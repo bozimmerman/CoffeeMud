@@ -386,6 +386,7 @@ public class StdRoom
 			case CMMsg.TYP_OK_ACTION:
 			case CMMsg.TYP_JUSTICE:
 			case CMMsg.TYP_OK_VISUAL:
+			case CMMsg.TYP_SNIFF:
 				break;
 			case CMMsg.TYP_SPEAK:
 				break;
@@ -472,6 +473,72 @@ public class StdRoom
 			case CMMsg.TYP_EXAMINESOMETHING:
 				look(mob,msg.sourceMessage()==null);
 				break;
+			case CMMsg.TYP_SNIFF:
+			{
+			    StringBuffer smell=new StringBuffer("");
+			    switch(domainType())
+			    {
+			    case Room.DOMAIN_INDOORS_UNDERWATER:
+			    case Room.DOMAIN_INDOORS_WATERSURFACE:
+			    case Room.DOMAIN_OUTDOORS_UNDERWATER:
+			    case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			        smell.append("It smells very WET here. ");
+			    	break;
+			    case Room.DOMAIN_INDOORS_CAVE:
+			        smell.append("It smells very dank and mildewy here. ");
+			    	break;
+			    case Room.DOMAIN_OUTDOORS_HILLS:
+			    case Room.DOMAIN_OUTDOORS_PLAINS:
+			        switch(getArea().getTimeObj().getSeasonCode())
+			        {
+			        case TimeClock.SEASON_FALL:
+			        case TimeClock.SEASON_WINTER:
+				        smell.append("There is a faint grassy smell here. ");
+				    	break;
+			        case TimeClock.SEASON_SPRING:
+			        case TimeClock.SEASON_SUMMER:
+				        smell.append("There is a floral grassy smell here. ");
+				    	break;
+			        }
+			    	break;
+			    case Room.DOMAIN_OUTDOORS_WOODS:
+			        switch(getArea().getTimeObj().getSeasonCode())
+			        {
+			        case TimeClock.SEASON_FALL:
+			        case TimeClock.SEASON_WINTER:
+				        smell.append("There is a faint woodsy smell here. ");
+				    	break;
+			        case TimeClock.SEASON_SPRING:
+			        case TimeClock.SEASON_SUMMER:
+				        smell.append("There is a rich woodsy smell here. ");
+				    	break;
+			        }
+			    	break;
+			    case Room.DOMAIN_OUTDOORS_JUNGLE:
+			        smell.append("There is a rich floral and plant aroma here. ");
+			    	break;
+			    case Room.DOMAIN_OUTDOORS_MOUNTAINS:
+			    case Room.DOMAIN_OUTDOORS_ROCKS:
+			        switch(getArea().getTimeObj().getSeasonCode())
+			        {
+			        case TimeClock.SEASON_FALL:
+			        case TimeClock.SEASON_WINTER:
+			        case TimeClock.SEASON_SUMMER:
+				        smell.append("It smells musty and rocky here. ");
+				    	break;
+			        case TimeClock.SEASON_SPRING:
+				        smell.append("It smells musty, rocky, and a bit grassy here. ");
+				    	break;
+			        }
+			    	break;
+			    case Room.DOMAIN_OUTDOORS_SWAMP:
+			        smell.append("It smells stinky and gassy here. ");
+			    	break;
+			    }
+				if(smell.length()>0)
+				    msg.source().tell(smell.toString());
+			}
+			break;
 			case CMMsg.TYP_READSOMETHING:
 				if(Sense.canBeSeenBy(this,mob))
 					mob.tell("There is nothing written here.");

@@ -72,9 +72,9 @@ public class Prop_Smell extends Property
 	            int pct=100;
 	            int ticks=-1;
 	            Vector parsedSmell=Util.parse(smell);
-	            for(int ii=parsedSmell.size()-1;ii>=0;ii++)
+	            for(int ii=parsedSmell.size()-1;ii>=0;ii--)
 	            {
-	                String s=((String)parsedSmell.elementAt(i)).toUpperCase();
+	                String s=((String)parsedSmell.elementAt(ii)).toUpperCase();
 	                if(s.startsWith("TICKS="))
 	                {
 	                    ticks=Util.s_int(s.substring(6).trim());
@@ -162,7 +162,7 @@ public class Prop_Smell extends Property
 	    if((affected instanceof MOB)&&(Dice.rollPercentage()<=20))
 	    {
 	        String emote=selectSmell(true);
-	        if(emote!=null)
+	        if((emote!=null)&&(emote.length()>0))
 	        {
 		        Room room=CoffeeUtensils.roomLocation(affected);
 		        if(room!=null)
@@ -202,26 +202,29 @@ public class Prop_Smell extends Property
 	                if(I.intValue()<=0) redo=true;
 		        }
 		    }
-		    StringBuffer newText=new StringBuffer("");
-		    for(int i=0;i<sm.size();i++)
+		    if(redo)
 		    {
-	            String smell=(String)sm.elementAt(i,1);
-	            Integer pct=(Integer)sm.elementAt(i,2);
-	            Integer ticks=(Integer)sm.elementAt(i,3);
-	            if(ticks.intValue()>0)
-	                newText.append("TICKS="+ticks+" ");
-	            if(Util.bset(pct.intValue(),FLAG_EMOTE))
-			        newText.append("EMOTE ");
-	            if(Util.bset(pct.intValue(),FLAG_BROADCAST))
-			        newText.append("BROADCAST ");
-	            if((pct.intValue()&511)!=100)
-			        newText.append("CHANCE="+(pct.intValue()&511)+" ");
-	            newText.append(smell+";");
+			    StringBuffer newText=new StringBuffer("");
+			    for(int i=0;i<sm.size();i++)
+			    {
+		            String smell=(String)sm.elementAt(i,1);
+			        Integer pct=(Integer)sm.elementAt(i,2);
+		            Integer ticks=(Integer)sm.elementAt(i,3);
+		            if(ticks.intValue()>0)
+		                newText.append("TICKS="+ticks+" ");
+		            if(Util.bset(pct.intValue(),FLAG_EMOTE))
+				        newText.append("EMOTE ");
+		            if(Util.bset(pct.intValue(),FLAG_BROADCAST))
+				        newText.append("BROADCAST ");
+		            if((pct.intValue()&511)!=100)
+				        newText.append("CHANCE="+(pct.intValue()&511)+" ");
+		            newText.append(smell+";");
+			    }
+			    if(newText.length()==0)
+			        affected.delEffect(this);
+			    else
+			        setMiscText(newText.toString());
 		    }
-		    if(newText.length()==0)
-		        affected.delEffect(this);
-		    else
-		        setMiscText(newText.toString());
 	    }
 	    return super.tick(ticking,tickID);
 	}

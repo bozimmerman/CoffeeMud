@@ -65,9 +65,9 @@ public class Prop_WearResister extends Property
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB mob=(MOB)((Item)affected).owner();
-			if((msg.amITarget(mob))&&(msg.value()<=0)&&(mob.location()!=null))
+			if((msg.amITarget(mob))&&(mob.location()!=null))
 			{
-				if(!Prop_HaveResister.isOk(msg,this,mob))
+				if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob)))
 					return false;
 				Prop_HaveResister.resistAffect(msg,mob,this);
 			}

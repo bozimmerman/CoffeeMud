@@ -1929,16 +1929,24 @@ public class StdMOB implements MOB
 		boolean canhearsrc=Sense.canBeHeardBy(msg.source(),this);
 
 		// first do special cases...
-		if((msg.targetCode()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this))&&(!amDead))
+		if((msg.targetCode()!=CMMsg.NO_EFFECT)
+		&&(msg.amITarget(this))
+		&&(!amDead))
+		switch(msg.targetMinor())
 		{
 			// healing by itself is pure happy
-			if(msg.targetMinor()==CMMsg.TYP_HEALING)
+			case CMMsg.TYP_HEALING:
 			{
 				int amt=msg.value();
 				if(amt>0) curState().adjHitPoints(amt,maxState());
 			}
-			else
-			if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+			break;
+			case CMMsg.TYP_SNIFF:
+			{
+			    // mob smells are wierd without hygiene
+			}
+			break;
+			case CMMsg.TYP_DAMAGE:
 			{
 				int dmg=msg.value();
 				synchronized(this)
@@ -1965,6 +1973,9 @@ public class StdMOB implements MOB
 					}
 				}
 			}
+			break;
+			default:
+			    break;
 		}
 
 		// now go on to source activities
@@ -2192,7 +2203,8 @@ public class StdMOB implements MOB
 			int targetMajor=msg.targetMajor();
 
 			// two special cases were already handled above
-			if((msg.targetMinor()!=CMMsg.TYP_HEALING)&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
+			if((msg.targetMinor()!=CMMsg.TYP_HEALING)
+			&&(msg.targetMinor()!=CMMsg.TYP_DAMAGE))
 			{
 				// but there might still be a few more...
 				if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -79,6 +80,14 @@ public class Spell_CauseStink extends Spell
 		return true;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((msg.amITarget(affected))
+		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
+		&&(Sense.canSmell(msg.source())))
+			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) absolutely HORRIBLE!!!");
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -40,6 +41,7 @@ public class Emoter extends ActiveTicker
 	}
 
 	protected Vector emotes=null;
+	protected Vector smells=null;
 	protected boolean broadcast=false;
 	protected String inroom="";
 
@@ -127,6 +129,11 @@ public class Emoter extends ActiveTicker
 					thisEmoteV.addElement(new Integer(emoteType));
 					thisEmoteV.addElement(new Boolean(broadcast));
 					thisEmoteV.addElement(thisEmote);
+					if(emoteType==EMOTE_SMELL)
+					{
+					    if(smells==null) smells=new Vector();
+					    smells.addElement(thisEmoteV);
+					}
 					emotes.addElement(thisEmoteV);
 				}
 			}
@@ -134,7 +141,44 @@ public class Emoter extends ActiveTicker
 		return emotes;
 	}
 
-	private void emoteHere(Room room, MOB emoter, Vector emote, boolean Wrapper)
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((msg.amITarget(myHost))
+		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
+		&&(Sense.canSmell(msg.source()))
+		&&(smells!=null))
+		{
+		    Vector emote=(Vector)smells.elementAt(Dice.roll(1,smells.size(),-1));
+	        MOB emoter=null;
+			if(myHost instanceof Room)
+			{
+				emoter=CMClass.getMOB("StdMOB");
+				emoteHere((Room)myHost,emoter,emote,msg.source(),false);
+				return;
+			}
+			Room room=getBehaversRoom(myHost);
+			if(room!=null)
+			{
+				if(myHost instanceof MOB)
+					emoter=(MOB)myHost;
+				else
+				{
+					if((myHost instanceof Item)&&(!Sense.isInTheGame(myHost,false)))
+						return;
+					emoter=CMClass.getMOB("StdMOB");
+					emoter.setName(myHost.name());
+				}
+				emoteHere(room,emoter,emote,null,true);
+			}
+		}
+	}
+	
+	private void emoteHere(Room room, 
+	        			   MOB emoter, 
+	        			   Vector emote, 
+	        			   MOB emoteTo,
+	        			   boolean Wrapper)
 	{
 		if(room==null) return;
 		if(inroom.length()>0)
@@ -146,16 +190,16 @@ public class Emoter extends ActiveTicker
 		}
 		FullMsg msg;
 		Room oldLoc=emoter.location();
+		String str=(String)emote.elementAt(2);
+		if(Wrapper) str="^E<S-NAME> "+str+" ^?";
 		if(emoter.location()!=room) emoter.setLocation(room);
-		if(Wrapper)
+		if(emoteTo!=null)
 		{
-			msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,"^E<S-NAME> "+(String)emote.elementAt(2)+" ^?");
+		    emoteTo.tell(emoter,emoteTo,null,str);
+		    return;
 		}
-		else
-		{
-			msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,(String)emote.elementAt(2));
-		}
-
+		
+		msg=new FullMsg(emoter,null,CMMsg.MSG_EMOTE,str);
 		if(room.okMessage(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
@@ -199,14 +243,14 @@ public class Emoter extends ActiveTicker
 				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					emoteHere(R,emoter,emote,false);
+					emoteHere(R,emoter,emote,null,false);
 				}
 				return true;
 			}
 			if(ticking instanceof Room)
 			{
 				emoter=CMClass.getMOB("StdMOB");
-				emoteHere((Room)ticking,emoter,emote,false);
+				emoteHere((Room)ticking,emoter,emote,null,false);
 				return true;
 			}
 
@@ -239,7 +283,7 @@ public class Emoter extends ActiveTicker
 			}
 			if(emoter==null) return true;
 
-			emoteHere(room,emoter,emote,true);
+			emoteHere(room,emoter,emote,null,true);
 
 			if(((Boolean)emote.elementAt(1)).booleanValue())
 			{
@@ -252,7 +296,7 @@ public class Emoter extends ActiveTicker
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
 						emoter.setName("something "+Directions.getInDirectionName(Directions.getOpDirectionCode(d)));
-						emoteHere(R,emoter,emote,true);
+						emoteHere(R,emoter,emote,null,true);
 					}
 				}
 			}

@@ -34,42 +34,18 @@ public class Sniff extends StdCommand
 			commands.removeElementAt(commands.size()-1);
 			quiet=true;
 		}
-		String textMsg="<S-NAME> sniff(s) ";
+		String textMsg="<S-NAME> sniff(s)";
 		if(mob.location()==null) return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
 			
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("at")))
-			   commands.removeElementAt(1);
-			else
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
-			   commands.removeElementAt(1);
 			String ID=Util.combine(commands,1);
-			
-			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
-			{
-				mob.location().listExits(mob);
-				return false;
-			}
 			if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 				thisThang=mob;
 			
 			if(thisThang==null)
 				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
-			if((thisThang==null)
-			&&(commands.size()>2)
-			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
-			{
-				commands.removeElementAt(1);
-				String ID2=Util.combine(commands,1);
-				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORN_REQ_ANY);
-				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
-				{
-					mob.tell("That's not a container.");
-					return false;
-				}
-			}
 			if(thisThang!=null)
 			{
 				String name=" <T-NAMESELF>";
@@ -94,7 +70,7 @@ public class Sniff extends StdCommand
 					return false;
 				}
 
-			FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_SNIFF,(quiet?null:textMsg+"around."),CMMsg.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"at you."),CMMsg.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around."));
+			FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_SNIFF,(quiet?null:textMsg+"around."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+"you."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+"around."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

@@ -139,14 +139,16 @@ public class Prop_HaveResister extends Property
 			recovery=(int)Math.round(Util.mul(recovery,Math.random()));
 			if(recovery<=0) recovery=0;
 			if(Prop_HaveResister.checkProtection(me,"weapons"))
-				mob.curState().adjHitPoints(recovery,mob.maxState());
+				msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"weapons"),100.0))));
 			else
 			{
 				Weapon W=(Weapon)msg.tool();
-				if(((W.weaponType()==Weapon.TYPE_BASHING)&&(Prop_HaveResister.checkProtection(me,"blunt")))
-				 ||((W.weaponType()==Weapon.TYPE_PIERCING)&&(Prop_HaveResister.checkProtection(me,"pierce")))
-				 ||((W.weaponType()==Weapon.TYPE_SLASHING)&&(Prop_HaveResister.checkProtection(me,"slash"))))
-					mob.curState().adjHitPoints(recovery,mob.maxState());
+				if((W.weaponType()==Weapon.TYPE_BASHING)&&(Prop_HaveResister.checkProtection(me,"blunt")))
+					msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"blunt"),100.0))));
+				if((W.weaponType()==Weapon.TYPE_PIERCING)&&(Prop_HaveResister.checkProtection(me,"pierce")));
+					msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"pierce"),100.0))));
+			    if((W.weaponType()==Weapon.TYPE_SLASHING)&&(Prop_HaveResister.checkProtection(me,"slash")));
+			    	msg.setValue((int)Math.round(Util.mul(msg.value(),Util.div(getProtection(me,"slash"),100.0))));
 			}
 			return;
 		}
@@ -204,9 +206,9 @@ public class Prop_HaveResister extends Property
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB mob=(MOB)((Item)affected).owner();
-			if((msg.amITarget(mob))&&(msg.value()<=0)&&(mob.location()!=null))
+			if((msg.amITarget(mob))&&(mob.location()!=null))
 			{
-				if(!Prop_HaveResister.isOk(msg,this,mob))
+				if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob)))
 					return false;
 				Prop_HaveResister.resistAffect(msg,mob,this);
 			}

@@ -634,6 +634,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_OK_VISUAL:
 		case CMMsg.TYP_DEATH:
 		case CMMsg.TYP_NOISE:
+		case CMMsg.TYP_SNIFF:
 			return true;
 		case CMMsg.TYP_SIT:
 		case CMMsg.TYP_SLEEP:
@@ -939,6 +940,15 @@ public class StdItem implements Item
 		else
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_SNIFF:
+			{
+			    String s=null;
+				if(Sense.canSmell(mob))
+				    s=EnvResource.RESOURCE_SMELLS[material()&EnvResource.RESOURCE_MASK].toLowerCase();
+				if((s!=null)&&(s.length()>0))
+				    mob.tell(mob,this,null,"<T-NAME> has a "+s+" smell.");
+			}
+			break;
 		case CMMsg.TYP_EXAMINESOMETHING:
 			if(!(this instanceof Container))
 			{

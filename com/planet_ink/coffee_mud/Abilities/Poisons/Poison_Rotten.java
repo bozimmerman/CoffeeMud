@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,6 +51,15 @@ public class Poison_Rotten extends Poison
 		    return "^G"+affected.name()+" was rotten! <S-NAME> bend(s) over with horrid stomach pains!^?";
 	    else
 		    return "^G<S-NAME> bend(s) over with horrid stomach pains!^?";
+	}
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if((msg.amITarget(affected))
+		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
+		&&(affected instanceof Item)
+		&&(Sense.canSmell(msg.source())))
+			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) rotten!");
 	}
 	protected String POISON_AFFECT(){return "^G<S-NAME> moan(s) and clutch(es) <S-HIS-HER> stomach.";}
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}

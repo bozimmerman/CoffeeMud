@@ -63,11 +63,10 @@ public class Prop_RideResister extends Property
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(((Rideable)affected).amRiding((MOB)msg.target()))
-		&&(msg.value()<=0)
 		&&(((MOB)msg.target()).location()!=null))
 		{
 			MOB mob=(MOB)msg.target();
-			if(!Prop_HaveResister.isOk(msg,this,mob))
+			if((msg.value()<=0)&&(!Prop_HaveResister.isOk(msg,this,mob)))
 				return false;
 			Prop_HaveResister.resistAffect(msg,mob,this);
 		}
