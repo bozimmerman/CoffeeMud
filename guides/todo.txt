@@ -1,6 +1,11 @@
 Bard Subclasses
 Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
+script editor in mudgrinder
+quest manager in mudgrinder
 macro help files
+For Shopkeeper VIEW, armor, give material and wear location; for weapons, give material and weapon type.  Basically, I'm thinking it would be really nice if the shopkeepers gave most of the intel that would prohibit wearing/using.. this could also include weight.  Just including level is a very big teaser of information.
+Weapon Immunity SILVER, MAGIC, LEVELS 1, 2, 3, 4, 5 PIERCE, BLUDGEON, SLASHING, LIGHTNING, FIRE, COLD, ACID, GAS, MAGIC.  
+add to regenMOB PIERCE, BLUDGEON, SLASHING, LIGHTNING, FIRE, COLD, ACID, GAS, MAGIC -- damage which is permanent, and does not regen
 
 //****** next version ********************************************************
 friends list, for filter who
@@ -25,16 +30,12 @@ ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM commo
 Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.
 1)	Waypoints—A Land Based auto-travelling system.  Any area that has a Prop_WayPoint can be accessed from another Prop_WayPoint Area, provided the character has the TRAVELLER skill, and has learned each of those way points.  The computer will determine (approx) the shortest route from WayPoint A to WayPoint B.  If the path becomes blocked or someone attacks the TRAVELLER, then the traveling stops in that room.  Note: You can only initiate the TRAVELLER skill from a WayPoint.
 2)	Seapoints—A sea based auto-travelling system.
-Weapon Immunity SILVER, MAGIC, LEVELS 1, 2, 3, 4, 5.  
-add to regenMOB PIERCE, BLUDGEON, SLASHING, LIGHTNING, FIRE, COLD, ACID, GAS, MAGIC -- damage which is permanent, and does not regen
 Prayer could be a SunCURSE.  If the MOB enters a sunlit room, it turns to stone (petrification).  
 sleep (exhaustion) ticker
-Currency exchange (silver, plat, elec, etc.)
 KNOCKBACK:  issue command, and the last attack of a series will attempt to push opponent back 1 range increment.Fighter QUAL 22, Ranger QUAL 18, Barbar QUAL 12
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 Druids should have some chants that affect Sex: Mating Instinct, a geas to find a creature of same race/opposite gender. Find Mate , a chant to track someone of opposite sex (closest?) that can be cast on others (CHANT find mate zara) will make zara be able to find a mate of (elf male) type. Feel Sex makes sexual activities more intense, basically just giving WONDERFUL sex results. YEARN SEX is a chant that makes the target suffer 8 WIS until they have sex (or the chant wears off). CROSSGENDER is a chant that maker any gender valid for sex. HOMOSEXUALITY, duh. NEUTER is a chant that makes no gender sexually viable. SPEED BIRTH creates a lvl 1 MOB of that Race, after sex. FERTILITY makes a BIRTH produce more offspring.
 Spell: a TRANSFORMATION spell that lowers your level by 1. REGRESSION?
 Spell: 'Rogue Limb'  One sof your limbs goes out of your control, causing you to do battle with it.  However, you take both sides of the damage.  heh.
 level and type and wear locations for weaponsmithing and armorsmithing
-For Shopkeeper armor, give material and wear location; for weapons, give material and weapon type.  Basically, I'm thinking it would be really nice if the shopkeepers gave most of the intel that would prohibit wearing/using.. this could also include weight.  Just including level is a very big teaser of information.
 LYING DOWN position?
