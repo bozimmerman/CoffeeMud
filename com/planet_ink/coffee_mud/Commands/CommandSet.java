@@ -262,6 +262,7 @@ public class CommandSet extends Hashtable
 		put("CLANQUAL",new Integer(CLANQUAL));
 		put("CLANREJECT",new Integer(CLANREJECT));
 		put("CLANRESIGN",new Integer(CLANRESIGN));
+		put("CLANVOTE",new Integer(CLANVOTE));
 		put("COLORSET",new Integer(COLORSET));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));

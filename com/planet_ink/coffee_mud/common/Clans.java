@@ -324,6 +324,7 @@ public class Clans implements Clan, Tickable
 		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+": "+crewList(Clan.POS_BOSS)+"\n\r"
 		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_LEADER,true,true),16)+": "+crewList(Clan.POS_LEADER)+"\n\r"
 		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_TREASURER,true,true),16)+": "+crewList(Clan.POS_TREASURER)+"\n\r"
+		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_STAFF,true,true),16)+": "+crewList(Clan.POS_STAFF)+"\n\r"
 		          +"Total Members   : "+getSize()+"\n\r");
 		if(all.size()>1)
 		{

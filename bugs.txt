@@ -1,3 +1,6 @@
+clan skipChecks wont ever be true, since you are going through commandprocessor
+clan votes -- final vote of all members should push decision
+look into mobs on grid homes?
 prop_spelladder doesn't work?!
 require a duration for status change!
 no <> allowed in prompt cmd any more
