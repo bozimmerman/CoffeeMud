@@ -57,4 +57,6 @@ public interface ExternalCommand
 	public boolean zapperCheck(String text, MOB mob);
 	public String zapperDesc(String text);
 	public void extinguish(MOB source, Environmental target, int level);
+	public int radiatesFromDir(Room room, Vector rooms);
+	public void getRadiantRooms(Room room, Vector rooms, boolean openOnly, int maxDepth);
 }

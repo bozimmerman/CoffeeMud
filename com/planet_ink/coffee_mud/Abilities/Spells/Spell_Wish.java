@@ -93,6 +93,7 @@ public class Spell_Wish extends Spell
 			// cast wish to cast bless on me
 			// cast wish to cast disintegrate on orc
 			// cast wish to cast geas on orc to kill bob
+			Log.sysOut("Wish",mob.ID()+" wished for "+myWish+".");
 
 			mob.location().send(mob,msg);
 			StringBuffer wish=new StringBuffer(myWish);
@@ -167,7 +168,6 @@ public class Spell_Wish extends Spell
 					newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 					newMOB.setFollowing(mob);
-					Log.sysOut("Wish",mob.ID()+" wished for mob "+newMOB.ID()+".");
 				}
 				else
 				if((foundThang instanceof Item)
@@ -180,7 +180,6 @@ public class Spell_Wish extends Spell
 					mob.location().addItemRefuse(newItem,Item.REFUSE_PLAYER_DROP);
 					mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 					mob.location().recoverRoomStats();
-					Log.sysOut("Wish",mob.ID()+" wished for item "+newItem.ID()+".");
 				}
 				if(experienceRequired<=0)
 					experienceRequired=0;

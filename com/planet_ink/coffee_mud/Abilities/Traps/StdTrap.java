@@ -69,6 +69,23 @@ public class StdTrap extends StdAbility implements Trap
 		return Ability.TRAP;
 	}
 
+	public boolean okAffect(Environmental myHost, Affect affect)
+	{
+		if((!disabled())&&(affected instanceof Item))
+		{
+			if((affect.tool()==affected)
+			   &&(affect.targetMinor()==Affect.TYP_GIVE)
+			   &&(affect.targetMessage()!=null)
+			   &&(affect.target()!=null)
+			   &&(affect.target() instanceof MOB)
+			   &&(!affect.source().getGroupMembers(new Hashtable()).contains(affect.target())))
+			{
+				affect.source().tell((MOB)affect.target(),affect.tool(),null,"<S-NAME> can't accept <T-NAME>.");
+				return false;
+			}
+		}
+		return super.okAffect(myHost,affect);
+	}
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if(!sprung)

@@ -38,6 +38,16 @@ public class Fido extends StdRace
 		return naturalWeapon;
 	}
 	
+	public DeadBody getCorpse(MOB mob, Room room)
+	{
+		DeadBody body=super.getCorpse(mob,room);
+		if((body!=null)&&(Dice.rollPercentage()<25))
+		{
+			Ability A=CMClass.getAbility("Disease_Fleas");
+			if(A!=null) body.addNonUninvokableAffect(A);
+		}
+		return body;
+	}
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

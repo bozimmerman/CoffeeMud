@@ -218,6 +218,32 @@ public class ItemUsage
 		return true;
 	}
 
+	public static void putout(MOB mob, Vector commands, boolean quiet)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("Put out what?");
+			return;
+		}
+		commands.removeElementAt(1);
+		commands.removeElementAt(0);
+		
+		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		if(items.size()==0)
+			mob.tell("You don't seem to be carrying that.");
+		else
+		for(int i=0;i<items.size();i++)
+		{
+			Item I=(Item)items.elementAt(i);
+			if((items.size()==1)||(I instanceof Light))
+			{
+				FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_EXTINGUISH,quiet?null:"<S-NAME> puts out <T-NAME>.");
+				if(mob.location().okAffect(mob,msg))
+					mob.location().send(mob,msg);
+			}
+		}
+	}
+	
 	public static void get(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
@@ -257,7 +283,9 @@ public class ItemUsage
 						getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 				}
 				if(getThis==null) break;
-				if((getThis instanceof Item)&&(Sense.canBeSeenBy(getThis,mob)))
+				if((getThis instanceof Item)
+				&&(Sense.canBeSeenBy(getThis,mob))
+				&&((!allFlag)||((Item)getThis).isGettable()||(getThis.displayText().length()>0)))
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
 			}
@@ -369,6 +397,12 @@ public class ItemUsage
 		{
 			commands.removeElementAt(1);
 			wear(mob,commands);
+			return;
+		}
+
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("out"))
+		{
+			putout(mob,commands,false);
 			return;
 		}
 

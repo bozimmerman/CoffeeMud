@@ -1338,12 +1338,6 @@ public class StdMOB implements MOB
 					mob.tell(name()+" can't see what you are giving.");
 					return false;
 				}
-				if((CMClass.fetchMyTrap(affect.tool())!=null)
-				&&(affect.targetMessage()!=null))
-				{
-					mob.tell(name()+" won't accept it.");
-					return false;
-				}
 				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
 				if(!location().okAffect(affect.source(),msg))
 					return false;
@@ -1818,13 +1812,13 @@ public class StdMOB implements MOB
 					setAgeHours(AgeHours+1);
 					if(AgeHours>60000)
 					{
-						if(((AgeHours%60)==0)&&(Dice.rollPercentage()==1))
+						if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
 						{
 							Ability A=CMClass.getAbility("Disease_Cancer");
 							if(A!=null) A.invoke(this,this,true);
 						}
 						else
-						if((AgeHours%600)==0)
+						if((AgeHours%1200)==0)
 						{
 							Ability A=CMClass.getAbility("Disease_Arthritis");
 							if(A!=null) A.invoke(this,this,true);

@@ -41,9 +41,12 @@ public class GenLightSource extends GenItem implements Light
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(myHost,affect))
-			return false;
-		return LightSource.isAnOkAffect(this,affect);
+		switch(LightSource.isAnOkAffect(this,affect))
+		{
+		case 0: return false;
+		case 1: return super.okAffect(myHost,affect);
+		default: return true;
+		}
 	}
 
 

@@ -527,6 +527,52 @@ public class AbilityHelper
 		};
 	
 	
+	public static int radiatesFromDir(Room room, Vector rooms)
+	{
+		for(int i=0;i<rooms.size();i++)
+		{
+			Room R=(Room)rooms.elementAt(i);
+			
+			if(R==room) return -1;
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if(R.getRoomInDir(d)==room)
+					return Directions.getOpDirectionCode(d);
+		}
+		return -1;
+	}
+	public static void getRadiantRooms(Room room, 
+									   Vector rooms, 
+									   boolean openOnly,
+									   int maxDepth)
+	{
+		int depth=0;
+		if(room==null) return;
+		if(rooms.contains(room)) return;
+		rooms.addElement(room);
+		int min=0;
+		int size=rooms.size();
+		while(depth<maxDepth)
+		{
+			for(int r=min;r<size;r++)
+			{
+				Room R1=(Room)rooms.elementAt(r);
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R=R1.getRoomInDir(d);
+					Exit E=R1.getExitInDir(d);
+					if((R!=null)
+					&&(E!=null)
+					&&((!openOnly)||(E.isOpen()))
+					&&(!rooms.contains(R)))
+						rooms.addElement(R);
+				}
+			}
+			min=size;
+			size=rooms.size();
+			depth++;
+		}
+	}
+	
 	public static void extinguish(MOB source, Environmental target, int level)
 	{
 		if(target instanceof Room)

@@ -38,14 +38,12 @@ public class LightSource extends StdItem implements Light
 		return new LightSource();
 	}
 
-	public static boolean isAnOkAffect(Light myLight,
-									   Affect affect
-									   )
+	public static int isAnOkAffect(Light myLight, Affect affect)
 	{
 		MOB mob=affect.source();
 
 		if(!affect.amITarget(myLight))
-			return true;
+			return 1;
 		else
 		switch(affect.targetMinor())
 		{
@@ -53,7 +51,7 @@ public class LightSource extends StdItem implements Light
 			if(myLight.getDuration()==0)
 			{
 				mob.tell(myLight.name()+" looks used up.");
-				return false;
+				return 0;
 			}
 			Room room=mob.location();
 			if(room!=null)
@@ -64,19 +62,29 @@ public class LightSource extends StdItem implements Light
 				   &&(mob.isMine(myLight)))
 				{
 					mob.tell("It's too wet to light "+myLight.name()+" here.");
-					return false;
+					return 0;
 				}
 			}
-			return true;
+			return 1;
+		case Affect.TYP_EXTINGUISH:
+			if((myLight.getDuration()==0)||(!myLight.isLit()))
+			{
+				mob.tell(myLight.name()+" is not lit!");
+				return 0;
+			}
+			return -1;
 		}
-		return true;
+		return 1;
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(!super.okAffect(myHost,affect))
-			return false;
-		return LightSource.isAnOkAffect(this,affect);
+		switch(LightSource.isAnOkAffect(this,affect))
+		{
+		case 0: return false;
+		case 1: return super.okAffect(myHost,affect);
+		default: return true;
+		}
 	}
 
 	public static void recoverMyEnvStats(Light myLight)
@@ -185,6 +193,15 @@ public class LightSource extends StdItem implements Light
 		if(affect.amITarget(myLight))
 			switch(affect.targetMinor())
 			{
+			case Affect.TYP_EXTINGUISH:
+				if(myLight.isLit())
+				{
+					myLight.light(false);
+					ExternalPlay.deleteTick(myLight,Host.LIGHT_FLICKERS);
+					myLight.recoverEnvStats();
+					room.recoverRoomStats();
+				}
+				break;
 			case Affect.TYP_HOLD:
 				if(myLight.getDuration()>0)
 				{

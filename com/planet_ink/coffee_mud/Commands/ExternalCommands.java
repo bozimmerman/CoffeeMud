@@ -130,6 +130,15 @@ public class ExternalCommands implements ExternalCommand
 	{
 		TheFight.postPanic(mob,affect);
 	}
+	public int radiatesFromDir(Room room, Vector rooms)
+	{
+		return AbilityHelper.radiatesFromDir(room,rooms);
+	}
+	public void getRadiantRooms(Room room, Vector rooms, boolean openOnly, int maxDepth)
+	{
+		AbilityHelper.getRadiantRooms(room,rooms,openOnly,maxDepth);
+	}
+	
 	
 	public void postDeath(MOB source, MOB target,Affect addHere)
 	{
