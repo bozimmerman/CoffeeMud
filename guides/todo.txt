@@ -35,6 +35,8 @@ For trade skills, and to make spells more realistic, perfect the delay of these 
 allow some message to be displayed as they are put in Que.  For example "You start whittling" (delay)
 "You have completed your piece of art". (Combat should cancel this!)
 
+iron grip spell to thwart disarm
+
 Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it 
 will send the items to the appropriate GateObject.  The GateObject can be either a container or not. 
 If not, the GateObject will drop its cargo on the floor.  The TeleportingContainer and the GateObject 
@@ -57,3 +59,18 @@ should be assignable to GENMOBS via a new tag.
 
 More WeaponTypes, with text file (Resource)? descriptions.  These should also be
 assignable to MOBs at build time, or to GENMOBs via a new tag.
+
+PlayerKill flag
+
+SubClasses: 
+Wild Mage: 50% chance similar (diff) spell is cast (higher level, perhaps)
+Assassin: Assassinate skill to auto-kill, lose something else though
+Barbarian: Free Berzerk, lower charisma
+Priests of specific Gods: bonuses to like spells, lose others
+Knights Order: special sword as part of outfit?
+Prancers: Dancing bards who get special ability
+Illusionist: Illusion spells at 100%, get all of them
+
+
+
+

@@ -57,26 +57,27 @@ public interface Item extends Environmental
 	/**
 	 * constants for worn items
 	 */
-	public static final int INVENTORY=0;
-	public static final int ON_HEAD=1;
-	public static final int ON_NECK=2;
-	public static final int ON_TORSO=4;
-	public static final int ON_ARMS=8;
-	public static final int ON_LEFT_WRIST=16;
-	public static final int ON_RIGHT_WRIST=32;
-	public static final int ON_LEFT_FINGER=64;
-	public static final int ON_RIGHT_FINGER=128;
-	public static final int ON_FEET=256;
-	public static final int HELD=512;
-	public static final int WIELD=1024;
-	public static final int ON_HANDS=2048;
-	public static final int FLOATING_NEARBY=4096;
-	public static final int ON_WAIST=8192;
-	public static final int ON_LEGS=16384;
+	public static final long INVENTORY=0;
+	public static final long ON_HEAD=1;
+	public static final long ON_NECK=2;
+	public static final long ON_TORSO=4;
+	public static final long ON_ARMS=8;
+	public static final long ON_LEFT_WRIST=16;
+	public static final long ON_RIGHT_WRIST=32;
+	public static final long ON_LEFT_FINGER=64;
+	public static final long ON_RIGHT_FINGER=128;
+	public static final long ON_FEET=256;
+	public static final long HELD=512;
+	public static final long WIELD=1024;
+	public static final long ON_HANDS=2048;
+	public static final long FLOATING_NEARBY=4096;
+	public static final long ON_WAIST=8192;
+	public static final long ON_LEGS=16384;
 	
 	/** If being worn, this code will show WHERE*/
 	public boolean amWearingAt(long wornCode);	// 0 means in inventory! see above
 	public boolean canBeWornAt(long wornCode);
+	public long whereCantWear(MOB mob); // 0 == ok!
 	public boolean canWear(MOB mob);
 	public void wearIfPossible(MOB mob);
 	public void wearAt(long wornCode);

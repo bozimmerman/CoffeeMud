@@ -7,8 +7,6 @@ import java.util.*;
 
 public class Skill_Attack2 extends StdAbility
 {
-	private boolean temporarilyDisable=false;
-
 	public Skill_Attack2()
 	{
 		super();
@@ -41,6 +39,10 @@ public class Skill_Attack2 extends StdAbility
 		return Ability.SKILL;
 	}
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		affectableStats.setSpeed(affectableStats.speed()+(1.0*(new Integer(profficiency()).doubleValue()/100.0)));
+	}
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
@@ -50,22 +52,13 @@ public class Skill_Attack2 extends StdAbility
 
 		MOB mob=(MOB)affected;
 
-		if((!temporarilyDisable)&&(affect.amISource(mob))&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK))
-		{
-			if((mob.isInCombat())&&(!mob.amDead())&&(affect.target() instanceof MOB))
-			{
-				if((mob.envStats().level()>=envStats().level())
-				&&(profficiencyCheck(0,false)))
-				{
-					Weapon weapon=(Weapon)CMClass.getWeapon("Natural");
-					if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
-						weapon=(Weapon)affect.tool();
-					temporarilyDisable=true;
-					ExternalPlay.doAttack(mob,(MOB)affect.target(),weapon);
-					temporarilyDisable=false;
-					helpProfficiency(mob);
-				}
-			}
-		}
+		if((affect.amISource(mob))
+		&&(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+		&&(Dice.rollPercentage()>95)
+		&&(mob.isInCombat())
+		&&(!mob.amDead())
+		&&(affect.target() instanceof MOB)
+		&&(mob.envStats().level()>=envStats().level()))
+			helpProfficiency(mob);
 	}
 }

@@ -30,6 +30,6 @@ public class Clericness extends CombatAbilities
 			mob.recoverCharStats();
 		}
 		// now equip character...
-		mob.charStats().getMyClass().newCharacter(mob,true);
+		newCharacter(mob);
 	}
 }

@@ -28,6 +28,6 @@ public class Fighterness extends CombatAbilities
 			mob.recoverCharStats();
 		}
 		// now equip character...
-		mob.charStats().getMyClass().newCharacter(mob,true);
+		newCharacter(mob);
 	}
 }

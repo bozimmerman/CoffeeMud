@@ -57,8 +57,13 @@ public class Fighter_WeaponBreak extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		if(levelDiff>0) 
+			levelDiff=levelDiff*5;
+		else 
+			levelDiff=0;
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
-		boolean success=profficiencyCheck(-(mob.getVictim().charStats().getDexterity()*2),auto)&&(auto||ExternalPlay.isHit(mob,mob.getVictim()));
+		boolean success=profficiencyCheck((-levelDiff)+(-(mob.getVictim().charStats().getDexterity()*2)),auto)&&(auto||ExternalPlay.isHit(mob,mob.getVictim()));
 		if((!success)||(hisWeapon.envStats().ability()>0)||(Sense.isABonusItems(hisWeapon)))
 		{
 			String str=auto?"":"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!";

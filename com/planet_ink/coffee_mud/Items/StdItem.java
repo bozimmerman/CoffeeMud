@@ -204,20 +204,25 @@ public class StdItem implements Item
 		return false;
 	}
 
-	public boolean canWear(MOB mob)
+	public long whereCantWear(MOB mob)
 	{
+		long couldHaveBeenWornAt=-1;
 		if(properWornBitmap==0)
-			return false;
+			return couldHaveBeenWornAt;
 
 		if(!wornLogicalAnd)
 		{
 			for(int i=0;i<20;i++)
 			{
 				long wornCode=new Double(Math.pow(new Double(2).doubleValue(),new Double(i).doubleValue())).longValue();
-				if((canBeWornAt(wornCode))&&(!mob.amWearingSomethingHere(wornCode)))
-					return true;
+				if(canBeWornAt(wornCode))
+				{
+					couldHaveBeenWornAt=wornCode;
+					if(!mob.amWearingSomethingHere(wornCode))
+						return 0;
+				}
 			}
-			return false;
+			return couldHaveBeenWornAt;
 		}
 		else
 		{
@@ -225,10 +230,17 @@ public class StdItem implements Item
 			{
 				long wornCode=new Double(Math.pow(new Double(2).doubleValue(),new Double(i).doubleValue())).longValue();
 				if((canBeWornAt(wornCode))&&(mob.amWearingSomethingHere(wornCode)))
-					return false;
+					return wornCode;
 			}
-			return true;
+			return 0;
 		}
+	}
+	
+	public boolean canWear(MOB mob)
+	{
+		if(whereCantWear(mob)==0)
+			return true;
+		return false;
 	}
 
 	public long rawWornCode()
@@ -456,7 +468,13 @@ public class StdItem implements Item
 				return false;
 			}
 			if(!canWear(mob))
-			{	mob.tell("You cannot wear any more of these.");
+			{	
+				long cantWearAt=whereCantWear(mob);
+				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
+				if(alreadyWearing!=null)
+					mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+				else
+					mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
 				return false;
 			}
 			if(envStats().level()>mob.envStats().level())
@@ -478,7 +496,11 @@ public class StdItem implements Item
 			}
 			if(mob.amWearingSomethingHere(Item.WIELD))
 			{
-				mob.tell("You are already wielding something.");
+				Item alreadyWearing=mob.fetchWornItem(Item.WIELD);
+				if(alreadyWearing!=null)
+					mob.tell("You are already wielding "+alreadyWearing.name()+".");
+				else
+					mob.tell("You are already wielding something.");
 				return false;
 			}
 			if(!canWear(mob))

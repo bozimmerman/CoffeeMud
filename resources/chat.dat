@@ -2550,6 +2550,18 @@
 9
 
 ############################################################
+>chicken
+
+(chicken|hi|hello)
+8:pecks at the ground.
+2:clucks.
+2:
+
+#matches anything and then says nothing
+()
+9
+
+############################################################
 >insect centipede
 
 (centipede|hi|hello)

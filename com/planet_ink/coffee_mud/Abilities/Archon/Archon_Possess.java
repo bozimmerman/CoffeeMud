@@ -42,7 +42,7 @@ public class Archon_Possess extends ArchonSkill
 				}
 			}
 		}
-		if(target==null)
+		if((target==null)||(!target.isMonster()))
 		{
 			mob.tell("You can't possess '"+MOBname+"' right now.");
 			return false;

@@ -51,10 +51,15 @@ public class Skill_Parry extends StdAbility
 			if((affect.tool()!=null)&&(affect.tool() instanceof Item))
 			{
 				Item attackerWeapon=(Item)affect.tool();
-				if((mob.fetchWieldedItem()!=null)
-				&&((attackerWeapon!=null)
-				&&((attackerWeapon instanceof Weapon))
-				&&(((Weapon)attackerWeapon).weaponType()!=Weapon.TYPE_NATURAL)))
+				Item myWeapon=mob.fetchWieldedItem();
+				if((myWeapon!=null)
+				&&(attackerWeapon!=null)
+				&&(myWeapon instanceof Weapon)
+				&&(attackerWeapon instanceof Weapon)
+				&&(((Weapon)myWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
+				&&(((Weapon)myWeapon).weaponType()!=Weapon.TYPE_NATURAL)
+				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_FLAILED)
+				&&(((Weapon)attackerWeapon).weaponType()!=Weapon.TYPE_NATURAL))
 				{
 					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+affect.source().fetchWieldedItem().name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getDexterity()-70,false))

@@ -543,13 +543,17 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+Login+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHAR");
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");
 				String password=DBConnector.getRes(R,"CMPASS");
 				Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
-				mob.setUserInfo(username,password,newCalendar);
+				if(Login.equalsIgnoreCase(username))
+				{
+					mob.setUserInfo(username,password,newCalendar);
+					break;
+				}
 			}
 			DBConnector.DBDone(D);
 		}

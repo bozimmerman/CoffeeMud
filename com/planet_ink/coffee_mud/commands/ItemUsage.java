@@ -400,7 +400,16 @@ public class ItemUsage
 
 	public boolean hold(MOB mob, Item item)
 	{
-		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_HOLD,"<S-NAME> hold(s) <T-NAME>.");
+		int msgType=Affect.MSG_HOLD;
+		String str="<S-NAME> hold(s) <T-NAME>.";
+		if((!mob.amWearingSomethingHere(Item.WIELD))
+		&&((item.rawProperLocationBitmap()==Item.WIELD)
+		||(item.rawProperLocationBitmap()==(Item.HELD|Item.WIELD))))
+		{
+			str="<S-NAME> wield(s) <T-NAME>.";
+			msgType=Affect.MSG_WIELD;
+		}
+		FullMsg newMsg=new FullMsg(mob,item,null,msgType,str);
 		if(mob.location().okAffect(newMsg))
 		{
 			mob.location().send(mob,newMsg);

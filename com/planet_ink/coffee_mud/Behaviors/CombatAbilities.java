@@ -18,6 +18,25 @@ public class CombatAbilities extends StdBehavior
 		return new CombatAbilities();
 	}
 
+	protected void newCharacter(MOB mob)
+	{
+		Vector oldAbilities=new Vector();
+		for(int a=0;a<mob.numAbilities();a++)
+			oldAbilities.addElement(mob.fetchAbility(a));
+		mob.charStats().getMyClass().newCharacter(mob,true);
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability newOne=mob.fetchAbility(a);
+			if((!oldAbilities.contains(newOne))
+			&&(newOne.qualifyingLevel(mob)>mob.baseEnvStats().level()))
+			{
+				mob.delAbility(newOne);
+				mob.delAffect(newOne);
+				a=a-1;
+			}
+		}
+	}
+	
 	protected void getSomeMoreMageAbilities(MOB mob)
 	{
 		for(int a=0;a<((mob.baseEnvStats().level())+5);a++)
@@ -98,7 +117,7 @@ public class CombatAbilities extends StdBehavior
 			//if(!tryThisOne.qualifies(mob))
 			//	mob.curState().adjMana(20,mob.maxState());
 
-			tryThisOne.setProfficiency(Dice.roll(1,50,(mob.baseEnvStats().level()-tryThisOne.qualifyingLevel(mob))*15));
+			tryThisOne.setProfficiency(Dice.roll(1,50,mob.baseEnvStats().level()));
 			Vector V=new Vector();
 			V.addElement(victim.name());
 			tryThisOne.invoke(mob,V,victim,false);

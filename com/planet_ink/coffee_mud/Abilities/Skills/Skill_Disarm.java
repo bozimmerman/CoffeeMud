@@ -60,7 +60,12 @@ public class Skill_Disarm extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-25,auto)&&(auto||(ExternalPlay.isHit(mob,mob.getVictim())));
+		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		if(levelDiff>0) 
+			levelDiff=levelDiff*5;
+		else 
+			levelDiff=0;
+		boolean success=profficiencyCheck(-levelDiff,auto)&&(auto||(ExternalPlay.isHit(mob,mob.getVictim())));
 		if(success)
 		{
 			Item hisWeapon=mob.getVictim().fetchWieldedItem();

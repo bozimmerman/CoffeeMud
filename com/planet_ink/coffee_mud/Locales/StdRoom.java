@@ -685,6 +685,17 @@ public class StdRoom
 		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,false);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
 		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
+		
+		if((found!=null) // the smurfy well exception
+		&&(found instanceof Item)
+		&&(goodLocation==null)
+		&&(found.displayText().length()==0)
+		&&(thingName.indexOf(".")<0))
+		{
+			Environmental visibleItem=fetchFromRoomFavorItems(null,thingName+".2");
+			if(visibleItem!=null)
+				found=visibleItem;
+		}
 		return found;
 	}
 

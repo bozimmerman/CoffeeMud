@@ -28,7 +28,7 @@ public class Thiefness extends CombatAbilities
 			mob.recoverCharStats();
 		}
 		// now equip character...
-		mob.charStats().getMyClass().newCharacter(mob,true);
+		newCharacter(mob);
 	}
 
 	public void tick(Environmental ticking, int tickID)

@@ -145,7 +145,12 @@ public class StdAbility implements Ability, Cloneable
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&(!Sense.canBeHeardBy(target,mob))))
 		{
 			if(!quiet)
-				mob.tell("You don't see '"+targetName+"' here.");
+			{
+				if(targetName.trim().length()==0)
+					mob.tell("You don't see them here.");
+				else
+					mob.tell("You don't see '"+targetName+"' here.");
+			}
 			return null;
 		}
 
@@ -181,7 +186,10 @@ public class StdAbility implements Ability, Cloneable
 		if(target!=null) targetName=target.name();
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&(!Sense.canBeHeardBy(target,mob))))
 		{
-			mob.tell("You don't see '"+targetName+"' here.");
+			if(targetName.trim().length()==0)
+				mob.tell("You don't see that here.");
+			else
+				mob.tell("You don't see '"+targetName+"' here.");
 			return null;
 		}
 
@@ -212,7 +220,12 @@ public class StdAbility implements Ability, Cloneable
 				mob.tell("You need to be more specific.");
 			else
 			if((target==null)||(target instanceof Item))
-				mob.tell("You don't see '"+targetName+"' here.");
+			{
+				if(targetName.trim().length()==0)
+					mob.tell("You don't see that here.");
+				else
+					mob.tell("You don't see '"+targetName+"' here.");
+			}
 			else
 				mob.tell("You can't do that to '"+targetName+"'.");
 			return null;

@@ -77,7 +77,10 @@ public class Fighter_Whomp extends StdAbility
 
 		super.unInvoke();
 
-		mob.tell("You feel less drowsy.");
+		if(mob.location()!=null)
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
+		else
+			mob.tell("You feel less drowsy.");
 		ExternalPlay.standIfNecessary(mob);
 	}
 
@@ -87,14 +90,6 @@ public class Fighter_Whomp extends StdAbility
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-
-		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if(levelDiff>=3)
-		{
-			mob.tell(target.charStats().HeShe()+" looks too powerful.");
-			return false;
-		}
-
 
 		if((!auto)&&(mob.charStats().getStrength()<18))
 		{
@@ -115,8 +110,13 @@ public class Fighter_Whomp extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		if(levelDiff>0) 
+			levelDiff=levelDiff*10;
+		else 
+			levelDiff=0;
 		// now see if it worked
-		boolean success=profficiencyCheck(-((target.charStats().getStrength()-mob.charStats().getStrength())),auto)&&(auto||((mob.getVictim()!=null)&&(ExternalPlay.isHit(mob,mob.getVictim()))));
+		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStrength()-mob.charStats().getStrength()))),auto)&&(auto||((mob.getVictim()!=null)&&(ExternalPlay.isHit(mob,mob.getVictim()))));
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

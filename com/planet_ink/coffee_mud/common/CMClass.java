@@ -104,7 +104,7 @@ public class CMClass
 		CharClass thisItem= (CharClass)getGlobal(charClasses,calledThis);
 		if((thisItem==null)&&(charClasses.size()>0))
 		{
-			for(int i=0;i<races.size();i++)
+			for(int i=0;i<charClasses.size();i++)
 				if(((CharClass)(charClasses.elementAt(i))).name().equalsIgnoreCase(calledThis))
 					return (CharClass)charClasses.elementAt(i);
 			Log.sysOut("CMClass","Unknown CharClass '"+calledThis+"'.");

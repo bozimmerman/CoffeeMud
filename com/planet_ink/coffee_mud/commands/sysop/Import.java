@@ -1749,6 +1749,13 @@ public class Import
 			I.setDisplayText(objectDisplay);
 			if(!objectDescription.trim().equalsIgnoreCase("OLDSTYLE"))
 				I.setDescription(objectDescription);
+			if((I instanceof Weapon)
+			&&((objectName.toUpperCase().indexOf("TWO-HANDED")>=0)
+			||(objectName.toUpperCase().indexOf("TWO HANDED")>=0)))
+			{
+				I.setRawLogicalAnd(true);
+				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
+			}
 
 			boolean materialchange=true;
 			if(objectDescription.equalsIgnoreCase("steel"))

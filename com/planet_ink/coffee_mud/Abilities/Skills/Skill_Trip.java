@@ -72,7 +72,10 @@ public class Skill_Trip extends StdAbility
 		MOB mob=(MOB)affected;
 		doneTicking=true;
 		super.unInvoke();
-		mob.tell("You regain your feet.");
+		if(mob.location()!=null)
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+		else
+			mob.tell("You regain your feet.");
 		ExternalPlay.standIfNecessary(mob);
 	}
 
@@ -86,6 +89,12 @@ public class Skill_Trip extends StdAbility
 			mob.tell(target.name()+" is already on the floor!");
 			return false;
 		}
+		
+		if((!Sense.aliveAwakeMobile(mob,true)||(Sense.isSitting(mob))))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
 
 		if(Sense.isFlying(target))
 		{
@@ -96,7 +105,13 @@ public class Skill_Trip extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-(50+((int)Math.round((new Integer(target.charStats().getDexterity()).doubleValue()-9.0)*3.0))),auto);
+		int levelDiff=mob.getVictim().envStats().level()-mob.envStats().level();
+		if(levelDiff>0) 
+			levelDiff=levelDiff*5;
+		else 
+			levelDiff=0;
+		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getDexterity()).doubleValue()-9.0)*3.0))));
+		boolean success=profficiencyCheck(adjustment,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),auto?"<T-NAME> trip(s)!":"<S-NAME> trip(s) <T-NAMESELF>!");

@@ -36,7 +36,7 @@ public class SaveThread extends Thread
 					if(itemKillTime.after(I.possessionTime()))
 					{
 						I.destroyThis();
-						i=-1;
+						i=i-1;
 					}
 				}
 			}

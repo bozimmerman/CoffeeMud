@@ -309,41 +309,41 @@ public class Sense
 	}
 
 
-	public static String wornLocation(int wornCode)
+	public static String wornLocation(long wornCode)
 	{
-		switch(wornCode)
+		switch((int)wornCode)
 		{
-		case Item.INVENTORY:
+		case (int)Item.INVENTORY:
 			return "inventory";
-		case Item.ON_HEAD:
+		case (int)Item.ON_HEAD:
 			return "head";
-		case Item.ON_NECK:
+		case (int)Item.ON_NECK:
 			return "neck";
-		case Item.ON_TORSO:
+		case (int)Item.ON_TORSO:
 			return "torso";
-		case Item.ON_ARMS:
+		case (int)Item.ON_ARMS:
 			return "arms";
-		case Item.ON_HANDS:
+		case (int)Item.ON_HANDS:
 			return "hands";
-		case Item.ON_LEFT_WRIST:
+		case (int)Item.ON_LEFT_WRIST:
 			return "right wrist";
-		case Item.ON_RIGHT_WRIST:
+		case (int)Item.ON_RIGHT_WRIST:
 			return "left wrist";
-		case Item.ON_LEFT_FINGER:
+		case (int)Item.ON_LEFT_FINGER:
 			return "left finger";
-		case Item.ON_RIGHT_FINGER:
+		case (int)Item.ON_RIGHT_FINGER:
 			return "right finger";
-		case Item.ON_FEET:
+		case (int)Item.ON_FEET:
 			return "feet";
-		case Item.HELD:
+		case (int)Item.HELD:
 			return "held";
-		case Item.WIELD:
+		case (int)Item.WIELD:
 			return "wield";
-		case Item.FLOATING_NEARBY:
+		case (int)Item.FLOATING_NEARBY:
 			return "floating nearby";
-		case Item.ON_WAIST:
+		case (int)Item.ON_WAIST:
 			return "waist";
-		case Item.ON_LEGS:
+		case (int)Item.ON_LEGS:
 			return "legs";
 		default:
 			return "body";
