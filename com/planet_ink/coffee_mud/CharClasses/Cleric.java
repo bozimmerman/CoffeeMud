@@ -215,6 +215,8 @@ public class Cleric extends StdCharClass
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("SmallMace");
+		if(mob.getAlignment()<350)
+			w=(Weapon)CMClass.getWeapon("Shortsword");
 		if(mob.fetchInventory(w.ID())==null)
 		{
 			mob.addInventory(w);

@@ -372,7 +372,6 @@ public class FrontDoor
 				mob.resetToMaxState();
 
 				mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
-				mob.baseCharStats().getCurrentClass().outfit(mob);
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("alignment.txt").toString());
 
@@ -392,6 +391,7 @@ public class FrontDoor
 					mob.setAlignment(500);
 					break;
 				}
+				mob.baseCharStats().getCurrentClass().outfit(mob);
 				mob.bringToLife(mob.location(),true);
 				ExternalPlay.DBCreateCharacter(mob);
 				if(CMMap.MOBs.get(mob.ID())==null)
