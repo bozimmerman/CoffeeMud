@@ -25,7 +25,9 @@ public class Thief_Trap extends ThiefSkill
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
-			if((A instanceof Trap)&&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
+			if((A instanceof Trap)
+			   &&(!((Trap)A).isABomb())
+			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.addElement(A);
 		}
 		Environmental trapThis=givenTarget;

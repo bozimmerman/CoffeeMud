@@ -9,7 +9,7 @@ public class Bomb_FlameBurst extends StdBomb
 {
 	public String ID() { return "Bomb_FlameBurst"; }
 	public String name(){ return "flame burst bomb";}
-	protected int trapLevel(){return 23;}
+	protected int trapLevel(){return 17;}
 	public String requiresToSet(){return "some lamp oil";}
 	public Environmental newInstance(){	return new Bomb_FlameBurst();}
 	

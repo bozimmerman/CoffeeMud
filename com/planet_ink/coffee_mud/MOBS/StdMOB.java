@@ -1336,6 +1336,12 @@ public class StdMOB implements MOB
 					mob.tell(name()+" can't see what you are giving.");
 					return false;
 				}
+				if((CMClass.fetchMyTrap(affect.tool())!=null)
+				&&(affect.targetMessage()!=null))
+				{
+					mob.tell(name()+" won't accept it.");
+					return false;
+				}
 				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
 				if(!location().okAffect(affect.source(),msg))
 					return false;

@@ -9,7 +9,7 @@ public class Bomb_Water extends StdBomb
 {
 	public String ID() { return "Bomb_Water"; }
 	public String name(){ return "water bomb";}
-	protected int trapLevel(){return 10;}
+	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "a water container";}
 	public Environmental newInstance(){	return new Bomb_Water();}
 	

@@ -356,7 +356,7 @@ public class IMudInterface implements ImudServices, Serializable
 					{
 						Vector whoV2=new Vector();
 						whoV2.addElement(smob.name());
-						whoV2.addElement(new Integer(0));
+						whoV2.addElement(new Integer((int)(ses.getIdleMillis()/1000)));
 						int classLevel=smob.charStats().getClassLevel(smob.charStats().getCurrentClass());
 						String levelStr=smob.charStats().getCurrentClass().name()+" ";
 						if(classLevel>=smob.envStats().level())

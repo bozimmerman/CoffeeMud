@@ -58,8 +58,8 @@ public class Chant_WaterWalking extends Chant
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)
 					&&(mob.location().getReverseExit(d)==affect.tool())
-					&&((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+					&&((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)))
 					{
 						triggerNow=true;
 						affect.source().recoverEnvStats();

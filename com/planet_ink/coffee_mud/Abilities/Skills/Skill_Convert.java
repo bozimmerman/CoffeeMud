@@ -100,7 +100,7 @@ public class Skill_Convert extends StdAbility
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) to convert <T-NAME>, but <S-IS-ARE> unconvincing.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to convert <T-NAMESELF>, but <S-IS-ARE> unconvincing.");
 
 		// return whether it worked
 		return success;

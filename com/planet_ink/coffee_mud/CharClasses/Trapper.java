@@ -74,6 +74,7 @@ public class Trapper extends Thief
 			CMAble.addCharAbilityMapping(ID(),16,"Thief_Bind",true);
 			
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Thief_MakeBomb",false);
 			
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_Search",true);
 			CMAble.addCharAbilityMapping(ID(),18,"AnimalTaming",false);

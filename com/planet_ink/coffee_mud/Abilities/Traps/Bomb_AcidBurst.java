@@ -9,7 +9,7 @@ public class Bomb_AcidBurst extends StdBomb
 {
 	public String ID() { return "Bomb_AcidBurst"; }
 	public String name(){ return "acid burst bomb";}
-	protected int trapLevel(){return 25;}
+	protected int trapLevel(){return 20;}
 	public String requiresToSet(){return "some lemos";}
 	public Environmental newInstance(){	return new Bomb_AcidBurst();}
 	

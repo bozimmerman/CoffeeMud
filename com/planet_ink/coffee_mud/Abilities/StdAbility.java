@@ -392,10 +392,8 @@ public class StdAbility implements Ability, Cloneable
 				// very important, since these can be autoinvoked affects (copies)!
 				A.setProfficiency(A.profficiency()+1);
 				if((this!=A)&&(profficiency()<100))
-				{
 					setProfficiency(profficiency()+1);
-					((StdAbility)A).lastProfHelp=System.currentTimeMillis();
-				}
+				((StdAbility)A).lastProfHelp=System.currentTimeMillis();
 			}
 		}
 		else

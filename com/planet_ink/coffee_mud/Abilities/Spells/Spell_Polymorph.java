@@ -15,27 +15,28 @@ public class Spell_Polymorph extends Spell
 	public Environmental newInstance(){	return new Spell_Polymorph();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
-	Race newRace=null;
+	private Race newRace=null;
+	private EnvStats oldStats=null;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(newRace!=null)
+		if((newRace!=null)&&(affected instanceof MOB))
 		{
 			if(affected.name().indexOf(" ")>0)
 				affectableStats.setReplacementName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setReplacementName(affected.name()+" the "+newRace.name());
-			newRace.setHeightWeight(affectableStats,'M');
+			newRace.setHeightWeight(((MOB)affected).baseEnvStats(),'M');
 		}
 	}
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 			affectableStats.setMyRace(newRace);
 	}
-
 
 	public void unInvoke()
 	{
@@ -45,7 +46,9 @@ public class Spell_Polymorph extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
+		{
 			mob.tell("You feel more like yourself again.");
+		}
 	}
 
 
@@ -78,9 +81,11 @@ public class Spell_Polymorph extends Spell
 				if(!msg.wasModified())
 				{
 					newRace=null;
+					oldStats=null;
 					while((newRace==null)||(newRace.ID().equals("StdRace")))
 						newRace=CMClass.randomRace();
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
+					oldStats=target.baseEnvStats().cloneStats();
 					success=beneficialAffect(mob,target,0);
 					target.recoverCharStats();
 					target.confirmWearability();

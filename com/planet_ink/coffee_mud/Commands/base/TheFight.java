@@ -303,7 +303,7 @@ public class TheFight
 
 		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
 
-		if(source!=null)
+		if((source!=null)&&(source.location()==deathRoom)&&(deathRoom.isInhabitant(source)))
 		{
 			if((deadMoney>0)&&(Util.bset(source.getBitmap(),MOB.ATT_AUTOGOLD)))
 			{

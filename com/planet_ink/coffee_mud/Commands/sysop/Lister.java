@@ -150,8 +150,8 @@ public class Lister
 		lines.append(Util.padRight("Status",9)+"| ");
 		lines.append(Util.padRight("Valid",5)+"| ");
 		lines.append(Util.padRight("Name",17)+"| ");
-		lines.append(Util.padRight("Location",17)+"| ");
-		lines.append(Util.padRight("IP",17)+"^.^N\n\r");
+		lines.append(Util.padRight("IP",17)+"| ");
+		lines.append(Util.padRight("Idle",17)+"^.^N\n\r");
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
@@ -160,18 +160,15 @@ public class Lister
 			{
 				lines.append(Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ");
 				lines.append("^!"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
-				if ( thisSession.mob().location() != null )
-					lines.append(Util.padRight(thisSession.mob().location().ID(),17)+"| ");
-				else
-					lines.append("^!"+Util.padRight("(no location)",17)+"^?| ");
 			}
 			else
 			{
 				lines.append(Util.padRight("N/A",5)+"| ");
 				lines.append(Util.padRight("NAMELESS",17)+"| ");
-				lines.append(Util.padRight("NOWHERE",17)+"| ");
 			}
-			lines.append(Util.padRight(thisSession.getAddress(),17)+"\n\r");
+			lines.append(Util.padRight(thisSession.getAddress(),17)+"| ");
+			lines.append(Util.padRight((thisSession.getIdleMillis()+""),17));
+			lines.append("\n\r");
 		}
 		return lines;
 	}

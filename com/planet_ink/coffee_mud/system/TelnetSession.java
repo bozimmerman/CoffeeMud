@@ -36,7 +36,7 @@ public class TelnetSession extends Thread implements Session
 	public long lastLoopTop=System.currentTimeMillis();
 	public long milliTotal=0;
 	public long tickTotal=0;
-	public long idleMillis=0;
+	public long lastKeystroke=0;
 
 	private int termID = 0;	//0 = NOANSI, 1 = ANSI
 	public int currentColor=(int)'N';
@@ -96,7 +96,7 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public long getTotalMillis(){ return milliTotal;}
-	public long getIdleMillis(){ return idleMillis;}
+	public long getIdleMillis(){ return System.currentTimeMillis()-lastKeystroke;}
 	public long getTotalTicks(){ return tickTotal;}
 
 	public long lastLoopTime(){ return lastLoopTop;}
@@ -996,7 +996,6 @@ public class TelnetSession extends Thread implements Session
 		boolean rv = false;
 		switch (c)
 		{
-
 			case 10:
 			{
 				c=-1;
@@ -1047,7 +1046,10 @@ public class TelnetSession extends Thread implements Session
 		}
 
 		if(c>0)
+		{
+			lastKeystroke=System.currentTimeMillis();
 			input.append((char)c);
+		}
 		return rv;
 	}
 
@@ -1312,12 +1314,7 @@ public class TelnetSession extends Thread implements Session
 						waiting=true;
 						String input=readlineContinue();
 						if(input!=null)
-						{
-							idleMillis=0;
 							enque(0,Util.parse(input));
-						}
-						else
-							idleMillis+=(System.currentTimeMillis()-lastLoopTop);
 						if(mob==null) break;
 						
 						if((((MOB)mob).lastTickedDateTime()>lastStop)
@@ -1414,7 +1411,7 @@ public class TelnetSession extends Thread implements Session
 					mob.location().send(mob,msg);
 			}
 			mob.setLastDateTime(System.currentTimeMillis());
-Log.sysOut("Session","logout: "+mob.name());
+			Log.sysOut("Session","logout: "+mob.name());
 			mob.destroy();
 			mob.setSession(null);
 			mob=null;
