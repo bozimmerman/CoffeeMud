@@ -46,7 +46,7 @@ public class NiceAbilities extends ActiveTicker
 				{
 					if((tryThisOne.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 					{
-						if(!tryThisOne.appropriateToMyAlignment(mob))
+						if(!tryThisOne.appropriateToMyAlignment(mob.getAlignment()))
 							tryThisOne=null;
 					}
 				}

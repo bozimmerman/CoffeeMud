@@ -48,16 +48,16 @@ public class Prayer extends StdAbility
 		return holyQuality;
 	}
 
-	public boolean appropriateToMyAlignment(MOB mob)
+	public boolean appropriateToMyAlignment(int alignment)
 	{
 		if((holyQuality==Prayer.HOLY_NEUTRAL)
-		   &&((mob.getAlignment()>650)||(mob.getAlignment()<350)))
+		   &&((alignment>650)||(alignment<350)))
 			return false;
 		else
-		if((holyQuality==Prayer.HOLY_EVIL)&&(mob.getAlignment()>650))
+		if((holyQuality==Prayer.HOLY_EVIL)&&(alignment>650))
 			return false;
 		else
-		if((holyQuality==Prayer.HOLY_GOOD)&&(mob.getAlignment()<350))
+		if((holyQuality==Prayer.HOLY_GOOD)&&(alignment<350))
 			return false;
 		return true;
 	}
@@ -66,7 +66,7 @@ public class Prayer extends StdAbility
 
 		Ability A=(Ability)mob.fetchAbility(this.ID());
 		if(A==null) return;
-		if(A.appropriateToMyAlignment(mob))
+		if(A.appropriateToMyAlignment(mob.getAlignment()))
 		{
 			super.helpProfficiency(mob);
 			return;
@@ -105,7 +105,7 @@ public class Prayer extends StdAbility
 			if(mob.getAlignment()<0)
 				mob.setAlignment(0);
 		}
-		if((appropriateToMyAlignment(mob))||(auto))
+		if((appropriateToMyAlignment(mob.getAlignment()))||(auto))
 			return true;
 		
 		if((holyQuality()==Prayer.HOLY_NEUTRAL)&&(Dice.rollPercentage()<50))

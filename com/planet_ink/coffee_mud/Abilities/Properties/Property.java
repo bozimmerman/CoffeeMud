@@ -140,7 +140,7 @@ public class Property implements Ability, Cloneable
 	{ return description;}
 	public void setDescription(String newDescription)
 	{ description=newDescription;}
-	public boolean appropriateToMyAlignment(MOB mob){return true;}
+	public boolean appropriateToMyAlignment(int alignment){return true;}
 	public String accountForYourself(){return "";}
 	public int affectType(){return 0;}
 

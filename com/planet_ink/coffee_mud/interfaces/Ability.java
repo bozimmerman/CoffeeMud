@@ -110,7 +110,7 @@ public interface Ability  extends Environmental
 
 	// For clerics, usually, whether this ability is
 	// appropriate for the mob using it
-	public boolean appropriateToMyAlignment(MOB mob);
+	public boolean appropriateToMyAlignment(int alignment);
 
 	// intelligently add this ability as an affect upon a target,
 	// and start a new clock (if necessary), setting the timer

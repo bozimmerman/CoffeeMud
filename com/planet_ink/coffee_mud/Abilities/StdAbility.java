@@ -802,7 +802,7 @@ public class StdAbility implements Ability, Cloneable
 		}
 		return true;
 	}
-	public boolean appropriateToMyAlignment(MOB mob){return true;}
+	public boolean appropriateToMyAlignment(int alignment){return true;}
 
 	public void addAffect(Ability to){}
 	public void addNonUninvokableAffect(Ability to){}

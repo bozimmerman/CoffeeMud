@@ -53,7 +53,7 @@ public class CombatAbilities extends StdBehavior
 				addThis=(Ability)CMClass.abilities.elementAt(Dice.roll(1,CMClass.abilities.size(),0)-1);
 				if((addThis.qualifyingLevel(mob)<0)
 				||(addThis.qualifyingLevel(mob)>=mob.baseEnvStats().level())
-				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyAlignment(mob)))
+				||(((addThis.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)&&(!addThis.appropriateToMyAlignment(mob.getAlignment())))
 				||(mob.fetchAbility(addThis.ID())!=null)
 				||((addThis.quality()!=Ability.MALICIOUS)
 				   &&(addThis.quality()!=Ability.BENEFICIAL_SELF)
