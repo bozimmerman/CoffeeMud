@@ -16,6 +16,7 @@ public class StdDeity extends StdMOB implements Deity
 	protected Hashtable trigParts=new Hashtable();
 	protected Hashtable trigTimes=new Hashtable();
 	protected int checkDown=0;
+	protected boolean norecurse=false;
 
 	public StdDeity()
 	{
@@ -248,25 +249,34 @@ public class StdDeity extends StdMOB implements Deity
 
 	public synchronized void bestowBlessings(MOB mob)
 	{
-		if((!alreadyBlessed(mob))&&(numBlessings()>0))
+		norecurse=true;
+		try
 		{
-			mob.location().show(this,mob,Affect.MSG_OK_VISUAL,"You feel the presence of <S-NAME> in <T-NAME>.");
-			if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
+			if((!alreadyBlessed(mob))&&(numBlessings()>0))
 			{
-				for(int b=0;b<numBlessings();b++)
+				mob.location().show(this,mob,Affect.MSG_OK_VISUAL,"You feel the presence of <S-NAME> in <T-NAME>.");
+				if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
 				{
-					Ability Blessing=fetchBlessing(b);
+					for(int b=0;b<numBlessings();b++)
+					{
+						Ability Blessing=fetchBlessing(b);
+						if(Blessing!=null)
+							bestowBlessing(mob,Blessing);
+					}
+				}
+				else
+				{
+					Ability Blessing=fetchBlessing(Dice.roll(1,numBlessings(),-1));
 					if(Blessing!=null)
 						bestowBlessing(mob,Blessing);
 				}
 			}
-			else
-			{
-				Ability Blessing=fetchBlessing(Dice.roll(1,numBlessings(),-1));
-				if(Blessing!=null)
-					bestowBlessing(mob,Blessing);
-			}
 		}
+		catch(Exception e)
+		{
+			Log.errOut("StdDeity",e);
+		}
+		norecurse=false;
 	}
 
 	public void removeBlessings(MOB mob)
@@ -300,6 +310,8 @@ public class StdDeity extends StdMOB implements Deity
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
+		if(norecurse) return;
+		
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
@@ -442,7 +454,8 @@ public class StdDeity extends StdMOB implements Deity
 					if(checks!=null) checks[v]=yup;
 				}
 			}
-			if((recheck)&&(!alreadyBlessed(msg.source())))
+			
+			if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 			{
 				boolean[] checks=(boolean[])trigParts.get(msg.source().name());
 				if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))

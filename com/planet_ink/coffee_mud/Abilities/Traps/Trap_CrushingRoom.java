@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Trap_CrushingRoom extends StdTrap
 {
-	public String ID() { return "Trap_CaveIn"; }
+	public String ID() { return "Trap_CrushingRoom"; }
 	public String name(){ return "cave-in";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}

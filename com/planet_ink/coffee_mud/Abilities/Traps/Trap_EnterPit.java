@@ -11,5 +11,5 @@ public class Trap_EnterPit extends Trap_Enter
 	protected int canAffectCode(){return Ability.CAN_EXITS;}
 	protected int canTargetCode(){return 0;}
 	protected int trapType(){return TRAP_PIT_BLADE;}
-	public Environmental newInstance(){	return new Trap_Enter();}
+	public Environmental newInstance(){	return new Trap_EnterPit();}
 }

@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Trap_Spark extends StdTrap
 {
-	public String ID() { return "Trap_ElectricShock"; }
+	public String ID() { return "Trap_Spark"; }
 	public String name(){ return "spark";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}

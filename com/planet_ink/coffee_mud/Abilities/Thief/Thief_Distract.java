@@ -10,9 +10,9 @@ public class Thief_Distract extends ThiefSkill
 	public String ID() { return "Thief_Distract"; }
 	public String name(){ return "Distract";}
 	public String displayText(){ return "(Distracted)";}
+	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
-	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"DISTRACT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Distract();}
