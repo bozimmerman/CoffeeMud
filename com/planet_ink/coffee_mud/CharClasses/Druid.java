@@ -133,6 +133,7 @@ public class Druid extends StdCharClass
 	public String weaponLimitations(){return "To avoid fumbling, must be Natural, Wooden, or Vegetation-based weapons.";}
 	public String armorLimitations(){return "Must wear cloth, paper, leather, or vegetation armor to avoid chant failure.";}
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
+	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}
 
 	public boolean okAffect(MOB myChar, Affect affect)
 	{

@@ -24,7 +24,7 @@ public class Ranger extends StdCharClass
 	{
 		super();
 		maxStat[CharStats.STRENGTH]=22;
-		maxStat[CharStats.DEXTERITY]=22;
+		maxStat[CharStats.INTELLIGENCE]=22;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
@@ -106,6 +106,7 @@ public class Ranger extends StdCharClass
 	}
 
 	public String statQualifications(){return "Strength 9+, Intelligence 9+";}
+	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
@@ -115,10 +116,10 @@ public class Ranger extends StdCharClass
 			return false;
 		}
 
-		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
+		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a Ranger.");
+				mob.tell("You need at least a 9 Intelligence to become a Ranger.");
 			return false;
 		}
 

@@ -50,6 +50,7 @@ public interface CharClass
 	public int getPracsFirstLevel();
 	public int getTrainsFirstLevel();
 	public int getLevelsPerBonusDamage();
+	public int getMovementMultiplier();
 	public String weaponLimitations();
 	public String armorLimitations();
 	public String otherLimitations();

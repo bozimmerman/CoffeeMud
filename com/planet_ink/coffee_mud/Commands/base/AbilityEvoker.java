@@ -56,7 +56,24 @@ public class AbilityEvoker
 				else
 					evokableAbility=thisAbility;
 		}
-
+		
+		if((evokableAbility!=null)&&(commands.size()>1))
+		{
+			int classCode=evokableAbility.classificationCode()&Ability.ALL_CODES;
+			switch(classCode)
+			{
+			case Ability.SPELL:
+			case Ability.SONG:
+			case Ability.PRAYER:
+			case Ability.CHANT:
+				evokableAbility=null;
+				foundMoreThanOne=true;
+				break;
+			default:
+				break;
+			}
+		}
+		
 		if(evokableAbility!=null)
 			commands.removeElementAt(0);
 		else

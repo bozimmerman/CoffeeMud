@@ -19,6 +19,7 @@ public class StdCharClass implements CharClass
 	public int getPracsFirstLevel(){return 5;}
 	public int getTrainsFirstLevel(){return 3;}
 	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getMovementMultiplier(){return 6;}
 	protected int maxStat[]={18,18,18,18,18,18};
 
 	public boolean playerSelectable()
@@ -247,7 +248,7 @@ public class StdCharClass implements CharClass
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " + 
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*6);
+		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier());
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
@@ -419,7 +420,7 @@ public class StdCharClass implements CharClass
 
 	public int getLevelMove(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*6)));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier())));
 	}
 
 	public boolean canAdvance(MOB mob, int abilityCode)

@@ -209,8 +209,17 @@ public class TheFight
 		deathRoom.showOthers(target,null,Affect.MSG_DEATH,"^F<S-NAME> is DEAD!!!^?\n\r");
 		
 		Hashtable beneficiaries=new Hashtable();
-		if((target.charStats()!=null)&&(source!=null))
-			beneficiaries=target.charStats().getCurrentClass().dispenseExperience(source,target);
+		if((source!=null)&&(source.charStats()!=null))
+		{
+			CharClass C=source.charStats().getCurrentClass();
+			if(source.isMonster()
+			   &&(source.amFollowing()!=null)
+			   &&(!source.amFollowing().isMonster())
+			   &&(source.amFollowing().charStats()!=null))
+				C=source.amFollowing().charStats().getCurrentClass();
+			
+			beneficiaries=C.dispenseExperience(source,target);
+		}
 		
 		int deadMoney=target.getMoney();
 		if((source!=null)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
