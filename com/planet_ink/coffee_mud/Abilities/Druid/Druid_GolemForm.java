@@ -67,7 +67,7 @@ public class Druid_GolemForm extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			affectableStats.setSensesMask(affectableStats.sensesMask()|affectableStats.CAN_NOT_SPEAK);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
 			affectableStats.setName(Util.startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
