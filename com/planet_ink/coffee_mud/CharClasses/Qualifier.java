@@ -49,4 +49,24 @@ public class Qualifier extends StdCharClass
 		}
 		super.startCharacter(mob, false, verifyOnly);
 	}
+	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	{
+		super.grantAbilities(mob,isBorrowedClass);
+		if(mob.isMonster())
+		{
+			Vector V=CMAble.getUpToLevelListings(ID(),
+												mob.charStats().getClassLevel(ID()),
+												false,
+												false);
+			for(Enumeration a=V.elements();a.hasMoreElements();)
+			{
+				Ability A=CMClass.getAbility((String)a.nextElement());
+				if((A!=null)
+				&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.COMMON_SKILL)
+				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+			}
+		}
+	}
+
 }

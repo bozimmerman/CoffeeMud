@@ -163,50 +163,52 @@ public class Cleric extends StdCharClass
 		}
 	}
 
-
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 
+		if(mob.isMonster())
+		{
+			Vector V=CMAble.getUpToLevelListings(ID(),
+												mob.charStats().getClassLevel(ID()),
+												false,
+												false);
+			for(Enumeration a=V.elements();a.hasMoreElements();)
+			{
+				Ability A=CMClass.getAbility((String)a.nextElement());
+				if((A!=null)
+				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
+					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+			}
+			return;
+		}
+		
 		if(disableClericSpellGrant()) return;
 
-		// if he already has one, don't give another!
-		if(!mob.isMonster())
+		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
-			for(int a=0;a<mob.numLearnedAbilities();a++)
-			{
-				Ability A=mob.fetchAbility(a);
-				if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-				&&(CMAble.getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-					return;
-			}
-			// now only give one, for current level, respecting alignment!
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-			{
-				Ability A=(Ability)a.nextElement();
-				if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
-				&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-				&&(A.appropriateToMyAlignment(mob.getAlignment()))
-				&&(!CMAble.getSecretSkill(ID(),true,A.ID()))
-				&&(CMAble.getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
-				&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
-				{
-					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
-					break; // one is enough
-				}
-			}
+			Ability A=mob.fetchAbility(a);
+			if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+			&&(CMAble.getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
+			&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
+				return;
 		}
-		else // monsters get everything -- leave it to other code to pick the right
+		// now only give one, for current level, respecting alignment!
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((CMAble.getQualifyingLevel(ID(),true,A.ID())>0)
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
-			&&((CMAble.getQualifyingLevel(ID(),true,A.ID())<=mob.baseCharStats().getClassLevel(this)))
+			&&(A.appropriateToMyAlignment(mob.getAlignment()))
+			&&(!CMAble.getSecretSkill(ID(),true,A.ID()))
+			&&(CMAble.getQualifyingLevel(ID(),true,A.ID())==mob.baseCharStats().getClassLevel(this))
 			&&(!CMAble.getDefaultGain(ID(),true,A.ID())))
+			{
 				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),true,A.ID()),CMAble.getDefaultParm(ID(),true,A.ID()),isBorrowedClass);
+				break; // one is enough
+			}
 		}
 	}
 
