@@ -22,6 +22,11 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
+			if(A.getMyMap().size()==0)
+			{
+				GrinderRooms.createLonelyRoom(A,null,0);
+				A.clearMap();
+			}
 			GrinderMap map=new GrinderMap(A);
 			map.rePlaceRooms();
 			return map.getHTMLTable(httpReq).toString();

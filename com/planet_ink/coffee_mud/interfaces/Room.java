@@ -42,6 +42,8 @@ public interface Room extends Environmental
 	public void startItemRejuv();
 	public void recoverRoomStats();
 	
+	public void destroyRoom();
+	
 	public Area getArea();
 	public void setArea(Area newArea);
 	

@@ -224,22 +224,32 @@ public class GrinderRooms
 		ExternalPlay.obliterateRoom(R);
 		return "";
 	}
-	public static String createRoom(Room R, int dir)
+	
+	public static Room createLonelyRoom(Area A, Room linkTo, int dir)
 	{
 		Room newRoom=CMClass.getLocale("StdRoom");
+		newRoom.setID(ExternalPlay.getOpenRoomID(A.name()));
+		newRoom.setDisplayText("Title of "+newRoom.ID());
+		newRoom.setDescription("Description of "+newRoom.ID());
+		newRoom.setArea(A);
+		if(linkTo!=null)
+		{
+			newRoom.rawDoors()[Directions.getOpDirectionCode(dir)]=linkTo;
+			newRoom.rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("StdOpenDoorway");
+		}
+		ExternalPlay.DBCreateRoom(newRoom,"StdRoom");
+		CMMap.addRoom(newRoom);
+		return newRoom;
+	}
+	
+	public static String createRoom(Room R, int dir)
+	{
+		Room newRoom=createLonelyRoom(R.getArea(),R,dir);
 		if(R.rawDoors()[dir]!=null)
 			return "Room already there!";
 		R.rawDoors()[dir]=newRoom;
 		if(R.rawExits()[dir]==null)
 			R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
-		newRoom.setID(ExternalPlay.getOpenRoomID(R.getArea().name()));
-		newRoom.setDisplayText("Title of "+newRoom.ID());
-		newRoom.setDescription("Description of "+newRoom.ID());
-		newRoom.rawDoors()[Directions.getOpDirectionCode(dir)]=R;
-		newRoom.rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("StdOpenDoorway");
-		newRoom.setArea(R.getArea());
-		ExternalPlay.DBCreateRoom(newRoom,"StdRoom");
-		CMMap.addRoom(newRoom);
 		ExternalPlay.DBUpdateExits(R);
 		if(R instanceof GridLocale)
 			((GridLocale)R).buildGrid();

@@ -732,6 +732,33 @@ public class StdRoom
 		return doors;
 	}
 
+	public void destroyRoom()
+	{
+		try{
+		for(int a=numAffects()-1;a>=0;a--)
+			fetchAffect(a).unInvoke();
+		}catch(Exception e){}
+		while(numAffects()>0)
+			delAffect(fetchAffect(0));
+		try{
+		for(int a=numInhabitants()-1;a>=0;a--)
+			fetchInhabitant(a).destroy();
+		}catch(Exception e){}
+		while(numInhabitants()>0)
+			delInhabitant(fetchInhabitant(0));
+		while(numBehaviors()>0)
+			delBehavior(fetchBehavior(0));
+		try{
+		for(int a=numItems()-1;a>=0;a--)
+			fetchItem(a).destroyThis();
+		}catch(Exception e){}
+		while(numItems()>0)
+			delItem(fetchItem(0));
+		if(this instanceof GridLocale)
+			((GridLocale)this).clearGrid();
+		ExternalPlay.deleteTick(this,-1);
+	}
+	
 	public MOB fetchInhabitant(String inhabitantID)
 	{
 		MOB mob=(MOB)CoffeeUtensils.fetchEnvironmental(inhabitants,inhabitantID,true);

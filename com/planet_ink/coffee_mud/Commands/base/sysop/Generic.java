@@ -69,6 +69,8 @@ public class Generic
 						ExternalPlay.DBUpdateMOB(mob2);
 					}
 				}
+				if(R instanceof GridLocale)
+					((GridLocale)R).clearGrid();
 				newRoom.setID(R.ID());
 				newRoom.setArea(R.getArea());
 				newRoom.setDisplayText(R.displayText());

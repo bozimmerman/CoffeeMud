@@ -437,7 +437,6 @@ public class Rooms
 				deadRoom.delAffect(A);
 			}
 		}
-		ExternalPlay.deleteTick(deadRoom,-1);
 		CMMap.delRoom(deadRoom);
 		for(int m=0;m<CMMap.numRooms();m++)
 		{
@@ -486,7 +485,7 @@ public class Rooms
 		clearTheRoom(deadRoom);
 		Resources.removeResource("areasList");
 		Resources.removeResource("areasListHTML");
-		
+		deadRoom.destroyRoom();
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid();
 		ExternalPlay.DBDeleteRoom(deadRoom);

@@ -85,7 +85,7 @@ public class Prop_ReqLevels extends Property
 					}
 					if(!ok)
 					{
-						affect.source().tell("You can not go that way.");
+						affect.source().tell("You are not allowed to go that way.");
 						return false;
 					}
 				}

@@ -17,8 +17,32 @@ public class CMMap
 
 	public static int numRooms(){return map.size();}
 	public static void addRoom(Room newOne){map.addElement(newOne);theWorldChanged();}
-	public static void setRoomAt(Room oldOne, int place){map.setElementAt(oldOne,place);theWorldChanged();}
-	public static void delRoom(Room oneToDel){try{map.removeElement(oneToDel);theWorldChanged();}catch(Exception e){}}
+	public static void setRoomAt(Room newOne, int place)
+	{
+		try
+		{
+			Room olderOne=(Room)map.elementAt(place);
+			if(olderOne instanceof GridLocale)
+				((GridLocale)olderOne).clearGrid();
+			map.setElementAt(newOne,place);
+			theWorldChanged();
+		}
+		catch(Exception e)
+		{
+		}
+	}
+	public static void delRoom(Room oneToDel){
+		try
+		{
+			if(oneToDel instanceof GridLocale)
+				((GridLocale)oneToDel).clearGrid();
+			map.removeElement(oneToDel);
+			theWorldChanged();
+		}
+		catch(Exception e)
+		{
+		}
+	}
 	public static Room getRoom(int x){try{return (Room)map.elementAt(x);}catch(Exception e){};return null;}
 	public static Vector getRoomVector(){return map;}
 	

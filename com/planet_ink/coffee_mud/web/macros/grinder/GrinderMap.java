@@ -22,8 +22,11 @@ public class GrinderMap
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);
-			GrinderRoom GR=new GrinderRoom(R);
-			areaMap.addElement(GR);
+			if(R.ID().length()>0)
+			{
+				GrinderRoom GR=new GrinderRoom(R);
+				areaMap.addElement(GR);
+			}
 		}
 	}
 	
@@ -180,7 +183,7 @@ public class GrinderMap
             for(int i=0;i<areaMap.size();i++)
             {
                 GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
-                if(processed.get(room.roomID)==null)
+                if(!processed.containsKey(room.roomID))
                 {
                     placeRoom(room,0,0,processed,areaMap,true);
                     doneSomething=true;
