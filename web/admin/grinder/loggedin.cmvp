@@ -1,7 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
-@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 
 <html>
 <head>
@@ -159,7 +158,6 @@
 </FORM>
 </BODY>
 </HTML>
-@endif@ 
 @endif@ 
 
 

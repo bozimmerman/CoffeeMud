@@ -1,4 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <html>
 <head>
@@ -65,18 +66,26 @@
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
 	<TD WIDTH=20% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();">
-	</TD>
-	<TD WIDTH=20% ALIGN=CENTER>
-	@if?PlayerOnline?=true@
-	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Boot Player" ONCLICK="Boot();">
+	@if?CheckReqParm?AUTH_CMDPLAYERS=true@
+		<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();">
 	@endif@
 	</TD>
 	<TD WIDTH=20% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban Player" ONCLICK="Ban();">
+	@if?PlayerOnline?=true@ 
+		@if?CheckReqParm?AUTH_BOOT=true@
+			<INPUT TYPE=BUTTON NAME=BOOT VALUE="Boot Player" ONCLICK="Boot();">
+		@endif@ 
+	@endif@
 	</TD>
 	<TD WIDTH=20% ALIGN=CENTER>
-	<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban IP Address" ONCLICK="BanIP();">
+	@if?CheckReqParm?AUTH_BAN=true@
+		<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban Player" ONCLICK="Ban();">
+	@endif@
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	@if?CheckReqParm?AUTH_BAN=true@
+		<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban IP Address" ONCLICK="BanIP();">
+	@endif@
 	</TD>
 	<TD WIDTH=20% ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="javascript:window.close();">
@@ -276,3 +285,4 @@
 </FORM>
 </BODY>
 </HTML>
+@endif@

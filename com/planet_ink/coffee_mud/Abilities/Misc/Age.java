@@ -61,33 +61,41 @@ public class Age extends StdAbility
 						following=((MOB)I.owner());
 					CagedAnimal C=(CagedAnimal)affected;
 					MOB babe=C.unCageMe();
-					babe.baseCharStats().setStat(CharStats.CHARISMA,10);
-					babe.baseCharStats().setStat(CharStats.CONSTITUTION,7);
-					babe.baseCharStats().setStat(CharStats.DEXTERITY,3);
-					babe.baseCharStats().setStat(CharStats.INTELLIGENCE,3);
-					babe.baseCharStats().setStat(CharStats.STRENGTH,2);
-					babe.baseCharStats().setStat(CharStats.WISDOM,2);
-					babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*2);
-					babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*2);
-					babe.baseState().setHitPoints(2);
-					babe.baseState().setMana(10);
-					babe.baseState().setMovement(20);
-					if(following!=null)
-						babe.setLiegeID(following.Name());
-					babe.recoverCharStats();
-					babe.recoverEnvStats();
-					babe.recoverMaxState();
-					Age A=(Age)babe.fetchEffect(ID());
-					if(A!=null) A.setMiscText(text());
-					Ability STAT=babe.fetchEffect("Prop_StatTrainer");
-					if(STAT!=null)
-						STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
-					babe.text();
-					babe.bringToLife(R,true);
-					babe.setMoney(0);
-					babe.setFollowing(following);
-					R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
-					((Item)affected).destroy();
+					if((babe==null)||(babe.baseCharStats()==null))
+					{
+						R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" JUST DIED OF DEFORMITIES!!");
+						((Item)affected).destroy();
+					}
+					else
+					{
+						babe.baseCharStats().setStat(CharStats.CHARISMA,10);
+						babe.baseCharStats().setStat(CharStats.CONSTITUTION,7);
+						babe.baseCharStats().setStat(CharStats.DEXTERITY,3);
+						babe.baseCharStats().setStat(CharStats.INTELLIGENCE,3);
+						babe.baseCharStats().setStat(CharStats.STRENGTH,2);
+						babe.baseCharStats().setStat(CharStats.WISDOM,2);
+						babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*2);
+						babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*2);
+						babe.baseState().setHitPoints(2);
+						babe.baseState().setMana(10);
+						babe.baseState().setMovement(20);
+						if(following!=null)
+							babe.setLiegeID(following.Name());
+						babe.recoverCharStats();
+						babe.recoverEnvStats();
+						babe.recoverMaxState();
+						Age A=(Age)babe.fetchEffect(ID());
+						if(A!=null) A.setMiscText(text());
+						Ability STAT=babe.fetchEffect("Prop_StatTrainer");
+						if(STAT!=null)
+							STAT.setMiscText("CHA=10 CON=7 DEX=3 INT=3 STR=2 WIS=2");
+						babe.text();
+						babe.bringToLife(R,true);
+						babe.setMoney(0);
+						babe.setFollowing(following);
+						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
+						((Item)affected).destroy();
+					}
 				}
 			}
 		}
