@@ -129,6 +129,7 @@ public class CommandSet extends Hashtable
 	public static final int SERVE=117;
 	public static final int REBUKE=118;
 	public static final int CRAWL=119;
+	public static final int TIME=120;
 
 	public CommandSet()
 	{
@@ -280,6 +281,8 @@ public class CommandSet extends Hashtable
 		put("TEACH",new Integer(TEACH));
 			put("TEA",new Integer(TEACH));
 		put("TELL",new Integer(TELL));
+		put("TIME",new Integer(TIME));
+			put("DATE",new Integer(TIME));
 		put("TOPICS",new Integer(TOPICS));
 		put("TRAIN",new Integer(TRAIN));
 			put("TR",new Integer(TRAIN));

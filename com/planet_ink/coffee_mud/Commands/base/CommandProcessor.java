@@ -420,6 +420,9 @@ public class CommandProcessor
 				case CommandSet.TEACH:
 					abilityEvoker.teach(mob,commands);
 					break;
+				case CommandSet.TIME:
+					basicSenses.time(mob,commands);
+					break;
 				case CommandSet.TOPICS:
 					topics(mob);
 					break;

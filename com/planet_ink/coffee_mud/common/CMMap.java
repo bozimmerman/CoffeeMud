@@ -16,9 +16,9 @@ public class CMMap
 	{ startRoom=newRoom;}
 
 	public static int numRooms(){return map.size();}
-	public static void addRoom(Room newOne){map.addElement(newOne);}
-	public static void setRoomAt(Room oldOne, int place){map.setElementAt(oldOne,place);}
-	public static void delRoom(Room oneToDel){try{map.removeElement(oneToDel);}catch(Exception e){}}
+	public static void addRoom(Room newOne){map.addElement(newOne);theWorldChanged();}
+	public static void setRoomAt(Room oldOne, int place){map.setElementAt(oldOne,place);theWorldChanged();}
+	public static void delRoom(Room oneToDel){try{map.removeElement(oneToDel);theWorldChanged();}catch(Exception e){}}
 	public static Room getRoom(int x){try{return (Room)map.elementAt(x);}catch(Exception e){};return null;}
 	public static Vector getRoomVector(){return map;}
 	
@@ -57,6 +57,15 @@ public class CMMap
 		AREAS=new Vector();
 		MOBs=new Hashtable();
 		startRoom=null;
+	}
+	
+	public static void theWorldChanged()
+	{
+		for(int a=0;a<AREAS.size();a++)
+		{
+			Area A=(Area)AREAS.elementAt(a);
+			A.clearMap();
+		}
 	}
 	
 	public static Area getArea(String areaName)

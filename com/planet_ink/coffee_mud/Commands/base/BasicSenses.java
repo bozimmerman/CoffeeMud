@@ -349,4 +349,10 @@ public class BasicSenses
 		}
 		mob.tell(room.getArea().weatherDescription(room));
 	}
+	public void time(MOB mob, Vector commands)
+	{
+		Room room=mob.location();
+		if(room==null) return;
+		mob.tell(room.getArea().timeDescription(mob,room));
+	}
 }

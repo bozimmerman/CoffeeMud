@@ -102,13 +102,39 @@ public class Resources
 	{
 		
 		Object rsc=getResource(filename);
-		if((rsc!=null)&&(rsc instanceof StringBuffer))
-			return (StringBuffer)rsc;
+		if(rsc!=null)
+		{
+			if(rsc instanceof StringBuffer)
+				return (StringBuffer)rsc;
+			else
+			if(rsc instanceof String)
+				return new StringBuffer((String)rsc);
+		}
 		
 		StringBuffer buf=getFile("resources"+File.separatorChar+filename);
 		if(buf==null) buf=new StringBuffer("");
 		submitResource(filename,buf);
 		return buf;
+	}
+	
+	public static void saveFileResource(String filename)
+	{
+		StringBuffer myRsc=getFileResource(filename);
+		if(myRsc==null){
+			Log.errOut("Resources","Unable to read file resource '"+filename+"'.");
+			return;
+		}
+		try
+		{
+			File F=new File("resources"+File.separatorChar+filename);
+			FileWriter FW=new FileWriter(F);
+			FW.write(myRsc.toString());
+			FW.close();
+		}
+		catch(IOException e)
+		{
+			Log.errOut("Resources",e);
+		}
 	}
 	
 }

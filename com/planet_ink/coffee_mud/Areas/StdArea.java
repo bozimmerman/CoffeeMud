@@ -13,10 +13,13 @@ public class StdArea implements Area
 	protected int climateID=Area.CLIMASK_NORMAL;
 	protected int currentWeather=Area.WEATHER_CLEAR;
 	protected int nextWeather=Area.WEATHER_CLEAR;
+	protected Vector myRooms=null;
 
-	protected int month=1;
-	protected int day=1;
-	protected int time=0;
+	protected static int year=1;
+	protected static int month=1;
+	protected static int day=1;
+	protected static int time=0;
+	protected static int timeCode=Area.TIME_DAWN;
 	
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -75,19 +78,85 @@ public class StdArea implements Area
 			return "You can't tell much about the weather from here.";
 		return getWeatherDescription();
 	}
+	public String timeDescription(MOB mob, Room room)
+	{
+		StringBuffer timeDesc=new StringBuffer("");
+		
+		if(Sense.canSee(mob))
+		switch(timeCode)
+		{
+		case Area.TIME_DAWN: timeDesc.append("It is dawn "); break;
+		case Area.TIME_DAY: timeDesc.append("It is daytime "); break;
+		case Area.TIME_DUSK: timeDesc.append("It is dusk "); break;
+		case Area.TIME_NIGHT: timeDesc.append("It is nighttime "); break;
+		}
+		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(Area.A_FULL_DAY-1)+")");
+		
+		if(Sense.canSee(mob))
+		if((timeCode==Area.TIME_NIGHT)&&((room.domainType()&Room.INDOORS)==0))
+		{
+			switch(weatherType(room))
+			{
+			case Area.WEATHER_BLIZZARD:
+			case Area.WEATHER_HAIL:
+			case Area.WEATHER_SLEET:
+			case Area.WEATHER_SNOW:
+			case Area.WEATHER_RAIN:
+			case Area.WEATHER_THUNDERSTORM:
+				timeDesc.append("\n\r"+weatherDescription(room)+" You can't see the moon."); break;
+			case Area.WEATHER_CLOUDY:
+				timeDesc.append("\n\rThe clouds obscure the moon."); break;
+			case Area.WEATHER_DUSTSTORM:
+				timeDesc.append("\n\rThe dust obscures the moon."); break;
+			default:
+				switch(getMoonPhase())
+				{
+				case 0: timeDesc.append("\n\rThere is a new moon in the sky."); break;
+				case 1: timeDesc.append("\n\rThe moon is in the waxing crescent phase."); break;
+				case 2: timeDesc.append("\n\rThe moon is in its first quarter."); break;
+				case 3: timeDesc.append("\n\rThe moon is in the waxing gibbous phase (almost full)."); break;
+				case 4: timeDesc.append("\n\rThere is a full moon in the sky."); break;
+				case 5: timeDesc.append("\n\rThe moon is in the waning gibbous phase (no longer full)."); break;
+				case 6: timeDesc.append("\n\rThe moon is in its last quarter."); break;
+				case 7: timeDesc.append("\n\rThe moon is in the waning crescent phase."); break;
+				default: timeDesc.append("\n\rThere is a BLUE MOON! Oh my GOD! Run away!!!!!"); break;
+				}
+			}
+		}
+		return timeDesc.toString();
+	}
 	public int climateType(){return climateID;}
 	public void setClimateType(int newClimateType)
 	{
 		climateID=newClimateType;
 	}
+	public int getYear(){return year;}
+	public void setYear(int y){year=y;}
+
 	public int getMonth(){return month;}
 	public void setMonth(int m){month=m;}
-	public int getMoonPhase(){return month/4;}
+	public int getMoonPhase(){return (int)Math.round(Util.mul(Util.div(getDayOfMonth(),Area.DAYS_IN_MONTH),8));}
 	
 	public int getDayOfMonth(){return day;}
 	public void setDayOfMonth(int d){day=d;}
 	public int getTimeOfDay(){return time;}
-	public void setTimeOfDay(int t){time=t;}
+	public int getTODCode(){return timeCode;}
+	public boolean setTimeOfDay(int t)
+	{
+		boolean raiseLowerTheSun=false;
+		switch(t)
+		{
+		case 0:timeCode=Area.TIME_DAWN; raiseLowerTheSun=true; break;
+		case 1:timeCode=Area.TIME_DAY; raiseLowerTheSun=true; break;
+		case 12:timeCode=Area.TIME_DUSK; raiseLowerTheSun=true; break;
+		case 13:timeCode=Area.TIME_NIGHT; raiseLowerTheSun=true; break;
+		case 14:
+		case 15:timeCode=Area.TIME_NIGHT; break;
+		default:timeCode=Area.TIME_DAY; break;
+		}
+		time=t;
+		return raiseLowerTheSun;
+	}
 	
 	
 	public boolean amISubOp(String username)
@@ -236,6 +305,321 @@ public class StdArea implements Area
 			stopTicking=true;
 		
 	}
+	
+	public void weatherTick()
+	{
+		if((--weatherTicker)<=0)
+		{
+				
+			weatherTicker=WEATHER_TICK_DOWN;
+			int[] changeChance=new int[Area.NUM_WEATHER];
+			for(int c=0;c<changeChance.length;c++) changeChance[c]=50;
+			changeChance[Area.WEATHER_BLIZZARD]=85;
+			changeChance[Area.WEATHER_CLEAR]=15;
+			changeChance[Area.WEATHER_CLOUDY]=25;
+			changeChance[Area.WEATHER_DROUGHT]=15;
+			changeChance[Area.WEATHER_DUSTSTORM]=85;
+			changeChance[Area.WEATHER_HAIL]=90;
+			changeChance[Area.WEATHER_HEAT_WAVE]=50;
+			changeChance[Area.WEATHER_RAIN]=50;
+			changeChance[Area.WEATHER_SLEET]=90;
+			changeChance[Area.WEATHER_SNOW]=65;
+			changeChance[Area.WEATHER_THUNDERSTORM]=65;
+			changeChance[Area.WEATHER_WINDY]=25;
+			changeChance[Area.WEATHER_WINTER_COLD]=15;
+			
+			String say=null;
+			int oldWeather=currentWeather;
+			if(Dice.rollPercentage()<changeChance[currentWeather])
+			{
+				String stopWord="";
+				int[] chanceToDo=new int[Area.NUM_WEATHER];
+				int chanceToRain=0;
+				int chanceToSnow=0;
+				int chanceToHail=0;
+				int chanceForClouds=10;
+				int chanceForStorm=0;
+				int chanceForWind=5;
+				if((climateType()&Area.CLIMATE_WINDY)>0)
+					chanceForWind=15;
+				if((climateType()&Area.CLIMASK_WET)>0)
+					chanceForClouds=35;
+				else
+				if((climateType()&Area.CLIMASK_DRY)>0)
+					chanceForClouds=5;
+				switch(oldWeather)
+				{
+				case Area.WEATHER_HAIL:
+					stopWord="The hailstorm stops.";
+					break;
+				case Area.WEATHER_CLOUDY:
+					stopWord="The clouds dissipate.";
+					chanceForClouds=0;
+					if((climateType()&Area.CLIMASK_WET)>0)
+					{
+						if((climateType()&Area.CLIMASK_COLD)>0)
+						{
+							chanceToSnow=20;
+							chanceToHail=20;
+							chanceToRain=10;
+						}
+						else
+						if((climateType()&Area.CLIMASK_HOT)>0)
+						{
+							chanceForStorm=20;
+							chanceToRain=35;
+							chanceToSnow=2;
+						}
+						else
+						{
+							chanceForStorm=10;
+							chanceToRain=25;
+							chanceToSnow=5;
+							chanceToHail=5;
+						}
+					}
+					else
+					if((climateType()&Area.CLIMASK_DRY)>0)
+					{
+						if((climateType()&Area.CLIMASK_COLD)>0)
+						{
+							chanceToSnow=5;
+							chanceToHail=5;
+							chanceToRain=2;
+						}
+						else
+						if((climateType()&Area.CLIMASK_HOT)>0)
+						{
+							chanceForStorm=5;
+							chanceToRain=9;
+							chanceToSnow=1;
+						}
+						else
+						{
+							chanceForStorm=2;
+							chanceToRain=7;
+							chanceToSnow=1;
+							chanceToHail=0;
+						}
+					}
+					else
+					{
+						if((climateType()&Area.CLIMASK_COLD)>0)
+						{
+							chanceToSnow=10;
+							chanceToHail=10;
+							chanceToRain=5;
+						}
+						else
+						if((climateType()&Area.CLIMASK_HOT)>0)
+						{
+							chanceForStorm=10;
+							chanceToRain=18;
+							chanceToSnow=1;
+						}
+						else
+						{
+							chanceForStorm=5;
+							chanceToRain=10;
+							chanceToSnow=2;
+							chanceToHail=2;
+						}
+					}
+					break;
+				case Area.WEATHER_THUNDERSTORM:
+					stopWord="The thunderstorm stops.";
+					break;
+				case Area.WEATHER_CLEAR:
+					break;
+				case Area.WEATHER_RAIN:
+					stopWord="It stops raining.";
+					break;
+				case Area.WEATHER_SNOW:
+					stopWord="It stops snowing.";
+					break;
+				case Area.WEATHER_WINDY:
+					chanceForWind=0;
+					stopWord="The wind gusts stop.";
+					if((climateType()&Area.CLIMASK_WET)>0)
+					{
+						if((climateType()&Area.CLIMASK_COLD)>0)
+							chanceForClouds=45;
+						else
+						if((climateType()&Area.CLIMASK_HOT)>0)
+							chanceForClouds=55;
+					}
+					else
+					if((climateType()&Area.CLIMASK_DRY)>0)
+						chanceForClouds=0;
+					else
+					if((climateType()&Area.CLIMASK_COLD)>0)
+						chanceForClouds=5;
+					else
+					if((climateType()&Area.CLIMASK_HOT)>0)
+						chanceForClouds=3;
+					break;
+				}
+				int newWeather=nextWeather;
+				if(Dice.rollPercentage()<chanceForClouds)
+					nextWeather=Area.WEATHER_CLOUDY;
+				else
+				if(Dice.rollPercentage()<chanceForWind)
+					nextWeather=Area.WEATHER_WINDY;
+				else
+				if(Dice.rollPercentage()<chanceToSnow)
+					nextWeather=Area.WEATHER_SNOW;
+				else
+				if(Dice.rollPercentage()<chanceToHail)
+					nextWeather=Area.WEATHER_HAIL;
+				else
+				if(Dice.rollPercentage()<chanceToRain)
+					nextWeather=Area.WEATHER_RAIN;
+				else
+				if(Dice.rollPercentage()<chanceForStorm)
+					nextWeather=Area.WEATHER_THUNDERSTORM;
+					
+				currentWeather=newWeather;
+				switch(oldWeather)
+				{
+				case Area.WEATHER_CLEAR:
+					switch(newWeather)
+					{
+					case Area.WEATHER_CLEAR:
+						break;
+					default:
+						say=getWeatherDescription();
+						break;
+					}
+					break;
+				case Area.WEATHER_CLOUDY:
+					switch(newWeather)
+					{
+					case Area.WEATHER_CLEAR:
+						say=stopWord;
+						break;
+					case Area.WEATHER_CLOUDY:
+						break;
+					case Area.WEATHER_HAIL:
+					case Area.WEATHER_RAIN:
+					case Area.WEATHER_SNOW:
+					case Area.WEATHER_THUNDERSTORM:
+						say=getWeatherDescription();
+						break;
+					case Area.WEATHER_WINDY:
+						say=stopWord+" "+getWeatherDescription();
+						break;
+					}
+					break;
+				case Area.WEATHER_HAIL:
+					switch(newWeather)
+					{
+					case Area.WEATHER_CLEAR:
+					case Area.WEATHER_CLOUDY:
+						say=stopWord;
+						break;
+					case Area.WEATHER_HAIL:
+						break;
+					case Area.WEATHER_RAIN:
+					case Area.WEATHER_SNOW:
+					case Area.WEATHER_THUNDERSTORM:
+					case Area.WEATHER_WINDY:
+						say=stopWord+" "+getWeatherDescription();
+						break;
+					}
+					break;
+				case Area.WEATHER_RAIN:
+					switch(newWeather)
+					{
+					case Area.WEATHER_CLEAR:
+					case Area.WEATHER_CLOUDY:
+					case Area.WEATHER_WINDY:
+						say=stopWord;
+						break;
+					case Area.WEATHER_HAIL:
+					case Area.WEATHER_SNOW:
+					case Area.WEATHER_THUNDERSTORM:
+						say=stopWord+" "+getWeatherDescription();
+						break;
+					case Area.WEATHER_RAIN:
+						break;
+					}
+					break;
+				case Area.WEATHER_SNOW:
+					switch(newWeather)
+					{
+					case Area.WEATHER_CLEAR:
+					case Area.WEATHER_CLOUDY:
+						say=stopWord;
+						break;
+					case Area.WEATHER_HAIL:
+					case Area.WEATHER_THUNDERSTORM:
+					case Area.WEATHER_RAIN:
+					case Area.WEATHER_WINDY:
+						say=stopWord+" "+getWeatherDescription();
+						break;
+					case Area.WEATHER_SNOW:
+						break;
+					}
+					break;
+				case Area.WEATHER_THUNDERSTORM:
+					switch(newWeather)
+					{
+					case Area.WEATHER_CLEAR:
+					case Area.WEATHER_CLOUDY:
+					case Area.WEATHER_WINDY:
+						say=stopWord;
+						break;
+					case Area.WEATHER_HAIL:
+					case Area.WEATHER_SNOW:
+					case Area.WEATHER_RAIN:
+						say=stopWord+" "+getWeatherDescription();
+						break;
+					case Area.WEATHER_THUNDERSTORM:
+						break;
+					}
+					break;
+				case Area.WEATHER_WINDY:
+					switch(newWeather)
+					{
+					case Area.WEATHER_CLEAR:
+						say=stopWord;
+						break;
+					case Area.WEATHER_CLOUDY:
+					case Area.WEATHER_HAIL:
+					case Area.WEATHER_SNOW:
+					case Area.WEATHER_THUNDERSTORM:
+					case Area.WEATHER_RAIN:
+						say=getWeatherDescription();
+						break;
+					case Area.WEATHER_WINDY:
+						break;
+					}
+					break;
+				}
+			}
+			else
+			if(currentWeather==Area.WEATHER_THUNDERSTORM)
+				say="A bolt of lightning streaks across the sky.";
+			if(say!=null)
+			{
+				Vector myMap=this.getMyMap();
+				for(int r=0;r<myMap.size();r++)
+				{
+					Room R=(Room)myMap.elementAt(r);
+					if((R.domainType()&Room.INDOORS)==0)
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						MOB mob=R.fetchInhabitant(i);
+						if((mob!=null)
+						   &&(!mob.isMonster())
+						   &&(Sense.canSee(mob)||(currentWeather!=oldWeather)))
+							mob.tell(say);
+					}
+				}
+			}
+		}
+	}
+	
 	public boolean tick(int tickID)
 	{
 		if(stopTicking) return false;
@@ -263,329 +647,7 @@ public class StdArea implements Area
 				else
 					a++;
 			}
-			if((--weatherTicker)<=0)
-			{
-				
-				if(Dice.rollPercentage()==1)
-				{
-					
-				}
-				
-				weatherTicker=WEATHER_TICK_DOWN;
-				int changeChance=50;
-				switch(currentWeather)
-				{
-				case Area.WEATHER_HAIL:
-					changeChance=90; 
-					break;
-				case Area.WEATHER_CLOUDY:
-					changeChance=25;
-					break;
-				case Area.WEATHER_THUNDERSTORM:
-					changeChance=65;
-					break;
-				case Area.WEATHER_CLEAR:
-					changeChance=15; 
-					break;
-				case Area.WEATHER_RAIN:
-					changeChance=50; 
-					break;
-				case Area.WEATHER_SNOW:
-					changeChance=65; 
-					break;
-				case Area.WEATHER_WINDY:
-					changeChance=25;
-					break;
-				}
-				String say=null;
-				int oldWeather=currentWeather;
-				if(Dice.rollPercentage()<changeChance)
-				{
-					String stopWord="";
-					int chanceToRain=0;
-					int chanceToSnow=0;
-					int chanceToHail=0;
-					int chanceForClouds=10;
-					int chanceForStorm=0;
-					int chanceForWind=5;
-					if((climateType()&Area.CLIMATE_WINDY)>0)
-						chanceForWind=15;
-					if((climateType()&Area.CLIMASK_WET)>0)
-						chanceForClouds=35;
-					else
-					if((climateType()&Area.CLIMASK_DRY)>0)
-						chanceForClouds=5;
-					switch(oldWeather)
-					{
-					case Area.WEATHER_HAIL:
-						stopWord="The hailstorm stops.";
-						break;
-					case Area.WEATHER_CLOUDY:
-						stopWord="The clouds dissipate.";
-						chanceForClouds=0;
-						if((climateType()&Area.CLIMASK_WET)>0)
-						{
-							if((climateType()&Area.CLIMASK_COLD)>0)
-							{
-								chanceToSnow=20;
-								chanceToHail=20;
-								chanceToRain=10;
-							}
-							else
-							if((climateType()&Area.CLIMASK_HOT)>0)
-							{
-								chanceForStorm=20;
-								chanceToRain=35;
-								chanceToSnow=2;
-							}
-							else
-							{
-								chanceForStorm=10;
-								chanceToRain=25;
-								chanceToSnow=5;
-								chanceToHail=5;
-							}
-						}
-						else
-						if((climateType()&Area.CLIMASK_DRY)>0)
-						{
-							if((climateType()&Area.CLIMASK_COLD)>0)
-							{
-								chanceToSnow=5;
-								chanceToHail=5;
-								chanceToRain=2;
-							}
-							else
-							if((climateType()&Area.CLIMASK_HOT)>0)
-							{
-								chanceForStorm=5;
-								chanceToRain=9;
-								chanceToSnow=1;
-							}
-							else
-							{
-								chanceForStorm=2;
-								chanceToRain=7;
-								chanceToSnow=1;
-								chanceToHail=0;
-							}
-						}
-						else
-						{
-							if((climateType()&Area.CLIMASK_COLD)>0)
-							{
-								chanceToSnow=10;
-								chanceToHail=10;
-								chanceToRain=5;
-							}
-							else
-							if((climateType()&Area.CLIMASK_HOT)>0)
-							{
-								chanceForStorm=10;
-								chanceToRain=18;
-								chanceToSnow=1;
-							}
-							else
-							{
-								chanceForStorm=5;
-								chanceToRain=10;
-								chanceToSnow=2;
-								chanceToHail=2;
-							}
-						}
-						break;
-					case Area.WEATHER_THUNDERSTORM:
-						stopWord="The thunderstorm stops.";
-						break;
-					case Area.WEATHER_CLEAR:
-						break;
-					case Area.WEATHER_RAIN:
-						stopWord="It stops raining.";
-						break;
-					case Area.WEATHER_SNOW:
-						stopWord="It stops snowing.";
-						break;
-					case Area.WEATHER_WINDY:
-						chanceForWind=0;
-						stopWord="The wind gusts stop.";
-						if((climateType()&Area.CLIMASK_WET)>0)
-						{
-							if((climateType()&Area.CLIMASK_COLD)>0)
-								chanceForClouds=45;
-							else
-							if((climateType()&Area.CLIMASK_HOT)>0)
-								chanceForClouds=55;
-						}
-						else
-						if((climateType()&Area.CLIMASK_DRY)>0)
-							chanceForClouds=0;
-						else
-						if((climateType()&Area.CLIMASK_COLD)>0)
-							chanceForClouds=5;
-						else
-						if((climateType()&Area.CLIMASK_HOT)>0)
-							chanceForClouds=3;
-						break;
-					}
-					int newWeather=nextWeather;
-					if(Dice.rollPercentage()<chanceForClouds)
-						nextWeather=Area.WEATHER_CLOUDY;
-					else
-					if(Dice.rollPercentage()<chanceForWind)
-						nextWeather=Area.WEATHER_WINDY;
-					else
-					if(Dice.rollPercentage()<chanceToSnow)
-						nextWeather=Area.WEATHER_SNOW;
-					else
-					if(Dice.rollPercentage()<chanceToHail)
-						nextWeather=Area.WEATHER_HAIL;
-					else
-					if(Dice.rollPercentage()<chanceToRain)
-						nextWeather=Area.WEATHER_RAIN;
-					else
-					if(Dice.rollPercentage()<chanceForStorm)
-						nextWeather=Area.WEATHER_THUNDERSTORM;
-					
-					currentWeather=newWeather;
-					switch(oldWeather)
-					{
-					case Area.WEATHER_CLEAR:
-						switch(newWeather)
-						{
-						case Area.WEATHER_CLEAR:
-							break;
-						default:
-							say=getWeatherDescription();
-							break;
-						}
-						break;
-					case Area.WEATHER_CLOUDY:
-						switch(newWeather)
-						{
-						case Area.WEATHER_CLEAR:
-							say=stopWord;
-							break;
-						case Area.WEATHER_CLOUDY:
-							break;
-						case Area.WEATHER_HAIL:
-						case Area.WEATHER_RAIN:
-						case Area.WEATHER_SNOW:
-						case Area.WEATHER_THUNDERSTORM:
-							say=getWeatherDescription();
-							break;
-						case Area.WEATHER_WINDY:
-							say=stopWord+" "+getWeatherDescription();
-							break;
-						}
-						break;
-					case Area.WEATHER_HAIL:
-						switch(newWeather)
-						{
-						case Area.WEATHER_CLEAR:
-						case Area.WEATHER_CLOUDY:
-							say=stopWord;
-							break;
-						case Area.WEATHER_HAIL:
-							break;
-						case Area.WEATHER_RAIN:
-						case Area.WEATHER_SNOW:
-						case Area.WEATHER_THUNDERSTORM:
-						case Area.WEATHER_WINDY:
-							say=stopWord+" "+getWeatherDescription();
-							break;
-						}
-						break;
-					case Area.WEATHER_RAIN:
-						switch(newWeather)
-						{
-						case Area.WEATHER_CLEAR:
-						case Area.WEATHER_CLOUDY:
-						case Area.WEATHER_WINDY:
-							say=stopWord;
-							break;
-						case Area.WEATHER_HAIL:
-						case Area.WEATHER_SNOW:
-						case Area.WEATHER_THUNDERSTORM:
-							say=stopWord+" "+getWeatherDescription();
-							break;
-						case Area.WEATHER_RAIN:
-							break;
-						}
-						break;
-					case Area.WEATHER_SNOW:
-						switch(newWeather)
-						{
-						case Area.WEATHER_CLEAR:
-						case Area.WEATHER_CLOUDY:
-							say=stopWord;
-							break;
-						case Area.WEATHER_HAIL:
-						case Area.WEATHER_THUNDERSTORM:
-						case Area.WEATHER_RAIN:
-						case Area.WEATHER_WINDY:
-							say=stopWord+" "+getWeatherDescription();
-							break;
-						case Area.WEATHER_SNOW:
-							break;
-						}
-						break;
-					case Area.WEATHER_THUNDERSTORM:
-						switch(newWeather)
-						{
-						case Area.WEATHER_CLEAR:
-						case Area.WEATHER_CLOUDY:
-						case Area.WEATHER_WINDY:
-							say=stopWord;
-							break;
-						case Area.WEATHER_HAIL:
-						case Area.WEATHER_SNOW:
-						case Area.WEATHER_RAIN:
-							say=stopWord+" "+getWeatherDescription();
-							break;
-						case Area.WEATHER_THUNDERSTORM:
-							break;
-						}
-						break;
-					case Area.WEATHER_WINDY:
-						switch(newWeather)
-						{
-						case Area.WEATHER_CLEAR:
-							say=stopWord;
-							break;
-						case Area.WEATHER_CLOUDY:
-						case Area.WEATHER_HAIL:
-						case Area.WEATHER_SNOW:
-						case Area.WEATHER_THUNDERSTORM:
-						case Area.WEATHER_RAIN:
-							say=getWeatherDescription();
-							break;
-						case Area.WEATHER_WINDY:
-							break;
-						}
-						break;
-					}
-				}
-				else
-				if(currentWeather==Area.WEATHER_THUNDERSTORM)
-					say="A bolt of lightning streaks across the sky.";
-				if(say!=null)
-				{
-					Vector myMap=this.getMyMap();
-					for(int r=0;r<myMap.size();r++)
-					{
-						Room R=(Room)myMap.elementAt(r);
-						if((R.domainType()&Room.INDOORS)==0)
-						for(int i=0;i<R.numInhabitants();i++)
-						{
-							MOB mob=R.fetchInhabitant(i);
-							if((mob!=null)
-							   &&(!mob.isMonster())
-							   &&(Sense.canSee(mob)||(currentWeather!=oldWeather)))
-								mob.tell(say);
-						}
-					}
-				}
-			}
+			weatherTick();
 		}
 		return true;
 	}
@@ -697,7 +759,15 @@ public class StdArea implements Area
 	}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{}
+	{
+		if((affected instanceof Room)&&((((Room)affected).domainType()&Room.INDOORS)==0))
+		{
+			if((weatherType((Room)affected)==Area.WEATHER_BLIZZARD)
+			   ||(weatherType((Room)affected)==Area.WEATHER_DUSTSTORM)
+			   ||(timeCode==Area.TIME_NIGHT))
+					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_DARK);
+		}
+	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
@@ -844,8 +914,11 @@ public class StdArea implements Area
 		return null;
 	}
 	
-	public Vector getMyMap()
+	public void clearMap(){myRooms=null;}
+	
+	public synchronized Vector getMyMap()
 	{
+		if(myRooms!=null) return myRooms;
 		Vector myMap=new Vector();
 		for(int m=0;m<CMMap.numRooms();m++)
 		{
@@ -853,6 +926,7 @@ public class StdArea implements Area
 			if(R.getArea()==this)
 				myMap.addElement(R);
 		}
+		myRooms=myMap;
 		return myMap;
 	}
 	
