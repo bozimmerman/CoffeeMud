@@ -389,7 +389,7 @@ public class Import
 		case 15: return "Prayer_CureCritical";
 		case 16: return "Prayer_CureLight";
 		case 17: return "Prayer_Curse";
-		case 18: return "Prayer_DetectEvil";
+		case 18: return "Prayer_SenseEvil";
 		case 19: return "Spell_DetectInvisible";
 		case 20: return "Spell_DetectMagic";
 		case 21: return "Thief_DetectTraps"; // detect poison actually

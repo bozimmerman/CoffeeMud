@@ -69,7 +69,7 @@ public class Paladin extends StdCharClass
 			}
 			
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureLight",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_DetectEvil",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_SenseEvil",true);
 		}
 	}
 

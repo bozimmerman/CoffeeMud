@@ -9,6 +9,8 @@
 ! Languages!  Affects says and replies if you don't know a language spoken by the speaker.
 ! Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add to attack ability, and increase movement and will act as a container for the purposes of cargo.  Mounted Items will not appear in inventory, and be restrained to a terrain type (air, water, etc).  More than one person can mount an item (a boat).  
 
+affected, myowner, and location are all the same damn thing.  Fix it.
+
 banks! (Actually, you can diposit anything, but only withdraw it at a (small) price).
 
 Item damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.  
