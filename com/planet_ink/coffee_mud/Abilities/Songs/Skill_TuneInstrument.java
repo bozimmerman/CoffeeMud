@@ -41,7 +41,7 @@ public class Skill_TuneInstrument extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> tune(s) <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> tune(s) <T-NAMESELF>.");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

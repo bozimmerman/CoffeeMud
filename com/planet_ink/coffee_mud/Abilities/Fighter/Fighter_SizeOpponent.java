@@ -38,7 +38,7 @@ public class Fighter_SizeOpponent extends StdAbility
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int adjustedAttack=target.adjustedAttackBonus();
+				int adjustedAttack=target.adjustedAttackBonus(mob);
 				int adjustedArmor=(-target.adjustedArmor())+50;
 				StringBuffer buf=new StringBuffer(target.name()+" looks to have "+target.curState().getHitPoints()+" out of "+target.maxState().getHitPoints()+" hit points.\n\r");
 				buf.append(target.charStats().HeShe()+" looks like "+target.charStats().heshe()+" is "+CommonStrings.fightingProwessStr(adjustedAttack)+" and is "+CommonStrings.armorStr(adjustedArmor)+".");

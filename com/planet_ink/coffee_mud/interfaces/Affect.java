@@ -175,6 +175,7 @@ public interface Affect extends Cloneable
 	public static final int MSG_DROP=MASK_HANDS|TYP_DROP;
 	public static final int MSG_WEAR=MASK_HANDS|TYP_WEAR;
 	public static final int MSG_FILL=MASK_HANDS|MASK_MOVE|MASK_SOUND|TYP_FILL;
+	public static final int MSG_DELICATE_SMALL_HANDS_ACT=MASK_HANDS|MASK_DELICATE|TYP_DELICATE_HANDS_ACT;
 	public static final int MSG_DELICATE_HANDS_ACT=MASK_HANDS|MASK_MOVE|MASK_DELICATE|TYP_DELICATE_HANDS_ACT;
 	public static final int MSG_THIEF_ACT=MASK_HANDS|MASK_MOVE|MASK_DELICATE|TYP_JUSTICE;
 	public static final int MSG_VALUE=MSK_HAGGLE|TYP_VALUE;

@@ -77,6 +77,12 @@ public class Spell_Sleep extends Spell
 			return false;
 		}
 
+		if(target.isInCombat())
+		{
+			mob.tell(target.name()+" is in combat, and would not be affected.");
+			return false;
+		}
+		
 		// if they can't hear the sleep spell, it
 		// won't happen
 		if((!auto)&&(!Sense.canBeHeardBy(mob,target)))

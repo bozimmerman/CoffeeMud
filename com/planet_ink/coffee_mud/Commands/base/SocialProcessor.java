@@ -520,8 +520,8 @@ public class SocialProcessor
 		if((mob1==null)||(mob2==null)) return 0;
 		int mob2Armor=(int)mob2.adjustedArmor();
 		int mob1Armor=(int)mob1.adjustedArmor();
-		int mob2Attack=(int)mob2.adjustedAttackBonus();
-		int mob1Attack=(int)mob1.adjustedAttackBonus();
+		int mob2Attack=(int)mob2.adjustedAttackBonus(mob1);
+		int mob1Attack=(int)mob1.adjustedAttackBonus(mob2);
 		int mob2Dmg=(int)mob2.envStats().damage();
 		int mob1Dmg=(int)mob1.envStats().damage();
 		int mob2Hp=(int)mob2.baseState().getHitPoints();

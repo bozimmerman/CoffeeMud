@@ -32,7 +32,7 @@ public class Skill_Warrants extends StdAbility
 		boolean success=profficiencyCheck((-25+mob.charStats().getStat(CharStats.CHARISMA)),auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),null);
+			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_DELICATE_SMALL_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),null);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -550,7 +550,7 @@ public class StdMOB implements MOB
 		   return false;
 		return true;
 	}
-	public int adjustedAttackBonus()
+	public int adjustedAttackBonus(MOB mob)
 	{
 		double att=new Integer(
 				envStats().attackAdjustment()
@@ -558,7 +558,10 @@ public class StdMOB implements MOB
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
-		return (int)Math.round(att);
+		if(mob==null) 
+			return (int)Math.round(att);
+		else 
+			return ((envStats().level()-mob.envStats().level())*2)+(int)Math.round(att);
 	}
 
 	public int adjustedArmor()
@@ -1117,7 +1120,8 @@ public class StdMOB implements MOB
 					&&(affect.sourceMinor()!=Affect.TYP_SLEEP))
 					{
 						tell("You need to stand up!");
-						return false;
+						if(affect.sourceMinor()!=Affect.TYP_WEAPONATTACK)
+							return false;
 					}
 					if(!Sense.canMove(this))
 					{
@@ -1665,7 +1669,7 @@ public class StdMOB implements MOB
 							weapon=(Weapon)affect.tool();
 						if(weapon!=null)
 						{
-							boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus()+adjustedArmor()));
+							boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus(this)+adjustedArmor()));
 							ExternalPlay.postWeaponDamage(affect.source(),this,weapon,isHit);
 							affect.tagModified(true);
 						}
@@ -1881,7 +1885,7 @@ public class StdMOB implements MOB
 
 					Item weapon=this.fetchWieldedItem();
 					double curSpeed=Math.floor(speeder);
-					speeder+=envStats().speed();
+					speeder+=Sense.isSitting(this)?(envStats().speed()/2.0):envStats().speed();
 					int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
 					if(Sense.aliveAwakeMobile(this,true))
 					{

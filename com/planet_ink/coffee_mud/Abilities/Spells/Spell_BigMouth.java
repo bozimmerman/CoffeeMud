@@ -30,7 +30,7 @@ public class Spell_BigMouth extends Spell
 			MOB target=(MOB)affect.target();
 			if(target.envStats().weight()<(mob.envStats().weight()/2))
 			{
-				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus()+target.adjustedArmor()));
+				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus(target)+target.adjustedArmor()));
 				if(!isHit)
 					mob.tell("You fail to eat "+target.name());
 				else

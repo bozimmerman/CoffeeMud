@@ -64,7 +64,7 @@ public class Skill_IdentifyPoison extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),auto?"":"^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_SMALL_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),auto?"":"^S<S-NAME> carefully sniff(s) and taste(s) <T-NAME>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

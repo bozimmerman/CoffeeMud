@@ -50,6 +50,7 @@ public class Spell_Stoneskin extends Spell
 		if(affect.amITarget(mob)
 		&&(affect.tool()!=null)
 		&&(!mob.amDead())
+		&&(Dice.rollPercentage()>75)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT)&&((affect.targetCode()-Affect.MASK_HURT)>0)&&(affect.tool() instanceof Weapon)))
 		{
 			affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);

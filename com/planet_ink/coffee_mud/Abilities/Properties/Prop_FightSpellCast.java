@@ -12,7 +12,7 @@ public class Prop_FightSpellCast extends Property
 	public String name(){ return "Casting spells when properly used during combat";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	Prop_FightSpellCast BOB=new Prop_FightSpellCast();	BOB.setMiscText(text()); return BOB;}
-
+	
 	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
 	{
 		Vector V=Prop_SpellAdder.getMySpellsV(this);

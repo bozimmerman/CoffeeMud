@@ -101,7 +101,7 @@ public class Spell_MagicItem extends Spell
 				if(wand instanceof Weapon)
 				{
 					Ability A=CMClass.getAbility("Prop_FightSpellCast");
-					A.setMiscText(wandThis.ID()+";");
+					A.setMiscText("25%;"+wandThis.ID()+";");
 					wand.addNonUninvokableAffect(A);
 				}
 				else

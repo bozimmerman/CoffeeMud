@@ -65,7 +65,7 @@ public class Skill_Puppeteer extends StdAbility
 		{
 			if(invoker().isInCombat())
 			{
-				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(invoker().adjustedAttackBonus()
+				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(invoker().adjustedAttackBonus(invoker().getVictim())
 																   +((Item)affected).envStats().attackAdjustment()
 																   +invoker().getVictim().adjustedArmor()));
 				if(!isHit)

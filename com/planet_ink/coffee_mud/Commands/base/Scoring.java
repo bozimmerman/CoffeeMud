@@ -185,7 +185,7 @@ public class Scoring
 	}
 	public static StringBuffer getScore(MOB mob)
 	{
-		int adjustedAttack=mob.adjustedAttackBonus();
+		int adjustedAttack=mob.adjustedAttackBonus(null);
 		int adjustedArmor=(-mob.adjustedArmor())+50;
 
 		StringBuffer msg=new StringBuffer("");
@@ -689,6 +689,7 @@ public class Scoring
 						msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 					}
 					else
+					if(seer==mob)
 						msg.append(header+"(something you can`t see)"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 				}
 			}

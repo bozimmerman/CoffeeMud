@@ -115,7 +115,7 @@ public class Thief_Sap extends ThiefSkill
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+target.adjustedArmor()));
+		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
 		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(hit);
 		if(success)
 		{

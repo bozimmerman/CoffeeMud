@@ -38,9 +38,7 @@ public class StdWand extends StdItem implements Wand
 				manaRequired=5;
 		}
 		else
-		{
-			manaRequired=50;
-		}
+			manaRequired=25;
 		if(manaRequired>mob.curState().getMana())
 		{
 			mob.tell("You don't have enough mana.");

@@ -51,7 +51,7 @@ public class Druid_KnowPlants extends StdAbility
 			mob.tell("Your plant senses fail you.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MAGIC,null);
+			FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_DELICATE_SMALL_HANDS_ACT|Affect.MASK_MAGIC,null);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

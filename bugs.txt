@@ -1,3 +1,7 @@
 ability to permasave a mpvar
 implement mana/move thing for abilities -- add to help
 scriptable -- add ability adding, and container checking
+using mpbehav should do something about semicolons
+
+
+

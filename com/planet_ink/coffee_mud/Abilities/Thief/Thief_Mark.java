@@ -103,7 +103,7 @@ public class Thief_Mark extends ThiefSkill
 			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_SMALL_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

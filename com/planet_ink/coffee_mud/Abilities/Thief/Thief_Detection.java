@@ -49,7 +49,7 @@ public class Thief_Detection extends ThiefSkill
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MASK_GENERAL:Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> start(s) examining <S-HIS-HER> surroundings carefully.");
+		FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MASK_GENERAL:Affect.MSG_DELICATE_SMALL_HANDS_ACT,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> start(s) examining <S-HIS-HER> surroundings carefully.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> look(s) around carefully, but become(s) distracted.");
 		else

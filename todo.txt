@@ -1,5 +1,8 @@
-New Ideas are now kept in the WebIQ session. This list will no longer be kept as up to 
-date, but only occassionally, to spark the interest and amusement of downloaders.
+****************************************************************
+New Ideas are now kept in a WebIQ session. This list will no 
+longer be kept as up to date, but only occassionally, to spark 
+the interest and amusement of downloaders.
+****************************************************************
 
 Misc/Architecture:
 ==================
@@ -18,7 +21,6 @@ Mortgages (bankers lend large amounts of money at interest, start taking away pr
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 SMTP capability
 code something to coffeemudify all the beds
-save player affects in the db
 Gaian is weak on qualifying chants.  
 give rooms maximum weight saveable to db
 Allow archons to define channels using the zapper codes 

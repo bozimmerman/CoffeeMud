@@ -98,7 +98,7 @@ public class Skill_Buffoonery extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MALICIOUS)|(auto?Affect.MASK_GENERAL:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okAffect(mob,msg))
+			FullMsg msg=new FullMsg(mob,target,this,(Affect.MSG_NOISYMOVEMENT|Affect.MASK_DELICATE|Affect.MASK_MALICIOUS)|(auto?Affect.MASK_GENERAL:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				long position=-1;

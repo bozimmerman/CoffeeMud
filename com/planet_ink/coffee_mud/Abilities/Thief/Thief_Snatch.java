@@ -67,7 +67,7 @@ public class Thief_Snatch extends StdAbility
 			levelDiff=levelDiff*6;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
+		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
