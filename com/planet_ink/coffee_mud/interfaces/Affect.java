@@ -206,6 +206,6 @@ public interface Affect
 	public static final int MSG_DISMOUNT=ACT_MOVE|ACT_SOUND|TYP_DISMOUNT;
 	public static final int MSG_SERVE=ACT_MOUTH|ACT_SOUND|TYP_SERVE;
 	public static final int MSG_REBUKE=ACT_MOUTH|ACT_SOUND|TYP_REBUKE;
-	public static final int MSG_ADVANCE=ACT_MOVE|ACT_SOUND|TYP_ADVANCE;
+	public static final int MSG_ADVANCE=ACT_MOVE|ACT_SOUND|MASK_MALICIOUS|TYP_ADVANCE;
 }
 

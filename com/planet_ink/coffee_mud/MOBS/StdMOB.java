@@ -718,11 +718,6 @@ public class StdMOB implements MOB
 						tell("You like "+amFollowing().charStats().himher()+" too much.");
 						return false;
 					}
-					if((riding()!=null)&&(target==riding()))
-					{
-						tell("You can't attack "+riding().name()+" right now.");
-						return false;
-					}
 					if((WorshipCharID.length()>0)&&(target.name().equals(WorshipCharID)))
 					{
 						tell("You are serving '"+WorshipCharID+"'!");
@@ -974,7 +969,7 @@ public class StdMOB implements MOB
 			   &&(atRange>maxRange(affect.tool())))
 			{
 				String newstr="<S-NAME> advance(s) at ";
-				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.name(),Affect.MSG_ADVANCE,newstr+" you",Affect.MSG_ADVANCE,newstr+target.name());
+				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.name(),Affect.MSG_ADVANCE,newstr+"you",Affect.MSG_ADVANCE,newstr+target.name());
 				boolean ok=location().okAffect(affect);
 				if(ok) atRange--;
 				if(victim!=null)
@@ -1050,7 +1045,10 @@ public class StdMOB implements MOB
 					&&(getVictim()!=affect.source())
 					&&(affect.source().getVictim()==this)
 					&&(affect.source().rangeToTarget()==0))
-					   setVictim(affect.source());
+					{
+					    setVictim(affect.source());
+						setAtRange(0);
+					}
 				}
 				else
 				if(isMonster()) // playerkill check

@@ -171,6 +171,32 @@ public class StdRideable extends StdMOB implements Rideable
 				return false;
 			}
 		}
+		if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		{
+			if((affect.amITarget(this))
+			   &&((affect.source().riding()==this)
+				  ||(this.amRiding(affect.source()))))
+			{
+				affect.source().tell("You can't attack "+riding().name()+" right now.");
+				if(getVictim()==affect.source()) setVictim(null);
+				if(affect.source().getVictim()==this) affect.source().setVictim(null);
+				return false;
+			}
+			else
+			if((affect.amISource(this))
+			   &&(affect.target()!=null)
+			   &&(affect.target() instanceof MOB)
+			   &&((amRiding((MOB)affect.target()))
+				  ||(((MOB)affect.target()).riding()==this)))
+			   
+			{
+				MOB targ=(MOB)affect.target();
+				tell("You can't attack "+targ.name()+" right now.");
+				if(getVictim()==targ) setVictim(null);
+				if(targ.getVictim()==this) targ.setVictim(null);
+				return false;
+			}
+		}
 		return super.okAffect(affect);
 	}
 	public void affect(Affect affect)
