@@ -84,7 +84,11 @@ public class Scriptable extends StdBehavior
 		"EVAL", // 41
 		"RANDNUM", // 42
 		"ROOMMOB", // 43
-		"ROOMITEM" // 44
+		"ROOMITEM", // 44
+		"NUMMOBSROOM", // 45
+		"NUMITEMSROOM", // 46
+		"MOBITEM", // 47
+		"NUMITEMSMOB" // 48
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -114,7 +118,11 @@ public class Scriptable extends StdBehavior
 		"MPBEACON", // 25
 		"MPALARM", // 26
 		"MPWHILE", // 27
-		"MPDAMAGE" // 28
+		"MPDAMAGE", // 28
+		"MPTRACKTO", // 29
+		"MPAFFECT", // 30
+		"MPBEHAVE", // 31
+		"MPUNBEHAVE"  //32
 	};
 
 	public Behavior newInstance()
@@ -332,6 +340,35 @@ public class Scriptable extends StdBehavior
 		return room;
 	}
 
+	private boolean simpleEval(String arg1, String arg2, String cmp, String cmdName)
+	{
+		int val=Util.s_int(arg1);
+		int val2=Util.s_int(arg2);
+		if(arg2.equalsIgnoreCase("=="))
+			return (val==val2);
+		else
+		if(arg2.equalsIgnoreCase(">="))
+			return (val>=val2);
+		else
+		if(arg2.equalsIgnoreCase("<="))
+			return (val<=val2);
+		else
+		if(arg2.equalsIgnoreCase(">"))
+			return (val>val2);
+		else
+		if(arg2.equalsIgnoreCase("<"))
+			return (val<val2);
+		else
+		if(arg2.equalsIgnoreCase("!="))
+			return (val!=val2);
+		else
+		{
+			Log.errOut("Scriptable",cmdName+" Syntax -- "+val+" "+arg2+" "+val2);
+			return false;
+		}
+	}
+	
+	
 	private Environmental findSomethingCalledThis(String thisName, Room imHere, boolean mob)
 	{
 		if(thisName.length()==0) return null;
@@ -694,29 +731,7 @@ public class Scriptable extends StdBehavior
 							num++;
 					}
 				}
-				int val2=Util.s_int(arg3);
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(num==val2);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(num>=val2);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(num<=val2);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(num>val2);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(num<val2);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(num!=val2);
-				else
-				{
-					Log.errOut("Scriptable","NUMMOBSINAREA Syntax -- "+monster.Name()+", "+evaluable);
-					return returnable;
-				}
+				returnable=simpleEval(""+num,arg3,arg2,"NUMMOBSINAREA");
 				break;
 			}
 			case 33: // nummobs
@@ -735,29 +750,7 @@ public class Scriptable extends StdBehavior
 							num++;
 					}
 				}
-				int val2=Util.s_int(arg3);
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(num==val2);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(num>=val2);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(num<=val2);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(num>val2);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(num<val2);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(num!=val2);
-				else
-				{
-					Log.errOut("Scriptable","NUMMOBS Syntax -- "+monster.Name()+", "+evaluable);
-					return returnable;
-				}
+				returnable=simpleEval(""+num,arg3,arg2,"NUMMOBS");
 				break;
 			}
 			case 34: // numracesinarea
@@ -776,29 +769,7 @@ public class Scriptable extends StdBehavior
 							num++;
 					}
 				}
-				int val2=Util.s_int(arg3);
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(num==val2);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(num>=val2);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(num<=val2);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(num>val2);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(num<val2);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(num!=val2);
-				else
-				{
-					Log.errOut("Scriptable","NUMRACESINAREA Syntax -- "+monster.Name()+", "+evaluable);
-					return returnable;
-				}
+				returnable=simpleEval(""+num,arg3,arg2,"NUMRACESINAREA");
 				break;
 			}
 			case 35: // numraces
@@ -817,29 +788,7 @@ public class Scriptable extends StdBehavior
 							num++;
 					}
 				}
-				int val2=Util.s_int(arg3);
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(num==val2);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(num>=val2);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(num<=val2);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(num>val2);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(num<val2);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(num!=val2);
-				else
-				{
-					Log.errOut("Scriptable","NUMRACES Syntax -- "+monster.Name()+", "+evaluable);
-					return returnable;
-				}
+				returnable=simpleEval(""+num,arg3,arg2,"NUMRACES");
 				break;
 			}
 			case 30: // questitem
@@ -870,30 +819,7 @@ public class Scriptable extends StdBehavior
 				{
 					double hitPctD=Util.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
 					int val1=(int)Math.round(hitPctD*100.0);
-					int val2=Util.s_int(arg3);
-
-					if(arg2.equalsIgnoreCase("=="))
-						returnable=(val1==val2);
-					else
-					if(arg2.equalsIgnoreCase(">="))
-						returnable=(val1>=val2);
-					else
-					if(arg2.equalsIgnoreCase("<="))
-						returnable=(val1<=val2);
-					else
-					if(arg2.equalsIgnoreCase(">"))
-						returnable=(val1>val2);
-					else
-					if(arg2.equalsIgnoreCase("<"))
-						returnable=(val1<val2);
-					else
-					if(arg2.equalsIgnoreCase("!="))
-						returnable=(val1!=val2);
-					else
-					{
-						Log.errOut("Scriptable","HITPRCNT Syntax -- "+monster.Name()+", "+evaluable);
-						return returnable;
-					}
+					returnable=simpleEval(""+val1,arg3,arg2,"HITPRCNT");
 				}
 				break;
 			}
@@ -934,13 +860,84 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				break;
 			}
+			case 45: // nummobsroom
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				if(lastKnownLocation!=null)
+					returnable=simpleEval(""+lastKnownLocation.numInhabitants(),arg2,arg1,"NUMMOBSROOM");
+				break;
+			}
+			case 46: // numitemsroom
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				int ct=0;
+				if(lastKnownLocation!=null)
+				for(int i=0;i<lastKnownLocation.numItems();i++)
+				{
+					Item I=lastKnownLocation.fetchItem(i);
+					if((I!=null)&&(I.container()==null))
+						ct++;
+				}
+				returnable=simpleEval(""+ct,arg2,arg1,"NUMITEMSROOM");
+				break;
+			}
+			case 47: //mobitem
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+				MOB M=null;
+				if(lastKnownLocation!=null)
+					M=lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+				Item which=null;
+				int ct=0;
+				if(M!=null)
+				for(int i=0;i<M.inventorySize();i++)
+				{
+					Item I=M.fetchInventory(i);
+					if((I!=null)&&(I.container()==null))
+					{
+						if(ct==Util.s_int(arg2))
+						{ which=I; break;}
+						ct++;
+					}
+				}
+				if(which==null)
+					returnable=false;
+				else
+					returnable=(CoffeeUtensils.containsString(which.name(),arg3)
+								||CoffeeUtensils.containsString(which.Name(),arg3)
+								||CoffeeUtensils.containsString(which.displayText(),arg3));
+				break;
+			}
+			case 48: // numitemsmob
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2));
+				MOB which=null;
+				if(lastKnownLocation!=null)
+					which=lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+				int ct=0;
+				if(which!=null)
+				for(int i=0;i<which.inventorySize();i++)
+				{
+					Item I=which.fetchInventory(i);
+					if((I!=null)&&(I.container()==null))
+						ct++;
+				}
+				returnable=simpleEval(""+ct,arg3,arg2,"NUMITEMSMOB");
+				break;
+			}
 			case 43: // roommob
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
 				Environmental which=null;
 				if(lastKnownLocation!=null)
-					lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+					which=lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
 				if(which==null)
 					returnable=false;
 				else
@@ -950,7 +947,6 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			case 44: // roomitem
-			if(lastKnownLocation!=null)
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
@@ -1152,30 +1148,7 @@ public class Scriptable extends StdBehavior
 				else
 				{
 					int val1=E.envStats().level();
-					int val2=Util.s_int(arg3);
-
-					if(arg2.equalsIgnoreCase("=="))
-						returnable=(val1==val2);
-					else
-					if(arg2.equalsIgnoreCase(">="))
-						returnable=(val1>=val2);
-					else
-					if(arg2.equalsIgnoreCase("<="))
-						returnable=(val1<=val2);
-					else
-					if(arg2.equalsIgnoreCase(">"))
-						returnable=(val1>val2);
-					else
-					if(arg2.equalsIgnoreCase("<"))
-						returnable=(val1<val2);
-					else
-					if(arg2.equalsIgnoreCase("!="))
-						returnable=(val1!=val2);
-					else
-					{
-						Log.errOut("Scriptable","LEVEL Syntax -- "+monster.Name()+", "+evaluable);
-						return returnable;
-					}
+					returnable=simpleEval(""+val1,arg3,arg2,"LEVEL");
 				}
 				break;
 			}
@@ -1326,29 +1299,7 @@ public class Scriptable extends StdBehavior
 					}
 
 					int val2=Util.s_int(arg3);
-
-					if(arg2.equalsIgnoreCase("=="))
-						returnable=(val1==val2);
-					else
-					if(arg2.equalsIgnoreCase(">="))
-						returnable=(val1>=val2);
-					else
-					if(arg2.equalsIgnoreCase("<="))
-						returnable=(val1<=val2);
-					else
-					if(arg2.equalsIgnoreCase(">"))
-						returnable=(val1>val2);
-					else
-					if(arg2.equalsIgnoreCase("<"))
-						returnable=(val1<val2);
-					else
-					if(arg2.equalsIgnoreCase("!="))
-						returnable=(val1!=val2);
-					else
-					{
-						Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.Name()+", "+evaluable);
-						return returnable;
-					}
+					returnable=simpleEval(""+val1,arg3,arg2,"GOLDAMT");
 				}
 				break;
 			}
@@ -1404,29 +1355,7 @@ public class Scriptable extends StdBehavior
 						val=(String)H.get(arg2);
 						if(val==null) val="";
 					}
-
-					if(arg3.equals("=="))
-						returnable=val.equals(arg4);
-					else
-					if(arg3.equals("!="))
-						returnable=!val.equals(arg4);
-					else
-					if(arg3.equals(">"))
-						returnable=Util.s_int(val)>Util.s_int(arg4);
-					else
-					if(arg3.equals("<"))
-						returnable=Util.s_int(val)<Util.s_int(arg4);
-					else
-					if(arg3.equals(">="))
-						returnable=Util.s_int(val)>=Util.s_int(arg4);
-					else
-					if(arg3.equals("<="))
-						returnable=Util.s_int(val)<=Util.s_int(arg4);
-					else
-					{
-						Log.errOut("Scriptable","VAR Syntax -- "+monster.Name()+", "+evaluable);
-						return returnable;
-					}
+					returnable=simpleEval(val,arg4,arg3,"VAR");
 				}
 				break;
 			}
@@ -1440,28 +1369,7 @@ public class Scriptable extends StdBehavior
 					Log.errOut("Scriptable","EVAL Syntax -- "+monster.Name()+", "+evaluable);
 					return returnable;
 				}
-				if(arg3.equals("=="))
-					returnable=val.equals(arg4);
-				else
-				if(arg3.equals("!="))
-					returnable=!val.equals(arg4);
-				else
-				if(arg3.equals(">"))
-					returnable=Util.s_int(val)>Util.s_int(arg4);
-				else
-				if(arg3.equals("<"))
-					returnable=Util.s_int(val)<Util.s_int(arg4);
-				else
-				if(arg3.equals(">="))
-					returnable=Util.s_int(val)>=Util.s_int(arg4);
-				else
-				if(arg3.equals("<="))
-					returnable=Util.s_int(val)<=Util.s_int(arg4);
-				else
-				{
-					Log.errOut("Scriptable","EVAL Syntax -- "+monster.Name()+", "+evaluable);
-					return returnable;
-				}
+				returnable=simpleEval(val,arg4,arg3,"EVAL");
 				break;
 			}
 			case 40: // number
@@ -1479,28 +1387,7 @@ public class Scriptable extends StdBehavior
 				int arg1=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase());
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				int arg3=Dice.roll(1,Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),2))),0);
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(arg1==arg3);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(arg1>=arg3);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(arg1<=arg3);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(arg1>arg3);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(arg1<arg3);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(arg1!=arg3);
-				else
-				{
-					Log.errOut("Scriptable","RANDNUM Syntax -- "+monster.Name()+", "+evaluable);
-					return returnable;
-				}
+				returnable=simpleEval(""+arg1,""+arg3,arg2,"RANDNUM");
 				break;
 			}
 			default:
@@ -1818,7 +1705,7 @@ public class Scriptable extends StdBehavior
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
 				Environmental which=null;
 				if(lastKnownLocation!=null)
-					lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+					which=lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
 				if(which!=null)
 					results.append(which.name());
 				break;
@@ -1841,6 +1728,66 @@ public class Scriptable extends StdBehavior
 				}
 				if(which!=null)
 					results.append(which.name());
+				break;
+			}
+			case 45: // nummobsroom
+			{
+				if(lastKnownLocation!=null)
+					results.append(""+lastKnownLocation.numInhabitants());
+				break;
+			}
+			case 46: // numitemsroom
+			{
+				int ct=0;
+				if(lastKnownLocation!=null)
+				for(int i=0;i<lastKnownLocation.numItems();i++)
+				{
+					Item I=lastKnownLocation.fetchItem(i);
+					if((I!=null)&&(I.container()==null))
+						ct++;
+				}
+				results.append(""+ct);
+				break;
+			}
+			case 47: //mobitem
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),1));
+				MOB M=null;
+				if(lastKnownLocation!=null)
+					M=lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+				Item which=null;
+				int ct=0;
+				if(M!=null)
+				for(int i=0;i<M.inventorySize();i++)
+				{
+					Item I=M.fetchInventory(i);
+					if((I!=null)&&(I.container()==null))
+					{
+						if(ct==Util.s_int(arg2))
+						{ which=I; break;}
+						ct++;
+					}
+				}
+				if(which!=null)
+					results.append(which.name());
+				break;
+			}
+			case 48: // numitemsmob
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				MOB which=null;
+				if(lastKnownLocation!=null)
+					which=lastKnownLocation.fetchInhabitant(Util.s_int(arg1));
+				int ct=0;
+				if(which!=null)
+				for(int i=0;i<which.inventorySize();i++)
+				{
+					Item I=which.fetchInventory(i);
+					if((I!=null)&&(I.container()==null))
+						ct++;
+				}
+				results.append(""+ct);
 				break;
 			}
 			case 36: // ishere
@@ -2613,6 +2560,48 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 30: // mpaffect
+			{
+				String cast=Util.getCleanBit(s,1);
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
+				Ability A=null;
+				if(cast!=null) A=CMClass.findAbility(cast);
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				if((newTarget!=null)&&(A!=null))
+				{
+					A.setMiscText(m2);
+					A.invoke(monster,Util.parse(m2),newTarget,true);
+				}
+				break;
+			}
+			case 31: // mpbehave
+			{
+				String cast=Util.getCleanBit(s,1);
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
+				Behavior A=null;
+				if(cast!=null) A=CMClass.getBehavior(cast);
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				if((newTarget!=null)&&(A!=null))
+				{
+					A.setParms(m2);
+					newTarget.addBehavior(A);
+				}
+				break;
+			}
+			case 32: // mpunbehave
+			{
+				String cast=Util.getCleanBit(s,1);
+				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				if(newTarget!=null)
+				{
+					Behavior A=newTarget.fetchBehavior(cast);
+					if(A!=null) newTarget.delBehavior(A);
+				}
+				break;
+			}
 			case 10: // mpkill
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
@@ -2818,6 +2807,13 @@ public class Scriptable extends StdBehavior
 					if(min>0)
 						ExternalPlay.postDamage(E,E,null,(max==min)?min:Dice.roll(1,max-min,min),Affect.NO_EFFECT,-1,null);
 				}
+				break;
+			}
+			case 29: // mptrackto
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				Ability A=CMClass.getAbility("Skill_Track");
+				if(A!=null)	A.invoke(monster,Util.parse(arg1),null,true);
 				break;
 			}
 			case 21: //MPENDQUEST

@@ -80,6 +80,7 @@ public class Spell_SummonEnemy extends Spell
 			{
 				MOB mob=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
 				if((mob!=null)
+				&&(!(mob instanceof Deity))
 				&&(mob.envStats().level()>=level)
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)

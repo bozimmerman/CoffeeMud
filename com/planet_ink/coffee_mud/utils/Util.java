@@ -574,8 +574,8 @@ public class Util
 	public static boolean isNumber(String s)
 	{
 		if(s==null) return false;
-		if(s.length()==0) return false;
 		s=s.trim();
+		if(s.length()==0) return false;
 		for(int i=0;i<s.length();i++)
 			if("0123456789-.,".indexOf(s.charAt(i))<0)
 				return false;

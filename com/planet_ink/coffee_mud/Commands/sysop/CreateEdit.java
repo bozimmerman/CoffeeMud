@@ -317,7 +317,7 @@ public class CreateEdit
 		if(commandType.equals("MOB"))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-			Mobs.modifyPlayer(mob,commands);
+			Mobs.modify(mob,commands);
 		}
 		else
 		if((commandType.equals("USER"))&&(mob.isASysOp(null)))

@@ -117,6 +117,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonAnimal",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_Nectar",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonHeat",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_SenseSentience",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);

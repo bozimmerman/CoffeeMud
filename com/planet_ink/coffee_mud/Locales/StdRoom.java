@@ -609,8 +609,7 @@ public class StdRoom
 			Say.append("^!Locale:^N("+ID()+")"+"\n\r");
 			Say.append("^H("+CMMap.getExtendedRoomID(this)+")^N ");
 		}
-		if((Sense.canBeSeenBy(this,mob))
-		   ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+		if(Sense.canBeSeenBy(this,mob))
 		{
 			Say.append("^O" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
 			if((!careAboutBrief)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
@@ -635,21 +634,22 @@ public class StdRoom
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB mob2=fetchInhabitant(i);
-			if((mob2!=null)
-			   &&(mob2!=mob)
-			   &&((Sense.canBeSeenBy(mob2,mob)))
-			   &&((mob2.displayText(mob).length()>0)
-				  ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))))
+			if((mob2!=null)&&(mob2!=mob))
 			{
-				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-					Say.append("^H("+CMClass.className(mob2)+")^N ");
+			   if(((Sense.canBeSeenBy(mob2,mob))
+			   &&(mob2.displayText(mob).length()>0))
+				  ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+				{
+					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+						Say.append("^H("+CMClass.className(mob2)+")^N ");
 
-				Say.append("^M");
-				if(mob2.displayText(mob).length()>0)
-					Say.append(mob2.displayText(mob));
-				else
-					Say.append(mob2.name());
-				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
+					Say.append("^M");
+					if(mob2.displayText(mob).length()>0)
+						Say.append(mob2.displayText(mob));
+					else
+						Say.append(mob2.name());
+					Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
+				}
 			}
 		}
 

@@ -279,5 +279,4 @@ public class AbilityEvoker extends Scriptable
 		teacherAbility.practice(teacher,mob);
 		mob.location().send(mob,msg);
 	}
-
 }

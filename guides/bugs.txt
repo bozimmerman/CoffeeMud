@@ -1,1 +1,0 @@
-Why the snake had a "null V" (empty XML) is the big Q.

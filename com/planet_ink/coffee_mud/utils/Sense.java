@@ -177,6 +177,10 @@ public class Sense
 		if(seer==seen) return true;
 		if(seen==null) return true;
 
+		if((seer instanceof MOB)
+		&&(Util.bset(((MOB)seer).getBitmap(),MOB.ATT_SYSOPMSGS)))
+			return true;
+		
 		if(!canSee(seer)) return false;
 		if(!isSeen(seen)) return false;
 

@@ -149,10 +149,10 @@ public class Scoring
 						here++;
 				}
 			}
-			if((Sense.canBeSeenBy(item,mob))
-			&&(((item.displayText().length()>0)
-				||useName
-				||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))))
+			if(Sense.canBeSeenBy(item,mob)
+			&&((item.displayText().length()>0)
+			    ||Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
+				||useName))
 			{
 				if(reps==0)	say.append("      ");
 				else

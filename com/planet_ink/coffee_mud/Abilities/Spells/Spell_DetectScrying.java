@@ -10,8 +10,9 @@ public class Spell_DetectScrying extends Spell
 {
 	public String ID() { return "Spell_DetectScrying"; }
 	public String name(){return "Detect Scrying";}
-	public int quality(){ return OK_OTHERS;}
+	public int quality(){ return INDIFFERENT;}
 	protected int canTargetCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_DetectScrying();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 

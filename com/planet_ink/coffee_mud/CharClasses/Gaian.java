@@ -58,6 +58,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Barkskin",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_SenseSentience",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Ranger_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);

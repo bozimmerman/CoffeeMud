@@ -607,7 +607,7 @@ public class SocialProcessor
 
 		FullMsg msg=null;
 		if(target!=null)
-			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) <T-NAMESELF>.");
+			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) "+target.Name()+".");
 		else
 			msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getLeigeID()+".");
 		if(mob.location().okAffect(mob,msg))

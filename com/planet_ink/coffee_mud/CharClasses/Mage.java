@@ -244,6 +244,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_Hungerless",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_MeteorStorm",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Spell_DetectSentience",false);
 			// level 23
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Dragonfire",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_MindBlock",false);
