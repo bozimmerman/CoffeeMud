@@ -460,7 +460,7 @@ public class TelnetSession extends Thread implements Session
 			for(int i=0;i<clookup.length;i++)
 			{
 				String s=clookup[i];
-				if((s!=null)&&(s.startsWith("^")))
+				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
 					clookup[i]=clookup[(int)s.charAt(1)];
 			}
 		}

@@ -1584,7 +1584,8 @@ public class StdMOB implements MOB
 			if(amDead)
 			{
 				if(isMonster())
-					if(envStats().rejuv()<Integer.MAX_VALUE)
+					if((envStats().rejuv()<Integer.MAX_VALUE)
+					&&(baseEnvStats().rejuv()>0))
 					{
 						envStats().setRejuv(envStats().rejuv()-1);
 						if(envStats().rejuv()<0)
@@ -1603,7 +1604,7 @@ public class StdMOB implements MOB
 				curState().expendEnergy(this,maxState,false);
 				if(!Sense.canBreathe(this))
 				{
-					location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^^^?");
+					location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^.^?");
 					ExternalPlay.postDamage(this,this,null,(int)Math.round(Util.mul(Math.random(),baseEnvStats().level()+2)),Affect.NO_EFFECT,-1,null);
 				}
 				if(isInCombat())

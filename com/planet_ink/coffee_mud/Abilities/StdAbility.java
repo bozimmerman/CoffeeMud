@@ -88,19 +88,23 @@ public class StdAbility implements Ability, Cloneable
 
 	public void startTickDown(Environmental affected, int tickTime)
 	{
-		if(affected.fetchAffect(this.ID())==null)
-			affected.addAffect(this);
 		if(affected instanceof MOB)
+		{
+			if(((MOB)affected).location()==null) return;
+			if(affected.fetchAffect(this.ID())==null) affected.addAffect(this);
 			((MOB)affected).location().recoverRoomStats();
+		}
 		else
 		{
+			if(affected.fetchAffect(this.ID())==null)
+				affected.addAffect(this);
+			
 			if(affected instanceof Room)
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverEnvStats();
 			ExternalPlay.startTickDown(this,Host.MOB_TICK,1);
 		}
-
 		tickDown=tickTime;
 	}
 

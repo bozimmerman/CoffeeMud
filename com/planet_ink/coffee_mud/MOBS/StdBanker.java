@@ -346,7 +346,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				Vector V=getDepositedItems(mob.name());
 				StringBuffer msg=new StringBuffer("\n\r");
 				String c="^x[Item                              ] ";
-				msg.append(c+c+"^^^N\n\r");
+				msg.append(c+c+"^.^N\n\r");
 				int colNum=0;
 				Coins coins=null;
 				boolean otherThanCoins=false;

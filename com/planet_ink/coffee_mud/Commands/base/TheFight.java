@@ -198,7 +198,7 @@ public class TheFight
 	{
 		if(target==null) return;
 		Room deathRoom=target.location();
-		deathRoom.showSource(target,null,Affect.MSG_DEATH,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^^\n\r");
+		deathRoom.showSource(target,null,Affect.MSG_DEATH,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r");
 		deathRoom.showOthers(target,null,Affect.MSG_DEATH,"^F<S-NAME> is DEAD!!!^?\n\r");
 		
 		Hashtable beneficiaries=new Hashtable();
@@ -208,7 +208,7 @@ public class TheFight
 		if(target.soulMate()==null)
 		{
 			int expLost=100*target.envStats().level();
-			target.tell("^F^*You lose "+expLost+" experience points.^?^^");
+			target.tell("^F^*You lose "+expLost+" experience points.^?^.");
 			target.charStats().getMyClass().loseExperience(target,expLost);
 		}
 		

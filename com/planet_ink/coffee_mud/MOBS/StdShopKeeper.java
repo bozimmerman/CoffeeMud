@@ -1030,7 +1030,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		
 		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
-		msg.append(c+((totalCols>1)?c:"")+"^^^N\n\r");
+		msg.append(c+((totalCols>1)?c:"")+"^.^N\n\r");
 		int colNum=0;
 		for(int i=0;i<inventory.size();i++)
 		{

@@ -308,13 +308,13 @@ public class StdCharClass implements CharClass
 		mob.setExperience(mob.getExperience()-amount);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
 		{
-			mob.tell("^xYou have ****LOST A LEVEL****^^^N\n\r\n\r");
+			mob.tell("^xYou have ****LOST A LEVEL****^.^N\n\r\n\r");
 			unLevel(mob);
 		}
 	}
 	public void level(MOB mob)
 	{
-		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^^^N\n\r\n\r");
+		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r");
 		theNews.append(levelAdjuster(mob,1));
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();

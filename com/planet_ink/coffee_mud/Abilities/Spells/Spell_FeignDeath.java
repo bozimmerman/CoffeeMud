@@ -125,7 +125,7 @@ public class Spell_FeignDeath extends Spell
 				if(follower!=null)
 					follower.setFollowing(null);
 			}
-			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!^^^?\n\r");
+			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!^.^?\n\r");
 			Body.setName("the body of "+target.name());
 			Body.setDisplayText("the body of "+target.name()+" lies here.");
 			Body.baseEnvStats().setWeight(target.envStats().weight()+100);

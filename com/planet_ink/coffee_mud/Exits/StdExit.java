@@ -301,7 +301,7 @@ public class StdExit implements Exit
 		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
 		{
 			if(room==null)
-				Say.append("^Z(null)^^^? ");
+				Say.append("^Z(null)^.^? ");
 			else
 				Say.append("^H("+room.ID()+")^? "+room.displayText()+Sense.colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));

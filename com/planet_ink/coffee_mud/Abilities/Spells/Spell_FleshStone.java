@@ -183,7 +183,7 @@ public class Spell_FleshStone extends Spell
 					statue=CMClass.getItem("GenItem");
 					statue.setName("a statue of "+target.name());
 					statue.setDisplayText("a statue of "+target.name()+" stands here.");
-					statue.setDescription("It's a hard granite statue, which looks exactly like "+target.name()+".");
+					statue.setDescription("It`s a hard granite statue, which looks exactly like "+target.name()+".");
 					statue.setMaterial(EnvResource.RESOURCE_GRANITE);
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into stone!!");

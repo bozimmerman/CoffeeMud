@@ -172,7 +172,7 @@ public class Chant_Treemorph extends Chant
 					tree=CMClass.getItem("GenItem");
 					tree.setName("a oak tree");
 					tree.setDisplayText("an oak tree that reminds you of "+target.name()+" is growing here.");
-					tree.setDescription("It's a tall oak tree, which seems to remind you of "+target.name()+".");
+					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.name()+".");
 					tree.setMaterial(EnvResource.RESOURCE_OAK);
 					tree.baseEnvStats().setWeight(5000);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");

@@ -13,7 +13,7 @@ public class LargeChest extends LockableContainer
 		name="a large chest";
 		displayText="a large wooden chest sits here.";
 		description="It\\`s of solid wood construction with metal bracings.  The lid has a key hole.";
-		capacity=100;
+		capacity=150;
 		setMaterial(EnvResource.RESOURCE_OAK);
 		baseGoldValue=50;
 		baseEnvStats().setWeight(50);

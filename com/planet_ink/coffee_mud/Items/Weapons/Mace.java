@@ -12,7 +12,7 @@ public class Mace extends StdWeapon
 		name="a rather large mace";
 		displayText="a heavy mace is found in the center of the room.";
 		miscText="";
-		description="It's metallic and quite hard..";
+		description="It`s metallic and quite hard..";
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(10);

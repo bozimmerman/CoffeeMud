@@ -235,7 +235,7 @@ public class Channels
 			mob.tell("This channel is not yet available to you.");
 			return;
 		}
-		String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^^";
+		String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
 		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_OK_ACTION,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,"^Q"+mob.name()+str);
 		if(mob.location().okAffect(msg))
 		{

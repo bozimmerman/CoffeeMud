@@ -12,7 +12,7 @@ public class Quarterstaff extends StdWeapon
 		name="a wooden quarterstaff";
 		displayText="a wooden quarterstaff lies in the corner of the room.";
 		miscText="";
-		description="It's long and wooden, just like a quarterstaff ought to be.";
+		description="It`s long and wooden, just like a quarterstaff ought to be.";
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(4);

@@ -43,6 +43,7 @@ public class SocialProcessor
 		Room location=mob.location();
 		if(target!=null)
 			location=target.location();
+		if(location==null) return;
 		if((isPrivate)&&(target!=null))
 		{
 			if(tellFlag)
@@ -66,12 +67,9 @@ public class SocialProcessor
 			}
 			else
 			{
-				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"));
-				if(mob.okAffect(msg)&&target.okAffect(msg))
-				{
-					mob.affect(msg);
-					target.affect(msg);
-				}
+				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"),Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+text+"'"+((target==null)?"":" to <T-NAMESELF>.^?"),Affect.NO_EFFECT,null);
+				if(location.okAffect(msg))
+					location.send(mob,msg);
 			}
 		}
 		else

@@ -143,7 +143,7 @@ public class ServiceEngine
 	public static StringBuffer report()
 	{
 		StringBuffer buf=new StringBuffer("");
-		buf.append("\n\r^xService Engine report:^^^N\n\r");
+		buf.append("\n\r^xService Engine report:^.^N\n\r");
 		int totalTickers=0;
 		long totalMillis=0;
 		long totalTicks=0;
@@ -188,10 +188,10 @@ public class ServiceEngine
 			buf.append("That object has consumed: ^H"+Util.returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
 		}
 		buf.append("\n\r");
-		buf.append("^xSave Thread report:^^^N\n\r");
+		buf.append("^xSave Thread report:^.^N\n\r");
 		buf.append("The Save Thread has consumed: ^H"+Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal)+"^?.\n\r");
 		buf.append("\n\r");
-		buf.append("^xSession report:^^^N\n\r");
+		buf.append("^xSession report:^.^N\n\r");
 		long totalMOBMillis=0;
 		long totalMOBTicks=0;
 		long topMOBMillis=0;

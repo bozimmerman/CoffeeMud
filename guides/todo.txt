@@ -14,6 +14,11 @@ CONTINUAL LIGHT spell
 rain/show causes some metals to rust (take minute damage).
 Amnesia as a disease
 eggs that hatch
+merchant class with haggle skill to lower prices HAGGLE 300 item
+can sit at tables and have conversation heard only at the table.
+playerdeath ini file entry, to make death permanent.
+racial abilities (abilities tied to the race)
+on death, lose a level.
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help.
 Leprecy: take more physical damage in combat. 

@@ -50,10 +50,10 @@ public class IMudInterface implements ImudServices, Serializable
 		{ "", "%^B_WHITE%^",   "\033[47m" }, // White
 
 		/* Text Affects */
-		{ "^^", "%^RESET%^",     "\033[0m" }, // Reset Text
-		{ "^^", "%^RESET%^",     "\033[0m" }, // Reset Text
+		{ "^.", "%^RESET%^",     "\033[0m" }, // Reset Text
+		{ "^.", "%^RESET%^",     "\033[0m" }, // Reset Text
 		{ "^H", "%^BOLD%^",      "\033[1m" }, // Bolden Text(Brightens it)
-		{ "^^", "%^EBOLD%^",	 "\033[0m" }, // Assumed to be a reset tag to stop bold
+		{ "^.", "%^EBOLD%^",	 "\033[0m" }, // Assumed to be a reset tag to stop bold
 		{ "^_", "%^UNDERLINE%^", "\033[4m" }, // Underline Text
 		{ "^*", "%^FLASH%^",     "\033[5m" }, // Blink Text
 		{ "^/", "%^ITALIC%^",    "\033[6m" }, // Italic Text
@@ -211,13 +211,13 @@ public class IMudInterface implements ImudServices, Serializable
 				int lvl=getLocalLevel(channelName);
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
-					String str="^Q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^^";
+					String str="^Q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
 				}
 				else
 				{
 					String msgs=socialFix(fixColors(ck.message));
-					String str="^Q("+channelName+") "+msgs+"^?^^";
+					String str="^Q("+channelName+") "+msgs+"^?^.";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
 				}
 				

@@ -18,7 +18,8 @@ public class CommonStrings
 			clookup[(int)'*']="\033[5m";
 			clookup[(int)'/']="\033[6m";
 			// reset
-			clookup[(int)'^']="\033[0m";
+			clookup[(int)'.']="\033[0m";
+			clookup[(int)'^']="^";
 			// F S - fight spell
 			clookup[(int)'F']="^r";
 			clookup[(int)'S']="^y";
@@ -60,7 +61,7 @@ public class CommonStrings
 			for(int i=0;i<clookup.length;i++)
 			{
 				String s=clookup[i];
-				if((s!=null)&&(s.startsWith("^")))
+				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
 					clookup[i]=clookup[(int)s.charAt(1)];
 			}
 		}

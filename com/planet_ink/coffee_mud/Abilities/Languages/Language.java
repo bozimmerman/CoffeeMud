@@ -69,7 +69,7 @@ public class Language extends StdAbility
 		int start=msg.indexOf("'");
 		int end=msg.lastIndexOf("'");
 		if((start>0)&&(end>start))
-			return msg.substring(start+1,end).trim();
+			return msg.substring(start+1,end);
 		return null;
 	}
 	protected String subStitute(String affmsg, String msg)
@@ -169,7 +169,7 @@ public class Language extends StdAbility
 						break;
 					}
 				}
-				msg=newStr.toString().trim();
+				msg=newStr.toString();
 				affect.modify(affect.source(),
 							  affect.target(),
 							  this,
@@ -227,6 +227,9 @@ public class Language extends StdAbility
 				else
 				if(!affect.amITarget(null)&&(affect.othersMessage()!=null))
 					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.othersCode(),Affect.NO_EFFECT,this.subStitute(affect.othersMessage(),msg)+" (translated from "+ID()+")"));
+				else
+				if(affect.amITarget((MOB)affected)&&(affect.targetMessage()!=null))
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+" (translated from "+ID()+")"));
 			}
 		}
 	}
