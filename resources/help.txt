@@ -14,10 +14,10 @@ inventory equipment look compare
 get put drop give wear wield        ^HOTHER^?
 hold eat drink fill                 ! quit password train qualify
 lock unlock open close pick         ansi noansi prompt colorset
-list buy sell value                 
-                                    ^HCLASSES^?
-^HHELP^?                                fighter mage cleric thief 
-help commands bug topics            ranger paladin bard druid
+list buy sell value                 bug commands help topics
+                                    
+^HCLASSES^?                             fighter ranger paladin monk
+barbarian mage cleric thief         bard druid
 
-** enter ^HHELP 'command name'^? or ^HTOPICS^? for more help!
+** enter ^HHELP 'command name'^?, ^HCOMMANDS^? or ^HTOPICS^? for more help!
 
