@@ -2365,7 +2365,7 @@ public class Import
 		if(R!=null) return R;
 		return CMMap.getRoom(areaName+"#"+roomID);
 	}
-
+	
 	public void areimport(MOB mob, Vector commands)
 	{
 		boolean prompt=true;
@@ -2432,68 +2432,146 @@ public class Import
 			mob.tell("File not found at: '"+areaFileName+"'!");
 			return;
 		}
-		if(areaFileName.toUpperCase().trim().endsWith(".LST"))
+		try
 		{
-			mob.tell("Unpacking areas lists from file : '"+areaFileName+"'...");
-			String filePrefix="";
-			int c=areaFileName.lastIndexOf(File.separator);
-			if(c>=0) filePrefix=areaFileName.substring(0,c+1);
-			c=0;
-			String fn="";
-			while((buf.length()>0)&&(c<buf.length()))
+			if(areaFileName.toUpperCase().trim().endsWith(".LST"))
 			{
-				switch(buf.charAt(c))
+				mob.tell("Unpacking areas lists from file : '"+areaFileName+"'...");
+				String filePrefix="";
+				int c=areaFileName.lastIndexOf(File.separator);
+				if(c>=0) filePrefix=areaFileName.substring(0,c+1);
+				c=0;
+				String fn="";
+				while((buf.length()>0)&&(c<buf.length()))
 				{
-				case '\n':
-				case '\r':
-					if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
-						commands.addElement(filePrefix+fn);
-					buf.delete(0,c+1);
-					c=0;
-					fn="";
-					break;
-				default:
-					fn+=(char)buf.charAt(c);
-					c++;
-					break;
+					switch(buf.charAt(c))
+					{
+					case '\n':
+					case '\r':
+						if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
+							commands.addElement(filePrefix+fn);
+						buf.delete(0,c+1);
+						c=0;
+						fn="";
+						break;
+					default:
+						fn+=(char)buf.charAt(c);
+						c++;
+						break;
+					}
+				}
+				if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
+					commands.addElement(filePrefix+fn);
+				continue;
+			}
+			if(buf.substring(0,20).indexOf("<AREA>")>=0)
+			{
+				mob.tell("Unpacking area from file: '"+areaFileName+"'...");
+				String error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(buf.toString(),true);
+				if(error.startsWith("Area Exists: "))
+				{
+					String areaName=error.substring(13).trim();
+					if((!prompt)
+					||(mob.session().confirm("Area: \""+areaName+"\" exists, obliterate first?","N")))
+					{
+						if(mob.location().getArea().name().equalsIgnoreCase(areaName))
+						{
+							mob.tell("You dip!  You are IN that area!  Leave it first...");
+							return;
+						}
+						else
+						{
+							reLinkTable=new Vector();
+							for(int m=0;m<CMMap.numRooms();m++)
+							{
+								Room r=CMMap.getRoom(m);
+								if(!r.getArea().name().equalsIgnoreCase(areaName))
+									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+									{
+										Room dirR=r.rawDoors()[d];
+										if((dirR!=null)&&(dirR.getArea().name().equalsIgnoreCase(areaName)))
+											reLinkTable.addElement(r.ID()+"/"+d+"/"+dirR.ID());
+									}
+							}
+							while(true)
+							{
+								Room foundOne=null;
+								for(int m=0;m<CMMap.numRooms();m++)
+								{
+									Room r=CMMap.getRoom(m);
+									if(r.getArea().name().equalsIgnoreCase(areaName))
+									{
+										foundOne=r;
+										break;
+									}
+								}
+								if(foundOne==null)
+									break;
+								else
+									myRooms.obliterateRoom(foundOne);
+							}
+						}
+					}
+					else
+						return;
+					error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(buf.toString(),true);
+				}
+				if(error.length()>0)
+				{
+					mob.tell("An error occurred on import: "+error);
+					mob.tell("Please correct the problem and try the import again.");
+					return;
+				}
+				else
+				{
+					mob.tell("Area successfully imported!");
+					continue;
 				}
 			}
-			if((fn.length()>0)&&(!fn.startsWith("#"))&&(!fn.startsWith("$")))
-				commands.addElement(filePrefix+fn);
-			continue;
-		}
-		if(buf.substring(0,20).indexOf("<AREA>")>=0)
-		{
-			mob.tell("Unpacking area from file: '"+areaFileName+"'...");
-			String error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(buf.toString(),true);
-			if(error.length()>0)
-			{
-				mob.tell("An error occurred on import: "+error);
-				mob.tell("Please correct the problem and try the import again.");
-				return;
-			}
 			else
+			if(buf.substring(0,20).indexOf("<AROOM>")>=0)
 			{
-				mob.tell("Area successfully imported!");
-				continue;
+				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
+				String error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
+				if(error.startsWith("Room Exists: "))
+				{
+					Room R=CMMap.getRoom(error.substring(13).trim());
+					if(R!=null)
+					{
+						reLinkTable=new Vector();
+						for(int m=0;m<CMMap.numRooms();m++)
+						{
+							Room r=CMMap.getRoom(m);
+							if(r!=R)
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							{
+								Room dirR=r.rawDoors()[d];
+								if((dirR!=null)&&(dirR==R))
+									reLinkTable.addElement(r.ID()+"/"+d+"/"+dirR.ID());
+							}
+						}
+						myRooms.obliterateRoom(R);
+					}
+					error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
+				}
+				if(error.length()>0)
+				{
+					mob.tell("An error occurred on import: "+error);
+					mob.tell("Please correct the problem and try the import again.");
+					return;
+				}
+				else
+				{
+					mob.tell("Room successfully imported!");
+					continue;
+				}
 			}
 		}
-		else
-		if(buf.substring(0,20).indexOf("<AROOM>")>=0)
+		catch(Exception e)
 		{
-			mob.tell("Unpacking room from file: '"+areaFileName+"'...");
-			String error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
-			if(error.length()>0)
-			{
-				mob.tell("An error occurred on import: "+error);
-				mob.tell("Please correct the problem and try the import again.");
-				return;
-			}
-			else
-			{
-				mob.tell("Area successfully imported!");
-				continue;
-			}
+			Log.errOut("Import-",e);
+			mob.tell(e.getMessage());
+			return;
 		}
 			
 
@@ -3499,6 +3577,8 @@ public class Import
 			Room saveRoom=(Room)e.nextElement();
 			saveRoom.getArea().toggleMobility(true);
 		}
+		for(int a=0;a<CMMap.numAreas();a++)
+			CMMap.getArea(a).fillInAreaRooms();
 		mob.session().println("done!");
 	}
 	

@@ -183,8 +183,9 @@ public class StdRoom
 		myArea=newArea;
 	}
 
-	protected void giveASky()
+	public void giveASky()
 	{
+		if(skyedYet) return;
 		skyedYet=true;
 		if((rawDoors()[Directions.UP]==null)
 		&&((domainType()&Room.INDOORS)==0)
@@ -199,6 +200,27 @@ public class StdRoom
 			rawExits()[Directions.UP]=o;
 			sky.rawDoors()[Directions.DOWN]=this;
 			sky.rawExits()[Directions.DOWN]=o;
+			for(int d=0;d<4;d++)
+			{
+				Room thatRoom=rawDoors()[d];
+				Room thatSky=null;
+				if((thatRoom!=null)&&(rawExits()[d]!=null))
+				{
+					thatRoom.giveASky();
+					thatSky=thatRoom.rawDoors()[Directions.UP];
+				}
+				if((thatSky!=null)&&(thatSky.ID().length()==0)&&(thatSky instanceof EndlessSky))
+				{
+					sky.rawDoors()[d]=thatSky;
+					sky.rawExits()[d]=rawExits()[d];
+					thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
+					Exit xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
+					if((xo==null)||(xo.hasADoor())) xo=o;
+					thatSky.rawExits()[Directions.getOpDirectionCode(d)]=xo;
+					((GridLocale)thatSky).clearGrid();
+				}
+			}
+			sky.clearGrid();
 			CMMap.addRoom(sky);
 		}
 	}
@@ -283,7 +305,7 @@ public class StdRoom
 			case Affect.TYP_ENTER:
 				if((!Sense.canMove(this))||(!getMobility()))
 					return false;
-				if((!skyedYet)&&(!mob.isMonster()))
+				if(!mob.isMonster())
 					giveASky();
 				break;
 			case Affect.TYP_AREAAFFECT:

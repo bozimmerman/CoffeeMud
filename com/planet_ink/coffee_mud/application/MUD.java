@@ -20,7 +20,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)5.7;
+	public static final float HOST_VERSION_MINOR=(float)5.8;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -236,6 +236,9 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD","Loading map...");
 		offlineReason=new String("Booting: loading rooms (this can take a while).");
 		RoomLoader.DBRead(CMMap.getAreaVector(),CMMap.getRoomVector());
+		offlineReason=new String("Booting: filling map.");
+		for(int a=0;a<CMMap.numAreas();a++)
+			CMMap.getArea(a).fillInAreaRooms();
 		Log.sysOut("MUD","Mapped rooms      : "+CMMap.numRooms()+" in "+CMMap.numAreas()+" areas");
 		if(CMMap.numRooms()==0)
 		{

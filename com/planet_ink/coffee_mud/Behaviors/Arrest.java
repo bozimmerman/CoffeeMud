@@ -8,7 +8,16 @@ import java.util.*;
 
 public class Arrest extends StdBehavior
 {
-	private MOB target=null;
+	public Vector warrants=new Vector();
+	
+	private class ArrestWarrant
+	{
+		public String name="";
+		public int actionCode=-1;
+		public int state=-1;
+		public MOB officer=null;
+	}
+									  
 	public Arrest()
 	{
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -18,26 +27,10 @@ public class Arrest extends StdBehavior
 		return new Arrest();
 	}
 
-	public void lookForCriminals(MOB observer)
-	{
-		if(!canFreelyBehaveNormal(observer)) return;
-	}
-
-	public void makeTheArrest(MOB observer)
-	{
-		if(!canFreelyBehaveNormal(observer)) return;
-	}
-
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
-		MOB mob=(MOB)ticking;
-		if(target!=null)
-			makeTheArrest(mob);
-		else
-			lookForCriminals(mob);
+		if(tickID!=Host.AREA_TICK) return;
 	}
 }

@@ -80,6 +80,8 @@ public class Rooms
 			thisRoom.setDescription("");
 			ExternalPlay.DBCreateRoom(thisRoom,Locale);
 			CMMap.addRoom(thisRoom);
+			mob.location().getArea().fillInAreaRoom(mob.location());
+			mob.location().getArea().fillInAreaRoom(thisRoom);
 		}
 
 		if(thisRoom==null)
@@ -126,7 +128,8 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-
+		mob.location().getArea().fillInAreaRoom(mob.location());
+		mob.location().getArea().fillInAreaRoom(thisRoom);
 		exitifyNewPortal(mob,thisRoom,direction);
 
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a portal opens up in the landscape.\n\r");

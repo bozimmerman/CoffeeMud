@@ -8,6 +8,8 @@ import java.util.*;
 
 public class EndlessSky extends StdGrid
 {
+	protected boolean crossLinked=false;
+	
 	public EndlessSky()
 	{
 		super();
@@ -33,7 +35,7 @@ public class EndlessSky extends StdGrid
 		return InTheAir.isOkAffect(this,affect);
 	}
 	public String getChildLocaleID(){return "InTheAir";}
-
+	
 	protected void buildFinalLinks()
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
@@ -82,10 +84,9 @@ public class EndlessSky extends StdGrid
 		for(int x=0;x<size;x++)
 			for(int y=0;y<size;y++)
 			{
-				InTheAir newRoom=(InTheAir)getGridRoom(x,y);
+				Room newRoom=(Room)getGridRoom(x,y);
 				if(newRoom!=null)
 				{
-					newRoom.setSkyGrid(this);
 					subMap[x][y]=newRoom;
 					if((y>0)&&(subMap[x][y-1]!=null))
 					{

@@ -94,8 +94,12 @@ public interface Area extends Environmental
 	public void forceWeatherTick();
 	public void tickControl(boolean start);
 	public StringBuffer getAreaStats();
+	
+	public void fillInAreaRooms();
+	public void fillInAreaRoom(Room R);
 	public Vector getMyMap();
 	public void clearMap();
+	
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
 	

@@ -866,6 +866,35 @@ public class StdArea implements Area
 		}
 		return base;
 	}
+	
+	public void fillInAreaRooms()
+	{
+		Vector V=getMyMap();
+		for(int r=0;r<V.size();r++)
+		{
+			Room R=(Room)V.elementAt(r);
+			if(R instanceof GridLocale)
+				((GridLocale)R).buildGrid();
+		}
+		myRooms=null;
+		V=getMyMap();
+		for(int r=0;r<V.size();r++)
+		{
+			Room R=(Room)V.elementAt(r);
+			R.clearSky();
+			R.giveASky();
+		}
+		myRooms=null;
+	}
+	
+	public void fillInAreaRoom(Room R)
+	{
+		if(R instanceof GridLocale)
+			((GridLocale)R).buildGrid();
+		R.clearSky();
+		R.giveASky();
+	}
+	
 	public int adjustMovement(int base, MOB mob, Room room)
 	{ 
 		if((room.domainType()&Room.INDOORS)>0)

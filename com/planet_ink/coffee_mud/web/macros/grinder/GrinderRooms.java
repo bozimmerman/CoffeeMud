@@ -210,8 +210,7 @@ public class GrinderRooms
 			}
 			R.getArea().clearMap();
 		}
-		if(R instanceof GridLocale)
-			((GridLocale)R).buildGrid();
+		R.getArea().fillInAreaRoom(R);
 		ExternalPlay.DBUpdateRoom(R);
 		ExternalPlay.DBUpdateMOBs(R);
 		ExternalPlay.DBUpdateItems(R);
@@ -242,6 +241,7 @@ public class GrinderRooms
 		ExternalPlay.DBCreateRoom(newRoom,"StdRoom");
 		ExternalPlay.DBUpdateExits(newRoom);
 		CMMap.addRoom(newRoom);
+		newRoom.getArea().fillInAreaRoom(newRoom);
 		return newRoom;
 	}
 	
@@ -255,8 +255,7 @@ public class GrinderRooms
 		if(R.rawExits()[dir]==null)
 			R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
 		ExternalPlay.DBUpdateExits(R);
-		if(R instanceof GridLocale)
-			((GridLocale)R).buildGrid();
+		R.getArea().fillInAreaRoom(R);
 		return "";
 	}
 }

@@ -189,7 +189,9 @@ public class GrinderExits
 				E2.setDisplayText(oldE2.displayText());
 				R2.rawExits()[Directions.getOpDirectionCode(dir)]=E2;
 				ExternalPlay.DBUpdateExits(R2);
+				R.getArea().fillInAreaRoom(R2);
 			}
+			R.getArea().fillInAreaRoom(R);
 		}
 		return "";
 	}
@@ -219,10 +221,8 @@ public class GrinderExits
 		ExternalPlay.DBUpdateExits(R);
 		ExternalPlay.DBUpdateExits(R2);
 			
-		if(R instanceof GridLocale)
-			((GridLocale)R).buildGrid();
-		if(R2 instanceof GridLocale)
-			((GridLocale)R2).buildGrid();
+		R.getArea().fillInAreaRoom(R);
+		R.getArea().fillInAreaRoom(R2);
 		return "";
 	}
 }

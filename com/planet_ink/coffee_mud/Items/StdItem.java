@@ -310,15 +310,23 @@ public class StdItem implements Item
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if(Sense.isLightSource(this))
+		if(affected instanceof Room)
 		{
-			if((!(affected instanceof Room))&&(rawWornCode()!=Item.INVENTORY))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
-			if(Sense.isInDark(affected))
+			if((Sense.isLightSource(this))&&(Sense.isInDark(affected)))
 				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 		}
-		if(!this.amWearingAt(Item.FLOATING_NEARBY))
-			affectableStats.setWeight(affectableStats.weight()+envStats().weight());
+		else
+		{
+			if(Sense.isLightSource(this))
+			{
+				if(rawWornCode()!=Item.INVENTORY)
+					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+				if(Sense.isInDark(affected))
+					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+			}
+			if(!amWearingAt(Item.FLOATING_NEARBY))
+				affectableStats.setWeight(affectableStats.weight()+envStats().weight());
+		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}

@@ -18,24 +18,46 @@ public class SaltWaterSurface extends WaterSurface
 	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 	
-	protected void giveASky()
+	public void giveASky()
 	{
-		skyedYet=true;
+		if(skyedYet) return;
 		super.giveASky();
+		skyedYet=true;
 		if((rawDoors()[Directions.DOWN]==null)
 		&&((domainType()&Room.INDOORS)==0)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
-			UnderSaltWaterGrid sky=new UnderSaltWaterGrid();
-			sky.setArea(getArea());
-			sky.setID("");
-			rawDoors()[Directions.DOWN]=sky;
+			UnderSaltWaterGrid sea=new UnderSaltWaterGrid();
+			sea.setArea(getArea());
+			sea.setID("");
+			rawDoors()[Directions.DOWN]=sea;
 			rawExits()[Directions.DOWN]=o;
-			sky.rawDoors()[Directions.UP]=this;
-			sky.rawExits()[Directions.UP]=o;
-			CMMap.addRoom(sky);
+			sea.rawDoors()[Directions.UP]=this;
+			sea.rawExits()[Directions.UP]=o;
+			for(int d=0;d<4;d++)
+			{
+				Room thatRoom=rawDoors()[d];
+				Room thatSea=null;
+				if((thatRoom!=null)&&(rawExits()[d]!=null))
+				{
+					thatRoom.giveASky();
+					thatSea=thatRoom.rawDoors()[Directions.DOWN];
+				}
+				if((thatSea!=null)&&(thatSea.ID().length()==0)&&(thatSea instanceof UnderSaltWaterGrid))
+				{
+					sea.rawDoors()[d]=thatSea;
+					sea.rawExits()[d]=rawExits()[d];
+					thatSea.rawDoors()[Directions.getOpDirectionCode(d)]=sea;
+					Exit xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
+					if((xo==null)||(xo.hasADoor())) xo=o;
+					thatSea.rawExits()[Directions.getOpDirectionCode(d)]=xo;
+					((GridLocale)thatSea).clearGrid();
+				}
+			}
+			sea.clearGrid();
+			CMMap.addRoom(sea);
 		}
 	}
 	

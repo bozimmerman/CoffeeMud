@@ -13,8 +13,8 @@ public class SwampGrid extends StdGrid
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_HILLS;
-		domainCondition=Room.CONDITION_NORMAL;
+		domainType=Room.DOMAIN_OUTDOORS_SWAMP;
+		domainCondition=Room.CONDITION_WET;
 	}
 	public Environmental newInstance()
 	{

@@ -198,6 +198,7 @@ public class Reset
 			Room room=(Room)allRooms.elementAt(r);
 			resetRoom(room);
 		}
+		area.fillInAreaRooms();
 		area.toggleMobility(mobile);
 	}
 }

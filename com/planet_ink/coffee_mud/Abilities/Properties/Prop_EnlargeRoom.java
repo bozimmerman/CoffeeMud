@@ -27,6 +27,26 @@ public class Prop_EnlargeRoom extends Property
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(text().length()>0)
-			affectableStats.setWeight(Util.s_int(text()));
+		{
+			int weight=affectableStats.weight();
+			switch(text().charAt(0))
+			{
+			case '+':
+				affectableStats.setWeight(weight+Util.s_int(text().substring(1).trim()));
+				break;
+			case '-':
+				affectableStats.setWeight(weight-Util.s_int(text().substring(1).trim()));
+				break;
+			case '*':
+				affectableStats.setWeight(weight*Util.s_int(text().substring(1).trim()));
+				break;
+			case '/':
+				affectableStats.setWeight(weight/Util.s_int(text().substring(1).trim()));
+				break;
+			default:
+				affectableStats.setWeight(Util.s_int(text()));
+				break;
+			}
+		}
 	}
 }

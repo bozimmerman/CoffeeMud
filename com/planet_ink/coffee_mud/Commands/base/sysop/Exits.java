@@ -81,6 +81,8 @@ public class Exits
 				ExternalPlay.DBUpdateExits(opRoom);
 			}
 		}
+		mob.location().getArea().fillInAreaRoom(mob.location());
+		if(opRoom!=null) opRoom.getArea().fillInAreaRoom(opRoom);
 		Log.sysOut("Exits",mob.location().ID()+" exits changed by "+mob.ID()+".");
 	}
 
@@ -140,10 +142,12 @@ public class Exits
 				if((exit!=null)&&(exit==thisExit))
 				{
 					ExternalPlay.DBUpdateExits(room);
+					room.getArea().fillInAreaRoom(room);
 					break;
 				}
 			}
 		}
+		mob.location().getArea().fillInAreaRoom(mob.location());
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,thisExit.name()+" shake(s) under the transforming power.");
 		Log.sysOut("Exits",mob.location().ID()+" exits changed by "+mob.ID()+".");
 	}
@@ -179,6 +183,7 @@ public class Exits
 		}
 		mob.location().rawExits()[direction]=null;
 		ExternalPlay.DBUpdateExits(mob.location());
+		mob.location().getArea().fillInAreaRoom(mob.location());
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
