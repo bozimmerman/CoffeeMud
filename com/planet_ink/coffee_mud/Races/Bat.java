@@ -18,10 +18,14 @@ public class Bat extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 	public String racialCategory(){return "Pteropine";}
-	protected String[] racialAbilityNames={"WingedFlying"};
-	protected int[] racialAbilityLevels={1};
-	protected int[] racialAbilityProfficiencies={100};
-	protected boolean[] racialAbilityQuals={false};
+	private String[]racialAbilityNames={"WingFlying"};
+	private int[]racialAbilityLevels={1};
+	private int[]racialAbilityProfficiencies={100};
+	private boolean[]racialAbilityQuals={false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,0 ,1 ,2 };

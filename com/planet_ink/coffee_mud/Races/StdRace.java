@@ -28,12 +28,12 @@ public class StdRace implements Race
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
 	protected Hashtable racialAbilityMap=null;
-	protected String[] racialAbilityNames=null;
-	protected int[] racialAbilityLevels=null;
-	protected int[] racialAbilityProfficiencies=null;
-	protected boolean[] racialAbilityQuals=null;
-	protected String[] culturalAbilityNames=null;
-	protected int[] culturalAbilityProfficiencies=null;
+	public String[] racialAbilityNames(){return null;}
+	public int[] racialAbilityLevels(){return null;}
+	public int[] racialAbilityProfficiencies(){return null;}
+	public boolean[] racialAbilityQuals(){return null;}
+	public String[] culturalAbilityNames(){return null;}
+	public int[] culturalAbilityProfficiencies(){return null;}
 										 
 	public boolean playerSelectable(){return false;}
 
@@ -240,14 +240,14 @@ public class StdRace implements Race
 			}
 			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 			
-			if((culturalAbilityNames!=null)&&(culturalAbilityProfficiencies!=null)
-			   &&(culturalAbilityNames.length==culturalAbilityProfficiencies.length))
-			for(int a=0;a<culturalAbilityNames.length;a++)
+			if((culturalAbilityNames()!=null)&&(culturalAbilityProfficiencies()!=null)
+			   &&(culturalAbilityNames().length==culturalAbilityProfficiencies().length))
+			for(int a=0;a<culturalAbilityNames().length;a++)
 			{
-				Ability A=CMClass.getAbility(culturalAbilityNames[a]);
+				Ability A=CMClass.getAbility(culturalAbilityNames()[a]);
 				if(A!=null)
 				{
-					A.setProfficiency(culturalAbilityProfficiencies[a]);
+					A.setProfficiency(culturalAbilityProfficiencies()[a]);
 					mob.addAbility(A);
 					A.autoInvocation(mob);
 					if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
@@ -471,23 +471,22 @@ public class StdRace implements Race
 	public Vector racialAbilities(MOB mob)
 	{
 		if((racialAbilityMap==null)
-		&&(racialAbilityNames!=null)
-		&&(racialAbilityLevels!=null)
-		&&(racialAbilityProfficiencies!=null)
-		&&(racialAbilityQuals!=null))
+		&&(racialAbilityNames()!=null)
+		&&(racialAbilityLevels()!=null)
+		&&(racialAbilityProfficiencies()!=null)
+		&&(racialAbilityQuals()!=null))
 		{
 			racialAbilityMap=new Hashtable();
-			for(int i=0;i<racialAbilityNames.length;i++)
+			for(int i=0;i<racialAbilityNames().length;i++)
 			{
 				CMAble.addCharAbilityMapping(ID(),
-											 racialAbilityLevels[i],
-											 racialAbilityNames[i],
-											 racialAbilityProfficiencies[i],
+											 racialAbilityLevels()[i],
+											 racialAbilityNames()[i],
+											 racialAbilityProfficiencies()[i],
 											 "",
-											 racialAbilityQuals[i],
+											 !racialAbilityQuals()[i],
 											 false);
 			}
-											 
 		}
 		if(racialAbilityMap==null) return empty;
 		Integer level=null;

@@ -16,8 +16,10 @@ public class Halfling extends StdRace
 	public int weightVariance(){return 50;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Halfling";}
-	protected String[] culturalAbilityNames={"Elvish","Cooking"};
-	protected int[] culturalAbilityProfficiencies={25,75};
+	private String[]culturalAbilityNames={"Elvish","Cooking"};
+	private int[]culturalAbilityProfficiencies={25,75};
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };

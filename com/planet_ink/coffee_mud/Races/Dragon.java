@@ -16,10 +16,14 @@ public class Dragon extends StdRace
 	public int weightVariance(){return 500;}
 	public long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ON_BACK|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
 	public String racialCategory(){return "Dragon";}
-	protected String[] racialAbilityNames={"Dragonbreath","WingedFlying"};
-	protected int[] racialAbilityLevels={5,1};
-	protected int[] racialAbilityProfficiencies={100,100};
-	protected boolean[] racialAbilityQuals={false,false};
+	private String[]racialAbilityNames={"Dragonbreath","WingFlying"};
+	private int[]racialAbilityLevels={5,1};
+	private int[]racialAbilityProfficiencies={100,100};
+	private boolean[]racialAbilityQuals={false,false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };

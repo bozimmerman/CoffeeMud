@@ -16,12 +16,16 @@ public class Wyvern extends StdRace
 	public int weightVariance(){return 500;}
 	public long forbiddenWornBits(){return Item.HELD|Item.WIELD|Item.ON_WAIST;}
 	public String racialCategory(){return "Reptile";}
-	protected String[] culturalAbilityNames={"Draconic"};
-	protected int[] culturalAbilityProfficiencies={50};
-	protected String[] racialAbilityNames={"WingedFlying"};
-	protected int[] racialAbilityLevels={1};
-	protected int[] racialAbilityProfficiencies={100};
-	protected boolean[] racialAbilityQuals={false};
+	private String[]culturalAbilityNames={"Draconic"};
+	private int[]culturalAbilityProfficiencies={50};
+	private String[]racialAbilityNames={"WingFlying"};
+	private int[]racialAbilityLevels={1};
+	private int[]racialAbilityProfficiencies={100};
+	private boolean[]racialAbilityQuals={false};
+	public String[] racialAbilityNames(){return null;}
+	public int[] racialAbilityLevels(){return null;}
+	public int[] racialAbilityProfficiencies(){return null;}
+	public boolean[] racialAbilityQuals(){return null;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };

@@ -16,10 +16,14 @@ public class WereAmphibian extends StdRace
 	public int weightVariance(){return 80;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Amphibian";}
-	protected String[] racialAbilityNames={"Skill_Swim"};
-	protected int[] racialAbilityLevels={1};
-	protected int[] racialAbilityProfficiencies={100};
-	protected boolean[] racialAbilityQuals={false};
+	private String[]racialAbilityNames={"Skill_Swim"};
+	private int[]racialAbilityLevels={1};
+	private int[]racialAbilityProfficiencies={100};
+	private boolean[]racialAbilityQuals={false};
+	public String[] racialAbilityNames(){return null;}
+	public int[] racialAbilityLevels(){return null;}
+	public int[] racialAbilityProfficiencies(){return null;}
+	public boolean[] racialAbilityQuals(){return null;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,1 ,1 ,1 ,1 ,0 };

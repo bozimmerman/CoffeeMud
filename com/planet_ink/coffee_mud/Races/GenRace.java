@@ -44,6 +44,20 @@ public class GenRace extends StdRace
 	protected Vector resourceChoices=null;
 	protected Race healthBuddy=null;
 
+	protected String[] racialAbilityNames=null;
+	protected int[] racialAbilityLevels=null;
+	protected int[] racialAbilityProfficiencies=null;
+	protected boolean[] racialAbilityQuals=null;
+	protected String[] culturalAbilityNames=null;
+	protected int[] culturalAbilityProfficiencies=null;
+	
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	
 	public Race copyOf()
 	{
 		try

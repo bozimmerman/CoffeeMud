@@ -17,8 +17,10 @@ public class Human extends StdRace
 	public long forbiddenWornBits(){return 0;}
 	protected int trainsAtFirstLevel(){return 2;}
 	public String racialCategory(){return "Human";}
-	protected String[] culturalAbilityNames={"Chopping"};
-	protected int[] culturalAbilityProfficiencies={50};
+	private String[]culturalAbilityNames={"Chopping"};
+	private int[]culturalAbilityProfficiencies={50};
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
