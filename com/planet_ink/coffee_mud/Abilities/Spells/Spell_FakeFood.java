@@ -40,7 +40,7 @@ public class Spell_FakeFood extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> invoke(s) a spell.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> invoke(s) a spell dramatically.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -75,12 +75,12 @@ public class Spell_FakeFood extends Spell
 					F2.recoverEnvStats();
 					F2.setPossessionTime(Calendar.getInstance());
 					mob.location().addItem(F2);
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,F2.name()+" appears!");
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,F2.name()+" appears!");
 				}
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke a spell, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell.");
 
 
 		// return whether it worked

@@ -40,7 +40,9 @@ public class Spell_FakeSpring extends Spell
 		if(littleSpring==null)
 			return;
 		super.unInvoke();
-		littleSpring.destroyThis();
+		Item spring=littleSpring; // protects against uninvoke loops!
+		littleSpring=null;
+		spring.destroyThis();
 		SpringLocation.recoverRoomStats();
 		SpringLocation=null;
 	}
@@ -76,7 +78,7 @@ public class Spell_FakeSpring extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> invoke(s) a spell.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> invoke(s) a spell dramatically.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -107,7 +109,7 @@ public class Spell_FakeSpring extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to invoke a spell, but fizzle(s) the spell.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> dramatically attempt(s) to invoke a spell, but fizzle(s) the spell.");
 
 
 		// return whether it worked

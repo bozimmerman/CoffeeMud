@@ -36,7 +36,6 @@ public class StdAbility implements Ability, Cloneable
 	protected int quality=Ability.INDIFFERENT;
 	
 	protected long tickDown=-1;
-
 	public StdAbility()
 	{
 	}

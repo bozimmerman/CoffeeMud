@@ -57,7 +57,6 @@ public class Spell_Anchor extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
-		MOB mob=(MOB)affected;
 		if((affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
 		&&("spell_summon;spell_gate".toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))

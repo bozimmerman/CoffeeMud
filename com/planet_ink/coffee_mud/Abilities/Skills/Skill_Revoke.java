@@ -73,7 +73,7 @@ public class Skill_Revoke extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> revoke(s) "+revokeThis.name()+" from <T-NAMESELF>.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

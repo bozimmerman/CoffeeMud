@@ -39,7 +39,6 @@ public class Spell_Dream extends Spell
 			mob.tell("Invoke a dream about what?");
 			return false;
 		}
-		String dream=Util.combine(commands,0).trim().toUpperCase();
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -51,7 +50,6 @@ public class Spell_Dream extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				Room thisRoom=mob.location();
 				for(int r=0;r<CMMap.numRooms();r++)
 				{
 					Room R=CMMap.getRoom(r);

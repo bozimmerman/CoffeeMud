@@ -33,7 +33,9 @@ public class Prayer_CreateWater extends Prayer
 			return;
 		SpringLocation.show(invoker,null,Affect.MSG_OK_VISUAL,"The little spring dries up.");
 		super.unInvoke();
-		littleSpring.destroyThis();
+		Item spring=littleSpring; // protects against uninvoke loops!
+		littleSpring=null;
+		spring.destroyThis();
 		SpringLocation.recoverRoomStats();
 		SpringLocation=null;
 	}

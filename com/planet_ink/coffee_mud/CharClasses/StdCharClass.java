@@ -288,7 +288,6 @@ public class StdCharClass implements CharClass
 
 	public void loseExperience(MOB mob, int amount)
 	{
-		int neededLower=neededToBeLevel(mob.baseEnvStats().level()-1);
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		mob.setExperience(mob.getExperience()-amount);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))

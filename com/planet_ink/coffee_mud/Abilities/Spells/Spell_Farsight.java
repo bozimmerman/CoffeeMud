@@ -87,7 +87,8 @@ public class Spell_Farsight extends Spell
 				if(success)
 				{
 					mob.tell("\n\r");
-					thatRoom.look(mob);
+					FullMsg msg2=new FullMsg(mob,thatRoom,Affect.MSG_EXAMINESOMETHING,null);
+					thatRoom.affect(msg2);
 				}
 			}
 		}

@@ -418,8 +418,8 @@ public class StdRoom
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
 	}
-
-	public void look(MOB mob)
+	
+	private void look(MOB mob)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if((mob.getBitmap()&MOB.ATT_SYSOPMSGS)>0)
