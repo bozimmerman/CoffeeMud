@@ -226,6 +226,7 @@ public class StdRoom
 			if(I!=null)
 			{
 				I.setMaterial(myResource);
+				I.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
 				I.baseEnvStats().setWeight(1);
 				I.setName("a pound of "+name);
 				I.setDisplayText("some "+name+" sit here.");
