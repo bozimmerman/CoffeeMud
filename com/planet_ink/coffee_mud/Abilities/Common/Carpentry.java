@@ -296,7 +296,8 @@ public class Carpentry extends CommonSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			key=null;
-			if(building instanceof Container)
+			if((building instanceof Container)
+			&&(!(building instanceof Armor)))
 			{
 				((Container)building).setCapacity(capacity+woodRequired);
 				if(misctype.equalsIgnoreCase("LID"))

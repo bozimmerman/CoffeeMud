@@ -223,6 +223,12 @@ public class ItemUsage
 			mob.location().send(mob,msg);
 			return true;
 		}
+		else
+		if(dropThis instanceof Coins)
+		{
+			mob.setMoney(mob.getMoney()+((Coins)dropThis).numberOfCoins());
+			((Coins)dropThis).destroyThis();
+		}
 		return false;
 	}
 	
@@ -326,6 +332,9 @@ public class ItemUsage
 		}
 		while(allFlag);
 		
+		if((container!=null)&&(V.contains(container)))
+			V.remove(container);
+		
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -335,6 +344,12 @@ public class ItemUsage
 			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) "+putThis.name()+" in <T-NAME>");
 			if(mob.location().okAffect(putMsg))
 				mob.location().send(mob,putMsg);
+			else
+			if(putThis instanceof Coins)
+			{
+				mob.setMoney(mob.getMoney()+((Coins)putThis).numberOfCoins());
+				((Coins)putThis).destroyThis();
+			}
 		}
 	}
 

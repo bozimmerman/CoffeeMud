@@ -81,6 +81,21 @@ public class SocialProcessor
 		}
 	}
 
+	public void hire(MOB mob, String rest)
+	{
+		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
+		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
+		   target=null;
+		if((target!=null)&&(!Sense.canBeSeenBy(target,mob)))
+			target=null;
+		FullMsg msg=null;
+		if(target==null)
+			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'I'm looking to hire some help.'^?");
+		else
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) to <T-NAMESELF> 'Are you for hire?'^?");
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+	}
 
 	public void cmdSay(MOB mob, Vector commands)
 	{
@@ -142,6 +157,24 @@ public class SocialProcessor
 	{
 		cmdSay(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, "+mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, "+mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" move, and I've scored "+mob.getExperience()+" exp.\""));
 	}
+	
+	public void reply(MOB mob, Vector commands)
+	{
+		if(mob==null) return;
+		if(mob.replyTo()==null)
+		{
+			mob.tell("No one has told you anything yet!");
+			return;
+		}
+		if((mob.replyTo().name().indexOf("@")<0)
+		&&(CMMap.MOBs.get(mob.replyTo().name())==null))
+		{
+			mob.tell(mob.replyTo().name()+" is no longer logged in.");
+			return;
+		}
+		quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
+	}
+	
 	public void tell(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -290,6 +323,12 @@ public class SocialProcessor
 			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,Affect.MSG_GIVE,"<S-NAME> give(s) "+giveThis.name()+" to <T-NAMESELF>.");
 			if(mob.location().okAffect(newMsg))
 				mob.location().send(mob,newMsg);
+			else
+			if(giveThis instanceof Coins)
+			{
+				mob.setMoney(mob.getMoney()+((Coins)giveThis).numberOfCoins());
+				((Coins)giveThis).destroyThis();
+			}
 		}
 	}
 

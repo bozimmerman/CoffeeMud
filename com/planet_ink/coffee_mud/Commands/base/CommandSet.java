@@ -150,6 +150,7 @@ public class CommandSet extends Hashtable
 	public static final int DEPOSIT=138;
 	public static final int WITHDRAW=139;
 	public static final int NOCOLOR=140;
+	public static final int HIRE=141;
 
 	public CommandSet()
 	{
@@ -239,6 +240,7 @@ public class CommandSet extends Hashtable
 		put("GTELL",new Integer(GTELL));
 			put("GT",new Integer(GTELL));
 		put("HELP",new Integer(HELP));
+		put("HIRE",new Integer(HIRE));
 		put("HOLD",new Integer(HOLD));
 			put("H",new Integer(HOLD));
 		put("I3CHANNELS",new Integer(I3CHANNELS));

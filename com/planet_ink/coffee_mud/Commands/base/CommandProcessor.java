@@ -261,6 +261,9 @@ public class CommandProcessor
 				case CommandSet.HELP:
 					help(mob,Util.combine(commands,1));
 					break;
+				case CommandSet.HIRE:
+					socialProcessor.hire(mob,Util.combine(commands,1));
+					break;
 				case CommandSet.HOLD:
 					itemUsage.hold(mob,commands);
 					break;
@@ -405,10 +408,7 @@ public class CommandProcessor
 					itemUsage.remove(mob,commands);
 					break;
 				case CommandSet.REPLY:
-					if(mob.replyTo()==null)
-						mob.tell("No one has told you anything yet!");
-					else
-						socialProcessor.quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
+					socialProcessor.reply(mob,commands);
 					break;
 				case CommandSet.REPORT:
 					socialProcessor.report(mob);

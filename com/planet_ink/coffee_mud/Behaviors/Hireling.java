@@ -40,6 +40,7 @@ public class Hireling extends StdBehavior
 		{
 			Integer I=(Integer)partials.get(workingFor);
 			partials.remove(workingFor);
+			ExternalPlay.standIfNecessary(observer);
 			if(!canFreelyBehaveNormal(observer))
 			{
 				workingFor="";
@@ -114,7 +115,8 @@ public class Hireling extends StdBehavior
 		
 		MOB observer=(MOB)affecting;
 		if((affect.sourceMinor()==Affect.TYP_SPEAK)
-		&&(affect.sourceMessage().toUpperCase().indexOf("HIRE")>0)
+		&&((affect.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
+			||(affect.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
 		&&(onTheJobUntil==null))
 			ExternalPlay.quickSay(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
 		else
@@ -155,10 +157,14 @@ public class Hireling extends StdBehavior
 				}
 				else
 				{
+					if(given>price())
+						partials.put(affect.source().name(),new Integer(given-price()));
 					StringBuffer skills=new StringBuffer("");
 					for(int a=0;a<observer.numAbilities();a++)
 					{
 						Ability A=observer.fetchAbility(a);
+						if(A.profficiency()==0)
+							A.setProfficiency(50+observer.envStats().level()-CMAble.lowestQualifyingLevel(A.ID()));
 						skills.append(", "+A.name());
 					}
 					workingFor=source.name();
@@ -166,7 +172,7 @@ public class Hireling extends StdBehavior
 					onTheJobUntil.add(Calendar.MINUTE,minutes());
 					ExternalPlay.follow(observer,source,false);
 					observer.setFollowing(source);
-					ExternalPlay.quickSay(observer,source,"Ok.  You've got me for "+minutes()+" minutes.  My skills include: "+skills.substring(3)+".  Just ORDER me to do what you want.",true,false);
+					ExternalPlay.quickSay(observer,source,"Ok.  You've got me for at least "+minutes()+" minutes.  My skills include: "+skills.substring(3)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
 				}
 			}
 		}
