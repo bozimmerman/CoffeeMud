@@ -179,7 +179,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		&&(!this.amWearingAt(Item.INVENTORY))
 		&&(mob.isMine(this))
 		&&(rollChance()))
-			ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
+			CommonStrings.resistanceMsgs(affect,affect.source(),mob);
 		return ;
 	}
 }

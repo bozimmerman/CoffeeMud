@@ -59,35 +59,11 @@ public class Grouping
 	}
 
 
-	private void addFollowers(MOB mob, Hashtable toThis)
-	{
-		if(toThis.get(mob)==null)
-		   	toThis.put(mob,mob);
-
-		for(int f=0;f<mob.numFollowers();f++)
-		{
-			MOB follower=mob.fetchFollower(f);
-			if((follower!=null)&&(toThis.get(follower)==null))
-			{
-				toThis.put(follower,follower);
-				addFollowers(follower,toThis);
-			}
-		}
-	}
-
-	public Hashtable getGroupMembers(MOB mob)
-	{
-		Hashtable followers=new Hashtable();
-		addFollowers(mob,followers);
-		if(mob.amFollowing()!=null)
-			addFollowers(mob.amFollowing(),followers);
-		return followers;
-	}
-
 	public void group(MOB mob)
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		Hashtable group=getGroupMembers(mob);
+		Hashtable group=new Hashtable();
+		mob.getGroupMembers(group);
 		StringBuffer msg=new StringBuffer("");
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
@@ -105,7 +81,8 @@ public class Grouping
 			return;
 		}
 
-		Hashtable group=getGroupMembers(mob);
+		Hashtable group=new Hashtable();
+		mob.getGroupMembers(group);
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
 			MOB target=(MOB)e.nextElement();

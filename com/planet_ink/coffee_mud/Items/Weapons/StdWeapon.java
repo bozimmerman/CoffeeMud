@@ -236,17 +236,11 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public String missString()
 	{
-		return ExternalPlay.standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
+		return CommonStrings.standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
 	}
 	public String hitString(int damageAmount)
 	{
-		if(weaponClassification==Weapon.CLASS_RANGED)
-			return "<S-NAME> fire(s) "+name()+" at <T-NAMESELF> and "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
-		else
-		if(weaponClassification==Weapon.CLASS_THROWN)
-			return "<S-NAME> throw(s) "+name()+" at <T-NAMESELF> and "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-HIM-HER>";
-		else
-			return "<S-NAME> "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+name();
+		return CommonStrings.standardHitString(weaponType,weaponClassification,damageAmount,name());
 	}
 	public int minRange(){return minRange;}
 	public int maxRange(){return maxRange;}

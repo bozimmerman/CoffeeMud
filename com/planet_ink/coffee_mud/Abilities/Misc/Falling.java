@@ -31,13 +31,6 @@ public class Falling extends StdAbility
 	}
 	
 	private boolean reversed(){return profficiency()==100;}
-	
-	public Item ultimateParent(Item item)
-	{
-		if(item.location()==null) return item;
-		return ultimateParent(item.location());
-	}
-
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
@@ -122,7 +115,7 @@ public class Falling extends StdAbility
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
 			||(!item.isGettable())
-			||(Sense.isFlying(ultimateParent(item))))
+			||(Sense.isFlying(item.ultimateLocation())))
 			{
 				unInvoke();
 				return false;

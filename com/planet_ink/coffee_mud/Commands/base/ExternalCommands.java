@@ -44,14 +44,6 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.theFight.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
 	}
-	public String standardHitWord(int weaponType, int damageAmount)
-	{
-		return processor.theFight.standardHitWord(weaponType,damageAmount);
-	}
-	public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
-	{
-		return processor.theFight.standardMissString(weaponType,weaponClassification,weaponName,useExtendedMissString);
-	}
 	public StringBuffer niceLister(MOB mob, Vector items, boolean useName)
 	{
 		return processor.scoring.niceLister(mob,items,useName);
@@ -64,33 +56,17 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.basicSenses.look(mob,commands,quiet);
 	}
-	public void resistanceMsgs(Affect affect, MOB source, MOB target)
+	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
-		processor.theFight.resistanceMsgs(affect,source,target);
-	}
-	public void strike(MOB source, MOB target, Weapon weapon, boolean success)
-	{
-		processor.theFight.strike(source,target,weapon,success);
+		processor.theFight.postWeaponDamage(source,target,weapon,success);
 	}
 	public void die(MOB source, MOB target)
 	{
 		processor.theFight.die(source,target);
 	}
-	public boolean isHit(MOB attacker, MOB target)
-	{
-		return processor.theFight.isHit(attacker,target);
-	}
-	public long adjustedAttackBonus(MOB mob)
-	{
-		return processor.theFight.adjustedAttackBonus(mob);
-	}
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		return processor.theFight.properTargets(A,caster,beRuthless);
-	}
-	public String standardMobCondition(MOB mob)
-	{
-		return processor.theFight.standardMobCondition(mob);
 	}
 	public boolean move(MOB mob, int directionCode, boolean flee)
 	{
@@ -112,14 +88,6 @@ public class ExternalCommands implements ExternalCommand
 		throws Exception
 	{
 		processor.doCommand(mob,commands);
-	}
-	public String shortAlignmentStr(int al)
-	{
-		return processor.scoring.shortAlignmentStr(al);
-	}
-	public String alignmentStr(int al)
-	{
-		return processor.scoring.alignmentStr(al);
 	}
 	public StringBuffer getInventory(MOB seer, MOB mob)
 	{

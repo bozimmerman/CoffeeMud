@@ -30,6 +30,6 @@ public class Natural extends StdWeapon
 	}
 	public String hitString(int damageAmount)
 	{
-		return "<S-NAME> "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF>";
+		return "<S-NAME> "+CommonStrings.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF>";
 	}
 }

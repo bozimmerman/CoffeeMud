@@ -38,11 +38,6 @@ public class Spell_ReverseGravity extends Spell
 		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
 	}
 
-	public Item ultimateParent(Item item)
-	{
-		if(item.location()==null) return item;
-		return ultimateParent(item.location());
-	}
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
@@ -69,7 +64,7 @@ public class Spell_ReverseGravity extends Spell
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item inhab=room.fetchItem(i);
-				if(!Sense.isFlying(ultimateParent(inhab)))
+				if(!Sense.isFlying(inhab.ultimateLocation()))
 				{
 					Ability A=CMClass.getAbility("Falling");
 					A.setAffectedOne(room);

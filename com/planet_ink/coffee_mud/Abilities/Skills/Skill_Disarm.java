@@ -66,7 +66,8 @@ public class Skill_Disarm extends StdAbility
 			levelDiff=levelDiff*5;
 		else 
 			levelDiff=0;
-		boolean success=profficiencyCheck(-levelDiff,auto)&&(auto||(ExternalPlay.isHit(mob,mob.getVictim())));
+		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
+		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		if((success)
 		   &&(hisWeapon!=null)

@@ -40,21 +40,23 @@ public interface MOB
 	public int maxCarry();
 	public String healthText();
 
-	/** Whether this MOB is dead.*/
+	/** Combat and death */
 	public boolean amDead();
-	public void raiseFromDead();
-	public void kill();
+	public DeadBody killMeDead();
 	public boolean isInCombat();
 	public void bringToLife(Room newLocation);
 	public void destroy();
-	
-	/** combat stuff */
 	public MOB getVictim();
 	public void setVictim(MOB mob);
 	public void makePeace();
 	public void setAtRange(int newRange);
 	public int rangeToTarget();
 	public boolean mayIFight(MOB mob);
+	public boolean mayPhysicallyAttack(MOB mob);
+	public int adjustedAttackBonus();
+	public int adjustedArmor();
+	public int adjustedDamage(Weapon weapon, MOB target);
+	
 	
 	/** Where this MOB is currently*/
 	public Room location();
@@ -141,6 +143,8 @@ public interface MOB
 	public MOB fetchFollower(String ID);
 	public MOB amFollowing();
 	public void setFollowing(MOB mob);
+	public void getGroupMembers(Hashtable list);
+	public boolean isEligibleMonster();
 	
 	/** Manipulation of ability objects, which includes
 	 * spells, traits, skills, etc.*/

@@ -33,6 +33,7 @@ public interface Item extends Environmental
 	 * point to the container object*/
 	public Item location();
 	public void setLocation(Item newLocation);
+	public Item ultimateLocation();
 	
 	public String secretIdentity();
 	public String rawSecretIdentity();

@@ -122,8 +122,8 @@ public class Scoring
 	{
 		TheFight theFight=new TheFight();
 
-		int adjustedArmor=100-(int)theFight.adjustedArmor(mob);
-		int adjustedAttack=(int)theFight.adjustedAttackBonus(mob);
+		int adjustedArmor=150+mob.adjustedArmor();
+		int adjustedAttack=mob.adjustedAttackBonus();
 
 
 		StringBuffer msg=new StringBuffer("");
@@ -144,9 +144,9 @@ public class Scoring
 		msg.append("You have ^B"+mob.getPractices()+"^? practices, ^B"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
 		msg.append("You have scored ^B"+mob.getExperience()+"^? experience points, and have been online for ^B"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
 		msg.append("You need ^B"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
-		msg.append("Your alignment is      : ^H"+alignmentStr(mob.getAlignment())+" ("+mob.getAlignment()+")^?.\n\r");
-		msg.append("Your armored defense is: ^H"+theFight.armorStr(adjustedArmor)+"^?.\n\r");
-		msg.append("Your combat prowess is : ^H"+theFight.fightingProwessStr(adjustedAttack)+"^?.\n\r");
+		msg.append("Your alignment is      : ^H"+CommonStrings.alignmentStr(mob.getAlignment())+" ("+mob.getAlignment()+")^?.\n\r");
+		msg.append("Your armored defense is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
+		msg.append("Your combat prowess is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^B"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 
 		if(Sense.isFalling(mob))
@@ -398,41 +398,6 @@ public class Scoring
 	{
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln("You are wearing:\n\r"+getEquipment(mob,mob));
-	}
-
-	public String shortAlignmentStr(int al)
-	{
-		if(al<350)
-			return "evil";
-		else
-		if(al<650)
-			return "neutral";
-		else
-			return "good";
-	}
-
-	public String alignmentStr(int al)
-	{
-		if(al<50)
-			return "pure evil";
-		else
-		if(al<300)
-			return "evil";
-		else
-		if(al<425)
-			return "somewhat evil";
-		else
-		if(al<575)
-			return "pure neutral";
-		else
-		if(al<700)
-			return "somewhat good";
-		else
-		if(al<950)
-			return "good";
-		else
-			return "pure goodness";
-
 	}
 	public void commands(MOB mob, CommandSet commandSet)
 	{

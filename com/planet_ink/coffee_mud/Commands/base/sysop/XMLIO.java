@@ -280,7 +280,7 @@ public class XMLIO
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB mob2=room.fetchInhabitant(i);
-				if((mob2!=null)&&(CoffeeUtensils.isEligibleMonster(mob2)))
+				if((mob2!=null)&&(mob2.isEligibleMonster()))
 				{
 					num++;
 					roomXML.append("<ROOMMOB"+num+">");

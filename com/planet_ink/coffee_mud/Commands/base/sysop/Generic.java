@@ -1034,7 +1034,7 @@ public class Generic
 	void genAlignment(MOB mob, MOB E)
 		throws IOException
 	{
-		mob.tell("\n\rAlignment: '"+new Scoring().alignmentStr(E.getAlignment())+"'.");
+		mob.tell("\n\rAlignment: '"+CommonStrings.alignmentStr(E.getAlignment())+"'.");
 		String newType=mob.session().choose("Enter a new alignment (G/N/E)\n\r:","GNE","");
 		int newValue=-1;
 		if(newType.length()>0)

@@ -142,6 +142,7 @@ public interface Affect
 	public static final int TYP_REBUKE=60;
 	public static final int TYP_ADVANCE=61;
 	public static final int TYP_DISEASE=62;
+	public static final int TYP_DEATH=63;
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;
@@ -208,5 +209,6 @@ public interface Affect
 	public static final int MSG_SERVE=ACT_MOUTH|ACT_SOUND|TYP_SERVE;
 	public static final int MSG_REBUKE=ACT_MOUTH|ACT_SOUND|TYP_REBUKE;
 	public static final int MSG_ADVANCE=ACT_MOVE|ACT_SOUND|MASK_MALICIOUS|TYP_ADVANCE;
+	public static final int MSG_DEATH=ACT_SOUND|ACT_GENERAL|TYP_DEATH;
 }
 

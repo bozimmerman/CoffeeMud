@@ -30,7 +30,7 @@ public class Prop_ReqAlignments extends Property
 		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
 			int x=text().toUpperCase().indexOf("ALL");
-			int y=text().toUpperCase().indexOf(ExternalPlay.shortAlignmentStr(affect.source().getAlignment()).toUpperCase());
+			int y=text().toUpperCase().indexOf(CommonStrings.shortAlignmentStr(affect.source().getAlignment()).toUpperCase());
 			if(((x>0)
 				&&(text().charAt(x-1)=='-')
 				&&((y<=0)

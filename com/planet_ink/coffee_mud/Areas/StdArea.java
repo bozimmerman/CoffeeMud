@@ -935,7 +935,7 @@ public class StdArea implements Area
 			s.append("Level range    : "+lowestLevel+" to "+highestLevel+"\n\r");
 			s.append("Average level  : "+averageLevel+"\n\r");
 			s.append("Median level   : "+medianLevel+"\n\r");
-			s.append("Alignment avg. : "+averageAlignment+" ("+ExternalPlay.alignmentStr(averageAlignment)+")\n\r");
+			s.append("Alignment avg. : "+averageAlignment+" ("+CommonStrings.alignmentStr(averageAlignment)+")\n\r");
 		}
 		return s;
 	}

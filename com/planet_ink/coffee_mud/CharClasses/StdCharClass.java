@@ -288,7 +288,7 @@ public class StdCharClass implements CharClass
 
 	public void loseExperience(MOB mob, int amount)
 	{
-		if(mob.isMonster()) return;
+		if((mob.isMonster())||(mob.soulMate()!=null)) return;
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		mob.setExperience(mob.getExperience()-amount);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
@@ -366,6 +366,47 @@ public class StdCharClass implements CharClass
 		if((abilityCode<0)||(abilityCode>5)) return false;
 		if(mob.baseCharStats().getStat(abilityCode)>=getMaxStat(abilityCode)) return false;
 		return true;
+	}
+	public Hashtable dispenseExperience(MOB killer, MOB killed)
+	{
+		if((killer==null)||(killed==null)) return new Hashtable();
+		Room deathRoom=killed.location();
+		int expAmount=60;
+		int totalLevels=0;
+		
+		Hashtable beneficiaries=new Hashtable();
+		Hashtable followers=new Hashtable();
+		if(killer!=null) killer.getGroupMembers(followers);
+
+		for(int m=0;m<deathRoom.numInhabitants();m++)
+		{
+			MOB mob=deathRoom.fetchInhabitant(m);
+			if((mob!=null)
+			&&(!mob.amDead())
+			&&(mob.charStats().getMyClass()!=null)
+			&&(beneficiaries.get(mob)==null))
+			{
+				if((mob.getVictim()==killed)
+				||(followers.get(mob)!=null)
+				||(mob==killer))
+				{
+					beneficiaries.put(mob,mob);
+					expAmount+=10;
+					totalLevels+=mob.envStats().level();
+				}
+			}
+		}
+		if(beneficiaries.size()>0)
+		{
+			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
+			{
+				MOB mob=(MOB)e.nextElement();
+				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
+				if(myAmount>100) myAmount=100;
+				mob.charStats().getMyClass().gainExperience(mob,killed,"",myAmount);
+			}
+		}
+		return beneficiaries;
 	}
 
 }

@@ -603,7 +603,7 @@ public class Rooms
 		for(int m=room.numInhabitants()-1;m>=0;m--)
 		{
 			MOB mob2=room.fetchInhabitant(m);
-			if((mob2!=null)&&(CoffeeUtensils.isEligibleMonster(mob2)))
+			if((mob2!=null)&&(mob2.isEligibleMonster()))
 			{
 				if(mob2.getStartRoom()==room)
 					mob2.destroy();

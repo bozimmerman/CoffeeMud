@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
-
+import java.util.*;
 public interface CharClass
 {
 	public String ID();
@@ -10,6 +10,7 @@ public interface CharClass
 	public void newCharacter(MOB mob, boolean isBorrowedClass);
 	public void gainExperience(MOB mob, MOB victim, String homage, int amount);
 	public void loseExperience(MOB mob, int amount);
+	public Hashtable dispenseExperience(MOB killer, MOB killed);
 	public void level(MOB mob);
 	public void unLevel(MOB mob);
 	public void outfit(MOB mob);

@@ -20,11 +20,6 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
 	}
-	public static String standardHitWord(int weaponType, int damageAmount)
-	{
-		if(player!=null) return player.standardHitWord(weaponType,damageAmount);
-		return "";
-	}
 	public static String getOpenRoomID(String areaName)
 	{
 		if(player!=null) return player.getOpenRoomID(areaName);
@@ -39,16 +34,6 @@ public class ExternalPlay
 	{
 		if(player!=null) return player.getToEvoke(mob,commands);
 		return null;
-	}
-	public static String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
-	{
-		if(player!=null) return player.standardMissString(weaponType,weaponClassification,weaponName,useExtendedMissString);
-		return "";
-	}
-	public static String standardMobCondition(MOB mob)
-	{
-		if(player!=null) return player.standardMobCondition(mob);
-		return "";
 	}
 	public static StringBuffer niceLister(MOB mob, Vector items, boolean useName)
 	{
@@ -78,27 +63,13 @@ public class ExternalPlay
 		if(player!=null) player.look(mob,commands,quiet);
 	}
 	
-	public static void resistanceMsgs(Affect affect, MOB source, MOB target)
+	public static void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
-		if(player!=null) player.resistanceMsgs(affect,source,target);
-	}
-	public static void strike(MOB source, MOB target, Weapon weapon, boolean success)
-	{
-		if(player!=null) player.strike(source,target,weapon,success);
+		if(player!=null) player.postWeaponDamage(source,target,weapon,success);
 	}
 	public static void die(MOB source, MOB target)
 	{
 		if(player!=null) player.die(source,target);
-	}
-	public static boolean isHit(MOB attacker, MOB target)
-	{
-		if(player!=null) return player.isHit(attacker,target);
-		return false;
-	}
-	public static long adjustedAttackBonus(MOB mob)
-	{
-		if(player!=null) return player.adjustedAttackBonus(mob);
-		return 0;
 	}
 	public static Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
@@ -127,16 +98,6 @@ public class ExternalPlay
 		throws Exception
 	{
 		if(player!=null) player.doCommand(mob,commands);
-	}
-	public static String shortAlignmentStr(int al)
-	{
-		if(player!=null) return player.shortAlignmentStr(al);
-		return "";
-	}
-	public static String alignmentStr(int al)
-	{
-		if(player!=null) return player.alignmentStr(al);
-		return "";
 	}
 	public static StringBuffer getInventory(MOB seer, MOB mob)
 	{

@@ -459,7 +459,7 @@ public class Dragon extends StdMOB
 		return true;
 	}
 
-	public void kill()
+	public DeadBody killMeDead()
 	{
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
@@ -486,6 +486,6 @@ public class Dragon extends StdMOB
 		this.location().recoverRoomStats();
 
 		// ===== Bury Him
-		super.kill();
+		return super.killMeDead();
 	}
 }

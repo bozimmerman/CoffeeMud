@@ -117,6 +117,7 @@ public class GenWallpaper implements Item
 		return true;
 	}
 	public Item location(){return null;}
+	public Item ultimateLocation(){return this;}
 	public String rawSecretIdentity(){return "";}
 	public String secretIdentity(){return "";}
 	public void setSecretIdentity(String newIdentity){}

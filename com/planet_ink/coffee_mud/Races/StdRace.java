@@ -99,7 +99,7 @@ public class StdRace implements Race
 	
 	public String healthText(MOB mob)
 	{
-		return ExternalPlay.standardMobCondition(mob);
+		return CommonStrings.standardMobCondition(mob);
 	}
 	
 	public Weapon funHumanoidWeapon()
@@ -165,5 +165,58 @@ public class StdRace implements Race
 			stats.setHeight(shortestMale+heightModifier);
  		else
 			stats.setHeight(shortestFemale+heightModifier);
+	}
+	public DeadBody getCorpse(MOB mob, Room room)
+	{
+		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
+		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
+		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+		if(!mob.isMonster())
+			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
+		Body.setName("the body of "+mob.name());
+		Body.setSecretIdentity(mob.name()+"/"+mob.description());
+		Body.setDisplayText("the body of "+mob.name()+" lies here.");
+		room.addItem(Body);
+		Body.recoverEnvStats();
+		Vector items=new Vector();
+		for(int i=0;i<mob.inventorySize();)
+		{
+			Item thisItem=mob.fetchInventory(i);
+			if((thisItem!=null)&&(thisItem.savable()))
+			{
+				if(mob.isMonster())
+				{
+					Item newItem=(Item)thisItem.copyOf();
+					newItem.setLocation(null);
+					newItem.setPossessionTime(Calendar.getInstance());
+					newItem.recoverEnvStats();
+					thisItem=newItem;
+					i++;
+				}
+				else
+					mob.delInventory(thisItem);
+				thisItem.remove();
+				if(thisItem.location()==null)
+					thisItem.setLocation(Body);
+				room.addItem(thisItem);
+				items.addElement(thisItem);
+			}
+			else
+			if(thisItem!=null)
+				mob.delInventory(thisItem);
+			else
+				i++;
+		}
+		if(mob.getMoney()>0)
+		{
+			Item C=(Item)CMClass.getItem("StdCoins");
+			C.baseEnvStats().setAbility(mob.getMoney());
+			C.recoverEnvStats();
+			C.setPossessionTime(Calendar.getInstance());
+			C.setLocation(Body);
+			room.addItem(C);
+			mob.setMoney(0);
+		}
+		return Body;
 	}
 }

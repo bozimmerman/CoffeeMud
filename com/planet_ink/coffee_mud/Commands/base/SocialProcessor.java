@@ -550,36 +550,6 @@ public class SocialProcessor
 		}
 	}
 
-	public int relativeLevelDiff(MOB mob, MOB mob2)
-	{
-		if((mob==null)||(mob2==null)) return -1;
-		TheFight theFight=new TheFight();
-
-		int mob2armor=(int)theFight.adjustedArmor(mob2);
-		int mobArmor=(int)theFight.adjustedArmor(mob);
-		int mob2attack=(int)theFight.adjustedAttackBonus(mob2);
-		int mobAttack=(int)theFight.adjustedAttackBonus(mob);
-		int mob2dmg=(int)mob2.envStats().damage();
-		int mobDmg=(int)mob.envStats().damage();
-		int mob2hp=(int)mob2.baseState().getHitPoints();
-		int mobHp=(int)mob.baseState().getHitPoints();
-
-		double mob2hitRound=((Util.div((mobArmor+mob2attack),100.0))*Util.div(mob2dmg,2.0))*Util.mul(mob2.envStats().speed(),1.0);
-		if(mob2hitRound<0) mob2hitRound=0.01;
-		double mobHitRound=((Util.div((mob2armor+mobAttack),100.0))*Util.div(mobDmg,2.0))*Util.mul(mob.envStats().speed(),1.0);
-		if(mobHitRound<0) mobHitRound=0.01;
-
-		double mob2survivalRounds=Util.div(mob2hp,mobHitRound);
-
-		double mobSurvivalRounds=Util.div(mobHp,mob2hitRound);
-
-		int factorRoundsLevel=3;
-
-		int levelDiff=(int)Math.round(Util.div((mobSurvivalRounds-mob2survivalRounds),factorRoundsLevel));
-
-		return levelDiff;
-
-	}
 	public void rebuke(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)

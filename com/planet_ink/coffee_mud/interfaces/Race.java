@@ -10,6 +10,7 @@ public interface Race
 	public void outfit(MOB mob);
 	public Weapon myNaturalWeapon();
 	public String healthText(MOB mob);
+	public DeadBody getCorpse(MOB mob, Room room);
 	
 	public String arriveStr();
 	public String leaveStr();

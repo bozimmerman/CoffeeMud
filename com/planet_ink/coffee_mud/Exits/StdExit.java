@@ -164,7 +164,7 @@ public class StdExit implements Exit
 				mob.tell("You can't go that way.");
 				return false;
 			}
-			if((alignmentRestricted)&&(alignmentRestrictedMask().toUpperCase().indexOf(ExternalPlay.shortAlignmentStr(mob.getAlignment()).toUpperCase())>=0))
+			if((alignmentRestricted)&&(alignmentRestrictedMask().toUpperCase().indexOf(CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase())>=0))
 			{
 				mob.tell("You can't go that way.");
 				return false;

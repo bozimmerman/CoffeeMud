@@ -67,7 +67,7 @@ public class Spell_WallOfAir extends Spell
 			M.setName("The wall of air");
 			M.setVictim(mob);
 			M.setAtRange(mob.rangeToTarget());
-			ExternalPlay.strike(M,mob,(Weapon)affect.tool(),true);
+			ExternalPlay.postWeaponDamage(M,mob,(Weapon)affect.tool(),true);
 			M.setLocation(null);
 			M.setVictim(null);
 			if(mob.isMonster())

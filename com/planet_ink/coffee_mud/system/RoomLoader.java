@@ -396,7 +396,7 @@ public class RoomLoader
 			{
 				MOB thisMOB=room.fetchInhabitant(m);
 
-				if((thisMOB!=null)&&(CoffeeUtensils.isEligibleMonster(thisMOB)))
+				if((thisMOB!=null)&&(thisMOB.isEligibleMonster()))
 				{
 					D=DBConnector.DBFetch();
 					str=

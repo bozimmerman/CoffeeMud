@@ -365,6 +365,11 @@ public class StdItem implements Item
 		return true;
 	}
 	
+	public Item ultimateLocation()
+	{
+		if(location()==null) return this;
+		return location().ultimateLocation();
+	}
 	public Item location()
 	{
 		return myLocation;

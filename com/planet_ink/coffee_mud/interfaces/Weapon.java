@@ -60,8 +60,6 @@ public interface Weapon extends Item
 	public void setAmmoRemaining(int amount);
 	public int ammunitionCapacity();
 	public void setAmmoCapacity(int amount);
-	
-
 	public String hitString(int damageAmount);
 	public String missString();
 }

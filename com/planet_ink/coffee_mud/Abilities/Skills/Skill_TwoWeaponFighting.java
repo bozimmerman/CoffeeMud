@@ -63,6 +63,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		{
 			MOB mob=(MOB)affected;
 			
+			if(affectableStats.speed()>=2.0) affectableStats.setSpeed(affectableStats.speed()-1.0);
 			if(middleOfTheFight)
 			{
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));

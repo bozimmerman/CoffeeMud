@@ -323,18 +323,6 @@ public class CoffeeUtensils
 		return null;
 	}
 
-	public static boolean isEligibleMonster(MOB mob)
-	{
-		if(!mob.isMonster())
-			return false;
-		MOB followed=mob.amFollowing();
-		if(followed!=null)
-			if(!followed.isMonster())
-				return false;
-		return true;
-
-	}
-	
 	public static Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;
@@ -347,6 +335,17 @@ public class CoffeeUtensils
 		if((E instanceof Item)&&(((Item)E).myOwner() instanceof MOB))
 		   return ((MOB)((Item)E).myOwner()).location();
 		return null;
+	}
+	
+	//int attChance=(int)(adjArmor+adjAttack);
+	public static boolean normalizeAndRollLess(int score)
+	{
+		if(score>95) 
+			score=95;
+		else
+		if(score<5)
+			score=5;
+		return (Dice.rollPercentage()<score);
 	}
 }
 

@@ -41,7 +41,6 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	public void setSensesMask(int newMask){SensesMask=newMask;}
 	public void setHeight(int newHeight){Height=newHeight;}
 	public void setReplacementName(String newName){replacementName=newName;}
-
 	public EnvStats cloneStats()
 	{
 		try

@@ -6,10 +6,7 @@ public interface ExternalCommand
 	// combat
 	public void postAttack(MOB attacker, MOB target, Item weapon);
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
-	public String standardHitWord(int weaponType, int damageAmount);
-	public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString);
-	public void strike(MOB source, MOB target, Weapon weapon, boolean success);
-	public boolean isHit(MOB attacker, MOB target);
+	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success);
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless);
 	public void die(MOB source, MOB target);
 
@@ -31,13 +28,8 @@ public interface ExternalCommand
 	public void follow(MOB mob, MOB tofollow, boolean quiet);
 	
 	// messages
-	public long adjustedAttackBonus(MOB mob);
-	public void resistanceMsgs(Affect affect, MOB source, MOB target);
-	public String shortAlignmentStr(int al);
-	public String alignmentStr(int al);
 	public StringBuffer getInventory(MOB seer, MOB mob);
 	public StringBuffer getScore(MOB mob);
-	public String standardMobCondition(MOB mob);
 	public StringBuffer niceLister(MOB mob, Vector items, boolean useName);
 	
 	

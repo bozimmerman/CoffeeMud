@@ -384,6 +384,11 @@ public class StdMOB implements MOB
 	
 	public void bringToLife(Room newLocation)
 	{
+		amDead=false;
+		recoverEnvStats();
+		recoverCharStats();
+		recoverMaxState();
+		resetToMaxState();
 		setMiscText(miscText);
 		if(getStartRoom()==null)
 			setStartRoom(CMMap.startRoom());
@@ -420,16 +425,6 @@ public class StdMOB implements MOB
 		ExternalPlay.look(this,null,true);
 	}
 
-	public void raiseFromDead()
-	{
-		amDead=false;
-		recoverEnvStats();
-		recoverCharStats();
-		recoverMaxState();
-		resetToMaxState();
-		bringToLife(getStartRoom());
-	}
-
 	public boolean isInCombat()
 	{
 		if(victim==null) return false;
@@ -445,12 +440,61 @@ public class StdMOB implements MOB
 	}
 	public boolean mayIFight(MOB mob)
 	{
+		if(mob==null) return false;
+		if(location()==null) return false;
+		if(mob.location()==null) return false;
+		if(mob.amDead()) return false;
+		if(amDead()) return false;
 		if(mob.isMonster()) return true;
 		if(isMonster()) return true;
 		if((getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
 		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
 		return true;
 	}
+	public boolean mayPhysicallyAttack(MOB mob)
+	{
+		if((!mayIFight(mob))
+		||(location()!=mob.location())
+		||(!location().isInhabitant(this))
+		||(!mob.location().isInhabitant(mob)))
+		   return false;
+		return true;
+	}
+	public int adjustedAttackBonus()
+	{
+		return	envStats().attackAdjustment()
+				+((int)Math.round((new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue()-9.0)*3.0))
+				-((curState().getHunger()<1)?10:0)
+				-((curState().getThirst()<1)?10:0);
+	}
+
+	public int adjustedArmor()
+	{
+		return  envStats().armor()
+				-((int)Math.round((new Integer(charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))
+				+((curState().getHunger()<1)?10:0)
+				+((curState().getThirst()<1)?10:0)
+				+(((envStats().disposition()&EnvStats.IS_SITTING)>0)?15:0)
+				+(((envStats().disposition()&EnvStats.IS_SLEEPING)>0)?30:0)
+				-50;
+	}
+	public int adjustedDamage(Weapon weapon, MOB target)
+	{
+		double damageAmount=0.0;
+		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
+			damageAmount = new Integer(Dice.roll(1, weapon.envStats().damage(),1)).doubleValue();
+		else
+			damageAmount = new Integer(Dice.roll(1, envStats().damage(), (charStats().getStat(CharStats.STRENGTH) / 3)-2)).doubleValue();
+        if(!Sense.canBeSeenBy(target,this)) damageAmount *=.5;
+        if(Sense.isSleeping(target)) damageAmount *=1.5;
+		else
+        if(Sense.isSitting(target)) damageAmount *=1.2;
+		if(curState().getHunger() < 1) damageAmount *= .8;
+		if(curState().getThirst() < 1) damageAmount *= .9;
+		if(damageAmount<1.0) damageAmount=1.0;
+		return (int)Math.round(damageAmount);
+	}
+
 	public void setAtRange(int newRange){atRange=newRange;}
 	public int rangeToTarget(){return atRange;}
 	public int maxRange(){return maxRange(null);}
@@ -513,27 +557,36 @@ public class StdMOB implements MOB
 			}
 		}
 	}
-	public void kill()
+	public DeadBody killMeDead()
 	{
+		Room deathRoom=location();
+		if(location()!=null) location().delInhabitant(this);
+		DeadBody Body=charStats().getMyRace().getCorpse(this,deathRoom);
 		amDead=true;
 		victim=null;
 		setRiding(null);
-		int a=0;
-		while(a<numAffects())
+		for(int a=numAffects()-1;a>=0;a--)
 		{
 			Ability A=fetchAffect(a);
-			if(A!=null)
-			{
-				int s=affects.size();
-				A.unInvoke();
-				if(affects.size()==s)
-					a++;
-			}
-			else
-				a++;
+			if(A!=null) A.unInvoke();
 		}
-		if(isMonster())
-			setLocation(null);
+		setLocation(null);
+		int fol=0;
+		while(numFollowers()>0)
+		{
+			MOB follower=fetchFollower(0);
+			if(follower!=null)
+			{
+				follower.setFollowing(null);
+				delFollower(follower);
+			}
+		}
+		setFollowing(null);
+		if((!isMonster())&&(soulMate()==null))
+			bringToLife(getStartRoom());
+		Body.startTicker(deathRoom);
+		deathRoom.recoverRoomStats();
+		return Body;
 	}
 
 	public Room location()
@@ -662,7 +715,7 @@ public class StdMOB implements MOB
 	{
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
 			return charStats().getMyRace().healthText(this);
-		return ExternalPlay.standardMobCondition(this);
+		return CommonStrings.standardMobCondition(this);
 	}
 
 	public void establishRange(MOB source, MOB target, Environmental tool)
@@ -770,14 +823,6 @@ public class StdMOB implements MOB
 				return false;
 			}
 
-			if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
-			{
-				if(charStats().getStat(CharStats.INTELLIGENCE)<5)
-				{
-					tell("You aren't smart enough to do magic.");
-					return false;
-				}
-			}
 			if(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS))
 			{
 				if((affect.target()!=this)&&(affect.target()!=null)&&(affect.target() instanceof MOB))
@@ -972,6 +1017,13 @@ public class StdMOB implements MOB
 					return false;
 				}
 				break;
+			case Affect.TYP_CAST_SPELL:
+				if(charStats().getStat(CharStats.INTELLIGENCE)<5)
+				{
+					tell("You aren't smart enough to do magic.");
+					return false;
+				}
+				break;
 			default:
 				break;
 			}
@@ -1053,7 +1105,7 @@ public class StdMOB implements MOB
 				}
 
 				if((!mayIFight(mob))
-				||(mob.envStats().level()>envStats().level()+26))
+				||(mob.envStats().level()>envStats().level()+26)&&isMonster()&&mob.isMonster())
 				{
 					if(!mayIFight(mob))
 						mob.tell("Player killing is highly discouraged.");
@@ -1095,7 +1147,7 @@ public class StdMOB implements MOB
 						
 						if(Dice.rollPercentage()<chanceToFail)
 						{
-							ExternalPlay.resistanceMsgs(affect,affect.source(),this);
+							CommonStrings.resistanceMsgs(affect,affect.source(),this);
 							affect.tagModified(true);
 						}
 					}
@@ -1332,8 +1384,8 @@ public class StdMOB implements MOB
 							weapon=(Weapon)affect.tool();
 						if(weapon!=null)
 						{
-							boolean isHit=ExternalPlay.isHit(affect.source(),this);
-							ExternalPlay.strike(affect.source(),this,weapon,isHit);
+							boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus()+adjustedArmor()));
+							ExternalPlay.postWeaponDamage(affect.source(),this,weapon,isHit);
 							affect.tagModified(true);
 						}
 					}
@@ -1342,7 +1394,7 @@ public class StdMOB implements MOB
 				{
 					// what is this?  a malicious, weapon attack not attached to hurt or weaponstrike!
 					if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
-						ExternalPlay.strike(affect.source(),this,(Weapon)affect.tool(),true);
+						ExternalPlay.postWeaponDamage(affect.source(),this,(Weapon)affect.tool(),true);
 				}
 				ExternalPlay.standIfNecessary(this);
 			}
@@ -1439,6 +1491,22 @@ public class StdMOB implements MOB
 			&&((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
 			&&((canseesrc)||(canhearsrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());
+			if((affect.othersMinor()==Affect.TYP_DEATH)&&(victim!=null))
+			{
+				if(victim==affect.source()) 
+					setVictim(null);
+				else
+				if((victim.getVictim()==null)||(victim.getVictim()==affect.source()))
+				{
+					if((amFollowing()!=null)&&(victim.amFollowing()!=null)&&(amFollowing()==victim.amFollowing()))
+						setVictim(null);
+					else
+					{
+						victim.setAtRange(-1);
+						victim.setVictim(this);
+					}
+				}
+			}
 		}
 
 		for(int i=0;i<inventorySize();i++)
@@ -1456,9 +1524,8 @@ public class StdMOB implements MOB
 		}
 	}
 
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{
-	}
+	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
+	
 	public boolean tick(int tickID)
 	{
 		if(pleaseDestroy)
@@ -1473,9 +1540,7 @@ public class StdMOB implements MOB
 					{
 						envStats().setRejuv(envStats().rejuv()-1);
 						if(envStats().rejuv()<0)
-						{
-							raiseFromDead();
-						}
+							bringToLife(getStartRoom());
 					}
 					else
 					{
@@ -1698,6 +1763,47 @@ public class StdMOB implements MOB
 		if(mob.fetchFollower(this)==null)
 			mob.addFollower(this);
 		amFollowing=mob;
+	}
+	private void addFollowers(MOB mob, Hashtable toThis)
+	{
+		if(toThis.get(mob)==null)
+		   	toThis.put(mob,mob);
+
+		for(int f=0;f<mob.numFollowers();f++)
+		{
+			MOB follower=mob.fetchFollower(f);
+			if((follower!=null)&&(toThis.get(follower)==null))
+			{
+				toThis.put(follower,follower);
+				addFollowers(follower,toThis);
+			}
+		}
+	}
+
+	public void getGroupMembers(Hashtable list)
+	{
+		if(list==null) return;
+		if(list.get(this)==null) list.put(this,this);
+		if(amFollowing()!=null)
+			amFollowing().getGroupMembers(list);
+		for(int f=0;f<numFollowers();f++)
+		{
+			MOB follower=fetchFollower(f);
+			if((follower!=null)&&(list.get(follower)==null))
+				follower.getGroupMembers(list);
+		}
+	}
+
+	public boolean isEligibleMonster()
+	{
+		if(!isMonster())
+			return false;
+		MOB followed=amFollowing();
+		if(followed!=null)
+			if(!followed.isMonster())
+				return false;
+		return true;
+
 	}
 
 	public MOB soulMate()

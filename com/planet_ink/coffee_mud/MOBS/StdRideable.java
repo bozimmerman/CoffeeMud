@@ -24,11 +24,18 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		return new StdRideable();
 	}
-	public void kill()
+	public DeadBody killMeDead()
 	{
 		while(riders.size()>0)
-			fetchRider(0).setRiding(null);
-		super.kill();
+		{
+			MOB mob=fetchRider(0);
+			if(mob!=null)
+			{
+				mob.setRiding(null);
+				delRider(mob);
+			}
+		}
+		return super.killMeDead();
 	}
 	
 	// common item/mob stuff
