@@ -124,6 +124,7 @@ public class Spell_Sleep extends Spell
 			// what happened.
 			invoker=mob;
 			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> whisper(s) to <T-NAMESELF>.");
+			MOB oldVictim=mob.getVictim();
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -134,6 +135,7 @@ public class Spell_Sleep extends Spell
 						if(target.location()==mob.location())
 							target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
 				}
+				if(oldVictim==null)	mob.setVictim(null);
 			}
 		}
 		else

@@ -115,6 +115,7 @@ public class Spell_MassSleep extends Spell
 					// and add it to the affects list of the
 					// affected MOB.  Then tell everyone else
 					// what happened.
+					MOB oldVictim=mob.getVictim();
 					FullMsg msg=new FullMsg(mob,target,this,affectType,null);
 					if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 					{
@@ -127,6 +128,7 @@ public class Spell_MassSleep extends Spell
 									target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
 						}
 					}
+					if(oldVictim==null) mob.setVictim(null);
 				}
 				else
 					maliciousFizzle(mob,target,"<T-NAME> seem(s) unaffected by the Sleep spell from <S-NAME>.");
