@@ -740,7 +740,7 @@ public class StdRoom
 		if((domainType&Room.INDOORS)>0)
 			return 1;
 		else
-			return 2;
+			return 3;
 	}
 
 	public void addAffect(Ability to)
