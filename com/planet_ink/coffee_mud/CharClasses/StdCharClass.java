@@ -294,7 +294,7 @@ public class StdCharClass implements CharClass, Cloneable
 		if(mob.baseEnvStats().level()<2) return;
 		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CommonStrings.msp("doh.wav",60));
 		if(!mob.isMonster())
-			ExternalPlay.channel("WIZINFO",mob.Name()+" has just lost a level.",true);
+			ExternalPlay.channel("WIZINFO","",mob.Name()+" has just lost a level.",true);
 
 		levelAdjuster(mob,-1);
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
@@ -477,7 +477,7 @@ public class StdCharClass implements CharClass, Cloneable
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));
 		if(!mob.isMonster())
-			ExternalPlay.channel("WIZINFO",mob.Name()+" has just gained a level.",true);
+			ExternalPlay.channel("WIZINFO","",mob.Name()+" has just gained a level.",true);
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;

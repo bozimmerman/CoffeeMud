@@ -693,7 +693,7 @@ public class MOBloader
 	public static void DBDelete(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
-		ExternalPlay.channel("WIZINFO",mob.Name()+" has just been deleted.",true);
+		ExternalPlay.channel("WIZINFO","",mob.Name()+" has just been deleted.",true);
 		DBConnection D=null;
 		try
 		{

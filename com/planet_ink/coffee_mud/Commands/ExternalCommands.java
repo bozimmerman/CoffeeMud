@@ -133,8 +133,8 @@ public class ExternalCommands implements ExternalCommand
 	}
 	public void channel(MOB mob, String channelName, String message, boolean systemMsg)
 	{ Channels.reallyChannel(mob,channelName,message,systemMsg);}
-	public void channel(String channelName, String message, boolean systemMsg)
-	{ Channels.reallyChannel(channelName,message,systemMsg);}
+	public void channel(String channelName, String clanID, String message, boolean systemMsg)
+	{ Channels.reallyChannel(channelName,clanID,message,systemMsg);}
 	
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{

@@ -43,7 +43,7 @@ public interface ExternalCommand
 	public StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine);
 	public int channelInt(String channelName);
 	public void channel(MOB mob, String channelName, String message, boolean systemMsg);
-	public void channel(String channelName, String message, boolean systemMsg);
+	public void channel(String channelName, String clanID, String message, boolean systemMsg);
 	
 	// misc
 	public void roomAffectFully(Affect msg, Room room, int dirCode);

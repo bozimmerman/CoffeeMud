@@ -1,14 +1,36 @@
-make drunkenness longer
 prop_spelladder doesn't work?!
-clan vote system
-mpalarm should check if the mob is stil alive
-clanrequirements string should be settable
-oligarchy vote length is short is 1/10th of clan death INI setting, 100% quarom
-republic/democracy is is 1/4 of the clan death INI setting, quarom 66%/50%
-have setduration mean something for lights and smokes
+no <> allowed in prompt cmd any more
 booting playerlist makes everyone appear at startroom.
-make it obvious that charclasses must be TRAINed for.
-doors only open from one side
-why does WHERE always show dup areas?!
-dont show name of unseen when showing health text
-
+do the purge list -- have protected names list like ban, purge days by level
+19.  Locksmithing 		
+	1.  BOLTLOCK a lock that can only be unlocked from one direction. 	
+		1.  Should be pickable from the other direction, just not unlocked with a key. 
+20.  Jewelmaking 		
+	1.  allow you to add jewels to any item 	
+21.  Construction 		
+	1.  needs to be able to modify door descriptions 	
+	2.  peephole. a window on a door (sortof) 	
+	3.  windows 	
+	4.  drawbridge 	
+	5.  WINDOW exits...exits that require the CRAWL command. 	
+22.  Pottery 	
+	1.  BRICKS converts a clay resource to a stone 
+	2.  flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc. 
+23.  Sculpting 	
+	1.  tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
+24.  Paper making 	
+	1.  Poster, Banner, and Screen. 
+25.  Tailoring 	
+	1.  pillow, sheets, blanket, large pillow, cushion 
+26.  Blacksmithing 	
+	1.  chain....works like rope, but heavy and metal. 
+	2.  Trashcan A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes. 
+	3.  DRUM (metal barrel) 
+	4.  can (Like TIN can or coffee can) 
+27.  Masonry 	
+	1.  could you add to the desription of archways the  type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room? 
+	2.  tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own. 
+	3.  windows 
+	4.  POOL will convert the room into a Water room, with 1 level of underwater added for free 
+	5.  portcullis (but it requires METAL instead of stone) 
+	6.  WINDOW exits...exits that require the CRAWL command. 

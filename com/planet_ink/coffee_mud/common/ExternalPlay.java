@@ -79,8 +79,8 @@ public class ExternalPlay
 	}
 	public static void channel(MOB mob, String channelName, String message, boolean systemMsg)
 	{ if(player!=null) player.channel(mob,channelName,message,systemMsg);}
-	public static void channel(String channelName, String message, boolean systemMsg)
-	{ if(player!=null) player.channel(channelName,message,systemMsg);}
+	public static void channel(String channelName, String clanID, String message, boolean systemMsg)
+	{ if(player!=null) player.channel(channelName,clanID,message,systemMsg);}
 	public static Ability getToEvoke(MOB mob, Vector commands)
 	{
 		if(player!=null) return player.getToEvoke(mob,commands);

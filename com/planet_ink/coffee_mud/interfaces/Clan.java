@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.interfaces;
 
 import java.util.*;
+import com.planet_ink.coffee_mud.utils.DVector;
 
 /**
   * Clan is the basis for clan objects.
@@ -49,16 +50,44 @@ public interface Clan extends Cloneable, Tickable
 	public static final String[] REL_DESCS={
 		"NEUTRAL","WAR","HOSTILE","FRIENDLY","ALLY"
 	};
+	public static final String[] REL_STATES={
+		"NEUTRALITY TOWARDS",
+		"WAR WITH",
+		"HOSTILITIES WITH",
+		"FRIENDSHIP WITH",
+		"AN ALLIANCE WITH"
+	};
 	
 	public static final int GVT_DICTATORSHIP=0;
 	public static final int GVT_OLIGARCHY=1;
 	public static final int GVT_REPUBLIC=2;
 	public static final int GVT_DEMOCRACY=3;
-	public static final String[] FVT_DESCS={
+	public static final String[] GVT_DESCS={
 		"DICTATORSHIP",
 		"OLIGARCHY",
 		"REPUBLIC",
 		"DEMOCRACY"
+	};
+	public static final int[] topRanks={
+		POS_BOSS,
+		POS_BOSS,
+		POS_LEADER,
+		POS_LEADER
+	};
+	
+	
+	public static final String[][] ROL_DESCS={
+		{"APPLICANT","MEMBER","STAFF","TREASURER","LEADER","BOSS"},
+		{"APPLICANT","SOLDIER","CAPTAIN","TREASURER","GENERAL","OLIGARCH"},
+		{"APPLICANT","CITIZEN","SOLDIER","TREASURER","SECRETARY","SENATOR"},
+		{"APPLICANT","CITIZEN","SOLDIER","TREASURER","MANAGER","FIRST CITIZEN"}
+	};
+	public static final int maxint=Integer.MAX_VALUE;
+	public static final int[][] ROL_MAX={
+		{maxint,maxint,maxint,1,maxint,1},
+		{maxint,maxint,maxint,1,maxint,5},
+		{maxint,maxint,maxint,1,1,5},
+		{maxint,maxint,maxint,maxint,maxint,1}
 	};
 	
 	public static final int TYPE_CLAN=1;
@@ -77,6 +106,7 @@ public interface Clan extends Cloneable, Tickable
 	public static final int FUNC_CLANVOTEASSIGN=11;
 	public static final int FUNC_CLANVOTEOTHER=12;
 	public static final int FUNC_CLANDEPOSITLIST=13;
+	public static final int FUNC_CLANDECLARE=14;
 	
 	public int allowedToDoThis(MOB mob, int function);
 	
@@ -84,7 +114,16 @@ public interface Clan extends Cloneable, Tickable
 	public final static int VSTAT_FAILED=1;
 	public final static int VSTAT_PASSED=2;
 	
+	public final static String[] VSTAT_DESCS={
+		"In Progress",
+		"Failed",
+		"Passed"
+	};
+	
 	public Enumeration votes();
+	public void updateVotes();
+	public void addVote(Object CV);
+	public void delVote(Object CV);
 	
 	public int getSize();
 
@@ -120,8 +159,8 @@ public interface Clan extends Cloneable, Tickable
 	public String getDonation();
 	public void setDonation(String newDonation);
   
-	public Vector getMemberList();
-	public Vector getMemberList(int PosFilter);
+	public DVector getMemberList();
+	public DVector getMemberList(int PosFilter);
 
 	public int getClanRelations(String id);
 	public void setClanRelations(String id, int rel);

@@ -1393,7 +1393,7 @@ public class TelnetSession extends Thread implements Session
 		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
-			ExternalPlay.channel("WIZINFO",mob.Name()+" has logged out.",true);
+			ExternalPlay.channel("WIZINFO","",mob.Name()+" has logged out.",true);
 			// the player quit message!
 			if(mob.location()!=null)
 			{
