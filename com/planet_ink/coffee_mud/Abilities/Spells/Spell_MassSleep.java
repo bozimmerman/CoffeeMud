@@ -123,9 +123,12 @@ public class Spell_MassSleep extends Spell
 						if(!msg.wasModified())
 						{
 							success=maliciousAffect(mob,target,2,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND);
-							if(success)
-								if(target.location()==mob.location())
-									target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
+							if((success)
+							&&(!Sense.isSleeping(target))
+							&&(target.fetchAffect(ID())==null)
+							&&(target.fetchAffect("Spell_Sleep")==null)
+							&&(target.location()==mob.location()))
+								target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) asleep!!");
 						}
 					}
 					if(oldVictim==null) mob.setVictim(null);

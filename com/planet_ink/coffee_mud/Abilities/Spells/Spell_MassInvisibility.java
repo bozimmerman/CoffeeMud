@@ -105,7 +105,9 @@ public class Spell_MassInvisibility extends Spell
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
-				if(mob.location().okAffect(msg))
+				if((mob.location().okAffect(msg))
+				&&(target.fetchAffect("Spell_Invisibility")==null)
+				&&(target.fetchAffect("Spell_MassInvisibility")==null))
 				{
 					mob.location().send(mob,msg);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");

@@ -964,6 +964,7 @@ public class StdMOB implements MOB
 		&&(affect.amISource(this))
 		&&(affect.target()!=null)
 		&&(affect.target()!=this)
+		&&(!Util.bset(affect.sourceCode(),Affect.ACT_GENERAL))
 		&&(affect.target() instanceof MOB))
 		{
 			MOB target=(MOB)affect.target();
@@ -972,21 +973,20 @@ public class StdMOB implements MOB
 			   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 			   &&(atRange>maxRange(affect.tool())))
 			{
-				String newstr="<S-NAME> advance(s) at <T-NAMESELF>.";
-				affect.modify(this,affect.target(),affect.tool(),Affect.MSG_NOISYMOVEMENT,newstr,Affect.MSG_OK_VISUAL,newstr,Affect.MSG_NOISYMOVEMENT,newstr);
-				atRange--;
+				String newstr="<S-NAME> advance(s) at ";
+				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.name(),Affect.MSG_ADVANCE,newstr+" you",Affect.MSG_ADVANCE,newstr+target.name());
+				boolean ok=location().okAffect(affect);
+				if(ok) atRange--;
 				if(victim!=null)
 				{
 					victim.setAtRange(atRange);
 					victim.recoverEnvStats();
 				}
 				recoverEnvStats();
-				if(location().okAffect(affect))
-					return true;
-				location().send(this,affect);
-				return false;
+				return ok;
 			}
 			else
+			if(affect.tool()!=null)
 			{
 				int useRange=atRange;
 				Environmental tool=affect.tool();
@@ -1004,21 +1004,17 @@ public class StdMOB implements MOB
 				}
 				if((useRange>=0)&&(maxRange(tool)<useRange))
 				{
-					if((tool!=null)&&(target!=null))
-						mob.tell("You are too far away from "+target.name()+" to use "+tool.name()+".");
+					mob.tell("You are too far away from "+target.name()+" to use "+tool.name()+".");
 					return false;
 				}
 				else
 				if((useRange>=0)&&(minRange(tool)>useRange))
 				{
-					if((tool!=null)&&(target!=null))
-					{
-						mob.tell("You are too close to "+target.name()+" to use "+tool.name()+".");
-						if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-						&&(tool instanceof Weapon)
-						&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
-							ExternalPlay.remove(this,(Item)tool);
-					}
+					mob.tell("You are too close to "+target.name()+" to use "+tool.name()+".");
+					if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+					&&(tool instanceof Weapon)
+					&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
+						ExternalPlay.remove(this,(Item)tool);
 					return false;
 				}
 			}

@@ -2076,7 +2076,39 @@ public class Import
 					else
 					{
 						String codeType=Util.getBit(codesLine,0);
-						if(codeType.equals("V")) continue; // still no vulnerabilities support
+						if(codeType.equals("V"))
+						{
+							int res=getBitMask(codesLine,3);
+							int imm=getBitMask(codesLine,3);
+							String[] resistances={
+								" teleport",
+								" mind",
+								" magic",
+								" weapons",
+								" blunt",
+								" pierce",
+								" slash",
+								" fire",
+								" cold",
+								" elec",
+								" acid",
+								" poison",
+								" evil",
+								" holy",
+								"",
+								" mind",
+								" disease",
+								" gas"};
+							for(int rei=0;rei<resistances.length;rei++)
+							{
+								if((Util.isSet(res,rei))&&(resistances[rei].length()>0))
+									resister.setMiscText(resister.text()+resistances[rei]+" -25%");
+								else
+								if((Util.isSet(imm,rei))&&(resistances[rei].length()>0))
+									resister.setMiscText(resister.text()+resistances[rei]+" -100%");
+							}
+
+						}
 						if(codeType.equals("A"))
 						{
 							int dis=0;
@@ -2104,8 +2136,8 @@ public class Import
 								sense=sense|EnvStats.CAN_SEE_INFRARED;
 							if(Util.isSet(codeBits,10))
 								caster.setMiscText(caster.text()+("Prayer_Curse")+";");
-							//if(Util.isSet(codeBits,11)) // what the heck is master weapon?
-							//	caster.setMiscText(caster.text()+(new Spell_FaerieFire().ID())+";");
+							if(Util.isSet(codeBits,11))
+								caster.setMiscText(caster.text()+"Specialization_Weapon;");
 							if(Util.isSet(codeBits,12))
 								caster.setMiscText(caster.text()+("Poison")+";");
 							if(Util.isSet(codeBits,13))
@@ -2152,45 +2184,38 @@ public class Import
 						}
 						else
 						{
-							Ability resist=resister;
 							int res=getBitMask(codesLine,3);
 							int imm=getBitMask(codesLine,3);
+							String[] resistances={
+								" teleport",
+								" mind",
+								" magic",
+								" weapons",
+								" blunt",
+								" pierce",
+								" slash",
+								" fire",
+								" cold",
+								" elec",
+								" acid",
+								" poison",
+								" evil",
+								" holy",
+								"",
+								" mind",
+								" disease",
+								" gas"};
+							for(int rei=0;rei<resistances.length;rei++)
+							{
+								if((Util.isSet(res,rei))&&(resistances[rei].length()>0))
+									resister.setMiscText(resister.text()+resistances[rei]+" 25%");
+								else
+								if((Util.isSet(imm,rei))&&(resistances[rei].length()>0))
+									resister.setMiscText(resister.text()+resistances[rei]+" 100%");
+							}
 
-							if((Util.isSet(res,0))||(Util.isSet(imm,0)))
-								resist.setMiscText(resist.text()+" teleport");
-							if((Util.isSet(res,1))||(Util.isSet(imm,1)))
-								resist.setMiscText(resist.text()+" mind");
-							if((Util.isSet(res,2))||(Util.isSet(imm,2)))
-								resist.setMiscText(resist.text()+" magic");
-							if((Util.isSet(res,3))||(Util.isSet(imm,3)))
-								resist.setMiscText(resist.text()+" weapons");
-							if((Util.isSet(res,4))||(Util.isSet(imm,4)))
-								resist.setMiscText(resist.text()+" blunt");
-							if((Util.isSet(res,5))||(Util.isSet(imm,5)))
-								resist.setMiscText(resist.text()+" pierce");
-							if((Util.isSet(res,6))||(Util.isSet(imm,6)))
-								resist.setMiscText(resist.text()+" slash");
-							if((Util.isSet(res,7))||(Util.isSet(imm,7)))
-								resist.setMiscText(resist.text()+" fire");
-							if((Util.isSet(res,8))||(Util.isSet(imm,8)))
-								resist.setMiscText(resist.text()+" cold");
-							if((Util.isSet(res,9))||(Util.isSet(imm,9)))
-								resist.setMiscText(resist.text()+" elec");
-							if((Util.isSet(res,10))||(Util.isSet(imm,10)))
-								resist.setMiscText(resist.text()+" acid");
-							if((Util.isSet(res,11))||(Util.isSet(imm,11)))
-								resist.setMiscText(resist.text()+" poison");
-							if((Util.isSet(res,12))||(Util.isSet(imm,12)))
-								resist.setMiscText(resist.text()+" evil");
-							if((Util.isSet(res,13))||(Util.isSet(imm,13)))
-								resist.setMiscText(resist.text()+" holy");
-							//if(Util.isSet(res,14)) nothing this specific (magic missile)
-							if((Util.isSet(res,15))||(Util.isSet(imm,15)))
-								resist.setMiscText(resist.text()+" mind");
-							if((Util.isSet(res,16))||(Util.isSet(imm,16)))
-								resist.setMiscText(resist.text()+" disease");
-							if((Util.isSet(res,17))||(Util.isSet(imm,17)))
-								resist.setMiscText(resist.text()+" water gas");
+							if(Util.isSet(res,14))
+								caster.setMiscText(caster.text()+"Spell_ResistMagicMissiles;");
 							//if(Util.isSet(res,18)) no light resistance
 							//if(Util.isSet(res,18)) no sound resistance
 						}

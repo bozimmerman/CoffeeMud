@@ -140,6 +140,7 @@ public interface Affect
 	public static final int TYP_WAND_USE=58;
 	public static final int TYP_SERVE=59;
 	public static final int TYP_REBUKE=60;
+	public static final int TYP_ADVANCE=61;
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;
@@ -205,5 +206,6 @@ public interface Affect
 	public static final int MSG_DISMOUNT=ACT_MOVE|ACT_SOUND|TYP_DISMOUNT;
 	public static final int MSG_SERVE=ACT_MOUTH|ACT_SOUND|TYP_SERVE;
 	public static final int MSG_REBUKE=ACT_MOUTH|ACT_SOUND|TYP_REBUKE;
+	public static final int MSG_ADVANCE=ACT_MOVE|ACT_SOUND|TYP_ADVANCE;
 }
 

@@ -40,6 +40,11 @@ public class Skill_Disarm extends StdAbility
 			mob.tell("You must be in combat to do this!");
 			return false;
 		}
+		if(mob.rangeToTarget()>0)
+		{
+			mob.tell("You must be in melee combat to do this!");
+			return false;
+		}
 		if(mob.fetchWieldedItem()==null)
 		{
 			mob.tell("You need a weapon to disarm someone!");
@@ -65,7 +70,6 @@ public class Skill_Disarm extends StdAbility
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		if((success)
 		   &&(hisWeapon!=null)
-		   &&((mob.rangeToTarget()<0)||(mob.rangeToTarget()==0))
 		   &&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 			  ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{

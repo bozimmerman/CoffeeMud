@@ -42,6 +42,11 @@ public class Fighter_WeaponBreak extends StdAbility
 			mob.tell("You must be in combat to do this!");
 			return false;
 		}
+		if(mob.rangeToTarget()>0)
+		{
+			mob.tell("You must be in melee combat to do this!");
+			return false;
+		}
 		if((!auto)&&(mob.fetchWieldedItem()==null))
 		{
 			mob.tell("You need a weapon to break someone elses!");
@@ -69,13 +74,12 @@ public class Fighter_WeaponBreak extends StdAbility
 		   &&(hisWeapon!=null)
 		   &&(hisWeapon.envStats().ability()==0)
 		   &&(!Sense.isABonusItems(hisWeapon))
-		   &&((mob.rangeToTarget()<0)||(mob.rangeToTarget()==0))
 		&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.remove();
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),null,Affect.MSG_NOISYMOVEMENT,str);
+			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -279,6 +279,9 @@ public class Sense
 
 	public static String wornLocation(long wornCode)
 	{
-		return Item.wornLocation[(int)Math.round(Math.sqrt(wornCode))];
+		int wornNum=(int)Math.round(Math.sqrt(wornCode));
+		if(Item.wornLocation.length>wornNum)
+			return Item.wornLocation[wornNum];
+		return "";
 	}
 }
