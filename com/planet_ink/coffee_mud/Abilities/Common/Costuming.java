@@ -22,11 +22,11 @@ import java.io.File;
    limitations under the License.
 */
 
-public class LeatherWorking extends CraftingSkill
+public class Costuming extends CraftingSkill
 {
-	public String ID() { return "LeatherWorking"; }
-	public String name(){ return "Leather Working";}
-	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
+	public String ID() { return "Costuming"; }
+	public String name(){ return "Costuming";}
+	private static final String[] triggerStrings = {"COSTUME","COSTUMING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private static final int RCP_FINALNAME=0;
@@ -41,24 +41,48 @@ public class LeatherWorking extends CraftingSkill
 	private static final int RCP_CONTAINMASK=9;
 	private static final int RCP_SPELL=10;
 
-
 	private Item building=null;
 	private boolean mending=false;
 	private boolean refitting=false;
 	private boolean messedUp=false;
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
+		{
+			if(building==null)
+				unInvoke();
+		}
+		return super.tick(ticking,tickID);
+	}
+
 	protected Vector loadRecipes()
 	{
-		Vector V=(Vector)Resources.getResource("LEATHERWORK RECIPES");
+		Vector V=(Vector)Resources.getResource("COSTUME RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"leatherworking.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"costume.txt");
 			V=loadList(str);
 			if(V.size()==0)
-				Log.errOut("LeatherWorking","Recipes not found!");
-			Resources.submitResource("LEATHERWORK RECIPES",V);
+				Log.errOut("Costuming","Recipes not found!");
+			Resources.submitResource("COSTUME RECIPES",V);
 		}
 		return V;
+	}
+
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		if(student.fetchAbility("Tailoring")==null)
+		{
+			teacher.tell(student.name()+" has not yet learned tailoring.");
+			student.tell("You need to learn tailoring before you can learn "+name()+".");
+			return false;
+		}
+
+		return true;
 	}
 
 	public void unInvoke()
@@ -78,7 +102,7 @@ public class LeatherWorking extends CraftingSkill
 						if(refitting)
 							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> mess(es) up making "+building.name()+".");
+							commonEmote(mob,"<S-NAME> mess(es) up knitting "+building.name()+".");
 					}
 					else
 					{
@@ -105,10 +129,10 @@ public class LeatherWorking extends CraftingSkill
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
 		Item IE=(Item)E;
-		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER)
+		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
 		{
 			if(!quiet)
-				commonTell(mob,"That's not made of any sort of leather.  That can't be mended.");
+				commonTell(mob,"That's not made of any sort of cloth.  It can't be mended.");
 			return false;
 		}
 		return true;
@@ -126,23 +150,21 @@ public class LeatherWorking extends CraftingSkill
 		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork scan\", or \"leatherwork mend <item>\".");
+			commonTell(mob,"Costume what? Enter \"Costume list\" for a list, \"Costume refit <item>\" to resize, \"Costume scan\", or \"Costume mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
-		String prefix="";
 		boolean bundle=false;
-		int multiplier=1;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
-			int toggleTop=4;
+			int toggleTop=3;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",14)+" "+Util.padRight("Amt",3)+" ");
+				buf.append(Util.padRight("Item",19)+" "+Util.padRight("Cloth",5)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -154,37 +176,7 @@ public class LeatherWorking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
-					}
-				}
-			}
-			for(int r=0;r<recipes.size();r++)
-			{
-				Vector V=(Vector)recipes.elementAt(r);
-				if(V.size()>0)
-				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+5)<=(mob.envStats().level()))
-					{
-						buf.append(Util.padRight("Hard "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop) toggler=1;
-					}
-				}
-			}
-			for(int r=0;r<recipes.size();r++)
-			{
-				Vector V=(Vector)recipes.elementAt(r);
-				if(V.size()>0)
-				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+11)<=mob.envStats().level())
-					{
-						buf.append(Util.padRight("Studded "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,19)+" "+Util.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -221,9 +213,9 @@ public class LeatherWorking extends CraftingSkill
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
-			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER)
+			if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
 			{
-				commonTell(mob,"That's not made of leather.  That can't be refitted.");
+				commonTell(mob,"That's not made of cloth.  It can't be refitted.");
 				return false;
 			}
 			if(!(building instanceof Armor))
@@ -263,27 +255,8 @@ public class LeatherWorking extends CraftingSkill
 				if(V.size()>0)
 				{
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if(((level+11)<=(mob.envStats().level()))
-					&&(recipeName.toUpperCase().indexOf("STUDDED ")>=0))
+					if(level<=mob.envStats().level())
 					{
-						multiplier=3;
-						prefix="studded ";
-						foundRecipe=V;
-						break;
-					}
-					else
-					if(((level+5)<=(mob.envStats().level()))
-					&&(recipeName.toUpperCase().indexOf("HARD")>=0))
-					{
-						multiplier=2;
-						prefix="hard ";
-						foundRecipe=V;
-						break;
-					}
-					else
-					if(level<=(mob.envStats().level()))
-					{
-						multiplier=1;
 						foundRecipe=V;
 						break;
 					}
@@ -291,34 +264,31 @@ public class LeatherWorking extends CraftingSkill
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"leatherwork list\" for a list.");
+				commonTell(mob,"You don't know how to Costume a '"+recipeName+"'.  Try \"Costume list\" for a list.");
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
-			int[] pm={EnvResource.MATERIAL_LEATHER};
-			int[] pm1={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+			int[] pm={EnvResource.MATERIAL_CLOTH};
 			int[][] data=fetchFoundResourceData(mob,
-												woodRequired,"leather",pm,
-												(multiplier==3)?1:0,
-												(multiplier==3)?"metal":null,
-												(multiplier==3)?pm1:null,
+												woodRequired,"cloth",pm,
+												0,null,null,
 												misctype.equalsIgnoreCase("BUNDLE"),
 												autoGenerate);
 			if(data==null) return false;
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,autoGenerate);
+			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=(multiplier*Util.s_int((String)foundRecipe.elementAt(RCP_TICKS)))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)])).toLowerCase();
+			completion=Util.s_int((String)foundRecipe.elementAt(Tailoring.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -327,23 +297,26 @@ public class LeatherWorking extends CraftingSkill
 			else
 				itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) making "+building.name()+".";
-			displayText="You are making "+building.name();
-			verb="making "+building.name();
+			startStr="<S-NAME> start(s) costuming "+building.name()+".";
+			displayText="You are costuming "+building.name();
+			verb="costuming "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
+			if(misctype.equalsIgnoreCase("BUNDLE"))
+				building.baseEnvStats().setWeight(woodRequired);
+			else
+				building.baseEnvStats().setWeight(woodRequired/2);
+			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_STRENGTH]-1;
+			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
+			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-2;
-			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+6*hardness+((multiplier-1)*5));
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);
+			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
 			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			if(spell.length()>0)
 			{
 				String parm="";
@@ -361,9 +334,8 @@ public class LeatherWorking extends CraftingSkill
 			}
 			if(building instanceof Weapon)
 			{
-				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()+(hardness*5)+(abilityCode()-1)-1);
-				((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
+				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
+				((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
 				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
 				{
 					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
@@ -372,7 +344,6 @@ public class LeatherWorking extends CraftingSkill
 				switch(((Weapon)building).weaponClassification())
 				{
 				case Weapon.CLASS_AXE:
-				case Weapon.CLASS_FLAILED:
 					((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
 					break;
 				case Weapon.CLASS_SWORD:
@@ -385,24 +356,26 @@ public class LeatherWorking extends CraftingSkill
 					break;
 				case Weapon.CLASS_NATURAL:
 				case Weapon.CLASS_BLUNT:
+				case Weapon.CLASS_FLAILED:
 				case Weapon.CLASS_HAMMER:
 				case Weapon.CLASS_STAFF:
 					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
-				building.baseEnvStats().setDamage(armordmg+hardness);
+				building.baseEnvStats().setDamage(armordmg);
 				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
-				((Armor)building).setRawProperLocationBitmap(0);
+
 				if(capacity>0)
 				{
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
+				((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{
 					String WO=Item.wornLocation[wo].toUpperCase();
@@ -427,21 +400,28 @@ public class LeatherWorking extends CraftingSkill
 					}
 				}
 			}
-			if(building instanceof Drink)
+			if(building instanceof Rideable)
 			{
-				if(Sense.isGettable(building))
-				{
-					((Drink)building).setLiquidRemaining(0);
-					((Drink)building).setLiquidHeld(capacity*50);
-					((Drink)building).setThirstQuenched(250);
-					if((capacity*50)<250)
-						((Drink)building).setThirstQuenched(capacity*50);
-				}
+				if(misctype.equalsIgnoreCase("CHAIR"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
+				else
+				if(misctype.equalsIgnoreCase("TABLE"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
+				else
+				if(misctype.equalsIgnoreCase("LADDER"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
+				else
+				if(misctype.equalsIgnoreCase("ENTER"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_ENTERIN);
+				else
+				if(misctype.equalsIgnoreCase("BED"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
 			}
 			building.recoverEnvStats();
 			building.text();
 			building.recoverEnvStats();
 		}
+
 
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;

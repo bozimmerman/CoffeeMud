@@ -22,11 +22,11 @@ import java.io.File;
    limitations under the License.
 */
 
-public class LeatherWorking extends CraftingSkill
+public class MasterLeatherWorking extends CraftingSkill
 {
-	public String ID() { return "LeatherWorking"; }
-	public String name(){ return "Leather Working";}
-	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
+	public String ID() { return "Master LeatherWorking"; }
+	public String name(){ return "Master Leather Working";}
+	private static final String[] triggerStrings = {"MLEATHERWORK","MLEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private static final int RCP_FINALNAME=0;
@@ -49,16 +49,31 @@ public class LeatherWorking extends CraftingSkill
 
 	protected Vector loadRecipes()
 	{
-		Vector V=(Vector)Resources.getResource("LEATHERWORK RECIPES");
+		Vector V=(Vector)Resources.getResource("MASTER LEATHERWORK RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"leatherworking.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"masterleatherworking.txt");
 			V=loadList(str);
 			if(V.size()==0)
-				Log.errOut("LeatherWorking","Recipes not found!");
-			Resources.submitResource("LEATHERWORK RECIPES",V);
+				Log.errOut("masterLeatherWorking","Recipes not found!");
+			Resources.submitResource("MASTER LEATHERWORK RECIPES",V);
 		}
 		return V;
+	}
+
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		if(student.fetchAbility("LeatherWorking")==null)
+		{
+			teacher.tell(student.name()+" has not yet learned leatherworking.");
+			student.tell("You need to learn leatherworking before you can learn "+name()+".");
+			return false;
+		}
+
+		return true;
 	}
 
 	public void unInvoke()
@@ -126,7 +141,7 @@ public class LeatherWorking extends CraftingSkill
 		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork scan\", or \"leatherwork mend <item>\".");
+			commonTell(mob,"Make what? Enter \"mleatherwork list\" for a list, \"mleatherwork refit <item>\" to resize, \"mleatherwork scan\", or \"mleatherwork mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -134,7 +149,7 @@ public class LeatherWorking extends CraftingSkill
 		String startStr=null;
 		String prefix="";
 		boolean bundle=false;
-		int multiplier=1;
+		int multiplier=4;
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -263,27 +278,55 @@ public class LeatherWorking extends CraftingSkill
 				if(V.size()>0)
 				{
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if(((level+11)<=(mob.envStats().level()))
-					&&(recipeName.toUpperCase().indexOf("STUDDED ")>=0))
+					if(((level+45)<=(mob.envStats().level()))
+					&&(recipeName.toUpperCase().indexOf("BATTLEMOULDED")>=0))
 					{
-						multiplier=3;
-						prefix="studded ";
+						multiplier=9;
+						prefix="Battlemoulded ";
 						foundRecipe=V;
 						break;
 					}
 					else
-					if(((level+5)<=(mob.envStats().level()))
-					&&(recipeName.toUpperCase().indexOf("HARD")>=0))
+					if(((level+40)<=(mob.envStats().level()))
+					&&(recipeName.toUpperCase().indexOf("LAMINAR")>=0))
 					{
-						multiplier=2;
-						prefix="hard ";
+						multiplier=8;
+						prefix="Laminar ";
 						foundRecipe=V;
 						break;
 					}
 					else
-					if(level<=(mob.envStats().level()))
+					if((level+35)<=(mob.envStats().level()))
+					&&(recipeName.toUpperCase().indexOf("MASTERWORK")>=0))
 					{
-						multiplier=1;
+						multiplier=7;
+						prefix="Masterwork ";
+						foundRecipe=V;
+						break;
+					}
+					else
+					if(((level+30)<=(mob.envStats().level()))
+					&&(recipeName.toUpperCase().indexOf("REINFORCED")>=0))
+					{
+						multiplier=6;
+						prefix="Reinforced ";
+						foundRecipe=V;
+						break;
+					}
+					else
+					if(((level+25)<=(mob.envStats().level()))
+					&&(recipeName.toUpperCase().indexOf("CUIRBOULI")>=0))
+					{
+						multiplier=5;
+						prefix="Cuirbouli ";
+						foundRecipe=V;
+						break;
+					}
+					else
+					if((level+20)<=(mob.envStats().level()))
+					{
+						multiplier=4;
+						prefix="Designer ";
 						foundRecipe=V;
 						break;
 					}
@@ -291,7 +334,7 @@ public class LeatherWorking extends CraftingSkill
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"leatherwork list\" for a list.");
+				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"mleatherwork list\" for a list.");
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
@@ -301,9 +344,9 @@ public class LeatherWorking extends CraftingSkill
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"leather",pm,
-												(multiplier==3)?1:0,
-												(multiplier==3)?"metal":null,
-												(multiplier==3)?pm1:null,
+												(multiplier==6)?1:0,
+												(multiplier==6)?"metal":null,
+												(multiplier==6)?pm1:null,
 												misctype.equalsIgnoreCase("BUNDLE"),
 												autoGenerate);
 			if(data==null) return false;
