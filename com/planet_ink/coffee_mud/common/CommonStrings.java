@@ -53,7 +53,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_INIPATH=27;
 	public static final int SYSTEM_MUDBINDADDRESS=28;
 	public static final int SYSTEM_MUDDOMAIN=29;
-	public static final int NUM_SYSTEM=30;
+	public static final int SYSTEM_I3EMAIL=30;
+	public static final int NUM_SYSTEM=31;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -197,6 +198,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
         setVar(SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
 		setVar(SYSTEM_MUDDOMAIN,page.getStr("DOMAIN"));
+		setVar(SYSTEM_I3EMAIL,page.getStr("I3EMAIL"));
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.i3.packets.InvalidPacketException;
 import com.planet_ink.coffee_mud.i3.net.Interactive;
 import com.planet_ink.coffee_mud.i3.persist.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.common.*;
 
 
 import java.io.DataInputStream;
@@ -228,13 +229,8 @@ public class Intermud implements Runnable, Persistent, Serializable {
                  n.name + "\",0," + password +
                  "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
                  ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
-                 "\""+intermud.getMudState()+"\",\"bo@zimmers.net\",([" +
+                 "\""+intermud.getMudState()+"\",\""+CommonStrings.getVar(CommonStrings.SYSTEM_I3EMAIL).toLowerCase()+"\",([" +
                  "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
-			/* for my amusement
-			({"startup-req-3",5,"TESTMUD",0,"TESTMUD",0,*gjs,0,0,27766,0,0,","3","3",
-			"CoffeeMud","OK","bo@zimmers.net",(["who":1,]),([]),})
-			({"channel-listen",5,"diku_chat",0,"TESTMUD",0,"diku_chat",1,})
-			*/
             connected = true;
             input_thread = new Thread(this);
             input_thread.setName("Intermud");
