@@ -92,6 +92,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,22);
 				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE);
+				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 				newMOB.setAlignment(0);

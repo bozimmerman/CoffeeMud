@@ -70,6 +70,7 @@ public class Prayer_AnimateGhost extends Prayer
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,2);
 				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,35);
+				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(10);
 				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE);

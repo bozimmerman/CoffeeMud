@@ -71,6 +71,7 @@ public class Prayer_AnimateGhoul extends Prayer
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,20);
 				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,15);
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 				newMOB.setAlignment(0);

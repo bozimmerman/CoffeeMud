@@ -116,6 +116,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		newMOB.recoverEnvStats();
+		newMOB.recoverCharStats();
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));

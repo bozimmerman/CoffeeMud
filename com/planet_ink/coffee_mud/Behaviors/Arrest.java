@@ -571,6 +571,9 @@ public class Arrest extends StdBehavior
 		if((myArea!=null)&&(mob.location().getArea()!=myArea))
 			return false;
 
+		if(isAnyKindOfOfficer(mob)||(isTheJudge(mob)))
+			return false;
+		
 		// is there a witness
 		MOB witness=getWitness(myArea,mob);
 		if(witness==null) return false;
@@ -778,6 +781,9 @@ public class Arrest extends StdBehavior
 		
 		if((affect.source().isMonster())&&(!arrestMobs)) 
 			return;
+		
+		if(isAnyKindOfOfficer(affect.source())||(isTheJudge(affect.source())))
+			return;
 
 		if(!Sense.aliveAwakeMobile(affect.source(),true))
 			return;
@@ -924,6 +930,38 @@ public class Arrest extends StdBehavior
 		}
 		return false;
 	}
+	
+	public boolean isAnyKindOfOfficer(MOB M)
+	{
+		if((M.isMonster())&&(M.location()!=null))
+		{
+			for(int i=0;i<officerNames.size();i++)
+				if(CoffeeUtensils.containsString(M.displayText(),(String)officerNames.elementAt(i)))
+				{
+					for(int b=0;b<M.numBehaviors();b++)
+					{
+						Behavior B=M.fetchBehavior(b);
+						if((B!=null)&&(B.grantsMobility()))
+							return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	public boolean isTheJudge(MOB M)
+	{
+		if((M.isMonster())&&(M.location()!=null))
+		{
+			String judgeName=(String)getLaws().get("JUDGE");
+			if((CoffeeUtensils.containsString(M.Name(),judgeName))
+			||(CoffeeUtensils.containsString(M.displayText(),judgeName))
+			||(CoffeeUtensils.containsString(M.name(),judgeName))
+			||(CoffeeUtensils.containsString(M.ID(),judgeName)))
+				return true;
+		}
+		return false;
+	}
 
 	public boolean isElligibleOfficer(MOB M, Area myArea)
 	{
@@ -931,22 +969,11 @@ public class Arrest extends StdBehavior
 		{
 			if((myArea!=null)&&(M.location().getArea()!=myArea)) return false;
 
-			for(int i=0;i<officerNames.size();i++)
-				if(CoffeeUtensils.containsString(M.displayText(),(String)officerNames.elementAt(i)))
-				{
-					if((!isBusyWithJustice(M))
-					   &&(Sense.aliveAwakeMobile(M,true))
-					   &&(!M.isInCombat()))
-					{
-						for(int b=0;b<M.numBehaviors();b++)
-						{
-							Behavior B=M.fetchBehavior(b);
-							if((B!=null)&&(B.grantsMobility()))
-								return true;
-						}
-					}
-					return false;
-				}
+			if(isAnyKindOfOfficer(M)
+			&&(!isBusyWithJustice(M))
+			&&(Sense.aliveAwakeMobile(M,true))
+			&&(!M.isInCombat()))
+				return true;
 		}
 		return false;
 	}

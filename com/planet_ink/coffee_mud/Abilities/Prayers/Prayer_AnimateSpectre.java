@@ -70,6 +70,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,10);
 				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,15);
+				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);

@@ -107,6 +107,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.recoverEnvStats();
+		newMOB.recoverCharStats();
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));

@@ -64,6 +64,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Skeleton"));
 				newMOB.baseCharStats().setStat(CharStats.STRENGTH,15);
 				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,16);
+				newMOB.recoverCharStats();
 				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 				newMOB.setAlignment(0);
