@@ -4,20 +4,21 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Forage extends CommonSkill
+public class Foraging extends CommonSkill
 {
 	private Item found=null;
 	private String foundShortName="";
-	public Forage()
+	public Foraging()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Forage";
+		name="Foraging";
 
 		displayText="You are foraging...";
 		verb="foraging";
 		miscText="";
 		triggerStrings.addElement("FORAGE");
+		triggerStrings.addElement("FORAGING");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
@@ -26,7 +27,7 @@ public class Forage extends CommonSkill
 
 	public Environmental newInstance()
 	{
-		return new Forage();
+		return new Foraging();
 	}
 	public boolean tick(int tickID)
 	{

@@ -42,6 +42,13 @@ public class CommonSkill extends StdAbility
 		return Ability.COMMON_SKILL;
 	}
 
+	public String replacePercent(String thisStr, String withThis)
+	{
+		int x=thisStr.indexOf("%");
+		if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
+		return thisStr;
+	}
+	
 	public boolean tick(int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
@@ -72,6 +79,43 @@ public class CommonSkill extends StdAbility
 			
 		}
 		super.unInvoke();
+	}
+	
+	public static Vector loadList(StringBuffer str)
+	{
+		Vector V=new Vector();
+		if(str==null) return V;
+		Vector V2=new Vector();
+		boolean oneComma=false;
+		int start=0;
+		for(int i=0;i<str.length();i++)
+		{
+			if(str.charAt(i)=='\t')
+			{
+				V2.addElement(str.substring(start,i));
+				start=i+1;
+				oneComma=true;
+			}
+			else
+			if((str.charAt(i)=='\n')||(str.charAt(i)=='\r'))
+			{
+				if(oneComma)
+				{
+					V2.addElement(str.substring(start,i));
+					V.addElement(V2);
+					V2=new Vector();
+				}
+				start=i+1;
+				oneComma=false;
+			}
+		}
+		if(V2.size()>1)
+		{
+			if(oneComma)
+				V2.addElement(str.substring(start,str.length()));
+			V.addElement(V2);
+		}
+		return V;
 	}
 	
 	public int lookingFor(int material, Room fromHere)

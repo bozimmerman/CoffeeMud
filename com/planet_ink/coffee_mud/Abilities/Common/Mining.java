@@ -4,20 +4,21 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Mine extends CommonSkill
+public class Mining extends CommonSkill
 {
 	private Item found=null;
 	private String foundShortName="";
-	public Mine()
+	public Mining()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mine";
+		name="Mining";
 
 		displayText="You are mining...";
 		verb="mining";
 		miscText="";
 		triggerStrings.addElement("MINE");
+		triggerStrings.addElement("MINING");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
@@ -26,7 +27,7 @@ public class Mine extends CommonSkill
 
 	public Environmental newInstance()
 	{
-		return new Mine();
+		return new Mining();
 	}
 	public boolean tick(int tickID)
 	{

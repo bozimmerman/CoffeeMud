@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.io.File;
 import java.util.*;
 
-public class Cook extends CommonSkill
+public class Cooking extends CommonSkill
 {
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
@@ -20,7 +20,7 @@ public class Cook extends CommonSkill
 	private Vector finalRecipe=null;
 	private boolean burnt=false;
 	private Hashtable oldContents=null;
-	public Cook()
+	public Cooking()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -30,6 +30,7 @@ public class Cook extends CommonSkill
 		verb="cooking";
 		miscText="";
 		triggerStrings.addElement("COOK");
+		triggerStrings.addElement("COOKING");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
@@ -38,7 +39,7 @@ public class Cook extends CommonSkill
 
 	public Environmental newInstance()
 	{
-		return new Cook();
+		return new Cooking();
 	}
 	public boolean tick(int tickID)
 	{
@@ -75,42 +76,9 @@ public class Cook extends CommonSkill
 		Vector V=(Vector)Resources.getResource("COOKING RECIPES");
 		if(V==null)
 		{
-			V=new Vector();
 			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"recipes.txt");
-			if(str!=null)
-			{
-				Vector V2=new Vector();
-				boolean oneComma=false;
-				int start=0;
-				for(int i=0;i<str.length();i++)
-				{
-					if(str.charAt(i)=='\t')
-					{
-						V2.addElement(str.substring(start,i));
-						start=i+1;
-						oneComma=true;
-					}
-					else
-					if((str.charAt(i)=='\n')||(str.charAt(i)=='\r'))
-					{
-						if(oneComma)
-						{
-							V2.addElement(str.substring(start,i));
-							V.addElement(V2);
-							V2=new Vector();
-						}
-						start=i+1;
-						oneComma=false;
-					}
-				}
-				if(V2.size()>1)
-				{
-					if(oneComma)
-						V2.addElement(str.substring(start,str.length()));
-					V.addElement(V2);
-				}
-			}
-			else
+			V=loadList(str);
+			if(V.size()==0)
 				Log.errOut("Cook","Recipes not found!");
 			Resources.submitResource("COOKING RECIPES",V);
 		}
@@ -392,9 +360,7 @@ public class Cook extends CommonSkill
 				Vector Vr=(Vector)closeRecipes.elementAt(vr);
 				Vector missing=missingIngrediantsFromOldContents(Vr);
 				Vector extra=extraIngrediantsInOldContents(Vr);
-				String recipeName=(String)Vr.elementAt(RCP_FINALFOOD);
-				int x=recipeName.indexOf("%");
-				if(x>=0) recipeName=new StringBuffer(recipeName).replace(x,x+1,((String)Vr.elementAt(RCP_MAININGR)).toLowerCase()).toString();
+				String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 				if(extra.size()>0)
 				{
 					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to remove ");
@@ -425,11 +391,9 @@ public class Cook extends CommonSkill
 			for(int vr=0;vr<recipes.size();vr++)
 			{
 				Vector Vr=(Vector)recipes.elementAt(vr);
-				String recipeName=(String)Vr.elementAt(RCP_FINALFOOD);
 				Vector counts=countIngrediants(Vr);
 				Integer amountMaking=(Integer)counts.elementAt(0);
-				int x=recipeName.indexOf("%");
-				if(x>=0) recipeName=new StringBuffer(recipeName).replace(x,x+1,((String)Vr.elementAt(RCP_MAININGR)).toLowerCase()).toString();
+				String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 				if(counts.size()==1)
 				{
 					finalRecipe=Vr;
@@ -467,43 +431,36 @@ public class Cook extends CommonSkill
 			}
 		}
 		
-		String recipeName=(String)finalRecipe.elementAt(RCP_FINALFOOD);
 		String foodType=(String)finalRecipe.elementAt(RCP_FOODDRINK);
 		Vector contents=cooking.getContents();
-		if(recipeName.indexOf("%")>=0)
+		String replaceName=((String)finalRecipe.elementAt(RCP_MAININGR));
+		for(int v=0;v<contents.size();v++)
 		{
-			int r=recipeName.indexOf("%");
-			String replaceName=((String)finalRecipe.elementAt(RCP_MAININGR));
-			for(int v=0;v<contents.size();v++)
+			Item I=(Item)contents.elementAt(v);
+			if((I instanceof EnvResource)
+			&&(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
 			{
-				Item I=(Item)contents.elementAt(v);
-				if((I instanceof EnvResource)
-				&&(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
-				{
-					String name=I.name();
-					if(name.endsWith(" meat"))
-						name=name.substring(0,name.length()-5);
-					if(name.endsWith(" flesh"))
-						name=name.substring(0,name.length()-6);
-					name=name.trim();
-					int x=name.lastIndexOf(" ");
-					if(x>0)
-						replaceName=name.substring(x+1);
-					else
-						replaceName=name;
-					break;
-				}
+				String name=I.name();
+				if(name.endsWith(" meat"))
+					name=name.substring(0,name.length()-5);
+				if(name.endsWith(" flesh"))
+					name=name.substring(0,name.length()-6);
+				name=name.trim();
+				int x=name.lastIndexOf(" ");
+				if(x>0)
+					replaceName=name.substring(x+1);
+				else
+					replaceName=name;
+				break;
 			}
-			replaceName=Character.toUpperCase(replaceName.charAt(0))+replaceName.substring(1).toLowerCase();
-			recipeName=new StringBuffer(recipeName).replace(r,r+1,replaceName).toString();
 		}
-		finalDishName=recipeName;
+		finalDishName=replacePercent((String)finalRecipe.elementAt(RCP_FINALFOOD),Character.toUpperCase(replaceName.charAt(0))+replaceName.substring(1).toLowerCase());
 		if(foodType.equalsIgnoreCase("FOOD"))
 		{
 			finalDish=CMClass.getItem("GenFood");
 			Food food=(Food)finalDish;
-			finalDish.setName(((burnt)?"burnt ":"")+recipeName);
-			finalDish.setDisplayText("some "+((burnt)?"burnt ":"")+recipeName+" has been left here");
+			finalDish.setName(((burnt)?"burnt ":"")+finalDishName);
+			finalDish.setDisplayText("some "+((burnt)?"burnt ":"")+finalDishName+" has been left here");
 			finalDish.setDescription("It looks "+((burnt)?"burnt!":"good!"));
 			food.setNourishment(0);
 			if(!burnt)
@@ -529,8 +486,8 @@ public class Cook extends CommonSkill
 			finalDish=CMClass.getItem("GenLiquidResource");
 			finalDish.setMiscText(cooking.text());
 			finalDish.recoverEnvStats();
-			finalDish.setName(((burnt)?"spoiled ":"")+recipeName);
-			finalDish.setDisplayText("some "+((burnt)?"spoiled ":"")+recipeName+" has been left here.");
+			finalDish.setName(((burnt)?"spoiled ":"")+finalDishName);
+			finalDish.setDisplayText("some "+((burnt)?"spoiled ":"")+finalDishName+" has been left here.");
 			finalDish.setDescription("It looks "+((burnt)?"spoiled!":"good!"));
 			Drink drink=(Drink)finalDish;
 			for(int v=0;v<contents.size();v++)

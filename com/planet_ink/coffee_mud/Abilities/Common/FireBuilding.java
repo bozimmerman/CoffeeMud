@@ -8,7 +8,7 @@ public class FireBuilding extends CommonSkill
 {
 	public Item lighting=null;
 	private int durationOfBurn=0;
-	
+	private boolean failed=false;
 	public FireBuilding()
 	{
 		super();
@@ -19,6 +19,8 @@ public class FireBuilding extends CommonSkill
 		verb="building a fire";
 		miscText="";
 		triggerStrings.addElement("LIGHT");
+		triggerStrings.addElement("FIREBUILD");
+		triggerStrings.addElement("FIREBUILDING");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
@@ -35,21 +37,26 @@ public class FireBuilding extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(lighting==null)
+			if(failed)
+				mob.tell("You failed to get the fire started.");
+			else
 			{
-				Item I=CMClass.getItem("GenItem");
-				I.baseEnvStats().setWeight(50);
-				I.setName("a roaring campire");
-				I.setDisplayText("A roaring campire has been built here.");
-				I.setDescription("It consists of dry wood, burning.");
-				I.recoverEnvStats();
-				I.setMaterial(EnvResource.RESOURCE_WOOD);
-				mob.location().addItem(I);
-				lighting=I;
+				if(lighting==null)
+				{
+					Item I=CMClass.getItem("GenItem");
+					I.baseEnvStats().setWeight(50);
+					I.setName("a roaring campire");
+					I.setDisplayText("A roaring campire has been built here.");
+					I.setDescription("It consists of dry wood, burning.");
+					I.recoverEnvStats();
+					I.setMaterial(EnvResource.RESOURCE_WOOD);
+					mob.location().addItem(I);
+					lighting=I;
+				}
+				Ability B=CMClass.getAbility("Burning");
+				B.setProfficiency(durationOfBurn);
+				B.invoke(mob,lighting,true);
 			}
-			Ability B=CMClass.getAbility("Burning");
-			B.setProfficiency(durationOfBurn);
-			B.invoke(mob,lighting,true);
 			lighting=null;
 		}
 		super.unInvoke();
@@ -164,6 +171,8 @@ public class FireBuilding extends CommonSkill
 			profficiencyAdjustment=-50;
 			break;
 		}
+		failed=!profficiencyCheck(profficiencyAdjustment,auto);
+		   
 		if(completion<4) completion=4;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) building a fire.");
 		if(mob.location().okAffect(msg))
@@ -173,5 +182,4 @@ public class FireBuilding extends CommonSkill
 		}
 		return true;
 	}
-
 }

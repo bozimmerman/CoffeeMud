@@ -4,20 +4,21 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Hunt extends CommonSkill
+public class Hunting extends CommonSkill
 {
 	private MOB found=null;
 	private String foundShortName="";
-	public Hunt()
+	public Hunting()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hunt";
+		name="Hunting";
 
 		displayText="You are hunting...";
 		verb="hunting";
 		miscText="";
 		triggerStrings.addElement("HUNT");
+		triggerStrings.addElement("HUNTING");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();

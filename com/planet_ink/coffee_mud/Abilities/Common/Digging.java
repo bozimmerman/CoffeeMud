@@ -18,6 +18,7 @@ public class Digging extends CommonSkill
 		verb="digging";
 		miscText="";
 		triggerStrings.addElement("DIG");
+		triggerStrings.addElement("DIGGING");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();

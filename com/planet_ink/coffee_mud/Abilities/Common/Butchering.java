@@ -4,20 +4,22 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Butcher extends CommonSkill
+public class Butchering extends CommonSkill
 {
 	private DeadBody body=null;
 	private String foundShortName="";
-	public Butcher()
+	private boolean failed=false;
+	public Butchering()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Butcher";
+		name="Butchering";
 
 		displayText="You are skinning and butchering something...";
 		verb="skinning and butchering";
 		miscText="";
 		triggerStrings.addElement("BUTCHER");
+		triggerStrings.addElement("BUTCHERING");
 		triggerStrings.addElement("SKIN");
 		quality=Ability.INDIFFERENT;
 
@@ -27,7 +29,7 @@ public class Butcher extends CommonSkill
 
 	public Environmental newInstance()
 	{
-		return new Butcher();
+		return new Butchering();
 	}
 	public void unInvoke()
 	{
@@ -36,16 +38,24 @@ public class Butcher extends CommonSkill
 			MOB mob=(MOB)affected;
 			if((body!=null)&&(!aborted)&&(mob.location().isContent(body)))
 			{
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up "+body.name()+".");
-				Vector resources=body.charStats().getMyRace().myResources();
-				body.destroyThis();
-				for(int i=0;i<resources.size();i++)
+				if(failed)
 				{
-					Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
-					newFound.setPossessionTime(Calendar.getInstance());
-					newFound.recoverEnvStats();
-					mob.location().addItem(newFound);
-					mob.location().recoverRoomStats();
+					mob.tell("You messed up your butchering completely.");
+					body.destroyThis();
+				}
+				else
+				{
+					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up "+body.name()+".");
+					Vector resources=body.charStats().getMyRace().myResources();
+					body.destroyThis();
+					for(int i=0;i<resources.size();i++)
+					{
+						Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
+						newFound.setPossessionTime(Calendar.getInstance());
+						newFound.recoverEnvStats();
+						mob.location().addItem(newFound);
+						mob.location().recoverRoomStats();
+					}
 				}
 			}
 		}
@@ -71,6 +81,7 @@ public class Butcher extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		failed=!profficiencyCheck(0,auto);
 		FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) butchering <T-NAME>.");
 		if(mob.location().okAffect(msg))
 		{

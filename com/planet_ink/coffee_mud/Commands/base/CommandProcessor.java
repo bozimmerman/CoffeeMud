@@ -581,6 +581,7 @@ public class CommandProcessor
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"misc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"skill_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"common_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"spell_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"songs_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"prayer_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}

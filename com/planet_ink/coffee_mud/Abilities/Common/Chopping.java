@@ -4,11 +4,11 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chop extends CommonSkill
+public class Chopping extends CommonSkill
 {
 	private Item found=null;
 	private String foundShortName="";
-	public Chop()
+	public Chopping()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -18,6 +18,7 @@ public class Chop extends CommonSkill
 		verb="chopping";
 		miscText="";
 		triggerStrings.addElement("CHOP");
+		triggerStrings.addElement("CHOPPING");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
@@ -26,7 +27,7 @@ public class Chop extends CommonSkill
 
 	public Environmental newInstance()
 	{
-		return new Chop();
+		return new Chopping();
 	}
 	public boolean tick(int tickID)
 	{

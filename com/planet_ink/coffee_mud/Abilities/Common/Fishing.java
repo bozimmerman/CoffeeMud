@@ -4,15 +4,15 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Fish extends CommonSkill
+public class Fishing extends CommonSkill
 {
 	private Item found=null;
 	private String foundShortName="";
-	public Fish()
+	public Fishing()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Fish";
+		name="Fishing";
 
 		displayText="You are fishing...";
 		verb="fishing";
@@ -26,7 +26,7 @@ public class Fish extends CommonSkill
 
 	public Environmental newInstance()
 	{
-		return new Fish();
+		return new Fishing();
 	}
 	public boolean tick(int tickID)
 	{
