@@ -5,10 +5,9 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class BardMap extends StdMap
+public class BardMap extends GenMap
 {
 	public String ID(){	return "BardMap";}
-	protected String	readableText="";
 	public BardMap()
 	{
 		super();

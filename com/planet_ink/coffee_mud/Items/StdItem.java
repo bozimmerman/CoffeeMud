@@ -754,7 +754,7 @@ public class StdItem implements Item
 			{
 				if(affect.targetMessage().trim().length()==0)
 				{
-					mob.tell("What what on "+name()+"?");
+					mob.tell("Write what on "+name()+"?");
 					return false;
 				}
 				return true;
