@@ -249,79 +249,78 @@ public class Cleric extends StdCharClass
 		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+		&&(myChar.isMine(msg.tool()))
+		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
-			&&(myChar.isMine(msg.tool()))
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-			{
-				int align=myChar.getAlignment();
-				Ability A=(Ability)msg.tool();
+			int align=myChar.getAlignment();
+			Ability A=(Ability)msg.tool();
 
-				if(A.appropriateToMyAlignment(align))
-					return true;
-				int hq=holyQuality(A);
-				int basis=0;
+			if(A.appropriateToMyAlignment(align))
+				return true;
+			int hq=holyQuality(A);
+			int basis=0;
 				
-				switch(alwaysFlunksThisQuality())
+			switch(alwaysFlunksThisQuality())
+			{
+			case 0:
+				if(align<500)
 				{
-				case 0:
-					if(align<500)
-					{
-						myChar.tell("Your immoral strife disrupts the prayer.");
-						return false;
-					}
-					if(hq==0) basis=100;
-					break;
-				case 500:
-					if((align>350)&&(align<650))
-					{
-						myChar.tell("Your moral weakness disrupts the prayer.");
-						return false;
-					}
-					if(hq==500) basis=100;
-					break;
-				case 1000:
-					if(align>500)
-					{
-						myChar.tell("Your moral confusion disrupts the prayer.");
-						return false;
-					}
-					if(hq==1000) basis=100;
-					break;
+					myChar.tell("Your immoral strife disrupts the prayer.");
+					return false;
 				}
-				if(basis==0)
+				if(hq==0) basis=100;
+				break;
+			case 500:
+				if((align>350)&&(align<650))
 				{
-					if(hq==0)
-						basis=align/10;
-					else
-					if(hq==1000)
-						basis=(1000-align)/10;
-					else
-					{
-						basis=(500-align)/10;
-						if(basis<0) basis=basis*-1;
-						basis-=10;
-					}
+					myChar.tell("Your moral weakness disrupts the prayer.");
+					return false;
 				}
-				if(Dice.rollPercentage()>basis)
-					return true;
-
+				if(hq==500) basis=100;
+				break;
+			case 1000:
+				if(align>500)
+				{
+					myChar.tell("Your moral confusion disrupts the prayer.");
+					return false;
+				}
+				if(hq==1000) basis=100;
+				break;
+			}
+			if(basis==0)
+			{
 				if(hq==0)
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+					basis=align/10;
 				else
 				if(hq==1000)
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+					basis=(1000-align)/10;
 				else
-				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
-				else
-				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
-				return false;
+				{
+					basis=(500-align)/10;
+					if(basis<0) basis=basis*-1;
+					basis-=10;
+				}
 			}
+			if(Dice.rollPercentage()>basis)
+				return true;
+
+			if(hq==0)
+				myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+			else
+			if(hq==1000)
+				myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+			else
+			if(align>650)
+				myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
+			else
+			if(align<350)
+				myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
+			return false;
 		}
 		return true;
 	}

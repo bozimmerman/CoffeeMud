@@ -158,24 +158,21 @@ public class Purist extends Cleric
 		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if((msg.amITarget(myChar))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
+			||(msg.sourceMinor()==CMMsg.TYP_WATER)))
 		{
-			if((msg.amITarget(myChar))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&((msg.sourceMinor()==CMMsg.TYP_COLD)
-				||(msg.sourceMinor()==CMMsg.TYP_WATER)))
-			{
-				int recovery=myChar.charStats().getClassLevel(this);
-				msg.setValue(msg.value()-recovery);
-			}
-			else
-			if((msg.amITarget(myChar))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
-			{
-				int recovery=msg.value();
-				msg.setValue(msg.value()+recovery);
-			}
+			int recovery=myChar.charStats().getClassLevel(this);
+			msg.setValue(msg.value()-recovery);
+		}
+		else
+		if((msg.amITarget(myChar))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
+		{
+			int recovery=msg.value();
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}

@@ -159,23 +159,20 @@ public class Shaman extends Cleric
 		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if((msg.amITarget(myChar))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.sourceMinor()==CMMsg.TYP_ACID))
 		{
-			if((msg.amITarget(myChar))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.sourceMinor()==CMMsg.TYP_ACID))
-			{
-				int recovery=myChar.charStats().getClassLevel(this);
-				msg.setValue(msg.value()-recovery);
-			}
-			else
-			if((msg.amITarget(myChar))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC))
-			{
-				int recovery=msg.value();
-				msg.setValue(msg.value()+recovery);
-			}
+			int recovery=myChar.charStats().getClassLevel(this);
+			msg.setValue(msg.value()-recovery);
+		}
+		else
+		if((msg.amITarget(myChar))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC))
+		{
+			int recovery=msg.value();
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}

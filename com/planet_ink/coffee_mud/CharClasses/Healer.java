@@ -190,24 +190,21 @@ public class Healer extends Cleric
 		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if((msg.amITarget(myChar))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
+			||(msg.sourceMinor()==CMMsg.TYP_WATER)))
 		{
-			if((msg.amITarget(myChar))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&((msg.sourceMinor()==CMMsg.TYP_COLD)
-				||(msg.sourceMinor()==CMMsg.TYP_WATER)))
-			{
-				int recovery=myChar.charStats().getClassLevel(this);
-				msg.setValue(msg.value()-recovery);
-			}
-			else
-			if((msg.amITarget(myChar))
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
-			{
-				int recovery=msg.value();
-				msg.setValue(msg.value()+recovery);
-			}
+			int recovery=myChar.charStats().getClassLevel(this);
+			msg.setValue(msg.value()-recovery);
+		}
+		else
+		if((msg.amITarget(myChar))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.sourceMinor()==CMMsg.TYP_FIRE))
+		{
+			int recovery=msg.value();
+			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}
@@ -217,33 +214,32 @@ public class Healer extends Cleric
 		super.executeMsg(myHost,msg);
 		if(!(myHost instanceof MOB)) return;
 		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool()!=null)
+		&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
+		&&(myChar.isMine(msg.tool()))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
+			if((msg.target()!=null)
+			   &&(msg.target() instanceof MOB))
 			{
-				if((msg.target()!=null)
-				   &&(msg.target() instanceof MOB))
-				{
-					MOB tmob=(MOB)msg.target();
-					if(msg.tool().ID().equals("Prayer_CureLight"))
-						tmob.curState().adjHitPoints(Dice.roll(2,6,4),tmob.maxState());
-					else
-					if(msg.tool().ID().equals("Prayer_CureSerious"))
-						tmob.curState().adjHitPoints(Dice.roll(2,16,4),tmob.maxState());
-					else
-					if(msg.tool().ID().equals("Prayer_CureCritical"))
-						tmob.curState().adjHitPoints(Dice.roll(4,16,4),tmob.maxState());
-					else
-					if(msg.tool().ID().equals("Prayer_Heal"))
-						tmob.curState().adjHitPoints(Dice.roll(5,20,4),tmob.maxState());
-					else
-					if(msg.tool().ID().equals("Prayer_MassHeal"))
-						tmob.curState().adjHitPoints(Dice.roll(5,20,4),tmob.maxState());
-				}
+				MOB tmob=(MOB)msg.target();
+				if(msg.tool().ID().equals("Prayer_CureLight"))
+					tmob.curState().adjHitPoints(Dice.roll(2,6,4),tmob.maxState());
+				else
+				if(msg.tool().ID().equals("Prayer_CureSerious"))
+					tmob.curState().adjHitPoints(Dice.roll(2,16,4),tmob.maxState());
+				else
+				if(msg.tool().ID().equals("Prayer_CureCritical"))
+					tmob.curState().adjHitPoints(Dice.roll(4,16,4),tmob.maxState());
+				else
+				if(msg.tool().ID().equals("Prayer_Heal"))
+					tmob.curState().adjHitPoints(Dice.roll(5,20,4),tmob.maxState());
+				else
+				if(msg.tool().ID().equals("Prayer_MassHeal"))
+					tmob.curState().adjHitPoints(Dice.roll(5,20,4),tmob.maxState());
 			}
 		}
 	}

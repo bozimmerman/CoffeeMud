@@ -147,6 +147,30 @@ public class SkyWatcher extends StdCharClass
 		return true;
 	}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		MOB myChar=(MOB)myHost;
+		if(!super.okMessage(myChar, msg))
+			return false;
+
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+		&&(msg.tool()!=null)
+		&&(myChar.isMine(msg.tool()))
+		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
+		&&(Dice.rollPercentage()<50))
+		{
+			if(((Ability)msg.tool()).appropriateToMyAlignment(myChar.getAlignment()))
+				return true;
+			myChar.tell("Extreme emotions disrupt your chant.");
+			return false;
+		}
+		return true;
+	}
+
 
 	public String statQualifications(){return "Constitution 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)

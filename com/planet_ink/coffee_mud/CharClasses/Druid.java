@@ -251,6 +251,30 @@ public class Druid extends StdCharClass
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		MOB myChar=(MOB)myHost;
+		if(!super.okMessage(myChar, msg))
+			return false;
+
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+		&&(msg.tool()!=null)
+		&&(myChar.isMine(msg.tool()))
+		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
+		&&(Dice.rollPercentage()<50))
+		{
+			if(((Ability)msg.tool()).appropriateToMyAlignment(myChar.getAlignment()))
+				return true;
+			myChar.tell("Extreme emotions disrupt your chant.");
+			return false;
+		}
+		return true;
+	}
+
 	protected boolean isValidBeneficiary(MOB killer,
 									   MOB killed,
 									   MOB mob,

@@ -116,7 +116,9 @@ public class StdAbility implements Ability, Cloneable
 
 	protected boolean disregardsArmorCheck(MOB mob)
 	{
-		return (CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),true,ID())>0);
+		return ((mob==null)
+				||(mob.isMonster())
+				||(CMAble.qualifiesByLevel(mob,this)));
 	}
 	
 	

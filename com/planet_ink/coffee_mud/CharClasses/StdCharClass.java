@@ -170,6 +170,7 @@ public class StdCharClass implements CharClass, Cloneable
 	{
 		if(((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)
 		&&(E instanceof Weapon)
+		&&(mob.charStats().getCurrentClass()==this)
 		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&EnvResource.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(new Integer(((Weapon)E).weaponClassification())))))
 		&&(Dice.rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))

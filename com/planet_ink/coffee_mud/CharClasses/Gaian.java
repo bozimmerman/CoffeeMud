@@ -224,6 +224,30 @@ public class Gaian extends StdCharClass
 		}
 
 	}
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		MOB myChar=(MOB)myHost;
+		if(!super.okMessage(myChar, msg))
+			return false;
+
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
+		&&(msg.tool()!=null)
+		&&(myChar.isMine(msg.tool()))
+		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
+		&&(Dice.rollPercentage()<50))
+		{
+			if(((Ability)msg.tool()).appropriateToMyAlignment(myChar.getAlignment()))
+				return true;
+			myChar.tell("Extreme emotions disrupt your chant.");
+			return false;
+		}
+		return true;
+	}
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

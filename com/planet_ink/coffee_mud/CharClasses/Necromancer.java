@@ -141,19 +141,18 @@ public class Necromancer extends Cleric
 		if(!super.okMessage(myChar, msg))
 			return false;
 
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
+		&&(myChar.baseCharStats().getClassLevel(this)>=30)
+		&&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-			   &&(myChar.baseCharStats().getClassLevel(this)>=30)
-			   &&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
+			Race newRace=(Race)CMClass.getRace("Lich");
+			if(newRace!=null)
 			{
-				Race newRace=(Race)CMClass.getRace("Lich");
-				if(newRace!=null)
-				{
-					myChar.tell("You are being transformed into a "+newRace.name()+"!!");
-					myChar.baseCharStats().setMyRace(newRace);
-					myChar.recoverCharStats();
-				}
+				myChar.tell("You are being transformed into a "+newRace.name()+"!!");
+				myChar.baseCharStats().setMyRace(newRace);
+				myChar.recoverCharStats();
 			}
 		}
 		return true;

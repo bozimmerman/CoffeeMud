@@ -73,7 +73,8 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 		"Must wear leather, cloth, or vegetation based armor.",
 		"Must wear non-metal armor.",
 		"Must wear wood or vegetation based armor.",
-		"Must wear metal armor"
+		"Must wear metal armor",
+		"Must wear stone, crystal, or metal armor."
 	};
 	
 	public static final int WEAPONS_ANY=0;
