@@ -1686,14 +1686,13 @@ public class StdMOB implements MOB
 		boolean canhearsrc=Sense.canBeHeardBy(msg.source(),this);
 
 		// first do special cases...
-		if((msg.targetCode()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this)))
+		if((msg.targetCode()!=CMMsg.NO_EFFECT)&&(msg.amITarget(this))&&(!amDead))
 		{
 			// healing by itself is pure happy
 			if(msg.targetMinor()==CMMsg.TYP_HEALING)
 			{
 				int amt=msg.value();
-				if((amt>0)&&(!amDead))
-					curState().adjHitPoints(amt,maxState());
+				if(amt>0) curState().adjHitPoints(amt,maxState());
 			}
 			else
 			if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -1701,14 +1700,16 @@ public class StdMOB implements MOB
 				int dmg=msg.value();
 				synchronized(this)
 				{
-					if((dmg>0)&&(!amDead))
+					if((dmg>0)&&(curState().getHitPoints()>0))
 					{
 						if((!curState().adjHitPoints(-dmg,maxState()))
 						&&(curState().getHitPoints()<1)
 						&&(location()!=null))
 							MUDFight.postDeath(msg.source(),this,msg);
 						else
-						if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
+						if((curState().getHitPoints()<getWimpHitPoint())
+						&&(getWimpHitPoint()>0)
+						&&(isInCombat()))
 							MUDFight.postPanic(this,msg);
 					}
 				}

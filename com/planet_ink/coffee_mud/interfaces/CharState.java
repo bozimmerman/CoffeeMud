@@ -5,8 +5,8 @@ public interface CharState extends Cloneable
 	public final static int ADJUST_FACTOR=5;
 	public final static int DEATH_THIRST_TICKS=(30*30)*6; // 6 hours
 	public final static int DEATH_HUNGER_TICKS=(30*30)*12; // 12 hours
-	public final static long REST_PER_TICK=MudHost.TICK_TIME*500;
-	public final static long FATIGUED_MILLIS=MudHost.TICK_TIME*4000;
+	public final static long REST_PER_TICK=MudHost.TICK_TIME*200;
+	public final static long FATIGUED_MILLIS=MudHost.TICK_TIME*2000;
 
 	public long getFatigue();
 	public void setFatigue(long newVal);
