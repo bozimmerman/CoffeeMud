@@ -370,7 +370,66 @@ public class StdMOB implements MOB
 		for(int c=0;c<charStats.numClasses();c++)
 			charStats.getMyClass(c).affectCharStats(this,charStats);
 		charStats.getMyRace().affectCharStats(this,charStats);
+		
+		if((!isMonster())&&(playerStats!=null))
+			switch(charStats.ageCategory())
+			{
+				case -1: break;
+				case Race.AGE_INFANT:
+				case Race.AGE_TODDLER:
+				case Race.AGE_CHILD:
+				case Race.AGE_YOUNGADULT:
+				    break;
+				case Race.AGE_MATURE:
+				case Race.AGE_MIDDLEAGED:
+				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+5);
+				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-1);
+				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
+				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
+				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+1);
+				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+1);
+				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+1);
+				    break;
+				case Race.AGE_OLD:
+				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+10);
+				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-5);
+				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-2);
+				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-2);
+				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-2);
+				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+2);
+				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+2);
+				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+2);
+				    break;
+				case Race.AGE_VENERABLE:
+				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+15);
+				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-25);
+				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-3);
+				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-3);
+				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-3);
+				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+3);
+				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+3);
+				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+3);
+				    break;
+				case Race.AGE_ANCIENT:
+				{
+					int[] chart=charStats.getMyRace().getAgingChart();
+					int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
+					int age=charStats.getStat(CharStats.AGE)-chart[Race.AGE_ANCIENT];
+					int num=(diff>0)?(int)Math.abs(Math.floor(Util.div(age,diff)))-1:1;
+					if(num==0) num=1;
+				    charStats.setStat(CharStats.SAVE_MIND,charStats.getStat(CharStats.SAVE_MIND)+20+(5*num));
+				    charStats.setStat(CharStats.SAVE_UNDEAD,charStats.getStat(CharStats.SAVE_UNDEAD)-50+15+(5*num));
+				    charStats.setStat(CharStats.MAX_STRENGTH_ADJ,charStats.getStat(CharStats.MAX_STRENGTH_ADJ)-(3+(1*num)));
+				    charStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-(3+(num)));
+				    charStats.setStat(CharStats.MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)-(3+(num)));
+				    charStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+(3+(num)));
+				    charStats.setStat(CharStats.MAX_WISDOM_ADJ,charStats.getStat(CharStats.MAX_WISDOM_ADJ)+(3+(num)));
+				    charStats.setStat(CharStats.MAX_CHARISMA_ADJ,charStats.getStat(CharStats.MAX_CHARISMA_ADJ)+(3+(num)));
+				    break;
+				}
+			}
 	}
+	
 	public void setBaseCharStats(CharStats newBaseCharStats)
 	{
 		baseCharStats=newBaseCharStats.cloneCharStats();
@@ -1127,7 +1186,7 @@ public class StdMOB implements MOB
 			if((target.getVictim()==source)&&(target.rangeToTarget()>=0))
 				source.setAtRange(target.rangeToTarget());
 			else
-			if(follow!=null)
+			if((follow!=null)&&(follow.location()==location()))
 			{
 				int newRange=follow.fetchFollowerOrder(source);
 				if(newRange<0)

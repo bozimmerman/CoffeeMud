@@ -37,6 +37,9 @@ public class GiantFish extends Fish
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,2,4,6,8,10,12,14,16};
+	public int[] getAgingChart(){return agingChart;}
+	
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

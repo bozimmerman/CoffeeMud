@@ -48,6 +48,9 @@ public class Bullywug extends StdRace
 	private static final int[] parts={0 ,2 ,0 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,4,8,12,16,20,24,28,32};
+	public int[] getAgingChart(){return agingChart;}
+	
 	protected static Vector resources=new Vector();
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 

@@ -44,6 +44,9 @@ public class WereAmphibian extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,1 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,4,8,12,16,20,24,28,32};
+	public int[] getAgingChart(){return agingChart;}
+	
 	protected static Vector resources=new Vector();
 
 	public Weapon myNaturalWeapon()

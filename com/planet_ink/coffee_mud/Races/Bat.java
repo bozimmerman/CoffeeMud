@@ -47,6 +47,9 @@ public class Bat extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,0 ,1 ,2 };
 	public int[] bodyMask(){return parts;}
 
+	private int[] agingChart={0,1,2,4,7,15,20,21,22};
+	public int[] getAgingChart(){return agingChart;}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

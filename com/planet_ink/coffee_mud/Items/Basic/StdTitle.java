@@ -207,7 +207,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.tool()==this))
 		{
 			LandTitle A=fetchALandTitle();
-			if(A.landOwner().length()>0)
+			if((A!=null)&&(A.landOwner().length()>0))
 			{
 				ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)msg.target());
 			    if((((SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER))
@@ -233,7 +233,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.tool()==this))
 		{
 			LandTitle A=fetchALandTitle();
-			if(A.landOwner().length()==0)
+			if((A!=null)&&(A.landOwner().length()>0))
 			{
 		        String str="I'm sorry, '"+msg.tool().Name()+" must be destroyed.";
 		        if(((MOB)msg.target()).isMonster())
