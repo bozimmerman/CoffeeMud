@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class MobData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name() {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public static int getShopCardinality(ShopKeeper E, Environmental O)
 	{
@@ -278,7 +278,7 @@ public class MobData extends StdWebMacro
 		if(mobCode.equals("NEW"))
 			M=CMClass.getMOB("GenMob");
 		else
-			M=RoomData.getMOBAtCardinality(R,Util.s_int(mobCode)-1);
+			M=RoomData.getMOBFromCode(R,mobCode);
 		
 		if(M==null)
 			return "No MOB?!";
@@ -586,7 +586,7 @@ public class MobData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				if(M.isMine(I))
-					str.append("<OPTION SELECTED VALUE=\""+(RoomData.getItemCardinality(M,I)+1)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name()))+((I.amWearingAt(Item.INVENTORY))?"":" (worn/wielded)"));
+					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name()))+((I.amWearingAt(Item.INVENTORY))?"":" (worn/wielded)"));
 				else
 				if(itemlist.contains(I))
 					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
@@ -595,7 +595,7 @@ public class MobData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+(i+1)+"');\">");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");

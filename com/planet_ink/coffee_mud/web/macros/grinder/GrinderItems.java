@@ -24,7 +24,7 @@ public class GrinderItems
 		MOB M=null;
 		if((mobNum!=null)&&(mobNum.length()>0))
 		{
-			M=RoomData.getMOBAtCardinality(R,Util.s_int(mobNum)-1);
+			M=RoomData.getMOBFromCode(R,mobNum);
 			if(M==null)
 				return "No MOB?!";
 		}
@@ -32,9 +32,9 @@ public class GrinderItems
 			I=CMClass.getItem(newClassID);
 		else
 		if(M!=null)
-			I=M.fetchInventory(Util.s_int(itemCode)-1);
+			I=RoomData.getItemFromCode(M,itemCode);
 		else
-			I=R.fetchItem(Util.s_int(itemCode)-1);
+			I=RoomData.getItemFromCode(R,itemCode);
 		
 		if(I==null)
 			return "No Item?!";
@@ -301,13 +301,13 @@ public class GrinderItems
 					((Food)I).setNourishment(Util.s_int(old));
 				break;
 			case 57: // container
-				if(Util.s_int(old)<=0)
+				if(!RoomData.isAllNum(old))
 					I.setContainer(null);
 				else
 				if(M==null)
-					I.setContainer(R.fetchItem(Util.s_int(old)-1));
+					I.setContainer(RoomData.getItemFromCode(R,old));
 				else
-					I.setContainer(M.fetchInventory(Util.s_int(old)-1));
+					I.setContainer(RoomData.getItemFromCode(M,old));
 				break;
 			case 58: // is light
 				break;
@@ -403,7 +403,10 @@ public class GrinderItems
 			}
 		}
 		if(M==null)
+		{
 			ExternalPlay.DBUpdateItems(R);
+			httpReq.getRequestParameters().put("ITEM",RoomData.getItemCode(R,I));
+		}
 		else
 		{
 			if((reqs.get("BEINGWORN")!=null)
@@ -415,6 +418,8 @@ public class GrinderItems
 			else
 				I.wearAt(Item.INVENTORY);
 			ExternalPlay.DBUpdateMOBs(R);
+			httpReq.getRequestParameters().put("MOB",RoomData.getMOBCode(R,M));
+			httpReq.getRequestParameters().put("ITEM",RoomData.getItemCode(M,I));
 		}
 		R.startItemRejuv();
 		return "";

@@ -41,18 +41,21 @@ public class ItemData extends StdWebMacro
 		
 		Item I=null;
 		MOB M=null;
+		if((mobNum!=null)&&(mobNum.length()>0))
+		{
+			M=RoomData.getMOBFromCode(R,mobNum);
+			if(M==null)
+				return "No MOB?!";
+			if(itemCode.equals("NEW"))
+				I=CMClass.getItem("GenItem");
+			else
+				I=RoomData.getItemFromCode(M,itemCode);
+		}
+		else
 		if(itemCode.equals("NEW"))
 			I=CMClass.getItem("GenItem");
 		else
-		if((mobNum!=null)&&(mobNum.length()>0))
-		{
-			M=RoomData.getMOBAtCardinality(R,Util.s_int(mobNum)-1);
-			if(M==null)
-				return "No MOB?!";
-			I=M.fetchInventory(Util.s_int(itemCode)-1);
-		}
-		else
-			I=R.fetchItem(Util.s_int(itemCode)-1);
+			I=RoomData.getItemFromCode(R,itemCode);
 		
 		if(I==null)
 			return "No Item?!";
@@ -488,7 +491,7 @@ public class ItemData extends StdWebMacro
 					if(M==null)
 					{
 						if((firstTime)&&(I.container()!=null))
-							old=""+(RoomData.getItemCardinality(R,I.container())+1);
+							old=""+RoomData.getItemCode(R,I.container());
 						else
 							old=(firstTime)?"":old;
 						str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">Inventory");
@@ -497,8 +500,8 @@ public class ItemData extends StdWebMacro
 							Item I2=R.fetchItem(i);
 							if((I2!=I)&&(I2!=oldI)&&(I2 instanceof Container)&&(!oldContents.contains(I2)))
 							{
-								str.append("<OPTION VALUE="+(i+1));
-								if(Util.s_int(old)==(i+1))
+								str.append("<OPTION VALUE=\""+RoomData.getItemCode(R,I2)+"\"");
+								if(old.equals(RoomData.getItemCode(R,I2)))
 									str.append(" SELECTED");
 								str.append(">"+I2.name()+" ("+CMClass.className(I2)+")"+((I2.container()==null)?"":(" in "+I2.container().name())));
 							}
@@ -507,7 +510,7 @@ public class ItemData extends StdWebMacro
 					else
 					{
 						if((firstTime)&&(I.container()!=null))
-							old=""+(RoomData.getItemCardinality(M,I.container())+1);
+							old=""+RoomData.getItemCode(M,I.container());
 						else
 							old=(firstTime)?"":old;
 						str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">Inventory");
@@ -516,8 +519,8 @@ public class ItemData extends StdWebMacro
 							Item I2=M.fetchInventory(i);
 							if((I2!=I)&&(I2!=I)&&(I2 instanceof Container)&&(!oldContents.contains(I2)))
 							{
-								str.append("<OPTION VALUE="+(i+1));
-								if(Util.s_int(old)==(i+1))
+								str.append("<OPTION VALUE=\""+RoomData.getItemCode(M,I2)+"\"");
+								if(old.equals(RoomData.getItemCode(M,I2)))
 									str.append(" SELECTED");
 								str.append(">"+" ("+CMClass.className(I2)+")"+((I2.container()==null)?"":(" in "+I2.container().name())));
 							}

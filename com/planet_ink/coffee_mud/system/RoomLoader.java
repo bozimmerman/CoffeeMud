@@ -158,7 +158,7 @@ public class RoomLoader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 		
-		DBReadContent(null,hash);
+		DBReadContent(null,hash,myHost);
 		
 		myHost.setGameStatusStr("Booting: Done loading room data)");
 		for(Enumeration r=hash.elements();r.hasMoreElements();)
@@ -343,11 +343,12 @@ public class RoomLoader
 			rooms.put(thisRoom.ID(),thisRoom);
 		}
 		recordCount=rooms.size();
+		updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 		currentRecordPos=0;
 		for(Enumeration e=rooms.elements();e.hasMoreElements();)
 		{
-			if(myHost!=null)
-				myHost.setGameStatusStr("Booting: Populating Rooms ("+(++currentRecordPos)+" of "+recordCount+")");
+			if((((++currentRecordPos)%updateBreak)==0)&&(myHost!=null))
+				myHost.setGameStatusStr("Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
 			Room room=(Room)e.nextElement();
 			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.ID());
 			if(itemNums!=null)

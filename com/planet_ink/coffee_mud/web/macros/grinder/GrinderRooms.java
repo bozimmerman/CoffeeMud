@@ -120,10 +120,10 @@ public class GrinderRooms
 				if(MATCHING==null)
 					break;
 				else
-				if(Util.s_int(MATCHING)>0)
+				if(RoomData.isAllNum(MATCHING))
 				{
-					if((Util.s_int(MATCHING)-1)<allmobs.size())
-						happilyAddMob((MOB)allmobs.elementAt(Util.s_int(MATCHING)-1),R);
+					MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
+					if(M!=null)	happilyAddMob(M,R);
 				}
 				else
 				if(MATCHING.indexOf("@")>0)
@@ -166,7 +166,7 @@ public class GrinderRooms
 					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 					if(I2!=null)
 					{
-						if(Util.s_int(MATCHING)>0)
+						if(RoomData.isAllNum(MATCHING))
 							happilyAddItem(I2,R);
 						else
 							happilyAddItem((Item)I2.copyOf(),R);

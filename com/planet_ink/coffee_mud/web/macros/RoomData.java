@@ -11,53 +11,130 @@ public class RoomData extends StdWebMacro
 	public static Vector mobs=new Vector();
 	public static Vector items=new Vector();
 
-	public static int getItemCardinality(Room R, Item I)
+	public static String getItemCode(Room R, Item I)
 	{
+		if(I==null) return "";
 		for(int i=0;i<R.numItems();i++)
-		{
-			Item Ir=R.fetchItem(i);
-			
-			if(Ir==I) return i;
-		}
-		return -1;
+			if(R.fetchItem(i)==I)
+				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()+"/"+I.text()).hashCode()).toString()+i;
+		return "";
 	}
 	
-	public static int getItemCardinality(MOB M, Item I)
+	public static String getItemCode(Vector allitems, Item I)
 	{
+		if(I==null) return "";
+		for(int i=0;i<allitems.size();i++)
+			if(allitems.elementAt(i)==I)
+				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()+"/"+I.text()).hashCode()).toString()+i;
+		return "";
+	}
+	
+	public static String getItemCode(MOB M, Item I)
+	{
+		if(I==null) return "";
 		for(int i=0;i<M.inventorySize();i++)
-		{
-			Item Im=M.fetchInventory(i);
-			if(Im==I) return i;
-		}
-		return -1;
+			if(M.fetchInventory(i)==I)
+				return new Long(new String(CMClass.className(I)+"/"+I.name()+"/"+I.displayText()+"/"+I.text()).hashCode()).toString()+i;
+		return "";
 	}
 	
-	public static int getMOBCardinality(Room R, MOB M)
+	public static String getMOBCode(Room R, MOB M)
 	{
-		int card=0;
+		if(M==null) return "";
+		int code=0;
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M2=R.fetchInhabitant(i);
-			if(M2==M) return card;
-			if(M2.isEligibleMonster())
-				card++;
+			if(M==M2)
+				return new Long(new String(CMClass.className(M)+"/"+M.name()+"/"+M.displayText()+"/"+M.text()).hashCode()).toString()+code;
+			else
+			if((M2!=null)&&(M2.isEligibleMonster()))
+				code++;
 		}
-		return -1;
+		return "";
+	}
+	
+	public static String getMOBCode(Vector mobs, MOB M)
+	{
+		if(M==null) return "";
+		for(int i=0;i<mobs.size();i++)
+			if(mobs.elementAt(i)==M)
+				return new Long(new String(CMClass.className(M)+"/"+M.name()+"/"+M.displayText()+"/"+M.text()).hashCode()).toString()+i;
+		return "";
+	}
+	
+	public static Item getItemFromCode(MOB M, String code)
+	{
+		for(int i=0;i<M.inventorySize();i++)
+			if(getItemCode(M,M.fetchInventory(i)).equals(code))
+				return M.fetchInventory(i);
+		if(code.length()>2) code=code.substring(0,code.length()-2);
+		for(int i=0;i<M.inventorySize();i++)
+			if(getItemCode(M,M.fetchInventory(i)).startsWith(code))
+				return M.fetchInventory(i);
+		return null;
+	}
+	
+	public static Item getItemFromCode(Room R, String code)
+	{
+		for(int i=0;i<R.numItems();i++)
+			if(getItemCode(R,R.fetchItem(i)).equals(code))
+				return R.fetchItem(i);
+		if(code.length()>2) code=code.substring(0,code.length()-2);
+		for(int i=0;i<R.numItems();i++)
+			if(getItemCode(R,R.fetchItem(i)).startsWith(code))
+				return R.fetchItem(i);
+		return null;
+	}
+	
+	public static Item getItemFromCode(Vector allitems, String code)
+	{
+		for(int i=0;i<allitems.size();i++)
+			if(getItemCode(allitems,(Item)allitems.elementAt(i)).equals(code))
+				return (Item)allitems.elementAt(i);
+		if(code.length()>2) code=code.substring(0,code.length()-2);
+		for(int i=0;i<allitems.size();i++)
+			if(getItemCode(allitems,(Item)allitems.elementAt(i)).startsWith(code))
+				return (Item)allitems.elementAt(i);
+		return null;
+	}
+	
+	public static MOB getMOBFromCode(Room R, String code)
+	{
+		for(int i=0;i<R.numInhabitants();i++)
+			if(getMOBCode(R,R.fetchInhabitant(i)).equals(code))
+				return R.fetchInhabitant(i);
+		if(code.length()>2) code=code.substring(0,code.length()-2);
+		for(int i=0;i<R.numInhabitants();i++)
+			if(getMOBCode(R,R.fetchInhabitant(i)).startsWith(code))
+				return R.fetchInhabitant(i);
+		return null;
+	}
+	
+	public static MOB getMOBFromCode(Vector allmobs, String code)
+	{
+		for(int i=0;i<allmobs.size();i++)
+			if(getMOBCode(allmobs,((MOB)allmobs.elementAt(i))).equals(code))
+				return ((MOB)allmobs.elementAt(i));
+		if(code.length()>2) code=code.substring(0,code.length()-2);
+		for(int i=0;i<allmobs.size();i++)
+			if(getMOBCode(allmobs,((MOB)allmobs.elementAt(i))).startsWith(code))
+				return ((MOB)allmobs.elementAt(i));
+		return null;
 	}
 	
 	public static Item getItemFromAnywhere(Object allitems, String MATCHING)
 	{
-		if(Util.s_int(MATCHING)>0)
+		if(isAllNum(MATCHING))
 		{
 			if(allitems instanceof Room)
-				return ((Room)allitems).fetchItem(Util.s_int(MATCHING)-1);
+				return getItemFromCode((Room)allitems,MATCHING);
 			else
 			if(allitems instanceof MOB)
-				return ((MOB)allitems).fetchInventory(Util.s_int(MATCHING)-1);
+				return getItemFromCode((MOB)allitems,MATCHING);
 			else
-			if((allitems instanceof Vector)
-			&&((Util.s_int(MATCHING)-1)<((Vector)allitems).size()))
-				return ((Item)((Vector)allitems).elementAt(Util.s_int(MATCHING)-1));
+			if(allitems instanceof Vector)
+				return getItemFromCode((Vector)allitems,MATCHING);
 		}
 		else
 		if(MATCHING.indexOf("@")>0)
@@ -95,21 +172,6 @@ public class RoomData extends StdWebMacro
 				if(CMClass.className(I).equals(MATCHING))
 					return I;
 			}
-		}
-		return null;
-	}
-	
-	public static MOB getMOBAtCardinality(Room R, int here)
-	{
-		int card=0;
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			MOB M2=R.fetchInhabitant(i);
-			if(M2.isEligibleMonster())
-				if(card==here)
-					return M2;
-				else
-					card++;
 		}
 		return null;
 	}
@@ -201,6 +263,16 @@ public class RoomData extends StdWebMacro
 			}
 		}
 		return mobs;
+	}
+	
+	public static boolean isAllNum(String str)
+	{
+		if(str.length()==0) return false;
+		for(int c=0;c<str.length();c++)
+			if((!Character.isDigit(str.charAt(c)))
+			&&(str.charAt(c)!='-'))
+				return false;
+		return true;
 	}
 	
 	public static Vector contributeItems(Vector inhabs)
@@ -304,9 +376,9 @@ public class RoomData extends StdWebMacro
 					if(MATCHING==null)
 						break;
 					else
-					if(Util.s_int(MATCHING)>0)
+					if(isAllNum(MATCHING))
 					{
-						MOB M2=getMOBAtCardinality(R,Util.s_int(MATCHING)-1);
+						MOB M2=getMOBFromCode(R,MATCHING);
 						if(M2!=null)
 							classes.addElement(M2);
 					}
@@ -349,7 +421,7 @@ public class RoomData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				if(R.isInhabitant(M))
-					str.append("<OPTION SELECTED VALUE=\""+(getMOBCardinality(R,M)+1)+"\">"+M.name()+" ("+CMClass.className(M)+")");
+					str.append("<OPTION SELECTED VALUE=\""+getMOBCode(classes,M)+"\">"+M.name()+" ("+CMClass.className(M)+")");
 				else
 				if(moblist.contains(M))
 					str.append("<OPTION SELECTED VALUE=\""+M+"\">"+M.name()+" ("+CMClass.className(M)+")");
@@ -358,7 +430,7 @@ public class RoomData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+(i+1)+"');\">");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+getMOBCode(classes,M)+"');\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
@@ -420,7 +492,7 @@ public class RoomData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				if(R.isContent(I))
-					str.append("<OPTION SELECTED VALUE=\""+(getItemCardinality(R,I)+1)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name())));
+					str.append("<OPTION SELECTED VALUE=\""+getItemCode(classes,I)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name())));
 				else
 				if(itemlist.contains(I))
 					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name())));
@@ -429,7 +501,7 @@ public class RoomData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+(i+1)+"');\">");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+getItemCode(classes,I)+"');\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
