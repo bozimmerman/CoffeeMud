@@ -343,7 +343,246 @@ public class TheFight
 			mob.tell("Automelee has been turned back on.  You will now enter melee combat normally.");
 		}
 	}
+
+	public Vector getSheaths(MOB mob, boolean withWeapons)
+	{
+		Vector sheaths=new Vector();
+		if(mob!=null)
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((I!=null)
+			&&(!I.amWearingAt(Item.INVENTORY))
+			&&(I instanceof Container)
+			&&(((Container)I).capacity()>0))
+			{
+				if(withWeapons)
+				{
+					Vector contents=((Container)I).getContents();
+					for(int c=0;c<contents.size();c++)
+						if(contents.elementAt(c) instanceof Weapon)
+						{
+							sheaths.addElement(I);
+							break;
+						}
+				}
+				else
+					sheaths.addElement(I);
+			}
+		}
+		return sheaths;
+	}
 	
+	public void sheath(MOB mob, Vector commands)
+	{
+		commands.removeElementAt(0);
+		Vector sheaths=getSheaths(mob,false);
+		Vector items=new Vector();
+		Vector containers=new Vector();
+		if(commands.size()==0)
+		{
+			Item item1=mob.fetchWieldedItem();
+			Item item2=mob.fetchWornItem(Item.HELD);
+			if(item2==item1) item2=null;
+			for(int i=0;i<sheaths.size();i++)
+			{
+				Container sheath=(Container)sheaths.elementAt(i);
+				if((item1!=null)
+				   &&(sheath.canContain(item1)))
+				{
+					items.addElement(item1);
+					containers.addElement(sheath);
+				}
+				else
+				if((item2!=null)
+				   &&(sheath.canContain(item2)))
+				{
+					items.addElement(item2);
+					containers.addElement(sheath);
+				}
+			}
+			if((item2!=null)&&(!items.contains(item2)))
+			for(int i=0;i<sheaths.size();i++)
+			{
+				Container sheath=(Container)sheaths.elementAt(i);
+				if(sheath.canContain(item2))
+				{
+					items.addElement(item2);
+					containers.addElement(sheath);
+				}
+			}
+		}
+		else
+		{
+			commands.insertElementAt("all",0);
+			Container container=(Container)new ItemUsage().possibleContainer(mob,commands,Item.WORN_REQ_WORNONLY);
+			String thingToPut=Util.combine(commands,0);
+			int addendum=1;
+			String addendumStr="";
+			Vector V=new Vector();
+			boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+			if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
+			if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
+			do
+			{
+				Item putThis=mob.fetchWornItem(thingToPut+addendumStr);
+				if(putThis==null) break;
+				if(((putThis.amWearingAt(Item.WIELD))
+				   ||(putThis.amWearingAt(Item.HELD)))
+				   &&(putThis instanceof Weapon))
+				{
+					if(Sense.canBeSeenBy(putThis,mob))
+					{
+						items.addElement(putThis);
+						if((container!=null)&&(container.canContain(putThis)))
+							containers.addElement(container);
+						else
+						{
+							Container tempContainer=null;
+							for(int i=0;i<sheaths.size();i++)
+							{
+								Container sheath=(Container)sheaths.elementAt(i);
+								if(sheath.canContain(putThis))
+								{tempContainer=sheath; break;}
+							}
+							if(tempContainer==null)
+								items.remove(putThis);
+							else
+								containers.addElement(tempContainer);
+						}
+					}
+				}
+				addendumStr="."+(++addendum);
+			}
+			while(allFlag);
+		}
+		
+		if(items.size()==0)
+		{
+			if(commands.size()==0)
+				mob.tell("You don't seem to be wielding anything you can sheath.");
+			else
+				mob.tell("You don't seem to be wielding that.");
+		}
+		else
+		for(int i=0;i<items.size();i++)
+		{
+			Item putThis=(Item)items.elementAt(i);
+			Container container=(Container)containers.elementAt(i);
+			if(ExternalPlay.remove(mob,putThis,true))
+			{
+				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> sheath(s) "+putThis.name()+" in <T-NAME>");
+				if(mob.location().okAffect(putMsg))
+					mob.location().send(mob,putMsg);
+			}
+		}
+	}
+	
+	public void draw(MOB mob, Vector commands)
+	{
+		boolean allFlag=false;
+		Vector containers=new Vector();
+		String containerName="";
+		String whatToGet="";
+		int c=0;
+		Vector sheaths=getSheaths(mob,true);
+		commands.removeElementAt(0);
+		if(commands.size()==0)
+		{
+			if(sheaths.size()>0)
+				containerName=((Item)sheaths.elementAt(0)).name();
+			else
+				containerName="a weapon";
+			for(int i=0;i<mob.inventorySize();i++)
+			{
+				Item I=mob.fetchInventory(i);
+				if((I instanceof Weapon)
+				   &&(I.container()!=null)
+				   &&(sheaths.contains(I.container())))
+				{
+					containers.addElement(I.container());
+					whatToGet=I.name();
+					break;
+				}
+			}
+			if(whatToGet.length()==0)
+				for(int i=0;i<mob.inventorySize();i++)
+				{
+					Item I=mob.fetchInventory(i);
+					if(I instanceof Weapon)
+					{
+						whatToGet=I.name();
+						break;
+					}
+				}
+		}
+		else
+		{
+			containerName=(String)commands.lastElement();
+			commands.insertElementAt("all",0);
+			containers=new ItemUsage().possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY);
+			if(containers.size()==0) containers=sheaths;
+			whatToGet=Util.combine(commands,0);
+			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+			if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
+			if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
+		}
+		boolean doneSomething=false;
+		while((c<containers.size())||(containers.size()==0))
+		{
+			Vector V=new Vector();
+			Item container=null;
+			if(containers.size()>0) container=(Item)containers.elementAt(c++);
+			int addendum=1;
+			String addendumStr="";
+			do
+			{
+				Environmental getThis=null;
+				if((container!=null)&&(mob.isMine(container)))
+				   getThis=mob.fetchInventory((Item)container,whatToGet+addendumStr);
+				if(getThis==null) break;
+				if((getThis instanceof Weapon)&&(Sense.canBeSeenBy(getThis,mob)))
+					V.addElement(getThis);
+				addendumStr="."+(++addendum);
+			}
+			while(allFlag);
+			
+			for(int i=0;i<V.size();i++)
+			{
+				Item getThis=(Item)V.elementAt(i);
+				long wearCode=0;
+				if(container!=null)	wearCode=container.rawWornCode();
+				if(new ItemUsage().get(mob,container,(Item)getThis,false,"draw"))
+				{
+					if(getThis.container()==null)
+					{
+						if(mob.amWearingSomethingHere(Item.WIELD))
+							new ItemUsage().hold(mob,getThis,true);
+						else
+							new ItemUsage().wield(mob,getThis,true);
+					}
+				}
+				if(container!=null)	container.setRawWornCode(wearCode);
+				doneSomething=true;
+			}
+			
+			if(containers.size()==0) break;
+		}
+		if(!doneSomething)
+		{
+			if(containers.size()>0)
+			{
+				Item container=(Item)containers.elementAt(0);
+				if(((Container)container).isOpen())
+					mob.tell("You don't see that in "+container.name()+".");
+				else
+					mob.tell(container.name()+" is closed.");
+			}
+			else
+				mob.tell("You don't see "+containerName+" here.");
+		}
+	}
+
 	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
 		if(source==null) return;

@@ -45,7 +45,7 @@ public class Spell_WallOfForce extends Spell
 			{
 				mob.tell("Malice neither escapes nor enters the wall of force.");
 				if(mob.isMonster())
-					ExternalPlay.remove(mob,(Weapon)affect.tool());
+					ExternalPlay.remove(mob,(Weapon)affect.tool(),false);
 				return false;
 			}
 			if((affect.sourceMinor()==Affect.TYP_ADVANCE)

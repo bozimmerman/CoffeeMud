@@ -11,8 +11,8 @@ public interface ExternalCommand
 	public void die(MOB source, MOB target);
 
 	// other actions
-	public boolean wear(MOB mob, Item item);
-	public boolean remove(MOB mob, Item item);
+	public boolean wear(MOB mob, Item item, boolean quiet);
+	public boolean remove(MOB mob, Item item, boolean quiet);
 	public void standIfNecessary(MOB mob);
 	public Ability getToEvoke(MOB mob, Vector commands);
 	public void look(MOB mob, Vector commands, boolean quiet);

@@ -76,18 +76,18 @@ public class ExternalPlay
 		if(player!=null) return player.niceLister(mob,items,useName);
 		return new StringBuffer("");
 	}
-	public static boolean remove(MOB mob, Item item)
+	public static boolean remove(MOB mob, Item item, boolean quiet)
 	{
-		if(player!=null) return player.remove(mob,item);
+		if(player!=null) return player.remove(mob,item,quiet);
 		return false;
 	}
 	public static void follow(MOB mob, MOB tofollow, boolean quiet)
 	{
 		if(player!=null) player.follow(mob,tofollow,quiet);
 	}
-	public static boolean wear(MOB mob, Item item)
+	public static boolean wear(MOB mob, Item item, boolean quiet)
 	{
-		if(player!=null) return player.wear(mob,item);
+		if(player!=null) return player.wear(mob,item,quiet);
 		return false;
 	}
 	public static void standIfNecessary(MOB mob)

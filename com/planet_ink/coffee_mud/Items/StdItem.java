@@ -511,7 +511,7 @@ public class StdItem implements Item
 				Item alreadyWearing=mob.fetchWornItem(Item.HELD);
 				if(alreadyWearing!=null)
 				{
-					if(!ExternalPlay.remove(mob,alreadyWearing))
+					if(!ExternalPlay.remove(mob,alreadyWearing,false))
 					{
 						mob.tell("Your hands are full.");
 						return false;
@@ -548,7 +548,7 @@ public class StdItem implements Item
 				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
 				if(alreadyWearing!=null)
 				{
-					if(!ExternalPlay.remove(mob,alreadyWearing))
+					if(!ExternalPlay.remove(mob,alreadyWearing,false))
 					{
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
 						return false;
@@ -584,7 +584,7 @@ public class StdItem implements Item
 				Item alreadyWearing=mob.fetchWornItem(Item.WIELD);
 				if(alreadyWearing!=null)
 				{
-					if(!ExternalPlay.remove(mob,alreadyWearing))
+					if(!ExternalPlay.remove(mob,alreadyWearing,false))
 					{
 						mob.tell("You are already wielding "+alreadyWearing.name()+".");
 						return false;

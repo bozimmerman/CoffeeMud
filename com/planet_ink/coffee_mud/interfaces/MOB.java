@@ -133,6 +133,7 @@ public interface MOB
 	public int inventorySize();
 	public Item fetchInventory(int index);
 	public Item fetchInventory(String itemName);
+	public Item fetchInventory(Item goodLocation, String itemName);
 	public Item fetchCarried(Item goodLocation, String itemName);
 	public Item fetchWornItem(String itemName);
 	public Item fetchWornItem(long wornCode);

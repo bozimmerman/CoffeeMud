@@ -186,6 +186,9 @@ public class CommandProcessor
 				case CommandSet.DOWN:
 					movement.standAndGo(mob,Directions.DOWN);
 					break;
+				case CommandSet.DRAW:
+					theFight.draw(mob,commands);
+					break;
 				case CommandSet.DRINK:
 					itemUsage.drink(mob,commands);
 					break;
@@ -448,6 +451,9 @@ public class CommandProcessor
 					break;
 				case CommandSet.SERVE:
 					socialProcessor.serve(mob,commands);
+					break;
+				case CommandSet.SHEATH:
+					theFight.sheath(mob,commands);
 					break;
 				case CommandSet.SIT:
 					movement.sit(mob,commands);

@@ -1114,7 +1114,7 @@ public class StdMOB implements MOB
 					if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 					&&(tool instanceof Weapon)
 					&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
-						ExternalPlay.remove(this,(Item)tool);
+						ExternalPlay.remove(this,(Item)tool,false);
 					return false;
 				}
 			}
@@ -1732,6 +1732,12 @@ public class StdMOB implements MOB
 	{
 		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,true);
 		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,false);
+		return item;
+	}
+	public Item fetchInventory(Item goodLocation, String itemName)
+	{
+		Item item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,true);
+		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,false);
 		return item;
 	}
 	public Item fetchCarried(Item goodLocation, String itemName)

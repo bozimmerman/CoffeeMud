@@ -48,7 +48,7 @@ public class Spell_WallOfAir extends Spell
 			M.setLocation(null);
 			M.setVictim(null);
 			if(mob.isMonster())
-				ExternalPlay.remove(mob,(Item)affect.tool());
+				ExternalPlay.remove(mob,(Item)affect.tool(),false);
 			return false;
 		}
 			

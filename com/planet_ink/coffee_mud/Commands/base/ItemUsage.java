@@ -155,8 +155,14 @@ public class ItemUsage
 		else
 			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 	}
-
 	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	{ return get(mob,container,getThis,quiet,"get");}
+
+	public boolean get(MOB mob, 
+					   Item container, 
+					   Item getThis, 
+					   boolean quiet, 
+					   String getWord)
 	{
 		String theWhat=getThis.name();
 		Environmental target=getThis;
@@ -168,7 +174,7 @@ public class ItemUsage
 			theWhat+=" from "+container.name();
 		}
 
-		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> get(s) "+theWhat);
+		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat);
 		if(!mob.location().okAffect(msg))
 			return false;
 		mob.location().send(mob,msg);
@@ -452,7 +458,7 @@ public class ItemUsage
 		}
 	}
 
-	public boolean wear(MOB mob, Item item)
+	public boolean wear(MOB mob, Item item, boolean quiet)
 	{
 		String str="<S-NAME> put(s) on <T-NAME>.";
 		int msgType=Affect.MSG_WEAR;
@@ -468,7 +474,7 @@ public class ItemUsage
 			str="<S-NAME> wield(s) <T-NAME>.";
 			msgType=Affect.MSG_WIELD;
 		}
-		FullMsg newMsg=new FullMsg(mob,item,null,msgType,str);
+		FullMsg newMsg=new FullMsg(mob,item,null,msgType,quiet?null:str);
 		if(mob.location().okAffect(newMsg))
 		{
 			mob.location().send(mob,newMsg);
@@ -477,9 +483,9 @@ public class ItemUsage
 		return false;
 	}
 
-	public boolean wield(MOB mob, Item item)
+	public boolean wield(MOB mob, Item item, boolean quiet)
 	{
-		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_WIELD,"<S-NAME> wield(s) <T-NAME>.");
+		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_WIELD,quiet?null:"<S-NAME> wield(s) <T-NAME>.");
 		if(mob.location().okAffect(newMsg))
 		{
 			mob.location().send(mob,newMsg);
@@ -488,7 +494,7 @@ public class ItemUsage
 		return false;
 	}
 
-	public boolean hold(MOB mob, Item item)
+	public boolean hold(MOB mob, Item item, boolean quiet)
 	{
 		int msgType=Affect.MSG_HOLD;
 		String str="<S-NAME> hold(s) <T-NAME>.";
@@ -499,7 +505,7 @@ public class ItemUsage
 			str="<S-NAME> wield(s) <T-NAME>.";
 			msgType=Affect.MSG_WIELD;
 		}
-		FullMsg newMsg=new FullMsg(mob,item,null,msgType,str);
+		FullMsg newMsg=new FullMsg(mob,item,null,msgType,quiet?null:str);
 		if(mob.location().okAffect(newMsg))
 		{
 			mob.location().send(mob,newMsg);
@@ -560,7 +566,7 @@ public class ItemUsage
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			wear(mob,(Item)items.elementAt(i));
+			wear(mob,(Item)items.elementAt(i),false);
 	}
 
 	public void hold(MOB mob, Vector commands)
@@ -576,7 +582,7 @@ public class ItemUsage
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			hold(mob,(Item)items.elementAt(i));
+			hold(mob,(Item)items.elementAt(i),false);
 	}
 
 	public void wield(MOB mob, Vector commands)
@@ -592,7 +598,7 @@ public class ItemUsage
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			wield(mob,(Item)items.elementAt(i));
+			wield(mob,(Item)items.elementAt(i),false);
 	}
 
 	public void drink(MOB mob, Vector commands)
@@ -696,9 +702,9 @@ public class ItemUsage
 		read(mob,thisThang, theRest);
 	}
 
-	public boolean remove(MOB mob, Item item)
+	public boolean remove(MOB mob, Item item, boolean quiet)
 	{
-		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_GET,"<S-NAME> remove(s) <T-NAME>.");
+		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_GET,quiet?null:"<S-NAME> remove(s) <T-NAME>.");
 		if(mob.location().okAffect(newMsg))
 		{
 			mob.location().send(mob,newMsg);
@@ -720,7 +726,7 @@ public class ItemUsage
 			mob.tell("You don't seem to be wearing that.");
 		else
 		for(int i=0;i<items.size();i++)
-			remove(mob,(Item)items.elementAt(i));
+			remove(mob,(Item)items.elementAt(i),false);
 	}
 
 	public void push(MOB mob, String whatToOpen, CommandSet commandSet)
