@@ -32,7 +32,6 @@ public class Missionary extends Cleric
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected boolean disableClericSpellGrant(){return true;}
 
 	public Missionary()
 	{

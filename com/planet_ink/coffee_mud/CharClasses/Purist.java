@@ -33,7 +33,6 @@ public class Purist extends Cleric
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected int alwaysFlunksThisQuality(){return 0;}
-	protected boolean disableClericSpellGrant(){return true;}
 
 	public Purist()
 	{

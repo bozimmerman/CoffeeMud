@@ -32,7 +32,6 @@ public class Oracle extends Cleric
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected boolean disableClericSpellGrant(){return true;}
 	protected int alwaysFlunksThisQuality(){return 0;}
 
 	public Oracle()

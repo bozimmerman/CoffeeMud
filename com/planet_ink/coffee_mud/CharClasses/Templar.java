@@ -33,7 +33,6 @@ public class Templar extends Cleric
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected int alwaysFlunksThisQuality(){return 1000;}
-	protected boolean disableClericSpellGrant(){return true;}
 
 	private int tickDown=0;
 

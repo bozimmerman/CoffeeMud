@@ -50,13 +50,13 @@ public class Cleric extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	protected boolean disableClericSpellGrant(){return false;}
 	protected int alwaysFlunksThisQuality(){return -1;}
 
 	public Cleric()
 	{
 		super();
-		if(disableClericSpellGrant()) return;
+		if(!ID().equals("Cleric")) 
+		    return;
 
 		maxStatAdj[CharStats.WISDOM]=7;
 		if(!loaded())
@@ -205,7 +205,7 @@ public class Cleric extends StdCharClass
 			return;
 		}
 		
-		if(disableClericSpellGrant()) return;
+		if(!ID().equals("Cleric")) return;
 
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{

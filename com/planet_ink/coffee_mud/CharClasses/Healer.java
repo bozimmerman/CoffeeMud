@@ -31,7 +31,6 @@ public class Healer extends Cleric
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(){return disallowedWeapons;}
-	protected boolean disableClericSpellGrant(MOB mob){return true;}
 	protected int alwaysFlunksThisQuality(){return 0;}
 
 	private DVector downs=new DVector(4);

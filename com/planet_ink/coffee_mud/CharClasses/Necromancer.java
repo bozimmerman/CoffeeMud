@@ -32,7 +32,6 @@ public class Necromancer extends Cleric
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
-	protected boolean disableClericSpellGrant(){return true;}
 	protected int alwaysFlunksThisQuality(){return 1000;}
 
 	public Necromancer()
