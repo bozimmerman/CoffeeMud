@@ -1673,7 +1673,7 @@ public class StdMOB implements MOB
 				if(isInCombat())
 				{
 					if((getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW)
-					 	ExternalPlay.drawIfNecessary(this);
+					 	ExternalPlay.drawIfNecessary(this,false);
 					
 					Item weapon=this.fetchWieldedItem();
 					double curSpeed=Math.floor(speeder);

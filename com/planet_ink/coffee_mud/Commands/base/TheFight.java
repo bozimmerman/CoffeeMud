@@ -462,10 +462,95 @@ public class TheFight
 			mob.tell("Auto weapon drawing has been turned off.  You will no longer draw your weapon automatically.");
 		}
 	}
-
-	public static void autoGuard(MOB mob)
+	
+	public static void throwit(MOB mob, Vector commands)
 	{
-		if((mob.getBitmap()&MOB.ATT_AUTOGUARD)==0)
+		if((commands.size()==2)&&(mob.isInCombat()))
+			commands.addElement(mob.getVictim().name());
+		if(commands.size()<3)
+		{
+			mob.tell("Throw what, where or at whom?");
+			return;
+		}
+		String str=(String)commands.lastElement();
+		commands.removeElement(str);
+		String what=Util.combine(commands,0);
+		Item item=mob.fetchWornItem(str);
+		if(item==null) mob.fetchInventory(str);
+		if((item==null)||(!Sense.canBeSeenBy(item,mob)))
+		{
+			mob.tell("You don't seem to have a '"+what+"'!");
+			return;
+		}
+		if((!item.amWearingAt(Item.HELD))&&(!item.amWearingAt(Item.WIELD)))
+		{
+			mob.tell("You aren't holding or wielding "+item.name()+"!");
+			return;
+		}
+		
+		int dir=Directions.getGoodDirectionCode(str);
+		Environmental target=null;
+		if(dir<0)
+			target=mob.location().fetchInhabitant(str);
+		else
+		{
+			target=mob.location().getRoomInDir(dir);
+			if((target==null)
+			||(mob.location().getExitInDir(dir)==null)
+			||(!mob.location().getExitInDir(dir).isOpen()))
+			{
+				mob.tell("You can't throw anything that way!");
+				return;
+			}
+			boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);
+			boolean isOutside=((((Room)target).domainType()&Room.INDOORS)==0);
+			
+			if((amOutside&&isOutside)
+			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
+			{
+				mob.tell("That's too far to throw "+item.name()+".");
+				return;
+			}
+		}
+		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!Sense.canBeSeenBy(target,mob)))))
+		{
+			mob.tell("You can't target "+item.name()+" at '"+str+"'!");
+			return;
+		}
+		if(!(target instanceof Room))
+		{
+			if((item.amWearingAt(Item.HELD))
+			&&(item instanceof Weapon)
+			&&(mob.fetchWieldedItem()==null)
+			&&(item.canBeWornAt(Item.WIELD)))
+			{
+				item.remove();
+				ItemUsage.wield(mob,item,false);
+			}
+		
+			if(item.amWearingAt(Item.WIELD))
+				ExternalPlay.postAttack(mob,(MOB)target,item);
+			else
+			{
+				FullMsg msg=new FullMsg(mob,target,item,Affect.MASK_MALICIOUS|Affect.MSG_THROW,"<S-NAME> throw(s) "+item.name()+" at <T-NAME>.");
+				if(mob.location().okAffect(msg)&&(ExternalPlay.drop(mob,item,true)))
+					mob.location().send(mob,msg);
+			}
+		}
+		else
+		{
+			FullMsg msg=new FullMsg(mob,target,item,Affect.MSG_THROW,"<S-NAME> throw(s) "+item.name()+" "+Directions.getInDirectionName(dir).toLowerCase()+".");
+			FullMsg msg2=new FullMsg(mob,target,item,Affect.MSG_THROW,item.name()+" fly(s) in from "+Directions.getFromDirectionName(dir).toLowerCase()+".");
+			if(mob.location().okAffect(msg)&&((Room)target).okAffect(msg))
+				mob.location().send(mob,msg);
+			
+		}
+	}
+
+	public static void autoGuard(MOB mob, Vector commands)
+	{
+		if(((mob.getBitmap()&MOB.ATT_AUTOGUARD)==0)
+		   ||((commands.size()>0)&&(((String)commands.firstElement()).toUpperCase().startsWith("G"))))
 		{
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOGUARD);
 			mob.tell("You are now on guard. You will no longer follow group leaders.");
@@ -614,8 +699,14 @@ public class TheFight
 		}
 	}
 	
-	public static void drawIfNecessary(MOB mob)
+	public static void drawIfNecessary(MOB mob, boolean held)
 	{
+		if(held)
+		{
+			if(mob.fetchWornItem(Item.HELD)==null)
+				draw(mob,new Vector(),true,true);
+		}
+		else
 		if(mob.fetchWieldedItem()==null)
 			draw(mob,new Vector(),true,true);
 	}

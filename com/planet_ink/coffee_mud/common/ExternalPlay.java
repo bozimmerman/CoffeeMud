@@ -40,9 +40,9 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
 	}
-	public static void drawIfNecessary(MOB mob)
+	public static void drawIfNecessary(MOB mob, boolean held)
 	{
-		if(player!=null) player.drawIfNecessary(mob);
+		if(player!=null) player.drawIfNecessary(mob,held);
 	}
 
 	public static String getOpenRoomID(String areaName)
@@ -143,9 +143,9 @@ public class ExternalPlay
 		if(player!=null) return player.properTargets(A,caster,beRuthless);
 		return new Hashtable();
 	}
-	public static boolean move(MOB mob, int directionCode, boolean flee)
+	public static boolean move(MOB mob, int directionCode, boolean flee, boolean nolook)
 	{
-		if(player!=null) return player.move(mob,directionCode,flee);
+		if(player!=null) return player.move(mob,directionCode,flee,nolook);
 		return false;
 	}
 	public static void flee(MOB mob, String direction)

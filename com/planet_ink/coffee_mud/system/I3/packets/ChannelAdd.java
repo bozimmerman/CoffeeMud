@@ -15,7 +15,6 @@ public class ChannelAdd extends Packet  {
     public ChannelAdd(Vector v) throws InvalidPacketException {
         super(v);
         try {
-            String str = (String)v.elementAt(0);
 			type = ChannelPacket.CHAN_ADD;
 			channel = (String)v.elementAt(6);
         }

@@ -16,6 +16,7 @@ public class RoomLoader
 	{
 		double pct=0.0;
 		updateBootStatus(myHost,pct);
+		Vector n=new Vector(3000,5000);
 		
 		DBConnection D=null;
 		try
@@ -80,6 +81,7 @@ public class RoomLoader
 					newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
 					newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
 					h.addElement(newRoom);
+					n.addElement(roomID);
 				}
 			}
 			DBConnector.DBDone(D);
@@ -117,12 +119,9 @@ public class RoomLoader
 			{
 				String roomID=DBConnections.getRes(R,"CMROID");
 				Room thisRoom=null;
-				for(int m=0;m<h.size();m++)
-					if(((Room)h.elementAt(m)).ID().equalsIgnoreCase(roomID))
-					{
-						thisRoom=(Room)h.elementAt(m);
-						break;
-					}
+				int index=n.indexOf(roomID);
+				if(index>=0) thisRoom=(Room)h.elementAt(index);
+				
 				if(thisRoom==null)
 					Log.errOut("Room","Couldn't set exit for unknown room '"+roomID+"'");
 				else

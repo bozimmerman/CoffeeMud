@@ -517,73 +517,73 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		int totalWeight=0;
 		while(value>=10000000)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=10000000;
 			totalWeight++;
 		}
 		while(value>=1000000)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=1000000;
 			totalWeight++;
 		}
 		while(value>=100000)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=100000;
 			totalWeight++;
 		}
 		while(value>=10000)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=10000;
 			totalWeight++;
 		}
 		while(value>=5000)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=5000;
 			totalWeight++;
 		}
 		while(value>=1000)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=1000;
 			totalWeight++;
 		}
 		while(value>=500)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=500;
 			totalWeight++;
 		}
 		while(value>=100)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=100;
 			totalWeight++;
 		}
 		while(value>=50)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=50;
 			totalWeight++;
 		}
 		while(value>=10)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=10;
 			totalWeight++;
 		}
 		while(value>=5)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			value-=5;
 			totalWeight++;
 		}
 		if(value>0)
 		{
-			Coins msliver=makeNote(value,banker,changeBag);
+			makeNote(value,banker,changeBag);
 			totalWeight+=value;
 		}
 		changeBag.setCapacity(totalWeight);

@@ -16,7 +16,6 @@ public class ChannelListen extends Packet  {
     public ChannelListen(Vector v) throws InvalidPacketException {
         super(v);
         try {
-            String str = (String)v.elementAt(0);
 			type = ChannelPacket.CHAN_LISTEN;
 			channel = (String)v.elementAt(6);
 			onoff = (String)v.elementAt(7);

@@ -284,6 +284,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(old!=null)
 							delDepositInventory(affect.source().name(),old);
 						addDepositInventory(affect.source().name(),item);
+						if(affect.targetMinor()==Affect.TYP_GIVE)
+						{
+							setMoney(getMoney()-((Coins)affect.tool()).numberOfCoins());
+							if(getMoney()<0) setMoney(0);
+						}
 					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",true,false);
 					}
 					else

@@ -134,7 +134,7 @@ public interface Affect extends Cloneable
 	public static final int TYP_RETIRE=70;
 	public static final int TYP_RETREAT=71;
 	public static final int TYP_PANIC=72;
-	
+	public static final int TYP_THROW=73;
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;
@@ -212,6 +212,6 @@ public interface Affect extends Cloneable
 	public static final int MSG_RETIRE=MASK_GENERAL|TYP_RETIRE;
 	public static final int MSG_RETREAT=MASK_MOVE|MASK_SOUND|TYP_RETREAT;
 	public static final int MSG_PANIC=MASK_MOVE|MASK_SOUND|TYP_PANIC;
-		
+	public static final int MSG_THROW=MASK_HANDS|MASK_SOUND|TYP_THROW;
 }
 

@@ -110,6 +110,37 @@ public class StdExit implements Exit
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
+	private Rideable findALadder(MOB mob, Room room)
+	{
+		if(room==null) return null;
+		if(mob.riding()!=null) return null;
+		for(int i=0;i<room.numItems();i++)
+		{
+			Item I=room.fetchItem(i);
+			if((I!=null)
+			   &&(I instanceof Rideable)
+			   &&(Sense.canBeSeenBy(I,mob))
+			   &&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_LADDER))
+				return (Rideable)I;
+		}
+		return null;
+	}
+
+	private void mountLadder(MOB mob, Rideable ladder)
+	{
+		String mountStr=ladder.mountString(Affect.TYP_MOUNT);
+		FullMsg msg=new FullMsg(mob,ladder,null,Affect.MSG_MOUNT,"<S-NAME> "+mountStr+" <T-NAMESELF>.");
+		Room room=(Room)((Item)ladder).owner();
+		if(mob.location()==room) room=null;
+		if((mob.location().okAffect(msg))
+		&&((room==null)||(room.okAffect(msg))))
+		{
+			mob.location().send(mob,msg);
+			if(room!=null)
+				room.sendOthers(mob,msg);
+		}
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
 		for(int b=0;b<numBehaviors();b++)
@@ -166,8 +197,16 @@ public class StdExit implements Exit
 			&&(!Sense.isClimbing(mob))
 			&&(!Sense.isInFlight(mob)))
 			{
-				mob.tell("You need to climb that way, if you know how.");
-				return false;
+				Rideable ladder=null;
+				if(affect.target() instanceof Room)
+					ladder=findALadder(mob,(Room)affect.target());
+				if(ladder!=null)
+					mountLadder(mob,ladder);
+				if(!Sense.isClimbing(mob))
+				{
+					mob.tell("You need to climb that way, if you know how.");
+					return false;
+				}
 			}
 			return true;
 		case Affect.TYP_LEAVE:

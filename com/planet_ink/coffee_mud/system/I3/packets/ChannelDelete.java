@@ -15,7 +15,6 @@ public class ChannelDelete extends Packet  {
     public ChannelDelete(Vector v) throws InvalidPacketException {
         super(v);
         try {
-            String str = (String)v.elementAt(0);
 			type = ChannelPacket.CHAN_REMOVE;
 			channel = (String)v.elementAt(6);
             channel = Intermud.getLocalChannel(channel);

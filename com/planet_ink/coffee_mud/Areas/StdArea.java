@@ -400,7 +400,6 @@ public class StdArea implements Area
 				case Affect.TYP_CLOSE:
 				case Affect.TYP_DEPOSIT:
 				case Affect.TYP_DROP:
-				case Affect.TYP_THROW:
 				case Affect.TYP_EXAMINESOMETHING:
 				case Affect.TYP_GET:
 				case Affect.TYP_GIVE:

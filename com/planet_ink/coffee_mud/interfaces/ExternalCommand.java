@@ -11,7 +11,7 @@ public interface ExternalCommand
 	public void justDie(MOB source, MOB target);
 	public void postDeath(MOB source, MOB target,Affect addHere);
 	public void postPanic(MOB mob, Affect affect);
-	public void drawIfNecessary(MOB mob);
+	public void drawIfNecessary(MOB mob, boolean held);
 
 	// other actions
 	public boolean wear(MOB mob, Item item, boolean quiet);
@@ -19,7 +19,7 @@ public interface ExternalCommand
 	public void standIfNecessary(MOB mob);
 	public Ability getToEvoke(MOB mob, Vector commands);
 	public void look(MOB mob, Vector commands, boolean quiet);
-	public boolean move(MOB mob, int directionCode, boolean flee);
+	public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook);
 	public void flee(MOB mob, String direction);
 	public StringBuffer getEquipment(MOB seer, MOB mob);
 	public void doCommand(MOB mob, Vector commands)
