@@ -4426,12 +4426,14 @@ public class Scriptable extends StdBehavior
 				break;
 			case 10: // death prog
 				if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-				&&(msg.amISource(monster)))
+				&&(msg.amISource(monster)
+				   ||((defaultItem!=null)&&(msg.source()==defaultItem.owner()))))
 				{
+					MOB ded=msg.source();
 					MOB src=lastToHurtMe;
 					if((src==null)||(src.location()!=monster.location()))
-					   src=monster;
-					execute(affecting,src,monster,monster,defaultItem,null,script,null);
+					   src=ded;
+					execute(affecting,src,ded,ded,defaultItem,null,script,null);
 					return;
 				}
 				break;

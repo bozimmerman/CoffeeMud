@@ -184,8 +184,11 @@
 	    </TD>
 	</TR>
 	<TR>
-		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Rejuv. Ticks:</B></FONT></TD>
+		<TD WIDTH=150>
+		<FONT COLOR="#66FFFF"><B>@if?ItemData?ISMOBITEM@Available:
+		@else@Rejuv. Ticks:@endif@</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=REJUV SIZE=5 VALUE="@ItemData?REJUV@">
+	    <I>@if?ItemData?ISMOBITEM@(0=Always,1-100%)@else@(0=Never Rejuv,# ticks)@endif@
 	    </TD>
 	</TR>
 	<TR>
@@ -234,6 +237,15 @@
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Secret Identity:</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=SECRETIDENTITY SIZE=60 VALUE="@ItemData?SECRETIDENTITY@"></TD>
 	</TR>
+	@if?ItemData?ISAMMO@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ammunition type:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><FONT COLOR=WHITE>
+	    <INPUT TYPE=TEXT NAME=AMMOTYPE SIZE=7 VALUE="@ItemData?AMMOTYPE@">
+	    </FONT>
+	    </TD>
+	</TR>
+	@endif@
 
 @if?ItemData?ISMAP@
 	<TR>
@@ -578,21 +590,24 @@
 				<INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@">
 				</TD>
 			@else@
-				<TR>
-					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Is Readable:</B></FONT></TD>
-				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX ONCLICK="ReShow();" NAME=ISREADABLE @ItemData?ISREADABLE@></TD>
-				</TR>
-				@if?CheckReqParm?ISREADABLE=on@
-				<TR>
-					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Readable Text:</B></FONT></TD>
-				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@"></TD>
-				</TR>
+				@if?!ItemData?ISAMMO@
+					<TR>
+						<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Is Readable:</B></FONT></TD>
+					    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX ONCLICK="ReShow();" NAME=ISREADABLE @ItemData?ISREADABLE@></TD>
+					</TR>
+					@if?CheckReqParm?ISREADABLE=on@
+					<TR>
+						<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Readable Text:</B></FONT></TD>
+					    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@"></TD>
+					</TR>
+					@endif@
+					<TR>
+						<TD WIDTH=150><FONT COLOR="#66FFFF"><B>
+						@if?ItemData?ISAMMO@Batch Size:@else@Uses Code:@endif@</B></FONT></TD>
+					    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
+					    </TD>
+					</TR>
 				@endif@
-				<TR>
-					<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Uses Code:</B></FONT></TD>
-				    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
-				    </TD>
-				</TR>
 			@endif@
 		@endif@
 	@endif@

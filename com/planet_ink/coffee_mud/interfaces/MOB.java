@@ -175,6 +175,7 @@ public interface MOB
 
 	/** Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */
+	public void flagVariableEq();
 	public void addInventory(Item item);
 	public void delInventory(Item item);
 	public int inventorySize();

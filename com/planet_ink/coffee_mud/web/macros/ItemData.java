@@ -504,11 +504,14 @@ public class ItemData extends StdWebMacro
 					}
 					break;
 				case 46: // ammo types
-					if((firstTime)&&(I instanceof Weapon))
-						old=""+((Weapon)I).ammunitionType();
-					else
-					if((firstTime)&&(I instanceof Ammunition))
-						old=""+((Ammunition)I).ammunitionType();
+					if(firstTime)
+					{
+						if(I instanceof Ammunition)
+							old=""+((Ammunition)I).ammunitionType();
+						else
+						if(I instanceof Weapon)
+							old=""+((Weapon)I).ammunitionType();
+					}
 					str.append(old);
 					break;
 				case 47: // ammo capacity

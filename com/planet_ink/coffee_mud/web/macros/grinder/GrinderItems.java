@@ -131,7 +131,8 @@ public class GrinderItems
 				Sense.setReadable(I,old.equals("on"));
 				break;
 			case 11: // readable text
-				I.setReadableText(old);
+				if(!(I instanceof Ammunition))
+					I.setReadableText(old);
 				break;
 			case 12: // is drink
 				break;
@@ -283,11 +284,11 @@ public class GrinderItems
 					((Drink)I).setLiquidType(Util.s_int(old));
 				break;
 			case 46: // ammo types
-				if((I instanceof Weapon)&&(!(I instanceof Wand)))
-					((Weapon)I).setAmmunitionType(old);
-				else
 				if(I instanceof Ammunition)
 					((Ammunition)I).setAmmunitionType(old);
+				else
+				if((I instanceof Weapon)&&(!(I instanceof Wand)))
+					((Weapon)I).setAmmunitionType(old);
 				break;
 			case 47: // ammo capacity
 				if((I instanceof Weapon)&&(!(I instanceof Wand)))

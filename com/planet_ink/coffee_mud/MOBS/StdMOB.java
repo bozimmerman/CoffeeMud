@@ -106,6 +106,7 @@ public class StdMOB implements MOB
 	public CharState baseState=new DefaultCharState();
 	private long lastTickedDateTime=0;
 	public long lastTickedDateTime(){return lastTickedDateTime;}
+	public void flagVariableEq(){lastTickedDateTime=-1;}
 
 	// mental characteristics
 	protected int Alignment=0;
@@ -2181,6 +2182,94 @@ public class StdMOB implements MOB
 	}
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
+	
+	protected int processVariableEquipment()
+	{
+		int newLastTickedDateTime=0;
+		for(int i=0;i<location().numInhabitants();i++)
+		{ 
+			MOB M=(MOB)location().fetchInhabitant(i);
+			if((M!=null)&&(!M.isMonster())&&(M.isASysOp(location())))
+			{ newLastTickedDateTime=-1; break;}
+		}
+		if(newLastTickedDateTime==0)
+		{
+			Vector rivals=new Vector();
+			for(int i=0;i<inventorySize();i++)
+			{
+				Item I=fetchInventory(i);
+				if((I!=null)&&(I.baseEnvStats().rejuv()>0)&&(I.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+				{
+					Vector V=null;
+					for(int r=0;r<rivals.size();r++)
+					{
+						Vector V2=(Vector)rivals.elementAt(r);
+						Item I2=(Item)V2.firstElement();
+						if(I2.rawWornCode()==I.rawWornCode())
+						{ V=V2; break;}
+					}
+					if(V==null){ V=new Vector(); rivals.addElement(V);}
+					V.addElement(I);
+				}
+			}
+			for(int i=0;i<rivals.size();i++)
+			{
+				Vector V=(Vector)rivals.elementAt(i);
+				if(((Item)V.firstElement()).rawWornCode()==0)
+				{
+					for(int r=0;r<rivals.size();r++)
+					{
+						Item I=(Item)rivals.elementAt(r);
+						if(Dice.rollPercentage()<I.baseEnvStats().rejuv())
+							delInventory(I);
+						else
+						{
+							I.baseEnvStats().setRejuv(0);
+							I.envStats().setRejuv(0);
+						}
+					}
+				}
+				else
+				{
+					int totalChance=0;
+					for(int r=0;r<rivals.size();r++)
+					{
+						Item I=(Item)rivals.elementAt(r);
+						totalChance+=I.baseEnvStats().rejuv();
+					}
+					int chosenChance=Dice.roll(1,totalChance,0);
+					totalChance=0;
+					Item chosenI=null;
+					for(int r=0;r<rivals.size();r++)
+					{
+						Item I=(Item)rivals.elementAt(r);
+						if(chosenChance<=(totalChance+I.baseEnvStats().rejuv()))
+						{ 
+							chosenI=I; 
+							break;
+						}
+						else
+							totalChance+=I.baseEnvStats().rejuv();
+					}
+					for(int r=0;r<rivals.size();r++)
+					{
+						Item I=(Item)rivals.elementAt(r);
+						if(chosenI!=I)
+							delInventory(I);
+						else
+						{
+							I.baseEnvStats().setRejuv(0);
+							I.envStats().setRejuv(0);
+						}
+					}
+				}
+			}
+			recoverEnvStats();
+			recoverCharStats();
+			recoverMaxState();
+		}
+		return newLastTickedDateTime;
+	}
 
 	public int movesSinceLastTick(){return movesSinceTick;}
 	public long lastMovedDateTime(){return lastMoveTime;}
@@ -2221,6 +2310,11 @@ public class StdMOB implements MOB
 			else
 			if(location()!=null)
 			{
+				// handle variable equipment!
+				if((lastTickedDateTime==-1)
+				&&isMonster()&&location().getMobility()&&location().getArea().getMobility())
+					lastTickedDateTime=processVariableEquipment();
+				
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
 				curState().expendEnergy(this,maxState,false);
@@ -2441,8 +2535,9 @@ public class StdMOB implements MOB
 			charStats().getMyRace().tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_END;
 		}
+		
+		if(lastTickedDateTime>=0) lastTickedDateTime=System.currentTimeMillis();
 		tickStatus=Tickable.STATUS_NOT;
-		lastTickedDateTime=System.currentTimeMillis();
 		return !pleaseDestroy;
 	}
 

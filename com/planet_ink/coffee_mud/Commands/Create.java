@@ -96,12 +96,31 @@ public class Create extends BaseGenerics
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ITEM [ITEM NAME]\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ITEM [ITEM NAME](@ room/[MOB NAME])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 
-		String itemID=((String)commands.elementAt(2));
+		String itemID=Util.combine(commands,2);
+		Environmental dest=mob.location();
+		int x=itemID.indexOf("@");
+		if(x>0)
+		{
+			String rest=itemID.substring(x+1).trim();
+			itemID=itemID.substring(0,x).trim();
+			if((!rest.equalsIgnoreCase("room"))
+			&&(rest.length()>0))
+			{
+				MOB M=mob.location().fetchInhabitant(rest);
+				if(M==null)
+				{
+					mob.tell("MOB '"+rest+"' not found.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+					return;
+				}
+				dest=M;
+			}
+		}
 		Item newItem=(Item)CMClass.getItem(itemID);
 
 		if(newItem==null)
@@ -120,7 +139,11 @@ public class Create extends BaseGenerics
 
 		if(newItem.subjectToWearAndTear())
 			newItem.setUsesRemaining(100);
-		mob.location().addItem(newItem);
+		if(dest instanceof Room)
+			((Room)dest).addItem(newItem);
+		else
+		if(dest instanceof MOB)
+			((MOB)dest).addInventory(newItem);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 
 		if(newItem.isGeneric())

@@ -207,19 +207,43 @@ public class Destroy extends BaseItemParser
 	{
 		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY MOB [MOB NAME]\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ITEM [ITEM NAME](@ room/[MOB NAME])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
-
+		
 		String itemID=Util.combine(commands,2);
+		MOB srchMob=mob;
+		Room srchRoom=mob.location();
+		int x=itemID.indexOf("@");
+		if(x>0)
+		{
+			String rest=itemID.substring(x+1).trim();
+			itemID=itemID.substring(0,x).trim();
+			if(rest.equalsIgnoreCase("room"))
+				srchMob=null;
+			else
+			if(rest.length()>0)
+			{
+				MOB M=srchRoom.fetchInhabitant(rest);
+				if(M==null)
+				{
+					mob.tell("MOB '"+rest+"' not found.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+					return false;
+				}
+				srchMob=M;
+				srchRoom=null;
+			}
+		}
+		
 		boolean allFlag=((String)commands.elementAt(2)).equalsIgnoreCase("all");
 		if(itemID.toUpperCase().startsWith("ALL.")){ allFlag=true; itemID="ALL "+itemID.substring(4);}
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
 		Item deadItem=null;
-		if(!allFlag) deadItem=mob.fetchInventory(null,itemID);
-		if(deadItem==null) deadItem=(Item)mob.location().fetchItem(null,itemID);
+		if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
+		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
 		while(deadItem!=null)
 		{
 			deadItem.destroy();
@@ -228,8 +252,8 @@ public class Destroy extends BaseItemParser
 			doneSomething=true;
 			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
 			deadItem=null;
-			if(!allFlag) deadItem=mob.fetchInventory(null,itemID);
-			if(deadItem==null) deadItem=(Item)mob.location().fetchItem(null,itemID);
+			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
+			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
 			if(!allFlag) break;
 		}
 		if(!doneSomething)

@@ -1447,6 +1447,7 @@ public class CoffeeMaker
 	private static void setGenMobInventory(MOB M, Vector buf)
 	{
 		Vector V=XMLManager.getRealContentsFromPieces(buf,"INVEN");
+		boolean variableEq=false;
 		if(V==null)
 		{
 			Log.errOut("CoffeeMaker","Error parsing 'INVEN' of "+M.Name()+".  Load aborted");
@@ -1479,6 +1480,8 @@ public class CoffeeMaker
 				if(ILOC.length()>0)
 					LOCmap.put(newOne,ILOC);
 				setPropertiesStr(newOne,idat,true);
+				if(newOne.baseEnvStats().rejuv()>0&&newOne.baseEnvStats().rejuv()<Integer.MAX_VALUE)
+					variableEq=true;
 				newOne.wearAt(wornCode);
 			}
 			for(int i=0;i<M.inventorySize();i++)
@@ -1492,6 +1495,7 @@ public class CoffeeMaker
 				}
 			}
 		}
+		if(variableEq) M.flagVariableEq();
 	}
 
 	private static void setGenPropertiesStr(Environmental E, Vector buf)

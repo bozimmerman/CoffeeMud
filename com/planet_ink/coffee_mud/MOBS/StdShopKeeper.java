@@ -254,6 +254,34 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 	}
 
+	protected int processVariableEquipment()
+	{
+		int newLastTickedDateTime=super.processVariableEquipment();
+		if(newLastTickedDateTime==0)
+		{
+			Vector rivals=new Vector();
+			for(int v=0;v<baseInventory.size();v++)
+			{
+				Environmental E=(Environmental)baseInventory.elementAt(v);
+				if((E.baseEnvStats().rejuv()>0)&&(E.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+					rivals.addElement(E);
+			}
+			for(int r=0;r<rivals.size();r++)
+			{
+				Environmental E=(Environmental)rivals.elementAt(r);
+				if(Dice.rollPercentage()<E.baseEnvStats().rejuv())
+					delStoreInventory(E);
+				else
+				{
+					E.baseEnvStats().setRejuv(0);
+					E.envStats().setRejuv(0);
+				}
+			}
+		}
+		return newLastTickedDateTime;
+	}
+	
+
 	public void delStoreInventory(Environmental thisThang)
 	{
 		if((whatISell==DEAL_INVENTORYONLY)&&(inBaseInventory(thisThang)))
@@ -446,6 +474,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return item;
 	}
 
+	
 	public Environmental removeStock(String name, MOB mob)
 	{
 		Environmental item=getStock(name,mob);
@@ -469,6 +498,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			else
 				storeInventory.removeElement(item);
 		}
+		item.baseEnvStats().setRejuv(0);
+		item.envStats().setRejuv(0);
 		return item;
 	}
 

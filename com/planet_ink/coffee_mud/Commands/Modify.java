@@ -15,20 +15,53 @@ public class Modify extends BaseGenerics
 	public void items(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(commands.size()<4)
+		if(commands.size()<3)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ITEM [ITEM NAME] [LEVEL, ABILITY, REJUV, USES, MISC] [NUMBER, TEXT]\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ITEM [ITEM NAME](@ room/[MOB NAME]) [LEVEL, ABILITY, REJUV, USES, MISC] [NUMBER, TEXT]\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
 
 		String itemID=((String)commands.elementAt(2));
-		String command=((String)commands.elementAt(3)).toUpperCase();
+		MOB srchMob=mob;
+		Room srchRoom=mob.location();
+		int x=itemID.indexOf("@");
+		if(x>0)
+		{
+			String rest=itemID.substring(x+1).trim();
+			itemID=itemID.substring(0,x).trim();
+			if(rest.equalsIgnoreCase("room"))
+				srchMob=null;
+			else
+			if(rest.length()>0)
+			{
+				MOB M=srchRoom.fetchInhabitant(rest);
+				if(M==null)
+				{
+					mob.tell("MOB '"+rest+"' not found.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+					return;
+				}
+				srchMob=M;
+				srchRoom=null;
+			}
+		}
+		String command="";
+		if(commands.size()>3)
+			command=((String)commands.elementAt(3)).toUpperCase();
 		String restStr="";
 		if(commands.size()>4)
 			restStr=Util.combine(commands,4);
 
-		Item modItem=(Item)mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemID,Item.WORN_REQ_ANY);
+		Item modItem=null;
+		if((srchMob!=null)&&(srchRoom!=null))
+			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,itemID,Item.WORN_REQ_ANY);
+		else
+		if(srchMob!=null)
+			modItem=srchMob.fetchInventory(itemID);
+		else
+		if(srchRoom!=null)
+			modItem=srchRoom.fetchItem(null,itemID);
 		if(modItem==null)
 		{
 			mob.tell("I don't see '"+itemID+" here.\n\r");
@@ -97,6 +130,12 @@ public class Modify extends BaseGenerics
 				genMiscSet(mob,modItem);
 			else
 				modItem.setMiscText(restStr);
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
+		}
+		else
+		if((command.length()==0)&&(modItem.isGeneric()))
+		{
+			genMiscSet(mob,modItem);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
@@ -1011,7 +1050,7 @@ public class Modify extends BaseGenerics
 				}
 				else
 				if(!((MOB)thang).isMonster())
-					players(mob,Util.parse("MODIFY PLAYER \""+thang.Name()+"\""));
+					players(mob,Util.parse("MODIFY USER \""+thang.Name()+"\""));
 				else
 					genMiscSet(mob,thang);
 				thang.recoverEnvStats();

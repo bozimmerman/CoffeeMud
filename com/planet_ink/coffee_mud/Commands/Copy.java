@@ -36,6 +36,25 @@ public class Copy extends StdCommand
 				commands.removeElementAt(0);
 		}
 		String name=Util.combine(commands,0);
+		Environmental dest=mob.location();
+		int x=name.indexOf("@");
+		if(x>0)
+		{
+			String rest=name.substring(x+1).trim();
+			name=name.substring(0,x).trim();
+			if((!rest.equalsIgnoreCase("room"))
+			&&(rest.length()>0))
+			{
+				MOB M=mob.location().fetchInhabitant(rest);
+				if(M==null)
+				{
+					mob.tell("MOB '"+rest+"' not found.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+					return false;
+				}
+				dest=M;
+			}
+		}
 		Environmental E=null;
 		int dirCode=Directions.getGoodDirectionCode(name);
 		if(dirCode>=0)
@@ -104,7 +123,11 @@ public class Copy extends StdCommand
 				Item newItem=(Item)E.copyOf();
 				newItem.setContainer(null);
 				newItem.wearAt(0);
-				room.addItem(newItem);
+				if(dest instanceof Room)
+					((Room)dest).addItem(newItem);
+				else
+				if(dest instanceof MOB)
+					((MOB)dest).addInventory(newItem);
 				room.recoverRoomStats();
 				if(i==0)
 				{

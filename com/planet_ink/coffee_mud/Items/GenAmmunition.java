@@ -37,7 +37,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 		readableText=text;
 	}
 	public String ammunitionType(){return readableText;}
-	public void setAmmunitionType(String text){}
+	public void setAmmunitionType(String text){readableText=text;}
 
 	public void setMiscText(String newText)
 	{
