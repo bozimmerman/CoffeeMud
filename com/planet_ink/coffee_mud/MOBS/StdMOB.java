@@ -1010,6 +1010,7 @@ public class StdMOB implements MOB
 					return false;
 
 				if((Sense.isSitting(this))&&
+				  (affect.sourceMinor()!=Affect.TYP_SITMOVE)&&
 				  (affect.targetCode()!=Affect.MSG_OK_VISUAL)&&
 				  (((affect.target()!=null)
 				    &&(((!(affect.target() instanceof Item))
@@ -1033,6 +1034,7 @@ public class StdMOB implements MOB
 
 				if(((Sense.isSleeping(this))||(sitting))
 				&&(affect.sourceMinor()!=Affect.TYP_STAND)
+				&&(affect.sourceMinor()!=Affect.TYP_SITMOVE)
 				&&(affect.sourceMinor()!=Affect.TYP_SLEEP))
 				{
 					tell("You need to stand up!");

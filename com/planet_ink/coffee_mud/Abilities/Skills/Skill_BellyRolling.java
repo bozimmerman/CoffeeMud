@@ -34,16 +34,17 @@ public class Skill_BellyRolling extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(affect.amITarget(mob)
-		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-		   &&(Sense.aliveAwakeMobile(mob,true))
-		   &&(Sense.isSitting(mob))
-		   &&(affect.tool()!=null)
-		   &&(!doneThisRound)
-		   &&(affect.tool() instanceof Weapon))
+		&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+		&&(Sense.aliveAwakeMobile(mob,true))
+		&&(Sense.isSitting(mob))
+		&&(affect.tool()!=null)
+		&&(!doneThisRound)
+		&&(affect.tool() instanceof Weapon))
 		{
-			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> rolls(s) around the attack by <T-NAME>!");
+			// can't use -NAME for affect.source() lest sitting prevent it
+			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_SITMOVE,"<S-NAME> roll(s) away from the attack by <T-NAMESELF>!");
 			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false))
-			&&(affect.source().getVictim()==mob)
+			&&((affect.source().getVictim()==mob)||(affect.source().getVictim()==null))
 			&&(mob.location().okAffect(mob,msg)))
 			{
 				doneThisRound=true;

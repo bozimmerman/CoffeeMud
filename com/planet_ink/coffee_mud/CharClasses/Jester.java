@@ -37,7 +37,7 @@ public class Jester extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_BellyRoll",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_BellyRolling",true);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Climsiness",true);
@@ -116,7 +116,7 @@ public class Jester extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_Puppeteer",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Roll",false);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Skill_Buffoonery",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Skill_Buffoonery",true);
 		}
 	}
 

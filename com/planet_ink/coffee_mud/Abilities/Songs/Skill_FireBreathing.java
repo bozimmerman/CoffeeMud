@@ -25,9 +25,9 @@ public class Skill_FireBreathing extends StdAbility
 		if(target==null) return false;
 
 		Item fireSource=null;
-		for(int i=0;i<target.inventorySize();i++)
+		for(int i=0;i<mob.inventorySize();i++)
 		{
-			Item I=target.fetchInventory(i);
+			Item I=mob.fetchInventory(i);
 			if((Sense.isOnFire(I))
 			&&(!I.amWearingAt(Item.INVENTORY))
 			&&(I.container()==null))

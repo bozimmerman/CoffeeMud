@@ -137,6 +137,7 @@ public interface Affect extends Cloneable
 	public static final int TYP_THROW=73;
 	public static final int TYP_EXTINGUISH=74;
 	public static final int TYP_TELL=75;
+	public static final int TYP_SITMOVE=76;
 	
 	public static final int TYP_CHANNEL=100; //(100-131 are channels)
 
@@ -219,5 +220,6 @@ public interface Affect extends Cloneable
 	public static final int MSG_THROW=MASK_HANDS|MASK_SOUND|TYP_THROW;
 	public static final int MSG_EXTINGUISH=MASK_HANDS|TYP_EXTINGUISH;
 	public static final int MSG_TELL=MASK_GENERAL|TYP_TELL;
+	public static final int MSG_SITMOVE=MASK_MOVE|TYP_SITMOVE;
 }
 
