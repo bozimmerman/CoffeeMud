@@ -123,7 +123,7 @@ public class MUD extends Thread implements Host
 		CommandProcessor commandProcessor=new CommandProcessor();
 		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems());
 
-		if(!CMClass.loadClasses())
+		if(!CMClass.loadClasses(page))
 		{
 			fatalStartupError(0);
 			return false;

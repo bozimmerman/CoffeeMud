@@ -87,7 +87,13 @@ public class RoomLoader
 		{
 			String areaName=(String)e.nextElement();
 			Log.sysOut("Area","Creating unhandled area: "+areaName);
-			DBCreate(areaName,"StdArea");
+			Area realArea=DBCreate(areaName,"StdArea");
+			for(int r=0;r<h.size();r++)
+			{
+				Room R=(Room)h.elementAt(r);
+				if(R.getArea().name().equals(areaName))
+					R.setArea(realArea);
+			}
 		}
 		
 		// now grab the exits

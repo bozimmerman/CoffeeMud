@@ -54,7 +54,7 @@ public class Spell_Flameshield extends Spell
 
 		if(affect.amITarget(mob))
 		{
-			if(Util.bset(affect.targetCode(),Affect.AFF_TOUCHED))
+			if(Util.bset(affect.targetCode(),Affect.AFF_TOUCHED)&&(affect.targetMessage()!=null)&&(affect.targetMessage().length()>0))
 			{
 				if((Dice.rollPercentage()>(source.charStats().getDexterity()*3)))
 				{

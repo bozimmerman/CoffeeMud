@@ -426,7 +426,7 @@ public class CommandProcessor
 					itemUsage.wear(mob,commands);
 					break;
 				case CommandSet.WEATHER:
-					mob.tell(mob.location().getArea().weatherDescription(mob.location()));
+					basicSenses.weather(mob,commands);
 					break;
 				case CommandSet.WEST:
 					movement.move(mob,Directions.WEST,false);

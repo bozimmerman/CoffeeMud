@@ -40,6 +40,8 @@ Lore skill for Bards.. allows an identify for them.
 
 More stuff for Fighters, especially Paladins and Rangers, who must use their trains for spells.
 
+Sweep would make a good Fighter ability, as would cleave!
+
 Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
 of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
 vassels, providing incentive to assist the vassel.
