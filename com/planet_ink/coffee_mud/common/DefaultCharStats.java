@@ -82,7 +82,7 @@ public class DefaultCharStats implements Cloneable, CharStats
 		switch(getStat(GENDER))
 		{
 		case 'M': return "him";
-		case 'F': return "him";
+		case 'F': return "her";
 		default: return "it";
 		}
 	}
