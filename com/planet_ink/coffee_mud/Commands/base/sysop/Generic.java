@@ -381,6 +381,7 @@ public class Generic
 						||(E instanceof Potion))
 						{
 							String oldName=newName;
+							if(!newName.endsWith(";")) newName+=";";
 							int x=newName.indexOf(";");
 							while(x>=0)
 							{
@@ -1559,7 +1560,6 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rAmount of Drink Held: '"+E.liquidHeld()+"'.");
-		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
 		E.setLiquidHeld(getNumericData(mob,"Enter a new amount\n\r:",E.liquidHeld()));
 		E.setLiquidRemaining(E.liquidHeld());
 	}

@@ -246,6 +246,7 @@ public class StdArea implements Area
 	}
 	
 	
+	public boolean getMobility(){return mobility;}
 	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean amISubOp(String username)
 	{

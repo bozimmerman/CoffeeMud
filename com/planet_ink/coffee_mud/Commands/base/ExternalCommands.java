@@ -30,7 +30,7 @@ public class ExternalCommands implements ExternalCommand
 	}
 	public void resetRoom(Room room)
 	{
-		processor.reset.room(room);
+		processor.reset.resetRoom(room);
 	}
 	public String getOpenRoomID(String areaName)
 	{

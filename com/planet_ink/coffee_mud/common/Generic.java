@@ -498,6 +498,8 @@ public class Generic
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
+		boolean mobile=area.getMobility();
+		area.toggleMobility(false);
 		buf.append("<AREA>");
 		buf.append(XMLManager.convertXMLtoTag("ACLAS",area.ID()));
 		buf.append(XMLManager.convertXMLtoTag("ANAME",area.name()));
@@ -523,6 +525,7 @@ public class Generic
 			}
 		}
 		buf.append("</AREA>");
+		area.toggleMobility(mobile);
 		return buf;
 	}
 	
@@ -533,6 +536,8 @@ public class Generic
 		
 		// do this quick before a tick messes it up!
 		Vector inhabs=new Vector();
+		boolean mobile=room.getArea().getMobility();
+		room.getArea().toggleMobility(false);
 		ExternalPlay.resetRoom(room);
 		if(andContent)
 		for(int i=0;i<room.numInhabitants();i++)
@@ -541,6 +546,7 @@ public class Generic
 		if(andContent)
 		for(int i=0;i<room.numItems();i++)
 			items.addElement(room.fetchItem(i));
+		room.getArea().toggleMobility(mobile);
 		
 		buf.append("<AROOM>");
 		buf.append(XMLManager.convertXMLtoTag("ROOMID",room.ID()));

@@ -33,13 +33,13 @@ public class Reset
 		String s=(String)commands.elementAt(0);
 		if(s.equalsIgnoreCase("room"))
 		{
-			room(mob.location());
+			resetRoom(mob.location());
 			mob.tell("Done.");
 		}
 		else
 		if(s.equalsIgnoreCase("area"))
 		{
-			area(mob.location().getArea());
+			resetArea(mob.location().getArea());
 			mob.tell("Done.");
 		}
 		else
@@ -47,14 +47,14 @@ public class Reset
 		{
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
-			area(A);
+			resetArea(A);
 			A.toggleMobility(false);
 			Vector rooms=A.getMyMap();
 			try{
 			for(int r=0;r<rooms.size();r++)
 			{
 				Room room=(Room)rooms.elementAt(r);
-				room(room);
+				resetRoom(room);
 				boolean somethingDone=false;
 				mob.tell(room.ID()+"/"+room.name()+"/"+room.displayText()+"--------------------");
 				for(int i=0;i<room.numItems();i++)
@@ -179,19 +179,22 @@ public class Reset
 			mob.tell("Done.");
 		}
 	}
-	public void room(Room room)
+	public void resetRoom(Room room)
 	{
 		if(room==null) return;
 		new Rooms().clearTheRoom(room);
 		ExternalPlay.DBReadContent(room);
 	}
-	public void area(Area area)
+	public void resetArea(Area area)
 	{
 		Vector allRooms=area.getMyMap();
+		boolean mobile=area.getMobility();
+		area.toggleMobility(false);
 		for(int r=0;r<allRooms.size();r++)
 		{
 			Room room=(Room)allRooms.elementAt(r);
-			room(room);
+			resetRoom(room);
 		}
+		area.toggleMobility(mobile);
 	}
 }
