@@ -297,6 +297,9 @@ public class Generic
 			+XMLManager.convertXMLtoTag("OPENTK",exit.openDelayTicks()));
 		}
 
+		if(E instanceof ClanItem)
+			text.append(XMLManager.convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
+		
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
@@ -1505,6 +1508,9 @@ public class Generic
 			exit.setOpenDelayTicks(XMLManager.getIntFromPieces(buf,"OPENTK"));
 		}
 
+		if(E instanceof ClanItem)
+			((ClanItem)E).setClanID(XMLManager.getValFromPieces(buf,"CLANID"));
+		
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;

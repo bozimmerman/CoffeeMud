@@ -213,6 +213,8 @@ public class ItemData extends StdWebMacro
 								sortMe.addElement(CMClass.className(i.nextElement()));
 							for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
 								sortMe.addElement(CMClass.className(i.nextElement()));
+							for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
+								sortMe.addElement(CMClass.className(i.nextElement()));
 							sorted=(Object[])(new TreeSet(sortMe)).toArray();
 							Resources.submitResource("MUDGRINDER-ITEMS2",sorted);
 						}

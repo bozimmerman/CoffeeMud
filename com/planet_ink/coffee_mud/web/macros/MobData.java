@@ -402,6 +402,13 @@ public class MobData extends StdWebMacro
 					&&(!(I instanceof ArchonOnly)))
 						sortMeA.addElement(CMClass.className(I));
 				}
+				for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
+				{   
+					Item I=(Item)i.nextElement();
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMeA.addElement(CMClass.className(I));
+				}
 				Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 				for(int r=0;r<sortedA.length;r++)
 				{
@@ -886,6 +893,13 @@ public class MobData extends StdWebMacro
 						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
+				{   
+					Item I=(Item)i.nextElement();
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
+				}
+				for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
 				{   
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())

@@ -21,11 +21,12 @@ public class CMClass extends ClassLoader
 	private static Vector weapons=new Vector();
 	private static Vector armor=new Vector();
 	private static Vector miscMagic=new Vector();
+	private static Vector clanItems=new Vector();
 	private static Vector areaTypes=new Vector();
 	private static Hashtable extraCmds=new Hashtable();
 	private static final String[] names={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
-		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND"
+		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS"
 		};
 	private static final String[] ancestors={
 		"com.planet_ink.coffee_mud.interfaces.Race",
@@ -41,7 +42,8 @@ public class CMClass extends ClassLoader
 		"com.planet_ink.coffee_mud.interfaces.Armor",
 		"com.planet_ink.coffee_mud.interfaces.MiscMagic",
 		"com.planet_ink.coffee_mud.interfaces.Area",
-		"com.planet_ink.coffee_mud.interfaces.Command"
+		"com.planet_ink.coffee_mud.interfaces.Command",
+		"com.planet_ink.coffee_mud.interfaces.ClanItem"
 		};
 
 	public static Enumeration races(){return races.elements();}
@@ -56,6 +58,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration weapons(){return weapons.elements();}
 	public static Enumeration armor(){return armor.elements();}
 	public static Enumeration miscMagic(){return miscMagic.elements();}
+	public static Enumeration clanItems(){return clanItems.elements();}
 	public static Enumeration areaTypes(){return areaTypes.elements();}
 	public static Enumeration extraCmds(){return extraCmds.elements();}
 	public static Enumeration abilities(){return abilities.elements();}
@@ -70,6 +73,8 @@ public class CMClass extends ClassLoader
 			thisItem=(Item)getEnv(weapons,calledThis);
 		if(thisItem==null)
 			thisItem=(Item)getEnv(miscMagic,calledThis);
+		if(thisItem==null)
+			thisItem=(Item)getEnv(clanItems,calledThis);
 		return thisItem;
 	}
 	public static Item sampleItem(){if(items.size()>0) return (Item)items.firstElement();	return null;}
@@ -102,6 +107,7 @@ public class CMClass extends ClassLoader
 		if(weapons.contains(O)){ weapons.removeElement(O); return true;}
 		if(armor.contains(O)){ armor.removeElement(O); return true;}
 		if(miscMagic.contains(O)){ miscMagic.removeElement(O); return true;}
+		if(clanItems.contains(O)){ clanItems.removeElement(O); return true;}
 		if(areaTypes.contains(O)){ areaTypes.removeElement(O); return true;}
 		return false;
 	}
@@ -135,6 +141,7 @@ public class CMClass extends ClassLoader
 		case 11: set=miscMagic; break;
 		case 12: set=areaTypes; break;
 		case 13: set=extraCmds; break;
+		case 14: set=clanItems; break;
 		}
 		if(set==null) return false;
 		
@@ -154,6 +161,8 @@ public class CMClass extends ClassLoader
 		case 10: armor=new Vector(new TreeSet(armor)); break;
 		case 11: miscMagic=new Vector(new TreeSet(miscMagic)); break;
 		case 12: areaTypes=new Vector(new TreeSet(areaTypes)); break;
+		case 13: break;
+		case 14: clanItems=new Vector(new TreeSet(clanItems)); break;
 		}
 		return true;
 	}
@@ -172,6 +181,7 @@ public class CMClass extends ClassLoader
 		if(thisItem==null) thisItem=getGlobal(armor,calledThis);
 		if(thisItem==null) thisItem=getGlobal(miscMagic,calledThis);
 		if(thisItem==null) thisItem=getGlobal(areaTypes,calledThis);
+		if(thisItem==null) thisItem=getGlobal(clanItems,calledThis);
 		return thisItem;
 	}
 	
@@ -188,6 +198,8 @@ public class CMClass extends ClassLoader
 			thisItem=getEnv(MOBs,calledThis);
 		if(thisItem==null)
 			thisItem=getEnv(abilities,calledThis);
+		if(thisItem==null)
+			thisItem=getEnv(clanItems,calledThis);
 		
 		if((thisItem==null)&&(charClasses.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Unknown '"+calledThis+"'.");
@@ -472,9 +484,10 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Armor loaded      : "+armor.size());
 
 		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar,page.getStr("MISCMAGIC"),"com.planet_ink.coffee_mud.interfaces.MiscMagic");
-		Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
+		clanItems=loadVectorListToObj(prefix+"Items"+File.separatorChar+"ClanItems"+File.separatorChar,page.getStr("CLANITEMS"),"com.planet_ink.coffee_mud.interfaces.ClanItem");
+		Log.sysOut("MUD","Misc Items loaded: "+miscMagic.size()+clanItems.size());
 		
-		if((items.size()+weapons.size()+armor.size()+miscMagic.size())==0) 
+		if((items.size()+weapons.size()+armor.size()+miscMagic.size()+clanItems.size())==0) 
 			return false;
 		
 		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar,page.getStr("BEHAVIORS"),"com.planet_ink.coffee_mud.interfaces.Behavior");
@@ -579,6 +592,7 @@ public class CMClass extends ClassLoader
 		armor=new Vector();
 		miscMagic=new Vector();
 		areaTypes=new Vector();
+		clanItems=new Vector();
 	}
 
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)

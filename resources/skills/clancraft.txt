@@ -1,11 +1,1 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+name,type1/amt1,type2/amt2,level,ticks,exp,value,class,misc,capacity,armordmg,contain,spell

@@ -172,6 +172,12 @@ public class RoomData extends StdWebMacro
 				if(CMClass.className(I).equals(MATCHING))
 					return I;
 			}
+			for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
+			{
+				Item I=(Item)i.nextElement();
+				if(CMClass.className(I).equals(MATCHING))
+					return I;
+			}
 		}
 		return null;
 	}
@@ -506,6 +512,13 @@ public class RoomData extends StdWebMacro
 						sortMe.addElement(CMClass.className(I));
 				}
 				for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
+				{
+					Item I=(Item)i.nextElement();
+					if((!I.isGeneric())
+					&&(!(I instanceof ArchonOnly)))
+						sortMe.addElement(CMClass.className(I));
+				}
+				for(Enumeration i=CMClass.clanItems();i.hasMoreElements();)
 				{
 					Item I=(Item)i.nextElement();
 					if((!I.isGeneric())

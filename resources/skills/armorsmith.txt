@@ -1,3 +1,4 @@
+name,level,ticks,wood,value,class,misc,capacity,armordmg,contain,spell
 % Cap	1	25	10		GenArmor	HEAD	0	3	0
 % Helm	10	70	15		GenArmor	HEAD	0	6	0
 % Helmet	16	100	15		GenArmor	HEAD	0	8	0
