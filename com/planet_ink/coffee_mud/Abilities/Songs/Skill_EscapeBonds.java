@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_EscapeBonds extends StdAbility
+public class Skill_EscapeBonds extends BardSkill
 {
 	public String ID() { return "Skill_EscapeBonds"; }
 	public String name(){ return "Escape Bonds";}

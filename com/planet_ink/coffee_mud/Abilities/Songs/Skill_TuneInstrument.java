@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.*;
 
-public class Skill_TuneInstrument extends StdAbility
+public class Skill_TuneInstrument extends BardSkill
 {
 	public String ID() { return "Skill_TuneInstrument"; }
 	public String name(){ return "Tune Instrument";}

@@ -189,7 +189,7 @@ public class Monk extends StdCharClass
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
 			&&(myChar.isMine(msg.tool()))
 			&&(!armorCheck(myChar)))
 			{
@@ -198,12 +198,6 @@ public class Monk extends StdCharClass
 					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+msg.tool().name()+" attempt due to <S-HIS-HER> armor!");
 					return false;
 				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
 			}
 		}
 		return super.okMessage(myChar,msg);

@@ -380,7 +380,8 @@ public class Mage extends StdCharClass
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&((msg.tool()==null)||((msg.tool() instanceof Ability)&&(myChar.isMine(msg.tool()))))
+			&&((msg.tool()==null)
+			   ||((CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)&&(myChar.isMine(msg.tool()))))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)

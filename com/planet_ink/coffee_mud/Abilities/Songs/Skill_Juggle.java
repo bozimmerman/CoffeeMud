@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.*;
 
-public class Skill_Juggle extends StdAbility
+public class Skill_Juggle extends BardSkill
 {
 	public String ID() { return "Skill_Juggle"; }
 	public String name(){ return "Juggle";}

@@ -1,5 +1,6 @@
-move armor restrictions to spells, thief skills, druid chants, make some spells override.
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
+same area zapper for channels-- just for channels, regular zapper cant use it
 GenCharClasses -- zappercheck on quals 
 Some solution for variable eq on mobs -- use rejuv! But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player
+drinking twice makes double drunk?

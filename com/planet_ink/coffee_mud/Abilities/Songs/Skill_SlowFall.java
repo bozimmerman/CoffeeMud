@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_SlowFall extends StdAbility
+public class Skill_SlowFall extends BardSkill
 {
 	public String ID() { return "Skill_SlowFall"; }
 	public String name(){return "Slow Fall";}

@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_Warrants extends StdAbility
+public class Skill_Warrants extends BardSkill
 {
 	public String ID() { return "Skill_Warrants"; }
 	public String name(){ return "Warrants";}
@@ -16,6 +16,7 @@ public class Skill_Warrants extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Warrants();}
+	protected boolean exemptFromArmorReq(){return true;}
 
 	public Behavior getArrest(Area A)
 	{

@@ -15,6 +15,7 @@ public class Thief_Con extends ThiefSkill
 	private static final String[] triggerStrings = {"CON"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Con();}
+	protected boolean exemptFromArmorReq(){return true;}
 	private MOB lastChecked=null;
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

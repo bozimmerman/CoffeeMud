@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_Conduct extends StdAbility
+public class Skill_Conduct extends BardSkill
 {
 	public String ID() { return "Skill_Conduct"; }
 	public String name(){ return "Conduct Symphony";}

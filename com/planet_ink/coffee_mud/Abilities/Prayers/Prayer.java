@@ -106,4 +106,55 @@ public class Prayer extends StdAbility
 		}
 		return;
 	}
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
+	{
+		if(!super.invoke(mob,commands,target,auto))
+			return false;
+		if((!auto)
+		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
+		&&(mob.isMine(this))
+		&&(!appropriateToMyAlignment(mob.getAlignment())))
+		{
+			int hq=500;
+			if(Util.bset(flags(),Ability.FLAG_HOLY))
+			{
+				if(!Util.bset(flags(),Ability.FLAG_UNHOLY))
+					hq=1000;
+			}
+			else
+			if(Util.bset(flags(),Ability.FLAG_UNHOLY))
+				hq=0;
+
+			int basis=0;
+			if(hq==0)
+				basis=mob.getAlignment()/10;
+			else
+			if(hq==1000)
+				basis=(1000-mob.getAlignment())/10;
+			else
+			{
+				basis=(500-mob.getAlignment())/10;
+				if(basis<0) basis=basis*-1;
+				basis-=10;
+			}
+
+			if(Dice.rollPercentage()>basis)
+				return true;
+
+			if(hq==0)
+				mob.tell("The evil nature of "+name()+" disrupts your prayer.");
+			else
+			if(hq==1000)
+				mob.tell("The goodness of "+name()+" disrupts your prayer.");
+			else
+			if(mob.getAlignment()>650)
+				mob.tell("The anti-good nature of "+name()+" disrupts your thought.");
+			else
+			if(mob.getAlignment()<350)
+				mob.tell("The anti-evil nature of "+name()+" disrupts your thought.");
+			return false;
+		}
+		return true;
+	}
+	
 }

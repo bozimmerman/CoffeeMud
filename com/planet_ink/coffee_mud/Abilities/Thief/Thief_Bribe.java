@@ -15,6 +15,7 @@ public class Thief_Bribe extends ThiefSkill
 	private static final String[] triggerStrings = {"BRIBE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Bribe();}
+	protected boolean exemptFromArmorReq(){return true;}
 	private MOB lastChecked=null;
 
 	public void unInvoke()

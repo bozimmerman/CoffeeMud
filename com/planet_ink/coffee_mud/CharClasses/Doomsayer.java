@@ -146,7 +146,7 @@ public class Doomsayer extends Cleric
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
 			&&(myChar.isMine(msg.tool()))
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{

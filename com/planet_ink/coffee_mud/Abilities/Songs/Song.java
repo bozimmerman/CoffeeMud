@@ -93,6 +93,17 @@ public class Song extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		if((!auto)
+		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
+		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
+		&&(mob.isMine(this))
+		&&(mob.location()!=null)
+		&&(Dice.rollPercentage()<50))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> hit(s) a foul note on "+name()+" due to <S-HIS-HER> armor!");
+			return false;
+		}
+		
 		if(skipStandardSongInvoke())
 			return true;
 

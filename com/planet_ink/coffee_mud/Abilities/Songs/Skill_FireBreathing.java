@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import java.util.*;
 
-public class Skill_FireBreathing extends StdAbility
+public class Skill_FireBreathing extends BardSkill
 {
 	public String ID() { return "Skill_FireBreathing"; }
 	public String name(){ return "Fire Breathing";}

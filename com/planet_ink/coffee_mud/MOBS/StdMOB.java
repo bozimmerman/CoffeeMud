@@ -2696,7 +2696,7 @@ public class StdMOB implements MOB
 		if((charStats().getMyRace().forbiddenWornBits()&wornCode)>0)
 			return 0;
 		if(wornCode==Item.FLOATING_NEARBY)
-			return Integer.MAX_VALUE;
+			return 6;
 		int total;
 		int add=0;
 		boolean found=false;

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_Imitation extends StdAbility
+public class Skill_Imitation extends BardSkill
 {
 	public String ID() { return "Skill_Imitation"; }
 	public String name(){ return "Imitate";}

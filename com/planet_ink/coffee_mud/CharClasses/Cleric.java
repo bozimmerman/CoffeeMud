@@ -245,8 +245,8 @@ public class Cleric extends StdCharClass
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 			&&(!disableAlignedSpells())
 			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
 			&&(myChar.isMine(msg.tool()))
+			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
 			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
 				int align=myChar.getAlignment();

@@ -15,6 +15,7 @@ public class Thief_Lore extends ThiefSkill
 	private static final String[] triggerStrings = {"LORE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Lore();}
+	protected boolean exemptFromArmorReq(){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -1,5 +1,36 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.util.*;
+import java.util.*;
 
-public class BardSkill
+public class BardSkill extends StdAbility
 {
+	public String ID() { return "BardSkill"; }
+	public String name(){ return "a Bard Skill";}
+	public int quality(){return Ability.INDIFFERENT;}
+	public int classificationCode(){	return Ability.SKILL;}
+	public Environmental newInstance(){	return new BardSkill();}
+	protected boolean exemptFromArmorReq(){return false;}
+
+	
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		if((!auto)
+		&&(!exemptFromArmorReq())
+		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
+		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
+		&&(mob.isMine(this))
+		&&(mob.location()!=null)
+		&&(Dice.rollPercentage()<50))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) "+name()+" due to <S-HIS-HER> clumsy armor!");
+			return false;
+		}
+		return true;
+	}
 }

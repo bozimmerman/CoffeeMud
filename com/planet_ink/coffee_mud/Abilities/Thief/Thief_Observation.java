@@ -15,6 +15,7 @@ public class Thief_Observation extends ThiefSkill
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.INDIFFERENT;}
 	private static final String[] triggerStrings = {"OBSERVE"};
+	protected boolean exemptFromArmorReq(){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Observation();	}
 

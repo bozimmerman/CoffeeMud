@@ -93,66 +93,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 
 	public boolean armorCheck(MOB mob)
-	{
-		if(allowedArmorLevel()==CharClass.ARMOR_ANY) return true;
-
-		for(int i=0;i<mob.inventorySize();i++)
-		{
-			Item I=mob.fetchInventory(i);
-			if(I==null) break;
-			if((!I.amWearingAt(Item.INVENTORY))
-			&&((I instanceof Armor)||(I instanceof Shield)))
-			{
-				boolean ok=true;
-				switch(I.material()&EnvResource.MATERIAL_MASK)
-				{
-				case EnvResource.MATERIAL_LEATHER:
-					if((allowedArmorLevel()==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel()==CharClass.ARMOR_VEGAN)
-					||(allowedArmorLevel()==CharClass.ARMOR_METALONLY))
-						ok=false;
-					break;
-				case EnvResource.MATERIAL_METAL:
-				case EnvResource.MATERIAL_MITHRIL:
-					if((allowedArmorLevel()==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel()==CharClass.ARMOR_LEATHER)
-					||(allowedArmorLevel()==CharClass.ARMOR_NONMETAL))
-						ok=false;
-					break;
-				case EnvResource.MATERIAL_ENERGY:
-					if((allowedArmorLevel()==CharClass.ARMOR_METALONLY)
-					||(allowedArmorLevel()==CharClass.ARMOR_VEGAN))
-					   return false;
-					break;
-				case EnvResource.MATERIAL_CLOTH:
-					if((allowedArmorLevel()==CharClass.ARMOR_METALONLY)
-					||((allowedArmorLevel()==CharClass.ARMOR_VEGAN)
-					   &&((I.material()==EnvResource.RESOURCE_HIDE)
-						  ||(I.material()==EnvResource.RESOURCE_FUR)
-						  ||(I.material()==EnvResource.RESOURCE_FEATHERS)
-						  ||(I.material()==EnvResource.RESOURCE_WOOL))))
-						ok=false;
-					break;
-				case EnvResource.MATERIAL_PLASTIC:
-				case EnvResource.MATERIAL_WOODEN:
-				case EnvResource.MATERIAL_ROCK:
-					if((allowedArmorLevel()==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel()==CharClass.ARMOR_VEGAN)
-					||(allowedArmorLevel()==CharClass.ARMOR_LEATHER)
-					||(allowedArmorLevel()==CharClass.ARMOR_METALONLY))
-						ok=false;
-					break;
-				default:
-					if(allowedArmorLevel()==CharClass.ARMOR_METALONLY)
-						ok=false;
-					break;
-				}
-				if((!ok)&&((I.rawProperLocationBitmap()&wearMask)>0))
-					return false;
-			}
-		}
-		return true;
-	}
+	{   return CoffeeUtensils.armorCheck(mob,allowedArmorLevel());}
 
 	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass)
 	{ giveMobAbility(mob,A,profficiency,defaultParm,isBorrowedClass,true);}

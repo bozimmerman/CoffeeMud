@@ -305,7 +305,7 @@ public class MUD extends Thread implements MudHost
 		try
 		{
 			saveThread=new SaveThread();
-			saveThread.start();
+			//saveThread.start();
 
 			utiliThread=new UtiliThread();
 			utiliThread.start();

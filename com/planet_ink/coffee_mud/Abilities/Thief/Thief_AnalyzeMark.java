@@ -16,6 +16,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Thief_AnalyzeMark();}
+	protected boolean exemptFromArmorReq(){return true;}
 
 	public MOB getMark(MOB mob)
 	{

@@ -8,6 +8,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public static final int ARMOR_NONMETAL=3;
 	public static final int ARMOR_VEGAN=4;
 	public static final int ARMOR_METALONLY=5;
+	public static long ARMOR_WEARMASK=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	
 	public String ID();
 	public String name();

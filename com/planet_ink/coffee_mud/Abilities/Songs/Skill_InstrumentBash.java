@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_InstrumentBash extends StdAbility
+public class Skill_InstrumentBash extends BardSkill
 {
 	public String ID() { return "Skill_InstrumentBash"; }
 	public String name(){ return "Instrument Bash";}

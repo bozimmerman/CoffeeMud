@@ -108,7 +108,8 @@ public class Paladin extends StdCharClass
 		if((msg.amISource(myChar))
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(myChar.getAlignment() < 650)
-		&&((msg.tool()==null)||((msg.tool() instanceof Ability)&&(myChar.isMine(msg.tool()))))
+		&&((msg.tool()==null)||((CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
+								&&(myChar.isMine(msg.tool()))))
 		&&(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2))
 		{
 			myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");

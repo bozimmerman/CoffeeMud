@@ -50,12 +50,15 @@ public class Chant extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if((appropriateToMyAlignment(mob.getAlignment()))||(auto))
-			return true;
-
-		if((Dice.rollPercentage()<50))
-			return true;
-		mob.tell("Extreme emotions disrupt your chant.");
-		return false;
+		if((!auto)
+		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
+		&&(!appropriateToMyAlignment(mob.getAlignment()))
+		&&(mob.isMine(this))
+		&&(Dice.rollPercentage()<50))
+		{
+			mob.tell("Extreme emotions disrupt your chant.");
+			return false;
+		}
+		return true;
 	}
 }

@@ -136,7 +136,7 @@ public class Barbarian extends StdCharClass
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
+			&&(CMAble.getQualifyingLevel(ID(),msg.tool().ID())>0)
 			&&(myChar.isMine(msg.tool()))
 			&&(!armorCheck(myChar)))
 			{

@@ -15,6 +15,7 @@ public class Thief_ContractHit extends ThiefSkill
 	private static final String[] triggerStrings = {"CONTRACTHIT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_ContractHit();}
+	protected boolean exemptFromArmorReq(){return true;}
 	public String displayText(){return "";}
 	private boolean done=false;
 	private boolean readyToHit=false;

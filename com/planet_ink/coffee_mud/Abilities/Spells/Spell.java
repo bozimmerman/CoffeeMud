@@ -16,6 +16,7 @@ public class Spell extends StdAbility
 	private static final String[] triggerStrings = {"CAST","CA","C"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SPELL;}
+	protected boolean exemptFromArmorReq(){return false;}
 
 	protected int affectType(boolean auto){
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -61,5 +62,23 @@ public class Spell extends StdAbility
 			}
 		}
 		return truefalse;
+	}
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		if((!auto)
+		&&(!exemptFromArmorReq())
+		&&(CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),ID())<0)
+		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_CLOTH))
+		&&(mob.isMine(this))
+		&&(mob.location()!=null)
+		&&(Dice.rollPercentage()<50))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+			return false;
+		}
+		return true;
 	}
 }

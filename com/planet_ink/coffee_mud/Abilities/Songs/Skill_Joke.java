@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.*;
 
-public class Skill_Joke extends StdAbility
+public class Skill_Joke extends BardSkill
 {
 	public String ID() { return "Skill_Joke"; }
 	public String name(){ return "Joke";}

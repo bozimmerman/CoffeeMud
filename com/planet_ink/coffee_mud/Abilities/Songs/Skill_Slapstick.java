@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_Slapstick extends StdAbility
+public class Skill_Slapstick extends BardSkill
 {
 	public String ID() { return "Skill_Slapstick"; }
 	public String name(){ return "Slapstick";}
