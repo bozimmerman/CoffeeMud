@@ -17,7 +17,7 @@
 </head>
 
 <body BGCOLOR=#CCFFFF>
-<h3>CoffeeMud 4.5 Player Class Information</h3><P>
+<h3>CoffeeMud 4.6 Player Class Information</h3><P>
 <TABLE WIDTH=100% BORDER=1>
 <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=#99CCCC VALIGN=CENTER ALIGN=CENTER><a name="@CharClassID@"><H2><FONT COLOR=BLACK>@CharClassName@</FONT></H2></a></TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Description</B></TD><TD>@CharClassData?help@</TD></TR>

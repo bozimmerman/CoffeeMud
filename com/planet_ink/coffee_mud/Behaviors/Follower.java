@@ -137,7 +137,9 @@ public class Follower extends ActiveTicker
 			Item I=(Item)ticking;
 			if((I.owner()!=null)
 			&&(I.owner() instanceof MOB)
-			&&(MUDZapper.zapperCheck(getParms(),(MOB)I.owner())))
+			&&(MUDZapper.zapperCheck(getParms(),(MOB)I.owner()))
+			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDMOBS"))
+			&&(!CMSecurity.isAllowed((MOB)I.owner(),((MOB)I.owner()).location(),"CMDROOMS")))
 				lastOwner=(MOB)I.owner();
 			else
 			if(!inventory)
@@ -201,7 +203,8 @@ public class Follower extends ActiveTicker
 		}
 		else
 		if((ticking instanceof Item)
-		&&(lastOwner!=null))
+		&&(lastOwner!=null)
+		&&(lastOwner.location()!=null))
 		{
 			Item I=(Item)ticking;
 			if(I.container()!=null) I.setContainer(null);
@@ -215,7 +218,11 @@ public class Follower extends ActiveTicker
 			{
 				CommonMsgs.get(lastOwner,null,I,true);
 				if(!lastOwner.isMine(I))
+				{
 					lastOwner.giveItem(I);
+					if(lastOwner.location()!=null)
+						lastOwner.location().recoverRoomStats();
+				}
 			}
 			
 		}
