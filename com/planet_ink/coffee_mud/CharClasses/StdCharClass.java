@@ -113,17 +113,22 @@ public class StdCharClass implements CharClass, Cloneable
 				switch(I.material()&EnvResource.MATERIAL_MASK)
 				{
 				case EnvResource.MATERIAL_LEATHER:
-					if(allowedArmorLevel()==CharClass.ARMOR_CLOTH)
+					if((allowedArmorLevel()==CharClass.ARMOR_CLOTH)
+					||(allowedArmorLevel()==CharClass.ARMOR_VEGAN)
+					||(allowedArmorLevel()==CharClass.ARMOR_METALONLY))
 						ok=false;
 					break;
 				case EnvResource.MATERIAL_METAL:
 				case EnvResource.MATERIAL_MITHRIL:
-					ok=false;
+					if(allowedArmorLevel()!=CharClass.ARMOR_METALONLY)
+						ok=false;
 					break;
 				case EnvResource.MATERIAL_WOODEN:
 				case EnvResource.MATERIAL_ROCK:
 					if((allowedArmorLevel()==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel()==CharClass.ARMOR_LEATHER))
+					||(allowedArmorLevel()==CharClass.ARMOR_VEGAN)
+					||(allowedArmorLevel()==CharClass.ARMOR_LEATHER)
+					||(allowedArmorLevel()==CharClass.ARMOR_METALONLY))
 						ok=false;
 					break;
 				default:

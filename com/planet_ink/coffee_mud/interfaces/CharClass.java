@@ -6,6 +6,8 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public static final int ARMOR_CLOTH=1;
 	public static final int ARMOR_LEATHER=2;
 	public static final int ARMOR_NONMETAL=3;
+	public static final int ARMOR_VEGAN=4;
+	public static final int ARMOR_METALONLY=5;
 	
 	public String ID();
 	public String name();

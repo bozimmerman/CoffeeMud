@@ -379,6 +379,9 @@ public class StdRace implements Race
 		Body.setCharStats(mob.baseCharStats().cloneCharStats());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+		Body.baseEnvStats().setAbility(mob.isMonster()?0:11);
+		if(!mob.isMonster())
+			Body.baseEnvStats().setDisposition(Body.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		if(!mob.isMonster())
 			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
 		Body.setName("the body of "+mob.name());

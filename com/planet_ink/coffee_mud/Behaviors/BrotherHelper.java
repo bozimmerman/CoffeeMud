@@ -42,6 +42,7 @@ public class BrotherHelper extends StdBehavior
 			return;
 		MOB target=(MOB)affect.target();
 
+		Room R=source.location();
 		if((source!=observer)
 		&&(target!=observer)
 		&&(source!=target)
@@ -49,9 +50,20 @@ public class BrotherHelper extends StdBehavior
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(isBrother(target,observer))
-		&&(!isBrother(source,observer)))
+		&&(!isBrother(source,observer))
+		&&(R!=null))
 		{
-			boolean yep=Aggressive.startFight(observer,source,true);
+			int numInFray=0;
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				MOB M=R.fetchInhabitant(m);
+				if((M!=null)&&(M.getVictim()==source))
+					numInFray++;
+			}
+			int numAllowed=Util.s_int(getParms());
+			boolean yep=true;
+			if((numAllowed==0)||(numInFray<numAllowed))
+				yep=Aggressive.startFight(observer,source,true);
 			if(yep)	ExternalPlay.quickSay(observer,null,"DON'T HURT MY FRIEND!",false,false);
 		}
 	}

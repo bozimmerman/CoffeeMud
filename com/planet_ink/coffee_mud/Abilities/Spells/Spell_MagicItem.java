@@ -113,6 +113,13 @@ public class Spell_MagicItem extends Spell
 					wand.addNonUninvokableAffect(A);
 				}
 				else
+				if(wand.canBeWornAt(Item.HELD)||wand.canBeWornAt(Item.WIELD))
+				{
+					Ability A=CMClass.getAbility("Prop_WearSpellCast");
+					A.setMiscText(wandThis.ID()+";");
+					wand.addNonUninvokableAffect(A);
+				}
+				else
 				{
 					Ability A=CMClass.getAbility("Prop_HaveSpellCast");
 					A.setMiscText(wandThis.ID()+";");

@@ -59,5 +59,19 @@ public class Corpse extends GenContainer implements DeadBody
 		return charStats;
 	}
 	public void setCharStats(CharStats newStats){charStats=newStats;}
-
+	
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if((msg.amITarget(this)||(msg.tool()==this))
+		&&(msg.targetMinor()==Affect.TYP_GET)
+		&&((envStats().ability()>10)||(Sense.isABonusItems(this)))
+		&&(rawSecretIdentity().indexOf("/")>=0)
+		&&(rawSecretIdentity().toUpperCase().startsWith(msg.source().Name().toUpperCase()+"/"))
+		&&(CMMap.getBodyRoom(msg.source())!=msg.source().location()))
+		{
+			msg.source().tell("You are prevented from touching "+name()+".");
+			return false;
+		}
+		return true;
+	}
 }

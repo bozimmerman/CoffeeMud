@@ -91,7 +91,7 @@ public class FireBuilding extends CommonSkill
 				return false;
 			}
 			completion=25-mob.envStats().level();
-			durationOfBurn=50+mob.envStats().level();
+			durationOfBurn=50+(mob.envStats().level()*4);
 			verb="building a fire";
 		}
 		else
@@ -132,7 +132,7 @@ public class FireBuilding extends CommonSkill
 				break;
 			case EnvResource.MATERIAL_WOODEN:
 				completion=25-mob.envStats().level();
-				durationOfBurn=40+(lighting.envStats().weight()*2);
+				durationOfBurn=50+(lighting.envStats().weight()*2);
 				break;
 			case EnvResource.MATERIAL_VEGETATION:
 			case EnvResource.MATERIAL_FLESH:

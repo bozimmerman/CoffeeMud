@@ -6,6 +6,8 @@
 	
 //****** next version ********************************************************
 GenRaces
+GenCharClasses -- zappercheck on quals
+ability to view wear location, weapon class/type in VIEW command
 racial abilities (abilities tied to the race)
 encumbrance/ wearing heavy armor slow  you down?
 property on abilities that describes what to say when already affected by it.
