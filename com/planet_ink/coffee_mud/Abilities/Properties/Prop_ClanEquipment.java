@@ -243,7 +243,7 @@ public class Prop_ClanEquipment extends Property
 						MUDFight.postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
 												   "^FThe magic of " +
 						                           clanType + " " + clanName +
-						                           " coarses through " + me.name() +
+						                           " courses through " + me.name() +
 						                           " and " +
 						                           "<DAMAGE>"+
 						                           " <T-NAME>!^?");
@@ -335,7 +335,7 @@ public class Prop_ClanEquipment extends Property
 			                      CMMsg.MSG_OK_ACTION,
 			// Source Message
 			                      "^FYour " + clanType + "'s " + type.toLowerCase() +
-			                      " magic coarses through "
+			                      " magic courses through "
 			                      + affected.name() +
 			                      " and " +
 			                      CommonStrings.standardHitWord(WeaponType,
@@ -344,7 +344,7 @@ public class Prop_ClanEquipment extends Property
 			// Target Message
 			                      "^FThe magic of " +
 			                      clanType + " " + clanName +
-			                      " coarses through " + affected.name() +
+			                      " courses through " + affected.name() +
 			                      " and " +
 			                      CommonStrings.standardHitWord(WeaponType,
 			    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +
@@ -352,7 +352,7 @@ public class Prop_ClanEquipment extends Property
 			// Other Message
 			                      "^FThe magic of " +
 			                      clanType + " " + clanName +
-			                      " coarses through " + affected.name() +
+			                      " courses through " + affected.name() +
 			                      " and " +
 			                      CommonStrings.standardHitWord(WeaponType,
 			    flameDamage) + ( (showDamn) ? " (" + flameDamage + ")" : "") +

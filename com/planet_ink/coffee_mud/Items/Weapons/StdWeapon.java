@@ -189,6 +189,14 @@ public class StdWeapon extends StdItem implements Weapon
 			if(ammunitionRemaining()<=0)
 			{
 				boolean reLoaded=false;
+				
+				for(int a=0;a<numEffects();a++)
+				{ 
+					Ability A=fetchEffect(a); 
+					if((A!=null)&&A.isBorrowed(this)&&(A.invoker()==null)) 
+						delEffect(A);
+				}
+				
 				if((msg.source().isMine(this))
 				   &&(msg.source().location()!=null)
 				   &&(Sense.aliveAwakeMobile(msg.source(),true)))
@@ -197,21 +205,31 @@ public class StdWeapon extends StdItem implements Weapon
 					for(int i=0;i<mob.inventorySize();i++)
 					{
 						Item I=mob.fetchInventory(i);
-						if(!((I instanceof Armor)
-						   ||(I instanceof Container)
-						   ||(I instanceof Weapon)
-						   ||(I.usesRemaining()==0)
-						   ||(I.usesRemaining()==Integer.MAX_VALUE)
-						   ||(I.container()!=null)
-						   ||(!I.rawSecretIdentity().equalsIgnoreCase(ammunitionType()))))
+						if((I instanceof Ammunition)
+						&&(I.usesRemaining()>0)
+						&&(I.usesRemaining()<Integer.MAX_VALUE)
+						&&(I.container()==null)
+						&&(((Ammunition)I).ammunitionType().equalsIgnoreCase(ammunitionType())))
 						{
-							if(mob.location().show(mob,this,I,CMMsg.MSG_RELOAD,"<S-NAME> get(s) "+ammunitionType()+" from <O-NAME>."))
+							if(mob.location().show(mob,this,I,CMMsg.MSG_RELOAD,"<S-NAME> load(s) <T-NAME> from <O-NAME>."))
 							{
 								int howMuchToTake=ammunitionCapacity();
 								if(I.usesRemaining()<howMuchToTake)
 									howMuchToTake=I.usesRemaining();
 								setAmmoRemaining(howMuchToTake);
 								I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
+								for(int a=0;a<I.numEffects();a++)
+								{ 
+									Ability A=I.fetchEffect(a); 
+									if((A!=null)&&(!A.isBorrowed(this))&&(fetchEffect(A.ID())==null))
+									{
+										A=(Ability)copyOf();
+										A.setInvoker(null);
+										A.setBorrowed(this,true);
+										addEffect(A);
+									}
+								}
+								
 								if(I.usesRemaining()<=0) I.destroy();
 								reLoaded=true;
 								break;

@@ -21,7 +21,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	protected int DISEASE_TICKS(){return 48;}
 	protected int DISEASE_DELAY(){return 5;}
-	protected String DISEASE_DONE(){return "Your disease has run its coarse.";}
+	protected String DISEASE_DONE(){return "Your disease has run its course.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
 

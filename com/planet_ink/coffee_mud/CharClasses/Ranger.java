@@ -120,6 +120,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_Sunray",false);
 			
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Ranger_Hide",false);
 			
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonInsects",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);

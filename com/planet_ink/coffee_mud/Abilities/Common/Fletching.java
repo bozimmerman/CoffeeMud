@@ -298,9 +298,9 @@ public class Fletching extends CraftingSkill
 				((Weapon)building).setRanges(((Weapon)building).minRange(),maxrange);
 			}
 			else
-			if(ammotype.length()>0)
+			if((ammotype.length()>0)&&(building instanceof Ammunition))
 			{
-				building.setSecretIdentity(ammotype);
+				((Ammunition)building).setAmmunitionType(ammotype);
 				building.setUsesRemaining(capacity);
 			}
 			building.recoverEnvStats();

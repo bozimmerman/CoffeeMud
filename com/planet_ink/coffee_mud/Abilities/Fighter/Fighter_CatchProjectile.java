@@ -54,7 +54,7 @@ public class Fighter_CatchProjectile extends StdAbility
 			else
 			if(((Weapon)w).requiresAmmunition())
 			{
-				Item neww=CMClass.getItem("GenItem");
+				Item neww=CMClass.getItem("GenAmmunition");
 				String ammo=((Weapon)w).ammunitionType();
 				if(ammo.length()==0) return true;
 				if(ammo.endsWith("s"))
@@ -65,7 +65,7 @@ public class Fighter_CatchProjectile extends StdAbility
 					ammo="a "+ammo;
 				neww.setName(ammo);
 				neww.setDisplayText(ammo+" sits here.");
-				neww.setSecretIdentity(ammo);
+				((Ammunition)neww).setAmmunitionType(ammo);
 				neww.setUsesRemaining(1);
 				neww.baseEnvStats().setWeight(1);
 				neww.setBaseValue(0);

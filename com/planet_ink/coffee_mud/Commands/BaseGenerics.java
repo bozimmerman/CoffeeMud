@@ -546,6 +546,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Potion)
 		 ||(E instanceof Light)
 		 ||(E instanceof Container)
+		 ||(E instanceof Ammunition)
 		 ||(E instanceof Key))
 			Sense.setReadable(E,false);
 		else
@@ -568,6 +569,7 @@ public class BaseGenerics extends StdCommand
 		 ||(E instanceof Wand)
 		 ||(E instanceof Scroll)
 		 ||(E instanceof Pill)
+		 ||(E instanceof Ammunition)
 		 ||(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
 		 ||(E instanceof Potion)
 		 ||(E instanceof Light)
@@ -586,6 +588,9 @@ public class BaseGenerics extends StdCommand
 				||(E instanceof Pill)
 				||(E instanceof Potion))
 					mob.tell(showNumber+". Assigned Spell(s) ( ';' delimited)\n: '"+E.readableText()+"'.");
+				else
+				if(E instanceof Ammunition)
+					mob.tell(showNumber+". Ammunition type: '"+E.readableText()+"'.");
 				else
 				if(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
 				{

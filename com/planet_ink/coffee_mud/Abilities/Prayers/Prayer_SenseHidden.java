@@ -35,7 +35,7 @@ public class Prayer_SenseHidden extends Prayer
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eyes are no longer opague.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> eyes are no longer opaque.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -60,7 +60,7 @@ public class Prayer_SenseHidden extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) opague eyes!":"^S<S-NAME> "+prayWord(mob)+" for divine revelation, and <S-HIS-HER> eyes become opague.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) opaque eyes!":"^S<S-NAME> "+prayWord(mob)+" for divine revelation, and <S-HIS-HER> eyes become opaque.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -64,7 +64,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 					ammo="a "+ammo;
 				neww.setName(ammo);
 				neww.setDisplayText(ammo+" sits here.");
-				neww.setSecretIdentity(ammo);
+				((Ammunition)neww).setAmmunitionType(ammo);
 				neww.setUsesRemaining(1);
 				neww.setWeaponClassification(Weapon.CLASS_THROWN);
 				neww.setWeaponType(((Weapon)w).weaponType());

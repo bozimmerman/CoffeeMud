@@ -53,7 +53,6 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SensePoison",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocateAnimals",true);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Ranger_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Farsight",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseAge",false);
 

@@ -1,11 +1,5 @@
-Heroes notes sleeves (and others) in goodie bags are empty!
-there doesn`t seem to be a help for the level 30 common skill: Master Tailoring.
-prayer for sense hidden, opague should be opaque
-woodland hide helpfile -> not available to ranger but description mentions ranger using the spell
-When a character`s baby isn`t with the parents, I`ve noticed it does some emotes. It would seem there are two versions of (Mob) cries, because one has a period at the end and one does not. I`m not sure if that was intentional though. Just pure observation.
- in the HELP file for the ORACLE, it says The Oracle himself, however, will need to determine if such a COARSE is divinely inspired... It should be COURSE, not COARSE, as we`re talking about a path, not the texture of a material. Okay, that`s all, thanks.
 !SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
-Do the thing about ammunition and props/behavs
+Update the database for the ammunition change
 Ability to buy space ship areas, and add them to shopkeepers
 Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
