@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Items;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
 
 public class LargeChest extends LockableContainer
@@ -19,7 +19,7 @@ public class LargeChest extends LockableContainer
 		baseEnvStats().setWeight(50);
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new LargeChest();

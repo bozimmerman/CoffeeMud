@@ -1,12 +1,8 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
+import com.planet_ink.coffee_mud.Items.StdItem;
 import java.util.*;
 
 
@@ -25,29 +21,29 @@ public class ManualArchon extends StdItem implements MiscMagic
 		baseGoldValue=50000;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new ManualArchon();
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.VISUAL_READ:
+			case Affect.TYP_READSOMETHING:
 				if(mob.isMine(this))
 				{
 					mob.tell("The manual glows softly, enveloping you magical energy.");
 					Session session=mob.session();
-					CharClass newClass=(CharClass)MUD.getCharClass("Archon");
+					CharClass newClass=(CharClass)CMClass.getCharClass("Archon");
 					if((session!=null)&&(newClass!=null))
 					{
 						mob.setSession(null);
-						
+
 						mob.baseCharStats().setStrength(25);
 						mob.baseCharStats().setWisdom(25);
 						mob.baseCharStats().setIntelligence(25);
@@ -59,11 +55,12 @@ public class ManualArchon extends StdItem implements MiscMagic
 						{
 							mob.charStats().getMyClass().gainExperience(mob,null,mob.getExpNeededLevel()+1);
 						}
-						
+
 						mob.baseCharStats().setMyClass(newClass);
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();
+						mob.resetToMaxState();
 						mob.charStats().getMyClass().logon(mob);
 						mob.setSession(session);
 					}
@@ -78,5 +75,5 @@ public class ManualArchon extends StdItem implements MiscMagic
 		}
 		super.affect(affect);
 	}
-	
+
 }

@@ -1,14 +1,10 @@
 package com.planet_ink.coffee_mud.commands.sysop;
 
 
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.telnet.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Exits.*;
 import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 import java.io.*;
 
@@ -19,10 +15,18 @@ public class SysopSocials
 	String Third_party_sees;
 	String Target_sees;
 	String See_when_no_target;
-	int sourceCode=Affect.GENERAL;
-	int othersCode=Affect.GENERAL;
-	int targetCode=Affect.GENERAL;
-	public static void Create(MOB mob, Vector commands)
+	int sourceCode=Affect.MSG_OK_ACTION;
+	int othersCode=Affect.MSG_OK_ACTION;
+	int targetCode=Affect.MSG_OK_ACTION;
+	
+	Socials socials=null;
+	
+	public SysopSocials(Socials newSocials)
+	{
+		socials=newSocials;
+	}
+	
+	public void create(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -31,7 +35,7 @@ public class SysopSocials
 		if(commands.size()<3)
 		{
 			mob.tell("but fail to specify the proper fields.\n\rThe format is CREATE SOCIAL [NAME]\n\r");
-			mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 
@@ -40,22 +44,22 @@ public class SysopSocials
 		if(modifySocial(mob,soc2))
 		{
 			soc2.Social_name=soc2.Social_name.toUpperCase();
-			if(MUD.allSocials.FetchSocial(soc2.Social_name)!=null)
+			if(socials.FetchSocial(soc2.Social_name)!=null)
 			{
 				mob.tell("That social already exists.  Try MODIFY!");
 				return;
 			}
 			else
 			{
-				MUD.allSocials.soc.put(soc2.Social_name,soc2);
-				MUD.allSocials.socialsList=null;
-				MUD.allSocials.save();
+				socials.soc.put(soc2.Social_name,soc2);
+				socials.socialsList=null;
+				socials.save();
 			}
 			Log.sysOut("SysopSocials",mob.ID()+" created social "+soc2.Social_name+".");
 		}
 	}
 
-	public static boolean modifySocial(MOB mob, Social soc)
+	public boolean modifySocial(MOB mob, Social soc)
 		throws IOException
 	{
 		String name=soc.Social_name;
@@ -83,7 +87,7 @@ public class SysopSocials
 			mob.session().println("(no change)");
 
 		mob.session().rawPrintln("\n\rTarget="+(targeted?"TARGET":(self?"SELF":"NONE")));
-		newName=mob.session().choose("Change (T/S/N)? ","TSN","");
+		newName=mob.session().choose("Change T)arget, S)elf, N)one: ","TSN","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
@@ -122,23 +126,26 @@ public class SysopSocials
 			mob.session().println("(no change)");
 
 
-		if(soc.sourceCode==Affect.GENERAL)
-			soc.sourceCode=Affect.HANDS_GENERAL;
-		mob.session().rawPrintln("\n\rYour action type="+((soc.sourceCode==Affect.SOUND_WORDS)?"SPEAKING":((soc.sourceCode==Affect.HANDS_GENERAL)?"MOVEMENT":"MAKING NOISE")));
-		newName=mob.session().choose("Change (W/M/N)? ","WMN","");
+		if(soc.sourceCode==Affect.MSG_OK_ACTION)
+			soc.sourceCode=Affect.MSG_HANDS;
+		mob.session().rawPrintln("\n\rYour action type="+((soc.sourceCode==Affect.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((soc.sourceCode==Affect.MSG_SPEAK)?"SPEAKING":((soc.sourceCode==Affect.MSG_HANDS)?"MOVEMENT":"MAKING NOISE"))));
+		newName=mob.session().choose("Change W)ords, M)ovement (small), S)ound, L)arge Movement ","WMNL","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
 			switch(newName.charAt(0))
 			{
 				case 'W':
-				soc.sourceCode=Affect.SOUND_WORDS;
+				soc.sourceCode=Affect.MSG_SPEAK;
 				break;
 				case 'M':
-				soc.sourceCode=Affect.HANDS_GENERAL;
+				soc.sourceCode=Affect.MSG_HANDS;
 				break;
 				case 'N':
-				soc.sourceCode=Affect.SOUND_NOISE;
+				soc.sourceCode=Affect.MSG_NOISE;
+				break;
+				case 'L':
+				soc.sourceCode=Affect.MSG_NOISYMOVEMENT;
 				break;
 			}
 		}
@@ -152,26 +159,34 @@ public class SysopSocials
 		else
 			mob.session().println("(no change)");
 
-		if(soc.othersCode==Affect.GENERAL)
-			soc.othersCode=Affect.HANDS_GENERAL;
-		mob.session().rawPrintln("\n\rOthers affect type="+((soc.othersCode==Affect.SOUND_WORDS)?"HEARING WORDS":((soc.othersCode==Affect.VISUAL_WNOISE)?"SEEING MOVEMENT":"HEARING NOISE")));
-		newName=mob.session().choose("Change (W/M/N)? ","WMN","");
+		if(soc.othersCode==Affect.MSG_OK_ACTION)
+			soc.othersCode=Affect.MSG_HANDS;
+		mob.session().rawPrintln("\n\rOthers affect type="+((soc.othersCode==Affect.MSG_HANDS)?"HANDS":((soc.sourceCode==Affect.MSG_OK_VISUAL)?"VISUAL ONLY":((soc.othersCode==Affect.MSG_SPEAK)?"HEARING WORDS":((soc.othersCode==Affect.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
+		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMNVH","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
 			switch(newName.charAt(0))
 			{
+				case 'H':
+				soc.othersCode=Affect.MSG_HANDS;
+				soc.targetCode=Affect.MSG_HANDS;
+				break;
 				case 'W':
-				soc.othersCode=Affect.SOUND_WORDS;
-				soc.targetCode=Affect.SOUND_WORDS;
+				soc.othersCode=Affect.MSG_SPEAK;
+				soc.targetCode=Affect.MSG_SPEAK;
 				break;
 				case 'M':
-				soc.othersCode=Affect.VISUAL_WNOISE;
-				soc.targetCode=Affect.VISUAL_WNOISE;
+				soc.othersCode=Affect.MSG_NOISYMOVEMENT;
+				soc.targetCode=Affect.MSG_NOISYMOVEMENT;
 				break;
 				case 'N':
-				soc.othersCode=Affect.SOUND_NOISE;
-				soc.targetCode=Affect.SOUND_NOISE;
+				soc.othersCode=Affect.MSG_NOISE;
+				soc.targetCode=Affect.MSG_NOISE;
+				break;
+				case 'V':
+				soc.othersCode=Affect.MSG_OK_VISUAL;
+				soc.targetCode=Affect.MSG_OK_VISUAL;
 				break;
 			}
 		}
@@ -190,26 +205,29 @@ public class SysopSocials
 				mob.session().println("(no change)");
 
 
-		if(soc.targetCode==Affect.GENERAL)
-			soc.targetCode=Affect.HANDS_GENERAL;
-		mob.session().rawPrintln("\n\rTarget affect type="+((soc.targetCode==Affect.SOUND_WORDS)?"HEARING WORDS":((soc.targetCode==Affect.HANDS_GENERAL)?"BEING TOUCHED":((soc.targetCode==Affect.VISUAL_WNOISE)?"SEEING MOVEMENT":"HEARING NOISE"))));
-		newName=mob.session().choose("Change (W/T/M/N)? ","WMTN","");
+		if(soc.targetCode==Affect.MSG_OK_ACTION)
+			soc.targetCode=Affect.MSG_HANDS;
+		mob.session().rawPrintln("\n\rTarget affect type="+((soc.othersCode==Affect.MSG_HANDS)?"HANDS":((soc.sourceCode==Affect.MSG_OK_VISUAL)?"VISUAL ONLY":((soc.othersCode==Affect.MSG_SPEAK)?"HEARING WORDS":((soc.othersCode==Affect.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE")))));
+		newName=mob.session().choose("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: ","WMNVH","");
 		if((newName!=null)&&(newName.length()>0))
 		{
 			newName=newName.toUpperCase();
 			switch(newName.charAt(0))
 			{
 				case 'W':
-				soc.targetCode=Affect.SOUND_WORDS;
+				soc.targetCode=Affect.MSG_SPEAK;
 				break;
 				case 'M':
-				soc.targetCode=Affect.VISUAL_WNOISE;
+				soc.targetCode=Affect.MSG_NOISYMOVEMENT;
 				break;
-				case 'T':
-				soc.targetCode=Affect.HANDS_GENERAL;
+				case 'H':
+				soc.targetCode=Affect.MSG_HANDS;
 				break;
 				case 'N':
-				soc.targetCode=Affect.SOUND_NOISE;
+				soc.targetCode=Affect.MSG_NOISE;
+				break;
+				case 'V':
+				soc.targetCode=Affect.MSG_OK_VISUAL;
 				break;
 			}
 		}
@@ -228,7 +246,7 @@ public class SysopSocials
 		return true;
 	}
 
-	public static void Modify(MOB mob, Vector commands)
+	public void modify(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -237,87 +255,87 @@ public class SysopSocials
 		if(commands.size()<3)
 		{
 			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is MODIFY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
-			mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		else
 		if(commands.size()>3)
 		{
-			String therest=CommandProcessor.combine(commands,3);
+			String therest=Util.combine(commands,3);
 			if(!((therest.equalsIgnoreCase("<T-NAME>")||therest.equalsIgnoreCase("SELF"))))
 			{
 				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is MODIFY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
-				mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> flub(s) a powerful spell.");
+				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				return;
 			}
 		}
 
-		String stuff=CommandProcessor.combine(commands,2).toUpperCase();
-		Social soc2=MUD.allSocials.FetchSocial(stuff);
+		String stuff=Util.combine(commands,2).toUpperCase();
+		Social soc2=socials.FetchSocial(stuff);
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
-			mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 
 		if(modifySocial(mob,soc2))
 		{
 			soc2.Social_name=soc2.Social_name.toUpperCase();
-			if(MUD.allSocials.FetchSocial(soc2.Social_name)!=soc2)
+			if(socials.FetchSocial(soc2.Social_name)!=soc2)
 			{
 				mob.session().rawPrintln("That social already exists in another form (<T-NAME>, or SELF).  Try deleting the other one first!");
 				return;
 			}
 			else
 			{
-				MUD.allSocials.socialsList=null;
-				MUD.allSocials.save();
+				socials.socialsList=null;
+				socials.save();
 			}
 			Log.sysOut("SysopSocials",mob.ID()+" modified social "+soc2.Social_name+".");
 		}
-		mob.location().show(mob,null,Affect.VISUAL_WNOISE,"The happiness of all mankind has just increased!");
+		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
 	}
 
-	public static void Destroy(MOB mob, Vector commands)
+	public void destroy(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(commands.size()<3)
 		{
 			mob.session().rawPrintln("but fail to specify the proper fields.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
-			mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		else
 		if(commands.size()>3)
 		{
-			String therest=CommandProcessor.combine(commands,3);
+			String therest=Util.combine(commands,3);
 			if(!((therest.equalsIgnoreCase("<T-NAME>")||therest.equalsIgnoreCase("SELF"))))
 			{
 				mob.session().rawPrintln("but fail to specify the proper second parameter.\n\rThe format is DESTROY SOCIAL [NAME] ([<T-NAME>], [SELF])\n\r");
-				mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> flub(s) a powerful spell.");
+				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				return;
 			}
 		}
 
-		Social soc2=MUD.allSocials.FetchSocial(CommandProcessor.combine(commands,2).toUpperCase());
+		Social soc2=socials.FetchSocial(Util.combine(commands,2).toUpperCase());
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
-			mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> flub(s) a powerful spell.");
+			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
 		else
 		{
 			if(mob.session().confirm("Are you sure you want to delete that social (y/N)? ","N"))
 			{
-				MUD.allSocials.soc.remove(soc2.Social_name);
-				MUD.allSocials.socialsList=null;
-				MUD.allSocials.save();
-				mob.location().show(mob,null,Affect.VISUAL_WNOISE,"The happiness of all mankind has just decreased!");
+				socials.soc.remove(soc2.Social_name);
+				socials.socialsList=null;
+				socials.save();
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
 			}
 			else
-				mob.location().show(mob,null,Affect.VISUAL_WNOISE,"The happiness of all mankind has just increased!");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
 			Log.sysOut("SysopSocials",mob.ID()+" destroyed social "+soc2.Social_name+".");
 		}
 

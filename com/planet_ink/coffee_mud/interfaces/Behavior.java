@@ -18,7 +18,13 @@ public interface Behavior extends Cloneable
 	public Behavior newInstance();
 	public Behavior copyOf();
 	
+	public void startBehavior(Environmental forMe);
 	
+	public String getParms();
+	public void setParms(String parameters);
+	
+	
+	public boolean grantsMobility();
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class

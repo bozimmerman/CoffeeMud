@@ -2,18 +2,8 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Abilities.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class DrowWarrior extends DrowElf
 {
@@ -43,7 +33,7 @@ public class DrowWarrior extends DrowElf
 
         equipDrow();
 
-		maxState.setHitPoints(Dice.roll(baseEnvStats().level(), 8, 2));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(), 8, 2));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
 
@@ -55,22 +45,26 @@ public class DrowWarrior extends DrowElf
 		baseCharStats().setDexterity(15 + Dice.roll(1,6,0));
 		baseCharStats().setConstitution(12 + Dice.roll(1,6,0));
 		baseCharStats().setCharisma(13 + Dice.roll(1,6,0));
-		baseCharStats().setMyClass(new Fighter());
-		baseCharStats().setMyRace(new Elf());
+		baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
+		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 
 
         addNaturalAbilities();
 
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
 
     public void equipDrow()
     {
-        DrowChainMailArmor chainMail = new DrowChainMailArmor();
-        chainMail.wear(Item.ON_TORSO);
-        this.addInventory(chainMail);
+        Armor chainMail = (Armor)CMClass.getArmor("DrowChainMailArmor");
+		if(chainMail!=null)
+		{
+			chainMail.wearAt(Item.ON_TORSO);
+			this.addInventory(chainMail);
+		}
 
         Weapon mainWeapon = null;
         Weapon secondWeapon = null;
@@ -79,114 +73,121 @@ public class DrowWarrior extends DrowElf
         switch(weaponry)
         {
             case 1:
-		        mainWeapon = (DrowSword) new DrowSword();
-		        secondWeapon = (DrowSword) new DrowSword();
-		        mainWeapon.wear(Item.WIELD);
-		        secondWeapon.wear(Item.HELD);
-		        this.addInventory(mainWeapon);
-                this.addInventory(secondWeapon);
+		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        secondWeapon = (Weapon)CMClass.getWeapon("DrowSword");
 		        baseEnvStats().setSpeed(2.0);
                 break;
             case 2:
-		        mainWeapon = (DrowSword) new DrowSword();
-//		        Shield secondWeapon = new Shield();
-		        mainWeapon.wear(Item.WIELD);
-//		        secondWeapon.wear(Item.SHIELD);
-		        this.addInventory(mainWeapon);
-//              this.addInventory(secondWeapon);
+		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
 		        baseEnvStats().setSpeed(1.0);
                 break;
             case 3:
-		        mainWeapon = (DrowSword) new DrowSword();
-		        secondWeapon = (DrowDagger) new DrowDagger();
-		        mainWeapon.wear(Item.WIELD);
-		        secondWeapon.wear(Item.HELD);
-		        this.addInventory(mainWeapon);
-                this.addInventory(secondWeapon);
+		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        secondWeapon = (Weapon)CMClass.getWeapon("DrowDagger");
 		        baseEnvStats().setSpeed(2.0);
                 break;
             case 4:
-		        mainWeapon = (Scimitar) new Scimitar();
-		        secondWeapon = (Scimitar) new Scimitar();
-		        mainWeapon.wear(Item.WIELD);
-		        secondWeapon.wear(Item.HELD);
-		        this.addInventory(mainWeapon);
-                this.addInventory(secondWeapon);
+		        mainWeapon = (Weapon)CMClass.getWeapon("Scimitar");
+		        secondWeapon = (Weapon)CMClass.getWeapon("Scimitar");
 		        baseEnvStats().setSpeed(2.0);
                 break;
             default:
-		        mainWeapon = (DrowSword) new DrowSword();
-		        secondWeapon = (DrowSword) new DrowSword();
-		        mainWeapon.wear(Item.WIELD);
-		        secondWeapon.wear(Item.HELD);
-		        this.addInventory(mainWeapon);
-                this.addInventory(secondWeapon);
+		        mainWeapon = (Weapon)CMClass.getWeapon("DrowSword");
+		        secondWeapon = (Weapon)CMClass.getWeapon("DrowSword");
 		        baseEnvStats().setSpeed(2.0);
                 break;
         }
+		if(mainWeapon!=null)
+		{
+		    mainWeapon.wearAt(Item.WIELD);
+		    this.addInventory(mainWeapon);
+			if(secondWeapon!=null)
+			{
+				secondWeapon.wearAt(Item.HELD);
+				this.addInventory(secondWeapon);
+			}
+		}
 
     }
 
     public void addNaturalAbilities()
     {
-        Spell_Darkness dark=new Spell_Darkness();
-        dark.setProfficiency(100);
+        Ability dark=CMClass.getAbility("Spell_Darkness");
+		if(dark==null) return;
+
+
+		dark.setProfficiency(100);
+		dark.setBorrowed(this,true);
         this.addAbility(dark);
 
-        Prayer_ProtGood p1 = new Prayer_ProtGood();
+        Ability p1 =CMClass.getAbility("Prayer_ProtGood");
         p1.setProfficiency(Dice.roll(5, 10, 50));
+		p1.setBorrowed(this,true);
         this.addAbility(p1);
 
-        Prayer_CauseLight p2 = new Prayer_CauseLight();
+        Ability p2 =CMClass.getAbility("Prayer_CauseLight");
         p2.setProfficiency(Dice.roll(5, 10, 50));
+		p2.setBorrowed(this,true);
         this.addAbility(p2);
 
-        Prayer_CauseSerious p3 = new Prayer_CauseSerious();
+        Ability p3 =CMClass.getAbility("Prayer_CauseSerious");
         p3.setProfficiency(Dice.roll(5, 10, 50));
+		p3.setBorrowed(this,true);
         this.addAbility(p3);
 
-        Prayer_Curse p4 = new Prayer_Curse();
+        Ability p4 =CMClass.getAbility("Prayer_Curse");
         p4.setProfficiency(Dice.roll(5, 10, 50));
+		p4.setBorrowed(this,true);
         this.addAbility(p4);
 
-        Prayer_Paralyze p5 = new Prayer_Paralyze();
+        Ability p5 =CMClass.getAbility("Prayer_Paralyze");
         p5.setProfficiency(Dice.roll(5, 10, 50));
+		p5.setBorrowed(this,true);
         this.addAbility(p5);
 
-        Prayer_DispelGood p6 = new Prayer_DispelGood();
+        Ability p6 =CMClass.getAbility("Prayer_DispelGood");
         p6.setProfficiency(Dice.roll(5, 10, 50));
+		p6.setBorrowed(this,true);
         this.addAbility(p6);
 
-        Prayer_Plague p7 = new Prayer_Plague();
+        Ability p7 =CMClass.getAbility("Prayer_Plague");
         p7.setProfficiency(Dice.roll(5, 10, 50));
+		p7.setBorrowed(this,true);
         this.addAbility(p7);
 
-        Prayer_CauseCritical p8 = new Prayer_CauseCritical();
+        Ability p8 =CMClass.getAbility("Prayer_CauseCritical");
         p8.setProfficiency(Dice.roll(5, 10, 50));
+		p8.setBorrowed(this,true);
         this.addAbility(p8);
 
-        Prayer_Blindness p9 = new Prayer_Blindness();
+        Ability p9 =CMClass.getAbility("Prayer_Blindness");
         p9.setProfficiency(Dice.roll(5, 10, 50));
+		p9.setBorrowed(this,true);
         this.addAbility(p9);
 
-        Prayer_BladeBarrier p10 = new Prayer_BladeBarrier();
+        Ability p10 =CMClass.getAbility("Prayer_BladeBarrier");
         p10.setProfficiency(Dice.roll(5, 10, 50));
+		p10.setBorrowed(this,true);
         this.addAbility(p10);
 
-        Prayer_Hellfire p11 = new Prayer_Hellfire();
+        Ability p11 =CMClass.getAbility("Prayer_Hellfire");
         p11.setProfficiency(Dice.roll(5, 10, 50));
+		p11.setBorrowed(this,true);
         this.addAbility(p11);
 
-        Prayer_UnholyWord p12 = new Prayer_UnholyWord();
+        Ability p12 =CMClass.getAbility("Prayer_UnholyWord");
         p12.setProfficiency(Dice.roll(5, 10, 50));
+		p12.setBorrowed(this,true);
         this.addAbility(p12);
 
-        Prayer_Deathfinger p13 = new Prayer_Deathfinger();
+        Ability p13 =CMClass.getAbility("Prayer_Deathfinger");
         p13.setProfficiency(Dice.roll(5, 10, 50));
+		p13.setBorrowed(this,true);
         this.addAbility(p13);
 
-        Prayer_Harm p14 = new Prayer_Harm();
+        Ability p14 =CMClass.getAbility("Prayer_Harm");
         p14.setProfficiency(Dice.roll(5, 10, 50));
+		p14.setBorrowed(this,true);
         this.addAbility(p14);
 
     }
@@ -196,15 +197,14 @@ public class DrowWarrior extends DrowElf
 		boolean retval = super.okAffect(affect);
 		MOB SourceMOB = affect.source();
 
-		if(affect.amITarget(this))
+		if((affect.amITarget(this))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL))
 		{
-            if((affect.targetCode()==Affect.STRIKE_MAGIC) || (affect.targetCode()==Affect.SOUND_MAGIC))
+            if(Dice.rollPercentage() <= magicResistance)
             {
-                if(Dice.rollPercentage() <= magicResistance)
-                {
-	                affect.source().tell("The drow warrior resisted your spell!");
-	                return false;
-                }
+	            affect.source().tell("The drow warrior resisted your spell!");
+	            return false;
             }
         }
         return true;
@@ -212,7 +212,7 @@ public class DrowWarrior extends DrowElf
 
 	public boolean tick(int tickID)
 	{
-		if((!amDead())&&(tickID==ServiceEngine.MOB_TICK))
+		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
 			if (isInCombat())
 			{
@@ -241,27 +241,23 @@ public class DrowWarrior extends DrowElf
     {
         if(envStats().disposition() == Sense.IS_SITTING)
             envStats().setDisposition(envStats().disposition() - Sense.IS_SITTING);
-        this.location().show(this, null, Affect.VISUAL_WNOISE, "<S-NAME> stand(s) up, ready for more combat.");
+        this.location().show(this, null, Affect.MSG_NOISYMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
 
         return true;
     }
 
     public boolean useSkill()
     {
-        Prayer prayer = null;
+        Ability prayer = null;
         if(Dice.rollPercentage() < 70)
         {
-            prayer = (Prayer) this.fetchAbility(Dice.roll(1,14,1));
+            prayer =  this.fetchAbility(Dice.roll(1,14,1));
             while(this.baseEnvStats().level() < prayer.baseEnvStats().level())
-                prayer = (Prayer) this.fetchAbility(Dice.roll(1,14,1));
+                prayer = this.fetchAbility(Dice.roll(1,14,1));
         }
         else
-        {
-            prayer = (Prayer) new Prayer_CureSerious();
-        }
-        Vector commands = new Vector();
-//        commands.addElement();
-        return prayer.invoke(this, commands);;
+            prayer = CMClass.getAbility("Prayer_CureSerious");
+        return prayer.invoke(this,null,false);;
     }
 
 	protected boolean castDarkness()
@@ -271,14 +267,15 @@ public class DrowWarrior extends DrowElf
 		if(Sense.isInDark(this.location()))
 			return true;
 
-		Spell_Darkness dark=new Spell_Darkness();
+		Ability dark=CMClass.getAbility("Spell_Darkness");
+		dark.setBorrowed(this,true);
 		dark.setProfficiency(100);
 		if(this.fetchAbility(dark.ID())==null)
 		   this.addAbility(dark);
 		else
-			dark = (Spell_Darkness) this.fetchAbility(dark.ID());
+			dark=this.fetchAbility(dark.ID());
 
-		dark.invoke(this,new Vector());
+		dark.invoke(this,null,false);
 		return true;
 	}
 

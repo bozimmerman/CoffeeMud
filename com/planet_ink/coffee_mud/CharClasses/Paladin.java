@@ -2,15 +2,8 @@ package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Paladin extends StdCharClass
 {
@@ -21,8 +14,8 @@ public class Paladin extends StdCharClass
 		maxHitPointsPerLevel=22;
 		maxStat[CharStats.STRENGTH]=22;
 		maxStat[CharStats.WISDOM]=22;
-		bonusPracLevel=2;
-		manaMultiplier=15;
+		bonusPracLevel=0;
+		manaMultiplier=10;
 		attackAttribute=CharStats.STRENGTH;
 		bonusAttackLevel=2;
 		name=myID;
@@ -36,23 +29,17 @@ public class Paladin extends StdCharClass
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		switch(affect.sourceCode())
-		{
-		case Affect.SOUND_MAGIC:
-		case Affect.STRIKE_MAGIC:
-			if(affect.source().getAlignment() < 650)
-				if(Dice.rollPercentage()<affect.source().charStats().getWisdom()*2)
+		if(affect.amISource(myChar))
+		if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			if(myChar.getAlignment() < 650)
+				if(Dice.rollPercentage()>myChar.charStats().getWisdom()*4)
 				{
-					affect.source().location().show(affect.source(),null,Affect.VISUAL_ONLY,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
 					return false;
 				}
-			break;
-		default:
-			break;
-		}
-		return super.okAffect(affect);
+		return super.okAffect(myChar, affect);
 	}
 
 	public boolean qualifiesForThisClass(MOB mob)
@@ -63,35 +50,41 @@ public class Paladin extends StdCharClass
 		if(mob.baseCharStats().getWisdom() <= 8)
 			return false;
 
-		if(!(mob.charStats().getMyRace() instanceof Human))
+		if(!(mob.charStats().getMyRace().ID().equals("Human")))
 			return(false);
 
 		return true;
 	}
 
-	public void newCharacter(MOB mob)
+	public void outfit(MOB mob)
 	{
-		super.newCharacter(mob);
-		giveMobAbility(mob,new Paladin_LayHands());
-		giveMobAbility(mob,new Fighter_BlindFighting());
-		giveMobAbility(mob,new Fighter_Rescue());
-		giveMobAbility(mob,new Skill_Attack2());
-		giveMobAbility(mob,new Skill_Attack3());
-		giveMobAbility(mob,new Skill_Bash());
-		giveMobAbility(mob,new Skill_Dirt());
-		giveMobAbility(mob,new Skill_Disarm());
-		giveMobAbility(mob,new Skill_Dodge());
-		giveMobAbility(mob,new Skill_Parry());
-		giveMobAbility(mob,new Skill_Trip());
-		giveMobAbility(mob,new Cleric_Turn());
-		giveMobAbility(mob,new Prayer_CureLight());
-		giveMobAbility(mob,new Prayer_DetectEvil());
-		if(!mob.isMonster())
+		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+		if(mob.fetchInventory(w.ID())==null)
 		{
-			Longsword s=new Longsword();
-			s.wear(Item.WIELD);
-			mob.addInventory(s);
+			mob.addInventory(w);
+			if(!mob.amWearingSomethingHere(Item.WIELD))
+				w.wearAt(Item.WIELD);
 		}
+	}
+	public void newCharacter(MOB mob, boolean isBorrowedClass)
+	{
+		super.newCharacter(mob, isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Paladin_LayHands"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Fighter_BlindFighting"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Fighter_Rescue"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Attack2"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Attack3"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Bash"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Dirt"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Disarm"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Dodge"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Parry"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Trip"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Cleric_Turn"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Prayer_CureLight"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Prayer_DetectEvil"), isBorrowedClass);
+		if(!mob.isMonster())
+			outfit(mob);
 	}
 
 	public void level(MOB mob)

@@ -17,6 +17,7 @@ public interface Item extends Environmental
 	public void setLocation(Item newLocation);
 	
 	public String secretIdentity();
+	public String rawSecretIdentity();
 	public void setSecretIdentity(String newIdentity);
 	
 	public boolean isAContainer();
@@ -25,8 +26,6 @@ public interface Item extends Environmental
 	 * for this object */
 	public int usesRemaining();
 	public void setUsesRemaining(int newUses);
-	
-	public void strike(MOB source, MOB target, boolean success);
 	
 	public void destroyThis();
 	public void removeThis();
@@ -78,7 +77,8 @@ public interface Item extends Environmental
 	public boolean amWearingAt(long wornCode);	// 0 means in inventory! see above
 	public boolean canBeWornAt(long wornCode);
 	public boolean canWear(MOB mob);
-	public void wear(long wornCode);
+	public void wearIfPossible(MOB mob);
+	public void wearAt(long wornCode);
 	public void remove();
 	public long rawWornCode();
 	public long rawProperLocationBitmap();
@@ -87,5 +87,6 @@ public interface Item extends Environmental
 	public void setRawLogicalAnd(boolean newAnd);
 	public boolean compareProperLocations(Item toThis);
 	public Environmental myOwner();
+	public String materialDescription();
 	public void setOwner(Environmental E);
 }

@@ -1,15 +1,10 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Exits.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.Util;
+import com.planet_ink.coffee_mud.utils.Sense;
+import com.planet_ink.coffee_mud.utils.Directions;
 import java.util.*;
 
 public class ClimbableSurface extends StdRoom
@@ -32,10 +27,12 @@ public class ClimbableSurface extends StdRoom
 		if(!super.okAffect(affect))
 			return false;
 
-		if(affect.amITarget(this)&&(affect.targetType()==Affect.MOVE)&&(affect.source().fetchAffect(new Falling().ID())==null)&&(!Sense.isFlying(affect.source())))
+		if(affect.amITarget(this)
+		&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
+		&&(affect.source().fetchAffect("Falling")==null)&&(!Sense.isFlying(affect.source())))
 		{
 			MOB mob=affect.source();
-			if(mob.fetchAffect(new Skill_Climb().ID())!=null)
+			if(mob.fetchAffect("Skill_Climb")!=null)
 			{
 				String direction=null;
 				if(mob.location()==doors[Directions.UP])
@@ -44,7 +41,7 @@ public class ClimbableSurface extends StdRoom
 				if(mob.location()==doors[Directions.DOWN])
 					direction="up";
 				if(direction!=null)
-					mob.location().show(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> attempt(s) to climb "+direction+".");
+					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to climb "+direction+".");
 			}
 			else
 			{
@@ -58,21 +55,35 @@ public class ClimbableSurface extends StdRoom
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
-		if((affect.target() instanceof Item)&&(!Sense.isFlying(affect.target())&&(affect.targetCode()==Affect.HANDS_DROP)))
-			Falling.startFalling(affect.target(),this);
+
+
+		if((affect.target() instanceof Item)
+		   &&(!Sense.isFlying(affect.target())
+			  &&(affect.targetMinor()==Affect.TYP_DROP)))
+		{
+			Ability falling=CMClass.getAbility("Falling");
+			falling.setAffectedOne(this);
+			falling.invoke(null,null,affect.target(),true);
+		}
 		else
-		if(affect.amITarget(this)&&(affect.targetType()==Affect.MOVE)&&(affect.source().fetchAffect(new Falling().ID())==null))
+		if(affect.amITarget(this)
+			&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
+		    &&(affect.source().fetchAffect("Falling")==null))
 		{
 			MOB mob=affect.source();
 			if(this.isInhabitant(mob))
 			{
-				Skill_Climb c=(Skill_Climb)mob.fetchAffect(new Skill_Climb().ID());
+				Ability c=mob.fetchAffect("Skill_Climb");
 				if((!Sense.isFlying(mob))
-				&&((c==null)||((c!=null)&&(!c.successful)))
-				&&(getRoom(Directions.DOWN)!=null)
-				&&(getExit(Directions.DOWN)!=null)
-				&&(getExit(Directions.DOWN).isOpen()))
-					Falling.startFalling(mob,null);
+				&&(c==null)
+				&&(doors()[Directions.DOWN]!=null)
+				&&(exits()[Directions.DOWN]!=null)
+				&&(exits()[Directions.DOWN].isOpen()))
+				{
+					Ability falling=CMClass.getAbility("Falling");
+					falling.setAffectedOne(null);
+					falling.invoke(null,null,mob,true);
+				}
 			}
 		}
 	}

@@ -1,61 +1,56 @@
 package com.planet_ink.coffee_mud.commands;
-import com.planet_ink.coffee_mud.MOBS.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.service.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.io.*;
 import java.util.*;
 public class FrontDoor
 {
-	
-	private static Vector classQualifies(MOB mob)
+
+	private Vector classQualifies(MOB mob)
 	{
 		Vector them=new Vector();
-		for(int c=0;c<MUD.charClasses.size();c++)
+		for(int c=0;c<CMClass.charClasses.size();c++)
 		{
-			CharClass thisClass=(CharClass)MUD.charClasses.elementAt(c);
+			CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 			if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
 				them.addElement(thisClass);
 		}
 		return them;
 	}
-	
-	private static boolean isOkName(String login)
+
+	private boolean isOkName(String login)
 	{
 		login=login.trim();
-		
+
 		if(login.indexOf(" ")>0) return false;
 		if((" SHIT FUCK CUNT ASS PUSSY COCK DAMN ").indexOf(" "+login.toUpperCase()+" ")>=0)
 			return false;
-		for(int m=0;m<MUD.MOBs.size();m++)
+		for(int m=0;m<CMClass.MOBs.size();m++)
 		{
-			MOB tm=(MOB)MUD.MOBs.elementAt(m);
-			if((Util.containsString(tm.ID(),login))
-			||(Util.containsString(tm.name(),login)))
+			MOB tm=(MOB)CMClass.MOBs.elementAt(m);
+			if((CoffeeUtensils.containsString(tm.ID(),login))
+			||(CoffeeUtensils.containsString(tm.name(),login)))
 				return false;
 		}
-		for(Enumeration e=MOBloader.MOBs.elements();e.hasMoreElements();)
+		for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 		{
 			MOB tm=(MOB)e.nextElement();
-			if((Util.containsString(tm.ID(),login))
-			||(Util.containsString(tm.name(),login)))
+			if((CoffeeUtensils.containsString(tm.ID(),login))
+			||(CoffeeUtensils.containsString(tm.name(),login)))
 				return false;
-					
+
 		}
 		return true;
-		
+
 	}
-	
-	public static boolean login(MOB mob)
+
+	public boolean login(MOB mob)
 		throws IOException
 	{
-		if(mob==null) 
+		if(mob==null)
 			return false;
-		if(mob.session()==null) 
+		if(mob.session()==null)
 			return false;
 		try
 		{
@@ -63,10 +58,10 @@ public class FrontDoor
 			if(login==null) return false;
 			login=login.trim();
 			if(login.length()==0) return false;
-			
+
 			if(login.equalsIgnoreCase("You"))
 				return false;
-			MOBloader.DBUserSearch(mob,login);
+			ExternalPlay.DBUserSearch(mob,login);
 			if(mob.ID().trim().length()>0)
 			{
 				mob.session().print("password:");
@@ -74,53 +69,48 @@ public class FrontDoor
 				if((mob.password().equalsIgnoreCase(password))&&(mob.name().trim().length()>0))
 				{
 					boolean swapMade=false;
-					for(int s=0;s<MUD.allSessions.size();s++)
+					for(int s=0;s<Sessions.size();s++)
 					{
-						Session thisSession=(Session)MUD.allSessions.elementAt(s);
-						if((thisSession.mob!=null)&&(thisSession!=mob.session()))
+						Session thisSession=(Session)Sessions.elementAt(s);
+						if((thisSession.mob()!=null)&&(thisSession!=mob.session()))
 						{
-							if((thisSession.mob.ID().equals(mob.ID())))
+							if((thisSession.mob().ID().equals(mob.ID())))
 							{
 								swapMade=true;
-								mob.session().mob=thisSession.mob;
-								thisSession.mob.setSession(mob.session());
-								thisSession.mob=null;
-								if(thisSession.out!=null)
-									thisSession.out.close();
-								if(thisSession.in!=null)
-									thisSession.in.close();
-								if(thisSession.sock!=null)
-									thisSession.sock.close();
-								thisSession.out=null;
-								thisSession.in=null;
-								thisSession.sock=null;
-								thisSession.killFlag=true;
-								Log.sysOut("FrontDoor","Session swap for "+mob.session().mob.name()+".");
-								mob.session().mob.bringToLife(mob.location());
+								Room oldRoom=thisSession.mob().location();
+								if(oldRoom!=null)
+								while(oldRoom.isInhabitant(thisSession.mob()))
+									oldRoom.delInhabitant(thisSession.mob());
+								mob.session().setMob(thisSession.mob());
+								thisSession.mob().setSession(mob.session());
+								thisSession.setMob(null);
+								thisSession.setKillFlag(true);
+								Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().name()+".");
+								mob.session().mob().bringToLife(oldRoom);
 								return true;
 							}
 						}
 					}
 					MOB oldMOB=mob;
-					if(MOBloader.MOBs.get(oldMOB.ID())!=null)
+					if(CMMap.MOBs.get(oldMOB.ID())!=null)
 					{
-						oldMOB.session().mob=(MOB)MOBloader.MOBs.get(oldMOB.ID());
-						mob=oldMOB.session().mob;
+						oldMOB.session().setMob((MOB)CMMap.MOBs.get(oldMOB.ID()));
+						mob=oldMOB.session().mob();
 						mob.setSession(oldMOB.session());
 						if(mob!=oldMOB)
 							oldMOB.setSession(null);
 					}
 					else
 					{
-						MOBloader.DBRead(mob);
+						ExternalPlay.DBRead(mob);
 						mob.setUserInfo(mob.ID(),password,Calendar.getInstance());
-						MOBloader.DBUpdate(mob);
+						ExternalPlay.DBUpdate(mob);
 						if(mob.baseCharStats()!=null)
 							if(mob.baseCharStats().getMyClass()!=null)
 								mob.baseCharStats().getMyClass().logon(mob);
 					}
 					mob.bringToLife(mob.location());
-					MOBloader.DBReadFollowers(mob);
+					ExternalPlay.DBReadFollowers(mob);
 				}
 				else
 				{
@@ -140,9 +130,9 @@ public class FrontDoor
 				else
 				if(mob.session().confirm("\n\r'"+login+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 				{
-					
+
 					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("newchar.txt").toString());
-					
+
 					String password="";
 					while(password.length()==0)
 					{
@@ -152,13 +142,13 @@ public class FrontDoor
 					}
 					mob.setUserInfo(login,password,Calendar.getInstance());
 					Log.sysOut("FrontDoor","Creating user: "+mob.name());
-					
+
 					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("races.txt").toString());
-					
+
 					mob.session().print("\n\rPlease choose from the following races: ");
-					for(int r=0;r<MUD.races.size();r++)
+					for(int r=0;r<CMClass.races.size();r++)
 					{
-						Race thisRace=(Race)MUD.races.elementAt(r);
+						Race thisRace=(Race)CMClass.races.elementAt(r);
 						if(thisRace.playerSelectable())
 							mob.session().print(thisRace.name()+" ");
 					}
@@ -166,19 +156,19 @@ public class FrontDoor
 					while(newRace==null)
 					{
 						String raceStr=mob.session().prompt("\n\r: ","");
-						newRace=MUD.getRace(raceStr);
+						newRace=CMClass.getRace(raceStr);
 						if(newRace==null)
-							for(int r=0;r<MUD.races.size();r++)
-								if(((Race)MUD.races.elementAt(r)).name().equalsIgnoreCase(raceStr))
+							for(int r=0;r<CMClass.races.size();r++)
+								if(((Race)CMClass.races.elementAt(r)).name().equalsIgnoreCase(raceStr))
 								{
-									newRace=(Race)MUD.races.elementAt(r);
+									newRace=(Race)CMClass.races.elementAt(r);
 									break;
 								}
 						if(newRace==null)
-							for(int r=0;r<MUD.races.size();r++)
-								if(((Race)MUD.races.elementAt(r)).name().toUpperCase().startsWith(raceStr.toUpperCase()))
+							for(int r=0;r<CMClass.races.size();r++)
+								if(((Race)CMClass.races.elementAt(r)).name().toUpperCase().startsWith(raceStr.toUpperCase()))
 								{
-									newRace=(Race)MUD.races.elementAt(r);
+									newRace=(Race)CMClass.races.elementAt(r);
 									break;
 								}
 						if(newRace!=null)
@@ -186,16 +176,16 @@ public class FrontDoor
 								newRace=null;
 					}
 					mob.baseCharStats().setMyRace(newRace);
-					
+
 					String Gender="";
 					while(Gender.length()==0)
 						Gender=mob.session().choose("\n\rWhat is your gender (M/F)?","MF","");
-					
+
 					mob.baseCharStats().setGender(Gender.toUpperCase().charAt(0));
-					
-					
+
+
 					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
-					
+
 					boolean mayCont=true;
 					int maxStat[]={18,18,18,18,18,18};
 					while(mayCont)
@@ -211,21 +201,21 @@ public class FrontDoor
 									classes.append("and "+((CharClass)V.elementAt(v)).name());
 								else
 									classes.append(((CharClass)V.elementAt(v)).name()+", ");
-							
+
 							mob.session().println("Your current stats are: \n\r"+mob.baseCharStats().getStats(maxStat));
 							mob.session().println("This would qualify you for "+classes.toString()+".");
 							if(!mob.session().confirm("Would you like to re-roll (y/N)?","N"))
 								mayCont=false;
 						}
 					}
-					
-					
+
+
 					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("classes.txt").toString());
-					
+
 					mob.session().print("\n\rPlease choose from the following Classes: ");
-					for(int c=0;c<MUD.charClasses.size();c++)
+					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
-						CharClass thisClass=(CharClass)MUD.charClasses.elementAt(c);
+						CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 						if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
 							mob.session().print(thisClass.name()+" ");
 					}
@@ -233,11 +223,11 @@ public class FrontDoor
 					while(newClass==null)
 					{
 						String ClassStr=mob.session().prompt("\n\r: ","");
-						newClass=MUD.getCharClass(ClassStr);
+						newClass=CMClass.getCharClass(ClassStr);
 						if(newClass==null)
-						for(int c=0;c<MUD.charClasses.size();c++)
+						for(int c=0;c<CMClass.charClasses.size();c++)
 						{
-							CharClass thisClass=(CharClass)MUD.charClasses.elementAt(c);
+							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
 								if(thisClass.name().equalsIgnoreCase(ClassStr))
 								{
@@ -246,9 +236,9 @@ public class FrontDoor
 								}
 						}
 						if(newClass==null)
-						for(int c=0;c<MUD.charClasses.size();c++)
+						for(int c=0;c<CMClass.charClasses.size();c++)
 						{
-							CharClass thisClass=(CharClass)MUD.charClasses.elementAt(c);
+							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
 								if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
 								{
@@ -261,31 +251,35 @@ public class FrontDoor
 								newClass=null;
 					}
 					mob.baseCharStats().setMyClass(newClass);
-					
+
 					mob.baseEnvStats().setLevel(1);
 					mob.baseEnvStats().setSensesMask(0);
-					
-					
-					mob.maxState().setHitPoints(20);
-					mob.maxState().setMovement(100);
-					mob.maxState().setMana(100);
-					
-					mob.setStartRoom(MUD.getRoom("Start"));
-					Ration r=new Ration();
-					Wineskin w=new Wineskin();
+
+
+					mob.baseState().setHitPoints(20);
+					mob.baseState().setMovement(100);
+					mob.baseState().setMana(100);
+
+					mob.setStartRoom(CMMap.startRoom());
+					Item r=(Item)CMClass.getItem("Ration");
+					Item w=(Item)CMClass.getItem("Waterskin");
+					Item t=(Item)CMClass.getItem("Torch");
 					mob.addInventory(r);
 					mob.addInventory(w);
-					
+					mob.addInventory(t);
+					mob.setWimpHitPoint(5);
+
 					mob.baseCharStats().getMyRace().newCharacter(mob);
-					
+
 					mob.recoverCharStats();
 					mob.recoverEnvStats();
 					mob.recoverMaxState();
-					
-					mob.baseCharStats().getMyClass().newCharacter(mob);
-					
+					mob.resetToMaxState();
+
+					mob.baseCharStats().getMyClass().newCharacter(mob,false);
+
 					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("alignment.txt").toString());
-					
+
 					String alignment="";
 					while(alignment.length()==0)
 						alignment=mob.session().choose("Select a starting alignment:\n\r Good, Evil, or Neutral (G/N/E): ","GNE","");
@@ -298,16 +292,16 @@ public class FrontDoor
 						mob.setAlignment(0);
 						break;
 					case 'N':
-					default: 
+					default:
 						mob.setAlignment(500);
 						break;
 					}
-					
+
 					mob.bringToLife(mob.location());
-					MOBloader.DBCreateCharacter(mob);
-					if(MOBloader.MOBs.get(mob.ID())==null)
-						MOBloader.MOBs.put(mob.ID(),mob);
-					
+					ExternalPlay.DBCreateCharacter(mob);
+					if(CMMap.MOBs.get(mob.ID())==null)
+						CMMap.MOBs.put(mob.ID(),mob);
+
 					Log.sysOut("FrontDoor","Created user: "+mob.name());
 					return true;
 				}

@@ -1,11 +1,11 @@
 package com.planet_ink.coffee_mud.Items;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
-public class Ration extends Food
+public class Ration extends StdFood
 {
 	public Ration()
 	{
@@ -19,7 +19,7 @@ public class Ration extends Food
 		baseGoldValue=15;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Ration();

@@ -1,26 +1,19 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Exits.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.Directions;
+import com.planet_ink.coffee_mud.utils.Dice;
 import java.util.*;
 
-public class Grid extends StdRoom implements GridLocale 
+public class Grid extends StdRoom implements GridLocale
 {
 	protected Room[] alts=new Room[Directions.NUM_DIRECTIONS];
 	protected Room[][] subMap=null;
 	protected String[] descriptions=null;
 	protected String[] displayTexts=null;
 	protected int size=5;
-	
+
 	public Grid()
 	{
 		super();
@@ -30,7 +23,7 @@ public class Grid extends StdRoom implements GridLocale
 	{
 		return new Grid();
 	}
-	
+
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
@@ -55,7 +48,7 @@ public class Grid extends StdRoom implements GridLocale
 		if(numDs>0)
 			description=descriptions[0];
 	}
-	
+
 	public void setDisplayText(String newDisplayText)
 	{
 		super.setDisplayText(newDisplayText);
@@ -80,15 +73,15 @@ public class Grid extends StdRoom implements GridLocale
 		if(numDs>0)
 			displayText=displayTexts[0];
 	}
-	
+
 	public Room getAltRoomFrom(Room loc)
 	{
 		int oldDirCode=-1;
 		if(loc==null) return null;
-		
+
 		if(loc instanceof GridLocaleChild)
 			loc=((GridLocaleChild)loc).parent();
-		
+
 		for(int x=0;x<Directions.NUM_DIRECTIONS;x++)
 			if((doors[x]!=null)&&(doors[x]==loc))
 			{
@@ -96,16 +89,16 @@ public class Grid extends StdRoom implements GridLocale
 				break;
 			}
 		if(oldDirCode<0) return null;
-		
+
 		return alts[oldDirCode];
 	}
-	
+
 	protected static void linkRoom(Room room, Room loc, int dirCode)
 	{
 		if(loc==null) return;
 		if(room==null) return;
 		int opCode=Directions.getOpDirectionCode(dirCode);
-		Exit o=new Open();
+		Exit o=(Exit)CMClass.getExit("Open").newInstance();
 		if(room.doors()[dirCode]!=null) return;
 		room.doors()[dirCode]=loc;
 		room.exits()[dirCode]=o;
@@ -113,7 +106,7 @@ public class Grid extends StdRoom implements GridLocale
 		loc.doors()[opCode]=room;
 		loc.exits()[opCode]=o;
 	}
-	
+
 	public Room findCenterRoom(int dirCode)
 	{
 		int x=0;
@@ -147,10 +140,10 @@ public class Grid extends StdRoom implements GridLocale
 		{
 			while(returnRoom==null)
 			{
-				if(subMap[x+xadjust][y+yadjust]!=null) 
+				if(subMap[x+xadjust][y+yadjust]!=null)
 					returnRoom=subMap[x+xadjust][y+yadjust];
 				else
-				if(subMap[x-xadjust][y-yadjust]!=null) 
+				if(subMap[x-xadjust][y-yadjust]!=null)
 					returnRoom=subMap[x-xadjust][y-yadjust];
 				else
 				{
@@ -170,7 +163,7 @@ public class Grid extends StdRoom implements GridLocale
 						yadjust++;
 						break;
 					}
-					
+
 				}
 			}
 		}
@@ -179,7 +172,7 @@ public class Grid extends StdRoom implements GridLocale
 		}
 		return returnRoom;
 	}
-	
+
 	protected void buildFinalLinks()
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -220,7 +213,7 @@ public class Grid extends StdRoom implements GridLocale
 			}
 		}
 	}
-	
+
 	public void buildGrid()
 	{
 		clearGrid();
@@ -236,12 +229,12 @@ public class Grid extends StdRoom implements GridLocale
 						linkRoom(newRoom,subMap[x][y-1],Directions.NORTH);
 					if((x>0)&&(subMap[x-1][y]!=null))
 						linkRoom(newRoom,subMap[x-1][y],Directions.WEST);
-					MUD.map.addElement(newRoom);
+					CMMap.map.addElement(newRoom);
 				}
 			}
 		buildFinalLinks();
 	}
-	
+
 	public void clearGrid()
 	{
 		if(subMap!=null)
@@ -250,13 +243,13 @@ public class Grid extends StdRoom implements GridLocale
 				for(int y=0;y<subMap[x].length;y++)
 				{
 					Room room=subMap[x][y];
-					MUD.map.remove(room);
+					CMMap.map.remove(room);
 				}
 			subMap=null;
 		}
 		alts=new Room[Directions.NUM_DIRECTIONS];
 	}
-	
+
 	protected Room getGridRoom(int x, int y)
 	{
 		if((x<0)||(y<0)||(y>=subMap[0].length)||(x>=subMap.length)) return null;
@@ -280,17 +273,17 @@ public class Grid extends StdRoom implements GridLocale
 				c=Dice.roll(1,descriptions.length,0)-1;
 			gc.setDescription(descriptions[c]);
 		}
-		
+
 		return gc;
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))
 			return false;
-		
-		
-		if((affect.targetCode()==affect.MOVE_ENTER)
+
+
+		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.target()==this))
 		{
 			if(subMap==null)
@@ -318,9 +311,9 @@ public class Grid extends StdRoom implements GridLocale
 		}
 		return true;
 	}
-	
-	protected class GridChild 
-		extends StdRoom 
+
+	protected class GridChild
+		extends StdRoom
 		implements GridLocaleChild
 	{
 		public Room parent=this;
@@ -331,8 +324,11 @@ public class Grid extends StdRoom implements GridLocale
 			{
 				domainType=((Room)parent).domainType();
 				domainCondition=((Room)parent).domainConditions();
-				setBaseEnvStats(parent().baseEnvStats().cloneStats());
-				recoverEnvStats();
+				if(parent.baseEnvStats()!=null)
+				{
+					setBaseEnvStats(parent.baseEnvStats().cloneStats());
+					recoverEnvStats();
+				}
 			}
 			myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		}
@@ -340,7 +336,7 @@ public class Grid extends StdRoom implements GridLocale
 		{
 			return new GridChild();
 		}
-		
+
 		public boolean okAffect(Affect affect)
 		{
 			if(!super.okAffect(affect))
@@ -350,29 +346,29 @@ public class Grid extends StdRoom implements GridLocale
 					return false;
 			return true;
 		}
-		
+
 		public void affect(Affect affect)
 		{
 			super.affect(affect);
 			if(parent!=null)
 				parent.affect(affect);
 		}
-		
-		
-		public void affectEnvStats(Environmental affected, Stats affectableStats)
+
+
+		public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 		{
 			super.affectEnvStats(affected,affectableStats);
 			if(parent!=null)
 				parent.affectEnvStats(affected,affectableStats);
 		}
-		
+
 		public void affectEnvStats(MOB affected, CharStats affectableStats)
 		{
 			super.affectCharStats(affected,affectableStats);
 			if(parent!=null)
 				parent.affectCharStats(affected,affectableStats);
 		}
-		
+
 		public Room parent()
 		{
 			return parent;

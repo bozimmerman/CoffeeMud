@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class Hat_Intelligence extends Armor
+public class Hat_Intelligence extends StdArmor
 {
 	public Hat_Intelligence()
 	{

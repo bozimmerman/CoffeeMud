@@ -1,9 +1,25 @@
 package com.planet_ink.coffee_mud.utils;
 
+import java.util.*;
 
 public class XMLManager
 {
 
+	/**
+	 * Returns the integer value of a string without crashing
+ 	 * 
+	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
+	 * @param INT Integer value of string
+	 * @return int Integer value of the string
+	 */
+	private  static int s_int(String INT)
+	{
+		int sint=0;
+		try{ sint=Integer.parseInt(INT); }
+		catch(java.lang.NumberFormatException e){ return 0;}
+		return sint;
+	}
+	
 	/**
 	 * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
 	 * 
@@ -83,7 +99,277 @@ public class XMLManager
 		Blob=Blob.substring(foundb,founde).trim();
 		return Blob;
 	}
-
+	
+	public static class XMLpiece
+	{
+		public String tag="";
+		public String value="";
+		public Vector parms=null;
+		public Vector contents=null;
+		public void addContent(XMLpiece x)
+		{
+			if(x==null) return;
+			if(contents==null) contents=new Vector();
+			contents.addElement(x);
+		}
+	}
+	
+	public static String parseOutParms(String blk, Vector parmList)
+	{
+		blk=blk.trim();
+		for(int x=0;x<blk.length();x++)
+			if(Character.isWhitespace(blk.charAt(x)))
+			{
+				parmList.addElement(blk.substring(x).trim());
+				return blk;
+			}
+		return blk;
+	}
+	
+	private static int findEndingTag(String buf, String tag)
+	{
+		if((buf==null)||(buf.length()==0)) return -1;
+		
+		int x=buf.indexOf("</"+tag+">");
+		if(x>=0) return x+("</"+tag+">").length();
+		
+		int newPos=0;
+		while(newPos<buf.length())
+		{
+			int check=buf.indexOf(tag,newPos);
+			if(check<0) return -1;
+			
+			if(check<2)
+				newPos+=2;
+			else
+			if(check==(buf.length()-1))
+			   return -1;
+			else
+			if(((!Character.isWhitespace(buf.charAt(check+tag.length())))&&(buf.charAt(check+tag.length())!='>'))
+			||((!Character.isWhitespace(buf.charAt(check-1)))&&(buf.charAt(check-1)!='/')))
+			   newPos=check+1;
+			else
+			{
+				boolean foundslash=false;
+				for(x=check-1;x>=0;x--)
+					if((buf.charAt(x)=='<')&&(foundslash))
+					{
+						check=x;
+						break;
+					}
+					else
+					if((buf.charAt(x)=='/')&&(!foundslash))
+						foundslash=true;
+					else
+					if(!Character.isWhitespace(buf.charAt(x)))
+					{
+					   newPos=check+1;
+					   break;
+					}
+				if((check==x)&&(x>=0)&&foundslash)
+				{
+					for(x=check+1;x<buf.length();x++)
+						if(buf.charAt(x)=='>')
+							return x+1;
+						else
+						if(buf.charAt(x)=='<')
+						{
+							newPos=check+1;
+							break;
+						}
+				}
+			}
+			
+		}
+		return -1;
+	}
+	
+	public static String getValFromPieces(Vector V, String tag)
+	{
+		XMLpiece x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.value!=null))
+			return x.value;
+		return "";
+	}
+	
+	public static Vector getContentsFromPieces(Vector V, String tag)
+	{
+		XMLpiece x=getPieceFromPieces(V,tag);
+		if((x!=null)&&(x.contents!=null))
+			return x.contents;
+		return new Vector();
+	}
+	
+	public static Vector getRealContentsFromPieces(Vector V, String tag)
+	{
+		XMLpiece x=getPieceFromPieces(V,tag);
+		if(x!=null)	return x.contents;
+		return null;
+	}
+	
+	public static XMLpiece getPieceFromPieces(Vector V, String tag)
+	{
+		if(V==null) return null;
+		for(int v=0;v<V.size();v++)
+			if(((XMLpiece)V.elementAt(v)).tag.equalsIgnoreCase(tag))
+				return (XMLpiece)V.elementAt(v);
+		return null;
+	}
+	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+  	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
+	 * @param Blob String to search
+	 * @param Tag Tag to search for
+	 * @return String Information from XML block
+	 */
+	public static boolean getBoolFromPieces(Vector V, String tag)
+	{
+		String val=getValFromPieces(V,tag);
+		if((val==null)||((val!=null)&&(val.length()==0)))
+			return false;
+		if(val.toUpperCase().trim().startsWith("T"))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * Return the data value within a given XML block
+	 * <TAG>Data</TAG>
+	 * 
+  	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
+	 * @param Blob String to search
+	 * @param Tag Tag to search for
+	 * @return String Information from XML block
+	 */
+	public static int getIntFromPieces(Vector V, String tag)
+	{
+		return s_int(getValFromPieces(V,tag));
+	}
+	
+	private static int findCompetingTag(String buf, String tag)
+	{
+		if((buf==null)||(buf.length()==0)) return -1;
+		
+		int x=buf.indexOf("<"+tag+">");
+		if(x>=0) return x;
+		
+		int newPos=0;
+		while(newPos<buf.length())
+		{
+			int check=buf.indexOf(tag,newPos);
+			if(check<0) return -1;
+			
+			if(check==0)
+				newPos++;
+			else
+			if(check==(buf.length()-1))
+			   return -1;
+			else
+			if(((!Character.isWhitespace(buf.charAt(check+tag.length())))&&(buf.charAt(check+tag.length())!='>'))
+			||((!Character.isWhitespace(buf.charAt(check-1)))&&(buf.charAt(check-1)!='/')))
+			   newPos=check+1;
+			else
+			{
+				for(x=check-1;x>=0;x--)
+					if(buf.charAt(x)=='<')
+					{
+						check=x;
+						break;
+					}
+					else
+					if(!Character.isWhitespace(buf.charAt(x)))
+					{
+					   newPos=check+1;
+					   break;
+					}
+				if((check==x)&&(x>=0))
+				{
+					for(x=check+1;x<buf.length();x++)
+						if(buf.charAt(x)=='>')
+							return check;
+						else
+						if(buf.charAt(x)=='<')
+						{
+							newPos=check+1;
+							break;
+						}
+				}
+			}
+		}
+		return -1;
+	}
+	
+	private static String completeBlock(String buf, String tag)
+	{
+		int possEnd=findEndingTag(buf.toUpperCase(),tag);
+		if(possEnd<0) return buf;
+		String possBlock=buf.substring(0,possEnd);
+		
+		int possMid=findCompetingTag(possBlock.toUpperCase(),tag);
+		if(possMid<0) return possBlock;
+		if(possMid>possEnd) return possBlock;
+		
+		String subBuf=buf.substring(possMid);
+		int newPos=subBuf.indexOf(">");
+		if(newPos<0) return possBlock;
+		newPos+=possMid;
+		String newBlock=completeBlock(buf.substring(newPos+1),tag);
+		newPos+=newBlock.length();
+		
+		int newPossEnd=findEndingTag(buf.substring(newPos+1).toUpperCase(),tag);
+		if(newPossEnd<0) return buf.substring(0,newPos);
+		return buf.substring(0,newPos+newPossEnd+1);
+	}
+	
+	public static Vector parseAllXML(String buf)
+	{
+		Vector xml=null;
+		int position=0;
+		while(position<buf.length())
+		{
+			int startTag=buf.indexOf("<",position);
+			if(startTag<0) break;
+			int endofTag=buf.indexOf(">",startTag);
+			if(endofTag<0) break;
+			endofTag++;
+			position=endofTag;
+			
+			XMLpiece piece=new XMLpiece();
+			
+			Vector parmList=new Vector();
+			String tag=parseOutParms(buf.substring(startTag+1,endofTag-1).trim(),parmList);
+			piece.tag=tag.toUpperCase().trim();
+			if(parmList.size()>0)
+				piece.parms=parmList;
+			
+			if((!tag.endsWith("/"))&&(findEndingTag(buf.substring(endofTag).toUpperCase(),tag)<0))
+				break;
+			else
+			{
+				if(!tag.endsWith("/"))
+				{
+					String wholeBlock=completeBlock(buf.substring(endofTag),tag);
+					position+=wholeBlock.length();
+					int z=wholeBlock.lastIndexOf("<");
+					if(z>=0) wholeBlock=wholeBlock.substring(0,z);
+					piece.contents=parseAllXML(wholeBlock.trim());
+					if(piece.contents==null)
+						piece.value=wholeBlock.trim();
+				}
+				if(piece.contents==null)
+					piece.contents=new Vector();
+			}
+			
+			if(xml==null) xml=new Vector();
+			xml.addElement(piece);
+		}
+		return xml;
+	}
+	
+	
 	/**
 	 * Return the data value within the first XML block
 	 * <TAG>Data</TAG>

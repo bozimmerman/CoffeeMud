@@ -2,25 +2,20 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 public class GenMob extends StdMOB
 {
-	
+
 	public GenMob()
 	{
 		super();
 		Username="a generic mob";
 		setDescription("He looks ordinary to me.");
 		setDisplayText("A generic mob stands here.");
-		
+
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
@@ -28,25 +23,25 @@ public class GenMob extends StdMOB
 	{
 		return new GenMob();
 	}
-	
-	public void bringToLife(Room newLocation)
-	{
-		setMiscText(text());
-		super.bringToLife(newLocation);
-	}
-	
+	public boolean isGeneric(){return true;}
+
 	public String text()
 	{
-		return Generic.getPropertiesStr(this);
+		miscText=Generic.getPropertiesStr(this,false);
+		return super.text();
 	}
-	
+
 	public void setMiscText(String newText)
 	{
-		miscText="";
-		Generic.setPropertiesStr(this,newText);
-		maxState().setHitPoints((10*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
+		super.setMiscText(newText);
+		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 		recoverCharStats();
+		baseState().setHitPoints((10*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
+		baseState().setMana(baseCharStats().getMyClass().getLevelMana(this));
+		baseState().setMovement(baseCharStats().getMyClass().getLevelMove(this));
 		recoverMaxState();
+		resetToMaxState();
+		if(getWimpHitPoint()>0) setWimpHitPoint((int)Math.round(Util.mul(curState().getHitPoints(),.10)));
 	}
 }

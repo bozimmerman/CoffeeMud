@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.interfaces;
-import com.planet_ink.coffee_mud.MOBS.*;
 
 import java.util.*;
 
@@ -14,8 +13,8 @@ public interface Room extends Environmental
 	
 	public Exit[] exits();
 	public Room[] doors();
-	public Exit getExit(int direction);
-	public Room getRoom(int direction);
+	public Exit getReverseExit(int direction);
+	public Exit getPairedExit(int direction);
 	
 	public int pointsPerMove();
 	public void look(MOB mob);
@@ -45,6 +44,8 @@ public interface Room extends Environmental
 	public int numInhabitants();
 	public boolean isInhabitant(MOB mob);
 	public MOB fetchInhabitant(int i);
+	public int numPCInhabitants();
+	public MOB fetchPCInhabitant(int i);
 	
 	public Item fetchItem(Item goodLocation, String itemID);
 	public void addItem(Item item);
@@ -52,8 +53,9 @@ public interface Room extends Environmental
 	public int numItems();
 	public boolean isContent(Item item);
 	public Item fetchItem(int i);
-	public Environmental fetchFromRoom(Item goodLocation, String thingName);
-	public Environmental fetchFromMOBRoom(MOB mob, Item goodLocation, String thingName);
+	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName);
+	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName);
+	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName);
 	
 	
 	public int domainType();
@@ -69,6 +71,7 @@ public interface Room extends Environmental
 	public final static int DOMAIN_OUTDOORS_PLAINS=OUTDOORS+3;
 	public final static int DOMAIN_OUTDOORS_UNDERWATER=OUTDOORS+4;
 	public final static int DOMAIN_OUTDOORS_AIR=OUTDOORS+5;
+	public final static int DOMAIN_OUTDOORS_WATERSURFACE=OUTDOORS+6;
 	
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;

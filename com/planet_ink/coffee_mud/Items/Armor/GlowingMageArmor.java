@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class GlowingMageArmor extends Armor
+public class GlowingMageArmor extends StdArmor
 {
 	public GlowingMageArmor()
 	{
@@ -29,20 +29,15 @@ public class GlowingMageArmor extends Armor
 	{
 		if(!super.okAffect(affect))
 			return false;
-		
+
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))
 			return true;
 		else
-		switch(affect.targetType())
+		if(affect.targetMinor()==Affect.TYP_GET)
 		{
-		case Affect.HANDS:
-			switch(affect.targetCode())
-			{
-			case Affect.HANDS_GET:
-				mob.tell("The mage armor cannot be removed from where it is.");
-				return false;
-			}
+			mob.tell("The mage armor cannot be removed from where it is.");
+			return false;
 		}
 		return true;
 	}

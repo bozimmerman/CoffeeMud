@@ -1,9 +1,7 @@
 package com.planet_ink.coffee_mud.Exits;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class StdExit implements Exit
@@ -14,13 +12,13 @@ public class StdExit implements Exit
 	protected String displayText="";
 	protected String closedText="A barrier blocks the way.";
 	protected String miscText="";
-	
+
 	protected String doorName="door";
 	protected String closeName="close";
 	protected String openName="open";
-	
-	protected Stats envStats=new Stats();
-	protected Stats baseEnvStats=new Stats();
+
+	protected EnvStats envStats=new DefaultEnvStats();
+	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	protected boolean isOpen=true;
 	protected boolean isLocked=false;
 	protected boolean hasADoor=false;
@@ -31,26 +29,27 @@ public class StdExit implements Exit
 	protected boolean isTrapped=false;
 	protected boolean levelRestricted=false;
 	protected boolean classRestricted=false;
+	protected boolean alignmentRestricted=false;
 	protected int openDelayTicks=4;
-	
+
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
-	
+
 	public StdExit()
 	{
 	}
-	
+
 	public String ID()
 	{
 		return myID;
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
-	public Stats envStats()
+	public EnvStats envStats()
 	{
 		return envStats;
 	}
-	public Stats baseEnvStats()
+	public EnvStats baseEnvStats()
 	{
 		return baseEnvStats;
 	}
@@ -63,20 +62,21 @@ public class StdExit implements Exit
 			affect.affectEnvStats(this,envStats);
 		}
 	}
-	public void setBaseEnvStats(Stats newBaseEnvStats)
-	{	
-		baseEnvStats=newBaseEnvStats.cloneStats(); 
+	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	{
+		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new StdExit();
 	}
+	public boolean isGeneric(){return false;}
 	private void cloneFix(Exit E)
 	{
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
-		
+
 		affects=new Vector();
 		behaviors=new Vector();
 		for(int i=0;i<E.numBehaviors();i++)
@@ -90,7 +90,7 @@ public class StdExit implements Exit
 			StdExit E=(StdExit)this.clone();
 			E.cloneFix(this);
 			return E;
-			
+
 		}
 		catch(CloneNotSupportedException e)
 		{
@@ -102,7 +102,7 @@ public class StdExit implements Exit
 	public void setDisplayText(String newDisplayText)
 	{ displayText=newDisplayText;}
 	public void setMiscText(String newMiscText)
-	{ 
+	{
 		miscText=newMiscText;
 	}
 	public String text()
@@ -111,7 +111,7 @@ public class StdExit implements Exit
 	{ return description;}
 	public void setDescription(String newDescription)
 	{ description=newDescription;}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		for(int b=0;b<behaviors.size();b++)
@@ -119,28 +119,28 @@ public class StdExit implements Exit
 			Behavior B=(Behavior)behaviors.elementAt(b);
 			if(!B.okAffect(this,affect)) return false;
 		}
-		
+
 		for(int i=0;i<affects.size();i++)
 			if(!((Ability)fetchAffect(i)).okAffect(affect))
 				return false;
-		
+
 		MOB mob=affect.source();
 		if((!affect.amITarget(this))&&(affect.tool()!=this))
 			return true;
 		else
-		if(((affect.targetType()&Affect.SOUND)>0)||((affect.targetType()&Affect.VISUAL)>0))
-			return true;
-		else
-		switch(affect.targetCode())
+		switch(affect.targetMinor())
 		{
-		case Affect.MOVE_ENTER:
+		case Affect.TYP_EXAMINESOMETHING:
+		case Affect.TYP_READSOMETHING:
+		case Affect.TYP_OK_VISUAL:
+		case Affect.TYP_OK_ACTION:
+			return true;
+		case Affect.TYP_ENTER:
 			if((hasADoor)&&(!isOpen))
 			{
 				mob.tell("The "+doorName+" is "+closeName+"d.");
 				return false;
 			}
-			if(mob.isASysOp())
-				return true;
 			if((levelRestricted)&&(mob.envStats().level()<envStats().level()))
 			{
 				mob.tell("You can't go that way.");
@@ -151,11 +151,26 @@ public class StdExit implements Exit
 				mob.tell("You can't go that way.");
 				return false;
 			}
+			if((alignmentRestricted)&&(alignmentRestrictedMask().toUpperCase().indexOf(ExternalPlay.shortAlignmentStr(mob).toUpperCase())>=0))
+			{
+				mob.tell("You can't go that way.");
+				return false;
+			}
+			if((Sense.isFlying(this))&&(!Sense.isFlying(mob)))
+			{
+				mob.tell("You can't fly.");
+				return false;
+			}
+			if((Sense.isClimbing(this))&&(!Sense.isClimbing(mob))&&(!Sense.isFlying(mob)))
+			{
+				mob.tell("You need to climb that way, if you know how.");
+				return false;
+			}
 			return true;
-		case Affect.MOVE_LEAVE:
-		case Affect.MOVE_FLEE:
+		case Affect.TYP_LEAVE:
+		case Affect.TYP_FLEE:
 			return true;
-		case Affect.HANDS_CLOSE:
+		case Affect.TYP_CLOSE:
 			if(isOpen)
 			{
 				if(!hasADoor)
@@ -172,7 +187,7 @@ public class StdExit implements Exit
 				return false;
 			}
 			//break;
-		case Affect.HANDS_OPEN:
+		case Affect.TYP_OPEN:
 			if(!hasADoor)
 			{
 				mob.tell("There is nothing to "+openName+" that way!");
@@ -194,22 +209,29 @@ public class StdExit implements Exit
 					return true;
 			}
 			//break;
-		case Affect.HANDS_PUSH:
+		case Affect.TYP_PUSH:
 			if((isOpen)||(!hasADoor))
 			{
 				mob.tell("There is nothing to push over there.");
 				return false;
 			}
 			return true;
-		case Affect.HANDS_PULL:
+		case Affect.TYP_DELICATE_HANDS_ACT:
+			return true;
+		case Affect.TYP_PULL:
 			if((isOpen)||(!hasADoor))
 			{
 				mob.tell("There is nothing to pull over there.");
 				return false;
 			}
 			return true;
-		case Affect.HANDS_LOCK:
-		case Affect.HANDS_UNLOCK:
+		case Affect.TYP_LOCK:
+			if(!hasADoor)
+			{
+				mob.tell("There is nothing to lock that way!");
+				return false;
+			}
+		case Affect.TYP_UNLOCK:
 			if(!hasADoor)
 			{
 				mob.tell("There is nothing to unlock that way!");
@@ -228,13 +250,13 @@ public class StdExit implements Exit
 			}
 			else
 			{
-				if((!isLocked)&&(affect.targetCode()==Affect.HANDS_UNLOCK))
+				if((!isLocked)&&(affect.targetMinor()==Affect.TYP_UNLOCK))
 				{
 					mob.tell("The "+doorName+" is not locked.");
 					return false;
 				}
 				else
-				if((isLocked)&&(affect.targetCode()==Affect.HANDS_LOCK))
+				if((isLocked)&&(affect.targetMinor()==Affect.TYP_LOCK))
 				{
 					mob.tell("The "+doorName+" is already locked.");
 					return false;
@@ -244,9 +266,9 @@ public class StdExit implements Exit
 					for(int i=0;i<mob.inventorySize();i++)
 					{
 						Item item=mob.fetchInventory(i);
-						if((item instanceof StdKey)&&(item.location()==null))
+						if((item instanceof Key)&&(item.location()==null))
 						{
-							if(item.text().equals(keyName()))
+							if(((Key)item).getKey().equals(keyName()))
 								return true;
 						}
 					}
@@ -265,8 +287,36 @@ public class StdExit implements Exit
 		}
 		return true;
 	}
-	
-	
+
+	public StringBuffer viewableText(MOB mob, Room room)
+	{
+		StringBuffer Say=new StringBuffer("");
+		if(mob.readSysopMsgs())
+		{
+			if(room==null)
+				Say.append("(null) ");
+			else
+				Say.append("("+room.ID()+") "+room.displayText()+Sense.colorCodes(room,mob)+" ");
+			Say.append("via ("+ID()+") "+(isOpen()?displayText():closedText()));
+		}
+		else
+		if(isOpen())
+		{
+			if((room!=null)&&(!Sense.canBeSeenBy(room,mob)))
+				Say.append("darkness");
+			else
+			if(displayText().length()>0)
+				Say.append(displayText());
+			else
+			if(room!=null)
+				Say.append(room.displayText()+Sense.colorCodes(room,mob));
+		}
+		else
+		if(Sense.canBeSeenBy(this,mob))
+			Say.append(closedText()+Sense.colorCodes(this,mob));
+		return Say;
+	}
+
 	public void affect(Affect affect)
 	{
 		for(int b=0;b<behaviors.size();b++)
@@ -274,30 +324,45 @@ public class StdExit implements Exit
 			Behavior B=(Behavior)behaviors.elementAt(b);
 			B.affect(this,affect);
 		}
-		
+
 		for(int i=0;i<affects.size();i++)
 			((Ability)fetchAffect(i)).affect(affect);
-		
+
 		MOB mob=affect.source();
 		if((!affect.amITarget(this))&&(affect.tool()!=this))
 			return;
 		else
-		switch(affect.targetCode())
+		switch(affect.targetMinor())
 		{
-		case Affect.VISUAL_LOOK:
+		case Affect.TYP_EXAMINESOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
-				mob.tell(description());
+				if(description().trim().length()>0)
+					mob.tell(description());
+				else
+				if(mob.location()!=null)
+				{
+					Room room=null;
+					for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
+						if(mob.location().exits()[r]==this)
+						{
+							room=mob.location().doors()[r];
+							break;
+						}
+					mob.tell(this.viewableText(mob,room).toString());
+				}
+				else
+					mob.tell("You don't see anything special.");
 				if(mob.readSysopMsgs())
 					mob.tell("Misc   : "+text());
 			}
 			else
-				mob.tell("You can't see that!");
+				mob.tell("You can't see that way!");
 			return;
-		case Affect.VISUAL_READ:
+		case Affect.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
-				if((isReadable||((!hasALock)&&(!classRestricted)))&&(readableText()!=null)&&(readableText().length()>0))
+				if((isReadable||((!hasALock)&&(!classRestricted)&&(!alignmentRestricted)))&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
 					mob.tell("There is nothing written on "+name()+".");
@@ -305,28 +370,28 @@ public class StdExit implements Exit
 			else
 				mob.tell("You can't see that!");
 			return;
-		case Affect.HANDS_CLOSE:
+		case Affect.TYP_CLOSE:
 			if((!hasADoor)||(!isOpen)) return;
 			isOpen=false;
 			break;
-		case Affect.HANDS_OPEN:
+		case Affect.TYP_OPEN:
 			if((!hasADoor)||(isOpen)||(isLocked)) return;
 			if(doorDefaultsClosed||doorDefaultsLocked)
-				ServiceEngine.startTickDown(this,ServiceEngine.EXIT_REOPEN,openDelayTicks);
+				ExternalPlay.startTickDown(this,Host.EXIT_REOPEN,openDelayTicks);
 			isLocked=false;
 			isOpen=true;
 			break;
-		case Affect.HANDS_LOCK:
+		case Affect.TYP_LOCK:
 			if((!hasADoor)||(!hasALock)||(isLocked)) return;
 			isOpen=false;
 			isLocked=true;
 			break;
-		case Affect.HANDS_PUSH:
-		case Affect.HANDS_PULL:
+		case Affect.TYP_PULL:
+		case Affect.TYP_PUSH:
 			mob.tell("It doesn't appear to be doing any good.");
 			break;
-		case Affect.HANDS_UNLOCK:
-			if((!hasADoor)||(!hasALock)||(isOpen)||(!isLocked)) 
+		case Affect.TYP_UNLOCK:
+			if((!hasADoor)||(!hasALock)||(isOpen)||(!isLocked))
 				return;
 			isLocked=false;
 			break;
@@ -334,10 +399,10 @@ public class StdExit implements Exit
 			break;
 		}
 	}
-	
+
 	public boolean tick(int tickID)
 	{
-		if(tickID==ServiceEngine.EXIT_REOPEN)
+		if(tickID==Host.EXIT_REOPEN)
 		{
 			if(doorDefaultsClosed)
 				isOpen=false;
@@ -355,7 +420,7 @@ public class StdExit implements Exit
 				Behavior B=(Behavior)behaviors.elementAt(b);
 				B.tick(this,tickID);
 			}
-			
+
 			int a=0;
 			while(a<affects.size())
 			{
@@ -370,33 +435,47 @@ public class StdExit implements Exit
 		}
 	}
 	public boolean isOpen(){return isOpen;};
-	public void setOpen(boolean isTrue){isOpen=isTrue;};
 	public boolean isLocked(){return isLocked;};
-	public void setLocked(boolean isTrue){isLocked=isTrue;};
 	public boolean hasADoor(){return hasADoor;};
-	public void setHasDoor(boolean isTrue){hasADoor=isTrue;};
 	public boolean hasALock(){return hasALock;};
-	public void setHasLock(boolean isTrue){hasALock=isTrue;};
 	public boolean defaultsLocked(){return doorDefaultsLocked;};
-	public void setDefaultsLocked(boolean isTrue){doorDefaultsLocked=isTrue;};
 	public boolean defaultsClosed(){return doorDefaultsClosed;};
-	public void setDefaultsClosed(boolean isTrue){doorDefaultsClosed=isTrue;};
+	public void setDoorsNLocks(boolean newHasADoor,
+								  boolean newIsOpen,
+								  boolean newDefaultsClosed,
+								  boolean newHasALock,
+								  boolean newIsLocked,
+								  boolean newDefaultsLocked)
+	{
+		isOpen=newIsOpen;
+		isLocked=newIsLocked;
+		hasADoor=newHasADoor;
+		hasALock=newHasALock;
+		doorDefaultsClosed=newDefaultsClosed;
+		doorDefaultsLocked=newDefaultsLocked;
+	}
+
 	public boolean isTrapped() {return isTrapped;}
 	public void setTrapped(boolean isTrue){isTrapped=isTrue;}
-	
+
 	public String readableText(){ return (isReadable?miscText:"");}
 	public boolean isReadable(){ return isReadable;}
 	public void setReadable(boolean isTrue){isReadable=isTrue;}
 	public void setReadableText(String text) { miscText=text; }
-	
+
 	public boolean levelRestricted(){ return levelRestricted;}
 	public void setLevelRestricted(boolean isTrue){levelRestricted=isTrue;}
-	
+
 	public String classRestrictedName(){ return (classRestricted?miscText:"");}
 	public boolean classRestricted(){ return classRestricted;}
 	public void setClassRestricted(boolean isTrue){classRestricted=isTrue;}
 	public void setClassRestrictedName(String className) { miscText=className; }
-	
+
+	public String alignmentRestrictedMask(){ return (alignmentRestricted?miscText:"");}
+	public boolean alignmentRestricted(){ return alignmentRestricted;}
+	public void setAlignmentRestricted(boolean isTrue){alignmentRestricted=isTrue;}
+	public void setAlignmentRestrictedMask(String alignments) { miscText=alignments; }
+
 	public String doorName(){return doorName;}
 	public String closeWord(){return closeName;}
 	public String openWord(){return openName;}
@@ -414,19 +493,32 @@ public class StdExit implements Exit
 
 	public String keyName()	{ return (hasALock?miscText:""); }
 	public void setKeyName(String newKeyName){miscText=newKeyName;}
-	
-	
-	
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+
+
+
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
-	
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{}//exits will never be asked this, so this method should always do NOTHING
+
+	public void addNonUninvokableAffect(Ability to)
+	{
+		if(to==null) return;
+		for(int i=0;i<affects.size();i++)
+			if(((Ability)affects.elementAt(i))==to)
+				return;
+		to.makeNonUninvokable();
+		to.makeLongLasting();
+		affects.addElement(to);
+		to.setAffectedOne(this);
+	}
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
 		for(int i=0;i<affects.size();i++)
-			if(((Ability)affects.elementAt(i)).ID().equals(to.ID()))
+			if(affects.elementAt(i)==to)
 				return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
@@ -455,7 +547,7 @@ public class StdExit implements Exit
 			   return (Ability)affects.elementAt(a);
 		return null;
 	}
-	
+
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
 	public void addBehavior(Behavior to)

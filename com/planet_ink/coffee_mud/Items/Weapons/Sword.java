@@ -1,8 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class Sword extends Weapon
+public class Sword extends StdWeapon
 {
 	public Sword()
 	{
@@ -22,7 +23,7 @@ public class Sword extends Weapon
 		weaponType=TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
@@ -36,12 +37,8 @@ public class Sword extends Weapon
 			case 4:	 return new Claymore();
 			case 5:	 return new Shortsword();
 			default: return new Sword();
-				
+
 		}
 
-	}
-	public void strike(MOB source, MOB target, boolean success)
-	{
-		super.strike(source, target, success);
 	}
 }

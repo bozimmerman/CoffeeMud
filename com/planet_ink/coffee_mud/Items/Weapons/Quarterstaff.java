@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Quarterstaff extends Weapon
+public class Quarterstaff extends StdWeapon
 {
 	public Quarterstaff()
 	{
@@ -15,16 +16,16 @@ public class Quarterstaff extends Weapon
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(4);
 		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(6);
+		baseEnvStats().setDamage(3);
 		baseGoldValue=1;
 		recoverEnvStats();
 		wornLogicalAnd=true;
 		material=Item.WOODEN;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		weaponType=TYPE_BASHING;
-		weaponClassification=Weapon.CLASS_BLUNT;
+		weaponClassification=Weapon.CLASS_STAFF;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Quarterstaff();

@@ -2,14 +2,13 @@ package com.planet_ink.coffee_mud.commands;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class CommandSet extends Hashtable
 {
-
-	private String commandList="";
 	private Vector extraCMDs=new Vector();
 	private Vector commandsToLeaveOut=new Vector();
-	
+
 	public static final int AFFECT=0;
 	public static final int PUSH=1;
 	public static final int PULL=2;
@@ -23,7 +22,7 @@ public class CommandSet extends Hashtable
 	public static final int CREATE=10;
 	public static final int DESTROY=11;
 	public static final int DESCRIPTION=12;
-	
+	public static final int YELL=13;
 	public static final int DOWN=14;
 	public static final int DRINK=15;
 	public static final int DROP=16;
@@ -57,7 +56,7 @@ public class CommandSet extends Hashtable
 	public static final int OPEN=44;
 	public static final int ORDER=45;
 	public static final int PASSWORD=46;
-	
+	public static final int VALUE=47;
 	public static final int PRACTICE=48;
 	public static final int PUT=49;
 	public static final int QUIET=50;
@@ -83,12 +82,12 @@ public class CommandSet extends Hashtable
 	public static final int SPELLS=70;
 	public static final int SPLIT=71;
 	public static final int STAND=72;
-	
+	public static final int LINK=73;
 	public static final int TAKE=74;
 	public static final int TELL=75;
 	public static final int TRAIN=76;
 	public static final int TEACH=77;
-	
+	public static final int TOPICS=78;
 	public static final int UNLOCK=79;
 	public static final int UP=80;
 	public static final int WHO=81;
@@ -98,12 +97,29 @@ public class CommandSet extends Hashtable
 	public static final int WHOIS=85;
 	public static final int WIELD=86;
 	public static final int WIMPY=87;
-	
+	public static final int UNLINK=88;
+	public static final int AUTOLOOT=89;
+	public static final int AUTOGOLD=90;
+	public static final int AUTOEXITS=91;
+	public static final int AUTOASSIST=92;
+	public static final int QUALIFY=93;
+	public static final int OUTFIT=94;
+	public static final int SHUTDOWN=95;
+	public static final int IMPORT=96;
+	public static final int XML=97;
+	public static final int RESET=98;
+	public static final int CHANNELS=99;
+
+
 	public CommandSet()
 	{
 		put("AFFECT",new Integer(AFFECT));
 			put("AFF",new Integer(AFFECT));
 		put("AREAS",new Integer(AREAS));
+		put("AUTOLOOT",new Integer(AUTOLOOT));
+		put("AUTOGOLD",new Integer(AUTOGOLD));
+		put("AUTOEXITS",new Integer(AUTOEXITS));
+		put("AUTOASSIST",new Integer(AUTOASSIST));
 		put("PUSH",new Integer(PUSH));
 		put("PULL",new Integer(PULL));
 		put("BUG",new Integer(BUG));
@@ -111,6 +127,7 @@ public class CommandSet extends Hashtable
 		put("CLOSE",new Integer(CLOSE));
 			put("CL",new Integer(CLOSE));
 			put("CLO",new Integer(CLOSE));
+		put("CHANNELS",new Integer(CHANNELS));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));
 			put("COMP",new Integer(COMPARE));
@@ -148,11 +165,13 @@ public class CommandSet extends Hashtable
 		put("GTELL",new Integer(GTELL));
 		put("HELP",new Integer(HELP));
 		put("HOLD",new Integer(HOLD));
+		put("IMPORT",new Integer(IMPORT));
 		put("INVENTORY",new Integer(INVENTORY));
 			put("INV",new Integer(INVENTORY));
 		put("KILL",new Integer(KILL));
 		put("LIST",new Integer(LIST));
 			put("LI",new Integer(LIST));
+		put("LINK",new Integer(LINK));
 		put("LOCK",new Integer(LOCK));
 		put("LOOK",new Integer(LOOK));
 			put("LOO",new Integer(LOOK));
@@ -164,12 +183,15 @@ public class CommandSet extends Hashtable
 		put("OPEN",new Integer(OPEN));
 			put("OP",new Integer(OPEN));
 		put("ORDER",new Integer(ORDER));
+		put("OUTFIT",new Integer(OUTFIT));
 		put("PASSWORD",new Integer(PASSWORD));
 		put("PRACTICE",new Integer(PRACTICE));
 			put("PRAC",new Integer(PRACTICE));
 		put("PRAYERS",new Integer(PRAYERS));
 		put("!",new Integer(PREVIOUS_CMD));
 		put("PUT",new Integer(PUT));
+		put("QUALIFY",new Integer(QUALIFY));
+			put("QUAL",new Integer(QUALIFY));
 		put("QUIET",new Integer(QUIET));
 		put("QUIT",new Integer(QUIT));
 		put("READ",new Integer(READ));
@@ -178,11 +200,13 @@ public class CommandSet extends Hashtable
 		put("REPLY",new Integer(REPLY));
 			put("REP",new Integer(REPLY));
 		put("REPORT",new Integer(REPORT));
+		put("RESET",new Integer(RESET));
 		put("REST",new Integer(SIT));
 		put("SAY",new Integer(SAY));
-			put("'",new Integer(SAY));
+			put("`",new Integer(SAY));
 		put("SAVE",new Integer(SAVE));
 		put("SELL",new Integer(SELL));
+		put("SHUTDOWN",new Integer(SHUTDOWN));
 		put("SIT",new Integer(SIT));
 		put("SCORE",new Integer(SCORE));
 			put("SC",new Integer(SCORE));
@@ -203,11 +227,15 @@ public class CommandSet extends Hashtable
 		put("TEACH",new Integer(TEACH));
 			put("TEA",new Integer(TEACH));
 		put("TELL",new Integer(TELL));
+		put("TOPICS",new Integer(TOPICS));
 		put("TRAIN",new Integer(TRAIN));
 			put("TR",new Integer(TRAIN));
 		put("UNLOCK",new Integer(UNLOCK));
+		put("UNLINK",new Integer(UNLINK));
 		put("UP",new Integer(UP));
 			put("U",new Integer(UP));
+		put("VALUE",new Integer(VALUE));
+			put("VAL",new Integer(VALUE));
 		put("WAKE",new Integer(WAKE));
 		put("WEAR",new Integer(WEAR));
 		put("WEST",new Integer(WEST));
@@ -217,9 +245,11 @@ public class CommandSet extends Hashtable
 		put("WIELD",new Integer(WIELD));
 		put("WIMPY",new Integer(WIMPY));
 			put("WIMP",new Integer(WIMPY));
+		put("XML",new Integer(XML));
+		put("YELL",new Integer(YELL));
 	}
-	
-	
+
+
 	public void loadAbilities(Vector abilities)
 	{
 		for(int e=0;e<abilities.size();e++)
@@ -243,38 +273,13 @@ public class CommandSet extends Hashtable
 			}
 		}
 	}
-	
-	public void loadChannels(String list)
-	{
-		while(list.length()>0)
-		{
-			int x=list.indexOf(",");
-			
-			String item=null;
-			if(x<0)
-			{
-				item=list;
-				list="";
-			}
-			else
-			{
-				item=list.substring(0,x).trim();
-				list=list.substring(x+1);
-			}
-			Channels.numChannelsLoaded++;
-			Channels.channelNames.addElement(item.toUpperCase().trim());
-			//extraCMDs.addElement(item.toUpperCase().trim());
-			put(item.toUpperCase().trim(),new Integer(CommandSet.CHANNEL));
-			//extraCMDs.addElement("NO"+item.toUpperCase().trim());
-			put("NO"+item.toUpperCase().trim(),new Integer(CommandSet.NOCHANNEL));
-		}
-	}
-	
+
 	public String commandList()
 	{
-		if(commandList.length()!=0) 
-			return commandList;
-		
+		StringBuffer commandList=(StringBuffer)Resources.getResource("COFFEEMUD COMMANDLIST");
+		if((commandList!=null)&&(commandList.length()!=0))
+			return commandList.toString();
+
 		Hashtable reverseHash=new Hashtable();
 		for(Enumeration e=keys();e.hasMoreElements();)
 		{
@@ -282,6 +287,7 @@ public class CommandSet extends Hashtable
 			Integer code=(Integer)get(key);
 			if((code!=null)
 			&&(code.intValue()!=CHANNEL)
+			&&(code.intValue()!=SHUTDOWN)
 			&&(code.intValue()!=NOCHANNEL))
 			{
 				String displayable=(String)reverseHash.get(code);
@@ -297,7 +303,7 @@ public class CommandSet extends Hashtable
 				}
 			}
 		}
-		
+
 		StringBuffer msg=new StringBuffer("");
 		Vector reverseList=new Vector();
 		for(Enumeration e=reverseHash.elements();e.hasMoreElements();)
@@ -325,21 +331,21 @@ public class CommandSet extends Hashtable
 			if(!found)
 				reverseList.addElement(ts);
 		}
-		
+
 		Collections.sort((List)reverseList);
 		int col=0;
 		for(int i=0;i<reverseList.size();i++)
 		{
-			if((++col)>6) 
+			if((++col)>6)
 			{
 				msg.append("\n\r");
 				col=1;
 			}
-			
+
 			msg.append(Util.padRight((String)reverseList.elementAt(i),13));
 		}
 		msg.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
-		commandList=msg.toString();
-		return commandList;
+		Resources.submitResource("COFFEEMUD COMMANDLIST",msg);
+		return msg.toString();
 	}
 }

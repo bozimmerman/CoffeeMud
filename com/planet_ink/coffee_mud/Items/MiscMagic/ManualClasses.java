@@ -1,11 +1,8 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
+import com.planet_ink.coffee_mud.Items.StdItem;
 import java.util.*;
 
 
@@ -35,12 +32,12 @@ public class ManualClasses extends StdItem implements MiscMagic
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.VISUAL_READ:
+			case Affect.TYP_READSOMETHING:
 				if(mob.isMine(this))
 				{
-					if(mob.fetchAffect(new Spell_ReadMagic().ID())!=null)
+					if(mob.fetchAffect("Spell_ReadMagic")!=null)
 					{
 						if(this.usesRemaining()<=0)
 							mob.tell("The markings have been read off the parchment, and are no longer discernable.");
@@ -50,9 +47,9 @@ public class ManualClasses extends StdItem implements MiscMagic
 							mob.tell("The manual glows softly, enveloping you in it's wisdom.");
 							CharClass lastC=null;
 							CharClass thisC=null;
-							for(int c=0;c<MUD.charClasses.size();c++)
+							for(int c=0;c<CMClass.charClasses.size();c++)
 							{
-								CharClass C=(CharClass)MUD.charClasses.elementAt(c);
+								CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
 								if(thisC==null) thisC=C;
 								if((lastC!=null)&&(thisC==mob.charStats().getMyClass()))
 								{
@@ -61,11 +58,11 @@ public class ManualClasses extends StdItem implements MiscMagic
 								}
 								lastC=C;
 							}
-							if((thisC!=null)&&(!(thisC instanceof Archon)))
+							if((thisC!=null)&&(!(thisC.ID().equals("Archon"))))
 							{
 								mob.charStats().setMyClass(thisC);
 								mob.tell("You are now a "+thisC.name()+".");
-								mob.location().showOthers(mob,null,Affect.VISUAL_WNOISE,mob.name()+" undergoes a traumatic change.");
+								mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,mob.name()+" undergoes a traumatic change.");
 							}
 						}
 					}

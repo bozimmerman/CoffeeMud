@@ -3,44 +3,22 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.sql.*;
+import com.planet_ink.coffee_mud.system.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.Items.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.commands.*;
 
-public class MUD 
+public class MUD extends Thread implements Host
 {
-	public final static int TICK_TIME=3000;
+	public SaveThread saveThread=null;
+	public INI page=null;
+	public boolean keepDown=true;
+	public String execExternalCommand=null;
+	public Socket sock=null;
+	public ServerSocket servsock=null;
 	
-	public static DBConnections DBs=null;
-	public static Vector races=new Vector();
-	public static Vector charClasses=new Vector();											
-	public static Vector MOBs=new Vector();
-	public static Vector abilities=new Vector();
-	public static Vector locales=new Vector();
-	public static Vector exits=new Vector();
-	public static Vector items=new Vector();
-	public static Vector behaviors=new Vector();
-	public static Vector weapons=new Vector();
-	public static Vector armor=new Vector();
-	public static Vector miscMagic=new Vector();
-	public static Vector map=new Vector();
-	
-	public static SaveThread saveThread=null;
-	
-	public static Socials allSocials=null;
-													
-	public static INI page=null;
-	
-	public static Vector allSessions=new Vector();
-	
-	public static boolean DBConfirmDeletions=false;
-	
-	public static void fatalStartupError(int type)
+	public void fatalStartupError(int type)
 	{
 		String str=null;
 		switch(type)
@@ -56,26 +34,22 @@ public class MUD
 			break;
 		}
 		Log.errOut("MUD",str);
-		System.out.println(str);
-		System.exit(-1);
+		this.interrupt();
 	}
 	
-	public static void main(String a[]) throws IOException
+	public void run()
 	{
-		
 		int q_len = 6;
-		Socket sock;
 
-		Log.startLogFiles();
 		page=new INI("coffeemud.ini");
 		if(!page.loaded)
 			fatalStartupError(1);
 		Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
-		DBs =new DBConnections(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
-		DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
-		
-		Log.sysOut("MUD","Starting CoffeeMud...\n\r\n\r");
-		String DBerrors=DBs.errorStatus().toString();
+		DBConnector.DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
+		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
+
+		Log.sysOut("MUD","Starting CoffeeMud v1.2...\n\r\n\r");
+		String DBerrors=DBConnector.errorStatus().toString();
 		if(DBerrors.length()==0)
 			Log.sysOut("MUD","Database connection successful.");
 		else
@@ -83,170 +57,180 @@ public class MUD
 			Log.errOut("MUD","Fatal database error: "+DBerrors);
 			System.exit(-1);
 		}
-		if(DBConfirmDeletions)
+		if(DBConnector.DBConfirmDeletions)
 			Log.sysOut("MUD","DB Deletions will be confirmed.");
 		
-		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
-		
-		races=page.loadVectorListToObj(prefix+"Races"+File.separatorChar);
-		Log.sysOut("MUD","Races loaded      : "+races.size());
-		if(races.size()==0) fatalStartupError(0);
-		
-		charClasses=page.loadVectorListToObj(prefix+"CharClasses"+File.separatorChar);
-		Log.sysOut("MUD","Classes loaded    : "+charClasses.size());
-		if(charClasses.size()==0) fatalStartupError(0);
+		CommandProcessor commandProcessor=new CommandProcessor();
+		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems());
 
-		MOBs=page.loadVectorListToObj(prefix+"MOBS"+File.separatorChar);
-		Log.sysOut("MUD","MOB Types loaded  : "+MOBs.size());
-		if(MOBs.size()==0) fatalStartupError(0);
-		
-		exits=page.loadVectorListToObj(prefix+"Exits"+File.separatorChar);
-		Log.sysOut("MUD","Exit Types loaded : "+exits.size());
-		if(exits.size()==0) fatalStartupError(0);
-		
-		locales=page.loadVectorListToObj(prefix+"Locales"+File.separatorChar);
-		Log.sysOut("MUD","Locales loaded    : "+locales.size());
-		if(locales.size()==0) fatalStartupError(0);
-		
-		abilities=page.loadVectorListToObj(prefix+"Abilities"+File.separatorChar);
-		Log.sysOut("MUD","Abilities loaded  : "+abilities.size());
-		if(abilities.size()==0) fatalStartupError(0);
-		
-		items=page.loadVectorListToObj(prefix+"Items"+File.separatorChar);
-		Log.sysOut("MUD","Items loaded      : "+items.size());
-		if(items.size()==0) fatalStartupError(0);
-		
-		weapons=page.loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar);
-		Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
-		if(weapons.size()==0) fatalStartupError(0);
-		
-		armor=page.loadVectorListToObj(prefix+"Items"+File.separatorChar+"Armor"+File.separatorChar);
-		Log.sysOut("MUD","Armor loaded      : "+armor.size());
-		if(armor.size()==0) fatalStartupError(0);
-		
-		miscMagic=page.loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar);
-		Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
-		if(miscMagic.size()==0) fatalStartupError(0);
-		
-		behaviors=page.loadVectorListToObj(prefix+"Behaviors"+File.separatorChar);
-		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
-		if(behaviors.size()==0) fatalStartupError(0);
-		
-		CommandProcessor.commandSet.loadChannels(page.getStr("CHANNELS"));
-		Log.sysOut("MUD","Channels loaded   : "+Channels.numChannelsLoaded);
-		
-		allSocials=new Socials("resources"+File.separatorChar+"socials.txt");
-		if(!allSocials.loaded)
+		if(!CMClass.loadClasses())
+			fatalStartupError(0);
+
+		int numChannelsLoaded=commandProcessor.channels.loadChannels(page.getStr("CHANNELS"),commandProcessor.commandSet);
+		commandProcessor.myHost=this;
+		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
+
+		commandProcessor.socials.load("resources"+File.separatorChar+"socials.txt");
+		if(!commandProcessor.socials.loaded)
 			Log.errOut("MUD","Unable to load socials from socials.txt!");
 		else
-			Log.sysOut("MUD","Socials loaded    : "+allSocials.num());
-		
-		RoomLoader.DBRead(map);
-		Log.sysOut("MUD","Mapped rooms      : "+map.size());
-		if(map.size()==0) fatalStartupError(2);
-		
-		CommandProcessor.commandSet.loadAbilities(abilities);
-		
-		ServerSocket servsock=new ServerSocket(page.getInt("PORT"), q_len);
-		
-		saveThread=new SaveThread();
-		saveThread.start();
-		Log.sysOut("MUD","Save thread started");
-		
+			Log.sysOut("MUD","Socials loaded    : "+commandProcessor.socials.num());
 
-		Log.sysOut("MUD","Now listening on port "+page.getInt("PORT")+".");
+		RoomLoader.DBRead(CMMap.map);
+		Log.sysOut("MUD","Mapped rooms      : "+CMMap.map.size());
+		if(CMMap.map.size()==0)
+		{
+			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
+			String id=page.getStr("START");
+			if(id.length()==0) id="START";
+			Room room=CMClass.getLocale("StdRoom");
+			room.setID(id);
+			room.setDisplayText("New Room");
+			room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.");
+			RoomLoader.DBCreate(room,"CoffeeMud");
+			CMMap.map.addElement(room);
+		}
+
+		CMMap.setStartRoom(page.getStr("START"));
+
+		commandProcessor.commandSet.loadAbilities(CMClass.abilities);
+
 		try
 		{
+			servsock=new ServerSocket(page.getInt("PORT"), q_len);
+
+			saveThread=new SaveThread();
+			saveThread.start();
+			Log.sysOut("MUD","Save thread started");
+
+
+			Log.sysOut("MUD","Now listening on port "+page.getInt("PORT")+".");
+			
 			while(true)
 			{
 				sock=servsock.accept();
-				Log.sysOut("MUD","Got a connection!");
+				Log.sysOut("MUD","Got a connection.");
 				PrintWriter out=new PrintWriter(sock.getOutputStream());
 				StringBuffer introText=Resources.getFileResource("intro.txt");
 				if(introText!=null)
 					out.println(introText.toString());
 				BufferedReader in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
-				Session S=new Session(sock,in,out);
+				TelnetSession S=new TelnetSession(sock,in,out);
 				S.start();
-				allSessions.addElement(S);
+				Sessions.addElement(S);
 			}
 		}
 		catch(Throwable t)
 		{
-			Log.sysOut("MUD","Shut down: "+t);
-			System.exit(0);
+			Log.sysOut("MUD","CoffeeMud Server thread stopped!.");
 		}
 	}
-	
-	public static Environmental getEnv(Vector fromThese, String calledThis)
+
+	public static void main(String a[]) throws IOException
 	{
-		for(int i=0;i<fromThese.size();i++)
+		Log.startLogFiles();
+		
+		try
 		{
-			Environmental E=(Environmental)fromThese.elementAt(i);
-			if(E.ID().equalsIgnoreCase(calledThis))
-				return (Environmental)fromThese.elementAt(i);
+			while(true)
+			{
+				MUD mud=new MUD();
+				mud.start();
+				mud.join();
+				System.gc();
+				System.runFinalization();
+				boolean keepDown=mud.keepDown;
+				String external=mud.execExternalCommand;
+				mud=null;
+				System.gc();
+				System.runFinalization();
+				if(Thread.activeCount()>1)
+					Log.sysOut(Thread.activeCount()+" thread(s) still active.");
+				if(keepDown)
+					break;
+				if(external!=null)
+				{
+					Runtime r=Runtime.getRuntime();
+					Process p=r.exec(external);
+					Log.sysOut("Attempted to execute '"+external+"'.");
+					break;
+				}
+			}
 		}
-		return null;
-	}
-	
-	public static Object getGlobal(Vector fromThese, String calledThis)
-	{
-		for(int i=0;i<fromThese.size();i++)
-			if(Util.id(fromThese.elementAt(i)).equalsIgnoreCase(calledThis))
-				return fromThese.elementAt(i);
-		return null;
-	}
-	
-	public static Item getItem(String calledThis)
-	{
-		Item thisItem=(Item)getEnv(items,calledThis);
-		if(thisItem==null)
-			thisItem=(Item)getEnv(armor,calledThis);
-		if(thisItem==null)
-			thisItem=(Item)getEnv(weapons,calledThis);
-		if(thisItem==null)
-			thisItem=(Item)getEnv(miscMagic,calledThis);
-		return thisItem;
-	}
-	
-	public static CharClass getCharClass(String calledThis)
-	{
-		return (CharClass)getGlobal(charClasses,calledThis);
-	}
-	public static Race getRace(String calledThis)
-	{
-		return (Race)getGlobal(races,calledThis);
-	}
-	public static Behavior getBehavior(String calledThis)
-	{
-		return (Behavior)getGlobal(behaviors,calledThis);
-	}
-	public static Room getLocale(String calledThis)
-	{
-		return (Room)getEnv(locales,calledThis);
-	}
-	public static Exit getExit(String calledThis)
-	{
-		return (Exit)getEnv(exits,calledThis);
-	}
-	public static Room getRoom(String calledThis)
-	{
-		return (Room)getEnv(map,calledThis);
-	}
-	public static MOB getMOB(String calledThis)
-	{
-		for(int i=0;i<MOBs.size();i++)
+		catch(InterruptedException e)
 		{
-			MOB mob=(MOB)MOBs.elementAt(i);
-			
-			if(INI.className(mob).equalsIgnoreCase(calledThis))
-				return mob;
+			Log.errOut("MUD",e);
 		}
-		return null;
 	}
-	public static Ability getAbility(String calledThis)
+	
+	public void shutdown(Session S, boolean keepItDown, String externalCommand)
 	{
-		return (Ability)getGlobal(abilities,calledThis);
+		if(saveThread==null) return;
+
+		saveThread.shutdown();
+		saveThread.interrupt();
+		saveThread=null;
+		S.println("Save thread stopped.");
+
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session session=Sessions.elementAt(s);
+			if(session.mob()!=null)
+			{
+				MOBloader.DBUpdate(session.mob());
+				MOBloader.DBUpdateFollowers(session.mob());
+			}
+		}
+		Log.sysOut("MUD","All users saved.");
+		S.println("All users saved.");
+
+		while(Sessions.size()>0)
+		{
+			Session S2=Sessions.elementAt(0);
+			if(S2==S)
+				Sessions.removeElementAt(0);
+			else
+				S2.logoff();
+		}
+		S.println("All users logged off.");
+
+		ServiceEngine.shutdownAll();
+		S.println("All threads stopped.");
+
+		DBConnector.killConnections();
+		Log.sysOut("MUD","All users saved.");
+		S.println("Database connections closed.");
+
+		CMClass.unload();
+		CMMap.unLoad();
+		INI page=null;
+		CMClass.unload();
+		Resources.clearResources();
+		try{Thread.sleep(500);}catch(Exception i){}
+		Log.sysOut("MUD","CoffeeMud shutdown complete.");
+		S.println("CoffeeMud shutdown complete.");
+		if(!keepItDown)
+			S.println("Restarting...");
+		S.logoff();
+		try{Thread.sleep(500);}catch(Exception i){}
+		if(Sessions.size()>0)
+			Sessions.elementAt(0).logoff();
+		System.gc();
+		System.runFinalization();
+		try{Thread.sleep(500);}catch(Exception i){}
+		this.keepDown=keepItDown;
+		this.execExternalCommand=externalCommand;
+		try
+		{
+			if(this.servsock!=null)
+				this.servsock.close();
+			if(this.sock!=null)
+				this.sock.close();
+		}
+		catch(IOException e)
+		{
+		}
+		this.interrupt();
 	}
 
 }

@@ -1,13 +1,10 @@
 package com.planet_ink.coffee_mud.Items;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Locales.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
-public class LightSource extends StdItem
+public class LightSource extends StdItem implements Light
 {
 	protected boolean lit=false;
 	public boolean burnedOut=false;
@@ -32,6 +29,10 @@ public class LightSource extends StdItem
 		baseGoldValue=5;
 		recoverEnvStats();
 	}
+
+	public void setDuration(int duration){durationTicks=duration;}
+	public int getDuration(){return durationTicks;}
+
 	public Environmental newInstance()
 	{
 		return new LightSource();
@@ -47,9 +48,9 @@ public class LightSource extends StdItem
 		if(!affect.amITarget(this))
 			return true;
 		else
-		switch(affect.targetCode())
+		switch(affect.targetMinor())
 		{
-		case Affect.HANDS_HOLD:
+		case Affect.TYP_HOLD:
 			if(burnedOut)
 			{
 				mob.tell(name()+" looks used up.");
@@ -72,26 +73,27 @@ public class LightSource extends StdItem
 	{
 		MOB mob=affect.source();
 		if((mob.location()!=null)
-		   &&(mob.location() instanceof UnderWater)
+		   &&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+			 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		   &&(this.lit)
 		   &&(!this.burnedOut)
 		   &&(mob.isMine(this)))
 		{
 			mob.tell("The water makes "+name()+" go out.");
-			tick(ServiceEngine.LIGHT_FLICKERS);
+			tick(Host.LIGHT_FLICKERS);
 		}
 
 		if(affect.amITarget(this))
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.HANDS_HOLD:
+			case Affect.TYP_HOLD:
 				if((!burnedOut)&&(mob.location()!=null))
 				{
-					mob.location().show(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> light(s) up "+name()+".");
+					affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> light(s) up "+name()+"."));
 					invoker=mob;
 					heldBy=mob;
 					lit=true;
-					ServiceEngine.startTickDown(this,ServiceEngine.LIGHT_FLICKERS,durationTicks);
+					ExternalPlay.startTickDown(this,Host.LIGHT_FLICKERS,durationTicks);
 					this.recoverEnvStats();
 					mob.location().recoverRoomStats();
 				}
@@ -109,7 +111,7 @@ public class LightSource extends StdItem
 			baseEnvStats().setDisposition(baseEnvStats().disposition()-Sense.IS_LIGHT);
 		super.recoverEnvStats();
 	}
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if((!burnedOut)&&(lit))
 		{
@@ -130,7 +132,7 @@ public class LightSource extends StdItem
 
 	public boolean tick(int tickID)
 	{
-		if(tickID==ServiceEngine.LIGHT_FLICKERS)
+		if(tickID==Host.LIGHT_FLICKERS)
 		{
 			if((heldBy!=null)
 			&&(lit)
@@ -140,7 +142,7 @@ public class LightSource extends StdItem
 				{
 					burnedOut=true;
 					if(invoker!=null)
-						((Room)heldBy).show(invoker,null,Affect.VISUAL_ONLY,name()+" flickers and burns out.");
+						((Room)heldBy).show(invoker,null,Affect.MSG_OK_VISUAL,name()+" flickers and burns out.");
 					if(destroyedWhenBurnedOut)
 						this.destroyThis();
 					((Room)heldBy).recoverRoomStats();

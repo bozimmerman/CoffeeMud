@@ -1,0 +1,99 @@
+package com.planet_ink.coffee_mud.Abilities.Thief;
+
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Thief_Bribe extends ThiefSkill
+{
+
+	public Thief_Bribe()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Peek";
+		displayText="(in a dark realm of thievery)";
+		miscText="";
+
+		triggerStrings.addElement("BRIBE");
+
+		canBeUninvoked=true;
+		isAutoinvoked=false;
+
+		baseEnvStats().setLevel(20);
+
+		addQualifyingClass("Thief",20);
+		recoverEnvStats();
+	}
+
+	public Environmental newInstance()
+	{
+		return new Thief_Bribe();
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(commands.size()<1)
+		{
+			mob.tell("Bribe whom?");
+			return false;
+		}
+		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+
+		commands.removeElementAt(0);
+
+		if(!target.isMonster())
+		{
+			mob.tell("You can't bribe a sentient player.");
+			return false;
+		}
+
+		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
+		{
+			mob.tell("You can't bribe someone to follow.");
+			return false;
+		}
+
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		int levelDiff=target.envStats().level()-mob.envStats().level();
+
+		int amountRequired=target.getMoney()+(int)(Math.round(100.0*(Util.div(25.0,mob.charStats().getCharisma())))*target.envStats().level());
+
+		boolean success=profficiencyCheck(0,auto);
+
+		if((!success)||(mob.getMoney()<amountRequired))
+		{
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+Util.combine(commands,0)+"', but no deal is reached.");
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+			if(mob.getMoney()<amountRequired)
+				mob.tell(target.charStats().HeShe()+" requires "+amountRequired+" coins to do this.");
+			success=false;
+		}
+		else
+		{
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+amountRequired+" coins.");
+			mob.setMoney(mob.getMoney()-amountRequired);
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				try
+				{
+					ExternalPlay.doCommand(target,commands);
+				}
+				catch(Exception e)
+				{
+					mob.tell(target.charStats().HeShe()+" takes your money and smiles, saying '"+e.getMessage()+"'.");
+				}
+			}
+			target.setMoney(mob.getMoney()+amountRequired);
+		}
+		return success;
+	}
+
+}

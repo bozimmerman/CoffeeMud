@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Cestus extends Weapon
+public class Cestus extends StdWeapon
 {
 	public Cestus()
 	{
@@ -20,9 +21,9 @@ public class Cestus extends Weapon
 		recoverEnvStats();
 		weaponType=Weapon.TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_EDGED;
-		
+
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Cestus();

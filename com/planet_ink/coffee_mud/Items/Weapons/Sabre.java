@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Sabre extends Weapon
+public class Sabre extends StdWeapon
 {
 	public Sabre()
 	{
@@ -22,7 +23,7 @@ public class Sabre extends Weapon
 		weaponType=TYPE_SLASHING;//?????????
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Sabre();

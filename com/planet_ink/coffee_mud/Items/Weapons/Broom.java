@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Broom extends Quarterstaff
 {
@@ -11,7 +12,7 @@ public class Broom extends Quarterstaff
 		displayText="a broom lies in the corner of the room.";
 		description="It's long and wooden, with lots of bristles on one end.";
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Broom();

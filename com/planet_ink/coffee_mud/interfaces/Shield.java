@@ -1,0 +1,4 @@
+package com.planet_ink.coffee_mud.interfaces;
+public interface Shield extends Armor
+{
+}

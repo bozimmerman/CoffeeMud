@@ -1,10 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
 
-public class WalkingBoots extends Armor
+public class WalkingBoots extends StdArmor
 {
 	public WalkingBoots()
 	{
@@ -26,5 +25,5 @@ public class WalkingBoots extends Armor
 	{
 		return new WalkingBoots();
 	}
-	
+
 }

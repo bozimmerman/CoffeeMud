@@ -1,18 +1,14 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.Exits.*;
-import com.planet_ink.coffee_mud.utils.*;
-
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.Dice;
+import com.planet_ink.coffee_mud.utils.Directions;
 import java.util.*;
 public class Maze extends Grid
 {
 	protected int size=10;
-						   
+
 	public Maze()
 	{
 		super();
@@ -22,7 +18,7 @@ public class Maze extends Grid
 	{
 		return new Maze();
 	}
-	
+
 	protected void buildFinalLinks()
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -31,14 +27,12 @@ public class Maze extends Grid
 			if(dirRoom!=null)
 			{
 				alts[d]=findCenterRoom(d);
-				if(alts[d]==null)
-					Log.errOut("Unable to link correctly.");
-				else
+				if(alts[d]!=null)
 					linkRoom(alts[d],dirRoom,d);
 			}
 		}
 	}
-	
+
 	protected boolean goodDir(int x, int y, int dirCode)
 	{
 		if(dirCode==Directions.UP) return false;
@@ -49,13 +43,13 @@ public class Maze extends Grid
 		if((y>=(subMap[0].length-1))&&(dirCode==Directions.SOUTH)) return false;
 		return true;
 	}
-	
+
 	protected Room roomDir(int x, int y, int dirCode)
 	{
 		if(!goodDir(x,y,dirCode)) return null;
 		return subMap[getX(x,dirCode)][getY(y,dirCode)];
 	}
-	
+
 	protected int getY(int y, int dirCode)
 	{
 		switch(dirCode)
@@ -78,19 +72,19 @@ public class Maze extends Grid
 		}
 		return x;
 	}
-	
+
 	protected void mazify(Hashtable visited, int x, int y)
 	{
 		if(visited.get(subMap[x][y])!=null) return;
 		Room room=subMap[x][y];
 		visited.put(room,room);
-		
+
 		boolean okRoom=true;
 		while(okRoom)
 		{
 			okRoom=false;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-			{ 
+			{
 				Room possRoom=roomDir(x,y,d);
 				if(possRoom!=null)
 					if(visited.get(possRoom)==null)
@@ -119,7 +113,7 @@ public class Maze extends Grid
 			}
 		}
 	}
-	
+
 	protected void buildMaze()
 	{
 		Hashtable visited=new Hashtable();
@@ -127,7 +121,7 @@ public class Maze extends Grid
 		int y=size/2;
 		mazify(visited,x,y);
 	}
-	
+
 	public void buildGrid()
 	{
 		clearGrid();
@@ -139,10 +133,8 @@ public class Maze extends Grid
 				if(newRoom!=null)
 				{
 					subMap[x][y]=newRoom;
-					MUD.map.addElement(newRoom);
+					CMMap.map.addElement(newRoom);
 				}
-				else
-					Log.errOut("A block will be missing at "+x+","+y+" -- "+subMap.length+","+subMap[0].length+"!");
 			}
 		buildMaze();
 		buildFinalLinks();

@@ -1,45 +1,40 @@
 package com.planet_ink.coffee_mud.commands.sysop;
 
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.telnet.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.Items.*;
 import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 import java.io.*;
 
 public class Lister
 {
-	
-	public static StringBuffer reallyList(Hashtable these, int ofType)
+
+	public StringBuffer reallyList(Hashtable these, int ofType)
 	{
 		return reallyList(these,ofType,null);
 	}
-	public static StringBuffer reallyList(Hashtable these)
+	public StringBuffer reallyList(Hashtable these)
 	{
 		return reallyList(these,-1,null);
 	}
-	public static StringBuffer reallyList(Hashtable these, Room likeRoom)
+	public StringBuffer reallyList(Hashtable these, Room likeRoom)
 	{
 		return reallyList(these,-1,likeRoom);
 	}
-	public static StringBuffer reallyList(Vector these, int ofType)
+	public StringBuffer reallyList(Vector these, int ofType)
 	{
 		return reallyList(these,ofType,null);
 	}
-	public static StringBuffer reallyList(Vector these)
+	public StringBuffer reallyList(Vector these)
 	{
 		return reallyList(these,-1,null);
 	}
-	public static StringBuffer reallyList(Vector these, Room likeRoom)
+	public StringBuffer reallyList(Vector these, Room likeRoom)
 	{
 		return reallyList(these,-1,likeRoom);
 	}
-	public static StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom)
+	public StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(these.size()==0) return lines;
@@ -69,14 +64,14 @@ public class Lister
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(INI.className(thisThang),24));
+				lines.append(Util.padRight(CMClass.className(thisThang),24));
 			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
-	
-	public static StringBuffer reallyList(Vector these, int ofType, Room likeRoom)
+
+	public StringBuffer reallyList(Vector these, int ofType, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(these.size()==0) return lines;
@@ -84,7 +79,7 @@ public class Lister
 		for(int i=0;i<these.size();i++)
 		{
 			Object thisThang=these.elementAt(i);
-			String thisOne=Util.id(thisThang);
+			String thisOne=CoffeeUtensils.id(thisThang);
 			boolean ok=true;
 			if(ofType>=0)
 			{
@@ -106,13 +101,13 @@ public class Lister
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(INI.className(thisThang),24));
+				lines.append(Util.padRight(CMClass.className(thisThang),24));
 			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
-	public static StringBuffer roomDetails(Vector these, Room likeRoom)
+	public StringBuffer roomDetails(Vector these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(these.size()==0) return lines;
@@ -128,64 +123,79 @@ public class Lister
 		lines.append("\n\r");
 		return lines;
 	}
-	public static void list(MOB mob, Vector commands)
+	public void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
 		{
 			mob.tell("List what?");
 			return;
 		}
-		
-		String listThis=CommandProcessor.combine(commands,0).toUpperCase();
-		
+
+		String listThis=Util.combine(commands,0).toUpperCase();
+
 		if("ITEMS".startsWith(listThis))
-			mob.tell(reallyList(MUD.items).toString());
+			mob.tell(reallyList(CMClass.items).toString());
 		else
 		if("ARMOR".startsWith(listThis))
-			mob.tell(reallyList(MUD.armor).toString());
+			mob.tell(reallyList(CMClass.armor).toString());
 		else
 		if("WEAPONS".startsWith(listThis))
-			mob.tell(reallyList(MUD.weapons).toString());
+			mob.tell(reallyList(CMClass.weapons).toString());
 		else
 		if("MOBS".startsWith(listThis))
-			mob.tell(reallyList(MUD.MOBs).toString());
+			mob.tell(reallyList(CMClass.MOBs).toString());
 		else
 		if("ROOMS".startsWith(listThis))
-			mob.tell(roomDetails(MUD.map,mob.location()).toString());
+			mob.tell(roomDetails(CMMap.map,mob.location()).toString());
 		else
 		if("AREA".startsWith(listThis))
-			mob.tell(reallyList(MUD.map,mob.location()).toString());
+			mob.tell(reallyList(CMMap.map,mob.location()).toString());
 		else
 		if("LOCALES".startsWith(listThis))
-			mob.tell(reallyList(MUD.locales).toString());
+			mob.tell(reallyList(CMClass.locales).toString());
 		else
 		if("BEHAVIORS".startsWith(listThis))
-			mob.tell(reallyList(MUD.behaviors).toString());
+			mob.tell(reallyList(CMClass.behaviors).toString());
 		else
 		if("EXITS".startsWith(listThis))
-			mob.tell(reallyList(MUD.exits).toString());
+			mob.tell(reallyList(CMClass.exits).toString());
 		else
 		if("RACES".startsWith(listThis))
-			mob.tell(reallyList(MUD.races).toString());
+			mob.tell(reallyList(CMClass.races).toString());
 		else
 		if("CLASSES".startsWith(listThis))
-			mob.tell(reallyList(MUD.charClasses).toString());
+			mob.tell(reallyList(CMClass.charClasses).toString());
 		else
 		if("SPELLS".startsWith(listThis))
-			mob.tell(reallyList(MUD.abilities,Ability.SPELL).toString());
+			mob.tell(reallyList(CMClass.abilities,Ability.SPELL).toString());
+		else
+		if("SONGS".startsWith(listThis))
+			mob.tell(reallyList(CMClass.abilities,Ability.SONG).toString());
+		else
+		if("PRAYERS".startsWith(listThis))
+			mob.tell(reallyList(CMClass.abilities,Ability.PRAYER).toString());
+		else
+		if("PROPERTIES".startsWith(listThis))
+			mob.tell(reallyList(CMClass.abilities,Ability.PROPERTY).toString());
+		else
+		if("THIEFSKILLS".startsWith(listThis))
+			mob.tell(reallyList(CMClass.abilities,Ability.THIEF_SKILL).toString());
 		else
 		if("SKILLS".startsWith(listThis))
-			mob.tell(reallyList(MUD.abilities,Ability.SKILL).toString());
+			mob.tell(reallyList(CMClass.abilities,Ability.SKILL).toString());
 		else
 		if("TICKS".startsWith(listThis))
-			mob.tell(ServiceEngine.listTicks().toString());
+			mob.tell(ExternalPlay.listTicks().toString());
 		else
 		if("MAGIC".startsWith(listThis))
-			mob.tell(reallyList(MUD.miscMagic).toString());
+			mob.tell(reallyList(CMClass.miscMagic).toString());
 		else
 		if("LOG".startsWith(listThis))
 			mob.tell(Log.getLog().toString());
 		else
-			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, BEHAVIORS, SKILLS, TICKS, LOG, or AREA.");
+		if("USERS".startsWith(listThis))
+			ExternalPlay.listUsers(mob);
+		else
+			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, or AREA.");
 	}
 }

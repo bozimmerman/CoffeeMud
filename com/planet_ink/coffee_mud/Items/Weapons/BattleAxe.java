@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class BattleAxe extends Sword
 {
@@ -23,7 +24,7 @@ public class BattleAxe extends Sword
 		weaponType=Weapon.TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_AXE;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new BattleAxe();

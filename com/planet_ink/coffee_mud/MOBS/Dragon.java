@@ -2,18 +2,8 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.Items.Weapons.DragonClaw;
-import com.planet_ink.coffee_mud.StdAffects.FullMsg;
-import com.planet_ink.coffee_mud.commands.TheFight;
-import com.planet_ink.coffee_mud.Locales.StdRoom;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Dragon extends StdMOB
 {
@@ -21,7 +11,7 @@ public class Dragon extends StdMOB
 	private int breatheDown=4;
 	private int swallowDown=5;
 	private int digestDown=4;
-	
+
 	private int birthColor=0;
 	private int birthAge=0;
 
@@ -54,7 +44,7 @@ public class Dragon extends StdMOB
 	// ===== Defined Value for holding the Dragon Type
 	private int DragonColor = WHITE;
 	private int DragonAge = VERYYOUNG;
-	private StdRoom Stomach = null;
+	private Room Stomach = null;
 
 	// ===== random constructor
 	public Dragon()
@@ -98,11 +88,15 @@ public class Dragon extends StdMOB
 		setDisplayText(getAgeDescription(DragonAge).toString() + " " + getColorDescription(DragonColor) + " Dragon watches you intently.");
 
 		// ===== arm him
-		DragonClaw ClawOne = new DragonClaw();
-		DragonClaw ClawTwo = new DragonClaw();
-		ClawOne.wear(Item.WIELD);
-		this.addInventory(ClawOne);
-		this.addInventory(ClawTwo);
+		Weapon ClawOne=(Weapon)CMClass.getWeapon("DragonClaw");
+		Weapon ClawTwo=(Weapon)CMClass.getWeapon("DragonClaw");
+		if(ClawOne!=null)
+		{
+			ClawOne.wearAt(Item.WIELD);
+			ClawTwo.wearAt(Item.WIELD);
+			this.addInventory(ClawOne);
+			this.addInventory(ClawTwo);
+		}
 
 		// ===== Set his defenses based upon his age as well
 		baseEnvStats().setArmor(20 - (DragonAge*15));
@@ -126,7 +120,7 @@ public class Dragon extends StdMOB
 			default:		PointMod = 3;	setAlignment(500);	break;
 		}
 
-		maxState.setHitPoints(((7+PointMod) * 10 * DragonAge));
+		baseState.setHitPoints(((7+PointMod) * 10 * DragonAge));
 		setMoney(1000 * DragonAge);
 		baseEnvStats().setWeight(1500 * DragonAge);
 
@@ -143,23 +137,28 @@ public class Dragon extends StdMOB
 		baseCharStats().setDexterity(13 + (DragonAge*2));
 		baseCharStats().setConstitution(13 + (DragonAge*2));
 		baseCharStats().setCharisma(13 + (DragonAge*2));
+		baseCharStats().setMyRace(CMClass.getRace("Dragon"));
 
 		// ===== if the dragon is an adult or larger add the swallow whole
 		Stomach=null;
 		if (baseEnvStats().level()>=ADULT)
 		{
 			//System.out.println("enabling swallow...");
-			Stomach = new StdRoom();
-			Stomach.setName("Dragon Stomach");
-			Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			Stomach = CMClass.getLocale("StdRoom");
+			if(Stomach!=null)
+			{
+				Stomach.setName("Dragon Stomach");
+				Stomach.setDescription("You are in the stomach of a dragon.  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			}
 		}
 
 		// ===== Recover from birth.
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	
+
 	// ===== public constructor
 	public Dragon(int colorValue, int ageValue)
 	{
@@ -236,7 +235,7 @@ public class Dragon extends StdMOB
 
 	public boolean tick(int tickID)
 	{
-		if((!amDead())&&(tickID==ServiceEngine.MOB_TICK))
+		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
 			if((baseEnvStats().level()!=this.birthAge)
 			||(baseEnvStats().ability()!=this.birthColor))
@@ -268,7 +267,7 @@ public class Dragon extends StdMOB
 	{
 		// ===== the text to post
 		MOB target = null;
-		int AffectCode = Affect.VISUAL_WNOISE;
+		int AffectCode = Affect.TYP_JUSTICE;
 		String msgText = "";
 
 		// ===== if we are following don't Breath, we might
@@ -284,50 +283,50 @@ public class Dragon extends StdMOB
 		{
 		case WHITE:
 			msgText = "The dragon breathes frost at <T-NAME>.";
-			AffectCode = Affect.STRIKE_COLD;
+			AffectCode = Affect.TYP_COLD;
 			break;
 		case BLACK:
 			msgText = "The dragon spits acid at <T-NAME>.";
-			AffectCode = Affect.STRIKE_ACID;
+			AffectCode = Affect.TYP_ACID;
 			break;
 		case BLUE:
 			msgText = "Lightning shoots forth from the dragons mouth striking <T-NAME>.";
-			AffectCode = Affect.STRIKE_ELECTRIC;
+			AffectCode = Affect.TYP_ELECTRIC;
 			break;
 		case GREEN:
 			msgText = "The dragon breathes a cloud of noxious vapors choking <T-NAME>.";
-			AffectCode = Affect.STRIKE_GAS;
+			AffectCode = Affect.TYP_GAS;
 			break;
 		case RED:
 			msgText = "The dragon torches <T-NAME> with fiery breath!.";
-			AffectCode = Affect.STRIKE_FIRE;
+			AffectCode = Affect.TYP_FIRE;
 			break;
 		case BRASS:
 			msgText = "The dragon cooks <T-NAME> with a blast of pure heat!.";
-			AffectCode = Affect.STRIKE_FIRE;
+			AffectCode = Affect.TYP_FIRE;
 			break;
 		case COPPER:
 			msgText = "The dragon spits acid at <T-NAME>.";
-			AffectCode = Affect.STRIKE_ACID;
+			AffectCode = Affect.TYP_ACID;
 			break;
 		case BRONZE:
 			msgText = "Lightning shoots forth from the dragons mouth striking <T-NAME>.";
-			AffectCode = Affect.STRIKE_ELECTRIC;
+			AffectCode = Affect.TYP_ELECTRIC;
 			break;
 		case SILVER:
 			msgText = "The dragon breathes frost at <T-NAME>.";
-			AffectCode = Affect.STRIKE_COLD;
+			AffectCode = Affect.TYP_COLD;
 			break;
 		case GOLD:
 			if ((int)Math.round(Math.random())==1)
 			{
 				msgText = "The dragon torches <T-NAME> with fiery breath!.";
-				AffectCode = Affect.STRIKE_FIRE;
+				AffectCode = Affect.TYP_FIRE;
 			}
 			else
 			{
 				msgText = "The dragon breathes a cloud of noxious vapors choking <T-NAME>.";
-				AffectCode = Affect.STRIKE_GAS;
+				AffectCode = Affect.TYP_GAS;
 			}
 			break;
 		default:
@@ -344,17 +343,19 @@ public class Dragon extends StdMOB
 				FullMsg Message = new FullMsg(this,
 											  target,
 											  null,
-											  AffectCode,
-											  AffectCode,
-											  Affect.VISUAL_WNOISE,
+											  Affect.MSK_MALICIOUS_MOVE|AffectCode,
+											  Affect.MSK_MALICIOUS_MOVE|AffectCode,
+											  Affect.MSG_NOISYMOVEMENT,
 											  msgText);
 				if (location().okAffect(Message))
 				{
 					location().send(this,Message);
-					if(Message.wasModified())
-						TheFight.doDamage(target,((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0))));
-					else
-						TheFight.doDamage(target,(short)Math.round(Math.random()*7)*DragonAge);
+					int damage=((short)Math.round(Util.div(Util.mul(Math.random(),7*DragonAge),2.0)));
+					if(!Message.wasModified())
+						damage=((short)Math.round(Math.random()*7)*DragonAge);
+					FullMsg msg=new FullMsg(this,target,null,Affect.NO_EFFECT,Affect.MASK_MALICIOUS+(damage),Affect.NO_EFFECT,null);
+					if(location().okAffect(msg))
+						location().send(this,msg);
 				}
 			}
 		}
@@ -364,7 +365,7 @@ public class Dragon extends StdMOB
 	protected boolean trySwallowWhole()
 	{
 		if(Stomach==null) return true;
-		if (Sense.canPerformAction(this)&&
+		if (Sense.aliveAwakeMobile(this,true)&&
 			(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
 		{
 			MOB TastyMorsel = getVictim();
@@ -383,15 +384,15 @@ public class Dragon extends StdMOB
 					FullMsg EatMsg=new FullMsg(this,
 											   TastyMorsel,
 											   null,
-											   Affect.TASTE_FOOD,
-											   Affect.STRIKE_JUSTICE,
-											   Affect.STRIKE_JUSTICE,
-											   "<S-NAME> swallowed <T-NAME> WHOLE!");
+											   Affect.MSG_EAT,
+											   Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,
+											   Affect.MSG_NOISYMOVEMENT,
+											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
 					if(this.location().okAffect(EatMsg))
 					{
 						this.location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);
-						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MOVE_ENTER,Stomach.description(),Affect.MOVE_ENTER,null,Affect.MOVE_ENTER,"<S-NAME> Slides down the gullet into the stomach!");
+						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> Slides down the gullet into the stomach!");
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -405,23 +406,19 @@ public class Dragon extends StdMOB
 		boolean retval = super.okAffect(affect);
 		MOB SourceMOB = affect.source();
 
-		if(affect.amITarget(this))
+		if((affect.amITarget(this))&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
 		{
-			if ((this.DragonAge*5)>=(Dice.rollPercentage()+1))
+			// ===== check for natural protections
+			switch (affect.targetMinor())
 			{
-				// ===== check for magic resistance
-				if((affect.targetCode()==Affect.STRIKE_MAGIC)||
-				   (affect.targetCode()==Affect.SOUND_MAGIC))
+			case Affect.TYP_CAST_SPELL:
+				if ((this.DragonAge*5)>=(Dice.rollPercentage()+1))
 				{
 					affect.source().tell("The Dragon resisted your spell!");
 					return false;
 				}
-			}
-
-			// ===== check for natural protections
-			switch (affect.targetCode())
-			{
-			case Affect.STRIKE_FIRE:
+				break;
+			case Affect.TYP_FIRE:
 				if (this.DragonColor==RED)
 				{
 					affect.source().tell("Red Dragons are immune to Fire!");
@@ -438,7 +435,7 @@ public class Dragon extends StdMOB
 					return false;
 				}
 				break;
-			case Affect.STRIKE_GAS:
+			case Affect.TYP_GAS:
 				if (this.DragonColor==GREEN)
 				{
 					affect.source().tell("Green Dragons are immune to gas attacks!");
@@ -450,7 +447,7 @@ public class Dragon extends StdMOB
 					return false;
 				}
 				break;
-			case Affect.STRIKE_ELECTRIC:
+			case Affect.TYP_ELECTRIC:
 				if (this.DragonColor==BLUE)
 				{
 					affect.source().tell("Blue Dragons are immune to Electrical attacks!");
@@ -462,7 +459,7 @@ public class Dragon extends StdMOB
 					return false;
 				}
 				break;
-			case Affect.STRIKE_COLD:
+			case Affect.TYP_COLD:
 				if (this.DragonColor==WHITE)
 				{
 					affect.source().tell("White Dragons are immune to cold attacks!");
@@ -474,7 +471,7 @@ public class Dragon extends StdMOB
 					return false;
 				}
 				break;
-			case Affect.STRIKE_ACID:
+			case Affect.TYP_ACID:
 				if (this.DragonColor==BLACK)
 				{
 					affect.source().tell("Black Dragons are immune to Acid!");
@@ -505,12 +502,11 @@ public class Dragon extends StdMOB
 				FullMsg DigestMsg=new FullMsg(this,
 										   TastyMorsel,
 										   null,
-										   Affect.STRIKE,
-										   Affect.STRIKE,
-										   Affect.STRIKE,
-										   "<S-NAME> Digests <T-NAME>!!");
+										   Affect.MSG_OK_ACTION,
+										   "<S-NAME> digest(s) <T-NAMESELF>!!");
 				Stomach.send(this,DigestMsg);
-				TheFight.doDamage(TastyMorsel,(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
+				int damage=((int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
+				ExternalPlay.postDamage(this,TastyMorsel,this,damage);
 			}
 		}
 		return true;

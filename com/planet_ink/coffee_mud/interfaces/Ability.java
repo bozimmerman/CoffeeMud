@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
 
-public interface Ability extends Environmental 
+public interface Ability  extends Environmental
 {
 	/** If it applies, the number of uses remaining
 	 * for this Ability */
@@ -10,37 +10,56 @@ public interface Ability extends Environmental
 	
 	public MOB invoker();
 	public Vector triggerStrings();
-	public boolean invoke(MOB mob, Vector commands);
-	public boolean invoke(MOB mob, Environmental target, boolean automatic);
+	public boolean invoke(MOB mob, Environmental target, boolean auto);
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto);
 	public boolean autoInvocation(MOB mob);
+	
+	public void makeNonUninvokable();
 	public void unInvoke();
 	public boolean canBeUninvoked();
+	public boolean isAnAutoEffect();
+	public boolean isBorrowed(Environmental toMe);
+	public void setBorrowed(Environmental toMe, boolean truefalse);
 	
-	public boolean canBeTaughtBy(MOB mob);
+	public boolean canBeTaughtBy(MOB teacher, MOB student);
 	public boolean canBePracticedBy(MOB teacher, MOB student);
 	public boolean canBeLearnedBy(MOB teacher, MOB student);
 	public void teach(MOB teacher, MOB student);
 	public void practice(MOB teacher, MOB student);
 	
+	public String accountForYourself();
+	
 	public boolean qualifies(MOB student);
 	public int qualifyingLevel(MOB student);
+	public boolean appropriateToMyAlignment(MOB mob);
 	
 	public void startTickDown(Environmental affected, long tickTime);
+	public void makeLongLasting();
 	
 	public int profficiency();
 	public void setProfficiency(int newProfficiency);
-	public boolean profficiencyCheck(int adjustment);
-	
+	public boolean profficiencyCheck(int adjustment, boolean auto);
+	public void helpProfficiency(MOB mob);
+
 	public Environmental affecting();
 	public void setAffectedOne(Environmental being);
 	
 	public int classificationCode();
 	public boolean putInCommandlist();
-	public boolean isMalicious();
+	public int quality();
 	
 	public static final int SKILL=0;
 	public static final int SPELL=1;
 	public static final int PRAYER=2;
 	public static final int SONG=3;
 	public static final int TRAP=4;
+	public static final int PROPERTY=5;
+	public static final int THIEF_SKILL=6;
+	
+	public static final int MALICIOUS=0;
+	public static final int INDIFFERENT=1;
+	public static final int OK_SELF=2;
+	public static final int OK_OTHERS=3;
+	public static final int BENEFICIAL_SELF=4;
+	public static final int BENEFICIAL_OTHERS=5;
 }

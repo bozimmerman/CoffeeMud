@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class LargeSack extends Container
+public class LargeSack extends StdContainer
 {
 	public LargeSack()
 	{
@@ -16,10 +16,10 @@ public class LargeSack extends Container
 		baseGoldValue=5;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new LargeSack();
 	}
-	
+
 }

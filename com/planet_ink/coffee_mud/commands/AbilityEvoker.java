@@ -1,17 +1,13 @@
 package com.planet_ink.coffee_mud.commands;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.commands.sysop.CreateEdit;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class AbilityEvoker
 {
-	private static boolean evokedBy(Ability thisAbility, String thisWord)
+	private boolean evokedBy(Ability thisAbility, String thisWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().size();i++)
 		{
@@ -21,7 +17,7 @@ public class AbilityEvoker
 		return false;
 	}
 
-	private static boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
+	private boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().size();i++)
 		{
@@ -34,7 +30,7 @@ public class AbilityEvoker
 		return false;
 	}
 
-	public static void evoke(MOB mob, Vector commands)
+	public void evoke(MOB mob, Vector commands)
 	{
 		String evokeWord=((String)commands.elementAt(0)).toUpperCase();
 
@@ -113,10 +109,10 @@ public class AbilityEvoker
 			mob.tell("You are not high enough level to do that.");
 			return;
 		}
-		evokableAbility.invoke(mob,commands);
+		evokableAbility.invoke(mob,commands,null,false);
 	}
 
-	public static void teach(MOB mob, Vector commands)
+	public void teach(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -135,14 +131,14 @@ public class AbilityEvoker
 		commands.removeElementAt(0);
 
 
-		String abilityName=CommandProcessor.combine(commands,0);
+		String abilityName=Util.combine(commands,0);
 		Ability myAbility=mob.fetchAbility(abilityName);
 		if(myAbility==null)
 		{
 			mob.tell("You don't seem to know "+abilityName+".");
 			return;
 		}
-		if(!myAbility.canBeTaughtBy(mob))
+		if(!myAbility.canBeTaughtBy(mob,student))
 			return;
 		if(!myAbility.canBeLearnedBy(mob,student))
 			return;
@@ -151,34 +147,51 @@ public class AbilityEvoker
 			mob.tell(student.name()+" already knows how to do that.");
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,student,null,Affect.SOUND_WORDS,Affect.SOUND_WORDS,Affect.SOUND_WORDS,null);
+		FullMsg msg=new FullMsg(mob,student,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(msg))
 			return;
-		msg=new FullMsg(mob,student,null,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,"<S-NAME> teach(es) <T-NAME> '"+myAbility.name()+"'.");
+		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
 		if(!mob.location().okAffect(msg))
 			return;
 		myAbility.teach(mob,student);
 		mob.location().send(mob,msg);
 	}
 
-	public static void practice(MOB mob, Vector commands)
+	public void practice(MOB mob, Vector commands)
 	{
-		if(commands.size()<3)
+		if(commands.size()<2)
 		{
-			mob.tell("Practice what, with whom?");
+			mob.tell("Practice what?");
 			return;
 		}
 		commands.removeElementAt(0);
 
-		MOB teacher=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+		MOB teacher=null;
+		if(commands.size()>1)
+		{
+			teacher=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			if(teacher!=null) commands.removeElementAt(commands.size()-1);
+		}
+
+		String abilityName=Util.combine(commands,0);
+
+		if(teacher==null)
+		for(int i=0;i<mob.location().numInhabitants();i++)
+		{
+			MOB possTeach=mob.location().fetchInhabitant(i);
+			if((possTeach.fetchAbility(abilityName)!=null)&&(possTeach!=mob))
+			{
+				teacher=possTeach;
+				break;
+			}
+		}
+
 		if((teacher==null)||((teacher!=null)&&(!Sense.canBeSeenBy(teacher,mob))))
 		{
 			mob.tell("That person doesn't seem to be here.");
 			return;
 		}
-		commands.removeElementAt(commands.size()-1);
 
-		String abilityName=CommandProcessor.combine(commands,0);
 		Ability myAbility=mob.fetchAbility(abilityName);
 		if(myAbility==null)
 		{
@@ -193,15 +206,14 @@ public class AbilityEvoker
 			return;
 		}
 
-		if(!teacherAbility.canBeTaughtBy(teacher))
+		if(!teacherAbility.canBeTaughtBy(teacher,mob))
 			return;
 		if(!teacherAbility.canBePracticedBy(teacher,mob))
 			return;
-
-		FullMsg msg=new FullMsg(teacher,mob,null,Affect.SOUND_WORDS,Affect.SOUND_WORDS,Affect.SOUND_WORDS,null);
+		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(msg))
 			return;
-		msg=new FullMsg(teacher,mob,null,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,"<S-NAME> practices '"+myAbility.name()+"' with <T-NAME>.");
+		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> practice(s) '"+myAbility.name()+"' with <T-NAMESELF>.");
 		if(!mob.location().okAffect(msg))
 			return;
 		teacherAbility.practice(teacher,mob);

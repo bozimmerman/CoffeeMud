@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Stiletto extends Dagger
 {
@@ -20,7 +21,7 @@ public class Stiletto extends Dagger
 		recoverEnvStats();
 		weaponType=TYPE_PIERCING;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Stiletto();

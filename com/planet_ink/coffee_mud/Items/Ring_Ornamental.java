@@ -2,8 +2,8 @@ package com.planet_ink.coffee_mud.Items;
 
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class Ring_Ornamental extends Ring
@@ -26,7 +26,7 @@ public class Ring_Ornamental extends Ring
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		
+
 		Random randomizer = new Random(System.currentTimeMillis());
 		int ringType = Math.abs(randomizer.nextInt() % 11);
 
@@ -38,7 +38,7 @@ public class Ring_Ornamental extends Ring
 	{
 		return new Ring_Ornamental();
 	}
-	
+
 	public void setItemDescription(int level)
 	{
 		switch(level)
@@ -67,7 +67,7 @@ public class Ring_Ornamental extends Ring
 				description="It is a fancy gold ring with a diamond inset.";
 				baseGoldValue=1000;
 				break;
-			case GOLD_RING:	
+			case GOLD_RING:
 				name="a gold ring";
 				displayText="a golden ring is on the ground.";
 				description="It is a simple gold ";

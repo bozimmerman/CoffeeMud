@@ -2,15 +2,8 @@ package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Cleric extends StdCharClass
 {
@@ -20,7 +13,7 @@ public class Cleric extends StdCharClass
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		maxHitPointsPerLevel=16;
 		maxStat[CharStats.WISDOM]=25;
-		bonusPracLevel=4;
+		bonusPracLevel=2;
 		manaMultiplier=15;
 		attackAttribute=CharStats.WISDOM;
 		bonusAttackLevel=1;
@@ -41,76 +34,80 @@ public class Cleric extends StdCharClass
 	}
 
 
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		switch(affect.sourceCode())
+		if(!super.okAffect(myChar, affect))
+			return false;
+
+		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
 		{
-		case Affect.STRIKE_HANDS:
-			Item I=affect.source().fetchWieldedItem();
+			Item I=myChar.fetchWieldedItem();
 			if((I!=null)&&(I instanceof Weapon))
 			{
-				int classification=((Weapon)I).weaponClassification;
-				if(affect.source().getAlignment()<350)
+				int classification=((Weapon)I).weaponClassification();
+				if(myChar.getAlignment()<350)
 				{
 					if((classification==Weapon.CLASS_POLEARM)
 					||(classification==Weapon.CLASS_SWORD)
 					||(classification==Weapon.CLASS_AXE)
+					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_EDGED))
-						break;
+						return true;
 				}
 				else
-				if(affect.source().getAlignment()<650)
+				if(myChar.getAlignment()<650)
 				{
 					if((classification==Weapon.CLASS_BLUNT)
 					||(classification==Weapon.CLASS_RANGED)
+					||(classification==Weapon.CLASS_STAFF)
+					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_SWORD))
-						break;
+						return true;
 				}
 				else
 				{
 					if((classification==Weapon.CLASS_BLUNT)
 					||(classification==Weapon.CLASS_FLAILED)
+					||(classification==Weapon.CLASS_STAFF)
 					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_HAMMER))
-						break;
+						return true;
 				}
-				if(Dice.rollPercentage()<affect.source().charStats().getWisdom()*2)
+				if(Dice.rollPercentage()>myChar.charStats().getWisdom()*4)
 				{
-					affect.source().location().show(affect.source(),null,Affect.VISUAL_WNOISE,"During a conflict of <S-HIS-HER> conscience, <S-NAME> fumble(s) horribly with "+I.name()+".");
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"During a conflict of <S-HIS-HER> conscience, <S-NAME> fumble(s) horribly with "+I.name()+".");
 					return false;
 				}
 			}
-			break;
-		default:
-			break;
 		}
-		return super.okAffect(affect);
+		return true;
 	}
 
-	public void newCharacter(MOB mob)
+	public void newCharacter(MOB mob, boolean isBorrowedClass)
 	{
-		super.newCharacter(mob);
-		giveMobAbility(mob,new Cleric_Turn());
-		for(int a=0;a<MUD.abilities.size();a++)
+		super.newCharacter(mob, isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Cleric_Turn"), isBorrowedClass);
+		for(int a=0;a<CMClass.abilities.size();a++)
 		{
-			Ability A=(Ability)MUD.abilities.elementAt(a);
-			if((A.qualifyingLevel(mob)>0)&&(A instanceof Prayer))
-				giveMobAbility(mob,A);
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((A.qualifyingLevel(mob)>0)&&(A.classificationCode()==Ability.PRAYER))
+				giveMobAbility(mob,A, isBorrowedClass);
 		}
 		if(!mob.isMonster())
-		{
-			Mace s=new Mace();
-			s.wear(Item.WIELD);
-			mob.addInventory(s);
-			Random randomizer = new Random(System.currentTimeMillis());
-			int money = 0;
-			for (int i = 0; i < 3; i++)
-				money += Math.abs(randomizer.nextInt() % 6) + 1;
-			money *= 10;
-			mob.setMoney(money);
-		}
+			outfit(mob);
 	}
 
+	public void outfit(MOB mob)
+	{
+		Weapon w=(Weapon)CMClass.getWeapon("SmallMace");
+		if(mob.fetchInventory(w.ID())==null)
+		{
+			mob.addInventory(w);
+			if(!mob.amWearingSomethingHere(Item.WIELD))
+				w.wearAt(Item.WIELD);
+		}
+	}
 	public void level(MOB mob)
 	{
 		super.level(mob);

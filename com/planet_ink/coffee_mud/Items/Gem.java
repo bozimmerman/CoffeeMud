@@ -2,8 +2,8 @@ package com.planet_ink.coffee_mud.Items;
 
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class Gem extends StdItem
@@ -26,7 +26,7 @@ public class Gem extends StdItem
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		
+
 		Random randomizer = new Random(System.currentTimeMillis());
 		int ringType = Math.abs(randomizer.nextInt() % 12);
 
@@ -38,7 +38,7 @@ public class Gem extends StdItem
 	{
 		return new Gem();
 	}
-	
+
 	public void setItemDescription(int level)
 	{
 		switch(level)
@@ -67,7 +67,7 @@ public class Gem extends StdItem
 				description="Finely cut and sparkling.";
 				baseGoldValue=5000;
 				break;
-			case QUARTZ:	
+			case QUARTZ:
 				name="a piece of quartz";
 				displayText="a piece of quartz lies here.";
 				description="It is a glasslike stone, gorgeous to the eye.";

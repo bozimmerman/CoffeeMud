@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 public class EternityQuarterstaff extends Quarterstaff
@@ -25,7 +25,7 @@ public class EternityQuarterstaff extends Quarterstaff
 		wornLogicalAnd=true;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		weaponType=TYPE_BASHING;
-		weaponClassification=Weapon.CLASS_BLUNT;
+		weaponClassification=Weapon.CLASS_STAFF;
 		recoverEnvStats();
 
 	}
@@ -38,9 +38,9 @@ public class EternityQuarterstaff extends Quarterstaff
 	public void affect(Affect affect)
 	{
 		MOB mob=affect.source();
-		switch(affect.sourceCode())
+		switch(affect.sourceMinor())
 		{
-		case Affect.SOUND_WORDS:
+		case Affect.TYP_SPEAK:
 			if((mob.isMine(this))
 			   &&(!amWearingAt(Item.INVENTORY))
 			   &&(affect.target() instanceof MOB)
@@ -53,7 +53,7 @@ public class EternityQuarterstaff extends Quarterstaff
 					if(usesRemaining()>0)
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						FullMsg msg=new FullMsg(mob,target,this,Affect.SOUND_MAGIC,Affect.SOUND_MAGIC,Affect.SOUND_MAGIC,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAME>, and delivers a healing beam of light.");
+						FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
 						if(mob.location().okAffect(msg))
 						{
 		   					int healing=1+(int)Math.round(Util.div(envStats().level(),10.0));
@@ -71,6 +71,4 @@ public class EternityQuarterstaff extends Quarterstaff
 		}
 		super.affect(affect);
 	}
-
-
 }

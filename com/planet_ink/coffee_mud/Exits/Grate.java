@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Exits;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 
 public class Grate extends StdClosedDoorway
@@ -21,5 +22,5 @@ public class Grate extends StdClosedDoorway
 	{
 		return new Grate();
 	}
-	
+
 }

@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class MichaelsMithrilChain extends Armor
+public class MichaelsMithrilChain extends StdArmor
 {
 	public MichaelsMithrilChain()
 	{
@@ -30,12 +30,12 @@ public class MichaelsMithrilChain extends Armor
 			return true;
 
 		MOB mob=(MOB)affect.target();
-		if((affect.targetCode()==affect.STRIKE_ELECTRIC)
+		if((affect.targetMinor()==affect.TYP_ELECTRIC)
 		&&(!this.amWearingAt(Item.INVENTORY))
 		&&(!this.amWearingAt(Item.HELD))
 		&&(mob.isMine(this)))
 		{
-			mob.location().show(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> appear(s) to be unaffected.");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> appear(s) to be unaffected.");
 			return false;
 		}
 		return true;

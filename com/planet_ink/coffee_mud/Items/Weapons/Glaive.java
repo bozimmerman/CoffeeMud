@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Glaive extends Weapon
+public class Glaive extends StdWeapon
 {
 	public Glaive()
 	{
@@ -24,7 +25,7 @@ public class Glaive extends Weapon
 		weaponClassification=Weapon.CLASS_POLEARM;
 	}
 
-	
+
 	public Environmental newInstance()
 	{
 		return new Glaive();

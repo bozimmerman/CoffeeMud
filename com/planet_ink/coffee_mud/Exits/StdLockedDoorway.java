@@ -1,8 +1,7 @@
 package com.planet_ink.coffee_mud.Exits;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class StdLockedDoorway extends StdExit

@@ -1,19 +1,10 @@
 package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.Abilities.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.service.*;
+import com.planet_ink.coffee_mud.common.*;
+
 public class GiantScorpion extends StdMOB
 {
 
@@ -44,11 +35,12 @@ public class GiantScorpion extends StdMOB
 		baseEnvStats().setLevel(5);
 		baseEnvStats().setArmor(30);
 
-		maxState.setHitPoints((Math.abs(randomizer.nextInt() % 18)*baseEnvStats().level()) + 9);
+		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 18)*baseEnvStats().level()) + 9);
 
-        addBehavior(new Mobile());
+        addBehavior(CMClass.getBehavior("Mobile"));
 
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
@@ -60,7 +52,7 @@ public class GiantScorpion extends StdMOB
 	public boolean tick(int tickID)
 	{
 		// ===== are we in combat?
-		if((!amDead())&&(tickID==ServiceEngine.MOB_TICK))
+		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
 			if((--stingDown)<=0)
 			{
@@ -74,7 +66,7 @@ public class GiantScorpion extends StdMOB
 
 	protected boolean sting()
 	{
-		if (Sense.canPerformAction(this)&&
+		if (Sense.aliveAwakeMobile(this,true)&&
 			(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
 		{
 			MOB target = getVictim();
@@ -85,11 +77,17 @@ public class GiantScorpion extends StdMOB
 			if (roll<20)
 			{
                 // Sting was successful
- 				FullMsg msg=new FullMsg(this, target, null, Affect.STRIKE, Affect.STRIKE, Affect.STRIKE, "<S-NAME> stings <T-NAME>");
-				this.location().send(target,msg);
-                Poison poison = new Poison();
-                poison.baseEnvStats().setLevel(baseEnvStats().level());
-                poison.invoke(this, target, true);
+ 				FullMsg msg=new FullMsg(this, target, null, Affect.MSK_MALICIOUS_MOVE|Affect.TYP_POISON, "<S-NAME> sting(s) <T-NAMESELF>");
+				if(location().okAffect(msg))
+				{
+					this.location().send(target,msg);
+					if(!msg.wasModified())
+					{
+						Ability poison = CMClass.getAbility("Poison");
+						poison.baseEnvStats().setLevel(baseEnvStats().level());
+						poison.invoke(this, target, true);
+					}
+				}
 			}
 		}
 		return true;

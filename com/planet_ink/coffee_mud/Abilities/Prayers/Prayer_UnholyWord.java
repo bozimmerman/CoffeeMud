@@ -1,0 +1,146 @@
+package com.planet_ink.coffee_mud.Abilities.Prayers;
+
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Prayer_UnholyWord extends Prayer
+{
+	public Prayer_UnholyWord()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Unholy Word";
+		displayText="(Unholy Word)";
+		baseEnvStats().setLevel(23);
+		holyQuality=Prayer.HOLY_EVIL;
+
+		addQualifyingClass("Cleric",baseEnvStats().level());
+		addQualifyingClass("Paladin",baseEnvStats().level()+4);
+		recoverEnvStats();
+	}
+
+	public Environmental newInstance()
+	{
+		return new Prayer_UnholyWord();
+	}
+
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		if(affected==null) return;
+		if(!(affected instanceof MOB)) return;
+		MOB mob=(MOB)affected;
+
+		if(mob==invoker) return;
+
+		if(mob.getAlignment()<350)
+		{
+			affectableStats.setArmor((affectableStats.armor()-30)-(mob.envStats().level()*3));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20+(mob.envStats().level()*2));
+		}
+		else
+		if(mob.getAlignment()>650)
+		{
+			affectableStats.setArmor((affectableStats.armor()+30)+(mob.envStats().level()*3));
+			affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-20)-(mob.envStats().level()*2));
+		}
+	}
+
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+
+		super.unInvoke();
+
+		mob.tell("The unholy word has been spoken.");
+	}
+
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		boolean success=profficiencyCheck(0,auto);
+		String str=auto?"The unholy word is spoken.":"<S-NAME> speak(s) the unholy word of <S-HIS-HER> god to <T-NAMESELF>.";
+		String missStr="<S-NAME> speak(s) the unholy word of <S-HIS-HER> god, but nothing happens.";
+
+		for(int i=0;i<mob.location().numInhabitants();i++)
+		{
+			MOB target=mob.location().fetchInhabitant(i);
+			affectType=Affect.MSG_CAST_VERBAL_SPELL;
+			if(auto) affectType=affectType|Affect.ACT_GENERAL;
+			if(target.getAlignment()>650)
+				affectType=affectType|Affect.MASK_MALICIOUS;
+
+			if(success)
+			{
+				// it worked, so build a copy of this ability,
+				// and add it to the affects list of the
+				// affected MOB.  Then tell everyone else
+				// what happened.
+				FullMsg msg=new FullMsg(mob,target,this,affectType,str);
+				if(mob.location().okAffect(msg))
+				{
+					mob.location().send(mob,msg);
+					if(!msg.wasModified())
+					{
+						if(Sense.canBeHeardBy(mob,target))
+						{
+							beneficialAffect(mob,target,0);
+							int a=0;
+							while(a<target.numAffects())
+							{
+								Ability A=target.fetchAffect(a);
+								int b=target.numAffects();
+								if(A instanceof Prayer_Bless)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_Sanctuary)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_HolyAura)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_HolyWord)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_Curse)
+									A.unInvoke();
+								else
+								if(A instanceof Prayer_GreatCurse)
+									A.unInvoke();
+								if(b==target.numAffects())
+									a++;
+							}
+							target.recoverEnvStats();
+						}
+						else
+						if(Util.bset(affectType,Affect.MASK_MALICIOUS))
+							maliciousFizzle(mob,target,"<T-NAME> did not hear the unholy word!");
+						else
+							beneficialWordsFizzle(mob,target,"<T-NAME> did not hear the unholy word!");
+					}
+				}
+			}
+			else
+			{
+				if(Util.bset(affectType,Affect.MASK_MALICIOUS))
+					maliciousFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");
+				else
+					beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to speak the unholy word to <T-NAMESELF>, but flub(s) it.");
+				missStr=null;
+				return false;
+			}
+		}
+
+
+		// return whether it worked
+		return success;
+	}
+}

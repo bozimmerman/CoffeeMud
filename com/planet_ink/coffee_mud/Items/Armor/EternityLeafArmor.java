@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class EternityLeafArmor extends Armor
+public class EternityLeafArmor extends StdArmor
 {
 	public EternityLeafArmor()
 	{
@@ -23,13 +23,13 @@ public class EternityLeafArmor extends Armor
 		material=Armor.CLOTH;
 	}
 
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if((!this.amWearingAt(Item.INVENTORY))&&(!this.amWearingAt(Item.HELD)))
 			affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SNEAKING);
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new EternityLeafArmor();

@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Items;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class QuestPoint extends StdItem
@@ -11,7 +11,7 @@ public class QuestPoint extends StdItem
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a quest point";
-		displayText="someone has left a quest point here";
+		displayText="A shiny blue coin has been left here.";
 		myLocation=null;
 		description="A shiny blue coin with magical script around the edges.";
 		myUses=Integer.MAX_VALUE;
@@ -26,15 +26,15 @@ public class QuestPoint extends StdItem
 	{
 		return new QuestPoint();
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.HANDS_GET:
+			case Affect.TYP_GET:
 				{
 				setLocation(null);
 				destroyThis();

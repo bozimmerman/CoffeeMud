@@ -2,16 +2,8 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Behaviors.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 public class FireGiant extends StdMOB
 {
 
@@ -31,6 +23,7 @@ public class FireGiant extends StdMOB
 		baseCharStats().setIntelligence(8 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStrength(20);
 		baseCharStats().setDexterity(13);
+		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 
 		baseEnvStats().setDamage(20);
 		baseEnvStats().setSpeed(1.0);
@@ -38,11 +31,12 @@ public class FireGiant extends StdMOB
 		baseEnvStats().setLevel(15);
 		baseEnvStats().setArmor(-10);
 
-		maxState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 17);
+		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 17);
 
-		addBehavior(new Aggressive());
+		addBehavior(CMClass.getBehavior("Aggressive"));
 
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
@@ -56,10 +50,10 @@ public class FireGiant extends StdMOB
 			return true;
 
 		MOB mob=(MOB)affect.target();
-		if((affect.targetCode()==affect.STRIKE_FIRE)
+		if((affect.targetMinor()==affect.TYP_FIRE)
 		&&(mob.isMine(this)))
 		{
-			mob.location().show(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> appear(s) to be unaffected.");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> appear(s) to be unaffected.");
 			return false;
 		}
 		return true;

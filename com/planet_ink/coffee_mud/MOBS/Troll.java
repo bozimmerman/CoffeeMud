@@ -2,17 +2,8 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.Locales.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Troll extends StdMOB
 {
@@ -34,6 +25,7 @@ public class Troll extends StdMOB
 
 		baseCharStats().setIntelligence(8 + Math.abs(randomizer.nextInt()) % 3);
 		baseCharStats().setCharisma(2);
+		baseCharStats().setMyRace(CMClass.getRace("Troll"));
 
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(8);
@@ -48,9 +40,10 @@ public class Troll extends StdMOB
 			hitPoints += Math.abs(randomizer.nextInt()) % 10 + 1;
 		hitPoints+=6;
 
-		maxState.setHitPoints(hitPoints);
+		baseState.setHitPoints(hitPoints);
 
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
@@ -61,7 +54,7 @@ public class Troll extends StdMOB
 
 	public boolean tick(int tickID)
 	{
-		if((!amDead())&&(tickID==ServiceEngine.MOB_TICK))
+		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
 			if((--regDown)<=0)
 			{
@@ -75,15 +68,13 @@ public class Troll extends StdMOB
 	protected boolean regenerate()
 	{
 		Room target = null;
-		int AffectCode = Affect.VISUAL_WNOISE;
-
 		target = location();
 
 		if(curState.getHitPoints() < maxState.getHitPoints())
 		{
 			String msgText = "The troll regenerates wounds";
 
-			FullMsg message = new FullMsg(this, target, null, AffectCode, Affect.VISUAL_WNOISE, Affect.VISUAL_WNOISE, msgText);
+			FullMsg message = new FullMsg(this, target, null, Affect.MSG_OK_ACTION, msgText);
 
 			target.send(this, message);
 

@@ -2,15 +2,8 @@ package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Bard extends StdCharClass
 {
@@ -20,36 +13,37 @@ public class Bard extends StdCharClass
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		maxHitPointsPerLevel=18;
 		maxStat[CharStats.CHARISMA]=25;
-		bonusPracLevel=2;
+		bonusPracLevel=1;
 		manaMultiplier=8;
 		attackAttribute=CharStats.DEXTERITY;
 		damageBonusPerLevel=0;
 		bonusAttackLevel=1;
 		name=myID;
 	}
-	
+
 	public boolean playerSelectable()
 	{
 		return true;
 	}
-	
+
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getCharisma() <= 8)
 			return false;
 		if(mob.baseCharStats().getDexterity() <= 8)
 			return false;
-		if(!(mob.charStats().getMyRace() instanceof Human) && !(mob.charStats().getMyRace() instanceof HalfElf))
+		if(!(mob.charStats().getMyRace().ID().equals("Human"))
+		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
 			return(false);
-			
+
 		return true;
 	}
-	
-	public void newCharacter(MOB mob)
+
+	public void newCharacter(MOB mob, boolean isBorrowedClass)
 	{
-		super.newCharacter(mob);
-		
-		
+		super.newCharacter(mob, isBorrowedClass);
+
+
 		Hashtable extras=new Hashtable();
 		int q=-1;
 		for(int r=0;r<7;r++)
@@ -64,41 +58,47 @@ public class Bard extends StdCharClass
 					q=-1;
 			}
 		}
-		
-		for(int a=0;a<MUD.abilities.size();a++)
+
+		for(int a=0;a<CMClass.abilities.size();a++)
 		{
-			Ability A=(Ability)MUD.abilities.elementAt(a);
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if(A.qualifyingLevel(mob)>=0)
 			{
-				if(A instanceof ThiefSkill)
-					giveMobAbility(mob,A);
+				if(A.classificationCode()==Ability.THIEF_SKILL)
+					giveMobAbility(mob,A, isBorrowedClass);
 				else
-				if(A instanceof Song)
+				if(A.classificationCode()==Ability.SONG)
 				{
 					if((A.qualifyingLevel(mob)<5)&&(A.qualifyingLevel(mob)>=1))
-						giveMobAbility(mob,A);
+						giveMobAbility(mob,A, isBorrowedClass);
 					else
 					if(extras.get(new Integer(A.qualifyingLevel(mob)))!=null)
-						giveMobAbility(mob,A);
+						giveMobAbility(mob,A, isBorrowedClass);
 				}
 			}
 		}
 		if(!mob.isMonster())
+			outfit(mob);
+	}
+
+
+	public void outfit(MOB mob)
+	{
+		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+		if(mob.fetchInventory(w.ID())==null)
 		{
-			Shortsword s=new Shortsword();
-			s.wear(Item.WIELD);
-			mob.addInventory(s);
+			mob.addInventory(w);
+			if(!mob.amWearingSomethingHere(Item.WIELD))
+				w.wearAt(Item.WIELD);
 		}
 	}
-	
-	
-	public boolean okAffect(Affect affect)
+	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		if(!new Thief().okAffect(affect))
+		if(!new Thief().okAffect(myChar, affect))
 			return false;
-		return super.okAffect(affect);
+		return super.okAffect(myChar, affect);
 	}
-	
+
 	public void level(MOB mob)
 	{
 		super.level(mob);

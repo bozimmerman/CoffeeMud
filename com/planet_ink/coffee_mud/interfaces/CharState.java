@@ -1,188 +1,33 @@
 package com.planet_ink.coffee_mud.interfaces;
-import com.planet_ink.coffee_mud.utils.*;
-public class CharState implements Cloneable
+public interface CharState extends Cloneable
 {
 	public final static int ANNOYANCE_DEFAULT_TICKS=30;
 	public final static int ADJUST_FACTOR=4;
 	
-	protected int HitPoints=10;
-	protected int Mana=100;
-	protected int Movement=50;
-	protected int Hunger=1000;
-	protected int Thirst=500;
+	public int getHitPoints();
+	public void setHitPoints(int newVal);
+	public boolean adjHitPoints(int byThisMuch, CharState max);
 	
-	protected int botherCycle=0;
+	public int getHunger();
+	public void setHunger(int newVal);
+	public boolean adjHunger(int byThisMuch, CharState max);
 	
-	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
-							 
-	public int getHitPoints(){return HitPoints;}
-	public void setHitPoints(int newVal){HitPoints=newVal;}
-	public boolean adjHitPoints(int byThisMuch, CharState max)
-	{
-		HitPoints+=byThisMuch;
-		if(HitPoints<1)
-		{
-			HitPoints=0;
-			return false;
-		}
-		if(HitPoints>max.getHitPoints())
-		{
-			HitPoints=max.getHitPoints();
-			return false;
-		}
-		return true;
-	}
-	public int getHunger(){return Hunger;}
-	public void setHunger(int newVal){Hunger=newVal;}
-	public boolean adjHunger(int byThisMuch, CharState max)
-	{
-		Hunger+=byThisMuch;
-		if(Hunger<0)
-		{
-			Hunger=0;
-			return false;
-		}
-		if(Hunger>max.getHunger())
-		{
-			Hunger=max.getHunger();
-			return false;
-		}
-		return true;
-	}
-	public int getThirst(){return Thirst;}
-	public void setThirst(int newVal){Thirst=newVal;}
-	public boolean adjThirst(int byThisMuch, CharState max)
-	{
-		Thirst+=byThisMuch;
-		if(Thirst<0)
-		{
-			Thirst=0;
-			return false;
-		}
-		if(Thirst>max.getThirst())
-		{
-			Thirst=max.getThirst();
-			return false;
-		}
-		return true;
-	}
-	public int getMana(){return Mana;}
-	public void setMana(int newVal){ Mana=newVal;}
-	public boolean adjMana(int byThisMuch, CharState max)
-	{
-		Mana+=byThisMuch;
-		if(Mana<0)
-		{
-			Mana=0;
-			return false;
-		}
-		if(Mana>max.getMana())
-		{
-			Mana=max.getMana();
-			return false;
-		}
-		return true;
-	}
-	public int getMovement(){return Movement;}
-	public void setMovement(int newVal){ Movement=newVal;}
-	public boolean adjMovement(int byThisMuch, CharState max)
-	{
-		Movement+=byThisMuch;
-		if(Movement<0)
-		{
-			Movement=0;
-			return false;
-		}
-		if(Movement>max.getMovement())
-		{
-			Movement=max.getMovement();
-			return false;
-		}
-		return true;
-	}
+	public int getThirst();
+	public void setThirst(int newVal);
+	public boolean adjThirst(int byThisMuch, CharState max);
 	
-	public void adjState(MOB mob, CharState maxState)
-	{
-		if(++botherCycle<ADJUST_FACTOR)
-			return;
-		
-		botherCycle=0;
-		
-		double con=new Integer(mob.charStats().getConstitution()).doubleValue();
-		double man=new Integer((mob.charStats().getIntelligence()+mob.charStats().getWisdom())).doubleValue();
-		double str=new Integer(mob.charStats().getStrength()).doubleValue();
-		int lvl=mob.envStats().level();
-		int lvlby2=(int)Math.round(Util.div(lvl,2.0));
-		
-		if(Sense.isSleeping(mob))
-		{
-			adjHitPoints((int)Math.round(con*.2)+1,maxState);
-			adjMana((int)Math.round((man*.2)+lvl),maxState);
-			adjMovement((int)Math.round(str),maxState);
-		}
-		else
-		if(Sense.isSitting(mob))
-		{
-			adjHitPoints((int)Math.round(con*.1)+1,maxState);
-			adjMana((int)Math.round((man*.1)+lvlby2),maxState);
-			adjMovement((int)Math.round(str*.5),maxState);
-		}
-		else
-		if(Sense.isFlying(mob))
-		{
-			adjHitPoints((int)Math.round(con*.1)+1,maxState);
-			adjMana((int)Math.round(man*.1)+lvlby2,maxState);
-			adjMovement((int)Math.round(str*.4),maxState);
-		}
-		else
-		if(Sense.isSwimming(mob))
-		{
-			adjHitPoints((int)Math.round(con*.05)+1,maxState);
-			adjMana((int)Math.round(man*.1)+lvlby2,maxState);
-			adjMovement((int)Math.round(str*.2)+1,maxState);
-		}
-		else
-		if(!mob.isInCombat())
-		{
-			adjHitPoints((int)Math.round((con*.05)+.05),maxState);
-			adjMana((int)Math.round(man*.1)+lvlby2,maxState);
-			adjMovement((int)Math.round(str*.3)+1,maxState);
-		}
-	}
+	public int getMana();
+	public void setMana(int newVal);
+	public boolean adjMana(int byThisMuch, CharState max);
 	
-	public void expendEnergy(MOB mob, CharState maxState, boolean moving)
-	{
-		if((!mob.isMonster())&&(mob.location()!=null))
-		{
-			if(moving)
-				adjMovement(-mob.location().pointsPerMove(),maxState);
-			
-			boolean annoy=adjThirst(-1,maxState)||adjHunger(-1,maxState);
-			if(annoy)
-			{
-				if((--annoyanceTicker)<=0)
-				{
-					annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
-					if(getThirst()<=0)
-						mob.tell("You are thirsty.");
-					if(getHunger()<=0)
-						mob.tell("You are hungry.");
-				}
-			}
-		}
-	}
+	public int getMovement();
+	public void setMovement(int newVal);
+	public boolean adjMovement(int byThisMuch, CharState max);
 	
+	public void adjState(MOB mob, CharState maxState);
+	
+	public void expendEnergy(MOB mob, CharState maxState, boolean moving);
 	
 	// create a new one of these
-	public CharState cloneCharState()
-	{
-		try
-		{
-			return (CharState) this.clone();
-		}
-		catch(CloneNotSupportedException e)
-		{
-			return new CharState();
-		}
-	}	
+	public CharState cloneCharState();
 }

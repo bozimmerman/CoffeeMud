@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class DragonClaw extends Natural
 {
@@ -20,7 +21,7 @@ public class DragonClaw extends Natural
 		weaponType=TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new DragonClaw();

@@ -7,23 +7,28 @@ public interface Race
 	public boolean playerSelectable();
 	public void newCharacter(MOB mob);
 	public void setWeight(MOB mob);
+	public void outfit(MOB mob);
 	
+	public String arriveStr();
+	public String leaveStr();
+
 	/** some general statistics about such an item
-	 * see class "Stats" for more information. */
-	public void affectEnvStats(Environmental affected, Stats affectableStats);
+	 * see class "EnvStats" for more information. */
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats);
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats);
-	
-	
+
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
 	 * from the given Environmental source */
-	public void affect(Affect affect);
-	
+	public void affect(MOB myChar, Affect affect);
+
 	/** this method is used to tell the system whether
 	 * a PENDING affect may take place
 	 */
-	public boolean okAffect(Affect affect);
-	
+	public boolean okAffect(MOB myChar, Affect affect);
+
 	public void level(MOB mob);
+
 }

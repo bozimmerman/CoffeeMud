@@ -1,0 +1,128 @@
+package com.planet_ink.coffee_mud.Items;
+
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class StdDrink extends StdContainer implements Drink
+{
+
+	protected int amountOfThirstQuenched=50;
+	protected int amountOfLiquidHeld=500;
+	protected int amountOfLiquidRemaining=500;
+
+	public StdDrink()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="a cup";
+		baseEnvStats.setWeight(10);
+		capacity=0;
+		displayText="a cup sits here.";
+		description="A small wooden cup with a lid.";
+		baseGoldValue=5;
+		recoverEnvStats();
+	}
+
+	public Environmental newInstance()
+	{
+		return new StdDrink();
+	}
+
+	public int thirstQuenched(){return amountOfThirstQuenched;}
+	public int liquidHeld(){return amountOfLiquidHeld;}
+	public int liquidRemaining(){return amountOfLiquidRemaining;}
+
+	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
+	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
+	public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
+
+	public boolean okAffect(Affect affect)
+	{
+		if(!super.okAffect(affect))
+			return false;
+		if(affect.amITarget(this))
+		{
+			MOB mob=affect.source();
+			switch(affect.targetMinor())
+			{
+				case Affect.TYP_DRINK:
+					if((mob.isMine(this))||(envStats().weight()>1000)||(!this.isGettable()))
+					{
+						if(amountOfLiquidRemaining<=0)
+						{
+							mob.tell(name()+" is empty.");
+							return false;
+						}
+						return true;
+					}
+					else
+					{
+						mob.tell("You don't have that.");
+						return false;
+					}
+				case Affect.TYP_FILL:
+					if(mob.isMine(this))
+					{
+						if(amountOfLiquidRemaining>=amountOfLiquidHeld)
+						{
+							mob.tell(name()+" is full.");
+							return false;
+						}
+						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+						{
+							Drink thePuddle=(Drink)affect.tool();
+							if(thePuddle.liquidRemaining()<1)
+							{
+								mob.tell(thePuddle.name()+" is empty.");
+								return false;
+							}
+							return true;
+						}
+						else
+						{
+							mob.tell("You can't fill "+name()+" from that.");
+							return false;
+						}
+					}
+					else
+					{
+						mob.tell("You don't have that.");
+						return false;
+					}
+			}
+		}
+		return true;
+	}
+
+	public void affect(Affect affect)
+	{
+		if(affect.amITarget(this))
+		{
+			MOB mob=affect.source();
+			switch(affect.targetMinor())
+			{
+			case Affect.TYP_DRINK:
+				amountOfLiquidRemaining-=10;
+				if(mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState()))
+					mob.tell("You are no longer thirsty.");
+				break;
+			case Affect.TYP_FILL:
+				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
+				{
+					Drink thePuddle=(Drink)affect.tool();
+					int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
+					if(amountToTake>thePuddle.liquidRemaining())
+						amountToTake=thePuddle.liquidRemaining();
+					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
+					amountOfLiquidRemaining+=amountToTake;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		super.affect(affect);
+	}
+}

@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Items;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
 public class Backpack extends CloseableContainer
 {
@@ -17,10 +17,10 @@ public class Backpack extends CloseableContainer
 		properWornBitmap=Item.ON_TORSO|Item.HELD;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Backpack();
 	}
-	
+
 }

@@ -1,13 +1,8 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Exits.*;
-import com.planet_ink.coffee_mud.utils.*;
-
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
 
 public class CaveRoom extends StdRoom
@@ -16,10 +11,10 @@ public class CaveRoom extends StdRoom
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		baseEnvStats().setDisposition(Sense.IS_DARK);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_DARK);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_CAVE;
-		
+
 		domainCondition=Room.CONDITION_NORMAL;
 	}
 	public Environmental newInstance()

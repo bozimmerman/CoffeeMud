@@ -3,19 +3,19 @@ package com.planet_ink.coffee_mud.interfaces;
 public interface Exit extends Environmental
 {
 	public boolean isOpen();
-	public void setOpen(boolean isTrue);
 	public boolean isLocked();
-	public void setLocked(boolean isTrue);
 	public boolean hasADoor();
-	public void setHasDoor(boolean isTrue);
 	public boolean hasALock();
-	public void setHasLock(boolean isTrue);
+	public boolean defaultsLocked();
+	public boolean defaultsClosed();
+	public void setDoorsNLocks(boolean hasADoor,
+							   boolean isOpen,
+							   boolean defaultsClosed,
+							   boolean hasALock,
+							   boolean isLocked,
+							   boolean defaultsLocked);
 	public String keyName();
 	public void setKeyName(String keyName);
-	public boolean defaultsLocked();
-	public void setDefaultsLocked(boolean isTrue);
-	public boolean defaultsClosed();
-	public void setDefaultsClosed(boolean isTrue);
 	
 	public boolean isTrapped();
 	public void setTrapped(boolean isTrue);
@@ -25,6 +25,8 @@ public interface Exit extends Environmental
 	public void setReadable(boolean isTrue);
 	public void setReadableText(String text);
 	
+	public StringBuffer viewableText(MOB mob, Room myRoom);
+	
 	public boolean levelRestricted();
 	public void setLevelRestricted(boolean isTrue);
 	
@@ -32,6 +34,11 @@ public interface Exit extends Environmental
 	public boolean classRestricted();
 	public void setClassRestricted(boolean isTrue);
 	public void setClassRestrictedName(String className);
+	
+	public String alignmentRestrictedMask();
+	public boolean alignmentRestricted();
+	public void setAlignmentRestricted(boolean isTrue);
+	public void setAlignmentRestrictedMask(String alignments);
 	
 	public String doorName();
 	public String closeWord();

@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Dagger extends Weapon
+public class Dagger extends StdWeapon
 {
 	public Dagger()
 	{
@@ -18,18 +19,13 @@ public class Dagger extends Weapon
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(4);
 		weaponType=TYPE_PIERCING;
-		weaponClassification=Weapon.CLASS_EDGED;
+		weaponClassification=Weapon.CLASS_DAGGER;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Dagger();
-	}
-
-	public void strike(MOB source, MOB target, boolean success)
-	{
-		super.strike(source, target, success);
 	}
 
 }

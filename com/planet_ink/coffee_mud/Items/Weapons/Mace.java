@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Mace extends Weapon
+public class Mace extends StdWeapon
 {
 	public Mace()
 	{
@@ -21,7 +22,7 @@ public class Mace extends Weapon
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_BLUNT;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Mace();

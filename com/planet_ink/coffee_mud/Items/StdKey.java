@@ -1,11 +1,11 @@
 package com.planet_ink.coffee_mud.Items;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
-public class StdKey extends StdItem
+public class StdKey extends StdItem implements Key
 {
 
 	public StdKey()
@@ -15,7 +15,7 @@ public class StdKey extends StdItem
 		name="a metal key";
 		displayText="a small metal key sits here.";
 		description="You can't tell what it\\`s to by looking at it.";
-		
+
 		baseGoldValue=0;
 		recoverEnvStats();
 	}
@@ -23,4 +23,7 @@ public class StdKey extends StdItem
 	{
 		return new StdKey();
 	}
+
+	public void setKey(String keyName){miscText=keyName;}
+	public String getKey(){return miscText;}
 }

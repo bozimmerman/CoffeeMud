@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class CloseableContainer extends Container
+public class CloseableContainer extends StdContainer
 {
 	public CloseableContainer()
 	{
@@ -10,7 +11,7 @@ public class CloseableContainer extends Container
 		hasALid=true;
 		isOpen=false;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new CloseableContainer();

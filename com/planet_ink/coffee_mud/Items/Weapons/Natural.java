@@ -1,9 +1,10 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-								
-public class Natural extends Weapon
+
+public class Natural extends StdWeapon
 {
 	public Natural()
 	{
@@ -17,12 +18,12 @@ public class Natural extends Weapon
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(0);
 		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(1);
+		baseEnvStats().setDamage(0);
 		weaponType=TYPE_NATURAL;
 		recoverEnvStats();
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Natural();

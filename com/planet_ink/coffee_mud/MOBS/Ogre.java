@@ -2,17 +2,11 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 public class Ogre extends StdMOB
 {
-	
+
 	public Ogre()
 	{
 
@@ -26,29 +20,27 @@ public class Ogre extends StdMOB
 		setMoney(10);
 		baseEnvStats.setWeight(350);
 		setWimpHitPoint(0);
-		
-		Natural fists = new Natural();
-		fists.baseEnvStats().setDamage(12);
-		fists.wear(Item.WIELD);
-		addInventory(fists);
-		
+		baseEnvStats().setDamage(12);
+
 		baseCharStats().setIntelligence(8);
 		baseCharStats().setCharisma(2);
 		baseCharStats().setStrength(22);
-		
+		baseCharStats().setMyRace(CMClass.getRace("Giant"));
+
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(4);
 		baseEnvStats().setArmor(50);
 		baseEnvStats().setSpeed(3.0);
-		
+
 		int hitPoints = 0;
 		for(int i = 0; i < 4; i++)
 			hitPoints += Math.abs(randomizer.nextInt()) % 16 + 1;
 		hitPoints++;
 
-		maxState.setHitPoints(hitPoints);
-		
+		baseState.setHitPoints(hitPoints);
+
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}

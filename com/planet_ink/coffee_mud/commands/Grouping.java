@@ -1,19 +1,15 @@
 package com.planet_ink.coffee_mud.commands;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.commands.sysop.CreateEdit;
 import com.planet_ink.coffee_mud.commands.sysop.SysopItemUsage;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Grouping
 {
-	public static void who(MOB mob, String mobName)
+	public void who(MOB mob, String mobName)
 	{
 		if((mobName!=null)&&(mobName.length()==0))
 		{
@@ -22,12 +18,12 @@ public class Grouping
 		}
 
 		StringBuffer msg=new StringBuffer("");
-		for(int s=0;s<MUD.allSessions.size();s++)
+		for(int s=0;s<Sessions.size();s++)
 		{
-			Session thisSession=(Session)MUD.allSessions.elementAt(s);
-			if((thisSession.mob!=null)&&(!thisSession.killFlag)&&((mobName==null)||(thisSession.mob.name().toUpperCase().startsWith(mobName.toUpperCase()))))
+			Session thisSession=(Session)Sessions.elementAt(s);
+			if((thisSession.mob()!=null)&&(!thisSession.killFlag())&&((mobName==null)||(thisSession.mob().name().toUpperCase().startsWith(mobName.toUpperCase()))))
 			{
-				msg.append(showWho(thisSession.mob,true));
+				msg.append(showWho(thisSession.mob(),true));
 			}
 		}
 		if((mobName!=null)&&(msg.length()==0))
@@ -44,7 +40,7 @@ public class Grouping
 		}
 	}
 
-	private static StringBuffer showWho(MOB who, boolean shortForm)
+	public StringBuffer showWho(MOB who, boolean shortForm)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
@@ -55,31 +51,31 @@ public class Grouping
 		if(!shortForm)
 		{
 			msg.append(Util.padRight("hp("+Util.padRight(""+who.curState().getHitPoints(),3)+"/"+Util.padRight(""+who.maxState().getHitPoints(),3)+")",12));
-			msg.append(Util.padRight("mn("+Util.padRight(""+who.curState().getHitPoints(),3)+"/"+Util.padRight(""+who.maxState().getHitPoints(),3)+")",12));
-			msg.append(Util.padRight("mv("+Util.padRight(""+who.curState().getHitPoints(),3)+"/"+Util.padRight(""+who.maxState().getHitPoints(),3)+")",12));
+			msg.append(Util.padRight("mn("+Util.padRight(""+who.curState().getMana(),3)+"/"+Util.padRight(""+who.maxState().getMana(),3)+")",12));
+			msg.append(Util.padRight("mv("+Util.padRight(""+who.curState().getMovement(),3)+"/"+Util.padRight(""+who.maxState().getMovement(),3)+")",12));
 		}
 		msg.append("\n\r");
 		return msg;
 	}
 
 
-	private static void addFollowers(MOB mob, Hashtable toThis)
+	private void addFollowers(MOB mob, Hashtable toThis)
 	{
-		if(toThis.get(mob.ID())==null)
-		   	toThis.put(mob.ID(),mob);
+		if(toThis.get(mob)==null)
+		   	toThis.put(mob,mob);
 
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB follower=mob.fetchFollower(f);
-			if(toThis.get(follower.ID())==null)
+			if(toThis.get(follower)==null)
 			{
-				toThis.put(follower.ID(),follower);
+				toThis.put(follower,follower);
 				addFollowers(follower,toThis);
 			}
 		}
 	}
 
-	public static Hashtable getAllFollowers(MOB mob)
+	public Hashtable getGroupMembers(MOB mob)
 	{
 		Hashtable followers=new Hashtable();
 		addFollowers(mob,followers);
@@ -88,10 +84,10 @@ public class Grouping
 		return followers;
 	}
 
-	public static void group(MOB mob)
+	public void group(MOB mob)
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		Hashtable group=getAllFollowers(mob);
+		Hashtable group=getGroupMembers(mob);
 		StringBuffer msg=new StringBuffer("");
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
@@ -101,7 +97,7 @@ public class Grouping
 		mob.tell(msg.toString());
 	}
 
-	public static void gtell(MOB mob, String text)
+	public void gtell(MOB mob, String text)
 	{
 		if(text.length()==0)
 		{
@@ -109,21 +105,21 @@ public class Grouping
 			return;
 		}
 
-		Hashtable group=getAllFollowers(mob);
+		Hashtable group=getGroupMembers(mob);
+		mob.tell("Ok.");
 		for(Enumeration e=group.elements();e.hasMoreElements();)
 		{
 			MOB target=(MOB)e.nextElement();
-			FullMsg msg=new FullMsg(mob,target,null,Affect.SOUND_WORDS,Affect.SOUND_WORDS,Affect.SOUND_WORDS,"<S-NAME> tell(s) the group '"+text+"'.");
-			if(target.okAffect(msg))
-				target.affect(msg);
+			if(target!=mob)
+				target.tell(mob.name()+" tell(s) the group '"+text+"'.");
 		}
 	}
 
-	public static void nofollow(MOB mob, boolean errorsOk)
+	public void nofollow(MOB mob, boolean errorsOk)
 	{
 		if(mob.amFollowing()!=null)
 		{
-			FullMsg msg=new FullMsg(mob,mob.amFollowing(),null,Affect.GENERAL,Affect.GENERAL,Affect.GENERAL,"<S-NAME> stop(s) following <T-NAME>.");
+			FullMsg msg=new FullMsg(mob,mob.amFollowing(),null,Affect.MSG_OK_ACTION,"<S-NAME> stop(s) following <T-NAMESELF>.");
 			mob.setFollowing(null);
 			mob.location().send(mob,msg);
 		}
@@ -135,14 +131,14 @@ public class Grouping
 		}
 	}
 
-	public static void follow(MOB mob, Vector commands)
+	public void follow(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell("Follow whom?");
 			return;
 		}
-		String whomToFollow=CommandProcessor.combine(commands,1);
+		String whomToFollow=Util.combine(commands,1);
 		MOB target=mob.location().fetchInhabitant(whomToFollow);
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
@@ -155,13 +151,15 @@ public class Grouping
 			return;
 		}
 		nofollow(mob,false);
-
-		FullMsg msg=new FullMsg(mob,target,null,Affect.GENERAL,Affect.GENERAL,Affect.GENERAL,"<S-NAME> follow(s) <T-NAME>.");
-		mob.setFollowing(target);
-		mob.location().send(mob,msg);
+		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"<S-NAME> follow(s) <T-NAMESELF>.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.setFollowing(target);
+			mob.location().send(mob,msg);
+		}
 	}
 
-	public static void order(MOB mob, Vector commands)
+	public void order(MOB mob, Vector commands)
 		throws Exception
 	{
 		if(commands.size()<3)
@@ -189,15 +187,15 @@ public class Grouping
 			return;
 		}
 		commands.removeElementAt(0);
-		FullMsg msg=new FullMsg(mob,target,null,Affect.SOUND_WORDS,Affect.SOUND_WORDS,Affect.SOUND_WORDS,"<S-NAME> order(s) <T-NAME> to '"+CommandProcessor.combine(commands,0)+"'.");
+		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> order(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'.");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			CommandProcessor.doCommand(target,commands);
+			ExternalPlay.doCommand(target,commands);
 		}
 	}
 
-	public static void split(MOB mob, Vector commands)
+	public void split(MOB mob, Vector commands)
 	{
 		if(mob.numFollowers()==0)
 		{
@@ -237,11 +235,11 @@ public class Grouping
 			if((recipient.amFollowing()==mob)&&(!recipient.isMonster()))
 			{
 				mob.setMoney(mob.getMoney()-gold);
-				Coins C=new Coins();
+				Item C=(Item)CMClass.getItem("Coins");
 				C.baseEnvStats().setAbility(gold);
 				C.recoverEnvStats();
 				mob.addInventory(C);
-				FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.HANDS_GIVE,Affect.HANDS_GIVE,Affect.VISUAL_WNOISE,"<S-NAME> give(s) "+C.name()+" to <T-NAME>.");
+				FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.MSG_GIVE,"<S-NAME> give(s) "+C.name()+" to <T-NAMESELF>.");
 				if(mob.location().okAffect(newMsg))
 					mob.location().send(mob,newMsg);
 			}

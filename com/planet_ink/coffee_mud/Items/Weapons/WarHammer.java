@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class WarHammer extends Weapon
+public class WarHammer extends StdWeapon
 {
 	public WarHammer()
 	{
@@ -23,7 +24,7 @@ public class WarHammer extends Weapon
 		weaponType=Weapon.TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_HAMMER;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new WarHammer();

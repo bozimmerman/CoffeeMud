@@ -1,10 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.commands.*;
 
-public class DrowSword extends Longsword implements DrowItem
+public class DrowSword extends Longsword
 {
 	public DrowSword()
 	{
@@ -20,12 +19,12 @@ public class DrowSword extends Longsword implements DrowItem
 		baseEnvStats().setWeight(4);
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(8);
-		baseEnvStats().setDisposition(Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
 		baseGoldValue=2500;
 		recoverEnvStats();
 		weaponType=TYPE_SLASHING;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new DrowSword();

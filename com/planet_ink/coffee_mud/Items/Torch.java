@@ -2,9 +2,8 @@ package com.planet_ink.coffee_mud.Items;
 
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class Torch extends LightSource
@@ -17,7 +16,7 @@ public class Torch extends LightSource
 		displayText="a small straw torch sits here.";
 		description="It looks like it is lightly covered in oil near the end.";
 		durationTicks=30;
-		
+
 		material=Item.WOODEN;
 		destroyedWhenBurnedOut=true;
 		baseGoldValue=1;
@@ -27,5 +26,5 @@ public class Torch extends LightSource
 		return new Torch();
 	}
 
-	
+
 }

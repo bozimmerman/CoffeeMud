@@ -1,23 +1,23 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class Shirt extends Armor
+public class Shirt extends GenArmor
 {
 	public Shirt()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="a nice looking shirt";
-		displayText="a shirt is folded nice and neatly here.";
-		description="It is a finely crafted shirt.";
+		name="a nice tunic";
+		displayText="a plain tunic is folded neatly here.";
+		description="It is a plain buttoned tunic.";
 		properWornBitmap=Item.ON_TORSO;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(6);
+		baseEnvStats().setArmor(2);
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setAbility(0);
-		baseGoldValue=5;
+		baseGoldValue=1;
 		recoverEnvStats();
 		material=Armor.CLOTH;
 	}

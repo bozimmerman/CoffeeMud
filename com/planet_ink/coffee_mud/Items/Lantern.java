@@ -2,9 +2,8 @@ package com.planet_ink.coffee_mud.Items;
 
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class Lantern extends LightSource
@@ -16,7 +15,7 @@ public class Lantern extends LightSource
 		name="a hooded lantern";
 		displayText="a hooded lantern sits here.";
 		description="The lantern still looks like it has some oil in it.";
-		
+
 		baseEnvStats().setWeight(5);
 		material=Item.METAL;
 		durationTicks=200;
@@ -33,9 +32,9 @@ public class Lantern extends LightSource
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-				case Affect.HANDS_FILL:
+				case Affect.TYP_FILL:
 					if(mob.isMine(this))
 					{
 						if(!burnedOut)
@@ -70,15 +69,15 @@ public class Lantern extends LightSource
 		}
 		return super.okAffect(affect);
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.HANDS_FILL:
+			case Affect.TYP_FILL:
 				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 				{
 					OilFlask thePuddle=(OilFlask)affect.tool();
@@ -97,5 +96,5 @@ public class Lantern extends LightSource
 		}
 		super.affect(affect);
 	}
-
 }
+

@@ -1,14 +1,9 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Exits.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.Directions;
+import com.planet_ink.coffee_mud.utils.Sense;
 
 import java.util.*;
 
@@ -31,12 +26,12 @@ public class InTheAir extends StdRoom
 	{
 		if(!super.okAffect(affect))
 			return false;
-		
-		if((affect.targetCode()==affect.MOVE_ENTER)
+
+		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.target()==this))
 		{
 			MOB mob=affect.source();
-			if(mob.location()!=this.getRoom(Directions.UP))
+			if(mob.location()!=this.doors()[Directions.UP])
 				if(!Sense.isFlying(mob))
 				{
 					mob.tell("You can't fly.");
@@ -45,22 +40,31 @@ public class InTheAir extends StdRoom
 		}
 		return true;
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
-		if((affect.target() instanceof Item)&&(!Sense.isFlying(affect.target())&&(affect.targetCode()==Affect.HANDS_DROP)))
-			Falling.startFalling(affect.target(),this);
+
+		if((affect.target() instanceof Item)
+		   &&(!Sense.isFlying(affect.target())
+		   &&(affect.targetMinor()==Affect.TYP_DROP)))
+		{
+			Ability falling=CMClass.getAbility("Falling");
+			falling.setAffectedOne(this);
+			falling.invoke(null,null,affect.target(),true);
+		}
 		else
 		if(this.isInhabitant(affect.source()))
 		{
 			MOB mob=affect.source();
 			if((!Sense.isFlying(mob))
-			&&(getRoom(Directions.DOWN)!=null)
-			&&(getExit(Directions.DOWN)!=null)
-			&&(getExit(Directions.DOWN).isOpen()))
+			&&(doors()[Directions.DOWN]!=null)
+			&&(exits()[Directions.DOWN]!=null)
+			&&(exits()[Directions.DOWN].isOpen()))
 			{
-				Falling.startFalling(mob,null);
+				Ability falling=CMClass.getAbility("Falling");
+				falling.setAffectedOne(null);
+				falling.invoke(null,null,mob,true);
 			}
 		}
 	}

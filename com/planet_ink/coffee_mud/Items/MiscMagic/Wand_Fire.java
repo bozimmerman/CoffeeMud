@@ -1,15 +1,12 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
 import java.util.*;
 
-public class Wand_Fire extends Wand implements MiscMagic
+public class Wand_Fire extends StdWand
 {
-	
+
 	public Wand_Fire()
 	{
 		super();
@@ -23,18 +20,18 @@ public class Wand_Fire extends Wand implements MiscMagic
 		baseEnvStats().setLevel(12);
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Wand_Fire();
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		MOB mob=affect.source();
-		switch(affect.sourceCode())
+		switch(affect.sourceMinor())
 		{
-		case Affect.SOUND_WORDS:
+		case Affect.TYP_SPEAK:
 			if((mob.isMine(this))
 			   &&(!amWearingAt(Item.INVENTORY))
 			   &&(affect.target() instanceof MOB)
@@ -44,10 +41,10 @@ public class Wand_Fire extends Wand implements MiscMagic
 				int x=affect.targetMessage().toUpperCase().indexOf("BLAZE");
 				if(x>=0)
 				{
-					if((usesRemaining()>0)&&(useTheWand(new Spell_BurningHands(),mob)))
+					Ability spell = CMClass.getAbility("Spell_BurningHands");
+					if((usesRemaining()>0)&&(useTheWand(spell,mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						Spell_BurningHands spell = new Spell_BurningHands();
 						spell.invoke(mob, target, true);
 						return;
 					}
@@ -55,10 +52,10 @@ public class Wand_Fire extends Wand implements MiscMagic
 				x=affect.targetMessage().toUpperCase().indexOf("BURN");
 				if(x>=0)
 				{
-					if((usesRemaining()>4)&&(useTheWand(new Spell_Fireball(),mob)))
+					Ability spell = CMClass.getAbility("Spell_Fireball");
+					if((usesRemaining()>4)&&(useTheWand(spell,mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						Spell_Fireball spell = new Spell_Fireball();
 						spell.invoke(mob, target, true);
 						return;
 					}

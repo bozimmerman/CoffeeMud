@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Shortsword extends Sword
 {
@@ -15,12 +16,12 @@ public class Shortsword extends Sword
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(3);
 		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(6);
+		baseEnvStats().setDamage(5);
 		baseGoldValue=10;
 		recoverEnvStats();
 		weaponType=TYPE_PIERCING;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Shortsword();

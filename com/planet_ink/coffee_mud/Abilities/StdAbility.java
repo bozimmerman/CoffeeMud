@@ -1,12 +1,8 @@
 package com.planet_ink.coffee_mud.Abilities;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.commands.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
 import java.util.*;
 
 public class StdAbility implements Ability, Cloneable
@@ -14,35 +10,37 @@ public class StdAbility implements Ability, Cloneable
 	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	protected String name="an ability";
 	protected String description="&";
+	protected boolean borrowed=false;
 	public String displayText="What they see when affected.";
 	public String miscText="";
 	protected MOB invoker=null;
 	protected Vector triggerStrings=new Vector();
 	protected int uses=Integer.MAX_VALUE;
 	protected int profficiency=0;
-	
+	protected boolean isAnAutoEffect=false;
+
 	private Vector qualifyingClassNames=new Vector();
 	private Vector qualifyingClassLevels=new Vector();
-	
-	protected Stats envStats=new Stats();
-	protected Stats baseEnvStats=new Stats();
+
+	protected EnvStats envStats=new DefaultEnvStats();
+	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	protected Environmental affected=null;
-	
+
 	protected boolean canBeUninvoked=true;
 	protected boolean isAutoinvoked=false;
 	protected boolean unInvoked=false;
 	protected boolean putInCommandlist=true;
-	
-	public boolean malicious=false;
-	
+
+	protected int quality=Ability.INDIFFERENT;
+
 	protected long tickDown=-1;
-	
+
 	private int lowestQualifyingLevel=Integer.MAX_VALUE;
-	
+
 	public StdAbility()
 	{
 	}
-	
+
 	protected void addQualifyingClass(String className, int atLevel)
 	{
 		qualifyingClassNames.addElement(className);
@@ -50,7 +48,7 @@ public class StdAbility implements Ability, Cloneable
 		if(atLevel<lowestQualifyingLevel)
 			lowestQualifyingLevel=atLevel;
 	}
-	
+
 	public boolean qualifies(MOB student)
 	{
 		int level=qualifyingLevel(student);
@@ -60,10 +58,18 @@ public class StdAbility implements Ability, Cloneable
 		else
 			return false;
 	}
-	
+
+	public boolean isAnAutoEffect()
+	{ return isAnAutoEffect; }
+	public boolean isBorrowed(Environmental toMe)
+	{ return borrowed;	}
+	public void setBorrowed(Environmental toMe, boolean truefalse)
+	{ borrowed=truefalse; }
+
 	public void startTickDown(Environmental affected, long tickTime)
 	{
-		affected.addAffect(this);
+		if(affected.fetchAffect(this.ID())==null)
+			affected.addAffect(this);
 		if(affected instanceof MOB)
 			((MOB)affected).location().recoverRoomStats();
 		else
@@ -72,12 +78,12 @@ public class StdAbility implements Ability, Cloneable
 				((Room)affected).recoverRoomStats();
 			else
 				affected.recoverEnvStats();
-			ServiceEngine.startTickDown(this,ServiceEngine.MOB_TICK,1);
+			ExternalPlay.startTickDown(this,Host.MOB_TICK,1);
 		}
-			
+
 		tickDown=tickTime;
 	}
-	
+
 	public boolean putInCommandlist()
 	{
 		return putInCommandlist;
@@ -85,82 +91,152 @@ public class StdAbility implements Ability, Cloneable
 	public int qualifyingLevel(MOB student)
 	{
 		if(student==null) return -1;
-		
-		if(student.charStats().getMyClass()==null) 
+
+		if(student.charStats().getMyClass()==null)
 			return -1;
-		
+
 		if(lowestQualifyingLevel==Integer.MAX_VALUE)
 			return -1;
-		
-		if(student.charStats().getMyClass() instanceof Archon)
+
+		if(student.charStats().getMyClass().ID().equals("Archon"))
 			return lowestQualifyingLevel;
-		
+
 		for(int i=0;i<qualifyingClassNames.size();i++)
 			if(student.charStats().getMyClass().ID().equals((String)qualifyingClassNames.elementAt(i)))
 				return ((Integer)qualifyingClassLevels.elementAt(i)).intValue();
-		
+
 		return -1;
 	}
-	
-	public MOB getTarget(MOB mob, Vector commands)
+
+	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget)
+	{ return getTarget(mob,commands,givenTarget,false);	}
+
+	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget, boolean quiet)
 	{
-		String targetName=CommandProcessor.combine(commands,0);
-		if((targetName.length()==0)&&(mob.isInCombat())&&(malicious))
-		   targetName=mob.getVictim().ID();
+		String targetName=Util.combine(commands,0);
+		MOB target=null;
+		if((givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
 		else
-		if((targetName.length()==0)&&(!malicious))
-		   targetName=mob.ID();
-			
-		MOB target=mob.location().fetchInhabitant(targetName);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if((targetName.length()==0)&&(mob.isInCombat())&&(quality==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+		   target=mob.getVictim();
+		else
+		if((targetName.length()==0)&&(quality!=Ability.MALICIOUS))
+			target=mob;
+		else
+		if(targetName.length()>0)
 		{
-			mob.tell("You don't see '"+targetName+"' here.");
+			target=mob.location().fetchInhabitant(targetName);
+			if(target==null)
+			{
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
+				if((t!=null)&&(!(t instanceof MOB)))
+				{
+					if(!quiet)
+						mob.tell("You can't do that to '"+targetName+"'.");
+					return null;
+				}
+			}
+		}
+
+		if(target!=null) 
+			targetName=target.name();
+		
+		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&(!Sense.canBeHeardBy(target,mob))))
+		{
+			if(!quiet)
+				mob.tell("You don't see '"+targetName+"' here.");
 			return null;
 		}
-		
+
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			if(target==mob)
-				mob.tell("You is already affected by "+name()+".");
-			else
-				mob.tell(target.name()+" is already affected by "+name()+".");
+			if(!quiet)
+			{
+				if(target==mob)
+					mob.tell("You are already affected by "+name()+".");
+				else
+					mob.tell(target.name()+" is already affected by "+name()+".");
+			}
 			return null;
 		}
 		return target;
 	}
-	
-	public Item getTarget(MOB mob, Room location, Vector commands)
+
+	public Environmental getAnyTarget(MOB mob, Vector commands, Environmental givenTarget)
 	{
-		String targetName=CommandProcessor.combine(commands,0);
-		
-		Environmental target=location.fetchFromRoom(null,targetName);
-		if(target==null)
-			target=location.fetchFromMOBRoom(mob,null,targetName);
-		if((target==null)||((target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))
+		String targetName=Util.combine(commands,0);
+		Environmental target=null;
+		if((givenTarget!=null)&&(givenTarget instanceof Environmental))
+			target=givenTarget;
+		else
+		if((targetName.length()==0)&&(mob.isInCombat())&&(quality==Ability.MALICIOUS)&&(mob.getVictim()!=null))
+			target=mob.getVictim();
+		else
+		{
+			target=mob.location().fetchFromRoomFavorMOBs(null,targetName);
+			if(target==null)
+				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName);
+		}
+		if(target!=null) targetName=target.name();
+		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&(!Sense.canBeHeardBy(target,mob))))
 		{
 			mob.tell("You don't see '"+targetName+"' here.");
 			return null;
 		}
+
+		if(target.fetchAffect(this.ID())!=null)
+		{
+			if(target==mob)
+				mob.tell("You are already affected by "+name()+".");
+			else
+				mob.tell(targetName+" is already affected by "+name()+".");
+			return null;
+		}
+		return target;
+	}
+
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands)
+	{
+		String targetName=Util.combine(commands,0);
+
+		Environmental target=location.fetchFromRoomFavorItems(null,targetName);
+		if((givenTarget!=null)&&(givenTarget instanceof Item))
+			target=givenTarget;
+		if(target==null)
+			target=location.fetchFromMOBRoomFavorsItems(mob,null,targetName);
+		if(target!=null) targetName=target.name();
+		if((target==null)||((target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))
+		{
+			if(targetName.length()==0)
+				mob.tell("You need to be more specific.");
+			else
+			if((target==null)||(target instanceof Item))
+				mob.tell("You don't see '"+targetName+"' here.");
+			else
+				mob.tell("You can't do that to '"+targetName+"'.");
+			return null;
+		}
 		return (Item)target;
 	}
-	
+
 	public int classificationCode()
 	{
 		return Ability.SKILL;
 	}
-	
+
 	public String ID()
 	{
 		return myID;
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
-	
-	public Stats envStats()
+
+	public EnvStats envStats()
 	{
 		return envStats;
 	}
-	public Stats baseEnvStats()
+	public EnvStats baseEnvStats()
 	{
 		return baseEnvStats;
 	}
@@ -168,11 +244,11 @@ public class StdAbility implements Ability, Cloneable
 	{
 		envStats=baseEnvStats.cloneStats();
 	}
-	public void setBaseEnvStats(Stats newBaseEnvStats)
+	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new StdAbility();
@@ -189,7 +265,7 @@ public class StdAbility implements Ability, Cloneable
 			StdAbility E=(StdAbility)this.clone();
 			E.cloneFix(this);
 			return E;
-			
+
 		}
 		catch(CloneNotSupportedException e)
 		{
@@ -211,16 +287,29 @@ public class StdAbility implements Ability, Cloneable
 	public int profficiency(){ return profficiency;}
 	public void setProfficiency(int newProfficiency)
 	{ profficiency=newProfficiency;}
-	
-	public boolean profficiencyCheck(int adjustment)
+
+	public boolean profficiencyCheck(int adjustment, boolean auto)
 	{
-		int pctChance=profficiency()+adjustment;
+		if(auto)
+		{
+			this.isAnAutoEffect=true;
+			this.setProfficiency(100);
+			return true;
+		}
+
+		isAnAutoEffect=false;
+		int pctChance=profficiency();
 		if(pctChance>95) pctChance=95;
 		if(pctChance<5) pctChance=5;
-		
+
+		if(adjustment>=0)
+			pctChance+=adjustment;
+		else
+		if(Dice.rollPercentage()>(100+adjustment))
+			return false;
 		return (Dice.rollPercentage()<pctChance);
 	}
-	
+
 	public Environmental affecting()
 	{
 		return affected;
@@ -229,14 +318,14 @@ public class StdAbility implements Ability, Cloneable
 	{
 		affected=being;
 	}
-	
+
 	public void unInvoke()
 	{
 		unInvoked=true;
-		
+
 		if(affected==null) return;
 		Environmental being=affected;
-		
+
 		if(canBeUninvoked)
 		{
 			being.delAffect(this);
@@ -251,6 +340,7 @@ public class StdAbility implements Ability, Cloneable
 				{
 					being.recoverEnvStats();
 					((MOB)being).recoverCharStats();
+					((MOB)being).recoverMaxState();
 				}
 			}
 			else
@@ -262,90 +352,89 @@ public class StdAbility implements Ability, Cloneable
 	{
 		return canBeUninvoked;
 	}
-	
+
 	public int usesRemaining()
 	{
 		return uses;
 	}
 	public void setUsesRemaining(int newUses)
 	{
-		uses=newUses;	
+		uses=newUses;
 	}
-	
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{
-	}
-	
+	{}
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{}
+
 	public MOB invoker()
 	{
 		return invoker;
 	}
-	
+
 	public Vector triggerStrings()
 	{
 		return triggerStrings;
 	}
-	
-    public boolean invoke(MOB mob, Environmental target, boolean automatic)
-    {
-		int oldProfficiency=profficiency();
-		int oldMana=mob.curState().getMana();
-		Vector V=new Vector();
-		V.addElement(target.name());
-		
-		
-		if(automatic)
-			setProfficiency(999);
-		
-		mob.curState().setMana(999);
-		boolean success=invoke(mob,V);
-		mob.curState().setMana(oldMana);
-		
-		if(automatic)
-			setProfficiency(oldProfficiency);
-		
-		return success;
-    }
 
 	public void helpProfficiency(MOB mob)
 	{
-		
+
 		Ability A=(Ability)mob.fetchAbility(this.ID());
 		if(A==null) return;
 		if(A.profficiency()<100)
 		{
 			if(Math.round((Util.div(mob.charStats().getIntelligence(),25.0))*100.0*Math.random())>50)
+			{
 			   A.setProfficiency(A.profficiency()+1);
+			   this.setProfficiency(this.profficiency()+1);
+			}
 		}
-		
+
 	}
-	
-	public boolean invoke(MOB mob, Vector commands)
+
+	public boolean invoke(MOB mob, Environmental target, boolean auto)
 	{
-		// if you can't move, you can't cast!
-		if(!Sense.canPerformAction(mob))
-			return false;
-		
-		Integer levelDiff=new Integer(mob.envStats().level()-envStats().level());
-		int manaConsumed=50-(int)Math.round(50.0*(levelDiff.doubleValue()/10.0));
-		
-		if(manaConsumed<5) manaConsumed=5;
-		if(manaConsumed>50) manaConsumed=50;
-		if(!mob.curState().adjMana(-manaConsumed,mob.maxState()))
+		Vector V=new Vector();
+		if(target!=null)
+			V.addElement(target.name());
+		return invoke(mob,V,target,auto);
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto)
+	{
+		if(!auto)
 		{
-			mob.tell("You don't have enough mana to do that.");
-			return false;
+			isAnAutoEffect=false;
+
+			// if you can't move, you can't cast! Not even verbal!
+			if(!Sense.aliveAwakeMobile(mob,false))
+				return false;
+
+			Integer levelDiff=new Integer(mob.envStats().level()-envStats().level());
+			int manaConsumed=50-(int)Math.round(50.0*(levelDiff.doubleValue()/10.0));
+			if(manaConsumed<5) manaConsumed=5;
+			if(manaConsumed>50) manaConsumed=50;
+
+			if(mob.curState().getMana()<manaConsumed)
+			{
+				mob.tell("You don't have enough mana to do that.");
+				return false;
+			}
+			mob.curState().adjMana(-manaConsumed,mob.maxState());
+			helpProfficiency(mob);
 		}
-		helpProfficiency(mob);
+		else
+			isAnAutoEffect=true;
 		return true;
 	}
-	
-	
-	
-	public boolean maliciousAffect(MOB mob, 
-								   Environmental target, 
+
+
+
+	public boolean maliciousAffect(MOB mob,
+								   Environmental target,
 								   int tickAdjustmentFromStandard,
 								   int additionAffectCheckCode)
 	{
@@ -366,48 +455,60 @@ public class StdAbility implements Ability, Cloneable
 			invoker=mob;
 			Ability newOne=(Ability)this.copyOf();
 			if(tickAdjustmentFromStandard<=0)
-			{	
-				tickAdjustmentFromStandard=(mob.envStats().level()*2)+5;
-				
+			{
+				tickAdjustmentFromStandard=(mob.envStats().level()*2)+10;
+
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);
-				
+
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
 			}
-			
+
 			newOne.startTickDown(target,tickAdjustmentFromStandard);
 		}
 		return ok;
 	}
-	
-	public boolean beneficialFizzle(MOB mob, 
-									Environmental target, 
+
+	public boolean beneficialWordsFizzle(MOB mob,
+										Environmental target,
+										String message)
+	{
+		// it didn't work, but tell everyone you tried.
+		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,message);
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+
+		return false;
+	}
+
+	public boolean beneficialVisualFizzle(MOB mob,
+										  Environmental target,
+										  String message)
+	{
+		// it didn't work, but tell everyone you tried.
+		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_OK_VISUAL,message);
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+
+		return false;
+	}
+
+	public boolean maliciousFizzle(MOB mob,
+								   Environmental target,
 									String message)
 	{
 		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,Affect.SOUND_WORDS,Affect.SOUND_WORDS,Affect.SOUND_WORDS,message);
+		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_OK_VISUAL|Affect.MASK_MALICIOUS,message);
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
-		
+
 		return false;
 	}
-	
-	public boolean maliciousFizzle(MOB mob, 
-								   Environmental target, 
-									String message)
-	{
-		// it didn't work, but tell everyone you tried.
-		FullMsg msg=new FullMsg(mob,target,this,Affect.STRIKE_JUSTICE,Affect.STRIKE_JUSTICE,Affect.STRIKE_JUSTICE,message);
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
-		
-		return false;
-	}
-	
-	
-	public boolean beneficialAffect(MOB mob, 
-								   Environmental target, 
+
+
+	public boolean beneficialAffect(MOB mob,
+								   Environmental target,
 								   int tickAdjustmentFromStandard)
 	{
 		boolean ok=true;
@@ -415,17 +516,17 @@ public class StdAbility implements Ability, Cloneable
 		{
 			invoker=mob;
 			Ability newOne=(Ability)this.copyOf();
-			
+
 			if(tickAdjustmentFromStandard<=0)
-				tickAdjustmentFromStandard=(mob.envStats().level()*2)+5;
-			
+				tickAdjustmentFromStandard=(mob.envStats().level()*2)+10;
+
 			newOne.startTickDown(target,tickAdjustmentFromStandard);
 		}
 		return ok;
 	}
-	
-	
-	
+
+
+
 	public boolean autoInvocation(MOB mob)
 	{
 		if(isAutoinvoked)
@@ -435,78 +536,86 @@ public class StdAbility implements Ability, Cloneable
 				Ability thisAbility=mob.fetchAffect(this.ID());
 				if(thisAbility!=null)
 					return false;
-				
 				mob.addAffect((Ability)this.copyOf());
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public boolean canBeTaughtBy(MOB mob)
+	public void makeNonUninvokable()
 	{
-		Ability yourAbility=mob.fetchAbility(ID());
+		unInvoked=false;
+		canBeUninvoked=false;
+	}
+
+	public String accountForYourself(){return name;}
+
+	public boolean canBeTaughtBy(MOB teacher, MOB student)
+	{
+		Ability yourAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
 			if(yourAbility.profficiency()<25)
 			{
-				mob.tell("You are not profficient enough to teach that.");
+				teacher.tell("You are not profficient enough to teach '"+ID()+"'");
+				student.tell(teacher.name()+" is not profficient enough to teach '"+ID()+"'.");
 				return false;
 			}
 			return true;
 		}
-		mob.tell("You don't know how to do that.");
+		teacher.tell("You don't know '"+name()+"'.");
+		student.tell(teacher.name()+" doesn't know '"+name()+"'.");
 		return false;
 	}
-	
+
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
 		if(student.getPractices()<=0)
 		{
-			teacher.tell(student.name()+" does not have enough practices to learn that.");
+			teacher.tell(student.name()+" does not have enough practices to learn '"+name()+"'.");
 			student.tell("You do not have any practices.");
 			return false;
 		}
 		if(student.getTrains()<=0)
 		{
-			teacher.tell(student.name()+" does not have enough training points to learn that.");
+			teacher.tell(student.name()+" does not have enough training points to learn '"+name()+"'.");
 			student.tell("You do not have any training points.");
 			return false;
 		}
 		int qLevel=qualifyingLevel(student);
 		if(qLevel<0)
 		{
-			teacher.tell(student.name()+" is not the right class.");
-			student.tell("You are not the right class.");
+			teacher.tell(student.name()+" is not the right class to learn '"+name()+"'.");
+			student.tell("You are not the right class to learn '"+name()+"'.");
 			return false;
 		}
 		if((qLevel>student.envStats().level()))
 		{
-			teacher.tell(student.name()+" is not high enough level to learn that.");
-			student.tell("You are not high enough level to learn that.");
+			teacher.tell(student.name()+" is not high enough level to learn '"+name()+"'.");
+			student.tell("You are not high enough level to learn '"+name()+"'.");
 			return false;
 		}
 		if(qLevel>student.charStats().getIntelligence()+7)
 		{
-			teacher.tell(student.name()+" is too stupid to learn that.");
-			student.tell("You are not of high enough intelligence to learn that.");
+			teacher.tell(student.name()+" is too stupid to learn '"+name()+"'.");
+			student.tell("You are not of high enough intelligence to learn '"+name()+"'.");
 			return false;
 		}
 		Ability yourAbility=student.fetchAbility(ID());
 		Ability teacherAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			teacher.tell(student.name()+" already knows that.");
-			student.tell("You already know that.");
+			teacher.tell(student.name()+" already knows '"+name()+"'.");
+			student.tell("You already know '"+name()+"'.");
 			return false;
 		}
-		
+
 		if(teacherAbility!=null)
 		{
 			if(teacherAbility.profficiency()<25)
 			{
-				teacher.tell("You aren't profficient enough to teach that.");
-				student.tell(teacher.name()+" isn't profficient enough to teach you that.");
+				teacher.tell("You aren't profficient enough to teach '"+name()+"'.");
+				student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
 				return false;
 			}
 		}
@@ -516,60 +625,67 @@ public class StdAbility implements Ability, Cloneable
 			teacher.tell("You don't know that.");
 			return false;
 		}
-		
-		return true;	
+
+		return true;
 	}
 
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
 		if(student.getPractices()==0)
 		{
-			teacher.tell(student.name()+" does not have enough practices to practice that.");
+			teacher.tell(student.name()+" does not have enough practices to practice '"+name()+"'.");
 			student.tell("You do not have any practices.");
 			return false;
 		}
-		
+
 		Ability yourAbility=student.fetchAbility(ID());
 		Ability teacherAbility=teacher.fetchAbility(ID());
-		if(yourAbility==null)
+		if((yourAbility==null)||(yourAbility.qualifyingLevel(student)<0))
 		{
-			teacher.tell(student.name()+" has not learned that yet.");
-			student.tell("You havn't learned that yet.");
+			teacher.tell(student.name()+" has not learned '"+name()+"' yet.");
+			student.tell("You havn't learned '"+name()+"' yet.");
 			return false;
 		}
-			
+
+		if(yourAbility.qualifyingLevel(student)>student.envStats().level())
+		{
+			teacher.tell(student.name()+" is not high enough level to practice '"+name()+"'.");
+			student.tell("You are not high enough level to practice '"+name()+"'.");
+			return false;
+		}
+
 		if(teacherAbility==null)
 		{
-			student.tell(teacher.name()+" does not know anything about that.");
-			teacher.tell("You don't know how to do that.");
+			student.tell(teacher.name()+" does not know anything about '"+name()+"'.");
+			teacher.tell("You don't know '"+name()+"'.");
 			return false;
 		}
-			
+
 		if(yourAbility.profficiency()>teacherAbility.profficiency())
 		{
-			teacher.tell("You aren't profficient enough to teach any more.");
-			student.tell(teacher.name()+" isn't profficient enough to teach any more.");
+			teacher.tell("You aren't profficient enough to teach any more about '"+name()+"'.");
+			student.tell(teacher.name()+" isn't profficient enough to teach any more about '"+name()+"'.");
 			return false;
 		}
 		else
 		if(yourAbility.profficiency()>74)
 		{
-			teacher.tell("You can't teach "+student.charStats().himher()+" any more.");
-			student.tell("You can't learn any more about that except through dilligence.");
+			teacher.tell("You can't teach "+student.charStats().himher()+" any more about '"+name()+"'.");
+			student.tell("You can't learn any more about '"+name()+"' except through dilligence.");
 			return false;
 		}
-		
+
 		if(teacherAbility.profficiency()<25)
 		{
-			teacher.tell("You aren't profficient enough to teach that.");
-			student.tell(teacher.name()+" isn't profficient enough to teach you that.");
+			teacher.tell("You aren't profficient enough to teach '"+name()+"'.");
+			student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
 			return false;
 		}
-		
-		return true;	
+
+		return true;
 	}
 
-	
+
 	public void teach(MOB teacher, MOB student)
 	{
 		if(student.getPractices()==0)
@@ -591,30 +707,28 @@ public class StdAbility implements Ability, Cloneable
 			newAbility.autoInvocation(student);
 		}
 	}
-	
+
 	public void practice(MOB teacher, MOB student)
 	{
 		if(student.getPractices()==0)
 			return;
-		
+
 		Ability yourAbility=student.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
 			if(yourAbility.profficiency()<75)
 			{
 				student.setPractices(student.getPractices()-1);
-				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(Util.div(teacher.charStats().getWisdom()+student.charStats().getIntelligence(),40.0))));
+				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(Util.div(teacher.charStats().getWisdom()+student.charStats().getIntelligence(),36.0))));
 				if(yourAbility.profficiency()>75)
 					yourAbility.setProfficiency(75);
 			}
 		}
 	}
-	
-	public boolean isMalicious()
-	{
-		return malicious;
-	}
-	
+	public void makeLongLasting(){tickDown=Integer.MAX_VALUE;}
+
+	public int quality(){return this.quality;};
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -623,7 +737,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		return;
 	}
-	
+
 	/** this method is used to tell the system whether
 	 * a PENDING affect may take place
 	 */
@@ -631,7 +745,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		return true;
 	}
-	
+
 	/**
 	 * this method allows any environmental object
 	 * to behave according to a timed response.  by
@@ -644,8 +758,8 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if((unInvoked)&&(canBeUninvoked))
 			return false;
-		
-		if(tickID==ServiceEngine.MOB_TICK)
+
+		if(tickID==Host.MOB_TICK)
 		{
 			if(tickDown<0)
 				return !unInvoked;
@@ -662,8 +776,10 @@ public class StdAbility implements Ability, Cloneable
 		}
 		return true;
 	}
-	
+	public boolean appropriateToMyAlignment(MOB mob){return true;}
+
 	public void addAffect(Ability to){}
+	public void addNonUninvokableAffect(Ability to){};
 	public void delAffect(Ability to){}
 	public int numAffects(){ return 0;}
 	public Ability fetchAffect(int index){return null;}
@@ -672,5 +788,6 @@ public class StdAbility implements Ability, Cloneable
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
 	public Behavior fetchBehavior(int index){return null;}
-	
+	public boolean isGeneric(){return false;}
+
 }

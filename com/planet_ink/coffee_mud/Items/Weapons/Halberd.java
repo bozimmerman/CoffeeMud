@@ -1,14 +1,15 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
-public class Halberd extends Weapon
+public class Halberd extends StdWeapon
 {
 	public final static int PLAIN					= 0;
 	public final static int QUALITY_WEAPON			= 1;
 	public final static int EXCEPTIONAL	  			= 2;
 
-	public Halberd() 
+	public Halberd()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -31,7 +32,7 @@ public class Halberd extends Weapon
 		weaponType=TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_POLEARM;
 	}
-	
+
 	public void setItemDescription(int level)
 	{
 		switch(level)

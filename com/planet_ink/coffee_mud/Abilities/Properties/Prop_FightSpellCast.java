@@ -1,0 +1,92 @@
+package com.planet_ink.coffee_mud.Abilities.Properties;
+
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Prop_FightSpellCast extends Property
+{
+	private Item myItem=null;
+	private boolean processing=false;
+
+	public Prop_FightSpellCast()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Casting spells when properly used";
+	}
+
+	public Environmental newInstance()
+	{
+		Prop_FightSpellCast BOB=new Prop_FightSpellCast();
+		BOB.setMiscText(text());
+		return BOB;
+	}
+
+	public void addMeIfNeccessary(MOB sourceMOB, MOB newMOB)
+	{
+		Vector V=Prop_SpellAdder.getMySpellsV(this);
+		for(int v=0;v<V.size();v++)
+		{
+			Ability A=(Ability)V.elementAt(v);
+			Ability EA=newMOB.fetchAffect(A.ID());
+			if((EA==null)&&(Prop_SpellAdder.didHappen(100,this)))
+				A.invoke(sourceMOB,newMOB,true);
+		}
+	}
+
+	public String accountForYourself()
+	{
+		String id="";
+		Vector V=Prop_SpellAdder.getMySpellsV(this);
+		for(int v=0;v<V.size();v++)
+		{
+			Ability A=(Ability)V.elementAt(v);
+			if(V.size()==1)
+				id+=A.name();
+			else
+			if(v==(V.size()-1))
+				id+="and "+A.name();
+			else
+				id+=A.name()+", ";
+		}
+		if(V.size()>0)
+			id="Casts "+id+" during combat.";
+		return id;
+	}
+
+	public void affect(Affect affect)
+	{
+		super.affect(affect);
+
+		if(processing) return;
+		processing=true;
+
+		if((myItem==null)&&(affected instanceof Item))
+			myItem=(Item)affected;
+		if((myItem!=null)
+		&&(!myItem.amWearingAt(Item.INVENTORY))
+		&&(myItem.myOwner()!=null)
+		&&(myItem.myOwner() instanceof MOB)
+		&&(affect.target()!=null)
+		&&(affect.target() instanceof MOB))
+		{
+			MOB mob=(MOB)myItem.myOwner();
+			if((mob.isInCombat())
+			&&(mob.location()!=null)
+			&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+			&&(!mob.amDead()))
+			{
+				if((myItem instanceof Weapon)
+				&&(affect.tool()==myItem)
+				&&(affect.amISource(mob)))
+					addMeIfNeccessary(affect.source(),(MOB)affect.target());
+				else
+				if(affect.amITarget(mob))
+					addMeIfNeccessary((MOB)affect.target(),(MOB)affect.target());
+			}
+		}
+		processing=false;
+	}
+}

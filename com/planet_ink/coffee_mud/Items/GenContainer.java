@@ -1,14 +1,13 @@
 package com.planet_ink.coffee_mud.Items;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
-public class GenContainer extends Container
+public class GenContainer extends StdContainer
 {
-	protected String	readableText="";
+	private String readableText = "";
 	public GenContainer()
 	{
 		super();
@@ -21,48 +20,32 @@ public class GenContainer extends Container
 		capacity=50;
 		recoverEnvStats();
 	}
-	
-	public GenContainer(String newName, 
-				   String newDisplayText, 
-				   String newDescription,
-				   boolean newIsGettable,
-				   int newBaseGoldValue,
-				   int newWeight,
-				   int newCapacity,
-				   boolean newHasALock,
-				   boolean newHasALid,
-				   boolean newIsTrapped,
-				   String newKeyName)
-	{
-		name=newName;
-		isGettable=newIsGettable;
-		baseEnvStats.setWeight(newWeight);
-		displayText=newDisplayText;
-		description=newDescription;
-		baseGoldValue=newBaseGoldValue;
-		capacity=newCapacity;
-		recoverEnvStats();
-		isTrapped=newIsTrapped;
-		Thief_Trap.setTrapped(this,isTrapped);
-		keyName=newKeyName;
-	}
-	
+
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
+	public String keyName()
+	{
+		return readableText;
+	}
+	public void setKeyName(String newKeyName)
+	{
+		readableText=newKeyName;
+	}
 	public Environmental newInstance()
 	{
 		return new GenContainer();
 	}
-	
+	public boolean isGeneric(){return true;}
+
 	public String text()
 	{
-		return Generic.getPropertiesStr(this);
+		return Generic.getPropertiesStr(this,false);
 	}
-	
+
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		Generic.setPropertiesStr(this,newText);
+		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 }

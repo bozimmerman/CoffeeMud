@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Javelin extends Weapon
+public class Javelin extends StdWeapon
 {
 	public Javelin()
 	{
@@ -23,7 +24,7 @@ public class Javelin extends Weapon
 		weaponType=TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_RANGED;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Javelin();

@@ -1,7 +1,5 @@
 package com.planet_ink.coffee_mud.utils;
 
-import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
 import java.util.*;
 import java.io.*;
 public class Util
@@ -31,6 +29,110 @@ public class Util
 		return thisStr;
 	}
 	
+	public static Vector copyVector(Vector V)
+	{
+		Vector V2=new Vector();
+		for(int v=0;v<V.size();v++)
+		{
+			Object h=V.elementAt(v);
+			if(h instanceof Vector)
+				V2.addElement(copyVector((Vector)h));
+			else
+				V2.addElement(h);
+		}
+		return V2;
+	}
+	
+	public static int numBits(String s)
+	{
+		int i=0;
+		int num=0;
+		boolean in=false;
+		char c=(char)0;
+		char fc=(char)0;
+		char lc=(char)0;
+		s=s.trim();
+		while(i<s.length())
+		{
+			c=s.charAt(i);
+			boolean white=(Character.isWhitespace(c)||(c==' ')||(c=='	')||(c=='\t'));
+			if(white&&in&&(((fc=='\'')&&(lc!='\''))||((fc=='`')&&(lc!='`'))))
+				white=false;
+			if(white&&in)
+			{
+				num++;
+				c=(char)0;
+				lc=(char)0;
+				fc=(char)0;
+				in=false;
+			}
+			else
+			if(!white)
+			{
+				if(!in)
+				{
+					in=true;
+					fc=c;
+					lc=(char)0;
+				}
+				else
+					lc=c;
+			}
+			i++;
+		}
+		if(in)
+			return num+1;
+		else
+			return num;
+	}
+	
+	public static String getBit(String s, int which)
+	{
+		int i=0;
+		int w=0;
+		boolean in=false;
+		s=s.trim();
+		String t="";
+		char c=(char)0;
+		char lc=(char)0;
+		char fc=(char)0;
+		while(i<s.length())
+		{
+			c=s.charAt(i);
+			boolean white=(Character.isWhitespace(c)||(c==' ')||(c=='	')||(c=='\t'));
+			if(white&&in&&(((fc=='\'')&&(lc!='\''))||((fc=='`')&&(lc!='`'))))
+				white=false;
+			if(white&&in)
+			{
+				if(w==which)
+					return t;
+				w++;
+				in=false;
+				c=(char)0;
+				lc=(char)0;
+				fc=(char)0;
+			}
+			else
+			if(!white)
+			{
+				if(!in)
+				{
+					t="";
+					fc=c;
+					lc=(char)0;
+					in=true;
+				}
+				else
+					lc=c;
+				t+=c;
+			}
+			i++;
+		}
+		if(in)
+			return t;
+		else
+			return "";
+	}
 	/**
 	 * Returns the long value of a string without crashing
  	 * 
@@ -46,193 +148,52 @@ public class Util
 		return slong;
 	}
 	
-	public static String id(Object e)
+	public static String combine(Vector commands, int startAt)
 	{
-		if(e!=null)
-			if(e instanceof Environmental)
-				return ((Environmental)e).ID();
-			else
-			if(e instanceof Race)
-				return ((Race)e).ID();
-			else
-			if(e instanceof CharClass)
-				return ((CharClass)e).ID();
-			else
-			if(e instanceof Behavior)
-				return ((Behavior)e).ID();
-		return "";
+		StringBuffer Combined=new StringBuffer("");
+		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+			Combined.append((String)commands.elementAt(commandIndex)+" ");
+		return Combined.toString().trim();
 	}
 	
-	public static boolean containsString(String toSrchStr, String srchStr)
+	public static Vector parse(String str)
 	{
-		if(srchStr.equalsIgnoreCase("all")) return true;
-		int x=toSrchStr.toUpperCase().indexOf(srchStr.toUpperCase());
-		if(x<0) return false;
-		
-		if(x==0)
+		Vector commands=new Vector();
+		str=str.trim();
+		while(!str.equals(""))
 		{
-			if(toSrchStr.length()<=srchStr.length())
-				return true;
-			//if(Character.isLetter(toSrchStr.charAt(x+srchStr.length())))
-			//   return false;
-			return true;
-		}
-		else
-		{
-			if(Character.isLetter(toSrchStr.charAt(x-1)))
-			   return false;
-			if(toSrchStr.length()<=x+srchStr.length())
-				return true;
-			//if(Character.isLetter(toSrchStr.charAt(x+srchStr.length())))
-			  // return false;
-			return true;
-		}
-	}
-	
-	public static Environmental fetchEnvironmental(Vector list, String srchStr)
-	{
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("the")))
-		   return null;
-		if(srchStr.startsWith("all "))
-			srchStr=srchStr.substring(4);
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			occurrance=s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
-		}
-
-							   
-		int myOccurrance=occurrance;
-		for(int i=0;i<list.size();i++)
-		{
-			Environmental thisThang=(Environmental)list.elementAt(i);
-			if(thisThang.ID().equalsIgnoreCase(srchStr)||containsString(thisThang.name(),srchStr))
-				if((--myOccurrance)<=0)
-					return thisThang;
-		}
-		myOccurrance=occurrance;
-		for(int i=0;i<list.size();i++)
-		{
-			Environmental thisThang=(Environmental)list.elementAt(i);
-			if((!(thisThang instanceof Ability))&&(containsString(thisThang.displayText(),srchStr)))
-				if((--myOccurrance)<=0)
-					return thisThang;
-		}
-		return null;
-	}
-	
-	public static Environmental fetchEnvironmental(Hashtable list, String srchStr)
-	{
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("the")))
-		   return null;
-		if(srchStr.startsWith("all "))
-			srchStr=srchStr.substring(4);
-		
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			occurrance=s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
-		}
-		if(list.get(srchStr)!=null) 
-			return (Environmental)list.get(srchStr);
-		int myOccurrance=occurrance;
-		for(Enumeration e=list.elements();e.hasMoreElements();)
-		{
-			Environmental thisThang=(Environmental)e.nextElement();
-			if(thisThang.ID().equalsIgnoreCase(srchStr)||containsString(thisThang.name(),srchStr))
-				if((--myOccurrance)<=0)
-					return thisThang;
-		}
-		myOccurrance=occurrance;
-		for(Enumeration e=list.elements();e.hasMoreElements();)
-		{
-			Environmental thisThang=(Environmental)e.nextElement();
-			if(containsString(thisThang.displayText(),srchStr))
-				if((--myOccurrance)<=0)
-					return thisThang;
-		}
-		return null;
-	}
-	
-	public static Environmental fetchEnvironmental(Environmental[] list, String srchStr)
-	{
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("the")))
-		   return null;
-		if(srchStr.startsWith("all "))
-			srchStr=srchStr.substring(4);
-		
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			occurrance=s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
-		}
-		int myOccurrance=occurrance;
-		for(int i=0;i<list.length;i++)
-		{
-			Environmental thisThang=(Environmental)list[i];
-			if(thisThang!=null)
-				if(thisThang.ID().equalsIgnoreCase(srchStr)||containsString(thisThang.name(),srchStr))
-					if((--myOccurrance)<=0)
-						return thisThang;
-		}
-		myOccurrance=occurrance;
-		for(int i=0;i<list.length;i++)
-		{
-			Environmental thisThang=(Environmental)list[i];
-			if(thisThang!=null)
-				if(containsString(thisThang.displayText(),srchStr))
-					if((--myOccurrance)<=0)
-						return thisThang;
-		}
-		return null;
-	}
-	
-	public static Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, boolean wornOnly, boolean unwornOnly)
-	{
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("the")))
-		   return null;
-		if(srchStr.startsWith("all "))
-			srchStr=srchStr.substring(4);
-		
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			occurrance=s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
-		}
-		int myOccurrance=occurrance;
-		for(int i=0;i<list.size();i++)
-		{
-			Item thisThang=(Item)list.elementAt(i);
-			boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
-			
-			if((thisThang.location()==goodLocation)
-			&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
-			&&(thisThang.ID().equalsIgnoreCase(srchStr)||containsString(thisThang.name(),srchStr)))
+			int spaceIndex=str.indexOf(" ");
+			int strIndex=str.indexOf("\"");
+			String CMD="";
+			if((strIndex>=0)&&((strIndex<spaceIndex)||(spaceIndex<0)))
 			{
-				if((--myOccurrance)<=0)
-					return thisThang;
+				int endStrIndex=str.indexOf("\"",strIndex+1);
+				if(endStrIndex>strIndex)
+				{
+					CMD=str.substring(strIndex+1,endStrIndex).trim();
+					str=str.substring(endStrIndex+1).trim();
+				}
+				else
+				{
+					CMD=str.substring(strIndex+1).trim();
+					str="";
+				}
 			}
+			else
+			if(spaceIndex>=0)
+			{
+				CMD=str.substring(0,spaceIndex).trim();
+				str=str.substring(spaceIndex+1).trim();
+			}
+			else
+			{
+				CMD=str.trim();
+				str="";
+			}
+			if(!CMD.equals(""))
+				commands.addElement(CMD);
 		}
-		myOccurrance=occurrance;
-		for(int i=0;i<list.size();i++)
-		{
-			Item thisThang=(Item)list.elementAt(i);
-			boolean beingWorn=!thisThang.amWearingAt(Item.INVENTORY);
-			if((thisThang.location()==goodLocation)
-			&&((beingWorn&wornOnly)||((!beingWorn)&&(unwornOnly))||((!wornOnly)&&(!unwornOnly)))
-			&&(containsString(thisThang.displayText(),srchStr)))
-				if((--myOccurrance)<=0)
-					return thisThang;
-		}
-		return null;
+		return commands;
 	}
 	
 	public static String padRight(String thisStr, int thisMuch)
@@ -305,5 +266,44 @@ public class Util
 	{
 		return new Integer(a).doubleValue()/new Integer(b).doubleValue();
 	}
+	public static int pow(int x, int y)
+	{
+		return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(y).doubleValue()));
+	}
+	public static boolean bset(int num, int bit)
+	{
+		return ((num&bit)==bit);
+	}
+	public static boolean isSet(int number, int bitnumber)
+	{
+		if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))
+			return true;
+		return false;
+	}
 	
+	public static String safetyFilter(String s)
+	{
+		StringBuffer s1=new StringBuffer(s);
+		
+		int x=-1;
+		while((++x)<s1.length())
+		{
+			if(s1.charAt(x)=='\r')
+			{
+				s1.deleteCharAt(x);
+				x--;
+			}
+			else
+			if(s1.charAt(x)=='\n')
+			{
+				s1.setCharAt(x,'\\');
+				s1.insert(x+1,'n');
+				x++;
+			}
+			else
+			if(s1.charAt(x)=='\'')
+				s1.setCharAt(x,'`');
+		}
+		return s1.toString();
+	}
 }

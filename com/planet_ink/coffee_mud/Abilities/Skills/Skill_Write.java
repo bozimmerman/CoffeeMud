@@ -1,0 +1,99 @@
+package com.planet_ink.coffee_mud.Abilities.Skills;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Skill_Write extends StdAbility
+{
+
+	public Skill_Write()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Write";
+		displayText="(in the mystical realm of magic)";
+		miscText="";
+
+		triggerStrings.addElement("WRITE");
+		triggerStrings.addElement("WR");
+
+		canBeUninvoked=true;
+		isAutoinvoked=false;
+
+		baseEnvStats().setLevel(1);
+
+		addQualifyingClass("Mage",1);
+		addQualifyingClass("Cleric",1);
+		addQualifyingClass("Fighter",1);
+		addQualifyingClass("Paladin",1);
+		addQualifyingClass("Thief",1);
+		addQualifyingClass("Bard",1);
+		recoverEnvStats();
+	}
+
+	public Environmental newInstance()
+	{
+		return new Skill_Write();
+	}
+
+	public int classificationCode()
+	{
+		return Ability.SKILL;
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(mob.charStats().getIntelligence()<8)
+		{
+			mob.tell("You are too stupid to actually write anything.");
+			return false;
+		}
+		if(commands.size()<2)
+		{
+			mob.tell("You must specify what you want to write on and then what you want to write.");
+			return false;
+		}
+		Item target=mob.fetchInventory((String)commands.elementAt(0));
+		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		{
+			mob.tell("You don't see that here.");
+			return false;
+		}
+
+		Item item=null;
+		if(target instanceof Item)
+			item=(Item)target;
+		if((item==null)||((item!=null)&&(!item.isReadable())))
+		{
+			mob.tell("You can't write on that.");
+			return false;
+		}
+
+		if(item instanceof Scroll)
+		{
+			mob.tell("You can't write on a scroll.");
+			return false;
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		boolean success=profficiencyCheck(0,auto);
+
+		if(success)
+		{
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> write(s) on <T-NAMESELF>.");
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				item.setReadableText(Util.combine(commands,1));
+			}
+		}
+		else
+			mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up.");
+		return success;
+	}
+
+}

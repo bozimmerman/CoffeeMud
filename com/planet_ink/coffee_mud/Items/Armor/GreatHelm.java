@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class GreatHelm extends Armor
+public class GreatHelm extends StdArmor
 {
 	public GreatHelm()
 	{
@@ -14,7 +14,7 @@ public class GreatHelm extends Armor
 		description="This is a steel helmet that completely encloses the head.";
 		properWornBitmap=Item.ON_HEAD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(18); 
+		baseEnvStats().setArmor(18);
 		baseEnvStats().setWeight(10);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=60;

@@ -1,19 +1,19 @@
 package com.planet_ink.coffee_mud.commands;
 
-import com.planet_ink.coffee_mud.MOBS.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
 public class BasicSenses
 {
-	public static void look(MOB mob, Vector commands, boolean quiet)
+	public void look(MOB mob, Vector commands, boolean quiet)
 	{
 		String textMsg="<S-NAME> look(s) ";
+		if(mob.location()==null) return;
 		if((commands!=null)&&(commands.size()>1))
 		{
-			String ID=CommandProcessor.combine(commands,1);
+			String ID=Util.combine(commands,1);
 			if(ID.equalsIgnoreCase("SELF"))
 				ID=mob.name();
 			Environmental thisThang=null;
@@ -23,29 +23,19 @@ public class BasicSenses
 				Room room=mob.location().doors()[dirCode];
 				Exit exit=mob.location().exits()[dirCode];
 				if((room!=null)&&(exit!=null))
-				{
-					if(!exit.isOpen())
-						thisThang=exit;
-					else
-					{
-						if((room.domainType()&128)==Room.INDOORS)
-							thisThang=room;
-						else
-						{
-							mob.tell("You can't see that from here.");
-							return;
-						}
-					}
-				}
+					thisThang=exit;
 				else
-					dirCode=-1;
+				{
+					mob.tell("You don't see anything that way.");
+					return;
+				}
 			}
 			if(dirCode<0)
-				thisThang=mob.location().fetchFromMOBRoom(mob,null,ID);
+				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID);
 			if(thisThang!=null)
 			{
-				String name="at "+thisThang.name();
-				if(thisThang instanceof Room)
+				String name="at <T-NAMESELF>.";
+ 				if((thisThang instanceof Room)||(thisThang instanceof Exit))
 				{
 					if(thisThang==mob.location())
 						name="around";
@@ -53,10 +43,12 @@ public class BasicSenses
 					if(dirCode>=0)
 						name=Directions.getDirectionName(dirCode);
 				}
-				FullMsg msg=new FullMsg(mob,thisThang,null,Affect.VISUAL_LOOK,textMsg+"at "+thisThang.name(),Affect.VISUAL_LOOK,textMsg+"at you.",Affect.VISUAL_WNOISE,textMsg+"at "+thisThang.name());
-				if(!mob.location().okAffect(msg))
-					return;
-				thisThang.affect(msg);
+				FullMsg msg=new FullMsg(mob,thisThang,null,Affect.MSG_EXAMINESOMETHING,textMsg+name);
+				if(mob.location().okAffect(msg))
+					thisThang.affect(msg);
+				if((thisThang instanceof Room)&&((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0))
+					((Room)thisThang).listExits(mob);
+
 			}
 			else
 				mob.tell("You don't see that here!");
@@ -70,64 +62,65 @@ public class BasicSenses
 					return;
 				}
 
-			FullMsg msg=new FullMsg(mob,mob.location(),null,Affect.VISUAL_LOOK,(quiet?null:textMsg+"around"),Affect.VISUAL_LOOK,(quiet?null:textMsg+"at you."),Affect.VISUAL_WNOISE,(quiet?null:textMsg+"around"));
-
+			FullMsg msg=new FullMsg(mob,mob.location(),null,Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"at you."),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"));
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
+			if((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
+				mob.location().listExits(mob);
 		}
 	}
 
-	public static void wimpy(MOB mob, Vector commands)
+	public void wimpy(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell("Change your wimp level to what?");
 			return;
 		}
-		mob.setWimpHitPoint(Util.s_int(CommandProcessor.combine(commands,1)));
+		mob.setWimpHitPoint(Util.s_int(Util.combine(commands,1)));
 		mob.tell("Your wimp level has been changed to "+mob.getWimpHitPoint()+" hit points.");
 	}
 
-	public static void description(MOB mob, Vector commands)
+	public void description(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell("Change your description to what?");
 			return;
 		}
-		mob.setDescription(CommandProcessor.combine(commands,1));
+		mob.setDescription(Util.combine(commands,1));
 		mob.tell("Your description has been changed.");
 	}
 
-	public static void password(MOB mob, Vector commands)
+	public void password(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell("Change your password to what?");
 			return;
 		}
-		mob.setDescription(CommandProcessor.combine(commands,1));
+		mob.setDescription(Util.combine(commands,1));
 		mob.tell("Your password has been changed.");
 	}
 
-	public static void emote(MOB mob, Vector commands)
+	public void emote(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell("emote what?");
 			return;
 		}
-		String emote="<S-NAME> "+CommandProcessor.combine(commands,1);
-		FullMsg msg=new FullMsg(mob,null,null,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,emote);
+		String emote="<S-NAME> "+Util.combine(commands,1);
+		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_NOISYMOVEMENT,emote);
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
 
-	public static void train(MOB mob, Vector commands)
+	public void train(MOB mob, Vector commands)
 	{
-		if(commands.size()<3)
+		if(commands.size()<2)
 		{
-			mob.tell("Train what, with whom?");
+			mob.tell("Train what?");
 			return;
 		}
 		commands.removeElementAt(0);
@@ -149,7 +142,22 @@ public class BasicSenses
 		commands.removeElementAt(0);
 
 
-		MOB teacher=mob.location().fetchInhabitant(CommandProcessor.combine(commands,0));
+		MOB teacher=null;
+		if(commands.size()>0)
+		{
+			teacher=mob.location().fetchInhabitant((String)commands.elementAt(0));
+			if(teacher!=null) commands.removeElementAt(0);
+		}
+		if(teacher==null)
+		for(int i=0;i<mob.location().numInhabitants();i++)
+		{
+			MOB possTeach=mob.location().fetchInhabitant(i);
+			if(possTeach!=mob)
+			{
+				teacher=possTeach;
+				break;
+			}
+		}
 		if((teacher==null)||((teacher!=null)&&(!Sense.canBeSeenBy(teacher,mob))))
 		{
 			mob.tell("That person doesn't seem to be here.");
@@ -176,7 +184,7 @@ public class BasicSenses
 			return;
 		}
 
-		FullMsg msg=new FullMsg(teacher,mob,null,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,"<S-NAME> train(s) with <T-NAME>.");
+		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> train(s) with <T-NAMESELF>.");
 		if(!mob.location().okAffect(msg))
 			return;
 		mob.location().send(mob,msg);
@@ -209,5 +217,30 @@ public class BasicSenses
 		}
 		mob.recoverCharStats();
 		mob.setTrains(mob.getTrains()-1);
+	}
+
+	public void outfit(MOB mob)
+	{
+		if(mob==null) return;
+		if(mob.charStats()==null) return;
+		CharClass C=mob.charStats().getMyClass();
+		Race R=mob.charStats().getMyRace();
+		if(C!=null) C.outfit(mob);
+		if(R!=null) R.outfit(mob);
+		new Scoring().equipment(mob);
+	}
+
+	public void autoExits(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOEXITS);
+			mob.tell("Autoexits has been turned off.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOEXITS);
+			mob.tell("Autoexits has been turned on.");
+		}
 	}
 }

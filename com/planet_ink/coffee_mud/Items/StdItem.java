@@ -1,8 +1,7 @@
 package com.planet_ink.coffee_mud.Items;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Abilities.ItemRejuv;
 import java.util.*;
 
 
@@ -30,13 +29,13 @@ public class StdItem implements Item
 	protected int		goldValue=0;
 	protected int		material=CLOTH;
 	protected Environmental owner=null;
-	
+
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();
 
-	protected Stats envStats=new Stats();
-	protected Stats baseEnvStats=new Stats();
+	protected EnvStats envStats=new DefaultEnvStats();
+	protected EnvStats baseEnvStats=new DefaultEnvStats();
 
 	protected boolean destroyed=false;
 
@@ -44,8 +43,8 @@ public class StdItem implements Item
 	{
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setArmor(0);
-		recoverEnvStats();
 	}
+	public boolean isGeneric(){return false;}
 
 	public String ID()
 	{
@@ -53,12 +52,12 @@ public class StdItem implements Item
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
-	public Stats envStats()
+	public EnvStats envStats()
 	{
 		return envStats;
 	}
 
-	public Stats baseEnvStats()
+	public EnvStats baseEnvStats()
 	{
 		return baseEnvStats;
 	}
@@ -76,7 +75,7 @@ public class StdItem implements Item
 			envStats().setDisposition(envStats().disposition()|Sense.IS_BONUS);
 	}
 
-	public void setBaseEnvStats(Stats newBaseEnvStats)
+	public void setBaseEnvStats(EnvStats newBaseEnvStats)
 	{
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
@@ -93,11 +92,15 @@ public class StdItem implements Item
 		destroyed=false;
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
-		
+
 		affects=new Vector();
 		behaviors=new Vector();
 		for(int i=0;i<E.numBehaviors();i++)
-			behaviors.addElement(E.fetchBehavior(i));
+			addBehavior(E.fetchBehavior(i));
+
+		for(int i=0;i<E.numAffects();i++)
+			if(!((Ability)E.fetchAffect(i)).canBeUninvoked())
+				addAffect((Ability)E.fetchAffect(i).copyOf());
 
 	}
 	public Environmental copyOf()
@@ -107,22 +110,26 @@ public class StdItem implements Item
 			StdItem E=(StdItem)this.clone();
 			E.cloneFix(this);
 			return E;
-			
+
 		}
 		catch(CloneNotSupportedException e)
 		{
 			return this.newInstance();
 		}
 	}
-	
+
 	public Environmental myOwner(){return owner;}
-	public void setOwner(Environmental E){owner=E;}
-	
+	public void setOwner(Environmental E)
+	{
+		owner=E;
+		recoverEnvStats();
+	}
+
 	public boolean amDestroyed()
 	{
 		return destroyed;
 	}
-	
+
 	public boolean amWearingAt(long wornCode)
 	{
 		if((myWornCode+wornCode)==0)
@@ -138,7 +145,20 @@ public class StdItem implements Item
 			return true;
 		return ((properWornBitmap & wornCode)==wornCode);
 	}
-	public void wear(long wornCode)
+	public void wearIfPossible(MOB mob)
+	{
+		if(canWear(mob))
+			for(int i=0;i<20;i++)
+			{
+				long wornCode=new Double(Math.pow(new Double(2).doubleValue(),new Double(i).doubleValue())).longValue();
+				if((this.canBeWornAt(wornCode))&&(!mob.amWearingSomethingHere(wornCode)))
+				{
+					wearAt(wornCode);
+					break;
+				}
+			}
+	}
+	public void wearAt(long wornCode)
 	{
 		if(wornCode==Item.INVENTORY)
 		{
@@ -149,7 +169,7 @@ public class StdItem implements Item
 			myWornCode=properWornBitmap;
 		else
 			myWornCode=wornCode;
-
+		recoverEnvStats();
 	}
 
 	public long rawProperLocationBitmap()
@@ -168,7 +188,7 @@ public class StdItem implements Item
 	{
 		if(toThis.rawLogicalAnd()!=wornLogicalAnd)
 			return false;
-		if(toThis.rawProperLocationBitmap()==properWornBitmap)
+		if((toThis.rawProperLocationBitmap()|Item.HELD)==(properWornBitmap|Item.HELD))
 			return true;
 		return false;
 	}
@@ -208,6 +228,7 @@ public class StdItem implements Item
 	public void remove()
 	{
 		myWornCode=Item.INVENTORY;
+		recoverEnvStats();
 	}
 
 
@@ -238,7 +259,7 @@ public class StdItem implements Item
 	{
 		baseGoldValue=newValue;
 	}
-	
+
 	public String readableText(){return miscText;}
 	public void setReadableText(String text){miscText=text;}
 	public boolean isReadable(){return isReadable;}
@@ -251,10 +272,10 @@ public class StdItem implements Item
 	public void setRemovable(boolean isTrue){isRemovable=isTrue;}
 	public boolean isTrapped(){return isTrapped;}
 	public void setTrapped(boolean isTrue){isTrapped=isTrue;}
-	
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if(Sense.isLight(this))
+		if(Sense.isLight(this)&&(rawWornCode()!=Item.INVENTORY))
 		{
 			if(!(affected instanceof Room))
 				affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_LIGHT);
@@ -266,6 +287,8 @@ public class StdItem implements Item
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{}
 	public void setMiscText(String newText)
 	{
 		miscText=newText;
@@ -274,26 +297,34 @@ public class StdItem implements Item
 	{
 		return miscText;
 	}
+
 	public boolean tick(int tickID)
 	{
 		if(destroyed)
 			return false;
 
-		int a=0;
-		while(a<affects.size())
+		if(tickID==Host.ITEM_BEHAVIOR_TICK)
 		{
-			Ability A=(Ability)affects.elementAt(a);
-			int s=affects.size();
-			if(!A.tick(tickID))
-				A.unInvoke();
-			if(affects.size()==s)
-				a++;
-		}
+			if(behaviors.size()==0) return false;
 
-		for(int b=0;b<behaviors.size();b++)
+			for(int b=0;b<behaviors.size();b++)
+			{
+				Behavior B=(Behavior)behaviors.elementAt(b);
+				B.tick(this,tickID);
+			}
+		}
+		else
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			B.tick(this,tickID);
+			int a=0;
+			while(a<affects.size())
+			{
+				Ability A=(Ability)affects.elementAt(a);
+				int s=affects.size();
+				if(!A.tick(tickID))
+					A.unInvoke();
+				if(affects.size()==s)
+					a++;
+			}
 		}
 		return true;
 	}
@@ -301,11 +332,12 @@ public class StdItem implements Item
 	{
 		return myLocation;
 	}
+	public String rawSecretIdentity(){return ((secretIdentity==null)?"":secretIdentity);}
 	public String secretIdentity()
 	{
 		if((secretIdentity!=null)&&(secretIdentity.length()>0))
-			return secretIdentity;
-		return description;
+			return secretIdentity+"\n\rLevel: "+envStats().level()+tackOns();
+		return description+"\n\rLevel: "+envStats().level()+tackOns();
 	}
 
 	public void setSecretIdentity(String newIdentity)
@@ -363,171 +395,182 @@ public class StdItem implements Item
 		if(!affect.amITarget(this))
 			return true;
 		else
-		switch(affect.targetType())
+		if((Util.bset(affect.targetCode(),Affect.MASK_MAGIC))&&(!this.isGettable()))
 		{
-		case Affect.VISUAL:
+			mob.tell("Please don't do that.");
+			return false;
+		}
+		else
+		switch(affect.targetMinor())
+		{
+		case Affect.TYP_EXAMINESOMETHING:
+		case Affect.TYP_READSOMETHING:
+		case Affect.TYP_SPEAK:
+		case Affect.TYP_OK_ACTION:
+		case Affect.TYP_OK_VISUAL:
+		case Affect.TYP_NOISE:
 			return true;
-		case Affect.SOUND:
-			return true;
-		case Affect.HANDS:
-			switch(affect.targetCode())
+		case Affect.TYP_HOLD:
+			if(!canBeWornAt(Item.HELD))
 			{
-			case Affect.HANDS_HOLD:
-				if(!canBeWornAt(Item.HELD))
-				{
-					StringBuffer msg=new StringBuffer("You can't hold that. ");
-					if(canBeWornAt(Item.WIELD))
-						msg.append("Try WIELDing it.");
-					else
-					if(properWornBitmap>0)
-						msg.append("Try WEARing it.");
-					mob.tell(msg.toString());
-					return false;
-				}
-				if(!canWear(mob))
-				{
-					mob.tell("Your hands are full.");
-					return false;
-				}
-				if(envStats().level()>mob.envStats().level())
-				{
-					mob.tell("That looks too advanced for you.");
-					return false;
-				}
-				return true;
-			case Affect.HANDS_WEAR:
-				if(properWornBitmap==0)
-				{
-					mob.tell("You can't wear that. ");
-					return false;
-				}
-				if(!amWearingAt(Item.INVENTORY))
-				{
-					mob.tell("You are already wearing that.");
-					return false;
-				}
-				if(!canWear(mob))
-				{	mob.tell("You cannot wear any more of these.");
-					return false;
-				}
-				if(envStats().level()>mob.envStats().level())
-				{
-					mob.tell("That looks too advanced for you.");
-					return false;
-				}
-				return true;
-			case Affect.HANDS_WIELD:
-				if(!canBeWornAt(Item.WIELD))
-				{
-					mob.tell("You can't wield that as a weapon.");
-					return false;
-				}
-				if(amWearingAt(Item.WIELD))
-				{
-					mob.tell("That's already being wielded.");
-					return false;
-				}
-				if(mob.amWearingSomethingHere(Item.WIELD))
-				{
-					mob.tell("You are already wielding something.");
-					return false;
-				}
-				if(!canWear(mob))
-				{	mob.tell("You can't wield that, your hands are full.");
-					return false;
-				}
-				if(envStats().level()>mob.envStats().level())
-				{
-					mob.tell("That looks too advanced for you.");
-					return false;
-				}
-				return true;
-			case Affect.HANDS_GET:
-				if(affect.tool()==null)
-				{
-					if(!Sense.canBeSeenBy(this,mob))
-					{
-						mob.tell("You can't see that.");
-						return false;
-					}
-					if(mob.envStats().level()<envStats().level()-10)
-					{
-						mob.tell(name()+" is too powerful to endure possessing it.");
-						return false;
-					}
-					if(envStats().weight()>(mob.charStats().maxCarry()-mob.envStats().weight()))
-					{
-						mob.tell(name()+" is too heavy.");
-						return false;
-					}
-					if((!amWearingAt(Item.INVENTORY))&&(!isRemovable))
-					{
-						if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
-						{
-							mob.tell("You can't seem to let go of "+name()+".");
-							return false;
-						}
-						mob.tell("You can't seem to remove "+name()+".");
-						return false;
-					}
-					if(!isGettable)
-					{
-						mob.tell("You can't get "+name()+".");
-						return false;
-					}
-					return true;
-				}
-				if(this instanceof Container)
-					return true;
-				if(affect.sourceCode()==Affect.HANDS_BUY)
-					return true;
-				if(affect.sourceCode()==Affect.HANDS_SELL)
-					return true;
-				break;
-			case Affect.HANDS_DROP:
-				if(!mob.isMine(this))
-				{
-					mob.tell("You don't have that.");
-					return false;
-				}
-				if(!isDroppable)
-				{
-					mob.tell("You can't seem to let go of "+name()+".");
-					return false;
-				}
-				return true;
-			default:
-				break;
+				StringBuffer msg=new StringBuffer("You can't hold that. ");
+				if(canBeWornAt(Item.WIELD))
+					msg.append("Try WIELDing it.");
+				else
+				if(properWornBitmap>0)
+					msg.append("Try WEARing it.");
+				mob.tell(msg.toString());
+				return false;
 			}
+			if(!canWear(mob))
+			{
+				mob.tell("Your hands are full.");
+				return false;
+			}
+			if(envStats().level()>mob.envStats().level())
+			{
+				mob.tell("That looks too advanced for you.");
+				return false;
+			}
+			return true;
+		case Affect.TYP_WEAR:
+			if(properWornBitmap==0)
+			{
+				mob.tell("You can't wear that. ");
+				return false;
+			}
+			if(!amWearingAt(Item.INVENTORY))
+			{
+				mob.tell("You are already wearing that.");
+				return false;
+			}
+			if(!canWear(mob))
+			{	mob.tell("You cannot wear any more of these.");
+				return false;
+			}
+			if(envStats().level()>mob.envStats().level())
+			{
+				mob.tell("That looks too advanced for you.");
+				return false;
+			}
+			return true;
+		case Affect.TYP_WIELD:
+			if(!canBeWornAt(Item.WIELD))
+			{
+				mob.tell("You can't wield that as a weapon.");
+				return false;
+			}
+			if(amWearingAt(Item.WIELD))
+			{
+				mob.tell("That's already being wielded.");
+				return false;
+			}
+			if(mob.amWearingSomethingHere(Item.WIELD))
+			{
+				mob.tell("You are already wielding something.");
+				return false;
+			}
+			if(!canWear(mob))
+			{	mob.tell("You can't wield that, your hands are full.");
+				return false;
+			}
+			if(envStats().level()>mob.envStats().level())
+			{
+				mob.tell("That looks too advanced for you.");
+				return false;
+			}
+			return true;
+		case Affect.TYP_GET:
+			if(affect.tool()==null)
+			{
+				if(!Sense.canBeSeenBy(this,mob))
+				{
+					mob.tell("You can't see that.");
+					return false;
+				}
+				if(mob.envStats().level()<envStats().level()-10)
+				{
+					mob.tell(name()+" is too powerful to endure possessing it.");
+					return false;
+				}
+				if((envStats().weight()>(mob.charStats().maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+				{
+					mob.tell(name()+" is too heavy.");
+					return false;
+				}
+				if((!amWearingAt(Item.INVENTORY))&&(!isRemovable))
+				{
+					if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
+					{
+						mob.tell("You can't seem to let go of "+name()+".");
+						return false;
+					}
+					mob.tell("You can't seem to remove "+name()+".");
+					return false;
+				}
+				if(!isGettable)
+				{
+					mob.tell("You can't get "+name()+".");
+					return false;
+				}
+				return true;
+			}
+			if(this instanceof Container)
+				return true;
+			switch(affect.sourceMinor())
+			{
+			case Affect.TYP_BUY:
+			case Affect.TYP_GET:
+			case Affect.TYP_GENERAL:
+			case Affect.TYP_SELL:
+			case Affect.TYP_VALUE:
+			case Affect.TYP_GIVE:
+				return true;
+			}
+			break;
+		case Affect.TYP_DROP:
+			if(!mob.isMine(this))
+			{
+				mob.tell("You don't have that.");
+				return false;
+			}
+			if(!isDroppable)
+			{
+				mob.tell("You can't seem to let go of "+name()+".");
+				return false;
+			}
+			return true;
+		case Affect.TYP_BUY:
+		case Affect.TYP_SELL:
+		case Affect.TYP_VALUE:
+				return true;
+		case Affect.TYP_OPEN:
+		case Affect.TYP_CLOSE:
+		case Affect.TYP_LOCK:
+		case Affect.TYP_PUT:
+		case Affect.TYP_UNLOCK:
+			if(this instanceof Container)
+				return true;
+			break;
+		case Affect.TYP_DELICATE_HANDS_ACT:
+		case Affect.TYP_CAST_SPELL:
+			return true;
+		case Affect.TYP_FILL:
+			if(this instanceof Drink)
+				return true;
+			if(this instanceof Lantern)
+				return true;
+			break;
+		case Affect.TYP_EAT:
+			if(this instanceof Food)
+				return true;
+			break;
+		case Affect.TYP_DRINK:
+			if(this instanceof Drink)
+				return true;
 			break;
 		default:
 			break;
-		}
-
-		switch(affect.targetCode())
-		{
-			case Affect.HANDS_OPEN:
-			case Affect.HANDS_CLOSE:
-			case Affect.HANDS_LOCK:
-			case Affect.HANDS_PUT:
-			case Affect.HANDS_UNLOCK:
-				if(this instanceof Container)
-					return true;
-				break;
-			case Affect.HANDS_FILL:
-				if(this instanceof Drink)
-					return true;
-				if(this instanceof Lantern)
-					return true;
-				break;
-			case Affect.TASTE_FOOD:
-				if(this instanceof Food)
-					return true;
-				break;
-			case Affect.TASTE_WATER:
-				if(this instanceof Drink)
-					return true;
-				break;
 		}
 		mob.tell("You can't do that to "+name()+".");
 		return false;
@@ -548,9 +591,9 @@ public class StdItem implements Item
 		if(!affect.amITarget(this))
 			return;
 		else
-		switch(affect.targetCode())
+		switch(affect.targetMinor())
 		{
-		case Affect.VISUAL_LOOK:
+		case Affect.TYP_EXAMINESOMETHING:
 			if(!(this instanceof Container))
 			{
 				if(Sense.canBeSeenBy(this,mob))
@@ -558,13 +601,16 @@ public class StdItem implements Item
 					if(mob.readSysopMsgs())
 						mob.tell(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rUses :"+usesRemaining()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\r"+description()+"\n\r");
 					else
+					if(description().length()==0)
+						mob.tell("You don't see anything special about "+this.name());
+					else
 						mob.tell(description());
 				}
 				else
 					mob.tell("You can't see that!");
 			}
 			return;
-		case Affect.VISUAL_READ:
+		case Affect.TYP_READSOMETHING:
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
@@ -575,44 +621,39 @@ public class StdItem implements Item
 			else
 				mob.tell("You can't see that!");
 			return;
-		case Affect.HANDS_HOLD:
+		case Affect.TYP_HOLD:
 			if((this.canWear(mob))&&(this.canBeWornAt(Item.HELD)))
 			{
-				wear(Item.HELD);
-				mob.location().recoverRoomStats();
+				wearAt(Item.HELD);
+				mob.recoverCharStats();
+				mob.recoverEnvStats();
+				mob.recoverMaxState();
 			}
 			break;
-		case Affect.HANDS_WEAR:
+		case Affect.TYP_WEAR:
 			if(this.canWear(mob))
 			{
-				for(int i=0;i<20;i++)
-				{
-					long wornCode=new Double(Math.pow(new Double(2).doubleValue(),new Double(i).doubleValue())).longValue();
-					if(this.canWear(mob)&&(this.canBeWornAt(wornCode)))
-					{
-						wear(wornCode);
-						break;
-					}
-				}
-				mob.location().recoverRoomStats();
+				wearIfPossible(mob);
+				mob.recoverCharStats();
+				mob.recoverEnvStats();
+				mob.recoverMaxState();
 			}
 			break;
-		case Affect.HANDS_WIELD:
+		case Affect.TYP_WIELD:
 			if((this.canWear(mob))&&(this.canBeWornAt(Item.WIELD)))
 			{
-				wear(Item.WIELD);
-				mob.location().recoverRoomStats();
+				wearAt(Item.WIELD);
+				mob.recoverCharStats();
+				mob.recoverEnvStats();
+				mob.recoverMaxState();
 			}
 			break;
-		case Affect.HANDS_GET:
+		case Affect.TYP_GET:
 			if(!(this instanceof Container))
 			{
 				setLocation(null);
 				if(Sense.isHidden(this))
-				{
 					baseEnvStats().setDisposition(baseEnvStats().disposition()&((int)Sense.ALLMASK-Sense.IS_HIDDEN));
-					recoverEnvStats();
-				}
 				if(mob.location().isContent(this))
 					mob.location().delItem(this);
 				if(!mob.isMine(this))
@@ -621,7 +662,7 @@ public class StdItem implements Item
 				mob.location().recoverRoomStats();
 			}
 			break;
-		case Affect.HANDS_DROP:
+		case Affect.TYP_DROP:
 			if(mob.isMine(this))
 			{
 				mob.delInventory(this);
@@ -642,11 +683,11 @@ public class StdItem implements Item
 		myLocation=null;
 		if(owner==null) return;
 		for(int a=this.numAffects()-1;a>=0;a--)
-			if(!(fetchAffect(a) instanceof ItemRejuv))
+			if(!(fetchAffect(a).ID().equals("ItemRejuv")))
 				fetchAffect(a).unInvoke();
-		
+
 		destroyed=true;
-		
+
 		if (owner instanceof Room)
 		{
 			Room thisRoom=(Room)owner;
@@ -670,17 +711,18 @@ public class StdItem implements Item
 			}
 			mob.delInventory(this);
 		}
+		recoverEnvStats();
 	}
-	
+
 	public void removeThis()
 	{
 		myLocation=null;
-		
+
 		if(owner==null) return;
 		for(int a=this.numAffects()-1;a>=0;a--)
-			if(!(fetchAffect(a) instanceof ItemRejuv))
+			if(!fetchAffect(a).ID().equals("ItemRejuv"))
 				fetchAffect(a).unInvoke();
-		
+
 		if (owner instanceof Room)
 		{
 			Room thisRoom=(Room)owner;
@@ -704,28 +746,25 @@ public class StdItem implements Item
 			}
 			mob.delInventory(this);
 		}
+		recoverEnvStats();
 	}
 
-	public void strike(MOB source, MOB target, boolean success)
+	public void addNonUninvokableAffect(Ability to)
 	{
-		if(success)
-		{
-			FullMsg msg=new FullMsg(source,target,null,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,"<S-NAME> annoys <T-NAME> with "+name()+".");
-			source.location().send(source,msg);
-		}
-		else
-		{
-			FullMsg msg=new FullMsg(source,target,null,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,Affect.VISUAL_WNOISE,"<S-NAME> swings "+name()+" at <T-NAME>.");
-			source.location().send(source,msg);
-		}
+		if(to==null) return;
+		for(int i=0;i<affects.size();i++)
+			if(((Ability)affects.elementAt(i))==to)
+				return;
+		to.makeNonUninvokable();
+		to.makeLongLasting();
+		affects.addElement(to);
+		to.setAffectedOne(this);
 	}
-
-
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
 		for(int i=0;i<affects.size();i++)
-			if(((Ability)affects.elementAt(i)).ID().equals(to.ID()))
+			if(((Ability)affects.elementAt(i))==to)
 				return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
@@ -763,11 +802,18 @@ public class StdItem implements Item
 		for(int i=0;i<behaviors.size();i++)
 			if(((Behavior)behaviors.elementAt(i)).ID().equals(to.ID()))
 				return;
+
+		// first one! so start ticking...
+		if(behaviors.size()==0)
+			ExternalPlay.startTickDown(this,Host.ITEM_BEHAVIOR_TICK,1);
+		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
 	public void delBehavior(Behavior to)
 	{
 		behaviors.removeElement(to);
+		if(behaviors.size()==0)
+			ExternalPlay.deleteTick(this,Host.ITEM_BEHAVIOR_TICK);
 	}
 	public int numBehaviors()
 	{
@@ -779,4 +825,38 @@ public class StdItem implements Item
 			return (Behavior)behaviors.elementAt(index);
 		return null;
 	}
+	protected String tackOns()
+	{
+		String identity="";
+		if(numAffects()>0)
+			identity+="\n\rHas the following magical properties: ";
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if(A.accountForYourself().length()>0)
+				identity+="\n\r"+A.accountForYourself();
+		}
+		return identity;
+	}
+
+	public String materialDescription()
+	{
+		switch(material)
+		{
+		case CLOTH:
+			return "CLOTH";
+		case METAL:
+			return "METAL";
+		case LEATHER:
+			return "LEATHER";
+		case MITHRIL:
+			return "MITRIL";
+		case WOODEN:
+			return "WOODEN";
+		case GLASS:
+			return "GLASS";
+		}
+		return "";
+	}
+
 }

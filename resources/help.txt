@@ -1,23 +1,23 @@
 MOVEMENT                            COMMUNICATION
 north south east west up down       gossip chat gratz greet
 exits recall                        answer quote say tell channels
-sleep wake rest stand               quiet emote socials
+sleep wake rest stand               quiet emote socials yell
 
 COMBAT/SPELLS/SKILLS                INFORMATION
 kill backstab flee wimpy rescue     help credits commands areas
 climb bash disarm dirt trip         report score attributes who
-spells skills prayers songs         description
+spells skills prayers songs         description topics
 pray practice cast sing
                                     GROUPS
 OBJECTS                             follow group gtell split
 inventory equipment look compare    
 get put drop give                   OTHER
-wear wield hold eat drink           ! quit password train
+wear wield hold eat drink           ! quit password train qualify
 lock unlock open close pick
-list buy sell                       CLASSES
+list buy sell value                 CLASSES
                                     fighter mage cleric thief 
-HELP                                ranger paladin
-help commands bug
+HELP                                ranger paladin bard
+help commands bug topics
 ** enter help 'command name' 
 for more help!
                        

@@ -1,13 +1,12 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
 import java.util.*;
 
-public class Wand_Nourishment extends Wand implements MiscMagic
+public class Wand_Nourishment extends StdWand
 {
-	
+
 	public Wand_Nourishment()
 	{
 		super();
@@ -19,20 +18,20 @@ public class Wand_Nourishment extends Wand implements MiscMagic
 		baseGoldValue=200;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Wand_Nourishment();
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.SOUND_WORDS:
+			case Affect.TYP_SPEAK:
 				if((mob.isMine(this))&&(!amWearingAt(Item.INVENTORY)))
 					if(affect.targetMessage().toUpperCase().indexOf("'SHAZAM'")>=0)
 						if(mob.curState().adjHunger(50,mob.maxState()))

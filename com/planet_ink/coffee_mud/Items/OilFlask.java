@@ -1,21 +1,22 @@
 package com.planet_ink.coffee_mud.Items;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
+
 import java.util.*;
 
-public class OilFlask extends Container
+public class OilFlask extends StdContainer
 {
-	
+
 	public int amountOfLiquidHeld=5;
 	public int amountOfLiquidRemaining=5;
-	
+
 	public OilFlask()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="an oil flash";
+		name="an oil flask";
 		baseEnvStats.setWeight(10);
 		capacity=0;
 		material=Item.GLASS;
@@ -24,20 +25,20 @@ public class OilFlask extends Container
 		baseGoldValue=5;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new OilFlask();
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-				case Affect.HANDS_FILL:
+				case Affect.TYP_FILL:
 					if(mob.isMine(this))
 					{
 						if(amountOfLiquidRemaining>=amountOfLiquidHeld)
@@ -72,15 +73,15 @@ public class OilFlask extends Container
 		}
 		return super.okAffect(affect);
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.HANDS_FILL:
+			case Affect.TYP_FILL:
 				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 				{
 					OilFlask thePuddle=(OilFlask)affect.tool();

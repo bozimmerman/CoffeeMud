@@ -1,35 +1,40 @@
 package com.planet_ink.coffee_mud.commands;
 
-import com.planet_ink.coffee_mud.MOBS.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.commands.sysop.SysopItemUsage;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.db.*;
 import java.io.*;
 import java.util.*;
 public class TheFight
 {
 
-	public static void kill(MOB mob, Vector commands)
+	private Grouping grouping=new Grouping();
+	public TheFight()
 	{
+	}
+	
+	public TheFight(Grouping grouper)
+	{
+		grouping=grouper;
+	}
+	public void kill(MOB mob, Vector commands)
+	{
+		if(mob.isInCombat())
+			return;
+
 		if(commands.size()<2)
 		{
 			mob.tell("Kill whom?");
 		}
 		boolean reallyKill=false;
-		String whomToKill=CommandProcessor.combine(commands,1);
+		String whomToKill=Util.combine(commands,1);
 		if(mob.isASysOp()&&(!mob.isMonster()))
 		{
 			if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("DEAD"))
 			{
 				commands.removeElementAt(commands.size()-1);
-				whomToKill=CommandProcessor.combine(commands,1);
+				whomToKill=Util.combine(commands,1);
 				reallyKill=true;
 			}
 		}
@@ -42,20 +47,15 @@ public class TheFight
 		}
 		if(reallyKill)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.STRIKE_MAGIC,"<S-NAME> touch <T-NAME>.",Affect.STRIKE_MAGIC,"<S-NAME> touches <T-NAME>.",Affect.VISUAL_WNOISE,"<S-NAME> touches <T-NAME>.");
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"<S-NAME> touch(es) <T-NAMESELF>.");
 			mob.location().send(mob,msg);
-			doDamage(target,target.curState().getHitPoints()+10);
+			doDamage(mob,target,target.curState().getHitPoints()+10);
 		}
 		else
-		{
-			Item weapon=mob.fetchWieldedItem();
-			FullMsg msg=new FullMsg(mob,target,weapon,Affect.STRIKE_HANDS,null,Affect.STRIKE_HANDS,null,Affect.VISUAL_WNOISE,null);
-			mob.location().send(mob,msg);
-		}
-
+			postAttack(mob,target,mob.fetchWieldedItem());
 	}
 
-	public static String mobCondition(MOB mob)
+	public String mobCondition(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 		if(pct<.10)
@@ -92,56 +92,71 @@ public class TheFight
 
 	}
 
-	public static Hashtable allPossibleCombatants(MOB mob)
+	public Hashtable allPossibleCombatants(MOB mob)
 	{
 		Hashtable h=new Hashtable();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
-		Hashtable h1=Grouping.getAllFollowers(mob);
+		Hashtable h1=grouping.getGroupMembers(mob);
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
 			if((inhab!=mob)
-			&&(h1.get(inhab.ID())==null))
-				h.put(inhab.ID(),inhab);
+			&&(h1.get(inhab)==null)
+			&&((!mob.isMonster())||(!inhab.isMonster())))
+				h.put(inhab,inhab);
 		}
 		return h;
 	}
 
-	public static Hashtable allCombatants(MOB mob)
+	public Hashtable properTargets(Ability A, MOB caster)
+	{
+		Hashtable h=null;
+		if(A.quality()!=Ability.MALICIOUS)
+			h=grouping.getGroupMembers(caster);
+		else
+		if(caster.isInCombat())
+			h=allCombatants(caster);
+		else
+			h=allPossibleCombatants(caster);
+		return h;
+	}
+
+	public Hashtable allCombatants(MOB mob)
 	{
 		Hashtable h=new Hashtable();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
 		if(!mob.isInCombat()) return null;
 
-		Hashtable h1=Grouping.getAllFollowers(mob);
+		Hashtable h1=grouping.getGroupMembers(mob);
 
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
 			if((inhab==mob.getVictim())
 			||((inhab!=mob)
-			&&(h1.get(inhab.ID())==null)))
-				h.put(inhab.ID(),inhab);
+			  &&(inhab.getVictim()!=mob.getVictim())
+			  &&(h1.get(inhab)==null)))
+				h.put(inhab,inhab);
 		}
 		return h;
 
 	}
 
 
-	public static long adjustedAttackBonus(MOB mob)
+	public long adjustedAttackBonus(MOB mob)
 	{
-		return	Math.round(mob.envStats().attackAdjustment()
-				+(Math.floor(new Integer(mob.charStats().getStrength()).doubleValue())-6)*2)
+		return	mob.envStats().attackAdjustment()
+				+(Math.round((new Integer(mob.charStats().getStrength()).doubleValue()-9.0)*3.0))
 				-((mob.curState().getHunger()<1)?10:0)
 				-((mob.curState().getThirst()<1)?10:0);
 	}
 
-	public static long adjustedArmor(MOB mob)
+	public long adjustedArmor(MOB mob)
 	{
-		return  Math.round(mob.envStats().armor()
-				-(Math.floor(new Integer(mob.charStats().getDexterity()).doubleValue())-6)*2)
+		return  mob.envStats().armor()
+				-(Math.round((new Integer(mob.charStats().getDexterity()).doubleValue()-9.0)*3.0))
 				+((mob.curState().getHunger()<1)?10:0)
 				+((mob.curState().getThirst()<1)?10:0)
 				+((Sense.isSitting(mob))?25:0)
@@ -149,14 +164,11 @@ public class TheFight
 	}
 
 
-	public static boolean isHit(MOB attacker, MOB target)
+	public boolean isHit(MOB attacker, MOB target)
 	{
-		if(attacker==null) return false;
-		if(attacker.amDead()) return false;
-		if(target==null) return false;
-		if(target.amDead()) return false;
+		if(!canDamageEachOther(attacker,target)) return false;
 
-		long adjArmor=adjustedArmor(target)*(Sense.canBeSeenBy(attacker,target)?1:2);
+		long adjArmor=adjustedArmor(target)-50;
 		long adjAttack=Math.round(adjustedAttackBonus(attacker)*(Sense.canBeSeenBy(target,attacker)?1:.5));
 
 		int attChance=(int)(adjArmor+adjAttack);
@@ -168,135 +180,235 @@ public class TheFight
 		return (Dice.rollPercentage()<attChance);
 	}
 
-	public static void doAttack(MOB attacker, MOB target, Item weapon)
+	public boolean doAttack(MOB attacker, MOB target, Weapon weapon)
 	{
-		if(weapon==null) return;
+		if(weapon==null) return false;
 		boolean hit=isHit(attacker,target);
-		weapon.strike(attacker,target,hit);
+		strike(attacker,target,weapon,hit);
+		return hit;
 	}
 
-	public static void postAttack(MOB attacker, MOB target, Item weapon)
+	public boolean canDamageEachOther(MOB attacker, MOB target)
 	{
-		if(attacker==null) return;
-		if(attacker.amDead()) return;
-		if(target==null) return;
-		if(target.amDead()) return;
-
-		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.STRIKE_HANDS,null,Affect.STRIKE_HANDS,null,Affect.VISUAL_WNOISE,null);
+		if((attacker==null)
+		||(attacker.amDead())
+		||(target==null)
+		||(target.location()==null)
+		||(target.amDead()))
+			return false;
+		return true;
+	}
+	
+	public boolean canFightEachOther(MOB attacker, MOB target)
+	{
+		if((!canDamageEachOther(attacker,target))
+		||(attacker.location()==null)
+		||(attacker.location()!=target.location())
+		||(!attacker.location().isInhabitant(attacker))
+		||(!target.location().isInhabitant(target)))
+		   return false;
+		return true;
+	}
+	
+	public void postAttack(MOB attacker, MOB target, Item weapon)
+	{
+		if(!canFightEachOther(attacker,target)) return;
+		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.MSG_WEAPONATTACK,null);
 		if(target.location().okAffect(msg))
 			target.location().send(attacker,msg);
 	}
-
-	public static void doDamage(MOB target, int damageAmount)
+	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage)
 	{
-		if(!target.curState().adjHitPoints(-damageAmount,target.maxState()))
+		if(!canDamageEachOther(attacker,target)) return;
+
+		FullMsg msg=new FullMsg(attacker,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damage,Affect.NO_EFFECT,null);
+		if(target.location().okAffect(msg))
+			target.location().send(target,msg);
+	}
+
+	public void doDamage(MOB source, MOB target, int damageAmount)
+	{
+		if((!target.curState().adjHitPoints(-damageAmount,target.maxState()))
+		   &&(target.location()!=null))
 		{
-			if(target.location()!=null)
+			Room deathRoom=target.location();
+			int expAmount=60;
+			int totalLevels=0;
+			Hashtable beneficiaries=new Hashtable();
+			Hashtable followers=new Hashtable();
+			if(source!=null)
+				followers=grouping.getGroupMembers(source);
+
+			for(int m=0;m<deathRoom.numInhabitants();m++)
 			{
-				Room deathRoom=target.location();
-				int numBeneficiaries=0;
-				int expAmount=50;
-				int totalLevels=0;
-				for(int m=0;m<deathRoom.numInhabitants();m++)
+				MOB mob=deathRoom.fetchInhabitant(m);
+				if((!mob.amDead())
+				&&(mob.charStats().getMyClass()!=null)
+				&&(beneficiaries.get(mob)==null)
+				&&(mob!=target))
 				{
-					MOB mob=deathRoom.fetchInhabitant(m);
-					if(((mob.getVictim()==target)&&(!mob.amDead())&&(!mob.isMonster())))
+					if((mob.getVictim()==target)
+					||(followers.get(mob)!=null)
+					||(mob==source))
 					{
-						numBeneficiaries++;
+						beneficiaries.put(mob,mob);
 						expAmount+=10;
 						totalLevels+=mob.envStats().level();
 					}
 				}
-				if(numBeneficiaries>0)
+			}
+			if(beneficiaries.size()>0)
+			{
+				for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 				{
-					for(int m=0;m<deathRoom.numInhabitants();m++)
+					MOB mob=(MOB)e.nextElement();
+					int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
+					if(myAmount>100) myAmount=100;
+					mob.charStats().getMyClass().gainExperience(mob,target,myAmount);
+				}
+			}
+			while(target.numFollowers()>0)
+				target.fetchFollower(0).setFollowing(null);
+			target.setFollowing(null);
+			deathRoom.delInhabitant(target);
+			deathRoom.show(target,null,Affect.MSG_OK_ACTION,target.name()+" is DEAD!!!\n\r");
+			if(!target.isMonster())
+			{
+				int expLost=100;
+				target.setExperience(target.getExperience()-expLost);
+				target.tell("You lose 100 experience points.");
+			}
+			DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
+			Body.baseEnvStats().setWeight(target.envStats().weight());
+			if(!target.isMonster())
+				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*4);
+			deathRoom.addItem(Body);
+			Body.recoverEnvStats();
+			if((source.getBitmap()&MOB.ATT_AUTOGOLD)>0)
+			{
+				if(beneficiaries.size()>0)
+				{
+					for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 					{
-						MOB mob=deathRoom.fetchInhabitant(m);
-						if(((mob.getVictim()==target)&&(!mob.amDead())&&(!mob.isMonster())))
-							if(mob.charStats().getMyClass()!=null)
-							{
-								int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(totalLevels,mob.envStats().level())));
-								if(myAmount>100) myAmount=100;
-								mob.charStats().getMyClass().gainExperience(mob,target,myAmount);
-							}
+						MOB mob=(MOB)e.nextElement();
+						int myAmount=(int)Math.round(Util.div(target.getMoney(),beneficiaries.size()));
+						if(myAmount>0)
+						{
+							mob.setMoney(mob.getMoney()+myAmount);
+							mob.tell("You collect "+myAmount+" coin(s) from the body of "+target.name()+".");
+						}
 					}
 				}
-				while(target.numFollowers()>0)
-					target.fetchFollower(0).setFollowing(null);
-				target.setFollowing(null);
-				deathRoom.delInhabitant(target);
-				deathRoom.show(target,null,Affect.VISUAL_WNOISE,target.name()+" is DEAD!!!\n\r");
-				if(!target.isMonster())
-				{
-					int expLost=100;
-					target.setExperience(target.getExperience()-expLost);
-					target.tell("You lose 100 experience points.");
-				}
-				DeadBody Body=new DeadBody();
-				Body.baseEnvStats().setWeight(target.envStats().weight());
-				if(!target.isMonster())
-					Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*4);
-				deathRoom.addItem(Body);
-				Body.recoverEnvStats();
-				Coins C=new Coins();
+			}
+			else
+			if(target.getMoney()>0)
+			{
+				Item C=(Item)CMClass.getItem("Coins");
 				C.baseEnvStats().setAbility(target.getMoney());
 				C.recoverEnvStats();
 				C.setLocation(Body);
 				deathRoom.addItem(C);
-				target.setMoney(0);
-				for(int i=0;i<target.inventorySize();)
+			}
+			target.setMoney(0);
+			Vector items=new Vector();
+			for(int i=0;i<target.inventorySize();)
+			{
+				Item thisItem=target.fetchInventory(i);
+				if(target.isMonster())
 				{
-					Item thisItem=target.fetchInventory(i);
-					if(target.isMonster())
-					{
-						Item newItem=(Item)thisItem.copyOf();
-						newItem.setLocation(null);
-						newItem.recoverEnvStats();
-						thisItem=newItem;
-						i++;
-					}
-					else
-						target.delInventory(thisItem);
-					thisItem.remove();
-					if(thisItem.location()==null)
-						thisItem.setLocation(Body);
-					deathRoom.addItem(thisItem);
-				}
-				target.kill();
-				Body.setName("the body of "+target.name());
-				Body.setSecretIdentity(target.name()+"/"+target.description());
-				Body.setDisplayText("the body of "+target.name()+" lies here.");
-				if((!target.isMonster())||(target.soulMate()!=null))
-				{
-					if(target.soulMate()==null)
-						target.raiseFromDead();
-					else
-					{
-						Archon_Possess.dispossess(target);
-						Body.startTicker(deathRoom);
-					}
+					Item newItem=(Item)thisItem.copyOf();
+					newItem.setLocation(null);
+					newItem.recoverEnvStats();
+					thisItem=newItem;
+					i++;
 				}
 				else
-					Body.startTicker(deathRoom);
-				deathRoom.recoverRoomStats();
+					target.delInventory(thisItem);
+				thisItem.remove();
+				if(thisItem.location()==null)
+					thisItem.setLocation(Body);
+				deathRoom.addItem(thisItem);
+				items.addElement(thisItem);
 			}
+			target.kill();
+			Body.setName("the body of "+target.name());
+			Body.setSecretIdentity(target.name()+"/"+target.description());
+			Body.setDisplayText("the body of "+target.name()+" lies here.");
+			if((!target.isMonster())||(target.soulMate()!=null))
+			{
+				if(target.soulMate()==null)
+					target.raiseFromDead();
+				else
+				{
+					Ability A=CMClass.getAbility("Archon_Possess");
+					A.setAffectedOne(target);
+					A.unInvoke();
+					Body.startTicker(deathRoom);
+				}
+			}
+			else
+				Body.startTicker(deathRoom);
+			deathRoom.recoverRoomStats();
+			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
+				for(int i=items.size()-1;i>=0;i--)
+					new ItemUsage().get(source,Body,(Item)items.elementAt(i));
 		}
 		else
 		if(target.curState().getHitPoints()<target.getWimpHitPoint())
-			Movement.flee(target,"");
+			ExternalPlay.flee(target,"");
+	}
+
+	public void autoloot(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTOLOOT)>0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOLOOT);
+			mob.tell("Autolooting has been turned off.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOLOOT);
+			mob.tell("Autolooting has been turned on.");
+		}
+	}
+	public void autogold(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTOGOLD)>0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOGOLD);
+			mob.tell("Autogold has been turned off.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOGOLD);
+			mob.tell("Autogold has been turned on.");
+		}
+	}
+
+	public void autoAssist(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTOASSIST)>0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOASSIST);
+			mob.tell("Autogold has been turned on.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOASSIST);
+			mob.tell("Autogold has been turned off.");
+		}
 	}
 
 
-
-	public static String hitString(int weaponType, int damageAmount, String weaponName)
+	public String hitString(int weaponType, int damageAmount, String weaponName)
 	{
 		if((weaponType!=Weapon.TYPE_NATURAL)||(weaponName==null)||(weaponName.length()==0))
-			return "<S-NAME> "+hitWord(weaponType,damageAmount)+" <T-NAME> with "+weaponName;
+			return "<S-NAME> "+hitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+weaponName;
 		else
-			return "<S-NAME> "+hitWord(weaponType,damageAmount)+" <T-NAME>";
+			return "<S-NAME> "+hitWord(weaponType,damageAmount)+" <T-NAMESELF>";
 	}
 
-	public static String hitWord(int weaponType, int damageAmount)
+	public String hitWord(int weaponType, int damageAmount)
 	{
 		switch(weaponType)
 		{
@@ -331,16 +443,16 @@ public class TheFight
 				return "OBLITERATE(S)";
 		case Weapon.TYPE_NATURAL:
 			if(damageAmount<3)
-				return "graze(s)";
+				return "scratch(es)";
 			else
 			if(damageAmount<6)
-				return "hit(s)";
+				return "graze(s)";
 			else
 			if(damageAmount<9)
-				return "pound(s)";
+				return "hit(s)";
 			else
 			if(damageAmount<13)
-				return "pummel(s)";
+				return "cut(s)";
 			else
 			if(damageAmount<25)
 				return "claw(s)";
@@ -375,7 +487,7 @@ public class TheFight
 				return "slice(s)";
 			else
 			if(damageAmount<35)
-				return "pierce(s)";
+				return "gut(s)";
 			else
 			if(damageAmount<50)
 				return "decimate(s)";
@@ -479,7 +591,7 @@ public class TheFight
 		}
 	}
 
-	public static String armorStr(int armor)
+	public String armorStr(int armor)
 	{
 		if(armor < 0)
 			return "nonexistant ("+armor+")";
@@ -513,7 +625,7 @@ public class TheFight
 		else
 			return "invincible! ("+armor+")";
 	}
-	public static String fightingProwessStr(int prowess)
+	public String fightingProwessStr(int prowess)
 	{
 		if(prowess < 0)
 			return "none ("+prowess+")";
@@ -547,26 +659,138 @@ public class TheFight
 		else
 			return "you are death incarnate! ("+prowess+")";
 	}
-	
-	public static String missString(int weaponType, String weaponName)
+
+	public String missString(int weaponType, String weaponName)
 	{
-			switch(weaponType)
-			{
-			case Weapon.TYPE_BASHING:
-				return "<S-NAME> swing(s) at <T-NAME> and miss(es).";
-			case Weapon.TYPE_NATURAL:
-				return "<S-NAME> swing(s) at <T-NAME> and miss(es).";
-			case Weapon.TYPE_SLASHING:
-				return "<S-NAME> swing(s) at <T-NAME> and miss(es).";
-			case Weapon.TYPE_PIERCING:
-				return "<S-NAME> lunge(s) at <T-NAME> and miss(es).";
-			case Weapon.TYPE_BURNING:
-				return "<S-NAME> swing(s) at <T-NAME> and miss(es).";
-			case Weapon.TYPE_BURSTING:
-				return "<S-NAME> attack(s) <T-NAME> and miss(es).";
-			default:
-				return "<S-NAME> swing(s) at <T-NAME> and miss(es).";
-			}
+		switch(weaponType)
+		{
+		case Weapon.TYPE_BASHING:
+			return "<S-NAME> swing(s) at <T-NAMESELF> and miss(es).";
+		case Weapon.TYPE_NATURAL:
+			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+		case Weapon.TYPE_SLASHING:
+			return "<S-NAME> swing(s) at <T-NAMESELF> and miss(es).";
+		case Weapon.TYPE_PIERCING:
+			return "<S-NAME> lunge(s) at <T-NAMESELF> and miss(es).";
+		case Weapon.TYPE_BURNING:
+			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+		case Weapon.TYPE_BURSTING:
+			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+		default:
+			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+		}
 	}
 
+	public void strike(MOB source, MOB target, Weapon weapon, boolean success)
+	{
+		if(target.amDead()) return;
+
+		if(success)
+		{
+            // calculate Base Damage (with Strength bonus)
+            int damageAmount = Dice.roll(1, source.envStats().damage(), (source.charStats().getStrength() / 3)-2);
+
+            // modify damage if target can not be seen
+            if(!Sense.canBeSeenBy(target,source))
+                damageAmount /= 2;
+
+            // modify damage if target is sitting
+            if(Sense.isSitting(target))
+                damageAmount *=2;
+
+            // modify damage if target is asleep
+            if(Sense.isSleeping(target))
+                damageAmount *=5;
+
+            // modify damage if source is hungry
+			if(source.curState().getHunger() < 1)
+            {
+                damageAmount *= 9;
+                damageAmount /= 10;
+            }
+
+            //modify damage if source is thirtsy
+			if(source.curState().getThirst() < 1)
+            {
+                damageAmount *= 9;
+                damageAmount /= 10;
+            }
+
+			if(damageAmount<=0)
+				damageAmount=1;
+
+			String youSee=null;
+			FullMsg msg=new FullMsg(source,
+									target,
+									weapon,
+									Affect.MSG_NOISYMOVEMENT,
+									hitString(weapon.weaponType(),damageAmount,weapon.name()));
+			msg.tagModified(true);
+			source.location().send(source,msg);
+			msg=new FullMsg(source,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damageAmount,Affect.NO_EFFECT,null);
+			if(source.location().okAffect(msg))
+				source.location().send(source,msg);
+		}
+		else
+		{
+			FullMsg msg=new FullMsg(source,
+									target,
+									weapon,
+									Affect.MSG_NOISYMOVEMENT,
+									missString(weapon.weaponType(),weapon.name()));
+			source.location().send(source,msg);
+		}
+	}
+
+	public void resistanceMsgs(Affect affect, MOB source, MOB target)
+	{
+		if(affect.wasModified()) return;
+		if(target.amDead()) return;
+
+		String tool=null;
+		String endPart=" from <S-NAME>.";
+		if(affect.tool()!=null)
+		{
+			if(affect.tool() instanceof Trap)
+				endPart=".";
+			else
+		    if(affect.tool() instanceof Ability)
+				tool=((Ability)affect.tool()).name();
+		}
+
+		switch(affect.targetMinor())
+		{
+		case Affect.TYP_MIND:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"mental attack":tool)+endPart));
+			break;
+		case Affect.TYP_GAS:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+endPart));
+			break;
+		case Affect.TYP_COLD:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"cold blast":tool)+endPart));
+			break;
+		case Affect.TYP_ELECTRIC:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"electrical attack":tool)+endPart));
+			break;
+		case Affect.TYP_FIRE:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"blast of heat":tool)+endPart));
+			break;
+		case Affect.TYP_WATER:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> dodge(s) the "+((tool==null)?"wet blast":tool)+endPart));
+			break;
+		case Affect.TYP_UNDEAD:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"evil attack":tool)+endPart));
+			break;
+		case Affect.TYP_POISON:
+			//affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"poisonous attack":tool)+endPart));
+			break;
+		case Affect.TYP_JUSTICE:
+			//affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"poisonous attack":tool)+endPart));
+			break;
+		case Affect.TYP_CAST_SPELL:
+			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart));
+			break;
+		}
+		affect.tagModified(true);
+	}
 }

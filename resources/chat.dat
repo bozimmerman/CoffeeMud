@@ -1961,6 +1961,8 @@
 
 {<S-NAME>& from &(the north|the south|the east|the west|above|below)}
 9Hi there $t!  How are you?
+9What's up $t?
+9Hello $t. How's it going?
 
 (price )
 9why do you think about money so much?
@@ -2465,7 +2467,6 @@
 #matches anything and then says nothing
 ()
 9
-
 ############################################################
 >cat kitten lion
 
@@ -2476,6 +2477,7 @@
 (bad)
 8:hisses
 
+############################################################
 >pig boar
 
 (pig|boar|hi|hello)
@@ -2485,6 +2487,28 @@
 ()
 9
 
+############################################################
+>duck duckling swan goose
+
+(hi|hello)
+9QUACK!!!!!!!
+1:smiles broadly, saying `Get the Duck out of here.`
+
+{<S-NAME>& from &(the north|the south|the east|the west|above|below)}
+7: 
+3quack quack!
+
+############################################################
+>skeleton zombie skelaton
+
+{<S-NAME>& from &(the north|the south|the east|the west|above|below)}
+7: 
+3:stinks!
+
+#matches anything and then quacks
+()
+8
+2:rots a bit.
 ############################################################
 >doll toy
 
@@ -2512,6 +2536,55 @@
 1"Where are my berries.
 
 @default
+############################################################
+>monster
+
+{<S-NAME>& from &(the north|the south|the east|the west|above|below)}
+9: 
+1: bares <S-HIS-HER> teeth and watches you carefully.
+
+(hi|hello)
+9: growls and snarls at you.
+1: grins widely, "Fine day today, isn't it?"
+
+()
+9: 
+1: snarls and paces angrily.
+############################################################
+>rabbit bunny
+
+{<S-NAME>& from &(the north|the south|the east|the west|above|below)}
+5: 
+5: wiggles <S-HIS-HER> nose at you.  How cute!
+
+(hi|hello)
+9: sticks his little ears up in the air.
+1: grins widely, "Fine day today, isn't it?"
+
+()
+8: 
+2: hops around.
+############################################################
+>lizard snake
+
+{<S-NAME>& from &(the north|the south|the east|the west|above|below)}
+5: 
+5: slithers around.
+
+()
+5: 
+5: slithers around.
+############################################################
+>fox bear
+
+(bad)
+9: snarls.
+3: tries to bite you.
+4!kill $t
+
+#matches anything and then says nothing
+()
+9 
 
 ############################################################
 >smurfette

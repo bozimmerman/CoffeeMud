@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class TwoHandedSword extends Sword
 {
@@ -22,7 +23,7 @@ public class TwoHandedSword extends Sword
 		recoverEnvStats();
 		weaponType=TYPE_SLASHING;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new TwoHandedSword();

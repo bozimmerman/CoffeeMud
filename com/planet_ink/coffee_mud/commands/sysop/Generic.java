@@ -1,45 +1,37 @@
 package com.planet_ink.coffee_mud.commands.sysop;
 
 
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.Exits.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
 import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.application.*;
+import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 import java.io.*;
 
 public class Generic
 {
-	
-	public final static long maxLength=60000;
-	
-	static void genName(MOB mob, Environmental E)
+
+	public final long maxLength=65535;
+	public Lister myLister=new Lister();
+
+	void genName(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rName: '"+E.name()+"'.");
+		mob.tell("\n\rName: '"+E.name()+"'.");
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
 			E.setName(newName);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static Room genRoomType(MOB mob, Room R)
+
+	Room genRoomType(MOB mob, Room R)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rType: '"+INI.className(R)+"'");
+		mob.tell("\n\rType: '"+CMClass.className(R)+"'");
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
 		{
-			Room newRoom=MUD.getLocale(newName);
+			Room newRoom=CMClass.getLocale(newName);
 			if(newRoom==null)
 			{
 				mob.tell("'"+newName+"' does not exist. No Change.");
@@ -61,25 +53,25 @@ public class Generic
 				}
 				for(int x=0;x<R.numItems();x++)
 					newRoom.addItem(R.fetchItem(x));
-				for(Enumeration e=MOBloader.MOBs.elements();e.hasMoreElements();)
+				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 				{
 					MOB mob2=(MOB)e.nextElement();
 					if(mob2.getStartRoom()==R)
 					{
 						mob2.setStartRoom(newRoom);
-						MOBloader.DBUpdate(mob2);
+						ExternalPlay.DBUpdate(mob2);
 					}
 				}
 				newRoom.setID(R.ID());
 				newRoom.setAreaID(R.getAreaID());
 				newRoom.setDisplayText(R.displayText());
 				newRoom.setDescription(R.description());
-				for(int r=0;r<MUD.map.size();r++)
+				for(int r=0;r<CMMap.map.size();r++)
 				{
-					Room room=(Room)MUD.map.elementAt(r);
+					Room room=(Room)CMMap.map.elementAt(r);
 					if(room==R)
 					{
-						MUD.map.setElementAt(newRoom,r);
+						CMMap.map.setElementAt(newRoom,r);
 						room=newRoom;
 					}
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -102,71 +94,78 @@ public class Generic
 			mob.tell("(no change)");
 		return R;
 	}
-	
-	static void genDescription(MOB mob, Environmental E)
+
+	void genDescription(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rDescription: '"+E.description()+"'.");
+		mob.tell("\n\rDescription: '"+E.description()+"'.");
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
 			E.setDescription(newName);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genDisplayText(MOB mob, Environmental E)
+
+	void genDisplayText(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rDisplay: '"+E.displayText()+"'.");
-		String newName=mob.session().prompt("Enter something new\n\r:","");
+		mob.tell("\n\rDisplay: '"+E.displayText()+"'.");
+		String newName=mob.session().prompt("Enter something new (null == blended)\n\r:","");
 		if(newName.length()>0)
+		{
+			if(newName.trim().equalsIgnoreCase("null"))
+				newName="";
 			E.setDisplayText(newName);
+		}
 		else
 			mob.tell("(no change)");
+		if(E.displayText().length()==0)
+			mob.tell("(blended)");
 	}
-	static void genClosedText(MOB mob, GenExit E)
+	void genClosedText(MOB mob, Exit E)
 	{
-		mob.tell("\n\r\n\rClosed Text: '"+E.closedText()+"'.");
+		mob.tell("\n\rClosed Text: '"+E.closedText()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),newName);
 		else
 			mob.tell("(no change)");
 	}
-	static void genDoorName(MOB mob, GenExit E)
+	void genDoorName(MOB mob, Exit E)
 	{
-		mob.tell("\n\r\n\rDoor Name: '"+E.doorName()+"'.");
+		mob.tell("\n\rDoor Name: '"+E.doorName()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(newName,E.closeWord(),E.openWord(),E.closedText());
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genOpenWord(MOB mob, GenExit E)
+
+	void genOpenWord(MOB mob, Exit E)
 	{
-		mob.tell("\n\r\n\rOpen Word: '"+E.openWord()+"'.");
+		mob.tell("\n\rOpen Word: '"+E.openWord()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),E.closeWord(),newName,E.closedText());
 		else
 			mob.tell("(no change)");
 	}
-	static void genCloseWord(MOB mob, GenExit E)
+	void genCloseWord(MOB mob, Exit E)
 	{
-		mob.tell("\n\r\n\rClose Word: '"+E.closeWord()+"'.");
+		mob.tell("\n\rClose Word: '"+E.closeWord()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 			E.setExitParams(E.doorName(),newName,E.openWord(),E.closedText());
 		else
 			mob.tell("(no change)");
 	}
-	static void genExitMisc(MOB mob, GenExit E)
+	void genExitMisc(MOB mob, Exit E)
 		throws IOException
 	{
 		if(E.hasALock())
 		{
 			E.setReadable(false);
 			E.setClassRestricted(false);
-			mob.tell("\n\r\n\rAssigned Key Item: '"+E.keyName()+"'.");
+			E.setAlignmentRestricted(false);
+			mob.tell("\n\rAssigned Key Item: '"+E.keyName()+"'.");
 			String newName=mob.session().prompt("Enter something new\n\r:","");
 			if(newName.length()>0)
 				E.setKeyName(newName);
@@ -176,10 +175,10 @@ public class Generic
 		else
 		if(E.hasADoor())
 		{
-			if(mob.session().confirm("Is this door readable (Y/N)",((E.isReadable())?"Y":"N")))
+			if(genGenericPrompt(mob,"Is this door readable",E.isReadable()))
 			{
 				E.setReadable(true);
-				mob.tell("\n\r\n\rText: '"+E.readableText()+"'.");
+				mob.tell("\n\rText: '"+E.readableText()+"'.");
 				String newName=mob.session().prompt("Enter something new\n\r:","");
 				if(newName.length()>0)
 					E.setReadableText(newName);
@@ -195,20 +194,36 @@ public class Generic
 			boolean ok=false;
 			while(!ok)
 			{
-				if(!mob.session().confirm("Restricted to by class? (Y/N)     : ",((E.classRestricted())?"Y":"N")))
+				if(!genGenericPrompt(mob,"Restricted to by class?",E.classRestricted()))
 				{
 					E.setClassRestricted(false);
 					ok=true;
+					if(!genGenericPrompt(mob,"Restricted to by alignment?",E.alignmentRestricted()))
+					{
+						E.setAlignmentRestricted(false);
+						ok=true;
+					}
+					else
+					{
+						E.setAlignmentRestricted(true);
+						mob.tell("\n\rAlignments to mask out: '"+E.alignmentRestrictedMask()+"'.");
+						String newName=mob.session().prompt("Enter new list (good, evil, neutral)\n\r:","");
+						if(newName.length()>0)
+							E.setAlignmentRestrictedMask(newName);
+						else
+							mob.tell("(no change)");
+					}
 				}
 				else
 				{
 					E.setClassRestricted(true);
-					mob.tell("\n\r\n\rClass name: '"+E.classRestrictedName()+"'.");
+					E.setAlignmentRestricted(false);
+					mob.tell("\n\rClass name: '"+E.classRestrictedName()+"'.");
 					String newName=mob.session().prompt("Enter something new\n\r:","");
-				
-					for(int c=0;c<MUD.charClasses.size();c++)
+
+					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
-						CharClass C=(CharClass)MUD.charClasses.elementAt(c);
+						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
 						if(C.name().equalsIgnoreCase(newName))
 						{
 							newName=C.ID();
@@ -231,123 +246,286 @@ public class Generic
 			}
 		}
 	}
-	static void genGettable(MOB mob, Item E)
+	void genGettable(MOB mob, Item E)
 		throws IOException
 	{
-		E.setGettable(mob.session().confirm("Is this item gettable (Y/N)",((E.isGettable())?"Y":"N")));
-		E.setDroppable(mob.session().confirm("Is this item droppable (Y/N)",((E.isDroppable())?"Y":"N")));
-		E.setRemovable(mob.session().confirm("Is this item removable (Y/N)",((E.isRemovable())?"Y":"N")));
-		E.setTrapped(mob.session().confirm("Is this item trapped (Y/N)",((E.isTrapped())?"Y":"N")));
-		if(E instanceof GenReadable)
+		if(E instanceof Potion)
+			((Potion)E).setDrunk((Potion)E,false);
+
+		E.setGettable(genGenericPrompt(mob,"Is this item gettable",E.isGettable()));
+		E.setDroppable(genGenericPrompt(mob,"Is this item droppable",E.isDroppable()));
+		E.setRemovable(genGenericPrompt(mob,"Is this item removable",E.isRemovable()));
+		E.setTrapped(genGenericPrompt(mob,"Is this item trapped",E.isTrapped()));
+		if((E instanceof Wand)
+		 ||(E instanceof Scroll)
+		 ||(E instanceof Pill)
+		 ||(E instanceof Potion)
+		 ||(E instanceof Light)
+		 ||(E instanceof Container)
+		 ||(E instanceof Key))
+			E.setReadable(false);
+		else
+		if((CMClass.className(E).endsWith("Readable"))
+		 ||(E instanceof com.planet_ink.coffee_mud.interfaces.Map))
 			E.setReadable(true);
 		else
-			E.setReadable(mob.session().confirm("Is this item readable (Y/N)",((E.isReadable())?"Y":"N")));
-		if(E.isReadable())
+			E.setReadable(genGenericPrompt(mob,"Is this item readable",E.isReadable()));
+		if((E.isReadable())
+		 ||(E instanceof Wand)
+		 ||(E instanceof Scroll)
+		 ||(E instanceof Pill)
+		 ||(E instanceof Potion)
+		 ||(E instanceof Light)
+		 ||(E instanceof Key))
 		{
-			mob.tell("\n\r\n\rAssigned Read Text: '"+E.readableText()+"'.");
-			String newName=mob.session().prompt("Enter something new\n\r:","");
-			if(newName.length()>0)
-				E.setReadableText(newName);
-			else
-				mob.tell("(no change)");
+			boolean ok=false;
+			while(!ok)
+			{
+				if(CMClass.className(E).endsWith("SuperPill"))
+				{
+					mob.tell("\n\rAssigned Spell or Parameters: '"+E.readableText()+"'.");
+					ok=true;
+				}
+				else
+				if((E instanceof Scroll)
+				||(E instanceof Pill)
+				||(E instanceof Potion))
+					mob.tell("\n\rAssigned Spell(s) ( ';' delimited)\n: '"+E.readableText()+"'.");
+				else
+				if(E instanceof Wand)
+					mob.tell("\n\rAssigned Spell Name: '"+E.readableText()+"'.");
+				else
+				if(E instanceof Key)
+				{
+					mob.tell("\n\rAssigned Key Code: '"+E.readableText()+"'.");
+					ok=true;
+				}
+				else
+				if(E instanceof com.planet_ink.coffee_mud.interfaces.Map)
+				{
+					mob.tell("\n\rAssigned Map Area(s): '"+E.readableText()+"'.");
+					ok=true;
+				}
+				else
+				if(E instanceof Light)
+				{
+					mob.tell("\n\rLight duration (before burn out): '"+Util.s_int(E.readableText())+"'.");
+					ok=true;
+				}
+				else
+				{
+					mob.tell("\n\rAssigned Read Text: '"+E.readableText()+"'.");
+					ok=true;
+				}
+				String newName=mob.session().prompt("Enter something new\n\r:","");
+				if((E instanceof Wand)
+				||(E instanceof Scroll)
+				||((E instanceof Pill)&&(!(CMClass.className(E).endsWith("SuperPill"))))
+				||(E instanceof Potion))
+				{
+					if(newName.length()==0)
+						ok=true;
+					else
+					{
+						if(newName.equalsIgnoreCase("LIST"))
+							mob.tell(myLister.reallyList(CMClass.abilities,-1).toString());
+						else
+						if(E instanceof Wand)
+						{
+							Ability chosenOne=chosenOne=(Ability)CMClass.getAbility(newName);
+							if(chosenOne!=null)
+								ok=true;
+							else
+								mob.tell("'"+newName+"' is not recognized.  Try 'LIST'.");
+						}
+						else
+						if((E instanceof Scroll)
+						||(E instanceof Pill)
+						||(E instanceof Potion))
+						{
+							String oldName=newName;
+							int x=newName.indexOf(";");
+							while(x>=0)
+							{
+								String spellName=newName.substring(0,x).trim();
+								Ability chosenOne=chosenOne=(Ability)CMClass.getAbility(spellName);
+								if(chosenOne!=null)
+									ok=true;
+								else
+								{
+									mob.tell("'"+spellName+"' is not recognized.  Try 'LIST'.");
+									break;
+								}
+								newName=newName.substring(x+1).trim();
+								x=newName.indexOf(";");
+							}
+							newName=oldName;
+						}
+					}
+				}
+
+				if(ok)
+				{
+					if(newName.length()>0)
+						E.setReadableText(newName);
+					else
+						mob.tell("(no change)");
+				}
+			}
 		}
-		Thief_Trap.setTrapped(E,E.isTrapped());
+		((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,E.isTrapped());
 	}
-	
-	static void genLevelRestrict(MOB mob, GenExit E)
+
+	void genLevelRestrict(MOB mob, Exit E)
 		throws IOException
 	{
-		if(mob.session().confirm("Restricted to level "+E.baseEnvStats().level()+" and above? (Y/N)     : ",((E.levelRestricted())?"Y":"N")))
+		if(genGenericPrompt(mob,"Restricted to level "+E.baseEnvStats().level()+" and above?",E.levelRestricted()))
 			E.setLevelRestricted(true);
 		else
 			E.setLevelRestricted(false);
 	}
-			
-	static void genDispositionTask(MOB mob, Environmental E, String prompt, int mask)
-		throws IOException
+
+	void toggleDispositionMask(Environmental E, int mask)
 	{
-		prompt=Util.padRight(prompt,15);
 		int current=E.baseEnvStats().disposition();
-		boolean val=((current&mask)==mask);
-		if(val)
-			prompt+="(Y/n): ";
-		else
-			prompt+="(y/N): ";
-		
-		if(mob.session().confirm(prompt,val?"Y":"N"))
+		if((current&mask)==0)
 			E.baseEnvStats().setDisposition(current|mask);
 		else
 			E.baseEnvStats().setDisposition(current&((int)(Sense.ALLMASK-mask)));
 	}
-	
-	static void genDisposition(MOB mob, Environmental E)
+
+	void genDisposition(MOB mob, Environmental E)
 		throws IOException
 	{
-		genDispositionTask(mob,E,"Is Invisible?",Sense.IS_INVISIBLE);
-		genDispositionTask(mob,E,"Is Hidden?",Sense.IS_HIDDEN);
-		genDispositionTask(mob,E,"Is Unseeable?",Sense.IS_SEEN);
-		if(E instanceof MOB)
+		String c="Q";
+		while(!c.equals("\n"))
 		{
-			genDispositionTask(mob,E,"Is Sneaking?",Sense.IS_SNEAKING);
-			genDispositionTask(mob,E,"Is Flying?",Sense.IS_FLYING);
-			genDispositionTask(mob,E,"Is Magical?",Sense.IS_BONUS);
+			mob.session().println("\n\r1) Is Invisible   : "+((E.baseEnvStats().disposition()&Sense.IS_INVISIBLE)!=0));
+			mob.session().println("2) Is Hidden      : "+((E.baseEnvStats().disposition()&Sense.IS_HIDDEN)!=0));
+			mob.session().println("3) Is Unseeable   : "+((E.baseEnvStats().disposition()&Sense.IS_SEEN)!=0));
+			mob.session().println("4) Is Magical     : "+((E.baseEnvStats().disposition()&Sense.IS_BONUS)!=0));
+			mob.session().println("5) Is Glowing     : "+((E.baseEnvStats().disposition()&Sense.IS_LIGHT)!=0));
+			if(E instanceof MOB)
+			{
+			mob.session().println("6) Is Flying      : "+((E.baseEnvStats().disposition()&Sense.IS_FLYING)!=0));
+			mob.session().println("7) Is Climbing    : "+((E.baseEnvStats().disposition()&Sense.IS_CLIMBING)!=0));
+			mob.session().println("8) Is Sneaking    : "+((E.baseEnvStats().disposition()&Sense.IS_SNEAKING)!=0));
+			}
+			else
+			{
+				if(E instanceof Exit)
+				{
+				mob.session().println("6) Requires Flight: "+((E.baseEnvStats().disposition()&Sense.IS_FLYING)!=0));
+				mob.session().println("7) Requires Climb : "+((E.baseEnvStats().disposition()&Sense.IS_SNEAKING)!=0));
+				}
+				mob.session().println("E) Is Evil        : "+((E.baseEnvStats().disposition()&Sense.IS_EVIL)!=0));
+				mob.session().println("G) Is Good        : "+((E.baseEnvStats().disposition()&Sense.IS_GOOD)!=0));
+			}
+			c=mob.session().choose("Enter one to change, or ENTER when done: ","12345678GE\n","\n").toUpperCase();
+			switch(c.charAt(0))
+			{
+			case '1': toggleDispositionMask(E,Sense.IS_INVISIBLE); break;
+			case '2': toggleDispositionMask(E,Sense.IS_HIDDEN); break;
+			case '3': toggleDispositionMask(E,Sense.IS_SEEN); break;
+			case '4': toggleDispositionMask(E,Sense.IS_BONUS); break;
+			case '5': toggleDispositionMask(E,Sense.IS_LIGHT); break;
+			case '6': toggleDispositionMask(E,Sense.IS_FLYING); break;
+			case '7': toggleDispositionMask(E,Sense.IS_CLIMBING); break;
+			case '8': toggleDispositionMask(E,Sense.IS_SNEAKING); break;
+			case 'G': toggleDispositionMask(E,Sense.IS_GOOD); break;
+			case 'E': toggleDispositionMask(E,Sense.IS_EVIL); break;
+			}
 		}
-		genDispositionTask(mob,E,"Is Glowing?",Sense.IS_LIGHT);
 	}
-			
-	static void genSensesTask(MOB mob, Environmental E, String prompt, int mask)
-		throws IOException
+
+	boolean genGenericPrompt(MOB mob, String prompt, boolean val)
 	{
-		prompt=Util.padRight(prompt,15);
+		try
+		{
+			prompt=Util.padRight(prompt,35);
+			if(val)
+				prompt+="(Y/n): ";
+			else
+				prompt+="(y/N): ";
+			return mob.session().confirm(prompt,val?"Y":"N");
+		}
+		catch(IOException e)
+		{
+			return val;
+		}
+	}
+
+	void toggleSensesMask(Environmental E, int mask)
+	{
 		int current=E.baseEnvStats().sensesMask();
-		boolean val=((current&mask)==mask);
-		if(val)
-			prompt+="(Y/n): ";
-		else
-			prompt+="(y/N): ";
-		
-		if(mob.session().confirm(prompt,val?"Y":"N"))
+		if((current&mask)==0)
 			E.baseEnvStats().setSensesMask(current|mask);
 		else
 			E.baseEnvStats().setSensesMask(current&((int)(Sense.ALLMASK-mask)));
 	}
-	
-	static void genSensesMask(MOB mob, Environmental E)
+
+	void genSensesMask(MOB mob, Environmental E)
 		throws IOException
 	{
-		genSensesTask(mob,E,"Can see in the dark?",Sense.CAN_SEE_DARK);
-		genSensesTask(mob,E,"Can see hidden?",Sense.CAN_SEE_HIDDEN);
-		genSensesTask(mob,E,"Can see invisible?",Sense.CAN_SEE_INVISIBLE);
-		genSensesTask(mob,E,"Can see sneakers?",Sense.CAN_SEE_SNEAKERS);
-		genSensesTask(mob,E,"Has infravision?",Sense.CAN_SEE_INFRARED);
-		genSensesTask(mob,E,"Can see good?",Sense.CAN_SEE_GOOD);
-		genSensesTask(mob,E,"Can see evil?",Sense.CAN_SEE_EVIL);
-		genSensesTask(mob,E,"Is Mute?",Sense.CAN_SPEAK);
-		genSensesTask(mob,E,"Is Deaf?",Sense.CAN_HEAR);
-		genSensesTask(mob,E,"Is Blind?",Sense.CAN_SEE);
-	}
-			
-	static void genDoorsNLocks(MOB mob, GenExit E)
-		throws IOException
-	{
-		if(mob.session().confirm("Has a door (Y/N)     : ",((E.hasADoor())?"Y":"N")))
+		String c="Q";
+		while(!c.equals("\n"))
 		{
-			E.setHasDoor(true);
-			E.setOpen(false);
-			E.setDefaultsClosed(mob.session().confirm("Defaults closed (Y/N): ",((E.defaultsClosed())?"Y":"N")));
-			if(mob.session().confirm("Has a lock (Y/N)     : ",((E.hasALock())?"Y":"N")))
+			mob.session().println("\n\r1) Can see in the dark: "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_DARK)!=0));
+			mob.session().println("2) Can see hidden     : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_HIDDEN)!=0));
+			mob.session().println("3) Can see invisible  : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_INVISIBLE)!=0));
+			mob.session().println("4) Can see sneakers   : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_SNEAKERS)!=0));
+			mob.session().println("5) Has infravision    : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_INFRARED)!=0));
+			mob.session().println("6) Can see goodness   : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_GOOD)!=0));
+			mob.session().println("7) Can see evilness   : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_EVIL)!=0));
+			mob.session().println("8) Can see magicness  : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_BONUS)!=0));
+			mob.session().println("9) Is Mute            : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SPEAK)!=0));
+			mob.session().println("A) Is Deaf            : "+((E.baseEnvStats().sensesMask()&Sense.CAN_HEAR)!=0));
+			mob.session().println("B) Is Blind           : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE)!=0));
+			c=mob.session().choose("Enter one to change, or ENTER when done: ","123456789AB\n","\n").toUpperCase();
+			switch(c.charAt(0))
 			{
-				E.setHasLock(true);
-				E.setLocked(true);
-				E.setDefaultsLocked(mob.session().confirm("Defaults locked (Y/N): ",((E.defaultsLocked())?"Y":"N")));
+			case '1': toggleSensesMask(E,Sense.CAN_SEE_DARK); break;
+			case '2': toggleSensesMask(E,Sense.CAN_SEE_HIDDEN); break;
+			case '3': toggleSensesMask(E,Sense.CAN_SEE_INVISIBLE); break;
+			case '4': toggleSensesMask(E,Sense.CAN_SEE_SNEAKERS); break;
+			case '5': toggleSensesMask(E,Sense.CAN_SEE_INFRARED); break;
+			case '6': toggleSensesMask(E,Sense.CAN_SEE_GOOD); break;
+			case '7': toggleSensesMask(E,Sense.CAN_SEE_EVIL); break;
+			case '8': toggleSensesMask(E,Sense.CAN_SEE_BONUS); break;
+			case '9': toggleSensesMask(E,Sense.CAN_SPEAK); break;
+			case 'A': toggleSensesMask(E,Sense.CAN_HEAR); break;
+			case 'B': toggleSensesMask(E,Sense.CAN_SEE); break;
+			}
+		}
+	}
+
+	void genDoorsNLocks(MOB mob, Exit E)
+		throws IOException
+	{
+		boolean HasDoor=E.hasADoor();
+		boolean Open=E.isOpen();
+		boolean DefaultsClosed=E.defaultsClosed();
+		boolean HasLock=E.hasALock();
+		boolean Locked=E.isLocked();
+		boolean DefaultsLocked=E.defaultsLocked();
+		if(genGenericPrompt(mob,"Has a door",E.hasADoor()))
+		{
+			HasDoor=true;
+			Open=false;
+			DefaultsClosed=genGenericPrompt(mob,"Defaults closed",E.defaultsClosed());
+			if(genGenericPrompt(mob,"Has a lock",E.hasALock()))
+			{
+				HasLock=true;
+				Locked=true;
+				DefaultsLocked=genGenericPrompt(mob,"Defaults locked",E.defaultsLocked());
 			}
 			else
 			{
-				E.setHasLock(false);
-				E.setLocked(false);
-				E.setDefaultsLocked(false);
+				HasLock=false;
+				Locked=false;
+				DefaultsLocked=false;
 			}
-			mob.tell("\n\r\n\rReset Delay (# ticks): '"+E.openDelayTicks()+"'.");
+			mob.tell("\n\rReset Delay (# ticks): '"+E.openDelayTicks()+"'.");
 			int newLevel=Util.s_int(mob.session().prompt("Enter a new delay\n\r:",""));
 			if(newLevel>0)
 				E.setOpenDelayTicks(newLevel);
@@ -356,71 +534,64 @@ public class Generic
 		}
 		else
 		{
-			E.setHasDoor(false);
-			E.setOpen(false);
-			E.setDefaultsClosed(false);
-			E.setHasLock(false);
-			E.setLocked(false);
-			E.setDefaultsLocked(false);
+			HasDoor=false;
+			Open=true;
+			DefaultsClosed=false;
+			HasLock=false;
+			Locked=false;
+			DefaultsLocked=false;
 		}
-		
-		E.setTrapped(mob.session().confirm("\n\r\n\rIs this exit trapped (Y/N)     : ",((E.isTrapped())?"Y":"N")));
-		Thief_Trap.setTrapped(E,E.isTrapped());
+		E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
+		E.setTrapped(genGenericPrompt(mob,"\n\r\n\rIs this exit trapped",E.isTrapped()));
+		((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,E.isTrapped());
 	}
-	
-	static void genLidsNLocks(MOB mob, GenContainer E)
+
+	void genLidsNLocks(MOB mob, Container E)
 		throws IOException
 	{
-		E.setGettable(mob.session().confirm("Is this item gettable (Y/N)",((E.isGettable())?"Y":"N")));
-		if(mob.session().confirm("Has a lid  (Y/N)     : ",((E.hasALid)?"Y":"N")))
+		if(genGenericPrompt(mob,"Has a lid ",E.hasALid()))
 		{
-			E.hasALid=true;
-			E.isOpen=false;
-			if(mob.session().confirm("Has a lock (Y/N)     : ",((E.hasALock)?"Y":"N")))
+			E.setLidsNLocks(true,false,E.hasALock(),E.isLocked());
+			if(genGenericPrompt(mob,"Has a lock",E.hasALock()))
 			{
-				E.hasALock=true;
-				E.isLocked=true;
-				mob.tell("\n\r\n\rText: '"+E.keyName+"'.");
+				E.setLidsNLocks(E.hasALid(),E.isOpen(),true,true);
+				mob.tell("\n\rText: '"+E.keyName()+"'.");
 				String newName=mob.session().prompt("Enter something new\n\r:","");
 				if(newName.length()>0)
-					E.keyName=newName;
+					E.setKeyName(newName);
 				else
 					mob.tell("(no change)");
 			}
 			else
 			{
-				E.keyName="";
-				E.hasALock=false;
-				E.isLocked=false;
+				E.setKeyName("");
+				E.setLidsNLocks(E.hasALid(),E.isOpen(),false,false);
 			}
 		}
 		else
 		{
-			E.keyName="";
-			E.hasALid=false;
-			E.hasALock=false;
-			E.isOpen=true;
-			E.isLocked=false;
+			E.setKeyName("");
+			E.setLidsNLocks(false,true,false,false);
 		}
-		E.setTrapped(mob.session().confirm("\n\r\n\rIs this container trapped (Y/N)     : ",((E.isTrapped())?"Y":"N")));
-		Thief_Trap.setTrapped(E,E.isTrapped());
+		E.setTrapped(genGenericPrompt(mob,"\n\r\n\rIs this container trapped",E.isTrapped()));
+		((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,E.isTrapped());
 	}
-	
-	static void genLevel(MOB mob, Environmental E)
+
+	void genLevel(MOB mob, Environmental E)
 	{
-		if(E.baseEnvStats().level()<0) 
+		if(E.baseEnvStats().level()<0)
 			E.baseEnvStats().setLevel(1);
-		mob.tell("\n\r\n\rLevel: '"+E.baseEnvStats().level()+"'.");
+		mob.tell("\n\rLevel: '"+E.baseEnvStats().level()+"'.");
 		int newLevel=Util.s_int(mob.session().prompt("Enter a new one\n\r:",""));
 		if(newLevel>0)
 			E.baseEnvStats().setLevel(newLevel);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genRejuv(MOB mob, Environmental E)
+
+	void genRejuv(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rRejuv Ticks: '"+E.baseEnvStats().rejuv()+"'.");
+		mob.tell("\n\rRejuv Ticks: '"+E.baseEnvStats().rejuv()+"'.");
 		String rlevel=mob.session().prompt("Enter new amount\n\r:","");
 		int newLevel=Util.s_int(rlevel);
 		if((newLevel>0)||(rlevel.trim()=="0"))
@@ -435,67 +606,77 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genUses(MOB mob, Item E)
+
+	void genUses(MOB mob, Item E)
 	{
-		mob.tell("\n\r\n\rUses Remaining: '"+E.usesRemaining()+"'.");
+		mob.tell("\n\rUses Remaining: '"+E.usesRemaining()+"'.");
 		int newLevel=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newLevel>0)
 			E.setUsesRemaining(newLevel);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genMiscText(MOB mob, Environmental E)
+
+	void genMiscSet(MOB mob, Environmental E)
 		throws IOException
 	{
-		if(E instanceof GenContainer)
-			modifyGenContainer(mob,(GenContainer)E);
+		if(!E.isGeneric())
+			return;
+
+		if(E instanceof ShopKeeper)
+			modifyGenShopkeeper(mob,(ShopKeeper)E);
 		else
-		if(E instanceof GenUndead)
-			modifyGenUndead(mob,(GenUndead)E);
+		if(E instanceof MOB)
+			modifyGenMOB(mob,(MOB)E);
 		else
-		if(E instanceof GenShopkeeper)
-			modifyGenShopkeeper(mob,(GenShopkeeper)E);
+		if(E instanceof Exit)
+			modifyGenExit(mob,(Exit)E);
 		else
-		if(E instanceof GenMob)
-			modifyGenMOB(mob,(GenMob)E);
+		if(E instanceof com.planet_ink.coffee_mud.interfaces.Map)
+			modifyGenMap(mob,(com.planet_ink.coffee_mud.interfaces.Map)E);
 		else
-		if(E instanceof GenExit)
-			modifyGenExit(mob,(GenExit)E);
+		if(E instanceof Armor)
+			modifyGenArmor(mob,(Armor)E);
 		else
-		if(E instanceof GenArmor)
-			modifyGenArmor(mob,(GenArmor)E);
+		if(E instanceof Food)
+			modifyGenFood(mob,(Food)E);
 		else
-		if(E instanceof GenWeapon)
-			modifyGenWeapon(mob,(GenWeapon)E);
+		if(E instanceof Drink)
+			modifyGenDrink(mob,(Drink)E);
 		else
-		if(E instanceof GenFood)
-			modifyGenFood(mob,(GenFood)E);
+		if(E instanceof Weapon)
+			modifyGenWeapon(mob,(Weapon)E);
 		else
-		if(E instanceof GenWater)
-			modifyGenDrink(mob,(GenWater)E);
+		if(E instanceof Container)
+			modifyGenContainer(mob,(Container)E);
 		else
-		if(E instanceof GenItem)
-			modifyGenItem(mob,(GenItem)E);
+		if(E instanceof Item)
+			modifyGenItem(mob,(Item)E);
+	}
+
+	void genMiscText(MOB mob, Environmental E)
+		throws IOException
+	{
+		if(E.isGeneric())
+			genMiscSet(mob,E);
 		else
 		{
-			mob.tell("\n\r\n\rMisc Text: '"+E.text()+"'.");
+			mob.tell("\n\rMisc Text: '"+E.text()+"'.");
 			String newText=mob.session().prompt("Re-enter now ('null'=='')\n\r:","");
 			if(newText.equalsIgnoreCase("NULL"))
-				E.setMiscText(newText);
+				E.setMiscText("");
 			else
 			if(newText.length()>0)
 				E.setMiscText(newText);
 			else
 				mob.tell("(no change)");
 		}
-		
+
 	}
-	
-	static void genAbility(MOB mob, Environmental E)
+
+	void genAbility(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rMagical Ability: '"+E.baseEnvStats().ability()+"'.");
+		mob.tell("\n\rMagical Ability: '"+E.baseEnvStats().ability()+"'.");
 		String newLevelStr=mob.session().prompt("Enter a new one (0=no magic)\n\r:","");
 		int newLevel=Util.s_int(newLevelStr);
 		if(newLevel>0)
@@ -506,11 +687,11 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genHitPoints(MOB mob, Environmental E)
+
+	void genHitPoints(MOB mob, Environmental E)
 	{
 		if(E.baseEnvStats().ability()<1) E.baseEnvStats().setAbility(11);
-		mob.tell("\n\r\n\rHit Points/Level Modifier (hp=((10*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
+		mob.tell("\n\rHit Points/Level Modifier (hp=((10*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
 		String newLevelStr=mob.session().prompt("Enter a new value\n\r:","");
 		int newLevel=Util.s_int(newLevelStr);
 		if(newLevel>0)
@@ -518,121 +699,124 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genValue(MOB mob, Item E)
+
+	void genValue(MOB mob, Item E)
 	{
-		mob.tell("\n\r\n\rAdjusted Value: '"+E.value()+"'.");
+		mob.tell("\n\rAdjusted Value: '"+E.value()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newValue>0)
 			E.setBaseValue(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genWeight(MOB mob, Environmental E)
+
+	void genWeight(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rWeight: '"+E.baseEnvStats().weight()+"'.");
+		mob.tell("\n\rWeight: '"+E.baseEnvStats().weight()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new weight\n\r:",""));
 		if(newValue>0)
 			E.baseEnvStats().setWeight(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	
-	static void genCapacity(MOB mob, Item E)
+
+
+	void genCapacity(MOB mob, Item E)
 	{
-		mob.tell("\n\r\n\rCapacity: '"+E.capacity()+"'.");
+		mob.tell("\n\rCapacity: '"+E.capacity()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new capacity\n\r:",""));
 		if(newValue>0)
 			E.setCapacity(newValue);
 		else
 			mob.tell("(no change)");
-		
+
 	}
-	
-	static void genAttack(MOB mob, Environmental E)
+
+	void genAttack(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rAttackAdjustment: '"+E.envStats().attackAdjustment()+"'.");
+		mob.tell("\n\rAttackAdjustment: '"+E.envStats().attackAdjustment()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newValue>0)
 			E.baseEnvStats().setAttackAdjustment(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genDamage(MOB mob, Environmental E)
+
+	void genDamage(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rDamage/Hit: '"+E.baseEnvStats().damage()+"'.");
+		mob.tell("\n\rDamage/Hit: '"+E.baseEnvStats().damage()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newValue>0)
 			E.baseEnvStats().setDamage(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genSpeed(MOB mob, Environmental E)
+
+	void genSpeed(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rAttacks/Round: '"+((int)Math.round(E.baseEnvStats().speed()))+"'.");
+		mob.tell("\n\rAttacks/Round: '"+((int)Math.round(E.baseEnvStats().speed()))+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newValue>0)
 			E.baseEnvStats().setSpeed(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genArmor(MOB mob, Environmental E)
+
+	void genArmor(MOB mob, Environmental E)
 	{
-		mob.tell("\n\r\n\rArmor (lower-better): '"+E.baseEnvStats().armor()+"'.");
+		if(E instanceof MOB)
+			mob.tell("\n\rArmor (lower-better): '"+E.baseEnvStats().armor()+"'.");
+		else
+			mob.tell("\n\rArmor (higher-better): '"+E.baseEnvStats().armor()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newValue>0)
 			E.baseEnvStats().setArmor(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genMoney(MOB mob, MOB E)
+
+	void genMoney(MOB mob, MOB E)
 	{
-		mob.tell("\n\r\n\rMoney: '"+E.getMoney()+"'.");
+		mob.tell("\n\rMoney: '"+E.getMoney()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newValue>0)
 			E.setMoney(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genWeaponType(MOB mob, Weapon E)
+
+	void genWeaponType(MOB mob, Weapon E)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rWeapon Attack Type: '"+E.typeDescription(E.weaponType)+"'.");
+		mob.tell("\n\rWeapon Attack Type: '"+E.typeDescription()+"'.");
 		String newType=mob.session().choose("Enter a new value (N/S/P/B)\n\r:","NSPB","");
 		int newValue=-1;
 		if(newType.length()>0)
 			newValue=("NSPB").indexOf(newType.toUpperCase());
 		if(newValue>=0)
-			E.weaponType=newValue;
+			E.setWeaponType(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genMaterialCode(MOB mob, Armor E)
+
+	void genMaterialCode(MOB mob, Item E)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rArmor Material Type: '"+E.materialDescription(E.material())+"'.");
-		String newType=mob.session().choose("Enter a new value (C/L/M/I/W)\n\r:","CLMIW","");
+		mob.tell("\n\rMaterial Type: '"+E.materialDescription()+"'.");
+		String newType=mob.session().choose("Enter a new value (C/L/M/I/W/G)\n\r:","CLMIWG","");
 		int newValue=-1;
 		if(newType.length()>0)
-			newValue=("CMLIW").indexOf(newType.toUpperCase());
+			newValue=("CLMIWG").indexOf(newType.toUpperCase());
 		if(newValue>=0)
 			E.setMaterial(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genAlignment(MOB mob, MOB E)
+
+	void genAlignment(MOB mob, MOB E)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rAlignment: '"+Scoring.alignmentStr(E)+"'.");
+		mob.tell("\n\rAlignment: '"+new Scoring().alignmentStr(E)+"'.");
 		String newType=mob.session().choose("Enter a new alignment (G/N/E)\n\r:","GNE","");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -653,11 +837,11 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genGender(MOB mob, MOB E)
+
+	void genGender(MOB mob, MOB E)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rGender: '"+Character.toUpperCase((char)E.baseCharStats().getGender())+"'.");
+		mob.tell("\n\rGender: '"+Character.toUpperCase((char)E.baseCharStats().getGender())+"'.");
 		String newType=mob.session().choose("Enter a new gender (M/F)\n\r:","MF","");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -675,73 +859,93 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genWeaponClassification(MOB mob, Weapon E)
+
+	void genWeaponClassification(MOB mob, Weapon E)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rWeapon Classification: '"+E.classifictionDescription(E.weaponClassification)+"'.");
-		String newType=mob.session().choose("Enter a new value (a/b/e/f/h/k/p/r/s)\n\r:","ABEFHKPRS","");
+		mob.tell("\n\rWeapon Classification: '"+E.classifictionDescription()+"'.");
+		String newType=mob.session().choose("Enter a new value (a/b/e/f/h/k/p/r/s/d/t)\n\r:","ABEFHKPRSDT","");
 		int newValue=-1;
 		if(newType.length()>0)
-			newValue=("ABEFHKPRS").indexOf(newType.toUpperCase());
+			newValue=("ABEFHKPRSDT").indexOf(newType.toUpperCase());
 		if(newValue>=0)
-			E.weaponClassification=newValue;
+			E.setWeaponClassification(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genWeaponHands(MOB mob, Weapon E)
+
+	void genWeaponHands(MOB mob, Weapon E)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rTwo-Handed?: '"+(E.rawLogicalAnd()?"YES":"NO")+"'.");
-		String newType=mob.session().choose("Enter a new value (y/N)\n\r:","YN","N");
-		if((newType.length()>0))
-		{
-			if(newType.equalsIgnoreCase("Y"))
-				E.setRawLogicalAnd(true);
-			else
-				E.setRawLogicalAnd(false);
-		}
-		else
-			mob.tell("(no change)");
+		E.setRawLogicalAnd(genGenericPrompt(mob,"\n\r\n\rTwo-Handed?",E.rawLogicalAnd()));
 	}
-	
-	static void genSecretIdentity(MOB mob, Item E)
+
+	void genSecretIdentity(MOB mob, Item E)
 	{
-		mob.tell("\n\r\n\rSecret Identity: '"+E.secretIdentity()+"'.");
+		mob.tell("\n\rSecret Identity: '"+E.rawSecretIdentity()+"'.");
 		String newValue=mob.session().prompt("Enter a new identity\n\r:","");
 		if(newValue.length()>0)
 			E.setSecretIdentity(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genNourishment(MOB mob, Food E)
+
+	void genNourishment(MOB mob, Food E)
 	{
-		mob.tell("\n\r\n\rNourishment/Eat: '"+E.amountOfNourishment+"'.");
+		mob.tell("\n\rNourishment/Eat: '"+E.nourishment()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
 		if(newValue>0)
-			E.amountOfNourishment=newValue;
+			E.setNourishment(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genBehaviors(MOB mob, MOB E)
+
+	void genRace(MOB mob, MOB E)
+	{
+		String raceID="begin!";
+		while(raceID.length()>0)
+		{
+			mob.tell("\n\rRace: '"+E.baseCharStats().getMyRace().ID()+"'.");
+			raceID=mob.session().prompt("Enter a new race or LIST\n\r:","").trim();
+			if(raceID.equalsIgnoreCase("LIST"))
+				mob.tell(myLister.reallyList(CMClass.races,-1).toString());
+			else
+			if(raceID.length()==0)
+				mob.tell("(no change)");
+			else
+			{
+				Race R=CMClass.getRace(raceID);
+				if(R!=null)
+					E.baseCharStats().setMyRace(R);
+				else
+					mob.tell("Unknown race! Try 'LIST'.");
+			}
+		}
+	}
+
+	void genBehaviors(MOB mob, Environmental E)
 	{
 		String behave="NO";
 		while(behave.length()>0)
 		{
 			String behaviorstr="";
 			for(int b=0;b<E.numBehaviors();b++)
-				behaviorstr+=E.fetchBehavior(b).ID()+", ";
+			{
+				behaviorstr+=E.fetchBehavior(b).ID();
+				if(E.fetchBehavior(b).getParms().trim().length()>0)
+					behaviorstr+="("+E.fetchBehavior(b).getParms().trim()+"), ";
+				else
+					behaviorstr+=", ";
+
+			}
 			if(behaviorstr.length()>0)
 				behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
-			mob.tell("\n\r\n\rBehaviors: '"+behaviorstr+"'.");
-			behave=mob.session().prompt("Enter a behavior to add/remove\n\r:","");
+			mob.tell("\n\rBehaviors: '"+behaviorstr+"'.");
+			behave=mob.session().prompt("Enter a behavior to add/remove or LIST\n\r:","");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("LIST"))
-					mob.tell(Lister.reallyList(MUD.behaviors,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.behaviors,-1).toString());
 				else
 				{
 					Behavior chosenOne=null;
@@ -758,22 +962,31 @@ public class Generic
 					}
 					else
 					{
-						chosenOne=(Behavior)MUD.getBehavior(behave);
+						chosenOne=(Behavior)CMClass.getBehavior(behave);
 						if(chosenOne!=null)
 						{
+							chosenOne=(Behavior)chosenOne.newInstance();
+
 							boolean alreadyHasIt=false;
 							for(int b=0;b<E.numBehaviors();b++)
 							{
 								Behavior B=E.fetchBehavior(b);
 								if(B.ID().equals(chosenOne.ID()))
+								{
 									alreadyHasIt=true;
+									chosenOne=B;
+								}
 							}
+							String parms=chosenOne.getParms();
+							parms=mob.session().prompt("Enter any behavior parameters\n\r:",parms);
+							chosenOne.setParms(parms.trim());
 							if(!alreadyHasIt)
+							{
 								mob.tell(chosenOne.ID()+" added.");
+								E.addBehavior(chosenOne);
+							}
 							else
 								mob.tell(chosenOne.ID()+" re-added.");
-							if(!alreadyHasIt)
-								E.addBehavior(chosenOne.newInstance());
 						}
 						else
 						{
@@ -786,48 +999,113 @@ public class Generic
 				mob.tell("(no change)");
 		}
 	}
-	
-	static void genShopkeeper(MOB mob, ShopKeeper E)
+
+	void genAffects(MOB mob, Environmental E)
+	{
+		String behave="NO";
+		while(behave.length()>0)
+		{
+			String affectstr="";
+			for(int b=0;b<E.numAffects();b++)
+			{
+				Ability A=E.fetchAffect(b);
+				if(!A.isBorrowed(E))
+				{
+					affectstr+=A.ID();
+					if(A.text().trim().length()>0)
+						affectstr+="("+A.text().trim()+"), ";
+					else
+						affectstr+=", ";
+				}
+
+			}
+			if(affectstr.length()>0)
+				affectstr=affectstr.substring(0,affectstr.length()-2);
+			mob.tell("\n\rAffects: '"+affectstr+"'.");
+			behave=mob.session().prompt("Enter an affect to add/remove or LIST\n\r:","");
+			if(behave.length()>0)
+			{
+				if(behave.equalsIgnoreCase("LIST"))
+					mob.tell(myLister.reallyList(CMClass.abilities,-1).toString());
+				else
+				{
+					Ability chosenOne=null;
+					for(int a=0;a<E.numAffects();a++)
+					{
+						Ability A=E.fetchAffect(a);
+						if(A.ID().equalsIgnoreCase(behave))
+							chosenOne=A;
+					}
+					if(chosenOne!=null)
+					{
+						mob.tell(chosenOne.ID()+" removed.");
+						E.delAffect(chosenOne);
+					}
+					else
+					{
+						chosenOne=(Ability)CMClass.getAbility(behave);
+						if(chosenOne!=null)
+						{
+							chosenOne=(Ability)chosenOne.newInstance();
+							String parms=chosenOne.text();
+							parms=mob.session().prompt("Enter any affect parameters (';' delimited!)\n\r:",parms);
+							chosenOne.setMiscText(parms.trim());
+							mob.tell(chosenOne.ID()+" added.");
+							E.addNonUninvokableAffect(chosenOne);
+						}
+						else
+						{
+							mob.tell("'"+behave+"' is not recognized.  Try 'LIST'.");
+						}
+					}
+				}
+			}
+			else
+				mob.tell("(no change)");
+		}
+	}
+
+	void genShopkeeper(MOB mob, ShopKeeper E)
 		throws IOException
 	{
-		mob.tell("\n\r\n\rShopekeeper type: '"+E.storeKeeperString()+"'.");
+		mob.tell("\n\rShopekeeper type: '"+E.storeKeeperString()+"'.");
 		String newType=mob.session().choose("Enter a new value (*/G/A/M/W/P/L/O/T/C)\n\r:","*GAMWPLOTC","");
 		int newValue=-1;
 		if(newType.length()>0)
 			newValue=("*GAMWPLOTC").indexOf(newType.toUpperCase());
 		if(newValue>=0)
 		{
-			if(E.whatISell!=newValue)
+			if(E.whatIsSold()!=newValue)
 			{
 				Vector V=E.getUniqueStoreInventory();
 				for(int b=0;b<V.size();b++)
 					E.delStoreInventory((Environmental)V.elementAt(b));
 			}
-			E.whatISell=newValue;
-		}			
-			
-		
+			E.setWhatIsSold(newValue);
+		}
+
+
 		String itemstr="NO";
 		while(itemstr.length()>0)
 		{
 			String inventorystr="";
 			Vector V=E.getUniqueStoreInventory();
 			for(int b=0;b<V.size();b++)
-				inventorystr+=INI.className(V.elementAt(b))+" ("+E.numberInStock(INI.className(V.elementAt(b)))+"), ";
+				inventorystr+=CMClass.className(V.elementAt(b))+" ("+E.numberInStock((Environmental)V.elementAt(b))+"), ";
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
-			mob.tell("\n\r\n\rInventory: '"+inventorystr+"'.");
-			itemstr=mob.session().prompt("Enter something to add/remove\n\r:","");
+			mob.tell("\n\rInventory: '"+inventorystr+"'.");
+			itemstr=mob.session().prompt("Enter something to add/remove or LIST\n\r:","");
 			if(itemstr.length()>0)
 			{
 				if(itemstr.equalsIgnoreCase("LIST"))
 				{
-					mob.tell(Lister.reallyList(MUD.abilities,-1).toString());
-					mob.tell(Lister.reallyList(MUD.armor,-1).toString());
-					mob.tell(Lister.reallyList(MUD.weapons,-1).toString());
-					mob.tell(Lister.reallyList(MUD.miscMagic,-1).toString());
-					mob.tell(Lister.reallyList(MUD.items,-1).toString());
-					mob.tell(Lister.reallyList(MUD.MOBs,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.abilities,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.armor,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.weapons,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.miscMagic,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.items,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.MOBs,-1).toString());
 				}
 				else
 				{
@@ -839,19 +1117,14 @@ public class Generic
 					}
 					else
 					{
-						item=MUD.getItem(itemstr);
-						if(item==null)
-							item=MUD.getAbility(itemstr);
-						if(item==null)
-							item=MUD.getMOB(itemstr);
-					
+						item=CMClass.getUnknown(itemstr);
 						if(item!=null)
 						{
 							boolean ok=E.doISellThis(item);
-							if((item instanceof Ability)&&((E.whatISell==E.TRAINER)||(E.whatISell==E.CASTER)))
+							if((item instanceof Ability)&&((E.whatIsSold()==E.TRAINER)||(E.whatIsSold()==E.CASTER)))
 								ok=true;
 							else
-							if(E.whatISell==E.ONLYBASEINVENTORY)
+							if(E.whatIsSold()==E.ONLYBASEINVENTORY)
 								ok=true;
 							if(!ok)
 							{
@@ -860,10 +1133,10 @@ public class Generic
 							else
 							{
 								boolean alreadyHasIt=false;
-							
+
 								if(E.doIHaveThisInStock(item.name()))
 								   alreadyHasIt=true;
-							
+
 								if(!alreadyHasIt)
 								{
 									mob.tell(item.ID()+" added.");
@@ -885,23 +1158,24 @@ public class Generic
 				mob.tell("(no change)");
 		}
 	}
-	
-	static void genAbilities(MOB mob, MOB E)
+
+	void genAbilities(MOB mob, MOB E)
 	{
 		String behave="NO";
 		while(behave.length()>0)
 		{
 			String abilitiestr="";
 			for(int b=0;b<E.numAbilities();b++)
-				abilitiestr+=E.fetchAbility(b).ID()+", ";
+				if(!E.fetchAbility(b).isBorrowed(E))
+					abilitiestr+=E.fetchAbility(b).ID()+", ";
 			if(abilitiestr.length()>0)
 				abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
-			mob.tell("\n\r\n\rAbilities: '"+abilitiestr+"'.");
-			behave=mob.session().prompt("Enter an ability to add/remove\n\r:","");
+			mob.tell("\n\rAbilities: '"+abilitiestr+"'.");
+			behave=mob.session().prompt("Enter an ability to add/remove or LIST\n\r:","");
 			if(behave.length()>0)
 			{
 				if(behave.equalsIgnoreCase("LIST"))
-					mob.tell(Lister.reallyList(MUD.abilities,-1).toString());
+					mob.tell(myLister.reallyList(CMClass.abilities,-1).toString());
 				else
 				{
 					Ability chosenOne=null;
@@ -920,7 +1194,7 @@ public class Generic
 					}
 					else
 					{
-						chosenOne=(Ability)MUD.getAbility(behave);
+						chosenOne=(Ability)CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -937,6 +1211,7 @@ public class Generic
 							if(!alreadyHasIt)
 							{
 								E.addAbility((Ability)chosenOne.copyOf());
+								chosenOne.setProfficiency(100);
 								chosenOne.autoInvocation(mob);
 							}
 						}
@@ -951,13 +1226,13 @@ public class Generic
 				mob.tell("(no change)");
 		}
 	}
-	
-	static void genWornLocation(MOB mob, Item E)
+
+	void genWornLocation(MOB mob, Item E)
 	{
 		int codeVal=-1;
 		while(codeVal!=0)
 		{
-			mob.tell("\n\r\n\rWearing parameters\n\r0: Done");
+			mob.tell("\n\rWearing parameters\n\r0: Done");
 			if(!E.rawLogicalAnd())
 				mob.tell("1: Able to worn on any ONE of these locations:");
 			else
@@ -989,33 +1264,33 @@ public class Generic
 			}
 		}
 	}
-	
-	static void genThirstQuenched(MOB mob, Drink E)
+
+	void genThirstQuenched(MOB mob, Drink E)
 	{
-		mob.tell("\n\r\n\rQuenched/Drink: '"+E.amountOfThirstQuenched+"'.");
+		mob.tell("\n\rQuenched/Drink: '"+E.thirstQuenched()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
 		if(newValue>0)
-			E.amountOfThirstQuenched=newValue;
+			E.setThirstQuenched(newValue);
 		else
 			mob.tell("(no change)");
 	}
-	
-	static void genDrinkHeld(MOB mob, Drink E)
+
+	void genDrinkHeld(MOB mob, Drink E)
 	{
-		mob.tell("\n\r\n\rAmount of Drink Held: '"+E.amountOfLiquidHeld+"'.");
+		mob.tell("\n\rAmount of Drink Held: '"+E.liquidHeld()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
 		if(newValue>0)
 		{
-			E.amountOfLiquidHeld=newValue;
-			E.amountOfLiquidRemaining=newValue;
+			E.setLiquidHeld(newValue);
+			E.setLiquidRemaining(newValue);
 		}
 		else
 			mob.tell("(no change)");
 	}
-	
 
-	
-	public static void modifyGenFood(MOB mob, GenFood me)
+
+
+	public void modifyGenFood(MOB mob, Food me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1028,9 +1303,12 @@ public class Generic
 			genDescription(mob,me);
 			genSecretIdentity(mob,me);
 			genValue(mob,me);
+			genRejuv(mob,me);
 			genWeight(mob,me);
 			genNourishment(mob,me);
 			genDisposition(mob,me);
+			genGettable(mob,me);
+			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
@@ -1040,7 +1318,7 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	public static void modifyGenDrink(MOB mob, GenWater me)
+	public void modifyGenDrink(MOB mob, Drink me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1054,9 +1332,12 @@ public class Generic
 			genSecretIdentity(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
+			genRejuv(mob,me);
 			genThirstQuenched(mob,me);
+			genMaterialCode(mob,me);
 			genDrinkHeld(mob,me);
-			me.setGettable(mob.session().confirm("Is this item gettable (Y/N)",((me.isGettable())?"Y":"N")));
+			genGettable(mob,me);
+			genAffects(mob,me);
 			genDisposition(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
@@ -1067,8 +1348,8 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	
-	public static void modifyGenItem(MOB mob, GenItem me)
+
+	public void modifyGenItem(MOB mob, Item me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1081,10 +1362,16 @@ public class Generic
 			genDisplayText(mob,me);
 			genDescription(mob,me);
 			genSecretIdentity(mob,me);
+			genMaterialCode(mob,me);
 			genGettable(mob,me);
+			genRejuv(mob,me);
+			genAbility(mob,me);
+			genUses(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
 			genDisposition(mob,me);
+			genBehaviors(mob,me);
+			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
@@ -1094,8 +1381,8 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	
-	public static void modifyGenReadable(MOB mob, GenReadable me)
+
+	public void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.interfaces.Map me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1104,13 +1391,18 @@ public class Generic
 		while(!ok)
 		{
 			genName(mob,me);
-			genLevel(mob,me);
 			genDisplayText(mob,me);
 			genDescription(mob,me);
+			genSecretIdentity(mob,me);
 			genGettable(mob,me);
+			genLevel(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
+			genRejuv(mob,me);
+			genMaterialCode(mob,me);
 			genDisposition(mob,me);
+			genBehaviors(mob,me);
+			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
@@ -1120,8 +1412,8 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	
-	public static void modifyGenContainer(MOB mob, GenContainer me)
+
+	public void modifyGenContainer(MOB mob, Container me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1130,15 +1422,21 @@ public class Generic
 		while(!ok)
 		{
 			genName(mob,me);
-			genLevel(mob,me);
 			genDisplayText(mob,me);
 			genDescription(mob,me);
+			genLevel(mob,me);
+			genRejuv(mob,me);
 			genCapacity(mob,me);
 			genLidsNLocks(mob,me);
+			genMaterialCode(mob,me);
 			genSecretIdentity(mob,me);
 			genValue(mob,me);
+			genUses(mob,me);
 			genWeight(mob,me);
 			genDisposition(mob,me);
+			genGettable(mob,me);
+			genBehaviors(mob,me);
+			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
@@ -1148,8 +1446,8 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	
-	public static void modifyGenWeapon(MOB mob, GenWeapon me)
+
+	public void modifyGenWeapon(MOB mob, Weapon me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1162,16 +1460,21 @@ public class Generic
 			genDescription(mob,me);
 			genAttack(mob,me);
 			genDamage(mob,me);
+			genMaterialCode(mob,me);
 			genWeaponType(mob,me);
 			genWeaponClassification(mob,me);
 			genWeaponHands(mob,me);
 			genLevel(mob,me);
+			genUses(mob,me);
+			genRejuv(mob,me);
 			genAbility(mob,me);
 			genSecretIdentity(mob,me);
 			genGettable(mob,me);
 			genValue(mob,me);
 			genWeight(mob,me);
 			genDisposition(mob,me);
+			genBehaviors(mob,me);
+			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
@@ -1181,7 +1484,7 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	public static void modifyGenArmor(MOB mob, GenArmor me)
+	public void modifyGenArmor(MOB mob, Armor me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1195,6 +1498,7 @@ public class Generic
 			genMaterialCode(mob,me);
 			genWornLocation(mob,me);
 			genLevel(mob,me);
+			genRejuv(mob,me);
 			genArmor(mob,me);
 			genAbility(mob,me);
 			genCapacity(mob,me);
@@ -1203,6 +1507,8 @@ public class Generic
 			genValue(mob,me);
 			genWeight(mob,me);
 			genDisposition(mob,me);
+			genBehaviors(mob,me);
+			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{
@@ -1212,7 +1518,7 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	public static void modifyGenExit(MOB mob, GenExit me)
+	public void modifyGenExit(MOB mob, Exit me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1244,7 +1550,7 @@ public class Generic
 		}
 		mob.recoverEnvStats();
 	}
-	public static void modifyGenMOB(MOB mob, GenMob me)
+	public void modifyGenMOB(MOB mob, MOB me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1258,7 +1564,9 @@ public class Generic
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),0,150,0,'M');
+				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),mob.baseCharStats().getGender());
+			genRejuv(mob,me);
+			genRace(mob,me);
 			genGender(mob,me);
 			genSpeed(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
@@ -1272,6 +1580,7 @@ public class Generic
 			genWeight(mob,me);
 			genAbilities(mob,me);
 			genBehaviors(mob,me);
+			genAffects(mob,me);
 			genDisposition(mob,me);
 			genSensesMask(mob,me);
 			ok=true;
@@ -1281,14 +1590,14 @@ public class Generic
 				ok=false;
 			}
 		}
-		
-		mob.setMiscText(mob.text());
+
+		mob.recoverCharStats();
+		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
+		mob.resetToMaxState();
+		mob.tell("\n\rNow don't forget to equip him with stuff before saving!\n\r");
 	}
-	public static void modifyGenUndead(MOB mob, GenUndead me)
+	public void modifyGenShopkeeper(MOB mob, ShopKeeper me)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1302,7 +1611,9 @@ public class Generic
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),0,150,0,'M');
+				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),mob.baseCharStats().getGender());
+			genRejuv(mob,me);
+			genRace(mob,me);
 			genGender(mob,me);
 			genSpeed(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
@@ -1316,49 +1627,7 @@ public class Generic
 			genWeight(mob,me);
 			genAbilities(mob,me);
 			genBehaviors(mob,me);
-			genDisposition(mob,me);
-			genSensesMask(mob,me);
-			ok=true;
-			if(me.text().length()>=maxLength)
-			{
-				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-				ok=false;
-			}
-		}
-		
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
-	}
-	
-	public static void modifyGenShopkeeper(MOB mob, GenShopkeeper me)
-		throws IOException
-	{
-		if(mob.isMonster())
-			return;
-		boolean ok=false;
-		while(!ok)
-		{
-			genName(mob,me);
-			genDisplayText(mob,me);
-			genDescription(mob,me);
-			int oldLevel=me.baseEnvStats().level();
-			genLevel(mob,me);
-			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),0,150,0,'M');
-			genGender(mob,me);
-			genSpeed(mob,me);
-			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));
-			genAttack(mob,me);
-			genDamage(mob,me);
-			genArmor(mob,me);
-			genHitPoints(mob,me);
-			genAlignment(mob,me);
-			genMoney(mob,me);
-			genWeight(mob,me);
-			genAbilities(mob,me);
-			genBehaviors(mob,me);
+			genAffects(mob,me);
 			genShopkeeper(mob,me);
 			genDisposition(mob,me);
 			genSensesMask(mob,me);
@@ -1369,8 +1638,9 @@ public class Generic
 				ok=false;
 			}
 		}
-		
+
 		mob.recoverCharStats();
+		mob.recoverMaxState();
 		mob.recoverEnvStats();
 		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
 	}

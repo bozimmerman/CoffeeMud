@@ -1,12 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 
 import java.util.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.db.*;
 
 /**
  * A MOB is a creature in the system, from a user
@@ -82,8 +76,10 @@ public interface MOB
 	// the core state values
 	public CharState curState();
 	public CharState maxState();
-	public void setMaxState(CharState newState);
 	public void recoverMaxState();
+	public CharState baseState();
+	public void setBaseState(CharState newState);
+	public void resetToMaxState();
 	
 	// mental characteristics
 	public String getWorshipCharID();
@@ -98,6 +94,7 @@ public interface MOB
 	// location!
 	public Room getStartRoom();
 	public void setStartRoom(Room newVal);
+	public Calendar lastTickedDateTime();
 	
 	/** Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */
@@ -131,9 +128,11 @@ public interface MOB
 	public Ability fetchAbility(int index);
 	public Ability fetchAbility(String ID);
 	
+	public int getBitmap();
+	public void setBitmap(int bitmap);
 	
-	
-	public static final int ALIGN_GOOD=1000;
-	public static final int ALIGN_NEUTRAL=500;
-	public static final int ALIGN_EVIL=0;
+	public static final int ATT_AUTOGOLD=1;
+	public static final int ATT_AUTOLOOT=2;
+	public static final int ATT_AUTOEXITS=4;
+	public static final int ATT_AUTOASSIST=8;
 }

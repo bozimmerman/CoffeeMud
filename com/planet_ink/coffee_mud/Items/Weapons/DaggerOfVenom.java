@@ -1,9 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.Abilities.*;
 
 
 public class DaggerOfVenom extends Dagger
@@ -23,27 +21,30 @@ public class DaggerOfVenom extends Dagger
 		baseGoldValue=1500;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(4);
-        baseEnvStats().setDisposition(Sense.IS_BONUS);
+        baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
 		weaponType=Weapon.TYPE_PIERCING;
-		weaponClassification=Weapon.CLASS_EDGED;
+		weaponClassification=Weapon.CLASS_DAGGER;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new DaggerOfVenom();
 	}
-	public void strike(MOB source, MOB target, boolean success)
+	public void affect(Affect affect)
 	{
-		super.strike(source, target, success);
-		if(success)
+		super.affect(affect);
+		if((affect.source().location()!=null)
+		   &&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		   &&(affect.tool()==this)
+		   &&(affect.target() instanceof MOB))
 		{
             int chance = ((int) Math.random() * 20);
             if(chance == 10)
             {
-                Poison poison = new Poison();
+                Ability poison = CMClass.getAbility("Poison");
                 poison.baseEnvStats().setLevel(baseEnvStats().level());
-                poison.invoke(source, target, true);
+                poison.invoke(affect.source(),(MOB)affect.target(), true);
             }
 		}
 	}

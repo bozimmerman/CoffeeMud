@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Arquebus extends Weapon
+public class Arquebus extends StdWeapon
 {
 	public Arquebus()
 	{
@@ -14,10 +15,10 @@ public class Arquebus extends Weapon
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(15);
-		
+
 		baseEnvStats().setAttackAdjustment(-1);
 		baseEnvStats().setDamage(10);
-		
+
 		baseGoldValue=500;
 		recoverEnvStats();
 		wornLogicalAnd=true;
@@ -25,7 +26,7 @@ public class Arquebus extends Weapon
 		weaponClassification=Weapon.CLASS_RANGED;
 		weaponType=Weapon.TYPE_PIERCING;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Arquebus();

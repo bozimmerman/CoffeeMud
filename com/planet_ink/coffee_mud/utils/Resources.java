@@ -10,6 +10,12 @@ public class Resources
 	private static Vector resource=new Vector();
 									   
 
+	public static void clearResources()
+	{
+		resourceIDs=new Vector();
+		resource=new Vector();
+	}
+	
 	public static Object getResource(String ID)
 	{
 		for(int i=0;i<resourceIDs.size();i++)
@@ -47,17 +53,33 @@ public class Resources
 			}
 	}
 	
-	public static StringBuffer getFileResource(String filename)
+	public static Vector getFileLineVector(StringBuffer buf)
 	{
+		Vector V=new Vector();
 		
-		Object rsc=getResource(filename);
-		if((rsc!=null)&&(rsc instanceof StringBuffer))
-			return (StringBuffer)rsc;
-		
+		String str="";
+		for(int i=0;i<buf.length();i++)
+		{
+			if((buf.charAt(i)=='\n')&&(buf.charAt(i+1)=='\r'))
+			{
+				i++;
+				V.addElement(str);
+				str="";
+			}
+			else
+				str+=buf.charAt(i);
+		}
+		if(str.length()>0)
+			V.addElement(str);
+		return V;
+	}
+	
+	public static StringBuffer getFile(String filename)
+	{
 		StringBuffer buf=new StringBuffer("");
 		try
 		{
-			FileReader F=new FileReader("resources"+File.separatorChar+filename);
+			FileReader F=new FileReader(filename);
 			BufferedReader reader=new BufferedReader(F);
 			String line="";
 			while((line!=null)&&(reader.ready()))
@@ -71,7 +93,20 @@ public class Resources
 		catch(Exception e)
 		{
 			Log.errOut("Resource",e.getMessage());
+			return null;
 		}
+		return buf;
+	}
+	
+	public static StringBuffer getFileResource(String filename)
+	{
+		
+		Object rsc=getResource(filename);
+		if((rsc!=null)&&(rsc instanceof StringBuffer))
+			return (StringBuffer)rsc;
+		
+		StringBuffer buf=getFile("resources"+File.separatorChar+filename);
+		if(buf==null) buf=new StringBuffer("");
 		submitResource(filename,buf);
 		return buf;
 	}

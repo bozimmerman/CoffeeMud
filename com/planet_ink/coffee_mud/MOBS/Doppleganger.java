@@ -2,17 +2,8 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Behaviors.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.service.*;
+import com.planet_ink.coffee_mud.common.*;
 public class Doppleganger extends StdMOB
 {
 
@@ -31,9 +22,9 @@ public class Doppleganger extends StdMOB
 		Username="a doppleganger";
 		setDescription("A formless biped creature, with wicked black eyes.");
 		setDisplayText("A formless biped stands here.");
-		setBaseEnvStats(new Stats());
-		setBaseCharStats(new CharStats());
-		setMaxState(new CharState());
+		setBaseEnvStats(new DefaultEnvStats());
+		setBaseCharStats(new DefaultCharStats());
+		setBaseState(new DefaultCharState());
 		setAlignment(0);
 		setMoney(250);
 		baseEnvStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
@@ -48,12 +39,13 @@ public class Doppleganger extends StdMOB
 		baseEnvStats().setLevel(6);
 		baseEnvStats().setArmor(20);
 
-		maxState.setHitPoints(Dice.roll(baseEnvStats().level(),20,5));
+		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,5));
 
-		addBehavior(new Mobile());
-		addBehavior(new MudChat());
+		addBehavior(CMClass.getBehavior("Mobile"));
+		addBehavior(CMClass.getBehavior("MudChat"));
 
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
@@ -65,7 +57,7 @@ public class Doppleganger extends StdMOB
 
 	public boolean tick(int tickID)
 	{
-		if((!amDead())&&(tickID==ServiceEngine.MOB_TICK))
+		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
 			if(mimicing!=null)
 			{
@@ -89,7 +81,7 @@ public class Doppleganger extends StdMOB
 	{
 		if(!super.okAffect(affect))
 			return false;
-		if((affect.amITarget(this))&&(affect.targetType()==Affect.STRIKE))
+		if((affect.amITarget(this))&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
 		{
 			if(mimicing!=null)
 			{
@@ -100,17 +92,18 @@ public class Doppleganger extends StdMOB
 			}
 			if(mimicing==null)
 			{
-				location().show(this,null,Affect.VISUAL_WNOISE,"<S-NAME> take(s) on a new form!");
+				location().show(this,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on a new form!");
 				mimicing=affect.source();
 				Username=mimicing.name();
 				setDisplayText(mimicing.rawDisplayText());
 				setDescription(mimicing.description());
 				setBaseEnvStats(mimicing.baseEnvStats().cloneStats());
 				setBaseCharStats(mimicing.baseCharStats().cloneCharStats());
-				setMaxState(mimicing.maxState().cloneCharState());
+				setBaseState(mimicing.baseState().cloneCharState());
 				recoverEnvStats();
 				recoverCharStats();
 				recoverMaxState();
+				resetToMaxState();
 				ticksSinceMimicing=0;
 			}
 		}

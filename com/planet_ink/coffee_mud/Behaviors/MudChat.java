@@ -1,13 +1,8 @@
 package com.planet_ink.coffee_mud.Behaviors;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.commands.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
 import java.util.*;
 public class MudChat extends StdBehavior
 {
@@ -25,27 +20,32 @@ public class MudChat extends StdBehavior
 	// match string
 	// following strings are the proposed responses.
 	//----------------------------------------------
-	
+
 	private Vector responseQue=new Vector();
 	private int tickDown=3;
+	private final static int TALK_WAIT_DELAY=30;
+	private int talkDown=0;
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
 	// on tick or more.
-	
+
 	private final static int RESPONSE_DELAY=2;
-	
+
 	public MudChat()
 	{
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
 	public Behavior newInstance()
-	{ 
+	{
 		return new MudChat();
 	}
-	
-	public void initChat()
+
+	public synchronized void initChat()
 	{
+		if(resourceLoaded) return;
+
 		StringBuffer rsc=Resources.getFileResource("chat.dat");
+		resourceLoaded=true;
 		Vector V=new Vector();
 		V.addElement("");
 		chatGroups.addElement(V);
@@ -97,7 +97,7 @@ public class MudChat extends StdBehavior
 			str=nextLine(rsc);
 		}
 	}
-	
+
 	public String nextLine(StringBuffer tsc)
 	{
 		String ret=null;
@@ -116,10 +116,10 @@ public class MudChat extends StdBehavior
 			}
 		}
 		return ret;
-		
+
 	}
-	
-	
+
+
 	private Vector matchChatGroup(String myName)
 	{
 		for(int i=1;i<chatGroups.size();i++)
@@ -128,7 +128,7 @@ public class MudChat extends StdBehavior
 			if(V.size()>0)
 				if(((String)V.elementAt(0)).length()>0)
 				{
-					String names=((String)V.elementAt(0)).substring(1);
+					String names=((String)V.elementAt(0));
 					while(names.length()>0)
 					{
 						String name=null;
@@ -145,7 +145,7 @@ public class MudChat extends StdBehavior
 						}
 						if(name.length()>0)
 						{
-							if(myName.indexOf(name)>=0)
+							if(myName.toUpperCase().indexOf(name)>=0)
 							{
 								return V;
 							}
@@ -155,11 +155,10 @@ public class MudChat extends StdBehavior
 		}
 		return null;
 	}
-	
+
 	private Vector getMyChatGroup(MOB forMe)
 	{
-		if(!resourceLoaded)
-			initChat();
+		initChat();
 		if((myChatGroup!=null)&&(myOldName.equals(forMe.name())))
 			return myChatGroup;
 		myOldName=forMe.name();
@@ -169,17 +168,20 @@ public class MudChat extends StdBehavior
 		if(V!=null) return V;
 		V=matchChatGroup(forMe.displayText());
 		if(V!=null) return V;
-		V=matchChatGroup(INI.className(forMe));
+		V=matchChatGroup(CMClass.className(forMe));
+		if(V!=null) return V;
+		if(this.getParms().length()>0)
+			V=matchChatGroup(this.getParms());
 		if(V!=null) return V;
 		return (Vector)chatGroups.elementAt(0);
 	}
-	
+
 	private void queResponse(Vector responses, MOB source, MOB target, String rest)
 	{
 		int total=0;
 		for(int x=1;x<responses.size();x++)
 			total+=Util.s_int(((String)responses.elementAt(x)).substring(0,1));
-		
+
 		String selection=null;
 		int select=Dice.roll(1,total,0);
 		for(int x=1;x<responses.size();x++)
@@ -191,7 +193,7 @@ public class MudChat extends StdBehavior
 				break;
 			}
 		}
-			
+
 		if(selection!=null)
 		{
 			String finalCommand=selection.substring(1).trim();
@@ -210,11 +212,11 @@ public class MudChat extends StdBehavior
 				finalCommand=finalCommand.substring(1).trim();
 			else
 			if(finalCommand.startsWith("\""))
-				finalCommand="say "+finalCommand.substring(1).trim();
+				finalCommand="say \""+finalCommand.substring(1).trim()+"\"";
 			else
 			if(target!=null)
 				finalCommand="say \""+target.name()+"\" "+finalCommand.trim();
-			
+
 			int t=finalCommand.indexOf("$r");
 			while(t>=0)
 			{
@@ -240,12 +242,12 @@ public class MudChat extends StdBehavior
 				t=finalCommand.indexOf("$$");
 			}
 
-			Vector V=CommandProcessor.parse(finalCommand);
+			Vector V=Util.parse(finalCommand);
 			V.insertElementAt(new Integer(RESPONSE_DELAY),0);
 			for(int f=0;f<responseQue.size();f++)
 			{
 				Vector V1=(Vector)responseQue.elementAt(f);
-				if(CommandProcessor.combine(V1,1).equalsIgnoreCase(finalCommand))
+				if(Util.combine(V1,1).equalsIgnoreCase(finalCommand))
 				{
 					V=null;
 					break;
@@ -255,8 +257,8 @@ public class MudChat extends StdBehavior
 				responseQue.addElement(V);
 		}
 	}
-	
-	
+
+
 	private boolean match(String expression, String message, String[] rest)
 	{
 		int l=expression.length();
@@ -264,7 +266,7 @@ public class MudChat extends StdBehavior
 		if((expression.charAt(0)=='(')
 		&&(expression.charAt(l-1)==')'))
 			expression=expression.substring(1,expression.length()-1);
-		
+
 		int end=0;
 		for(;((end<expression.length())&&(("(&|~").indexOf(expression.charAt(end))<0));end++);
 		String check=null;
@@ -305,7 +307,7 @@ public class MudChat extends StdBehavior
 			response=true;
 			rest[0]=message;
 		}
-		
+
 		if(expression.length()>0)
 		{
 			if(expression.startsWith("("))
@@ -336,12 +338,11 @@ public class MudChat extends StdBehavior
 			else
 			if(expression.startsWith("~"))
 				return response&&(!match(expression.substring(1),message,rest));
-			
+
 		}
 		return response;
 	}
-	
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -349,21 +350,27 @@ public class MudChat extends StdBehavior
 	public void affect(Environmental affecting, Affect affect)
 	{
 		super.affect(affecting,affect);
-		
-		if(!canBehave(affecting)) 
+
+		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB mob=affect.source();
 		MOB monster=(MOB)affecting;
-		if((!affect.amISource(monster))&&(!mob.isMonster()))
+		if((!affect.amISource(monster))
+		&&(!mob.isMonster())
+		&&(Sense.canBeHeardBy(mob,monster))
+		&&(Sense.canBeSeenBy(mob,monster)))
 		{
 			Vector myResponses=null;
-			Vector myGroup=getMyChatGroup(monster);
+			myChatGroup=getMyChatGroup(monster);
 			String rest[]=new String[1];
-			
-			if((affect.targetCode()==Affect.SOUND_WORDS)
-			&&(affect.amITarget(monster)||((mob.location()==monster.location())&&(mob.location().numInhabitants()<3)))
+
+			if((affect.targetMinor()==Affect.TYP_SPEAK)
+			&&(affect.amITarget(monster)
+			   ||((mob.location()==monster.location())
+				  &&(talkDown<=0)
+				  &&(mob.location().numPCInhabitants()==1)))
 			&&(Sense.canBeHeardBy(mob,monster))
-			&&(myGroup!=null)
+			&&(myChatGroup!=null)
 			&&(affect.targetMessage()!=null))
 			{
 				int x=affect.targetMessage().indexOf("'");
@@ -372,9 +379,9 @@ public class MudChat extends StdBehavior
 				{
 					String msg=" "+affect.targetMessage().substring(x+1,y)+" ";
 					int l=0;
-					for(int i=1;i<myGroup.size();i++)
+					for(int i=1;i<myChatGroup.size();i++)
 					{
-						Vector possResponses=(Vector)myGroup.elementAt(i);
+						Vector possResponses=(Vector)myChatGroup.elementAt(i);
 						String expression=((String)possResponses.elementAt(0)).trim();
 						l=expression.length();
 						if((l>0)
@@ -391,8 +398,17 @@ public class MudChat extends StdBehavior
 				}
 			}
 			else
-			if((Sense.canBeHeardBy(mob,monster)&&Sense.canBeSeenBy(mob,monster))
-			&&(myGroup!=null))
+			if((affect.sourceMinor()==Affect.TYP_SPEAK)
+			&&(Sense.canBeHeardBy(mob,monster))
+			&&(Sense.canBeSeenBy(mob,monster))
+			&&(mob.isMonster())
+			&&(affect.source()!=monster))
+			   talkDown=this.TALK_WAIT_DELAY;
+			else
+			if((Sense.canBeHeardBy(mob,monster))
+			&&(Sense.canBeSeenBy(mob,monster))
+			&&(talkDown<=0)
+			&&(myChatGroup!=null))
 			{
 				String msg=null;
 				char c1='[';
@@ -409,9 +425,9 @@ public class MudChat extends StdBehavior
 				if(msg!=null)
 				{
 					int l=0;
-					for(int i=1;i<myGroup.size();i++)
+					for(int i=1;i<myChatGroup.size();i++)
 					{
-						Vector possResponses=(Vector)myGroup.elementAt(i);
+						Vector possResponses=(Vector)myChatGroup.elementAt(i);
 						String expression=((String)possResponses.elementAt(0)).trim();
 						l=expression.length();
 						if((l>0)
@@ -427,24 +443,32 @@ public class MudChat extends StdBehavior
 					}
 				}
 			}
-			
-				
+
+
 			if(myResponses!=null)
 				queResponse(myResponses,monster,mob,rest[0]);
 		}
 	}
-	
+
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((tickID==ServiceEngine.MOB_TICK)&&(ticking instanceof MOB))
+		if((tickID==Host.MOB_TICK)&&(ticking instanceof MOB))
 		{
+			if(!canFreelyBehaveNormal(ticking))
+			{
+				responseQue.removeAllElements();
+				return;
+			}
+
+			if(talkDown>0) talkDown--;
+
 			if(tickDown>=0)
 			{
 				--tickDown;
 				if(tickDown<0)
 				{
-					Vector myGroup=getMyChatGroup((MOB)ticking);
+					myChatGroup=getMyChatGroup((MOB)ticking);
 				}
 			}
 			for(int t=responseQue.size()-1;t>=0;t--)
@@ -459,7 +483,7 @@ public class MudChat extends StdBehavior
 					responseQue.removeElementAt(t);
 					try
 					{
-						CommandProcessor.doCommand((MOB)ticking,que);
+						ExternalPlay.doCommand((MOB)ticking,que);
 					}
 					catch(Exception e)
 					{

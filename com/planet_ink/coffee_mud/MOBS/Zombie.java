@@ -2,17 +2,11 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 public class Zombie extends Undead
 {
-	
+
 	public Zombie()
 	{
 
@@ -24,19 +18,20 @@ public class Zombie extends Undead
 		setDisplayText("a skeleton slowly moves about.");
 		setMoney(10);
 		baseEnvStats.setWeight(30);
-		
+
 		baseEnvStats().setDamage(8);
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(80);
 		baseEnvStats().setSpeed(1.0);
-		
+
 		int hitPoints = 0;
 		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;
 		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;
 
-		maxState.setHitPoints(hitPoints);
-		
+		baseState.setHitPoints(hitPoints);
+
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}

@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class Whip extends Weapon
+public class Whip extends StdWeapon
 {
 	public Whip()
 	{
@@ -22,7 +23,7 @@ public class Whip extends Weapon
 		weaponType=Weapon.TYPE_SLASHING;//?????????
 		weaponClassification=Weapon.CLASS_FLAILED;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Whip();

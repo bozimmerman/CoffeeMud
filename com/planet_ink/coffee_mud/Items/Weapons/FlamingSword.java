@@ -1,8 +1,7 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.commands.*;
 
 public class FlamingSword extends Longsword
 {
@@ -20,7 +19,7 @@ public class FlamingSword extends Longsword
 		baseEnvStats().setWeight(4);
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(8);
-		baseEnvStats().setDisposition(Sense.IS_LIGHT | Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_LIGHT | Sense.IS_BONUS);
 		baseGoldValue=2500;
 		recoverEnvStats();
 		weaponType=TYPE_SLASHING;
@@ -30,20 +29,25 @@ public class FlamingSword extends Longsword
 	{
 		return new FlamingSword();
 	}
-	public void strike(MOB source, MOB target, boolean success)
+	public void affect(Affect affect)
 	{
-		super.strike(source, target, success);
-		if(success)
+		super.affect(affect);
+		if((affect.source().location()!=null)
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&(affect.tool()==this)
+		&&(affect.target() instanceof MOB)
+		&&(!((MOB)affect.target()).amDead()))
 		{
-			FullMsg msg=new FullMsg(source,target,this,Affect.SOUND_MAGIC,Affect.STRIKE_FIRE,Affect.SOUND_MAGIC,"Flames from the sword wielded by <MYAME>'s burn <T-NAME>!");
-			if(target.okAffect(msg))
+			FullMsg msg=new FullMsg(affect.source(),(MOB)affect.target(),new FlamingSword(),Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,Affect.MSG_NOISYMOVEMENT,null);
+			if(affect.source().location().okAffect(msg))
 			{
-				source.location().send(source, msg);
+				affect.source().location().send(affect.source(), msg);
 				if(!msg.wasModified())
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					TheFight.doDamage(target, ++flameDamage);
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,name()+" "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.NO_EFFECT,Affect.MASK_HURT+flameDamage,Affect.NO_EFFECT,null));
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.Exits;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Abilities.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class TrappedLockedDoor extends StdLockedDoorway
 {
@@ -8,7 +8,8 @@ public class TrappedLockedDoor extends StdLockedDoorway
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		Thief_Trap.setTrapped(this,true);
+		Trap t=(Trap)CMClass.getAbility("Trap_Trap");
+		if(t!=null) t.setTrapped(this,true);
 	}
 	public Environmental newInstance()
 	{

@@ -2,15 +2,8 @@ package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Mage extends StdCharClass
 {
@@ -20,7 +13,7 @@ public class Mage extends StdCharClass
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		maxHitPointsPerLevel=8;
 		maxStat[CharStats.INTELLIGENCE]=25;
-		bonusPracLevel=6;
+		bonusPracLevel=4;
 		manaMultiplier=20;
 		attackAttribute=CharStats.INTELLIGENCE;
 		bonusAttackLevel=0;
@@ -39,27 +32,31 @@ public class Mage extends StdCharClass
 	{
 		if(mob.baseCharStats().getIntelligence()<=8)
 			return false;
-		if(!(mob.charStats().getMyRace() instanceof Human) && !(mob.charStats().getMyRace() instanceof Elf) && !(mob.charStats().getMyRace() instanceof HalfElf))
+		if(!(mob.charStats().getMyRace().ID().equals("Human"))
+		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
+		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
 			return(false);
 		return true;
 	}
 
-	public void newCharacter(MOB mob)
+	public void newCharacter(MOB mob, boolean isBorrowedClass)
 	{
-		super.newCharacter(mob);
-		mob.addAbility(new Spell_ReadMagic());
-		mob.addAbility(new Skill_Revoke());
-		mob.addAbility(new Spell_Shield());
-		mob.addAbility(new Spell_MagicMissile());
-		mob.addAbility(new Skill_Write());
+		super.newCharacter(mob, isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_WandUse"),isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Spell_ReadMagic"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Revoke"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Spell_Shield"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Spell_MagicMissile"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Write"), isBorrowedClass);
 
 		int numTotal=0;
-		for(int a=0;a<MUD.abilities.size();a++)
+		for(int a=0;a<CMClass.abilities.size();a++)
 		{
-			Ability A=(Ability)MUD.abilities.elementAt(a);
-			if(A.qualifyingLevel(mob)>0)
+			Ability A=(Ability)CMClass.abilities.elementAt(a);
+			if((A.qualifyingLevel(mob)>0)&&(A.classificationCode()==Ability.SPELL))
 				numTotal++;
 		}
+		Hashtable given=new Hashtable();
 		for(int level=2;level<19;level++)
 		{
 			int numSpells=(int)Math.floor(Util.div(26-level,8));
@@ -67,16 +64,17 @@ public class Mage extends StdCharClass
 			while(numLevel<numSpells)
 			{
 				int randSpell=(int)Math.round(Math.random()*numTotal);
-				for(int a=0;a<MUD.abilities.size();a++)
+				for(int a=0;a<CMClass.abilities.size();a++)
 				{
-					Ability A=(Ability)MUD.abilities.elementAt(a);
-					if(A.qualifyingLevel(mob)>0)
+					Ability A=(Ability)CMClass.abilities.elementAt(a);
+					if((A.qualifyingLevel(mob)>0)&&(A.classificationCode()==Ability.SPELL))
 					{
 						if(randSpell==0)
 						{
-							if((A.qualifyingLevel(mob)==level)&&(mob.fetchAbility(A.ID())==null))
+							if((A.qualifyingLevel(mob)==level)&&(given.get(A.ID())==null))
 							{
-								mob.addAbility((Ability)A.copyOf());
+								giveMobAbility(mob,A,isBorrowedClass);
+								given.put(A.ID(),A);
 								numLevel++;
 							}
 							break;
@@ -91,16 +89,17 @@ public class Mage extends StdCharClass
 		while(numLevel<2)
 		{
 			int randSpell=(int)Math.round(Math.random()*numTotal);
-			for(int a=0;a<MUD.abilities.size();a++)
+			for(int a=0;a<CMClass.abilities.size();a++)
 			{
-				Ability A=(Ability)MUD.abilities.elementAt(a);
-				if(A.qualifyingLevel(mob)>0)
+				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				if((A.qualifyingLevel(mob)>0)&&(A.classificationCode()==Ability.SPELL))
 				{
 					if(randSpell==0)
 					{
-						if((A.qualifyingLevel(mob)>18)&&(mob.fetchAbility(A.ID())==null))
+						if((A.qualifyingLevel(mob)>18)&&(given.get(A.ID())==null))
 						{
-							mob.addAbility((Ability)A.copyOf());
+							giveMobAbility(mob,A,isBorrowedClass);
+							given.put(A.ID(),A);
 							numLevel++;
 						}
 						break;
@@ -113,56 +112,62 @@ public class Mage extends StdCharClass
 
 
 		if(!mob.isMonster())
-		{
-			Quarterstaff s=new Quarterstaff();
-			s.wear(Item.WIELD);
-			mob.addInventory(s);
-		}
+			outfit(mob);
 	}
 
-	public boolean okAffect(Affect affect)
+	public void outfit(MOB mob)
 	{
-		switch(affect.sourceCode())
+		Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");
+		if(mob.fetchInventory(w.ID())==null)
 		{
-		case Affect.SOUND_MAGIC:
-		case Affect.STRIKE_MAGIC:
-			for(int i=0;i<affect.source().inventorySize();i++)
+			mob.addInventory(w);
+			if(!mob.amWearingSomethingHere(Item.WIELD))
+				w.wearAt(Item.WIELD);
+		}
+	}
+	public boolean okAffect(MOB myChar, Affect affect)
+	{
+		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		{
+			if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
 			{
-				Item I=affect.source().fetchInventory(i);
-				if((I.amWearingAt(Item.ON_TORSO))
-				 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield))
-				 ||(I.amWearingAt(Item.ON_LEGS))
-				 ||(I.amWearingAt(Item.ON_ARMS))
-				 ||(I.amWearingAt(Item.ON_WAIST))
-				 ||(I.amWearingAt(Item.ON_HEAD)))
-					if((I instanceof Armor)&&(((Armor)I).material()!=Armor.CLOTH))
-						if(Dice.rollPercentage()<affect.source().charStats().getIntelligence()*2)
+				for(int i=0;i<myChar.inventorySize();i++)
+				{
+					Item I=myChar.fetchInventory(i);
+					if((I.amWearingAt(Item.ON_TORSO))
+					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield))
+					 ||(I.amWearingAt(Item.ON_LEGS))
+					 ||(I.amWearingAt(Item.ON_ARMS))
+					 ||(I.amWearingAt(Item.ON_WAIST))
+					 ||(I.amWearingAt(Item.ON_HEAD)))
+						if((I instanceof Armor)&&(((Armor)I).material()!=Armor.CLOTH))
+							if(Dice.rollPercentage()>myChar.charStats().getIntelligence()*4)
+							{
+								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+								return false;
+							}
+				}
+			}
+			else
+			if(affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			{
+				Item I=myChar.fetchWieldedItem();
+				if((I!=null)&&(I instanceof Weapon))
+				{
+					int classification=((Weapon)I).weaponClassification();
+					if(!((classification==Weapon.CLASS_NATURAL)
+					||(classification==Weapon.CLASS_DAGGER)
+					||(classification==Weapon.CLASS_STAFF))
+					   )
+						if(Dice.rollPercentage()>myChar.charStats().getIntelligence()*4)
 						{
-							affect.source().location().show(affect.source(),null,Affect.VISUAL_ONLY,"<S-NAME> watch(es) <S-HIS-HER> armor absorb(s) <S-HIS-HER> magical energy!");
+							myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+I.name()+".");
 							return false;
 						}
+				}
 			}
-			break;
-		case Affect.STRIKE_HANDS:
-			Item I=affect.source().fetchWieldedItem();
-			if((I!=null)&&(I instanceof Weapon))
-			{
-				int classification=((Weapon)I).weaponClassification;
-				if(!((classification==Weapon.CLASS_NATURAL)
-				||(I instanceof Quarterstaff)
-				||(I instanceof Dagger))
-				   )
-					if(Dice.rollPercentage()<affect.source().charStats().getIntelligence()*2)
-					{
-						affect.source().location().show(affect.source(),null,Affect.VISUAL_WNOISE,"<S-NAME> fumble(s) horribly with "+I.name()+".");
-						return false;
-					}
-			}
-			break;
-		default:
-			break;
 		}
-		return super.okAffect(affect);
+		return super.okAffect(myChar,affect);
 	}
 
 	public void level(MOB mob)

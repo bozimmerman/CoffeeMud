@@ -1,10 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class GlovesSpeed extends Armor
+public class GlovesSpeed extends StdArmor
 {
 	public GlovesSpeed()
 	{
@@ -25,19 +24,14 @@ public class GlovesSpeed extends Armor
 
 	}
 
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if((!this.amWearingAt(Item.INVENTORY))&&(!this.amWearingAt(Item.HELD)))
-			if(affected instanceof Fighter || affected instanceof Archon)
-			{
-				affectableStats.setSpeed(affectableStats.speed() * 2.0);
-			}
-			else
-			{
-				affectableStats.setSpeed(affectableStats.speed() * 2.0);
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 100);
-			}
+		{
+			affectableStats.setSpeed(affectableStats.speed() * 2.0);
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + 10);
+		}
 	}
 
 	public Environmental newInstance()

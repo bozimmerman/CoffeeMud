@@ -1,0 +1,69 @@
+package com.planet_ink.coffee_mud.Abilities.Spells;
+
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.Abilities.Spells.interfaces.*;
+import java.util.*;
+
+public class Spell_KnowAlignment extends Spell
+	implements DivinationDevotion
+{
+	public Spell_KnowAlignment()
+	{
+		super();
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		name="Know Alignment";
+
+		canBeUninvoked=true;
+		isAutoinvoked=false;
+
+		baseEnvStats().setLevel(2);
+
+		addQualifyingClass("Mage",2);
+		addQualifyingClass("Ranger",baseEnvStats().level()+4);
+
+		baseEnvStats().setAbility(0);
+		uses=Integer.MAX_VALUE;
+		recoverEnvStats();
+	}
+
+	public Environmental newInstance()
+	{
+		return new Spell_KnowAlignment();
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+		if(target==mob) return false;
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		boolean success=profficiencyCheck(0,auto);
+
+		// it worked, so build a copy of this ability,
+		// and add it to the affects list of the
+		// affected MOB.  Then tell everyone else
+		// what happened.
+		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"You draw out <T-NAME>s disposition.",affectType,auto?"":"<S-NAME> draw(s) out your disposition.",affectType,auto?"":"<S-NAME> draws out <T-NAME>s disposition.");
+		if(mob.location().okAffect(msg))
+		{
+			mob.location().send(mob,msg);
+			if(success)
+				mob.tell(mob,target,"<T-NAME> seem(s) like "+target.charStats().heshe()+" is "+ExternalPlay.alignmentStr(target)+".");
+			else
+			{
+				MOB newMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
+				newMOB.setAlignment(Dice.rollPercentage()*10);
+				mob.tell(mob,target,"<T-NAME> seem(s) like "+target.charStats().heshe()+" is "+ExternalPlay.alignmentStr(newMOB)+".");
+			}
+		}
+
+
+		// return whether it worked
+		return success;
+	}
+}

@@ -1,21 +1,17 @@
 package com.planet_ink.coffee_mud.commands;
 
-import com.planet_ink.coffee_mud.MOBS.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.io.*;
 import java.util.*;
 public class Movement
 {
-	public static void go(MOB mob, Vector commands)
+	public void go(MOB mob, Vector commands)
 	{
-		int direction=Directions.getGoodDirectionCode(CommandProcessor.combine(commands,1));
+		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
 		if(direction>=0)
-			Movement.move(mob,direction,false);
+			move(mob,direction,false);
 		else
 		{
 			mob.tell("Try north, south, east, west, up, or down.");
@@ -23,29 +19,28 @@ public class Movement
 		}
 	}
 
-	public static void move(MOB mob, int directionCode, boolean flee)
+	public void move(MOB mob, int directionCode, boolean flee)
 	{
 		if(directionCode<0) return;
 		if(mob==null) return;
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return;
-		Room destRoom=thisRoom.getRoom(directionCode);
-		Exit exit=thisRoom.getExit(directionCode);
+		Room destRoom=thisRoom.doors()[directionCode];
+		Exit exit=thisRoom.exits()[directionCode];
 		if(destRoom==null)
 		{
 			mob.tell("You can't go that way.");
 			return;
 		}
 
-		Exit opExit=destRoom.getExit(Directions.getOpDirectionCode(directionCode));
-
+		Exit opExit=thisRoom.getReverseExit(directionCode);
 		String directionName=Directions.getDirectionName(directionCode);
 		String otherDirectionName=Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
-		int leaveCode=Affect.MOVE_LEAVE;
-		if(flee)leaveCode=Affect.MOVE_FLEE;
+		int leaveCode=Affect.MSG_LEAVE;
+		if(flee)leaveCode=Affect.MSG_FLEE;
 
-		FullMsg enterMsg=new FullMsg(mob,destRoom,exit,Affect.MOVE_ENTER,null,Affect.MOVE_ENTER,null,Affect.MOVE_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
+		FullMsg enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
 		FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flees":Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName);
 		if((exit==null)&&(!mob.isASysOp()))
 		{
@@ -54,7 +49,7 @@ public class Movement
 		}
 		else
 		if(exit==null)
-			thisRoom.show(mob,null,Affect.VISUAL_WNOISE,"The area to the "+directionName+" shimmers and becomes transparent.");
+			thisRoom.show(mob,null,Affect.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
 		else
 		if((exit!=null)&&(!exit.okAffect(enterMsg)))
 			return;
@@ -84,13 +79,13 @@ public class Movement
 		((Room)enterMsg.target()).send(mob,enterMsg);
 
 		if(opExit!=null) opExit.affect(leaveMsg);
-		BasicSenses.look(mob,null,true);
+		ExternalPlay.look(mob,null,true);
 
 		if(!flee)
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB follower=mob.fetchFollower(f);
-			if(follower.amFollowing()==mob)
+			if((follower.amFollowing()==mob)&&(follower.location()!=mob.location()))
 			{
 				follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
 				move(follower,directionCode,false);
@@ -100,7 +95,7 @@ public class Movement
 		}
 	}
 
-	public static void flee(MOB mob, String direction)
+	public void flee(MOB mob, String direction)
 	{
 		if((mob.location()==null)||(!mob.isInCombat()))
 		{
@@ -115,7 +110,7 @@ public class Movement
 			{
 				for(int i=0;i<7;i++)
 				{
-					Exit thisExit=mob.location().getExit(i);
+					Exit thisExit=mob.location().exits()[i];
 					if(thisExit!=null)
 					{
 						if(thisExit.isOpen())
@@ -142,169 +137,202 @@ public class Movement
 			move(mob,directionCode,true);
 	}
 
-	public static void open(MOB mob, String whatToOpen)
+	public void open(MOB mob, String whatToOpen)
 	{
-
-		Integer cmd=(Integer)CommandProcessor.commandSet.get(whatToOpen.toUpperCase());
-		Environmental openThis=null;
-		if(cmd!=null)
+		if(whatToOpen.length()==0)
 		{
-			int dir=cmd.intValue();
-			if(
-			  (dir==CommandSet.NORTH)
-			||(dir==CommandSet.SOUTH)
-			||(dir==CommandSet.EAST)
-			||(dir==CommandSet.WEST)
-			||(dir==CommandSet.UP)
-			||(dir==CommandSet.DOWN))
-			{
-				int dirCode=Directions.getDirectionCode(whatToOpen);
-				openThis=mob.location().getExit(dirCode);
-			}
+			mob.tell("Open what?");
+			return;
 		}
+		Environmental openThis=null;
+		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+		if(dirCode>=0)
+			openThis=mob.location().exits()[dirCode];
 		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoom(mob,null,whatToOpen);
+			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen);
 
 		if((openThis==null)||(!Sense.canBeSeenBy(openThis,mob)))
 		{
 			mob.tell("You don't see that here.");
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,openThis,null,Affect.HANDS_OPEN,Affect.HANDS_OPEN,Affect.VISUAL_WNOISE,"<S-NAME> open(s) "+openThis.name());
-		if(!mob.location().okAffect(msg))
-			return;
-		mob.location().send(mob,msg);
+		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,"<S-NAME> open(s) "+openThis.name());
+		if(openThis instanceof Exit)
+			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		else
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
 	}
 
-	public static void unlock(MOB mob, String whatTounlock)
+	public void unlock(MOB mob, String whatTounlock)
 	{
-
-		Integer cmd=(Integer)CommandProcessor.commandSet.get(whatTounlock.toUpperCase());
-		Environmental unlockThis=null;
-		if(cmd!=null)
+		if(whatTounlock.length()==0)
 		{
-			int dir=cmd.intValue();
-			if(
-			  (dir==CommandSet.NORTH)
-			||(dir==CommandSet.SOUTH)
-			||(dir==CommandSet.EAST)
-			||(dir==CommandSet.WEST)
-			||(dir==CommandSet.UP)
-			||(dir==CommandSet.DOWN))
-			{
-				int dirCode=Directions.getDirectionCode(whatTounlock);
-				unlockThis=mob.location().getExit(dirCode);
-			}
+			mob.tell("Unlock what?");
+			return;
 		}
+		Environmental unlockThis=null;
+		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
+		if(dirCode>=0)
+			unlockThis=mob.location().exits()[dirCode];
 		if(unlockThis==null)
-			unlockThis=mob.location().fetchFromMOBRoom(mob,null,whatTounlock);
+			unlockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTounlock);
 
 		if((unlockThis==null)||(!Sense.canBeSeenBy(unlockThis,mob)))
 		{
 			mob.tell("You don't see that here.");
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.HANDS_UNLOCK,Affect.HANDS_UNLOCK,Affect.VISUAL_WNOISE,"<S-NAME> unlock(s) "+unlockThis.name());
-		if(!mob.location().okAffect(msg))
-			return;
-		mob.location().send(mob,msg);
+		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,"<S-NAME> unlock(s) "+unlockThis.name());
+		if(unlockThis instanceof Exit)
+			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		else
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
 	}
 
-	public static void close(MOB mob, String whatToClose)
+	public void close(MOB mob, String whatToClose)
 	{
-
-		Integer cmd=(Integer)CommandProcessor.commandSet.get(whatToClose.toUpperCase());
-		Environmental closeThis=null;
-		if(cmd!=null)
+		if(whatToClose.length()==0)
 		{
-			int dir=cmd.intValue();
-			if(
-			  (dir==CommandSet.NORTH)
-			||(dir==CommandSet.SOUTH)
-			||(dir==CommandSet.EAST)
-			||(dir==CommandSet.WEST)
-			||(dir==CommandSet.UP)
-			||(dir==CommandSet.DOWN))
-				closeThis=mob.location().getExit(Directions.getDirectionCode(whatToClose));
+			mob.tell("Close what?");
+			return;
 		}
+		Environmental closeThis=null;
+		int dirCode=Directions.getGoodDirectionCode(whatToClose);
+		if(dirCode>=0)
+			closeThis=mob.location().exits()[dirCode];
 		if(closeThis==null)
-			closeThis=mob.location().fetchFromMOBRoom(mob,null,whatToClose);
+			closeThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToClose);
 
 		if((closeThis==null)||(!Sense.canBeSeenBy(closeThis,mob)))
 		{
 			mob.tell("You don't see that here.");
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.HANDS_CLOSE,Affect.HANDS_CLOSE,Affect.VISUAL_WNOISE,"<S-NAME> close(s) "+closeThis.name());
-		if(!mob.location().okAffect(msg))
-			return;
-		mob.location().send(mob,msg);
+		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,"<S-NAME> close(s) "+closeThis.name());
+		if(closeThis instanceof Exit)
+			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		else
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
 	}
 
-	public static void lock(MOB mob, String whatTolock)
+	public void roomAffectFully(Affect msg, Room room, int dirCode)
 	{
-		Integer cmd=(Integer)CommandProcessor.commandSet.get(whatTolock.toUpperCase());
-		Environmental lockThis=null;
-		if(cmd!=null)
+		room.send(msg.source(),msg);
+		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
+			return;
+		dirCode=getMyDirCode((Exit)msg.target(),room,dirCode);
+		if(dirCode<0) return;
+		Exit pair=room.getPairedExit(dirCode);
+		FullMsg altMsg=new FullMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+		if(pair!=null)
+			pair.affect(altMsg);
+	}
+
+	public int getMyDirCode(Exit exit, Room room, int testCode)
+	{
+		if(testCode>=0) return testCode;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			if(room.exits()[d]==exit) return d;
+		return -1;
+	}
+
+	public boolean roomOkAndAffectFully(FullMsg msg, Room room, int dirCode)
+	{
+		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
+			return room.okAffect(msg);
+
+		if(!room.okAffect(msg))
+			return false;
+		dirCode=getMyDirCode((Exit)msg.target(),room,dirCode);
+		if(dirCode<0) return true;
+		Exit pair=room.getPairedExit(dirCode);
+		FullMsg altMsg=new FullMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
+		if(pair!=null)
+			if(!pair.okAffect(altMsg))
+				return false;
+		roomAffectFully(msg,room,dirCode);
+		return true;
+	}
+
+	public void lock(MOB mob, String whatTolock)
+	{
+		if(whatTolock.length()==0)
 		{
-			int dir=cmd.intValue();
-			if(
-			  (dir==CommandSet.NORTH)
-			||(dir==CommandSet.SOUTH)
-			||(dir==CommandSet.EAST)
-			||(dir==CommandSet.WEST)
-			||(dir==CommandSet.UP)
-			||(dir==CommandSet.DOWN))
-				lockThis=mob.location().getExit(Directions.getDirectionCode(whatTolock));
+			mob.tell("Lock what?");
+			return;
 		}
+		Environmental lockThis=null;
+		int dirCode=Directions.getGoodDirectionCode(whatTolock);
+		if(dirCode>=0)
+			lockThis=mob.location().exits()[dirCode];
 		if(lockThis==null)
-			lockThis=mob.location().fetchFromMOBRoom(mob,null,whatTolock);
+			lockThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatTolock);
 
 		if((lockThis==null)||(!Sense.canBeSeenBy(lockThis,mob)))
 		{
 			mob.tell("You don't see that here.");
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.HANDS_LOCK,Affect.HANDS_LOCK,Affect.VISUAL_WNOISE,"<S-NAME> lock(s) "+lockThis.name());
-		if(!mob.location().okAffect(msg))
-			return;
-		mob.location().send(mob,msg);
-	}
-
-	public static void sit(MOB mob)
-	{
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MOVE_SIT,Affect.MOVE_SIT,Affect.MOVE_GENERAL,"<S-NAME> sit(s) down and take(s) a rest.");
+		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,"<S-NAME> lock(s) "+lockThis.name());
+		if(lockThis instanceof Exit)
+			roomOkAndAffectFully(msg,mob.location(),dirCode);
+		else
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
-	public static void wake(MOB mob)
+
+	public void sit(MOB mob)
+	{
+		if(Sense.isSitting(mob))
+			mob.tell("You are already sitting!");
+		else
+		{
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SIT,"<S-NAME> sit(s) down and take(s) a rest.");
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+		}
+	}
+	public void wake(MOB mob)
 	{
 		if(!Sense.isSleeping(mob))
-		{
 			mob.tell("You aren't sleeping!?");
-			return;
+		else
+		{
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,"<S-NAME> awake(s) and stand(s) up.");
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
 		}
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MOVE_SIT,Affect.MOVE_SIT,Affect.MOVE_GENERAL,"<S-NAME> awake(s) and sit(s) up.");
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
 	}
-	public static void sleep(MOB mob)
+	public void sleep(MOB mob)
 	{
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MOVE_SLEEP,Affect.MOVE_SLEEP,Affect.MOVE_GENERAL,"<S-NAME> lay(s) down and take(s) a nap.");
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
+		if(Sense.isSleeping(mob))
+			mob.tell("You are already asleep!");
+		else
+		{
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SLEEP,"<S-NAME> lay(s) down and take(s) a nap.");
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+		}
 	}
 
-	public static void standIfNecessary(MOB mob)
+	public void standIfNecessary(MOB mob)
 	{
-		if(Sense.isSleeping(mob)||Sense.isSitting(mob))
+		if((!mob.amDead())&&(Sense.isSleeping(mob)||Sense.isSitting(mob)))
 			stand(mob);
 	}
 
-	public static void stand(MOB mob)
+	public void stand(MOB mob)
 	{
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MOVE_STAND,Affect.MOVE_STAND,Affect.MOVE_GENERAL,"<S-NAME> stand(s) up.");
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
+		if((!Sense.isSitting(mob))&&(!Sense.isSleeping(mob)))
+			mob.tell("You are already standing!");
+		else
+		{
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,"<S-NAME> stand(s) up.");
+			if(mob.location().okAffect(msg))
+				mob.location().send(mob,msg);
+		}
 	}
 }

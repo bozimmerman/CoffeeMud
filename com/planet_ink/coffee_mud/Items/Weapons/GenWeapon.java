@@ -1,12 +1,11 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Abilities.*;
 import java.util.*;
 
-public class GenWeapon extends Weapon
+public class GenWeapon extends StdWeapon
 {
 	protected String	readableText="";
 	public GenWeapon()
@@ -26,53 +25,24 @@ public class GenWeapon extends Weapon
 		baseEnvStats().setLevel(5);
 		recoverEnvStats();
 	}
-	
-	public GenWeapon(String newName, 
-				   String newDisplayText, 
-				   String newDescription,
-				   String newSecretIdentity,
-				   int newBaseGoldValue,
-				   int newWeight,
-				   int newAttack,
-				   int newDamage,
-				   int newWeaponType,
-				   int newWeaponClassification,
-				   boolean twoHanded)
-	{
-		name=newName;
-		baseEnvStats.setWeight(newWeight);
-		displayText=newDisplayText;
-		description=newDescription;
-		secretIdentity=newSecretIdentity;
-		baseGoldValue=newBaseGoldValue;
-		wornLogicalAnd=false;
-		properWornBitmap=Item.HELD|Item.WIELD;
-		if(twoHanded)
-			wornLogicalAnd=true;
-		baseEnvStats().setAttackAdjustment(newAttack);
-		baseEnvStats().setDamage(newDamage);
-		weaponType=newWeaponType;
-		weaponClassification=newWeaponClassification;
-		recoverEnvStats();
-	}
-	
 	public Environmental newInstance()
 	{
 		return new GenWeapon();
 	}
-	
-	
+	public boolean isGeneric(){return true;}
+
+
 	public String text()
 	{
-		return Generic.getPropertiesStr(this);
+		return Generic.getPropertiesStr(this,false);
 	}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
-	
+
 	public void setMiscText(String newText)
 	{
 		miscText="";
-		Generic.setPropertiesStr(this,newText);
+		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
 }

@@ -1,9 +1,8 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
+import com.planet_ink.coffee_mud.Items.StdItem;
 import java.util.*;
 
 
@@ -22,23 +21,23 @@ public class ManualAdvancement extends StdItem implements MiscMagic
 		baseGoldValue=10000;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new ManualAdvancement();
 	}
-	
+
 	public void affect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-			case Affect.VISUAL_READ:
+			case Affect.TYP_READSOMETHING:
 				if(mob.isMine(this))
 				{
-					if(mob.fetchAffect(new Spell_ReadMagic().ID())!=null)
+					if(mob.fetchAffect("Spell_ReadMagic")!=null)
 					{
 						if(this.usesRemaining()<=0)
 							mob.tell("The markings have been read off the parchment, and are no longer discernable.");
@@ -59,5 +58,5 @@ public class ManualAdvancement extends StdItem implements MiscMagic
 		}
 		super.affect(affect);
 	}
-	
+
 }

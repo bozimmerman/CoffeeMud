@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Exits;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 
 public class LockedGate extends StdLockedDoorway
@@ -21,5 +22,5 @@ public class LockedGate extends StdLockedDoorway
 	{
 		return new LockedGate();
 	}
-	
+
 }

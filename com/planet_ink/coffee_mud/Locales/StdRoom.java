@@ -1,18 +1,12 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Exits.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
-public class StdRoom 
-	implements Room 
+public class StdRoom
+	implements Room
 {
 	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	protected String name="room";
@@ -21,8 +15,8 @@ public class StdRoom
 	protected String miscText="";
 	protected String description="";
 	private String objectID=myID;
-	protected Stats envStats=new Stats();
-	protected Stats baseEnvStats=new Stats();
+	protected EnvStats envStats=new DefaultEnvStats();
+	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
 	public Room[] doors=new Room[Directions.NUM_DIRECTIONS];
 	protected Vector affects=new Vector();
@@ -31,13 +25,13 @@ public class StdRoom
 	protected Vector inhabitants=new Vector();
 	protected int domainType=Room.DOMAIN_OUTDOORS_CITY;
 	protected int domainCondition=Room.CONDITION_NORMAL;
-	
+
 	protected boolean skyedYet=false;
-								   
+
 	public StdRoom()
 	{
 	}
-	
+
 	public String ID()
 	{
 		return myID	;
@@ -52,12 +46,13 @@ public class StdRoom
 	{
 		return new StdRoom();
 	}
+	public boolean isGeneric(){return false;}
 	private void cloneFix(Room E)
 	{
 		affects=new Vector();
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
-		
+
 		contents=new Vector();
 		inhabitants=new Vector();
 		exits=new Exit[Directions.NUM_DIRECTIONS];
@@ -68,7 +63,7 @@ public class StdRoom
 				exits[d]=(Exit)E.exits()[d].copyOf();
 			if(E.doors()[d]!=null)
 				doors[d]=E.doors()[d];
-			
+
 		}
 	}
 	public Environmental copyOf()
@@ -78,7 +73,7 @@ public class StdRoom
 			StdRoom R=(StdRoom)this.clone();
 			R.cloneFix(this);
 			return R;
-			
+
 		}
 		catch(CloneNotSupportedException e)
 		{
@@ -94,7 +89,7 @@ public class StdRoom
 	{
 		return domainCondition;
 	}
-	
+
 	public String displayText()
 	{
 		return displayText;
@@ -113,11 +108,13 @@ public class StdRoom
 	}
 	public String text()
 	{
-		return miscText;
+		return Generic.getPropertiesStr(this,true);
 	}
 	public void setMiscText(String newMiscText)
 	{
-		miscText=newMiscText;
+		miscText="";
+		if(newMiscText.trim().length()>0)
+			Generic.setPropertiesStr(this,newMiscText,true);
 	}
 	public String getAreaID()
 	{
@@ -131,7 +128,7 @@ public class StdRoom
 	{
 		myAreaID=newArea;
 	}
-	
+
 	protected void giveASky(Room room)
 	{
 		skyedYet=true;
@@ -141,196 +138,156 @@ public class StdRoom
 		&&(!(room instanceof EndlessSky))
 		&&(!(room instanceof InTheAir)))
 		{
-			StdOpenDoorway o=new StdOpenDoorway();
+			Exit o=(Exit)CMClass.getExit("StdOpenDoorway").newInstance();
 			EndlessSky sky=new EndlessSky();
 			sky.setAreaID(room.getAreaID());
+			sky.setID("");
 			room.doors()[Directions.UP]=sky;
 			room.exits()[Directions.UP]=o;
 			sky.doors()[Directions.DOWN]=room;
 			sky.exits()[Directions.DOWN]=o;
-			MUD.map.addElement(sky);
+			CMMap.map.addElement(sky);
 		}
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
-			
-			boolean legalToDoToThisRoom=false;
-			switch(affect.targetType())
+
+			switch(affect.targetMinor())
 			{
-			case Affect.MOVE:
-				switch(affect.targetCode())
+			case Affect.TYP_LEAVE:
+			case Affect.TYP_FLEE:
+			case Affect.TYP_ENTER:
+				if((!skyedYet)
+				&&(affect.targetMinor()==Affect.TYP_ENTER)
+				&&(affect.source()!=null)
+				&&(!affect.source().isMonster()))
+					giveASky(this);
+				break;
+			case Affect.TYP_AREAAFFECT:
+				if(affect.source().location()==this)
 				{
-				case Affect.MOVE_LEAVE:
-				case Affect.MOVE_FLEE:
-				case Affect.MOVE_ENTER:
-					legalToDoToThisRoom=true;
-					if((!skyedYet)
-					&&(affect.targetCode()==Affect.MOVE_ENTER)
-					&&(affect.source()!=null)
-					&&(!affect.source().isMonster()))
-						giveASky(this);
-					break;
-				default:
-					break;
+					for(int m=0;m<CMMap.map.size();m++)
+					{
+						Room otherRoom=(Room)CMMap.map.elementAt(m);
+						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
+						   if(!otherRoom.okAffect(affect)) return false;
+					}
 				}
 				break;
-			case Affect.HANDS:
-				switch(affect.targetCode())
-				{
-				case Affect.HANDS_RECALL:
-					legalToDoToThisRoom=true;
-					break;
-				default:
-					break;
-				}
-				break;
-			case Affect.AREA:
-				legalToDoToThisRoom=true;
-				break;
-			case Affect.VISUAL:
-				if(!Sense.canBeSeenBy(this,mob))
-				{
-					mob.tell("You can't see anything!");
-					return false;
-				}
-				legalToDoToThisRoom=true;
-				break;
-			case Affect.SOUND:
-				legalToDoToThisRoom=true;
+			case Affect.TYP_CAST_SPELL:
 				break;
 			default:
+				if((Util.bset(affect.targetMajor(),Affect.AFF_TOUCHED))
+				||(Util.bset(affect.targetMajor(),Affect.AFF_CONSUMED)))
+				{
+					mob.tell("You can't do that here.");
+					return false;
+				}
 				break;
 			}
-			if(!legalToDoToThisRoom)
-			{
-				mob.tell("You can't do that here.");
-				return false;
-			}
 		}
-		
+
 		for(int i=0;i<inhabitants.size();i++)
 			if(!((MOB)inhabitants.elementAt(i)).okAffect(affect))
 				return false;
-		
+
 		for(int i=0;i<contents.size();i++)
 			if(!((Item)contents.elementAt(i)).okAffect(affect))
 				return false;
-		
+
 		for(int i=0;i<affects.size();i++)
 			if(!((Ability)fetchAffect(i)).okAffect(affect))
 				return false;
-		
+
 		for(int b=0;b<behaviors.size();b++)
 		{
 			Behavior B=(Behavior)behaviors.elementAt(b);
 			if(!B.okAffect(this,affect))
 				return false;
 		}
-		
+
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
-			Exit thisExit=getExit(i);
-			if(thisExit!=null) 
+			Exit thisExit=exits()[i];
+			if(thisExit!=null)
 				if(!thisExit.okAffect(affect))
 					return false;
 		}
-		
-		if((affect.othersType()==Affect.AREA)&&(affect.source().location()==this))
-		{
-			for(int m=0;m<MUD.map.size();m++)
-			{
-				Room otherRoom=(Room)MUD.map.elementAt(m);
-				if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
-				   if(!otherRoom.okAffect(affect)) return false;
-			}
-		}
 		return true;
 	}
-	
+
 	public void affect(Affect affect)
 	{
-		
+
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
-			switch(affect.targetType())
+			switch(affect.targetMinor())
 			{
-			case Affect.MOVE:
-				switch(affect.targetCode())
-				{
-				case Affect.MOVE_LEAVE:
-				{
-					recoverRoomStats();
-					break;
-				}
-				case Affect.MOVE_FLEE:
-				{
-					recoverRoomStats();
-					break;
-				}
-				case Affect.MOVE_ENTER:
-				{
-					recoverRoomStats();
-					break;
-				}
-				default:
-					break;
-				}
+			case Affect.TYP_LEAVE:
+			{
+				recoverRoomStats();
 				break;
-			case Affect.VISUAL:
-				switch(affect.targetCode())
+			}
+			case Affect.TYP_FLEE:
+			{
+				recoverRoomStats();
+				break;
+			}
+			case Affect.TYP_ENTER:
+			{
+				recoverRoomStats();
+				break;
+			}
+			case Affect.TYP_EXAMINESOMETHING:
+				look(mob);
+				break;
+			case Affect.TYP_READSOMETHING:
+				if(Sense.canBeSeenBy(this,mob))
+					mob.tell("There is nothing written here.");
+				else
+					mob.tell("You can't see that!");
+				break;
+			case Affect.TYP_AREAAFFECT:
+				if(affect.source().location()==this)
 				{
-				case Affect.VISUAL_LOOK:
-					look(mob);
-					break;
-				case Affect.VISUAL_READ:
-					if(Sense.canBeSeenBy(this,mob))
-						mob.tell("There is nothing written here.");
-					else
-						mob.tell("You can't see that!");
-					break;
-				default:
-					break;
+					for(int m=0;m<CMMap.map.size();m++)
+					{
+						Room otherRoom=(Room)CMMap.map.elementAt(m);
+						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
+						   otherRoom.affect(affect);
+					}
 				}
 				break;
 			default:
 				break;
 			}
-			if((affect.othersType()==Affect.AREA)&&(affect.source().location()==this))
-			{
-				for(int m=0;m<MUD.map.size();m++)
-				{
-					Room otherRoom=(Room)MUD.map.elementAt(m);
-					if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
-					   otherRoom.affect(affect);
-				}
-			}
 		}
-		
+
 		for(int i=0;i<contents.size();i++)
 			((Item)contents.elementAt(i)).affect(affect);
-		
+
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
-			Exit thisExit=getExit(i);
-			if(thisExit!=null) 
+			Exit thisExit=exits()[i];
+			if(thisExit!=null)
 				thisExit.affect(affect);
 		}
-		
+
 		for(int b=0;b<behaviors.size();b++)
 		{
 			Behavior B=(Behavior)behaviors.elementAt(b);
 			B.affect(this,affect);
 		}
-		
+
 		for(int i=0;i<affects.size();i++)
 			((Ability)fetchAffect(i)).affect(affect);
 	}
-	
+
 	public void startItemRejuv()
 	{
 		for(int c=0;c<contents.size();c++)
@@ -338,50 +295,53 @@ public class StdRoom
 			Item item=(Item)contents.elementAt(c);
 			if(item.location()==null)
 			{
-				ItemRejuv.unloadIfNecessary(item);
+				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
+				I.unloadIfNecessary(item);
 				if((item.envStats().rejuv()<Integer.MAX_VALUE)&&(item.envStats().rejuv()>0))
-					ItemRejuv.loadMeUp(item,this);
+					I.loadMeUp(item,this);
 			}
 		}
 	}
-	
+
 	public boolean tick(int tickID)
 	{
-		for(int b=0;b<behaviors.size();b++)
+		if(tickID==Host.ROOM_BEHAVIOR_TICK)
 		{
-			Behavior B=(Behavior)behaviors.elementAt(b);
-			B.tick(this,tickID);
+			if(behaviors.size()==0) return false;
+
+			for(int b=0;b<behaviors.size();b++)
+			{
+				Behavior B=(Behavior)behaviors.elementAt(b);
+				B.tick(this,tickID);
+			}
 		}
-		
-		int a=0;
-		while(a<affects.size())
+		else
 		{
-			Ability A=(Ability)affects.elementAt(a);
-			int s=affects.size();
-			if(!A.tick(tickID))
-				A.unInvoke();
-			if(affects.size()==s)
-				a++;
+			int a=0;
+			while(a<affects.size())
+			{
+				Ability A=(Ability)affects.elementAt(a);
+				int s=affects.size();
+				if(!A.tick(tickID))
+					A.unInvoke();
+				if(affects.size()==s)
+					a++;
+			}
 		}
 		return true;
 	}
-	
-	public Stats envStats()
+
+	public EnvStats envStats()
 	{
 		return envStats;
 	}
-	public Stats baseEnvStats()
+	public EnvStats baseEnvStats()
 	{
 		return baseEnvStats;
 	}
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
-		for(int b=0;b<inhabitants.size();b++)
-		{
-			MOB mob=(MOB)inhabitants.elementAt(b);
-			mob.affectEnvStats(this,envStats);
-		}
 		for(int a=0;a<affects.size();a++)
 		{
 			Ability affect=(Ability)affects.elementAt(a);
@@ -392,6 +352,11 @@ public class StdRoom
 			Item item=(Item)contents.elementAt(i);
 			item.affectEnvStats(this,envStats);
 		}
+		for(int b=0;b<inhabitants.size();b++)
+		{
+			MOB mob=(MOB)inhabitants.elementAt(b);
+			mob.affectEnvStats(this,envStats);
+		}
 	}
 	public void recoverRoomStats()
 	{
@@ -401,6 +366,7 @@ public class StdRoom
 			MOB mob=(MOB)inhabitants.elementAt(b);
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
+			mob.recoverMaxState();
 		}
 		for(int i=0;i<contents.size();i++)
 		{
@@ -408,13 +374,13 @@ public class StdRoom
 			item.recoverEnvStats();
 		}
 	}
-	
-	public void setBaseEnvStats(Stats newBaseEnvStats)
-	{	
-		baseEnvStats=newBaseEnvStats.cloneStats(); 
+
+	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	{
+		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
-	
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(envStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
@@ -428,16 +394,19 @@ public class StdRoom
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}//rooms will never be asked this, so this method should always do NOTHING
-	
+	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	{}//rooms will never be asked this, so this method should always do NOTHING
+
 	public void look(MOB mob)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if(mob.readSysopMsgs())
 		{
-			Say.append("Area:("+myAreaID+")"+"\n\r");
+			Say.append("Area  :("+myAreaID+")"+"\n\r");
+			Say.append("Locale:("+CMClass.className(this)+")"+"\n\r");
 			Say.append("("+ID()+")");
 		}
-		if((Sense.canBeSeenBy(this,mob))||(mob.isASysOp()))
+		if((Sense.canBeSeenBy(this,mob))||(mob.readSysopMsgs()))
 		{
 			Say.append(displayText()+Sense.colorCodes(this,mob)+"\n\r");
 			Say.append(description()+"\n\r\n\r");
@@ -446,22 +415,28 @@ public class StdRoom
 		{
 			Item item=(Item)contents.elementAt(c);
 			if(item.location()==null)
-				if((Sense.canBeSeenBy(item,mob)))
+				if((Sense.canBeSeenBy(item,mob))&&((item.displayText().length()>0)||(mob.readSysopMsgs())))
 				{
 					Say.append("     ");
 					if(mob.readSysopMsgs())
-						Say.append("("+item.ID()+") ");
-					Say.append(item.displayText()+Sense.colorCodes(item,mob)+"\n\r");
+						Say.append("("+CMClass.className(item)+") ");
+					if(item.displayText().length()>0)
+						Say.append(item.displayText()+Sense.colorCodes(item,mob)+"\n\r");
+					else
+						Say.append(item.name()+Sense.colorCodes(item,mob)+"\n\r");
 				}
 		}
 		for(int i=0;i<inhabitants.size();i++)
 		{
 			MOB mob2=(MOB)inhabitants.elementAt(i);
-			if((mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob))))
+			if((mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||(mob.readSysopMsgs())))
 			{
 				if(mob.readSysopMsgs())
-					Say.append("("+mob2.ID()+") ");
-				Say.append(mob2.displayText()+Sense.colorCodes(mob2,mob)+"\n\r");
+					Say.append("("+CMClass.className(mob2)+") ");
+				if(mob2.displayText().length()>0)
+					Say.append(mob2.displayText()+Sense.colorCodes(mob2,mob)+"\n\r");
+				else
+					Say.append(mob2.name()+Sense.colorCodes(mob2,mob)+"\n\r");
 			}
 		}
 		if(Say.length()==0)
@@ -469,17 +444,17 @@ public class StdRoom
 		else
 			mob.tell(Say.toString());
 	}
-	
+
 	public void bringMobHere(MOB mob, boolean andFollowers)
 	{
 		if(mob==null) return;
-		
+
 		Room oldRoom=mob.location();
 		if(oldRoom!=null)
 			oldRoom.delInhabitant(mob);
 		addInhabitant(mob);
 		mob.setLocation(this);
-		
+
 		if((andFollowers)&&(oldRoom!=null))
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -492,73 +467,52 @@ public class StdRoom
 		oldRoom.recoverRoomStats();
 		recoverRoomStats();
 	}
-	public Exit getExit(int direction)
+
+	public Exit getReverseExit(int direction)
 	{
-		if((direction<0)||(direction>=exits.length))
-		   return null;
-		return (Exit)exits[direction];
+		if(direction>=Directions.NUM_DIRECTIONS)
+			return null;
+		Exit myExit=exits()[direction];
+		Room opRoom=doors()[direction];
+		if(opRoom!=null)
+			return opRoom.exits()[Directions.getOpDirectionCode(direction)];
+		else
+			return null;
 	}
-	public Room getRoom(int direction)
+	public Exit getPairedExit(int direction)
 	{
-		if((direction<0)||(direction>=doors.length))
-		   return null;
-		return (Room)doors[direction];
+		Exit opExit=getReverseExit(direction);
+		Exit myExit=exits()[direction];
+		if((myExit==null)||(opExit==null))
+			return null;
+		if(myExit.hasADoor()!=opExit.hasADoor())
+			return null;
+		return opExit;
 	}
+
 	public void listExits(MOB mob)
 	{
 		if(!Sense.canSee(mob))
 		{
-			mob.tell("You can't see anything!"); 
-			return; 
+			mob.tell("You can't see anything!");
+			return;
 		}
-		
+
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
-			Exit exit=getExit(i);
-			Room room=getRoom(i);
-			if(room!=null)
-			{
-				String Dir=Directions.getDirectionName(i);
-				StringBuffer Say=new StringBuffer("");
-				
-				if(exit!=null)
-				{
-					if((Sense.isInDark(room))
-					&&(!Sense.canSeeInDark(mob)))
-					{
-						Say.append("darkness");
-					}
-					else
-					if((exit.isOpen())||(mob.readSysopMsgs()))
-					{
-						if(mob.readSysopMsgs()) 
-							Say.append("("+room.ID()+") ");
-						Say.append(room.displayText()+Sense.colorCodes(room,mob)+" ");
-					}
-				
-					if((Sense.canBeSeenBy(exit,mob))||(mob.readSysopMsgs()))
-					{
-						String display=exit.displayText();
-						if(!exit.isOpen())
-							display=exit.closedText();
-						else
-						if(display.length()>0)
-							display="via "+display;
-						
-						if(display.length()>0)
-							Say.append(display+Sense.colorCodes(exit,mob));
-						if(mob.readSysopMsgs()) 
-							Say.append(" ("+exit.ID()+") ");
-					}
-						
-				}
-				if(Say.length()>0)
-					mob.tell(Util.padRight(Dir,5)+": "+Say);
-			}
+			Exit exit=exits()[i];
+			Room room=doors()[i];
+
+			String Dir=Directions.getDirectionName(i);
+			StringBuffer Say=new StringBuffer("");
+			if(exit!=null)
+				Say=exit.viewableText(mob, room);
+			if(Say.length()>0)
+				mob.tell(Util.padRight(Dir,5)+": "+Say);
 		}
 	}
-	
-	
+
+
 	private void reallySend(MOB source, Affect msg)
 	{
 		if(Log.debugChannelOn())
@@ -570,9 +524,19 @@ public class StdRoom
 				otherMOB.affect(msg);
 		}
 		affect(msg);
+
+		// now handle trailer msgs
+		if(msg.trailerMsgs()!=null)
+		{
+			for(int i=0;i<msg.trailerMsgs().size();i++)
+			{
+				Affect affect=(Affect)msg.trailerMsgs().elementAt(i);
+				if((affect!=msg)&&(okAffect(affect)))
+					send(affect.source(),affect);
+			}
+		}
 	}
-	
-	
+
 	public void send(MOB source, Affect msg)
 	{
 		source.affect(msg);
@@ -599,7 +563,7 @@ public class StdRoom
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		reallySend(source,msg);
 	}
-	
+
 	public void showSource(MOB source,
 						   Environmental target,
 						   int allCode,
@@ -608,7 +572,7 @@ public class StdRoom
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
 		source.affect(msg);
 	}
-	
+
 	public Exit[] exits()
 	{
 		return exits;
@@ -617,18 +581,40 @@ public class StdRoom
 	{
 		return doors;
 	}
-	
+
 	public MOB fetchInhabitant(String inhabitantID)
 	{
-		return (MOB)Util.fetchEnvironmental(inhabitants,inhabitantID);
+		MOB mob=(MOB)CoffeeUtensils.fetchEnvironmental(inhabitants,inhabitantID,true);
+		if(mob==null)
+			mob=(MOB)CoffeeUtensils.fetchEnvironmental(inhabitants,inhabitantID, false);
+		return mob;
 	}
 	public void addInhabitant(MOB mob)
 	{
-		inhabitants.addElement(mob);	
+		inhabitants.addElement(mob);
 	}
 	public int numInhabitants()
 	{
 		return inhabitants.size();
+	}
+	public int numPCInhabitants()
+	{
+		int numUsers=0;
+		for(int i=0;i<numInhabitants();i++)
+			if(!fetchInhabitant(i).isMonster())
+				numUsers++;
+		return numUsers;
+	}
+	public MOB fetchPCInhabitant(int which)
+	{
+		int numUsers=0;
+		for(int i=0;i<numInhabitants();i++)
+			if(!fetchInhabitant(i).isMonster())
+				if(numUsers==which)
+					return fetchInhabitant(i);
+				else
+					numUsers++;
+		return null;
 	}
 	public boolean isInhabitant(MOB mob)
 	{
@@ -645,21 +631,25 @@ public class StdRoom
 	}
 	public void delInhabitant(MOB mob)
 	{
-		inhabitants.removeElement(mob);	
+		inhabitants.removeElement(mob);
 	}
-	
+
 	public Item fetchItem(Item goodLocation, String itemID)
 	{
-		return (Item)Util.fetchAvailableItem(contents,itemID,goodLocation,false,true);
+		Item item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,false,true,true);
+		if(item==null) item=(Item)CoffeeUtensils.fetchAvailableItem(contents,itemID,goodLocation,false,true,false);
+		return item;
 	}
 	public void addItem(Item item)
 	{
 		item.setOwner(this);
 		contents.addElement(item);
+		item.recoverEnvStats();
 	}
 	public void delItem(Item item)
 	{
 		contents.removeElement(item);
+		item.recoverEnvStats();
 	}
 	public int numItems()
 	{
@@ -678,24 +668,37 @@ public class StdRoom
 			return (Item)contents.elementAt(i);
 		return null;
 	}
-	public Environmental fetchFromRoom(Item goodLocation, String thingName)
+	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName)
 	{
 		Environmental found=null;
-		found=fetchItem(goodLocation, thingName);
-		if(found==null)
-			found=fetchInhabitant(thingName);
-		if(found==null)
-			found=Util.fetchEnvironmental(exits,thingName);
+		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,true);
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,true);
+		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,false);
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
 		return found;
 	}
-	
-	public Environmental fetchFromMOBRoom(MOB mob, Item goodLocation, String thingName)
+
+	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName)
+	{
+		Environmental found=null;
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,true);
+		if(found==null)	found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,true);
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,true);
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(inhabitants,thingName,false);
+		if(found==null) found=CoffeeUtensils.fetchAvailableItem(contents,thingName,goodLocation,false,true,false);
+		if(found==null)	found=CoffeeUtensils.fetchEnvironmental(exits,thingName,false);
+		return found;
+	}
+
+	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName)
 	{
 		Environmental found=null;
 		if(mob!=null)
 			found=mob.fetchCarried(goodLocation, thingName);
 		if(found==null)
-			found=fetchFromRoom(goodLocation, thingName);
+			found=fetchFromRoomFavorItems(goodLocation, thingName);
 		if((mob!=null)&&(found==null))
 			found=mob.fetchWornItem(thingName);
 		if((found!=null)&&(Sense.canBeSeenBy(found,mob)))
@@ -707,13 +710,24 @@ public class StdRoom
 	{
 		return 1;
 	}
-	
+
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
 		for(int i=0;i<affects.size();i++)
-			if(((Ability)affects.elementAt(i)).ID().equals(to.ID()))
+			if(affects.elementAt(i)==to)
 				return;
+		affects.addElement(to);
+		to.setAffectedOne(this);
+	}
+	public void addNonUninvokableAffect(Ability to)
+	{
+		if(to==null) return;
+		for(int i=0;i<affects.size();i++)
+			if(affects.elementAt(i)==to)
+				return;
+		to.makeNonUninvokable();
+		to.makeLongLasting();
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -741,7 +755,7 @@ public class StdRoom
 			   return (Ability)affects.elementAt(a);
 		return null;
 	}
-	
+
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
 	public void addBehavior(Behavior to)
@@ -750,11 +764,16 @@ public class StdRoom
 		for(int i=0;i<behaviors.size();i++)
 			if(((Behavior)behaviors.elementAt(i)).ID().equals(to.ID()))
 				return;
+		if(behaviors.size()==0)
+			ExternalPlay.startTickDown(this,Host.ROOM_BEHAVIOR_TICK,1);
+		to.startBehavior(this);
 		behaviors.addElement(to);
 	}
 	public void delBehavior(Behavior to)
 	{
 		behaviors.removeElement(to);
+		if(behaviors.size()==0)
+			ExternalPlay.deleteTick(this,Host.ROOM_BEHAVIOR_TICK);
 	}
 	public int numBehaviors()
 	{

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 
 public class Claymore extends Sword
@@ -30,7 +31,7 @@ public class Claymore extends Sword
 		properWornBitmap=Item.HELD|Item.WIELD;
 		weaponType=TYPE_SLASHING;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Claymore();

@@ -5,17 +5,18 @@ import java.net.*;
 import java.util.*;
 import java.sql.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 
 // requires nothing to load
 public class Socials
 {
-	String filename="";
+	private String filename="";
 	public boolean loaded=false;
 	public Hashtable soc=new Hashtable();
 	public String socialsList=null;
 
-	public Socials(String newFilename)
+	public void load(String newFilename)
 	{
 		filename=newFilename;
 		try
@@ -33,32 +34,39 @@ public class Socials
 					switch(s.charAt(0))
 					{
 					case 'W':
-						socobj.sourceCode=Affect.SOUND_WORDS;
+						socobj.sourceCode=Affect.MSG_SPEAK;
 						break;
 					case 'M':
-						socobj.sourceCode=Affect.HANDS_GENERAL;
+						socobj.sourceCode=Affect.MSG_HANDS;
 						break;
 					case 'S':
-						socobj.sourceCode=Affect.SOUND_NOISE;
+						socobj.sourceCode=Affect.MSG_NOISE;
+						break;
+					case 'O':
+						socobj.sourceCode=Affect.MSG_NOISYMOVEMENT;
 						break;
 					}
 					switch(s.charAt(1))
 					{
 					case 'T':
-						socobj.othersCode=Affect.VISUAL_WNOISE;
-						socobj.targetCode=Affect.HANDS_GENERAL;
+						socobj.othersCode=Affect.MSG_HANDS;
+						socobj.targetCode=Affect.MSG_HANDS;
 						break;
 					case 'S':
-						socobj.othersCode=Affect.SOUND_NOISE;
-						socobj.targetCode=Affect.SOUND_NOISE;
+						socobj.othersCode=Affect.MSG_NOISE;
+						socobj.targetCode=Affect.MSG_NOISE;
 						break;
 					case 'W':
-						socobj.othersCode=Affect.SOUND_WORDS;
-						socobj.targetCode=Affect.SOUND_WORDS;
+						socobj.othersCode=Affect.MSG_SPEAK;
+						socobj.targetCode=Affect.MSG_SPEAK;
 						break;
 					case 'V':
-						socobj.othersCode=Affect.VISUAL_WNOISE;
-						socobj.targetCode=Affect.VISUAL_WNOISE;
+						socobj.othersCode=Affect.MSG_NOISYMOVEMENT;
+						socobj.targetCode=Affect.MSG_NOISYMOVEMENT;
+						break;
+					case 'O':
+						socobj.othersCode=Affect.MSG_OK_VISUAL;
+						socobj.targetCode=Affect.MSG_OK_VISUAL;
 						break;
 					}
 					getline=getline.substring(x+1);
@@ -159,29 +167,35 @@ public class Socials
 
 				switch(I.sourceCode)
 				{
-				case Affect.SOUND_WORDS:
+				case Affect.MSG_SPEAK:
 					buf.append('w');
 					break;
-				case Affect.HANDS_GENERAL:
+				case Affect.MSG_HANDS:
 					buf.append('m');
 					break;
-				case Affect.SOUND_NOISE:
+				case Affect.MSG_NOISE:
 					buf.append('s');
+					break;
+				case Affect.MSG_NOISYMOVEMENT:
+					buf.append('o');
 					break;
 				}
 				switch(I.targetCode)
 				{
-				case Affect.HANDS_GENERAL:
+				case Affect.MSG_HANDS:
 					buf.append('t');
 					break;
-				case Affect.SOUND_NOISE:
+				case Affect.MSG_NOISE:
 					buf.append('s');
 					break;
-				case Affect.SOUND_WORDS:
+				case Affect.MSG_SPEAK:
 					buf.append('w');
 					break;
-				case Affect.VISUAL_WNOISE:
+				case Affect.MSG_NOISYMOVEMENT:
 					buf.append('v');
+					break;
+				case Affect.MSG_OK_VISUAL:
+					buf.append('o');
 					break;
 				}
 				buf.append('\t');

@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
 
 public class PortableHole extends BagOfHolding implements MiscMagic
@@ -24,10 +24,10 @@ public class PortableHole extends BagOfHolding implements MiscMagic
 
 
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new PortableHole();
 	}
-	
+
 }

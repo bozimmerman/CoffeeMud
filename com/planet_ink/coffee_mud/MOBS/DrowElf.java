@@ -2,16 +2,8 @@ package com.planet_ink.coffee_mud.MOBS;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.db.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class DrowElf extends StdMOB
 {
@@ -26,7 +18,7 @@ public class DrowElf extends StdMOB
 		super();
 
 		Random randomizer = new Random(System.currentTimeMillis());
-		
+
 		baseEnvStats().setLevel(4 + Math.abs(randomizer.nextInt() % 7));
 
 		int gender = Math.abs(randomizer.nextInt() % 2);
@@ -40,16 +32,16 @@ public class DrowElf extends StdMOB
 		Username="a Drow Elf";
 		setDescription("a " + sex + " Drow Fighter");
 		setDisplayText("The drow is armored in black chain mail and carrying a nice arsenal of weapons");
-		
-		maxState.setHitPoints(25 + (baseEnvStats.level() * 2) + (randomizer.nextInt() % 15));
+
+		baseState.setHitPoints(25 + (baseEnvStats.level() * 2) + (randomizer.nextInt() % 15));
 		setMoney((int)Math.round(Util.div((50 * baseEnvStats().level()),(randomizer.nextInt() % 10 + 1))));
 		baseEnvStats.setWeight(70 + Math.abs(randomizer.nextInt() % 20));
-		
+
 		setWimpHitPoint(5);
-		
+
 		baseEnvStats().setSpeed(2.0);
 		baseEnvStats().setSensesMask(Sense.CAN_SEE_DARK | Sense.CAN_SEE_INFRARED);
-		
+
 		if(gender == MALE)
 			baseCharStats().setGender('M');
 		else
@@ -61,16 +53,18 @@ public class DrowElf extends StdMOB
 		baseCharStats().setDexterity(15 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setConstitution(12 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setCharisma(13 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 
 
 		recoverMaxState();
+		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	
+
 	public boolean tick(int tickID)
 	{
-		if((!amDead())&&(tickID==ServiceEngine.MOB_TICK))
+		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
 			if (isInCombat())
 			{
@@ -80,26 +74,27 @@ public class DrowElf extends StdMOB
 					castDarkness();
 				}
 			}
-									 
+
 		}
 		return super.tick(tickID);
 	}
 
 	protected boolean castDarkness()
 	{
-		if(this.location()==null) 
+		if(this.location()==null)
 			return true;
 		if(Sense.isInDark(this.location()))
 			return true;
-		
-		com.planet_ink.coffee_mud.Abilities.Spell_Darkness dark=new com.planet_ink.coffee_mud.Abilities.Spell_Darkness();
+
+		Ability dark=CMClass.getAbility("Spell_Darkness");
 		dark.setProfficiency(100);
+		dark.setBorrowed(this,true);
 		if(this.fetchAbility(dark.ID())==null)
 		   this.addAbility(dark);
 		else
-			dark=(com.planet_ink.coffee_mud.Abilities.Spell_Darkness)this.fetchAbility(dark.ID());
-		
-		dark.invoke(this,new Vector());
+			dark=this.fetchAbility(dark.ID());
+
+		dark.invoke(this,null,true);
 		return true;
 	}
 
@@ -107,5 +102,5 @@ public class DrowElf extends StdMOB
 	{
 		return new DrowElf();
 	}
-	
+
 }

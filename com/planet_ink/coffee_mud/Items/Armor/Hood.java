@@ -1,9 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 
-public class Hood extends Armor
+public class Hood extends StdArmor
 {
 	public Hood()
 	{
@@ -14,7 +14,7 @@ public class Hood extends Armor
 		description="This is a cloth hood that covers the head and shoulders.";
 		properWornBitmap=Item.ON_HEAD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(2); 
+		baseEnvStats().setArmor(2);
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=5;

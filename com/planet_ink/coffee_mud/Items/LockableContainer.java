@@ -1,7 +1,8 @@
 package com.planet_ink.coffee_mud.Items;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
-public class LockableContainer extends Container
+public class LockableContainer extends StdContainer
 {
 	public LockableContainer()
 	{
@@ -12,7 +13,7 @@ public class LockableContainer extends Container
 		hasALock=true;
 		isLocked=true;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new LockableContainer();

@@ -2,9 +2,9 @@ package com.planet_ink.coffee_mud.Items.MiscMagic;
 
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
+import com.planet_ink.coffee_mud.Items.Ring_Ornamental;
 import java.util.*;
 
 
@@ -24,7 +24,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		return new Ring_Protection();
 	}
 
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if((!this.amWearingAt(Item.INVENTORY))&&(!this.amWearingAt(Item.HELD)))
@@ -37,32 +37,32 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		setIdentity();
 	}
 
-	private int correctTargetCode()
+	private int correctTargetMinor()
 	{
 		switch(this.envStats().level())
 		{
 			case SILVER_RING:
-				return Affect.STRIKE_COLD;
+				return Affect.TYP_COLD;
 			case COPPER_RING:
-				return Affect.STRIKE_ELECTRIC;
+				return Affect.TYP_ELECTRIC;
 			case PLATINUM_RING:
-				return Affect.STRIKE_GAS;
+				return Affect.TYP_GAS;
 			case GOLD_RING_DIAMOND:
-				return Affect.STRIKE_FIRE;
+				return Affect.TYP_FIRE;
 			case GOLD_RING:
-				return Affect.STRIKE_ACID;
+				return Affect.TYP_ACID;
 			case GOLD_RING_RUBY:
-				return Affect.STRIKE_MIND;
+				return Affect.TYP_MIND;
 			case GOLD_RING_OPAL:
-				return Affect.STRIKE_MAGIC;
+				return Affect.TYP_CAST_SPELL;
 			case GOLD_RING_TOPAZ:
 				return -99;
 			case GOLD_RING_SAPPHIRE:
-				return Affect.STRIKE_JUSTICE;
+				return Affect.TYP_JUSTICE;
 			case MITHRIL_RING:
-				return Affect.STRIKE_HANDS;
+				return Affect.TYP_WEAPONATTACK;
 			case GOLD_RING_PEARL:
-				return Affect.STRIKE_WATER;
+				return Affect.TYP_WATER;
 			case GOLD_RING_EMERALD:
 				return -99;
 			default:
@@ -160,20 +160,20 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		}
 	}
 
-	public boolean okAffect(Affect affect)
+	public void affect(Affect affect)
 	{
 		if((affect.target()==null)||(!(affect.target() instanceof MOB)))
-			return true;
+			return ;
 
 		MOB mob=(MOB)affect.target();
-		if((affect.targetCode()==correctTargetCode())
+		if(mob!=this.myOwner()) return;
+
+		if((affect.targetMinor()==correctTargetMinor())
+		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(!this.amWearingAt(Item.INVENTORY))
 		&&(mob.isMine(this))
 		&&(rollChance()))
-		{
-			mob.location().show(mob,null,Affect.VISUAL_WNOISE,"<S-NAME> appear(s) to be unaffected.");
-			return false;
-		}
-		return true;
+			ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
+		return ;
 	}
 }

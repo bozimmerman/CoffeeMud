@@ -1,11 +1,11 @@
 package com.planet_ink.coffee_mud.Items;
 
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
 import java.util.*;
 
-public class Spring extends Drink
+public class Spring extends StdDrink
 {
 	public Spring()
 	{
@@ -23,20 +23,20 @@ public class Spring extends Drink
 		isGettable=false;
 		recoverEnvStats();
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new Spring();
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(affect.amITarget(this))
 		{
 			MOB mob=affect.source();
-			switch(affect.targetCode())
+			switch(affect.targetMinor())
 			{
-				case Affect.HANDS_FILL:
+				case Affect.TYP_FILL:
 					mob.tell("You can't fill the magical spring.");
 					return false;
 				default:
@@ -45,5 +45,5 @@ public class Spring extends Drink
 		}
 		return super.okAffect(affect);
 	}
-	
+
 }

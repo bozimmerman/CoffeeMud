@@ -1,17 +1,11 @@
 package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.commands.*;
-import com.planet_ink.coffee_mud.MOBS.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Exits.*;
-import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.application.*;
-
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.Sense;
 import java.util.*;
-public class UnderWaterGrid extends Grid	
+
+public class UnderWaterGrid extends Grid
 {
 	public UnderWaterGrid()
 	{
@@ -23,24 +17,24 @@ public class UnderWaterGrid extends Grid
 		domainType=Room.DOMAIN_OUTDOORS_UNDERWATER;
 		domainCondition=Room.CONDITION_WET;
 	}
-	
+
 	public Environmental newInstance()
 	{
 		return new UnderWaterGrid();
 	}
-	
-	public void affectEnvStats(Environmental affected, Stats affectableStats)
+
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SWIMMING);
 	}
-	
+
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))
 			return false;
-		if((affect.targetCode()==affect.STRIKE_FIRE)
-		||(affect.targetCode()==affect.STRIKE_GAS))
+		if((affect.targetMinor()==affect.TYP_FIRE)
+		||(affect.targetMinor()==affect.TYP_GAS))
 		{
 			affect.source().tell("That won't work underwater.");
 			return false;

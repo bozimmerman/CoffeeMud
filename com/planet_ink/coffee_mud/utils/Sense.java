@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.utils;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 
 
 public class Sense
@@ -20,7 +21,7 @@ public class Sense
 	public final static int CAN_TASTE=4096;
 	public final static int CAN_SPEAK=8192;
 	public final static int CAN_BREATHE=16384;
-	
+
 	public final static long ALLMASK=(int)Math.round((Integer.MAX_VALUE/2)-0.5);
 
 	public static boolean canSee(Environmental E)
@@ -53,7 +54,7 @@ public class Sense
 	{ return ((E.envStats().sensesMask()&CAN_SPEAK)==0); }
 	public static boolean canBreathe(Environmental E)
 	{ return ((E.envStats().sensesMask()&CAN_BREATHE)==0); }
-	
+
 	// dispositions
 	public final static int IS_SEEN=1;
 	public final static int IS_HIDDEN=2;
@@ -69,7 +70,8 @@ public class Sense
 	public final static int IS_FLYING=2048;
 	public final static int IS_SWIMMING=4096;
 	public final static int IS_LIGHT=8192;
-	
+	public final static int IS_CLIMBING=16384;
+
 	public static boolean isSeen(Environmental E)
 	{ return ((E.envStats().disposition()&IS_SEEN)==0) || isSleeping(E); }
 	public static boolean isHidden(Environmental E)
@@ -89,7 +91,7 @@ public class Sense
 		return false;
 	}
 	public static boolean isGood(Environmental E)
-	{ 
+	{
 		if ((E.envStats().disposition()&IS_GOOD)==IS_GOOD)
 			return true;
 		else
@@ -114,55 +116,63 @@ public class Sense
 	{ return ((E.envStats().disposition()&IS_SITTING)==IS_SITTING); }
 	public static boolean isFlying(Environmental E)
 	{ return ((E.envStats().disposition()&IS_FLYING)==IS_FLYING); }
+	public static boolean isClimbing(Environmental E)
+	{ return ((E.envStats().disposition()&IS_CLIMBING)==IS_CLIMBING); }
 	public static boolean isSwimming(Environmental E)
 	{ return ((E.envStats().disposition()&IS_SWIMMING)==IS_SWIMMING); }
-	
+
 	public static boolean canBeHeardBy(Environmental heard , Environmental hearer)
 	{
 		if(hearer==heard) return true;
-		if(hearer==null) 
+		if(hearer==null)
 			return false;
 		if(heard==null)
 			return false;
-		if(!canHear(hearer)) 
+		if(!canHear(hearer))
 			return false;
 		if(isSneaking(heard)&&(!canSeeSneakers(hearer)))
 		   return false;
 		return true;
 	}
-	
-	public static boolean canPerformAction(MOB mob)
+
+	public static boolean aliveAwakeMobile(MOB mob, boolean quiet)
 	{
+		if(mob.amDead())
+		{
+			if(!quiet)
+				mob.tell("You are DEAD!");
+			return false;
+		}
 		if(isSleeping(mob))
 		{
-			mob.tell("You are sleeping!");
+			if(!quiet)
+				mob.tell("You are sleeping!");
 			return false;
 		}
 		if(!canMove(mob))
 		{
-			mob.tell("You can't move!");
+			if(!quiet)
+				mob.tell("You can't move!");
 			return false;
 		}
 		return true;
 	}
-	
+
 	public static boolean canBeSeenBy(Environmental seen , Environmental seer)
 	{
-		
+
 		if(seer==seen) return true;
-		if(!canSee(seer))
-			return false;
 		if(seen==null) return true;
-		if(!isSeen(seen))
-		   return false;
+
+		if(!canSee(seer)) return false;
+		if(!isSeen(seen)) return false;
+
 		if((isInvisible(seen))&&(!canSeeInvisible(seer)))
 		   return false;
 		if((isHidden(seen))&&(!canSeeHidden(seer)))
 		   return false;
 		if((isSneaking(seen))&&(!canSeeSneakers(seer)))
-		   return false;
-		if((isHidden(seen))&&(!canSeeHidden(seer)))
-		   return false;
+			return false;
 		if((seer instanceof MOB)&&(!(seen instanceof Room)))
 		{
 			MOB mob=(MOB)seer;
@@ -194,7 +204,7 @@ public class Sense
 	public static StringBuffer colorCodes(Environmental seen , Environmental seer)
 	{
 		StringBuffer Say=new StringBuffer("");
-		
+
 		if((Sense.isEvil(seen))&&(Sense.canSeeEvil(seer)))
 			Say.append(" (glowing red)");
 		if((Sense.isGood(seen))&&(Sense.canSeeGood(seer)))
@@ -219,7 +229,7 @@ public class Sense
 			Say.append(" (glowing)");
 		return Say;
 	}
-	
+
 	public final static int flag_arrives=0;
 	public final static int flag_leaves=1;
 	public final static int flag_is=2;
@@ -251,25 +261,40 @@ public class Sense
 		if(isFlying(seen))
 			type="flys";
 		else
+		if(isClimbing(seen))
+			type="climbs";
+		else
 		if(isSwimming(seen))
 			type="swims";
 		else
-		if(flag_msgType==flag_arrives)
-			return "arrives";
-		else
-		if(flag_msgType==flag_leaves)
-			return "leaves";
+		if((flag_msgType==flag_arrives)||(flag_msgType==flag_leaves))
+		{
+			if(seen instanceof MOB)
+			{
+				if(flag_msgType==flag_arrives)
+					return ((MOB)seen).charStats().getMyRace().arriveStr();
+				else
+				if(flag_msgType==flag_leaves)
+					return ((MOB)seen).charStats().getMyRace().leaveStr();
+			}
+			else
+			if(flag_msgType==flag_arrives)
+				return "arrives";
+			else
+			if(flag_msgType==flag_leaves)
+				return "leaves";
+		}
 		else
 			return "is";
-		
+
 		if(flag_msgType==flag_arrives)
 			return type+" in";
 		else
 			return type;
-			
+
 	}
-	
-	
+
+
 	public static String wornLocation(int wornCode)
 	{
 		switch(wornCode)

@@ -1,58 +1,73 @@
 package com.planet_ink.coffee_mud.Behaviors;
 
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.commands.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.service.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.application.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.CharClasses.*;
+
 import java.util.*;
 
 public class Aggressive extends StdBehavior
 {
-	
+
 	public Aggressive()
 	{
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
 	public Behavior newInstance()
-	{ 
+	{
 		return new Aggressive();
 	}
-	
-	public static void pickAFight(MOB monster)
+
+	public static void startFight(MOB monster, MOB mob, boolean fightMOBs)
 	{
-		if(!canBehave(monster)) return;
-		for(int i=0;i<monster.location().numInhabitants();i++)
+		if(((!mob.isMonster())||(fightMOBs))
+		&&(monster.location()!=null)
+		&&(canFreelyBehaveNormal(monster))
+		&&(monster.location().isInhabitant(mob))
+		&&(Sense.canBeSeenBy(mob,monster))
+		&&((mob.charStats().getMyClass()==null)||(!(mob.charStats().getMyClass().ID().equals("Archon"))))
+		&&(mob!=monster))
 		{
-			MOB mob=monster.location().fetchInhabitant(i);
-			if((!mob.isMonster())
-			&&(monster.location().isInhabitant(mob))
-			&&(Sense.canBeSeenBy(mob,monster)))
+			if(Sense.isHidden(monster))
 			{
-				monster.setVictim(mob);
-				break;
+				Ability A=monster.fetchAbility("Thief_BackStab");
+				if(A!=null)
+				{
+					A.setProfficiency(Dice.roll(1,50,(mob.baseEnvStats().level()-A.qualifyingLevel(mob))*15));
+					A.invoke(monster,mob,false);
+				}
+			}
+			ExternalPlay.postAttack(monster,mob,monster.fetchWieldedItem());
+			monster.setVictim(mob);
+		}
+	}
+	public static void pickAFight(MOB observer)
+	{
+		if(!canFreelyBehaveNormal(observer)) return;
+		for(int i=0;i<observer.location().numInhabitants();i++)
+		{
+			MOB mob=observer.location().fetchInhabitant(i);
+			if(mob!=observer)
+			{
+				startFight(observer,mob,false);
+				if(observer.isInCombat()) break;
 			}
 		}
 	}
-	
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
-	 * from the given Environmental source */
-	public void affect(Environmental affecting, Affect affect)
+
+	public static void tickAggressively(Environmental ticking, int tickID)
 	{
-		super.affect(affecting,affect);
-		MOB mob=affect.source();
-		if(!canBehave(affecting)) return;
-		MOB monster=(MOB)affecting;
-		
-		if((!mob.isMonster())
-		&&(monster.location().isInhabitant(mob))
-		&&(Sense.canBeSeenBy(mob,monster)))
-			if(!monster.isInCombat())
-				monster.setVictim(mob);
+		if(tickID!=Host.MOB_TICK) return;
+		if(ticking==null) return;
+		if(!(ticking instanceof MOB)) return;
+
+		pickAFight((MOB)ticking);
+	}
+
+	public void tick(Environmental ticking, int tickID)
+	{
+		super.tick(ticking,tickID);
+		if(tickID!=Host.MOB_TICK) return;
+		tickAggressively(ticking,tickID);
 	}
 }

@@ -2,15 +2,8 @@ package com.planet_ink.coffee_mud.CharClasses;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.telnet.*;
-import com.planet_ink.coffee_mud.Races.*;
-import com.planet_ink.coffee_mud.Abilities.*;
-import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.application.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.db.*;
+import com.planet_ink.coffee_mud.common.*;
 
 public class Ranger extends StdCharClass
 {
@@ -21,7 +14,7 @@ public class Ranger extends StdCharClass
 		maxHitPointsPerLevel=22;
 		maxStat[CharStats.STRENGTH]=22;
 		maxStat[CharStats.DEXTERITY]=22;
-		bonusPracLevel=2;
+		bonusPracLevel=0;
 		manaMultiplier=10;
 		attackAttribute=CharStats.STRENGTH;
 		bonusAttackLevel=3;
@@ -30,12 +23,12 @@ public class Ranger extends StdCharClass
 		trainsAtFirstLevel=4;
 		damageBonusPerLevel=1;
 	}
-	
+
 	public boolean playerSelectable()
 	{
 		return true;
 	}
-	
+
 	public boolean qualifiesForThisClass(MOB mob)
 	{
 		if(mob.baseCharStats().getStrength()<=8)
@@ -44,38 +37,46 @@ public class Ranger extends StdCharClass
 		if(mob.baseCharStats().getIntelligence()<=8)
 			return false;
 
-		if(!(mob.charStats().getMyRace() instanceof Human) && !(mob.charStats().getMyRace() instanceof Elf) && !(mob.charStats().getMyRace() instanceof HalfElf))
+		if(!(mob.charStats().getMyRace().ID().equals("Human"))
+		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
+		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
 			return(false);
-			
+
 
 		return true;
 	}
-	
-	public void newCharacter(MOB mob)
+
+	public void outfit(MOB mob)
 	{
-		super.newCharacter(mob);
-		giveMobAbility(mob,new Ranger_Track());
-		giveMobAbility(mob,new Fighter_BlindFighting());
-		giveMobAbility(mob,new Fighter_Rescue());
-		giveMobAbility(mob,new Skill_Attack2());
-		giveMobAbility(mob,new Skill_Attack3());
-		giveMobAbility(mob,new Skill_Bash());
-		giveMobAbility(mob,new Skill_Disarm());
-		giveMobAbility(mob,new Skill_Dirt());
-		giveMobAbility(mob,new Skill_Dodge());
-		giveMobAbility(mob,new Skill_Parry());
-		giveMobAbility(mob,new Skill_Trip());
-		giveMobAbility(mob,new Spell_ReadMagic());
-		giveMobAbility(mob,new Spell_Light());
-		
-		if(!mob.isMonster())
+		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+		if(mob.fetchInventory(w.ID())==null)
 		{
-			Longsword s=new Longsword();
-			s.wear(Item.WIELD);
-			mob.addInventory(s);
+			mob.addInventory(w);
+			if(!mob.amWearingSomethingHere(Item.WIELD))
+				w.wearAt(Item.WIELD);
 		}
 	}
-	
+	public void newCharacter(MOB mob, boolean isBorrowedClass)
+	{
+		super.newCharacter(mob, isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Ranger_Track"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Fighter_BlindFighting"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Fighter_Rescue"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Attack2"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Attack3"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Bash"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Disarm"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Dirt"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Dodge"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Parry"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Skill_Trip"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Spell_ReadMagic"), isBorrowedClass);
+		giveMobAbility(mob,CMClass.getAbility("Spell_Light"), isBorrowedClass);
+
+		if(!mob.isMonster())
+			outfit(mob);
+	}
+
 	public void level(MOB mob)
 	{
 		super.level(mob);

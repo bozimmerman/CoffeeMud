@@ -1,10 +1,9 @@
 package com.planet_ink.coffee_mud.Items.Armor;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.StdAffects.*;
-import com.planet_ink.coffee_mud.Items.*;
 
-public class LeatherBoots extends Armor
+public class LeatherBoots extends StdArmor
 {
 	public LeatherBoots()
 	{
@@ -26,5 +25,5 @@ public class LeatherBoots extends Armor
 	{
 		return new LeatherBoots();
 	}
-	
+
 }
