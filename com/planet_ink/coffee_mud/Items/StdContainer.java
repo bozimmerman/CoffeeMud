@@ -130,7 +130,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if((mob.envStats().level()<newitem.envStats().level()-10)
+						if((mob.envStats().level()<newitem.envStats().level()-(10+(mob.envStats().level()/5)))
 						&&(!(mob instanceof ShopKeeper)))
 						{
 							mob.tell(newitem.name()+" is too powerful to endure possessing it.");

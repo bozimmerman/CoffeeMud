@@ -731,7 +731,7 @@ public class CommandProcessor
 			if(mob.isASysOp(mob.location()))
 				Lister.where(mob,commands);
 			else
-				Scoring.where(mob);
+				Scoring.where(mob,commands);
 			break;
 		case CommandSet.WHISPER:
 			SocialProcessor.whisper(mob,commands);

@@ -1,92 +1,472 @@
+Misc/Architecture:
+=================
 smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
-locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
-in the skill MASON, could you add to the desription of archways the type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room?
 putting a change bag into a changebag should combine your notes.
 ability to deposit in someone elses bank account
-BLACKSMITH chain....works like rope, but heavy and metal.
-TAILOR pillow, sheets, blanket, large pillow, cushion
-Commonskill Furnishing used to add descriptions to furnitures/doors. Only adds, doesn't subtract or replace. Kinda like engraving, except for furniture type items. 
-It displays to new users (News doesn't) It displays EVERY time they login (News doesn't) they can redisplay it when needed thru a MOTD command (my players have a habit of losing equipment.. to include journals and news). 
+MOTD It displays to new users (News doesn't) It displays EVERY time they login (News doesn't) they can redisplay it when needed thru a MOTD command (my players have a habit of losing equipment.. to include journals and news). 
 tread water for water surfaces with water beneath
 add floating num to resources -- whether the item will float
-barbarian skill improved throwing...does extra damage with hurled items.
 difference report for a given mob against all others of same level/race, ditto for weapons/armor -- compare the stuff to tims spec sheet
-common skill PACKAGING...allows you to crate up a bunch of resources into one large unit. must be unpackaged to be used (using the packaging skill to unpack.)
-Thief skill ALERTNESS gives one random description from an item in the room upon entry into that room.. For example: A thief walks into a room. He gets the room description. His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin. It randomly selects one of those items (the coin) and issues a LOOK COIN command.
 can the death/morgue strings be specified by the player's deity?
-1) Can DEATH allow you to specify room by the god of the player, with a default room for unholy folks?
-2) Can MORGUE get a setting 'DEATH' so the body goes with the person
-clan boss deletion automatically votes for a new one
-Programming.html update
-	need special section for languages
-	need special section for poisons
-	need special section for diseases
-	need special section for traps
-	
-//****** next version ********************************************************
+clan boss deletion automatically assigns a new one
+Programming.html updates: 	need special section for languages, poisons, diseases, traps
 GenRaces
 GenCharClasses -- zappercheck on quals
 racial abilities (abilities tied to the race)
 property on abilities that describes what to say when already affected by it.
 race specific questions to have during the character creation process -- stored where?
 Some solution for variable eq on mobs -- use rejuv!
-construct addition--peephole. a window on a door (sortof)
-ability to make windows in Construction, Masonry
-mason POOL will convert the room into a Water room, with 1 level of underwater added for free
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
 Mortgages (bankers lend large amounts of money at interest, start taking away property if you don't pay up)
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 SMTP capability
 give rooms maximum weight saveable to db
-Bandage common skill Using cloth type materials, the player with this skill can bandage a severely wounded player, raising their HP.  Probably only about 5% HP per pound of cloth or less.  Only let the skill work on people less than about 30% of max HP.  Good for limping back to town for a cleric, but doesn't ruin the need for a cleric.  And it's another use for cloth. 
 on your back for wearing backpacks
-add energy as a base material type -- update import
-autosneak thief skill
 zapper check on quests and questchats for eligible players
-ability/skill to drain mana from dead bodies
-Arrest allowing players to bring bountys to the judge.
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
-Arrest idea: banned substances (get, drop, eq, etc)
 apply languages to writing as well. Should be simple, right? ha!
 Weather affecting movement, flooding, slipping, vision.  Behaviors for floods and fires.
-Conquest Area behavior
-animate golem spell
-Scalp - Barbarian(5), Templar(10), Assassin (10), or Thief(20)
-DEPRESSION.  -10 to Attack, Gets hungry faster (10% or so), reduced saves vs Justice (-20%), Reduced chance of pregnancy/fertility.  People who get depressed generally have less enthusiasm about everything (fighting, sex, personal property...it's all pointless anyways) and tend to eat more.  (Thereby getting FAT.)
-YAWNS.  if you get too fatigued, you may get this disease, which is contagious.  No effect other than the occassionally yawning.
-Obessity.  It doesn't change your WEIGHT, per se.  It creates a unseeable undroppable item of FAT for the duration of the obessity.  You can get rid of Obessity with a cure disease, or by remaining hungry for a good while.  You contract obessity by overeatting.
-Alcoholism.  If you drink too much alcohol, you risk gaining this disease.  If you don't drink a glass of alcohol every 3 MUD hours, then you get a -10 to attack and defense.  This penalty is cummulative until you drink alcohol, or you go 5 MUD days without alcohol.  Staying logged off for 5 MUD isn't suffecient....I hope.
-jewelmaking should allow you to add jewels to any item
 parse out all the commands into classes, so that access can be class based, and time req can be determined
 could you expand the languages to include GOBLIN, GIANT, TERRAN (earth), AQUAN (water), IGNAN(fire), and AURIAL(air), and SYLVAN (woodland)?
 BOOKS! paper with multiple pages to post on. Add to the papermaking skill. Also add Poster, Banner, and Screen.
-TaxCollector MOB Behavior. Designated mob wanders an area and charges taxesbased on the last time that you have paid taxes.
-a behavior that watches the weather... in foul or cold weather, items of certain material types would cost more
-readables that can load text from a text file
-ability to have random formulaic weapons, armor -- do somehow with rejuv field
-PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
-Allergies - nuff said
-assemblies mixing item 1 with item 2 produces item 3, these are predefined by archons  
 msx support
-
-From Aereon:
-masonry tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.
-Barbarian skills (SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) TACTICS, gives bonuses to combat in those terrains. Also allows a Barbarian to HIDE in that type of terrain if he remains in a room of that type for more than 2 minutes....
 resource override parameter allows for resources to APPEAR as different names. For example ResourceOverride(berries smurfberries)
 have a setting for no prompt, which also takes out the blank line after the prompt.
-blacksmith TRASHCAN. A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes.
-sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
-Barbarian skill Smoke Signals. Requires a fire. puffs of smoke produce a message for all in the area who can read smoke signals (has smoke signal skill). To all others it says you see puffs of smoke in the air. Totally a role-playing skill. Can't think of practical use, other than communication that could be done with a tell....
-barbarian skill GUARDTOTEM. Requires 6 scalps of the same race. Prevents creatures of that race from entering into the guarded area.should prevent only 50% of the time, reduced if the level of MOB is greater than Barbar who set the totem
-Barbarian skill SCALPING, as discussed on the group....can't think of practical purposes, though....
-Barbarian skill WARTOTEM. Requires 3 scalps of the same type of critter. The Barbarian drops the scalps, and does WARTOTEM command. Any critter of that race that fights in the room with the totem suffers penalties to attack and damage.
-Song Mana Pool--Think Tank--Collective Mind: all party members divide the cost of any mana consumption. IE a wizard casts a spell that costs 100 mana while partied with 3 other people, each lose 25 mana.
-Barbarians should be able to LEATHERWORK the scalps into SCALP armors. SCALPS should have a value of 3 (1 better than leather, 1 worse than scales). Other than that, all scalps must be of the same critter for the purpose of leathworking a piece of armor.
-barbarian skill Fragmentation A critical shot enhancement for barbarians that only works with thrown weapons, does an EXTRA 3 times damage, but destroys the thrown weapon in the process. (I am visualizing an axe that slams so hard into it's oponenent that the shaft splits and buries into the enemy as well...)
-new common skill FABRICATING....includes any assembly-type work.....cigarettes, computers, cars, robots, sensors, etc.
-construct needs to be able to modify door descriptions
-we need a property that allows a MOB to use a general skill whenever a player is present. For example, making the lumberjack chop if a player enters a room
+possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
+LYING DOWN position?
+group formations as an alternative way of determining range
+if you tell enough 'sentient'(?) muds a rumour it spreads throughout town/area/world?
+subclasses might cost QUEST points instead of TRAINs.
+quest points could be used to raise max stat (but not the actual stat).
+a config to allow a linefeed at ticks
+quest points can be used to avoid instantdeath rooms, it teleports you back to recall, but without the loss of life, XP, and equipment.
+Corpses should note time/manner of death
+maybe doors in your house need to be able to stay in the state you last left them (unless they are SMARTdoors of the future....)
 
+New Commands:
+=============
+Push/Pull 
+	should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
+
+
+Properties:
+===========
+Prop_Employed
+	Allows a MOB to use a general skill whenever a player is present. 
+	For example, making the lumberjack chop if a player enters a room
+
+
+Behaviors:
+==========
+Conquest
+	Allows players/clans to take over an area and control it.
+WeatherPricing	
+	Watches the weather... in foul or cold weather, items of certain material 
+	types would cost more
+Additions/Updates
+	Arrest -- banned substances (get, drop, eq, etc)
+	Arrest allowing players to bring bountys to the judge.
+TaxCollector 
+	Designated mob wanders an area and charges taxesbased on the last time 
+	that you have paid taxes.
+
+
+Common Skills:
+==============
+Acupuncture
+	Relaxes a player and allows him to go longer before becoming fatigued
+	Might even help speed the recovery time from some illnesses like cold and flu.
+Therapy
+	If alcolism/depression ever comes into play, this would help players to get rid of it.
+	Therapist player must have int/wis higher than patient.
+	Patient must be at rest (lying down)
+	Players need to be in the same room.
+	Depending on the illness, might take more than one session to rid player of affliction.
+Splint Making
+	Brace/bandage broken bones.
+	Doesn't heal them, but speed healing of broken bones.
+Zoology
+	Kinda like Opponent knowledge, but different.
+	Reports back the BEHAVIOR of the mob, aggressive, wimpy, etc....
+	Works only on animals and monsters (not intelligent humanoids, etc.)
+Engineering
+	Gnomes should get a bonus of some sort for this ability.
+	Allows the MOB to build devices/machines such as:
+	Aqueduct (to bring water from a nearby river/lake/ocean to another location, like owned land)
+	A Flying machine (GenRideable that flies).
+	A Derrigible.  Derigable.  A durrigable....A blimp dammit.
+	A submarine.  (A boat that can submerge for some time before it runs out of air and passengers suffocate)
+	assemblies mixing item 1 with item 2 produces item 3, these are predefined by archons  
+Fabricating
+	includes any assembly-type work
+	cigarettes, computers, cars, robots, sensors, etc.
+Packaging
+	allows you to crate up a bunch of resources into one large unit. 
+	must be unpackaged to be used (using the packaging skill to unpack.)
+Furnishing 
+	used to add descriptions to furnitures/doors. Only adds, doesn't subtract 
+	or replace. Kinda like engraving, except for furniture type items.
+Bandage 
+	Using cloth type materials, the player with this skill can bandage a 
+	severely wounded player, raising their HP.  Probably only about 5% HP 
+	per pound of cloth or less.  Only let the skill work on people less 
+	than about 30% of max HP.  Good for limping back to town for a cleric, 
+	but doesn't ruin the need for a cleric.  And it's another use for cloth. 
+Additions/Updates
+	locksmith BOLTLOCK a lock that can only be unlocked from one direction. 
+		Should be pickable from the other direction, just not unlocked with a key.
+	in the skill MASON, could you add to the desription of archways the 
+		type of stone used to make it...A magestic MARBLE archway towers 
+		above you? Also, could that description replace the room description 
+		of the next room?
+	BLACKSMITH chain....works like rope, but heavy and metal.
+	TAILOR pillow, sheets, blanket, large pillow, cushion
+	masonry tunnel (at about 20 levels above the normal masonry skill) 
+		connect 2 rooms in the same area that you own.
+	blacksmith TRASHCAN. A container that has the property of trashcollection, 
+		even in a privately owned property. Anything placed in the trashcan will 
+		be destroyed in 30 minutes.
+	sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that 
+		hold water and people. 
+	construct needs to be able to modify door descriptions
+	construct  peephole. a window on a door (sortof)
+	ability to make windows in Construction, Masonry
+	mason POOL will convert the room into a Water room, with 1 level 
+		of underwater added for free
+	jewelmaking should allow you to add jewels to any item
+	mason portcullis (but it requires METAL instead of stone)
+	construct drawbridge
+	blacksmith DRUM (metal barrel)
+	BLACKSMITH can (Like TIN can or coffee can)
+	pottery flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc.
+	MASON and CONSTRUCT WINDOW exits...exits that require the CRAWL command.
+
+	
+	
+Fighter Skills:
+==============
+Side Kick
+	Allows the monk an extra attack each round
+	The extra attack is dealt to a mob that the monk is not currently targetting
+Back hand
+	Allows the monk an extra attack each round
+	The extra attack is dealt to a mob that the monk is not currently targetting
+	Side kick is prerequisite.
+Smoke Signals
+	Requires a fire. Puffs of smoke produce a message for all in the area who can 
+	read smoke signals (has smoke signal skill). To all others it says you see 
+	puffs of smoke in the air. Totally a role-playing skill. Can't think of 
+	practical use, other than communication that could be done with a tell....
+Scalp 
+	Barbarian(5), Templar(10), Assassin (10), or Thief(20)
+GuardTotem 
+	Requires 6 scalps of the same race. Prevents creatures of that race from 
+	entering into the guarded area.should prevent only 50% of the time, 
+	reduced if the level of MOB is greater than Barbar who set the totem
+WarTotem
+	Requires 3 scalps of the same type of critter. The Barbarian drops the scalps, 
+	and does WARTOTEM command. Any critter of that race that fights in the room 
+	with the totem suffers penalties to attack and damage.
+Fragmentation 
+	A critical shot enhancement for barbarians that only works with thrown weapons, 
+	does an EXTRA 3 times damage, but destroys the thrown weapon in the process. 
+	(I am visualizing an axe that slams so hard into it's oponenent that the 
+	shaft splits and buries into the enemy as well...)
+(SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) Tactics
+	gives bonuses to combat in those terrains. Also allows a Barbarian to 
+	HIDE in that type of terrain if he remains in a room of that type for more 
+	than 2 minutes....
+Improved Throwing
+	Barbarian does extra damage with hurled items.
+Battering
+	aka Barbarian lock picking.
+Grab opponent 
+	prevents them from changing range, allows one fewer attack from barbar
+Bodytoss
+	take a grabbed opponent and chunk him 2 ranges out. Causes damage to him 
+	based on your proficiency.
+Piledrive
+	follows up a bodytoss with a powerful elbow attack. must have bodytoss to use.
+Gouge
+	blinds opponent for a lot longer than dirt. Harder to use.
+Bodyshield
+	allows you to take a PINNED opponent, and use him as a shield, with him 
+	taking damage instead of you. Works 50% of time if your skill is 100%, 
+	and both enemies are your level, 75% of time if your pinned opponenet 
+	is 20 levels lower than you, or the other attacker is 20 levels lower 
+	than you, and near 100% if both are 20 levels lower than you....
+
+	
+
+Thief Skills:
+=============
+Alertness 
+	gives one random description from an item in the room upon entry into that 
+	room.. For example: A thief walks into a room. He gets the room description. 
+	His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin. 
+	It randomly selects one of those items (the coin) and issues a LOOK COIN command.
+Autosneak 
+	Nuff Said
+Improved stealing/swiping
+	Burglar to be able to steal from signifigantly higher MOBs
+Mug
+	allows STEAL during a fight.
+Additions/Updates
+	Pick should LOCK unlocked (but lockable) doors.
+
+
+
+
+Spells:
+=======
+Create Golem
+	Creates a golem from a statue in the same room.
+	Golems do not heal naturally
+	Golems follow the mage and intercept attacks for them.
+Absorption
+	Allows the caster to absorb a beneficial effect from a mob by touching him/her/it
+	If the mob has no beneficial effects, hp/mana are absorbed.
+Ability Theft
+	Allows the caster to steal an ability from the target by touching him/her
+	The Caster maintains the target's proficiency of that spell.
+	The ability is returned to the target when the spell dispels.
+Body Meld
+	Allows a Necromancer to meld with a dismembered piece of flash
+	Dismembered body parts may be replaced if melded with the same type (eye for an eye)
+	Melding with arms/tentacles give more places to hold stuff
+	Melding with arms/tentacles/claws give extra attacks
+	Melding with claws gives the bonus of attacking with natural weapon
+	Caster may meld with (level / 4) body parts above and beyond what is natural for race.
+	Melding might also allow the necromancer to gain some abilties for the body parts source mob
+Flesh Jewelry
+	Allows the caster (Necromancer) to create jewelry from disembodies parts.
+	Each would have a different use.
+	For example, a necklace of ears might be proof against deafness.
+	Requires body parts used for creation to be placed on the ground.
+Inflict Vampirism
+	Self explanatory if you read the behaviors section below.
+Inflict Mana Vampirism
+	Self explanatory if you read the behaviors section below.
+Resist Vampirism
+	Self explanatory if you read the behaviors section below.
+Resist Mana Vampirism
+	Self explanatory if you read the behaviors section below.
+Resist Canabalism
+	Self explanatory if you read the behaviors section below.
+Summon Eclipse (Mage spell, I'm thinking)
+	Allows the mage to eclipse the moon
+	Prevents druidic opponents (and allies) of the mage from using moon based chants.
+Orb of Magnetism
+	The caster conjures an orb of Magnetic force in the room.
+	All metal items in the room worn, held, wielded, or possessed by any mob gets pulled to and stuck to the orb
+	Can potentially leave fighters stark n*ked fighting with their bare fists
+	All metal items drop to the floor when the spell ends
+Reverse Polarity
+	This spell can only be cast after Orb of Magnetism.
+	It reverses the polarity of the magnetic field and does so violently
+	So violently, in fact, that mobs in the room take damage from the flying items
+	There is a potential, don't know how big, that the repelling force is strong enough to send items to adjacent rooms.
+Magnetic Earth
+	Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground
+	Held Metal items are automatically dropped
+	MOBs wearing Metal items on torso body are pinned to the ground.
+Magenetic Field
+	If the target of this spell is wearing metallic armor, he/she is held motionless
+Brittle
+	Causes an item, regardless of condition to become extremely brittle and shatter when used
+	The brittleness is undetectable shy of a detect magic spell (or something similar)
+Minor Illusionary Sentry
+	Causes an illusion of the spell caster to appear
+	The spell caster and the illusion are tied together regardless of distance.
+	The caster may speak to whoever is in the remote room via the illusion
+	The cast automatically sees whatever the illusion sees.
+	To all who enter the room, the illusion looks like a MOB, not an item.
+	The illusion is dispelled when successfully hit.
+Major Illusionary Sentry
+	Functions exactly as the above spell
+	The caster can channel spells via the illusion to target items/mobs in the remote room.
+Greatest Illusionary Sentry
+	Functions as Major Illusionary Sentry
+	The illusion does not dispell when attacked
+	However, the caster takes whatever damage is dealt to the illusion.
+Reflexive Cast
+	Allows the caster to specify a spell to automatically discharge when he/she is next hit.
+	The spell must be one that the mage knows.
+	Works well for a sleeping mage
+Verbal cast
+	While under the effects of this spell, the caster may cast spells by speaking the spells name
+	The spell may be targeted at someone/something by speaking the spells name to that individual
+	This allows the caster to cast spells while blind/held/paralyzed.
+	Spells cannot be cast in this fashion when the caster is mute.
+Deliver
+	The caster may send a specified item to a specified mob.
+Juggernaut
+	Allows the caster to become immune to any attack and take zero damage
+	Increases the casters strength to 50
+	Decreases the casters dex by 1/3
+	Movement becomes 25% of original.
+	Only last for (Caster's level) / 10 rounds
+	Costs TONS of mana to invoke
+Life Siphon
+	This short lived spell creates a field around the mage(Range 1)
+	Everyone in the field loses one hp per round
+	Lost hitpoints are given to the mage
+Spell Morph
+	This spell works only against magic spells which deal damage
+	It does not prevent/reduce damage in any way whatsoever. 
+	It does change the form of damage.
+	For instance:
+		Damage from a fireball is dealt as freezing damage
+		Damage from an acid arrow is dealt as gas damage, etc.
+	The damage may then be reduced by another spell....
+Long reach
+	This spell allows the player's arms to become rubbery and stretchy
+	This allows the character to use a melee attack on an enemy ignoring range
+	Enemies are still affected by range
+	Nothing may be worn on the arms on the arms of the target while under these spell effects.
+Babble
+	This spell causes a target to babble random string of nonsense like:
+		"Blue cheese makes my foot sad."
+		"The purple cow wants my cake."
+		"Where did all the bubbles go?"
+		"Vote for my tooth"
+		"The sheep shall rise again!"
+		"Pardon me, do you have a spork?"
+	This could very well be in the form of another language
+	If it's a language, the proficiency is automatically 100%
+	It affects all channels of communication, tell, gossip, say, clantalk...
+Remove Hands
+	Causes the targets hands (All of them) to fall off.
+	So sorry if you were wielding a weapon.
+Rupture Nexus
+	This spell is a followup for Conjure Nexus
+	The nexus of mana must be present in the room
+	The mage must be at full mana
+	The mage causes the nexus to rupture and directs all energy towards the mage's enemies in the room.
+	This spell causes 1 point of damage for each point of mana for the mage.
+	Takes the mage to 0 mana.
+	Dispels the Nexus of Mana.
+Intangibility
+	Allows for a Pass Door effect
+	Melee attacks do no harm
+	Ranged attacks do no harm, but will target MOBs behind the target of spell.
+Mystic Light
+	autolighting for personal property
+	
+	
+Prayers/Chants:
+=======
+Mass Blindness
+	Nuff Said
+Acid Rain
+	This druidic chant may only be cast during a rainstorm
+	Turns drops of rain into acid dealing damage to enemy mobs.
+Curing/Wounding Aura 
+	Casts a curelight/causelight every 12 ticks on every MOB in the room.
+Summon Corpse 
+	brings a corpse to you. The target corpse can be that of any 
+	MOB or any player in your group.
+
+Songs:
+======
+Cadence
+	All group members get same movement rate regardless of encumbrance, etc.
+Mana Pool
+	All party members divide the cost of any mana consumption.
+
+
+Character Classes:
+==================
+Cavalier 
+	Fighter subclass
+	The knight---mounted fighter.
+Tinkerer
+	This will be for when the high tech stuff comes, but essentially the high tech equivalent of arcanist.
+Bounty Hunter 
+	Thief subclass, combination trapper/ranger I'm thinking.  
+	Bring bounties to Judge (Hassan) for reward of xp/gold.
+Wild Mage
+	50% of the time, a spell cast will end up higher level, different spell.
+
+
+Diseases:
+===================
+Vampirism (Change to current)
+	Causes the MOB to need to drink blood.
+	Will starve, despite eating food, hungerless spell, etc., without blood.
+Mana-Vampirism
+	Same as above, but must absorb mana to be nourished
+	Does not regerate Mana points....Must absorb mana to regain.
+Depression
+	-10 to Attack, Gets hungry faster (10% or so), reduced saves vs 
+	Justice (-20%), Reduced chance of pregnancy/fertility.  People who 
+	get depressed generally have less enthusiasm about everything 
+	(fighting, sex, personal property...it's all pointless anyways) and 
+	tend to eat more.  (Thereby getting FAT.)
+Yawns
+	if you get too fatigued, you may get this disease, which is contagious.  No 
+	effect other than the occassionally yawning.
+Obessity
+	It doesn't change your WEIGHT, per se.  It creates a unseeable undroppable 
+	item of FAT for the duration of the obessity.  You can get rid of Obessity 
+	with a cure disease, or by remaining hungry for a good while.  
+	You contract obessity by overeatting.
+Alcoholism
+	If you drink too much alcohol, you risk gaining this disease.  If you don't 
+	drink a glass of alcohol every 3 MUD hours, then you get a -10 to attack 
+	and defense.  This penalty is cummulative until you drink alcohol, or you 
+	go 5 MUD days without alcohol.  Staying logged off for 5 MUD isn't 
+	suffecient....I hope.
+Allergies 
+	Nuff said
+	
+Mobs:
+=====
+Hydra
+	Regrows 2 heads each time one is severed
+	# attacks based on # of heads.
+	Heads can attack different targets...Not just a tank target.
+Rust Monster
+	Attacks turn metal items to rust.
+
+Misc/Architecture:
+==================
+
+Group Magic:
+============
+The idea here is for a collection of spells that have some very miraculous effects.  There can be any number of 
+restrictions on the spells.  For example, number of people, incredible amount of mana, presence of the nexus
+of mana, all participants must be female, all participants must be wearing a gold ring, can only be cast on a 
+specific day of the year, phase of the moon, time of day, combination of any of these, etc.  Anyhow, the caster
+leads the spell and after several rounds, the effect takes place.  These are spells that only a true caster
+can learn and lead.  Mages would lead Mystic Rites, Clerics lead rituals, and druids would lead a chorus in
+order to achieve the effect they are going after.  
+
+Items:
+======
+Mana Batteries
+Portable Forge
+Lumberjack's saw
+	1 time use item.
+	Cuts wood at 10x the level of the wielder
+	crumbles to dust when done.
+Miner's Pick
+	1 time use item.
+	Mines stone/ore at 10x the level of the wielder
+	crumbles to dust when done.
+Joined/linked items
+	Neither item works until they are possessed/worn/wielded by the same person.
+Items of Slaying  
+	One time use items, instantly slays a race the item was targeted for
+	Crumbles to dust on attack, Whether strike was successful or not
+
+High Tech:
+==========
+Robots/Cyborgs/Androids
+Worm holes
+FTL travel
+Radioactivity
+	Lots can be done with this.
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
@@ -97,11 +477,3 @@ Cyborgs, andriods, robots.  All basically robots....un-healable MOBS.  Must be r
 Tech armors.  Basically, an item than is a rideable version of #5.  The character must be inside/riding the vehicle in order to use.  New opportunities for player classes here (robot pilot, etc.)
 FTL travel.  Some areas in space are so far apart, that they may only be reached via Faster-Than-Light travel of some sort.
 Probes.  Space ships may send out probes to investigate planets, other space ships, etc.  Some probes are better than others---might not be blocked by shields, etc---cost more money, higher level, though.
-
-
-Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.
-Cavelier the knight, law enforcer - mounted bonuses, Mounted Combat 2 Mounted Combat 3 Vigilance....allows the character to be on guard moreso than others...can recover hp, mana, movement at sleeping rates while resting. a skill dealing with a lance like Joust or Mounted Charge.Horsemanship.Dragon Lore.Leadership.Reputation
-level and type and wear locations for weaponsmithing and armorsmithing
-possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
-LYING DOWN position?
-group formations as an alternative way of determining range

@@ -783,20 +783,26 @@ public class StdArea implements Area
 				}
 				long[] allspot={Item.ON_FEET,Item.ON_TORSO,Item.ON_LEGS};
 				long allcode=0;
-				for(int l=0;l<allspot.length;l++) allcode=allcode|allspot[l];
-				if((coldChance>0)||(rustChance>0))
+				for(int l=0;l<allspot.length;l++) 
+					allcode=allcode|allspot[l];
+				
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session S=Sessions.elementAt(s);
-					if((S.mob()!=null)
-					&&(S.mob().location()!=null)
-					&&(S.mob().location().getArea()==this)
-					&&(!S.mob().isMonster())
-					&&(weatherType(S.mob().location())!=Area.WEATHER_CLEAR))
+					if((S.mob()==null)
+					||(S.mob().location()==null)
+					||(S.mob().location().getArea()!=this)
+					||(S.mob().isMonster()))
+						continue;
+					
+					MOB M=S.mob();
+					Room R=M.location();
+					
+					if(coldChance>0)
 					{
-						MOB M=S.mob();
 						int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
-						if(Dice.rollPercentage()<(coldChance-save))
+						if((Dice.rollPercentage()<(coldChance-save))
+						&&((weatherType(S.mob().location())!=Area.WEATHER_CLEAR)))
 						{
 							long coveredPlaces=0;
 							Item I=CMClass.getItem("GenItem");
@@ -827,40 +833,52 @@ public class StdArea implements Area
 									COLD.invoke(M,M,true);
 							}
 						}
-						else
-						if(Dice.rollPercentage()<rustChance)
+					}
+					
+					switch(R.domainType())
+					{
+					case Room.DOMAIN_INDOORS_UNDERWATER:
+					case Room.DOMAIN_INDOORS_WATERSURFACE:
+					case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+					case Room.DOMAIN_OUTDOORS_UNDERWATER:
+						rustChance+=5;
+						break;
+					default:
+						break;
+					}
+					
+					if(Dice.rollPercentage()<rustChance)
+					{
+						String weatherDesc=Area.WEATHER_DESCS[weatherType(null)].toLowerCase();
+						Vector rustThese=new Vector();
+						for(int i=0;i<M.inventorySize();i++)
 						{
-							String weatherDesc=Area.WEATHER_DESCS[weatherType(null)].toLowerCase();
-							Vector rustThese=new Vector();
-							for(int i=0;i<M.inventorySize();i++)
+							Item I=M.fetchInventory(i);
+							if(I==null)	continue;
+							if((!I.amWearingAt(Item.INVENTORY))
+							&&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
+							&&(I.subjectToWearAndTear())
+							&&((Dice.rollPercentage()>I.envStats().ability()*25)))
+								rustThese.addElement(I);
+							else
+							if(I.amWearingAt(Item.ABOUT_BODY)
+							&&(((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)))
+							{	rustThese.clear();	break;	}
+						}
+						for(int i=0;i<rustThese.size();i++)
+						{
+							Item I=(Item)rustThese.elementAt(i);
+							M.tell("Your "+I.name()+" rusts in the "+weatherDesc+".");
+							I.setUsesRemaining(I.usesRemaining()-1);
+							if(I.usesRemaining()<=0)
 							{
-								Item I=M.fetchInventory(i);
-								if(I==null)	continue;
-								if((!I.amWearingAt(Item.INVENTORY))
-								&&(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL))
-								&&(I.subjectToWearAndTear())
-								&&((Dice.rollPercentage()>I.envStats().ability()*25)))
-									rustThese.addElement(I);
-								else
-								if(I.amWearingAt(Item.ABOUT_BODY)
-								&&(((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)))
-								{	rustThese.clear();	break;	}
-							}
-							for(int i=0;i<rustThese.size();i++)
-							{
-								Item I=(Item)rustThese.elementAt(i);
-								M.tell("Your "+I.name()+" rusts in the "+weatherDesc+".");
-								I.setUsesRemaining(I.usesRemaining()-1);
-								if(I.usesRemaining()<=0)
+								if(M.location()!=null)
 								{
-									if(M.location()!=null)
-									{
-										FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
-										if(M.location().okAffect(M,msg))
-											M.location().send(M,msg);
-									}
-									I.destroy();
+									FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
+									if(M.location().okAffect(M,msg))
+										M.location().send(M,msg);
 								}
+								I.destroy();
 							}
 						}
 					}

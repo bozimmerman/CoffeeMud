@@ -674,7 +674,7 @@ public class StdItem implements Item
 					mob.tell("You can't see that.");
 					return false;
 				}
-				if((mob.envStats().level()<envStats().level()-10)
+				if((mob.envStats().level()<envStats().level()-(10+(mob.envStats().level()/5)))
 				&&(!(mob instanceof ShopKeeper)))
 				{
 					mob.tell(name()+" is too powerful to endure possessing it.");

@@ -474,7 +474,7 @@ public class CommonSkill extends StdAbility
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))
 				&&(Sense.canBeSeenBy(I,mob))
-				&&((M==from)||(!I.amWearingAt(Item.INVENTORY))))
+				&&((mob==from)||(!I.amWearingAt(Item.INVENTORY))))
 					V.addElement(I);
 			}
 		}

@@ -863,11 +863,13 @@ public class Scoring
 		}
 		V.addElement(area,new Integer(i));
 	}
-	public static void where(MOB mob)
+	public static void where(MOB mob, Vector commands)
 	{
+		int adjust=Util.s_int(Util.combine(commands,0));
 		DVector levelsVec=new DVector(2);
 		DVector mobsVec=new DVector(2);
 		DVector alignVec=new DVector(2);
+		int moblevel=mob.envStats().level()+adjust;
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
@@ -875,14 +877,14 @@ public class Scoring
 			{
 				int median=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
 				int medianDiff=0;
-				int upperLimit=mob.envStats().level()/3;
-				if((median<(mob.envStats().level()+upperLimit))
-				&&((median>=(mob.envStats().level()-5))))
+				int upperLimit=moblevel/3;
+				if((median<(moblevel+upperLimit))
+				&&((median>=(moblevel-5))))
 				{
 					if(mob.envStats().level()>=median)
-						medianDiff=(int)Math.round(9.0*Util.div(median,mob.envStats().level()));
+						medianDiff=(int)Math.round(9.0*Util.div(median,moblevel));
 					else
-						medianDiff=(int)Math.round(10.0*Util.div(mob.envStats().level(),median));
+						medianDiff=(int)Math.round(10.0*Util.div(moblevel,median));
 				}
 				whereAdd(levelsVec,A.name(),medianDiff);
 				
