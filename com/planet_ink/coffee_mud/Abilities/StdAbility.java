@@ -175,7 +175,7 @@ public class StdAbility implements Ability, Cloneable
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
-						mob.tell(target,null,null,"You can't do that to <S-NAME>.");
+						mob.tell(mob,t,null,"You can't do that to <T-NAMESELF>.");
 					return null;
 				}
 			}
