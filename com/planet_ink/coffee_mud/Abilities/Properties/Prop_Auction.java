@@ -126,6 +126,7 @@ public class Prop_Auction extends Property
 			setInvoker(mob);
 			auctioning=target;
 			bid=Util.s_int(Util.combine(commands,0));
+			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
 			setAbilityCode(STATE_START);
 			ExternalPlay.startTickDown(this,Host.QUEST_TICK,1);
