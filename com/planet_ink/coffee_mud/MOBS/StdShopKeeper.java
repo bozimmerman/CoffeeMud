@@ -1172,12 +1172,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								int val[]=yourValue(mob,E,true);
 								String col=null;
 								if(val[1]>0)
-									col=Util.padRight("["+val[1]+"qp",5+csize)+"] ^<SHOP^>"+Util.padRight(E.name()+"^</SHOP^>",totalWidth-csize);
+									col=Util.padRight("["+val[1]+"qp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
 								else
 								if(val[2]>0)
-									col=Util.padRight("["+val[2]+"xp",5+csize)+"] ^<SHOP^>"+Util.padRight(E.name()+"^</SHOP^>",totalWidth-csize);
+									col=Util.padRight("["+val[2]+"xp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
 								else
-									col=Util.padRight("["+val[0],5+csize)+"] ^<SHOP^>"+Util.padRight(E.name()+"^</SHOP^>",totalWidth-csize);
+									col=Util.padRight("["+val[0],5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
 								if((++colNum)>totalCols)
 								{
 									str.append("\n\r");
