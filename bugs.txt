@@ -1,9 +1,7 @@
 leash in mobile broke
 ticktock cmd does not skip hours over days well
-!wimpy behavior -race +dwarf zappercheck (very?) broken -- should have protected dwarves from fighting each other
-!sounders should have triggers for damage and starting a fight.
-!Follower allows a mob to follow someone who enters the room and meets the appropriate masks. For ex..gnome slave has a willfollow towards -race +gnome +player.
-!skillaggressive makes mob aggressive if they see you using a particular skill, or under the effect of a particular skill.
+?sounders should have triggers for damage and starting a fight.
+deviations report uses a diff baseline than rescore in the grinder does.
 Prop_ClosedNightDay gets seasonal stuff
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas

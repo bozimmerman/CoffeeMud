@@ -150,9 +150,9 @@ public class MUDZapper
 									+"\"-my areaname\" etc.. (create exceptions to -area) <BR>"
 									+"+ITEM \"+item name\" etc... (<WORD> only those with an item name) <BR>"
 									+"-EFFECTS (<WORD> anyone, even no effects) <BR>"
-									+"+Sleep \"+Chopping\" etc.. (create name exceptions to -effects) <BR>"
+									+"+Sleep \"+Wood Chopping\" etc.. (create name exceptions to -effects) <BR>"
 									+"+EFFECTS (do not <WORD> anyone, even non effected people) <BR>"
-									+"-Sleep \"-Chopping\" etc.. (create name exceptions to +effects) ";
+									+"-Sleep \"-Wood Chopping\" etc.. (create name exceptions to +effects) ";
 
 	public static String zapperInstructions(String CR, String word)
 	{

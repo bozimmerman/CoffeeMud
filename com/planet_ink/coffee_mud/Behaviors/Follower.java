@@ -74,7 +74,7 @@ public class Follower extends StdBehavior
 				return true;
 			MOB mob=(MOB)ticking;
 			Room room=mob.location();
-			if(room.numInhabitants()!=lastNumPeople)
+			if((room.numInhabitants()!=lastNumPeople)&&(mob.amFollowing()==null))
 			{
 				for(int i=0;i<room.numInhabitants();i++)
 				{
@@ -83,7 +83,7 @@ public class Follower extends StdBehavior
 					&&(M!=ticking)
 					&&(!CMSecurity.isAllowed(M,room,"CMDMOBS"))
 					&&(!CMSecurity.isAllowed(M,room,"CMDROOMS"))
-					&&(MUDZapper.zapperCheck(getParms(),mob))
+					&&(MUDZapper.zapperCheck(getParms(),M))
 					&&(followChance>Dice.rollPercentage()))
 					{
 						CommonMsgs.follow(mob,M,false);
