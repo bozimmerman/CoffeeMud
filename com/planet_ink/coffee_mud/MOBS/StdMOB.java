@@ -1681,7 +1681,6 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_CLOSE:
 			case CMMsg.TYP_DRINK:
 			case CMMsg.TYP_DROP:
-			case CMMsg.TYP_THROW:
 			case CMMsg.TYP_EAT:
 			case CMMsg.TYP_FILL:
 			case CMMsg.TYP_GET:
@@ -2035,9 +2034,9 @@ public class StdMOB implements MOB
 					{
 						if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 						{
-							Weapon weapon=msg.source().myNaturalWeapon();
-							if((msg.tool()!=null)&&(msg.tool() instanceof Weapon))
-								weapon=(Weapon)msg.tool();
+							Item weapon=msg.source().myNaturalWeapon();
+							if((msg.tool()!=null)&&(msg.tool() instanceof Item))
+								weapon=(Item)msg.tool();
 							if(weapon!=null)
 							{
 								boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(this)+adjustedArmor()));
@@ -2047,8 +2046,8 @@ public class StdMOB implements MOB
 						}
 						else
 						if((msg.tool()!=null)
-						&&(msg.tool() instanceof Weapon))
-							MUDFight.postWeaponDamage(msg.source(),this,(Weapon)msg.tool(),true);
+						&&(msg.tool() instanceof Item))
+							MUDFight.postWeaponDamage(msg.source(),this,(Item)msg.tool(),true);
 					}
 					if(Sense.isSitting(this)||Sense.isSleeping(this))
 						CommonMsgs.stand(this,true);

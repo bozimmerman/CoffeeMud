@@ -1,6 +1,5 @@
-finish intoxication by breaking into levels of replacement.
-Archons need the ability to manage player as well as their inventories when they are offline. 
-Archones need the ability to edit/manage player's/clan's bank accounts. 
+shopkeeper invresetrate
+dusts
 mutable racial body parts, with ability to grant powers. items to wear on customized body parts.
 Install ship battery
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.

@@ -277,18 +277,26 @@ public class MUDFight
 		return oldHit;
 	}
 
-	public static void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
+	public static void postWeaponDamage(MOB source, MOB target, Item item, boolean success)
 	{
 		if(source==null) return;
 		if(!source.mayIFight(target)) return;
-		int damageInt=source.adjustedDamage(weapon,target);
+		Weapon weapon=null;
+		int damageInt=0;
+		if(item instanceof Weapon) 
+		{
+			weapon=(Weapon)item;
+			damageInt=source.adjustedDamage(weapon,target);
+		}
 		if(success)
 		{
             // calculate Base Damage (with Strength bonus)
-			String oldHitString="^F"+weapon.hitString(damageInt)+"^?";
+			String oldHitString="^F"+((weapon!=null)?
+								weapon.hitString(damageInt):
+								CommonStrings.standardHitString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,damageInt,item.name()))+"^?";
 			FullMsg msg=new FullMsg(source,
 									target,
-									weapon,
+									item,
 									CMMsg.MSG_OK_VISUAL,
 									CMMsg.MSG_DAMAGE,
 									CMMsg.MSG_OK_VISUAL,
@@ -302,7 +310,9 @@ public class MUDFight
 				if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 				{
 					damageInt=msg.value();
-					String newMsg="^F"+weapon.hitString(damageInt)+"^?";
+					String newMsg="^F"+((weapon!=null)?
+									weapon.hitString(damageInt):
+									CommonStrings.standardHitString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,damageInt,item.name()))+"^?";
 					msg.modify(msg.source(),
 							   msg.target(),
 							   msg.tool(),
@@ -321,11 +331,14 @@ public class MUDFight
 		}
 		else
 		{
+			String missString="^F"+((weapon!=null)?
+								weapon.missString():
+								CommonStrings.standardMissString(Weapon.TYPE_BASHING,Weapon.CLASS_BLUNT,item.name(),false))+"^?";
 			FullMsg msg=new FullMsg(source,
 									target,
 									weapon,
 									CMMsg.MSG_NOISYMOVEMENT,
-									weapon.missString());
+									missString);
 			// why was there no okaffect here?
 			if(source.location().okMessage(source,msg))
 				source.location().send(source,msg);

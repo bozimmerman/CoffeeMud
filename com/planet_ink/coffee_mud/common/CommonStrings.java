@@ -368,7 +368,8 @@ public class CommonStrings extends Scriptable
 	{
 		if(type<0) type=Weapon.TYPE_BURSTING;
 		int damnCode=0;
-			 if(damage<=3) damnCode=0; //3
+		if(damage<=0) return "annoy(s)";
+		else if(damage<=3) damnCode=0; //3
 		else if(damage<=6) damnCode=1; //4
 		else if(damage<=10) damnCode=2;//5
 		else if(damage<=15) damnCode=3; //10
@@ -486,10 +487,10 @@ public class CommonStrings extends Scriptable
 		case Weapon.TYPE_GASSING:
 			switch(damnCode)
 			{
-			case 0: return "annoy(s)";
+			case 0: return "mist(s)";
 			case 1: return "gass(es)";
 			case 2: return "gass(es)";
-			case 3: return "choke(s)";
+			case 3: return "fume(s)";
 			case 4: return "choke(s)";
 			case 5: return "decimate(s)";
 			case 6: return "murder(s)";
@@ -499,10 +500,10 @@ public class CommonStrings extends Scriptable
 			switch(damnCode)
 			{
 			case 0: return "sting(s)";
-			case 1: return "sting(s)";
+			case 1: return "sizzle(s)";
 			case 2: return "burn(s)";
-			case 3: return "burn(s)";
-			case 4: return "scorch(es)";
+			case 3: return "scorch(es)";
+			case 4: return "dissolve(s)";
 			case 5: return "melt(s)";
 			case 6: return "melt(s)";
 			}
