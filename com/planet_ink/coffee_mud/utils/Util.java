@@ -572,19 +572,25 @@ public class Util
 			return num;
 	}
 	
-	public static String getCleanBit(String s, int which)
-	{
-		s=getBit(s,which);
+	public static String cleanBit(String s)
+	{ 
 		while(s.startsWith(" "))
-			s=s.substring(1);
-		if((s.startsWith("'"))||(s.startsWith("`")))
 			s=s.substring(1);
 		while(s.endsWith(" "))
 			s=s.substring(0,s.length()-1);
-		if((s.endsWith("'"))||(s.endsWith("`")))
-			s=s.substring(0,s.length()-1);
+		if((s.startsWith("'"))||(s.startsWith("`")))
+		{
+			s=s.substring(1);
+			if((s.endsWith("'"))||(s.endsWith("`")))
+				s=s.substring(0,s.length()-1);
+		}
 		return s;
 	}
+	public static String getCleanBit(String s, int which)
+	{ return cleanBit(getBit(s,which));}
+	
+	public static String getPastBitClean(String s, int which)
+	{ return cleanBit(getPastBit(s,which));}
 	
 	public static String getPastBit(String s, int which)
 	{

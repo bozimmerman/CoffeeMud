@@ -49,6 +49,8 @@ public class StdPortal extends StdContainer implements Rideable
 	public boolean amRiding(Rider mob){ return false;}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
+		if(!super.okMessage(myHost,msg))
+			return false;
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_DISMOUNT:
@@ -108,7 +110,7 @@ public class StdPortal extends StdContainer implements Rideable
 			}
 			break;
 		}
-		return super.okMessage(myHost,msg);
+		return true;
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

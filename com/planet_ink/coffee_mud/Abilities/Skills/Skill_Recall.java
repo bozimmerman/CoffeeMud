@@ -25,23 +25,32 @@ public class Skill_Recall extends StdAbility
 		boolean success=(!mob.isInCombat())||profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,mob.getStartRoom(),this,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
-			if(mob.location().okMessage(mob,msg))
+			Room recalledRoom=mob.location();
+			Room recallRoom=mob.getStartRoom();
+			FullMsg msg=new FullMsg(mob,recallRoom,this,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
+			if(recalledRoom.okMessage(mob,msg))
 			{
 				if(mob.isInCombat())
 					CommonMsgs.flee(mob,"NOWHERE");
-				mob.location().send(mob,msg);
+				recalledRoom.send(mob,msg);
+				if(recalledRoom.isInhabitant(mob))
+					recallRoom.bringMobHere(mob,false);
 				for(int f=0;f<mob.numFollowers();f++)
 				{
 					MOB follower=mob.fetchFollower(f);
-					if((follower!=null)&&(follower.isMonster())&&(follower.location()!=null))
+					if((follower!=null)
+					&&(follower.isMonster())
+					&&(follower.location()==recalledRoom)
+					&&(recalledRoom.isInhabitant(follower)))
 					{
-						FullMsg msg2=new FullMsg(follower,mob.getStartRoom(),this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
-						if(follower.location().okMessage(follower,msg2))
+						FullMsg msg2=new FullMsg(follower,recallRoom,this,CMMsg.MASK_MOVE|CMMsg.TYP_RECALL,"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
+						if(recalledRoom.okMessage(follower,msg2))
 						{
 							if(follower.isInCombat())
 								CommonMsgs.flee(follower,("NOWHERE"));
-							follower.location().send(follower,msg2);
+							recallRoom.send(follower,msg2);
+							if(recalledRoom.isInhabitant(follower))
+								recallRoom.bringMobHere(follower,false);
 						}
 					}
 				}

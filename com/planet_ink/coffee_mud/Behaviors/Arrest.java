@@ -39,6 +39,11 @@ public class Arrest extends StdBehavior
 		private String warnMsg=null;
 		public void setArrestingOfficer(MOB mob)
 		{
+			if((arrestingOfficer!=null)
+			&&(arrestingOfficer.getStartRoom()!=null)
+			&&(arrestingOfficer.location()!=null)
+			&&(arrestingOfficer.getStartRoom().getArea()!=arrestingOfficer.location().getArea()))
+				MUDTracker.wanderAway(arrestingOfficer,true,true);
 			if((mob==null)&&(arrestingOfficer!=null))
 				stopTracking(arrestingOfficer);
 			arrestingOfficer=mob;
@@ -674,7 +679,7 @@ public class Arrest extends StdBehavior
 		if(officer.isMonster())
 			MUDTracker.wanderAway(officer,true,true);
 	}
-
+	
 	public MOB getAWitnessHere(Room R)
 	{
 		if(R!=null)

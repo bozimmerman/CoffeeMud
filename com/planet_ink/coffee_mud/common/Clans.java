@@ -793,26 +793,26 @@ public class Clans implements Clan, Tickable
 
 	public int getNumVoters(int function)
 	{
-		Vector realmembers=new Vector();
-		Vector bosses=new Vector();
+		int realmembers=0;
+		int bosses=0;
 		DVector members=getMemberList();
 		for(int m=0;m<members.size();m++)
 		{
 			if(((Integer)members.elementAt(m,2)).intValue()==Clan.POS_BOSS)
 			{
-				realmembers.addElement(members.elementAt(m,1));
-				bosses.addElement(members.elementAt(m,1));
+				realmembers++;
+				bosses++;
 			}
 			else
 			if(((Integer)members.elementAt(m,2)).intValue()!=Clan.POS_APPLICANT)
-				realmembers.addElement(members.elementAt(m,1));
+				realmembers++;
 		}
-		int numVotes=bosses.size();
+		int numVotes=bosses;
 		if(getGovernment()==Clan.GVT_DEMOCRACY)
-			numVotes=realmembers.size();
+			numVotes=realmembers;
 		else
 		if((getGovernment()==Clan.GVT_REPUBLIC)&&(function==Clan.FUNC_CLANASSIGN))
-			numVotes=realmembers.size();
+			numVotes=realmembers;
 		return numVotes;
 	}
 

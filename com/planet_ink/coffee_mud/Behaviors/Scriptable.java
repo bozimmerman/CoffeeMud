@@ -3310,7 +3310,7 @@ public class Scriptable extends StdBehavior
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				String arg2=Util.getCleanBit(s,2);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				if(newTarget!=null)
 				{
 					boolean found=false;
@@ -3765,7 +3765,7 @@ public class Scriptable extends StdBehavior
 			{
 				Environmental E=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,2));
 				if((E!=null)&&(arg2.length()>0))
 					mpsetvar(E.Name(),arg2,arg3);
 				break;

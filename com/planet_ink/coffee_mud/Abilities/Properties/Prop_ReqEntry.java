@@ -28,27 +28,58 @@ public class Prop_ReqEntry extends Property
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected!=null)
-		   &&(msg.target()!=null)
-		   &&(msg.target() instanceof Room)
-		   &&(msg.targetMinor()==CMMsg.TYP_ENTER)
-		   &&(!Sense.isFalling(msg.source()))
-		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
+		if((affected!=null)&&(msg.target()!=null))
 		{
-			HashSet H=new HashSet();
-			if(text().toUpperCase().indexOf("NOFOL")>=0)
-				H.add(msg.source());
-			else
+			if((msg.target() instanceof Room)
+			&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+			&&(!Sense.isFalling(msg.source()))
+			&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 			{
-				msg.source().getGroupMembers(H);
+				HashSet H=new HashSet();
+				if(text().toUpperCase().indexOf("NOFOL")>=0)
+					H.add(msg.source());
+				else
+				{
+					msg.source().getGroupMembers(H);
+					for(Iterator e=H.iterator();e.hasNext();)
+						((MOB)e.next()).getRideBuddies(H);
+				}
 				for(Iterator e=H.iterator();e.hasNext();)
-					((MOB)e.next()).getRideBuddies(H);
+					if(passesMuster((MOB)e.next()))
+						return super.okMessage(myHost,msg);
+				msg.source().tell("You can not go that way.");
+				return false;
 			}
-			for(Iterator e=H.iterator();e.hasNext();)
-				if(passesMuster((MOB)e.next()))
-					return super.okMessage(myHost,msg);
-			msg.source().tell("You can not go that way.");
-			return false;
+			else
+			if((msg.target() instanceof Rideable)
+			&&(msg.amITarget(affected)))
+			{
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_SIT:
+				case CMMsg.TYP_ENTER:
+				case CMMsg.TYP_SLEEP:
+				case CMMsg.TYP_MOUNT:
+					{
+						HashSet H=new HashSet();
+						if(text().toUpperCase().indexOf("NOFOL")>=0)
+							H.add(msg.source());
+						else
+						{
+							msg.source().getGroupMembers(H);
+							for(Iterator e=H.iterator();e.hasNext();)
+								((MOB)e.next()).getRideBuddies(H);
+						}
+						for(Iterator e=H.iterator();e.hasNext();)
+							if(passesMuster((MOB)e.next()))
+								return super.okMessage(myHost,msg);
+						msg.source().tell("You are not permitted in there.");
+						return false;
+					}
+				default:
+					break;
+				}
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
