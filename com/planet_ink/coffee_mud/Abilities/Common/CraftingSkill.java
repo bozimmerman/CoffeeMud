@@ -73,6 +73,30 @@ public class CraftingSkill extends CommonSkill
 	    }
 	    return recipes;
 	}
+	
+	protected void addSpells(Environmental E, String spells)
+	{
+	    if(spells.length()==0) return;
+	    if(spells.equalsIgnoreCase("bundle")) return;
+	    Vector V=Util.parseSemicolons(spells,true);
+	    Ability lastSpell=null;
+	    Ability A=null;
+	    for(int v=0;v<V.size();v++)
+	    {
+	        spells=(String)V.elementAt(v); 
+	        A=CMClass.getAbility(spells);
+	        if(A==null)
+	        {
+	            if(lastSpell!=null)
+	                lastSpell.setMiscText(spells);
+	        }
+	        else
+	        {
+	            lastSpell=A;
+	            E.addNonUninvokableEffect(A);
+	        }
+	    }
+	}
 
 	protected Vector loadList(StringBuffer str)
 	{

@@ -29,7 +29,7 @@ public class Prop_Doppleganger extends Property
 
 	public String accountForYourself()
 	{ return "Level Changer";	}
-
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -58,6 +58,8 @@ public class Prop_Doppleganger extends Property
 					&&((M.getVictim()==mob)||(victim==null))
 					&&(M.fetchEffect(ID())==null))
 					{
+				        if(CMSecurity.isAllowed(M,mob.location(),"CMDMOBS")||CMSecurity.isAllowed(M,mob.location(),"CMDROOMS"))
+				            return super.okMessage(myHost,msg);
 						total+=M.envStats().level();
 						num++;
 					}

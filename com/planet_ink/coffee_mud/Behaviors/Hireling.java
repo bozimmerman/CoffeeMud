@@ -102,7 +102,7 @@ public class Hireling extends StdBehavior
 		MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)
 		{
-			Integer I=(Integer)partials.get(workingFor);
+			Double D=(Double)partials.get(workingFor);
 			partials.remove(workingFor);
 			CommonMsgs.stand(observer,true);
 			if(!canActAtAll(observer))
@@ -122,8 +122,8 @@ public class Hireling extends StdBehavior
 					observer.setFollowing(talkTo);
 			}
 			int additional=0;
-			if(I!=null)
-				additional+=(int)Math.round(Util.mul(Util.div(minutes(),price()),I.intValue()));
+			if(D!=null)
+				additional+=(int)Math.round(Util.mul(Util.div(minutes(),price()),D.doubleValue()));
 			if(additional<=0)
 			{
 				if(talkTo!=null)
@@ -184,7 +184,7 @@ public class Hireling extends StdBehavior
 			&&((msg.target() instanceof Coins)||(msg.tool() instanceof Coins)))
 			{
 				if((msg.target() instanceof MOB)
-				&&(!CMSecurity.isAllowed(((MOB)msg.target()),source.location(),"CMROOMS")))
+				&&(!CMSecurity.isAllowed(((MOB)msg.target()),source.location(),"CMDROOMS")))
 					CommonMsgs.say(observer,null,"I don't think so.",false,false);
 				return false;
 			}
@@ -263,7 +263,7 @@ public class Hireling extends StdBehavior
 						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me "+BeanCounter.nameCurrencyShort(observer,(price()-given))+" more later on and I'll work.",true,false);
 				}
 				else
-					CommonMsgs.say(observer,source,"My price is "+price()+".  Give me "+BeanCounter.nameCurrencyShort(observer,(price()-given))+" more and I'll work.",true,false);
+					CommonMsgs.say(observer,source,"My price is "+BeanCounter.nameCurrencyShort(observer,price())+".  Give me "+BeanCounter.nameCurrencyShort(observer,(price()-given))+" more and I'll work.",true,false);
 				partials.put(msg.source().Name(),new Double(given));
 			}
 			else

@@ -96,13 +96,23 @@ public class BaseGenerics extends StdCommand
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Currency: '"+A.getCurrency()+"'.");
+		String currencyName=A.getCurrency().length()==0?"Default":A.getCurrency();
+		mob.tell(showNumber+". Currency: '"+currencyName+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		String newName=mob.session().prompt("Enter a new one or 'DEFAULT'\n\r:","");
 		if(newName.length()>0)
 		{
-		    if((newName.indexOf("=")<0)&&(BeanCounter.getAllCurrencies().contains(newName.trim().toUpperCase())))
-		        mob.tell("'"+newName+"' is not a known currency. Existing currencies include: "+Util.toStringList(BeanCounter.getAllCurrencies()));
+		    if(newName.equalsIgnoreCase("default"))
+		        A.setCurrency("");
+		    else
+		    if((newName.indexOf("=")<0)&&(!BeanCounter.getAllCurrencies().contains(newName.trim().toUpperCase())))
+		    {
+		        Vector V=BeanCounter.getAllCurrencies();
+		        for(int v=0;v<V.size();v++)
+		            if(((String)V.elementAt(v)).length()==0)
+		                V.setElementAt("DEFAULT",v);
+		        mob.tell("'"+newName.trim().toUpperCase()+"' is not a known currency. Existing currencies include: "+Util.toStringList(V));
+		    }
 		    else
 		    if(newName.indexOf("=")>=0)
 		        A.setCurrency(newName.trim());

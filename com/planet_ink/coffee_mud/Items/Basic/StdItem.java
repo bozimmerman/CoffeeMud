@@ -736,6 +736,19 @@ public class StdItem implements Item
 				}
 			}
 			return canWearComplete(mob);
+		case CMMsg.TYP_PUSH:
+		case CMMsg.TYP_PULL:
+		    if(msg.source().isMine(this))
+		    {
+		        mob.tell("You'll need to put that down first.");
+		        return false;
+		    }
+			if(!Sense.isGettable(this))
+			{
+				mob.tell("You can't move "+name()+".");
+				return false;
+			}
+		    return true;
 		case CMMsg.TYP_GET:
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
@@ -840,7 +853,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_SELL:
 		case CMMsg.TYP_VALUE:
 		case CMMsg.TYP_VIEW:
-				return true;
+			return true;
 		case CMMsg.TYP_OPEN:
 		case CMMsg.TYP_CLOSE:
 		case CMMsg.TYP_LOCK:
@@ -886,6 +899,7 @@ public class StdItem implements Item
 		default:
 			break;
 		}
+System.out.println(msg.targetMinor()+"/"+msg.sourceMinor()+"/"+CMMsg.TYP_PUSH+"/"+CMMsg.TYP_PULL);		
 		mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 		return false;
 	}
@@ -1036,6 +1050,8 @@ public class StdItem implements Item
 				unWear();
 				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
+				if(this instanceof Coins)
+				    ((Coins)this).putCoinsBack();
 			}
 			break;
 		case CMMsg.TYP_REMOVE:
@@ -1057,6 +1073,8 @@ public class StdItem implements Item
 			}
 			unWear();
 			setContainer(null);
+			if(this instanceof Coins)
+			    ((Coins)this).putCoinsBack();
 			break;
 		case CMMsg.TYP_WRITE:
 			if(Sense.isReadable(this))

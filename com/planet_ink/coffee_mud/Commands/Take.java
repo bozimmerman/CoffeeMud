@@ -30,8 +30,8 @@ public class Take extends BaseItemParser
 		throws java.io.IOException
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),"ORDER")
-		||CMSecurity.isAllowed(mob,mob.location(),"CMMOBS")
-		||CMSecurity.isAllowed(mob,mob.location(),"CMROOMS"))
+		||CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")
+		||CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
 		{
 			if(commands.size()<3)
 			{

@@ -44,7 +44,7 @@ public class ItemMender extends StdBehavior
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(!CMSecurity.isAllowed(source,source.location(),"CMROOMS"))
+		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
@@ -92,7 +92,7 @@ public class ItemMender extends StdBehavior
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		&&(!CMSecurity.isAllowed(source,source.location(),"CMROOMS"))
+		&&(!CMSecurity.isAllowed(source,source.location(),"CMDROOMS"))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{

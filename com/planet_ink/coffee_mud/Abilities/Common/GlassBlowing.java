@@ -208,11 +208,7 @@ public class GlassBlowing extends CraftingSkill
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-		if(spell.length()>0)
-		{
-			Ability A=CMClass.getAbility(spell);
-			if(A!=null)	building.addNonUninvokableEffect(A);
-		}
+		addSpells(building,spell);
 		if(building instanceof Container)
 		{
 			if(capacity>0)

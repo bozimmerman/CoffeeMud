@@ -45,30 +45,42 @@ public class Withdraw extends StdCommand
 	    long numCoins=EnglishParser.numPossibleGold(str);
 	    String currency=EnglishParser.numPossibleGoldCurrency(shopkeeper,str);
 	    double denomination=EnglishParser.numPossibleGoldDenomination(shopkeeper,currency,str);
-		if(((numCoins==0)||(denomination==0.0))&&(!str.equalsIgnoreCase("all")))
-		{
-			mob.tell("Withdraw how much?");
-			return false;
-		}
-
 		Item thisThang=null;
-		thisThang=((Banker)shopkeeper).findDepositInventory(mob,str);
-		if((!str.equalsIgnoreCase(""+Integer.MAX_VALUE))&&(thisThang instanceof Coins))
-		    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
-		
+		if(numCoins>0)
+		{
+		    if(denomination==0.0)
+		    {
+				mob.tell("Withdraw how much?");
+				return false;
+		    }
+		    else
+		    {
+				thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
+				if(thisThang instanceof Coins)
+				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+		    }
+		}
+		else
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob,str);
+
 		if(((thisThang==null)||((thisThang instanceof Coins)&&(((Coins)thisThang).getNumberOfCoins()<=0)))
 		&&(((Banker)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
 		&&(mob.isMarriedToLiege()))
 		{
 			MOB mob2=CMMap.getPlayer(mob.getLiegeID());
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob2,str);
-			if((!str.equalsIgnoreCase(""+Integer.MAX_VALUE))&&(thisThang instanceof Coins))
-			    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
-		    if((thisThang==null)||(((Coins)thisThang).getNumberOfCoins()<=0))
-		    {
-				mob.tell("Withdraw how much?");
-				return false;
-		    }
+			if(numCoins>0)
+			{
+				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,""+Integer.MAX_VALUE);
+				if(thisThang instanceof Coins)
+				    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+				else
+			    {
+					mob.tell("Withdraw how much?");
+					return false;
+			    }
+			}
+			else
+				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,str);
 		}
 
 		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))

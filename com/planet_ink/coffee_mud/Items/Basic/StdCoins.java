@@ -69,6 +69,7 @@ public class StdCoins extends StdItem implements Coins
 		    baseEnvStats().setAbility((int)number);
 	    else
 	        baseEnvStats().setAbility(Integer.MAX_VALUE);
+	    envStats().setAbility(baseEnvStats().ability());
     }
 	public double getDenomination(){return denomination;}
 	public void setDenomination(double valuePerCoin)
@@ -102,12 +103,22 @@ public class StdCoins extends StdItem implements Coins
 	}
 	public void recoverEnvStats()
 	{
-		baseEnvStats.setWeight((int)Math.round((new Long(getNumberOfCoins()).doubleValue()/100.0)));
+		if(((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+		&&((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER))
+			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
+		// import not to sup this, otherwise 'ability' makes it magical!
+		for(int a=0;a<numEffects();a++)
+		{
+			Ability effect=fetchEffect(a);
+			effect.affectEnvStats(this,envStats);
+		}
 	}
-
+	
 	public boolean putCoinsBack()
 	{
+	    if(amDestroyed()) 
+	        return false;
 		Coins alternative=null;
 		if(owner() instanceof Room)
 		{
@@ -116,11 +127,12 @@ public class StdCoins extends StdItem implements Coins
 			{
 				Item I=R.fetchItem(i);
 				if((I!=null)
-				   &&(I!=this)
-				   &&(I instanceof Coins)
-				   &&(((Coins)I).getDenomination()==getDenomination())
-				   &&(((Coins)I).getCurrency().equals(getCurrency()))
-				   &&(I.container()==container()))
+				&&(I!=this)
+				&&(I instanceof Coins)
+				&&(!I.amDestroyed())
+				&&(((Coins)I).getDenomination()==getDenomination())
+				&&(((Coins)I).getCurrency().equals(getCurrency()))
+				&&(I.container()==container()))
 				{
 					alternative=(Coins)I;
 					break;
@@ -135,11 +147,12 @@ public class StdCoins extends StdItem implements Coins
 			{
 				Item I=M.fetchInventory(i);
 				if((I!=null)
-				   &&(I!=this)
-				   &&(I instanceof Coins)
-				   &&(((Coins)I).getDenomination()==getDenomination())
-				   &&(((Coins)I).getCurrency().equals(getCurrency()))
-				   &&(I.container()==container()))
+				&&(I!=this)
+				&&(I instanceof Coins)
+				&&(!I.amDestroyed())
+				&&(((Coins)I).getDenomination()==getDenomination())
+				&&(((Coins)I).getCurrency().equals(getCurrency()))
+				&&(I.container()==container()))
 				{
 					alternative=(Coins)I;
 					break;

@@ -57,7 +57,7 @@ public class Aggressive extends StdBehavior
 		&&(canFreelyBehaveNormal(monster))
 		&&(Sense.canBeSeenBy(mob,monster))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
-		&&(!CMSecurity.isAllowed(mob,mob.location(),"CMROOMS")))
+		&&(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")))
 		{
 			// special backstab sneak attack!
 			if(Sense.isHidden(monster))

@@ -27,8 +27,13 @@ public class Patroller extends ActiveTicker
 	public long flags(){return Behavior.FLAG_MOBILITY;}
 
 	private int step=0;
+	private int diameter=20;
 	private boolean rideOk=false;
+	private boolean rideOnly=false;
+	private Vector correction=null;
 
+	private boolean rideFlag=false;
+	
 	public Patroller()
 	{
 		super();
@@ -39,7 +44,10 @@ public class Patroller extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		rideOk=Util.getParmStr(newParms,"rideok","false").equalsIgnoreCase("true");
+		String rideokString=Util.getParmStr(newParms,"rideok","false");
+		rideOnly=rideokString.equalsIgnoreCase("only");
+		rideOk=rideOnly||rideokString.equalsIgnoreCase("true");
+		diameter=Util.getParmInt(newParms,"diameter",20);
 	}
 
 
@@ -65,7 +73,7 @@ public class Patroller extends ActiveTicker
 			for(int i=V.size()-1;i>=0;i--)
 			{
 				s=(String)V.elementAt(i);
-				if(s.equalsIgnoreCase("RESTART")) break;
+				if(s.equalsIgnoreCase("RESTART")||s.equalsIgnoreCase("REPEAT")) break;
 				int dir=Directions.getGoodDirectionCode(s);
 				if(dir>=0)
 					V.addElement(Directions.getDirectionName(Directions.getOpDirectionCode(dir)));
@@ -76,13 +84,34 @@ public class Patroller extends ActiveTicker
 		return V;
 	}
 
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+	    if((rideOnly)
+	    &&(!rideFlag)
+	    &&(rideOk)
+	    &&(host instanceof Rideable)
+	    &&(msg.targetMinor()==CMMsg.TYP_ENTER)
+	    &&(msg.source()!=host)
+	    &&(msg.source().riding()==host))
+	    {
+	        if(host instanceof MOB)
+		        msg.source().tell("You must dismount before you can do that.");
+	        else
+		        msg.source().tell("You must disembark before you can do that.");
+	        return false;
+	    }
+	    return super.okMessage(host,msg);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		super.tick(ticking,tickID);
+		if(!super.tick(ticking,tickID))
+		    return false;
 		if(canAct(ticking,tickID))
 		{
 			Room thisRoom=null;
-			if(ticking instanceof MOB) thisRoom=((MOB)ticking).location();
+			if(ticking instanceof MOB) 
+			    thisRoom=((MOB)ticking).location();
 			else
 			if((ticking instanceof Item)
 			&&(((Item)ticking).owner() instanceof Room)
@@ -103,13 +132,20 @@ public class Patroller extends ActiveTicker
 			}
 			if(thisRoom==null) return true;
 			
+			if(!rideOk)
+			{
+				if(((ticking instanceof Rideable)&&(((Rideable)ticking).numRiders()>0))
+				||((ticking instanceof MOB)&&(((MOB)ticking).amFollowing()!=null)&&(((MOB)ticking).location()==((MOB)ticking).amFollowing().location())))
+					return true;
+			}
+			
 			Room thatRoom=null;
 			Vector steps=getSteps();
 			if(steps.size()==0) return true;
 			if((step<0)||(step>=steps.size())) step=0;
 			String nxt=(String)steps.elementAt(step);
 
-			if((nxt.equalsIgnoreCase("RESTART"))&&(step>0))
+			if((nxt.equalsIgnoreCase("RESTART")||nxt.equalsIgnoreCase("REPEAT"))&&(step>0))
 			{
 				step=0;
 				nxt=(String)steps.elementAt(step);
@@ -121,23 +157,69 @@ public class Patroller extends ActiveTicker
 				return true;
 			}
 
+			
 			int direction=Directions.getGoodDirectionCode(nxt);
 			if(direction<0)
+			{
+				if(CMMap.getExtendedRoomID(thisRoom).toUpperCase().endsWith(nxt.toUpperCase()))
+				{
+				    step++;
+				    return true;
+				}
+				        
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=thisRoom.getRoomInDir(d);
-					if((R!=null)&&(R.roomID().toUpperCase().endsWith(nxt.toUpperCase())))
+					if((R!=null)
+					&&(CMMap.getExtendedRoomID(R).toUpperCase().endsWith(nxt.toUpperCase())))
 					{
 						thatRoom=R;
 						direction=d;
 						break;
 					}
 				}
+			}
 			else
 				thatRoom=thisRoom.getRoomInDir(direction);
+			Room destinationRoomForThisStep=thatRoom;
 
 			if((direction<0)||(thatRoom==null))
-				return true;
+			{
+			    Room R=CMMap.getRoom(nxt);
+			    if(R==null) R=CMMap.getRoom(thisRoom.getArea()+nxt);
+			    if(R==null) R=CMMap.getRoom(thisRoom.getArea()+"#"+nxt);
+			    if(R!=null)
+			    {
+			        direction=-1;
+			        if(correction!=null)
+			        {
+			            direction=MUDTracker.radiatesFromDir(thisRoom,correction);
+			            if(direction<0) 
+			                correction=null;
+			            else
+			                thatRoom=thisRoom.getRoomInDir(direction);
+			        }
+					if((direction<0)||(thatRoom==null))
+			        {
+			            correction=new Vector();
+			            MUDTracker.getRadiantRooms(R,correction,false,false,true,thisRoom,diameter);
+			            direction=MUDTracker.radiatesFromDir(thisRoom,correction);
+			            if(direction>=0)
+			                thatRoom=thisRoom.getRoomInDir(direction);
+			            else
+			                correction=null;
+			        }
+					if((direction<0)||(thatRoom==null))
+					{
+					    step=0;
+					    return true;
+					}
+			    }
+			    else
+					return true;
+			}
+			else
+			    correction=null;
 			Exit E=thisRoom.getExitInDir(direction);
 			if(E==null) return true;
 			
@@ -148,12 +230,6 @@ public class Patroller extends ActiveTicker
 				&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
 				   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
 					return false;
-			}
-			if(!rideOk)
-			{
-				if(((ticking instanceof Rideable)&&(((Rideable)ticking).numRiders()>0))
-				||((ticking instanceof MOB)&&(((MOB)ticking).amFollowing()!=null)&&(((MOB)ticking).location()==((MOB)ticking).amFollowing().location())))
-					return true;
 			}
 			
 			if(ticking instanceof Item)
@@ -174,17 +250,19 @@ public class Patroller extends ActiveTicker
 							MOB mob=(MOB)R;
 							FullMsg enterMsg=new FullMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
+							rideFlag=true;
 							if((E!=null)&&(!E.okMessage(mob,enterMsg)))
-								return true;
+							{	rideFlag=false;	return true;}
 							else
 							if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
-								return true;
+							{	rideFlag=false;	return true;}
 							else
 							if(!enterMsg.target().okMessage(mob,enterMsg))
-								return true;
+							{	rideFlag=false;	return true;}
 							else
 							if(!mob.okMessage(mob,enterMsg))
-								return true;
+							{	rideFlag=false;	return true;}
+							rideFlag=false;
 						}
 					}
 				}
@@ -193,7 +271,6 @@ public class Patroller extends ActiveTicker
 				thatRoom.bringItemHere(I,-1);
 				if(I.owner()==thatRoom)
 				{
-					step++;
 					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
 					if(riders!=null)
 					for(int i=0;i<riders.size();i++)
@@ -219,8 +296,9 @@ public class Patroller extends ActiveTicker
 								R.setRiding(null);
 					}
 				}
+				if(I.owner()==destinationRoomForThisStep)
+				    step++;
 				else
-				if(I.owner()==thisRoom)
 					tickDown=0;
 			}
 			else
@@ -268,12 +346,15 @@ public class Patroller extends ActiveTicker
 					mob.curState().setMovement(oldState.getMovement());
 				}
 				else
+				{
+					rideFlag=true;
 					MUDTracker.move(mob,direction,false,false);
+					rideFlag=false;
+				}
 
-				if(mob.location()==thatRoom)
+				if(mob.location()==destinationRoomForThisStep)
 					step++;
 				else
-				if(mob.location()==thisRoom)
 					tickDown=0;
 			}
 		}

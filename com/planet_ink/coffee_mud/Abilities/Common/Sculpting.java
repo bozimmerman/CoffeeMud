@@ -261,21 +261,7 @@ public class Sculpting extends CraftingSkill
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
-			if(spell.length()>0)
-			{
-				String parm="";
-				if(spell.indexOf(";")>0)
-				{
-					parm=spell.substring(spell.indexOf(";")+1);
-					spell=spell.substring(0,spell.indexOf(";"));
-				}
-				Ability A=CMClass.getAbility(spell);
-				if(A!=null)
-				{
-					A.setMiscText(parm);
-					building.addNonUninvokableEffect(A);
-				}
-			}
+			addSpells(building,spell);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			key=null;

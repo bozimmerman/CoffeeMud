@@ -62,8 +62,8 @@ public class Dress extends StdCommand
 				return false;
 			}
 			if(CMSecurity.isAllowed(mob,mob.location(),"ORDER")
-			||(CMSecurity.isAllowed(mob,mob.location(),"CMROOMS")&&(target.isMonster()))
-			||(CMSecurity.isAllowed(mob,mob.location(),"CMMOBS")&&(target.isMonster())))
+			||(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")&&(target.isMonster()))
+			||(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")&&(target.isMonster())))
 			{
 				mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
 				item.unWear();

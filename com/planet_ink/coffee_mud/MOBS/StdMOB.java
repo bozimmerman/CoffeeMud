@@ -1827,8 +1827,8 @@ public class StdMOB implements MOB
 				if(msg.tool()==null) return false;
 				if(!(msg.tool() instanceof Item)) return false;
 				if(CMSecurity.isAllowed(this,location(),"ORDER")
-				||(CMSecurity.isAllowed(this,location(),"CMMOBS")&&(isMonster()))
-				||(CMSecurity.isAllowed(this,location(),"CMROOMS")&&(isMonster())))
+				||(CMSecurity.isAllowed(this,location(),"CMDMOBS")&&(isMonster()))
+				||(CMSecurity.isAllowed(this,location(),"CMDROOMS")&&(isMonster())))
 					return true;
 				if(getWearPositions(Item.ON_ARMS)==0)
 				{

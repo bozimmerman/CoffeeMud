@@ -206,21 +206,7 @@ public class Wainwrighting extends CraftingSkill
 		int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 		int riders=Util.s_int((String)foundRecipe.elementAt(RCP_NUMRIDERS));
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-		if(spell.length()>0)
-		{
-			String parm="";
-			if(spell.indexOf(";")>0)
-			{
-				parm=spell.substring(spell.indexOf(";")+1);
-				spell=spell.substring(0,spell.indexOf(";"));
-			}
-			Ability A=CMClass.getAbility(spell);
-			if(A!=null)
-			{
-				A.setMiscText(parm);
-				building.addNonUninvokableEffect(A);
-			}
-		}
+		addSpells(building,spell);
 		key=null;
 		if(building instanceof Rideable)
 		{

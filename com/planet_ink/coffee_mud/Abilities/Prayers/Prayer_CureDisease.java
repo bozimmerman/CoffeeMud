@@ -58,7 +58,7 @@ public class Prayer_CureDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A healing glow surrounds <T-NAME>.":"^S<S-NAME> cure(s) the disease in <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A healing glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for <T-YOUPOSS> health.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -79,7 +79,9 @@ public class Prayer_CureDisease extends Prayer
 				        
 				}
 				if(badOnes)
-				    mob.tell(mob,target,null,"<T-NAME> had diseases too powerful for this magic.");
+				    mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> had diseases too powerful for <S-YOUPOSS> magic.");
+				else
+				    mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> cure(s) the diseases in <T-NAMESELF>.");
 				if(!Sense.stillAffectedBy(target,offensiveAffects,false))
 					target.tell("You feel much better!");
 			}

@@ -63,7 +63,7 @@ public class Thiefness extends CombatAbilities
 					victim=potentialVictim;
 			}
 			if((victim!=null)
-			&&(!CMSecurity.isAllowed(victim,victim.location(),"CMROOMS"))
+			&&(!CMSecurity.isAllowed(victim,victim.location(),"CMDROOMS"))
 			&&(!CMSecurity.isAllowed(victim,victim.location(),"ORDER")))
 			{
 				Vector V=new Vector();

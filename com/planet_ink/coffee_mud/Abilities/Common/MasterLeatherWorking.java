@@ -433,21 +433,7 @@ public class MasterLeatherWorking extends CraftingSkill
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
 			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-			if(spell.length()>0)
-			{
-				String parm="";
-				if(spell.indexOf(";")>0)
-				{
-					parm=spell.substring(spell.indexOf(";")+1);
-					spell=spell.substring(0,spell.indexOf(";"));
-				}
-				Ability A=CMClass.getAbility(spell);
-				if(A!=null)
-				{
-					A.setMiscText(parm);
-					building.addNonUninvokableEffect(A);
-				}
-			}
+			addSpells(building,spell);
 			if(building instanceof Weapon)
 			{
 				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()+(hardness*5)+(abilityCode()-1)-1);

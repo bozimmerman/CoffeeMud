@@ -688,25 +688,7 @@ public class Cooking extends CraftingSkill
 				if(finalDish instanceof Perfume)
 					((Perfume)finalDish).setSmellList(spell);
 				else
-				{
-					String parms="";
-					int x=spell.indexOf("(");
-					if(x>=0)
-					{
-						int y=spell.indexOf(")");
-						if(y>x)
-						{
-							parms=spell.substring(x+1,y);
-							spell=spell.substring(0,x);
-						}
-					}
-					Ability A=CMClass.getAbility(spell);
-					if(A!=null)
-					{
-						finalDish.addNonUninvokableEffect(A);
-						A.setMiscText(parms);
-					}
-				}
+					addSpells(finalDish,spell);
 			}
 			finalDish.recoverEnvStats();
 			finalDish.text();

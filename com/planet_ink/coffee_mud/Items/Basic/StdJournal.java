@@ -201,7 +201,7 @@ public class StdJournal extends StdItem
 								        else
 								        {
 											Vector journal2=CMClass.DBEngine().DBReadJournal(Name());
-											Vector entry2=(Vector)journal2.elementAt(which);
+											Vector entry2=(Vector)journal2.elementAt(which-1);
 											String from2=(String)entry2.elementAt(1);
 											String to=(String)entry2.elementAt(3);
 											String subject=(String)entry2.elementAt(4);

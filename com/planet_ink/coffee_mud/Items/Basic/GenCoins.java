@@ -94,6 +94,8 @@ public class GenCoins extends GenItem implements Coins
 
 	public boolean putCoinsBack()
 	{
+	    if(amDestroyed()) 
+	        return false;
 		Coins alternative=null;
 		if(owner() instanceof Room)
 		{

@@ -73,7 +73,10 @@ public class Give extends BaseItemParser
 			if(giveThis!=null)
 			{
 			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToGive))
+			    {
+			        ((Coins)giveThis).putCoinsBack();
 			        return false;
+			    }
 				allFlag=false;
 			}
 			else
