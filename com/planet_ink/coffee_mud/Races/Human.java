@@ -27,8 +27,8 @@ public class Human extends StdRace
 	public int shortestMale(){return 68;}
 	public int shortestFemale(){return 64;}
 	public int heightVariance(){return 12;}
-	public int lightestWeight(){return 100;}
-	public int weightVariance(){return 100;}
+	public int lightestWeight(){return 150;}
+	public int weightVariance(){return 50;}
 	public long forbiddenWornBits(){return 0;}
 	protected int trainsAtFirstLevel(){return 2;}
 	public String racialCategory(){return "Human";}
