@@ -2250,6 +2250,26 @@ public class Import
 			mob.tell("File not found at: '"+areaFileName+"'!");
 			return;
 		}
+		if(buf.substring(0,20).indexOf("<AREA>")>=0)
+		{
+			String error=com.planet_ink.coffee_mud.common.Generic.unpackAreaFromXML(buf.toString(),true);
+			if(error.length()>0)
+			{
+				mob.tell("An error occurred on import: "+error);
+				mob.tell("Please correct the problem and try the import again.");
+			}
+		}
+		else
+		if(buf.substring(0,20).indexOf("<AROOM>")>=0)
+		{
+			String error=com.planet_ink.coffee_mud.common.Generic.unpackRoomFromXML(buf.toString(),true);
+			if(error.length()>0)
+			{
+				mob.tell("An error occurred on import: "+error);
+				mob.tell("Please correct the problem and try the import again.");
+			}
+		}
+			
 
 		Vector V=Resources.getFileLineVector(buf);
 

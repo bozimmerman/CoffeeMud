@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Commands.base.Socials;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import java.io.*;
 import java.util.*;
 public class CreateEdit
 {
@@ -23,6 +24,60 @@ public class CreateEdit
 		sysopSocials=new SysopSocials(ourSocials);
 	}
 
+	public void export(MOB mob, Vector commands)
+	{
+		String commandType="";
+		String fileName="";
+		commands.removeElementAt(0);
+		if(commands.size()>0)
+		{
+			commandType=((String)commands.elementAt(0)).toUpperCase();
+			commands.removeElementAt(0);
+		}
+		else
+		{
+			mob.tell("Export what?  Room or Area?");
+			return;
+		}
+		if(commands.size()>0)
+		{
+			fileName=Util.combine(commands,0);
+		}
+		else
+		{
+			mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump.");
+			return;
+		}
+		if((commandType.equalsIgnoreCase("ROOM"))
+		||(commandType.equalsIgnoreCase("AREA")))
+		{
+			String xml="";
+			if(commandType.equalsIgnoreCase("ROOM"))
+				xml=com.planet_ink.coffee_mud.common.Generic.getAreaXML(mob.location().getArea(),true).toString();
+			else
+				xml=com.planet_ink.coffee_mud.common.Generic.getRoomXML(mob.location(),true).toString();
+			if(fileName.equals("SCREEN"))
+			{
+				mob.tell("Here it is:\n\r\n\r");
+				mob.session().rawPrintln(xml+"\n\r\n\r");
+			}
+			else
+			{
+				try
+				{
+					File f=new File(fileName);
+					FileOutputStream out=new FileOutputStream(f);
+					out.write(xml.getBytes());
+					out.close();
+				}
+				catch(java.io.IOException e)
+				{
+					mob.tell("A file error occurred: "+e.getMessage());
+				}
+			}
+		}
+	}
+	
 	public void destroy(MOB mob, Vector commands)
 		throws Exception
 	{

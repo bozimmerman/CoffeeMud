@@ -344,10 +344,72 @@ public class Generic
 		ExternalPlay.DBUpdateExits(newRoom);
 		if(andContent)
 		{
-			Vector xC=XMLManager.getRealContentsFromPieces(xml,"ROOMCONTENT");
-			if(xC==null) return unpackErr("Room","null 'xC'");
-			
+			Vector cV=XMLManager.getRealContentsFromPieces(xml,"ROOMCONTENT");
+			if(cV==null) return unpackErr("Room","null 'cV'");
+			if(cV.size()>0)
+			{
+				Vector mV=XMLManager.getRealContentsFromPieces(cV,"ROOMMOBS");
+				if(mV==null) return unpackErr("Room","null 'mV'");
+				for(int m=0;m<mV.size();m++)
+				{
+					XMLManager.XMLpiece mblk=(XMLManager.XMLpiece)mV.elementAt(m);
+					if((!mblk.tag.equalsIgnoreCase("RMOB"))||(mblk.contents==null))
+						return unpackErr("Room","bad 'mblk'");
+					String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
+					MOB newMOB=CMClass.getMOB(mClass);
+					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass);
+					newMOB.setMiscText(XMLManager.getValFromPieces(mblk.contents,"MTEXT"));
+					newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
+					newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
+					newMOB.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(mblk.contents,"MREJV"));
+					newMOB.setStartRoom(newRoom);
+					newMOB.setLocation(newRoom);
+					newMOB.recoverCharStats();
+					newMOB.recoverEnvStats();
+					newMOB.recoverMaxState();
+					newMOB.resetToMaxState();
+					newMOB.bringToLife(newRoom);
+				}
+				Hashtable itemLocTable=new Hashtable();
+				Hashtable identTable=new Hashtable();
+				Vector iV=XMLManager.getRealContentsFromPieces(cV,"ROOMITEMS");
+				if(iV==null) return unpackErr("Room","null 'iV'");
+				for(int i=0;i<iV.size();i++)
+				{
+					XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)iV.elementAt(i);
+					if((!iblk.tag.equalsIgnoreCase("RITEM"))||(iblk.contents==null))
+						return unpackErr("Room","bad 'iblk'");
+					String iClass=XMLManager.getValFromPieces(iblk.contents,"MCLAS");
+					Item newItem=CMClass.getItem(iClass);
+					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass);
+					identTable.put(XMLManager.getValFromPieces(iblk.contents,"IIDEN"),newItem);
+					String iloc=XMLManager.getValFromPieces(iblk.contents,"ILOCA");
+					if(iloc.length()>0) itemLocTable.put(iloc,newItem);
+					newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
+					newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(iblk.contents,"IABLE"));
+					newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJV"));
+					newItem.setUsesRemaining(XMLManager.getIntFromPieces(iblk.contents,"IUSES"));
+					newItem.setMiscText(XMLManager.getValFromPieces(iblk.contents,"ITEXT"));
+					newItem.setLocation(null);
+					newItem.recoverEnvStats();
+					newRoom.addItem(newItem);
+				}
+				for(Enumeration e=itemLocTable.keys();e.hasMoreElements();)
+				{
+					String loc=(String)e.nextElement();
+					Item childI=(Item)itemLocTable.get(loc);
+					Item parentI=(Item)identTable.get(loc);
+					childI.setLocation(parentI);
+					childI.recoverEnvStats();
+					parentI.recoverEnvStats();
+				}
+			}
 		}
+		// equivalent to clear debriandrestart
+		ExternalPlay.clearDebri(newRoom,0);
+		ExternalPlay.DBUpdateItems(newRoom);
+		newRoom.startItemRejuv();
+		ExternalPlay.DBUpdateMOBs(newRoom);
 		return "";
 	}
 	public static String unpackAreaFromXML(String buf, boolean andRooms)
@@ -476,11 +538,16 @@ public class Generic
 				for(int i=0;i<inhabs.size();i++)
 				{
 					MOB mob=(MOB)inhabs.elementAt(i);
-					buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
-					buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
-					buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
-					buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
-					buf.append(XMLManager.convertXMLtoTag("MTEXT",mob.text()));
+					if((mob.isMonster())&&((mob.amFollowing()==null)||(mob.amFollowing().isMonster())))
+					{
+						buf.append("<RMOB>");
+						buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
+						buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
+						buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
+						buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
+						buf.append(XMLManager.convertXMLtoTag("MTEXT",mob.text()));
+						buf.append("</RMOB>");
+					}
 				}
 				buf.append("</ROOMMOBS>");
 			}
@@ -491,6 +558,7 @@ public class Generic
 				buf.append("<ROOMITEMS>");
 				for(int i=0;i<items.size();i++)
 				{
+					buf.append("<RITEM>");
 					Item item=(Item)items.elementAt(i);
 					buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
 					buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
@@ -503,6 +571,7 @@ public class Generic
 					buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
 					buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
 					buf.append(XMLManager.convertXMLtoTag("ITEXT",item.text()));
+					buf.append("</RITEM>");
 				}
 				buf.append("</ROOMITEMS>");
 			}
