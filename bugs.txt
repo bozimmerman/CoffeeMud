@@ -1,3 +1,11 @@
 restart doesn't work with fakedb 
-song of knowledge doesn't affect all group members all the time.
-
+!song of knowledge doesn't affect all group members all the time.  removing one removes all!
+area currents affects underwater and water
+affected by: elvish elvish elvish
+!order to make eye glasses/monocle, you need GLASS.
+all of my room descriptions keep going away...on the property that I own. none of them have descriptions anymore...and I created one earlier today!
+!when using STORE SPELL, the caster should have to pay upfront the cost of the spell being stored. This will prevent spells requiring full mana (I hope) from being stored. Right now, I can store enchant armor, give it to ANYONE including myself, and cast for free, with store spell costing very little mana
+look at import money
+!look at import rejuv rates
+diff between gen and std
+poet's gateguard question

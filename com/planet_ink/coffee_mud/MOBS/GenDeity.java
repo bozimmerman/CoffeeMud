@@ -37,7 +37,7 @@ public class GenDeity extends StdDeity
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((newText!=null)&&(newText.length()>0))
+		if((newText!=null)&&(newText.length()>10))
 			Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 		recoverCharStats();

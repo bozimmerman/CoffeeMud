@@ -41,7 +41,7 @@ public class GenBanker extends StdBanker
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		if((newText!=null)&&(newText.length()>0))
+		if((newText!=null)&&(newText.length()>10))
 			Generic.setPropertiesStr(this,newText,false);
 		baseState().setHitPoints(Dice.rollHP(baseEnvStats().level(),baseEnvStats().ability()));
 		recoverEnvStats();
