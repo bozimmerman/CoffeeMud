@@ -967,7 +967,7 @@ public class TelnetSession extends Thread implements Session
 			long tries=5;
 			while((!killFlag)&&((--tries)>0))
 			{
-				MOB newMob=(MOB)CMClass.getMOB("StdMOB").newInstance();
+				MOB newMob=(MOB)CMClass.getMOB("StdMOB");
 				newMob.setSession(this);
 				mob=newMob;
 				if(ExternalPlay.login(newMob))

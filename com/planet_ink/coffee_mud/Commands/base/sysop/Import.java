@@ -84,7 +84,6 @@ public class Import
 			Log.errOut("Import","Cannot find room class "+newClass+".");
 			return R;
 		}
-		R2=(Room)R2.newInstance();
 		R2.setID(R.ID());
 		R2.setArea(R.getArea());
 		R2.setDescription(R.description());

@@ -30,7 +30,6 @@ public class Dwarf extends StdRace
 		Ability A=CMClass.getAbility("Dwarven");
 		if(A!=null)
 		{
-			A=(Ability)A.newInstance();
 			A.setProfficiency(100);
 			mob.addAbility(A);
 			A.autoInvocation(mob);

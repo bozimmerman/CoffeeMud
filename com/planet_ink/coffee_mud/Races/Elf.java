@@ -30,7 +30,6 @@ public class Elf extends StdRace
 		Ability A=CMClass.getAbility("Elvish");
 		if(A!=null)
 		{
-			A=(Ability)A.newInstance();
 			A.setProfficiency(100);
 			mob.addAbility(A);
 			A.autoInvocation(mob);

@@ -125,10 +125,7 @@ public class RoomLoader
 						Log.errOut("Room","Couldn't find room '"+nextRoomID+"', exit type '"+exitID+"', direction: "+direction);
 					else
 					if(newExit!=null)
-					{
-						newExit=(Exit)newExit.newInstance();
 						newExit.setMiscText(exitMiscText);
-					}
 					thisRoom.rawDoors()[direction]=newRoom;
 					thisRoom.rawExits()[direction]=newExit;
 				}
@@ -231,7 +228,6 @@ public class RoomLoader
 					Log.errOut("Room","Couldn't find MOB '"+MOBID+"'");
 				else
 				{
-					newMOB=(MOB)newMOB.newInstance();
 					newMOB.setStartRoom(thisRoom);
 					newMOB.setLocation(thisRoom);
 					newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));

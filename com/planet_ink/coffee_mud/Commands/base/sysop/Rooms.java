@@ -74,7 +74,6 @@ public class Rooms
 		}
 		else
 		{
-			thisRoom=(Room)thisRoom.newInstance();
 			thisRoom.setArea(mob.location().getArea());
 			thisRoom.setID(new Reset().getOpenRoomID(mob.location().getArea().name()));
 			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.ID());

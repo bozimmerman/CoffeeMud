@@ -76,7 +76,6 @@ public class Chant_SummonElemental extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		newMOB=(MOB)newMOB.newInstance();
 		newMOB.baseEnvStats().setLevel(adjustedLevel(caster)/2);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Unique"));
 		switch(Dice.roll(1,4,0))

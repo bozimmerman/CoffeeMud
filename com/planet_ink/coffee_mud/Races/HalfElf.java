@@ -31,7 +31,6 @@ public class HalfElf extends StdRace
 		Ability A=CMClass.getAbility("Elvish");
 		if(A!=null)
 		{
-			A=(Ability)A.newInstance();
 			A.setProfficiency(50);
 			mob.addAbility(A);
 			A.autoInvocation(mob);

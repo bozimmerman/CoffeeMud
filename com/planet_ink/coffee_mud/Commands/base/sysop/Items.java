@@ -158,7 +158,6 @@ public class Items
 		if((newItem instanceof Weapon)||(newItem instanceof Armor))
 			if(!(newItem instanceof Wand))
 				newItem.setUsesRemaining(100);
-		newItem=(Item)newItem.newInstance();
 		mob.location().addItem(newItem);
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 

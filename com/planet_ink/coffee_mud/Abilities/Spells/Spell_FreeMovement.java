@@ -64,7 +64,7 @@ public class Spell_FreeMovement extends Spell
 		&&(profficiencyCheck(0,false)))
 		{
 			Ability A=(Ability)affect.tool();
-			MOB newMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
+			MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
 			FullMsg msg=new FullMsg(newMOB,null,null,Affect.MSG_SIT,null);
 			newMOB.recoverEnvStats();
 			try

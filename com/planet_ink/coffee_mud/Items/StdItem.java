@@ -460,6 +460,7 @@ public class StdItem implements Item
 		case Affect.TYP_SPEAK:
 		case Affect.TYP_OK_ACTION:
 		case Affect.TYP_OK_VISUAL:
+		case Affect.TYP_DEATH:
 		case Affect.TYP_NOISE:
 			return true;
 		case Affect.TYP_HOLD:
@@ -780,6 +781,9 @@ public class StdItem implements Item
 		case Affect.TYP_WRITE:
 			if(this.isReadable())
 				setReadableText(affect.targetMessage());
+			break;
+		case Affect.TYP_DEATH:
+			destroyThis();
 			break;
 		default:
 			break;

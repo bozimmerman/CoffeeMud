@@ -143,7 +143,6 @@ public class Chant_SummonAnimal extends Chant
 		default: continue;
 		}
 
-		newMOB=(MOB)newMOB.newInstance();
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.recoverCharStats();

@@ -149,7 +149,6 @@ public class MOBloader
 					Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
 				else
 				{
-					newAbility=(Ability)newAbility.newInstance();
 					newAbility.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMABLVL"));
 					newAbility.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMABAB"));
 					newAbility.setUsesRemaining((int)DBConnections.getLongRes(R,"CMABUR"));
@@ -296,7 +295,6 @@ public class MOBloader
 					Log.errOut("MOB","Couldn't find MOB '"+MOBID+"'");
 				else
 				{
-					newMOB=(MOB)newMOB.newInstance();
 					if(location==null)
 					{
 						newMOB.setStartRoom(newMOB.getStartRoom());

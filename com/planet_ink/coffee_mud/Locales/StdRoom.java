@@ -144,7 +144,7 @@ public class StdRoom
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 		{
-			Exit o=(Exit)CMClass.getExit("StdOpenDoorway").newInstance();
+			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
 			EndlessSky sky=new EndlessSky();
 			sky.setArea(room.getArea());
 			sky.setID("");

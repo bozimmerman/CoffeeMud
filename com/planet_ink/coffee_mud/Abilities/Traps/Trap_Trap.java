@@ -23,7 +23,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		baseEnvStats().setAbility(Dice.roll(1,3,0)-1);
 		recoverEnvStats();
 		if(benefactor==null)
-			benefactor=(MOB)CMClass.getMOB("StdMOB").newInstance();
+			benefactor=(MOB)CMClass.getMOB("StdMOB");
 	}
 
 	public boolean sprung()

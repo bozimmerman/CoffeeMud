@@ -44,13 +44,13 @@ public class Chant_SummonPlants extends Chant
 	{
 		if((affect.amITarget(littlePlants))
 		&&(affect.targetMinor()==Affect.TYP_GET))
-			unInvoke();
-			
+			affect.addTrailerMsg(new FullMsg(affect.source(),littlePlants,null,Affect.MSG_OK_VISUAL,Affect.ACT_GENERAL|Affect.MSG_DEATH,-1,null));
 	}
 	
 	public static Item buildPlant(MOB mob, Room room)
 	{
 		Item newItem=(Item)CMClass.getItem("GenItem");
+		newItem.setMaterial(EnvResource.RESOURCE_GREENS);
 		switch(Dice.roll(1,5,0))
 		{
 		case 1:
@@ -81,7 +81,6 @@ public class Chant_SummonPlants extends Chant
 		}
 		newItem.setSecretIdentity(mob.name());
 		newItem.setMiscText(newItem.text());
-		newItem=(Item)newItem.newInstance();
 		room.addItem(newItem);
 		room.show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonPlants newChant=new Chant_SummonPlants();

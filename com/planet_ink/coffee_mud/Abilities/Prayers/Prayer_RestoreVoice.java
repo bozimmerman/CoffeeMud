@@ -27,7 +27,7 @@ public class Prayer_RestoreVoice extends Prayer
 
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
+		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
 		for(int a=0;a<fromMe.numAffects();a++)

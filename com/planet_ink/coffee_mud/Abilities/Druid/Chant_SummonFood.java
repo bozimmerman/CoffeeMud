@@ -32,7 +32,7 @@ public class Chant_SummonFood extends Chant
 		}
 		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell("This magic will not work in the city.");
 			return false;
 		}
 		

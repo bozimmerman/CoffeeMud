@@ -40,7 +40,6 @@ public class Generic
 			if(mob.session().confirm("This will change the room type of room '"+R.ID()+"'.  This is a dangerous procedure.  Are you absolutely sure (y/N)? ","N"))
 			{
 				mob.tell("\n\rWorking...");
-				newRoom=(Room)newRoom.newInstance();
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					newRoom.rawExits()[d]=R.rawExits()[d];
@@ -1215,8 +1214,6 @@ public class Generic
 						chosenOne=(Behavior)CMClass.getBehavior(behave);
 						if(chosenOne!=null)
 						{
-							chosenOne=(Behavior)chosenOne.newInstance();
-
 							boolean alreadyHasIt=false;
 							for(int b=0;b<E.numBehaviors();b++)
 							{
@@ -1297,7 +1294,6 @@ public class Generic
 						chosenOne=(Ability)CMClass.getAbility(behave);
 						if(chosenOne!=null)
 						{
-							chosenOne=(Ability)chosenOne.newInstance();
 							String parms=chosenOne.text();
 							parms=mob.session().prompt("Enter any affect parameters (';' delimited!)\n\r:",parms);
 							chosenOne.setMiscText(parms.trim());

@@ -45,7 +45,6 @@ public class Wyvern extends StdRace
 		Ability A=CMClass.getAbility("Draconic");
 		if(A!=null)
 		{
-			A=(Ability)A.newInstance();
 			mob.addAbility(A);
 			A.autoInvocation(mob);
 			if(mob.isMonster())

@@ -200,10 +200,7 @@ public class XMLIO
 		if(mob2!=null)
 		{
 			if(level>0)
-			{
-				mob2=(MOB)mob2.newInstance();
 				mob2.baseCharStats().getMyClass().buildMOB(mob2,level,0,150,0,'M');
-			}
 			roomXML.append("<OBJECT>");
 			roomXML.append(XMLManager.convertXMLtoTag("OBJECTTYPE","MOB"));
 			roomXML.append(XMLManager.convertXMLtoTag("OBJECTCLASS",CMClass.className(mob2)));
@@ -371,7 +368,6 @@ public class XMLIO
 				MOB newMOB=CMClass.getMOB(newClass);
 				if(newMOB!=null)
 				{
-					newMOB=(MOB)newMOB.newInstance();
 					newMOB.setMiscText(newText);
 					newMOB.baseEnvStats().setLevel(newLevel);
 					newMOB.baseEnvStats().setAbility(newAbility);
@@ -416,7 +412,6 @@ public class XMLIO
 				Item newItem=CMClass.getItem(newClass);
 				if(newItem!=null)
 				{
-					newItem=(Item)newItem.newInstance();
 					newItem.setMiscText(newText);
 					newItem.baseEnvStats().setLevel(newLevel);
 					newItem.baseEnvStats().setAbility(newAbility);
@@ -533,7 +528,7 @@ public class XMLIO
 				Room newRoom=CMClass.getLocale(newRoomClass);
 				if(newRoom==null) return;
 				isNewRoom=true;
-				room=(Room)newRoom.newInstance();
+				room=newRoom;
 				room.setID(new Reset().getOpenRoomID(newArea.name()));
 				room.setArea(newArea);
 				newID=room.ID();
@@ -605,7 +600,6 @@ public class XMLIO
 							Exit newExit=CMClass.getExit(newClass);
 							if(newExit!=null)
 							{
-								newExit=(Exit)newExit.newInstance();
 								if(door!=null)
 								{
 									opExit=(Exit)door.rawExits()[Directions.getOpDirectionCode(d)];

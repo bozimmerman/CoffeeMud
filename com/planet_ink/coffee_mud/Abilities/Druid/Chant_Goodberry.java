@@ -59,7 +59,7 @@ public class Chant_Goodberry extends Chant
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> begin to glow!");
 				for(int i=0;i<numAffected;i++)
 				{
-					Pill newItem=(Pill)CMClass.getStdItem("GenPill");
+					Pill newItem=(Pill)CMClass.getItem("GenPill");
 					newItem.setName(target.name());
 					newItem.setDisplayText(target.displayText());
 					newItem.setDescription(target.description());

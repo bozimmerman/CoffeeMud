@@ -40,9 +40,7 @@ public class Exits
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		else
-			thisExit=(Exit)thisExit.newInstance();
-
+		
 		Exit opExit=mob.location().rawExits()[direction];
 		Room opRoom=mob.location().rawDoors()[direction];
 

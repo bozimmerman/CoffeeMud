@@ -30,7 +30,6 @@ public class Gnome extends StdRace
 		Ability A=CMClass.getAbility("Gnomish");
 		if(A!=null)
 		{
-			A=(Ability)A.newInstance();
 			A.setProfficiency(100);
 			mob.addAbility(A);
 			A.autoInvocation(mob);

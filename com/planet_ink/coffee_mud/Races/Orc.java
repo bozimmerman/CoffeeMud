@@ -42,8 +42,7 @@ public class Orc extends StdRace
 		Ability A=CMClass.getAbility("Orcish");
 		if(A!=null)
 		{
-			A=(Ability)A.newInstance();
-			mob.addAbility(A);
+ 			mob.addAbility(A);
 			A.autoInvocation(mob);
 			if(mob.isMonster())
 				A.invoke(mob,mob,true);

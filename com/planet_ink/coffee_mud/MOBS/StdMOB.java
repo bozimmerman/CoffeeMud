@@ -624,7 +624,7 @@ public class StdMOB implements MOB
 	{
 		if((charStats()!=null)&&(charStats().getMyRace()!=null))
 			return charStats().getMyRace().myNaturalWeapon();
-		return (Weapon)CMClass.getWeapon("Natural").newInstance();
+		return (Weapon)CMClass.getWeapon("Natural");
 	}
 
 	public String displayText()

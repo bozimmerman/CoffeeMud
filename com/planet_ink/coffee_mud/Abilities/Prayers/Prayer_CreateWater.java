@@ -63,7 +63,6 @@ public class Prayer_CreateWater extends Prayer
 					return false;
 				}
 
-				newItem=(Item)newItem.newInstance();
 				mob.location().addItem(newItem);
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();

@@ -84,8 +84,6 @@ public class Spell_SummonMonster extends Spell
 
 
 		MOB newMOB=(MOB)CMClass.getMOB(mobID);
-
-		newMOB=(MOB)newMOB.newInstance();
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.recoverCharStats();

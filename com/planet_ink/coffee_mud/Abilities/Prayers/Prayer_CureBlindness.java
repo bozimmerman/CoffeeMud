@@ -27,8 +27,8 @@ public class Prayer_CureBlindness extends Prayer
 
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
-		MOB newerMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
+		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
+		MOB newerMOB=(MOB)CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
 		FullMsg msg=new FullMsg(newMOB,newerMOB,null,Affect.MSG_EXAMINESOMETHING,null);

@@ -27,7 +27,7 @@ public class Prayer_MassFreedom extends Prayer
 
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
-		MOB newMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
+		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
 
 		FullMsg msg=new FullMsg(newMOB,null,null,Affect.MSG_SIT,null);

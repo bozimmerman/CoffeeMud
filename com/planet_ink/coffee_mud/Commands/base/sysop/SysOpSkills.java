@@ -28,7 +28,7 @@ public class SysOpSkills
 	}
 	private MOB levelMOBup(int level, CharClass C)
 	{
-		MOB mob=(MOB)CMClass.getMOB("StdMOB").newInstance();
+		MOB mob=(MOB)CMClass.getMOB("StdMOB");
 		mob.setAlignment(500);
 		mob.setName("Average Joe");
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));

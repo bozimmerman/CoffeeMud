@@ -19,7 +19,7 @@ public class Reset
 					highest=newnum+1;
 			}
 		}
-		return AreaID+highest;
+		return AreaID+"#"+highest;
 	}
 
 	public void resetSomething(MOB mob, Vector commands)

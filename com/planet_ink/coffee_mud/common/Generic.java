@@ -317,7 +317,6 @@ public class Generic
 		String roomClass=XMLManager.getValFromPieces(xml,"RCLAS");
 		Room newRoom=CMClass.getLocale(roomClass);
 		if(newRoom==null) return unpackErr("Room","null 'newRoom'");
-		newRoom=(Room)newRoom.newInstance();
 		newRoom.setID(XMLManager.getValFromPieces(xml,"ROOMID"));
 		if(newRoom.ID().equals("NEW")) newRoom.setID(ExternalPlay.getOpenRoomID(myArea.name()));
 		if(CMMap.getRoom(newRoom.ID())!=null) return "Room Exists: "+newRoom.ID();
@@ -347,12 +346,9 @@ public class Generic
 			{
 				exit=CMClass.getExit(XMLManager.getValFromPieces(xxV,"EXID"));
 				if(xxV==null) return unpackErr("Room","null 'exit'"+" in room "+newRoom.ID());
-				exit=(Exit)exit.newInstance();
 				exit.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(xxV,"EXDAT")));
 				newRoom.rawExits()[dir]=exit;
 			}
-			else
-				exit=(Exit)exit.newInstance();
 			exit.recoverEnvStats();
 			if(doorID.length()>0)
 			{
@@ -409,7 +405,6 @@ public class Generic
 					String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
 					MOB newMOB=CMClass.getMOB(mClass);
 					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.ID());
-					newMOB=(MOB)newMOB.newInstance();
 					newMOB.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT")));
 					newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
 					newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
@@ -434,7 +429,6 @@ public class Generic
 					String iClass=XMLManager.getValFromPieces(iblk.contents,"ICLAS");
 					Item newItem=CMClass.getItem(iClass);
 					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.ID());
-					newItem=(Item)newItem.newInstance();
 					identTable.put(XMLManager.getValFromPieces(iblk.contents,"IIDEN"),newItem);
 					String iloc=XMLManager.getValFromPieces(iblk.contents,"ILOCA");
 					if(iloc.length()>0) itemLocTable.put(iloc,newItem);
@@ -850,7 +844,6 @@ public class Generic
 					int wornCode=XMLManager.getIntFromPieces(idat,"IWORN");
 					String IID=XMLManager.getValFromPieces(idat,"IID");
 					String ILOC=XMLManager.getValFromPieces(idat,"ILOC");
-					newOne=(Item)newOne.newInstance();
 					mob.addInventory(newOne);
 					IIDmap.put(IID,newOne);
 					if(ILOC.length()>0)
@@ -894,7 +887,6 @@ public class Generic
 						Log.errOut("Generic","Error parsing 'ABLTY DATA' of "+CMClass.className(newOne)+".  Load aborted");
 						return;
 					}
-					newOne=(Ability)newOne.newInstance();
 					newOne.setProfficiency(100);
 					setPropertiesStr(newOne,adat,true);
 					if(((MOB)E).fetchAbility(newOne.ID())==null)
@@ -937,7 +929,6 @@ public class Generic
 							Log.errOut("Generic","Error parsing 'SHOP DATA' of "+CMClass.className(newOne)+".  Load aborted");
 							return;
 						}
-						newOne=newOne.newInstance();
 						if(newOne instanceof Item)
 						{
 							String IID=XMLManager.getValFromPieces(idat,"IID");
@@ -1083,7 +1074,6 @@ public class Generic
 					Log.errOut("Generic","Error parsing 'BHAVE DATA' of "+CMClass.className(newOne)+".  Load aborted");
 					return;
 				}
-				newOne=(Behavior)newOne.newInstance();
 				newOne.setParms(bparms);
 				E.addBehavior(newOne);
 			}
@@ -1112,7 +1102,6 @@ public class Generic
 					Log.errOut("Generic","Error parsing 'AFF DATA' of "+CMClass.className(newOne)+".  Load aborted");
 					return;
 				}
-				newOne=(Ability)newOne.newInstance();
 				newOne.setMiscText(aparms);
 				E.addNonUninvokableAffect(newOne);
 			}

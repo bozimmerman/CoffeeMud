@@ -24,7 +24,7 @@ public class Mobs
 			return;
 		}
 
-		MOB deadMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
+		MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
 		boolean found=ExternalPlay.DBUserSearch(deadMOB,Util.combine(commands,2));
 
 		if(!found)
@@ -189,7 +189,6 @@ public class Mobs
 			return;
 		}
 
-		newMOB=(MOB)newMOB.newInstance();
 		newMOB.setStartRoom(mob.location());
 		newMOB.setLocation(mob.location());
 		newMOB.envStats().setRejuv(5000);
