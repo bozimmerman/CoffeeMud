@@ -20,7 +20,7 @@ public class Snake extends StdRace
 		// pounds
 		lightestWeight=5;
 		weightVariance=15;
-		forbiddenWornBits=Integer.MAX_VALUE;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_EYES;
 	}
 	public boolean playerSelectable(){return false;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

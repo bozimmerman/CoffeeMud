@@ -20,7 +20,7 @@ public class GiantRat extends Rat
 		// pounds
 		lightestWeight=25;
 		weightVariance=10;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;
 	}
 	public boolean playerSelectable(){return false;}
 

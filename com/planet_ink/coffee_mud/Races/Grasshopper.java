@@ -20,7 +20,7 @@ public class Grasshopper extends StdRace
 		// pounds
 		lightestWeight=1;
 		weightVariance=0;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_TORSO;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_TORSO-Item.ON_EYES;
 	}
 	public boolean playerSelectable(){return false;}
 

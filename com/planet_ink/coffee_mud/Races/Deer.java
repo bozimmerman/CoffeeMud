@@ -20,7 +20,7 @@ public class Deer extends StdRace
 		// pounds
 		lightestWeight=150;
 		weightVariance=50;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
 	}
 	public boolean playerSelectable(){return false;}
 

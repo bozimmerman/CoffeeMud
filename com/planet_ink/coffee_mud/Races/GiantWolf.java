@@ -16,7 +16,7 @@ public class GiantWolf extends Wolf
 		// pounds
 		lightestWeight=80;
 		weightVariance=60;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

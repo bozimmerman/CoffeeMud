@@ -20,7 +20,7 @@ public class Monkey extends StdRace
 		// pounds
 		lightestWeight=50;
 		weightVariance=60;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.HELD-Item.WIELD;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.HELD-Item.WIELD-Item.ON_EARS-Item.ON_EYES;
 	}
 	public boolean playerSelectable(){return false;}
 

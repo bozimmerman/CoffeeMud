@@ -20,7 +20,7 @@ public class Cow extends StdRace
 		// pounds
 		lightestWeight=250;
 		weightVariance=100;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
 	}
 	public boolean playerSelectable(){return false;}
 

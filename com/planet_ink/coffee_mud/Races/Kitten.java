@@ -16,7 +16,7 @@ public class Kitten extends Cat
 		// pounds
 		lightestWeight=7;
 		weightVariance=10;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_EARS-Item.ON_EYES;
 	}
 	public Vector myResources()
 	{

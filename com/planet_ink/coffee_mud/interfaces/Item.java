@@ -71,6 +71,9 @@ public interface Item extends Environmental
 	public static final long FLOATING_NEARBY=4096;
 	public static final long ON_WAIST=8192;
 	public static final long ON_LEGS=16384;
+	public static final long ON_EYES=32768;
+	public static final long ON_EARS=65536;
+	public static final long ABOUT_BODY=131072;
 	
 	public static final String[] wornLocation={
 		"inventory",
@@ -89,6 +92,8 @@ public interface Item extends Environmental
 		"floating nearby",
 		"waist",
 		"legs",
+		"eyes",
+		"ears",
 		"body"};
 	
 	/** If being worn, this code will show WHERE*/

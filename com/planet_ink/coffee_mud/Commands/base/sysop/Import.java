@@ -1789,7 +1789,7 @@ public class Import
 			if(Util.isSet(wearFlag,9))
 				I.setRawProperLocationBitmap(Item.HELD|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,10)) // about the body
-				I.setRawProperLocationBitmap(Item.ON_NECK|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.ABOUT_BODY|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,11))
 				I.setRawProperLocationBitmap(Item.ON_WAIST|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,12))
@@ -1801,7 +1801,7 @@ public class Import
 			if(Util.isSet(wearFlag,15))
 				I.setRawLogicalAnd(true);
 			if(Util.isSet(wearFlag,17)) //ears
-				I.setRawProperLocationBitmap(Item.ON_HEAD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Item.ON_EARS|I.rawProperLocationBitmap());
 			if(Util.isSet(wearFlag,18)) // ankles
 				I.setRawProperLocationBitmap(Item.ON_FEET|I.rawProperLocationBitmap());
 

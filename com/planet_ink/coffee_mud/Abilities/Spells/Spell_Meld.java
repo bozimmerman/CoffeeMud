@@ -88,6 +88,8 @@ public class Spell_Meld extends Spell
 		if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 		{
 			if(shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_NECK)
+			   ||shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_EARS)
+			   ||shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_EYES)
 			   ||shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_TORSO)
 			   ||shinBone(itemOne,itemTwo,Item.ON_NECK,Item.ON_TORSO)
 			   ||shinBone(itemOne,itemTwo,Item.ON_TORSO,Item.ON_ARMS)

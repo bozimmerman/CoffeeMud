@@ -16,7 +16,7 @@ public class Puppy extends Dog
 		// pounds
 		lightestWeight=7;
 		weightVariance=20;
-		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK;
+		forbiddenWornBits=Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
