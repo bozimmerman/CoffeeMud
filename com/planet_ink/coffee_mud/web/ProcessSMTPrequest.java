@@ -160,6 +160,12 @@ public class ProcessSMTPrequest extends Thread
 																		  finalData.toString(),-1);
 									}
 						}
+						if ((replyData != null))
+						{
+							sout.write(replyData);
+							sout.flush();
+							replyData=null;
+						}
 					}
 					else
 					{
