@@ -17,7 +17,7 @@
 </head>
 
 <body BGCOLOR=#00FF99>
-<h3>CoffeeMud 4.3 Player Spell Information</h3><P>
+<h3>CoffeeMud 4.5 Player Spell Information</h3><P>
 (<a href="spells.cmvp">View the spells by level</a>)<P>
 <BR>
 	<TABLE WIDTH=100% BORDER=1>	@AbilityDomainNext?reset@ @loop@ @AbilityDomainNext@ @LevelNext?reset@ @loop@ @LevelNext@ @AbilityNext?reset@	@loop@ @AbilityNext?spell@ 
