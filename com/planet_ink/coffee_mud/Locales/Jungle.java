@@ -24,9 +24,13 @@ public class Jungle extends StdRoom
 		new Integer(EnvResource.RESOURCE_JADE),
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_HEMP),
-		new Integer(EnvResource.RESOURCE_AQUAMARINE),
 		new Integer(EnvResource.RESOURCE_SILK),
-		new Integer(EnvResource.RESOURCE_CRYSOBERYL),
+		new Integer(EnvResource.RESOURCE_FRUIT),
+		new Integer(EnvResource.RESOURCE_APPLES),
+		new Integer(EnvResource.RESOURCE_BERRIES),
+		new Integer(EnvResource.RESOURCE_ORANGES),
+		new Integer(EnvResource.RESOURCE_LEMONS),
+		new Integer(EnvResource.RESOURCE_FUR),
 		new Integer(EnvResource.RESOURCE_FEATHERS)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));

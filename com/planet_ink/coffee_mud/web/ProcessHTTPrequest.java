@@ -5,19 +5,13 @@ import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.exceptions.*;
 
 // quick & dirty web server for CoffeeMUD
 // (c) 2002 Jeff Kamenek
 
 // largely based on info from the relevant RFCs
 //  and http://www.jmarshall.com/easy/http/
-
-// TODO / NOT IMPLEMENTED:
-//   doesn't handle URL parameters yet (strips them out)
-//   Well, it does now, but it doesn't convert them from Funky Form(tm)
-//   - Bo
-
-
 
 // although this technically doesn't *need* to be a thread,
 //  (ie. it only runs once, responding to request)
@@ -33,17 +27,25 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private String command = null;
 	private String request = null;
 	private String requestMain = null;
-	private Hashtable requestParameters = null;
+	
+	private String requestParametersEncoded = null;	// I keep the encoded form
+	// I've called it Table to distinguish it from Encoded string...
+	private Hashtable requestParametersTable = null;
+
 	// default mime type
 	private String mimetype = "text/html";
 	private final static String mimePrefix = "MIME";
 
 	private boolean headersOnly = false;
+	private boolean isAdminServer = false;
 
 	// these are all the HTTP states this class can return
 	private final static String S_200 = "200 OK";
 	private final static String S_301 = "301 Moved Permanently";
-	private final static String S_302 = "302 Moved Temporarily";
+	private final static String S_302 = "302 Found";
+	private final static String S_303 = "303 See Other";
+	private final static String S_307 = "307 Temporary Redirect";
+
 	private final static String S_400 = "400 Bad Request";
 	private final static String S_401 = "401 Unauthorized";
 	private final static String S_404 = "404 Not Found";
@@ -57,13 +59,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private String status = S_500;
 	private String statusExtra = "...";
 	HTTPserver webServer;
-	private final static String hex="0123456789ABCDEF";
-	
+
 	public boolean virtualPage;
 
 
 	
-	public ProcessHTTPrequest(Socket a_sock, HTTPserver a_webServer, INI a_page)
+	public ProcessHTTPrequest(Socket a_sock, HTTPserver a_webServer, INI a_page, boolean a_isAdminServer)
 	{
 		// thread name contains both an instance counter and the client's IP address
 		//  (too long)
@@ -74,6 +75,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		page = a_page;
 		webServer = a_webServer;
 		sock = a_sock;
+		isAdminServer = a_isAdminServer;
 		
 		if (page != null && sock != null)
 			this.start();
@@ -92,7 +94,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	private boolean process(String inLine) throws Exception
 	{
-//		virtualPage = false;
+		virtualPage = false;
 		try
 		{
 			StringTokenizer inTok = new StringTokenizer(inLine," ");
@@ -132,8 +134,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				request = new String("/");
 			}
-			
-			request=hexFix(request);
 			int p = request.indexOf("?");
 			if (p == -1)
 			{
@@ -141,46 +141,20 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 			else
 			{
-				String reqParms=null;
 				if (p == 0)
 				{
 					requestMain = "/";
-					reqParms = request.substring(1);
+					requestParametersEncoded = request.substring(1);
 				}
 				else
 				{
 					requestMain = request.substring(0,p);
 					if (p < request.length())
-						reqParms = request.substring(p+1);
+						requestParametersEncoded = request.substring(p+1);
 				}
-				if((reqParms!=null)&&(reqParms.length()>0))
-				{
-					requestParameters=new Hashtable();
-					while(reqParms.length()>0)
-					{
-						int x=reqParms.indexOf("&");
-						String req=null;
-						if(x>=0)
-						{
-							req=reqParms.substring(0,x);
-							reqParms=reqParms.substring(x+1);
-						}
-						else
-						{
-							req=reqParms;
-							reqParms="";
-						}
-						if(req!=null)
-						{
-							x=req.indexOf("=");
-							if(x>=0)
-								requestParameters.put(req.substring(0,x).trim().toUpperCase(),req.substring(x+1).trim());
-							else
-								requestParameters.put(req.trim().toUpperCase(),req.trim());
-						}
-					}
-				}
+
 			}
+			requestMain = URLDecoder.decode(requestMain);
 			
 			return true;
 		}
@@ -192,13 +166,75 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 
 	}
-
 	public Hashtable getRequestParameters()
 	{
-		if(requestParameters==null)
-			requestParameters=new Hashtable();
-		return requestParameters;
+		// have we already parsed the parameters?
+		if (requestParametersTable != null)
+		{
+			// yep
+			return requestParametersTable;
+		}
+		
+		requestParametersTable = new Hashtable();
+
+		// do we have any parameters to parse?
+		if (requestParametersEncoded == null)
+		{
+			// nope
+			return requestParametersTable;
+		}
+		
+		String pStr = new String(requestParametersEncoded);
+		String thisParam;
+		String thisParamName;
+		String thisParamValue;
+		
+		while (pStr != null)
+		{
+			int p = pStr.indexOf("&");
+			if (p == -1)
+			{
+				thisParam = pStr;
+				pStr = null;
+			}
+			else
+			{
+				thisParam = pStr.substring(0,p);
+				if (p < pStr.length())
+					pStr = pStr.substring(p+1);
+				else
+					pStr = null;
+			}
+
+			int eq=thisParam.indexOf("=");
+			if (eq == -1)
+			{
+				// a null parameter (ie a parameter name with no value,
+				//  which is valid - I give it a value of "" rather than null tho!
+				thisParamName = thisParam;
+				thisParamValue = "";
+			}
+			else
+			{
+				thisParamName = thisParam.substring(0,eq);
+				if (eq < thisParam.length())
+					thisParamValue=URLDecoder.decode(thisParam.substring(eq+1));
+				else
+					thisParamValue = "";
+			}
+
+			requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);
+		}
+		
+		return requestParametersTable;
+		
 	}
+
+	public String getRequestEncodedParameters()
+	{
+		return (requestParametersEncoded!=null?requestParametersEncoded:"");
+	}
+
 
 	private String parseFoundMacro(StringBuffer s, int i)
 	{
@@ -245,12 +281,15 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return -1;
 	}
 	
-	private byte [] doVirtualPage(byte [] data)
+
+	private byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
 	{
 		if((webServer.webMacros==null)
 		   ||(webServer.webMacros.size()==0))
 			return data;
 		StringBuffer s = new StringBuffer(new String(data));
+		String redirectTo = null;
+
 		try
 		{
 			for(int i=0;i<s.length();i++)
@@ -273,7 +312,16 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 								String s3=" ";
 								while(s3.length()>0)
 								{
-									s3=new String(doVirtualPage(s2.getBytes()));
+									try
+									{
+										s3=new String(doVirtualPage(s2.getBytes()));
+									}
+									catch (HTTPRedirectException e)
+									{
+										s3 = " ";
+										redirectTo = e.getMessage();
+									}
+
 									s.insert(ldex,s3);
 									ldex+=s3.length();
 								}
@@ -283,6 +331,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						else
 						if(foundMacro.equalsIgnoreCase("break"))
 							return ("").getBytes();
+						else
 						if(foundMacro.equalsIgnoreCase("back"))
 							s.replace(i,i+6, "[back without loop]" );
 						else
@@ -298,11 +347,25 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 							WebMacro W=(WebMacro)webServer.webMacros.get(foundMacro.toUpperCase());
 							if(W!=null)
 							{
-								String q=W.runMacro(this,parms);
-								if (q != null)
-									s.replace(i,i+l+2, q );
-								else
-									s.replace(i,i+l+2, "[error]" );
+								try
+								{
+
+									String q=W.runMacro(this,parms);
+									if (q != null)
+										s.replace(i,i+l+2, q );
+									else
+										s.replace(i,i+l+2, "[error]" );
+								}
+								catch (HTTPRedirectException e)
+								{
+									// can't just do this:
+									// throw e;
+									// since we want ALL macros on the page to run
+									redirectTo = e.getMessage();
+									// doesn't bother to replace original
+									// macro text; page will never be seen
+									// (replaced by redirection page)
+								}
 							}
 						}
 					}
@@ -313,13 +376,42 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			Log.errOut(getName(), "Exception in doVirtualPage() - " + e.getMessage() );
 		}
+
+		if (redirectTo != null)
+		{
+			throw new HTTPRedirectException(redirectTo);
+		}
+		
+
 		
 		return s.toString().getBytes();
 	}
 	
+
+	// if the client's browser does not support or honour 3xx redirects,
+	//  then this attached page attempts to use javascript to redirect
+	// if that doesn't work, the meta refresh will hopefully refresh to the new url;
+	//  if *that* doesn't work, we present the user with a link to click.
+	// the page is also marked as uncacheable with an invalid expiry date
+	//
+	// *** this will be replaced by a template page in the near future *** 
+	//     (when I can be bothered doing it that is)
+	public String makeRedirectPage(String url)
+	{
+		return "<html><head>"
+				+"<META HTTP-EQUIV=\"Expires\" CONTENT=\"Mon, 06 Jan 1990 00:00:01 GMT\">"
+				+"<meta HTTP-EQUIV=\"Refresh\" CONTENT=\"2; URL=" + url + "\">"
+				+"<script>self.location.href = \"" + url +"\";</script>"
+				+"</head><body>"
+				+"<br>Redirecting in 2 seconds; if redirection does not work, "
+				+"<a href=\"" + url + "\">click here!</a><br></body></html>";
+	}	
 	
 	public void run()
 	{
+		String hdrRedirectTo = null;
+
+
 		BufferedReader sin = null;
 //		PrintWriter sout;
 		DataOutputStream sout = null;
@@ -399,7 +491,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 					if (mimetype.length() == 0)
 						mimetype = new String("application/octet-stream");	// default to raw binary
-						
+
 					if (page.getStr("VIRTUALPAGEEXTENSION").equalsIgnoreCase(exten) )
 						virtualPage = true;
 
@@ -466,9 +558,24 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				
 			}
 
+						
 			if (virtualPage)
 			{
-				replyData = doVirtualPage(replyData);
+				try
+				{
+					replyData = doVirtualPage(replyData);
+				}
+				catch (HTTPRedirectException e)
+				{
+//					status = S_302;
+					status = S_303;
+//					status = S_307;
+					hdrRedirectTo = e.getMessage();
+//					headersOnly = true;
+					// write over existing page
+					replyData = makeRedirectPage(hdrRedirectTo).getBytes();
+					
+				}
 			}
 
 			// first the status header
@@ -478,26 +585,31 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			// may add content-length at some point, shouldn't
 			//  be necassary though
 			// should also probably add Last-Modified
+			if (hdrRedirectTo != null)
+			{
+				sout.writeBytes("Location: " + hdrRedirectTo + cr);
+//Log.sysOut(getName(), "dbg Redirect=" +  hdrRedirectTo) ;
+			}
+			
 			
 			sout.writeBytes("Server: " + HTTPserver.ServerVersionString + cr);
 			sout.writeBytes("MIME-Version: 1.0" + cr);
-//			sout.writeBytes("Content-Type: " + mimetype + cr);
-			sout.writeBytes("Content-Type: " + mimetype);
-			sout.writeBytes( cr );
-			
-			
+			sout.writeBytes("Content-Type: " + mimetype + cr);
+			if ((replyData != null))
+			{
+				sout.writeBytes("Content-Length: " + replyData.length);
+				sout.writeBytes( cr );
+			}
 			if (!headersOnly)
 			{
 				if ((replyData != null))
 				{
-					sout.writeBytes("Content-Length: " + replyData.length);
-					sout.writeBytes( cr );
-
 					// must insert a blank line before message body
 					sout.writeBytes( cr );
 					sout.write(replyData);
 				}
 			}
+			
 		}
 		catch (Exception e)
 		{
@@ -542,23 +654,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		catch (Exception e)	{}
 	}
-	
-	private String hexFix(String request)
-	{
-		StringBuffer str=new StringBuffer(request);
-		for(int i=0;i<str.length()-2;i++)
-		{
-			if(str.charAt(i)=='%')
-			{
-				int cd1=hex.indexOf(str.charAt(i+1));
-				int cd2=hex.indexOf(str.charAt(i+2));
-				if((cd1>=0)&&(cd2>=0))
-					str.replace(i,i+3,""+((char)((cd1*16)+cd2)));
-			}
-		}
-		return str.toString();
-	}
-
 	public String getHTTPclientIP()
 	{
 		if (sock != null)
@@ -569,6 +664,16 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		return "[NOT CONNECTED]";
 	}
+
+	// gets the InetAddress of the server this request connected to;
+	// this is because HTTP redirects must specify complete path (doh!)
+	public InetAddress getServerAddress()
+	{
+		if (sock != null)
+			return sock.getLocalAddress();
+		return null;
+	}
+
 	public String ServerVersionString(){return HTTPserver.ServerVersionString;}
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}

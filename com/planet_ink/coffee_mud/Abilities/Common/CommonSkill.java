@@ -49,14 +49,14 @@ public class CommonSkill extends StdAbility
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())||(mob.location()!=activityRoom))
 			{aborted=true; unInvoke(); return false;}
-			if(tickDown<4)
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb);
+			if(tickDown==4)
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> almost done "+verb+".");
 			else
 			if(tickUp==0)
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> begin(s) "+verb);
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> begin(s) "+verb+".");
 			else
 			if((tickUp%4)==0)
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb);
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> continue(s) "+verb+".");
 			
 			tickUp++;	
 		}
@@ -65,7 +65,6 @@ public class CommonSkill extends StdAbility
 
 	public void unInvoke()
 	{
-		super.unInvoke();
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
@@ -75,8 +74,44 @@ public class CommonSkill extends StdAbility
 				mob.tell("You are done "+verb);
 			
 		}
+		super.unInvoke();
 	}
 	
+	public int lookingFor(int material, Room fromHere)
+	{
+		Vector V=new Vector();
+		V.addElement(new Integer(material));
+		return lookingFor(V,fromHere);
+	}
+	
+	public int lookingFor(Vector materials, Room fromHere)
+	{
+		Vector possibilities=new Vector();
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Room room=fromHere.getRoomInDir(d);
+			Exit exit=fromHere.getExitInDir(d);
+			if((room!=null)&&(exit!=null)&&(exit.isOpen()))
+			{
+				Environmental E=room.myResource();
+				if(E!=null)
+				{
+					if(E instanceof Item)
+					{
+						if(materials.contains(new Integer(((Item)E).material()&EnvResource.MATERIAL_MASK)))
+						{possibilities.addElement(new Integer(d));}
+					}
+					else
+					if((E instanceof MOB)&&(materials.contains(new Integer(EnvResource.MATERIAL_FLESH))))
+					{possibilities.addElement(new Integer(d));}
+				}
+			}
+		}
+		if(possibilities.size()==0) 
+			return -1;
+		else 
+			return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
+	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -85,10 +120,23 @@ public class CommonSkill extends StdAbility
 			mob.tell("You are in combat!");
 			return false;
 		}
-
+		for(int a=mob.numAffects()-1;a>=0;a--)
+		{
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
+			{
+				if(A.ID().equals(ID()))
+					A.unInvoke();
+				else
+				{
+					mob.tell("You are too busy to do any "+verb+" right now.");
+					return false;
+				}
+			}
+		}
 		isAnAutoEffect=false;
 
-		// if you can't move, you can't cast! Not even verbal!
+		// if you can't move, you can't do anything!
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
 
@@ -108,6 +156,7 @@ public class CommonSkill extends StdAbility
 			mob.tell("You don't have enough mana to do that.");
 			return false;
 		}
+		activityRoom=mob.location();
 		mob.curState().adjMana(-manaConsumed,mob.maxState());
 		helpProfficiency(mob);
 		

@@ -100,5 +100,6 @@ public interface Area extends Environmental
 	public boolean amISubOp(String username);
 	public String getSubOpList();
 	public void setSubOpList(String list);
+	public Vector getSubOpVectorList();
 	
 }

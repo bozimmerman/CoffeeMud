@@ -11,7 +11,7 @@ public class HTTPserver extends Thread
 	public INI page=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
-	public static final float HOST_VERSION_MINOR=(float)0.0;
+	public static final float HOST_VERSION_MINOR=(float)0.3;
 	public static Hashtable webMacros=null;
 
 	// this gets sent in HTTP response
@@ -20,6 +20,9 @@ public class HTTPserver extends Thread
 	
 	public boolean isOK = false;
 	
+	public boolean isAdminServer = false;
+
+
 	public ServerSocket servsock=null;
 	public static int longestMacro=0;
 
@@ -194,14 +197,17 @@ public class HTTPserver extends Thread
 		}
 		
 
-		//jef - get backlog value
 		if (page.getInt("BACKLOG") > 0)
 			q_len = page.getInt("BACKLOG");
 
-		//jef - address to bind too (may be null for ALL)
 		InetAddress bindAddr = null;
 
-		//jef - get bind address
+
+		if (page.getStr("ADMIN") != null && page.getStr("ADMIN").equalsIgnoreCase("true"))
+		{
+			Log.sysOut(getName(),"Admin mode");
+			isAdminServer = true;
+		}
 		if (page.getStr("BIND") != null && page.getStr("BIND").length() > 0)
 		{
 			try
@@ -230,8 +236,7 @@ public class HTTPserver extends Thread
 			{
 				sock=servsock.accept();
 				
-				// process the request - pass .ini data for mime types
-				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page);
+				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
 				W.equals(W); // this prevents an initialized by never used error
 				// nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
 				//  if succeeds - no need to .start() it here
@@ -251,8 +256,6 @@ public class HTTPserver extends Thread
 				isOK = false;
 		}
 		
-//		Log.sysOut(getName(),"Cleaning up.");
-
 		try
 		{
 			if(servsock!=null)

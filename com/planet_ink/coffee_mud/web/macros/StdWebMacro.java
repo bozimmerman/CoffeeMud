@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.web.macros;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.exceptions.*;
 import java.util.*;
 
 public class StdWebMacro implements WebMacro
@@ -10,7 +11,7 @@ public class StdWebMacro implements WebMacro
 	// not yet implemented!
 	public boolean isAdminMacro()	{return false;}
 	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
 	{
 		return "[Unimplemented macro!]";
 	}

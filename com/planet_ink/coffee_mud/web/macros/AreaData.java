@@ -14,6 +14,7 @@ public class AreaData extends StdWebMacro
 		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("AREA");
 		if(last==null) return " @break@";
+
 		if(last.length()>0)
 		{
 			Area A=CMMap.getArea(last);

@@ -23,8 +23,6 @@ public class INI extends Properties
 		}
 	}
 
-	// jef: constructor allows inheritance from any Properties object
-	//  used by http servers for 'common.ini'
 	public INI(Properties p, String filename)
 	{
 		super(p);

@@ -31,6 +31,7 @@ public class StdRoom
 	protected int baseMove=2;
 	protected int baseThirst=1;
 	protected int myResource=-1;
+	protected Calendar resourceFound=null;
 
 	protected boolean skyedYet=false;
 	public StdRoom()
@@ -157,6 +158,13 @@ public class StdRoom
 	public Vector resourceChoices(){return null;}
 	public Environmental myResource()
 	{
+		if(resourceFound!=null)
+		{
+			Calendar C=Calendar.getInstance();
+			C.add(Calendar.MINUTE,-30);
+			if(resourceFound.before(C))
+				myResource=-1;
+		}
 		if(myResource<0)
 		{
 			if(resourceChoices()==null) 
@@ -190,6 +198,7 @@ public class StdRoom
 			return null;
 		else
 		{
+			resourceFound=Calendar.getInstance();
 			int material=(myResource&EnvResource.MATERIAL_MASK);
 			Item I=null;
 			String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();

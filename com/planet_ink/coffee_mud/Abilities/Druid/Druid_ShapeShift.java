@@ -35,8 +35,6 @@ public class Druid_ShapeShift extends StdAbility
 		displayText="(in your animal form)";
 		miscText="";
 		triggerStrings.addElement("SHAPESHIFT");
-		quality=Ability.INDIFFERENT;
-		baseEnvStats().setLevel(16);
 		quality=Ability.OK_SELF;
 
 		recoverEnvStats();

@@ -1,10 +1,10 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
+import java.net.InetAddress;
 public interface ExternalHTTPRequests
 {
 	public String ServerVersionString();
 	public String getWebServerPortStr();
-	//public HTTPserver getWebServer();
 	public String getHTTPstatus();
 	public String getHTTPstatusInfo();
 	public String getHTTPclientIP();
@@ -13,4 +13,6 @@ public interface ExternalHTTPRequests
 	public String WebHelperhtmlPlayerList();
 	public String WebHelperhtmlAreaTbl();
 	public Hashtable getRequestParameters();
+	public String getRequestEncodedParameters();
+	public InetAddress getServerAddress();
 }

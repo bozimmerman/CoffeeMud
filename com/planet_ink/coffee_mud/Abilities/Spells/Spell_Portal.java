@@ -44,7 +44,7 @@ public class Spell_Portal extends Spell
 		}
 		if(oldRoom!=null)
 		{
-			oldRoom.show(invoker,null,Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+			oldRoom.showOthers(invoker,null,Affect.MSG_OK_VISUAL,"The swirling portal closes.");
 			oldRoom.rawDoors()[Directions.GATE]=null;
 			oldRoom.rawExits()[Directions.GATE]=null;
 		}

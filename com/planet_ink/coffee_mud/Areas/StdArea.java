@@ -968,4 +968,9 @@ public class StdArea implements Area
 		return theWeatherDescription(nextWeather);
 	}
 	
+	public Vector getSubOpVectorList()
+	{
+		return subOps;
+	}
+
 }

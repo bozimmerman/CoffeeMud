@@ -23,6 +23,7 @@ c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\commands\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\commands\base\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\commands\base\sysop\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\common\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\exceptions\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Exits\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\interfaces\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Items\*.java
