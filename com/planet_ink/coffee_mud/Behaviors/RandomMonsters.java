@@ -96,6 +96,7 @@ public class RandomMonsters extends ActiveTicker
 					M.setStartRoom(null);
 					M.baseEnvStats().setRejuv(0);
 					M.recoverEnvStats();
+					M.text();
 					maintained.addElement(M);
 					if(ticking instanceof Room)
 						M.bringToLife(((Room)ticking),true);
