@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -199,7 +200,9 @@ public class Score extends Affect
 			msg.append("^!You are hidden.^?\n\r");
 		if(Sense.isSneaking(mob))
 			msg.append("^!You are sneaking.^?\n\r");
-
+		if(Util.bset(mob.getBitmap(),MOB.ATT_QUIET))
+			msg.append("^!You are in QUIET mode.^?\n\r");
+		
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
 			msg.append("^!You are fatigued.^?\n\r");
 		if(mob.curState().getHunger()<1)

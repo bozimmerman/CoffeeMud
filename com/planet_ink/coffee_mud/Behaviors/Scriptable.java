@@ -35,6 +35,8 @@ public class Scriptable extends StdBehavior
 	private Hashtable delayProgCounters=new Hashtable();
 	private Hashtable lastTimeProgsDone=new Hashtable();
 	private Hashtable lastDayProgsDone=new Hashtable();
+	private long tickStatus=Tickable.STATUS_NOT;
+	public long getTickStatus(){return tickStatus;}
 
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{
@@ -1304,6 +1306,7 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			{
+			    tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
 			switch(funcCode.intValue())
 			{
 			case 1: // rand
@@ -2848,6 +2851,8 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			else
+			{
+			    tickStatus=Tickable.STATUS_MISC2+funcCode.intValue();
 			switch(funcCode.intValue())
 			{
 			case 1: // rand
@@ -3776,6 +3781,7 @@ public class Scriptable extends StdBehavior
 				scriptableError(scripted,"Unknown Val",preFab,evaluable);
 				return results.toString();
 			}
+			}
 			if((z>=0)&&(z<=evaluable.length()))
 			{
 				evaluable=evaluable.substring(z+1).trim();
@@ -3822,6 +3828,7 @@ public class Scriptable extends StdBehavior
 			        if(methods[i].startsWith(cmd))
 			            methCode=new Integer(i);
 			if(methCode==null) methCode=new Integer(0);
+		    tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
 			if(cmd.length()==0)
 				continue;
 			else
@@ -5089,6 +5096,7 @@ public class Scriptable extends StdBehavior
 		{
 			Vector script=(Vector)scripts.elementAt(v);
 			if(script.size()<1) continue;
+		    tickStatus=Tickable.STATUS_AFFECT+v;
 
 			String trigger=((String)script.elementAt(0)).toUpperCase().trim();
 			switch(getTriggerCode(trigger))
@@ -5604,6 +5612,7 @@ public class Scriptable extends StdBehavior
 		for(int v=0;v<scripts.size();v++)
 		{
 			Vector script=(Vector)scripts.elementAt(v);
+		    tickStatus=Tickable.STATUS_BEHAVIOR+v;
 			String trigger="";
 			if(script.size()>0)
 				trigger=((String)script.elementAt(0)).toUpperCase().trim();

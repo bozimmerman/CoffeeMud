@@ -20,7 +20,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdShipContainer extends StdElecContainer
+public class StdShipContainer extends StdElecContainer implements ShipComponent
 {
 	public String ID(){	return "StdShipContainer";}
 	public StdShipContainer()
@@ -31,6 +31,7 @@ public class StdShipContainer extends StdElecContainer
 		setDescription("You can't tell what it is by looking at it.");
 
 		material=EnvResource.RESOURCE_STEEL;
+		setComponentType(ShipComponent.COMPONENT_PANEL_ANY);
 		baseGoldValue=0;
 		recoverEnvStats();
 	}
@@ -38,4 +39,8 @@ public class StdShipContainer extends StdElecContainer
 	private int componentType=ShipComponent.COMPONENT_MISC;
 	public int componentType(){return componentType;}
 	public void setComponentType(int type){componentType=type;}
+	
+	public DVector getSSParms(){return new DVector(2);}
+	public String getSSXML(){return "";}
+	public void setSSXML(String xml){}
 }

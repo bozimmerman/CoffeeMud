@@ -40,7 +40,8 @@ public class Boot extends StdCommand
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=Sessions.elementAt(s);
-			if((S.mob()!=null)&&(EnglishParser.containsString(S.mob().name(),whom)))
+			if(((S.mob()!=null)&&(EnglishParser.containsString(S.mob().name(),whom)))
+			||(S.getAddress().equalsIgnoreCase(whom)))
 			{
 				if(S==mob.session())
 				{
@@ -49,9 +50,14 @@ public class Boot extends StdCommand
 				}
 				else
 				{
-					mob.tell("You boot "+S.mob().name());
-					if(S.mob().location()!=null)
-						S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
+				    if(S.mob()!=null)
+				    {
+						mob.tell("You boot "+S.mob().name());
+						if(S.mob().location()!=null)
+							S.mob().location().show(S.mob(),null,CMMsg.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
+				    }
+				    else
+				        mob.tell("You boot "+S.getAddress());
 					S.setKillFlag(true);
 					boot=true;
 					break;
@@ -59,7 +65,7 @@ public class Boot extends StdCommand
 			}
 		}
 		if(!boot)
-			mob.tell("You can't find anyone by that name.");
+			mob.tell("You can't find anyone by that name or ip address.");
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

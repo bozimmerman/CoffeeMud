@@ -92,6 +92,45 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genComponentType(MOB mob, ShipComponent S, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		String componentType=Util.capitalize(ShipComponent.COMPONENT_DESC[S.componentType()].toLowerCase());
+		mob.tell(showNumber+". Component Type: '"+componentType+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		boolean continueThis=true;
+		while(continueThis)
+		{
+		    continueThis=false;
+			String newName=mob.session().prompt("Enter a new one (?)\n\r:","");
+			if(newName.length()>0)
+			{
+			    if(newName.equalsIgnoreCase("?"))
+			    {
+			        mob.tell("Component Types: "+Util.toStringList(ShipComponent.COMPONENT_DESC));
+			        continueThis=true;
+			    }
+			    else
+			    {
+			        int newType=-1;
+			        for(int i=0;i<ShipComponent.COMPONENT_DESC.length;i++)
+			            if(ShipComponent.COMPONENT_DESC[i].equalsIgnoreCase(newName))
+			                newType=i;
+			        if(newType<0)
+			        {
+			            mob.tell("'"+newName+"' is not recognized.  Try '?' for a list.");
+			            continueThis=true;
+			        }
+			        else
+			            S.setComponentType(newType);
+			    }
+			}
+			else
+				mob.tell("(no change)");
+		}
+	}
+	
 	static void genCurrency(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -4810,6 +4849,8 @@ public class BaseGenerics extends StdCommand
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
+			if(me instanceof ShipComponent)
+			    genComponentType(mob,(ShipComponent)me,++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
@@ -5043,6 +5084,8 @@ public class BaseGenerics extends StdCommand
 			genLevel(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genCapacity(mob,me,++showNumber,showFlag);
+			if(me instanceof ShipComponent)
+			    genComponentType(mob,(ShipComponent)me,++showNumber,showFlag);
 			genLidsNLocks(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);

@@ -899,7 +899,6 @@ public class StdItem implements Item
 		default:
 			break;
 		}
-System.out.println(msg.targetMinor()+"/"+msg.sourceMinor()+"/"+CMMsg.TYP_PUSH+"/"+CMMsg.TYP_PULL);		
 		mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 		return false;
 	}

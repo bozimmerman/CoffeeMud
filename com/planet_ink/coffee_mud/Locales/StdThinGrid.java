@@ -589,7 +589,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		public long getTickStatus(){return tickStatus;}
 		public boolean tick(Tickable ticking, int tickID)
 		{
+		    tickStatus=Tickable.STATUS_START;
 			Room R=null;
+		    Vector roomsToClear=new Vector();
 			try{
 				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
@@ -599,14 +601,17 @@ public class StdThinGrid extends StdRoom implements GridLocale
 						DVector DV=((StdThinGrid)R).rooms;
 						if(DV.size()>0)
 						{
+						    tickStatus=Tickable.STATUS_ALIVE;
 							synchronized(DV)
 							{
 								long time=System.currentTimeMillis()-EXPIRATION;
 								for(int r=DV.size()-1;r>=0;r--)
 									if(((Long)DV.elementAt(r,4)).longValue()<time)
 									{
+									    tickStatus=Tickable.STATUS_MISC;
 										R=(Room)DV.elementAt(r,1);
 										if(!cleanRoom(R)) continue;
+									    tickStatus=Tickable.STATUS_MISC+1;
 										boolean cleanOne=true;
 										for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 										{
@@ -614,18 +619,30 @@ public class StdThinGrid extends StdRoom implements GridLocale
 											if((R2!=null)&&(!cleanRoom(R2)))
 											{ cleanOne=false; break;}
 										}
+									    tickStatus=Tickable.STATUS_MISC+2;
 										if(cleanOne)
 										{
 											DV.removeElementAt(r);
-											clearRoom(R,null);
+										    roomsToClear.addElement(R);
 										}
+									    tickStatus=Tickable.STATUS_MISC+3;
 									}
 							}
+							tickStatus=Tickable.STATUS_MISC+4;
 						}
 					}
 				}
 			}
 			catch(java.util.NoSuchElementException  e){}
+			tickStatus=Tickable.STATUS_MISC+5;
+			for(int i=0;i<roomsToClear.size();i++)
+			{
+			    R=(Room)roomsToClear.elementAt(i);
+			    tickStatus=Tickable.STATUS_MISC+6;
+				clearRoom(R,null);
+			    tickStatus=Tickable.STATUS_MISC+7;
+			}
+			tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}
 	}

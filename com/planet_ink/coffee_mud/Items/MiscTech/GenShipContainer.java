@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.MiscTech;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -75,6 +76,13 @@ public class GenShipContainer extends StdShipContainer
 		case 4: return ""+fuelType();
 		case 5: return ""+powerCapacity();
 		case 6: return ""+componentType();
+		default:
+		{
+		    DVector DV=getSSParms();
+		    int x=DV.indexOf(code.toUpperCase());
+		    if(x>=0) return (String)DV.elementAt(x,2);
+		}
+		break;
 		}
 		return "";
 	}
@@ -92,11 +100,21 @@ public class GenShipContainer extends StdShipContainer
 		case 4: setFuelType(Util.s_int(val)); break;
 		case 5: setPowerCapacity(Util.s_long(val)); break;
 		case 6: setComponentType(Util.s_int(val)); break;
+		default:
+		{
+		    DVector DV=getSSParms();
+		    DV.removeElement(code.toUpperCase());
+		    DV.addElement(code.toUpperCase(),val);
+		}
+		break;
 		}
 	}
 	protected int getCodeNum(String code){
 		for(int i=0;i<MYCODES.length;i++)
 			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		DVector DV=getSSParms();
+		int i=DV.indexOf(code.toUpperCase());
+		if(i>=0) return i+MYCODES.length;
 		return -1;
 	}
 	private static String[] codes=null;
@@ -104,19 +122,23 @@ public class GenShipContainer extends StdShipContainer
 	{
 		if(codes!=null) return codes;
 		String[] superCodes=CoffeeMaker.GENITEMCODES;
-		codes=new String[superCodes.length+MYCODES.length];
+		DVector DV=getSSParms();
+		codes=new String[superCodes.length+MYCODES.length+DV.size()];
 		int i=0;
 		for(;i<superCodes.length;i++)
 			codes[i]=superCodes[i];
 		for(int x=0;x<MYCODES.length;i++,x++)
 			codes[i]=MYCODES[x];
+		for(int x=0;x<DV.size();i++,x++)
+			codes[i]=(String)DV.elementAt(x,1);
 		return codes;
 	}
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenShipComponent)) return false;
-		for(int i=0;i<getStatCodes().length;i++)
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+		String[] theCodes=getStatCodes();
+		for(int i=0;i<theCodes.length;i++)
+			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
 		return true;
 	}

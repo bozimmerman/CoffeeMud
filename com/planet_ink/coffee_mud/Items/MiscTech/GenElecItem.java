@@ -97,8 +97,9 @@ public class GenElecItem extends StdElecItem
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenElecItem)) return false;
-		for(int i=0;i<getStatCodes().length;i++)
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+		String[] theCodes=getStatCodes();
+		for(int i=0;i<theCodes.length;i++)
+			if(!E.getStat(theCodes[i]).equals(getStat(theCodes[i])))
 				return false;
 		return true;
 	}

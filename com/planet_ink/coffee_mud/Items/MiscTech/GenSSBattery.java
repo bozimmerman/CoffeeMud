@@ -27,12 +27,13 @@ public class GenSSBattery extends GenShipComponent
 	{
 		super();
 		setName("a generic ships battery");
-		baseEnvStats.setWeight(2);
+		baseEnvStats.setWeight(50);
 		setDisplayText("a generic ships battery sits here.");
 		setDescription("");
-		baseGoldValue=5;
+		baseGoldValue=5000;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
+		setComponentType(ShipComponent.COMPONENT_POWER);
 		setMaterial(EnvResource.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)
