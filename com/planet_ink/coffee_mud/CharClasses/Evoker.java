@@ -27,6 +27,7 @@ public class Evoker extends SpecialistMage
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_ForkedLightning",25,true);
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_Levitate",25,true);
 			CMAble.addCharAbilityMapping(ID(),21,"Spell_IceStorm",25,true);
+			CMAble.addCharAbilityMapping(ID(),22,"Spell_Shove",25,true);
 			CMAble.addCharAbilityMapping(ID(),30,"Spell_MassDisintegrate",25,true);
 		}
 	}
