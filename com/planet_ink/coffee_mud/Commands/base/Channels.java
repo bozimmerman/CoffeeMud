@@ -90,6 +90,14 @@ public class Channels
 		return -1;
 	}
 
+	public int getChannelLvl(String channelName)
+	{
+		for(int c=0;c<channelNames.size();c++)
+			if(((String)channelNames.elementAt(c)).startsWith(channelName))
+				return ((Integer)channelLevels.elementAt(c)).intValue();
+		return -1;
+	}
+
 	public int getChannelNum(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)

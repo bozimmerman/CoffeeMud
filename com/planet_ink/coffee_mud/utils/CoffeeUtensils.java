@@ -48,6 +48,7 @@ public class CoffeeUtensils
 		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
+		
 		boolean allFlag=false;
 		if(srchStr.startsWith("ALL "))
 		{
@@ -57,15 +58,26 @@ public class CoffeeUtensils
 		else
 		if(srchStr.equalsIgnoreCase("ALL"))
 			allFlag=true;
-
+		
 		int dot=srchStr.lastIndexOf(".");
 		int occurrance=0;
 		if(dot>0)
 		{
-			occurrance=Util.s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
 		}
-
 
 		int myOccurrance=occurrance;
 		if(exactOnly)
@@ -135,9 +147,22 @@ public class CoffeeUtensils
 		int occurrance=0;
 		if(dot>0)
 		{
-			occurrance=Util.s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
 		}
+		
 		if(list.get(srchStr)!=null)
 			return (Environmental)list.get(srchStr);
 		int myOccurrance=occurrance;
@@ -195,9 +220,22 @@ public class CoffeeUtensils
 		int occurrance=0;
 		if(dot>0)
 		{
-			occurrance=Util.s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
 		}
+		
 		int myOccurrance=occurrance;
 		if(exactOnly)
 		{
@@ -255,8 +293,20 @@ public class CoffeeUtensils
 		int occurrance=0;
 		if(dot>0)
 		{
-			occurrance=Util.s_int(srchStr.substring(dot+1));
-			srchStr=srchStr.substring(0,dot);
+			String sub=srchStr.substring(dot+1);
+			occurrance=Util.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=Util.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
 		}
 		int myOccurrance=occurrance;
 		if(exactOnly)

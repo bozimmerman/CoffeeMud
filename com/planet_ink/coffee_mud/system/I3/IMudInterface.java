@@ -311,7 +311,7 @@ public class IMudInterface implements ImudServices, Serializable
 					else
 					for(int v=0;v<V.size();v++)
 					{
-						String nom = fixColors((String)V.elementAt(0));
+						String nom = fixColors((String)V.elementAt(v));
 						buf.append("["+Util.padRight(nom,20)+"]\n\r");
 					}
 					smob.session().unfilteredPrintln(buf.toString());
@@ -327,12 +327,14 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
 				int channelInt=ExternalPlay.channelInt(wk.channel);
+				int channelLvl=Util.s_int(getChannelLevel(wk.channel));
 				Vector whoV=new Vector();
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session ses=(Session)Sessions.elementAt(s);
 					if((!ses.killFlag())&&(ses.mob()!=null)
 					&&(!ses.mob().amDead())
+					&&(ses.mob().envStats().level()>=channelLvl)
 					&&(ses.mob().location()!=null)
 					&&(!Util.isSet(ses.mob().getChannelMask(),channelInt)))
 						whoV.addElement(ses.mob().name());
@@ -458,6 +460,22 @@ public class IMudInterface implements ImudServices, Serializable
 		return port;
 	}
 
+    /**
+     * Given a local channel name, returns the level
+     * required.
+     * Example:
+     * <PRE>
+     * if( str.equals("intercre") ) return "1";
+     * </PRE>
+     * @param str the local name of the desired channel
+     * @return the remote name of the specified local channel
+     */
+	public String getChannelLevel(String str){
+		for(int i=0;i<channels.length;i++)
+			if(channels[i][1].equalsIgnoreCase(str))
+				return channels[i][2];
+		return "0";
+	}
     /**
      * Given a local channel name, returns the remote
      * channel name.

@@ -19,6 +19,7 @@ public class CommandProcessor
 	public Movement movement=new Movement();
 	public Scoring scoring=new Scoring();
 	public SocialProcessor socialProcessor=new SocialProcessor();
+	public ShopKeepers shopKeepers=new ShopKeepers();
 	public Socials socials=new Socials();
 	public Lister sysopLister=new Lister();
 	public TheFight theFight=new TheFight(grouping);
@@ -118,7 +119,7 @@ public class CommandProcessor
 					mob.tell("Thank you for your assistance in debugging CoffeeMud!");
 					break;
 				case CommandSet.BUY:
-					socialProcessor.buy(mob,commands);
+					shopKeepers.buy(mob,commands);
 					break;
 				case CommandSet.CLOSE:
 					movement.close(mob,Util.combine(commands,1));
@@ -161,6 +162,9 @@ public class CommandProcessor
 					break;
 				case CommandSet.CREDITS:
 					credits(mob);
+					break;
+				case CommandSet.DEPOSIT:
+					shopKeepers.deposit(mob,commands);
 					break;
 				case CommandSet.DESCRIPTION:
 					basicSenses.description(mob,commands);
@@ -293,7 +297,7 @@ public class CommandProcessor
 					scoring.languages(mob);
 					break;
 				case CommandSet.LIST:
-					socialProcessor.list(mob,commands);
+					shopKeepers.list(mob,commands);
 					break;
 				case CommandSet.LINK:
 					if(mob.isASysOp(mob.location()))
@@ -424,7 +428,7 @@ public class CommandProcessor
 					scoring.score(mob);
 					break;
 				case CommandSet.SELL:
-					socialProcessor.sell(mob,commands);
+					shopKeepers.sell(mob,commands);
 					break;
 				case CommandSet.SERVE:
 					socialProcessor.serve(mob,commands);
@@ -519,7 +523,7 @@ public class CommandProcessor
 					movement.standAndGo(mob,Directions.UP);
 					break;
 				case CommandSet.VALUE:
-					socialProcessor.value(mob,commands);
+					shopKeepers.value(mob,commands);
 					break;
 				case CommandSet.VASSALS:
 					socialProcessor.vassals(mob,commands);
@@ -559,6 +563,9 @@ public class CommandProcessor
 					break;
 				case CommandSet.WIMPY:
 					basicSenses.wimpy(mob,commands);
+					break;
+				case CommandSet.WITHDRAW:
+					shopKeepers.withdraw(mob,commands);
 					break;
 				case CommandSet.WIZINV:
 					if(mob.isASysOp(null))

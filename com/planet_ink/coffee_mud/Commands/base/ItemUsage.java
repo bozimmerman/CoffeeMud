@@ -24,6 +24,48 @@ public class ItemUsage
 		return null;
 	}
 
+	public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode)
+	{
+		if(commands.size()==1)
+			return null;
+
+		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
+		boolean allFlag=false;
+		String preWord="";
+		if(commands.size()>2)
+			preWord=(String)commands.elementAt(commands.size()-2);
+		if(preWord.equalsIgnoreCase("all")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID;}
+		else
+		if(possibleContainerID.toUpperCase().startsWith("ALL.")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID.substring(4);}
+		else
+		if(possibleContainerID.toUpperCase().endsWith(".ALL")){ allFlag=true; possibleContainerID="ALL "+possibleContainerID.substring(0,possibleContainerID.length()-4);}
+		
+		Vector V=new Vector();
+		int addendum=1;
+		String addendumStr="";
+		do
+		{
+			Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,wornReqCode);
+			if((thisThang!=null)
+			&&(thisThang instanceof Item)
+			&&(Sense.canBeSeenBy(thisThang,mob))
+			&&(((Item)thisThang).isAContainer()))
+			{
+				V.addElement(thisThang);
+				if(V.size()==1)
+				{
+					commands.removeElementAt(commands.size()-1);
+					if(allFlag&&(preWord.equalsIgnoreCase("all")))
+						commands.removeElementAt(commands.size()-1);
+				}
+			}
+			if(thisThang==null) return V;
+			addendumStr="."+(++addendum);
+		}
+		while(allFlag);
+		return V;
+	}
+
 	public void compare(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -119,30 +161,48 @@ public class ItemUsage
 		String containerName="";
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
-		Item container=possibleContainer(mob,commands,Item.WORN_REQ_ANY);
+		Vector containers=possibleContainers(mob,commands,Item.WORN_REQ_ANY);
+		int c=0;
 		String whatToGet=Util.combine(commands,0);
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		Vector V=new Vector();
-		int addendum=1;
-		String addendumStr="";
-		do
+		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
+		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
+		boolean doneSomething=false;
+		while((c<containers.size())||(containers.size()==0))
 		{
-			Environmental getThis=null;
-			if((container!=null)&&(mob.isMine(container)))
-			   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,(Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
-			else
-			   getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
-			if(getThis==null) break;
-			if((getThis instanceof Item)&&(Sense.canBeSeenBy(getThis,mob)))
-				V.addElement(getThis);
-			addendumStr="."+(++addendum);
-		}
-		while(allFlag);
-		
-		if(V.size()==0)
-		{
-			if(container!=null)
+			Vector V=new Vector();
+			Item container=null;
+			if(containers.size()>0) container=(Item)containers.elementAt(c++);
+			int addendum=1;
+			String addendumStr="";
+			do
 			{
+				Environmental getThis=null;
+				if((container!=null)&&(mob.isMine(container)))
+				   getThis=mob.location().fetchFromMOBRoomFavorsItems(mob,(Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+				else
+				   getThis=mob.location().fetchFromRoomFavorItems((Item)container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
+				if(getThis==null) break;
+				if((getThis instanceof Item)&&(Sense.canBeSeenBy(getThis,mob)))
+					V.addElement(getThis);
+				addendumStr="."+(++addendum);
+			}
+			while(allFlag);
+			
+			for(int i=0;i<V.size();i++)
+			{
+				Item getThis=(Item)V.elementAt(i);
+				get(mob,container,(Item)getThis,false);
+				doneSomething=true;
+			}
+			
+			if(containers.size()==0) break;
+		}
+		if(!doneSomething)
+		{
+			if(containers.size()>0)
+			{
+				Item container=(Item)containers.elementAt(0);
 				if(((Container)container).isOpen())
 					mob.tell("You don't see that in "+container.name()+".");
 				else
@@ -150,12 +210,6 @@ public class ItemUsage
 			}
 			else
 				mob.tell("You don't see '"+containerName+"' here.");
-		}
-		else
-		for(int i=0;i<V.size();i++)
-		{
-			Item getThis=(Item)V.elementAt(i);
-			get(mob,container,(Item)getThis,false);
 		}
 	}
 
@@ -169,6 +223,7 @@ public class ItemUsage
 		}
 		return false;
 	}
+	
 	public void drop(MOB mob, Vector commands)
 	{
 		String whatToDrop=null;
@@ -184,6 +239,8 @@ public class ItemUsage
 
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
+		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
 		int addendum=1;
 		String addendumStr="";
 		do
@@ -251,6 +308,8 @@ public class ItemUsage
 		String addendumStr="";
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
+		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 		do
 		{
 			Environmental putThis=new SocialProcessor().possibleGold(mob,thingToPut);
@@ -310,6 +369,8 @@ public class ItemUsage
 		String addendumStr="";
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
+		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
 		do
 		{
 			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr,Item.WORN_REQ_ANY);
@@ -404,8 +465,10 @@ public class ItemUsage
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();
-		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		String name=Util.combine(commands,0);
+		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
+		if(name.toUpperCase().endsWith(".ALL")){ allFlag=true; name="ALL "+name.substring(0,name.length()-4);}
 		do
 		{
 			Environmental item=null;
