@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>CoffeeMUD Web Server</title>
+</head>
+
+<body>
+
+<div align="center">
+
+<IMG SRC="/images/cm1.2.gif" WIDTH=450 HEIGHT=90 ALT="" BORDER="0"><br>
+<h3>Welcome to CoffeeMUD</H3>
+@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@<br>
+<br>
+Server status: <b>@MUDSERVERSTATUS@</B><br>
+Players currently online: <b>@NUMPLAYERS@</B><br>
+<br>
+<a href="gamestatus.cmvp">Detailed Game Status</a><br><br>
+<a href="areas.cmvp">Installed Map Areas</a><br><br>
+
+<br>
+<a href="guides/mudintro.html">Introduction</a><br>
+<a href="guides/features.html">CoffeeMUD features</a><br>
+<a href="guides/ClassInfo.html">Player Class Information</a><br>
+<a href="guides/RaceInfo.html">Player Race Information</a><br>
+<a href="guides/ArchonGuide.html">The Novice Archon's Guide to World Construction and Destruction</a><br>
+<a href="guides/bugs.txt">Bugs</a><br>
+<a href="guides/todo.txt">To Do</a><br>
+
+<br>
+</DIV>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>CoffeeMUD Areas</title>
+</head>
+
+<body>
+<div align="center">
+	<h3>Installed map areas</H3>
+	<hr><br>
+
+	<table border="1" align="center">
+		@AREATBL@
+	</TABLE>
+	<br>
+	<hr>
+	<a href="/">back to top page</A>
+	</div>
+</body>
+</html>

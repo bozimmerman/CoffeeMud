@@ -1,0 +1,17 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+	<head>
+		<title>@HTTPSTATUS@</title>
+		
+	</head>
+	<body>
+		<IMG SRC="/images/skull.jpg" WIDTH=60 HEIGHT=60 ALT="" BORDER="0" align="left" hspace="20" vspace="2">
+		<h2>@HTTPSTATUS@</h2>
+
+		@HTTPSTATUSINFO@<br>
+
+		<br>
+		<hr><i>@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@</i>
+	</body>
+</html>
