@@ -49,13 +49,13 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 	public void addRider(Rider mob)
 	{
-		if(mob!=null)
+		if((mob!=null)&&(!riders.contains(mob)))
 			riders.addElement(mob);
 	}
 	public void delRider(Rider mob)
 	{
 		if(mob!=null)
-			riders.removeElement(mob);
+			while(riders.removeElement(mob));
 	}
 
 	protected void cloneFix(Item E)

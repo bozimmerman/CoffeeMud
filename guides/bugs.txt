@@ -1,3 +1,3 @@
 GAES still isn't done
-blank rooms for sale by property dealer?
-a maple table occupied by Thalnia
+Fighter secret skill IMPROVED DISARM if they don't have anything in the wield position, it will cause them to drop what is in the held position.
+

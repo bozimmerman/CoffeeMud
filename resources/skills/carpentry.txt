@@ -30,6 +30,7 @@ Small % Shield	3	30	15	5	GenShield	HELD	1	6	0
 % Box	3	30	30	8	GenContainer		10		0
 % Table	6	30	60	20	GenRideable	TABLE	50		0
 % Coffin	6	40	50	35	GenContainer		500		64
+% Potion Rack	6	30	30	8	GenContainer		100		2048
 % Desk	6	30	60	20	GenRideable	TABLE	50		0
 % Stool	6	30	20	6	GenChair	CHAIR	1		0
 % Chair	6	30	30	10	GenChair	CHAIR	1		0

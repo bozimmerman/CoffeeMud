@@ -455,6 +455,10 @@ public class StdContainer extends StdItem implements Container
 					if(E instanceof Key)
 						return true;
 					break;
+				case CONTAIN_DRINKABLES:
+					if((E instanceof Drink)&&(E instanceof Item))
+						return true;
+					break;
 				case CONTAIN_OTHERWEAPONS:
 					if((E instanceof Weapon)
 					&&(((Weapon)E).weaponClassification()!=Weapon.CLASS_SWORD)

@@ -37,10 +37,6 @@ public class Prop_WizInvis extends Property
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 		if(!Sense.canBreathe(affected))
 			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
-		if(Sense.isSleeping(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SLEEPING);
-		if(Sense.isSitting(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SITTING);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INVISIBLE);

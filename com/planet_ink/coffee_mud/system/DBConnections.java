@@ -307,7 +307,7 @@ public class DBConnections
 	 * the given Field NAME, returning the value.  The value
 	 * will be trim()ed, and will not be NULL.
 	 * 
-	 * <br><br><b>Usage:</b> str=getLongRes(R,"FIELD");
+	 * <br><br><b>Usage:</b> str=getRes(R,"FIELD");
 	 * @param Results	The ResultSet object to use
 	 * @param Field		Field name to return
 	 * @return String	The value of the field being returned
@@ -363,8 +363,8 @@ public class DBConnections
 		try
 		{
 			String Val=Results.getString(Field);
-			if(Val!=null)
-				return Long.parseLong(Val);
+			if((Val!=null)&&(Val.trim().length()>0))
+				return Long.parseLong(Val.trim());
 			else
 				return 0;
 

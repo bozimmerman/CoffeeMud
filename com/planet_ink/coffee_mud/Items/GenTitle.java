@@ -20,7 +20,6 @@ public class GenTitle extends StdTitle
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
-		setMaterial(EnvResource.RESOURCE_OAK);
 	}
 	public Environmental newInstance()
 	{

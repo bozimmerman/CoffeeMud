@@ -26,6 +26,7 @@ public class StdTitle extends StdItem implements LandTitle
 		setName("a standard title");
 		setDescription("Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**");
 		baseGoldValue=10000;
+		isReadable=true;
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
@@ -131,6 +132,18 @@ public class StdTitle extends StdItem implements LandTitle
 			if(R.fetchAffect(a) instanceof LandTitle)
 			{ A=(LandTitle)R.fetchAffect(a); break;}
 		return A;
+	}
+
+	public boolean okAffect(Environmental myHost, Affect affect)
+	{
+		if((affect.targetMinor()==Affect.TYP_WRITE)
+		&&(affect.amITarget(this)))
+		{
+			MOB mob=affect.source();
+			mob.tell("You shouldn't write on "+name()+".");
+			return false;
+		}
+		return super.okAffect(myHost,affect);
 	}
 
 	public void affect(Environmental myHost, Affect msg)

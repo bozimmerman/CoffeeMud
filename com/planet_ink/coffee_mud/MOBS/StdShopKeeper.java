@@ -955,7 +955,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				Room R=(Room)r.nextElement();
 				LandTitle A=getTitle(R);
-				if((A!=null)&&(!roomsHandling.contains(R)))
+				if((A!=null)&&(R.roomID().length()>0)&&(!roomsHandling.contains(R)))
 				{
 					Vector V2=A.getRooms();
 					for(int v=0;v<V2.size();v++)
