@@ -8,7 +8,7 @@ import java.util.*;
 public class Spell_WallOfStone extends Spell
 {
 	public String ID() { return "Spell_WallOfStone"; }
-	public String name(){return "Wall of Ice";}
+	public String name(){return "Wall of Stone";}
 	public String displayText(){return "(Wall of Stone)";}
 	public int maxRange(){return 10;}
 	public int minRange(){return 1;}

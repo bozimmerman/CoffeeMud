@@ -304,8 +304,9 @@ public class Mage extends StdCharClass
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if((CMAble.getQualifyingLevel(ID(),A.ID())==level)
+			&&((CMAble.getQualifyingLevel(ID(),A.ID())<=25)
 			&&(!CMAble.getDefaultGain(ID(),A.ID()))
-			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
+			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)))
 			{if (!grantable.contains(A.ID())) grantable.addElement(A.ID());}
 		}
 		for(int a=0;a<mob.numAbilities();a++)

@@ -8,7 +8,7 @@ import java.util.*;
 public class Ranger_TrackAnimal extends StdAbility
 {
 	public String ID() { return "Ranger_TrackAnimal"; }
-	public String name(){ return "Track";}
+	public String name(){ return "Track Animal";}
 	private String displayText="(tracking an animal)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
