@@ -4897,7 +4897,6 @@ public class Import extends StdCommand
 					else
 					if(nextLine.startsWith(">"))
 					{
-						nextLine=nextLine;
 						String scriptStuff="";
 						if(!nextLine.substring(1).trim().toUpperCase().startsWith("IN_FILE_PROG"))
 						{

@@ -34,7 +34,7 @@ public class SocialTbl extends StdWebMacro
 		Vector socialVec=new Vector();
 		for(int s=0;s<Socials.num();s++)
 		{
-			Social S=Socials.enum(s);
+			Social S=Socials.enumSocial(s);
 			String name=null;
 			int x=S.name().trim().indexOf(" ");
 			if(x>=0)

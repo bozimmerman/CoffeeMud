@@ -402,7 +402,7 @@ public class Socials
 		return soc.size();
 	}
 
-	public static Social enum(int index)
+	public static Social enumSocial(int index)
 	{
 		if((index<0)||(index>num())) return null;
 		int i=0;

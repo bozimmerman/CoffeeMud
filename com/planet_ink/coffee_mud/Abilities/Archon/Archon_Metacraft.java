@@ -5,7 +5,6 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill;
 import java.util.*;
-import java.io.File;
 
 /* 
    Copyright 2000-2004 Bo Zimmerman
@@ -38,7 +37,7 @@ public class Archon_Metacraft extends CraftingSkill
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
-				if(((A.classificationCode()&Ability.ALL_CODES)==A.COMMON_SKILL)
+				if(((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)
 				&&(Util.bset(A.flags(),Ability.FLAG_CRAFTING)))
 					craftingSkills.addElement(A.copyOf());
 			}

@@ -236,7 +236,7 @@ public class Weaponsmithing extends CraftingSkill
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if((level<=mob.envStats().level())
-					&&(canDo((String)V.elementAt(this.RCP_WEAPONCLASS),mob)))
+					&&(canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))
 					{
 						buf.append(Util.padRight(item,21)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -290,7 +290,7 @@ public class Weaponsmithing extends CraftingSkill
 				{
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					if((level<=mob.envStats().level())
-					&&(canDo((String)V.elementAt(this.RCP_WEAPONCLASS),mob)))
+					&&(canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))
 					{
 						foundRecipe=V;
 						break;
@@ -323,7 +323,7 @@ public class Weaponsmithing extends CraftingSkill
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			completion=Util.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);

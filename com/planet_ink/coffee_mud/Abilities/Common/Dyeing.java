@@ -3,7 +3,6 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
-import java.io.File;
 
 /* 
    Copyright 2000-2004 Bo Zimmerman
