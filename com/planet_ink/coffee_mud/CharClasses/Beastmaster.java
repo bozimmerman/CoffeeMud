@@ -84,13 +84,13 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_BreatheWater",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_BullStrength",true);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Thief_Bind",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonAnimal",true);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_CatsGrace",true);
 
-			CMAble.addCharAbilityMapping(ID(),15,"AnimalTraining",true);
+			CMAble.addCharAbilityMapping(ID(),15,"AnimalTraining",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_Hawkeye",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_SpeedBirth",0,"",false,true);

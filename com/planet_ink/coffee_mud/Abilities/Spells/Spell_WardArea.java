@@ -73,7 +73,10 @@ public class Spell_WardArea extends Spell implements Trap
 			newCaster.setName("the thin air");
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
-			newCaster.baseEnvStats().setLevel(invoker.envStats().level());
+			if(invoker()!=null)
+				newCaster.baseEnvStats().setLevel(invoker.envStats().level());
+			else
+				newCaster.baseEnvStats().setLevel(10);
 			newCaster.recoverEnvStats();
 			newCaster.recoverCharStats();
 			if(invoker()!=null)

@@ -24,8 +24,8 @@ public class Construction extends CommonSkill
 	private final static int BUILD_SECRETDOOR=8;
 	private final static int BUILD_STAIRS=9;
 
-	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Stairs","Secret Door"};
-	private final static int[] woodReq={100,125,350,50,50,0,0,0,350,200};
+	private final static String[] names={"Wall","Door","Roof","Gate","Fence","Demolish","Title","Description","Secret Door"};
+	private final static int[] woodReq={100,125,350,50,50,0,0,0,200,350};
 
 	private Room room=null;
 	private int dir=-1;
@@ -314,7 +314,7 @@ public class Construction extends CommonSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Wood required\n\r");
-			for(int r=0;r<9;r++)
+			for(int r=0;r<names.length;r++)
 			{
 				if((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
 					buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
@@ -334,7 +334,7 @@ public class Construction extends CommonSkill
 		messedUp=false;
 
 		String firstWord=(String)commands.firstElement();
-		for(int r=0;r<0;r++)
+		for(int r=0;r<names.length;r++)
 		{
 			if((names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
 			&&((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief"))))
