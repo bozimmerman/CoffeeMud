@@ -60,7 +60,8 @@ public class Undead extends StdRace
 				return false;
 			}
 			else
-			if((msg.amITarget(mob)&&Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
+			if((msg.amITarget(mob))
+			&&(Util.bset(msg.targetCode(),CMMsg.MASK_HURT))
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
 			&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_UNHOLY))

@@ -276,7 +276,12 @@ public class MOBloader
 					if((x>0)&&(x<cclass.length()-2))
 						cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
 					thisUser.addElement(cclass);
-					thisUser.addElement(((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name());
+					String rrace=DBConnections.getRes(R,"CMRACE");
+					Race R=CMClass.getRace(rrace);
+					if(R!=null)	
+						thisUser.addElement(R.name());
+					else 
+						thisUser.addElement(rrace);
 					String lvl=DBConnections.getRes(R,"CMLEVL");
 					x=lvl.indexOf(";");
 					int level=0;
