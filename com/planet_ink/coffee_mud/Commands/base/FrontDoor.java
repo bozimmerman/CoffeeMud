@@ -156,6 +156,7 @@ public class FrontDoor
 						oldMOB.setSession(null);
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),false);
+					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				}
 				else
 				{
@@ -168,6 +169,7 @@ public class FrontDoor
 					}
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
+					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				}
 				ExternalPlay.DBUpdateIP(mob);
 				ExternalPlay.DBReadFollowers(mob);
@@ -413,6 +415,7 @@ public class FrontDoor
 				mob.baseCharStats().getCurrentClass().outfit(mob);
 				mob.setStartRoom(CMMap.getStartRoom(mob));
 				mob.bringToLife(mob.getStartRoom(),true);
+				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				ExternalPlay.DBCreateCharacter(mob);
 				if(CMMap.getPlayer(mob.ID())==null)
 					CMMap.addPlayer(mob);

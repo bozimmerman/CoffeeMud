@@ -390,7 +390,8 @@ public class StdMOB implements MOB
 		if(location!=null)
 		{
 			location().delInhabitant(this);
-			location().show(this,null,Affect.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
+			if(mySession!=null)
+				location().show(this,null,Affect.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
 		}
 		setFollowing(null);
 		if((!isMonster())&&(numFollowers()>0))
@@ -449,10 +450,7 @@ public class StdMOB implements MOB
 			}
 		}
 		if(!location().isInhabitant(this))
-		{
 			location().addInhabitant(this);
-			location().showOthers(this,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
-		}
 		pleaseDestroy=false;
 
 		// will ensure no duplicate ticks, this obj, this id
@@ -1707,7 +1705,10 @@ public class StdMOB implements MOB
 					{
 						envStats().setRejuv(envStats().rejuv()-1);
 						if(envStats().rejuv()<0)
+						{
 							bringToLife(getStartRoom(),true);
+							location().showOthers(this,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
+						}
 					}
 					else
 					{

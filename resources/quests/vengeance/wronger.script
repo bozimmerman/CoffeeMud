@@ -1,15 +1,6 @@
 # script for the future victim
-MASK_PROG P GOSSIPS 'VENGENCE! I HAVE BEEN WRONGED!'
-	IF VAR(n$ WRONGED == '')
-		gossip It was I!
-		mpsetvar $n WRONGED $i
-	ENDIF
-~
-
 DEATH_PROG
-	IF VAR($n WRONGED != )
-		mpsetvar $n WRONGED $i
-		MPECHO Goodbye cruel world...
-	ENDIF
+	mpsetvar $n VENGEANCE KILLER
+	MPECHO $i gurgles 'Goodbye cruel world...'
 ~
 		

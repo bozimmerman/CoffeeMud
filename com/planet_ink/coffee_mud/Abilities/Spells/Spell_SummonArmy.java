@@ -60,6 +60,7 @@ public class Spell_SummonArmy extends Spell
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
+					newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 					newMOB.setStartRoom(null);
 					newMOB.setVictim(mob.getVictim());
 					ExternalPlay.follow(newMOB,mob,true);

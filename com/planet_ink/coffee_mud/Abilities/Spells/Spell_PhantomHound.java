@@ -161,6 +161,7 @@ public class Spell_PhantomHound extends Spell
 				beast.resetToMaxState();
 				beast.text();
 				beast.bringToLife(mob.location(),true);
+				beast.location().showOthers(beast,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				beast.setStartRoom(null);
 				victim=mob.getVictim();
 				victim.setVictim(beast);

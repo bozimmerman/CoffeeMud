@@ -10,3 +10,7 @@ emote counts the shopkeepers money.
 SPEECH_PROG robbed stole rob thief quest help robbed? stole? money? money thief? quest? 
 say "$n" Yea, I stole it.  So what?
 ~
+
+DEATH_PROG
+	mpsetvar $n ROBBED KILLER
+~

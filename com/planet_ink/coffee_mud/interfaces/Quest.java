@@ -34,6 +34,9 @@ public interface Quest extends Tickable
 	public String getQuestObjectName(int i);
 	public String getQuestMobName(int i);
 	public String getQuestItemName(int i);
+	public Environmental getQuestObject(int i);
+	public MOB getQuestMob(int i);
+	public Item getQuestItem(int i);
 	
 	// if the quest has a winner, this is him.
 	public void declareWinner(String mobName);

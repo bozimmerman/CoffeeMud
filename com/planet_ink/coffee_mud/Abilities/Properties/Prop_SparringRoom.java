@@ -62,6 +62,7 @@ public class Prop_SparringRoom extends Property
 				R=CMMap.getRoom(text().trim());
 			if(R==null) R=target.getStartRoom();
 			target.bringToLife(R,true);
+			target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 			deathRoom.recoverRoomStats();
 			return false;
 		}

@@ -141,6 +141,7 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.addNonUninvokableAffect(A);
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
+		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		return(newMOB);
 

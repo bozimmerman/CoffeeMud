@@ -1,7 +1,7 @@
 # this script is for the little boy or girl from whom 
 # the lolly pop has been stolen.
 RAND_PROG 10
-if has($i 'a lolly pop') or var($i LOLLY == POP)
+if has($i 'a lolly pop')
 	emote sucks on $k lolly pop.
 else
 	cry
@@ -13,7 +13,7 @@ mpsetvar $i LOLLY
 ~
 
 RAND_PROG 10
-if has($i 'a lolly pop') or var($i LOLLY == POP)
+if has($i 'a lolly pop')
 	emote sucks on $k lolly pop.
 else
 	say Waaaaaaahhhh!
@@ -21,7 +21,7 @@ endif
 ~
 
 RAND_PROG 10
-if has($i 'a lolly pop') or var($i LOLLY == POP)
+if has($i 'a lolly pop')
 	emote sucks on $k lolly pop.
 else
 	emote weeps 'Oh, whoa is me!'
@@ -38,14 +38,13 @@ endif
 ~
 
 GIVE_PROG p a lolly pop
-	if var($n LOLLY == POP)
-		say "$n" You've already helped me!
+	IF QUESTWINNER($n stolen)
+		say "$n" You've already helped me in the past!
 	else
 		if var($i LOLLY == POP)
 			say "$n" I'm happy now.
 		else
 			mpsetvar $i LOLLY POP
-			mpsetvar $n LOLLY POP
 			say "$n" My lolly pop!  Thank you so so much!!!
 			hug $n
 			mpexp $n 100
@@ -53,6 +52,7 @@ GIVE_PROG p a lolly pop
 			emote sucks on $k lolly pop.
 			mpoload QuestPoint
 			give "a quest point" "$n"
+			mpquestwin $n stolen
 			mpendquest stolen
 		endif
 	endif

@@ -9,5 +9,8 @@ SPEECH_PROG lolly pop steal take little lolly? pop? steal? take? boy? girl? litt
 if has($i 'a lolly pop')
 	say "$n" You'll never get this lolly pop!
 	emote slurps on the lolly pop.
+else
+	say "$n" Yes, but .. hmm.. where'd it go?
+	emote looks around for the lolly pop.
 endif
 ~

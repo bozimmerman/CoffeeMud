@@ -89,6 +89,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				B.startBehavior(newMOB);
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
+				newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{

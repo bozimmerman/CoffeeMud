@@ -142,6 +142,7 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
+		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);

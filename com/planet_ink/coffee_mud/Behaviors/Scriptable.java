@@ -61,7 +61,9 @@ public class Scriptable extends StdBehavior
 		"VAR", // 27
 		"QUESTWINNER", //28
 		"QUESTMOB", // 29
-		"QUESTOBJ" // 30
+		"QUESTOBJ", // 30
+		"ISQUESTMOBALIVE", // 31
+		"ISINAREA" // 32
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -537,6 +539,35 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 					returnable=(Q.wasQuestMob(arg1)>=0);
+				break;
+			}
+			case 31: // isquestmobalive
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Quest Q=Quests.fetchQuest(arg2);
+				if(Q==null)
+					returnable=false;
+				else
+				{
+					MOB M=null;
+					if(Util.s_int(arg1)>0)
+						M=Q.getQuestMob(Util.s_int(arg1));
+					else
+						M=Q.getQuestMob(Q.wasQuestMob(arg1));
+					if(M==null) returnable=false;
+					else returnable=!M.amDead();
+				}
+				break;
+			}
+			case 32: // isinarea
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					if(R.fetchInhabitant(arg1)!=null) return true;
+				}
 				break;
 			}
 			case 30: // questitem
@@ -1161,7 +1192,7 @@ public class Scriptable extends StdBehavior
 					int x=back.indexOf("}");
 					if(x>=0)
 					{
-						String mid=back.substring(0,x);
+						String mid=back.substring(0,x).trim();
 						int y=mid.indexOf(" ");
 						if(y>0)
 						{

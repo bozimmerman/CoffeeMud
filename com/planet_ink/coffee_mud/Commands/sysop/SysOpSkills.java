@@ -605,6 +605,24 @@ public class SysOpSkills
 						   break;
 						}
 					}
+					if(room==null)
+					{
+						Vector candidates=new Vector();
+						Item target=null;
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+						{
+							Room R=(Room)r.nextElement();
+							target=R.fetchItem(null,cmd.toString());
+							if(target!=null)
+								candidates.addElement(target);
+						}
+						if(candidates.size()>0)
+						{
+							target=(Item)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
+							if(target.owner() instanceof Room)
+								room=(Room)target.owner();
+						}
+					}
 				}
 			}
 		}

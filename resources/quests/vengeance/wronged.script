@@ -1,30 +1,25 @@
-# this script is for the shopkeeper chosen to be robbed
+# this script is for the one who will give the reward!
 ONCE_PROG
-	gossip Vengence! I have been wronged!
+	gossip Vengeance! I have been wronged by ${2 vengeance}!
 	mpsetvar $i VENGEANCE 
 ~
 
-MASK_PROG 'IT WAS I!'
-	IF VAR($n VENGEANCE != MINE)
-		gossip Naive! You will pay for this! A reward for the death of my enemy!
-	ENDIF
-~
-
 SPEECH_PROG trouble problem wronged quest help honor insult reward corpse enemy trouble? problem? wronged? quest? help? honor? insult? reward? corpse? enemy?
-say "$n" That dirty so-and-so has insulted my honor!  Give me his corpse and I'll have a reward.
+	say "$n" ${2 vengeance} has insulted my honor!  Kill him dead and I'll have a reward.
 ~
 
-GIVE_PROG body of
+GREET_PROG 200
 	IF VAR($i VENGEANCE != MINE)
-		IF VAR($n WRONGED == '$<$i WRONGED>')
+		IF VAR($n VENGEANCE == KILLER)
 			mpsetvar $i VENGEANCE MINE
-			mpsetvar $n VENGEANCE MINE
+			mpsetvar $n VENGEANCE
 			say "$n" Thank you.  I will mount his head on my wall.  Here is your reward:
 			mpexp $n 100
 			mpoload QuestPoint
 			give "a quest point" "$n"
 			mpoload 1000
 			give 1000 "$n"
+			mpquestwin $n vengeance
 			mpendquest vengeance
 		ENDIF
 	ENDIF

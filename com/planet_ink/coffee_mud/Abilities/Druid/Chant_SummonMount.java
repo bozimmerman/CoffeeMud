@@ -99,6 +99,7 @@ public class Chant_SummonMount extends Chant
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob));
 				target.bringToLife(newRoom,true);
+				target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
 				ExternalPlay.move(target,opDir,false,false);

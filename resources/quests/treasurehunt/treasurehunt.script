@@ -1,30 +1,31 @@
 ONCE_PROG
-	gossip Find and bring me my missing coin and you shall be rewarded!
+	gossip Find and bring me $[1 treasurehunt] and you shall be rewarded!
 	mpsetvar i$ TREASUREHUNT 
 ~
 
 SPEECH_PROG missing bring quest reward coin find missing? bring? quest? reward? coin? find? missing?
-	say "$n" Find and bring me my missing coin and you shall be rewarded!
+	say "$n" Find and bring me $[1 treasurehunt] and you shall be rewarded!
 endif
 ~
 
-GIVE_PROG 'a silver coin' 'a copper coin' 'a quest coin' 'a platinum coin'
-	if var($n TREASUREHUNT == FOUND)
-		say "$n" You've already helped me!
+GIVE_PROG all
+	IF !ISNAME($o '$[1 treasurehunt]')
+		say "$n" Sorry, that's not it!
+		drop $o
 	else
-		if var($i TREASUREHUNT == FOUND)
-			say "$n" Sorry, the quest is over!
+		if var($n TREASUREHUNT == FOUND)
+			say "$n" Sorry, someone beat you!
+			drop $o
 		else
 			mpsetvar $i TREASUREHUNT FOUND
-			mpsetvar $n TREASUREHUNT FOUND
 			say "$n" Congratulations!
 			shake $n
 			mpexp $n 100
-			hold coin
+			hold $[1 treasurehunt]
 			mpoload QuestPoint
 			give "a quest point" "$n"
+			mpquestwin $n treasurehunt
 			mpendquest treasurehunt
 		endif
 	endif
-
 ~

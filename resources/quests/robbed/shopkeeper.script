@@ -15,23 +15,30 @@ SPEECH_PROG trouble problem robbed stole rob thief quest help trouble? problem? 
 
 GIVE_PROG gold
 	IF VAR($i ROBBED == RECOVER)
-		say "$n" I've already been helped, thanks.
+		say "$n" I've already been helped, but thanks.
 	ELSE
-		IF VAR($n ROBBED == RECOVER)
-			say "$n" You've already helped me.  Find someone else.
+		IF QUESTWINNER($n robbed)
+			say "$n" You've already completed this quest!
+			drop $o
 		ELSE
-			IF GOLDAMT($o >= 5000)
-				mpsetvar $i ROBBED RECOVER
-				mpsetvar $n ROBBED RECOVER
-				say "$n" Thank you very much.  I hope he didn't give you too much trouble.  Here is your reward:
-				mpexp $n 100
-				mpoload QuestPoint
-				give "a quest point" "$n"
-				mpoload 100
-				give 100 "$n"
-				mpendquest robbed
+			IF VAR($n ROBBED == KILLER)
+				IF GOLDAMT($o >= 5000)
+					mpsetvar $i ROBBED RECOVER
+					mpsetvar $n ROBBED 
+					say "$n" Thank you very much.  I hope he didn't give you too much trouble.  Here is your reward:
+					mpexp $n 100
+					mpoload QuestPoint
+					give "a quest point" "$n"
+					mpoload 100
+					give 100 "$n"
+					mpquestwin $n robbed
+					mpendquest robbed
+				ELSE
+					say "$n" Are you trying to insult me?  I just got robbed of more than THAT!
+					drop $o
+				ENDIF
 			ELSE
-				say "$n" Are you trying to insult me?  I just got robbed of more than THAT!
+				say "$n" What's this?  This is not my money! Get MY money back!
 				drop $o
 			ENDIF
 		ENDIF

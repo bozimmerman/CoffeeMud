@@ -164,6 +164,7 @@ public class Spell_Wish extends Spell
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
+					newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 					newMOB.setFollowing(mob);
 					Log.sysOut("Wish",mob.ID()+" wished for mob "+newMOB.ID()+".");
