@@ -36,7 +36,7 @@ public class Wyvern extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public String standardMobCondition(MOB mob)
+	public String heathText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

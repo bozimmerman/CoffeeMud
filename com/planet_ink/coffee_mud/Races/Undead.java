@@ -60,7 +60,7 @@ public class Undead extends StdRace
 			affect.tagModified(true);
 		}
 	}
-	public String standardMobCondition(MOB mob)
+	public String heathText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

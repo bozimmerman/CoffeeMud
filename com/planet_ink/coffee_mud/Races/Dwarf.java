@@ -66,7 +66,7 @@ public class Dwarf extends StdRace
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
 
-	public String standardMobCondition(MOB mob)
+	public String heathText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
