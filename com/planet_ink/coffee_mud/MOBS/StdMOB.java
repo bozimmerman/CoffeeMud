@@ -1142,8 +1142,6 @@ public class StdMOB implements MOB
 							for(int s=0;s<numAttacks;s++)
 								ExternalPlay.postAttack(this,victim,weapon);
 							curState().expendEnergy(this,maxState,true);
-							if(weapon==null)
-								pleaseWieldSomething();
 						}
 						if(!isMonster())
 						{
@@ -1448,24 +1446,6 @@ public class StdMOB implements MOB
 		}
 		return null;
 	}
-
-
-	private void pleaseWieldSomething()
-	{
-		if(fetchWieldedItem()!=null)
-			return;
-		
-		for(int i=0;i<inventory.size();i++)
-		{
-			Item thisItem=(Item)inventory.elementAt(i);
-			if((thisItem.canBeWornAt(Item.WIELD))&&(thisItem.canWear(this)))
-			{
-				thisItem.wearAt(Item.WIELD);
-				return;
-			}
-		}
-	}
-
 
 	public boolean isMine(Environmental env)
 	{

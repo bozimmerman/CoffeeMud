@@ -14,6 +14,7 @@ public interface ExternalCommand
 	public boolean doAttack(MOB attacker, MOB target, Weapon weapon);
 	
 	// other actions
+	public boolean wear(MOB mob, Item item);
 	public void standIfNecessary(MOB mob);
 	public void look(MOB mob, Vector commands, boolean quiet);
 	public void move(MOB mob, int directionCode, boolean flee);

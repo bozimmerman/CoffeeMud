@@ -595,6 +595,9 @@ public class TelnetSession extends Thread implements Session
 			try
 			{
 				int c=in.read();
+				if(c<0)
+					throw new IOException("Connection reset by peer.");
+				else
 				if(c==10)
 					c=-1;
 				else
@@ -607,8 +610,10 @@ public class TelnetSession extends Thread implements Session
 			{
 				return null;
 			}
+			finally
+			{
+			}
 		}
-
 		String inStr=preFilter(input);
 		input=new StringBuffer("");
 		return inStr;
@@ -746,6 +751,9 @@ public class TelnetSession extends Thread implements Session
 
 		}
 		catch(IOException e)
+		{
+		}
+		finally
 		{
 		}
 	}

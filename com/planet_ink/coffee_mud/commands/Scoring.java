@@ -23,8 +23,11 @@ public class Scoring
 					foundButUnseen=true;
 			}
 		}
-		if((foundButUnseen)&&(Sense.isSleeping(seer)))
+		if(foundButUnseen)
 			msg.append("(nothing you can see right now)");
+		else
+		if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
+			msg.append("(some gold coins you can't see)");
 		else
 		if(mob.getMoney()>0)
 			msg.append(mob.getMoney()+" gold coins.\n\r");

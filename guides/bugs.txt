@@ -1,1 +1,1 @@
-no alignment change on monster kill?
+?autogold when blind

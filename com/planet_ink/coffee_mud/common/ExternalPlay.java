@@ -25,6 +25,11 @@ public class ExternalPlay
 		if(player!=null) return player.hitWord(weaponType,damageAmount);
 		return "";
 	}
+	public static boolean wear(MOB mob, Item item)
+	{
+		if(player!=null) return player.wear(mob,item);
+		return false;
+	}
 	public static void standIfNecessary(MOB mob)
 	{
 		if(player!=null) player.standIfNecessary(mob);

@@ -10,6 +10,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor=newProcessor;
 	}
+	public boolean wear(MOB mob, Item item)
+	{
+		return processor.itemUsage.wear(mob,item);
+	}
 	
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{

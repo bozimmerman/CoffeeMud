@@ -2155,6 +2155,8 @@ public class Import
 		Vector shopData=new Vector();
 		Vector specialData=new Vector();
 		Vector newRooms=new Vector();
+		
+		boolean prompt=true;
 
 		commands.removeElementAt(0);
 		
@@ -2170,6 +2172,11 @@ public class Import
 			return;
 		}
 
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("noprompt"))
+		{
+			commands.removeElementAt(0);
+			prompt=false;
+		}
 		// read in the .are file
 		StringBuffer buf=Resources.getFile(Util.combine(commands,0));
 		if((buf==null)||((buf!=null)&&(buf.length()==0)))
@@ -2210,7 +2217,8 @@ public class Import
 			}
 			if(exists)
 			{
-				if(mob.session().confirm("Area: \""+areaName+"\" exists, obliterate first?","N"))
+				if((!prompt)
+				||(mob.session().confirm("Area: \""+areaName+"\" exists, obliterate first?","N")))
 				{
 					if(mob.location().getAreaID().equalsIgnoreCase(areaName))
 					{
@@ -2240,7 +2248,7 @@ public class Import
 					return;
 			}
 			else
-			if(!mob.session().confirm("Found area: \""+areaName+"\", is this ok?","Y"))
+			if((prompt)&&(!mob.session().confirm("Found area: \""+areaName+"\", is this ok?","Y")))
 				return;
 
 			Resources.removeResource("areasList");
@@ -2567,7 +2575,8 @@ public class Import
 											}
 									}
 									if(opExit==null)
-										if(!mob.session().confirm(R.ID()+" links to #"+linkRoomID+". Found "+R2.ID()+". Link?","Y"))
+										if((prompt)&&
+										  (!mob.session().confirm(R.ID()+" links to #"+linkRoomID+". Found "+R2.ID()+". Link?","Y")))
 											continue;
 									linkRoom=R2;
 									if(opExit!=null)
