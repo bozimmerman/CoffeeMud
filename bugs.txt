@@ -5,7 +5,7 @@ webmacro DUMPFILE To view some text file on your computer through the MUD withou
 webmacro LIST Maybe a system for the command LIST, wouldnt be as easy implemented  as some of the above (SHUTDOWN for example could just be a button on  a .cmvp page)
 
 If there is no TELL LAST thing, just take this as an IDEA then.
-I have a Prop_HaveSpellCast on a glass item.  Clever player quickly ‘smashed’ the object.  Prop did not wear off. 
+Might just be our system, but, in combat, if you type ‘laugh’ you get the whole social list.
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 

@@ -122,7 +122,7 @@ public class Prop_HaveSpellCast extends Property
 			myItem=(Item)affectedMOB;
 
 			if((lastMOB!=null)
-			&&(myItem.owner()!=lastMOB)
+			&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
 			&&(lastMOB.location()!=null))
 				removeMyAffectsFromLastMob();
 			

@@ -118,7 +118,8 @@ public class Prop_HaveAdjuster extends Property
 		if((affectedMOB!=null)
 		&&(affectedMOB instanceof MOB)
 		&&(affected!=null)
-		&&(affected instanceof Item))
+		&&(affected instanceof Item)
+		&&(!((Item)affected).amDestroyed()))
 			envStuff(affectableStats,adjEnvStats);
 		super.affectEnvStats(affectedMOB,affectableStats);
 	}
