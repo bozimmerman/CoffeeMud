@@ -32,8 +32,8 @@ public class ActiveTicker extends StdBehavior
 	public void setParms(String newParms)
 	{
 		parms=newParms;
-		minTicks=getVal(parms,"minticks",minTicks);
-		maxTicks=getVal(parms,"maxticks",maxTicks);
+		minTicks=getVal(parms,"min",minTicks);
+		maxTicks=getVal(parms,"max",maxTicks);
 		chance=getVal(parms,"chance",chance);
 		tickReset();
 	}
@@ -74,7 +74,8 @@ public class ActiveTicker extends StdBehavior
 	{
 		if((tickID==Host.MOB_TICK)
 		||(tickID==Host.ITEM_BEHAVIOR_TICK)
-		||(tickID==Host.ROOM_BEHAVIOR_TICK))
+		||(tickID==Host.ROOM_BEHAVIOR_TICK)
+		||((tickID==Host.AREA_TICK)&&(ticking instanceof Area)))
 		{
 			int a=Dice.rollPercentage();
 			if((--tickDown)<1)

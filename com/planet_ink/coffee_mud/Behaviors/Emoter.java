@@ -25,7 +25,9 @@ public class Emoter extends ActiveTicker
 	{
 		String myParms=newParms;
 		emotes=new Vector();
-		int x=myParms.indexOf("/");
+		char c=';';
+		int x=myParms.indexOf(c);
+		if(x<0){ c='/'; x=myParms.indexOf(c);}
 		if(x>0)
 		{
 			String parmText=myParms.substring(0,x);
@@ -35,7 +37,7 @@ public class Emoter extends ActiveTicker
 		while(myParms.length()>0)
 		{
 			String thisEmote=myParms;
-			x=myParms.indexOf("/");
+			x=myParms.indexOf(";");
 			if(x>0)
 			{
 				thisEmote=myParms.substring(0,x);
@@ -55,19 +57,20 @@ public class Emoter extends ActiveTicker
 		{
 			MOB mob=this.getBehaversMOB(ticking);
 			Room room=this.getBehaversRoom(ticking);
-			if(room==null) return;
-
-			boolean nonMOBfound=false;
-			for(int i=0;i<room.numInhabitants();i++)
+			if(room!=null)
 			{
-				MOB inhab=room.fetchInhabitant(i);
-				if((inhab!=null)&&(!inhab.isMonster()))
+				boolean nonMOBfound=false;
+				for(int i=0;i<room.numInhabitants();i++)
 				{
-					nonMOBfound=true;
-					break;
+					MOB inhab=room.fetchInhabitant(i);
+					if((inhab!=null)&&(!inhab.isMonster()))
+					{
+						nonMOBfound=true;
+						break;
+					}
 				}
+				if(!nonMOBfound) return;
 			}
-			if(!nonMOBfound) return;
 
 			String emote=(String)emotes.elementAt(Dice.roll(1,emotes.size(),0)-1);
 			if((mob!=null)&&(ticking instanceof MOB))
@@ -80,13 +83,20 @@ public class Emoter extends ActiveTicker
 				catch(Exception e){ Log.errOut("Emoter",e);}
 			}
 			else
-			if(ticking instanceof Room)
+			if(ticking instanceof Area)
 			{
-				MOB dummyMOB=CMClass.getMOB("StdMOB");
-				room.show(dummyMOB,null,Affect.MSG_OK_ACTION,emote);
+				Vector V=((Area)ticking).getMyMap();
+				for(int r=0;r<V.size();r++)
+				{
+					room=(Room)V.elementAt(r);
+					room.showHappens(Affect.MSG_OK_ACTION,emote);
+				}
 			}
 			else
-			if(ticking instanceof Item)
+			if(ticking instanceof Room)
+				room.showHappens(Affect.MSG_OK_ACTION,emote);
+			else
+			if((ticking instanceof Item)&&(room!=null))
 			{
 				Item item=(Item)ticking;
 				if(mob!=null)
