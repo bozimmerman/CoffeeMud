@@ -101,8 +101,8 @@ public class ScrimShaw extends CommonSkill
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item building=(Item)E;
-		if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)
+		Item IE=(Item)E;
+		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of bone.  That can't be mended.");

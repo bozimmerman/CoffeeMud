@@ -513,17 +513,17 @@ public class CommonSkill extends StdAbility
 				commonTell(mob,"You can't mend "+E.name()+".");
 			return false;
 		}
-		Item building=(Item)E;
-		if(!building.subjectToWearAndTear())
+		Item IE=(Item)E;
+		if(!IE.subjectToWearAndTear())
 		{
 			if(!quiet)
-				commonTell(mob,"You can't mend "+building.name()+".");
+				commonTell(mob,"You can't mend "+IE.name()+".");
 			return false;
 		}
-		if(building.usesRemaining()>=100)
+		if(IE.usesRemaining()>=100)
 		{
 			if(!quiet)
-				commonTell(mob,building.name()+" is in good condition already.");
+				commonTell(mob,IE.name()+" is in good condition already.");
 			return false;
 		}
 		return true;

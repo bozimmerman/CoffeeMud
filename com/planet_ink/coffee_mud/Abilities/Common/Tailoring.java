@@ -105,8 +105,8 @@ public class Tailoring extends CommonSkill
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item building=(Item)E;
-		if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+		Item IE=(Item)E;
+		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of any sort of cloth.  It can't be mended.");

@@ -109,10 +109,10 @@ public class Fletching extends CommonSkill
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item building=(Item)E;
-		if((!(building instanceof Weapon))
-		||(((Weapon)building).weaponClassification()!=Weapon.CLASS_RANGED)
-		   &&(((Weapon)building).weaponClassification()!=Weapon.CLASS_THROWN))
+		Item IE=(Item)E;
+		if((!(IE instanceof Weapon))
+		||(((Weapon)IE).weaponClassification()!=Weapon.CLASS_RANGED)
+		   &&(((Weapon)IE).weaponClassification()!=Weapon.CLASS_THROWN))
 		{
 			if(!quiet)
 				commonTell(mob,"You don't know how to mend that sort of thing.");

@@ -577,7 +577,7 @@ public class TheFight
 		else
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOGUARD));
-			mob.tell("You are on longer on guard.  You will now follow group leaders.");
+			mob.tell("You are no longer on guard.  You will now follow group leaders.");
 			if(mob.isMonster())
 				ExternalPlay.quickSay(mob,null,"I will now follow my group leader.",false,false);
 		}

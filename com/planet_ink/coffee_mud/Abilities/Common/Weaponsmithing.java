@@ -174,9 +174,9 @@ public class Weaponsmithing extends CommonSkill
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item building=(Item)E;
-		if((!(building instanceof Weapon))
-		||((((Weapon)building).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
+		Item IE=(Item)E;
+		if((!(IE instanceof Weapon))
+		||((((Weapon)IE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
 		{
 			if(!quiet)
 				commonTell(mob,"You don't know how to mend that sort of thing.");

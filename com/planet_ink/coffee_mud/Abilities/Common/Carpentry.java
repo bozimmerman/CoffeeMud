@@ -114,8 +114,8 @@ public class Carpentry extends CommonSkill
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item building=(Item)E;
-		if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		Item IE=(Item)E;
+		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of wood.  That can't be mended.");

@@ -105,12 +105,12 @@ public class Weaving extends CommonSkill
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item building=(Item)E;
-		if((building.material()!=EnvResource.RESOURCE_COTTON)
-		&&(building.material()!=EnvResource.RESOURCE_SILK)
-		&&(building.material()!=EnvResource.RESOURCE_HEMP)
-		&&(building.material()!=EnvResource.RESOURCE_WHEAT)
-		&&(building.material()!=EnvResource.RESOURCE_SEAWEED))
+		Item IE=(Item)E;
+		if((IE.material()!=EnvResource.RESOURCE_COTTON)
+		&&(IE.material()!=EnvResource.RESOURCE_SILK)
+		&&(IE.material()!=EnvResource.RESOURCE_HEMP)
+		&&(IE.material()!=EnvResource.RESOURCE_WHEAT)
+		&&(IE.material()!=EnvResource.RESOURCE_SEAWEED))
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of any sort of weavable material.  It can't be mended.");

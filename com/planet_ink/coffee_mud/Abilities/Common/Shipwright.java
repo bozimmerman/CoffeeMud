@@ -118,14 +118,14 @@ public class Shipwright extends CommonSkill
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
-		Item building=(Item)E;
-		if(!(building instanceof Rideable))
+		Item IE=(Item)E;
+		if(!(IE instanceof Rideable))
 		{
 			if(!quiet)
 				commonTell(mob,"You don't know how to mend that.");
 			return false;
 		}
-		if((building.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of wood.  That can't be mended.");
