@@ -127,6 +127,30 @@ public class Sounder extends StdBehavior
 					strings[v]=s.substring(10).trim();
 				}
 				else
+				if((s.toUpperCase().startsWith("OPEN ")))
+				{
+					triggers[v]=CMMsg.TYP_OPEN;
+					strings[v]=s.substring(5).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("OPEN_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_OPEN|ROOM_MASK;
+					strings[v]=s.substring(10).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("CLOSE ")))
+				{
+					triggers[v]=CMMsg.TYP_CLOSE;
+					strings[v]=s.substring(6).trim();
+				}
+				else
+				if((s.toUpperCase().startsWith("CLOSE_ROOM ")))
+				{
+					triggers[v]=CMMsg.TYP_CLOSE|ROOM_MASK;
+					strings[v]=s.substring(11).trim();
+				}
+				else
 				if((s.toUpperCase().startsWith("HOLD ")))
 				{
 					triggers[v]=CMMsg.TYP_HOLD;
@@ -317,6 +341,8 @@ public class Sounder extends StdBehavior
 		case CMMsg.TYP_WIELD:
 		case CMMsg.TYP_EAT:
 		case CMMsg.TYP_DRINK:
+		case CMMsg.TYP_OPEN:
+		case CMMsg.TYP_CLOSE:
 		case CMMsg.TYP_SIT:
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:

@@ -1,3 +1,4 @@
+Hidden people in rideables don't show up on the list.
 1. EmberBud Import: Margate.are: n of 11656 door is not there
 2. EmberBud Import: Margate.are: 11752 should have been no_mob (code 0, but makes me wonder about 8)
 3. EmberBud Import: Margate.are: All the doors except locked ones became default open
