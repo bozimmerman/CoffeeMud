@@ -1,13 +1,10 @@
 Comprehend languages no longer translates TELLs in other languages.
 
 Try out Artisans
-Test: ?Vampirism, Cannibalism, ?Forgive,
-Test: Infuse Holiness, Infuse Unholiness, ?Sense Traps, Conviction
-Test: Benediction, Maladiction, Blood Hearth, Blessed Hearth, Guardian Hearth,
-Test: Consecrate Land, Desecrate Land, Neutralize Land, Condemnation, Heresy
-Test: ?Faithless, Tithe, ?Daily Bread, Righteous Indignation
-Test: ??Birds Eye, Haunted, Peace Ritual, Unholy Armament, Create Idol, Doomspout
-Test: Revival, Marry, Annul, Divorce
+Test: ?Forgive, ?Sense Traps, ?Blood Hearth, ?Blessed Hearth, Guardian Hearth,
+Test: ?Condemnation, ?Heresy, ??Faithless, ??Daily Bread,
+Test: ??Birds Eye, Peace Ritual, ?Unholy Armament, ?Create Idol
+Test: !Revival, Annul, Divorce
 
 Druids meed more Qualifying chants, and more qualifying in general as opposed to gaining. 
 Druids of all kinds suffer double duration on all crafting skills -- need a flag

@@ -19,7 +19,7 @@ public class Prayer_BlessedHearth extends Prayer
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if((affected==null)||(!(affected instanceof Room)))
 			return super.okMessage(myHost,msg);
 
 		Room R=(Room)affected;

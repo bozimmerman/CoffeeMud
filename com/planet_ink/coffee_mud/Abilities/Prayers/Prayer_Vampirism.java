@@ -118,6 +118,7 @@ public class Prayer_Vampirism extends Prayer
 			M.curState().adjHunger(-2,M.maxState());
 			if((M.isMonster())
 			&&((M.curState().getThirst()<=0)||(M.curState().getHunger()<=0))
+			&&(M.fetchEffect("Butchering")==null)
 			&&(Sense.aliveAwakeMobile(M,true)))
 			{
 				DeadBody B=null;

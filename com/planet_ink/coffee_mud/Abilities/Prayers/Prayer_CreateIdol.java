@@ -83,7 +83,7 @@ public class Prayer_CreateIdol extends Prayer
 			else
 			{
 				Vector V=R.resourceChoices();
-				if(V.size()>0)
+				if((V!=null)&&(V.size()>0))
 				for(int v=0;v<V.size()*10;v++)
 				{
 					int rsc=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).intValue();

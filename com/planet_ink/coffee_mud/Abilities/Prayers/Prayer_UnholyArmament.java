@@ -66,11 +66,11 @@ public class Prayer_UnholyArmament extends Prayer
 		}
 		else
 		{
-			I=CMClass.getWeapon("GenArmor");
+			I=CMClass.getArmor("GenArmor");
 			I.setRawProperLocationBitmap(pos);
 			I.baseEnvStats().setLevel(mob.envStats().level());
 			if(pos==Item.ABOUT_BODY) 
-				I.setMaterial(EnvResource.RESOURCE_COAL);
+				I.setMaterial(EnvResource.RESOURCE_COTTON);
 			else
 				I.setMaterial(EnvResource.MATERIAL_MITHRIL);
 			I.recoverEnvStats();

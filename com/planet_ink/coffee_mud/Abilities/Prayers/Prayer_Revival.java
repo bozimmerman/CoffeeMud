@@ -93,6 +93,8 @@ public class Prayer_Revival extends Prayer
 				MOB M=(MOB)inhabs.elementAt(Dice.roll(1,inhabs.size(),-1));
 				if((M!=null)&&(levels>=M.envStats().level()))
 				{
+					MOB vic1=mob.getVictim();
+					MOB vic2=M.getVictim();
 					if(M.getWorshipCharID().length()>0)
 					{
 						Ability A=CMClass.getAbility("Prayer_Faithless");
@@ -115,6 +117,8 @@ public class Prayer_Revival extends Prayer
 								}
 							}
 					}
+					mob.setVictim(vic1);
+					M.setVictim(vic2);
 				}
 			}
 		}

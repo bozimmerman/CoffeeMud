@@ -54,7 +54,8 @@ public class Prayer_Heresy extends Prayer
 					V.addElement("heresy against <T-NAMESELF>");//the crime
 					int low=CMAble.lowestQualifyingLevel(ID());
 					int me=CMAble.qualifyingClassLevel(mob,this);
-					int lvl=(low-me)/5;
+					int lvl=(me-low)/5;
+					if(lvl<0) lvl=0;
 					if(lvl>Law.ACTION_HIGHEST) lvl=Law.ACTION_HIGHEST;
 					V.addElement(Law.ACTION_DESCS[lvl]);//sentence
 					V.addElement("Angering "+D.name()+" will bring doom upon us all!");

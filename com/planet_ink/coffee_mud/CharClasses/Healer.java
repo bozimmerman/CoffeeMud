@@ -45,6 +45,7 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",false);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_InfuseHoliness",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_RemoveDeathMark",false);

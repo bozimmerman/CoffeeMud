@@ -39,7 +39,6 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Extinguish",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_InfuseUnholiness",true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_CreateWater",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_Purify",false);
@@ -53,7 +52,7 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_ProtCold",false);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_RitegousIndignation",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_RighteousIndignation",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_HuntEvil",false);

@@ -507,7 +507,7 @@ public class Arrest extends StdBehavior
 				if(laws!=null)
 				{
 					boolean didSomething=false;
-					if((V!=null)&&(V.elementAt(1) instanceof String))
+					if((V!=null)&&(V.size()>0)&&(V.elementAt(1) instanceof String))
 					{
 						String name=(String)V.elementAt(1);
 						V.clear();

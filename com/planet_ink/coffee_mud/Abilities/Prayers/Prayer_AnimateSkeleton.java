@@ -46,7 +46,8 @@ public class Prayer_AnimateSkeleton extends Prayer
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.baseState().setMana(0);
 		Behavior B=CMClass.getBehavior("Aggressive");
-		if((B!=null)&&(mob!=null)){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
+		if((B!=null)&&(mob!=null)){ B.setParms("+NAMES \"-"+mob.Name()+"\""); }
+		if(B!=null) newMOB.addBehavior(B);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();

@@ -103,15 +103,18 @@ public class Prayer_UndeniableFaith extends Prayer
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,-(levelDiff*25),auto);
+		int type=affectType(auto);
+		int mal=CMMsg.MASK_MALICIOUS;
+		if(auto){ type=Util.unsetb(type,CMMsg.MASK_MALICIOUS); mal=0;}
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
+			FullMsg msg=new FullMsg(mob,target,this,type,auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
 			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVE(S) !!!");
-			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_VERBAL|mal|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))
 			&&(mob.location().okMessage(mob,msg3))
 			&&(mob.location().okMessage(mob,msg2)))

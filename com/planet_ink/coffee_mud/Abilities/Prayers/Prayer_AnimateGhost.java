@@ -54,7 +54,8 @@ public class Prayer_AnimateGhost extends Prayer
 			newMOB.addNonUninvokableEffect(A);
 		}
 		Behavior B=CMClass.getBehavior("Aggressive");
-		if((B!=null)&&(mob!=null)){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
+		if((B!=null)&&(mob!=null)){ B.setParms("+NAMES \"-"+mob.Name()+"\"");}
+		if(B!=null) newMOB.addBehavior(B);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		if(mob==null)

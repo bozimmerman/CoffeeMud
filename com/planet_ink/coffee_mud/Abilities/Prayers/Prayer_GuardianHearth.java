@@ -20,7 +20,7 @@ public class Prayer_GuardianHearth extends Prayer
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if((affected==null)||(!(affected instanceof Room)))
 			return super.okMessage(myHost,msg);
 
 		if(prots==null)
