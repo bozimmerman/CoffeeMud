@@ -93,6 +93,15 @@ public class ProcessSMTPrequest extends Thread
 					if((lastc==cr.charAt(0))&&(c==cr.charAt(1)))
 					{	s=input.substring(0,input.length()-1); break;}
 					input.append((char)c);
+					if(input.length()>server.getMaxMsgSize())
+					{
+						replyData=("552 String exceeds size limit. You are very bad!"+cr).getBytes();
+						//Log.errOut("SMTPR","Long request from "+sock.getInetAddress());
+						sout.write(replyData);
+						sout.flush();
+						quitFlag=true;
+						s="";
+					}
 				}
 				String cmd=s.toUpperCase();
 				String parm="";
