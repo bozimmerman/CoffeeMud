@@ -6,15 +6,15 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Song_Agility extends Song
+public class Song_Armor extends Song
 {
 
-	public Song_Agility()
+	public Song_Armor()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Agility";
-		displayText="(Song of Agility)";
+		name="Armor";
+		displayText="(Song of Armor)";
 		miscText="";
 
 		canBeUninvoked=true;
@@ -32,13 +32,13 @@ public class Song_Agility extends Song
 
 	public Environmental newInstance()
 	{
-		return new Song_Agility();
+		return new Song_Armor();
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(invoker.envStats().level())*5));
+		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(invoker.envStats().level())*1));
 	}
 }
