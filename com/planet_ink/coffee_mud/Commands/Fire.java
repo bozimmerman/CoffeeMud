@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,7 +7,7 @@ import java.util.*;
 public class Fire extends StdCommand
 {
 	public Fire(){}
-	
+
 	private String[] access={"FIRE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
@@ -15,7 +15,7 @@ public class Fire extends StdCommand
 	{
 		String rest="ALL";
 		if(commands.size()>1) rest=Util.combine(commands,1);
-		
+
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
 		   target=null;
@@ -33,6 +33,6 @@ public class Fire extends StdCommand
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

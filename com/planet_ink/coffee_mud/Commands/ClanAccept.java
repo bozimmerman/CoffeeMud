@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,14 +7,14 @@ import java.util.*;
 public class ClanAccept extends BaseClanner
 {
 	public ClanAccept(){}
-	
+
 	private String[] access={"CLANACCEPT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());
-		
+
 		commands.setElementAt("clanaccept",0);
 		String qual=Util.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
@@ -94,6 +94,6 @@ public class ClanAccept extends BaseClanner
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return false;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -10,7 +10,7 @@ public class Sheath extends BaseItemParser
 
 	private String[] access={"SHEATH"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public static Vector getSheaths(MOB mob)
 	{
 		Vector sheaths=new Vector();
@@ -27,7 +27,7 @@ public class Sheath extends BaseItemParser
 		}
 		return sheaths;
 	}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -43,7 +43,7 @@ public class Sheath extends BaseItemParser
 			commands.removeElementAt(commands.size()-1);
 			noerrors=true;
 		}
-		
+
 		Item item1=null;
 		Item item2=null;
 		if(commands.size()>0)

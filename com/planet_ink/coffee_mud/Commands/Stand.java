@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -14,7 +14,7 @@ public class Stand extends StdCommand
 		throws java.io.IOException
 	{
 		boolean ifnecessary=((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")));
-			
+
 		if((!Sense.isSitting(mob))&&(!Sense.isSleeping(mob)))
 		{
 			if(!ifnecessary)

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -10,7 +10,7 @@ public class Wear extends BaseItemParser
 
 	private String[] access={"WEAR"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public boolean wear(MOB mob, Item item, boolean quiet)
 	{
 		String str="<S-NAME> put(s) on <T-NAME>.";
@@ -36,7 +36,7 @@ public class Wear extends BaseItemParser
 		return false;
 	}
 
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -48,7 +48,7 @@ public class Wear extends BaseItemParser
 		commands.removeElementAt(0);
 		if(commands.firstElement() instanceof Item)
 			return wear(mob,(Item)commands.firstElement(),((commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY"))));
-		
+
 		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -8,10 +8,10 @@ import java.io.IOException;
 public class Destroy extends StdCommand
 {
 	public Destroy(){}
-	
+
 	private String[] access={"DESTROY"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public boolean mobs(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -87,7 +87,7 @@ public class Destroy extends StdCommand
 		}
 		return true;
 	}
-	
+
 	public void rooms(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -202,7 +202,7 @@ public class Destroy extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
-	
+
 	public boolean items(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -649,6 +649,6 @@ public class Destroy extends StdCommand
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean arcCommand(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

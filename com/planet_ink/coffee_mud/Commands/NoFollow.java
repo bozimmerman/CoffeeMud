@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,10 +7,10 @@ import java.util.*;
 public class NoFollow extends Follow
 {
 	public NoFollow(){}
-	
+
 	private String[] access={"NOFOLLOW","NOFOL"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -37,6 +37,6 @@ public class NoFollow extends Follow
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

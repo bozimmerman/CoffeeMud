@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -10,7 +10,7 @@ public class Drop extends BaseItemParser
 
 	private String[] access={"DROP","DRO"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
 		FullMsg msg=new FullMsg(mob,dropThis,null,(optimize?CMMsg.MASK_OPTIMIZE:0)|CMMsg.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
@@ -35,7 +35,7 @@ public class Drop extends BaseItemParser
 		boolean optimize=true;
 		Item container=null;
 		Vector V=new Vector();
-		
+
 		if((commands.size()==3)
 		&&(commands.firstElement() instanceof Item)
 		&&(commands.elementAt(1) instanceof Boolean)
@@ -43,7 +43,7 @@ public class Drop extends BaseItemParser
 			return drop(mob,(Item)commands.firstElement(),
 						((Boolean)commands.elementAt(1)).booleanValue(),
 						((Boolean)commands.elementAt(2)).booleanValue());
-		
+
 		if(commands.size()<2)
 		{
 			mob.tell("Drop what?");

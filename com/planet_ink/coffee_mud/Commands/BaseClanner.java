@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -80,7 +80,7 @@ public class BaseClanner extends StdCommand
 		mob.tell("Without a vote, this command can not be executed.");
 		return false;
 	}
-	
+
 
 	public static void clanAnnounce(MOB mob, String msg)
 	{

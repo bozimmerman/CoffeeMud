@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,7 +7,7 @@ import java.util.*;
 public class Close extends StdCommand
 {
 	public Close(){}
-	
+
 	private String[] access={"CLOSE","CLOS","CLO","CL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
@@ -44,7 +44,7 @@ public class Close extends StdCommand
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					if(mob.location().getExitInDir(d)==closeThis)
 					{dirCode=d; break;}
-				
+
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
 					Room opR=mob.location().getRoomInDir(dirCode);
@@ -69,6 +69,6 @@ public class Close extends StdCommand
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,7 +7,7 @@ import java.util.*;
 public class Open extends BaseItemParser
 {
 	public Open(){}
-	
+
 	private String[] access={"OPEN","OP","O"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
@@ -40,7 +40,7 @@ public class Open extends BaseItemParser
 			&&(!open))
 			{
 				mob.location().send(msg.source(),msg);
-				
+
 				if(dirCode<0)
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					if(mob.location().getExitInDir(d)==openThis)
@@ -67,6 +67,6 @@ public class Open extends BaseItemParser
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

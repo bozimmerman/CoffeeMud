@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,10 +7,10 @@ import java.util.*;
 public class Get extends BaseItemParser
 {
 	public Get(){}
-	
+
 	private String[] access={"GET","G"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{ return get(mob,container,getThis,quiet,"get",false);}
 
@@ -52,7 +52,7 @@ public class Get extends BaseItemParser
 		}
 		return true;
 	}
-	
+
 	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
 	{
 		int gold=numPossibleGold(itemID);
@@ -99,7 +99,7 @@ public class Get extends BaseItemParser
 				quiet=((Boolean)commands.elementAt(1)).booleanValue();
 			return get(mob,container,item,quiet);
 		}
-		
+
 		if(commands.size()<2)
 		{
 			mob.tell("Get what?");
@@ -189,6 +189,6 @@ public class Get extends BaseItemParser
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

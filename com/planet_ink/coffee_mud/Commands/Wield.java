@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -10,7 +10,7 @@ public class Wield extends BaseItemParser
 
 	private String[] access={"WIELD"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{

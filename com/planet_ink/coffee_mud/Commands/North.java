@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,7 +7,7 @@ import java.util.*;
 public class North extends Go
 {
 	public North(){}
-	
+
 	private String[] access={"NORTH","N"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
@@ -24,6 +24,6 @@ public class North extends Go
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

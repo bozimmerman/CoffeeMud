@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -43,7 +43,7 @@ public class Unlock extends StdCommand
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					if(mob.location().getExitInDir(d)==unlockThis)
 					{dirCode=d; break;}
-				
+
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))
 				{
 					Room opR=mob.location().getRoomInDir(dirCode);

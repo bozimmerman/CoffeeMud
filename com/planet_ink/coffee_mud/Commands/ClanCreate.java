@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,7 +7,7 @@ import java.util.*;
 public class ClanCreate extends BaseClanner
 {
 	public ClanCreate(){}
-	
+
 	private String[] access={"CLANCREATE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
@@ -88,6 +88,6 @@ public class ClanCreate extends BaseClanner
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return false;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

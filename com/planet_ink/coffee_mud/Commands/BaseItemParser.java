@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -31,7 +31,7 @@ public class BaseItemParser extends StdCommand
 		}
 		return null;
 	}
-	
+
 	public static Vector possibleContainers(MOB mob, Vector commands, int wornReqCode)
 	{
 		Vector V=new Vector();
@@ -90,7 +90,7 @@ public class BaseItemParser extends StdCommand
 		while((allFlag)&&(addendum<=maxContained));
 		return V;
 	}
-	
+
 	public static int numPossibleGold(String itemID)
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))

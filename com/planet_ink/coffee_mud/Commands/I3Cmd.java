@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,10 +7,10 @@ import java.util.*;
 public class I3Cmd extends StdCommand
 {
 	public I3Cmd(){}
-	
+
 	private String[] access={"I3"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public void i3Error(MOB mob)
 	{
 		if(mob.isASysOp(null))
@@ -18,7 +18,7 @@ public class I3Cmd extends StdCommand
 		else
 			mob.tell("Try I3 LIST or I3 INFO [MUD-NAME].");
 	}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -91,11 +91,11 @@ public class I3Cmd extends StdCommand
 			CMClass.I3Interface().i3mudInfo(mob,Util.combine(commands,1));
 		else
 			i3Error(mob);
-		
+
 		return false;
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,7 +7,7 @@ import java.util.*;
 public class Sit extends StdCommand
 {
 	public Sit(){}
-	
+
 	private String[] access={"SIT","REST","R"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands)
@@ -19,7 +19,7 @@ public class Sit extends StdCommand
 			return false;
 		}
 		if(commands.size()<=1)
-		{ 
+		{
 			if(Sense.isSitting(mob))
 				mob.tell(getScr("Movement","siterr1"));
 			else
@@ -54,6 +54,6 @@ public class Sit extends StdCommand
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,10 +7,10 @@ import java.util.*;
 public class Read extends StdCommand
 {
 	public Read(){}
-	
+
 	private String[] access={"READ"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public void read(MOB mob, Environmental thisThang, String theRest)
 	{
 		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
@@ -35,7 +35,7 @@ public class Read extends StdCommand
 			mob.location().send(mob,newMsg);
 
 	}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -68,6 +68,6 @@ public class Read extends StdCommand
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,11 +7,11 @@ import java.util.*;
 public class Follow extends StdCommand
 {
 	public Follow(){}
-	
+
 	private String[] access={"FOLLOW","FOL","FO","F"};
 	public String[] getAccessWords(){return access;}
-	
-	
+
+
 	public void nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
 		if(mob.amFollowing()!=null)
@@ -45,7 +45,7 @@ public class Follow extends StdCommand
 		}
 	}
 
-	
+
 	public boolean processFollow(MOB mob, MOB tofollow, boolean quiet)
 	{
 		if(tofollow!=null)
@@ -72,12 +72,12 @@ public class Follow extends StdCommand
 			nofollow(mob,!quiet,quiet);
 		return true;
 	}
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
-		
+
 		if((commands.size()>2)
 		&&(commands.lastElement() instanceof String)
 		&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
@@ -87,13 +87,13 @@ public class Follow extends StdCommand
 		}
 		if((commands.size()>1)&&(commands.elementAt(1) instanceof MOB))
 			return processFollow(mob,(MOB)commands.elementAt(1),quiet);
-		
+
 		if(commands.size()<2)
 		{
 			mob.tell("Follow whom?");
 			return false;
 		}
-		
+
 		String whomToFollow=Util.combine(commands,1);
 		if((whomToFollow.equalsIgnoreCase("self"))
 		   ||(mob.name().toUpperCase().startsWith(whomToFollow)))
@@ -122,6 +122,6 @@ public class Follow extends StdCommand
 	}
 	public int ticksToExecute(){return 1;}
 	public boolean canBeOrdered(){return true;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

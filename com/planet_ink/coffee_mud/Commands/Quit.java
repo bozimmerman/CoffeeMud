@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -7,10 +7,10 @@ import java.util.*;
 public class Quit extends StdCommand
 {
 	public Quit(){}
-	
+
 	private String[] access={"QUIT","QUI","Q"};
 	public String[] getAccessWords(){return access;}
-	
+
 	public static void dispossess(MOB mob)
 	{
 		if(mob.soulMate()==null)
@@ -27,7 +27,7 @@ public class Quit extends StdCommand
 		mob.setSoulMate(null);
 	}
 
-	
+
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -39,7 +39,7 @@ public class Quit extends StdCommand
 			try
 			{
 				mob.session().cmdExit(mob,commands);
-				
+
 			}
 			catch(Exception e)
 			{
@@ -52,6 +52,6 @@ public class Quit extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return false;}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

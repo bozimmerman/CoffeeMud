@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands.extra;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -19,7 +19,7 @@ public class Sleep extends StdCommand
 			return false;
 		}
 		if(commands.size()<=1)
-		{ 
+		{
 			FullMsg msg=new FullMsg(mob,null,null,CMMsg.MSG_SLEEP,getScr("Movement","sleep"));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
