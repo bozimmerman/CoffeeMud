@@ -13,7 +13,7 @@ public class ShallowWater extends StdRoom implements Drink
 		name="the water";
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_ROCKS;
+		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
 		domainCondition=Room.CONDITION_WET;
 		baseThirst=0;
 	}

@@ -367,25 +367,46 @@ public class Reset
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("localecheck"))
+		if(s.equalsIgnoreCase("mobaggrfix"))
 		{
 			if(mob.session()==null) return;
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Integer matNum=new Integer(EnvResource.RESOURCE_DATA[i][0]);
-				boolean found=false;
-				for(Enumeration l=CMClass.locales();l.hasMoreElements();)
+				Room R=(Room)r.nextElement();
+				R.getArea().toggleMobility(false);
+				resetRoom(R);
+				boolean somethingDone=false;
+				for(int m=0;m<R.numInhabitants();m++)
 				{
-					Room R=(Room)l.nextElement();
-					if((R.resourceChoices()!=null)
-					&&(R.resourceChoices().contains(matNum)))
+					MOB M=R.fetchInhabitant(m);
+					if((M.isEligibleMonster())
+					&&(M.getStartRoom()==R))
 					{
-						found=true;
-						break;
+						Behavior B=M.fetchBehavior("MobileAggressive");
+						if(B!=null)
+						{
+							if(B.getParms().equalsIgnoreCase("MOBKILLER"))
+							{
+								B.setParms("MOBKILLER delay=140");
+								mob.session().println(M.name()+" in "+R.roomID());
+								somethingDone=true;
+							}
+						}
+						B=M.fetchBehavior("Aggressive");
+						if(B!=null)
+						{
+							if(B.getParms().equalsIgnoreCase("MOBKILLER"))
+							{
+								B.setParms("MOBKILLER delay=140");
+								mob.session().println(M.name()+" in "+R.roomID());
+							}
+						}
+						somethingDone=true;
 					}
 				}
-				if(!found)
-					mob.session().println("Resource "+EnvResource.RESOURCE_DESCS[i]+" not gettable.");
+				if(somethingDone)
+					ExternalPlay.DBUpdateMOBs(R);
+				R.getArea().toggleMobility(true);
 			}
 			mob.session().println("done!");
 		}

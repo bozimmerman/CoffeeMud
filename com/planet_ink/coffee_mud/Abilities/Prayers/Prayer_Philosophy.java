@@ -84,7 +84,7 @@ public class Prayer_Philosophy extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> give(s) <T-NAMESELF> something to think about, but just confuses <T-HIMHER>.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> give(s) <T-NAMESELF> something to think about, but it just confuses <T-HIM-HER>.");
 
 
 		// return whether it worked
