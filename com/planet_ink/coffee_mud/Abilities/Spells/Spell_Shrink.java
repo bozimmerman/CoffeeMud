@@ -68,6 +68,15 @@ public class Spell_Shrink extends Spell
 		super.unInvoke();
 	}
 
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		int str=affectableStats.getStat(CharStats.STRENGTH);
+		int dex=affectableStats.getStat(CharStats.DEXTERITY);
+		affectableStats.setStat(CharStats.STRENGTH,(str/10)+1);
+		affectableStats.setStat(CharStats.DEXTERITY,(dex*2)+1);
+	}
+
 	public void affectEnvStats(MOB affectedMOB, EnvStats affectedStats)
 	{
 		super.affectEnvStats(affectedMOB,affectedStats);
@@ -92,6 +101,8 @@ public class Spell_Shrink extends Spell
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,E,0);
+				if(E instanceof MOB)
+					((MOB)E).charStats().getMyRace().confirmGear((MOB)E);
 			}
 		}
 		else

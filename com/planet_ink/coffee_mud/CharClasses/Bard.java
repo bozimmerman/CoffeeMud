@@ -18,7 +18,7 @@ public class Bard extends StdCharClass
 		bonusPracLevel=1;
 		manaMultiplier=8;
 		attackAttribute=CharStats.DEXTERITY;
-		levelsPerBonusDamage=7;
+		levelsPerBonusDamage=4;
 		bonusAttackLevel=1;
 		name=myID;
 		

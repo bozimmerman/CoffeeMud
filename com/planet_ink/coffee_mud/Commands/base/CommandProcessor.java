@@ -20,6 +20,7 @@ public class CommandProcessor
 	public Scoring scoring=new Scoring();
 	public SocialProcessor socialProcessor=new SocialProcessor();
 	public Socials socials=new Socials();
+	public Lister sysopLister=new Lister();
 	public TheFight theFight=new TheFight(grouping);
 	public CreateEdit createEdit=new CreateEdit(socials);
 	public Import importer=new Import();
@@ -418,6 +419,12 @@ public class CommandProcessor
 				case CommandSet.SLEEP:
 					movement.sleep(mob,commands);
 					break;
+				case CommandSet.SNOOP:
+					if(mob.isASysOp(mob.location()))
+						sysopSkills.snoop(mob, commands);
+					else
+						mob.tell("Mind your own business!\n\r");
+					break;
 				case CommandSet.SOCIALS:
 					scoring.socials(mob,socials);
 					break;
@@ -514,6 +521,12 @@ public class CommandProcessor
 					break;
 				case CommandSet.WEST:
 					movement.standAndGo(mob,Directions.WEST);
+					break;
+				case CommandSet.WHERE:
+					if(mob.isASysOp(mob.location()))
+						sysopLister.where(mob,commands);
+					else
+						mob.tell("Only the Archons may divine that.");
 					break;
 				case CommandSet.WHOIS:
 					grouping.who(mob,Util.combine(commands,1));

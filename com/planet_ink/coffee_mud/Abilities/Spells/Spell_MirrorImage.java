@@ -130,6 +130,11 @@ public class Spell_MirrorImage extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You already have mirror images.");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

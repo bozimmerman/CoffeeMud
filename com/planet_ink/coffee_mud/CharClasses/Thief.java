@@ -38,6 +38,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_Dirt",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Thief_Peek",true);
@@ -66,7 +67,6 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Lore",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Sap",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_Poison",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Skill_Dirt",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Charm",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Bribe",true);

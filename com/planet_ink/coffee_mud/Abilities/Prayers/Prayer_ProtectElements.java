@@ -57,6 +57,11 @@ public class Prayer_ProtectElements extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You already have protection from elements.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

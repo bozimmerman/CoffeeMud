@@ -47,6 +47,10 @@ public interface Session
 	public String choose(String Message, String Choices, String Default)
 	throws IOException;
 	
+	public void startSnooping(Session S);
+	public void stopSnooping(Session S);
+	public boolean amSnooping(Session S);
+	
 	public void cmdExit(MOB mob, Vector commands)
 		throws Exception;
 	public void logoff();

@@ -139,6 +139,9 @@ public class CommandSet extends Hashtable
 	public static final int IDEA=127;
 	public static final int GAIN=128;
 	public static final int TICKTOCK=129;
+	public static final int WHERE=130;
+	public static final int SNOOP=140;
+	
 
 	public CommandSet()
 	{
@@ -295,6 +298,7 @@ public class CommandSet extends Hashtable
 			put("SK",new Integer(SKILLS));
 		put("SLEEP",new Integer(SLEEP));
 			put("SL",new Integer(SLEEP));
+		put("SNOOP",new Integer(SNOOP));
 		put("SOCIALS",new Integer(SOCIALS));
 		put("SOUTH",new Integer(SOUTH));
 			put("S",new Integer(SOUTH));
@@ -333,6 +337,7 @@ public class CommandSet extends Hashtable
 			put("WEAT",new Integer(WEATHER));
 		put("WEST",new Integer(WEST));
 			put("W",new Integer(WEST));
+		put("WHERE",new Integer(WHERE));
 		put("WHOIS",new Integer(WHOIS));
 		put("WHO",new Integer(WHO));
 		put("WIELD",new Integer(WIELD));

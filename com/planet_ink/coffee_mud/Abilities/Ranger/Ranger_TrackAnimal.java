@@ -56,7 +56,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		{
 			Room thisRoom=location.getRoomInDir(dirs);
 			Exit thisExit=location.getExitInDir(dirs);
-			if((thisRoom!=null)&&(thisExit!=null))
+			if((thisRoom!=null)&&(thisExit!=null)&&(thisRoom.domainConditions()!=Room.CONDITION_WET))
 			{
 				for(int trail=0;trail<theTrail.size();trail++)
 				{
@@ -139,7 +139,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			int i=((Integer)dirVec.elementAt(x)).intValue();
 			Room nextRoom=location.getRoomInDir(i);
 			Exit nextExit=location.getExitInDir(i);
-			if((nextRoom!=null)&&(nextExit!=null))
+			if((nextRoom!=null)&&(nextExit!=null)&&(nextRoom.domainConditions()!=Room.CONDITION_WET))
 			{
 				MOB mobCheck=animalHere(nextRoom);
 				if((mobCheck!=null)
@@ -236,6 +236,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		{
 			mob.tell(mob,null,"You stop tracking.");
 			oldTrack.unInvoke();
+			if(commands.size()==0) return true;
 		}
 
 		trackingWhom=null;

@@ -79,6 +79,11 @@ public class Prayer_ProtectHealth extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You already have protected health.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

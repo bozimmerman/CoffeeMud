@@ -128,6 +128,57 @@ public class SysOpSkills
 		avgMob.resetToMaxState();
 	}
 
+
+	public void snoop(MOB mob, Vector commands)
+	{
+		commands.removeElementAt(0);
+		if(mob.session()==null) return;
+		boolean doneSomething=false;
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session S=Sessions.elementAt(s);
+			if(S.amSnooping(mob.session()))
+			{
+				if(S.mob()!=null)
+					mob.tell("You stop snooping on "+S.mob().name()+".");
+				else
+					mob.tell("You stop snooping on someone.");
+				doneSomething=true;
+				S.stopSnooping(mob.session());
+			}
+		}
+		if(commands.size()==0)
+		{
+			if(!doneSomething)
+				mob.tell("Snoop on whom?");
+			return;
+		}
+		String whom=Util.combine(commands,0);
+		boolean snoop=false;
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session S=Sessions.elementAt(s);
+			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().name(),whom)))
+			{
+				if(S==mob.session())
+				{
+					mob.tell("no.");
+					return;
+				}
+				else
+				if((!S.amSnooping(mob.session()))
+				&&(mob.isASysOp(S.mob().location())))
+				{
+					mob.tell("You start snooping on "+S.mob().name()+".");
+					S.startSnooping(mob.session());
+					snoop=true;
+				}
+			}
+		}
+		if(!snoop)
+		mob.tell("You can't find anyone by that name.");
+	}
+	
 	public MOB AverageClassMOB(MOB mob, int level, CharClass C, int numTries)
 	{
 		MOB avgMob=(MOB)levelMOBup(level,C);
@@ -312,7 +363,7 @@ public class SysOpSkills
 					for(int a=0;a<CMMap.numAreas();a++)
 					{
 						Area A=CMMap.getArea(a);
-						if((CoffeeUtensils.containsString(A.name(),cmd.toString().toUpperCase()))
+						if((CoffeeUtensils.containsString(A.name(),cmd.toString()))
 						&&(A.getMyMap().size()>0))
 						{
 							room=(Room)A.getMyMap().elementAt(Dice.roll(1,A.getMyMap().size(),-1));
@@ -326,7 +377,7 @@ public class SysOpSkills
 					for(int m=0;m<CMMap.numRooms();m++)
 					{
 						Room room2=CMMap.getRoom(m);
-						if(CoffeeUtensils.containsString(room2.displayText().toUpperCase(),areaName))
+						if(CoffeeUtensils.containsString(room2.displayText(),areaName))
 						{
 						   room=room2;
 						   break;
@@ -336,7 +387,7 @@ public class SysOpSkills
 					for(int m=0;m<CMMap.numRooms();m++)
 					{
 						Room room2=CMMap.getRoom(m);
-						if(CoffeeUtensils.containsString(room2.description().toUpperCase(),areaName))
+						if(CoffeeUtensils.containsString(room2.description(),areaName))
 						{
 						   room=room2;
 						   break;

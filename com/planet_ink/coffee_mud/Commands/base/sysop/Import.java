@@ -2348,7 +2348,12 @@ public class Import
 			commands.removeElementAt(0);
 			prompt=false;
 		}
+		
+		// continue pre-processing
+		for(int areaFile=0;areaFile<commands.size();areaFile++)
+		{
 
+		}
 		
 		Vector mobData=new Vector();
 		Vector objectData=new Vector();

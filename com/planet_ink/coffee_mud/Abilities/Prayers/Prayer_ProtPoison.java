@@ -74,6 +74,11 @@ public class Prayer_ProtPoison extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You already have protection from poison.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

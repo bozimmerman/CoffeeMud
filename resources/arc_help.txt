@@ -9,4 +9,5 @@ import export xml
 
 ^HSkills^N
 chargen possess goto wizinv
+where
 ** enter ^HAHELP 'command name'^N or ^BATOPICS^N for more help!

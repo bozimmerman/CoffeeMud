@@ -613,7 +613,7 @@ public class Spell_Wish extends Spell
 					{
 						int oldVal=mob.baseCharStats().getStat(trait);
 						int amountToLose=oldC.getMaxStat(trait)-18;
-						if(amountToLose>0)
+						if(amountToLose>oldVal)
 						{
 							mob.baseCharStats().setStat(trait,oldVal-amountToLose);
 							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.TRAITS[trait].toLowerCase()+".");

@@ -123,7 +123,6 @@ public class Lister
 
 	public StringBuffer listSessions(MOB mob)
 	{
-		
 		StringBuffer lines=new StringBuffer("^X");
 		lines.append(Util.padRight("Status",9)+"| ");
 		lines.append(Util.padRight("Valid",5)+"| ");
@@ -230,6 +229,59 @@ public class Lister
 		return buf;
 	}
 	
+	public void where(MOB mob, Vector commands)
+	{
+		StringBuffer lines=new StringBuffer("^X");
+		lines.append(Util.padRight("Name",17)+"| ");
+		lines.append(Util.padRight("Location",17)+"^?\n\r");
+		String who=Util.combine(commands,1);
+		if(who.length()==0)
+		{
+			for(int s=0;s<Sessions.size();s++)
+			{
+				Session thisSession=(Session)Sessions.elementAt(s);
+				if((thisSession.mob() != null)
+				&&(mob.isASysOp(thisSession.mob().location())))
+				{
+					lines.append("^B"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
+					if(thisSession.mob().location() != null )
+					{
+						lines.append(thisSession.mob().location().displayText());
+						lines.append(" ("+thisSession.mob().location().ID()+")");
+					}
+					else
+						lines.append("^B(no location)^?");
+				}
+				else
+				{
+					lines.append(Util.padRight("NAMELESS",17)+"| ");
+					lines.append("NOWHERE");
+				}
+				lines.append("\n\r");
+			}
+		}
+		else
+		{
+			for(int r=0;r<CMMap.numRooms();r++)
+			{
+				Room R=CMMap.getRoom(r);
+				if((R!=null)&&(mob.isASysOp(R)))
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M=R.fetchInhabitant(m);
+					if((CoffeeUtensils.containsString(M.name(),who))
+					||(CoffeeUtensils.containsString(M.displayText(),who)))
+					{
+						lines.append("^B"+Util.padRight(M.name(),17)+"^?| ");
+						lines.append(R.displayText());
+						lines.append(" ("+R.ID()+")");
+						lines.append("\n\r");
+					}
+				}
+			}
+		}
+		mob.tell(lines.toString());
+	}
 	
 	public void list(MOB mob, Vector commands)
 	{

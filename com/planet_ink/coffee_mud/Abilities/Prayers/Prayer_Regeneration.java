@@ -76,6 +76,11 @@ public class Prayer_Regeneration extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You already have regenerative powers.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

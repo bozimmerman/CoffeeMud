@@ -121,6 +121,11 @@ public class Skill_Meditation extends StdAbility
 			mob.tell("You must be in a sitting, restful position to meditate.");
 			return false;
 		}
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You are already meditating!");
+			return false;
+		}
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);
 		if(success)

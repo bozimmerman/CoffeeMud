@@ -25,6 +25,7 @@ public class TelnetSession extends Thread implements Session
 
 	private Calendar lastCMDDateTime=Calendar.getInstance();
 	private Vector cmdQ=new Vector();
+	private Vector snoops=new Vector();
 
 	private boolean lastWasCR=false;
 
@@ -88,6 +89,20 @@ public class TelnetSession extends Thread implements Session
 	public boolean killFlag(){return killFlag;}
 	public void setKillFlag(boolean truefalse){killFlag=truefalse;}
 	public Vector previousCMD(){return previousCmd;}
+	public void startSnooping(Session S)
+	{
+		if(!snoops.contains(S))
+			snoops.addElement(S);
+	}
+	public void stopSnooping(Session S)
+	{
+		while(snoops.contains(S))
+			snoops.removeElement(S);
+	}
+	public boolean amSnooping(Session S)
+	{
+		return(snoops.contains(S));
+	}
 
 	public Vector deque()
 	{
@@ -153,9 +168,14 @@ public class TelnetSession extends Thread implements Session
 
 	public void rawPrintln(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).rawPrintln(msg);
+		
+		if(out==null)return;
 		if(!needPrompt)
 			out.print("\n\r");
-		if((out==null)||(msg==null)) return;
+		if(msg==null)return;
 		out.print(msg+"\n\r");
 		out.flush();
 		needPrompt=true;
@@ -163,9 +183,14 @@ public class TelnetSession extends Thread implements Session
 
 	public void rawPrint(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).rawPrint(msg);
+		
+		if(out==null)return;
 		if(!needPrompt)
 			out.print("\n\r");
-		if((out==null)||(msg==null)) return;
+		if(msg==null)return;
 		out.print(msg);
 		out.flush();
 		needPrompt=true;
@@ -173,6 +198,10 @@ public class TelnetSession extends Thread implements Session
 
 	public void print(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).print(msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(filter(mob,mob,msg,false));
 		out.flush();
@@ -181,6 +210,10 @@ public class TelnetSession extends Thread implements Session
 
 	public void stdPrint(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).stdPrint(msg);
+		
 		if((out==null)||(msg==null)) return;
 
 		if(!needPrompt)
@@ -194,6 +227,10 @@ public class TelnetSession extends Thread implements Session
 					  Environmental Target,
 					  String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).print(Source,Target,msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(filter(Source,Target,msg,false));
 		out.flush();
@@ -203,6 +240,10 @@ public class TelnetSession extends Thread implements Session
 					  Environmental Target,
 					  String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).stdPrint(Source,Target,msg);
+		
 		if((out==null)||(msg==null)) return;
 		if(!needPrompt)
 			out.print("\n\r");
@@ -215,6 +256,10 @@ public class TelnetSession extends Thread implements Session
 					  int Length,
 					  String msgEnd)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).print(msg,Length,msgEnd);
+		
 		if((out==null)||(msg==null)) return;
 		while(msg.length()<Length)
 			msg=msg+" ";
@@ -227,6 +272,10 @@ public class TelnetSession extends Thread implements Session
 						 int Length,
 						 String msgEnd)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).stdPrint(msg,Length,msgEnd);
+		
 		if((out==null)||(msg==null)) return;
 		if(!needPrompt)
 			out.print("\n\r");
@@ -237,6 +286,10 @@ public class TelnetSession extends Thread implements Session
 
 	public void println(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).println(msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(filter(mob,mob,msg,false)+"\n\r");
 		out.flush();
@@ -244,6 +297,10 @@ public class TelnetSession extends Thread implements Session
 
 	public void unfilteredPrintln(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).unfilteredPrintln(msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(filter(mob,mob,msg,true)+"\n\r");
 		out.flush();
@@ -251,6 +308,10 @@ public class TelnetSession extends Thread implements Session
 
 	public void unfilteredPrint(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).unfilteredPrint(msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(filter(mob,mob,msg,true));
 		out.flush();
@@ -258,6 +319,10 @@ public class TelnetSession extends Thread implements Session
 
 	public void colorOnlyPrintln(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).colorOnlyPrintln(msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(colorOnlyFilter(msg)+"\n\r");
 		out.flush();
@@ -265,6 +330,10 @@ public class TelnetSession extends Thread implements Session
 
 	public void colorOnlyPrint(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).colorOnlyPrint(msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(colorOnlyFilter(msg));
 		out.flush();
@@ -272,10 +341,15 @@ public class TelnetSession extends Thread implements Session
 
 	public void stdPrintln(String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).stdPrintln(msg);
+		
 		if((out==null)||(msg==null)) return;
 		if(!needPrompt)
 			out.print("\n\r");
-		println(msg);
+		out.print(filter(mob,mob,msg,false)+"\n\r");
+		out.flush();
 		needPrompt=true;
 	}
 
@@ -283,6 +357,10 @@ public class TelnetSession extends Thread implements Session
 						Environmental Target,
 						String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).println(Source,Target,msg);
+		
 		if((out==null)||(msg==null)) return;
 		out.print(filter(Source,Target,msg,false)+"\n\r");
 		out.flush();
@@ -292,10 +370,15 @@ public class TelnetSession extends Thread implements Session
 						   Environmental Target,
 						   String msg)
 	{
+		if(snoops.size()>0)
+			for(int s=0;s<snoops.size();s++)
+				((Session)snoops.elementAt(s)).stdPrintln(Source,Target,msg);
+		
 		if((out==null)||(msg==null)) return;
 		if(!needPrompt)
 			out.print("\n\r");
-		println(Source,Target,msg);
+		out.print(filter(Source,Target,msg,false)+"\n\r");
+		out.flush();
 		needPrompt=true;
 	}
 
@@ -999,6 +1082,9 @@ public class TelnetSession extends Thread implements Session
 								if(CMDS.size()>0)
 								{
 									setPreviousCmd(CMDS);
+									if(snoops.size()>0)
+										for(int s=0;s<snoops.size();s++)
+											((Session)snoops.elementAt(s)).rawPrintln(Util.combine(CMDS,0));
 									ExternalPlay.doCommand(mob,CMDS);
 									lastCMDDateTime=Calendar.getInstance();
 								}

@@ -95,6 +95,11 @@ public class Prayer_BladeBarrier extends Prayer
 	{
 		MOB target=mob;
 		if(target==null) return false;
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You already have the blade barrier.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

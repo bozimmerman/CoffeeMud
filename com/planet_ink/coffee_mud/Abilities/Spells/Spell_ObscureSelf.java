@@ -158,11 +158,9 @@ public class Spell_ObscureSelf extends Spell
 	{
 		MOB target=mob;
 
-		if(target.fetchAffect(this.ID())!=null)
+		if(target.fetchAffect(ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> fizzle(s) a spell, that spell already affects <S-HIM-HER>.");
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
+			mob.tell("You are already obscure.");
 			return false;
 		}
 
