@@ -1562,7 +1562,7 @@ public class Generic
 			else
 				mob.tell("1: Must be worn on ALL of these locations:");
 			int maxCode=1;
-			for(int l=0;l<16;l++)
+			for(int l=0;l<18;l++)
 			{
 				int wornCode=1<<l;
 				if(Sense.wornLocation(wornCode).length()>0)

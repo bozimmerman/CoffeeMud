@@ -142,10 +142,10 @@ commands "reset" the MOB, and "implement" the scores which are given in the
 several areas.&nbsp; "recoverEnvStats()", for instance, must be called whenever 
 a change is made to the "baseEnvStats()" object.&nbsp; Ditto for "CharStats" and 
 "MaxState".&nbsp; </FONT>
-<P><FONT size=4>Now, suppose we wanted to add an "Affect" or "Behavior" or "Ability" to the MOB.&nbsp; The 
+<P><FONT size=4>Now, suppose we wanted to add an "Affect" or "Behavior" or "Ability" to your StdMOB.&nbsp; The 
 proper place for such a statement would be in the same above constructor, among 
 the other commands.&nbsp; Preferably before the several "recover" commands, but 
-after the several stat definitions.</FONT>
+after the several stat definitions.  Of course, all of this is unnecesssary for a new GenMOB object.</FONT>
 <pre>
 		
 		addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
@@ -163,6 +163,26 @@ combat, allows the MOB to Chat with other players, and&nbsp;to walk around
 in its area. The last behavior 
 gives the MOB the wisdom to use its Poison ability while in 
 combat.</FONT></P>
+<P><FONT size=4>If your MOB extends StdShopKeeper, you will need to add your inventory manually.  You will also
+need to specify the type of ShopKeeper.
+</FONT></P>
+<pre>
+		setWhatIsSold(ShopKeeper.ONLYBASEINVENTORY);
+		
+		Weapon sword=(Weapon)CMClass.getWeapon("Longsword");
+		addStoreInventory(sword,35);
+		Armor mail=(Armor)CMClass.getArmor("FullPlate");
+		addStoreInventory(mail,35);
+		Item waterskin=(Item)CMClass.getItem("Waterskin");
+		addStoreInventory(waterskin,35);
+</pre>
+<P><FONT size=4>You'll recall from the Archon's Guide that there are many different types of ShopKeepers, 
+including trainers, pet sellers, weaponsmiths, and others. </FONT>
+<P><FONT size=4>GenRideable MOBs will require a few other settings as well!</FONT></P>
+<pre>
+		setRideBasis(Rideable.RIDEABLE_LAND);
+		setMobCapacity(2);
+</pre>
 <P><FONT size=4>The last thing is to give the MOB equipment, 
 armor, and weapons.&nbsp; The following commands will do the trick!</FONT></P>
 <pre>
@@ -225,10 +245,10 @@ system.&nbsp; A custom MOB must import the following packages:</FONT></P>
 	import com.planet_ink.coffee_mud.utils.*;
 	import com.planet_ink.coffee_mud.interfaces.*;
 	import com.planet_ink.coffee_mud.Items.*;
-import com.planet_ink.coffee_mud.Items.Armor.*;
-import com.planet_ink.coffee_mud.Items.Weapons.*;
-import com.planet_ink.coffee_mud.Items.MiscMagic.*;
-import com.planet_ink.coffee_mud.common.*;</FONT> 
+	import com.planet_ink.coffee_mud.Items.Armor.*;
+	import com.planet_ink.coffee_mud.Items.Weapons.*;
+	import com.planet_ink.coffee_mud.Items.MiscMagic.*;
+	import com.planet_ink.coffee_mud.common.*;</FONT> 
  </PRE></FONT>
 <P><FONT size=4>As well as any other java.*,&nbsp;&nbsp;sun.*, 
 or&nbsp;custom&nbsp;packages you may need.&nbsp; No other packages in the 
@@ -242,23 +262,105 @@ this reason, using Standard instead of Generic whereever possible is always
 good.&nbsp; </FONT>
 <P><FONT size=4>Each MOB must also have a custom "newInstance" method as shown 
 below.</FONT><PRE>public class MyNewSword extends StdWeapon <BR>{ <BR>	public MyNewWeapon() <BR>	{ <BR>		super(); <BR>	}</PRE><PRE>	public Environmental newInstance() <BR>	{ <BR>		return new MyNewWeapon(); <BR>	} <BR>}</PRE>
-<P><FONT size=4>     
-    All of 
-your customizing will be done inside the constructor: name, displayText, description, etc, 
+<P><FONT size=4>All of your customizing will be done inside the constructor: name, displayText, description, etc, 
 etc.</FONT>
 <P><FONT size=4></FONT>&nbsp;</P>
-<pre>	public MyNewWeapon()
+<pre>	
+	public MyNewWeapon()
 	{
 		super();
 
-		Username=
-	 
-	
-		
-
-		"asuper sword"; 
+		Username="a super sword";
 		setDescription("A long super duper sword!"); 
 		setDisplayText("Someone left their super sword here.");
+		
+		setMaterial(EnvResource.RESOURCE_STEEL);
+		baseEnvStats.setWeight(25);
+		baseEnvStats.setAttackAdjustment(10);
+		baseEnvStats.setDamage(15);
+	}
+	
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>What is shown above is entirely sufficient for the creation of a StdWeapon.  The material, weight, attack
+and damage describe it completely.  Other classes, however, have different requirements.  For instance, StdArmor:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewArmor()
+	{
+		super();
+
+		Username="a super bracer";
+		setDescription("A super duper bracer"); 
+		setDisplayText("Someone left their super bracer here.");
+		
+		setMaterial(EnvResource.RESOURCE_STEEL);
+		baseEnvStats.setWeight(5);
+		baseEnvStats.setArmor(5);
+		setRawProperLocationBitmap(Item.ON_LEFT_WRIST|Item.ON_RIGHT_WRIST);
+		setRawLogicalAnd(false);
+	}
+	
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>In this case, we made a bracer wearable on both left and right wrists.  If it were something that
+could only be worn on both wrists at the same time (like handcuffs), then the RawLogicalAnd value would have been
+true.  Now, a StdContainer:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewBag()
+	{
+		super();
+
+		Username="a super bag";
+		setDescription("A super duper bag"); 
+		setDisplayText("Someone left their super bag here.");
+		
+		setMaterial(EnvResource.RESOURCE_LEATHER);
+		baseEnvStats.setWeight(1);
+		setCapacity(100);
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>When setting the capacity of a container, remember that it must also be able to hold its own
+weight!  Now, a StdDrink container:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewCup()
+	{
+		super();
+
+		Username="a super cup";
+		setDescription("A super duper cup"); 
+		setDisplayText("Someone left their super bag here.");
+		
+		setMaterial(EnvResource.RESOURCE_LEATHER);
+		setLiquidHeld(2000);
+		setLiquidRemaining(2000);
+		setThirstQuenched(500);
+		setLiquidType(EnvResource.RESOURCE_MILK);
+		baseEnvStats.setWeight(1);
+		setCapacity(0);
+	}
+</pre>
+<P><FONT size=4></FONT>&nbsp;</P>
+<P><FONT size=4>The StdDrink created above is an enormous cup of milk!  You'll notice the capacity is 0, meaning 
+that mundane objects cannot be stored in it.  Now, a StdFood:</FONT>
+<P><FONT size=4></FONT>&nbsp;</P>
+<pre>	
+	public MyNewCup()
+	{
+		super();
+
+		Username="a super crumb";
+		setDescription("A super duper crumb"); 
+		setDisplayText("Someone left their super crumbs here.");
+		
+		setMaterial(EnvResource.RESOURCE_MEAT);
+		setNourishment(500);
+		baseEnvStats.setWeight(1);
+		setCapacity(0);
+	}
 </pre>
 <P><FONT size=4></FONT>&nbsp;</P>
 </BODY>

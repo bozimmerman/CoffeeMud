@@ -438,7 +438,10 @@ public class StdMOB implements MOB
 				A.autoInvocation(this);
 		}
 		location().recoverRoomStats();
-		ExternalPlay.look(this,null,true);
+		if(Sense.isSleeping(this))
+			tell("(You are asleep)");
+		else
+			ExternalPlay.look(this,null,true);
 	}
 
 	public boolean isInCombat()

@@ -434,7 +434,7 @@ public class Scoring
 	{
 		StringBuffer msg=new StringBuffer("");
 		boolean foundButUnseen=false;
-		for(int l=0;l<16;l++)
+		for(int l=0;l<18;l++)
 		{
 			int wornCode=1<<l;
 			String header="^N(^H"+Sense.wornLocation(wornCode)+"^?)";
