@@ -211,61 +211,64 @@ public class TelnetSession extends Thread implements Session
 	public synchronized void onlyPrint(String msg)
 	{
 		if((out==null)||(msg==null)) return;
-		
-		if(snoops.size()>0)
-			for(int s=0;s<snoops.size();s++)
-				((Session)snoops.elementAt(s)).onlyPrint(msg);
-		
-		lastOutput=System.currentTimeMillis();
-		
-		if(msg.endsWith("\n\r")
-		&&(msg.equals(lastStr))
-		&&(msg.length()>2)
-		&&(msg.indexOf("\n")==(msg.length()-2)))
-		{ spamStack++; return; }
-		else
-		if(spamStack>0)
+		try
 		{
-			if(spamStack>1)
-				lastStr=lastStr.substring(0,lastStr.length()-2)+"("+spamStack+")"+lastStr.substring(lastStr.length()-2);
-			out.print(lastStr);
-			out.flush();
-		}
+			if(snoops.size()>0)
+				for(int s=0;s<snoops.size();s++)
+					((Session)snoops.elementAt(s)).onlyPrint(msg);
 		
-		spamStack=0;
-		if(msg.startsWith("\n\r")&&(msg.length()>2))
-			lastStr=msg.substring(2);
-		else
-			lastStr=msg;
-		if(pageBreak<0)
-			pageBreak=CommonStrings.getIntVar(CommonStrings.SYSTEMI_PAGEBREAK);
-		if(pageBreak>0)
-		{
-			int lines=0;
-			for(int i=0;i<msg.length();i++)
+			lastOutput=System.currentTimeMillis();
+		
+			if(msg.endsWith("\n\r")
+			&&(msg.equals(lastStr))
+			&&(msg.length()>2)
+			&&(msg.indexOf("\n")==(msg.length()-2)))
+			{ spamStack++; return; }
+			else
+			if(spamStack>0)
 			{
-				if(msg.charAt(i)=='\n')
+				if(spamStack>1)
+					lastStr=lastStr.substring(0,lastStr.length()-2)+"("+spamStack+")"+lastStr.substring(lastStr.length()-2);
+				out.print(lastStr);
+				out.flush();
+			}
+		
+			spamStack=0;
+			if(msg.startsWith("\n\r")&&(msg.length()>2))
+				lastStr=msg.substring(2);
+			else
+				lastStr=msg;
+			if(pageBreak<0)
+				pageBreak=CommonStrings.getIntVar(CommonStrings.SYSTEMI_PAGEBREAK);
+			if(pageBreak>0)
+			{
+				int lines=0;
+				for(int i=0;i<msg.length();i++)
 				{
-					lines++;
-					if(lines>=pageBreak)
+					if(msg.charAt(i)=='\n')
 					{
-						lines=0;
-						if((i<(msg.length()-1)&&(msg.charAt(i+1)=='\r')))
-							i++;
-						out.print(msg.substring(0,i));
-						msg=msg.substring(i+1);
-						out.flush();
-						out.print("<pause - enter>");
-						out.flush();
-						try{
-							blockingIn();
-						}catch(Exception e){return;}
+						lines++;
+						if(lines>=pageBreak)
+						{
+							lines=0;
+							if((i<(msg.length()-1)&&(msg.charAt(i+1)=='\r')))
+								i++;
+							out.print(msg.substring(0,i));
+							msg=msg.substring(i+1);
+							out.flush();
+							out.print("<pause - enter>");
+							out.flush();
+							try{
+								blockingIn();
+							}catch(Exception e){return;}
+						}
 					}
 				}
 			}
+			out.print(msg);
+			out.flush();
 		}
-		out.print(msg);
-		out.flush();
+		catch(java.lang.NullPointerException e){}
 	}
 	
 	public void rawPrint(String msg)

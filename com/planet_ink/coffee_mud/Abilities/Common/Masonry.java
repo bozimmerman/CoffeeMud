@@ -22,10 +22,30 @@ public class Masonry extends CommonSkill
 	private final static int BUILD_MONUMENT=6;
 	private final static int BUILD_WINDOW=7;
 	private final static int BUILD_CRAWLWAY=8;
+	private final static int BUILD_POOL=9;
+	private final static int BUILD_PORTCULIS=10;
 	
-	private final static String[] names={"Wall","Roof","Archway","Demolish","Title","Description","Druidic Monument","Window","Crawlway"};
-	private final static int[] woodReq={250,500,200,0,0,0,1000,100,500};
-
+	private final static int DAT_NAME=0;
+	private final static int DAT_WOOD=1;
+	private final static int DAT_ROOF=2;
+	private final static int DAT_REQDIR=3;
+	private final static int DAT_REQNONULL=4;
+	
+	// name, wood, ok=0/roof=1/out=2, req direction=1, ok=0, ok=0, nonull=1, nullonly=2
+	private final static String[][] data={
+		{"Wall","250","1","1","0"},
+		{"Roof","500","2","0","0"},
+		{"Archway","200","0","1","0"},
+		{"Demolish","0","0","1","0"},
+		{"Title","0","1","0","0"},
+		{"Description","0","1","0","0"},
+		{"Druidic Monument","1000","2","0","0"},
+		{"Window","100","1","1","1"},
+		{"Crawlway","500","1","1","1"},
+		{"Pool","700","2","0","0"},
+		{"Portcullis","100","0","1","0"},
+	};
+	
 	private Room room=null;
 	private int dir=-1;
 	private int doingCode=-1;
@@ -82,6 +102,9 @@ public class Masonry extends CommonSkill
 					case BUILD_ARCH:
 						commonTell(mob,"You've ruined the archway!");
 						break;
+					case BUILD_PORTCULIS:
+						commonTell(mob,"You've ruined the portcullis!");
+						break;
 					case BUILD_TITLE:
 						commonTell(mob,"You've ruined the titling!");
 						break;
@@ -93,6 +116,9 @@ public class Masonry extends CommonSkill
 						break;
 					case BUILD_WINDOW:
 						commonTell(mob,"You've ruined the window!");
+						break;
+					case BUILD_POOL:
+						commonTell(mob,"You've ruined the pool!");
 						break;
 					case BUILD_CRAWLWAY:
 						commonTell(mob,"You've ruined the crawlway!");
@@ -106,8 +132,18 @@ public class Masonry extends CommonSkill
 					switch(doingCode)
 					{
 					case BUILD_ROOF:
+					case BUILD_POOL:
 						{
-							Room R=CMClass.getLocale("StoneRoom");
+							Room R=null;
+							if(doingCode==BUILD_POOL)
+							{
+								if((room.domainType()&Room.INDOORS)==Room.INDOORS)
+									R=CMClass.getLocale("IndoorWaterSurface");
+								else
+									R=CMClass.getLocale("WaterSurface");
+							}
+							else
+								R=CMClass.getLocale("StoneRoom");
 							R.setRoomID(room.roomID());
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
@@ -115,7 +151,8 @@ public class Masonry extends CommonSkill
 							for(int a=room.numAffects()-1;a>=0;a--)
 							{
 								Ability A=room.fetchAffect(a);
-								if(A!=null){
+								if(A!=null)
+								{
 									room.delAffect(A);
 									R.addAffect(A);
 								}
@@ -123,7 +160,8 @@ public class Masonry extends CommonSkill
 							for(int i=room.numItems()-1;i>=0;i--)
 							{
 								Item I=room.fetchItem(i);
-								if(I!=null){
+								if(I!=null)
+								{
 									room.delItem(I);
 									R.addItem(I);
 								}
@@ -168,6 +206,25 @@ public class Masonry extends CommonSkill
 							R.getArea().fillInAreaRoom(R);
 							ExternalPlay.DBUpdateRoom(R);
 							ExternalPlay.DBUpdateExits(R);
+						}
+						break;
+					case BUILD_PORTCULIS:
+						{
+							Exit x=CMClass.getExit("GenExit");
+							Exit x2=CMClass.getExit("GenExit");
+							x.setName("an archway");
+							x.setDescription("A portcullis lies this way.");
+							x.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
+							x2.setName("a portcullis");
+							x2.setDescription("A portcullis lies this way.");
+							x2.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
+							room.rawExits()[dir]=x;
+							if(room.rawDoors()[dir]!=null)
+							{
+								room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
+								ExternalPlay.DBUpdateExits(room.rawDoors()[dir]);
+							}
+							ExternalPlay.DBUpdateExits(room);
 						}
 						break;
 					case BUILD_ARCH:
@@ -360,10 +417,10 @@ public class Masonry extends CommonSkill
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
 			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
-			for(int r=0;r<names.length;r++)
+			for(int r=0;r<data.length;r++)
 			{
 				if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
-					buf.append(Util.padRight(names[r],20)+" "+woodReq[r]+"\n\r");
+					buf.append(Util.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]+"\n\r");
 			}
 			commonTell(mob,buf.toString());
 			return true;
@@ -380,10 +437,10 @@ public class Masonry extends CommonSkill
 		messedUp=false;
 
 		String firstWord=(String)commands.firstElement();
-		for(int r=0;r<names.length;r++)
+		for(int r=0;r<data.length;r++)
 		{
 			if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
-				if(names[r].toUpperCase().startsWith(firstWord.toUpperCase()))
+				if(data[r][DAT_NAME].toUpperCase().startsWith(firstWord.toUpperCase()))
 					doingCode=r;
 		}
 		if(doingCode<0)
@@ -397,16 +454,36 @@ public class Masonry extends CommonSkill
 		   dir=-1;
 		else
 		if(((dir<0)||(dir>3))
-		   &&(doingCode!=BUILD_ROOF)
-		   &&(doingCode!=BUILD_DESC)
-		   &&(doingCode!=BUILD_MONUMENT)
-		   &&(doingCode!=BUILD_TITLE))
+		   &&(Util.s_int(data[doingCode][DAT_REQDIR])==1))
 		{
 			commonTell(mob,"A valid direction in which to build must also be specified.");
 			return false;
 		}
 
-		int woodRequired=woodReq[doingCode];
+		if(data[doingCode][DAT_REQNONULL].equals("1")
+		   &&(dir>=0)
+		   &&(mob.location().getExitInDir(dir)==null))
+		{
+			commonTell(mob,"There is a wall that way that needs to be demolished first.");
+			return false;
+		}
+														  
+
+		int woodRequired=Util.s_int(data[doingCode][DAT_WOOD]);
+		if(((mob.location().domainType()&Room.INDOORS)==0)
+		   &&(data[doingCode][DAT_ROOF].equals("1")))
+		{
+			commonTell(mob,"That can only be built after a roof, which includes the frame.");
+			return false;
+		}
+		else
+		if(((mob.location().domainType()&Room.INDOORS)>0)
+		   &&(data[doingCode][DAT_ROOF].equals("2")))
+		{
+			commonTell(mob,"That can only be built outdoors!");
+			return false;
+		}
+		
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=Util.combine(commands,1);
@@ -461,18 +538,35 @@ public class Masonry extends CommonSkill
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))
 			workingOn=dir;
 
-		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+		Item firstWood=null;
 		int foundWood=0;
-		if(firstWood!=null)
-			foundWood=findNumberOfResource(mob.location(),firstWood.material());
-		if((foundWood==0)&&(woodRequired>0))
+		if(doingCode==BUILD_PORTCULIS)
 		{
-			commonTell(mob,"There is no stone here to make anything from!  It might need to put it down first.");
-			return false;
+			firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
+			if(firstWood==null)
+				firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
+			if(firstWood!=null)
+				foundWood=findNumberOfResource(mob.location(),firstWood.material());
+			if((foundWood==0)&&(woodRequired>0))
+			{
+				commonTell(mob,"There is no metal here to make that from!  It might need to put it down first.");
+				return false;
+			}
+		}
+		else
+		{
+			firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+			if(firstWood!=null)
+				foundWood=findNumberOfResource(mob.location(),firstWood.material());
+			if((foundWood==0)&&(woodRequired>0))
+			{
+				commonTell(mob,"There is no stone here to make anything from!  It might need to put it down first.");
+				return false;
+			}
 		}
 		if(foundWood<woodRequired)
 		{
-			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+names[doingCode].toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
+			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+data[doingCode][DAT_NAME].toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
 
@@ -480,11 +574,7 @@ public class Masonry extends CommonSkill
 		   ||((mob.amFollowing()!=null)&&(ExternalPlay.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
 		if(!canBuild)
 		{
-			if((doingCode!=BUILD_ROOF)
-			   &&(doingCode!=BUILD_TITLE)
-			   &&(doingCode!=BUILD_MONUMENT)
-			   &&(doingCode!=BUILD_DESC)
-			   &&(dir>=0))
+			if((dir>=0)&&(data[doingCode][DAT_REQDIR].equals("1")))
 			{
 				Room R=mob.location().getRoomInDir(dir);
 				if((R!=null)
@@ -520,11 +610,17 @@ public class Masonry extends CommonSkill
 		case BUILD_ROOF:
 			verb="building a frame and roof";
 			break;
+		case BUILD_POOL:
+			verb="building a pool";
+			break;
 		case BUILD_WALL:
 			verb="building the "+Directions.getDirectionName(dir)+" wall";
 			break;
 		case BUILD_ARCH:
 			verb="building the "+Directions.getDirectionName(dir)+" archway";
+			break;
+		case BUILD_PORTCULIS:
+			verb="building the "+Directions.getDirectionName(dir)+" portcullis";
 			break;
 		case BUILD_TITLE:
 			verb="giving this place a title";

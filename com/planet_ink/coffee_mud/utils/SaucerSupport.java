@@ -1031,7 +1031,7 @@ public class SaucerSupport
 								   boolean wander,
 								   boolean roomprefer, boolean roomobject, Vector rooms)
 	{
-		// ridden things dont wander!
+		// ridden and following things aren't mobile!
 		if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
 		||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
 			return false;

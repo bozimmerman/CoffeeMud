@@ -15,6 +15,7 @@ public class SmokeRings extends CommonSkill
 	{
 		super();
 		displayText="";
+		canBeUninvoked=false;
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}

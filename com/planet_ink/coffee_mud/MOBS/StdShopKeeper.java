@@ -1050,9 +1050,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						{
 							Room R2=R.getRoomInDir(d);
 							LandTitle L2=null;
-							if(R2!=null) L2=getTitle(R2);
-							if(L2==null)
-							{ skipThisOne=false; break;}
+							if(R2!=null)
+							{
+								L2=getTitle(R2);
+								if(L2==null)
+								{ skipThisOne=false; break;}
+							}
+							else
+								continue;
 							if(L2.landOwner().equals(name)) 
 							{ skipThisOne=false; break;}
 							if(L2.landOwner().length()>0)
@@ -1081,7 +1086,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 		int totalCols=((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER))?1:2;
 		int totalWidth=60/totalCols;
-
+		int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
 		for(int i=0;i<inventory.size();i++)
 		{
 			Environmental E=(Environmental)inventory.elementAt(i);
@@ -1103,6 +1108,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		String c="^x["+Util.padRight("Cost",4+csize)+"] "+Util.padRight("Product",totalWidth-csize);
 		msg.append(c+((totalCols>1)?c:"")+"^.^N\n\r");
 		int colNum=0;
+		int rowNum=0;
 		for(int i=0;i<inventory.size();i++)
 		{
 			Environmental E=(Environmental)inventory.elementAt(i);
@@ -1121,6 +1127,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");
+					rowNum++;
+					if((limit>0)&&(rowNum>limit))
+						return msg;
 					colNum=1;
 				}
 				msg.append(col);

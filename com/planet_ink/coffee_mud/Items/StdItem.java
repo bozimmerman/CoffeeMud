@@ -303,6 +303,17 @@ public class StdItem implements Item
 	public boolean isGettable(){return isGettable;}
 	public void setGettable(boolean isTrue){isGettable=isTrue;}
 	public boolean isDroppable(){return isDroppable;}
+	public boolean isUltimatelyDroppable()
+	{
+		if(this instanceof Container)
+		{
+			Vector V=((Container)this).getContents();
+			for(int v=0;v<V.size();v++)
+				if(!((Item)V.elementAt(v)).isDroppable())
+					return false;
+		}
+		return isDroppable();
+	}
 	public void setDroppable(boolean isTrue){isDroppable=isTrue;}
 	public boolean isRemovable(){return isRemovable;}
 	public void setRemovable(boolean isTrue){isRemovable=isTrue;}
@@ -759,7 +770,7 @@ public class StdItem implements Item
 				mob.tell("You don't have that.");
 				return false;
 			}
-			if(!isDroppable)
+			if(!isUltimatelyDroppable())
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;
@@ -771,7 +782,7 @@ public class StdItem implements Item
 				mob.tell(name()+" is too heavy to throw.");
 				return false;
 			}
-			if(!isDroppable)
+			if(!isUltimatelyDroppable())
 			{
 				mob.tell("You can't seem to let go of "+name()+".");
 				return false;

@@ -189,6 +189,11 @@ public class MOBTeacher extends CombatAbilities
 					s=s.substring(3).trim();
 				if(s.startsWith("\"")) s=s.substring(1).trim();
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.trim().equalsIgnoreCase("LIST"))
+				{
+					ExternalPlay.quickSay(monster,mob,"Try the QUALIFY command.",true,false);
+					return;
+				}
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),mob.charStats());
 				if(myAbility==null)
 				{

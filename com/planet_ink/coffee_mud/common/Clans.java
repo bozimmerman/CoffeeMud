@@ -358,7 +358,8 @@ public class Clans implements Clan, Tickable
 			msg.append("-----------------------------------------------------------------\n\r"
 			          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_MEMBER,true,true),16)
 					  +":^.^N "+crewList(Clan.POS_MEMBER)+"\n\r");
-			if(allowedToDoThis(mob,Clan.FUNC_CLANACCEPT)>=0)
+			if((allowedToDoThis(mob,Clan.FUNC_CLANACCEPT)>=0)
+			||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 			{
 				msg.append("-----------------------------------------------------------------\n\r"
 				        +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_APPLICANT,true,true),16)+":^.^N "+crewList(Clan.POS_APPLICANT)+"\n\r");

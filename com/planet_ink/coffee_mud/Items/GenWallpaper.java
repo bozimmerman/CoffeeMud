@@ -89,6 +89,7 @@ public class GenWallpaper implements Item
 	public boolean isGettable(){return false;}
 	public void setGettable(boolean isTrue){}
 	public boolean isDroppable(){return true;}
+	public boolean isUltimatelyDroppable(){return true;}
 	public void setDroppable(boolean isTrue){}
 	public boolean isRemovable(){return true;}
 	public void setRemovable(boolean isTrue){}

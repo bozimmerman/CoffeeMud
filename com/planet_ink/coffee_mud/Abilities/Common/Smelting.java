@@ -130,6 +130,13 @@ public class Smelting extends CommonSkill
 		building=null;
 		messedUp=false;
 		String recipeName=Util.combine(commands,0);
+		int maxAmount=0;
+		if((commands.size()>1)&&(Util.isNumber((String)commands.lastElement())))
+		{
+			maxAmount=Util.s_int((String)commands.lastElement());
+			commands.removeElementAt(commands.size()-1);
+			recipeName=Util.combine(commands,0);
+		}
 		Vector foundRecipe=null;
 		for(int r=0;r<recipes.size();r++)
 		{
@@ -200,6 +207,7 @@ public class Smelting extends CommonSkill
 			return false;
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
+		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
 		int Resource1Destroyed=amountMaking;
 		int Resource2Destroyed=amountMaking;
 		for(int i=mob.location().numItems()-1;i>=0;i--)

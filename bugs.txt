@@ -1,15 +1,14 @@
+Can this pretty, pretty please take a param of how much material you're trying to smelt?
 make sure import cmare handles rooms with containers in containers with items ok
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
-allow duplicates of the quest to be run
-add an optional property limit to the list
-Masonry	POOL will convert the room into a Water room, with 1 level of underwater added for free
-Masonry	portcullis (but it requires METAL instead of stone)
-Where are some archon powers?  If some goob starts a clan called 'TulathIsAJerk', I can't delete the offending clan.  Also, clandetails should be viewable to Archons as if they are a boss for a clan (i.e. all members, applicants, etc).  It would also be nice to be able to manually authorize a clan to active.
-gain list should do qual
-posting always makes from unknown
+!Masonry	POOL will convert the room into a Water room, with 1 level of underwater added for free
+!Masonry	portcullis (but it requires METAL instead of stone)
 book of laws can be crafted
-fines for arrest should be added
 A young player had a follower, who had the skill kick and a decent amount of movement.  She turned off autoassist, then ordered the follower to kick a mob.  She then could order the mob to kick as often as she could type it, completely bypassing the fight delay system.
-While you are in a group, even when you are sitting you follow the members.  Seems if yer sitting you can't possibly be walking around!
-OK, if you put a drappable false into a container, foomp, it's droppable by way of the container.  Bad bug for cursed items.
-Can't for the life of me getting 'cook cookie' to work.  There are a number that don't seem to be working either (stews)...  and Fried TomatoEs is spelled tomatos.
+The skill's help files should mention that certain woods use certain diff amounts.  Ironwood take more wood, for example.
+I've run into some strange scenarios where players reported that crafted canoes, furniture, and pipes can be withdrawn repeatedly and they're still in their bank account
+My players are complaining a fairly large amount about the strangeness involved in re-conncting.  Anytime they reconnect for any reason (like link death), their followers are no longer following them, esp pets they bought or hirelings they had.  The latter is fine, but the former is a big problem.  Players with carts and horses find that their horses no longer will take their orders.
+SECSPERTICK- number of real life seconds between each game "tick".
+HOURSPERDAY- number of real life hours in one game day.
+DAYSPERMONTH- number of game days that make up a game month.
+DAYSPERYEAR- number of game days that makes up a game year.

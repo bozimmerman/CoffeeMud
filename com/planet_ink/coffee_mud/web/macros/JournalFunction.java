@@ -22,7 +22,7 @@ public class JournalFunction extends StdWebMacro
 		}
 		MOB M=CMMap.getLoadPlayer(Authenticate.getLogin(httpReq));
 		String from="Unknown";
-		if(M!=null) M.Name();
+		if(M!=null) from=M.Name();
 		if(parms.containsKey("NEWPOST"))
 		{
 			String to=httpReq.getRequestParameter("TO");
