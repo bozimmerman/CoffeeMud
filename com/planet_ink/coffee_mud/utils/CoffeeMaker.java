@@ -1917,7 +1917,7 @@ public class CoffeeMaker
 		str.append(XMLManager.convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
 		str.append(XMLManager.convertXMLtoTag("DEX",mob.baseCharStats().getStat(CharStats.DEXTERITY)));
 		str.append(XMLManager.convertXMLtoTag("CON",mob.baseCharStats().getStat(CharStats.CONSTITUTION)));
-		str.append(XMLManager.convertXMLtoTag("GEND",(char)mob.baseCharStats().getStat(CharStats.GENDER)));
+		str.append(XMLManager.convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.GENDER))));
 		str.append(XMLManager.convertXMLtoTag("WIS",mob.baseCharStats().getStat(CharStats.WISDOM)));
 		str.append(XMLManager.convertXMLtoTag("INT",mob.baseCharStats().getStat(CharStats.INTELLIGENCE)));
 		str.append(XMLManager.convertXMLtoTag("CHA",mob.baseCharStats().getStat(CharStats.CHARISMA)));

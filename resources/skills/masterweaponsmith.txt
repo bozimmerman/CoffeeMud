@@ -16,17 +16,17 @@ Master Battle Axe	50	120	25	6648	GenWeapon	AXE	SLASHING	64	20	2	0	WOODEN
 Master Bearded Axe	53	140	20	6267	GenWeapon	AXE	SLASHING	60	30	2	0	WOODEN
 Master Executioners Axe	55	150	25	10161	GenWeapon	AXE	SLASHING	91	-20	2	0	WOODEN
 % Master Club	32	20	12	1722	GenWeapon	BLUNT	BASHING	39	-40	1	0
-Master Short % Staff	31	20	10	2599	GenWeapon	STAFF	BASHING	43		2	0
+Master Short % Staff	31	20	10	2599	GenStaff	STAFF	BASHING	43		2	0
 Master % Shillelagh	31	20	8	1410	GenWeapon	BLUNT	BASHING	25		1	0
 Master % Sai	31	20	5	1300	GenWeapon	BLUNT	PIERCING	30	-20	1	0
 Master % Cudgel	34	20	14	1962	GenWeapon	BLUNT	BASHING	29	0	1	0
-Master Long % Staff	35	20	16	3472	GenWeapon	STAFF	BASHING	47		2	1
+Master Long % Staff	35	20	16	3472	GenStaff	STAFF	BASHING	47		2	1
 Master % Morning Star	37	30	16	2420	GenWeapon	BLUNT	PIERCING	35	-10	1	0
 Master Spiked % Club	39	30	15	2562	GenWeapon	BLUNT	PIERCING	39	-20	1	0
-Master % QuarterStaff	39	30	12	4048	GenWeapon	STAFF	BASHING	54		2	0
-Master % Jo Staff	41	40	8	3275	GenWeapon	STAFF	BASHING	44	20	2	0
+Master % QuarterStaff	39	30	12	4048	GenStaff	STAFF	BASHING	54		2	0
+Master % Jo Staff	41	40	8	3275	GenStaff	STAFF	BASHING	44	20	2	0
 Master % Mace	45	50	12	3040	GenWeapon	BLUNT	BASHING	40	-10	1	0
-Master % Bo Staff	47	60	14	4953	GenWeapon	STAFF	BASHING	55	20	2	0
+Master % Bo Staff	47	60	14	4953	GenStaff	STAFF	BASHING	55	20	2	0
 Master Herculean Club	49	80	30	8400	GenWeapon	BLUNT	BASHING	80	-10	2	0
 Master Flanged % Mace	51	80	14	3712	GenWeapon	BLUNT	BASHING	39	10	1	0
 Master Half-moon	52	90	25	9265	GenWeapon	BLUNT	SLASHING	87	-20	2	0
