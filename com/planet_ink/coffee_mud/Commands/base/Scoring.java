@@ -723,7 +723,7 @@ public class Scoring
 						   {"Highlighted Text","H"},
 						   {"Fight Text","F"},
 						   {"Spells","S"},
-						   {"Emotes","p"},
+						   {"Emotes","E"},
 						   {"Talks","T"},
 						   {"Room Titles","O"},
 						   {"Room Descriptions","L"},
@@ -732,14 +732,14 @@ public class Scoring
 						   {"MOBs","M"},
 						   {"Channel Foreground","q"}
 		};
-		String[][] theColors={{"White","w"},
+		String[][] theColors={{"White","W"},
 							  {"Green","g"},
 							  {"Blue","b"},
 							  {"Red","r"},
 							  {"Yellow","y"},
 							  {"Cyan","c"},
 							  {"Purple","p"},
-							  {"Grey","W"},
+							  {"Grey","w"},
 							  {"Dark Green","G"},
 							  {"Dark Blue","B"},
 							  {"Dark Red","R"},
@@ -764,7 +764,7 @@ public class Scoring
 			numToChange=mob.session().prompt("Enter Number or RETURN: ","");
 			int num=Util.s_int(numToChange);
 			if(numToChange.length()==0) break;
-			if((num<=0)||(num>=theSet.length))
+			if((num<=0)||(num>theSet.length))
 				mob.tell("That is not a valid entry!");
 			else
 			{
