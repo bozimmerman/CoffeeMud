@@ -54,7 +54,7 @@ public class GenFood extends StdFood
 		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private static String[] MYCODES={"NORISHMENT"};
+	private static String[] MYCODES={"NOURISHMENT"};
 	public String getStat(String code)
 	{
 		if(CoffeeMaker.getGenItemCodeNum(code)>=0)

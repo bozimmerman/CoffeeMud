@@ -56,7 +56,7 @@ public class Spell_Erase extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target instanceof Scroll)
-					((Scroll)target).setScrollText("");
+					((Scroll)target).setSpellList("");
 				else
 					target.setReadableText("");
 			}

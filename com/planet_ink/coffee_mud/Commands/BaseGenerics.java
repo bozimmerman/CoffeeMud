@@ -594,9 +594,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 
 		if((E instanceof Wand)
-		 ||(E instanceof Scroll)
-		 ||(E instanceof Pill)
-		 ||(E instanceof Potion)
+		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Light)
 		 ||(E instanceof Container)
 		 ||(E instanceof Ammunition)
@@ -619,9 +617,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 
 		if((Sense.isReadable(E))
-		 ||(E instanceof Wand)
-		 ||(E instanceof Scroll)
-		 ||(E instanceof Pill)
+		 ||(E instanceof SpellHolder)
 		 ||(E instanceof Ammunition)
 		 ||(CMClass.className(E).toUpperCase().endsWith("PORTAL"))
 		 ||(E instanceof Potion)
@@ -637,9 +633,7 @@ public class BaseGenerics extends StdCommand
 					ok=true;
 				}
 				else
-				if((E instanceof Scroll)
-				||(E instanceof Pill)
-				||(E instanceof Potion))
+				if(E instanceof SpellHolder)
 					mob.tell(showNumber+". Assigned Spell(s) ( ';' delimited)\n: '"+E.readableText()+"'.");
 				else
 				if(E instanceof Ammunition)
@@ -684,9 +678,7 @@ public class BaseGenerics extends StdCommand
 				String newName=null;
 
 				if((E instanceof Wand)
-				||(E instanceof Scroll)
-				||((E instanceof Pill)&&(!(CMClass.className(E).endsWith("SuperPill"))))
-				||(E instanceof Potion))
+				||((E instanceof SpellHolder)&&(!(CMClass.className(E).endsWith("SuperPill")))))
 				{
 					newName=mob.session().prompt("Enter something new (?)\n\r:","");
 					if(newName.length()==0)
@@ -705,9 +697,7 @@ public class BaseGenerics extends StdCommand
 								mob.tell("'"+newName+"' is not recognized.  Try '?'.");
 						}
 						else
-						if((E instanceof Scroll)
-						||(E instanceof Pill)
-						||(E instanceof Potion))
+						if(E instanceof SpellHolder)
 						{
 							String oldName=newName;
 							if(!newName.endsWith(";")) newName+=";";
@@ -782,7 +772,7 @@ public class BaseGenerics extends StdCommand
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		if(E instanceof Potion)
-			((Potion)E).setDrunk((Potion)E,false);
+			((Potion)E).setDrunk(false);
 
 		String c="Q";
 		while(!c.equals("\n"))

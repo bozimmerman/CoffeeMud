@@ -20,11 +20,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenPill extends GenFood implements Pill
+public class GenPill extends StdPill
 {
 	public String ID(){	return "GenPill";}
-	protected Ability theSpell;
-
+	protected String readableText="";
+	
 	public GenPill()
 	{
 		super();
@@ -39,46 +39,76 @@ public class GenPill extends GenFood implements Pill
 		material=EnvResource.RESOURCE_CORN;
 	}
 
-
 	public boolean isGeneric(){return true;}
 
-	public void eatIfAble(MOB mob, Pill me)
-	{ new StdPill().eatIfAble(mob,me);	}
-
-	public String secretIdentity()
-	{
-		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells(this));
-	}
-
+	
 	public String getSpellList()
 	{ return readableText;}
 	public void setSpellList(String list){readableText=list;}
-	public Vector getSpells(Pill me)
-	{ return new StdPill().getSpells(me);}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			MOB mob=msg.source();
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_EAT:
-				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
-				{
-					eatIfAble(mob,this);
-					super.executeMsg(myHost,msg);
-				}
-				else
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
-				break;
-			default:
-				super.executeMsg(myHost,msg);
-				break;
-			}
-		}
-		else
-			super.executeMsg(myHost,msg);
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){
+		readableText=text;
+		setSpellList(readableText);
 	}
-	// stats handled by genfood, spells by readabletext
+	
+	public String text()
+	{
+		return CoffeeMaker.getPropertiesStr(this,false);
+	}
+
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		CoffeeMaker.setPropertiesStr(this,newText,false);
+		recoverEnvStats();
+	}
+	private static String[] MYCODES={"NOURISHMENT"};
+	public String getStat(String code)
+	{
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			return CoffeeMaker.getGenItemStat(this,code);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+nourishment();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			CoffeeMaker.setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setNourishment(Util.s_int(val)); break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] superCodes=CoffeeMaker.GENITEMCODES;
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenPill)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		return true;
+	}
 }

@@ -20,10 +20,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenWand extends GenItem implements Wand
+public class GenWand extends StdWand
 {
 	public String ID(){	return "GenWand";}
 	private String secretWord=StdWand.words[Dice.roll(1,StdWand.words.length,0)-1];
+	protected String readableText="";
 	
 	public GenWand()
 	{
@@ -41,23 +42,18 @@ public class GenWand extends GenItem implements Wand
 		recoverEnvStats();
 	}
 
-
 	public boolean isGeneric(){return true;}
 
-	protected int maxUses=Integer.MAX_VALUE;
-	public int maxUses(){return maxUses;}
-	public void setMaxUses(int newMaxUses){maxUses=newMaxUses;}
-	
-	public boolean useTheWand(Ability A, MOB mob)
-	{
-		return new StdWand().useTheWand(A,mob);
-	}
 	public void setSpell(Ability theSpell)
 	{
 		readableText="";
 		if(theSpell!=null)
 			readableText=theSpell.ID();
 		secretWord=StdWand.getWandWord(readableText);
+	}
+	public Ability getSpell()
+	{
+		return CMClass.getAbility(readableText);
 	}
 
 	public void setReadableText(String text)
@@ -66,58 +62,29 @@ public class GenWand extends GenItem implements Wand
 		secretWord=StdWand.getWandWord(readableText);
 	}
 
-	public Ability getSpell()
+	public String text()
 	{
-		return CMClass.getAbility(readableText());
-	}
-	public int value()
-	{
-		if(usesRemaining()<=0)
-			return 0;
-		else
-			return super.value();
+		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 
-	public String secretIdentity()
+	public void setMiscText(String newText)
 	{
-		String id=super.secretIdentity();
-		Ability A=getSpell();
-		if(A!=null)
-		{
-			id="'A wand of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
-			return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
-		}
-		return id;
+		miscText="";
+		CoffeeMaker.setPropertiesStr(this,newText,false);
+		recoverEnvStats();
 	}
 
-	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
-						   String message,
-						   Wand me)
+	public String getStat(String code)
+	{ return CoffeeMaker.getGenItemStat(this,code);}
+	public void setStat(String code, String val)
+	{ CoffeeMaker.setGenItemStat(this,code,val);}
+	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
+	public boolean sameAs(Environmental E)
 	{
-		new StdWand().waveIfAble(mob,afftarget,message,me);
+		if(!(E instanceof GenWand)) return false;
+		for(int i=0;i<getStatCodes().length;i++)
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+				return false;
+		return true;
 	}
-
-	public String magicWord(){return secretWord;}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		MOB mob=msg.source();
-
-		switch(msg.targetMinor())
-		{
-		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(this))
-				waveIfAble(mob,msg.tool(),msg.targetMessage(),this);
-			break;
-		case CMMsg.TYP_SPEAK:
-			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
-				msg.addTrailerMsg(new FullMsg(msg.source(),this,msg.target(),msg.NO_EFFECT,null,CMMsg.MASK_GENERAL|CMMsg.TYP_WAND_USE,msg.targetMessage(),msg.NO_EFFECT,null));
-			break;
-		default:
-			break;
-		}
-		super.executeMsg(myHost,msg);
-	}
-	// stats handled by genitem, spells by readabletext
 }

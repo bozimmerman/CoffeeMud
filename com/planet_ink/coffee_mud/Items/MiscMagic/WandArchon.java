@@ -88,18 +88,17 @@ public class WandArchon extends StdWand implements ArchonOnly
 
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
-						   String message,
-						   Wand me)
+						   String message)
 	{
-		if((mob.isMine(me))
-		   &&(!me.amWearingAt(Item.INVENTORY)))
+		if((mob.isMine(this))
+		   &&(!amWearingAt(Item.INVENTORY)))
 		{
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
 				MOB target=(MOB)afftarget;
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,name()+" glows brightly at <T-NAME>.");
 					int destLevel=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
 					if(destLevel<=target.baseEnvStats().level())
@@ -115,7 +114,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("LEVEL UP")>0)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,name()+" glows brightly at <T-NAME>.");
 					if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 						target.charStats().getCurrentClass().level(target);
 					else
@@ -125,7 +124,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("REFRESH")>0)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,name()+" glows brightly at <T-NAME>.");
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell("You feel refreshed!");
@@ -134,14 +133,14 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.toUpperCase().indexOf("BURN")>0)
 				{
-					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,me.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
+					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					MUDFight.postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(me.name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
+					MUDFight.postDamage(mob,target,null,(++flameDamage),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,(name()+" <DAMAGE> <T-NAME>!")+CommonStrings.msp("fireball.wav",30));
 					return;
 				}
 			}
 		}
-		super.waveIfAble(mob,afftarget,message,me);
+		super.waveIfAble(mob,afftarget,message);
 	}
 }

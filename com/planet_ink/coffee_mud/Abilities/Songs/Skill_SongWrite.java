@@ -77,7 +77,7 @@ public class Skill_SongWrite extends BardSkill
 		}
 		int numSpells=(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=0;
-		if(scroll.numSpells()>numSpells)
+		if(scroll.getSpells().size()>numSpells)
 		{
 			mob.tell("You aren't powerful enough to write any more magic onto "+scroll.name()+".");
 			return false;
@@ -109,10 +109,10 @@ public class Skill_SongWrite extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(scroll.getScrollText().trim().length()==0)
-					scroll.setScrollText(scrollThis.ID());
+				if(scroll.getSpellList().length()==0)
+					scroll.setSpellList(scrollThis.ID());
 				else
-					scroll.setScrollText(scroll.getScrollText()+";"+scrollThis.ID());
+					scroll.setSpellList(scroll.getSpellList()+";"+scrollThis.ID());
 				if((scroll.usesRemaining()==Integer.MAX_VALUE)||(scroll.usesRemaining()<0))
 					scroll.setUsesRemaining(0);
 				scroll.setUsesRemaining(scroll.usesRemaining()+1);

@@ -91,7 +91,7 @@ public class Thief_Forgery extends ThiefSkill
 					return false;
 				}
 				else
-				if(((Scroll)target).numSpells()>0)
+				if(((Scroll)target).getSpells().size()>0)
 				{
 					mob.tell("That already has real spells on it!");
 					return false;

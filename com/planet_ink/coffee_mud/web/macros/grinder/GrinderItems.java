@@ -97,7 +97,7 @@ public class GrinderItems
 						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
 						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES",
-						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM"};
+						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -236,7 +236,8 @@ public class GrinderItems
 			case 33: // is trapped
 				break;
 			case 34: // readable spells
-				if(((I instanceof Pill)||(I instanceof Scroll)||(I instanceof Potion))&&(CMClass.className(I).indexOf("SuperPill")<0))
+				if(((I instanceof SpellHolder))
+				&&(CMClass.className(I).indexOf("SuperPill")<0))
 				{
 					if(httpReq.isRequestParameter("READABLESPELLS"))
 					{
@@ -248,12 +249,7 @@ public class GrinderItems
 								break;
 					}
 					old=old+";";
-					if(I instanceof Pill)
-						((Pill)I).setSpellList(old);
-					if(I instanceof Potion)
-						((Potion)I).setSpellList(old);
-					if(I instanceof Scroll)
-						((Scroll)I).setScrollText(old);
+					((SpellHolder)I).setSpellList(old);
 				}
 				break;
 			case 35: // is wand
@@ -393,6 +389,8 @@ public class GrinderItems
 			case 65: // isammo
 				break;
 			case 66: // is mob type
+				break;
+			case 67: // is dust
 				break;
 			}
 		}

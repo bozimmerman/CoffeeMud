@@ -204,7 +204,7 @@ public class ItemData extends StdWebMacro
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
 							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
 							  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
-							  "ISAMMO","ISMOBITEM"};
+							  "ISAMMO","ISMOBITEM","ISDUST"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -421,12 +421,8 @@ public class ItemData extends StdWebMacro
 					break;
 				case 34: // readable spells
 					{
-						if(I instanceof Potion)
-							old=";"+((Potion)I).getSpellList();
-						if(I instanceof Pill)
-							old=";"+((Pill)I).getSpellList();
-						if(I instanceof Scroll)
-							old=";"+((Scroll)I).getScrollText();
+						if(I instanceof SpellHolder)
+							old=";"+((SpellHolder)I).getSpellList();
 						if(httpReq.isRequestParameter("READABLESPELLS"))
 						{
 							old=";"+httpReq.getRequestParameter("READABLESPELLS");
@@ -730,6 +726,9 @@ public class ItemData extends StdWebMacro
 					else return "false";
 				case 70: // is mob item
 					if(M!=null) return "true";
+					else return "false";
+				case 71: // is dust
+					if(I instanceof MagicDust) return "true";
 					else return "false";
 				}
 				if(firstTime)

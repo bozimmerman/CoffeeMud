@@ -20,11 +20,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenPotion extends GenDrink implements Potion
+public class GenPotion extends StdPotion
 {
 	public String ID(){	return "GenPotion";}
-	protected Ability theSpell;
-
+	protected String readableText="";
 	public GenPotion()
 	{
 		super();
@@ -42,71 +41,94 @@ public class GenPotion extends GenDrink implements Potion
 
 
 	public boolean isGeneric(){return true;}
-	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
-
-	public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
-	public void setDrunk(Potion me, boolean isTrue)
-	{ new StdPotion().setDrunk(this,isTrue);}
-
-	public String secretIdentity()
-	{
-		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells(this));
-	}
-
-	public int value()
-	{
-		if(isDrunk())
-			return 0;
-		else
-			return super.value();
-	}
-
-	public void drinkIfAble(MOB mob, Potion me)
-	{new StdPotion().drinkIfAble(mob,me);}
-
+	
 	public String getSpellList()
 	{ return readableText;}
 	public void setSpellList(String list){readableText=list;}
-	public Vector getSpells(Potion me)
-	{	return new StdPotion().getSpells(me);}
-
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if((msg.amITarget(this))
-		   &&(msg.targetMinor()==CMMsg.TYP_DRINK)
-		   &&(msg.othersMessage()==null)
-		   &&(msg.sourceMessage()==null))
-				return true;
-		return super.okMessage(myHost,msg);
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){
+		readableText=text;
+		setSpellList(readableText);
 	}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	
+	public String text()
 	{
-		if(msg.amITarget(this))
-		{
-			MOB mob=msg.source();
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_DRINK:
-				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
-				{
-					drinkIfAble(mob,this);
-					mob.tell(name()+" vanishes!");
-					this.destroy();
-				}
-				else
-				{
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
-					super.executeMsg(myHost,msg);
-				}
-				break;
-			default:
-				super.executeMsg(myHost,msg);
-				break;
-			}
-		}
+		return CoffeeMaker.getPropertiesStr(this,false);
+	}
+	public int liquidType(){
+		if((material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+			return material();
+		if(Util.s_int(readableText)==0) return EnvResource.RESOURCE_FRESHWATER;
+		return Util.s_int(readableText);
+	}
+	public void setLiquidType(int newLiquidType){readableText=""+newLiquidType;}
+
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		CoffeeMaker.setPropertiesStr(this,newText,false);
+		recoverEnvStats();
+	}
+	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};
+	public String getStat(String code)
+	{
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			return CoffeeMaker.getGenItemStat(this,code);
 		else
-			super.executeMsg(myHost,msg);
+		switch(getCodeNum(code))
+		{
+		case 0: return ""+hasALock();
+		case 1: return ""+hasALid();
+		case 2: return ""+capacity();
+		case 3: return ""+containTypes();
+		case 4: return ""+thirstQuenched();
+		case 5: return ""+liquidHeld();
+		case 6: return ""+liquidType();
+		}
+		return "";
 	}
-	// stats handled by GenDrink, spells by readable text
+	public void setStat(String code, String val)
+	{
+		if(CoffeeMaker.getGenItemCodeNum(code)>=0)
+			CoffeeMaker.setGenItemStat(this,code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0: setLidsNLocks(hasALid(),isOpen(),Util.s_bool(val),false); break;
+		case 1: setLidsNLocks(Util.s_bool(val),isOpen(),hasALock(),false); break;
+		case 2: setCapacity(Util.s_int(val)); break;
+		case 3: setContainTypes(Util.s_long(val)); break;
+		case 4: setThirstQuenched(Util.s_int(val)); break;
+		case 5: setLiquidHeld(Util.s_int(val)); break;
+		case 6: setLiquidType(Util.s_int(val)); break;
+		}
+	}
+	protected int getCodeNum(String code){
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] superCodes=CoffeeMaker.GENITEMCODES;
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenPotion)) return false;
+		String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		return true;
+	}
 }

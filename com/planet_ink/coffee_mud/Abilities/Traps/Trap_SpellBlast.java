@@ -38,8 +38,8 @@ public class Trap_SpellBlast extends StdTrap
 			Item I=mob.location().fetchItem(i);
 			if((I!=null)
 			&&(I instanceof Scroll)
-			&&(((Scroll)I).getSpells()!=null)
-			&&(((Scroll)I).getSpells().size()>0)
+			&&(((SpellHolder)I).getSpells()!=null)
+			&&(((SpellHolder)I).getSpells().size()>0)
 			&&(I.usesRemaining()>0))
 				return I;
 		}
@@ -50,8 +50,8 @@ public class Trap_SpellBlast extends StdTrap
 	{
 		if(E==null) return null;
 		Item I=getPoison(mob);
-		if((I!=null)&&(I instanceof Scroll)){
-			Vector V=((Scroll)I).getSpells();
+		if((I!=null)&&(I instanceof SpellHolder)){
+			Vector V=((SpellHolder)I).getSpells();
 			if(V.size()>0)
 				setMiscText(((Ability)V.firstElement()).ID());
 			I.setUsesRemaining(I.usesRemaining()-1);

@@ -44,7 +44,7 @@ public class StdWand extends StdItem implements Wand
 	public int maxUses(){return Integer.MAX_VALUE;}
 	public void setMaxUses(int newMaxUses){}
 	
-	public boolean useTheWand(Ability A, MOB mob)
+	public static boolean useTheWand(Ability A, MOB mob)
 	{
 		int manaRequired=5;
 		int q=CMAble.qualifyingLevel(mob,A);
@@ -108,8 +108,57 @@ public class StdWand extends StdItem implements Wand
 
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
-						   String message,
-						   Wand me)
+						   String message)
+	{
+		if((mob.isMine(this))
+		   &&(!this.amWearingAt(Item.INVENTORY)))
+		{
+			Environmental target=null;
+			if((mob.location()!=null))
+				target=afftarget;
+			int x=message.toUpperCase().indexOf(this.magicWord().toUpperCase());
+			if(x>=0)
+			{
+				message=message.substring(x+this.magicWord().length());
+				int y=message.indexOf("'");
+				if(y>=0) message=message.substring(0,y);
+				message=message.trim();
+				Ability wandUse=mob.fetchAbility("Skill_WandUse");
+				if((wandUse==null)||(!wandUse.profficiencyCheck(null,0,false)))
+					mob.tell(this.name()+" glows faintly for a moment, then fades.");
+				else
+				{
+					Ability A=this.getSpell();
+					if(A==null)
+						mob.tell("Something seems wrong with "+this.name()+".");
+					else
+					if(this.usesRemaining()<=0)
+						mob.tell(this.name()+" seems spent.");
+					else
+					{
+						A=(Ability)A.newInstance();
+						if(this.useTheWand(A,mob))
+						{
+							Vector V=new Vector();
+							if(target!=null)
+								V.addElement(target.name());
+							V.addElement(message);
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly.");
+							this.setUsesRemaining(this.usesRemaining()-1);
+							A.invoke(mob, V, target, true);
+							wandUse.helpProfficiency(mob);
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public static void waveIfAble(MOB mob,
+								  Environmental afftarget,
+								  String message,
+								  Wand me)
 	{
 		if((mob.isMine(me))
 		   &&(!me.amWearingAt(Item.INVENTORY)))
@@ -138,7 +187,7 @@ public class StdWand extends StdItem implements Wand
 					else
 					{
 						A=(Ability)A.newInstance();
-						if(me.useTheWand(A,mob))
+						if(useTheWand(A,mob))
 						{
 							Vector V=new Vector();
 							if(target!=null)
@@ -155,7 +204,7 @@ public class StdWand extends StdItem implements Wand
 			}
 		}
 	}
-
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -164,7 +213,7 @@ public class StdWand extends StdItem implements Wand
 		{
 		case CMMsg.TYP_WAND_USE:
 			if(msg.amITarget(this))
-				waveIfAble(mob,msg.tool(),msg.targetMessage(),this);
+				waveIfAble(mob,msg.tool(),msg.targetMessage());
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)

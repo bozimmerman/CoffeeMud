@@ -2876,7 +2876,7 @@ public class Import extends StdCommand
 			case 2: I=CMClass.getMiscMagic("GenScroll");
 					I.baseEnvStats().setLevel(val1);
 					I.setUsesRemaining(3);
-					((Scroll)I).setScrollText(getSpell(str2,val2)+";"+getSpell(str3,val3)+";"+getSpell(str4,val4));
+					((SpellHolder)I).setSpellList(getSpell(str2,val2)+";"+getSpell(str3,val3)+";"+getSpell(str4,val4));
 					break;
 			case 3: I=CMClass.getMiscMagic("GenWand");
 					I.baseEnvStats().setLevel(val1);

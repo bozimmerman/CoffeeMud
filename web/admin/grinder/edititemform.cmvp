@@ -607,6 +607,17 @@
 					    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
 					    </TD>
 					</TR>
+				@else
+					@if?ItemData?ISDUST@
+					<TR>
+						<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on affected:</B></FONT></TD>
+					    <TD WIDTH=450 COLSPAN=2>
+					    <SELECT NAME=READABLESPELLS MULTIPLE>
+					    @ItemData?READABLESPELLS@
+					    </SELECT>
+					    </TD>
+					</TR>
+					@endif@
 				@endif@
 			@endif@
 		@endif@

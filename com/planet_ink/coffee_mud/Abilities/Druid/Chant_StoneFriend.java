@@ -99,8 +99,10 @@ public class Chant_StoneFriend extends Chant
 			return false;
 		MOB mob=(MOB)affecting();
 		if((affected==mob)
-		&&(invoker()!=mob)
-		&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
+		&&(mob!=getCharmer())
+		&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer()))
+		&&(mob.location()!=null)
+		&&(mob.location().isInhabitant(getCharmer())))
 			CommonMsgs.follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}

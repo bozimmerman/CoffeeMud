@@ -172,7 +172,7 @@ public class CMClass extends ClassLoader
 	private static Item sampleItem=null;
 	public static Item sampleItem(){
 		if((sampleItem==null)&&(items.size()>0))
-			sampleItem= (Item)items.firstElement();
+			sampleItem= (Item)((Item)items.firstElement()).copyOf();
 		return sampleItem;
 	}
 
@@ -181,7 +181,7 @@ public class CMClass extends ClassLoader
 	{
 		if((sampleMOB==null)&&(MOBs.size()>0))
 		{
-			sampleMOB=(MOB)MOBs.firstElement();
+			sampleMOB=(MOB)((MOB)MOBs.firstElement()).copyOf();
 			sampleMOB.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
 			sampleMOB.envStats().setDisposition(EnvStats.IS_NOT_SEEN);
 		}

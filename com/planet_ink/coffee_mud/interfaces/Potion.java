@@ -16,12 +16,9 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Potion extends MiscMagic
+public interface Potion extends Drink, MiscMagic, SpellHolder
 {
-	public Vector getSpells(Potion me);
-	public String getSpellList();
-	public void setSpellList(String list);
 	public boolean isDrunk();
-	public void setDrunk(Potion me, boolean isTrue);
-	public void drinkIfAble(MOB mob, Potion me);
+	public void setDrunk(boolean isTrue);
+	public void drinkIfAble(MOB mob);
 }

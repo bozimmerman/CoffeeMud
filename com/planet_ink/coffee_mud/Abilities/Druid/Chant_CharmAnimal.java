@@ -112,8 +112,10 @@ public class Chant_CharmAnimal extends Chant
 			unInvoke();
 		else
 		if((affected==mob)
-		&&(invoker()!=mob)
-		&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
+		&&(mob!=getCharmer())
+		&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer()))
+		&&(mob.location()!=null)
+		&&(mob.location().isInhabitant(getCharmer())))
 			CommonMsgs.follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);
 	}

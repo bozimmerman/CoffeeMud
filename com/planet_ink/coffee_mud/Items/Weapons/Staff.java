@@ -55,10 +55,6 @@ public class Staff extends StdWeapon implements Wand
 	}
 
 
-	public boolean useTheWand(Ability A, MOB mob)
-	{
-		return new StdWand().useTheWand(A,mob);
-	}
 	public void setSpell(Ability theSpell)
 	{
 		miscText="";
@@ -94,10 +90,9 @@ public class Staff extends StdWeapon implements Wand
 
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
-						   String message,
-						   Wand me)
+						   String message)
 	{
-		new StdWand().waveIfAble(mob,afftarget,message,me);
+		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -107,7 +102,7 @@ public class Staff extends StdWeapon implements Wand
 		{
 		case CMMsg.TYP_WAND_USE:
 			if(msg.amITarget(this))
-				waveIfAble(mob,msg.tool(),msg.targetMessage(),this);
+				StdWand.waveIfAble(mob,msg.tool(),msg.targetMessage(),this);
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)

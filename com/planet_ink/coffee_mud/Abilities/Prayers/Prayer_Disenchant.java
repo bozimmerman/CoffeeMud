@@ -70,17 +70,8 @@ public class Prayer_Disenchant extends Prayer
 					((Wand)target).setUsesRemaining(0);
 				}
 				else
-				if(target instanceof Scroll)
-				{
-					((Scroll)target).setSpellList(new Vector());
-					((Scroll)target).setScrollText("");
-				}
-				else
-				if(target instanceof Potion)
-					((Potion)target).setSpellList("");
-				else
-				if(target instanceof Pill)
-					((Pill)target).setSpellList("");
+				if(target instanceof SpellHolder)
+					((SpellHolder)target).setSpellList("");
 				target.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

@@ -23,7 +23,6 @@ import java.util.*;
 public class GenMultiPotion extends GenDrink implements Potion
 {
 	public String ID(){	return "GenMultiPotion";}
-	protected Ability theSpell;
 
 	public GenMultiPotion()
 	{
@@ -44,12 +43,25 @@ public class GenMultiPotion extends GenDrink implements Potion
 	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
 
 	public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
-	public void setDrunk(Potion me, boolean isTrue)
-	{ new StdPotion().setDrunk(this,isTrue);}
+	public void setDrunk(boolean isTrue)
+	{
+		if(isTrue&&isDrunk()) return;
+		if((!isTrue)&&(!isDrunk())) return;
+		if(isTrue)
+			setSpellList(getSpellList()+";DRUNK");
+		else
+		{
+			String list="";
+			Vector theSpells=getSpells();
+			for(int v=0;v<theSpells.size();v++)
+				list+=((Ability)theSpells.elementAt(v)).ID()+";";
+			setSpellList(list);
+		}
+	}
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells(this));
+		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells());
 	}
 
 	public int value()
@@ -63,18 +75,22 @@ public class GenMultiPotion extends GenDrink implements Potion
 	public String getSpellList()
 	{ return readableText;}
 	public void setSpellList(String list){readableText=list;}
-	public Vector getSpells(Potion me)
-	{	return new StdPotion().getSpells(me);}
-
-
-	public void drinkIfAble(MOB mob, Potion me)
+	public Vector getSpells()
 	{
-		if(!(me instanceof Drink)) return;
+		return StdPotion.getSpells(this);
+	}
+	public void setReadableText(String text){
+		readableText=text;
+		setSpellList(readableText);
+	}
+	
 
-		Vector spells=getSpells(me);
-		if(mob.isMine(me))
+	public void drinkIfAble(MOB mob)
+	{
+		Vector spells=getSpells();
+		if(mob.isMine(this))
 		{
-			if((!me.isDrunk())&&(spells.size()>0))
+			if((!isDrunk())&&(spells.size()>0))
 			{
 				for(int i=0;i<spells.size();i++)
 				{
@@ -83,8 +99,8 @@ public class GenMultiPotion extends GenDrink implements Potion
 				}
 			}
 
-			if((((Drink)me).liquidRemaining()<=((Drink)me).thirstQuenched())&&(!me.isDrunk()))
-				setDrunk(me,true);
+			if((liquidRemaining()<=thirstQuenched())&&(!isDrunk()))
+				setDrunk(true);
 		}
 
 	}
@@ -109,7 +125,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 			case CMMsg.TYP_DRINK:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
-					drinkIfAble(mob,this);
+					drinkIfAble(mob);
 					if(isDrunk())
 					{
 						mob.tell(name()+" vanishes!");

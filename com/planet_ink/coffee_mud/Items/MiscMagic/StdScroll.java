@@ -26,7 +26,6 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 {
 	public String ID(){	return "StdScroll";}
 	protected boolean readableScroll=false;
-	protected Vector theSpells=new Vector();
 
 	public StdScroll()
 	{
@@ -44,20 +43,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 
 
 
-	public int numSpells()
-	{
-		return theSpells.size();
-	}
-
-	public Vector getSpells()
-	{
-		return theSpells;
-	}
-
-	public String getScrollText()
-	{
-		return miscText;
-	}
+	public String getSpellList()
+	{ return miscText;}
+	public void setSpellList(String list){miscText=list;}
 
 	public int value()
 	{
@@ -90,7 +78,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
+		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells(this));
 	}
 
 	public static String makeSecretIdentity(String thang, String id, String more, Vector V)
@@ -116,6 +104,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		add.append(id);
 		return add.toString();
 	}
+	
 	public void readIfAble(MOB mob, Scroll me, String spellName)
 	{
 		if(mob.isMine(me))
@@ -175,9 +164,10 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if(!mob.isMonster())
 						{
 							StringBuffer theNews=new StringBuffer("The scroll contains the following spells:\n\r");
-							for(int u=0;u<me.getSpells().size();u++)
+							Spells=me.getSpells();
+							for(int u=0;u<Spells.size();u++)
 							{
-								Ability A=(Ability)me.getSpells().elementAt(u);
+								Ability A=(Ability)Spells.elementAt(u);
 								theNews.append("Level "+Util.padRight(""+CMAble.lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());
@@ -190,11 +180,11 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		}
 	}
 
-	public void parseSpells(Scroll me, String names)
+	public static Vector getSpells(SpellHolder me)
 	{
 		int baseValue=200;
 		Vector theSpells=new Vector();
-		me.setSpellList(theSpells);
+		String names=me.getSpellList();
 		int del=names.indexOf(";");
 		while(del>=0)
 		{
@@ -222,9 +212,15 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				theSpells.addElement(A);
 			}
 		}
-		me.setBaseValue(baseValue);
-		me.recoverEnvStats();
+		if(me instanceof Item)
+		{
+			((Item)me).setBaseValue(baseValue);
+			((Item)me).recoverEnvStats();
+		}
+		return theSpells;
 	}
+	
+	public Vector getSpells(){ return getSpells(this);}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -248,11 +244,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	public void setMiscText(String newText)
 	{
 		miscText=newText;
-		parseSpells(this,newText);
+		setSpellList(newText);
 	}
-	public void setScrollText(String text)
-	{ setMiscText(text); }
-	public void setSpellList(Vector newOne){theSpells=newOne;}
 	public boolean isReadableScroll(){return readableScroll;}
 	public void setReadableScroll(boolean isTrue){readableScroll=isTrue;}
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};

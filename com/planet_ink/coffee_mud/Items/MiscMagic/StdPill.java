@@ -48,10 +48,10 @@ public class StdPill extends StdFood implements Pill
 		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells(this));
 	}
 
-	public void eatIfAble(MOB mob, Pill me)
+	public void eatIfAble(MOB mob)
 	{
-		Vector spells=me.getSpells(me);
-		if((mob.isMine(me))&&(spells.size()>0))
+		Vector spells=getSpells();
+		if((mob.isMine(this))&&(spells.size()>0))
 			for(int i=0;i<spells.size();i++)
 			{
 				Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
@@ -62,11 +62,12 @@ public class StdPill extends StdFood implements Pill
 	public String getSpellList()
 	{ return miscText;}
 	public void setSpellList(String list){miscText=list;}
-	public Vector getSpells(Pill me)
+	
+	public static Vector getSpells(SpellHolder me)
 	{
-		String names=me.getSpellList();
-
+		int baseValue=200;
 		Vector theSpells=new Vector();
+		String names=me.getSpellList();
 		int del=names.indexOf(";");
 		while(del>=0)
 		{
@@ -77,6 +78,7 @@ public class StdPill extends StdFood implements Pill
 				if(A!=null)
 				{
 					A=(Ability)A.copyOf();
+					baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
 					theSpells.addElement(A);
 				}
 			}
@@ -89,12 +91,16 @@ public class StdPill extends StdFood implements Pill
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
+				baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
 		}
-		me.recoverEnvStats();
+		if(me instanceof Item)
+			((Item)me).recoverEnvStats();
 		return theSpells;
 	}
+	
+	public Vector getSpells(){ return getSpells(this);}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -106,7 +112,7 @@ public class StdPill extends StdFood implements Pill
 			case CMMsg.TYP_EAT:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
-					eatIfAble(mob,this);
+					eatIfAble(mob);
 					super.executeMsg(myHost,msg);
 				}
 				else

@@ -20,11 +20,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenScroll extends GenItem implements Scroll
+public class GenScroll extends StdScroll
 {
 	public String ID(){	return "GenScroll";}
-	protected boolean readableScroll=false;
-	protected Vector theSpells=new Vector();
+	protected String readableText="";
 
 	public GenScroll()
 	{
@@ -43,76 +42,38 @@ public class GenScroll extends GenItem implements Scroll
 
 	public boolean isGeneric(){return true;}
 
-	public int numSpells()
+	public String getSpellList()
+	{ return readableText;}
+	public void setSpellList(String list){readableText=list;}
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){
+		readableText=text;
+		setSpellList(readableText);
+	}
+	
+	public String text()
 	{
-		return theSpells.size();
+		return CoffeeMaker.getPropertiesStr(this,false);
 	}
 
-	public Vector getSpells()
+	public void setMiscText(String newText)
 	{
-		return theSpells;
-	}
-	public int value()
-	{
-		if(usesRemaining()<=0)
-			return 0;
-		else
-			return super.value();
+		miscText="";
+		CoffeeMaker.setPropertiesStr(this,newText,false);
+		recoverEnvStats();
 	}
 
-	public String secretIdentity()
+	public String getStat(String code)
+	{ return CoffeeMaker.getGenItemStat(this,code);}
+	public void setStat(String code, String val)
+	{ CoffeeMaker.setGenItemStat(this,code,val);}
+	public String[] getStatCodes(){return CoffeeMaker.GENITEMCODES;}
+	public boolean sameAs(Environmental E)
 	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
+		if(!(E instanceof GenScroll)) return false;
+		for(int i=0;i<getStatCodes().length;i++)
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+				return false;
+		return true;
 	}
-
-	public String getScrollText()
-	{
-		return readableText;
-	}
-
-	public boolean useTheScroll(Ability A, MOB mob)
-	{
-		return new StdScroll().useTheScroll(A,mob);
-	}
-
-	public void readIfAble(MOB mob, Scroll me, String spellName)
-	{
-		new StdScroll().readIfAble(mob,me,spellName);
-	}
-
-	public void parseSpells(Scroll me, String names)
-	{
-		new StdScroll().parseSpells(me,names);
-	}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			MOB mob=msg.source();
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_READSOMETHING:
-				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
-					readIfAble(mob,this,msg.targetMessage());
-				else
-					msg.addTrailerMsg(new FullMsg(msg.source(),msg.target(),msg.tool(),msg.NO_EFFECT,null,msg.targetCode(),msg.targetMessage(),msg.NO_EFFECT,null));
-				return;
-			default:
-				break;
-			}
-		}
-		super.executeMsg(myHost,msg);
-	}
-	public void setReadableText(String newText)
-	{
-		readableText=newText;
-		parseSpells(this,newText);
-	}
-	public void setScrollText(String text)
-	{ this.setReadableText(text); }
-	public void setSpellList(Vector newOne){theSpells=newOne;}
-	public boolean isReadableScroll(){return readableScroll;}
-	public void setReadableScroll(boolean isTrue){readableScroll=isTrue;}
-	// stats handled by genitem, spells by readabletext
 }

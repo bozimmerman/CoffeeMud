@@ -42,22 +42,9 @@ public class Spell_Disenchant extends Spell
 			doneSomething=true;
 		}
 		else
-		if(target instanceof Scroll)
+		if(target instanceof SpellHolder)
 		{
-			((Scroll)target).setSpellList(new Vector());
-			((Scroll)target).setScrollText("");
-			doneSomething=true;
-		}
-		else
-		if(target instanceof Potion)
-		{
-			((Potion)target).setSpellList("");
-			doneSomething=true;
-		}
-		else
-		if(target instanceof Pill)
-		{
-			((Pill)target).setSpellList("");
+			((SpellHolder)target).setSpellList("");
 			doneSomething=true;
 		}
 		else

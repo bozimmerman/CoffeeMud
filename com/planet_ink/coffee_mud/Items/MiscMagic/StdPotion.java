@@ -42,7 +42,7 @@ public class StdPotion extends StdDrink implements Potion
 
 
 	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
-	public boolean isDrunk(){return (miscText.toUpperCase().indexOf(";DRUNK")>=0);}
+	public boolean isDrunk(){return (getSpellList().toUpperCase().indexOf(";DRUNK")>=0);}
 	public int value()
 	{
 		if(isDrunk())
@@ -51,73 +51,81 @@ public class StdPotion extends StdDrink implements Potion
 			return super.value();
 	}
 
-	public void setDrunk(Potion me, boolean isTrue)
+	public void setDrunk(boolean isTrue)
 	{
-		if(isTrue&&me.isDrunk()) return;
-		if((!isTrue)&&(!me.isDrunk())) return;
+		if(isTrue&&isDrunk()) return;
+		if((!isTrue)&&(!isDrunk())) return;
 		if(isTrue)
-			me.setSpellList(me.getSpellList()+";DRUNK");
+			setSpellList(getSpellList()+";DRUNK");
 		else
 		{
 			String list="";
-			Vector theSpells=me.getSpells(me);
+			Vector theSpells=getSpells();
 			for(int v=0;v<theSpells.size();v++)
 				list+=((Ability)theSpells.elementAt(v)).ID()+";";
-			me.setSpellList(list);
+			setSpellList(list);
 		}
 	}
 
-	public void drinkIfAble(MOB mob, Potion me)
+	public void drinkIfAble(MOB mob)
 	{
-		Vector spells=getSpells(me);
-		if(mob.isMine(me))
-			if((!me.isDrunk())&&(spells.size()>0))
+		Vector spells=getSpells();
+		if(mob.isMine(this))
+			if((!isDrunk())&&(spells.size()>0))
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
 					thisOne.invoke(mob,mob,true);
-					me.setDrunk(me,true);
-					if(me instanceof Drink)
-						((Drink)me).setLiquidRemaining(0);
+					setDrunk(true);
+					setLiquidRemaining(0);
 				}
 	}
 
 	public String getSpellList()
 	{ return miscText;}
 	public void setSpellList(String list){miscText=list;}
-	public Vector getSpells(Potion me)
+	
+	public static Vector getSpells(SpellHolder me)
 	{
-		String names=me.getSpellList();
-
+		int baseValue=200;
 		Vector theSpells=new Vector();
+		String names=me.getSpellList();
 		int del=names.indexOf(";");
 		while(del>=0)
 		{
 			String thisOne=names.substring(0,del);
-			if((thisOne.length()>0)&&(!thisOne.equals(";"))&&(!thisOne.equals("DRUNK")))
+			if((thisOne.length()>0)&&(!thisOne.equals(";")))
 			{
 				Ability A=(Ability)CMClass.getAbility(thisOne);
 				if(A!=null)
 				{
 					A=(Ability)A.copyOf();
+					baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
 					theSpells.addElement(A);
 				}
 			}
 			names=names.substring(del+1);
 			del=names.indexOf(";");
 		}
-		if((names.length()>0)&&(!names.equals(";"))&&(!names.equals("DRUNK")))
+		if((names.length()>0)&&(!names.equals(";")))
 		{
 			Ability A=(Ability)CMClass.getAbility(names);
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
+				baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
 		}
-		me.recoverEnvStats();
+		if(me instanceof Item)
+		{
+			((Item)me).setBaseValue(baseValue);
+			((Item)me).recoverEnvStats();
+		}
 		return theSpells;
 	}
+	
+	public Vector getSpells(){ return getSpells(this);}
 
 	public String secretIdentity()
 	{
@@ -144,7 +152,7 @@ public class StdPotion extends StdDrink implements Potion
 			case CMMsg.TYP_DRINK:
 				if((msg.sourceMessage()==null)&&(msg.othersMessage()==null))
 				{
-					drinkIfAble(mob,this);
+					drinkIfAble(mob);
 					mob.tell(name()+" vanishes!");
 					destroy();
 				}

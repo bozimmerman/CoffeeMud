@@ -16,7 +16,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Pill extends Food, MiscMagic, SpellHolder
+public interface MagicDust extends SpellHolder, MiscMagic
 {
-	public void eatIfAble(MOB mob);
+	public void spreadIfAble(MOB mob);
 }

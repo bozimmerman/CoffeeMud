@@ -42,7 +42,7 @@ public class GenSuperPill extends GenPill
 
 	public String secretIdentity()
 	{
-		String tx=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells(this));
+		String tx=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells());
 		String id=readableText;
 		int x=id.toUpperCase().indexOf("ARM");
 		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
@@ -96,8 +96,8 @@ public class GenSuperPill extends GenPill
 	public void EATME(MOB mob)
 	{
 		boolean redress=false;
-		if(getSpells(this).size()>0)
-			eatIfAble(mob,this);
+		if(getSpells().size()>0)
+			eatIfAble(mob);
 		if((Util.getParmPlus(readableText,"beacon")>0)
 		&&(mob.location()!=null))
 			mob.setStartRoom(mob.location());

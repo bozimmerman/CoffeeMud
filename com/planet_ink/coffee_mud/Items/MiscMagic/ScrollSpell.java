@@ -31,15 +31,4 @@ public class ScrollSpell extends StdScroll
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_PAPER;
 	}
-
-	public void setMiscText(String newText)
-	{
-		miscText=newText;
-		this.parseSpells(this,miscText);
-	}
-
-	public String secretIdentity()
-	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
-	}
 }
