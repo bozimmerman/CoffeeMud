@@ -1,9 +1,9 @@
-package com.planet_ink.coffee_mud.utils;
+package com.planet_ink.coffee_mud.common;
 
 import java.util.*;
 import java.io.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 public class INI extends Properties
 {

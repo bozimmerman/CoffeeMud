@@ -187,7 +187,7 @@ public class Quests implements Cloneable, Quest
 								for(int i=0;i<R2.numInhabitants();i++)
 								{
 									MOB M2=R2.fetchInhabitant(i);
-									if((M2!=null)&&(M2.isMonster()))
+									if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
 									{
 										if(mobType.equalsIgnoreCase("any"))
 											choices.addElement(M2);
@@ -263,7 +263,7 @@ public class Quests implements Cloneable, Quest
 								for(int i=0;i<R2.numItems();i++)
 								{
 									Item I2=R2.fetchItem(i);
-									if(I2!=null)
+									if((I2!=null)&&(objectInUse(I2)==null))
 									{
 										if(itemType.equalsIgnoreCase("any"))
 											choices.addElement(I2);
@@ -439,7 +439,7 @@ public class Quests implements Cloneable, Quest
 							for(int i=0;i<R2.numInhabitants();i++)
 							{
 								MOB M2=R2.fetchInhabitant(i);
-								if((M2!=null)&&(M2.isMonster()))
+								if((M2!=null)&&(M2.isMonster())&&(objectInUse(M2)==null))
 								{
 									String mname=M2.name().toUpperCase();
 									String mdisp=M2.displayText().toUpperCase();
@@ -521,7 +521,7 @@ public class Quests implements Cloneable, Quest
 							for(int i=0;i<R2.numItems();i++)
 							{
 								Item I2=R2.fetchItem(i);
-								if(I2!=null)
+								if((I2!=null)&&(objectInUse(I2)==null))
 								{
 									String iname=I2.name().toUpperCase();
 									String idisp=I2.displayText().toUpperCase();
@@ -1056,6 +1056,17 @@ public class Quests implements Cloneable, Quest
 		}
 	}
 
+	public static Quest objectInUse(Environmental E)
+	{
+		if(E==null) return null;
+		for(int q=0;q<numQuests();q++)
+		{
+			Quest Q=fetchQuest(q);
+			if(Q.isQuestObject(E)) return Q;
+		}
+		return null;
+	}
+	
 	// this will stop executing of the quest script.  It will clean up
 	// any objects or mobs which may have been loaded, restoring map
 	// mobs to their previous state.
@@ -1288,6 +1299,10 @@ public class Quests implements Cloneable, Quest
 		}
 		return -1;
 	}
+	
+	public boolean isQuestObject(Environmental E)
+	{ return ((stuff!=null)&&(stuff.contains(E)));}
+	
 	public String getQuestObjectName(int i)
 	{
 		Environmental E=getQuestObject(i);

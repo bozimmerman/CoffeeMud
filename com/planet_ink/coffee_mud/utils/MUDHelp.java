@@ -328,15 +328,27 @@ public class MUDHelp
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 		{
 			String ahelpStr=helpStr.replaceAll("_"," ").trim();
+			boolean found=false;
 			for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 			{
 				Area A=(Area)e.nextElement();
-				if(EnglishParser.containsString(A.name(),ahelpStr))
+				if(A.name().equalsIgnoreCase(ahelpStr))
 				{
 					helpStr=A.name();
+					found=true;
 					break;
 				}
 			}
+			if(!found)
+				for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+				{
+					Area A=(Area)e.nextElement();
+					if(EnglishParser.containsString(A.name(),ahelpStr))
+					{
+						helpStr=A.name();
+						break;
+					}
+				}
 		}
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
 		{

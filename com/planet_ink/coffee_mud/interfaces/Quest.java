@@ -31,6 +31,7 @@ public interface Quest extends Tickable
 	public int wasQuestItem(String name);
 	public int wasQuestObject(String name);
 	public boolean isQuestObject(String name, int i);
+	public boolean isQuestObject(Environmental E);
 	public String getQuestObjectName(int i);
 	public String getQuestMobName(int i);
 	public String getQuestItemName(int i);
