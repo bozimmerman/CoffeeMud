@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.web.*;
 import com.planet_ink.coffee_mud.web.espresso.*;
 
 /* 
-   Copyright 2000-2004 Bo Zimmerman
+   Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -906,7 +906,7 @@ public class MUD extends Thread implements MudHost
 
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER));
-				Log.sysOut("MUD","(C) 2000-2004 Bo Zimmerman");
+				Log.sysOut("MUD","(C) 2000-2005 Bo Zimmerman");
 				Log.sysOut("MUD","http://coffeemud.zimmers.net");
 
 				Scripts.setLocale(page.getStr("LANGUAGE"),page.getStr("COUNTRY"));

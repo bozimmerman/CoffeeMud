@@ -3,7 +3,7 @@ package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.interfaces.Environmental;
 
 /* 
-   Copyright 2000-2004 Mike Rundell
+   Copyright 2000-2005 Mike Rundell
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

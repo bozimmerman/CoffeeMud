@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2004 Bo Zimmerman
+   Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,17 +32,8 @@ public class Thiefness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		String className="Thief";
 		combatMode=COMBAT_RANDOM;
-		String theparms=getParmsMinusCombatMode();
-		if((theparms.length()>0)&&((CMClass.getCharClass(theparms)!=null)))
-		   className=theparms;
-		if(!mob.baseCharStats().getCurrentClass().ID().equals(className))
-		{
-			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(className));
-			mob.recoverCharStats();
-		}
-		// now equip character...
+		makeClass(mob,getParmsMinusCombatMode(),"Thief");
 		newCharacter(mob);
 	}
 

@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2004 Bo Zimmerman
+   Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -59,15 +59,8 @@ public class Mageness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		String className="Mage";
-		if((getParms().length()>0)&&(CMClass.getCharClass(getParms())!=null))
-			className=getParms();
-		if(!mob.baseCharStats().getCurrentClass().ID().equals(className))
-		{
-			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(className));
-			mob.recoverCharStats();
-		}
-		// now equip character...
+		combatMode=COMBAT_RANDOM;
+		makeClass(mob,getParmsMinusCombatMode(),"Mage");
 		newCharacter(mob);
 		getSomeMoreMageAbilities(mob);
 	}

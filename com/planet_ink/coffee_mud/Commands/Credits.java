@@ -6,7 +6,7 @@ import java.util.*;
 import java.io.*;
 
 /* 
-   Copyright 2000-2004 Bo Zimmerman
+   Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ public class Credits extends StdCommand
 		if((credits!=null)&&(mob.session()!=null))
 			mob.session().colorOnlyPrintln(credits.toString());
 		else
-			mob.tell("CoffeeMud is (C)2001-2004 by Bo Zimmerman");
+			mob.tell("CoffeeMud is (C)2000-2005 by Bo Zimmerman");
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

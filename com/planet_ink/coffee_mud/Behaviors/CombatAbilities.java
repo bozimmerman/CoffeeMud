@@ -7,7 +7,7 @@ import java.util.*;
 import java.io.*;
 
 /* 
-   Copyright 2000-2004 Bo Zimmerman
+   Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -41,6 +41,45 @@ public class CombatAbilities extends StdBehavior
 		"MIXEDDEFENSIVE"
 	};
 
+	protected void makeClass(MOB mob, String theParms, String defaultClassName)
+	{
+	    CharClass C=null;
+	    if(theParms.trim().length()==0) 
+	    {
+	        C=CMClass.getCharClass(defaultClassName);
+			if(mob.baseCharStats().getCurrentClass()!=C)
+			{
+				mob.baseCharStats().setCurrentClass(C);
+				mob.recoverCharStats();
+			}
+			return;
+	    }
+	    Vector V=Util.parse(theParms.trim());
+	    Vector classes=new Vector();
+	    for(int v=0;v<V.size();v++)
+	    {
+	        C=CMClass.getCharClass((String)V.elementAt(v));
+	        if((C!=null)&&(!C.ID().equalsIgnoreCase("Archon")))
+	            classes.addElement(C);
+	    }
+	    if(classes.size()==0) 
+	    {
+	        C=CMClass.getCharClass(defaultClassName);
+			if(mob.baseCharStats().getCurrentClass()!=C)
+			{
+				mob.baseCharStats().setCurrentClass(C);
+				mob.recoverCharStats();
+			}
+			return;
+	    }
+	    for(int i=0;i<classes.size();i++)
+	    {
+	        C=(CharClass)classes.elementAt(i);
+	        mob.baseCharStats().setCurrentClass(C);
+	        mob.baseCharStats().setClassLevel(C,mob.baseEnvStats().level()/classes.size());
+	    }
+	    mob.recoverCharStats();
+	}
 
 	protected String getParmsMinusCombatMode()
 	{

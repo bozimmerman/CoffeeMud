@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /* 
-   Copyright 2000-2004 Bo Zimmerman
+   Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class Ver extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell("CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER));
-		mob.tell("(C) 2000-2004 Bo Zimmerman");
+		mob.tell("(C) 2000-2005 Bo Zimmerman");
 		mob.tell("^<A HREF=\"mailto:bo@zimmers.net\"^>bo@zimmers.net^</A^>");
 		mob.tell("^<A HREF=\"http://coffeemud.zimmers.net\"^>http://coffeemud.zimmers.net^</A^>");
 		return false;

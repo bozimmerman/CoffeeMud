@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
 /* 
-   Copyright 2000-2004 Bo Zimmerman
+   Copyright 2000-2005 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -332,19 +332,18 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)
-		&&(!myChar.isMonster()))
+		if((msg.source()==myHost)
+		&&(!msg.source().isMonster()))
 		{
-			if(!armorCheck(myChar,msg.sourceCode(),msg.tool()))
+			if(!armorCheck(msg.source(),msg.sourceCode(),msg.tool()))
 			{
 				if(msg.tool()==null)
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>","maneuver"));
+				    msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>","maneuver"));
 				else
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>",msg.tool().name()+" attempt"));
+				    msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>",msg.tool().name()+" attempt"));
 				return false;
 			}
-			if(!weaponCheck(myChar,msg.sourceCode(),msg.tool()))
+			if(!weaponCheck(msg.source(),msg.sourceCode(),msg.tool()))
 				return false;
 		}
 		return true;
@@ -353,6 +352,12 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
+	    if((msg.source()==myHost)
+	    &&(msg.sourceMinor()==CMMsg.TYP_WIELD)
+	    &&(msg.tool() instanceof Weapon)
+	    &&(!msg.source().isMonster())
+	    &&(!weaponCheck(msg.source(),msg.sourceCode(),msg.tool())))
+	        msg.addTrailerMsg(new FullMsg(msg.source(),msg.tool(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 

@@ -1,8 +1,8 @@
 ^HWelcome to CoffeeMud!^N
 
-Thanks for deciding to create a new character.  As this is a brand new software venture, we encourage users to have as many characters as they like in order to more fully test the system.
+You are about to enter a world of high adventure and terrible danger.  The first step in this process is to decide what sort of adventurer you will be.  
 
-We hope you'll be coming back frequently to help us play test, and will give us as much feedback as possible.  We need all of your gripes, praises, and suggestions if our fledgling adventure can improve.
+Since this is a beta-test mud, you are allowed to create as many characters as you like in order to help us test.  We will need as much feedback as you can give us, including all of your gripes, praises, and suggestions if our adventure can improve.
 
 You'll find that the character creation process is rather simple, but that the game itself is as complex and exciting as you make it.  You will be guided wizard-style through each question in creating your character.  
 

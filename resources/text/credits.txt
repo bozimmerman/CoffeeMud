@@ -1,5 +1,5 @@
 CoffeeMud is an all-Java server application 
-(C) 2000 - 2004 by Bo Zimmerman
+(C) 2000 - 2005 by Bo Zimmerman
 
 Special thanks to Tim Kassebaum, Jef Kamenek, David Walters
 Mike Rundell, Thomas Neumann, Lee H. Fox, George Reese, and
