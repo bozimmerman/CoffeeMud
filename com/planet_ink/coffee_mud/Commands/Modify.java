@@ -844,6 +844,12 @@ public class Modify extends BaseGenerics
 			races(mob,commands);
 		}
 		else
+		if(commandType.equals("CLASS"))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			classes(mob,commands);
+		}
+		else
 		if(commandType.equals("AREA"))
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");

@@ -434,25 +434,22 @@ public class StdBanker extends StdShopKeeper implements Banker
 				String c="^x[Item                              ] ";
 				str.append(c+c+"^.^N\n\r");
 				int colNum=0;
-				Coins coins=null;
 				boolean otherThanCoins=false;
 				for(int i=0;i<V.size();i++)
 				{
 					Item I=(Item)V.elementAt(i);
-					if(I instanceof Coins)
+					if(!(I instanceof Coins))
 					{
-						coins=(Coins)I;
-						continue;
+						otherThanCoins=true;
+						String col=null;
+						col="["+Util.padRight(I.name(),34)+"] ";
+						if((++colNum)>2)
+						{
+							str.append("\n\r");
+							colNum=1;
+						}
+						str.append(col);
 					}
-					otherThanCoins=true;
-					String col=null;
-					col="["+Util.padRight(I.name(),34)+"] ";
-					if((++colNum)>2)
-					{
-						str.append("\n\r");
-						colNum=1;
-					}
-					str.append(col);
 				}
 				if(!otherThanCoins)
 					str=new StringBuffer("\n\r^N");
@@ -461,9 +458,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(coins!=null)
 				{
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+coins.numberOfCoins()+"^? gold coins.");
+						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+getBalance(mob)+"^? gold coins.");
 					else
-						str.append("Your balance with us is ^H"+coins.numberOfCoins()+"^? gold coins.");
+						str.append("Your balance with us is ^H"+getBalance(mob)+"^? gold coins.");
 				}
 				if(coinInterest!=0.0)
 				{

@@ -595,9 +595,9 @@ public class CMClass extends ClassLoader
 			int loaded=0;
 			for(int r=0;r<genClasses.size();r++)
 			{
-				CharClass CR=((CharClass)CMClass.getCharClass("GenClass").copyOf());
+				CharClass CR=((CharClass)CMClass.getCharClass("GenCharClass").copyOf());
 				CR.setClassParms((String)((Vector)genClasses.elementAt(r)).elementAt(1));
-				if(!CR.ID().equals("GenClass"))
+				if(!CR.ID().equals("GenCharClass"))
 				{
 					addCharClass(CR);
 					loaded++;
@@ -840,7 +840,8 @@ public class CMClass extends ClassLoader
 										doNotAdd=true;
 										break;
 									}
-								if(!doNotAdd) V.addElement(O);
+								if(!doNotAdd)
+									V.addElement(O);
 							}
 						}
 					}

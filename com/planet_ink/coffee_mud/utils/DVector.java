@@ -103,7 +103,7 @@ public class DVector implements Cloneable
 			stuff[0].addElement(O);
 			stuff[1].addElement(O1);
 			stuff[2].addElement(O2);
-			stuff[2].addElement(O3);
+			stuff[3].addElement(O3);
 			stuff[4].addElement(O4);
 			stuff[5].addElement(O5);
 		}
@@ -116,7 +116,7 @@ public class DVector implements Cloneable
 			stuff[0].addElement(O);
 			stuff[1].addElement(O1);
 			stuff[2].addElement(O2);
-			stuff[2].addElement(O3);
+			stuff[3].addElement(O3);
 			stuff[4].addElement(O4);
 			stuff[5].addElement(O5);
 			stuff[6].addElement(O6);
@@ -130,7 +130,7 @@ public class DVector implements Cloneable
 			stuff[0].addElement(O);
 			stuff[1].addElement(O1);
 			stuff[2].addElement(O2);
-			stuff[2].addElement(O3);
+			stuff[3].addElement(O3);
 			stuff[4].addElement(O4);
 			stuff[5].addElement(O5);
 			stuff[6].addElement(O6);

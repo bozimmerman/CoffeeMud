@@ -378,13 +378,13 @@ public class GenCharClass extends StdCharClass
 		Vector V=CMAble.getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
-			VA.addElement(A.ID(),
-						  ""+CMAble.getQualifyingLevel(ID(),A.ID()),
-						  ""+CMAble.getDefaultProfficiency(ID(),A.ID()),
-						  ""+CMAble.getDefaultGain(ID(),A.ID()),
-						  ""+CMAble.getSecretSkill(ID(),A.ID()),
-						  ""+CMAble.getDefaultParm(ID(),A.ID()));
+			String AID=(String)V.elementAt(v);
+			VA.addElement(AID,
+						  ""+CMAble.getQualifyingLevel(ID(),AID),
+						  ""+CMAble.getDefaultProfficiency(ID(),AID),
+						  ""+CMAble.getDefaultGain(ID(),AID),
+						  ""+CMAble.getSecretSkill(ID(),AID),
+						  ""+CMAble.getDefaultParm(ID(),AID));
 		}
 		return VA;
 	}
@@ -539,11 +539,8 @@ public class GenCharClass extends StdCharClass
 	public boolean sameAs(CharClass E)
 	{
 		if(!(E instanceof GenCharClass)) return false;
-		if(((GenCharClass)E).classParms().equals(classParms()))
+		if(((CharClass)E).classParms().equals(classParms()))
 			return true;
 		return false;
-	}
-	public int compareTo(Object o){ 
-		return (((CharClass)o).ID().compareTo(ID()));
 	}
 }

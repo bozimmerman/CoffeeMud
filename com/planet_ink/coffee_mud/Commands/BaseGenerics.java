@@ -3649,7 +3649,7 @@ public class BaseGenerics extends StdCommand
 				Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
 				if(A!=null)
 				{
-					parts.append("("+A.ID()+"/"+E.getStat("GETCABLELVL"+v)+"/"+E.getStat("GETCABLEQUAL"+v)+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
+					parts.append("("+A.ID()+"/"+E.getStat("GETCABLELVL"+v)+"/"+E.getStat("GETCABLEGAIN"+v)+"/"+E.getStat("GETCABLEPROF"+v)+"), ");
 					ables.addElement(A);
 					data.addElement(A.ID()+";"+E.getStat("GETCABLELVL"+v)+";"+E.getStat("GETCABLEPROF"+v)+";"+E.getStat("GETCABLEGAIN"+v)+";"+E.getStat("GETCABLESECR"+v)+";"+E.getStat("GETCABLEPARM"+v));
 				}
@@ -3682,13 +3682,13 @@ public class BaseGenerics extends StdCommand
 						String prof=mob.session().prompt("Enter the (default) profficiency level (0): ","0");
 						str.append((""+Util.s_int(prof))+";");
 						if(mob.session().confirm("Is this skill automatically gained (Y/n)?","Y"))
-							str.append("false;");
-						else
 							str.append("true;");
+						else
+							str.append("false;");
 						if(mob.session().confirm("Is this skill secret (N/y)?","N"))
-							str.append("false;");
-						else
 							str.append("true;");
+						else
+							str.append("false;");
 						String parm=mob.session().prompt("Enter any properties (): ","");
 						str.append(parm);
 						data.addElement(str.toString());
