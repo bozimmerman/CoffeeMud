@@ -99,15 +99,14 @@ public class Prayer_HolyWord extends Prayer
 						if(Sense.canBeHeardBy(mob,target))
 						{
 							str=null;
-							Item I=Prayer_Bless.getSomething(mob,true);
+							Item I=Prayer_Bless.getSomething(target,true);
 							while(I!=null)
 							{
 								FullMsg msg2=new FullMsg(target,I,null,Affect.ACT_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
-								if(mob.location().okAffect(msg2))
-									mob.location().send(target,msg2);
+								target.location().send(target,msg2);
 								Prayer_Bless.endIt(I,2);
 								I.recoverEnvStats();
-								I=Prayer_Bless.getSomething(mob,true);
+								I=Prayer_Bless.getSomething(target,true);
 							}
 							Prayer_Bless.endIt(target,2);
 							beneficialAffect(mob,target,0);

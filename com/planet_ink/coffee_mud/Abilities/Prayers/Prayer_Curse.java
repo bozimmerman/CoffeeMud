@@ -142,7 +142,6 @@ public class Prayer_Curse extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,0,-1);
 					Item I=getSomething(mob,true);
 					if(I!=null)
 					{
@@ -150,6 +149,7 @@ public class Prayer_Curse extends Prayer
 						I.recoverEnvStats();
 					}
 					endIt(target,0);
+					success=maliciousAffect(mob,target,0,-1);
 					target.recoverEnvStats();
 				}
 			}

@@ -21,7 +21,7 @@ public class Mage extends StdCharClass
 		bonusAttackLevel=0;
 		name=myID;
 		practicesAtFirstLevel=6;
-		levelsPerBonusDamage=11;
+		levelsPerBonusDamage=10;
 		trainsAtFirstLevel=3;
 		if(!abilitiesLoaded)
 		{

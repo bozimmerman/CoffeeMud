@@ -20,7 +20,7 @@ public class Druid extends StdCharClass
 		manaMultiplier=15;
 		attackAttribute=CharStats.CONSTITUTION;
 		bonusAttackLevel=1;
-		levelsPerBonusDamage=5;
+		levelsPerBonusDamage=6;
 		name=myID;
 		if(!abilitiesLoaded)
 		{

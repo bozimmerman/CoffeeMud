@@ -120,7 +120,7 @@ public class Prayer_Bless extends Prayer
 			return true;
 		if(item.fetchAffect("Prayer_UnholyWord")!=null)
 			return true;
-		if(!item.isGettable())
+		if(!item.isRemovable())
 			return true;
 		if(!item.isDroppable())
 			return true;
@@ -147,18 +147,17 @@ public class Prayer_Bless extends Prayer
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,0);
-				Item I=getSomething(mob,true);
+				Item I=getSomething(target,true);
 				while(I!=null)
 				{
 					FullMsg msg2=new FullMsg(target,I,null,Affect.ACT_GENERAL|Affect.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
-					if(mob.location().okAffect(msg2))
-						mob.location().send(target,msg2);
+					target.location().send(target,msg2);
 					endIt(I,0);
 					I.recoverEnvStats();
-					I=getSomething(mob,true);
+					I=getSomething(target,true);
 				}
 				endIt(target,0);
+				beneficialAffect(mob,target,0);
 				target.recoverEnvStats();
 				target.location().recoverRoomStats();
 			}
