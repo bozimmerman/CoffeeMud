@@ -182,7 +182,10 @@ public class Oracle extends Cleric
 			while((newOne==null)&&((++tries)<100))
 			{
 				CharClass C=CMClass.randomCharClass();
-				if((C!=null)&&(C!=this)&&(mob.charStats().getClassLevel(C)<0))
+				if((C!=null)
+				&&(C!=this)
+				&&(!C.ID().equalsIgnoreCase("Archon"))
+				&&(mob.charStats().getClassLevel(C)<0))
 				{
 					int tries2=0;
 					while((newOne==null)&&((++tries2)<10000))

@@ -98,6 +98,26 @@ public class CMAble
 		return lowLevel.intValue();
 	}
 	
+	public static boolean classOnly(String classID, String abilityID)
+	{
+		if(completeAbleMap.containsKey(classID))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(classID);
+			if(!ableMap.containsKey(abilityID)) 
+				return false;
+		}
+		else
+			return false;
+		for(Enumeration e=completeAbleMap.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			if((!key.equalsIgnoreCase(classID))
+			&&(((Hashtable)completeAbleMap.get(classID)).containsKey(abilityID)))
+				return false;
+		}
+		return true;
+	}
+	
 	public static Vector getLevelListings(String ID, 
 										  boolean checkAll,
 										  int level)

@@ -30,11 +30,11 @@ public class Archon extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Scrapping",false);
 			
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Resistance",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Multiwatch",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Wrath",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Hush",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Archon_Banish",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Resistance",100,"",true,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Archon_Multiwatch",100,"",true,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Archon_Wrath",100,"",true,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Archon_Hush",100,"",true,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_AlterTime",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_MoveSky",true);
 		}
