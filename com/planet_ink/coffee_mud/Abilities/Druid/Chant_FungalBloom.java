@@ -49,12 +49,12 @@ public class Chant_FungalBloom extends Chant
 				A.setBorrowed(target,true);
 				((Trap)A).setReset(3);
 				target.addAffect(A);
-				target.setMiscText(target.text());
-				((Trap)A).activateBomb();
+				A=target.fetchAffect(A.ID());
+				if(A!=null)	((Trap)A).activateBomb();
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) to the <T-NAMESELF>, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to the <T-NAMESELF>, but nothing happens.");
 
 		// return whether it worked
 		return success;
