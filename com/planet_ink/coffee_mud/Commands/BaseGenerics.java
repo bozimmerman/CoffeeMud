@@ -2014,7 +2014,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		PlayerStats P=mob.playerStats();
+		PlayerStats P=((MOB)E).playerStats();
 		if(P==null) return;
 		String behave="NO";
 		while(behave.length()>0)

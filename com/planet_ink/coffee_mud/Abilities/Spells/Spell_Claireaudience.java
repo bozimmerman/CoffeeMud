@@ -8,7 +8,7 @@ public class Spell_Claireaudience extends Spell
 {
 	public String ID() { return "Spell_Claireaudience"; }
 	public String name(){return "Claireaudience";}
-	public String displayText(){return "(Claireaudience)";}
+	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Claireaudience();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}

@@ -8,7 +8,7 @@ public class Spell_Clairevoyance extends Spell
 {
 	public String ID() { return "Spell_Clairevoyance"; }
 	public String name(){return "Clairevoyance";}
-	public String displayText(){return "(Clairevoyance)";}
+	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Clairevoyance();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}

@@ -43,7 +43,9 @@ public class CMSecurity
 		{
 			String key=(String)e.nextElement();
 			if(key.startsWith("GROUP_"))
+			{
 				addGroup(key.substring(6),(String)page.get(key));
+			}
 		}
 	}
 	
@@ -65,25 +67,12 @@ public class CMSecurity
 		addGroup(name,H);
 	}
 	public static void addGroup(String name, String set)
-	{addGroup(name,Util.parseCommas(set,true));}
+	{
+		addGroup(name,Util.parseCommas(set,true));
+	}
 	
 	public static boolean isASysOp(MOB mob)
 	{
-		for(int v=0;v<compiledSysop.size();v++)
-		{
-			Vector V=(Vector)compiledSysop.elementAt(v);
-			StringBuffer str=new StringBuffer("");
-			for(int v2=0;v2<V.size();v2++)
-			{
-				if(V.elementAt(v2) instanceof Integer)
-					str.append(((Integer)V.elementAt(v2)).intValue()+"/");
-				else
-				if(V.elementAt(v2) instanceof String)
-					str.append(((String)V.elementAt(v2))+"/");
-				else
-					str.append("?/");
-			}
-		}
 		return MUDZapper.zapperCheckReal(compiledSysop,mob);
 	}
 	

@@ -8,7 +8,7 @@ public class Spell_Scry extends Spell
 {
 	public String ID() { return "Spell_Scry"; }
 	public String name(){return "Scry";}
-	public String displayText(){return "(Scry)";}
+	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Scry();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}

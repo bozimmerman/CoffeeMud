@@ -847,6 +847,18 @@ public class List extends StdCommand
 		return -1;
 	}
 	
+	public int getAnyCode(MOB mob)
+	{
+		for(int i=0;i<SECURITY_LISTMAP.length;i++)
+		{
+			String[] cmd=(String[])SECURITY_LISTMAP[i];
+			for(int c=1;c<cmd.length;c++)
+				if(CMSecurity.isAllowed(mob,mob.location(),cmd[c])
+				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
+				{ return i;}
+		}
+		return -1;
+	}
 	public final static String[][] SECURITY_LISTMAP={
 		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
 		/*01*/{"ITEMS","CMDITEMS"},
@@ -904,7 +916,7 @@ public class List extends StdCommand
 
 		String listWord=((String)commands.firstElement()).toUpperCase();
 		int code=getMyCmdCode(mob, listWord);
-		if(code<0)
+		if((code<0)||(listWord.length()==0))
 		{
 			Vector V=getMyCmdWords(mob);
 			if(V.size()==0)
@@ -998,15 +1010,26 @@ public class List extends StdCommand
 		commands.removeElementAt(0);
 		Vector V=new Vector();
 		if(commands.size()==0)
-			V=CoffeeUtensils.shopkeepers(mob.location(),mob);
+		{
+			if(getAnyCode(mob)>=0)
+			{
+				archonlist(mob,commands);
+				return false;
+			}
+			else
+				V=CoffeeUtensils.shopkeepers(mob.location(),mob);
+		}
 		else
 		{
 			MOB shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
 			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 				V.addElement(shopkeeper);
 			else
-			if(getMyCmdCode(mob, (String)commands.firstElement())>0)
+			if(getAnyCode(mob)>=0)
+			{
 				archonlist(mob,commands);
+				return false;
+			}
 		}
 		if(V.size()==0)
 		{

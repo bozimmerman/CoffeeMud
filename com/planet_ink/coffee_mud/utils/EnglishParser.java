@@ -858,7 +858,8 @@ public class EnglishParser extends Scriptable implements Tickable
 		
 		// first, exacting pass
 		Command C=CMClass.findCommandByTrigger(firstWord,true);
-		if(C!=null) return C;
+		if((C!=null)&&(C.securityCheck(mob))) return C;
+		
 
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -877,19 +878,19 @@ public class EnglishParser extends Scriptable implements Tickable
 			if(ChannelSet.getChannelName(c).equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("Channel");
-				if(C!=null) return C;
+				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 			else
 			if(("NO"+ChannelSet.getChannelName(c)).equalsIgnoreCase(firstWord))
 			{
 				C=CMClass.getCommand("NoChannel");
-				if(C!=null) return C;
+				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 		}
 		
 		// second, inexacting pass
 		C=CMClass.findCommandByTrigger(firstWord,false);
-		if(C!=null) return C;
+		if((C!=null)&&(C.securityCheck(mob))) return C;
 
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -916,14 +917,14 @@ public class EnglishParser extends Scriptable implements Tickable
 			{
 				commands.setElementAt(ChannelSet.getChannelName(c),0);
 				C=CMClass.getCommand("Channel");
-				if(C!=null) return C;
+				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 			else
 			if(("NO"+ChannelSet.getChannelName(c)).startsWith(firstWord))
 			{
 				commands.setElementAt("NO"+ChannelSet.getChannelName(c),0);
 				C=CMClass.getCommand("NoChannel");
-				if(C!=null) return C;
+				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 		}
 		return null;
