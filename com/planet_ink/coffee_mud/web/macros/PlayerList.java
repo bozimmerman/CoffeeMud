@@ -28,7 +28,7 @@ public class PlayerList extends StdWebMacro
 				&& (m.name().length() > 0) )
 			{
 				// jef: nb - only shows full sysops, not subops
-				if ( m.isASysOp(null) )
+				if ( CMSecurity.isASysOp(m) )
 					s.append("Archon");
 				s.append("\">");
 				s.append(m.name());

@@ -10,11 +10,20 @@ public class CMSecurity
 	private static Hashtable groups=new Hashtable();
 	private static Vector compiledSysop=null;
 	// supported: AFTER, AHELP, ANNOUNCE, AT, BAN, BEACON, BOOT, MISC (chargen),
-	// COPYMOBS, COPYITEMS, COPYROOMS, CMDQUESTS, CMDMOBS, CMDSOCIALS, CMDROOMS,
+	// COPYMOBS, COPYITEMS, COPYROOMS, CMDQUESTS, CMDSOCIALS, CMDROOMS,
 	// CMDITEMS, CMDEXITS, CMDAREAS, CMDRACES, CMDCLASSES, NOPURGE, KILLBUGS,
 	// KILLIDEAS, KILLTYPOS, CMDCLANS, DUMPFILE, GOTO, LOADUNLOAD, CMDPLAYERS
-	// POSSESS, SHUTDOWN, SNOOP, STAT, SYSMSGS, TICKTOCK, TRANSFER, WIZINV, WHERE
-	// RESET, RESETUTILS, KILLDEAD, ORDER, TAKE
+	// POSSESS, SHUTDOWN, SNOOP, STAT, SYSMSGS, TICKTOCK, TRANSFER, WHERE
+	// RESET, RESETUTILS, KILLDEAD, MERGE, IMPORTROOMS, IMPORTMOBS, IMPORTITEMS
+	// IMPORTPLAYERS, EXPORT, EXPORTPLAYERS, EXPORTFILE
+	// ORDER (includes TAKE, GIVE, DRESS, mob passivity, all follow)
+	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV)
+	// CMDMOBS (also prevents walkaways)
+	// SUPERSKILL (never fails skills)
+	// JOURNALS, PKILL
+	// LIST: 
+	// (list is also affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
+	//  cmditems, cmdmobs, cmdrooms, 
 	
 	// todo: import, export, merge
 	public static void setSysOp(String zapCheck)
@@ -147,7 +156,26 @@ public class CMSecurity
 		}
 		return false;
 	}
-	public static boolean isAllowed(MOB mob, String code)
+	public static boolean isAllowedEverywhere(MOB mob, String code)
+	{
+		if(isASysOp(mob)) return true;
+		if(mob==null) return false;
+		if(mob.playerStats()==null) return false;
+		Vector V=mob.playerStats().getSecurityGroups();
+		if(V==null) return false;
+		
+		for(int v=0;v<V.size();v++)
+		{
+			HashSet H=(HashSet)groups.get((String)V.elementAt(v));
+			if(H!=null)
+			{
+				if(H.contains(code))
+					return true;
+			}
+		}
+		return false;
+	}
+	public static boolean isAllowedAnywhere(MOB mob, String code)
 	{
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;

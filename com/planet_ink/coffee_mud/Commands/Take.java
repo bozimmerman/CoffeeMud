@@ -13,7 +13,7 @@ public class Take extends BaseItemParser
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(CMSecurity.isAllowed(mob,mob.location(),"TAKE"))
+		if(CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		{
 			if(commands.size()<3)
 			{
@@ -31,6 +31,11 @@ public class Take extends BaseItemParser
 			if((victim==null)||((victim!=null)&&(!Sense.canBeSeenBy(victim,mob))))
 			{
 				mob.tell("I don't see anyone called "+(String)commands.elementAt(commands.size()-1)+" here.");
+				return false;
+			}
+			if((!victim.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,"ORDER")))
+			{
+				mob.tell(victim.Name()+" is a player!");
 				return false;
 			}
 			commands.removeElementAt(commands.size()-1);

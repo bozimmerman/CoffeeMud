@@ -310,7 +310,7 @@ public class MUDGrinder extends StdWebMacro
 		if(AREA.length()==0) return null;
 		Area A=CMMap.getArea(AREA);
 		if(A==null) return null;
-		if(mob.isASysOp(null)||A.amISubOp(mob.Name()))
+		if(CMSecurity.isASysOp(mob)||A.amISubOp(mob.Name()))
 			return A;
 		return null;
 	}

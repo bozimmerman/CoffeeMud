@@ -725,10 +725,10 @@ public class TelnetSession extends Thread implements Session
 				case 'r': {   if(mob().location()!=null)
 								  buf.append(mob().location().displayText());
 							  c++; break; }
-				case 'z': {      if((mob().location()!=null)&&(mob().isASysOp(mob().location())))
+				case 'z': {      if((mob().location()!=null)&&(CMSecurity.isAllowed(mob(),mob().location(),"SYSMSGS")))
 								  buf.append(mob().location().getArea().name());
 							  c++; break; }
-				case 'R': {   if((mob().location()!=null)&&(mob().isASysOp(mob().location())))
+				case 'R': {   if((mob().location()!=null)&&CMSecurity.isAllowed(mob(),mob().location(),"SYSMSGS"))
 								  buf.append(mob().location().roomID());
 							  c++; break; }
 				case 'e': {	  MOB victim=mob().getVictim();

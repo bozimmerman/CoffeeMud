@@ -33,6 +33,11 @@ public class Dress extends StdCommand
 			mob.tell("I don't see "+whom+" here.");
 			return false;
 		}
+		if((!target.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,"ORDER")))
+		{
+			mob.tell(target.Name()+" is a player!");
+			return false;
+		}
 		if(target.willFollowOrdersOf(mob))
 		{
 			Item item=mob.fetchInventory(what);
@@ -41,7 +46,7 @@ public class Dress extends StdCommand
 				mob.tell("I don't see "+what+" here.");
 				return false;
 			}
-			if(mob.isASysOp(mob.location()))
+			if(CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 			{
 				mob.location().show(mob,target,item,CMMsg.MASK_GENERAL|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
 				item.unWear();

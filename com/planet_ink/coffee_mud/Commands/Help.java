@@ -26,7 +26,7 @@ public class Help extends StdCommand
 			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt");
 		else
 			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getHelpFile(),mob);
-		if((thisTag==null)&&(mob.isASysOp(mob.location())))
+		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),"AHELP")))
 			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getArcHelpFile(),mob);
 		if(thisTag==null)
 		{

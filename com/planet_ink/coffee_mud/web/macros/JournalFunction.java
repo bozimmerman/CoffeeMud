@@ -48,7 +48,7 @@ public class JournalFunction extends StdWebMacro
 		if((num<0)||(num>=info.size()))
 			return "Function not performed -- illegal journal message specified.";
 		String to= ((String)((Vector)info.elementAt(num)).elementAt(3));
-		if(M.isASysOp(null)||(to.equalsIgnoreCase(M.Name())))
+		if(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name())))
 		{
 			if(parms.containsKey("DELETE"))
 			{

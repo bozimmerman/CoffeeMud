@@ -1301,7 +1301,7 @@ public class MUDZapper
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 
 		Vector V=Util.parse(text.toUpperCase());
-		if(mob.isASysOp(mob.location()))
+		if(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);

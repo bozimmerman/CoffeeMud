@@ -93,7 +93,7 @@ public class Who extends StdCommand
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
 			&&((((mob2.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0)
-				||(mob.isASysOp(null))))
+				||(CMSecurity.isAllowedAnywhere(mob,"WIZINV"))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
 			&&(mob2.envStats().level()>0))
 				msg.append(showWhoShort(mob2));

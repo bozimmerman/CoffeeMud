@@ -59,7 +59,7 @@ public class Thiefness extends CombatAbilities
 				   &&(Sense.canBeSeenBy(potentialVictim,mob)))
 					victim=potentialVictim;
 			}
-			if((victim!=null)&&(!victim.isASysOp(victim.location())))
+			if((victim!=null)&&(!CMSecurity.isAllowed(victim,victim.location(),"ORDER")))
 			{
 				Vector V=new Vector();
 				Ability A=mob.fetchAbility((Dice.rollPercentage()>50)?(mob.isInCombat()?"Thief_Mug":"Thief_Steal"):"Thief_Swipe");

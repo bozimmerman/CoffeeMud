@@ -734,7 +734,7 @@ public class StdRoom
 		StringBuffer Say=new StringBuffer("");
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
-			if(!mob.isASysOp(this))
+			if(!CMSecurity.isAllowed(mob,this,"SYSMSGS"))
 				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SYSOPMSGS));
 			else
 			{

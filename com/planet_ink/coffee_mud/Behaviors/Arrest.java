@@ -1259,7 +1259,7 @@ public class Arrest extends StdBehavior
 
 		if(isAnyKindOfOfficer(laws,mob)
 		||(isTheJudge(laws,mob))
-		||(mob.isASysOp(mob.location())))
+		||CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW"))
 			return false;
 
 		// is there a witness
@@ -1428,7 +1428,7 @@ public class Arrest extends StdBehavior
 
 	protected boolean isAnUltimateAuthorityHere(MOB M, Law laws)
 	{
-		if((M.isASysOp(M.location())||(isTheJudge(laws,M))))
+		if(CMSecurity.isAllowed(M,M.location(),"ABOVELAW")||(isTheJudge(laws,M)))
 			return true;
 		return false;
 	}
@@ -1772,10 +1772,10 @@ public class Arrest extends StdBehavior
 					&&(Sense.canBeSeenBy(W.criminal(),officer))
 					&&(canFocusOn(officer,W.criminal())))
 					{
-						if(W.criminal().isASysOp(W.criminal().location()))
+						if(CMSecurity.isAllowed(W.criminal(),W.criminal().location(),"ABOVELAW"))
 						{
 							CommonMsgs.say(officer,W.criminal(),"Damn, I can't arrest you.",false,false);
-							if(W.criminal().isASysOp(null))
+							if(CMSecurity.isAllowedEverywhere(W.criminal(),"ABOVELAW"))
 							{
 								fileAllWarrants(laws,W.criminal());
 								unCuff(W.criminal());

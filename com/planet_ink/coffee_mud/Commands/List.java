@@ -1054,6 +1054,59 @@ public class List extends StdCommand
 		}
 		return str.toString();
 	}
+	
+	public final static String[][] SECURITY_LISTMAP={
+		{"ITEMS","CMDITEMS"},
+		{"TRAILTO",""},
+		{"ARMOR","CMDITEMS"},
+		{"ENVRESOURCES",""},
+		{"WEAPONS","CMDITEMS"},
+		{"MOBS","CMDMOBS"},
+		{"ROOMS",""},
+		{"AREA",""},
+		{"LOCALES","CMDROOMS"},
+		{"BEHAVIORS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"EXITS","CMDEXITS"},
+		{"RACES","CMDRACES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS"},
+		{"CLASSES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDCLASSES"},
+		{"SUBOPS",""},
+		{"SPELLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"SONGS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"PRAYERS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"PROPERTIES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"THIEFSKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"COMMON","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"DEVIATIONS",""},
+		{"SKILLS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"QUESTS","CMDQUESTS"},
+		{"DISEASES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"POISONS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		{"ARMOR","CMDITEMS"},
+		{"",""},
+		{"",""},
+	};
+	/*
+		if(("TICKS".startsWith(listWord))&&(mob.isASysOp(null)))
+		if("MAGIC".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
+		if("TECH".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
+		if("CLANITEMS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
+		if(("BUGS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLBUGS")))
+		if(("IDEAS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLIDEAS")))
+		if(("NOPURGE".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")))
+		if(("BANNED".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"BAN")))
+		if(("TYPOS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLTYPOS")))
+		if(("LOG".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("USERS".startsWith(listWord))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")))
+		if(("SESSIONS".startsWith(listThis))&&(mob.isASysOp(null)))
+        if(("LINKAGES".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("REPORTS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("THREADS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if("RESOURCES".startsWith(listThis))
+		if("WORDS".startsWith(listWord))
+		if("ONEWAYDOORS".startsWith(listWord))
+		if("UNLINKEDEXITS".startsWith(listWord))
+	*/
+	
 	public void archonlist(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -1068,22 +1121,22 @@ public class List extends StdCommand
 		String listThis=Util.combine(commands,0).toUpperCase();
 		String listWord=((String)commands.firstElement()).toUpperCase();
 
-		if("ITEMS".startsWith(listThis))
+		if("ITEMS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.items()).toString());
 		else
 		if("TRAILTO".startsWith(listWord))
 			s.rawPrintln(trailTo(mob.location(),commands));
 		else
-		if("ARMOR".startsWith(listThis))
+		if("ARMOR".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.armor()).toString());
 		else
-		if("ENVRESOURCES".startsWith(listThis))
+		if("ENVRESOURCES".startsWith(listThis)&&CMSecurity.isAllowed(mob,mob.location(),"LOADUNLOAD"))
 			s.rawPrintln(listEnvResources());
 		else
-		if("WEAPONS".startsWith(listThis))
+		if("WEAPONS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.weapons()).toString());
 		else
-		if("MOBS".startsWith(listThis))
+		if("MOBS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.mobTypes()).toString());
 		else
 		if("ROOMS".startsWith(listThis))
@@ -1092,7 +1145,7 @@ public class List extends StdCommand
 		if("AREA".startsWith(listThis))
 			s.rawPrintln(roomTypes(CMMap.rooms(),mob.location()).toString());
 		else
-		if("LOCALES".startsWith(listThis))
+		if("LOCALES".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.locales()).toString());
 		else
 		if("BEHAVIORS".startsWith(listThis))
@@ -1134,7 +1187,7 @@ public class List extends StdCommand
 		if("SKILLS".startsWith(listThis))
 			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.SKILL).toString());
 		else
-		if(("QUESTS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("QUESTS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")))
 			mob.tell(listQuests().toString());
 		else
 		if("DISEASES".startsWith(listThis))
@@ -1143,25 +1196,25 @@ public class List extends StdCommand
 		if("POISONS".startsWith(listThis))
 			s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.POISON).toString());
 		else
-		if(("TICKS".startsWith(listWord))&&(mob.isASysOp(null)))
+		if(("TICKS".startsWith(listWord))&&(CMSecurity.isASysOp(mob)))
 			mob.tell(listTicks(Util.combine(commands,1)).toString());
 		else
-		if("MAGIC".startsWith(listThis))
+		if("MAGIC".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.miscMagic()).toString());
 		else
-		if("TECH".startsWith(listThis))
+		if("TECH".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.miscTech()).toString());
 		else
-		if("CLANITEMS".startsWith(listThis))
+		if("CLANITEMS".startsWith(listThis)&&(CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")))
 			s.rawPrintln(CMLister.reallyList(CMClass.clanItems()).toString());
 		else
-		if(("BUGS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("BUGS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLBUGS")))
 			mob.tell(journalList("SYSTEM_BUGS").toString());
 		else
-		if(("IDEAS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("IDEAS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLIDEAS")))
 			mob.tell(journalList("SYSTEM_IDEAS").toString());
 		else
-		if(("NOPURGE".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("NOPURGE".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"NOPURGE")))
 		{
 			StringBuffer str=new StringBuffer("\n\rProtected players:\n\r");
 			Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
@@ -1171,7 +1224,7 @@ public class List extends StdCommand
 			s.rawPrintln(str.toString());
 		}
 		else
-		if(("BANNED".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("BANNED".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"BAN")))
 		{
 			StringBuffer str=new StringBuffer("\n\rBanned names/ips:\n\r");
 			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
@@ -1181,25 +1234,25 @@ public class List extends StdCommand
 			s.rawPrintln(str.toString());
 		}
 		else
-		if(("TYPOS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("TYPOS".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"KILLTYPOS")))
 			mob.tell(journalList("SYSTEM_TYPOS").toString());
 		else
-		if(("LOG".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("LOG".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
 			s.rawPrintln(Log.getLog().toString());
 		else
-		if(("USERS".startsWith(listWord))&&(mob.isASysOp(null)))
+		if(("USERS".startsWith(listWord))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")))
 			listUsers(mob,commands);
 		else
-		if(("SESSIONS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("SESSIONS".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
 			mob.tell(listSessions(mob).toString());
         else
-        if(("LINKAGES".startsWith(listThis))&&(mob.isASysOp(null)))
+        if(("LINKAGES".startsWith(listThis))&&(CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")))
             mob.tell(listLinkages(mob).toString());
         else
-		if(("REPORTS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("REPORTS".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
 			mob.tell(listReports(mob).toString());
 		else
-		if(("THREADS".startsWith(listThis))&&(mob.isASysOp(null)))
+		if(("THREADS".startsWith(listThis))&&(CMSecurity.isASysOp(mob)))
 			mob.tell(listThreads(mob).toString());
 		else
 		if("RESOURCES".startsWith(listThis))
@@ -1229,7 +1282,7 @@ public class List extends StdCommand
 			MOB shopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
 			if((shopkeeper==null)||(CoffeeUtensils.getShopKeeper(shopkeeper)==null)||(!Sense.canBeSeenBy(shopkeeper,mob)))
 			{
-				if(mob.isASysOp(mob.location()))
+				if(CMSecurity.isStaff(mob))
 				{
 					archonlist(mob,commands);
 					return false;

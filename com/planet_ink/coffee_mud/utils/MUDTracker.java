@@ -219,7 +219,9 @@ public class MUDTracker extends Scriptable
 		for(int m=0;m<oldRoom.numInhabitants();m++)
 		{
 			MOB inhab=oldRoom.fetchInhabitant(m);
-			if((inhab!=null)&&(inhab.isASysOp(oldRoom)))
+			if((inhab!=null)
+			&&(!inhab.isMonster())
+			&&(CMSecurity.isAllowed(inhab,oldRoom,"CMDMOBS")))
 				return false;
 		}
 

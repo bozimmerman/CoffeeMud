@@ -30,7 +30,7 @@ public class JournalInfo extends StdWebMacro
 		MOB M=CMMap.getLoadPlayer(Authenticate.getLogin(httpReq));
 		
 		String to=((String)((Vector)info.elementAt(num)).elementAt(3));
-		if(to.equalsIgnoreCase("all")||((M!=null)&&(M.isASysOp(null)||(to.equalsIgnoreCase(M.Name())))))
+		if(to.equalsIgnoreCase("all")||((M!=null)&&(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name())))))
 		{
 			if(parms.containsKey("KEY"))
 				return ((String)((Vector)info.elementAt(num)).elementAt(0));

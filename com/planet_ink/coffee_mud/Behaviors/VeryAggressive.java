@@ -53,7 +53,7 @@ public class VeryAggressive extends Aggressive
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
-			if((inhab!=null)&&(inhab.isASysOp(thisRoom)))
+			if((inhab!=null)&&(CMSecurity.isAllowed(inhab,thisRoom,"ORDER")))
 				return;
 		}
 

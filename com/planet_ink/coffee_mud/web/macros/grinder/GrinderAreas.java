@@ -12,7 +12,7 @@ public class GrinderAreas
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if((A.amISubOp(mob.Name()))||(mob.isASysOp(null)))
+			if((A.amISubOp(mob.Name()))||(CMSecurity.isASysOp(mob)))
 				if((pickedA!=null)&&(pickedA==A))
 					AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
 				else

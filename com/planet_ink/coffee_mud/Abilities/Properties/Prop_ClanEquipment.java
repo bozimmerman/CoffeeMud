@@ -444,7 +444,7 @@ public class Prop_ClanEquipment extends Property
 			if ( (msg.source() != null)
 			    && ( (source.getClanID() == null) ||
 			         (! (source.getClanID().equalsIgnoreCase(clanName))))
-			    && (! (source.isASysOp(source.location()))))
+			    && (! CMSecurity.isAllowed(source,source.location(),"CMDITEMS")))
 			{
 				FullMsg msg2 = new FullMsg(source, null, CMMsg.MSG_OK_ACTION,
 				                          "The magic on " + affected.Name() +

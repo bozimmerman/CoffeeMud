@@ -585,7 +585,7 @@ public class Sense
 		||((!isHidden(A))
 			&&(mob.location()!=null)
 			&&(mob.location().getArea().getTimeObj()==A.getTimeObj()))
-		||(mob.isASysOp(null))
+		||(CMSecurity.isASysOp(mob))
 		||(A.amISubOp(mob.Name())))
 			return true;
 		return false;
@@ -597,7 +597,8 @@ public class Sense
 		||((!isHidden(R))
 			&&(mob.location()!=null)
 			&&(mob.location().getArea().getTimeObj()==R.getArea().getTimeObj()))
-		||(mob.isASysOp(R)))
+		||(CMSecurity.isASysOp(mob))
+		||(R.getArea().amISubOp(mob.Name())))
 			return true;
 		return false;
 	}

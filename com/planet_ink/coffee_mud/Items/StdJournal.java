@@ -30,7 +30,7 @@ public class StdJournal extends StdItem
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WRITE:
-			if((!MUDZapper.zapperCheck(getWriteReq(),msg.source()))&&(!msg.source().isASysOp(null)))
+			if((!MUDZapper.zapperCheck(getWriteReq(),msg.source()))&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS"))))
 			{
 				msg.source().tell("You are not allowed to write on "+name());
 				return false;
@@ -70,7 +70,7 @@ public class StdJournal extends StdItem
 					entry.setCharAt(0,' ');
 				}
 				if((entry.charAt(0)=='*')
-				   ||(mob.isASysOp(null)))
+				   ||(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")))
 				{
 					mineAble=true;
 					entry.setCharAt(0,' ');
@@ -78,7 +78,7 @@ public class StdJournal extends StdItem
 				mob.tell(entry.toString()+"\n\r");
 				if((entry.toString().trim().length()>0)
 				&&(which>0)
-				&&(MUDZapper.zapperCheck(getWriteReq(),mob)||(mob.isASysOp(null))))
+				&&(MUDZapper.zapperCheck(getWriteReq(),mob)||((CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))))
 				{
 					try
 					{
@@ -127,7 +127,7 @@ public class StdJournal extends StdItem
 			try
 			{
 				if((msg.targetMessage().toUpperCase().startsWith("DEL"))
-				   &&(mob.isASysOp(null))
+				   &&(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))
 				   &&(!mob.isMonster()))
 				{
 					if(mob.session().confirm("Delete all journal entries? Are you sure (y/N)?","N"))
@@ -156,7 +156,7 @@ public class StdJournal extends StdItem
 						return;
 					}
 					if((subject.startsWith("MOTD")||subject.startsWith("MOTM")||subject.startsWith("MOTY"))
-					   &&(!mob.isASysOp(null)))
+					   &&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
 						subject=subject.substring(4);
 					String message=mob.session().prompt("Enter your message\n\r: ");
 					if(message.trim().length()==0)
@@ -165,7 +165,7 @@ public class StdJournal extends StdItem
 						return;
 					}
 					if(message.startsWith("<cmvp>")
-					&&(!mob.isASysOp(null)))
+					&&(!(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS"))))
 					{
 						mob.tell("Illegal code, aborted.");
 						return;

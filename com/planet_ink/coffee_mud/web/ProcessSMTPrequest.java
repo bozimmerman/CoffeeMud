@@ -180,7 +180,7 @@ public class ProcessSMTPrequest extends Thread
 											if(server.isASubscribeOnlyJournal(journal))
 											{
 												MOB M=CMMap.getLoadPlayer(from);
-												if((M==null)||(!M.isASysOp(null)))
+												if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
 												{
 													replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
 													break;

@@ -56,7 +56,7 @@ public class Authenticate extends StdWebMacro
 		MOB mob=CMMap.getLoadPlayer(login);
 		if(mob==null) return false;
 		boolean subOp=false;
-		boolean sysop=mob.isASysOp(null);
+		boolean sysop=CMSecurity.isASysOp(mob);
 		httpReq.addRequestParameters("SYSOP",""+sysop);
 		String AREA=httpReq.getRequestParameter("AREA");
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)

@@ -581,7 +581,7 @@ public class StdMOB implements MOB
 			return true;
 		if(Util.bset(getBitmap(),MOB.ATT_PLAYERKILL))
 		{
-			if((isASysOp(location()))
+			if(CMSecurity.isAllowed(this,location(),"PKILL")
 			||(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 				return true;
 			return false;
@@ -589,7 +589,7 @@ public class StdMOB implements MOB
 		else
 		if(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
 		{
-			if((mob.isASysOp(mob.location()))
+			if(CMSecurity.isAllowed(this,location(),"PKILL")
 			||(Util.bset(getBitmap(),MOB.ATT_PLAYERKILL)))
 				return true;
 			return false;
@@ -1598,7 +1598,7 @@ public class StdMOB implements MOB
 				if((!isMonster())&&(!mob.isMonster())
 				&&(soulMate()==null)
 				&&(mob.soulMate()==null)
-				&&(!isASysOp(location()))&&(!mob.isASysOp(mob.location()))
+				&&(!CMSecurity.isAllowed(this,location(),"PKILL"))&&(!CMSecurity.isAllowed(mob,mob.location(),"PKILL"))
 				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff())
 				&&((!(msg.tool() instanceof Ability))
 				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)!=Ability.DISEASE))
@@ -1682,7 +1682,7 @@ public class StdMOB implements MOB
 			case CMMsg.TYP_GIVE:
 				if(msg.tool()==null) return false;
 				if(!(msg.tool() instanceof Item)) return false;
-				if(msg.source().isASysOp(location())) return true;
+				if(CMSecurity.isAllowed(this,location(),"ORDER")) return true;
 				if(getWearPositions(Item.ON_ARMS)==0)
 				{
 					msg.source().tell(name()+" is unable to accept that from you.");
@@ -1715,8 +1715,8 @@ public class StdMOB implements MOB
                 if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)>0)
 				&&(!isMonster())
 				&&(!mob.isMonster())
-				&&(!isASysOp(location()))
-				&&(!mob.isASysOp(location())))
+				&&(!CMSecurity.isAllowed(this,location(),"ORDER"))
+				&&(!CMSecurity.isAllowed(mob,mob.location(),"ORDER")))
                 {
 					if(envStats.level() > (mob.envStats().level() + CommonStrings.getIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF)))
 					{
@@ -2192,7 +2192,7 @@ public class StdMOB implements MOB
 		for(int i=0;i<location().numInhabitants();i++)
 		{ 
 			MOB M=(MOB)location().fetchInhabitant(i);
-			if((M!=null)&&(!M.isMonster())&&(M.isASysOp(location())))
+			if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,location(),"CMDMOBS")))
 			{ newLastTickedDateTime=-1; break;}
 		}
 		if(newLastTickedDateTime==0)
@@ -2404,7 +2404,8 @@ public class StdMOB implements MOB
 					if(Sense.isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_TICK,maxState());
 					else
-					if(!isASysOp(location()))
+					if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)==0)
+					||(baseEnvStats().level()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
 					{
 						curState().adjFatigue(MudHost.TICK_TIME,maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
@@ -2426,7 +2427,9 @@ public class StdMOB implements MOB
 					{
 						tickCounter=0;
 						setAgeHours(AgeHours+1);
-						if((AgeHours>60000)&&(!isASysOp(location())))
+						if((AgeHours>60000)
+						&&((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)==0)
+						||(baseEnvStats().level()<=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL))))
 						{
 							if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
 							{
@@ -2551,18 +2554,6 @@ public class StdMOB implements MOB
 	public boolean isMonster(){	return (mySession==null);}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public boolean isASysOp(Room of)
-	{
-		if(baseCharStats()==null) return false;
-		if(baseCharStats().getClassLevel("Archon")>=0)
-			return true;
-		if(of==null) return false;
-		if(of.getArea()==null) return false;
-		if(of.getArea().amISubOp(Username))
-			return true;
-		return false;
-	}
-
 	public void confirmWearability()
 	{
 		Race R=charStats().getMyRace();
@@ -2676,7 +2667,7 @@ public class StdMOB implements MOB
 	}
 	public boolean willFollowOrdersOf(MOB mob)
 	{
-		if(mob.isASysOp(mob.location())
+		if((isMonster()?CMSecurity.isAllowed(mob,location(),"ORDER"):CMSecurity.isAllowedEverywhere(mob,"ORDER"))
 		||(amFollowing()==mob)
 		||(getLiegeID().equals(mob.Name()))
 		||(CoffeeUtensils.doesOwnThisProperty(mob,getStartRoom())))

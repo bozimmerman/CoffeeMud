@@ -162,7 +162,7 @@ public class Hireling extends StdBehavior
 			&&((msg.target() instanceof Coins)||(msg.tool() instanceof Coins)))
 			{
 				if((msg.target() instanceof MOB)
-				&&(!((MOB)msg.target()).isASysOp(source.location())))
+				&&(!CMSecurity.isAllowed(((MOB)msg.target()),source.location(),"ORDER")))
 					CommonMsgs.say(observer,null,"I don't think so.",false,false);
 				return false;
 			}

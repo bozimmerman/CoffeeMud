@@ -13,7 +13,7 @@ public class I3Cmd extends StdCommand
 
 	public void i3Error(MOB mob)
 	{
-		if(mob.isASysOp(null))
+		if(CMSecurity.isAllowed(mob,mob.location(),"I3"))
 			mob.tell("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], or I3 INFO [MUD].");
 		else
 			mob.tell("Try I3 LIST or I3 INFO [MUD-NAME].");
@@ -42,7 +42,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("add"))
 		{
-			if(!mob.isASysOp(null)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");
@@ -56,7 +56,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("delete"))
 		{
-			if(!mob.isASysOp(null)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");
@@ -67,7 +67,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("listen"))
 		{
-			if(!mob.isASysOp(null)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");
@@ -78,7 +78,7 @@ public class I3Cmd extends StdCommand
 		else
 		if(str.equalsIgnoreCase("silence"))
 		{
-			if(!mob.isASysOp(null)){ i3Error(mob); return false;}
+			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			if(commands.size()<2)
 			{
 				mob.tell("You did not specify a channel name!");

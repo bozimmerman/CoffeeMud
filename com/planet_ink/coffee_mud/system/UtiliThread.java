@@ -154,7 +154,7 @@ public class UtiliThread extends Thread
 					   ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("MERGE")))
 						check=check*60;
 					else
-					if(S.mob().isASysOp(null))
+					if(CMSecurity.isAllowed(S.mob(),S.mob().location(),"CMDROOMS"))
 						check=check*15;
 					else
 					if(S.getStatus()==Session.STATUS_LOGIN)

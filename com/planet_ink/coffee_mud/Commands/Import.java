@@ -3767,11 +3767,6 @@ public class Import extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("Only the Archons may import.");
-			return false;
-		}
 		boolean prompt=true;
 		Hashtable doneItems=new Hashtable();
 		Hashtable doneRooms=new Hashtable();
@@ -3875,6 +3870,12 @@ public class Import extends StdCommand
 			}
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREAS>")>=0))
 			{
+				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTROOMS"))
+				{
+					mob.tell("You are not allowed to import areas in '"+areaFileName+"'.");
+					continue;
+				}
+				
 				Vector areas=new Vector();
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
@@ -3937,6 +3938,11 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AREA>")>=0))
 			{
+				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTROOMS"))
+				{
+					mob.tell("You are not allowed to import area in '"+areaFileName+"'.");
+					continue;
+				}
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking area from file: '"+areaFileName+"'...");
 				Vector areaD=new Vector();
@@ -3980,6 +3986,11 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<AROOM>")>=0))
 			{
+				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTROOMS"))
+				{
+					mob.tell("You are not allowed to import room in '"+areaFileName+"'.");
+					continue;
+				}
 				mob.tell("Unpacking room from file: '"+areaFileName+"'...");
 				String error=CoffeeMaker.fillCustomVectorFromXML(buf.toString(),custom);
 				if(error.length()==0) importCustomObjects(mob,custom,customBotherChecker,!prompt);
@@ -4022,6 +4033,11 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"IMPORTMOBS"))
+				{
+					mob.tell("You are not allowed to import mobs in '"+areaFileName+"' here.");
+					continue;
+				}
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking mobs from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
@@ -4054,6 +4070,11 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<PLAYERS>")>=0))
 			{
+				if(!CMSecurity.isAllowedEverywhere(mob,"IMPORTPLAYERS"))
+				{
+					mob.tell("You are not allowed to import players in '"+areaFileName+"' here.");
+					continue;
+				}
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking players from file: '"+areaFileName+"'...");
 				Vector mobs=new Vector();
@@ -4118,6 +4139,11 @@ public class Import extends StdCommand
 			else
 			if((buf.length()>20)&&(buf.substring(0,20).indexOf("<ITEMS>")>=0))
 			{
+				if(!CMSecurity.isAllowed(mob,mob.location(),"IMPORTITEMS"))
+				{
+					mob.tell("You are not allowed to import items in '"+areaFileName+"' here.");
+					continue;
+				}
 				if(mob.session()!=null)
 					mob.session().rawPrint("Unpacking items from file: '"+areaFileName+"'...");
 				Vector items=new Vector();
@@ -5471,6 +5497,7 @@ public class Import extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,"IMPORT");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

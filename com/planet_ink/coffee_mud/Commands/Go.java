@@ -183,7 +183,8 @@ public class Go extends StdCommand
 			enterMsg=new FullMsg(mob,destRoom,exit,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,getScr("Movement","senter",Sense.dispositionString(mob,Sense.flag_arrives),otherDirectionName));
 			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sflees",directionName):getScr("Movement","sleaves",Sense.dispositionString(mob,Sense.flag_leaves),directionName)));
 		}
-		if((exit==null)&&(!CMSecurity.isAllowedStartsWith(mob,destRoom,"CMD")))
+		boolean gotoAllowed=(!CMSecurity.isAllowed(mob,destRoom,"GOTO"));
+		if((exit==null)&&(!gotoAllowed))
 		{
 			mob.tell(getScr("Movement","moveerr1"));
 			return false;
@@ -192,30 +193,30 @@ public class Go extends StdCommand
 		if(exit==null)
 			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,getScr("Movement","stwitch",directionName));
 		else
-		if((exit!=null)&&(!exit.okMessage(mob,enterMsg)))
+		if((exit!=null)&&(!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
 			return false;
 		else
-		if(!leaveMsg.target().okMessage(mob,leaveMsg))
+		if(!leaveMsg.target().okMessage(mob,leaveMsg)&&(!gotoAllowed))
 			return false;
 		else
-		if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
+		if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg))&&(!gotoAllowed))
 			return false;
 		else
-		if(!enterMsg.target().okMessage(mob,enterMsg))
+		if(!enterMsg.target().okMessage(mob,enterMsg)&&(!gotoAllowed))
 			return false;
 		else
-		if(!mob.okMessage(mob,enterMsg))
+		if(!mob.okMessage(mob,enterMsg)&&(!gotoAllowed))
 			return false;
 
 		if(mob.riding()!=null)
 		{
-			if((!mob.riding().okMessage(mob,enterMsg)))
+			if((!mob.riding().okMessage(mob,enterMsg))&&(!gotoAllowed))
 				return false;
 		}
 		else
 		{
 			mob.curState().expendEnergy(mob,mob.maxState(),true);
-			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState())))
+			if((!flee)&&(!mob.curState().adjMovement(-1,mob.maxState()))&&(!gotoAllowed))
 			{
 				mob.tell(getScr("Movement","tootired"));
 				return false;

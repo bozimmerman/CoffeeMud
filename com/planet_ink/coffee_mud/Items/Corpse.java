@@ -123,7 +123,7 @@ public class Corpse extends GenContainer implements DeadBody
         &&(playerCorpse())
 		&&(mobName().length()>0))
         {
-            if(((MOB)msg.source()).isASysOp((Room)myHost))
+            if(CMSecurity.isAllowed(msg.source(),(Room)myHost,"CMDITEMS"))
                 return true;
             if(msg.source().isMonster())
                 return true;

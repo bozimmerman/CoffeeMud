@@ -33,7 +33,6 @@ public class AreaList extends StdEspressoCommand {
         return null;
       for (Enumeration a = CMMap.areas(); a.hasMoreElements(); ) {
         Area A = (Area) a.nextElement();
-        //if((A.amISubOp(mob.Name()))||(mob.isASysOp(null)))
         areaV.addElement(A.Name());
       }
       return areaV;

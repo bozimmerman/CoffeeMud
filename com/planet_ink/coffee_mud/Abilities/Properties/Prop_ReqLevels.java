@@ -20,10 +20,10 @@ public class Prop_ReqLevels extends Property
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
 
-		if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(mob.isASysOp(R)))
+		if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(CMSecurity.isAllowed(mob,R,"GOTO")))
 			return true;
 
-		if((text().toUpperCase().indexOf("SYSOP")>=0)&&(!mob.isASysOp(R)))
+		if((text().toUpperCase().indexOf("SYSOP")>=0)&&(!CMSecurity.isAllowed(mob,R,"GOTO")))
 			return false;
 
 		int lvl=mob.envStats().level();

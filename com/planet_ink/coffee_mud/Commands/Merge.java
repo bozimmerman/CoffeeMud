@@ -149,11 +149,6 @@ public class Merge extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("Only the Archons can do that.");
-			return false;
-		}
 		boolean noisy=CMSecurity.isDebugging("MERGE");
 		Vector placesToDo=new Vector();
 		commands.removeElementAt(0);
@@ -192,18 +187,33 @@ public class Merge extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("room"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"MERGE"))
+			{
+				mob.tell("You are not allowed to do that here.");
+				return false;
+			}
 			commands.removeElementAt(0);
 			placesToDo.addElement(mob.location());
 		}
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("area"))
 		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"MERGE"))
+			{
+				mob.tell("You are not allowed to do that here.");
+				return false;
+			}
 			commands.removeElementAt(0);
 			placesToDo.addElement(mob.location().getArea());
 		}
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("world"))
 		{
+			if(!CMSecurity.isAllowedEverywhere(mob,"MERGE"))
+			{
+				mob.tell("You are not allowed to do that.");
+				return false;
+			}
 			commands.removeElementAt(0);
 			placesToDo=new Vector();
 		}
@@ -347,7 +357,9 @@ public class Merge extends StdCommand
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			placesToDo.addElement(A);
+			if(A.getMap().hasMoreElements()
+			&&CMSecurity.isAllowed(mob,((Room)A.getMap().nextElement()),"MERGE"))
+				placesToDo.addElement(A);
 		}
 		if(placesToDo.size()==0)
 		{
@@ -363,7 +375,8 @@ public class Merge extends StdCommand
 				for(Enumeration r=A.getMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					placesToDo.addElement(R);
+					if(CMSecurity.isAllowed(mob,R,"MERGE"))
+						placesToDo.addElement(R);
 				}
 			}
 			else
@@ -384,6 +397,8 @@ public class Merge extends StdCommand
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
+			if(!CMSecurity.isAllowed(mob,R,"MERGE"))
+				continue;
 			if(R.roomID().length()==0) continue;
 			boolean oldMobility=R.getArea().getMobility();
 			R.getArea().toggleMobility(false);
@@ -448,6 +463,7 @@ public class Merge extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedAnywhere(mob,"MERGE");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

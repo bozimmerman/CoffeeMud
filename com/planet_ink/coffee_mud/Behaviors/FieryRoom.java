@@ -82,7 +82,8 @@ public class FieryRoom extends ActiveTicker {
                                 }
                                 else
                                 {
-                                        if(!inhab.isASysOp(room)) {
+                                        if(!CMSecurity.isAllowedStartsWith(inhab,room,"CMDROOMS"))
+										{
                                                 dealDamage(inhab);
                                                 if(Dice.rollPercentage()>eqChance)
                                                         eqRoast(inhab);

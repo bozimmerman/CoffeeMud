@@ -66,9 +66,9 @@ public class StdLawBook extends StdItem
 				if(Util.s_long(msg.targetMessage())>0)
 					which=Util.s_int(msg.targetMessage());
 
-				boolean allowedToModify=mob.isASysOp(null);
+				boolean allowedToModify=(CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW"));
 				if(A.getMap().hasMoreElements())
-					allowedToModify=mob.isASysOp((Room)A.getMap().nextElement());
+					allowedToModify=(CMSecurity.isAllowed(mob,((Room)A.getMap().nextElement()),"ABOVELAW"));
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
 				if((!allowedToModify)

@@ -50,11 +50,6 @@ public class Export extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		if(!mob.isASysOp(null))
-		{
-			mob.tell("Only the Archons can do that.");
-			return false;
-		}
 		String commandType="";
 		String fileName="";
 		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path
@@ -74,10 +69,18 @@ public class Export extends StdCommand
 			mob.tell("Export what?  Room, World, Player, or Area?");
 			return false;
 		}
-		if(commandType.equalsIgnoreCase("PLAYER")
-		&&(!mob.isASysOp(null)))
+		if(commandType.equalsIgnoreCase("PLAYER"))
 		{
-			mob.tell("Only Archons may export player data.");
+			if(!CMSecurity.isAllowedEverywhere(mob,"EXPORTPLAYERS"))
+			{
+				mob.tell("You are not allowed to export player data.");
+				return false;
+			}
+		}
+		else
+		if(!CMSecurity.isAllowed(mob,mob.location(),"EXPORT"))
+		{
+			mob.tell("You are not allowed to export room, mob, or item data.");
 			return false;
 		}
 
@@ -108,9 +111,9 @@ public class Export extends StdCommand
 				fileNameCode=0;
 			else
 			{
-				if(!mob.isASysOp(null))
+				if(CMSecurity.isAllowedAnywhere(mob,"EXPORTFILE"))
 				{
-					mob.tell("Only Archons may export to a file.");
+					mob.tell("You are not allowed to export to a file.");
 					return false;
 				}
 				File F=new File(fileName);
@@ -176,6 +179,11 @@ public class Export extends StdCommand
 			}
 			else
 			{
+				if(!CMSecurity.isAllowedEverywhere(mob,"EXPORT"))
+				{
+					mob.tell("You are not allowed to export world data.");
+					return false;
+				}
 				StringBuffer buf=new StringBuffer("");
 				if(fileNameCode!=2) buf.append("<AREAS>");
 				for(Enumeration a=CMMap.areas();a.hasMoreElements();)
@@ -322,6 +330,7 @@ public class Export extends StdCommand
 	}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
+	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"EXPORT");}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

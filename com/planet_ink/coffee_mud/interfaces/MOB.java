@@ -118,7 +118,6 @@ public interface MOB
 	public Session session();
 	public void setSession(Session newSession);
 	public boolean isMonster();
-	public boolean isASysOp(Room of);
 	public MOB soulMate();
 	public void setSoulMate(MOB mob);
 
