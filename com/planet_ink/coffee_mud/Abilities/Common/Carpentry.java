@@ -123,9 +123,9 @@ public class Carpentry extends CommonSkill
 				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.elementAt(0),"");
-					int level=Util.s_int((String)V.elementAt(1));
-					int wood=Util.s_int((String)V.elementAt(3));
+					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
+					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
+					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 						buf.append(Util.padRight(item,20)+" "+wood+"\n\r");
 				}

@@ -8,7 +8,7 @@ import java.util.*;
 public class Engraving extends CommonSkill
 {
 	private Item found=null;
-	private String foundShortName="";
+	private String writing="";
 	public Engraving()
 	{
 		super();
@@ -23,27 +23,29 @@ public class Engraving extends CommonSkill
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
-		//CMAble.addCharAbilityMapping("All",1,ID(),false);
+		CMAble.addCharAbilityMapping("All",1,ID(),false);
 	}
 
 	public Environmental newInstance()
 	{
 		return new Engraving();
 	}
-	public boolean tick(int tickID)
-	{
-		MOB mob=(MOB)affected;
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
-		{
-		}
-		return super.tick(tickID);
-	}
-
 	public void unInvoke()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
+			if(writing.length()==0)
+				mob.tell("You mess up your engravey.");
+			else
+			{
+				String desc=found.description();
+				int x=desc.indexOf(" Engraved on it are the words `");
+				int y=desc.lastIndexOf("`");
+				if((x>=0)&&(y>x))
+					desc=desc.substring(0,x);
+				found.setDescription(desc+" Engraved on it are the words `"+writing+"`.");
+			}
 		}
 		super.unInvoke();
 	}
@@ -56,13 +58,35 @@ public class Engraving extends CommonSkill
 			mob.tell("You must specify what you want to engrave onto, and what words to engrave on it.");
 			return false;
 		}
-		verb="engraving";
-		found=null;
+		Item target=mob.fetchCarried(null,(String)commands.firstElement());
+		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
+		{
+			mob.tell("You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			return false;
+		}
+		else
+			commands.remove(commands.firstElement());
+		
+		if((((target.material()&EnvResource.MATERIAL_GLASS)==0)
+			&&((target.material()&EnvResource.MATERIAL_METAL)==0)
+			&&((target.material()&EnvResource.MATERIAL_ROCK)==0)
+			&&((target.material()&EnvResource.MATERIAL_WOODEN)==0)
+			&&((target.material()&EnvResource.MATERIAL_MITHRIL)==0))
+		||(!target.isGeneric()))
+		{
+			mob.tell("You can't engrave onto that material.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		int duration=60-mob.envStats().level();
-		if(duration<25) duration=25;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) engraving.");
+		writing=Util.combine(commands,0);
+		verb="engraving on "+target.name();
+		displayText="You are "+verb;
+		found=target;
+		if(!profficiencyCheck(0,auto)) writing="";
+		int duration=30-mob.envStats().level();
+		if(duration<6) duration=6;
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) engraving on "+target.name());
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

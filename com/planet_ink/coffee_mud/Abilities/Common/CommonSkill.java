@@ -7,10 +7,10 @@ import java.util.*;
 
 public class CommonSkill extends StdAbility
 {
-	public Room activityRoom=null;
-	public boolean aborted=false;
-	public int tickUp=0;
-	public String verb="working";
+	protected Room activityRoom=null;
+	protected boolean aborted=false;
+	protected int tickUp=0;
+	protected String verb="working";
 
 	public CommonSkill()
 	{
@@ -42,7 +42,7 @@ public class CommonSkill extends StdAbility
 		return Ability.COMMON_SKILL;
 	}
 
-	public String replacePercent(String thisStr, String withThis)
+	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
 		{
@@ -93,7 +93,7 @@ public class CommonSkill extends StdAbility
 		super.unInvoke();
 	}
 	
-	public static Vector loadList(StringBuffer str)
+	protected static Vector loadList(StringBuffer str)
 	{
 		Vector V=new Vector();
 		if(str==null) return V;
@@ -130,14 +130,14 @@ public class CommonSkill extends StdAbility
 		return V;
 	}
 	
-	public int lookingFor(int material, Room fromHere)
+	protected int lookingFor(int material, Room fromHere)
 	{
 		Vector V=new Vector();
 		V.addElement(new Integer(material));
 		return lookingFor(V,fromHere);
 	}
 	
-	public int lookingFor(Vector materials, Room fromHere)
+	protected int lookingFor(Vector materials, Room fromHere)
 	{
 		Vector possibilities=new Vector();
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -157,7 +157,7 @@ public class CommonSkill extends StdAbility
 			return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
 	}
 	
-	public Environmental makeResource(int myResource)
+	protected Environmental makeResource(int myResource)
 	{
 		if(myResource<0)
 			return null;
