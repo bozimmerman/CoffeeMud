@@ -43,7 +43,7 @@ public class Chant_CalmWeather extends Chant
 			return false;
 
 		int size=mob.location().getArea().mapSize();
-		size=size-(mob.envStats().level()*20);
+		size=size/mob.envStats().level();
 		if(size<0) size=0;
 		boolean success=profficiencyCheck(-size,auto);
 		if(success)
