@@ -214,13 +214,14 @@ public class ItemUsage
 			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 	}
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
-	{ return get(mob,container,getThis,quiet,"get");}
+	{ return get(mob,container,getThis,quiet,"get",false);}
 
 	public static boolean get(MOB mob,
 							  Item container,
 							  Item getThis,
 							  boolean quiet,
-							  String getWord)
+							  String getWord,
+							  boolean optimize)
 	{
 		String theWhat="<T-NAME>";
 		Item target=getThis;
@@ -233,12 +234,12 @@ public class ItemUsage
 		}
 		if(!getThis.amWearingAt(Item.INVENTORY))
 		{
-			FullMsg msg=new FullMsg(mob,getThis,null,Affect.MSG_REMOVE,null);
+			FullMsg msg=new FullMsg(mob,getThis,null,(optimize?Affect.MASK_OPTIMIZE:0)|Affect.MSG_REMOVE,null);
 			if(!mob.location().okAffect(mob,msg))
 				return false;
 			mob.location().send(mob,msg);
 		}
-		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
+		FullMsg msg=new FullMsg(mob,target,tool,(optimize?Affect.MASK_OPTIMIZE:0)|Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat+".");
 		if(!mob.location().okAffect(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
@@ -246,7 +247,7 @@ public class ItemUsage
 		// the item deserves to be the target of the GET.
 		if(!mob.isMine(target))
 		{
-			msg=new FullMsg(mob,getThis,null,Affect.MSG_GET,null);
+			msg=new FullMsg(mob,getThis,null,(optimize?Affect.MASK_OPTIMIZE:0)|Affect.MSG_GET,null);
 			if(!mob.location().okAffect(mob,msg))
 				return false;
 			mob.location().send(mob,msg);
@@ -341,11 +342,13 @@ public class ItemUsage
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
-				if(!get(mob,container,(Item)getThis,false))
+				if(!get(mob,container,(Item)getThis,false,"get",true))
 					if(getThis instanceof Coins)
 						((Coins)getThis).putCoinsBack();
 				doneSomething=true;
 			}
+			mob.location().recoverRoomStats();
+			mob.location().recoverRoomStats();
 
 			if(containers.size()==0) break;
 		}
@@ -367,9 +370,9 @@ public class ItemUsage
 		}
 	}
 
-	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet)
+	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
-		FullMsg msg=new FullMsg(mob,dropThis,null,Affect.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
+		FullMsg msg=new FullMsg(mob,dropThis,null,(optimize?Affect.MASK_OPTIMIZE:0)|Affect.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -453,10 +456,12 @@ public class ItemUsage
 		for(int i=0;i<V.size();i++)
 		{
 			Item dropThis=(Item)V.elementAt(i);
-			drop(mob,dropThis,false);
+			drop(mob,dropThis,false,true);
 			if(dropThis instanceof Coins)
 				((Coins)dropThis).putCoinsBack();
 		}
+		mob.location().recoverRoomStats();
+		mob.location().recoverRoomStats();
 	}
 
 	public static void put(MOB mob, Vector commands)
@@ -542,12 +547,14 @@ public class ItemUsage
 		{
 			Environmental putThis=(Environmental)V.elementAt(i);
 			String putWord=(putThis instanceof Rideable)?((Rideable)putThis).putString(mob):"in";
-			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
+			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MASK_OPTIMIZE|Affect.MSG_PUT,"<S-NAME> put(s) <O-NAME> "+putWord+" <T-NAME>.");
 			if(mob.location().okAffect(mob,putMsg))
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)
 				((Coins)putThis).putCoinsBack();
 		}
+		mob.location().recoverRoomStats();
+		mob.location().recoverRoomStats();
 	}
 
 	public static void fill(MOB mob, Vector commands)

@@ -27,7 +27,7 @@ public interface ExternalCommand
 		throws Exception;
 	public MOB parseShopkeeper(MOB mob, Vector commands, String error);
 	public boolean get(MOB mob, Item container, Item getThis, boolean quiet);
-	public boolean drop(MOB mob, Environmental dropThis, boolean quiet);
+	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize);
 	public void read(MOB mob, Environmental thisThang, String theRest);
 	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
 	public void follow(MOB mob, MOB tofollow, boolean quiet);

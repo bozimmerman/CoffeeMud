@@ -46,7 +46,7 @@ public interface Affect extends Cloneable
 	
 	// helpful seperator masks
 	public static final int MINOR_MASK=2047;
-	public static final int MAJOR_MASK=2095104;////1046528
+	public static final int MAJOR_MASK=4192256;
 	
 	// masks for all messages
 	public static final int MASK_HANDS=2048;       // small hand movements
@@ -59,6 +59,7 @@ public interface Affect extends Cloneable
 	public static final int MASK_DELICATE=262144;  // for thief skills!
 	public static final int MASK_MALICIOUS=524288; // for attacking
 	public static final int MASK_CHANNEL=1048576;  // for channel messages
+	public static final int MASK_OPTIMIZE=2097152; // to optomize a repeated msg
 	public static final int MASK_HURT=MASK_GENERAL|1024;
 	
 	// minor messages

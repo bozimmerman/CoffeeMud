@@ -360,15 +360,17 @@ public class StdRideable extends StdMOB implements Rideable
 			   &&(affect.tool() instanceof Rider))
 			{
 				((Rider)affect.tool()).setRiding(null);
-				if(affect.source().location()!=null)
-					affect.source().location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(affect.source().location()!=null)
+						affect.source().location().recoverRoomStats();
 			}
 			else
 			if(amRiding(affect.source()))
 			{
 				affect.source().setRiding(null);
-				if(affect.source().location()!=null)
-					affect.source().location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(affect.source().location()!=null)
+						affect.source().location().recoverRoomStats();
 			}
 			break;
 		case Affect.TYP_MOUNT:
@@ -378,15 +380,17 @@ public class StdRideable extends StdMOB implements Rideable
 				   &&(affect.tool() instanceof Rider))
 				{
 					((Rider)affect.tool()).setRiding(this);
-					if(affect.source().location()!=null)
-						affect.source().location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						if(affect.source().location()!=null)
+							affect.source().location().recoverRoomStats();
 				}
 				else
 				if(!amRiding(affect.source()))
 				{
 					affect.source().setRiding(this);
-					if(affect.source().location()!=null)
-						affect.source().location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						if(affect.source().location()!=null)
+							affect.source().location().recoverRoomStats();
 				}
 			}
 			break;
@@ -399,8 +403,9 @@ public class StdRideable extends StdMOB implements Rideable
 			if(amRiding(affect.source()))
 			{
 			   affect.source().setRiding(null);
-				if(affect.source().location()!=null)
-					affect.source().location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					if(affect.source().location()!=null)
+						affect.source().location().recoverRoomStats();
 			}
 			break;
 		}

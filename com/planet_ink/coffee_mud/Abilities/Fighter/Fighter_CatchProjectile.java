@@ -48,7 +48,7 @@ public class Fighter_CatchProjectile extends StdAbility
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
 					ExternalPlay.remove(affect.source(),w,true);
-				ExternalPlay.drop(affect.source(),w,true);
+				ExternalPlay.drop(affect.source(),w,true,false);
 			}
 			else
 			if(((Weapon)w).requiresAmmunition())

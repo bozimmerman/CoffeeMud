@@ -402,18 +402,21 @@ public class StdRoom
 			{
 			case Affect.TYP_LEAVE:
 			{
-				recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					recoverRoomStats();
 				break;
 			}
 			case Affect.TYP_FLEE:
 			{
-				recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					recoverRoomStats();
 				break;
 			}
 			case Affect.TYP_ENTER:
 			case Affect.TYP_RECALL:
 			{
-				recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					recoverRoomStats();
 				break;
 			}
 			case Affect.TYP_EXAMINESOMETHING:
@@ -529,49 +532,31 @@ public class StdRoom
 		Area myArea=getArea();
 		if(myArea!=null)
 			myArea.affectEnvStats(this,envStats());
-		for(int a=0;a<numAffects();a++)
-		{
-			Ability affect=fetchAffect(a);
-			if(affect!=null)
-				affect.affectEnvStats(this,envStats);
-		}
-		for(int i=0;i<numItems();i++)
-		{
-			Item item=fetchItem(i);
-			if(item!=null)
-				item.affectEnvStats(this,envStats);
-		}
-		for(int m=0;m<numInhabitants();m++)
-		{
-			MOB mob=fetchInhabitant(m);
-			if(mob!=null)
-				mob.affectEnvStats(this,envStats);
-		}
+		if(affects!=null)
+		for(Enumeration e=affects.elements();e.hasMoreElements();)
+			((Ability)e.nextElement()).affectEnvStats(this,envStats);
+		for(Enumeration e=contents.elements();e.hasMoreElements();)
+			((Item)e.nextElement()).affectEnvStats(this,envStats);
+		for(Enumeration e=inhabitants.elements();e.hasMoreElements();)
+			((MOB)e.nextElement()).affectEnvStats(this,envStats);
 	}
 	public void recoverRoomStats()
 	{
 		recoverEnvStats();
-		for(int m=0;m<numInhabitants();m++)
+		for(Enumeration e=inhabitants.elements();e.hasMoreElements();)
 		{
-			MOB mob=fetchInhabitant(m);
-			if(mob!=null)
-			{
-				mob.recoverCharStats();
-				mob.recoverEnvStats();
-				mob.recoverMaxState();
-			}
+			MOB mob=(MOB)e.nextElement();
+			mob.recoverCharStats();
+			mob.recoverEnvStats();
+			mob.recoverMaxState();
 		}
 		for(int d=0;d<exits.length;d++)
 		{
 			Exit X=exits[d];
 			if(X!=null) X.recoverEnvStats();
 		}
-		for(int i=0;i<numItems();i++)
-		{
-			Item item=fetchItem(i);
-			if(item!=null)
-				item.recoverEnvStats();
-		}
+		for(Enumeration e=contents.elements();e.hasMoreElements();)
+			((Item)e.nextElement()).recoverEnvStats();
 	}
 
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)

@@ -921,14 +921,16 @@ public class StdItem implements Item
 				if(!mob.isMine(this))
 					mob.addInventory(this);
 				unWear();
-				mob.location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					mob.location().recoverRoomStats();
 			}
 			break;
 		case Affect.TYP_REMOVE:
 			if(!(this instanceof Container))
 			{
 				unWear();
-				mob.location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					mob.location().recoverRoomStats();
 			}
 			break;
 		case Affect.TYP_THROW:
@@ -939,9 +941,12 @@ public class StdItem implements Item
 				mob.delInventory(this);
 				if(!((Room)affect.tool()).isContent(this))
 					((Room)affect.tool()).addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				((Room)affect.tool()).recoverRoomStats();
-				if(mob.location()!=affect.tool())
-					mob.location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+				{
+					((Room)affect.tool()).recoverRoomStats();
+					if(mob.location()!=affect.tool())
+						mob.location().recoverRoomStats();
+				}
 			}
 			unWear();
 			setContainer(null);
@@ -952,7 +957,8 @@ public class StdItem implements Item
 				mob.delInventory(this);
 				if(!mob.location().isContent(this))
 					mob.location().addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
-				mob.location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					mob.location().recoverRoomStats();
 			}
 			unWear();
 			setContainer(null);

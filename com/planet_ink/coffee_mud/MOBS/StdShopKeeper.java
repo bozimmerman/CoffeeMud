@@ -690,7 +690,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 					if(mySession!=null)
 						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
-					mob.location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mob.location().recoverRoomStats();
 				}
 				break;
 			case Affect.TYP_VIEW:
@@ -819,7 +820,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 					if(mySession!=null)
 						mySession.stdPrintln(affect.source(),affect.target(),affect.tool(),affect.targetMessage());
-					mob.location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mob.location().recoverRoomStats();
 				}
 				break;
 			case Affect.TYP_LIST:

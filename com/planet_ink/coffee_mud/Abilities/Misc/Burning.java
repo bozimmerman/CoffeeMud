@@ -108,7 +108,7 @@ public class Burning extends StdAbility
 		{
 			Item I=(Item)affected;
 			if(!ouch((MOB)I.owner()))
-				ExternalPlay.drop((MOB)I.owner(),I,false);
+				ExternalPlay.drop((MOB)I.owner(),I,false,false);
 			if(I.subjectToWearAndTear())
 			{
 				if((I.usesRemaining()<1000)

@@ -238,7 +238,7 @@ public class Money
 				banker.location().send(banker,newMsg);
 			else
 			{
-				ExternalPlay.drop(banker,changeBag,true);
+				ExternalPlay.drop(banker,changeBag,true,false);
 				return null;
 			}
 		}
@@ -265,7 +265,7 @@ public class Money
 			}
 		}
 		else
-			ExternalPlay.drop(banker,changeBag,true);
+			ExternalPlay.drop(banker,changeBag,true,false);
 		return changeBag;
 	}
 

@@ -106,7 +106,8 @@ public class GenCoins extends GenItem implements Coins
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
 				unWear();
 				destroy();
-				affect.source().location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					affect.source().location().recoverRoomStats();
 			}
 			break;
 		default:

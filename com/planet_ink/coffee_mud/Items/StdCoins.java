@@ -115,7 +115,8 @@ public class StdCoins extends StdItem implements Coins
 				unWear();
 				destroy();
 				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
-				affect.source().location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					affect.source().location().recoverRoomStats();
 			}
 			break;
 		default:

@@ -49,7 +49,7 @@ public class Fighter_DeflectProjectile extends StdAbility
 			{
 				if(!w.amWearingAt(Item.INVENTORY))
 					ExternalPlay.remove(affect.source(),w,true);
-				ExternalPlay.drop(affect.source(),w,true);
+				ExternalPlay.drop(affect.source(),w,true,false);
 				if(!mob.location().isContent(w))
 					return true;
 			}

@@ -182,9 +182,9 @@ public class ExternalPlay
 		if(player!=null) return player.getMyDirCode(exit,room,testCode);
 		return 0;
 	}
-	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet)
+	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)
 	{
-		if(player!=null) return player.drop(mob,dropThis,quiet);
+		if(player!=null) return player.drop(mob,dropThis,quiet,optimize);
 		return false;
 	}
 	public static StringBuffer getHelpText(String helpStr)

@@ -104,7 +104,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						if((!affect.source().isMine(this))&&(affect.source().isMine(newitem)))
-							if(!ExternalPlay.drop(affect.source(),newitem,true))
+							if(!ExternalPlay.drop(affect.source(),newitem,true,true))
 								return false;
 						return true;
 					}
@@ -314,13 +314,15 @@ public class StdContainer extends StdItem implements Container
 				{
 					setContainer(null);
 					mob.giveItem(this);
-					mob.location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mob.location().recoverRoomStats();
 				}
 				else
 				{
 					setContainer(null);
 					unWear();
-					mob.location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mob.location().recoverRoomStats();
 				}
 				break;
 			case Affect.TYP_PUT:
@@ -329,7 +331,8 @@ public class StdContainer extends StdItem implements Container
 				{
 					Item newitem=(Item)affect.tool();
 					newitem.setContainer(this);
-					mob.location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mob.location().recoverRoomStats();
 				}
 				break;
 			case Affect.TYP_THROW:
@@ -339,9 +342,12 @@ public class StdContainer extends StdItem implements Container
 				{
 					setContainer(null);
 					recursiveDropMOB(mob,(Room)affect.tool(),this,this instanceof DeadBody);
-					mob.location().recoverRoomStats();
-					if(mob.location()!=affect.tool())
-						((Room)affect.tool()).recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					{
+						mob.location().recoverRoomStats();
+						if(mob.location()!=affect.tool())
+							((Room)affect.tool()).recoverRoomStats();
+					}
 				}
 				break;
 			case Affect.TYP_DROP:
@@ -349,7 +355,8 @@ public class StdContainer extends StdItem implements Container
 				{
 					setContainer(null);
 					recursiveDropMOB(mob,mob.location(),this,this instanceof DeadBody);
-					mob.location().recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+						mob.location().recoverRoomStats();
 				}
 				break;
 			case Affect.TYP_EXAMINESOMETHING:

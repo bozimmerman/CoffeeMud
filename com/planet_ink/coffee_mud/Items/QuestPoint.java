@@ -40,7 +40,8 @@ public class QuestPoint extends StdItem
 				if(!mob.isMine(this))
 					mob.setQuestPoint(mob.getQuestPoint()+1);
 				unWear();
-				mob.location().recoverRoomStats();
+				if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					mob.location().recoverRoomStats();
 				return;
 			}
 			default:

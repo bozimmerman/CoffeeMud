@@ -162,7 +162,7 @@ public class Skill_Juggle extends StdAbility
 				else
 				{
 					unJuggle(I);
-					ExternalPlay.drop(M,I,false);
+					ExternalPlay.drop(M,I,false,false);
 					break;
 				}
 			}
@@ -257,7 +257,7 @@ public class Skill_Juggle extends StdAbility
 							Item I=(Item)copy.elementAt(Dice.roll(1,copy.size(),-1));
 							I.unWear();
 							mob.giveItem(I);
-							if((mob.isMine(I))&&(ExternalPlay.drop(mob,I,true)))
+							if((mob.isMine(I))&&(ExternalPlay.drop(mob,I,true,false)))
 							{
 								Weapon w=(Weapon)CMClass.getWeapon("StdWeapon");
 								w.setName(I.name());

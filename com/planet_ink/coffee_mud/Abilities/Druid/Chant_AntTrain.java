@@ -39,7 +39,7 @@ public class Chant_AntTrain extends Chant
 				item.unWear();
 			}
 			if(wasntMine)
-				ExternalPlay.drop(mob,item,true);
+				ExternalPlay.drop(mob,item,true,false);
 			wasntMine=false;
 
 			item.recoverEnvStats();

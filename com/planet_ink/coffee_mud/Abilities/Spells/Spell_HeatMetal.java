@@ -64,7 +64,7 @@ public class Spell_HeatMetal extends Spell
 				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 				if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
 				{
-					ExternalPlay.drop(mob,item,false);
+					ExternalPlay.drop(mob,item,false,false);
 					if(!mob.isMine(item))
 					{
 						item.addAffect((Ability)this.copyOf());

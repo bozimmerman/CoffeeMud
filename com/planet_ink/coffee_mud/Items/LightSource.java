@@ -232,13 +232,16 @@ public class LightSource extends StdItem implements Light
 			case Affect.TYP_REMOVE:
 				if(affect.source()!=null)
 				{
-					affect.source().recoverEnvStats();
-					if(affect.source().location()!=null)
-						affect.source().location().recoverRoomStats();
-					if((affect.tool()!=null)
-					&&(affect.tool()!=affect.source().location())
-					&&(affect.tool() instanceof Room))
-						((Room)affect.tool()).recoverRoomStats();
+					if(!Util.bset(affect.targetCode(),Affect.MASK_OPTIMIZE))
+					{
+						affect.source().recoverEnvStats();
+						if(affect.source().location()!=null)
+							affect.source().location().recoverRoomStats();
+						if((affect.tool()!=null)
+						&&(affect.tool()!=affect.source().location())
+						&&(affect.tool() instanceof Room))
+							((Room)affect.tool()).recoverRoomStats();
+					}
 				}
 				break;
 			}
