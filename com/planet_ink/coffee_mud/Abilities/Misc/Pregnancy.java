@@ -139,7 +139,7 @@ public class Pregnancy extends StdAbility
 					ADJSTAT.setStat(i,(S1.getStat(i)+S3.getStat(i))/2);
 			}
 			else
-			if(i!=CharStats.GENDER)
+			if((i!=CharStats.GENDER)&&(i!=CharStats.AGE))
 				ADJSTAT.setStat(i,(S1.getStat(i)+S3.getStat(i))/2);
 		}
 		GR.setStat("ASTATS",CoffeeMaker.getCharStatsStr(ADJSTAT));

@@ -42,6 +42,7 @@ public interface CharStats extends Cloneable
 	public static final int SAVE_MAGIC=19;
 	public static final int SAVE_DISEASE=20;
 	public static final int SAVE_TRAPS=21;
+	public static final int NUM_SAVE_END=21;
 
 	public static final int MAX_STRENGTH_ADJ=22;
 	public static final int MAX_INTELLIGENCE_ADJ=23;
@@ -201,4 +202,5 @@ public interface CharStats extends Cloneable
 	public String HeShe();
 
 	public int ageCategory();
+	public String ageName();
 }

@@ -344,6 +344,30 @@ public class DefaultCharStats implements Cloneable, CharStats
 		bodyAlterations[racialPartNumber]=deviation;
 	}
 	
+	public int ageCategory()
+	{
+		int age=getStat(CharStats.AGE);
+		int cat=Race.AGE_INFANT;
+		int[] chart=getMyRace().getAgingChart();
+		if(age<=0) return cat;
+		while((cat<Race.AGE_ANCIENT)&&(age<chart[cat]))
+			cat++;
+		return cat;
+	}
+
+	public String ageName()
+	{
+		int cat=ageCategory();
+		if(cat<Race.AGE_ANCIENT) return Race.AGE_DESCS[cat];
+		int age=getStat(CharStats.AGE);
+		int[] chart=getMyRace().getAgingChart();
+		int diff=chart[Race.AGE_ANCIENT]-chart[Race.AGE_VENERABLE];
+		age=age-chart[Race.AGE_ANCIENT];
+		int num=(int)Math.abs(Math.floor(Util.div(age,diff)))-1;
+		if(num<=0) return Race.AGE_DESCS[cat];
+		return Race.AGE_DESCS[cat]+" "+Util.convertToRoman(num);
+	}
+	
 	public int getSave(int which)
 	{
 		switch(which)
