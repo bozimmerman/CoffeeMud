@@ -4370,6 +4370,8 @@ public class BaseGenerics extends StdCommand
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			if(me instanceof Container)
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
+			if(me instanceof Perfume)
+				((Perfume)me).setSmellList(genText(mob,((Perfume)me).getSmellList(),++showNumber,showFlag,"Smells list (; delimited)"));
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

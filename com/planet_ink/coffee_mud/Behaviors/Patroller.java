@@ -8,16 +8,23 @@ import java.util.*;
 public class Patroller extends ActiveTicker
 {
 	public String ID(){return "Patroller";}
-	protected int canImproveCode(){return Behavior.CAN_MOBS;}
+	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_ITEMS;}
 	public long flags(){return Behavior.FLAG_MOBILITY;}
 
 	private int step=0;
+	private boolean rideOk=false;
 
 	public Patroller()
 	{
 		super();
 		minTicks=5; maxTicks=10; chance=100;
+		rideOk=false;
 		tickReset();
+	}
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		rideOk=Util.getParmStr(newParms,"rideok","false").equalsIgnoreCase("true");
 	}
 
 
@@ -57,23 +64,16 @@ public class Patroller extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
+		if(canAct(ticking,tickID))
 		{
-			// ridden things dont wander!
-			MOB mob=(MOB)ticking;
-			if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
-			||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
-				return true;
-
-			Room thisRoom=mob.location();
+			Room thisRoom=null;
+			if(ticking instanceof MOB) thisRoom=((MOB)ticking).location();
+			else
+			if((ticking instanceof Item)&&(((Item)ticking).owner() instanceof Room)&&(!((Item)ticking).amDestroyed()))
+				thisRoom=(Room)((Item)ticking).owner();
+			if(thisRoom==null) return true;
+			
 			Room thatRoom=null;
-			if(thisRoom instanceof GridLocale)
-			{
-				Vector V=((GridLocale)thisRoom).getAllRooms();
-				Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
-				if(R!=null) R.bringMobHere(mob,true);
-				thisRoom=mob.location();
-			}
 			Vector steps=getSteps();
 			if(steps.size()==0) return true;
 			if((step<0)||(step>=steps.size())) step=0;
@@ -110,18 +110,57 @@ public class Patroller extends ActiveTicker
 				return true;
 			Exit E=thisRoom.getExitInDir(direction);
 			if(E==null) return true;
-
-			boolean move=true;
+			
 			for(int m=0;m<thisRoom.numInhabitants();m++)
 			{
 				MOB inhab=thisRoom.fetchInhabitant(m);
 				if((inhab!=null)
 				&&(CMSecurity.isAllowed(inhab,thisRoom,"CMDMOBS")
 				   ||CMSecurity.isAllowed(inhab,thisRoom,"CMDROOMS")))
-					move=false;
+					return false;
 			}
-			if(move)
+			if(!rideOk)
 			{
+				if(((ticking instanceof Rideable)&&(((Rideable)ticking).numRiders()>0))
+				||((ticking instanceof MOB)&&(((MOB)ticking).amFollowing()!=null)&&(((MOB)ticking).location()==((MOB)ticking).amFollowing().location())))
+					return true;
+			}
+			
+			if(ticking instanceof Item)
+			{
+				Item I=(Item)ticking;
+				if(thisRoom instanceof GridLocale)
+				{
+					Vector V=((GridLocale)thisRoom).getAllRooms();
+					Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
+					if(R!=null) R.bringItemHere(I,0);
+					thisRoom=R;
+				}
+				
+				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
+				
+				if(I.owner()==thatRoom)
+				{
+					step++;
+					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");
+				}
+				else
+				if(I.owner()==thisRoom)
+					tickDown=0;
+			}
+			else
+			if(ticking instanceof MOB)
+			{
+				// ridden things dont wander!
+				MOB mob=(MOB)ticking;
+				if(thisRoom instanceof GridLocale)
+				{
+					Vector V=((GridLocale)thisRoom).getAllRooms();
+					Room R=(Room)(V.elementAt(Dice.roll(1,V.size(),-1)));
+					if(R!=null) R.bringMobHere(mob,true);
+					thisRoom=mob.location();
+				}
+
 				// handle doors!
 				if(E.hasADoor()&&(!E.isOpen()))
 				{

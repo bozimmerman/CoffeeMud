@@ -57,6 +57,7 @@ public interface DatabaseEngine
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String liegeID);
+	public Vector DBReadAllPlayerData(String playerID);
 	public Vector DBReadData(String playerID, String section);
 	public int DBCountData(String playerID, String section);
 	public Vector DBReadData(String playerID, String section, String key);

@@ -8,9 +8,10 @@ import java.util.*;
 public class Emoter extends ActiveTicker
 {
 	public String ID(){return "Emoter";}
+	private int expires=0;
 	public Emoter()
 	{
-		minTicks=10;maxTicks=30;chance=50;
+		minTicks=10;maxTicks=30;chance=50;expires=0;
 		tickReset();
 	}
 
@@ -18,6 +19,7 @@ public class Emoter extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
+		expires=Util.getParmInt(parms,"expires",expires);
 		emotes=null;
 	}
 
@@ -159,6 +161,12 @@ public class Emoter extends ActiveTicker
 		&&(emotes.size()>0)
 		&&(!CMSecurity.isDisabled("EMOTERS")))
 		{
+			if((expires>0)&&((--expires)==0))
+			{
+				if(ticking instanceof Environmental)
+					((Environmental)ticking).delBehavior(this);
+				return false;
+			}
 			Vector emote=(Vector)emotes.elementAt(Dice.roll(1,emotes.size(),-1));
 			MOB emoter=null;
 			if(ticking instanceof Area)

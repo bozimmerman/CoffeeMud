@@ -376,6 +376,9 @@ public class CoffeeMaker
 		if(E instanceof LandTitle)
 			text.append(XMLManager.convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
 
+		if(E instanceof Perfume)
+			text.append(XMLManager.convertXMLtoTag("SMELLLST",((Perfume)E).getSmellList()));
+		
 		if(E instanceof DeadBody)
 		{
 			if(((DeadBody)E).charStats()!=null)
@@ -1655,6 +1658,9 @@ public class CoffeeMaker
 		if(E instanceof LandTitle)
 			((LandTitle)E).setLandPropertyID(XMLManager.getValFromPieces(buf,"LANDID"));
 
+		if(E instanceof Perfume)
+			((Perfume)E).setSmellList(XMLManager.getValFromPieces(buf,"SMELLLST"));
+		
 		if(E instanceof Food)
 			((Food)E).setNourishment(XMLManager.getIntFromPieces(buf,"CAPA2"));
 		

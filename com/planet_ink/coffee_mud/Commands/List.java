@@ -902,6 +902,7 @@ public class List extends StdCommand
 		/*38*/{"THREADS","LISTADMIN"},
 		/*39*/{"RESOURCES","LOADUNLOAD"},
 		/*40*/{"ONEWAYDOORS","CMDEXITS","CMDROOMS","CMDAREAS"},
+		/*41*/{"CHANTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 	};
 	
 	public void archonlist(MOB mob, Vector commands)
@@ -999,6 +1000,7 @@ public class List extends StdCommand
 		case 38: s.println(listThreads(mob).toString()); break;
 		case 39: s.rawPrintln(CMLister.reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString()); break;
 		case 40: s.rawPrintln(reallyFindOneWays(mob,commands)); break;
+		case 41: s.rawPrintln(CMLister.reallyList(CMClass.abilities(),Ability.CHANT).toString()); break;
 		default:
 			s.println("List?!");
 			break;

@@ -64,6 +64,24 @@ public class Sinking extends StdAbility
 		return false;
 	}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost,msg))
+			return false;
+		if((affected!=null)&&(affected instanceof MOB)&&(msg.amISource((MOB)affected)))
+		{
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target() instanceof Room)
+			&&((((Room)msg.target()).domainType()==Room.DOMAIN_INDOORS_AIR)
+			   ||(((Room)msg.target()).domainType()==Room.DOMAIN_OUTDOORS_AIR))
+			&&(!Sense.isFlying(msg.source())))
+			{
+				msg.source().tell("You can't seem to get there from here.");
+				return false;
+			}
+		}
+		return true;
+	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -97,6 +97,7 @@ public interface Room extends Environmental
 	public void send(MOB source, CMMsg msg);
 	public void sendOthers(MOB source, CMMsg msg);
 	public void showHappens(int allCode, String allMessage);
+	public void showHappens(int allCode, Environmental like, String allMessage);
 	public boolean show(MOB source,
 						Environmental target,
 						int allCode,

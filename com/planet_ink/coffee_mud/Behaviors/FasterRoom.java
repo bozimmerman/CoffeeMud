@@ -40,7 +40,7 @@ public class FasterRoom extends StdBehavior
 		}
 		return defaultValue;
 	}
-	public void doBe(Room room, int burst, int health)
+	public void doBe(Room room, int burst, int health, int hits, int mana, int move)
 	{
 		if(room==null) return;
 		for(int i=0;i<room.numInhabitants();i++)
@@ -52,6 +52,33 @@ public class FasterRoom extends StdBehavior
 					M.tick(M,MudHost.TICK_MOB);
 				for(int i2=0;i2<health;i2++)
 					M.curState().recoverTick(M,M.maxState());
+				if(hits!=0)
+				{
+					int oldMana=M.curState().getMana();
+					int oldMove=M.curState().getMovement();
+					for(int i2=0;i2<mana;i2++)
+						M.curState().recoverTick(M,M.maxState());
+					M.curState().setMana(oldMana);
+					M.curState().setMovement(oldMove);
+				}
+				if(mana!=0)
+				{
+					int oldHP=M.curState().getHitPoints();
+					int oldMove=M.curState().getMovement();
+					for(int i2=0;i2<mana;i2++)
+						M.curState().recoverTick(M,M.maxState());
+					M.curState().setHitPoints(oldHP);
+					M.curState().setMovement(oldMove);
+				}
+				if(move!=0)
+				{
+					int oldMana=M.curState().getMana();
+					int oldHP=M.curState().getHitPoints();
+					for(int i2=0;i2<mana;i2++)
+						M.curState().recoverTick(M,M.maxState());
+					M.curState().setMana(oldMana);
+					M.curState().setHitPoints(oldHP);
+				}
 			}
 		}
 	}
@@ -61,15 +88,18 @@ public class FasterRoom extends StdBehavior
 		{
 			int burst=getVal(getParms(),"BURST",0)-1;
 			int health=getVal(getParms(),"HEALTH",0)-1;
+			int hits=getVal(getParms(),"HITS",0)-1;
+			int mana=getVal(getParms(),"MANA",0)-1;
+			int move=getVal(getParms(),"MOVE",0)-1;
 			if(ticking instanceof Room)
-				doBe((Room)ticking,burst,health);
+				doBe((Room)ticking,burst,health,hits,mana,move);
 			else
 			if(ticking instanceof Area)
 			{
 				for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					doBe(R,burst,health);
+					doBe(R,burst,health,hits,mana,move);
 				}
 			}
 		}

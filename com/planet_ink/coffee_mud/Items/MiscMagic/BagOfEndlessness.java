@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.MiscMagic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import java.util.Vector;
 import com.planet_ink.coffee_mud.Items.SmallSack;
 
 public class BagOfEndlessness extends BagOfHolding
@@ -23,8 +24,6 @@ public class BagOfEndlessness extends BagOfHolding
 		recoverEnvStats();
 	}
 
-
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this)
@@ -36,16 +35,32 @@ public class BagOfEndlessness extends BagOfHolding
 			&&(newitem.owner() !=null))
 			{
 				Item neweritem=(Item)newitem.copyOf();
-				neweritem.setContainer(this);
-				if(newitem.owner() instanceof MOB)
-					((MOB)newitem.owner()).addInventory(neweritem);
-				else
-				if(newitem.owner() instanceof Room)
+				Vector allStuff=new Vector();
+				allStuff.addElement(neweritem);
+				if(newitem instanceof Container)
 				{
-					((Room)newitem.owner()).addItem(neweritem);
-					neweritem.setDispossessionTime(dispossessionTime());
+					Vector V=((Container)newitem).getContents();
+					for(int v=0;v<V.size();v++)
+					{
+						Item I=(Item)((Item)V.elementAt(v)).copyOf();
+						I.setContainer(neweritem);
+						allStuff.addElement(I);
+					}
 				}
-				neweritem.recoverEnvStats();
+				neweritem.setContainer(this);
+				for(int i=0;i<allStuff.size();i++)
+				{
+					neweritem=(Item)allStuff.elementAt(i);
+					if(newitem.owner() instanceof MOB)
+						((MOB)newitem.owner()).addInventory(neweritem);
+					else
+					if(newitem.owner() instanceof Room)
+					{
+						((Room)newitem.owner()).addItem(neweritem);
+						neweritem.setDispossessionTime(dispossessionTime());
+					}
+					neweritem.recoverEnvStats();
+				}
 			}
 		}
 		super.executeMsg(myHost,msg);

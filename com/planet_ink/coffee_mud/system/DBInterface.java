@@ -131,6 +131,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBCreateCharacter(MOB mob)
 	{MOBloader.DBCreateCharacter(mob);}
 
+	public Vector DBReadAllPlayerData(String playerID)
+	{ return DataLoader.DBReadAllPlayerData(playerID);}
+	
 	public Vector DBReadData(String playerID, String section)
 	{ return DataLoader.DBRead(playerID,section);}
 	

@@ -621,10 +621,40 @@ public class Cooking extends CraftingSkill
 			if(burnt)drink.setThirstQuenched(1);
 		}
 		else
+		if(CMClass.getItem(foodType)!=null)
+		{
+			finalDish=CMClass.getItem(foodType);
+			finalDish.setName(((burnt)?"ruined ":"")+finalDishName);
+			finalDish.setDisplayText("some "+((burnt)?"ruined ":"")+finalDishName+" has been left here");
+			finalDish.setSecretIdentity("This was prepared by "+mob.Name()+".");
+			if(finalDish instanceof Drink)
+			{
+				Drink drink=(Drink)finalDish;
+				int rem=drink.liquidHeld();
+				drink.setLiquidRemaining(0);
+				for(int v=0;v<contents.size();v++)
+				{
+					Item I=(Item)contents.elementAt(v);
+					drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
+					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
+				}
+				if((drink.liquidRemaining()>0)&&(!burnt))
+					drink.setLiquidHeld(drink.liquidRemaining());
+				else
+				{
+					drink.setLiquidHeld(1);
+					drink.setLiquidRemaining(1);
+					drink.setThirstQuenched(1);
+				}
+				finalDish.setMaterial(drink.liquidType());
+			}
+			finalDish.baseEnvStats().setWeight(finalDish.baseEnvStats().weight()/finalAmount);
+		}
+		else
 		{
 			finalDish=CMClass.getItem("GenResource");
 			if(burnt)
-					finalDish.setMaterial(EnvResource.RESOURCE_DUST);
+				finalDish.setMaterial(EnvResource.RESOURCE_DUST);
 			else
 			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 				if(EnvResource.RESOURCE_DESCS[i].equalsIgnoreCase(foodType))
@@ -643,22 +673,27 @@ public class Cooking extends CraftingSkill
 			String spell=(String)finalRecipe.elementAt(RCP_BONUSSPELL);
 			if((spell!=null)&&(spell.length()>0))
 			{
-				String parms="";
-				int x=spell.indexOf("(");
-				if(x>=0)
+				if(finalDish instanceof Perfume)
+					((Perfume)finalDish).setSmellList(spell);
+				else
 				{
-					int y=spell.indexOf(")");
-					if(y>x)
+					String parms="";
+					int x=spell.indexOf("(");
+					if(x>=0)
 					{
-						parms=spell.substring(x+1,y);
-						spell=spell.substring(0,x);
+						int y=spell.indexOf(")");
+						if(y>x)
+						{
+							parms=spell.substring(x+1,y);
+							spell=spell.substring(0,x);
+						}
 					}
-				}
-				Ability A=CMClass.getAbility(spell);
-				if(A!=null)
-				{
-					finalDish.addNonUninvokableEffect(A);
-					A.setMiscText(parms);
+					Ability A=CMClass.getAbility(spell);
+					if(A!=null)
+					{
+						finalDish.addNonUninvokableEffect(A);
+						A.setMiscText(parms);
+					}
 				}
 			}
 			finalDish.recoverEnvStats();

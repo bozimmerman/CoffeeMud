@@ -90,6 +90,36 @@ public class StdRideable extends StdMOB implements Rideable
 		if(rideBasis==Rideable.RIDEABLE_WATER)
 			envStats().setDisposition(envStats().disposition()|EnvStats.IS_SWIMMING);
 	}
+	public void affectCharStats(Environmental affected, CharStats affectableStats)
+	{
+		if(affected instanceof MOB)
+		{
+			MOB mob=(MOB)affected;
+			super.affectCharStats(mob,affectableStats);
+			if(amRiding(mob))
+				for(int a=0;a<numEffects();a++)
+				{
+					Ability A=fetchEffect(a);
+					if((A!=null)&&(A.bubbleAffect()))
+					   A.affectCharStats(mob,affectableStats);
+				}
+		}
+	}
+	public void affectCharState(Environmental affected, CharState affectableStats)
+	{
+		if(affected instanceof MOB)
+		{
+			MOB mob=(MOB)affected;
+			super.affectCharState(mob,affectableStats);
+			if(amRiding(mob))
+				for(int a=0;a<numEffects();a++)
+				{
+					Ability A=fetchEffect(a);
+					if((A!=null)&&(A.bubbleAffect()))
+					   A.affectCharState(mob,affectableStats);
+				}
+		}
+	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -98,10 +128,19 @@ public class StdRideable extends StdMOB implements Rideable
 			MOB mob=(MOB)affected;
 			if(!Sense.hasSeenContents(this))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
-			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(amRiding(mob)))
+			if(amRiding(mob))
 			{
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
-				affectableStats.setDamage(affectableStats.damage()-mob.baseEnvStats().damage());
+				if((mob.isInCombat())&&(mob.rangeToTarget()==0))
+				{
+					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
+					affectableStats.setDamage(affectableStats.damage()-mob.baseEnvStats().damage());
+				}
+				for(int a=0;a<numEffects();a++)
+				{
+					Ability A=fetchEffect(a);
+					if((A!=null)&&(A.bubbleAffect()))
+					   A.affectEnvStats(affected,affectableStats);
+				}
 			}
 		}
 	}

@@ -1013,6 +1013,16 @@ public class StdRoom
 		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		send(everywhereMOB,msg);
 	}
+	public void showHappens(int allCode, Environmental like, String allMessage)
+	{
+		MOB everywhereMOB=CMClass.getMOB("StdMOB");
+		everywhereMOB.setName(like.name());
+		everywhereMOB.setBaseEnvStats(like.envStats());
+		everywhereMOB.setLocation(this);
+		everywhereMOB.recoverEnvStats();
+		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
+		send(everywhereMOB,msg);
+	}
 	public boolean show(MOB source,
 					 Environmental target,
 					 int allCode,

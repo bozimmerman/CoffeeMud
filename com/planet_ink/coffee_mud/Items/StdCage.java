@@ -35,7 +35,8 @@ public class StdCage extends StdContainer
 					buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
 				else
 					buf.append(description()+"\n\r");
-				buf.append(name()+" contains:\n\r");
+				if((isOpen)&&((capacity>0)||(getContents().size()>0)))
+					buf.append(name()+" contains:\n\r");
 				Vector newItems=new Vector();
 
 				if(mob.isMine(this))

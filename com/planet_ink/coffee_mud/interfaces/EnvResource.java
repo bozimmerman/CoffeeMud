@@ -203,6 +203,7 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_SOAP=MATERIAL_VEGETATION|157;
 	public final static int RESOURCE_SPIDERSTEEL=MATERIAL_CLOTH|158;
 	public final static int RESOURCE_ASH=MATERIAL_VEGETATION|159;
+	public final static int RESOURCE_PERFUME=MATERIAL_LIQUID|160;
 	
 	public final static int RESOURCE_MASK=255;	
 
@@ -368,6 +369,7 @@ public interface EnvResource extends Item
 	"SOAP", // 157
 	"SPIDERSTEEL", // 158
 	"ASH", // 159
+	"PERFUME", // 160
 	};
 	
 	public final static int DATA_CODE=0;
@@ -539,6 +541,7 @@ public interface EnvResource extends Item
 	{RESOURCE_SOAP,			1,	0,	1,	430}, 
 	{RESOURCE_SPIDERSTEEL,	250,0,	2,	630}, 
 	{RESOURCE_ASH,			1,	0,	0,	50}, 
+	{RESOURCE_PERFUME,		1,	1,	1,	1000},
 	};
 	
 	
