@@ -119,14 +119,14 @@ public class Thief extends StdCharClass
 							break;
 						default:
 							if((Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-							&&(I.rawProperLocationBitmap()!=Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER)
+							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER))
 							&&(I.rawProperLocationBitmap()!=Item.ON_EARS)
-							&&(I.rawProperLocationBitmap()!=Item.ON_EARS|Item.HELD)
+							&&(I.rawProperLocationBitmap()!=(Item.ON_EARS|Item.HELD))
 							&&(I.rawProperLocationBitmap()!=Item.ON_EYES)
-							&&(I.rawProperLocationBitmap()!=Item.ON_EYES|Item.HELD)
+							&&(I.rawProperLocationBitmap()!=(Item.ON_EYES|Item.HELD))
 							&&(I.rawProperLocationBitmap()!=Item.ON_NECK)
-							&&(I.rawProperLocationBitmap()!=Item.ON_NECK|Item.HELD)
-							&&(I.rawProperLocationBitmap()!=Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD))
+							&&(I.rawProperLocationBitmap()!=(Item.ON_NECK|Item.HELD))
+							&&(I.rawProperLocationBitmap()!=(Item.ON_RIGHT_FINGER|Item.ON_LEFT_FINGER|Item.HELD)))
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) in <S-HIS-HER> maneuver!");
 								return false;
