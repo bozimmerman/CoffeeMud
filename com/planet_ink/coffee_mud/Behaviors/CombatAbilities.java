@@ -159,12 +159,11 @@ public class CombatAbilities extends StdBehavior
 				||(A.quality()==Ability.BENEFICIAL_SELF)
 				||(A.quality()==Ability.BENEFICIAL_OTHERS)))
 				{
-					MOB victim=mob.getVictim();
 					if(A.quality()==Ability.MALICIOUS)
 						victim=mob;
 					Vector V=new Vector();
 					V.addElement("say");
-					V.addElement(mob.getVictim().name());
+					V.addElement(victim.name());
 					V.addElement(((Wand)myWand).magicWord());
 					try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
 				}

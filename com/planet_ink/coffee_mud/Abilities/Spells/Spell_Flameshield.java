@@ -45,7 +45,7 @@ public class Spell_Flameshield extends Spell
 		super.affect(affect);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=affected;
+		MOB mob=(MOB)affected;
 		if(affect.target()==null) return;
 		if(affect.source()==null) return;
 		MOB source=affect.source();
