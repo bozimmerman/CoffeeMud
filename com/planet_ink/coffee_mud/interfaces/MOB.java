@@ -20,7 +20,7 @@ public interface MOB
 	public static final int ATT_PLAYERKILL=128;
 	public static final int ATT_BRIEF=256;
 	public static final int ATT_NOFOLLOW=512;
-	public static final int ATT_AUTOWEATHER=1028;
+	public static final int ATT_AUTOWEATHER=1024;
 	
 	/** When the USER last logged on */
 	public Calendar lastDateTime();
