@@ -121,24 +121,27 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		Vector V=getDepositInventory(mob);
 		boolean money=thisThang instanceof Coins;
+		boolean found=false;
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			Vector V2=(Vector)V.elementAt(v);
 			if(money&&((String)V2.elementAt(DATA_DATA)).startsWith("COINS;"))
 			{
 				CMClass.DBEngine().DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
-				return true;
+				found=true;
 			}
-
-			Item I=makeItem((String)V2.elementAt(DATA_DATA));
-			if(I==null) continue;
-			if(thisThang.sameAs(I))
+			if(!money)
 			{
-				CMClass.DBEngine().DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
-				return true;
+				Item I=makeItem((String)V2.elementAt(DATA_DATA));
+				if(I==null) continue;
+				if(thisThang.sameAs(I))
+				{
+					CMClass.DBEngine().DBDeleteData(((String)V2.elementAt(DATA_USERID)),((String)V2.elementAt(DATA_BANK)),((String)V2.elementAt(DATA_KEY)));
+					return true;
+				}
 			}
 		}
-		return false;
+		return found;
 	};
 	public void delAllDeposits(String mob)
 	{
