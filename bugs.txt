@@ -1,3 +1,9 @@
+webmacro SHUTDOWN Allow an Admin to Shutdown the server without having to be logged  into the game.
+webmacro SHUTDOWN RESTART Same reason as above, if somethings wrong with the game but your not  on the host pc and you believe the problem could be fixed by a quick  reboot this will be handy without having to log into the game (maybe  the game isnt accepting connections, i.e. you wouldnt be able to log  in anyway)
+webmacro ANNOUNCE Make announcements without having to log into the game, makes it  easier then having to log in and dealing with player pages etc. if  you just need to make a quick announcement.
+webmacro DUMPFILE To view some text file on your computer through the MUD without  having to log on or ebing on the host PC.
+webmacro LIST Maybe a system for the command LIST, wouldnt be as easy implemented  as some of the above (SHUTDOWN for example could just be a button on  a .cmvp page)
+
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
 racial affects

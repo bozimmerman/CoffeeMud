@@ -29,10 +29,7 @@ public class Spell_DemonGate extends Spell
 					myTarget=mob.getVictim();
 				else
 				if(myTarget!=mob.getVictim())
-				{
-					if(((MOB)affected).amDead()) ((MOB)affected).setLocation(null);
-					((MOB)affected).destroy();
-				}
+                    unInvoke();
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -54,6 +51,10 @@ public class Spell_DemonGate extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
+            if(mob.amFollowing()!=null)
+                mob.location().showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,"^F<S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.");
+            else
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> disappears back into it's home plane.");
 			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
 		}
@@ -85,7 +86,10 @@ public class Spell_DemonGate extends Spell
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
 				if(Dice.rollPercentage()<10)
-					myMonster.setVictim(mob);
+                { 
+					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F<S-NAME> wrests itself from out of <T-YOUPOSS> control!^?");
+                    myMonster.setVictim(mob);
+                }
 				else
 				{
 					myMonster.setVictim(mob.getVictim());
@@ -136,7 +140,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		newMOB.setMoney(0);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+        newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> tears through the fabric of reality and steps into this world!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);
