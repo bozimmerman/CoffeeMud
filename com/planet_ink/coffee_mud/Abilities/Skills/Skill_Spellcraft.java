@@ -19,6 +19,7 @@ public class Skill_Spellcraft extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){return Ability.SKILL;}
 	public String lastID="";
+	public int craftType(){return Ability.SPELL;}
 	
 	public void affect(Environmental myHost, Affect msg)
 	{
@@ -30,7 +31,7 @@ public class Skill_Spellcraft extends StdAbility
 		&&(!msg.amISource(mob))
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==craftType())
 		&&(!lastID.equalsIgnoreCase(msg.tool().ID()))
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))
