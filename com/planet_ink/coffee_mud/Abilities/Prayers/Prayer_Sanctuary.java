@@ -15,6 +15,7 @@ public class Prayer_Sanctuary extends Prayer
 		displayText="(Sanctuary)";
 
 		quality=Ability.BENEFICIAL_OTHERS;
+		holyQuality=Prayer.HOLY_GOOD;
 
 		baseEnvStats().setLevel(13);
 

@@ -57,6 +57,7 @@ public class Prayer_ProtectHealth extends Prayer
 			if((affect.tool()!=null)
 			   &&(Dice.rollPercentage()>50)
 			   &&((affect.tool().ID().equals("Prayer_Plague"))
+				||(affect.targetMinor()==Affect.TYP_DISEASE)
 				||(affect.tool().name().toUpperCase().indexOf("DISEASE")>=0)
 				||(affect.tool().name().toUpperCase().indexOf("PLAGUE")>=0)
 				||(affect.tool().name().toUpperCase().indexOf("VIRUS")>=0)))

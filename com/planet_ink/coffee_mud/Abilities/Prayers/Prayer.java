@@ -50,7 +50,10 @@ public class Prayer extends StdAbility
 
 	public boolean appropriateToMyAlignment(MOB mob)
 	{
-		if(holyQuality==Prayer.HOLY_NEUTRAL) return true;
+		if((holyQuality==Prayer.HOLY_NEUTRAL)
+		   &&((mob.getAlignment()>650)||(mob.getAlignment()<350)))
+			return false;
+		else
 		if((holyQuality==Prayer.HOLY_EVIL)&&(mob.getAlignment()>650))
 			return false;
 		else
@@ -88,6 +91,15 @@ public class Prayer extends StdAbility
 			else
 			if(holyQuality==Prayer.HOLY_GOOD)
 				mob.setAlignment(mob.getAlignment()+(envStats().level()*10));
+			else
+			if(holyQuality==Prayer.HOLY_NEUTRAL)
+			{
+				if(mob.getAlignment()<500)
+					mob.setAlignment(mob.getAlignment()+(envStats().level()*5));
+				else
+				if(mob.getAlignment()>500)
+					mob.setAlignment(mob.getAlignment()-(envStats().level()*5));
+			}
 			if(mob.getAlignment()>1000)
 				mob.setAlignment(1000);
 			if(mob.getAlignment()<0)
@@ -95,12 +107,24 @@ public class Prayer extends StdAbility
 		}
 		if((appropriateToMyAlignment(mob))||(auto))
 			return true;
+		
+		if((holyQuality()==Prayer.HOLY_NEUTRAL)&&(Dice.rollPercentage()<50))
+			return true;
+		else
 		if(Dice.rollPercentage()<25)
 			return true;
 		if(this.holyQuality()==Prayer.HOLY_EVIL)
 			mob.tell("The evil nature of "+name()+" disrupts your prayer.");
 		else
+		if(holyQuality()==Prayer.HOLY_GOOD)
 			mob.tell("The goodness of "+name()+" disrupts your prayer.");
+		else
+		if(mob.getAlignment()>650)
+			mob.tell("The non-good nature of "+name()+" disrupts your thought.");
+		else
+		if(mob.getAlignment()<350)
+			mob.tell("The anti-evil nature of "+name()+" disrupts your thought.");
+					 
 		return false;
 	}
 }
