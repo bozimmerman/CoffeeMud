@@ -7,8 +7,16 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class RoomLoader
 {
-	public static void DBRead(Vector areas, Vector h)
+	public static void updateBootStatus(Host myHost, double pct)
 	{
+		myHost.setGameStatusStr("Booting: loading rooms ("+((int)Math.round(pct*100.0))+"% completed)");
+	}
+	
+	public static void DBRead(Host myHost, Vector areas, Vector h)
+	{
+		double pct=0.0;
+		updateBootStatus(myHost,pct);
+		
 		DBConnection D=null;
 		try
 		{
@@ -82,6 +90,9 @@ public class RoomLoader
 			return;
 		}
 		
+		pct+=(0.006);
+		updateBootStatus(myHost,pct);
+		
 		// handle stray areas
 		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
 		{
@@ -137,19 +148,30 @@ public class RoomLoader
 			Log.errOut("Room",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		
+		pct+=(0.05);
+		updateBootStatus(myHost,pct);
+		
+		double pcteach=Util.div(0.941516,h.size());
 		for(int m=0;m<h.size();m++)
 		{
 			Room thisRoom=(Room)h.elementAt(m);
 			DBReadContent(thisRoom);
 			thisRoom.startItemRejuv();
 			thisRoom.recoverRoomStats();
+			pct+=pcteach;
+			updateBootStatus(myHost,pct);
 		}
+		
 		for(int a=0;a<areas.size();a++)
 		{
 			Area A=(Area)areas.elementAt(a);
 			StringBuffer s=A.getAreaStats();
 			Resources.submitResource("HELP_"+A.name().toUpperCase(),s);
 		}
+		
+		pct=1.0;
+		updateBootStatus(myHost,pct);
 	}
 
 	public static void DBReadContent(Room thisRoom)
@@ -158,12 +180,16 @@ public class RoomLoader
 		if(thisRoom==null)
 			return;
 
+		Hashtable itemTimes=new Hashtable();
+		Hashtable mobTimes=new Hashtable();
+		
 		DBConnection D=null;
 		// now grab the items
 		try
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMROIT WHERE CMROID='"+thisRoom.ID()+"'");
+			
 			Hashtable itemNums=new Hashtable();
 			Hashtable itemLocs=new Hashtable();
 			while(R.next())

@@ -222,6 +222,7 @@ public class MUD extends Thread implements Host
 		CommandProcessor commandProcessor=new CommandProcessor();
 		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems(), new IMudClient());
 
+		offlineReason=new String("Booting: loading base classes");
 		if(!CMClass.loadClasses(page))
 		{
 			fatalStartupError(0);
@@ -232,6 +233,7 @@ public class MUD extends Thread implements Host
 		commandProcessor.myHost=this;
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
+		offlineReason=new String("Booting: loading socials");
 		commandProcessor.socials.load("resources"+File.separatorChar+"socials.txt");
 		if(!commandProcessor.socials.loaded)
 			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
@@ -239,8 +241,8 @@ public class MUD extends Thread implements Host
 			Log.sysOut("MUD","Socials loaded    : "+commandProcessor.socials.num());
 
 		Log.sysOut("MUD","Loading map...");
-		offlineReason=new String("Booting: loading rooms (this can take a while).");
-		RoomLoader.DBRead(CMMap.getAreaVector(),CMMap.getRoomVector());
+		offlineReason=new String("Booting: loading rooms (0% completed).");
+		RoomLoader.DBRead(this, CMMap.getAreaVector(),CMMap.getRoomVector());
 		offlineReason=new String("Booting: filling map.");
 		for(int a=0;a<CMMap.numAreas();a++)
 			CMMap.getArea(a).fillInAreaRooms();
@@ -577,6 +579,11 @@ public class MUD extends Thread implements Host
 			return offlineReason;
 	}
 
+	public void setGameStatusStr(String str)
+	{
+		offlineReason=str;
+	}
+	
 	public void speedTime()
 	{
 		if(saveThread!=null)
