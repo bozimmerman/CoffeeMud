@@ -390,18 +390,24 @@ public class Clans implements Clan, Tickable
 			Vector V;
 			int activeMembers=0;
 			ExternalPlay.DBClanFill(C.getName(),members,new Vector(),lastDates);
+			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_DAY*Host.TICK_TIME;
 			for(int j=0;j<members.size();j++)
 			{
-				if(System.currentTimeMillis()-(((Long)lastDates.elementAt(j)).longValue())<(CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_DAY*Host.TICK_TIME))
+				long lastLogin=((Long)lastDates.elementAt(j)).longValue();
+				if((System.currentTimeMillis()-lastLogin)<deathMilis)
 					activeMembers++;
 			}
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
 			{
 				if(C.getStatus()==Clan.CLANSTATUS_FADING)
+				{
+					Log.sysOut("Clans","Clan '"+C.getName()+" deleted with only "+activeMembers+" having logged on lately.");
 					destroyClan(C);
+				}
 				else
 				{
 					C.setStatus(Clan.CLANSTATUS_FADING);
+					Log.sysOut("Clans","Clan '"+C.getName()+" fading with only "+activeMembers+" having logged on lately.");
 					clanAnnounce("Clan "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
 				}
 			}
@@ -414,6 +420,7 @@ public class Clans implements Clan, Tickable
 				break;
 			case Clan.CLANSTATUS_PENDING:
 				C.setStatus(Clan.CLANSTATUS_ACTIVE);
+				Log.sysOut("Clans","Clan '"+C.getName()+" now active with "+activeMembers+".");
 				clanAnnounce("Clan "+name()+" now has sufficient members.  The Clan is now fully approved.");
 				break;
 			default:

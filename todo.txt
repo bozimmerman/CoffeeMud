@@ -53,6 +53,9 @@ readables that can load text from a text file
 ability to have random formulaic weapons, armor.
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
 Allergies - nuff said
+missing resources: wax, flowers, ebony, ivory, nuts, bread, wafer/cracker, yew
+
+
 
 From Aereon:
 masonry tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.

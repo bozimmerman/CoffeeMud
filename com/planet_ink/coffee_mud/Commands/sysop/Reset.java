@@ -24,6 +24,63 @@ public class Reset
 		return AreaID+"#"+highest;
 	}
 
+	public static int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
+		throws java.io.IOException
+	{
+		Integer IT=(Integer)rememberI.get(I.Name());
+		if(IT!=null)
+		{
+			if(IT.intValue()==I.material())
+			{
+				mob.tell(lead+I.Name()+" still "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+				return 0;
+			}
+			I.setMaterial(IT.intValue());
+			mob.tell(lead+I.Name()+" Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+			return 1;
+		}
+		while(true)
+		{
+			String str=mob.session().prompt(lead+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+			if(str.equalsIgnoreCase("delete"))
+				return -1;
+			else
+			if(str.length()==0)
+			{
+				rememberI.put(I.Name(),new Integer(I.material()));
+				return 0;
+			}
+			if(str.equals("?"))
+				mob.tell(I.Name()+"/"+I.displayText()+"/"+I.description());
+			else
+			{
+				String poss="";
+				for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
+				{
+					if(EnvResource.RESOURCE_DESCS[ii].startsWith(str.toUpperCase()))
+					   poss=EnvResource.RESOURCE_DESCS[ii];
+					if(str.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[ii]))
+					{
+						I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
+						mob.tell(lead+"Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
+						rememberI.put(I.Name(),new Integer(I.material()));
+						return 1;
+					}
+				}
+				if(poss.length()==0)
+				{
+					for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
+					{
+						if(EnvResource.RESOURCE_DESCS[ii].indexOf(str.toUpperCase())>=0)
+						   poss=EnvResource.RESOURCE_DESCS[ii];
+					}
+				}
+				mob.tell(lead+"'"+str+"' does not exist.  Try '"+poss+"'.");
+			}
+		}
+	}
+	
+	
 	public static void resetSomething(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
@@ -178,6 +235,8 @@ public class Reset
 			Area A=mob.location().getArea();
 			resetArea(A);
 			A.toggleMobility(false);
+			Hashtable rememberI=new Hashtable();
+			Hashtable rememberM=new Hashtable();
 			try{
 			for(Enumeration r=A.getMap();r.hasMoreElements();)
 			{
@@ -185,22 +244,20 @@ public class Reset
 				resetRoom(R);
 				boolean somethingDone=false;
 				mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
-				for(int i=0;i<R.numItems();i++)
+				for(int i=R.numItems()-1;i>=0;i--)
 				{
 					Item I=R.fetchItem(i);
 					if(I.ID().equalsIgnoreCase("GenWallpaper")) continue;
-					String str=mob.session().prompt(" "+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
-					if(str.length()>0)
-					for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
+					int returned=resetAreaOramaManaI(mob,I,rememberI," ");
+					if(returned<0)
 					{
-						if(str.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[ii]))
-						{
-							I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
-							somethingDone=true;
-							mob.tell(" Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
-							break;
-						}
+						R.delItem(I);
+						somethingDone=true;
+						mob.tell(" deleted");
 					}
+					else
+					if(returned>0)
+						somethingDone=true;
 				}
 				if(somethingDone)
 					ExternalPlay.DBUpdateItems(R);
@@ -209,45 +266,92 @@ public class Reset
 				{
 					MOB M=R.fetchInhabitant(m);
 					if(M==mob) continue;
-					String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
-					if(str.length()>0)
+					Race R2=(Race)rememberM.get(M.Name());
+					if(R2!=null)
 					{
-						Race R2=CMClass.getRace(str);
-						if(R2==null)
-							str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
+						if(M.charStats().getMyRace()==R2)
+							mob.tell(" "+M.Name()+" still "+R2.name());
 						else
-						if(R2!=null)
 						{
+							M.baseCharStats().setMyRace(R2);
+							R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
+							M.recoverCharStats();
+							M.recoverEnvStats();
+							mob.tell(" "+M.Name()+" Changed to "+R2.ID());
+							somethingDone=true;
+						}
+					}
+					else
+					while(true)
+					{
+						String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
+						if(str.length()==0)
+						{
+							rememberM.put(M.name(),M.baseCharStats().getMyRace());
+							break;
+						}
+						if(str.equals("?"))
+							mob.tell(M.Name()+"/"+M.displayText()+"/"+M.description());
+						else
+						{
+							R2=CMClass.getRace(str);
+							if(R2==null)
+							{
+								String poss="";
+								if(poss.length()==0)
+								for(Enumeration e=CMClass.races();e.hasMoreElements();)
+								{
+									Race R3=(Race)e.nextElement();
+									if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
+									   poss=R3.name();
+								}
+								if(poss.length()==0)
+								for(Enumeration e=CMClass.races();e.hasMoreElements();)
+								{
+									Race R3=(Race)e.nextElement();
+									if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
+									   poss=R3.name();
+								}
+								if(poss.length()==0)
+								for(Enumeration e=CMClass.races();e.hasMoreElements();)
+								{
+									Race R3=(Race)e.nextElement();
+									if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
+									   poss=R3.name();
+								}
+								if(poss.length()==0)
+								for(Enumeration e=CMClass.races();e.hasMoreElements();)
+								{
+									Race R3=(Race)e.nextElement();
+									if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
+									   poss=R3.name();
+								}
+								mob.tell(" '"+str+"' is not a valid race.  Try '"+poss+"'.");
+								continue;
+							}
 							mob.tell(" Changed to "+R2.ID());
 							M.baseCharStats().setMyRace(R2);
 							R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
 							M.recoverCharStats();
 							M.recoverEnvStats();
+							rememberM.put(M.name(),M.baseCharStats().getMyRace());
 							somethingDone=true;
+							break;
 						}
 					}
 					for(int i=M.inventorySize()-1;i>=0;i--)
 					{
 						Item I=M.fetchInventory(i);
-						str=mob.session().prompt("   "+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
-						if(str.equalsIgnoreCase("delete"))
+						int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
+						if(returned<0)
 						{
 							M.delInventory(I);
 							somethingDone=true;
 							mob.tell("   deleted");
 						}
 						else
-						if(str.length()>0)
-						for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
-						{
-							if(str.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[ii]))
-							{
-								I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
-								somethingDone=true;
-								mob.tell("   Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
-								break;
-							}
-						}
+						if(returned>0)
+							somethingDone=true;
 					}
 					ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
 					if(SK!=null)
@@ -259,27 +363,20 @@ public class Reset
 							if(E instanceof Item)
 							{
 								Item I=(Item)E;
-								str=mob.session().prompt(" - "+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
-								if(str.equalsIgnoreCase("delete"))
+								int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
+								if(returned<0)
 								{
 									SK.delStoreInventory(I);
 									somethingDone=true;
-									mob.tell(" - deleted");
+									mob.tell("   deleted");
 								}
 								else
-								if(str.length()>0)
-								for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
+								if(returned>0)
 								{
-									if(str.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[ii]))
-									{
-										int numInStock=SK.numberInStock(I);
-										I.setMaterial(EnvResource.RESOURCE_DATA[ii][0]);
-										somethingDone=true;
-										mob.tell(" - Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
-										SK.delStoreInventory(I);
-										SK.addStoreInventory(I,numInStock);
-										break;
-									}
+									somethingDone=true;
+									int numInStock=SK.numberInStock(I);
+									SK.delStoreInventory(I);
+									SK.addStoreInventory(I,numInStock);
 								}
 							}
 						}

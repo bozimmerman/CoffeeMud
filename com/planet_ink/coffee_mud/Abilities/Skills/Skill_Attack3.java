@@ -41,4 +41,20 @@ public class Skill_Attack3 extends StdAbility
 		&&(affect.target() instanceof MOB))
 			helpProfficiency(mob);
 	}
+	
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		if(student.fetchAbility("Skill_Attack2")==null)
+		{
+			teacher.tell(student.name()+" has not yet learned second attack.");
+			student.tell("You need to learn second attack before you can learn "+name()+".");
+			return false;
+		}
+
+		return true;
+	}
+
 }
