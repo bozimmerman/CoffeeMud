@@ -1,11 +1,3 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+beer	DRINK	Poison_Alcohol	1	HOPS	1	WATER	1
+whiskey	DRINK	Poison_Liquor	1	WHEAT	1	WATER	1
+firebreather	DRINK	Poison_Firebreather	1	LEMONS	1	WATER	1	SOME DRAGON BLOOD	1

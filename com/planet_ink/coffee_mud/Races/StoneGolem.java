@@ -75,6 +75,8 @@ public class StoneGolem extends StdRace
 			{
 				resources.addElement(makeResource
 					("a pound of stone",EnvResource.RESOURCE_STONE));
+				resources.addElement(makeResource
+					("essence of golem",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

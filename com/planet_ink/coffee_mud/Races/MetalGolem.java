@@ -74,6 +74,8 @@ public class MetalGolem extends StdRace
 			{
 				resources.addElement(makeResource
 					("a pound of iron",EnvResource.RESOURCE_IRON));
+				resources.addElement(makeResource
+					("essence of golem",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;

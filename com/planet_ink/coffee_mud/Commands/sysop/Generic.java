@@ -2161,6 +2161,8 @@ public class Generic
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me,++showNumber,showFlag);
+			if(me instanceof Container)
+				genCapacity(mob,(Container)me,++showNumber,showFlag);
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
 			if(showFlag<=0) 

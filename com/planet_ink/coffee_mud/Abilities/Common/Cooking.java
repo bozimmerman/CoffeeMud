@@ -11,11 +11,15 @@ public class Cooking extends CommonSkill
 	public String name(){ return "Cooking";}
 	private static final String[] triggerStrings = {"COOK","COOKING"};
 	public String[] triggerStrings(){return triggerStrings;}
+	protected static String cookWordShort(){return "cook";};
+	protected static String cookWord(){return "cooking";};
 
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
-	public static int RCP_MAININGR=2;
-	public static int RCP_MAINAMNT=3;
+	public static int RCP_BONUSSPELL=2;
+	public static int RCP_LEVEL=3;
+	public static int RCP_MAININGR=4;
+	public static int RCP_MAINAMNT=5;
 
 	private Container cooking=null;
 	private Item fire=null;
@@ -29,10 +33,10 @@ public class Cooking extends CommonSkill
 	public Cooking()
 	{
 		super();
-		displayText="You are cooking...";
-		verb="cooking";
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
+		displayText="You are "+cookWord()+"...";
+		verb=cookWord();
+		if(ID().equals("Cooking")&&(!mapped))
+		{mapped=true; CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Cooking();}
 
@@ -58,15 +62,15 @@ public class Cooking extends CommonSkill
 			else
 			if(tickUp==0)
 			{
-				commonTell(mob,"You start cooking up some "+finalDishName+".");
-				displayText="You are cooking "+finalDishName;
-				verb="cooking "+finalDishName;
+				commonTell(mob,"You start "+cookWord()+" up some "+finalDishName+".");
+				displayText="You are "+cookWord()+" "+finalDishName;
+				verb=cookWord()+" "+finalDishName;
 			}
 		}
 		return super.tick(ticking,tickID);
 	}
 
-	private static synchronized Vector loadRecipes()
+	protected synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("COOKING RECIPES");
 		if(V==null)
@@ -127,9 +131,9 @@ public class Cooking extends CommonSkill
 		if((pot instanceof Drink)&&(((Drink)pot).containsDrink()))
 		{
 			if(pot instanceof EnvResource)
-				h.put(EnvResource.RESOURCE_DESCS[((EnvResource)pot).material()&EnvResource.RESOURCE_MASK],new Integer(((Drink)pot).liquidRemaining()/10));
+				h.put(EnvResource.RESOURCE_DESCS[((EnvResource)pot).material()&EnvResource.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
 			else
-				h.put(EnvResource.RESOURCE_DESCS[((Drink)pot).liquidType()&EnvResource.RESOURCE_MASK],new Integer(((Drink)pot).liquidRemaining()/10));
+				h.put(EnvResource.RESOURCE_DESCS[((Drink)pot).liquidType()&EnvResource.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
 		}
 		if(pot.owner()==null) return h;
 		if(!(pot.owner() instanceof MOB)) return h;
@@ -148,10 +152,10 @@ public class Cooking extends CommonSkill
 					ing=((String)Util.parse(I.name()).lastElement()).toUpperCase();
 			else
 				ing=I.name();
-			Integer INT=(Integer)h.get(ing);
+			Integer INT=(Integer)h.get(ing+"/"+I.name().toUpperCase());
 			if(INT==null) INT=new Integer(0);
 			INT=new Integer(INT.intValue()+1);
-			h.put(ing,INT);
+			h.put(ing+"/"+I.name().toUpperCase(),INT);
 		}
 		return h;
 	}
@@ -187,12 +191,15 @@ public class Cooking extends CommonSkill
 					if(amount<0) amount=amount*-1;
 					if(ingredient.equalsIgnoreCase("water"))
 						amount=amount*10;
+					boolean found=false;
 					for(int i=0;i<contents.length;i++)
 					{
 						String ingredient2=(String)contents[i];
 						int amount2=amounts[i];
-						if(ingredient.equalsIgnoreCase(ingredient2))
+						if((ingredient2.toUpperCase().startsWith(ingredient+"/"))
+						||(ingredient2.toUpperCase().endsWith("/"+ingredient)))
 						{
+							found=true;
 							amounts[i]=amount2-amount;
 							if(amounts[i]<0) NotEnoughForThisRun=true;
 							if(amounts[i]==0) RanOutOfSomething=true;
@@ -207,7 +214,12 @@ public class Cooking extends CommonSkill
 			codedList.addElement(new Integer(-amountMade));
 			for(int i=0;i<contents.length;i++)
 				if(amounts[i]<0)
-					codedList.addElement(contents[i]);
+				{
+					String content=contents[i];
+					if(content.indexOf("/")>=0)
+						content=content.substring(0,content.indexOf("/"));
+					codedList.addElement(content);
+				}
 		}
 		else
 		{
@@ -217,8 +229,13 @@ public class Cooking extends CommonSkill
 				String ingredient2=(String)contents[i];
 				int amount2=amounts[i];
 				if((amount2>0)
-				&&(!ingredient2.equalsIgnoreCase("water")))
-					codedList.addElement(contents[i]);
+				&&(!ingredient2.toUpperCase().startsWith("WATER/")))
+				{
+					String content=contents[i];
+					if(content.indexOf("/")>=0)
+						content=content.substring(0,content.indexOf("/"));
+					codedList.addElement(content);
+				}
 			}
 		}
 
@@ -235,10 +252,18 @@ public class Cooking extends CommonSkill
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
 				String ingredient2=(String)Vr.elementAt(vr);
-				if((ingredient2.length()>0)&&(ingredient2.equalsIgnoreCase(ingredient)))
+				if((ingredient2.length()>0)
+				&&((ingredient.toUpperCase().startsWith(ingredient2+"/"))
+				||(ingredient.toUpperCase().endsWith("/"+ingredient2))))
 					found=true;
 			}
-			if(!found) extra.addElement(ingredient);
+			if(!found)
+			{
+				String content=ingredient;
+				if(content.indexOf("/")>=0)
+					content=content.substring(0,content.indexOf("/"));
+				extra.addElement(content);
+			}
 		}
 		return extra;
 	}
@@ -257,8 +282,19 @@ public class Cooking extends CommonSkill
 			{
 				int amount=1;
 				if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
-				if((amount>=0)&&(!oldContents.containsKey(ingredient.toUpperCase())))
-					missing.addElement(ingredient);
+				if(amount>=0)
+				{
+					boolean found=false;
+					for(Enumeration e=oldContents.keys();e.hasMoreElements();)
+					{
+						String ingredient2=(String)e.nextElement();
+						if((ingredient2.toUpperCase().startsWith(ingredient+"/"))
+						||(ingredient2.toUpperCase().endsWith("/"+ingredient)))
+						{ found=true; break;}
+					}
+					if(!found)
+						missing.addElement(ingredient);
+				}
 				else
 				if(amount<0){
 					foundOptional=true;
@@ -276,11 +312,47 @@ public class Cooking extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		verb="cooking";
+		verb=cookWord();
 		cooking=null;
 		fire=null;
 		finalRecipe=null;
 		finalAmount=0;
+		Vector allRecipes=loadRecipes();
+		if(Util.combine(commands,0).equalsIgnoreCase("list"))
+		{
+			StringBuffer buf=new StringBuffer(Util.padRight("Recipe",16)+" ingrediants required\n\r");
+			for(int r=0;r<allRecipes.size();r++)
+			{
+				Vector Vr=(Vector)allRecipes.elementAt(r);
+				if(Vr.size()>0)
+				{
+					String item=(String)Vr.elementAt(RCP_FINALFOOD);
+					if(item.length()==0) continue;
+					int level=Util.s_int((String)Vr.elementAt(RCP_LEVEL));
+					if(level<=mob.envStats().level())
+					{
+						buf.append(Util.padRight(Util.capitalize(replacePercent(item,"")),16)+" ");
+						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
+						{
+							String ingredient=(String)Vr.elementAt(vr);
+							if(ingredient.length()>0)
+							{
+								int amount=1;
+								if(vr<Vr.size()-1)amount=Util.s_int((String)Vr.elementAt(vr+1));
+								if(amount==0) amount=1;
+								if(amount<0) amount=amount*-1;
+								if(ingredient.equalsIgnoreCase("water"))
+									amount=amount*10;
+								buf.append(ingredient.toLowerCase()+"("+amount+") ");
+							}
+						}
+						buf.append("\n\r");
+					}
+				}
+			}
+			commonTell(mob,buf.toString());
+			return true;
+		}
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
@@ -291,7 +363,7 @@ public class Cooking extends CommonSkill
 		}
 		if(!(target instanceof Container))
 		{
-			commonTell(mob,"There's nothing in "+target.name()+" to cook!");
+			commonTell(mob,"There's nothing in "+target.name()+" to "+cookWordShort()+"!");
 			return false;
 		}
 		switch(target.material()&EnvResource.MATERIAL_MASK)
@@ -303,7 +375,7 @@ public class Cooking extends CommonSkill
 		case EnvResource.MATERIAL_PRECIOUS:
 			break;
 		default:
-			commonTell(mob,target.name()+" is not suitable to cook in.");
+			commonTell(mob,target.name()+" is not suitable to "+cookWordShort()+" in.");
 			return false;
 		}
 
@@ -330,13 +402,20 @@ public class Cooking extends CommonSkill
 		//***********************************************
 		//* figure out recipe
 		//***********************************************
-		Vector allRecipes=loadRecipes();
 		Vector recipes=new Vector();
 		Vector closeRecipes=new Vector();
 		for(int v=0;v<allRecipes.size();v++)
 		{
 			Vector Vr=(Vector)allRecipes.elementAt(v);
-			if(oldContents.containsKey(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()))
+			boolean found=false;
+			for(Enumeration e=oldContents.keys();e.hasMoreElements();)
+			{
+				String ingredient2=(String)e.nextElement();
+				if((ingredient2.toUpperCase().startsWith(((String)Vr.elementAt(RCP_MAININGR))+"/"))
+				||(ingredient2.toUpperCase().endsWith("/"+((String)Vr.elementAt(RCP_MAININGR)))))
+				{ found=true; break;}
+			}
+			if(found)
 			   closeRecipes.addElement(Vr);
 			if((missingIngredientsFromOldContents(Vr).size()==0)
 			&&(extraIngredientsInOldContents(Vr).size()==0))
@@ -347,7 +426,7 @@ public class Cooking extends CommonSkill
 		{
 			if(closeRecipes.size()==0)
 			{
-				commonTell(mob,"You don't know how to make anything out of those ingredients.");
+				commonTell(mob,"You don't know how to make anything out of those ingredients.  Have you tried LIST as a parameter?");
 				return false;
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)
@@ -391,9 +470,14 @@ public class Cooking extends CommonSkill
 				String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 				if(counts.size()==1)
 				{
-					finalRecipe=Vr;
-					finalAmount=amountMaking.intValue();
-					break;
+					if(Util.s_int((String)Vr.elementAt(RCP_LEVEL))>mob.envStats().level())
+						complaints.addElement("If you are trying to make "+recipeName+", you need to wait until you are level "+Util.s_int((String)Vr.elementAt(RCP_LEVEL))+".");
+					else
+					{
+						finalRecipe=Vr;
+						finalAmount=amountMaking.intValue();
+						break;
+					}
 				}
 				else
 				if(amountMaking.intValue()<=0)
@@ -472,8 +556,6 @@ public class Cooking extends CommonSkill
 			}
 			food.setNourishment(food.nourishment()/finalAmount);
 			food.baseEnvStats().setWeight(food.baseEnvStats().weight()/finalAmount);
-			food.recoverEnvStats();
-			food.text();
 		}
 		else
 		if((foodType.equalsIgnoreCase("DRINK"))&&(cooking instanceof Drink))
@@ -496,16 +578,40 @@ public class Cooking extends CommonSkill
 			drink.setThirstQuenched(drink.liquidRemaining());
 			drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()/finalAmount);
 			if(burnt)drink.setThirstQuenched(1);
-			drink.text();
 		}
-
+		if(finalDish!=null)
+		{
+			String spell=(String)finalRecipe.elementAt(RCP_BONUSSPELL);
+			if((spell!=null)&&(spell.length()>0))
+			{
+				String parms="";
+				int x=spell.indexOf("(");
+				if(x>=0)
+				{
+					int y=spell.indexOf(")");
+					if(y>x)
+					{
+						parms=spell.substring(x+1,y);
+						spell=spell.substring(0,x);
+					}
+				}
+				Ability A=CMClass.getAbility(spell);
+				if(A!=null)
+				{
+					finalDish.addNonUninvokableAffect(A);
+					A.setMiscText(parms);
+				}
+			}
+		}
+		finalDish.recoverEnvStats();
+		finalDish.text();
 		//***********************************************
 		//* done figuring out recipe
 		//***********************************************
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		FullMsg msg=new FullMsg(mob,cooking,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) cooking something in <T-NAME>.");
+		FullMsg msg=new FullMsg(mob,cooking,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -658,11 +658,29 @@ public class ItemUsage
 				return;
 			}
 		}
-		String ofWhat="";
+		String str="<S-NAME> take(s) a drink from <T-NAMESELF>.";
+		Environmental tool=null;
 		if((thisThang instanceof Drink)
+		&&(((Drink)thisThang).liquidRemaining()>0)
 		&&(((Drink)thisThang).liquidType()!=EnvResource.RESOURCE_FRESHWATER))
-			ofWhat=" of "+EnvResource.RESOURCE_DESCS[((Drink)thisThang).liquidType()&EnvResource.RESOURCE_MASK].toLowerCase();
-		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_DRINK,"<S-NAME> take(s) a drink"+ofWhat+" from <T-NAMESELF>.");
+			str="<S-NAME> take(s) a drink of "+EnvResource.RESOURCE_DESCS[((Drink)thisThang).liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+" from <T-NAMESELF>.";
+		else
+		if(thisThang instanceof Container)
+		{
+			Vector V=((Container)thisThang).getContents();
+			for(int v=0;v<V.size();v++)
+			{
+				Item I=(Item)V.elementAt(v);
+				if((I instanceof Drink)&&(I instanceof EnvResource))
+				{
+					tool=thisThang;
+					thisThang=I;
+					str="<S-NAME> take(s) a drink of <T-NAMESELF> from <O-NAMESELF>.";
+					break;
+				}
+			}
+		}
+		FullMsg newMsg=new FullMsg(mob,thisThang,tool,Affect.MSG_DRINK,str);
 		if(mob.location().okAffect(mob,newMsg))
 			mob.location().send(mob,newMsg);
 	}

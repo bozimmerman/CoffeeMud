@@ -29,6 +29,8 @@ public class Skeleton extends Undead
 		baseEnvStats().setArmor(70);
 		baseEnvStats().setSpeed(1.0);
 
+		baseCharStats().setMyRace(CMClass.getRace("Skeleton"));
+		baseCharStats().getMyRace().startRacing(this,false);
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(),20,baseEnvStats().level()));
 
 		recoverMaxState();

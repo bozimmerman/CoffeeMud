@@ -1,11 +1,11 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+beesting	DRINK	Poison_BeeSting	1	SOME INSECT GUTS	1	LEMONS	1		
+bloodboil	DRINK	Poison_Bloodboil	5	SOME UNDEAD BLOOD	1	WATER	1	LEMONS	1		
+peppersauce	DRINK	Poison_Peppersauce	7	PEPPER	1	WATER	1				
+venom	DRINK	Poison_Venom	10	SOME SNAKE BLOOD	1	
+mindsap	DRINK	Poison_Mindsap	12	LEAD	1	WATER	1	LAMP OIL	1		
+heartstopper	DRINK	Poison_Heartstopper	15	LAMP OIL	1	SEAWEED	1	POTATOES	1	
+goblindrip	DRINK	Poison_GoblinDrip	16	SOME GOBLIN BLOOD	1	COPPER	1	
+ghoultouch	DRINK	Poison_Ghoultouch	18	SOME UNDEAD BLOOD	1	KNUCKLE BONE	1	
+decreptifier	DRINK	Poison_Decreptifier	20	ESSENCE OF GOLEM	1	TOMATOES	1	WATER	1		
+XXX	DRINK	Poison_XXX	25	SOME SNAKE BLOOD	1	LEAD	1	SOME TROLL BLOOD	1	
+slumberall	DRINK	Poison_Slumberall	9	POULTRY	1	MILK	1	SEAWEED	1	

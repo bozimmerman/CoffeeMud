@@ -1,5 +1,33 @@
 package com.planet_ink.coffee_mud.Abilities.Common;
 
-public class Distilling
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+import java.io.File;
+
+public class Distilling extends Cooking
 {
+	public String ID() { return "Distilling"; }
+	public String name(){ return "Distilling";}
+	private static final String[] triggerStrings = {"DISTILLING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	protected static String cookWordShort(){return "distill";};
+	protected static String cookWord(){return "distilling";};
+	public Environmental newInstance(){	return new Distilling();}
+
+	
+	protected synchronized Vector loadRecipes()
+	{
+		Vector V=(Vector)Resources.getResource("DISTILLING RECIPES");
+		if(V==null)
+		{
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"liquors.txt");
+			V=loadList(str);
+			if(V.size()==0)
+				Log.errOut("Distilling","Recipes not found!");
+			Resources.submitResource("DISTILLING RECIPES",V);
+		}
+		return V;
+	}
 }

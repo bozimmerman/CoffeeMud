@@ -84,6 +84,9 @@ public class Cow extends StdRace
 				for(int i=0;i<10;i++)
 					resources.addElement(makeResource
 					("a strip of "+name().toLowerCase()+" leather",EnvResource.RESOURCE_LEATHER));
+				for(int i=0;i<20;i++)
+					resources.addElement(makeResource
+					("some "+name().toLowerCase()+" milk",EnvResource.RESOURCE_MILK));
 				for(int i=0;i<7;i++)
 					resources.addElement(makeResource
 					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_BEEF));

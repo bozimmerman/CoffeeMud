@@ -74,6 +74,8 @@ public class WoodGolem extends StdRace
 			{
 				resources.addElement(makeResource
 					("a pound of oak",EnvResource.RESOURCE_OAK));
+				resources.addElement(makeResource
+					("essence of golem",EnvResource.RESOURCE_BLOOD));
 			}
 		}
 		return resources;
