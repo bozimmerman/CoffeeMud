@@ -1,3 +1,4 @@
 GAES still isn't done
 When I boot a player, they're still listed according to the website and archon command 'where', but not to 'who'.. Plus, after having done it,t he CPU time is way up.
 I'm getting SQL errors whenever someone uses a single quote (') in a room description.
+document the druids!

@@ -125,7 +125,7 @@ public class Necromancer extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Becomes Lich upon death after reaching 30th level Necromancer.";}
+	public String otherBonuses(){return "Becomes Lich upon death after reaching 30th level Necromancer.  Undead followers will not drain experience.";}
 	public String otherLimitations(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
 	public String weaponLimitations(){return "May only use sword, axe, polearm, and some edged weapons.";}
 
@@ -217,6 +217,21 @@ public class Necromancer extends Cleric
 		return true;
 	}
 
+	protected boolean isValidBeneficiary(MOB killer, 
+									   MOB killed, 
+									   MOB mob,
+									   Hashtable followers)
+	{
+		if((mob!=null)
+		&&(!mob.amDead())
+		&&((!mob.isMonster())||(!mob.charStats().getMyRace().racialCategory().equals("Undead")))
+		&&((mob.getVictim()==killed)
+		 ||(followers.get(mob)!=null)
+		 ||(mob==killer)))
+			return true;
+		return false;
+	}
+	
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
