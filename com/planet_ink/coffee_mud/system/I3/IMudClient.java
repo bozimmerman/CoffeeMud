@@ -28,7 +28,9 @@ public class IMudClient implements I3Interface
 		wk.sender_name=mob.name();
 		wk.target_mud=mudName;
 		wk.who=new Vector();
-		Intermud.sendPacket(wk);
+		try{
+		wk.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 	
 	
@@ -67,7 +69,9 @@ public class IMudClient implements I3Interface
 		tk.target_mud=Intermud.translateName(mudName);
 		tk.target_name=tellName;
 		tk.message=message;
-		Intermud.sendPacket(tk);
+		try{
+		tk.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 	
 	public void i3channel(MOB mob, String channelName, String message)
@@ -89,7 +93,9 @@ public class IMudClient implements I3Interface
 		ck.sender_name=mob.name();
 		ck.sender_visible_name=mob.name();
 		ck.message=message;
-		Intermud.sendPacket(ck);
+		try{
+		ck.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 	
 	public void i3locate(MOB mob, String mobName)
@@ -104,7 +110,9 @@ public class IMudClient implements I3Interface
 		LocateQueryPacket ck=new LocateQueryPacket();
 		ck.sender_name=mob.name();
 		ck.user_name=mobName;
-		Intermud.sendPacket(ck);
+		try{
+		ck.send();
+		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 	
 	public void giveMudList(MOB mob)
@@ -119,7 +127,27 @@ public class IMudClient implements I3Interface
 			for(Enumeration e=l.elements();e.hasMoreElements();)
 			{
 				Mud m=(Mud)e.nextElement();
-				buf.append("["+Util.padRight(m.mud_name,20)+"] "+Util.padRight(m.status,10)+m.address+"("+m.player_port+")\n\r");
+				if(m.state<0)
+					buf.append("["+Util.padRight(m.mud_name,20)+"] "+m.address+" ("+m.player_port+")\n\r");
+			}
+		}
+		mob.session().unfilteredPrintln(buf.toString());
+	}
+	
+	public void giveChannelsList(MOB mob)
+	{
+		if((mob==null)||(!i3online())) return;
+		if(mob.isMonster()) return;
+		StringBuffer buf=new StringBuffer("\n\rI3 Channels List:\n\r");
+		ChannelList list=Intermud.getAllChannelList();
+		if(list!=null)
+		{
+			Hashtable l=list.getChannels();
+			for(Enumeration e=l.elements();e.hasMoreElements();)
+			{
+				Channel c=(Channel)e.nextElement();
+				if(c.type==0)
+					buf.append("["+Util.padRight(c.channel,20)+"] "+c.owner+"\n\r");
 			}
 		}
 		mob.session().unfilteredPrintln(buf.toString());

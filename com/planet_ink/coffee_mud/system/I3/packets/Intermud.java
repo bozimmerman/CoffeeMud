@@ -11,6 +11,7 @@ package com.planet_ink.coffee_mud.system.I3.packets;
 import com.planet_ink.coffee_mud.system.I3.packets.InvalidPacketException;
 import com.planet_ink.coffee_mud.system.I3.net.Interactive;
 import com.planet_ink.coffee_mud.system.I3.persist.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 
 import java.io.DataInputStream;
@@ -412,12 +413,22 @@ public class Intermud implements Runnable, Persistent, Serializable {
                     catch( InvalidPacketException e ) {
                         e.printStackTrace();
                     }
+				}
+                else if( type.equals("who-reply") ) {
+                    try {
+                        WhoPacket p = new WhoPacket(data);
+
+                        intermud.receive(p);
+                    }
+                    catch( InvalidPacketException e ) {
+                        e.printStackTrace();
+                    }
                 }
                 else if( type.equals("error") ) {
                     error(data);
                 }
                 else {
-                    System.out.println("Other packet: " + type);
+                    Log.errOut("Intermud","Other packet: " + type);
                 }
             }
         }
@@ -558,6 +569,13 @@ public class Intermud implements Runnable, Persistent, Serializable {
     public static MudList getAllMudsList() {
 		if(!isConnected()) return new MudList(-1);
         return thread.muds;
+    }
+    /**
+     * @return the list of known muds
+     */
+    public static ChannelList getAllChannelList() {
+		if(!isConnected()) return new ChannelList();
+        return thread.channels;
     }
     /**
      * Sets the list of known muds to the specified list.

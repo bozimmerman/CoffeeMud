@@ -31,20 +31,29 @@ public class WhoPacket extends Packet {
     }
 
     public String toString() {
-            String str = "({\"who-reply\",5,\"" + Server.getMudName() +
-                         "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
-            int i;
+		if(type==Packet.WHO_REQUEST)
+		{
+			return "({\"who-req\",5,\"" + Server.getMudName() +
+			       "\",\"" + sender_name + "\",\"" + target_mud +
+			       "\",0,})";
+		}
+		else
+		{
+			String str = "({\"who-reply\",5,\"" + Server.getMudName() +
+		             "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
+			int i;
 
-            for(i=0; i<who.size(); i++) {
-                Vector v = (Vector)who.elementAt(i);
-                String nom = (String)v.elementAt(0);
-                int idle = ((Integer)v.elementAt(1)).intValue();
-                String xtra = (String)v.elementAt(2);
+			for(i=0; i<who.size(); i++) {
+			    Vector v = (Vector)who.elementAt(i);
+			    String nom = (String)v.elementAt(0);
+			    int idle = ((Integer)v.elementAt(1)).intValue();
+			    String xtra = (String)v.elementAt(2);
 
-                str += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
-            }
-            str += "}),})";
+			    str += "({\"" + nom + "\"," + idle + ",\"" + xtra + "\",}),";
+			}
+			str += "}),})";
+			return str;
+		}
 
-        return str;
     }
 }

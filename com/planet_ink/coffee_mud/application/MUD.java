@@ -16,14 +16,14 @@ import com.planet_ink.coffee_mud.web.*;
 
 public class MUD extends Thread implements Host
 {
-	public String nameID="CoffeeMud";
+	public String nameID="My Mud";
 	public SaveThread saveThread=null;
 	public INI page=null;
 	public boolean keepDown=true;
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)6.1;
+	public static final float HOST_VERSION_MINOR=(float)7.0;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -38,11 +38,12 @@ public class MUD extends Thread implements Host
 	public final static String ServerVersionString = "CoffeeMUD-MainServer/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 	public boolean serverIsRunning = false;
 
-	public MUD()
+	public MUD(String mudName)
 	{
 		super("MUD-MainServer");
 
 		isOK = false;
+		nameID=mudName;
 		
 		if (!loadPropPage())
 		{
@@ -205,10 +206,6 @@ public class MUD extends Thread implements Host
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
 		}
 
-		String newID=page.getStr("MUDID");
-		if((newID!=null)&&(newID.length()>0))
-			nameID=newID;
-		
 		offlineReason=new String("Booting: connecting to database");
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
@@ -231,7 +228,7 @@ public class MUD extends Thread implements Host
 			return false;
 		}
 
-		int numChannelsLoaded=commandProcessor.channels.loadChannels(page.getStr("CHANNELS"),commandProcessor.commandSet);
+		int numChannelsLoaded=commandProcessor.channels.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"),commandProcessor.commandSet);
 		commandProcessor.myHost=this;
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
@@ -288,7 +285,7 @@ public class MUD extends Thread implements Host
 		{
 			if(page.getBoolean("RUNI3SERVER"))
 			{
-				IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),null);
+				IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),commandProcessor.channels.iChannelsArray());
 				imserver=new Server();
 				imserver.start("CoffeeMud",27766,imud);
 			}
@@ -575,11 +572,19 @@ public class MUD extends Thread implements Host
 	{
 		Log.startLogFiles();
 		
+		String nameID="Unnamed CoffeeMud";
+		if(a.length>0)
+		{
+			nameID="";
+			for(int i=0;i<a.length;i++)
+				nameID+=" "+a[i];
+			nameID=nameID.trim();
+		}
 		try
 		{
 			while(true)
 			{
-				MUD mud=new MUD();
+				MUD mud=new MUD(nameID);
 				mud.start();
 				mud.initHost();
 				mud.join();

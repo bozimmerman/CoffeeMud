@@ -13,9 +13,9 @@ public class IMudInterface implements ImudServices, Serializable
 	public String version="CoffeeMud 3.0";
 	public String name="CoffeeMud";
 	public int port=4444;
-	public String[][] channels={{"diku_chat","CHAT"},
-									   {"diku_immortals","GOSSIP"},
-									   {"diku_code","ANSWER"}};
+	public String[][] channels={{"diku_chat","CHAT","0"},
+								{"diku_immortals","GOSSIP","32"},
+								{"diku_code","GREET","0"}};
 														
 	
 	public IMudInterface (String Name, String Version, int Port, String[][] Channels)
@@ -39,6 +39,35 @@ public class IMudInterface implements ImudServices, Serializable
 		return null;
 	}
 	
+	
+	public String replaceAll(String str, String thisStr, String withThisStr)
+	{
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			if(str.charAt(i)==thisStr.charAt(0))
+				if(str.substring(i).startsWith(thisStr))
+					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+		}
+		return str;
+	}
+	
+	public String socialFix(String str)
+	{
+		
+		str=replaceAll(str,"$N","<S-NAME>");
+		str=replaceAll(str,"$n","<S-NAME>");
+		str=replaceAll(str,"$T","<T-NAMESELF>");
+		str=replaceAll(str,"$t","<T-NAMESELF>");
+		str=replaceAll(str,"$m","<S-HIM-HER>");
+		str=replaceAll(str,"$M","<T-HIM-HER>");
+		str=replaceAll(str,"$s","<S-HIS-HER>");
+		str=replaceAll(str,"$S","<T-HIS-HER>");
+		str=replaceAll(str,"$e","<S-HE-SHE>");
+		str=replaceAll(str,"$E","<T-HE-SHE>");
+		str=replaceAll(str,"`","\'");
+		if(str.equals("$")) return "";
+		return str.trim();
+	}
 	
 	/**
      * Handles an incoming I3 packet asynchronously.
@@ -65,8 +94,14 @@ public class IMudInterface implements ImudServices, Serializable
 				mob.setName(ck.sender_name+"@"+ck.sender_mud);
 				String channelName=ck.channel;
 				FullMsg msg=null;
+				
+				if((ck.sender_mud!=null)&&(ck.sender_mud.equalsIgnoreCase(getMudName())))
+				   return;
+				if((ck.channel==null)||(ck.channel.length()==0))
+					return;
 				int channelInt=ExternalPlay.channelInt(channelName);
 				if(channelInt<0) return;
+				int lvl=getLocalLevel(channelName);
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
 					String str=mob.name()+" "+channelName+"(S) '"+ck.message+"'";
@@ -74,7 +109,8 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				else
 				{
-					String str=" ("+channelName+") "+mob.name()+ck.message+"";
+					String msgs=socialFix(ck.message);
+					String str="("+channelName+") "+msgs+"";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|channelInt,str);
 				}
 				
@@ -84,6 +120,7 @@ public class IMudInterface implements ImudServices, Serializable
 					if((!ses.killFlag())&&(ses.mob()!=null)
 					&&(!ses.mob().amDead())
 					&&(ses.mob().location()!=null)
+					&&(ses.mob().envStats().level()>=lvl)
 					&&(ses.mob().okAffect(msg)))
 						ses.mob().affect(msg);
 				}
@@ -100,14 +137,16 @@ public class IMudInterface implements ImudServices, Serializable
 					if(Sense.isHidden(smob)) stat="hidden";
 					if(!Sense.isSeen(smob)) stat="wizinv";
 					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,smob.name(),0,stat);
-					Intermud.sendPacket(lpk);
+					try{
+					lpk.send();
+					}catch(Exception e){Log.errOut("IMudClient",e);}
 				}
 			}
 			break;
 		case Packet.LOCATE_REPLY:
 			{
 				LocateReplyPacket lk=(LocateReplyPacket)packet;
-				MOB smob=findSessMob(lk.sender_name);
+				MOB smob=findSessMob(lk.target_name);
 				if(smob!=null)
 					smob.tell(lk.located_visible_name+"@"+lk.located_mud_name+" ("+lk.idle_time+"): "+lk.status);
 			}
@@ -118,15 +157,18 @@ public class IMudInterface implements ImudServices, Serializable
 				MOB smob=findSessMob(wk.target_name);
 				if(smob!=null)
 				{
-					StringBuffer buf=new StringBuffer("\n\rwho@"+wk.sender_mud);
+					StringBuffer buf=new StringBuffer("\n\rwhois@"+wk.sender_mud+":\n\r");
 					Vector V=wk.who;
+					if(V.size()==0)
+						buf.append("Nobody!");
+					else
 					for(int v=0;v<V.size();v++)
 					{
 						Vector V2=(Vector)V.elementAt(v);
 						String nom = (String)V2.elementAt(0);
 						int idle = ((Integer)V2.elementAt(1)).intValue();
 						String xtra = (String)V2.elementAt(2);
-						buf.append("["+Util.padRight(nom,20)+"] ("+Util.padRight(""+idle,5)+"): "+xtra+"\n\r");
+						buf.append("["+Util.padRight(nom,20)+"] ("+Util.padRightPreserve(""+idle,3)+"): "+xtra+"\n\r");
 					}
 					smob.session().unfilteredPrintln(buf.toString());
 					break;
@@ -157,7 +199,9 @@ public class IMudInterface implements ImudServices, Serializable
 					}
 				}
 				wkr.who=whoV;
-				Intermud.sendPacket(wkr);
+				try{
+				wkr.send();
+				}catch(Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
 		case Packet.TELL:
@@ -203,6 +247,24 @@ public class IMudInterface implements ImudServices, Serializable
 			if(channels[i][0].equalsIgnoreCase(str))
 				return channels[i][1];
 		return "";
+	}
+
+    /**
+     * Given a I3 channel name, this method should provide
+     * the local level for that channel.
+     * Example:
+     * <PRE>
+     * if( str.equals("imud_code") ) return "intercre";
+     * </PRE>
+     * @param str the remote name of the desired channel
+     * @return the local channel name for a remote channel
+     * @see #getRemoteChannel
+     */
+    public int getLocalLevel(String str){
+		for(int i=0;i<channels.length;i++)
+			if(channels[i][1].equalsIgnoreCase(str))
+				return Util.s_int(channels[i][2]);
+		return 0;
 	}
 
     /**

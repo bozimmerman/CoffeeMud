@@ -1,1 +1,1 @@
-java -Xms65535000 -Xmx115535000 com.planet_ink.coffee_mud.application.MUD
+java -Xms65535000 -Xmx115535000 com.planet_ink.coffee_mud.application.MUD "Your Muds Name"

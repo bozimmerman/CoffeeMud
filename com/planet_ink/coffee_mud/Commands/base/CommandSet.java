@@ -145,6 +145,7 @@ public class CommandSet extends Hashtable
 	public static final int AUTOWEATHER=133;
 	public static final int I3LOCATE=134;
 	public static final int I3LIST=135;
+	public static final int I3CHANNELS=136;
 
 	public CommandSet()
 	{
@@ -234,6 +235,7 @@ public class CommandSet extends Hashtable
 		put("HELP",new Integer(HELP));
 		put("HOLD",new Integer(HOLD));
 			put("H",new Integer(HOLD));
+		put("I3CHANNELS",new Integer(I3CHANNELS));
 		put("IDEA",new Integer(IDEA));
 		put("IMPORT",new Integer(IMPORT));
 		put("INVENTORY",new Integer(INVENTORY));

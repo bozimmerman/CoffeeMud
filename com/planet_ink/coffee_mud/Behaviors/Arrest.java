@@ -358,7 +358,7 @@ public class Arrest extends StdBehavior
 							   getBit(info,BIT_SENTENCE));
 		}
 		
-		if((affect.targetCode()!=Affect.NO_EFFECT)
+		if((affect.othersCode()!=Affect.NO_EFFECT)
 		   &&(affect.othersMessage()!=null))
 		for(int i=0;i<otherCrimes.size();i++)
 		{
@@ -535,9 +535,18 @@ public class Arrest extends StdBehavior
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
-							W.arrestingOfficer=officer;
-							ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(W.criminal)+"! Lie down immediately!",false,false);
-							W.state=STATE_ARRESTING;
+							if(W.criminal.isASysOp(W.criminal.location()))
+							{
+								ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"Damn, I can't arrest you.",false,false);
+								if(W.criminal.isASysOp(null))
+									setFree(W.criminal);
+							}
+							else
+							{
+								W.arrestingOfficer=officer;
+								ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(W.criminal)+"! Lie down immediately!",false,false);
+								W.state=STATE_ARRESTING;
+							}
 						}
 					}
 					break;

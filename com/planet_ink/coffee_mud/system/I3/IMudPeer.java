@@ -28,9 +28,17 @@ public class IMudPeer implements PersistentPeer
 			try{
 				if(myobj instanceof Intermud)
 				{
+					
+					((Intermud)myobj).password=Util.s_int(buf.toString());
+					/*
 					ByteArrayInputStream byin=new ByteArrayInputStream(buf.toString().getBytes());
+					
 					ObjectInputStream in=new ObjectInputStream(byin);
-					Object newobj=in.readObject();
+					Object newobj;
+					newobj=in.readObject();
+					if(newobj instanceof Integer)
+						((Intermud)myobj).password=((Integer)newobj).intValue();
+					newobj=in.readObject();
 					if(newobj instanceof Hashtable)
 						((Intermud)myobj).banned=(Hashtable)newobj;
 					newobj=in.readObject();
@@ -42,9 +50,7 @@ public class IMudPeer implements PersistentPeer
 					newobj=in.readObject();
 					if(newobj instanceof Vector)
 						((Intermud)myobj).name_servers=(Vector)newobj;
-					newobj=in.readObject();
-					if(newobj instanceof Integer)
-						((Intermud)myobj).password=((Integer)newobj).intValue();
+					*/
 					
 				}
 			}
@@ -70,12 +76,15 @@ public class IMudPeer implements PersistentPeer
 		{
 			if(myobj instanceof Intermud)
 			{
+				byout.write(new String(""+((Intermud)myobj).password).getBytes());
+				/*
 				ObjectOutputStream out=new ObjectOutputStream(byout);
+				out.writeObject(new Integer(((Intermud)myobj).password));
 				out.writeObject(((Intermud)myobj).banned);
 				out.writeObject(((Intermud)myobj).channels);
 				out.writeObject(((Intermud)myobj).muds);
 				out.writeObject(((Intermud)myobj).name_servers);
-				out.writeObject(new Integer(((Intermud)myobj).password));
+				*/
 			}
 		}
 		catch(Exception e)
@@ -83,7 +92,8 @@ public class IMudPeer implements PersistentPeer
 			Log.errOut("ImudPeer",e);
 		}
 		StringBuffer buf=new StringBuffer(new String(byout.toByteArray()));
-		Resources.submitResource(myID,buf);
+		Resources.removeResource("ppeer."+myID);
+		Resources.submitResource("ppeer."+myID,buf);
 		Resources.saveFileResource("ppeer."+myID);
 	}
 

@@ -140,7 +140,7 @@ public class Spell_FeignDeath extends Spell
 			deathRoom=mob.location();
 			Body=(DeadBody)CMClass.getItem("Corpse");
 			Body.setCharStats(target.baseCharStats().cloneCharStats());
-			beneficialAffect(mob,target,0);
+			beneficialAffect(mob,target,10);
 
 			int tries=0;
 			while((target.numFollowers()>0)&&((++tries)<1000))

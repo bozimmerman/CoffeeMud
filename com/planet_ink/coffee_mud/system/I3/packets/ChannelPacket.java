@@ -28,7 +28,8 @@ public class ChannelPacket extends Packet  {
             else {
                 type = ChannelPacket.CHAN_TARGET;
             }
-            channel = Intermud.getLocalChannel((String)v.elementAt(6));
+			channel = (String)v.elementAt(6);
+            channel = Intermud.getLocalChannel(channel);
             sender_visible_name = (String)v.elementAt(7);
             message = (String)v.elementAt(8);
         }
@@ -57,8 +58,10 @@ public class ChannelPacket extends Packet  {
     }
 
     public String toString() {
-        return "({\"channel-m\",5,\"" + Server.getMudName() + "\",\"" +
+		String str=
+			 "({\"channel-m\",5,\"" + Server.getMudName() + "\",\"" +
                sender_name + "\",0,0,\"" + channel + "\",\"" +
                sender_visible_name + "\",\"" + message + "\",})";
+		return str;
     }
 }
