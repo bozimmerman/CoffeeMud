@@ -129,7 +129,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 									spellName="";
 								else
 								{
-									params.addElement(spellName.substring(t).trim());
+									params.insertElementAt(spellName.substring(t).trim(),0);
 									spellName=spellName.substring(0,t);
 									thisOne=(Ability)CoffeeUtensils.fetchEnvironmental(Spells,spellName,true);
 									if(thisOne==null)

@@ -312,6 +312,25 @@ public class Prop_HaveAdjuster extends Property
 	public String accountForYourself()
 	{
 		String id="Affects the owner: "+text();
+		int x=id.toUpperCase().indexOf("ARM");
+		for(StringBuffer ID=new StringBuffer(id);((x>0)&&(x<id.length()));x++)
+			if(id.charAt(x)=='-')
+			{
+				ID.setCharAt(x,'+');
+				id=ID.toString();
+				break;
+			}
+			else
+			if(id.charAt(x)=='+')
+			{
+				ID.setCharAt(x,'-');
+				id=ID.toString();
+				break;
+			}
+			else
+			if(Character.isDigit(id.charAt(x)))
+				break;
+			
 		return id;
 	}
 }
