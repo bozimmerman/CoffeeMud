@@ -15,6 +15,8 @@ public class Prop_ReqTattoo extends Property
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
+		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+			return true;
 		
 		int x=text().toUpperCase().indexOf("ALL");
 		Vector V=Prop_Tattoo.getTattoos(mob);
@@ -39,7 +41,7 @@ public class Prop_ReqTattoo extends Property
 		&&(affect.target()!=null)
 		&&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
-			if(((affect.target() instanceof Room)&&(affect.targetMinor()==Affect.TYP_ENTER)&&(!Sense.isSneaking(affect.source())))
+			if(((affect.target() instanceof Room)&&(affect.targetMinor()==Affect.TYP_ENTER))
 			||((affect.target() instanceof Item)&&(affect.targetMinor()==Affect.TYP_GET)))
 			{
 				Hashtable H=new Hashtable();

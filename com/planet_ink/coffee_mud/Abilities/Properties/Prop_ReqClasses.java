@@ -15,6 +15,8 @@ public class Prop_ReqClasses extends Property
 	public boolean passesMuster(MOB mob)
 	{
 		if(mob==null) return false;
+		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+			return true;
 		
 		int x=text().toUpperCase().indexOf("ALL");
 		int y=text().toUpperCase().indexOf(mob.charStats().getCurrentClass().name().toUpperCase());
@@ -34,7 +36,6 @@ public class Prop_ReqClasses extends Property
 		   &&(affect.target()!=null)
 		   &&(affect.target() instanceof Room)
 		   &&(affect.targetMinor()==Affect.TYP_ENTER)
-		   &&(!Sense.isSneaking(affect.source()))
 		   &&((affect.amITarget(affected))||(affect.tool()==affected)||(affected instanceof Area)))
 		{
 			Hashtable H=new Hashtable();

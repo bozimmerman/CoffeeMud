@@ -12,14 +12,13 @@ public class OverTheLedge extends InTheAir
 {
 	public boolean okAffect(Affect affect)
 	{
-		if(!super.okAffect(affect)) return false;
-		
 		if(Sense.isSleeping(this)) return true;
+		
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.amITarget(this))
-		&&(getRoomInDir(Directions.DOWN)!=affect.source().location()))
+		&&((getRoomInDir(Directions.DOWN)!=affect.source().location())))
 			return true;
-		return isOkAffect(this,affect);
+		return super.okAffect(affect);
 	}
 	public Environmental newInstance()
 	{
