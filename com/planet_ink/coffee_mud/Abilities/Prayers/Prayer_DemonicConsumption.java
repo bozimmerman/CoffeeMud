@@ -62,7 +62,7 @@ public class Prayer_DemonicConsumption extends Prayer
 							return false;
 					}
 					else
-						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> <T-IS-ARE> consumed!");
+						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> is consumed!");
 
 					if(target instanceof Item)
 						((Item)target).destroy();

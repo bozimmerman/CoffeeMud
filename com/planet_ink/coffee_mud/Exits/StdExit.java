@@ -208,7 +208,8 @@ public class StdExit implements Exit
 					ladder=findALadder(mob,(Room)affect.target());
 				if(ladder!=null)
 					mountLadder(mob,ladder);
-				if(!Sense.isClimbing(mob))
+				if((!Sense.isClimbing(mob))
+				&&(!Sense.isFalling(mob)))
 				{
 					mob.tell("You need to climb that way, if you know how.");
 					return false;

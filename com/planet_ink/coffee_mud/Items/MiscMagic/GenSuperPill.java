@@ -107,6 +107,7 @@ public class GenSuperPill extends GenPill
 
 	public void EATME(MOB mob)
 	{
+		boolean redress=false;
 		if(getSpells(this).size()>0)
 			eatIfAble(mob,this);
 		mob.baseEnvStats().setAbility(mob.baseEnvStats().ability()+getVal(readableText,"abi"));
@@ -119,7 +120,9 @@ public class GenSuperPill extends GenPill
 		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|getVal(readableText,"sen"));
 		mob.baseEnvStats().setSpeed(mob.baseEnvStats().speed()+getVal(readableText,"spe"));
 		mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+getVal(readableText,"wei"));
+		if(getVal(readableText,"wei")!=0) redress=true;
 		mob.baseEnvStats().setHeight(mob.baseEnvStats().height()+getVal(readableText,"hei"));
+		if(getVal(readableText,"hei")!=0) redress=true;
 
 		mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+getVal(readableText,"cha"));
 		mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+getVal(readableText,"con"));
@@ -136,6 +139,7 @@ public class GenSuperPill extends GenPill
 		val=getStr(readableText,"rac").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
+			redress=true;
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
 		}
@@ -157,7 +161,7 @@ public class GenSuperPill extends GenPill
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		mob.confirmWearability();
+		if(redress)	mob.confirmWearability();
 	}
 
 	public void affect(Environmental myHost, Affect affect)

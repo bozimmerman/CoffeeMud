@@ -69,7 +69,8 @@ public class ClimbableSurface extends StdRoom
 			Rideable ladder=findALadder(affect.source(),this);
 			if(ladder!=null)
 				mountLadder(affect.source(),ladder);
-			if(!Sense.isClimbing(affect.source()))
+			if((!Sense.isClimbing(affect.source()))
+			&&(!Sense.isFalling(affect.source())))
 			{
 				affect.source().tell("You need to climb that way, if you know how.");
 				return false;

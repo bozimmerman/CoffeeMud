@@ -12,6 +12,9 @@ public class GoodyBag extends BagOfEndlessness
 	public GoodyBag()
 	{
 		super();
+		name="a little bag";
+		displayText="a small bag is sitting here.";
+		description="A nice little bag to put your things in.";
 		secretIdentity="The Archon's Goody Bag";
 		recoverEnvStats();
 	}
@@ -54,8 +57,6 @@ public class GoodyBag extends BagOfEndlessness
 			alreadyFilled=true;
 			if(getContents().size()==0)
 			{
-				putInBag(CMClass.getItem("QuestPoint"));
-				addMoney(10);
 				addMoney(100);
 				addMoney(500);
 				addMoney(1000);
@@ -64,15 +65,6 @@ public class GoodyBag extends BagOfEndlessness
 				addMoney(100000);
 				addMoney(1000000);
 				addMoney(10000000);
-				Money.makeNote(10,this.owner(),this);
-				Money.makeNote(100,this.owner(),this);
-				Money.makeNote(500,this.owner(),this);
-				Money.makeNote(1000,this.owner(),this);
-				Money.makeNote(5000,this.owner(),this);
-				Money.makeNote(10000,this.owner(),this);
-				Money.makeNote(100000,this.owner(),this);
-				Money.makeNote(1000000,this.owner(),this);
-				Money.makeNote(10000000,this.owner(),this);
 				Item I=CMClass.getItem("GenSuperPill");
 				I.setName("a training pill");
 				I.setDisplayText("A small round pill has been left here.");
@@ -82,6 +74,11 @@ public class GoodyBag extends BagOfEndlessness
 				I.setName("a practice pill");
 				I.setDisplayText("A tiny little pill has been left here.");
 				((Pill)I).setSpellList("prac+1");
+				putInBag(I);
+				I=CMClass.getItem("GenSuperPill");
+				I.setName("a quest point pill");
+				I.setDisplayText("A questy little pill has been left here.");
+				((Pill)I).setSpellList("ques+1");
 				putInBag(I);
 				I=CMClass.getItem("GenSuperPill");
 				I.setName("a 100 exp pill");
