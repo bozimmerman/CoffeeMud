@@ -126,14 +126,26 @@ public class Socials
 		if(C.size()==0) return null;
 
 		String SocialName=(String)C.elementAt(0);
+		String theRest="";
 		if(C.size()>1)
 		{
 			String Target=((String)C.elementAt(1)).toUpperCase();
 			if(!Target.equals("SELF"))
 				Target="<T-NAME>";
-			SocialName+=" "+Target;
+			theRest=" "+Target;
 		}
-		return FetchSocial(SocialName);
+		Social S=FetchSocial(SocialName+theRest);
+		if(S==null)
+		{
+			for(Enumeration e=soc.keys();e.hasMoreElements();)
+			{
+				String key=(String)e.nextElement();
+				if(key.startsWith(SocialName.toUpperCase()))
+				{	SocialName=key; break;}
+			}
+			S=FetchSocial(SocialName+theRest);
+		}
+		return S;
 	}
 
 	public int num()

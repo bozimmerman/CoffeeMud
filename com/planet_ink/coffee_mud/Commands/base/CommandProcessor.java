@@ -39,11 +39,23 @@ public class CommandProcessor
 		if(mob.location()==null) return;
 
 		String firstWord=((String)commands.elementAt(0)).toUpperCase();
-		Command C=CMClass.findExtraCommand(firstWord);
-		if((C!=null)&&(!C.execute(mob,commands)))
-			return;
 
 		Integer commandCodeObj=(Integer)commandSet.get(firstWord);
+		if(commandCodeObj==null)
+		{
+			Command C=CMClass.findExtraCommand(firstWord);
+			if((C!=null)&&(!C.execute(mob,commands)))
+				return;
+			for(Enumeration e=commandSet.keys();e.hasMoreElements();)
+			{
+				String key=(String)e.nextElement();
+				if(key.toUpperCase().startsWith(firstWord))
+				{
+					commandCodeObj=(Integer)commandSet.get(key);
+					break;
+				}
+			}
+		}
 		if(commandCodeObj!=null)
 		{
 			int commandCode=commandCodeObj.intValue();
