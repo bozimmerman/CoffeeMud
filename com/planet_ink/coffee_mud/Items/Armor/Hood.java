@@ -9,7 +9,7 @@ public class Hood extends StdArmor
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="a cloth hood, also known as a Lierpipe.";
+		name="a cloth hood";
 		displayText="a cloth hood sits here.";
 		description="This is a cloth hood that covers the head and shoulders.";
 		properWornBitmap=Item.ON_HEAD;

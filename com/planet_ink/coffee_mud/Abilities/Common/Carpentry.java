@@ -300,7 +300,7 @@ public class Carpentry extends CommonSkill
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{
-					String WO=Item.wornLocation[wo];
+					String WO=Item.wornLocation[wo].toUpperCase();
 					if(misctype.equalsIgnoreCase(WO))
 					{
 						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
