@@ -84,8 +84,8 @@ public class RandomMonsters extends ActiveTicker
 			}
 		}
 		super.setParms(oldParms);
-		minMonsters=getParmVal(oldParms,"minmonsters",1);
-		maxMonsters=getParmVal(oldParms,"maxmonsters",1);
+		minMonsters=Util.getParmInt(oldParms,"minmonsters",1);
+		maxMonsters=Util.getParmInt(oldParms,"maxmonsters",1);
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;

@@ -24,9 +24,9 @@ public class Prop_WeakBridge extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		max=getParmVal(newText,"max",400);
-		chance=getParmVal(newText,"chance",75);
-		ticksDown=getParmVal(newText,"down",300);
+		max=Util.getParmInt(newText,"max",400);
+		chance=Util.getParmInt(newText,"chance",75);
+		ticksDown=Util.getParmInt(newText,"down",300);
 	}
 	
 	public boolean okAffect(Environmental myHost, Affect msg)

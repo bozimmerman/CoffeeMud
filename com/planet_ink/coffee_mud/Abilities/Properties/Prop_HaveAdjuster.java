@@ -28,55 +28,55 @@ public class Prop_HaveAdjuster extends Property
 		boolean gotRace=false;
 		boolean gotSex=false;
 
-		adjEnvStats.setAbility(getVal(newText,"abi"));
-		adjEnvStats.setArmor(getVal(newText,"arm"));
-		adjEnvStats.setAttackAdjustment(getVal(newText,"att"));
-		adjEnvStats.setDamage(getVal(newText,"dam"));
-		adjEnvStats.setDisposition(getVal(newText,"dis"));
-		adjEnvStats.setLevel(getVal(newText,"lev"));
-		adjEnvStats.setRejuv(getVal(newText,"rej"));
-		adjEnvStats.setSensesMask(getVal(newText,"sen"));
-		adjEnvStats.setSpeed(getDoubleVal(newText,"spe"));
-		adjEnvStats.setWeight(getVal(newText,"wei"));
-		adjEnvStats.setHeight(getVal(newText,"hei"));
+		adjEnvStats.setAbility(Util.getParmPlus(newText,"abi"));
+		adjEnvStats.setArmor(Util.getParmPlus(newText,"arm"));
+		adjEnvStats.setAttackAdjustment(Util.getParmPlus(newText,"att"));
+		adjEnvStats.setDamage(Util.getParmPlus(newText,"dam"));
+		adjEnvStats.setDisposition(Util.getParmPlus(newText,"dis"));
+		adjEnvStats.setLevel(Util.getParmPlus(newText,"lev"));
+		adjEnvStats.setRejuv(Util.getParmPlus(newText,"rej"));
+		adjEnvStats.setSensesMask(Util.getParmPlus(newText,"sen"));
+		adjEnvStats.setSpeed(Util.getParmDoublePlus(newText,"spe"));
+		adjEnvStats.setWeight(Util.getParmPlus(newText,"wei"));
+		adjEnvStats.setHeight(Util.getParmPlus(newText,"hei"));
 
-		String val=getStr(newText,"gen").toUpperCase();
+		String val=Util.getParmStr(newText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
 			adjCharStats.setStat(CharStats.GENDER,(int)val.charAt(0));
 			gotSex=true;
 		}
 
-		val=getStr(newText,"cla").toUpperCase();
+		val=Util.getParmStr(newText,"cla","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
 		{
 			gotClass=true;
 			adjCharStats.setCurrentClass(CMClass.getCharClass(val));
 		}
-		val=getStr(newText,"rac").toUpperCase();
+		val=Util.getParmStr(newText,"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
 			gotRace=true;
 			adjCharStats.setMyRace(CMClass.getRace(val));
 		}
-		adjCharStats.setStat(CharStats.STRENGTH,getVal(newText,"str"));
-		adjCharStats.setStat(CharStats.WISDOM,getVal(newText,"wis"));
-		adjCharStats.setStat(CharStats.CHARISMA,getVal(newText,"cha"));
-		adjCharStats.setStat(CharStats.CONSTITUTION,getVal(newText,"con"));
-		adjCharStats.setStat(CharStats.DEXTERITY,getVal(newText,"dex"));
-		adjCharStats.setStat(CharStats.INTELLIGENCE,getVal(newText,"int"));
-		adjCharStats.setStat(CharStats.MAX_STRENGTH_ADJ,getVal(newText,"maxstr"));
-		adjCharStats.setStat(CharStats.MAX_WISDOM_ADJ,getVal(newText,"maxwis"));
-		adjCharStats.setStat(CharStats.MAX_CHARISMA_ADJ,getVal(newText,"maxcha"));
-		adjCharStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,getVal(newText,"maxcon"));
-		adjCharStats.setStat(CharStats.MAX_DEXTERITY_ADJ,getVal(newText,"maxdex"));
-		adjCharStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,getVal(newText,"maxint"));
+		adjCharStats.setStat(CharStats.STRENGTH,Util.getParmPlus(newText,"str"));
+		adjCharStats.setStat(CharStats.WISDOM,Util.getParmPlus(newText,"wis"));
+		adjCharStats.setStat(CharStats.CHARISMA,Util.getParmPlus(newText,"cha"));
+		adjCharStats.setStat(CharStats.CONSTITUTION,Util.getParmPlus(newText,"con"));
+		adjCharStats.setStat(CharStats.DEXTERITY,Util.getParmPlus(newText,"dex"));
+		adjCharStats.setStat(CharStats.INTELLIGENCE,Util.getParmPlus(newText,"int"));
+		adjCharStats.setStat(CharStats.MAX_STRENGTH_ADJ,Util.getParmPlus(newText,"maxstr"));
+		adjCharStats.setStat(CharStats.MAX_WISDOM_ADJ,Util.getParmPlus(newText,"maxwis"));
+		adjCharStats.setStat(CharStats.MAX_CHARISMA_ADJ,Util.getParmPlus(newText,"maxcha"));
+		adjCharStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,Util.getParmPlus(newText,"maxcon"));
+		adjCharStats.setStat(CharStats.MAX_DEXTERITY_ADJ,Util.getParmPlus(newText,"maxdex"));
+		adjCharStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,Util.getParmPlus(newText,"maxint"));
 
-		adjCharState.setHitPoints(getVal(newText,"hit"));
-		adjCharState.setHunger(getVal(newText,"hun"));
-		adjCharState.setMana(getVal(newText,"man"));
-		adjCharState.setMovement(getVal(newText,"mov"));
-		adjCharState.setThirst(getVal(newText,"thi"));
+		adjCharState.setHitPoints(Util.getParmPlus(newText,"hit"));
+		adjCharState.setHunger(Util.getParmPlus(newText,"hun"));
+		adjCharState.setMana(Util.getParmPlus(newText,"man"));
+		adjCharState.setMovement(Util.getParmPlus(newText,"mov"));
+		adjCharState.setThirst(Util.getParmPlus(newText,"thi"));
 		return ((gotClass?1:0)+(gotRace?2:0)+(gotSex?4:0));
 	}
 

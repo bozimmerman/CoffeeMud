@@ -25,7 +25,7 @@ public class Decay extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		tickDown=getParmVal(parms,"remain",tickDown);
+		tickDown=Util.getParmInt(parms,"remain",tickDown);
 	}
 
 	public String getParms()

@@ -43,7 +43,7 @@ public class MOBHunter extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		radius=getParmVal(newParms,"radius",radius);
+		radius=Util.getParmInt(newParms,"radius",radius);
 	}
 	private MOB findPrey(MOB mob)
 	{

@@ -22,8 +22,8 @@ public class Prop_NarrowLedge extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		check=getParmVal(newText,"check",16);
-		name=getParmStr(newText,"name","the narrow ledge");
+		check=Util.getParmInt(newText,"check",16);
+		name=Util.getParmStr(newText,"name","the narrow ledge");
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)

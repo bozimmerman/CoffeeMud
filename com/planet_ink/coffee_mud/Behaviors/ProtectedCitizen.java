@@ -16,6 +16,7 @@ public class ProtectedCitizen extends ActiveTicker
 	private String[] claims=null;
 	private int radius=7;
 	private int maxAssistance=1;
+	private boolean wander=false;
 
 	public Behavior newInstance()
 	{
@@ -33,8 +34,9 @@ public class ProtectedCitizen extends ActiveTicker
 		super.setParms(parms);
 		cityguard=null;
 		zapper=null;
-		radius=getParmVal(parms,"radius",radius);
-		maxAssistance=getParmVal(parms,"maxassists",maxAssistance);
+		wander=parms.toUpperCase().indexOf("WANDER");
+		radius=Util.getParmInt(parms,"radius",radius);
+		maxAssistance=Util.getParmInt(parms,"maxassists",maxAssistance);
 		claims=null;
 	}
 
@@ -119,7 +121,7 @@ public class ProtectedCitizen extends ActiveTicker
 
 		Room thisRoom=mob.location();
 		Vector V=new Vector();
-		SaucerSupport.getRadiantRooms(thisRoom,V,true,true,false,null,radius);
+		SaucerSupport.getRadiantRooms(thisRoom,V,true,!wander,false,null,radius);
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);

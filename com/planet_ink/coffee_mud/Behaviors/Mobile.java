@@ -71,7 +71,7 @@ public class Mobile extends ActiveTicker
 		leash=0;
 		leashHash=null;
 		restrictedLocales=null;
-		leash=getParmVal(newParms,"LEASH",0);
+		leash=Util.getParmInt(newParms,"LEASH",0);
 		Vector V=Util.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{

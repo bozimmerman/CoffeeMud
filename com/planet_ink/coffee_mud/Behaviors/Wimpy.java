@@ -25,9 +25,9 @@ public class Wimpy extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		tickWait=getParmVal(newParms,"delay",0);
+		tickWait=Util.getParmInt(newParms,"delay",0);
 		tickDown=tickWait;
-		veryWimpy=getParmVal(newParms,"very",0)==1;
+		veryWimpy=Util.getParmInt(newParms,"very",0)==1;
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)

@@ -44,9 +44,9 @@ public class Sounder extends StdBehavior
 		{
 			String s=(String)emote.firstElement();
 			minTicks=23;
-			minTicks=getParmVal(newParms,"min",minTicks);
+			minTicks=Util.getParmInt(newParms,"min",minTicks);
 			maxTicks=23;
-			maxTicks=getParmVal(newParms,"max",maxTicks);
+			maxTicks=Util.getParmInt(newParms,"max",maxTicks);
 			if((minTicks!=23)||(maxTicks!=23))
 				emote.removeElementAt(0);
 			for(int v=0;v<emote.size();v++)

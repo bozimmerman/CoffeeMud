@@ -28,77 +28,6 @@ public class GenSuperPill extends GenPill
 	}
 	public boolean isGeneric(){return true;}
 
-	public static int getVal(String text, String key)
-	{
-		text=text.toUpperCase();
-		key=key.toUpperCase();
-		int x=text.indexOf(key);
-		while(x>=0)
-		{
-			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
-			{
-				while((x<text.length())&&(text.charAt(x)!='+')&&(text.charAt(x)!='-'))
-					x++;
-				if(x<text.length())
-				{
-					char pm=text.charAt(x);
-					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
-						x++;
-					if(x<text.length())
-					{
-						text=text.substring(x);
-						x=0;
-						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
-							x++;
-						if(pm=='+')
-							return Util.s_int(text.substring(0,x));
-						else
-							return -Util.s_int(text.substring(0,x));
-					}
-				}
-				x=-1;
-			}
-			else
-				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
-		}
-		return 0;
-	}
-
-	public static String getStr(String text, String key)
-	{
-		String oldText=text;
-		text=text.toUpperCase();
-		key=key.toUpperCase();
-		int x=text.indexOf(key);
-		while(x>=0)
-		{
-			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
-			{
-				while((x<text.length())&&(text.charAt(x)!='='))
-					x++;
-				if(x<text.length())
-				{
-					while((x<text.length())&&(!Character.isLetter(text.charAt(x))))
-						x++;
-					if(x<text.length())
-					{
-						oldText=oldText.substring(x);
-						text=text.substring(x);
-						x=0;
-						while((x<text.length())&&(Character.isLetter(text.charAt(x))))
-							x++;
-						return oldText.substring(0,x).trim();
-					}
-
-				}
-				x=-1;
-			}
-			else
-				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
-		}
-		return "";
-	}
-
 	public String secretIdentity()
 	{
 		String id=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells(this));
@@ -110,53 +39,53 @@ public class GenSuperPill extends GenPill
 		boolean redress=false;
 		if(getSpells(this).size()>0)
 			eatIfAble(mob,this);
-		mob.baseEnvStats().setAbility(mob.baseEnvStats().ability()+getVal(readableText,"abi"));
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+getVal(readableText,"arm"));
-		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+getVal(readableText,"att"));
-		mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+getVal(readableText,"dam"));
-		mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|getVal(readableText,"dis"));
-		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+getVal(readableText,"lev"));
-		mob.baseEnvStats().setRejuv(mob.baseEnvStats().rejuv()+getVal(readableText,"rej"));
-		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|getVal(readableText,"sen"));
-		mob.baseEnvStats().setSpeed(mob.baseEnvStats().speed()+getVal(readableText,"spe"));
-		mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+getVal(readableText,"wei"));
-		if(getVal(readableText,"wei")!=0) redress=true;
-		mob.baseEnvStats().setHeight(mob.baseEnvStats().height()+getVal(readableText,"hei"));
-		if(getVal(readableText,"hei")!=0) redress=true;
+		mob.baseEnvStats().setAbility(mob.baseEnvStats().ability()+Util.getParmPlus(readableText,"abi"));
+		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+Util.getParmPlus(readableText,"arm"));
+		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+Util.getParmPlus(readableText,"att"));
+		mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+Util.getParmPlus(readableText,"dam"));
+		mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|Util.getParmPlus(readableText,"dis"));
+		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+Util.getParmPlus(readableText,"lev"));
+		mob.baseEnvStats().setRejuv(mob.baseEnvStats().rejuv()+Util.getParmPlus(readableText,"rej"));
+		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|Util.getParmPlus(readableText,"sen"));
+		mob.baseEnvStats().setSpeed(mob.baseEnvStats().speed()+Util.getParmPlus(readableText,"spe"));
+		mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+Util.getParmPlus(readableText,"wei"));
+		if(Util.getParmPlus(readableText,"wei")!=0) redress=true;
+		mob.baseEnvStats().setHeight(mob.baseEnvStats().height()+Util.getParmPlus(readableText,"hei"));
+		if(Util.getParmPlus(readableText,"hei")!=0) redress=true;
 
-		String val=getStr(readableText,"gen").toUpperCase();
+		String val=Util.getParmStr(readableText,"gen","").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 			mob.baseCharStats().setStat(CharStats.GENDER,(int)val.charAt(0));
-		val=getStr(readableText,"cla").toUpperCase();
+		val=Util.getParmStr(readableText,"cla","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
 			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val));
-		if(getVal(readableText,"lev")!=0)
-			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+getVal(readableText,"lev"));
-		val=getStr(readableText,"rac").toUpperCase();
+		if(Util.getParmPlus(readableText,"lev")!=0)
+			mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())+Util.getParmPlus(readableText,"lev"));
+		val=Util.getParmStr(readableText,"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
 			redress=true;
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
 		}
-		mob.baseCharStats().setStat(CharStats.MAX_STRENGTH_ADJ,mob.baseCharStats().getStat(CharStats.MAX_STRENGTH_ADJ)+getVal(readableText,"maxstr"));
-		mob.baseCharStats().setStat(CharStats.MAX_WISDOM_ADJ,mob.baseCharStats().getStat(CharStats.MAX_WISDOM_ADJ)+getVal(readableText,"maxwis"));
-		mob.baseCharStats().setStat(CharStats.MAX_CHARISMA_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CHARISMA_ADJ)+getVal(readableText,"maxcha"));
-		mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)+getVal(readableText,"maxcon"));
-		mob.baseCharStats().setStat(CharStats.MAX_DEXTERITY_ADJ,mob.baseCharStats().getStat(CharStats.MAX_DEXTERITY_ADJ)+getVal(readableText,"maxdex"));
-		mob.baseCharStats().setStat(CharStats.MAX_INTELLIGENCE_ADJ,mob.baseCharStats().getStat(CharStats.MAX_INTELLIGENCE_ADJ)+getVal(readableText,"maxint"));
+		mob.baseCharStats().setStat(CharStats.MAX_STRENGTH_ADJ,mob.baseCharStats().getStat(CharStats.MAX_STRENGTH_ADJ)+Util.getParmPlus(readableText,"maxstr"));
+		mob.baseCharStats().setStat(CharStats.MAX_WISDOM_ADJ,mob.baseCharStats().getStat(CharStats.MAX_WISDOM_ADJ)+Util.getParmPlus(readableText,"maxwis"));
+		mob.baseCharStats().setStat(CharStats.MAX_CHARISMA_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CHARISMA_ADJ)+Util.getParmPlus(readableText,"maxcha"));
+		mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)+Util.getParmPlus(readableText,"maxcon"));
+		mob.baseCharStats().setStat(CharStats.MAX_DEXTERITY_ADJ,mob.baseCharStats().getStat(CharStats.MAX_DEXTERITY_ADJ)+Util.getParmPlus(readableText,"maxdex"));
+		mob.baseCharStats().setStat(CharStats.MAX_INTELLIGENCE_ADJ,mob.baseCharStats().getStat(CharStats.MAX_INTELLIGENCE_ADJ)+Util.getParmPlus(readableText,"maxint"));
 
-		mob.baseState().setHitPoints(mob.curState().getHitPoints()+getVal(readableText,"hit"));
-		mob.curState().setHunger(mob.curState().getHunger()+getVal(readableText,"hun"));
-		mob.curState().setMana(mob.curState().getMana()+getVal(readableText,"man"));
-		mob.curState().setMovement(mob.curState().getMovement()+getVal(readableText,"mov"));
-		mob.curState().setThirst(mob.curState().getThirst()+getVal(readableText,"thi"));
+		mob.baseState().setHitPoints(mob.curState().getHitPoints()+Util.getParmPlus(readableText,"hit"));
+		mob.curState().setHunger(mob.curState().getHunger()+Util.getParmPlus(readableText,"hun"));
+		mob.curState().setMana(mob.curState().getMana()+Util.getParmPlus(readableText,"man"));
+		mob.curState().setMovement(mob.curState().getMovement()+Util.getParmPlus(readableText,"mov"));
+		mob.curState().setThirst(mob.curState().getThirst()+Util.getParmPlus(readableText,"thi"));
 
-		mob.setPractices(mob.getPractices()+getVal(readableText,"prac"));
-		mob.setTrains(mob.getTrains()+getVal(readableText,"trai"));
-		mob.setQuestPoint(mob.getQuestPoint()+getVal(readableText,"ques"));
-		mob.setMoney(mob.getMoney()+getVal(readableText,"coin"));
-		int exp=getVal(readableText,"expe");
+		mob.setPractices(mob.getPractices()+Util.getParmPlus(readableText,"prac"));
+		mob.setTrains(mob.getTrains()+Util.getParmPlus(readableText,"trai"));
+		mob.setQuestPoint(mob.getQuestPoint()+Util.getParmPlus(readableText,"ques"));
+		mob.setMoney(mob.getMoney()+Util.getParmPlus(readableText,"coin"));
+		int exp=Util.getParmPlus(readableText,"expe");
 		if(exp>0) mob.charStats().getCurrentClass().gainExperience(mob,null,mob.getLeigeID(),exp,false);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();

@@ -37,8 +37,8 @@ public class ProtectedCitizens extends ActiveTicker
 		super.setParms(parms);
 		citizenZapper=null;
 		helperZapper=null;
-		radius=getParmVal(parms,"radius",radius);
-		maxAssistance=getParmVal(parms,"maxassists",maxAssistance);
+		radius=Util.getParmInt(parms,"radius",radius);
+		maxAssistance=Util.getParmInt(parms,"maxassists",maxAssistance);
 		claims=null;
 	}
 

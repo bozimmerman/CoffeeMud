@@ -26,11 +26,11 @@ public class Prop_SpellReflecting extends Property
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		minLevel=getParmVal(newText,"min",minLevel);
-		maxLevel=getParmVal(newText,"max",maxLevel);
-		chance=getParmVal(newText,"chance",chance);
-		fade=getParmVal(newText,"fade",fade);
-		remaining=getParmVal(newText,"remain",remaining);
+		minLevel=Util.getParmInt(newText,"min",minLevel);
+		maxLevel=Util.getParmInt(newText,"max",maxLevel);
+		chance=Util.getParmInt(newText,"chance",chance);
+		fade=Util.getParmInt(newText,"fade",fade);
+		remaining=Util.getParmInt(newText,"remain",remaining);
 		setAbilityCode(remaining);
 	}
 

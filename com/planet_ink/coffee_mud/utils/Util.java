@@ -28,6 +28,153 @@ public class Util
 	}
 	
 	
+	public static int getParmInt(String text, String key, int defaultValue)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='=')&&(!Character.isDigit(text.charAt(x))))
+					x++;
+				if((x<text.length())&&(text.charAt(x)=='='))
+				{
+					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+							x++;
+						return Util.s_int(text.substring(0,x));
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return defaultValue;
+	}
+	
+	public static int getParmPlus(String text, String key)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='+')&&(text.charAt(x)!='-'))
+					x++;
+				if(x<text.length())
+				{
+					char pm=text.charAt(x);
+					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+							x++;
+						if(pm=='+')
+							return Util.s_int(text.substring(0,x));
+						else
+							return -Util.s_int(text.substring(0,x));
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return 0;
+	}
+
+	public static double getParmDoublePlus(String text, String key)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='+')&&(text.charAt(x)!='-'))
+					x++;
+				if(x<text.length())
+				{
+					char pm=text.charAt(x);
+					while((x<text.length())
+					&&(!Character.isDigit(text.charAt(x)))
+					&&(text.charAt(x)!='.'))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())
+						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
+							x++;
+						if(text.substring(0,x).indexOf(".")<0)
+						{
+							if(pm=='+')
+								return new Integer(Util.s_int(text.substring(0,x))).doubleValue();
+							else
+								return new Integer(-Util.s_int(text.substring(0,x))).doubleValue();
+						}
+						else
+						{
+							if(pm=='+')
+								return Util.s_double(text.substring(0,x));
+							else
+								return -Util.s_double(text.substring(0,x));
+						}
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return (double)0.0;
+	}
+	
+	public static String getParmStr(String text, String key, String defaultVal)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='='))
+					x++;
+				if(x<text.length())
+				{
+					boolean endWithQuote=false;
+					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
+						if(text.charAt(x)=='\"'){ endWithQuote=true; x++; break;}
+						else
+							x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())
+							&&((Character.isLetterOrDigit(text.charAt(x)))
+							||((endWithQuote)&&(text.charAt(x)!='\"'))))
+							x++;
+						return text.substring(0,x).trim();
+					}
+
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return defaultVal;
+	}
+
 	public static String[] toStringArray(Vector V)
 	{
 		if((V==null)||(V.size()==0)){

@@ -47,9 +47,9 @@ public class RandomTraps extends ActiveTicker
 		if(x>=0)
 		{
 			oldParms=newParms.substring(0,x).trim();
-			String p=getParmStr(oldParms,"ROOMS","NO").toUpperCase().trim();
+			String p=Util.getParmStr(oldParms,"ROOMS","NO").toUpperCase().trim();
 			if(p.startsWith("Y")) doRooms=true;
-			p=getParmStr(oldParms,"ITEMS","NO").toUpperCase().trim();
+			p=Util.getParmStr(oldParms,"ITEMS","NO").toUpperCase().trim();
 			if(p.startsWith("Y")){
 				doAnyItems=true;
 				doAnyContainers=true;
@@ -89,7 +89,7 @@ public class RandomTraps extends ActiveTicker
 				doLockedContainers=false;
 			}
 			
-			p=getParmStr(oldParms,"EXITS","LOCKED").toUpperCase().trim();
+			p=Util.getParmStr(oldParms,"EXITS","LOCKED").toUpperCase().trim();
 			if((p.startsWith("Y"))
 			||(p.startsWith("DOOR")))
 			{
@@ -162,8 +162,8 @@ public class RandomTraps extends ActiveTicker
 			}
 		}
 		super.setParms(oldParms);
-		minTraps=getParmVal(oldParms,"mintraps",1);
-		maxTraps=getParmVal(oldParms,"maxtraps",1);
+		minTraps=Util.getParmInt(oldParms,"mintraps",1);
+		maxTraps=Util.getParmInt(oldParms,"maxtraps",1);
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;

@@ -18,11 +18,6 @@ public class Arrest extends StdBehavior
 	}
 	private Vector oldWarrants=new Vector();
 	private Vector warrants=new Vector();
-	private Vector otherCrimes=new Vector();
-	private Vector otherBits=new Vector();
-	private Vector officerNames=new Vector();
-	private Vector chitChat=new Vector();
-	private Vector chitChat2=new Vector();
 	private boolean loadAttempt=false;
 
 	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
@@ -58,6 +53,77 @@ public class Arrest extends StdBehavior
 	private static final int BIT_CRIMENAME=2;
 	private static final int BIT_SENTENCE=3;
 	private static final int BIT_WARNMSG=4;
+	private static final int BIT_NUMBITS=5;
+	
+	private static final String defaultLaw=
+		"OFFICERS=@\n"+
+		"JUDGE=@\n"+
+		"JAIL=@\n"+
+		"RELEASEROOM=@\n"+
+		"WARNINGMSG=Your behavior is unacceptable.  Do not repeat this offense.  You may go.\n"+
+		"THREATMSG=That behavior is NOT tolerated here.  Keep your nose clean, or next time I may not be so lenient.  You may go.\n"+
+		"JAIL1MSG=You are hereby sentenced to minimum jail time.  Take away the prisoner!\n"+
+		"JAIL2MSG=You are hereby sentenced to jail time.  Take away the prisoner!\n"+
+		"JAIL3MSG=You are hereby sentenced to hard jail time.  Take away the prisoner!\n"+
+		"JAIL4MSG=You are hereby sentenced to rot in jail.  Take away the prisoner!\n"+
+		"PAROLE1MSG=You are hereby sentenced to a short period under the prisoner's geas. Perhaps that will make you think!\n"+
+		"PAROLE2MSG=You are hereby sentenced to a period under the prisoner's geas. That will teach you, I think.\n"+
+		"PAROLE3MSG=You are hereby sentenced to hard time under the prisoner's geas! That will teach you!\n"+
+		"PAROLE4MSG=You are hereby sentenced to rot under the prisoner's geas!  Don't let me see you again!\n"+
+		"PAROLEDISMISS=Now, get out of my sight!\n"+
+		"PREVOFFMSG=You have been warned about this behavior before.\n"+
+		"EXECUTEMSG=You are hereby sentenced to a brutal death.  Sentence to be carried out IMMEDIATELY!\n"+
+		"LAWFREE=You are free to go.\n"+
+		"CHITCHAT=\"You didn't really think you could get away with it did you?\" \"You are REALLY in for it!\" \"Convicts like you are a dime a dozen.\" \"MAKE WAY! DEAD MAN WALKING!\" \"You are gonna GET it.\" \"I love my job.\"\n"+
+		"CHITCHAT2=\"You didn't really think you would get away with it did you?\" \"I hope you aren't claustrophobic!\" \"Remember not to drop your soap in there.\" \"MAKE WAY! DEAD MAN WALKING!\" \"I recommend you hold your breathe while you're in there -- I always do.  It stinks!\" \"Putting away scum like you makes it all worthwhile\"\n"+
+		"RESISTWARNMSG=I said SIT DOWN! NOW!\n"+
+		"NORESISTMSG=Good.  Now hold still.\n"+
+		"RESISTFIGHTMSG=Resisting arrest?! How DARE you!\n"+
+		"RESISTMSG=Resisting arrest eh?  Well, have it your way.\n"+
+		"PROTECTED=+INT 3\n"+
+		"ARRESTMOBS=true\n"+
+		"TRESPASSERS=\n"+
+		"PAROLE1TIME=40\n"+
+		"PAROLE2TIME=80\n"+
+		"PAROLE3TIME=160\n"+
+		"PAROLE4TIME=320\n"+
+		"JAIL1TIME=20\n"+
+		"JAIL2TIME=40\n"+
+		"JAIL3TIME=80\n"+
+		"JAIL4TIME=160\n"+
+		"RESISTINGARREST=;;resisting arrest;jail1;Resisting arrest by a lawful officer is a serious crime.\n"+
+		"TRESPASSING=!home !indoors;!recently;trespassing;jail3;Your kind are not allowed here.\n"+
+		"NUDITY=!home !indoors;witness !recently;indecent exposure;warning;Nudity below the waist violates our high moral code.  Use the 'outfit' command if you need clothes!\n"+
+		"ARMED=\n"+
+		"ASSAULT=;;assaulting <T-NAME>;jail4;Assault is a hideous offense.\n"+
+		"MURDER=;;murdering <T-NAME>;death;Murder is a barbarous offense.\n"+
+		"THIEF_SWIPE=;;robbing <T-NAME>;jail2;Swiping violates our high moral code.\n"+
+		"THIEF_STEAL=;;robbing <T-NAME>;jail3;Stealing violates our high moral code.\n"+
+		"THIEF_TRAP=!home;;setting traps in city limits;jail3;Trapping puts us all in mortal danger.\n"+
+		"THIEF_BRIBE=;;bribing <T-NAME>;jail2;Bribing is a violation of our moral code.\n"+
+		"THIEF_CON=;;conning <T-NAME>;jail2;Conning and deception is a violation of our moral code.\n"+
+		"THIEF_EMBEZZLE=;;embezzling <T-NAME>;jail4;Embezzling money is a form of vicious theft!\n"+
+		"THIEF_CONTRACTHIT=;;taking out contract on <T-NAME>'s life;death;Murder by contract is a barbarous offense.\n"+
+		"THIEF_DEATHTRAP=;;setting a death trap;death;Murder by trapping is a barbarous offense.\n"+
+		"THIEF_FORGREY=;;forgery;jail2;Forgery is deceptive and quite illegal.\n"+
+		"THIEF_RACKETEER=;;racketeering <T-NAME>;jail3;Racketeering is a form of vicious theft.\n"+
+		"THIEF_ROBBERY=;;robbing <T-NAME>;jail3;Robbery violates our high moral code.\n"+
+		"INEBRIATION=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
+		"POISON_ALCOHOL=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
+		"POISON_FIREBREATHER=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
+		"POISON_LIQUOR=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
+		"CRIME1=spit(s) spits;;witness;spitting in city limits;warning;Spitting is a dirty habit.\n"+
+		"CRIME2=wiggies wiggy wiggie;!home;witness;wiggying in public;warning;Wiggying is considered indecent.\n"+
+		"CRIME3=throttle \"grabs for your\";!home;witness;throttling in public;warning;Throttling is considered unacceptable behavior, as it violates the peace.\n"+
+		"CRIME4=\"barks at\" \"barks loudly at\";!indoors;witness;creating a disturbance;warning;We do not take kindly to people creating a nuisance of themselves.\n"+
+		"CRIME5=\"flicks a bird\" \"gives you the bird\";!indoors;witness recently;indecent public behavior;warning;'Flicking the bird' is considered unnacceptable behavior.\n"+
+		"CRIME6=\"flicks his whip across\" \"flicks her whip across\" \"his tongue over\" \"her tongue over\" \"tongue around you\" bites slaps \"vague stroking motions\" \"and ties his to a four\" \"and ties her to a four\" \"and ties you securely to a\";!indoors;witness recently;inappropriate public behavior;warning;If you need to do that, we kindly ask that you take it inside.\n"+
+		"CRIME7=\"ducks down low, charges forward\" \"head into your stomach\" \"doubles over in pain\" \"suddenly knees you\" \"rips out\" \"With a resounding WHAP\" \"to the floor, pinning\";!indoors;witness recently;public fighting;warning;Do NOT violate our peace.\n"+
+		"CRIME8=\"swears at\";!indoors;witness recently;inappropriate public language;warning;If you need to curse, go somewhere more private.\n"+
+		"CRIME9=\"stripping away\" \"has started to strip you\" \"clothes off and parades\" \"is exposing\" \"has just revealed\" \"pants and rudely moons\" \"bends over and gives you\";!indoors;witness;indecent exposure;warning;Nudity violates our high moral code.  Use the 'outfit' command if you need clothes!\n"+
+		"CRIME10=\"pukes on\" \"spews vomit and pukes all over your\";!indoors;witness recently;desecrating our streets;parole1;If you need to be sick, DO NOT do it on our streets.\n"+
+		"CRIME11=\"while stabbing a pin into a voodoo doll\";;witness;practicing voodoo;jail2;Voodoo is NOT tolerated here.\n";
+		
 
 	private class ArrestWarrant implements Cloneable
 	{
@@ -83,6 +149,91 @@ public class Arrest extends StdBehavior
 				if(A!=null) A.unInvoke();
 			}
 			arrestingOfficer=mob;
+		}
+	}
+	
+	private class Laws
+	{
+		public Vector otherCrimes=new Vector();
+		public Vector otherBits=new Vector();
+		private Vector officerNames=new Vector();
+		public Vector chitChat=new Vector();
+		public Vector chitChat2=new Vector();
+		private Properties theLaws=null;
+		
+		public Laws(){}
+		
+		public Laws(Properties laws)
+		{
+			theLaws=laws;
+			String officers=(String)laws.get("OFFICERS");
+			if((officers!=null)&&(officers.length()>0))
+				officerNames=Util.parse(officers);
+			if((officers!=null)&&(officers.length()>0))
+				officerNames=Util.parse(officers);
+			String chat=(String)laws.get("CHITCHAT");
+			if((chat!=null)&&(chat.length()>0))
+				chitChat=Util.parse(chat);
+			String chat2=(String)laws.get("CHITCHAT2");
+			if((chat2!=null)&&(chat2.length()>0))
+				chitChat2=Util.parse(chat2);
+
+			for(Enumeration e=laws.keys();e.hasMoreElements();)
+			{
+				String key=(String)e.nextElement();
+				String words=(String)laws.get(key);
+				if(key.startsWith("CRIME"))
+				{
+					int x=words.indexOf(";");
+					if(x>0)
+					{
+						otherCrimes.addElement(Util.parse(words.substring(0,x)));
+						String[] bits=new String[BIT_NUMBITS];
+						Vector parsed=Util.parseSemicolons(words.substring(x+1));
+						for(int i=0;i<BIT_NUMBITS;i++)
+							if(i<parsed.size())
+								bits[i]=(String)parsed.elementAt(i);
+							else
+								bits[i]="";
+						otherBits.addElement(bits);
+					}
+					laws.remove(key);
+				}
+			}
+		}
+		
+		public String getMsg(String msg)
+		{ 
+			if((theLaws!=null)&&(theLaws.get(msg)!=null))
+				return (String)theLaws.get(msg);
+			return "";
+		}
+		
+		public boolean isLaw(String law)
+		{
+			if((theLaws!=null)&&(theLaws.get(law)!=null))
+				return ((String)theLaws.get(law)).length()>0;
+			return false;
+		}
+		
+		public String getLaw(String law)
+		{
+			if((theLaws!=null)&&(theLaws.get(law)!=null))
+				return (String)theLaws.get(law);
+			return "";
+		}
+		
+		public String[] getLawBits(String law)
+		{
+			String tlaw=getLaw(law);
+			String[] bits=new String[BIT_NUMBITS];
+			Vector parsed=Util.parseSemicolons(tlaw);
+			for(int i=0;i<BIT_NUMBITS;i++)
+				if(i<parsed.size())
+					bits[i]=(String)parsed.elementAt(i);
+				else
+					bits[i]="";
+			return bits;
 		}
 	}
 
@@ -141,7 +292,7 @@ public class Arrest extends StdBehavior
 			{
 				if((mob.isMonster())
 				&&(mob.location()!=null)
-				&&(isElligibleOfficer(mob,mob.location().getArea())))
+				&&(isElligibleOfficer(getLaws(mob.location().getArea()),mob,mob.location().getArea())))
 					return true;
 				return (getWarrant(mob,0))!=null;
 			}
@@ -155,15 +306,38 @@ public class Arrest extends StdBehavior
 		loadAttempt=false;
 	}
 
-	private Properties getLaws()
+	private Laws getLaws(Environmental what)
 	{
 		String lawName=getParms();
-		if(lawName.length()==0)	lawName="laws.ini";
-		Properties laws=(Properties)Resources.getResource("LEGAL-"+lawName);
+		Laws laws=null;
+		if((lawName.equalsIgnoreCase("area"))&&(what!=null))
+			laws=(Laws)Resources.getResource("LEGAL-"+what.Name());
+		else
+		{
+			if(lawName.length()==0)	
+				lawName="laws.ini";
+			laws=(Laws)Resources.getResource("LEGAL-"+lawName);
+		}
 		if(laws==null)
 		{
-			laws=new Properties();
-			try{laws.load(new FileInputStream("resources"+File.separatorChar+lawName));}
+			Properties lawprops=new Properties();
+			try
+			{
+				if((lawName.equalsIgnoreCase("area"))&&(what!=null))
+				{
+					Vector data=ExternalPlay.DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
+					if((data!=null)&&(data.size()>0)) data=(Vector)data.firstElement();
+					if((data!=null)&&(data.size()>0))
+						lawprops.load(new ByteArrayInputStream(((String)data.elementAt(3)).getBytes()));
+					else
+					{
+						lawprops.load(new ByteArrayInputStream(defaultLaw.getBytes()));
+						ExternalPlay.DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",defaultLaw);
+					}
+				}
+				if(lawprops.isEmpty())
+					lawprops.load(new FileInputStream("resources"+File.separatorChar+lawName));
+			}
 			catch(IOException e)
 			{
 				if(!loadAttempt)
@@ -171,56 +345,13 @@ public class Arrest extends StdBehavior
 					Log.errOut("Arrest","Unable to load: "+lawName+", legal system inoperable.");
 					loadAttempt=true;
 				}
-				return laws;
+				return new Laws();
 			}
 			loadAttempt=true;
+			laws=new Laws(lawprops);
 			Resources.submitResource("LEGAL-"+lawName,laws);
-			String officers=(String)laws.get("OFFICERS");
-			if((officers!=null)&&(officers.length()>0))
-				officerNames=Util.parse(officers);
-			if((officers!=null)&&(officers.length()>0))
-				officerNames=Util.parse(officers);
-			String chat=(String)laws.get("CHITCHAT");
-			if((chat!=null)&&(chat.length()>0))
-				chitChat=Util.parse(chat);
-			String chat2=(String)laws.get("CHITCHAT2");
-			if((chat2!=null)&&(chat2.length()>0))
-				chitChat2=Util.parse(chat2);
-
-			for(Enumeration e=laws.keys();e.hasMoreElements();)
-			{
-				String key=(String)e.nextElement();
-				String words=(String)laws.get(key);
-				if(key.startsWith("CRIME"))
-				{
-					int x=words.indexOf(";");
-					if(x>0)
-					{
-						otherCrimes.addElement(Util.parse(words.substring(0,x)));
-						otherBits.addElement(words.substring(x+1));
-					}
-					laws.remove(key);
-				}
-			}
 		}
 		return laws;
-	}
-
-	public String getBit(String words, int which)
-	{
-		int x=words.indexOf(";");
-		int one=0;
-		while(x>=0)
-		{
-			if(one==which)
-				return words.substring(0,x);
-			one++;
-			words=words.substring(x+1);
-			x=words.indexOf(";");
-		}
-		if(which==one)
-			return words;
-		return "";
 	}
 
 	public ArrestWarrant getWarrant(MOB mob, int which)
@@ -295,6 +426,120 @@ public class Arrest extends StdBehavior
 		return null;
 	}
 
+	public boolean isAnyKindOfOfficer(Laws laws, MOB M)
+	{
+		if((M.isMonster())&&(M.location()!=null))
+		{
+			for(int i=0;i<laws.officerNames.size();i++)
+				if(CoffeeUtensils.containsString(M.displayText(),(String)laws.officerNames.elementAt(i)))
+				{
+					for(int b=0;b<M.numBehaviors();b++)
+					{
+						Behavior B=M.fetchBehavior(b);
+						if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
+							return true;
+					}
+				}
+		}
+		return false;
+	}
+
+	public boolean isTheJudge(Laws laws, MOB M)
+	{
+		if(((M.isMonster()||M.soulMate()!=null))&&(M.location()!=null))
+		{
+			String judgeName=laws.getMsg("JUDGE");
+			if((CoffeeUtensils.containsString(M.Name(),judgeName))
+			||(CoffeeUtensils.containsString(M.displayText(),judgeName))
+			||(CoffeeUtensils.containsString(M.name(),judgeName))
+			||(CoffeeUtensils.containsString(M.ID(),judgeName)))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isElligibleOfficer(Laws laws, MOB M, Area myArea)
+	{
+		if((M.isMonster())&&(M.location()!=null))
+		{
+			if((myArea!=null)&&(M.location().getArea()!=myArea)) return false;
+
+			if(isAnyKindOfOfficer(laws,M)
+			&&(!isBusyWithJustice(M))
+			&&(Sense.aliveAwakeMobile(M,true))
+			&&(!M.isInCombat()))
+				return true;
+		}
+		return false;
+	}
+
+	public MOB getElligibleOfficerHere(Laws laws, 
+									   Area myArea, 
+									   Room R, 
+									   MOB criminal, 
+									   MOB victim)
+	{
+		if(R==null) return null;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if((M!=criminal)
+			   &&(M.location()!=null)
+			   &&(M.location().getArea()==myArea)
+			   &&((victim==null)||(M!=victim))
+			   &&(isElligibleOfficer(laws,M,myArea))
+			   &&(Sense.canBeSeenBy(criminal,M)))
+				return M;
+		}
+		return null;
+	}
+
+	public MOB getAnyElligibleOfficer(Laws laws, 
+									  Area myArea, 
+									  MOB criminal, 
+									  MOB victim)
+	{
+		Room R=criminal.location();
+		if(R==null) return null;
+		if((myArea!=null)&&(R.getArea()!=myArea)) return null;
+		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
+		if(M==null)
+		for(Enumeration e=myArea.getMap();e.hasMoreElements();)
+		{
+			Room R2=(Room)e.nextElement();
+			M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
+			if(M!=null) break;
+		}
+		return M;
+	}
+
+	public MOB getElligibleOfficer(Laws laws, 
+								   Area myArea, 
+								   MOB criminal, 
+								   MOB victim)
+	{
+		Room R=criminal.location();
+		if(R==null) return null;
+		if((myArea!=null)&&(R.getArea()!=myArea)) return null;
+		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
+		if(M!=null) return M;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Room R2=R.getRoomInDir(d);
+			if(R2!=null)
+			{
+				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
+				if(M!=null)
+				{
+					int direction=Directions.getOpDirectionCode(d);
+					ExternalPlay.move(M,direction,false,false);
+					if(M.location()==R) return M;
+				}
+			}
+		}
+		return null;
+	}
+		
 	public boolean isStillACrime(ArrestWarrant W)
 	{
 		// will witness talk, or victim press charges?
@@ -339,9 +584,8 @@ public class Arrest extends StdBehavior
 		return adjusted;
 	}
 
-	public boolean judgeMe(MOB judge, MOB officer, MOB criminal, ArrestWarrant W)
+	public boolean judgeMe(Laws laws, MOB judge, MOB officer, MOB criminal, ArrestWarrant W)
 	{
-		Properties laws=getLaws();
 		switch(highestCrimeAction(criminal))
 		{
 		case ACTION_WARN:
@@ -357,12 +601,12 @@ public class Arrest extends StdBehavior
 					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".  ");
 					if((W2.warnMsg!=null)&&(W2.warnMsg.length()>0))
 						str.append(W2.warnMsg+"  ");
-					if((W2.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-						str.append(((String)laws.get("PREVOFFMSG"))+"  ");
+					if((W2.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+						str.append(laws.getMsg("PREVOFFMSG")+"  ");
 				}
 			}
-			if((laws.get("WARNINGMSG")!=null)&&(((String)laws.get("WARNINGMSG")).length()>0))
-				str.append(((String)laws.get("WARNINGMSG"))+"  ");
+			if(laws.getMsg("WARNINGMSG").length()>0)
+				str.append(laws.getMsg("WARNINGMSG")+"  ");
 			ExternalPlay.quickSay(judge,criminal,str.toString(),false,false);
 			}
 			return true;
@@ -379,110 +623,110 @@ public class Arrest extends StdBehavior
 					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".  ");
 					if((W2.warnMsg!=null)&&(W2.warnMsg.length()>0))
 						str.append(W2.warnMsg+"  ");
-					if((W2.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-						str.append(((String)laws.get("PREVOFFMSG"))+"  ");
+					if((W2.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+						str.append(laws.getMsg("PREVOFFMSG")+"  ");
 				}
 			}
-			if((laws.get("THREATMSG")!=null)&&(((String)laws.get("THREATMSG")).length()>0))
-				str.append(((String)laws.get("THREATMSG"))+"  ");
+			if(laws.getMsg("THREATMSG").length()>0)
+				str.append(laws.getMsg("THREATMSG")+"  ");
 			ExternalPlay.quickSay(judge,criminal,str.toString(),false,false);
 			}
 			return true;
 		case ACTION_PAROLE1:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("PAROLE1MSG")!=null)&&(((String)laws.get("PAROLE1MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PAROLE1MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("PAROLE1TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("PAROLE1MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("PAROLE1MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("PAROLE1TIME"));
 				W.state=STATE_PAROLING;
 			}
 			return false;
 		case ACTION_PAROLE2:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("PAROLE2MSG")!=null)&&(((String)laws.get("PAROLE2MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PAROLE2MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("PAROLE2TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("PAROLE2MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("PAROLE2MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("PAROLE2TIME"));
 				W.state=STATE_PAROLING;
 			}
 			return false;
 		case ACTION_PAROLE3:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("PAROLE3MSG")!=null)&&(((String)laws.get("PAROLE3MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PAROLE3MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("PAROLE3TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("PAROLE3MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("PAROLE3MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("PAROLE3TIME"));
 				W.state=STATE_PAROLING;
 			}
 			return false;
 		case ACTION_PAROLE4:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("PAROLE4MSG")!=null)&&(((String)laws.get("PAROLE4MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PAROLE4MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("PAROLE4TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("PAROLE4MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("PAROLE4MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("PAROLE4TIME"));
 				W.state=STATE_PAROLING;
 			}
 			return false;
 		case ACTION_JAIL1:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,W.criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("JAIL1MSG")!=null)&&(((String)laws.get("JAIL1MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("JAIL1MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("JAIL1TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("JAIL1MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("JAIL1MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("JAIL1TIME"));
 				W.state=STATE_JAILING;
 			}
 			return false;
 		case ACTION_JAIL2:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("JAIL2MSG")!=null)&&(((String)laws.get("JAIL2MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("JAIL2MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("JAIL2TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("JAIL2MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("JAIL2MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("JAIL2TIME"));
 				W.state=STATE_JAILING;
 			}
 			return false;
 		case ACTION_JAIL3:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("JAIL3MSG")!=null)&&(((String)laws.get("JAIL3MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("JAIL3MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("JAIL3TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("JAIL3MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("JAIL3MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("JAIL3TIME"));
 				W.state=STATE_JAILING;
 			}
 			return false;
 		case ACTION_JAIL4:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("JAIL4MSG")!=null)&&(((String)laws.get("JAIL4MSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("JAIL4MSG"),false,false);
-				W.jailTime=Util.s_int((String)laws.get("JAIL4TIME"));
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("JAIL4MSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("JAIL4MSG"),false,false);
+				W.jailTime=Util.s_int(laws.getMsg("JAIL4TIME"));
 				W.state=STATE_JAILING;
 			}
 			return false;
 		case ACTION_EXECUTE:
 			if(judge!=null)
 			{
-				if((W.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("PREVOFFMSG"),false,false);
-				if((laws.get("EXECUTEMSG")!=null)&&(((String)laws.get("EXECUTEMSG")).length()>0))
-					ExternalPlay.quickSay(judge,criminal,(String)laws.get("EXECUTEMSG"),false,false);
+				if((W.offenses>0)&&(laws.getMsg("PREVOFFMSG").length()>0))
+					ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PREVOFFMSG"),false,false);
+				if(laws.getMsg("EXECUTEMSG").length()>0)
+					ExternalPlay.quickSay(judge,criminal,laws.getMsg("EXECUTEMSG"),false,false);
 				W.state=STATE_EXECUTING;
 			}
 			return false;
@@ -575,6 +819,7 @@ public class Arrest extends StdBehavior
 	}
 
 	public boolean fillOutWarrant(MOB mob,
+								Laws laws,
 								Area myArea,
 								Environmental target,
 								String crimeLocs,
@@ -588,8 +833,8 @@ public class Arrest extends StdBehavior
 		if((myArea!=null)&&(mob.location().getArea()!=myArea))
 			return false;
 
-		if(isAnyKindOfOfficer(mob)
-		||(isTheJudge(mob))
+		if(isAnyKindOfOfficer(laws,mob)
+		||(isTheJudge(laws,mob))
 		||(mob.isASysOp(mob.location())))
 			return false;
 		
@@ -693,8 +938,7 @@ public class Arrest extends StdBehavior
 		// is the victim a protected race?
 		if(victim!=null)
 		{
-			String protectedStr=(String)getLaws().get("PROTECTED");
-			if((protectedStr!=null)&&(!SaucerSupport.zapperCheck(protectedStr,victim)))
+			if(!SaucerSupport.zapperCheck(laws.getMsg("PROTECTED"),victim))
 			   return false;
 		}
 
@@ -771,14 +1015,14 @@ public class Arrest extends StdBehavior
 		super.affect(affecting, affect);
 		if(!(affecting instanceof Area)) return;
 		Area myArea=(Area)affecting;
-		Properties laws=getLaws();
+		Laws laws=getLaws(affecting);
 		if(affect.source()==null) return;
 
 		// the archons pardon
 		if((affect.sourceMinor()==Affect.TYP_SPEAK)
 		&&(affect.sourceMessage()!=null)
 		&&(affect.source().isASysOp(affect.source().location())
-		   ||(isTheJudge(affect.source()))))
+		   ||(isTheJudge(laws,affect.source()))))
 		{
 			int x=affect.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
 			if(x>0)
@@ -816,40 +1060,37 @@ public class Arrest extends StdBehavior
 		   
 		if((affect.sourceMinor()==Affect.TYP_DEATH)
 		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof MOB))
+		&&(affect.tool() instanceof MOB)
+		&&(laws.isLaw("MURDER")))
 		{
-			String info=(String)laws.get("MURDER");
 			MOB criminal=(MOB)affect.tool();
-			if((info!=null)&&(info.length()>0))
+			for(int i=warrants.size()-1;i>=0;i--)
 			{
-				for(int i=warrants.size()-1;i>=0;i--)
-				{
-					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
-					if((W.victim!=null)
-					&&(W.criminal!=null)
-					&&(W.victim==affect.source())
-					&&(W.criminal==criminal))
-						warrants.removeElement(W);
-				}
-				fillOutWarrant(criminal,
-							   myArea,
-							   affect.source(),
-							   getBit(info,BIT_CRIMELOCS),
-							   getBit(info,BIT_CRIMEFLAGS),
-							   getBit(info,BIT_CRIMENAME),
-							   getBit(info,BIT_SENTENCE),
-							   getBit(info,BIT_WARNMSG));
-				return;
+				ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+				if((W.victim!=null)
+				&&(W.criminal!=null)
+				&&(W.victim==affect.source())
+				&&(W.criminal==criminal))
+					warrants.removeElement(W);
 			}
+			String[] bits=laws.getLawBits("MURDER");
+			fillOutWarrant(criminal,
+						   laws,
+						   myArea,
+						   affect.source(),
+						   bits[BIT_CRIMELOCS],
+						   bits[BIT_CRIMEFLAGS],
+						   bits[BIT_CRIMENAME],
+						   bits[BIT_SENTENCE],
+						   bits[BIT_WARNMSG]);
+			return;
 		}
-		boolean arrestMobs=false;
-		if(getLaws().get("ARRESTMOBS")!=null)
-			arrestMobs=((String)getLaws().get("ARRESTMOBS")).equalsIgnoreCase("true");
+		boolean arrestMobs=laws.getMsg("ARRESTMOBS").equalsIgnoreCase("true");
 
 		if((affect.source().isMonster())&&(!arrestMobs)) 
 			return;
 		
-		if(isAnyKindOfOfficer(affect.source())||(isTheJudge(affect.source())))
+		if(isAnyKindOfOfficer(laws,affect.source())||(isTheJudge(laws,affect.source())))
 			return;
 
 		if(!Sense.aliveAwakeMobile(affect.source(),true))
@@ -858,19 +1099,20 @@ public class Arrest extends StdBehavior
 		if(affect.source().location()==null) return;
 
 		if((affect.tool()!=null)
-		   &&(affect.tool() instanceof Ability)
-		   &&(affect.othersMessage()!=null))
+		&&(affect.tool() instanceof Ability)
+		&&(affect.othersMessage()!=null)
+		&&(laws.isLaw(affect.tool().ID().toUpperCase())))
 		{
-			String info=(String)laws.get(affect.tool().ID().toUpperCase());
-			if((info!=null)&&(info.length()>0))
-				fillOutWarrant(affect.source(),
-								myArea,
-								affect.target(),
-								getBit(info,BIT_CRIMELOCS),
-								getBit(info,BIT_CRIMEFLAGS),
-								getBit(info,BIT_CRIMENAME),
-								getBit(info,BIT_SENTENCE),
-								getBit(info,BIT_WARNMSG));
+			String[] info=laws.getLawBits(affect.tool().ID().toUpperCase());
+			fillOutWarrant(affect.source(),
+						   laws,
+							myArea,
+							affect.target(),
+							info[BIT_CRIMELOCS],
+							info[BIT_CRIMEFLAGS],
+							info[BIT_CRIMENAME],
+							info[BIT_SENTENCE],
+							info[BIT_WARNMSG]);
 		}
 		
 		for(int a=0;a<affect.source().numAffects();a++)
@@ -878,18 +1120,18 @@ public class Arrest extends StdBehavior
 			Ability A=affect.source().fetchAffect(a);
 			if((A!=null)
 			&&(!A.isAutoInvoked())
-			&&(laws.get("$"+A.ID().toUpperCase())!=null))
+			&&(laws.isLaw("$"+A.ID().toUpperCase())))
 			{
-				String info=(String)laws.get("$"+A.ID().toUpperCase());
-				if((info!=null)&&(info.length()>0))
-					fillOutWarrant(affect.source(),
-									myArea,
-									null,
-									getBit(info,BIT_CRIMELOCS),
-									getBit(info,BIT_CRIMEFLAGS),
-									getBit(info,BIT_CRIMENAME),
-									getBit(info,BIT_SENTENCE),
-									getBit(info,BIT_WARNMSG));
+				String[] info=laws.getLawBits("$"+A.ID().toUpperCase());
+				fillOutWarrant(affect.source(),
+								laws,
+								myArea,
+								null,
+								info[BIT_CRIMELOCS],
+								info[BIT_CRIMEFLAGS],
+								info[BIT_CRIMENAME],
+								info[BIT_SENTENCE],
+								info[BIT_WARNMSG]);
 			}
 		}
 
@@ -899,10 +1141,10 @@ public class Arrest extends StdBehavior
 		&&(affect.target()!=affect.source())
 		&&(!affect.target().name().equals(affect.source().name()))
 		&&(affect.target() instanceof MOB)
-		&&(!isTheJudge((MOB)affect.target())))
+		&&(!isTheJudge(laws,(MOB)affect.target())))
 		{
 			boolean justResisting=false;
-			if(isAnyKindOfOfficer((MOB)affect.target()))
+			if(isAnyKindOfOfficer(laws,(MOB)affect.target()))
 				for(int i=warrants.size()-1;i>=0;i--)
 				{
 					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
@@ -917,29 +1159,33 @@ public class Arrest extends StdBehavior
 				}
 			if(justResisting)
 			{
-				String info=(String)laws.get("RESISTINGARREST");
-				if((info!=null)&&(info.length()>0))
+				if(laws.isLaw("RESISTINGARREST"))
+				{
+					String[] info=laws.getLawBits("RESISTINGARREST");
 					fillOutWarrant(affect.source(),
+									laws,
 									myArea,
 									null,
-									getBit(info,BIT_CRIMELOCS),
-									getBit(info,BIT_CRIMEFLAGS),
-									getBit(info,BIT_CRIMENAME),
-									getBit(info,BIT_SENTENCE),
-									getBit(info,BIT_WARNMSG));
+									info[BIT_CRIMELOCS],
+									info[BIT_CRIMEFLAGS],
+									info[BIT_CRIMENAME],
+									info[BIT_SENTENCE],
+									info[BIT_WARNMSG]);
+				}
 			}
 			else
+			if(laws.isLaw("ASSAULT"))
 			{
-				String info=(String)laws.get("ASSAULT");
-				if((info!=null)&&(info.length()>0))
-					fillOutWarrant(affect.source(),
-									myArea,
-									affect.target(),
-									getBit(info,BIT_CRIMELOCS),
-									getBit(info,BIT_CRIMEFLAGS),
-									getBit(info,BIT_CRIMENAME),
-									getBit(info,BIT_SENTENCE),
-									getBit(info,BIT_WARNMSG));
+				String[] info=laws.getLawBits("ASSAULT");
+				fillOutWarrant(affect.source(),
+								laws,
+								myArea,
+								affect.target(),
+								info[BIT_CRIMELOCS],
+								info[BIT_CRIMEFLAGS],
+								info[BIT_CRIMENAME],
+								info[BIT_SENTENCE],
+								info[BIT_WARNMSG]);
 			}
 		}
 
@@ -948,27 +1194,27 @@ public class Arrest extends StdBehavior
 		{
 			if(affect.sourceMinor()==Affect.TYP_ENTER)
 			{
-				String nudity=(String)laws.get("NUDITY");
-				if((nudity!=null)
+				if((laws.isLaw("NUDITY"))
 				&&(!affect.source().isMonster())
-				&&(nudity.length()>0)
 				&&(affect.source().fetchWornItem(Item.ON_LEGS)==null)
 				&&(affect.source().fetchWornItem(Item.ON_WAIST)==null)
 				&&(affect.source().fetchWornItem(Item.ABOUT_BODY)==null))
+				{
+					String info[]=laws.getLawBits("NUDITY");
 					fillOutWarrant(affect.source(),
+									laws,
 								   myArea,
 								   null,
-								   getBit(nudity,BIT_CRIMELOCS),
-								   getBit(nudity,BIT_CRIMEFLAGS),
-								   getBit(nudity,BIT_CRIMENAME),
-								   getBit(nudity,BIT_SENTENCE),
-								   getBit(nudity,BIT_WARNMSG));
+								   info[BIT_CRIMELOCS],
+								   info[BIT_CRIMEFLAGS],
+								   info[BIT_CRIMENAME],
+								   info[BIT_SENTENCE],
+								   info[BIT_WARNMSG]);
+				}
 				
-				String armed=(String)laws.get("ARMED");
 				Item w=null;
-				if((armed!=null)
+				if((laws.isLaw("ARMED"))
 				&&((!affect.source().isMonster())||(arrestMobs))
-				&&(armed.length()>0)
 				&&((w=affect.source().fetchWieldedItem())!=null)
 				&&(w instanceof Weapon)
 				&&(((Weapon)w).weaponClassification()!=Weapon.CLASS_NATURAL)
@@ -977,49 +1223,52 @@ public class Arrest extends StdBehavior
 				&&(Sense.isSeen(w))
 				&&(!Sense.isHidden(w))
 				&&(!Sense.isInvisible(w)))
+				{
+					String info[]=laws.getLawBits("ARMED");
 					fillOutWarrant(affect.source(),
+									laws,
 								   myArea,
 								   null,
-								   getBit(armed,BIT_CRIMELOCS),
-								   getBit(armed,BIT_CRIMEFLAGS),
-								   getBit(armed,BIT_CRIMENAME),
-								   getBit(armed,BIT_SENTENCE),
-								   getBit(armed,BIT_WARNMSG));
+								   info[BIT_CRIMELOCS],
+								   info[BIT_CRIMEFLAGS],
+								   info[BIT_CRIMENAME],
+								   info[BIT_SENTENCE],
+								   info[BIT_WARNMSG]);
+				}
 				
-				String tresspassStr=(String)laws.get("TRESPASSERS");
-				if((tresspassStr!=null)
-				&&(SaucerSupport.zapperCheck(tresspassStr,affect.source())))
+				if((laws.isLaw("TRESPASSING"))
+				&&(laws.isLaw("TRESPASSERS"))
+				&&(SaucerSupport.zapperCheck(laws.getMsg("TRESPASSERS"),affect.source())))
 				{
-					String trespassing=(String)laws.get("TRESPASSING");
-					if((trespassing!=null)&&(trespassing.length()>0))
-					{
-						fillOutWarrant(affect.source(),
-									   myArea,
-									   null,
-									   getBit(trespassing,BIT_CRIMELOCS),
-									   getBit(trespassing,BIT_CRIMEFLAGS),
-									   getBit(trespassing,BIT_CRIMENAME),
-									   getBit(trespassing,BIT_SENTENCE),
-									   getBit(trespassing,BIT_WARNMSG));
-					}
+					String[] info=laws.getLawBits("TRESPASSING");
+					fillOutWarrant(affect.source(),
+									laws,
+								   myArea,
+								   null,
+								   info[BIT_CRIMELOCS],
+								   info[BIT_CRIMEFLAGS],
+								   info[BIT_CRIMENAME],
+								   info[BIT_SENTENCE],
+								   info[BIT_WARNMSG]);
 				}
 			}
-			for(int i=0;i<otherCrimes.size();i++)
+			for(int i=0;i<laws.otherCrimes.size();i++)
 			{
-				Vector V=(Vector)otherCrimes.elementAt(i);
+				Vector V=(Vector)laws.otherCrimes.elementAt(i);
 				for(int v=0;v<V.size();v++)
 				{
 					if(CoffeeUtensils.containsString(affect.othersMessage(),(String)V.elementAt(v)))
 					{
-						String info=(String)otherBits.elementAt(i);
+						String[] info=(String[])laws.otherBits.elementAt(i);
 						fillOutWarrant(affect.source(),
+										laws,
 										myArea,
 										affect.target(),
-										getBit(info,BIT_CRIMELOCS),
-										getBit(info,BIT_CRIMEFLAGS),
-										getBit(info,BIT_CRIMENAME),
-										getBit(info,BIT_SENTENCE),
-										getBit(info,BIT_WARNMSG));
+										info[BIT_CRIMELOCS],
+										info[BIT_CRIMEFLAGS],
+										info[BIT_CRIMENAME],
+										info[BIT_SENTENCE],
+										info[BIT_WARNMSG]);
 					}
 				}
 			}
@@ -1042,110 +1291,6 @@ public class Arrest extends StdBehavior
 		return false;
 	}
 	
-	public boolean isAnyKindOfOfficer(MOB M)
-	{
-		if((M.isMonster())&&(M.location()!=null))
-		{
-			for(int i=0;i<officerNames.size();i++)
-				if(CoffeeUtensils.containsString(M.displayText(),(String)officerNames.elementAt(i)))
-				{
-					for(int b=0;b<M.numBehaviors();b++)
-					{
-						Behavior B=M.fetchBehavior(b);
-						if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
-							return true;
-					}
-				}
-		}
-		return false;
-	}
-
-	public boolean isTheJudge(MOB M)
-	{
-		if(((M.isMonster()||M.soulMate()!=null))&&(M.location()!=null))
-		{
-			String judgeName=(String)getLaws().get("JUDGE");
-			if((CoffeeUtensils.containsString(M.Name(),judgeName))
-			||(CoffeeUtensils.containsString(M.displayText(),judgeName))
-			||(CoffeeUtensils.containsString(M.name(),judgeName))
-			||(CoffeeUtensils.containsString(M.ID(),judgeName)))
-				return true;
-		}
-		return false;
-	}
-
-	public boolean isElligibleOfficer(MOB M, Area myArea)
-	{
-		if((M.isMonster())&&(M.location()!=null))
-		{
-			if((myArea!=null)&&(M.location().getArea()!=myArea)) return false;
-
-			if(isAnyKindOfOfficer(M)
-			&&(!isBusyWithJustice(M))
-			&&(Sense.aliveAwakeMobile(M,true))
-			&&(!M.isInCombat()))
-				return true;
-		}
-		return false;
-	}
-
-	public MOB getElligibleOfficerHere(Area myArea, Room R, MOB criminal, MOB victim)
-	{
-		if(R==null) return null;
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			MOB M=R.fetchInhabitant(i);
-			if((M!=criminal)
-			   &&(M.location()!=null)
-			   &&(M.location().getArea()==myArea)
-			   &&((victim==null)||(M!=victim))
-			   &&(isElligibleOfficer(M,myArea))
-			   &&(Sense.canBeSeenBy(criminal,M)))
-				return M;
-		}
-		return null;
-	}
-
-	public MOB getAnyElligibleOfficer(Area myArea, MOB criminal, MOB victim)
-	{
-		Room R=criminal.location();
-		if(R==null) return null;
-		if((myArea!=null)&&(R.getArea()!=myArea)) return null;
-		MOB M=getElligibleOfficerHere(myArea,R,criminal,victim);
-		if(M==null)
-		for(Enumeration e=myArea.getMap();e.hasMoreElements();)
-		{
-			Room R2=(Room)e.nextElement();
-			M=getElligibleOfficerHere(myArea,R2,criminal,victim);
-			if(M!=null) break;
-		}
-		return M;
-	}
-
-	public MOB getElligibleOfficer(Area myArea, MOB criminal, MOB victim)
-	{
-		Room R=criminal.location();
-		if(R==null) return null;
-		if((myArea!=null)&&(R.getArea()!=myArea)) return null;
-		MOB M=getElligibleOfficerHere(myArea,R,criminal,victim);
-		if(M!=null) return M;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-		{
-			Room R2=R.getRoomInDir(d);
-			if(R2!=null)
-			{
-				M=getElligibleOfficerHere(myArea,R2,criminal,victim);
-				if(M!=null)
-				{
-					int direction=Directions.getOpDirectionCode(d);
-					ExternalPlay.move(M,direction,false,false);
-					if(M.location()==R) return M;
-				}
-			}
-		}
-		return null;
-	}
-
 	public String fixCharge(ArrestWarrant W)
 	{
 		if(W==null) return "";
@@ -1193,7 +1338,7 @@ public class Arrest extends StdBehavior
 		if(tickID!=Host.AREA_TICK) return true;
 		if(!(ticking instanceof Area)) return true;
 		Area myArea=(Area)ticking;
-		Properties laws=getLaws();
+		Laws laws=getLaws(myArea);
 
 
 		Hashtable handled=new Hashtable();
@@ -1227,7 +1372,7 @@ public class Arrest extends StdBehavior
 						if((officer==null)||(!W.criminal.location().isInhabitant(officer)))
 						   officer=null;
 						if(officer==null)
-							officer=getElligibleOfficer(myArea,W.criminal,W.victim);
+							officer=getElligibleOfficer(laws,myArea,W.criminal,W.victim);
 						W.travelAttemptTime=0;
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
@@ -1250,7 +1395,7 @@ public class Arrest extends StdBehavior
 								W.setArrestingOfficer(null);
 							}
 							else
-							if(judgeMe(null,officer,W.criminal,W))
+							if(judgeMe(laws,null,officer,W.criminal,W))
 							{
 								setFree(W.criminal);
 								dismissOfficer(officer);
@@ -1279,7 +1424,7 @@ public class Arrest extends StdBehavior
 							{
 								if(officer.getVictim()==W.criminal)
 								{
-									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTFIGHTMSG"),false,false);
+									ExternalPlay.quickSay(officer,W.criminal,laws.getMsg("RESISTFIGHTMSG"),false,false);
 									W.state=STATE_SUBDUEING;
 								}
 								else
@@ -1304,9 +1449,9 @@ public class Arrest extends StdBehavior
 									try{ExternalPlay.doCommand(W.criminal,Util.parse("SIT"));}catch(Exception e){}
 								}
 								if(Sense.isSitting(W.criminal)||Sense.isSleeping(W.criminal))
-									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("NORESISTMSG"),false,false);
+									ExternalPlay.quickSay(officer,W.criminal,laws.getMsg("NORESISTMSG"),false,false);
 								else
-									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTWARNMSG"),false,false);
+									ExternalPlay.quickSay(officer,W.criminal,laws.getMsg("RESISTWARNMSG"),false,false);
 								W.state=STATE_SUBDUEING;
 							}
 						}
@@ -1343,7 +1488,7 @@ public class Arrest extends StdBehavior
 							if(!Sense.isSitting(W.criminal)&&(!Sense.isSleeping(W.criminal)))
 							{
 								if(!W.arrestingOfficer.isInCombat())
-									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTMSG"),false,false);
+									ExternalPlay.quickSay(officer,W.criminal,laws.getMsg("RESISTMSG"),false,false);
 
 								Ability A=CMClass.getAbility("Skill_ArrestingSap");
 								if(A!=null){
@@ -1377,11 +1522,13 @@ public class Arrest extends StdBehavior
 								if(A!=null)A.unInvoke();
 								makePeace(officer.location());
 								ExternalPlay.standIfNecessary(W.criminal);
+								A=officer.fetchAffect("Skill_Track");
+								if(A!=null) officer.delAffect(A);
 								A=CMClass.getAbility("Skill_Track");
 								if(A!=null)
 								{	
-									A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
 									W.travelAttemptTime=System.currentTimeMillis();
+									A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
 								}
 								makePeace(officer.location());
 							}
@@ -1413,17 +1560,17 @@ public class Arrest extends StdBehavior
 							makePeace(officer.location());
 							if(officer.isMonster())
 								ExternalPlay.look(officer,null,true);
-							if(officer.location().fetchInhabitant((String)laws.get("JUDGE"))!=null)
+							if(officer.location().fetchInhabitant(laws.getMsg("JUDGE"))!=null)
 								W.state=STATE_REPORTING;
 							else
 							if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
 							{
 								Ability A=CMClass.getAbility("Skill_Track");
-								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
+								if(A!=null)	A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
 							}
 							else
-							if((Dice.rollPercentage()>75)&&(chitChat.size()>0))
-								ExternalPlay.quickSay(officer,W.criminal,(String)chitChat.elementAt(Dice.roll(1,chitChat.size(),-1)),false,false);
+							if((Dice.rollPercentage()>75)&&(laws.chitChat.size()>0))
+								ExternalPlay.quickSay(officer,W.criminal,(String)laws.chitChat.elementAt(Dice.roll(1,laws.chitChat.size(),-1)),false,false);
 						}
 						else
 						{
@@ -1443,14 +1590,14 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
-							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
+							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
 								Ability A=W.arrestingOfficer.fetchAffect("Skill_Track");
 								if(A!=null) officer.delAffect(A);
 								A=CMClass.getAbility("Skill_Track");
-								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
+								if(A!=null)	A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
 							}
 							else
 							if(Sense.aliveAwakeMobile(judge,true))
@@ -1494,19 +1641,19 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
-							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
+							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
 								Ability A=W.arrestingOfficer.fetchAffect("Skill_Track");
 								if(A!=null) officer.delAffect(A);
 								A=CMClass.getAbility("Skill_Track");
-								if(A!=null) A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
+								if(A!=null) A.invoke(officer,Util.parse(laws.getMsg("JUDGE")),null,true);
 							}
 							else
 							if(Sense.aliveAwakeMobile(judge,true))
 							{
-								if(judgeMe(judge,officer,W.criminal,W))
+								if(judgeMe(laws,judge,officer,W.criminal,W))
 								{
 									W.travelAttemptTime=0;
 									unCuff(W.criminal);
@@ -1544,7 +1691,7 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
-							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
+							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
 							setFree(W.criminal);
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
@@ -1554,7 +1701,7 @@ public class Arrest extends StdBehavior
 								A.startTickDown(judge,W.criminal,W.jailTime);
 								W.criminal.recoverEnvStats();
 								W.criminal.recoverCharStats();
-								ExternalPlay.quickSay(judge,W.criminal,(String)laws.get("PAROLEDISMISS"),false,false);
+								ExternalPlay.quickSay(judge,W.criminal,laws.getMsg("PAROLEDISMISS"),false,false);
 								dismissOfficer(officer);
 								W.setArrestingOfficer(null);
 								W.criminal.tell("\n\r\n\r");
@@ -1586,11 +1733,11 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
-							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
+							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
 							{
-								Room jail=getRoom(judge.location().getArea(),(String)laws.get("JAIL"));
+								Room jail=getRoom(judge.location().getArea(),laws.getMsg("JAIL"));
 								if(jail!=null)
 								{
 									makePeace(officer.location());
@@ -1602,6 +1749,8 @@ public class Arrest extends StdBehavior
 									W.criminal.makePeace();
 									makePeace(officer.location());
 									ExternalPlay.standIfNecessary(W.criminal);
+									A=officer.fetchAffect("Skill_Track");
+									if(A!=null) officer.delAffect(A);
 									A=CMClass.getAbility("Skill_Track");
 									if(A!=null)
 									{
@@ -1649,7 +1798,7 @@ public class Arrest extends StdBehavior
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
-							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
+							MOB judge=officer.location().fetchInhabitant(laws.getMsg("JUDGE"));
 							if((judge!=null)&&(Sense.aliveAwakeMobile(judge,true))&&(judge.location()==W.criminal.location()))
 							{
 								setFree(W.criminal);
@@ -1721,8 +1870,8 @@ public class Arrest extends StdBehavior
 								}
 							}
 							else
-							if((Dice.rollPercentage()>75)&&(chitChat2.size()>0))
-								ExternalPlay.quickSay(officer,W.criminal,(String)chitChat2.elementAt(Dice.roll(1,chitChat2.size(),-1)),false,false);
+							if((Dice.rollPercentage()>75)&&(laws.chitChat2.size()>0))
+								ExternalPlay.quickSay(officer,W.criminal,(String)laws.chitChat2.elementAt(Dice.roll(1,laws.chitChat2.size(),-1)),false,false);
 						}
 						else
 						{
@@ -1746,8 +1895,8 @@ public class Arrest extends StdBehavior
 								||(!W.criminal.location().isInhabitant(W.criminal))
 								||(!W.criminal.location().isInhabitant(officer)))
 								{
-									W.arrestingOfficer=getAnyElligibleOfficer(W.jail.getArea(),W.criminal,W.victim);
-									if(W.arrestingOfficer==null) W.arrestingOfficer=getAnyElligibleOfficer(myArea,W.criminal,W.victim);
+									W.arrestingOfficer=getAnyElligibleOfficer(laws,W.jail.getArea(),W.criminal,W.victim);
+									if(W.arrestingOfficer==null) W.arrestingOfficer=getAnyElligibleOfficer(laws,myArea,W.criminal,W.victim);
 									if(W.arrestingOfficer==null) break;
 									officer=W.arrestingOfficer;
 									W.jail.bringMobHere(officer,false);
@@ -1759,18 +1908,21 @@ public class Arrest extends StdBehavior
 									W.releaseRoom=W.criminal.getStartRoom();
 								else
 								{
-									W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("RELEASEROOM"));
+									W.releaseRoom=getRoom(W.criminal.location().getArea(),laws.getMsg("RELEASEROOM"));
 									if(W.releaseRoom==null)
-										W.releaseRoom=getRoom(myArea,(String)laws.get("RELEASEROOM"));
+										W.releaseRoom=getRoom(myArea,laws.getMsg("RELEASEROOM"));
 								}
-								if(W.releaseRoom==null) W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("JUDGE"));
-								if(W.releaseRoom==null) W.releaseRoom=getRoom(myArea,(String)laws.get("JUDGE"));
+								if(W.releaseRoom==null) W.releaseRoom=getRoom(W.criminal.location().getArea(),laws.getMsg("JUDGE"));
+								if(W.releaseRoom==null) W.releaseRoom=getRoom(myArea,laws.getMsg("JUDGE"));
 								W.criminal.makePeace();
 								makePeace(officer.location());
-								Ability A=CMClass.getAbility("Skill_Track");
-								if(A!=null){
-									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom)),W.releaseRoom,true);
+								Ability A=officer.fetchAffect("Skill_Track");
+								if(A!=null) officer.delAffect(A);
+								A=CMClass.getAbility("Skill_Track");
+								if(A!=null)
+								{
 									W.travelAttemptTime=System.currentTimeMillis();
+									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom)),W.releaseRoom,true);
 								}
 							}
 							else
@@ -1785,7 +1937,7 @@ public class Arrest extends StdBehavior
 									{
 										if((Sense.aliveAwakeMobile(officer,true))
 										&&(W.criminal.location().isInhabitant(officer)))
-											ExternalPlay.quickSay(officer,null,(String)laws.get("LAWFREE"),false,false);
+											ExternalPlay.quickSay(officer,null,laws.getMsg("LAWFREE"),false,false);
 										dismissOfficer(officer);
 									}
 									W.travelAttemptTime=0;
