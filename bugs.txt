@@ -2,7 +2,20 @@ Something to hunt multiplayers with 1. the closest (in milliseconds) commands we
 A little thing, but it would come in handy - importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
 Abilility to do Archon commands in Scriptable.
 MOBReSave doesn't work? Creates dups?
-TEST SMTP Server
+shelter it seems I can cast this spell while cuffed.
+shelter doesnt take the group along with the caster like it say in the help
+Animal crossbreed players do not get benefits from spells like giant strength or enlightenment.
+Wand_nourishment when targetting self....Something seems wrong with a wooden wand.
+the grinder doesn't support geninstruments well (there is no field to determine instrument type)
+Clan Property should only be transferrable to other clans....that is to say, if the owner of a property is a clan, then giving the title to another person should transfer it to that person's clan. This was the bug in guilds (had nothing to do with the guild...sorry).
+I don't seem to have dodge. with my assasin.
+the help file overflows my GMUD display buffer. We really need to break it down into sections (Traps, Skills, Spells, Chants, Prayers, Commonskills, Socials, Commands, etc)
+the little girl in the lollypop quest is a he (at least this time)
+Every time I get pregnant.. it gets just.. undone.. and then like the next day.. I'm not pregnant if that loosing baby is supposed to happen.. then how about a message to tell me I loose it and why!
+clan home/clan donate fix
+crafting info parm
+
+
 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
