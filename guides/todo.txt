@@ -9,7 +9,7 @@ add to regenMOB PIERCE, BLUDGEON, SLASHING, LIGHTNING, FIRE, COLD, ACID, GAS, MA
 
 //****** next version ********************************************************
 friends list, for filter who
-Z-level for the GrinderMap (elevation)
+Z-level for the GrinderMap (elevation?) how the heck would THAT work...
 group formations as an alternative way of determining range
 ignore list, for ignoreing players/gossips/who/etc.. 
 Room descriptions varying by the time of day.

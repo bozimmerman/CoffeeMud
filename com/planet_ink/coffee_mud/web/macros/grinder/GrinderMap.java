@@ -9,8 +9,8 @@ import com.planet_ink.coffee_mud.common.*;
 public class GrinderMap
 {
     private Vector areaMap=null;
+	private Hashtable hashRooms=null;
     public GrinderRoom[][] grid=null;
-    private Hashtable hashRooms=null;
     public int Xbound=0;
     public int Ybound=0;
 	public Area area=null;
@@ -19,6 +19,7 @@ public class GrinderMap
 	{
 		area=A;
 		areaMap=new Vector();
+		hashRooms=new Hashtable();
 		for(Enumeration r=A.getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -26,6 +27,7 @@ public class GrinderMap
 			{
 				GrinderRoom GR=new GrinderRoom(R);
 				areaMap.addElement(GR);
+				hashRooms.put(GR.roomID,GR);
 			}
 		}
 	}
@@ -60,12 +62,10 @@ public class GrinderMap
 	            Ybound=room.y;
 	    }
 	    grid=new GrinderRoom[Xbound+1][Ybound+1];
-	    hashRooms=new Hashtable();
 	    for(int y=0;y<areaMap.size();y++)
 	    {
 	        GrinderRoom room=(GrinderRoom)areaMap.elementAt(y);
 	        grid[room.x][room.y]=room;
-	        hashRooms.put(room.roomID,room);
 	    }
     }
 
@@ -90,14 +90,18 @@ public class GrinderMap
         return null;
     }
 
-    public GrinderRoom getRoom(Vector allRooms, String ID)
+    public GrinderRoom getRoom(String ID)
     {
-        for(int r=0;r<allRooms.size();r++)
-        {
-            GrinderRoom room=(GrinderRoom)allRooms.elementAt(r);
-            if(room.roomID.equalsIgnoreCase(ID))
-                return room;
-        }
+		if((hashRooms!=null)&&(hashRooms.containsKey(ID)))
+		   return (GrinderRoom)hashRooms.get(ID);
+		
+		if(areaMap!=null)
+			for(int r=0;r<areaMap.size();r++)
+			{
+			    GrinderRoom room=(GrinderRoom)areaMap.elementAt(r);
+			    if(room.roomID.equalsIgnoreCase(ID))
+			        return room;
+			}
         return null;
     }
 
@@ -157,7 +161,37 @@ public class GrinderMap
         return true;
     }
 
-    public void placeRooms()
+ 	public void getRadiantRooms(GrinderRoom room, 
+								Vector rooms, 
+								int maxDepth)
+	{
+		int depth=0;
+		if(room==null) return;
+		if(rooms.contains(room)) return;
+		rooms.addElement(room);
+		int min=0;
+		int size=rooms.size();
+		while(depth<maxDepth)
+		{
+			for(int r=min;r<size;r++)
+			{
+				GrinderRoom R1=(GrinderRoom)rooms.elementAt(r);
+				if(R1!=null)
+					for(int d=0;d<6;d++)
+					{
+						GrinderDir R=R1.doors[d];
+						GrinderRoom GR=((R!=null)?getRoom(R.room):null);
+						if((GR!=null)&&(!rooms.contains(GR)))
+							rooms.addElement(GR);
+					}
+			}
+			min=size;
+			size=rooms.size();
+			depth++;
+		}
+	}
+	
+	public void placeRooms()
     {
         if(areaMap==null) return;
         if(areaMap.size()==0) return;
@@ -174,9 +208,10 @@ public class GrinderMap
                     dir.positionedAlready=false;
             }
         }
-
+		
         Hashtable processed=new Hashtable();
         boolean doneSomething=true;
+		
         while((areaMap.size()>processed.size())&&(doneSomething))
         {
             doneSomething=false;
@@ -185,25 +220,12 @@ public class GrinderMap
                 GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
                 if(!processed.containsKey(room.roomID))
                 {
-                    placeRoom(room,0,0,processed,areaMap,true,true,0);
+                    placeRoom(room,0,0,processed,true,true,0);
                     doneSomething=true;
                 }
             }
         }
-		/*doneSomething=true;
-        while((areaMap.size()>processed.size())&&(doneSomething))
-        {
-            doneSomething=false;
-            for(int i=0;i<areaMap.size();i++)
-            {
-                GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
-                if(!processed.containsKey(room.roomID))
-                {
-                    placeRoom(room,0,0,processed,areaMap,true,true);
-                    doneSomething=true;
-                }
-            }
-        }*/
+		
         if(areaMap.size()>processed.size())
             Log.errOut("GrinderMap",areaMap.size()-processed.size()+" room(s) were not placed.");
     }
@@ -430,7 +452,6 @@ public class GrinderMap
                                 int favoredX,
                                 int favoredY,
                                 Hashtable processed,
-                                Vector allRooms,
                                 boolean doNotDefer,
 								boolean passTwo,
 								int depth)
@@ -442,9 +463,9 @@ public class GrinderMap
         {
             // maybe someone else will take care of it?
             if(!doNotDefer)
-                for(int r=0;r<allRooms.size();r++)
+                for(int r=0;r<areaMap.size();r++)
                 {
-                    GrinderRoom roomToBlame=(GrinderRoom)allRooms.elementAt(r);
+                    GrinderRoom roomToBlame=(GrinderRoom)areaMap.elementAt(r);
                     if(roomToBlame!=room)
                         for(int rd=0;rd<Directions.NUM_DIRECTIONS;rd++)
                         {
@@ -485,7 +506,7 @@ public class GrinderMap
 			&&(processed.get(roomID)==null)
             &&(passTwo||((d!=Directions.UP)&&(d!=Directions.DOWN))))
             {
-                GrinderRoom nextRoom=getRoom(allRooms,roomID);
+				GrinderRoom nextRoom=getRoom(roomID);
                 if(nextRoom!=null)
                 {
                     int newFavoredX=room.x;
@@ -528,7 +549,7 @@ public class GrinderMap
                             break;
                     }
                     room.doors[d].positionedAlready=true;
-                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,allRooms,false,passTwo,depth+1);
+                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,false,passTwo,depth+1);
                 }
             }
         }
