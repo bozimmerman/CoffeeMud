@@ -8,7 +8,7 @@ public class Say extends StdCommand
 {
 	public Say(){}
 
-	private String[] access={"SAY","ASK","`","SA"};
+	private String[] access={"SAY","ASK","`","SA","SAYTO"};
 	public String[] getAccessWords(){return access;}
 	
 	private static final String[] impossibleTargets={
@@ -18,6 +18,7 @@ public class Say extends StdCommand
 		"JUST",
 		"A",
 		"AN",
+		"TO",
 		"THE",
 		"SOME",
 		"SITS",
@@ -31,28 +32,52 @@ public class Say extends StdCommand
 		throws java.io.IOException
 	{
 		String theWord="Say";
+		boolean toFlag=false;
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("ask"))
 			theWord="Ask";
 		else
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("yell"))
 			theWord="Yell";
+		else
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("sayto")
+		||((String)commands.elementAt(0)).equalsIgnoreCase("sayt"))
+		{
+			theWord="Say";
+			toFlag=true;
+		}
+		
 		if(commands.size()==1)
 		{
 			mob.tell(theWord+" what?");
 			return false;
 		}
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("to"))
+		{
+			commands.removeElementAt(1);
+			toFlag=true;
+		}
+		
 		Environmental target=null;
 		if(commands.size()>2)
 		{
 			String possibleTarget=((String)commands.elementAt(1)).toUpperCase();
-			for(int i=0;i<impossibleTargets.length;i++)
-				if(impossibleTargets[i].startsWith(possibleTarget))
-				{ possibleTarget=""; break;}
+			if(!toFlag)
+				for(int i=0;i<impossibleTargets.length;i++)
+					if(impossibleTargets[i].startsWith(possibleTarget))
+					{ possibleTarget=""; break;}
 			if(possibleTarget.length()>0)
 			{
 				target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
-				if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
-				   target=null;
+				
+				if((!toFlag)&&(target!=null))
+				{
+					if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+						target=null;
+					if((target.name().toUpperCase().indexOf(possibleTarget.toUpperCase())<0)
+					||(!(target instanceof MOB)))
+						target=null;
+				}
+				
 				if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
 					commands.removeElementAt(1);
 				else

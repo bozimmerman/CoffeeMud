@@ -256,7 +256,7 @@ public class CombatAbilities extends StdBehavior
 					if(victim!=null)
 					{
 						Vector V=new Vector();
-						V.addElement("say");
+						V.addElement("sayto");
 						V.addElement(victim.name());
 						V.addElement(((Wand)myWand).magicWord());
 						mob.doCommand(V);

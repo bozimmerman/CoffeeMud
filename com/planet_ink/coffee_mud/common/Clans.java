@@ -859,7 +859,7 @@ public class Clans implements Clan, Tickable
 			for(int j=0;j<members.size();j++)
 			{
 				long lastLogin=((Long)members.elementAt(j,3)).longValue();
-				if((System.currentTimeMillis()-lastLogin)<deathMilis)
+				if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
 					activeMembers++;
 				numTypes[getRoleOrder(((Integer)members.elementAt(j,2)).intValue())]++;
 			}

@@ -173,9 +173,9 @@ public class EnglishParser extends Scriptable implements Tickable
 		{"mount %m","mobfind %m;mount %m"},
 		// below are learns, practices, teaches, etc..
 		// below are tells, say tos, report tos,
-		{"tell %m %g","mobfind %m;say %m %g"},
-		{"say %g to %m","mobfind %m;say %m %g"},
-		{"tell %g to %m","mobfind %m;say %m %g"},
+		{"tell %m %g","mobfind %m;sayto %m %g"},
+		{"say %g to %m","mobfind %m;sayto %m %g"},
+		{"tell %g to %m","mobfind %m;sayto %m %g"},
 		// below are skill usages
 		{"%k %i","itemfind %i;%k %i"},
 		{"%k %m","mobfind %m;%k %m"},
