@@ -1,6 +1,6 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
-import com.planet_ink.coffee_mud.commands.base.Socials;
+import com.planet_ink.coffee_mud.Commands.base.Socials;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -15,14 +15,14 @@ public class CreateEdit
 	public Utils utils=new Utils();
 	public Socials socials=null;
 	public SysopSocials sysopSocials=null;
-	
-	
+
+
 	public CreateEdit(Socials ourSocials)
 	{
 		socials=ourSocials;
 		sysopSocials=new SysopSocials(ourSocials);
 	}
-	
+
 	public void destroy(MOB mob, Vector commands)
 		throws Exception
 	{

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -223,21 +223,21 @@ public class ItemUsage
 			mob.tell("Put what where?");
 			return;
 		}
-		
+
 		if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("on"))
 		{
 			commands.removeElementAt(commands.size()-1);
 			this.wear(mob,commands);
 			return;
 		}
-		
+
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("on"))
 		{
 			commands.removeElementAt(1);
 			this.wear(mob,commands);
 			return;
 		}
-		
+
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
@@ -591,7 +591,7 @@ public class ItemUsage
 		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_READSOMETHING,soMsg,Affect.MSG_READSOMETHING,tMsg,Affect.MSG_READSOMETHING,soMsg);
 		if(mob.location().okAffect(newMsg))
 			mob.location().send(mob,newMsg);
-		
+
 	}
 
 	public void read(MOB mob, Vector commands)

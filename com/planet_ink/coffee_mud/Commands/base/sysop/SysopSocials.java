@@ -1,9 +1,9 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
 
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.commands.base.Social;
-import com.planet_ink.coffee_mud.commands.base.Socials;
+import com.planet_ink.coffee_mud.Commands.base.Social;
+import com.planet_ink.coffee_mud.Commands.base.Socials;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
@@ -19,14 +19,14 @@ public class SysopSocials
 	int sourceCode=Affect.MSG_OK_ACTION;
 	int othersCode=Affect.MSG_OK_ACTION;
 	int targetCode=Affect.MSG_OK_ACTION;
-	
+
 	Socials socials=null;
-	
+
 	public SysopSocials(Socials newSocials)
 	{
 		socials=newSocials;
 	}
-	
+
 	public void create(MOB mob, Vector commands)
 		throws IOException
 	{

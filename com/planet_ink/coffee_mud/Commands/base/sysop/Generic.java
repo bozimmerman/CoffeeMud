@@ -1,7 +1,7 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
 
-import com.planet_ink.coffee_mud.commands.base.Scoring;
+import com.planet_ink.coffee_mud.Commands.base.Scoring;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -161,7 +161,7 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
+
 	void genSubOps(MOB mob, Area A)
 		throws IOException
 	{
@@ -188,7 +188,7 @@ public class Generic
 			}
 		}
 	}
-	
+
 	void genCloseWord(MOB mob, Exit E)
 		throws IOException
 	{
@@ -514,8 +514,8 @@ public class Generic
 			A.setClimateType(current&((int)(Sense.ALLMASK-mask)));
 	}
 
-	
-	
+
+
 	void genClimateType(MOB mob, Area A)
 		throws IOException
 	{
@@ -539,7 +539,7 @@ public class Generic
 			}
 		}
 	}
-	
+
 	void genSensesMask(MOB mob, Environmental E)
 		throws IOException
 	{

@@ -1,8 +1,8 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.commands.base.sysop.CreateEdit;
-import com.planet_ink.coffee_mud.commands.base.sysop.SysopItemUsage;
+import com.planet_ink.coffee_mud.Commands.base.sysop.CreateEdit;
+import com.planet_ink.coffee_mud.Commands.base.sysop.SysopItemUsage;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
@@ -31,7 +31,7 @@ public class Channels
 		if(channelNames.size()==0) buf.append("None!");
 		mob.tell(buf.toString());
 	}
-	
+
 	public int loadChannels(String list, CommandSet cmdSet)
 	{
 		while(list.length()>0)

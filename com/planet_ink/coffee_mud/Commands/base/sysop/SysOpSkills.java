@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
 import java.io.*;
 import java.util.*;
@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.utils.*;
 public class SysOpSkills
 {
 	private Room findRoom(String roomID)
-	{	
+	{
 		for(int m=0;m<CMMap.map.size();m++)
 		{
 			Room thisRoom=(Room)CMMap.map.elementAt(m);
@@ -18,7 +18,6 @@ public class SysOpSkills
 		}
 		return null;
 	}
-	
 	private MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=(MOB)CMClass.getMOB("StdMOB").newInstance();
@@ -224,7 +223,7 @@ public class SysOpSkills
 		}
 		return true;
 	}
-	
+
 	public boolean gotoCmd(MOB mob, Vector commands)
 	{
 
@@ -235,7 +234,6 @@ public class SysOpSkills
 			return false;
 		}
 		commands.removeElementAt(0);
-		
 		Room curRoom=mob.location();
 		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
 
@@ -252,7 +250,7 @@ public class SysOpSkills
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session thisSession=(Session)Sessions.elementAt(s);
-					if((thisSession.mob()!=null) && (!thisSession.killFlag()) 
+					if((thisSession.mob()!=null) && (!thisSession.killFlag())
 					&&(thisSession.mob().location()!=null)
 					&&(thisSession.mob().name().equalsIgnoreCase(cmd.toString())))
 					{
@@ -264,7 +262,7 @@ public class SysOpSkills
 					for(int s=0;s<Sessions.size();s++)
 					{
 						Session thisSession=(Session)Sessions.elementAt(s);
-						if((thisSession.mob()!=null)&&(!thisSession.killFlag()) 
+						if((thisSession.mob()!=null)&&(!thisSession.killFlag())
 						&&(thisSession.mob().location()!=null)
 						&&(CoffeeUtensils.containsString(thisSession.mob().name(),cmd.toString())))
 						{
@@ -295,7 +293,6 @@ public class SysOpSkills
 			return true;
 		}
 	}
-	
 	public MOB getTarget(MOB mob, Vector commands, boolean quiet)
 	{
 		String targetName=Util.combine(commands,0);
@@ -315,9 +312,9 @@ public class SysOpSkills
 			}
 		}
 
-		if(target!=null) 
+		if(target!=null)
 			targetName=target.name();
-		
+
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
@@ -385,7 +382,7 @@ public class SysOpSkills
 		ExternalPlay.look(mob.soulMate(),null,true);
 		mob.setSoulMate(null);
 	}
-	
+
 	public boolean wizinv(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);

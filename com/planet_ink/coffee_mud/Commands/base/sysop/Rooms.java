@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -157,7 +157,7 @@ public class Rooms
 		if(mob.location()==null) return;
 		if(mob.location().getArea()==null) return;
 		Area myArea=mob.location().getArea();
-		
+
 		String oldName=myArea.name();
 		Resources.removeResource("HELP_"+myArea.name().toUpperCase());
 		if(commands.size()==2)
@@ -226,7 +226,7 @@ public class Rooms
 			if(command.equalsIgnoreCase("ADDSUB"))
 			{
 				if((commands.size()<4)||(!ExternalPlay.DBUserSearch(null,restStr)))
-				{ 
+				{
 					mob.tell("Unknown or invalid username given.\n\r");
 					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
@@ -236,7 +236,7 @@ public class Rooms
 			if(command.equalsIgnoreCase("DELSUB"))
 			{
 				if((commands.size()<4)||(!myArea.amISubOp(restStr)))
-				{ 
+				{
 					mob.tell("Unknown or invalid subOp name given.  Valid names are: "+myArea.getSubOpList()+".\n\r");
 					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				}
@@ -261,7 +261,7 @@ public class Rooms
 			}
 			Log.sysOut("Rooms",mob.ID()+" modified area "+myArea.name()+".");
 		}
-		
+
 		if((!myArea.name().equals(oldName))&&(!mob.isMonster()))
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
@@ -396,7 +396,7 @@ public class Rooms
 		}
 		else
 		{
-			flunkCmd1(mob); 
+			flunkCmd1(mob);
 			return;
 		}
 		Log.sysOut("Rooms",mob.ID()+" modified room "+mob.location().ID()+".");
@@ -566,7 +566,7 @@ public class Rooms
 			else
 				confirmed=true;
 		}
-		
+
 		Room foundOne=mob.location();
 		while(foundOne!=null)
 		{
@@ -583,11 +583,11 @@ public class Rooms
 			if(foundOne!=null)
 				new Rooms().obliterateRoom(mob,foundOne);
 		}
-		
+
 		Area A=CMMap.getArea(areaName);
 		ExternalPlay.DBDeleteArea(A);
 		CMMap.AREAS.removeElement(A);
-		
+
 		if(confirmed)
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import java.io.*;
 import java.net.*;

@@ -7,8 +7,8 @@ import com.planet_ink.coffee_mud.system.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.commands.base.CommandProcessor;
-import com.planet_ink.coffee_mud.commands.base.ExternalCommands;
+import com.planet_ink.coffee_mud.Commands.base.CommandProcessor;
+import com.planet_ink.coffee_mud.Commands.base.ExternalCommands;
 
 public class MUD extends Thread implements Host
 {

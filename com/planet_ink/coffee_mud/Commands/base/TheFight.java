@@ -1,10 +1,10 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.commands.base.sysop.SysopItemUsage;
-import com.planet_ink.coffee_mud.commands.base.sysop.SysOpSkills;
+import com.planet_ink.coffee_mud.Commands.base.sysop.SysopItemUsage;
+import com.planet_ink.coffee_mud.Commands.base.sysop.SysOpSkills;
 import java.io.*;
 import java.util.*;
 public class TheFight
@@ -14,7 +14,7 @@ public class TheFight
 	public TheFight()
 	{
 	}
-	
+
 	public TheFight(Grouping grouper)
 	{
 		grouping=grouper;
@@ -62,7 +62,7 @@ public class TheFight
 	public String mobCondition(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
-	
+
 		if(pct<.10)
 			return "^r" + mob.name() + "^r is hovering on deaths door!^N";
 		else
@@ -204,7 +204,7 @@ public class TheFight
 			return false;
 		return true;
 	}
-	
+
 	public boolean canFightEachOther(MOB attacker, MOB target)
 	{
 		if((!canDamageEachOther(attacker,target))
@@ -215,7 +215,7 @@ public class TheFight
 		   return false;
 		return true;
 	}
-	
+
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if(!canFightEachOther(attacker,target)) return;
@@ -295,7 +295,7 @@ public class TheFight
 				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
 			deathRoom.addItem(Body);
 			Body.recoverEnvStats();
-			
+
 			int deadMoney=target.getMoney();
 			target.setMoney(0);
 			Vector items=new Vector();
@@ -328,12 +328,12 @@ public class TheFight
 					i++;
 			}
 			target.kill();
-			
+
 			// lastly, clean up victimhood
 			for(int i=0;i<deathRoom.numInhabitants();i++)
 			{
 				MOB inhab=deathRoom.fetchInhabitant(i);
-				// if a mob is not fighting the dead man (fighting someone else), 
+				// if a mob is not fighting the dead man (fighting someone else),
 				// and the person this mob is fighting is either fighting noone, or the victim
 				// then he should fight this mob!
 				// otherwise, if the mob is still fighting the target, stop him!
@@ -349,13 +349,13 @@ public class TheFight
 							else
 								victim.setVictim(inhab);
 						}
-							
+
 					}
 					else
 						inhab.setVictim(null);
 				}
 			}
-			
+
 			Body.setName("the body of "+target.name());
 			Body.setSecretIdentity(target.name()+"/"+target.description());
 			Body.setDisplayText("the body of "+target.name()+" lies here.");
@@ -368,7 +368,7 @@ public class TheFight
 			}
 			Body.startTicker(deathRoom);
 			deathRoom.recoverRoomStats();
-			
+
 			if(deadMoney>0)
 			{
 				if((source.getBitmap()&MOB.ATT_AUTOGOLD)==0)
@@ -813,7 +813,7 @@ public class TheFight
 
 			if(damageAmount<1.0)
 				damageAmount=1.0;
-			
+
 			int damageInt=(int)Math.round(damageAmount);
 
 			FullMsg msg=new FullMsg(source,

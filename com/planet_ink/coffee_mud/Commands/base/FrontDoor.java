@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -52,7 +52,7 @@ public class FrontDoor
 			return false;
 		if(mob.session()==null)
 			return false;
-		
+
 		String login=mob.session().prompt("name:");
 		if(login==null) return false;
 		login=login.trim();
@@ -141,7 +141,7 @@ public class FrontDoor
 				}
 				mob.setUserInfo(login,password,Calendar.getInstance());
 				Log.sysOut("FrontDoor","Creating user: "+mob.name());
-				
+
 				mob.session().setTermID(0);
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
 					mob.session().setTermID(1);
@@ -166,7 +166,7 @@ public class FrontDoor
 				}
 				tmpStrB.append("]");
 				mob.session().print(tmpStrB.toString());
-					
+
 				Race newRace=null;
 				while(newRace==null)
 				{
@@ -201,7 +201,7 @@ public class FrontDoor
 							newRace=null;
 				}
 				mob.baseCharStats().setMyRace(newRace);
-				
+
 				String Gender="";
 				while(Gender.length()==0)
 					Gender=mob.session().choose("\n\r^BWhat is your gender (M/F)?^N","MF","");
@@ -241,7 +241,7 @@ public class FrontDoor
 
 						mob.session().println("Your current stats are: \n\r"+mob.charStats().getStats(maxStat));
 						mob.session().println("This would qualify you for ^H"+classes.toString()+"^N.");
-							
+
 						if(!mob.session().confirm("^BWould you like to re-roll (y/N)?^N","N"))
 							mayCont=false;
 					}

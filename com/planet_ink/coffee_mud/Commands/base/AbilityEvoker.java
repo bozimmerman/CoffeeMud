@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -79,7 +79,7 @@ public class AbilityEvoker
 					}
 					else
 						evokableAbility=thisAbility;
-						
+
 				}
 			}
 			if((evokableAbility!=null)&&(!foundMoreThanOne))

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -133,7 +133,7 @@ public class BasicSenses
 		else
 			new ItemUsage().get(mob,commands);
 	}
-	
+
 	public void train(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
@@ -331,7 +331,7 @@ public class BasicSenses
 			mob.tell("Autoexits has been turned on.");
 		}
 	}
-	
+
 	public void weather(MOB mob, Vector commands)
 	{
 		Room room=mob.location();

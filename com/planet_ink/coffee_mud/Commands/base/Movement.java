@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -40,7 +40,7 @@ public class Movement
 		int leaveCode=Affect.MSG_LEAVE;
 		if(flee) leaveCode=Affect.MSG_FLEE;
 
-		
+
 		FullMsg enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
 		FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flees":Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName);
 		if((exit==null)&&(!mob.isASysOp(destRoom)))
@@ -258,7 +258,7 @@ public class Movement
 	{
 		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
 			return room.okAffect(msg);
-		
+
 		Exit thisExit=(Exit)msg.target();
 		if(!room.okAffect(msg))
 			return false;

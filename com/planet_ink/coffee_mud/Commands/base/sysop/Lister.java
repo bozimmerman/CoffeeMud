@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -127,9 +127,9 @@ public class Lister
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
-			
+
 			lines.append ( thisSession.killFlag() ? "^HCLOSING^?|" : " open  |" );
-			
+
 			if (thisSession.mob() != null)
 			{
 				lines.append ( (thisSession.mob().session() == thisSession) ? "  yes  " : "  ^HNO!^? " );
@@ -153,7 +153,7 @@ public class Lister
 		int agc = tGroup.activeGroupCount();
 		Thread tArray[] = new Thread [ac+1];
 		ThreadGroup tgArray[] = new ThreadGroup [agc+1];
-		
+
 		tGroup.enumerate(tArray,false);
 		tGroup.enumerate(tgArray,false);
 
@@ -179,7 +179,7 @@ public class Lister
 			lines.append("}\n\r");
 		}
 	}
-	
+
 
 	public StringBuffer listThreads(MOB mob)
 	{
@@ -191,16 +191,16 @@ public class Lister
 				topTG = topTG.getParent();
 			if (topTG != null)
 				dumpThreadGroup(lines,topTG);
-		
+
 		}
 		catch (Exception e)
 		{
 			lines.append ("\n\rBastards! Exception while listing threads: " + e.getMessage() + "\n\r");
 		}
 		return lines;
-			
+
 	}
-	
+
 	public void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)

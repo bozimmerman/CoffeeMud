@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -8,9 +8,9 @@ import java.util.*;
 
 public class XMLIO
 {
-	
+
 	Rooms myRooms=new Rooms();
-							
+
 	public void xml(MOB mob,Vector commands)
 	{
 		if(mob.isMonster()) return;
@@ -27,7 +27,7 @@ public class XMLIO
 		if(s.equalsIgnoreCase("ROOM"))
 			roomxml(mob,commands);
 	}
-	
+
 	public void infoxml(MOB mob, Vector commands)
 	{
 
@@ -243,7 +243,7 @@ public class XMLIO
 		mob.session().rawPrintln(roomXML.toString());
 		return;
 	}
-	
+
 	public void contentxml(MOB mob, Vector commands)
 	{
 		if(commands.size()>=1)
@@ -449,7 +449,7 @@ public class XMLIO
 			return;
 		}
 	}
-	
+
 	public void roomxml(MOB mob, Vector commands)
 	{
 		if(commands.size()>=1)
@@ -526,7 +526,7 @@ public class XMLIO
 			Area newArea=CMMap.getArea(newAreaStr);
 			if(newArea==null)
 				newArea=ExternalPlay.DBCreateArea(newAreaStr,"StdArea");
-			
+
 			boolean isNewRoom=false;
 			if(newID.equalsIgnoreCase("NEW"))
 			{

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 
 
 import com.planet_ink.coffee_mud.utils.*;
@@ -39,7 +39,7 @@ public class Utils
 							E=((ShopKeeper)mob2).getStock(name);
 					}
 				}
-				if(E!=null) break;	
+				if(E!=null) break;
 			}
 		if(E==null)
 		{
@@ -77,5 +77,5 @@ public class Utils
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
 	}
-	
+
 }

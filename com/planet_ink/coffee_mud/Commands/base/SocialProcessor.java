@@ -1,9 +1,9 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.commands.base.sysop.*;
+import com.planet_ink.coffee_mud.Commands.base.sysop.*;
 import java.util.*;
 
 public class SocialProcessor
@@ -225,8 +225,8 @@ public class SocialProcessor
 			commands.removeElementAt(commands.size()-1);
 
 		String itemID=Util.combine(commands,0);
-		
-		
+
+
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		int addendum=1;

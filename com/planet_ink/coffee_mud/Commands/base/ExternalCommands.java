@@ -1,11 +1,11 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 public class ExternalCommands implements ExternalCommand
 {
 	CommandProcessor processor=null;
-	
+
 	public ExternalCommands(CommandProcessor newProcessor)
 	{
 		processor=newProcessor;
@@ -14,7 +14,7 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.itemUsage.wear(mob,item);
 	}
-	
+
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		processor.theFight.postAttack(attacker,target,weapon);

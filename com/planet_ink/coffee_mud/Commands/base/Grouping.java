@@ -1,9 +1,9 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.commands.base.sysop.CreateEdit;
-import com.planet_ink.coffee_mud.commands.base.sysop.SysopItemUsage;
+import com.planet_ink.coffee_mud.Commands.base.sysop.CreateEdit;
+import com.planet_ink.coffee_mud.Commands.base.sysop.SysopItemUsage;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
@@ -147,7 +147,7 @@ public class Grouping
 		else
 			nofollow(mob,!quiet,quiet);
 	}
-	
+
 	public void follow(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)

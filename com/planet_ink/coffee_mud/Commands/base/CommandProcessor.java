@@ -1,9 +1,9 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import java.util.*;
 import java.io.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.commands.base.sysop.*;
+import com.planet_ink.coffee_mud.Commands.base.sysop.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
@@ -41,7 +41,7 @@ public class CommandProcessor
 		Command C=CMClass.findExtraCommand(firstWord);
 		if((C!=null)&&(!C.execute(mob,commands)))
 			return;
-		
+
 		Integer commandCodeObj=(Integer)commandSet.get(firstWord);
 		if(commandCodeObj!=null)
 		{
@@ -507,14 +507,14 @@ public class CommandProcessor
 			Resources.removeResource("arc_help.txt");
 		helpFile=null;
 		arcHelpFile=null;
-			
+
 		// also the intro page
 		if(Resources.getResource("intro.txt")!=null)
 			Resources.removeResource("intro.txt");
-			
+
 		if(Resources.getResource("offline.txt")!=null)
 			Resources.removeResource("offline.txt");
-			
+
 		mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");
 	}
 
@@ -528,7 +528,7 @@ public class CommandProcessor
 		if(arcHelpFile==null) return false;
 		return true;
 	}
-	
+
 	private boolean getHelpFile()
 	{
 		if(helpFile==null)
@@ -552,7 +552,7 @@ public class CommandProcessor
 			mob.tell("No help is available.");
 			return;
 		}
-		
+
 		doTopics(mob,helpFile,"HELP", "PLAYER TOPICS");
 	}
 
@@ -563,10 +563,10 @@ public class CommandProcessor
 			mob.tell("No archon help is available.");
 			return;
 		}
-		
+
 		doTopics(mob,arcHelpFile,"AHELP", "ARCHON TOPICS");
 	}
-	
+
 	private void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
 	{
 		StringBuffer topicBuffer=(StringBuffer)Resources.getResource(resName);
@@ -707,12 +707,12 @@ public class CommandProcessor
 			Log.errOut("CommandProcessor",mob.name()+" starts system restarting '"+externalCommand+"'...");
 		else
 			Log.errOut("CommandProcessor",mob.name()+" starts system restart...");
-		if(myHost!=null) 
+		if(myHost!=null)
 			myHost.shutdown(mob.session(),keepItDown,externalCommand);
 		else
 			Log.errOut("CommandProcessor","Shutdown failed.  No host.");
 	}
-	
+
 	public void cmdDumpfile(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -725,7 +725,7 @@ public class CommandProcessor
 		int numFiles = 0;
 		int numSessions = 0;
 		boolean rawMode=false;
-		
+
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("raw"))
 		{
 			rawMode = true;
@@ -743,7 +743,7 @@ public class CommandProcessor
 			rawMode = true;
 			commands.removeElementAt(0);
 		}
-		
+
 		StringBuffer fileText = new StringBuffer("");
 		while (commands.size() > 0)
 		{
@@ -753,10 +753,10 @@ public class CommandProcessor
 			fn.replace('/','_');
 			fn.replace('\\','_');
 			fn.replace(':','_');
-			
+
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;
-				
+
 			StringBuffer ft = Resources.getFileResource(fn);
 			if (ft != null && ft.length() > 0)
 			{
@@ -764,18 +764,18 @@ public class CommandProcessor
 				fileText.append(ft);
 				++numFiles;
 			}
-		
+
 			if (wipeAfter)
 				Resources.removeResource(fn);
 			commands.removeElementAt(0);
-			
+
 		}
 		if (fileText.length() > 0)
 		{
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session thisSession=(Session)Sessions.elementAt(s);
-				
+
 				if (thisSession==null) continue;
 				if (thisSession.killFlag() || (thisSession.mob()==null)) continue;
 				if (allFlag || thisSession.mob().name().equalsIgnoreCase(targetName))
@@ -790,5 +790,5 @@ public class CommandProcessor
 		}
 		mob.tell("dumped " + numFiles + " files to " + numSessions + " user(s)");
 	}
-	
+
 }

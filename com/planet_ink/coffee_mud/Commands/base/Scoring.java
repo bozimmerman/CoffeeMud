@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -47,7 +47,7 @@ public class Scoring
 	public void score(MOB mob)
 	{
 		TheFight theFight=new TheFight();
-		
+
 		int adjustedArmor=100-(int)theFight.adjustedArmor(mob);
 		int adjustedAttack=(int)theFight.adjustedAttackBonus(mob);
 

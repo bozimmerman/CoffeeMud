@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base.sysop;
+package com.planet_ink.coffee_mud.Commands.base.sysop;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -188,7 +188,7 @@ public class Import
 			text=text.trim().substring(7).trim();
 		return text;
 	}
-	
+
 	private boolean returnAnError(MOB mob, String str)
 	{
 		Log.errOut("Import",str);
@@ -2187,11 +2187,11 @@ public class Import
 		Vector specialData=new Vector();
 		Vector newRooms=new Vector();
 		Vector reLinkTable=null;
-		
+
 		boolean prompt=true;
 
 		commands.removeElementAt(0);
-		
+
 		// verify that the process can start
 		if(commands.size()<1)
 		{
@@ -2323,7 +2323,7 @@ public class Import
 				Area A=CMMap.getArea(areaName);
 				if(A==null)
 					A=ExternalPlay.DBCreateArea(areaName,"StdArea");
-				
+
 				Room R=CMClass.getLocale("StdRoom");
 				R.setID(eatNextLine(roomV));
 				R.setDisplayText(Util.safetyFilter(eatLineSquiggle(roomV)));
@@ -2597,7 +2597,7 @@ public class Import
 							E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|Sense.IS_HIDDEN);
 							E.recoverEnvStats();
 						}
-						
+
 						if(name.length()>0)
 						{
 							if(("aeiouAEIOU").indexOf(name.charAt(0))>=0)
@@ -2947,7 +2947,7 @@ public class Import
 							{
 								String description=lookItem.description();
 								smurfRoom.delItem(lookItem);
-								
+
 								Item testItem=CMClass.getItem(I.ID());
 								if((testItem!=null)&&(testItem.description().equals(I.description())))
 									I.setDescription(description);
@@ -2961,7 +2961,7 @@ public class Import
 				}
 			}
 			mob.session().print("\n\nReset, and saving...");
-			
+
 			// try to re-link olde room links
 			if(reLinkTable!=null)
 				for(int r=0;r<reLinkTable.size();r++)

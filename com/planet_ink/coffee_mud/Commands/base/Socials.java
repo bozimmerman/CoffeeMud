@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.commands.base;
+package com.planet_ink.coffee_mud.Commands.base;
 
 import java.io.*;
 import java.net.*;
@@ -162,8 +162,8 @@ public class Socials
 			StringBuffer buf=new StringBuffer("");
 			for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 			{
-				com.planet_ink.coffee_mud.commands.base.Social
-					I=(com.planet_ink.coffee_mud.commands.base.Social)e.nextElement();
+				com.planet_ink.coffee_mud.Commands.base.Social
+					I=(com.planet_ink.coffee_mud.Commands.base.Social)e.nextElement();
 
 				switch(I.sourceCode)
 				{
