@@ -93,24 +93,152 @@ public class CommonSkill extends StdAbility
 			Exit exit=fromHere.getExitInDir(d);
 			if((room!=null)&&(exit!=null)&&(exit.isOpen()))
 			{
-				Environmental E=room.myResource();
-				if(E!=null)
-				{
-					if(E instanceof Item)
-					{
-						if(materials.contains(new Integer(((Item)E).material()&EnvResource.MATERIAL_MASK)))
-						{possibilities.addElement(new Integer(d));}
-					}
-					else
-					if((E instanceof MOB)&&(materials.contains(new Integer(EnvResource.MATERIAL_FLESH))))
-					{possibilities.addElement(new Integer(d));}
-				}
+				int material=room.myResource();
+				if(materials.contains(new Integer(material&EnvResource.MATERIAL_MASK)))
+				{possibilities.addElement(new Integer(d));}
 			}
 		}
 		if(possibilities.size()==0) 
 			return -1;
 		else 
 			return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
+	}
+	
+	public Environmental makeResource(int myResource)
+	{
+		if(myResource<0)
+			return null;
+		else
+		{
+			int material=(myResource&EnvResource.MATERIAL_MASK);
+			Item I=null;
+			String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
+			if((myResource==EnvResource.RESOURCE_WOOL)
+			||(myResource==EnvResource.RESOURCE_FEATHERS)
+			||(myResource==EnvResource.RESOURCE_SCALES)
+			||(myResource==EnvResource.RESOURCE_HIDE)
+			||(myResource==EnvResource.RESOURCE_FUR))
+			   material=EnvResource.MATERIAL_LEATHER;
+			if(myResource==EnvResource.RESOURCE_FISH)
+				material=EnvResource.MATERIAL_VEGETATION;
+			switch(material)
+			{
+			case EnvResource.MATERIAL_LEATHER:
+			case EnvResource.MATERIAL_FLESH:
+				MOB M=null;
+				switch(myResource)
+				{
+				case EnvResource.RESOURCE_MUTTON:
+				case EnvResource.RESOURCE_WOOL:
+					return CMClass.getMOB("Sheep");
+				case EnvResource.RESOURCE_LEATHER:
+				case EnvResource.RESOURCE_HIDE:
+					switch(Dice.roll(1,10,0))
+					{
+					case 1:
+					case 2:
+					case 3: return CMClass.getMOB("Cow");
+					case 4: return CMClass.getMOB("Bull");
+					case 5:
+					case 6:
+					case 7: return CMClass.getMOB("Doe");
+					case 8:
+					case 9:
+					case 10: return CMClass.getMOB("Buck");
+					}
+					break;
+				case EnvResource.RESOURCE_PORK:
+					return CMClass.getMOB("Pig");
+				case EnvResource.RESOURCE_FUR:
+				case EnvResource.RESOURCE_MEAT:
+					switch(Dice.roll(1,10,0))
+					{
+					case 1:
+					case 2:
+					case 3:
+					case 4: return CMClass.getMOB("Wolf"); 
+					case 5:
+					case 6:
+					case 7: return CMClass.getMOB("Buffalo");
+					case 8:
+					case 9: return CMClass.getMOB("BrownBear");
+					case 10: return CMClass.getMOB("BlackBear");
+					}
+					break;
+				case EnvResource.RESOURCE_SCALES:
+					switch(Dice.roll(1,10,0))
+					{
+					case 1:
+					case 2:
+					case 3:
+					case 4: return CMClass.getMOB("Lizard"); 
+					case 5:
+					case 6:
+					case 7: return CMClass.getMOB("GardenSnake");
+					case 8:
+					case 9: return CMClass.getMOB("Cobra");
+					case 10: return CMClass.getMOB("Python");
+					}
+					break;
+				case EnvResource.RESOURCE_POULTRY:
+				case EnvResource.RESOURCE_EGGS:
+					return CMClass.getMOB("Chicken");
+				case EnvResource.RESOURCE_BEEF:
+					switch(Dice.roll(1,5,0))
+					{
+					case 1:
+					case 2:
+					case 3:
+					case 4: return CMClass.getMOB("Cow"); 
+					case 5: return CMClass.getMOB("Bull"); 
+					}
+					break;
+				case EnvResource.RESOURCE_FEATHERS:
+					switch(Dice.roll(1,4,0))
+					{
+					case 1: return CMClass.getMOB("WildEagle"); 
+					case 2: return CMClass.getMOB("Falcon"); 
+					case 3: return CMClass.getMOB("Chicken");
+					case 4: return CMClass.getMOB("Parakeet");
+					}
+					break;
+				}
+				break;
+			case EnvResource.MATERIAL_VEGETATION:
+			{
+				I=CMClass.getItem("GenFoodResource");
+				break;
+			}
+			case EnvResource.MATERIAL_CLOTH:
+			case EnvResource.MATERIAL_PAPER:
+			case EnvResource.MATERIAL_LIQUID:
+			case EnvResource.MATERIAL_WOODEN:
+			case EnvResource.MATERIAL_ROCK:
+			{
+				I=CMClass.getItem("GenResource");
+				break;
+			}
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL:
+			{
+				I=CMClass.getItem("GenResource");
+				name=name+" ore";
+				break;
+			}
+			}
+			if(I!=null)
+			{
+				I.setMaterial(myResource);
+				I.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
+				I.baseEnvStats().setWeight(1);
+				I.setName("a pound of "+name);
+				I.setDisplayText("some "+name+" sit here.");
+				I.setDescription("Looks like "+I.name()+".");
+				I.recoverEnvStats();
+				return I;
+			}
+		}
+		return null;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

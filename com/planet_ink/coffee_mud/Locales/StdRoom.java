@@ -156,7 +156,7 @@ public class StdRoom
 		}
 	}
 	public Vector resourceChoices(){return null;}
-	public Environmental myResource()
+	public int myResource()
 	{
 		if(resourceFound!=null)
 		{
@@ -189,62 +189,13 @@ public class StdRoom
 					if(theRoll<=totalChance)
 					{
 						myResource=resource;
+						resourceFound=Calendar.getInstance();
 						break;
 					}
 				}
 			}
 		}
-		if(myResource<0)
-			return null;
-		else
-		{
-			resourceFound=Calendar.getInstance();
-			int material=(myResource&EnvResource.MATERIAL_MASK);
-			Item I=null;
-			String name=EnvResource.RESOURCE_DESCS[myResource&EnvResource.RESOURCE_MASK].toLowerCase();
-			if(myResource==EnvResource.RESOURCE_WOOL)
-				material=EnvResource.MATERIAL_LEATHER;
-			switch(material)
-			{
-			case EnvResource.MATERIAL_LEATHER:
-			case EnvResource.MATERIAL_FLESH:
-				// return an animal
-				break;
-			case EnvResource.MATERIAL_VEGETATION:
-			{
-				I=CMClass.getItem("GenFoodResource");
-				break;
-			}
-			case EnvResource.MATERIAL_CLOTH:
-			case EnvResource.MATERIAL_PAPER:
-			case EnvResource.MATERIAL_LIQUID:
-			case EnvResource.MATERIAL_WOODEN:
-			case EnvResource.MATERIAL_ROCK:
-			{
-				I=CMClass.getItem("GenResource");
-				break;
-			}
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL:
-			{
-				I=CMClass.getItem("GenResource");
-				name=name+" ore";
-				break;
-			}
-			}
-			if(I!=null)
-			{
-				I.setMaterial(myResource);
-				I.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
-				I.baseEnvStats().setWeight(1);
-				I.setName("a pound of "+name);
-				I.setDisplayText("some "+name+" sit here.");
-				I.setDescription("Looks like "+I.name()+".");
-				I.recoverEnvStats();
-				return I;
-			}
-		}
-		return null;
+		return myResource;
 	}
 			
 

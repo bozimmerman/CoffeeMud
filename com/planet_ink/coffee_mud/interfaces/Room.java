@@ -31,7 +31,7 @@ public interface Room extends Environmental
 	
 	public int domainType();
 	public int domainConditions();
-	public Environmental myResource();
+	public int myResource();
 	public Vector resourceChoices();
 	
 	public void setID(String newID);

@@ -22,7 +22,7 @@ public class Falcon extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,4);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STRENGTH,10);
 		baseCharStats().setStat(CharStats.DEXTERITY,17);
 
@@ -32,6 +32,8 @@ public class Falcon extends StdMOB
 		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(50);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
+		baseCharStats().setMyRace(CMClass.getRace("GreatBird"));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 4)*baseEnvStats().level()) + 1);
 

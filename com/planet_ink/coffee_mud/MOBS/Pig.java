@@ -1,5 +1,42 @@
 package com.planet_ink.coffee_mud.MOBS;
 
-public class Pig
+import java.util.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+public class Pig extends StdMOB
 {
+
+	public Pig()
+	{
+		super();
+		Random randomizer = new Random(System.currentTimeMillis());
+
+		Username="a pig";
+		setDescription("A large pink hairless animal with hooved feet.");
+		setDisplayText("A pig snorts at you.");
+		setAlignment(500);
+		setMoney(0);
+		setWimpHitPoint(2);
+
+		baseEnvStats().setDamage(1);
+
+		baseCharStats().setMyRace(CMClass.getRace("Pig"));
+		baseCharStats().getMyRace().startRacing(this,false);
+
+		baseEnvStats().setAbility(0);
+		baseEnvStats().setLevel(1);
+		baseEnvStats().setArmor(30);
+
+		baseState.setHitPoints(Math.abs(randomizer.nextInt() % 12) + 2);
+
+		recoverMaxState();
+		resetToMaxState();
+		recoverEnvStats();
+		recoverCharStats();
+	}
+	public Environmental newInstance()
+	{
+		return new Pig();
+	}
 }

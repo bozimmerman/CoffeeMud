@@ -119,11 +119,11 @@ public class Hunt extends CommonSkill
 		activityRoom=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		Environmental E=mob.location().myResource();
+		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&(E instanceof MOB))
+		   &&((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
 		{
-			found=(MOB)E;
+			found=(MOB)makeResource(resourceType);
 			foundShortName=found.name();
 			int x=0;
 			if((x=foundShortName.lastIndexOf(" "))>=0)

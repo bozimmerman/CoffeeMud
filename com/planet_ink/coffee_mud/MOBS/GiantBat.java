@@ -22,7 +22,7 @@ public class GiantBat extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 100));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,7);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STRENGTH,16);
 		baseCharStats().setStat(CharStats.DEXTERITY,17);
 

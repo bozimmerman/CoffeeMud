@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
 import java.util.Vector;
 public class Python extends Snake
 {
@@ -16,6 +17,16 @@ public class Python extends Snake
 		// pounds
 		lightestWeight=15;
 		weightVariance=20;
+	}
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a fearsome hug");
+			naturalWeapon.setWeaponType(Weapon.TYPE_NATURAL);
+		}
+		return naturalWeapon;
 	}
 	public Vector myResources()
 	{

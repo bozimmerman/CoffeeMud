@@ -25,7 +25,7 @@ public class Cat extends StdMOB
 
 		baseEnvStats().setDamage(4);
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1 + Math.abs(randomizer.nextInt() % 4));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
 
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);

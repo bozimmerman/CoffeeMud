@@ -1,5 +1,42 @@
 package com.planet_ink.coffee_mud.MOBS;
 
-public class Lizard
+import java.util.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+public class Lizard extends StdMOB
 {
+
+	public Lizard()
+	{
+		super();
+		Random randomizer = new Random(System.currentTimeMillis());
+
+		Username="a lizard";
+		setDescription("A small unobtrusize reptile with rough green skin.");
+		setDisplayText("A lizard scurries by.");
+		setAlignment(500);
+		setMoney(0);
+
+		baseEnvStats().setDamage(1);
+
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+
+		baseEnvStats().setAbility(0);
+		baseEnvStats().setLevel(1);
+		baseEnvStats().setArmor(90);
+
+		baseCharStats().setMyRace(CMClass.getRace("Lizard"));
+		baseCharStats().getMyRace().startRacing(this,false);
+		baseState.setHitPoints(Math.abs(randomizer.nextInt() % 4) + 2);
+
+		recoverMaxState();
+		resetToMaxState();
+		recoverEnvStats();
+		recoverCharStats();
+	}
+	public Environmental newInstance()
+	{
+		return new Lizard();
+	}
 }

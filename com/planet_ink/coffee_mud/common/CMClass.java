@@ -2,9 +2,11 @@ package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.*;
 import java.io.*;
+import java.lang.reflect.Modifier;
 import com.planet_ink.coffee_mud.utils.Log;
 import com.planet_ink.coffee_mud.utils.INI;
 import com.planet_ink.coffee_mud.utils.CoffeeUtensils;
+
 
 public class CMClass extends ClassLoader
 {
@@ -221,135 +223,135 @@ public class CMClass extends ClassLoader
 	{
 		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
 
-		races=loadVectorListToObj(prefix+"Races"+File.separatorChar,page.getStr("RACES"));
+		races=loadVectorListToObj(prefix+"Races"+File.separatorChar,page.getStr("RACES"),"com.planet_ink.coffee_mud.interfaces.Race");
 		Log.sysOut("MUD","Races loaded      : "+races.size());
 		if(races.size()==0) return false;
 //-------------------------------------------------------
 
-		charClasses=loadVectorListToObj(prefix+"CharClasses"+File.separatorChar,page.getStr("CHARCLASSES"));
+		charClasses=loadVectorListToObj(prefix+"CharClasses"+File.separatorChar,page.getStr("CHARCLASSES"),"com.planet_ink.coffee_mud.interfaces.CharClass");
 		Log.sysOut("MUD","Classes loaded    : "+charClasses.size());
 		if(charClasses.size()==0) return false;
 //-------------------------------------------------------
 
-		MOBs=loadVectorListToObj(prefix+"MOBS"+File.separatorChar,page.getStr("MOBS"));
+		MOBs=loadVectorListToObj(prefix+"MOBS"+File.separatorChar,page.getStr("MOBS"),"com.planet_ink.coffee_mud.interfaces.MOB");
 		Log.sysOut("MUD","MOB Types loaded  : "+MOBs.size());
 		if(MOBs.size()==0) return false;
 //-------------------------------------------------------
 
-		exits=loadVectorListToObj(prefix+"Exits"+File.separatorChar,page.getStr("EXITS"));
+		exits=loadVectorListToObj(prefix+"Exits"+File.separatorChar,page.getStr("EXITS"),"com.planet_ink.coffee_mud.interfaces.Exit");
 		Log.sysOut("MUD","Exit Types loaded : "+exits.size());
 		if(exits.size()==0) return false;
 //-------------------------------------------------------
 
-		areaTypes=loadVectorListToObj(prefix+"Areas"+File.separatorChar,page.getStr("AREAS"));
+		areaTypes=loadVectorListToObj(prefix+"Areas"+File.separatorChar,page.getStr("AREAS"),"com.planet_ink.coffee_mud.interfaces.Area");
 		Log.sysOut("MUD","Area Types loaded : "+areaTypes.size());
 		if(areaTypes.size()==0) return false;
 //-------------------------------------------------------
 
-		locales=loadVectorListToObj(prefix+"Locales"+File.separatorChar,page.getStr("LOCALES"));
+		locales=loadVectorListToObj(prefix+"Locales"+File.separatorChar,page.getStr("LOCALES"),"com.planet_ink.coffee_mud.interfaces.Room");
 		Log.sysOut("MUD","Locales loaded    : "+locales.size());
 		if(locales.size()==0) return false;
 //-------------------------------------------------------
 
-		abilities=loadVectorListToObj(prefix+"Abilities"+File.separatorChar,page.getStr("ABILITIES"));
+		abilities=loadVectorListToObj(prefix+"Abilities"+File.separatorChar,page.getStr("ABILITIES"),"com.planet_ink.coffee_mud.interfaces.Ability");
 		if(abilities.size()==0) return false;
 
 		Vector tempV;
 		int size=0;
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Ranger"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Ranger"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Paladin"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Paladin"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		Log.sysOut("MUD","Fighter Skills    : "+size);
 //-------------------------------------------------------
 		
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Druid"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Druid"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		Log.sysOut("MUD","Chants loaded     : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 //-------------------------------------------------------
 		
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		Log.sysOut("MUD","Languages loaded  : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
 //-------------------------------------------------------
 		
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		Log.sysOut("MUD","Properties loaded : "+size);
 //-------------------------------------------------------
 		
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		Log.sysOut("MUD","Prayers loaded    : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 //-------------------------------------------------------
 		
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Common"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Common"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		size+=tempV.size();
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
 		Log.sysOut("MUD","Skills loaded     : "+size);
 //-------------------------------------------------------
 		
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		Log.sysOut("MUD","Songs loaded      : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 //-------------------------------------------------------
 		
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		Log.sysOut("MUD","Spells loaded     : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
 //-------------------------------------------------------
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"");
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Ability");
 		Log.sysOut("MUD","Traps loaded      : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
 //-------------------------------------------------------
 
-		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"));
+		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"),"com.planet_ink.coffee_mud.interfaces.Item");
 		Log.sysOut("MUD","Items loaded      : "+items.size());
 		if(items.size()==0) return false;
 //-------------------------------------------------------
 
-		weapons=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar,"");
+		weapons=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Weapon");
 		Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
 		if(weapons.size()==0) return false;
 //-------------------------------------------------------
 
-		armor=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Armor"+File.separatorChar,"");
+		armor=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Armor"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.Armor");
 		Log.sysOut("MUD","Armor loaded      : "+armor.size());
 		if(armor.size()==0) return false;
 //-------------------------------------------------------
 
-		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar,"");
+		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar,"","com.planet_ink.coffee_mud.interfaces.MiscMagic");
 		Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
 		if(miscMagic.size()==0) return false;
 //-------------------------------------------------------
 
-		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar,page.getStr("BEHAVIORS"));
+		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar,page.getStr("BEHAVIORS"),"com.planet_ink.coffee_mud.interfaces.Behavior");
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 //-------------------------------------------------------
 		
-		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"));
+		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
 		if(cmds.size()>1)
 		{
 			Log.sysOut("MUD","XCommands loaded  : "+cmds.size());
@@ -390,26 +392,40 @@ public class CMClass extends ClassLoader
 		areaTypes=new Vector();
 	}
 
-	public static Hashtable loadHashListToObj(String filePath, String auxPath)
+	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancestor)
 	{
 		Hashtable h=new Hashtable();
-		loadListToObj(h,filePath,false);
+		loadListToObj(h,filePath,false, ancestor);
 		if(auxPath.length()>0)
-			loadListToObj(h,auxPath,true);
+			loadListToObj(h,auxPath,true, ancestor);
 		return h;
 	}
-	public static Vector loadVectorListToObj(String filePath, String auxPath)
+	public static Vector loadVectorListToObj(String filePath, String auxPath, String ancestor)
 	{
 		Vector v=new Vector();
-		loadListToObj(v,filePath,false);
+		loadListToObj(v,filePath,false, ancestor);
 		if(auxPath.length()>0)
-			loadListToObj(v,auxPath,true);
+			loadListToObj(v,auxPath,true, ancestor);
 		return v;
 	}
-	public static void loadListToObj(Object toThis, String filePath, boolean aux)
+	public static void loadListToObj(Object toThis, String filePath, boolean aux, String ancestor)
 	{
 		StringBuffer objPathBuf=new StringBuffer(filePath);
 		String objPath=objPathBuf.toString();
+		
+		Class ancestorCl=null;
+		if (ancestor != null && ancestor.length() != 0)
+		{
+			try
+			{
+				ancestorCl = Class.forName(ancestor);
+			}
+			catch (ClassNotFoundException e)
+			{
+				Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
+				ancestorCl = null;
+			}
+		}
 		
 		int x=0;
 		if(!aux)
@@ -441,10 +457,19 @@ public class CMClass extends ClassLoader
 								new FileInputStream(f).read(data,0,(int)f.length());
 								Class C=loader.defineClass(itemName, data, 0, data.length);
 								loader.resolveClass(C);
-								O=(Object)C.newInstance();
+								if (!checkClass(C,ancestorCl))
+									O=null;
+								else
+									O=(Object)C.newInstance();
 							}
 							else
-								O=(Object)Class.forName(objPath+itemName).newInstance();
+							{
+								Class C=Class.forName(objPath+itemName);
+								if (!checkClass(C,ancestorCl))
+									O=null;
+								else
+									O=(Object)C.newInstance();
+							}
 							if(O!=null)
 							{
 								if(toThis instanceof Hashtable)
@@ -476,4 +501,28 @@ public class CMClass extends ClassLoader
 		else
 			return name;
 	}
+	
+	private static boolean checkClass(Class cl, Class ancestorCl)
+	{
+		if (cl == null)
+			return false;
+
+		// if it's a primitive or an interface, we're not interested
+		if (cl.isPrimitive() || cl.isInterface())
+			return false;
+		
+		// if it's abstract or not public, we're not interested either
+		// the Class class lacks shortcut methods for these, 
+		// so we use java.lang.reflect.Modifier
+		if ( Modifier.isAbstract( cl.getModifiers()) || !Modifier.isPublic( cl.getModifiers()) )
+			return false;
+		
+		// if no ancestor was specified, we're done
+		if (ancestorCl == null)
+			return true;
+		
+		return (ancestorCl.isAssignableFrom(cl)) ;
+	}
+
+
 }

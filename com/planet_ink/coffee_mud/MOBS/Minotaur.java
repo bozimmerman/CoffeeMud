@@ -24,6 +24,8 @@ public class Minotaur extends StdMOB
 		baseCharStats().setStat(CharStats.INTELLIGENCE,4 + Math.abs(randomizer.nextInt() % 5));
 		baseCharStats().setStat(CharStats.STRENGTH,18);
 		baseCharStats().setStat(CharStats.DEXTERITY,15);
+		baseCharStats().setMyRace(CMClass.getRace("Minotaur"));
+		baseCharStats().getMyRace().startRacing(this,false);
 
 		Weapon mainWeapon=(Weapon)CMClass.getWeapon("BattleAxe");
 		if(mainWeapon!=null)

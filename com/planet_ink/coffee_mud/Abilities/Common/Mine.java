@@ -82,15 +82,14 @@ public class Mine extends CommonSkill
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		Environmental E=mob.location().myResource();
+		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&(E instanceof Item)
-		   &&(((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
-		   ||((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
-		   ||((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
-		   ||((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)))
+		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
+		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
+		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)))
 		{
-			found=(Item)E;
+			found=(Item)makeResource(resourceType);
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=50-mob.envStats().level();

@@ -20,7 +20,7 @@ public class Tiger extends StdMOB
 		baseEnvStats.setWeight(300 + Math.abs(randomizer.nextInt() % 55));
 
 
-		baseCharStats().setStat(CharStats.INTELLIGENCE,1 + Math.abs(randomizer.nextInt() % 4));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STRENGTH,13);
 		baseCharStats().setStat(CharStats.DEXTERITY,17);
 		baseCharStats().setMyRace(CMClass.getRace("GreatCat"));

@@ -87,12 +87,11 @@ public class Forage extends CommonSkill
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		Environmental E=mob.location().myResource();
+		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&(E instanceof Item)
-		   &&((((Item)E).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+		   &&((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
 		{
-			found=(Item)E;
+			found=(Item)makeResource(resourceType);
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
 		int duration=35-mob.envStats().level();
