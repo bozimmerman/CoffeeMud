@@ -20,12 +20,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 			mob.tell("You are too close to perform a called shot!");
 			return false;
 		}
-		if(!mob.isInCombat())
-		{
-			mob.tell("You must be in combat to call a shot!");
-			return false;
-		}
-
+		
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{

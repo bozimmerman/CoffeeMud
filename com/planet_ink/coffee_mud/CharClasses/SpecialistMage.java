@@ -12,6 +12,9 @@ public class SpecialistMage extends Mage
 	public String baseClass(){return "Mage";}
 	public int domain(){return Ability.DOMAIN_ABJURATION;}
 	public int opposed(){return Ability.DOMAIN_ENCHANTMENT;}
+	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
 	public void cloneFix(CharClass C)
 	{

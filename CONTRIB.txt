@@ -2,7 +2,7 @@ Bo would like to acknowledge and thank the following people for contributing,
 both directly and indirectly to the development of CoffeeMud.
 
 Tim Kassebaum, for putting in lord knows how many hours doing head and 
-documentation work for version 3.0-4.0, including just about every spell, 
+documentation work for versions 3.0-4.0, including just about every spell, 
 prayer, subclasses, and 0-level skill, for uncountable ideas (and for 
 documenting those too), and for SOMEHOW finding time to playtest amidst
 all this.  And of course Hojo, playtesting, bugfinding FOOL!

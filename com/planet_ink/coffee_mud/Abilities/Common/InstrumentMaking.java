@@ -208,29 +208,38 @@ public class InstrumentMaking extends CommonSkill
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
-		
-		((Item)building).setRawProperLocationBitmap(0);
-		for(int wo=1;wo<Item.wornLocation.length;wo++)
+		if(building instanceof Rideable)
 		{
-			String WO=Item.wornLocation[wo].toUpperCase();
-			if(misctype.equalsIgnoreCase(WO))
+			((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
+			((Rideable)building).setRiderCapacity(Util.s_int(misctype));
+			if(((Rideable)building).riderCapacity()<=0)
+				((Rideable)building).setRiderCapacity(1);
+		}
+		else
+		{
+			((Item)building).setRawProperLocationBitmap(0);
+			for(int wo=1;wo<Item.wornLocation.length;wo++)
 			{
-				((Item)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
-				((Item)building).setRawLogicalAnd(false);
-			}
-			else
-			if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-			||(misctype.toUpperCase().endsWith("||"+WO)))
-			{
-				((Item)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-				((Item)building).setRawLogicalAnd(false);
-			}
-			else
-			if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-			||(misctype.toUpperCase().endsWith("&&"+WO)))
-			{
-				((Item)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-				((Item)building).setRawLogicalAnd(true);
+				String WO=Item.wornLocation[wo].toUpperCase();
+				if(misctype.equalsIgnoreCase(WO))
+				{
+					((Item)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
+					((Item)building).setRawLogicalAnd(false);
+				}
+				else
+				if((misctype.toUpperCase().indexOf(WO+"||")>=0)
+				||(misctype.toUpperCase().endsWith("||"+WO)))
+				{
+					((Item)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					((Item)building).setRawLogicalAnd(false);
+				}
+				else
+				if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
+				||(misctype.toUpperCase().endsWith("&&"+WO)))
+				{
+					((Item)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
+					((Item)building).setRawLogicalAnd(true);
+				}
 			}
 		}
 		building.recoverEnvStats();

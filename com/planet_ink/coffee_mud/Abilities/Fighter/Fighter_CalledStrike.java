@@ -20,9 +20,8 @@ public class Fighter_CalledStrike extends StdAbility
 	public int classificationCode(){ return Ability.SKILL;}
 
 	protected String gone="";
-	protected long code=0;
-	protected long bit=0;
 	protected MOB target=null;
+	protected int hpReq=9;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -31,38 +30,24 @@ public class Fighter_CalledStrike extends StdAbility
 
 	protected boolean amputate()
 	{
-		MOB mob=(MOB)affected;
+		MOB mob=(MOB)target;
 		if(mob==null) return false;
-		Amputation A=(Amputation)target.fetchAffect("Amputation");
+		Amputation A=(Amputation)mob.fetchAffect("Amputation");
 		boolean newOne=false;
 		if(A==null)
 		{
 			A=new Amputation();
 			newOne=true;
 		}
-		if((Amputation.AMPUTATE_BOTHEYES&bit)>0)
-			target.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
-		else
-		{
-			target.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
-			Item limb=CMClass.getItem("GenItem");
-			limb.setName("a "+gone);
-			limb.setDisplayText("a bloody "+gone+" is sitting here.");
-			limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
-			limb.baseEnvStats().setLevel(1);
-			limb.baseEnvStats().setWeight(5);
-			limb.recoverEnvStats();
-			target.location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
-		}
-		A.setMiscText(""+(A.missingLimbList()|code));
+		Amputation.amputate(mob,A,gone);
 		if(newOne==true)
 		{
-			target.addAbility(A);
-			A.autoInvocation(target);
+			mob.addAbility(A);
+			A.autoInvocation(mob);
 		}
 		else
 		{
-			Ability A2=target.fetchAbility(A.ID());
+			Ability A2=mob.fetchAbility(A.ID());
 			if(A2!=null) A2.setMiscText(A.text());
 		}
 		mob.confirmWearability();
@@ -79,9 +64,9 @@ public class Fighter_CalledStrike extends StdAbility
 		&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
 		{
 			int hurtAmount=msg.targetCode()-Affect.MASK_HURT;
-			if(hurtAmount>=(target.baseState().getHitPoints()/9))
+			if(hurtAmount>=(target.baseState().getHitPoints()/hpReq))
 			{
-				hurtAmount=(target.baseState().getHitPoints()/9);
+				hurtAmount=(target.baseState().getHitPoints()/hpReq);
 				msg.modify(msg.source(),msg.target(),msg.tool(),
 						   msg.sourceCode(),
 						   msg.sourceMessage(),
@@ -105,12 +90,7 @@ public class Fighter_CalledStrike extends StdAbility
 			mob.tell("You are too far away to perform a called strike!");
 			return false;
 		}
-		if(!mob.isInCombat())
-		{
-			mob.tell("You must be in combat to call a strike!");
-			return false;
-		}
-
+		
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
@@ -131,11 +111,34 @@ public class Fighter_CalledStrike extends StdAbility
 		if(!prereqs(mob)) return false;
 
 		gone="";
-		code=0;
-		bit=0;
+		hpReq=9;
+		target=null;
 
-		target=mob.getVictim();
-		if(target==null) return false;
+		if(commands.size()>0)
+		{
+			String s=(String)commands.firstElement();
+			if(mob.location().fetchInhabitant(s)!=null)
+				target=mob.location().fetchInhabitant(s);
+			if((target!=null)&&(!Sense.canBeSeenBy(target,mob)))
+			{
+				mob.tell("You can't see '"+s+"' here.");
+				return false;
+			}
+			if(target!=null)
+				commands.removeElementAt(0);
+		}
+		if(target==null)
+			target=mob.getVictim();
+		if((target==null)||(target==mob))
+		{
+			mob.tell("Do this to whom?");
+			return false;
+		}
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell(target.name()+" already has a call against one of "+target.charStats().hisher()+" limbs.");
+			return false;
+		}
 
 		Amputation A=(Amputation)target.fetchAffect("Amputation");
 		boolean newOne=false;
@@ -145,50 +148,47 @@ public class Fighter_CalledStrike extends StdAbility
 			newOne=true;
 		}
 
-		long missingLimbList=A.missingLimbList();
-		Vector V=new Vector();
-		for(int i=0;i<Amputation.AMPUTATE_BITS;i++)
-		{
-			if(!Util.isSet((int)missingLimbList,i))
-				V.addElement(new Integer(i));
-		}
-		if(V.size()==0)
+		Vector remainingLimbList=A.remainingLimbNameSet(target.charStats().getMyRace());
+		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
 				mob.tell("There is nothing left on "+target.name()+" to cut off!");
 			return false;
 		}
 		if(mob.isMonster())
-		{
-			bit=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).longValue();
-			gone=Amputation.AMPUTATE_DESCS[(int)bit];
-			code=Amputation.AMPUTATE_CODES[(int)bit];
-		}
+			gone=(String)remainingLimbList.elementAt(Dice.roll(1,remainingLimbList.size(),-1));
 		else
 		if(commands.size()<=0)
 		{
 			mob.tell("You must specify a body part to cut off.");
 			StringBuffer str=new StringBuffer("Parts include: ");
-			for(int i=0;i<V.size();i++)
-				str.append(Amputation.AMPUTATE_DESCS[(int)((Integer)V.elementAt(i)).longValue()]+", ");
+			for(int i=0;i<remainingLimbList.size();i++)
+				str.append(((String)remainingLimbList.elementAt(i))+", ");
 			mob.tell(str.toString().substring(0,str.length()-2)+".");
 			return false;
 		}
 		else
 		{
-			for(int i=0;i<V.size();i++)
-				if(Amputation.AMPUTATE_DESCS[(int)((Integer)V.elementAt(i)).longValue()].toLowerCase().startsWith(Util.combine(commands,0).toLowerCase()))
+			String off=Util.combine(commands,0);
+			if((off.equalsIgnoreCase("head"))
+			&&(target.charStats().getMyRace().bodyMask()[Race.BODY_HEAD]>=0))
+		    {	
+				gone=Race.BODYPARTSTR[Race.BODY_HEAD].toLowerCase();
+				hpReq=3;
+			}
+			else
+			for(int i=0;i<remainingLimbList.size();i++)
+				if(((String)remainingLimbList.elementAt(i)).toUpperCase().startsWith(off.toUpperCase()))
 				{
-					gone=Amputation.AMPUTATE_DESCS[(int)((Integer)V.elementAt(i)).longValue()];
-					code=Amputation.AMPUTATE_CODES[(int)((Integer)V.elementAt(i)).longValue()];
+					gone=(String)remainingLimbList.elementAt(i);
 					break;
 				}
 			if(gone.length()==0)
 			{
-				mob.tell("'"+Util.combine(commands,0)+"' is not a valid body part.");
+				mob.tell("'"+off+"' is not a valid body part.");
 				StringBuffer str=new StringBuffer("Parts include: ");
-				for(int i=0;i<V.size();i++)
-					str.append(Amputation.AMPUTATE_DESCS[(int)((Integer)V.elementAt(i)).longValue()]+", ");
+				for(int i=0;i<remainingLimbList.size();i++)
+					str.append(((String)remainingLimbList.elementAt(i))+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 				return false;
 			}

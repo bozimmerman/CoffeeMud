@@ -11,11 +11,9 @@ public class Amputation extends StdAbility
 	public String ID() { return "Amputation"; }
 	public String name(){ return "Amputation";}
 	public String displayText(){
-		long missingLimbList=missingLimbList();
 		StringBuffer buf=new StringBuffer("");
-		for(int i=0;i<AMPUTATE_BITS;i++)
-			if(Util.isSet((int)missingLimbList,i))
-				buf.append(", "+AMPUTATE_DESCS[i]);
+		for(int i=0;i<missingLimbNameSet().size();i++)
+			buf.append(", "+missingLimbNameSet().elementAt(i));
 		if(buf.length()==0) return "";
 		return "(Missing your"+buf.substring(1)+")";
 	}
@@ -29,71 +27,47 @@ public class Amputation extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return true;}
 	public int classificationCode(){return Ability.PROPERTY;}
+	private Vector missingLimbs=null;
+	private long forbiddenWornBits=-1;
 
-	public static final long AMPUTATE_LEFTHAND=1;
-	public static final long AMPUTATE_RIGHTHAND=2;
-	public static final long AMPUTATE_LEFTARM=4|AMPUTATE_LEFTHAND;
-	public static final long AMPUTATE_RIGHTARM=8|AMPUTATE_RIGHTHAND;
-	public static final long AMPUTATE_LEFTFOOT=16;
-	public static final long AMPUTATE_RIGHTFOOT=32;
-	public static final long AMPUTATE_LEFTLEG=64|AMPUTATE_LEFTFOOT;
-	public static final long AMPUTATE_RIGHTLEG=128|AMPUTATE_RIGHTFOOT;
-	public static final long AMPUTATE_LEFTEAR=256;
-	public static final long AMPUTATE_RIGHTEAR=512;
-	public static final long AMPUTATE_LEFTEYE=1024;
-	public static final long AMPUTATE_RIGHTEYE=2048;
-	public static final long AMPUTATE_BOTHARMS=AMPUTATE_LEFTARM|AMPUTATE_RIGHTARM;
-	public static final long AMPUTATE_BOTHLEGS=AMPUTATE_LEFTLEG|AMPUTATE_RIGHTLEG;
-	public static final long AMPUTATE_BOTHFEET=AMPUTATE_LEFTFOOT|AMPUTATE_RIGHTFOOT;
-	public static final long AMPUTATE_BOTHHANDS=AMPUTATE_LEFTHAND|AMPUTATE_RIGHTHAND;
-	public static final long AMPUTATE_BOTHEARS=AMPUTATE_LEFTEAR|AMPUTATE_RIGHTEAR;
-	public static final long AMPUTATE_BOTHEYES=AMPUTATE_LEFTEYE|AMPUTATE_RIGHTEYE;
-	public static final long AMPUTATE_ARMSNLEGS=AMPUTATE_BOTHARMS|AMPUTATE_BOTHLEGS;
-	public static final long AMPUTATE_BITS=12;
-	public static final String[] AMPUTATE_DESCS={"left hand","right hand",
-												 "left arm","right arm",
-												 "left foot","right foot",
-												 "left leg","right leg",
-												 "left ear","right ear",
-												 "left eye","right eye"};
-	public static final long[] AMPUTATE_CODES=	 {AMPUTATE_LEFTHAND,AMPUTATE_LEFTHAND,
-												 AMPUTATE_LEFTARM,AMPUTATE_RIGHTARM,
-												 AMPUTATE_LEFTFOOT,AMPUTATE_RIGHTFOOT,
-												 AMPUTATE_LEFTLEG,AMPUTATE_RIGHTLEG,
-												 AMPUTATE_LEFTEAR,AMPUTATE_RIGHTEAR,
-												 AMPUTATE_LEFTEYE,AMPUTATE_RIGHTEYE};
-	public static final long[] AMPUTATE_WEARS=	 {Item.ON_LEFT_FINGER,Item.ON_RIGHT_FINGER,
-												 Item.ON_LEFT_WRIST,Item.ON_RIGHT_WRIST,
-												 0,0,
-												 0,0,
-												 AMPUTATE_LEFTEAR,AMPUTATE_RIGHTEAR,
-												 AMPUTATE_LEFTEYE,AMPUTATE_RIGHTEYE};
-
-	public long missingLimbList(){ return Util.s_long(text());}
-	public boolean canWear(long missingLimbs, Item item)
+	public final static boolean[] validamputees={true,//antenea
+												 true,//eye
+												 true,//ear
+												 false,//head
+												 false,//neck
+												 true,//arm
+												 true,//hand
+												 false,//torso
+												 true,//leg
+												 true,//foot
+												 true,//nose
+												 false,//gills
+												 false,//mouth
+												 false,//waist
+												 true,//tail
+												 true//wing
+												 };
+	
+	public final static int[][] extraamuputees={{-1},//antenea
+											    {-1},//eye
+											    {-1},//ear
+											    {Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENEA,Race.BODY_GILL},//head
+												{Race.BODY_EAR,Race.BODY_EYE,Race.BODY_MOUTH,Race.BODY_NOSE,Race.BODY_ANTENEA,Race.BODY_GILL,Race.BODY_HEAD},//nect
+												{Race.BODY_HAND},//arm
+												{-1},//hand
+												{-1},//torso
+												{Race.BODY_FOOT},//leg
+												{-1},//foot
+												{-1},//nose
+												{-1},//gills
+												{-1},//mouth
+												{-1},//waist
+												{-1},//tail
+												{-1}//wing
+												};
+	public boolean canWear(Item item)
 	{
-		long forbiddenWornBits=0;
-		if((missingLimbs&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_ARMS;
-		if((missingLimbs&AMPUTATE_BOTHLEGS)==AMPUTATE_BOTHLEGS)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_LEGS;
-		if((missingLimbs&AMPUTATE_BOTHFEET)==AMPUTATE_BOTHFEET)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_FEET;
-		if((missingLimbs&AMPUTATE_BOTHEYES)==AMPUTATE_BOTHEYES)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_EYES;
-		if((missingLimbs&AMPUTATE_BOTHEARS)>0)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_EARS;
-		if((missingLimbs&AMPUTATE_LEFTHAND)>0)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_LEFT_FINGER;
-		if((missingLimbs&AMPUTATE_RIGHTHAND)>0)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_RIGHT_FINGER;
-		if((missingLimbs&AMPUTATE_LEFTARM)>0)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_LEFT_WRIST;
-		if((missingLimbs&AMPUTATE_RIGHTARM)>0)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_RIGHT_WRIST;
-		if((missingLimbs&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
-			forbiddenWornBits=forbiddenWornBits|Item.ON_HANDS;
-
+		missingLimbNameSet();
 		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits)>0))
 			return false;
 		else
@@ -105,29 +79,28 @@ public class Amputation extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		long missingLimbList=missingLimbList();
-		if((missingLimbList&AMPUTATE_BOTHLEGS)==AMPUTATE_BOTHLEGS)
+		missingLimbNameSet();
+		if(Util.bset(forbiddenWornBits,Item.ON_LEGS))
 		{
-			if((missingLimbList&AMPUTATE_ARMSNLEGS)==AMPUTATE_ARMSNLEGS)
+			if(Util.bset(forbiddenWornBits,Item.ON_ARMS))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 			affectableStats.setDisposition(affectableStats.disposition()|affectableStats.IS_SITTING);
 		}
-		if((missingLimbList&AMPUTATE_BOTHEYES)==AMPUTATE_BOTHEYES)
+		if(Util.bset(forbiddenWornBits,Item.ON_EYES))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
-		if((missingLimbList&AMPUTATE_BOTHEARS)==AMPUTATE_BOTHEARS)
+		if(Util.bset(forbiddenWornBits,Item.ON_EARS))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 	}
 
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
-		if((missingLimbList()&AMPUTATE_BOTHFEET)>0)
-		{
-			if((missingLimbList()&AMPUTATE_BOTHFEET)==AMPUTATE_BOTHFEET)
-				affectableState.setMovement(affectableState.getMovement()/8);
-			else
-				affectableState.setMovement(affectableState.getMovement()/4);
-		}
+		missingLimbNameSet();
+		if(Util.bset(forbiddenWornBits,Item.ON_LEGS))
+			affectableState.setMovement(affectableState.getMovement()/8);
+		else
+		if(Util.bset(forbiddenWornBits,Item.ON_FEET))
+			affectableState.setMovement(affectableState.getMovement()/4);
 	}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
@@ -137,7 +110,7 @@ public class Amputation extends StdAbility
 			&&(!Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&((affect.sourceCode()&Affect.MASK_GENERAL)==0))
 		{
-			long missingLimbList=missingLimbList();
+			missingLimbNameSet();
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_PULL:
@@ -147,7 +120,7 @@ public class Amputation extends StdAbility
 			case Affect.TYP_DROP:
 			case Affect.TYP_THROW:
 			case Affect.TYP_OPEN:
-				if((missingLimbList&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS)
+				if(Util.bset(forbiddenWornBits,Item.ON_ARMS))
 				{
 					myChar.tell("Your condition prevents you from doing that.");
 					return false;
@@ -162,7 +135,7 @@ public class Amputation extends StdAbility
 			case Affect.TYP_PUT:
 			case Affect.TYP_UNLOCK:
 			case Affect.TYP_WRITE:
-				if((missingLimbList&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
+				if(Util.bset(forbiddenWornBits,Item.ON_HANDS))
 				{
 					myChar.tell("Your condition prevents you from doing that.");
 					return false;
@@ -171,10 +144,10 @@ public class Amputation extends StdAbility
 			case Affect.TYP_HOLD:
 			case Affect.TYP_WIELD:
 				if((affect.target()!=null)
-				&&((missingLimbList&AMPUTATE_BOTHHANDS)>0)
+				&&(Util.bset(forbiddenWornBits,Item.ON_LEFT_FINGER)||Util.bset(forbiddenWornBits,Item.ON_RIGHT_FINGER))
 				&&(affect.target() instanceof Item))
 				{
-					if(((missingLimbList&AMPUTATE_BOTHHANDS)!=AMPUTATE_BOTHHANDS)
+					if((Util.bset(forbiddenWornBits,Item.ON_LEFT_FINGER)!=Util.bset(forbiddenWornBits,Item.ON_RIGHT_FINGER))
 					&&(!((Item)affect.target()).rawLogicalAnd())
 					&&((!myChar.amWearingSomethingHere(Item.HELD))&&(!myChar.amWearingSomethingHere(Item.WIELD))))
 						break;
@@ -193,14 +166,14 @@ public class Amputation extends StdAbility
 			case Affect.TYP_WEAR:
 				if((affect.target()!=null)
 				&&(affect.target() instanceof Item)
-				&&(!canWear(missingLimbList,(Item)affect.target())))
+				&&(!canWear((Item)affect.target())))
 				{
 					myChar.tell("Your lack of limbs prevents you from putting on "+affect.target().name()+".");
 					return false;
 				}
 				break;
 			case Affect.TYP_DRINK:
-				if((missingLimbList&AMPUTATE_BOTHHANDS)==AMPUTATE_BOTHHANDS)
+				if(Util.bset(forbiddenWornBits,Item.ON_HANDS))
 				{
 					if(affect.target()==null) return true;
 					if(!myChar.isMine(affect.target())) return true;
@@ -213,9 +186,9 @@ public class Amputation extends StdAbility
 		else
 		if((affect.amITarget(myChar))
 		&&(affect.targetMinor()==Affect.TYP_GIVE)
-		&&((missingLimbList()&AMPUTATE_BOTHARMS)==AMPUTATE_BOTHARMS))
+		&&(Util.bset(forbiddenWornBits,Item.ON_ARMS)))
 		{
-			affect.source().tell("You cannot give anything to the "+name()+".");
+			affect.source().tell("You cannot give anything to the "+myChar.name()+".");
 			return false;
 		}
 		return super.okAffect(myHost,affect);
@@ -280,6 +253,174 @@ public class Amputation extends StdAbility
 		return target;
 	}
 
+	public void setMiscText(String text)
+	{
+		super.setMiscText(text);
+		missingLimbs=null;
+	}
+	
+	public static Vector racialLimbNameSet(Race R)
+	{
+		Vector V=new Vector();
+		int[] limbs=R.bodyMask();
+		for(int i=0;i<limbs.length;i++)
+		{
+			if(validamputees[i])
+				if(limbs[i]==1)
+					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+				else
+				if(limbs[i]==2)
+				{
+					V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
+					V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+				}
+				else
+				for(int ii=0;ii<limbs[i];ii++)
+					V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+		}
+		return V;
+	}
+	
+	public Vector missingLimbNameSet()
+	{
+		if(missingLimbs!=null) return missingLimbs;
+		forbiddenWornBits=-1;
+		missingLimbs=new Vector();
+		if(affected==null) return missingLimbs;
+		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
+		   return missingLimbs;
+		String s=text();
+		int x=s.indexOf(";");
+		while(x>=0)
+		{
+			String s2=s.substring(0,x);
+			if(s2.length()>0)
+				missingLimbs.addElement(s2);
+			s=s.substring(x+1);
+			x=s.indexOf(";");
+		}
+		forbiddenWornBits=0;
+		if(missingLimbs.contains("left eye")&&missingLimbs.contains("right eye"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_EYES;
+		if(missingLimbs.contains("left ear")&&missingLimbs.contains("right ear"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_EARS;
+		if(missingLimbs.contains("left arm")&&missingLimbs.contains("right arm"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_ARMS;
+		if(missingLimbs.contains("left arm"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_LEFT_WRIST;
+		if(missingLimbs.contains("right arm"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_RIGHT_WRIST;
+		if(missingLimbs.contains("left hand")&&missingLimbs.contains("right hand"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_HANDS;
+		if(missingLimbs.contains("left hand"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_LEFT_FINGER;
+		if(missingLimbs.contains("right hand"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_RIGHT_FINGER;
+		if(missingLimbs.contains("left leg")&&missingLimbs.contains("right leg"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_LEGS;
+		if(missingLimbs.contains("left foot")&&missingLimbs.contains("right foot"))
+			forbiddenWornBits=forbiddenWornBits|Item.ON_FEET;
+		return missingLimbs;
+	}
+
+	public Vector remainingLimbNameSet(Race R)
+	{
+		Vector RV=racialLimbNameSet(R);
+		Vector MV=missingLimbNameSet();
+		for(int m=0;m<MV.size();m++)
+		{
+			String S=(String)MV.elementAt(m);
+			if(RV.contains(S)) RV.removeElement(S);
+		}
+		return RV;
+	}
+	
+	public static int getRacialCode(String name)
+	{
+		name=name.toUpperCase();
+		for(int r=0;r<Race.BODYPARTSTR.length;r++)
+			if(name.endsWith(Race.BODYPARTSTR[r]))
+				return r;
+		return -1;
+	}
+	
+	public Vector affectedLimbNameSet(Race R, String missing, Vector missingLimbs)
+	{
+		Vector AL=new Vector();
+		int x=getRacialCode(missing);
+		if(x>=0)
+		{
+			int[] aff=extraamuputees[x];
+			if((aff.length>1)||(aff[0]>=0))
+			for(int a=0;a<aff.length;a++)
+			if(R.bodyMask()[aff[a]]>0)
+			{
+				String r=Race.BODYPARTSTR[aff[a]].toLowerCase();
+				if(missing.startsWith("left "))
+				   r="left "+r;
+				else
+				if(missing.startsWith("right "))
+				   r="right "+r;
+				if(!missingLimbs.contains(r))
+					AL.addElement(r);
+			}
+		}
+		return AL;
+	}
+	
+	public static void amputate(Environmental target, Amputation A, String gone)
+	{
+		if(A==null) return;
+		if(target!=null)
+		{
+			if(target instanceof MOB)
+			{
+				if(gone.toLowerCase().endsWith("eye"))
+					((MOB)target).location().show(((MOB)target),null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
+				else
+					((MOB)target).location().show(((MOB)target),null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
+			}
+			else
+			if((target instanceof DeadBody)
+			&&(((Item)target).owner()!=null)
+			&&(((Item)target).owner() instanceof Room))
+			{
+				if(gone.toLowerCase().endsWith("eye"))
+					((Room)((Item)target).owner()).showHappens(Affect.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" is destroyed!^?");
+				else
+					((Room)((Item)target).owner()).showHappens(Affect.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" falls off!^?");
+			}
+		}
+		Item limb=CMClass.getItem("GenItem");
+		limb.setName("a "+gone);
+		limb.setDisplayText("a bloody "+gone+" is sitting here.");
+		limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
+		limb.baseEnvStats().setLevel(1);
+		limb.baseEnvStats().setWeight(5);
+		limb.recoverEnvStats();
+		Race R=null;
+		if(target!=null)
+		{
+			if(target instanceof MOB)
+			{
+				((MOB)target).location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
+				R=((MOB)target).charStats().getMyRace();
+			}
+			else
+			if((target instanceof DeadBody)
+			&&(((Item)target).owner()!=null)
+			&&(((Item)target).owner() instanceof Room))
+			{
+				((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
+				R=((DeadBody)target).charStats().getMyRace();
+			}
+		}
+		Vector theRest=A.affectedLimbNameSet(R,gone,A.missingLimbNameSet());
+		if(!theRest.contains(gone)) theRest.addElement(gone);
+		for(int i=0;i<theRest.size();i++)
+			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -297,23 +438,14 @@ public class Amputation extends StdAbility
 				newOne=true;
 			}
 
-			Vector V=new Vector();
-			long bit=0;
-			long missingLimbList=A.missingLimbList();
-			for(int i=0;i<AMPUTATE_BITS;i++)
-			{
-				if(!Util.isSet((int)missingLimbList,i))
-					V.addElement(new Integer(i));
-			}
-			if(V.size()==0)
+			Vector VN=A.remainingLimbNameSet(target.charStats().getMyRace());
+			if(VN.size()==0)
 			{
 				if(!auto)
 					mob.tell("There is nothing left on "+target.name()+" to amputate!");
 				return false;
 			}
-			bit=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).longValue();
-			String gone=AMPUTATE_DESCS[(int)bit];
-			long code=AMPUTATE_CODES[(int)bit];
+			String gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
 
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),str);
@@ -322,21 +454,7 @@ public class Amputation extends StdAbility
 			    target.location().send(target,msg);
 				if(!msg.wasModified())
 				{
-					if((AMPUTATE_BOTHEYES&bit)>0)
-						target.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
-					else
-					{
-						target.location().show(target,null,Affect.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" falls off!^?");
-						Item limb=CMClass.getItem("GenItem");
-						limb.setName("a "+gone);
-						limb.setDisplayText("a bloody "+gone+" is sitting here.");
-						limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
-						limb.baseEnvStats().setLevel(1);
-						limb.baseEnvStats().setWeight(5);
-						limb.recoverEnvStats();
-						target.location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
-					}
-					A.setMiscText(""+(A.missingLimbList()|code));
+					amputate(target,A,gone);
 					if(newOne==true)
 					{
 						target.addAbility(A);

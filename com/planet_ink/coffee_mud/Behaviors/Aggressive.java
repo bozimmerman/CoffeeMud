@@ -62,17 +62,23 @@ public class Aggressive extends StdBehavior
 	public static boolean pickAFight(MOB observer, String zapStr, boolean mobKiller)
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
+		MOB startItWith=null;
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB mob=observer.location().fetchInhabitant(i);
-			if((mob!=null)
-			&&(mob!=observer)
-			&&(SaucerSupport.zapperCheck(zapStr,mob)))
+			if((mob!=null)&&(mob!=observer))
 			{
-				if(startFight(observer,mob,mobKiller))
-					return true;
+				if(mob.charStats().getCurrentClass().ID().equals("Archon"))
+					return false;
+				
+				if((startItWith==null)
+				&&(SaucerSupport.zapperCheck(zapStr,mob)))
+					 startItWith=mob;
 			}
 		}
+		if((startItWith!=null)
+		&&(startFight(observer,startItWith,mobKiller)))
+			return true;
 		return false;
 	}
 

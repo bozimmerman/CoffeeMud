@@ -40,6 +40,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public final static int BODY_TAIL=14;
 	public final static int BODY_WING=15;
 	public final static int BODY_PARTS=16;
+	public final static int BODY_OTHERMASKCODE=1048576;
 	public final static String[] BODYPARTSTR={
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
