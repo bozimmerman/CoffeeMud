@@ -15,83 +15,6 @@ public class Chant_GrowItem extends Chant
 	protected int overrideMana(){return 50;}
 	public Environmental newInstance(){	return new Chant_GrowItem();}
 
-	private static final int RCP_FINALNAME=0;
-	private static final int RCP_LEVEL=1;
-	private static final int RCP_TICKS=2;
-	private static final int RCP_WOOD=3;
-	private static final int RCP_VALUE=4;
-	private static final int RCP_CLASSTYPE=5;
-	private static final int RCP_MISCTYPE=6;
-	private static final int RCP_CAPACITY=7;
-	private static final int RCP_ARMORDMG=8;
-	private static final int RCP_CONTAINMASK=9;
-	private static final int RCP_SPELL=10;
-
-	protected Vector loadList(StringBuffer str)
-	{
-		Vector V=new Vector();
-		if(str==null) return V;
-		Vector V2=new Vector();
-		boolean oneComma=false;
-		int start=0;
-		int longestList=0;
-		for(int i=0;i<str.length();i++)
-		{
-			if(str.charAt(i)=='\t')
-			{
-				V2.addElement(str.substring(start,i));
-				start=i+1;
-				oneComma=true;
-			}
-			else
-			if((str.charAt(i)=='\n')||(str.charAt(i)=='\r'))
-			{
-				if(oneComma)
-				{
-					V2.addElement(str.substring(start,i));
-					if(V2.size()>longestList) longestList=V2.size();
-					V.addElement(V2);
-					V2=new Vector();
-				}
-				start=i+1;
-				oneComma=false;
-			}
-		}
-		if(V2.size()>1)
-		{
-			if(oneComma)
-				V2.addElement(str.substring(start,str.length()));
-			if(V2.size()>longestList) longestList=V2.size();
-			V.addElement(V2);
-		}
-		for(int v=0;v<V.size();v++)
-		{
-			V2=(Vector)V.elementAt(v);
-			while(V2.size()<longestList)
-				V2.addElement("");
-		}
-		return V;
-	}
-
-	protected String replacePercent(String thisStr, String withThis)
-	{
-		if(withThis.length()==0)
-		{
-			int x=thisStr.indexOf("% ");
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
-			x=thisStr.indexOf(" %");
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
-			x=thisStr.indexOf("%");
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
-		}
-		else
-		{
-			int x=thisStr.indexOf("%");
-			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
-		}
-		return thisStr;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
@@ -129,158 +52,31 @@ public class Chant_GrowItem extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Vector V=(Vector)Resources.getResource("CARPENTRY RECIPES");
-				if(V==null)
+				Item building=null;
+				Item key=null;
+				Ability A=CMClass.getAbility("Carpentry");
+				if(A!=null)
 				{
-					StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"carpentry.txt");
-					V=loadList(str);
-					if(V.size()==0)
-						Log.errOut("Carpentry","Recipes not found!");
-					Resources.submitResource("CARPENTRY RECIPES",V);
+					while((building==null)||(building.name().endsWith(" bundle")))
+					{
+						Vector V=new Vector();
+						V.addElement(new Integer(material));
+						A.invoke(mob,V,A,true);
+						if((V.size()>0)&&(V.lastElement() instanceof Item))
+						{
+							if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Item)))
+								key=(Item)V.elementAt(V.size()-2);
+							building=(Item)V.lastElement();
+						}
+						else
+							break;
+					}
 				}
-				if(V.size()==0) return false;
-				Vector foundRecipe=(Vector)V.elementAt(Dice.roll(1,V.size(),-1));
-				int tries=0;
-				while(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this)+1)&&(++tries<1000))
-					foundRecipe=(Vector)V.elementAt(Dice.roll(1,V.size(),-1));
-				if(tries>999)
-				{
-					mob.tell("For some reason, the chant failed...");
-					return false;
-				}
-
-				Item building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 				if(building==null)
 				{
-					mob.tell("There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
+					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-				String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(material&EnvResource.RESOURCE_MASK)]).toLowerCase();
-				int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
-				itemName=Util.startWithAorAn(itemName);
-				building.setName(itemName);
-				building.setDisplayText(itemName+" is here");
-				building.setDescription(itemName+" looks like a hunk of bark and branch!");
-				building.baseEnvStats().setWeight(woodRequired);
-				building.setBaseValue(0);
-				building.setMaterial(material);
-				building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
-				String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
-				int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-				int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-				int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
-				Item key=null;
-				String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
-				if(spell.length()>0)
-				{
-					String parm="";
-					if(spell.indexOf(";")>0)
-					{
-						parm=spell.substring(spell.indexOf(";")+1);
-						spell=spell.substring(0,spell.indexOf(";"));
-					}
-					Ability A=CMClass.getAbility(spell);
-					A.setMiscText(parm);
-					if(A!=null)	building.addNonUninvokableEffect(A);
-				}
-				if((building instanceof Container)
-				&&(!(building instanceof Armor)))
-				{
-					if(capacity>0)
-					{
-						((Container)building).setCapacity(capacity+woodRequired);
-						((Container)building).setContainTypes(canContain);
-					}
-					if(misctype.equalsIgnoreCase("LID"))
-						((Container)building).setLidsNLocks(true,false,false,false);
-					else
-					if(misctype.equalsIgnoreCase("LOCK"))
-					{
-						((Container)building).setLidsNLocks(true,false,true,false);
-						((Container)building).setKeyName(new Double(Math.random()).toString());
-						key=CMClass.getItem("GenKey");
-						((Key)key).setKey(((Container)building).keyName());
-						key.setName("a wooden key");
-						key.setDisplayText("a small wooden key sits here");
-						key.setDescription("looks like a key to "+building.name());
-						key.recoverEnvStats();
-						key.text();
-					}
-				}
-				if(building instanceof Drink)
-				{
-					((Drink)building).setLiquidRemaining(0);
-					((Drink)building).setLiquidHeld(capacity*50);
-					((Drink)building).setThirstQuenched(250);
-					if((capacity*50)<250)
-						((Drink)building).setThirstQuenched(capacity*50);
-				}
-				if(building instanceof Rideable)
-				{
-					if(misctype.equalsIgnoreCase("CHAIR"))
-						((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-					else
-					if(misctype.equalsIgnoreCase("TABLE"))
-						((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-					else
-					if(misctype.equalsIgnoreCase("LADDER"))
-						((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
-					else
-					if(misctype.equalsIgnoreCase("BED"))
-						((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
-				}
-				if(building instanceof Weapon)
-				{
-					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-					((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
-					for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
-					{
-						if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
-							((Weapon)building).setWeaponClassification(cl);
-					}
-					building.baseEnvStats().setAttackAdjustment(0);
-					building.baseEnvStats().setDamage(armordmg);
-					((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
-					((Weapon)building).setRawLogicalAnd((capacity>1));
-				}
-				if(building instanceof Armor)
-				{
-					((Armor)building).baseEnvStats().setArmor(armordmg);
-					((Armor)building).setRawProperLocationBitmap(0);
-					for(int wo=1;wo<Item.wornLocation.length;wo++)
-					{
-						String WO=Item.wornLocation[wo].toUpperCase();
-						if(misctype.equalsIgnoreCase(WO))
-						{
-							((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
-							((Armor)building).setRawLogicalAnd(false);
-						}
-						else
-						if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-						||(misctype.toUpperCase().endsWith("||"+WO)))
-						{
-							((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-							((Armor)building).setRawLogicalAnd(false);
-						}
-						else
-						if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-						||(misctype.toUpperCase().endsWith("&&"+WO)))
-						{
-							((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-							((Armor)building).setRawLogicalAnd(true);
-						}
-					}
-				}
-				if(building instanceof Light)
-				{
-					((Light)building).setDuration(capacity);
-					if(building instanceof Container)
-						((Container)building).setCapacity(0);
-				}
-
-				//Behavior B=CMClass.getBehavior("Decay");
-				//B.setParms("min=490 max=490 chance=100");
-				//building.addBehavior(B);
 
 				building.recoverEnvStats();
 				building.text();

@@ -132,8 +132,9 @@ public class CommonSkill extends StdAbility
 			return ((Integer)(possibilities.elementAt(Dice.roll(1,possibilities.size(),-1)))).intValue();
 	}
 
-	public Item getRequiredFire(MOB mob)
+	public Item getRequiredFire(MOB mob,int autoGenerate)
 	{
+		if(autoGenerate>0) return CMClass.getItem("StdItem");
 		Item fire=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{

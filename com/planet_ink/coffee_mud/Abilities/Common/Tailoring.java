@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Tailoring extends CommonSkill
+public class Tailoring extends CraftingSkill
 {
 	public String ID() { return "Tailoring"; }
 	public String name(){ return "Tailoring";}
 	private static final String[] triggerStrings = {"KNIT","TAILOR","TAILORING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -119,7 +118,14 @@ public class Tailoring extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Knit what? Enter \"knit list\" for a list, \"knit refit <item>\" to resize, \"knit scan\", or \"knit mend <item>\".");
@@ -242,23 +248,18 @@ public class Tailoring extends CommonSkill
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
-			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH);
-			int foundWood=0;
-			if(firstWood!=null)
-				foundWood=findNumberOfResource(mob.location(),firstWood.material());
-			if(foundWood==0)
-			{
-				commonTell(mob,"There is no cloth here to make anything from!  It might need to put it down first.");
-				return false;
-			}
-			if(foundWood<woodRequired)
-			{
-				commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				return false;
-			}
+			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+			int[] pm={EnvResource.MATERIAL_CLOTH};
+			int[][] data=fetchFoundResourceData(mob,
+												woodRequired,"cloth",pm,
+												0,null,null,
+												misctype.equalsIgnoreCase("BUNDLE"),
+												autoGenerate);
+			if(data==null) return false;
+			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -266,8 +267,7 @@ public class Tailoring extends CommonSkill
 				return false;
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
-			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE")) 
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -286,7 +286,7 @@ public class Tailoring extends CommonSkill
 			else
 				building.baseEnvStats().setWeight(woodRequired/2);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
-			building.setMaterial(firstWood.material());
+			building.setMaterial(data[0][FOUND_CODE]);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -408,6 +408,12 @@ public class Tailoring extends CommonSkill
 			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
+		}
+
+		if(autoGenerate>0)
+		{
+			commands.addElement(building);
+			return true;
 		}
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);

@@ -405,7 +405,7 @@ public class Cooking extends CraftingSkill
 			return false;
 		}
 
-		fire=getRequiredFire(mob);
+		fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
 
 		burnt=!profficiencyCheck(mob,0,auto);

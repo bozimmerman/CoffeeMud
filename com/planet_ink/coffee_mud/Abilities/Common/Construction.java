@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Construction extends CommonSkill
+public class Construction extends CraftingSkill
 {
 	public String ID() { return "Construction"; }
 	public String name(){ return "Construction";}
 	private static final String[] triggerStrings = {"CONSTRUCT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_DOOR=1;
@@ -552,29 +551,14 @@ public class Construction extends CommonSkill
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))
 			workingOn=dir;
 
-		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
-		int foundWood=0;
-		if(firstWood!=null)
-			foundWood=findNumberOfResource(mob.location(),firstWood.material());
-		if((foundWood==0)&&(woodRequired>0))
-		{
-			commonTell(mob,"There is no wood here to make anything from!  It might need to put it down first.");
-			return false;
-		}
-		if(firstWood!=null)
-		{
-			if(firstWood.material()==EnvResource.RESOURCE_BALSA)
-				woodRequired=woodRequired/2;
-			else
-			if(firstWood.material()==EnvResource.RESOURCE_IRONWOOD)
-				woodRequired=woodRequired*2;
-			if(woodRequired<1) woodRequired=1;
-		}
-		if(foundWood<woodRequired)
-		{
-			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+data[doingCode][0].toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-			return false;
-		}
+		int[] pm={EnvResource.MATERIAL_WOODEN};
+		int[][] idata=fetchFoundResourceData(mob,
+											woodRequired,"wood",pm,
+											0,null,null,
+											false,
+											0);
+		woodRequired=idata[0][FOUND_AMT];
+		if(data==null) return false;
 
 		boolean canBuild=(CoffeeUtensils.doesOwnThisProperty(mob,mob.location())
 		   ||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))));
@@ -600,7 +584,7 @@ public class Construction extends CommonSkill
 
 		room=mob.location();
 		if(woodRequired>0)
-			destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+			destroyResources(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null,0);
 
 		switch(doingCode)
 		{

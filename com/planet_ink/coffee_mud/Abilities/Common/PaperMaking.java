@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class PaperMaking extends CommonSkill
+public class PaperMaking extends CraftingSkill
 {
 	public String ID() { return "PaperMaking"; }
 	public String name(){ return "Paper Making";}
 	private static final String[] triggerStrings = {"PAPERMAKE","PAPERMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -81,7 +80,14 @@ public class PaperMaking extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Papermake what? Enter \"Papermake list\" for a list.");
@@ -114,7 +120,6 @@ public class PaperMaking extends CommonSkill
 		{
 			building=null;
 			messedUp=false;
-			int materialType=0;
 			String materialDesc="";
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
@@ -130,47 +135,28 @@ public class PaperMaking extends CommonSkill
 						foundRecipe=V;
 						materialDesc=(String)foundRecipe.elementAt(RCP_WOODTYPE);
 						if(materialDesc.equalsIgnoreCase("WOOD"))
-							materialType=EnvResource.MATERIAL_WOODEN;
-						else
-						for(int r2=0;r2<EnvResource.RESOURCE_DESCS.length;r2++)
-						{
-							if(EnvResource.RESOURCE_DESCS[r2].equalsIgnoreCase(materialDesc))
-							{
-								materialType=EnvResource.RESOURCE_DATA[r2][0];
-								break;
-							}
-						}
+							materialDesc="WOODEN";
 						break;
 					}
 				}
 			}
-			if((foundRecipe==null)||(materialType<=0))
+			if(materialDesc.length()==0) materialDesc="WOODEN";
+			if(foundRecipe==null)
 			{
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"make list\" for a list.");
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
-			Item firstWood=null;
-			int foundWood=0;
-			if(materialType==EnvResource.MATERIAL_WOODEN)
-				firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
-			else
-				firstWood=findFirstResource(mob.location(),materialType);
-			if(firstWood!=null)
-				foundWood=findNumberOfResource(mob.location(),firstWood.material());
-			if(foundWood==0)
-			{
-				commonTell(mob,"There is no "+materialDesc.toLowerCase()+" here to make anything from!  It might need to put it down first.");
-				return false;
-			}
-			if(foundWood<woodRequired)
-			{
-				commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				return false;
-			}
+			int[][] data=fetchFoundResourceData(mob,
+												woodRequired,materialDesc,null,
+												0,null,null,
+												false,
+												autoGenerate);
+			if(data==null) return false;
+			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+			destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,autoGenerate);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -178,7 +164,7 @@ public class PaperMaking extends CommonSkill
 				return false;
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
@@ -187,8 +173,8 @@ public class PaperMaking extends CommonSkill
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.baseGoldValue())));
-			building.setMaterial(firstWood.material());
+			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+			building.setMaterial(data[0][FOUND_CODE]);
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			if(spell.length()>0)
 			{
@@ -203,7 +189,7 @@ public class PaperMaking extends CommonSkill
 				if(A!=null)	building.addNonUninvokableEffect(A);
 			}
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			if(materialType==EnvResource.MATERIAL_WOODEN)
+			if((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 				building.setMaterial(EnvResource.RESOURCE_PAPER);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.recoverEnvStats();
@@ -214,6 +200,12 @@ public class PaperMaking extends CommonSkill
 
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<20) completion=20;
+
+		if(autoGenerate>0)
+		{
+			commands.addElement(building);
+			return true;
+		}
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))

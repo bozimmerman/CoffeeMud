@@ -4,13 +4,12 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Taxidermy extends CommonSkill
+public class Taxidermy extends CraftingSkill
 {
 	public String ID() { return "Taxidermy"; }
 	public String name(){ return "Taxidermy";}
 	private static final String[] triggerStrings = {"STUFF","TAXIDERMY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private Item found=null;
 	private String foundShortName="";
@@ -74,25 +73,19 @@ public class Taxidermy extends CommonSkill
 			}
 		}
 		int woodRequired=I.baseEnvStats().weight()/5;
-		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH);
-		int foundWood=0;
-		if(firstWood!=null)
-			foundWood=findNumberOfResource(mob.location(),firstWood.material());
-		if(foundWood==0)
-		{
-			commonTell(mob,"There is no cloth here to stuff anything with!  It might need to put it down first.");
-			return false;
-		}
-		if(foundWood<woodRequired)
-		{
-			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to stuff "+I.name()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-			return false;
-		}
+		int[] pm={EnvResource.MATERIAL_CLOTH};
+		int[][] data=fetchFoundResourceData(mob,
+											woodRequired,"cloth stuffing",pm,
+											0,null,null,
+											false,
+											0);
+		if(data==null) return false;
+		woodRequired=data[0][FOUND_AMT];
 
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(found!=null)	foundShortName=I.Name();
 		int duration=15+(woodRequired/3)-mob.envStats().level();
@@ -104,7 +97,7 @@ public class Taxidermy extends CommonSkill
 		if(x<0) return false;
 		String name=I.rawSecretIdentity().substring(0,x);
 		String desc=I.rawSecretIdentity().substring(x+1);
-		I.setMaterial(firstWood.material());
+		I.setMaterial(data[0][FOUND_CODE]);
 		found.setName("the stuffed body of "+name);
 		found.setDisplayText("the stuffed body of "+name+" stands here");
 		found.setDescription(desc);

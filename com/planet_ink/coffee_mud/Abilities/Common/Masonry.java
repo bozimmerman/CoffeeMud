@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Masonry extends CommonSkill
+public class Masonry extends CraftingSkill
 {
 	public String ID() { return "Masonry"; }
 	public String name(){ return "Masonry";}
 	private static final String[] triggerStrings = {"MASONRY"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private final static int BUILD_WALL=0;
 	private final static int BUILD_ROOF=1;
@@ -574,36 +573,29 @@ public class Masonry extends CommonSkill
 		if((doingCode==BUILD_WINDOW)||(doingCode==BUILD_CRAWLWAY))
 			workingOn=dir;
 
-		Item firstWood=null;
 		int foundWood=0;
+		int[][] idata=null;
 		if(doingCode==BUILD_PORTCULIS)
 		{
-			firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
-			if(firstWood==null)
-				firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
-			if(firstWood!=null)
-				foundWood=findNumberOfResource(mob.location(),firstWood.material());
-			if((foundWood==0)&&(woodRequired>0))
-			{
-				commonTell(mob,"There is no metal here to make that from!  It might need to put it down first.");
-				return false;
-			}
+			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+			idata=fetchFoundResourceData(mob,
+			 							woodRequired,"metal",pm,
+			 							0,null,null,
+			 							false,
+			 							0);
+			woodRequired=idata[0][FOUND_AMT];
+			if(data==null) return false;
 		}
 		else
 		{
-			firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
-			if(firstWood!=null)
-				foundWood=findNumberOfResource(mob.location(),firstWood.material());
-			if((foundWood==0)&&(woodRequired>0))
-			{
-				commonTell(mob,"There is no stone here to make anything from!  It might need to put it down first.");
-				return false;
-			}
-		}
-		if(foundWood<woodRequired)
-		{
-			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+data[doingCode][DAT_NAME].toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-			return false;
+			int[] pm={EnvResource.MATERIAL_ROCK};
+			idata=fetchFoundResourceData(mob,
+										woodRequired,"stone",pm,
+										0,null,null,
+										false,
+										0);
+			woodRequired=idata[0][FOUND_AMT];
+			if(data==null) return false;
 		}
 
 		boolean canBuild=(CoffeeUtensils.doesOwnThisProperty(mob,mob.location())
@@ -630,7 +622,7 @@ public class Masonry extends CommonSkill
 
 		room=mob.location();
 		if(woodRequired>0)
-			destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+			destroyResources(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null,0);
 
 		switch(doingCode)
 		{

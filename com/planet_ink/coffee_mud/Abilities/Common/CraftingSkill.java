@@ -135,10 +135,155 @@ public class CraftingSkill extends CommonSkill
 		return mostItem;
 	}
 
-	protected void randomRecipeFix(MOB mob, Vector recipes, Vector commands)
+	
+	protected Item fetchFoundOtherEncoded(MOB mob, String otherRequired)
 	{
-		if((mob.isMonster()
-		&&(!Sense.isAnimalIntelligence(mob)))
+		if((otherRequired==null)||(otherRequired.trim().length()==0)) 
+			return null;
+		Item firstOther=null;
+		boolean resourceOther=otherRequired.startsWith("!");
+		if(resourceOther) otherRequired=otherRequired.substring(1);
+		if((otherRequired.length()>0)&&(!resourceOther))
+			firstOther=findMostOfMaterial(mob.location(),otherRequired);
+		if((firstOther==null)&&(otherRequired.length()>0))
+			firstOther=findFirstResource(mob.location(),otherRequired);
+		return firstOther;
+	}
+	
+	protected static final int FOUND_CODE=0;
+	protected static final int FOUND_AMT=1;
+	protected int fixResourceRequirement(int resource, int amt)
+	{
+		if(amt<=0) return amt;
+		switch(resource)
+		{
+		case EnvResource.RESOURCE_MITHRIL:
+			amt=amt/2;
+			break;
+		case EnvResource.RESOURCE_ADAMANTITE:
+			amt=amt/3;
+			break;
+		case EnvResource.RESOURCE_BALSA:
+			amt=amt/2;
+			break;
+		case EnvResource.RESOURCE_IRONWOOD:
+			amt=amt*2;
+			break;
+		}
+		if(amt<0) amt=1;
+		return amt;
+	}
+	protected int[][] fetchFoundResourceData(MOB mob, 
+											 int req1Required,
+											 String req1Desc, int[] req1, 
+											 int req2Required,
+											 String req2Desc, int[] req2,
+											 boolean bundle,
+											 int autoGeneration)
+	{
+		int[][] data=new int[2][2];
+		if((req1Desc!=null)&&(req1Desc.length()==0)) req1Desc=null;
+		if((req2Desc!=null)&&(req2Desc.length()==0)) req2Desc=null;
+		
+		// the fake resource generation:
+		if(autoGeneration>0)
+		{
+			data[0][FOUND_AMT]=req1Required;
+			data[1][FOUND_AMT]=req2Required;
+			data[1][FOUND_CODE]=autoGeneration;
+			data[0][FOUND_CODE]=autoGeneration;
+			return data;
+		}
+		
+		Item firstWood=null;
+		Item firstOther=null;
+		if(req1!=null)
+		{
+			for(int i=0;i<req1.length;i++)
+			{
+				if((req1[i]&EnvResource.RESOURCE_MASK)==0)
+					firstWood=findMostOfMaterial(mob.location(),req1[i]);
+				else
+					firstWood=findFirstResource(mob.location(),req1[i]);
+				if(firstWood!=null) break;
+			}
+		}
+		else
+		if(req1Desc!=null)
+			firstWood=fetchFoundOtherEncoded(mob,req1Desc);
+		data[0][FOUND_AMT]=0;
+		if(firstWood!=null)
+		{
+			data[0][FOUND_AMT]=findNumberOfResource(mob.location(),firstWood.material());
+			data[0][FOUND_CODE]=findNumberOfResource(mob.location(),firstWood.material());
+		}
+		
+		if(req2!=null)
+		{
+			for(int i=0;i<req2.length;i++)
+			{
+				if((req2[i]&EnvResource.RESOURCE_MASK)==0)
+					firstOther=findMostOfMaterial(mob.location(),req2[i]);
+				else
+					firstOther=findFirstResource(mob.location(),req2[i]);
+				if(firstOther!=null) break;
+			}
+		}
+		else
+		if(req2Desc!=null)
+			firstOther=fetchFoundOtherEncoded(mob,req2Desc);
+		data[1][FOUND_AMT]=0;
+		if(firstOther!=null)
+		{
+			data[1][FOUND_AMT]=findNumberOfResource(mob.location(),firstOther.material());
+			data[1][FOUND_CODE]=firstOther.material();
+		}
+		if(req1Required>0)
+		{
+			if(data[0][FOUND_AMT]==0)
+			{
+				if(req1Desc!=null)
+					commonTell(mob,"There is no "+req1Desc.toLowerCase()+" here to make anything from!  It might need to put it down first.");
+				return null;
+			}
+			else
+				data[0][FOUND_AMT]=1;
+			if(!bundle) req1Required=fixResourceRequirement(data[0][FOUND_CODE],req1Required);
+		}
+		if(req2Required>0)
+		{
+			if(((req2!=null)&&(data[1][FOUND_AMT]==0))
+			||((req2==null)&&(req2Desc!=null)&&(req2Desc.length()>0)&&(data[1][FOUND_AMT]==0)))
+			{
+				if(req2Desc.equalsIgnoreCase("PRECIOUS"))
+					commonTell(mob,"You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+				else
+					commonTell(mob,"You need some "+req2Desc.toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+				return null;
+			}
+			if(!bundle) req2Required=fixResourceRequirement(data[1][FOUND_CODE],req2Required);
+		}
+
+		if(req1Required>data[0][FOUND_AMT])
+		{
+			commonTell(mob,"You need "+req1Required+" pounds of "+EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+			return null;
+		}
+		else
+			data[0][FOUND_AMT]=req1Required;
+		if((req2Required>0)&&(req2Required>data[1][FOUND_AMT]))
+		{
+			commonTell(mob,"You need "+req2Required+" pounds of "+EnvResource.RESOURCE_DESCS[(data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+			return null;
+		}
+		else
+			data[1][FOUND_AMT]=req2Required;
+		return data;
+	}
+
+	protected void randomRecipeFix(MOB mob, Vector recipes, Vector commands, int autoGeneration)
+	{
+		if(((mob.isMonster()&&(!Sense.isAnimalIntelligence(mob)))||(autoGeneration>0))
 		&&(commands.size()==0)
 		&&(recipes!=null)
 		&&(recipes.size()>0))
@@ -318,11 +463,13 @@ public class CraftingSkill extends CommonSkill
 	protected int destroyResources(Room room,
 									int howMuch,
 									int finalMaterial,
-									Item firstOther,
-									Item never)
+									int otherMaterial,
+									Item never,
+									int autoGeneration)
 	{
 		int lostValue=0;
 		if(room==null) return 0;
+		if(autoGeneration>0) return 0;
 
 		if(howMuch>0)
 		for(int i=room.numItems()-1;i>=0;i--)
@@ -331,7 +478,11 @@ public class CraftingSkill extends CommonSkill
 			if(I==null) break;
 			if(I==never) continue;
 
-			if((firstOther!=null)&&(I==firstOther))
+			if((otherMaterial>0)
+			&&(I instanceof EnvResource)
+			&&(I.container()==null)
+			&&(!Sense.isOnFire(I))
+			&&(I.material()==otherMaterial))
 			{
 				lostValue+=I.value();
 				I.destroy();

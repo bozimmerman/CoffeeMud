@@ -517,6 +517,7 @@ public class CoffeeUtensils
 				case EnvResource.MATERIAL_LEATHER:
 					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
 					||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
+					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
 						ok=false;
 					break;
@@ -529,11 +530,13 @@ public class CoffeeUtensils
 					break;
 				case EnvResource.MATERIAL_ENERGY:
 					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_VEGAN))
 					   return false;
 					break;
 				case EnvResource.MATERIAL_CLOTH:
 					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||((allowedArmorLevel==CharClass.ARMOR_VEGAN)
 					   &&((I.material()==EnvResource.RESOURCE_HIDE)
 						  ||(I.material()==EnvResource.RESOURCE_FUR)
@@ -543,15 +546,29 @@ public class CoffeeUtensils
 					break;
 				case EnvResource.MATERIAL_PLASTIC:
 				case EnvResource.MATERIAL_WOODEN:
-				case EnvResource.MATERIAL_ROCK:
 					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
+					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
 					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
 					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
 						ok=false;
 					break;
+				case EnvResource.MATERIAL_ROCK:
+				case EnvResource.MATERIAL_GLASS:
+					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
+					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
+					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
+						ok=false;
+					break;
+				case EnvResource.MATERIAL_FLESH:
+					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+					||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
+					||(allowedArmorLevel==CharClass.ARMOR_CLOTH)
+					||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
+						ok=false;
+					break;
 				default:
-					if(allowedArmorLevel==CharClass.ARMOR_METALONLY)
+					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+					||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
 						ok=false;
 					break;
 				}

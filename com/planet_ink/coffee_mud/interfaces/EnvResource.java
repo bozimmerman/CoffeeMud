@@ -361,6 +361,13 @@ public interface EnvResource extends Item
 	"BAMBOO", // 156
 	};
 	
+	public final static int DATA_CODE=0;
+	public final static int DATA_VALUE=1;
+	public final static int DATA_FREQ=2;
+	public final static int DATA_STRENGTH=3;
+	public final static int DATA_BOUANCY=4;
+	
+	
 	public final static int[][] RESOURCE_DATA={ 
 	// full code, base value, frequency, strength (1-10), bouancy
 	{RESOURCE_NOTHING,		0,	0,	0,	0}, 

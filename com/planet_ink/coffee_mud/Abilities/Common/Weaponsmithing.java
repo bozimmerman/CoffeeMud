@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Weaponsmithing extends CommonSkill
+public class Weaponsmithing extends CraftingSkill
 {
 	public String ID() { return "Weaponsmithing"; }
 	public String name(){ return "Weaponsmithing";}
 	private static final String[] triggerStrings = {"WEAPONSMITH","WEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -193,7 +192,14 @@ public class Weaponsmithing extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", or \"weaponsmith mend <item>\".");
@@ -237,7 +243,7 @@ public class Weaponsmithing extends CommonSkill
 		else
 		if(str.equalsIgnoreCase("mend"))
 		{
-			fire=getRequiredFire(mob);
+			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			building=null;
 			mending=false;
@@ -255,7 +261,7 @@ public class Weaponsmithing extends CommonSkill
 		else
 		{
 			mending=false;
-			fire=getRequiredFire(mob);
+			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			building=null;
 			messedUp=false;
@@ -290,39 +296,18 @@ public class Weaponsmithing extends CommonSkill
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
-			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
-			if(firstWood==null)
-				firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
-			int foundWood=0;
-			if(firstWood!=null)
-				foundWood=findNumberOfResource(mob.location(),firstWood.material());
-			Item firstOther=findMostOfMaterial(mob.location(),otherRequired);
-			if((firstOther==null)&&(otherRequired.length()>0))
-				firstOther=findFirstResource(mob.location(),otherRequired);
-			if(foundWood==0)
-			{
-				commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
-				return false;
-			}
-			if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
-				woodRequired=woodRequired/2;
-			else
-			if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
-				woodRequired=woodRequired/3;
-			if(woodRequired<1) woodRequired=1;
-			if(foundWood<woodRequired)
-			{
-				commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				return false;
-			}
-			if((otherRequired.length()>0)&&(firstOther==null))
-			{
-				commonTell(mob,"You need a pound of "+otherRequired.toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				return false;
-			}
+			int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+			int[][] data=fetchFoundResourceData(mob,
+												woodRequired,"metal",pm,
+												otherRequired.length()>0?1:0,otherRequired,null,
+												false,
+												autoGenerate);
+			if(data==null) return false;
+			woodRequired=data[0][FOUND_AMT];
+			
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),firstOther,null);
+			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,autoGenerate);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -330,18 +315,18 @@ public class Weaponsmithing extends CommonSkill
 				return false;
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) smithing "+building.name()+".";
 			displayText="You are smithing "+building.name();
 			verb="smithing "+building.name();
-			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
+			int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_STRENGTH]-6;
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue((Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))/4)+(woodRequired*(firstWood.baseGoldValue())));
-			building.setMaterial(firstWood.material());
+			building.setBaseValue((Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))/4)+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
+			building.setMaterial(data[0][FOUND_CODE]);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
@@ -386,6 +371,12 @@ public class Weaponsmithing extends CommonSkill
 			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
+		}
+
+		if(autoGenerate>0)
+		{
+			commands.addElement(building);
+			return true;
 		}
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);

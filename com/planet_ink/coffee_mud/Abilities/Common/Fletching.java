@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Fletching extends CommonSkill
+public class Fletching extends CraftingSkill
 {
 	public String ID() { return "Fletching"; }
 	public String name(){ return "Fletching";}
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -125,7 +124,14 @@ public class Fletching extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"fletch list\" for a list, \"fletch scan\", or \"fletch mend <item>\".");
@@ -207,22 +213,16 @@ public class Fletching extends CommonSkill
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
-			int foundWood=0;
-			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_WOODEN);
-			if(firstWood!=null)
-				foundWood=findNumberOfResource(mob.location(),firstWood.material());
-			Item firstOther=findMostOfMaterial(mob.location(),otherRequired);
-			if((foundWood==0)&&(woodRequired>0))
-			{
-				commonTell(mob,"There is no wood here to make anything from!  It might need to put it down first.");
-				return false;
-			}
-			if((otherRequired.length()>0)&&(firstOther==null))
-			{
-				commonTell(mob,"You need a pound of "+otherRequired.toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				return false;
-			}
-			if((firstOther!=null)&&(Sense.isMetal(firstOther)))
+			int[] pm={EnvResource.MATERIAL_WOODEN};
+			int[][] data=fetchFoundResourceData(mob,
+												woodRequired,"wood",pm,
+												1,otherRequired,null,
+												false,
+												autoGenerate);
+			if(data==null) return false;
+			woodRequired=data[0][FOUND_AMT];
+			if(((data[1][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			||((data[1][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
 			{
 				Item fire=null;
 				for(int i=0;i<mob.location().numItems();i++)
@@ -242,7 +242,7 @@ public class Fletching extends CommonSkill
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,autoGenerate);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -250,7 +250,7 @@ public class Fletching extends CommonSkill
 				return false;
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
@@ -260,7 +260,7 @@ public class Fletching extends CommonSkill
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
-			building.setMaterial(firstWood.material());
+			building.setMaterial(data[0][FOUND_CODE]);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String ammotype=(String)foundRecipe.elementAt(RCP_AMMOTYPE);
@@ -316,6 +316,12 @@ public class Fletching extends CommonSkill
 			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
+		}
+
+		if(autoGenerate>0)
+		{
+			commands.addElement(building);
+			return true;
 		}
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);

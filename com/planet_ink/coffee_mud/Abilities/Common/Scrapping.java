@@ -148,7 +148,7 @@ public class Scrapping extends CommonSkill
 		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PLASTIC)
 		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
 		{
-			fire=getRequiredFire(mob);
+			fire=getRequiredFire(mob,0);
 			if(fire==null) return false;
 		}
 

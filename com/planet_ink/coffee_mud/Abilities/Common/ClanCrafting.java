@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class ClanCrafting extends CommonSkill
+public class ClanCrafting extends CraftingSkill
 {
 	public String ID() { return "ClanCrafting"; }
 	public String name(){ return "Clan Crafting";}
 	private static final String[] triggerStrings = {"CLANCRAFT"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_MATERIAL1=1;
@@ -108,7 +107,14 @@ public class ClanCrafting extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"clancraft list\" for a list.");
@@ -206,9 +212,7 @@ public class ClanCrafting extends CommonSkill
 			return false;
 		}
 
-		int rsc1=-1;
 		int amt1=0;
-		int rsc2=-1;
 		int amt2=0;
 		String mat1=(String)foundRecipe.elementAt(RCP_MATERIAL1);
 		String mat2=(String)foundRecipe.elementAt(RCP_MATERIAL2);
@@ -217,30 +221,12 @@ public class ClanCrafting extends CommonSkill
 		{
 			amt1=Util.s_int(mat1.substring(m1+1));
 			mat1=mat1.substring(0,m1).toLowerCase();
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-			{
-				if(mat1.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
-				{
-					mat1=mat1.toLowerCase();
-					rsc1=EnvResource.RESOURCE_DATA[i][0];
-					break;
-				}
-			}
 		}
 		int m2=mat2.indexOf("/");
 		if(m2>=0)
 		{
 			amt2=Util.s_int(mat2.substring(m2+1));
 			mat2=mat2.substring(0,m2).toLowerCase();
-			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
-			{
-				if(mat2.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
-				{
-					mat2=mat2.toLowerCase();
-					rsc2=EnvResource.RESOURCE_DATA[i][0];
-					break;
-				}
-			}
 		}
 
 		int expRequired=Util.s_int((String)foundRecipe.elementAt(RCP_EXP));
@@ -249,36 +235,9 @@ public class ClanCrafting extends CommonSkill
 			mob.tell("You need "+expRequired+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
 			return false;
 		}
-
-		Item wood1=((rsc1<=0)?null:findFirstResource(mob.location(),rsc1));
-		int found1=0;
-		if((wood1!=null)&&(rsc1>0))
-			found1=findNumberOfResource(mob.location(),wood1.material());
-		if((found1==0)&&(rsc1>0))
-		{
-			commonTell(mob,"There is no "+mat1+" here to make this from!  It might need to put it down first.");
-			return false;
-		}
-		if(found1<amt1)
-		{
-			commonTell(mob,"You need "+amt1+" pounds of "+mat1+".  There is not enough here.  Are you sure you set it all on the ground first?");
-			return false;
-		}
-
-		Item wood2=((rsc2<=0)?null:findFirstResource(mob.location(),rsc2));
-		int found2=0;
-		if((wood2!=null)&&(rsc2>0))
-			found2=findNumberOfResource(mob.location(),wood2.material());
-		if((found2==0)&&(rsc2>0))
-		{
-			commonTell(mob,"There is no "+mat2+" here to make this from!  It might need to put it down first.");
-			return false;
-		}
-		if(found2<amt2)
-		{
-			commonTell(mob,"You need "+amt2+" pounds of "+mat1+".  There is not enough here.  Are you sure you set it all on the ground first?");
-			return false;
-		}
+		int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,autoGenerate);
+		amt1=data[0][FOUND_AMT];
+		amt2=data[1][FOUND_AMT];
 		String reqskill=(String)foundRecipe.elementAt(this.RCP_REQUIREDSKILL);
 		if(reqskill.trim().length()>0)
 		{
@@ -292,10 +251,10 @@ public class ClanCrafting extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		if(wood1!=null)
-			destroyResources(mob.location(),amt1,wood1.material(),null,null);
-		if(wood2!=null)
-			destroyResources(mob.location(),amt2,wood2.material(),null,null);
+		if(amt1>0)
+			destroyResources(mob.location(),amt1,data[0][FOUND_CODE],0,null,autoGenerate);
+		if(amt2>0)
+			destroyResources(mob.location(),amt2,data[1][FOUND_CODE],0,null,autoGenerate);
 		C.setExp(C.getExp()-expRequired);
 		C.update();
 
@@ -328,8 +287,8 @@ public class ClanCrafting extends CommonSkill
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(amt1+amt2);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
-		building.setMaterial(wood1.material());
-		int hardness=EnvResource.RESOURCE_DATA[wood1.material()&EnvResource.RESOURCE_MASK][3]-6;
+		building.setMaterial(data[0][FOUND_CODE]);
+		int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-6;
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -409,6 +368,12 @@ public class ClanCrafting extends CommonSkill
 
 		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
+
+		if(autoGenerate>0)
+		{
+			commands.addElement(building);
+			return true;
+		}
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))

@@ -46,7 +46,7 @@ public class Chant_SummonFood extends Chant
 				for(int i=0;i<((adjustedLevel(mob)/4)+1);i++)
 				{
 					newItem=(Food)CMClass.getStdItem("GenFoodResource");
-					newItem.setName("some "+EnvResource.RESOURCE_DESCS[berryType].toLowerCase());
+					newItem.setName("some "+EnvResource.RESOURCE_DESCS[berryType&EnvResource.RESOURCE_MASK].toLowerCase());
 					newItem.setDisplayText(Util.capitalize(newItem.name())+" are growing here.");
 					newItem.setDescription("These little berries look juicy and good.");
 					newItem.setMaterial(berryType);

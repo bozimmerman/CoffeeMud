@@ -128,7 +128,7 @@ public class Alchemy extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		randomRecipeFix(mob,loadRecipes(),commands,0);
 		if(commands.size()<1)
 		{
 			commonTell(mob,"Brew what? Enter \"brew list\" for a list.");
@@ -233,7 +233,7 @@ public class Alchemy extends CraftingSkill
 			else
 			{
 				requiresFire=true;
-				fire=getRequiredFire(mob);
+				fire=getRequiredFire(mob,0);
 				if(fire==null) return false;
 				experienceToLose+=CMAble.qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMAble.qualifyingClassLevel(mob,theSpell)*5;

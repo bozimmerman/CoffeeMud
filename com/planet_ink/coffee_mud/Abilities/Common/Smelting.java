@@ -97,7 +97,7 @@ public class Smelting extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		randomRecipeFix(mob,loadRecipes(),commands,0);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"smelt list\" for a list.");
@@ -126,7 +126,7 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
-		fire=getRequiredFire(mob);
+		fire=getRequiredFire(mob,0);
 		if(fire==null) return false;
 		building=null;
 		messedUp=false;
@@ -196,8 +196,8 @@ public class Smelting extends CraftingSkill
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
-		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],0,null);
-		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],0,null);
+		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],0,null,0);
+		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],0,null,0);
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],false);

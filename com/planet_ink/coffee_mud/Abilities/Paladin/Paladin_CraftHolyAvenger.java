@@ -6,14 +6,13 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilities.Common.CommonSkill
+public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill
 {
 	public String ID() { return "Paladin_CraftHolyAvenger"; }
 	public String name(){ return "Craft Holy Avenger";}
 	private static final String[] triggerStrings = {"CRAFTHOLY","CRAFTHOLYAVENGER","CRAFTAVENGER"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Paladin_CraftHolyAvenger();}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private Item building=null;
 	private Item fire=null;
@@ -100,32 +99,18 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		building=null;
 		messedUp=false;
 		int woodRequired=50;
-		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
-		if(firstWood==null)
-			firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
-		int foundWood=0;
-		if(firstWood!=null)
-			foundWood=findNumberOfResource(mob.location(),firstWood.material());
-		if(foundWood==0)
-		{
-			commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
-			return false;
-		}
-		if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
-			woodRequired=woodRequired/2;
-		else
-		if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
-			woodRequired=woodRequired/3;
-		if(woodRequired<1) woodRequired=1;
-		if(foundWood<woodRequired)
-		{
-			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to craft the Holy Avenger.  There is not enough here.  Are you sure you set it all on the ground first?");
-			return false;
-		}
+		int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+		int[][] data=fetchFoundResourceData(mob,
+											woodRequired,"metal",pm,
+											0,null,null,
+											false,
+											auto?EnvResource.RESOURCE_MITHRIL:0);
+		if(data==null) return false;
+		woodRequired=data[0][FOUND_AMT];
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,auto?1:0);
 		building=CMClass.getWeapon("GenWeapon");
 		completion=50-CMAble.qualifyingClassLevel(mob,this);
 		String itemName="the Holy Avenger";
@@ -133,12 +118,12 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		String startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
 		verb="crafting "+building.name();
-		int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-5;
+		int hardness=EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][3]-5;
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(0);
-		building.setMaterial(firstWood.material());
+		building.setMaterial(data[0][FOUND_CODE]);
 		building.baseEnvStats().setLevel(mob.envStats().level());
 		building.baseEnvStats().setAbility(5);
 

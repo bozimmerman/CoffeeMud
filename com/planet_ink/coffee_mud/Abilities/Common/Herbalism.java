@@ -88,10 +88,14 @@ public class Herbalism extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		boolean autoGenerate=false;
-		if((auto)&&(givenTarget==this))
-		{	autoGenerate=true; givenTarget=null;}
-		randomRecipeFix(mob,loadRecipes(),commands);
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()<1)
 		{
 			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list.");
@@ -259,6 +263,11 @@ public class Herbalism extends CraftingSkill
 			if(completion<10) completion=10;
 
 			messedUp=!profficiencyCheck(mob,0,auto);
+			if(autoGenerate>0)
+			{
+				commands.addElement(building);
+				return true;
+			}
 
 			FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(mob.location().okMessage(mob,msg))

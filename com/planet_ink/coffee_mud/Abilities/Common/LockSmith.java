@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class LockSmith extends CommonSkill
+public class LockSmith extends CraftingSkill
 {
 	public String ID() { return "LockSmith"; }
 	public String name(){ return "Locksmithing";}
 	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private Item building=null;
 	private Environmental workingOn=null;
@@ -217,25 +216,17 @@ public class LockSmith extends CommonSkill
 			return false;
 		}
 
-		Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
-		if(firstWood==null)
-			firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
-		int foundWood=0;
-		if(firstWood!=null)
-			foundWood=findNumberOfResource(mob.location(),firstWood.material());
-		if(foundWood==0)
-		{
-			commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
-			return false;
-		}
-		if(foundWood<woodRequired)
-		{
-			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-			return false;
-		}
+		int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+		int[][] data=fetchFoundResourceData(mob,
+											woodRequired,"metal",pm,
+											0,null,null,
+											false,
+											0);
+		if(data==null) return false;
+		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
+		destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,0);
 		building=getBuilding(workingOn);
 		if(building==null)
 		{
@@ -244,7 +235,7 @@ public class LockSmith extends CommonSkill
 		}
 		completion=15-((mob.envStats().level()-workingOn.envStats().level()));
 		if(keyFlag) completion=completion/2;
-		String itemName=(EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]+" key").toLowerCase();
+		String itemName=(EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]+" key").toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
@@ -254,7 +245,7 @@ public class LockSmith extends CommonSkill
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(1);
-		building.setMaterial(firstWood.material());
+		building.setMaterial(data[0][FOUND_CODE]);
 		if(keyFlag)
 			building.baseEnvStats().setLevel(1);
 		else

@@ -6,13 +6,12 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 import java.io.File;
 
-public class JewelMaking extends CommonSkill
+public class JewelMaking extends CraftingSkill
 {
 	public String ID() { return "JewelMaking"; }
 	public String name(){ return "Jewel Making";}
 	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public long flags(){return FLAG_CRAFTING;}
 
 	private static final int RCP_FINALNAME=0;
 	private static final int RCP_LEVEL=1;
@@ -160,7 +159,14 @@ public class JewelMaking extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		randomRecipeFix(mob,loadRecipes(),commands);
+		int autoGenerate=0;
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{	
+			autoGenerate=((Integer)commands.firstElement()).intValue(); 
+			commands.removeElementAt(0);
+			givenTarget=null;
+		}
+		randomRecipeFix(mob,loadRecipes(),commands,autoGenerate);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"jewel list\" for a list.  You may also enter jewel encrust <gem name> <item name>, or jewel mount <gem name> <item name>, or jewel refit <item name>, or jewel scan, or jewel mend <item name>.");
@@ -199,7 +205,7 @@ public class JewelMaking extends CommonSkill
 				commonTell(mob,Util.capitalize(word)+" what jewel onto what item?");
 				return false;
 			}
-			fire=getRequiredFire(mob);
+			fire=getRequiredFire(mob,autoGenerate);
 			building=null;
 			mending=false;
 			refitting=false;
@@ -270,7 +276,7 @@ public class JewelMaking extends CommonSkill
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			fire=getRequiredFire(mob);
+			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
@@ -289,7 +295,7 @@ public class JewelMaking extends CommonSkill
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			fire=getRequiredFire(mob);
+			fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
@@ -345,7 +351,7 @@ public class JewelMaking extends CommonSkill
 			misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 			if(!misctype.equals("BUNDLE"))
 			{
-				fire=getRequiredFire(mob);
+				fire=getRequiredFire(mob,autoGenerate);
 				if(fire==null) return false;
 			}
 			else
@@ -353,49 +359,17 @@ public class JewelMaking extends CommonSkill
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
-			Item firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_MITHRIL);
-			if(firstWood==null) firstWood=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
-			int foundWood=0;
-			if(firstWood!=null)
-				foundWood=findNumberOfResource(mob.location(),firstWood.material());
-			Item firstOther=null;
-			boolean resourceOther=otherRequired.startsWith("!");
-			if(resourceOther) otherRequired=otherRequired.substring(1);
-			if((otherRequired.length()>0)&&(!resourceOther))
-					firstOther=findMostOfMaterial(mob.location(),otherRequired);
-			if((firstOther==null)&&(otherRequired.length()>0))
-				firstOther=findFirstResource(mob.location(),otherRequired);
-			if(foundWood==0)
-			{
-				commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
-				return false;
-			}
-			if(!misctype.equalsIgnoreCase("BUNDLE")) 
-			{
-				if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
-					woodRequired=woodRequired/2;
-				else
-				if(firstWood.material()==EnvResource.RESOURCE_ADAMANTITE)
-					woodRequired=woodRequired/3;
-			}
-			if(woodRequired<1) woodRequired=1;
-			if(foundWood<woodRequired)
-			{
-				commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				return false;
-			}
-			if((otherRequired.length()>0)&&(firstOther==null))
-			{
-				if(otherRequired.equalsIgnoreCase("PRECIOUS"))
-					commonTell(mob,"You need some sort of precious stones to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				else
-					commonTell(mob,"You need some "+otherRequired.toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
-				return false;
-			}
+			int[] pm={EnvResource.MATERIAL_MITHRIL,EnvResource.MATERIAL_METAL};
+			int[][] data=fetchFoundResourceData(mob,
+												woodRequired,"metal",pm,
+												1,otherRequired,null,
+												false,
+												autoGenerate);
+			if(data==null) return false;
+			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			int woodDestroyed=woodRequired;
-			int lostValue=destroyResources(mob.location(),woodDestroyed,firstWood.material(),firstOther,null);
+			int lostValue=destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,autoGenerate);
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
@@ -404,10 +378,10 @@ public class JewelMaking extends CommonSkill
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 			String itemName=null;
-			if((firstOther!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
+				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			else
-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
+				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			if(misctype.equalsIgnoreCase("BUNDLE")) 
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -417,21 +391,22 @@ public class JewelMaking extends CommonSkill
 			displayText="You are making "+building.name();
 			verb="making "+building.name();
 			building.setDisplayText(itemName+" is here");
-			if((firstOther!=null)&&(firstWood!=null)
-			&&(Sense.isMetal(firstWood))
-			&&(((firstOther.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)))
-				building.setDescription(itemName+" made of "+EnvResource.RESOURCE_DESCS[firstWood.material()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
+			if((data[1][FOUND_CODE]>0)
+			&&(((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			   ||((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
+			&&(((data[1][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)))
+				building.setDescription(itemName+" made of "+EnvResource.RESOURCE_DESCS[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK].toLowerCase()+".");
 			else
 				building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(firstWood.baseGoldValue())));
+			building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(EnvResource.RESOURCE_DATA[data[0][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE])));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			if(firstOther==null)
-				building.setMaterial(firstWood.material());
+			if(data[1][FOUND_CODE]==0)
+				building.setMaterial(data[0][FOUND_CODE]);
 			else
 			{
-				building.setMaterial(firstOther.material());
-				building.setBaseValue(building.baseGoldValue()+firstOther.baseGoldValue());
+				building.setMaterial(data[1][FOUND_CODE]);
+				building.setBaseValue(building.baseGoldValue()+EnvResource.RESOURCE_DATA[data[1][FOUND_CODE]&EnvResource.RESOURCE_MASK][EnvResource.DATA_VALUE]);
 			}
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			//int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -494,6 +469,12 @@ public class JewelMaking extends CommonSkill
 			verb="bundling "+EnvResource.RESOURCE_DESCS[building.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
+		}
+
+		if(autoGenerate>0)
+		{
+			commands.addElement(building);
+			return true;
 		}
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);

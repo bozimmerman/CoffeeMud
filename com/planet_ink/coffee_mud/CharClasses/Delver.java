@@ -17,7 +17,7 @@ public class Delver extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
-	public int allowedArmorLevel(){return CharClass.ARMOR_METALONLY;}
+	public int allowedArmorLevel(){return CharClass.ARMOR_OREONLY;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
@@ -185,8 +185,8 @@ CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String weaponLimitations(){return "To avoid fumbling, must be metal or rock weapons.";}
-	public String armorLimitations(){return "Must wear metal armors to avoid chant failure.";}
+	public String weaponLimitations(){return "To avoid fumbling, must be metal, glass, or stone weapons.";}
+	public String armorLimitations(){return "Must wear metal, glass, or stone armors to avoid chant failure.";}
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "";}
 
@@ -218,6 +218,7 @@ CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 				{
 				case EnvResource.MATERIAL_ROCK:
 				case EnvResource.MATERIAL_UNKNOWN:
+				case EnvResource.MATERIAL_GLASS:
 				case EnvResource.MATERIAL_METAL:
 					break;
 				default:
@@ -250,6 +251,7 @@ CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 		if(myChar==null) return duration;
 		if(Util.bset(skill.flags(),Ability.FLAG_CRAFTING)
 		&&(!skill.ID().equals("Sculpting"))
+		&&(!skill.ID().equals("Herbalism"))
 		&&(!skill.ID().equals("Masonry")))
 			return duration*2;
 		   
