@@ -41,6 +41,7 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Appraise",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Song_Armor",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Song_Babble",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Song_Clumsiness",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Song_Rage",false);
@@ -49,8 +50,11 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Trip",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Song_Serenity",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Song_Revelation",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Song_Friendship",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Song_Inebriation",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Song_Comprehension",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Song_Health",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Song_Mercy",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Peek",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Song_Silence",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Song_Dexterity",false);
@@ -62,24 +66,20 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),17,"Song_Quickness",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Song_Lethargy",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Song_Friendship",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Song_Flight",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Song_Knowledge",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Song_Blasting",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Song_Strength",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Song_Thanks",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Song_Lullibye",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Song_Distraction",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Song_Flying",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Steal",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Song_Death",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Song_Disgust",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Song_Rebirth",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Knowledge",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Thanks",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Babble",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Flight",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Mercy",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Distraction",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Disgust",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Song_Comprehension",false);
 		}
 	}
 

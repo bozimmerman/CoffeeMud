@@ -29,7 +29,7 @@
 @RaceClassNext?reset@
 @loop@
 @RaceClassNext@
-<a href="classes.cmvp#@CharClassID@">@CharClassName@</a>
+<a href="classes.cmvp?CLASS=@CharClassID@">@CharClassName@</a>
 @back@
 </TD>
 </TR>
