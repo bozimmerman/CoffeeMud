@@ -96,19 +96,16 @@ public class SMTPclient
 		Vector addys=new Vector();
 		Attribute mx=doMXLookup(domain);
 		boolean connected=false;
-		addys.addElement(domain);
 		try{
 			if((mx!=null)&&(mx.size()>0))
 			for(NamingEnumeration e=mx.getAll();e.hasMore();)
-			{
-				String hostid=(String)e.next();
-				if(!addys.contains(hostid))
-					addys.addElement(hostid);
-			}
+				addys.addElement((String)e.next());
 		}
 		catch(javax.naming.NamingException ne)
 		{
 		}
+		if(addys.size()==0)
+			addys.addElement(domain);
 		for(Enumeration e=addys.elements();e.hasMoreElements();)
 		{
 			String hostid=(String)e.nextElement();
