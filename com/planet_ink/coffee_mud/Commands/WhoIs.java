@@ -4,12 +4,13 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class WhoIs extends BaseWho
+public class WhoIs extends Who
 {
 	public WhoIs(){}
 
 	private String[] access={"WHOIS"};
 	public String[] getAccessWords(){return access;}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{

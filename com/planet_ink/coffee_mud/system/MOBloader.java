@@ -630,24 +630,38 @@ public class MOBloader
 	public static void DBUpdateItems(MOB mob)
 	{
 		if(mob.Name().length()==0) return;
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			D.update("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'",0);
+			DBConnector.DBDone(D);
+			try{Thread.sleep(mob.inventorySize());}catch(Exception e){}
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB","UpdateItems"+sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
 		Vector V=new Vector();
-		V.addElement("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
 		if(mob.inventorySize()>0)
 			DBUpdateContents(mob,V);
-		DBConnection D=DBConnector.DBFetch();
 		for(int v=0;v<V.size();v++)
 		{
 			String updateString=(String)V.elementAt(v);
+			D=null;
 			try
 			{
+				D=DBConnector.DBFetch();
 				D.update(updateString,0);
+				DBConnector.DBDone(D);
 			}
-			catch(SQLException sqle)
+			catch(Exception sqle)
 			{
 				Log.errOut("MOB","UpdateItems"+sqle+"//"+updateString);
+				if(D!=null) DBConnector.DBDone(D);
 			}
 		}
-		DBConnector.DBDone(D);
 	}
 
 	public static void DBUpdateFollowers(MOB mob)

@@ -1488,7 +1488,8 @@ public class CoffeeMaker
 		if(E instanceof MOB)
 		{
 			MOB mob=(MOB)E;
-			mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			if(XMLManager.getValFromPieces(buf,"GENDER").length()>0)
+				mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
 			mob.setClanID(XMLManager.getValFromPieces(buf,"CLAN"));
 			if(mob.getClanID().length()>0) mob.setClanRole(Clan.POS_MEMBER);
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");

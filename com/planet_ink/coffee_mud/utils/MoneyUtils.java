@@ -117,7 +117,7 @@ public class MoneyUtils
 			msliver.setNumberOfCoins(5);
 			msliver.setName("a fiver note");
 			msliver.setDisplayText("a small crumpled note lies on the ground");
-			msliver.setDescription("This note convertable to 10 gold coins.");
+			msliver.setDescription("This note convertable to 5 gold coins.");
 		}
 		else
 		if(value>0)

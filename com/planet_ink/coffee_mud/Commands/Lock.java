@@ -36,7 +36,7 @@ public class Lock extends StdCommand
 		{
 			boolean locked=((Exit)lockThis).isLocked();
 			if((mob.location().okMessage(msg.source(),msg))
-			&&(locked))
+			&&(!locked))
 			{
 				mob.location().send(msg.source(),msg);
 				if(dirCode<0)

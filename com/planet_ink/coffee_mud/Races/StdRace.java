@@ -241,7 +241,15 @@ public class StdRace implements Race
 		stats.setWeight(lightestWeight()+weightModifier);
 		int heightModifier=0;
 		if(heightVariance()>0)
-			heightModifier=Dice.roll(1,heightVariance(),0);
+		{
+			if(weightModifier>0)
+			{
+				double variance=Util.div(weightModifier,weightVariance());
+				heightModifier=(int)Math.round(Util.mul(heightVariance(),variance));
+			}
+			else
+				heightModifier=Dice.roll(1,heightVariance(),0);
+		}
 		if (gender == 'M')
 			stats.setHeight(shortestMale()+heightModifier);
  		else

@@ -411,6 +411,7 @@ public class RoomLoader
 					+thisItem.baseEnvStats().ability()+","
 					+thisItem.baseEnvStats().height()+")";
 					D.update(sql,0);
+					Thread.sleep(50);
 					DBConnector.DBDone(D);
 				}
 				catch(Throwable sqle)
@@ -432,6 +433,7 @@ public class RoomLoader
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'",0);
 			DBConnector.DBDone(D);
+			try{Thread.sleep(room.numItems());}catch(Exception e){}
 		}
 		catch(SQLException sqle)
 		{

@@ -4,12 +4,54 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Who extends BaseWho
+public class Who extends StdCommand
 {
 	public Who(){}
 
 	private String[] access={"WHO","WH"};
 	public String[] getAccessWords(){return access;}
+	
+	public static StringBuffer showWhoShort(MOB who)
+	{
+		StringBuffer msg=new StringBuffer("");
+		msg.append("[");
+		msg.append(Util.padRight(who.charStats().raceName(),12)+" ");
+		String levelStr=who.charStats().displayClassLevel(who,true).trim();
+		int x=levelStr.lastIndexOf(" ");
+		if(x>=0) levelStr=levelStr.substring(x).trim();
+		msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
+		msg.append(Util.padRight(levelStr,7));
+		String name=null;
+		if(Util.bset(who.envStats().disposition(),EnvStats.IS_NOT_SEEN))
+			name="("+who.name()+")";
+		else
+			name=who.name();
+		if((who.session()!=null)&&(who.session().afkFlag()))
+		{
+			long t=(who.session().getIdleMillis()/1000);
+			String s=t+"s";
+			if(t>600)
+			{
+				t=t/60;
+				s=t+"m";
+				if(t>120)
+				{
+					t=t/60;
+					s=t+"h";
+					if(t>48)
+					{
+						t=t/24;
+						s=t+"d";
+					}
+				}
+			}
+			name=name+(" (idle: "+s+")");
+		}
+		msg.append("] "+Util.padRight(name,35));
+		msg.append("\n\r");
+		return msg;
+	}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
