@@ -35,7 +35,70 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 		baseEnvStats().setWeight(0);
 		recoverEnvStats();
 	}
+	
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+	    if((decayTime>0)&&(System.currentTimeMillis()>decayTime))
+	    {
+	        if((material&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+	        {
+	            if(fetchEffect("Poison_Rotten")==null)
+	            {
+	                Ability A=CMClass.getAbility("Poison_Rotten");
+	                if(A!=null) this.addNonUninvokableEffect(A);
+	            }
+	        }
+	        else
+	        {
+	            
+	        }
+            setNourishment(0);
+	        decayTime=0;
+	    }
+	    return super.okMessage(host,msg);
+	}
 
+	public void setMaterial(int newValue)
+	{
+	    super.setMaterial(newValue);
+	    switch(newValue&EnvResource.MATERIAL_MASK)
+	    {
+	    case EnvResource.MATERIAL_FLESH:
+	    {
+	    	if(fetchEffect("Poison_Rotten")==null)
+	        decayTime=System.currentTimeMillis()+(
+	            	   MudHost.TICK_TIME
+	        		  *CommonStrings.SYSTEMI_TICKSPERMUDDAY);
+	    	break;
+	    }
+	    case EnvResource.MATERIAL_VEGETATION:
+	        decayTime=System.currentTimeMillis()+(
+	                MudHost.TICK_TIME
+			        *CommonStrings.SYSTEMI_TICKSPERMUDDAY
+			        *DefaultTimeClock.globalClock.getDaysInWeek());
+	    break;
+	    }
+	    switch(newValue)
+	    {
+	    case EnvResource.RESOURCE_HERBS:
+	    case EnvResource.RESOURCE_WAX:
+	    case EnvResource.RESOURCE_COFFEEBEANS:
+	    case EnvResource.RESOURCE_SEAWEED:
+	    case EnvResource.RESOURCE_SUGAR:
+	    case EnvResource.RESOURCE_COCOA:
+	    case EnvResource.RESOURCE_MUSHROOMS:
+	    case EnvResource.RESOURCE_VINE:
+	    case EnvResource.RESOURCE_FLOWERS:
+	    case EnvResource.RESOURCE_NUTS:
+	    case EnvResource.RESOURCE_CRACKER:
+	    case EnvResource.RESOURCE_PIPEWEED:
+	    case EnvResource.RESOURCE_GARLIC:
+	    case EnvResource.RESOURCE_SOAP:
+	    case EnvResource.RESOURCE_ASH:
+	        decayTime=0;
+	    	break;
+	    }
+	}
 	private int domainSource=-1;
 	public int domainSource(){return domainSource;}
 	public void setDomainSource(int src){domainSource=src;}

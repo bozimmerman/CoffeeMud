@@ -53,7 +53,7 @@ public class Inventory extends StdCommand
 			if(!mask.startsWith("all")) mask="all "+mask;
 			Vector V=(Vector)viewItems.clone();
 			viewItems.clear();
-			Item I=(Item)V.firstElement();
+			Item I=(V.size()>0)?(Item)V.firstElement():null;
 			while(I!=null)
 			{
 				I=(Item)EnglishParser.fetchEnvironmental(V,mask,false);

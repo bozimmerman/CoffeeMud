@@ -21,11 +21,11 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Poison_RottenMeat extends Poison
+public class Poison_Rotten extends Poison
 {
-	public String ID() { return "Poison_RottenMeat"; }
-	public String name(){ return "Rotten Meat";}
-	private static final String[] triggerStrings = {"MEATROTT"};
+	public String ID() { return "Poison_Rotten"; }
+	public String name(){ return "Rotten";}
+	private static final String[] triggerStrings = {"POISONROTT"};
 	public String[] triggerStrings(){return triggerStrings;}
 
 	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!

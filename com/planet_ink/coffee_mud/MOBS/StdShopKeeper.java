@@ -1025,6 +1025,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						for(int p=0;p<products.size();p++)
 						{
 							Item I=(Item)products.elementAt(p);
+							if(I instanceof EnvResource)
+							    I.setMaterial(I.material()); // resets food decay time
 							location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 						}
 						FullMsg msg2=new FullMsg(mobFor,product,this,CMMsg.MSG_GET,null);

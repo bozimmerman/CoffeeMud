@@ -62,6 +62,8 @@ public class As extends StdCommand
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
 		boolean dead=M.amDead();
+		int myBitmap=mob.getBitmap();
+		int oldBitmap=M.getBitmap();
 		M.setSession(mySession);
 		mySession.setMob(M);
 		if(((String)commands.firstElement()).equalsIgnoreCase("here")
@@ -89,7 +91,9 @@ public class As extends StdCommand
 			M.setLocation(oldRoom);
 		}
 		M.setSession(oldSession);
+		M.setBitmap(oldBitmap);
 		mySession.setMob(mob);
+		mob.setBitmap(myBitmap);
 		if(dead) M.removeFromGame();
 		return false;
 	}

@@ -24,6 +24,7 @@ public class StdFood extends StdItem implements Food
 {
 	public String ID(){	return "StdFood";}
 	protected int amountOfNourishment=500;
+	protected long decayTime=0;
 
 	public StdFood()
 	{
@@ -48,6 +49,9 @@ public class StdFood extends StdItem implements Food
 		amountOfNourishment=amount;
 	}
 
+	public long decayTime(){return decayTime;}
+	public void setDecayTime(long time){decayTime=time;}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
