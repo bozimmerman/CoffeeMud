@@ -101,6 +101,9 @@ public class CommandProcessor
 				case CommandSet.AUTOLOOT:
 					theFight.autoloot(mob);
 					break;
+				case CommandSet.AUTOWEATHER:
+					basicSenses.autoweather(mob);
+					break;
 				case CommandSet.BEACON:
 					if(mob.isASysOp(mob.location()))
 						sysopSkills.beacon(mob);

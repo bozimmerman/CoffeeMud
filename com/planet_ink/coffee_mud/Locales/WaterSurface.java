@@ -72,6 +72,7 @@ public class WaterSurface extends StdRoom implements Drink
 		if(room==null) return;
 		if((room.ID().length()==0)&&(room instanceof UnderWaterGrid))
 		{
+			((UnderWaterGrid)room).clearGrid();
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;

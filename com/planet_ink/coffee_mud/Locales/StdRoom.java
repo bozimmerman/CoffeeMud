@@ -232,6 +232,7 @@ public class StdRoom
 		if(room==null) return;
 		if((room.ID().length()==0)&&(room instanceof EndlessSky))
 		{
+			((EndlessSky)room).clearGrid();
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;
@@ -575,7 +576,13 @@ public class StdRoom
 		{
 			Say.append("^O" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
 			if((!careAboutBrief)||((mob.getBitmap()&MOB.ATT_BRIEF)==0))
-				Say.append("^L" + description()+"^N\n\r\n\r");
+			{
+				Say.append("^L" + description());
+				if(((mob.getBitmap()&MOB.ATT_AUTOWEATHER)>0)
+				&&((domainType()&Room.INDOORS)==0))
+					Say.append("\n\r\n\r"+getArea().weatherDescription(this));
+				Say.append("^N\n\r\n\r");
+			}
 		}
 		
 		Vector viewItems=new Vector();

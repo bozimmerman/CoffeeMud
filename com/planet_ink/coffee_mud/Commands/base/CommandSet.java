@@ -142,6 +142,7 @@ public class CommandSet extends Hashtable
 	public static final int WHERE=130;
 	public static final int SNOOP=131;
 	public static final int BRIEF=132;
+	public static final int AUTOWEATHER=133;
 	
 
 	public CommandSet()
@@ -161,6 +162,7 @@ public class CommandSet extends Hashtable
 		put("AUTOEXITS",new Integer(AUTOEXITS));
 		put("AUTOMELEE",new Integer(AUTOMELEE));
 		put("AUTOASSIST",new Integer(AUTOASSIST));
+		put("AUTOWEATHER",new Integer(AUTOWEATHER));
 		put("BEACON",new Integer(BEACON));
 		put("BRIEF",new Integer(BRIEF));
 		put("PUSH",new Integer(PUSH));

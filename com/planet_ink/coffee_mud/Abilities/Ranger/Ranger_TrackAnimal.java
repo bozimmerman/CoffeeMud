@@ -106,6 +106,14 @@ public class Ranger_TrackAnimal extends StdAbility
 			if(nextDirection>=0)
 			{
 				mob.tell("The trail seems to continue "+Directions.getDirectionName(nextDirection)+".");
+				if(mob.isMonster())
+				{
+					Room nextRoom=mob.location().getRoomInDir(nextDirection);
+					if((nextRoom!=null)&&(nextRoom.getArea()==mob.location().getArea()))
+						ExternalPlay.move(mob,nextDirection,false);
+					else
+						unInvoke();
+				}
 				nextDirection=-2;
 			}
 

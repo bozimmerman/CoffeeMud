@@ -357,6 +357,20 @@ public class BasicSenses
 		}
 	}
 
+	public void autoweather(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTOWEATHER)>0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOWEATHER);
+			mob.tell("Weather descriptions are now off.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOWEATHER);
+			mob.tell("Weather descriptions are now on.");
+		}
+	}
+
 	public void ansi(MOB mob)
 	{
 		if(!mob.isMonster())
