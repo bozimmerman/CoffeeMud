@@ -127,6 +127,12 @@ public class CommonStrings extends Scriptable
 		sysInts[varNum]=new Integer(Util.s_int(val));
 	}
 
+	public static void setVar(int varNum, String val, boolean upperFy)
+	{
+		if(val==null) val="";
+		setUpLowVar(varNum,upperFy?val.toUpperCase():val);
+	}
+	
 	public static void setVar(int varNum, String val)
 	{
 		if(val==null) val="";

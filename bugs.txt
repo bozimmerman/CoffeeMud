@@ -1,13 +1,8 @@
 combat precognition has no failed message.
-I have set the starting room in the ini file and it still does not adjust the players starting position (for new or old players) everyone goes to "New Room"
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
 Can't type: gain paladin's goodness had to type gain goodness
 the DISPLAY command should also show the contents of an open container.
-marmorsmith list show an entry for name,level,ticks,wood,value,class
-And... centaurs have hands, and arms...
-You should not be able to refit clothes while polymorphed into a wyvern. Well. Maybe... but then it shouldn't keep saying I need hands for this and that.
-Does an anti-ranger have true sight or does LIGHT just make me completely visible to him? Invisibility to mark, hide, sneak, etc. does not seem to work to allow me to either backstab or shadow it.
 
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
 In the Archon's Guide, small arrangement of links to various parts of the webpage 

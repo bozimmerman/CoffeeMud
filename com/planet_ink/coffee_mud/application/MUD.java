@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.web.espresso.*;
 
 public class MUD extends Thread implements MudHost
 {
-	public static final float HOST_VERSION_MAJOR=(float)4.5;
+	public static final float HOST_VERSION_MAJOR=(float)4.6;
 	public static final long  HOST_VERSION_MINOR=5;
 	
 	public static boolean keepDown=true;
@@ -818,7 +818,7 @@ public class MUD extends Thread implements MudHost
 				
 				isOK = true;
 				CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting");
-				CommonStrings.setVar(CommonStrings.SYSTEM_INIPATH,iniFile);
+				CommonStrings.setVar(CommonStrings.SYSTEM_INIPATH,iniFile,false);
 				CommonStrings.setVar(CommonStrings.SYSTEM_MUDBINDADDRESS,page.getStr("BIND"));
 				CommonStrings.setIntVar(CommonStrings.SYSTEMI_MUDBACKLOG,page.getInt("BACKLOG"));
 				Log.startLogFiles(page.getInt("NUMLOGS"));

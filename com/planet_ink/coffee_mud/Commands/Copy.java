@@ -135,7 +135,7 @@ public class Copy extends StdCommand
 				if(dest instanceof MOB)
 				{
 					((MOB)dest).addInventory(newItem);
-					end="into "+dest+"'s arms";
+					end="into "+dest.name()+"'s arms";
 				}
 				room.recoverRoomStats();
 				if(i==0)

@@ -359,6 +359,12 @@ public class Sounder extends StdBehavior
 		if((msg!=lastMsg)&&(!CMSecurity.isDisabled("EMOTERS")))
 		switch(msg.targetMinor())
 		{
+		case CMMsg.TYP_OPEN:
+		case CMMsg.TYP_CLOSE:
+			if((msg.target()==E)
+			||((!(E instanceof Item))&&(!(E instanceof Exit))))
+				lookFor=msg.targetMinor();
+			break;
 		case CMMsg.TYP_GET:
 		case CMMsg.TYP_REMOVE:
 		case CMMsg.TYP_WEAR:
@@ -366,8 +372,6 @@ public class Sounder extends StdBehavior
 		case CMMsg.TYP_WIELD:
 		case CMMsg.TYP_EAT:
 		case CMMsg.TYP_DRINK:
-		case CMMsg.TYP_OPEN:
-		case CMMsg.TYP_CLOSE:
 		case CMMsg.TYP_SIT:
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:

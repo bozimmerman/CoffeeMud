@@ -15,7 +15,9 @@ mv	FIST	You shake your fist angrily in the air!	<S-NAME> shakes <S-HIS-HER> fist
 ww	GROVEL	You grovel in the dirt.	<S-NAME> grovels in the dirt.		
 mo	NOOGIE	You can't noogie the AIR!  It has no head.			
 oo	BOW	You bow deeply.	<S-NAME> bows deeply.		
-mt	GIRN	You girn like Rexxar does.	<S-NAME> girns, which is how Rexxar grins.		
+mo 	GIRN	You girn at noone in particular.	<S-NAME> girns at noone in particular.		
+mo 	GIRN SELF	You attempt to grin but fail horribly.			
+mt	GIRN <T-NAME>	You attempt to grin but fail horribly.	<S-NAME> contorts his face as he attempts to grin.	<S-NAME> contorts his face at you.	You girn at noone in particular.
 mw	DOH <T-NAME>	You hit your head like Homer Simpson and holler `DOH!!!` at <T-NAME>.	<S-NAME> hits <S-HIS-HER> head like Homer Simpson and hollers `DOH!!!` at <T-NAME>.	<S-NAME> looks right at you and lets out a loud ^yDOH^?!!!!	DOH!
 ww	RAMBLE <T-NAME>	You ramble on to <T-NAMESELF> about your past adventures.	<S-NAME> blithers on and on to <T-NAMESELF> about something.	<S-NAME> tells you a rather boring tale, you feign interest.	??EH??
 ss	MOO <T-NAME>	You focus all your bovine Zen on <T-NAMESELF>, and speak your thoughts.  Muh-OOOOO!	Slowly, <S-NAME> looks at <T-NAMESELF>, chews <S-HIS-HER> cud, and muh-OOOOs!	<S-NAME> moos at you.  What could that possibly mean?	You'd better find someone else to moo at.
