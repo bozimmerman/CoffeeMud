@@ -1,7 +1,5 @@
 leash in mobile broke
-I have a vambrace with clanenchant acid on it to a power of 10. It should increase my acid save by 50. It makes no change at all to my acid save.
 deviations report uses a diff baseline than rescore in the grinder does.
-Corpses should note time/manner of death 
 Prop_ClosedNightDay gets seasonal stuff
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas

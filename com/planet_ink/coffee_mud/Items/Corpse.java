@@ -18,6 +18,7 @@ public class Corpse extends GenContainer implements DeadBody
 	protected Environmental killingTool=null;
 	protected boolean destroyAfterLooting=false;
 	protected boolean playerCorpse=false;
+	protected long timeOfDeath=System.currentTimeMillis();
 	protected boolean mobPKFlag=false;
 
 	public Corpse()
@@ -104,6 +105,8 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setKillingTool(Environmental tool){killingTool=tool;}
 	public boolean destroyAfterLooting(){return destroyAfterLooting;}
 	public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
+	public long timeOfDeath(){return timeOfDeath;}
+	public void setTimeOfDeath(long time){timeOfDeath=time;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

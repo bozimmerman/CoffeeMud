@@ -22,6 +22,8 @@ public interface DeadBody extends Container
 	public void setPlayerCorpse(boolean truefalse);
 	public boolean mobPKFlag();
 	public void setMobPKFlag(boolean truefalse);
+	public long timeOfDeath();
+	public void setTimeOfDeath(long time);
 	
 	public void startTicker(Room thisRoom);
 }

@@ -391,6 +391,7 @@ public class CoffeeMaker
 				text.append(XMLManager.convertXMLtoTag("MDNAME",""+((DeadBody)E).mobName()));
 				text.append(XMLManager.convertXMLtoTag("MDDESC",""+((DeadBody)E).mobDescription()));
 				text.append(XMLManager.convertXMLtoTag("MKNAME",""+((DeadBody)E).killerName()));
+				text.append(XMLManager.convertXMLtoTag("MTOD",""+((DeadBody)E).timeOfDeath()));
 				text.append(XMLManager.convertXMLtoTag("MKPLAY",""+((DeadBody)E).killerPlayer()));
 				text.append(XMLManager.convertXMLtoTag("MDLMSG",""+((DeadBody)E).lastMessage()));
 				text.append(XMLManager.convertXMLtoTag("MBREAL",""+((DeadBody)E).destroyAfterLooting()));
@@ -1701,6 +1702,7 @@ public class CoffeeMaker
 				{
 					((DeadBody)E).setMobName(mobName);
 					((DeadBody)E).setMobDescription(XMLManager.getValFromPieces(buf,"MDDESC"));
+					((DeadBody)E).setTimeOfDeath(XMLManager.getLongFromPieces(buf,"MTOD"));
 					((DeadBody)E).setKillerName(XMLManager.getValFromPieces(buf,"MKNAME"));
 					((DeadBody)E).setKillerPlayer(XMLManager.getBoolFromPieces(buf,"MKPLAY"));
 					((DeadBody)E).setMobPKFlag(XMLManager.getBoolFromPieces(buf,"MPKILL"));
