@@ -45,7 +45,7 @@ public class IMudPeer implements PersistentPeer
 				((Intermud)myobj).name_servers=(Vector)newobj;
 			}
 			catch(Exception e){
-				Log.errOut("IMudPeer",e.getMessage());
+				//Log.errOut("IMudPeer",e.getMessage());
 			}
 		}
 		isRestoring=false;

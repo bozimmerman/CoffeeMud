@@ -583,7 +583,7 @@ public class Lister
 		if("BANNED".startsWith(listThis))
 		{
 			StringBuffer str=new StringBuffer("\n\rBanned names/ips:\n\r");
-			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			if((banned!=null)&&(banned.size()>0))
 			for(int b=0;b<banned.size();b++)
 				str.append((b+1)+") "+((String)banned.elementAt(b))+"\n\r");

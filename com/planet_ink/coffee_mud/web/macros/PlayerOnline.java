@@ -11,7 +11,7 @@ public class PlayerOnline extends StdWebMacro
 
 	public String ban(String banMe)
 	{
-		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 		if((banned!=null)&&(banned.size()>0))
 		for(int b=0;b<banned.size();b++)
 		{
@@ -19,7 +19,7 @@ public class PlayerOnline extends StdWebMacro
 			if(B.equals(banMe))
 				return "false";
 		}
-		StringBuffer str=Resources.getFileResource("banned.ini");
+		StringBuffer str=Resources.getFileResource("banned.ini",false);
 		str.append(banMe+"\n\r");
 		Resources.saveFileResource("banned.ini");
 		return "true";

@@ -389,7 +389,7 @@ public class MUD extends Thread implements Host
 					try{address=sock.getInetAddress().getHostAddress();}catch(Exception e){}
 					Log.sysOut("MUD","Got a connection from "+address);
 					// now see if they are banned!
-					Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+					Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 					boolean ok=true;
 					if((banned!=null)&&(banned.size()>0))
 					for(int b=0;b<banned.size();b++)

@@ -87,6 +87,8 @@ public class Resources
 	}
 	
 	public static StringBuffer getFile(String filename)
+	{ return getFile(filename,true);}
+	public static StringBuffer getFile(String filename, boolean reportErrors)
 	{
 		StringBuffer buf=new StringBuffer("");
 		try
@@ -104,15 +106,17 @@ public class Resources
 		}
 		catch(Exception e)
 		{
-			Log.errOut("Resource",e.getMessage());
+			if(reportErrors)
+				Log.errOut("Resource",e.getMessage());
 			return null;
 		}
 		return buf;
 	}
 	
 	public static StringBuffer getFileResource(String filename)
+	{ return getFileResource(filename,true);}
+	public static StringBuffer getFileResource(String filename, boolean reportErrors)
 	{
-		
 		Object rsc=getResource(filename);
 		if(rsc!=null)
 		{
@@ -123,7 +127,7 @@ public class Resources
 				return new StringBuffer((String)rsc);
 		}
 		
-		StringBuffer buf=getFile("resources"+File.separatorChar+filename);
+		StringBuffer buf=getFile("resources"+File.separatorChar+filename,reportErrors);
 		if(buf==null) buf=new StringBuffer("");
 		submitResource(filename,buf);
 		return buf;

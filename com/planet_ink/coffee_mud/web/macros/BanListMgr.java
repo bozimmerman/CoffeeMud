@@ -23,7 +23,7 @@ public class BanListMgr extends StdWebMacro
 		if(parms.containsKey("NEXT"))
 		{
 			String lastID="";
-			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			for(int i=0;i<banned.size();i++)
 			{
 				String key=(String)banned.elementAt(i);
@@ -44,7 +44,7 @@ public class BanListMgr extends StdWebMacro
 		if(parms.containsKey("DELETE"))
 		{
 			StringBuffer newBanned=new StringBuffer("");
-			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			String key=httpReq.getRequestParameter("BANNEDONE");
 			if((key!=null)&&(key.length()>0)&&(banned!=null)&&(banned.size()>0))
 			{
@@ -63,7 +63,7 @@ public class BanListMgr extends StdWebMacro
 		else
 		if(parms.containsKey("ADD"))
 		{
-			StringBuffer newBanned=Resources.getFileResource("banned.ini");
+			StringBuffer newBanned=Resources.getFileResource("banned.ini",false);
 			if(newBanned==null) newBanned=new StringBuffer("");
 			Vector banned=Resources.getFileLineVector(newBanned);
 			if(banned==null) banned=new Vector();

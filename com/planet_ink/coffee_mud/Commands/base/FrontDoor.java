@@ -33,7 +33,7 @@ public class FrontDoor
 
 	private static boolean bannedName(String login)
 	{
-		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 		if((banned!=null)&&(banned.size()>0))
 		for(int b=0;b<banned.size();b++)
 		{

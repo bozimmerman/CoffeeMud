@@ -1066,7 +1066,7 @@ public class StdArea implements Area
 		if(reReadTime)
 		{
 			reReadTime=false;
-			StringBuffer timeRsc=Resources.getFileResource("time.txt");
+			StringBuffer timeRsc=Resources.getFileResource("time.txt",false);
 			if(timeRsc.length()<30)
 			{
 				timeRsc=new StringBuffer("<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>");
