@@ -57,6 +57,8 @@ public class GenRace extends StdRace
 	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+	private boolean destroyBodyAfterUse=false;
+	protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
 	
 	public Race copyOf()
 	{
@@ -147,6 +149,7 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("VWEIGHT",""+weightVariance()));
 		str.append(XMLManager.convertXMLtoTag("WEAR",""+forbiddenWornBits()));
 		str.append(XMLManager.convertXMLtoTag("PLAYER",""+availability));
+		str.append(XMLManager.convertXMLtoTag("DESTROYBODY",""+destroyBodyAfterUse()));
 		StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
 			bbody.append((""+bodyMask()[i])+";");
@@ -269,6 +272,7 @@ public class GenRace extends StdRace
 			availability=Race.AVAILABLE_NONE;
 		else
 			availability=Util.s_int(playerval);
+		destroyBodyAfterUse=XMLManager.getBoolFromPieces(raceData,"DESTROYBODY");
 		leaveStr=XMLManager.getValFromPieces(raceData,"LEAVE");
 		arriveStr=XMLManager.getValFromPieces(raceData,"ARRIVE");
 		healthBuddy=CMClass.getRace(XMLManager.getValFromPieces(raceData,"HEALTHRACE"));
@@ -387,7 +391,7 @@ public class GenRace extends StdRace
 									 "WEAPONCLASS","WEAPONXML",
 									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL",
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
-									 "NUMOFT","GETOFTID","GETOFTPARM"
+									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL"
 									 };
 	public String getStat(String code)
 	{
@@ -441,6 +445,7 @@ public class GenRace extends StdRace
 		case 31: return ""+((outfit()!=null)?outfit().size():0);
 		case 32: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
 		case 33: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
+		case 34: return ""+destroyBodyAfterUse();
 		}
 		return "";
 	}
@@ -566,6 +571,7 @@ public class GenRace extends StdRace
 					 }
 					 break;
 				 }
+		case 34: destroyBodyAfterUse=Util.s_bool(val); break;
 		}
 	}
 	public String[] getStatCodes(){return CODES;}

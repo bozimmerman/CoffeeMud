@@ -10,6 +10,14 @@ public class Corpse extends GenContainer implements DeadBody
 	public String ID(){	return "Corpse";}
 	protected Room roomLocation=null;
 	protected CharStats charStats=null;
+	protected String mobName="";
+	protected String mobDescription="";
+	protected String killerName="";
+	protected boolean killerPlayer=false;
+	protected String lastMessage="";
+	protected Environmental killingTool=null;
+	protected boolean destroyAfterLooting=false;
+	protected boolean playerCorpse=false;
 
 	public Corpse()
 	{
@@ -63,6 +71,40 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 	public void setCharStats(CharStats newStats){charStats=newStats;}
 
+	public void setSecretIdentity(String newIdentity)
+	{
+		if(newIdentity.indexOf("/")>0)
+		{
+			playerCorpse=false;
+			int x=newIdentity.indexOf("/");
+			if(x>=0)
+			{
+				mobName=newIdentity.substring(0,x);
+				mobDescription=newIdentity.substring(x+1);
+				playerCorpse=true;
+			}
+		}
+		else
+			super.setSecretIdentity(newIdentity);
+	}
+	
+	public String mobName(){ return mobName;}
+	public void setMobName(String newName){mobName=newName;}
+	public String mobDescription(){return mobDescription;}
+	public void setMobDescription(String newDescription){mobDescription=newDescription;}
+	public String killerName(){return killerName;}
+	public void setKillerName(String newName){killerName=newName;}
+	public boolean killerPlayer(){return killerPlayer;}
+	public void setKillerPlayer(boolean trueFalse){killerPlayer=trueFalse;}
+	public boolean playerCorpse(){return playerCorpse;}
+	public void setPlayerCorpse(boolean truefalse){playerCorpse=truefalse;}
+	public String lastMessage(){return lastMessage;}
+	public void setLastMessage(String lastMsg){lastMessage=lastMsg;}
+	public Environmental killingTool(){return killingTool;}
+	public void setKillingTool(Environmental tool){killingTool=tool;}
+	public boolean destroyAfterLooting(){return destroyAfterLooting;}
+	public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

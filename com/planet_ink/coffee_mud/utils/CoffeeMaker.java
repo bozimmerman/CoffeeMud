@@ -382,11 +382,27 @@ public class CoffeeMaker
 			{
 				text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.GENDER)));
 				text.append(XMLManager.convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
+				text.append(XMLManager.convertXMLtoTag("MDNAME",""+((DeadBody)E).mobName()));
+				text.append(XMLManager.convertXMLtoTag("MDDESC",""+((DeadBody)E).mobDescription()));
+				text.append(XMLManager.convertXMLtoTag("MKNAME",""+((DeadBody)E).killerName()));
+				text.append(XMLManager.convertXMLtoTag("MKPLAY",""+((DeadBody)E).killerPlayer()));
+				text.append(XMLManager.convertXMLtoTag("MDLMSG",""+((DeadBody)E).lastMessage()));
+				text.append(XMLManager.convertXMLtoTag("MBREAL",""+((DeadBody)E).destroyAfterLooting()));
+				text.append(XMLManager.convertXMLtoTag("MPLAYR",""+((DeadBody)E).playerCorpse()));
+				if(((DeadBody)E).killingTool()==null) text.append("<KLTOOL />");
+				else
+				{
+					text.append("<KLTOOL>");
+					text.append(XMLManager.convertXMLtoTag("KLCLASS",CMClass.className(((DeadBody)E).killingTool())));
+					text.append(XMLManager.convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).killingTool(),true)));
+					text.append("</KLTOOL>");
+				}
 			}
 			else
 			{
 				text.append(XMLManager.convertXMLtoTag("GENDER","M"));
 				text.append(XMLManager.convertXMLtoTag("MRACE","Human"));
+				text.append(XMLManager.convertXMLtoTag("MPLAYR","false"));
 			}
 		}
 
@@ -1656,6 +1672,34 @@ public class CoffeeMaker
 				((DeadBody)E).setCharStats(new DefaultCharStats());
 			try{
 				((DeadBody)E).charStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+				((DeadBody)E).setPlayerCorpse(XMLManager.getBoolFromPieces(buf,"MPLAYR"));
+				String mobName=XMLManager.getValFromPieces(buf,"MDNAME");
+				if(mobName.length()>0)
+				{
+					((DeadBody)E).setMobName(mobName);
+					((DeadBody)E).setMobDescription(XMLManager.getValFromPieces(buf,"MDDESC"));
+					((DeadBody)E).setKillerName(XMLManager.getValFromPieces(buf,"MKNAME"));
+					((DeadBody)E).setKillerPlayer(XMLManager.getBoolFromPieces(buf,"MKPLAY"));
+					((DeadBody)E).setDestroyAfterLooting(XMLManager.getBoolFromPieces(buf,"MBREAL"));
+					((DeadBody)E).setLastMessage(XMLManager.getValFromPieces(buf,"MDLMSG"));
+					Vector dblk=XMLManager.getContentsFromPieces(buf,"KLTOOL");
+					if((dblk!=null)&&(dblk.size()>0))
+					{
+						String itemi=XMLManager.getValFromPieces(dblk,"KLCLASS");
+						Environmental newOne=null;
+						Vector idat=XMLManager.getRealContentsFromPieces(dblk,"KLDATA");
+						if(newOne==null) newOne=CMClass.getUnknown(itemi);
+						if(newOne==null)
+						{
+							Log.errOut("CoffeeMaker","Error parsing 'TOOL DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
+							return;
+						}
+						setPropertiesStr(newOne,idat,true);
+						((DeadBody)E).setKillingTool(newOne);
+					}
+					else
+						((DeadBody)E).setKillingTool(null);
+				}
 			} catch(Exception e){}
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
@@ -2510,31 +2554,6 @@ public class CoffeeMaker
 			}
 			break;
 		}
-	}
-
-	public static MOB makeMOBfromCorpse(DeadBody corpse, String type)
-	{
-		if((type==null)||(type.length()==0))
-			type="StdMOB";
-		MOB mob=CMClass.getMOB(type);
-		if(corpse!=null)
-		{
-			mob.setName(corpse.name());
-			mob.setDisplayText(corpse.displayText());
-			mob.setDescription(corpse.description());
-			mob.setBaseCharStats(corpse.charStats().cloneCharStats());
-			mob.setBaseEnvStats(corpse.baseEnvStats().cloneStats());
-			mob.recoverCharStats();
-			mob.recoverEnvStats();
-			int level=mob.baseEnvStats().level();
-			mob.baseState().setHitPoints(Dice.rollHP(level,mob.baseEnvStats().ability()));
-			mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
-			mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
-			mob.recoverMaxState();
-			mob.resetToMaxState();
-			mob.baseCharStats().getMyRace().startRacing(mob,false);
-		}
-		return mob;
 	}
 
 	public static int levelsFromAbility(Item savedI)

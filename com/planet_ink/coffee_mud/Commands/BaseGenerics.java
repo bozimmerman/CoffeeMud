@@ -4040,6 +4040,7 @@ public class BaseGenerics extends StdCommand
 			int showNumber=0;
 			genText(mob,me,++showNumber,showFlag,"Name","NAME");
 			genCat(mob,me,++showNumber,showFlag);
+			genBool(mob,me,++showNumber,showFlag,"Never create corpse","DESTROYBODY");
 			genInt(mob,me,++showNumber,showFlag,"Base Weight","BWEIGHT");
 			genInt(mob,me,++showNumber,showFlag,"Weight Variance","VWEIGHT");
 			genInt(mob,me,++showNumber,showFlag,"Base Male Height","MHEIGHT");

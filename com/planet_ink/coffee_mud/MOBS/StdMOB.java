@@ -745,7 +745,7 @@ public class StdMOB implements MOB
 		if(location()!=null) location().delInhabitant(this);
 		DeadBody Body=null;
 		if(createBody)
-			Body=charStats().getMyRace().getCorpse(this,deathRoom);
+			Body=charStats().getMyRace().getCorpseContainer(this,deathRoom);
 		amDead=true;
 		makePeace();
 		setRiding(null);
@@ -770,7 +770,8 @@ public class StdMOB implements MOB
 			bringToLife(CMMap.getDeathRoom(this),true);
 		if(deathRoom!=null)
 		{
-			if(Body!=null) Body.startTicker(deathRoom);
+			if(Body!=null)
+				Body.startTicker(deathRoom);
 			deathRoom.recoverRoomStats();
 		}
 		return Body;

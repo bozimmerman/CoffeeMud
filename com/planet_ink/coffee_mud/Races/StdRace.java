@@ -36,6 +36,7 @@ public class StdRace implements Race
 	protected String[] culturalAbilityNames(){return null;}
 	protected int[] culturalAbilityProfficiencies(){return null;}
 	protected boolean uncharmable(){return false;}
+	protected boolean destroyBodyAfterUse(){return false;}
 	
 	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 
@@ -318,19 +319,12 @@ public class StdRace implements Race
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		int ability=0;
-		if(!mob.isMonster())
-		{
-			ability=11;
-			if(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
-				ability=ability|64;
-		}
-		Body.baseEnvStats().setAbility(ability);
-		if(!mob.isMonster())
-			Body.baseEnvStats().setDisposition(Body.baseEnvStats().disposition()|EnvStats.IS_BONUS);
+		Body.setPlayerCorpse(!mob.isMonster());
 		if(!mob.isMonster())
 			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
 		Body.setName("the body of "+mob.Name());
-		Body.setSecretIdentity(mob.Name()+"/"+mob.description());
+		Body.setMobName(mob.Name());
+		Body.setMobDescription(mob.description());
 		Body.setDisplayText("the body of "+mob.Name()+" lies here.");
 		if(room!=null)
 			room.addItem(Body);
@@ -385,6 +379,20 @@ public class StdRace implements Race
 			if(room!=null)
 				room.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
 			mob.setMoney(0);
+		}
+		if(destroyBodyAfterUse())
+		{
+			for(int r=0;r<myResources().size();r++)
+			{
+				Item I=(Item)myResources().elementAt(r);
+				if(I!=null)
+				{
+					I=(Item)I.copyOf();
+					I.setContainer(Body);
+					if(room!=null)
+						room.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+				}
+			}
 		}
 		return Body;
 	}

@@ -33,7 +33,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public Weapon myNaturalWeapon();
 	public Vector myResources();
 	
-	public DeadBody getCorpse(MOB mob, Room room);
+	public DeadBody getCorpseContainer(MOB mob, Room room);
 	public void reRoll(MOB mob, CharStats C);
 	
 	public boolean isGeneric();
