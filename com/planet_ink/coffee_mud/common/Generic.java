@@ -772,6 +772,7 @@ public class Generic
 				buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
 				buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 				buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
+				buf.append(XMLManager.convertXMLtoTag("MREJUV",mob.baseEnvStats().rejuv()));
 				buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
 				buf.append("</MOB>\n\r");
 			}
@@ -831,11 +832,72 @@ public class Generic
 			buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
 			buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
 			buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
+			buf.append(XMLManager.convertXMLtoTag("IREJUV",item.baseEnvStats().rejuv()));
 			buf.append(XMLManager.convertXMLtoTag("ITEXT",parseOutAngleBrackets(item.text())));
 			buf.append("</ITEM>\n\r");
 		}
 		return buf;
 	}
+	
+	public static String addItemsFromXML(String xmlBuffer,
+										 Vector addHere,
+										 Session S)
+	{
+		Vector xml=XMLManager.parseAllXML(xmlBuffer);
+		if(xml==null) return unpackErr("MOBs","null 'xml'");
+		Vector iV=XMLManager.getRealContentsFromPieces(xml,"ITEMS");
+		if(iV==null) return unpackErr("Items","null 'iV'");
+		for(int i=0;i<iV.size();i++)
+		{
+			XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)iV.elementAt(i);
+			if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
+				return unpackErr("Items","??"+iblk.tag);
+			if(S!=null) S.rawPrint(".");
+			String itemClass=XMLManager.getValFromPieces(iblk.contents,"ICLAS");
+			Item newItem=CMClass.getItem(itemClass);
+			if(newItem==null) return unpackErr("Items","null 'iClass': "+itemClass);
+			newItem.baseEnvStats().setLevel(XMLManager.getIntFromPieces(iblk.contents,"ILEVL"));
+			newItem.baseEnvStats().setAbility(XMLManager.getIntFromPieces(iblk.contents,"IABLE"));
+			newItem.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(iblk.contents,"IREJUV"));
+			newItem.setUsesRemaining(XMLManager.getIntFromPieces(iblk.contents,"IUSES"));
+			newItem.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(iblk.contents,"ITEXT")));
+			newItem.setContainer(null);
+			newItem.recoverEnvStats();
+			addHere.addElement(newItem);
+		}
+		return "";
+	}
+	
+	public static String addMOBsFromXML(String xmlBuffer,
+										Vector addHere,
+										Session S)
+	{
+		Vector xml=XMLManager.parseAllXML(xmlBuffer);
+		if(xml==null) return unpackErr("MOBs","null 'xml'");
+		Vector mV=XMLManager.getRealContentsFromPieces(xml,"MOBS");
+		if(mV==null) return unpackErr("MOBs","null 'mV'");
+		for(int m=0;m<mV.size();m++)
+		{
+			XMLManager.XMLpiece mblk=(XMLManager.XMLpiece)mV.elementAt(m);
+			if((!mblk.tag.equalsIgnoreCase("MOB"))||(mblk.contents==null))
+				return unpackErr("MOBs","bad 'mblk'");
+			String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
+			MOB newMOB=CMClass.getMOB(mClass);
+			if(newMOB==null) return unpackErr("MOBs","null 'mClass': "+mClass);
+			newMOB.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT")));
+			newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
+			newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
+			newMOB.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(mblk.contents,"MREJV"));
+			newMOB.recoverCharStats();
+			newMOB.recoverEnvStats();
+			newMOB.recoverMaxState();
+			newMOB.resetToMaxState();
+			addHere.addElement(newMOB);
+		}
+		return "";
+	}
+	
+	
 	
 	public static StringBuffer getRoomItems(Room room, 
 											Hashtable found, 

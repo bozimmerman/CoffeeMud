@@ -184,10 +184,16 @@ public class RoomData extends StdWebMacro
 		&&(M.name().equals(M2.name()))
 		&&(M.baseEnvStats().rejuv()==M2.baseEnvStats().rejuv()))
 		{
-			if(!M.text().equals(M2.text()))
+			int oldHeight=M.baseEnvStats().height();
+			int oldWeight=M.baseEnvStats().weight();
+			M.baseEnvStats().setHeight(M2.baseEnvStats().height());
+			M.baseEnvStats().setWeight(M2.baseEnvStats().weight());
+			String buf1=M.text();
+			String buf2=M2.text();
+			M.baseEnvStats().setHeight(oldHeight);
+			M.baseEnvStats().setWeight(oldWeight);
+			if(!buf1.equals(buf2))
 			{
-				String buf1=M.text();
-				String buf2=M2.text();
 				try{
 					for(int l=0, l2=0;((l!=buf1.length())&&(l2!=buf2.length()));l++,l2++)
 					{
@@ -199,7 +205,11 @@ public class RoomData extends StdWebMacro
 							while(buf2.charAt(++l2)!='<');
 						}
 					}
-				} catch(Exception e){return false;}
+				} 
+				catch(Exception e)
+				{
+					return false;
+				}
 			}
 			return true;
 		}
@@ -221,10 +231,13 @@ public class RoomData extends StdWebMacro
 			I=(Item)I.copyOf();
 			I.wearAt(Item.INVENTORY);
 			I.setContainer(null);
-			if(!I.text().equals(I2.text()))
+			int oldHeight=I.baseEnvStats().height();
+			I.baseEnvStats().setHeight(I2.baseEnvStats().height());
+			String buf1=I.text();
+			String buf2=I2.text();
+			I.baseEnvStats().setHeight(oldHeight);
+			if(buf1.equals(buf2))
 			{
-				String buf1=I.text();
-				String buf2=I2.text();
 				try{
 					for(int l=0, l2=0;((l!=buf1.length())&&(l2!=buf2.length()));l++,l2++)
 					{
