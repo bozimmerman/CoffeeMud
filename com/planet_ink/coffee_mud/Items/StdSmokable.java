@@ -59,7 +59,7 @@ public class StdSmokable extends StdContainer implements Light
 				else
 					durationTicks=0;
 			}
-			if(getDuration()==0)
+			if(durationTicks==0)
 			{
 				mob.tell(name()+" looks empty.");
 				return false;
@@ -69,7 +69,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(((LightSource.inTheRain(room)&&(goesOutInTheRain()))
 					||(LightSource.inTheWater(room)&&(mob.riding()==null)))
-				   &&(getDuration()>0)
+				   &&(durationTicks>0)
 				   &&(mob.isMine(this)))
 				{
 					mob.tell("It's too wet to light "+name()+" here.");
@@ -82,7 +82,7 @@ public class StdSmokable extends StdContainer implements Light
 						  affect.othersCode(),"<S-NAME> light(s) up <T-NAME>.");
 			return super.okAffect(myHost,affect);
 		case Affect.TYP_EXTINGUISH:
-			if((getDuration()==0)||(!isLit()))
+			if((durationTicks==0)||(!isLit()))
 			{
 				mob.tell(name()+" is not lit!");
 				return false;
@@ -127,7 +127,7 @@ public class StdSmokable extends StdContainer implements Light
 				if(owner() instanceof MOB)
 				{
 					((MOB)owner()).tell(((MOB)owner()),null,this,"<O-NAME> burns out.");
-					setDuration(0);
+					durationTicks=0;
 					if(destroyedWhenBurnedOut())
 						destroy();
 					((MOB)owner()).recoverEnvStats();
@@ -137,7 +137,7 @@ public class StdSmokable extends StdContainer implements Light
 					((MOB)owner()).location().recoverRoomStats();
 				}
 				light(false);
-				setDuration(0);
+				durationTicks=0;
 			}
 		}
 		return false;
@@ -169,7 +169,7 @@ public class StdSmokable extends StdContainer implements Light
 		{
 			if(((LightSource.inTheRain(room)&&goesOutInTheRain())||(LightSource.inTheWater(room)&&(mob.riding()==null)))
 			&&(isLit())
-			&&(getDuration()>0)
+			&&(durationTicks>0)
 			&&(mob.isMine(this))
 			&&((!Sense.isInFlight(mob))
 			   ||(LightSource.inTheRain(room))
@@ -196,7 +196,7 @@ public class StdSmokable extends StdContainer implements Light
 				}
 				break;
 			case Affect.TYP_WEAR:
-				if(getDuration()>0)
+				if(durationTicks>0)
 				{
 					if(capacity>0)
 					{

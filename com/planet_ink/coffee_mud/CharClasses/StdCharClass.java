@@ -82,12 +82,6 @@ public class StdCharClass implements CharClass, Cloneable
 					mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
 				return false;
 			}
-			if(mob.getTrains()<1)
-			{
-				if(!quiet)
-					mob.tell("You need a training session to become a "+name()+".");
-				return false;
-			}
 		}
 		return true;
 	}

@@ -16,46 +16,46 @@ public class Arrest extends StdBehavior
 	{
 		return new Arrest();
 	}
-	private Vector oldWarrants=new Vector();
-	private Vector warrants=new Vector();
-	private boolean loadAttempt=false;
+	protected Vector oldWarrants=new Vector();
+	protected Vector warrants=new Vector();
+	protected boolean loadAttempt=false;
 
-	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
-	private static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
+	protected static final long ONE_REAL_DAY=(long)1000*60*60*24;
+	protected static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
 	
-	private static final int ACTION_WARN=0;
-	private static final int ACTION_THREATEN=1;
-	private static final int ACTION_PAROLE1=2;
-	private static final int ACTION_PAROLE2=3;
-	private static final int ACTION_PAROLE3=4;
-	private static final int ACTION_PAROLE4=5;
-	private static final int ACTION_JAIL1=6;
-	private static final int ACTION_JAIL2=7;
-	private static final int ACTION_JAIL3=8;
-	private static final int ACTION_JAIL4=9;
-	private static final int ACTION_EXECUTE=10;
-	private static final int ACTION_HIGHEST=10;
+	protected static final int ACTION_WARN=0;
+	protected static final int ACTION_THREATEN=1;
+	protected static final int ACTION_PAROLE1=2;
+	protected static final int ACTION_PAROLE2=3;
+	protected static final int ACTION_PAROLE3=4;
+	protected static final int ACTION_PAROLE4=5;
+	protected static final int ACTION_JAIL1=6;
+	protected static final int ACTION_JAIL2=7;
+	protected static final int ACTION_JAIL3=8;
+	protected static final int ACTION_JAIL4=9;
+	protected static final int ACTION_EXECUTE=10;
+	protected static final int ACTION_HIGHEST=10;
 
-	private static final int STATE_SEEKING=0;
-	private static final int STATE_ARRESTING=1;
-	private static final int STATE_SUBDUEING=2;
-	private static final int STATE_MOVING=3;
-	private static final int STATE_REPORTING=4;
-	private static final int STATE_WAITING=5;
-	private static final int STATE_PAROLING=6;
-	private static final int STATE_JAILING=7;
-	private static final int STATE_EXECUTING=8;
-	private static final int STATE_MOVING2=9;
-	private static final int STATE_RELEASE=10;
+	protected static final int STATE_SEEKING=0;
+	protected static final int STATE_ARRESTING=1;
+	protected static final int STATE_SUBDUEING=2;
+	protected static final int STATE_MOVING=3;
+	protected static final int STATE_REPORTING=4;
+	protected static final int STATE_WAITING=5;
+	protected static final int STATE_PAROLING=6;
+	protected static final int STATE_JAILING=7;
+	protected static final int STATE_EXECUTING=8;
+	protected static final int STATE_MOVING2=9;
+	protected static final int STATE_RELEASE=10;
 
-	private static final int BIT_CRIMELOCS=0;
-	private static final int BIT_CRIMEFLAGS=1;
-	private static final int BIT_CRIMENAME=2;
-	private static final int BIT_SENTENCE=3;
-	private static final int BIT_WARNMSG=4;
-	private static final int BIT_NUMBITS=5;
+	protected static final int BIT_CRIMELOCS=0;
+	protected static final int BIT_CRIMEFLAGS=1;
+	protected static final int BIT_CRIMENAME=2;
+	protected static final int BIT_SENTENCE=3;
+	protected static final int BIT_WARNMSG=4;
+	protected static final int BIT_NUMBITS=5;
 	
-	private static final String defaultLaw=
+	protected static final String defaultLaw=
 		"OFFICERS=@\n"+
 		"JUDGE=@\n"+
 		"JAIL=@\n"+
@@ -114,7 +114,7 @@ public class Arrest extends StdBehavior
 		"POISON_LIQUOR=!indoors !home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n";
 		
 
-	private class ArrestWarrant implements Cloneable
+	protected class ArrestWarrant implements Cloneable
 	{
 		public MOB criminal=null;
 		public MOB victim=null;
@@ -138,14 +138,14 @@ public class Arrest extends StdBehavior
 		}
 	}
 	
-	private class Laws
+	protected class Laws
 	{
 		public Vector otherCrimes=new Vector();
 		public Vector otherBits=new Vector();
-		private Vector officerNames=new Vector();
+		protected Vector officerNames=new Vector();
 		public Vector chitChat=new Vector();
 		public Vector chitChat2=new Vector();
-		private Properties theLaws=null;
+		protected Properties theLaws=null;
 		
 		public Laws(){}
 		
@@ -292,7 +292,7 @@ public class Arrest extends StdBehavior
 		loadAttempt=false;
 	}
 
-	private Laws getLaws(Environmental what)
+	protected Laws getLaws(Environmental what)
 	{
 		String lawName=getParms();
 		Laws laws=null;
@@ -1364,9 +1364,9 @@ public class Arrest extends StdBehavior
 		}
 	}
 
-	public boolean trackTheJudge(MOB officer, Area myArea, Laws laws, boolean startFresh)
+	public boolean trackTheJudge(MOB officer, Area myArea, Laws laws)
 	{
-		if(startFresh) stopTracking(officer);
+		stopTracking(officer);
 		Ability A=CMClass.getAbility("Skill_Track");
 		if(A!=null)
 		{
@@ -1595,7 +1595,7 @@ public class Arrest extends StdBehavior
 								makePeace(officer.location());
 								ExternalPlay.standIfNecessary(W.criminal);
 								W.travelAttemptTime=System.currentTimeMillis();
-								trackTheJudge(officer,myArea,laws,false);
+								trackTheJudge(officer,myArea,laws);
 								makePeace(officer.location());
 							}
 						}
@@ -1630,7 +1630,7 @@ public class Arrest extends StdBehavior
 								W.state=STATE_REPORTING;
 							else
 							if(Sense.flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
-								trackTheJudge(officer,myArea,laws,false);
+								trackTheJudge(officer,myArea,laws);
 							else
 							if((Dice.rollPercentage()>75)&&(laws.chitChat.size()>0))
 								ExternalPlay.quickSay(officer,W.criminal,(String)laws.chitChat.elementAt(Dice.roll(1,laws.chitChat.size(),-1)),false,false);
@@ -1657,7 +1657,7 @@ public class Arrest extends StdBehavior
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
-								trackTheJudge(officer,myArea,laws,true);
+								trackTheJudge(officer,myArea,laws);
 							}
 							else
 							if(Sense.aliveAwakeMobile(judge,true))
@@ -1705,7 +1705,7 @@ public class Arrest extends StdBehavior
 							if(judge==null)
 							{
 								W.state=STATE_MOVING;
-								trackTheJudge(officer,myArea,laws,true);
+								trackTheJudge(officer,myArea,laws);
 							}
 							else
 							if(Sense.aliveAwakeMobile(judge,true))
@@ -1806,11 +1806,10 @@ public class Arrest extends StdBehavior
 									W.criminal.makePeace();
 									makePeace(officer.location());
 									ExternalPlay.standIfNecessary(W.criminal);
-									A=officer.fetchAffect("Skill_Track");
-									if(A!=null) officer.delAffect(A);
 									A=CMClass.getAbility("Skill_Track");
 									if(A!=null)
 									{
+										stopTracking(officer);
 										W.travelAttemptTime=System.currentTimeMillis();
 										A.setAbilityCode(1);
 										A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true);
@@ -1924,6 +1923,7 @@ public class Arrest extends StdBehavior
 								Ability A=CMClass.getAbility("Skill_Track");
 								if(A!=null)
 								{
+									stopTracking(officer);
 									A.setAbilityCode(1); // tells track to cache the path
 									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail)),W.jail,true);
 								}
@@ -1966,10 +1966,10 @@ public class Arrest extends StdBehavior
 								W.releaseRoom=setReleaseRoom(laws,myArea,W.criminal);
 								W.criminal.makePeace();
 								makePeace(officer.location());
-								stopTracking(officer);
 								Ability A=CMClass.getAbility("Skill_Track");
 								if(A!=null)
 								{
+									stopTracking(officer);
 									W.travelAttemptTime=System.currentTimeMillis();
 									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom)),W.releaseRoom,true);
 								}
@@ -2005,6 +2005,7 @@ public class Arrest extends StdBehavior
 											officer.curState().setMovement(20);
 										if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
 										{
+											stopTracking(officer);
 											Ability A=CMClass.getAbility("Skill_Track");
 											if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom)),W.releaseRoom,true);
 										}
