@@ -5,36 +5,23 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class GenBoat extends Boat
+public class GenBoat extends GenRideable
 {
 	public String ID(){	return "GenBoat";}
 	
 	private String readableText = "";
-	public String readableText(){return readableText;}
-	public void setReadableText(String text){readableText=text;}
-	public String keyName()
+	public GenBoat()
 	{
-		return readableText;
-	}
-	public void setKeyName(String newKeyName)
-	{
-		readableText=newKeyName;
+		super();
+		name="a boat";
+		displayText="a boat is docked here.";
+		description="Looks like a boat";
+		rideBasis=Rideable.RIDEABLE_WATER;
+		material=EnvResource.RESOURCE_OAK;
+		recoverEnvStats();
 	}
 	public Environmental newInstance()
 	{
 		return new GenBoat();
-	}
-	public boolean isGeneric(){return true;}
-
-	public String text()
-	{
-		return Generic.getPropertiesStr(this,false);
-	}
-
-	public void setMiscText(String newText)
-	{
-		miscText="";
-		Generic.setPropertiesStr(this,newText,false);
-		recoverEnvStats();
 	}
 }

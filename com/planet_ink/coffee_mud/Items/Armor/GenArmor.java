@@ -46,5 +46,18 @@ public class GenArmor extends StdArmor
 		Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
+	public String getStat(String code)
+	{ return Generic.getGenItemStat(this,code);}
+	public void setStat(String code, String val)
+	{ Generic.setGenItemStat(this,code,val);}
+	public String[] getStatCodes(){return Generic.GENITEMCODES;}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenArmor)) return false;
+		for(int i=0;i<getStatCodes().length;i++)
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+				return false;
+		return true;
+	}
 }
 

@@ -65,6 +65,10 @@ public class StdItem implements Item
 		}
 		if(envStats().ability()>0)
 			envStats().setDisposition(envStats().disposition()|EnvStats.IS_BONUS);
+		if((owner()!=null)
+		&&(owner() instanceof MOB)
+		&&(Sense.isHidden(this)))
+		   envStats().setDisposition((int)(envStats().disposition()&(EnvStats.ALLMASK-EnvStats.IS_HIDDEN)));
 	}
 
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
