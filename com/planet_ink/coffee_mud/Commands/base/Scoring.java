@@ -55,13 +55,15 @@ public class Scoring
 			   deadMOB=S.mob();
 		}
 		FullMsg msg=new FullMsg(deadMOB,null,Affect.MSG_RETIRE,"A horrible death cry is heard throughout the land.");
+		if(deadMOB.location()!=null)
+			deadMOB.location().send(deadMOB,msg);
 		for(int r=0;r<CMMap.numRooms();r++)
 		{
 			Room R=CMMap.getRoom(r);
-			if(R!=null)
+			if((R!=null)&&(R!=deadMOB.location()))
 			{
 				if(R.okAffect(msg))
-					R.send(deadMOB,msg);
+					R.sendOthers(deadMOB,msg);
 				else
 				{
 					CMMap.MOBs.put(deadMOB.ID(),deadMOB);

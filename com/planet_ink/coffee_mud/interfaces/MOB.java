@@ -159,6 +159,7 @@ public interface MOB
 	public MOB fetchFollower(MOB thisOne);
 	public MOB fetchFollower(String ID);
 	public MOB amFollowing();
+	public boolean willFollowOrdersOf(MOB mob);
 	public void setFollowing(MOB mob);
 	public Hashtable getGroupMembers(Hashtable list);
 	public Hashtable getRideBuddies(Hashtable list);

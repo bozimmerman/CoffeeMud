@@ -411,11 +411,27 @@ public class Grouping
 				mob.tell("You might want to remove that first.");
 				return;
 			}
-			FullMsg msg=new FullMsg(target,item,mob,Affect.MASK_GENERAL|Affect.MSG_DRESS,Affect.MSG_DRESS,Affect.MSG_DRESS,null);
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
 			if(mob.location().okAffect(msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> put(s) "+item.name()+" on <T-NAMESELF>.");
+				if(ExternalPlay.drop(mob,item,true))
+				{
+					msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_GET,null);
+					if(mob.location().okAffect(msg))
+					{
+						mob.location().send(mob,msg);
+						msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_WEAR,Affect.MSG_WEAR,Affect.MSG_WEAR,null);
+						if(mob.location().okAffect(msg))
+						{
+							mob.location().send(mob,msg);
+							mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> put(s) "+item.name()+" on <T-NAMESELF>.");
+						}
+						else
+							mob.tell("You cannot seem to get "+item.name()+" on "+target.name()+".");
+					}
+					else
+						mob.tell("You cannot seem to get "+item.name()+" to "+target.name()+".");
+				}
 			}
 		}
 		else
@@ -449,13 +465,26 @@ public class Grouping
 				mob.tell(target.name()+" doesn't seem to be equipped with '"+what+"'.");
 				return;
 			}
-			FullMsg msg=new FullMsg(target,item,mob,Affect.MSG_UNDRESS,null);
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
 			if(mob.location().okAffect(msg))
 			{
-				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> take(s) "+item.name()+" off <T-NAMESELF>.");
+				msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_GET,null);
+				if(mob.location().okAffect(msg))
+				{
+					mob.location().send(mob,msg);
+					msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_DROP,null);
+					if(mob.location().okAffect(msg))
+					{
+						mob.location().send(mob,msg);
+						if(ExternalPlay.get(mob,null,item,true))
+							mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> take(s) "+item.name()+" off <T-NAMESELF>.");
+					}
+					else
+						mob.tell("You cannot seem to get "+item.name()+" off "+target.name()+".");
+				}
+				else
+					mob.tell("You cannot seem to get "+item.name()+" off of "+target.name()+".");
 			}
-				
 		}
 		else
 			mob.tell(target.name()+" won't let you.");
@@ -503,14 +532,26 @@ public class Grouping
 				if((ExternalPlay.drop(mob,item,true))
 				   &&(mob.location().isContent(item)))
 				{
-					target.addInventory(item);
-					if(item instanceof Food)
-						msg=new FullMsg(target,item,null,Affect.MSG_EAT,null);
-					else
-						msg=new FullMsg(target,item,null,Affect.MSG_DRINK,null);
-					item.affect(msg);
-					if((target.isMine(item))&&(ExternalPlay.drop(mob,item,true)))
-						mob.addInventory(item);
+					msg=new FullMsg(target,item,Affect.MASK_GENERAL|Affect.MSG_GET,null);
+					target.location().send(target,msg);
+					if(target.isMine(item))
+					{
+						if(item instanceof Food)
+							msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_EAT,Affect.MSG_EAT,Affect.MSG_EAT,null);
+						else
+							msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_DRINK,Affect.MSG_DRINK,Affect.MSG_DRINK,null);
+						if(target.location().okAffect(msg))
+							target.location().send(target,msg);
+						if(target.isMine(item))
+						{
+							msg=new FullMsg(target,item,null,Affect.MASK_GENERAL|Affect.MSG_DROP,Affect.MSG_DROP,Affect.MSG_DROP,null);
+							if(mob.location().okAffect(msg))
+							{
+								mob.location().send(mob,msg);
+								ExternalPlay.get(mob,null,item,true);
+							}
+						}
+					}
 				}
 			}
 		}

@@ -117,7 +117,8 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)affect.tool();
 					if(newitem.container()==this)
 					{
-						if(!Sense.canBeSeenBy(newitem,mob))
+						if((!Sense.canBeSeenBy(newitem,mob))
+						&&((affect.sourceMajor()&Affect.MASK_GENERAL)==0))
 						{
 							mob.tell("You can't see that.");
 							return false;

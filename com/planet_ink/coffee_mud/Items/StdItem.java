@@ -623,7 +623,9 @@ public class StdItem implements Item
 		case Affect.TYP_GET:
 			if((affect.tool()==null)||(affect.tool() instanceof MOB))
 			{
-				if((!Sense.canBeSeenBy(this,mob))&&(amWearingAt(Item.INVENTORY)))
+				if((!Sense.canBeSeenBy(this,mob))
+				   &&((affect.sourceMajor()&Affect.MASK_GENERAL)==0)
+				   &&(amWearingAt(Item.INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;

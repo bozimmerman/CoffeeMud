@@ -1935,6 +1935,19 @@ public class StdMOB implements MOB
 		if (mob==null) mob=(MOB)CoffeeUtensils.fetchEnvironmental(followers,ID,false);
 		return mob;
 	}
+	public boolean willFollowOrdersOf(MOB mob)
+	{
+		if(mob.isASysOp(mob.location())
+		||(amFollowing()==mob)
+		||(getLeigeID().equals(mob.name()))
+		||((getClanID().length()>0)
+			&&(getClanID().equals(mob.getClanID()))
+			&&((mob.getClanRole()==Clan.POS_LEADER)
+				||(mob.getClanRole()==Clan.POS_BOSS)))
+		||(ExternalPlay.doesOwnThisProperty(mob,getStartRoom())))
+			return true;
+		return false;
+	}
 	public MOB amFollowing()
 	{
 		if(amFollowing!=null)
