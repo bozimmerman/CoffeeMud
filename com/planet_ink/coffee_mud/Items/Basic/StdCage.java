@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -51,7 +52,7 @@ public class StdCage extends StdContainer
 				else
 					buf.append(description()+"\n\r");
 				//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
-			    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+"\n\r");
+			    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.				        response.append("\n\r"+Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+"."))>>8].toLowerCase()+".\n\r");
 				if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					buf.append(name()+" contains:\n\r");
 				Vector newItems=new Vector();

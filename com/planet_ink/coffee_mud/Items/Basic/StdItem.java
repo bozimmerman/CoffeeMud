@@ -949,7 +949,7 @@ public class StdItem implements Item
 					else
 						response.append(description());
 					//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
-				    //    response.append("\n\r"+Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase());
+				    //    response.append("\n\r"+Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".");
 				    mob.tell(response.toString());
 				}
 				else

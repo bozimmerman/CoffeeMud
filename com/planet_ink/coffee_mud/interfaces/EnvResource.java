@@ -58,6 +58,23 @@ public interface EnvResource extends Item
 	"ENERGY",
 	"PLASTIC"};
 	
+	public final static String[] MATERIAL_NOUNDESCS={
+		"Unknown material",
+		"Cloth",
+		"Leather",
+		"Metal",
+		"Metal",
+		"Wood",
+		"Glass",
+		"Vegetation",
+		"Flesh",
+		"Paper",
+		"Rock",
+		"Liquid",
+		"Stone",
+		"Energy",
+		"Plastic"};
+	
 	public final static int RESOURCE_NOTHING=MATERIAL_UNKNOWN|0;
 	public final static int RESOURCE_MEAT=MATERIAL_FLESH|1;
 	public final static int RESOURCE_BEEF=MATERIAL_FLESH|2;

@@ -373,7 +373,7 @@ public class StdContainer extends StdItem implements Container
 					else
 						buf.append(description()+"\n\r");
 					//if(msg.source().charStats().getStat(CharStats.INTELLIGENCE)>=10)
-				    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_DESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+"\n\r");
+				    //    buf.append(Util.capitalize(name())+" is mostly made of a kind of "+EnvResource.MATERIAL_NOUNDESCS[(material()&EnvResource.MATERIAL_MASK)>>8].toLowerCase()+".\n\r");
 					if((isOpen)&&((capacity>0)||(getContents().size()>0)))
 					{
 						buf.append(name()+" contains:\n\r");
