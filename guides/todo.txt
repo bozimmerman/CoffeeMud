@@ -1,6 +1,7 @@
 Bard Subclasses
 Finish WebServer.html macro help files update
 Programming.html update
+Leatherwork scan, Armorsmith..
 
 //****** next version ********************************************************
 friends list, for filter who
