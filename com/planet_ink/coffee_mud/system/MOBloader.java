@@ -78,6 +78,7 @@ public class MOBloader
 					mob.setColorStr(colorStr);
 				mob.setClanID(DBConnections.getRes(R,"CMCLAN"));
 				mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
+				mob.setEmail(DBConnections.getRes(R,"CMEMAL"));
 				found=true;
 			}
 			DBConnector.DBDone(D);
@@ -226,7 +227,10 @@ public class MOBloader
 			head.append(Util.padRight("Class",10)+" ");
 			head.append(Util.padRight("Lvl",4)+" ");
 			head.append(Util.padRight("Hours",5)+" ");
-			head.append(Util.padRight("Last",18));
+			if(sortBy!=6)
+				head.append(Util.padRight("Last",18)+" ");
+			else
+				head.append(Util.padRight("E-Mail",23)+" ");
 			head.append("] Character name\n\r");
 			Vector allUsers=new Vector();
 			if(R!=null)
@@ -254,6 +258,7 @@ public class MOBloader
 					thisUser.addElement(new Integer(level).toString());
 					thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
 					thisUser.addElement(DBConnections.getRes(R,"CMDATE"));
+					thisUser.addElement(DBConnections.getRes(R,"CMEMAL"));
 					allUsers.addElement(thisUser);
 				}
 				catch(Exception e){Log.errOut("MOBloader",e);}
@@ -304,7 +309,10 @@ public class MOBloader
 				head.append(Util.padRight((String)U.elementAt(1),10)+" ");
 				head.append(Util.padRight((String)U.elementAt(3),4)+" ");
 				head.append(Util.padRight((String)U.elementAt(4),5)+" ");
-				head.append(Util.padRight(IQCalendar.d2String(IQCalendar.string2Millis((String)U.elementAt(5))),18));
+				if(sortBy!=6)
+					head.append(Util.padRight(IQCalendar.d2String(IQCalendar.string2Millis((String)U.elementAt(5))),18)+" ");
+				else
+					head.append(Util.padRight((String)U.elementAt(6),23)+" ");
 				head.append("] "+Util.padRight((String)U.elementAt(0),15));
 				head.append("\n\r");
 			}
@@ -434,6 +442,29 @@ public class MOBloader
 		}
 	}
 	
+	public static void DBUpdateEmail(MOB mob)
+	{
+		if(mob.session()==null) return;
+
+		DBConnection D=null;
+		String str=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			str="UPDATE CMCHAR SET"
+			+"  CMEMAL='"+mob.getEmail()+"'"
+			+"  WHERE CMUSERID='"+mob.ID()+"'";
+			D.update(str);
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB",str);
+			Log.errOut("MOB","UpdateEmail:"+sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+	}
+
 	public static void DBClanFill(String clan, Vector members, Vector roles)
 	{
 		Vector dateJunk=new Vector();
@@ -550,6 +581,7 @@ public class MOBloader
 			+", CMCOLR='"+mob.getColorStr()+"'"
 			+", CMCLAN='"+mob.getClanID()+"'"
 			+", CMCLRO="+mob.getClanRole()
+			+", CMEMAL='"+mob.getEmail()+"'"
 			+"  WHERE CMUSERID='"+mob.ID()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
@@ -811,7 +843,9 @@ public class MOBloader
 					if(mob!=null)
 					{
 						String password=DBConnector.getRes(R,"CMPASS");
+						String email=DBConnector.getRes(R,"CMEMAL");
 						mob.setUserInfo(username,password);
+						mob.setEmail(email);
 					}
 					break;
 				}

@@ -320,6 +320,8 @@ public class ExternalPlay
 	{  if(sysPlayer!=null) sysPlayer.DBClanFill(clan,members,roles);}
 	public static void DBUpdateClan(String name, String clan, int role)
 	{  if(sysPlayer!=null) sysPlayer.DBUpdateClan(name,clan,role);}
+	public static void DBUpdateEmail(MOB mob)
+	{  if(sysPlayer!=null) sysPlayer.DBUpdateEmail(mob);}
 	
 	public static void DBUpdateItems(Room room)
 	{

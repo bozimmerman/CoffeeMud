@@ -123,6 +123,13 @@ public class FrontDoor
 			String password=mob.session().blockingIn();
 			if((mob.password().equalsIgnoreCase(password))&&(mob.name().trim().length()>0))
 			{
+				if((mob.getEmail()==null)||(mob.getEmail().length()==0))
+				{
+					if(!Scoring.email(mob,null,true)) 
+						return false;
+					ExternalPlay.DBUpdateEmail(mob);
+				}
+
 				boolean swapMade=false;
 				for(int s=0;s<Sessions.size();s++)
 				{
@@ -212,6 +219,18 @@ public class FrontDoor
 					password=mob.session().prompt("\n\rEnter a password: ","");
 					if(password.length()==0)
 						mob.session().println("\n\rYou must enter a password to continue.");
+				}
+				
+				while(true)
+				{
+					String newEmail=mob.session().prompt("\n\rPlease enter your e-mail Address:");
+					String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+					if((newEmail.length()>6)&&(newEmail.indexOf("@")>0)&&((newEmail.equalsIgnoreCase(confirmEmail))))
+					{
+						mob.setEmail(newEmail);
+						break;
+					}
+					mob.session().println("\n\rThat email address combination was invalid.\n\r");
 				}
 				mob.setUserInfo(login,password);
 				Log.sysOut("FrontDoor","Creating user: "+mob.name());

@@ -187,6 +187,7 @@ public class CommandSet extends Hashtable
 	public static final int CLANBALANCE=174;
 	public static final int CLANDONATE=175;
 	public static final int CLANCREATE=176;
+	public static final int EMAIL=177;
 
 	private CommandSet()
 	{
@@ -271,6 +272,7 @@ public class CommandSet extends Hashtable
 		put("EAST",new Integer(EAST));
 			put("E",new Integer(EAST));
 		put("EAT",new Integer(EAT));
+		put("EMAIL",new Integer(EMAIL));
 		put("EMOTE",new Integer(EMOTE));
 		put("ENTER",new Integer(ENTER));
 			put("EN",new Integer(ENTER));

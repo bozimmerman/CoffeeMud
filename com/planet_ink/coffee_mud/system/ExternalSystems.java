@@ -39,6 +39,8 @@ public class ExternalSystems implements ExternalSystem
 	{ MOBloader.DBClanFill(clan,members,roles,lastDates);}
 	public void DBUpdateClan(String name, String clan, int role)
 	{ MOBloader.DBUpdateClan(name,clan,role);}
+	public void DBUpdateEmail(MOB mob)
+	{ MOBloader.DBUpdateEmail(mob);}
 	
 	public void DBUpdateFollowers(MOB mob)
 	{

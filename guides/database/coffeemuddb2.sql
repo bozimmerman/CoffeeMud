@@ -49,6 +49,7 @@ CMCOLR varchar (50) NULL,
 CMLSIP varchar (100) NULL,
 CMCLAN varchar (100) NULL,
 CMCLRO integer NULL,
+CMEMAL varchar (255),
 PRIMARY KEY (CMUSERID)
 );
 

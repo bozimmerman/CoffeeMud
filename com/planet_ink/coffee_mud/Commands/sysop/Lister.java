@@ -346,6 +346,9 @@ public class Lister
 			if("DATE".startsWith(rest)||"LAST".startsWith(rest))
 				sortBy=5;
 			else
+			if("EMAIL".startsWith(rest))
+				sortBy=6;
+			else
 			{
 				mob.tell("Unrecognized sort criteria: "+rest);
 				return;

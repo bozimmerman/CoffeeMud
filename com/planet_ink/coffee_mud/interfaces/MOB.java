@@ -64,6 +64,8 @@ public interface MOB
 	public int getChannelMask();
 	public int getBitmap();
 	public void setBitmap(int bitmap);
+	public String getEmail();
+	public void setEmail(String newAdd);
 	
 	/** Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */

@@ -10,6 +10,9 @@ public class StdMOB implements MOB
 	protected long LastDateTime=System.currentTimeMillis();
 	protected long lastUpdated=0;
 	protected int channelMask;
+	protected String email=null;
+	public String getEmail(){if(email==null) return ""; return email;}
+	public void setEmail(String newAdd){email=newAdd;}
 
 	private String colorStr=null;
 	private String prompt=null;

@@ -825,4 +825,32 @@ public class Scoring
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln(msg.toString());
 	}
+	public static boolean email(MOB mob, Vector commands, boolean confirmOnly)
+		throws IOException
+	{
+		if(mob.session()==null) 
+			return true;
+		
+		if((mob.getEmail()==null)||(mob.getEmail().length()==0))
+			mob.session().println("\n\rYou have no email address on file for this character.");
+		else
+		{
+			if(confirmOnly) return true;
+			String change=mob.session().prompt("You currently have '"+mob.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
+			if(change.startsWith("N")) return false;
+		}
+		String newEmail=mob.session().prompt("New E-mail Address:");
+		if(newEmail==null) return false;
+		newEmail=newEmail.trim();
+		if(newEmail.length()<6) return false;
+		if(newEmail.indexOf("@")<0) return false;
+		String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+		if(confirmEmail==null) return false;
+		confirmEmail=confirmEmail.trim();
+		if(confirmEmail.length()==0) return false;
+		if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
+		mob.setEmail(confirmEmail);
+		ExternalPlay.DBUpdateEmail(mob);
+		return true;
+	}
 }

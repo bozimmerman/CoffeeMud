@@ -275,6 +275,9 @@ public class CommandProcessor
 				case CommandSet.EAT:
 					ItemUsage.eat(mob,commands);
 					break;
+				case CommandSet.EMAIL:
+					Scoring.email(mob,commands,false);
+					break;
 				case CommandSet.EMOTE:
 					BasicSenses.emote(mob,commands);
 					break;
