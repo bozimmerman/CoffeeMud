@@ -35,6 +35,7 @@ public class TemporaryImmunity extends StdAbility
 				if((System.currentTimeMillis()-L.longValue())>IMMUNITY_TIME)
 					set.removeElementAt(s);
 			}
+			
 			if(set.size()==0){ unInvoke(); return false;}
 		}
 		return super.tick(ticking,tickID);

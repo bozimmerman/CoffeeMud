@@ -19,6 +19,33 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+
+		super.unInvoke();
+
+		if(canBeUninvoked())
+			if((mob.location()!=null)&&(!mob.amDead()))
+			{
+				Ability A=mob.fetchEffect("TemporaryImmunity");
+				if(A==null)
+				{
+					A=CMClass.getAbility("TemporaryImmunity");
+					A.setBorrowed(mob,false);
+					A.makeLongLasting();
+					mob.addEffect(A);
+					A.makeLongLasting();
+				}
+				A.setMiscText("+"+ID());
+				mob.tell("You feel more polite.");
+			}
+	}
+
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

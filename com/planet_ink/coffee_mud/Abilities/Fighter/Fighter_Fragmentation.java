@@ -38,7 +38,7 @@ public class Fighter_Fragmentation extends StdAbility
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			if(Dice.rollPercentage()<25) helpProfficiency((MOB)affected);
-			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"<O-NAME> fragment(s) in <T-NAME>!"));
+			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"<T-NAME> fragment(s) in <S-NAME>!"));
 			msg.setValue(msg.value()+(2*(int)Math.round(Util.mul(msg.value(),Util.div(profficiency(),100.0)))));
 		}
 			

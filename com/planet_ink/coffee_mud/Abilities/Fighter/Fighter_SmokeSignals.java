@@ -17,7 +17,7 @@ public class Fighter_SmokeSignals extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Fighter_SmokeSignals();}
 	public int usageType(){return USAGE_MOVEMENT;}
-	private static final String[] triggerStrings = {"SMOKESIGNAL"};
+	private static final String[] triggerStrings = {"SMOKESIGNALS","SMOKESIGNAL"};
 	public int quality(){return Ability.INDIFFERENT;}
 	public String[] triggerStrings(){return triggerStrings;}
 
@@ -31,7 +31,7 @@ public class Fighter_SmokeSignals extends StdAbility
 		&&(msg.targetCode()==CMMsg.NO_EFFECT)
 		&&(msg.targetMessage()!=null)
 		&&(msg.othersMessage()!=null))
-			msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"The smoke signals seem to say '"+msg.targetMessage()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			msg.addTrailerMsg(new FullMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"The smoke signals seem to say '"+msg.targetMessage()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(myHost,msg);
 	}
 	
@@ -57,7 +57,7 @@ public class Fighter_SmokeSignals extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((!auto)&&(!mob.isInCombat()))
+		if((!auto)&&(mob.isInCombat()))
 		{
 			mob.tell("Not while you are fighting!");
 			return false;

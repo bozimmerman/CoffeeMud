@@ -52,7 +52,22 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			MOB mob=(MOB)affected;
 			super.unInvoke();
 			if(canBeUninvoked())
+			{
+				if(!mob.amDead())
+				{
+					Ability A=mob.fetchEffect("TemporaryImmunity");
+					if(A==null)
+					{
+						A=CMClass.getAbility("TemporaryImmunity");
+						A.setBorrowed(mob,false);
+						A.makeLongLasting();
+						mob.addEffect(A);
+						A.makeLongLasting();
+					}
+					A.setMiscText("+"+ID());
+				}
 				mob.tell("The rot is cured.");
+			}
 		}
 	}
 

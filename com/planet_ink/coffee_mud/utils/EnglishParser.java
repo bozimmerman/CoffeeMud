@@ -725,6 +725,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 
 				MOB M=me.location().fetchInhabitant(name);
+				if(M==me) M=me.location().fetchInhabitant(name+".2");
 				if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
 				{
 					if(CommonStrings.isDebugging("GEAS"))

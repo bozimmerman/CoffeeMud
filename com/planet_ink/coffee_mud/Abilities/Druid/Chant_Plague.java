@@ -59,7 +59,19 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
+			{
+				Ability A=mob.fetchEffect("TemporaryImmunity");
+				if(A==null)
+				{
+					A=CMClass.getAbility("TemporaryImmunity");
+					A.setBorrowed(mob,false);
+					A.makeLongLasting();
+					mob.addEffect(A);
+					A.makeLongLasting();
+				}
+				A.setMiscText("+"+ID());
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The sores on <S-YOUPOSS> face clear up.");
+			}
 	}
 
 

@@ -23,8 +23,8 @@
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=15 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Statistics Report</H2></FONT></TD></TR>
 	<TR>
-		<TD WIDTH=58% COLSPAN=8 ALIGN=CENTER>
-		<SELECT NAME=DAYS>
+		<TD WIDTH=42% COLSPAN=7 ALIGN=CENTER>
+		<SELECT NAME=DAYS ONCHANGE="Clicked('/grinder/stats.cmvp');">
 		<OPTION VALUE=1>1
 		<OPTION VALUE=2>2
 		<OPTION VALUE=3>3
@@ -125,138 +125,165 @@
 		<OPTION VALUE=98>98
 		<OPTION VALUE=99>99
 		</SELECT>
-		<SELECT NAME=SCALE>
+		<SELECT NAME=SCALE ONCHANGE="Clicked('/grinder/stats.cmvp');">
 		<OPTION VALUE=1 SELECTED>Days
 		<OPTION VALUE=7>Weeks
 		<OPTION VALUE=30>Months
 		<OPTION VALUE=365>Years
 		</SELECT>
 		</TD>
-		<TD WIDTH=42% COLSPAN=7 ALIGN=CENTER>
-		<SELECT NAME=CODE>
-		<OPTION VALUE="*">Report on All Players
-		@BaseCharClassNext?RESET@
-		@loop@
-		@BaseCharClassNext@
-		<OPTION VALUE="B@BaseCharClassName@">Report on @BaseCharClassName@ Type players
-		@back@
-		@BaseCharClassNext?RESET@
-		@CharClassNext?RESET@
-		@loop@
-		@CharClassNext@
-		<OPTION VALUE="C@CharClassID@">Report on @CharClassName@ players
-		@back@
-		@CharClassNext?RESET@
-		@RaceNext?RESET@
-		@loop@
-		@RaceNext@
-		<OPTION VALUE="R@RaceID@">Report on @RaceName@ players
-		@back@
-		@RaceNext?RESET@
-		<OPTION VALUE="GM">Report on Male players
-		<OPTION VALUE="GF">Report on Female players
-		<OPTION VALUE="GN">Report on Neuter players
-		<OPTION VALUE="L1">Report on players of level 1
-		<OPTION VALUE="L2">Report on players of level 2
-		<OPTION VALUE="L3">Report on players of level 3
-		<OPTION VALUE="L4">Report on players of level 4
-		<OPTION VALUE="L5">Report on players of level 5
-		<OPTION VALUE="L6">Report on players of level 6
-		<OPTION VALUE="L7">Report on players of level 7
-		<OPTION VALUE="L8">Report on players of level 8
-		<OPTION VALUE="L9">Report on players of level 9
-		<OPTION VALUE="L10">Report on players of level 10
-		<OPTION VALUE="L11">Report on players of level 11
-		<OPTION VALUE="L12">Report on players of level 12
-		<OPTION VALUE="L13">Report on players of level 13
-		<OPTION VALUE="L14">Report on players of level 14
-		<OPTION VALUE="L15">Report on players of level 15
-		<OPTION VALUE="L16">Report on players of level 16
-		<OPTION VALUE="L17">Report on players of level 17
-		<OPTION VALUE="L18">Report on players of level 18
-		<OPTION VALUE="L19">Report on players of level 19
-		<OPTION VALUE="L20">Report on players of level 20
-		<OPTION VALUE="L21">Report on players of level 21
-		<OPTION VALUE="L22">Report on players of level 22
-		<OPTION VALUE="L23">Report on players of level 23
-		<OPTION VALUE="L24">Report on players of level 24
-		<OPTION VALUE="L25">Report on players of level 25
-		<OPTION VALUE="L26">Report on players of level 26
-		<OPTION VALUE="L27">Report on players of level 27
-		<OPTION VALUE="L28">Report on players of level 28
-		<OPTION VALUE="L29">Report on players of level 29
-		<OPTION VALUE="L30">Report on players of level 30
-		<OPTION VALUE="L31">Report on players of level 31
-		<OPTION VALUE="L32">Report on players of level 32
-		<OPTION VALUE="L33">Report on players of level 33
-		<OPTION VALUE="L34">Report on players of level 34
-		<OPTION VALUE="L35">Report on players of level 35
-		<OPTION VALUE="L36">Report on players of level 36
-		<OPTION VALUE="L37">Report on players of level 37
-		<OPTION VALUE="L38">Report on players of level 38
-		<OPTION VALUE="L39">Report on players of level 39
-		<OPTION VALUE="L40">Report on players of level 40
-		<OPTION VALUE="L41">Report on players of level 41
-		<OPTION VALUE="L42">Report on players of level 42
-		<OPTION VALUE="L43">Report on players of level 43
-		<OPTION VALUE="L44">Report on players of level 44
-		<OPTION VALUE="L45">Report on players of level 45
-		<OPTION VALUE="L46">Report on players of level 46
-		<OPTION VALUE="L47">Report on players of level 47
-		<OPTION VALUE="L48">Report on players of level 48
-		<OPTION VALUE="L49">Report on players of level 49
-		<OPTION VALUE="L50">Report on players of level 40
-		<OPTION VALUE="L51">Report on players of level 51
-		<OPTION VALUE="L52">Report on players of level 52
-		<OPTION VALUE="L53">Report on players of level 53
-		<OPTION VALUE="L54">Report on players of level 54
-		<OPTION VALUE="L55">Report on players of level 55
-		<OPTION VALUE="L56">Report on players of level 56
-		<OPTION VALUE="L57">Report on players of level 57
-		<OPTION VALUE="L58">Report on players of level 58
-		<OPTION VALUE="L59">Report on players of level 59
-		<OPTION VALUE="L60">Report on players of level 60
-		<OPTION VALUE="L61">Report on players of level 61
-		<OPTION VALUE="L62">Report on players of level 62
-		<OPTION VALUE="L63">Report on players of level 63
-		<OPTION VALUE="L64">Report on players of level 64
-		<OPTION VALUE="L65">Report on players of level 65
-		<OPTION VALUE="L66">Report on players of level 66
-		<OPTION VALUE="L67">Report on players of level 67
-		<OPTION VALUE="L68">Report on players of level 68
-		<OPTION VALUE="L69">Report on players of level 69
-		<OPTION VALUE="L70">Report on players of level 70
-		<OPTION VALUE="L71">Report on players of level 71
-		<OPTION VALUE="L72">Report on players of level 72
-		<OPTION VALUE="L73">Report on players of level 73
-		<OPTION VALUE="L74">Report on players of level 74
-		<OPTION VALUE="L75">Report on players of level 75
-		<OPTION VALUE="L76">Report on players of level 76
-		<OPTION VALUE="L77">Report on players of level 77
-		<OPTION VALUE="L78">Report on players of level 78
-		<OPTION VALUE="L79">Report on players of level 79
-		<OPTION VALUE="L80">Report on players of level 80
-		<OPTION VALUE="L81">Report on players of level 81
-		<OPTION VALUE="L82">Report on players of level 82
-		<OPTION VALUE="L83">Report on players of level 83
-		<OPTION VALUE="L84">Report on players of level 84
-		<OPTION VALUE="L85">Report on players of level 85
-		<OPTION VALUE="L86">Report on players of level 86
-		<OPTION VALUE="L87">Report on players of level 87
-		<OPTION VALUE="L88">Report on players of level 88
-		<OPTION VALUE="L89">Report on players of level 89
-		<OPTION VALUE="L90">Report on players of level 90
-		<OPTION VALUE="L91">Report on players of level 91
-		<OPTION VALUE="L92">Report on players of level 92
-		<OPTION VALUE="L93">Report on players of level 93
-		<OPTION VALUE="L94">Report on players of level 94
-		<OPTION VALUE="L95">Report on players of level 95
-		<OPTION VALUE="L96">Report on players of level 96
-		<OPTION VALUE="L97">Report on players of level 97
-		<OPTION VALUE="L98">Report on players of level 98
-		<OPTION VALUE="L99">Report on players of level 99
-		<OPTION VALUE="L100">Report on players of level 100
-		<OPTION VALUE="L101">Report on players of level 101
+		<TD WIDTH=58% COLSPAN=8 ALIGN=CENTER>
+		<FONT COLOR=WHITE>Report on...</FONT>
+		<SELECT NAME=CODEPART ONCHANGE="SelCombo(document.CONTROL.CODE,'*'); Clicked('/grinder/stats.cmvp');">
+		<OPTION VALUE="BASECLASS">players of class type ...
+		<OPTION VALUE="CLASS">players of class...
+		<OPTION VALUE="RACE">players of race...
+		<OPTION VALUE="LEVEL">players of level...
+		<OPTION VALUE="GENDER">players of gender...
+		<OPTION VALUE="CLASS">players of race...
+		</SELECT>
+		<SELECT NAME=CODE ONCHANGE="Clicked('/grinder/stats.cmvp');">
+		<OPTION VALUE="*">ALL
+		@if?CheckReqParm?CODEPART=@
+			@BaseCharClassNext?RESET@
+			@loop@
+			@BaseCharClassNext@
+			<OPTION VALUE="B@BaseCharClassName@">@BaseCharClassName@
+			@back@
+			@BaseCharClassNext?RESET@
+		@endif@
+		@if?CheckReqParm?CODEPART=BASECLASS@
+			@BaseCharClassNext?RESET@
+			@loop@
+			@BaseCharClassNext@
+			<OPTION VALUE="B@BaseCharClassName@">@BaseCharClassName@
+			@back@
+			@BaseCharClassNext?RESET@
+		@endif@
+		@if?CheckReqParm?CODEPART=CLASS@
+			@CharClassNext?RESET@
+			@loop@
+			@CharClassNext@
+			<OPTION VALUE="C@CharClassID@">@CharClassName@
+			@back@
+			@CharClassNext?RESET@
+		@endif@
+		@if?CheckReqParm?CODEPART=RACE@
+			@RaceNext?RESET@
+			@loop@
+			@RaceNext@
+			<OPTION VALUE="R@RaceID@">@RaceName@
+			@back@
+			@RaceNext?RESET@
+		@endif@
+		@if?CheckReqParm?CODEPART=GENDER@
+			<OPTION VALUE="GM">Male
+			<OPTION VALUE="GF">Female
+			<OPTION VALUE="GN">Neuter
+		@endif@
+		@if?CheckReqParm?CODEPART=LEVEL@
+			<OPTION VALUE="L1">1
+			<OPTION VALUE="L2">2
+			<OPTION VALUE="L3">3
+			<OPTION VALUE="L4">4
+			<OPTION VALUE="L5">5
+			<OPTION VALUE="L6">6
+			<OPTION VALUE="L7">7
+			<OPTION VALUE="L8">8
+			<OPTION VALUE="L9">9
+			<OPTION VALUE="L10">10
+			<OPTION VALUE="L11">11
+			<OPTION VALUE="L12">12
+			<OPTION VALUE="L13">13
+			<OPTION VALUE="L14">14
+			<OPTION VALUE="L15">15
+			<OPTION VALUE="L16">16
+			<OPTION VALUE="L17">17
+			<OPTION VALUE="L18">18
+			<OPTION VALUE="L19">19
+			<OPTION VALUE="L20">20
+			<OPTION VALUE="L21">21
+			<OPTION VALUE="L22">22
+			<OPTION VALUE="L23">23
+			<OPTION VALUE="L24">24
+			<OPTION VALUE="L25">25
+			<OPTION VALUE="L26">26
+			<OPTION VALUE="L27">27
+			<OPTION VALUE="L28">28
+			<OPTION VALUE="L29">29
+			<OPTION VALUE="L30">30
+			<OPTION VALUE="L31">31
+			<OPTION VALUE="L32">32
+			<OPTION VALUE="L33">33
+			<OPTION VALUE="L34">34
+			<OPTION VALUE="L35">35
+			<OPTION VALUE="L36">36
+			<OPTION VALUE="L37">37
+			<OPTION VALUE="L38">38
+			<OPTION VALUE="L39">39
+			<OPTION VALUE="L40">40
+			<OPTION VALUE="L41">41
+			<OPTION VALUE="L42">42
+			<OPTION VALUE="L43">43
+			<OPTION VALUE="L44">44
+			<OPTION VALUE="L45">45
+			<OPTION VALUE="L46">46
+			<OPTION VALUE="L47">47
+			<OPTION VALUE="L48">48
+			<OPTION VALUE="L49">49
+			<OPTION VALUE="L50">40
+			<OPTION VALUE="L51">51
+			<OPTION VALUE="L52">52
+			<OPTION VALUE="L53">53
+			<OPTION VALUE="L54">54
+			<OPTION VALUE="L55">55
+			<OPTION VALUE="L56">56
+			<OPTION VALUE="L57">57
+			<OPTION VALUE="L58">58
+			<OPTION VALUE="L59">59
+			<OPTION VALUE="L60">60
+			<OPTION VALUE="L61">61
+			<OPTION VALUE="L62">62
+			<OPTION VALUE="L63">63
+			<OPTION VALUE="L64">64
+			<OPTION VALUE="L65">65
+			<OPTION VALUE="L66">66
+			<OPTION VALUE="L67">67
+			<OPTION VALUE="L68">68
+			<OPTION VALUE="L69">69
+			<OPTION VALUE="L70">70
+			<OPTION VALUE="L71">71
+			<OPTION VALUE="L72">72
+			<OPTION VALUE="L73">73
+			<OPTION VALUE="L74">74
+			<OPTION VALUE="L75">75
+			<OPTION VALUE="L76">76
+			<OPTION VALUE="L77">77
+			<OPTION VALUE="L78">78
+			<OPTION VALUE="L79">79
+			<OPTION VALUE="L80">80
+			<OPTION VALUE="L81">81
+			<OPTION VALUE="L82">82
+			<OPTION VALUE="L83">83
+			<OPTION VALUE="L84">84
+			<OPTION VALUE="L85">85
+			<OPTION VALUE="L86">86
+			<OPTION VALUE="L87">87
+			<OPTION VALUE="L88">88
+			<OPTION VALUE="L89">89
+			<OPTION VALUE="L90">90
+			<OPTION VALUE="L91">91
+			<OPTION VALUE="L92">92
+			<OPTION VALUE="L93">93
+			<OPTION VALUE="L94">94
+			<OPTION VALUE="L95">95
+			<OPTION VALUE="L96">96
+			<OPTION VALUE="L97">97
+			<OPTION VALUE="L98">98
+			<OPTION VALUE="L99">99
+			<OPTION VALUE="L100">100
+			<OPTION VALUE="L101">101
+		@endif@
 		</SELECT>
 		<SCRIPT LANGUAGE=JavaScript>
 		<!--
@@ -266,6 +293,7 @@
 					if(ME.options[x].value==val)
 					{ ME.selectedIndex=x; return;}
 			}	
+			SelCombo(document.CONTROL.CODEPART,'@RequestParameter?CODEPART@');
 			SelCombo(document.CONTROL.DAYS,'@RequestParameter?DAYS@');
 			SelCombo(document.CONTROL.SCALE,'@RequestParameter?SCALE@');
 			SelCombo(document.CONTROL.CODE,'@RequestParameter?CODE@');

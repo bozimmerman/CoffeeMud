@@ -51,14 +51,17 @@ public class Scalp extends CommonSkill
 						if(lastSoManyScalps.size()>100)
 							lastSoManyScalps.removeElementAt(0);
 						Item scalp=CMClass.getItem("GenItem");
+						String race="";
+						if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
+							race=" "+body.charStats().getMyRace().name();
 						if(body.name().startsWith("the body"))
-							scalp.setName("the scalp"+body.name().substring(8));
+							scalp.setName("the"+race+" scalp"+body.name().substring(8));
 						else
-							scalp.setName("a scalp");
+							scalp.setName("a"+race+" scalp");
 						if(body.displayText().startsWith("the body"))
-							scalp.setDisplayText("the scalp"+body.displayText().substring(8));
+							scalp.setDisplayText("the"+race+" scalp"+body.displayText().substring(8));
 						else
-							scalp.setDisplayText("a scalp sits here");
+							scalp.setDisplayText("a"+race+" scalp sits here");
 						scalp.setBaseValue(1);
 						scalp.setDescription("This is the bloody top of that poor creatures head.");
 						scalp.setMaterial(EnvResource.RESOURCE_MEAT);

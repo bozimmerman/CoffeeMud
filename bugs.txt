@@ -1,9 +1,5 @@
 ?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
 ?Test: Shield Block, Far Shot, Counter Att, AutoBash, Weapon Catch, Body Shield
-Test: Improved Throwing, Smoke Signals, Fragmentation, Scalp, Tactics
-diseases that don't kill you should go away
-break up report on combo in mudgrinder statistics
-geased the bartender to kill the bard, and he can't find him?!
 
 Delver:
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  

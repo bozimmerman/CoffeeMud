@@ -9,7 +9,7 @@ public class Fighter_FieldTactics extends StdAbility
 {
 	public String ID() { return "Fighter_FieldTactics"; }
 	public String name(){ return "Field Tactics";}
-	public String displayText(){ return "";}
+	public String displayText(){ return hidden?"(Hidden)":"";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
@@ -118,7 +118,7 @@ public class Fighter_FieldTactics extends StdAbility
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 			activated=true;
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(15.0*(Util.div(profficiency(),100.0))));
-			affectableStats.setArmor(affectableStats.armor()+(int)Math.round(15.0*(Util.div(profficiency(),100.0))));
+			affectableStats.setArmor(affectableStats.armor()-(int)Math.round(15.0*(Util.div(profficiency(),100.0))));
 		}
 		else
 		{
