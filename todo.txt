@@ -1,11 +1,9 @@
 Archons Guide updates
-	Finish documenting behaviors/affects for mobs, etc. 
 	shopkeepers/bankers should mention change bags
+	How to create Deities (and sample ones)
 	money system explanation?
-	explain the clan system under stdclanmaster/genclanmaster
 	How to create Homes
 	How to create Inns
-	How to create Deities (and sample ones)
 Programming.html update
 	Include building information
 	Create external class-creation info
@@ -14,6 +12,7 @@ Programming.html update
 	Updates misc. methods. Items
 	
 //****** next version ********************************************************
+GenRaces
 racial abilities (abilities tied to the race)
 like, I'd like some race specific questions to have during the character creation process
 Some solution for variable eq on mobs

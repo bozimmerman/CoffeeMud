@@ -11,6 +11,8 @@ public class Chant_MoveSky extends Chant
 	public String name(){ return "Move The Sky";}
 	public String displayText(){return "";}
 	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_MoveSky();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -248,7 +248,7 @@ public class StdAbility implements Ability, Cloneable
 
 	protected static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode)
 	{
-		if(commands.size()==1)
+		if((commands==null)||(commands.size()<2))
 			return null;
 
 		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
