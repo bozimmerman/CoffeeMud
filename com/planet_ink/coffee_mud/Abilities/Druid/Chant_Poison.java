@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_Poison extends Chant
 {
 	public String ID() { return "Chant_Poison"; }
-	public String name(){ return "Poison";}
+	public String name(){ return "Venomous Bite";}
 	public String displayText(){return "(Poisoned)";}
 	public int quality(){return Ability.MALICIOUS;}
 	int poisonTick=3;

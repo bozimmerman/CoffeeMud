@@ -1,7 +1,8 @@
+Dress (or hitch for animals) item in inventory.  FEED item in inventory.
 Wainsright - to create wagons -- but first, a rideable in a rideable is a puller!
 mime behavior: A MOB will mimic any social that you do.
 pillow social to start a pillow fight
-aroma property. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
+aromaemoter. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
 new social= smurf
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana on each room mapped.
 Deadly weak-bridge exit.  If too much weight, you fall and die.
@@ -13,7 +14,7 @@ Perhaps a little modification to have the mob act as a better assassin, and the 
 Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
 ARTIST ability to make wallpaper -- make Paintings.
 there is no help for TIME. It might be helpful to put in a help, that tells when the sun rises and sets.
-there also needs to be a GenJewelry to create rings, necklaces, bracelets, etc that a jeweler would buy instead of things that a grocer or armorer would buy. GenJewelry should be able to be worn on any specified location.
+Need a jeweler shopkeeper
 we need a shopkeeper of type GROCER who buys all foodstuffs, as well as other RESOURCE based shopkeepers that will buy any metal, wood, or stone.
 qualify command should allow you to type QUALIFY ILLUSION to see what illusion spells you qualify for.
 new skill: Scrap--turns an item of at least 5lbs into 1 lb of material of the type it is made of.
@@ -26,7 +27,7 @@ Amnesia as a disease
 prop_reflecting to reflect spell damage back to the caster, put on shield items
 eggs that hatch
 merchant class with haggle skill to lower prices HAGGLE 300 item
-can sit AT tables and have conversation heard only at the table.
+WHISPER command to talk to everyone at a table only LISTEN should counter it.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 Infection: Hitpoints are recovered at 1/2 rate. 
@@ -35,22 +36,12 @@ add currents to water...
 an ability to tell how many HP a MOB has
 gen-wizard player editor
 Behavior & Skill libido - Property Pregnancy, Property Aging 
-viewer/editor for items/mobs worldwide
 titles for high levels.
 Auto quests, quests, questbox (Behavior)
 Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
-Thieves attack/damage closer to a fighter, to balance out the bad armor.
 ReligiousHelper—Aids other MOBs of given religion
-Nonconvertable—MOB won’t accept another religion.
-IMPROVED TURNING:  Affects your bonus to Turn or control.  Don’t give this to anyone yet, but specialty clerics will need to have access to it.
-* ENHANCEMENT, Where the * stands for a school of magic.  Makes spells of this nature upto twice as effective (doubling damage dealt, effect, ect.)
-* EXTENSION, Where * is a school of magic, makes all spells cast from that school last up to twice as long.
-* RESISTANCE, Where * is a school of magic, adds resistance to all harmful spells from that school.
-* SPECIALIZATION, Where * is a school of magic, makes all spells from that school more difficult to resist.
-CONVERT:  A Cleric may convert a character to his Deity.  It will ask a confirmation from the other character.  Cleric gains 25 XP for each conversion.  A Cleric MAY attempt to convert MOBs, and get that XP.  A Cleric loses 25 XP for killing a MOB of his religion.
 Sniper.  This allows a character to make a single ranged attack from a hidden position without entering combat.  After the shot, combat is ended, as is the Hide.
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
-Offering: A cleric may sacrifice money to their deity.  Doing so restores X/10 Mana points.
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3, after all other modifiers for damage have been calculated.
 When Underwater, movement is expended at 2* the rate.  If you run out of movement on water, you suffer a -50% to your swim check.
@@ -58,9 +49,7 @@ When Underwater, movement is expended at 2* the rate.  If you run out of movemen
 random monster property class which reads stats from a resource file
 
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
-guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
 Assassin: Assassinate skill to auto-kill, lose something else though
-Priests of specific Gods: bonuses to like spells, lose others
 Prancers: Dancing bards who get special ability
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
 Wizard: must memorize spells from book.  Profficiency check at casting time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
