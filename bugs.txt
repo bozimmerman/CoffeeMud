@@ -1,15 +1,10 @@
-acidbreath appeared as an autogain for a charlatan (and it shouldn`t)
-midgaard clan banker seems to be write-protected, he is taking/giving gold but is not incrementing the clan`s gold amount...highly exploitable
-The (flying) tag shouldn`t appear when they`re (dragons, et al) asleep.
-grid link problem -- total replacement of a grid room, west first, then south, with a foreign room.
-knucklebones just needs a system for ties and its ready
-Keno: A card with 10 x 8 squares, you choose up to 10 (20 in non video keno) numbers and then 20 balls are drawn each with a non repeating number between 1 and 80. The number of matches are then looked up on a table and multiplied by your bet. The odds are a hypergeometric distribution. Terminology: http://www.gamingtoday.com/Glossary/keno.cfm Sample Payoff: http://casinopassion.s5.com/keno.html
-item generation behavior?
-property tax, with ability to auction AND foreclose
-we'd need a slavetrading skill, and the ability to have the mob items "grow up" in the shopkeepers care, and we'd need some way to transfer ownership (make them serve, etc) when you buy them.
-Execution skill for Arrest
-for the trader class, we need tar & feather, whip (improve common skils), torture, salvetrading skill, executions (stoning, drawn & quarter, beheading)
-ability to deposit a container and its contents.
-Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
-Install ship battery
-document real estate, space ship selling, genairlock
+
+
+
+
+
+
+
+
+
+
