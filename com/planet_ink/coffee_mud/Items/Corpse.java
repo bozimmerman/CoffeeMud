@@ -26,6 +26,12 @@ public class Corpse extends GenContainer implements DeadBody
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_MEAT;
 	}
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		if(newText.length()>30) 
+			super.setMiscText(newText);
+	}
 	public Environmental newInstance()
 	{
 		return new Corpse();

@@ -95,6 +95,19 @@ public class StdRace implements Race
 					return false;
 				}
 				break;
+			case Affect.TYP_DRINK:
+				if((forbiddenWornBits()&Item.HELD)>0)
+				{
+					if(affect.target()==null) return true;
+					if(!myChar.isMine(affect.target())) return true;
+					myChar.tell("You cannot drink from that.");
+					return false;
+				}
+				break;
+			}
+			
+			switch(affect.targetMinor())
+			{
 			case Affect.TYP_HOLD:
 			case Affect.TYP_WIELD:
 				if((forbiddenWornBits()&Item.HELD)==0)
@@ -116,15 +129,6 @@ public class StdRace implements Race
 							affect.source().tell("You lack the anatomy to wield "+affect.target().name()+".");
 							break;
 					}
-					return false;
-				}
-				break;
-			case Affect.TYP_DRINK:
-				if((forbiddenWornBits()&Item.HELD)>0)
-				{
-					if(affect.target()==null) return true;
-					if(!myChar.isMine(affect.target())) return true;
-					myChar.tell("You cannot drink from that.");
 					return false;
 				}
 				break;

@@ -375,7 +375,7 @@ public class Skill_Juggle extends StdAbility
 			A.pause=false;
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<T-NAME> attempt(s) to juggle, but messes up.");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to juggle, but messes up.");
 
 
 		// return whether it worked
