@@ -37,9 +37,8 @@ public class Lich extends Skeleton
 		return resources;
 	}
 
-	public void tick(MOB myChar, int tickID)
+	public boolean tick(MOB myChar, int tickID)
 	{
-		super.tick(myChar,tickID);
 		if((tickID==MudHost.TICK_MOB)
 		&&(Dice.rollPercentage()<10))
 		{
@@ -50,5 +49,6 @@ public class Lich extends Skeleton
 				A.invoke(myChar,null,true,0);
 			}
 		}
+		return super.tick(myChar,tickID);
 	}
 }

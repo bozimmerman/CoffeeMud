@@ -136,7 +136,7 @@ public class Templar extends Cleric
 		return true;
 	}
 
-	public void tick(MOB myChar, int tickID)
+	public boolean tick(MOB myChar, int tickID)
 	{
 		if((tickID==MudHost.TICK_MOB)&&((--tickDown)<=0))
 		{
@@ -147,7 +147,7 @@ public class Templar extends Cleric
 				if(A!=null) A.invoke(myChar,myChar,true,0);
 			}
 		}
-		super.tick(myChar,tickID);
+		return super.tick(myChar,tickID);
 	}
 
 	public String statQualifications(){return "Wisdom 9+ Strength 9+";}

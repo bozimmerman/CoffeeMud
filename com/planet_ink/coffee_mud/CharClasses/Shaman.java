@@ -138,12 +138,12 @@ public class Shaman extends Cleric
 		return true;
 	}
 
-	public void tick(MOB myChar, int tickID)
+	public boolean tick(MOB myChar, int tickID)
 	{
 		if(tickID==MudHost.TICK_MOB)
 		{
 		}
-		return;
+		return true;
 	}
 
 	public String statQualifications(){return "Wisdom 9+ Constitution 9+";}

@@ -134,11 +134,11 @@ public class Healer extends Cleric
 		return true;
 	}
 
-	public void tick(MOB myChar, int tickID)
+	public boolean tick(MOB myChar, int tickID)
 	{
 		if((tickID==MudHost.TICK_MOB)&&(myChar.charStats().getClassLevel(this)>=30))
 		{
-			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return;
+			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return true;
 
 			HashSet followers=myChar.getGroupMembers(new HashSet());
 			if(myChar.location()!=null)
@@ -174,7 +174,7 @@ public class Healer extends Cleric
 					A.invoke(myChar,((MOB)e.next()),true,0);
 			}
 		}
-		super.tick(myChar,tickID);
+		return super.tick(myChar,tickID);
 	}
 
 	public String statQualifications(){return "Wisdom 9+ Charisma 9+";}
