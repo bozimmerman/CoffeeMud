@@ -187,6 +187,12 @@ public class Scriptable extends StdBehavior
 		"MPLOADVAR", // 39
 		"MPM2I2M", // 40
 		"MPOLOADROOM", // 41
+		"MPHIDE", // 42
+		"MPUNHIDE", // 43
+		"MPOPEN", // 44
+		"MPCLOSE", // 45
+		"MPLOCK", // 46
+		"MPUNLOCK" // 47
 	};
 
 	public Behavior newInstance()
@@ -632,6 +638,24 @@ public class Scriptable extends StdBehavior
 						return monster.amFollowing();
 					  else
 						return null;
+			case 'r':
+			case 'R': return getRandomMOB(monster,null,lastKnownLocation);
+			case 'x':
+			case 'X':
+				if(lastKnownLocation!=null)
+				{
+					if((str.length()>2)&&(Directions.getGoodDirectionCode(""+str.charAt(2))>=0))
+						return lastKnownLocation.getExitInDir(Directions.getGoodDirectionCode(""+str.charAt(2)));
+					else
+					{
+						int i=0;
+						Exit E=null;
+						while(((++i)<100)||(E!=null))
+							E=lastKnownLocation.getExitInDir(Dice.roll(1,Directions.NUM_DIRECTIONS,-1));
+						return E;
+					}
+				}
+				return null;
 			}
 		}
 		if(lastKnownLocation!=null)
@@ -2808,17 +2832,17 @@ public class Scriptable extends StdBehavior
 
 	private MOB getRandomMOB(MOB monster, MOB randMOB, Room room)
 	{
-		if((room!=null)
-		&&(monster!=null)
-		&&(room.numInhabitants()>1)
-		&&(room.isInhabitant(monster)))
+		if((randMOB!=null)&&(randMOB!=monster)) 
+			return randMOB;
+		
+		if((room!=null)&&(room.numInhabitants()>0))
 		{
 			int tries=0;
 			while((++tries)<1000)
 			{
 				if((randMOB!=null)
 				&&(randMOB!=monster)
-				&&((!randMOB.isMonster())||(room.numPCInhabitants()==0)))
+				&&(room.numPCInhabitants()==0))
 				   break;
 				randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
 			}
@@ -2831,7 +2855,6 @@ public class Scriptable extends StdBehavior
 		int t=varifyable.indexOf("$");
 		if((monster!=null)&&(monster.location()!=null))
 			lastKnownLocation=monster.location();
-		Room room=lastKnownLocation;
 		MOB randMOB=null;
 		while((t>=0)&&(t<varifyable.length()-1))
 		{
@@ -2842,8 +2865,8 @@ public class Scriptable extends StdBehavior
 			switch(c)
 			{
 			case 'a':
-				if(room!=null)
-					return room.name();
+				if(lastKnownLocation!=null)
+					return lastKnownLocation.name();
 				break;
 			case 'i':
 				if(monster!=null)
@@ -2865,7 +2888,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 'r':
 			case 'R':
-				randMOB=getRandomMOB(monster,randMOB,room);
+				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.name();
 				break;
@@ -2890,7 +2913,7 @@ public class Scriptable extends StdBehavior
 					middle=((MOB)target).charStats().heshe();
 				break;
 			case 'J':
-				randMOB=getRandomMOB(monster,randMOB,room);
+				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.charStats().heshe();
 				break;
@@ -2907,7 +2930,7 @@ public class Scriptable extends StdBehavior
 					middle=((MOB)target).charStats().hisher();
 				break;
 			case 'K':
-				randMOB=getRandomMOB(monster,randMOB,room);
+				randMOB=getRandomMOB(monster,randMOB,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.charStats().hisher();
 				break;
@@ -2924,12 +2947,12 @@ public class Scriptable extends StdBehavior
 					middle=secondaryItem.name();
 				break;
 			case 'l':
-				if(room!=null)
+				if(lastKnownLocation!=null)
 				{
 					StringBuffer str=new StringBuffer("");
-					for(int i=0;i<room.numInhabitants();i++)
+					for(int i=0;i<lastKnownLocation.numInhabitants();i++)
 					{
-						MOB M=room.fetchInhabitant(i);
+						MOB M=lastKnownLocation.fetchInhabitant(i);
 						if((M!=null)&&(M!=monster)&&(Sense.canBeSeenBy(M,monster)))
 						   str.append("\""+M.name()+"\" ");
 					}
@@ -2937,12 +2960,12 @@ public class Scriptable extends StdBehavior
 					break;
 				}
 			case 'L':
-				if(room!=null)
+				if(lastKnownLocation!=null)
 				{
 					StringBuffer str=new StringBuffer("");
-					for(int i=0;i<room.numItems();i++)
+					for(int i=0;i<lastKnownLocation.numItems();i++)
 					{
-						Item I=room.fetchItem(i);
+						Item I=lastKnownLocation.fetchItem(i);
 						if((I!=null)&&(I.container()==null)&&(Sense.canBeSeenBy(I,monster)))
 						   str.append("\""+I.name()+"\" ");
 					}
@@ -3026,6 +3049,36 @@ public class Scriptable extends StdBehavior
 			//case 'a':
 			case 'A':
 				// unnecessary, since, in coffeemud, this is part of the name
+				break;
+			case 'x':
+			case 'X':
+				if(lastKnownLocation!=null)
+				{
+					middle="";
+					Exit E=null;
+					int dir=-1;
+					if((t<varifyable.length()-2)&&(Directions.getGoodDirectionCode(""+varifyable.charAt(t+2))>=0))
+					{
+						dir=Directions.getGoodDirectionCode(""+varifyable.charAt(t+2));
+						E=lastKnownLocation.getExitInDir(dir);
+					}
+					else
+					{
+						int i=0;
+						while(((++i)<100)||(E!=null))
+						{
+							dir=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
+							E=lastKnownLocation.getExitInDir(dir);
+						}
+					}
+					if((dir>=0)&&(E!=null))
+					{
+						if(c=='x') 
+							middle=Directions.getDirectionName(dir);
+						else 
+							middle=E.name();
+					}
+				}
 				break;
 			}
 			if((middle.length()>0)
@@ -3310,7 +3363,7 @@ public class Scriptable extends StdBehavior
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				String arg2=Util.getCleanBit(s,2);
-				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,2));
 				if(newTarget!=null)
 				{
 					boolean found=false;
@@ -3481,6 +3534,100 @@ public class Scriptable extends StdBehavior
 						lastKnownLocation.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
 						lastKnownLocation.recoverRoomStats();
 					}
+				}
+				break;
+			}
+			case 42: // mphide
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if(newTarget!=null)
+				{
+					newTarget.baseEnvStats().setDisposition(newTarget.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
+					newTarget.recoverEnvStats();
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				break;
+			}
+			case 43: // mpunhide
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget!=null)&&(Util.bset(newTarget.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN)))
+				{
+					newTarget.baseEnvStats().setDisposition(newTarget.baseEnvStats().disposition()-EnvStats.IS_NOT_SEEN);
+					newTarget.recoverEnvStats();
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				break;
+			}
+			case 44: // mpopen
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget instanceof Exit)&&(((Exit)newTarget).hasADoor()))
+				{
+					Exit E=(Exit)newTarget;
+					E.setDoorsNLocks(E.hasADoor(),true,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				else
+				if((newTarget instanceof Container)&&(((Container)newTarget).hasALid()))
+				{
+					Container E=(Container)newTarget;
+					E.setLidsNLocks(E.hasALid(),true,E.hasALock(),false);
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				break;
+			}
+			case 45: // mpclose
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget instanceof Exit)&&(((Exit)newTarget).hasADoor())&&(((Exit)newTarget).isOpen()))
+				{
+					Exit E=(Exit)newTarget;
+					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				else
+				if((newTarget instanceof Container)&&(((Container)newTarget).hasALid())&&(((Container)newTarget).isOpen()))
+				{
+					Container E=(Container)newTarget;
+					E.setLidsNLocks(E.hasALid(),false,E.hasALock(),false);
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				break;
+			}
+			case 46: // mplock
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget instanceof Exit)&&(((Exit)newTarget).hasALock()))
+				{
+					Exit E=(Exit)newTarget;
+					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),true,E.defaultsLocked());
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				else
+				if((newTarget instanceof Container)&&(((Container)newTarget).hasALock()))
+				{
+					Container E=(Container)newTarget;
+					E.setLidsNLocks(E.hasALid(),false,E.hasALock(),true);
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				break;
+			}
+			case 47: // mpunlock
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget instanceof Exit)&&(((Exit)newTarget).isLocked()))
+				{
+					Exit E=(Exit)newTarget;
+					E.setDoorsNLocks(E.hasADoor(),false,E.defaultsClosed(),E.hasALock(),false,E.defaultsLocked());
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
+				}
+				else
+				if((newTarget instanceof Container)&&(((Container)newTarget).isLocked()))
+				{
+					Container E=(Container)newTarget;
+					E.setLidsNLocks(E.hasALid(),false,E.hasALock(),false);
+					if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
 				}
 				break;
 			}
@@ -3855,19 +4002,52 @@ public class Scriptable extends StdBehavior
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,4));
-				if((newTarget!=null)&&(arg2.length()>0)&&(newTarget instanceof MOB))
+				if((newTarget!=null)&&(arg2.length()>0))
 				{
-					MOB E=(MOB)newTarget;
-					int min=Util.s_int(arg2);
-					int max=Util.s_int(arg3);
-					if(max<min) max=min;
-					if(min>0)
+					if(newTarget instanceof MOB)
 					{
-						int dmg=(max==min)?min:Dice.roll(1,max-min,min);
-						if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
-							dmg=E.curState().getHitPoints()-1;
-						if(dmg>0)
-							MUDFight.postDamage(E,E,null,dmg,CMMsg.MSG_OK_VISUAL,-1,null);
+						MOB E=(MOB)newTarget;
+						int min=Util.s_int(arg2);
+						int max=Util.s_int(arg3);
+						if(max<min) max=min;
+						if(min>0)
+						{
+							int dmg=(max==min)?min:Dice.roll(1,max-min,min);
+							if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
+								dmg=E.curState().getHitPoints()-1;
+							if(dmg>0)
+								MUDFight.postDamage(E,E,null,dmg,CMMsg.MSG_OK_VISUAL,-1,null);
+						}
+					}
+					else
+					if(newTarget instanceof Item)
+					{
+						Item E=(Item)newTarget;
+						int min=Util.s_int(arg2);
+						int max=Util.s_int(arg3);
+						if(max<min) max=min;
+						if(min>0)
+						{
+							int dmg=(max==min)?min:Dice.roll(1,max-min,min);
+							boolean destroy=false;
+							if(E.subjectToWearAndTear())
+							{
+								if((dmg>=E.usesRemaining())&&(!arg4.equalsIgnoreCase("kill")))
+									dmg=E.usesRemaining()-1;
+								if(dmg>0)
+									E.setUsesRemaining(E.usesRemaining()-dmg);
+								if(E.usesRemaining()<=0) destroy=true;
+							}
+							else
+							if(arg4.equalsIgnoreCase("kill"))
+								destroy=true;
+							if(destroy)
+							{
+								if(lastKnownLocation!=null)
+									lastKnownLocation.showHappens(CMMsg.MSG_OK_VISUAL,E.name()+" is destroyed!");
+								E.destroy();
+							}
+						}
 					}
 				}
 				break;
@@ -4176,7 +4356,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 4: // give_prog
 				if((msg.targetMinor()==CMMsg.TYP_GIVE)
-				&&((msg.amITarget(monster))||(msg.tool()==affecting))
+				&&((msg.amITarget(monster))||(msg.tool()==affecting)||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(!msg.amISource(monster))
 				&&(msg.tool() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
@@ -4210,7 +4390,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 20: // get_prog
 				if((msg.targetMinor()==CMMsg.TYP_GET)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting)))
+				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4243,7 +4423,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 22: // drop_prog
 				if((msg.targetMinor()==CMMsg.TYP_DROP)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting)))
+				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4276,7 +4456,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 24: // remove_prog
 				if((msg.targetMinor()==CMMsg.TYP_REMOVE)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting)))
+				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4309,7 +4489,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 25: // consume_prog
 				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
-				&&((msg.amISource(monster))||(msg.amITarget(affecting)))
+				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4342,7 +4522,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 21: // put_prog
 				if((msg.targetMinor()==CMMsg.TYP_PUT)
-				&&((msg.amISource(monster))||(msg.amITarget(affecting)))
+				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(msg.tool() instanceof Item)
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
@@ -4378,7 +4558,7 @@ public class Scriptable extends StdBehavior
 				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
 					||(msg.targetMinor()==CMMsg.TYP_HOLD)
 					||(msg.targetMinor()==CMMsg.TYP_WIELD))
-				&&((msg.amISource(monster))||(msg.amITarget(affecting)))
+				&&((msg.amISource(monster))||(msg.amITarget(affecting))||(affecting instanceof Room)||(affecting instanceof Area))
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
@@ -4411,7 +4591,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 19: // bribe_prog
 				if((msg.targetMinor()==CMMsg.TYP_GIVE)
-				&&(msg.amITarget(eventMob))
+				&&(msg.amITarget(eventMob)||(!(affecting instanceof MOB)))
 				&&(!msg.amISource(monster))
 				&&(msg.tool() instanceof Coins)
 				&&(canFreelyBehaveNormal(monster)))
@@ -4428,7 +4608,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 8: // entry_prog
 				if((msg.targetMinor()==CMMsg.TYP_ENTER)
-				&&(msg.amISource(eventMob))
+				&&(msg.amISource(eventMob)||(!(affecting instanceof MOB)))
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
@@ -4455,7 +4635,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 10: // death prog
 				if((msg.sourceMinor()==CMMsg.TYP_DEATH)
-				&&(msg.amISource(eventMob)))
+				&&(msg.amISource(eventMob)||(!(affecting instanceof MOB))))
 				{
 					MOB ded=msg.source();
 					MOB src=lastToHurtMe;

@@ -113,8 +113,11 @@ public class ProtectedCitizen extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return false;
 
-		String claim=getClaims()[Dice.roll(1,getClaims().length,-1)];
-		mob.doCommand(Util.parse("YELL \""+claim+"\""));
+		String claim=getClaims()[Dice.roll(1,getClaims().length,-1)].trim();
+		if(claim.startsWith(","))
+			mob.doCommand(Util.parse("EMOTE \""+claim.substring(1).trim()+"\""));
+		else
+			mob.doCommand(Util.parse("YELL \""+claim+"\""));
 
 		Room thisRoom=mob.location();
 		Vector V=new Vector();

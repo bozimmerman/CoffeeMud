@@ -16,13 +16,13 @@ public class Toadstool extends StdRace
 	public int weightVariance(){return 1;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Vegetation";}
+	public int availability(){return Race.AVAILABLE_NONE;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

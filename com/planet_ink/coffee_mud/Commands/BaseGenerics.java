@@ -1836,7 +1836,7 @@ public class BaseGenerics extends StdCommand
 				if(R!=null)
 				{
 					E.baseCharStats().setMyRace(R);
-					E.baseCharStats().getMyRace().startRacing(mob,false);
+					E.baseCharStats().getMyRace().startRacing(E,false);
 					E.baseCharStats().getMyRace().setHeightWeight(E.baseEnvStats(),(char)E.baseCharStats().getStat(CharStats.GENDER));
 				}
 				else

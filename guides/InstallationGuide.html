@@ -259,8 +259,14 @@ the web, you may want to run the Admin web server so that you can use the
 MUDGrinder area editing tool.&nbsp; See the <A href="MUDGrinder.html">MUDGrinder Guide</A>
 for more information on this tool.&nbsp; For more information on the CoffeeMud 
 web server in general, please read the <A href="WebServer.html">WebServer Guide</A>.
-<BR><BR><EM>ITEMS, MOBS, BEHAVIORS, ABILITIES, CHARCLASSES, RACES, 
-COMMANDS, LOCALES, AREAS, EXITS</EM> <BR>These settings each 
+<BR><BR><EM>RUNSMTPSERVER<BR></EM>This setting tells CoffeeMud 
+whether to start up the built-in&nbsp;smtp (mail)&nbsp;server.&nbsp; A value of 
+"TRUE" will turn on the smtp servers.&nbsp; Even if you don't wish to&nbsp;allow 
+any incoming mail, you may want to run the&nbsp;mail server so that you can 
+create outgoing newsletters for your players.&nbsp; For more information on the 
+CoffeeMud&nbsp;smtp server in general, please read the <A 
+href="SMTPServer.html">SMTPServer Guide</A>. <BR><BR><EM>ITEMS, MOBS, BEHAVIORS, 
+ABILITIES, CHARCLASSES, RACES, COMMANDS, LOCALES, AREAS, EXITS</EM> <BR>These settings each 
 specify a path on your local drive which will contain Java class files.&nbsp; 
 These class files are typically classes which you might want to use with 
 your CoffeeMud system, but which are not included with the standard CoffeeMud 
@@ -295,6 +301,103 @@ the CoffeeMud game settings, it is highly recommended that you read through
 the INI file as if it were just another Installation Guide.</EM>&nbsp;&nbsp;      
              
       
+<P>
+<IMG src="images/hd.jpg">
+<P><STRONG><FONT size=5>The CoffeeMud Package:</FONT></STRONG></P>
+<P align=left>Here is a summary of the directories inside the CoffeeMud package, 
+along with some of the important files you may want to edit when configuring
+your server.</P>
+<IMG src="images/dir-com.jpg">
+<P>The directories inside the <STRONG>com</STRONG>     directory contain all the Java Class files, 
+which are the executable portion of CoffeeMud.  All of the Java source 
+files are also found herein.</P>
+<IMG src="images/dir-data.jpg">
+<P>The <STRONG>data</STRONG>  directory is where all area, room, mob, journal, and player data is
+stored when the FAKEDB system is being used.  When FAKEDB is not being used,
+this directory is unused.</P>
+<IMG src="images/dir-guides.jpg">
+<P>The <STRONG>guides</STRONG>  directory is where you'll find this document, as well as other HTML
+documents you may find helpful in configuring your server as well as building
+areas inside it.</P>
+<P>The 
+<STRONG>guides/database</STRONG>
+  directory is where you'll find several SQL scripts necessary
+to configuring another database engine, such as SQL Server, MySQL, PostGRE, Access,
+and others.</P>
+<P>The <STRONG>guides/images</STRONG>
+  directory contains image files used inside the HTML files in 
+the guides directory.</P>
+<IMG src="images/dir-web.jpg">
+<P>The <STRONG>web</STRONG>  directory is where you'll find several important files
+related to the configuration of the two default web servers: admin, and public (pub):</P>
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD VALIGN=TOP><I>admin.ini</I></TD><TD VALIGN=TOP> The configuration file for the admin web server.  This is the
+server which, by default, governs the MUDGrinder and other server administrative
+pages and utilities.</TD></TR>
+<TR><TD VALIGN=TOP><I>common.ini</I></TD><TD VALIGN=TOP> The configuration file for certain settings common to both 
+the admin and public web servers.</TD></TR>
+<TR><TD VALIGN=TOP><I>pub.ini</I></TD><TD VALIGN=TOP> The configuration file for the public web server.</TD></TR>
+<TR><TD VALIGN=TOP><I>email.ini</I></TD><TD VALIGN=TOP> The configuration file for the smtp server.</TD></TR>
+</TABLE>
+<P>The <STRONG>admin</STRONG> directory is where the pages made available by the admin
+web server are found, by default.  This directory also contains the <STRONG>admin/images</STRONG>
+to store image files displayed by the admin pages, as well as the <STRONG>admin/grinder</STRONG>
+directory, where the MUDGrinder pages are stored by default.</P>
+<P>The <STRONG>admin.templates</STRONG> directory is where the default error page for
+the admin web server is found.</P>
+<P>The <STRONG>pub</STRONG> directory is where the pages made available by the pub
+web server are found, by default.  This directory also contains the <STRONG>pub/images</STRONG>
+to store image files displayed by the public web pages, as well as the <STRONG>pub/sounds</STRONG>
+directory where MSP sound files are stored for players to access.</P>
+<P>The <STRONG>pub.templates</STRONG> directory is where the default error page for
+the pub web server is found.</P>
+<IMG src="images/dir-resources.jpg">
+<P>The <STRONG>resources</STRONG>  directory is where you'll find most of the important files
+for tinkering with the configuration of several aspects of your system.  Some of these files
+are in the resources directory itself, and some are in its subdirectories.  The important
+files found in the resources directory are:</P>
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD VALIGN=TOP><I>chat.dat</I></TD><TD VALIGN=TOP> The configuration file for the MudChat behavior.</TD></TR>
+<TR><TD VALIGN=TOP><I>laws.ini</I></TD><TD VALIGN=TOP> The default configuration file for the Arrest behavior.</TD></TR>
+<TR><TD VALIGN=TOP><I>lawtoc.ini</I></TD><TD VALIGN=TOP> The default pages file for the GenLawBook item.</TD></TR>
+<TR><TD VALIGN=TOP><I>movingroom.xml</I></TD><TD VALIGN=TOP> A sample configuration file for the MovingRoom behavior.</TD></TR>
+<TR><TD VALIGN=TOP><I>socials.txt</I></TD><TD VALIGN=TOP> The text file holding all of the socials.</TD></TR>
+</TABLE>
+<P>The <STRONG>resources/data</STRONG> directory is where you'll find sample files for
+a variety of things.  At the moment, it only contains a cmare files with some example
+deities to load into your mud.  Use the import command to load this set of mobs.</P>
+<P>The <STRONG>resources/help</STRONG> directory is where you'll find all of the files
+responsible for the numerous standard and archon HELP entries.  It also contains the
+two text files shown when help and ahelp are entered without parameters.  The *.ini files
+are formatted as java property files, meaning that they are in ENTRY=VALUE format.  The
+VALUE may span several lines, so long as it ends with a backslash \</P>
+<P>The <STRONG>resources/progs</STRONG> directory contains several sample MOBPROG files
+loadable using the Scriptable behavior.</P>
+<P>The <STRONG>resources/quests</STRONG> directory contains several sample quests.  Each
+quest is in its own directory, along with any supporting Scriptable *.script files, and any
+supporting mob or item *.cmare files.  The CREATE QUEST command is used to load each of
+these *.quest files.  Quests may also be loaded via the MUDGrinder.</P>
+<P>The <STRONG>resources/scripts</STRONG> directory will some day contain directories for
+each of the human languages CoffeeMud has been translated into.  At present, only the EN_TX
+(English) directory exists, with some accompanying text files containing strings used 
+in CoffeeMud.  This set of strings is quite incomplete.</P>
+<P>The <STRONG>resources/skills</STRONG> directory contains the database of recipes used by
+the Common skills in CoffeeMud.  Each text file contains recipe for a single skill, and each
+is formatted in tab-delimited format, with rows seperated by carriage returns.</P>
+<P>The <STRONG>resources/text</STRONG> directory contains several text files displayed at
+different points in the CoffeeMud engine.  A summary is as follows:</P>
+<TABLE WIDTH=100% BORDER=1>
+<TR><TD VALIGN=TOP><I>alignment.txt</I></TD><TD VALIGN=TOP> A text file describing alignment to new players.</TD></TR>
+<TR><TD VALIGN=TOP><I>classes.txt</I></TD><TD VALIGN=TOP>A text file describing class selections for new players.</TD></TR>
+<TR><TD VALIGN=TOP><I>credits.txt</I></TD><TD VALIGN=TOP>The text file shown to users who use the CREDITS command.</TD></TR>
+<TR><TD VALIGN=TOP><I>intro.txt</I></TD><TD VALIGN=TOP>The text file displayed to users when they connect to your mud.</TD></TR>
+<TR><TD VALIGN=TOP><I>newchar.txt</I></TD><TD VALIGN=TOP>A text file introducing your mud to new players.</TD></TR>
+<TR><TD VALIGN=TOP><I>offline.txt</I></TD><TD VALIGN=TOP>A text file shown to players while your mud is booting.</TD></TR>
+<TR><TD VALIGN=TOP><I>races.txt</I></TD><TD VALIGN=TOP>A text file describing race selections to new players.</TD></TR>
+<TR><TD VALIGN=TOP><I>stats.txt</I></TD><TD VALIGN=TOP>A text file describing the basic stats to new players</TD></TR>
+<TR><TD VALIGN=TOP><I>motd.txt</I></TD><TD VALIGN=TOP>A text file shown to users when they log on.  The existence of this file activates 
+MOTD command, as well as the MOTD entry in the CONFIG command.
+</TABLE>
 <P>
 <IMG src="images/db.jpg">
 <P><STRONG><FONT size=5>The CoffeeMud Database:</FONT></STRONG></P>

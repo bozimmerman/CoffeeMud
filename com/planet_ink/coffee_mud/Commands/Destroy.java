@@ -400,7 +400,7 @@ public class Destroy extends BaseItemParser
 		if(!mob.isASysOp(null))
 		{
 			mob.tell("You are not powerful enough to do that.");
-			return false;
+			return;
 		}
 
 		if(commands.size()<3)
