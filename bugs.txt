@@ -1,4 +1,5 @@
 I think adding censoring abilities -- masks and filters and so forth, would probably handle the other crudeness situations that people are expressing concern about.  Another INI setting perhaps?
+wizinfo channel for others
 the idea of unique items
 map command.  
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.  You'll probably have to write your own spec on this one.

@@ -154,38 +154,39 @@ public class RandomMonsters extends ActiveTicker
 			Resources.submitResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode(),monsters);
 		}
 		else
-		if(!alreadyTriedLoad)
 		{
-			alreadyTriedLoad=true;
 			int extraSemicolon=filename.indexOf(";");
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
 			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
-			if(monsters!=null) return monsters;
-			StringBuffer buf=Resources.getFileResource(filename);
-			if((buf==null)||((buf!=null)&&(buf.length()<20)))
+			if((monsters==null)&&(!alreadyTriedLoad))
 			{
-				Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
-				return null;
+				alreadyTriedLoad=true;
+				StringBuffer buf=Resources.getFileResource(filename);
+				if((buf==null)||((buf!=null)&&(buf.length()<20)))
+				{
+					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+					return null;
+				}
+				if(buf.substring(0,20).indexOf("<MOBS>")<0)
+				{
+					Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+					return null;
+				}
+				monsters=new Vector();
+				String error=CoffeeMaker.addMOBsFromXML(buf.toString(),monsters,null);
+				if(error.length()>0)
+				{
+					Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"': "+error+".");
+					return null;
+				}
+				if(monsters.size()<=0)
+				{
+					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+					return null;
+				}
+				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
-			if(buf.substring(0,20).indexOf("<MOBS>")<0)
-			{
-				Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
-				return null;
-			}
-			monsters=new Vector();
-			String error=CoffeeMaker.addMOBsFromXML(buf.toString(),monsters,null);
-			if(error.length()>0)
-			{
-				Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"': "+error+".");
-				return null;
-			}
-			if(monsters.size()<=0)
-			{
-				Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
-				return null;
-			}
-			Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 		}
 		return monsters;
 	}
@@ -223,7 +224,6 @@ public class RandomMonsters extends ActiveTicker
 		{
 			Vector monsters=getMonsters(ticking,getParms());
 			if(monsters==null) return true;
-
 			int num=minMonsters;
 			if(maintained.size()>=minMonsters)
 				num=maintained.size()+1;
