@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Chant_Treemorph extends Chant
 {
-
+	Item tree=null;
 	public Chant_Treemorph()
 	{
 		super();
@@ -35,71 +35,76 @@ public class Chant_Treemorph extends Chant
 		return new Chant_Treemorph();
 	}
 
+	public boolean tick(int tickID)
+	{
+		if((tickID==Host.MOB_TICK)
+		&&(affected!=null)
+		&&(tree!=null)
+		&&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if((tree.owner()!=null)&&(tree.owner()!=mob.location()))
+			{
+				Room room=null;
+				if(tree.owner() instanceof MOB)
+					room=((MOB)tree.owner()).location();
+				else
+				if(tree.owner() instanceof Room)
+					room=(Room)tree.owner();
+				if((room!=null)&&(room!=mob.location()))
+					room.bringMobHere(mob,false);
+			}
+		}
+		return super.tick(tickID);
+	}
+	
 	public boolean okAffect(Affect affect)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
-
-		MOB mob=(MOB)affected;
-		if(affect.source().getVictim()==mob)
-			affect.source().setVictim(null);
-		if(mob.isInCombat())
+		if(affected instanceof MOB)
 		{
-			if(mob.getVictim()!=null)
-				mob.getVictim().makePeace();
-			mob.makePeace();
-		}
-		mob.recoverMaxState();
-		mob.resetToMaxState();
-		mob.curState().setHunger(1000);
-		mob.curState().setThirst(1000);
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly prevent the mob
-		// from trying to do ANYTHING except sleep
-		if(affect.amISource(mob))
-		{
-			if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
-			&&(affect.sourceMajor()>0))
-			{
-				mob.tell("Trees can't do that.");
-				return false;
-			}
-		}
-		if(affect.amITarget(mob))
-		{
-			if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-			{
-				affect.source().tell("Attack a tree?!");
+			MOB mob=(MOB)affected;
+			if(affect.source().getVictim()==mob)
 				affect.source().setVictim(null);
-				mob.setVictim(null);
-				return false;
-			}
-			else
+			if(mob.isInCombat())
 			{
-				Item item=CMClass.getItem("GenItem");
-				item.setName(mob.name());
-				item.setDescription(mob.description());
-				item.setDisplayText(mob.displayText());
-				item.setGettable(false);
-				item.envStats().setWeight(2000);
-				FullMsg msg=new FullMsg(affect.source(),item,affect.targetCode(),null);
-				if(!okAffect(msg))
+				if(mob.getVictim()!=null)
+					mob.getVictim().makePeace();
+				mob.makePeace();
+			}
+			mob.recoverMaxState();
+			mob.resetToMaxState();
+			mob.curState().setHunger(1000);
+			mob.curState().setThirst(1000);
+			mob.recoverCharStats();
+			mob.recoverEnvStats();
+
+			// when this spell is on a MOBs Affected list,
+			// it should consistantly prevent the mob
+			// from trying to do ANYTHING except sleep
+			if(affect.amISource(mob))
+			{
+				if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
+				&&(affect.sourceMajor()>0))
+				{
+					mob.tell("Trees can't do that.");
 					return false;
+				}
 			}
 		}
 		if(!super.okAffect(affect))
 			return false;
 		
-		if(affect.source().getVictim()==mob)
-			affect.source().setVictim(null);
-		if(mob.isInCombat())
+		if(affected instanceof MOB)
 		{
-			if(mob.getVictim()!=null)
-				mob.getVictim().makePeace();
-			mob.makePeace();
+			MOB mob=(MOB)affected;
+			if(affect.source().getVictim()==affected)
+				affect.source().setVictim(null);
+			if(mob.isInCombat())
+			{
+				if(mob.getVictim()!=null)
+					mob.getVictim().makePeace();
+				mob.makePeace();
+			}
 		}
 		return true;
 	}
@@ -111,14 +116,17 @@ public class Chant_Treemorph extends Chant
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setReplacementName("a tree that reminds you of "+affected.name());
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SMELL);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SPEAK);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_TASTE);
+		if(affected instanceof MOB)
+		{
+			//affectableStats.setReplacementName("a tree of "+affected.name());
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SMELL);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SPEAK);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_TASTE);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SEEN);
+		}
 	}
-
 
 	public void unInvoke()
 	{
@@ -128,7 +136,8 @@ public class Chant_Treemorph extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell("Your flesh returns to normal!");
+		if(tree!=null) tree.destroyThis();
+		mob.tell("You feel like your normal self again!");
 		mob.curState().setHitPoints(1);
 		mob.curState().setMana(0);
 		mob.curState().setMovement(0);
@@ -178,9 +187,22 @@ public class Chant_Treemorph extends Chant
 					}
 					target.makePeace();
 					ExternalPlay.standIfNecessary(target);
-					success=maliciousAffect(mob,target,mob.envStats().level()*10,-1);
-					if(success)
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
+					tree=CMClass.getItem("GenItem");
+					tree.setName("a oak tree");
+					tree.setDisplayText("an oak tree that reminds you of "+target.name()+" is growing here.");
+					tree.setDescription("It's a tall oak tree, which seems to remind you of "+target.name()+".");
+					tree.setMaterial(EnvResource.RESOURCE_OAK);
+					tree.baseEnvStats().setWeight(5000);
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
+					success=maliciousAffect(mob,target,mob.envStats().level()*50,-1);
+					Ability A=target.fetchAffect(ID());
+					if(success&&(A!=null))
+					{
+						mob.location().addItem(tree);
+						tree.addAffect(A);
+						A.setAffectedOne(target);
+						tree.recoverEnvStats();
+					}
 				}
 			}
 		}

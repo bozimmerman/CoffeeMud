@@ -42,13 +42,14 @@ public class Spell_DispelMagic extends Spell
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A!=null)&&(A.canBeUninvoked())&&(A instanceof Spell))
+			if((A!=null)&&(A.canBeUninvoked())
+			&&(((A.classificationCode()&Ability.SPELL)>0)||((A.classificationCode()&Ability.CHANT)>0)))
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
 				&&((A.invoker()==mob)
-				||(A.invoker().envStats().level()<mob.envStats().level())))
-						revokeThis=A;
+				||(A.invoker().envStats().level()<=mob.envStats().level()+5)))
+					revokeThis=A;
 			}
 		}
 
@@ -67,8 +68,12 @@ public class Spell_DispelMagic extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		
+		int diff=revokeThis.invoker().envStats().level()-mob.envStats().level();
+		if(diff<0) diff=0;
+		else diff=diff*-20;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(diff,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.");
