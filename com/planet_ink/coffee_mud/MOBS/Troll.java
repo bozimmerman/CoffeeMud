@@ -48,7 +48,7 @@ public class Troll extends StdMOB
 		return new Troll();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
@@ -58,7 +58,7 @@ public class Troll extends StdMOB
 				regenerate();
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	protected boolean regenerate()

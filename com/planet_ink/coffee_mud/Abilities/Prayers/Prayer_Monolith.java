@@ -156,7 +156,7 @@ public class Prayer_Monolith extends Prayer
 		}
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -197,7 +197,7 @@ public class Prayer_Monolith extends Prayer
 				break;
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 

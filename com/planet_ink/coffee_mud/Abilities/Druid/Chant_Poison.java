@@ -14,9 +14,9 @@ public class Chant_Poison extends Chant
 	int poisonTick=3;
 	public Environmental newInstance(){	return new Chant_Poison();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

@@ -17,9 +17,9 @@ public class Paladin_Aura extends Paladin
 	}
 	public Environmental newInstance(){	return new Paladin_Aura();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		for(int i=paladinsGroup.size()-1;i>=0;i--)
 		{
 			try

@@ -1,10 +1,10 @@
 package com.planet_ink.coffee_mud.system;
 
-import com.planet_ink.coffee_mud.interfaces.Environmental;
+import com.planet_ink.coffee_mud.interfaces.Tickable;
 
 public class TockClient
 {
-	public Environmental clientObject;
+	public Tickable clientObject;
 	public int tickID=0;
 	public int reTickDown=0;
 	public int tickDown=0;
@@ -14,7 +14,7 @@ public class TockClient
 	public long milliTotal=0;
 	public long tickTotal=0;
 	
-	public TockClient(Environmental newClientObject,
+	public TockClient(Tickable newClientObject,
 					  int newTickDown,
 					  int newTickID)
 	{

@@ -13,7 +13,7 @@ public class Spell_AnimateWeapon extends Spell
 	public Environmental newInstance(){	return new Spell_AnimateWeapon();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
 		&&(affected instanceof Item)
@@ -58,7 +58,7 @@ public class Spell_AnimateWeapon extends Spell
 		}
 		else
 			unInvoke();
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect affect)

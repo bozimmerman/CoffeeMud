@@ -45,9 +45,9 @@ public class Prayer_FreezeMetal extends Prayer
 		super.affectCharStats(affected,affectableStats);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if(tickID!=Host.MOB_TICK) return true;
 		if((affected==null)||(!(affected instanceof MOB)))

@@ -15,9 +15,9 @@ public class Chant_AnimalSpy extends Chant
 	private boolean disable=false;
 	public Environmental newInstance()	{	return new Chant_AnimalSpy();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Host.MOB_TICK)
 		   &&(affected==spy))

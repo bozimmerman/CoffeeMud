@@ -17,9 +17,9 @@ public class Spell_IncreaseGravity extends Spell
 	public Environmental newInstance(){	return new Spell_IncreaseGravity();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		else
 		if((affected!=null)&&(affected instanceof Room)&&(invoker!=null))

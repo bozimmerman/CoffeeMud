@@ -18,9 +18,9 @@ public class Thief_Poison extends ThiefSkill
 	int poisonDown=3;
 	public Environmental newInstance(){	return new Thief_Poison();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

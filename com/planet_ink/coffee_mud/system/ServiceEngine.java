@@ -9,7 +9,7 @@ public class ServiceEngine
 {
 	public static Vector tickGroup=new Vector();
 
-	public static Tick confirmAndGetTickThread(Environmental E, int tickID)
+	public static Tick confirmAndGetTickThread(Tickable E, int tickID)
 	{
 		Tick tock=null;
 
@@ -36,7 +36,7 @@ public class ServiceEngine
 		}
 	}
 
-	public static void startTickDown(Environmental E,
+	public static void startTickDown(Tickable E,
 									 int tickID,
 									 int numTicks)
 	{
@@ -51,7 +51,7 @@ public class ServiceEngine
 			}
 	}
 
-	public static boolean deleteTick(Environmental E, int tickID)
+	public static boolean deleteTick(Tickable E, int tickID)
 	{
 		for(int v=0;v<tickGroup.size();v++)
 		{
@@ -61,7 +61,7 @@ public class ServiceEngine
 				for(int t=almostTock.tickers.size()-1;t>=0;t--)
 				{
 					TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-					Environmental E2=C.clientObject;
+					Tickable E2=C.clientObject;
 					if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
 					{
 						almostTock.tickers.removeElement(C);
@@ -74,7 +74,7 @@ public class ServiceEngine
 		return false;
 	}
 
-	public static boolean isTicking(Environmental E, int tickID)
+	public static boolean isTicking(Tickable E, int tickID)
 	{
 		for(int v=0;v<tickGroup.size();v++)
 		{
@@ -82,7 +82,7 @@ public class ServiceEngine
 			for(int t=0;t<almostTock.tickers.size();t++)
 			{
 				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-				Environmental E2=C.clientObject;
+				Tickable E2=C.clientObject;
 				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
 					return true;
 			}
@@ -90,9 +90,9 @@ public class ServiceEngine
 		return false;
 	}
 	
-	public static void suspendTicking(Environmental E, int tickID){suspendResumeTicking(E,tickID,true);}
-	public static void resumeTicking(Environmental E, int tickID){suspendResumeTicking(E,tickID,false);}
-	private static boolean suspendResumeTicking(Environmental E, int tickID, boolean suspend)
+	public static void suspendTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,true);}
+	public static void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
+	private static boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
 		for(int v=0;v<tickGroup.size();v++)
 		{
@@ -100,7 +100,7 @@ public class ServiceEngine
 			for(int t=0;t<almostTock.tickers.size();t++)
 			{
 				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-				Environmental E2=C.clientObject;
+				Tickable E2=C.clientObject;
 				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
 					C.suspended=suspend;
 			}
@@ -108,7 +108,7 @@ public class ServiceEngine
 		return false;
 	}
 
-	public static boolean isHere(Environmental E2, Room here)
+	public static boolean isHere(Tickable E2, Room here)
 	{
 		if(E2==null)
 			return false;
@@ -153,7 +153,7 @@ public class ServiceEngine
 		long topObjectMillis=-1;
 		long topObjectTicks=0;
 		int topObjectGroup=0;
-		Environmental topObjectClient=null;
+		Tickable topObjectClient=null;
 		for(int v=0;v<tickGroup.size();v++)
 		{
 			Tick almostTock=(Tick)tickGroup.elementAt(v);
@@ -228,7 +228,7 @@ public class ServiceEngine
 			while(t<almostTock.tickers.size())
 			{
 				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-				Environmental E2=C.clientObject;
+				Tickable E2=C.clientObject;
 				if(isHere(E2,here))
 				{
 					if(!Tick.tickTicker(C,almostTock.tickers)) t++;
@@ -258,7 +258,7 @@ public class ServiceEngine
 			for(int t=0;t<almostTock.tickers.size();t++)
 			{
 				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-				Environmental E=C.clientObject;
+				Tickable E=C.clientObject;
 
 				if((E instanceof Ability)&&(E.ID().equals("ItemRejuv")))
 					E=((Ability)E).affecting();

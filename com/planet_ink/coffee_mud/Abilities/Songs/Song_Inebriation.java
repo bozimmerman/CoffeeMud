@@ -41,9 +41,9 @@ public class Song_Inebriation extends Song
 			mob.location().send(mob,msg);
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

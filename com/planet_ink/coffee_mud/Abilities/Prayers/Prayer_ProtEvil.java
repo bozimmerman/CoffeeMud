@@ -16,7 +16,7 @@ public class Prayer_ProtEvil extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_ProtEvil();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return false;
@@ -31,7 +31,7 @@ public class Prayer_ProtEvil extends Prayer
 			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
 			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?");
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect affect)

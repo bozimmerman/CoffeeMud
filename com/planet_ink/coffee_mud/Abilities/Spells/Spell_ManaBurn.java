@@ -29,10 +29,10 @@ public class Spell_ManaBurn extends Spell
 		super.affect(affect);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		adjustMana();
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void adjustMana()

@@ -55,13 +55,13 @@ public class Follower extends StdBehavior
 
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.MOB_TICK) return true;
 		if((direction>=0)&&(ticking instanceof MOB))
 		{
-			if(!canFreelyBehaveNormal(ticking)) return;
+			if(!canFreelyBehaveNormal(ticking)) return true;
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
 			Room otherRoom=(Room)thisRoom.getRoomInDir(direction);
@@ -75,7 +75,7 @@ public class Follower extends StdBehavior
 				direction=-1;
 
 			if(direction<0)
-				return;
+				return true;
 
 
 			boolean move=true;
@@ -89,6 +89,6 @@ public class Follower extends StdBehavior
 				ExternalPlay.move(mob,direction,false,false);
 			direction=-1;
 		}
-		return;
+		return true;
 	}
 }

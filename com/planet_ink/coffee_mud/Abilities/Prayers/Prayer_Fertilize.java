@@ -14,7 +14,7 @@ public class Prayer_Fertilize extends Prayer
 	public int holyQuality(){ return HOLY_NEUTRAL;}
 	public Environmental newInstance(){	return new Prayer_Fertilize();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
@@ -31,7 +31,7 @@ public class Prayer_Fertilize extends Prayer
 					}
 				}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 		
 	}
 	

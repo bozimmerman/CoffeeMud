@@ -121,7 +121,7 @@ public class Util
 	{
 		int sint=0;
 		try{ sint=Integer.parseInt(INT); }
-		catch(java.lang.NumberFormatException e){ return 0;}
+		catch(Exception e){ return 0;}
 		return sint;
 	}
 	
@@ -291,7 +291,7 @@ public class Util
 	{
 		long slong=0;
 		try{ slong=Long.parseLong(LONG); }
-		catch(java.lang.NumberFormatException e){ return 0;}
+		catch(Exception e){ return 0;}
 		return slong;
 	}
 	
@@ -306,7 +306,7 @@ public class Util
 	{
 		double sdouble=0;
 		try{ sdouble=Double.parseDouble(DOUBLE); }
-		catch(java.lang.NumberFormatException e){ return 0;}
+		catch(Exception e){ return 0;}
 		return sdouble;
 	}
 	

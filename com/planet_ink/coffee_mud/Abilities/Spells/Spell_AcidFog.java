@@ -19,7 +19,7 @@ public class Spell_AcidFog extends Spell
 	public Environmental newInstance(){	return new Spell_AcidFog();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -35,7 +35,7 @@ public class Spell_AcidFog extends Spell
 				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,damage,0),Affect.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	public void unInvoke()
 	{

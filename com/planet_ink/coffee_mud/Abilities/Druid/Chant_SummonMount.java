@@ -36,7 +36,7 @@ public class Chant_SummonMount extends Chant
 			unInvoke();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -53,7 +53,7 @@ public class Chant_SummonMount extends Chant
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -70,15 +70,15 @@ public class GateGuard extends StdBehavior
 		return num;
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		int dir=findGate(mob);
-		if(dir<0) return;
+		if(dir<0) return true;
 		Exit e=mob.location().getExitInDir(dir);
 		int numPlayers=numValidPlayers(mob,mob.location());
 		if(noticeTock==0)
@@ -137,5 +137,6 @@ public class GateGuard extends StdBehavior
 		}
 		else
 			noticeTock--;
+		return true;
 	}
 }

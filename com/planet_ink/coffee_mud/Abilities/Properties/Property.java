@@ -299,7 +299,7 @@ public class Property implements Ability, Cloneable
 	{
 		return true;
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{ return true;	}
 	public void makeLongLasting(){}
 	public void makeNonUninvokable(){}

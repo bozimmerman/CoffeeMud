@@ -60,7 +60,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		}
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)&&(affected instanceof MOB))
 		{
@@ -93,6 +93,6 @@ public class Skill_TwoWeaponFighting extends StdAbility
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 }

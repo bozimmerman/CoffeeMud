@@ -49,13 +49,13 @@ public class FasterRoom extends StdBehavior
 			if(M!=null)
 			{
 				for(int i2=0;i2<burst;i2++)
-					M.tick(Host.MOB_TICK);
+					M.tick(M,Host.MOB_TICK);
 				for(int i2=0;i2<health;i2++)
 					M.curState().recoverTick(M,M.maxState());
 			}
 		}
 	}
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(((tickID==Host.AREA_TICK)||(tickID==Host.ROOM_BEHAVIOR_TICK)))
 		{
@@ -73,5 +73,6 @@ public class FasterRoom extends StdBehavior
 				}
 			}
 		}
+		return true;
 	}
 }

@@ -17,7 +17,7 @@ public class Spell_DemonGate extends Spell
 	public Environmental newInstance(){	return new Spell_DemonGate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -34,7 +34,7 @@ public class Spell_DemonGate extends Spell
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void affect(Affect msg)

@@ -208,7 +208,7 @@ public class MovingRoom extends ActiveTicker
 			}
 		}
 	}
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		Vector normalVec = (Vector)messageInfo.elementAt(0);
 		Vector reverseVec = (Vector)messageInfo.elementAt(1);
@@ -377,6 +377,7 @@ public class MovingRoom extends ActiveTicker
 					}
 				}
 			}
-        	}
+        }
+		return true;
 	}
 }

@@ -14,9 +14,9 @@ public class Song_Mana extends Song
 	public int quality(){ return OK_OTHERS;}
 	public Environmental newInstance(){	return new Song_Mana();}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

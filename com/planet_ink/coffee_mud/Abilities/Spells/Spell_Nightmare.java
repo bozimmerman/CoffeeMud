@@ -86,11 +86,11 @@ public class Spell_Nightmare extends Spell
 			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to wake up from <S-HIS-HER> nightmare.");
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 			notAgainThisRound=false;
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -25,9 +25,9 @@ public class Chant_PredictWeather extends Chant
 		if(canBeUninvoked())
 			mob.tell(mob,null,"Your senses are no longer sensitive to the weather.");
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Host.MOB_TICK)
 		   &&(affected!=null)

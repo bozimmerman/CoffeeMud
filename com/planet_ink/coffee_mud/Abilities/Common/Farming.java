@@ -25,7 +25,7 @@ public class Farming extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Farming();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
 		   &&(affected instanceof Room)
@@ -41,7 +41,7 @@ public class Farming extends CommonSkill
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()

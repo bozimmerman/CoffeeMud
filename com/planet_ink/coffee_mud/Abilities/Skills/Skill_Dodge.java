@@ -19,11 +19,11 @@ public class Skill_Dodge extends StdAbility
 	public Environmental newInstance(){	return new Skill_Dodge();}
 	private boolean doneThisRound=false;
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 			doneThisRound=false;
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public boolean okAffect(Affect affect)

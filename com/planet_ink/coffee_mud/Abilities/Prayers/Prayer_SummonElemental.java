@@ -16,7 +16,7 @@ public class Prayer_SummonElemental extends Prayer
 	public int holyQuality(){ return HOLY_NEUTRAL;}
 	public Environmental newInstance(){	return new Prayer_SummonElemental();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -27,7 +27,7 @@ public class Prayer_SummonElemental extends Prayer
 					unInvoke();
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void affect(Affect msg)

@@ -1,1 +1,8 @@
 GAES still isn't done
+nightmare's duration needs to be reduced.
+SING social needs to be deleted or renamed.
+I believe that the Item zapper looks at class level insteadof total level
+I believe nightmare shouldn't last as long as it does, and
+that you shouldn't be able to cast spells while under it's affects. I was
+fighting Poseidon, and he cast nightmare on me.
+the DRAGONFIRE spell says the flames flames the enemy when it damages an opponenet. The first flames needs to be singular, so that it says The FLAME flames the enemy.

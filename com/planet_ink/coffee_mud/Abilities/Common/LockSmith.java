@@ -45,7 +45,7 @@ public class LockSmith extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
@@ -104,7 +104,7 @@ public class LockSmith extends CommonSkill
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

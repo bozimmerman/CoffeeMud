@@ -49,7 +49,7 @@ public class GiantScorpion extends StdMOB
 		return new GiantScorpion();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		// ===== are we in combat?
 		if((!amDead())&&(tickID==Host.MOB_TICK))
@@ -61,7 +61,7 @@ public class GiantScorpion extends StdMOB
 					sting();
 			}
 		}
-        return super.tick(tickID);
+        return super.tick(ticking,tickID);
 	}
 
 	protected boolean sting()

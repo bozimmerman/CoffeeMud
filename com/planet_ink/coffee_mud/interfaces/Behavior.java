@@ -6,7 +6,7 @@ import java.util.*;
  * something that is affected by, or affects
  * the environment around them.
  */
-public interface Behavior extends Cloneable
+public interface Behavior extends Cloneable, Tickable
 {
 	/** General descriptive ID for this
 	 * object.	Includes everything from 
@@ -50,14 +50,4 @@ public interface Behavior extends Cloneable
 	public String getStat(String code);
 	public void setStat(String code, String val);
 	public boolean sameAs(Behavior  B);
-	
-	/**
-	 * this method allows any environmental object
-	 * to behave according to a timed response.  by
-	 * default, it will never be called unless the
-	 * object uses the ServiceEngine to setup service.
-	 * The tickID allows granularity with the type
-	 * of service being requested.
-	 */
-	public void tick(Environmental ticking, int tickID);
 }

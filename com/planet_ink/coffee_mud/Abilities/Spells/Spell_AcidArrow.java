@@ -17,7 +17,7 @@ public class Spell_AcidArrow extends Spell
 	public Environmental newInstance(){	return new Spell_AcidArrow();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -27,7 +27,7 @@ public class Spell_AcidArrow extends Spell
 			if((!vic.amDead())&&(vic.location()!=null))
 				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(2,4,0),Affect.TYP_ACID,-1,"<T-NAME> sizzle(s) from the acid arrow residue!");
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

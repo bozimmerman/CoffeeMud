@@ -13,6 +13,7 @@ import java.util.*;
 public class StdBehavior implements Behavior
 {
 	public String ID(){return "StdBehavior";}
+	public String name(){return ID();}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public boolean grantsMobility(){return false;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
@@ -39,7 +40,7 @@ public class StdBehavior implements Behavior
 	{
 
 	}
-	protected MOB getBehaversMOB(Environmental ticking)
+	protected MOB getBehaversMOB(Tickable ticking)
 	{
 		if(ticking==null) return null;
 
@@ -54,7 +55,7 @@ public class StdBehavior implements Behavior
 		return null;
 	}
 
-	protected Room getBehaversRoom(Environmental ticking)
+	protected Room getBehaversRoom(Tickable ticking)
 	{
 		if(ticking==null) return null;
 
@@ -136,7 +137,7 @@ public class StdBehavior implements Behavior
 		if((E instanceof Area)&&((canImproveCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
-	public static boolean canActAtAll(Environmental affecting)
+	public static boolean canActAtAll(Tickable affecting)
 	{
 		if(affecting==null) return false;
 		if(!(affecting instanceof MOB)) return false;
@@ -148,7 +149,7 @@ public class StdBehavior implements Behavior
 		return true;
 	}
 
-	public static boolean canFreelyBehaveNormal(Environmental affecting)
+	public static boolean canFreelyBehaveNormal(Tickable affecting)
 	{
 		if(affecting==null) return false;
 		if(!(affecting instanceof MOB)) return false;
@@ -171,8 +172,9 @@ public class StdBehavior implements Behavior
 	 * The tickID allows granularity with the type
 	 * of service being requested.
 	 */
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
+		return true;
 	}
 	private static final String[] CODES={"CLASS","TEXT"};
 	public String[] getStatCodes(){return CODES;}

@@ -25,9 +25,9 @@ public class Disease_Tetnus extends Disease
 	protected boolean DISEASE_TOUCHSPREAD(){return true;}
 	protected int dexDown=1;
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))	return false;
+		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
 
 		MOB mob=(MOB)affected;

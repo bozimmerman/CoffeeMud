@@ -17,9 +17,9 @@ public class Song_Mercy extends Song
 	private Room lastRoom=null;
 	private int count=3;
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;

@@ -21,7 +21,7 @@ public class Spell_WallOfFire extends Spell
 	private Item theWall=null;
 	private String deathNotice="";
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -48,7 +48,7 @@ public class Spell_WallOfFire extends Spell
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 

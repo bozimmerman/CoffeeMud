@@ -61,10 +61,10 @@ public class Skill_Meditation extends StdAbility
 		return;
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
 		MOB mob=(MOB)affected;
 
@@ -90,7 +90,7 @@ public class Skill_Meditation extends StdAbility
 			unInvoke();
 			return false;
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

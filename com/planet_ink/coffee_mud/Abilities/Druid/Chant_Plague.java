@@ -14,12 +14,12 @@ public class Chant_Plague extends Chant
 	public Environmental newInstance(){	return new Chant_Plague();}
 	public String text(){return "DISEASE";}
 	int plagueDown=4;
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((--plagueDown)<=0)
 		{

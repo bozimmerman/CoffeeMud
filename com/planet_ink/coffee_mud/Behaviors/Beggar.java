@@ -25,15 +25,14 @@ public class Beggar extends StdBehavior
 			msg.addTrailerMsg(new FullMsg(mob,msg.source(),Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?"));
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(!canFreelyBehaveNormal(ticking)) return true;
 		tickTock++;
-		if(tickTock<5)
-			return;
+		if(tickTock<5) return true;
 		tickTock=0;
 		MOB mob=(MOB)ticking;
 		for(int i=0;i<mob.location().numInhabitants();i++)
@@ -84,5 +83,6 @@ public class Beggar extends StdBehavior
 		}
 		if(mobsHitUp.size()>0)
 			mobsHitUp.removeElementAt(0);
+		return true;
 	}
 }

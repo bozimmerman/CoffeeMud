@@ -21,9 +21,9 @@ public class Prayer_HealingAura extends Prayer
 	private int tenDown=10;
 	private int twentyDown=20;
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 		   return false;
 		if(tickID!=Host.MOB_TICK) return true;

@@ -31,14 +31,14 @@ public class Goblin extends StdMOB
 		return new Goblin();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
 			if(birthType!=baseEnvStats().ability())
 				setMOBSpecifics(baseEnvStats().ability());
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void setMOBSpecifics(int goblinType)

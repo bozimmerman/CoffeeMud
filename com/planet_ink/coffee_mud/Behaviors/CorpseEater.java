@@ -19,14 +19,14 @@ public class CorpseEater extends ActiveTicker
 		return new CorpseEater();
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			if(thisRoom.numItems()==0) return;
+			if(thisRoom.numItems()==0) return true;
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
 				Item I=thisRoom.fetchItem(i);
@@ -40,10 +40,10 @@ public class CorpseEater extends ActiveTicker
 					}
 					thisRoom.show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) "+I.name());
 					I.destroyThis();
-					return;
+					return true;
 				}
 			}
-
 		}
+		return true;
 	}
 }

@@ -17,7 +17,7 @@ public class Chant_SummonInsects extends Chant
 	Room castingLocation=null;
 	public Environmental newInstance(){	return new Chant_SummonInsects();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -30,7 +30,7 @@ public class Chant_SummonInsects extends Chant
 			if((!vic.amDead())&&(vic.location()!=null))
 				ExternalPlay.postDamage(invoker,vic,this,Dice.roll(1,3,0),Affect.TYP_OK_VISUAL,-1,"<T-NAME> <T-IS-ARE> stung by the swarm!");
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	public void unInvoke()
 	{

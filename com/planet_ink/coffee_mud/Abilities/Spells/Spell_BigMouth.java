@@ -86,9 +86,9 @@ public class Spell_BigMouth extends Spell
 		lastKnownLocation=null;
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if(invoker()==null) return true;
 		MOB mob=(MOB)invoker();
 		if(mob.location()!=null)

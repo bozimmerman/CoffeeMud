@@ -22,9 +22,9 @@ public class Disease_MummyRot extends StdAbility
 	int conDown=1;
 	int diseaseTick=0;
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))	return false;
+		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
 
 		MOB mob=(MOB)affected;

@@ -41,7 +41,7 @@ public class WimpyAggressive extends Aggressive
 		}
 	}
 
-	public static void tickWimpyAggressively(Environmental ticking, int tickID)
+	public static void tickWimpyAggressively(Tickable ticking, int tickID)
 	{
 		if(tickID!=Host.MOB_TICK) return;
 		if(ticking==null) return;
@@ -49,13 +49,14 @@ public class WimpyAggressive extends Aggressive
 
 		pickAWimpyFight((MOB)ticking);
 	}
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.MOB_TICK) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
 			tickWimpyAggressively(ticking,tickID);
 		}
+		return true;
 	}
 }

@@ -21,7 +21,7 @@ public class Mobile extends ActiveTicker
 		return new Mobile();
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
@@ -30,7 +30,7 @@ public class Mobile extends ActiveTicker
 			MOB mob=(MOB)ticking;
 			if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
 			||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
-				return;
+				return true;
 			
 			Room thisRoom=mob.location();
 			if(thisRoom instanceof GridLocale)
@@ -79,7 +79,7 @@ public class Mobile extends ActiveTicker
 			}
 
 			if(direction<0)
-				return;
+				return true;
 
 			boolean move=true;
 			for(int m=0;m<thisRoom.numInhabitants();m++)
@@ -113,6 +113,6 @@ public class Mobile extends ActiveTicker
 					tickDown=0;
 			}
 		}
-		return;
+		return true;
 	}
 }

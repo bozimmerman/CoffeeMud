@@ -21,9 +21,9 @@ public class Spell_ConjureNexus extends Spell
 		super.unInvoke();
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof Room)))
 			return false;
 		Room R=(Room)affected;

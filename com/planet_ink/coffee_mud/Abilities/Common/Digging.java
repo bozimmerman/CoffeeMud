@@ -25,7 +25,7 @@ public class Digging extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Digging();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
@@ -47,7 +47,7 @@ public class Digging extends CommonSkill
 
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()

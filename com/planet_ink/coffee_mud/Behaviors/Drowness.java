@@ -322,7 +322,7 @@ public class Drowness extends StdBehavior
         return retval;
     }
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticking!=null)
 		if(ticking instanceof MOB)
@@ -370,6 +370,7 @@ public class Drowness extends StdBehavior
 			}
 		}
 		super.tick(ticking,tickID);
+		return true;
 	}
 
     public boolean castFemaleSpell(MOB mob)

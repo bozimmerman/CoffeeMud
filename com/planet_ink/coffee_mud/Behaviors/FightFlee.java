@@ -19,7 +19,7 @@ public class FightFlee extends ActiveTicker
 		return new FightFlee();
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
@@ -30,5 +30,6 @@ public class FightFlee extends ActiveTicker
 			   &&(mob.getVictim().getVictim()==mob))
 				ExternalPlay.flee(mob,"");
 		}
+		return true;
 	}
 }

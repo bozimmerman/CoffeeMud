@@ -15,9 +15,9 @@ public class Song_Silence extends Song
 	protected boolean skipStandardSongTick(){return true;}
 	public Environmental newInstance(){	return new Song_Silence();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

@@ -74,7 +74,7 @@ public class Spell_WallOfAir extends Spell
 		}
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -84,7 +84,7 @@ public class Spell_WallOfAir extends Spell
 			   &&(!invoker.location().isContent(theWall)))
 				unInvoke();
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

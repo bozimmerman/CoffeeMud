@@ -28,13 +28,13 @@ public class Thiefness extends CombatAbilities
 		newCharacter(mob);
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canActAtAll(ticking)) return;
-		if(!(ticking instanceof MOB)) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(!canActAtAll(ticking)) return true;
+		if(!(ticking instanceof MOB)) return true;
 		MOB mob=(MOB)ticking;
 		if((--tickDown)<=0)
 		if((Dice.rollPercentage()<10)&&(mob.location()!=null))
@@ -81,5 +81,6 @@ public class Thiefness extends CombatAbilities
 				}
 			}
 		}
+		return true;
 	}
 }

@@ -13,21 +13,21 @@ public class MobileGoodGuardian extends Mobile
 		return new MobileGoodGuardian();
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
 			if(((Rideable)ticking).numRiders()>0)
-				return;
+				return true;
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
 		||(!Sense.canTaste(mob)))
-		   return;
+		   return true;
 		
 		Room thisRoom=mob.location();
 		MOB victim=GoodGuardian.anyPeaceToMake(mob.location(),mob);
@@ -57,6 +57,6 @@ public class MobileGoodGuardian extends Mobile
 			ExternalPlay.move(mob,dirCode,false,false);
 			GoodGuardian.keepPeace(mob,victim);
 		}
+		return true;
 	}
-
 }

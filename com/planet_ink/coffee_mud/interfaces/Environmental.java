@@ -6,7 +6,7 @@ import java.util.*;
  * something that is affected by, or affects
  * the environment around them.
  */
-public interface Environmental extends Cloneable
+public interface Environmental extends Cloneable, Tickable
 {
 	/** General descriptive ID for this
 	 * object.	Includes everything from
@@ -78,16 +78,6 @@ public interface Environmental extends Cloneable
 	 * a PENDING affect may take place
 	 */
 	public boolean okAffect(Affect affect);
-
-	/**
-	 * this method allows any environmental object
-	 * to behave according to a timed response.  by
-	 * default, it will never be called unless the
-	 * object uses the ServiceEngine to setup service.
-	 * The tickID allows granularity with the type
-	 * of service being requested.
-	 */
-	public boolean tick(int tickID);
 	
 	/**
 	 * Parameters for using in 3 dimensional space

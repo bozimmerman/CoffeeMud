@@ -18,7 +18,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 	private Item fire=null;
 	private boolean messedUp=false;
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
@@ -30,7 +30,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 			||(mob.isMine(fire)))
 				unInvoke();
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()

@@ -37,7 +37,7 @@ public class Chant_Reincarnation extends Chant
 			affectableStats.setMyRace(newRace);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(tickDown!=Integer.MAX_VALUE)
@@ -47,7 +47,7 @@ public class Chant_Reincarnation extends Chant
 			
 			// undo the affects of this spell
 			if((affected==null)||(!(affected instanceof MOB)))
-				return super.tick(tickID);
+				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
 			mob.tell("Your reincarnation geis is lifted as your form solidifies.");
 			if(newRace!=null)
@@ -63,7 +63,7 @@ public class Chant_Reincarnation extends Chant
 			}
 			return false;
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect msg)

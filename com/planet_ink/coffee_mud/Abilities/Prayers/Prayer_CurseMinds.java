@@ -16,12 +16,12 @@ public class Prayer_CurseMinds extends Prayer
 
 	boolean notAgain=false;
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		MOB mob=(MOB)affected;
 		if(mob.isInCombat())
@@ -29,7 +29,7 @@ public class Prayer_CurseMinds extends Prayer
 			MOB newvictim=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if(newvictim!=mob) mob.setVictim(newvictim);
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()

@@ -64,13 +64,13 @@ public class Spell_KnowBliss extends Spell
 			unInvoke();
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
 			// undo the affects of this spell
 			if((affected==null)||(!(affected instanceof MOB)))
-				return super.tick(tickID);
+				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
 			for(int b=0;b<mob.numBehaviors();b++)
 			{
@@ -78,13 +78,13 @@ public class Spell_KnowBliss extends Spell
 				if((B!=null)&&(B.grantsMobility()))
 				{
 					B.tick(affected,tickID);
-					return super.tick(tickID);
+					return super.tick(ticking,tickID);
 				}
 			}
 			Behavior B=CMClass.getBehavior("Mobile");
 			B.tick(affected,tickID);
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public boolean okAffect(Affect msg)

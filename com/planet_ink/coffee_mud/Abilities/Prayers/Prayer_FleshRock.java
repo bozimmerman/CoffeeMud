@@ -15,7 +15,7 @@ public class Prayer_FleshRock extends Prayer
 	public Environmental newInstance(){	return new Prayer_FleshRock();}
 
 	public Item statue=null;
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -35,7 +35,7 @@ public class Prayer_FleshRock extends Prayer
 					room.bringMobHere(mob,false);
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect affect)

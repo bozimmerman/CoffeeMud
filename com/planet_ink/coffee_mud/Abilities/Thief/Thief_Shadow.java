@@ -92,9 +92,9 @@ public class Thief_Shadow extends ThiefSkill
 		}
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if(lastTogether==0) return true;
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
 			lastTogether=System.currentTimeMillis();

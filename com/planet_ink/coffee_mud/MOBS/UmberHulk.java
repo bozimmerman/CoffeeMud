@@ -47,7 +47,7 @@ public class UmberHulk extends StdMOB
 		return new UmberHulk();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
@@ -57,7 +57,7 @@ public class UmberHulk extends StdMOB
 				confuse();
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
     public void addNaturalAbilities()
     {

@@ -109,7 +109,7 @@ public class Emoter extends ActiveTicker
 		if(oldLoc!=null) emoter.setLocation(oldLoc);
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(emotes.size()>0))
@@ -124,11 +124,11 @@ public class Emoter extends ActiveTicker
 					Room R=(Room)r.nextElement();
 					emoteHere(R,emoter,emote);
 				}
-				return;
+				return true;
 			}
 			
 			Room room=getBehaversRoom(ticking);
-			if(room==null) return;
+			if(room==null) return true;
 			if(ticking instanceof MOB)
 				emoter=(MOB)ticking;
 			else
@@ -164,5 +164,6 @@ public class Emoter extends ActiveTicker
 				}
 			}
 		}
+		return true;
 	}
 }

@@ -140,7 +140,7 @@ public class Spell_Delirium extends Spell
 		return str.trim();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -151,7 +151,7 @@ public class Spell_Delirium extends Spell
 			if(amountRemaining<0)
 				unInvoke();
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 

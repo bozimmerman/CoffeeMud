@@ -1,11 +1,30 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+ONCE_PROG
+	gossip Find and bring me my missing coin and you shall be rewarded!
+	mpset i$ TREASUREHUNT 
+~
 
-<P>&nbsp;</P>
+SPEECH_PROG missing bring quest reward coin find missing? bring? quest? reward? coin? find? missing?
+	say "$n" Find and bring me my missing coin and you shall be rewarded!
+endif
+~
 
-</BODY>
-</HTML>
+GIVE_PROG 'a silver coin' 'a copper coin' 'a quest coin' 'a platinum coin'
+	if var($n TREASUREHUNT == FOUND)
+		say "$n" You've already helped me!
+	else
+		if var($i TREASUREHUNT == FOUND)
+			say "$n" Sorry, the quest is over!
+		else
+			mpset $i TREASUREHUNT FOUND
+			mpset $n TREASUREHUNT FOUND
+			say "$n" Congratulations!
+			shake $n
+			mpexp $n 100
+			hold coin
+			mpoload QuestPoint
+			give "a quest point" "$n"
+			mpendquest treasurehunt
+		endif
+	endif
+
+~

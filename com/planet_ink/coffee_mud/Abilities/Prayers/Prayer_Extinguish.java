@@ -45,7 +45,7 @@ public class Prayer_Extinguish extends Prayer
 			ExternalPlay.postDeath(source,(MOB)target,null);
 		if((target instanceof Light)&&(((Light)target).isLit()))
 		{
-			((Light)target).tick(Host.LIGHT_FLICKERS);
+			((Light)target).tick(target,Host.LIGHT_FLICKERS);
 			((Light)target).light(false);
 		}
 	}

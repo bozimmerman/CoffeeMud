@@ -41,14 +41,14 @@ public class Spell_Charm extends Spell
 		return super.okAffect(affect);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
 		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=invoker)))
 			ExternalPlay.follow(mob,invoker,true);
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()

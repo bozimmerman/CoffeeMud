@@ -63,7 +63,7 @@ public class DrowElf extends StdMOB
 		recoverCharStats();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
@@ -77,7 +77,7 @@ public class DrowElf extends StdMOB
 			}
 
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	protected boolean castDarkness()

@@ -74,15 +74,15 @@ public class Mime extends ActiveTicker
 				   msg.othersCode(),oth);
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		Affect msg=lastMsg;
-		if(msg==null) return;
+		if(msg==null) return true;
 		lastMsg=null;
 		if(((ticking instanceof MOB)&&(!canFreelyBehaveNormal(ticking)))
 		||(!canAct(ticking,tickID)))
-			return;
+			return true;
 		msg=(Affect)msg.copyOf();
 		MOB sMOB=(MOB)msg.source();
 		if(msg.sourceMinor()==Affect.TYP_EMOTE)
@@ -128,7 +128,7 @@ public class Mime extends ActiveTicker
 			}
 		}
 		else
-			return;
+			return true;
 		disabled=true;
 		if((msg!=null)
 		&&(sMOB.location()!=null)
@@ -144,5 +144,6 @@ public class Mime extends ActiveTicker
 				sMOB.location().send(msg.source(),msg);
 		}
 		disabled=false;
+		return true;
 	}
 }

@@ -26,15 +26,16 @@ public class MobileAggressive extends Mobile
 		return ExternalPlay.zapperCheck(getParms(),M);
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.MOB_TICK) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
 			Aggressive.tickAggressively(ticking,tickID,this);
 			VeryAggressive.tickVeryAggressively(ticking,tickID,this);
 		}
+		return true;
 	}
 }

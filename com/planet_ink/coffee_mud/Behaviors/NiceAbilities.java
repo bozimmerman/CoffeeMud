@@ -20,18 +20,18 @@ public class NiceAbilities extends ActiveTicker
 		return new NiceAbilities();
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			if(thisRoom==null) return;
+			if(thisRoom==null) return true;
 
 			double aChance=Util.div(mob.curState().getMana(),mob.maxState().getMana());
 			if((Math.random()>aChance)||(mob.curState().getMana()<50))
-				return;
+				return true;
 
 			MOB target=thisRoom.fetchInhabitant(Dice.roll(1,thisRoom.numInhabitants(),-1));
 			int x=0;
@@ -66,5 +66,6 @@ public class NiceAbilities extends ActiveTicker
 					tryThisOne.invoke(mob,V,target,false);
 				}
 		}
+		return true;
 	}
 }

@@ -18,10 +18,10 @@ public class Fighter_Heroism extends StdAbility
 	public Environmental newInstance(){	return new Fighter_Heroism();}
 	public int classificationCode(){ return Ability.SKILL;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
 		MOB mob=(MOB)affected;
 
@@ -32,7 +32,7 @@ public class Fighter_Heroism extends StdAbility
 		&&(Dice.rollPercentage()==1)
 		&&(tickID==Host.MOB_TICK))
 			helpProfficiency(mob);
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)

@@ -453,7 +453,7 @@ public class StdExit implements Exit
 		}
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.EXIT_REOPEN)
 		{
@@ -486,7 +486,7 @@ public class StdExit implements Exit
 				if(A!=null)
 				{
 					int s=affects.size();
-					if(!A.tick(tickID))
+					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 					if(affects.size()==s)
 						a++;

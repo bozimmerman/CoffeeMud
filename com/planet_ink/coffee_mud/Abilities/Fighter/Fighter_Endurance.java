@@ -19,10 +19,10 @@ public class Fighter_Endurance extends StdAbility
 	public Environmental newInstance(){	return new Fighter_Endurance();}
 	public int classificationCode(){ return Ability.SKILL;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
 		MOB mob=(MOB)affected;
 
@@ -34,6 +34,6 @@ public class Fighter_Endurance extends StdAbility
 			mob.curState().recoverTick(mob,mob.maxState());
 			helpProfficiency(mob);
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 }

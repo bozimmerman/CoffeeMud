@@ -26,7 +26,7 @@ public class StdInnKey extends StdKey implements InnKey
 		return new StdInnKey();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.ITEM_BOUNCEBACK)
 		{

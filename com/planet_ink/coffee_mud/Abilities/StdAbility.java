@@ -797,7 +797,7 @@ public class StdAbility implements Ability, Cloneable
 	 * The tickID allows granularity with the type
 	 * of service being requested.
 	 */
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;

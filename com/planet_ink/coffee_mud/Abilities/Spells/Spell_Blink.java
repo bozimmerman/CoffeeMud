@@ -27,7 +27,7 @@ public class Spell_Blink extends Spell
 			mob.tell("You stop blinking.");
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)&&(affected!=null)&&(affected instanceof MOB))
 		{
@@ -85,7 +85,7 @@ public class Spell_Blink extends Spell
 			else
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) again.");
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -41,17 +41,17 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(ticking==null) return;
+		if(ticking==null) return true;
 		MOB mob=(MOB)ticking;
 		
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canActAtAll(mob)) return;
-		if(!mob.isInCombat()) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(!canActAtAll(mob)) return true;
+		if(!mob.isInCombat()) return true;
 		MOB victim=mob.getVictim();
-		if(victim==null) return;
+		if(victim==null) return true;
 
 		// insures we only try this once!
 		for(int b=0;b<mob.numBehaviors();b++)
@@ -61,12 +61,12 @@ public class CombatAbilities extends StdBehavior
 				break;
 			else
 			if(B instanceof CombatAbilities)
-				return;
+				return true;
 		}
 
 		double aChance=Util.div(mob.curState().getMana(),mob.maxState().getMana());
 		if((Math.random()>aChance)||(mob.curState().getMana()<50))
-			return;
+			return true;
 
 		int tries=0;
 		Ability tryThisOne=null;
@@ -140,5 +140,6 @@ public class CombatAbilities extends StdBehavior
 				}
 			}
 		}
+		return true;
 	}
 }

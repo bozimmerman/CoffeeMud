@@ -135,11 +135,11 @@ public class LightSource extends StdItem implements Light
 		}
 		return false;
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!LightSource.pleaseTickLightly(this,tickID))
 			return false;
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public static boolean inTheRain(Room room)
@@ -178,7 +178,7 @@ public class LightSource extends StdItem implements Light
 					mob.tell("The water makes "+myLight.name()+" go out.");
 				else
 					mob.tell("The rain makes "+myLight.name()+" go out.");
-				myLight.tick(Host.LIGHT_FLICKERS);
+				myLight.tick(myLight,Host.LIGHT_FLICKERS);
 			}
 		}
 

@@ -1,11 +1,39 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# this script is for the shopkeeper chosen to be robbed
+ONCE_PROG
+gossip Help! I've been ROBBED!!
+mpsetvar $i ROBBED 
+mpset $i MONEY 0
+~
 
-<P>&nbsp;</P>
+SPEECH_PROG trouble problem robbed stole rob thief quest help
+	IF VAR($i ROBBED == RECOVER)
+		say "$n" I've already been helped, thanks.
+	ELSE
+		say "$n" That dirty thief made out of here with my gold.  Get my money back and I'll have a reward.
+	ENDIF
+~
 
-</BODY>
-</HTML>
+GIVE_PROG gold
+	IF VAR($i ROBBED == RECOVER)
+		say "$n" I've already been helped, thanks.
+	ELSE
+		IF VAR($n ROBBED == RECOVER)
+			say "$n" You've already helped me.  Find someone else.
+		ELSE
+			IF GOLDAMT($o >= 5000)
+				mpset $i ROBBED RECOVER
+				mpset $n ROBBED RECOVER
+				say "$n" Thank you very much.  I hope he didn't give you too much trouble.  Here is your reward:
+				mpexp $n 100
+				mpoload QuestPoint
+				give "a quest point" "$n"
+				mpoload 100
+				give 100 "$n"
+				mpendquest robbed
+			ELSE
+				say "$n" Are you trying to insult me?  I just got robbed of more than THAT!
+				drop $o
+			ENDIF
+		ENDIF
+	ENDIF
+~

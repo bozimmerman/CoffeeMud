@@ -299,65 +299,64 @@ public class BribeGateGuard extends StdBehavior
 		}
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		int dir=findGate(mob);
 		if(dir<0) 
-    {
-      ExternalPlay.quickSay(mob,null,"I'd shut the gate, but there isn't one...",false,false);
-      return;
-    }
+		{
+			ExternalPlay.quickSay(mob,null,"I'd shut the gate, but there isn't one...",false,false);
+			return true;
+		}
 		Exit e=mob.location().getExitInDir(dir);
-    tickTock++;
+		tickTock++;
 		if(tickTock>2)
 		{
 			tickTock=0;
-      boolean nightTime=(mob.location().getArea().getTODCode()==Area.TIME_NIGHT);
-      if(nightTime)
-      {
-        if((!e.isLocked())&&(e.hasALock()))
-        {
-          if(getMyKeyTo(mob,e)!=null)
-          {
-            FullMsg msg=new FullMsg(mob,e,Affect.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
-            if(mob.location().okAffect(msg))
-              ExternalPlay.roomAffectFully(msg,mob.location(),dir);
-          }
-        }
-      }
-      else
-      if(e.isLocked())
-      {
-        if(getMyKeyTo(mob,e)!=null)
-        {
-          FullMsg msg=new FullMsg(mob,e,Affect.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
-          if(mob.location().okAffect(msg))
-            ExternalPlay.roomAffectFully(msg,mob.location(),dir);
-        }
-      }
-      if((e.isOpen())&&(paidPlayers.isEmpty()))
-      {
-        FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
-        if(mob.location().okAffect(msg))
-          ExternalPlay.roomAffectFully(msg,mob.location(),dir);
-      }
-      if((!e.isOpen())&&(!paidPlayers.isEmpty()))
-      {
-        FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> open(s) <T-NAME>.");
-        for(int i=0;i<paidPlayers.size();i++)
-        {
-          ExternalPlay.quickSay(mob,(MOB)paidPlayers.elementAt(i),"I still have that "+getBalance((MOB)paidPlayers.elementAt(i))+" from before if you're heading through",true,false);
-        }
-        if(mob.location().okAffect(msg))
-          ExternalPlay.roomAffectFully(msg,mob.location(),dir);
-      }
-
-    }
-  }
-
+			boolean nightTime=(mob.location().getArea().getTODCode()==Area.TIME_NIGHT);
+			if(nightTime)
+			{
+				if((!e.isLocked())&&(e.hasALock()))
+				{
+					if(getMyKeyTo(mob,e)!=null)
+					{
+						FullMsg msg=new FullMsg(mob,e,Affect.MSG_LOCK,"<S-NAME> lock(s) <T-NAME>.");
+						if(mob.location().okAffect(msg))
+							ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+					}
+				}
+			}
+			else
+			if(e.isLocked())
+			{
+				if(getMyKeyTo(mob,e)!=null)
+				{
+					FullMsg msg=new FullMsg(mob,e,Affect.MSG_UNLOCK,"<S-NAME> unlock(s) <T-NAME>.");
+					if(mob.location().okAffect(msg))
+						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+				}
+			}
+			if((e.isOpen())&&(paidPlayers.isEmpty()))
+			{
+				FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
+				if(mob.location().okAffect(msg))
+					ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+			}
+			if((!e.isOpen())&&(!paidPlayers.isEmpty()))
+			{
+				FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> open(s) <T-NAME>.");
+				for(int i=0;i<paidPlayers.size();i++)
+				{
+					ExternalPlay.quickSay(mob,(MOB)paidPlayers.elementAt(i),"I still have that "+getBalance((MOB)paidPlayers.elementAt(i))+" from before if you're heading through",true,false);
+				}
+				if(mob.location().okAffect(msg))
+					ExternalPlay.roomAffectFully(msg,mob.location(),dir);
+			}
+		}
+		return true;
+	}
 }

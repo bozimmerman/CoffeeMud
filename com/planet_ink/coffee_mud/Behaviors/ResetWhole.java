@@ -32,10 +32,10 @@ public class ResetWhole extends StdBehavior
 		}
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(lastAccess<0) return;
+		if(lastAccess<0) return true;
 		
 		long time=1800000;
 		try
@@ -71,5 +71,6 @@ public class ResetWhole extends StdBehavior
 			}
 			lastAccess=-1;
 		}
+		return true;
 	}
 }

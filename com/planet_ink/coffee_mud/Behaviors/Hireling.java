@@ -52,11 +52,11 @@ public class Hireling extends StdBehavior
 			observer.getStartRoom().bringMobHere(observer,false);
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return;
-		if(onTheJobUntil==0) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(onTheJobUntil==0) return true;
 		MOB observer=(MOB)ticking;
 		if(System.currentTimeMillis()>onTheJobUntil)
 		{
@@ -70,7 +70,7 @@ public class Hireling extends StdBehavior
 				observer.setFollowing(null);
 				if(observer.getStartRoom()!=null)
 					observer.getStartRoom().bringMobHere(observer,false);
-				return;
+				return true;
 			}
 			MOB talkTo=null;
 			if((workingFor.length()>0)&&(observer.location()!=null))
@@ -108,6 +108,7 @@ public class Hireling extends StdBehavior
 				observer.setFollowing(talkTo);
 			}
 		}
+		return true;
 	}
 	
 	/** this method defines how this thing responds

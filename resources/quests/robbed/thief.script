@@ -1,11 +1,12 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# this is the script for the thief.  Not much to do..
+ONCE_PROG
+mpoload 5000
+~
 
-<P>&nbsp;</P>
+RAND_PROG 10
+emote counts the shopkeepers money.
+~
 
-</BODY>
-</HTML>
+SPEECH_PROG robbed stole rob thief quest help
+say "$n" Yea, I stole it.  So what?
+~

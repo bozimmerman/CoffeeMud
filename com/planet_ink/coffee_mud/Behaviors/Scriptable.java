@@ -12,6 +12,76 @@ public class Scriptable extends StdBehavior
 	private MOB lastToHurtMe=null;
 	private Room lastKnownLocation=null;
 	private Vector que=new Vector();
+	private static final Hashtable funcH=new Hashtable();
+	private static final Hashtable methH=new Hashtable();
+	private static final Hashtable progH=new Hashtable();
+	private Vector oncesDone=new Vector();
+
+	private static final String[] progs={
+		"GREET_PROG", //1
+		"ALL_GREET_PROG", //2
+		"SPEECH_PROG", //3
+		"GIVE_PROG", //4
+		"RAND_PROG", //5
+		"ONCE_PROG", //6
+		"FIGHT_PROG", //7
+		"ENTRY_PROG", //8
+		"EXIT_PROG", //9
+		"DEATH_PROG", //10
+		"HITPRCNT_PROG", //11
+		"MASK_PROG" //12
+	};
+	private static final String[] funcs={
+		"RAND", //1
+		"HAS", //2
+		"WORN", //3
+		"ISNPC", //4
+		"ISPC", //5
+		"ISGOOD", //6
+		"ISNAME", //7
+		"ISEVIL", //8
+		"ISNEUTRAL", //9
+		"ISFIGHT", //10
+		"ISIMMORT", //11
+		"ISCHARMED", //12
+		"STAT", //13
+		"AFFECTED", //14
+		"ISFOLLOW", //15
+		"HITPRCNT", //16
+		"INROOM", //17
+		"SEX", //18
+		"POSITION", //19
+		"LEVEL", //20
+		"CLASS", //21
+		"BASECLASS", //22
+		"RACE", //23
+		"RACECAT", //24
+		"GOLDAMT", //25
+		"OBJTYPE", // 26
+		"VAR", // 27
+	};
+	private static final String[] methods={
+		"MPASOUND", //1
+		"MPECHO", //2
+		"MPSLAY", //3
+		"MPJUNK", //4
+		"MPMLOAD", //5
+		"MPOLOAD", //6
+		"MPECHOAT", //7
+		"MPECHOAROUND", //8
+		"MPCAST", //9
+		"MPKILL", //10
+		"MPEXP", //11
+		"MPPURGE", //12
+		"MPUNAFFECT", //13
+		"MPGOTO", //14
+		"MPAT", //15
+		"MPSET", //16
+		"MPTRANSFER", //17
+		"MPFORCE", //18
+		"IF", //19
+		"MPSETVAR" //20
+	};
 
 	public Behavior newInstance()
 	{
@@ -55,8 +125,26 @@ public class Scriptable extends StdBehavior
 		}
 	}
 
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		oncesDone.clear();
+	}
+	
 	private Vector parseScripts(String text)
 	{
+		synchronized(funcH)
+		{
+			if(funcH.size()==0)
+			{
+				for(int i=0;i<funcs.length;i++)
+					funcH.put(funcs[i],new Integer(i+1));
+				for(int i=0;i<methods.length;i++)
+					methH.put(methods[i],new Integer(i+1));
+				for(int i=0;i<progs.length;i++)
+					progH.put(progs[i],new Integer(i+1));
+			}
+		}
 		Vector V=new Vector();
 		if(text.startsWith("LOAD="))
 		{
@@ -196,13 +284,15 @@ public class Scriptable extends StdBehavior
 	
 	public boolean eval(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String evaluable)
 	{
-		evaluable=evaluable.toUpperCase().trim();
+		String uevaluable=evaluable.toUpperCase().trim();
 		boolean returnable=false;
 		while(evaluable.length()>0)
 		{
 			int y=evaluable.indexOf("(");
 			int z=evaluable.indexOf(")");
-			String preFab=evaluable.substring(0,y).trim();
+			String preFab=uevaluable.substring(0,y).trim();
+			Integer funcCode=(Integer)funcH.get(preFab);
+			if(funcCode==null) funcCode=new Integer(0);
 			if(y==0)
 			{
 				int depth=0;
@@ -214,6 +304,7 @@ public class Scriptable extends StdBehavior
 					{
 						String expr=evaluable.substring(1,i);
 						evaluable=evaluable.substring(i+1);
+						uevaluable=uevaluable.substring(i+1);
 						returnable=eval(source,target,monster,primaryItem,secondaryItem,expr);
 						break;
 					}
@@ -228,10 +319,10 @@ public class Scriptable extends StdBehavior
 			if(evaluable.startsWith("!"))
 				return !eval(source,target,monster,primaryItem,secondaryItem,evaluable.substring(1).trim());
 			else
-			if(evaluable.startsWith("AND "))
+			if(uevaluable.startsWith("AND "))
 				return returnable&&eval(source,target,monster,primaryItem,secondaryItem,evaluable.substring(3).trim());
 			else
-			if(evaluable.startsWith("OR "))
+			if(uevaluable.startsWith("OR "))
 				return returnable||eval(source,target,monster,primaryItem,secondaryItem,evaluable.substring(2).trim());
 			else
 			if((y<0)||(z<y))
@@ -239,26 +330,31 @@ public class Scriptable extends StdBehavior
 				Log.errOut("Scriptable","() Syntax -- "+monster.name()+", "+evaluable);
 				break;
 			}
-			else	
-			if(preFab.equals("RAND"))
+			else
+			switch(funcCode.intValue())
+			{
+			case 1: // rand
 			{
 				int arg=Util.s_int(evaluable.substring(y+1,z));
 				if(Dice.rollPercentage()<arg)
 					returnable=true;
 				else
 					returnable=false;
+				break;
 			}
-			else
-			if(preFab.equals("HAS"))
+			case 2: // has
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(arg2.length()==0))
+				if(arg2.length()==0)
 				{
 					Log.errOut("Scriptable","HAS Syntax -- "+monster.name()+", "+evaluable);
-					break;
+					return returnable;
 				}
+				if(E==null)
+					returnable=false;
+				else
 				if(E instanceof MOB)
 					returnable=(((MOB)E).fetchInventory(arg2)!=null);
 				else
@@ -269,18 +365,21 @@ public class Scriptable extends StdBehavior
 					returnable=(((Room)E).fetchItem(null,arg2)!=null);
 				else
 					returnable=false;
+				break;
 			}
-			else
-			if(preFab.equals("WORN"))
+			case 3: // worn
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(evaluable.substring(y+1,z),1));
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(arg2.length()==0))
+				if(arg2.length()==0)
 				{
 					Log.errOut("Scriptable","WORN Syntax -- "+monster.name()+", "+evaluable);
-					break;
+					return returnable;
 				}
+				if(E==null)
+					returnable=false;
+				else
 				if(E instanceof MOB)
 					returnable=(((MOB)E).fetchWornItem(arg2)!=null);
 				else
@@ -288,395 +387,602 @@ public class Scriptable extends StdBehavior
 					returnable=(CoffeeUtensils.containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
 				else
 					returnable=false;
+				break;
 			}
-			else
-			if(preFab.equals("ISNPC"))
+			case 4: // isnpc
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				returnable=((MOB)E).isMonster();
+					returnable=false;
+				else
+					returnable=((MOB)E).isMonster();
+				break;
 			}
-			else
-			if(preFab.equals("ISPC"))
+			case 5: // ispc
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				returnable=!((MOB)E).isMonster();
+					returnable=false;
+				else
+					returnable=!((MOB)E).isMonster();
+				break;
 			}
-			else
-			if(preFab.equals("ISGOOD"))
+			case 6: // isgood
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("good");
+					returnable=false;
+				else
+					returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("good");
+				break;
 			}
-			else
-			if(preFab.equals("ISEVIL"))
+			case 8: // isevil
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("evil");
+					returnable=false;
+				else
+					returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("evil");
+				break;
 			}
-			else
-			if(preFab.equals("ISNEUTRAL"))
+			case 9: // isneutral
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("neutral");
+					returnable=false;
+				else
+					returnable=CommonStrings.shortAlignmentStr(((MOB)E).getAlignment()).equalsIgnoreCase("neutral");
+				break;
 			}
-			else
-			if(preFab.equals("ISFIGHT"))
+			case 10: // isfight
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				returnable=((MOB)E).isInCombat();
+					returnable=false;
+				else
+					returnable=((MOB)E).isInCombat();
+				break;
 			}
-			else
-			if(preFab.equals("ISIMMORT"))
+			case 11: // isimmort
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				returnable=((MOB)E).isASysOp(((MOB)E).location());
+					returnable=false;
+				else
+					returnable=((MOB)E).isASysOp(((MOB)E).location());
+				break;
 			}
-			else
-			if(preFab.equals("ISCHARMED"))
+			case 12: // ischarmed
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
 				if((E==null)||(!(E instanceof MOB)))
-					break;
-				Ability A=((MOB)E).fetchAffect("Spell_Charm");
-				if(A==null) A=((MOB)E).fetchAffect("Spell_Enthrall");
-				if(A==null) A=((MOB)E).fetchAffect("Chant_CharmAnimal");
-				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonMonster");
-				if(A==null) A=((MOB)E).fetchAffect("Spell_DemonGate");
-				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonEnemy");
-				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonSteed");
-				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonFlyer");
-				if(A==null) A=((MOB)E).fetchAffect("Spell_SummonArmy");
-				returnable=(A!=null);
+					returnable=false;
+				else
+				{
+					Ability A=((MOB)E).fetchAffect("Spell_Charm");
+					if(A==null) A=((MOB)E).fetchAffect("Spell_Enthrall");
+					if(A==null) A=((MOB)E).fetchAffect("Chant_CharmAnimal");
+					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonMonster");
+					if(A==null) A=((MOB)E).fetchAffect("Spell_DemonGate");
+					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonEnemy");
+					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonSteed");
+					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonFlyer");
+					if(A==null) A=((MOB)E).fetchAffect("Spell_SummonArmy");
+					returnable=(A!=null);
+				}
+				break;
 			}
-			else
-			if(preFab.equals("ISFOLLOW"))
+			case 15: // isfollow
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(!(((MOB)E).location()==null)))
-					break;
-				returnable=!(((MOB)E).amFollowing()==null)||(((MOB)E).amFollowing().location()!=lastKnownLocation);
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+					returnable=!(((MOB)E).amFollowing()==null)||(((MOB)E).amFollowing().location()!=lastKnownLocation);
+				break;
 			}
-			else
-			if(preFab.equals("HITPRCNT"))
+			case 7: // isname
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if(E==null)
+					returnable=false;
+				else
+					returnable=CoffeeUtensils.containsString(E.name(),arg2);
+				break;
+			}
+			case 14: // affected
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if(E==null)
+					returnable=false;
+				else
+					returnable=(E.fetchAffect(arg2)!=null);
+				break;
+			}
+			case 16: // hitprcnt
 			{
 				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
 				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","HITPRCNT Syntax -- "+monster.name()+", "+evaluable);
-					break;
+					return returnable;
 				}
-				double hitPctD=Util.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
-				int val1=(int)Math.round(hitPctD*100.0);
-				int val2=Util.s_int(arg3);
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					double hitPctD=Util.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
+					int val1=(int)Math.round(hitPctD*100.0);
+					int val2=Util.s_int(arg3);
 				
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(val1==val2);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(val1>=val2);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(val1<=val2);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(val1>val2);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(val1<val2);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(val1!=val2);
-				else
-				{
-					Log.errOut("Scriptable","HITPRCNT Syntax -- "+monster.name()+", "+evaluable);
-					break;
+					if(arg2.equalsIgnoreCase("=="))
+						returnable=(val1==val2);
+					else
+					if(arg2.equalsIgnoreCase(">="))
+						returnable=(val1>=val2);
+					else
+					if(arg2.equalsIgnoreCase("<="))
+						returnable=(val1<=val2);
+					else
+					if(arg2.equalsIgnoreCase(">"))
+						returnable=(val1>val2);
+					else
+					if(arg2.equalsIgnoreCase("<"))
+						returnable=(val1<val2);
+					else
+					if(arg2.equalsIgnoreCase("!="))
+						returnable=(val1!=val2);
+					else
+					{
+						Log.errOut("Scriptable","HITPRCNT Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
 				}
+				break;
 			}
-			else
-			if(preFab.equals("INROOM"))
+			case 17: // inroom
 			{
 				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
 				Environmental E=monster;
-				if((E==null)||(!(E instanceof MOB))||(!(((MOB)E).location()==null))||(arg2.length()==0))
-					break;
-				returnable=((MOB)E).location().ID().equalsIgnoreCase(arg2);
-			}
-			else
-			if(preFab.equals("SEX"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","SEX Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				String sex=(""+((char)((MOB)E).charStats().getStat(CharStats.GENDER))).toUpperCase();
-				if(arg2.equals("=="))
-					returnable=arg3.startsWith(sex);
+				Room R=getRoom(arg2,lastKnownLocation);
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
 				else
-				if(arg2.equals("!="))
-					returnable=!arg3.startsWith(sex);
+				if((R==null)&&(arg2.length()==0))
+					returnable=true;
 				else
-				{
-					Log.errOut("Scriptable","SEX Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("POSITION"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","POSITION Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				String sex="STANDING";
-				if(Sense.isSleeping(E))
-					sex="SLEEPING";
+				if(R==null)
+					returnable=false;
 				else
-				if(Sense.isSitting(E))
-					sex="SITTING";
-				if(arg2.equals("=="))
-					returnable=sex.startsWith(arg3);
-				else
-				if(arg2.equals("!="))
-					returnable=!sex.startsWith(arg3);
-				else
-				{
-					Log.errOut("Scriptable","POSITION Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("LEVEL"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","LEVEL Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				int val1=E.envStats().level();
-				int val2=Util.s_int(arg3);
-				
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(val1==val2);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(val1>=val2);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(val1<=val2);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(val1>val2);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(val1<val2);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(val1!=val2);
-				else
-				{
-					Log.errOut("Scriptable","LEVEL Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("CLASS"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				String sex=((MOB)E).charStats().getCurrentClass().name().toUpperCase();
-				if(arg2.equals("=="))
-					returnable=sex.startsWith(arg3);
-				else
-				if(arg2.equals("!="))
-					returnable=!sex.startsWith(arg3);
-				else
-				{
-					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("BASECLASS"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				String sex=((MOB)E).charStats().getCurrentClass().baseClass().toUpperCase();
-				if(arg2.equals("=="))
-					returnable=sex.startsWith(arg3);
-				else
-				if(arg2.equals("!="))
-					returnable=!sex.startsWith(arg3);
-				else
-				{
-					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("RACE"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","RACE Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				String sex=((MOB)E).charStats().getMyRace().name().toUpperCase();
-				if(arg2.equals("=="))
-					returnable=sex.startsWith(arg3);
-				else
-				if(arg2.equals("!="))
-					returnable=!sex.startsWith(arg3);
-				else
-				{
-					Log.errOut("Scriptable","RACE Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("RACECAT"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","RACECAT Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				String sex=((MOB)E).charStats().getMyRace().racialCategory().toUpperCase();
-				if(arg2.equals("=="))
-					returnable=sex.startsWith(arg3);
-				else
-				if(arg2.equals("!="))
-					returnable=!sex.startsWith(arg3);
-				else
-				{
-					Log.errOut("Scriptable","RACECAT Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("GOLDAMT"))
-			{
-				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
-				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
-				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
-				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(arg2.length()==0)||(arg3.length()==0))
-				{
-					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				int val1=0;
-				if(E instanceof MOB)
-					val1=((MOB)E).getMoney();
-				else
-				if(E instanceof Coins)
-					val1=((Coins)E).numberOfCoins();
-				else
-				if(E instanceof Item)
-					val1=((Item)E).value();
-				else
-				{
-					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-				
-				int val2=Util.s_int(arg3);
-				
-				if(arg2.equalsIgnoreCase("=="))
-					returnable=(val1==val2);
-				else
-				if(arg2.equalsIgnoreCase(">="))
-					returnable=(val1>=val2);
-				else
-				if(arg2.equalsIgnoreCase("<="))
-					returnable=(val1<=val2);
-				else
-				if(arg2.equalsIgnoreCase(">"))
-					returnable=(val1>val2);
-				else
-				if(arg2.equalsIgnoreCase("<"))
-					returnable=(val1<val2);
-				else
-				if(arg2.equalsIgnoreCase("!="))
-					returnable=(val1!=val2);
-				else
-				{
-					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
-					break;
-				}
-			}
-			else
-			if(preFab.equals("OBJTYPE"))
-			{
-			}
-			else
-			{
-				Log.errOut("Scriptable","Unknown CMD -- "+monster.name()+", "+evaluable);
+					returnable=((MOB)E).location().ID().equalsIgnoreCase(R.ID());
 				break;
 			}
+			case 18: // sex
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","SEX Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex=(""+((char)((MOB)E).charStats().getStat(CharStats.GENDER))).toUpperCase();
+					if(arg2.equals("=="))
+						returnable=arg3.startsWith(sex);
+					else
+					if(arg2.equals("!="))
+						returnable=!arg3.startsWith(sex);
+					else
+					{
+						Log.errOut("Scriptable","SEX Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 13: // stat
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(evaluable.substring(y+1,z),3));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","STAT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					boolean found=false;
+					for(int i=0;i<E.getStatCodes().length;i++)
+					{
+						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+						{
+							found=true; break;
+						}
+					}
+				
+					if(!found)
+					{
+						Log.errOut("Scriptable","STAT Syntax -- "+monster.name()+", unknown stat: "+arg2+" for "+E.name());
+						break;
+					}
+						
+					if(arg3.equals("=="))
+						returnable=E.getStat(arg2).equalsIgnoreCase(arg4);
+					else
+					if(arg3.equals("!="))
+						returnable=!E.getStat(arg2).equalsIgnoreCase(arg4);
+					else
+					{
+						Log.errOut("Scriptable","STAT Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 19: // position
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","POSITION Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex="STANDING";
+					if(Sense.isSleeping(E))
+						sex="SLEEPING";
+					else
+					if(Sense.isSitting(E))
+						sex="SITTING";
+					if(arg2.equals("=="))
+						returnable=sex.startsWith(arg3);
+					else
+					if(arg2.equals("!="))
+						returnable=!sex.startsWith(arg3);
+					else
+					{
+						Log.errOut("Scriptable","POSITION Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 20: // level
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","LEVEL Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					int val1=E.envStats().level();
+					int val2=Util.s_int(arg3);
+				
+					if(arg2.equalsIgnoreCase("=="))
+						returnable=(val1==val2);
+					else
+					if(arg2.equalsIgnoreCase(">="))
+						returnable=(val1>=val2);
+					else
+					if(arg2.equalsIgnoreCase("<="))
+						returnable=(val1<=val2);
+					else
+					if(arg2.equalsIgnoreCase(">"))
+						returnable=(val1>val2);
+					else
+					if(arg2.equalsIgnoreCase("<"))
+						returnable=(val1<val2);
+					else
+					if(arg2.equalsIgnoreCase("!="))
+						returnable=(val1!=val2);
+					else
+					{
+						Log.errOut("Scriptable","LEVEL Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 21: // class
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex=((MOB)E).charStats().getCurrentClass().name().toUpperCase();
+					if(arg2.equals("=="))
+						returnable=sex.startsWith(arg3);
+					else
+					if(arg2.equals("!="))
+						returnable=!sex.startsWith(arg3);
+					else
+					{
+						Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 22: // baseclass
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex=((MOB)E).charStats().getCurrentClass().baseClass().toUpperCase();
+					if(arg2.equals("=="))
+						returnable=sex.startsWith(arg3);
+					else
+					if(arg2.equals("!="))
+						returnable=!sex.startsWith(arg3);
+					else
+					{
+						Log.errOut("Scriptable","CLASS Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 23: // race
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","RACE Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex=((MOB)E).charStats().getMyRace().name().toUpperCase();
+					if(arg2.equals("=="))
+						returnable=sex.startsWith(arg3);
+					else
+					if(arg2.equals("!="))
+						returnable=!sex.startsWith(arg3);
+					else
+					{
+						Log.errOut("Scriptable","RACE Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 24: //racecat
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","RACECAT Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex=((MOB)E).charStats().getMyRace().racialCategory().toUpperCase();
+					if(arg2.equals("=="))
+						returnable=sex.startsWith(arg3);
+					else
+					if(arg2.equals("!="))
+						returnable=!sex.startsWith(arg3);
+					else
+					{
+						Log.errOut("Scriptable","RACECAT Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 25: // goldamt
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(evaluable.substring(y+1,z),2));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					int val1=0;
+					if(E instanceof MOB)
+						val1=((MOB)E).getMoney();
+					else
+					if(E instanceof Coins)
+						val1=((Coins)E).numberOfCoins();
+					else
+					if(E instanceof Item)
+						val1=((Item)E).value();
+					else
+					{
+						Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				
+					int val2=Util.s_int(arg3);
+				
+					if(arg2.equalsIgnoreCase("=="))
+						returnable=(val1==val2);
+					else
+					if(arg2.equalsIgnoreCase(">="))
+						returnable=(val1>=val2);
+					else
+					if(arg2.equalsIgnoreCase("<="))
+						returnable=(val1<=val2);
+					else
+					if(arg2.equalsIgnoreCase(">"))
+						returnable=(val1>val2);
+					else
+					if(arg2.equalsIgnoreCase("<"))
+						returnable=(val1<val2);
+					else
+					if(arg2.equalsIgnoreCase("!="))
+						returnable=(val1!=val2);
+					else
+					{
+						Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 26: // objtype
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2).toUpperCase();
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","OBJTYPE Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					String sex=CMClass.className(E).toUpperCase();
+					if(arg2.equals("=="))
+						returnable=sex.indexOf(arg3)>=0;
+					else
+					if(arg2.equals("!="))
+						returnable=sex.indexOf(arg3)<0;
+					else
+					{
+						Log.errOut("Scriptable","OBJTYPE Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 27: // var
+			{
+				String arg1=Util.getBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getBit(evaluable.substring(y+1,z),1).toUpperCase();
+				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(evaluable.substring(y+1,z),3));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
+				{
+					Log.errOut("Scriptable","VAR Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.name());
+					String val="";
+					if(H!=null)
+					{
+						val=(String)H.get(arg2);
+						if(val==null) val="";
+					}
+					
+					if(arg3.equals("=="))
+						returnable=val.equals(arg4);
+					else
+					if(arg3.equals("!="))
+						returnable=!val.equals(arg4);
+					else
+					if(arg3.equals(">"))
+						returnable=Util.s_int(val)>Util.s_int(arg4);
+					else
+					if(arg3.equals("<"))
+						returnable=Util.s_int(val)<Util.s_int(arg4);
+					else
+					if(arg3.equals(">="))
+						returnable=Util.s_int(val)>=Util.s_int(arg4);
+					else
+					if(arg3.equals("<="))
+						returnable=Util.s_int(val)<=Util.s_int(arg4);
+					else
+					{
+						Log.errOut("Scriptable","VAR Syntax -- "+monster.name()+", "+evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			default:
+				Log.errOut("Scriptable","Unknown CMD -- "+monster.name()+", "+evaluable);
+				return returnable;
+			}
 			if((z>=0)&&(z<=evaluable.length()))
+			{
 				evaluable=evaluable.substring(z+1).trim();
+				uevaluable=uevaluable.substring(z+1).trim();
+			}
 		}
 		return returnable;
 	}
@@ -767,6 +1073,31 @@ public class Scriptable extends StdBehavior
 				if(secondaryItem!=null)
 					middle=secondaryItem.name();
 				break;
+			case '<':
+				{
+					int x=back.indexOf(">");
+					if(x>=0)
+					{
+						String mid=back.substring(0,x);
+						int y=mid.indexOf(",");
+						Environmental E=null;
+						if(y>=0)
+						{
+							E=getArgumentItem(mid.substring(0,y).trim(),source,monster,target,primaryItem,secondaryItem);
+							mid=mid.substring(y+1).trim();
+						}
+						if(E!=null)
+						{
+							middle=null;
+							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.name());
+							if(H!=null)
+								middle=(String)H.get(mid);
+							if(middle==null) middle="";
+						}
+						back=back.substring(x+1);
+					}
+				}
+				break;
 			case 'a':
 			case 'A':
 				// unnecessary, since, in coffeemud, this is part of the name
@@ -784,10 +1115,14 @@ public class Scriptable extends StdBehavior
 		{
 			String s=((String)script.elementAt(si)).trim();
 			String cmd=Util.getBit(s,0).toUpperCase();
+			Integer methCode=(Integer)methH.get(cmd);
+			if(methCode==null) methCode=new Integer(0);
 			if(cmd.length()==0)
 				continue;
 			else
-			if(cmd.equals("IF"))
+			switch(methCode.intValue())
+			{
+			case 19: // if
 			{
 				String conditionStr=(s.substring(2).trim());
 				boolean condition=eval(source,target,monster,primaryItem,secondaryItem,conditionStr);
@@ -842,9 +1177,9 @@ public class Scriptable extends StdBehavior
 					execute(source,target,monster,primaryItem,secondaryItem,V);
 					//source.tell("Stopping "+conditionStr);
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPASOUND"))
+			case 1: // mpasound
 			{
 				String echo=varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim());
 				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,echo);
@@ -855,9 +1190,9 @@ public class Scriptable extends StdBehavior
 					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
 						R2.show(monster,null,Affect.MSG_OK_ACTION,echo);
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPJUNK"))
+			case 4: // mpjunk
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
 				if(s.equalsIgnoreCase("all"))
@@ -874,12 +1209,84 @@ public class Scriptable extends StdBehavior
 					if(I!=null)
 						I.destroyThis();
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPECHO"))
+			case 2: // mpecho
+			{
 				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim()));
-			else
-			if((cmd.equals("MPMLOAD"))&&(lastKnownLocation!=null))
+				break;
+			}
+			case 13: // mpunaffect
+			{
+				String m=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				if(newTarget!=null)
+				for(int a=newTarget.numAffects()-1;a>=0;a--)
+				{
+					Ability A=newTarget.fetchAffect(a);
+					if(A!=null)
+						A.unInvoke();
+				}
+				break;
+			}
+			case 3: // mpslay
+			{
+				String m=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				if(newTarget!=null)
+					ExternalPlay.postDeath(newTarget,monster,null);
+				break;
+			}
+			case 16: // mpset
+			{
+				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
+				String arg2=Util.getBit(s,2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,2));
+				Environmental E=null;
+				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,m,Item.WORN_REQ_ANY);
+				if(E!=null)
+				{
+					boolean found=false;
+					for(int i=0;i<E.getStatCodes().length;i++)
+					{
+						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+						{
+							found=true; break;
+						}
+					}
+				
+					if(!found)
+					{
+						Log.errOut("Scriptable","MPSET Syntax -- "+monster.name()+", unknown stat: "+arg2+" for "+E.name());
+						break;
+					}
+					E.setStat(arg2,arg3);
+				}
+				break;
+			}
+			case 11: // mpexp
+			{
+				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
+				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				int t=Util.s_int(Util.getBit(s,2));
+				if((t>0)&&(newTarget!=null))
+				{
+					Hashtable group=newTarget.getGroupMembers(new Hashtable());
+					if(!group.contains(newTarget))
+						group.put(newTarget,newTarget);
+					for(Enumeration e=group.elements();e.hasMoreElements();)
+					{
+						MOB M=(MOB)e.nextElement();
+						if(M.location()==lastKnownLocation)
+						{
+							M.tell("You are granted "+t+" experience points!");
+							M.charStats().getCurrentClass().gainExperience(M,null,M.getLeigeID(),t);
+						}
+					}
+				}
+				break;
+			}
+			case 5: // mpmload
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(7).trim());
 				MOB m=CMClass.getMOB(s);
@@ -897,27 +1304,32 @@ public class Scriptable extends StdBehavior
 					m.resetToMaxState();
 					m.bringToLife(lastKnownLocation,true);
 				}
+				break;
 			}
-			else
-			if((cmd.equals("MPOLOAD"))&&(lastKnownLocation!=null))
+			case 6: // mpoload
 			{
 				s=s.substring(7).trim();
-				Item m=CMClass.getItem(s);
-				if(m==null)
+				if(Util.s_int(s)>0)
+					monster.setMoney(monster.getMoney()+Util.s_int(s));
+				else
 				{
-					Environmental e=findSomethingCalledThis(s,lastKnownLocation,false);
-					if(e instanceof Item)
-						m=(Item)e;
+					Item m=CMClass.getItem(s);
+					if(m==null)
+					{
+						Environmental e=findSomethingCalledThis(s,lastKnownLocation,false);
+						if(e instanceof Item)
+							m=(Item)e;
+					}
+					if(m!=null)
+					{
+						m=(Item)m.copyOf();
+						m.recoverEnvStats();
+						monster.addInventory(m);
+					}
 				}
-				if(m!=null)
-				{
-					m=(Item)m.copyOf();
-					m.recoverEnvStats();
-					monster.addInventory(m);
-				}
+				break;
 			}
-			else
-			if(cmd.equals("MPECHOAT"))
+			case 7: // mpechoat
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
@@ -926,9 +1338,9 @@ public class Scriptable extends StdBehavior
 					s=s.substring(s.indexOf(Util.getBit(s,1))+Util.getBit(s,1).length()).trim();
 					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPECHOAROUND"))
+			case 8: // mpechoaround
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
@@ -937,9 +1349,9 @@ public class Scriptable extends StdBehavior
 					s=s.substring(s.indexOf(Util.getBit(s,1))+Util.getBit(s,1).length()).trim();
 					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s));
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPCAST"))
+			case 9: // mpcast
 			{
 				String cast=Util.getBit(s,1);
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,2));
@@ -951,17 +1363,17 @@ public class Scriptable extends StdBehavior
 					A.setProfficiency(100);
 					A.invoke(monster,newTarget,false);
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPKILL"))
+			case 10: // mpkill
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if(newTarget!=null)
 					monster.setVictim(newTarget);
+				break;
 			}
-			else
-			if(cmd.equals("MPPURGE"))
+			case 12: // mppurge
 			{
 				if(lastKnownLocation!=null)
 				{
@@ -976,17 +1388,17 @@ public class Scriptable extends StdBehavior
 							((Item)E).destroyThis();
 					}
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPGOTO"))
+			case 14: // mpgoto
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim());
 				Room goHere=getRoom(s,lastKnownLocation);
 				if(goHere!=null)
 					goHere.bringMobHere(monster,true);
+				break;
 			}
-			else
-			if(cmd.equals("MPAT"))
+			case 15: // mpat
 			{
 				Room lastPlace=lastKnownLocation;
 				String roomName=Util.getBit(s,1);
@@ -1009,9 +1421,9 @@ public class Scriptable extends StdBehavior
 						lastPlace.bringMobHere(monster,true);
 					}
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPTRANSFER"))
+			case 17: // mptransfer
 			{
 				String roomName=Util.getBit(s,1);
 				if(roomName.length()>0)
@@ -1050,9 +1462,9 @@ public class Scriptable extends StdBehavior
 					}
 
 				}
+				break;
 			}
-			else
-			if(cmd.equals("MPFORCE"))
+			case 18: // mpforce
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
 				s=varify(source,target,monster,primaryItem,secondaryItem,s);
@@ -1071,19 +1483,53 @@ public class Scriptable extends StdBehavior
 					}
 				}
 			}
-			else
-			if(cmd.length()>0)
+			case 20: // mpsetvar
 			{
-				try
+				String m=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,1));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,2));
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,Util.getBit(s,3));
+				Environmental E=null;
+				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,m,Item.WORN_REQ_ANY);
+				if((E!=null)&&(arg2.length()>0))
 				{
-					Vector V=Util.parse(varify(source,target,monster,primaryItem,secondaryItem,s));
-					if(V.size()>0)
-						ExternalPlay.doCommand(monster,V);
+					Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.name());
+					if(H==null)
+					{
+						H=new Hashtable();
+						Resources.submitResource("SCRIPTVAR-"+E.name(),H);
+					}
+					if(arg3.equals("++"))
+					{
+						String val=(String)H.get(arg2);
+						arg3=new Integer(Util.s_int(val)+1).toString();
+					}
+					else
+					if(arg3.equals("--"))
+					{
+						String val=(String)H.get(arg2);
+						arg3=new Integer(Util.s_int(val)-1).toString();
+					}
+					if(H.containsKey(arg2))
+						H.remove(arg2);
+					H.put(arg2,arg3);
 				}
-				catch(Exception e)
+				break;
+			}
+			default:
+				if(cmd.length()>0)
 				{
-					Log.errOut("Scriptable",e);
+					try
+					{
+						Vector V=Util.parse(varify(source,target,monster,primaryItem,secondaryItem,s));
+						if(V.size()>0)
+							ExternalPlay.doCommand(monster,V);
+					}
+					catch(Exception e)
+					{
+						Log.errOut("Scriptable",e);
+					}
 				}
+				break;
 			}
 		}
 	}
@@ -1114,57 +1560,47 @@ public class Scriptable extends StdBehavior
 
 		if(affect.source()==null) return;
 
+		if(affect.amITarget(monster)
+		&&(!affect.amISource(monster))
+		&&((affect.targetCode()&Affect.MASK_HURT)>0)
+		&&(affect.source()!=monster))
+			lastToHurtMe=affect.source();
+			
+		if(lastKnownLocation!=null)
 		for(int v=0;v<scripts.size();v++)
 		{
 			Vector script=(Vector)scripts.elementAt(v);
 			if(script.size()<1) continue;
 			
 			String trigger=((String)script.elementAt(0)).toUpperCase().trim();
-			
-			if((lastKnownLocation!=null)
-			&&(affect.targetMinor()==Affect.TYP_ENTER)
-			&&(affect.amITarget(lastKnownLocation))
-			&&(!affect.amISource(monster))
-			&&(canFreelyBehaveNormal(monster)))
+			switch(getTriggerCode(trigger))
 			{
-				if((trigger.startsWith("GREET_PROG"))
+			case 1: // greet_prog
+				if((affect.targetMinor()==Affect.TYP_ENTER)
+				&&(affect.amITarget(lastKnownLocation))
+				&&(!affect.amISource(monster))
+				&&(canFreelyBehaveNormal(monster))
 				&&(Sense.canSenseMoving(affect.source(),affecting)))
 				{
 					int prcnt=Util.s_int(Util.getBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
 						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
 				}
-				else
-				if((trigger.startsWith("ALL_GREET_PROG")))
+				break;
+			case 2: // allgreet_prog
+				if((affect.targetMinor()==Affect.TYP_ENTER)
+				&&(affect.amITarget(lastKnownLocation))
+				&&(!affect.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)))
 				{
 					int prcnt=Util.s_int(Util.getBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
 						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
 				}
-
-			}
-
-			if(affect.amISource(monster)
-			&&(affect.sourceMinor()==Affect.TYP_DEATH)
-			&&(trigger.startsWith("DEATH_PROG")))
-			{
-				MOB src=lastToHurtMe;
-				if((src==null)||(src.location()!=monster.location()))
-				   src=monster;
-				execute(src,monster,monster,null,null,script);
-			}
-			
-			if(affect.amITarget(monster)
-			&&(!affect.amISource(monster))
-			&&((affect.targetCode()&Affect.MASK_HURT)>0)
-			&&(affect.source()!=monster))
-				lastToHurtMe=affect.source();
-			
-			if(!affect.amISource(monster))
-			switch(affect.targetMinor())
-			{
-			case Affect.TYP_SPEAK:
-				if((trigger.startsWith("SPEECH_PROG"))
+				break;
+			case 3: // speech_prog
+				if((affect.sourceMinor()==Affect.TYP_SPEAK)
+				&&(!affect.amISource(monster))
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					String msg=affect.othersMessage().toUpperCase();
@@ -1197,20 +1633,77 @@ public class Scriptable extends StdBehavior
 					}
 				}
 				break;
-			case Affect.TYP_GIVE:
-				if((affect.amITarget(monster))
-				&&(canFreelyBehaveNormal(monster))
-				&&(trigger.startsWith("GIVE_PROG"))
-				&&(affect.tool() instanceof Item))
-					que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2));
+			case 4: // give_prog
+				if((affect.sourceMinor()==Affect.TYP_GIVE)
+				&&(affect.amITarget(monster))
+				&&(!affect.amISource(monster))
+				&&(affect.tool() instanceof Item)
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					trigger=trigger.substring(9).trim();
+					if(Util.getBit(trigger,0).equalsIgnoreCase("p"))
+					{
+						trigger=trigger.substring(1).trim();
+						if(((" "+trigger+" ").indexOf(affect.tool().name())>=0)
+						||(trigger.equalsIgnoreCase("all")))
+							que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2));
+					}
+					else
+					{
+						int num=Util.numBits(trigger);
+						for(int i=0;i<num;i++)
+						{
+							String t=Util.getBit(trigger,i);
+							if(((" "+affect.tool().name()+" ").indexOf(" "+t+" ")>=0)
+							||(t.equalsIgnoreCase("all")))
+							{
+								que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2));
+								break;
+							}
+						}
+					}
+				}
 				break;
-			default:
-				if((trigger.startsWith("MASK_PROG"))
-				&&(affect.othersMessage()!=null))
+			case 8: // entry_prog
+				if((affect.targetMinor()==Affect.TYP_ENTER)
+				&&(affect.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					int prcnt=Util.s_int(Util.getBit(trigger,1));
+					if(Dice.rollPercentage()<prcnt)
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
+				}
+				break;
+			case 9: // exit prog
+				if((affect.targetMinor()==Affect.TYP_LEAVE)
+				&&(affect.amITarget(lastKnownLocation))
+				&&(!affect.amISource(monster))
+				&&(canFreelyBehaveNormal(monster)))
+				{
+					int prcnt=Util.s_int(Util.getBit(trigger,1));
+					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
+						que.addElement(new ScriptableResponse(affect.source(),monster,monster,null,null,script,2));
+				}
+				break;
+			case 10: // death prog
+				if((affect.sourceMinor()==Affect.TYP_DEATH)
+				&&(affect.amISource(monster)))
+				{
+					MOB src=lastToHurtMe;
+					if((src==null)||(src.location()!=monster.location()))
+					   src=monster;
+					execute(src,monster,monster,null,null,script);
+				}
+				break;
+			case 12: // mask prog
+				if(!affect.amISource(monster))
 				{
 					boolean doIt=false;
-					String msg=affect.othersMessage().toUpperCase();
-					msg=" "+msg+" ";
+					String msg=affect.othersMessage();
+					if(msg==null) msg=affect.targetMessage();
+					if(msg==null) msg=affect.sourceMessage();
+					if(msg==null) break;
+					msg=" "+msg.toUpperCase()+" ";
 					trigger=trigger.substring(9).trim();
 					if(Util.getBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -1262,7 +1755,19 @@ public class Scriptable extends StdBehavior
 		return false;
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	private int getTriggerCode(String trigger)
+	{
+		int x=trigger.indexOf(" ");
+		Integer I=null;
+		if(x<0)
+			I=(Integer)progH.get(trigger.toUpperCase().trim());
+		else
+			I=(Integer)progH.get(trigger.substring(0,x).toUpperCase().trim());
+		if(I==null) return 0;
+		return I.intValue();
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(ticking instanceof MOB)
@@ -1279,25 +1784,39 @@ public class Scriptable extends StdBehavior
 				String trigger="";
 				if(script.size()>0)
 					trigger=((String)script.elementAt(0)).toUpperCase().trim();
-				if((trigger.startsWith("RAND_PROG"))&&(!mob.amDead()))
+				switch(getTriggerCode(trigger))
 				{
-					int prcnt=Util.s_int(Util.getBit(trigger,1));
-					if((Dice.rollPercentage()<prcnt)&&(nonPCAvailable(lastKnownLocation)))
+				case 5: // randProg
+					if(!mob.amDead())
+					{
+						int prcnt=Util.s_int(Util.getBit(trigger,1));
+						if((Dice.rollPercentage()<prcnt)&&(nonPCAvailable(lastKnownLocation)))
+							execute(mob,mob,mob,null,null,script);
+					}
+					break;
+				case 7: // fightProg
+					if((mob.isInCombat())&&(!mob.amDead()))
+					{
+						int prcnt=Util.s_int(Util.getBit(trigger,1));
+						if(Dice.rollPercentage()<prcnt)
+							execute(mob.getVictim(),mob,mob,null,null,script);
+					}
+					break;
+				case 11: // hitprcnt
+					if((mob.isInCombat())&&(!mob.amDead()))
+					{
+						int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
+						if(mob.curState().getHitPoints()<=floor)
+							execute(mob.getVictim(),mob,mob,null,null,script);
+					}
+					break;
+				case 6: // onceprog
+					if(!oncesDone.contains(script))
+					{
+						oncesDone.addElement(script);
 						execute(mob,mob,mob,null,null,script);
-				}
-				else
-				if(trigger.startsWith("FIGHT_PROG")&&(mob.isInCombat())&&(!mob.amDead()))
-				{
-					int prcnt=Util.s_int(Util.getBit(trigger,1));
-					if(Dice.rollPercentage()<prcnt)
-						execute(mob.getVictim(),mob,mob,null,null,script);
-				}
-				else
-				if(trigger.startsWith("HITPRCNT_PROG")&&(mob.isInCombat())&&(!mob.amDead()))
-				{
-					int floor=(int)Math.round(Util.mul(Util.div(Util.s_int(Util.getBit(trigger,1)),100.0),mob.maxState().getHitPoints()));
-					if(mob.curState().getHitPoints()<=floor)
-						execute(mob.getVictim(),mob,mob,null,null,script);
+					}
+					break;
 				}
 			}
 			
@@ -1307,5 +1826,6 @@ public class Scriptable extends StdBehavior
 				if(SB.tickOrGo()) que.removeElement(SB);
 			}
 		}
+		return true;
 	}
 }

@@ -34,14 +34,14 @@ public class Painting extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Painting();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
 			if(building==null)
 				unInvoke();
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()

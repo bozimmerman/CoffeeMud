@@ -22,17 +22,17 @@ public class GetsAllEquipped extends ActiveTicker
 		return new GetsAllEquipped();
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			if(DoneEquipping)
-				return;
+				return true;
 
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			if(thisRoom.numItems()==0) return;
+			if(thisRoom.numItems()==0) return true;
 
 			DoneEquipping=true;
 			Vector V=new Vector();
@@ -52,5 +52,6 @@ public class GetsAllEquipped extends ActiveTicker
 			}
 
 		}
+		return true;
 	}
 }

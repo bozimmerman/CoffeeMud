@@ -20,9 +20,9 @@ public class Paladin extends StdAbility
 	public Environmental newInstance(){	return new Paladin();}
 	public int classificationCode(){ return Ability.SKILL;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return false;
 		if(invoker==null) invoker=(MOB)affected;

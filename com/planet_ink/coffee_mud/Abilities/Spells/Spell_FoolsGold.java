@@ -14,9 +14,9 @@ public class Spell_FoolsGold extends Spell
 	public Environmental newInstance(){	return new Spell_FoolsGold();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!destroyOnNextTick) return super.tick(tickID);
+		if(!destroyOnNextTick) return super.tick(ticking,tickID);
 		((Item)affected).destroyThis();
 		destroyOnNextTick=false;
 		return false;

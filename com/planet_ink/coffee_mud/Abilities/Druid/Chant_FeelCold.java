@@ -52,9 +52,9 @@ public class Chant_FeelCold extends Chant
 		affectedStats.setStat(CharStats.SAVE_COLD,affectedStats.getStat(CharStats.SAVE_COLD)-100);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if(tickID!=Host.MOB_TICK) return false;
 		if((affecting()!=null)&&(affecting() instanceof MOB))
 		{

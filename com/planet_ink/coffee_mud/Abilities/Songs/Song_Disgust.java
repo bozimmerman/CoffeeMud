@@ -15,9 +15,9 @@ public class Song_Disgust extends Song
 	public Environmental newInstance(){	return new Song_Disgust();}
 	protected boolean mindAttack(){return true;}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

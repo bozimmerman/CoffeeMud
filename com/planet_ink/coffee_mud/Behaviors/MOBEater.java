@@ -72,11 +72,11 @@ public class MOBEater extends ActiveTicker
 		lastKnownLocation=null;
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(ticking==null) return;
-		if(!(ticking instanceof MOB)) return;
+		if(ticking==null) return true;
+		if(!(ticking instanceof MOB)) return true;
 
 		MOB mob=(MOB)ticking;
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB)&&(((MOB)ticking).isInCombat()))
@@ -99,6 +99,7 @@ public class MOBEater extends ActiveTicker
 		}
 		if(mob.amDead())
 			kill();
+		return true;
 	}
 	protected boolean trySwallowWhole(MOB mob)
 	{

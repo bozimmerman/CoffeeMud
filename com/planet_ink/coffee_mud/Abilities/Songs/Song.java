@@ -33,9 +33,9 @@ public class Song extends StdAbility
 
 	public Environmental newInstance(){	return new Song();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		if(skipStandardSongTick())

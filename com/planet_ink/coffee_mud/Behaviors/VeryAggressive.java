@@ -26,7 +26,7 @@ public class VeryAggressive extends Aggressive
 		return ExternalPlay.zapperCheck(getParms(),M);
 	}
 
-	public static void tickVeryAggressively(Environmental ticking, 
+	public static void tickVeryAggressively(Tickable ticking, 
 											int tickID,
 											Behavior B)
 	{
@@ -86,7 +86,7 @@ public class VeryAggressive extends Aggressive
 		}
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((--tickDown)<0)
@@ -94,5 +94,6 @@ public class VeryAggressive extends Aggressive
 			tickDown=tickWait;
 			tickVeryAggressively(ticking,tickID,this);
 		}
+		return true;
 	}
 }

@@ -1,11 +1,13 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# this script is for the outlaw who stole the lolly pop
+RAND_PROG 10
+if has($i, 'a lolly pop')
+	emote sucks on $k lolly pop.
+endif
+~
 
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+SPEECH_PROG lolly pop steal take little lolly? pop? steal? take? boy? girl? little?
+if has($i, 'a lolly pop')
+	say "$n" You'll never get this lolly pop!
+	emote slurps on the lolly pop.
+endif
+~

@@ -15,7 +15,7 @@ public class Spell_FleshStone extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public Item statue=null;
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -35,7 +35,7 @@ public class Spell_FleshStone extends Spell
 					room.bringMobHere(mob,false);
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect affect)

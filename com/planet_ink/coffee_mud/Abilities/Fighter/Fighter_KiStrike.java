@@ -37,11 +37,11 @@ public class Fighter_KiStrike extends StdAbility
 		return super.okAffect(msg);
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 			if(done) unInvoke();
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

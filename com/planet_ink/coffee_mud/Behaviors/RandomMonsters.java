@@ -39,7 +39,7 @@ public class RandomMonsters extends ActiveTicker
 		return new RandomMonsters();
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		for(int i=maintained.size()-1;i>=0;i--)
@@ -49,13 +49,13 @@ public class RandomMonsters extends ActiveTicker
 				maintained.removeElement(M);
 		}
 		if(maintained.size()>=maxMonsters)
-			return;
+			return true;
 		if((canAct(ticking,tickID))||(maintained.size()<minMonsters))
 		{
 			if(filename.trim().length()==0)
 			{
 				Log.errOut("RandomMonsters","Blank XML filename: '"+filename+"'.");
-				return;
+				return true;
 			}
 			Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
 			if(monsters==null)
@@ -64,24 +64,24 @@ public class RandomMonsters extends ActiveTicker
 				if((buf==null)||((buf!=null)&&(buf.length()==0)))
 				{
 					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+ticking.name()+"'.");
-					return;
+					return true;
 				}
 				if(buf.substring(0,20).indexOf("<MOBS>")<0)
 				{
 					Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+ticking.name()+"'.");
-					return;
+					return true;
 				}
 				monsters=new Vector();
 				String error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),monsters,null);
 				if(error.length()>0)
 				{
 					Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+ticking.name()+"': "+error+".");
-					return;
+					return true;
 				}
 				if(monsters.size()<=0)
 				{
 					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+ticking.name()+"'.");
-					return;
+					return true;
 				}
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
@@ -99,7 +99,21 @@ public class RandomMonsters extends ActiveTicker
 					M.text();
 					maintained.addElement(M);
 					if(ticking instanceof Room)
-						M.bringToLife(((Room)ticking),true);
+					{
+						if(ticking instanceof GridLocale)
+						{
+							Vector map=((GridLocale)ticking).getAllRooms();
+							if(map.size()==0)	
+								M.bringToLife(((Room)ticking),true);
+							else
+							{
+								Room room=(Room)map.elementAt(Dice.roll(1,map.size(),-1));
+								M.bringToLife(room,true);
+							}
+						}
+						else
+							M.bringToLife(((Room)ticking),true);
+					}
 					else
 					if((ticking instanceof Area)&&(((Area)ticking).mapSize()>0))
 					{
@@ -114,5 +128,6 @@ public class RandomMonsters extends ActiveTicker
 				}
 			}
 		}
+		return true;
 	}
 }

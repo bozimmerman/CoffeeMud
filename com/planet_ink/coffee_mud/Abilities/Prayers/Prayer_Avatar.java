@@ -54,12 +54,12 @@ public class Prayer_Avatar extends Prayer
 		}
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		MOB mob=(MOB)affected;
 		if(mob.location()!=null)
@@ -106,7 +106,7 @@ public class Prayer_Avatar extends Prayer
 					ExternalPlay.postAttack(mob,attack,mob.fetchWieldedItem());
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 

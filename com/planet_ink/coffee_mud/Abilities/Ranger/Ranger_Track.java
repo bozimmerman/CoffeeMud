@@ -22,9 +22,9 @@ public class Ranger_Track extends StdAbility
 	public int nextDirection=-2;
 	public Environmental newInstance(){	return new Ranger_Track();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if(tickID==Host.MOB_TICK)
 		{

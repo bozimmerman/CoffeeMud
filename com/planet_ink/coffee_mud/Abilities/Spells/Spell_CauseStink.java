@@ -17,9 +17,9 @@ public class Spell_CauseStink extends Spell
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	public int cycle=1;
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if(tickID==Host.MOB_TICK)
 		{
 			if(Dice.rollPercentage()>25) return true;

@@ -127,9 +127,9 @@ public class Spell_DetectGold extends Spell
 				mob.tell("You sense golden emanations coming from "+dirs.substring(2)+", and "+last+".");
 		}
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Host.MOB_TICK)
 		   &&(affected!=null)

@@ -18,11 +18,11 @@ public class Skill_Parry extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	private boolean doneThisRound=false;
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 			doneThisRound=false;
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public Environmental newInstance(){	return new Skill_Parry();}

@@ -27,7 +27,7 @@ public class Prayer_EarthMud extends Prayer
 			affectableStats.setWeight((affectableStats.weight()*2)+1);
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
@@ -39,7 +39,7 @@ public class Prayer_EarthMud extends Prayer
 				   M.curState().adjMovement(-1,M.maxState());
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 		
 	}
 	

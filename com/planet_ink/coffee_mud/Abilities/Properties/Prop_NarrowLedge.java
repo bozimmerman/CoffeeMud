@@ -26,7 +26,7 @@ public class Prop_NarrowLedge extends Property
 		name=getParmStr(newText,"name","the narrow ledge");
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.SPELL_AFFECT)
 		{

@@ -73,17 +73,18 @@ public class AntiVagrant extends StdBehavior
 			speakDown=2;
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.MOB_TICK) return true;
 		
 		// believe it or not, this is for arrest behavior.
-		if(speakDown>0)	{	speakDown--;return;	}
+		if(speakDown>0)	{	speakDown--;return true;	}
 
-		if(!canFreelyBehaveNormal(ticking)) return;
+		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		wakeVagrants(mob);
+		return true;
 	}
 }

@@ -30,7 +30,7 @@ public class Alchemy extends CommonSkill
 	}
 	public Environmental newInstance(){ return new Alchemy();	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
@@ -62,7 +62,7 @@ public class Alchemy extends CommonSkill
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	private static synchronized Vector loadRecipes()

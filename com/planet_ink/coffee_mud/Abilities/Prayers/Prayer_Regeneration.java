@@ -38,10 +38,10 @@ public class Prayer_Regeneration extends Prayer
 		affectedStats.setStat(CharStats.SAVE_DISEASE,affectedStats.getStat(CharStats.SAVE_DISEASE)+100);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
 		MOB mob=(MOB)affected;
 
@@ -55,7 +55,7 @@ public class Prayer_Regeneration extends Prayer
 			mob.curState().recoverTick(mob,mob.maxState());
 			helpProfficiency(mob);
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -17,7 +17,7 @@ public class Spell_Phantasm extends Spell
 	public Environmental newInstance(){	return new Spell_Phantasm();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -38,7 +38,7 @@ public class Spell_Phantasm extends Spell
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public boolean okAffect(Affect msg)

@@ -643,7 +643,7 @@ public class StdArea implements Area
 		}
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(stopTicking) return false;
 		if(tickID==Host.AREA_TICK)
@@ -662,7 +662,7 @@ public class StdArea implements Area
 				if(A!=null)
 				{
 					int s=affects.size();
-					if(!A.tick(tickID))
+					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 					if(affects.size()==s)
 						a++;

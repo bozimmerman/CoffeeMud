@@ -315,9 +315,9 @@ public class Trap_Trap extends StdAbility implements Trap
 			unInvoke();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if(tickID==Host.TRAP_RESET)
 		{

@@ -18,9 +18,9 @@ public class Paladin_Goodness extends Paladin
 	}
 	public Environmental newInstance(){	return new Paladin_Goodness();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) 
+		if(!super.tick(ticking,tickID)) 
 			return false;
 		tickTock=!tickTock;
 		if(tickTock)

@@ -85,7 +85,7 @@ public class WaterCurrents extends ActiveTicker
 		}
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
@@ -107,5 +107,6 @@ public class WaterCurrents extends ActiveTicker
 				}
 			}
 		}
+		return true;
 	}
 }

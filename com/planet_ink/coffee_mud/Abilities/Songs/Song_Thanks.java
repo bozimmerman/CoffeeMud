@@ -16,9 +16,9 @@ public class Song_Thanks extends Song
 	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Thanks();}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

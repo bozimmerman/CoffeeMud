@@ -1,11 +1,22 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+#set the quest name
+set quest treasurehunt
 
-<P>&nbsp;</P>
+import items quests/treasurehunt/items.cmare
+# first command loads a set of items
 
-</BODY>
-</HTML>
+set mobtype Human
+# load up any mob from the any area of race human. Will set a room!
+
+give behavior Scriptable("LOAD=quests/treasurehunt/treasurehunt.script")
+# load the above behavior into the last mob (in this case, the human)
+
+set room any
+# sets any OTHER room on the map.  Since area was was cleared, will be same area
+
+load item any
+# loads any item into the above room
+
+set duration 30
+# the duration of the quest is 30 minutes.  The scripts on the mobs will
+# do the rest...
+

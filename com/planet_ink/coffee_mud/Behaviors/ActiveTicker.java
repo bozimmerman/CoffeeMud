@@ -34,7 +34,7 @@ public class ActiveTicker extends StdBehavior
 		tickReset();
 	}
 
-	protected boolean canAct(Environmental ticking, int tickID)
+	protected boolean canAct(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		||(tickID==Host.ITEM_BEHAVIOR_TICK)

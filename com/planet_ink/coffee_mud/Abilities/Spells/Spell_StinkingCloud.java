@@ -19,7 +19,7 @@ public class Spell_StinkingCloud extends Spell
 
 	Room castingLocation=null;
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -42,7 +42,7 @@ public class Spell_StinkingCloud extends Spell
 			else
 				unInvoke();
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect affect)

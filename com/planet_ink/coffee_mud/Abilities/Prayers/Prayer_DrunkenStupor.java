@@ -43,14 +43,14 @@ public class Prayer_DrunkenStupor extends Prayer
 		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		Ability A=getInebriation();
 		if(A!=null)
-			A.tick(tickID);
+			A.tick(ticking,tickID);
 
 		return true;
 	}

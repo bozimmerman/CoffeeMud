@@ -15,7 +15,7 @@ public class Chant_SummonElemental extends Chant
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonElemental();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -32,7 +32,7 @@ public class Chant_SummonElemental extends Chant
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	
 	public void affect(Affect msg)

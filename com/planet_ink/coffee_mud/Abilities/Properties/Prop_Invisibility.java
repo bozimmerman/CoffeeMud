@@ -32,11 +32,11 @@ public class Prop_Invisibility extends Property
 		return;
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(ticksSinceLoss<9999)
 			ticksSinceLoss++;
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

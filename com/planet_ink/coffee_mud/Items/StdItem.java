@@ -355,7 +355,7 @@ public class StdItem implements Item
 		return miscText;
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(destroyed)
 			return false;
@@ -379,7 +379,7 @@ public class StdItem implements Item
 				if(A!=null)
 				{
 					int s=affects.size();
-					if(!A.tick(tickID))
+					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 					if(affects.size()==s)
 						a++;

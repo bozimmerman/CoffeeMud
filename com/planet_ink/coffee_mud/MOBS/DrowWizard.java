@@ -159,7 +159,7 @@ public class DrowWizard extends DrowElf
         return retval;
     }
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
@@ -178,7 +178,7 @@ public class DrowWizard extends DrowElf
 			}
 
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
     public boolean castSpell()

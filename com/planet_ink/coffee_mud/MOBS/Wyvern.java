@@ -50,7 +50,7 @@ public class Wyvern extends StdMOB
 		return new Wyvern();
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
@@ -61,7 +61,7 @@ public class Wyvern extends StdMOB
 					sting();
 			}
 		}
-        return super.tick(tickID);
+        return super.tick(ticking,tickID);
 	}
 
 	public void recoverCharStats()

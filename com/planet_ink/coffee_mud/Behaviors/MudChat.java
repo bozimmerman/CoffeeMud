@@ -450,7 +450,7 @@ public class MudChat extends StdBehavior
 		}
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((tickID==Host.MOB_TICK)&&(ticking instanceof MOB))
@@ -458,7 +458,7 @@ public class MudChat extends StdBehavior
 			if(!canFreelyBehaveNormal(ticking))
 			{
 				responseQue.removeAllElements();
-				return;
+				return true;
 			}
 
 			if(talkDown>0) talkDown--;
@@ -495,5 +495,6 @@ public class MudChat extends StdBehavior
 				}
 			}
 		}
+		return true;
 	}
 }

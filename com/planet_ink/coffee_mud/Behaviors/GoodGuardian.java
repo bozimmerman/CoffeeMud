@@ -77,14 +77,15 @@ public class GoodGuardian extends StdBehavior
 		}
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
+		if(tickID!=Host.MOB_TICK) return true;
+		if(!canFreelyBehaveNormal(ticking)) return true;
 		MOB mob=(MOB)ticking;
 		MOB victim=anyPeaceToMake(mob.location(),mob);
 		keepPeace(mob,victim);
+		return true;
 	}
 }

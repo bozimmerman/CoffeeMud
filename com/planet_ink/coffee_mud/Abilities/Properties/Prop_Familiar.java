@@ -70,7 +70,7 @@ public class Prop_Familiar extends Property
 		return false;
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -102,7 +102,7 @@ public class Prop_Familiar extends Property
 					removeMeFromFamiliarTo();
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

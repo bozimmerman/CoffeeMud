@@ -64,7 +64,7 @@ public class LizardManShaman extends LizardMan
 
     }
    
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
@@ -78,7 +78,7 @@ public class LizardManShaman extends LizardMan
 			}
 
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
     public boolean castSpell()

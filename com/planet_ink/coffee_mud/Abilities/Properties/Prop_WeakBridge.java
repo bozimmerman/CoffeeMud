@@ -103,7 +103,7 @@ public class Prop_WeakBridge extends Property
 		&&(bridgeIsUp))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.SPELL_AFFECT)
 		{

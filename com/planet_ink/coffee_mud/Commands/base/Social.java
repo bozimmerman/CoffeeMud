@@ -153,7 +153,7 @@ public class Social implements Environmental
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)	{}
 	public void affect(Affect affect){}
 	public boolean okAffect(Affect affect){	return true;}
-	public boolean tick(int tickID)	{ return true;	}
+	public boolean tick(Tickable ticking, int tickID)	{ return true;	}
 	public int maxRange(){return -1;}
 	public int minRange(){return -1;}
 

@@ -102,11 +102,11 @@ public class ROMPatrolman extends StdBehavior
 			ExternalPlay.postAttack(observer,victim,weapon);
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.MOB_TICK) return true;
 		MOB mob=(MOB)ticking;
 		tickTock--;
 		if(tickTock<=0)
@@ -114,5 +114,6 @@ public class ROMPatrolman extends StdBehavior
 			tickTock=Dice.roll(1,3,0);
 			keepPeace(mob);
 		}
+		return true;
 	}
 }

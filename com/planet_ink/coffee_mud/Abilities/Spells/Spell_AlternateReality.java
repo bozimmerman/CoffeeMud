@@ -26,9 +26,9 @@ public class Spell_AlternateReality extends Spell
 			mob.tell("Your reality returns to normal.");
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID)) return false;
+		if(!super.tick(ticking,tickID)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affected;

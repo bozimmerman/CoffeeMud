@@ -19,12 +19,12 @@ public class Prayer_Plague extends Prayer
 
 	public String text(){return "DISEASE";}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((--plagueDown)<=0)
 		{

@@ -39,10 +39,10 @@ public class InstantDeath extends ActiveTicker
 		}
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(!activated) return;
+		if(!activated) return true;
 		if(canAct(ticking,tickID))
 		{
 			if(ticking instanceof MOB)
@@ -56,9 +56,9 @@ public class InstantDeath extends ActiveTicker
 			{
 				Item item=(Item)ticking;
 				Environmental E=item.owner();
-				if(E==null) return;
+				if(E==null) return true;
 				Room room=getBehaversRoom(ticking);
-				if(room==null) return;
+				if(room==null) return true;
 				if(E instanceof MOB)
 					ExternalPlay.postDeath(null,(MOB)E,null);
 				else
@@ -79,6 +79,7 @@ public class InstantDeath extends ActiveTicker
 				}
 			}
 		}
+		return true;
 	}
 	
 	/** this method defines how this thing responds

@@ -15,7 +15,7 @@ public class Burning extends StdAbility
 	public Environmental newInstance(){	return new Burning();}
 	
 	private boolean reversed(){return profficiency()==100;}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickDown<2)&&(affected!=null))
 		{
@@ -71,7 +71,7 @@ public class Burning extends StdAbility
 				return false;
 			}
 		}
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		if(tickID!=Host.MOB_TICK)

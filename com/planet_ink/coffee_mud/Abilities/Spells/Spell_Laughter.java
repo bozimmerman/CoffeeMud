@@ -25,12 +25,12 @@ public class Spell_Laughter extends Spell
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		((MOB)affected).location().show((MOB)affected,null,Affect.MSG_OK_ACTION,"<S-NAME> laugh(s) uncontrollably, unable to move!");
 		return true;

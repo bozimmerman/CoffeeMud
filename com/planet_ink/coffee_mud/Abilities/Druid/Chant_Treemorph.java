@@ -14,7 +14,7 @@ public class Chant_Treemorph extends Chant
 	Item tree=null;
 	public Environmental newInstance(){	return new Chant_Treemorph();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
 		&&(affected!=null)
@@ -34,7 +34,7 @@ public class Chant_Treemorph extends Chant
 					room.bringMobHere(mob,false);
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect affect)

@@ -923,12 +923,12 @@ public class Arrest extends StdBehavior
 		}
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.AREA_TICK) return;
-		if(!(ticking instanceof Area)) return;
+		if(tickID!=Host.AREA_TICK) return true;
+		if(!(ticking instanceof Area)) return true;
 		Area myArea=(Area)ticking;
 		Properties laws=getLaws();
 		
@@ -1357,7 +1357,8 @@ public class Arrest extends StdBehavior
 					break;
 				}
 			}
+			
 		}
-		
+		return true;
 	}
 }

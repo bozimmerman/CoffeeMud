@@ -36,9 +36,9 @@ public class Chicken extends StdMOB
 	{
 		return new Chicken();
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if(tickID==Host.MOB_TICK)
 		{

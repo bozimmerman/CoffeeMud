@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
 
-public class Quest
+public interface Quest extends Tickable
 {
 }

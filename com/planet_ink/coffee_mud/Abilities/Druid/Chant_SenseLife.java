@@ -62,9 +62,9 @@ public class Chant_SenseLife extends Chant
 			mob.tell("You sense a life force coming from "+dirs.substring(2)+", and "+last+".");
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Host.MOB_TICK)
 		   &&(affected!=null)

@@ -16,6 +16,8 @@ public class ItemUsage
 			itemID=itemID.substring(0,itemID.length()-6);
 		if(itemID.toUpperCase().trim().endsWith(" GOLD"))
 			itemID=itemID.substring(0,itemID.length()-5);
+		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
+			itemID=itemID.substring(10);
 		int gold=Util.s_int(itemID);
 		if(gold>0)
 		{

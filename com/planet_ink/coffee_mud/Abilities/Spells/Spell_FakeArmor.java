@@ -15,10 +15,10 @@ public class Spell_FakeArmor extends Spell
 	public Environmental newInstance(){	return new Spell_FakeArmor();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(notAgainThisRound) notAgainThisRound=false;
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public boolean okAffect(Affect affect)

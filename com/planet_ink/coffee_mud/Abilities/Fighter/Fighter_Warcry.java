@@ -27,9 +27,9 @@ public class Fighter_Warcry extends StdAbility
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(Util.div(affectableStats.damage(),4.0)));
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((affected==null)||(invoker==null)||(!(affected instanceof MOB)))
 			return false;

@@ -18,9 +18,9 @@ public class Fighter_KnifeHand extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Fighter_KnifeHand();}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Host.MOB_TICK)
 		   &&(affected!=null)

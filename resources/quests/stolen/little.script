@@ -1,11 +1,59 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+# this script is for the little boy or girl from whom 
+# the lolly pop has been stolen.
+RAND_PROG 10
+if has($i, 'a lolly pop') or var($i LOLLY == POP)
+	emote sucks on $k lolly pop.
+else
+	cry
+endif
+~
 
-<P>&nbsp;</P>
+ONCE_PROG
+mpsetvar $i LOLLY
+~
 
-</BODY>
-</HTML>
+RAND_PROG 10
+if has($i, 'a lolly pop') or var($i LOLLY == POP)
+	emote sucks on $k lolly pop.
+else
+	say Waaaaaaahhhh!
+endif
+~
+
+RAND_PROG 10
+if has($i, 'a lolly pop') or var($i LOLLY == POP)
+	emote sucks on $k lolly pop.
+else
+	emote weeps 'Oh, whoa is me!'
+endif
+~
+
+SPEECH_PROG trouble problem cry crying wrong? quest trouble? wrong problem? cry? crying? quest?
+if has($i, 'a lolly pop')
+	say "$n" Want some of my lolly pop?
+else
+	say "$n" A nasty outlaw has stolen my lolly pop! Can you get it back for me?
+	cry
+endif
+~
+
+GIVE_PROG p a lolly pop
+	if var($n LOLLY == POP)
+		say "$n" You've already helped me!
+	else
+		if var($i LOLLY == POP)
+			say "$n" I'm happy now.
+		else
+			mpset $i LOLLY POP
+			mpset $n LOLLY POP
+			say "$n" My lolly pop!  Thank you so so much!!!
+			hug $n
+			mpexp $n 100
+			hold "a lolly pop"
+			emote sucks on $k lolly pop.
+			mpoload QuestPoint
+			give "a quest point" "$n"
+			mpendquest stolen
+		endif
+	endif
+~

@@ -74,7 +74,7 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public static void tickAggressively(Environmental ticking, 
+	public static void tickAggressively(Tickable ticking, 
 										int tickID,
 										Behavior B)
 	{
@@ -85,14 +85,15 @@ public class Aggressive extends StdBehavior
 		pickAFight((MOB)ticking,B);
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.MOB_TICK) return true;
 		if((--tickDown)<0)
 		{
 			tickDown=tickWait;
 			tickAggressively(ticking,tickID,this);
 		}
+		return true;
 	}
 }

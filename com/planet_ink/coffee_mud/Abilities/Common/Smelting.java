@@ -35,7 +35,7 @@ public class Smelting extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Smelting();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
@@ -48,7 +48,7 @@ public class Smelting extends CommonSkill
 			||(mob.isMine(fire)))
 				unInvoke();
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	private static synchronized Vector loadRecipes()

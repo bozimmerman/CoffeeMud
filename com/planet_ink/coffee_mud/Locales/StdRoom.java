@@ -456,7 +456,7 @@ public class StdRoom
 		}
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.ROOM_BEHAVIOR_TICK)
 		{
@@ -476,7 +476,7 @@ public class StdRoom
 				if(A!=null)
 				{
 					int s=affects.size();
-					if(!A.tick(tickID))
+					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 					if(affects.size()==s)
 						a++;

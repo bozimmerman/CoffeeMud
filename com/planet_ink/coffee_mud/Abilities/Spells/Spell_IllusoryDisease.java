@@ -24,9 +24,9 @@ public class Spell_IllusoryDisease extends Spell
 
 	public String text(){return "DISEASE";}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))	return false;
+		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
 
 		MOB mob=(MOB)affected;

@@ -35,11 +35,11 @@ public class Vagrant extends StdBehavior
 		return true;
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 
-		if(tickID!=Host.MOB_TICK) return;
+		if(tickID!=Host.MOB_TICK) return true;
 		MOB mob=(MOB)ticking;
 		if((wakeForTicks<=0)&&(sleepForTicks<=0))
 		{
@@ -62,5 +62,6 @@ public class Vagrant extends StdBehavior
 		else
 		if(sleepForTicks>0)
 			sleepForTicks--;
+		return true;
 	}
 }

@@ -29,7 +29,7 @@ public class Paladin_SummonMount extends StdAbility
 		}
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 		{
@@ -49,7 +49,7 @@ public class Paladin_SummonMount extends StdAbility
 				}
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void affect(Affect msg)

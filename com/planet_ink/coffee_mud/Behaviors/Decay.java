@@ -21,10 +21,10 @@ public class Decay extends ActiveTicker
 		return new Decay();
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		if(!activated) return;
+		if(!activated) return true;
 		if(canAct(ticking,tickID))
 		{
 			if(ticking instanceof MOB)
@@ -43,9 +43,9 @@ public class Decay extends ActiveTicker
 			{
 				Item item=(Item)ticking;
 				Environmental E=item.owner();
-				if(E==null) return;
+				if(E==null) return true;
 				Room room=getBehaversRoom(ticking);
-				if(room==null) return;
+				if(room==null) return true;
 				item.destroyThis();
 				if(E instanceof MOB)
 				{
@@ -60,6 +60,7 @@ public class Decay extends ActiveTicker
 				room.recoverRoomStats();
 			}
 		}
+		return true;
 	}
 	
 	/** this method defines how this thing responds

@@ -240,7 +240,7 @@ public class Prop_ItemTransporter extends Property
 			}
 		}
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
 			tryToMoveStuff();

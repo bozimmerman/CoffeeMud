@@ -47,9 +47,9 @@ public class Disease_Migraines extends Disease
 		return super.okAffect(affect);
 	}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))	return false;
+		if(!super.tick(ticking,tickID))	return false;
 		if((affected==null)||(invoker==null)) return false;
 		return true;
 	}

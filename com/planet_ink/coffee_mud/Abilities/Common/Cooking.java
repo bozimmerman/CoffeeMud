@@ -36,7 +36,7 @@ public class Cooking extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Cooking();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Host.MOB_TICK))
 		{
@@ -63,7 +63,7 @@ public class Cooking extends CommonSkill
 				verb="cooking "+finalDishName;
 			}
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	private static synchronized Vector loadRecipes()

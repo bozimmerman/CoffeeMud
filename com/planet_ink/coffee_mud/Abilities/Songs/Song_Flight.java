@@ -15,9 +15,9 @@ public class Song_Flight extends Song
 	public Environmental newInstance(){	return new Song_Flight();}
 	protected boolean skipStandardSongInvoke(){return true;}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 
 		MOB mob=(MOB)affected;

@@ -50,7 +50,7 @@ public class DelayedTransporter extends ActiveTicker
 		parms=newParms;
 	}
 	
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		Room room=this.getBehaversRoom(ticking);
@@ -86,5 +86,6 @@ public class DelayedTransporter extends ActiveTicker
 				}
 			}
 		}
+		return true;
 	}
 }

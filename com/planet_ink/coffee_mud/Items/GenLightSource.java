@@ -78,11 +78,11 @@ public class GenLightSource extends GenItem implements Light
 		super.recoverEnvStats();
 	}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!LightSource.pleaseTickLightly(this,tickID))
 			return false;
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 	public String getStat(String code)
 	{ return Generic.getGenItemStat(this,code);}

@@ -35,7 +35,7 @@ public class Corpse extends StdContainer implements DeadBody
 		roomLocation=thisRoom;
 		ExternalPlay.startTickDown(this,Host.DEADBODY_DECAY,envStats().rejuv());
 	}
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID==Host.DEADBODY_DECAY)
 		{
@@ -44,7 +44,7 @@ public class Corpse extends StdContainer implements DeadBody
 			return false;
 		}
 		else
-			return super.tick(tickID);
+			return super.tick(ticking,tickID);
 	}
 	public CharStats charStats()
 	{

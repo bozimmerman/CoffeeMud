@@ -20,19 +20,19 @@ public class Scavenger extends ActiveTicker
 		return new Scavenger();
 	}
 
-	public void tick(Environmental ticking, int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-			if(thisRoom.numItems()==0) return;
+			if(thisRoom.numItems()==0) return true;
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
 				Item thisItem=thisRoom.fetchItem(i);
 				if((thisItem!=null)&&(thisItem instanceof DeadBody))
-					return;
+					return true;
 			}
 
 			Vector V=new Vector();
@@ -46,7 +46,7 @@ public class Scavenger extends ActiveTicker
 			{
 
 			}
-
 		}
+		return true;
 	}
 }

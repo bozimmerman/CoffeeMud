@@ -1691,7 +1691,7 @@ public class StdMOB implements MOB
 	
 	public int movesSinceLastTick(){return movesSinceTick;}
 	
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(pleaseDestroy)
 			return false;
@@ -1795,7 +1795,7 @@ public class StdMOB implements MOB
 				if(A!=null)
 				{
 					int s=affects.size();
-					if(!A.tick(tickID))
+					if(!A.tick(ticking,tickID))
 						A.unInvoke();
 					if(affects.size()==s)
 						a++;

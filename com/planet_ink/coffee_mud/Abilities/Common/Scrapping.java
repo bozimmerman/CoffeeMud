@@ -29,7 +29,7 @@ public class Scrapping extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Scrapping();}
 
-	public boolean tick(int tickID)
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
@@ -42,7 +42,7 @@ public class Scrapping extends CommonSkill
 							||(mob.isMine(fire)))))
 				unInvoke();
 		}
-		return super.tick(tickID);
+		return super.tick(ticking,tickID);
 	}
 
 	public void unInvoke()

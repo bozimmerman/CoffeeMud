@@ -51,7 +51,7 @@ public class Tick extends Thread
 			C.tickDown=C.reTickDown;
 			try
 			{
-				boolean ok=C.clientObject.tick(C.tickID);
+				boolean ok=C.clientObject.tick(C.clientObject,C.tickID);
 				if(!ok)
 					synchronized(tickers)
 					{
