@@ -61,7 +61,7 @@ public class Wand_Advancement extends StdWand
 						if(mob.location().okAffect(msg))
 						{
 							mob.location().send(mob,msg);
-							while(target.envStats().level()<25)
+							while(target.envStats().level()<30)
 							{
 								target.charStats().getMyClass().gainExperience(target,null,target.getExpNeededLevel()+1);
 							}

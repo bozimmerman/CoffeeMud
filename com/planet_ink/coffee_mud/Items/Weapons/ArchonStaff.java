@@ -53,7 +53,7 @@ public class ArchonStaff extends Staff implements Wand
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
-					while(target.envStats().level()<25)
+					while(target.envStats().level()<30)
 						target.charStats().getMyClass().gainExperience(target,null,target.getExpNeededLevel()+1);
 				}
 				else

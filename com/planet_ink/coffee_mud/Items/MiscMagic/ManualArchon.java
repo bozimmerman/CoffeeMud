@@ -51,7 +51,7 @@ public class ManualArchon extends StdItem implements MiscMagic
 						mob.baseCharStats().setDexterity(25);
 						mob.baseCharStats().setCharisma(25);
 						mob.recoverCharStats();
-						for(int i=mob.envStats().level();i<=26;i++)
+						for(int i=mob.envStats().level();i<=30;i++)
 						{
 							mob.charStats().getMyClass().gainExperience(mob,null,mob.getExpNeededLevel()+1);
 						}
