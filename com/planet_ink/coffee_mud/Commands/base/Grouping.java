@@ -134,7 +134,26 @@ public class Grouping
 		msg.append(Util.padRight(levelStr,7));
 		String name=who.name();
 		if((who.session()!=null)&&(who.session().afkFlag()))
-			name=name+(" (idle: "+(who.session().getIdleMillis()/1000)+"s)");
+		{
+			long t=(who.session().getIdleMillis()/1000);
+			String s=t+"s";
+			if(t>600)
+			{
+				t=t/60;
+				s=t+"m";
+				if(t>120)
+				{
+					t=t/60;
+					s=t+"h";
+					if(t>48)
+					{
+						t=t/24;
+						s=t+"d";
+					}
+				}
+			}
+			name=name+(" (idle: "+s+")");
+		}
 		msg.append("] "+Util.padRight(name,35));
 		msg.append("\n\r");
 		return msg;

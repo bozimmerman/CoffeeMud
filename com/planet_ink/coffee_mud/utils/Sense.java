@@ -235,7 +235,7 @@ public class Sense
 			Say.append(" (^yhidden^?)");
 		if((!Sense.isGolem(seen))
 		&&(Sense.canSeeInfrared(seer))
-		&&(seer instanceof MOB)
+		&&(seen instanceof MOB)
 		&&(isInDark(((MOB)seer).location())))
 			Say.append(" (^rheat aura^?)");
 		if((Sense.isABonusItems(seen))&&(Sense.canSeeBonusItems(seer)))
