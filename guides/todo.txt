@@ -43,6 +43,10 @@ Add last-call to list users.
 
 PlayerKill flag
 
+Forget spell to make someone forget a skill they try, at random!
+
+Distract ability (can't fight during) to make an enemies scores worse...
+
 ThievesTools required for picking locks, check/remove traps without severe penalty.
 
 HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 

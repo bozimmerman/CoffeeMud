@@ -66,9 +66,7 @@ public interface MOB
 	public void setSession(Session newSession);
 	public void setReplyTo(MOB mob);
 	public MOB replyTo();
-	public Language speaking();
-	public void setSpeaking(Language lang);
-	
+
 	/** Whether a sessiob object is attached to this MOB */
 	public boolean isMonster();
 	public boolean isASysOp(Room of);

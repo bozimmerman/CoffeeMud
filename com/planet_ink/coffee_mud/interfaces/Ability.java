@@ -55,6 +55,7 @@ public interface Ability  extends Environmental
 	public static final int TRAP=4;
 	public static final int PROPERTY=5;
 	public static final int THIEF_SKILL=6;
+	public static final int LANGUAGE=7;
 	
 	public static final int MALICIOUS=0;
 	public static final int INDIFFERENT=1;

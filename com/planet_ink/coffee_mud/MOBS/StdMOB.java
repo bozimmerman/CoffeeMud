@@ -114,7 +114,6 @@ public class StdMOB implements MOB
 	protected MOB replyTo=null;
 	protected MOB amFollowing=null;
 	protected MOB soulMate=null;
-	protected Language langSpeaking=null;
 	private double speeder=0.0;
 	protected int atRange=-1;
 
@@ -371,10 +370,6 @@ public class StdMOB implements MOB
 		LastDateTime=Calendar.getInstance();
 	}
 
-	public Language speaking()
-	{	return langSpeaking;	}
-	public void setSpeaking(Language lang)
-	{	langSpeaking=lang;	}
 	public MOB replyTo()
 	{	return replyTo;	}
 	public void setReplyTo(MOB mob)
