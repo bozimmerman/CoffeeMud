@@ -89,6 +89,14 @@ public class ExternalCommands implements ExternalCommand
 		return ShopKeepers.parseShopkeeper(mob,commands,error);
 	}
 							   
+	public boolean postExperience(MOB mob, 
+								  MOB victim, 
+								  String homage, 
+								  int amount, 
+								  boolean quiet)
+	{
+		return TheFight.postExperience(mob,victim,homage,amount,quiet);
+	}
 	public boolean postHealing(MOB healer, 
 							   MOB target, 
 							   Environmental tool, 

@@ -29,7 +29,7 @@ public class Spell_Duplicate extends Spell
 			return false;
 
 		mob.tell("You lose "+(target.envStats().level()*5)+" experience points.");
-		mob.charStats().getCurrentClass().loseExperience(mob,target.envStats().level()*5);
+		ExternalPlay.postExperience(mob,null,null,-target.envStats().level()*5,false);
 
 		boolean success=profficiencyCheck(0,auto);
 

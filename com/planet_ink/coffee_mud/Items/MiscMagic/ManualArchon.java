@@ -59,7 +59,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 							if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 								mob.charStats().getCurrentClass().level(mob);
 							else
-								mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+								ExternalPlay.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
 						mob.recoverCharStats();
 						mob.recoverEnvStats();

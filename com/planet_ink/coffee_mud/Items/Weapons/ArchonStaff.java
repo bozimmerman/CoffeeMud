@@ -72,7 +72,7 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 						if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 							target.charStats().getCurrentClass().level(target);
 						else
-							target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
+							ExternalPlay.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					}
 				}
 				else
@@ -82,7 +82,7 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 					if(target.getExpNeededLevel()==Integer.MAX_VALUE)
 						target.charStats().getCurrentClass().level(target);
 					else
-						target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
+						ExternalPlay.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					return;
 				}
 				else

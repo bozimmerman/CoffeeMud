@@ -46,7 +46,7 @@ public class Prop_Familiar extends Property
 				familiarTo.delAffect(A);
 				/*if(!familiarTo.amDead())
 				{
-					familiarTo.charStats().getMyClass().loseExperience(familiarTo,50);
+					ExternalPlay.postExperience(familiarTo,null,null,-50,false);
 					familiarTo.tell("You`ve just lost 50 experience points for losing your familiar");
 				}*/
 				familiarTo.recoverCharStats();

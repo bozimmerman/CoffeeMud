@@ -264,7 +264,7 @@ public class StdCharClass implements CharClass, Cloneable
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
 				if(sire.charStats()!=null)
-					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.name(),sireShare,quiet);
+					ExternalPlay.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
 		}
 		if((mob.getClanID().length()>0)&&(amount>2))
@@ -456,7 +456,7 @@ public class StdCharClass implements CharClass, Cloneable
 			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				mob.charStats().getCurrentClass().level(mob);
 			else
-				mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
+				ExternalPlay.postExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
 			int newAttack=mob.baseEnvStats().attackAdjustment()-oldattack;
 			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-newAttack);
 			mob.recoverEnvStats();
@@ -596,7 +596,7 @@ public class StdCharClass implements CharClass, Cloneable
 				MOB mob=(MOB)e.nextElement();
 				int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
 				if(myAmount>100) myAmount=100;
-				mob.charStats().getCurrentClass().gainExperience(mob,killed,"",myAmount,false);
+				ExternalPlay.postExperience(mob,killed,"",myAmount,false);
 			}
 		return beneficiaries;
 	}

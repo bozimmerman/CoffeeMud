@@ -49,6 +49,12 @@ public class ExternalPlay
 		if(player!=null) return player.postHealing(healer,target,tool,messageCode,healing,allDisplayMessage);
 		return false;
 	}
+	public static boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet)
+	{
+		if(player!=null) return player.postExperience(mob,victim,homage,amount,quiet);
+		return false;
+	}
+		
 	public static void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage)
 	{
 		if(player!=null) player.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);

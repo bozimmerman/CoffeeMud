@@ -7,6 +7,7 @@ public interface ExternalCommand
 	public void postAttack(MOB attacker, MOB target, Item weapon);
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
 	public boolean postHealing(MOB healer, MOB target, Environmental tool, int messageCode,int healing,String allDisplayMessage);
+	public boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
 	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success);
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless);
 	public void justDie(MOB source, MOB target);

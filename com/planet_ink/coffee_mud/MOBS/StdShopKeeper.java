@@ -780,7 +780,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					int[] val=yourValue(mob,product,true);
 					if(val[0]>0) com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,val[0]);
 					if(val[1]>0) mob.setQuestPoint(mob.getQuestPoint()-val[1]);
-					if(val[2]>0) mob.charStats().getCurrentClass().loseExperience(mob,val[2]);
+					if(val[2]>0) ExternalPlay.postExperience(mob,null,null,-val[2],false);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{

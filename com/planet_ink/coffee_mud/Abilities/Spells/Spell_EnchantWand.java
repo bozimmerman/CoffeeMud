@@ -64,7 +64,7 @@ public class Spell_EnchantWand extends Spell
 			return false;
 
 		int experienceToLose=10*CMAble.lowestQualifyingLevel(wandThis.ID());
-		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
+		ExternalPlay.postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
 		boolean success=profficiencyCheck(0,auto);

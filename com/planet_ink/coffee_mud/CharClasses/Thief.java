@@ -162,7 +162,7 @@ public class Thief extends StdCharClass
 			   &&(affect.tool().ID().equals("Thief_Steal")
 				  ||affect.tool().ID().equals("Thief_Robbery")
 				  ||affect.tool().ID().equals("Thief_Swipe")))
-				gainExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10,false);
+				ExternalPlay.postExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10,false);
 		}
 		super.affect(myHost,affect);
 	}

@@ -38,7 +38,7 @@ public class ExperiencePoints implements Environmental
 	 * change, or anything else.
 	 */
 	private String homage="";
-	public void setMiscText(String newMiscText){homage=newMiscText}
+	public void setMiscText(String newMiscText){homage=newMiscText;}
 	public String text(){return homage;}
 
 	/** return a new instance of the object*/

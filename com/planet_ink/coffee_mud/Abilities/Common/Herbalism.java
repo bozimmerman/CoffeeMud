@@ -236,7 +236,7 @@ public class Herbalism extends CommonSkill
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
 
-			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
+			ExternalPlay.postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();

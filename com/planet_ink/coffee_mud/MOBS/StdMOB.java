@@ -1609,10 +1609,21 @@ public class StdMOB implements MOB
 				ExternalPlay.flee(mob,"");
 				break;
 			case Affect.TYP_EXPCHANGE:
-				if((affect.tool()!=null)&&(affect.tool() instanceof ExperiencePoints))
+				if((affect.tool()!=null)
+				&&(affect.tool() instanceof ExperiencePoints))
 				{
 					ExperiencePoints EXP=(ExperiencePoints)affect.tool();
-					
+					MOB victim=null;
+					if(affect.target() instanceof MOB)
+						victim=(MOB)affect.target();
+					if(EXP.maxRange()>=0)
+						charStats().getCurrentClass().gainExperience(this,
+																	 victim,
+																	 EXP.text(),
+																	 EXP.maxRange(),
+																	 Util.s_bool(EXP.displayText()));
+					else
+						charStats().getCurrentClass().loseExperience(this,-EXP.maxRange());
 				}
 				break;
 			case Affect.TYP_DEATH:

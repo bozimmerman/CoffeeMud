@@ -98,7 +98,7 @@ public class Artisan extends StdCharClass
 					exp++;
 			}
 			if(exp>0)
-				gainExperience(mob,null,mob.getLeigeID(),exp,false);
+				ExternalPlay.postExperience(mob,null,mob.getLeigeID(),exp,false);
 		}
 		return super.tick(ticking,tickID);
 	}

@@ -651,7 +651,7 @@ public class StdDeity extends StdMOB implements Deity
 					else
 					{
 						msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
-						msg.source().charStats().getCurrentClass().loseExperience(msg.source(),xpwrath);
+						ExternalPlay.postExperience(msg.source(),null,null,-xpwrath,false);
 					}
 				}
 				break;

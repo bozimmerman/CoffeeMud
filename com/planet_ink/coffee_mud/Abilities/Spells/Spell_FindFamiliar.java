@@ -27,7 +27,7 @@ public class Spell_FindFamiliar extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.charStats().getCurrentClass().loseExperience(mob,100);
+		ExternalPlay.postExperience(mob,null,null,-100,false);
 		
 		boolean success=profficiencyCheck(0,auto);
 
