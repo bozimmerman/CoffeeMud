@@ -93,6 +93,8 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_SIT:
 		case Rideable.RIDEABLE_TABLE:
 			return "on";
+		case Rideable.RIDEABLE_LADDER:
+			return "climbing on";
 		case Rideable.RIDEABLE_SLEEP:
 			return "on";
 		}
@@ -112,6 +114,8 @@ public class StdRideable extends StdContainer implements Rideable
 			return "sit(s) on";
 		case Rideable.RIDEABLE_ENTERIN:
 			return "get(s) into";
+		case Rideable.RIDEABLE_LADDER:
+			return "climb(s) onto";
 		case Rideable.RIDEABLE_SLEEP:
 			if(commandType==Affect.TYP_SIT)
 				return "sit(s) down on";
@@ -131,6 +135,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_SIT:
 		case Rideable.RIDEABLE_SLEEP:
 		case Rideable.RIDEABLE_TABLE:
+		case Rideable.RIDEABLE_LADDER:
 			return "get(s) off of";
 		case Rideable.RIDEABLE_ENTERIN:
 			return "get(s) out of";
@@ -149,6 +154,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_TABLE: return "";
 		case Rideable.RIDEABLE_SLEEP: return "";
 		case Rideable.RIDEABLE_ENTERIN: return "occupied by";
+		case Rideable.RIDEABLE_LADDER: return "occupied by";
 		}
 		return "";
 	}
@@ -161,6 +167,9 @@ public class StdRideable extends StdContainer implements Rideable
 		else
 		if(rideBasis==Rideable.RIDEABLE_WATER)
 			envStats().setDisposition(envStats().disposition()|EnvStats.IS_SWIMMING);
+		else
+		if(rideBasis==Rideable.RIDEABLE_LADDER)
+			envStats().setDisposition(envStats().disposition()|EnvStats.IS_CLIMBING);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -288,6 +297,7 @@ public class StdRideable extends StdContainer implements Rideable
 			else
 			if((rideBasis()==Rideable.RIDEABLE_LAND)
 			   ||(rideBasis()==Rideable.RIDEABLE_AIR)
+			   ||(rideBasis()==Rideable.RIDEABLE_LADDER)
 			   ||(rideBasis()==Rideable.RIDEABLE_WATER))
 			{
 				if(affect.amITarget(this))
@@ -333,6 +343,9 @@ public class StdRideable extends StdContainer implements Rideable
 							ok=false;
 						break;
 					case Rideable.RIDEABLE_AIR:
+						break;
+					case Rideable.RIDEABLE_LADDER:
+						ok=true;
 						break;
 					case Rideable.RIDEABLE_WATER:
 						if((sourceRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
@@ -399,6 +412,11 @@ public class StdRideable extends StdContainer implements Rideable
 		{
 		case Affect.TYP_DISMOUNT:
 			if(amRiding(affect.source()))
+				affect.source().setRiding(null);
+			break;
+		case Affect.TYP_ENTER:
+			if((rideBasis()==Rideable.RIDEABLE_LADDER)
+			&&(amRiding(affect.source())))
 				affect.source().setRiding(null);
 			break;
 		case Affect.TYP_MOUNT:

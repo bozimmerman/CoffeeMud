@@ -22,6 +22,7 @@ public class Tailoring extends CommonSkill
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
 	private static final int RCP_ARMORDMG=8;
+	private static final int RCP_CONTAINMASK=9;
 
 	private Item building=null;
 	private Item key=null;
@@ -299,6 +300,7 @@ public class Tailoring extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			if(building instanceof Weapon)
 			{
@@ -315,6 +317,12 @@ public class Tailoring extends CommonSkill
 			}
 			if(building instanceof Armor)
 			{
+				
+				if(capacity>0)
+				{
+					((Armor)building).setCapacity(capacity+woodRequired);
+					((Armor)building).setContainTypes(canContain);
+				}
 				((Armor)building).baseEnvStats().setArmor(armordmg);
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
@@ -340,6 +348,23 @@ public class Tailoring extends CommonSkill
 						((Armor)building).setRawLogicalAnd(true);
 					}
 				}
+			}
+			if(building instanceof Rideable)
+			{
+				if(misctype.equalsIgnoreCase("CHAIR"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
+				else
+				if(misctype.equalsIgnoreCase("TABLE"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
+				else
+				if(misctype.equalsIgnoreCase("LADDER"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
+				else
+				if(misctype.equalsIgnoreCase("ENTER"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_ENTERIN);
+				else
+				if(misctype.equalsIgnoreCase("BED"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
 			}
 			building.recoverEnvStats();
 			building.text();

@@ -11,10 +11,11 @@ public interface Rideable extends Environmental
 	public final static int RIDEABLE_SLEEP=4;
 	public final static int RIDEABLE_TABLE=5;
 	public final static int RIDEABLE_ENTERIN=6;
+	public final static int RIDEABLE_LADDER=7;
 	public final static String[] RIDEABLE_DESCS=
 	{
 		"LAND-BASED","WATER-BASED","AIR-FLYING","FURNITURE-SIT","FURNITURE-SLEEP","FURNITURE-TABLE",
-		"ENTER-IN"
+		"ENTER-IN","LADDER"
 	};
 	
 	public int rideBasis();

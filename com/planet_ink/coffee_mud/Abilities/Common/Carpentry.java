@@ -344,6 +344,9 @@ public class Carpentry extends CommonSkill
 				if(misctype.equalsIgnoreCase("TABLE"))
 					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
 				else
+				if(misctype.equalsIgnoreCase("LADDER"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
+				else
 				if(misctype.equalsIgnoreCase("BED"))
 					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
 			}

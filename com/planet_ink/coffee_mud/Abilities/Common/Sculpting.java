@@ -305,6 +305,9 @@ public class Sculpting extends CommonSkill
 				if(misctype.equalsIgnoreCase("TABLE"))
 					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
 				else
+				if(misctype.equalsIgnoreCase("LADDER"))
+					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
+				else
 				if(misctype.equalsIgnoreCase("BED"))
 					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
 			}
@@ -315,6 +318,12 @@ public class Sculpting extends CommonSkill
 					((Container)building).setCapacity(0);
 			}
 			building.recoverEnvStats();
+			if((!building.isGettable())
+			&&(!ExternalPlay.doesOwnThisProperty(mob,mob.location())))
+			{
+				mob.tell("You are not allowed to build that here.");
+				return false;
+			}
 			building.text();
 			building.recoverEnvStats();
 		}
