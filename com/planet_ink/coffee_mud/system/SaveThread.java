@@ -64,7 +64,10 @@ public class SaveThread extends Thread
 					boolean isDead=mob.amDead();
 					String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 					Log.errOut("SaveThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
-					if(!ticked)	mob.destroy();
+					if(!ticked){
+						mob.destroy();
+						R.delInhabitant(mob);
+					}
 				}
 			}
 		}
