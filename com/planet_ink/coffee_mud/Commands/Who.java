@@ -59,7 +59,7 @@ public class Who extends StdCommand
 		{
 		    if(who.charStats().getMyRace().leveless()
 		    ||who.charStats().getCurrentClass().leveless())
-				msg.append(Util.padRight(" ",12)+" ");
+				msg.append(Util.padRight(" ",7)+" ");
 		    else
 				msg.append(Util.padRight(levelStr,7));
 		}

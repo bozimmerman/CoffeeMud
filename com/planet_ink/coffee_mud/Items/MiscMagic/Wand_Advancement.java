@@ -72,7 +72,14 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 						if(mob.location().okMessage(mob,msg2))
 						{
 							mob.location().send(mob,msg2);
-							if(target.getExpNeededLevel()==Integer.MAX_VALUE)
+							if((target.charStats().getCurrentClass().leveless())
+							||(target.charStats().getMyRace().leveless())
+							||(CMSecurity.isDisabled("LEVELS")))
+							    mob.tell("The wand will not work on such as "+target.name()+".");
+							else
+							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(target.charStats().getCurrentClass().expless())
+							||(target.charStats().getMyRace().expless()))
 								target.charStats().getCurrentClass().level(target);
 							else
 								MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);

@@ -103,9 +103,16 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if(destLevel==0) destLevel=30;
 					if(destLevel<=target.baseEnvStats().level())
 						destLevel=100;
+					if((target.charStats().getCurrentClass().leveless())
+					||(target.charStats().getMyRace().leveless())
+					||(CMSecurity.isDisabled("LEVELS")))
+					    mob.tell("The wand will not work on such as "+target.name()+".");
+					else
 					while(target.baseEnvStats().level()<destLevel)
 					{
-						if(target.getExpNeededLevel()==Integer.MAX_VALUE)
+						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+						||(target.charStats().getCurrentClass().expless())
+						||(target.charStats().getMyRace().expless()))
 							target.charStats().getCurrentClass().level(target);
 						else
 							MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
@@ -115,7 +122,14 @@ public class WandArchon extends StdWand implements ArchonOnly
 				if(message.toUpperCase().indexOf("LEVEL UP")>0)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-					if(target.getExpNeededLevel()==Integer.MAX_VALUE)
+					if((target.charStats().getCurrentClass().leveless())
+					||(target.charStats().getMyRace().leveless())
+					||(CMSecurity.isDisabled("LEVELS")))
+					    mob.tell("The wand will not work on such as "+target.name()+".");
+					else
+					if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+					||(target.charStats().getCurrentClass().expless())
+					||(target.charStats().getMyRace().expless()))
 						target.charStats().getCurrentClass().level(target);
 					else
 						MUDFight.postExperience(target,null,null,target.getExpNeededLevel()+1,false);
@@ -125,7 +139,14 @@ public class WandArchon extends StdWand implements ArchonOnly
 				if(message.toUpperCase().indexOf("LEVEL DOWN")>0)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-					if(target.getExpNeededLevel()==Integer.MAX_VALUE)
+					if((target.charStats().getCurrentClass().leveless())
+					||(target.charStats().getMyRace().leveless())
+					||(CMSecurity.isDisabled("LEVELS")))
+					    mob.tell("The wand will not work on such as "+target.name()+".");
+					else
+					if((target.getExpNeededLevel()==Integer.MAX_VALUE)
+					||(target.charStats().getCurrentClass().expless())
+					||(target.charStats().getMyRace().expless()))
 						target.charStats().getCurrentClass().unLevel(target);
 					else
 						MUDFight.postExperience(target,null,null,target.getExpNeededLevel()*-1,false);

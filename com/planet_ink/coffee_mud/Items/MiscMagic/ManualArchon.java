@@ -62,17 +62,22 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						mob.baseCharStats().setStat(CharStats.CONSTITUTION,25);
 						mob.baseCharStats().setStat(CharStats.DEXTERITY,25);
 						mob.baseCharStats().setStat(CharStats.CHARISMA,25);
-						mob.baseCharStats().setCurrentClass(newClass);
 						if((!mob.isMonster())&&(mob.soulMate()==null))
 							CoffeeTables.bump(mob,CoffeeTables.STAT_CLASSCHANGE);
 						mob.recoverCharStats();
+						if((!mob.charStats().getCurrentClass().leveless())
+						&&(!mob.charStats().getMyRace().leveless())
+						&&(!CMSecurity.isDisabled("LEVELS")))
 						while(mob.baseEnvStats().level()<=100)
 						{
-							if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
+							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
+							||(mob.charStats().getCurrentClass().expless())
+							||(mob.charStats().getMyRace().expless()))
 								mob.charStats().getCurrentClass().level(mob);
 							else
 								MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
 						}
+						mob.baseCharStats().setCurrentClass(newClass);
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();
