@@ -1,4 +1,6 @@
 Ability to buy space ship areas, and add them to shopkeepers
+Add Prop_HaveDmgAbsorb
+Finish Scripting doc
 do new security system
 mutable body parts, with ability to grant powers
 Ask Loki which guildmaster -- might be dup behavior -- When I gain a skill, it adds the skill to my list, removes the train, tells me the guildmaster teaches me the skill, and then the guildmaster says that I already know the skill. That last part is the bug. He just taught me the skill, but then tells me I already know it.

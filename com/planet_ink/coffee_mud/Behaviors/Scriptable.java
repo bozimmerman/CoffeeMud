@@ -3429,7 +3429,7 @@ public class Scriptable extends StdBehavior
 
 					if(!found)
 					{
-						scriptableError(scripted,"MPSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
+						scriptableError(scripted,"MPGSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
 						break;
 					}
 				}
