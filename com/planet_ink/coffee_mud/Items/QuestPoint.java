@@ -16,7 +16,6 @@ public class QuestPoint extends StdItem
 		setDescription("A shiny blue coin with magical script around the edges.");
 		myUses=Integer.MAX_VALUE;
 		myWornCode=0;
-		setMiscText("");
 		material=0;
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();

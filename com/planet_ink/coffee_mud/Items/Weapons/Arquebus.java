@@ -11,7 +11,6 @@ public class Arquebus extends StdWeapon
 
 		setName("an arquebus");
 		setDisplayText("an arquebus is on the ground.");
-		setMiscText("");
 		setDescription("It\\`s got a metal barrel and wooden stock.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

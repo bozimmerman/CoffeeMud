@@ -273,6 +273,7 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD","Mapped rooms      : "+CMMap.numRooms()+" in "+CMMap.numAreas()+" areas");
 		CMMap.initStartRooms(page);
 		CMMap.initDeathRooms(page);
+		CMMap.initBodyRooms(page);
 
 		if(CMMap.numRooms()==0)
 		{

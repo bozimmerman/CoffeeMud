@@ -11,7 +11,6 @@ public class ShieldWeapon extends StdWeapon
 
 		setName("a bashing shield");
 		setDisplayText("A bashing shield has been left here.");
-		setMiscText("");
 		setDescription("Looks like natural fighting ability.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

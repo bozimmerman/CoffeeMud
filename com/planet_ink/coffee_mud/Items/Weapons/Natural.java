@@ -13,7 +13,6 @@ public class Natural extends StdWeapon
 
 		setName("fingernails and teeth");
 		setDisplayText("A set of claws and teeth are piled here.");
-		setMiscText("");
 		setDescription("Those hands and claws look fit to kill.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

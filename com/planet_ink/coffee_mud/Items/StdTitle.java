@@ -26,7 +26,6 @@ public class StdTitle extends StdItem implements LandTitle
 		setName("a standard title");
 		setDescription("Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**");
 		baseGoldValue=10000;
-		setMiscText("Who Knows?");
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();
 	}

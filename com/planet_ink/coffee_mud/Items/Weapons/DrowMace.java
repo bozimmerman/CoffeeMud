@@ -12,7 +12,6 @@ public class DrowMace extends Mace
 
 		setName("a mace");
 		setDisplayText("an ornate mace is on the ground.");
-		setMiscText("");
 		setDescription("A mace made out of a very dark material.");
 		secretIdentity="A Drow mace";
 		baseEnvStats().setAbility(Dice.roll(1,6,0));

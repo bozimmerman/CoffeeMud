@@ -13,7 +13,6 @@ public class StdLasso extends StdWeapon
 		super();
 		setName("a lasso");
 		setDisplayText("a lasso has been left here.");
-		setMiscText("");
 		setDescription("Its a rope with a big stiff loop on one end!");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

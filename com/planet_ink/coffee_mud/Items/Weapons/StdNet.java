@@ -13,7 +13,6 @@ public class StdNet extends StdWeapon
 		super();
 		setName("a net");
 		setDisplayText("a net has been left here.");
-		setMiscText("");
 		setDescription("Its a wide tangling net!");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

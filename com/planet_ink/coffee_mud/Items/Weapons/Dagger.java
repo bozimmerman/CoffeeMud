@@ -11,7 +11,6 @@ public class Dagger extends StdWeapon
 
 		setName("a small dagger");
 		setDisplayText("a sharp little dagger lies here.");
-		setMiscText("");
 		setDescription("It has a wooden handle and a metal blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

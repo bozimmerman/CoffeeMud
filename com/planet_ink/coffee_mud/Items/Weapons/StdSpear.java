@@ -13,7 +13,6 @@ public class StdSpear extends StdWeapon
 		super();
 		setName("a spear");
 		setDisplayText("a spear has been left here.");
-		setMiscText("");
 		setDescription("It looks like it might sail far!");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

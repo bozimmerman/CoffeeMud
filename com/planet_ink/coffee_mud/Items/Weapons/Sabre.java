@@ -11,7 +11,6 @@ public class Sabre extends StdWeapon
 
 		setName("a sabre");
 		setDisplayText("a sabre has been dropped by someone.");
-		setMiscText("");
 		setDescription("A slender piece of metal with a fancy silver basket-hilt.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(2);

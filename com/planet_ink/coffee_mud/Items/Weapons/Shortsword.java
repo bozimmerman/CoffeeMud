@@ -11,7 +11,6 @@ public class Shortsword extends Sword
 
 		setName("a short sword");
 		setDisplayText("a short sword has been dropped on the ground.");
-		setMiscText("");
 		setDescription("A sword with a not-too-long blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

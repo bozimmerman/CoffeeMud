@@ -657,7 +657,11 @@ public class StdMOB implements MOB
 	}
 	public DeadBody killMeDead(boolean createBody)
 	{
-		Room deathRoom=location();
+		Room deathRoom=null;
+		if(isMonster())
+			deathRoom=location();
+		else
+			deathRoom=CMMap.getBodyRoom(this);
 		if(location()!=null) location().delInhabitant(this);
 		DeadBody Body=null;
 		if(createBody)

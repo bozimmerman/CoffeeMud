@@ -11,7 +11,6 @@ public class BattleAxe extends Sword
 
 		setName("a battle axe");
 		setDisplayText("a heavy battle axe sits here");
-		setMiscText("");
 		setDescription("It has a stout pole, about 4 feet in length with a trumpet shaped blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

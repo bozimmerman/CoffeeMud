@@ -18,7 +18,6 @@ public class StdCoins extends StdItem implements Coins
 		myUses=Integer.MAX_VALUE;
 		material=EnvResource.RESOURCE_GOLD;
 		myWornCode=0;
-		setMiscText("");
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 	}

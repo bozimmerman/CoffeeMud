@@ -16,7 +16,6 @@ public class GenStaff extends GenWeapon implements Wand
 
 		setName("a wooden staff");
 		setDisplayText("a wooden staff lies in the corner of the room.");
-		setMiscText("");
 		setDescription("");
 		secretIdentity="";
 		baseEnvStats().setAbility(0);

@@ -16,7 +16,6 @@ public class ArchonStaff extends Staff implements Wand
 
 		setName("a wooden staff");
 		setDisplayText("a wooden staff lies in the corner of the room.");
-		setMiscText("");
 		setDescription("It`s long and wooden, just like a staff ought to be.");
 		secretIdentity="The Archon`s Staff of Power!";
 		baseEnvStats().setAbility(0);

@@ -11,7 +11,6 @@ public class WarHammer extends StdWeapon
 
 		setName("a warhammer");
 		setDisplayText("a brutal warhammer sits here");
-		setMiscText("");
 		setDescription("It has a large wooden handle with a brutal blunt double-head.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

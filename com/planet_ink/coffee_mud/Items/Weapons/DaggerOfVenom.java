@@ -13,7 +13,6 @@ public class DaggerOfVenom extends Dagger
 
 		setName("a small dagger");
 		setDisplayText("a sharp little dagger lies here.");
-		setMiscText("");
 		setDescription("It has a wooden handle and a metal blade.");
         secretIdentity="A Dagger of Venom (Periodically injects poison on a successful hit.)";
 		baseEnvStats().setAbility(0);

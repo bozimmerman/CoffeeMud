@@ -11,7 +11,6 @@ public class Quarterstaff extends StdWeapon
 
 		setName("a wooden quarterstaff");
 		setDisplayText("a wooden quarterstaff lies in the corner of the room.");
-		setMiscText("");
 		setDescription("It`s long and wooden, just like a quarterstaff ought to be.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

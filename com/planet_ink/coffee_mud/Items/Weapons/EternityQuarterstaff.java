@@ -12,7 +12,6 @@ public class EternityQuarterstaff extends Quarterstaff
 
 		setName("a quarterstaff");
 		setDisplayText("a wooden quarterstaff lies on the ground.");
-		setMiscText("");
 		setDescription("It\\`s long and wooden, just like a quarterstaff ought to be.");
 		secretIdentity="A quarterstaff fashioned from a branch of one of the Fox god's Eternity Trees.  A truely wondrous gift.";
 		baseEnvStats().setAbility(0);

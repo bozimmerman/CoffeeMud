@@ -12,7 +12,6 @@ public class DrowQuarterstaff extends Mace
 
 		setName("a quarterstaff");
 		setDisplayText("a quarterstaff is on the ground.");
-		setMiscText("");
 		setDescription("A quarterstaff made out of a very dark material metal.");
 		secretIdentity="A Drow quarterstaff";
 		baseEnvStats().setAbility(Dice.roll(1,6,0));

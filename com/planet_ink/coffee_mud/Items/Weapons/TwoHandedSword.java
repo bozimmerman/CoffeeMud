@@ -11,7 +11,6 @@ public class TwoHandedSword extends Sword
 
 		setName("a two-handed sword");
 		setDisplayText("a heavy two-handed sword hangs on the wall.");
-		setMiscText("");
 		setDescription("It has a metallic pommel, and a very large blade.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

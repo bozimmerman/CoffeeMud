@@ -1,3 +1,1 @@
 GAES still isn't done
-Add instrument type to instrumentmake list
-morgue ini entry

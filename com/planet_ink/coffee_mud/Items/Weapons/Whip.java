@@ -11,7 +11,6 @@ public class Whip extends StdWeapon
 
 		setName("a long leather whip");
 		setDisplayText("a long leather whip has been dropped by someone.");
-		setMiscText("");
 		setDescription("Weaved of leather with a nasty little barb at the end.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

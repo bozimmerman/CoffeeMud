@@ -11,7 +11,6 @@ public class Cestus extends StdWeapon
 
 		setName("a mean looking cestus");
 		setDisplayText("a cestus is on the gound.");
-		setMiscText("");
 		setDescription("It\\`s a glove covered in long spikes and blades.");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

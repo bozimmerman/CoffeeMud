@@ -11,7 +11,6 @@ public class Mace extends StdWeapon
 
 		setName("a rather large mace");
 		setDisplayText("a heavy mace is found in the center of the room.");
-		setMiscText("");
 		setDescription("It`s metallic and quite hard..");
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);

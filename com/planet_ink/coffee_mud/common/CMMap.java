@@ -11,6 +11,7 @@ public class CMMap
 	protected static Vector deitiesList = new Vector();
 	protected static Hashtable startRooms=new Hashtable();
 	protected static Hashtable deathRooms=new Hashtable();
+	protected static Hashtable bodyRooms=new Hashtable();
 
 	private static void theWorldChanged()
 	{
@@ -215,12 +216,35 @@ public class CMMap
 			roomID=(String)deathRooms.get("ALL");
 
 		Room room=null;
-		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")));
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
 			room=mob.getStartRoom();
 		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
 			room=getRoom(roomID);
 		if(room==null)
 			room=mob.getStartRoom();
+		if((room==null)&&(numRooms()>0))
+			room=getFirstRoom();
+		return room;
+	}
+
+	public static Room getBodyRoom(MOB mob)
+	{
+		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
+		race.replace(' ','_');
+		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
+		String roomID=(String)bodyRooms.get(race);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)bodyRooms.get(align);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)bodyRooms.get("ALL");
+
+		Room room=null;
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
+			room=mob.location();
+		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
+			room=getRoom(roomID);
+		if(room==null)
+			room=mob.location();
 		if((room==null)&&(numRooms()>0))
 			room=getFirstRoom();
 		return room;
@@ -270,12 +294,19 @@ public class CMMap
 		pageRooms(page,deathRooms,"DEATH");
 	}
 
+	public static void initBodyRooms(INI page)
+	{
+		bodyRooms=new Hashtable();
+		pageRooms(page,bodyRooms,"MORGUE");
+	}
+
 	public static void unLoad()
 	{
 		areasList.clear();
 		roomsList.clear();
 		deitiesList.clear();
 		playersList.clear();
+		bodyRooms=new Hashtable();
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
 	}
