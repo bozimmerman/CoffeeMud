@@ -293,10 +293,13 @@ public class Alchemy extends CommonSkill
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();
-			building=CMClass.getItem("GenPotion");
+			building=CMClass.getItem("GenMultiPotion");
 			((Potion)building).setSpellList(theSpell.ID());
 			building.setName("a potion of "+theSpell.name().toLowerCase());
 			building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
+			((Drink)building).setThirstQuenched(10);
+			((Drink)building).setLiquidHeld(100+experienceToLose);
+			((Drink)building).setLiquidRemaining(100+experienceToLose);
 			building.setDescription("");
 			building.recoverEnvStats();
 			building.text();
