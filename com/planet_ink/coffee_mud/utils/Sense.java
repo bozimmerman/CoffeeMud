@@ -384,6 +384,29 @@ public class Sense
 		if(Sense.isSwimming(E)) return true;
 		if(E instanceof Rider)
 			return isWaterWorthy(((Rider)E).riding());
+		if(E instanceof Item)
+		{
+			Vector V=(E instanceof Container)?((Container)E).getContents():new Vector();
+			if(!V.contains(E)) V.addElement(E);
+			long totalWeight=0;
+			long totalFloatilla=0;
+			for(int v=0;v<V.size();v++)
+			{
+				Item I=(Item)V.elementAt(v);
+				totalWeight+=(long)I.baseEnvStats().weight();
+				totalFloatilla+=totalWeight*(long)EnvResource.RESOURCE_DATA[I.material()&EnvResource.RESOURCE_MASK][4];
+			}
+			if(E instanceof Container)
+			{
+				long cap=((Container)E).capacity();
+				if(totalWeight<cap)
+				{
+					totalFloatilla+=(cap-totalWeight);
+					totalWeight+=cap-totalWeight;
+				}
+			}
+			return (totalFloatilla/totalWeight)<=1000;
+		}
 		return false;
 	}
 	

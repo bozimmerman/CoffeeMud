@@ -7,11 +7,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 {
 	public String ID(){return "StdShopKeeper";}
 	protected int whatISell=0;
-	private Vector storeInventory=new Vector();
+	protected Vector storeInventory=new Vector();
 	protected Vector baseInventory=new Vector();
-	private Hashtable duplicateInventory=new Hashtable();
+	protected Hashtable duplicateInventory=new Hashtable();
 	protected int maximumDuplicatesBought=5;
-	private Hashtable prices=new Hashtable();
+	protected Hashtable prices=new Hashtable();
 
 	public StdShopKeeper()
 	{
@@ -45,7 +45,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	public int whatIsSold(){return whatISell;}
 	public void setWhatIsSold(int newSellCode){whatISell=newSellCode;}
 
-	private boolean inBaseInventory(Environmental thisThang)
+	protected boolean inBaseInventory(Environmental thisThang)
 	{
 		for(int x=0;x<baseInventory.size();x++)
 		{
@@ -881,7 +881,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			super.affect(myHost,affect);
 	}
 
-	private double prejudiceValueFromPart(MOB mob, boolean sellTo, String part)
+	protected double prejudiceValueFromPart(MOB mob, boolean sellTo, String part)
 	{
 		int x=part.indexOf("=");
 		if(x<0) return 0.0;
@@ -912,7 +912,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return 0.0;
 
 	}
-	private double prejudiceFactor(MOB mob, boolean sellTo)
+	protected double prejudiceFactor(MOB mob, boolean sellTo)
 	{
 		if(prejudiceFactors().length()==0) return 1.0;
 		if(prejudiceFactors().indexOf("=")<0)
@@ -1005,7 +1005,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return val;
 	}
 
-	private LandTitle getTitle(Room R)
+	protected LandTitle getTitle(Room R)
 	{
 		for(int a=0;a<R.numAffects();a++)
 			if(R.fetchAffect(a) instanceof LandTitle)
@@ -1013,7 +1013,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return null;
 	}
 
-	private Vector addRealEstate(Vector V,MOB mob)
+	protected Vector addRealEstate(Vector V,MOB mob)
 	{
 		if(((whatISell==DEAL_LANDSELLER)
 			||((whatISell==DEAL_CLANDSELLER)&&(mob.getClanID().length()>0)))
@@ -1063,7 +1063,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	public String prejudiceFactors(){return Util.decompressString(miscText);}
 	public void setPrejudiceFactors(String factors){miscText=Util.compressString(factors);}
 
-	private StringBuffer listInventory(MOB mob)
+	protected StringBuffer listInventory(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		int csize=0;
