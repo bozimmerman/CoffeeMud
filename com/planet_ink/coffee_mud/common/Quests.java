@@ -107,17 +107,31 @@ public class Quests implements Cloneable, Quest
 		{
 			String s=(String)script.elementAt(v);
 			Vector p=Util.parse(s);
+			boolean isQuiet=beQuiet;
 			if(p.size()>0)
 			{
 				String cmd=((String)p.elementAt(0)).toUpperCase();
 				if(cmd.equals("QUIET"))
-					beQuiet=true;
-				else
+				{
+					if(p.size()<2)
+					{
+						beQuiet=true;
+						continue;
+					}
+					else
+					{
+						isQuiet=true;
+						p.removeElementAt(0);
+						cmd=((String)p.elementAt(0)).toUpperCase();
+					}
+				}
+					
 				if(cmd.equals("SET"))
 				{
 					if(p.size()<2)
 					{
-						Log.errOut("Quests","Quest '"+name()+"', unfound variable on set.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', unfound variable on set.");
 						error=true; break;
 					}
 					cmd=((String)p.elementAt(1)).toUpperCase();
@@ -139,7 +153,7 @@ public class Quests implements Cloneable, Quest
 						}
 						if(A==null)
 						{
-							if(!beQuiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', unknown area '"+areaName+"'.");
 							error=true; break;
 						}
@@ -151,12 +165,6 @@ public class Quests implements Cloneable, Quest
 						if(p.size()<3) continue;
 						Vector choices=new Vector();
 						Vector mobTypes=Util.parse(Util.combine(p,2).toUpperCase());
-						boolean quiet=beQuiet;
-						if(mobTypes.contains("QUIET"))
-						{
-							mobTypes.removeElement("QUIET");
-							quiet=true;
-						}
 						for(int t=0;t<mobTypes.size();t++)
 						{
 							String mobType=(String)mobTypes.elementAt(t);
@@ -208,7 +216,7 @@ public class Quests implements Cloneable, Quest
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(M==null)
 						{
-							if(!quiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', !mob '"+p+"'.");
 							error=true; break;
 						}
@@ -233,12 +241,6 @@ public class Quests implements Cloneable, Quest
 						if(p.size()<3) continue;
 						Vector choices=new Vector();
 						Vector itemTypes=Util.parse(Util.combine(p,2).toUpperCase());
-						boolean quiet=beQuiet;
-						if(itemTypes.contains("QUIET"))
-						{
-							itemTypes.removeElement("QUIET");
-							quiet=true;
-						}
 						for(int t=0;t<itemTypes.size();t++)
 						{
 							String itemType=(String)itemTypes.elementAt(t);
@@ -281,7 +283,7 @@ public class Quests implements Cloneable, Quest
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)
 						{
-							if(!quiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', !item '"+p+"'.");
 							error=true; break;
 						}
@@ -332,7 +334,7 @@ public class Quests implements Cloneable, Quest
 							R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(R==null)
 						{
-							if(!beQuiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
 							error=true; break;
 						}
@@ -393,7 +395,7 @@ public class Quests implements Cloneable, Quest
 							R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(R==null)
 						{
-							if(!beQuiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', !locale '"+localeName+"'.");
 							error=true; break;
 						}
@@ -411,12 +413,6 @@ public class Quests implements Cloneable, Quest
 						Vector choices2=new Vector();
 						Vector choices3=new Vector();
 						String mobName=Util.combine(p,2).toUpperCase();
-						boolean quiet=beQuiet;
-						if(mobName.startsWith("QUIET "))
-						{
-							mobName=mobName.substring(6).trim();
-							quiet=true;
-						}
 						String mask="";
 						int x=mobName.indexOf("MASK=");
 						if(x>=0)
@@ -478,7 +474,7 @@ public class Quests implements Cloneable, Quest
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(M==null)
 						{
-							if(!quiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', !mob '"+mobName+"'.");
 							error=true; break;
 						}
@@ -507,12 +503,6 @@ public class Quests implements Cloneable, Quest
 						Vector choices2=new Vector();
 						Vector choices3=new Vector();
 						String itemName=Util.combine(p,2).toUpperCase();
-						boolean quiet=beQuiet;
-						if(itemName.startsWith("QUIET "))
-						{
-							itemName=itemName.substring(6).trim();
-							quiet=true;
-						}
 						Enumeration e=CMMap.rooms();
 						if(A!=null) e=A.getMap();
 						for(;e.hasMoreElements();)
@@ -564,7 +554,7 @@ public class Quests implements Cloneable, Quest
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)
 						{
-							if(!quiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', !item '"+itemName+"'.");
 							error=true; break;
 						}
@@ -591,7 +581,8 @@ public class Quests implements Cloneable, Quest
 					if(cmd.equals("INTERVAL")){}
 					else
 					{
-						Log.errOut("Quests","Quest '"+name()+"', unknown variable '"+cmd+"'.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', unknown variable '"+cmd+"'.");
 						error=true; break;
 					}
 				}
@@ -600,7 +591,8 @@ public class Quests implements Cloneable, Quest
 				{
 					if(p.size()<2)
 					{
-						Log.errOut("Quests","Quest '"+name()+"', no IMPORT type.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', no IMPORT type.");
 						error=true; break;
 					}
 					cmd=((String)p.elementAt(1)).toUpperCase();
@@ -608,30 +600,35 @@ public class Quests implements Cloneable, Quest
 					{
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', no IMPORT MOBS file.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', no IMPORT MOBS file.");
 							error=true; break;
 						}
 						StringBuffer buf=Resources.getFileResource(Util.combine(p,2));
 						if((buf==null)||((buf!=null)&&(buf.length()==0)))
 						{
-							Log.errOut("Quests","Unknown XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
+							if(!isQuiet)
+								Log.errOut("Quests","Unknown XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
 							error=true; break;
 						}
 						if(buf.substring(0,20).indexOf("<MOBS>")<0)
 						{
-							Log.errOut("Quests","Invalid XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
+							if(!isQuiet)
+								Log.errOut("Quests","Invalid XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
 							error=true; break;
 						}
 						loadedMobs=new Vector();
 						String errorStr=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),loadedMobs,null);
 						if(errorStr.length()>0)
 						{
-							Log.errOut("Quests","Error on import of: '"+Util.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
+							if(!isQuiet)
+								Log.errOut("Quests","Error on import of: '"+Util.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
 							error=true; break;
 						}
 						if(loadedMobs.size()<=0)
 						{
-							Log.errOut("Quests","No mobs loaded: '"+Util.combine(p,2)+"' for '"+name()+"'.");
+							if(!isQuiet)
+								Log.errOut("Quests","No mobs loaded: '"+Util.combine(p,2)+"' for '"+name()+"'.");
 							error=true; break;
 						}
 					}
@@ -640,36 +637,42 @@ public class Quests implements Cloneable, Quest
 					{
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', no import filename!");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', no import filename!");
 							error=true; break;
 						}
 						StringBuffer buf=Resources.getFileResource(Util.combine(p,2));
 						if((buf==null)||((buf!=null)&&(buf.length()==0)))
 						{
-							Log.errOut("Quests","Unknown XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
+							if(!isQuiet)
+								Log.errOut("Quests","Unknown XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
 							error=true; break;
 						}
 						if(buf.substring(0,20).indexOf("<ITEMS>")<0)
 						{
-							Log.errOut("Quests","Invalid XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
+							if(!isQuiet)
+								Log.errOut("Quests","Invalid XML file: '"+Util.combine(p,2)+"' for '"+name()+"'.");
 							error=true; break;
 						}
 						loadedItems=new Vector();
 						String errorStr=com.planet_ink.coffee_mud.common.Generic.addItemsFromXML(buf.toString(),loadedItems,null);
 						if(errorStr.length()>0)
 						{
-							Log.errOut("Quests","Error on import of: '"+Util.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
+							if(!isQuiet)
+								Log.errOut("Quests","Error on import of: '"+Util.combine(p,2)+"' for '"+name()+"': "+errorStr+".");
 							error=true; break;
 						}
 						if(loadedItems.size()<=0)
 						{
-							Log.errOut("Quests","No items loaded: '"+Util.combine(p,2)+"' for '"+name()+"'.");
+							if(!isQuiet)
+								Log.errOut("Quests","No items loaded: '"+Util.combine(p,2)+"' for '"+name()+"'.");
 							error=true; break;
 						}
 					}
 					else
 					{
-						Log.errOut("Quests","Quest '"+name()+"', unknown import type '"+cmd+"'.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', unknown import type '"+cmd+"'.");
 						error=true; break;
 					}
 				}
@@ -678,7 +681,8 @@ public class Quests implements Cloneable, Quest
 				{
 					if(p.size()<2)
 					{
-						Log.errOut("Quests","Quest '"+name()+"', unfound type on load.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', unfound type on load.");
 						error=true; break;
 					}
 					cmd=((String)p.elementAt(1)).toUpperCase();
@@ -686,12 +690,14 @@ public class Quests implements Cloneable, Quest
 					{
 						if(loadedMobs.size()==0)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot load mob, no mobs imported.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot load mob, no mobs imported.");
 							error=true; break;
 						}
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', no mob name to load!");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', no mob name to load!");
 							error=true; break;
 						}
 						String mobName=Util.combine(p,2);
@@ -717,7 +723,7 @@ public class Quests implements Cloneable, Quest
 						}
 						if(choices.size()==0)
 						{
-							if(!beQuiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', no mob found to load '"+mobName+"'!");
 							error=true; break;
 						}
@@ -749,12 +755,14 @@ public class Quests implements Cloneable, Quest
 					{
 						if(loadedItems.size()==0)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot load item, no items imported.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot load item, no items imported.");
 							error=true; break;
 						}
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', no item name to load!");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', no item name to load!");
 							error=true; break;
 						}
 						String itemName=Util.combine(p,2);
@@ -770,7 +778,7 @@ public class Quests implements Cloneable, Quest
 						}
 						if(choices.size()==0)
 						{
-							if(!beQuiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', no item found to load '"+itemName+"'!");
 							error=true; break;
 						}
@@ -799,7 +807,8 @@ public class Quests implements Cloneable, Quest
 					}
 					else
 					{
-						Log.errOut("Quests","Quest '"+name()+"', unknown load type '"+cmd+"'.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', unknown load type '"+cmd+"'.");
 						error=true; break;
 					}
 
@@ -809,7 +818,8 @@ public class Quests implements Cloneable, Quest
 				{
 					if(p.size()<2)
 					{
-						Log.errOut("Quests","Quest '"+name()+"', unfound type on give.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', unfound type on give.");
 						error=true; break;
 					}
 					cmd=((String)p.elementAt(1)).toUpperCase();
@@ -817,12 +827,14 @@ public class Quests implements Cloneable, Quest
 					{
 						if(M==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give follower, no mob set.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give follower, no mob set.");
 							error=true; break;
 						}
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give follower, follower name not given.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give follower, follower name not given.");
 							error=true; break;
 						}
 						String mobName=Util.combine(p,2);
@@ -842,7 +854,7 @@ public class Quests implements Cloneable, Quest
 						}
 						if(choices.size()==0)
 						{
-							if(!beQuiet)
+							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give follower, no mobs called '"+mobName+"' previously set in script.");
 							error=true; break;
 						}
@@ -854,17 +866,20 @@ public class Quests implements Cloneable, Quest
 					{
 						if(I==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give item, no item set.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give item, no item set.");
 							error=true; break;
 						}
 						if(M==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give item, no mob set.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give item, no mob set.");
 							error=true; break;
 						}
 						if(p.size()>2)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give item, parameter unnecessarily given: '"+Util.combine(p,2)+"'.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give item, parameter unnecessarily given: '"+Util.combine(p,2)+"'.");
 							error=true; break;
 						}
 						M.giveItem(I);
@@ -874,18 +889,21 @@ public class Quests implements Cloneable, Quest
 					{
 						if(M==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give ability, no mob set.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give ability, no mob set.");
 							error=true; break;
 						}
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give ability, ability name not given.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give ability, ability name not given.");
 							error=true; break;
 						}
 						Ability A3=CMClass.findAbility((String)p.elementAt(2));
 						if(A3==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give ability, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
 						Vector V=new Vector();
@@ -914,18 +932,21 @@ public class Quests implements Cloneable, Quest
 					{
 						if(E==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, no mob or item set.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, no mob or item set.");
 							error=true; break;
 						}
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, behavior name not given.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, behavior name not given.");
 							error=true; break;
 						}
 						Behavior B=CMClass.getBehavior((String)p.elementAt(2));
 						if(B==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give behavior, behavior name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
 						Vector V=new Vector();
@@ -950,18 +971,21 @@ public class Quests implements Cloneable, Quest
 					{
 						if(E==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give affect, no mob or item set.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give affect, no mob or item set.");
 							error=true; break;
 						}
 						if(p.size()<3)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give affect, ability name not given.");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give affect, ability name not given.");
 							error=true; break;
 						}
 						Ability A3=CMClass.findAbility((String)p.elementAt(2));
 						if(A3==null)
 						{
-							Log.errOut("Quests","Quest '"+name()+"', cannot give affect, ability name unknown '"+((String)p.elementAt(2))+".");
+							if(!isQuiet)
+								Log.errOut("Quests","Quest '"+name()+"', cannot give affect, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
 						Vector V=new Vector();
@@ -988,13 +1012,15 @@ public class Quests implements Cloneable, Quest
 					}
 					else
 					{
-						Log.errOut("Quests","Quest '"+name()+"', unknown give type '"+cmd+"'.");
+						if(!isQuiet)
+							Log.errOut("Quests","Quest '"+name()+"', unknown give type '"+cmd+"'.");
 						error=true; break;
 					}
 				}
 				else
 				{
-					Log.errOut("Quests","Quest '"+name()+"', unknown command '"+cmd+"'.");
+					if(!isQuiet)
+						Log.errOut("Quests","Quest '"+name()+"', unknown command '"+cmd+"'.");
 					error=true; break;
 				}
 				done=true;
