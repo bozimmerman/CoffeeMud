@@ -19,6 +19,12 @@ public class BasicSenses
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
 			   commands.removeElementAt(1);
 			String ID=Util.combine(commands,1);
+			
+			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
+			{
+				mob.location().listExits(mob);
+				break;
+			}
 			if(ID.equalsIgnoreCase("SELF"))
 				ID=mob.name();
 			Environmental thisThang=null;
