@@ -53,7 +53,7 @@ public class Fighter_FlyingKick extends StdAbility
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{
-			mob.tell("You are too close away to do a flying kick!");
+			mob.tell("You are too close to do a flying kick!");
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_LEG)<=1)

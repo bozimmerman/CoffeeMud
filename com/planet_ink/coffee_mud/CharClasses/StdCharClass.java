@@ -575,7 +575,6 @@ public class StdCharClass implements CharClass, Cloneable
 	public void loseExperience(MOB mob, int amount)
 	{
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;
-		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		mob.setExperience(mob.getExperience()-amount);
         if((mob.getLiegeID().length()>0)&&(amount>2))
         {
@@ -601,6 +600,7 @@ public class StdCharClass implements CharClass, Cloneable
 				}
             }
         }
+		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
 			unLevel(mob);
 	}

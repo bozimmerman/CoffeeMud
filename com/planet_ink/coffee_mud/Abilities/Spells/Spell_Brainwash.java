@@ -132,6 +132,8 @@ public class Spell_Brainwash extends Spell
 
 		if(success)
 		{
+		    MOB oldVictim=mob.getVictim();
+		    MOB oldVictim2=target.getVictim();
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
@@ -143,6 +145,10 @@ public class Spell_Brainwash extends Spell
 				super.maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND);
 				Ability A=target.fetchEffect(ID());
 				if(A!=null) A.setMiscText(message);
+				if(mob.getVictim()!=oldVictim)
+				    mob.setVictim(oldVictim);
+				if(target.getVictim()!=oldVictim2)
+				    target.setVictim(oldVictim2);
 			}
 		}
 		else
