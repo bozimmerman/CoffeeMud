@@ -9,6 +9,7 @@ public interface Weapon extends Item
 	public final static int TYPE_BASHING=3;
 	public final static int TYPE_BURNING=4;
 	public final static int TYPE_BURSTING=5;
+	public final static int TYPE_SHOOT=6;
 
 	// weapon classifications
 	public final static int CLASS_AXE=0;

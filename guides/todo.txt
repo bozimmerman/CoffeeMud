@@ -16,7 +16,8 @@ animals will produce poisoned meat, of course.
 Beacon, Worship command to change recall/start room to a new temple or church.  Worshiped room would 
 also get ticked, and previews of actions,  which will improve the Cleric class considerably.  
 
-Meditation for Mage should be like Endurance for Fighter
+Meditation for Mage should be like Endurance for Fighter.
+Lore skill for Bards.. allows an identify for them.
 
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 guild.  These will be special Sub-Classes (derivatives of existing classes).

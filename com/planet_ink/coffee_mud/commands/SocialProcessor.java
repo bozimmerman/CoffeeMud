@@ -306,7 +306,7 @@ public class SocialProcessor
 			}
 			else
 			{
-				mob.tell("That person is not here.");
+				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
 				return;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -363,7 +363,7 @@ public class SocialProcessor
 			}
 			else
 			{
-				mob.tell("That person is not here.");
+				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
 				return;
 			}
 			commands.removeElementAt(commands.size()-1);
@@ -419,7 +419,7 @@ public class SocialProcessor
 			}
 			else
 			{
-				mob.tell("That person is not here.");
+				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
 				return;
 			}
 		}
@@ -474,7 +474,7 @@ public class SocialProcessor
 				if(mob.isASysOp())
 					new Lister().list(mob,commands);
 				else
-					mob.tell("That person is not here.");
+					mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
 				return;
 			}
 		}

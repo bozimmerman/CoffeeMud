@@ -592,7 +592,7 @@ public class Import
 		return (x*y)+z;
 	}
 
-	private void doWeapon(Weapon I, int val1, String str1, int val2, int val3, int val4, String str4)
+	private void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
 	{
 		if((str1.trim().length()>0)&&((Character.isLetter(str1.trim().charAt(0)))||(str1.trim().startsWith("'"))))
 		{
@@ -607,7 +607,12 @@ public class Import
 			else
 			if(str1.startsWith("SPEAR")) val1=3;
 			else
-			if(str1.startsWith("MACE")) val1=4;
+			if(str1.startsWith("MACE"))
+			{
+				val1=4;
+				if(name.toUpperCase().endsWith("HAMMER"))
+					val1=11;
+			}
 			else
 			if(str1.startsWith("AXE")) val1=5;
 			else
@@ -633,6 +638,7 @@ public class Import
 		case 8: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); break;
 		case 9: ((Weapon)I).setWeaponClassification(Weapon.CLASS_DAGGER); break;
 		case 10: ((Weapon)I).setWeaponClassification(Weapon.CLASS_STAFF); break;
+		case 11: ((Weapon)I).setWeaponClassification(Weapon.CLASS_HAMMER); break;
 		}
 		((Weapon)I).baseEnvStats().setDamage(val3);
 		if((str4.trim().length()>0)&&((Character.isLetter(str4.trim().charAt(0)))||(str4.trim().startsWith("'"))))
@@ -1538,15 +1544,15 @@ public class Import
 					adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					break;
 			case 5: I=CMClass.getWeapon("GenWeapon");
-					doWeapon((Weapon)I,val1,str1,val2,val3,val4,str4);
+					doWeapon((Weapon)I,objectName,val1,str1,val2,val3,val4,str4);
 					adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					break;
 			case 6: I=CMClass.getWeapon("GenWeapon");
-					doWeapon((Weapon)I,val1,str1,val2,val3,val4,str4);
+					doWeapon((Weapon)I,objectName,val1,str1,val2,val3,val4,str4);
 					adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					break;
 			case 7: I=CMClass.getWeapon("GenWeapon");
-					doWeapon((Weapon)I,val1,str1,val2,val3,val4,str4);
+					doWeapon((Weapon)I,objectName,val1,str1,val2,val3,val4,str4);
 					adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					break;
 			case 8: I=CMClass.getStdItem("GenItem");
@@ -2575,8 +2581,16 @@ public class Import
 						}
 						else
 						{
-							E.setName("the ground");
-							name="door";
+							if(E.hasADoor())
+							{
+								E.setName("a door");
+								name="door";
+							}
+							else
+							{
+								E.setName("the ground");
+								name="ground";
+							}
 						}
 						E.setExitParams(name,E.closeWord(),E.openWord(),E.name()+", closed");
 						E.setDescription(descStr);

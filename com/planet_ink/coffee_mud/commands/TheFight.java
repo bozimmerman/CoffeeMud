@@ -561,6 +561,29 @@ public class TheFight
 				return "DESTROY(S)";
 			else
 				return "OBLITERATE(S)";
+		case Weapon.TYPE_SHOOT:
+			if(damageAmount<3)
+				return "scratch(es)";
+			else
+			if(damageAmount<9)
+				return "graze(s)";
+			else
+			if(damageAmount<20)
+				return "hit(s)";
+			else
+			if(damageAmount<35)
+				return "pierce(s)";
+			else
+			if(damageAmount<50)
+				return "decimate(s)";
+			else
+			if(damageAmount<75)
+				return "MASSACRE(S)";
+			else
+			if(damageAmount<100)
+				return "DESTROY(S)";
+			else
+				return "OBLITERATE(S)";
 		case Weapon.TYPE_BURNING:
 			if(damageAmount<3)
 				return "warm(s)";
@@ -654,7 +677,19 @@ public class TheFight
 			return "heavily armored ("+armor+")";
 		else
 		if(armor < 135)
-			return "unhittable ("+armor+")";
+			return "completely armored ("+armor+")";
+		else
+		if(armor < 150)
+			return "divinely armored ("+armor+")";
+		else
+		if(armor < 165)
+			return "practically unhittable ("+armor+")";
+		else
+		if(armor < 180)
+			return "almost impenetrable ("+armor+")";
+		else
+		if(armor < 195)
+			return "almost invincible ("+armor+")";
 		else
 			return "invincible! ("+armor+")";
 	}
@@ -690,6 +725,18 @@ public class TheFight
 		if(prowess < 135)
 			return "extremely dangerous ("+prowess+")";
 		else
+		if(prowess < 150)
+			return "deadly ("+prowess+")";
+		else
+		if(prowess < 165)
+			return "extremely deadly ("+prowess+")";
+		else
+		if(prowess < 180)
+			return "a dealer of death ("+prowess+")";
+		else
+		if(prowess < 195)
+			return "a master of death ("+prowess+")";
+		else
 			return "you are death incarnate! ("+prowess+")";
 	}
 
@@ -709,6 +756,8 @@ public class TheFight
 			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
 		case Weapon.TYPE_BURSTING:
 			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
+		case Weapon.TYPE_SHOOT:
+			return "<S-NAME> shoot(s) at <T-NAMESELF> and miss(es).";
 		default:
 			return "<S-NAME> attack(s) <T-NAMESELF> and miss(es).";
 		}

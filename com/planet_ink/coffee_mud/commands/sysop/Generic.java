@@ -809,10 +809,10 @@ public class Generic
 		throws IOException
 	{
 		mob.tell("\n\rWeapon Attack Type: '"+E.typeDescription()+"'.");
-		String newType=mob.session().choose("Enter a new value (N/S/P/B)\n\r:","NSPB","");
+		String newType=mob.session().choose("Enter a new value (N/S/P/B/F/M/R)\n\r:","NSPBFMR","");
 		int newValue=-1;
 		if(newType.length()>0)
-			newValue=("NSPB").indexOf(newType.toUpperCase());
+			newValue=("NSPBFMR").indexOf(newType.toUpperCase());
 		if(newValue>=0)
 			E.setWeaponType(newValue);
 		else
