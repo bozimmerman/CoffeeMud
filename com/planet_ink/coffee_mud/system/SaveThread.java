@@ -254,6 +254,9 @@ public class SaveThread extends Thread
 			
 			status="autopurge process";
 			Vector allUsers=ExternalPlay.getUserList();
+			Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+			if(protectedOnes==null) protectedOnes=new Vector();
+			
 			for(int u=0;u<allUsers.size();u++)
 			{
 				Vector user=(Vector)allUsers.elementAt(u);
@@ -272,11 +275,21 @@ public class SaveThread extends Thread
 				
 				if(last<when)
 				{
-					MOB M=CMMap.getLoadPlayer(name);
-					if(M!=null)
+					boolean protectedOne=false;
+					for(int p=0;p<protectedOnes.size();p++)
 					{
-						ExternalPlay.destroyUser(M);
-						Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(new IQCalendar(last).d2String())+".");
+						String P=(String)protectedOnes.elementAt(p);
+						if(P.equalsIgnoreCase(name))
+						{ protectedOne=true; break;	}
+					}
+					if(!protectedOne)
+					{
+						MOB M=CMMap.getLoadPlayer(name);
+						if(M!=null)
+						{
+							//ExternalPlay.destroyUser(M);
+							Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(new IQCalendar(last).d2String())+".");
+						}
 					}
 				}
 			}

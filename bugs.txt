@@ -1,32 +1,34 @@
 - test autopurge!!!
 debug auction once and for all
 use zappermask for channels
-Jewelmaking 		
-	allow you to add jewels to any item 	
-Construction 		
-	needs to be able to modify door descriptions 	
-	peephole. a window on a door (sortof) 	
-	windows 	
-	drawbridge 	
-	WINDOW exits...exits that require the CRAWL command. 	
-Pottery 	
-	BRICKS converts a clay resource to a stone 
-	flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc. 
-Sculpting 	
-	tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
-Paper making 	
-	Poster, Banner, and Screen. y
-Tailoring 	
-	pillow, sheets, blanket, large pillow, cushion 
-Blacksmithing 	
-	chain....works like rope, but heavy and metal. 
-	Trashcan A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes. 
-	DRUM (metal barrel) 
-	can (Like TIN can or coffee can) 
-Masonry 	
-	could you add to the desription of archways the  type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room? 
-	tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own. 
-	windows 
-	POOL will convert the room into a Water room, with 1 level of underwater added for free 
-	portcullis (but it requires METAL instead of stone) 
-	WINDOW exits...exits that require the CRAWL command. 
+bodymask -- expose it!
+save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
+Jewelmaking
+	allow you to add jewels to any item
+Construction
+	needs to be able to modify door descriptions
+	peephole. a window on a door (sortof)
+	windows
+	drawbridge
+	WINDOW exits...exits that require the CRAWL command.
+Pottery
+	BRICKS converts a clay resource to a stone
+	flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc.
+Sculpting
+	tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people.
+Paper making
+	Poster, Banner, and Screen.
+Tailoring
+	pillow, sheets, blanket, large pillow, cushion
+Blacksmithing
+	chain....works like rope, but heavy and metal.
+	Trashcan A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes.
+	DRUM (metal barrel)
+	can (Like TIN can or coffee can)
+Masonry
+	could you add to the desription of archways the  type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room?
+	tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.
+	windows
+	POOL will convert the room into a Water room, with 1 level of underwater added for free
+	portcullis (but it requires METAL instead of stone)
+	WINDOW exits...exits that require the CRAWL command
