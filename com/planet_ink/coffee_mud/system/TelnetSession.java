@@ -472,7 +472,7 @@ public class TelnetSession extends Thread implements Session
 	{
 		if (termID == 1 && c != -1)
 		{
-			if (c != currentColor)
+			if ((c != currentColor)||(c=='^'))
 			{
 				if(c !='.')
 				{
