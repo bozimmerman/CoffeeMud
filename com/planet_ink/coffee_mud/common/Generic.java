@@ -308,8 +308,16 @@ public class Generic
 		
 		if(E instanceof DeadBody)
 		{
-			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.GENDER)));
-			text.append(XMLManager.convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
+			if(((DeadBody)E).charStats()!=null)
+			{
+				text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.GENDER)));
+				text.append(XMLManager.convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
+			}
+			else
+			{
+				text.append(XMLManager.convertXMLtoTag("GENDER","M"));
+				text.append(XMLManager.convertXMLtoTag("MRACE","Human"));
+			}
 		}
 
 		if(E instanceof MOB)
