@@ -7,25 +7,14 @@ import java.util.*;
 
 public class Prayer_Curse extends Prayer
 {
-	public Prayer_Curse()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Curse";
-		displayText="(Cursed)";
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(7);
-		holyQuality=Prayer.HOLY_EVIL;
-
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Curse();
-	}
+	public String ID() { return "Prayer_Curse"; }
+	public String name(){ return "Curse";}
+	public String displayText(){ return "(Cursed)";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	public Environmental newInstance(){	return new Prayer_Curse();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -136,7 +125,7 @@ public class Prayer_Curse extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> is cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> is cursed!":"^S<S-NAME> curse(s) <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

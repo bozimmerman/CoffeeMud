@@ -7,23 +7,11 @@ import java.util.*;
 
 public class Prayer_RemovePoison extends Prayer
 {
-	public Prayer_RemovePoison()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Remove Poison";
-
-		baseEnvStats().setLevel(11);
-		quality=Ability.OK_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_RemovePoison();
-	}
+	public String ID() { return "Prayer_RemovePoison"; }
+	public String name(){ return "Remove Poison";}
+	public int quality(){ return OK_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_RemovePoison();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
@@ -60,7 +48,7 @@ public class Prayer_RemovePoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> pray(s) that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> pray(s) that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

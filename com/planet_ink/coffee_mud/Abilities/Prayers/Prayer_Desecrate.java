@@ -7,24 +7,12 @@ import java.util.*;
 
 public class Prayer_Desecrate extends Prayer
 {
-	public Prayer_Desecrate()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Desecrate";
-
-		holyQuality=Prayer.HOLY_EVIL;
-		baseEnvStats().setLevel(3);
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Desecrate();
-	}
+	public String ID() { return "Prayer_Desecrate"; }
+	public String name(){ return "Desecrate";}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public Environmental newInstance(){	return new Prayer_Desecrate();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -48,7 +36,7 @@ public class Prayer_Desecrate extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> feel(s) desecrated!":"^S<S-NAME> desecrate(s) <T-NAMESELF> before <S-HIS-HER> god.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) desecrated!":"^S<S-NAME> desecrate(s) <T-NAMESELF> before <S-HIS-HER> god.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,23 +7,11 @@ import java.util.*;
 
 public class Prayer_CureDisease extends Prayer
 {
-	public Prayer_CureDisease()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Cure Disease";
-
-		baseEnvStats().setLevel(12);
-		quality=Ability.OK_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_CureDisease();
-	}
+	public String ID() { return "Prayer_CureDisease"; }
+	public String name(){ return "Cure Disease";}
+	public int quality(){ return OK_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_CureDisease();}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
@@ -55,7 +43,7 @@ public class Prayer_CureDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A healing glow surrounds <T-NAME>.":"^S<S-NAME> cure(s) the disease in <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A healing glow surrounds <T-NAME>.":"^S<S-NAME> cure(s) the disease in <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

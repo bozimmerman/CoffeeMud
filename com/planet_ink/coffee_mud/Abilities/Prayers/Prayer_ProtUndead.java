@@ -7,27 +7,14 @@ import java.util.*;
 
 public class Prayer_ProtUndead extends Prayer
 {
-	public Prayer_ProtUndead()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Protection Undead";
-		displayText="(Protection from Undead)";
-
-		quality=Ability.OK_SELF;
-		holyQuality=Prayer.HOLY_NEUTRAL;
-		baseEnvStats().setLevel(4);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_ProtUndead();
-	}
+	public String ID() { return "Prayer_ProtUndead"; }
+	public String name(){ return "Protection Undead";}
+	public String displayText(){ return "(Protection from Undead)";}
+	public int quality(){ return OK_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prayer_ProtUndead();}
 
 	public boolean tick(int tickID)
 	{
@@ -96,7 +83,7 @@ public class Prayer_ProtUndead extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> become(s) protected from the undead.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from the undead.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> become(s) protected from the undead.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from the undead.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

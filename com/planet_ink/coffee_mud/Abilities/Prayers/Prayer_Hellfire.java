@@ -7,22 +7,11 @@ import java.util.*;
 
 public class Prayer_Hellfire extends Prayer
 {
-	public Prayer_Hellfire()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hellfire";
-
-		holyQuality=Prayer.HOLY_EVIL;
-		baseEnvStats().setLevel(19);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Hellfire();
-	}
+	public String ID() { return "Prayer_Hellfire"; }
+	public String name(){ return "Hellfire";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_Hellfire();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -41,7 +30,7 @@ public class Prayer_Hellfire extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			Prayer_Hellfire newOne=(Prayer_Hellfire)this.copyOf();
-			FullMsg msg=new FullMsg(mob,target,newOne,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) the rage of <S-HIS-HER> god against the good inside <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,newOne,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) the rage of <S-HIS-HER> god against the good inside <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

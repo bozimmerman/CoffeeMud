@@ -7,26 +7,12 @@ import java.util.*;
 
 public class Prayer_Calm extends Prayer
 {
-	public Prayer_Calm()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Calm";
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(16);
-		quality=Ability.BENEFICIAL_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Calm();
-	}
+	public String ID() { return "Prayer_Calm"; }
+	public String name(){ return "Calm";}
+	protected int canTargetCode(){return 0;}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_Calm();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -49,7 +35,7 @@ public class Prayer_Calm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of calmness descends.":"^S<S-NAME> pray(s) for calmness.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of calmness descends.":"^S<S-NAME> pray(s) for calmness.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

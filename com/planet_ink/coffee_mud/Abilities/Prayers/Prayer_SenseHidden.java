@@ -7,26 +7,14 @@ import java.util.*;
 
 public class Prayer_SenseHidden extends Prayer
 {
-	public Prayer_SenseHidden()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sense Hidden";
-		displayText="(Sense Hidden)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(11);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_SenseHidden();
-	}
+	public String ID() { return "Prayer_SenseHidden"; }
+	public String name(){ return "Sense Hidden";}
+	public String displayText(){ return "(Sense Hidden)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){ return OK_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public Environmental newInstance(){	return new Prayer_SenseHidden();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -68,7 +56,7 @@ public class Prayer_SenseHidden extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> attain(s) opague eyes!":"^S<S-NAME> pray(s) for divine revelation, and <S-HIS-HER> eyes become opague.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> attain(s) opague eyes!":"^S<S-NAME> pray(s) for divine revelation, and <S-HIS-HER> eyes become opague.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

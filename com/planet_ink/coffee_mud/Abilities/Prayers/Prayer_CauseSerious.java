@@ -7,22 +7,11 @@ import java.util.*;
 
 public class Prayer_CauseSerious extends Prayer
 {
-	public Prayer_CauseSerious()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Cause Serious Wounds";
-
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(6);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_CauseSerious();
-	}
+	public String ID() { return "Prayer_CauseSerious"; }
+	public String name(){ return "Cause Serious Wounds";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_CauseSerious();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -40,7 +29,7 @@ public class Prayer_CauseSerious extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> pray(s) at <T-NAMESELF> for a serious burst of pain!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"A seriously painful burst assaults <T-NAME>.":"^S<S-NAME> pray(s) at <T-NAMESELF> for a serious burst of pain!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,23 +7,11 @@ import java.util.*;
 
 public class Prayer_CauseLight extends Prayer
 {
-	public Prayer_CauseLight()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Cause Light Wounds";
-
-		quality=Ability.MALICIOUS;
-		holyQuality=Prayer.HOLY_EVIL;
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_CauseLight();
-	}
+	public String ID() { return "Prayer_CauseLight"; }
+	public String name(){ return "Cause Light Wounds";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_CauseLight();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -41,7 +29,7 @@ public class Prayer_CauseLight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> pray(s) at <T-NAMESELF> for a light burst of pain!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"A light painful burst assaults <T-NAME>.":"^S<S-NAME> pray(s) at <T-NAMESELF> for a light burst of pain!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

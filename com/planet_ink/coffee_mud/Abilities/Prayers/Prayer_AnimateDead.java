@@ -7,32 +7,12 @@ import java.util.*;
 
 public class Prayer_AnimateDead extends Prayer
 {
-	public Prayer_AnimateDead()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Animate Dead";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(24);
-		
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		holyQuality=Prayer.HOLY_EVIL;
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_AnimateDead();
-	}
+	public String ID() { return "Prayer_AnimateDead"; }
+	public String name(){ return "Animate Dead";}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Prayer_AnimateDead();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -80,7 +60,7 @@ public class Prayer_AnimateDead extends Prayer
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> pray(s) over <T-NAMESELF> hungrily, calling on evil powers.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) over <T-NAMESELF> hungrily, calling on evil powers.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

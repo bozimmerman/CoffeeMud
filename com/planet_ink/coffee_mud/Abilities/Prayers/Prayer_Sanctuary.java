@@ -7,27 +7,14 @@ import java.util.*;
 
 public class Prayer_Sanctuary extends Prayer
 {
-	public Prayer_Sanctuary()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sanctuary";
-		displayText="(Sanctuary)";
-
-		quality=Ability.BENEFICIAL_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		baseEnvStats().setLevel(13);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Sanctuary();
-	}
+	public String ID() { return "Prayer_Sanctuary"; }
+	public String name(){ return "Sanctuary";}
+	public String displayText(){ return "(Sanctuary)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_Sanctuary();}
 
 
 	public void unInvoke()
@@ -75,7 +62,7 @@ public class Prayer_Sanctuary extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> pray(s) that <T-NAME> be given sanctuary from harm.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) that <T-NAME> be given sanctuary from harm.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

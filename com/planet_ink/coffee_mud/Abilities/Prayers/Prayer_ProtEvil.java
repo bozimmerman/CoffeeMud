@@ -7,27 +7,14 @@ import java.util.*;
 
 public class Prayer_ProtEvil extends Prayer
 {
-	public Prayer_ProtEvil()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Protection Evil";
-		displayText="(Protection from evil)";
-
-		quality=Ability.OK_SELF;
-		holyQuality=Prayer.HOLY_GOOD;
-		baseEnvStats().setLevel(4);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_ProtEvil();
-	}
+	public String ID() { return "Prayer_ProtEvil"; }
+	public String name(){ return "Protection Evil";}
+	public String displayText(){ return "(Protection from evil)";}
+	public int quality(){ return OK_SELF;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prayer_ProtEvil();}
 
 	public boolean tick(int tickID)
 	{
@@ -124,7 +111,7 @@ public class Prayer_ProtEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> become(s) protected from evil.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from evil.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> become(s) protected from evil.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from evil.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

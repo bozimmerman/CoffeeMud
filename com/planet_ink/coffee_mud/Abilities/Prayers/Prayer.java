@@ -7,53 +7,36 @@ import java.util.*;
 
 public class Prayer extends StdAbility
 {
+	public String ID() { return "Prayer"; }
+	public String name(){ return "a Prayer";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	private static final String[] triggerStrings = {"PRAY","PR"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.PRAYER;}
+	
 	public final static int HOLY_EVIL=0;
 	public final static int HOLY_NEUTRAL=1;
 	public final static int HOLY_GOOD=2;
 
-	protected int holyQuality=HOLY_NEUTRAL;
-
-	protected int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-
-	public Prayer()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="a Prayer";
-		displayText="(in the holy dominion of the gods)";
-		miscText="";
-		triggerStrings.addElement("PRAY");
-		triggerStrings.addElement("PR");
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		holyQuality=Prayer.HOLY_NEUTRAL;
-		quality=Ability.INDIFFERENT;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=0;
+	protected int affectType(boolean auto){
+		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		if(quality()==Ability.MALICIOUS)
+			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto) affectType=affectType|Affect.ACT_GENERAL;
+		return affectType;
 	}
-
-	public int classificationCode()
-	{
-		return Ability.PRAYER;
-	}
-
 	public Environmental newInstance()
 	{
 		return new Prayer();
 	}
 
-	public int holyQuality()
-	{
-		return holyQuality;
-	}
-
 	public boolean appropriateToMyAlignment(int alignment)
 	{
-		switch(holyQuality)
+		switch(holyQuality())
 		{
 		case Prayer.HOLY_EVIL:
 			if(alignment<350) return true;
@@ -82,11 +65,6 @@ public class Prayer extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		affectType=Affect.MSG_CAST_VERBAL_SPELL;
-		if(quality()==Ability.MALICIOUS)
-			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.ACT_GENERAL;
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

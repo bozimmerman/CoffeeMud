@@ -7,23 +7,11 @@ import java.util.*;
 
 public class Prayer_DispelEvil extends Prayer
 {
-	public Prayer_DispelEvil()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dispel Evil";
-
-		holyQuality=Prayer.HOLY_GOOD;
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(9);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_DispelEvil();
-	}
+	public String ID() { return "Prayer_DispelEvil"; }
+	public String name(){ return "Dispel Evil";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_DispelEvil();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -41,7 +29,7 @@ public class Prayer_DispelEvil extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exercise(s)!":"^S<S-NAME> exercise(s) the evil inside <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"The evil inside <T-NAME> exercise(s)!":"^S<S-NAME> exercise(s) the evil inside <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,22 +7,11 @@ import java.util.*;
 
 public class Prayer_MassHeal extends Prayer
 {
-	public Prayer_MassHeal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mass Heal";
-		baseEnvStats().setLevel(22);
-		quality=Ability.BENEFICIAL_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_MassHeal();
-	}
+	public String ID() { return "Prayer_MassHeal"; }
+	public String name(){ return "Mass Heal";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_MassHeal();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -41,7 +30,7 @@ public class Prayer_MassHeal extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) surrounded by a white light.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
 				if(mob.location().okAffect(msg))
 				{
 					mob.location().send(mob,msg);

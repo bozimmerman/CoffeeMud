@@ -7,23 +7,11 @@ import java.util.*;
 
 public class Prayer_MassFreedom extends Prayer
 {
-	public Prayer_MassFreedom()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mass Freedom";
-
-		baseEnvStats().setLevel(20);
-		quality=Ability.OK_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_MassFreedom();
-	}
+	public String ID() { return "Prayer_MassFreedom"; }
+	public String name(){ return "Mass Freedom";}
+	public int quality(){ return OK_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_MassFreedom();}
 
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
@@ -63,7 +51,7 @@ public class Prayer_MassFreedom extends Prayer
 		boolean nothingDone=true;
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of freedom flows through the air":"^S<S-NAME> pray(s) for freedom, and the area begins to fill with divine glory.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> pray(s) for freedom, and the area begins to fill with divine glory.^?");
 			Room room=mob.location();
 			if((room!=null)&&(room.okAffect(msg)))
 			{

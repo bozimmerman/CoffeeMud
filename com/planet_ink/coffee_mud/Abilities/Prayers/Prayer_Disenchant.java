@@ -7,26 +7,12 @@ import java.util.*;
 
 public class Prayer_Disenchant extends Prayer
 {
-	public Prayer_Disenchant()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Disenchant";
-		displayText="(Disenchant)";
-		quality=Ability.INDIFFERENT;
-		holyQuality=Prayer.HOLY_NEUTRAL;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		baseEnvStats().setLevel(24);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Disenchant();
-	}
+	public String ID() { return "Prayer_Disenchant"; }
+	public String name(){ return "Disenchant";}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public Environmental newInstance(){	return new Prayer_Disenchant();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -44,7 +30,7 @@ public class Prayer_Disenchant extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> appear(s) neutralized!":"^S<S-NAME> invoke(s) <S-HIS-HER> god's power to neutralize <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) neutralized!":"^S<S-NAME> invoke(s) <S-HIS-HER> god's power to neutralize <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

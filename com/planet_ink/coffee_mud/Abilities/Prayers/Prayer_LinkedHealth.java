@@ -7,29 +7,15 @@ import java.util.*;
 
 public class Prayer_LinkedHealth extends Prayer
 {
+	public String ID() { return "Prayer_LinkedHealth"; }
+	public String name(){ return "Linked Health";}
+	public String displayText(){ return "(Linked Health)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int quality(){ return OK_OTHERS;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
 	MOB buddy=null;
-	public Prayer_LinkedHealth()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Linked Health";
-		displayText="(Linked Health)";
-
-		quality=Ability.OK_OTHERS;
-		holyQuality=Prayer.HOLY_NEUTRAL;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(13);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_LinkedHealth();
-	}
+	public Environmental newInstance(){	return new Prayer_LinkedHealth();}
 
 
 	public void unInvoke()
@@ -98,7 +84,7 @@ public class Prayer_LinkedHealth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> pray(s) that <S-HIS-HER> health be linked with <T-NAME>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) that <S-HIS-HER> health be linked with <T-NAME>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

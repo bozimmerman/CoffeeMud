@@ -7,24 +7,13 @@ import java.util.*;
 
 public class Prayer_Nullification extends Prayer
 {
-	public Prayer_Nullification()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Nullification";
-		baseEnvStats().setLevel(22);
-		quality=Ability.BENEFICIAL_OTHERS;
-		holyQuality=Prayer.HOLY_NEUTRAL;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Nullification();
-	}
+	public String ID() { return "Prayer_Nullification"; }
+	public String name(){ return "Nullification";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Prayer_Nullification();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -41,7 +30,7 @@ public class Prayer_Nullification extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) nullified.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) nullified.":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>.^?");
 				if(mob.location().okAffect(msg))
 				{
 					mob.location().send(mob,msg);

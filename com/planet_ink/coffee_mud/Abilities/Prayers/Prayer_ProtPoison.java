@@ -7,26 +7,14 @@ import java.util.*;
 
 public class Prayer_ProtPoison extends Prayer
 {
-	public Prayer_ProtPoison()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Protection Poison";
-		displayText="(Protection from Poison)";
-
-		quality=Ability.BENEFICIAL_SELF;
-		baseEnvStats().setLevel(13);
-		recoverEnvStats();
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_ProtPoison();
-	}
-
+	public String ID() { return "Prayer_ProtPoison"; }
+	public String name(){ return "Protection Poison";}
+	public String displayText(){ return "(Protection from Poison)";}
+	public int quality(){ return BENEFICIAL_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prayer_ProtPoison();}
 
 	public void unInvoke()
 	{
@@ -91,7 +79,7 @@ public class Prayer_ProtPoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> pray(s) for protection from poisons.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> pray(s) for protection from poisons.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

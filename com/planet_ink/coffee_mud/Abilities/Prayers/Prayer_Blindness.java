@@ -7,26 +7,14 @@ import java.util.*;
 
 public class Prayer_Blindness extends Prayer
 {
-	public Prayer_Blindness()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Blindness";
-		displayText="(Blindness)";
-		quality=Ability.MALICIOUS;
-		holyQuality=Prayer.HOLY_EVIL;
-		baseEnvStats().setLevel(17);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Blindness();
-	}
+	public String ID() { return "Prayer_Blindness"; }
+	public String name(){ return "Blindness";}
+	public String displayText(){ return "(Blindness)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_Blindness();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -68,7 +56,7 @@ public class Prayer_Blindness extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) an unholy blindness upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) an unholy blindness upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,23 +7,12 @@ import java.util.*;
 
 public class Prayer_MassMobility extends Prayer
 {
-	public Prayer_MassMobility()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mass Mobility";
-		displayText="(Mass Mobility)";
-		quality=Ability.BENEFICIAL_OTHERS;
-		holyQuality=Prayer.HOLY_NEUTRAL;
-		baseEnvStats().setLevel(20);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_MassMobility();
-	}
+	public String ID() { return "Prayer_MassMobility"; }
+	public String name(){ return "Mass Mobility";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public String displayText(){ return "(Mass Mobility)";}
+	public Environmental newInstance(){	return new Prayer_MassMobility();}
 
 
 
@@ -89,7 +78,7 @@ public class Prayer_MassMobility extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 
 		Room room=mob.location();
-		affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 		if(auto) affectType=affectType|Affect.ACT_GENERAL;
 		if((success)&&(room!=null))
 		{

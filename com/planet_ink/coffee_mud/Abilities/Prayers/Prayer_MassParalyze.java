@@ -7,23 +7,12 @@ import java.util.*;
 
 public class Prayer_MassParalyze extends Prayer
 {
-	public Prayer_MassParalyze()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mass Paralyze";
-		displayText="(Paralyzed)";
-		quality=Ability.MALICIOUS;
-		holyQuality=Prayer.HOLY_EVIL;
-		baseEnvStats().setLevel(20);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_MassParalyze();
-	}
+	public String ID() { return "Prayer_MassParalyze"; }
+	public String name(){ return "Mass Paralyze";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public String displayText(){ return "(Paralyzed)";}
+	public Environmental newInstance(){	return new Prayer_MassParalyze();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -67,7 +56,7 @@ public class Prayer_MassParalyze extends Prayer
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) an unholy paralysis upon <T-NAMESELF>.^?");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> invoke(s) an unholy paralysis upon <T-NAMESELF>.^?");
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.TYP_PARALYZE|(auto?Affect.ACT_GENERAL:0),null);
 				if((target!=mob)&&(mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 				{

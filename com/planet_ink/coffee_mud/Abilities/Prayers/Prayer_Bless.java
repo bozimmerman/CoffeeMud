@@ -7,27 +7,14 @@ import java.util.*;
 
 public class Prayer_Bless extends Prayer
 {
-	public Prayer_Bless()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Bless";
-		displayText="(Blessed)";
-
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(7);
-		quality=Ability.BENEFICIAL_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Bless();
-	}
+	public String ID() { return "Prayer_Bless"; }
+	public String name(){ return "Bless";}
+	public String displayText(){ return "(Blessed)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_Bless();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -145,7 +132,7 @@ public class Prayer_Bless extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> invoke(s) <S-HIS-HER> god's power to bless <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> invoke(s) <S-HIS-HER> god's power to bless <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

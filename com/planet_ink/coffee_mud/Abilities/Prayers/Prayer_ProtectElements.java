@@ -7,27 +7,14 @@ import java.util.*;
 
 public class Prayer_ProtectElements extends Prayer
 {
-	public Prayer_ProtectElements()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Protect Elements";
-		displayText="(Protection from Elements)";
-
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(18);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_ProtectElements();
-	}
+	public String ID() { return "Prayer_ProtectElements"; }
+	public String name(){ return "Protection Elements";}
+	public int quality(){ return BENEFICIAL_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public String displayText(){ return "(Protection fromt Elements)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prayer_ProtectElements();}
 
 
 	public void unInvoke()
@@ -74,7 +61,7 @@ public class Prayer_ProtectElements extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) elemental protection.":"^S<S-NAME> pray(s) for elemental protection.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) elemental protection.":"^S<S-NAME> pray(s) for elemental protection.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

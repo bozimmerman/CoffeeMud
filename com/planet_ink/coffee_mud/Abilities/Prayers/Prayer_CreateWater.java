@@ -7,25 +7,15 @@ import java.util.*;
 
 public class Prayer_CreateWater extends Prayer
 {
+	public String ID() { return "Prayer_CreateWater"; }
+	public String name(){ return "Create Water";}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
 	private Room SpringLocation=null;
 	private Item littleSpring=null;
-
-	public Prayer_CreateWater()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Create Water";
-		baseEnvStats().setLevel(5);
-
-		canAffectCode=0;
-		canTargetCode=0;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_CreateWater();
-	}
+	public Environmental newInstance(){	return new Prayer_CreateWater();}
 
 	public void unInvoke()
 	{
@@ -55,7 +45,7 @@ public class Prayer_CreateWater extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> call(s) to <S-HIS-HER> god for water.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) to <S-HIS-HER> god for water.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,24 +7,12 @@ import java.util.*;
 
 public class Prayer_Resurrect extends Prayer
 {
-	public Prayer_Resurrect()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resurrect";
-		displayText="(Resurrected)";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		baseEnvStats().setLevel(25);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Resurrect();
-	}
+	public String ID() { return "Prayer_Resurrect"; }
+	public String name(){ return "Resurrect";}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public Environmental newInstance(){	return new Prayer_Resurrect();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -46,7 +34,7 @@ public class Prayer_Resurrect extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,body,this,affectType,auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,body,this,affectType(auto),auto?"<T-NAME> is resurrected!":"^S<S-NAME> resurrect(s) <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				invoker=mob;

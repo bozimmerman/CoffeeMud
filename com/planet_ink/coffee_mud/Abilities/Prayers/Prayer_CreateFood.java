@@ -7,22 +7,13 @@ import java.util.*;
 
 public class Prayer_CreateFood extends Prayer
 {
-	public Prayer_CreateFood()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Create Food";
-		baseEnvStats().setLevel(5);
-
-		canAffectCode=0;
-		canTargetCode=0;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_CreateFood();
-	}
+	public String ID() { return "Prayer_CreateFood"; }
+	public String name(){ return "Create Food";}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Prayer_CreateFood();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -33,7 +24,7 @@ public class Prayer_CreateFood extends Prayer
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> call(s) to <S-HIS-HER> god for food.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) to <S-HIS-HER> god for food.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,28 +7,14 @@ import java.util.*;
 
 public class Prayer_BloodMoon extends Prayer
 {
-	public Prayer_BloodMoon()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Blood Moon";
-		displayText="(Blood Moon)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		quality=Ability.MALICIOUS;
-		holyQuality=Prayer.HOLY_EVIL;
-
-		baseEnvStats().setLevel(13);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_BloodMoon();
-	}
+	public String ID() { return "Prayer_BloodMoon"; }
+	public String name(){ return "Blood Moon";}
+	public String displayText(){ return "(Blood Moon)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_BloodMoon();	}
 
 
 	public void unInvoke()
@@ -76,7 +62,7 @@ public class Prayer_BloodMoon extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> pray(s) that <T-NAME> feel pain.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) that <T-NAME> feel pain.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

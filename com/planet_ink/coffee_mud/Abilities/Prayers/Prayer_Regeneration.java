@@ -7,29 +7,15 @@ import java.util.*;
 
 public class Prayer_Regeneration extends Prayer
 {
+	public String ID() { return "Prayer_Regeneration"; }
+	public String name(){ return "Regeneration";}
+	public String displayText(){ return "(Regeneration)";}
+	public int quality(){ return BENEFICIAL_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	String lastMessage=null;
-	public Prayer_Regeneration()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Regeneration";
-		displayText="(Regeneration)";
-
-		holyQuality=Prayer.HOLY_NEUTRAL;
-		quality=Ability.BENEFICIAL_SELF;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(18);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Regeneration();
-	}
+	public Environmental newInstance(){	return new Prayer_Regeneration();}
 
 
 	public void unInvoke()
@@ -93,7 +79,7 @@ public class Prayer_Regeneration extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) regenerative abilities!":"^S<S-NAME> pray(s) for divine regenerative abilities!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) regenerative abilities!":"^S<S-NAME> pray(s) for divine regenerative abilities!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

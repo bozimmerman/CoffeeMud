@@ -7,29 +7,15 @@ import java.util.*;
 
 public class Prayer_BladeBarrier extends Prayer
 {
+	public String ID() { return "Prayer_BladeBarrier"; }
+	public String name(){ return "Blade Barrier";}
+	public String displayText(){ return "(Blade Barrier)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){ return BENEFICIAL_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
 	String lastMessage=null;
-	public Prayer_BladeBarrier()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Blade Barrier";
-		displayText="(Blade Barrier)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		holyQuality=Prayer.HOLY_NEUTRAL;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(18);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_BladeBarrier();
-	}
+	public Environmental newInstance(){	return new Prayer_BladeBarrier();}
 
 
 	public void unInvoke()
@@ -112,7 +98,7 @@ public class Prayer_BladeBarrier extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> pray(s) for divine protection!  ")+"A barrier of blades begin to spin around <T-NAME>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> pray(s) for divine protection!  ")+"A barrier of blades begin to spin around <T-NAME>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

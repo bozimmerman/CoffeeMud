@@ -7,23 +7,15 @@ import java.util.*;
 
 public class Prayer_SenseLife extends Prayer
 {
+	public String ID() { return "Prayer_SenseLife"; }
+	public String name(){ return "Sense Life";}
+	public String displayText(){ return "(Sense Life)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){ return OK_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
 	private Room lastRoom=null;
-	public Prayer_SenseLife()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sense Life";
-		baseEnvStats().setLevel(1);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_SenseLife();
-	}
+	public Environmental newInstance(){	return new Prayer_SenseLife();}
 
 	public void unInvoke()
 	{
@@ -103,7 +95,7 @@ public class Prayer_SenseLife extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> listen(s) for a message from <S-HIS-HER> god.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> listen(s) for a message from <S-HIS-HER> god.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,24 +7,14 @@ import java.util.*;
 
 public class Prayer_UnholyWord extends Prayer
 {
-	public Prayer_UnholyWord()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Unholy Word";
-		displayText="(Unholy Word)";
-		baseEnvStats().setLevel(23);
-		holyQuality=Prayer.HOLY_EVIL;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_UnholyWord();
-	}
+	public String ID() { return "Prayer_UnholyWord"; }
+	public String name(){ return "Unholy Word";}
+	public String displayText(){ return "(Unholy Word)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_UnholyWord();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -77,7 +67,7 @@ public class Prayer_UnholyWord extends Prayer
 		{
 			MOB target=room.fetchInhabitant(i);
 			if(target==null) break;
-			affectType=Affect.MSG_CAST_VERBAL_SPELL;
+			int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|Affect.ACT_GENERAL;
 			if(target.getAlignment()>650)
 				affectType=affectType|Affect.MASK_MALICIOUS;

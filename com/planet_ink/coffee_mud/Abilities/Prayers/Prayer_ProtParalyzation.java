@@ -7,25 +7,14 @@ import java.util.*;
 
 public class Prayer_ProtParalyzation extends Prayer
 {
-	public Prayer_ProtParalyzation()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Protection Paralyzation";
-		displayText="(Protection from Paralyzation)";
-
-		quality=Ability.BENEFICIAL_SELF;
-		baseEnvStats().setLevel(13);
-		recoverEnvStats();
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_ProtectHealth();
-	}
+	public String ID() { return "Prayer_ProtParalyzation"; }
+	public String name(){ return "Protection Paralyzation";}
+	public String displayText(){ return "(Protection from Paralyzation)";}
+	public int quality(){ return BENEFICIAL_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prayer_ProtParalyzation();}
 
 
 	public void unInvoke()
@@ -91,7 +80,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> pray(s) for a free mind and body.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> pray(s) for a free mind and body.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,27 +7,15 @@ import java.util.*;
 
 public class Prayer_Plague extends Prayer
 {
+	public String ID() { return "Prayer_Plague"; }
+	public String name(){ return "Plague";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public String displayText(){ return "(Plague)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public Environmental newInstance(){	return new Prayer_Plague();}
 	int plagueDown=4;
-
-	public Prayer_Plague()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Plague";
-		displayText="(Plague)";
-		quality=Ability.MALICIOUS;
-		holyQuality=Prayer.HOLY_EVIL;
-		baseEnvStats().setLevel(12);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Plague();
-	}
 
 	public String text(){return "DISEASE";}
 	
@@ -94,7 +82,7 @@ public class Prayer_Plague extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy plague upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"":"^S<S-NAME> inflict(s) an unholy plague upon <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_DISEASE|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

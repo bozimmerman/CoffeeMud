@@ -7,25 +7,14 @@ import java.util.*;
 
 public class Prayer_Contagion extends Prayer
 {
-	public Prayer_Contagion()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Contagion";
-		displayText="(Contagion)";
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(7);
-		holyQuality=Prayer.HOLY_EVIL;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Contagion();
-	}
+	public String ID() { return "Prayer_Contagion"; }
+	public String displayText(){ return "(Contagion)";}
+	public String name(){ return "Contagion";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Prayer_Contagion();	}
 
 	public void unInvoke()
 	{
@@ -92,7 +81,7 @@ public class Prayer_Contagion extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> pray(s) at <T-NAMESELF> for unholy contagion.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> pray(s) at <T-NAMESELF> for unholy contagion.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.TYP_DISEASE|Affect.MASK_MALICIOUS,null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

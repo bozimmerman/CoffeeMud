@@ -7,24 +7,12 @@ import java.util.*;
 
 public class Prayer_SenseAlignment extends Prayer
 {
-	public Prayer_SenseAlignment()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sense Alignment";
-
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(1);
-
-		// lets save this one for druids.. clerics have the detect evil/good spells
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_SenseAlignment();
-	}
+	public String ID() { return "Prayer_SenseAlignment"; }
+	public String name(){ return "Sense Alignment";}
+	//public String displayText(){ return "(Sense Alignment)";}
+	public int quality(){ return OK_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public Environmental newInstance(){	return new Prayer_SenseAlignment();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -43,7 +31,7 @@ public class Prayer_SenseAlignment extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> peer(s) into the eyes of <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> peer(s) into the eyes of <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,25 +7,14 @@ import java.util.*;
 
 public class Prayer_Blindsight extends Prayer
 {
-	public Prayer_Blindsight()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Blindsight";
-		displayText="(Blindsight)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		quality=Ability.BENEFICIAL_SELF;
-		baseEnvStats().setLevel(13);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Blindsight();
-	}
+	public String ID() { return "Prayer_Blindsight"; }
+	public String name(){ return "Blindsight";}
+	public String displayText(){ return "(Blindsight)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int quality(){ return BENEFICIAL_SELF;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public Environmental newInstance(){	return new Prayer_Blindsight();	}
 
 
 	public void unInvoke()
@@ -70,7 +59,7 @@ public class Prayer_Blindsight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) blindsight.":"^S<S-NAME> pray(s) for the blindsight.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) blindsight.":"^S<S-NAME> pray(s) for the blindsight.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

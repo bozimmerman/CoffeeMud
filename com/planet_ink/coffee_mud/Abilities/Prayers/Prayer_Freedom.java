@@ -7,23 +7,11 @@ import java.util.*;
 
 public class Prayer_Freedom extends Prayer
 {
-	public Prayer_Freedom()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Freedom";
-
-		baseEnvStats().setLevel(8);
-		quality=Ability.OK_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Freedom();
-	}
+	public String ID() { return "Prayer_Freedom"; }
+	public String name(){ return "Freedom";}
+	public int quality(){ return OK_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_Freedom();}
 
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
@@ -71,7 +59,7 @@ public class Prayer_Freedom extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> pray(s) over <T-NAMESELF>, delivering a light unbinding touch.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> pray(s) over <T-NAMESELF>, delivering a light unbinding touch.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

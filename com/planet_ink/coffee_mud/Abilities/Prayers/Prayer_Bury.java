@@ -7,25 +7,12 @@ import java.util.*;
 
 public class Prayer_Bury extends Prayer
 {
-	public Prayer_Bury()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Bury";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(3);
-		holyQuality=Prayer.HOLY_NEUTRAL;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Bury();
-	}
+	public String ID() { return "Prayer_Bury"; }
+	public String name(){ return "Bury";}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public int quality(){ return INDIFFERENT;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
+	public Environmental newInstance(){	return new Prayer_Bury();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -49,7 +36,7 @@ public class Prayer_Bury extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened. 
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"^S<T-NAME> bury(s) <T-HIM-HERSELF>.^?":"^S<S-NAME> bury(s) <T-NAMESELF> in the name of <S-HIS-HER> god.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> bury(s) <T-HIM-HERSELF>.^?":"^S<S-NAME> bury(s) <T-NAMESELF> in the name of <S-HIS-HER> god.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,32 +7,12 @@ import java.util.*;
 
 public class Prayer_Drain extends Prayer
 {
-	public Prayer_Drain()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Drain";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Drain)";
-
-		quality=Ability.MALICIOUS;
-		holyQuality=Prayer.HOLY_EVIL;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(17);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Drain();
-	}
+	public String ID() { return "Prayer_Drain"; }
+	public String name(){ return "Drain";}
+	public String displayText(){ return "(Drain)";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_Drain();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -56,7 +36,7 @@ public class Prayer_Drain extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_UNDEAD|(auto?Affect.ACT_GENERAL:0),null);
-			FullMsg msg2=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> reach(es) at <T-NAMESELF>, praying!^?");
+			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> reach(es) at <T-NAMESELF>, praying!^?");
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg2);

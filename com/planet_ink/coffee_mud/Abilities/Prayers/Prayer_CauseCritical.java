@@ -7,24 +7,11 @@ import java.util.*;
 
 public class Prayer_CauseCritical extends Prayer
 {
-	public Prayer_CauseCritical()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Cause Critical Wounds";
-
-		quality=Ability.MALICIOUS;
-		holyQuality=Prayer.HOLY_EVIL;
-
-		baseEnvStats().setLevel(14);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_CauseCritical();
-	}
+	public String ID() { return "Prayer_CauseCritical"; }
+	public String name(){ return "Cause Critical Wounds";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_CauseCritical();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -42,7 +29,7 @@ public class Prayer_CauseCritical extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"A critically painful burst assaults <T-NAME>.":"^S<S-NAME> pray(s) at <T-NAMESELF> for a critical burst of pain!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"A critically painful burst assaults <T-NAME>.":"^S<S-NAME> pray(s) at <T-NAMESELF> for a critical burst of pain!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

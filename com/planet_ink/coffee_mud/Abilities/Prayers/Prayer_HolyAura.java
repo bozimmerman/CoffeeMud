@@ -7,26 +7,14 @@ import java.util.*;
 
 public class Prayer_HolyAura extends Prayer
 {
-	public Prayer_HolyAura()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Holy Aura";
-		displayText="(Holy Aura)";
-
-		baseEnvStats().setLevel(15);
-		quality=Ability.BENEFICIAL_OTHERS;
-		holyQuality=Prayer.HOLY_GOOD;
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_HolyAura();
-	}
+	public String ID() { return "Prayer_HolyAura"; }
+	public String name(){ return "Holy Aura";}
+	public String displayText(){ return "(Holy Aura)";}
+	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public int holyQuality(){ return HOLY_GOOD;}
+	public Environmental newInstance(){	return new Prayer_HolyAura();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -69,7 +57,7 @@ public class Prayer_HolyAura extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> become(s) clothed in holiness.":"^S<S-NAME> call(s) on <S-HIS-HER> god for <T-NAME> to be clothed in holiness.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) clothed in holiness.":"^S<S-NAME> call(s) on <S-HIS-HER> god for <T-NAME> to be clothed in holiness.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

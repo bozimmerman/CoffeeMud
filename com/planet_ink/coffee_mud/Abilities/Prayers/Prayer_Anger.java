@@ -7,24 +7,11 @@ import java.util.*;
 
 public class Prayer_Anger extends Prayer
 {
-	public Prayer_Anger()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Anger";
-
-		holyQuality=Prayer.HOLY_EVIL;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prayer_Anger();
-	}
+	public String ID() { return "Prayer_Anger"; }
+	public String name(){ return "Anger";}
+	public int quality(){ return MALICIOUS;}
+	public int holyQuality(){ return HOLY_EVIL;}
+	public Environmental newInstance(){	return new Prayer_Anger();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,7 +34,7 @@ public class Prayer_Anger extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of anger descends":"^S<S-NAME> rage(s) for anger.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
