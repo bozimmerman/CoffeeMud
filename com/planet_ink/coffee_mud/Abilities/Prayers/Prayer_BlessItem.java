@@ -75,7 +75,7 @@ public class Prayer_BlessItem extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> invoke(s) <S-HIS-HER> god's power to bless <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> appear(s) blessed!":"^S<S-NAME> "+prayWord(mob)+" for the power to bless <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -86,7 +86,7 @@ public class Prayer_BlessItem extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> call(s) on <S-HIS-HER> god for blessings, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for blessings, but nothing happens.");
 		// return whether it worked
 		return success;
 	}

@@ -57,7 +57,7 @@ public class Prayer_HolyAura extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) clothed in holiness.":"^S<S-NAME> call(s) on <S-HIS-HER> god for <T-NAME> to be clothed in holiness.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) clothed in holiness.":"^S<S-NAME> "+prayForWord(mob)+" to clothe <T-NAMESELF> in holiness.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -76,7 +76,7 @@ public class Prayer_HolyAura extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> call(s) on <S-HIS-HER> god for holy blessing, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for holiness, but nothing happens.");
 
 
 		// return whether it worked
