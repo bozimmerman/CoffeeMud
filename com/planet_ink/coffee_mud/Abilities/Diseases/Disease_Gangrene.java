@@ -16,7 +16,7 @@ public class Disease_Gangrene extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Gangrene();}
 
-	protected int DISEASE_TICKS(){return new Long(100*MudHost.TICKS_PER_MUDDAY).intValue();}
+	protected int DISEASE_TICKS(){return new Long(100*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your gangrous wounds feel better.";}
@@ -32,7 +32,7 @@ public class Disease_Gangrene extends Disease
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 		tickUpToDay++;
-		if(tickUpToDay==MudHost.TICKS_PER_MUDDAY)
+		if(tickUpToDay==CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY))
 		{
 			daysSick++;
 			tickUpToDay=0;

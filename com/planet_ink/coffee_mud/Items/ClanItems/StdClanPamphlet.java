@@ -10,7 +10,6 @@ public class StdClanPamphlet extends StdClanItem
 	public String ID(){	return "StdClanPamphlet";}
 	public Environmental newInstance(){ return new StdClanPamphlet();}
 	private int tradeTime=-1;
-	private static final int TRADEFREQ=(int)MudHost.TICKS_PER_MUDDAY;
 
 	public StdClanPamphlet()
 	{
@@ -69,7 +68,7 @@ public class StdClanPamphlet extends StdClanItem
 			if(tradeTime<=0)
 			{
 				MOB mob=(MOB)owner();
-				tradeTime=TRADEFREQ;
+				tradeTime=CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY);
 				if((mob.getClanID().equals(clanID()))
 				&&(rulingClan!=null)
 				&&(rulingClan.length()>0)

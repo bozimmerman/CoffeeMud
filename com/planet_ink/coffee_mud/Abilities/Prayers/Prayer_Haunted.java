@@ -100,7 +100,7 @@ public class Prayer_Haunted extends Prayer
 					CMClass.DBEngine().DBUpdateRoom((Room)target);
 				}
 				else
-					beneficialAffect(mob,target,(int)(MudHost.TICKS_PER_MUDDAY*5));
+					beneficialAffect(mob,target,(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
 			}
 		}
 		else

@@ -16,7 +16,7 @@ public class Disease_Malaria extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Malaria();}
 
-	protected int DISEASE_TICKS(){return new Long(9*MudHost.TICKS_PER_MUDDAY).intValue();}
+	protected int DISEASE_TICKS(){return new Long(9*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected int DISEASE_DELAY(){return 5;}
 	protected String DISEASE_DONE(){return "Your malaria clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with malaria.^?";}
@@ -34,7 +34,7 @@ public class Disease_Malaria extends Disease
 		MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
-		if((!mob.amDead())&&((++tickUp)==MudHost.TICKS_PER_MUDDAY))
+		if((!mob.amDead())&&((++tickUp)==CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)))
 		{
 			tickUp=0;
 			conDown++;

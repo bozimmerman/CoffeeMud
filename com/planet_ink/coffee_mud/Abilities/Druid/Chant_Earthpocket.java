@@ -9,7 +9,7 @@ public class Chant_Earthpocket extends Chant
 {
 	public String ID() { return "Chant_Earthpocket"; }
 	public String name(){return "Earthpocket";}
-	public String displayText(){return "(Earthpocket: "+(super.tickDown/MudHost.TICKS_PER_MUDDAY)+")";}
+	public String displayText(){return "(Earthpocket: "+(super.tickDown/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY))+")";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){ return new Chant_Earthpocket();}
@@ -152,7 +152,7 @@ public class Chant_Earthpocket extends Chant
 				pocket.setDescription("It looks like an endless black hole in the wall.  Very mystical.");
 				pocket.recoverEnvStats();
 				target.location().addItem(pocket);
-				beneficialAffect(mob,target,(int)MudHost.TICKS_PER_MUDDAY*5);
+				beneficialAffect(mob,target,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A dark pocket of energy appears in a nearby wall.");
 			}
 		}

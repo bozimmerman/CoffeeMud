@@ -18,7 +18,7 @@ public class Pregnancy extends StdAbility
 			int y=text().indexOf("/",x+1);
 			if(y<0) return "";
 			long start=Util.s_long(text().substring(0,x));
-			long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/MudHost.TICKS_PER_MUDDAY; // down to days;
+			long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
 			long months=days/30;
 			if(days<1)
 				return "(<1 day pregnant)";
@@ -256,7 +256,7 @@ public class Pregnancy extends StdAbility
 				{
 					int z=text().indexOf("/",y+1);
 					long end=Util.s_long(text().substring(x+1,y));
-					long days=((end-System.currentTimeMillis())/MudHost.TICK_TIME)/MudHost.TICKS_PER_MUDDAY; // down to days
+					long days=((end-System.currentTimeMillis())/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days
 					long months=days/30; // down to months
 					labor=false;
 					if(days<7) // BIRTH!
@@ -391,7 +391,7 @@ public class Pregnancy extends StdAbility
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
-		long add=((10)*(30)*MudHost.TICKS_PER_MUDDAY*MudHost.TICK_TIME);
+		long add=((10)*(30)*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME);
 		long end=start+add;
 		if(success)
 		{

@@ -40,14 +40,13 @@ public class StdArea implements Area
 	{
 		return climateObj;
 	}
-	protected static final TimeClock globalClock=new DefaultTimeClock();
-	protected TimeClock myClock=globalClock;
+	protected TimeClock myClock=DefaultTimeClock.globalClock;
 	public void setTimeObj(TimeClock obj){myClock=obj;}
 	public TimeClock getTimeObj(){return myClock;}
 
 	public StdArea()
 	{
-		globalClock.setLoadName("GLOBAL");
+		DefaultTimeClock.globalClock.setLoadName("GLOBAL");
 	}
 	public String name()
 	{

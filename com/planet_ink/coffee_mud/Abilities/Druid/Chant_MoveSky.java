@@ -35,7 +35,7 @@ public class Chant_MoveSky extends Chant
 				if(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT)
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The moon begin(s) to descend!");
-					int x=TimeClock.A_FULL_DAY-mob.location().getArea().getTimeObj().getTimeOfDay();
+					int x=mob.location().getArea().getTimeObj().getHoursInDay()-mob.location().getArea().getTimeObj().getTimeOfDay();
 					mob.location().getArea().getTimeObj().tickTock(x);
 				}
 				else

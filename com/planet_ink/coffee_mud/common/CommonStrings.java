@@ -64,7 +64,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MANACONSUMETIME=22;
 	public static final int SYSTEMI_MANACONSUMEAMT=23;
 	public static final int SYSTEMI_MUDBACKLOG=24;
-	public static final int NUMI_SYSTEM=25;
+	public static final int SYSTEMI_TICKSPERMUDDAY=25;
+	public static final int NUMI_SYSTEM=26;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -206,6 +207,26 @@ public class CommonStrings extends Scriptable
 		setIntVar(SYSTEMI_LANGPRACCOST,page.getStr("LANGPRACCOST"));
 		setIntVar(SYSTEMI_LANGTRAINCOST,page.getStr("LANGTRAINCOST"));
 		setIntVar(SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
+		
+		if(Util.s_int(page.getStr("HOURSINDAY"))>0)
+			DefaultTimeClock.globalClock.setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));
+		
+		if(Util.s_int(page.getStr("DAYSINMONTH"))>0)
+			DefaultTimeClock.globalClock.setDaysInMonth(Util.s_int(page.getStr("DAYSINMONTH")));
+		
+		String monthsInYear=page.getStr("MONTHSINYEAR");
+		if(monthsInYear.trim().length()>0)
+			DefaultTimeClock.globalClock.setMonthsInYear(Util.toStringArray(Util.parseCommas(monthsInYear,true)));
+		
+		if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
+			&&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
+		DefaultTimeClock.globalClock.setDawnToDusk(
+									Util.s_int(page.getStr("DAWNHR")),
+									Util.s_int(page.getStr("DAYHR")),
+									Util.s_int(page.getStr("DUSKHR")),
+									Util.s_int(page.getStr("NIGHTHR")));
+		
+		setIntVar(SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_UTILTHREAD_SLEEP*DefaultTimeClock.globalClock.getHoursInDay()/MudHost.TICK_TIME)));
 		
 		CMSecurity.setDisableVars(page.getStr("DISABLE"));
 		if(page.getStr("DISABLE").trim().length()>0)

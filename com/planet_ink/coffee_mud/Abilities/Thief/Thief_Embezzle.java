@@ -93,7 +93,7 @@ public class Thief_Embezzle extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*TimeClock.A_FULL_DAY)/MudHost.TICK_TIME)).intValue());
+				beneficialAffect(mob,target,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/MudHost.TICK_TIME)).intValue());
 				bank.delDepositInventory(victim,hisCoins);
 				hisCoins.setNumberOfCoins(hisCoins.numberOfCoins()-hisAmount);
 				bank.addDepositInventory(victim,hisCoins);

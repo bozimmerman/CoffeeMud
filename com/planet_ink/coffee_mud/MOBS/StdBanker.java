@@ -10,7 +10,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected double coinInterest=-0.008;
 	protected double itemInterest=-0.001;
-	protected static final Integer allDown=new Integer(new Long(TimeClock.A_FULL_DAY*MudHost.TIME_MILIS_PER_MUDHOUR*5).intValue());
 	protected static Hashtable bankTimes=new Hashtable();
 
 	public StdBanker()
@@ -224,7 +223,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				Long L=(Long)bankTimes.get(bankChain());
 				if((L==null)||(L.longValue()<System.currentTimeMillis()))
 				{
-					L=new Long(System.currentTimeMillis()+allDown.intValue());
+					L=new Long(System.currentTimeMillis()+new Long(((long)location().getArea().getTimeObj().getHoursInDay())*MudHost.TIME_MILIS_PER_MUDHOUR*((long)5)).intValue());
 					proceed=true;
 					bankTimes.remove(bankChain());
 					bankTimes.put(bankChain(),L);

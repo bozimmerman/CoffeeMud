@@ -358,7 +358,7 @@ public class Clans implements Clan, Tickable
 	public static void addClan(Clan C)
 	{
 		if(!CMSecurity.isDisabled("CLANTICKS"))
-			CMClass.ThreadEngine().startTickDown(C,MudHost.TICK_CLAN,(int)MudHost.TICKS_PER_MUDDAY);
+			CMClass.ThreadEngine().startTickDown(C,MudHost.TICK_CLAN,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 		all.put(C.ID().toUpperCase(),C);
 	}
 	public static void removeClan(Clan C)
@@ -854,7 +854,7 @@ public class Clans implements Clan, Tickable
 		try{
 			DVector members=getMemberList();
 			int activeMembers=0;
-			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*MudHost.TICKS_PER_MUDDAY*MudHost.TICK_TIME;
+			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME;
 			int[] numTypes=new int[Clan.POSORDER.length];
 			for(int j=0;j<members.size();j++)
 			{
@@ -955,7 +955,7 @@ public class Clans implements Clan, Tickable
 				long duration=54;
 				if(data.size()>0) duration=Util.s_long((String)data.firstElement());
 				if(duration<=0) duration=54;
-				duration=duration*MudHost.TICKS_PER_MUDDAY*MudHost.TICK_TIME;
+				duration=duration*CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME;
 				for(Enumeration e=votes();e.hasMoreElements();)
 				{
 					ClanVote CV=(ClanVote)e.nextElement();

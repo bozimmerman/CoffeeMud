@@ -143,7 +143,7 @@ public class Prayer_UndeniableFaith extends Prayer
 					if(mob!=target)
 						MUDFight.postExperience(mob,target,null,25,false);
 					godName=mob.getWorshipCharID();
-					beneficialAffect(mob,target,(int)MudHost.TICKS_PER_MUDDAY);
+					beneficialAffect(mob,target,(int)CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY));
 					convertStack.addElement(target,new Long(System.currentTimeMillis()));
 				}
 			}

@@ -19,7 +19,7 @@ public class Age extends StdAbility
 	public String displayText()
 	{
 		long start=Util.s_long(text());
-		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/MudHost.TICKS_PER_MUDDAY; // down to days;
+		long days=((System.currentTimeMillis()-start)/MudHost.TICK_TIME)/CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY); // down to days;
 		long months=days/30;
 		if(days<1)
 			return "(<1 day old)";

@@ -16,8 +16,8 @@ public class Disease_Vampirism extends Disease
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease_Vampirism();}
 
-	protected int DISEASE_TICKS(){return new Long(MudHost.TICKS_PER_MUDDAY*6).intValue();}
-	protected int DISEASE_DELAY(){return new Long(MudHost.TICKS_PER_MUDDAY).intValue();}
+	protected int DISEASE_TICKS(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*6).intValue();}
+	protected int DISEASE_DELAY(){return new Long(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)).intValue();}
 	protected String DISEASE_DONE(){return "Your vampirism lifts.";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
 	protected String DISEASE_AFFECT(){return "";}

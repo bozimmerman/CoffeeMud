@@ -7,6 +7,8 @@ public class DefaultTimeClock implements TimeClock
 {
 	public String ID(){return "DefaultTimeClock";}
 	public String name(){return "Time Object";}
+	public static final TimeClock globalClock=new DefaultTimeClock();
+	
 	protected long tickStatus=Tickable.STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
 	private boolean loaded=false;
@@ -16,13 +18,38 @@ public class DefaultTimeClock implements TimeClock
 	private int month=1;
 	private int day=1;
 	private int time=0;
+	private int hoursInDay=16;
+	private String[] monthsInYear={
+			 "the 1st month","the 2nd month","the 3rd month","the 4th month",
+			 "the 5th month","the 6th month","the 7th month","the 8th month",
+			 "the 9th month","the 10th month","the 11th month","the 12th month"
+	};
+	private int daysInMonth=30;
+	private int[] dawnToDusk={0,1,12,13};
+	
+	public int getHoursInDay(){return hoursInDay;}
+	public void setHoursInDay(int h){hoursInDay=h;}
+	public int getDaysInMonth(){return daysInMonth;}
+	public void setDaysInMonth(int d){daysInMonth=d;}
+	public int getMonthsInYear(){return monthsInYear.length;}
+	public String[] getMonthNames(){return monthsInYear;}
+	public void setMonthsInYear(String[] months){monthsInYear=months;}
+	public int[] getDawnToDusk(){return dawnToDusk;}
+	public void setDawnToDusk(int dawn, int day, int dusk, int night)
+	{ 
+		dawnToDusk[TIME_DAWN]=dawn;
+		dawnToDusk[TIME_DAY]=day;
+		dawnToDusk[TIME_DUSK]=dusk;
+		dawnToDusk[TIME_NIGHT]=night;
+	}
+	
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
 
 		if((Sense.canSee(mob))&&(getTODCode()>=0))
 			timeDesc.append(TOD_DESC[getTODCode()]);
-		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(TimeClock.A_FULL_DAY-1)+")");
+		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(getHoursInDay()-1)+")");
 		timeDesc.append("\n\rIt is the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
 		timeDesc.append(" day of the "+getMonth()+numAppendage(getMonth()));
 		timeDesc.append(" month.  It is "+(TimeClock.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
@@ -86,38 +113,28 @@ public class DefaultTimeClock implements TimeClock
 	}
 	public int getMonth(){return month;}
 	public void setMonth(int m){month=m;}
-	public int getMoonPhase(){return (int)Math.round(Math.floor(Util.mul(Util.div(getDayOfMonth(),TimeClock.DAYS_IN_MONTH),8.0)));}
+	public int getMoonPhase(){return (int)Math.round(Math.floor(Util.mul(Util.div(getDayOfMonth(),getDaysInMonth()),8.0)));}
 
 	public int getDayOfMonth(){return day;}
 	public void setDayOfMonth(int d){day=d;}
 	public int getTimeOfDay(){return time;}
 	public int getTODCode()
 	{
-		switch(time)
-		{
-		case 0:return TimeClock.TIME_DAWN;
-		case 12:return TimeClock.TIME_DUSK;
-		case 13:return TimeClock.TIME_NIGHT;
-		case 14:return TimeClock.TIME_NIGHT;
-		case 15:return TimeClock.TIME_NIGHT;
-		default:return TimeClock.TIME_DAY;
-		}
+		if(time>=getDawnToDusk()[TimeClock.TIME_NIGHT])
+			return TimeClock.TIME_NIGHT;
+		if(time>=getDawnToDusk()[TimeClock.TIME_DUSK])
+			return TimeClock.TIME_DUSK;
+		if(time>=getDawnToDusk()[TimeClock.TIME_DAY])
+			return TimeClock.TIME_DAY;
+		if(time>=getDawnToDusk()[TimeClock.TIME_DAWN])
+			return TimeClock.TIME_DAWN;
+		return TimeClock.TIME_DAY;
 	}
 	public boolean setTimeOfDay(int t)
 	{
-		boolean raiseLowerTheSun=false;
-		switch(t)
-		{
-		case 0:raiseLowerTheSun=true; break;
-		case 1:raiseLowerTheSun=true; break;
-		case 12:raiseLowerTheSun=true; break;
-		case 13:raiseLowerTheSun=true; break;
-		case 14:break;
-		case 15:break;
-		default:break;
-		}
+		int oldCode=getTODCode();
 		time=t;
-		return raiseLowerTheSun;
+		return getTODCode()!=oldCode;
 	}
 
 	public void raiseLowerTheSunEverywhere()
@@ -178,15 +195,15 @@ public class DefaultTimeClock implements TimeClock
 		{
 			boolean raiseLowerTheSun=setTimeOfDay(getTimeOfDay()+howManyHours);
 			lastTicked=System.currentTimeMillis();
-			if(getTimeOfDay()>=TimeClock.A_FULL_DAY)
+			if(getTimeOfDay()>=getHoursInDay())
 			{
-				raiseLowerTheSun=setTimeOfDay(getTimeOfDay()-TimeClock.A_FULL_DAY);
+				raiseLowerTheSun=setTimeOfDay(getTimeOfDay()-getHoursInDay());
 				setDayOfMonth(getDayOfMonth()+1);
-				if(getDayOfMonth()>TimeClock.DAYS_IN_MONTH)
+				if(getDayOfMonth()>getDaysInMonth())
 				{
 					setDayOfMonth(1);
 					setMonth(getMonth()+1);
-					if(getMonth()>TimeClock.MONTHS_IN_YEAR)
+					if(getMonth()>getMonthsInYear())
 					{
 						setMonth(1);
 						setYear(getYear()+1);
@@ -196,15 +213,15 @@ public class DefaultTimeClock implements TimeClock
 			else
 			if(getTimeOfDay()<0)
 			{
-				raiseLowerTheSun=setTimeOfDay(TimeClock.A_FULL_DAY+getTimeOfDay());
+				raiseLowerTheSun=setTimeOfDay(getHoursInDay()+getTimeOfDay());
 				setDayOfMonth(getDayOfMonth()-1);
 				if(getDayOfMonth()<1)
 				{
-					setDayOfMonth(TimeClock.DAYS_IN_MONTH);
+					setDayOfMonth(getDaysInMonth());
 					setMonth(getMonth()-1);
 					if(getMonth()<1)
 					{
-						setMonth(TimeClock.MONTHS_IN_YEAR);
+						setMonth(getMonthsInYear());
 						setYear(getYear()-1);
 					}
 				}
@@ -242,6 +259,13 @@ public class DefaultTimeClock implements TimeClock
 				setDayOfMonth(XMLManager.getIntFromPieces(V,"DAY"));
 				setMonth(XMLManager.getIntFromPieces(V,"MONTH"));
 				setYear(XMLManager.getIntFromPieces(V,"YEAR"));
+				setHoursInDay(globalClock.getHoursInDay());
+				setDaysInMonth(globalClock.getDaysInMonth());
+				setMonthsInYear(globalClock.getMonthNames());
+				setDawnToDusk(globalClock.getDawnToDusk()[TIME_DAWN],
+							  globalClock.getDawnToDusk()[TIME_DAY],
+							  globalClock.getDawnToDusk()[TIME_DUSK],
+							  globalClock.getDawnToDusk()[TIME_NIGHT]);
 			}
 			if((System.currentTimeMillis()-lastTicked)>MudHost.TIME_MILIS_PER_MUDHOUR)
 				tickTock(1);

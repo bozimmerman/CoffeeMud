@@ -17,6 +17,15 @@ public interface TimeClock extends Tickable
 	public void save();
 	public int getSeasonCode();
 	public void setLoadName(String name);
+	public int getHoursInDay();
+	public void setHoursInDay(int h);
+	public int getDaysInMonth();
+	public void setDaysInMonth(int d);
+	public int getMonthsInYear();
+	public String[] getMonthNames();
+	public void setMonthsInYear(String[] months);
+	public int[] getDawnToDusk();
+	public void setDawnToDusk(int dawn, int day, int dusk, int night);
 	
 	public final static String[] MOON_PHASES={
 		"There is a new moon in the sky.",
@@ -43,11 +52,7 @@ public interface TimeClock extends Tickable
 	public final static String[] TOD_DESC={
 		"It is dawn ","It is daytime ","It is dusk ","It is nighttime "
 	};
-	
-	public final static int A_FULL_DAY=16; // groups of 10 minutes, so 2 hours, 40 minutes=24 hours.
-	public final static int DAYS_IN_MONTH=30; // number of days in a month
-	public final static int MONTHS_IN_YEAR=12; // number of months in a full year
-									   
+										   
 	public final static int TIME_DAWN=0;
 	public final static int TIME_DAY=1;
 	public final static int TIME_DUSK=2;

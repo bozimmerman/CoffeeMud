@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class StdAbility implements Ability, Cloneable
+public class StdAbility extends Scriptable implements Ability, Cloneable
 {
 	public String ID() { return "StdAbility"; }
 	public String Name(){return name();}
@@ -650,8 +650,8 @@ public class StdAbility implements Ability, Cloneable
 				if(target!=null)
 					tickAdjustmentFromStandard-=(target.envStats().level()*2);
 
-				if(tickAdjustmentFromStandard>(MudHost.TICKS_PER_MUDDAY/2))
-					tickAdjustmentFromStandard=(int)(MudHost.TICKS_PER_MUDDAY/2);
+				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2))
+					tickAdjustmentFromStandard=(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);
 
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
@@ -713,8 +713,8 @@ public class StdAbility implements Ability, Cloneable
 			if(tickAdjustmentFromStandard<=0)
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob)*7)+60;
-				if(tickAdjustmentFromStandard>(MudHost.TICKS_PER_MUDDAY/2))
-					tickAdjustmentFromStandard=(int)(MudHost.TICKS_PER_MUDDAY/2);
+				if(tickAdjustmentFromStandard>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2))
+					tickAdjustmentFromStandard=(int)(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)/2);
 				if(tickAdjustmentFromStandard<5)
 					tickAdjustmentFromStandard=5;
 			}

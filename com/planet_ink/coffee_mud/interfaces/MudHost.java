@@ -8,7 +8,6 @@ public interface MudHost
 	public final static long TIME_MILIS_PER_MUDHOUR=10*60000; // 10 minutes, right now.
 	public final static long TIME_UTILTHREAD_SLEEP=TIME_MILIS_PER_MUDHOUR;
 	public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/new Long(TICK_TIME).doubleValue());
-	public final static long TICKS_PER_MUDDAY=(TIME_UTILTHREAD_SLEEP*TimeClock.A_FULL_DAY)/TICK_TIME;
 
 	public final static int TICKMASK_SOLITARY=65536;
 	public final static int TICK_MOB=0;
