@@ -9,10 +9,31 @@ public class JournalLoader
 {
 	public static synchronized Vector DBRead(String Journal)
 	{
-		Vector journal=null;//(Vector)Resources.getResource("JOURNAL_"+Journal);
-		if(journal==null)
+		Vector journal=new Vector();
+		if(Journal==null)
 		{
-			journal=new Vector();
+			DBConnection D=null;
+			try
+			{
+				D=DBConnector.DBFetch();
+				ResultSet R=D.query("SELECT * FROM CMJRNL");
+				while(R.next())
+				{
+					String which=DBConnections.getRes(R,"CMJRNL");
+					if(!journal.contains(which))
+						journal.addElement(which);
+				}
+				DBConnector.DBDone(D);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("Journal",sqle);
+				if(D!=null) DBConnector.DBDone(D);
+				return null;
+			}
+		}
+		else
+		{
 			//Resources.submitResource("JOURNAL_"+Journal);
 			DBConnection D=null;
 			try
@@ -38,7 +59,7 @@ public class JournalLoader
 				if(D!=null) DBConnector.DBDone(D);
 				return null;
 			}
-			
+				
 			// sorting SUCKED  I like KNOWING where the messages will be
 			/*
 			Vector oldJournal=journal;

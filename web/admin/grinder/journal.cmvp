@@ -1,11 +1,137 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Journal Browser</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked1(journal)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value='';
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.submit();
+		}
+		function Clicked2(journal,message)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.submit();
+		}
+		function Clicked3(journal,message,action)
+		{
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.FUNCTION.value=action;
+			document.JOURNAL.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<FORM NAME=JOURNAL TARGET=_top METHOD=GET ACTION="journal.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud 4.0 Journal Browser</H2></FONT></TD></TR>
+	<TR><TD WIDTH=100% COLSPAN=2>
+		<TABLE WIDTH=100% BORDER=1>
+			<TR>
+			@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
+			@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+			@JournalNext?RESET@
+			@loop@
+				@JournalNext@<TD><a href="javascript:Clicked1('@JournalName@')"><FONT COLOR=WHITE>@JournalName@</FONT></a></TD>
+			@back@
+			</TR>
+		</TABLE>
+		</TD>
+	</TR>
+	<TR><TD WIDTH=30% VALIGN=TOP>
+		@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
+		@if?!CheckReqParm?JOURNAL=@
+			@JournalMessageNext?RESET@
+			<UL>
+			@loop@
+				@JournalMessageNext@
+				<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@')">
+				<FONT COLOR=YELLOW>
+				@RequestParameter?JOURNALMESSAGE@
+				</FONT>
+				<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
+				</FONT>
+				</a>
+			@back@
+			</UL>
+		@endif@
+		</TD>
+		<TD WIDTH=70% VALIGN=TOP>
+		@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
+		@if?!CheckReqParm?JOURNAL=@
+		@if?!CheckReqParm?JOURNALMESSAGE=@
+		<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+		<TR>
+			<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
+			</TD>
+			<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW>From: </FONT></TD>
+			<TD><FONT COLOR=WHITE>@JournalInfo?FROM@</FONT></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW>To: </FONT></TD>
+			<TD><FONT COLOR=WHITE>@JournalInfo?TO@</FONT></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW>Date: </FONT></TD>
+			<TD><FONT COLOR=WHITE>@JournalInfo?DATE@</FONT></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
+			<TD><FONT COLOR=WHITE>@JournalInfo?SUBJECT@</FONT></TD>
+		</TR>
+		</TABLE>
+		<HR>
+		<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT>
+		<HR>
+		<TEXTAREA NAME=NEWTEXT ROWS=3 COLS=40 WRAP=VIRTUAL>
+		</TEXTAREA>
+		<TABLE WIDTH=100% BORDER=0>
+		<TR>
+		<TD WIDTH=50% ALIGN=LEFT>
+		<INPUT TYPE=BUTTON NAME=REPLY VALUE="Submit Reply" ONCLICK="if(document.JOURNAL.NEWTEXT.value.length>0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','REPLY');">
+		</TD>
+		<TD WIDTH=50% ALIGN=RIGHT>
+		<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete Message" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
+		</TD>
+		</TR>
+		</TABLE>
+		@endif@
+		@endif@
+		</TD>
+	</TR>
+</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked2('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@');">
+	</TD>
+	<TD WIDTH=50% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+	</TR>
+	</TABLE>
+</FORM>
 </BODY>
 </HTML>
+@endif@
+@endif@

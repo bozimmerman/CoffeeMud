@@ -30,8 +30,11 @@
 	@AddRequestParameter?TICKGROUPCT=++@
 @back@
 	</TD>
-	<TD WIDTH=20% ALIGN=RIGHT>
-	<INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="javascript:window.close();">
+	<TD WIDTH=15% ALIGN=RIGHT>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="ReOpen('@RequestParameter?TICKGROUPCOUNTER@');">
+	</TD>
+	<TD WIDTH=15% ALIGN=RIGHT>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="window.close();">
 	</TD>
 </TR>
 </TABLE>

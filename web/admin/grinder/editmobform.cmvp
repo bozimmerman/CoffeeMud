@@ -159,8 +159,9 @@
     </TD>
 </TR>
 <TR>
-	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Hit Points/Level Modifier:</B><BR>(hp=((10*level) + (random*level*THIS)))</FONT></TD>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Hit Points Mod.:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@MobData?ABILITY@">
+	&nbsp;&nbsp;<FONT COLOR="#66FFFF">(Total Hit Points=((10*Level) + (Random * Level * THIS)))
     </TD>
 </TR>
 <TR>
