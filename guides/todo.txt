@@ -1,6 +1,8 @@
 idle ticker
 sleep (exhaustion) ticker
 auction system (see mailing list)
+Patrol behavior
+Merchant common skill
 Behavior & Skill libido - Property Pregnancy (with eggs for some), Property Aging 
 disease--Syphilis. It is contracted through SEX and KISS socials. Makes small red sores on mouth, butt, and genitals. After 1 day, acts like FLU. After 2 days, has a random chance each day of reducing CON by 1.
 disease--Chlamydia. STD. Women symptoms vaginal discharge, genital itching. Men symptoms causes discharge. Causes infertility.
@@ -13,6 +15,7 @@ Sniper.  This allows a character to make a single ranged attack from a hidden po
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 Space ships as Locale types
+Improve maps to divide area into sections
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
 Create Docking areas.

@@ -100,7 +100,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Lore",false);
 			
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Sap",true);
-CMAble.addCharAbilityMapping(ID(),21,"Thief_Caltrops",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Thief_Caltrops",true);
 			
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",true);
 			

@@ -463,6 +463,10 @@ public class StdContainer extends StdItem implements Container
 					if(E instanceof DeadBody)
 						return true;
 					break;
+				case CONTAIN_CAGED:
+					if(E instanceof CagedAnimal)
+						return true;
+					break;
 				case CONTAIN_READABLES:
 					if((E instanceof Item)
 					&&(((Item)E).isReadable()))

@@ -148,6 +148,13 @@ public class Sense
 		return true;
 	}
 
+	public static boolean isBound(MOB mob)
+	{
+		return ((mob.fetchAffect("Skill_HandCuff")!=null)
+				||(mob.fetchAffect("Prisoner")!=null)
+				||(mob.fetchAffect("Thief_Bind")!=null));
+
+	}
 	public static boolean isOnFire(Environmental seen)
 	{
 		if(seen==null) return false;

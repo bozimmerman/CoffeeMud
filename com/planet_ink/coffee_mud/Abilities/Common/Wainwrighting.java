@@ -24,7 +24,6 @@ public class Wainwrighting extends CommonSkill
 	private static final int RCP_NUMRIDERS=8;
 	private static final int RCP_CONTAINMASK=9;
 
-
 	private Item building=null;
 	private Item key=null;
 	private boolean messedUp=false;
@@ -47,7 +46,7 @@ public class Wainwrighting extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	private static synchronized Vector loadRecipes()
+	protected synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("WAINWRIGHT RECIPES");
 		if(V==null)
@@ -140,7 +139,7 @@ public class Wainwrighting extends CommonSkill
 		}
 		if(foundRecipe==null)
 		{
-			commonTell(mob,"You don't know how to carve a '"+recipeName+"'.  Try \"carve list\" for a list.");
+			commonTell(mob,"You don't know how to carve a '"+recipeName+"'.  Try \"list\" as your parameter for a list.");
 			return false;
 		}
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));

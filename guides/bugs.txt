@@ -1,5 +1,5 @@
 GAES still isn't done
-can you add a lock to a storage wagon? If so, could we make the storage wagon a room that analyzes how much weight is in it, and applies it to the wagon. That way you can put someone in a cart (room), and lock them in there.
+START_GNOME not working
 modify - whether one wishes to use the wizard or the menu by means of the .ini 
 fleas as a disease -- contageous!
 A couple players are still reporting that even on 3.8.7.0, they sometimes lose ansi color when they turn on autoexits.

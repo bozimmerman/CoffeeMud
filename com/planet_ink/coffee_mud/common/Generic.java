@@ -1103,7 +1103,7 @@ public class Generic
 		}
 	}
 
-	private static void setPropertiesStr(Environmental E, Vector V, boolean fromTop)
+	public static void setPropertiesStr(Environmental E, Vector V, boolean fromTop)
 	{
 		if(E==null)
 			Log.errOut("Generic","setPropertiesStr2: null 'E'");
