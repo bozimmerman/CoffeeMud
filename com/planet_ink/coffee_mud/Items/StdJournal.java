@@ -50,6 +50,11 @@ public class StdJournal extends StdItem
 					which=Util.s_int(affect.targetMessage());
 				StringBuffer entry=DBRead(name(),mob.name(),which-1,Util.s_long(readableText().trim()));
 				boolean mineAble=false;
+				if(entry.charAt(0)=='#')
+				{
+					which=-1;
+					entry.setCharAt(0,' ');
+				}
 				if((entry.charAt(0)=='*')||(mob.isASysOp(null)))
 				{
 					mineAble=true;
@@ -57,7 +62,6 @@ public class StdJournal extends StdItem
 				}
 				mob.tell(entry.toString()+"\n\r");
 				setReadableText(IQCalendar.getInstance().getTime().getTime()+"");
-System.out.println("BLAH/"+entry.toString().trim().length()+"/"+which+"/"+entry.toString());
 				if((entry.toString().trim().length()>0)&&(which>0))
 				{
 					try
@@ -88,7 +92,7 @@ System.out.println("BLAH/"+entry.toString().trim().length()+"/"+which+"/"+entry.
 							else
 								mob.tell("Aborted.");
 						}
-							
+								
 					}
 					catch(IOException e)
 					{
@@ -161,7 +165,7 @@ System.out.println("BLAH/"+entry.toString().trim().length()+"/"+which+"/"+entry.
 		Vector journal=ExternalPlay.DBReadJournal(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
-			buf.append("\n\r "+Util.padRight("#",5)+Util.padRight("From",16)+Util.padRight("To",16)+"Subject\n\r");
+			buf.append("#\n\r "+Util.padRight("#",5)+Util.padRight("From",16)+Util.padRight("To",16)+"Subject\n\r");
 			buf.append("---------------------------------------------\n\r");
 			if(journal==null) return buf;
 		}
