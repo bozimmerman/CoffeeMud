@@ -38,23 +38,8 @@ public class Spell_Enlarge extends Spell
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setWeight(affectableStats.weight()+9999);
-	}
-
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if(affected==null)
-			return;
-		if(!(affected instanceof Item))
-			return;
-		Item item=(Item)affected;
-		if(item.name().endsWith(addOnString))
-			item.setName(item.name().substring(0,item.name().length()-addOnString.length()).trim());
-		int x=item.displayText().indexOf(addOnString);
-		if(x>=0)
-			item.setDisplayText(item.displayText().substring(0,x)+item.displayText().substring(x+addOnString.length()));
-		item.recoverEnvStats();
-		super.unInvoke();
+		affectableStats.setHeight(affectableStats.height()+9999);
+		affectableStats.setReplacementName(affected.name()+addOnString);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -86,12 +71,6 @@ public class Spell_Enlarge extends Spell
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
 				beneficialAffect(mob,target,100);
-				String lastWordIn=Util.lastWordIn(target.name());
-				int x=target.displayText().toUpperCase().indexOf(lastWordIn.toUpperCase());
-				if(x>=0)
-					target.setDisplayText(target.displayText().substring(0,x+lastWordIn.length())+addOnString+target.displayText().substring(x+lastWordIn.length()));
-
-				target.setName(target.name()+addOnString);
 			}
 
 		}

@@ -47,10 +47,12 @@ public interface EnvStats extends Cloneable
 	public int ability();
 	public int rejuv();
 	public int weight();
+	public int height();
 	public int armor();
 	public int damage();
 	public double speed();
 	public int attackAdjustment();
+	public String replacementName();
 	
 	public void setRejuv(int newRejuv);
 	public void setLevel(int newLevel);
@@ -62,6 +64,8 @@ public interface EnvStats extends Cloneable
 	public void setAbility(int newAdjustment);
 	public void setDisposition(int newDisposition);
 	public void setSensesMask(int newMask);
+	public void setReplacementName(String newName);
+	public void setHeight(int newHeight);
 
 	public EnvStats cloneStats();
 }

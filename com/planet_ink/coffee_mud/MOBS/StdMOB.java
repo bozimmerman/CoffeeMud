@@ -565,13 +565,18 @@ public class StdMOB implements MOB
 	public String displayText()
 	{
 		if((displayText.length()==0)
+		   ||(envStats().replacementName()!=null)
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
 		   ||((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 		   ||(isInCombat()))
 		{
-			StringBuffer sendBack=new StringBuffer(name());
+			StringBuffer sendBack=null;
+			if(envStats().replacementName()!=null) 
+				sendBack=new StringBuffer(envStats().replacementName());
+			else
+				sendBack=new StringBuffer(name());
 			sendBack.append(" ");
 			sendBack.append(Sense.dispositionString(this,Sense.flag_is));
 			sendBack.append(" here");

@@ -9,8 +9,6 @@ public class Spell_PolymorphSelf extends Spell
 {
 
 	Race newRace=null;
-	String oldName="";
-	
 	public Spell_PolymorphSelf()
 	{
 		super();
@@ -41,8 +39,15 @@ public class Spell_PolymorphSelf extends Spell
 		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
 	}
 
-
-
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		if(newRace!=null)
+		if(affected.name().indexOf(" ")>0)
+			affectableStats.setReplacementName("a "+newRace.name()+" called "+affected.name());
+		else
+			affectableStats.setReplacementName(affected.name()+" the "+newRace.name());
+	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -58,8 +63,6 @@ public class Spell_PolymorphSelf extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(oldName.length()>0)
-			mob.setName(oldName);
 		mob.tell("You feel more like yourself again.");
 	}
 
@@ -119,14 +122,8 @@ public class Spell_PolymorphSelf extends Spell
 				if(!msg.wasModified())
 				{
 					newRace=R;
-					oldName=target.name();
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					success=beneficialAffect(mob,target,0);
-					if(target.fetchAffect(ID())!=null)
-						if(target.name().trim().indexOf(" ")>0)
-							target.setName(target.name()+", a "+newRace.name());
-						else
-							target.setName(target.name()+" the "+newRace.name());
 				}
 			}
 		}

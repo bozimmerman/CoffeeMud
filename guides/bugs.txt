@@ -1,3 +1,2 @@
 More than one polymorph can screw a PLAYERS name for GOOD.  Fix it! flesh stone, enlarge
 hide, leave the room, reenter the room, try to hide again
-if((success)&&(okAffect(msg))) is wrong! Can't send fizzle message for a lack of OKAffect!

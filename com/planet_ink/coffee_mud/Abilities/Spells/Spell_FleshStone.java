@@ -8,8 +8,6 @@ import java.util.*;
 public class Spell_FleshStone extends Spell
 {
 
-	String previousDisplayText="";
-
 	public Spell_FleshStone()
 	{
 		super();
@@ -124,6 +122,7 @@ public class Spell_FleshStone extends Spell
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
+		affectableStats.setReplacementName("a statue of "+affected.name());
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_HEAR);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SMELL);
@@ -146,7 +145,6 @@ public class Spell_FleshStone extends Spell
 		mob.curState().setMovement(0);
 		mob.curState().setHunger(0);
 		mob.curState().setThirst(0);
-		mob.setDisplayText(previousDisplayText);
 		ExternalPlay.standIfNecessary(mob);
 	}
 
@@ -200,8 +198,6 @@ public class Spell_FleshStone extends Spell
 					}
 					target.makePeace();
 					ExternalPlay.standIfNecessary(target);
-					previousDisplayText=((MOB)target).displayText();
-					target.setDisplayText("A statue of "+target.name()+" stands here.");
 					success=maliciousAffect(mob,target,mob.envStats().level()*50,-1);
 					if(success)
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into stone!!");

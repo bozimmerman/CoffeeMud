@@ -3,7 +3,6 @@ import com.planet_ink.coffee_mud.interfaces.*;
 
 public class DefaultEnvStats implements Cloneable, EnvStats
 {
-
 	protected int Level=0;
 	protected int SensesMask=0;			// see Senses class
 	protected int Armor=100;			// should be positive
@@ -14,6 +13,8 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	protected int Rejuv=Integer.MAX_VALUE;
 	protected int Weight=0;
 	protected int Ability=0;			// object dependant
+	protected int Height=0;
+	protected String replacementName=null;
 
 	public int sensesMask(){return SensesMask;}
 	public int disposition(){return Disposition;}
@@ -21,9 +22,11 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	public int ability(){return Ability;}
 	public int rejuv(){return Rejuv;}
 	public int weight(){return Weight;}
+	public int height(){return Height;}
 	public int armor(){return Armor;}
 	public int damage(){return Damage;}
 	public double speed(){return Speed;}
+	public String replacementName(){return replacementName;}
 	public int attackAdjustment(){return AttackAdjustment;}
 
 	public void setRejuv(int newRejuv){Rejuv=newRejuv;}
@@ -36,6 +39,8 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	public void setAbility(int newAdjustment){Ability=newAdjustment;}
 	public void setDisposition(int newDisposition){Disposition=newDisposition;}
 	public void setSensesMask(int newMask){SensesMask=newMask;}
+	public void setHeight(int newHeight){Height=newHeight;}
+	public void setReplacementName(String newName){replacementName=newName;}
 
 	public EnvStats cloneStats()
 	{

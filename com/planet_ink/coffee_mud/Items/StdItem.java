@@ -100,6 +100,9 @@ public class StdItem implements Item
 					say.append("^H("+CMClass.className(this)+")^N ");
 
 				say.append("^I");
+				if(envStats().replacementName()!=null)
+					say.append(envStats().replacementName());
+				else
 				if(displayText().length()>0)
 					say.append(displayText());
 				else
