@@ -298,9 +298,9 @@ public class StdItem implements Item
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		if(Sense.isLight(this)&&(rawWornCode()!=Item.INVENTORY))
+		if(Sense.isLight(this))
 		{
-			if(!(affected instanceof Room))
+			if((!(affected instanceof Room))&&(rawWornCode()!=Item.INVENTORY))
 				affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_LIGHT);
 			if(Sense.isInDark(affected))
 				affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_DARK);

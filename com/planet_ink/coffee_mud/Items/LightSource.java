@@ -72,16 +72,22 @@ public class LightSource extends StdItem implements Light
 	public void affect(Affect affect)
 	{
 		MOB mob=affect.source();
-		if((mob.location()!=null)
-		   &&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			 ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-		   &&(this.lit)
-		   &&(!this.burnedOut)
-		   &&(mob.isMine(this)))
+		Room room=null;
+		if(mob.location()!=null)
 		{
-			mob.tell("The water makes "+name()+" go out.");
-			tick(Host.LIGHT_FLICKERS);
+			room=mob.location();
+			if(((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+			  ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			&&(this.lit)
+			&&(!this.burnedOut)
+			&&(mob.isMine(this)))
+			{
+				mob.tell("The water makes "+name()+" go out.");
+				tick(Host.LIGHT_FLICKERS);
+			}
 		}
+		if((myOwner()!=null)&&(myOwner() instanceof Room))
+			room=(Room)myOwner();
 
 		if(affect.amITarget(this))
 			switch(affect.targetMinor())
@@ -100,6 +106,17 @@ public class LightSource extends StdItem implements Light
 				break;
 			}
 		super.affect(affect);
+		if(affect.amITarget(this))
+		{
+			switch(affect.targetMinor())
+			{
+			case Affect.TYP_DROP:
+			case Affect.TYP_GET:
+				if(room!=null) room.recoverRoomStats();
+				else if(mob!=null) mob.recoverEnvStats();
+				break;
+			}
+		}
 	}
 
 	public void recoverEnvStats()
