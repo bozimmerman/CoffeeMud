@@ -1,4 +1,4 @@
-name,level,ticks,wood,value,class,misc,capacity,armordmg,contain,spell										
+name,level,ticks,wood,value,class,misc,capacity,armordmg,contain,spell
 % Armet	12	25	16	512	GenArmor	HEAD	0	8	0	
 % Casque	77	70	32	4096	GenArmor	HEAD	0	16	0	
 % Cabasset	47	100	26	2197	GenArmor	HEAD	0	13	0	
