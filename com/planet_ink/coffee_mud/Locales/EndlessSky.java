@@ -18,8 +18,13 @@ public class EndlessSky extends StdGrid
 		domainCondition=Room.CONDITION_NORMAL;
 		setDisplayText("Up in the sky");
 		setDescription("");
-		size=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
-		if(size==0) size=3;
+		xsize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
+		ysize=CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE);
+		if(xsize==0)
+		{
+			xsize=3;
+			ysize=3;
+		}
 	}
 	public Environmental newInstance()
 	{
@@ -85,9 +90,9 @@ public class EndlessSky extends StdGrid
 	{
 		clearGrid();
 		Exit ox=CMClass.getExit("Open");
-		subMap=new Room[size][size];
-		for(int x=0;x<size;x++)
-			for(int y=0;y<size;y++)
+		subMap=new Room[xsize][ysize];
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
 			{
 				Room newRoom=(Room)getGridRoom(x,y);
 				if(newRoom!=null)
@@ -107,7 +112,7 @@ public class EndlessSky extends StdGrid
 		buildFinalLinks();
 		if((subMap[0][0]!=null)
 		&&(subMap[0][0].rawDoors()[Directions.UP]==null)
-		&&(size>1))
+		&&(xsize>1))
 			linkRoom(subMap[0][0],subMap[1][0],Directions.UP,ox,ox);
 		for(int y=0;y<subMap[0].length;y++)
 			linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);

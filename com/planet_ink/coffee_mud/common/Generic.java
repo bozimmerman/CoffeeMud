@@ -164,7 +164,14 @@ public class Generic
 	private static String getOrdPropertiesStr(Environmental E)
 	{
 		if(E instanceof Room)
-			return getExtraEnvPropertiesStr(E);
+		{
+			if(E instanceof GridLocale)
+				return XMLManager.convertXMLtoTag("XGRID",((GridLocale)E).xSize())
+					  +XMLManager.convertXMLtoTag("YGRID",((GridLocale)E).ySize())
+					  +getExtraEnvPropertiesStr(E);
+			else
+				return getExtraEnvPropertiesStr(E);
+		}
 		else
 		if(E instanceof Area)
 			return getExtraEnvPropertiesStr(E);
@@ -1120,7 +1127,14 @@ public class Generic
 		}
 
 		if(E instanceof Room)
+		{
 			setExtraEnvProperties(E,V);
+			if(E instanceof GridLocale)
+			{
+				((GridLocale)E).setXSize(XMLManager.getIntFromPieces(V,"XGRID"));
+				((GridLocale)E).setYSize(XMLManager.getIntFromPieces(V,"YGRID"));
+			}
+		}
 		else
 		if(E instanceof Area)
 			setExtraEnvProperties(E,V);

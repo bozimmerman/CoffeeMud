@@ -84,10 +84,10 @@ public class UnderWaterGrid extends StdGrid
 	public void buildGrid()
 	{
 		clearGrid();
-		subMap=new Room[size][size];
+		subMap=new Room[xsize][ysize];
 		Exit ox=CMClass.getExit("Open");
-		for(int x=0;x<size;x++)
-			for(int y=0;y<size;y++)
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
 			{
 				Room newRoom=(Room)getGridRoom(x,y);
 				if(newRoom!=null)
@@ -105,7 +105,9 @@ public class UnderWaterGrid extends StdGrid
 				}
 			}
 		buildFinalLinks();
-		if((subMap[0][0]!=null)&&(subMap[0][0].rawDoors()[Directions.UP]==null))
+		if((subMap[0][0]!=null)
+		&&(subMap[0][0].rawDoors()[Directions.UP]==null)
+		&&(xsize>1))
 			linkRoom(subMap[0][0],subMap[1][0],Directions.UP,ox,ox);
 		for(int y=0;y<subMap[0].length;y++)
 			linkRoom(subMap[0][y],subMap[subMap.length-1][y],Directions.WEST,ox,ox);

@@ -126,9 +126,9 @@ public class StdMaze extends StdGrid
 	public void buildGrid()
 	{
 		clearGrid();
-		subMap=new Room[size][size];
-		for(int x=0;x<size;x++)
-			for(int y=0;y<size;y++)
+		subMap=new Room[xsize][ysize];
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
 			{
 				Room newRoom=getGridRoom(x,y);
 				if(newRoom!=null)

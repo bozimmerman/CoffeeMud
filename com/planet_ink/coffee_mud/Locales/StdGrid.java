@@ -12,7 +12,8 @@ public class StdGrid extends StdRoom implements GridLocale
 	protected Room[][] subMap=null;
 	protected String[] descriptions=null;
 	protected String[] displayTexts=null;
-	protected int size=5;
+	protected int xsize=5;
+	protected int ysize=5;
 
 	public StdGrid()
 	{
@@ -24,6 +25,12 @@ public class StdGrid extends StdRoom implements GridLocale
 		return new StdGrid();
 	}
 	public String getChildLocaleID(){return "StdRoom";}
+	
+	public int xSize(){return xsize;}
+	public int ySize(){return ysize;}
+	public void setXSize(int x){ if(x>0)xsize=x; }
+	public void setYSize(int y){ if(y>0)ysize=y; }
+	
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
@@ -111,7 +118,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(subMap==null) buildGrid();
 		Vector V=new Vector();
 		for(int x=0;x<subMap.length;x++)
-			for(int y=0;y<subMap[0].length;y++)
+			for(int y=0;y<subMap[x].length;y++)
 				V.addElement(subMap[x][y]);
 		return V;
 	}
@@ -224,11 +231,11 @@ public class StdGrid extends StdRoom implements GridLocale
 				{
 					case Directions.NORTH:
 						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][0],dirRoom,d,dirExit,altExit);
+							linkRoom(subMap[x][x],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.SOUTH:
 						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][subMap[0].length-1],dirRoom,d,dirExit,altExit);
+							linkRoom(subMap[x][subMap[x].length-1],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.EAST:
 						for(int y=0;y<subMap[0].length;y++)
@@ -240,12 +247,12 @@ public class StdGrid extends StdRoom implements GridLocale
 						break;
 					case Directions.UP:
 						for(int x=0;x<subMap.length;x++)
-							for(int y=0;y<subMap[0].length;y++)
+							for(int y=0;y<subMap[x].length;y++)
 								linkRoom(subMap[x][y],dirRoom,d,dirExit,altExit);
 						break;
 					case Directions.DOWN:
 						for(int x=0;x<subMap.length;x++)
-							for(int y=0;y<subMap[0].length;y++)
+							for(int y=0;y<subMap[x].length;y++)
 								linkRoom(subMap[x][y],dirRoom,d,dirExit,altExit);
 						break;
 				}
@@ -256,10 +263,10 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void buildGrid()
 	{
 		clearGrid();
-		subMap=new Room[size][size];
+		subMap=new Room[xsize][ysize];
 		Exit ox=CMClass.getExit("Open");
-		for(int x=0;x<size;x++)
-			for(int y=0;y<size;y++)
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
 			{
 				Room newRoom=getGridRoom(x,y);
 				if(newRoom!=null)
@@ -303,7 +310,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	protected Room getGridRoom(int x, int y)
 	{
-		if(subMap==null) subMap=new Room[size][size];
+		if(subMap==null) subMap=new Room[xsize][ysize];
 		if((x<0)||(y<0)||(y>=subMap[0].length)||(x>=subMap.length)) return null;
 		Room gc=CMClass.getLocale(getChildLocaleID());
 		gc.setID("");
