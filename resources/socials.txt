@@ -115,6 +115,7 @@ mo	EGRIN	You grin evilly.	<S-NAME> grins evilly.
 mo	EGRIN <T-NAME>	You grin evilly at <T-NAME>.	<S-NAME> grins at <T-NAMESELF> evilly-- <T-HE-SHE> better watch out!		<S-NAME> grins at <T-NAMESELF> evilly-- <T-HE-SHE> better watch out!	
 mo	GRIN	You grin.	<S-NAME> grins.		
 mo	GRIN <T-NAME>	<S-NAME> grin at <T-NAMESELF>	<S-NAME> grins at <T-NAMESELF>.	<S-NAME> grins at you.
+mo	GRIN SELF	You grin at yourself.  You must be getting very bad thoughts.	<S-NAME> grins at <S-HIM-HERSELF>. You must wonder what's in <S-HIS-HER> mind.		
 wo	COMFORT	Do you feel uncomfortable?			
 ww	BABBLE	You babble endlessly.	<S-NAME> babbles endlessly, won't <S-HE-SHE> EVER shut up?		
 mo	WINK	Have you got something in your eye?	<S-NAME> winks suggestively.		
@@ -205,7 +206,6 @@ mo	STRIP SELF	You can't DO that in public!
 mo	FROWN	You frown disapprovingly.	<S-NAME> frowns.		
 ss	AARGH SELF	You scream in frustration at your own stupidity!	<S-NAME> screams in frustration at <S-HIS-HER> own stupidity!		
 mo	ROLL <T-NAME>	You look at <T-NAMESELF> and roll your eyes in disgust.	<S-NAME> rolls <S-HIS-HER> eyes in disgust at <T-NAMESELF>.	<S-NAME> rolls <S-HIS-HER> eyes at you.	You should be disgusted with yourself because you look so foolish.
-mo	GRIN <T-NAME>	You grin evilly at <T-HIM-HER>.	<S-NAME> grins evilly at <T-NAMESELF>.	<S-NAME> grins evilly at you.	You must be delirious.
 mo	FLEX <T-NAME>	You show off to <T-NAMESELF>, flexing your muscles proudly.	<S-NAME> flexes <S-HIS-HER> muscles, in a vain attempt to impress <T-NAMESELF>.	<S-NAME> flexes <S-HIS-HER> muscles in a vain attempt to show off to you.	
 mo	TWIDDLE	You patiently twiddle your thumbs.	<S-NAME> patiently twiddles <S-HIS-HER> thumbs.		
 ss	MOAN <T-NAME>	You moan for the loss of <T-HIM-HER>.	<S-NAME> moans for the loss of <T-NAMESELF>.	<S-NAME> moans at the sight of you.  Hmmmm.	You see no cause to moan.
@@ -235,7 +235,6 @@ mo	POKE SELF	You poke yourself in the ribs, feeling very silly.	<S-NAME> pokes <
 mo	CUDDLE	Who do you feel like cuddling today?			
 ss	SMURF	Who would you like to smurf?			
 mo	GRIMACE	You grimace painfully at the thought.	<S-NAME> grimaces painfully at the thought.		
-mo	GRIN SELF	You grin at yourself.  You must be getting very bad thoughts.	<S-NAME> grins at <S-HIM-HERSELF>. You must wonder what's in <S-HIS-HER> mind.		
 ss	HOWL	You howl at the moon.	<S-NAME> howls at the moon.		
 ot	FONDLE SELF	You fondly fondle yourself, feels funny doesn't it?	<S-NAME> fondly fondles <S-HIM-HERSELF> - this is going too far!!		
 ov	PUNCH <T-NAME>	You punch <T-HIM-HER> playfully.	<S-NAME> punches <T-NAMESELF> playfully.	<S-NAME> punches you playfully.  OUCH!	You can't find your boxing partner.
