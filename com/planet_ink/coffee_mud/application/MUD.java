@@ -579,9 +579,9 @@ public class MUD extends Thread implements Host
 				mud=null;
 				System.gc();
 				System.runFinalization();
-				if(Thread.activeCount()>1)
+				if(Thread.activeCount()>2)
 				{
-					Log.sysOut("MUD","WARNING: " + (Thread.activeCount()-1) +" other thread(s) are still active!");
+					Log.sysOut("MUD","WARNING: " + (Thread.activeCount()) +" other thread(s) are still active!");
 					threadList(Thread.currentThread().getThreadGroup());
 				}
 				if(keepDown)

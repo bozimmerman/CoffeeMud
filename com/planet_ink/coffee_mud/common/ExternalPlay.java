@@ -246,6 +246,10 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.clearDebri(room,taskCode);
 	}
+	public static void tickAllTickers(Room here)
+	{
+		if(sysPlayer!=null) sysPlayer.tickAllTickers(here);
+	}
 	public static StringBuffer listTicks(int whichTick)
 	{
 		if(sysPlayer!=null) return sysPlayer.listTicks(whichTick);

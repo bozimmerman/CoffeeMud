@@ -90,6 +90,65 @@ public class ServiceEngine
 		}
 		return false;
 	}
+	
+
+	public static boolean isHere(Environmental E2, Room here)
+	{
+		if(E2==null)
+			return false;
+		else
+		if(E2==here)
+			return true;
+		else
+		if((E2 instanceof MOB)
+		&&(((MOB)E2).location()==here))
+			return true;
+		else
+		if((E2 instanceof Item)
+		&&(((Item)E2).myOwner()==here))
+			return true;
+		else
+		if((E2 instanceof Item)
+		&&(((Item)E2).myOwner()!=null)
+		&&(((Item)E2).myOwner() instanceof MOB)
+		&&(((MOB)((Item)E2).myOwner()).location()==here))
+			return true;
+		else
+		if(E2 instanceof Exit)
+		{
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if(here.rawExits()[d]==E2)
+					return true;
+		}
+		return false;
+	}
+	
+	public static void tickAllTickers(Room here)
+	{
+		Vector tickers=new Vector();
+		for(int v=0;v<tickGroup.size();v++)
+		{
+			Tick almostTock=(Tick)tickGroup.elementAt(v);
+			int t=0;
+			while(t<almostTock.tickers.size())
+			{
+				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
+				Environmental E2=C.clientObject;
+				if(isHere(E2,here))
+				{
+					if(!Tick.tickTicker(C,almostTock.tickers)) t++;
+				}
+				else
+				if((E2 instanceof Ability)
+				&&(isHere(((Ability)E2).affecting(),here)))
+				{
+					if(!Tick.tickTicker(C,almostTock.tickers)) t++;
+				}
+				else
+					t++;
+			}
+		}
+	}
 
 	public static StringBuffer listTicks(int whichTick)
 	{

@@ -95,6 +95,7 @@ public class Chant_SummonAnimal extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=null;
+		
 		while(newMOB==null)
 		switch(Dice.rollPercentage())
 		{
@@ -139,6 +140,7 @@ public class Chant_SummonAnimal extends Chant
 		case 39: newMOB=(MOB)CMClass.getMOB("Rat"); break;
 		case 40: newMOB=(MOB)CMClass.getMOB("Turtle"); break;
 		case 41: newMOB=(MOB)CMClass.getMOB("Raven"); break;
+		default: continue;
 		}
 
 		newMOB=(MOB)newMOB.newInstance();
@@ -148,8 +150,6 @@ public class Chant_SummonAnimal extends Chant
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.bringToLife(caster.location());
-		newMOB.setStartRoom(null);
 		return(newMOB);
 
 

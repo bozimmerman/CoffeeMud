@@ -85,6 +85,10 @@ public class ExternalSystems implements ExternalSystem
 	{
 		return MOBloader.DBReadUserOnly(mob);
 	}
+	public void tickAllTickers(Room here)
+	{
+		ServiceEngine.tickAllTickers(here);
+	}
 	public StringBuffer listTicks(int whichTick)
 	{
 		return ServiceEngine.listTicks(whichTick);

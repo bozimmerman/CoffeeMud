@@ -37,6 +37,28 @@ public class Tick extends Thread
 		this.interrupt();
 	}
 
+	public static boolean tickTicker(TockClient C, Vector tickers)
+	{
+		if((--C.tickDown)<1)
+		{
+			C.tickDown=C.reTickDown;
+			try
+			{
+				boolean ok=C.clientObject.tick(C.tickID);
+				if(!ok)
+				{
+					tickers.removeElement(C);
+					return true;
+				}
+			}
+			catch(Exception t)
+			{
+				Log.errOut("ServiceEngine",t);
+			}
+		}
+		return false;
+	}
+	
 	public void run()
 	{
 		while(true)
@@ -54,26 +76,7 @@ public class Tick extends Thread
 				{
 					TockClient client=(TockClient)tickers.elementAt(i);
 					lastClient=client;
-					if((--client.tickDown)<1)
-					{
-						client.tickDown=client.reTickDown;
-						try
-						{
-							boolean ok=client.clientObject.tick(client.tickID);
-							if(!ok)
-							{
-								tickers.removeElement(client);
-							}
-							else
-								i++;
-						}
-						catch(Exception t)
-						{
-							Log.errOut("Tick",t);
-							i++;
-						}
-					}
-					else
+					if(!tickTicker(client,tickers))
 						i++;
 				}
 			}

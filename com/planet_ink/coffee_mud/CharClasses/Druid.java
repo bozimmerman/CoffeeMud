@@ -36,9 +36,11 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseLife",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Moonbeam",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_LocatePlants",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_PlantGrowth",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_Tangle",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_CalmWind",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_LocateAnimals",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_Hunger",true);
@@ -60,7 +62,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SummonMount",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SummonCold",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_WindGust",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonAnimal",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_PlantTravel",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonRain",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_NeutralizePoison",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_SummonWind",true);
@@ -80,16 +82,17 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonInsects",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_Bury",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_Hibernation",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonAnimal",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_CharmArea",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Chant_AnimalSpy",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_IllusionaryForest",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Chant_Earthquake",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_AnimalSpy",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_DistantGrowth",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonElemental",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Chant_PlantSnare",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Chant_SetSnare",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_Earthquake",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_PlantSnare",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_Shillelagh",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_TreemorphOthers",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_Treemorph",true);
 		}
 	}
 
