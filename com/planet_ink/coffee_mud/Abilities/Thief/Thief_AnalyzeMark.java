@@ -9,6 +9,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 {
 	public String ID() { return "Thief_AnalyzeMark"; }
 	public String name(){ return "Analyze Mark";}
+	public String displayText(){ return "";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){return Ability.INDIFFERENT;}

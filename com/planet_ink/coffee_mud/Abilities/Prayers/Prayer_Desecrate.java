@@ -46,7 +46,7 @@ public class Prayer_Desecrate extends Prayer
 					double exp=5.0;
 					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
 					int levelDiff=mob.envStats().level()-target.envStats().level();
-					if(levelDiff<(-levelLimit) ) exp=0.0;
+					if(levelDiff>levelLimit) exp=0.0;
 					mob.charStats().getCurrentClass().gainExperience(mob,null,null,(int)Math.round(exp));
 				}
 				mob.location().recoverRoomStats();

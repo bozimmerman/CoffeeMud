@@ -7,9 +7,9 @@ public class Assassin extends Thief
 	public String ID(){return "Assassin";}
 	public String name(){return "Assassin";}
 	public boolean playerSelectable(){	return true;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	private static boolean abilitiesLoaded2=false;
+	public boolean loaded(){return abilitiesLoaded2;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
 	
 	public String weaponLimitations(){return "";}
 	protected boolean isAllowedWeapon(int wclass){ return true;}
@@ -52,6 +52,7 @@ public class Assassin extends Thief
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Thief_KillLog",true);
 			
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",true);
 			

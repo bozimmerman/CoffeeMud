@@ -9,9 +9,9 @@ public class Arcanist extends Thief
 	public String ID(){return "Arcanist";}
 	public String name(){return "Arcanist";}
 	public boolean playerSelectable(){	return true;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	private static boolean abilitiesLoaded2=false;
+	public boolean loaded(){return abilitiesLoaded2;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
 	public int getBonusManaLevel(){return 18;}
 	
 	public Arcanist()

@@ -1,6 +1,12 @@
 GAES still isn't done
 can you add a lock to a storage wagon? If so, could we make the storage wagon a room that analyzes how much weight is in it, and applies it to the wagon. That way you can put someone in a cart (room), and lock them in there.
 modify - whether one wishes to use the wizard or the menu by means of the .ini 
-caltrops should implement trap!
 fleas as a disease -- contageous!
-
+A couple players are still reporting that even on 3.8.7.0, they sometimes lose ansi color when they turn on autoexits.
+'hello  would be the same as ' hello
+followers need to be tested finally -- including saves!
+I just opened a door while hiding, and it says that I am stilll hidden
+I can't open a backpack in combat? Why not?
+on illusory wall, SENSE INVISIBLE won't let you see the exit.
+buying a pet, if you can't have another follower, don't allow the purchase
+if a pet is sleeping and you recall, you lose the pet

@@ -7,10 +7,9 @@ public class Trapper extends Thief
 {
 	public String ID(){return "Trapper";}
 	public String name(){return "Trapper";}
-	public boolean playerSelectable(){	return true;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	private static boolean abilitiesLoaded2=false;
+	public boolean loaded(){return abilitiesLoaded2;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
 	
 	public Trapper()
 	{

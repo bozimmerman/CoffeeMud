@@ -404,8 +404,8 @@ public class Movement extends Scriptable
 						}
 					}
 				}
-				else
-					follower.setFollowing(null);
+				//else
+				//	follower.setFollowing(null);
 			}
 		}
 		return true;

@@ -394,7 +394,7 @@ public class StdMOB implements MOB
 				location().show(this,null,Affect.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
 		}
 		setFollowing(null);
-		if((!isMonster())&&(numFollowers()>0))
+		if(!isMonster())
 			ExternalPlay.DBUpdateFollowers(this);
 
 		while(numFollowers()>0)
@@ -1818,12 +1818,7 @@ public class StdMOB implements MOB
 		return !pleaseDestroy;
 	}
 
-	public boolean isMonster()
-	{
-		if(mySession==null)
-		   return true;
-		return false;
-	}
+	public boolean isMonster(){	return (mySession==null);}
 
 	public boolean isASysOp(Room of)
 	{
@@ -1910,14 +1905,18 @@ public class StdMOB implements MOB
 	}
 	public void addFollower(MOB follower)
 	{
-		if(follower!=null)
+		if((follower!=null)&&(!followers.contains(follower)))
+		{
 			followers.addElement(follower);
+		}
 	}
 
 	public void delFollower(MOB follower)
 	{
-		if(follower!=null)
+		if((follower!=null)&&(followers.contains(follower)))
+		{
 			followers.removeElement(follower);
+		}
 	}
 	public int numFollowers()
 	{

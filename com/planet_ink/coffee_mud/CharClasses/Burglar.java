@@ -7,9 +7,9 @@ public class Burglar extends Thief
 	public String ID(){return "Burglar";}
 	public String name(){return "Burglar";}
 	public boolean playerSelectable(){	return true;}
-	private static boolean abilitiesLoaded=false;
-	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	private static boolean abilitiesLoaded2=false;
+	public boolean loaded(){return abilitiesLoaded2;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
 	
 	public Burglar()
 	{
