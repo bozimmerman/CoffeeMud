@@ -1110,7 +1110,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				for(Enumeration r=CMMap.areas();r.hasMoreElements();)
 				{
 					Area A=(Area)r.nextElement();
-					if((A instanceof SpaceObject)&&(A.ID().toUpperCase().indexOf("SHIP")>=0))
+					if((A instanceof SpaceObject)&&(A.ID().toUpperCase().indexOf("PLANET")<0))
 					{
 						LandTitle LT=CoffeeUtensils.getLandTitle(A);
 						if(LT!=null) titles.put(A,LT);
