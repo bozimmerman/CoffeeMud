@@ -13,7 +13,7 @@ public class Prayer_RemovePoison extends Prayer
 	public int holyQuality(){ return HOLY_GOOD;}
 	public Environmental newInstance(){	return new Prayer_RemovePoison();}
 
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public static Vector returnOffensiveAffects(Environmental fromMe)
 	{
 		Vector offenders=new Vector();
 

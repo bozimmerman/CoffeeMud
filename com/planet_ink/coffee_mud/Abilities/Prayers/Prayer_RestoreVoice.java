@@ -13,7 +13,7 @@ public class Prayer_RestoreVoice extends Prayer
 	public int holyQuality(){ return HOLY_GOOD;}
 	public Environmental newInstance(){	return new Prayer_RestoreVoice();}
 
-	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();

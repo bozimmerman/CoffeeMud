@@ -11,7 +11,7 @@ public class Prayer_Contagion extends Prayer
 	public String displayText(){ return "(Contagion)";}
 	public String name(){ return "Contagion";}
 	public int quality(){ return MALICIOUS;}
-	public int holyQuality(){ return HOLY_EVIL;}
+	public int holyQuality(){ return HOLY_NEUTRAL;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_Contagion();	}
@@ -21,7 +21,7 @@ public class Prayer_Contagion extends Prayer
 		if(affected==null) return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked)
-			mob.tell("The unholy contagion fades.");
+			mob.tell("The contagion fades.");
 		super.unInvoke();
 	}
 	
@@ -81,7 +81,7 @@ public class Prayer_Contagion extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> pray(s) at <T-NAMESELF> for unholy contagion.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> pray(s) at <T-NAMESELF> for contagion.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.TYP_DISEASE|Affect.MASK_MALICIOUS,null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

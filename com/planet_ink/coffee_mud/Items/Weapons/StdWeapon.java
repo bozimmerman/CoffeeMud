@@ -87,30 +87,49 @@ public class StdWeapon extends StdItem implements Weapon
 			affect.addTrailerMsg(new FullMsg(affect.source(),this,Affect.MSG_DROP,null));
 		else
 		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(affect.tool()!=null)
 		&&(affect.tool()==this)
-		&&(subjectToWearAndTear())
-		&&(Dice.rollPercentage()<5)
-		&&(owner()!=null)
 		&&(amWearingAt(Item.WIELD))
+		&&(owner()!=null)
 		&&(owner() instanceof MOB)
-		&&(affect.amISource((MOB)owner()))
-		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*4)))
+		&&(affect.amISource((MOB)owner())))
 		{
-			setUsesRemaining(usesRemaining()-1);
-			if((usesRemaining()<=0)
-			&&(owner()!=null)
-			&&(owner() instanceof MOB))
+			if(((affect.targetCode()-Affect.MASK_HURT)>50)
+			&&((this instanceof Electronics)||((affect.targetCode()-Affect.MASK_HURT)>200))
+			&&(affect.target()!=null)
+			&&(affect.target() instanceof MOB)
+			&&(((MOB)affect.target()).curState().getHitPoints()>(affect.targetCode()-Affect.MASK_HURT)))
 			{
-				MOB owner=(MOB)owner();
-				setUsesRemaining(100);
-				affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
-				remove();
-				destroyThis();
-				owner.recoverEnvStats();
-				owner.recoverCharStats();
-				owner.recoverMaxState();
-				owner.location().recoverRoomStats();
+				switch(weaponType())
+				{
+				case Weapon.TYPE_FROSTING:
+				case Weapon.TYPE_GASSING:
+					break;
+				default:
+					CMClass.getAbility("Amputation").invoke(affect.source(),affect.target(),true);
+					break;
+				}
+			}
+			
+			if((subjectToWearAndTear())
+			&&(Dice.rollPercentage()<5)
+			&&(affect.source().rangeToTarget()==0)
+			&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*5)))
+			{
+				setUsesRemaining(usesRemaining()-1);
+				if((usesRemaining()<=0)
+				&&(owner()!=null)
+				&&(owner() instanceof MOB))
+				{
+					MOB owner=(MOB)owner();
+					setUsesRemaining(100);
+					affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
+					remove();
+					destroyThis();
+					owner.recoverEnvStats();
+					owner.recoverCharStats();
+					owner.recoverMaxState();
+					owner.location().recoverRoomStats();
+				}
 			}
 		}
 	}

@@ -140,6 +140,7 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Deathfinger",false);
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Drain",false);
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Contagion",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Restoration",false);
 		}
 	}
 

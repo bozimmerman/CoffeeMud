@@ -13,7 +13,7 @@ public class Prayer_CureBlindness extends Prayer
 	public int holyQuality(){ return HOLY_GOOD;}
 	public Environmental newInstance(){	return new Prayer_CureBlindness();}
 
-	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public static Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		MOB newMOB=(MOB)CMClass.getMOB("StdMOB");
 		MOB newerMOB=(MOB)CMClass.getMOB("StdMOB");
