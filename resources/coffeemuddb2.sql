@@ -120,3 +120,15 @@ CMDESC text NULL ,
 CMROTX text NULL ,
 PRIMARY KEY (CMAREA)
 );
+
+
+CREATE TABLE CMJRNL (
+	CMJKEY varchar (50) NULL ,
+	CMJRNL varchar (50) NULL ,
+	CMFROM varchar (50) NULL ,
+	CMDATE integer NULL ,
+	CMTONM varchar (50) NULL ,
+	CMSUBJ varchar (100) NULL ,
+	CMMSGT text NULL,
+PRIMARY KEY (CMJKEY) 
+);

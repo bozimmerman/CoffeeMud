@@ -4,16 +4,14 @@
 
 ! Create a custom command ability, include ability to override existing commands!
 
-Add Notes abilities -- really need for bug fix reporting!  Done this way: a Journal can be read, 
-it will list the posts for a given Journal.  A new command, Post, allows writing on Journals.  It
-will consult your Write ability for profficiency :).  
+! Add Notes abilities -- really need for bug fix reporting!  Done this way: a Journal can be read, it will list the posts for a given Journal.  
+
+More WeaponTypes, with text file (Resource)? descriptions.  These should also be
+assignable to MOBs at build time, or to GENMOBs via a new tag.
 
 From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file
 (A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and
 should be assignable to GENMOBS via a new tag.
-
-More WeaponTypes, with text file (Resource)? descriptions.  These should also be
-assignable to MOBs at build time, or to GENMOBs via a new tag.
 
 Add CoffeeMud area files!
 
@@ -36,9 +34,12 @@ animals will produce poisoned meat, of course.
 
 Meditation for Mage should be like Endurance for Fighter.
 
+Predict Weather spell!
+
 Lore skill for Bards.. allows an identify for them.
 
-More stuff for Fighters, especially Paladins and Rangers, who must use their trains for spells.
+More stuff for Fighters, especially Paladins and Rangers, who must use their 
+trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!
 
 Sweep would make a good Fighter ability, as would cleave!
 
