@@ -31,6 +31,7 @@ public class RoomLoader
 				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
 				A.setDescription(DBConnections.getRes(R,"CMDESC"));
 				A.setMiscText(DBConnections.getRes(R,"CMROTX"));
+				A.tickControl(true);
 			}
 			DBConnector.DBDone(D);
 		}
@@ -523,6 +524,8 @@ public class RoomLoader
 			Log.errOut("Area",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		if(A==null) return null;
+		A.tickControl(true);
 		return A;
 	}
 	
@@ -554,6 +557,8 @@ public class RoomLoader
 	
 	public static void DBDelete(Area A)
 	{
+		if(A==null) return;
+		A.tickControl(false);
 		DBConnection D=null;
 		try
 		{

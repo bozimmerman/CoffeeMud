@@ -211,6 +211,7 @@ public class Lister
 		}
 
 		String listThis=Util.combine(commands,0).toUpperCase();
+		String listWord=((String)commands.firstElement()).toUpperCase();
 
 		if("ITEMS".startsWith(listThis))
 			mob.tell(reallyList(CMClass.items).toString());
@@ -264,7 +265,10 @@ public class Lister
 			mob.tell(reallyList(CMClass.abilities,Ability.SKILL).toString());
 		else
 		if("TICKS".startsWith(listThis))
-			mob.tell(ExternalPlay.listTicks().toString());
+			mob.tell(ExternalPlay.listTicks(-1).toString());
+		else
+		if("TICKS".startsWith(listWord))
+			mob.tell(ExternalPlay.listTicks(Util.s_int(Util.combine(commands,1))).toString());
 		else
 		if("MAGIC".startsWith(listThis))
 			mob.tell(reallyList(CMClass.miscMagic).toString());

@@ -104,6 +104,12 @@ public class CommandProcessor
 				case CommandSet.CHANNELS:
 					channels.listChannels(mob);
 					break;
+				case CommandSet.CHARGEN:
+					if(mob.isASysOp(mob.location()))
+						sysopSkills.chargen(mob,commands);
+					else
+						mob.tell("Sorry, you don't have that power!");
+					break;
 				case CommandSet.CONSIDER:
 					socialProcessor.consider(mob,commands);
 					break;
@@ -185,6 +191,12 @@ public class CommandProcessor
 				case CommandSet.GO:
 					movement.go(mob,commands);
 					break;
+				case CommandSet.GOTO:
+					if(mob.isASysOp(mob.location()))
+						sysopSkills.gotoCmd(mob,commands);
+					else
+						mob.tell("Try 'GO'.");
+					break;
 				case CommandSet.GROUP:
 					grouping.group(mob);
 					break;
@@ -259,6 +271,12 @@ public class CommandProcessor
 				case CommandSet.PASSWORD:
 					basicSenses.password(mob,commands);
 					break;
+				case CommandSet.POSSESS:
+					if(mob.isASysOp(mob.location()))
+						sysopSkills.possess(mob,commands);
+					else
+						mob.tell("You aren't powerful enough to possess anyone.");
+					break;
 				case CommandSet.PRACTICE:
 					abilityEvoker.practice(mob,commands);
 					break;
@@ -280,11 +298,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.QUIT:
 					if(mob.soulMate()!=null)
-					{
-						Ability A=CMClass.getAbility("Archon_Possess");
-						A.setAffectedOne(mob);
-						A.unInvoke();
-					}
+						new SysOpSkills().dispossess(mob);
 					else
 					if(!mob.isMonster())
 						mob.session().cmdExit(mob,commands);
@@ -425,6 +439,12 @@ public class CommandProcessor
 					break;
 				case CommandSet.WIMPY:
 					basicSenses.wimpy(mob,commands);
+					break;
+				case CommandSet.WIZINV:
+					if(mob.isASysOp(null))
+						sysopSkills.wizinv(mob,commands);
+					else
+						mob.tell("You aren't powerful enough to do that.");
 					break;
 				case CommandSet.XML:
 					if(mob.isASysOp(null))

@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.commands.sysop.SysopItemUsage;
+import com.planet_ink.coffee_mud.commands.sysop.SysOpSkills;
 import java.io.*;
 import java.util.*;
 public class TheFight
@@ -363,11 +364,7 @@ public class TheFight
 				if(target.soulMate()==null)
 					target.raiseFromDead();
 				else
-				{
-					Ability A=CMClass.getAbility("Archon_Possess");
-					A.setAffectedOne(target);
-					A.unInvoke();
-				}
+					new SysOpSkills().dispossess(target);
 			}
 			Body.startTicker(deathRoom);
 			deathRoom.recoverRoomStats();

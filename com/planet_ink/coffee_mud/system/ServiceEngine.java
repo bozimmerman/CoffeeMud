@@ -91,7 +91,7 @@ public class ServiceEngine
 		return false;
 	}
 
-	public static StringBuffer listTicks()
+	public static StringBuffer listTicks(int whichTick)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append(Util.padRight("Grp",4)+Util.padRight("Client",18)+" "+Util.padRight("ID",5)+Util.padRight("Time",10));
@@ -100,6 +100,7 @@ public class ServiceEngine
 		for(int v=0;v<tickGroup.size();v++)
 		{
 			Tick almostTock=(Tick)tickGroup.elementAt(v);
+			if((whichTick<0)||(whichTick==v))
 			for(int t=0;t<almostTock.tickers.size();t++)
 			{
 				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
@@ -116,7 +117,7 @@ public class ServiceEngine
 					msg.append("\n\r");
 					col=1;
 				}
-				msg.append(Util.padRight(""+v,4)+Util.padRight(E.ID(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+oo,10));
+				msg.append(Util.padRight(""+v,4)+Util.padRight(E.name(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+oo,10));
 			}
 		}
 		return msg;

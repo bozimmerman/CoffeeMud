@@ -116,6 +116,10 @@ public class CommandSet extends Hashtable
 	public static final int ARCTOPICS=104;
 	public static final int DUMPFILE=105;
 	public static final int VER=106;
+	public static final int CHARGEN=107;
+	public static final int POSSESS=108;
+	public static final int GOTO=109;
+	public static final int WIZINV=110;
 
 	public CommandSet()
 	{
@@ -139,6 +143,7 @@ public class CommandSet extends Hashtable
 			put("CL",new Integer(CLOSE));
 			put("CLO",new Integer(CLOSE));
 		put("CHANNELS",new Integer(CHANNELS));
+		put("CHARGEN",new Integer(CHARGEN));
 		put("COMMANDS",new Integer(COMMANDS));
 		put("COMPARE",new Integer(COMPARE));
 			put("COMP",new Integer(COMPARE));
@@ -173,6 +178,7 @@ public class CommandSet extends Hashtable
 		put("GET",new Integer(GET));
 		put("GIVE",new Integer(GIVE));
 		put("GO",new Integer(GO));
+		put("GOTO",new Integer(GOTO));
 		put("GROUP",new Integer(GROUP));
 			put("GR",new Integer(GROUP));
 		put("GTELL",new Integer(GTELL));
@@ -203,6 +209,8 @@ public class CommandSet extends Hashtable
 		put("ORDER",new Integer(ORDER));
 		put("OUTFIT",new Integer(OUTFIT));
 		put("PASSWORD",new Integer(PASSWORD));
+		put("POSSESS",new Integer(POSSESS));
+			put("POSS",new Integer(POSSESS));
 		put("PRACTICE",new Integer(PRACTICE));
 			put("PRAC",new Integer(PRACTICE));
 		put("PRAYERS",new Integer(PRAYERS));
@@ -266,6 +274,7 @@ public class CommandSet extends Hashtable
 		put("WIELD",new Integer(WIELD));
 		put("WIMPY",new Integer(WIMPY));
 			put("WIMP",new Integer(WIMPY));
+		put("WIZINV",new Integer(WIZINV));
 		put("XML",new Integer(XML));
 		put("YELL",new Integer(YELL));
 	}

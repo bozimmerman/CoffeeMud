@@ -6,6 +6,7 @@ public interface Area extends Environmental
 	public int weatherType(Room room);
 	public int climateType();
 	public void setClimateType(int newClimateType);
+	public void tickControl(boolean start);
 	
 	public StringBuffer getAreaStats();
 	public Vector getMyMap();

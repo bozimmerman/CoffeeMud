@@ -77,4 +77,5 @@ public class Utils
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
 	}
+	
 }

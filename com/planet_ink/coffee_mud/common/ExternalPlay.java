@@ -242,9 +242,9 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.clearDebri(room,taskCode);
 	}
-	public static StringBuffer listTicks()
+	public static StringBuffer listTicks(int whichTick)
 	{
-		if(sysPlayer!=null) return sysPlayer.listTicks();
+		if(sysPlayer!=null) return sysPlayer.listTicks(whichTick);
 		return new StringBuffer();
 	}
 	public static boolean DBUserSearch(MOB mob, String Login)

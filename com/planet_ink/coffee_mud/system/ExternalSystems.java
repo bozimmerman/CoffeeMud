@@ -60,9 +60,9 @@ public class ExternalSystems implements ExternalSystem
 	{
 		return MOBloader.DBUserSearch(mob,Login);
 	}
-	public StringBuffer listTicks()
+	public StringBuffer listTicks(int whichTick)
 	{
-		return ServiceEngine.listTicks();
+		return ServiceEngine.listTicks(whichTick);
 	}
 	public Area DBCreateArea(String areaName, String areaType)
 	{
