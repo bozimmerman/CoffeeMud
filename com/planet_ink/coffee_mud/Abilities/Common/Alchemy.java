@@ -229,7 +229,7 @@ public class Alchemy extends CommonSkill
 			{
 				requiresFire=false;
 				fire=null;
-				experienceToLose+=theSpell.qualifyingLevel(mob)*20;
+				experienceToLose+=theSpell.qualifyingLevel(mob)*10;
 				experienceToLose-=(mob.envStats().level()*5);
 			}
 			else
@@ -250,7 +250,7 @@ public class Alchemy extends CommonSkill
 					mob.tell("You'll need to build a fire first.");
 					return false;
 				}
-				experienceToLose+=theSpell.qualifyingLevel(mob)*25;
+				experienceToLose+=theSpell.qualifyingLevel(mob)*15;
 				experienceToLose-=(mob.envStats().level()*5);
 			}
 			int resourceType=-1;
