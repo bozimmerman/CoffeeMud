@@ -142,15 +142,25 @@ public class Quests implements Cloneable, Quest
 						String areaName=Util.combine(p,2);
 						if(areaName.equalsIgnoreCase("any"))
 							A=CMMap.getRandomArea();
-						else
-						for(Enumeration e=CMMap.areas();e.hasMoreElements();)
-						{
-							Area A2=(Area)e.nextElement();
-							if(CoffeeUtensils.containsString(A2.Name(),areaName))
+						if(A==null)
+							for (Enumeration e = CMMap.areas(); e.hasMoreElements(); ) 
 							{
-								A=A2; break;
+								Area A2 = (Area) e.nextElement();
+								if (A2.Name().equalsIgnoreCase(areaName)) 
+								{
+								   A = A2;
+								   break;
+								}
 							}
-						}
+						if(A==null)
+							for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+							{
+								Area A2=(Area)e.nextElement();
+								if(CoffeeUtensils.containsString(A2.Name(),areaName))
+								{
+									A=A2; break;
+								}
+							}
 						if(A==null)
 						{
 							if(!isQuiet)

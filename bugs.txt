@@ -12,7 +12,5 @@ AFTER archon command to do delayed commands (after 5 ticks at hassan smile) (in 
 add noprompt shutdown
 Can we get some sorta little INI setting that after X connection attempts within Y minutes, auto-block that IP for Z minutes?
 mudchat shouldn't work if they can't see you.
-have a log for each channel that contains the last 20 or so messages on that channel.
 Coffins should prevent item decay on Body-type items.
 wood and herbs sink
-an archon with playerkill on should be able to override a players playerkill flag

@@ -540,9 +540,23 @@ public class StdMOB implements MOB
 		if((getClanID().length()>0)&&(mob.getClanID().length()>0)
 		&&(Clans.getClanRelations(getClanID(),mob.getClanID())==Clan.REL_WAR))
 			return true;
-		if(!Util.bset(getBitmap(),MOB.ATT_PLAYERKILL)) return false;
-		if(!Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)) return false;
-		return true;
+		if(Util.bset(getBitmap(),MOB.ATT_PLAYERKILL))
+		{
+			if((isASysOp(location())) 
+			||(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+				return true;
+			return false;
+		}
+		else
+		if(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+		{
+			if((mob.isASysOp(mob.location())) 
+			||(Util.bset(getBitmap(),MOB.ATT_PLAYERKILL)))
+				return true;
+			return false;
+		}
+		else
+			return false;
 	}
 	public boolean mayPhysicallyAttack(MOB mob)
 	{

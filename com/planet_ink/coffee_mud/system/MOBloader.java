@@ -458,7 +458,7 @@ public class MOBloader
 				members.addElement(username);
 				roles.addElement(new Integer(role));
 				MOB M=(MOB)CMMap.getPlayer(username);
-				if(M!=null)
+				if((M!=null)&&(M.lastTickedDateTime()>0))
 					lastDates.addElement(new Long(M.lastTickedDateTime()));
 				else
 					lastDates.addElement(new Long(lastDateTime));
