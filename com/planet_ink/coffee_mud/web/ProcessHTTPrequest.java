@@ -410,12 +410,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						if(foundMacro.startsWith("if?"))
 						{
 							int l=foundMacro.length()+2;
-							int v=myEndif(s,l);
+							int v=myEndif(s,i+l);
 							if(v<0)
 								s.replace(i,i+l,"[if without endif]");
 							else
 							{
-								int v2=myElse(s,l,v);
+								int v2=myElse(s,i+l,v);
 								foundMacro=foundMacro.substring(3);
 								try
 								{

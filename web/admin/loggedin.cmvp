@@ -14,11 +14,31 @@
 
 <div align="center">
 <IMG SRC="images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
-<h3>CoffeeMUD MUDGrinder</H3>
+<h3>MUDGrinder</H3>
 <br>
-<FORM NAME=SELECTAREA METHOD=GET TARGET=/grindermain.cmvp>
+<FORM NAME=SELECTAREA METHOD=GET ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-
+<TABLE WIDTH=200 BORDER=1>
+<TR><TD ALIGN=CENTER><B>Areas available:</B></TD></TR>
+<TR><TD ALIGN=CENTER>
+<SELECT NAME=AREA HEIGHT=10>
+@MUDGrinder?AREALIST@
+</SELECT>
+</TD></TR>
+<TR><TD ALIGN=CENTER>
+@if?CheckReqParm?SYSOP=true@
+<TABLE BORDER=0><TR><TD ALIGN=CENTER>
+<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="document.SELECTAREA.action='/newarea.cmvp'; document.SELECTAREA.submit();">
+</TD><TD ALIGN=CENTER>
+<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="document.SELECTAREA.action='/modarea.cmvp'; document.SELECTAREA.submit();">
+</TD><TD ALIGN=CENTER>
+<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="document.SELECTAREA.action='/areagone.cmvp'; document.SELECTAREA.submit();">
+</TD>
+</TR></TABLE>
+@else@
+<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify">
+@endif@
+</TD></TR></TABLE>
 </FORM>
 </BODY>
 </HTML>

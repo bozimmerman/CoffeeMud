@@ -402,7 +402,7 @@ public class Rooms
 		Log.sysOut("Rooms",mob.ID()+" modified room "+mob.location().ID()+".");
 	}
 
-	public void obliterateRoom(MOB mob, Room deadRoom)
+	public void obliterateRoom(Room deadRoom)
 	{
 		CMMap.delRoom(deadRoom);
 		for(int m=0;m<CMMap.numRooms();m++)
@@ -513,7 +513,7 @@ public class Rooms
 
 			if(!confirmed)
 				if(!mob.session().confirm("You are about to permanantly destroy Room \""+deadRoom.ID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
-			obliterateRoom(mob,deadRoom);
+			obliterateRoom(deadRoom);
 			mob.tell("The sound of massive destruction rings in your ears.");
 			mob.location().showOthers(mob,null,Affect.MSG_NOISE,"The sound of massive destruction rings in your ears.");
 			Log.sysOut("Rooms",mob.ID()+" destroyed room "+deadRoom.ID()+".");
@@ -528,6 +528,30 @@ public class Rooms
 		}
 	}
 
+	public void obliterateArea(String areaName)
+	{
+		Room foundOne=CMMap.getRoom(0);
+		while(foundOne!=null)
+		{
+			foundOne=null;
+			for(int m=0;m<CMMap.numRooms();m++)
+			{
+				Room r=CMMap.getRoom(m);
+				if(r.getArea().name().equalsIgnoreCase(areaName))
+				{
+					foundOne=r;
+					break;
+				}
+			}
+			if(foundOne!=null)
+				obliterateRoom(foundOne);
+		}
+
+		Area A=CMMap.getArea(areaName);
+		ExternalPlay.DBDeleteArea(A);
+		CMMap.delArea(A);
+	}
+	
 	public void destroyArea(MOB mob, Vector commands)
 		throws Exception
 	{
@@ -568,28 +592,7 @@ public class Rooms
 			else
 				confirmed=true;
 		}
-
-		Room foundOne=mob.location();
-		while(foundOne!=null)
-		{
-			foundOne=null;
-			for(int m=0;m<CMMap.numRooms();m++)
-			{
-				Room r=CMMap.getRoom(m);
-				if(r.getArea().name().equalsIgnoreCase(areaName))
-				{
-					foundOne=r;
-					break;
-				}
-			}
-			if(foundOne!=null)
-				new Rooms().obliterateRoom(mob,foundOne);
-		}
-
-		Area A=CMMap.getArea(areaName);
-		ExternalPlay.DBDeleteArea(A);
-		CMMap.delArea(A);
-
+		obliterateArea(areaName);
 		if(confirmed)
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");

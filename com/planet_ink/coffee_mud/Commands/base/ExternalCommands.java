@@ -14,6 +14,16 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.itemUsage.wear(mob,item);
 	}
+	
+	public void obliterateArea(String areaName)
+	{
+		processor.sysopRooms.obliterateArea(areaName);
+	}
+	public void obliterateRoom(Room deadRoom)
+	{
+		processor.sysopRooms.obliterateRoom(deadRoom);
+	}
+	
 	public boolean remove(MOB mob, Item item)
 	{
 		return processor.itemUsage.remove(mob,item);

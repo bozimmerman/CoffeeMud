@@ -27,6 +27,7 @@ public class CommandProcessor
 	public SysOpSkills sysopSkills=new SysOpSkills();
 	public XMLIO xmlIO=new XMLIO();
 	public Reset reset=new Reset();
+	public Rooms sysopRooms=new Rooms();
 	public Properties helpFile=null;
 	public Properties arcHelpFile=null;
 	public Host myHost=null;

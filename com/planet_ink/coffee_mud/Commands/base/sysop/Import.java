@@ -2508,7 +2508,7 @@ public class Import
 							if(foundOne==null)
 								break;
 							else
-								myRooms.obliterateRoom(mob,foundOne);
+								myRooms.obliterateRoom(foundOne);
 						}
 					}
 				}

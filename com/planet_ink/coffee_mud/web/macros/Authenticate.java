@@ -24,10 +24,10 @@ public class Authenticate extends StdWebMacro
 		}
 	}
 	
-	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~1!2@3#4$5%6^7&8*9(0)-_=+[{]}|;:',<.>/? ";
+	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`~1!23#4$5%6^78*9(0)-_=+[{]}|;:',./? ";
 	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
 
-	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
+	public static MOB getAuthenticatedMOB(String login)
 	{
 		MOB mob=(MOB)CMMap.MOBs.get(login);
 		if(mob==null)
@@ -35,18 +35,27 @@ public class Authenticate extends StdWebMacro
 			mob=CMClass.getMOB("StdMOB");
 			mob.setName(login);
 			if(!ExternalPlay.DBReadUserOnly(mob))
-				return false;
+				return null;
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 		}
+		return mob;
+	}
+	
+	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
+	{
+		MOB mob=getAuthenticatedMOB(login);
+		if(mob==null) return false;
 		boolean subOp=false;
 		boolean sysop=mob.isASysOp(null);
 		httpReq.getRequestParameters().put("SYSOP",""+sysop);
+		String AREA=(String)httpReq.getRequestParameters().get("AREA");
 		for(int a=0;a<CMMap.numAreas();a++)
 		{
 			Area A=(Area)CMMap.getArea(a);
-			if(A.amISubOp(mob.name()))
-			{ subOp=true; break;}
+			if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.name())))
+				if(A.amISubOp(mob.name()))
+				{ subOp=true; break;}
 		}
 		httpReq.getRequestParameters().put("SUBOP",""+(sysop||subOp));
 		return mob.password().equalsIgnoreCase(password)&&(mob.name().trim().length()>0);
@@ -110,23 +119,25 @@ public class Authenticate extends StdWebMacro
 		return INTOME.toString();
 	}
 	
-	private static String getLogin(ExternalHTTPRequests httpReq)
+	public static String getLogin(ExternalHTTPRequests httpReq)
 	{
 		String login=(String)httpReq.getRequestParameters().get("LOGIN");
-		if(login.length()>0)
+		if((login!=null)&&(login.length()>0))
 			return login;
 		String auth=(String)httpReq.getRequestParameters().get("AUTH");
+		if(auth==null) return "";
 		if(auth.indexOf("\"")>=0) auth=auth.substring(0,auth.indexOf("\""));
 		login=Decrypt(auth);
 		return login;
 	}
 	
-	private static String getPassword(ExternalHTTPRequests httpReq)
+	public static String getPassword(ExternalHTTPRequests httpReq)
 	{
 		String password=(String)httpReq.getRequestParameters().get("PASSWORD");
-		if(password.length()>0)
+		if((password!=null)&&(password.length()>0))
 			return password;
 		String auth=(String)httpReq.getRequestParameters().get("AUTH");
+		if(auth==null) return "";
 		if(auth.indexOf("\"")>=0) auth=auth.substring(auth.indexOf("\"")+1);
 		password=Decrypt(auth);
 		return password;

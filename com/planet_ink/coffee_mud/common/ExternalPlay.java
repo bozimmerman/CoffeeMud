@@ -25,10 +25,17 @@ public class ExternalPlay
 		if(player!=null) return player.getOpenRoomID(areaName);
 		return "";
 	}
+	public static void obliterateArea(String areaName)
+	{
+		if(player!=null) player.obliterateArea(areaName);
+	}
+	public static void obliterateRoom(Room deadRoom)
+	{
+		if(player!=null) player.obliterateRoom(deadRoom);
+	}
 	public static void resetRoom(Room room)
 	{
 		if(player!=null) player.resetRoom(room);
-		
 	}
 	public static Ability getToEvoke(MOB mob, Vector commands)
 	{

@@ -40,5 +40,7 @@ public interface ExternalCommand
 	public boolean login(MOB mob) throws IOException;
 	public void resetRoom(Room room);
 	public String getOpenRoomID(String areaName);
+	public void obliterateArea(String areaName);
+	public void obliterateRoom(Room deadRoom);
 	
 }
