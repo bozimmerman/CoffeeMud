@@ -22,7 +22,6 @@ public class CommonStrings extends Scriptable
 {
 	private CommonStrings(){};
 	
-	public static String[] clookup=null;
 	public static final int SYSTEM_PKILL=0;
 	public static final int SYSTEM_MULTICLASS=1;
 	public static final int SYSTEM_PLAYERDEATH=2;
@@ -126,94 +125,6 @@ public class CommonStrings extends Scriptable
 	private static Vector sayFilter=new Vector();
 	private static Vector channelFilter=new Vector();
 	private static Vector emoteFilter=new Vector();
-	
-	public static final String COLOR_WHITE="\033[1;37m";
-	public static final String COLOR_LIGHTGREEN="\033[1;32m";
-	public static final String COLOR_LIGHTBLUE="\033[1;34m";
-	public static final String COLOR_LIGHTRED="\033[1;31m";
-	public static final String COLOR_YELLOW="\033[1;33m";
-	public static final String COLOR_LIGHTCYAN="\033[1;36m";
-	public static final String COLOR_LIGHTPURPLE="\033[1;35m";
-	public static final String COLOR_GREY="\033[0;37m";
-	public static final String COLOR_GREEN="\033[0;32m";
-	public static final String COLOR_BLUE="\033[0;34m";
-	public static final String COLOR_RED="\033[0;31m";
-	public static final String COLOR_BROWN="\033[0;33m";
-	public static final String COLOR_CYAN="\033[0;36m";
-	public static final String COLOR_PURPLE="\033[0;35m";
-	public static final String COLOR_DARKGREY="\033[1;30m";
-	public static final String COLOR_BLACK="\033[0;30m";
-	public static final String COLOR_NONE="\033[0;0m";
-	public static final String COLOR_BOLD="\033[1m";
-	public static final String COLOR_UNDERLINE="\033[4m";
-	public static final String COLOR_BLINK="\033[5m";
-	public static final String COLOR_ITALICS="\033[6m";
-	public static final String COLOR_BGWHITE="\033[47m";
-	public static final String COLOR_BGGREEN="\033[42m";
-	public static final String COLOR_BGBLUE="\033[44m";
-	public static final String COLOR_BGRED="\033[41m";
-	public static final String COLOR_BGYELLOW="\033[43m";
-	public static final String COLOR_BGCYAN="\033[46m";
-	public static final String COLOR_BGPURPLE="\033[45m";
-	public static final String COLOR_BGBLACK="\033[40m";
-	public static final String COLOR_BGDEFAULT="\033[49m";
-	public static final String[] COLOR_ALLCOLORS={
-		COLOR_WHITE,COLOR_LIGHTGREEN,COLOR_LIGHTBLUE,COLOR_LIGHTRED,
-		COLOR_YELLOW,COLOR_LIGHTCYAN,COLOR_LIGHTPURPLE,COLOR_GREY,
-		COLOR_GREEN,COLOR_BLUE,COLOR_RED,COLOR_BROWN,
-		COLOR_CYAN,COLOR_PURPLE,COLOR_DARKGREY,COLOR_BLACK,COLOR_NONE,
-		COLOR_BOLD,COLOR_UNDERLINE,COLOR_BLINK,COLOR_ITALICS,
-		COLOR_BGWHITE,COLOR_BGGREEN,COLOR_BGBLUE,COLOR_BGRED,
-		COLOR_BGYELLOW,COLOR_BGCYAN,COLOR_BGPURPLE,COLOR_BGBLACK,
-		COLOR_BGDEFAULT
-	};
-	public static final String[] COLOR_ALLCOLORNAMES={
-		"WHITE","LIGHTGREEN","LIGHTBLUE","LIGHTRED",
-		"YELLOW","LIGHTCYAN","LIGHTPURPLE","GREY",
-		"GREEN","BLUE","RED","BROWN",
-		"CYAN","PURPLE","DARKGREY","BLACK","NONE",
-		"BOLD","UNDERLINE","BLINK","ITALICS",
-		"BGWHITE","BGGREEN","BGBLUE","BGRED",
-		"BGYELLOW","BGCYAN","BGPURPLE","BGBLACK",
-		"BGDEFAULT"
-	};
-	public static final char COLORCODE_FIGHT='F';
-	public static final char COLORCODE_SPELL='S';
-	public static final char COLORCODE_EMOTE='E';
-	public static final char COLORCODE_TALK='T';
-	public static final char COLORCODE_TELL='t';
-	public static final char COLORCODE_CHANNEL='Q';
-	public static final char COLORCODE_CHANNELFORE='q';
-	public static final char COLORCODE_IMPORTANT1='x';
-	public static final char COLORCODE_IMPORTANT2='X';
-	public static final char COLORCODE_IMPORTANT3='Z';
-	public static final char COLORCODE_ROOMTITLE='O';
-	public static final char COLORCODE_ROOMDESC='L';
-	public static final char COLORCODE_DIRECTION='D';
-	public static final char COLORCODE_DOORDESC='d';
-	public static final char COLORCODE_ITEM='I';
-	public static final char COLORCODE_MOB='M';
-	public static final char COLORCODE_HITPOINTS='h';
-	public static final char COLORCODE_MANA='m';
-	public static final char COLORCODE_MOVES='v';
-	public static final char COLORCODE_NORMAL='N';
-	public static final char COLORCODE_HIGHLIGHT='H';
-	public static final char[] COLORCODE_ALLCODES={
-	    COLORCODE_FIGHT,COLORCODE_SPELL,COLORCODE_EMOTE,COLORCODE_TALK,
-	    COLORCODE_TELL,COLORCODE_CHANNEL,COLORCODE_CHANNELFORE,COLORCODE_IMPORTANT1,
-	    COLORCODE_IMPORTANT2,COLORCODE_IMPORTANT3,COLORCODE_ROOMTITLE,COLORCODE_ROOMDESC,
-	    COLORCODE_DIRECTION,COLORCODE_DOORDESC,COLORCODE_ITEM,COLORCODE_MOB,
-	    COLORCODE_HITPOINTS,COLORCODE_MANA,COLORCODE_MOVES,COLORCODE_NORMAL,
-	    COLORCODE_HIGHLIGHT
-	};
-	public static final String[] COLORCODE_ALLCODENAMES={
-	    "FIGHT","SPELL","EMOTE","TALK",
-	    "TELL","CHANNEL","CHANNELFORE","IMPORTANT1",
-	    "IMPORTANT2","IMPORTANT3","ROOMTITLE","ROOMDESC",
-	    "DIRECTION","DOORDESC","ITEM","MOB",
-	    "HITPOINTS","MANA","MOVES","NORMAL",
-	    "HIGHLIGHT"
-	};
 	
 	public static int pkillLevelDiff=26;
 
@@ -330,7 +241,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CLANTROPCP,page.getStr("CLANTROPCP"));
 		setVar(SYSTEM_CLANTROPEXP,page.getStr("CLANTROPEXP"));
 		setVar(SYSTEM_COLORSCHEME,page.getStr("COLORSCHEME"));
-		clookup=null;
+		CMColor.clookup=null;
 		
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
@@ -435,134 +346,6 @@ public class CommonStrings extends Scriptable
 		CMSecurity.setSaveFlags(page.getStr("SAVE"));
 		
 	}
-
-	public static String mixColorCodes(String code1, String code2)
-	{
-	    if((code1==null)||(code1.length()==0)) return code2;
-	    if((code2==null)||(code2.length()==0)) return code1;
-	    if(code1.charAt(code1.length()-1)!=code2.charAt(code2.length()-1))
-	        return code1+code2;
-	    if(code2.startsWith("\033["))code2=code2.substring("\033[".length());
-	    return code1.substring(0,code1.length()-1)+";"+code2;
-	}
-	
-	
-	public static String[] standardColorLookups()
-	{
-		if(clookup==null)
-		{
-			clookup=new String[256];
-			
-			clookup['!']=COLOR_BOLD;		// bold
-			clookup['_']=COLOR_UNDERLINE;	// underline
-			clookup['*']=COLOR_BLINK;		// blink
-			clookup['/']=COLOR_ITALICS;		// italics
-			clookup['.']=COLOR_NONE;		// reset
-			clookup['^']="^";				// ansi escape
-			clookup['<']="<";				// mxp escape
-			clookup['"']="\"";				// mxp escape
-			clookup['>']=">";				// mxp escape
-			clookup['&']="&";				// mxp escape
-			clookup['w']=COLOR_WHITE;
-			clookup['g']=COLOR_LIGHTGREEN;
-			clookup['b']=COLOR_LIGHTBLUE;
-			clookup['r']=COLOR_LIGHTRED;
-			clookup['y']=COLOR_YELLOW;
-			clookup['c']=COLOR_LIGHTCYAN;
-			clookup['p']=COLOR_LIGHTPURPLE;
-			clookup['k']=COLOR_DARKGREY;
-			clookup['W']=COLOR_GREY;
-			clookup['G']=COLOR_GREEN;
-			clookup['B']=COLOR_BLUE;
-			clookup['R']=COLOR_RED;
-			clookup['Y']=COLOR_YELLOW;
-			clookup['C']=COLOR_CYAN;
-			clookup['P']=COLOR_PURPLE;
-			//clookup['K']=COLOR_BLACK;
-			
-			// default color settings:
-			clookup[COLORCODE_NORMAL]=COLOR_GREY;
-			clookup[COLORCODE_HIGHLIGHT]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_FIGHT]=COLOR_LIGHTRED;
-			clookup[COLORCODE_SPELL]=COLOR_YELLOW;
-			clookup[COLORCODE_EMOTE]=COLOR_LIGHTPURPLE;
-			clookup[COLORCODE_TALK]=COLOR_LIGHTBLUE;
-			clookup[COLORCODE_TELL]=COLOR_CYAN;
-			clookup[COLORCODE_CHANNEL]=mixColorCodes(COLOR_LIGHTCYAN,COLOR_BGBLUE);
-			clookup[COLORCODE_CHANNELFORE]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_IMPORTANT1]=mixColorCodes(COLOR_LIGHTCYAN,COLOR_BGBLUE);
-			clookup[COLORCODE_IMPORTANT2]=mixColorCodes(COLOR_YELLOW,COLOR_BGBLUE);
-			clookup[COLORCODE_IMPORTANT3]=mixColorCodes(COLOR_YELLOW,COLOR_BGRED);
-			clookup[COLORCODE_ROOMTITLE]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_ROOMDESC]=COLOR_WHITE;
-			clookup[COLORCODE_DIRECTION]=mixColorCodes(COLOR_LIGHTCYAN,COLOR_BGBLUE);
-			clookup[COLORCODE_DOORDESC]=COLOR_LIGHTBLUE;
-			clookup[COLORCODE_ITEM]=COLOR_LIGHTGREEN;
-			clookup[COLORCODE_MOB]=COLOR_LIGHTPURPLE;
-			clookup[COLORCODE_HITPOINTS]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_MANA]=COLOR_LIGHTCYAN;
-			clookup[COLORCODE_MOVES]=COLOR_LIGHTCYAN;
-			Vector schemeSettings=Util.parseCommas(getVar(CommonStrings.SYSTEM_COLORSCHEME),true);
-			for(int i=0;i<schemeSettings.size();i++)
-			{
-			    String s=(String)schemeSettings.elementAt(i);
-			    int x=s.indexOf("=");
-			    if(x>0)
-			    {
-			        String key=s.substring(0,x).trim();
-			        String value=s.substring(x+1).trim();
-			        char codeChar=' ';
-			        for(int ii=0;ii<CommonStrings.COLORCODE_ALLCODENAMES.length;ii++)
-			            if(key.equalsIgnoreCase(CommonStrings.COLORCODE_ALLCODENAMES[ii]))
-			            { codeChar=CommonStrings.COLORCODE_ALLCODES[ii]; break;}
-			        if(codeChar!=' ')
-			        {
-			            String newVal=null;
-			            String addColor=null;
-			            String addCode=null;
-			            while(value.length()>0)
-			            {
-			                x=value.indexOf("+");
-			                if(x<0)
-			                {
-			                    addColor=value;
-			                    value="";
-			                }
-			                else
-			                {
-			                    addColor=value.substring(0,x).trim();
-			                    value=value.substring(x+1).trim();
-			                }
-			                addCode=null;
-					        for(int ii=0;ii<CommonStrings.COLOR_ALLCOLORNAMES.length;ii++)
-					            if(addColor.equalsIgnoreCase(CommonStrings.COLOR_ALLCOLORNAMES[ii]))
-					            { addCode=CommonStrings.COLOR_ALLCOLORS[ii]; break;}
-					        if(addCode!=null)
-					        {
-					            if(newVal==null)
-					                newVal=addCode;
-					            else
-					                newVal=CommonStrings.mixColorCodes(newVal,addCode);
-					        }
-			            }
-			            if(newVal!=null)
-			                clookup[codeChar]=newVal;
-			        }
-			    }
-			}
-			
-				
-
-			for(int i=0;i<clookup.length;i++)
-			{
-				String s=clookup[i];
-				if((s!=null)&&(s.startsWith("^"))&&(s.length()>1))
-					clookup[i]=clookup[s.charAt(1)];
-			}
-		}
-		return clookup;
-	}
-
 
 	public static String standardHitWord(int type, int damage)
 	{

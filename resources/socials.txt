@@ -194,6 +194,7 @@ ov	HOP	You hop around like a little kid.	<S-NAME> hops around like a little kid.
 ov	CHARGE	You charge into the fray!	<S-NAME> charges into the fray!  All guts, no brains.		
 ov	SPIN <T-NAME>	You grab <T-YOUPOSS> hands and spin around in circles.	<S-NAME> takes hold of <T-YOUPOSS> hands and begins to spin around the room.	<S-NAME> takes <T-YOUPOSS> hands and starts to spin around the room with you.	They aren`t there.
 mv	GROUPHUG	You pull everyone into a HUGE group hug. Snuggly!	<S-NAME> pulls you into a HUGE group hug! Awwww.		
+mo	EXCITED <T-NAME>	You bounce excitedly at <T-NAME>!	<S-NAME> hops around excitedly at <T-NAME>.	<S-NAME> looks at you and gets really excited!	So much energy, but nobody to share it with.
 oo	LACES	Whose laces?			
 oo	ATL <T-NAME>	You attach to <T-YOUPOSS> leg in a panicked attempt to make <T-HIM-HER> stay!	<S-NAME> divebombs <T-YOUPOSS> leg in a pathetic attempt to get <T-HIM-HER> to stay.	<S-NAME> attaches to your leg so you can`t leave. *PANIC* you can`t get <S-HIM-HER> off!	They`ve already left.
 mo	BLINK	You bat your eyelashes.	<S-NAME> blinks innocently.		
@@ -307,6 +308,7 @@ mo	LEER SELF	Desperation has reached new heights, hasn't it?	<S-NAME> leers at <
 oo	MOON SELF	You try to moon yourself, but you can't see your A** that well.	<S-NAME> nearly goes into convulsions while trying to moon <S-HIM-HERSELF>.		
 ww	TANK	You boldly offer to tank for everyone else.  Are you sure you know what you're getting into?	<S-NAME> offers to tank!		
 ot	WRIST <T-NAME>	You slaps <T-HIM-HER> wrist sharply.	<S-NAME> slaps <T-NAMESELF>'s wrist sharply.	<S-NAME> slaps your wrist sharply.	Sorry, friend, I can't see that person here.
+mo	SHOO	You shoo everyone away.	<S-NAME> shoos everyone away. Get lost!		
 mo	PONDER <T-NAME>	You ponder the matters <T-NAME> has raised.	<S-NAME> ponders the matters <T-NAME> has raised.	<S-NAME> ponders the matters you have raised.	
 mv	ENOD <T-NAME>	You eagerly nod at <T-NAME>.	<S-NAME> eagerly nods at <T-NAME>.  <S-NAME> must approve!	<S-NAME> nods at <T-NAME> in approval.	
 ww	WHINE	You whine to anyone who will listen to you.	<S-NAME> whines pathetically to anyone who will listen.		
@@ -630,6 +632,7 @@ ov	MOSH SELF	Masochist!	<S-NAME> throws <S-HIM-HERSELF> on the floor, grinding <
 mo	SMIRK	You smirk.	<S-NAME> smirks.		
 mv	ANGELIC	You smile angelically.	Becoming the poster child of innocence, <S-NAME> smiles angelically.		
 ss	INNOCENT	You innocently whistle a tune.	<S-NAME> looks around and whistles innocently.		
+mo	EXCITED	Whoohoo!	<S-NAME> is so excited <S-HE-SHE> is bouncing off the walls!		
 ss	GACK SELF	*GACK!*	Appalled, <S-NAME> gacks at <S-HIM-HERSELF>!		
 mo	BECKON SELF	You beckon to your shadow to follow.	<S-NAME> beckons to <S-HIS-HER> shadow to follow.		
 mo	TIP	You tip your hat gallantly.	<S-NAME> gallantly tips <S-HIS-HER> hat.		

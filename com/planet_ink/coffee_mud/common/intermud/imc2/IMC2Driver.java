@@ -1478,12 +1478,6 @@ public final class IMC2Driver extends Thread {
         if(reqFrom.endsWith("*"))
         {
             Log.errOut("IMC2 SPAM DETECTED: "+reqFrom+"!");
-            try
-            {
-                int x=5/0;
-                System.out.println(x);
-            }
-            catch(Exception e){ Log.errOut("IMC2",e);}
         }
         out.to = reqFrom;
         imc_addkey(out, "versionid", IMC_VERSIONID);

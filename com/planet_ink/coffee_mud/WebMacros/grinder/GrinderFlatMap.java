@@ -215,8 +215,6 @@ public class GrinderFlatMap
             for(Iterator i=block.iterator();i.hasNext();)
             {
                 R=(GrinderRoom)i.next();
-                if(grid[R.x][R.y]!=R)
-                    System.out.println("You found the problem!");
                 grid[R.x][R.y]=null;
             }
             int xworkdiff=newBlock[0]-closestR.x;

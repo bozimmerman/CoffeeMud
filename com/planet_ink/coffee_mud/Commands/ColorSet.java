@@ -25,6 +25,48 @@ public class ColorSet extends StdCommand
 
 	private String[] access={"COLORSET"};
 	public String[] getAccessWords(){return access;}
+	
+	public String colorDescription(String code)
+	{
+	    StringBuffer buf=new StringBuffer("");
+		String what=CMColor.translateANSItoCMCode(code);
+		while((what!=null)&&(what.length()>1))
+		{
+			for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
+				if(what.charAt(1)==CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0))
+				{
+					buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+					break;
+				}
+		    if(what.indexOf("|")>0)
+		    {
+		        what=what.substring(what.indexOf("|")+1);
+		        buf.append("^N=background, foreground=");
+		    }
+		    else
+		        what=null;
+		}
+		return buf.toString();
+	}
+
+	private int pickColor(MOB mob, String prompt)
+	throws java.io.IOException
+	{
+		String newColor=mob.session().prompt(prompt,"");
+		int colorNum=-1;
+		if(newColor.length()>0)
+		{
+			colorNum=-1;
+			for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
+				if(CMColor.COLOR_ALLCOLORNAMES[ii].toUpperCase().startsWith(newColor.toUpperCase()))
+				{
+					colorNum=ii; 
+					break;
+				}
+		}
+		return colorNum;
+	}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -52,22 +94,8 @@ public class ColorSet extends StdCommand
 						   {"Doors","d"},
 						   {"Items","I"},
 						   {"MOBs","M"},
-						   {"Channel Foreground","Q"}
+						   {"Channel Colors","Q"}
 		};
-		String[][] theColors={{"White","w"},
-							  {"Green","g"},
-							  {"Blue","b"},
-							  {"Red","r"},
-							  {"Yellow","y"},
-							  {"Cyan","c"},
-							  {"Purple","p"},
-							  {"Grey","W"},
-							  {"Dark Green","G"},
-							  {"Dark Blue","B"},
-							  {"Dark Red","R"},
-							  {"Brown","Y"},
-							  {"Dark Cyan","C"},
-							  {"Dark Purple","P"}};
 		String numToChange="!";
 		while(numToChange.length()>0)
 		{
@@ -75,11 +103,7 @@ public class ColorSet extends StdCommand
 			for(int i=0;i<theSet.length;i++)
 			{
 				buf.append("\n\r^H"+Util.padLeft(""+(i+1),2)+"^N) "+Util.padRight(theSet[i][0],20)+": ");
-				String what=clookup[theSet[i][1].charAt(0)];
-				if(what!=null)
-				for(int ii=0;ii<theColors.length;ii++)
-					if(what.equals(clookup[theColors[ii][1].charAt(0)]))
-						buf.append("^"+theColors[ii][1]+theColors[ii][0]);
+				buf.append(colorDescription(clookup[theSet[i][1].charAt(0)]));
 				buf.append("^N");
 			}
 			mob.session().println(buf.toString());
@@ -92,46 +116,73 @@ public class ColorSet extends StdCommand
 			{
 				num--;
 				buf=new StringBuffer("");
-				buf.append("\n\r^c"+Util.padLeft(""+(num+1),2)+"^N)"+Util.padRight(theSet[num][0],20)+":");
-				String what=clookup[theSet[num][1].charAt(0)];
-				if(what!=null)
-				for(int ii=0;ii<theColors.length;ii++)
-					if(what.equals(clookup[theColors[ii][1].charAt(0)]))
-						buf.append("^"+theColors[ii][1]+theColors[ii][0]);
-				buf.append("^N\n\rAvailable Colors:");
-				for(int ii=0;ii<theColors.length;ii++)
-					buf.append("\n\r^"+theColors[ii][1]+theColors[ii][0]);
-				mob.session().println(buf.toString()+"^N");
-				String newColor=mob.session().prompt("Enter Name of New Color: ","");
-				if(newColor.length()>0)
+				buf.append("\n\r\n\r^c"+Util.padLeft(""+(num+1),2)+"^N) "+Util.padRight(theSet[num][0],20)+": ");
+				buf.append(colorDescription(clookup[theSet[num][1].charAt(0)]));
+				boolean changes=false;
+				if(theSet[num][1].charAt(0)!='Q')
 				{
-					int colorNum=-1;
-					for(int ii=0;ii<theColors.length;ii++)
-						if(theColors[ii][0].toUpperCase().startsWith(newColor.toUpperCase()))
-						{
-							colorNum=ii; break;
-						}
+					buf.append("^N\n\rAvailable Colors: ");
+					for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
+					{
+					    if(ii>0) buf.append(", ");
+						buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+					}
+					mob.session().println(buf.toString()+"^N");
+					int colorNum=pickColor(mob,"Enter Name of New Color: ");
 					if(colorNum<0)
 						mob.tell("That is not a valid color!");
 					else
 					{
-						clookup[theSet[num][1].charAt(0)]=clookup[theColors[colorNum][1].charAt(0)];
-						String newChanges="";
-						String[] common=CommonStrings.standardColorLookups();
-						for(int i=0;i<theSet.length;i++)
-						{
-							char c=theSet[i][1].charAt(0);
-							if(!clookup[c].equals(common[c]))
-								for(int ii=0;ii<theColors.length;ii++)
-									if(common[theColors[ii][1].charAt(0)].equals(clookup[c]))
-									{
-										newChanges+=c+"^"+theColors[ii][1]+"#";
-										break;
-									}
-						}
-						pstats.setColorStr(newChanges);
-						clookup=(String[])mob.session().clookup().clone();
+						clookup[theSet[num][1].charAt(0)]=clookup[CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum].charAt(0)];
+						changes=true;
 					}
+				}
+				else
+				{
+					buf.append("^N\n\r\n\rAvailable Background Colors: ");
+					boolean first=true;
+					for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
+					    if(Character.isUpperCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
+						{
+						    if(first)first=false; else buf.append(", ");
+							buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+						}
+					buf.append("^N\n\rAvailable Foreground Colors: ");
+					first=true;
+					for(int ii=0;ii<CMColor.COLOR_ALLNORMALCOLORCODELETTERS.length;ii++)
+					    if(Character.isLowerCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii].charAt(0)))
+						{
+						    if(first)first=false; else buf.append(", ");
+							buf.append("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[ii]+Util.capitalize(CMColor.COLOR_ALLCOLORNAMES[ii]));
+						}
+					mob.session().println(buf.toString()+"^N");
+					int colorNum1=pickColor(mob,"Enter Name of Background Color: ");
+					if((colorNum1<0)||(!Character.isUpperCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum1].charAt(0))))
+						mob.tell("That is not a valid Background color!");
+					else
+					{
+						int colorNum2=pickColor(mob,"Enter Name of Foreground Color: ");
+						if((colorNum2<0)||(Character.isUpperCase(CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2].charAt(0))))
+							mob.tell("That is not a valid Foreground color!");
+						else
+						{
+						    changes=true;
+						    clookup[theSet[num][1].charAt(0)]=CMColor.translateCMCodeToANSI("^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum1]+"|^"+CMColor.COLOR_ALLNORMALCOLORCODELETTERS[colorNum2]);
+						}
+					}
+				}
+				if(changes)
+				{
+					String newChanges="";
+					String[] common=CMColor.standardColorLookups();
+					for(int i=0;i<theSet.length;i++)
+					{
+						char c=theSet[i][1].charAt(0);
+						if(!clookup[c].equals(common[c]))
+							newChanges+=c+CMColor.translateANSItoCMCode(clookup[c])+"#";
+					}
+					pstats.setColorStr(newChanges);
+					clookup=(String[])mob.session().clookup().clone();
 				}
 			}
 		}
