@@ -372,18 +372,18 @@ public class Util
 	{
 		return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(y).doubleValue()));
 	}
-	public static boolean bset(int num, int bit)
+	public static boolean bset(int num, int bitmask)
 	{
-		return ((num&bit)==bit);
+		return ((num&bitmask)==bitmask);
 	}
-	public static int setb(int num, int bit)
+	public static int setb(int num, int bitmask)
 	{
-		return num|bit;
+		return num|bitmask;
 	}
-	public static int unsetb(int num, int bit)
+	public static int unsetb(int num, int bitmask)
 	{
-		if(bset(num,bit))
-			num-=bit;
+		if(bset(num,bitmask))
+			num-=bitmask;
 		return num;
 	}
 	public static boolean isSet(int number, int bitnumber)

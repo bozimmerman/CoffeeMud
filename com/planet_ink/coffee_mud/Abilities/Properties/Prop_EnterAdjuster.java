@@ -174,7 +174,7 @@ public class Prop_EnterAdjuster extends Property
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		mob.charStats().getMyRace().confirmGear(mob);
+		mob.confirmWearability();
 	}
 
 	public boolean okAffect(Affect affect)

@@ -40,48 +40,73 @@ public class StdRace implements Race
 	
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		if((forbiddenWornBits()&Item.HELD)>0)
+		
+		if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
 		{
-			if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
+			switch(affect.sourceMinor())
 			{
-				switch(affect.sourceMinor())
+			case Affect.TYP_CLOSE:
+			case Affect.TYP_DELICATE_HANDS_ACT:
+			case Affect.TYP_DROP:
+			case Affect.TYP_FILL:
+			case Affect.TYP_GET:
+			case Affect.TYP_GIVE:
+			case Affect.TYP_HANDS:
+			case Affect.TYP_LOCK:
+			case Affect.TYP_OPEN:
+			case Affect.TYP_PULL:
+			case Affect.TYP_PUSH:
+			case Affect.TYP_PUT:
+			case Affect.TYP_UNLOCK:
+			case Affect.TYP_WRITE:
+				if((forbiddenWornBits()&Item.HELD)>0)
 				{
-				case Affect.TYP_CLOSE:
-				case Affect.TYP_DELICATE_HANDS_ACT:
-				case Affect.TYP_DROP:
-				case Affect.TYP_FILL:
-				case Affect.TYP_GET:
-				case Affect.TYP_GIVE:
-				case Affect.TYP_HANDS:
-				case Affect.TYP_HOLD:
-				case Affect.TYP_LOCK:
-				case Affect.TYP_OPEN:
-				case Affect.TYP_PULL:
-				case Affect.TYP_PUSH:
-				case Affect.TYP_PUT:
-				case Affect.TYP_UNLOCK:
-				case Affect.TYP_WEAR:
-				case Affect.TYP_WIELD:
-				case Affect.TYP_WRITE:
 					myChar.tell("Your anatomy prevents you from doing that.");
 					return false;
-				case Affect.TYP_DRINK:
+				}
+				break;
+			case Affect.TYP_HOLD:
+			case Affect.TYP_WIELD:
+				if((forbiddenWornBits()&Item.HELD)==0) 
+					break;
+			case Affect.TYP_WEAR:
+				if((affect.target()!=null)
+				&&(affect.target() instanceof Item)
+				&&(!canWear((Item)affect.target())))
+				{
+					switch(affect.targetMinor())
+					{
+						case Affect.TYP_WEAR:
+							affect.source().tell("You lack the anatomy to wear "+affect.target().name()+".");
+							break;
+						case Affect.TYP_HOLD:
+							affect.source().tell("You lack the anatomy to hold "+affect.target().name()+".");
+							break;
+						case Affect.TYP_WIELD:
+							affect.source().tell("You lack the anatomy to wield "+affect.target().name()+".");
+							break;
+					}
+					return false;
+				}
+				break;
+			case Affect.TYP_DRINK:
+				if((forbiddenWornBits()&Item.HELD)>0)
+				{
 					if(affect.tool()==null) return true;
 					if(!myChar.isMine(affect.tool())) return true;
 					myChar.tell("You cannot drink from that.");
 					return false;
 				}
+				break;
 			}
-			else
-			if(affect.amITarget(myChar))
-			{
-				switch(affect.targetMinor())
-				{
-				case Affect.TYP_GIVE:
-					affect.source().tell("You cannot give anything to the "+name()+".");
-					return false;
-				}
-			}
+		}
+		else
+		if((affect.amITarget(myChar))
+		&&(affect.targetMinor()==Affect.TYP_GIVE)
+		&&((forbiddenWornBits()&Item.HELD)>0))
+		{
+			affect.source().tell("You cannot give anything to the "+name()+".");
+			return false;
 		}
 		return true;
 	}
@@ -212,28 +237,6 @@ public class StdRace implements Race
 			stats.setHeight(shortestMale()+heightModifier);
  		else
 			stats.setHeight(shortestFemale()+heightModifier);
-	}
-	
-	public void confirmGear(MOB mob)
-	{
-		if(mob==null) return;
-		for(int i=0;i<mob.inventorySize();i++)
-		{
-			Item item=mob.fetchInventory(i);
-			if((item!=null)&&(!item.amWearingAt(Item.INVENTORY)))
-			{
-				long oldCode=item.rawWornCode();
-				item.remove();
-				int msgCode=Affect.MSG_WEAR;
-				if((oldCode&Item.WIELD)>0)
-					msgCode=Affect.MSG_WIELD;
-				else
-				if((oldCode&Item.HELD)>0)
-					msgCode=Affect.MSG_HOLD;
-				FullMsg msg=new FullMsg(mob,item,null,Affect.NO_EFFECT,null,msgCode,null,Affect.NO_EFFECT,null);
-				if(item.okAffect(msg)) item.wearAt(oldCode);
-			}
-		}
 	}
 	
 	public boolean canWear(Item item)

@@ -496,11 +496,6 @@ public class StdItem implements Item
 				mob.tell(msg.toString());
 				return false;
 			}
-			if(!mob.charStats().getMyRace().canWear(this))
-			{
-				mob.tell("You lack the anatomy to hold "+name()+".");
-				return false;
-			}
 			if(envStats().level()>mob.envStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
@@ -532,11 +527,6 @@ public class StdItem implements Item
 			}
 			if(!alreadyWornMsg(affect.source(),this))
 				return false;
-			if(!mob.charStats().getMyRace().canWear(this))
-			{
-				mob.tell("You lack the anatomy to wear "+name()+".");
-				return false;
-			}
 			if(envStats().level()>mob.envStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
@@ -569,11 +559,6 @@ public class StdItem implements Item
 			}
 			if(!alreadyWornMsg(affect.source(),this))
 				return false;
-			if(!mob.charStats().getMyRace().canWear(this))
-			{
-				mob.tell("You lack the anatomy to wield "+name()+".");
-				return false;
-			}
 			if(envStats().level()>mob.envStats().level())
 			{
 				mob.tell("That looks too advanced for you.");

@@ -145,6 +145,7 @@ public interface MOB
 	public Item fetchWieldedItem();
 	public boolean amWearingSomethingHere(long wornCode);
 	public boolean isMine(Environmental env);
+	public void confirmWearability();
 	
 	/** Manipulation of followers */
 	public void addFollower(MOB follower);

@@ -157,7 +157,7 @@ public class GenSuperPill extends GenPill
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		mob.charStats().getMyRace().confirmGear(mob);
+		mob.confirmWearability();
 	}
 
 	public void affect(Affect affect)

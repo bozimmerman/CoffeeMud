@@ -121,16 +121,17 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			setMiscText(""+myRaceCode);
 			int raceLevel=4;
-			if(mob.envStats().level()<6)
+			int classLevel=CMAble.qualifyingClassLevel(mob,this);
+			if(classLevel<6)
 				raceLevel=0;
 			else
-			if(mob.envStats().level()<12)
+			if(classLevel<12)
 				raceLevel=1;
 			else
-			if(mob.envStats().level()<18)
+			if(classLevel<18)
 				raceLevel=2;
 			else
-			if(mob.envStats().level()<24)
+			if(classLevel<24)
 				raceLevel=3;
 			raceName=shapes[raceLevel][myRaceCode];
 			newRace=CMClass.getRace(races[raceLevel][myRaceCode]);
@@ -166,7 +167,7 @@ public class Druid_ShapeShift extends StdAbility
 				else
 					raceName="A "+raceName;
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
-				newRace.confirmGear(mob);
+				mob.confirmWearability();
 			}
 		}
 		else

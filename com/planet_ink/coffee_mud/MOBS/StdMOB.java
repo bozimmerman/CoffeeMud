@@ -1726,6 +1726,27 @@ public class StdMOB implements MOB
 		return false;
 	}
 
+	public void confirmWearability()
+	{
+		for(int i=0;i<inventorySize();i++)
+		{
+			Item item=fetchInventory(i);
+			if((item!=null)&&(!item.amWearingAt(Item.INVENTORY)))
+			{
+				long oldCode=item.rawWornCode();
+				item.remove();
+				int msgCode=Affect.MSG_WEAR;
+				if((oldCode&Item.WIELD)>0)
+					msgCode=Affect.MSG_WIELD;
+				else
+				if((oldCode&Item.HELD)>0)
+					msgCode=Affect.MSG_HOLD;
+				FullMsg msg=new FullMsg(this,item,null,Affect.NO_EFFECT,null,msgCode,null,Affect.NO_EFFECT,null);
+				if(item.okAffect(msg)) item.wearAt(oldCode);
+			}
+		}
+	}
+	
 	public void addInventory(Item item)
 	{
 		item.setOwner(this);

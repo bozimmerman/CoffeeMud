@@ -78,7 +78,7 @@ public class Spell_Shrink extends Spell
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,E,0);
 				if(E instanceof MOB)
-					((MOB)E).charStats().getMyRace().confirmGear((MOB)E);
+					((MOB)E).confirmWearability();
 			}
 		}
 		else
