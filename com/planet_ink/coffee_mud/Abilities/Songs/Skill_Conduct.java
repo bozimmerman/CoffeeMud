@@ -39,7 +39,7 @@ public class Skill_Conduct extends BardSkill
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		Play.unplay(mob,mob,null);
+		new Play().unplay(mob,mob,false);
 		if(success)
 		{
 			String str=auto?"^SSymphonic Conduction Begins!^?":"^S<S-NAME> begin(s) to wave <S-HIS-HER> arms in a mystical way!^?";
@@ -52,7 +52,6 @@ public class Skill_Conduct extends BardSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Play newOne=(Play)this.copyOf();
-				newOne.referencePlay=newOne;
 
 				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;

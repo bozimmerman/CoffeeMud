@@ -103,7 +103,7 @@ public class Fishing extends CommonSkill
 		if((profficiencyCheck(mob,0,auto))
 		   &&(foundFish>0))
 		{
-			found=(Item)CoffeeUtensils.makeResource(foundFish,false);
+			found=(Item)CoffeeUtensils.makeResource(foundFish,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();

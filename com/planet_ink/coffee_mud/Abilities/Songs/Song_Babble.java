@@ -121,7 +121,7 @@ public class Song_Babble extends Song
 		}
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		unsing(mob,mob,null);
+		unsing(mob,mob,true);
 		if(success)
 		{
 			String str=auto?"The "+songOf()+" begins to play!":"<S-NAME> begin(s) to sing the "+songOf()+".";
@@ -134,7 +134,6 @@ public class Song_Babble extends Song
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Song newOne=(Song)this.copyOf();
-				newOne.referenceSong=newOne;
 
 				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;

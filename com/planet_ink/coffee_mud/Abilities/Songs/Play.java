@@ -25,7 +25,6 @@ public class Play extends StdAbility
 	protected boolean persistantSong(){return true;}
 	protected String songOf(){return name();}
 
-	public Play referencePlay=null;
 	protected MusicalInstrument instrument=null;
 
 	protected int affectType(boolean auto){
@@ -86,15 +85,13 @@ public class Play extends StdAbility
 			return false;
 
 		if((invoker==null)
-		||(referencePlay==null)
-		||(referencePlay.affected==null)
-		||(referencePlay.invoker==null)
+		||(invoker.fetchEffect(ID())==null)
 		||((instrument!=null)&&(!usingInstrument(instrument,invoker)))
 		||(invoker.location()!=mob.location())
 		||(!Sense.aliveAwakeMobile(invoker,true))
 		||(!Sense.canBeHeardBy(invoker,mob)))
 		{
-			unplay(mob,null,this);
+			unplay(mob,null,false);
 			return false;
 		}
 		return true;
@@ -120,19 +117,15 @@ public class Play extends StdAbility
 		}
 	}
 
-	protected static void unplay(MOB mob, MOB invoker, Ability song)
+	protected void unplay(MOB mob, MOB invoker, boolean notMe)
 	{
 		if(mob==null) return;
-		if(song!=null)
-		{
-			song=mob.fetchEffect(song.ID());
-			if(song!=null) song.unInvoke();
-		}
-		else
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
 			Ability A=(Ability)mob.fetchEffect(a);
-			if(((A!=null)&&(A instanceof Play))
+			if((A!=null)
+			&&(A instanceof Play)
+			&&((!notMe)||(!A.ID().equals(ID())))
 			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
 		}
@@ -235,7 +228,7 @@ public class Play extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		unplay(mob,mob,null);
+		unplay(mob,mob,true);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
@@ -248,7 +241,6 @@ public class Play extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Play newOne=(Play)this.copyOf();
-				newOne.referencePlay=newOne;
 
 				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;

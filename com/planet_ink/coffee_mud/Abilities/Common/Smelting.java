@@ -200,7 +200,7 @@ public class Smelting extends CraftingSkill
 		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],0,null,0);
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
-		building=(Item)CoffeeUtensils.makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],false);
+		building=(Item)CoffeeUtensils.makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],-1,false);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
 		verb="smelting "+doneResourceDesc.toLowerCase();

@@ -24,8 +24,6 @@ public class Dance extends StdAbility
 	protected boolean skipStandardDanceTick(){return false;}
 	protected String danceOf(){return name();}
 
-	public Dance referenceDance=null;
-
 	public int prancerLevel()
 	{
 		if(invoker()==null) return CMAble.lowestQualifyingLevel(ID());
@@ -60,42 +58,36 @@ public class Dance extends StdAbility
 		{
 			MOB mob=(MOB)affected;
 			if((invoker==null)
-			||(referenceDance==null)
-			||(referenceDance.affected==null)
-			||(referenceDance.invoker==null)
 			||(invoker.location()!=mob.location())
+			||(Sense.isSitting(invoker()))
 			||(!Sense.aliveAwakeMobile(mob,true))
 			||(!Sense.aliveAwakeMobile(invoker(),true))
+			||(invoker.fetchEffect(ID())==null)
 			||(!Sense.canBeSeenBy(invoker,mob)))
 			{
-				undance(mob,null,this);
+				undance(mob,null,false);
 				return false;
 			}
 			if(invokerManaCost<0) invokerManaCost=usageCost(invoker())[1];
 			if(!mob.curState().adjMovement(-(invokerManaCost/15),mob.maxState()))
 			{
 				mob.tell("The dancing exhausts you.");
-				undance(mob,null,this);
+				undance(mob,null,false);
 				return false;
 			}
 		}
 		return true;
 	}
 
-	protected void undance(MOB mob, MOB invoker, Ability song)
+	protected void undance(MOB mob, MOB invoker, boolean notMe)
 	{
 		if(mob==null) return;
-		if(song!=null)
-		{
-			song=mob.fetchEffect(song.ID());
-			if(song!=null) song.unInvoke();
-		}
-		else
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
 			Ability A=(Ability)mob.fetchEffect(a);
 			if((A!=null)
 			&&(A instanceof Dance)
+			&&((!notMe)||(!A.ID().equals(ID())))
 			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
 		}
@@ -137,7 +129,9 @@ public class Dance extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		undance(mob,null,null);
+		
+		undance(mob,null,true);
+		
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
@@ -151,7 +145,6 @@ public class Dance extends StdAbility
 				invoker=mob;
 				Dance newOne=(Dance)this.copyOf();
 				newOne.invoker=mob;
-				newOne.referenceDance=newOne;
 				newOne.invokerManaCost=-1;
 
 				HashSet h=properTargets(mob,givenTarget,auto);
@@ -184,7 +177,7 @@ public class Dance extends StdAbility
 								R2.send(follower,msg3);
 								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 								{
-									undance(follower,null,null);
+									undance(follower,null,false);
 									newOne.setBorrowed(follower,true);
 									if(follower!=mob)
 										follower.addEffect((Ability)newOne.copyOf());

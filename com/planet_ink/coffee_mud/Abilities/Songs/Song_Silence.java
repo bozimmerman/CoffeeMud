@@ -24,12 +24,10 @@ public class Song_Silence extends Song
 			return false;
 
 		if((invoker==null)
-		||(referenceSong==null)
-		||(referenceSong.affecting()==null)
-		||(referenceSong.invoker()==null)
+		||(invoker.fetchEffect(ID())==null)
 		||(invoker.location()!=mob.location()))
 		{
-			unsing(mob,null,this);
+			unsing(mob,null,false);
 			return false;
 		}
 		return true;

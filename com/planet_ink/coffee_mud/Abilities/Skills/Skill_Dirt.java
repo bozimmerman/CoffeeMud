@@ -75,9 +75,15 @@ public class Skill_Dirt extends StdAbility
 			return false;
 		}
 
-		if(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0)
+		if((!auto)&&(mob.charStats().getBodyPart(Race.BODY_FOOT)<=0))
 		{
 			mob.tell("You need feet to kick.");
+			return false;
+		}
+
+		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
+		{
+			mob.tell(target.name()+" has no eyes, and would not be affected.");
 			return false;
 		}
 

@@ -52,20 +52,23 @@ public class Prayer_MassBlindness extends Prayer
 			for(Iterator e=h.iterator();e.hasNext();)
 			{
 				MOB target=(MOB)e.next();
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy blindness upon <T-NAMESELF>.^?");
-				if((target!=mob)&&(mob.location().okMessage(mob,msg)))
+				if(auto||(target.charStats().getBodyPart(Race.BODY_EYE)>0))
 				{
-					mob.location().send(mob,msg);
-					if(msg.value()<=0)
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> "+prayForWord(mob)+" an unholy blindness upon <T-NAMESELF>.^?");
+					if((target!=mob)&&(mob.location().okMessage(mob,msg)))
 					{
-						success=maliciousAffect(mob,target,0,-1);
-						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
+						mob.location().send(mob,msg);
+						if(msg.value()<=0)
+						{
+							success=maliciousAffect(mob,target,0,-1);
+							mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> go(es) blind!");
+						}
+						nothingDone=false;
 					}
-					nothingDone=false;
 				}
 			}
 		}

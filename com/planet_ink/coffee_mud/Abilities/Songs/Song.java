@@ -22,8 +22,6 @@ public class Song extends StdAbility
 	protected boolean skipStandardSongTick(){return false;}
 	protected String songOf(){return "Song of "+name();}
 
-	public Song referenceSong=null;
-
 	protected int affectType(boolean auto){
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(quality()==Ability.MALICIOUS)
@@ -63,32 +61,26 @@ public class Song extends StdAbility
 			return false;
 
 		if((invoker==null)
-		||(referenceSong==null)
-		||(referenceSong.affected==null)
-		||(referenceSong.invoker==null)
+		||(invoker.fetchEffect(ID())==null)
 		||(invoker.location()!=mob.location())
 		||(!Sense.aliveAwakeMobile(invoker,true))
 		||(!Sense.canBeHeardBy(invoker,mob)))
 		{
-			unsing(mob,null,this);
+			unsing(mob,null,false);
 			return false;
 		}
 		return true;
 	}
 
-	protected void unsing(MOB mob, MOB invoker, Ability song)
+	protected void unsing(MOB mob, MOB invoker, boolean notMe)
 	{
 		if(mob==null) return;
-		if(song!=null)
-		{
-			song=mob.fetchEffect(song.ID());
-			if(song!=null) song.unInvoke();
-		}
-		else
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{
 			Ability A=(Ability)mob.fetchEffect(a);
-			if(((A!=null)&&(A instanceof Song))
+			if((A!=null)
+			&&(A instanceof Dance)
+			&&((!notMe)||(!A.ID().equals(ID())))
 			&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 				A.unInvoke();
 		}
@@ -121,7 +113,7 @@ public class Song extends StdAbility
 		}
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		unsing(mob,mob,null);
+		unsing(mob,mob,true);
 		if(success)
 		{
 			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
@@ -134,7 +126,6 @@ public class Song extends StdAbility
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Song newOne=(Song)this.copyOf();
-				newOne.referenceSong=newOne;
 
 				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;

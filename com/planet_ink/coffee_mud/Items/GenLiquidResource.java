@@ -24,4 +24,7 @@ public class GenLiquidResource extends GenDrink implements EnvResource, Drink
 	{
 		return new GenLiquidResource();
 	}
+	private int domainSource=-1;
+	public int domainSource(){return domainSource;}
+	public void setDomainSource(int src){domainSource=src;}
 }

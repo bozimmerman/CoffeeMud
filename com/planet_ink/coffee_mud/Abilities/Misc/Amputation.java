@@ -291,10 +291,12 @@ public class Amputation extends StdAbility
 	public static void amputate(Environmental target, Amputation A, String gone)
 	{
 		if(A==null) return;
+		Race R=null;
 		if(target!=null)
 		{
 			if(target instanceof MOB)
 			{
+				R=((MOB)target).charStats().getMyRace();
 				if(gone.toLowerCase().endsWith("eye"))
 					((MOB)target).location().show(((MOB)target),null,CMMsg.MSG_OK_VISUAL,"^G<S-YOUPOSS> "+gone+" is destroyed!^?");
 				else
@@ -305,6 +307,7 @@ public class Amputation extends StdAbility
 			&&(((Item)target).owner()!=null)
 			&&(((Item)target).owner() instanceof Room))
 			{
+				R=((DeadBody)target).charStats().getMyRace();
 				if(gone.toLowerCase().endsWith("eye"))
 					((Room)((Item)target).owner()).showHappens(CMMsg.MSG_OK_VISUAL,"^G"+target.name()+"'s "+gone+" is destroyed!^?");
 				else
@@ -315,7 +318,20 @@ public class Amputation extends StdAbility
 		limb.setName("a "+gone);
 		limb.setDisplayText("a bloody "+gone+" is sitting here.");
 		limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
-		limb.setMaterial(EnvResource.RESOURCE_MEAT);
+		int material=EnvResource.RESOURCE_MEAT;
+		if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
+			for(int r=0;r<R.myResources().size();r++)
+			{
+				Item I=(Item)R.myResources().elementAt(r);
+				int mat=I.material()&EnvResource.MATERIAL_MASK;
+				if(((mat==EnvResource.MATERIAL_FLESH))
+				||(r==R.myResources().size()-1))
+				{
+					material=I.material();
+					break;
+				}
+			}
+		limb.setMaterial(material);
 		limb.baseEnvStats().setLevel(1);
 		limb.baseEnvStats().setWeight(5);
 		limb.recoverEnvStats();

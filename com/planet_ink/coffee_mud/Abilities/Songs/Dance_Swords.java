@@ -22,7 +22,7 @@ public class Dance_Swords extends Dance
 		||(affected==null))
 		{
 			if(affected instanceof MOB)
-				undance((MOB)affected,null,this);
+				undance((MOB)affected,null,false);
 			else
 				unInvoke();
 			return false;
@@ -34,7 +34,7 @@ public class Dance_Swords extends Dance
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_REMOVE:
 				if(affected instanceof MOB)
-					undance((MOB)affected,null,this);
+					undance((MOB)affected,null,false);
 				else
 					unInvoke();
 				break;
@@ -85,7 +85,6 @@ public class Dance_Swords extends Dance
 			}
 			if(sword==null) return true;
 			Dance newOne=(Dance)this.copyOf();
-			newOne.referenceDance=this;
 			newOne.invokerManaCost=-1;
 			newOne.startTickDown(invoker(),sword,99999);
 			return true;
@@ -97,10 +96,7 @@ public class Dance_Swords extends Dance
 		&&(((Item)affected).owner() instanceof Room)
 		&&(invoker()!=null)
 		&&(invoker().location().isContent((Item)affected))
-		&&(referenceDance!=null)
-		&&(referenceDance instanceof Dance_Swords)
-		&&(((Dance_Swords)referenceDance).affected!=null)
-		&&(((Dance_Swords)referenceDance).invoker!=null)
+		&&(invoker().fetchEffect(ID())!=null)
 		&&(Sense.aliveAwakeMobile(invoker(),true)))
 		{
 			if(invoker().isInCombat())
@@ -140,7 +136,7 @@ public class Dance_Swords extends Dance
 		else
 		{
 			if(affected instanceof MOB)
-				undance((MOB)affected,null,this);
+				undance((MOB)affected,null,false);
 			else
 				unInvoke();
 			return false;
@@ -157,7 +153,7 @@ public class Dance_Swords extends Dance
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		undance(mob,null,null);
+		undance(mob,null,true);
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
@@ -170,7 +166,6 @@ public class Dance_Swords extends Dance
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Dance newOne=(Dance)this.copyOf();
-				newOne.referenceDance=newOne;
 				newOne.invokerManaCost=-1;
 
 				MOB follower=mob;

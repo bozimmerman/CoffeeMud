@@ -32,7 +32,7 @@ public class Play_Dirge extends Play
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		unplay(mob,mob,null);
+		unplay(mob,mob,true);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
@@ -45,7 +45,6 @@ public class Play_Dirge extends Play
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Play newOne=(Play)this.copyOf();
-				newOne.referencePlay=newOne;
 
 				HashSet h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;

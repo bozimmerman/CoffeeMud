@@ -23,4 +23,7 @@ public class GenResource extends GenItem implements EnvResource
 	{
 		return new GenResource();
 	}
+	private int domainSource=-1;
+	public int domainSource(){return domainSource;}
+	public void setDomainSource(int src){domainSource=src;}
 }

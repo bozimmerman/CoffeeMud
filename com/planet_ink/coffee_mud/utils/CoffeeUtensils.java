@@ -44,7 +44,7 @@ public class CoffeeUtensils
 		return -1;
 	}
 
-	public static Environmental makeResource(int myResource, boolean noAnimals)
+	public static Environmental makeResource(int myResource, int localeCode, boolean noAnimals)
 	{
 		if(myResource<0)
 			return null;
@@ -200,6 +200,8 @@ public class CoffeeUtensils
 					((Drink)I).setLiquidType(myResource);
 				I.setBaseValue(EnvResource.RESOURCE_DATA[myResource&EnvResource.RESOURCE_MASK][1]);
 				I.baseEnvStats().setWeight(1);
+				if(I instanceof EnvResource)
+					((EnvResource)I).setDomainSource(localeCode);
 				if(I instanceof Drink)
 					I.setName("some "+name);
 				else

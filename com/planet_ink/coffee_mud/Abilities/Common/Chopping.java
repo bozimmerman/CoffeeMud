@@ -91,7 +91,7 @@ public class Chopping extends CommonSkill
 		if((profficiencyCheck(mob,0,auto))
 		   &&((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
 		{
-			found=(Item)CoffeeUtensils.makeResource(resourceType,false);
+			found=(Item)CoffeeUtensils.makeResource(resourceType,mob.location().domainType(),false);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();

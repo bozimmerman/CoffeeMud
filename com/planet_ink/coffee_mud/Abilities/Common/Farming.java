@@ -172,9 +172,21 @@ public class Farming extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mine.destroy();
 		if((profficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
-			found=(Item)CoffeeUtensils.makeResource(code,false);
+		{
+			found=(Item)CoffeeUtensils.makeResource(code,mob.location().domainType(),false);
+			if((found!=null)
+			&&(found.material()==EnvResource.RESOURCE_HERBS)
+			&&(mine!=null)
+			&&(mine.material()==found.material()))
+			{
+				found.setName(mine.name());
+				found.setDisplayText(mine.displayText());
+				found.setDescription(mine.description());
+				found.text();
+			}
+		}
+		mine.destroy();
 		int duration=45-mob.envStats().level();
 		if(duration<25) duration=25;
 		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) planting "+foundShortName+".");

@@ -55,10 +55,15 @@ public class Prayer_GodLight extends Prayer
 			return false;
 		}
 
+		if((target instanceof MOB)
+		&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0))
+		{
+			mob.tell(target.name()+" has no eyes, and would not be affected.");
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)

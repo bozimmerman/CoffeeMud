@@ -352,6 +352,9 @@ public class CoffeeMaker
 			text.append(XMLManager.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
 			text.append(XMLManager.convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
 		}
+		
+		if(E instanceof EnvResource)
+			text.append(XMLManager.convertXMLtoTag("DOMN",((EnvResource)E).domainSource()+""));
 
 		if(E instanceof Food)
 			text.append(XMLManager.convertXMLtoTag("CAPA2",((Food)E).nourishment()));
@@ -1627,6 +1630,9 @@ public class CoffeeMaker
 
 		if(E instanceof Food)
 			((Food)E).setNourishment(XMLManager.getIntFromPieces(buf,"CAPA2"));
+		
+		if(E instanceof EnvResource)
+			((EnvResource)E).setDomainSource(XMLManager.getIntFromPieces(buf,"DOMN"));
 
 		if(E instanceof Drink)
 		{

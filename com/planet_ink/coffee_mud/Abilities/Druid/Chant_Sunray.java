@@ -44,6 +44,11 @@ public class Chant_Sunray extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
+		{
+			mob.tell(target.name()+" has no eyes, and would not be affected.");
+			return false;
+		}
 
 
 		boolean success=profficiencyCheck(mob,0,auto);

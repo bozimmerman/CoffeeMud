@@ -499,7 +499,7 @@ public class CraftingSkill extends CommonSkill
 					lostValue+=I.value();
 					for(int x=0;x<I.baseEnvStats().weight();x++)
 					{
-						Environmental E=CoffeeUtensils.makeResource(finalMaterial,true);
+						Environmental E=CoffeeUtensils.makeResource(finalMaterial,-1,true);
 						if(E instanceof Item)
 							room.addItemRefuse((Item)E,Item.REFUSE_PLAYER_DROP);
 					}

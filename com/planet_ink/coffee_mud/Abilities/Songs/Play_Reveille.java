@@ -20,7 +20,7 @@ public class Play_Reveille extends Play
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);
-		unplay(mob,mob,null);
+		unplay(mob,mob,true);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
@@ -33,7 +33,6 @@ public class Play_Reveille extends Play
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Play newOne=(Play)this.copyOf();
-				newOne.referencePlay=newOne;
 
 				Hashtable h=new Hashtable();
 				for(int i=0;i<mob.location().numInhabitants();i++)

@@ -24,4 +24,7 @@ public class GenFoodResource extends GenFood implements EnvResource, Food
 	{
 		return new GenFoodResource();
 	}
+	private int domainSource=-1;
+	public int domainSource(){return domainSource;}
+	public void setDomainSource(int src){domainSource=src;}
 }

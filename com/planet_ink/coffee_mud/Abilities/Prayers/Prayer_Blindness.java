@@ -44,10 +44,14 @@ public class Prayer_Blindness extends Prayer
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
+		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
+		{
+			mob.tell(target.name()+" has no eyes, and would not be affected.");
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-
 
 		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.WISDOM)*2)),auto);
 		if(success)

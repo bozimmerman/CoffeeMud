@@ -29,7 +29,7 @@ public class Song_Nothing extends Song
 			if((A!=null)&&(A instanceof Song))
 				foundOne=true;
 		}
-		unsing(mob,mob,null);
+		unsing(mob,mob,true);
 		if(!foundOne)
 		{
 			mob.tell(auto?"There is no song playing.":"You aren't singing.");

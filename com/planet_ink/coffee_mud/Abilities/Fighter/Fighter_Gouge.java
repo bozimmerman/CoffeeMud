@@ -70,19 +70,19 @@ public class Fighter_Gouge extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(mob.charStats().getBodyPart(Race.BODY_HAND)<=0)
+		if((!auto)&&(mob.charStats().getBodyPart(Race.BODY_HAND)<=0))
 		{
 			mob.tell("You need feet to kick.");
 			return false;
 		}
 
-		if(target.charStats().getBodyPart(Race.BODY_EYE)<=0)
+		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)<=0))
 		{
 			mob.tell(target.name()+" has no eyes!");
 			return false;
 		}
 
-		if(anyWeapons(mob))
+		if((!auto)&&(anyWeapons(mob)))
 		{
 			mob.tell("Your hands must be free to gouge.");
 			return false;

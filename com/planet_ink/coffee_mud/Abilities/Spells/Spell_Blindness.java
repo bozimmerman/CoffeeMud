@@ -41,6 +41,12 @@ public class Spell_Blindness extends Spell
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
+		if((!auto)&&(target.charStats().getBodyPart(Race.BODY_EYE)==0))
+		{
+			mob.tell(target.name()+" has no eyes, and would not be affected.");
+			return false;
+		}
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

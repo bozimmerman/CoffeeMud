@@ -2,6 +2,10 @@ package com.planet_ink.coffee_mud.interfaces;
 
 public interface EnvResource extends Item
 {
+	
+	public int domainSource();
+	public void setDomainSource(int src);
+	
 	// item materials
 	public final static int MATERIAL_UNKNOWN=0;
 	public final static int MATERIAL_CLOTH=1<<8;

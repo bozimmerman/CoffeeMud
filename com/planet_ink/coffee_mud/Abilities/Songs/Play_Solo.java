@@ -33,14 +33,14 @@ public class Play_Solo extends Play
 				&&(otherBard.location()!=null))
 				{
 					if(otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))
-						unplay(myChar,null,null);
+						unplay(myChar,null,false);
 				}
 				else
 				if(otherBard.location()!=null)
 				{
 					otherBard.tell("You can't seem to upstage "+myChar.name()+"'s solo.");
 					if(!invoker().curState().adjMana(-10,invoker().maxState()))
-						unplay(myChar,null,null);
+						unplay(myChar,null,false);
 					return false;
 				}
 			}
@@ -54,7 +54,7 @@ public class Play_Solo extends Play
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		unplay(mob,mob,null);
+		unplay(mob,mob,true);
 		if(success)
 		{
 			String str=auto?"^S"+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to play "+songOf()+" on "+instrumentName()+".^?";
@@ -67,8 +67,7 @@ public class Play_Solo extends Play
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Play newOne=(Play)this.copyOf();
-				newOne.referencePlay=newOne;
-
+				
 				Vector songsToCancel=new Vector();
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
@@ -97,11 +96,11 @@ public class Play_Solo extends Play
 					&&(A.affecting() instanceof MOB))
 					{
 						MOB M=(MOB)A.affecting();
-						if(A instanceof Song) ((Song)A).unsing(M,null,null);
+						if(A instanceof Song) ((Song)A).unsing(M,null,false);
 						else
-						if(A instanceof Dance) ((Dance)A).undance(M,null,null);
+						if(A instanceof Dance) ((Dance)A).undance(M,null,false);
 						else
-						if(A instanceof Play) ((Play)A).unplay(M,null,null);
+						if(A instanceof Play) ((Play)A).unplay(M,null,false);
 						else
 							A.unInvoke();
 					}

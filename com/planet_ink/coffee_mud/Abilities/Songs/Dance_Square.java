@@ -51,7 +51,7 @@ public class Dance_Square extends Dance
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
-		undance(mob,null,null);
+		undance(mob,null,true);
 		if(success)
 		{
 			String str=auto?"^SThe "+danceOf()+" begins!^?":"^S<S-NAME> begin(s) to dance the "+danceOf()+".^?";
@@ -64,7 +64,6 @@ public class Dance_Square extends Dance
 				mob.location().send(mob,msg);
 				invoker=mob;
 				Dance newOne=(Dance)this.copyOf();
-				newOne.referenceDance=newOne;
 				newOne.invokerManaCost=-1;
 
 				HashSet friends=mob.getGroupMembers(new HashSet());
