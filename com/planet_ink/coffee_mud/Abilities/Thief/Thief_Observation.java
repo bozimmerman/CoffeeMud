@@ -24,6 +24,15 @@ public class Thief_Observation extends ThiefSkill
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(!Sense.aliveAwakeMobile((MOB)affected,true)))
+		{ unInvoke(); return false;}
+		return true;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

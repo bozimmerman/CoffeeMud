@@ -1,4 +1,3 @@
-Bard Subclasses
 Programming.html update
 Installation.html update
 Archons Guide updates

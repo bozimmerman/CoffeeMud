@@ -41,8 +41,23 @@ public class EnglishParser
 		{"find %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"bring %i to %m","itemfind %i;mobfind %m;give %i %m"},
 		{"find %i for %m","itemfind %i;mobfind %m;give %i %m"},
+		{"get %i for %m","itemfind %i;mobfind %m;give %i %m"},
+		{"get %m %i","itemfind %i;mobfind %m;give %i %m"},
+		{"fetch %i for %m","itemfind %i;mobfind %m;give %i %m"},
+		{"fetch %m %i","itemfind %i;mobfind %m;give %i %m"},
 		{"bring me %i","itemfind %i;mobfind %c;give %i %c"},
 		{"find me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"fetch me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"get me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"get %i","itemfind %i;mobfind %c;give %i %c"},
+		{"go and get %i","itemfind %i;mobfind %c;give %i %c"},
+		{"go and bring me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"go and find me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"go and fetch me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"go get %i","itemfind %i;mobfind %c;give %i %c"},
+		{"go bring me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"go find me %i","itemfind %i;mobfind %c;give %i %c"},
+		{"deliver %i %m","itemfind %i;mobfind %m;give %i %m"},
 		// below are eats, drinks
 		// below are skill usages
 		// below are gos, and find someone (and report back where), take me to, show me

@@ -22,6 +22,15 @@ public class Thief_Detection extends ThiefSkill
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(!Sense.aliveAwakeMobile((MOB)affected,true)))
+		{ unInvoke(); return false;}
+		return true;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -1,7 +1,1 @@
 GAES still isn't done
-Hojomonkey another prob with juggle? i was juggling two, then i tried to juggle all and it told me i juggled 5 more, but i actually stopped juggling altogether
-Hojomonkey i valued all 7 of my elven longswords and now the shopkeeper keeps telling me the value over and pver and pver
-Aereon     ventriloquate doesn't give back a failure notice when miscast.
-Aereon     I disarmed a lamia, but in the same tick it attempted to disarm me and it hit me with the dagger. Is there a way that we can either move the disarm messages to last, or to prevent the attacks if disarmed? Just a little bug...
-Is WIELDING an instrument against the law?
-the SLEEP command should cancel any SEARCH/DETECTION/OBSERVATION skills

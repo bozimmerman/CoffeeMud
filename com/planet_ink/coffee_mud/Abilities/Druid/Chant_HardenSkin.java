@@ -36,7 +36,7 @@ public class Chant_HardenSkin extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if(canBeUninvoked())
-			mob.tell("Your skin returns to normal.");
+			mob.tell("Your skin softens back to normal.");
 	}
 
 

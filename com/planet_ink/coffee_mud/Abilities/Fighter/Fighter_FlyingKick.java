@@ -75,7 +75,7 @@ public class Fighter_FlyingKick extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> fail(s) to ax kick <T-NAMESELF>.");
+			return maliciousFizzle(mob,target,"<S-NAME> fail(s) to land the flying kick on  <T-NAMESELF>.");
 
 		// return whether it worked
 		return success;

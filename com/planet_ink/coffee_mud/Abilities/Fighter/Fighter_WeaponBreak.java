@@ -67,8 +67,8 @@ public class Fighter_WeaponBreak extends StdAbility
 			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okAffect(mob,msg))
 			{
-				mob.location().send(mob,msg);
 				hisWeapon.destroy();
+				mob.location().send(mob,msg);
 				mob.location().recoverRoomStats();
 			}
 		}

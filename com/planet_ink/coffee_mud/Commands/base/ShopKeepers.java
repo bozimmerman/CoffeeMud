@@ -110,7 +110,6 @@ public class ShopKeepers
 		}
 
 		int maxToDo=Integer.MAX_VALUE;
-		int numDone=0;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0))
 		{
@@ -118,27 +117,34 @@ public class ShopKeepers
 			commands.setElementAt("all",0);
 		}
 		
-		String thisName=Util.combine(commands,0);
-		boolean doneSomething=false;
+		String whatName=Util.combine(commands,0);
+		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		if(thisName.toUpperCase().startsWith("ALL.")){ allFlag=true; thisName="ALL "+thisName.substring(4);}
-		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
+		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
+		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
+		int addendum=1;
+		String addendumStr="";
 		do
 		{
-			Environmental thisThang=null;
-			thisThang=mob.fetchCarried(null,thisName);
-			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
-			{
-				if(!doneSomething)
-					mob.tell("You don't see '"+thisName+"' here.");
-				return;
-			}
+			Item itemToDo=mob.fetchCarried(null,whatName+addendumStr);
+			if(itemToDo==null) break;
+			if((Sense.canBeSeenBy(itemToDo,mob))
+			&&(!V.contains(itemToDo)))
+				V.addElement(itemToDo);
+			addendumStr="."+(++addendum);
+		}
+		while((allFlag)&&(addendum<=maxToDo));
+		
+		if(V.size()==0)
+			mob.tell("You don't seem to have '"+whatName+"'.");
+		else
+		for(int v=0;v<V.size();v++)
+		{
+			Item thisThang=(Item)V.elementAt(v);
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>.");
-			if(!mob.location().okAffect(mob,newMsg))
-				return;
-			mob.location().send(mob,newMsg);
-			doneSomething=true;
-		}while((allFlag)&&((++numDone)<maxToDo));
+			if(mob.location().okAffect(mob,newMsg))
+				mob.location().send(mob,newMsg);
+		}
 	}
 
 
@@ -153,7 +159,6 @@ public class ShopKeepers
 		}
 		
 		int maxToDo=Integer.MAX_VALUE;
-		int numDone=0;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0))
 		{
@@ -161,27 +166,34 @@ public class ShopKeepers
 			commands.setElementAt("all",0);
 		}
 		
-		String thisName=Util.combine(commands,0);
-		boolean doneSomething=false;
+		String whatName=Util.combine(commands,0);
+		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		if(thisName.toUpperCase().startsWith("ALL.")){ allFlag=true; thisName="ALL "+thisName.substring(4);}
-		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
+		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
+		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
+		int addendum=1;
+		String addendumStr="";
 		do
 		{
-			Environmental thisThang=null;
-			thisThang=mob.fetchInventory(thisName);
-			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
-			{
-				if(!doneSomething)
-					mob.tell("You don't see '"+thisName+"' here.");
-				return;
-			}
+			Item itemToDo=mob.fetchCarried(null,whatName+addendumStr);
+			if(itemToDo==null) break;
+			if((Sense.canBeSeenBy(itemToDo,mob))
+			&&(!V.contains(itemToDo)))
+				V.addElement(itemToDo);
+			addendumStr="."+(++addendum);
+		}
+		while((allFlag)&&(addendum<=maxToDo));
+		
+		if(V.size()==0)
+			mob.tell("You don't seem to have '"+whatName+"'.");
+		else
+		for(int v=0;v<V.size();v++)
+		{
+			Item thisThang=(Item)V.elementAt(v);
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_VALUE,null);
-			if(!mob.location().okAffect(mob,newMsg))
-				return;
-			mob.location().send(mob,newMsg);
-			doneSomething=true;
-		}while((allFlag)&&((++numDone)<maxToDo));
+			if(mob.location().okAffect(mob,newMsg))
+				mob.location().send(mob,newMsg);
+		}
 	}
 
 	public static void view(MOB mob, Vector commands)
@@ -194,8 +206,13 @@ public class ShopKeepers
 			return;
 		}
 		
+		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
+		{
+			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			return;
+		}
+		
 		int maxToDo=Integer.MAX_VALUE;
-		int numDone=0;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0))
 		{
@@ -203,31 +220,35 @@ public class ShopKeepers
 			commands.setElementAt("all",0);
 		}
 		
-		String thisName=Util.combine(commands,0);
-		boolean doneSomething=false;
+		String whatName=Util.combine(commands,0);
+		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		if(thisName.toUpperCase().startsWith("ALL.")){ allFlag=true; thisName="ALL "+thisName.substring(4);}
-		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
-		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
-		{
-			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
-			return;
-		}
+		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
+		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
+		int addendum=1;
+		String addendumStr="";
 		do
 		{
-			Environmental thisThang=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(thisName,mob);
-			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
-			{
-				if(!doneSomething)
-					mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any for sale.  Try LIST.");
-				return;
-			}
+			Environmental itemToDo=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(whatName,mob);
+			if(itemToDo==null) break;
+			if(Sense.canBeSeenBy(itemToDo,mob))
+				V.addElement(itemToDo);
+			if(addendum>=CoffeeUtensils.getShopKeeper(shopkeeper).numberInStock(itemToDo))
+				break;
+			addendumStr="."+(++addendum);
+		}
+		while((allFlag)&&(addendum<=maxToDo));
+		
+		if(V.size()==0)
+			mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
+		else
+		for(int v=0;v<V.size();v++)
+		{
+			Environmental thisThang=(Environmental)V.elementAt(v);
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_VIEW,null);
-			if(!mob.location().okAffect(mob,newMsg))
-				return;
-			mob.location().send(mob,newMsg);
-			doneSomething=true;
-		}while((allFlag)&&((++numDone)<maxToDo));
+			if(mob.location().okAffect(mob,newMsg))
+				mob.location().send(mob,newMsg);
+		}
 	}
 
 	public static void buy(MOB mob, Vector commands)
@@ -239,9 +260,13 @@ public class ShopKeepers
 			mob.tell("Buy what?");
 			return;
 		}
+		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
+		{
+			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			return;
+		}
 		
 		int maxToDo=Integer.MAX_VALUE;
-		int numDone=0;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0))
 		{
@@ -249,32 +274,35 @@ public class ShopKeepers
 			commands.setElementAt("all",0);
 		}
 		
-		String thisName=Util.combine(commands,0);
-		boolean doneSomething=false;
+		String whatName=Util.combine(commands,0);
+		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
-		if(thisName.toUpperCase().startsWith("ALL.")){ allFlag=true; thisName="ALL "+thisName.substring(4);}
-		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
-		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
-		{
-			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
-			return;
-		}
-
+		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
+		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
+		int addendum=1;
+		String addendumStr="";
 		do
 		{
-			Environmental thisThang=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(thisName,mob);
-			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
-			{
-				if(!doneSomething)
-					mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any for sale.  Try LIST.");
-				return;
-			}
+			Environmental itemToDo=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(whatName,mob);
+			if(itemToDo==null) break;
+			if(Sense.canBeSeenBy(itemToDo,mob))
+				V.addElement(itemToDo);
+			if(addendum>=CoffeeUtensils.getShopKeeper(shopkeeper).numberInStock(itemToDo))
+				break;
+			addendumStr="."+(++addendum);
+		}
+		while((allFlag)&&(addendum<=maxToDo));
+		
+		if(V.size()==0)
+			mob.tell(shopkeeper,null,null,"<S-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
+		else
+		for(int v=0;v<V.size();v++)
+		{
+			Environmental thisThang=(Environmental)V.elementAt(v);
 			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>.");
-			if(!mob.location().okAffect(mob,newMsg))
-				return;
-			mob.location().send(mob,newMsg);
-			doneSomething=true;
-		}while((allFlag)&&((++numDone)<maxToDo));
+			if(mob.location().okAffect(mob,newMsg))
+				mob.location().send(mob,newMsg);
+		}
 	}
 
 
