@@ -164,6 +164,11 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,Integer.MAX_VALUE);
+				if(("AEIOU").indexOf(Character.toUpperCase(raceName.charAt(0)))>=0)
+					raceName="An "+raceName;
+				else
+					raceName="A "+raceName;
+				mob.tell("You have become "+raceName.toLowerCase()+".");
 				newRace.confirmGear(mob);
 				mob.makePeace();
 			}

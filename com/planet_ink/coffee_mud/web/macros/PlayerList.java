@@ -6,7 +6,7 @@ public class PlayerList extends StdWebMacro
 {
 	public String name()	{return "PlayerList";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return httpReq.WebHelperhtmlPlayerList();
 	}

@@ -12,15 +12,16 @@ public class HTTPserver extends Thread
 
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
 	public static final float HOST_VERSION_MINOR=(float)0.0;
-	public static Vector webMacros=null;
+	public static Hashtable webMacros=null;
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
-	public final static String ServerVersionString = "HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
+	public final static String ServerVersionString = "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 	
 	public boolean isOK = false;
 	
 	public ServerSocket servsock=null;
+	public static int longestMacro=0;
 
 	private Host mud;
 	private String partialName;
@@ -136,7 +137,7 @@ public class HTTPserver extends Thread
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
-			Log.sysOut(getName(),"CoffeeMud built-in HTTPserver v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR);
+			Log.sysOut(getName(),"CoffeeMud HTTPserver v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR);
 			Log.sysOut(getName(),"Written and (c) 2002 Jeff Kamenek");
 		}
 
@@ -315,15 +316,23 @@ public class HTTPserver extends Thread
 	public static boolean loadWebMacros()
 	{
 		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
-		webMacros=CMClass.loadVectorListToObj(prefix+"web"+File.separatorChar+"macros"+File.separatorChar, "");
-		Log.sysOut("WEB","WebMacros loaded  : "+webMacros.size());
-		if(webMacros.size()==0) return false;
+		Vector webMacrosV=CMClass.loadVectorListToObj(prefix+"web"+File.separatorChar+"macros"+File.separatorChar, "");
+		Log.sysOut("WEB","WebMacros loaded  : "+webMacrosV.size());
+		if(webMacrosV.size()==0) return false;
+		webMacros=new Hashtable();
+		for(int w=0;w<webMacrosV.size();w++)
+		{
+			WebMacro W=(WebMacro)webMacrosV.elementAt(w);
+			if(W.ID().length()>longestMacro)
+				longestMacro=W.ID().length();
+			webMacros.put(W.ID().toUpperCase(),W);
+		}
 		return true;
 	}
 
 	public static void unloadWebMacros()
 	{
-		webMacros=new Vector();
+		webMacros=new Hashtable();
 	}
 
 }

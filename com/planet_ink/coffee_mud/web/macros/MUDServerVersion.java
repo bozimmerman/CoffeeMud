@@ -6,7 +6,7 @@ public class MUDServerVersion extends StdWebMacro
 {
 	public String name()	{return "MUDServerVersion";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return httpReq.getMUD().ServerVersionString();
 	}

@@ -7,7 +7,7 @@ public class AreaTbl extends StdWebMacro
 {
 	public String name()	{return "AreaTbl";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return httpReq.WebHelperhtmlAreaTbl();
 	}

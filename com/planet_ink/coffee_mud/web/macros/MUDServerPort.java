@@ -7,7 +7,7 @@ public class MUDServerPort extends StdWebMacro
 {
 	public String name()	{return "MUDServerPort";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return httpReq.getMUD().getPortStr();
 	}

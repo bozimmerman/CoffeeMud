@@ -7,7 +7,7 @@ public class HTTPstatus extends StdWebMacro
 {
 	public String name()	{return "HTTPstatus";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return httpReq.getHTTPstatus();
 	}

@@ -19,7 +19,32 @@ Players currently online: <b>@NUMPLAYERS@</B><br>
 <br>
 <a href="gamestatus.cmvp">Detailed Game Status</a><br><br>
 <a href="areas.cmvp">Installed Map Areas</a><br><br>
-
+<BR>
+<UL>
+@loop@
+<LI>@CharClassNext@<A HREF="charclassdata.cmvp?CLASS=@CharClassID@">@CharClassName@</A>
+@back@
+</UL>
+<br>
+<TABLE BORDER=1 WIDTH=100%>
+@loop@
+<TR>
+<TD WIDTH=25%>
+@RaceNext=ALL@<A HREF="racedata.cmvp?CLASS=@RaceID@">@RaceName@</A>
+</TD>
+<TD WIDTH=25%>
+@RaceNext=ALL&EMPTYOK@<A HREF="racedata.cmvp?CLASS=@RaceID@">@RaceName@</A>
+</TD>
+<TD WIDTH=25%>
+@RaceNext=ALL&EMPTYOK@<A HREF="racedata.cmvp?CLASS=@RaceID@">@RaceName@</A>
+</TD>
+<TD WIDTH=25%>
+@RaceNext=ALL&EMPTYOK@<A HREF="racedata.cmvp?CLASS=@RaceID@">@RaceName@</A>
+</TD>
+</TR>
+@back@
+</TR>
+</TABLE>
 <br>
 <a href="guides/mudintro.html">Introduction</a><br>
 <a href="guides/features.html">CoffeeMUD features</a><br>

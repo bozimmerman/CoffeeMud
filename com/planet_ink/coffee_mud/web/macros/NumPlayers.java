@@ -7,7 +7,7 @@ public class NumPlayers extends StdWebMacro
 {
 	public String name()	{return "NumPlayers";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return new Integer(Sessions.size()).toString();
 	}

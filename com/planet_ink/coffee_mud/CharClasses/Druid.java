@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class Druid extends StdCharClass
 {
 	private static boolean abilitiesLoaded=false;
+	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	
 	public Druid()
 	{
@@ -54,16 +55,45 @@ public class Druid extends StdCharClass
 			return false;
 
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
-		if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon)
-		&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
-		&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
 		{
-			if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+			if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
 			{
-				myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
-				return false;
+				for(int i=0;i<myChar.inventorySize();i++)
+				{
+					Item I=myChar.fetchInventory(i);
+					if(I==null) break;
+					if((((I.rawWornCode()&wearMask)>0)&&(I instanceof Armor))
+					 ||(I.amWearingAt(Item.HELD)&&(I instanceof Shield)))
+					{
+						switch(I.material()&EnvResource.MATERIAL_MASK)
+						{
+						case EnvResource.MATERIAL_CLOTH:
+						case EnvResource.MATERIAL_VEGETATION:
+						case EnvResource.MATERIAL_PAPER:
+							break;
+						default:
+							if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
+							{
+								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
+								return false;
+							}
+							break;
+						}
+					}
+				}
+			}
+			else
+			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Weapon)
+			&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+			&&((((Weapon)affect.tool()).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
+			{
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+				{
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+					return false;
+				}
 			}
 		}
 		return true;

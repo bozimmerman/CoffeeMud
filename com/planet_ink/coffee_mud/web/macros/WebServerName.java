@@ -7,7 +7,7 @@ public class WebServerName extends StdWebMacro
 {
 	public String name()	{return "WebServerName";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return httpReq.getWebServerPartialName();
 	}

@@ -6,7 +6,7 @@ public class WebServerPort extends StdWebMacro
 {
 	public String name()	{return "WebServerPort";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		return httpReq.getWebServerPortStr();
 	}

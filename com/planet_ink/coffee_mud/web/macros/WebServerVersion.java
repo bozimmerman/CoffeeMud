@@ -6,7 +6,7 @@ public class WebServerVersion extends StdWebMacro
 {
 	public String name()	{return "WebServerVersion";}
 
-	public String runMacro(ExternalHTTPRequests httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 //		return httpReq.getWebServer().ServerVersionString;
 		// it's static

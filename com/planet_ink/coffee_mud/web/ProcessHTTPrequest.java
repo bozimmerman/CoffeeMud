@@ -14,6 +14,8 @@ import com.planet_ink.coffee_mud.interfaces.*;
 
 // TODO / NOT IMPLEMENTED:
 //   doesn't handle URL parameters yet (strips them out)
+//   Well, it does now, but it doesn't convert them from Funky Form(tm)
+//   - Bo
 
 
 
@@ -31,7 +33,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	private String command = null;
 	private String request = null;
 	private String requestMain = null;
-	private String requestParameters = null;
+	private Hashtable requestParameters = null;
 	// default mime type
 	private String mimetype = "text/html";
 	private final static String mimePrefix = "MIME";
@@ -138,16 +140,44 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 			else
 			{
+				String reqParms=null;
 				if (p == 0)
 				{
 					requestMain = "/";
-					requestParameters = request.substring(1);
+					reqParms = request.substring(1);
 				}
 				else
 				{
 					requestMain = request.substring(0,p);
 					if (p < request.length())
-						requestParameters = request.substring(p+1);
+						reqParms = request.substring(p+1);
+				}
+				if((reqParms!=null)&&(reqParms.length()>0))
+				{
+					requestParameters=new Hashtable();
+					while(reqParms.length()>0)
+					{
+						int x=reqParms.indexOf("&");
+						String req=null;
+						if(x>=0)
+						{
+							req=reqParms.substring(0,x);
+							reqParms=reqParms.substring(x+1);
+						}
+						else
+						{
+							req=reqParms;
+							reqParms="";
+						}
+						if(req!=null)
+						{
+							x=req.indexOf("=");
+							if(x>=0)
+								requestParameters.put(req.substring(0,x).trim().toUpperCase(),req.substring(x+1).trim());
+							else
+								requestParameters.put(req.trim().toUpperCase(),req.trim());
+						}
+					}
 				}
 			}
 			
@@ -162,34 +192,88 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	}
 
-	private void processMacro(WebMacro macro,StringBuffer s) throws Exception
+	public Hashtable getRequestParameters()
 	{
-		int pos;
-		String lookFor = macro.macroID();
-		
-		while(true)
-		{
-			pos = s.toString().indexOf(lookFor);
-			if ( pos == -1)
-				break;
-			
-			String q = macro.runMacro(this);
-//			if (q != null && q.length() > 0)
-			if (q != null)
-				s.replace(pos,pos+lookFor.length(), q );
-			else
-				s.replace(pos,pos+lookFor.length(), "[error]" );
-		}
+		if(requestParameters==null)
+			requestParameters=new Hashtable();
+		return requestParameters;
 	}
-
 	private byte [] doVirtualPage(byte [] data)
 	{
+		if((webServer.webMacros==null)
+		   ||(webServer.webMacros.size()==0))
+			return data;
 		StringBuffer s = new StringBuffer(new String(data));
-		
 		try
 		{
-			for (int i=0; i<HTTPserver.webMacros.size(); ++i)
-				processMacro( (WebMacro)HTTPserver.webMacros.elementAt(i), s );
+			for(int i=0;i<s.length();i++)
+			{
+				if(s.charAt(i)=='@')
+				{
+					String foundMacro=null;
+					boolean extend=false;
+					for(int x=i+1;x<s.length();x++)
+					{
+						if(s.charAt(x)=='@')
+						{
+							foundMacro=s.substring(i+1,x);
+							break;
+						}
+						else
+						if(s.charAt(x)=='=')
+							extend=true;
+						else
+						if(((x-i)>webServer.longestMacro)&&(!extend))
+							break;
+					}
+					if(foundMacro!=null)
+					{
+						if(foundMacro.equalsIgnoreCase("loop"))
+						{
+							int v=s.toString().toUpperCase().indexOf("@BACK@");
+							if(v<0)
+								s.replace(i,i+6, "[loop without back]" );
+							else
+							{
+								String s2=s.substring(i+7,v);
+								s.replace(i,v+6,"");
+								int ldex=i;
+								String s3=" ";
+								while(s3.length()>0)
+								{
+									s3=new String(doVirtualPage(s2.getBytes()));
+									s.insert(ldex,s3);
+									ldex+=s3.length();
+								}
+							}
+																					 
+						}
+						else
+						if(foundMacro.equalsIgnoreCase("break"))
+							return ("").getBytes();
+						else
+						{
+							int l=foundMacro.length();
+							int x=foundMacro.indexOf("=");
+							String parms=null;
+							if(x>=0)
+							{
+								parms=foundMacro.substring(x+1);
+								foundMacro=foundMacro.substring(0,x);
+							}
+							WebMacro W=(WebMacro)webServer.webMacros.get(foundMacro.toUpperCase());
+							if(W!=null)
+							{
+								String q=W.runMacro(this,parms);
+								if (q != null)
+									s.replace(i,i+l+2, q );
+								else
+									s.replace(i,i+l+2, "[error]" );
+							}
+						}
+					}
+				}
+			}
 		}
 		catch (Exception e)
 		{

@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
-
+import java.util.*;
 public interface ExternalHTTPRequests
 {
 	public String ServerVersionString();
@@ -12,4 +12,5 @@ public interface ExternalHTTPRequests
 	public Host getMUD();
 	public String WebHelperhtmlPlayerList();
 	public String WebHelperhtmlAreaTbl();
+	public Hashtable getRequestParameters();
 }
