@@ -1433,7 +1433,9 @@ public class StdMOB implements MOB
 				}
 
 				if((!isMonster())&&(!mob.isMonster())
-				&&(soulMate()==null)&&(mob.soulMate()==null)
+				&&(soulMate()==null)
+				&&(mob.soulMate()==null)
+				&&(!isASysOp())&&(!mob.isASysOp())
 				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff()))
 				{
 					mob.tell("That is not EVEN a fair fight.");
@@ -1441,8 +1443,9 @@ public class StdMOB implements MOB
 					if(victim==mob) setVictim(null);
 					return false;
 				}
-				if(this.amFollowing()==mob)
-					setFollowing(null);
+				
+				if(amFollowing()==mob) setFollowing(null);
+				
 				if(isInCombat())
 				{
 					if((rangeToTarget()>0)
