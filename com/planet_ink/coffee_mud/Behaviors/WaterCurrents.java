@@ -9,6 +9,8 @@ public class WaterCurrents extends ActiveTicker
 {
 	public String ID(){return "WaterCurrents";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+	protected String dirs="";
+	
 	public WaterCurrents()
 	{
 		minTicks=3;maxTicks=5;chance=75;
@@ -20,8 +22,68 @@ public class WaterCurrents extends ActiveTicker
 		return new WaterCurrents();
 	}
 
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		Vector V=Util.parse(newParms);
+		dirs="";
+		for(int v=0;v<V.size();v++)
+		{
+			int dir=Directions.getGoodDirectionCode((String)V.elementAt(v));
+			if(dir>=0) dirs=dirs+Directions.getDirectionChar(dir);
+		}
+		if(dirs.length()==0)
+			dirs="NE";
+	}
 	public void applyCurrents(Room R)
 	{
+		if(R.numInhabitants()==0) return;
+		Vector sweeps=new Vector();
+		for(int m=0;m<R.numInhabitants();m++)
+		{
+			MOB M=R.fetchInhabitant(m);
+			if((M!=null)
+			&&(!M.isMonster())
+			&&(M.riding()==null)
+			&&((!(M instanceof Rideable))||(((Rideable)M).numRiders()==0))
+			&&(!M.isInCombat())
+			&&(!sweeps.contains(M)))
+				sweeps.addElement(M);
+		}
+		if(sweeps.size()>0)
+		{
+			int dir=-1;
+			Room R2=null;
+			for(int dl=0;dl<dirs.length();dl++)
+			{
+				dir=Directions.getDirectionCode(dirs.charAt(dl));
+				if(dir>=0)
+				{
+					R2=R.getRoomInDir(dir);
+					if(R2!=null)
+					{
+						if((R.getExitInDir(dir)!=null)
+						&&(R.getExitInDir(dir).isOpen())
+						&&((R2.domainType()==R.domainType())
+							||(R2.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+							||(R2.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+							||(R2.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+							||(R2.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)))
+								break;
+						R2=null;
+					}
+				}
+			}
+			if(R2!=null);
+			for(int m=0;m<sweeps.size();m++)
+			{
+				MOB M=(MOB)sweeps.elementAt(m);
+				R.show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
+				R2.bringMobHere(M,false);
+				R2.show(M,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
+				ExternalPlay.look(M,null,true);
+			}
+		}
 	}
 	
 	public void tick(Environmental ticking, int tickID)
@@ -37,10 +99,13 @@ public class WaterCurrents extends ActiveTicker
 				for(Iterator r=((Area)ticking).getMap();r.hasNext();)
 				{
 					Room R=(Room)r.next();
-					applyCurrents(R);
+					if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+					||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+						applyCurrents(R);
 				}
 			}
 		}
 	}
-	
 }
