@@ -227,7 +227,7 @@ public class Amputation extends StdAbility
 	}
 
 // ****************************************************************************
-// False Realities 4.2.4
+// False Realities 
 // Addition by Tulath, 4/10/04.
 // Reason:  Easy single limb amputation removal
 // ****************************************************************************

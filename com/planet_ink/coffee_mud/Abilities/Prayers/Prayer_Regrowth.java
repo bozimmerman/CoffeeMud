@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.Abilities.Misc.Amputation;
 import java.util.*;
 
 // ****************************************************************************
-// False Realities 4.2.4
+// False Realities 
 // Created by Tulath, 4/10/04.
 // Prayer regrows only a single amputated limb.
 // Order of importance to the limbs listed on lines ~27-37
