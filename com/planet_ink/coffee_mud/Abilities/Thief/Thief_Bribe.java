@@ -18,24 +18,6 @@ public class Thief_Bribe extends ThiefSkill
 	protected boolean exemptFromArmorReq(){return true;}
 	private MOB lastChecked=null;
 
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
-		if(canBeUninvoked())
-		{
-			CommonMsgs.follow(mob,null,false);
-			CommonMsgs.stand(mob,true);
-			if((mob.isMonster())&&(!Sense.isMobile(mob)))
-				MUDTracker.wanderAway(mob,true,true);
-		}
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<1)
@@ -67,7 +49,7 @@ public class Thief_Bribe extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int amountRequired=target.getMoney()+(int)(Math.round(100.0*(Util.div(25.0,mob.charStats().getStat(CharStats.CHARISMA))))*target.envStats().level());
+		int amountRequired=target.getMoney()+(int)(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

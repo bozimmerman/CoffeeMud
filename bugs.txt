@@ -1,10 +1,8 @@
 Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, Autosneak
 Test: Improved Swipe, Palm, Mug, Alertness, Countertracking, Careful Step, 
 Test: Squatting, Linguistic Comprehension, Arsonry, Tag Turf, Graffiti, Panhandling
-Test: 
+Test: Kamikaze
 Default statistics page is not right
-
-Kamikaze  Requires Make Bomb. Targets a follower of the thief who is holding a bomb. Once that follower is ordered to GO , he will become a suicide bomber, adding his HP to the damage of the bomb. Has a secondary effect of making any law enforcement in the area increase all punishments by 1 level if a terrorist activity has occurred in the past mudweek. May (eventually) increase the selling prices of all shopkeepers in the area.  
 
 Fighters:
 Side Kick  Allows the monk an extra attack each round  The extra attack is dealt to a mob that the monk is not currently targetting  
