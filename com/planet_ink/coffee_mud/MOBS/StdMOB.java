@@ -977,17 +977,6 @@ public class StdMOB implements MOB
 					tell("You can't move!");
 					return false;
 				}
-				if((envStats().weight()>mob.maxCarry())
-				&&((affect.sourceMinor()==Affect.TYP_ENTER)
-					||(affect.sourceMinor()==Affect.TYP_MOUNT)
-					||(affect.sourceMinor()==Affect.TYP_WEAR)
-					||(affect.sourceMinor()==Affect.TYP_WIELD)
-					||(affect.sourceMinor()==Affect.TYP_LEAVE)))
-				{
-					tell("You are too encumbered, drop something!");
-					return false;
-				}
-
 			}
 
 			switch(affect.sourceMinor())
