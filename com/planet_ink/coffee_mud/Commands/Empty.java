@@ -39,9 +39,13 @@ public class Empty extends BaseItemParser
 			else
 			if(s.equalsIgnoreCase("ground")) target=mob.location();
 			else
-				target=possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
-			if(target==null) 
-				target=mob.location().fetchFromRoomFavorItems(null,s,Item.WORN_REQ_UNWORNONLY);
+			{
+				target=possibleContainer(mob,commands,false,Item.WORN_REQ_UNWORNONLY);
+				if(target==null) 
+					target=mob.location().fetchFromRoomFavorItems(null,s,Item.WORN_REQ_UNWORNONLY);
+				else
+					commands.addElement("delme");
+			}
 			if(target!=null)
 				commands.removeElementAt(commands.size()-1);
 		}
@@ -120,9 +124,13 @@ public class Empty extends BaseItemParser
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
+		if((V.size()==1)&&(V.firstElement()==target))
+			mob.tell("You can't empty something into itself!");
+		else
 		for(int v=0;v<V.size();v++)
 		{
 			Container C=(Container)V.elementAt(v);
+			if(C==target) continue;
 			Vector V2=C.getContents();
 			FullMsg msg=new FullMsg(mob,C,CMMsg.MSG_QUIETMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
