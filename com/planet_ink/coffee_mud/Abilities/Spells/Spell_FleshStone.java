@@ -199,7 +199,6 @@ public class Spell_FleshStone extends Spell
 						if(target.numEffects()==s)
 							a++;
 					}
-					target.makePeace();
 					CommonMsgs.stand(target,true);
 					statue=CMClass.getItem("GenItem");
 					String name=target.name();
@@ -213,6 +212,8 @@ public class Spell_FleshStone extends Spell
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into stone!!");
 					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()*25,-1);
+					target.makePeace();
+					if(mob.getVictim()==target) mob.setVictim(null);
 					Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{

@@ -575,7 +575,6 @@ public class StdCharClass implements CharClass, Cloneable
 	public void loseExperience(MOB mob, int amount)
 	{
 		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;
-		mob.setExperience(mob.getExperience()-amount);
         if((mob.getLiegeID().length()>0)&&(amount>2))
         {
 			MOB sire=CMMap.getPlayer(mob.getLiegeID());
@@ -595,11 +594,13 @@ public class StdCharClass implements CharClass, Cloneable
                 int clanshare=(int)Math.round(Util.mul(amount,C.getTaxes()));
                 if(clanshare>0)
 				{
+                    amount-=clanshare; 
                     C.adjExp(clanshare*-1);
 					C.update();
 				}
             }
         }
+		mob.setExperience(mob.getExperience()-amount);
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
 			unLevel(mob);

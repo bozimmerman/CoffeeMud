@@ -214,13 +214,14 @@ public class DefaultTimeClock implements TimeClock
 
 	public void tickTock(int howManyHours)
 	{
+	    int todCode=getTODCode();
 		if(howManyHours!=0)
 		{
-			boolean raiseLowerTheSun=setTimeOfDay(getTimeOfDay()+howManyHours);
+			setTimeOfDay(getTimeOfDay()+howManyHours);
 			lastTicked=System.currentTimeMillis();
 			while(getTimeOfDay()>=getHoursInDay())
 			{
-				raiseLowerTheSun=setTimeOfDay(getTimeOfDay()-getHoursInDay());
+				setTimeOfDay(getTimeOfDay()-getHoursInDay());
 				setDayOfMonth(getDayOfMonth()+1);
 				if(getDayOfMonth()>getDaysInMonth())
 				{
@@ -235,7 +236,7 @@ public class DefaultTimeClock implements TimeClock
 			}
 			while(getTimeOfDay()<0)
 			{
-				raiseLowerTheSun=setTimeOfDay(getHoursInDay()+getTimeOfDay());
+				setTimeOfDay(getHoursInDay()+getTimeOfDay());
 				setDayOfMonth(getDayOfMonth()-1);
 				if(getDayOfMonth()<1)
 				{
@@ -248,8 +249,8 @@ public class DefaultTimeClock implements TimeClock
 					}
 				}
 			}
-			if(raiseLowerTheSun) raiseLowerTheSunEverywhere();
 		}
+		if(getTODCode()!=todCode) raiseLowerTheSunEverywhere();
 	}
 	public void save()
 	{

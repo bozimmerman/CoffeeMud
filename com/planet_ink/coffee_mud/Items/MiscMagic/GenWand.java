@@ -55,11 +55,8 @@ public class GenWand extends StdWand
 		return CMClass.getAbility(readableText);
 	}
 
-	public void setReadableText(String text)
-	{
-		super.setReadableText(text);
-		secretWord=StdWand.getWandWord(readableText);
-	}
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){ readableText=text;secretWord=StdWand.getWandWord(readableText);}
 
 	public String text()
 	{

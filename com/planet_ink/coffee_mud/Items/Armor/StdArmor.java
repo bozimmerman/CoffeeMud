@@ -497,7 +497,10 @@ public class StdArmor extends StdContainer implements Armor
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((!this.amWearingAt(Item.INVENTORY))&&((!this.amWearingAt(Item.HELD))||(this instanceof Shield)))
+		
+		if((!amWearingAt(Item.INVENTORY))
+		&&((!amWearingAt(Item.FLOATING_NEARBY))||(fitsOn(Item.FLOATING_NEARBY)))
+		&&((!amWearingAt(Item.HELD))||(this instanceof Shield)))
 		{
 			affectableStats.setArmor(affectableStats.armor()-envStats().armor());
 			if(amWearingAt(Item.ON_TORSO))

@@ -88,7 +88,7 @@ public class Spell_Cloudkill extends Spell
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_GAS|(auto?CMMsg.MASK_GENERAL:0),null);
-				if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
+				if(mob.location().okMessage(mob,msg)&&mob.location().okMessage(mob,msg2))
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
@@ -98,7 +98,7 @@ public class Spell_Cloudkill extends Spell
 
 					int midLevel=(int)Math.round(Util.div(adjustedLevel(mob,asLevel),2.0));
 					if(midLevel<target.envStats().level())
-						damage-=(int)Math.round(Util.div(damage,2.0));
+						damage-=(int)Math.round(Util.mul(damage,0.80));
 
 					if((msg.value()>0)||(msg2.value()>0))
 						damage = (int)Math.round(Util.div(damage,2.0));

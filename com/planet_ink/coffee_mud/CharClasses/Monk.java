@@ -167,7 +167,7 @@ public class Monk extends StdCharClass
 		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
+		int attArmor=(int)Math.round(Util.div(dexStat,9.0));
 		attArmor=attArmor*-1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);

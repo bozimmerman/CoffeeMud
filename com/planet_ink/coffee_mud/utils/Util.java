@@ -467,6 +467,7 @@ public class Util
 			{
 				if(s.length()>encodeBuffer.length)
 					encodeBuffer=new byte[s.length()];
+				encodeBuffer[0]=0;
 
 				int len = compresser.deflate(encodeBuffer);
 				result = new byte[len];

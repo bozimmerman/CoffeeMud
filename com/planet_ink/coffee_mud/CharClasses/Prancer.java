@@ -226,7 +226,7 @@ public class Prancer extends StdCharClass
 		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
+		int attArmor=(int)Math.round(Util.div(dexStat,9.0));
 		if(dexStat>=25)attArmor+=2;
 		else
 		if(dexStat>=22)attArmor+=1;

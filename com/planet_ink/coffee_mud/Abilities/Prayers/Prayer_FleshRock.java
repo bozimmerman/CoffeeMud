@@ -187,7 +187,6 @@ public class Prayer_FleshRock extends Prayer
 						if(target.numEffects()==s)
 							a++;
 					}
-					target.makePeace();
 					CommonMsgs.stand(target,true);
 					statue=CMClass.getItem("GenItem");
 					String name=target.name();
@@ -201,6 +200,8 @@ public class Prayer_FleshRock extends Prayer
 					statue.baseEnvStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into rock!!");
 					success=maliciousAffect(mob,target,asLevel,mob.envStats().level()*50,-1);
+					target.makePeace();
+					if(mob.getVictim()==target) mob.setVictim(null);
 					Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{

@@ -603,7 +603,7 @@ public class Spell_Wish extends Spell
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
 						{
-							String s=(String)V.elementAt(i2);
+							String s=(String)V.elementAt(i2-1);
 							if(Util.isNumber(s)
 							&&((Util.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
