@@ -2901,4 +2901,50 @@ public class CoffeeMaker
 		return vals;
 	}
 
+	public Area copyArea(Area A, String newName)
+	{
+		for(Enumeration e=A.getMap();e.hasMoreElements();)
+		{
+			Room room=(Room)e.nextElement();
+			/*
+			Room newRoom=(Room)room.copyOf();
+			newRoom.clearSky();
+			if(newRoom instanceof GridLocale)
+				((GridLocale)newRoom).clearGrid();
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				newRoom.rawDoors()[d]=null;
+				newRoom.rawExits()[d]=null;
+			}
+			room.rawDoors()[dirCode]=newRoom;
+			newRoom.rawDoors()[Directions.getOpDirectionCode(dirCode)]=room;
+			if(room.rawExits()[dirCode]==null)
+				room.rawExits()[dirCode]=CMClass.getExit("Open");
+			newRoom.rawExits()[Directions.getOpDirectionCode(dirCode)]=(Exit)(room.rawExits()[dirCode].copyOf());
+			newRoom.setRoomID(CMMap.getOpenRoomID(room.getArea().Name()));
+			newRoom.setArea(room.getArea());
+			CMClass.DBEngine().DBCreateRoom(newRoom,CMClass.className(newRoom));
+			CMClass.DBEngine().DBUpdateExits(newRoom);
+			CMClass.DBEngine().DBUpdateExits(room);
+			if(newRoom.numInhabitants()>0)
+				CMClass.DBEngine().DBUpdateMOBs(newRoom);
+			if(newRoom.numItems()>0)
+				CMClass.DBEngine().DBUpdateItems(newRoom);
+			CMMap.addRoom(newRoom);
+			newRoom.getArea().fillInAreaRoom(newRoom);
+			if(i==0)
+			{
+				if(number>1)
+					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+room.roomTitle()+"s fall "+Directions.getInDirectionName(dirCode)+".");
+				else
+					room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
+				Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+room.roomID()+".");
+			}
+			else
+				room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
+			room=newRoom;
+			*/
+		}
+		return A;
+	}
 }

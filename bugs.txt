@@ -1,7 +1,8 @@
 !SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
-add isable func for abilities, isopen, islocked for items
 Update the database for the ammunition change
 Ability to buy space ship areas, and add them to shopkeepers
 Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 mutable body parts, with ability to grant powers
+in the Root help, it says it is caster only, but then it gives an example usage of CHANT ROOT ORC
+When I aged Thorne tobecomeing a toddler, his name suddenly changed to Esuom Jr

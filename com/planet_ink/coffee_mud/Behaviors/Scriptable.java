@@ -141,6 +141,9 @@ public class Scriptable extends StdBehavior
 		"ISPKILL", // 55
 		"NAME", // 56
 		"ISMOON", // 57
+		"ISABLE", // 58
+		"ISOPEN", // 59
+		"ISLOCKED", // 60
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -847,6 +850,55 @@ public class Scriptable extends StdBehavior
 					returnable=true;
 				else
 					returnable=false;
+				break;
+			}
+			case 58: // isable
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
+					returnable=((MOB)E).findAbility(arg2)!=null;
+				else
+					returnable=false;
+				break;
+			}
+			case 59: // isopen
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				int dir=Directions.getGoodDirectionCode(arg1);
+				returnable=false;
+				if(dir<0)
+				{
+					Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+					if((E!=null)&&(E instanceof Container))
+						returnable=((Container)E).isOpen();
+				}
+				else
+				if(lastKnownLocation!=null)
+				{
+					Exit E=lastKnownLocation.getExitInDir(dir);
+					if(E!=null) returnable= E.isOpen();
+				}
+				break;
+			}
+			case 60: // islocked
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				int dir=Directions.getGoodDirectionCode(arg1);
+				returnable=false;
+				if(dir<0)
+				{
+					Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+					if((E!=null)&&(E instanceof Container))
+						returnable=((Container)E).isLocked();
+				}
+				else
+				if(lastKnownLocation!=null)
+				{
+					Exit E=lastKnownLocation.getExitInDir(dir);
+					if(E!=null) returnable= E.isLocked();
+				}
 				break;
 			}
 			case 10: // isfight
@@ -2095,6 +2147,57 @@ public class Scriptable extends StdBehavior
 					results.append(((MOB)E).healthText());
 				else
 					results.append(E.name()+" is dead.");
+				break;
+			}
+			case 58: // isable
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
+				{
+					Ability A=((MOB)E).findAbility(arg2);
+					if(A!=null) results.append(""+A.profficiency());
+				}
+				break;
+			}
+			case 59: // isopen
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				int dir=Directions.getGoodDirectionCode(arg1);
+				boolean returnable=false;
+				if(dir<0)
+				{
+					Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+					if((E!=null)&&(E instanceof Container))
+						returnable=((Container)E).isOpen();
+				}
+				else
+				if(lastKnownLocation!=null)
+				{
+					Exit E=lastKnownLocation.getExitInDir(dir);
+					if(E!=null) returnable= E.isOpen();
+				}
+				results.append(""+returnable);
+				break;
+			}
+			case 60: // islocked
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				int dir=Directions.getGoodDirectionCode(arg1);
+				if(dir<0)
+				{
+					Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+					if((E!=null)&&(E instanceof Container))
+						results.append(((Container)E).keyName());
+				}
+				else
+				if(lastKnownLocation!=null)
+				{
+					Exit E=lastKnownLocation.getExitInDir(dir);
+					if(E!=null)
+						results.append(E.keyName());
+				}
 				break;
 			}
 			case 55: // ispkill

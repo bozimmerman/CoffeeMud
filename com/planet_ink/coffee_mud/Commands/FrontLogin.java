@@ -139,6 +139,17 @@ public class FrontLogin extends StdCommand
 		StringBuffer buf=new StringBuffer("");
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return;
+		
+        if((mob.session()!=null)
+		&&(!mob.isMonster())
+		&&(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
+		{
+            buf = Resources.getFileResource("text"+File.separatorChar+"motd.txt");
+			if(buf.length()>0)
+                mob.session().unfilteredPrintln(buf.toString()+"\n\r--------------------------------------\n\r");
+			buf=new StringBuffer("");
+		}
+		
 		if(mob.session()!=null)
 			mob.session().setTermID(((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0)+((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?2:0));
 		Vector journal=CMClass.DBEngine().DBReadJournal("CoffeeMud News");
