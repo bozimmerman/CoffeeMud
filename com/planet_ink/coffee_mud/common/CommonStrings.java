@@ -110,22 +110,6 @@ public class CommonStrings
 			case 9: return "OBLITERATE(S)";
 			}
 			break;
-		case Weapon.TYPE_BURSTING:
-		default:
-			switch(damnCode)
-			{
-			case 0: return "scratch(es)";
-			case 1: return "graze(s)";
-			case 2: return "wound(s)";
-			case 3: return "cut(s)";
-			case 4: return "badly damage(s)";
-			case 5: return "decimate(s)";
-			case 6: return "murder(s)";
-			case 7: return "MASSACRE(S)";
-			case 8: return "DESTROY(S)";
-			case 9: return "OBLITERATE(S)";
-			}
-			break;
 		case Weapon.TYPE_FROSTING:
 			switch(damnCode)
 			{
@@ -186,8 +170,24 @@ public class CommonStrings
 			case 9: return "OBLITERATE(S)";
 			}
 			break;
+		case Weapon.TYPE_BURSTING:
+		default:
+			switch(damnCode)
+			{
+			case 0: return "scratch(es)";
+			case 1: return "graze(s)";
+			case 2: return "wound(s)";
+			case 3: return "cut(s)";
+			case 4: return "badly damage(s)";
+			case 5: return "decimate(s)";
+			case 6: return "murder(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
+			}
+			break;
 		}
-		return hws[stringCode];
+		return "";
 	}
 	
 	public static String armorStr(int armor){
