@@ -3,10 +3,11 @@ Admin macros for the grinder (view logs, purge players, etc..)
 macros for command help
 One of our players commented that they'd like a config option 'AUTOIMPROVEMENT' that would be default off, but when on, tells you anytime an ability increases in proficiency... like 'You become better at Recall (65%).'
 Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
-
-//****** next version ********************************************************
+Just a command that lets players knock on a door, causing the folk inside to hear a 'knonk on the door' or some such. 5 rooms deep indoors if HARD is used.
 Ability to manage Resources via web (table view much nicer)
 News (Journal) reading macro
+
+//****** next version ********************************************************
 friends list, for filter who
 group formations as an alternative way of determining range
 ignore list, for ignoreing players/gossips/who/etc.. 

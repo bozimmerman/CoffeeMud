@@ -113,7 +113,8 @@ public class Thief extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),25,"Thief_Ambush",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Ventrilloquate",false);
-			CMAble.addCharAbilityMapping(ID(),30,"Thief_Nondetection",false);
+			
+			CMAble.addCharAbilityMapping(ID(),30,"Thief_Nondetection",true);
 		}
 	}
 

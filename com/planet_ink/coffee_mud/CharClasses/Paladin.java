@@ -90,7 +90,7 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_MassFreedom",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Paladin_Goodness",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Heal",false);
-			CMAble.addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Paladin_CraftHolyAvenger",true);
 		
 		}
 	}
