@@ -103,7 +103,6 @@ public class RandomTeleporter extends ActiveTicker
 		super.tick(ticking,tickID);
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
-			Vector objections=null;
 			MOB mob=(MOB)ticking;
 			int tries=0;
 			Room R=null;

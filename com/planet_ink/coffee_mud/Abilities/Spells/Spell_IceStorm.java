@@ -52,7 +52,7 @@ public class Spell_IceStorm extends Spell
 					mob.location().send(mob,msg2);
 					invoker=mob;
 
-					int numDice = adjustedLevel(mob);
+					int numDice = adjustedLevel(mob)/4;
 					int damage = Dice.roll(numDice, 15, 10);
 					if((msg.wasModified())||(msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));

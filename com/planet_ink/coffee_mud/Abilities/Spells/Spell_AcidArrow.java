@@ -53,7 +53,7 @@ public class Spell_AcidArrow extends Spell
 				mob.location().send(mob,msg2);
 				invoker=mob;
                 int numDice = adjustedLevel(mob);
-				int damage = Dice.roll(numDice, 4, 5);
+				int damage = Dice.roll(1, numDice+10, 5);
 				if((msg2.wasModified())||(msg.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));
 				ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The acidic blast <DAMAGE> <T-NAME>!");

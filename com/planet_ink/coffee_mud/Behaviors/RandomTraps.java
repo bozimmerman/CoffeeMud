@@ -220,7 +220,6 @@ public class RandomTraps extends ActiveTicker
 				else
 				if((ticking instanceof Area)&&(((Area)ticking).mapSize()>0))
 				{
-					Room room=null;
 					for(Enumeration m=((Area)ticking).getMap();m.hasMoreElements();)
 						makeRoomElligible((Room)m.nextElement(),elligible);
 				}

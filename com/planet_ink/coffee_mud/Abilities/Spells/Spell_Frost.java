@@ -44,8 +44,8 @@ public class Spell_Frost extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob);
-				damage += Dice.roll(maxDie,3,15);
+				int maxDie =  adjustedLevel(mob)/4;
+				damage += Dice.roll(maxDie,6,5);
 				mob.location().send(mob,msg2);
 				if((msg2.wasModified())||(msg.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));

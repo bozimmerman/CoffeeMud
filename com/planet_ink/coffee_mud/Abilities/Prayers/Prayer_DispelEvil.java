@@ -33,7 +33,7 @@ public class Prayer_DispelEvil extends Prayer
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int harming=Dice.roll(1,15,10);
+				int harming=Dice.roll(3,adjustedLevel(mob)+8,10);
 				if(msg.wasModified())
 					harming=(int)Math.round(Util.div(harming,2.0));
 				if(target.getAlignment()<350)

@@ -54,7 +54,7 @@ public class Spell_Dragonfire extends Spell
 					invoker=mob;
 
 					int maxDie =  adjustedLevel(mob);
-					int damage = Dice.roll(maxDie,3,6);
+					int damage = Dice.roll(maxDie,6,maxDie);
 					if((msg.wasModified())||(msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));
 

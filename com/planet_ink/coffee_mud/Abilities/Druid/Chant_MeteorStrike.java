@@ -55,8 +55,8 @@ public class Chant_MeteorStrike extends Chant
 					invoker=mob;
 
 					int damage = 0;
-					int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),3.0));
-					damage = Dice.roll(maxDie,6,6);
+					int maxDie=adjustedLevel(mob);
+					damage = Dice.roll(maxDie,6,30);
 					if(!msg.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
 					if(target.location()==mob.location())

@@ -399,11 +399,17 @@ public class Clans implements Clan, Tickable
 			Vector V;
 			int activeMembers=0;
 			ExternalPlay.DBClanFill(C.getName(),members,new Vector(),lastDates);
-			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_DAY*Host.TICK_TIME;
 			if(members.size()!=lastDates.size())
 			{
 				Log.errOut("Unable to tick "+C.name()+"!");
 				return true;
+			}
+			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_DAY*Host.TICK_TIME;
+			for(int j=0;j<members.size();j++)
+			{
+				long lastLogin=((Long)lastDates.elementAt(j)).longValue();
+				if((System.currentTimeMillis()-lastLogin)<deathMilis)
+					activeMembers++;
 			}
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
 			{

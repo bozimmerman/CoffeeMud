@@ -46,7 +46,15 @@ public class Spell_GravitySlam extends Spell
 				int maxDie =  adjustedLevel(mob);
 				if(!Sense.isInFlight(target))
 					maxDie=maxDie/2;
-				damage += Dice.roll(maxDie,adjustedLevel(mob)/2,adjustedLevel(mob)/2);
+				Room R=mob.location();
+				if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+					maxDie=maxDie/6;
+				if((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+					maxDie=maxDie/4;
+				
+				damage += Dice.roll(10,6,maxDie*2);
 				if(msg.wasModified())
 					damage = (int)Math.round(Util.div(damage,2.0));
 				if(!Sense.isInFlight(target))

@@ -44,7 +44,7 @@ public class Spell_IceLance extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob);
+				int maxDie =  adjustedLevel(mob)/2;
 				damage += Dice.roll(maxDie,6,15);
 				mob.location().send(mob,msg2);
 				if((msg2.wasModified())||(msg.wasModified()))

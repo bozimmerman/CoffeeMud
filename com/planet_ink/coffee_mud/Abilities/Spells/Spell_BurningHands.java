@@ -44,7 +44,7 @@ public class Spell_BurningHands extends Spell
 				mob.location().send(mob,msg2);
 				int damage = 0;
 				int maxDie =  adjustedLevel(mob);
-				damage += Dice.roll(1,maxDie*5,3);
+				damage += Dice.roll(1,maxDie,15);
 				if((msg2.wasModified())||(msg.wasModified()))
 					damage = (int)Math.round(Util.div(damage,2.0));
 				if(target.location()==mob.location())
