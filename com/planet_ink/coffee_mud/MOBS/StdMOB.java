@@ -302,7 +302,7 @@ public class StdMOB implements MOB
 			bodyWeight=new Integer(baseEnvStats().weight()).doubleValue();
 		else
 			bodyWeight=new Integer(charStats().getMyRace().getMaxWeight()).doubleValue();
-		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + str*5.0);
+		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + (str*5.0));
 	}
 	public int maxFollowers()
 	{
