@@ -221,6 +221,14 @@ public class ItemUsage
 		{
 			commands.removeElementAt(commands.size()-1);
 			this.wear(mob,commands);
+			return;
+		}
+		
+		if(((String)commands.elementAt(1)).equalsIgnoreCase("on"))
+		{
+			commands.removeElementAt(1);
+			this.wear(mob,commands);
+			return;
 		}
 		
 		commands.removeElementAt(0);

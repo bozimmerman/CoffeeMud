@@ -124,6 +124,12 @@ public class BasicSenses
 			new ItemUsage().remove(mob,commands);
 		}
 		else
+		if((commands.size()>1)&&(((String)commands.elementAt(1)).equalsIgnoreCase("off")))
+		{
+			commands.removeElementAt(1);
+			new ItemUsage().remove(mob,commands);
+		}
+		else
 			new ItemUsage().get(mob,commands);
 	}
 	
