@@ -12,6 +12,7 @@ public interface ExternalCommand
 	public void postDeath(MOB source, MOB target,Affect addHere);
 	public void postPanic(MOB mob, Affect affect);
 	public void drawIfNecessary(MOB mob, boolean held);
+	public void sheathIfPossible(MOB mob);
 
 	// other actions
 	public boolean wear(MOB mob, Item item, boolean quiet);

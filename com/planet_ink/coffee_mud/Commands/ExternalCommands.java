@@ -148,6 +148,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		AbilityHelper.getRadiantRooms(room,rooms,openOnly,maxDepth);
 	}
+	public void sheathIfPossible(MOB mob)
+	{
+		TheFight.sheathIfPossible(mob);
+	}
 	
 	
 	public void postDeath(MOB source, MOB target,Affect addHere)

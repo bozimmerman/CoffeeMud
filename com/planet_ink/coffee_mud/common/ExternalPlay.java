@@ -223,6 +223,10 @@ public class ExternalPlay
 		if(player!=null) return player.getScore(mob);
 		return new StringBuffer("");
 	}
+	public static void sheathIfPossible(MOB mob)
+	{
+		if(player!=null) player.sheathIfPossible(mob);
+	}
 	public static Vector findBastardTheBestWay(Room location, Vector destRooms, boolean noWater)
 	{
 		if(player!=null) return player.findBastardTheBestWay(location,destRooms,noWater);

@@ -271,6 +271,8 @@ public class Scoring
 		if(Sense.isSneaking(mob))
 			msg.append("^!You are sneaking.^?\n\r");
 
+		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
+			msg.append("^!You are fatigued.^?\n\r");
 		if(mob.curState().getHunger()<1)
 			msg.append("^!You are hungry.^?\n\r");
 		if(mob.curState().getThirst()<1)

@@ -612,16 +612,40 @@ public class TheFight
 		return sheaths;
 	}
 
+	public static void sheathIfPossible(MOB mob)
+	{ sheath(mob,new Vector(),true,false);}
 	public static void sheath(MOB mob, Vector commands)
+	{ sheath(mob,commands,false,false);}
+	
+	public static void sheath(MOB mob, Vector commands, boolean noerrors, boolean quiet)
 	{
 		commands.removeElementAt(0);
+		Item item1=null;
+		Item item2=null;
+		if(commands.size()==0)
+		{
+			for(int i=0;i<mob.inventorySize();i++)
+			{
+				Item I=mob.fetchInventory(i);
+				if((I!=null)
+				&&(I instanceof Weapon)
+				&&(!I.amWearingAt(Item.INVENTORY)))
+				{
+					if(I.amWearingAt(Item.WIELD))
+						item1=I;
+					else
+					if(I.amWearingAt(Item.WIELD))
+						item2=I;
+				}
+			}
+			if((noerrors)&&(item1==null)&&(item2==null))
+				return;
+		}
 		Vector sheaths=getSheaths(mob,false);
 		Vector items=new Vector();
 		Vector containers=new Vector();
 		if(commands.size()==0)
 		{
-			Item item1=mob.fetchWieldedItem();
-			Item item2=mob.fetchWornItem(Item.HELD);
 			if(item2==item1) item2=null;
 			for(int i=0;i<sheaths.size();i++)
 			{
@@ -697,10 +721,11 @@ public class TheFight
 
 		if(items.size()==0)
 		{
-			if(commands.size()==0)
-				mob.tell("You don't seem to be wielding anything you can sheath.");
-			else
-				mob.tell("You don't seem to be wielding that.");
+			if(!noerrors)
+				if(commands.size()==0)
+					mob.tell("You don't seem to be wielding anything you can sheath.");
+				else
+					mob.tell("You don't seem to be wielding that.");
 		}
 		else
 		for(int i=0;i<items.size();i++)
@@ -709,7 +734,7 @@ public class TheFight
 			Container container=(Container)containers.elementAt(i);
 			if(ExternalPlay.remove(mob,putThis,true))
 			{
-				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> sheath(s) <O-NAME> in <T-NAME>");
+				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,((quiet?null:"<S-NAME> sheath(s) <O-NAME> in <T-NAME>")));
 				if(mob.location().okAffect(mob,putMsg))
 					mob.location().send(mob,putMsg);
 			}

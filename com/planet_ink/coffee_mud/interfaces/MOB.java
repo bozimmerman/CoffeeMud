@@ -27,6 +27,8 @@ public interface MOB
 	public static final int ATT_AUTOIMPROVE=16384;
 	public static final int ATT_NOTEACH=32768;
 
+	public static final long SHEATH_TIME=3*Host.TICK_TIME;
+	
 	public static final boolean[] AUTOREV={false,
 										   false,
 										   false,
@@ -103,7 +105,8 @@ public interface MOB
 	public int adjustedAttackBonus();
 	public int adjustedArmor();
 	public int adjustedDamage(Weapon weapon, MOB target);
-
+	public long peaceTime();
+	
 
 	/** If the MOB is controlled by a USER, this
 	 * will point to the controlling session object*/

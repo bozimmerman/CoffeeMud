@@ -52,6 +52,7 @@ public class StdMOB implements MOB
 
 	protected Vector behaviors=new Vector();
 
+	
 	// gained attributes
 	protected int Experience=0;
 	protected int ExpNextLevel=1000;
@@ -139,6 +140,8 @@ public class StdMOB implements MOB
 	protected MOB soulMate=null;
 	private double speeder=0.0;
 	protected int atRange=-1;
+	private long peaceTime=0;
+	public long peaceTime(){return peaceTime;}
 
 	public String Name()
 	{
@@ -570,21 +573,28 @@ public class StdMOB implements MOB
 	}
 	public int adjustedAttackBonus()
 	{
-		return	envStats().attackAdjustment()
-				+((charStats().getStat(CharStats.STRENGTH)-9)*3)
-				-((curState().getHunger()<1)?10:0)
-				-((curState().getThirst()<1)?10:0);
+		double att=new Integer(
+				envStats().attackAdjustment()
+				+((charStats().getStat(CharStats.STRENGTH)-9)*3)).doubleValue();
+		if(curState().getHunger()<1) att=att*.9;
+		if(curState().getThirst()<1) att=att*.9;
+		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
+		return (int)Math.round(att);
 	}
 
 	public int adjustedArmor()
 	{
-		return  envStats().armor()
-				-((charStats().getStat(CharStats.DEXTERITY)-9)*3)
-				+((curState().getHunger()<1)?10:0)
-				+((curState().getThirst()<1)?10:0)
-				+(((envStats().disposition()&EnvStats.IS_SITTING)>0)?15:0)
-				+(((envStats().disposition()&EnvStats.IS_SLEEPING)>0)?30:0)
-				-50;
+		double arm=new Integer(((charStats().getStat(CharStats.DEXTERITY)-9)*3)
+							   +50).doubleValue();
+		if((envStats().disposition()&EnvStats.IS_SLEEPING)>0) arm=0.0;
+		if(arm>0.0)
+		{
+			if(curState().getHunger()<1) arm=arm*.85;
+			if(curState().getThirst()<1) arm=arm*.85;
+			if(curState().getFatigue()>CharState.FATIGUED_MILLIS) arm=arm*.85;
+			if((envStats().disposition()&EnvStats.IS_SITTING)>0) arm=arm*.75;
+		}
+		return (int)Math.round(envStats().armor()-arm);
 	}
 	
 	public int adjustedDamage(Weapon weapon, MOB target)
@@ -607,6 +617,7 @@ public class StdMOB implements MOB
 		else
 			damageAmount = new Integer(envStats().damage()+(charStats().getStat(CharStats.STRENGTH) / 3)-2).doubleValue();
 		if(curState().getHunger() < 1) damageAmount *= .8;
+		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(curState().getThirst() < 1) damageAmount *= .9;
 		if(damageAmount<1.0) damageAmount=1.0;
 		return (int)Math.round(damageAmount);
@@ -1795,6 +1806,7 @@ public class StdMOB implements MOB
 				}
 				if(isInCombat())
 				{
+					peaceTime=0;
 					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW))
 					 	ExternalPlay.drawIfNecessary(this,false);
 
@@ -1846,7 +1858,20 @@ public class StdMOB implements MOB
 					}
 				}
 				else
+				{
 					speeder=0.0;
+					peaceTime+=Host.TICK_TIME;
+					if(Util.bset(getBitmap(),MOB.ATT_AUTODRAW)&&(peaceTime>=SHEATH_TIME))
+						ExternalPlay.sheathIfPossible(this);
+				}
+				if(!isMonster())
+				{
+					if(Sense.isSleeping(this))
+						curState().adjFatigue(-CharState.REST_PER_TICK,maxState());
+					else
+						curState().adjFatigue(Host.TICK_TIME,maxState());
+				}
+				
 				if((riding()!=null)&&(CoffeeUtensils.roomLocation(riding())!=location()))
 					setRiding(null);
 				if((!isMonster())&&(((++minuteCounter)*Host.TICK_TIME)>60000))

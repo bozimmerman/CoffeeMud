@@ -221,7 +221,7 @@ public class Sense
 	}
 	public static StringBuffer colorCodes(Environmental seen , Environmental seer)
 	{
-		StringBuffer Say=new StringBuffer("");
+		StringBuffer Say=new StringBuffer("^N");
 
 		if((Sense.isEvil(seen))&&(Sense.canSeeEvil(seer)))
 			Say.append(" (glowing ^rred^?)");

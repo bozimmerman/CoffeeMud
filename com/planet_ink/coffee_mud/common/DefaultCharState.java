@@ -9,6 +9,7 @@ public class DefaultCharState implements Cloneable, CharState
 	protected int Movement=50;
 	protected int Hunger=1000;
 	protected int Thirst=500;
+	protected long Fatigue=0;
 
 	protected int botherCycle=0;
 	protected int ticksHungry=0;
@@ -29,6 +30,18 @@ public class DefaultCharState implements Cloneable, CharState
 		if(HitPoints>max.getHitPoints())
 		{
 			HitPoints=max.getHitPoints();
+			return false;
+		}
+		return true;
+	}
+	public long getFatigue(){return Fatigue;}
+	public void setFatigue(long newVal){Fatigue=newVal;}
+	public boolean adjFatigue(long byThisMuch, CharState max)
+	{
+		Fatigue+=byThisMuch;
+		if(Fatigue<1)
+		{
+			Fatigue=0;
 			return false;
 		}
 		return true;
