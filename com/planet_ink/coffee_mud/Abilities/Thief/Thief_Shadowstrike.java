@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -71,8 +72,13 @@ public class Thief_Shadowstrike extends ThiefSkill
 		FullMsg msg=new FullMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
 		if(mob.location().okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
-			MUDFight.postAttack(mob,target,w);
+		    boolean alwaysInvis=Util.bset(mob.baseEnvStats().disposition(),EnvStats.IS_INVISIBLE);
+		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
+		    mob.recoverEnvStats();
+		    mob.location().send(mob,msg);
+		    MUDFight.postAttack(mob,target,w);
+		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_INVISIBLE);
+		    mob.recoverEnvStats();
 			if(success)
 			{
 				MOB oldVictim=target.getVictim();

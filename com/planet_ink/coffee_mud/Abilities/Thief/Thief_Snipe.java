@@ -75,14 +75,17 @@ public class Thief_Snipe extends ThiefSkill
 		int code=CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT;
 		String str=auto?"":"<S-NAME> strike(s) <T-NAMESELF> from the shadows!";
 		int otherCode=success?code:CMMsg.NO_EFFECT;
-		if(Util.bset(otherCode,CMMsg.MASK_SOUND))
-		    otherCode=Util.unsetb(otherCode,CMMsg.MASK_SOUND);
 		String otherStr=success?str:null;
 		FullMsg msg=new FullMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
 		if(mob.location().okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
-			MUDFight.postAttack(mob,target,w);
+		    boolean alwaysInvis=Util.bset(mob.baseEnvStats().disposition(),EnvStats.IS_INVISIBLE);
+		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
+		    mob.recoverEnvStats();
+		    mob.location().send(mob,msg);
+		    MUDFight.postAttack(mob,target,w);
+		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_INVISIBLE);
+		    mob.recoverEnvStats();
 			if(success)
 			{
 				MOB oldVictim=target.getVictim();

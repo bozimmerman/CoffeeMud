@@ -36,6 +36,7 @@ public class Thief_Hide extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every message listed in the CMMsg interface
