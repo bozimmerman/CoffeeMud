@@ -88,7 +88,7 @@ public class StdWeapon extends StdItem implements Weapon
 		&&(affect.tool()!=null)
 		&&(affect.tool()==this)
 		&&(subjectToWearAndTear())
-		&&(Dice.rollPercentage()<10)
+		&&(Dice.rollPercentage()<5)
 		&&(owner()!=null)
 		&&(amWearingAt(Item.WIELD))
 		&&(owner() instanceof MOB)

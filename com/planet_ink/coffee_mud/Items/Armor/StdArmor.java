@@ -170,7 +170,8 @@ public class StdArmor extends StdItem implements Armor
 		{
 			if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			&&(affect.tool() instanceof Weapon)
+			&&(Dice.rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
 			{
 				Weapon tool=(Weapon)affect.tool();
 				switch(material()&EnvResource.MATERIAL_MASK)
