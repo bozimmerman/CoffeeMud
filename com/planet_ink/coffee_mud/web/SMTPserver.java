@@ -84,7 +84,7 @@ public class SMTPserver extends Thread implements Tickable
 			Vector V=Util.parseCommas(journalStr,true);
 			if(V.size()>0)
 			{
-				journals=new DVector(3);
+				journals=new DVector(4);
 				for(int v=0;v<V.size();v++)
 				{
 					String s=((String)V.elementAt(v)).trim();
@@ -98,7 +98,8 @@ public class SMTPserver extends Thread implements Tickable
 					if(!journals.contains(s))
 					{
 						boolean forward=(parm.toUpperCase().startsWith("FORWARD ")||parm.toUpperCase().endsWith(" FORWARD")||(parm.toUpperCase().indexOf(" FORWARD ")>=0));
-						journals.addElement(s,new Boolean(parm),parm);
+						boolean subscribeOnly=(parm.toUpperCase().startsWith("SUBSCRIBEONLY ")||parm.toUpperCase().endsWith(" SUBSCRIBEONLY")||(parm.toUpperCase().indexOf(" SUBSCRIBEONLY ")>=0));
+						journals.addElement(s,new Boolean(forward),new Boolean(subscribeOnly),parm);
 					}
 				}
 			}
@@ -135,13 +136,23 @@ public class SMTPserver extends Thread implements Tickable
 		}
 		return false;
 	}
+	public boolean isASubscribeOnlyJournal(String journal)
+	{
+		if(journals==null) return false;
+		for(int i=0;i<journals.size();i++)
+		{
+			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
+				return ((Boolean)journals.elementAt(i,3)).booleanValue();
+		}
+		return false;
+	}
 	public String getJournalCriteria(String journal)
 	{
 		if(journals==null) return "";
 		for(int i=0;i<journals.size();i++)
 		{
 			if(journal.equalsIgnoreCase((String)journals.elementAt(i,1)))
-				return (String)journals.elementAt(i,3);;
+				return (String)journals.elementAt(i,4);;
 		}
 		return "";
 	}
