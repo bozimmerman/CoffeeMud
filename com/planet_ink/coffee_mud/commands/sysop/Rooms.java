@@ -210,11 +210,14 @@ public class Rooms
 					case 'W':
 						newClimate=newClimate|Area.CLIMATE_WINDY;
 						break;
+					case 'D':
+						newClimate=newClimate|Area.CLIMATE_WINDY;
+						break;
 					case 'N':
 						// do nothing
 						break;
 					default:
-						mob.tell("Invalid CLIMATE code: '"+restStr.charAt(i)+"'.  Valid codes include: R)AINY, H)OT, C)OLD, W)INDY, N)ORMAL.\n\r");
+						mob.tell("Invalid CLIMATE code: '"+restStr.charAt(i)+"'.  Valid codes include: R)AINY, H)OT, C)OLD, D)RY, W)INDY, N)ORMAL.\n\r");
 						mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 						return;
 					}

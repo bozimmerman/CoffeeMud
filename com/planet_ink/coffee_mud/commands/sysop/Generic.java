@@ -527,13 +527,15 @@ public class Generic
 			mob.session().println("H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
 			mob.session().println("C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
 			mob.session().println("W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
-			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWR\n","\n").toUpperCase();
+			mob.session().println("D) Very dry         : "+((A.climateType()&Area.CLIMASK_DRY)>0));
+			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWD\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{
 			case 'C': toggleClimateMask(A,Area.CLIMASK_COLD); break;
 			case 'H': toggleClimateMask(A,Area.CLIMASK_HOT); break;
 			case 'R': toggleClimateMask(A,Area.CLIMASK_WET); break;
 			case 'W': toggleClimateMask(A,Area.CLIMATE_WINDY); break;
+			case 'D': toggleClimateMask(A,Area.CLIMASK_DRY); break;
 			}
 		}
 	}
