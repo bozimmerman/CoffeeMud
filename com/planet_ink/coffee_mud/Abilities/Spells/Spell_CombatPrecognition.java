@@ -12,6 +12,7 @@ public class Spell_CombatPrecognition extends Spell
 	public String displayText(){return "(Combat Precognition)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
+	protected int overrideMana(){return 100;}
 	boolean lastTime=false;
 	public Environmental newInstance(){	return new Spell_CombatPrecognition();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}

@@ -13,6 +13,7 @@ public class Spell_DemonGate extends Spell
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
+	protected int overrideMana(){return 100;}
 	MOB myTarget=null;
 	public Environmental newInstance(){	return new Spell_DemonGate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
@@ -84,7 +85,7 @@ public class Spell_DemonGate extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
-				if(Dice.rollPercentage()<25)
+				if(Dice.rollPercentage()<10)
 					myMonster.setVictim(mob);
 				else
 				{

@@ -1,5 +1,3 @@
-reduce the chance that the gated demon is hostile towards the caster, but change the mana cost to be a heckuva lot more.  Doesn't need to be caster's full mana, though.
-compare trip and body flip
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
 do tims readable with pages
@@ -8,4 +6,3 @@ Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when 
 	entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
-perhaps we can put something in so that the quests ask each other which mobs they are usin
