@@ -40,7 +40,7 @@ public class Ranger_Enemy1 extends StdAbility
 				   &&(((Ranger_Enemy1)A).miscText.length()>0))
 					choices.remove(((Ranger_Enemy1)A).miscText);
 			}
-			for(int a=0;a<mob.numEffects();a++)
+			for(int a=0;a<mob.numAllEffects();a++)
 			{
 				Ability A=mob.fetchEffect(a);
 				if((A instanceof Ranger_Enemy1)

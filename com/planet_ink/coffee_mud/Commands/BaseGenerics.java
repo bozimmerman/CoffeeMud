@@ -3890,6 +3890,89 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	static void genRacialEffects(MOB mob, Race E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		while(true)
+		{
+			StringBuffer parts=new StringBuffer("");
+			int numResources=Util.s_int(E.getStat("NUMREFF"));
+			Vector ables=new Vector();
+			Vector data=new Vector();
+			for(int v=0;v<numResources;v++)
+			{
+				Ability A=CMClass.getAbility(E.getStat("GETREFF"+v));
+				if(A!=null)
+				{
+					parts.append("("+A.ID()+"/"+E.getStat("GETREFFLVL"+v)+"/"+E.getStat("GETREFFPARM"+v)+"), ");
+					ables.addElement(A);
+					data.addElement(A.ID()+"~"+E.getStat("GETREFFLVL"+v)+"~"+E.getStat("GETREFFPARM"+v));
+				}
+			}
+			if(parts.toString().endsWith(", "))
+			{parts.deleteCharAt(parts.length()-1);parts.deleteCharAt(parts.length()-1);}
+			mob.tell(showNumber+". Racial Effects: "+parts.toString()+".");
+			if((showFlag!=showNumber)&&(showFlag>-999)) return;
+			String newName=mob.session().prompt("Enter an effect name to add or remove\n\r:","");
+			if(newName.equalsIgnoreCase("?"))
+				mob.tell(CMLister.reallyList(CMClass.abilities(),-1).toString());
+			else
+			if(newName.length()>0)
+			{
+				int partNum=-1;
+				for(int i=0;i<ables.size();i++)
+					if(EnglishParser.containsString(((Ability)ables.elementAt(i)).ID(),newName))
+					{ partNum=i; break;}
+				boolean updateList=false;
+				if(partNum<0)
+				{
+					Ability A=CMClass.getAbility(newName);
+					if(A==null)
+						mob.tell("That is neither an existing effect name, nor a valid one to add.  Use ? for a list.");
+					else
+					{
+						StringBuffer str=new StringBuffer(A.ID()+"~");
+						String level=mob.session().prompt("Enter the level to gain this effect (1): ","1");
+						str.append((""+Util.s_int(level))+"~");
+						String prof=mob.session().prompt("Enter any parameters: ","");
+						str.append(""+prof);
+						data.addElement(str.toString());
+						ables.addElement(A);
+						mob.tell(A.name()+" added.");
+						updateList=true;
+					}
+				}
+				else
+				{
+					Ability A=(Ability)ables.elementAt(partNum);
+					ables.removeElementAt(partNum);
+					data.removeElementAt(partNum);
+					updateList=true;
+					mob.tell(A.name()+" removed.");
+				}
+				if(updateList)
+				{
+					if(data.size()>0)
+						E.setStat("NUMREFF",""+data.size());
+					else
+						E.setStat("NUMREFF","");
+					for(int i=0;i<data.size();i++)
+					{
+						Vector V=Util.parseSquiggles((String)data.elementAt(i));
+						E.setStat("GETREFF"+i,((String)V.elementAt(0)));
+						E.setStat("GETREFFLVL"+i,((String)V.elementAt(1)));
+						E.setStat("GETREFFPARM"+i,((String)V.elementAt(3)));
+					}
+				}
+			}
+			else
+			{
+				mob.tell("(no change)");
+				return;
+			}
+		}
+	}
 	static void genClassAbilities(MOB mob, CharClass E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -4148,6 +4231,7 @@ public class BaseGenerics extends StdCommand
 			genWeapon(mob,me,++showNumber,showFlag);
 			genRacialAbilities(mob,me,++showNumber,showFlag);
 			genCulturalAbilities(mob,me,++showNumber,showFlag);
+			genRacialEffects(mob,me,++showNumber,showFlag);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));

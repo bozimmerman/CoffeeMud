@@ -28,6 +28,10 @@ public class StdRace implements Race
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
 	protected Vector outfitChoices=null;
+	protected Hashtable racialEffectMap=null;
+	protected String[] racialEffectNames(){return null;}
+	protected int[] racialEffectLevels(){return null;}
+	protected String[] racialEffectParms(){return null;}
 	protected Hashtable racialAbilityMap=null;
 	protected String[] racialAbilityNames(){return null;}
 	protected int[] racialAbilityLevels(){return null;}
@@ -331,7 +335,7 @@ public class StdRace implements Race
 			room.addItem(Body);
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());
 		Body.recoverEnvStats();
-		for(int i=0;i<mob.numEffects();i++)
+		for(int i=0;i<mob.numAllEffects();i++)
 		{
 			Ability A=mob.fetchEffect(i);
 			if((A!=null)&&(A instanceof DiseaseAffect))
@@ -397,6 +401,46 @@ public class StdRace implements Race
 			}
 		}
 		return Body;
+	}
+
+	public Vector racialEffects(MOB mob)
+	{
+		if((racialEffectMap==null)
+		&&(racialEffectNames()!=null)
+		&&(racialEffectLevels()!=null)
+		&&(racialEffectParms()!=null))
+			racialEffectMap=new Hashtable();
+		
+		if(racialEffectMap==null) return empty;
+		
+		Integer level=null;
+		if(mob!=null)
+			level=new Integer(mob.envStats().level());
+		else
+			level=new Integer(Integer.MAX_VALUE);
+		
+		if(racialEffectMap.containsKey(level))
+			return (Vector)racialEffectMap.get(level);
+		Vector finalV=new Vector();
+		for(int v=0;v<racialEffectLevels().length;v++)
+		{
+			if((racialEffectLevels()[v]<=level.intValue())
+			&&(racialEffectNames().length>v)
+			&&(racialEffectParms().length>v))
+			{
+				Ability A=CMClass.getAbility(racialEffectNames()[v]);
+				if(A!=null)
+				{
+					A.setProfficiency(100);
+					A.setBorrowed(mob,true);
+					A.setMiscText(racialEffectParms()[v]);
+					A.makeNonUninvokable();
+					finalV.addElement(A);
+				}
+			}
+		}
+		racialAbilityMap.put(level,finalV);
+		return finalV;
 	}
 
 	public Vector racialAbilities(MOB mob)

@@ -19,7 +19,7 @@ public class Play_Tempo extends Play
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			for(int i=0;i<mob.numEffects();i++)
+			for(int i=0;i<mob.numAllEffects();i++)
 			{
 				Ability A=mob.fetchEffect(i);
 				if((A!=null)

@@ -13,7 +13,7 @@ public class Affect extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("");
 		int colnum=2;
-		for(int a=0;a<mob.numEffects();a++)
+		for(int a=0;a<mob.numAllEffects();a++)
 		{
 			Ability thisAffect=mob.fetchEffect(a);
 			String disp=thisAffect.displayText();

@@ -194,7 +194,7 @@ public class Language extends StdAbility
 	{
 		if(!auto)
 		{
-			for(int a=0;a<mob.numEffects();a++)
+			for(int a=0;a<mob.numAllEffects();a++)
 			{
 				Ability A=mob.fetchEffect(a);
 				if((A!=null)&&(A instanceof Language))

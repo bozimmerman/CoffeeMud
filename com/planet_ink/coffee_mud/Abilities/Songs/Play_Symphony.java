@@ -672,7 +672,7 @@ public class Play_Symphony extends Play
 		case CODE_SPEEDCOMMONSKILLS:
 			{
 				MOB M=(MOB)affected;
-				for(int a=0;a<M.numEffects();a++)
+				for(int a=0;a<M.numAllEffects();a++)
 				{
 					Ability A=M.fetchEffect(a);
 					if((A!=null)

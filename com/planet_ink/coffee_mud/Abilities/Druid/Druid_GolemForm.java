@@ -166,7 +166,7 @@ public class Druid_GolemForm extends StdAbility
 	public static boolean isShapeShifted(MOB mob)
 	{
 		if(mob==null) return false;
-		for(int a=0;a<mob.numEffects();a++)
+		for(int a=0;a<mob.numAllEffects();a++)
 		{
 			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Druid_GolemForm))

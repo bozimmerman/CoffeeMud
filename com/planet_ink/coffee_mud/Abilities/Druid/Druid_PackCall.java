@@ -79,7 +79,7 @@ public class Druid_PackCall extends StdAbility
 			return false;
 		}
 		Druid_ShapeShift D=null;
-		for(int a=0;a<mob.numEffects();a++)
+		for(int a=0;a<mob.numAllEffects();a++)
 		{
 			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Druid_ShapeShift))

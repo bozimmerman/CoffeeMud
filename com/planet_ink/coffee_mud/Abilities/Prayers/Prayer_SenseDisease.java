@@ -33,6 +33,16 @@ public class Prayer_SenseDisease extends Prayer
 
 	public Ability getDisease(Environmental mob)
 	{
+		if(mob instanceof MOB)
+		{
+			for(int m=0;m<((MOB)mob).numAllEffects();m++)
+			{
+				Ability A=((MOB)mob).fetchEffect(m);
+				if((A.classificationCode()&A.ALL_CODES)==A.DISEASE)
+					return A;
+			}
+		}
+		else
 		for(int m=0;m<mob.numEffects();m++)
 		{
 			Ability A=mob.fetchEffect(m);

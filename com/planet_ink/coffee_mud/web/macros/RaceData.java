@@ -11,7 +11,7 @@ public class RaceData extends StdWebMacro
 
 	// valid parms include HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES,
 	// HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
-	// CLASSES, LANGS
+	// CLASSES, LANGS, EFFECTS
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -152,6 +152,16 @@ public class RaceData extends StdWebMacro
 						}
 					}
 
+				}
+				if(parms.containsKey("EFFECTS"))
+				{
+					int num=Util.s_int(R.getStat("NUMREFF"));
+					for(int i=0;i<num;i++)
+					{
+						Ability A=mob.fetchAbility(R.getStat("NUMREFF"+i));
+						if(A!=null)
+							str.append(A.Name()+", ");
+					}
 				}
 				if(parms.containsKey("LANGS"))
 				{

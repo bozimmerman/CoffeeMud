@@ -23,7 +23,7 @@ public class Common extends Language
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		for(int a=0;a<mob.numEffects();a++)
+		for(int a=0;a<mob.numAllEffects();a++)
 		{
 			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Language))

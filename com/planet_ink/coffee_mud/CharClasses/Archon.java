@@ -66,7 +66,7 @@ public class Archon extends StdCharClass
 		// the most efficient way of doing this -- just hash em!
 		Hashtable alreadyAble=new Hashtable();
 		Hashtable alreadyAff=new Hashtable();
-		for(int a=0;a<mob.numEffects();a++)
+		for(int a=0;a<mob.numAllEffects();a++)
 		{
 			Ability A=mob.fetchEffect(a);
 			if(A!=null) alreadyAff.put(A.ID(),A);

@@ -193,6 +193,8 @@ public interface MOB
 	public void confirmWearability();
 	public void giveItem(Item thisContainer);
 	public int getWearPositions(long wornCode);
+	
+	public int numAllEffects();
 
 	/** Manipulation of followers */
 	public void addFollower(MOB follower);

@@ -26,6 +26,12 @@ public class Chant_SensePoison extends Chant
 		if(fromMe instanceof MOB)
 		{
 			MOB mob=(MOB)fromMe;
+			for(int a=0;a<mob.numAllEffects();a++)
+			{
+				Ability A=mob.fetchEffect(a);
+				if((A!=null)&&(A.classificationCode()==Ability.POISON)&&(!offenders.contains(A)))
+					offenders.addElement(A);
+			}
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);

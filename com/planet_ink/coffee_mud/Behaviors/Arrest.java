@@ -1545,7 +1545,7 @@ public class Arrest extends StdBehavior
 							info[Law.BIT_WARNMSG]);
 		}
 
-		for(int a=0;a<msg.source().numEffects();a++)
+		for(int a=0;a<msg.source().numAllEffects();a++)
 		{
 			Ability A=msg.source().fetchEffect(a);
 			if((A!=null)

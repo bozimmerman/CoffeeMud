@@ -44,6 +44,13 @@ public class GenRace extends StdRace
 	protected Vector resourceChoices=null;
 	protected Race healthBuddy=null;
 
+	protected String[] racialEffectNames=null;
+	protected int[] racialEffectLevels=null;
+	protected String[] racialEffectParms=null;
+	protected String[] racialEffectNames(){return racialEffectNames;}
+	protected int[] racialEffectLevels(){return racialEffectLevels;}
+	protected String[] racialEffectParms(){return racialEffectParms;}
+	
 	protected String[] racialAbilityNames=null;
 	protected int[] racialAbilityLevels=null;
 	protected int[] racialAbilityProfficiencies=null;
@@ -222,6 +229,24 @@ public class GenRace extends StdRace
 			}
 			str.append("</RABILITIES>");
 		}
+		
+		if((racialEffectNames==null)||(racialEffectNames.length==0))
+			str.append("<REFFECTS/>");
+		else
+		{
+			str.append("<REFFECTS>");
+			for(int r=0;r<racialAbilityNames.length;r++)
+			{
+				str.append("<REFFECT>");
+				str.append("<RFCLASS>"+racialEffectNames[r]+"</RCLASS>");
+				str.append("<RFLEVEL>"+racialEffectLevels[r]+"</RLEVEL>");
+				str.append("<RFPARM>"+racialEffectParms[r]+"</RPROFF>");
+				str.append("</REFFECT>");
+			}
+			str.append("</REFFECTS>");
+		}
+		
+		
 		if((culturalAbilityNames==null)||(culturalAbilityNames.length==0))
 			str.append("<CABILITIES/>");
 		else
@@ -384,6 +409,28 @@ public class GenRace extends StdRace
 				racialAbilityLevels[x]=XMLManager.getIntFromPieces(iblk.contents,"RLEVEL");
 			}
 		}
+		
+		xV=XMLManager.getRealContentsFromPieces(raceData,"REFFECTS");
+		racialEffectNames=null;
+		racialEffectParms=null;
+		racialEffectLevels=null;
+		if((xV!=null)&&(xV.size()>0))
+		{
+			racialEffectNames=new String[xV.size()];
+			racialEffectParms=new String[xV.size()];
+			racialEffectLevels=new int[xV.size()];
+			for(int x=0;x<xV.size();x++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				if((!iblk.tag.equalsIgnoreCase("REFFECT"))||(iblk.contents==null))
+					continue;
+				racialEffectNames[x]=XMLManager.getValFromPieces(iblk.contents,"RFCLASS");
+				racialEffectParms[x]=XMLManager.getValFromPieces(iblk.contents,"RFPARM");
+				racialEffectLevels[x]=XMLManager.getIntFromPieces(iblk.contents,"RFLEVEL");
+			}
+		}
+		
+		
 		xV=XMLManager.getRealContentsFromPieces(raceData,"CABILITIES");
 		culturalAbilityNames=null;
 		culturalAbilityProfficiencies=null;
@@ -409,7 +456,8 @@ public class GenRace extends StdRace
 									 "WEAPONCLASS","WEAPONXML",
 									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL",
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
-									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL"
+									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
+									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL"
 									 };
 	public String getStat(String code)
 	{
@@ -464,6 +512,10 @@ public class GenRace extends StdRace
 		case 32: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
 		case 33: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
 		case 34: return ""+destroyBodyAfterUse();
+		case 35: return (racialEffectNames==null)?"0":(""+racialEffectNames.length);
+		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);
+		case 37: return (racialEffectParms==null)?"0":(""+racialEffectParms[num]);
+		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
 		}
 		return "";
 	}
@@ -590,6 +642,30 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 34: destroyBodyAfterUse=Util.s_bool(val); break;
+		case 35: racialEffectMap=null;
+				 if(Util.s_int(val)==0){
+					 racialEffectNames=null; 
+					 racialEffectParms=null; 
+					 racialEffectLevels=null; 
+				 }
+				 else{
+					 racialEffectNames=new String[Util.s_int(val)];
+					 racialEffectParms=new String[Util.s_int(val)];
+					 racialEffectLevels=new int[Util.s_int(val)];
+				 }
+				 break;
+		case 36: {   if(racialEffectNames==null) racialEffectNames=new String[num+1];
+				     racialEffectNames[num]=val;
+					 break;
+				 }
+		case 37: {   if(racialEffectParms==null) racialEffectParms=new String[num+1];
+				     racialEffectParms[num]=val;
+					 break;
+				 }
+		case 38: {   if(racialEffectLevels==null) racialEffectLevels=new int[num+1];
+				     racialEffectLevels[num]=Util.s_int(val);
+					 break;
+				 }
 		}
 	}
 	public String[] getStatCodes(){return CODES;}

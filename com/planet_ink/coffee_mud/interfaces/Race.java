@@ -51,6 +51,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public boolean sameAs(Race E);
 	
 	public Vector racialAbilities(MOB mob);
+	public Vector racialEffects(MOB mob);
 	
 	public final static int BODY_ANTENEA=0;
 	public final static int BODY_EYE=1;

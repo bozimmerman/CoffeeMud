@@ -284,7 +284,7 @@ public class StdMOB implements MOB
 				item.affectEnvStats(this,envStats);
 			}
 		}
-		for(int a=0;a<numEffects();a++)
+		for(int a=0;a<numAllEffects();a++)
 		{
 			Ability effect=fetchEffect(a);
 			if(effect!=null)
@@ -337,7 +337,7 @@ public class StdMOB implements MOB
 
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
-		for(int a=0;a<numEffects();a++)
+		for(int a=0;a<numAllEffects();a++)
 		{
 			Ability effect=fetchEffect(a);
 			if(effect!=null)
@@ -409,7 +409,7 @@ public class StdMOB implements MOB
 		maxState=baseState.cloneCharState();
 		if(charStats.getMyRace()!=null)	charStats.getMyRace().affectCharState(this,maxState);
 		if(riding()!=null) riding().affectCharState(this,maxState);
-		for(int a=0;a<numEffects();a++)
+		for(int a=0;a<numAllEffects();a++)
 		{
 			Ability effect=fetchEffect(a);
 			if(effect!=null)
@@ -1119,7 +1119,7 @@ public class StdMOB implements MOB
 				return false;
 		}
 
-		for(int i=0;i<numEffects();i++)
+		for(int i=0;i<numAllEffects();i++)
 		{
 			Ability aff=(Ability)fetchEffect(i);
 			if((aff!=null)&&(!aff.okMessage(this,msg)))
@@ -2186,7 +2186,7 @@ public class StdMOB implements MOB
 				I.executeMsg(this,msg);
 		}
 
-		for(int i=0;i<numEffects();i++)
+		for(int i=0;i<numAllEffects();i++)
 		{
 			Ability A=(Ability)fetchEffect(i);
 			if(A!=null)
@@ -2469,7 +2469,7 @@ public class StdMOB implements MOB
 			}
 
 			int a=0;
-			while(a<numEffects())
+			while(a<numAllEffects())
 			{
 				Ability A=fetchEffect(a);
 				if(A!=null)
@@ -2847,6 +2847,12 @@ public class StdMOB implements MOB
 		if(affects.size()<size)
 			to.setAffectedOne(null);
 	}
+	
+	public int numAllEffects()
+	{
+		return affects.size()+charStats().getMyRace().racialEffects(this).size();
+	}
+	
 	public int numEffects()
 	{
 		return affects.size();
@@ -2855,14 +2861,16 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			return (Ability)affects.elementAt(index);
+			if(index<affects.size())
+				return (Ability)affects.elementAt(index);
+			return (Ability)charStats().getMyRace().racialEffects(this).elementAt(index-affects.size());
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchEffect(String ID)
 	{
-		for(int a=0;a<numEffects();a++)
+		for(int a=0;a<numAllEffects();a++)
 		{
 			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.ID().equals(ID)))

@@ -124,7 +124,7 @@ public class Artisan extends StdCharClass
 			if(mob.charStats().getCurrentClass()==this)
 			{
 				int exp=0;
-				for(int a=0;a<mob.numEffects();a++)
+				for(int a=0;a<mob.numAllEffects();a++)
 				{
 					Ability A=mob.fetchEffect(a);
 					if((A!=null)

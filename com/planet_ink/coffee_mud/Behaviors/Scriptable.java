@@ -2286,6 +2286,12 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E instanceof MOB)
+				{
+					if(((MOB)E).numAllEffects()>0)
+						results.append(E.fetchEffect(Dice.roll(1,((MOB)E).numAllEffects(),-1)).name());
+				}
+				else
 				if(E.numEffects()>0)
 					results.append(E.fetchEffect(Dice.roll(1,E.numEffects(),-1)).name());
 				break;
