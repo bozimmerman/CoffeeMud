@@ -13,7 +13,7 @@ public class Prayer_BlessItem extends Prayer
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Bless Item";
 		displayText="(Blessed)";
-		quality=Ability.OK_OTHERS;
+		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
 		baseEnvStats().setLevel(24);
