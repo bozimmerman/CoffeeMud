@@ -21,6 +21,9 @@ public class Skill_Climb extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(1);
 
 		recoverEnvStats();

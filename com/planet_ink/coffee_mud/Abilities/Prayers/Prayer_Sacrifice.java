@@ -13,6 +13,9 @@ public class Prayer_Sacrifice extends Prayer
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Sacrifice";
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(3);
 		holyQuality=Prayer.HOLY_GOOD;
 

@@ -15,6 +15,8 @@ public class Chant_Bury extends Chant
 		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(3);
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
 
 		recoverEnvStats();
 	}

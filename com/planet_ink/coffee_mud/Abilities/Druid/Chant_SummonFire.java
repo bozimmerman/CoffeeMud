@@ -17,6 +17,9 @@ public class Chant_SummonFire extends Chant
 		name="Summon Fire";
 		baseEnvStats().setLevel(5);
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		recoverEnvStats();
 	}
 

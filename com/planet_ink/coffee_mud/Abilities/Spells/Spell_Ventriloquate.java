@@ -18,6 +18,9 @@ public class Spell_Ventriloquate extends Spell
 
 		baseEnvStats().setLevel(1);
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
+
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

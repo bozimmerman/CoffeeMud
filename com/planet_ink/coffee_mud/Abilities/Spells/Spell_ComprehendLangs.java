@@ -17,6 +17,9 @@ public class Spell_ComprehendLangs extends Spell
 		// bring up their affected list.
 		displayText="(Comprehend Languages)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		baseEnvStats().setLevel(1);
 		quality=Ability.BENEFICIAL_SELF;

@@ -16,6 +16,9 @@ public class Fighter_Endurance extends StdAbility
 		displayText="";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 		quality=Ability.OK_SELF;

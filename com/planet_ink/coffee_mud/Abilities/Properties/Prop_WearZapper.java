@@ -16,6 +16,7 @@ public class Prop_WearZapper extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Restrictions to wielding/wearing/holding";
+		canAffectCode=Ability.CAN_ITEMS;
 	}
 
 	public Environmental newInstance()

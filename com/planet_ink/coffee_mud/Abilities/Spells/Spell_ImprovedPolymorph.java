@@ -19,6 +19,9 @@ public class Spell_ImprovedPolymorph extends Spell
 		// bring up their affected list.
 		displayText="(Improved Polymorph)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;

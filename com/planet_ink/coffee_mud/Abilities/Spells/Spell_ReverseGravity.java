@@ -19,6 +19,8 @@ public class Spell_ReverseGravity extends Spell
 		// bring up their affected list.
 		displayText="(Gravity is Reversed)";
 
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=0;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

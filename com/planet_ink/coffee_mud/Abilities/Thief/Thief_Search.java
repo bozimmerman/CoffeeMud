@@ -17,6 +17,9 @@ public class Thief_Search extends ThiefSkill
 
 		triggerStrings.addElement("SEARCH");
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -19,6 +19,10 @@ public class Spell extends StdAbility
 		triggerStrings.addElement("CAST");
 		triggerStrings.addElement("CA");
 		triggerStrings.addElement("C");
+		
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 	}

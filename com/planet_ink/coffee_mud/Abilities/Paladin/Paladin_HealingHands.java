@@ -20,6 +20,9 @@ public class Paladin_HealingHands extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		recoverEnvStats();

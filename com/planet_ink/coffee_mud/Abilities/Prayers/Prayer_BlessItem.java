@@ -16,6 +16,9 @@ public class Prayer_BlessItem extends Prayer
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(24);
 
 		recoverEnvStats();

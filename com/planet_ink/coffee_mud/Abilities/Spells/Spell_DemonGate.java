@@ -19,6 +19,9 @@ public class Spell_DemonGate extends Spell
 		// bring up their affected list.
 		displayText="(Demon Gate)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		quality=Ability.BENEFICIAL_SELF;
 
 		canBeUninvoked=true;

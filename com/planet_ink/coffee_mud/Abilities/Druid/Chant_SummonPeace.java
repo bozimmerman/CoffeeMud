@@ -13,6 +13,9 @@ public class Chant_SummonPeace extends Chant
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Summon Peace";
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(16);
 		quality=Ability.BENEFICIAL_OTHERS;
 

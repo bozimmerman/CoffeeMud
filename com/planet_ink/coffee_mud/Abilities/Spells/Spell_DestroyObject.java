@@ -17,6 +17,9 @@ public class Spell_DestroyObject extends Spell
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(12);
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;

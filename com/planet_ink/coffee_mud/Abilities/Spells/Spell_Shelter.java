@@ -20,6 +20,9 @@ public class Spell_Shelter extends Spell
 		displayText="(In a shelter)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -14,6 +14,7 @@ public class Mobile extends ActiveTicker
 		minTicks=10; maxTicks=30; chance=100;
 		tickReset();
 		mobileType=true;
+		canImproveCode=Behavior.CAN_MOBS;
 	}
 	public Behavior newInstance()
 	{

@@ -11,6 +11,7 @@ public class Prop_Tattoo extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="A Tattoo";
+		canAffectCode=Ability.CAN_MOBS;
 	}
 	public Environmental newInstance()
 	{

@@ -17,6 +17,9 @@ public class Spell_Laughter extends Spell
 		// bring up their affected list.
 		displayText="(Laughter spell)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

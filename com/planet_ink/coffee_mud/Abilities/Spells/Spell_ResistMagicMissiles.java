@@ -15,6 +15,9 @@ public class Spell_ResistMagicMissiles extends Spell
 		displayText="(Resist Magic Missiles)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_OTHERS;

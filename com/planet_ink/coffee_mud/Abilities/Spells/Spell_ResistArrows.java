@@ -15,6 +15,9 @@ public class Spell_ResistArrows extends Spell
 		displayText="(Resist Arrows)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_OTHERS;

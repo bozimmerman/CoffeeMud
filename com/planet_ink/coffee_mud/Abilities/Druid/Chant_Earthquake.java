@@ -17,6 +17,8 @@ public class Chant_Earthquake extends Chant
 		displayText="(Earthquake)";
 
 
+		canAffectCode=0;
+		canTargetCode=0;
 		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(15);

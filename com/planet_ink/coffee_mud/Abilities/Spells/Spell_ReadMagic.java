@@ -19,6 +19,9 @@ public class Spell_ReadMagic extends Spell
 
 		baseEnvStats().setLevel(1);
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

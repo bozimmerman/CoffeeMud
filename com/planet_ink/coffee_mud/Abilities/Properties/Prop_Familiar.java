@@ -29,6 +29,7 @@ public class Prop_Familiar extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Find Familiar Property";
+		canAffectCode=Ability.CAN_MOBS;
 	}
 
 	public Environmental newInstance()

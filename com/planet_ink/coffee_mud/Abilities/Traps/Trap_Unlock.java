@@ -10,6 +10,8 @@ public class Trap_Unlock extends Trap_Trap
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ITEMS;
 	}
 
 	public Environmental newInstance()

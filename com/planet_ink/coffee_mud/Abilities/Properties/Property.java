@@ -15,6 +15,7 @@ public class Property implements Ability, Cloneable
 	protected Environmental affected=null;
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
+	protected int canAffectCode=0;
 
 	public Property()
 	{
@@ -133,6 +134,20 @@ public class Property implements Ability, Cloneable
 	public String accountForYourself(){return "";}
 	public int affectType(){return 0;}
 
+	public boolean canAffect(Environmental E)
+	{
+		if((E==null)&&(canAffectCode==0)) return true;
+		if(E==null) return false;
+		if((E instanceof MOB)&&((canAffectCode&Ability.CAN_MOBS)>0)) return true;
+		if((E instanceof Item)&&((canAffectCode&Ability.CAN_ITEMS)>0)) return true;
+		if((E instanceof Exit)&&((canAffectCode&Ability.CAN_EXITS)>0)) return true;
+		if((E instanceof Room)&&((canAffectCode&Ability.CAN_ROOMS)>0)) return true;
+		if((E instanceof Area)&&((canAffectCode&Ability.CAN_AREAS)>0)) return true;
+		return false;
+	}
+	
+	public boolean canTarget(Environmental E)
+	{ return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{}

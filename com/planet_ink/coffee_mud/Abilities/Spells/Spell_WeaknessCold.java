@@ -17,6 +17,9 @@ public class Spell_WeaknessCold extends Spell
 		displayText="(Weakness to Cold)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.MALICIOUS;

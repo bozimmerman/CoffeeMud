@@ -22,6 +22,9 @@ public class Chant_WhisperWard extends Chant
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;
 
+		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;
+		canTargetCode=Ability.CAN_EXITS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;
+		
 		baseEnvStats().setLevel(9);
 
 		baseEnvStats().setAbility(0);

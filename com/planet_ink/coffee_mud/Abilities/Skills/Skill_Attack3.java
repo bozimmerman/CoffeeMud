@@ -21,6 +21,9 @@ public class Skill_Attack3 extends StdAbility
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(18);
 
 		recoverEnvStats();

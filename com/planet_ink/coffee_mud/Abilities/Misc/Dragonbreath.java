@@ -27,6 +27,9 @@ public class Dragonbreath extends StdAbility
 
 		quality=Ability.MALICIOUS;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=0;

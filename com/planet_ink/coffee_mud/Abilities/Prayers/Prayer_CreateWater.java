@@ -17,6 +17,8 @@ public class Prayer_CreateWater extends Prayer
 		name="Create Water";
 		baseEnvStats().setLevel(5);
 
+		canAffectCode=0;
+		canTargetCode=0;
 		recoverEnvStats();
 	}
 

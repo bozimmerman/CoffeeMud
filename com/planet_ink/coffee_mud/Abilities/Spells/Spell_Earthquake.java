@@ -16,6 +16,9 @@ public class Spell_Earthquake extends Spell
 		// bring up their affected list.
 		displayText="(Earthquake)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

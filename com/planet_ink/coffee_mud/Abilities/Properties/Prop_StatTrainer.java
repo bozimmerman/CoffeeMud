@@ -12,6 +12,7 @@ public class Prop_StatTrainer extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Good training MOB";
+		canAffectCode=Ability.CAN_MOBS;
 	}
 
 	public Environmental newInstance()

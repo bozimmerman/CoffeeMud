@@ -17,6 +17,8 @@ public class Prayer_Curse extends Prayer
 		baseEnvStats().setLevel(7);
 		holyQuality=Prayer.HOLY_EVIL;
 
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
 		recoverEnvStats();
 	}
 

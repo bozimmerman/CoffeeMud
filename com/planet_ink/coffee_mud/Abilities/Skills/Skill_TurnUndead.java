@@ -24,6 +24,9 @@ public class Skill_TurnUndead extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		triggerStrings.addElement("TURN");
 		triggerStrings.addElement("CONTROL");
 

@@ -17,6 +17,9 @@ public class Spell_WeaknessGas extends Spell
 		displayText="(Weakness to Gas)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.MALICIOUS;

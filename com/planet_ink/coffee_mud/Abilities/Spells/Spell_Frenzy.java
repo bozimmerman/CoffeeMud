@@ -19,6 +19,9 @@ public class Spell_Frenzy extends Spell
 		// bring up their affected list.
 		displayText="(Frenzy spell)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

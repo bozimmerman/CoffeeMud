@@ -21,6 +21,9 @@ public class Druid_DruidicPass extends StdAbility
 		miscText="";
 		triggerStrings.addElement("PASS");
 		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		quality=Ability.OK_SELF;
 		baseEnvStats().setLevel(7);
 

@@ -14,6 +14,9 @@ public class Prayer_BloodMoon extends Prayer
 		name="Blood Moon";
 		displayText="(Blood Moon)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 		holyQuality=Prayer.HOLY_EVIL;
 

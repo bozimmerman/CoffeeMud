@@ -17,6 +17,8 @@ public class Spell_Mute extends Spell
 		// bring up their affected list.
 		displayText="(Mute)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.MALICIOUS;
 

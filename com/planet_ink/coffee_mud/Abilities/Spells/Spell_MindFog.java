@@ -17,6 +17,8 @@ public class Spell_MindFog extends Spell
 		// bring up their affected list.
 		displayText="(Mind Fog)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.MALICIOUS;
 

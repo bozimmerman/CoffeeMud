@@ -18,6 +18,9 @@ public class Spell_Weaken extends Spell
 		displayText="(Weaken spell)";
 
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -14,6 +14,8 @@ public class Prayer_CreateFood extends Prayer
 		name="Create Food";
 		baseEnvStats().setLevel(5);
 
+		canAffectCode=0;
+		canTargetCode=0;
 		recoverEnvStats();
 	}
 

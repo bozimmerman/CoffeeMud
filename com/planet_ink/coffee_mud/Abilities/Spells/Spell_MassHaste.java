@@ -17,6 +17,9 @@ public class Spell_MassHaste extends Spell
 		// bring up their affected list.
 		displayText="(Hasted)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 
 		quality=Ability.BENEFICIAL_OTHERS;
 

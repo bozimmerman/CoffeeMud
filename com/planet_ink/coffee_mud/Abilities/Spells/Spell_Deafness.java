@@ -17,6 +17,9 @@ public class Spell_Deafness extends Spell
 		// bring up their affected list.
 		displayText="(Deafness)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

@@ -18,6 +18,9 @@ public class Paladin extends StdAbility
 		displayText="";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		quality=Ability.OK_OTHERS;
 		canBeUninvoked=false;
 		isAutoinvoked=true;

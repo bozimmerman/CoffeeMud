@@ -20,6 +20,9 @@ public class Chant_CharmAnimal extends Chant
 		quality=Ability.MALICIOUS;
 
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(6);
 
 		canBeUninvoked=true;

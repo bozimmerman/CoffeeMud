@@ -16,6 +16,9 @@ public class Chant_SummonRain extends Chant
 		displayText="(Summon Rain)";
 		miscText="";
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

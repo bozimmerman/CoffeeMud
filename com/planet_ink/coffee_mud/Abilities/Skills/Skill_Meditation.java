@@ -21,6 +21,9 @@ public class Skill_Meditation extends StdAbility
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(19);
 
 		recoverEnvStats();

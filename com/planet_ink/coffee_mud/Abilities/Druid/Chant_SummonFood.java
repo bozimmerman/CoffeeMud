@@ -14,6 +14,9 @@ public class Chant_SummonFood extends Chant
 		name="Summon Food";
 		baseEnvStats().setLevel(5);
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		recoverEnvStats();
 	}
 

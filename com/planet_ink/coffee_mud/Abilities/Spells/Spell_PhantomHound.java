@@ -17,6 +17,9 @@ public class Spell_PhantomHound extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+
 		baseEnvStats().setLevel(13);
 
 		baseEnvStats().setAbility(0);

@@ -18,6 +18,8 @@ public class Chant_Farsight extends Chant
 		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(9);
+		canAffectCode=0;
+		canTargetCode=0;
 
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;

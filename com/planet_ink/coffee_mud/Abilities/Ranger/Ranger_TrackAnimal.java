@@ -22,6 +22,9 @@ public class Ranger_TrackAnimal extends StdAbility
 		miscText="";
 		triggerStrings.addElement("TRACKANIMAL");
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(1);
 
 		canBeUninvoked=true;

@@ -16,6 +16,9 @@ public class Chant_Sunray extends Chant
 		quality=Ability.MALICIOUS;
 		baseEnvStats().setLevel(17);
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		recoverEnvStats();
 	}
 

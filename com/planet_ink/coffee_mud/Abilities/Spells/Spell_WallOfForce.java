@@ -20,6 +20,9 @@ public class Spell_WallOfForce extends Spell
 		displayText="(Wall of Force)";
 
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(16);

@@ -17,6 +17,8 @@ public class Prayer_GreatCurse extends Prayer
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(15);
 		recoverEnvStats();
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 	}
 
 	public Environmental newInstance()

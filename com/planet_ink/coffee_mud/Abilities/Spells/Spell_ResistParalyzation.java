@@ -17,6 +17,9 @@ public class Spell_ResistParalyzation extends Spell
 		displayText="(Resist Paralysis)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_OTHERS;

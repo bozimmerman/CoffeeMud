@@ -19,6 +19,7 @@ public class Prop_HaveResister extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Resistance due to ownership";
+		canAffectCode=Ability.CAN_ITEMS;
 	}
 
 	public Environmental newInstance()

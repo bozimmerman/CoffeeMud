@@ -24,6 +24,8 @@ public class Ranger_FindWater extends StdAbility
 		triggerStrings.addElement("FINDWATER");
 
 		baseEnvStats().setLevel(1);
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

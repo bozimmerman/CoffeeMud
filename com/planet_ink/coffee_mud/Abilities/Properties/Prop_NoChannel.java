@@ -12,6 +12,7 @@ public class Prop_NoChannel extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Channel Neutralizing";
+		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS;
 	}
 
 	public Environmental newInstance()

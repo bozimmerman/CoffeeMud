@@ -15,6 +15,7 @@ public class Prop_WizInvis extends Property
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Wizard Invisibility";
 		displayText="(Wizard Invisibility)";
+		canAffectCode=Ability.CAN_MOBS;
 	}
 
 	public Environmental newInstance()

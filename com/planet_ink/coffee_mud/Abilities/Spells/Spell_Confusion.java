@@ -19,6 +19,9 @@ public class Spell_Confusion extends Spell
 		// bring up their affected list.
 		displayText="(Confusion spell)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

@@ -19,6 +19,9 @@ public class Spell_PolymorphSelf extends Spell
 		// bring up their affected list.
 		displayText="(Polymorph Self)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;

@@ -21,6 +21,9 @@ public class Specialization_Weapon extends StdAbility
 
 		quality=Ability.BENEFICIAL_SELF;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 

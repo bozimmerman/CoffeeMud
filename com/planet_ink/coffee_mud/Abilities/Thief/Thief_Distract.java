@@ -17,6 +17,9 @@ public class Thief_Distract extends ThiefSkill
 
 		triggerStrings.addElement("DISTRACT");
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

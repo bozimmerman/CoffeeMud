@@ -12,6 +12,7 @@ public class Prop_Resistance extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Stuff Neutralizing";
+		canAffectCode=Ability.CAN_MOBS;
 	}
 	public Environmental newInstance()
 	{

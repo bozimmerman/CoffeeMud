@@ -18,6 +18,9 @@ public class Prayer_LinkedHealth extends Prayer
 		quality=Ability.OK_OTHERS;
 		holyQuality=Prayer.HOLY_NEUTRAL;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(13);
 
 		recoverEnvStats();

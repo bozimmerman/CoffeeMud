@@ -20,6 +20,9 @@ public class Spell_SummonEnemy extends Spell
 		displayText="(Enemy Summoning)";
 
 		quality=Ability.INDIFFERENT;
+		
+		canAffectCode=0;
+		canTargetCode=0;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

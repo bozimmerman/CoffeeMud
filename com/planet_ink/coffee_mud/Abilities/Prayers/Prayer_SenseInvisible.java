@@ -14,6 +14,8 @@ public class Prayer_SenseInvisible extends Prayer
 		name="Sense Invisible";
 		displayText="(Sense Invisible)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(10);

@@ -12,6 +12,7 @@ public class Prop_ReqCapacity extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Capacity Limitations";
+		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
 	}
 
 	public Environmental newInstance()

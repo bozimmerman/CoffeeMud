@@ -14,6 +14,9 @@ public class Prayer_Bless extends Prayer
 		name="Bless";
 		displayText="(Blessed)";
 
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(7);
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;

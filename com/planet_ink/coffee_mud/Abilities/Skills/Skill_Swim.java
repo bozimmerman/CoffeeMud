@@ -18,6 +18,9 @@ public class Skill_Swim extends StdAbility
 
 		triggerStrings.addElement("SWIM");
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

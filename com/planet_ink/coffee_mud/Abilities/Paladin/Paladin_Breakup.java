@@ -17,6 +17,9 @@ public class Paladin_Breakup extends StdAbility
 		triggerStrings.addElement("BREAKUP");
 
 		baseEnvStats().setLevel(1);
+		
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

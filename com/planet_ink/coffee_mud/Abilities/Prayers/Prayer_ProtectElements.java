@@ -18,6 +18,9 @@ public class Prayer_ProtectElements extends Prayer
 
 		baseEnvStats().setLevel(18);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		recoverEnvStats();
 	}
 

@@ -17,6 +17,9 @@ public class Spell_Command extends Spell
 		// bring up their affected list.
 		displayText="(Commanded)";
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

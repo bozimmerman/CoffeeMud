@@ -16,6 +16,9 @@ public class Undead_LifeDrain extends StdAbility
 		miscText="";
 		triggerStrings.addElement("DRAIN");
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

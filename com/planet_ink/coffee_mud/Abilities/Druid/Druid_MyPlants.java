@@ -22,6 +22,8 @@ public class Druid_MyPlants extends StdAbility
 		triggerStrings.addElement("MYPLANTS");
 		triggerStrings.addElement("PLANTS");
 		
+		canAffectCode=0;
+		canTargetCode=0;
 		quality=Ability.OK_SELF;
 		baseEnvStats().setLevel(7);
 

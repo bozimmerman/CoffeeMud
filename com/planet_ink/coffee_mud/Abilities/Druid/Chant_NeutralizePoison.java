@@ -13,6 +13,9 @@ public class Chant_NeutralizePoison extends Chant
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Neutralize Poison";
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(11);
 		quality=Ability.OK_OTHERS;
 

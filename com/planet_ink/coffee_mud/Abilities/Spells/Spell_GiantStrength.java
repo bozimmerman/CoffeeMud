@@ -17,6 +17,9 @@ public class Spell_GiantStrength extends Spell
 		// bring up their affected list.
 		displayText="(Giant-Strength spell)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.BENEFICIAL_OTHERS;
 		canBeUninvoked=true;

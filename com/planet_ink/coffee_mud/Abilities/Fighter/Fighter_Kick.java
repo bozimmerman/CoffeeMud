@@ -17,6 +17,9 @@ public class Fighter_Kick extends StdAbility
 
 		triggerStrings.addElement("KICK");
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -28,6 +28,9 @@ public class CommonSkill extends StdAbility
 		practicesToPractice=1;
 
 		baseEnvStats().setLevel(20);
+		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_ITEMS;
 
 		recoverEnvStats();
 	}

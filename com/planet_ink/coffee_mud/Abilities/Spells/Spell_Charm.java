@@ -19,6 +19,9 @@ public class Spell_Charm extends Spell
 
 		quality=Ability.MALICIOUS;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		baseEnvStats().setLevel(6);
 

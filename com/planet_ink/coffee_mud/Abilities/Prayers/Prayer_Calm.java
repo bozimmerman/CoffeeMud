@@ -13,6 +13,9 @@ public class Prayer_Calm extends Prayer
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Calm";
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(16);
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;

@@ -17,6 +17,9 @@ public class Spell_Clog extends Spell
 		// bring up their affected list.
 		displayText="(Shrunken Mouth)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

@@ -20,6 +20,9 @@ public class Thief_DetectTraps extends ThiefSkill
 		triggerStrings.addElement("CHECK");
 		quality=Ability.OK_SELF;
 
+		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -19,6 +19,9 @@ public class Skill_UndeadInvisibility extends StdAbility
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(8);
 
 		recoverEnvStats();

@@ -17,6 +17,8 @@ public class Prayer_CurseItem extends Prayer
 		quality=Ability.MALICIOUS;
 
 
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
 		baseEnvStats().setLevel(24);
 
 		recoverEnvStats();

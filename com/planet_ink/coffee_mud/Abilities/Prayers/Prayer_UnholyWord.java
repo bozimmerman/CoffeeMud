@@ -16,6 +16,8 @@ public class Prayer_UnholyWord extends Prayer
 		baseEnvStats().setLevel(23);
 		holyQuality=Prayer.HOLY_EVIL;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		recoverEnvStats();
 	}
 

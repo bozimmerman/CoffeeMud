@@ -18,6 +18,8 @@ public class Chant_CalmWind extends Chant
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		canAffectCode=0;
+		canTargetCode=0;
 
 		baseEnvStats().setLevel(7);
 

@@ -16,6 +16,9 @@ public class Spell_Claireaudience extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(13);
 
 		baseEnvStats().setAbility(0);

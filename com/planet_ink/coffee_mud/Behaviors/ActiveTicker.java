@@ -16,6 +16,7 @@ public class ActiveTicker extends StdBehavior
 	{
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		tickReset();
+		canImproveCode=Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;
 	}
 
 	protected void tickReset()

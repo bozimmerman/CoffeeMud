@@ -12,6 +12,7 @@ public class Prop_PeaceMaker extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Strike Neuralizing";
+		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS;
 	}
 
 	public Environmental newInstance()

@@ -12,6 +12,7 @@ public class Prop_RestrictSpells extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Specific Spell Neutralizing";
+		canAffectCode=Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
 	}
 
 	public Environmental newInstance()

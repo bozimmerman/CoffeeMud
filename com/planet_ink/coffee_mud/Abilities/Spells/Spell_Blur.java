@@ -18,6 +18,9 @@ public class Spell_Blur extends Spell
 		displayText="(Blur spell)";
 		quality=Ability.BENEFICIAL_OTHERS;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		baseEnvStats().setLevel(2);
 

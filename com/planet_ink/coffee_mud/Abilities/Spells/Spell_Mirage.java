@@ -18,6 +18,9 @@ public class Spell_Mirage extends Spell
 		// bring up their affected list.
 		displayText="(Mirage spell)";
 
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=Ability.CAN_ROOMS;
+
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

@@ -17,6 +17,8 @@ public class Prayer_HolyAura extends Prayer
 		baseEnvStats().setLevel(15);
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		recoverEnvStats();
 	}

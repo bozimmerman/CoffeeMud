@@ -17,6 +17,9 @@ public class Spell_WeaknessElectricity extends Spell
 		displayText="(Weakness to Electricity)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.MALICIOUS;

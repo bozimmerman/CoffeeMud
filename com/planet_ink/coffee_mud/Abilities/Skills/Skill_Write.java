@@ -19,6 +19,9 @@ public class Skill_Write extends StdAbility
 		triggerStrings.addElement("WRITE");
 		triggerStrings.addElement("WR");
 
+		canTargetCode=Ability.CAN_ITEMS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

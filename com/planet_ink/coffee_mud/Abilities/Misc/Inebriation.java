@@ -18,6 +18,9 @@ public class Inebriation extends StdAbility
 		displayText="(Inebriated)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

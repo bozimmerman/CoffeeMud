@@ -17,6 +17,9 @@ public class Spell_FeatherFall extends Spell
 		// bring up their affected list.
 		displayText="(Feather Fall)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.OK_SELF;
 

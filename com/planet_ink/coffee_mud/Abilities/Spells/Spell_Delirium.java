@@ -18,6 +18,9 @@ public class Spell_Delirium extends Spell
 		// bring up their affected list.
 		displayText="(Delirium)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 		canBeUninvoked=true;

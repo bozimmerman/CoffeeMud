@@ -17,6 +17,9 @@ public class Spell_GhostSound extends Spell
 		// bring up their affected list.
 		displayText="(Ghost Sound spell)";
 
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=0;
+		
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

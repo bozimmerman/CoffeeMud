@@ -20,6 +20,8 @@ public class Spell_Repulsion extends Spell
 		// bring up their affected list.
 		displayText="(Repulsion)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.MALICIOUS;
 

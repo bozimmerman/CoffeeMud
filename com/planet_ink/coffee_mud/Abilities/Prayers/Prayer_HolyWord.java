@@ -14,6 +14,9 @@ public class Prayer_HolyWord extends Prayer
 		name="Holy Word";
 		displayText="(Holy Word)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		holyQuality=Prayer.HOLY_GOOD;
 		baseEnvStats().setLevel(23);
 

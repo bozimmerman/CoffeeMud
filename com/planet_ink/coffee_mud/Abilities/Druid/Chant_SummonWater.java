@@ -17,6 +17,9 @@ public class Chant_SummonWater extends Chant
 		name="Summon Water";
 		baseEnvStats().setLevel(5);
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		recoverEnvStats();
 	}
 

@@ -18,6 +18,9 @@ public class Thief_Peek extends ThiefSkill
 
 		triggerStrings.addElement("PEEK");
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

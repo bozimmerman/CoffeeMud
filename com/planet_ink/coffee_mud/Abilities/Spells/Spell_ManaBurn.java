@@ -21,6 +21,9 @@ public class Spell_ManaBurn extends Spell
 		quality=Ability.MALICIOUS;
 
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		baseEnvStats().setLevel(6);
 
 		canBeUninvoked=true;

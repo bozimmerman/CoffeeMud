@@ -14,6 +14,9 @@ public class Prayer_Blindsight extends Prayer
 		name="Blindsight";
 		displayText="(Blindsight)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.BENEFICIAL_SELF;
 		baseEnvStats().setLevel(13);
 		recoverEnvStats();

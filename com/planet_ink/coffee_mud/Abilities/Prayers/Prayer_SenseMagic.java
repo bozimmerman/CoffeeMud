@@ -14,6 +14,8 @@ public class Prayer_SenseMagic extends Prayer
 		name="Sense Magic";
 		displayText="(Sense Magic)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(10);

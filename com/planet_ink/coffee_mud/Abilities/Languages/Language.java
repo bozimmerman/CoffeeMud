@@ -22,6 +22,8 @@ public class Language extends StdAbility
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 		trainsRequired=0;
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
 	}
 
 	public int classificationCode()

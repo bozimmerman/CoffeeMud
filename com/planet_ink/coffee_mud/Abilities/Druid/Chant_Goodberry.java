@@ -18,6 +18,9 @@ public class Chant_Goodberry extends Chant
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(2);
 
 		baseEnvStats().setAbility(0);

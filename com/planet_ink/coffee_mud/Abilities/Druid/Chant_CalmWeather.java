@@ -20,6 +20,8 @@ public class Chant_CalmWeather extends Chant
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(7);
+		canAffectCode=0;
+		canTargetCode=0;
 
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;

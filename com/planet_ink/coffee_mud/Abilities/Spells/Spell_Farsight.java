@@ -16,6 +16,9 @@ public class Spell_Farsight extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(9);
 
 		baseEnvStats().setAbility(0);

@@ -22,6 +22,9 @@ public class Skill_ScrollCopy extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canTargetCode=Ability.CAN_ITEMS;
+		canAffectCode=0;
+		
 		baseEnvStats().setLevel(1);
 
 		recoverEnvStats();

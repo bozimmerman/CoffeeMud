@@ -14,6 +14,8 @@ public class Chant_CalmAnimal extends Chant
 		name="Calm Animal";
 		baseEnvStats().setLevel(21);
 		quality=Ability.OK_OTHERS;
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
 
 		recoverEnvStats();
 	}

@@ -14,6 +14,8 @@ public class Prayer_SenseHidden extends Prayer
 		name="Sense Hidden";
 		displayText="(Sense Hidden)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(11);

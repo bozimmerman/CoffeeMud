@@ -21,6 +21,9 @@ public class Skill_Revoke extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
+		canAffectCode=0;
+		
 		baseEnvStats().setLevel(1);
 
 		recoverEnvStats();

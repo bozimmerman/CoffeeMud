@@ -16,6 +16,8 @@ public class Chant_SummonFear extends Chant
 		// bring up their affected list.
 		displayText="(Afraid)";
 
+		canAffectCode=0;
+		canTargetCode=0;
 
 		quality=Ability.MALICIOUS;
 

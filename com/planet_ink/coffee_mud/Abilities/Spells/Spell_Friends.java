@@ -17,6 +17,9 @@ public class Spell_Friends extends Spell
 		// bring up their affected list.
 		displayText="(Friends spell)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.OK_SELF;
 		canBeUninvoked=true;

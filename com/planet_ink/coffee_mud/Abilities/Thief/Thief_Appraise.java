@@ -18,6 +18,9 @@ public class Thief_Appraise extends ThiefSkill
 
 		triggerStrings.addElement("APPRAISE");
 
+		canTargetCode=Ability.CAN_ITEMS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

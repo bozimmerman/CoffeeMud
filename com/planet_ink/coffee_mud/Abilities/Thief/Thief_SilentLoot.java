@@ -18,6 +18,9 @@ public class Thief_SilentLoot extends ThiefSkill
 
 		triggerStrings.addElement("SILENTLOOT");
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -17,6 +17,9 @@ public class Prayer_Blindness extends Prayer
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(17);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		recoverEnvStats();
 	}
 

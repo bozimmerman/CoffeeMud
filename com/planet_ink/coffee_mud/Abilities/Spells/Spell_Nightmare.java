@@ -20,6 +20,8 @@ public class Spell_Nightmare extends Spell
 		// bring up their affected list.
 		displayText="(You are having a nightmare)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.MALICIOUS;
 

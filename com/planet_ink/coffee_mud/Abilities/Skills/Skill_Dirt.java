@@ -21,6 +21,9 @@ public class Skill_Dirt extends StdAbility
 
 		quality=Ability.MALICIOUS;
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

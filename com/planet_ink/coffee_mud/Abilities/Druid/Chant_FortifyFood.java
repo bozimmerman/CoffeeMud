@@ -19,6 +19,8 @@ public class Chant_FortifyFood extends Chant
 		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(2);
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
 
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;

@@ -21,6 +21,9 @@ public class Skill_Disarm extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(11);

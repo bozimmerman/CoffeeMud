@@ -18,6 +18,9 @@ public class Thief_Listen extends ThiefSkill
 
 		triggerStrings.addElement("LISTEN");
 
+		canTargetCode=0;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

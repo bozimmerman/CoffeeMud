@@ -223,6 +223,16 @@ public class MobData extends StdWebMacro
 			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=SHP"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
+			for(int i=0;i<RoomData.items.size();i++)
+			{
+				Item I=(Item)RoomData.items.elementAt(i);
+				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
+			for(int i=0;i<RoomData.mobs.size();i++)
+			{
+				MOB I=(MOB)RoomData.mobs.elementAt(i);
+				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
 			for(int r=0;r<sortedA.length;r++)
 			{
 				String cnam=(String)sortedA[r];

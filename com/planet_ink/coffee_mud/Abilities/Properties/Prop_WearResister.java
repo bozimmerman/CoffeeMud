@@ -15,6 +15,7 @@ public class Prop_WearResister extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Resistance due to wearing";
+		canAffectCode=Ability.CAN_ITEMS;
 	}
 
 	public Environmental newInstance()

@@ -17,6 +17,10 @@ public class Spell_FoolsGold extends Spell
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(13);
+		
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+		
 
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;

@@ -15,6 +15,9 @@ public class Prayer_BladeBarrier extends Prayer
 		name="Blade Barrier";
 		displayText="(Blade Barrier)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		holyQuality=Prayer.HOLY_NEUTRAL;
 		quality=Ability.BENEFICIAL_SELF;
 

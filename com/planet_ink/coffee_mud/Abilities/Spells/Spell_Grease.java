@@ -20,6 +20,9 @@ public class Spell_Grease extends Spell
 		// bring up their affected list.
 		displayText="(Covered in Grease)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

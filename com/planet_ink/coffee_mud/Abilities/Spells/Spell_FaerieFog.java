@@ -19,6 +19,9 @@ public class Spell_FaerieFog extends Spell
 		// bring up their affected list.
 		displayText="(Faerie Fog)";
 
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=0;
+		
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

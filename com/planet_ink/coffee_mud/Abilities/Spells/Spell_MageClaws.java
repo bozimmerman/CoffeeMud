@@ -18,6 +18,9 @@ public class Spell_MageClaws extends Spell
 		displayText="(Mage Claws spell)";
 		quality=Ability.BENEFICIAL_SELF;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		baseEnvStats().setLevel(16);
 

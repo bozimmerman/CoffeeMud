@@ -24,6 +24,9 @@ public class Ranger_Track extends StdAbility
 
 		baseEnvStats().setLevel(1);
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		recoverEnvStats();

@@ -18,6 +18,9 @@ public class Spell_GustOfWind extends Spell
 		// bring up their affected list.
 		displayText="(Blown Down)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

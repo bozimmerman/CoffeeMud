@@ -15,6 +15,9 @@ public class Chant_WarpWood extends Chant
 
 		quality=Ability.MALICIOUS;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(8);
 
 		recoverEnvStats();

@@ -19,6 +19,9 @@ public class Spell_MajorGlobe extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_OTHERS;
+		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		baseEnvStats().setLevel(9);
 

@@ -19,6 +19,9 @@ public class Spell_DeadenSmell extends Spell
 
 		quality=Ability.INDIFFERENT;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -17,6 +17,8 @@ public class Spell_TimeStop extends Spell
 		// bring up their affected list.
 		displayText="(Time is Stopped)";
 
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ROOMS;
+		canTargetCode=0;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

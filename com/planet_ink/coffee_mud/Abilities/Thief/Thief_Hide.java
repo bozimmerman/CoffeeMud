@@ -17,6 +17,9 @@ public class Thief_Hide extends ThiefSkill
 
 		triggerStrings.addElement("HIDE");
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_SELF;

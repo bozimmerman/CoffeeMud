@@ -22,6 +22,8 @@ public class Chant extends StdAbility
 		isAutoinvoked=false;
 		minRange=0;
 		maxRange=0;
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 	}
 
 	public int classificationCode()

@@ -20,6 +20,9 @@ public class Spell_WallOfDarkness extends Spell
 		displayText="(Wall of Darkness)";
 
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(16);

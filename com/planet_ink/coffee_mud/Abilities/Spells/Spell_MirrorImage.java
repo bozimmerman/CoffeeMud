@@ -22,6 +22,9 @@ public class Spell_MirrorImage extends Spell
 		displayText="(Mirror Image spell)";
 
 		quality=Ability.BENEFICIAL_SELF;
+		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

@@ -20,6 +20,9 @@ public class Regeneration extends StdAbility
 		displayText="(Regeneration)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=false;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_SELF;

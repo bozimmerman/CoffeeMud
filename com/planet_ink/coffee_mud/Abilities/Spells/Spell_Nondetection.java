@@ -20,6 +20,9 @@ public class Spell_Nondetection extends Spell
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_OTHERS;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		baseEnvStats().setLevel(9);
 
 		baseEnvStats().setAbility(0);

@@ -18,6 +18,9 @@ public class Prayer_Regeneration extends Prayer
 		holyQuality=Prayer.HOLY_NEUTRAL;
 		quality=Ability.BENEFICIAL_SELF;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(18);
 
 		recoverEnvStats();

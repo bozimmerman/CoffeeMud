@@ -21,6 +21,9 @@ public class Spell_HeatMetal extends Spell
 
 		quality=Ability.MALICIOUS;
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -21,6 +21,9 @@ public class Spell_Anchor extends Spell
 
 		baseEnvStats().setLevel(9);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

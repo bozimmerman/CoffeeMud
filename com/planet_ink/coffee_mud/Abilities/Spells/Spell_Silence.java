@@ -17,6 +17,9 @@ public class Spell_Silence extends Spell
 		// bring up their affected list.
 		displayText="(Silence spell)";
 
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=0;
+
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

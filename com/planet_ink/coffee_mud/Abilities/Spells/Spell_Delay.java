@@ -19,6 +19,9 @@ public class Spell_Delay extends Spell
 		// bring up their affected list.
 		displayText="(Delay spell)";
 
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=Ability.CAN_ROOMS;
+		
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

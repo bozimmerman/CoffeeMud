@@ -18,6 +18,9 @@ public class Spell_Sleep extends Spell
 		displayText="(Sleep spell)";
 
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

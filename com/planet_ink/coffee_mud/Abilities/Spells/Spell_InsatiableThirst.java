@@ -17,7 +17,6 @@ public class Spell_InsatiableThirst extends Spell
 		// bring up their affected list.
 		displayText="(Insatiable Thirst spell)";
 
-
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

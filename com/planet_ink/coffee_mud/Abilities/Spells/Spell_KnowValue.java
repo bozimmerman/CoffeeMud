@@ -18,6 +18,9 @@ public class Spell_KnowValue extends Spell
 
 		baseEnvStats().setLevel(8);
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -20,6 +20,9 @@ public class Spell_PredictWeather extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+
 		baseEnvStats().setLevel(7);
 
 		baseEnvStats().setAbility(0);

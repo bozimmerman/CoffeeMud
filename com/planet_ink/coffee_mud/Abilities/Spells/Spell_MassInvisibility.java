@@ -17,6 +17,8 @@ public class Spell_MassInvisibility extends Spell
 		// bring up their affected list.
 		displayText="(Invisibility)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.BENEFICIAL_OTHERS;
 

@@ -15,6 +15,9 @@ public class Thief_Sap extends ThiefSkill
 		displayText="(knocked out)";
 		miscText="";
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		triggerStrings.addElement("SAP");
 
 		canBeUninvoked=true;

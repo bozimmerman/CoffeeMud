@@ -15,6 +15,9 @@ public class Burning extends StdAbility
 		displayText="(Burning)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

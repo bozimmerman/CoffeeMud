@@ -18,6 +18,8 @@ public class Spell_StinkingCloud extends Spell
 		// bring up their affected list.
 		displayText="(In the Stinking Cloud)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
 
 		quality=Ability.MALICIOUS;
 

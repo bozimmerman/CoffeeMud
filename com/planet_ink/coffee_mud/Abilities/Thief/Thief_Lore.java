@@ -17,6 +17,9 @@ public class Thief_Lore extends ThiefSkill
 		// bring up their affected list.
 		displayText="";
 
+		canTargetCode=Ability.CAN_ITEMS;
+		canAffectCode=0;
+		
 		quality=Ability.INDIFFERENT;
 
 		baseEnvStats().setLevel(1);

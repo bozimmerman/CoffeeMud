@@ -16,6 +16,9 @@ public class Thief_BackStab extends ThiefSkill
 		displayText="(in a dark realm of thievery)";
 		miscText="";
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		triggerStrings.addElement("BACKSTAB");
 
 		canBeUninvoked=true;

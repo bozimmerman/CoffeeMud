@@ -18,6 +18,9 @@ public class Spell_Cloudkill extends Spell
 		displayText="(Cloudkill)";
 
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(16);

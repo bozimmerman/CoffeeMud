@@ -16,7 +16,6 @@ public class Spell_Fear extends Spell
 		// bring up their affected list.
 		displayText="(Afraid)";
 
-
 		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(8);

@@ -15,6 +15,7 @@ public class Prop_FightSpellCast extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Casting spells when properly used";
+		canAffectCode=Ability.CAN_ITEMS;
 	}
 
 	public Environmental newInstance()

@@ -17,6 +17,8 @@ public class Prayer_Paralyze extends Prayer
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(8);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		recoverEnvStats();
 	}
 

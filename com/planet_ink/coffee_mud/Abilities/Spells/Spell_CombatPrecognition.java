@@ -18,6 +18,9 @@ public class Spell_CombatPrecognition extends Spell
 		// bring up their affected list.
 		displayText="(Combat Precognition)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.BENEFICIAL_SELF;
 
 		canBeUninvoked=true;

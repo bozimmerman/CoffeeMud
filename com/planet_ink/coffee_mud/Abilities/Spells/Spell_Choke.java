@@ -19,6 +19,9 @@ public class Spell_Choke extends Spell
 
 		quality=Ability.MALICIOUS;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -17,6 +17,8 @@ public class Spell_ObscureSelf extends Spell
 		// bring up their affected list.
 		displayText="(Obscure Self)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.OK_SELF;
 		canBeUninvoked=true;

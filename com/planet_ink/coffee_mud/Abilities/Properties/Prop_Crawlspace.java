@@ -12,6 +12,7 @@ public class Prop_Crawlspace extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Room navigation limitation";
+		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_AREAS;
 	}
 
 	public Environmental newInstance()

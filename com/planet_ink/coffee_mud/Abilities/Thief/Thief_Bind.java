@@ -19,6 +19,9 @@ public class Thief_Bind extends ThiefSkill
 		// bring up their affected list.
 		displayText="(Bound)";
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		triggerStrings.addElement("BIND");
 		quality=Ability.MALICIOUS;
 

@@ -20,6 +20,7 @@ public class Paladin_Defend extends StdAbility
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(1);
+		canAffectCode=Ability.CAN_MOBS;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

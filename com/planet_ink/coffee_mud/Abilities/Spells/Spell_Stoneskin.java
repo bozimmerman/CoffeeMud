@@ -17,6 +17,9 @@ public class Spell_Stoneskin extends Spell
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Stoneskin";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		// what the affected mob sees when they
 		// bring up their affected list.
 		displayText="(Stoneskin)";

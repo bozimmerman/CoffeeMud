@@ -18,6 +18,9 @@ public class Spell_FaerieFire extends Spell
 		// bring up their affected list.
 		displayText="(Faerie Fire)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

@@ -18,6 +18,9 @@ public class Thief_Swipe extends ThiefSkill
 
 		triggerStrings.addElement("SWIPE");
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

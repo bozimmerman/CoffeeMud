@@ -14,6 +14,8 @@ public class Prayer_SenseGood extends Prayer
 		name="Sense Good";
 		displayText="(Sense Good)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		baseEnvStats().setLevel(2);
 
 		recoverEnvStats();

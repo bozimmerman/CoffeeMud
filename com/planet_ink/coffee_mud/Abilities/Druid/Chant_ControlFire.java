@@ -22,6 +22,9 @@ public class Chant_ControlFire extends Chant
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(8);
 		maxRange=5;
 		minRange=0;

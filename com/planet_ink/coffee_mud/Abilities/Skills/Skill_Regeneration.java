@@ -24,6 +24,9 @@ public class Skill_Regeneration extends StdAbility
 		isAutoinvoked=true;
 		quality=Ability.BENEFICIAL_SELF;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setAbility(0);
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

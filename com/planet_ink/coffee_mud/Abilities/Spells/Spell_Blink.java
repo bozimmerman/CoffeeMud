@@ -18,6 +18,9 @@ public class Spell_Blink extends Spell
 		displayText="(Blink spell)";
 
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.BENEFICIAL_OTHERS;
 		canBeUninvoked=true;
 		isAutoinvoked=false;

@@ -22,6 +22,9 @@ public class Spell_MagicMouth extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(9);
 
 		baseEnvStats().setAbility(0);

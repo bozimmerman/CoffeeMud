@@ -16,6 +16,8 @@ public class Prayer_Nullification extends Prayer
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_NEUTRAL;
 
+		canAffectCode=0;
+		canTargetCode=0;
 		recoverEnvStats();
 	}
 

@@ -19,6 +19,9 @@ public class Skill_Trip extends StdAbility
 
 		triggerStrings.addElement("TRIP");
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

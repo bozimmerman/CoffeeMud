@@ -18,6 +18,9 @@ public class Falling extends StdAbility
 		displayText="(Falling)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

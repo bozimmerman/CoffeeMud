@@ -18,7 +18,9 @@ public class Spell_Enthrall extends Spell
 		displayText="(Enthralled)";
 
 		quality=Ability.MALICIOUS;
-
+		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		baseEnvStats().setLevel(6);
 

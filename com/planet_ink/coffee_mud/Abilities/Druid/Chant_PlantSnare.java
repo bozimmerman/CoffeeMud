@@ -20,6 +20,8 @@ public class Chant_PlantSnare extends Chant
 		// bring up their affected list.
 		displayText="(Snared)";
 
+		canAffectCode=0;
+		canTargetCode=0;
 
 		quality=Ability.MALICIOUS;
 

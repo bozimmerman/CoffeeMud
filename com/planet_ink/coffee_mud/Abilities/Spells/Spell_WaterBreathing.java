@@ -17,6 +17,9 @@ public class Spell_WaterBreathing extends Spell
 		displayText="(Water Breathing)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.OK_OTHERS;

@@ -19,6 +19,8 @@ public class Spell_WallOfAir extends Spell
 		// bring up their affected list.
 		displayText="(Wall of Air)";
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
 
 		quality=Ability.OK_SELF;
 

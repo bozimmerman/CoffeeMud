@@ -23,6 +23,13 @@ public interface Behavior extends Cloneable
 	public String getParms();
 	public void setParms(String parameters);
 	
+	public boolean canImprove(Environmental E);
+	// improve flag
+	public static final int CAN_MOBS=1;
+	public static final int CAN_ITEMS=2;
+	public static final int CAN_AREAS=4;
+	public static final int CAN_ROOMS=8;
+	public static final int CAN_EXITS=16;
 	
 	public boolean grantsMobility();
 	/** this method defines how this thing responds

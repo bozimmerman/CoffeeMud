@@ -19,6 +19,9 @@ public class Spell_Infravision extends Spell
 		displayText="(Infravision)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.OK_SELF;

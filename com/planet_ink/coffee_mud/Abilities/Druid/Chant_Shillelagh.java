@@ -17,6 +17,9 @@ public class Chant_Shillelagh extends Chant
 
 		baseEnvStats().setLevel(24);
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		recoverEnvStats();
 	}
 

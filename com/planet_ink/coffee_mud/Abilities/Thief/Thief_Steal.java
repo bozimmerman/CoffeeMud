@@ -18,6 +18,9 @@ public class Thief_Steal extends ThiefSkill
 
 		triggerStrings.addElement("STEAL");
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

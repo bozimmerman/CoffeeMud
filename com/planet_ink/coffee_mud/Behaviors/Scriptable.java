@@ -17,6 +17,7 @@ public class Scriptable extends ActiveTicker
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=30; chance=50;
 		tickReset();
+		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

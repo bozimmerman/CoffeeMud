@@ -17,6 +17,9 @@ public class Thief_Observation extends ThiefSkill
 		displayText="(Keen sense of observation)";
 		miscText="";
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		triggerStrings.addElement("OBSERVE");
 
 		canBeUninvoked=true;

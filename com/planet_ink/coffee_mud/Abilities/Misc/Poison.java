@@ -19,6 +19,8 @@ public class Poison extends StdAbility
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.MALICIOUS;
 

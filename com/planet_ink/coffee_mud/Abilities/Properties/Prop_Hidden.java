@@ -13,6 +13,7 @@ public class Prop_Hidden extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Persistant Hiddenness";
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
 	}
 
 	public Environmental newInstance()

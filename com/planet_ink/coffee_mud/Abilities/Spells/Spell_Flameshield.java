@@ -14,6 +14,9 @@ public class Spell_Flameshield extends Spell
 		name="Flameshield";
 		displayText="(Flameshield)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(9);
 		quality=Ability.BENEFICIAL_OTHERS;
 

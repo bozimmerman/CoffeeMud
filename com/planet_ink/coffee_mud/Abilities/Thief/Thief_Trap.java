@@ -19,6 +19,9 @@ public class Thief_Trap extends ThiefSkill
 
 		triggerStrings.addElement("TRAP");
 
+		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
+		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

@@ -16,6 +16,9 @@ public class Spell_LightenItem extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(2);
 
 		baseEnvStats().setAbility(0);

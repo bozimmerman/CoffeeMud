@@ -14,6 +14,9 @@ public class Spell_FakeArmor extends Spell
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Fake Armor";
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

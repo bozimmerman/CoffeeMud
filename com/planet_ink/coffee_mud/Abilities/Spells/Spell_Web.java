@@ -20,6 +20,8 @@ public class Spell_Web extends Spell
 		// bring up their affected list.
 		displayText="(Webbed)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
 
 		quality=Ability.MALICIOUS;
 

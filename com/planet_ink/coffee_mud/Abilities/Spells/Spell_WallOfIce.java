@@ -23,6 +23,9 @@ public class Spell_WallOfIce extends Spell
 		displayText="(Wall of Ice)";
 
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(16);

@@ -19,6 +19,9 @@ public class Chant_SummonElemental extends Chant
 
 		quality=Ability.BENEFICIAL_SELF;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

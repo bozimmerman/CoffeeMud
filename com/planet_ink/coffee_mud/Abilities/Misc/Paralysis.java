@@ -16,6 +16,9 @@ public class Paralysis extends StdAbility
 		quality=Ability.MALICIOUS;
 		baseEnvStats().setLevel(10);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		recoverEnvStats();
 	}
 

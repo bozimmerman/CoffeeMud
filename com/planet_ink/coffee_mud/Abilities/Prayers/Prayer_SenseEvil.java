@@ -14,6 +14,8 @@ public class Prayer_SenseEvil extends Prayer
 		name="Sense Evil";
 		displayText="(Sense Evil)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		baseEnvStats().setLevel(2);
 
 		recoverEnvStats();

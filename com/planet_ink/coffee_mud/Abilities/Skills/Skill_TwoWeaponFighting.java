@@ -21,6 +21,9 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		canBeUninvoked=false;
 		isAutoinvoked=true;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(8);
 
 		recoverEnvStats();

@@ -21,6 +21,9 @@ public class Skill_Recall extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canTargetCode=0;
+		canAffectCode=0;
+		
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
 	}

@@ -18,6 +18,9 @@ public class Chant_IllusionaryForest extends Chant
 		// bring up their affected list.
 		displayText="(Illusionary Forest)";
 		quality=Ability.INDIFFERENT;
+		
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=Ability.CAN_ROOMS;
 
 
 		canBeUninvoked=true;

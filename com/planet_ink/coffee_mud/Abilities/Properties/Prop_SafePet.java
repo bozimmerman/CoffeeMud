@@ -14,6 +14,7 @@ public class Prop_SafePet extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Unattackable Pets";
+		canAffectCode=Ability.CAN_MOBS;
 	}
 
 	public Environmental newInstance()

@@ -16,6 +16,9 @@ public class Spell_DispelMagic extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
+		
 		baseEnvStats().setLevel(5);
 
 		baseEnvStats().setAbility(0);

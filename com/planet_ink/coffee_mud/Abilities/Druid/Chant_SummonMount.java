@@ -15,6 +15,9 @@ public class Chant_SummonMount extends Chant
 		displayText="(Mount)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

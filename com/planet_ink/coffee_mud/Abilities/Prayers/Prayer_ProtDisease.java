@@ -14,6 +14,8 @@ public class Prayer_ProtDisease extends Prayer
 		name="Protection Disease";
 		displayText="(Protection from Disease)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		quality=Ability.BENEFICIAL_SELF;
 		baseEnvStats().setLevel(13);
 		recoverEnvStats();

@@ -20,6 +20,9 @@ public class Skill_Parry extends StdAbility
 		isAutoinvoked=true;
 		quality=Ability.BENEFICIAL_SELF;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(3);
 
 		recoverEnvStats();

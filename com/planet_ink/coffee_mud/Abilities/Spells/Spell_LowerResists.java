@@ -17,6 +17,9 @@ public class Spell_LowerResists extends Spell
 		displayText="(Lowered Resistances)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.MALICIOUS;

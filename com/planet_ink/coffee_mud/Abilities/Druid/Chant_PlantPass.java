@@ -17,6 +17,9 @@ public class Chant_PlantPass extends Chant
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(13);
 
 		baseEnvStats().setAbility(0);

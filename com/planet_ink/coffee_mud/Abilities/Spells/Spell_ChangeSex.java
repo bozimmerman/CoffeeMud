@@ -17,6 +17,9 @@ public class Spell_ChangeSex extends Spell
 		// bring up their affected list.
 		displayText="(Change Sex)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.MALICIOUS;

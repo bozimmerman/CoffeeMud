@@ -19,6 +19,9 @@ public class Chant_SummonAnimal extends Chant
 
 		quality=Ability.BENEFICIAL_SELF;
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

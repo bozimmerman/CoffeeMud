@@ -20,6 +20,9 @@ public class Spell_FeignDeath extends Spell
 		displayText="(Feign Death)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

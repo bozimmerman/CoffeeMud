@@ -17,6 +17,9 @@ public class Spell_Slow extends Spell
 		// bring up their affected list.
 		displayText="(Slow spell)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

@@ -17,6 +17,7 @@ public class ArchonSkill extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		recoverEnvStats();
+		canAffectCode=0;
 	}
 
 	public int classificationCode()

@@ -19,6 +19,9 @@ public class Spell_Haste extends Spell
 
 		quality=Ability.BENEFICIAL_OTHERS;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

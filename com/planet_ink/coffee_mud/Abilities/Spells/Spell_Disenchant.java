@@ -16,6 +16,9 @@ public class Spell_Disenchant extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(22);
 
 		baseEnvStats().setAbility(0);

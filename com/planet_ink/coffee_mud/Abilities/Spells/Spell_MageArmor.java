@@ -19,6 +19,8 @@ public class Spell_MageArmor extends Spell
 		// bring up their affected list.
 		displayText="(Mage Armor)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.BENEFICIAL_SELF;
 		canBeUninvoked=true;
@@ -58,8 +60,7 @@ public class Spell_MageArmor extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=mob;
-		if(target==null) return false;
+		MOB target=mob;		if(target==null) return false;
 
 		if(mob.fetchAffect(this.ID())!=null)
 		{

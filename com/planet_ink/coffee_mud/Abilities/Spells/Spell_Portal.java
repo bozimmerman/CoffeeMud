@@ -18,6 +18,9 @@ public class Spell_Portal extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=0;
+
 		baseEnvStats().setLevel(18);
 
 		baseEnvStats().setAbility(0);

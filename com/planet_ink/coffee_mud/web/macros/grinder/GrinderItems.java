@@ -21,16 +21,17 @@ public class GrinderItems
 		
 		Item I=null;
 		MOB M=null;
-		if(itemCode.equals("NEW"))
-			I=CMClass.getItem(newClassID);
-		else
 		if((mobNum!=null)&&(mobNum.length()>0))
 		{
 			M=R.fetchInhabitant(Util.s_int(mobNum)-1);
 			if(M==null)
 				return "No MOB?!";
-			I=M.fetchInventory(Util.s_int(itemCode)-1);
 		}
+		if(itemCode.equals("NEW"))
+			I=CMClass.getItem(newClassID);
+		else
+		if(M!=null)
+			I=M.fetchInventory(Util.s_int(itemCode)-1);
 		else
 			I=R.fetchItem(Util.s_int(itemCode)-1);
 		
@@ -337,6 +338,8 @@ public class GrinderItems
 			else
 			{
 				M.addInventory(I);
+				M.recoverEnvStats();
+				M.text();
 				R.recoverRoomStats();
 			}
 		}
@@ -363,6 +366,8 @@ public class GrinderItems
 			{
 				M.delInventory(oldI);
 				M.addInventory(I);
+				M.recoverEnvStats();
+				M.text();
 				R.recoverRoomStats();
 				for(int i=0;i<M.inventorySize();i++)
 				{

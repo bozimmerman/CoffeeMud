@@ -20,6 +20,17 @@ public class StdAbility implements Ability, Cloneable
 	protected boolean isAnAutoEffect=false;
 	protected int maxRange=0;
 	protected int minRange=0;
+	
+	protected int canAffectCode=Ability.CAN_AREAS|
+								Ability.CAN_ITEMS|
+								Ability.CAN_MOBS|
+								Ability.CAN_ROOMS|
+								Ability.CAN_EXITS;
+	protected int canTargetCode=Ability.CAN_AREAS|
+								Ability.CAN_ITEMS|
+								Ability.CAN_MOBS|
+								Ability.CAN_ROOMS|
+								Ability.CAN_EXITS;
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -101,6 +112,29 @@ public class StdAbility implements Ability, Cloneable
 		return CMAble.getQualifyingLevel(student.charStats().getMyClass().ID(),ID());
 	}
 
+	public boolean canAffect(Environmental E)
+	{
+		if((E==null)&&(canAffectCode==0)) return true;
+		if(E==null) return false;
+		if((E instanceof MOB)&&((canAffectCode&Ability.CAN_MOBS)>0)) return true;
+		if((E instanceof Item)&&((canAffectCode&Ability.CAN_ITEMS)>0)) return true;
+		if((E instanceof Exit)&&((canAffectCode&Ability.CAN_EXITS)>0)) return true;
+		if((E instanceof Room)&&((canAffectCode&Ability.CAN_ROOMS)>0)) return true;
+		if((E instanceof Area)&&((canAffectCode&Ability.CAN_AREAS)>0)) return true;
+		return false;
+	}
+	
+	public boolean canTarget(Environmental E)
+	{
+		if((E==null)&&(canTargetCode==0)) return true;
+		if(E==null) return false;
+		if((E instanceof MOB)&&((canTargetCode&Ability.CAN_MOBS)>0)) return true;
+		if((E instanceof Item)&&((canTargetCode&Ability.CAN_ITEMS)>0)) return true;
+		if((E instanceof Room)&&((canTargetCode&Ability.CAN_ROOMS)>0)) return true;
+		if((E instanceof Area)&&((canTargetCode&Ability.CAN_AREAS)>0)) return true;
+		return false;
+	}
+	
 	public MOB getTarget(MOB mob, Vector commands, Environmental givenTarget)
 	{ return getTarget(mob,commands,givenTarget,false);	}
 

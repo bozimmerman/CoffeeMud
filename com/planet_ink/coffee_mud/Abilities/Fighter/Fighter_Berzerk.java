@@ -19,6 +19,9 @@ public class Fighter_Berzerk extends StdAbility
 
 		triggerStrings.addElement("BERZERK");
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_SELF;

@@ -17,6 +17,9 @@ public class Fighter_Tumble extends StdAbility
 		displayText="(Tumbling)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		triggerStrings.addElement("TUMBLE");
 
 		canBeUninvoked=true;

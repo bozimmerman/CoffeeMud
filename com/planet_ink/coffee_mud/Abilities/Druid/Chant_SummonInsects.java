@@ -18,6 +18,8 @@ public class Chant_SummonInsects extends Chant
 		// bring up their affected list.
 		displayText="(In a swarm of insects)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
 
 		quality=Ability.MALICIOUS;
 

@@ -18,6 +18,9 @@ public class Thief_Sneak extends ThiefSkill
 
 		triggerStrings.addElement("SNEAK");
 
+		canTargetCode=0;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

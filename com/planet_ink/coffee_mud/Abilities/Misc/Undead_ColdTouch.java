@@ -17,6 +17,9 @@ public class Undead_ColdTouch extends StdAbility
 		displayText="(Cold and Weakened)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

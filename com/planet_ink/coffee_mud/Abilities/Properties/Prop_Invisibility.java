@@ -13,6 +13,7 @@ public class Prop_Invisibility extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Persistant Invisibility";
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
 	}
 
 	public Environmental newInstance()

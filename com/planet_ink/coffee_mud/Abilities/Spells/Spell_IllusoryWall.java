@@ -16,6 +16,9 @@ public class Spell_IllusoryWall extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_EXITS;
+		canTargetCode=Ability.CAN_EXITS;
+		
 		baseEnvStats().setLevel(7);
 
 		baseEnvStats().setAbility(0);

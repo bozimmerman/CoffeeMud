@@ -20,7 +20,10 @@ public class Spell_DetectGold extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.OK_SELF;
-
+		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(7);
 
 		baseEnvStats().setAbility(0);

@@ -18,6 +18,9 @@ public class Prayer_ProtEvil extends Prayer
 		holyQuality=Prayer.HOLY_GOOD;
 		baseEnvStats().setLevel(4);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		recoverEnvStats();
 	}
 

@@ -17,6 +17,9 @@ public class Thief_Pick extends ThiefSkill
 		displayText="(in a dark realm of thievery)";
 		miscText="";
 
+		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
+		canAffectCode=0;
+		
 		triggerStrings.addElement("PICK");
 
 		canBeUninvoked=true;

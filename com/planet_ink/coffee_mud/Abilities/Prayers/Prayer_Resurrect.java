@@ -14,6 +14,8 @@ public class Prayer_Resurrect extends Prayer
 		name="Resurrect";
 		displayText="(Resurrected)";
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
 		baseEnvStats().setLevel(25);
 
 		recoverEnvStats();

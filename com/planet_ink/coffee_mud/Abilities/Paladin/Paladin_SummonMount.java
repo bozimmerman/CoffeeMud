@@ -18,6 +18,9 @@ public class Paladin_SummonMount extends StdAbility
 		quality=Ability.OK_SELF;
 		triggerStrings.addElement("CALLMOUNT");
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

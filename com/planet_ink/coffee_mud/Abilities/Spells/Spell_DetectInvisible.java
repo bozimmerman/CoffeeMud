@@ -21,6 +21,9 @@ public class Spell_DetectInvisible extends Spell
 		isAutoinvoked=false;
 		quality=Ability.OK_SELF;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(6);
 
 		baseEnvStats().setAbility(0);

@@ -19,6 +19,9 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		displayText="(ItemRejuv)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

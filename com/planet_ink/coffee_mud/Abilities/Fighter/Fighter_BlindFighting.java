@@ -18,6 +18,9 @@ public class Fighter_BlindFighting extends StdAbility
 
 		canBeUninvoked=false;
 		isAutoinvoked=true;
+		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
 
 		baseEnvStats().setLevel(10);
 		quality=Ability.BENEFICIAL_SELF;

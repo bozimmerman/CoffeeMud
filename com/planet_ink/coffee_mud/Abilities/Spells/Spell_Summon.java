@@ -16,6 +16,9 @@ public class Spell_Summon extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=0;
+
 		baseEnvStats().setLevel(18);
 
 		baseEnvStats().setAbility(0);

@@ -16,6 +16,8 @@ public class Chant_DistantGrowth extends Chant
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.INDIFFERENT;
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ROOMS;
 
 		baseEnvStats().setLevel(10);
 

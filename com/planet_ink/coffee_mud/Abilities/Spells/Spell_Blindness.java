@@ -18,6 +18,9 @@ public class Spell_Blindness extends Spell
 		displayText="(Blindness)";
 
 		quality=Ability.MALICIOUS;
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

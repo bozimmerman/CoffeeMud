@@ -16,6 +16,8 @@ public class Prayer_Disenchant extends Prayer
 		quality=Ability.INDIFFERENT;
 		holyQuality=Prayer.HOLY_NEUTRAL;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
 		baseEnvStats().setLevel(24);
 
 		recoverEnvStats();

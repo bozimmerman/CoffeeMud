@@ -15,6 +15,7 @@ public class Prop_HaveZapper extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Restrictions to ownership";
+		canAffectCode=Ability.CAN_ITEMS;
 	}
 
 	public Environmental newInstance()

@@ -17,6 +17,9 @@ public class Spell_FloatingDisc extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(5);
 
 		baseEnvStats().setAbility(0);

@@ -20,6 +20,9 @@ public class Spell_Delude extends Spell
 		displayText="(Delude spell)";
 		quality=Ability.OK_SELF;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		baseEnvStats().setLevel(18);
 

@@ -13,6 +13,9 @@ public class Spell_Shatter extends Spell
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Shatter";
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
+
 
 		baseEnvStats().setLevel(8);
 

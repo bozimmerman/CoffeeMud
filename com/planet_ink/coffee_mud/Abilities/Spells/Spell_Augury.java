@@ -17,6 +17,9 @@ public class Spell_Augury extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(3);
 
 		baseEnvStats().setAbility(0);

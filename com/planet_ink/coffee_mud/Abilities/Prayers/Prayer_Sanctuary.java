@@ -17,6 +17,8 @@ public class Prayer_Sanctuary extends Prayer
 		quality=Ability.BENEFICIAL_OTHERS;
 		holyQuality=Prayer.HOLY_GOOD;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		baseEnvStats().setLevel(13);
 
 		recoverEnvStats();

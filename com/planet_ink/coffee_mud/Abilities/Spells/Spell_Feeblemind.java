@@ -18,6 +18,9 @@ public class Spell_Feeblemind extends Spell
 		displayText="(Feeblemind spell)";
 
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

@@ -15,6 +15,8 @@ public class Prayer_SenseLife extends Prayer
 		name="Sense Life";
 		baseEnvStats().setLevel(1);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		recoverEnvStats();
 	}
 

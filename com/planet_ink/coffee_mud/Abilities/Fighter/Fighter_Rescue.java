@@ -15,6 +15,9 @@ public class Fighter_Rescue extends StdAbility
 		displayText="(Rescued)";
 		miscText="";
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		triggerStrings.addElement("RESCUE");
 		triggerStrings.addElement("RES");
 

@@ -23,6 +23,9 @@ public class Skill_WandUse extends StdAbility
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_SELF;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
 	}

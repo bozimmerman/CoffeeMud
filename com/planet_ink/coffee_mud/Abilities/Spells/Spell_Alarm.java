@@ -20,6 +20,9 @@ public class Spell_Alarm extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		baseEnvStats().setLevel(14);
 
 		baseEnvStats().setAbility(0);

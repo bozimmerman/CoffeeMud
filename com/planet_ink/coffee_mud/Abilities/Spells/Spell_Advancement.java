@@ -18,6 +18,9 @@ public class Spell_Advancement extends Spell
 		displayText="(Advancement)";
 		quality=Ability.OK_OTHERS;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		baseEnvStats().setLevel(15);
 

@@ -18,6 +18,9 @@ public class Thief_Bribe extends ThiefSkill
 
 		triggerStrings.addElement("BRIBE");
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

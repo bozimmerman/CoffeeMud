@@ -16,6 +16,10 @@ public class Spell_Darkness extends Spell
 		// what the affected mob sees when they
 		// bring up their affected list.
 		displayText="(Darkness spell)";
+		
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=Ability.CAN_ROOMS;
+		
 
 
 		canBeUninvoked=true;

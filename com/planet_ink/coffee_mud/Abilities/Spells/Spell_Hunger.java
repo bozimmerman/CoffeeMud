@@ -17,6 +17,9 @@ public class Spell_Hunger extends Spell
 		// bring up their affected list.
 		displayText="(Hunger)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

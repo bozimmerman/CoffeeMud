@@ -17,6 +17,9 @@ public class Spell_LightSensitivity extends Spell
 		// bring up their affected list.
 		displayText="(Light Sensitivity)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 		canBeUninvoked=true;

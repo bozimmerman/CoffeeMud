@@ -36,6 +36,9 @@ public class Druid_ShapeShift extends StdAbility
 		miscText="";
 		triggerStrings.addElement("SHAPESHIFT");
 		quality=Ability.OK_SELF;
+		
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
 
 		recoverEnvStats();
 	}

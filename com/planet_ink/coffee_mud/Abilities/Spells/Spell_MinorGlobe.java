@@ -16,6 +16,9 @@ public class Spell_MinorGlobe extends Spell
 		displayText="(Globe of Invulnerability)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_OTHERS;

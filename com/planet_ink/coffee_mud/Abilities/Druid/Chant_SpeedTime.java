@@ -19,6 +19,9 @@ public class Chant_SpeedTime extends Chant
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(7);
 
 		baseEnvStats().setAbility(0);

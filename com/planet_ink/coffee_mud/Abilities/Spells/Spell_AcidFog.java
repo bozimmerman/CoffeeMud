@@ -18,6 +18,9 @@ public class Spell_AcidFog extends Spell
 		// bring up their affected list.
 		displayText="(In the Acid Fog)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 
 		quality=Ability.MALICIOUS;
 

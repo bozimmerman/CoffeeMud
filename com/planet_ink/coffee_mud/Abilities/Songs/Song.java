@@ -26,6 +26,9 @@ public class Song extends StdAbility
 		triggerStrings.addElement("SING");
 		triggerStrings.addElement("SI");
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		maxRange=1;

@@ -22,6 +22,9 @@ public class Spell_FindFamiliar extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(7);
 
 		uses=Integer.MAX_VALUE;

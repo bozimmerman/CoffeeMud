@@ -20,6 +20,9 @@ public class Skill_Dodge extends StdAbility
 		isAutoinvoked=true;
 		quality=Ability.BENEFICIAL_SELF;
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		baseEnvStats().setLevel(7);
 
 		recoverEnvStats();

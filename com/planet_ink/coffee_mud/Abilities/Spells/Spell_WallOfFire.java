@@ -21,6 +21,9 @@ public class Spell_WallOfFire extends Spell
 		displayText="(Wall of Fire)";
 
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+
 		quality=Ability.OK_SELF;
 
 		baseEnvStats().setLevel(16);

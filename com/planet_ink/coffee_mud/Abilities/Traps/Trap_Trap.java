@@ -24,6 +24,8 @@ public class Trap_Trap extends StdAbility implements Trap
 		recoverEnvStats();
 		if(benefactor==null)
 			benefactor=(MOB)CMClass.getMOB("StdMOB");
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_EXITS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;
 	}
 
 	public boolean sprung()

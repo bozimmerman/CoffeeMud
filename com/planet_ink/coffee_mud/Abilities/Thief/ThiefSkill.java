@@ -13,6 +13,7 @@ public class ThiefSkill extends StdAbility
 		name="a Thief Skill";
 		displayText="(in a dark realm of thievery)";
 		miscText="";
+		canAffectCode=0;
 	}
 
 	public int classificationCode()

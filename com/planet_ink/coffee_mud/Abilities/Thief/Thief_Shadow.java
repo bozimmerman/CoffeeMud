@@ -18,6 +18,9 @@ public class Thief_Shadow extends ThiefSkill
 		miscText="";
 		displayText="check";
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		triggerStrings.addElement("SHADOW");
 
 		canBeUninvoked=true;

@@ -17,6 +17,9 @@ public class Prayer_ProtectHealth extends Prayer
 		quality=Ability.BENEFICIAL_SELF;
 		baseEnvStats().setLevel(13);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		recoverEnvStats();
 	}
 

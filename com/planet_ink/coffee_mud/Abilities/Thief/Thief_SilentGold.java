@@ -17,6 +17,9 @@ public class Thief_SilentGold extends ThiefSkill
 
 		triggerStrings.addElement("SILENTGOLD");
 
+		canTargetCode=0;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

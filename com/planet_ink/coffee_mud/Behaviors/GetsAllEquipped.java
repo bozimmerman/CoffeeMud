@@ -14,6 +14,7 @@ public class GetsAllEquipped extends ActiveTicker
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		maxTicks=5;minTicks=10;chance=100;
 		tickReset();
+		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

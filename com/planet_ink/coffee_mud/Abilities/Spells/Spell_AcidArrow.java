@@ -19,6 +19,9 @@ public class Spell_AcidArrow extends Spell
 
 		quality=Ability.MALICIOUS;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=0;

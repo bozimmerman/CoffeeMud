@@ -17,6 +17,8 @@ public class Prayer_Contagion extends Prayer
 		baseEnvStats().setLevel(7);
 		holyQuality=Prayer.HOLY_EVIL;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 		recoverEnvStats();
 	}
 

@@ -12,6 +12,7 @@ public class Scavenger extends ActiveTicker
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		minTicks=10; maxTicks=30; chance=25;
 		tickReset();
+		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

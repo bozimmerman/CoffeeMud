@@ -21,6 +21,8 @@ public class Fighter_WeaponBreak extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
 		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(14);

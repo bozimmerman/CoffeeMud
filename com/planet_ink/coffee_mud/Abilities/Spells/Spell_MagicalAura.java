@@ -20,6 +20,9 @@ public class Spell_MagicalAura extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
+		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
+		
 		baseEnvStats().setLevel(1);
 		quality=Ability.BENEFICIAL_SELF;
 

@@ -33,6 +33,15 @@ public interface Ability  extends Environmental
 		"TRANSMUTATION","ENCHANTMENT/CHARM","CONJURATION"
 	};
 	
+	// flag
+	public static final int CAN_MOBS=1;
+	public static final int CAN_ITEMS=2;
+	public static final int CAN_AREAS=4;
+	public static final int CAN_ROOMS=8;
+	public static final int CAN_EXITS=16;
+	
+	
+	
 	public static final int ALL_DOMAINS=(255<<5);
 	// the classification incorporates the above
 	public int classificationCode();
@@ -105,6 +114,9 @@ public interface Ability  extends Environmental
 	public void practice(MOB teacher, MOB student);
 	public boolean qualifiesByLevel(MOB student);
 	public int qualifyingLevel(MOB student);
+	
+	public boolean canTarget(Environmental E);
+	public boolean canAffect(Environmental E);
 
 	// for use by the identify spell, this should return a
 	// nice description of any properties incorporated

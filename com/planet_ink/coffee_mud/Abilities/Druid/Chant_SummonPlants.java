@@ -17,6 +17,9 @@ public class Chant_SummonPlants extends Chant
 		name="Summon Plants";
 		baseEnvStats().setLevel(5);
 
+		canAffectCode=Ability.CAN_ITEMS;
+		canTargetCode=0;
+		
 		recoverEnvStats();
 	}
 

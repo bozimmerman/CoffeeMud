@@ -18,6 +18,9 @@ public class Prayer_AnimateDead extends Prayer
 
 		baseEnvStats().setLevel(24);
 		
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		holyQuality=Prayer.HOLY_EVIL;
 		quality=Ability.INDIFFERENT;
 

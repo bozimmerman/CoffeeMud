@@ -16,6 +16,7 @@ public class Prop_SpellAdder extends Property
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Casting spells on oneself";
+		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;
 	}
 
 	public Environmental newInstance()

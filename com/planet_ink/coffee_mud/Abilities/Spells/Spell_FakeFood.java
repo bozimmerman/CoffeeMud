@@ -15,6 +15,9 @@ public class Spell_FakeFood extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=0;
+		
 		baseEnvStats().setLevel(13);
 
 		baseEnvStats().setAbility(0);

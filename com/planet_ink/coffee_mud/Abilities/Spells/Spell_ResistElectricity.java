@@ -17,6 +17,9 @@ public class Spell_ResistElectricity extends Spell
 		displayText="(Resist Electricity)";
 		miscText="";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.BENEFICIAL_OTHERS;

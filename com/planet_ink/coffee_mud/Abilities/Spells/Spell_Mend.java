@@ -16,6 +16,9 @@ public class Spell_Mend extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+
 		baseEnvStats().setLevel(4);
 
 		baseEnvStats().setAbility(0);

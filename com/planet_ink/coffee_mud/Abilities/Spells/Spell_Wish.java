@@ -18,6 +18,8 @@ public class Spell_Wish extends Spell
 		// bring up their affected list.
 		displayText="(Wish Spell)";
 
+		canAffectCode=0;
+		canTargetCode=0;
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;

@@ -22,6 +22,9 @@ public class Spell_SummonSteed extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+
 		baseEnvStats().setLevel(7);
 
 		uses=Integer.MAX_VALUE;

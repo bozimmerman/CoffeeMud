@@ -19,6 +19,8 @@ public class Spell_Tourettes extends Spell
 		// bring up their affected list.
 		displayText="(Tourettes)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.MALICIOUS;
 

@@ -19,6 +19,9 @@ public class Thief_Snatch extends StdAbility
 
 		triggerStrings.addElement("SNATCH");
 
+		canTargetCode=0;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

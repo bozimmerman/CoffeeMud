@@ -17,6 +17,8 @@ public class Chant_Hunger extends Chant
 		// bring up their affected list.
 		displayText="(Hunger)";
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
 
 		quality=Ability.MALICIOUS;
 

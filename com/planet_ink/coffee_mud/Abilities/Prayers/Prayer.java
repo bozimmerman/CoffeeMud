@@ -25,6 +25,9 @@ public class Prayer extends StdAbility
 		triggerStrings.addElement("PRAY");
 		triggerStrings.addElement("PR");
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		holyQuality=Prayer.HOLY_NEUTRAL;
 		quality=Ability.INDIFFERENT;
 		canBeUninvoked=true;

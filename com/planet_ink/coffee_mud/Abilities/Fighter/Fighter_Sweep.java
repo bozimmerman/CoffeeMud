@@ -20,6 +20,9 @@ public class Fighter_Sweep extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=0;
+		
 		quality=Ability.MALICIOUS;
 
 		baseEnvStats().setLevel(2);

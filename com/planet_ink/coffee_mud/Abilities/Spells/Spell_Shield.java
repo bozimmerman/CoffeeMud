@@ -17,6 +17,8 @@ public class Spell_Shield extends Spell
 		// bring up their affected list.
 		displayText="(Shield spell)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
 
 		baseEnvStats().setLevel(1);
 		quality=Ability.BENEFICIAL_OTHERS;

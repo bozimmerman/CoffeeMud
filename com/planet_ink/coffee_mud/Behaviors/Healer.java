@@ -23,6 +23,7 @@ public class Healer extends ActiveTicker
 			healingVector.addElement(CMClass.getAbility("Prayer_Bless"));
 			healingVector.addElement(CMClass.getAbility("Prayer_Sanctuary"));
 		}
+		canImproveCode=Behavior.CAN_MOBS;
 	}
 
 	public Behavior newInstance()

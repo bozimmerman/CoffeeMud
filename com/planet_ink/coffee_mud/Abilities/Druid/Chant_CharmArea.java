@@ -16,6 +16,8 @@ public class Chant_CharmArea extends Chant
 
 		baseEnvStats().setLevel(3);
 
+		canAffectCode=Ability.CAN_ROOMS;
+		canTargetCode=0;
 		recoverEnvStats();
 	}
 

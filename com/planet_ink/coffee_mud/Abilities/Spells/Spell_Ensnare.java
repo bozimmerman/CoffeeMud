@@ -25,6 +25,9 @@ public class Spell_Ensnare extends Spell
 
 		baseEnvStats().setLevel(15);
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=1;

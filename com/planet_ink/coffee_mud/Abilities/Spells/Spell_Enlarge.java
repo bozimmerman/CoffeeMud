@@ -16,6 +16,9 @@ public class Spell_Enlarge extends Spell
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Enlarge Object";
 
+		canAffectCode=0;
+		canTargetCode=Ability.CAN_ITEMS;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 

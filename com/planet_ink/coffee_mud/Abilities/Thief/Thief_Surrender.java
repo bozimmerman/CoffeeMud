@@ -17,6 +17,9 @@ public class Thief_Surrender extends ThiefSkill
 
 		triggerStrings.addElement("SURRENDER");
 
+		canTargetCode=0;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		quality=Ability.OK_SELF;

@@ -17,6 +17,9 @@ public class Spell_Forget extends Spell
 		// bring up their affected list.
 		displayText="(Forgetful)";
 
+		canAffectCode=Ability.CAN_MOBS;
+		canTargetCode=Ability.CAN_MOBS;
+		
 		quality=Ability.MALICIOUS;
 
 

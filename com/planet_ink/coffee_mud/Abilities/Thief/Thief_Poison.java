@@ -17,6 +17,9 @@ public class Thief_Poison extends ThiefSkill
 		displayText="(Poisoned)";
 		miscText="";
 
+		canTargetCode=Ability.CAN_MOBS;
+		canAffectCode=Ability.CAN_MOBS;
+		
 		triggerStrings.addElement("POISON");
 
 		canBeUninvoked=true;

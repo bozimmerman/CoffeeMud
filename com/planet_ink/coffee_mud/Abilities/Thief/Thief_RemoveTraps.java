@@ -19,6 +19,9 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 		triggerStrings.addElement("DETRAP");
 
+		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
+		canAffectCode=0;
+		
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 
