@@ -284,6 +284,9 @@ public class StdMOB implements MOB
 	public void recoverCharStats()
 	{
 		charStats=baseCharStats().cloneCharStats();
+		if(charStats.combinedClassLevels()==0)
+			charStats.setClassLevel(charStats.getCurrentClass().ID(),baseEnvStats().level());
+			
 		if(riding()!=null) riding().affectCharStats(this,charStats);
 		for(int a=0;a<numAffects();a++)
 		{

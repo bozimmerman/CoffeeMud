@@ -47,6 +47,7 @@ public interface CharStats extends Cloneable
 	public String getMyLevelsStr();
 	public void setCurrentClass(String classID);
 	public int getClassLevel(String classID);
+	public int combinedClassLevels();
 	public void setClassLevel(String classID, int level);
 	public Race getMyRace();
 	public void setMyRace(Race newVal);

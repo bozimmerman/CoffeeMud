@@ -76,6 +76,17 @@ public class DefaultCharStats implements Cloneable, CharStats
 		if(myClasses==null) return 0;
 		return myClasses.length;
 	}
+	public int combinedClassLevels()
+	{
+		if((myClasses==null)||(myLevels==null))
+			return 0;
+		
+		int combined=0;
+		for(int i=0;i<myLevels.length;i++)
+			combined+=myLevels[i].intValue();
+		return combined;
+	}
+
 	public CharClass getMyClass(int i)
 	{
 		if((myClasses==null)
