@@ -415,5 +415,4 @@ public class StdCharClass implements CharClass
 		}
 		return beneficiaries;
 	}
-
 }

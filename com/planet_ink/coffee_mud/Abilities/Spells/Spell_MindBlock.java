@@ -51,7 +51,7 @@ public class Spell_MindBlock extends Spell
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
 				   yep=true;
 			}
-			if(!yep)
+			if(yep)
 			{
 				affect.source().tell(affect.source(),mob,"<T-NAME> seem(s) unaffected.");
 				return false;
