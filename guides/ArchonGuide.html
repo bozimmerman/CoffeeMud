@@ -1312,22 +1312,20 @@ bring one of these things into the world, you have only to call its true name
 using the create command.&nbsp; To create a Longsword, for instance, issue the 
 command "create Longsword".&nbsp; It will then fall from the sky onto the floor 
 or ground before you.</P>
-<P>To find out what items are available for you to create, you can enter "list 
-items".&nbsp; Entering "create &lt;itemname&gt;" will prove the true incantation 
-for almost all of the items on this list.&nbsp; An exception, however, is the 
-GenRideable.&nbsp; Since there is both an Item and a&nbsp;MOB version of that 
-name, you will need to further qualify your create command by entering "create 
-item GenRideable" or "create mob GenRideable".</P>
-<P><STRONG><A name=geni1>The 
-"GenItem", "GenCoins", "GenResource", "GenMirror", and 
+<P>To find out what items are available for you to create, 
+you can enter "list items".&nbsp; Entering "create &lt;itemname&gt;" will prove 
+the true incantation for almost all of the items on this list.&nbsp; An 
+exception, however, is the GenRideable.&nbsp; Since there is both an Item and 
+a&nbsp;MOB version of that name, you will need to further qualify your create 
+command by entering "create item GenRideable" or "create mob GenRideable".</P>
+<P><STRONG><A name=geni1>The "GenItem", "GenResource", "GenMirror", and 
 "GenReadable"</A></STRONG></P>
 <P>These represent some of the basic items your ordinary 
 denizen will use every day.&nbsp; A GenItem and 
-GenMirror&nbsp;represent&nbsp;nothing-special THINGS, while a GenCoins always 
-represents a pile of gold coins, ready to be picked up and coverted to 
-money.&nbsp; GenResource is a raw material, like iron, coal, or wood, from which 
-other things are made.&nbsp; GenReadables are GenItems with something to read on 
-them, like a book or parchment.</P>
+GenMirror&nbsp;represent&nbsp;nothing-special THINGS.&nbsp; GenResource is a raw 
+material, like iron, coal, or wood, from which other things are made.&nbsp; 
+GenReadables are GenItems with something to read on them, like a book or 
+parchment.</P>
 <P>Whenever a GenItem is created, much like the GenExit 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include:</P>
@@ -1464,13 +1462,39 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       considered magical. The exception to this is the <B 
       >GenCoins</B> object. For coins, this denotes the 
       number of coins in the pile!</TD></TR></TABLE></P>
+<P><STRONG><A name=geni2>The "GenCoins"</A><BR></STRONG><BR>A GenCoins item 
+represents one or more instances of a unit of currency, such as a dollar bill, a 
+gold coin, a stack of bills, or a pile of coins.</P>
+<P>Whenever these GenCoins are created, much like the GenItem above, you are 
+presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include all of the fields listed 
+above under GenItem, plus&nbsp;two&nbsp;more:</P>
+<P><STRONG>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG>Property</STRONG></TD>
+    <TD width="75%"><STRONG>Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Money Data</EM></TD>
+    <TD>A three part field, including the Currency type, which can be either 
+      "DEFAULT",&nbsp;another of the stock currency types, or a custom currency 
+      defined for your area. See the section on area currencies for more 
+      information on this.&nbsp; &nbsp;The next part is the decimal 
+      absolute-value denomination within the given currency, followed by the 
+      number of items in the "stack" of money.&nbsp; Together, these three 
+      fields define the nature, value, and size of the GenCoins stack.</TD></TR>
+  <TR>
+    <TD><EM>Base Value</EM></TD>
+    <TD>For a GenCoins item, this field is, ironically, 
+useless.</TD></TR></TABLE></STRONG></P>
 <P><STRONG><A name=geni2>The "GenLightSource", "GenCigar", "GenPipe", 
 and&nbsp;"GenLantern"&nbsp;</A></STRONG><BR><BR></P>
-<P>A GenLightSource and GenLantern provide light for 
-players whenever they are HELD.&nbsp; GenCigars and GenPipes are WORN on the 
-mouth for enjoyment. GenLightSources and GenCigars will burn away after a time, 
-while GenLanterns can be refilled with oil from an oil flask, and GenPipes must 
-be filled with an herb.</P>
+<P>A GenLightSource and GenLantern provide light for players whenever they are 
+HELD.&nbsp; GenCigars and GenPipes are WORN on the mouth for enjoyment. 
+GenLightSources and GenCigars will burn away after a time, while GenLanterns can 
+be refilled with oil from an oil flask, and GenPipes must be filled with an 
+herb.</P>
 <P>Whenever these GenLightSources are created, much like 
 the GenItem above, you are presented with a list of properties to fill in.&nbsp; 
 Pressing enter will leave the property unchanged.&nbsp; The properties include 
@@ -1496,15 +1520,13 @@ all of the fields listed above under GenItem, plus&nbsp;two&nbsp;more:</P>
       after use. GenLanterns and GenCigars default this to false, meaning the 
       item remains after it burns out (though no longer gives off light). The 
       GenLantern may be refilled with oil at this time, or the GenPipe may be 
-      refilled with herbs to continue.</TD></TR></TABLE></P>
-<P><A name=geni3>The 
-"GenJournal"</A></STRONG><BR><BR></P>
-<P>GenJournals represent message boards for players to 
-commonly post on and everyone to read.&nbsp; All GenJournals who have the same 
-NAME field will display the same set of messages to readers, regardless of how 
-many GenJournals there are.&nbsp; Players who have access to GenJournals, and 
-who have the Write skill may write new messages, or post replies to old ones on 
-GenJournals.</P>
+      refilled with herbs to continue.</TD></TR></TABLE></STRONG></P>
+<P><STRONG><A name=geni3>The "GenJournal"</A></STRONG><BR><BR>GenJournals represent message 
+boards for players to commonly post on and everyone to read.&nbsp; All 
+GenJournals who have the same NAME field will display the same set of messages 
+to readers, regardless of how many GenJournals there are.&nbsp; Players who have 
+access to GenJournals, and who have the Write skill may write new messages, or 
+post replies to old ones on GenJournals.</P>
 <P>GenJournals may be books that individual players carry 
 around and magically chat with each other on (assuming all their journals have 
 the same name).&nbsp; They may also be large public posting boards.&nbsp; To 
@@ -2421,8 +2443,8 @@ more:</P>
     <TD>This is the general classification of the 
       instrument for the purposes of several of the Minstrel 
 songs.</TD></TR></TABLE></P>
-<P><A name=geni24>The "GenLimb" 
-</A></STRONG></P>
+<P><A name=geni24><STRONG>The 
+"GenLimb"</STRONG> </A></STRONG></P>
 <P>This strange item represents both false limbs and real 
 replaceable ones.</P>
 <P>Whenever a GenLimb item is created, much like the 
@@ -2636,12 +2658,12 @@ again.&nbsp; Summoning a goblin into an ordinary room&nbsp;is as simple as
 entering "create Goblin".&nbsp; This will create a standard Goblin in the room 
 you are standing in.&nbsp; To make him stay there, even after you reboot, you 
 must save the room as described in the section below on saving rooms.</P>
-<P>To find out what mobs are available for you to create, you can enter "list 
-mobs".&nbsp; Entering "create &lt;mobname&gt;" will prove the true incantation 
-for almost all of the creatures on this list.&nbsp; An exception, however, is 
-the GenRideable.&nbsp; Since there is both an Item and a&nbsp;MOB version of 
-that name, you will need to further qualify your create command by entering 
-"create mob GenRideable" or "create item GenRideable".</P>
+<P>To find out what mobs are available for you to create, 
+you can enter "list mobs".&nbsp; Entering "create &lt;mobname&gt;" will prove 
+the true incantation for almost all of the creatures on this list.&nbsp; An 
+exception, however, is the GenRideable.&nbsp; Since there is both an Item and 
+a&nbsp;MOB version of that name, you will need to further qualify your create 
+command by entering "create mob GenRideable" or "create item GenRideable".</P>
 <P>If&nbsp;you wish to create your goblin a Grid-type 
 locale, extra consideration is required.&nbsp; Locale types like MountainsGrid, 
 WoodsGrid, WoodsMaze, PlainsGrid, DesertMaze, etc.. can all contain nasty 
