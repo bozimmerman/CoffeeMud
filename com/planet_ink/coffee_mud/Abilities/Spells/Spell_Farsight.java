@@ -24,6 +24,8 @@ public class Spell_Farsight extends Spell
 		else
 		{
 			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
+			int limit=mob.envStats().level()/5;
+			if(limit<0) limit=1;
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -58,6 +60,13 @@ public class Spell_Farsight extends Spell
 				{
 					String whatToOpen=(String)commands.elementAt(0);
 					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					if(limit<=0)
+					{
+						mob.tell("Your sight has reached its limit.");
+						success=true;
+						break;
+					}
+					else
 					if(dirCode<0)
 					{
 						mob.tell("\n\r'"+whatToOpen+"' is not a valid direction.");
@@ -79,6 +88,7 @@ public class Spell_Farsight extends Spell
 						{
 							commands.removeElementAt(0);
 							thatRoom=room;
+							limit--;
 							mob.tell("\n\r");
 							FullMsg msg2=new FullMsg(mob,thatRoom,Affect.MSG_EXAMINESOMETHING,null);
 							thatRoom.affect(mob,msg2);

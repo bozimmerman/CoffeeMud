@@ -8,8 +8,8 @@ import java.util.*;
 public class Prayer_SummonElemental extends Prayer
 {
 	public String ID() { return "Prayer_SummonElemental"; }
-	public String name(){return "Summon Elemental";}
-	public String displayText(){return "(Summon Elemental)";}
+	public String name(){return "Elemental Aid";}
+	public String displayText(){return "(Elemental Aid)";}
 	public int quality(){return BENEFICIAL_SELF;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_Plague extends Chant implements DiseaseAffect
 {
 	public String ID() { return "Chant_Plague"; }
-	public String name(){ return "Plague";}
+	public String name(){ return "Summon Plague";}
 	public String displayText(){return "(Plague)";}
 	public int quality(){return Ability.MALICIOUS;}
 	public Environmental newInstance(){	return new Chant_Plague();}

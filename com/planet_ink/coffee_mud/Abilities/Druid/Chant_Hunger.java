@@ -8,8 +8,8 @@ import java.util.*;
 public class Chant_Hunger extends Chant
 {
 	public String ID() { return "Chant_Hunger"; }
-	public String name(){ return "Hunger";}
-	public String displayText(){return "(Hunger)";}
+	public String name(){ return "Feel Hunger";}
+	public String displayText(){return "(Feel Hunger)";}
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_Bury extends Chant
 {
 	public String ID() { return "Chant_Bury"; }
-	public String name(){ return "Bury";}
+	public String name(){ return "Earthfeed";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
@@ -34,7 +34,7 @@ public class Chant_Bury extends Chant
 
 		if(!(target instanceof DeadBody))
 		{
-			mob.tell("You may only bury the dead.");
+			mob.tell("You may only feed the dead to the earth.");
 			return false;
 		}
 
@@ -49,7 +49,7 @@ public class Chant_Bury extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> bur(ys) <T-HIM-HERSELF>.":"^S<S-NAME> bur(ys) <T-NAMESELF> while chanting, returning dust to dust.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> bur(ys) <T-HIM-HERSELF>.":"^S<S-NAME> chant(s) to <T-NAMESELF>, returning dust to dust.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -66,7 +66,7 @@ public class Chant_Bury extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to bury <T-NAMESELF> while chanting, but fail(s).");
+			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but nothing happens.");
 
 		// return whether it worked
 		return success;

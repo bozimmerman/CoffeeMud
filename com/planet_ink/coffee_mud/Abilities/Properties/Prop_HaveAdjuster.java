@@ -36,7 +36,7 @@ public class Prop_HaveAdjuster extends Property
 		adjEnvStats.setLevel(getVal(newText,"lev"));
 		adjEnvStats.setRejuv(getVal(newText,"rej"));
 		adjEnvStats.setSensesMask(getVal(newText,"sen"));
-		adjEnvStats.setSpeed(getVal(newText,"spe"));
+		adjEnvStats.setSpeed(getDoubleVal(newText,"spe"));
 		adjEnvStats.setWeight(getVal(newText,"wei"));
 		adjEnvStats.setHeight(getVal(newText,"hei"));
 

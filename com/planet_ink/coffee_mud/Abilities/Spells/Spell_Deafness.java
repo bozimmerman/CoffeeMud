@@ -8,8 +8,8 @@ import java.util.*;
 public class Spell_Deafness extends Spell
 {
 	public String ID() { return "Spell_Deafness"; }
-	public String name(){return "Deafness";}
-	public String displayText(){return "(Deafness)";}
+	public String name(){return "Deafen";}
+	public String displayText(){return "(Deafen)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Deafness();}

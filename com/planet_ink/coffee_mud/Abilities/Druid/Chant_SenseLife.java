@@ -8,8 +8,8 @@ import java.util.*;
 public class Chant_SenseLife extends Chant
 {
 	public String ID() { return "Chant_SenseLife"; }
-	public String name(){ return "Sense Life";}
-	public String displayText(){return "(Sense Life)";}
+	public String name(){ return "Life Echos";}
+	public String displayText(){return "(Life Echos)";}
 	private Room lastRoom=null;
 	public Environmental newInstance(){	return new Chant_SenseLife();}
 
@@ -24,7 +24,7 @@ public class Chant_SenseLife extends Chant
 		if(canBeUninvoked())
 		{
 			lastRoom=null;
-			mob.tell("Your life sensations fade.");
+			mob.tell("Your life echo sensations fade.");
 		}
 	}
 
@@ -54,12 +54,12 @@ public class Chant_SenseLife extends Chant
 		}
 
 		if((dirs.length()==0)&&(last.length()==0))
-			mob.tell("You do not sense any life beyond your own.");
+			mob.tell("You do not feel any life beyond your own.");
 		else
 		if(dirs.length()==0)
-			mob.tell("You sense a life force coming from "+last+".");
+			mob.tell("You feel a life force coming from "+last+".");
 		else
-			mob.tell("You sense a life force coming from "+dirs.substring(2)+", and "+last+".");
+			mob.tell("You feel a life force coming from "+dirs.substring(2)+", and "+last+".");
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -86,7 +86,7 @@ public class Chant_SenseLife extends Chant
 		
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			target.tell("You are already sensing life.");
+			target.tell("You are already sensing life echos.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

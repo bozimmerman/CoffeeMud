@@ -8,7 +8,7 @@ import java.util.*;
 public class Spell_Boomerang extends Spell
 {
 	public String ID() { return "Spell_Boomerang"; }
-	public String name(){return "Boomerang";}
+	public String name(){return "Returning";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_Boomerang();}
@@ -36,7 +36,7 @@ public class Spell_Boomerang extends Spell
 		&&(text().length()==0))
 		{
 			setMiscText(msg.source().Name());
-			msg.source().tell(affected.name()+" will now boomerang back to you.");
+			msg.source().tell(affected.name()+" will now return back to you.");
 		}
 		if((affected instanceof Item)&&(text().length()>0))
 		{
@@ -52,7 +52,7 @@ public class Spell_Boomerang extends Spell
 				else
 				if(!owner.isMine(I))
 				{
-					owner.tell(I.name()+" boomerangs back into your inventory!");
+					owner.tell(I.name()+" returns to your inventory!");
 					I.unWear();
 					I.setContainer(null);
 					owner.giveItem(I);

@@ -194,6 +194,55 @@ public class Property implements Ability, Cloneable
 		return 0;
 	}
 
+	protected static double getDoubleVal(String text, String key)
+	{
+		text=text.toUpperCase();
+		key=key.toUpperCase();
+		int x=text.indexOf(key);
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='+')&&(text.charAt(x)!='-'))
+					x++;
+				if(x<text.length())
+				{
+					char pm=text.charAt(x);
+					while((x<text.length())
+					&&(!Character.isDigit(text.charAt(x)))
+					&&(text.charAt(x)!='.'))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())
+						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
+							x++;
+						if(text.substring(0,x).indexOf(".")<0)
+						{
+							if(pm=='+')
+								return new Integer(Util.s_int(text.substring(0,x))).doubleValue();
+							else
+								return new Integer(-Util.s_int(text.substring(0,x))).doubleValue();
+						}
+						else
+						{
+							if(pm=='+')
+								return Util.s_double(text.substring(0,x));
+							else
+								return -Util.s_double(text.substring(0,x));
+						}
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return 0;
+	}
+	
 	protected static String getStr(String text, String key)
 	{
 		String oldText=text;

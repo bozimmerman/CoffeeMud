@@ -8,8 +8,8 @@ import java.util.*;
 public class Spell_Nondetection extends Spell
 {
 	public String ID() { return "Spell_Nondetection"; }
-	public String name(){return "Nondetection";}
-	public String displayText(){return "(Nondetection)";}
+	public String name(){return "Resist Divination";}
+	public String displayText(){return "(Resist Divination)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Nondetection();}
@@ -24,7 +24,7 @@ public class Spell_Nondetection extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your undetectable field fades.");
+			mob.tell("Your divination resistance field fades.");
 
 		super.unInvoke();
 
@@ -59,7 +59,7 @@ public class Spell_Nondetection extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an undetectable globe of protection around <T-NAMESELF>.^?"));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"An undetectable field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an globe of resistance around <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(mob,msg))
 			{
 				amountAbsorbed=0;
@@ -68,7 +68,7 @@ public class Spell_Nondetection extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke an undetectable globe, but fail(s).");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a resistance globe, but fail(s).");
 
 		return success;
 	}

@@ -8,8 +8,8 @@ import java.util.*;
 public class Spell_Blindness extends Spell
 {
 	public String ID() { return "Spell_Blindness"; }
-	public String name(){return "Blindness";}
-	public String displayText(){return "(Blindness)";}
+	public String name(){return "Blind";}
+	public String displayText(){return "(Blind)";}
 	public int quality(){return MALICIOUS;};
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_Blindness();}

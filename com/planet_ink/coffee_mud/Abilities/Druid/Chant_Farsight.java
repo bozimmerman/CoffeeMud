@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_Farsight extends Chant
 {
 	public String ID() { return "Chant_Farsight"; }
-	public String name(){ return "Farsight";}
+	public String name(){ return "Eaglesight";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
@@ -36,6 +36,8 @@ public class Chant_Farsight extends Chant
 			{
 				mob.location().send(mob,msg);
 				Room thatRoom=mob.location();
+				int limit=mob.envStats().level()/3;
+				if(limit<0) limit=1;
 				if(commands.size()==0)
 				{
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -66,6 +68,13 @@ public class Chant_Farsight extends Chant
 				{
 					String whatToOpen=(String)commands.elementAt(0);
 					int dirCode=Directions.getGoodDirectionCode(whatToOpen);
+					if(limit<=0)
+					{
+						mob.tell("Your sight has reached its limit.");
+						success=true;
+						break;
+					}
+					else
 					if(dirCode<0)
 					{
 						mob.tell("\n\r'"+whatToOpen+"' is not a valid direction.");
@@ -87,6 +96,7 @@ public class Chant_Farsight extends Chant
 						{
 							commands.removeElementAt(0);
 							thatRoom=room;
+							limit--;
 							mob.tell("\n\r");
 							FullMsg msg2=new FullMsg(mob,thatRoom,Affect.MSG_EXAMINESOMETHING,null);
 							thatRoom.affect(mob,msg2);
