@@ -52,6 +52,9 @@ public class MasterWeaponsmithing extends Weaponsmithing
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		boolean autoGenerate=false;
+		if((auto)&&(givenTarget==this))
+		{	autoGenerate=true; givenTarget=null;}
 		randomRecipeFix(mob,loadRecipes(),commands);
 		if(commands.size()==0)
 		{
