@@ -41,8 +41,6 @@ public interface CharStats extends Cloneable
 		"WISDOM"
 	};
 	
-	public int maxCarry();
-	
 	// create a new one of these
 	public CharStats cloneCharStats();
 	

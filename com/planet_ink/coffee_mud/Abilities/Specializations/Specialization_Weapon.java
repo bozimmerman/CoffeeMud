@@ -8,7 +8,7 @@ import java.util.*;
 public class Specialization_Weapon extends StdAbility
 {
 	protected boolean activated=false;
-	protected int weaponType=0;
+	protected int weaponType=-1;
 	protected int secondWeaponType=-1;
 
 	public Specialization_Weapon()
@@ -50,7 +50,7 @@ public class Specialization_Weapon extends StdAbility
 		&&((affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon)
 		&&((((Weapon)affect.tool()).weaponClassification()==weaponType)
- 		 ||(weaponType==0)
+ 		 ||(weaponType<0)
 		 ||(((Weapon)affect.tool()).weaponClassification()==secondWeaponType))))
 			helpProfficiency((MOB)affected);
 	}
@@ -66,7 +66,7 @@ public class Specialization_Weapon extends StdAbility
 			if((myWeapon!=null)
 			&&(myWeapon instanceof Weapon)
 			&&((((Weapon)myWeapon).weaponClassification()==weaponType)
- 			 ||(weaponType==0)
+ 			 ||(weaponType<0)
 			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponType)))
 			{
 				activated=true;

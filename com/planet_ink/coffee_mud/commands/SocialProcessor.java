@@ -323,7 +323,7 @@ public class SocialProcessor
 		do
 		{
 			Environmental thisThang=null;
-			thisThang=mob.fetchInventory(thisName);
+			thisThang=mob.fetchCarried(null,thisName);
 			if(thisThang==null)
 				thisThang=mob.fetchFollower(thisName);
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))

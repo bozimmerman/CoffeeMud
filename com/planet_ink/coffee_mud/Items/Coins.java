@@ -48,6 +48,7 @@ public class Coins extends StdItem
 	
 	public void recoverEnvStats()
 	{
+		baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 		goldValue=envStats().ability();
 	}

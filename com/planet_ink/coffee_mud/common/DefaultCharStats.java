@@ -45,11 +45,6 @@ public class DefaultCharStats implements Cloneable, CharStats
 	public void setMyClass(CharClass newVal){MyClass=newVal;}
 	public void setMyRace(Race newVal){MyRace=newVal;}
 
-	public int maxCarry()
-	{
-		return 100+(Strength*30);
-	}
-
 	// create a new one of these
 	public CharStats cloneCharStats()
 	{

@@ -28,7 +28,6 @@ public class MudChat extends StdBehavior
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
 	// on tick or more.
-
 	private final static int RESPONSE_DELAY=2;
 
 	public MudChat()
@@ -357,7 +356,8 @@ public class MudChat extends StdBehavior
 		if((!affect.amISource(monster))
 		&&(!mob.isMonster())
 		&&(Sense.canBeHeardBy(mob,monster))
-		&&(Sense.canBeSeenBy(mob,monster)))
+		&&(Sense.canBeSeenBy(mob,monster))
+		&&(Sense.canBeSeenBy(monster,mob)))
 		{
 			Vector myResponses=null;
 			myChatGroup=getMyChatGroup(monster);
@@ -406,6 +406,7 @@ public class MudChat extends StdBehavior
 			else
 			if((Sense.canBeHeardBy(mob,monster))
 			&&(Sense.canBeSeenBy(mob,monster))
+			&&(Sense.canBeSeenBy(monster,mob))
 			&&(talkDown<=0)
 			&&(myChatGroup!=null))
 			{
@@ -483,6 +484,8 @@ public class MudChat extends StdBehavior
 					try
 					{
 						ExternalPlay.doCommand((MOB)ticking,que);
+						// you've done one, so get out before doing another!
+						break;
 					}
 					catch(Exception e)
 					{

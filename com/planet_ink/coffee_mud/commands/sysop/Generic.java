@@ -15,6 +15,7 @@ public class Generic
 	public Lister myLister=new Lister();
 
 	void genName(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rName: '"+E.name()+"'.");
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
@@ -96,6 +97,7 @@ public class Generic
 	}
 
 	void genDescription(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rDescription: '"+E.description()+"'.");
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
@@ -106,6 +108,7 @@ public class Generic
 	}
 
 	void genDisplayText(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rDisplay: '"+E.displayText()+"'.");
 		String newName=mob.session().prompt("Enter something new (null == blended)\n\r:","");
@@ -121,6 +124,7 @@ public class Generic
 			mob.tell("(blended)");
 	}
 	void genClosedText(MOB mob, Exit E)
+		throws IOException
 	{
 		mob.tell("\n\rClosed Text: '"+E.closedText()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
@@ -130,6 +134,7 @@ public class Generic
 			mob.tell("(no change)");
 	}
 	void genDoorName(MOB mob, Exit E)
+		throws IOException
 	{
 		mob.tell("\n\rDoor Name: '"+E.doorName()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
@@ -140,6 +145,7 @@ public class Generic
 	}
 
 	void genOpenWord(MOB mob, Exit E)
+		throws IOException
 	{
 		mob.tell("\n\rOpen Word: '"+E.openWord()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
@@ -149,6 +155,7 @@ public class Generic
 			mob.tell("(no change)");
 	}
 	void genCloseWord(MOB mob, Exit E)
+		throws IOException
 	{
 		mob.tell("\n\rClose Word: '"+E.closeWord()+"'.");
 		String newName=mob.session().prompt("Enter something new\n\r:","");
@@ -578,6 +585,7 @@ public class Generic
 	}
 
 	void genLevel(MOB mob, Environmental E)
+		throws IOException
 	{
 		if(E.baseEnvStats().level()<0)
 			E.baseEnvStats().setLevel(1);
@@ -590,6 +598,7 @@ public class Generic
 	}
 
 	void genRejuv(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rRejuv Ticks: '"+E.baseEnvStats().rejuv()+"'.");
 		String rlevel=mob.session().prompt("Enter new amount\n\r:","");
@@ -608,6 +617,7 @@ public class Generic
 	}
 
 	void genUses(MOB mob, Item E)
+		throws IOException
 	{
 		mob.tell("\n\rUses Remaining: '"+E.usesRemaining()+"'.");
 		int newLevel=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
@@ -675,6 +685,7 @@ public class Generic
 	}
 
 	void genAbility(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rMagical Ability: '"+E.baseEnvStats().ability()+"'.");
 		String newLevelStr=mob.session().prompt("Enter a new one (0=no magic)\n\r:","");
@@ -689,6 +700,7 @@ public class Generic
 	}
 
 	void genHitPoints(MOB mob, Environmental E)
+		throws IOException
 	{
 		if(E.baseEnvStats().ability()<1) E.baseEnvStats().setAbility(11);
 		mob.tell("\n\rHit Points/Level Modifier (hp=((10*level) + (random*level*THIS))) : '"+E.baseEnvStats().ability()+"'.");
@@ -701,6 +713,7 @@ public class Generic
 	}
 
 	void genValue(MOB mob, Item E)
+		throws IOException
 	{
 		mob.tell("\n\rAdjusted Value: '"+E.value()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
@@ -711,6 +724,7 @@ public class Generic
 	}
 
 	void genWeight(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rWeight: '"+E.baseEnvStats().weight()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new weight\n\r:",""));
@@ -722,6 +736,7 @@ public class Generic
 
 
 	void genCapacity(MOB mob, Item E)
+		throws IOException
 	{
 		mob.tell("\n\rCapacity: '"+E.capacity()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new capacity\n\r:",""));
@@ -733,6 +748,7 @@ public class Generic
 	}
 
 	void genAttack(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rAttackAdjustment: '"+E.envStats().attackAdjustment()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
@@ -743,6 +759,7 @@ public class Generic
 	}
 
 	void genDamage(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rDamage/Hit: '"+E.baseEnvStats().damage()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
@@ -753,6 +770,7 @@ public class Generic
 	}
 
 	void genSpeed(MOB mob, Environmental E)
+		throws IOException
 	{
 		mob.tell("\n\rAttacks/Round: '"+((int)Math.round(E.baseEnvStats().speed()))+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
@@ -763,6 +781,7 @@ public class Generic
 	}
 
 	void genArmor(MOB mob, Environmental E)
+		throws IOException
 	{
 		if(E instanceof MOB)
 			mob.tell("\n\rArmor (lower-better): '"+E.baseEnvStats().armor()+"'.");
@@ -776,6 +795,7 @@ public class Generic
 	}
 
 	void genMoney(MOB mob, MOB E)
+		throws IOException
 	{
 		mob.tell("\n\rMoney: '"+E.getMoney()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
@@ -881,6 +901,7 @@ public class Generic
 	}
 
 	void genSecretIdentity(MOB mob, Item E)
+		throws IOException
 	{
 		mob.tell("\n\rSecret Identity: '"+E.rawSecretIdentity()+"'.");
 		String newValue=mob.session().prompt("Enter a new identity\n\r:","");
@@ -891,6 +912,7 @@ public class Generic
 	}
 
 	void genNourishment(MOB mob, Food E)
+		throws IOException
 	{
 		mob.tell("\n\rNourishment/Eat: '"+E.nourishment()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
@@ -901,6 +923,7 @@ public class Generic
 	}
 
 	void genRace(MOB mob, MOB E)
+		throws IOException
 	{
 		String raceID="begin!";
 		while(raceID.length()>0)
@@ -924,6 +947,7 @@ public class Generic
 	}
 
 	void genBehaviors(MOB mob, Environmental E)
+		throws IOException
 	{
 		String behave="NO";
 		while(behave.length()>0)
@@ -1001,6 +1025,7 @@ public class Generic
 	}
 
 	void genAffects(MOB mob, Environmental E)
+		throws IOException
 	{
 		String behave="NO";
 		while(behave.length()>0)
@@ -1160,6 +1185,7 @@ public class Generic
 	}
 
 	void genAbilities(MOB mob, MOB E)
+		throws IOException
 	{
 		String behave="NO";
 		while(behave.length()>0)
@@ -1228,6 +1254,7 @@ public class Generic
 	}
 
 	void genWornLocation(MOB mob, Item E)
+		throws IOException
 	{
 		int codeVal=-1;
 		while(codeVal!=0)
@@ -1266,6 +1293,7 @@ public class Generic
 	}
 
 	void genThirstQuenched(MOB mob, Drink E)
+		throws IOException
 	{
 		mob.tell("\n\rQuenched/Drink: '"+E.thirstQuenched()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));
@@ -1276,6 +1304,7 @@ public class Generic
 	}
 
 	void genDrinkHeld(MOB mob, Drink E)
+		throws IOException
 	{
 		mob.tell("\n\rAmount of Drink Held: '"+E.liquidHeld()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new amount\n\r:",""));

@@ -35,8 +35,10 @@ public interface Session
 	public void unfilteredPrint(String msg);
 	
 	
-	public String prompt(String Message, String Default);
-	public String prompt(String Message);
+	public String prompt(String Message, String Default)
+		throws IOException;
+	public String prompt(String Message)
+		throws IOException;
 	public boolean confirm(String Message, String Default)
 	throws IOException;
 	public String choose(String Message, String Choices, String Default)
@@ -48,7 +50,8 @@ public interface Session
 	public boolean killFlag();
 	public void setKillFlag(boolean truefalse);
 	
-	public String blockingIn();
+	public String blockingIn()
+		throws IOException;
 	public String readlineContinue()
 		throws IOException;
 	public String filter(Environmental source,

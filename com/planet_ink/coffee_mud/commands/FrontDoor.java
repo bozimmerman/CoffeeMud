@@ -52,282 +52,271 @@ public class FrontDoor
 			return false;
 		if(mob.session()==null)
 			return false;
-		try
-		{
-			String login=mob.session().prompt("name:");
-			if(login==null) return false;
-			login=login.trim();
-			if(login.length()==0) return false;
+		
+		String login=mob.session().prompt("name:");
+		if(login==null) return false;
+		login=login.trim();
+		if(login.length()==0) return false;
 
-			if(login.equalsIgnoreCase("You"))
-				return false;
-			ExternalPlay.DBUserSearch(mob,login);
-			if(mob.ID().trim().length()>0)
+		if(login.equalsIgnoreCase("You"))
+			return false;
+		ExternalPlay.DBUserSearch(mob,login);
+		if(mob.ID().trim().length()>0)
+		{
+			mob.session().print("password:");
+			String password=mob.session().blockingIn();
+			if((mob.password().equalsIgnoreCase(password))&&(mob.name().trim().length()>0))
 			{
-				mob.session().print("password:");
-				String password=mob.session().blockingIn();
-				if((mob.password().equalsIgnoreCase(password))&&(mob.name().trim().length()>0))
+				boolean swapMade=false;
+				for(int s=0;s<Sessions.size();s++)
 				{
-					boolean swapMade=false;
-					for(int s=0;s<Sessions.size();s++)
+					Session thisSession=(Session)Sessions.elementAt(s);
+					if((thisSession.mob()!=null)&&(thisSession!=mob.session()))
 					{
-						Session thisSession=(Session)Sessions.elementAt(s);
-						if((thisSession.mob()!=null)&&(thisSession!=mob.session()))
+						if((thisSession.mob().ID().equals(mob.ID())))
 						{
-							if((thisSession.mob().ID().equals(mob.ID())))
-							{
-								swapMade=true;
-								Room oldRoom=thisSession.mob().location();
-								if(oldRoom!=null)
-								while(oldRoom.isInhabitant(thisSession.mob()))
-									oldRoom.delInhabitant(thisSession.mob());
-								mob.session().setMob(thisSession.mob());
-								thisSession.mob().setSession(mob.session());
-								thisSession.setMob(null);
-								thisSession.setKillFlag(true);
-								Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().name()+".");
-								mob.session().mob().bringToLife(oldRoom);
-								return true;
-							}
+							swapMade=true;
+							Room oldRoom=thisSession.mob().location();
+							if(oldRoom!=null)
+							while(oldRoom.isInhabitant(thisSession.mob()))
+								oldRoom.delInhabitant(thisSession.mob());
+							mob.session().setMob(thisSession.mob());
+							thisSession.mob().setSession(mob.session());
+							thisSession.setMob(null);
+							thisSession.setKillFlag(true);
+							Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().name()+".");
+							mob.session().mob().bringToLife(oldRoom);
+							return true;
 						}
 					}
-					MOB oldMOB=mob;
-					if(CMMap.MOBs.get(oldMOB.ID())!=null)
-					{
-						oldMOB.session().setMob((MOB)CMMap.MOBs.get(oldMOB.ID()));
-						mob=oldMOB.session().mob();
-						mob.setSession(oldMOB.session());
-						if(mob!=oldMOB)
-							oldMOB.setSession(null);
-					}
-					else
-					{
-						ExternalPlay.DBRead(mob);
-						mob.setUserInfo(mob.ID(),password,Calendar.getInstance());
-						ExternalPlay.DBUpdate(mob);
-						if(mob.baseCharStats()!=null)
-							if(mob.baseCharStats().getMyClass()!=null)
-								mob.baseCharStats().getMyClass().logon(mob);
-					}
-					mob.bringToLife(mob.location());
-					ExternalPlay.DBReadFollowers(mob);
+				}
+				MOB oldMOB=mob;
+				if(CMMap.MOBs.get(oldMOB.ID())!=null)
+				{
+					oldMOB.session().setMob((MOB)CMMap.MOBs.get(oldMOB.ID()));
+					mob=oldMOB.session().mob();
+					mob.setSession(oldMOB.session());
+					if(mob!=oldMOB)
+						oldMOB.setSession(null);
 				}
 				else
 				{
-					Log.sysOut("FrontDoor","Failed login: "+mob.name());
-					mob.setUserInfo("","",Calendar.getInstance());
-					mob.session().println("\n\rInvalid password.\n\r");
-					return false;
+					ExternalPlay.DBRead(mob);
+					mob.setUserInfo(mob.ID(),password,Calendar.getInstance());
+					ExternalPlay.DBUpdate(mob);
+					if(mob.baseCharStats()!=null)
+						if(mob.baseCharStats().getMyClass()!=null)
+							mob.baseCharStats().getMyClass().logon(mob);
 				}
+				mob.bringToLife(mob.location());
+				ExternalPlay.DBReadFollowers(mob);
 			}
 			else
 			{
-				if(!isOkName(login))
+				Log.sysOut("FrontDoor","Failed login: "+mob.name());
+				mob.setUserInfo("","",Calendar.getInstance());
+				mob.session().println("\n\rInvalid password.\n\r");
+				return false;
+			}
+		}
+		else
+		{
+			if(!isOkName(login))
+			{
+				mob.session().println("\n\rThat name is unrecognized.\n\rThat name is also not available for new users.\n\r  Choose another name (no spaces allowed)!\n\r");
+				mob.setUserInfo("","",Calendar.getInstance());
+			}
+			else
+			if(mob.session().confirm("\n\r'"+login+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
+			{
+
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("newchar.txt").toString());
+
+				String password="";
+				while(password.length()==0)
 				{
-					mob.session().println("\n\rThat name is unrecognized.\n\rThat name is also not available for new users.\n\r  Choose another name (no spaces allowed)!\n\r");
-					mob.setUserInfo("","",Calendar.getInstance());
+					password=mob.session().prompt("\n\rEnter a password: ","");
+					if(password.length()==0)
+						mob.session().println("\n\rYou must enter a password to continue.");
 				}
-				else
-				if(mob.session().confirm("\n\r'"+login+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
+				mob.setUserInfo(login,password,Calendar.getInstance());
+				Log.sysOut("FrontDoor","Creating user: "+mob.name());
+
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("races.txt").toString());
+
+				mob.session().print("\n\rPlease choose from the following races: ");
+				for(int r=0;r<CMClass.races.size();r++)
 				{
-
-					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("newchar.txt").toString());
-
-					String password="";
-					while(password.length()==0)
-					{
-						password=mob.session().prompt("\n\rEnter a password: ","");
-						if(password.length()==0)
-							mob.session().println("\n\rYou must enter a password to continue.");
-					}
-					mob.setUserInfo(login,password,Calendar.getInstance());
-					Log.sysOut("FrontDoor","Creating user: "+mob.name());
-
-					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("races.txt").toString());
-
-					mob.session().print("\n\rPlease choose from the following races: ");
-					for(int r=0;r<CMClass.races.size();r++)
-					{
-						Race thisRace=(Race)CMClass.races.elementAt(r);
-						if(thisRace.playerSelectable())
-							mob.session().print(thisRace.name()+" ");
-					}
-					Race newRace=null;
-					while(newRace==null)
-					{
-						String raceStr=mob.session().prompt("\n\r: ","");
-						newRace=CMClass.getRace(raceStr);
-						if((newRace!=null)&&(!newRace.playerSelectable()))
-							newRace=null;
-						if(newRace==null)
-							for(int r=0;r<CMClass.races.size();r++)
-							{
-								Race R=(Race)CMClass.races.elementAt(r);
-								if((R.name().equalsIgnoreCase(raceStr))
-								&&(R.playerSelectable()))
-								{
-									newRace=(Race)CMClass.races.elementAt(r);
-									break;
-								}
-							}
-						if(newRace==null)
-							for(int r=0;r<CMClass.races.size();r++)
-							{
-								Race R=(Race)CMClass.races.elementAt(r);
-								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
-								&&(R.playerSelectable()))
-								{
-									newRace=(Race)CMClass.races.elementAt(r);
-									break;
-								}
-							}
-						if(newRace!=null)
-							if(!mob.session().confirm("Is "+newRace.name()+" correct (Y/n)?","Y"))
-								newRace=null;
-					}
-					mob.baseCharStats().setMyRace(newRace);
-
-					String Gender="";
-					while(Gender.length()==0)
-						Gender=mob.session().choose("\n\rWhat is your gender (M/F)?","MF","");
-
-					mob.baseCharStats().setGender(Gender.toUpperCase().charAt(0));
-
-
-					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
-
-					boolean mayCont=true;
-					int maxStat[]={18,18,18,18,18,18};
-					while(mayCont)
-					{
-						mob.baseCharStats().reRoll();
-						mob.recoverCharStats();
-						Vector V=classQualifies(mob);
-						if(V.size()>1)
+					Race thisRace=(Race)CMClass.races.elementAt(r);
+					if(thisRace.playerSelectable())
+						mob.session().print(thisRace.name()+" ");
+				}
+				Race newRace=null;
+				while(newRace==null)
+				{
+					String raceStr=mob.session().prompt("\n\r: ","");
+					newRace=CMClass.getRace(raceStr);
+					if((newRace!=null)&&(!newRace.playerSelectable()))
+						newRace=null;
+					if(newRace==null)
+						for(int r=0;r<CMClass.races.size();r++)
 						{
-							StringBuffer classes=new StringBuffer("");
-							for(int v=0;v<V.size();v++)
-								if(v==V.size()-1)
-									classes.append("and "+((CharClass)V.elementAt(v)).name());
-								else
-									classes.append(((CharClass)V.elementAt(v)).name()+", ");
-
-							mob.session().println("Your current stats are: \n\r"+mob.baseCharStats().getStats(maxStat));
-							mob.session().println("This would qualify you for "+classes.toString()+".");
-							if(!mob.session().confirm("Would you like to re-roll (y/N)?","N"))
-								mayCont=false;
+							Race R=(Race)CMClass.races.elementAt(r);
+							if((R.name().equalsIgnoreCase(raceStr))
+							&&(R.playerSelectable()))
+							{
+								newRace=(Race)CMClass.races.elementAt(r);
+								break;
+							}
 						}
+					if(newRace==null)
+						for(int r=0;r<CMClass.races.size();r++)
+						{
+							Race R=(Race)CMClass.races.elementAt(r);
+							if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
+							&&(R.playerSelectable()))
+							{
+								newRace=(Race)CMClass.races.elementAt(r);
+								break;
+							}
+						}
+					if(newRace!=null)
+						if(!mob.session().confirm("Is "+newRace.name()+" correct (Y/n)?","Y"))
+							newRace=null;
+				}
+				mob.baseCharStats().setMyRace(newRace);
+
+				String Gender="";
+				while(Gender.length()==0)
+					Gender=mob.session().choose("\n\rWhat is your gender (M/F)?","MF","");
+
+				mob.baseCharStats().setGender(Gender.toUpperCase().charAt(0));
+
+
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
+
+				boolean mayCont=true;
+				int maxStat[]={18,18,18,18,18,18};
+				while(mayCont)
+				{
+					mob.baseCharStats().reRoll();
+					mob.recoverCharStats();
+					Vector V=classQualifies(mob);
+					if(V.size()>1)
+					{
+						StringBuffer classes=new StringBuffer("");
+						for(int v=0;v<V.size();v++)
+							if(v==V.size()-1)
+								classes.append("and "+((CharClass)V.elementAt(v)).name());
+							else
+								classes.append(((CharClass)V.elementAt(v)).name()+", ");
+
+						mob.session().println("Your current stats are: \n\r"+mob.baseCharStats().getStats(maxStat));
+						mob.session().println("This would qualify you for "+classes.toString()+".");
+						if(!mob.session().confirm("Would you like to re-roll (y/N)?","N"))
+							mayCont=false;
 					}
+				}
 
 
-					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("classes.txt").toString());
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("classes.txt").toString());
 
-					mob.session().print("\n\rPlease choose from the following Classes: ");
+				mob.session().print("\n\rPlease choose from the following Classes: ");
+				for(int c=0;c<CMClass.charClasses.size();c++)
+				{
+					CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
+					if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
+						mob.session().print(thisClass.name()+" ");
+				}
+				CharClass newClass=null;
+				while(newClass==null)
+				{
+					String ClassStr=mob.session().prompt("\n\r: ","");
+					newClass=CMClass.getCharClass(ClassStr);
+					if(newClass==null)
 					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
 						CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
 						if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
-							mob.session().print(thisClass.name()+" ");
+							if(thisClass.name().equalsIgnoreCase(ClassStr))
+							{
+								newClass=thisClass;
+								break;
+							}
 					}
-					CharClass newClass=null;
-					while(newClass==null)
+					if(newClass==null)
+					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
-						String ClassStr=mob.session().prompt("\n\r: ","");
-						newClass=CMClass.getCharClass(ClassStr);
-						if(newClass==null)
-						for(int c=0;c<CMClass.charClasses.size();c++)
-						{
-							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
-								if(thisClass.name().equalsIgnoreCase(ClassStr))
-								{
-									newClass=thisClass;
-									break;
-								}
-						}
-						if(newClass==null)
-						for(int c=0;c<CMClass.charClasses.size();c++)
-						{
-							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
-								if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
-								{
-									newClass=thisClass;
-									break;
-								}
-						}
-						if(newClass!=null)
-							if(!mob.session().confirm("Is "+newClass.name()+" correct (Y/n)?","Y"))
-								newClass=null;
+						CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
+						if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
+							if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
+							{
+								newClass=thisClass;
+								break;
+							}
 					}
-					mob.baseCharStats().setMyClass(newClass);
-
-					mob.baseEnvStats().setLevel(1);
-					mob.baseEnvStats().setSensesMask(0);
-
-
-					mob.baseState().setHitPoints(20);
-					mob.baseState().setMovement(100);
-					mob.baseState().setMana(100);
-
-					mob.setStartRoom(CMMap.startRoom());
-					Item r=(Item)CMClass.getItem("Ration");
-					Item w=(Item)CMClass.getItem("Waterskin");
-					Item t=(Item)CMClass.getItem("Torch");
-					mob.addInventory(r);
-					mob.addInventory(w);
-					mob.addInventory(t);
-					mob.setWimpHitPoint(5);
-
-					mob.baseCharStats().getMyRace().newCharacter(mob);
-
-					mob.recoverCharStats();
-					mob.recoverEnvStats();
-					mob.recoverMaxState();
-					mob.resetToMaxState();
-
-					mob.baseCharStats().getMyClass().newCharacter(mob,false);
-
-					mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("alignment.txt").toString());
-
-					String alignment="";
-					while(alignment.length()==0)
-						alignment=mob.session().choose("Select a starting alignment:\n\r Good, Evil, or Neutral (G/N/E): ","GNE","");
-					switch(alignment.charAt(0))
-					{
-					case 'G':
-						mob.setAlignment(1000);
-						break;
-					case 'E':
-						mob.setAlignment(0);
-						break;
-					case 'N':
-					default:
-						mob.setAlignment(500);
-						break;
-					}
-
-					mob.bringToLife(mob.location());
-					ExternalPlay.DBCreateCharacter(mob);
-					if(CMMap.MOBs.get(mob.ID())==null)
-						CMMap.MOBs.put(mob.ID(),mob);
-
-					Log.sysOut("FrontDoor","Created user: "+mob.name());
-					return true;
+					if(newClass!=null)
+						if(!mob.session().confirm("Is "+newClass.name()+" correct (Y/n)?","Y"))
+							newClass=null;
 				}
-				return false;
+				mob.baseCharStats().setMyClass(newClass);
+
+				mob.baseEnvStats().setLevel(1);
+				mob.baseEnvStats().setSensesMask(0);
+
+
+				mob.baseState().setHitPoints(20);
+				mob.baseState().setMovement(100);
+				mob.baseState().setMana(100);
+
+				mob.setStartRoom(CMMap.startRoom());
+				Item r=(Item)CMClass.getItem("Ration");
+				Item w=(Item)CMClass.getItem("Waterskin");
+				Item t=(Item)CMClass.getItem("Torch");
+				mob.addInventory(r);
+				mob.addInventory(w);
+				mob.addInventory(t);
+				mob.setWimpHitPoint(5);
+
+				mob.baseCharStats().getMyRace().newCharacter(mob);
+
+				mob.recoverCharStats();
+				mob.recoverEnvStats();
+				mob.recoverMaxState();
+				mob.resetToMaxState();
+
+				mob.baseCharStats().getMyClass().newCharacter(mob,false);
+
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("alignment.txt").toString());
+
+				String alignment="";
+				while(alignment.length()==0)
+					alignment=mob.session().choose("Select a starting alignment:\n\r Good, Evil, or Neutral (G/N/E): ","GNE","");
+				switch(alignment.charAt(0))
+				{
+				case 'G':
+					mob.setAlignment(1000);
+					break;
+				case 'E':
+					mob.setAlignment(0);
+					break;
+				case 'N':
+				default:
+					mob.setAlignment(500);
+					break;
+				}
+
+				mob.bringToLife(mob.location());
+				ExternalPlay.DBCreateCharacter(mob);
+				if(CMMap.MOBs.get(mob.ID())==null)
+					CMMap.MOBs.put(mob.ID(),mob);
+
+				Log.sysOut("FrontDoor","Created user: "+mob.name());
+				return true;
 			}
-			mob.session().println("\n\r");
-			return true;
-		}
-		catch(java.io.IOException e)
-		{
-			throw e;
-		}
-		catch(Exception t)
-		{
-			Log.errOut("FrontDoor",t);
 			return false;
 		}
+		mob.session().println("\n\r");
+		return true;
 	}
 }

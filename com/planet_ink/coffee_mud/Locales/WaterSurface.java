@@ -44,7 +44,7 @@ public class WaterSurface extends StdRoom
 			}
 			else
 			if(Sense.isSwimming(mob))
-				if(mob.envStats().weight()>Math.round(Util.mul(mob.charStats().maxCarry(),0.50)))
+				if(mob.envStats().weight()>Math.round(Util.mul(mob.maxCarry(),0.50)))
 				{
 					mob.tell("You are too encumbered to swim.");
 					return false;

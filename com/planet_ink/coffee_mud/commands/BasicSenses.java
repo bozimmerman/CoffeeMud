@@ -65,7 +65,8 @@ public class BasicSenses
 			FullMsg msg=new FullMsg(mob,mob.location(),null,Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"at you."),Affect.MSG_EXAMINESOMETHING,(quiet?null:textMsg+"around"));
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
-			if((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
+			if(((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
+			&&(Sense.canBeSeenBy(mob.location(),mob)))
 				mob.location().listExits(mob);
 		}
 	}

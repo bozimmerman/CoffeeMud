@@ -504,7 +504,7 @@ public class StdItem implements Item
 					mob.tell(name()+" is too powerful to endure possessing it.");
 					return false;
 				}
-				if((envStats().weight()>(mob.charStats().maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+				if((envStats().weight()>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 				{
 					mob.tell(name()+" is too heavy.");
 					return false;

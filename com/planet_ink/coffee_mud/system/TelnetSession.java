@@ -245,6 +245,7 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public String prompt(String Message, String Default)
+		throws IOException
 	{
 		String Msg=prompt(Message).trim();
 		if(Msg.equals("")) return Default;
@@ -252,6 +253,7 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public String prompt(String Message)
+		throws IOException
 	{
 		print(Message);
 		String input=blockingIn();
@@ -558,35 +560,24 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public String blockingIn()
+		throws IOException
 	{
 		if((in==null)||(out==null)) return "";
 		input=new StringBuffer("");
-		try
+		while(!killFlag)
 		{
-			while(!killFlag)
+			try
 			{
-				try
-				{
-					int c=in.read();
-					if(c==13)
-						break;
-					else
-					if((c>0)&&(c!=10))
-						input.append((char)c);
-				}
-				catch(InterruptedIOException e)
-				{
-				}
+				int c=in.read();
+				if(c==13)
+					break;
+				else
+				if((c>0)&&(c!=10))
+					input.append((char)c);
 			}
-		}
-		catch(SocketException s)
-		{
-			return null;
-		}
-		catch(IOException ioe)
-		{
-			Log.errOut("Session",ioe);
-			return null;
+			catch(InterruptedIOException e)
+			{
+			}
 		}
 		String inStr=preFilter(input);
 		input=new StringBuffer("");

@@ -104,7 +104,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if(this.recursiveRoomWeight(mob,newitem)>(mob.charStats().maxCarry()-mob.envStats().weight()))
+						if(this.recursiveRoomWeight(mob,newitem)>(mob.maxCarry()-mob.envStats().weight()))
 						{
 							mob.tell(newitem.name()+" is too heavy.");
 							return false;
@@ -119,7 +119,7 @@ public class StdContainer extends StdItem implements Container
 					}
 				}
 				else
-				if((this.recursiveRoomWeight(mob,this)>(mob.charStats().maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+				if((this.recursiveRoomWeight(mob,this)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 				{
 					mob.tell(name()+" is too heavy.");
 					return false;

@@ -287,31 +287,8 @@ public class TheFight
 				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*4);
 			deathRoom.addItem(Body);
 			Body.recoverEnvStats();
-			if((source.getBitmap()&MOB.ATT_AUTOGOLD)>0)
-			{
-				if(beneficiaries.size()>0)
-				{
-					for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
-					{
-						MOB mob=(MOB)e.nextElement();
-						int myAmount=(int)Math.round(Util.div(target.getMoney(),beneficiaries.size()));
-						if(myAmount>0)
-						{
-							mob.setMoney(mob.getMoney()+myAmount);
-							mob.tell("You collect "+myAmount+" coin(s) from the body of "+target.name()+".");
-						}
-					}
-				}
-			}
-			else
-			if(target.getMoney()>0)
-			{
-				Item C=(Item)CMClass.getItem("Coins");
-				C.baseEnvStats().setAbility(target.getMoney());
-				C.recoverEnvStats();
-				C.setLocation(Body);
-				deathRoom.addItem(C);
-			}
+			
+			int deadMoney=target.getMoney();
 			target.setMoney(0);
 			Vector items=new Vector();
 			for(int i=0;i<target.inventorySize();)
@@ -371,9 +348,40 @@ public class TheFight
 			}
 			Body.startTicker(deathRoom);
 			deathRoom.recoverRoomStats();
+			
+			if(deadMoney>0)
+			{
+				if((source.getBitmap()&MOB.ATT_AUTOGOLD)==0)
+				{
+					Item C=(Item)CMClass.getItem("Coins");
+					C.baseEnvStats().setAbility(deadMoney);
+					C.recoverEnvStats();
+					C.setLocation(Body);
+					deathRoom.addItem(C);
+					deathRoom.recoverRoomStats();
+				}
+				else
+				for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
+				{
+					MOB mob=(MOB)e.nextElement();
+					int myAmount=(int)Math.round(Util.div(deadMoney,beneficiaries.size()));
+					if(myAmount>0)
+					{
+						Item C=CMClass.getItem("Coins");
+						C.baseEnvStats().setAbility(myAmount);
+						C.setLocation(Body);
+						C.recoverEnvStats();
+						deathRoom.addItem(C);
+						deathRoom.recoverRoomStats();
+						if(Sense.canBeSeenBy(Body,mob))
+							new ItemUsage().get(mob,Body,C);
+					}
+				}
+			}
 			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
 				for(int i=items.size()-1;i>=0;i--)
-					new ItemUsage().get(source,Body,(Item)items.elementAt(i));
+					if(Sense.canBeSeenBy(Body,source))
+						new ItemUsage().get(source,Body,(Item)items.elementAt(i));
 		}
 		else
 		if(target.curState().getHitPoints()<target.getWimpHitPoint())

@@ -58,7 +58,7 @@ public class Scoring
 		msg.append("You have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, ");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, and ");
 		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" movement.\n\r");
-		msg.append("You have "+mob.envStats().weight()+"/"+mob.charStats().maxCarry()+" pounds of encumbrance.\n\r");
+		msg.append("You have "+mob.envStats().weight()+"/"+mob.maxCarry()+" pounds of encumbrance.\n\r");
 		msg.append("You have "+mob.getPractices()+" practices, "+mob.getTrains()+" training sessions, and "+mob.getQuestPoint()+" quest points.\n\r");
 		msg.append("You have scored "+mob.getExperience()+" experience points, and have been online for "+Math.round(Util.div(mob.getAgeHours(),60.0))+" hours.\n\r");
 		msg.append("You need "+(mob.getExpNeededLevel())+" experience points to level.\n\r");

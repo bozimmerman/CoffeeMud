@@ -237,6 +237,11 @@ public class StdMOB implements MOB
 		LastDateTime=newCalendar.getInstance();
 	}
 
+	public int maxCarry()
+	{
+		return (baseEnvStats().weight()+50+(charStats().getStrength()*30));
+	}
+
 	public CharStats baseCharStats(){return baseCharStats;}
 	public CharStats charStats(){return charStats;}
 	public void recoverCharStats()
@@ -671,7 +676,7 @@ public class StdMOB implements MOB
 				    &&(((!(affect.tool() instanceof Item))
 				      ||(!this.isMine(affect.tool())))))))
 				{
-					tell("You need to stand up.");
+					tell("You need to stand up!");
 					return false;
 				}
 			}

@@ -28,6 +28,8 @@ public interface MOB
 	public void recoverCharStats();
 	public void setBaseCharStats(CharStats newBaseCharStats);
 	public String rawDisplayText();
+	public int maxCarry();
+
 	
 	/** Whether this MOB is dead.*/
 	public boolean amDead();
