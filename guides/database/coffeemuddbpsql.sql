@@ -176,12 +176,12 @@ ALTER TABLE CMAREA
 	ADD PRIMARY KEY (CMAREA);
 
 CREATE TABLE CMJRNL (
-	CMJKEY varchar(50) NOT NULL,
+	CMJKEY varchar(255) NOT NULL,
 	CMJRNL varchar(50) NULL ,
 	CMFROM varchar(50) NULL ,
 	CMDATE varchar(50)  NULL ,
 	CMTONM varchar(50) NULL ,
-	CMSUBJ varchar(100) NULL ,
+	CMSUBJ varchar(255) NULL ,
 	CMMSGT text NULL 
 );
 

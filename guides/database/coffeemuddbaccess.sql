@@ -145,12 +145,12 @@ PRIMARY KEY (CMAREA)
 
 
 CREATE TABLE CMJRNL (
-	CMJKEY varchar (50) ,
+	CMJKEY varchar (255) ,
 	CMJRNL varchar (50) NULL ,
 	CMFROM varchar (50) NULL ,
 	CMDATE varchar (50) NULL ,
 	CMTONM varchar (50) NULL ,
-	CMSUBJ varchar (100) NULL ,
+	CMSUBJ varchar (255) NULL ,
 	CMMSGT memo NULL,
 PRIMARY KEY (CMJKEY) 
 );
