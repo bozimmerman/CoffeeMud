@@ -214,32 +214,36 @@ FUNCTION_PROG DoStay
 	IF EVAL('$<$n BJTOTAL>' > '$<$n MYBJTOTAL>')
 		MPCALLFUNC GameLoseOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  You lose.
 	ELSE
-		IF EVAL('$<$n BJTOTAL>' == '$<$n MYBJTOTAL>')
-			IF VAR($n BJTOTAL < 17)
-				MPCALLFUNC DoStay
-			ELSE
-				MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
-			ENDIF
+		IF EVAL('$<$n BJTOTAL>' >= '17') AND EVAL('$<$n BJTOTAL>' < '$<$n MYBJTOTAL>')
+			MPCALLFUNC GameWinOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  The dealer may not draw again.  You win.
 		ELSE
-			MPCALLFUNC DealOut $<$n DEALERBJVALS>
-			MPSETVAR $n DEALERBJVALS $<$n BJLIST>
-			say $n The dealer draws the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
-			IF VAR($n BJTOTAL > 21)
-				MPCALLFUNC GameWinOver The house busts. You win!
-			ELSE
-				IF EVAL('$<$n DEALERBJVALS>.4' > 0)
-					MPCALLFUNC GameLoseOver The house drew five cards without a bust.  You lose.
+			IF EVAL('$<$n BJTOTAL>' == '$<$n MYBJTOTAL>')
+				IF VAR($n BJTOTAL < 17)
+					MPCALLFUNC DoStay
 				ELSE
-					IF VAR($n BJTOTAL > '$<$n MYBJTOTAL>')
-						MPCALLFUNC GameLoseOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  You lose.
+					MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
+				ENDIF
+			ELSE
+				MPCALLFUNC DealOut $<$n DEALERBJVALS>
+				MPSETVAR $n DEALERBJVALS $<$n BJLIST>
+				say $n The dealer draws the $<$n BJCARDNAME> of $<$n BJCARDSUIT>, for a total of $<$n BJTOTAL>.
+				IF VAR($n BJTOTAL > 21)
+					MPCALLFUNC GameWinOver The house busts. You win!
+				ELSE
+					IF EVAL('$<$n DEALERBJVALS>.4' > 0)
+						MPCALLFUNC GameLoseOver The house drew five cards without a bust.  You lose.
 					ELSE
-						IF VAR($n BJTOTAL == '$<$n MYBJTOTAL>')
-							MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
+						IF VAR($n BJTOTAL > '$<$n MYBJTOTAL>')
+							MPCALLFUNC GameLoseOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  You lose.
 						ELSE
-							IF VAR($n BJTOTAL < 17)
-								MPCALLFUNC DoStay
+							IF VAR($n BJTOTAL == '$<$n MYBJTOTAL>')
+								MPCALLFUNC GameTieOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  Tie goes to the dealer.  You lose.
 							ELSE
-								MPCALLFUNC GameWinOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  The dealer may not draw again.  You win.
+								IF VAR($n BJTOTAL < 17)
+									MPCALLFUNC DoStay
+								ELSE
+									MPCALLFUNC GameWinOver The house has $<$n BJTOTAL> to your $<$n MYBJTOTAL>.  The dealer may not draw again.  You win.
+								ENDIF
 							ENDIF
 						ENDIF
 					ENDIF
