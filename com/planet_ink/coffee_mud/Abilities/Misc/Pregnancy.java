@@ -64,17 +64,8 @@ public class Pregnancy extends StdAbility
 			if((race1.bodyMask()[i]>0)&&(race2.bodyMask()[i]>0))
 				GR.bodyMask()[i]=((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
 			else
-			if((race1.bodyMask()[i]<0)&&(race2.bodyMask()[i]>=0))
+			if((race1.bodyMask()[i]<=0)&&(race2.bodyMask()[i]>=0))
 				GR.bodyMask()[i]=race2.bodyMask()[i];
-			else
-			if((race2.bodyMask()[i]<0)&&(race1.bodyMask()[i]<0))
-				GR.bodyMask()[i]=race1.bodyMask()[i];
-			else
-			if((race1.bodyMask()[i]==0)&&(race2.bodyMask()[i]>=0))
-				GR.bodyMask()[i]=race2.bodyMask()[i];
-			else
-			if((race2.bodyMask()[i]==0)&&(race1.bodyMask()[i]>=0))
-				GR.bodyMask()[i]=race1.bodyMask()[i];
 			else
 				GR.bodyMask()[i]=race1.bodyMask()[i];
 
