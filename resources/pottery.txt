@@ -1,6 +1,0 @@
-% Cup	1	10	5	1	GenWater		5	
-% Mug	1	10	5	1	GenWater		5	
-% Plate	1	10	5	1	GenContainer		5	
-% Pot	1	20	10	1	GenWater		15	
-% Pan	1	20	10	1	GenContainer		15	
-% Pitcher	1	20	10	1	GenWater		15	

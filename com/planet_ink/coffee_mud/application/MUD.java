@@ -22,8 +22,8 @@ public class MUD extends Thread implements Host
 	public boolean keepDown=true;
 	public String execExternalCommand=null;
 
-	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)7.6;
+	public static final float HOST_VERSION_MAJOR=(float)4.0;
+	public static final float HOST_VERSION_MINOR=(float)0.0;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -35,7 +35,7 @@ public class MUD extends Thread implements Host
 	public INI webCommon=null;
 	public HTTPserver webServerThread=null;
 	public HTTPserver adminServerThread=null;
-	public final static String ServerVersionString = "CoffeeMUD-MainServer/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
+	public final static String ServerVersionString = "CoffeeMUD-MainServer/Pre-" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 	public boolean serverIsRunning = false;
 
 	public MUD(String mudName)
@@ -541,7 +541,7 @@ public class MUD extends Thread implements Host
 	
 	public String getVer()
 	{
-		return "CoffeeMud v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR;
+		return "CoffeeMud Pre-v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR;
 	}
 
 	public boolean isGameRunning()

@@ -1,8 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 1.00
 Project("{66355F20-A65B-11D0-BFB5-00A0C91EBFA0}") = "CoffeeMud", "CoffeeMud.vjp", "{32154302-C629-11D4-AA91-00E029553A3C}"
 	ProjectSection(SourceCodeControl) = preProject
-		SccProjectName = \u0022$/CoffeeMud/Version\u00203.0\u0022,\u0020CUGAAAAA
-		SccAuxPath = \\\\Rock_Ranger\\c\\projects\\SourceControl\\CoffeeMud,
+		SccProjectName = \u0022$/CoffeeMud/Version\u00204.0\u0022,\u0020AUJAAAAA
 		SccLocalPath = .
 	EndProjectSection
 EndProject
@@ -14,8 +13,7 @@ Global
 		0 = {32154302-C629-11D4-AA91-00E029553A3C}
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccProjectName = \u0022$/CoffeeMud/Version\u00203.0\u0022,\u0020CUGAAAAA
-		SccAuxPath = \\\\Rock_Ranger\\c\\projects\\SourceControl\\CoffeeMud,
+		SccProjectName = \u0022$/CoffeeMud/Version\u00204.0\u0022,\u0020AUJAAAAA
 		SccLocalPath = .
 	EndGlobalSection
 	GlobalSection(DeploymentRoot) = postSolution
