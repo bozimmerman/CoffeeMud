@@ -1,8 +1,5 @@
 ?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
-?Test: Shield Block, Far Shot, Body Shield
-scrimshaw knife is bash/blunt!
-Sounder EAT EAT_ROOM
-
+?Test: Far Shot, Body Shield
 
 Delver:
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
@@ -43,7 +40,6 @@ Delver:
 6Stone friend 	A charm spell that works against STONE/METAL golems, and against EARTH elementals. 
 7Earthpocket  Creates a cart for the delver that can stonewalk with him. It is kinda like a floating disk spell, with the items locked inside a pocket of earth that only the delver can get to. I would love for it to be a cart type item, though. (to make it different.)  
 
-ability to wish for body parts, ability to wish for lower level items (making level lower)
 mutable body parts, with ability to grant powers
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.

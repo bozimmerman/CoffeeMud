@@ -32,32 +32,19 @@ public class Prop_ScrapExplode extends Property {
 			int damage = 3 * item.envStats().weight();
 			if (mob != null) 
 			{
-				MUDFight.postDamage(mob, mob, item, damage*2, CMMsg.NO_EFFECT, Weapon.TYPE_BURSTING,
-				        "Scrapping " + item.Name() + " causes an explosion, ***RIPPING*** ("+(damage*2)+") through <T-NAME>!!!");
-				Hashtable theBadGuys=mob.getGroupMembers(new Hashtable());
-				for(Enumeration e=theBadGuys.elements();e.hasMoreElements();) 
+				MUDFight.postDamage(mob, mob, item, damage*2,  CMMsg.MSG_OK_VISUAL, Weapon.TYPE_PIERCING,
+				        "Scrapping " + item.Name() + " causes an explosion which <DAMAGE> <T-NAME>!!!");
+				HashSet theBadGuys=mob.getGroupMembers(new HashSet());
+				for(Iterator e=theBadGuys.iterator();e.hasNext();)
 				{
-					MOB inhab=(MOB)e.nextElement();
-					if (mob == inhab)continue;
-					MUDFight.postDamage(inhab, inhab, item, damage, CMMsg.NO_EFFECT, Weapon.TYPE_BURSTING,
-					        replaceDamageTag("Fragments from " + item.Name() + " <DAMAGE> <T-NAME>!", damage, Weapon.TYPE_BURSTING));
+					MOB inhab=(MOB)e.next();
+					if (mob != inhab)
+						MUDFight.postDamage(inhab, inhab, item, damage, CMMsg.MSG_OK_VISUAL, Weapon.TYPE_PIERCING,
+						        "Fragments from " + item.Name() + " <DAMAGE> <T-NAME>!");
 				}
 			}
 			item.destroy();
 			room.recoverRoomStats();
 	    }
-	}
-	private static String replaceDamageTag(String str, int damage, int damageType)
-	{
-		if (str == null)return null;
-		int replace = str.indexOf("<DAMAGE>");
-		if (replace >= 0) 
-		{
-			if (!CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES"))
-			    return str.substring(0, replace) + CommonStrings.standardHitWord(damageType, damage) + str.substring(replace + 8);
-			else
-			    return str.substring(0, replace) + CommonStrings.standardHitWord(damageType, damage) + " (" + damage + ")" + str.substring(replace + 8);
-		}
-		return str;
 	}
 }

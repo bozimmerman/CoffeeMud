@@ -7,13 +7,13 @@
 % Bed	6	50	70	20	GenBed	BED	2
 % Statue	12	22	100	100	GenItem	STATUE	0
 % Figurine	3	40	30	25	GenItem	STATUE	0
-% Sword	11	20	6	320	GenWeapon	PIERCE	10
-% Knife	5	10	2	42	GenWeapon	PIERCE	4
-% Spear	14	20	6	408	GenSpear	PIERCE	12
-% Short sword	7	20	4	49	GenWeapon	PIERCE	6
+% Sword	11	20	6	320	GenWeapon	SWORD	10
+% Knife	5	10	2	42	GenWeapon	DAGGER	4
+% Spear	14	20	6	408	GenSpear	THROWN	12
+% Short sword	7	20	4	49	GenWeapon	SWORD	6
 % Club	1	10	10	218	GenWeapon	BLUNT	3
 % Great Club	21	20	30	1752	GenWeapon	BLUNT	24
-% Sliver	24	10	1	668	GenWeapon	PIERCE	18
+% Sliver	24	10	1	668	GenWeapon	EDGED	18
 % Flail	13	40	15	692	GenWeapon	BLUNT	14
 % Skull mace	50	80	12	3602	GenWeapon	BLUNT	41
 

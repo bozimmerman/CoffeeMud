@@ -131,6 +131,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
+		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this))
 		{
 			MOB mob=msg.source();
@@ -172,6 +173,5 @@ public class StdDrink extends StdContainer implements Drink,Item
 				break;
 			}
 		}
-		super.executeMsg(myHost,msg);
 	}
 }

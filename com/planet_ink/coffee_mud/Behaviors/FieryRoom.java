@@ -103,7 +103,7 @@ public class FieryRoom extends ActiveTicker {
         }
 
         private void dealDamage(MOB mob) {
-                MUDFight.postDamage(mob, mob, null, directDamage, CMMsg.MSG_OK_ACTION, Weapon.TYPE_BURNING,
+                MUDFight.postDamage(mob, mob, null, directDamage, CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE, Weapon.TYPE_BURNING,
                                         "The fire here <DAMAGE> <T-NAME>!");
         }
 

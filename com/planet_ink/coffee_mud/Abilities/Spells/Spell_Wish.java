@@ -127,9 +127,12 @@ public class Spell_Wish extends Spell
 			String[] redundantStarts={"CREATE","TO CREATE","ANOTHER","THERE WAS","I HAD","I COULD HAVE","MAY I HAVE","CAN I HAVE","CAN YOU","CAN I","MAKE","TO MAKE","GIVE","ME","TO HAVE","TO GET","A NEW","SOME MORE","MY OWN","A","PLEASE","THE","I OWNED"};
 			String[] redundantEnds={"TO APPEAR","OF MY OWN","FOR ME","BE","CREATED","PLEASE","HERE"};
 			int i=0;
-			while(i<redundantStarts.length){
+			while(i<redundantStarts.length)
+			{
 				if(objectWish.startsWith(" "+redundantStarts[i]+" "))
-				{	objectWish=objectWish.substring(1+redundantStarts[i].length()); i=-1;}i++;}
+				{	objectWish=objectWish.substring(1+redundantStarts[i].length()); i=-1;}
+				i++;
+			}
 			i=0;
 			while(i<redundantEnds.length){
 				if(objectWish.endsWith(" "+redundantEnds[i]+" "))
@@ -203,8 +206,17 @@ public class Spell_Wish extends Spell
 			}
 
 			// anything else may refer to another person or item
+			Environmental target=null;
 			String possName=((String)wishV.elementAt(0)).trim();
-			Environmental target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORN_REQ_UNWORNONLY);
+			if(wishV.size()>2)
+			{
+				possName=Util.combine(wishV,0,2);
+				if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORN_REQ_UNWORNONLY);
+				if(target==null) target=mob.fetchInventory(possName);
+				if(target==null) possName=((String)wishV.elementAt(0)).trim();
+			}
+			if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORN_REQ_UNWORNONLY);
+			if(target==null) target=mob.fetchInventory(possName);
 			if((target==null)
 			||(possName.equalsIgnoreCase("FOR"))
 			||(possName.equalsIgnoreCase("TO"))
@@ -526,6 +538,60 @@ public class Spell_Wish extends Spell
 				return true;
 			}
 
+			if((target!=null)
+			&&((myWish.indexOf(" LOWER ")>=0)||(myWish.indexOf(" HIGHER ")>=0)||(myWish.indexOf(" WAS ")>=0)||(myWish.indexOf(" WOULD BE ")>=0)||(myWish.indexOf(" WOULD BECOME ")>=0)||(myWish.indexOf(" BECAME ")>=0))
+			&&(myWish.indexOf(" LEVEL ")>=0))
+			{
+				int level=0;
+				if(myWish.indexOf(" LOWER ")>=0)
+					level=-1;
+				else
+				if(myWish.indexOf(" HIGHER" )>=0)
+					level=1;
+				else
+				{
+					Vector V=Util.parse(myWish);
+					for(int i2=0;i2<V.size()-1;i2++)
+					{
+						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVEL"))
+						{
+							String s=(String)V.elementAt(i2+1);
+							if(Util.isNumber(s)
+							&&((Util.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
+							{
+								level=Util.s_int(s)-target.baseEnvStats().level();
+								break;
+							}
+						}
+					}
+				}
+				if(level!=0)
+				{
+					int levelsLost=level;
+					if(levelsLost<0) levelsLost=levelsLost*-1;
+					if(levelsLost>=mob.baseEnvStats().level())
+						levelsLost=mob.baseEnvStats().level()-1;
+					int newLevel=target.baseEnvStats().level()+level;
+					if((target instanceof MOB)&&(newLevel>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
+					{
+						wishDrain(mob,baseLoss,false);
+						mob.tell("That's beyond your power, but you lost exp even for trying.");
+						return false;
+					}
+						
+					wishDrain(mob,baseLoss*levelsLost,true);
+					if((mob!=target)||(newLevel>=target.baseEnvStats().level()))
+					for(int i2=0;i2<levelsLost;i2++)
+						mob.baseCharStats().getCurrentClass().unLevel(mob);
+					target.baseEnvStats().setLevel(newLevel);
+					target.recoverEnvStats();
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now level "+target.envStats().level()+"!");
+				}
+				return true;
+			}
+			
+			
+			
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
 			||(myWish.indexOf(" WAS ")>=0))

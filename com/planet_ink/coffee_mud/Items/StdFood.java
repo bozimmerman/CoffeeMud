@@ -60,6 +60,7 @@ public class StdFood extends StdItem implements Food
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
+		super.executeMsg(myHost,msg);
 		if(msg.amITarget(this))
 		{
 			MOB mob=msg.source();
@@ -81,6 +82,5 @@ public class StdFood extends StdItem implements Food
 				break;
 			}
 		}
-		super.executeMsg(myHost,msg);
 	}
 }

@@ -157,16 +157,6 @@ public class Scrapping extends CommonSkill
 			return false;
 		int duration=35-mob.envStats().level();
 		if(duration<10) duration=10;
-		for(int v=0;v<V.size();v++)
-		{
-		    if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
-		    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
-		    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
-		        duration+=((Item)V.elementAt(v)).envStats().weight();
-		    else
-		        duration+=((Item)V.elementAt(v)).envStats().weight()/2;
-		    ((Item)V.elementAt(v)).destroy();
-		}
 		messedUp=!profficiencyCheck(mob,0,auto);
 		found=makeItemResource(I.material());
 		foundShortName="nothing";
@@ -175,6 +165,16 @@ public class Scrapping extends CommonSkill
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{
+			for(int v=0;v<V.size();v++)
+			{
+			    if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
+			    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+			    ||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
+			        duration+=((Item)V.elementAt(v)).envStats().weight();
+			    else
+			        duration+=((Item)V.elementAt(v)).envStats().weight()/2;
+			    ((Item)V.elementAt(v)).destroy();
+			}
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,duration);
 		}

@@ -379,6 +379,27 @@ public class Carpentry extends CommonSkill
 					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
 						((Weapon)building).setWeaponClassification(cl);
 				}
+				switch(((Weapon)building).weaponClassification())
+				{
+				case Weapon.CLASS_AXE:
+				case Weapon.CLASS_FLAILED:
+					((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
+					break;
+				case Weapon.CLASS_SWORD:
+				case Weapon.CLASS_DAGGER:
+				case Weapon.CLASS_EDGED:
+				case Weapon.CLASS_POLEARM:
+				case Weapon.CLASS_RANGED:
+					((Weapon)building).setWeaponType(Weapon.TYPE_PIERCING);
+					break;
+				case Weapon.CLASS_NATURAL:
+				case Weapon.CLASS_THROWN:
+				case Weapon.CLASS_BLUNT:
+				case Weapon.CLASS_HAMMER:
+				case Weapon.CLASS_STAFF:
+					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
+					break;
+				}
 				building.baseEnvStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
 				building.baseEnvStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);

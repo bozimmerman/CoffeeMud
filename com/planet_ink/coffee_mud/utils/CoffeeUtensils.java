@@ -555,7 +555,7 @@ public class CoffeeUtensils
 						ok=false;
 					break;
 				}
-				if((!ok)&&((I.rawProperLocationBitmap()&CharClass.ARMOR_WEARMASK)>0))
+				if((!ok)&&((I.rawWornCode()&CharClass.ARMOR_WEARMASK)>0))
 					return false;
 			}
 		}
