@@ -41,7 +41,10 @@ public class GoodGuardian extends StdBehavior
 
 
 		if(victim!=null)
-			Aggressive.startFight(observer,victim,true);
+		{
+			if(!BrotherHelper.isBrother(victim,observer))
+				Aggressive.startFight(observer,victim,true);
+		}
 		else
 		if(anythingToDo)
 		{

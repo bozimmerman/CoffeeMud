@@ -16,6 +16,15 @@ public class BrotherHelper extends StdBehavior
 	{
 		return new BrotherHelper();
 	}
+	
+	public static boolean isBrother(MOB target, MOB observer)
+	{
+		if((observer.ID().equals(target.ID()))
+		&&(observer.name().equals(target.name())))
+			return true;
+		return false;
+	}
+	
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -37,8 +46,8 @@ public class BrotherHelper extends StdBehavior
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(observer.ID().equals(target.ID()))
-		&&(observer.name().equals(target.name())))
+		&&(isBrother(target,observer))
+		&&(!isBrother(source,observer)))
 			Aggressive.startFight(observer,source,false);
 	}
 
