@@ -4,27 +4,22 @@ Prod and harass Bo to add an EAT_PROG to scriptable
 ?Reverse Gravity causes things to fly up into oblivion when indoors
 ?clan resources gathering items don't work without someone in the room.
 ?(Missing your nose, right nose)
+rooms with room links (but no exits) don't show up in sysmsgs
 i don`t have alchemy but there should be a chemical to make items glow.
 cleric prayer create water should always fill a container, not create a spring
 add a GOOD/EVIL/NEUTRAL flag to the where command
 Pregnancy Code Suggestion, What about throwing up or getting sick (in morning) from 1 month to 3 monthes, nothing happens there.. thought that would be kinda cool, and maybe you catch yawning more often? Just suggestions, I have the free time to research!
 need a room-reset message for rooms to get so behaviors (conquerable) can respond.
-i tried creating a banned.ini file in the same dir as coffeemud.ini and listed the following: > *fingolfin* > *finrod* > *finwe*
 can not add to banned list throuhg web site
-make it so rideables can enter rooms of sufficient size, and water vehicles can always go to other water rooms, even if indoors
-?greater invis. isnt targeting items
 do tims readable with pages - genbook - auto paging 24 lines - read book shows all with pauses, read 1 book.
+some way to enter parms for usespellcast,fightspellcast,pills,potions,wands
+allow modify player to reset password
+translate sen and dis for props and superpills
+figure out way to keep demonbeasts from being summoned targets
 
-10.) Now that experience is passed in a message, I presume it's possible 
-to intercept it and modify now? Would it then be possible to create a 
-prop for mobs and items like prop_ModExp that accepts a +/- percentage? 
-For Mobs, I'm envisioning shopkeepers that can be set at -100% so they 
-fight and act normal - and players can kill them if they want, but they 
-do not award experience. Or even a quest only area where the mobs award 
-more experience than thier level would suggest.
-    For items, they could modify all experience gained when worn.
-    
+
 code something to coffeemudify all the beds 
+mutable body parts, with ability to grant powers
 GenCharClasses -- zappercheck on quals 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.

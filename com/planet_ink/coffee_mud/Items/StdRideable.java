@@ -413,9 +413,13 @@ public class StdRideable extends StdContainer implements Rideable
 			{
 				Room sourceRoom=(Room)msg.source().location();
 				Room targetRoom=(Room)msg.target();
+				Exit E=null;
 				if((sourceRoom!=null)&&(!msg.amITarget(sourceRoom)))
 				{
-					boolean ok=!((targetRoom.domainType()&Room.INDOORS)>0);
+					if((msg.tool()!=null)&&(msg.tool() instanceof Exit))
+					   E=(Exit)msg.tool();
+					boolean ok=(!((targetRoom.domainType()&Room.INDOORS)>0)
+								||((targetRoom.maxRange()>4)&&((E==null)||(!E.hasADoor()))));
 					switch(rideBasis)
 					{
 					case Rideable.RIDEABLE_LAND:
@@ -447,6 +451,8 @@ public class StdRideable extends StdContainer implements Rideable
 						&&(sourceRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE)
 						&&(targetRoom.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
 							ok=false;
+						else
+							ok=true;
 						if((targetRoom.domainType()==Room.DOMAIN_INDOORS_AIR)
 						||(targetRoom.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 						||(targetRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)

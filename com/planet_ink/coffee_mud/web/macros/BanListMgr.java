@@ -51,8 +51,8 @@ public class BanListMgr extends StdWebMacro
 				for(int b=0;b<banned.size();b++)
 				{
 					String B=(String)banned.elementAt(b);
-					if(!B.equals(key))
-						newBanned.append(B+"\n\r");
+					if((!B.equals(key))&&(B.trim().length()>0))
+						newBanned.append(B+"\n");
 				}
 				Resources.updateResource("banned.ini",newBanned);
 				Resources.saveFileResource("banned.ini");
@@ -78,7 +78,7 @@ public class BanListMgr extends StdWebMacro
 				}
 				if(!found)
 				{
-					newBanned.append(key+"\n\r");
+					if(key.trim().length()>0) newBanned.append(key+"\n");
 					Resources.updateResource("banned.ini",newBanned);
 					Resources.saveFileResource("banned.ini");
 				}

@@ -20,7 +20,7 @@ public class PlayerOnline extends StdWebMacro
 				return "false";
 		}
 		StringBuffer str=Resources.getFileResource("banned.ini",false);
-		str.append(banMe+"\n\r");
+		if(banMe.trim().length()>0) str.append(banMe+"\n");
 		Resources.updateResource("banned.ini",str);
 		Resources.saveFileResource("banned.ini");
 		return "true";

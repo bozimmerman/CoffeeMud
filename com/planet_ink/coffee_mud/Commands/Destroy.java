@@ -456,8 +456,8 @@ public class Destroy extends StdCommand
 					for(int b=0;b<protectedOnes.size();b++)
 					{
 						String B=(String)protectedOnes.elementAt(b);
-						if((b+1)!=which)
-							newNoPurge.append(B+"\n\r");
+						if(((b+1)!=which)&&(B.trim().length()>0))
+							newNoPurge.append(B+"\n");
 					}
 				Resources.updateResource("protectedplayers.ini",newNoPurge);
 				Resources.saveFileResource("protectedplayers.ini");
@@ -480,8 +480,8 @@ public class Destroy extends StdCommand
 					for(int b=0;b<banned.size();b++)
 					{
 						String B=(String)banned.elementAt(b);
-						if((b+1)!=which)
-							newBanned.append(B+"\n\r");
+						if(((b+1)!=which)&&(B.trim().length()>0))
+							newBanned.append(B+"\n");
 					}
 				Resources.updateResource("banned.ini",newBanned);
 				Resources.saveFileResource("banned.ini");

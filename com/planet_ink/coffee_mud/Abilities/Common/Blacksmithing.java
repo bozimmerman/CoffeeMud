@@ -26,6 +26,7 @@ public class Blacksmithing extends CommonSkill
 
 	private Item building=null;
 	private Item fire=null;
+	private boolean fireRequired=true;
 	private boolean messedUp=false;
 	private static boolean mapped=false;
 	public Blacksmithing()
@@ -41,14 +42,17 @@ public class Blacksmithing extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((building==null)
-			||(fire==null)
-			||(!Sense.isOnFire(fire))
-			||(!mob.location().isContent(fire))
-			||(mob.isMine(fire)))
+			if(fireRequired)
 			{
-				messedUp=true;
-				unInvoke();
+				if((building==null)
+				||(fire==null)
+				||(!Sense.isOnFire(fire))
+				||(!mob.location().isContent(fire))
+				||(mob.isMine(fire)))
+				{
+					messedUp=true;
+					unInvoke();
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -119,8 +123,6 @@ public class Blacksmithing extends CommonSkill
 			return true;
 		}
 
-			fire=getRequiredFire(mob);
-			if(fire==null) return false;
 		building=null;
 		messedUp=false;
 		String recipeName=Util.combine(commands,0);
@@ -167,6 +169,15 @@ public class Blacksmithing extends CommonSkill
 			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
+		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
+		if(!misctype.equalsIgnoreCase("BUNDLE"))
+		{
+			fireRequired=true;
+			fire=getRequiredFire(mob);
+			if(fire==null) return false;
+		}
+		else
+			fireRequired=false;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		int lostValue=destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
@@ -190,7 +201,6 @@ public class Blacksmithing extends CommonSkill
 		building.setMaterial(firstWood.material());
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
-		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		if(spell.length()>0)

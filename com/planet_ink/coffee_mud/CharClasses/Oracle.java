@@ -158,10 +158,10 @@ public class Oracle extends Cleric
 			if(numNonQualified>=level) return;
 			Ability newOne=null;
 			int tries=0;
-			while((newOne==null)&&((++tries)<100))
+			while((newOne==null)&&((++tries)<1000))
 			{
 				CharClass C=CMClass.randomCharClass();
-				if((C!=null)&&(C!=this))
+				if((C!=null)&&(C!=this)&&(mob.charStats().getClassLevel(C)<0))
 				{
 					int tries2=0;
 					while((newOne==null)&&((++tries2)<1000))
@@ -170,7 +170,8 @@ public class Oracle extends Cleric
 						if((A!=null)
 						   &&(!CMAble.getSecretSkill(C.ID(),A.ID()))
 						   &&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=1)
-						   &&(CMAble.getQualifyingLevel(this.ID(),A.ID())<0))
+						   &&(CMAble.getQualifyingLevel(this.ID(),A.ID())<0)
+						   &&(mob.fetchAbility(A.ID())==null))
 						{
 							newOne=A;
 							break;
