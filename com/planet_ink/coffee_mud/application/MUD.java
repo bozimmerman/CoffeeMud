@@ -167,7 +167,6 @@ public class MUD extends Thread implements Host
 			return false;
 		}
 
-		Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
 		while (!serverIsRunning && isOK)
 		{
 		}
@@ -634,6 +633,8 @@ public class MUD extends Thread implements Host
 					isOK = true;
 					offlineReason=new String("Booting");
 				}
+				if(page!=null)
+					Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
 				
 				System.out.println();
 				Log.sysOut("MUD",getGlobalVer());
