@@ -43,11 +43,10 @@ public class Spell_Counterspell extends Spell
 		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 		&&(invoker!=null)
 		&&(!mob.amDead())
-		&&(Dice.rollPercentage()<35)
-		&&(profficiencyCheck(0,false)))
+		&&(Dice.rollPercentage()<(70+(2*(mob.envStats().level()-affect.source().envStats().level())))))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> dispels "+affect.tool().name()+"!");
-			super.tickDown=0;
+			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> dispels the "+affect.tool().name()+" from <T-NAME>!");
+			tickDown=0;
 			return false;
 		}
 		return true;

@@ -10,7 +10,7 @@ public class Fighter_Shrug extends StdAbility
 	public String ID() { return "Fighter_Shrug"; }
 	public String name(){ return "Shrug Off";}
 	public String displayText(){return "(Braced for a hit)";}
-	private static final String[] triggerStrings = {"SHRUGOFF"};
+	private static final String[] triggerStrings = {"BRACE"};
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -155,20 +155,46 @@ public class StdArmor extends StdContainer implements Armor
 		&&(owner() instanceof MOB)
 		&&(affect.amITarget(owner()))
 		&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*2))
-		&&(subjectToWearAndTear()))
+		&&(subjectToWearAndTear())
+		&&(Dice.rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
 		{
+			int weaponType=-1;
 			if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon)
-			&&((affect.targetCode()-Affect.MASK_HURT)>0)
-			&&(Dice.rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.DEXTERITY))))
+			&&((affect.targetCode()-Affect.MASK_HURT)>0))
 			{
-				Weapon tool=(Weapon)affect.tool();
+				if((affect.tool()!=null)
+				&&(affect.tool() instanceof Weapon))
+				   weaponType=((Weapon)affect.tool()).weaponType();
+				else
+				switch(affect.sourceMinor())
+				{
+				case Affect.TYP_FIRE:
+					weaponType=Weapon.TYPE_BURNING;
+					break;
+				case Affect.TYP_WATER:
+					weaponType=Weapon.TYPE_FROSTING;
+					break;
+				case Affect.TYP_ACID:
+					weaponType=Weapon.TYPE_MELTING;
+					break;
+				case Affect.TYP_COLD:
+					weaponType=Weapon.TYPE_FROSTING;
+					break;
+				case Affect.TYP_GAS:
+					weaponType=Weapon.TYPE_GASSING;
+					break;
+				case Affect.TYP_ELECTRIC:
+					weaponType=Weapon.TYPE_STRIKING;
+					break;
+				}
+			}
+			if(weaponType>=0)
+			{
 				switch(material()&EnvResource.MATERIAL_MASK)
 				{
 				case EnvResource.MATERIAL_CLOTH:
 				case EnvResource.MATERIAL_PAPER:
-					switch(tool.weaponType())
+					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -197,7 +223,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case EnvResource.MATERIAL_GLASS:
-					switch(tool.weaponType())
+					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_GASSING:
@@ -223,7 +249,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case EnvResource.MATERIAL_LEATHER:
-					switch(tool.weaponType())
+					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -259,7 +285,7 @@ public class StdArmor extends StdContainer implements Armor
 						setUsesRemaining(usesRemaining()-1);
 					break;
 				case EnvResource.MATERIAL_METAL:
-					switch(tool.weaponType())
+					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -289,7 +315,7 @@ public class StdArmor extends StdContainer implements Armor
 					break;
 				case EnvResource.MATERIAL_ROCK:
 				case EnvResource.MATERIAL_PRECIOUS:
-					switch(tool.weaponType())
+					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -318,7 +344,7 @@ public class StdArmor extends StdContainer implements Armor
 					}
 					break;
 				case EnvResource.MATERIAL_WOODEN:
-					switch(tool.weaponType())
+					switch(weaponType)
 					{
 					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_FROSTING:
@@ -349,59 +375,6 @@ public class StdArmor extends StdContainer implements Armor
 				default:
 					if(Dice.rollPercentage()==1)
 						setUsesRemaining(usesRemaining()-1);
-					break;
-				}
-			}
-			else
-			if((affect.targetMinor()==Affect.TYP_ACID)&&(!affect.wasModified()))
-			{
-				switch(material()&EnvResource.MATERIAL_MASK)
-				{
-				case EnvResource.MATERIAL_METAL:
-				case EnvResource.MATERIAL_ROCK:
-				case EnvResource.MATERIAL_PRECIOUS:
-				case EnvResource.MATERIAL_VEGETATION:
-				case EnvResource.MATERIAL_FLESH:
-					setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
-					break;
-				case EnvResource.MATERIAL_MITHRIL:
-					if(Dice.rollPercentage()<25)
-						setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
-					break;
-				case EnvResource.MATERIAL_WOODEN:
-					if(Dice.rollPercentage()<50)
-						setUsesRemaining(usesRemaining()-Dice.roll(1,5,0));
-					break;
-				default:
-					break;
-				}
-			}
-			else
-			if((affect.targetMinor()==Affect.TYP_FIRE)&&(!affect.wasModified()))
-			{
-				switch(material()&EnvResource.MATERIAL_MASK)
-				{
-				case EnvResource.MATERIAL_CLOTH:
-				case EnvResource.MATERIAL_PAPER:
-				case EnvResource.MATERIAL_WOODEN:
-				case EnvResource.MATERIAL_LEATHER:
-					setUsesRemaining(usesRemaining()-Dice.roll(1,10,0));
-					break;
-				default:
-					break;
-				}
-			}
-			else
-			if((affect.targetMinor()==Affect.TYP_WATER)&&(!affect.wasModified()))
-			{
-				switch(material())
-				{
-				case EnvResource.RESOURCE_IRON:
-				case EnvResource.RESOURCE_STEEL:
-				case EnvResource.RESOURCE_PAPER:
-					setUsesRemaining(usesRemaining()-1);
-					break;
-				default:
 					break;
 				}
 			}

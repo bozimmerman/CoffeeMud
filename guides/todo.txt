@@ -1,6 +1,8 @@
-Add parameters to Aggressive behavior, like the GateGuards
+Better spell help
 New Skill -- Double the damage on all Ranged Weapons to make them more deadly.
 Ability to save riding status in the database.
+Wainsright - to create wagons
+Shipwright - create boats
 AUTOFOLLOW (or GUARD) to prevent a mob from actually following followers. 
 Scrolls can now disappear when used up.
 Paper-maker to make paper, scrolls (silkscreens) Wood. Cloth=Canvas. Cotton=Canvas. Silk=Silkscreen

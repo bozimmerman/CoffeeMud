@@ -81,6 +81,12 @@ public class Spell_Wish extends Spell
 		else
 		if(mob.location().okAffect(msg))
 		{
+			// cast wish bless were cast on me
+			// cast wish to have restoration cast on me
+			// cast wish to cast bless on me
+			// cast wish to cast disintegrate on orc
+			// cast wish to cast gaes on orc to kill bob
+			
 			mob.location().send(mob,msg);
 			if(mob.isMonster())
 			{

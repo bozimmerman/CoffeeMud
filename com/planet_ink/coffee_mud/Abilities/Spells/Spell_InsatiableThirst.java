@@ -40,7 +40,7 @@ public class Spell_InsatiableThirst extends Spell
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					target.curState().adjThirst(-150 - (mob.envStats().level() * 10),target.maxState());
+					target.curState().adjThirst(-150 - (mob.envStats().level() * 100),target.maxState());
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly thirsty!");
 				}
 			}

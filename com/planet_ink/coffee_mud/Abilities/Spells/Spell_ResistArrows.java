@@ -45,7 +45,7 @@ public class Spell_ResistArrows extends Spell
 		&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 		&&(((Weapon)affect.tool()).requiresAmmunition())
 		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
+		&&(Dice.rollPercentage()<35))
 		{
 			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((Weapon)affect.tool()).ammunitionType()+" from <T-NAME>!");
 			return false;

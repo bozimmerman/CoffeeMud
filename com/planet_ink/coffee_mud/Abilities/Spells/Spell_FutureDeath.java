@@ -80,10 +80,10 @@ public class Spell_FutureDeath extends Spell
 						str="<S-NAME> lie(s) on the ground, take(s) on a sickly expression, and die(s).";
 						break;
 					case 9:
-						str="<S-NAME> grab(s) <S-HIS-HER> chest, and then it stops.";
+						str="<S-NAME> grab(s) at <S-HIS-HER> heart, and then it stops.";
 						break;
 					case 10:
-						str="<S-NAME> run(s) an unseen blade along <S-HIS-HER> wrists, and die(s).";
+						str="<S-NAME> stand(s) on <S-HIS-HER> toes, stick(s) out <S-HIS-HER> tongue, and die(s).";
 						break;
 					}
 					target.location().show(target,null,Affect.MSG_OK_VISUAL,str);

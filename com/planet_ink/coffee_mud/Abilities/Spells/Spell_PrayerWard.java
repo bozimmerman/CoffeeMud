@@ -43,8 +43,7 @@ public class Spell_PrayerWard extends Spell
 		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 		&&(invoker!=null)
 		&&(!mob.amDead())
-		&&(Dice.rollPercentage()<35)
-		&&(profficiencyCheck(0,false)))
+		&&(Dice.rollPercentage()<35))
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> wards off "+affect.tool().name()+"!");
 			return false;
