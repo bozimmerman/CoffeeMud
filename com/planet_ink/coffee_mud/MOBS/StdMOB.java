@@ -1039,7 +1039,7 @@ public class StdMOB implements MOB
 			else
 			if(((Util.bset(targetMajor,Affect.AFF_TOUCHED))
 				||(Util.bset(targetMajor,Affect.AFF_MOVEDON))
-				||(Util.bset(targetMajor,Affect.AFF_CONSUMED)))
+				||((Util.bset(targetMajor,Affect.AFF_CONSUMED))&&(!Util.bset(targetMajor,Affect.AFF_SOUNDEDAT))))
 			&&(!asleep)&&((canhearsrc)||(canseesrc)))
 				tell(affect.source(),affect.target(),affect.targetMessage());
 		}
@@ -1073,7 +1073,8 @@ public class StdMOB implements MOB
 				tell(affect.source(),affect.target(),affect.othersMessage());
 			}
 			else
-			if((Util.bset(othersMajor,Affect.OTH_SENSE_MOVEMENT)||Util.bset(othersMajor,Affect.OTH_SENSE_CONSUMPTION))
+			if(((Util.bset(othersMajor,Affect.OTH_SENSE_MOVEMENT))
+				||((Util.bset(othersMajor,Affect.OTH_SENSE_CONSUMPTION))&&(!Util.bset(othersMajor,Affect.OTH_HEAR_SOUNDS))))
 			&&((!asleep)||(affect.othersMinor()==Affect.TYP_ENTER))
 			&&((canseesrc)||(canhearsrc)))
 				tell(affect.source(),affect.target(),affect.othersMessage());
