@@ -100,7 +100,6 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.setDescription("A ferocious, fleet of foot, flying friend.");
 		ride.setRideBasis(Rideable.RIDEABLE_AIR);
 		ride.setMobCapacity(2);
-		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
@@ -108,6 +107,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location());
 		caster.location().recoverRoomStats();
+		newMOB.setStartRoom(null);
 		return(newMOB);
 
 

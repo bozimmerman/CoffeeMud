@@ -118,8 +118,6 @@ public class Spell_SummonSteed extends Spell
 			newMOB.setDescription("Ferocious, fleet of foot, and strong, a best of breed!");
 			ride.setMobCapacity(3);
 		}
-
-		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
@@ -127,6 +125,7 @@ public class Spell_SummonSteed extends Spell
 		newMOB.text();
 		newMOB.bringToLife(caster.location());
 		caster.location().recoverRoomStats();
+		newMOB.setStartRoom(null);
 		return(newMOB);
 
 

@@ -106,7 +106,6 @@ public class Spell_SummonEnemy extends Spell
 		if(monster==null) return null;
 		monster=(MOB)monster.copyOf();
 		monster.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		monster.setStartRoom(null);
 		monster.recoverCharStats();
 		monster.recoverEnvStats();
 		monster.recoverMaxState();
@@ -114,6 +113,7 @@ public class Spell_SummonEnemy extends Spell
 		monster.text();
 		monster.bringToLife(caster.location());
 		caster.location().recoverRoomStats();
+		monster.setStartRoom(null);
 		return(monster);
 	}
 }

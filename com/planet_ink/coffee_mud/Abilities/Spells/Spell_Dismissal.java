@@ -57,11 +57,11 @@ public class Spell_Dismissal extends Spell
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> vanish(es) in dismissal!");
 					if(target.getStartRoom()==null)
 						target.destroy();
 					else
 					{
+						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> vanish(es) in dismissal!");
 						target.getStartRoom().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> appears!");
 						target.getStartRoom().bringMobHere(target,false);
 					}
