@@ -120,7 +120,6 @@ public class Log
 			FileOutputStream fileStream=new FileOutputStream(fileOut);
 			fileOutWriter=new PrintWriter(fileStream,true);
 			errOutWriter=systemOutWriter;
-			systemOutWriter=systemOutWriter;
 		}
 		catch(IOException e)
 		{
