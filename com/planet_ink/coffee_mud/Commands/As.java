@@ -69,6 +69,11 @@ public class As extends StdCommand
 		    mob.tell(M.Name()+" is being possessed at the moment.");
 		    return false;
 		}
+		if(CMSecurity.isASysOp(M))
+		{
+		    mob.tell("You can't do that as the mighty "+M.Name()+".");
+		    return false;
+		}
 		Session oldSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;

@@ -513,7 +513,6 @@ public class Modify extends BaseGenerics
 				flunkCmd2(mob);
 				return;
 			}
-			Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 		}
 
 		if((!myArea.Name().equals(oldName))&&(!mob.isMonster()))
@@ -566,6 +565,7 @@ public class Modify extends BaseGenerics
 			CMClass.DBEngine().DBUpdateArea(oldName,myArea);
 			CMMap.renameRooms(myArea,oldName,allMyDamnRooms);
 		}
+		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 	}
 
 	public void exits(MOB mob, Vector commands)

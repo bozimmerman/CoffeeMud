@@ -23,6 +23,7 @@
 <!ELEMENT HealthText EMPTY ATT='name'>
 <!ELEMENT TELL '<SEND HREF="TELL &name;" PROMPT hint="Click to reply.|TELL &name;">' ATT='name'>
 <!ELEMENT SAY '<SEND HREF="SAY &quot;&name;&quot; " PROMPT hint="Click to reply.|SAY &quot;&name;&quot;">' ATT='name'>
+<!ELEMENT WHISPER '<SEND HREF="WHISPER &quot;&name;&quot; " PROMPT hint="Click to reply.|WHISPER &quot;&name;&quot;">' ATT='name'>
 <!ELEMENT GTELL '<SEND HREF="GTELL" PROMPT hint="Click to reply.|GTELL">' ATT='name'>
 <!ELEMENT CHANNEL '<SEND HREF="&name; " PROMPT hint="Click to reply.|&name; ">' ATT='name'>
 <!ELEMENT CHANNELS '<SEND HREF="&extra;&text;" hint="Click to toggle on/off.|&extra;&text;">' ATT='extra'>

@@ -92,7 +92,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			{
 				if((((Integer)rooms.elementAt(i,2)).intValue()==x)
 				&&(((Integer)rooms.elementAt(i,3)).intValue()==y))
+				{
+				    rooms.setElementAt(i,4,new Long(System.currentTimeMillis()));
 					return (Room)rooms.elementAt(i,1);
+				}
 			}
 			return null;
 		}
@@ -613,7 +616,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			return;
 		tickStarted=true;
 		ThinGridVacuum TGV=new ThinGridVacuum();
-		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_MOB,30);
+		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_ROOM_BEHAVIOR,30);
 	}
 	
 	protected static class ThinGridVacuum implements Tickable

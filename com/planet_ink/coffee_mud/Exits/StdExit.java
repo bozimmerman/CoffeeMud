@@ -162,6 +162,28 @@ public class StdExit implements Exit
 		}
 	}
 
+	protected final String closeWordPastTense()
+	{
+		if(closeWord().length()==0)
+			return "closed";
+		else
+		if(Util.isVowel(closeWord().charAt(closeWord().length()-1)))
+			return closeWord()+"d";
+		else
+			return closeWord()+"ed";
+	}
+	
+	protected final String openWordPastTense()
+	{
+		if(openWord().length()==0)
+			return "opened";
+		else
+		if(Util.isVowel(closeWord().charAt(closeWord().length()-1)))
+			return openWord()+"d";
+		else
+			return openWord()+"ed";
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		for(int b=0;b<numBehaviors();b++)
@@ -204,7 +226,7 @@ public class StdExit implements Exit
 					mob.tell("You can't go that way.");
 					return false;
 				}
-				mob.tell("The "+doorName()+" is "+closeWord()+"d.");
+				mob.tell("The "+doorName()+" is "+closeWordPastTense()+".");
 				return false;
 			}
 			if((Sense.isFlying(this))
@@ -248,7 +270,7 @@ public class StdExit implements Exit
 			}
 			else
 			{
-				mob.tell("The "+doorName()+" is already "+closeWord()+"d.");
+				mob.tell("The "+doorName()+" is already "+closeWordPastTense()+".");
 				return false;
 			}
 			//break;

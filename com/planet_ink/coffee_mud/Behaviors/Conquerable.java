@@ -199,7 +199,7 @@ public class Conquerable extends Arrest
 			&&(((ClanItem)I).clanID().equals(holdingClan)))
 			{
 				MOB M=(MOB)I.owner();
-				if((M.location()!=null)&&(!M.amDead()))
+				if((M.location()!=null)&&(!M.amDead())&&(M.isMonster()))
 				{
 					M.delInventory(I);
 					if(M.getClanID().equals(holdingClan))
@@ -219,7 +219,9 @@ public class Conquerable extends Arrest
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					MOB M=R.fetchInhabitant(i);
-					if((M!=null)&&(M.isMonster())&&(M.getStartRoom()!=null)
+					if((M!=null)
+					&&(M.isMonster())
+					&&(M.getStartRoom()!=null)
 					&&(myArea.inMetroArea(M.getStartRoom().getArea()))
 					&&(M.getClanID().equals(holdingClan)))
 						M.setClanID("");
@@ -354,6 +356,7 @@ public class Conquerable extends Arrest
 				{
 					MOB M=R.fetchInhabitant(i);
 					if((M!=null)
+			        &&(M.isMonster())
 					&&(M.getStartRoom()!=null)
 					&&(A.inMetroArea(M.getStartRoom().getArea()))
 					&&(!Sense.isAnimalIntelligence(M)))
@@ -532,7 +535,9 @@ public class Conquerable extends Arrest
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					MOB M=R.fetchInhabitant(i);
-					if((M!=null)&&(M.isMonster())&&(M.getStartRoom()!=null)
+					if((M!=null)
+					&&(M.isMonster())
+					&&(M.getStartRoom()!=null)
 					&&(myArea.inMetroArea(M.getStartRoom().getArea()))
 					&&(!Sense.isAnimalIntelligence(M))
 					&&(M.getClanID().length()==0))

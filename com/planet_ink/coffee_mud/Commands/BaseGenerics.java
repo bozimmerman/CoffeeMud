@@ -167,7 +167,7 @@ public class BaseGenerics extends StdCommand
 		TimeClock TC=A.getTimeObj();
 		StringBuffer report=new StringBuffer("");
 		if(TC==DefaultTimeClock.globalClock)
-			report.append("Default");
+			report.append("Default -- Can't be changed.");
 		else
 		{
 		    report.append(TC.getHoursInDay()+" hrs-day/");

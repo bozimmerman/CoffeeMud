@@ -580,7 +580,7 @@ public class DefaultClimate implements Climate
 				desc.append("obscure the sky.");
 			break;
 		case Climate.WEATHER_THUNDERSTORM:
-			desc.append("A heavy and thunderous rainstorm ");
+			desc.append("A heavy and blusterous rainstorm ");
 			if((A.climateType()&Area.CLIMATE_WINDY)>0)
 				desc.append("swirls all around you.");
 			else

@@ -41,7 +41,7 @@ public class Activate extends BaseItemParser
 		Item item=null;
 		if(mob.riding() instanceof Electronics)
 		{
-		    if((E==null)||(cmd.equalsIgnoreCase("$")))
+		    if((E==null)||(cmd.equalsIgnoreCase(">")))
 		        item=(Item)mob.riding();
 		}
 		else

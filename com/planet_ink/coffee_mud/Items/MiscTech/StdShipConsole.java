@@ -58,4 +58,66 @@ public class StdShipConsole extends StdRideable
 	{
 		return E instanceof Software;
 	}
+
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+	    if(msg.amITarget(this))
+	    {
+	        switch(msg.targetMinor())
+	        {
+	        case CMMsg.TYP_READSOMETHING:
+	            return true;
+	        case CMMsg.TYP_ACTIVATE:
+	            if((msg.targetMessage()==null)&&(activated()))
+	            {
+	                msg.source().tell(name()+" is already booted up.");
+	                return false;
+	            }
+	        	break;
+	        case CMMsg.TYP_DEACTIVATE:
+	            if((msg.targetMessage()==null)&&(!activated()))
+	            {
+	                msg.source().tell(name()+" is already shut down.");
+	                return false;
+	            }
+	        	break;
+	        }
+	    }
+	    return super.okMessage(host,msg);
+	}
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+	    if(msg.amITarget(this))
+	    {
+	        switch(msg.targetMinor())
+	        {
+	        case CMMsg.TYP_READSOMETHING:
+		    {
+		        if(!activated())
+		        {
+		            msg.source().tell("The screen is blank.  Try ACTIVATEing it first.");
+		        }
+		        else
+		        {
+		        }
+		        return;
+		    }
+	        case CMMsg.TYP_ACTIVATE:
+	            if(!activated())
+	            {
+	                activate(true);
+	                msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> boot(s) up <T-NAME>.");
+	            }
+	        	break;
+	        case CMMsg.TYP_DEACTIVATE:
+	            if(activated())
+	            {
+	                activate(false);
+	                msg.source().location().show(msg.source(),this,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shut(s) up <T-NAME>.");
+	            }
+	            break;
+	        }
+	    }
+	    super.executeMsg(host,msg);
+	}
 }

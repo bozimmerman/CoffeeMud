@@ -685,6 +685,9 @@ public class CMClass extends ClassLoader
 
 		miscTech=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscTech"+File.separatorChar,page.getStr("MISCTECH"),"com.planet_ink.coffee_mud.interfaces.Electronics");
 		if(miscTech.size()>0) Log.sysOut("MUD","Electronics loaded: "+miscTech.size());
+		Vector tempV=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Software"+File.separatorChar,page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.interfaces.Software");
+		if(tempV.size()>0) addV(tempV,miscTech);
+		miscTech=new Vector(new TreeSet(miscTech));
 
 		if((items.size()+weapons.size()+armor.size()+miscTech.size()+miscMagic.size()+clanItems.size())==0)
 			return false;

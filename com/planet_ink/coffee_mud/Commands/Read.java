@@ -42,10 +42,11 @@ public class Read extends StdCommand
 				return;
 			}
 		}
-		String soMsg="<S-NAME> read(s) <T-NAMESELF>.";
+		String srcMsg="<S-NAME> read(s) <T-NAMESELF>.";
+		String soMsg=(mob.isMine(thisThang)?srcMsg:null);
 		String tMsg=theRest;
 		if((tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
-		FullMsg newMsg=new FullMsg(mob,thisThang,null,CMMsg.MSG_READSOMETHING,soMsg,CMMsg.MSG_READSOMETHING,tMsg,CMMsg.MSG_READSOMETHING,soMsg);
+		FullMsg newMsg=new FullMsg(mob,thisThang,null,CMMsg.MSG_READSOMETHING,srcMsg,CMMsg.MSG_READSOMETHING,tMsg,CMMsg.MSG_READSOMETHING,soMsg);
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
 

@@ -2002,10 +2002,11 @@ of mphide, making the target (possibly) visible again.&nbsp;
 <P class=MsoNormal><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">mpunlock</SPAN></P>
 <P class=MsoNormal><O:P></O:P></P>
-<P class=MsoNormal>Usage: <BR><EM>mpunhide [target] <BR></EM></P>
+<P class=MsoNormal>Usage: <BR><EM>mpunlock [target] <BR></EM></P>
 <P class=MsoNormal>This&nbsp;command&nbsp;unlocks the given 
 container or exit.&nbsp; This command has no effect&nbsp; if the target does not 
-have a lid, does not have a lock, or is already unlocked or open. 
+have a lid, does not have a lock, or is already unlocked or open.&nbsp; No key 
+is required.
 <P class=MsoNormal><O:P></O:P></P>
 <P class=MsoNormal>EXAMPLES:<BR><BR><EM>mpunlock $xN<BR>mpunlock chest</EM> </P>
 <P class=MsoNormal><SPAN 
@@ -2333,20 +2334,19 @@ style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isalive</SPAN><
 <P class=MsoNormal>This checks whether the character is 
 alive.</P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if isalive($i)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am NOT 
-dead!<BR>end</EM></P>
+<P class=MsoNormal><EM>if 
+isalive($i)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho I am NOT dead!<BR>end</EM></P>
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">isbehave</SPAN></B></P>
-<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; 
-<BR></SPAN><EM>isbehave(character behaviorid)</EM></P>
-<P class=MsoNormal>This checks whether the character has a given behavior.&nbsp; 
-The behaviorid must be the full Java name of the behavior.&nbsp; </P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>isbehave(character behaviorid)</EM></P>
+<P class=MsoNormal>This checks whether the character has a 
+given behavior.&nbsp; The behaviorid must be the full Java name of the 
+behavior.&nbsp; </P>
 <P class=MsoNormal>EXAMPLE:</P>
-<P class=MsoNormal><EM>if isbehave($n, Mobile)<BR><SPAN 
-style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is 
-mobile.<BR>else<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The 
-actor triggering me is not mobile.<BR>endif<BR></EM><BR><B 
+<P class=MsoNormal><EM>if isbehave($n, 
+Mobile)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me is mobile.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+triggering me is not mobile.<BR>endif<BR></EM><BR><B 
 style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">ischarmed<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage: <BR><EM>ischarmed(character)</EM></P>

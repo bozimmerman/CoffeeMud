@@ -977,7 +977,11 @@ public class StdArea implements Area
 
 
 
-	private static final String[] CODES={"CLASS","CLIMATE","DESCRIPTION","TEXT","TECHLEVEL"};
+	private static final String[] CODES={"CLASS",
+	    								 "CLIMATE",
+	    								 "DESCRIPTION",
+	    								 "TEXT",
+	    								 "TECHLEVEL"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)

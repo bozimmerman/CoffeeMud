@@ -1346,7 +1346,8 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			{
-			    tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
+			    if(tickStatus!=Tickable.STATUS_NOT)
+				    tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
 			switch(funcCode.intValue())
 			{
 			case 1: // rand
@@ -2909,7 +2910,8 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			{
-			    tickStatus=Tickable.STATUS_MISC2+funcCode.intValue();
+			    if(tickStatus!=Tickable.STATUS_NOT)
+			        tickStatus=Tickable.STATUS_MISC2+funcCode.intValue();
 			switch(funcCode.intValue())
 			{
 			case 1: // rand
@@ -3899,7 +3901,8 @@ public class Scriptable extends StdBehavior
 			        if(methods[i].startsWith(cmd))
 			            methCode=new Integer(i);
 			if(methCode==null) methCode=new Integer(0);
-		    tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
+		    if(tickStatus!=Tickable.STATUS_NOT)
+			    tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
 			if(cmd.length()==0)
 				continue;
 			else
@@ -5217,7 +5220,6 @@ public class Scriptable extends StdBehavior
 		{
 			Vector script=(Vector)scripts.elementAt(v);
 			if(script.size()<1) continue;
-		    tickStatus=Tickable.STATUS_AFFECT+v;
 
 			String trigger=((String)script.elementAt(0)).toUpperCase().trim();
 			switch(getTriggerCode(trigger))
@@ -5721,6 +5723,7 @@ public class Scriptable extends StdBehavior
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+	    tickStatus=Tickable.STATUS_START;
 		super.tick(ticking,tickID);
 		MOB mob=getScriptableMOB(ticking);
 
@@ -5729,6 +5732,7 @@ public class Scriptable extends StdBehavior
 		if((mob==null)||(lastKnownLocation==null))
 		{
 			altStatusTickable=null;
+		    tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}
 
