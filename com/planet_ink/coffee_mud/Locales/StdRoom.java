@@ -762,9 +762,10 @@ public class StdRoom
 	{
 		if(Log.debugChannelOn())
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
-		for(int i=0;i<numInhabitants();i++)
+		Vector inhabs=(Vector)inhabitants.clone();
+		for(int i=0;i<inhabs.size();i++)
 		{
-			MOB otherMOB=fetchInhabitant(i);
+			MOB otherMOB=(MOB)inhabs.elementAt(i);
 			if((otherMOB!=null)&&(otherMOB!=source))
 				otherMOB.affect(msg);
 		}

@@ -634,7 +634,7 @@ public class StdMOB implements MOB
 		if(location()!=null) location().delInhabitant(this);
 		DeadBody Body=charStats().getMyRace().getCorpse(this,deathRoom);
 		amDead=true;
-		victim=null;
+		makePeace();
 		setRiding(null);
 		for(int a=numAffects()-1;a>=0;a--)
 		{
@@ -1732,7 +1732,7 @@ public class StdMOB implements MOB
 						{
 							if((!amDead())
 							&&(curState().getHitPoints()>0)
-							&&(victim!=null)
+							&&(isInCombat())
 							&&((s==0)||(!Sense.isSitting(this))))
 							{
 								if((weapon!=null)&&(weapon.amWearingAt(Item.INVENTORY)))
@@ -1754,6 +1754,8 @@ public class StdMOB implements MOB
 										ExternalPlay.postAttack(this,victim,weapon);
 								}
 							}
+							else
+								break;
 						}
 							
 						if(Dice.rollPercentage()>(charStats().getStat(CharStats.CONSTITUTION)*4))
