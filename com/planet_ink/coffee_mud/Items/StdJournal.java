@@ -29,7 +29,8 @@ public class StdJournal extends StdItem
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_WRITE:
-			if(affect.source().envStats().level()<envStats().level())
+			if((affect.source().envStats().level()<envStats().level())
+			   &&(!affect.source().isASysOp(null)))
 			{
 				affect.source().tell("You are not allowed to write on "+name());
 				return false;
@@ -70,7 +71,8 @@ public class StdJournal extends StdItem
 				mob.tell(entry.toString()+"\n\r");
 				if((entry.toString().trim().length()>0)
 				   &&(which>0)
-				   &&(envStats().level()<=mob.envStats().level()))
+				   &&((envStats().level()<=mob.envStats().level()))
+					||(mob.isASysOp(null)))
 				{
 					try
 					{
