@@ -221,7 +221,7 @@ public class Prop_ItemTransporter extends Property
 						Item item=(Item)itemsToMove.elementAt(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
-						room.addItem(item);
+						room.addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
 					}
 				if(mob!=null)
 					for(int i=0;i<itemsToMove.size();i++)
@@ -234,6 +234,12 @@ public class Prop_ItemTransporter extends Property
 						else
 							mob.addInventory(item);
 					}
+				if(room!=null) room.recoverRoomStats();
+				if(mob!=null){
+					mob.recoverCharStats();
+					mob.recoverEnvStats();
+					mob.recoverMaxState();
+				}
 			}
 		}
 	}

@@ -66,7 +66,6 @@ public class FrontDoor
 		return Character.toUpperCase(name.charAt(0))+name.substring(1).trim();
 	}
 	
-	
 	public boolean login(MOB mob)
 		throws IOException
 	{
@@ -118,19 +117,20 @@ public class FrontDoor
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
 						oldMOB.setSession(null);
+					showTheNews(mob);
 					mob.bringToLife(mob.location(),false);
 				}
 				else
 				{
 					ExternalPlay.DBReadMOB(mob);
-					mob.setUserInfo(mob.ID(),password,Calendar.getInstance());
-					ExternalPlay.DBUpdateMOB(mob);
+					mob.setUserInfo(mob.ID(),password);
 					if(mob.baseCharStats()!=null)
 						if(mob.baseCharStats().getMyClass()!=null)
 						{
 							mob.baseCharStats().getMyClass().startCharacter(mob,false,true);
 							mob.baseCharStats().getMyRace().startRacing(mob,true);
 						}
+					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
 				}
 				ExternalPlay.DBReadFollowers(mob);
@@ -138,7 +138,7 @@ public class FrontDoor
 			else
 			{
 				Log.sysOut("FrontDoor","Failed login: "+mob.name());
-				mob.setUserInfo("","",Calendar.getInstance());
+				mob.setUserInfo("","");
 				mob.session().println("\n\rInvalid password.\n\r");
 				return false;
 			}
@@ -148,7 +148,7 @@ public class FrontDoor
 			if(!isOkName(login))
 			{
 				mob.session().println("\n\rThat name is unrecognized.\n\rThat name is also not available for new users.\n\r  Choose another name (no spaces allowed)!\n\r");
-				mob.setUserInfo("","",Calendar.getInstance());
+				mob.setUserInfo("","");
 			}
 			else
 			if(mob.session().confirm("\n\r'"+nameFixer(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
@@ -163,7 +163,7 @@ public class FrontDoor
 					if(password.length()==0)
 						mob.session().println("\n\rYou must enter a password to continue.");
 				}
-				mob.setUserInfo(login,password,Calendar.getInstance());
+				mob.setUserInfo(login,password);
 				Log.sysOut("FrontDoor","Creating user: "+mob.name());
 
 				mob.session().setTermID(0);
@@ -378,7 +378,6 @@ public class FrontDoor
 					mob.setAlignment(500);
 					break;
 				}
-
 				mob.bringToLife(mob.location(),true);
 				ExternalPlay.DBCreateCharacter(mob);
 				if(CMMap.MOBs.get(mob.ID())==null)
@@ -391,5 +390,31 @@ public class FrontDoor
 		}
 		mob.session().println("\n\r");
 		return true;
+	}
+	
+	public void showTheNews(MOB mob)
+	{
+		StringBuffer buf=new StringBuffer("");
+		Vector journal=ExternalPlay.DBReadJournal("CoffeeMud News");
+		for(int which=0;which<journal.size();which++)
+		{
+			Vector entry=(Vector)journal.elementAt(which);
+			String from=(String)entry.elementAt(1);
+			long last=Util.s_long((String)entry.elementAt(2));
+			String to=(String)entry.elementAt(3);
+			String subject=(String)entry.elementAt(4);
+			String message=(String)entry.elementAt(5);
+			boolean mineAble=to.equalsIgnoreCase(mob.name())||from.equalsIgnoreCase(mob.name());
+			IQCalendar C=IQCalendar.getIQInstance();
+			C.setTimeInMillis(last);
+			if((C.after(mob.lastDateTime()))
+			&&(to.equals("ALL")||mineAble))
+			{
+				buf.append("\n\r--------------------------------------\n\r");
+				buf.append("\n\rNews: "+C.d2String()+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+			}
+		}
+		if((!mob.isMonster())&&(buf.length()>0))
+			mob.session().unfilteredPrintln(buf.toString()+"\n\r--------------------------------------\n\r");
 	}
 }

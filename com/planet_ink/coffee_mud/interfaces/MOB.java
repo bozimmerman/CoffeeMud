@@ -22,12 +22,15 @@ public interface MOB
 	public static final int ATT_NOFOLLOW=512;
 	public static final int ATT_AUTOWEATHER=1024;
 	
-	/** When the USER last logged on */
+	/** When the USER last logged off */
 	public Calendar lastDateTime();
+	public Calendar lastUpdated();
+	public void setUpdated();
+	public void setLastDateTime(Calendar C);
 	/** User PASSWORD */
 	public String password();
 	/** update USER information */
-	public void setUserInfo(String newUsername, String newPassword, Calendar newCalendar);
+	public void setUserInfo(String newUsername, String newPassword);
 	public void setChannelMask(int newMask);
 	public int getChannelMask();
 	public int getBitmap();

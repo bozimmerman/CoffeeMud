@@ -222,7 +222,7 @@ public class SaveThread extends Thread
 						processed++;
 					}
 					else
-					if(mob.lastDateTime().after(Calendar.getInstance()))
+					if((mob.lastUpdated()==null)||(mob.lastUpdated().before(mob.lastDateTime())))
 					{
 						MOBloader.DBUpdate(mob);
 						processed++;

@@ -111,7 +111,7 @@ public class BasicSenses
 			mob.tell("Change your password to what?");
 			return;
 		}
-		mob.setUserInfo(mob.name(),Util.combine(commands,1),mob.lastDateTime());
+		mob.setUserInfo(mob.name(),Util.combine(commands,1));
 		mob.tell("Your password has been changed.");
 	}
 

@@ -39,6 +39,6 @@ public class LocateQueryPacket extends Packet {
     public String toString() {
         return "({\"locate-req\",5,\"" + Server.getMudName() +
                "\", \"" + sender_name + "\",0,0,\"" +
-               user_name + "\",})";
+               user_name + "\"})";
     }
 }

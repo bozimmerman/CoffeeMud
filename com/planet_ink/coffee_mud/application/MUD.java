@@ -23,7 +23,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)7.0;
+	public static final float HOST_VERSION_MINOR=(float)7.1;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -314,7 +314,7 @@ public class MUD extends Thread implements Host
 		
 		System.out.println();
 		Log.sysOut("MUD",getVer());
-		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
+		Log.sysOut("MUD","(C) 2000-2003 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		
 		if ((page == null) || (!page.loaded))

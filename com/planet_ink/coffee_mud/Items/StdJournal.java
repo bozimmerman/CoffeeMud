@@ -48,7 +48,8 @@ public class StdJournal extends StdItem
 				int which=-1;
 				if(Util.s_long(affect.targetMessage())>0)
 					which=Util.s_int(affect.targetMessage());
-				StringBuffer entry=DBRead(name(),mob.name(),which-1,Util.s_long(readableText().trim()));
+				long lastTime=mob.lastDateTime().getTimeInMillis();
+				StringBuffer entry=DBRead(name(),mob.name(),which-1,lastTime);
 				boolean mineAble=false;
 				if(entry.charAt(0)=='#')
 				{
@@ -61,7 +62,6 @@ public class StdJournal extends StdItem
 					entry.setCharAt(0,' ');
 				}
 				mob.tell(entry.toString()+"\n\r");
-				setReadableText(IQCalendar.getInstance().getTime().getTime()+"");
 				if((entry.toString().trim().length()>0)&&(which>0))
 				{
 					try

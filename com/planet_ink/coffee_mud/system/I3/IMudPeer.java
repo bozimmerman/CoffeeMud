@@ -28,7 +28,6 @@ public class IMudPeer implements PersistentPeer
 			try{
 				if(myobj instanceof Intermud)
 				{
-					
 					((Intermud)myobj).password=Util.s_int(buf.toString());
 					/*
 					ByteArrayInputStream byin=new ByteArrayInputStream(buf.toString().getBytes());

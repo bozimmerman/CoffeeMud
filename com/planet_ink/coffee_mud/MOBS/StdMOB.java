@@ -8,6 +8,7 @@ public class StdMOB implements MOB
 	protected String Username="";
 	protected String Password="";
 	protected Calendar LastDateTime=Calendar.getInstance();
+	protected Calendar lastUpdated=null;
 	protected int channelMask;
 
 	protected int termID = 0;	//0:plain, 1:ansi
@@ -262,14 +263,15 @@ public class StdMOB implements MOB
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
 
+	public Calendar lastUpdated(){return lastUpdated;}
+	public void setUpdated(){lastUpdated=Calendar.getInstance();}
 	public Calendar lastDateTime(){return LastDateTime;}
+	public void setLastDateTime(Calendar C){ LastDateTime=C;}
 	public void setUserInfo(String newUsername,
-							String newPassword,
-							Calendar newCalendar)
+							String newPassword)
 	{
 		Username=newUsername;
 		Password=newPassword;
-		LastDateTime=newCalendar.getInstance();
 	}
 
 	public int maxCarry()
@@ -390,7 +392,6 @@ public class StdMOB implements MOB
 		}
 		if(!isMonster())
 			session().setKillFlag(true);
-		LastDateTime=Calendar.getInstance();
 	}
 
 	public MOB replyTo()

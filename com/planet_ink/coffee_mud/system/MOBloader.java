@@ -50,9 +50,11 @@ public class MOBloader
 				mob.setQuestPoint(Util.s_int(DBConnections.getRes(R,"CMQUES")));
 				mob.setStartRoom(CMMap.getRoom(DBConnections.getRes(R,"CMROID")));
 				Calendar lastDateTime=(Calendar)new IQCalendar();
-				lastDateTime=(Calendar)IQCalendar.string2Date(DBConnections.getRes(R,"CMDATE"));
+				String dateTimeStr=DBConnections.getRes(R,"CMDATE");
+				lastDateTime=(Calendar)IQCalendar.string2Date(dateTimeStr);
+				mob.setLastDateTime(lastDateTime);
 				mob.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
-				mob.setUserInfo(username,password,mob.lastDateTime());
+				mob.setUserInfo(username,password);
 				mob.baseEnvStats().setAttackAdjustment(Util.s_int(DBConnections.getRes(R,"CMATTA")));
 				mob.baseEnvStats().setArmor(Util.s_int(DBConnections.getRes(R,"CMAMOR")));
 				mob.baseEnvStats().setDamage(Util.s_int(DBConnections.getRes(R,"CMDAMG")));
@@ -399,6 +401,7 @@ public class MOBloader
 		}
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);
+		mob.setUpdated();
 	}
 	private static void DBUpdateContents(MOB mob, Vector V)
 	{
@@ -631,7 +634,7 @@ public class MOBloader
 	{
 		DBConnection D=null;
 		boolean returnable=false;
-		if(mob!=null) mob.setUserInfo("","",Calendar.getInstance());
+		if(mob!=null) mob.setUserInfo("","");
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -647,7 +650,7 @@ public class MOBloader
 					{
 						String password=DBConnector.getRes(R,"CMPASS");
 						Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
-						mob.setUserInfo(username,password,newCalendar);
+						mob.setUserInfo(username,password);
 					}
 					break;
 				}

@@ -523,7 +523,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.VER:
 					mob.tell(myHost.getVer());
-					mob.tell("(C) 2000-2002 Bo Zimmerman");
+					mob.tell("(C) 2000-2003 Bo Zimmerman");
 					mob.tell("bo@zimmers.net");
 					mob.tell("http://www.zimmers.net/home/mud.html");
 					break;

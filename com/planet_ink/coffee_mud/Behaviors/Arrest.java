@@ -537,7 +537,7 @@ public class Arrest extends StdBehavior
 						{
 							if(W.criminal.isASysOp(W.criminal.location()))
 							{
-								ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"Damn, I can't arrest you.",false,false);
+								ExternalPlay.quickSay(officer,W.criminal,"Damn, I can't arrest you.",false,false);
 								if(W.criminal.isASysOp(null))
 									setFree(W.criminal);
 							}

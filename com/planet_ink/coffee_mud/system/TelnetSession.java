@@ -1205,6 +1205,7 @@ public class TelnetSession extends Thread implements Session
 		status=Session.STATUS_LOGOUT4;
 		if(mob!=null)
 		{
+			mob.setLastDateTime(Calendar.getInstance());
 			Log.sysOut("Session","logout: "+mob.name());
 			mob.destroy();
 			mob.setSession(null);
