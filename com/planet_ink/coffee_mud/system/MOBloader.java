@@ -610,10 +610,12 @@ public class MOBloader
 	}
 	private static void DBUpdateContents(MOB mob, Vector V)
 	{
+		Vector done=new Vector();
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item thisItem=mob.fetchInventory(i);
 			if((thisItem!=null)
+			&&(!done.contains(thisItem))
 			&&(thisItem.savable()))
 			{
 				String
@@ -641,6 +643,7 @@ public class MOBloader
 				+thisItem.baseEnvStats().height()+")";
 				if(!V.contains(str))
 					V.addElement(str);
+				done.addElement(thisItem);
 			}
 		}
 	}

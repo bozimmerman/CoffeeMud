@@ -1,3 +1,5 @@
 GAES still isn't done
 Corky is too low level.
 Add instrument stuff to the command-line editor, and wear location.
+you can fire someone else's hirelings
+I bought remove curse from the healer, and it didn't show me that he cast it. I received the benefit, though
