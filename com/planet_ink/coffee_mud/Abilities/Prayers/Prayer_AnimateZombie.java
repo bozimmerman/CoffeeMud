@@ -80,6 +80,8 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				newMOB.addNonUninvokableAffect(CMClass.getAbility("Spell_CauseStink"));
+				Behavior B=CMClass.getBehavior("Aggressive");
+				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();

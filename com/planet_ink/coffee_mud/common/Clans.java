@@ -218,14 +218,17 @@ public class Clans implements Clan, Tickable
 		case Clan.POS_MEMBER:
 			roleName.append(roles[1].toLowerCase());
 			break;
-		case Clan.POS_TREASURER:
+		case Clan.POS_ENCHANTER:
 			roleName.append(roles[3].toLowerCase());
 			break;
-		case Clan.POS_LEADER:
+		case Clan.POS_TREASURER:
 			roleName.append(roles[4].toLowerCase());
 			break;
-		case Clan.POS_BOSS:
+		case Clan.POS_LEADER:
 			roleName.append(roles[5].toLowerCase());
+			break;
+		case Clan.POS_BOSS:
+			roleName.append(roles[6].toLowerCase());
 			break;
 		default:
 			roleName.append("member");
@@ -328,6 +331,7 @@ public class Clans implements Clan, Tickable
 		msg.append("^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+":^.^N "+crewList(Clan.POS_BOSS)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_LEADER,true,true),16)+":^.^N "+crewList(Clan.POS_LEADER)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_TREASURER,true,true),16)+":^.^N "+crewList(Clan.POS_TREASURER)+"\n\r"
+		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_ENCHANTER,true,true),16)+":^.^N "+crewList(Clan.POS_ENCHANTER)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_STAFF,true,true),16)+":^.^N "+crewList(Clan.POS_STAFF)+"\n\r"
 		          +"^xTotal Members   :^.^N "+getSize()+"\n\r");
 		if(all.size()>1)
@@ -429,9 +433,9 @@ public class Clans implements Clan, Tickable
 			case FUNC_CLANDEPOSITLIST:
 				return ((role==Clan.POS_BOSS)||(role==Clan.POS_TREASURER))?1:-1;
 			case FUNC_CLANCANORDERUNDERLINGS:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_STAFF))?1:-1;
 			case FUNC_CLANCANORDERCONQUERED:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
 			case FUNC_CLANVOTEASSIGN:
 				return (role==Clan.POS_BOSS)?1:-1;
 			case FUNC_CLANVOTEOTHER:
@@ -466,13 +470,13 @@ public class Clans implements Clan, Tickable
 			case FUNC_CLANWITHDRAW:
 				return (role==Clan.POS_TREASURER)?1:-1;
 			case FUNC_CLANDEPOSITLIST:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
 			case FUNC_CLANCANORDERUNDERLINGS:
 				return -1;
 			case FUNC_CLANCANORDERCONQUERED:
 				return (role==Clan.POS_STAFF)?1:-1;
 			case FUNC_CLANVOTEASSIGN:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
 			case FUNC_CLANVOTEOTHER:
 				return (role==Clan.POS_BOSS)?1:-1;
 			}
@@ -505,15 +509,15 @@ public class Clans implements Clan, Tickable
 			case FUNC_CLANWITHDRAW:
 				return (role==Clan.POS_TREASURER)?1:-1;
 			case FUNC_CLANDEPOSITLIST:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
 			case FUNC_CLANCANORDERUNDERLINGS:
 				return -1;
 			case FUNC_CLANCANORDERCONQUERED:
 				return (role==Clan.POS_STAFF)?1:-1;
 			case FUNC_CLANVOTEASSIGN:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
 			case FUNC_CLANVOTEOTHER:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_LEADER)||(role==Clan.POS_TREASURER)||(role==Clan.POS_STAFF)||(role==Clan.POS_MEMBER))?1:-1;
 			}
 		}
 		else
@@ -548,7 +552,7 @@ public class Clans implements Clan, Tickable
 			case FUNC_CLANCANORDERUNDERLINGS:
 				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER))?1:-1;
 			case FUNC_CLANCANORDERCONQUERED:
-				return ((role==Clan.POS_BOSS)||(role==Clan.POS_LEADER)||(role==Clan.POS_STAFF)||(role==Clan.POS_TREASURER))?1:-1;
+				return ((role==Clan.POS_BOSS)||(role==Clan.POS_ENCHANTER)||(role==Clan.POS_LEADER)||(role==Clan.POS_STAFF)||(role==Clan.POS_TREASURER))?1:-1;
 			case FUNC_CLANVOTEASSIGN:
 				return -1;
 			case FUNC_CLANVOTEOTHER:

@@ -25,9 +25,10 @@ public interface Clan extends Cloneable, Tickable
 	public static final int POS_APPLICANT=0;
 	public static final int POS_MEMBER=1;
 	public static final int POS_STAFF=2;
-	public static final int POS_TREASURER=4;
-	public static final int POS_LEADER=8;
-	public static final int POS_BOSS=16;
+	public static final int POS_ENCHANTER=4;
+	public static final int POS_TREASURER=8;
+	public static final int POS_LEADER=16;
+	public static final int POS_BOSS=32;
 
 	public static final int CLANSTATUS_ACTIVE=0;
 	public static final int CLANSTATUS_PENDING=1;
@@ -77,17 +78,17 @@ public interface Clan extends Cloneable, Tickable
 	
 	
 	public static final String[][] ROL_DESCS={
-		{"APPLICANT","MEMBER","STAFF","TREASURER","LEADER","BOSS"},
-		{"APPLICANT","MEMBER","CHIEF","TREASURER","SECRETARY","GUILDMASTER"},
-		{"APPLICANT","CITIZEN","SHERIFF","TREASURER","SECRETARY","SENATOR"},
-		{"APPLICANT","CITIZEN","SOLDIER","TREASURER","MANAGER","FIRST CITIZEN"}
+		{"APPLICANT","MEMBER","STAFF","ENCHANTER","TREASURER","LEADER","BOSS"},
+		{"APPLICANT","MEMBER","CHIEF","ENCHANTER","TREASURER","SECRETARY","GUILDMASTER"},
+		{"APPLICANT","CITIZEN","SHERIFF","ENCHANTER","TREASURER","SECRETARY","SENATOR"},
+		{"APPLICANT","CITIZEN","SOLDIER","ENCHANTER","TREASURER","MANAGER","FIRST CITIZEN"}
 	};
 	public static final int maxint=Integer.MAX_VALUE;
 	public static final int[][] ROL_MAX={
-		{maxint,maxint,maxint,1,maxint,1},
-		{maxint,maxint,maxint,1,maxint,5},
-		{maxint,maxint,maxint,1,1,5},
-		{maxint,maxint,maxint,maxint,maxint,1}
+		{maxint,maxint,maxint,1,1,maxint,1},
+		{maxint,maxint,maxint,1,1,maxint,5},
+		{maxint,maxint,maxint,1,1,1,5},
+		{maxint,maxint,maxint,maxint,maxint,maxint,1}
 	};
 	
 	public static final int TYPE_CLAN=1;

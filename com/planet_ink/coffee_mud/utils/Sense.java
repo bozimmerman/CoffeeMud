@@ -282,7 +282,11 @@ public class Sense
 			Say.append(" (^Wbound^?)");
 		if(isFlying(seen))
 			Say.append(" (^pflying^?)");
-		if(isFalling(seen))
+		if((isFalling(seen))
+		&&((!(seen instanceof MOB))
+		   ||(((MOB)seen).location()==null)
+		   ||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+			  &&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
 			Say.append(" (^pfalling^?)");
 		if((isGlowing(seen))&&(seen instanceof Item))
 			Say.append(" (^gglowing^?)");

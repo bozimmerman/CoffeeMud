@@ -80,14 +80,15 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 				newMOB.baseState().setMana(100);
+				Behavior B=CMClass.getBehavior("Aggressive");
+				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.addAbility(CMClass.getAbility("Undead_WeakEnergyDrain"));
-				Behavior B=CMClass.getBehavior("CombatAbilities");
+				B=CMClass.getBehavior("CombatAbilities");
 				newMOB.addBehavior(B);
-				B.startBehavior(newMOB);
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");

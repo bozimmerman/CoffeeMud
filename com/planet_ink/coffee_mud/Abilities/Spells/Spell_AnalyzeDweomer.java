@@ -72,6 +72,10 @@ public class Spell_AnalyzeDweomer extends Spell
 					Weapon w=(Weapon)target;
 					str.append("It is a "+Weapon.classifictionDescription[w.weaponClassification()].toLowerCase()+" weapon.  ");
 					str.append("It does "+Weapon.typeDescription[w.weaponType()].toLowerCase()+" damage.  ");
+					if(w.minRange()>0)
+						str.append("It has a minimum range of "+w.minRange()+".  ");
+					if(w.maxRange()>w.minRange())
+						str.append("It has a maximum range of "+w.maxRange()+".  ");
 				}
 				str.append("It is made of "+EnvResource.RESOURCE_DESCS[target.material()&EnvResource.RESOURCE_MASK].toLowerCase()+"  ");
 				if(mob.isMonster())

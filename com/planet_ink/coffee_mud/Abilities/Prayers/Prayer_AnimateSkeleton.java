@@ -72,6 +72,8 @@ public class Prayer_AnimateSkeleton extends Prayer
 				newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 				newMOB.baseState().setMana(0);
+				Behavior B=CMClass.getBehavior("Aggressive");
+				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();

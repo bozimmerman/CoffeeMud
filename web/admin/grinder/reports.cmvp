@@ -38,6 +38,9 @@ That object has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topObjectMillisTimePlu
 <FONT COLOR=#CCFFFF><B>Save Thread report:</B></FONT><BR>
 The Save Thread has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?saveThreadMilliTotalTimePlusAverage@</FONT> (@SystemInfo?saveThreadStatus@).<BR>
 <BR>
+<FONT COLOR=#CCFFFF><B>Utility Thread report:</B></FONT><BR>
+The Utility Thread has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?utilThreadMilliTotalTimePlusAverage@</FONT> (@SystemInfo?utilThreadStatus@).<BR>
+<BR>
 <FONT COLOR=#CCFFFF><B>Session report:</B></FONT><BR>
 There are <FONT COLOR=#CCFFFF>@NumPlayers?ALL@</FONT> ticking players logged on.<BR>
 The ticking players have consumed: <FONT COLOR=#CCFFFF>@SystemInfo?totalMOBMillisTimePlusAverage@</FONT>.<BR>

@@ -14,82 +14,101 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-public class Spell_BaseClanEq extends Spell {
-  public String ID() { return "Spell_BaseClanEq"; }
-  public String name(){return "Enchant Clan Equipment Base Model";}
-  protected int canTargetCode(){return CAN_ITEMS;}
-  public Environmental newInstance(){	return new Spell_BaseClanEq();}
-  public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-  protected int overrideMana(){return Integer.MAX_VALUE;}
+public class Spell_BaseClanEq extends Spell 
+{
+	public String ID() { return "Spell_BaseClanEq"; }
+	public String name(){return "Enchant Clan Equipment Base Model";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_BaseClanEq();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
-  {
-    if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
-    {
-            mob.tell("You aren't even a member of a clan.");
-            return false;
-    }
-    Clan C=Clans.getClan(mob.getClanID());
-    String ClanName="";
-    String ClanType="";
-    if(C!=null) {
-      ClanName = C.ID();
-      ClanType = C.typeName();
-    }
-    else
-    {  // I'll just have it set to Some Unknown Clan, though I don't see how it'd get here
-      ClanName = "Unknown Clan";
-      ClanType = "Some";
-    }
-    // Invoking will be like:
-    //   CAST [CLANEQSPELL] ITEM QUANTITY
-    //   -2   -1            0    1
-    if(commands.size()<1)
-    {
-      mob.tell("Enchant which spell onto what?");
-      return false;
-    }
-    if(commands.size()<2)
-    {
-      mob.tell("Use how much clan enchantment power?");
-      return false;
-    }
-    Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Item.WORN_REQ_UNWORNONLY);
-    if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
-    {
-            mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
-            return false;
-    }
-    // Add clan power check start
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		{
+			mob.tell("You aren't even a member of a clan.");
+			return false;
+		}
+		Clan C=Clans.getClan(mob.getClanID());
+		if(C==null)
+		{
+			mob.tell("You aren't even a member of a clan.");
+			return false;
+		}
+		if(mob.getClanRole()!=Clan.POS_ENCHANTER)
+		{
+			mob.tell("You must be assigned to enchanter to draw from the power of your "+C.typeName()+".");
+			return false;
+		}
+		String ClanName=C.ID();
+		String ClanType=C.typeName();
 
-    // Add clan power check end
+		// Invoking will be like:
+		//   CAST [CLANEQSPELL] ITEM QUANTITY
+		//   -2   -1            0    1
+		if(commands.size()<1)
+		{
+			mob.tell("Enchant which spell onto what?");
+			return false;
+		}
+		if(commands.size()<2)
+		{
+			mob.tell("Use how much clan enchantment power?");
+			return false;
+		}
+		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Item.WORN_REQ_UNWORNONLY);
+		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		{
+		    mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
+		    return false;
+		}
+		// Add clan power check start
+		int points=Util.s_int((String)commands.elementAt(1));
+		if(points<=0)
+		{
+			mob.tell("You need to use at least 1 enchantment point.");
+			return false;
+		}
+		long exp=points*CommonStrings.getIntVar(CommonStrings.SYSTEMI_CLANENCHCOST);
+		if(C.getExp()<exp)
+		{
+			mob.tell("You need "+exp+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
+			return false;
+		}
 
-    // lose all the mana!
-    if(!super.invoke(mob,commands,givenTarget,auto))
-            return false;
+		// Add clan power check end
 
-          boolean success=profficiencyCheck(0,auto);
+		// lose all the mana!
+		if(!super.invoke(mob,commands,givenTarget,auto))
+		    return false;
 
-          if(success)
-          {
-            FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely.^?");
-            if (mob.location().okAffect(mob, msg)) {
-              mob.location().send(mob, msg);
-              Ability A=CMClass.getAbility("Prop_ClanEquipment");
-              StringBuffer str=new StringBuffer("");
-              str.append(((String)commands.elementAt(2)).toUpperCase()); // Type of Enchantment
-              str.append(" ");
-              str.append((String)commands.elementAt(1));     // Power of Enchantment
-              str.append(" ");
-              str.append(ClanName);                          // Clan Name
-              str.append(" ");
-              str.append(ClanType);                          // Clan Type
-              A.setMiscText(str.toString());
-              target.addAffect(A);
-            }
-          }
-          else
-            beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely, and looking very frustrated.");
-    return success;
-  }
+		boolean success=profficiencyCheck(0,auto);
+
+		C.setExp(C.getExp()-exp);
+		C.update();
+		
+		if(success)
+		{
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely.^?");
+			if (mob.location().okAffect(mob, msg)) 
+			{
+				mob.location().send(mob, msg);
+				Ability A=CMClass.getAbility("Prop_ClanEquipment");
+				StringBuffer str=new StringBuffer("");
+				str.append(((String)commands.elementAt(2)).toUpperCase()); // Type of Enchantment
+				str.append(" ");
+				str.append(""+points);     // Power of Enchantment
+				str.append(" ");
+				str.append(ClanName);                          // Clan Name
+				str.append(" ");
+				str.append(ClanType);                          // Clan Type
+				A.setMiscText(str.toString());
+				target.addAffect(A);
+			}
+		}
+		else
+			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting intensely, and looking very frustrated.");
+		return success;
+	}
 }

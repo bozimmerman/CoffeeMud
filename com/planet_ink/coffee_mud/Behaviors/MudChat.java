@@ -351,7 +351,9 @@ public class MudChat extends StdBehavior
 		&&(!mob.isMonster())
 		&&(Sense.canBeHeardBy(mob,monster))
 		&&(Sense.canBeSeenBy(mob,monster))
-		&&(Sense.canBeSeenBy(monster,mob)))
+		&&(Sense.canBeSeenBy(monster,mob))
+		&&(!mob.isInCombat())
+		&&(!monster.isInCombat()))
 		{
 			Vector myResponses=null;
 			myChatGroup=getMyChatGroup(monster,getChatGroups());

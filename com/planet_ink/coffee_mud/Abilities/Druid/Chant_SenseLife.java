@@ -28,6 +28,18 @@ public class Chant_SenseLife extends Chant
 		}
 	}
 
+	public boolean inhabitated(MOB mob, Room R)
+	{
+		if(R==null) return false;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if((M!=null)&&(!Sense.isGolem(M))&&(M!=mob))
+				return true;
+		}
+		return false;
+	}
+	
 	public void messageTo(MOB mob)
 	{
 		String last="";
@@ -36,17 +48,14 @@ public class Chant_SenseLife extends Chant
 		{
 			Room R=mob.location().getRoomInDir(d);
 			Exit E=mob.location().getExitInDir(d);
-			if((R!=null)&&(E!=null))
+			if((R!=null)&&(E!=null)&&(inhabitated(mob,R)))
 			{
-				if(R.numInhabitants()>0)
-				{
-					if(last.length()>0)
-						dirs+=", "+last;
-					last=Directions.getFromDirectionName(d);
-				}
+				if(last.length()>0)
+					dirs+=", "+last;
+				last=Directions.getFromDirectionName(d);
 			}
 		}
-		if(mob.location().numInhabitants()>1)
+		if(inhabitated(mob,mob.location()))
 		{
 			if(last.length()>0)
 				dirs+=", "+last;

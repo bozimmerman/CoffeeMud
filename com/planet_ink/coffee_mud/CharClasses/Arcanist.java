@@ -35,6 +35,18 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_ReadMagic",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
 			
+			// clan magic
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqAcid",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqCold",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqElectric",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqFire",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqGas",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqMind",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqParalysis",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqPoison",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqWater",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqDisease",0,"",false,true);
+			
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Erase",false);
 			

@@ -86,7 +86,8 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.addAbility(CMClass.getAbility("Disease_MummyRot"));
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				newMOB.addBehavior(B);
-				B.startBehavior(newMOB);
+				B=CMClass.getBehavior("Aggressive");
+				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");

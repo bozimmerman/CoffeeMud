@@ -73,6 +73,7 @@ public class Arrest extends StdBehavior
 		public int state=-1;
 		public int offenses=0;
 		public long lastOffense=0;
+		public long travelAttemptTime=0;
 		public String warnMsg=null;
 		public void setArrestingOfficer(MOB mob)
 		{
@@ -1225,6 +1226,7 @@ public class Arrest extends StdBehavior
 						   officer=null;
 						if(officer==null)
 							officer=getElligibleOfficer(myArea,W.criminal,W.victim);
+						W.travelAttemptTime=0;
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
@@ -1264,6 +1266,7 @@ public class Arrest extends StdBehavior
 				case STATE_ARRESTING:
 					{
 						MOB officer=W.arrestingOfficer;
+						W.travelAttemptTime=0;
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
@@ -1321,6 +1324,7 @@ public class Arrest extends StdBehavior
 						&&(Sense.aliveAwakeMobile(officer,true))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
+							W.travelAttemptTime=0;
 							if((W.criminal.isMonster())
 							&&(!Sense.isEvil(W.criminal))
 							&&(!Sense.isSitting(W.criminal)))
@@ -1372,12 +1376,17 @@ public class Arrest extends StdBehavior
 								makePeace(officer.location());
 								ExternalPlay.standIfNecessary(W.criminal);
 								A=CMClass.getAbility("Skill_Track");
-								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
+								if(A!=null)
+								{	
+									A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
+									W.travelAttemptTime=System.currentTimeMillis();
+								}
 								makePeace(officer.location());
 							}
 						}
 						else
 						{
+							W.travelAttemptTime=0;
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
@@ -1392,6 +1401,7 @@ public class Arrest extends StdBehavior
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
 						&&(!W.crime.equalsIgnoreCase("pardoned"))
+						&&((W.travelAttemptTime==0)||((System.currentTimeMillis()-W.travelAttemptTime)<(5*60*1000)))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
 							if(W.criminal.curState().getMovement()<50)
@@ -1415,6 +1425,7 @@ public class Arrest extends StdBehavior
 						}
 						else
 						{
+							W.travelAttemptTime=0;
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
@@ -1442,7 +1453,7 @@ public class Arrest extends StdBehavior
 							else
 							if(Sense.aliveAwakeMobile(judge,true))
 							{
-
+								W.travelAttemptTime=0;
 								String sirmaam="Sir";
 								if(Character.toString((char)judge.charStats().getStat(CharStats.GENDER)).equalsIgnoreCase("F"))
 									sirmaam="Ma'am";
@@ -1457,6 +1468,7 @@ public class Arrest extends StdBehavior
 							}
 							else
 							{
+								W.travelAttemptTime=0;
 								unCuff(W.criminal);
 								W.setArrestingOfficer(null);
 								W.state=STATE_SEEKING;
@@ -1464,6 +1476,7 @@ public class Arrest extends StdBehavior
 						}
 						else
 						{
+							W.travelAttemptTime=0;
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
@@ -1493,6 +1506,7 @@ public class Arrest extends StdBehavior
 							{
 								if(judgeMe(judge,officer,W.criminal,W))
 								{
+									W.travelAttemptTime=0;
 									unCuff(W.criminal);
 									dismissOfficer(officer);
 									setFree(W.criminal);
@@ -1502,6 +1516,7 @@ public class Arrest extends StdBehavior
 							}
 							else
 							{
+								W.travelAttemptTime=0;
 								unCuff(W.criminal);
 								W.setArrestingOfficer(null);
 								W.state=STATE_SEEKING;
@@ -1509,6 +1524,7 @@ public class Arrest extends StdBehavior
 						}
 						else
 						{
+							W.travelAttemptTime=0;
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
@@ -1517,6 +1533,7 @@ public class Arrest extends StdBehavior
 					break;
 				case STATE_PAROLING:
 					{
+						W.travelAttemptTime=0;
 						MOB officer=W.arrestingOfficer;
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
@@ -1586,6 +1603,7 @@ public class Arrest extends StdBehavior
 									A=CMClass.getAbility("Skill_Track");
 									if(A!=null)
 									{
+										W.travelAttemptTime=System.currentTimeMillis();
 										A.setAbilityCode(1);
 										A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true);
 									}
@@ -1593,6 +1611,7 @@ public class Arrest extends StdBehavior
 								}
 								else
 								{
+									W.travelAttemptTime=0;
 									setFree(W.criminal);
 									ExternalPlay.quickSay(judge,W.criminal,"But since there IS no jail, I will let you go.",false,false);
 									dismissOfficer(officer);
@@ -1602,6 +1621,7 @@ public class Arrest extends StdBehavior
 							else
 							{
 								unCuff(W.criminal);
+								W.travelAttemptTime=0;
 								if(W.arrestingOfficer!=null)
 									dismissOfficer(W.arrestingOfficer);
 								W.setArrestingOfficer(null);
@@ -1613,6 +1633,7 @@ public class Arrest extends StdBehavior
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
+							W.travelAttemptTime=0;
 						}
 					}
 					break;
@@ -1637,9 +1658,11 @@ public class Arrest extends StdBehavior
 								W.criminal.recoverCharStats();
 								ExternalPlay.postAttack(judge,W.criminal,judge.fetchWieldedItem());
 								W.setArrestingOfficer(null);
+								W.travelAttemptTime=0;
 							}
 							else
 							{
+								W.travelAttemptTime=0;
 								unCuff(W.criminal);
 								if(W.arrestingOfficer!=null)
 									dismissOfficer(W.arrestingOfficer);
@@ -1649,6 +1672,7 @@ public class Arrest extends StdBehavior
 						}
 						else
 						{
+							W.travelAttemptTime=0;
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
@@ -1661,6 +1685,7 @@ public class Arrest extends StdBehavior
 						if((officer!=null)
 						&&(W.criminal.location().isInhabitant(officer))
 						&&(W.criminal.location().isInhabitant(W.criminal))
+						&&((W.travelAttemptTime==0)||((System.currentTimeMillis()-W.travelAttemptTime)<(5*60*1000)))
 						&&(Sense.aliveAwakeMobile(officer,true))
 						&&(W.jail!=null))
 						{
@@ -1702,6 +1727,7 @@ public class Arrest extends StdBehavior
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
+							W.travelAttemptTime=0;
 						}
 					}
 					break;
@@ -1741,7 +1767,10 @@ public class Arrest extends StdBehavior
 								W.criminal.makePeace();
 								makePeace(officer.location());
 								Ability A=CMClass.getAbility("Skill_Track");
-								if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom)),W.releaseRoom,true);
+								if(A!=null){
+									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom)),W.releaseRoom,true);
+									W.travelAttemptTime=System.currentTimeMillis();
+								}
 							}
 							else
 							if(W.releaseRoom!=null)
@@ -1758,12 +1787,14 @@ public class Arrest extends StdBehavior
 											ExternalPlay.quickSay(officer,null,(String)laws.get("LAWFREE"),false,false);
 										dismissOfficer(officer);
 									}
+									W.travelAttemptTime=0;
 								}
 								else
 								{
 									if((officer!=null)
 									&&(Sense.aliveAwakeMobile(officer,true))
-									&&(W.criminal.location().isInhabitant(officer)))
+									&&(W.criminal.location().isInhabitant(officer))
+									&&((W.travelAttemptTime==0)||((System.currentTimeMillis()-W.travelAttemptTime)<(5*60*1000))))
 									{
 										ExternalPlay.look(officer,null,true);
 										if(W.criminal.curState().getMovement()<20)
@@ -1778,6 +1809,7 @@ public class Arrest extends StdBehavior
 									}
 									else
 									{
+										W.travelAttemptTime=0;
 										setFree(W.criminal);
 										if(officer!=null)
 											dismissOfficer(officer);
@@ -1786,6 +1818,7 @@ public class Arrest extends StdBehavior
 							}
 							else
 							{
+								W.travelAttemptTime=0;
 								setFree(W.criminal);
 								if(W.arrestingOfficer!=null)
 									dismissOfficer(W.arrestingOfficer);

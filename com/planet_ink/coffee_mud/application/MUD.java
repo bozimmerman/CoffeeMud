@@ -24,6 +24,7 @@ public class MUD extends Thread implements Host
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
 	public static SaveThread saveThread=null;
+	public static UtiliThread utiliThread=null;
 	public static INI page=null;
 	public static INI webCommon=null;
 	public static Server imserver=null;
@@ -201,6 +202,7 @@ public class MUD extends Thread implements Host
 		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_CLANENCHCOST,page.getStr("CLANENCHCOST"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_FOLLOWLEVELDIFF,page.getStr("FOLLOWLEVELDIFF"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_EXPRATE,page.getStr("EXPRATE"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_SKYSIZE,page.getStr("SKYSIZE"));
@@ -318,7 +320,11 @@ public class MUD extends Thread implements Host
 
 			saveThread=new SaveThread();
 			saveThread.start();
-			Log.sysOut("MUD","Save thread started");
+			
+			utiliThread=new UtiliThread();
+			utiliThread.start();
+			
+			Log.sysOut("MUD","Utility threads started");
 		}
 		catch (Throwable th)
 		{
@@ -503,7 +509,7 @@ public class MUD extends Thread implements Host
 	}
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
-		if(saveThread==null) return;
+		if((saveThread==null)||(utiliThread==null)) return;
 
 		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
 		for(int i=0;i<mudThreads.size();i++)
@@ -522,6 +528,12 @@ public class MUD extends Thread implements Host
 		saveThread.interrupt();
 		saveThread=null;
 		if(S!=null)S.println("Save thread stopped.");
+		offlineReason="Shutting down...Utility Thread";
+		utiliThread.shutdown();
+		utiliThread.interrupt();
+		utiliThread=null;
+		if(S!=null)S.println("Utility thread stopped.");
+		
 
 		offlineReason="Shutting down...IMServer";
 		if(imserver!=null)

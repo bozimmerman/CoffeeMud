@@ -86,7 +86,8 @@ public class Prayer_AnimateGhoul extends Prayer
 				newMOB.addAbility(CMClass.getAbility("WeakParalysis"));
 				Behavior B=CMClass.getBehavior("CombatAbilities");
 				newMOB.addBehavior(B);
-				B.startBehavior(newMOB);
+				B=CMClass.getBehavior("Aggressive");
+				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.addNonUninvokableAffect(CMClass.getAbility("Spell_CauseStink"));
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);

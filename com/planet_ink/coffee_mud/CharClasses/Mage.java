@@ -99,6 +99,17 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_WeaknessGas",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DispelMagic",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_FaerieFire",false);
+			// clan magic
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqAcid",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqCold",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqElectric",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqFire",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqGas",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqMind",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqParalysis",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqPoison",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqWater",0,"",false,true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_CEqDisease",0,"",false,true);
 			// level 6
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_WeaknessAcid",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Augury",false);

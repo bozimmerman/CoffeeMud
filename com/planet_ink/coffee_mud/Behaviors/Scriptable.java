@@ -1221,7 +1221,7 @@ public class Scriptable extends StdBehavior
 					if((R==null)||(R2==null))
 						returnable=false;
 					else
-						returnable=simpleEval(R2.roomID(),R.roomID(),comp,"INROOM");
+						returnable=simpleEval(CMMap.getExtendedRoomID(R2),CMMap.getExtendedRoomID(R),comp,"INROOM");
 				}
 				break;
 			}

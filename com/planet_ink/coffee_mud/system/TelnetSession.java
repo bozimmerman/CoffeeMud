@@ -182,7 +182,6 @@ public class TelnetSession extends Thread implements Session
 			return;
 		synchronized(cmdQ)
 		{
-
 			if((commands.size()>0)&&(commands.elementAt(0) instanceof Integer))
 				commands.removeElementAt(0);
 			commands.insertElementAt(new Integer(tickDown),0);

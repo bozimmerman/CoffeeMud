@@ -85,8 +85,9 @@ public class Prayer_AnimateGhast extends Prayer
 				newMOB.resetToMaxState();
 				newMOB.addAbility(CMClass.getAbility("Paralysis"));
 				Behavior B=CMClass.getBehavior("CombatAbilities");
-				newMOB.addBehavior(B);
-				B.startBehavior(newMOB);
+				if(B!=null) newMOB.addBehavior(B);
+				B=CMClass.getBehavior("Aggressive");
+				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.addNonUninvokableAffect(CMClass.getAbility("Spell_CauseStink"));
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);

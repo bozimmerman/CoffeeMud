@@ -109,7 +109,7 @@ public class SaucerSupport
 									+"-NAMES (<WORD> everyone) <BR>"
 									+"+bob \"+my name\" etc.. (create name exceptions to -names) <BR>"
 									+"+NAMES (do not <WORD> anyone who has a name) <BR>"
-									+"-bob \"-my name\" etc.. (create name exceptions to +names) "
+									+"-bob \"-my name\" etc.. (create name exceptions to +names) <BR>"
 									+"-CLAN (<WORD> anyone, even no clan) <BR>"
 									+"+Killers \"+Holy Avengers\" etc.. (create clan exceptions to -clan) <BR>"
 									+"+CLAN (do not <WORD> anyone, even non clan people) <BR>"

@@ -308,11 +308,26 @@ public class ServiceEngine
 		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTime"))
 			return Util.returnTime(SaveThread.milliTotal,0);
 		else
+		if(itemCode.equalsIgnoreCase("utilThreadMilliTotal"))
+			return ""+UtiliThread.milliTotal;
+		else
+		if(itemCode.equalsIgnoreCase("utilThreadStatus"))
+			return ""+UtiliThread.status;
+		else
+		if(itemCode.equalsIgnoreCase("utilThreadMilliTotalTime"))
+			return Util.returnTime(UtiliThread.milliTotal,0);
+		else
 		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTimePlusAverage"))
 			return Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal);
 		else
 		if(itemCode.equalsIgnoreCase("saveThreadTickTotal"))
 			return ""+SaveThread.tickTotal;
+		else
+		if(itemCode.equalsIgnoreCase("utilThreadMilliTotalTimePlusAverage"))
+			return Util.returnTime(UtiliThread.milliTotal,UtiliThread.tickTotal);
+		else
+		if(itemCode.equalsIgnoreCase("utilThreadTickTotal"))
+			return ""+UtiliThread.tickTotal;
 		else
 		if(itemCode.equalsIgnoreCase("topObjectClient"))
 		{

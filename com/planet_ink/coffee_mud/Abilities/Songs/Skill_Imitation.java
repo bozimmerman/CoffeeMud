@@ -15,7 +15,7 @@ public class Skill_Imitation extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.OK_SELF;}
 	public Environmental newInstance(){	return new Skill_Imitation();}
-	private static final String[] triggerStrings = {"IMMITATE"};
+	private static final String[] triggerStrings = {"IMITATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
@@ -25,6 +25,7 @@ public class Skill_Imitation extends StdAbility
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public Hashtable immitations=new Hashtable();
+	public String[] lastOnes=new String[2];
 
 	public void affect(Environmental myHost, Affect msg)
 	{
@@ -32,15 +33,28 @@ public class Skill_Imitation extends StdAbility
 		if((myHost==null)||(!(myHost instanceof MOB)))
 		   return;
 		MOB mob=(MOB)myHost;
-		if(msg.amISource(mob)&&(msg.tool()!=null)&&(msg.othersMessage()!=null))
+		if(msg.tool()!=null)
 		{
-			if(((msg.tool().ID().equals("Skill_Spellcraft"))
+			if((msg.amISource(mob))
+			&&((msg.tool().ID().equals("Skill_Spellcraft"))
 				||(msg.tool().ID().equals("Skill_Songcraft"))
 				||(msg.tool().ID().equals("Skill_Chantcraft"))
 				||(msg.tool().ID().equals("Skill_Prayercraft")))
+			&&(msg.tool().text().equals(lastOnes[0]))
 			&&(msg.tool().text().length()>0)
-			&&(!immitations.containsKey(msg.tool().name())))
-				immitations.put(msg.tool().name(),msg.othersMessage());
+			&&(!immitations.containsKey(msg.tool().text())))
+			{
+				Ability A=CMClass.getAbility(msg.tool().text());
+				if(A!=null)	immitations.put(A.name(),lastOnes[1]);
+			}
+			else
+			if((msg.tool() instanceof Ability)
+			&&(!msg.amISource(mob))
+			&&(msg.othersMessage()!=null))
+			{
+				lastOnes[0]=msg.tool().ID();
+				lastOnes[1]=msg.othersMessage();
+			}
 		}
 
 	}
@@ -59,8 +73,8 @@ public class Skill_Imitation extends StdAbility
 		}
 		if((cmd.length()==0)||(found==null))
 		{
-			if(found!=null) mob.tell("'"+cmd+"' is not something you know how to immitate.");
-			mob.tell("Spells/Skills you may immitate: "+str.toString()+".");
+			if(found!=null) mob.tell("'"+cmd+"' is not something you know how to imitate.");
+			mob.tell("Spells/Skills you may imitate: "+str.toString()+".");
 			return true;
 		}
 		Environmental target=null;
@@ -88,7 +102,7 @@ public class Skill_Imitation extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to immitate "+found+", but fail(s).");
+			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to imitate "+found+", but fail(s).");
 
 		return success;
 	}
