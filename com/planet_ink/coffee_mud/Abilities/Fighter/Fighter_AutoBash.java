@@ -10,6 +10,8 @@ public class Fighter_AutoBash extends StdAbility
 	public String ID() { return "Fighter_AutoBash"; }
 	public String name(){ return "AutoBash";}
 	public String displayText(){return "";};
+	private static final String[] triggerStrings = {"AUTOBASH"};
+	public String[] triggerStrings(){return triggerStrings;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

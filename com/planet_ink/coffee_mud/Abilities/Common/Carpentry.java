@@ -141,7 +141,12 @@ public class Carpentry extends CommonSkill
 		boolean bundle=false;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Wood required\n\r");
+			StringBuffer buf=new StringBuffer("Item <S-NAME> <S-IS-ARE> skilled at carving:\n\r");
+			int toggler=1;
+			int toggleTop=2;
+			for(int r=0;r<toggleTop;r++)
+				buf.append(Util.padRight("Item",33)+" "+Util.padRight("Wood",4)+" ");
+			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
@@ -151,9 +156,13 @@ public class Carpentry extends CommonSkill
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
-						buf.append(Util.padRight(item,20)+" "+wood+"\n\r");
+					{
+						buf.append(Util.padRight(item,33)+" "+Util.padRight(""+wood,4)+((toggler!=toggleTop)?" ":"\n\r"));
+						if(++toggler>toggleTop) toggler=1;
+					}
 				}
 			}
+			if(toggler!=1) buf.append("\n\r");
 			commonTell(mob,buf.toString());
 			return true;
 		}

@@ -58,6 +58,11 @@ public class Fighter_Charge extends StdAbility
 			mob.tell("You can not charge while in melee!");
 			return false;
 		}
+		if((Sense.isSitting(mob))||(mob.riding()!=null))
+		{
+			mob.tell("You must be on your feet to charge!");
+			return false;
+		}
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

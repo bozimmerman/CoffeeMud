@@ -26,7 +26,7 @@ public class Fighter_ImprovedShieldDefence extends StdAbility
 		Item w=((MOB)affected).fetchFirstWornItem(Item.HELD);
 		if((w==null)||(!(w instanceof Shield))) return;
 		gettingBonus=true;
-		affectableStats.setArmor(affectableStats.armor()+((int)Math.round(Util.mul(affectableStats.armor(),(Util.div(profficiency(),500.0))))));
+		affectableStats.setArmor(affectableStats.armor()+((int)Math.round(Util.mul(w.envStats().armor(),(Util.div(profficiency(),100.0))))));
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
