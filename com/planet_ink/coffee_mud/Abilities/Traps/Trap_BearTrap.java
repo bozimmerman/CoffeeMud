@@ -62,8 +62,8 @@ public class Trap_BearTrap extends StdTrap
 					amountRemaining-=trapped.envStats().level();
 					if(amountRemaining<=0)
 					{
-						trapped=null;
 						trapped.location().show(trapped,null,Affect.MSG_OK_VISUAL,"<S-NAME> pull(s) free of the bear trap.");
+						trapped=null;
 					}
 					else
 						return false;
