@@ -151,9 +151,6 @@ public class MOBloader
 					Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
 				else
 				{
-					newAbility.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMABLVL"));
-					newAbility.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMABAB"));
-					newAbility.setUsesRemaining((int)DBConnections.getLongRes(R,"CMABUR"));
 					newAbility.setProfficiency((int)DBConnections.getLongRes(R,"CMABPF"));
 					newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
 					newAbility.recoverEnvStats();
@@ -565,17 +562,11 @@ public class MOBloader
 				str="INSERT INTO CMCHAB ("
 				+"CMUSERID, "
 				+"CMABID, "
-				+"CMABLVL, "
-				+"CMABAB, "
-				+"CMABUR,"
 				+"CMABPF,"
 				+"CMABTX"
 				+") values ("
 				+"'"+mob.ID()+"',"
 				+"'"+thisAbility.ID()+"',"
-				+thisAbility.baseEnvStats().level()+","
-				+thisAbility.baseEnvStats().ability()+","
-				+thisAbility.usesRemaining()+","
 				+thisAbility.profficiency()+",'"
 				+thisAbility.text()+"'"
 				+")";

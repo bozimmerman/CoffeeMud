@@ -1879,12 +1879,6 @@ public class StdMOB implements MOB
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		int qualifyingLevel=to.qualifyingLevel(this);
-		if((qualifyingLevel>=0)&&(qualifyingLevel!=to.envStats().level()))
-		{
-			to.baseEnvStats().setLevel(qualifyingLevel);
-			to.recoverEnvStats();
-		}
 		abilities.addElement(to);
 	}
 	public void delAbility(Ability to)

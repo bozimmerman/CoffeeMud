@@ -31,7 +31,8 @@ public class Thief_Trap extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(+((mob.envStats().level()-unlockThis.envStats().level()-envStats().level())*3),auto);
+		boolean success=profficiencyCheck(+((mob.envStats().level()
+											 -unlockThis.envStats().level())*3),auto);
 		Trap theTrap=new Trap_Trap().fetchMyTrap(unlockThis);
 		if(theTrap!=null)
 		{
@@ -56,8 +57,7 @@ public class Thief_Trap extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			int rejuv=((30-mob.envStats().level())*30);
-			theTrap.baseEnvStats().setRejuv(rejuv);
-			theTrap.recoverEnvStats();
+			theTrap.setReset(rejuv);
 
 			theTrap.setSprung(false);
 			if(success)

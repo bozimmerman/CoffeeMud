@@ -38,8 +38,7 @@ public class Skill_Attack3 extends StdAbility
 		&&(Dice.rollPercentage()>97)
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
-		&&(affect.target() instanceof MOB)
-		&&(mob.envStats().level()>=envStats().level()))
+		&&(affect.target() instanceof MOB))
 			helpProfficiency(mob);
 	}
 }

@@ -373,11 +373,13 @@ public class Scoring
 		for(int a=0;a<able.numAbilities();a++)
 		{
 			Ability thisAbility=able.fetchAbility(a);
+			int level=thisAbility.qualifyingLevel(able);
+			if(level<0) level=able.envStats().level();
 			if((thisAbility!=null)
-			&&(thisAbility.envStats().level()>highestLevel)
-			&&(thisAbility.envStats().level()<lowestLevel)
+			&&(level>highestLevel)
+			&&(level<lowestLevel)
 			&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
-				highestLevel=thisAbility.envStats().level();
+				highestLevel=level;
 		}
 		for(int l=0;l<=highestLevel;l++)
 		{
@@ -386,8 +388,10 @@ public class Scoring
 			for(int a=0;a<able.numAbilities();a++)
 			{
 				Ability thisAbility=able.fetchAbility(a);
+				int level=thisAbility.qualifyingLevel(able);
+				if(level<0) level=able.envStats().level();
 				if((thisAbility!=null)
-				&&(thisAbility.envStats().level()==l)
+				&&(level==l)
 				&&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
 				{
 					if(thisLine.length()==0)

@@ -643,7 +643,6 @@ public class Spell_Wish extends Spell
 							mob.baseCharStats().getMyClass().unLevel(mob);
 						}
 						A=tm.fetchAbility(A.ID());
-						A.baseEnvStats().setLevel(tm.envStats().level());
 						A.setProfficiency(100);
 						A.autoInvocation(tm);
 						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" now knows "+A.name()+"!");

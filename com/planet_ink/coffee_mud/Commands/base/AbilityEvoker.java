@@ -134,7 +134,7 @@ public class AbilityEvoker
 			mob.tell("You don't know how to do that.");
 			return;
 		}
-		if(evokableAbility.envStats().level()>mob.envStats().level())
+		if(evokableAbility.qualifyingLevel(mob)>mob.envStats().level())
 		{
 			mob.tell("You are not high enough level to do that.");
 			return;

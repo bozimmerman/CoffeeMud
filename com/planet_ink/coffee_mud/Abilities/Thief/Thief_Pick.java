@@ -39,7 +39,8 @@ public class Thief_Pick extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(+((mob.envStats().level()-unlockThis.envStats().level()-envStats().level())*3),auto);
+		boolean success=profficiencyCheck(+((mob.envStats().level()
+											 -unlockThis.envStats().level())*3),auto);
 		
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.name()+" and fail(s).");

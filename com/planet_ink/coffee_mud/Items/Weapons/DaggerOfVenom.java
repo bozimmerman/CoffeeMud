@@ -45,8 +45,7 @@ public class DaggerOfVenom extends Dagger
             if(chance == 10)
             {
                 Ability poison = CMClass.getAbility("Poison");
-                poison.baseEnvStats().setLevel(baseEnvStats().level());
-                poison.invoke(affect.source(),(MOB)affect.target(), true);
+	            poison.invoke(affect.source(),(MOB)affect.target(), true);
             }
 		}
 	}

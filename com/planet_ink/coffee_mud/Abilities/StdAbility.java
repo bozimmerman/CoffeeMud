@@ -50,12 +50,14 @@ public class StdAbility implements Ability, Cloneable
 	public Environmental newInstance()	{ return new StdAbility(); }
 	public int classificationCode(){ return Ability.SKILL; }
 	
+	protected static final EnvStats envStats=new DefaultEnvStats();
+	public EnvStats envStats(){return envStats;}
+	public EnvStats baseEnvStats(){return envStats;}
+	
 	public boolean isNowAnAutoEffect(){ return isAnAutoEffect; }
 	public boolean isBorrowed(Environmental toMe){ return borrowed;	}
 	public void setBorrowed(Environmental toMe, boolean truefalse) { borrowed=truefalse; }
 	public void setName(String newName){}
-	public EnvStats envStats(){	return new DefaultEnvStats();}
-	public EnvStats baseEnvStats(){return new DefaultEnvStats();}
 	public void recoverEnvStats() {}
 	public int usesRemaining(){return 100;}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
@@ -407,7 +409,7 @@ public class StdAbility implements Ability, Cloneable
 				return false;
 
 			int manaConsumed=50;
-			int diff=mob.envStats().level()-envStats().level();
+			int diff=mob.envStats().level()-qualifyingLevel(mob);
 			if(diff>0)
 			switch(diff)
 			{
@@ -534,7 +536,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(isAutoInvoked())
 		{
-			if(mob.envStats().level()>=envStats().level())
+			if(mob.envStats().level()>=qualifyingLevel(mob))
 			{
 				Ability thisAbility=mob.fetchAffect(this.ID());
 				if(thisAbility!=null)
@@ -727,9 +729,6 @@ public class StdAbility implements Ability, Cloneable
 			newAbility.setProfficiency((int)Math.round(Util.mul(profficiency(),((Util.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),100.0))))));
 			if(newAbility.profficiency()>75)
 				newAbility.setProfficiency(75);
-			int qLevel=qualifyingLevel(student);
-			if(qLevel<1) qLevel=1;
-			newAbility.envStats().setLevel(qLevel);
 			student.addAbility(newAbility);
 			newAbility.autoInvocation(student);
 		}

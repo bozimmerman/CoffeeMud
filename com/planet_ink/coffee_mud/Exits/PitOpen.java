@@ -8,13 +8,9 @@ public class PitOpen extends StdOpenDoorway
 	public PitOpen()
 	{
 		super();
-		Trap t=(Trap)CMClass.getAbility("Trap_Enter");
+		Trap t=(Trap)CMClass.getAbility("Trap_EnterPit");
 		if(t!=null)
-		{
-			t.baseEnvStats().setAbility(Trap.TRAP_PIT_BLADE);
-			t.recoverEnvStats();
 			t.setTrapped(this,t,true);
-		}
 	}
 	public Environmental newInstance()
 	{

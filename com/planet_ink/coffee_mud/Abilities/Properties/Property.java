@@ -59,8 +59,10 @@ public class Property implements Ability, Cloneable
 	public boolean isBorrowed(Environmental toMe){ return borrowed;	}
 	public void setBorrowed(Environmental toMe, boolean truefalse)	{ borrowed=truefalse; }
 
-	public EnvStats envStats(){ return new DefaultEnvStats();}
-	public EnvStats baseEnvStats(){ return new DefaultEnvStats();}
+	protected static final EnvStats envStats=new DefaultEnvStats();
+	public EnvStats envStats(){return envStats;}
+	public EnvStats baseEnvStats(){return envStats;}
+	
 	public void recoverEnvStats(){}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public Environmental newInstance()

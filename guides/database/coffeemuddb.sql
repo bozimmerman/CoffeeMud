@@ -1,9 +1,6 @@
 CREATE TABLE CMCHAB (
 	CMUSERID char (50) NULL ,
 	CMABID char (50) NULL ,
-	CMABLVL int NULL ,
-	CMABAB int NULL ,
-	CMABUR int NULL ,
 	CMABPF int NULL ,
 	CMABTX text NULL
 );

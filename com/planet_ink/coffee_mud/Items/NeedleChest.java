@@ -9,10 +9,8 @@ public class NeedleChest extends LargeChest
 	public NeedleChest()
 	{
 		super();
-		Trap t=(Trap)CMClass.getAbility("Trap_Open");
-		t.baseEnvStats().setAbility(Trap.TRAP_NEEDLE);
-		t.recoverEnvStats();
-		t.setTrapped(this,t,true);
+		Trap t=(Trap)CMClass.getAbility("Trap_OpenNeedle");
+		if(t!=null)	t.setTrapped(this,t,true);
 		isLocked=false;
 		setMaterial(EnvResource.RESOURCE_OAK);
 	}

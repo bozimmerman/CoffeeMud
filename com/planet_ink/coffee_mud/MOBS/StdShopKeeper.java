@@ -552,7 +552,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(product instanceof MOB)
 					{
-						product.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+						((MOB)product).baseEnvStats().setRejuv(Integer.MAX_VALUE);
 						product.recoverEnvStats();
 						product.setMiscText(product.text());
 						((MOB)product).bringToLife(mob.location(),true);
@@ -602,13 +602,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(product instanceof Ability)
 		{
 			if(whatISell==TRAINER)
-				val=product.baseEnvStats().level()*100;
+				val=CMAble.lowestQualifyingLevel(product.ID())*100;
 			else
 			if(whatISell==CASTER)
-				val=product.baseEnvStats().level()*25;
+				val=CMAble.lowestQualifyingLevel(product.ID())*25;
 		}
 		else
-			val=product.baseEnvStats().level()*25;
+			val=CMAble.lowestQualifyingLevel(product.ID())*25;
 		if(mob==null) return val;
 
 		//double halfPrice=Math.round(Util.div(val,2.0));

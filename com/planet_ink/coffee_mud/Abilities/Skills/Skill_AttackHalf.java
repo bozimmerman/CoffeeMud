@@ -36,8 +36,7 @@ public class Skill_AttackHalf extends StdAbility
 		&&(Dice.rollPercentage()>95)
 		&&(mob.isInCombat())
 		&&(!mob.amDead())
-		&&(affect.target() instanceof MOB)
-		&&(mob.envStats().level()>=envStats().level()))
+		&&(affect.target() instanceof MOB))
 			helpProfficiency(mob);
 	}
 }

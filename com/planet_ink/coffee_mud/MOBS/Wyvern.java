@@ -89,7 +89,6 @@ public class Wyvern extends StdMOB
 					if(!msg.wasModified())
 					{
 						Ability poison = CMClass.getAbility("Poison");
-						poison.baseEnvStats().setLevel(baseEnvStats().level());
 						poison.invoke(this, target, true);
 					}
 				}

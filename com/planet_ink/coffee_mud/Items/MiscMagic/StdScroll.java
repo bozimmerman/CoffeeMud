@@ -163,7 +163,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							for(int u=0;u<me.getSpells().size();u++)
 							{
 								Ability A=(Ability)me.getSpells().elementAt(u);
-								theNews.append("Level "+Util.padRight(""+A.envStats().level(),2)+": "+A.name()+"\n\r");
+								theNews.append("Level "+Util.padRight(""+CMAble.lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());
 						}
@@ -190,7 +190,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				if(A!=null)
 				{
 					A=(Ability)A.copyOf();
-					baseValue+=(100*A.envStats().level());
+					baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
 					theSpells.addElement(A);
 				}
 			}
@@ -203,7 +203,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			if(A!=null)
 			{
 				A=(Ability)A.copyOf();
-				baseValue+=(100*A.envStats().level());
+				baseValue+=(100*CMAble.lowestQualifyingLevel(A.ID()));
 				theSpells.addElement(A);
 			}
 		}

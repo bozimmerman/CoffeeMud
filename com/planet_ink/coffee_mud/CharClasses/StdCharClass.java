@@ -329,7 +329,7 @@ public class StdCharClass implements CharClass
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
-			&&(A.envStats().level()==mob.envStats().level()))
+			&&(A.qualifyingLevel(mob)<=mob.envStats().level()))
 				A.autoInvocation(mob);
 		}
 		
