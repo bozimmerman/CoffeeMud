@@ -55,6 +55,8 @@ public class Prayer_Restoration extends Prayer
 				{
 					target.delAffect(A);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> missing parts are restored!");
+					A=target.fetchAbility(A.ID());
+					if(A!=null) target.delAbility(A);
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();

@@ -27,7 +27,8 @@ public class Amputation extends StdAbility
 	private static final String[] triggerStrings = {"AMPUTATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public int classificationCode(){return Ability.PROPERTY;}
 
 	public static final long AMPUTATE_LEFTHAND=1;
 	public static final long AMPUTATE_RIGHTHAND=2;
@@ -335,9 +336,17 @@ public class Amputation extends StdAbility
 						limb.recoverEnvStats();
 						target.location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
 					}
-					if(newOne==true)
-						target.addNonUninvokableAffect(A);
 					A.setMiscText(""+(A.missingLimbList()|code));
+					if(newOne==true)
+					{
+						target.addAbility(A);
+						A.autoInvocation(target);
+					}
+					else
+					{
+						Ability A2=target.fetchAbility(A.ID());
+						if(A2!=null) A2.setMiscText(A.text());
+					}
 					mob.confirmWearability();
 				}
 			}

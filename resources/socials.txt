@@ -616,3 +616,6 @@ oo	GOOSE	Who would you like to goose?
 mo	NIBBLE SELF	You nibble on your OWN ear ???????????????????	<S-NAME> nibbles on <S-HIS-HER> OWN ear (I wonder how it is done !!).		
 mo	PALE SELF	You feel the blood draining from your face.	null	null	null
 ss	LAUGH <T-NAME>	You laugh at <T-NAMESELF> mercilessly.	<S-NAME> laughs at <T-NAMESELF> mercilessly.	<S-NAME> laughs at you mercilessly.	You can't find the butt of your joke.
+mo	MATE	Umm, with yourself?			
+mo	MATE SELF	You make passionate love to yourself.	You don't want to know what <S-NAME> is doing right now.		
+mo	MATE <T-NAME>	You make passionate love to <T-HIM-HER>.	<S-NAME> makes passionate love to <T-NAMESELF>.	<S-NAME> makes passionate love to you.	Sorry, friend, I can't see that person here.

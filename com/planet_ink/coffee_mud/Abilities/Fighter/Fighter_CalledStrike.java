@@ -35,7 +35,8 @@ public class Fighter_CalledStrike extends StdAbility
 		if(mob==null) return false;
 		Amputation A=(Amputation)target.fetchAffect("Amputation");
 		boolean newOne=false;
-		if(A==null){
+		if(A==null)
+		{
 			A=new Amputation();
 			newOne=true;
 		}
@@ -53,9 +54,17 @@ public class Fighter_CalledStrike extends StdAbility
 			limb.recoverEnvStats();
 			target.location().addItemRefuse(limb,Item.REFUSE_PLAYER_DROP);
 		}
-		if(newOne==true)
-			target.addNonUninvokableAffect(A);
 		A.setMiscText(""+(A.missingLimbList()|code));
+		if(newOne==true)
+		{
+			target.addAbility(A);
+			A.autoInvocation(target);
+		}
+		else
+		{
+			Ability A2=target.fetchAbility(A.ID());
+			if(A2!=null) A2.setMiscText(A.text());
+		}
 		mob.confirmWearability();
 		return true;
 	}
@@ -130,7 +139,8 @@ public class Fighter_CalledStrike extends StdAbility
 
 		Amputation A=(Amputation)target.fetchAffect("Amputation");
 		boolean newOne=false;
-		if(A==null){
+		if(A==null)
+		{
 			A=new Amputation();
 			newOne=true;
 		}

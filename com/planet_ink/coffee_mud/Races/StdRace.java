@@ -128,8 +128,8 @@ public class StdRace implements Race
 		}
 		else
 		if((affect.amITarget(myChar))
-		&&(affect.targetMinor()==Affect.TYP_GIVE)
-		&&((forbiddenWornBits()&Item.HELD)>0))
+		&&((affect.targetMinor()==Affect.TYP_GIVE)
+		&&((forbiddenWornBits()&Item.HELD)>0)))
 		{
 			affect.source().tell("You cannot give anything to the "+name()+".");
 			return false;
@@ -139,6 +139,35 @@ public class StdRace implements Race
 
 	public void affect(Environmental myHost, Affect affect)
 	{
+		// the sex rules
+		if(!(myHost instanceof MOB)) return;
+		
+		MOB myChar=(MOB)myHost;
+		if((affect.amITarget(myChar))
+		&&(affect.tool()!=null)
+		&&(affect.tool().ID().equals("Social"))
+		&&(myChar.charStats().getStat(CharStats.GENDER)==((int)'F'))
+		&&(affect.source().charStats().getStat(CharStats.GENDER)==((int)'M'))
+		&&(affect.tool().name().equals("MATE <T-NAME>")
+			||affect.tool().name().equals("SEX <T-NAME>"))
+		&&(Sense.isSitting(myChar))
+		&&(Sense.isSitting(affect.source()))
+		&&((myChar.amFollowing()==affect.source())
+		   ||(affect.source().amFollowing()==myChar))
+		&&(Dice.rollPercentage()<10)
+		&&((ID().equals("Human"))
+		   ||(affect.source().charStats().getMyRace().ID().equals("Human"))
+		   ||(affect.source().charStats().getMyRace().ID().equals(ID())))
+		&&(myChar.location()==affect.source().location())
+		&&(!myChar.amWearingSomethingHere(Item.ON_WAIST))
+		&&(!affect.source().amWearingSomethingHere(Item.ON_WAIST)))
+		{
+			Ability A=CMClass.getAbility("Pregnancy");
+			if((A!=null)
+			&&(myChar.fetchAbility(A.ID())==null)
+			&&(myChar.fetchAffect(A.ID())==null))
+				A.invoke(affect.source(),myChar,true);
+		}
 	}
 	public void wearOutfit(MOB mob, Armor s1, Armor s2, Armor p1)
 	{

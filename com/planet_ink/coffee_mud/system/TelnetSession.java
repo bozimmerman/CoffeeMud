@@ -36,6 +36,7 @@ public class TelnetSession extends Thread implements Session
 	public long lastLoopTop=System.currentTimeMillis();
 	public long milliTotal=0;
 	public long tickTotal=0;
+	public long idleMillis=0;
 
 	private int termID = 0;	//0 = NOANSI, 1 = ANSI
 	public int currentColor=(int)'N';
@@ -94,10 +95,11 @@ public class TelnetSession extends Thread implements Session
 		}
 	}
 
-	public long getTotalMillis(){return milliTotal;}
-	public long getTotalTicks(){return tickTotal;}
+	public long getTotalMillis(){ return milliTotal;}
+	public long getIdleMillis(){ return idleMillis;}
+	public long getTotalTicks(){ return tickTotal;}
 
-	public long lastLoopTime(){return lastLoopTop;}
+	public long lastLoopTime(){ return lastLoopTop;}
 
 	public MOB mob(){return mob;}
 	public void setMob(MOB newmob)
@@ -1310,9 +1312,16 @@ public class TelnetSession extends Thread implements Session
 						waiting=true;
 						String input=readlineContinue();
 						if(input!=null)
+						{
+							idleMillis=0;
 							enque(0,Util.parse(input));
+						}
+						else
+							idleMillis+=(System.currentTimeMillis()-lastLoopTop);
 						if(mob==null) break;
-						if((((MOB)mob).lastTickedDateTime()>lastStop)||(!mob.isInCombat()))
+						
+						if((((MOB)mob).lastTickedDateTime()>lastStop)
+						||(!mob.isInCombat()))
 						{
 							CMDS=deque();
 							if(CMDS!=null)
@@ -1333,12 +1342,13 @@ public class TelnetSession extends Thread implements Session
 								}
 								needPrompt=true;
 							}
+							
 						}
 						if((needPrompt)&&(waiting))
 						{
 							showPrompt();
-							if((input==null)&&(this.input!=null)&&(this.input.length()>0))
-								this.rawPrint(this.input.toString());
+							if((input==null)&&(input!=null)&&(input.length()>0))
+								rawPrint(input.toString());
 							needPrompt=false;
 						}
 					}

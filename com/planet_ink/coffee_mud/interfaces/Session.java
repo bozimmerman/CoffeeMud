@@ -90,6 +90,7 @@ public interface Session
 	public int getStatus();
 	public long getTotalMillis();
 	public long getTotalTicks();
+	public long getIdleMillis();
 	
 	public static final int STATUS_OK=0;
 	public static final int STATUS_LOGIN=1;
