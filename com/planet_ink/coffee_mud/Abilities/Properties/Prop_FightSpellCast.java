@@ -80,10 +80,13 @@ public class Prop_FightSpellCast extends Property
 			{
 				if((myItem instanceof Weapon)
 				&&(affect.tool()==myItem)
+				&&(myItem.amWearingAt(Item.WIELD))
 				&&(affect.amISource(mob)))
 					addMeIfNeccessary(affect.source(),(MOB)affect.target());
 				else
-				if(affect.amITarget(mob))
+				if((affect.amITarget(mob))
+				&&(!myItem.amWearingAt(Item.WIELD))
+				&&(!(myItem instanceof Weapon)))
 					addMeIfNeccessary((MOB)affect.target(),(MOB)affect.target());
 			}
 		}
