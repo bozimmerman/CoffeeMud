@@ -16,6 +16,10 @@ public class Gorilla extends Monkey
 	protected int weightVariance(){return 80;}
 	public String racialCategory(){return "Primate";}
 	
+	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
+	public int[] bodyMask(){return parts;}
+	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

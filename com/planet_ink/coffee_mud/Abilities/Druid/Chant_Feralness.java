@@ -41,7 +41,8 @@ public class Chant_Feralness extends Chant
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((affected instanceof MOB)&&(((MOB)affected).charStats().getMyRace()==((MOB)affected).baseCharStats().getMyRace()))
+		if((affected instanceof MOB)
+		&&(((MOB)affected).fetchAffect("Druid_ShapeShift")==null))
 			unInvoke();
 		return true;
 	}

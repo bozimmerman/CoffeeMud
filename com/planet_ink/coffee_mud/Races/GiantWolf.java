@@ -13,6 +13,10 @@ public class GiantWolf extends Wolf
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
 	public String racialCategory(){return "Canine";}
 	
+	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
+	public int[] bodyMask(){return parts;}
+	
 	protected static Vector resources=new Vector();
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

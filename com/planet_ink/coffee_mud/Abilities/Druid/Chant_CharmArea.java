@@ -23,6 +23,22 @@ public class Chant_CharmArea extends Chant
 			affect.source().tell("You really don't feel like leaving this place.  It is just too beautiful.");
 			return false;
 		}
+		if((Util.bset(affect.sourceCode(),affect.MASK_MALICIOUS))
+		||(Util.bset(affect.targetCode(),affect.MASK_MALICIOUS))
+		||(Util.bset(affect.othersCode(),affect.MASK_MALICIOUS)))
+		{
+			if((affect.source()!=null)
+			   &&(affect.target()!=null)
+			   &&(affect.source()!=affect.target()))
+			{
+				affect.source().tell("Nah, you feel too peaceful here.");
+				if(affect.source().getVictim()!=null)
+					affect.source().getVictim().makePeace();
+				affect.source().makePeace();
+			}
+			affect.modify(affect.source(),affect.target(),affect.tool(),Affect.NO_EFFECT,"",Affect.NO_EFFECT,"",Affect.NO_EFFECT,"");
+			return false;
+		}
 		return super.okAffect(myHost,affect);
 	}
 

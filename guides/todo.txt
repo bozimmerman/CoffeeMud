@@ -3,6 +3,7 @@ Improve maps to divide area into sections
 Prancers: Dancing bards who get special ability
 Druid Subclasses
 Bard Subclasses
+Add race to zapper
 
 //****** next version ********************************************************
 Space ships as Locale types

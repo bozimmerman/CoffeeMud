@@ -5,14 +5,14 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Spell_ChantWard extends Spell
+public class Spell_ChantShield extends Spell
 {
-	public String ID() { return "Spell_ChantWard"; }
-	public String name(){return "Chant Ward";}
-	public String displayText(){return "(Chant Ward)";}
+	public String ID() { return "Spell_ChantShield"; }
+	public String name(){return "Chant Shield";}
+	public String displayText(){return "(Chant Shield)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	public Environmental newInstance(){	return new Spell_ChantWard();}
+	public Environmental newInstance(){	return new Spell_ChantShield();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()
@@ -22,7 +22,7 @@ public class Spell_ChantWard extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
-			mob.tell("Your ward against chants fades.");
+			mob.tell("Your shield against chants fades.");
 
 		super.unInvoke();
 
@@ -45,7 +45,7 @@ public class Spell_ChantWard extends Spell
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> wards off "+affect.tool().name()+"!");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> blocks off "+affect.tool().name()+"!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);
@@ -63,7 +63,7 @@ public class Spell_ChantWard extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> feel(s) protected from chants.":"^S<S-NAME> invoke(s) an anti-chant barrier around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> look(s) protected from chants.":"^S<S-NAME> invoke(s) an anti-chant shield around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -71,7 +71,7 @@ public class Spell_ChantWard extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a barrier, but fail(s).");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a shield, but fail(s).");
 
 		return success;
 	}

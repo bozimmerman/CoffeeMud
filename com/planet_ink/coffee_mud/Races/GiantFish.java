@@ -18,6 +18,10 @@ public class GiantFish extends StdRace
 	public String racialCategory(){return "Amphibian";}
 	protected static Vector resources=new Vector();
 	
+	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
+	public int[] bodyMask(){return parts;}
+	
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

@@ -37,6 +37,16 @@ public interface Area extends Environmental
 		"The moon is in the waning crescent phase.",
 		"There is a BLUE MOON! Oh my GOD! Run away!!!!!"
 	};
+	public final static int PHASE_NEW=0;
+	public final static int PHASE_WAXCRESCENT=1;
+	public final static int PHASE_WAXQUARTER=2;
+	public final static int PHASE_WAXGIBBOUS=3;
+	public final static int PHASE_FULL=4;
+	public final static int PHASE_WANEGIBBOUS=5;
+	public final static int PHASE_WANDEQUARTER=6;
+	public final static int PHASE_WANECRESCENT=7;
+	public final static int PHASE_BLUE=8;
+	
 	public final static String[] TOD_DESC={
 		"It is dawn ","It is daytime ","It is dusk ","It is nighttime "
 	};

@@ -1753,7 +1753,20 @@ lightestWeight to determine that.</FONT></P><pre>protected long forbiddenWornBit
 establishes where a creature of this type may NOT wear something.&nbsp; In this 
 case, we forbid any wielded items, or anything worn around the waist, on hands 
 or feet,&nbsp;or about the body.&nbsp; Anywhere else is fine.&nbsp; Return 0 if 
-you do not wish any restrictions on wearing.</FONT></P><pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+you do not wish any restrictions on wearing.</FONT></P><pre>	private static final int[] parts={0,2,2,1,1,0,0,1,4,4,1,0,1,1,1,2};
+	public int[] bodyMask(){return parts;}
+</PRE>
+<P align=left><FONT size=4>The 
+bodyMask method defines and returns an array of integers which defines the types 
+and number of particular body parts normally retained by the race.&nbsp; Each 
+position in the array is defined by the equates BODY_ in the Race 
+interface.&nbsp; These equates are (starting from 0): <FONT size=3>BODY_ANTENEA, 
+BODY_EYE, BODY_EAR, BODY_HEAD, BODY_NECK, BODY_ARM, BODY_HAND, BODY_TORSO, 
+BODY_LEG, BODY_FOOT, BODY_NOSE, BODY_GILL, BODY_MOUTH, BODY_WAIST, BODY_TAIL, 
+BODY_WING</FONT>. Remember that these can be found in the Race interface for you 
+to reference.&nbsp; In the above example, we find no antenea, 2 eyes, 2 ears, a 
+head, neck, no arms or hands, a torso, 4 legs, 4 feet, anose, but&nbsp;no gill, 
+and then a mouth, waist, tail, and 2 wings.</FONT></P><pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 {
 	super.affectEnvStats(affected,affectableStats);
 	affectableStats.setSensesMask(affectableStats.sensesMask()

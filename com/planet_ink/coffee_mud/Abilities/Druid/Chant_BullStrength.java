@@ -1,5 +1,75 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 
-public class Chant_BullStrength
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Chant_BullStrength extends Chant
 {
+	public String ID() { return "Chant_BullStrength"; }
+	public String name(){return "Bull Strength";}
+	public String displayText(){return "(Bull Strength)";}
+	public int quality(){ return Ability.BENEFICIAL_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){ return new Chant_BullStrength();}
+
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+6);
+	}
+
+
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+
+		if(canBeUninvoked())
+			mob.tell("You don't feel quite so strong.");
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		MOB target=mob;
+		if(target==null) return false;
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell("You already have the strength of a bull.");
+			return false;
+		}
+
+		// the invoke method for spells receives as
+		// parameters the invoker, and the REMAINING
+		// command line parameters, divided into words,
+		// and added as String objects to a vector.
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		boolean success=profficiencyCheck(0,auto);
+
+		if(success)
+		{
+			// it worked, so build a copy of this ability,
+			// and add it to the affects list of the
+			// affected MOB.  Then tell everyone else
+			// what happened.
+			invoker=mob;
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> gain(s) the strength of a bull!":"^S<S-NAME> chant(s) for the strength of a bull!^?");
+			if(mob.location().okAffect(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				beneficialAffect(mob,target,0);
+			}
+		}
+		else
+			return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s), but nothing more happens.");
+
+		// return whether it worked
+		return success;
+	}
 }

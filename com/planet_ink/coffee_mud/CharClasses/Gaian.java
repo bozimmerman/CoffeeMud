@@ -82,7 +82,7 @@ CMAble.addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",true);
 CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_Observe",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Thief_Observation",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_PlantMaze",true);
 CMAble.addCharAbilityMapping(ID(),14,"Chant_Thorns",true);
 
@@ -149,7 +149,7 @@ CMAble.addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
 		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
 		{
 			if(!quiet)
-				mob.tell("You must be Human, Elf, Dwarf, or Half Elf to be a Druid");
+				mob.tell("You must be Human, Elf, Dwarf, or Half Elf to be a Gaian");
 			return false;
 		}
 		return super.qualifiesForThisClass(mob,quiet);

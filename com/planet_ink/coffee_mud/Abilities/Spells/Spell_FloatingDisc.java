@@ -67,7 +67,7 @@ public class Spell_FloatingDisc extends Spell
 
 		if(mob.amWearingSomethingHere(Item.FLOATING_NEARBY))
 		{
-			mob.tell("You are already carrying something on a floating disc.");
+			mob.tell("You already have something floating nearby.");
 			return false;
 		}
 

@@ -14,9 +14,28 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public Vector myResources();
 	public String racialCategory();
 	public Race copyOf();
+	public int[] bodyMask();
 	
 	public String arriveStr();
 	public String leaveStr();
 
 	public void level(MOB mob);
+	
+	public final static int BODY_ANTENEA=0;
+	public final static int BODY_EYE=1;
+	public final static int BODY_EAR=2;
+	public final static int BODY_HEAD=3;
+	public final static int BODY_NECK=4;
+	public final static int BODY_ARM=5;
+	public final static int BODY_HAND=6;
+	public final static int BODY_TORSO=7;
+	public final static int BODY_LEG=8;
+	public final static int BODY_FOOT=9;
+	public final static int BODY_NOSE=10;
+	public final static int BODY_GILL=11;
+	public final static int BODY_MOUTH=12;
+	public final static int BODY_WAIST=13;
+	public final static int BODY_TAIL=14;
+	public final static int BODY_WING=15;
+	public final static int BODY_PARTS=16;
 }

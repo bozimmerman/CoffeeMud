@@ -19,6 +19,10 @@ public class StdRace implements Race
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unknown";}
 	
+	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	public int[] bodyMask(){return parts;}
+	
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
 	
