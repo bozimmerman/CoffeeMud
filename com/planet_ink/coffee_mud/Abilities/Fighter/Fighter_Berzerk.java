@@ -81,7 +81,7 @@ public class Fighter_Berzerk extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> get(s) a wild look in <S-HIS-HER> eyes!");

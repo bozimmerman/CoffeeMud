@@ -47,7 +47,7 @@ public class Prayer_Regeneration extends Prayer
 
 		if(((Sense.isSitting(mob))||(Sense.isSleeping(mob)))
 		&&(!mob.isInCombat())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false))
 		&&(tickID==MudHost.TICK_MOB))
 		{
 			mob.curState().recoverTick(mob,mob.maxState());
@@ -74,7 +74,7 @@ public class Prayer_Regeneration extends Prayer
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -48,12 +48,12 @@ public class Skill_Climb extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			success=profficiencyCheck(0,auto);
+			success=profficiencyCheck(mob,0,auto);
 
 			if(mob.fetchEffect(ID())==null)
 			{

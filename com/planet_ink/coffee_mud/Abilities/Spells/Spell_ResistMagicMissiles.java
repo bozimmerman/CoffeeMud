@@ -41,7 +41,7 @@ public class Spell_ResistMagicMissiles extends Spell
 		&&(msg.tool()!=null)
 		&&(msg.tool().ID().equalsIgnoreCase("Spell_MagicMissile"))
 		&&(!mob.amDead())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 		{
 			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs a magic missile from <T-NAME>!");
 			return false;
@@ -58,7 +58,7 @@ public class Spell_ResistMagicMissiles extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) magically protected.":"^S<S-NAME> invoke(s) an absorbing barrier of protection around <T-NAMESELF>.^?");

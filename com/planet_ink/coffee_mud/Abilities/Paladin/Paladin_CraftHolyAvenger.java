@@ -170,7 +170,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		building.text();
 		building.recoverEnvStats();
 
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
 		if(mob.location().okMessage(mob,msg))

@@ -106,7 +106,7 @@ public class Spell_WeaknessCold extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A shimmering frost absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering frost absorbing field around <T-NAMESELF>.^?");

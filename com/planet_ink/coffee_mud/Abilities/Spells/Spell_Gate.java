@@ -75,7 +75,7 @@ public class Spell_Gate extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-adjustment,auto);
+		boolean success=profficiencyCheck(mob,-adjustment,auto);
 
 		if(success)
 		{

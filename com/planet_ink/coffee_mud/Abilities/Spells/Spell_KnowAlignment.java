@@ -21,7 +21,7 @@ public class Spell_KnowAlignment extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		// it worked, so build a copy of this ability,
 		// and add it to the affects list of the

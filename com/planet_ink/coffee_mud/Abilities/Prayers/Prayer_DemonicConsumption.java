@@ -32,7 +32,7 @@ public class Prayer_DemonicConsumption extends Prayer
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		success=profficiencyCheck(-(levelDiff*20),auto);
+		success=profficiencyCheck(mob,-(levelDiff*20),auto);
 
 		if(auto)affectType=affectType|CMMsg.MASK_GENERAL;
 

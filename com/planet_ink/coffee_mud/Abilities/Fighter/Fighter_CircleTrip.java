@@ -124,7 +124,7 @@ public class Fighter_CircleTrip extends StdAbility
 				else
 					levelDiff=0;
 				int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
-				success=profficiencyCheck(adjustment,auto);
+				success=profficiencyCheck(mob,adjustment,auto);
 				success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 				if(success)
 				{

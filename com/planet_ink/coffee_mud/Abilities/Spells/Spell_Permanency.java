@@ -20,7 +20,7 @@ public class Spell_Permanency extends Spell
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
-		
+
 		if((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))
 		{
 			mob.tell("You aren't powerful enough to cast this.");
@@ -30,7 +30,7 @@ public class Spell_Permanency extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

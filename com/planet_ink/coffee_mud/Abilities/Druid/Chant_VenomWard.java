@@ -48,7 +48,7 @@ public class Chant_VenomWard extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"An anti-venom field appears around <T-NAME>.":"^S<S-NAME> chant(s) for an anti-venom field of protection around <T-NAMESELF>.^?");

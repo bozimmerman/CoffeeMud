@@ -32,7 +32,7 @@ public class Skill_Stability extends BardSkill
 		&&(msg.amITarget(affected))
 		&&(((Ability)msg.tool()).quality()==Ability.MALICIOUS)
 		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-40,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-40,false)))
 		{
 			Room roomS=null;
 			Room roomD=null;

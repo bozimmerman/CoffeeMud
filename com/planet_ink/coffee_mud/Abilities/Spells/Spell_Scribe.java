@@ -76,7 +76,7 @@ public class Spell_Scribe extends Spell
 		MUDFight.postExperience(mob,null,null,-experienceToLose,false);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

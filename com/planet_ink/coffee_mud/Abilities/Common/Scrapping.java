@@ -173,7 +173,7 @@ public class Scrapping extends CommonSkill
 		        duration+=((Item)V.elementAt(v)).envStats().weight()/2;
 		    ((Item)V.elementAt(v)).destroy();
 		}
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		found=makeItemResource(I.material());
 		foundShortName="nothing";
 		if(found!=null)

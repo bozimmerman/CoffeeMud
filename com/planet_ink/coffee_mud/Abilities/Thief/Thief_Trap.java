@@ -100,7 +100,7 @@ public class Thief_Trap extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(+((mob.envStats().level()
+		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
 											 -trapThis.envStats().level())*3),auto);
 		Trap theOldTrap=CoffeeUtensils.fetchMyTrap(trapThis);
 		if(theOldTrap!=null)

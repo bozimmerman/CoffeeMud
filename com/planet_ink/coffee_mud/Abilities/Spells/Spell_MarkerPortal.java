@@ -92,7 +92,7 @@ public class Spell_MarkerPortal extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-profNeg,auto);
+		boolean success=profficiencyCheck(mob,-profNeg,auto);
 
 		if((success)
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)

@@ -146,7 +146,7 @@ public class Chant_SummonDustdevil extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

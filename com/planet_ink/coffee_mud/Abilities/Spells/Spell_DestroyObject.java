@@ -21,7 +21,7 @@ public class Spell_DestroyObject extends Spell
 		if(!super.invoke(mob,commands, givenTarget, auto))
 			return false;
 
-		boolean success=profficiencyCheck(((mob.envStats().level()-target.envStats().level())*25),auto);
+		boolean success=profficiencyCheck(mob,((mob.envStats().level()-target.envStats().level())*25),auto);
 
 		if(success)
 		{

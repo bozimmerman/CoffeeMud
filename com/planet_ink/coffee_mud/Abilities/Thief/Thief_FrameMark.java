@@ -67,7 +67,7 @@ public class Thief_FrameMark extends ThiefSkill
 
 		int levelDiff=(target.envStats().level()-mob.envStats().level()*15);
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck(levelDiff,auto);
+		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
 		mob.setMoney(mob.getMoney()-(target.envStats().level()*1000));
 

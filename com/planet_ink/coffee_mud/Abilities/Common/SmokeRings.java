@@ -33,7 +33,7 @@ public class SmokeRings extends CommonSkill
 		&&(msg.target()==msg.tool())
 		&&(((Light)msg.target()).amWearingAt(Item.ON_MOUTH))
 		&&(((Light)msg.target()).isLit())
-		&&(profficiencyCheck(0,false)))
+		&&(profficiencyCheck(null,0,false)))
 		{
 			if(Dice.rollPercentage()==1) helpProfficiency((MOB)affected);
 			String str="<S-NAME> blow(s) out a perfect smoke ring.";

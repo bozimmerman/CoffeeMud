@@ -83,7 +83,7 @@ public class Engraving extends CommonSkill
 		verb="engraving on "+target.name();
 		displayText="You are "+verb;
 		found=target;
-		if(!profficiencyCheck(0,auto)) writing="";
+		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) engraving on "+target.name());

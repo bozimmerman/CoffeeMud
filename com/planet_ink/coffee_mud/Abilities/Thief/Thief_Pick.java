@@ -46,7 +46,7 @@ public class Thief_Pick extends ThiefSkill
 
 		int adjustment=(mob.envStats().level()-unlockThis.envStats().level())*(1+abilityCode());
 		if(adjustment>0) adjustment=0;
-		boolean success=profficiencyCheck(adjustment,auto);
+		boolean success=profficiencyCheck(mob,adjustment,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.name()+" and fail(s).");

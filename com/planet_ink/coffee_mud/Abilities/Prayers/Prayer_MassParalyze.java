@@ -45,7 +45,7 @@ public class Prayer_MassParalyze extends Prayer
 		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		boolean nothingDone=true;
 		if(success)
 		{

@@ -57,7 +57,7 @@ public class Spell_GreaterInvisibility extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -69,7 +69,7 @@ public class Spell_GreaterInvisibility extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fade(s) from view!");
-				
+
 				beneficialAffect(mob,target,0);
 			}
 		}

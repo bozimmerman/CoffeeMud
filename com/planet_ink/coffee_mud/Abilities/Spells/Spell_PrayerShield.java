@@ -60,7 +60,7 @@ public class Spell_PrayerShield extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> look(s) protected from prayers.":"^S<S-NAME> invoke(s) an anti-prayer shield around <T-NAMESELF>.^?");

@@ -26,7 +26,7 @@ public class Spell_Reinforce extends Spell
 		if(!super.invoke(mob,commands, givenTarget, auto))
 			return false;
 
-		boolean success=profficiencyCheck(((mob.envStats().level()-target.envStats().level())*5),auto);
+		boolean success=profficiencyCheck(mob,((mob.envStats().level()-target.envStats().level())*5),auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),

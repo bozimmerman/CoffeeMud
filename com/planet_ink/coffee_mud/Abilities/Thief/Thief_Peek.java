@@ -32,7 +32,7 @@ public class Thief_Peek extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		boolean success=profficiencyCheck(-(levelDiff*(!Sense.canBeSeenBy(mob,target)?0:10)),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff*(!Sense.canBeSeenBy(mob,target)?0:10)),auto);
 		int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);
 		if(!Sense.canBeSeenBy(mob,target))
 			discoverChance-=50;

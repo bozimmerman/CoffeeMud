@@ -38,7 +38,7 @@ public class Thief_Surrender extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success&&(mob.getMoney()>=gold))
 		{

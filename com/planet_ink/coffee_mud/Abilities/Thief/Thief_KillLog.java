@@ -134,7 +134,7 @@ public class Thief_KillLog extends ThiefSkill
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		if(profficiencyCheck(0,auto))
+		if(profficiencyCheck(mob,0,auto))
 		{
 			StringBuffer str=new StringBuffer("");
 			str.append(Util.padRight("Name",20)+Util.padRight("Level",6)+"Kill Pct.\n\r");

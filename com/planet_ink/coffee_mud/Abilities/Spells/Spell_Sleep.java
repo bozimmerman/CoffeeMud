@@ -100,7 +100,7 @@ public class Spell_Sleep extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)),auto);
+		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)),auto);
 
 		if(success)
 		{

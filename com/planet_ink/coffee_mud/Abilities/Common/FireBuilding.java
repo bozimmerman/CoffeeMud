@@ -181,7 +181,7 @@ public class FireBuilding extends CommonSkill
 			profficiencyAdjustment=-50;
 			break;
 		}
-		failed=!profficiencyCheck(profficiencyAdjustment,auto);
+		failed=!profficiencyCheck(mob,profficiencyAdjustment,auto);
 
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(completion<4) completion=4;

@@ -103,7 +103,7 @@ public class Ranger_Hide extends StdAbility
 			str="You creep behind some rocks and remain completely still.";
 
 
-		boolean success=profficiencyCheck(levelDiff*10,auto);
+		boolean success=profficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");

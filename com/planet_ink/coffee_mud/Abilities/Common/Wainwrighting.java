@@ -244,7 +244,7 @@ public class Wainwrighting extends CommonSkill
 		building.recoverEnvStats();
 
 
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<15) completion=15;
 
 		if(misctype.equalsIgnoreCase("bundle"))

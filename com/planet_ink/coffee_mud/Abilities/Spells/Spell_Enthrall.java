@@ -155,7 +155,7 @@ public class Spell_Enthrall extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(-10-((target.charStats().getStat(CharStats.INTELLIGENCE))+(levelDiff*5)),auto);
+		boolean success=profficiencyCheck(mob,-10-((target.charStats().getStat(CharStats.INTELLIGENCE))+(levelDiff*5)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

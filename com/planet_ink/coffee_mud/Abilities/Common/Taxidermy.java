@@ -92,7 +92,7 @@ public class Taxidermy extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		destroyResources(mob.location(),woodRequired,firstWood.material(),null,null);
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		if(found!=null)	foundShortName=I.Name();
 		int duration=15+(woodRequired/3)-mob.envStats().level();
 		if(duration>65) duration=65;

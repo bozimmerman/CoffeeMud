@@ -51,7 +51,7 @@ public class Fighter_BullRush extends StdAbility
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		boolean success=profficiencyCheck(-(levelDiff*5),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff*5),auto);
 
 		str="<S-NAME> bullrush(es) <T-NAME> "+direction+".";
 		FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);

@@ -108,7 +108,7 @@ public class AnimalTrading extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		if(profficiencyCheck(0,auto))
+		if(profficiencyCheck(mob,0,auto))
 		{
 			FullMsg msg=new FullMsg(mob,shopkeeper,M,CMMsg.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))

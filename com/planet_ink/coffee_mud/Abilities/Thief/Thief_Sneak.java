@@ -56,7 +56,7 @@ public class Thief_Sneak extends ThiefSkill
 				levelDiff=levelDiff*8;
 			else
 				levelDiff=levelDiff*10;
-			success=profficiencyCheck(levelDiff,auto);
+			success=profficiencyCheck(mob,levelDiff,auto);
 			if(success)
 			{
 				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_SNEAKING);

@@ -101,7 +101,7 @@ public class Spell_KnowOrigin extends Spell
 			return false;
 
 		Room R=origin(mob,target);
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if((success)&&(R!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), divining the origin of <T-NAMESELF>.^?");

@@ -117,7 +117,7 @@ public class Sinking extends StdAbility
 			{
 				Ability A=mob.fetchAbility("Skill_Swim");
 				if(((direction==Directions.DOWN)&&(A!=null))
-				&&(A.profficiencyCheck(25,(A.profficiency()>=75))
+				&&(A.profficiencyCheck(mob,25,(A.profficiency()>=75))
 				&&(mob.curState().getMovement()>0)))
 				{
 					if(mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> tread(s) water."))

@@ -161,7 +161,7 @@ public class Pregnancy extends StdAbility
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		long start=System.currentTimeMillis();
 		long add=((10)*(30)*MudHost.TICKS_PER_MUDDAY*MudHost.TICK_TIME);
 		long end=start+add;

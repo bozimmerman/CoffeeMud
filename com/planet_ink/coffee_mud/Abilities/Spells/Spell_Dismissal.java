@@ -27,10 +27,10 @@ public class Spell_Dismissal extends Spell
 		{
 			int levelDiff=target.envStats().level()-mob.envStats().level();
 			if(levelDiff<0) levelDiff=0;
-			success=profficiencyCheck(-(levelDiff*5),auto);
+			success=profficiencyCheck(mob,-(levelDiff*5),auto);
 		}
 		else
-			success=profficiencyCheck(0,auto);
+			success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -310,7 +310,7 @@ public class Amputation extends StdAbility
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			Amputation A=(Amputation)target.fetchEffect(ID());
@@ -327,6 +327,7 @@ public class Amputation extends StdAbility
 					mob.tell("There is nothing left on "+target.name()+" to amputate!");
 				return false;
 			}
+System.out.println(Util.toStringList(VN));
 			String gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
 
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";

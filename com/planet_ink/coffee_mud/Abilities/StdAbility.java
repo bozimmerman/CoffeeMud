@@ -332,7 +332,7 @@ public class StdAbility implements Ability, Cloneable
 		}
 	}
 
-	public boolean profficiencyCheck(int adjustment, boolean auto)
+	public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto)
 	{
 		if(auto)
 		{

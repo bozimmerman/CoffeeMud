@@ -127,14 +127,14 @@ public class Dance extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) the "+name()+" due to <S-HIS-HER> armor!");
 			return false;
 		}
-		
+
 		if(skipStandardDanceInvoke())
 			return true;
 
 		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		undance(mob,null,null);
 		if(success)
 		{

@@ -211,7 +211,7 @@ public class PaperMaking extends CommonSkill
 		}
 
 
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<20) completion=20;
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);

@@ -21,7 +21,7 @@ public class Prayer_MassHarm extends Prayer
 		Hashtable h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		int numEnemies=h.size();
 		for(Enumeration e=h.elements();e.hasMoreElements();)
 		{

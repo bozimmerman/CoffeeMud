@@ -114,7 +114,7 @@ public class Song_Friendship extends Song
 			return false;
 		}
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		unsing(mob,mob,null);
 		if(success)
 		{

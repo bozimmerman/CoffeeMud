@@ -60,7 +60,7 @@ public class Spell_DispelMagic extends Spell
 		if(diff<0) diff=0;
 		else diff=diff*-20;
 
-		boolean success=profficiencyCheck(diff,auto);
+		boolean success=profficiencyCheck(mob,diff,auto);
 		if(success)
 		{
 			int affectType=affectType(auto);

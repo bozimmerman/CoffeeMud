@@ -150,7 +150,7 @@ public class Chant_FindMate extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)

@@ -58,7 +58,7 @@ public class Property implements Ability, Cloneable
 
 	public int profficiency(){return 0;}
 	public void setProfficiency(int newProfficiency){}
-	public boolean profficiencyCheck(int adjustment, boolean auto){return false;}
+	public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
 	public void helpProfficiency(MOB mob){}
 
 	public Environmental affecting(){return affected;}

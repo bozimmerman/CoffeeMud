@@ -406,7 +406,7 @@ public class Cooking extends CommonSkill
 		fire=getRequiredFire(mob);
 		if(fire==null) return false;
 
-		burnt=!profficiencyCheck(0,auto);
+		burnt=!profficiencyCheck(mob,0,auto);
 		int duration=40-mob.envStats().level();
 		if(duration<15) duration=15;
 		cooking=(Container)target;

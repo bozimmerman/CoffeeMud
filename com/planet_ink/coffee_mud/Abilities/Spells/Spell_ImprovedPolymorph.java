@@ -98,7 +98,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		int statDiff=targetStatTotal-fakeStatTotal;
 		if(statDiff<0) statDiff=statDiff*-1;
 		int levelDiff=mob.envStats().level()-target.envStats().level();
-		boolean success=profficiencyCheck((levelDiff*5)-(statDiff*5),auto);
+		boolean success=profficiencyCheck(mob,(levelDiff*5)-(statDiff*5),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

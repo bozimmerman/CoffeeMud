@@ -170,6 +170,6 @@ public interface Ability  extends Environmental
 	// as an ability, how profficient the mob is at it.
 	public int profficiency();
 	public void setProfficiency(int newProfficiency);
-	public boolean profficiencyCheck(int adjustment, boolean auto);
+	public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto);
 	public void helpProfficiency(MOB mob);
 }

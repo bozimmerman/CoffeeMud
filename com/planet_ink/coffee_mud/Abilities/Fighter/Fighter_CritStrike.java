@@ -38,7 +38,7 @@ public class Fighter_CritStrike extends StdAbility
 		&&(msg.tool() instanceof Weapon)
 		&&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
 		&&(((Weapon)msg.tool()).weaponClassification()!=Weapon.CLASS_THROWN)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck((-90)+mob.charStats().getStat(CharStats.STRENGTH),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,(-90)+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
 			int bonus=(int)Math.round(Util.mul((msg.value()),pctRecovery));

@@ -40,7 +40,7 @@ public class Spell_MindBlock extends Spell
 		MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(!mob.amDead())
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 		{
 			boolean yep=(msg.targetMinor()==CMMsg.TYP_MIND);
 			if((!yep)
@@ -70,7 +70,7 @@ public class Spell_MindBlock extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A anti-psionic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-psionic field of protection around <T-NAMESELF>.^?"));

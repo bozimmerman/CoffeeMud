@@ -131,7 +131,7 @@ public class Fighter_LightningStrike extends StdAbility
 		else
 			levelDiff=0;
 		// now see if it worked
-		boolean success=profficiencyCheck((-levelDiff),auto);
+		boolean success=profficiencyCheck(mob,(-levelDiff),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -58,7 +58,7 @@ public class Prayer_HolyWord extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		String str=(auto?"The holy word is spoken.":"^S<S-NAME> speak(s) the holy word"+ofDiety(mob)+" to <T-NAMESELF>.^?")+CommonStrings.msp("bless.wav",10);
 		String missStr="<S-NAME> speak(s) the holy word"+ofDiety(mob)+", but nothing happens.";

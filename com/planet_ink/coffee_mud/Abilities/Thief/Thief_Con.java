@@ -70,7 +70,7 @@ public class Thief_Con extends ThiefSkill
 
 		int levelDiff=(mob.envStats().level()-target.envStats().level())*10;
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck((mob.charStats().getStat(CharStats.CHARISMA)*2)+levelDiff,auto);
+		boolean success=profficiencyCheck(mob,(mob.charStats().getStat(CharStats.CHARISMA)*2)+levelDiff,auto);
 
 		if(!success)
 		{

@@ -65,7 +65,7 @@ public class Spell_MarkerSummoning extends Spell
 		}
 		profNeg+=newRoom.numItems();
 
-		boolean success=profficiencyCheck(-(profNeg/2),auto);
+		boolean success=profficiencyCheck(mob,-(profNeg/2),auto);
 
 		if((success)&&(inhabs.size()>0))
 		{

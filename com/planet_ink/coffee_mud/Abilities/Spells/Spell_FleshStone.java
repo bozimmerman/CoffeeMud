@@ -157,7 +157,7 @@ public class Spell_FleshStone extends Spell
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		boolean success=profficiencyCheck(-(levelDiff*5),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(success)
 		{

@@ -43,7 +43,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 			&&(msg.target()!=null)
 			&&(getMark(mob)==msg.target())
 			&&(getMarkTicks(mob)>15)
-			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
 			{
 				if(Dice.rollPercentage()>90) helpProfficiency((MOB)affected);
 				StringBuffer str=CommonMsgs.getScore((MOB)msg.target());

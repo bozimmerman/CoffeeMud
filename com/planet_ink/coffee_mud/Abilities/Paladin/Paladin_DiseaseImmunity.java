@@ -22,7 +22,7 @@ public class Paladin_DiseaseImmunity extends Paladin
 		&&(msg.targetMinor()==CMMsg.TYP_DISEASE)
 		&&(!mob.amDead())
 		&&(mob.getAlignment()>650)
-		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+		&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			return false;
 		return super.okMessage(myHost,msg);
 	}

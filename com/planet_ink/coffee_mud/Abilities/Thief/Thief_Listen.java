@@ -104,7 +104,7 @@ public class Thief_Listen extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			success=profficiencyCheck(0,auto);
+			success=profficiencyCheck(mob,0,auto);
 			int numberHeard=0;
 			for(int i=0;i<room.numInhabitants();i++)
 			{

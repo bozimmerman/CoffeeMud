@@ -47,7 +47,7 @@ public class Chant_AcidWard extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"An oily field of protection appears around <T-NAME>.":"^S<S-NAME> chant(s) for an oily field of protection around <T-NAMESELF>.^?");

@@ -85,7 +85,7 @@ public class Skill_Cage extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 		if((success)&&(caged.cageMe(target)))

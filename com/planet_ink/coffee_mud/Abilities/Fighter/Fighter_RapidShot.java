@@ -33,7 +33,7 @@ public class Fighter_RapidShot extends StdAbility
 			&&(w instanceof Weapon)
 			&&(((Weapon)w).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(((Weapon)w).ammunitionType().length()>0)
-			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			{
 				helpProfficiency(mob);
 				for(int i=0;i<(adjustedLevel(mob)/7);i++)

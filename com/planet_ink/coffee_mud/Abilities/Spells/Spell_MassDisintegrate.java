@@ -46,7 +46,7 @@ public class Spell_MassDisintegrate extends Spell
 			avgLevel=avgLevel/h.size();
 
 		boolean success=false;
-		success=profficiencyCheck(-(avgLevel*2),auto);
+		success=profficiencyCheck(mob,-(avgLevel*2),auto);
 
 		if(success)
 		{

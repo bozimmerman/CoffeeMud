@@ -54,7 +54,7 @@ public class Skill_Disarm extends StdAbility
 		else
 			levelDiff=0;
 		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
-		boolean success=profficiencyCheck(-levelDiff,auto)&&(hit);
+		boolean success=profficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)&&(hisWeapon!=null)
 		   &&((hisWeapon.fitsOn(Item.WIELD))
 			  ||hisWeapon.fitsOn(Item.WIELD|Item.HELD)))

@@ -124,7 +124,7 @@ public class Thief_Hide extends ThiefSkill
 
 		String str="You creep into a shadow and remain completely still.";
 
-		boolean success=profficiencyCheck(levelDiff*10,auto);
+		boolean success=profficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to hide and fail(s).");

@@ -46,7 +46,7 @@ public class Prayer_SenseGood extends Prayer
 		Environmental target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -38,7 +38,7 @@ public class Skill_Conduct extends BardSkill
 		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		Play.unplay(mob,mob,null);
 		if(success)
 		{

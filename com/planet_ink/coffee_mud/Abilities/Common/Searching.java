@@ -56,7 +56,7 @@ public class Searching extends CommonSkill
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		if(profficiencyCheck(0,auto))
+		if(profficiencyCheck(mob,0,auto))
 			success=true;
 		int duration=3;
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,(auto?"":"<S-NAME> start(s) searching."));

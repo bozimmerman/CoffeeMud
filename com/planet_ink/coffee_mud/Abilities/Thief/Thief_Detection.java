@@ -47,7 +47,7 @@ public class Thief_Detection extends ThiefSkill
 			return false;
 		}
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,auto?CMMsg.MASK_GENERAL:CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> start(s) examining <S-HIS-HER> surroundings carefully.");
 		if(!success)

@@ -71,7 +71,7 @@ public class Skill_Meditation extends StdAbility
 		MOB mob=(MOB)affected;
 
 		if(tickID!=MudHost.TICK_MOB) return true;
-		if(!profficiencyCheck(0,false)) return true;
+		if(!profficiencyCheck(null,0,false)) return true;
 
 		if((mob.curState().getHunger()<=0)
 		||(mob.curState().getThirst()<=0))
@@ -114,7 +114,7 @@ public class Skill_Meditation extends StdAbility
 			return false;
 		}
 		// now see if it worked
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

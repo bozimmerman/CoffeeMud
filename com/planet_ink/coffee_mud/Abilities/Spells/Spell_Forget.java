@@ -73,7 +73,7 @@ public class Spell_Forget extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)+(levelDiff*5)),auto);
+		boolean success=profficiencyCheck(mob,-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)+(levelDiff*5)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -77,7 +77,7 @@ public class Skill_Feint extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-(target.charStats().getStat(CharStats.DEXTERITY)),auto);
+		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.DEXTERITY)),auto);
 
 		if(success)
 		{

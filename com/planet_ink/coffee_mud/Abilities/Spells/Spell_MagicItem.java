@@ -76,7 +76,7 @@ public class Spell_MagicItem extends Spell
 
 		int experienceToLose=1000;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -60,7 +60,7 @@ public class Spell_ChantShield extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> look(s) protected from chants.":"^S<S-NAME> invoke(s) an anti-chant shield around <T-NAMESELF>.^?");

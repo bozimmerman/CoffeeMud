@@ -47,7 +47,7 @@ public class Chant_CalmWind extends Chant
 		int size=mob.location().getArea().numberOfIDedRooms();
 		size=size/mob.envStats().level();
 		if(size<0) size=0;
-		boolean success=profficiencyCheck(-size,auto);
+		boolean success=profficiencyCheck(mob,-size,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"^SThe swirling sky changes color!^?":"^S<S-NAME> chant(s) into the swirling sky!^?");

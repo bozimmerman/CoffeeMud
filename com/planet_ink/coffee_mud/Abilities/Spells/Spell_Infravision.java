@@ -51,7 +51,7 @@ public class Spell_Infravision extends Spell
 			return false;
 		}
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) glowing eyes!":"^S<S-NAME> invoke(s) glowing red eyes!^?");
 		if(mob.location().okMessage(mob,msg))

@@ -173,7 +173,7 @@ public class Painting extends CommonSkill
 		building.text();
 		building.recoverEnvStats();
 
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		completion=completion-mob.envStats().level()+5;
 		if(completion<10) completion=10;
 

@@ -36,7 +36,7 @@ public class Prayer_Wave extends Prayer
 			return false;
 		}
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		int numEnemies=h.size();
 		for(Enumeration e=h.elements();e.hasMoreElements();)
 		{

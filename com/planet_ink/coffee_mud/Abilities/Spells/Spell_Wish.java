@@ -45,7 +45,7 @@ public class Spell_Wish extends Spell
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
 		}
 	}
-	
+
 	public void wishDrain(MOB mob, int expLoss)
 	{
 		if(mob==null) return;
@@ -85,7 +85,7 @@ public class Spell_Wish extends Spell
 
 		int baseLoss=25;
 		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(!success)
 		{
 			MUDFight.postExperience(mob,null,null,-baseLoss,false);

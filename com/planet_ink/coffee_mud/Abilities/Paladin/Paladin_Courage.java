@@ -34,7 +34,7 @@ public class Paladin_Courage extends Paladin
 			if((invoker.getAlignment()>650)
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Ability)
-			&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+			&&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 			{
 				String str1=msg.tool().ID().toUpperCase();
 				if((str1.indexOf("SPOOK")>=0)

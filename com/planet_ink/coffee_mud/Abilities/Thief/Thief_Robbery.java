@@ -112,7 +112,7 @@ public class Thief_Robbery extends ThiefSkill
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		boolean success=profficiencyCheck(-(levelDiff),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
 
 		if(!success)
 		{

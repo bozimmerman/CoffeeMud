@@ -37,7 +37,7 @@ public class Fighter_CoverDefence extends StdAbility
 			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
 		{
 			FullMsg msg2=new FullMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");
-			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
+			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
 			&&(msg.source().getVictim()==mob)
 			&&(mob.location().okMessage(mob,msg2)))
 			{

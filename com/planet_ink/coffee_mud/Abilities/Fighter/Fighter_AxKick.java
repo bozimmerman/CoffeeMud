@@ -56,7 +56,7 @@ public class Fighter_AxKick extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(mob.charStats().getStat(CharStats.STRENGTH)-target.charStats().getStat(CharStats.STRENGTH)-10,auto);
+		boolean success=profficiencyCheck(mob,mob.charStats().getStat(CharStats.STRENGTH)-target.charStats().getStat(CharStats.STRENGTH)-10,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

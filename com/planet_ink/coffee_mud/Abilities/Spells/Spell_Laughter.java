@@ -81,7 +81,7 @@ public class Spell_Laughter extends Spell
 
 
 		if(levelDiff<0) levelDiff=0;
-		boolean success=profficiencyCheck(-(levelDiff*5),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(success)
 		{

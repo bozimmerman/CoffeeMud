@@ -34,7 +34,7 @@ public class Spell_Disintegrate extends Spell
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff<0) levelDiff=0;
-		success=profficiencyCheck(-(levelDiff*25),auto);
+		success=profficiencyCheck(mob,-(levelDiff*25),auto);
 
 		if(auto)affectType=affectType|CMMsg.MASK_GENERAL;
 

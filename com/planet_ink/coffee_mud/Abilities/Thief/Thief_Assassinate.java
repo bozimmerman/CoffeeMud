@@ -197,7 +197,7 @@ public class Thief_Assassinate extends ThiefSkill
 			return false;
 
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
 		if(tracking!=null)

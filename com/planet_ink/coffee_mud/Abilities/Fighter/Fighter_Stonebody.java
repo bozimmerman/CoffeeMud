@@ -36,7 +36,7 @@ public class Fighter_Stonebody extends StdAbility
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(mob.rangeToTarget()==0)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.CONSTITUTION),false)))
 		{
 			int regain=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),2.0));
 			msg.setValue(msg.value()-regain);

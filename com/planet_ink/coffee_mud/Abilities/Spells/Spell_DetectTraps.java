@@ -132,7 +132,7 @@ public class Spell_DetectTraps extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting traps.");
 			return false;
 		}
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -32,7 +32,7 @@ public class JewelMaking extends CommonSkill
 	private static boolean mapped=false;
 	private boolean mending=false;
 	private boolean refitting=false;
-	
+
 	public JewelMaking()
 	{
 		super();
@@ -145,14 +145,14 @@ public class JewelMaking extends CommonSkill
 		}
 		return true;
 	}
-	
+
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
 		if(!canWhat(mob,E,"mend",quiet)) return false;
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		randomRecipeFix(mob,loadRecipes(),commands);
@@ -243,7 +243,7 @@ public class JewelMaking extends CommonSkill
 				verb="mounting "+materialName+" onto "+building.name();
 			}
 			beingDone.addElement(jewelI);
-			messedUp=!profficiencyCheck(0,auto);
+			messedUp=!profficiencyCheck(mob,0,auto);
 			completion=10;
 			FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
 			if(mob.location().okMessage(mob,msg))
@@ -461,7 +461,7 @@ public class JewelMaking extends CommonSkill
 		}
 
 
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<8) completion=8;
 
 		if(misctype.equalsIgnoreCase("bundle"))

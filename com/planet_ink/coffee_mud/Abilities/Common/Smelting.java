@@ -231,7 +231,7 @@ public class Smelting extends CommonSkill
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
 		verb="smelting "+doneResourceDesc.toLowerCase();
 
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<4) completion=4;
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);

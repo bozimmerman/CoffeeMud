@@ -27,7 +27,7 @@ public class Spell_BurningHands extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

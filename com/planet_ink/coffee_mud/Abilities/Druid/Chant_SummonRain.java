@@ -28,7 +28,7 @@ public class Chant_SummonRain extends Chant
 		int size=mob.location().getArea().numberOfIDedRooms();
 		size=size/mob.envStats().level();
 		if(size<0) size=0;
-		boolean success=profficiencyCheck(-size,auto);
+		boolean success=profficiencyCheck(mob,-size,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"The sky changes color!":"^S<S-NAME> chant(s) into the sky for water!^?");

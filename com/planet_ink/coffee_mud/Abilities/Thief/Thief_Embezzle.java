@@ -86,7 +86,7 @@ public class Thief_Embezzle extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-(levelDiff),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
 		if((success)&&(amount>0)&&(coins!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> embezzle(s) "+amount+" gold from the "+victim+" account maintained by <T-NAME>.");

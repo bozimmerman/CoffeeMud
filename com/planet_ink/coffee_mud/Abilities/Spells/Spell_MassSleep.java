@@ -31,7 +31,7 @@ public class Spell_MassSleep extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-20,auto);
+		boolean success=profficiencyCheck(mob,-20,auto);
 
 		if(success)
 		{

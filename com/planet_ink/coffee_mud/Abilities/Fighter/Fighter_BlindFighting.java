@@ -27,7 +27,7 @@ public class Fighter_BlindFighting extends StdAbility
 		if(!mob.isInCombat()) return;
 		if((!Sense.canBeSeenBy(mob.getVictim(),mob))
 		&&(Sense.canBeHeardBy(mob.getVictim(),mob))
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
 		{
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_VICTIM);
 			helpProfficiency(mob);

@@ -74,7 +74,7 @@ public class Spell_Toadstool extends Spell
 			return false;
 
 		int chance=-((target.envStats().level()-adjustedLevel(mob))*5);
-		boolean success=profficiencyCheck(chance-(target.charStats().getStat(CharStats.CONSTITUTION)*2),auto);
+		boolean success=profficiencyCheck(mob,chance-(target.charStats().getStat(CharStats.CONSTITUTION)*2),auto);
 
 		if(success)
 		{

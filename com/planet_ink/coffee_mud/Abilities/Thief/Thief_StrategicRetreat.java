@@ -29,7 +29,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		String where=Util.combine(commands,0);
 		if(!success)

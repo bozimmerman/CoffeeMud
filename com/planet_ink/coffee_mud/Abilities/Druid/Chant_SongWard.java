@@ -66,7 +66,7 @@ public class Chant_SongWard extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> <T-IS-ARE> protected from songs.":"^S<S-NAME> chant(s) for a ward against songs around <T-NAMESELF>.^?");

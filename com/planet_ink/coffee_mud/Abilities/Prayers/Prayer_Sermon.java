@@ -121,7 +121,7 @@ public class Prayer_Sermon extends Prayer
 			return false;
 
 
-		boolean success=profficiencyCheck(-(h.size()*3),auto);
+		boolean success=profficiencyCheck(mob,-(h.size()*3),auto);
 
 		if(success)
 		{

@@ -90,7 +90,7 @@ public class Speculate extends CommonSkill
 		success=false;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		if(profficiencyCheck(0,auto))
+		if(profficiencyCheck(mob,0,auto))
 			success=true;
 		int duration=45-mob.envStats().level();
 		if(duration<5) duration=5;

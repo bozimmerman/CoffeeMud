@@ -110,7 +110,7 @@ public class Chant_LocatePlants extends Chant
 			return true;
 		}
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
 		for(Enumeration r=target.location().getArea().getMap();r.hasMoreElements();)

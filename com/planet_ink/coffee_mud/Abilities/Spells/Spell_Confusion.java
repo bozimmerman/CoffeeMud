@@ -67,7 +67,7 @@ public class Spell_Confusion extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-target.envStats().level(),auto);
+		boolean success=profficiencyCheck(mob,-target.envStats().level(),auto);
 
 		if(success)
 		{

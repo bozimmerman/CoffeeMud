@@ -39,7 +39,7 @@ public class Thief_DetectTraps extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(+((mob.envStats().level()
+		boolean success=profficiencyCheck(mob,+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
 		Trap theTrap=CoffeeUtensils.fetchMyTrap(unlockThis);
 		if(unlockThis instanceof Exit)

@@ -154,7 +154,7 @@ public class Spell_StoreSpell extends Spell
 			return false;
 		overridemana=-1;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

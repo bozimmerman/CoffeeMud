@@ -193,7 +193,7 @@ public class Thief_ContractHit extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 		if(levelDiff>0) levelDiff=0;
-		boolean success=profficiencyCheck(levelDiff,auto);
+		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,CMMsg.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
 		if(mob.location().okMessage(mob,msg))

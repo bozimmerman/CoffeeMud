@@ -56,7 +56,7 @@ public class Spell_Summon extends Spell
 			return false;
 
 		int adjustment=(target.envStats().level()-mob.envStats().level())*3;
-		boolean success=profficiencyCheck(-adjustment,auto);
+		boolean success=profficiencyCheck(mob,-adjustment,auto);
 
 		if(success)
 		{

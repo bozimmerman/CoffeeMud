@@ -40,7 +40,7 @@ public class Fighter_CatchProjectile extends StdAbility
 		&&(mob.rangeToTarget()>0)
 		&&(mob.fetchEffect("Fighter_ReturnProjectile")==null)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>0)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
 		&&(mob.freeWearPositions(Item.HELD)>0))
 		{
 			Item w=(Item)msg.tool();

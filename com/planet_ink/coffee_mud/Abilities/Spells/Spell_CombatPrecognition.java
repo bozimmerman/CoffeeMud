@@ -31,7 +31,7 @@ public class Spell_CombatPrecognition extends Spell
 			if(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 			{
 				FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> avoid(s) the attack by <T-NAME>!");
-				if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-60,false))
+				if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-60,false))
 				&&(!lastTime)
 				&&(msg.source().getVictim()==mob)
 				&&(msg.source().rangeToTarget()==0)
@@ -48,7 +48,7 @@ public class Spell_CombatPrecognition extends Spell
 			else
 			if((msg.value()<=0)
 			   &&(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-			   &&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
+			   &&((mob.fetchAbility(ID())==null)||profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
 			{
 				String tool=null;
 				if((msg.tool()!=null)&&(msg.tool() instanceof Ability))
@@ -115,7 +115,7 @@ public class Spell_CombatPrecognition extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

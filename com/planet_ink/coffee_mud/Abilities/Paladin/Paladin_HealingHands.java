@@ -49,7 +49,7 @@ public class Paladin_HealingHands extends StdAbility
 
 		helpProfficiency(mob);
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

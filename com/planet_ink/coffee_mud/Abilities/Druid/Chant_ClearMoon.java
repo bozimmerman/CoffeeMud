@@ -34,7 +34,7 @@ public class Chant_ClearMoon extends Chant
 			return false;
 
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(!success)
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> chant(s) for a clear moon, but the magic fades.");

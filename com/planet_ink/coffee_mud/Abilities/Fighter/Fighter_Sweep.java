@@ -71,7 +71,7 @@ public class Fighter_Sweep extends StdAbility
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F<S-NAME> sweep(s)!^?"))

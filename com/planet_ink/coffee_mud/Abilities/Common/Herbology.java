@@ -94,7 +94,7 @@ public class Herbology extends CommonSkill
 		displayText="You are "+verb;
 		found=target;
 		messedUp=false;
-		if(!profficiencyCheck(0,auto)) messedUp=true;
+		if(!profficiencyCheck(mob,0,auto)) messedUp=true;
 		int duration=10-(mob.envStats().level()/3);
 		if(duration<2) duration=2;
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");

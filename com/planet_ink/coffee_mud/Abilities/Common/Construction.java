@@ -635,7 +635,7 @@ public class Construction extends CommonSkill
 				verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
 			break;
 		}
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<25) completion=25;
 

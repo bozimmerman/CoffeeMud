@@ -39,7 +39,7 @@ public class Fighter_ReturnProjectile extends StdAbility
 		&&(!(msg.tool() instanceof Electronics))
 		&&(mob.rangeToTarget()>0)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,-85+mob.charStats().getStat(CharStats.DEXTERITY),false))
 		&&(mob.freeWearPositions(Item.HELD)>0))
 		{
 			Item w=(Item)msg.tool();

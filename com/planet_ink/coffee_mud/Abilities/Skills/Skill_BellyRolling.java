@@ -43,7 +43,7 @@ public class Skill_BellyRolling extends StdAbility
 		{
 			// can't use -NAME for msg.source() lest sitting prevent it
 			FullMsg msg2=new FullMsg(mob,msg.source(),null,CMMsg.MSG_SITMOVE,"<S-NAME> roll(s) away from the attack by <T-NAMESELF>!");
-			if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false))
+			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-50,false))
 			&&((msg.source().getVictim()==mob)||(msg.source().getVictim()==null))
 			&&(mob.location().okMessage(mob,msg2)))
 			{

@@ -20,7 +20,7 @@ public class Paladin_Aura extends Paladin
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false);
+		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false);
 		for(int i=paladinsGroup.size()-1;i>=0;i--)
 		{
 			try

@@ -39,7 +39,7 @@ public class Spell_ChainLightening extends Spell
 		int maxDie=adjustedLevel(mob);
 		int damage = Dice.roll(maxDie,8,1);
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			if(mob.location().show(mob,null,this,affectType(auto),(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CommonStrings.msp("lightning.wav",40)))

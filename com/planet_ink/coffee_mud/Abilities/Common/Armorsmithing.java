@@ -386,7 +386,7 @@ public class Armorsmithing extends CommonSkill
 		}
 
 
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;
 
 		if(bundle)

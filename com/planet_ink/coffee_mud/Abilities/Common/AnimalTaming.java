@@ -164,7 +164,7 @@ public class AnimalTaming extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		messedUp=!profficiencyCheck(-taming.envStats().level(),auto);
+		messedUp=!profficiencyCheck(mob,-taming.envStats().level(),auto);
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
 		verb="taming "+M.name();

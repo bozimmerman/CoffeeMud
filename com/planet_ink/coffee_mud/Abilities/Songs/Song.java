@@ -104,7 +104,7 @@ public class Song extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> hit(s) a foul note on "+name()+" due to <S-HIS-HER> armor!");
 			return false;
 		}
-		
+
 		if(skipStandardSongInvoke())
 			return true;
 
@@ -114,7 +114,7 @@ public class Song extends StdAbility
 			return false;
 		}
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		unsing(mob,mob,null);
 		if(success)
 		{

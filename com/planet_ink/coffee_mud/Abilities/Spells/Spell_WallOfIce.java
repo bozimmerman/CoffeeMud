@@ -125,7 +125,7 @@ public class Spell_WallOfIce extends Spell
 		Environmental target = mob.location();
 
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

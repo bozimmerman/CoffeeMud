@@ -21,7 +21,7 @@ public class Spell_Delirium extends Spell
 	{
 		if((invoker==null)||(invoker.location()==null))
 			return likeThisOne;
-		
+
 		if(likeThisOne instanceof Room)
 		{
 			int tries=0;
@@ -208,7 +208,7 @@ public class Spell_Delirium extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

@@ -62,7 +62,7 @@ public class Spell_ResistArrows extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) absorbantly protected.":"^S<S-NAME> invoke(s) a non-porous barrier of protection around <T-NAMESELF>.^?");

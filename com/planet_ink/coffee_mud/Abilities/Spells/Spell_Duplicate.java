@@ -32,7 +32,7 @@ public class Spell_Duplicate extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		int multiPlier=5;
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
@@ -43,7 +43,7 @@ public class Spell_Duplicate extends Spell
 		mob.tell("You lose "+expLoss+" experience points.");
 		MUDFight.postExperience(mob,null,null,-expLoss,false);
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

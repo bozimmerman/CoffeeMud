@@ -132,7 +132,7 @@ public class Lacquerring extends CommonSkill
 		displayText="You are "+verb;
 		found=target;
 		if(darkFlag) writing=Util.capitalize(writing);
-		if(!profficiencyCheck(0,auto)) writing="";
+		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=60-mob.envStats().level();
 		if(duration<12) duration=12;
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) lacquerring "+target.name());

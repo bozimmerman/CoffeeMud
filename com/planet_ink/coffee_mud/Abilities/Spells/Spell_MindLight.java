@@ -76,7 +76,7 @@ public class Spell_MindLight extends Spell
 		}
 
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

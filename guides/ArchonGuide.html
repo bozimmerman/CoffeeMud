@@ -730,7 +730,8 @@ taking the easy way out.<BR>"Prop_NoSummon" makes sure that
 everyone leaves of their own free will.<BR>"Prop_ReqAlignments" lets you limit the alignment of all 
 who enter.<BR>"Prop_ReqCapacity" lets you limit the number 
 of folks who may enter each room.<BR>"Prop_ReqClasses" lets 
-you limit the character class of those who enter.<BR>"Prop_ReqEntry" lets you limit entry to folks by many 
+you limit the character class of those who enter.<BR>  
+  "Prop_ModExperience" modifies experience gained in this area.<BR>"Prop_ReqEntry" lets you limit entry to folks by many 
 different criteria.<BR>"Prop_ReqHeight" keeps out tall 
 people, or at least those unwilling to crawl.<BR>"Prop_ReqLevels" lets you limit entry by levels.<BR>"Prop_ReqRaces" lets you limit entry by race.<BR>"Prop_PKill" makes this a place that only the bloodthirsty 
 may enter.<BR>"Prop_NoPKill" keeps out the riffraff.<BR><BR>To learn more about the properties 
@@ -823,7 +824,8 @@ sale, and ensures that you never run out of new rooms to buy.<BR>"Prop_NarrowLed
 are very very careful.<BR>"Prop_NoPurge" makes the room 
 safe for dropped garbage.<BR>"Prop_ReqTattoo" checks out a 
 mobs forearm before letting them in.<BR>"Prop_RestrictSpells" shuts down a list of spells that you 
-provide.<BR>"Prop_RoomDark" turns off the lights.<BR>"Prop_RoomForSale" puts this one little room on the 
+provide.<BR>  "Prop_ModExperience" modifies experience gained while in the 
+room.<BR>"Prop_RoomDark" turns off the lights.<BR>"Prop_RoomForSale" puts this one little room on the 
 market.<BR>"Prop_RoomsForSale" designates that this room, 
 and all others like it nearby, are for sale as a group.<BR>"Prop_RoomView" makes this room seem to be another...<BR>"Prop_AbilityImmunity" protects the room from specified 
 targeted spells.<BR>"Prop_RoomWatch" allows folks in other 
@@ -1238,11 +1240,11 @@ entries remain "new" longer than normal ones.&nbsp; These are created by
 starting off an entry subject with the letters MOTD (for message of the day), 
 MOTM, or MOTY.&nbsp; If a subject starts with those letters, in uppercase, the 
 entry will persist as new for a day, month, or year respectively.</P>
-<P>Archons can also make use of the Web Macros system inside the body or message 
-part of a journal entry.&nbsp; To do so, the message must start with the 
-characters &lt;cmvp&gt;.&nbsp; If those six characters start the message, then 
-the message may contain web macros.&nbsp; See the WebServer Guide for more 
-information on this feature.</P>
+<P>Archons can also make use of the Web Macros system 
+inside the body or message part of a journal entry.&nbsp; To do so, the message 
+must start with the characters &lt;cmvp&gt;.&nbsp; If those six characters start 
+the message, then the message may contain web macros.&nbsp; See the WebServer 
+Guide for more information on this feature.</P>
 <P>Whenever a GenJournal is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include all of the 
@@ -2028,7 +2030,8 @@ throws.<BR>"Prop_HaveSpellCast" gives a spell effect to the
 owner.<BR>"Prop_HaveZapper" restricts ownership.<BR>"Prop_Hidden" makes an item hidden, temporarily.<BR>"Prop_Invisibility" makes an item invisible.<BR>"Prop_AbilityImmunity" protects the&nbsp;item from 
 specified targeted spells.<BR>"Prop_ItemTransporter" makes 
 an item that transports things.<BR>"Prop_ItemTransReceiver" 
-makes an item receives transported things.<BR>"Prop_NoPurge" makes the item a permanent piece of 
+makes an item receives transported things.<BR>"Prop_ModExperience" modifies 
+experience gained when holding/wielding/wearing this.<BR>"Prop_NoPurge" makes the item a permanent piece of 
 garbage.<BR>"Prop_OpenPassword" gives a container a secret 
 opening word.<BR>"Prop_RideAdjuster" modifies the mounted 
 persons stats.<BR>"Prop_RideResister" modifies the mounted 
@@ -2839,7 +2842,9 @@ cast.<BR>"Prop_Retainable" changes its price to
 shopkeepers.<BR>"Prop_RideAdjuster" adjusts stats when 
 ridden.<BR>"Prop_RideResister" adjusts saves when 
 ridden.<BR>"Prop_RideSpellCast" gives spell-affects when 
-ridden.<BR>"Prop_RideZapper" restricts riding.<BR>"Prop_SafePet" makes unattackable.<BR>"Prop_SpellReflecting" makes spell reflecting.<BR>"Prop_StatTrainer" gives good stats.<BR>"Prop_TattooAdder" gives a tattoo upon death.<BR>"Prop_TicketTaker" requires a price to ride.<BR>"Prop_WeaponImmunity" gives immunities to certain attacks 
+ridden.<BR>"Prop_RideZapper" restricts riding.<BR>"Prop_SafePet" makes unattackable.<BR>"Prop_SpellReflecting" makes spell 
+reflecting.<BR>"Prop_ModExperience" modified experience gained from killing 
+him.<BR>"Prop_StatTrainer" gives good stats.<BR>"Prop_TattooAdder" gives a tattoo upon death.<BR>"Prop_TicketTaker" requires a price to ride.<BR>"Prop_WeaponImmunity" gives immunities to certain attacks 
 from low level weapons.<BR>"Regeneration" regenerates hit 
 points during combat.<BR>"Skill_AllBreathing" makes them a 
 fish.<BR>"Skill_Resistance" gives resistances that you 

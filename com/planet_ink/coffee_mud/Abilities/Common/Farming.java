@@ -144,7 +144,7 @@ public class Farming extends CommonSkill
 			return false;
 
 		mine.destroy();
-		if((profficiencyCheck(0,auto))&&(isPotentialCrop(mob.location(),code)))
+		if((profficiencyCheck(mob,0,auto))&&(isPotentialCrop(mob.location(),code)))
 			found=(Item)makeResource(code,false);
 		int duration=45-mob.envStats().level();
 		if(duration<25) duration=25;

@@ -87,7 +87,7 @@ public class Chant_Treehouse extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{
@@ -123,7 +123,7 @@ public class Chant_Treehouse extends Chant
 				if(A!=null) newRoom.addEffect(A);
 				A=CMClass.getAbility("Prop_NoTeleportOut");
 				if(A!=null) newRoom.addEffect(A);
-				
+
 				newRoom.rawExits()[Directions.DOWN]=E;
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{

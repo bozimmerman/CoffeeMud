@@ -50,7 +50,7 @@ public class Dance_Square extends Dance
 		if((!auto)&&(!Sense.aliveAwakeMobile(mob,false)))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		undance(mob,null,null);
 		if(success)
 		{

@@ -101,7 +101,7 @@ public class Chant_Reincarnation extends Chant
 
 
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			int modifier=0;

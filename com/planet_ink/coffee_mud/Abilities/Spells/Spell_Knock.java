@@ -72,7 +72,7 @@ public class Spell_Knock extends Spell
 
 		int levelDiff=openThis.envStats().level()-mob.envStats().level();
 
-		boolean success=profficiencyCheck(-(levelDiff*5),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff*5),auto);
 
 		if(!success)
 			beneficialWordsFizzle(mob,openThis,"<S-NAME> point(s) at "+openThis.name()+" and shouts incoherantly, but nothing happens.");

@@ -86,7 +86,7 @@ public class Fishing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		int resourceType=mob.location().myResource();
-		if((profficiencyCheck(0,auto))
+		if((profficiencyCheck(mob,0,auto))
 		   &&(resourceType==EnvResource.RESOURCE_FISH))
 		{
 			found=(Item)makeResource(resourceType,false);

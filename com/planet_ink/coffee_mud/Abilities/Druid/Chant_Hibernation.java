@@ -83,7 +83,7 @@ public class Chant_Hibernation extends Chant
 		MOB mob=(MOB)affected;
 
 		if(tickID!=MudHost.TICK_MOB) return true;
-		if(!profficiencyCheck(0,false)) return true;
+		if(!profficiencyCheck(null,0,false)) return true;
 
 		if((!mob.isInCombat())
 		&&(Sense.isSleeping(mob)))
@@ -122,7 +122,7 @@ public class Chant_Hibernation extends Chant
 			return false;
 		}
 		// now see if it worked
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -228,7 +228,7 @@ public class Prop_ClanEquipment extends Property
 				}
 				message = message.trim();
 				Ability wandUse = mob.fetchAbility("Skill_WandUse");
-				if ( (wandUse == null) || (!wandUse.profficiencyCheck(0, false)))
+				if ( (wandUse == null) || (!wandUse.profficiencyCheck(mob,0, false)))
 				{
 					mob.tell(me.name() + " glows faintly for a moment, then fades.");
 				}

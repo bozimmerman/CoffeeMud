@@ -190,7 +190,7 @@ public class Masonry extends CommonSkill
 								||(R.rawDoors()[d].roomID().length()>0))
 									R.rawExits()[d]=room.rawExits()[d];
 							}
-							
+
 							R.startItemRejuv();
 							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 							{
@@ -228,7 +228,7 @@ public class Masonry extends CommonSkill
 								CMClass.DBEngine().DBCreateRoom(R2,R2.ID());
 								CMClass.DBEngine().DBUpdateExits(R2);
 							}
-							
+
 							R.getArea().clearMap();
 							R.getArea().fillInAreaRoom(R);
 							CMClass.DBEngine().DBUpdateRoom(R);
@@ -665,7 +665,7 @@ public class Masonry extends CommonSkill
 				verb="demolishing the "+Directions.getDirectionName(dir)+" wall";
 			break;
 		}
-		messedUp=!profficiencyCheck(0,auto);
+		messedUp=!profficiencyCheck(mob,0,auto);
 		startStr="<S-NAME> start(s) "+verb;
 		if(completion<15) completion=15;
 

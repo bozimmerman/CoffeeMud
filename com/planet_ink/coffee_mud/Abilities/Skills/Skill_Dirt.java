@@ -84,7 +84,7 @@ public class Skill_Dirt extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(-(target.charStats().getStat(CharStats.DEXTERITY)*3),auto);
+		boolean success=profficiencyCheck(mob,-(target.charStats().getStat(CharStats.DEXTERITY)*3),auto);
 
 		if(success)
 		{

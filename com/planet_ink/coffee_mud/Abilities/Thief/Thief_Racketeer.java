@@ -61,7 +61,7 @@ public class Thief_Racketeer extends ThiefSkill
 			return false;
 
 		int amount=Dice.roll(profficiency(),100,0);
-		boolean success=profficiencyCheck(-(levelDiff),auto);
+		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "+amount+" gold of protection money from <T-NAME>.");

@@ -69,7 +69,7 @@ public class Ranger_Sneak extends StdAbility
 				levelDiff=levelDiff*10;
 			else
 				levelDiff=levelDiff*5;
-			success=profficiencyCheck(levelDiff,auto);
+			success=profficiencyCheck(mob,levelDiff,auto);
 
 			if(success)
 			{

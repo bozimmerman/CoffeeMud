@@ -32,7 +32,7 @@ public class Paladin_Goodness extends Paladin
 				&&(target.getAlignment()<350)
 				&&((paladinsGroup.contains(target))
 					||((target.getVictim()==invoker)&&(target.rangeToTarget()==0)))
-			    &&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+			    &&((invoker==null)||(invoker.fetchAbility(ID())==null)||profficiencyCheck(null,0,false)))
 				{
 					int harming=Dice.roll(1,15,0);
 					if(target.getAlignment()<350)

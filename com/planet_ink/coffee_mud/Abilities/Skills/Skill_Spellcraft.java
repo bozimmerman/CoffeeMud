@@ -39,7 +39,7 @@ public class Skill_Spellcraft extends StdAbility
 		&&(mob.location().isInhabitant(msg.source()))
 		&&(Sense.canBeSeenBy(msg.source(),mob))
 		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
-		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
+		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(mob,0,false)))
 		{
 			Ability A=(Ability)copyOf();
 			A.setMiscText(msg.tool().ID());

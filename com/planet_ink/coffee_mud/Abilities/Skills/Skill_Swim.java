@@ -78,14 +78,14 @@ public class Skill_Swim extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		Room R=mob.location();
 		if((R!=null)
 		&&(R.okMessage(mob,msg)))
 		{
 			R.send(mob,msg);
-			success=profficiencyCheck(0,auto);
+			success=profficiencyCheck(mob,0,auto);
 			if(!success)
 				R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
 			else

@@ -60,7 +60,7 @@ public class Spell_SongShield extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> look(s) protected from songs.":"^S<S-NAME> invoke(s) an anti-song spell around <T-NAMESELF>.^?");

@@ -23,7 +23,7 @@ public class Prayer_Weather extends Prayer
 		int size=mob.location().getArea().numberOfIDedRooms();
 		size=size-(mob.envStats().level()*20);
 		if(size<0) size=0;
-		boolean success=profficiencyCheck(-size,auto);
+		boolean success=profficiencyCheck(mob,-size,auto);
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"The sky changes color!":"^S<S-NAME> "+prayWord(mob)+" for a change in weather!^?");

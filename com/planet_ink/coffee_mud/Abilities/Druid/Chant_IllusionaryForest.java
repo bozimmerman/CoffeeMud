@@ -110,7 +110,7 @@ public class Chant_IllusionaryForest extends Chant
 			return false;
 
 		Environmental target = mob.location();
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)
 		{

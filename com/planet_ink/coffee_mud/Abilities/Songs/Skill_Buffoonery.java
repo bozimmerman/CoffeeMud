@@ -92,7 +92,7 @@ public class Skill_Buffoonery extends BardSkill
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		boolean success=profficiencyCheck(0,auto);
+		boolean success=profficiencyCheck(mob,0,auto);
 		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
 		else

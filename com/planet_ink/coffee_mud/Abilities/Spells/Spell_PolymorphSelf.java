@@ -102,7 +102,7 @@ public class Spell_PolymorphSelf extends Spell
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		int statDiff=mobStatTotal-fakeStatTotal;
-		boolean success=profficiencyCheck(-(statDiff*5),auto);
+		boolean success=profficiencyCheck(mob,-(statDiff*5),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

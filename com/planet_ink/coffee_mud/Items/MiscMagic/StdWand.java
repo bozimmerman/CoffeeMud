@@ -107,7 +107,7 @@ public class StdWand extends StdItem implements Wand
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
 				Ability wandUse=mob.fetchAbility("Skill_WandUse");
-				if((wandUse==null)||(!wandUse.profficiencyCheck(0,false)))
+				if((wandUse==null)||(!wandUse.profficiencyCheck(null,0,false)))
 					mob.tell(me.name()+" glows faintly for a moment, then fades.");
 				else
 				{

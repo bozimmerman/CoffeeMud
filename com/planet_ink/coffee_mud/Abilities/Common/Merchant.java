@@ -607,7 +607,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(!profficiencyCheck(0,auto))
+		if(!profficiencyCheck(mob,0,auto))
 		{
 			commonTell(mob,target,null,"You fail to put <T-NAME> up for sale.");
 			return false;

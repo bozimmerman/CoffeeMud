@@ -265,7 +265,7 @@ public class LockSmith extends CommonSkill
 		int profficiencyAddition=0;
 		if(workingOn.envStats().level()>mob.envStats().level())
 			profficiencyAddition=workingOn.envStats().level()-mob.envStats().level();
-		messedUp=!profficiencyCheck(profficiencyAddition*5,auto);
+		messedUp=!profficiencyCheck(mob,profficiencyAddition*5,auto);
 		if(completion<8) completion=8;
 
 		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,startStr);
