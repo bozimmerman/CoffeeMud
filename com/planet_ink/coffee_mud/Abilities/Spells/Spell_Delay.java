@@ -7,39 +7,15 @@ import java.util.*;
 
 public class Spell_Delay extends Spell
 {
+	public String ID() { return "Spell_Delay"; }
+	public String name(){return "Delay";}
+	public String displayText(){return "(Delay spell)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return CAN_ROOMS;}
 	private Ability shooter=null;
 	private Vector parameters=null;
-	public Spell_Delay()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Delay";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Delay spell)";
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=Ability.CAN_ROOMS;
-		
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Delay();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public Environmental newInstance(){	return new Spell_Delay();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void unInvoke()
 	{
@@ -118,7 +94,7 @@ public class Spell_Delay extends Spell
 		Environmental target = mob.location();
 		if((target.fetchAffect(this.ID())!=null)||(givenTarget!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"A delay has already been cast here!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"A delay has already been cast here!");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -133,7 +109,7 @@ public class Spell_Delay extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> point(s) and shout(s) 'NOW!'.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

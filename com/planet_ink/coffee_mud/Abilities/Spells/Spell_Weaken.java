@@ -7,40 +7,13 @@ import java.util.*;
 
 public class Spell_Weaken extends Spell
 {
-	public Spell_Weaken()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Weaken";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Weaken spell)";
-
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(11);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Weaken();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
-
+	public String ID() { return "Spell_Weaken"; }
+	public String name(){return "Weaken";}
+	public String displayText(){return "(Weaken spell)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Weaken();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -84,7 +57,7 @@ public class Spell_Weaken extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

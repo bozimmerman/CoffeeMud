@@ -7,34 +7,11 @@ import java.util.*;
 
 public class Spell_Ventriloquate extends Spell
 {
-	public Spell_Ventriloquate()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Ventriloquate";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Ventriloquate();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
-
+	public String ID() { return "Spell_Ventriloquate"; }
+	public String name(){return "Ventriloquate";}
+	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	public Environmental newInstance(){	return new Spell_Ventriloquate();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -59,7 +36,7 @@ public class Spell_Ventriloquate extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

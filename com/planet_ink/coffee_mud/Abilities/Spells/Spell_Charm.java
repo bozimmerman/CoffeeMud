@@ -7,39 +7,13 @@ import java.util.*;
 
 public class Spell_Charm extends Spell
 {
-	public Spell_Charm()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Charm";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Charmed)";
-
-		quality=Ability.MALICIOUS;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		baseEnvStats().setLevel(6);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Charm();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_Charm"; }
+	public String name(){return "Charm";}
+	public String displayText(){return "(Charmed)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Charm();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean okAffect(Affect affect)
 	{

@@ -7,36 +7,13 @@ import java.util.*;
 
 public class Spell_Enlarge extends Spell
 {
-
+	public String ID() { return "Spell_Enlarge"; }
+	public String name(){return "Enlarge Object";}
+	protected int canTargetCode(){return CAN_ITEMS;}
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
-
-	public Spell_Enlarge()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Enlarge Object";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Enlarge();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public Environmental newInstance(){	return new Spell_Enlarge();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -68,7 +45,7 @@ public class Spell_Enlarge extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

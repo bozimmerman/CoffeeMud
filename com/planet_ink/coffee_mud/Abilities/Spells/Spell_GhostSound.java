@@ -7,37 +7,13 @@ import java.util.*;
 
 public class Spell_GhostSound extends Spell
 {
-	public Spell_GhostSound()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Ghost Sound";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Ghost Sound spell)";
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=0;
-		
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_GhostSound();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_GhostSound"; }
+	public String name(){return "Ghost Sound";}
+	public String displayText(){return "(Ghost Sound spell)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){ return new Spell_GhostSound();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(int tickID)
 	{
@@ -107,7 +83,7 @@ public class Spell_GhostSound extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -123,7 +99,7 @@ public class Spell_GhostSound extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

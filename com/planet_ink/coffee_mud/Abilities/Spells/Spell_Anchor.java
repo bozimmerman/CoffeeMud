@@ -7,36 +7,13 @@ import java.util.*;
 
 public class Spell_Anchor extends Spell
 {
-	public Spell_Anchor()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Anchor";
-		displayText="(Anchor)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(9);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Anchor();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
-	}
+	public String ID() { return "Spell_Anchor"; }
+	public String name(){return "Anchor";}
+	public String displayText(){return "(Anchor)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Anchor();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 
 	public void unInvoke()
@@ -101,7 +78,7 @@ public class Spell_Anchor extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"An magical anchoring field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anchoring field of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

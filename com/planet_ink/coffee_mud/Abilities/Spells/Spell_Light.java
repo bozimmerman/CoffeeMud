@@ -8,37 +8,13 @@ import java.util.*;
 
 public class Spell_Light extends Spell
 {
-
-	public Spell_Light()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Light";
-		displayText="(Light)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Light();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Light"; }
+	public String name(){return "Light";}
+	public String displayText(){return "(Light)";}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Light();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -74,7 +50,7 @@ public class Spell_Light extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
+		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

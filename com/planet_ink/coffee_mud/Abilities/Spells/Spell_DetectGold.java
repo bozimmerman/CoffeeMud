@@ -8,37 +8,16 @@ import java.util.*;
 
 public class Spell_DetectGold extends Spell
 {
+	public String ID() { return "Spell_DetectGold"; }
+	public String name(){return "Detect Gold";}
+	public String displayText(){return "(Detect Gold)";}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_DetectGold();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	
 	Room lastRoom=null;
-	public Spell_DetectGold()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Detect Gold";
-		displayText="(Detect Gold)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_DetectGold();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -203,7 +182,7 @@ public class Spell_DetectGold extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) golden senses!":"^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> gain(s) golden senses!":"^S<S-NAME> incant(s) softly, and gain(s) golden senses!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

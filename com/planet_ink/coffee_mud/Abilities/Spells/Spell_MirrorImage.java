@@ -7,42 +7,18 @@ import java.util.*;
 
 public class Spell_MirrorImage extends Spell
 {
+	public String ID() { return "Spell_MirrorImage"; }
+	public String name(){return "Mirror Image";}
+	public String displayText(){return "(Mirror Image spell)";}
+	public int quality(){return BENEFICIAL_SELF;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_MirrorImage();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	
 	private	Random randomizer = new Random(System.currentTimeMillis());
 	private int numberOfImages = 0;
 	private boolean notAgain=false;
 
-	public Spell_MirrorImage()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mirror Image";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Mirror Image spell)";
-
-		quality=Ability.BENEFICIAL_SELF;
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(11);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MirrorImage();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -153,7 +129,7 @@ public class Spell_MirrorImage extends Spell
 			// what happened.
 			invoker=mob;
 			numberOfImages = Dice.roll(1,(int)(Math.round(Util.div(adjustedLevel(mob),3.0))),2);
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A spell forms around":"^S<S-NAME> incant(s) the reflective spell of")+" <T-NAME>, and suddenly " + numberOfImages + " copies appear.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

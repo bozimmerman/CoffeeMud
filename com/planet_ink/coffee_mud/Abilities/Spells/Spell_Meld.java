@@ -7,38 +7,11 @@ import java.util.*;
 
 public class Spell_Meld extends Spell
 {
-
-	public Spell_Meld()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Meld";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Meld)";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(6);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Meld();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public String ID() { return "Spell_Meld"; }
+	public String name(){return "Meld";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_Meld();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)
 	{
@@ -165,7 +138,7 @@ public class Spell_Meld extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

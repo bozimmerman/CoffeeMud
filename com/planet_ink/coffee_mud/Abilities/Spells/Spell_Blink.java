@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_Blink extends Spell
 {
-	public Spell_Blink()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Blink";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Blink spell)";
-
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		quality=Ability.BENEFICIAL_OTHERS;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(12);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Blink();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_Blink"; }
+	public String name(){return "Blink";}
+	public String displayText(){return "(Blink spell)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Blink();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public void unInvoke()
 	{
@@ -134,7 +109,7 @@ public class Spell_Blink extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> begin(s) to blink!":"^S<S-NAME> cast(s) a spell at <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> begin(s) to blink!":"^S<S-NAME> cast(s) a spell at <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

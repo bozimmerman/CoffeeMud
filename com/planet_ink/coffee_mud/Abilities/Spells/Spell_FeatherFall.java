@@ -7,39 +7,13 @@ import java.util.*;
 
 public class Spell_FeatherFall extends Spell
 {
-	public Spell_FeatherFall()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Feather Fall";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Feather Fall)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.OK_OTHERS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(3);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FeatherFall();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public String ID() { return "Spell_FeatherFall"; }
+	public String name(){return "Feather Fall";}
+	public String displayText(){return "(Feather Fall)";}
+	public int quality(){ return OK_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_FeatherFall();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -79,7 +53,7 @@ public class Spell_FeatherFall extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> become(s) very light!":"^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> become(s) very light!":"^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,34 +7,14 @@ import java.util.*;
 
 public class Spell_FloatingDisc extends Spell
 {
+	public String ID() { return "Spell_FloatingDisc"; }
+	public String name(){return "Floating Disc";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_FloatingDisc();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	
 	boolean wasntMine=false;
-	public Spell_FloatingDisc()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Floating Disc";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(5);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FloatingDisc();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
 
 	public void unInvoke()
 	{
@@ -111,7 +91,7 @@ public class Spell_FloatingDisc extends Spell
 				}
 				target.envStats().setWeight(oldweight);
 			}
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,44 +7,17 @@ import java.util.*;
 
 public class Spell_Nightmare extends Spell
 {
+	public String ID() { return "Spell_Nightmare"; }
+	public String name(){return "Nightmare";}
+	public String displayText(){return "(You are having a nightmare)";}
+	public int maxRange(){return 1;}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Nightmare();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public int amountRemaining=0;
 	boolean notAgainThisRound=false;
-	public Spell_Nightmare()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Nightmare";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(You are having a nightmare)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=1;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Nightmare();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
-
 
 	public boolean okAffect(Affect affect)
 	{
@@ -142,7 +115,7 @@ public class Spell_Nightmare extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))||(mob.location().okAffect(msg2)))
 			{

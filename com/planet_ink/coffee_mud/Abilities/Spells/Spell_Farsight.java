@@ -7,33 +7,11 @@ import java.util.*;
 
 public class Spell_Farsight extends Spell
 {
-	public Spell_Farsight()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Farsight";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Farsight();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_Farsight"; }
+	public String name(){return "Farsight";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_Farsight();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -45,7 +23,7 @@ public class Spell_Farsight extends Spell
 			this.beneficialVisualFizzle(mob,null,"<S-NAME> get(s) a far off look, but the spell fizzles.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,affectType,"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
+			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

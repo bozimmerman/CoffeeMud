@@ -8,37 +8,14 @@ import java.util.*;
 
 public class Spell_DetectMagic extends Spell
 {
-
-	public Spell_DetectMagic()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Detect Magic";
-		displayText="(Detect Magic)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(5);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_DetectMagic();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_DetectMagic"; }
+	public String name(){return "Detect Magic";}
+	public String displayText(){return "(Detect Magic)";}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_DetectMagic();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
+	
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -71,7 +48,7 @@ public class Spell_DetectMagic extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> gain(s) sparkling eyes!":"^S<S-NAME> incant(s) softly, and gain(s) sparkling eyes!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,34 +7,11 @@ import java.util.*;
 
 public class Spell_StoneFlesh extends Spell
 {
-	public Spell_StoneFlesh()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Stone Flesh";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-
-		baseEnvStats().setLevel(19);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_StoneFlesh();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
-
+	public String ID() { return "Spell_StoneFlesh"; }
+	public String name(){return "Stone Flesh";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_StoneFlesh();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -69,7 +46,7 @@ public class Spell_StoneFlesh extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

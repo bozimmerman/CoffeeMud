@@ -7,35 +7,13 @@ import java.util.*;
 
 public class Spell_WizardLock extends Spell
 {
-
-	public Spell_WizardLock()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Wizard Lock";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
-		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
-
-		baseEnvStats().setLevel(3);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_WizardLock();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
-
+	public String ID() { return "Spell_WizardLock"; }
+	public String name(){return "Wizard Lock";}
+	public String displayText(){return "(Wizard Locked)";}
+	protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	public Environmental newInstance(){	return new Spell_WizardLock();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -142,7 +120,7 @@ public class Spell_WizardLock extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, encanting.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger at <T-NAMESELF>, encanting.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

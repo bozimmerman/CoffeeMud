@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_GraceOfTheCat extends Spell
 {
-	public Spell_GraceOfTheCat()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Grace Of The Cat";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Grace Of The Cat spell)";
-
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(6);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_GraceOfTheCat();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
+	public String ID() { return "Spell_GraceOfTheCat"; }
+	public String name(){return "Grace Of The Cat";}
+	public String displayText(){return "(Grace Of The Cat spell)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){ return new Spell_GraceOfTheCat();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -98,7 +73,7 @@ public class Spell_GraceOfTheCat extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> speak(s) and gesture(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

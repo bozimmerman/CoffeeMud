@@ -8,38 +8,13 @@ import java.util.*;
 
 public class Spell_WeaknessAcid extends Spell
 {
-
-	public Spell_WeaknessAcid()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Weakness to Acid";
-		displayText="(Weakness to Acid)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_WeaknessAcid();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
-
+	public String ID() { return "Spell_WeaknessAcid"; }
+	public String name(){return "Weakness to Acid";}
+	public String displayText(){return "(Weakness to Acid)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_WeaknessAcid();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -90,7 +65,7 @@ public class Spell_WeaknessAcid extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A shimmering absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering absorbing field of weakness around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A shimmering absorbing field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering absorbing field of weakness around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

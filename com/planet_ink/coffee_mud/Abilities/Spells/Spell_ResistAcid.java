@@ -8,38 +8,13 @@ import java.util.*;
 
 public class Spell_ResistAcid extends Spell
 {
-
-	public Spell_ResistAcid()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resist Acid";
-		displayText="(Resist Acid)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(5);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ResistAcid();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
-	}
-
+	public String ID() { return "Spell_ResistAcid"; }
+	public String name(){return "Resist Acid";}
+	public String displayText(){return "(Resist Acid)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_ResistAcid();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()
 	{
@@ -72,7 +47,7 @@ public class Spell_ResistAcid extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> feel(s) oilily protected.":"^S<S-NAME> invoke(s) a oily field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> feel(s) oilily protected.":"^S<S-NAME> invoke(s) a oily field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

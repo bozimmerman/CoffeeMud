@@ -7,33 +7,11 @@ import java.util.*;
 
 public class Spell_RechargeWand extends Spell
 {
-	public Spell_RechargeWand()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Recharge Wand";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-
-		baseEnvStats().setLevel(17);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_RechargeWand();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_RechargeWand"; }
+	public String name(){return "Recharge Wand";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_RechargeWand();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -62,7 +40,7 @@ public class Spell_RechargeWand extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forhead.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF> as sweat beads form on <S-HIS-HER> forhead.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

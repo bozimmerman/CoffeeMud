@@ -7,34 +7,11 @@ import java.util.*;
 
 public class Spell_Summon extends Spell
 {
-	public Spell_Summon()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(18);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Summon();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
-
+	public String ID() { return "Spell_Summon"; }
+	public String name(){return "Summon";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_Summon();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -80,7 +57,7 @@ public class Spell_Summon extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> summon(s) <T-NAME> in a mighty cry!^?");
 			if((mob.location().okAffect(msg))&&(oldRoom.okAffect(msg)))
 			{
 				mob.location().send(mob,msg);

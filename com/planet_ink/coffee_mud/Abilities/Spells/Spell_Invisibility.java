@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_Invisibility extends Spell
 {
-	public Spell_Invisibility()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Invisibility";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Invisibility spell)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.BENEFICIAL_OTHERS;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Invisibility();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_Invisibility"; }
+	public String name(){return "Invisibility";}
+	public String displayText(){return "(Invisibility spell)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Invisibility();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
@@ -101,7 +76,7 @@ public class Spell_Invisibility extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

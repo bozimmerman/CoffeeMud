@@ -7,38 +7,12 @@ import java.util.*;
 
 public class Spell_Knock extends Spell
 {
-
-	public Spell_Knock()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Knock";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Knock Spell)";
-
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(3);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Knock();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Knock"; }
+	public String name(){return "Knock";}
+	public String displayText(){return "(Knock Spell)";}
+	protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
+	public Environmental newInstance(){	return new Spell_Knock();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -63,7 +37,7 @@ public class Spell_Knock extends Spell
 			beneficialWordsFizzle(mob,openThis,"<S-NAME> point(s) at "+openThis.name()+" and shouts incoherantly, but nothing happens.");
 		else
 		{
-			mob.location().show(mob,null,affectType,auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at "+openThis.name()+".^?");
+			mob.location().show(mob,null,affectType(auto),auto?openThis.name()+" begin(s) to glow!":"^S<S-NAME> point(s) at "+openThis.name()+".^?");
 			for(int a=0;a<openThis.numAffects();a++)
 			{
 				Ability A=openThis.fetchAffect(a);
@@ -75,7 +49,7 @@ public class Spell_Knock extends Spell
 				}
 			}
 
-			FullMsg msg=new FullMsg(mob,openThis,null,affectType,"^S<S-NAME> point(s) at <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,openThis,null,affectType(auto),"^S<S-NAME> point(s) at <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				msg=new FullMsg(mob,openThis,null,Affect.MSG_UNLOCK,null);

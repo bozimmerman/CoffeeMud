@@ -7,39 +7,13 @@ import java.util.*;
 
 public class Spell_Mute extends Spell
 {
-	public Spell_Mute()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mute";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Mute)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(10);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Mute();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
-
+	public String ID() { return "Spell_Mute"; }
+	public String name(){return "Mute";}
+	public String displayText(){return "(Mute)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Mute();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -84,7 +58,7 @@ public class Spell_Mute extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands at <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands at <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

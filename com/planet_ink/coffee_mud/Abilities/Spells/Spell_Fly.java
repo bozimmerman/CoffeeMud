@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_Fly extends Spell
 {
-	public Spell_Fly()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Fly";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Fly spell)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.BENEFICIAL_OTHERS;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(12);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Fly();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
+	public String ID() { return "Spell_Fly"; }
+	public String name(){return "Fly";}
+	public String displayText(){return "(Fly spell)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Fly();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -82,7 +57,7 @@ public class Spell_Fly extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> cast(s) a spell on <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

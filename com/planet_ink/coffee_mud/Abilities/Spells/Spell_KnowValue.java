@@ -7,33 +7,11 @@ import java.util.*;
 
 public class Spell_KnowValue extends Spell
 {
-	public Spell_KnowValue()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Know Value";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(8);
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_KnowValue();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_KnowValue"; }
+	public String name(){return "Know Value";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_KnowValue();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,7 +25,7 @@ public class Spell_KnowValue extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> weigh(s) the value of <T-NAMESELF> carefully.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> weigh(s) the value of <T-NAMESELF> carefully.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

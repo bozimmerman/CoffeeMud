@@ -7,43 +7,16 @@ import java.util.*;
 
 public class Spell_Stoneskin extends Spell
 {
+	public String ID() { return "Spell_Stoneskin"; }
+	public String name(){return "Stoneskin";}
+	public String displayText(){return "(Stoneskin)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Stoneskin();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	int HitsRemaining=0;
 	int oldHP=-1;
-
-	public Spell_Stoneskin()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Stoneskin";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Stoneskin)";
-
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(11);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Stoneskin();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
-
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -110,7 +83,7 @@ public class Spell_Stoneskin extends Spell
 			// what happened.
 			invoker=mob;
 
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

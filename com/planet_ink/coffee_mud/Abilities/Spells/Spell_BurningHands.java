@@ -7,37 +7,12 @@ import java.util.*;
 
 public class Spell_BurningHands extends Spell
 {
-	public Spell_BurningHands()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Burning Hands";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Burning Hands spell)";
-
-		quality=Ability.MALICIOUS;
-
-
-		uses=Integer.MAX_VALUE;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(4);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_BurningHands();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public String ID() { return "Spell_BurningHands"; }
+	public String name(){return "Burning Hands";}
+	public String displayText(){return "(Burning Hands spell)";}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_BurningHands();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -60,7 +35,7 @@ public class Spell_BurningHands extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> incant(s) and reach(es) for <T-NAMESELF>.")+"A fan of flames erupts!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> incant(s) and reach(es) for <T-NAMESELF>.")+"A fan of flames erupts!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_FIRE|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

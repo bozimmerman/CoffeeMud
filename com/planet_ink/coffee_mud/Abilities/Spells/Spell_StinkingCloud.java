@@ -7,41 +7,17 @@ import java.util.*;
 
 public class Spell_StinkingCloud extends Spell
 {
+	public String ID() { return "Spell_StinkingCloud"; }
+	public String name(){return "Stinking Cloud";}
+	public String displayText(){return "(In the Stinking Cloud)";}
+	public int maxRange(){return 3;}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_StinkingCloud();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	
 	Room castingLocation=null;
-	public Spell_StinkingCloud()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Stinking Cloud";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(In the Stinking Cloud)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=3;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_StinkingCloud();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
 
 	public boolean tick(int tickID)
 	{
@@ -141,7 +117,7 @@ public class Spell_StinkingCloud extends Spell
 
 		if(success)
 		{ 
-			mob.location().show(mob,null,affectType,auto?"A stinking cloud of orange and green gas appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A stinking cloud of orange and green gas appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -150,7 +126,7 @@ public class Spell_StinkingCloud extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_GAS|(auto?Affect.ACT_GENERAL:0),null);
 				if((mob.location().okAffect(msg))
 				   &&(mob.location().okAffect(msg2))

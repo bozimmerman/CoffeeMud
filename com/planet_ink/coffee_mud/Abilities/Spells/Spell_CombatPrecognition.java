@@ -7,39 +7,14 @@ import java.util.*;
 
 public class Spell_CombatPrecognition extends Spell
 {
+	public String ID() { return "Spell_CombatPrecognition"; }
+	public String name(){return "Combat Precognition";}
+	public String displayText(){return "(Combat Precognition)";}
+	public int quality(){return BENEFICIAL_SELF;};
+	protected int canAffectCode(){return CAN_MOBS;}
 	boolean lastTime=false;
-	public Spell_CombatPrecognition()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Combat Precognition";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Combat Precognition)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		quality=Ability.BENEFICIAL_SELF;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(23);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_CombatPrecognition();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public Environmental newInstance(){	return new Spell_CombatPrecognition();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -143,7 +118,7 @@ public class Spell_CombatPrecognition extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"<S-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<S-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

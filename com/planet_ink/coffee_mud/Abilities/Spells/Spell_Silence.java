@@ -7,39 +7,13 @@ import java.util.*;
 
 public class Spell_Silence extends Spell
 {
-	public Spell_Silence()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Silence";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Silence spell)";
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=0;
-
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(14);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Silence();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
-
-
+	public String ID() { return "Spell_Silence"; }
+	public String name(){return "Silence";}
+	public String displayText(){return "(Silence spell)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_Silence();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void unInvoke()
 	{
@@ -75,7 +49,7 @@ public class Spell_Silence extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> fizzles a spell.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"<S-NAME> fizzles a spell.");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -91,7 +65,7 @@ public class Spell_Silence extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"S":"^S<S-NAME> whisper(s) and gesture(s) and s")+"ilence falls like a blanket.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,37 +7,14 @@ import java.util.*;
 
 public class Spell_IceSheet extends Spell
 {
-	public Spell_IceSheet()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Ice Sheet";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Ice Sheet spell)";
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=0;
-		
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_IceSheet();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_IceSheet"; }
+	public String name(){return "Ice Sheet";}
+	public String displayText(){return "(Ice Sheet spell)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){ return new Spell_IceSheet();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	
 
 	public void unInvoke()
 	{
@@ -107,7 +84,7 @@ public class Spell_IceSheet extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"Ice Sheet has already been cast here!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Ice Sheet has already been cast here!");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -130,7 +107,7 @@ public class Spell_IceSheet extends Spell
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
 				msgStr="the water freezes over!";
 			if(auto)msgStr=Character.toUpperCase(msgStr.charAt(0))+msgStr.substring(1);
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"":"^S<S-NAME> speak(s) and gesture(s) and ")+msgStr+"^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

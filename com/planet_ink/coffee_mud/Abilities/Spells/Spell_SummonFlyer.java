@@ -7,38 +7,14 @@ import java.util.*;
 
 public class Spell_SummonFlyer extends Spell
 {
-	public Spell_SummonFlyer()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Flyer";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Summon Flyer)";
-
-		quality=Ability.OK_SELF;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_SummonFlyer();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_SummonFlyer"; }
+	public String name(){return "Summon Flyer";}
+	public String displayText(){return "(Summon Flyer)";}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_SummonFlyer();	}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public void unInvoke()
 	{
@@ -87,7 +63,7 @@ public class Spell_SummonFlyer extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> magically call(s) for a loyal steed.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> magically call(s) for a loyal steed.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

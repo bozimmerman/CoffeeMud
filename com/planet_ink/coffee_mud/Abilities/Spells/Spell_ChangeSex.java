@@ -7,37 +7,13 @@ import java.util.*;
 
 public class Spell_ChangeSex extends Spell
 {
-	public Spell_ChangeSex()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Change Sex";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Change Sex)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(12);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ChangeSex();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
+	public String ID() { return "Spell_ChangeSex"; }
+	public String name(){return "Change Sex";}
+	public String displayText(){return "(Change Sex)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){return new Spell_ChangeSex();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -69,11 +45,6 @@ public class Spell_ChangeSex extends Spell
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(target.isMonster())
-			quality=Ability.MALICIOUS;
-		else
-			quality=Ability.INDIFFERENT;
-		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -90,7 +61,7 @@ public class Spell_ChangeSex extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> sing(s) a spell to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> sing(s) a spell to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

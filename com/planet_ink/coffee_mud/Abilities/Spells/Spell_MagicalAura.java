@@ -8,37 +8,14 @@ import java.util.*;
 
 public class Spell_MagicalAura extends Spell
 {
-
-	public Spell_MagicalAura()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Magical Aura";
-		displayText="(Magical Aura)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;
-		
-		baseEnvStats().setLevel(1);
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MagicalAura();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_MagicalAura"; }
+	public String name(){return "Magical Aura";}
+	public String displayText(){return "(Magical Aura)";}
+	public int quality(){return BENEFICIAL_SELF;};
+	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+	public Environmental newInstance(){	return new Spell_MagicalAura();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -76,7 +53,7 @@ public class Spell_MagicalAura extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A magical aura appears around <T-NAME>.":"^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?");
+		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A magical aura appears around <T-NAME>.":"^S<S-NAME> invoke(s) a magical aura around <T-NAMESELF>.^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

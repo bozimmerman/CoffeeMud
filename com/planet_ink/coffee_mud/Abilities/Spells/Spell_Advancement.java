@@ -7,39 +7,15 @@ import java.util.*;
 
 public class Spell_Advancement extends Spell
 {
-	public Spell_Advancement()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Advancement";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Advancement)";
-		quality=Ability.OK_OTHERS;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		baseEnvStats().setLevel(15);
-		overrideMana=100;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Advancement();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_Advancement"; }
+	public String name(){ return "Advancement";}
+	public String displayText(){ return "(Advancement)";}
+	public int quality(){ return OK_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	protected int overrideMana(){return 100;}
+	public Environmental newInstance(){	return new Spell_Advancement();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -83,7 +59,7 @@ public class Spell_Advancement extends Spell
 			// what happened.
 			invoker=mob;
 
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,42 +7,15 @@ import java.util.*;
 
 public class Spell_GustOfWind extends Spell
 {
+	public String ID() { return "Spell_GustOfWind"; }
+	public String name(){return "Gust of Wind";}
+	public String displayText(){return "(Blown Down)";}
+	public int maxRange(){return 4;}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
 	public boolean doneTicking=false;
-	public Spell_GustOfWind()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Gust of Wind";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Blown Down)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=4;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_GustOfWind();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public Environmental newInstance(){	return new Spell_GustOfWind();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -104,7 +77,7 @@ public class Spell_GustOfWind extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> blow(s) at <S-HIS-HER> enemies.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -113,7 +86,7 @@ public class Spell_GustOfWind extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,"<T-NAME> get(s) blown back!");
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> get(s) blown back!");
 				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					if((!msg.wasModified())&&(target.location()==mob.location()))

@@ -7,37 +7,12 @@ import java.util.*;
 
 public class Spell_Wish extends Spell
 {
-
-	public Spell_Wish()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Wish";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Wish Spell)";
-
-		canAffectCode=0;
-		canTargetCode=0;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(25);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Wish();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public String ID() { return "Spell_Wish"; }
+	public String name(){return "Wish";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_Wish();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	
 	private Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)
 	{
 		if((E!=null)
@@ -95,7 +70,7 @@ public class Spell_Wish extends Spell
 
 		mob.curState().setMana(0);
 		int baseLoss=25;
-		FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
+		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> wish(es) for '"+myWish+"'!!^?");
 		boolean success=profficiencyCheck(0,auto);
 		if(!success)
 		{

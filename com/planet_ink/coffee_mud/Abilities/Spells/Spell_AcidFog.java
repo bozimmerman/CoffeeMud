@@ -7,42 +7,17 @@ import java.util.*;
 
 public class Spell_AcidFog extends Spell
 {
+	public String ID() { return "Spell_AcidFog"; }
+	public String name(){ return "Acid Fog";}
+	public String displayText(){ return "(Acid Fog)";}
+	public int quality(){ return MALICIOUS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int minRange(){return 2;}
+	public int maxRange(){return 5;}
 	Room castingLocation=null;
-	public Spell_AcidFog()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Acid Fog";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(In the Acid Fog)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=2;
-		maxRange=5;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_AcidFog();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public Environmental newInstance(){	return new Spell_AcidFog();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean tick(int tickID)
 	{
@@ -98,7 +73,7 @@ public class Spell_AcidFog extends Spell
 
 		if(success)
 		{ 
-			mob.location().show(mob,null,affectType,auto?"A horrendous cloud of acid appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A horrendous cloud of acid appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -107,7 +82,7 @@ public class Spell_AcidFog extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.ACT_GENERAL:0),null);
 				if((mob.location().okAffect(msg))
 				   &&(mob.location().okAffect(msg2))

@@ -7,40 +7,13 @@ import java.util.*;
 
 public class Spell_MassSleep extends Spell
 {
-	public Spell_MassSleep()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mass Sleep";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Sleep)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(10);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-		maxRange=0;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MassSleep();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_MassSleep"; }
+	public String name(){return "Mass Sleep";}
+	public String displayText(){return "(Sleep)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_MassSleep();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -108,7 +81,7 @@ public class Spell_MassSleep extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> whisper(s) and wave(s) <S-HIS-HER> arms.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -122,7 +95,7 @@ public class Spell_MassSleep extends Spell
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					MOB oldVictim=mob.getVictim();
-					FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 					if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 					{
 						mob.location().send(mob,msg);

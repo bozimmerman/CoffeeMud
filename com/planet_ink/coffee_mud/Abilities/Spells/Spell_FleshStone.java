@@ -7,38 +7,14 @@ import java.util.*;
 
 public class Spell_FleshStone extends Spell
 {
+	public String ID() { return "Spell_FleshStone"; }
+	public String name(){return "Flesh Stone";}
+	public String displayText(){return "(Flesh to Stone)";}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_FleshStone();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
+
 	public Item statue=null;
-	public Spell_FleshStone()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Flesh Stone";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Flesh to Stone)";
-
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(19);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FleshStone();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
-
 	public boolean tick(int tickID)
 	{
 		if((tickID==Host.MOB_TICK)
@@ -187,7 +163,7 @@ public class Spell_FleshStone extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) at <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

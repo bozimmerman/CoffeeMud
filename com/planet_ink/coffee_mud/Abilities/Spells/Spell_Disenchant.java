@@ -7,33 +7,11 @@ import java.util.*;
 
 public class Spell_Disenchant extends Spell
 {
-	public Spell_Disenchant()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Disenchant";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(22);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Disenchant();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Disenchant"; }
+	public String name(){return "Disenchant";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_Disenchant();	}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,7 +25,7 @@ public class Spell_Disenchant extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> hold(s) <T-NAMESELF> and cast(s) a spell.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

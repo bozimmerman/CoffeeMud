@@ -6,38 +6,12 @@ import java.util.*;
 
 public class Spell_ChainLightening extends Spell
 {
-	public Spell_ChainLightening()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Chain Lightning";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Chain Lightning)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-		minRange=0;
-		maxRange=2;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ChainLightening();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_ChainLightening"; }
+	public String name(){return "Chain Lightning";}
+	public int maxRange(){return 2;}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_ChainLightening();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -60,7 +34,7 @@ public class Spell_ChainLightening extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType,auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -69,7 +43,7 @@ public class Spell_ChainLightening extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.ACT_GENERAL:0),null);
 				if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 				{

@@ -7,39 +7,15 @@ import java.util.*;
 
 public class Spell_DemonGate extends Spell
 {
+	public String ID() { return "Spell_DemonGate"; }
+	public String name(){return "Demon Gate";}
+	public String displayText(){return "(Demon Gate)";}
+	public int quality(){return BENEFICIAL_SELF;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
 	MOB myTarget=null;
-	public Spell_DemonGate()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Demon Gate";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Demon Gate)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		quality=Ability.BENEFICIAL_SELF;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_DemonGate();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public Environmental newInstance(){	return new Spell_DemonGate();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean tick(int tickID)
 	{
@@ -86,7 +62,7 @@ public class Spell_DemonGate extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> open(s) the gates of the abyss, encanting angrilly.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> open(s) the gates of the abyss, encanting angrilly.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

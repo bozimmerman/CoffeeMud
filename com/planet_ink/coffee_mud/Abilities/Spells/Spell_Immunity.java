@@ -7,39 +7,16 @@ import java.util.*;
 
 public class Spell_Immunity extends Spell
 {
+	public String ID() { return "Spell_Immunity"; }
+	public String name(){return "Immunity";}
+	public String displayText(){return "(immunity to "+immunityName+")";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Immunity();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+
 	private int immunityType=-1;
 	private String immunityName="";
-	public Spell_Immunity()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Immunity";
-		displayText="(Immunity)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Immunity();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
-	}
-
 
 	public void unInvoke()
 	{
@@ -85,7 +62,7 @@ public class Spell_Immunity extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> attain(s) an immunity barrier.":"^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) an immunity barrier.":"^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				switch(Dice.roll(1,5,0))
@@ -104,16 +81,13 @@ public class Spell_Immunity extends Spell
 					break;
 				case 4: 
 					immunityType=Affect.TYP_COLD;
-					immunityName="acid";
-					displayText="(immunity to cold)";
+					immunityName="cold";
 					break;
 				case 5: 
 					immunityType=Affect.TYP_ELECTRIC;
 					immunityName="electricity";
-					displayText="(immunity to electricity)";
 					break;
 				}
-				displayText="(immunity to "+immunityName+")";
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,0);
 			}

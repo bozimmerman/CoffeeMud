@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_MassInvisibility extends Spell
 {
-	public Spell_MassInvisibility()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mass Invisibility";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Invisibility)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(14);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MassInvisibility();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_MassInvisibility"; }
+	public String name(){return "Mass Invisibility";}
+	public String displayText(){return "(Invisibility)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_MassInvisibility();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
@@ -98,7 +73,7 @@ public class Spell_MassInvisibility extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -107,7 +82,7 @@ public class Spell_MassInvisibility extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okAffect(msg))
 				&&(target.fetchAffect("Spell_Invisibility")==null)
 				&&(target.fetchAffect("Spell_MassInvisibility")==null))

@@ -7,34 +7,11 @@ import java.util.*;
 
 public class Spell_Teleport extends Spell
 {
-	public Spell_Teleport()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Teleport";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(10);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Teleport();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
-
+	public String ID() { return "Spell_Teleport"; }
+	public String name(){return "Teleport";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){return new Spell_Teleport();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -100,7 +77,7 @@ public class Spell_Teleport extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,"^S<S-NAME> invoke(s) a teleportation spell.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,30 +7,13 @@ import java.util.*;
 
 public class Spell_Flameshield extends Spell
 {
-	public Spell_Flameshield()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Flameshield";
-		displayText="(Flameshield)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(9);
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Flameshield();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Flameshield"; }
+	public String name(){return "Flameshield";}
+	public String displayText(){return "(Flameshield)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Flameshield();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 
 	public void unInvoke()
@@ -67,7 +50,7 @@ public class Spell_Flameshield extends Spell
 			{
 				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3)))
 				{
-					FullMsg msg=new FullMsg(source,mob,this,affectType,null);
+					FullMsg msg=new FullMsg(source,mob,this,affectType(false),null);
 					if(source.location().okAffect(msg))
 					{
 						source.location().send(source,msg);
@@ -111,7 +94,7 @@ public class Spell_Flameshield extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms.  ")+"A field of flames erupt(s) around <T-NAME>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

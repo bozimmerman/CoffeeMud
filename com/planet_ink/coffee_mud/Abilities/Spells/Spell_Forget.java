@@ -7,39 +7,13 @@ import java.util.*;
 
 public class Spell_Forget extends Spell
 {
-	public Spell_Forget()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Forget";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Forgetful)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		quality=Ability.MALICIOUS;
-
-
-		baseEnvStats().setLevel(6);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Forget();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_Forget"; }
+	public String name(){return "Forget";}
+	public String displayText(){return "(Forgetful)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Forget();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean okAffect(Affect affect)
 	{
@@ -106,7 +80,7 @@ public class Spell_Forget extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			String str=auto?"":"^S<S-NAME> incant(s) confusingly at <T-NAMESELF>^?";
-			FullMsg msg=new FullMsg(mob,target,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

@@ -7,38 +7,12 @@ import java.util.*;
 
 public class Spell_SummonEnemy extends Spell
 {
-	public Spell_SummonEnemy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Enemy";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Enemy Summoning)";
-
-		quality=Ability.INDIFFERENT;
-		
-		canAffectCode=0;
-		canTargetCode=0;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_SummonMonster();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_SummonEnemy"; }
+	public String name(){return "Summon Enemy";}
+	public String displayText(){return "(Enemy Summoning)";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_SummonMonster();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	
 	public void unInvoke()
 	{
@@ -58,7 +32,7 @@ public class Spell_SummonEnemy extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> conjur(s) the dark shadow of a living creature...^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

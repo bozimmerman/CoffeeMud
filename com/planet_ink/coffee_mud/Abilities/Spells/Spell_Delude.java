@@ -7,40 +7,14 @@ import java.util.*;
 
 public class Spell_Delude extends Spell
 {
+	public String ID() { return "Spell_Delude"; }
+	public String name(){return "Delude";}
+	public String displayText(){return "(Delude spell)";}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
 	int previousAlignment=500;
-
-	public Spell_Delude()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Delude";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Delude spell)";
-		quality=Ability.OK_SELF;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		baseEnvStats().setLevel(18);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Delude();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
+	public Environmental newInstance(){	return new Spell_Delude();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void unInvoke()
 	{
@@ -75,7 +49,7 @@ public class Spell_Delude extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> incant(s) and meditate(s).^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) and meditate(s).^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_FindFamiliar extends Spell
 {
-	public Spell_FindFamiliar()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Find Familiar";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Find Familiar)";
-
-		quality=Ability.BENEFICIAL_SELF;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FindFamiliar();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_FindFamiliar"; }
+	public String name(){return "Find Familiar";}
+	public String displayText(){return "(Find Familiar)";}
+	public int quality(){return BENEFICIAL_SELF;};
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_FindFamiliar();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -64,7 +39,7 @@ public class Spell_FindFamiliar extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> call(s) for a familiar.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> call(s) for a familiar.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

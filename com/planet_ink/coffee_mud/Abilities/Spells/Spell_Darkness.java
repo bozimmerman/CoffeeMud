@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_Darkness extends Spell
 {
-	public Spell_Darkness()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Darkness";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Darkness spell)";
-		
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=Ability.CAN_ROOMS;
-		
-
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Darkness();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Darkness"; }
+	public String name(){return "Darkness";}
+	public String displayText(){return "(Darkness spell)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return CAN_ROOMS;}
+	public Environmental newInstance(){	return new Spell_Darkness();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void unInvoke()
 	{
@@ -77,7 +52,7 @@ public class Spell_Darkness extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"Darkness has already been cast here!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Darkness has already been cast here!");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -93,7 +68,7 @@ public class Spell_Darkness extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"D":"^S<S-NAME> incant(s) and gesture(s) and d")+"arkness envelopes everyone.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

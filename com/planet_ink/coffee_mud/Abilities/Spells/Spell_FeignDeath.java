@@ -8,39 +8,15 @@ import java.util.*;
 
 public class Spell_FeignDeath extends Spell
 {
-
+	public String ID() { return "Spell_FeignDeath"; }
+	public String name(){return "Feign Death";}
+	public String displayText(){return "(Feign Death)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_FeignDeath();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	
 	public DeadBody Body=null;
 	public Room deathRoom=null;
-
-	public Spell_FeignDeath()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Feign Death";
-		displayText="(Feign Death)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FeignDeath();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -131,7 +107,7 @@ public class Spell_FeignDeath extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?");
+		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) to <T-NAMESELF> and yell(s) for death!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

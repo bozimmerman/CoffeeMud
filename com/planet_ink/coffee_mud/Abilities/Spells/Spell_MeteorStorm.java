@@ -6,38 +6,13 @@ import java.util.*;
 
 public class Spell_MeteorStorm extends Spell
 {
-	public Spell_MeteorStorm()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Meteor Storm";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Meteor Storm)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-		minRange=1;
-		maxRange=4;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MeteorStorm();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_MeteorStorm"; }
+	public String name(){return "Meteor Storm";}
+	public int maxRange(){return 4;}
+	public int minRange(){return 1;}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_MeteorStorm();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -60,7 +35,7 @@ public class Spell_MeteorStorm extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType,auto?"A devestating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devestating meteor shower!^?");
+			mob.location().show(mob,null,affectType(auto),auto?"A devestating meteor shower erupts!":"^S<S-NAME> conjur(s) up a devestating meteor shower!^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -69,7 +44,7 @@ public class Spell_MeteorStorm extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if(mob.location().okAffect(msg))
 				{
 					mob.location().send(mob,msg);

@@ -7,44 +7,18 @@ import java.util.*;
 
 public class Spell_WallOfForce extends Spell
 {
+	public String ID() { return "Spell_WallOfForce"; }
+	public String name(){return "Wall of Force";}
+	public String displayText(){return "(Wall of Force)";}
+	public int maxRange(){return 10;}
+	public int minRange(){return 1;}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_WallOfDarkness();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+
 	private Item theWall=null;
-	
-	public Spell_WallOfForce()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Wall of Force";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Wall of Force)";
-
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=0;
-
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=1;
-		maxRange=10;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_WallOfDarkness();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
-
 
 	public boolean okAffect(Affect affect)
 	{
@@ -153,7 +127,7 @@ public class Spell_WallOfForce extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"An impenetrable wall of force appears!":"^S<S-NAME> conjur(s) up a impenetrable wall of force!^?");
+			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?"An impenetrable wall of force appears!":"^S<S-NAME> conjur(s) up a impenetrable wall of force!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

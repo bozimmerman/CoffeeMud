@@ -7,33 +7,11 @@ import java.util.*;
 
 public class Spell_IdentifyObject extends Spell
 {
-	public Spell_IdentifyObject()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Identify Object";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(8);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_IdentifyObject();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_IdentifyObject"; }
+	public String name(){return "Identify Object";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_IdentifyObject();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,7 +25,7 @@ public class Spell_IdentifyObject extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> study(s) <T-NAMESELF> very closely.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> study(s) <T-NAMESELF> very closely.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

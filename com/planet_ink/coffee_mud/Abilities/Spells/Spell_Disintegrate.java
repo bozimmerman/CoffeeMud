@@ -7,35 +7,13 @@ import java.util.*;
 
 public class Spell_Disintegrate extends Spell
 {
-	public Spell_Disintegrate()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Disintegrate";
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(25);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Disintegrate();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Disintegrate"; }
+	public String name(){return "Disintegrate";}
+	public int quality(){return MALICIOUS;};
+	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Disintegrate();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;	}
+	
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,12 +25,13 @@ public class Spell_Disintegrate extends Spell
 
 
 		boolean success=false;
-		affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 		if(target instanceof Item)
 			success=profficiencyCheck(((mob.envStats().level()-target.envStats().level())*25),auto);
 		else
 		{
-			affectType=affectType;
+			if(!auto)
+				affectType=affectType|Affect.MASK_MALICIOUS;
 			success=profficiencyCheck(-(target.envStats().level()*3),auto);
 		}
 

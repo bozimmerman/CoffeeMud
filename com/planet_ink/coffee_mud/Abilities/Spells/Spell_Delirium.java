@@ -7,42 +7,15 @@ import java.util.*;
 
 public class Spell_Delirium extends Spell
 {
+	public String ID() { return "Spell_Delirium"; }
+	public String name(){return "Delirium";}
+	public String displayText(){return "(Delirium)";}
+	public int maxRange(){return 1;}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
 	int amountRemaining=0;
-	public Spell_Delirium()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Delirium";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Delirium)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.MALICIOUS;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		minRange=0;
-		maxRange=1;
-		
-		baseEnvStats().setLevel(2);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Delirium();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public Environmental newInstance(){	return new Spell_Delirium();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	private Environmental getRandomOtherName(Environmental likeThisOne)
 	{
@@ -245,7 +218,7 @@ public class Spell_Delirium extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))||(mob.location().okAffect(msg2)))
 			{

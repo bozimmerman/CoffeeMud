@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_Blindness extends Spell
 {
-	public Spell_Blindness()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Blindness";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Blindness)";
-
-		quality=Ability.MALICIOUS;
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(9);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Blindness();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
+	public String ID() { return "Spell_Blindness"; }
+	public String name(){return "Blindness";}
+	public String displayText(){return "(Blindness)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Blindness();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -83,7 +58,7 @@ public class Spell_Blindness extends Spell
 			// what happened.
 			invoker=mob;
 			String autoStr="A flashing light blazes at <T-NAME>!";
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?autoStr:"^SYou invoke a flashing light into <T-NAME>s eyes.^?",affectType,auto?autoStr:"^S<S-NAME> invoke(s) a flashing light into your eyes.^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?autoStr:"^SYou invoke a flashing light into <T-NAME>s eyes.^?",affectType(auto),auto?autoStr:"^S<S-NAME> invoke(s) a flashing light into your eyes.^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?autoStr:"^S<S-NAME> invokes a flashing light into <T-NAME>s eyes.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

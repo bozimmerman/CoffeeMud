@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_Lightning extends Spell
 {
-	public Spell_Lightning()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lightning Bolt";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Lightning Bolt spell)";
-
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(8);
-		maxRange=2;
-		minRange=0;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Lightning();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Lightning"; }
+	public String name(){return "Lightning Bolt";}
+	public String displayText(){return "(Lightning Bolt spell)";}
+	public int maxRange(){return 2;}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_Lightning();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -61,7 +36,7 @@ public class Spell_Lightning extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A lightning bolt streaks through the air!":"^S<S-NAME> point(s) incanting at <T-NAMESELF>, shooting forth a lightning bolt!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A lightning bolt streaks through the air!":"^S<S-NAME> point(s) incanting at <T-NAMESELF>, shooting forth a lightning bolt!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{

@@ -7,30 +7,10 @@ import java.util.*;
 
 public class Spell_SeeAura extends Spell
 {
-	public Spell_SeeAura()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="See Aura";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(18);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_SeeAura();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_SeeAura"; }
+	public String name(){return "See Aura";}
+	public Environmental newInstance(){	return new Spell_SeeAura();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,7 +27,7 @@ public class Spell_SeeAura extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?",affectType,auto?"":"^S<S-NAME> draw(s) out your aura.^?",affectType,auto?"":"^S<S-NAME> draws out <T-NAME>s aura.^?");
+		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^SYou draw out <T-NAME>s aura, seeing <T-HIM-HER> from the inside out...^?",affectType(auto),auto?"":"^S<S-NAME> draw(s) out your aura.^?",affectType(auto),auto?"":"^S<S-NAME> draws out <T-NAME>s aura.^?");
 		if(success)
 		{
 			if(mob.location().okAffect(msg))

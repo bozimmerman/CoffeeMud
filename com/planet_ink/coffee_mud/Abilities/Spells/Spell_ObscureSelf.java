@@ -7,37 +7,13 @@ import java.util.*;
 
 public class Spell_ObscureSelf extends Spell
 {
-	public Spell_ObscureSelf()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Obscure Self";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Obscure Self)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.OK_SELF;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(2);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ObscureSelf();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_ObscureSelf"; }
+	public String name(){return "Obscure Self";}
+	public String displayText(){return "(Obscure Self)";}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_ObscureSelf();	}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 
 	public boolean okAffect(Affect affect)
@@ -179,7 +155,7 @@ public class Spell_ObscureSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> whisper(s) to <S-HIS-HERSELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <S-HIS-HERSELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

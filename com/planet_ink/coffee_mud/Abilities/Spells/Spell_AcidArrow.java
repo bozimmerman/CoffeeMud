@@ -7,40 +7,15 @@ import java.util.*;
 
 public class Spell_AcidArrow extends Spell
 {
-	public Spell_AcidArrow()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Acid Arrow";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Acid Arrow)";
-
-		quality=Ability.MALICIOUS;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=2;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_AcidArrow();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_AcidArrow"; }
+	public String name(){ return "Acid Arrow";}
+	public String displayText(){ return "(Acid Arrow)";}
+	public int quality(){ return MALICIOUS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int maxRange(){return 2;}
+	public Environmental newInstance(){	return new Spell_AcidArrow();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean tick(int tickID)
 	{
@@ -70,7 +45,7 @@ public class Spell_AcidArrow extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"An arrow made of acid appears zooming towards <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, conjuring an acid arrow from the java plain!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"An arrow made of acid appears zooming towards <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, conjuring an acid arrow from the java plain!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ACID|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{

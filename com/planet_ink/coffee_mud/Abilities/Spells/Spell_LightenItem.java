@@ -7,33 +7,13 @@ import java.util.*;
 
 public class Spell_LightenItem extends Spell
 {
-	public Spell_LightenItem()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lighten Item";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_LightenItem();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_LightenItem"; }
+	public String name(){return "Lighten Item";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_LightenItem();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -86,7 +66,7 @@ public class Spell_LightenItem extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

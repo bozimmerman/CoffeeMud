@@ -6,34 +6,13 @@ import java.util.*;
 
 public class Spell_FakeWeapon extends Spell
 {
+	public String ID() { return "Spell_FakeWeapon"; }
+	public String name(){return "Fake Weapon";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
 	private Item myItem=null;
-	public Spell_FakeWeapon()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Fake Weapon";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FakeWeapon();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public Environmental newInstance(){	return new Spell_FakeWeapon();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public void unInvoke()
 	{
@@ -88,7 +67,7 @@ public class Spell_FakeWeapon extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,34 +7,12 @@ import java.util.*;
 
 public class Spell_PassDoor extends Spell
 {
-	public Spell_PassDoor()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Pass Door";
-		displayText="(Translucent)";
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_PassDoor();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_PassDoor"; }
+	public String name(){return "Pass Door";}
+	public String displayText(){return "(Translucent)";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_PassDoor();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
@@ -98,7 +76,7 @@ public class Spell_PassDoor extends Spell
 		else
 		if(auto)
 		{
-			FullMsg msg=new FullMsg(mob,null,null,affectType,"<S-NAME> shimmer(s) and turn(s) translucent.");
+			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"<S-NAME> shimmer(s) and turn(s) translucent.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -108,7 +86,7 @@ public class Spell_PassDoor extends Spell
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,affectType,"^S<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".^?");
+			FullMsg msg=new FullMsg(mob,null,null,affectType(auto),"^S<S-NAME> shimmer(s) and pass(es) "+Directions.getDirectionName(dirCode)+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

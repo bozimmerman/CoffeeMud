@@ -8,36 +8,16 @@ import java.util.*;
 
 public class Spell_PredictWeather extends Spell
 {
+	public String ID() { return "Spell_PredictWeather"; }
+	public String name(){return "Predict Weather";}
+	public String displayText(){return "(Predict Weather)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_PredictWeather();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	
 	String lastPrediction="";
-	public Spell_PredictWeather()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Predict Weather";
-		displayText="(Predict Weather)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_PredictWeather();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -85,7 +65,7 @@ public class Spell_PredictWeather extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
 			if(mob.location().okAffect(msg))
 			{
 				lastPrediction="";

@@ -7,39 +7,13 @@ import java.util.*;
 
 public class Spell_FaerieFire extends Spell
 {
-
-	public Spell_FaerieFire()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Faerie Fire";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Faerie Fire)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(5);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FaerieFire();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_FaerieFire"; }
+	public String name(){return "Faerie Fire";}
+	public String displayText(){return "(Faerie Fire)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_FaerieFire();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 
 	public void unInvoke()
@@ -85,7 +59,7 @@ public class Spell_FaerieFire extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"twinkling fire envelopes <T-NAME>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

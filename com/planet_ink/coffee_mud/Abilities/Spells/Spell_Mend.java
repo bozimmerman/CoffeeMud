@@ -7,33 +7,11 @@ import java.util.*;
 
 public class Spell_Mend extends Spell
 {
-	public Spell_Mend()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mend";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-
-		baseEnvStats().setLevel(4);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Mend();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public String ID() { return "Spell_Mend"; }
+	public String name(){return "Mend";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_Mend();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -49,7 +27,7 @@ public class Spell_Mend extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),
 									(auto?"<T-NAME> begins to shimmer!"
 										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okAffect(msg))

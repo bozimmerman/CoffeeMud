@@ -7,36 +7,12 @@ import java.util.*;
 
 public class Spell_ReadMagic extends Spell
 {
-	public Spell_ReadMagic()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Read Magic";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Ability to read magical markings)";
-
-		baseEnvStats().setLevel(1);
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ReadMagic();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_ReadMagic"; }
+	public String name(){return "Read Magic";}
+	public String displayText(){return "(Ability to read magical markings)";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_ReadMagic();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

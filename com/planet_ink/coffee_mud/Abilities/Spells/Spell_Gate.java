@@ -6,34 +6,11 @@ import java.util.*;
 
 public class Spell_Gate extends Spell
 {
-	public Spell_Gate()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Gate";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(13);
-		
-		canAffectCode=0;
-		canTargetCode=0;
-		
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Gate();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_Gate"; }
+	public String name(){return "Gate";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){ return new Spell_Gate();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -80,7 +57,7 @@ public class Spell_Gate extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> invoke(s) a teleportation spell.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
 			if((mob.location().okAffect(msg))&&(newRoom.okAffect(msg)))
 			{
 				mob.location().send(mob,msg);

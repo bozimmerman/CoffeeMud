@@ -7,40 +7,16 @@ import java.util.*;
 
 public class Spell_MageArmor extends Spell
 {
+	public String ID() { return "Spell_MageArmor"; }
+	public String name(){return "Mage Armor";}
+	public String displayText(){return "(Mage Armor)";}
+	public int quality(){return BENEFICIAL_SELF;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_MageArmor();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+
 	Item theArmor=null;
-
-	public Spell_MageArmor()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mage Armor";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Mage Armor)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.BENEFICIAL_SELF;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(5);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MageArmor();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
-	}
-
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -92,7 +68,7 @@ public class Spell_MageArmor extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> invoke(s) a magical glowing breast plate!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a magical glowing breast plate!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

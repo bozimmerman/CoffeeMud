@@ -7,30 +7,10 @@ import java.util.*;
 
 public class Spell_KnowAlignment extends Spell
 {
-	public Spell_KnowAlignment()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Know Alignment";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_KnowAlignment();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_KnowAlignment"; }
+	public String name(){return "Know Alignment";}
+	public Environmental newInstance(){	return new Spell_KnowAlignment();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,7 +27,7 @@ public class Spell_KnowAlignment extends Spell
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^SYou draw out <T-NAME>s disposition.^?",affectType,auto?"":"^S<S-NAME> draw(s) out your disposition.^?",affectType,auto?"":"^S<S-NAME> draws out <T-NAME>s disposition.^?");
+		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^SYou draw out <T-NAME>s disposition.^?",affectType(auto),auto?"":"^S<S-NAME> draw(s) out your disposition.^?",affectType(auto),auto?"":"^S<S-NAME> draws out <T-NAME>s disposition.^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);

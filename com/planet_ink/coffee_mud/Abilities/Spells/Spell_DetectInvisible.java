@@ -8,37 +8,14 @@ import java.util.*;
 
 public class Spell_DetectInvisible extends Spell
 {
-
-	public Spell_DetectInvisible()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Detect Invisible";
-		displayText="(Detect Invisible)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(6);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_DetectInvisible();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_DetectInvisible"; }
+	public String name(){return "Detect Invisible";}
+	public String displayText(){return "(Detect Invisible)";}
+	public int quality(){ return OK_SELF;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_DetectInvisible();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
+	
 	public void unInvoke()
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -71,7 +48,7 @@ public class Spell_DetectInvisible extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"<S-NAME> open(s) <S-HIS-HER> softly glowing eyes.":"^S<S-NAME> incant(s) softly, and open(s) <S-HIS-HER> glowing eyes.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> open(s) <S-HIS-HER> softly glowing eyes.":"^S<S-NAME> incant(s) softly, and open(s) <S-HIS-HER> glowing eyes.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

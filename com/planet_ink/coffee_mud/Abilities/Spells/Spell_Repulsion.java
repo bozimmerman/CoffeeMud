@@ -7,44 +7,16 @@ import java.util.*;
 
 public class Spell_Repulsion extends Spell
 {
+	public String ID() { return "Spell_Repulsion"; }
+	public String name(){return "Repulsion";}
+	public String displayText(){return "(Repulsion)";}
+	public int maxRange(){return 3;}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Repulsion();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public int amountRemaining=0;
-
-	public Spell_Repulsion()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Repulsion";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Repulsion)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=3;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Repulsion();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
-	}
-
 
 	public boolean okAffect(Affect affect)
 	{
@@ -106,7 +78,7 @@ public class Spell_Repulsion extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -115,7 +87,7 @@ public class Spell_Repulsion extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

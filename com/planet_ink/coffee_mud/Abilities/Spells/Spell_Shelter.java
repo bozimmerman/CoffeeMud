@@ -8,39 +8,16 @@ import java.util.*;
 
 public class Spell_Shelter extends Spell
 {
-
+	public String ID() { return "Spell_Shelter"; }
+	public String name(){return "Shelter";}
+	public String displayText(){return "(In a shelter)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_Shelter();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+	
 	public Room previousLocation=null;
 	public Room shelter=null;
-
-	public Spell_Shelter()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Shelter";
-		displayText="(In a shelter)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(12);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Shelter();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
 
 	public void unInvoke()
 	{
@@ -83,7 +60,7 @@ public class Spell_Shelter extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
+		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
@@ -101,7 +78,7 @@ public class Spell_Shelter extends Spell
 				if((follower.isMonster())||(follower==mob))
 				{
 					FullMsg enterMsg=new FullMsg(follower,newRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere.");
-					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType,"<S-NAME> disappear(s) into oblivion.");
+					FullMsg leaveMsg=new FullMsg(follower,thisRoom,this,affectType(auto),"<S-NAME> disappear(s) into oblivion.");
 					if(thisRoom.okAffect(leaveMsg)&&newRoom.okAffect(enterMsg))
 					{
 						if(follower.isInCombat())

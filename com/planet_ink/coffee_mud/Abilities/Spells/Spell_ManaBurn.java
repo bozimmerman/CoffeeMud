@@ -7,41 +7,16 @@ import java.util.*;
 
 public class Spell_ManaBurn extends Spell
 {
+	public String ID() { return "Spell_ManaBurn"; }
+	public String name(){return "Mana Burn";}
+	public String displayText(){return "(Mana Burn)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_ManaBurn(); }
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
 	int curMana=0;
-	public Spell_ManaBurn()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mana Burn";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Mana Burn)";
-
-		quality=Ability.MALICIOUS;
-
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		baseEnvStats().setLevel(6);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ManaBurn();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
-
+	
 	public boolean okAffect(Affect affect)
 	{
 		adjustMana();
@@ -117,7 +92,7 @@ public class Spell_ManaBurn extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened. 
 			String str=auto?"":"^S<S-NAME> incant(s) hotly at <T-NAMESELF>^?";
-			FullMsg msg=new FullMsg(mob,target,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),str);
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

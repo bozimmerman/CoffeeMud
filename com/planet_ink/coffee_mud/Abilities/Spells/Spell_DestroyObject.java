@@ -7,33 +7,11 @@ import java.util.*;
 
 public class Spell_DestroyObject extends Spell
 {
-	public Spell_DestroyObject()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Destroy Object";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(12);
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_DestroyObject();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_DestroyObject"; }
+	public String name(){return "Destroy Object";}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_DestroyObject();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -47,7 +25,7 @@ public class Spell_DestroyObject extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),
 									(auto?"<T-NAME> begins to glow!"
 										 :"^S<S-NAME> incant(s) at <T-NAMESELF>!^?"));
 			if(mob.location().okAffect(msg))

@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_Enthrall extends Spell
 {
-	public Spell_Enthrall()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Enthrall";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Enthralled)";
-
-		quality=Ability.MALICIOUS;
-		
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		baseEnvStats().setLevel(6);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Enthrall();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_Enthrall"; }
+	public String name(){return "Enthrall";}
+	public String displayText(){return "(Enthralled)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Enthrall();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean okAffect(Affect affect)
 	{

@@ -7,37 +7,13 @@ import java.util.*;
 
 public class Spell_MagicMissile extends Spell
 {
-	public Spell_MagicMissile()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Magic Missile";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Magic Missile spell)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(1);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		maxRange=1;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MagicMissile();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_MagicMissile"; }
+	public String name(){return "Magic Missile";}
+	public String displayText(){return "(Magic Missile spell)";}
+	public int maxRange(){return 1;}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){return new Spell_MagicMissile();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -58,7 +34,7 @@ public class Spell_MagicMissile extends Spell
 			int numMissiles=((int)Math.round(Math.floor(Util.div(adjustedLevel(mob),5)))+1);
 			for(int i=0;i<numMissiles;i++)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,affectType,(i==0)?(auto?"A magic missle appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?"):null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(i==0)?(auto?"A magic missle appears hurling full speed at <T-NAME>!":"^S<S-NAME> point(s) at <T-NAMESELF>, shooting forth a magic missile!^?"):null);
 				if(mob.location().okAffect(msg))
 				{
 					mob.location().send(mob,msg);

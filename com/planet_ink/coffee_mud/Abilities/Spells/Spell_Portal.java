@@ -7,36 +7,15 @@ import java.util.*;
 
 public class Spell_Portal extends Spell
 {
+	public String ID() { return "Spell_Portal"; }
+	public String name(){return "Portal";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_Portal();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+
 	Room newRoom=null;
 	Room oldRoom=null;
-	public Spell_Portal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Portal";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(18);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Portal();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
-
+	
 	public void unInvoke()
 	{
 		if(canBeUninvoked)
@@ -100,8 +79,8 @@ public class Spell_Portal extends Spell
 		&&((newRoom.getRoomInDir(Directions.GATE)==null)
 		&&(newRoom.getExitInDir(Directions.GATE)==null)))
 		{
-			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType,"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
-			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType,"A blinding, swirling portal appears here.");
+			FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> evoke(s) a blinding, swirling portal here.^?");
+			FullMsg msg2=new FullMsg(mob,newRoom,this,affectType(auto),"A blinding, swirling portal appears here.");
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);

@@ -7,33 +7,13 @@ import java.util.*;
 
 public class Spell_IllusoryWall extends Spell
 {
-	public Spell_IllusoryWall()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Illusory Wall";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_EXITS;
-		canTargetCode=Ability.CAN_EXITS;
-		
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_IllusoryWall();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_IllusoryWall"; }
+	public String name(){return "Illusory Wall";}
+	protected int canAffectCode(){return CAN_EXITS;}
+	protected int canTargetCode(){return CAN_EXITS;}
+	public Environmental newInstance(){ return new Spell_IllusoryWall();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -74,7 +54,7 @@ public class Spell_IllusoryWall extends Spell
 			beneficialVisualFizzle(mob,null,"<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+", but nothing happens.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,exit,null,affectType,"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
+			FullMsg msg=new FullMsg(mob,exit,null,affectType(auto),"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,38 +7,15 @@ import java.util.*;
 
 public class Spell_MinorGlobe extends Spell
 {
+	public String ID() { return "Spell_MinorGlobe"; }
+	public String name(){return "Globe";}
+	public String displayText(){return "(Globe of Invulnerability)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_MinorGlobe();	}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
+
 	int amountAbsorbed=0;
-	public Spell_MinorGlobe()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Globe";
-		displayText="(Globe of Invulnerability)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MinorGlobe();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
-	}
-
 
 	public void unInvoke()
 	{
@@ -93,7 +70,7 @@ public class Spell_MinorGlobe extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"An anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-magic globe of protection around <T-NAMESELF>.^?"));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"An anti-magic field envelopes <T-NAME>!":"^S<S-NAME> invoke(s) an anti-magic globe of protection around <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(msg))
 			{
 				amountAbsorbed=0;

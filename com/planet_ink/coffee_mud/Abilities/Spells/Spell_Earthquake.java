@@ -6,41 +6,15 @@ import java.util.*;
 
 public class Spell_Earthquake extends Spell
 {
-	public Spell_Earthquake()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Earthquake";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Earthquake)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(15);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-		minRange=1;
-		maxRange=3;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Earthquake();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Earthquake"; }
+	public String name(){return "Earthquake";}
+	public String displayText(){return "(Earthquake)";}
+	public int maxRange(){return 3;}
+	public int minRange(){return 1;}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Earthquake();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -98,7 +72,7 @@ public class Spell_Earthquake extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a thunderous spell.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -107,7 +81,7 @@ public class Spell_Earthquake extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

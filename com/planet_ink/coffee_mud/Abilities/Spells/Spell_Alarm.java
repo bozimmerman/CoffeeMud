@@ -7,39 +7,16 @@ import java.util.*;
 
 public class Spell_Alarm extends Spell
 {
+	public String ID() { return "Spell_Alarm"; }
+	public String name(){return "Alarm";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return CAN_ITEMS;}
 	Room myRoomContainer=null;
 
 	boolean waitingForLook=false;
 
-	public Spell_Alarm()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Alarm";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(14);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-
-	public Environmental newInstance()
-	{
-		return new Spell_Alarm();
-	}
-	
-	public int classificationCode()
-	{
-		return Ability.SPELL | Ability.DOMAIN_ENCHANTMENT;
-	}
+	public Environmental newInstance(){	return new Spell_Alarm();}
+	public int classificationCode(){	return Ability.SPELL | Ability.DOMAIN_ENCHANTMENT;}
 
 
 	public void affect(Affect affect)
@@ -79,7 +56,7 @@ public class Spell_Alarm extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> glow(s) faintly for a short time.":"^S<S-NAME> touch(es) <T-NAMESELF> very lightly.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> glow(s) faintly for a short time.":"^S<S-NAME> touch(es) <T-NAMESELF> very lightly.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

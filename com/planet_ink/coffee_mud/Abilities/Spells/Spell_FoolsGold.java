@@ -6,35 +6,13 @@ import java.util.*;
 
 public class Spell_FoolsGold extends Spell
 {
+	public String ID() { return "Spell_FoolsGold"; }
+	public String name(){return "Fools Gold";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
 	boolean destroyOnNextTick=false;
-	public Spell_FoolsGold()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Fools Gold";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(13);
-		
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=0;
-		
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FoolsGold();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public Environmental newInstance(){	return new Spell_FoolsGold();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(int tickID)
 	{
@@ -71,7 +49,7 @@ public class Spell_FoolsGold extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms around dramatically.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

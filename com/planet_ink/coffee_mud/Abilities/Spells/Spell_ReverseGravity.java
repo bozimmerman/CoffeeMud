@@ -7,38 +7,14 @@ import java.util.*;
 
 public class Spell_ReverseGravity extends Spell
 {
+	public String ID() { return "Spell_ReverseGravity"; }
+	public String name(){return "Reverse Gravity";}
+	public String displayText(){return "(Gravity is Reversed)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return 0;}
 	private Vector childrenAffects=new Vector();
-	
-	public Spell_ReverseGravity()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Reverse Gravity";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Gravity is Reversed)";
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=0;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(18);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ReverseGravity();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public Environmental newInstance(){	return new Spell_ReverseGravity();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean tick(int tickID)
 	{
@@ -132,7 +108,7 @@ public class Spell_ReverseGravity extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"Gravity has already been reversed here!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Gravity has already been reversed here!");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -148,7 +124,7 @@ public class Spell_ReverseGravity extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), (auto?"G":"^S<S-NAME> speak(s) and wave(s) and g")+"ravity begins to reverse!^?");
 			if(mob.location().okAffect(msg))
 			{
 				childrenAffects=new Vector();

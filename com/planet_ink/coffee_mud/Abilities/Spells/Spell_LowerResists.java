@@ -8,38 +8,15 @@ import java.util.*;
 
 public class Spell_LowerResists extends Spell
 {
+	public String ID() { return "Spell_LowerResists"; }
+	public String name(){return "Lower Resistance";}
+	public String displayText(){return "(Lowered Resistances)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_LowerResists();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+
 	int amount=0;
-	public Spell_LowerResists()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lower Resistance";
-		displayText="(Lowered Resistances)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(2);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_LowerResists();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
-
 
 	public void unInvoke()
 	{
@@ -83,7 +60,7 @@ public class Spell_LowerResists extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"A shimmering unresistable field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering unresistable field around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A shimmering unresistable field appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a shimmering unresistable field around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -6,34 +6,13 @@ import java.util.*;
 
 public class Spell_Clairevoyance extends Spell
 {
-	public Spell_Clairevoyance()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Clairevoyance";
-		displayText="(Clairevoyance)";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Clairevoyance();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_Clairevoyance"; }
+	public String name(){return "Clairevoyance";}
+	public String displayText(){return "(Clairevoyance)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Clairevoyance();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -103,8 +82,8 @@ public class Spell_Clairevoyance extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> invoke(s) clairevoyance, calling '"+mobName+"'.^?");
-			FullMsg msg2=new FullMsg(mob,target,this,affectType,null);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) clairevoyance, calling '"+mobName+"'.^?");
+			FullMsg msg2=new FullMsg(mob,target,this,affectType(auto),null);
 			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);

@@ -7,43 +7,18 @@ import java.util.*;
 
 public class Spell_Grease extends Spell
 {
+	public String ID() { return "Spell_Grease"; }
+	public String name(){return "Grease";}
+	public String displayText(){return "(Covered in Grease)";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Grease();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
+
     public final static int SIT = 0;
     public final static int FUMBLE_WEAPON = 1;
     public final static int BOTH = 2;
-	public Spell_Grease()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Grease";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Covered in Grease)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(3);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Grease();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
-
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
@@ -171,7 +146,7 @@ public class Spell_Grease extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> invoke a spell at <T-NAME>s feet..^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invoke(s) a spell at your feet.^?",affectType,auto?"":"^S<S-NAME> invokes a spell at <T-NAME>s feet.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> invoke a spell at <T-NAME>s feet..^?",Affect.MSG_CAST_ATTACK_VERBAL_SPELL,auto?"":"^S<S-NAME> invoke(s) a spell at your feet.^?",affectType(auto),auto?"":"^S<S-NAME> invokes a spell at <T-NAME>s feet.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,40 +7,14 @@ import java.util.*;
 
 public class Spell_Frenzy extends Spell
 {
+	public String ID() { return "Spell_Frenzy"; }
+	public String name(){return "Frenzy";}
+	public String displayText(){return "(Frenzy spell)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
 	public int hpAdjustment=0;
-
-	public Spell_Frenzy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Frenzy";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Frenzy spell)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(13);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Frenzy();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public Environmental newInstance(){	return new Spell_Frenzy();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -100,7 +74,7 @@ public class Spell_Frenzy extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> scream(s) at <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> scream(s) at <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,41 +7,17 @@ import java.util.*;
 
 public class Spell_HeatMetal extends Spell
 {
+	public String ID() { return "Spell_HeatMetal"; }
+	public String name(){return "Heat Metal";}
+	public String displayText(){return "Heated";}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_HeatMetal();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+
 	private Vector affectedItems=new Vector();
-
-	public Spell_HeatMetal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Heat Metal";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="";
-
-		quality=Ability.MALICIOUS;
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(11);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_HeatMetal();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
-
+	
 	public boolean okAffect(Affect msg)
 	{
 		if(!super.okAffect(msg)) return false;
@@ -151,7 +127,7 @@ public class Spell_HeatMetal extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

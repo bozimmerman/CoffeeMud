@@ -7,37 +7,11 @@ import java.util.*;
 
 public class Spell_ShockingGrasp extends Spell
 {
-	public Spell_ShockingGrasp()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Shocking Grasp";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Shocking Grasp spell)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(6);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ShockingGrasp();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
-
+	public String ID() { return "Spell_ShockingGrasp"; }
+	public String name(){return "Shocking Grasp";}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_ShockingGrasp();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -59,7 +33,7 @@ public class Spell_ShockingGrasp extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> grab(s) at <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> grab(s) at <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{

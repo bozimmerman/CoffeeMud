@@ -7,39 +7,11 @@ import java.util.*;
 
 public class Spell_Command extends Spell
 {
-	public Spell_Command()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Command";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Commanded)";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(21);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Command();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_Command"; }
+	public String name(){return "Command";}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_Command();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -87,7 +59,7 @@ public class Spell_Command extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> command(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> command(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"'.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{

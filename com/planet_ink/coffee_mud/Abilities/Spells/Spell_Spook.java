@@ -7,37 +7,12 @@ import java.util.*;
 
 public class Spell_Spook extends Spell
 {
-	public Spell_Spook()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Spook";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Spooked)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(5);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Spook();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
-
+	public String ID() { return "Spell_Spook"; }
+	public String name(){return "Spook";}
+	public String displayText(){return "(Spooked)";}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_Spook();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -59,7 +34,7 @@ public class Spell_Spook extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&((mob.location().okAffect(msg2))))
 			{

@@ -8,38 +8,13 @@ import java.util.*;
 
 public class Spell_FaerieFog extends Spell
 {
-
-	public Spell_FaerieFog()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Faerie Fog";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Faerie Fog)";
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=0;
-		
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(8);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_FaerieFog();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public String ID() { return "Spell_FaerieFog"; }
+	public String name(){return "Faerie Fog";}
+	public String displayText(){return "(Faerie Fog)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_FaerieFog();}
+	public int classificationCode() {	return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 
 	public void unInvoke()
@@ -77,7 +52,7 @@ public class Spell_FaerieFog extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> fizzles a spell.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> fizzles a spell.");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -93,7 +68,7 @@ public class Spell_FaerieFog extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType,(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto),(auto?"A ":"^S<S-NAME> speak(s) and gesture(s) and a ")+"sparkling fog envelopes the area.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

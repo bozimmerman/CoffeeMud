@@ -7,32 +7,11 @@ import java.util.*;
 
 public class Spell_Dismissal extends Spell
 {
-	public Spell_Dismissal()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dismissal";
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(25);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Dismissal();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
-	}
+	public String ID() { return "Spell_Dismissal"; }
+	public String name(){return "Dismissal";}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_Dismissal();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -43,7 +22,6 @@ public class Spell_Dismissal extends Spell
 			return false;
 
 		boolean success=false;
-		affectType=affectType;
 		if(target.getStartRoom()==null)
 			success=profficiencyCheck(-(target.envStats().level()*3),auto);
 		else
@@ -51,7 +29,7 @@ public class Spell_Dismissal extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a dismissive spell!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

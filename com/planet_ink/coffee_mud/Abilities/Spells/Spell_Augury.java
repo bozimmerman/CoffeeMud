@@ -7,34 +7,11 @@ import java.util.*;
 
 public class Spell_Augury extends Spell
 {
-
-	public Spell_Augury()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Augury";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=0;
-		canTargetCode=0;
-		
-		baseEnvStats().setLevel(3);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Augury();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_Augury"; }
+	public String name(){return "Augury";}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Spell_Augury();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 	public boolean isTrapped(Environmental E)
 	{
@@ -85,7 +62,7 @@ public class Spell_Augury extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", encanting.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", encanting.^?");
 			if(mob.location().okAffect(msg))
 			{
 				boolean aggressiveMonster=false;

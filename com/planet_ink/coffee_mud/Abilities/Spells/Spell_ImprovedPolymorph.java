@@ -7,41 +7,15 @@ import java.util.*;
 
 public class Spell_ImprovedPolymorph extends Spell
 {
+	public String ID() { return "Spell_ImprovedPolymorph"; }
+	public String name(){return "Improved Polymorph";}
+	public String displayText(){return "(Improved Polymorph)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_ImprovedPolymorph();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
 	Race newRace=null;
-	public Spell_ImprovedPolymorph()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Improved Polymorph";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Improved Polymorph)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(15);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ImprovedPolymorph();
-	}
 	
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
-	}
-
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -131,7 +105,7 @@ public class Spell_ImprovedPolymorph extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> form(s) an improved spell around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

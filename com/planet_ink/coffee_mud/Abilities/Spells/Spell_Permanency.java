@@ -8,35 +8,15 @@ import java.util.*;
 
 public class Spell_Permanency extends Spell
 {
+	public String ID() { return "Spell_Permanency"; }
+	public String name(){return "Permanency";}
+	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
+	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	public StdAbility permanentAbility=null;
 	public int oldTicksRemaining=0;
-	public Spell_Permanency()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Permanency";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_EXITS;
-
-		baseEnvStats().setLevel(22);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Permanency();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public Environmental newInstance(){	return new Spell_Permanency();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	
 	public String displayText()
 	{
 		if(permanentAbility!=null)
@@ -83,7 +63,7 @@ public class Spell_Permanency extends Spell
 		
 		if(success)
 		{ 
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

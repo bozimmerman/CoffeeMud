@@ -7,35 +7,12 @@ import java.util.*;
 
 public class Spell_InsatiableThirst extends Spell
 {
-	public Spell_InsatiableThirst()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Insatiable Thirst";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Insatiable Thirst spell)";
-
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_InsatiableThirst();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
-	}
+	public String ID() { return "Spell_InsatiableThirst"; }
+	public String name(){return "Insatiable Thirst";}
+	public String displayText(){return "(Insatiable Thirst spell)";}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){	return new Spell_InsatiableThirst();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -57,7 +34,7 @@ public class Spell_InsatiableThirst extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

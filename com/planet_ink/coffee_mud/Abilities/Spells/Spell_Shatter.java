@@ -7,29 +7,11 @@ import java.util.*;
 
 public class Spell_Shatter extends Spell
 {
-	public Spell_Shatter()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Shatter";
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS|Ability.CAN_ITEMS;
-
-
-		baseEnvStats().setLevel(8);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Shatter();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public String ID() { return "Spell_Shatter"; }
+	public String name(){return "Shatter";}
+	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	public Environmental newInstance(){	return new Spell_Shatter();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -74,8 +56,8 @@ public class Spell_Shatter extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
-			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType,null);
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> starts vibrating!":"^S<S-NAME> utter(s) a shattering spell, causing <T-NAMESELF> to vibrate and resonate.^?");
+			FullMsg msg2=new FullMsg(mob,mobTarget,this,affectType(auto),null);
 			if((mob.location().okAffect(msg))&&((mobTarget==null)||(mob.location().okAffect(msg2))))
 			{
 				mob.location().send(mob,msg);

@@ -7,30 +7,18 @@ import java.util.*;
 
 public class Spell_MagicMouth extends Spell
 {
+	public String ID() { return "Spell_MagicMouth"; }
+	public String name(){return "Magic Mouth";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return CAN_ITEMS;}
+	public Environmental newInstance(){ return new Spell_MagicMouth();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+
 	Room myRoomContainer=null;
 	int myTrigger=Affect.TYP_ENTER;
 	String message="NO MESSAGE ENTERED";
 
 	boolean waitingForLook=false;
-
-	public Spell_MagicMouth()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Magic Mouth";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=Ability.CAN_ITEMS;
-		
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
 
 	public void doMyThing()
 	{
@@ -38,15 +26,6 @@ public class Spell_MagicMouth extends Spell
 		unInvoke();
 		return;
 	}
-	public Environmental newInstance()
-	{
-		return new Spell_MagicMouth();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
-
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
@@ -149,7 +128,7 @@ public class Spell_MagicMouth extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,38 +7,16 @@ import java.util.*;
 
 public class Spell_TimeStop extends Spell
 {
+	public String ID() { return "Spell_TimeStop"; }
+	public String name(){return "Time Stop";}
+	public String displayText(){return "(Time is Stopped)";}
+	protected int canAffectCode(){return CAN_ROOMS|CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	protected int overrideMana(){return 100;}
+	public Environmental newInstance(){	return new Spell_TimeStop();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	
 	protected Vector fixed=new Vector();
-	public Spell_TimeStop()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Time Stop";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Time is Stopped)";
-
-		canAffectCode=Ability.CAN_MOBS|Ability.CAN_ROOMS;
-		canTargetCode=0;
-		overrideMana=100;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(18);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_TimeStop();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
 
 	public void unInvoke()
 	{
@@ -120,7 +98,7 @@ public class Spell_TimeStop extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"Time has already been stopped here!");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Time has already been stopped here!");
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 			return false;
@@ -136,7 +114,7 @@ public class Spell_TimeStop extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, (auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?");
+			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),(auto?"T":"^S<S-NAME> speak(s) and gesture(s) and t")+"ime suddenly STOPS!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -7,38 +7,13 @@ import java.util.*;
 
 public class Spell_ComprehendLangs extends Spell
 {
-	public Spell_ComprehendLangs()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Comprehend Languages";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Comprehend Languages)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-
-		baseEnvStats().setLevel(1);
-		quality=Ability.BENEFICIAL_SELF;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_ComprehendLangs();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
-	}
+	public String ID() { return "Spell_ComprehendLangs"; }
+	public String name(){return "Comprehend Languages";}
+	public String displayText(){return "(Comprehend Languages)";}
+	public int quality(){return BENEFICIAL_SELF;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_ComprehendLangs();}
+	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
 
 	public void unInvoke()
@@ -123,7 +98,7 @@ public class Spell_ComprehendLangs extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> feel(s) more comprehrending.":"^S<S-NAME> invoke(s) the power of comprehension!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> feel(s) more comprehrending.":"^S<S-NAME> invoke(s) the power of comprehension!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -6,35 +6,14 @@ import java.util.*;
 
 public class Spell_PhantomHound extends Spell
 {
+	public String ID() { return "Spell_PhantomHound"; }
+	public String name(){return "Phantom Hound";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
 	private MOB victim=null;
 	private int pointsLeft=0;
-	public Spell_PhantomHound()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Phantom Hound";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_PhantomHound();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
+	public Environmental newInstance(){	return new Spell_PhantomHound();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
 	public boolean tick(int tickID)
 	{
@@ -126,7 +105,7 @@ public class Spell_PhantomHound extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> invoke(s) a ferocious phantom assistant.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> invoke(s) a ferocious phantom assistant.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

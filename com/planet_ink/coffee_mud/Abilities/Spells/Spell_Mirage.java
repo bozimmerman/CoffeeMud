@@ -7,38 +7,15 @@ import java.util.*;
 
 public class Spell_Mirage extends Spell
 {
+	public String ID() { return "Spell_Mirage"; }
+	public String name(){return "Mirage";}
+	public String displayText(){return "(Mirage spell)";}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return CAN_ROOMS;}
+	public Environmental newInstance(){	return new Spell_Mirage();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
+	
 	Room newRoom=null;
-	public Spell_Mirage()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mirage";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Mirage spell)";
-
-		canAffectCode=Ability.CAN_ROOMS;
-		canTargetCode=Ability.CAN_ROOMS;
-
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(7);
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Mirage();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
-	}
 
 	public void unInvoke()
 	{
@@ -103,7 +80,7 @@ public class Spell_Mirage extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg = new FullMsg(mob, target, this, affectType, auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
+			FullMsg msg = new FullMsg(mob, target, this, affectType(auto), auto?"":"^S<S-NAME> speak(s) and gesture(s) dramatically!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

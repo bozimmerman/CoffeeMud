@@ -7,36 +7,13 @@ import java.util.*;
 
 public class Spell_Frost extends Spell
 {
-	public Spell_Frost()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Frost";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Frost)";
-
-		quality=Ability.MALICIOUS;
-
-		uses=Integer.MAX_VALUE;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(4);
-		maxRange=1;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Frost();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
-	}
+	public String ID() { return "Spell_Frost"; }
+	public String name(){return "Frost";}
+	public String displayText(){return "(Frost)";}
+	public int maxRange(){return 2;}
+	public int quality(){return MALICIOUS;};
+	public Environmental newInstance(){ return new Spell_Frost();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -59,7 +36,7 @@ public class Spell_Frost extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType,(auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"A ":"^S<S-NAME> incant(s) and point(s) at <T-NAMESELF>. A ")+"blast of frost erupts!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_COLD|(auto?Affect.ACT_GENERAL:0),null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{

@@ -7,37 +7,13 @@ import java.util.*;
 
 public class Spell_SpellTurning extends Spell
 {
-	public Spell_SpellTurning()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Spell Turning";
-		displayText="(Spell Turning)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_SpellTurning();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
-	}
-
+	public String ID() { return "Spell_SpellTurning"; }
+	public String name(){return "Spell Turning";}
+	public String displayText(){return "(Spell Turning)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){return new Spell_SpellTurning();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
 
 	public void unInvoke()
 	{
@@ -88,7 +64,7 @@ public class Spell_SpellTurning extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"^S<S-NAME> invoke(s) an reflective barrier of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) an reflective barrier of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

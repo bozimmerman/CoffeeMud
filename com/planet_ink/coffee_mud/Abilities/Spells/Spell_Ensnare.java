@@ -7,45 +7,17 @@ import java.util.*;
 
 public class Spell_Ensnare extends Spell
 {
+	public String ID() { return "Spell_Ensnare"; }
+	public String name(){return "Ensnare";}
+	public String displayText(){return "(Ensnared)";}
+	public int maxRange(){return 2;}
+	public int minRange(){return 1;}
+	public int quality(){return MALICIOUS;};
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_Ensnare();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public int amountRemaining=0;
-
-	public Spell_Ensnare()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Ensnare";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Ensnared)";
-
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(15);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=1;
-		maxRange=2;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_Ensnare();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
-
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -112,7 +84,7 @@ public class Spell_Ensnare extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -121,7 +93,7 @@ public class Spell_Ensnare extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okAffect(msg))&&(target.fetchAffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);

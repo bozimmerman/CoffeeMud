@@ -7,39 +7,13 @@ import java.util.*;
 
 public class Spell_MassHaste extends Spell
 {
-	public Spell_MassHaste()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mass Haste";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Hasted)";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(14);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Spell_MassHaste();
-	}
-	public int classificationCode()
-	{
-		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
-	}
+	public String ID() { return "Spell_MassHaste"; }
+	public String name(){return "Mass Haste";}
+	public String displayText(){return "(Hasted)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	public Environmental newInstance(){	return new Spell_MassHaste();}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -79,7 +53,7 @@ public class Spell_MassHaste extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType,auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.^?");
+			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) quickly.^?");
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();
@@ -88,7 +62,7 @@ public class Spell_MassHaste extends Spell
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,affectType,null);
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
 				if((mob.location().okAffect(msg))
 				   &&(target.fetchAffect("Spell_Haste")==null)
 				   &&(target.fetchAffect("Spell_MassHaste")==null))
