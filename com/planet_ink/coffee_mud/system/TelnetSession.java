@@ -569,6 +569,9 @@ public class TelnetSession extends Thread implements Session
 			try
 			{
 				int c=in.read();
+				if(c<0)
+					throw new IOException("reset by peer");
+				else
 				if(c==13)
 					break;
 				else
