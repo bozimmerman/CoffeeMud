@@ -368,6 +368,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                     int len=0;
                     while(!shutdown){try{
 	                    len = input.readInt();
+	                    break;
                     }catch(java.io.IOException e){if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) throw e;}}
 					if(len>65536)
 					{
@@ -381,6 +382,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 
                     while(!shutdown){try{
 	                    input.readFully(tmp);
+	                    break;
                     }catch(java.io.IOException e){if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) throw e;}}
 					str=new String(tmp);
                 }
