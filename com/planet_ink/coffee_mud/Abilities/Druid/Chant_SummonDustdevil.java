@@ -158,6 +158,7 @@ public class Chant_SummonDustdevil extends Chant
 				MOB target = determineMonster(mob, material);
 				if(target!=null)
 				{
+					if(target.isInCombat()) target.makePeace();
 					beneficialAffect(mob,target,0);
 					ExternalPlay.follow(target,mob,true);
 					if(target.amFollowing()!=mob)

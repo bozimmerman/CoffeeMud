@@ -1,10 +1,4 @@
 set range at 0 after combat -- how did he leave combat? flee? yes, and then came back
 ability to permasave a mpvar
-! webiqserverport macro not showing other ips
-enchant weapon/armor to allow targeting of mobs
-summoned aggr monsters attack caster
 implement mana/move thing for abilities -- add to help
-decay riders on decay behavior
-scriptable support for seasons
-
-
+social editor does not accept <>

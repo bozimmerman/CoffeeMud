@@ -126,7 +126,10 @@ public class Scriptable extends StdBehavior
 		"NUMITEMSROOM", // 46
 		"MOBITEM", // 47
 		"NUMITEMSMOB", // 48
-		"HASTATTOO" // 49
+		"HASTATTOO", // 49
+		"ISSEASON", // 50
+		"ISWEATHER", // 51
+		"GSTAT" // 52
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -162,7 +165,9 @@ public class Scriptable extends StdBehavior
 		"MPBEHAVE", // 31
 		"MPUNBEHAVE",  //32
 		"MPTATTOO", // 33
-		"BREAK" // 34
+		"BREAK", // 34
+		"MPGSET", // 35
+		"MPSAVEVAR" // 36
 	};
 
 	public Behavior newInstance()
@@ -912,6 +917,28 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 50: // isseason
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				returnable=false;
+				if(monster.location()!=null)
+				for(int a=0;a<Area.SEASON_DESCS.length;a++)
+					if((Area.SEASON_DESCS[a]).startsWith(arg1.toUpperCase())
+					&&(monster.location().getArea().getSeasonCode()==a))
+					{returnable=true; break;}
+				break;
+			}
+			case 51: // isweather
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				returnable=false;
+				if(monster.location()!=null)
+				for(int a=0;a<Area.WEATHER_DESCS.length;a++)
+					if((Area.WEATHER_DESCS[a]).startsWith(arg1.toUpperCase())
+					&&(monster.location().getArea().weatherType(monster.location())==a))
+					{returnable=true; break;}
+				break;
+			}
 			case 38: // istime
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
@@ -1210,10 +1237,65 @@ public class Scriptable extends StdBehavior
 					if(arg3.equals("!="))
 						returnable=!E.getStat(arg2).equalsIgnoreCase(arg4);
 					else
+						returnable=simpleEval(getStat(arg2),arg4,arg3,"STAT");
+				}
+				break;
+			}
+			case 52: // gstat
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),3));
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					Log.errOut("Scriptable","GSTAT Syntax -- "+monster.Name()+", "+evaluable);
+					break;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					boolean found=false;
+					String val="";
+					if(E instanceof MOB)
 					{
-						Log.errOut("Scriptable","STAT Syntax -- "+monster.Name()+", "+evaluable);
-						return returnable;
+						for(int i=0;i<Generic.GENMOBCODES.length;i++)
+						{
+							if(Generic.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							{
+								val=Generic.getGenMobStat((MOB)E,Generic.GENMOBCODES[i]);
+								found=true; break;
+							}
+						}
 					}
+					else
+					if(E instanceof Item)
+					{
+						for(int i=0;i<Generic.GENITEMCODES.length;i++)
+						{
+							if(Generic.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							{
+								val=Generic.getGenItemStat((Item)E,Generic.GENITEMCODES[i]);
+								found=true; break;
+							}
+						}
+					}
+
+					if(!found)
+					{
+						Log.errOut("Scriptable","GSTAT Syntax -- "+monster.Name()+", unknown stat: "+arg2+" for "+E.name());
+						break;
+					}
+
+					if(arg3.equals("=="))
+						returnable=val.equalsIgnoreCase(arg4);
+					else
+					if(arg3.equals("!="))
+						returnable=!val.equalsIgnoreCase(arg4);
+					else
+						returnable=simpleEval(val,arg4,arg3,"GSTAT");
 				}
 				break;
 			}
@@ -1845,6 +1927,18 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 50: // isseason
+			{
+				if(monster.location()!=null)
+					results.append(Area.SEASON_DESCS[monster.location().getArea().getSeasonCode()]);
+				break;
+			}
+			case 51: // isweather
+			{
+				if(monster.location()!=null)
+					results.append(Area.WEATHER_DESCS[monster.location().getArea().weatherType(monster.location())]);
+				break;
+			}
 			case 38: // istime
 			{
 				if(lastKnownLocation!=null)
@@ -1996,6 +2090,50 @@ public class Scriptable extends StdBehavior
 					}
 
 					results.append(E.getStat(arg2));
+					break;
+				}
+				break;
+			}
+			case 52: // gstat
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(E!=null)
+				{
+					boolean found=false;
+					String val="";
+					if(E instanceof MOB)
+					{
+						for(int i=0;i<Generic.GENMOBCODES.length;i++)
+						{
+							if(Generic.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							{
+								val=Generic.getGenMobStat((MOB)E,Generic.GENMOBCODES[i]);
+								found=true; break;
+							}
+						}
+					}
+					else
+					if(E instanceof Item)
+					{
+						for(int i=0;i<Generic.GENITEMCODES.length;i++)
+						{
+							if(Generic.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							{
+								val=Generic.getGenItemStat((Item)E,Generic.GENITEMCODES[i]);
+								found=true; break;
+							}
+						}
+					}
+
+					if(!found)
+					{
+						Log.errOut("Scriptable","GSTAT Syntax -- "+monster.Name()+", unknown stat: "+arg2+" for "+E.name());
+						break;
+					}
+
+					results.append(val);
 					break;
 				}
 				break;
@@ -2625,6 +2763,47 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 35: // mpgset
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				String arg2=Util.getCleanBit(s,2);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				if(newTarget!=null)
+				{
+					boolean found=false;
+					String val="";
+					if(newTarget instanceof MOB)
+					{
+						for(int i=0;i<Generic.GENMOBCODES.length;i++)
+						{
+							if(Generic.GENMOBCODES[i].equalsIgnoreCase(arg2))
+							{
+								Generic.setGenMobStat((MOB)newTarget,Generic.GENMOBCODES[i],arg3);
+								found=true; break;
+							}
+						}
+					}
+					else
+					if(newTarget instanceof Item)
+					{
+						for(int i=0;i<Generic.GENITEMCODES.length;i++)
+						{
+							if(Generic.GENITEMCODES[i].equalsIgnoreCase(arg2))
+							{
+								Generic.setGenItemStat((Item)newTarget,Generic.GENITEMCODES[i],arg3);
+								found=true; break;
+							}
+						}
+					}
+
+					if(!found)
+					{
+						Log.errOut("Scriptable","MPSET Syntax -- "+monster.Name()+", unknown stat: "+arg2+" for "+newTarget.Name());
+						break;
+					}
+				}
+				break;
+			}
 			case 11: // mpexp
 			{
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
@@ -3003,6 +3182,15 @@ public class Scriptable extends StdBehavior
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				if((E!=null)&&(arg2.length()>0))
 					mpsetvar(E.Name(),arg2,arg3);
+				break;
+			}
+			case 36: // mpsavevar
+			{
+				Environmental E=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				if((E!=null)&&(arg2.length()>0))
+				{
+				}
 				break;
 			}
 			case 28: // mpdamage

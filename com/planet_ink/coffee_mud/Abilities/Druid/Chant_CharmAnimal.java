@@ -128,6 +128,7 @@ public class Chant_CharmAnimal extends Chant
 					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
 					if(success)
 					{
+						if(target.isInCombat()) target.makePeace();
 						ExternalPlay.follow(target,mob,false);
 						ExternalPlay.makePeaceInGroup(mob);
 						if(target.amFollowing()!=mob)

@@ -171,10 +171,20 @@ public class MOBloader
 					Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
 				else
 				{
-					newAbility.setProfficiency((int)DBConnections.getLongRes(R,"CMABPF"));
-					newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
-					newAbility.recoverEnvStats();
-					mob.addAbility(newAbility);
+					int profficiency=(int)DBConnections.getLongRes(R,"CMABPF");
+					if(profficiency==Integer.MAX_VALUE)
+					{
+						newAbility.setProfficiency(100);
+						mob.addNonUninvokableAffect(newAbility);
+						newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
+					}
+					else
+					{
+						newAbility.setProfficiency(profficiency);
+						newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
+						newAbility.recoverEnvStats();
+						mob.addAbility(newAbility);
+					}
 				}
 			}
 			DBConnector.DBDone(D);
@@ -716,9 +726,11 @@ public class MOBloader
 		DBConnection D=DBConnector.DBFetch();
 		Vector V=new Vector();
 		V.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
+		HashSet H=new HashSet();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
+			H.add(thisAbility.ID());
 			if((thisAbility!=null)&&(!thisAbility.isBorrowed(mob)))
 			{
 				String
@@ -732,6 +744,28 @@ public class MOBloader
 				+"'"+thisAbility.ID()+"',"
 				+thisAbility.profficiency()+",'"
 				+thisAbility.text()+"'"
+				+")";
+				V.addElement(str);
+			}
+		}
+		for(int a=0;a<mob.numAffects();a++)
+		{
+			Ability thisAffect=mob.fetchAffect(a);
+			if((thisAffect!=null)
+			&&(!H.contains(thisAffect.ID()))
+			&&(!thisAffect.isBorrowed(mob)))
+			{
+				String
+				str="INSERT INTO CMCHAB ("
+				+"CMUSERID, "
+				+"CMABID, "
+				+"CMABPF,"
+				+"CMABTX"
+				+") values ("
+				+"'"+mob.Name()+"',"
+				+"'"+thisAffect.ID()+"',"
+				+Integer.MAX_VALUE+",'"
+				+thisAffect.text()+"'"
 				+")";
 				V.addElement(str);
 			}

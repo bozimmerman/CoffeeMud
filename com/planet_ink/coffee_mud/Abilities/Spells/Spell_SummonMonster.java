@@ -51,6 +51,7 @@ public class Spell_SummonMonster extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
+				if(target.isInCombat()) target.makePeace();
 				ExternalPlay.follow(target,mob,true);
 				beneficialAffect(mob,target,0);
 				if(target.amFollowing()!=mob)

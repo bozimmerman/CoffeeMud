@@ -95,6 +95,7 @@ public class Chant_BrownMold extends Chant
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
 				beneficialAffect(mob,target,0);
+				if(target.isInCombat()) target.makePeace();
 				ExternalPlay.follow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");

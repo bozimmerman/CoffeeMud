@@ -113,9 +113,11 @@ public class Paladin_SummonMount extends StdAbility
 				target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
+				if(target.isInCombat()) target.makePeace();
 				ExternalPlay.move(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
+					if(target.isInCombat()) target.makePeace();
 					ExternalPlay.follow(target,mob,true);
 					if(target.amFollowing()!=mob)
 						mob.tell(target.name()+" seems unwilling to follow you.");

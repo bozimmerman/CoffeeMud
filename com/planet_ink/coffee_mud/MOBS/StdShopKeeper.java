@@ -805,10 +805,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								A.invoke(this,V,mob,true);
 							}
 							else
-							if(A.canTarget(CMClass.getItem("StdItem")))
+							if(A.canTarget(CMClass.sampleItem()))
 							{
 								Item I=mob.fetchWieldedItem();
 								if(I==null) I=mob.fetchWornItem(Item.HELD);
+								if(I==null) I=mob.fetchWornItem("all");
+								if(I==null) I=mob.fetchCarried(null,"all");
 								if(I==null) return;
 								V.addElement(I.name()+"$");
 								addInventory(I);

@@ -172,8 +172,7 @@ public class BasicSenses
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Train what? Enter HELP TRAIN for more information.");
-
+			mob.tell("You have "+mob.getTrains()+" training sessions. Enter HELP TRAIN for more information.");
 			return;
 		}
 		commands.removeElementAt(0);

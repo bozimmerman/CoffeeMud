@@ -870,7 +870,7 @@ public class Lister
 	public static String trailTo(Room R1, Vector commands)
 	{
 		String where=Util.combine(commands,1);
-		if(where.length()==0) return "Trail to where?";
+		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.";
 		if(R1==null) return "Where are you?";
 		boolean confirm=false;
 		if(where.endsWith(" CONFIRM!"))
@@ -1157,6 +1157,74 @@ public class Lister
 		}
 		return str;
 	}
+
+	private static String reallyFindWords(MOB mob, Vector commands)
+	{
+		String words=Util.combine(commands,1);
+		if(words.length()==0)
+			return "Perhaps you should specify some words to search for.";
+		StringBuffer str=new StringBuffer("");
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			StringBuffer s=new StringBuffer("");
+			if(CoffeeUtensils.containsString(R.displayText(),words))
+				s.append("display ");
+			if(CoffeeUtensils.containsString(R.description(),words))
+				s.append("description ");
+			MOB M=R.fetchInhabitant(words);
+			if(M!=null)
+				s.append("mob '"+M.name()+"' ");
+			Item I=R.fetchItem(null,words);
+			if(I!=null)
+				s.append("item '"+I.name()+"' ");
+			if(s.length()>0)
+				str.append(Util.padRight(R.roomID(),30)+": "+s.toString()+"\n\r");
+		}
+		return str.toString();
+	}
+	
+	
+	private static String reallyFindOneWays(MOB mob, Vector commands)
+	{
+		StringBuffer str=new StringBuffer("");
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Room R2=R.rawDoors()[d];
+				if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
+					str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+R2.roomID()+"\n\r");
+			}
+		}
+		if(str.length()==0) str.append("None!");
+		if(Util.combine(commands,1).equalsIgnoreCase("log"))
+			Log.rawSysOut(str.toString());
+		return str.toString();
+	}
+	
+	
+	private static String unlinkedExits(MOB mob, Vector commands)
+	{
+		StringBuffer str=new StringBuffer("");
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				Room R2=R.rawDoors()[d];
+				Exit E2=R.rawExits()[d];
+				if((R2==null)&&(E2!=null))
+					str.append(Util.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+E2.temporaryDoorLink()+" ("+E2.displayText()+")\n\r");
+			}
+		}
+		if(str.length()==0) str.append("None!");
+		if(Util.combine(commands,1).equalsIgnoreCase("log"))
+			Log.rawSysOut(str.toString());
+		return str.toString();
+	}
+	
 	
 	public static void list(MOB mob, Vector commands)
 	{
@@ -1290,6 +1358,15 @@ public class Lister
 		if("RESOURCES".startsWith(listThis))
 			s.rawPrintln(reallyList2Cols(Resources.findResourceKeys("").elements(),-1,null).toString());
 		else
-			s.rawPrintln("Can't list those, try ITEMS, POISONS, COMMON, DISEASES, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, SUBOPS, TRAILTO, or AREA.");
+		if("WORDS".startsWith(listWord))
+			s.rawPrintln(reallyFindWords(mob,commands));
+		else
+		if("ONEWAYDOORS".startsWith(listWord))
+			s.rawPrintln(reallyFindOneWays(mob,commands));
+		else
+		if("UNLINKEDEXITS".startsWith(listWord))
+			s.rawPrintln(unlinkedExits(mob,commands));
+		else
+			s.rawPrintln("Can't list those, try ITEMS, POISONS, COMMON, DISEASES, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, WORDS, RESOURCES, SUBOPS, TRAILTO, or AREA.");
 	}
 }

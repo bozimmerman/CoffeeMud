@@ -1,3 +1,6 @@
+New Ideas are now kept in the WebIQ session. This list will no longer be kept as up to 
+date, but only occassionally, to spark the interest and amusement of downloaders.
+
 Misc/Architecture:
 ==================
 add floating num to resources -- whether the item will float
@@ -14,9 +17,11 @@ Item Interactivity (Scriptable + socials that require an ITEM target) Tapping yo
 Mortgages (bankers lend large amounts of money at interest, start taking away property if you don't pay up)
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 SMTP capability
-save player affects
+code something to coffeemudify all the beds
+save player affects in the db
 Gaian is weak on qualifying chants.  
 give rooms maximum weight saveable to db
+Allow archons to define channels using the zapper codes 
 zapper check on quests and questchats for eligible players
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 apply languages to writing as well. Should be simple, right? ha!
@@ -67,8 +72,9 @@ TaxCollector
 	Designated mob wanders an area and charges taxesbased on the last time 
 	that you have paid taxes.
 Additions/Updates
-	Arrest -- banned substances (get, drop, eq, etc)
-	Arrest allowing players to bring bountys to the judge.
+	Arrest 
+		banned substances (get, drop, eq, etc)
+		allowing players to bring bountys to the judge.
 
 
 
@@ -139,35 +145,38 @@ Knowledge <race>
 Sexual Techniques
 	Gives mana bonuses following sex with someone who has this skill.
 Additions/Updates
-	locksmith BOLTLOCK a lock that can only be unlocked from one direction. 
+	Locksmithing
+		BOLTLOCK a lock that can only be unlocked from one direction. 
 		Should be pickable from the other direction, just not unlocked with a key.
-	in the skill MASON, could you add to the desription of archways the 
-		type of stone used to make it...A magestic MARBLE archway towers 
-		above you? Also, could that description replace the room description 
-		of the next room?
-	BLACKSMITH chain....works like rope, but heavy and metal.
-	TAILOR pillow, sheets, blanket, large pillow, cushion
-	masonry tunnel (at about 20 levels above the normal masonry skill) 
-		connect 2 rooms in the same area that you own.
-	blacksmith TRASHCAN. A container that has the property of trashcollection, 
-		even in a privately owned property. Anything placed in the trashcan will 
-		be destroyed in 30 minutes.
-	paper making Poster, Banner, and Screen.
-	sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that 
-		hold water and people. 
-	pottery--BRICKS converts a clay resource to a stone
-	construct needs to be able to modify door descriptions
-	construct  peephole. a window on a door (sortof)
-	ability to make windows in Construction, Masonry
-	mason POOL will convert the room into a Water room, with 1 level 
-		of underwater added for free
-	jewelmaking should allow you to add jewels to any item
-	mason portcullis (but it requires METAL instead of stone)
-	construct drawbridge
-	blacksmith DRUM (metal barrel)
-	BLACKSMITH can (Like TIN can or coffee can)
-	pottery flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc.
-	MASON and CONSTRUCT WINDOW exits...exits that require the CRAWL command.
+	Masonry
+		could you add to the desription of archways the  type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room?
+		tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.
+		windows
+		POOL will convert the room into a Water room, with 1 level of underwater added for free
+		portcullis (but it requires METAL instead of stone)
+		WINDOW exits...exits that require the CRAWL command.
+	Blacksmithing
+		chain....works like rope, but heavy and metal.
+		Trashcan A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes.
+		DRUM (metal barrel)
+		can (Like TIN can or coffee can)
+	Tailoring 
+		pillow, sheets, blanket, large pillow, cushion
+	Paper making 
+		Poster, Banner, and Screen.
+	Sculpting
+		tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
+	pottery
+		BRICKS converts a clay resource to a stone
+		flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc.
+	Construction 
+		needs to be able to modify door descriptions
+		peephole. a window on a door (sortof)
+		windows
+		drawbridge
+		WINDOW exits...exits that require the CRAWL command.
+	Jewelmaking 
+		allow you to add jewels to any item
 
 
 
@@ -476,6 +485,7 @@ Alcoholism
 	suffecient....I hope.
 Allergies 
 	Nuff said
+Insomnia
 
 
 

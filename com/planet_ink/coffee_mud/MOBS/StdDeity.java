@@ -261,7 +261,31 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		Room prevRoom=location();
 		mob.location().bringMobHere(this,false);
-		if(Blessing!=null) Blessing.invoke(this,mob,true);
+		if(Blessing!=null)
+		{
+			Vector V=new Vector();
+			if(Blessing.canTarget(mob))
+			{
+				V.addElement(mob.name()+"$");
+				Blessing.invoke(this,V,mob,true);
+			}
+			else
+			if(Blessing.canTarget(CMClass.sampleItem()))
+			{
+				Item I=mob.fetchWieldedItem();
+				if(I==null) I=mob.fetchWornItem(Item.HELD);
+				if(I==null) I=mob.fetchWornItem("all");
+				if(I==null) I=mob.fetchCarried(null,"all");
+				if(I==null) return;
+				V.addElement(I.name()+"$");
+				addInventory(I);
+				Blessing.invoke(this,V,I,true);
+				delInventory(I);
+				if(!mob.isMine(I)) mob.addInventory(I);
+			}
+			else
+				Blessing.invoke(this,mob,true);
+		}
 		prevRoom.bringMobHere(this,false);
 		if(mob.location()!=prevRoom)
 		{
@@ -288,7 +312,31 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		Room prevRoom=location();
 		mob.location().bringMobHere(this,false);
-		if(Curse!=null) Curse.invoke(this,mob,true);
+		if(Curse!=null)
+		{
+			Vector V=new Vector();
+			if(Curse.canTarget(mob))
+			{
+				V.addElement(mob.name()+"$");
+				Curse.invoke(this,V,mob,true);
+			}
+			else
+			if(Curse.canTarget(CMClass.sampleItem()))
+			{
+				Item I=mob.fetchWieldedItem();
+				if(I==null) I=mob.fetchWornItem(Item.HELD);
+				if(I==null) I=mob.fetchWornItem("all");
+				if(I==null) I=mob.fetchCarried(null,"all");
+				if(I==null) return;
+				V.addElement(I.name()+"$");
+				addInventory(I);
+				Curse.invoke(this,V,I,true);
+				delInventory(I);
+				if(!mob.isMine(I)) mob.addInventory(I);
+			}
+			else
+				Curse.invoke(this,mob,true);
+		}
 		prevRoom.bringMobHere(this,false);
 		if(mob.location()!=prevRoom)
 		{

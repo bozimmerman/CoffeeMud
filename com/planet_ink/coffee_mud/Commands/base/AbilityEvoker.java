@@ -221,7 +221,7 @@ public class AbilityEvoker extends Scriptable
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr1"));
+			mob.tell(getScr("AbilityEvoker","pracerr1",""+mob.getPractices()));
 			return;
 		}
 		commands.removeElementAt(0);

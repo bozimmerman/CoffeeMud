@@ -90,6 +90,17 @@ public class Decay extends ActiveTicker
 		if(activated) return;
 		if(affect.amITarget(affecting))
 		{
+			if(affecting instanceof Rideable)
+			{
+				if(((affect.targetMinor()==Affect.TYP_SLEEP)
+					||(affect.targetMinor()==Affect.TYP_SIT)
+					||(affect.targetMinor()==Affect.TYP_MOUNT)
+					||(affect.targetMinor()==Affect.TYP_ENTER))
+				&&(!affect.source().isMonster())
+				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
+					activated=true;
+			}
+			else
 			if(affecting instanceof MOB)
 			{
 				if(((affect.targetMajor()&Affect.MASK_MALICIOUS)>0)

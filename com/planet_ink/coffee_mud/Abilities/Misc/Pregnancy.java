@@ -96,9 +96,7 @@ public class Pregnancy extends StdAbility
 
 							mob.location().show(mob,null,Affect.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
 							Ability A=mob.fetchAffect(ID());
-							Ability A2=mob.fetchAbility(ID());
 							if(A!=null) mob.delAffect(A);
-							if(A2!=null) mob.delAbility(A2);
 							MOB babe=CMClass.getMOB("GenMOB");
 							Race R=CMClass.getRace((String)races.elementAt(Dice.roll(1,races.size(),-1)));
 							if(R==null) R=mob.baseCharStats().getMyRace();
@@ -170,9 +168,7 @@ public class Pregnancy extends StdAbility
 		if(success)
 		{
 			setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-			Ability A=(Ability)copyOf();
-			target.addAbility(A);
-			A.autoInvocation(target);
+			target.addNonUninvokableAffect(this);
 		}
 		return success;
 	}

@@ -451,15 +451,7 @@ public class Amputation extends StdAbility
 				{
 					amputate(target,A,gone);
 					if(newOne==true)
-					{
-						target.addAbility(A);
-						A.autoInvocation(target);
-					}
-					else
-					{
-						Ability A2=target.fetchAbility(A.ID());
-						if(A2!=null) A2.setMiscText(A.text());
-					}
+						target.addNonUninvokableAffect(A);
 					target.confirmWearability();
 				}
 			}

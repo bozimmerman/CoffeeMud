@@ -62,6 +62,7 @@ public class Chant_SummonElemental extends Chant
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
 				target.addNonUninvokableAffect(this);
+				if(target.isInCombat()) target.makePeace();
 				ExternalPlay.follow(target,mob,true);
 				if(target.amFollowing()!=mob)
 					mob.tell(target.name()+" seems unwilling to follow you.");

@@ -72,6 +72,7 @@ public class CMClass extends ClassLoader
 			thisItem=(Item)getEnv(miscMagic,calledThis);
 		return thisItem;
 	}
+	public static Item sampleItem(){if(items.size()>0) return (Item)items.firstElement();	return null;}
 	
 	public static Command findExtraCommand(String word, boolean exactOnly)
 	{

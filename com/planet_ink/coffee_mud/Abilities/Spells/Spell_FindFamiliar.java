@@ -39,6 +39,7 @@ public class Spell_FindFamiliar extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
+				if(target.isInCombat()) target.makePeace();
 				ExternalPlay.follow(target,mob,true);
 				invoker=mob;
 				if(target.amFollowing()!=mob)

@@ -333,8 +333,8 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(auto)
 		{
-			this.isAnAutoEffect=true;
-			this.setProfficiency(100);
+			isAnAutoEffect=true;
+			setProfficiency(100);
 			return true;
 		}
 

@@ -84,9 +84,11 @@ public class Chant_SummonAnimal extends Chant
 				target.location().showOthers(target,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);
+				if(target.isInCombat()) target.makePeace();
 				ExternalPlay.move(target,opDir,false,false);
 				if(target.location()==mob.location())
 				{
+					if(target.isInCombat()) target.makePeace();
 					ExternalPlay.follow(target,mob,true);
 					beneficialAffect(mob,target,0);
 					if(target.amFollowing()!=mob)

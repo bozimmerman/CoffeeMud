@@ -130,7 +130,10 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("BWEIGHT",""+lightestWeight()));
 		str.append(XMLManager.convertXMLtoTag("VWEIGHT",""+weightVariance()));
 		str.append(XMLManager.convertXMLtoTag("WEAR",""+forbiddenWornBits()));
-		str.append(XMLManager.convertXMLtoTag("BODY",""+bodyMask().toString()));
+		StringBuffer bbody=new StringBuffer("");
+		for(int i=0;i<bodyMask().length;i++)
+			bbody.append(bodyMask()[i]+';');
+		str.append(XMLManager.convertXMLtoTag("BODY",bbody.toString()));
 		str.append(XMLManager.convertXMLtoTag("HEALTHRACE",(healthBuddy()!=null)?healthBuddy().ID():""));
 		str.append(XMLManager.convertXMLtoTag("ARRIVE",arriveStr()));
 		str.append(XMLManager.convertXMLtoTag("LEAVE",leaveStr()));
@@ -174,6 +177,78 @@ public class GenRace extends StdRace
 	}
 	public void setRacialParms(String parms)
 	{
+		if(parms.trim().length()==0) return;
+		Vector xml=XMLManager.parseAllXML(parms);
+		if(xml==null)
+		{
+			Log.errOut("GenRace","Unable to parse: "+parms);
+			return;
+		}
+		Vector raceData=XMLManager.getRealContentsFromPieces(xml,"RACE");
+		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data."); return;}
+		String id=XMLManager.returnXMLParm(parms,"ID");
+		if(id.length()==0) return;
+		ID=id;
+		name=XMLManager.getValFromPieces(raceData,"NAME");
+		racialCategory=XMLManager.getValFromPieces(raceData,"CAT");
+		forbiddenWornBits=XMLManager.getLongFromPieces(raceData,"WEAR");
+		weightVariance=XMLManager.getIntFromPieces(raceData,"VWEIGHT");
+		lightestWeight=XMLManager.getIntFromPieces(raceData,"BWEIGHT");
+		heightVariance=XMLManager.getIntFromPieces(raceData,"VHEIGHT");
+		shortestFemale=XMLManager.getIntFromPieces(raceData,"FHEIGHT");
+		shortestMale=XMLManager.getIntFromPieces(raceData,"MHEIGHT");
+		leaveStr=XMLManager.getValFromPieces(raceData,"LEAVE");
+		arriveStr=XMLManager.getValFromPieces(raceData,"ARRIVE");
+		healthBuddy=CMClass.getRace(XMLManager.getValFromPieces(raceData,"HEALTHRACE"));
+		String body=XMLManager.getValFromPieces(raceData,"BODY");
+		Vector V=Util.parseSemicolons(body);
+		for(int v=0;v<V.size();v++)
+			if(v<bodyMask().length)
+				bodyMask()[v]=Util.s_int((String)V.elementAt(v));
+		adjEStats=null;
+		String eStats=XMLManager.getValFromPieces(raceData,"ESTATS");
+		if(eStats.length()>0){ adjEStats=new DefaultEnvStats(); Generic.setEnvStats(adjEStats,eStats);}
+		adjStats=null;
+		String aStats=XMLManager.getValFromPieces(raceData,"ASTATS");
+		if(aStats.length()>0){ adjStats=new DefaultCharStats(); Generic.setCharStats(adjStats,aStats);}
+		setStats=null;
+		String cStats=XMLManager.getValFromPieces(raceData,"CSTATS");
+		if(cStats.length()>0){ setStats=new DefaultCharStats(); Generic.setCharStats(setStats,cStats);}
+		adjState=null;
+		String aState=XMLManager.getValFromPieces(raceData,"ASTATE");
+		if(aState.length()>0){ adjState=new DefaultCharState(); Generic.setCharState(adjState,aState);}
+
+		// now RESOURCES!
+		Vector xV=XMLManager.getRealContentsFromPieces(xml,"RESOURCES");
+		resourceChoices=null;
+		if((xV!=null)&&(xV.size()>0))
+		{
+			resourceChoices=new Vector();
+			for(int x=0;x<xV.size();x++)
+			{
+				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
+				if((!iblk.tag.equalsIgnoreCase("RSCITEM"))||(iblk.contents==null))
+					continue;
+				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
+				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
+				if((idat==null)||(newOne==null)) continue;
+				Generic.setPropertiesStr(newOne,idat,true);
+				newOne.recoverEnvStats();
+				resourceChoices.addElement(newOne);
+			}
+		}
+		naturalWeapon=null;
+		XMLManager.XMLpiece iblk=XMLManager.getPieceFromPieces(xml,"WEAPON");
+		if((!iblk.tag.equalsIgnoreCase("WEAPON"))&&(iblk.contents!=null))
+		{
+			naturalWeapon=(Weapon)CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
+			Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
+			if((idat!=null)&&(naturalWeapon!=null))
+			{
+				Generic.setPropertiesStr(naturalWeapon,idat,true);
+				naturalWeapon.recoverEnvStats();
+			}
+		}
 	}
 	protected static String[] CODES={"CLASS","PARMS"};
 	public String getStat(String code){
