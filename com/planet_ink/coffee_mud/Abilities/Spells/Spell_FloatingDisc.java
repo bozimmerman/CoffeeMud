@@ -48,6 +48,12 @@ public class Spell_FloatingDisc extends Spell
 	}
 
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setWeight(0);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
@@ -75,8 +81,8 @@ public class Spell_FloatingDisc extends Spell
 			wasntMine=false;
 			if(!mob.isMine(target))
 			{
-				int oldweight=target.envStats().weight();
-				target.envStats().setWeight(0);
+				target.addNonUninvokableAffect(this);
+				target.recoverEnvStats();
 				wasntMine=true;
 				if(target.ID().equals("StdCoins"))
 				{
@@ -86,10 +92,12 @@ public class Spell_FloatingDisc extends Spell
 				else
 				if(!ExternalPlay.get(mob,null,(Item)target,true))
 				{
-					target.envStats().setWeight(oldweight);
+					target.delAffect(this);
+					target.recoverEnvStats();
 					return false;
 				}
-				target.envStats().setWeight(oldweight);
+				target.delAffect(this);
+				target.recoverEnvStats();
 			}
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))

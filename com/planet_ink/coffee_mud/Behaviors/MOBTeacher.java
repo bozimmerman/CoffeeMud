@@ -21,10 +21,17 @@ public class MOBTeacher extends CombatAbilities
 		setParms(parms);
 	}
 
-	private void setTheCharClass(MOB mob, String classID)
+	private void setTheCharClass(MOB mob, CharClass C)
 	{
-		mob.baseCharStats().setCurrentClass(CMClass.getCharClass(classID));
-		mob.baseCharStats().setClassLevel(CMClass.getCharClass(classID),mob.envStats().level());
+		for(int i=0;i<mob.baseCharStats().numClasses();i++)
+		{
+			CharClass C1=mob.baseCharStats().getMyClass(i);
+			if((C1!=null)&&(mob.baseCharStats().getClassLevel(C1)>0))
+				mob.baseCharStats().setClassLevel(C1,1);
+		}
+		mob.baseCharStats().setCurrentClass(C);
+		mob.baseCharStats().setClassLevel(C,mob.envStats().level());
+		mob.recoverCharStats();
 	}
 
 	private void classAbles(MOB mob)
@@ -35,8 +42,7 @@ public class MOBTeacher extends CombatAbilities
 			Ability A2=mob.fetchAbility(A.ID());
 			if(A2==null)
 			{
-				if((CMAble.qualifiesByLevel(mob,A))
-				||((mob.charStats().getCurrentClass().ID().equals("StdCharClass"))
+				if((CMAble.qualifiesByLevel(mob,A)||((mob.charStats().getCurrentClass().ID().equals("StdCharClass")))
 				   &&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
 				{
 					A=(Ability)A.copyOf();
@@ -52,7 +58,7 @@ public class MOBTeacher extends CombatAbilities
 	
 	private void ensureCharClass()
 	{
-		setTheCharClass(myMOB,"StdCharClass");
+		setTheCharClass(myMOB,CMClass.getCharClass("StdCharClass"));
 		myMOB.recoverCharStats();
 		Ability A=null;
 		
@@ -81,17 +87,23 @@ public class MOBTeacher extends CombatAbilities
 				int x=parm.indexOf(C.ID().toUpperCase());
 				if(x>=0)
 				{
-					setTheCharClass(myMOB,C.ID());
+					setTheCharClass(myMOB,C);
 					classAbles(myMOB);
 					myMOB.recoverCharStats();
 				}
 			}
 			myMOB.recoverCharStats();
 			if(myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
-			{
 				classAbles(myMOB);
-				myMOB.recoverCharStats();
+			int lvl=myMOB.envStats().level()/myMOB.baseCharStats().numClasses();
+			if(lvl<1) lvl=1;
+			for(int i=0;i<myMOB.baseCharStats().numClasses();i++)
+			{
+				CharClass C=myMOB.baseCharStats().getMyClass(i);
+				if((C!=null)&&(myMOB.baseCharStats().getClassLevel(C)>=0))
+					myMOB.baseCharStats().setClassLevel(C,lvl);
 			}
+			myMOB.recoverCharStats();
 		}
 	}
 	
@@ -174,12 +186,6 @@ public class MOBTeacher extends CombatAbilities
 					monster.recoverCharStats();
 				}
 
-				if((!CMAble.qualifiesByLevel(monster,myAbility))
-				&&(!monster.baseCharStats().getCurrentClass().ID().equals("StdCharClass")))
-				{
-					ExternalPlay.quickSay(monster,mob,"I'm sorry, I don't know '"+myAbility.name()+"'.",true,false);
-					return;
-				}
 				if(mob.fetchAbility(myAbility.ID())!=null)
 				{
 					ExternalPlay.quickSay(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);

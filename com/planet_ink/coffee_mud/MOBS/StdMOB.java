@@ -2075,7 +2075,8 @@ public class StdMOB implements MOB
 		for(int a=0;a<numAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
-			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.name().equalsIgnoreCase(ID))))
+			if((A!=null)
+			&&((A.ID().equalsIgnoreCase(ID))||(A.name().equalsIgnoreCase(ID))))
 				return A;
 		}
 		return (Ability)CoffeeUtensils.fetchEnvironmental(abilities,ID,false);
