@@ -2571,7 +2571,7 @@ public class Import
 							E.setName("the ground");
 							name="door";
 						}
-						E.setExitParams(name,E.closeWord(),E.openWord(),E.closedText());
+						E.setExitParams(name,E.closeWord(),E.openWord(),E.name()+", closed");
 						E.setDescription(descStr);
 						R.exits()[dirCode]=E;
 						Exit opExit=null;
