@@ -3090,9 +3090,10 @@ public class StdMOB implements MOB
 	}
 	public MOB amFollowing()
 	{
-		if(amFollowing!=null)
+	    MOB following=amFollowing;
+		if(following!=null)
 		{
-			if(!amFollowing.isFollowedBy(this))
+			if(!following.isFollowedBy(this))
 				amFollowing=null;
 		}
 		return amFollowing;

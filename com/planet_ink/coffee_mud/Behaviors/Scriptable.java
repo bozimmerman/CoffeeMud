@@ -230,6 +230,7 @@ public class Scriptable extends StdBehavior
 		"MPTITLE", // 49
 		"BREAK", // 50
 		"MPSETCLANDATA", // 51
+		"MPPLAYERCLASS", // 52
 	};
 
     private final static String[] clanVars={
@@ -4130,8 +4131,15 @@ public class Scriptable extends StdBehavior
 				if(scripted instanceof MOB)
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
-					if(Util.s_int(s)>0)
-					    BeanCounter.addMoney(monster,new Integer(Util.s_int(s)).doubleValue());
+					long coins=EnglishParser.numPossibleGold(null,s);
+					if(coins>0)
+					{
+					    String currency=EnglishParser.numPossibleGoldCurrency((MOB)scripted,s);
+					    double denom=EnglishParser.numPossibleGoldDenomination((MOB)scripted,currency,s);
+					    Coins C=BeanCounter.makeCurrency(currency,denom,coins);
+					    monster.addInventory(C);
+					    C.putCoinsBack();
+					}
 					else
 					if(lastKnownLocation!=null)
 					{
@@ -4167,10 +4175,13 @@ public class Scriptable extends StdBehavior
 				if(lastKnownLocation!=null)
 				{
 					Vector Is=new Vector();
-					if(Util.s_int(s)>0)
+					long coins=EnglishParser.numPossibleGold(null,s);
+					if(coins>0)
 					{
-						Coins C=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(monster),new Integer(Util.s_int(s)).doubleValue());
-						if(C!=null) Is.addElement(C);
+					    String currency=EnglishParser.numPossibleGoldCurrency(monster,s);
+					    double denom=EnglishParser.numPossibleGoldDenomination(monster,currency,s);
+					    Coins C=BeanCounter.makeCurrency(currency,denom,coins);
+					    Is.addElement(C);
 					}
 					else
 					{
@@ -4190,6 +4201,8 @@ public class Scriptable extends StdBehavior
 								I=(Item)I.copyOf();
 								I.recoverEnvStats();
 								lastKnownLocation.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+								if(I instanceof Coins)
+								    ((Coins)I).putCoinsBack();
 							}
 						}
 					}
@@ -4473,6 +4486,27 @@ public class Scriptable extends StdBehavior
 				    	break;
 				    }
 				    if(!nosave) C.update();
+				}
+				break;
+			}
+			case 52: // mpplayerclass
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
+				{
+				    Vector V=Util.parse(Util.getPastBit(s,1));
+				    for(int i=0;i<V.size();i++)
+				    {
+				        if(Util.isInteger((String)V.elementAt(i)))
+				            ((MOB)newTarget).baseCharStats().setClassLevel(((MOB)newTarget).baseCharStats().getCurrentClass(),Util.s_int((String)V.elementAt(i)));
+				        else
+				        {
+				            CharClass C=CMClass.getCharClass((String)V.elementAt(i));
+				            if(C!=null)
+					            ((MOB)newTarget).baseCharStats().setCurrentClass(C);
+				        }
+				    }
+				    ((MOB)newTarget).recoverCharStats();
 				}
 				break;
 			}

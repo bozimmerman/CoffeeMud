@@ -22,6 +22,7 @@ import java.util.*;
    limitations under the License.
 */
 public class GenSSPanel extends GenShipContainer
+	implements ShipComponent.ShipPanel
 {
 	public String ID(){	return "GenSSPanel";}
 	public GenSSPanel()
@@ -35,10 +36,13 @@ public class GenSSPanel extends GenShipContainer
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
 		setMaterial(EnvResource.RESOURCE_STEEL);
-		setComponentType(ShipComponent.COMPONENT_PANEL_ANY);
 		recoverEnvStats();
 	}
 
+	private int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_ANY;
+	public int panelType(){return panelType;}
+	public void setPanelType(int type){panelType=type;}
+	
 	public String displayText(){
 		if(isOpen())
 			return name()+" is opened here.";
@@ -50,21 +54,20 @@ public class GenSSPanel extends GenShipContainer
 		if(!super.canContain(E)) return false;
 		if(E instanceof ShipComponent)
 		{
-			int myType=((ShipComponent)E).componentType();
-			switch(componentType())
+			switch(panelType())
 			{
-			case ShipComponent.COMPONENT_PANEL_ANY:
+			case ShipComponent.ShipPanel.COMPONENT_PANEL_ANY:
 				return true;
-			case ShipComponent.COMPONENT_PANEL_ENGINE:
-				return myType==ShipComponent.COMPONENT_ENGINE;
-			case ShipComponent.COMPONENT_PANEL_POWER:
-				return myType==ShipComponent.COMPONENT_POWER;
-			case ShipComponent.COMPONENT_PANEL_SENSOR:
-				return myType==ShipComponent.COMPONENT_SENSOR;
-			case ShipComponent.COMPONENT_PANEL_WEAPON:
-				return myType==ShipComponent.COMPONENT_WEAPON;
-			case ShipComponent.COMPONENT_PANEL_COMPUTER:
-				return myType==ShipComponent.COMPONENT_COMPUTER;
+			case ShipComponent.ShipPanel.COMPONENT_PANEL_ENGINE:
+				return E instanceof ShipComponent.ShipEngine;
+			case ShipComponent.ShipPanel.COMPONENT_PANEL_POWER:
+				return E instanceof ShipComponent.ShipPowerSource;
+			case ShipComponent.ShipPanel.COMPONENT_PANEL_SENSOR:
+				return E instanceof ShipComponent.ShipSensor;
+			case ShipComponent.ShipPanel.COMPONENT_PANEL_WEAPON:
+				return E instanceof ShipComponent.ShipWeapon;
+			case ShipComponent.ShipPanel.COMPONENT_PANEL_COMPUTER:
+				return E instanceof ShipComponent.ShipComputer;
 			}
 		}
 		return true;

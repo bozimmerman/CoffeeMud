@@ -92,12 +92,12 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
-	static void genComponentType(MOB mob, ShipComponent S, int showNumber, int showFlag)
+	static void genPanelType(MOB mob, ShipComponent.ShipPanel S, int showNumber, int showFlag)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		String componentType=Util.capitalize(ShipComponent.COMPONENT_DESC[S.componentType()].toLowerCase());
-		mob.tell(showNumber+". Component Type: '"+componentType+"'.");
+		String componentType=Util.capitalize(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC[S.panelType()].toLowerCase());
+		mob.tell(showNumber+". Panel Type: '"+componentType+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean continueThis=true;
 		while(continueThis)
@@ -108,14 +108,14 @@ public class BaseGenerics extends StdCommand
 			{
 			    if(newName.equalsIgnoreCase("?"))
 			    {
-			        mob.tell("Component Types: "+Util.toStringList(ShipComponent.COMPONENT_DESC));
+			        mob.tell("Component Types: "+Util.toStringList(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC));
 			        continueThis=true;
 			    }
 			    else
 			    {
 			        int newType=-1;
-			        for(int i=0;i<ShipComponent.COMPONENT_DESC.length;i++)
-			            if(ShipComponent.COMPONENT_DESC[i].equalsIgnoreCase(newName))
+			        for(int i=0;i<ShipComponent.ShipPanel.COMPONENT_PANEL_DESC.length;i++)
+			            if(ShipComponent.ShipPanel.COMPONENT_PANEL_DESC[i].equalsIgnoreCase(newName))
 			                newType=i;
 			        if(newType<0)
 			        {
@@ -123,7 +123,7 @@ public class BaseGenerics extends StdCommand
 			            continueThis=true;
 			        }
 			        else
-			            S.setComponentType(newType);
+			            S.setPanelType(newType);
 			    }
 			}
 			else
@@ -4885,7 +4885,10 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
 			if(me instanceof ShipComponent)
-			    genComponentType(mob,(ShipComponent)me,++showNumber,showFlag);
+			{
+			    if(me instanceof ShipComponent.ShipPanel)
+				    genPanelType(mob,(ShipComponent.ShipPanel)me,++showNumber,showFlag);
+			}
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
 			genReadable2(mob,me,++showNumber,showFlag);
@@ -5120,7 +5123,10 @@ public class BaseGenerics extends StdCommand
 			genRejuv(mob,me,++showNumber,showFlag);
 			genCapacity(mob,me,++showNumber,showFlag);
 			if(me instanceof ShipComponent)
-			    genComponentType(mob,(ShipComponent)me,++showNumber,showFlag);
+			{
+			    if(me instanceof ShipComponent.ShipPanel)
+				    genPanelType(mob,(ShipComponent.ShipPanel)me,++showNumber,showFlag);
+			}
 			genLidsNLocks(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);

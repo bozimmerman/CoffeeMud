@@ -42,6 +42,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private String poofout="";						  
 	private String tranpoofin="";
 	private String tranpoofout="";
+	private int wrap=78;
 	private int[] birthday=null;
 	private MOB replyTo=null;
 	private Vector securityGroups=new Vector();
@@ -54,6 +55,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setUpdated(long time){lastUpdated=time;}
 	public long lastDateTime(){return LastDateTime;}
 	public void setLastDateTime(long C){ LastDateTime=C;}
+	public int getWrap(){return wrap;}
+	public void setWrap(int newWrap){wrap=newWrap;}
 	public String password(){return Password;}
 	public void setPassword(String newPassword){Password=newPassword;}
 	public void setChannelMask(int newMask){ channelMask=newMask;}
@@ -183,6 +186,7 @@ public class DefaultPlayerStats implements PlayerStats
 		String i=getPrivateList(getIgnored());
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
+			+"<WRAP>"+wrap+"</WRAP>"
 			+getTitleXML()
 			+((birthday!=null)?"<BIRTHDAY>"+Util.toStringList(birthday)+"</BIRTHDAY>":"")
 			+((poofin.length()>0)?"<POOFIN>"+poofin+"</POOFIN>":"")
@@ -195,6 +199,8 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		friends=getHashFrom(XMLManager.returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(XMLManager.returnXMLValue(str,"IGNORED"));
+		String oldWrap=XMLManager.returnXMLValue(str,"WRAP");
+		if(Util.isInteger(oldWrap)) wrap=Util.s_int(oldWrap);
 		setSecurityGroupStr(XMLManager.returnXMLValue(str,"SECGRPS"));
 		String bday=XMLManager.returnXMLValue(str,"BIRTHDAY");
 		if((bday!=null)&&(bday.length()>0))

@@ -32,15 +32,6 @@ public class StdShipComponent extends StdShipItem implements ShipComponent
 
 		material=EnvResource.RESOURCE_STEEL;
 		baseGoldValue=0;
-		setComponentType(ShipComponent.COMPONENT_MISC);
 		recoverEnvStats();
 	}
-	
-	private int componentType=ShipComponent.COMPONENT_MISC;
-	public int componentType(){return componentType;}
-	public void setComponentType(int type){componentType=type;}
-	
-	public DVector getSSParms(){return new DVector(2);}
-	public String getSSXML(){return "";}
-	public void setSSXML(String xml){}
 }

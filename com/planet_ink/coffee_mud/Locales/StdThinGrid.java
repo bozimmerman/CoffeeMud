@@ -420,8 +420,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	public boolean isMyChild(Room loc)
 	{
-		for(int i=0;i<rooms.size();i++)
-			if(loc==rooms.elementAt(i,1))
+	    DVector myRooms=rooms.copyOf();
+		for(int i=0;i<myRooms.size();i++)
+			if(loc==myRooms.elementAt(i,1))
 				return true;
 		return false;
 	}

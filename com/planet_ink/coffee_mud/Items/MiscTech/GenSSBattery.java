@@ -20,7 +20,8 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenSSBattery extends GenShipComponent
+public class GenSSBattery extends GenShipComponent 
+implements ShipComponent.ShipPowerSource
 {
 	public String ID(){	return "GenSSBattery";}
 	public GenSSBattery()
@@ -33,7 +34,6 @@ public class GenSSBattery extends GenShipComponent
 		baseGoldValue=5000;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
-		setComponentType(ShipComponent.COMPONENT_POWER);
 		setMaterial(EnvResource.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)

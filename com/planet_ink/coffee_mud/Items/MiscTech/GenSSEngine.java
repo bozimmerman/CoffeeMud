@@ -21,6 +21,7 @@ import java.util.*;
    limitations under the License.
 */
 public class GenSSEngine extends GenShipComponent
+	implements ShipComponent.ShipEngine
 {
 	public String ID(){	return "GenSSEngine";}
 	public GenSSEngine()
@@ -33,7 +34,6 @@ public class GenSSEngine extends GenShipComponent
 		baseGoldValue=500000;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
-		setComponentType(ShipComponent.COMPONENT_ENGINE);
 		setMaterial(EnvResource.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)
