@@ -53,7 +53,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_GET:
 			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and flies out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and flies out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
@@ -61,7 +61,7 @@ public class Prop_HaveZapper extends Property
 		case CMMsg.TYP_DRINK:
 			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> flashes and falls out <S-HIS-HER> mouth!");
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out <S-HIS-HER> mouth!"));
 				return false;
 			}
 			break;

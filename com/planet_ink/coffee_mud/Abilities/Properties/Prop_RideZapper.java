@@ -51,7 +51,7 @@ public class Prop_RideZapper extends Property
 		case CMMsg.TYP_ENTER:
 			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,"<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!");
+				mob.location().show(mob,null,affected,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> zaps <S-NAME>, making <S-HIM-HER> jump up!"));
 				return false;
 			}
 			break;

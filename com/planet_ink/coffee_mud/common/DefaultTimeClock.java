@@ -33,14 +33,13 @@ public class DefaultTimeClock implements TimeClock
 	private int month=1;
 	private int day=1;
 	private int time=0;
-	private int hoursInDay=16;
+	private int hoursInDay=10;
 	private String[] monthsInYear={
 			 "the 1st month","the 2nd month","the 3rd month","the 4th month",
-			 "the 5th month","the 6th month","the 7th month","the 8th month",
-			 "the 9th month","the 10th month","the 11th month","the 12th month"
+			 "the 5th month","the 6th month","the 7th month","the 8th month"
 	};
-	private int daysInMonth=30;
-	private int[] dawnToDusk={0,1,12,13};
+	private int daysInMonth=20;
+	private int[] dawnToDusk={0,1,6,7};
 	private String[] weekNames={};
 	private String[] yearNames={"year #"};
 	
@@ -125,23 +124,12 @@ public class DefaultTimeClock implements TimeClock
 	public int getYear(){return year;}
 	public void setYear(int y){year=y;}
 
-	public int getSeasonCode(){ 
-		switch(month)
-		{
-		case 1: return TimeClock.SEASON_WINTER;
-		case 2: return TimeClock.SEASON_WINTER; 
-		case 3: return TimeClock.SEASON_SPRING; 
-		case 4: return TimeClock.SEASON_SPRING; 
-		case 5: return TimeClock.SEASON_SPRING; 
-		case 6: return TimeClock.SEASON_SUMMER; 
-		case 7: return TimeClock.SEASON_SUMMER; 
-		case 8: return TimeClock.SEASON_SUMMER; 
-		case 9: return TimeClock.SEASON_FALL; 
-		case 10:return TimeClock.SEASON_FALL; 
-		case 11:return TimeClock.SEASON_FALL; 
-		case 12:return TimeClock.SEASON_WINTER; 
-		}
-		return TimeClock.SEASON_WINTER;
+	public int getSeasonCode(){
+	    int div=(int)Math.round(Math.floor(Util.div(getMonthsInYear(),4.0)));
+	    if(month<div) return TimeClock.SEASON_WINTER;
+	    if(month<(div*2)) return TimeClock.SEASON_SPRING;
+	    if(month<(div*3)) return TimeClock.SEASON_SUMMER;
+	    return TimeClock.SEASON_FALL;
 	}
 	public int getMonth(){return month;}
 	public void setMonth(int m){month=m;}

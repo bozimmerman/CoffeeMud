@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,21 +51,21 @@ public class Prop_WearZapper extends Property
 		case CMMsg.TYP_HOLD:
 			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WEAR:
 			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;
 		case CMMsg.TYP_WIELD:
 			if((!MUDZapper.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,CMMsg.MSG_OK_VISUAL,Util.getParmStr(text(),"MESSAGE","<O-NAME> flashes and falls out of <S-HIS-HER> hands!"));
 				return false;
 			}
 			break;

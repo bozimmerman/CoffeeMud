@@ -107,12 +107,14 @@ public class Prop_FightSpellCast extends Property
 
 		if(processing) return;
 
-		if(affected==null) return;
+		if(!(affected instanceof Item)) return;
 		processing=true;
 
 		Item myItem=(Item)affected;
 
 		if((myItem!=null)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.value())>0)
 		&&(!myItem.amWearingAt(Item.INVENTORY))
 		&&(myItem.owner()!=null)
 		&&(myItem.owner() instanceof MOB)
@@ -122,8 +124,6 @@ public class Prop_FightSpellCast extends Property
 			MOB mob=(MOB)myItem.owner();
 			if((mob.isInCombat())
 			&&(mob.location()!=null)
-			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&((msg.value())>0)
 			&&(!mob.amDead()))
 			{
 				if((myItem instanceof Weapon)

@@ -35,11 +35,13 @@ public class Emoter extends ActiveTicker
 	{
 		super.setParms(newParms);
 		expires=Util.getParmInt(parms,"expires",0);
+	    inroom=Util.getParmStr(parms,"inroom","").toUpperCase();
 		emotes=null;
 	}
 
 	protected Vector emotes=null;
 	protected boolean broadcast=false;
+	protected String inroom="";
 
 	protected final static int EMOTE_VISUAL=0;
 	protected final static int EMOTE_SOUND=1;
@@ -135,6 +137,13 @@ public class Emoter extends ActiveTicker
 	private void emoteHere(Room room, MOB emoter, Vector emote, boolean Wrapper)
 	{
 		if(room==null) return;
+		if(inroom.length()>0)
+		{
+		    String ID=CMMap.getExtendedRoomID(room);
+		    if((ID.length()==0)
+		    ||((!inroom.equals(ID))&&(!inroom.endsWith(ID))&&(inroom.indexOf(ID+";")<0)))
+		        return;
+		}
 		FullMsg msg;
 		Room oldLoc=emoter.location();
 		if(emoter.location()!=room) emoter.setLocation(room);
