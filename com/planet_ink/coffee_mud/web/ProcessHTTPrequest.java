@@ -1000,39 +1000,34 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			int timeout=0;
 			ByteArrayOutputStream out=new ByteArrayOutputStream();
-			boolean gotHeader=false;
-			int contentlength=-1;
+			int contentLength=-1;
+			int c=-1;
 			while(true)
 			{
 				while(sin.available()>0)
 				{
-					int x=sin.read();
-					if((x==10)&&(!gotHeader))
+					c=sin.read();
+					if((contentLength<0)&&(c==13))
 					{
 						if(out.size()==0)
 						{
-							gotHeader=true;
 							// got empty line, but no data yet!
-							contentlength=getContentLength(data);
-							if(contentlength<0) return data;
+							contentLength=getContentLength(data);
+							if(contentLength<=0) return data;
 						}
 						else
 						{
 							String s=new String(out.toByteArray());
 							out=new ByteArrayOutputStream();
 							data.addElement(s);
-							if(s.startsWith("GET "))
-							{
-								data.addElement(out.toByteArray());
-								return data;
-							}
+							if(s.startsWith("GET ")) return data;
 						}
 					}
 					else
-					if((x!=13)||(gotHeader))
+					if((c!=10)||((contentLength>0)&&(out.size()>0)))
 					{
-						out.write(x);
-						if((contentlength>0)&&(out.size()>=contentlength))
+						out.write(c);
+						if((contentLength>0)&&(out.size()>=contentLength))
 						{
 							data.addElement(out.toByteArray());
 							return data;
@@ -1045,7 +1040,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				{
 					if(timeout>=20)
 					{
-						data.addElement(out.toByteArray());
+						if(data.size()==0)
+							data.addElement(new String(out.toByteArray()));
+						else
+							data.addElement(out.toByteArray());
 						break;
 					}
 				}
@@ -1095,7 +1093,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			Vector inData = getData(sin);
 			//Log.sysOut("HTTP",inLine);
-			if((inData==null)||(inData.size()==0)) 
+			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String))) 
 				return "[400 -- no request received]";
 			String inLine=(String)inData.elementAt(0);
 			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")))

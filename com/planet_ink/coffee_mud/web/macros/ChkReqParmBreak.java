@@ -25,7 +25,6 @@ public class ChkReqParmBreak extends StdWebMacro
 			String check=httpReq.getRequestParameter(key);
 			if(!not)
 			{
-System.out.println(key+"/"+check+"=="+equals);				
 				if((check==null)&&(equals.length()==0))
 					return " @break@";
 				if(check==null) return "";
