@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 /* 
@@ -34,4 +35,29 @@ public class EndlessOcean extends StdGrid
 
 	public String getChildLocaleID(){return "SaltWaterSurface";}
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
+	
+	public void buildGrid()
+	{
+		super.buildGrid();
+		if(subMap!=null)
+		{
+			Exit ox=CMClass.getExit("Open");
+			if(rawDoors()[Directions.NORTH]==null)
+				for(int i=0;i<subMap.length;i++)
+					if(subMap[i][0]!=null)
+						linkRoom(subMap[i][0],subMap[i][ySize()/2],Directions.NORTH,ox,ox);
+			if(rawDoors()[Directions.SOUTH]==null)
+				for(int i=0;i<subMap.length;i++)
+					if(subMap[i][ySize()-1]!=null)
+						linkRoom(subMap[i][ySize()-1],subMap[i][ySize()/2],Directions.SOUTH,ox,ox);
+			if(rawDoors()[Directions.EAST]==null)
+				for(int i=0;i<subMap[0].length;i++)
+					if(subMap[xSize()-1][i]!=null)
+						linkRoom(subMap[xSize()-1][i],subMap[xSize()/2][i],Directions.EAST,ox,ox);
+			if(rawDoors()[Directions.WEST]==null)
+				for(int i=0;i<subMap[0].length;i++)
+					if(subMap[0][i]!=null)
+						linkRoom(subMap[0][i],subMap[xSize()/2][i],Directions.WEST,ox,ox);
+		}
+	}
 }

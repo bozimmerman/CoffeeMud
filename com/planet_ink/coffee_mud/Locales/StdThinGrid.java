@@ -31,9 +31,11 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	protected int xsize=5;
 	protected int ysize=5;
+	protected Exit ox=null;
 	
 	protected final DVector rooms=new DVector(4);
 	protected static boolean tickStarted=false;
+	protected static Ability watcher=null;
 
 	public StdThinGrid()
 	{
@@ -169,6 +171,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			R.addEffect((Ability)fetchEffect(a).copyOf());
 		for(int b=0;b<numBehaviors();b++)
 			R.addBehavior((Behavior)fetchBehavior(b).copyOf());
+		if(watcher==null)
+			watcher=new ThinGridChildWatch();
+		R.addNonUninvokableEffect(watcher);
 	}
 
 	protected Room getMakeSingleGridRoom(int x, int y)
@@ -193,65 +198,51 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{
+		if((x<0)||(y<0)||(y>=ySize())||(x>=xSize())) 
+			return;
+		
 		// the adjacent rooms created by this method should also take
 		// into account the possibility that they are on the edge.
 		// it does NOT
-		Exit ox=CMClass.getExit("Open");
+		if(ox==null) ox=CMClass.getExit("Open");
 		Room R2=null;
 		if(y>0)
 		{
 			R2=getMakeSingleGridRoom(x,y-1);
 			if(R2!=null)
-			{
 				linkRoom(R,R2,Directions.NORTH,ox,ox);
-				if((y==1)&&(R.rawDoors()[Directions.NORTH]!=null)&&(R.rawExits()[Directions.NORTH]!=null))
-					linkRoom(R2,rawDoors()[Directions.NORTH],Directions.NORTH,R.rawExits()[Directions.NORTH],R.rawExits()[Directions.NORTH]);
-			}
-				
 		}
 		else
-		if((R.rawDoors()[Directions.NORTH]!=null)&&(R.rawExits()[Directions.NORTH]!=null))
-			linkRoom(R,rawDoors()[Directions.NORTH],Directions.NORTH,R.rawExits()[Directions.NORTH],R.rawExits()[Directions.NORTH]);
+		if((rawDoors()[Directions.NORTH]!=null)&&(rawExits()[Directions.NORTH]!=null))
+			linkRoom(R,rawDoors()[Directions.NORTH],Directions.NORTH,rawExits()[Directions.NORTH],rawExits()[Directions.NORTH]);
 		
 		if(x>0)
 		{
 			R2=getMakeSingleGridRoom(x-1,y);
 			if(R2!=null) 
-			{
 				linkRoom(R,R2,Directions.WEST,ox,ox);
-				if((x==1)&&(R.rawDoors()[Directions.WEST]!=null)&&(R.rawExits()[Directions.WEST]!=null))
-					linkRoom(R2,rawDoors()[Directions.WEST],Directions.WEST,R.rawExits()[Directions.WEST],R.rawExits()[Directions.WEST]);
-			}
 		}
 		else
-		if((rawDoors()[Directions.WEST]!=null)&&(R.rawExits()[Directions.WEST]!=null))
-			linkRoom(R,rawDoors()[Directions.WEST],Directions.WEST,R.rawExits()[Directions.WEST],R.rawExits()[Directions.NORTH]);
+		if((rawDoors()[Directions.WEST]!=null)&&(rawExits()[Directions.WEST]!=null))
+			linkRoom(R,rawDoors()[Directions.WEST],Directions.WEST,rawExits()[Directions.WEST],rawExits()[Directions.WEST]);
 		if(y<(ySize()-1))
 		{
 			R2=getMakeSingleGridRoom(x,y+1);
 			if(R2!=null) 
-			{
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
-				if((y==(ySize()-1))&&(R.rawDoors()[Directions.SOUTH]!=null)&&(R.rawExits()[Directions.SOUTH]!=null))
-					linkRoom(R2,rawDoors()[Directions.SOUTH],Directions.SOUTH,R.rawExits()[Directions.SOUTH],R.rawExits()[Directions.SOUTH]);
-			}
 		}
 		else
-		if((rawDoors()[Directions.SOUTH]!=null)&&(R.rawExits()[Directions.SOUTH]!=null))
-			linkRoom(R,rawDoors()[Directions.SOUTH],Directions.SOUTH,R.rawExits()[Directions.SOUTH],R.rawExits()[Directions.NORTH]);
+		if((rawDoors()[Directions.SOUTH]!=null)&&(rawExits()[Directions.SOUTH]!=null))
+			linkRoom(R,rawDoors()[Directions.SOUTH],Directions.SOUTH,rawExits()[Directions.SOUTH],rawExits()[Directions.SOUTH]);
 		if(x<(xSize()-1))
 		{
 			R2=getMakeSingleGridRoom(x+1,y);
 			if(R2!=null) 
-			{
 				linkRoom(R,R2,Directions.EAST,ox,ox);
-				if((x==(xSize()-1))&&(R.rawDoors()[Directions.EAST]!=null)&&(R.rawExits()[Directions.EAST]!=null))
-					linkRoom(R2,rawDoors()[Directions.EAST],Directions.EAST,R.rawExits()[Directions.EAST],R.rawExits()[Directions.EAST]);
-			}
 		}
 		else
-		if((rawDoors()[Directions.EAST]!=null)&&(R.rawExits()[Directions.EAST]!=null))
-			linkRoom(R,rawDoors()[Directions.EAST],Directions.EAST,R.rawExits()[Directions.EAST],R.rawExits()[Directions.NORTH]);
+		if((rawDoors()[Directions.EAST]!=null)&&(rawExits()[Directions.EAST]!=null))
+			linkRoom(R,rawDoors()[Directions.EAST],Directions.EAST,rawExits()[Directions.EAST],rawExits()[Directions.EAST]);
 	}
 	
 	protected Room getMakeGridRoom(int x, int y)
@@ -282,12 +273,13 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			int y=((GridLocale)loc).getChildY(oldLoc);
 			int x=((GridLocale)loc).getChildX(oldLoc);
+			
 			if((x>=0)&&(y>=0))
 			switch(opDirection)
 			{
 			case Directions.EAST:
 				if((((GridLocale)loc).ySize()==ySize()))
-					return getMakeGridRoom(x-1,y);
+					return getMakeGridRoom(xSize()-1,y);
 				break;
 			case Directions.WEST:
 				if((((GridLocale)loc).ySize()==ySize()))
@@ -299,7 +291,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				break;
 			case Directions.SOUTH:
 				if((((GridLocale)loc).xSize()==xSize()))
-					return getMakeGridRoom(x,y-1);
+					return getMakeGridRoom(x,ySize()-1);
 				break;
 			}
 		}
@@ -308,23 +300,23 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		switch(opDirection)
 		{
 		case Directions.NORTH:
-			x=x/2;
+			x=xSize()/2;
 			break;
 		case Directions.SOUTH:
-			x=x/2;
-			y=y-1;
+			x=xSize()/2;
+			y=ySize()-1;
 			break;
 		case Directions.EAST:
-			x=x-1;
-			y=y/2;
+			x=xSize()-1;
+			y=ySize()/2;
 			break;
 		case Directions.WEST:
-			y=y/2;
+			y=ySize()/2;
 			break;
 		case Directions.UP:
 		case Directions.DOWN:
-			x=x/2;
-			y=y/2;
+			x=xSize()/2;
+			y=ySize()/2;
 			break;
 		}
 		return getMakeGridRoom(x,y);
@@ -440,7 +432,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	public int getChildX(Room loc)
 	{
-		if(roomID().length()==0) return -1;
 		DVector rs=rooms.copyOf();
 		for(int i=0;i<rs.size();i++)
 			if(rs.elementAt(i,1)==loc)
@@ -455,7 +446,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	public int getChildY(Room loc)
 	{
-		if(roomID().length()==0) return -1;
 		DVector rs=rooms.copyOf();
 		for(int i=0;i<rs.size();i++)
 			if(rs.elementAt(i,1)==loc)
@@ -482,33 +472,35 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((msg.targetMinor()==CMMsg.TYP_ENTER)
-		&&(msg.target()==this))
+		if(msg.targetMinor()==CMMsg.TYP_ENTER)
 		{
-			MOB mob=msg.source();
-			if((mob.location()!=null)&&(mob.location().roomID().length()>0))
+			if(msg.target()==this)
 			{
-				int direction=-1;
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				MOB mob=msg.source();
+				if((mob.location()!=null)&&(mob.location().roomID().length()>0))
 				{
-					if(mob.location().getRoomInDir(d)==this)
-						direction=d;
+					int direction=-1;
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					{
+						if(mob.location().getRoomInDir(d)==this)
+							direction=d;
+					}
+					if(direction<0)
+					{
+						mob.tell("Some great evil is preventing your movement that way.");
+						return false;
+					}
+					else
+					msg.modify(msg.source(),
+								  getAltRoomFrom(mob.location(),direction),
+								  msg.tool(),
+								  msg.sourceCode(),
+								  msg.sourceMessage(),
+								  msg.targetCode(),
+								  msg.targetMessage(),
+								  msg.othersCode(),
+								  msg.othersMessage());
 				}
-				if(direction<0)
-				{
-					mob.tell("Some great evil is preventing your movement that way.");
-					return false;
-				}
-				else
-				msg.modify(msg.source(),
-							  getAltRoomFrom(mob.location(),direction),
-							  msg.tool(),
-							  msg.sourceCode(),
-							  msg.sourceMessage(),
-							  msg.targetCode(),
-							  msg.targetMessage(),
-							  msg.othersCode(),
-							  msg.othersMessage());
 			}
 		}
 		return true;
@@ -524,6 +516,200 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		ThinGridVacuum TGV=new ThinGridVacuum();
 		CMClass.ThreadEngine().startTickDown(TGV,MudHost.TICK_MOB,10);
 	}
+	
+	protected static class ThinGridChildWatch implements Ability
+	{
+		public String ID() { return "ThinGridChildWatch"; }
+		public String name(){ return "a Thin Child Watching Property";}
+		public String Name(){return name();}
+		public String description(){return "";}
+		public String displayText(){return "";}
+		protected boolean borrowed=false;
+		protected String miscText="";
+		protected Environmental affected=null;
+		protected int canAffectCode(){return 0;}
+		protected int canTargetCode(){return 0;}
+		public int castingTime(){return 0;}
+		public int combatCastingTime(){return 0;}
+		public int abilityCode(){return 0;}
+		public void setAbilityCode(int newCode){}
+		public int adjustedLevel(MOB mob){return -1;}
+		public boolean bubbleAffect(){return false;}
+		public long flags(){return 0;}
+		public long getTickStatus(){return Tickable.STATUS_NOT;}
+		public int usageType(){return 0;}
+
+		public void setName(String newName){}
+		public void setDescription(String newDescription){}
+		public void setDisplayText(String newDisplayText){}
+		public MOB invoker(){return null;}
+		public void setInvoker(MOB mob){}
+		public static final String[] empty={};
+		public String[] triggerStrings(){return empty;}
+		public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto){return false;}
+		public boolean invoke(MOB mob, Environmental target, boolean auto){return false;}
+		public boolean autoInvocation(MOB mob){return false;}
+		public void unInvoke(){}
+		public boolean canBeUninvoked(){return false;}
+		public boolean isAutoInvoked(){return true;}
+		public boolean isNowAnAutoEffect(){return true;}
+
+		public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
+		public boolean canBePracticedBy(MOB teacher, MOB student){return false;}
+		public boolean canBeLearnedBy(MOB teacher, MOB student){return false;}
+		public void teach(MOB teacher, MOB student){}
+		public void practice(MOB teacher, MOB student){}
+		public int maxRange(){return Integer.MAX_VALUE;}
+		public int minRange(){return Integer.MIN_VALUE;}
+
+		public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
+		{
+			if(affected.fetchEffect(ID())==null)
+				affected.addEffect(this);
+		}
+
+		public int profficiency(){return 0;}
+		public void setProfficiency(int newProfficiency){}
+		public boolean profficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
+		public void helpProfficiency(MOB mob){}
+
+		public Environmental affecting(){return affected;}
+		public void setAffectedOne(Environmental being){affected=being;}
+
+		public boolean putInCommandlist(){return false;}
+		public int quality(){return Ability.INDIFFERENT;}
+
+		public int classificationCode(){ return Ability.PROPERTY;}
+		public boolean isBorrowed(Environmental toMe){ return borrowed;	}
+		public void setBorrowed(Environmental toMe, boolean truefalse)	{ borrowed=truefalse; }
+
+		protected static final EnvStats envStats=new DefaultEnvStats();
+		public EnvStats envStats(){return envStats;}
+		public EnvStats baseEnvStats(){return envStats;}
+
+		public void recoverEnvStats(){}
+		public void setBaseEnvStats(EnvStats newBaseEnvStats){}
+		public Environmental newInstance()
+		{
+			try{
+				return (Environmental)this.getClass().newInstance();
+			}
+			catch(Exception e)
+			{
+				Log.errOut(ID(),e);
+			}
+			return new ThinGridChildWatch();
+		}
+
+		private static final String[] CODES={"CLASS","TEXT"};
+		public String[] getStatCodes(){return CODES;}
+		private int getCodeNum(String code){
+			for(int i=0;i<CODES.length;i++)
+				if(code.equalsIgnoreCase(CODES[i])) return i;
+			return -1;
+		}
+		public String getStat(String code){
+			switch(getCodeNum(code))
+			{
+			case 0: return ID();
+			case 1: return text();
+			}
+			return "";
+		}
+		public void setStat(String code, String val)
+		{
+			switch(getCodeNum(code))
+			{
+			case 0: return;
+			case 1: setMiscText(val); break;
+			}
+		}
+		public boolean sameAs(Environmental E)
+		{
+			if(!(E instanceof Ability)) return false;
+			for(int i=0;i<CODES.length;i++)
+				if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+					return false;
+			return true;
+		}
+		private void cloneFix(Ability E){}
+
+		public Environmental copyOf()
+		{
+			try
+			{
+				ThinGridChildWatch E=(ThinGridChildWatch)this.clone();
+				return E;
+
+			}
+			catch(CloneNotSupportedException e)
+			{
+				return this.newInstance();
+			}
+		}
+
+		public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+
+		public void setMiscText(String newMiscText)
+		{ miscText=newMiscText;}
+		public String text()
+		{ return miscText;}
+		public boolean appropriateToMyAlignment(int alignment){return true;}
+		public String accountForYourself(){return "";}
+		public int affectType(){return 0;}
+		public String requirements(){return "";}
+
+		public boolean canAffect(Environmental E){	return false;}
+
+		public boolean canTarget(Environmental E)
+		{ return false;}
+
+		public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+		{}
+		public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+		{}
+		public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+		{}
+		public void executeMsg(Environmental myHost, CMMsg msg)
+		{
+			return;
+		}
+		public boolean okMessage(Environmental myHost, CMMsg msg)
+		{
+			if((msg.targetMinor()==CMMsg.TYP_ENTER)
+			&&(msg.target()==myHost)
+			&&(myHost instanceof Room)
+			&&(((Room)myHost).getGridParent() instanceof StdThinGrid))
+			{
+				StdThinGrid STG=((StdThinGrid)((Room)myHost).getGridParent());
+				int x=STG.getChildX((Room)myHost);
+				int y=STG.getChildY((Room)myHost);
+				STG.fillExitsOfGridRoom((Room)myHost,x,y);
+			}
+			return true;
+		}
+		public boolean tick(Tickable ticking, int tickID)
+		{ return true;	}
+		public void makeLongLasting(){}
+		public void makeNonUninvokable(){}
+		private static final int[] cost=new int[3];
+		public int[] usageCost(MOB mob){return cost;}
+
+
+		public void addEffect(Ability to){}
+		public void addNonUninvokableEffect(Ability to){}
+		public void delEffect(Ability to){}
+		public int numEffects(){ return 0;}
+		public Ability fetchEffect(int index){return null;}
+		public Ability fetchEffect(String ID){return null;}
+		public void addBehavior(Behavior to){}
+		public void delBehavior(Behavior to){}
+		public int numBehaviors(){return 0;}
+		public Behavior fetchBehavior(int index){return null;}
+		public Behavior fetchBehavior(String ID){return null;}
+		public boolean isGeneric(){return false;}
+	}
+	
 	protected static class ThinGridVacuum implements Tickable
 	{
 		public String ID(){return "ThinGridVacuum";}

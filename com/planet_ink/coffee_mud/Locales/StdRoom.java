@@ -246,7 +246,7 @@ public class StdRoom
 		&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKYSIZE)>0))
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
-			EndlessSky sky=new EndlessSky();
+			EndlessThinSky sky=new EndlessThinSky();
 			sky.setArea(getArea());
 			sky.setRoomID("");
 			rawDoors()[Directions.UP]=sky;
@@ -262,7 +262,8 @@ public class StdRoom
 					thatRoom.giveASky(depth+1);
 					thatSky=thatRoom.rawDoors()[Directions.UP];
 				}
-				if((thatSky!=null)&&(thatSky.roomID().length()==0)&&(thatSky instanceof EndlessSky))
+				if((thatSky!=null)&&(thatSky.roomID().length()==0)
+				&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
 				{
 					sky.rawDoors()[d]=thatSky;
 					Exit xo=rawExits()[d];
@@ -285,9 +286,10 @@ public class StdRoom
 		if(!skyedYet) return;
 		Room room=rawDoors()[Directions.UP];
 		if(room==null) return;
-		if((room.roomID().length()==0)&&(room instanceof EndlessSky))
+		if((room.roomID().length()==0)
+		&&((room instanceof EndlessSky)||(room instanceof EndlessThinSky)))
 		{
-			((EndlessSky)room).clearGrid(null);
+			((GridLocale)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			rawExits()[Directions.UP]=null;
 			room.rawDoors()[Directions.DOWN]=null;

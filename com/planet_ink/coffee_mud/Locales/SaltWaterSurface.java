@@ -25,6 +25,7 @@ public class SaltWaterSurface extends WaterSurface
 	{
 		super();
 	}
+	protected String UnderWaterLocaleID(){return "UnderSaltWaterGrid";}
 
 
 	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
@@ -42,7 +43,7 @@ public class SaltWaterSurface extends WaterSurface
 		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
-			UnderSaltWaterGrid sea=new UnderSaltWaterGrid();
+			GridLocale sea=(GridLocale)CMClass.getLocale(UnderWaterLocaleID());
 			sea.setArea(getArea());
 			sea.setRoomID("");
 			rawDoors()[Directions.DOWN]=sea;
@@ -58,7 +59,9 @@ public class SaltWaterSurface extends WaterSurface
 					thatRoom.giveASky(depth+1);
 					thatSea=thatRoom.rawDoors()[Directions.DOWN];
 				}
-				if((thatSea!=null)&&(thatSea.roomID().length()==0)&&(thatSea instanceof UnderSaltWaterGrid))
+				if((thatSea!=null)
+				   &&(thatSea.roomID().length()==0)
+				   &&((thatSea instanceof UnderSaltWaterGrid)||(thatSea instanceof UnderSaltWaterThinGrid)))
 				{
 					sea.rawDoors()[d]=thatSea;
 					sea.rawExits()[d]=rawExits()[d];
@@ -80,7 +83,8 @@ public class SaltWaterSurface extends WaterSurface
 		super.clearSky();
 		Room room=rawDoors()[Directions.DOWN];
 		if(room==null) return;
-		if((room.roomID().length()==0)&&(room instanceof UnderSaltWaterGrid))
+		if((room.roomID().length()==0)
+		&&((room instanceof UnderSaltWaterGrid)||(room instanceof UnderSaltWaterThinGrid)))
 		{
 			((UnderSaltWaterGrid)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;

@@ -311,13 +311,22 @@ self-explanatory.&nbsp; They include:</P>
     <TD>DesertMaze </TD>
     <TD>a hot, dry, multi-room outside maze</TD></TR>
   <TR>
+    <TD>DesertThinGrid </TD>
+    <TD>as DesertGrid but it uses less memory/more cpu</TD></TR>
+  <TR>
     <TD>EndlessOcean </TD>
-    <TD>  huge multi-room,&nbsp;locale&nbsp;on the 
+    <TD>huge multi-room,&nbsp;locale&nbsp;on the 
       ocean surface</TD></TR>
   <TR>
     <TD>EndlessSky </TD>
     <TD>an endless, ~3D, multi-room,&nbsp;locale up in 
       the sky</TD></TR>
+  <TR>
+    <TD>EndlessThinOcean </TD>
+    <TD>As EndlessOcean but using less memory/more cpu</TD></TR>
+  <TR>
+    <TD>EndlessThinSky </TD>
+    <TD>As EndlessSky but using less memory/more cpu</TD></TR>
   <TR>
     <TD>FrozenMountains </TD>
     <TD>a cold, outside, mountanous room</TD></TR>
@@ -329,11 +338,17 @@ self-explanatory.&nbsp; They include:</P>
     <TD>endless, ~3D, multi-room,&nbsp;locale below the 
       lake surface</TD></TR>
   <TR>
+    <TD>GreatThinLake</TD>
+    <TD>as GreatLake but using less memory/more cpu</TD></TR>
+  <TR>
     <TD>Hills </TD>
     <TD>green rolling hills</TD></TR>
   <TR>
     <TD>HillsGrid </TD>
     <TD>a huge multi-room rolling hilly area</TD></TR>
+  <TR>
+    <TD>HillsThinGrid </TD>
+    <TD>as HillsGrid but using less memory/more cpu</TD></TR>
   <TR>
     <TD>HotRoom </TD>
     <TD>a hot, stone, indoor place</TD></TR>
@@ -363,6 +378,9 @@ self-explanatory.&nbsp; They include:</P>
     <TD>JungleGrid</TD>
     <TD>a large multi-room overgrown hot forest</TD></TR>
   <TR>
+    <TD>JungleThinGrid</TD>
+    <TD>as JungleGrid but using less memory/more cpu</TD></TR>
+  <TR>
     <TD>LargeCaveRoom</TD>
     <TD>a cave room large enough to bring mounts into</TD></TR>
   <TR>
@@ -386,6 +404,9 @@ self-explanatory.&nbsp; They include:</P>
     <TD>MountainsGrid</TD>
     <TD>an outside, mountanous multi-room of rock</TD></TR>
   <TR>
+    <TD>MountainsThinGrid</TD>
+    <TD>as MountainsGrid but using less memory/more cpu</TD></TR>
+  <TR>
     <TD>MountainsMaze</TD>
     <TD>an outside, mountanous maze of rock</TD></TR>
   <TR>
@@ -395,6 +416,9 @@ self-explanatory.&nbsp; They include:</P>
     <TD>MountainSurfaceGrid</TD>
     <TD>a large, multi-room, climable mountainous 
   place</TD></TR>
+  <TR>
+    <TD>MountainSurfaceThinGrid</TD>
+    <TD>as MountainSurfaceGrid but using less mem/more cpu</TD></TR>
   <TR>
     <TD>OverTheLedge</TD>
     <TD>a room you can walk into, but then fall 
@@ -406,14 +430,23 @@ self-explanatory.&nbsp; They include:</P>
     <TD>PlainsGrid </TD>
     <TD>a huge multi-room, outdoor plains area</TD></TR>
   <TR>
+    <TD>PlainsThinGrid </TD>
+    <TD>as PlainsGrid but using less memory/more cpu</TD></TR>
+  <TR>
     <TD>Road </TD>
     <TD>out in the open road</TD></TR>
   <TR>
     <TD>RoadGrid </TD>
     <TD>a huge multi-room, outdoor stretch of road</TD></TR>
   <TR>
+    <TD>RoadThinGrid </TD>
+    <TD>as RoadGrid but using less memory, more cpu</TD></TR>
+  <TR>
     <TD>SaltWaterSurface</TD>
     <TD>the surface of the ocean</TD></TR>
+  <TR>
+    <TD>SaltWaterThinSurface</TD>
+    <TD>as SaltWaterSurface but depths use less memory/more cpu</TD></TR>
   <TR>
     <TD>SewerMaze</TD>
     <TD>a wet, cave-like maze</TD></TR>
@@ -429,7 +462,7 @@ self-explanatory.&nbsp; They include:</P>
     nearby</TD></TR>
   <TR>
     <TD>StdGrid </TD>
-    <TD>the basis for all of the Grid areas -- do not 
+    <TD>the basis for all of the Grid locales -- do not 
     use.</TD></TR>
   <TR>
     <TD>StdMaze </TD>
@@ -440,9 +473,9 @@ use</TD></TR>
     <TD>the basis for all other Locales, do not 
 use!</TD></TR>
   <TR>
-    <TD>StoneGrid </TD>
-    <TD>well lit indoor multi-room&nbsp;locale with stone 
-      walls and ceiling</TD></TR>
+    <TD>StdThinGrid </TD>
+    <TD>the basis for all of the ThinGrid locales -- do not 
+    use.</TD></TR>
   <TR>
     <TD>StoneMaze </TD>
     <TD>well lit indoor multi-room maze with stone walls 
@@ -452,12 +485,22 @@ use!</TD></TR>
     <TD>well lit indoor room with stone walls and 
     ceiling</TD></TR>
   <TR>
+    <TD>StoneGrid </TD>
+    <TD>well lit indoor multi-room&nbsp;locale with stone 
+      walls and ceiling</TD></TR>
+  <TR>
+    <TD>StoneThinGrid </TD>
+    <TD>as StoneGrid but using less memory/more cpu</TD></TR>
+  <TR>
     <TD>Swamp</TD>
     <TD>damp outdoor swampy region</TD></TR>
   <TR>
     <TD>SwampGrid</TD>
     <TD>a large multi-room damp outdoor swampy 
   region</TD></TR>
+  <TR>
+    <TD>SwampThinGrid</TD>
+    <TD>as SwampGrid but using less memory/more cpu</TD></TR>
   <TR>
     <TD>TreeSurface </TD>
     <TD>a wooden ClimbableSurface, such as the trunk of a 
@@ -472,6 +515,9 @@ use!</TD></TR>
     <TD>UnderSaltWaterMaze</TD>
     <TD>a multi-room 2D maze beneath the ocean</TD></TR>
   <TR>
+    <TD>UnderSaltWaterThinGrid</TD>
+    <TD>as UnderSaltWaterGrid but using less mem/more cpu</TD></TR>
+  <TR>
     <TD>UnderWater </TD>
     <TD>as wet as it gets... unless you are a fish you 
       won't live long</TD></TR>
@@ -479,12 +525,18 @@ use!</TD></TR>
     <TD>UnderWaterGrid </TD>
     <TD>a huge multi-room underwater locale</TD></TR>
   <TR>
+    <TD>UnderWaterThinGrid </TD>
+    <TD>as UnderWaterGrid but using less memory/more cpu</TD></TR>
+  <TR>
     <TD>UnderWaterMaze </TD>
     <TD>a huge multi-room maze of underwater locales -- 
       be careful!</TD></TR>
   <TR>
     <TD>WaterSurface</TD>
     <TD>the surface of a lake or river</TD></TR>
+  <TR>
+    <TD>WaterThinSurface</TD>
+    <TD>as WaterSurface but depths use less mem/more cpu</TD></TR>
   <TR>
     <TD>WetCaveMaze </TD>
     <TD>as CaveMaze, but extremely wet and nasty</TD></TR>
@@ -500,6 +552,9 @@ use!</TD></TR>
     <TD>well lit multi-indoor-room with wooden walls and 
       ceiling</TD></TR>
   <TR>
+    <TD>WoodRoomThinGrid </TD>
+    <TD>as WoodRoomGrid but uses less memory/more cpu</TD></TR>
+  <TR>
     <TD>WoodRoomMaze</TD>
     <TD>well lit multi-indoor-maze with wooden walls and 
       ceiling</TD></TR>
@@ -511,6 +566,9 @@ forest</TD></TR>
     <TD>WoodsGrid </TD>
     <TD>thick with trees and life, multi-room 
   expanse</TD></TR>
+  <TR>
+    <TD>WoodsThinGrid </TD>
+    <TD>as WoodsGrid but using less memory/more cpu</TD></TR>
   <TR>
     <TD>WoodsMaze </TD>
     <TD>thick with trees and life, a multi-room maze of 
