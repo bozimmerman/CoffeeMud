@@ -32,11 +32,10 @@ public class Skill_Puppeteer extends StdAbility
 		&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 		&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
 		||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
-		&&(affect.targetMinor()!=Affect.TYP_LEAVE)
-		&&(affect.targetMinor()!=Affect.TYP_ENTER)
 		&&(affect.targetMinor()!=Affect.TYP_SPEAK)
 		&&(affect.targetMinor()!=Affect.TYP_PANIC)
 		&&(!((affect.tool()!=null)&&(affect.tool() instanceof Song)))
+		&&(!((affect.tool()!=null)&&(affect.tool() instanceof Skill_Puppeteer)))
 		&&(!((affect.tool()!=null)&&(affect.tool() instanceof Dance)))
 		&&(!affect.amITarget(puppet)))
 		{
@@ -122,7 +121,13 @@ public class Skill_Puppeteer extends StdAbility
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
-		if(!target.Name().toUpperCase().endsWith(" puppet"))
+		if(target.fetchAffect(ID())!=null)
+		{
+			mob.tell(target.name()+" is already animated!");
+			return false;
+		}
+		if((!target.Name().toLowerCase().endsWith(" puppet"))
+		&&(!target.Name().toLowerCase().endsWith(" marionette")))
 		{
 			mob.tell("That's not a puppet!");
 			return false;
