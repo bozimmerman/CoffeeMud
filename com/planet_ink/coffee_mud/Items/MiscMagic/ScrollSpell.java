@@ -30,6 +30,6 @@ public class ScrollSpell extends StdScroll
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity(),getSpells());
+		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
 	}
 }

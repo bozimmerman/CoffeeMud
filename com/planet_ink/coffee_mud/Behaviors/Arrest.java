@@ -80,7 +80,13 @@ public class Arrest extends StdBehavior
 				return true;
 			}
 			else
+			{
+				if((mob.isMonster())
+				&&(mob.location()!=null)
+				&&(isElligibleOfficer(mob,mob.location().getArea())))
+					return true;
 				return (getWarrant(mob,0))!=null;
+			}
 		}
 		return super.modifyBehavior(mob,O);
 	}

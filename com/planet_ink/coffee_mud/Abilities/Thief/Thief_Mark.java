@@ -99,7 +99,7 @@ public class Thief_Mark extends ThiefSkill
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(levelDiff,auto);
 
-		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -16,6 +16,10 @@ public class Thief_Hide extends ThiefSkill
 	private static final String[] triggerStrings = {"HIDE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Hide();}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
@@ -31,11 +35,20 @@ public class Thief_Hide extends ThiefSkill
 		if(affect.amISource(mob))
 		{
 
-			if(((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
-				 ||(affect.sourceMinor()==Affect.TYP_SPEAK)
-				 ||(affect.sourceMinor()==Affect.TYP_ENTER)
+			if(((affect.sourceMinor()==Affect.TYP_ENTER)
 				 ||(affect.sourceMinor()==Affect.TYP_LEAVE)
-				 ||(affect.sourceMinor()==Affect.TYP_RECALL)))
+				 ||(affect.sourceMinor()==Affect.TYP_FLEE)
+				 ||(affect.sourceMinor()==Affect.TYP_RECALL))
+			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
+			&&(affect.sourceMajor()>0))
+			{
+				unInvoke();
+				mob.recoverEnvStats();
+			}
+			else
+			if((Util.bset(affect.sourceMajor(),Affect.MASK_SOUND)
+				 ||(affect.sourceMinor()==Affect.TYP_SPEAK))
+			 &&(abilityCode()==0)
 			 &&(!Util.bset(affect.sourceMajor(),Affect.MASK_GENERAL))
 			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
 			 &&(affect.sourceMajor()>0))

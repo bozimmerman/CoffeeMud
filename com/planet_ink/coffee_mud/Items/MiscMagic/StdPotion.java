@@ -109,7 +109,7 @@ public class StdPotion extends StdDrink implements Potion
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),getSpells(this));
+		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells(this));
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)

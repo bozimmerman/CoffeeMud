@@ -53,13 +53,13 @@ public class Burglar extends Thief
 CMAble.addCharAbilityMapping(ID(),9,"Thief_Forgery",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_Listen",false);
 			
-CMAble.addCharAbilityMapping(ID(),10,"Thief_ImprovedHiding",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Thief_ImprovedHiding",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
 			
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Steal",true);
-CMAble.addCharAbilityMapping(ID(),11,"Thief_AvoidTraps",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Thief_AvoidTraps",false);
 			
-CMAble.addCharAbilityMapping(ID(),12,"Thief_SlipItem",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Thief_SlipItem",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_Snatch",false);
 			
 CMAble.addCharAbilityMapping(ID(),13,"Thief_PlantItem",true);
@@ -71,22 +71,22 @@ CMAble.addCharAbilityMapping(ID(),13,"Thief_PlantItem",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_SilentGold",false);
 			
-CMAble.addCharAbilityMapping(ID(),16,"Thief_SafeCracking",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Thief_SafeCracking",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Thief_SilentLoot",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Fighter_BlindFighting",false);
 			
-CMAble.addCharAbilityMapping(ID(),18,"Thief_Robbery",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Thief_Robbery",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Map",false);
 			
-CMAble.addCharAbilityMapping(ID(),19,"Thief_SenseLaw",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Thief_SenseLaw",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Distract",false);
 			
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Lore",false);
 			
-CMAble.addCharAbilityMapping(ID(),21,"Thief_Racketeer",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Thief_Racketeer",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_StripItem",false);
 			
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_UsePoison",true);
@@ -95,10 +95,10 @@ CMAble.addCharAbilityMapping(ID(),21,"Thief_Racketeer",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_AnalyzeDweomer",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_Tumble",false);
 			
-CMAble.addCharAbilityMapping(ID(),24,"Thief_Con",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Thief_Con",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 
-CMAble.addCharAbilityMapping(ID(),25,"Thief_Embezzle",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Thief_Embezzle",true);
 CMAble.addCharAbilityMapping(ID(),30,"Thief_ContractHit",true);
 		}
 	}

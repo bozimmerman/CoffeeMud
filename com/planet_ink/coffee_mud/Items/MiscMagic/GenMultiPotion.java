@@ -37,7 +37,7 @@ public class GenMultiPotion extends GenWater implements Potion
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),getSpells(this));
+		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells(this));
 	}
 	
 	public int value()

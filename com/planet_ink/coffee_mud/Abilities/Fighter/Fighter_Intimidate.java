@@ -31,7 +31,7 @@ public class Fighter_Intimidate extends StdAbility
 			if((!target.isInCombat())
 			&&(affect.source().getVictim()!=target)
 			&&(levelDiff<0)
-			&&(profficiencyCheck(-(100+levelDiff),false)))
+			&&(profficiencyCheck((-(100+levelDiff))+(target.charStats().getStat(CharStats.CHARISMA)*2),false)))
 			{
 				affect.source().tell("You are too intimidated by "+target.name());
 				if(affect.source().location()!=lastRoom)

@@ -166,15 +166,19 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 		else
 		{
-			mobName=Util.combine(commands,0);
+			if(givenTarget!=null)
+				mobName=givenTarget.name();
+			else
+				mobName=Util.combine(commands,0);
 			if(mobName.length()==0)
 			{
 				mob.tell("Assassinate whom?");
 				return false;
 			}
-			if(mob.location().fetchInhabitant(mobName)!=null)
+			MOB M=mob.location().fetchInhabitant(mobName);
+			if(M!=null)
 			{
-				ExternalPlay.postAttack(mob,mob.location().fetchInhabitant(mobName),mob.fetchWieldedItem());
+				ExternalPlay.postAttack(mob,M,mob.fetchWieldedItem());
 				return false;
 			}
 		}

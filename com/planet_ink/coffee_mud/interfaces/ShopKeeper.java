@@ -41,6 +41,7 @@ public interface ShopKeeper extends MOB
 	public Vector getUniqueStoreInventory();
 	public Vector getBaseInventory();
 	public String storeKeeperString();
+	public Vector removeSellableProduct(String named, MOB mob);
 	public void clearStoreInventory();
 	public void addStoreInventory(Environmental thisThang, int number);
 	public void delStoreInventory(Environmental thisThang);

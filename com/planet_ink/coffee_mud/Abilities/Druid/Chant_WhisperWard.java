@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chant_WhisperWard extends Chant
+public class Chant_WhisperWard extends Chant implements Trap
 {
 	public String ID() { return "Chant_WhisperWard"; }
 	public String name(){ return "Whisperward";}
@@ -18,6 +18,25 @@ public class Chant_WhisperWard extends Chant
 	boolean waitingForLook=false;
 	public Environmental newInstance(){	return new Chant_WhisperWard();	}
 	
+	private boolean sprung=false;
+
+	public boolean sprung()
+	{
+		return sprung;
+	}
+	public void setSprung(boolean isSprung)
+	{
+		sprung=isSprung;
+		if(sprung)
+			unInvoke();
+	}
+	public void setReset(int Reset){}
+	public int getReset(){return 0;}
+
+	public void spring(MOB M)
+	{
+		doMyThing();
+	}
 
 	public void doMyThing()
 	{

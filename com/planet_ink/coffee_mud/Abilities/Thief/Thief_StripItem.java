@@ -1,5 +1,89 @@
 package com.planet_ink.coffee_mud.Abilities.Thief;
 
-public class Thief_StripItem
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Thief_StripItem extends ThiefSkill
 {
+	public String ID() { return "Thief_StripItem"; }
+	public String name(){ return "Strip Item";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"STRIPITEM"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_StripItem();}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(commands.size()<2)
+		{
+			mob.tell("Strip what off of whom?");
+			return false;
+		}
+		String itemToSteal=(String)commands.elementAt(0);
+
+		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
+		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) target=(MOB)givenTarget;
+		if((target==null)||(target.amDead())||(!Sense.canBeSeenBy(target,mob)))
+		{
+			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
+			return false;
+		}
+		int levelDiff=target.envStats().level()-mob.envStats().level();
+		if((!target.mayIFight(mob))&&(levelDiff<10))
+		{
+			mob.tell("You cannot strip anything off of "+target.charStats().himher()+".");
+			return false;
+		}
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		Item stolen=target.fetchWornItem(itemToSteal);
+		if((stolen==null)||(!Sense.canBeSeenBy(stolen,mob)))
+		{
+			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");
+			return false;
+		}
+		if(stolen.amWearingAt(Item.WIELD))
+		{
+			mob.tell(target.name()+" is wielding "+stolen.name()+"! Try disarm!");
+			return false;
+		}
+
+		boolean success=profficiencyCheck(-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15)),auto);
+
+		if(!success)
+		{
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to strip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off <T-NAME> and fails!");
+			if(mob.location().okAffect(mob,msg))
+				mob.location().send(mob,msg);
+		}
+		else
+		{
+			String str=null;
+			if(!auto) str="<S-NAME> strip(s) "+stolen.name()+" off <T-NAMESELF>.";
+
+			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
+			String hisStr=str;
+			int hisCode=Affect.MSG_THIEF_ACT | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
+
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
+			if(mob.location().okAffect(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
+				{
+					if(target.getVictim()==mob)
+						target.makePeace();
+				}
+				msg=new FullMsg(target,stolen,null,Affect.MSG_GET,Affect.MSG_GET,Affect.MSG_NOISE,null);
+				if(target.location().okAffect(target,msg))
+					target.location().send(mob,msg);
+			}
+		}
+		return success;
+	}
 }

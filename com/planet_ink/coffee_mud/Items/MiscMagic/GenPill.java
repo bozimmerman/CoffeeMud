@@ -35,7 +35,7 @@ public class GenPill extends GenFood implements Pill
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),getSpells(this));
+		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells(this));
 	}
 
 	public String getSpellList()

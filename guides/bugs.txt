@@ -11,3 +11,5 @@ on illusory wall, SENSE INVISIBLE won't let you see the exit.
 buying a pet, if you can't have another follower, don't allow the purchase
 if a pet is sleeping and you recall, you lose the pet
 Reimplement SysOpModLocale
+mailto:marqphex@iname.com?subject=Glitch/Broken Code
+I had to crawl south and then climb up somewhere...  When I said slimb, it took the 50 mana, but told me I had to stand.  Seems kinda.. cheapskate.

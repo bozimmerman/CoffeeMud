@@ -1190,26 +1190,29 @@ public class TelnetSession extends Thread implements Session
 				case 'M': { buf.append("^m"+mob().maxState().getMana()); c++; break;}
 				case 'v': { buf.append("^v"+mob().curState().getMovement()); c++; break;}
 				case 'V': { buf.append("^v"+mob().maxState().getMovement()); c++; break;}
-				case 'x': { buf.append("^h"+mob().getExperience()); c++; break;}
-				case 'X': { buf.append("^h"+mob().getExpNeededLevel()); c++; break;}
-				case 'g': { buf.append("^h"+mob().getMoney()); c++; break;}
-				case 'a': { buf.append("^h"+mob().getAlignment()); c++; break;}
-				case 'A': { buf.append("^h"+CommonStrings.alignmentStr(mob().getAlignment())); c++; break;}
-				case 'w': { buf.append("^h"+mob().envStats().weight()); c++; break;}
-				case 'W': { buf.append("^h"+mob().maxCarry()); c++; break;}
+				case 'x': { buf.append(mob().getExperience()); c++; break;}
+				case 'X': { buf.append(mob().getExpNeededLevel()); c++; break;}
+				case 'g': { buf.append(mob().getMoney()); c++; break;}
+				case 'a': { buf.append(mob().getAlignment()); c++; break;}
+				case 'A': { buf.append(CommonStrings.alignmentStr(mob().getAlignment())); c++; break;}
+				case 'w': { buf.append(mob().envStats().weight()); c++; break;}
+				case 'W': { buf.append(mob().maxCarry()); c++; break;}
 				case 'r': {   if(mob().location()!=null)
-								  buf.append("^h"+mob().location().displayText());
+								  buf.append(mob().location().displayText());
+							  c++; break; }
+				case 'z': {      if((mob().location()!=null)&&(mob().isASysOp(mob().location())))
+								  buf.append(mob().location().getArea().name());
 							  c++; break; }
 				case 'R': {   if((mob().location()!=null)&&(mob().isASysOp(mob().location())))
-								  buf.append("^h"+mob().location().ID());
+								  buf.append(mob().location().ID());
 							  c++; break; }
 				case 'e': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))
-								  buf.append("^h"+victim.name());
+								  buf.append(victim.name());
 							  c++; break; }
 				case 'E': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))
-								  buf.append("^h"+victim.charStats().getMyRace().healthText(victim));
+								  buf.append(victim.charStats().getMyRace().healthText(victim));
 							  c++; break; }
 				case 'B': { buf.append("\n\r"); c++; break;}
 				case 'd': {	  MOB victim=mob().getVictim();

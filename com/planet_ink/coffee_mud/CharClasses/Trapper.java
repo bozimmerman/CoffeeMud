@@ -94,9 +94,9 @@ CMAble.addCharAbilityMapping(ID(),23,"AnimalTrading",true);
 
 CMAble.addCharAbilityMapping(ID(),24,"AnimalTraining",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Thief_TrapImmunity",true);
+CMAble.addCharAbilityMapping(ID(),25,"Thief_TrapImmunity",true);
 			
-			CMAble.addCharAbilityMapping(ID(),25,"Thief_DeathTrap",true);
+CMAble.addCharAbilityMapping(ID(),25,"Thief_DeathTrap",true);
 		}
 	}
 	public String otherLimitations(){return "Sneak and Hide attempts will fail outside of the wild.";}

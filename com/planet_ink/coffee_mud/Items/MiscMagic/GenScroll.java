@@ -50,7 +50,7 @@ public class GenScroll extends GenItem implements Scroll
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity(),getSpells())+" Charges: "+usesRemaining();
+		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
 	}
 
 	public String getScrollText()

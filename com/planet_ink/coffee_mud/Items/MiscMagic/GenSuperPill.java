@@ -101,7 +101,7 @@ public class GenSuperPill extends GenPill
 
 	public String secretIdentity()
 	{
-		String id=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),getSpells(this));
+		String id=StdScroll.makeSecretIdentity("super pill",super.secretIdentity(),"",getSpells(this));
 		return id;
 	}
 

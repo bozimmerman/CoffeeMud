@@ -46,9 +46,12 @@ public class Mageness extends CombatAbilities
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
-		if(!mob.baseCharStats().getCurrentClass().ID().equals("Mage"))
+		String className="Mage";
+		if((getParms().length()>0)&&(CMClass.getCharClass(getParms())!=null))
+			className=getParms();
+		if(!mob.baseCharStats().getCurrentClass().ID().equals(className))
 		{
-			mob.baseCharStats().setCurrentClass(CMClass.getCharClass("Mage"));
+			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(className));
 			mob.recoverCharStats();
 		}
 		// now equip character...

@@ -33,7 +33,7 @@ public class StdPill extends StdFood implements Pill
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),getSpells(this));
+		return StdScroll.makeSecretIdentity("pill",super.secretIdentity(),"",getSpells(this));
 	}
 
 	public void eatIfAble(MOB mob, Pill me)

@@ -16,7 +16,11 @@ public class Thief_Pick extends ThiefSkill
 	private static final String[] triggerStrings = {"PICK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Pick();}
+	public int code=10;
 
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		String whatTounlock=Util.combine(commands,0);
@@ -39,8 +43,9 @@ public class Thief_Pick extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		boolean success=profficiencyCheck(+((mob.envStats().level()
-											 -unlockThis.envStats().level())*3),auto);
+		int adjustment=(mob.envStats().level()-unlockThis.envStats().level())*abilityCode();
+		if(adjustment>0) adjustment=0;
+		boolean success=profficiencyCheck(adjustment,auto);
 
 		if(!success)
 			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.name()+" and fail(s).");

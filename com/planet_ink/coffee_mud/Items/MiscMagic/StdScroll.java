@@ -80,26 +80,31 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity(),getSpells())+" Charges: "+usesRemaining();
+		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
 	}
 
-	public static String makeSecretIdentity(String thang, String id, Vector V)
+	public static String makeSecretIdentity(String thang, String id, String more, Vector V)
 	{
-		String add="";
+		StringBuffer add=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
 			if(v==0)
-				add="A "+thang+" of ";
+				add.append("A "+thang+" of ");
 			Ability A=(Ability)V.elementAt(v);
 			if(V.size()==1)
-				add+=A.name();
+				add.append(A.name());
 			else
 			if(v==(V.size()-1))
-				add+="and "+A.name();
+				add.append("and "+A.name());
 			else
-				add+=A.name()+", ";
+				add.append(A.name()+", ");
 		}
-		return add+((add.length()==0)?"":"\n")+id;
+		if(add.length()>0)
+		{
+			add.append(more+"\n");
+		}
+		add.append(id);
+		return add.toString();
 	}
 	public void readIfAble(MOB mob, Scroll me, String spellName)
 	{

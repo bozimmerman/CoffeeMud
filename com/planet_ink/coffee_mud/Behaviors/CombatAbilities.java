@@ -22,7 +22,7 @@ public class CombatAbilities extends StdBehavior
 			Ability A=mob.fetchAbility(a);
 			if(A!=null)
 			{
-				A.setProfficiency(50);
+				if(A.profficiency()<50)	A.setProfficiency(50);
 				oldAbilities.addElement(A);
 			}
 		}

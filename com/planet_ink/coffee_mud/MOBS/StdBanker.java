@@ -115,6 +115,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		return mine;
 	};
+	public Vector getAccountNames()
+	{
+		Vector V=ExternalPlay.DBReadJournal(bankChain());
+		Vector mine=new Vector();
+		for(int v=0;v<V.size();v++)
+		{
+			Vector V2=(Vector)V.elementAt(v);
+			mine.addElement(V2.elementAt(1));
+		}
+		return mine;
+	}
+
 	public Item findDepositInventory(String mob, String likeThis)
 	{
 		Vector V=getDepositInventory(mob);

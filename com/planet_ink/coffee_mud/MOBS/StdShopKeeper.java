@@ -794,7 +794,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_BUY:
 			case Affect.TYP_VIEW:
 			{
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
+				if((affect.tool()!=null)
+				&&(doIHaveThisInStock(affect.tool().name(),mob)))
 				{
 					if((affect.targetMinor()!=Affect.TYP_VIEW)
 					&&(yourValue(mob,affect.tool(),true)>totalMoney(mob)))
@@ -869,6 +870,47 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	}
 
 
+	public Vector removeSellableProduct(String named, MOB mob)
+	{
+		Vector V=new Vector();
+		Environmental product=removeStock(named,mob);
+		if(product==null) return V;
+		V.addElement(product);
+		if(product instanceof Container)
+		{
+			int i=0;
+			Key foundKey=null;
+			Container C=((Container)product);
+			while(i<storeInventory.size())
+			{
+				int a=storeInventory.size();
+				Environmental I=(Environmental)storeInventory.elementAt(i);
+				if((I instanceof Item)&&(((Item)I).container()==product))
+				{
+					if((I instanceof Key)&&(((Key)I).getKey().equals(C.keyName())))
+						foundKey=(Key)I;
+					((Item)I).remove();
+					V.addElement(I);
+					storeInventory.removeElement(I);
+					((Item)I).setContainer((Item)product);
+				}
+				if(a==storeInventory.size())
+					i++;
+			}
+			if((C.isLocked())&&(foundKey==null))
+			{
+				String keyName=Double.toString(Math.random());
+				C.setKeyName(keyName);
+				C.setLidsNLocks(C.hasALid(),true,C.hasALock(),false);
+				Key key=(Key)CMClass.getItem("StdKey");
+				key.setKey(keyName);
+				key.setContainer(C);
+				V.addElement(key);
+			}
+		}
+		return V;
+	}
+	
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
@@ -937,45 +979,20 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					ExternalPlay.quickSay(this,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
 				break;
 			case Affect.TYP_BUY:
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
+				if((affect.tool()!=null)
+				&&(doIHaveThisInStock(affect.tool().name(),mob)))
 				{
-					Environmental product=removeStock(affect.tool().name(),mob);
+					Vector products=removeSellableProduct(affect.tool().name(),mob);
+					if(products.size()==0) break;
+					Environmental product=(Environmental)products.firstElement();
 					setTotalMoney(mob,yourValue(mob,product,true));
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
-						mob.location().addItemRefuse((Item)product,Item.REFUSE_PLAYER_DROP);
-						if(product instanceof Container)
+						for(int p=0;p<products.size();p++)
 						{
-							int i=0;
-							Key foundKey=null;
-							Container C=((Container)product);
-							while(i<storeInventory.size())
-							{
-								int a=storeInventory.size();
-								Environmental I=(Environmental)storeInventory.elementAt(i);
-								if((I instanceof Item)&&(((Item)I).container()==product))
-								{
-									if((I instanceof Key)&&(((Key)I).getKey().equals(C.keyName())))
-										foundKey=(Key)I;
-									((Item)I).remove();
-									mob.location().addItemRefuse((Item)I,Item.REFUSE_PLAYER_DROP);
-									storeInventory.removeElement(I);
-									((Item)I).setContainer((Item)product);
-								}
-								if(a==storeInventory.size())
-									i++;
-							}
-							if((C.isLocked())&&(foundKey==null))
-							{
-								String keyName=Double.toString(Math.random());
-								C.setKeyName(keyName);
-								C.setLidsNLocks(C.hasALid(),true,C.hasALock(),false);
-								Key key=(Key)CMClass.getItem("StdKey");
-								key.setKey(keyName);
-								key.setContainer(C);
-								mob.location().addItemRefuse(key,Item.REFUSE_PLAYER_DROP);
-							}
+							Item I=(Item)products.elementAt(p);
+							mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 						}
 						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);
 						if(location().okAffect(mob,msg))
