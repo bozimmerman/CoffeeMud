@@ -237,7 +237,7 @@ public class ItemUsage
 			Item I=(Item)items.elementAt(i);
 			if((items.size()==1)||(I instanceof Light))
 			{
-				FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_EXTINGUISH,quiet?null:"<S-NAME> puts out <T-NAME>.");
+				FullMsg msg=new FullMsg(mob,I,null,Affect.MSG_EXTINGUISH,quiet?null:"<S-NAME> put(s) out <T-NAME>.");
 				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}

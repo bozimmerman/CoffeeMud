@@ -10,7 +10,7 @@ public class Spell_TrueSight extends Spell
 {
 	public String ID() { return "Spell_TrueSight"; }
 	public String name(){return "True Sight";}
-	public String displayText(){return "(Spell_TrueSight)";}
+	public String displayText(){return "(True Sight)";}
 	public int quality(){ return OK_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_TrueSight();}
