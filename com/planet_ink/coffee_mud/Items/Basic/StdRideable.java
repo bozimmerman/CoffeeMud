@@ -386,8 +386,8 @@ public class StdRideable extends StdContainer implements Rideable
 			break;
 		case CMMsg.TYP_MOUNT:
 			if((msg.tool()!=null)
-			   &&(msg.amITarget(this))
-			   &&(msg.tool() instanceof Rider))
+			&&(msg.amITarget(this))
+			&&((msg.tool() instanceof Rider)&&(!Sense.isBoundOrHeld(msg.tool()))))
 			{
 				msg.source().tell(msg.tool().name()+" can not be mounted to "+name()+"!");
 				return false;

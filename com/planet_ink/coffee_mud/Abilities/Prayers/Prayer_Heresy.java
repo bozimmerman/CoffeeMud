@@ -56,24 +56,28 @@ public class Prayer_Heresy extends Prayer
 				{
 					MOB D=null;
 					if(mob.getWorshipCharID().length()>0) D=CMMap.getDeity(mob.getWorshipCharID());
-					if(D==null)
-					{
-						D=CMClass.getMOB("StdDeity");
-						D.setName("the gods");
-					}
 					Vector V=new Vector();
 					V.addElement(new Integer(Law.MOD_ADDWARRANT));
-					V.addElement(D);//victim first
+					if(D==null)
+						V.addElement(D);//victim first
+					else
+						V.addElement(target);//victim first
 					V.addElement("");//crime locs
-					V.addElement("");//crime flags
-					V.addElement("heresy against <T-NAME>");//the crime
+					V.addElement("!witness");//crime flags
+					if(D==null)
+						V.addElement("heresy against the gods");//the crime
+					else
+						V.addElement("heresy against <T-NAME>");//the crime
 					int low=CMAble.lowestQualifyingLevel(ID());
 					int me=CMAble.qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;
 					if(lvl<0) lvl=0;
 					if(lvl>Law.ACTION_HIGHEST) lvl=Law.ACTION_HIGHEST;
 					V.addElement(Law.ACTION_DESCS[lvl]);//sentence
-					V.addElement("Angering "+D.name()+" will bring doom upon us all!");
+					if(D!=null)
+						V.addElement("Angering "+D.name()+" will bring doom upon us all!");
+					else
+						V.addElement("Angering the gods will bring doom upon us all!");
 					B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,V);
 				}
 			}

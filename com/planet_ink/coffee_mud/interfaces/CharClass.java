@@ -106,6 +106,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public static final int WEAPONS_GOODCLERIC=8;
 	public static final int WEAPONS_NEUTRALCLERIC=9;
 	public static final int WEAPONS_ALLCLERIC=10;
+	public static final int WEAPONS_FLAILONLY=11;
 	public static final int[][] WEAPONS_SETS={
 /*0*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
 /*1*/{Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER},
@@ -118,6 +119,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 /*8*/{Weapon.CLASS_BLUNT,Weapon.CLASS_HAMMER,Weapon.CLASS_FLAILED,Weapon.CLASS_NATURAL,Weapon.CLASS_STAFF},
 /*9*/{Weapon.CLASS_BLUNT,Weapon.CLASS_RANGED,Weapon.CLASS_THROWN,Weapon.CLASS_STAFF,Weapon.CLASS_NATURAL,Weapon.CLASS_SWORD},
 /*10*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
+/*11*/{Weapon.CLASS_NATURAL,Weapon.CLASS_FLAILED},
 	};
 	public static final String[] WEAPONS_LONGDESC={
 /*0*/"May use any weapons.",
@@ -130,7 +132,8 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 /*7*/"Must use polearms, axes, swords, daggers, or edged weapons.",
 /*8*/"Must use hammers, staves, flailed, natural, or blunt weapons.",
 /*9*/"Must use swords, staves, natural, ranged, or blunt weapons",
-/*10*/"Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer."
+/*10*/"Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.",
+/*11*/"Must use flaied weapons."
 	};
 		
 }

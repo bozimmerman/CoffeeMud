@@ -53,7 +53,7 @@ public class Fighter_Behead extends StdAbility
 		{
 			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
 			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,warrants))
+			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,warrants))
 				warrants.clear();
 		}
 		if(warrants.size()==0)
@@ -82,9 +82,9 @@ public class Fighter_Behead extends StdAbility
 				mob.tell("You are too far away to try that!");
 				return false;
 			}
-			if(!Sense.isBound(target))
+			if(!Sense.isBoundOrHeld(target))
 			{
-				mob.tell(mob.getVictim().charStats().HeShe()+" is not prone!");
+				mob.tell(target.charStats().HeShe()+" is not bound and would resist.");
 				return false;
 			}
 		}
@@ -97,16 +97,16 @@ public class Fighter_Behead extends StdAbility
 			levelDiff=levelDiff*3;
 		else
 			levelDiff=0;
-		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(mob.getVictim())+mob.getVictim().adjustedArmor()));
+		boolean hit=(auto)||(Dice.normalizeAndRollLess(mob.adjustedAttackBonus(target)+target.adjustedArmor()));
 		boolean success=profficiencyCheck(mob,0,auto)&&(hit);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.curState().setHitPoints(0);
-				int dmg=target.curState().getHitPoints();
+				target.curState().setHitPoints(1);
+				int dmg=target.maxState().getHitPoints();
 				MUDFight.postDamage(mob,target,ww,dmg,CMMsg.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and behead(s) <T-NAME>!"+CommonStrings.msp("decap.wav",30));
 				mob.location().recoverRoomStats();
 				Item limb=CMClass.getItem("GenLimb");

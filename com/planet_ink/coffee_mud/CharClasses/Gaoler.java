@@ -39,7 +39,7 @@ public class Gaoler extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_FLAILONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
@@ -70,7 +70,9 @@ public class Gaoler extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Carpentry",false);
 			CMAble.addCharAbilityMapping(ID(),6,"LockSmith",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Warrants",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_Sap",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Spell_Brainwash",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Bind",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_TarAndFeather",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Torturesmithing",true);

@@ -147,17 +147,39 @@ public class Skill_HandCuff extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if(mob.isInCombat()&&(!auto))
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
+	    if((commands.size()>0)&&((String)commands.firstElement()).equalsIgnoreCase("UNTIE"))
+	    {
+	        commands.removeElementAt(0);
+			MOB target=super.getTarget(mob,commands,givenTarget,false,true);
+			if(target==null) return false;
+			Ability A=target.fetchEffect(ID());
+			if(A!=null)
+			{
+			    if(mob.location().show(mob,target,null,CMMsg.MSG_HANDS,"<S-NAME> attempt(s) to unbind <T-NAMESELF>."))
+			    {
+				    A.unInvoke();
+				    return true;
+			    }
+			    else
+			        return false;
+			}
+			else
+			{
+			    mob.tell(target.name()+" doesn't appear to be handcuffed.");
+			    return false;
+			}
+	    }
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if((!Sense.isSleeping(target))&&(!Sense.isSitting(target))&&(!auto))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");
-			return false;
-		}
-		if(mob.isInCombat()&&(!auto))
-		{
-			mob.tell("Not while you are fighting!");
 			return false;
 		}
 		// the invoke method for spells receives as

@@ -49,7 +49,7 @@ public class Feed extends StdCommand
 			mob.tell("Not while you are in combat!");
 			return false;
 		}
-		if(target.willFollowOrdersOf(mob)||(Sense.isBound(target)))
+		if(target.willFollowOrdersOf(mob)||(Sense.isBoundOrHeld(target)))
 		{
 			Item item=mob.fetchInventory(what);
 			if((item==null)||(!Sense.canBeSeenBy(item,mob)))

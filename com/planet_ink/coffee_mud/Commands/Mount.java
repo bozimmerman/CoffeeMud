@@ -68,7 +68,7 @@ public class Mount extends StdCommand
 			            mob.tell("You don't see "+((String)commands.firstElement())+" here.");
 			            return false;
 			        }
-			        if((!Sense.isBound(M))&&(!M.willFollowOrdersOf(mob)))
+			        if((!Sense.isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
 			        {
 			            mob.tell("Only the bound or servants can be mounted unwillingly.");
 			            return false;

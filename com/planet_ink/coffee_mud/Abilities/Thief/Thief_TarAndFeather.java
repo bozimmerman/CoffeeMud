@@ -40,9 +40,10 @@ public class Thief_TarAndFeather extends ThiefSkill
             return;
 	    if((((Item)affected).amWearingAt(Item.INVENTORY))||(((Item)affected).amDestroyed()))
 	    {
+	        Item I=(Item)affected;
 	        affected.delEffect(this);
 	        setAffectedOne(null);
-	        ((Item)affected).destroy();
+	        I.destroy();
 	    }
 	}
 	
@@ -61,7 +62,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			mob.tell("You need to stand up!");
 			return false;
 		}
-		if((!auto)&&(!Sense.isBound(target))&&(!Sense.isSleeping(target)))
+		if((!auto)&&(!Sense.isBoundOrHeld(target))&&(!Sense.isSleeping(target)))
 		{
 			mob.tell(target.name()+" must be prone or bound first.");
 			return false;
@@ -86,14 +87,31 @@ public class Thief_TarAndFeather extends ThiefSkill
 			Item I=CMClass.getArmor("GenArmor");
 			if(I!=null)
 			{
+			    target.addInventory(I);
+			    long wearCode=0;
+			    Race R=target.charStats().getMyRace();
+			    for(int i=0;i<Item.wornOrder.length;i++)
+			    {
+			        if((!Util.bset(R.forbiddenWornBits(),Item.wornOrder[i]))
+			        &&(Item.wornOrder[i]!=Item.FLOATING_NEARBY)
+			        &&(Item.wornOrder[i]!=Item.ON_EYES)
+			        &&(Item.wornOrder[i]!=Item.ON_MOUTH))
+				        wearCode|=Item.wornOrder[i];
+			    }
+			    for(int i=0;i<Race.BODY_WEARGRID.length;i++)
+			    {
+			        if((target.charStats().getBodyPart(i)<=0)
+			        &&(Race.BODY_WEARGRID[i][1]>0))
+			            wearCode=Util.unsetb(wearCode,Race.BODY_WEARGRID[i][0]);
+			    }
+				I.setRawProperLocationBitmap(wearCode);
+			    I.setRawWornCode(wearCode);
 			    I.setName("a coating of tar and feathers");
 			    I.setDisplayText("a pile of tar and feathers sits here.");
 			    I.baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOREMOVE);
 			    I.envStats().setSensesMask(EnvStats.SENSE_ITEMNOREMOVE);
+			    I.setRawLogicalAnd(true);
 			    I.addNonUninvokableEffect((Ability)this.copyOf());
-			    mob.addInventory(I);
-			    long wearCode=0;
-			    I.setRawWornCode(wearCode);
 			}
 		}
 		else

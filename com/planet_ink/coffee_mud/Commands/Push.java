@@ -29,7 +29,6 @@ public class Push extends Go
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String whatToOpen=Util.combine(commands,1);
 		Environmental openThis=null;
 		String dir="";
 		int dirCode=-1;
@@ -47,7 +46,7 @@ public class Push extends Go
 			        return false;
 			    }
 			    E=mob.location().getRoomInDir(dirCode);
-			    dir=" "+Directions.getDirectionName(dir);
+			    dir=" "+Directions.getDirectionName(dirCode);
 			    commands.removeElementAt(commands.size()-1);
 			}
 		}
@@ -57,6 +56,7 @@ public class Push extends Go
 			if(dirCode>=0)
 				openThis=mob.location().getExitInDir(dirCode);
 		}
+		String whatToOpen=Util.combine(commands,1);
 		if(openThis==null)
 			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORN_REQ_ANY);
 
@@ -73,14 +73,14 @@ public class Push extends Go
 		    if((dir.length()>0)&&(msg.tool() instanceof Room))
 		    {
 		        Room R=(Room)msg.tool();
-		        dirCode=MUDTracker.findExitDir(mob,R,"");
+		        dirCode=MUDTracker.findRoomDir(mob,R);
 		        if(dirCode>=0)
 		        {
 			        if(openThis instanceof Item)
 			            R.bringItemHere((Item)openThis,Item.REFUSE_PLAYER_DROP);
 			        else
 			        if(openThis instanceof MOB)
-			            super.move((MOB)openThis,dirCode,true,false,true,true);
+			            move((MOB)openThis,dirCode,((MOB)openThis).isInCombat(),false,true,true);
 		        }
 		    }
 		            

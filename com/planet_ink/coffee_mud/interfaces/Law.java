@@ -199,6 +199,6 @@ public interface Law
 		public void setInternalStr(String tag, String value);
 		public String rawLawString();
 		public boolean lawIsActivated();
-		public void propertyTaxTick(Area A);
+		public void propertyTaxTick(Area A, boolean debugging);
 		public Environmental[] getTreasuryNSafe(Area A);
 }

@@ -4,6 +4,7 @@ package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -263,7 +264,7 @@ public class StdRideable extends StdMOB implements Rideable
 			break;
 		case CMMsg.TYP_MOUNT:
 			if((msg.tool()!=null)
-			   &&(msg.tool() instanceof Rider))
+			&&((msg.tool() instanceof Rider)&&(!Sense.isBoundOrHeld(msg.tool()))))
 			{
 				if(amRiding((Rider)msg.tool()))
 				{

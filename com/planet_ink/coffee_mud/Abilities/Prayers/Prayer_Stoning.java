@@ -44,7 +44,7 @@ public class Prayer_Stoning extends Prayer
 		{
 		    while(cits.size()<10)
 			{
-		        MOB M=CMClass.getMOB("LocalCitizen");
+		        MOB M=CMClass.getMOB("AngryCitizen");
 		        if(M==null)
 		        {
 		            unInvoke();
@@ -54,12 +54,13 @@ public class Prayer_Stoning extends Prayer
 		        {
 		            cits.addElement(M);
 		            M.bringToLife(R,true);
+		            R.show(M,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> arrive(s) for the stoning.");
 		        }
 			}
 			for(int i=0;i<cits.size();i++)
 			{
 			    MOB M=(MOB)cits.elementAt(i);
-			    if(M.location()!=mob.location())
+			    if((M.location()!=mob.location())||(mob.amDead()))
 			    {
 			        MUDTracker.wanderAway(M,true,false);
 			        M.destroy();
@@ -98,7 +99,7 @@ public class Prayer_Stoning extends Prayer
 		{
 			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
 			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,warrants))
+			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,warrants))
 				warrants.clear();
 		}
 		if(warrants.size()==0)
@@ -107,7 +108,7 @@ public class Prayer_Stoning extends Prayer
 		    return false;
 		}
 		
-		if((!auto)&&(!Sense.isBound(target)))
+		if((!auto)&&(!Sense.isBoundOrHeld(target)))
 		{
 			mob.tell(target.name()+" must be bound first.");
 			return false;
@@ -129,7 +130,7 @@ public class Prayer_Stoning extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,0,-1);
+					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE);
 					for(int i=0;i<warrants.size();i++)
 					{
 						LegalWarrant W=(LegalWarrant)warrants.elementAt(i);

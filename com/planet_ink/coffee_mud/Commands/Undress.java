@@ -49,7 +49,7 @@ public class Undress extends StdCommand
 			mob.tell("I don't see "+whom+" here.");
 			return false;
 		}
-		if(target.willFollowOrdersOf(mob)||(Sense.isBound(target)))
+		if(target.willFollowOrdersOf(mob)||(Sense.isBoundOrHeld(target)))
 		{
 			Item item=target.fetchInventory(what);
 			if((item==null)

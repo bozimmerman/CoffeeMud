@@ -497,4 +497,17 @@ public class MUDTracker extends Scriptable
 		}
 		return dir;
 	}
+	public static int findRoomDir(MOB mob, Room R)
+	{
+	    if((mob==null)||(R==null)) 
+	        return -1;
+	    Room R2=mob.location();
+	    if(R2==null)
+	        return -1;
+		int dir=-1;
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		    if(R2.getRoomInDir(d)==R)
+		        return d;
+		return dir;
+	}
 }

@@ -304,7 +304,7 @@ public class Skill_Enslave extends StdAbility
 			return false;
 		}
 		
-		if(!Sense.isBound(target))
+		if(!Sense.isBoundOrHeld(target))
 		{
 		    mob.tell(target.name()+" must be bound first.");
 		    return false;
