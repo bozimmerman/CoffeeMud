@@ -52,6 +52,7 @@ public class Prop_WearZapper extends Property
 		case Affect.TYP_GET:
 			break;
 		case Affect.TYP_DROP:
+		case Affect.TYP_THROW:
 			break;
 		default:
 			break;

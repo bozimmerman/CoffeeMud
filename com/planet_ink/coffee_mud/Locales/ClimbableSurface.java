@@ -82,15 +82,14 @@ public class ClimbableSurface extends StdRoom
 		if(Sense.isSleeping(this)) return;
 
 		if((affect.target() instanceof Item)
-		   &&((!(affect.target() instanceof Rideable))
-			  ||(((Rideable)affect.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
-		   &&(!Sense.isFlying(affect.target()))
-			  &&(affect.targetMinor()==Affect.TYP_DROP))
-		{
-			Ability falling=CMClass.getAbility("Falling");
-			falling.setAffectedOne(this);
-			falling.invoke(null,null,affect.target(),true);
-		}
+		&&((!(affect.target() instanceof Rideable))
+		   ||(((Rideable)affect.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
+		&&(!Sense.isFlying(affect.target()))
+		&&((affect.targetMinor()==Affect.TYP_DROP)
+			||((affect.targetMinor()==Affect.TYP_THROW)
+			   &&(affect.tool()!=null)
+			   &&(affect.tool()==this))))
+			InTheAir.makeFall(affect.target(),this,0);
 		else
 		if(affect.amITarget(this)
 			&&(Util.bset(affect.targetCode(),Affect.MASK_MOVE))
@@ -119,11 +118,7 @@ public class ClimbableSurface extends StdRoom
 						if(Sense.isClimbing(mob))
 							ExternalPlay.move(mob,Directions.DOWN,false,true);
 						else
-						{
-							Ability falling=CMClass.getAbility("Falling");
-							falling.setAffectedOne(null);
-							falling.invoke(null,null,mob,true);
-						}
+							InTheAir.makeFall(mob,this,0);
 					}
 				}
 			}

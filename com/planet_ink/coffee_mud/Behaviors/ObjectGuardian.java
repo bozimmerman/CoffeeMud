@@ -25,6 +25,7 @@ public class ObjectGuardian extends StdBehavior
 		MOB monster=(MOB)oking;
 		if((mob!=monster)
 		&&((affect.sourceMinor()==Affect.TYP_GET)
+		||((affect.sourceMinor()==Affect.TYP_THROW)&&(monster.location()==affect.tool()))
 		||(affect.sourceMinor()==Affect.TYP_DROP)))
 		{
 			FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> touch that.");

@@ -77,8 +77,11 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 	{
 		super.affect(affect);
 		if((affect.target() instanceof Item)
-		   &&(affect.targetMinor()==Affect.TYP_DROP)
-		   &&(!Sense.isSleeping(this)))
+		&&((affect.targetMinor()==Affect.TYP_DROP)
+			||((affect.targetMinor()==Affect.TYP_THROW)
+			   &&(affect.tool()!=null)
+			   &&(affect.tool()==this)))
+		&&(!Sense.isSleeping(this)))
 			((Item)affect.target()).destroyThis();
 		else
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))

@@ -28,21 +28,22 @@ public class InTheAir extends StdRoom
 		if(!super.okAffect(affect)) return false;
 		return isOkAffect(this,affect);
 	}
-	public static boolean isOkAffect(Room room, Affect affect)
+	
+	public static void makeFall(Environmental E, Room room, int avg)
 	{
-		if(Sense.isSleeping(room)) return true;
-		if((affect.targetMinor()==affect.TYP_ENTER)
-		&&(affect.amITarget(room)))
+		if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
+		||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
 		{
-			MOB mob=affect.source();
-			if((!Sense.isInFlight(mob))
-			&&(!Sense.isFalling(mob)))
-			{
-				mob.tell("You can't fly.");
-				return false;
-			}
+			Ability falling=CMClass.getAbility("Falling");
+			falling.setProfficiency(avg);
+			falling.setAffectedOne(room);
+			falling.invoke(null,null,E,true);
 		}
-		
+	}
+	
+	public static void affect(Room room, Affect affect)
+	{
+		if(Sense.isSleeping(room)) return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
 		Vector needToFall=new Vector();
@@ -97,13 +98,31 @@ public class InTheAir extends StdRoom
 			Environmental E=(Environmental)needToFall.elementAt(i);
 			if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
 			||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
+				makeFall(E,room,avg);
+		}
+	}
+
+	public void affect(Affect affect)
+	{
+		super.affect(affect);
+		InTheAir.affect(this,affect);
+	}
+	
+	public static boolean isOkAffect(Room room, Affect affect)
+	{
+		if(Sense.isSleeping(room)) return true;
+		if((affect.targetMinor()==affect.TYP_ENTER)
+		&&(affect.amITarget(room)))
+		{
+			MOB mob=affect.source();
+			if((!Sense.isInFlight(mob))
+			&&(!Sense.isFalling(mob)))
 			{
-				Ability falling=CMClass.getAbility("Falling");
-				falling.setProfficiency(avg);
-				falling.setAffectedOne(room);
-				falling.invoke(null,null,E,true);
+				mob.tell("You can't fly.");
+				return false;
 			}
 		}
+		InTheAir.affect(room,affect);
 		return true;
 	}
 }

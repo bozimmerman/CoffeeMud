@@ -46,6 +46,7 @@ public class Prop_HaveZapper extends Property
 			}
 			break;
 		case Affect.TYP_DROP:
+		case Affect.TYP_THROW:
 			break;
 		default:
 			break;

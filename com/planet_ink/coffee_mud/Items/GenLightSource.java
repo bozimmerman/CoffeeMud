@@ -56,12 +56,17 @@ public class GenLightSource extends GenItem implements Light
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_DROP:
+			case Affect.TYP_THROW:
 			case Affect.TYP_GET:
 				if(affect.source()!=null)
 				{
 					affect.source().recoverEnvStats();
 					if(affect.source().location()!=null)
 						affect.source().location().recoverRoomStats();
+					if((affect.tool()!=null)
+					&&(affect.tool()!=affect.source().location())
+					&&(affect.tool() instanceof Room))
+						((Room)affect.tool()).recoverRoomStats();
 				}
 				break;
 			}

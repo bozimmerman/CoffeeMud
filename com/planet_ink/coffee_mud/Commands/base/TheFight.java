@@ -466,17 +466,18 @@ public class TheFight
 	public static void throwit(MOB mob, Vector commands)
 	{
 		if((commands.size()==2)&&(mob.isInCombat()))
-			commands.addElement(mob.getVictim().name());
+			commands.addElement(mob.getVictim().name()+"$");
 		if(commands.size()<3)
 		{
 			mob.tell("Throw what, where or at whom?");
 			return;
 		}
+		commands.removeElementAt(0);
 		String str=(String)commands.lastElement();
 		commands.removeElement(str);
 		String what=Util.combine(commands,0);
-		Item item=mob.fetchWornItem(str);
-		if(item==null) mob.fetchInventory(str);
+		Item item=mob.fetchWornItem(what);
+		if(item==null) item=mob.fetchInventory(what);
 		if((item==null)||(!Sense.canBeSeenBy(item,mob)))
 		{
 			mob.tell("You don't seem to have a '"+what+"'!");
@@ -504,8 +505,10 @@ public class TheFight
 			}
 			boolean amOutside=((mob.location().domainType()&Room.INDOORS)==0);
 			boolean isOutside=((((Room)target).domainType()&Room.INDOORS)==0);
+			boolean isUp=(mob.location().getRoomInDir(Directions.UP)==target);
+			boolean isDown=(mob.location().getRoomInDir(Directions.DOWN)==target);
 			
-			if((amOutside&&isOutside)
+			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
 			{
 				mob.tell("That's too far to throw "+item.name()+".");
@@ -521,29 +524,27 @@ public class TheFight
 		{
 			if((item.amWearingAt(Item.HELD))
 			&&(item instanceof Weapon)
-			&&(mob.fetchWieldedItem()==null)
 			&&(item.canBeWornAt(Item.WIELD)))
-			{
-				item.remove();
 				ItemUsage.wield(mob,item,false);
-			}
 		
 			if(item.amWearingAt(Item.WIELD))
 				ExternalPlay.postAttack(mob,(MOB)target,item);
 			else
 			{
-				FullMsg msg=new FullMsg(mob,target,item,Affect.MASK_MALICIOUS|Affect.MSG_THROW,"<S-NAME> throw(s) "+item.name()+" at <T-NAME>.");
-				if(mob.location().okAffect(msg)&&(ExternalPlay.drop(mob,item,true)))
+				FullMsg msg=new FullMsg(mob,item,mob.location(),Affect.MASK_MALICIOUS|Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> at "+target.name()+".");
+				if(mob.location().okAffect(msg))
 					mob.location().send(mob,msg);
 			}
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,item,Affect.MSG_THROW,"<S-NAME> throw(s) "+item.name()+" "+Directions.getInDirectionName(dir).toLowerCase()+".");
-			FullMsg msg2=new FullMsg(mob,target,item,Affect.MSG_THROW,item.name()+" fly(s) in from "+Directions.getFromDirectionName(dir).toLowerCase()+".");
-			if(mob.location().okAffect(msg)&&((Room)target).okAffect(msg))
+			FullMsg msg=new FullMsg(mob,item,target,Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
+			FullMsg msg2=new FullMsg(mob,item,target,Affect.MSG_THROW,item.name()+" fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
+			if(mob.location().okAffect(msg)&&((Room)target).okAffect(msg2))
+			{
 				mob.location().send(mob,msg);
-			
+				((Room)target).sendOthers(mob,msg2);
+			}
 		}
 	}
 

@@ -136,6 +136,11 @@ public class Prop_ItemTransporter extends Property
 		||((affected instanceof Room)
 			&&(affect.targetMinor()==Affect.TYP_DROP)
 			&&(affect.target()!=null)
+			&&(affect.target() instanceof Item))
+		||((affected instanceof Room)
+			&&(affect.targetMinor()==Affect.TYP_THROW)
+		    &&(affected==affect.tool())
+			&&(affect.target()!=null)
 			&&(affect.target() instanceof Item)))
 		{
 			if(!setDestination())
@@ -249,6 +254,7 @@ public class Prop_ItemTransporter extends Property
 		if((affect.targetMinor()==Affect.TYP_GET)
 		||(affect.targetMinor()==Affect.TYP_GIVE)
 		||(affect.targetMinor()==Affect.TYP_PUT)
+		||(affect.targetMinor()==Affect.TYP_THROW)
 		||(affect.targetMinor()==Affect.TYP_DROP))
 			tryToMoveStuff();
 	}

@@ -60,6 +60,7 @@ public class HolyAvenger extends TwoHandedSword
 			}
 			break;
 		case Affect.TYP_DROP:
+		case Affect.TYP_THROW:
 			break;
 		default:
 			break;

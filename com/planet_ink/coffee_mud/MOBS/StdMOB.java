@@ -1243,6 +1243,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_CLOSE:
 			case Affect.TYP_DRINK:
 			case Affect.TYP_DROP:
+			case Affect.TYP_THROW:
 			case Affect.TYP_EAT:
 			case Affect.TYP_FILL:
 			case Affect.TYP_GET:

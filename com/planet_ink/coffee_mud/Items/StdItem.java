@@ -685,6 +685,18 @@ public class StdItem implements Item
 				return false;
 			}
 			return true;
+		case Affect.TYP_THROW:
+			if(envStats().weight()>(mob.maxCarry()/5))
+			{
+				mob.tell(name()+" is too heavy to throw.");
+				return false;
+			}
+			if(!isDroppable)
+			{
+				mob.tell("You can't seem to let go of "+name()+".");
+				return false;
+			}
+			return true;
 		case Affect.TYP_BUY:
 		case Affect.TYP_SELL:
 		case Affect.TYP_VALUE:
@@ -826,6 +838,21 @@ public class StdItem implements Item
 				remove();
 				mob.location().recoverRoomStats();
 			}
+			break;
+		case Affect.TYP_THROW:
+			if(mob.isMine(this)
+			   &&(affect.tool()!=null)
+			   &&(affect.tool() instanceof Room))
+			{
+				mob.delInventory(this);
+				if(!((Room)affect.tool()).isContent(this))
+					((Room)affect.tool()).addItemRefuse(this,Item.REFUSE_PLAYER_DROP);
+				((Room)affect.tool()).recoverRoomStats();
+				if(mob.location()!=affect.tool())
+					mob.location().recoverRoomStats();
+			}
+			remove();
+			setContainer(null);
 			break;
 		case Affect.TYP_DROP:
 			if(mob.isMine(this))

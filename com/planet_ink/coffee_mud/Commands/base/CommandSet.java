@@ -358,6 +358,8 @@ public class CommandSet extends Hashtable
 		put("TELL",new Integer(TELL));
 			put("T",new Integer(TELL));
 		put("TICKTOCK",new Integer(TICKTOCK));
+		put("THROW",new Integer(THROW));
+			put("TOSS",new Integer(THROW));
 		put("TIME",new Integer(TIME));
 			put("DATE",new Integer(TIME));
 		put("TOPICS",new Integer(TOPICS));

@@ -46,6 +46,7 @@ public class Spell_IronGrip extends Spell
 			else
 			if((affect.amISource(mob))
 			&&((affect.targetMinor()==Affect.TYP_DROP)
+				||(affect.targetMinor()==Affect.TYP_THROW)
 				||(affect.targetMinor()==Affect.TYP_GET))
 			&&(affect.target()!=null)
 			&&(affect.target() instanceof Item)

@@ -71,6 +71,7 @@ public class StdRace implements Race
 			case Affect.TYP_OPEN:
 			case Affect.TYP_PULL:
 			case Affect.TYP_PUSH:
+			case Affect.TYP_THROW:
 			case Affect.TYP_PUT:
 			case Affect.TYP_UNLOCK:
 			case Affect.TYP_WRITE:

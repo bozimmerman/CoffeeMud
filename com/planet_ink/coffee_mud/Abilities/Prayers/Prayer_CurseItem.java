@@ -79,6 +79,7 @@ public class Prayer_CurseItem extends Prayer
 			}
 			break;
 		case Affect.TYP_DROP:
+		case Affect.TYP_THROW:
 			mob.tell("You can't seem to get rid of "+item.name()+".");
 			return false;
 		}

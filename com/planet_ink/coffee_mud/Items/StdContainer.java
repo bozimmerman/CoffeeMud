@@ -292,11 +292,23 @@ public class StdContainer extends StdItem implements Container
 					mob.location().recoverRoomStats();
 				}
 				break;
+			case Affect.TYP_THROW:
+				if((mob.isMine(this))
+				&&(affect.tool()!=null)
+				&&(affect.tool() instanceof Room))
+				{
+					setContainer(null);
+					recursiveDropMOB(mob,(Room)affect.tool(),this,this instanceof DeadBody);
+					mob.location().recoverRoomStats();
+					if(mob.location()!=affect.tool())
+						((Room)affect.tool()).recoverRoomStats();
+				}
+				break;
 			case Affect.TYP_DROP:
 				if(mob.isMine(this))
 				{
-					this.setContainer(null);
-					recursiveDropMOB(mob,this,this instanceof DeadBody);
+					setContainer(null);
+					recursiveDropMOB(mob,mob.location(),this,this instanceof DeadBody);
 					mob.location().recoverRoomStats();
 				}
 				break;
@@ -520,7 +532,10 @@ public class StdContainer extends StdItem implements Container
 	{
 		miscText=newKeyName;
 	}
-	protected static void recursiveDropMOB(MOB mob, Item thisContainer, boolean bodyFlag)
+	protected static void recursiveDropMOB(MOB mob, 
+										   Room room, 
+										   Item thisContainer, 
+										   boolean bodyFlag)
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
@@ -532,11 +547,11 @@ public class StdContainer extends StdItem implements Container
 		if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
 		if(bodyFlag)
 		{
-			mob.location().addItem(thisContainer);
+			room.addItem(thisContainer);
 			thisContainer.setDispossessionTime(0);
 		}
 		else
-			mob.location().addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
+			room.addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
 		thisContainer.recoverEnvStats();
 		boolean nothingDone=true;
 		do
@@ -547,7 +562,7 @@ public class StdContainer extends StdItem implements Container
 				Item thisItem=mob.fetchInventory(i);
 				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 				{
-					recursiveDropMOB(mob,thisItem,bodyFlag);
+					recursiveDropMOB(mob,room,thisItem,bodyFlag);
 					nothingDone=false;
 					break;
 				}

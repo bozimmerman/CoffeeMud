@@ -161,6 +161,7 @@ public class GenWallpaper implements Item
 			}
 			break;
 		case Affect.TYP_DROP:
+		case Affect.TYP_THROW:
 			return true;
 		default:
 			break;
