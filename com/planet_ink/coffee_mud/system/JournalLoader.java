@@ -90,7 +90,7 @@ public class JournalLoader
 			}
 				
 			Vector oldJournal=journal;
-			journal.clear();
+			journal=new Vector();
 			while(oldJournal.size()>0)
 			{
 				Vector useEntry=null;
