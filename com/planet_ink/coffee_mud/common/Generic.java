@@ -11,7 +11,7 @@ public class Generic
 		return (x&m)==m;
 	}
 
-	public static int flags(Environmental E)
+	private static int flags(Environmental E)
 	{
 		int f=0;
 		if(E instanceof Item)
@@ -65,7 +65,7 @@ public class Generic
 		return f;
 	}
 
-	public static void setFlags(Environmental E, int f)
+	private static void setFlags(Environmental E, int f)
 	{
 		if(E instanceof Item)
 		{
@@ -101,7 +101,7 @@ public class Generic
 			((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,((Item)E).isTrapped());
 	}
 
-	public static String getPropertiesStr(Environmental E, boolean fromTop)
+	private static String getPropertiesStr(Environmental E, boolean fromTop)
 	{
 		if(E==null)
 		{
@@ -149,7 +149,7 @@ public class Generic
 		return "";
 	}
 
-	public static String getGenPropertiesStr(Environmental E)
+	private static String getGenPropertiesStr(Environmental E)
 	{
 		StringBuffer text=new StringBuffer("");
 		text.append(getEnvPropertiesStr(E));
@@ -255,7 +255,7 @@ public class Generic
 		return text.toString();
 	}
 
-	public static void setPropertiesStr(Environmental E, String buf, boolean fromTop)
+	private static void setPropertiesStr(Environmental E, String buf, boolean fromTop)
 	{
 		Vector V=XMLManager.parseAllXML(buf);
 		if(V==null)

@@ -64,8 +64,33 @@ public class Prayer_BlessItem extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands);
-		if(target==null) return false;
+		MOB mobTarget=getTarget(mob,commands,givenTarget,true);
+		Item target=null;
+		if(mobTarget!=null)
+		{
+			Vector goodPossibilities=new Vector();
+			Vector possibilities=new Vector();
+			for(int i=0;i<mobTarget.inventorySize();i++)
+			{
+				Item item=mobTarget.fetchInventory(i);
+				if((item!=null)
+				   &&(item.location()==null))
+				{
+					if(item.amWearingAt(Item.INVENTORY))
+						possibilities.addElement(item);
+					else
+						goodPossibilities.addElement(item);
+				}
+				if(goodPossibilities.size()>0)
+					target=(Item)goodPossibilities.elementAt(Dice.roll(1,goodPossibilities.size(),-1));
+				else
+				if(possibilities.size()>0)
+					target=(Item)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1));
+			}
+		}
+		
+		if(target==null)
+			target=getTarget(mob,mob.location(),givenTarget,commands);
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

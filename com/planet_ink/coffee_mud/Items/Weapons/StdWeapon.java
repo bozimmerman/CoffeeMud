@@ -104,10 +104,13 @@ public class StdWeapon extends StdItem implements Weapon
 						   ||(I.location()!=null)
 						   ||(!I.rawSecretIdentity().equalsIgnoreCase(ammunitionType()))))
 						{
-							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+I.name()+".");
-							setAmmoRemaining(I.usesRemaining());
-							I.setUsesRemaining(0);
-							I.destroyThis();
+							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.name()+".");
+							int howMuchToTake=ammunitionCapacity();
+							if(I.usesRemaining()<howMuchToTake)
+								howMuchToTake=I.usesRemaining();
+							setAmmoRemaining(howMuchToTake);
+							I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
+							if(I.usesRemaining()<=0) I.destroyThis();
 							reLoaded=true;
 							break;
 						}

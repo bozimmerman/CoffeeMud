@@ -636,6 +636,7 @@ public class Import
 					((Weapon)I).setAmmoRemaining(20);
 					((Weapon)I).setAmmunitionType("arrows");
 					((Weapon)I).setRanges(1,3);
+					((Weapon)I).setRawLogicalAnd(true);
 				}
 				break;
 		case 1: ((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD); break;
