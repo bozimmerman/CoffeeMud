@@ -202,6 +202,7 @@ public class CommandSet extends Hashtable
 	public static final int WIZLIST=189;
 	public static final int STAT=190;
 	public static final int WIZEMOTE=191;
+	public static final int POUR=192;
 
 	private CommandSet()
 	{
@@ -376,6 +377,7 @@ public class CommandSet extends Hashtable
 		put("PLAYERKILL",new Integer(PLAYERKILL));
 		put("POSSESS",new Integer(POSSESS));
 			put("POSS",new Integer(POSSESS));
+		put("POUR",new Integer(POUR));
 		put("PRACTICE",new Integer(PRACTICE));
 			put("PRAC",new Integer(PRACTICE));
 		put("PRAYERS",new Integer(PRAYERS));

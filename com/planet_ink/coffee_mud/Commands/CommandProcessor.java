@@ -502,6 +502,9 @@ public class CommandProcessor
 			else
 				mob.tell("You aren't powerful enough to possess anyone.");
 			break;
+		case CommandSet.POUR:
+			ItemUsage.pour(mob,commands);
+			break;
 		case CommandSet.PRACTICE:
 			AbilityEvoker.practice(mob,commands);
 			break;

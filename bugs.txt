@@ -1,2 +1,5 @@
-still get damage msgs after the kill
-can see the wizinv?!
+! fish don't seem to survive underwater
+! pour command as a reverse fill
+! need some way to verify the unused resources
+! need some way to clean out the imported item materials
+

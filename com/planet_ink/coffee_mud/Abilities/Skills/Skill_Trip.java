@@ -49,9 +49,9 @@ public class Skill_Trip extends StdAbility
 		if(canBeUninvoked())
 			doneTicking=true;
 		super.unInvoke();
-		if(!mob.amDead())
+		if(canBeUninvoked())
 		{
-			if(mob.location()!=null)
+			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet.");
 				if(mob.location().okAffect(mob,msg))

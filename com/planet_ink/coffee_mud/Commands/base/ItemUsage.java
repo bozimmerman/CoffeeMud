@@ -557,6 +557,74 @@ public class ItemUsage
 		mob.location().recoverRoomStats();
 	}
 
+	public static void pour(MOB mob, Vector commands)
+	{
+		if(commands.size()<2)
+		{
+			mob.tell("Pour what, into what?");
+			return;
+		}
+		commands.removeElementAt(0);
+		if(commands.size()<2)
+		{
+			mob.tell("Into what should I pour the "+(String)commands.elementAt(0)+"?");
+			return;
+		}
+		Environmental fillFromThis=null;
+		String thingToFillFrom=(String)commands.elementAt(0);
+		fillFromThis=mob.fetchCarried(null,thingToFillFrom);
+		if((fillFromThis==null)||((fillFromThis!=null)&&(!Sense.canBeSeenBy(fillFromThis,mob))))
+		{
+			mob.tell("I don't see a "+thingToFillFrom+" here.");
+			return;
+		}
+		commands.removeElementAt(0);
+
+		int maxToFill=Integer.MAX_VALUE;
+		if((commands.size()>1)
+		&&(Util.s_int((String)commands.firstElement())>0)
+		&&(numPossibleGold(Util.combine(commands,0))==0))
+		{
+			maxToFill=Util.s_int((String)commands.firstElement());
+			commands.setElementAt("all",0);
+		}
+		
+		String thingToFill=Util.combine(commands,0);
+		int addendum=1;
+		String addendumStr="";
+		Vector V=new Vector();
+		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
+		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
+		do
+		{
+			Environmental fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill+addendumStr,Item.WORN_REQ_ANY);
+			if(fillThis==null) break;
+			if((Sense.canBeSeenBy(fillThis,mob))
+			&&(!V.contains(fillThis)))
+				V.addElement(fillThis);
+			addendumStr="."+(++addendum);
+		}
+		while((allFlag)&&(maxToFill<addendum));
+		if(V.size()==0)
+			mob.tell("I don't see '"+thingToFill+"' here.");
+		else
+		for(int i=0;i<V.size();i++)
+		{
+			Environmental fillThis=(Environmental)V.elementAt(i);
+			FullMsg fillMsg=new FullMsg(mob,fillThis,fillFromThis,Affect.MSG_FILL,"<S-NAME> pour(s) <O-NAME> into <T-NAME>.");
+			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
+			{
+				if(get(mob,null,(Item)fillThis,false))
+					if(mob.location().okAffect(mob,fillMsg))
+						mob.location().send(mob,fillMsg);
+			}
+			else
+			if(mob.location().okAffect(mob,fillMsg))
+				mob.location().send(mob,fillMsg);
+		}
+	}
+
 	public static void fill(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)

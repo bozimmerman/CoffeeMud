@@ -60,7 +60,7 @@ public class Spell_Earthquake extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(mob.location()!=null)
+			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
 				if(mob.location().okAffect(mob,msg))
@@ -115,7 +115,7 @@ public class Spell_Earthquake extends Spell
 					{
 						if(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0)
 						{
-							success=maliciousAffect(mob,target,4,-1);
+							success=maliciousAffect(mob,target,2,-1);
 							if(success)
 							{
 								if(target.location()==mob.location())

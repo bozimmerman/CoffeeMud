@@ -1,7 +1,4 @@
 Can we get some web macros that would list and display the deities?
-encumbrance slows you down?
-ability to view wear location, weapon class/type in VIEW command
-pour command as a reverse fill
 Room descriptions varying by the time of day.
 smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
 mobile parm LEASH=X rooms from start

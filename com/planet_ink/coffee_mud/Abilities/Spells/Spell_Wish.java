@@ -497,6 +497,22 @@ public class Spell_Wish extends Spell
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" is now heavier!");
 				return true;
 			}
+			if((target instanceof MOB)
+			&&((myWish.indexOf(" EXP ")>=0)
+			||(myWish.indexOf(" EXPERIENCE ")>=0)))
+			{
+				int x=myWish.indexOf(" EXP");
+				String wsh=myWish.substring(0,x).trim();
+				x=wsh.lastIndexOf(" ");
+				int amount=25;
+				if((x>=0)&&(Util.isNumber(wsh.substring(x).trim())))
+				   amount=Util.s_int(wsh.substring(x).trim());
+				mob.charStats().getCurrentClass().loseExperience(mob,amount);
+				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				((MOB)target).charStats().getCurrentClass().gainExperience((MOB)target,null,((MOB)target).getLeigeID(),amount,false);
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" gains experience!");
+				return true;
+			}
 
 			if((target instanceof MOB)
 			&&((myWish.indexOf(" BECOME ")>=0)
@@ -565,7 +581,10 @@ public class Spell_Wish extends Spell
 				if(R!=null)
 				{
 					if(!((MOB)target).isMonster())
+					{
 						baseLoss+=500;
+						mob.baseCharStats().getCurrentClass().unLevel(mob);
+					}
 					mob.charStats().getCurrentClass().loseExperience(mob,baseLoss);
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					((MOB)target).baseCharStats().setMyRace(R);
@@ -596,6 +615,8 @@ public class Spell_Wish extends Spell
 					baseLoss+=1000;
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					mob.charStats().getCurrentClass().loseExperience(mob,baseLoss);
+					mob.baseCharStats().getCurrentClass().unLevel(mob);
+					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					StringBuffer str=new StringBuffer("");
 					for(int trait=0;trait<6;trait++)
@@ -656,6 +677,7 @@ public class Spell_Wish extends Spell
 							baseLoss+=500;
 							mob.charStats().getCurrentClass().loseExperience(mob,baseLoss);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+							mob.baseCharStats().getCurrentClass().unLevel(mob);
 							mob.baseCharStats().getCurrentClass().unLevel(mob);
 						}
 						A=tm.fetchAbility(A.ID());

@@ -113,7 +113,7 @@ public class Reset
 		}
 	}
 	
-	private static int rightImportMat(MOB mob, Item I)
+	private static int rightImportMat(MOB mob, Item I, boolean openOnly)
 		throws java.io.IOException
 	{
 		if((I!=null)&&(I.description().trim().length()>0))
@@ -123,6 +123,15 @@ public class Reset
 			if((x<0)||((x>0)&&(y<0)))
 			{
 				String s=I.description().trim().toLowerCase();
+				if((mob!=null)&&(mob.session()!=null)&&(openOnly))
+				{
+					if(mob.session().confirm("Clear "+I.name()+"/"+I.displayText()+"/"+I.description()+" (Y/n)?","Y"))
+					{
+						I.setDescription("");
+						return I.material();
+					}
+					return -1;
+				}
 				int rightMat=-1;
 				for(int i=0;i<Import.objDescs.length;i++)
 				{
@@ -321,6 +330,28 @@ public class Reset
 			mob.session().println("done!");
 		}
 		else
+		if(s.equalsIgnoreCase("localecheck"))
+		{
+			if(mob.session()==null) return;
+			for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+			{
+				Integer matNum=new Integer(EnvResource.RESOURCE_DATA[i][0]);
+				boolean found=false;
+				for(Enumeration l=CMClass.locales();l.hasMoreElements();)
+				{
+					Room R=(Room)l.nextElement();
+					if(R.resourceChoices().contains(matNum))
+					{
+						found=true;
+						break;
+					}
+				}
+				if(!found)
+					mob.session().println("Resource "+EnvResource.RESOURCE_DESCS[i]+" not gettable.");
+			}
+			mob.session().println("done!");
+		}
+		else
 		if(s.equalsIgnoreCase("worldmatconfirm"))
 		{
 			if(mob.session()==null) return;
@@ -338,14 +369,14 @@ public class Reset
 						boolean changedMOBS=false;
 						boolean changedItems=false;
 						for(int i=0;i<R.numItems();i++)
-							changedItems=changedItems||rightImportMat(null,R.fetchItem(i))>=0;
+							changedItems=changedItems||rightImportMat(null,R.fetchItem(i),false)>=0;
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M=R.fetchInhabitant(m);
 							if(M==mob) continue;
 							if(!M.isEligibleMonster()) continue;
 							for(int i=0;i<M.inventorySize();i++)
-								changedMOBS=changedMOBS||rightImportMat(null,M.fetchInventory(i))>=0;
+								changedMOBS=changedMOBS||rightImportMat(null,M.fetchInventory(i),false)>=0;
 							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
 							if(SK!=null)
 							{
@@ -357,7 +388,67 @@ public class Reset
 									{
 										Item I=(Item)E;
 										boolean didSomething=false;
-										didSomething=rightImportMat(null,I)>=0;
+										didSomething=rightImportMat(null,I,false)>=0;
+										changedMOBS=changedMOBS||didSomething;
+										if(didSomething)
+										{
+											int numInStock=SK.numberInStock(I);
+											SK.delStoreInventory(I);
+											SK.addStoreInventory(I,numInStock);
+										}
+									}
+								}
+							}
+						}
+						if(changedItems)
+							ExternalPlay.DBUpdateItems(R);
+						if(changedMOBS)
+							ExternalPlay.DBUpdateMOBs(R);
+						mob.session().print(".");
+					}
+				}
+				A.toggleMobility(true);
+			}
+			mob.session().println("done!");
+		}
+		else
+		if(s.equalsIgnoreCase("worlddescclear"))
+		{
+			if(mob.session()==null) return;
+			mob.session().print("working...");
+			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			{
+				Area A=(Area)a.nextElement();
+				A.toggleMobility(false);
+				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.roomID().length()>0)
+					{
+						resetRoom(R);
+						boolean changedMOBS=false;
+						boolean changedItems=false;
+						for(int i=0;i<R.numItems();i++)
+							changedItems=changedItems||rightImportMat(mob,R.fetchItem(i),true)>=0;
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M=R.fetchInhabitant(m);
+							if(M==mob) continue;
+							if(!M.isEligibleMonster()) continue;
+							for(int i=0;i<M.inventorySize();i++)
+								changedMOBS=changedMOBS||rightImportMat(mob,M.fetchInventory(i),true)>=0;
+							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+							if(SK!=null)
+							{
+								Vector V=SK.getUniqueStoreInventory();
+								for(int i=V.size()-1;i>=0;i--)
+								{
+									Environmental E=(Environmental)V.elementAt(i);
+									if(E instanceof Item)
+									{
+										Item I=(Item)E;
+										boolean didSomething=false;
+										didSomething=rightImportMat(mob,I,true)>=0;
 										changedMOBS=changedMOBS||didSomething;
 										if(didSomething)
 										{

@@ -60,7 +60,7 @@ public class Chant_Earthquake extends Chant
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
-			if(mob.location()!=null)
+			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
 				if(mob.location().okAffect(mob,msg))
@@ -115,7 +115,7 @@ public class Chant_Earthquake extends Chant
 					{
 						if(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0)
 						{
-							success=maliciousAffect(mob,target,5,-1);
+							success=maliciousAffect(mob,target,3,-1);
 							if(success)
 							{
 								if(target.location()==mob.location())

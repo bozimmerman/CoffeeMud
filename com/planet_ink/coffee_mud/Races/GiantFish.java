@@ -56,7 +56,7 @@ public class GiantFish extends StdRace
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 			{
-				if((mob.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
+				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
 					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 			}
 			else
