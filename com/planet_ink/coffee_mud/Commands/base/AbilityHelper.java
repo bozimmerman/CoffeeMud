@@ -9,6 +9,62 @@ public class AbilityHelper
 {
 	protected final static int TRACK_ATTEMPTS=25;
 	protected final static int TRACK_DEPTH=500;
+
+	private static boolean levelCheck(String text, char prevChar, int lastPlace, int lvl)
+	{
+		int x=0;
+		while(x>=0)
+		{
+			x=text.indexOf(">",lastPlace);
+			if(x<0)	x=text.indexOf("<",lastPlace);
+			if(x<0)	x=text.indexOf("=",lastPlace);
+			if(x>=0)
+			{
+				char prev='+';
+				if(x>0) prev=text.charAt(x-1);
+				
+				char primaryChar=text.charAt(x);
+				x++;
+				boolean ok=false;
+				boolean andEqual=false;
+				if(text.charAt(x)=='=')
+				{
+					andEqual=true;
+					x++;
+				}
+				lastPlace=x;
+					
+				if(prev==prevChar)
+				{
+					boolean found=false;
+					String cmpString="";
+					while((x<text.length())&&
+						  (((text.charAt(x)==' ')&&(cmpString.length()==0))
+						   ||(Character.isDigit(text.charAt(x)))))
+					{
+						if(Character.isDigit(text.charAt(x)))
+							cmpString+=text.charAt(x);
+						x++;
+					}
+					if(cmpString.length()>0)
+					{
+						int cmpLevel=Util.s_int(cmpString);
+						if((cmpLevel==lvl)&&(andEqual))
+							found=true;
+						else
+						switch(primaryChar)
+						{
+						case '>': found=(lvl>cmpLevel); break;
+						case '<': found=(lvl<cmpLevel); break;
+						case '=': found=(lvl==cmpLevel); break;
+						}
+					}
+					if(found) return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	public static boolean zapperCheck(String text, MOB mob)
 	{
@@ -20,7 +76,20 @@ public class AbilityHelper
 		String mobBaseClass=mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3);
 		String mobRace=mob.charStats().getMyRace().racialCategory().toUpperCase().substring(0,3);
 		String mobAlign=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
+		String mobGender=mob.charStats().genderName().toUpperCase();
+		int level=mob.envStats().level();
+		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
+		
 		text=text.toUpperCase();
+		
+		if(mob.isASysOp(mob.location()))
+		{
+			if(text.toUpperCase().indexOf("+SYSOP")>=0)
+				return true;
+			if(text.toUpperCase().indexOf("-SYSOP")>=0)
+				return false;
+		}
+		
 		// do class first
 		int x=text.indexOf("-CLAS");
 		if(x>=0)
@@ -75,7 +144,38 @@ public class AbilityHelper
 				return false;
 
 		}
+		
+		x=text.indexOf("-GENDER");
+		if(x>=0)
+		{
+			if(text.indexOf("+"+mobGender)<x)
+				return false;
+		}
+		else
+		{
+			if(text.indexOf("-"+mobGender)>=0)
+				return false;
+		}
+		
+		x=text.indexOf("-LEVELS");
+		if(x>=0)
+		{
+			if(!levelCheck(text,'+',x+6,level))
+				return false;
+		}
+		else
+		{
+			if(levelCheck(text,'-',0,level))
+				return false;
+		}
 
+		x=text.indexOf("-CLASSLEVEL");
+		if(x>=0)
+		{
+			if(!levelCheck(text,'+',x+6,classLevel))
+				return false;
+		}
+		
 		return true;
 	}
 

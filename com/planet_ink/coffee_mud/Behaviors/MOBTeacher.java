@@ -26,6 +26,29 @@ public class MOBTeacher extends CombatAbilities
 		mob.baseCharStats().setCurrentClass(CMClass.getCharClass(classID));
 		mob.baseCharStats().setClassLevel(CMClass.getCharClass(classID),mob.envStats().level());
 	}
+
+	private void classAbles(MOB mob)
+	{
+		for(int i=0;i<CMClass.abilities.size();i++)
+		{
+			Ability A=(Ability)CMClass.abilities.elementAt(i);
+			Ability A2=mob.fetchAbility(A.ID());
+			if(A2==null)
+			{
+				if((CMAble.qualifiesByLevel(mob,A))
+				||((mob.charStats().getCurrentClass().ID().equals("StdCharClass"))
+				   &&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
+				{
+					A=(Ability)A.copyOf();
+					A.setBorrowed(myMOB,true);
+					A.setProfficiency(100);
+					mob.addAbility(A);
+				}
+			}
+			else
+				A2.setProfficiency(100);
+		}
+	}
 	
 	private void ensureCharClass()
 	{
@@ -49,43 +72,25 @@ public class MOBTeacher extends CombatAbilities
 		}
 		else
 		{
-			if(getParms().toUpperCase().indexOf("MAG")>=0)
-				setTheCharClass(myMOB,"Mage");
-			if(getParms().toUpperCase().indexOf("THI")>=0)
-				setTheCharClass(myMOB,"Thief");
-			if(getParms().toUpperCase().indexOf("FIG")>=0)
-				setTheCharClass(myMOB,"Fighter");
-			if(getParms().toUpperCase().indexOf("CLE")>=0)
-				setTheCharClass(myMOB,"Cleric");
-			if(getParms().toUpperCase().indexOf("RAN")>=0)
-				setTheCharClass(myMOB,"Ranger");
-			if(getParms().toUpperCase().indexOf("PAL")>=0)
-				setTheCharClass(myMOB,"Paladin");
-			if(getParms().toUpperCase().indexOf("BARD")>=0)
-				setTheCharClass(myMOB,"Bard");
-			if(getParms().toUpperCase().indexOf("DRU")>=0)
-				setTheCharClass(myMOB,"Druid");
-			
 			myMOB.baseCharStats().setStat(CharStats.INTELLIGENCE,19);
 			myMOB.baseCharStats().setStat(CharStats.WISDOM,19);
-			myMOB.recoverCharStats();
-			for(int i=0;i<CMClass.abilities.size();i++)
+			String parm=getParms().toUpperCase();
+			for(int c=0;c<CMClass.charClasses.size();c++)
 			{
-				A=(Ability)CMClass.abilities.elementAt(i);
-				Ability A2=myMOB.fetchAbility(A.ID());
-				if(A2==null)
+				CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+				int x=parm.indexOf(C.ID().toUpperCase());
+				if(x>=0)
 				{
-					if((CMAble.qualifiesByLevel(myMOB,A))
-					||((myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
-					{
-						A=(Ability)A.copyOf();
-						A.setBorrowed(myMOB,true);
-						A.setProfficiency(100);
-						myMOB.addAbility(A);
-					}
+					setTheCharClass(myMOB,C.ID());
+					classAbles(myMOB);
+					myMOB.recoverCharStats();
 				}
-				else
-					A2.setProfficiency(100);
+			}
+			myMOB.recoverCharStats();
+			if(myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
+			{
+				classAbles(myMOB);
+				myMOB.recoverCharStats();
 			}
 		}
 	}
