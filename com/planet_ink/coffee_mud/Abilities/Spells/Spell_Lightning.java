@@ -69,10 +69,10 @@ public class Spell_Lightning extends Spell
 				{
 					mob.location().send(mob,msg2);
 					int damage = 0;
-					int maxDie =  mob.envStats().level();
-					if (maxDie > 10)
-						maxDie = 10;
-					damage += Dice.roll(maxDie,5,mob.envStats().level());
+					int maxDie =  (int)Math.round(new Integer(mob.envStats().level()).doubleValue()/2.0);
+					if (maxDie > 12)
+						maxDie = 12;
+					damage += Dice.roll(maxDie,4,mob.envStats().level());
 					if(msg2.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
 

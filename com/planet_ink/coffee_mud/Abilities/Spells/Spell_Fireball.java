@@ -65,12 +65,12 @@ public class Spell_Fireball extends Spell
 					invoker=mob;
 
                     int numDice = 0;
-                    if (mob.envStats().level() > 10)
+                    if (mob.envStats().level() > 20)
                         numDice = 10;
                     else
-                        numDice = mob.envStats().level();
+                        numDice = (int)Math.round(new Integer(mob.envStats().level()).doubleValue()/2.0);
 
-					int damage = Dice.roll(numDice, 6, mob.envStats().level());
+					int damage = Dice.roll(numDice, 6, 10);
 					if(msg2.wasModified())
 						damage = (int)Math.round(Util.div(damage,2.0));
 					mob.location().show(target,null,Affect.MSG_OK_ACTION,"The blast "+ExternalPlay.hitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
