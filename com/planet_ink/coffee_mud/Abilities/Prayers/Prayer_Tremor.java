@@ -105,7 +105,7 @@ public class Prayer_Tremor extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(Sense.isFlying(target))
+				if(Sense.isInFlight(target))
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) unaffected.");
 				else
 				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))

@@ -102,7 +102,7 @@ public class Falling extends StdAbility
 			if((room==null)
 			||((room!=null)&&(!room.isContent(item)))
 			||(!item.isGettable())
-			||(Sense.isFlying(item.ultimateContainer())))
+			||(Sense.isInFlight(item.ultimateContainer())))
 			{
 				unInvoke();
 				return false;

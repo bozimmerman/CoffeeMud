@@ -202,7 +202,7 @@ public class RandomMonsters extends ActiveTicker
 							{
 								Room R=(Room)e.nextElement();
 								if((okRoomForMe(M,R))
-								&&((Sense.isFlying(M))
+								&&((Sense.isInFlight(M))
 								  ||(((R.domainType()&Room.DOMAIN_INDOORS_AIR)==0)
 								    &&((R.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0)))
 								&&(R.roomID().trim().length()>0))

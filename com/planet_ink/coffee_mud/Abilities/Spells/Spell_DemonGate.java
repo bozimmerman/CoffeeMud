@@ -137,7 +137,5 @@ public class Spell_DemonGate extends Spell
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);
-
-
 	}
 }

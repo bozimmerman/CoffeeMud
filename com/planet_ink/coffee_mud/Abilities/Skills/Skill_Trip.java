@@ -91,7 +91,7 @@ public class Skill_Trip extends StdAbility
 			mob.tell("You can't trip someone "+target.riding().stateString(target)+" "+target.riding().name()+"!");
 			return false;
 		}
-		if(Sense.isFlying(target))
+		if(Sense.isInFlight(target))
 		{
 			mob.tell(target.name()+" is flying and can't be tripped!");
 			return false;

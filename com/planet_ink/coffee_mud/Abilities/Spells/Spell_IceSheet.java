@@ -48,7 +48,7 @@ public class Spell_IceSheet extends Spell
 				else
 				if((Util.bset(affect.sourceMajor(),Affect.MASK_MOVE)))
 				{
-					if((!Sense.isFlying(mob))
+					if((!Sense.isInFlight(mob))
 					&&(Dice.rollPercentage()>((affect.source().charStats().getStat(CharStats.DEXTERITY)*3)+25)))
 					{
 						int oldDisposition=mob.baseEnvStats().disposition();

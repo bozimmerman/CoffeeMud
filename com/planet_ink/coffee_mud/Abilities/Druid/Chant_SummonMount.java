@@ -133,6 +133,9 @@ public class Chant_SummonMount extends Chant
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
+		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
+		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.setName("a wild horse");
 		newMOB.setDisplayText("a wild horse stands here");
 		newMOB.setDescription("An untamed beast of the fields, tame only by magical means.");

@@ -90,7 +90,7 @@ public class Fighter_BodyFlip extends StdAbility
 			mob.tell("You can't flip someone "+target.riding().stateString(target)+" "+target.riding().name()+"!");
 			return false;
 		}
-		if(Sense.isFlying(target))
+		if(Sense.isInFlight(target))
 		{
 			mob.tell(target.name()+" is flying and can't be flipped over!");
 			return false;

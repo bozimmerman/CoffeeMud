@@ -31,8 +31,7 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 			||(affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_FLEE))
 		   &&(affect.amITarget(this))
-		   &&(!Sense.isSwimming(affect.source()))
-		   &&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
+		   &&(!Sense.isWaterWorthy(affect.source())))
 		{
 			MOB mob=affect.source();
 			boolean hasBoat=false;

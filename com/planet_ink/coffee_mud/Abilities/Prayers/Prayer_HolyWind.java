@@ -109,7 +109,7 @@ public class Prayer_HolyWind extends Prayer
 						if(target.rangeToTarget()>target.location().maxRange())
 							target.setAtRange(target.location().maxRange());
 						mob.location().send(mob,msg);
-						if((!Sense.isFlying(target))
+						if((!Sense.isInFlight(target))
 						&&(Dice.rollPercentage()>(((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))-(5*howLong))
 						&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0))
 						{

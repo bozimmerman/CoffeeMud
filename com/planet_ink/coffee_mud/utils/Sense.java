@@ -371,6 +371,15 @@ public class Sense
 
 	}
 
+	public static boolean isWaterWorthy(Environmental E)
+	{
+		if(E==null) return false;
+		if(Sense.isSwimming(E)) return true;
+		if(E instanceof Rider)
+			return isWaterWorthy(((Rider)E).riding());
+		return false;
+	}
+	
 	public static boolean isInFlight(Environmental E)
 	{
 		if(E==null) return false;

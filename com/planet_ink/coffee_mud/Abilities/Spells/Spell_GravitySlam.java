@@ -44,12 +44,12 @@ public class Spell_GravitySlam extends Spell
 
 				int damage = 0;
 				int maxDie =  adjustedLevel(mob);
-				if(!Sense.isFlying(target))
+				if(!Sense.isInFlight(target))
 					maxDie=maxDie/2;
 				damage += Dice.roll(maxDie,adjustedLevel(mob)/2,adjustedLevel(mob)/2);
 				if(msg.wasModified())
 					damage = (int)Math.round(Util.div(damage,2.0));
-				if(!Sense.isFlying(target))
+				if(!Sense.isInFlight(target))
 					mob.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> is hurled up into the air and **SLAMMED** back down!");
 				else
 					mob.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> is hurled even higher into the air and **SLAMMED** back down!");

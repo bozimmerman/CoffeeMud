@@ -686,7 +686,7 @@ public class SaucerSupport
 				}
 
 				if((oldRoom.domainConditions()!=nextRoom.domainConditions())
-				&&(!Sense.isFlying(mob))
+				&&(!Sense.isInFlight(mob))
 				&&((nextRoom.domainConditions()==Room.DOMAIN_INDOORS_AIR)
 				||(nextRoom.domainConditions()==Room.DOMAIN_OUTDOORS_AIR)))
 					direction=-1;
@@ -757,6 +757,8 @@ public class SaucerSupport
 		int dir=direction;
 		if(((nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 		||(nextRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+		   &&(!Sense.isWaterWorthy(mob))
+		   &&(!Sense.isInFlight(mob))
 		   &&(mob.fetchAbility("Skill_Swim")!=null))
 		{
 			Ability A=mob.fetchAbility("Skill_Swim");
@@ -769,6 +771,8 @@ public class SaucerSupport
 		}
 		else
 		if((nextRoom.ID().indexOf("Surface")>0)
+		&&(!Sense.isClimbing(mob))
+		&&(!Sense.isInFlight(mob))
 		&&(mob.fetchAbility("Skill_Climb")!=null))
 		{
 			Ability A=mob.fetchAbility("Skill_Climb");

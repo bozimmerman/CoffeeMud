@@ -624,6 +624,7 @@ public class Import
 			i=str.indexOf("-");
 		else
 			i++;
+		
 		if(i<0)
 			i=str.length()-1;
 
@@ -1093,11 +1094,13 @@ public class Import
 					M.baseEnvStats().setLevel(1);
 				int baseHP=11;
 				if(circleFormat)
-					baseHP=(int)Math.round(Util.div(getDRoll(Util.getBit(codeStr2,2)),M.baseEnvStats().level()));
+					baseHP=getDRoll(Util.getBit(codeStr2,2));
 				else
-					baseHP=(int)Math.round(Util.div(getDRoll(Util.getBit(codeStr2,3)),M.baseEnvStats().level()));
-				if(baseHP>11)
-					M.baseEnvStats().setAbility(baseHP-11);
+					baseHP=getDRoll(Util.getBit(codeStr2,3));
+				baseHP=baseHP-(M.baseEnvStats().level()*M.baseEnvStats().level());
+				baseHP=baseHP/M.baseEnvStats().level();
+				M.baseEnvStats().setAbility(baseHP);
+				
 				if(circleFormat)
 				{
 					if(Util.getBit(codeStr4,2).toUpperCase().equals("MALE"))

@@ -43,7 +43,7 @@ public class GenMob extends StdMOB
 			Generic.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 		recoverCharStats();
-		baseState().setHitPoints((10*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
+		baseState().setHitPoints((baseEnvStats().level()*baseEnvStats().level())+Dice.roll(baseEnvStats().level(),baseEnvStats().ability(),1));
 		baseState().setMana(baseCharStats().getCurrentClass().getLevelMana(this));
 		baseState().setMovement(baseCharStats().getCurrentClass().getLevelMove(this));
 		recoverMaxState();
