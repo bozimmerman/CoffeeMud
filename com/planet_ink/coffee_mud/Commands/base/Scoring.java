@@ -375,7 +375,7 @@ public class Scoring
 			ofType=ofType|ofDomain;
 		}
 		V.addElement(new Integer(ofType));
-		return getAbilities(able,V,mask);
+		return getQualifiedAbilities(able,V,mask);
 	}
 	
 	public StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask)
