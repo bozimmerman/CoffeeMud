@@ -286,9 +286,9 @@ public class StdCharClass implements CharClass, Cloneable
 		else
 		for(int i=1;i<level;i++)
 			if(i<breakLevel)
-				neededLevel+=1000+(75*i);
+				neededLevel+=1000+(100*i);
 			else
-				neededLevel+=1000+(75*(breakLevel-1))+(25*(i-(breakLevel-1)));
+				neededLevel+=1000+(100*(breakLevel-1))+(25*(i-(breakLevel-1)));
 		return neededLevel;
 	}
 
@@ -525,7 +525,7 @@ public class StdCharClass implements CharClass, Cloneable
 		Hashtable followers=(killer!=null)?killer.getGroupMembers(new Hashtable()):(new Hashtable());
 
 		int totalLevels=0;
-		int expAmount=60;
+		int expAmount=100;
 		for(int m=0;m<deathRoom.numInhabitants();m++)
 		{
 			MOB mob=deathRoom.fetchInhabitant(m);

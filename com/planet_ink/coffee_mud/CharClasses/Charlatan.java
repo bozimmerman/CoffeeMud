@@ -134,7 +134,7 @@ public class Charlatan extends StdCharClass
 		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
 		{
 			if(!quiet)
-				mob.tell("You must be Human or Half Elf to be a Bard");
+				mob.tell("You must be Human or Half Elf to be a Charlatan");
 			return false;
 		}
 

@@ -40,7 +40,7 @@ public class Spell_Anchor extends Spell
 
 		if((affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
-		&&("spell_summon;spell_gate;spell_dismissal".toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		&&("spell_summon;spell_gate;spell_dismissal;spell_shove;fighter_bullrush".toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
 		{
 			Room roomS=null;
 			Room roomD=null;

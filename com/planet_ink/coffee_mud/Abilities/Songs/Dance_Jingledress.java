@@ -1,5 +1,32 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
 
-public class Dance_Jingledress
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+
+public class Dance_Jingledress extends Dance
 {
+	public String ID() { return "Dance_Jingledress"; }
+	public String name(){ return "Jingledress";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public Environmental newInstance(){	return new Dance_Jingledress();}
+	protected String danceOf(){return name()+" Dance";}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+
+		MOB mob=(MOB)affected;
+		if(mob==null)
+			return false;
+		
+		int healing=Dice.roll(2,adjustedLevel(invoker()),4);
+		mob.curState().adjHitPoints(healing,mob.maxState());
+		return true;
+	}
+
+
 }

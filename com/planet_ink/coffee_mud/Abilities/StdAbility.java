@@ -379,6 +379,37 @@ public class StdAbility implements Ability, Cloneable
 	}
 	public void setInvoker(MOB mob){invoker=mob;}
 
+	protected int manaCost(MOB mob)
+	{
+		int manaConsumed=50;
+		int diff=0;
+		for(int c=0;c<mob.charStats().numClasses();c++)
+		{
+			CharClass C=mob.charStats().getMyClass(c);
+			int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),ID());
+			int classLevel=mob.charStats().getClassLevel(C.ID());
+			if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+				diff+=(classLevel-qualifyingLevel);
+		}
+
+		if(diff>0)
+		switch(diff)
+		{
+		case 1: manaConsumed=40; break;
+		case 2: manaConsumed=30; break;
+		case 3: manaConsumed=25; break;
+		case 4: manaConsumed=20; break;
+		case 5: manaConsumed=15; break;
+		case 6: manaConsumed=10; break;
+		case 7: manaConsumed=10; break;
+		case 8: manaConsumed=10; break;
+		default: manaConsumed=5; break;
+		}
+
+		if(overrideMana()>=0) manaConsumed=overrideMana();
+		return manaConsumed;
+	}
+	
 	public void helpProfficiency(MOB mob)
 	{
 		Ability A=(Ability)mob.fetchAbility(ID());
@@ -421,33 +452,8 @@ public class StdAbility implements Ability, Cloneable
 			if(!Sense.aliveAwakeMobile(mob,false))
 				return false;
 
-			int manaConsumed=50;
-			int diff=0;
-			for(int c=0;c<mob.charStats().numClasses();c++)
-			{
-				CharClass C=mob.charStats().getMyClass(c);
-				int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),ID());
-				int classLevel=mob.charStats().getClassLevel(C.ID());
-				if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
-					diff+=(classLevel-qualifyingLevel);
-			}
-
-			if(diff>0)
-			switch(diff)
-			{
-			case 1: manaConsumed=40; break;
-			case 2: manaConsumed=30; break;
-			case 3: manaConsumed=25; break;
-			case 4: manaConsumed=20; break;
-			case 5: manaConsumed=15; break;
-			case 6: manaConsumed=10; break;
-			case 7: manaConsumed=10; break;
-			case 8: manaConsumed=10; break;
-			default: manaConsumed=5; break;
-			}
-
-			if(overrideMana()>=0) manaConsumed=overrideMana();
-
+			int manaConsumed=manaCost(mob);
+			
 			if(mob.curState().getMana()<manaConsumed)
 			{
 				mob.tell("You don't have enough mana to do that.");

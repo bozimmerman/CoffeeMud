@@ -25,6 +25,8 @@ public class Prayer_Sober extends Prayer
 				if((A.classificationCode()==Ability.POISON)
 				&&((A.ID().toUpperCase().indexOf("INEBRIA")>=0)
 				   ||(A.ID().toUpperCase().indexOf("ALCOHOL")>=0)
+				   ||(A.ID().toUpperCase().indexOf("POLKA")>=0)
+				   ||(A.ID().toUpperCase().indexOf("DRUNKEN")>=0)
 				   ||(A.ID().toUpperCase().indexOf("LIQUOR")>=0)
 				   ||(A.ID().toUpperCase().indexOf("FIREBREATHER")>=0))
 				&&((A.invoker()==null)
