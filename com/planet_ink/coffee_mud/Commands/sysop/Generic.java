@@ -2169,6 +2169,7 @@ public class Generic
 			genValue(mob,me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
+			genMaterialCode(mob,me,++showNumber,showFlag);
 			genNourishment(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me,++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);

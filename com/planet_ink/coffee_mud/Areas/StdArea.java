@@ -712,7 +712,8 @@ public class StdArea implements Area
 					&&(weatherType(S.mob().location())!=Area.WEATHER_CLEAR))
 					{
 						MOB M=S.mob();
-						if(Dice.rollPercentage()<coldChance)
+						int save=(M.charStats().getStat(CharStats.SAVE_COLD)+M.charStats().getStat(CharStats.SAVE_WATER))/2;
+						if(Dice.rollPercentage()<(coldChance-save))
 						{
 							long coveredPlaces=0;
 							for(int i=0;i<M.inventorySize();i++)
