@@ -1,9 +1,7 @@
 see about shutdown problems -- havn't been able to at ALL lately.
 maps are picky -- need to make them less so.
 adapt Prop_Transportable to allow people to be transported when a rideable is entered.
-wearadjuster thinks I'm removing belt when I draw from it.
 i wonder if you couldn't do something like just making each quest require a prior one be completed
-someone beat you to it, sayys gargamel.
 roomview should show messages from target room.
 
 
