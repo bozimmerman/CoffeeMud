@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Thief_Poison extends ThiefSkill
 {
-	int tickDown=3;
+	int poisonDown=3;
 
 	public Thief_Poison()
 	{
@@ -44,9 +44,9 @@ public class Thief_Poison extends ThiefSkill
 		if(mob==null) return false;
 		if(invoker==null) return false;
 		
-		if((--tickDown)<=0)
+		if((--poisonDown)<=0)
 		{
-			tickDown=3;
+			poisonDown=3;
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
 			int hpLoss=invoker.envStats().level();
 			ExternalPlay.postDamage(invoker,mob,this,hpLoss);

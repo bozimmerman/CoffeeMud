@@ -725,7 +725,10 @@ public class StdAbility implements Ability, Cloneable
 			}
 		}
 	}
-	public void makeLongLasting(){tickDown=Integer.MAX_VALUE;}
+	public void makeLongLasting()
+	{
+		tickDown=Integer.MAX_VALUE; 
+	}
 
 	public int quality(){return this.quality;}
 
@@ -759,7 +762,8 @@ public class StdAbility implements Ability, Cloneable
 		if((unInvoked)&&(canBeUninvoked))
 			return false;
 
-		if(tickID==Host.MOB_TICK)
+		if((tickID==Host.MOB_TICK)
+		&&(tickDown!=Integer.MAX_VALUE))
 		{
 			if(tickDown<0)
 				return !unInvoked;

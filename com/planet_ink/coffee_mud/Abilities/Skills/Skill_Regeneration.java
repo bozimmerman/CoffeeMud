@@ -10,7 +10,7 @@ import java.util.*;
 public class Skill_Regeneration extends StdAbility
 {
 	private static final int maxTickDown=3;
-	private int tickDown=maxTickDown;
+	private int regenDown=maxTickDown;
 
 	public Skill_Regeneration()
 	{
@@ -39,9 +39,9 @@ public class Skill_Regeneration extends StdAbility
 		if(!super.tick(tickID))
 			return false;
 
-		if((--tickDown)>0)
+		if((--regenDown)>0)
 			return true;
-		tickDown=maxTickDown;
+		regenDown=maxTickDown;
 		MOB mob=(MOB)affected;
 		if(mob==null) return true;
 		if(mob.location()==null) return true;

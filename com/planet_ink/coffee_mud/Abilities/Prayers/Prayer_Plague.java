@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Prayer_Plague extends Prayer
 {
-	int tickDown=4;
+	int plagueDown=4;
 
 	public Prayer_Plague()
 	{
@@ -34,10 +34,10 @@ public class Prayer_Plague extends Prayer
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(tickID);
 
-		if((--tickDown)<=0)
+		if((--plagueDown)<=0)
 		{
 			MOB mob=(MOB)affected;
-			tickDown=4;
+			plagueDown=4;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			if(invoker==null) invoker=mob;
 			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());

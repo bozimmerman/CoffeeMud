@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Poison extends StdAbility
 {
-	int tickDown=3;
+	int poisonTick=3;
 
 	public Poison()
 	{
@@ -40,9 +40,9 @@ public class Poison extends StdAbility
 		if(mob==null) return false;
 		if(invoker==null) return false;
 		
-		if((--tickDown)<=0)
+		if((--poisonTick)<=0)
 		{
-			tickDown=3;
+			poisonTick=3;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.");
 			int damage=Dice.roll(envStats().level(),3,1);
 			ExternalPlay.postDamage(invoker,mob,this,damage);

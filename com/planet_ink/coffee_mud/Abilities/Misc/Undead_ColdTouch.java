@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Undead_ColdTouch extends StdAbility
 {
-	int tickDown=3;
+	int coldDown=3;
 
 	public Undead_ColdTouch()
 	{

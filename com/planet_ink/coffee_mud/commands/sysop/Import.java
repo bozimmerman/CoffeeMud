@@ -1955,12 +1955,14 @@ public class Import
 						case 18:
 							if((val>0)&&(I instanceof Weapon))
 								I.baseEnvStats().setAttackAdjustment(I.baseEnvStats().attackAdjustment()+(val*5));
-							adjuster.setMiscText(adjuster.text()+" attack"+((val>=0)?("+"+(val*5)):(""+(val*5))));
+							else
+								adjuster.setMiscText(adjuster.text()+" attack"+((val>=0)?("+"+(val*5)):(""+(val*5))));
 							break;
 						case 19:
 							if((val>0)&&(I instanceof Weapon))
 								I.baseEnvStats().setDamage(I.baseEnvStats().damage()+val);
-							adjuster.setMiscText(adjuster.text()+" damage"+((val>=0)?("+"+(val)):(""+(val))));
+							else
+								adjuster.setMiscText(adjuster.text()+" damage"+((val>=0)?("+"+(val)):(""+(val))));
 							break;
 						case 20: // spells, but with a numeric value.. ?!?!
 							break;
