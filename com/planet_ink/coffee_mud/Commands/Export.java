@@ -55,7 +55,7 @@ public class Export extends StdCommand
 			    mob.tell("No email box has been defined.");
 			    return;
 			}
-			if(mob.playerStats().getEmail().length()==0)
+			if((mob.playerStats()==null)||(mob.playerStats().getEmail().length()==0))
 			{
 			    mob.tell("No email address has been defined.");
 			    return;
@@ -69,6 +69,7 @@ public class Export extends StdCommand
 			        "Exported XML",
 			        xml.toString(),
 			        -1);
+			mob.tell("XML emailed to "+mob.playerStats().getEmail());
 		}
 		else
 		{
