@@ -210,6 +210,7 @@ public class MUD extends Thread implements Host
 		CommonStrings.setVar(CommonStrings.SYSTEM_MULTICLASS,page.getStr("CLASSSYSTEM"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_PKILL,page.getStr("PLAYERKILL"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_PLAYERDEATH,page.getStr("PLAYERDEATH"));
+		CommonStrings.setVar(CommonStrings.SYSTEM_EXPRATE,page.getStr("EXPRATE"));
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
 		if(DBerrors.length()==0)

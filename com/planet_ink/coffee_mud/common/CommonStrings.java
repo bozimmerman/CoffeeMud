@@ -7,19 +7,36 @@ public class CommonStrings
 	public static final int SYSTEM_PKILL=0;
 	public static final int SYSTEM_MULTICLASS=1;
 	public static final int SYSTEM_PLAYERDEATH=2;
-	public static final int NUM_SYSTEM=3;
+	public static final int SYSTEM_EXPRATE=3;
+	public static final int NUM_SYSTEM=5;
 	private static String[] sysVars=new String[NUM_SYSTEM];
+
+	public static int pkillLevelDiff=26;
+	
+	public static int getPKillLevelDiff(){return pkillLevelDiff;}
 	
 	public static String getVar(int varNum)
 	{
 		if((varNum<0)||(varNum>=NUM_SYSTEM)) return "";
+		if(sysVars[varNum]==null) return "";
 		return sysVars[varNum];
 	}
 	
 	public static void setVar(int varNum, String val)
 	{
 		if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
-		sysVars[varNum]=val;
+		if(val==null) val="";
+		sysVars[varNum]=val.toUpperCase();
+		switch(varNum)
+		{
+		case SYSTEM_PKILL:
+			{
+				int x=val.indexOf("-");
+				if(x>0)
+					pkillLevelDiff=Util.s_int(val.substring(x+1));
+			}
+			break;
+		}
 	}
 	
 	public static String[] standardColorLookups()

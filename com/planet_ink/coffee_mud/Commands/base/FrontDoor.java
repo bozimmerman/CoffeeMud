@@ -7,15 +7,25 @@ import java.util.*;
 public class FrontDoor
 {
 
+	
+	private boolean classOkForMe(MOB mob, CharClass thisClass)
+	{
+		if((thisClass.playerSelectable())
+		   &&((CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+			  ||(CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI"))
+			  ||(thisClass.baseClass().equals(thisClass.ID())))
+		   &&thisClass.qualifiesForThisClass(mob,true))
+			return true;
+		return false;
+	}
+	
 	private Vector classQualifies(MOB mob)
 	{
 		Vector them=new Vector();
 		for(int c=0;c<CMClass.charClasses.size();c++)
 		{
 			CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-			if((thisClass.playerSelectable())
-			   &&(thisClass.baseClass().equals(thisClass.ID()))
-			   &&thisClass.qualifiesForThisClass(mob,true))
+			if(classOkForMe(mob,thisClass))
 				them.addElement(thisClass);
 		}
 		return them;
@@ -306,9 +316,7 @@ public class FrontDoor
 						for(int c=0;c<CMClass.charClasses.size();c++)
 						{
 							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if((thisClass.playerSelectable())
-							   &&(thisClass.baseClass().equals(thisClass.ID()))
-							   &&thisClass.qualifiesForThisClass(mob,true))
+							if(classOkForMe(mob,thisClass))
 								if(thisClass.name().equalsIgnoreCase(ClassStr))
 								{
 									newClass=thisClass;
@@ -319,19 +327,14 @@ public class FrontDoor
 						for(int c=0;c<CMClass.charClasses.size();c++)
 						{
 							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-							if((thisClass.playerSelectable())
-							   &&(thisClass.baseClass().equals(thisClass.ID()))
-							   &&thisClass.qualifiesForThisClass(mob,true))
+							if(classOkForMe(mob,thisClass))
 								if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
 								{
 									newClass=thisClass;
 									break;
 								}
 						}
-						if((newClass!=null)
-						&&(newClass.playerSelectable())
-						&&(newClass.baseClass().equals(newClass.ID()))
-						&&(newClass.qualifiesForThisClass(mob,true)))
+						if((newClass!=null)&&(classOkForMe(mob,newClass)))
 						{
 							StringBuffer str=ExternalPlay.getHelpText(newClass.ID().toUpperCase());
 							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");

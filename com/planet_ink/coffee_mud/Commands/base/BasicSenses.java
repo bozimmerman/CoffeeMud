@@ -173,7 +173,8 @@ public class BasicSenses
 		String abilityName=((String)commands.elementAt(0)).toUpperCase();
 		int abilityCode=mob.charStats().getCode(abilityName);
 		CharClass theClass=null;
-		if(abilityCode<0)
+		if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+		&&(abilityCode<0))
 		{
 			for(int c=0;c<CMClass.charClasses.size();c++)
 			{

@@ -36,7 +36,15 @@ public class StdCharClass implements CharClass
 					mob.tell("But you are already a "+name()+"!");
 				return false;
 			}
-			if(!mob.charStats().getCurrentClass().baseClass().equals(baseClass()))
+			if(CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
+			{
+				if(!quiet)
+					mob.tell("You should be happy to be a "+name()+"!");
+				return false;
+			}
+			else
+			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI"))
+			&&(!mob.charStats().getCurrentClass().baseClass().equals(baseClass())))
 			{
 				if(!quiet)
 					mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
@@ -127,16 +135,17 @@ public class StdCharClass implements CharClass
 							   String homage, 
 							   int amount)
 	{
-		int levelLimit=6;
 		double theAmount=new Integer(amount).doubleValue();
 
 		if(victim!=null)
 		{
+			int levelLimit=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_EXPRATE));
 			int levelDiff=victim.envStats().level()-mob.envStats().level();
 
 			if(levelDiff<(-levelLimit) )
 				theAmount=0.0;
 			else
+			if(levelLimit>0)
 			{
 				double levelFactor=Util.div(levelDiff,levelLimit);
 				theAmount=theAmount+Util.mul(levelFactor,amount);

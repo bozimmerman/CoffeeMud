@@ -462,6 +462,8 @@ public class StdMOB implements MOB
 		||(victim.location()!=location())
 		||(victim.amDead()))
 		{
+			if(victim.getVictim()==this)
+				victim.setVictim(null);
 			setVictim(null);
 			return false;
 		}
@@ -477,6 +479,10 @@ public class StdMOB implements MOB
 		if(mob.isMonster()) return true;
 		if(isMonster()) return true;
 		if(mob==this) return true;
+		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
+			return true;
+		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
+			return false;
 		if((getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
 		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
 		return true;
@@ -576,10 +582,16 @@ public class StdMOB implements MOB
 		{
 			if((mob.location()==null)
 			||(location()==null)
+			||(mob.amDead())
+			||(amDead())
 			||(mob.location()!=location())
 			||(!location().isInhabitant(this))
 			||(!location().isInhabitant(mob)))
+			{
+				if(victim!=null)
+					victim.setVictim(null);
 				victim=null;
+			}
 			else
 			{
 				mob.recoverCharStats();
@@ -1143,13 +1155,19 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if((!mayIFight(mob))
-				||(mob.envStats().level()>envStats().level()+26)&&(!isMonster())&&(!mob.isMonster()))
+				if(!mayIFight(mob))
 				{
-					if(!mayIFight(mob))
-						mob.tell("Player killing is highly discouraged.");
-					else
-						mob.tell("That is not EVEN a fair fight.");
+					mob.tell("You are not allowed to attack "+name()+".");
+					mob.setVictim(null);
+					if(victim==mob) setVictim(null);
+					return false;
+				}
+				
+				if((!isMonster())
+				&&(!mob.isMonster())
+				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff()))
+				{
+					mob.tell("That is not EVEN a fair fight.");
 					mob.setVictim(null);
 					if(victim==mob) setVictim(null);
 					return false;

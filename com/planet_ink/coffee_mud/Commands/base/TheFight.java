@@ -205,18 +205,55 @@ public class TheFight
 		if((target.charStats()!=null)&&(source!=null))
 			beneficiaries=target.charStats().getCurrentClass().dispenseExperience(source,target);
 		
-		if(target.soulMate()==null)
-		{
-			int expLost=100*target.envStats().level();
-			target.tell("^F^*You lose "+expLost+" experience points.^?^.");
-			target.charStats().getCurrentClass().loseExperience(target,expLost);
-		}
-		
 		int deadMoney=target.getMoney();
 		if((source!=null)&&((source.getBitmap()&MOB.ATT_AUTOGOLD)>0))
 			target.setMoney(0);
 		
-		DeadBody Body=target.killMeDead();
+		DeadBody Body=null;
+		if((target.soulMate()==null)&&(!target.isMonster()))
+		{
+			String whatToDo=CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERDEATH);
+			if(whatToDo.startsWith("UNL"))
+				target.charStats().getCurrentClass().unLevel(target);
+			else
+			if(whatToDo.startsWith("PUR"))
+			{
+				MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
+				boolean found=ExternalPlay.DBUserSearch(deadMOB,target.ID());
+				if(found)
+				{
+					Body=target.killMeDead();
+					if(CMMap.MOBs.get(deadMOB.ID())!=null)
+					{
+					   deadMOB=(MOB)CMMap.MOBs.get(deadMOB.ID());
+					   CMMap.MOBs.remove(deadMOB.ID());
+					}
+					for(int s=0;s<Sessions.size();s++)
+					{
+						Session S=(Session)Sessions.elementAt(s);
+						if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().ID().equals(deadMOB.ID())))
+						   deadMOB=S.mob();
+					}
+					deadMOB.destroy();
+					ExternalPlay.DBDeleteMOB(deadMOB);
+				}
+			}
+			else
+			if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
+			{
+				int expLost=Util.s_int(whatToDo);
+				target.tell("^F^*You lose "+expLost+" experience points.^?^.");
+				target.charStats().getCurrentClass().loseExperience(target,expLost);
+			}
+			else
+			{
+				int expLost=100*target.envStats().level();
+				target.tell("^F^*You lose "+expLost+" experience points.^?^.");
+				target.charStats().getCurrentClass().loseExperience(target,expLost);
+			}
+		}
+		
+		if(Body==null) Body=target.killMeDead();
 		
 		if(target.soulMate()!=null) new SysOpSkills().dispossess(target);
 		
@@ -285,6 +322,13 @@ public class TheFight
 	public void playerkill(MOB mob)
 		throws IOException
 	{
+		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS")
+			||CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("NEVER"))
+		{
+			mob.tell("This option has been disabled.");
+			return;
+		}
+			
 		if(mob.isInCombat())
 		{
 			mob.tell("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!");
