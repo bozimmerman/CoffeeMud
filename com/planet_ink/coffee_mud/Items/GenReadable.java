@@ -17,6 +17,8 @@ public class GenReadable extends GenItem
 		description="Looks like something";
 		setMaterial(EnvResource.RESOURCE_WOOD);
 		isReadable=true;
+		baseEnvStats().setWeight(1);
+		recoverEnvStats();
 	}
 
 	public Environmental newInstance()

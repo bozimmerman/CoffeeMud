@@ -30,6 +30,19 @@ public class Burning extends StdAbility
 	private boolean reversed(){return profficiency()==100;}
 	public boolean tick(int tickID)
 	{
+		if((tickDown<2)&&(affected!=null))
+		{
+			if(affected instanceof Item)
+			{
+				Environmental E=((Item)affected).myOwner();
+				((Item)affected).destroyThis();
+				if(E instanceof Room)
+					((Room)E).recoverRoomStats();
+				if(E instanceof MOB)
+					((MOB)E).location().recoverRoomStats();
+				return false;
+			}
+		}
 		if(!super.tick(tickID))
 			return false;
 
@@ -73,16 +86,6 @@ public class Burning extends StdAbility
 		return true;
 	}
 
-	public void unInvoke()
-	{
-		if(affected!=null)
-		{
-			if(affected instanceof Item)
-				((Item)affected).destroyThis();
-		}
-		super.unInvoke();
-	}
-	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -94,12 +97,17 @@ public class Burning extends StdAbility
 		if(target==null) return false;
 		if(target.fetchAffect("Burning")==null)
 		{
-			Burning B=new Burning();
-			B.invoker=mob;
-			target.addAffect(B);
-			if(!(target instanceof MOB))
-				ExternalPlay.startTickDown(B,Host.MOB_TICK,profficiency());
+			beneficialAffect(mob,target,profficiency());
 			target.recoverEnvStats();
+			if(target instanceof Item)
+			{
+				((Item)target).myOwner().recoverEnvStats();
+				if(((Item)target).myOwner() instanceof Room)
+					((Room)((Item)target).myOwner()).recoverRoomStats();
+				else
+				if(((Item)target).myOwner() instanceof MOB)
+					((MOB)((Item)target).myOwner()).location().recoverRoomStats();
+			}
 		}
 		return true;
 	}
