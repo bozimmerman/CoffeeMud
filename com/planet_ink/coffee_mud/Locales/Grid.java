@@ -34,19 +34,19 @@ public class Grid extends StdRoom implements GridLocale
 			numDs++;
 			x=newDescription.indexOf("<P>",x+2);
 		}
-		descriptions=new String[numDs+1];
+		this.descriptions=new String[numDs+1];
 		x=newDescription.indexOf("<P>");
 		numDs=0;
 		while(x>=0)
 		{
-			descriptions[numDs]=newDescription.substring(0,x);
+			this.descriptions[numDs]=newDescription.substring(0,x);
 			numDs++;
 			newDescription=newDescription.substring(x+3);
 			x=newDescription.indexOf("<P>");
 		}
-		descriptions[numDs]=newDescription;
+		this.descriptions[numDs]=newDescription;
 		if(numDs>0)
-			description=descriptions[0];
+			this.description=this.descriptions[0];
 	}
 
 	public void setDisplayText(String newDisplayText)
@@ -59,19 +59,19 @@ public class Grid extends StdRoom implements GridLocale
 			numDs++;
 			x=newDisplayText.indexOf("<P>",x+2);
 		}
-		displayTexts=new String[numDs+1];
+		this.displayTexts=new String[numDs+1];
 		x=newDisplayText.indexOf("<P>");
 		numDs=0;
 		while(x>=0)
 		{
-			displayTexts[numDs]=newDisplayText.substring(0,x);
+			this.displayTexts[numDs]=newDisplayText.substring(0,x);
 			numDs++;
 			newDisplayText=newDisplayText.substring(x+3);
 			x=newDisplayText.indexOf("<P>");
 		}
-		displayTexts[numDs]=newDisplayText;
+		this.displayTexts[numDs]=newDisplayText;
 		if(numDs>0)
-			displayText=displayTexts[0];
+			this.displayText=this.displayTexts[0];
 	}
 
 	public Room getAltRoomFrom(Room loc)
@@ -90,7 +90,7 @@ public class Grid extends StdRoom implements GridLocale
 			}
 		if(oldDirCode<0) return null;
 
-		return alts[oldDirCode];
+		return this.alts[oldDirCode];
 	}
 
 	protected static void linkRoom(Room room, Room loc, int dirCode)
@@ -114,23 +114,23 @@ public class Grid extends StdRoom implements GridLocale
 		switch(dirCode)
 		{
 		case Directions.NORTH:
-			x=subMap.length/2;
+			x=this.subMap.length/2;
 			break;
 		case Directions.SOUTH:
-			x=subMap.length/2;
-			y=subMap[0].length-1;
+			x=this.subMap.length/2;
+			y=this.subMap[0].length-1;
 			break;
 		case Directions.EAST:
-			x=subMap.length-1;
-			y=subMap[0].length/2;
+			x=this.subMap.length-1;
+			y=this.subMap[0].length/2;
 			break;
 		case Directions.WEST:
-			y=subMap[0].length/2;
+			y=this.subMap[0].length/2;
 			break;
 		case Directions.UP:
 		case Directions.DOWN:
-			x=subMap.length/2;
-			y=subMap[0].length/2;
+			x=this.subMap.length/2;
+			y=this.subMap[0].length/2;
 			break;
 		}
 		Room returnRoom=null;
@@ -140,11 +140,11 @@ public class Grid extends StdRoom implements GridLocale
 		{
 			while(returnRoom==null)
 			{
-				if(subMap[x+xadjust][y+yadjust]!=null)
-					returnRoom=subMap[x+xadjust][y+yadjust];
+				if(this.subMap[x+xadjust][y+yadjust]!=null)
+					returnRoom=this.subMap[x+xadjust][y+yadjust];
 				else
-				if(subMap[x-xadjust][y-yadjust]!=null)
-					returnRoom=subMap[x-xadjust][y-yadjust];
+				if(this.subMap[x-xadjust][y-yadjust]!=null)
+					returnRoom=this.subMap[x-xadjust][y-yadjust];
 				else
 				{
 					switch(dirCode)
@@ -180,34 +180,34 @@ public class Grid extends StdRoom implements GridLocale
 			Room dirRoom=this.doors()[d];
 			if(dirRoom!=null)
 			{
-				alts[d]=findCenterRoom(d);
+				this.alts[d]=this.findCenterRoom(d);
 				switch(d)
 				{
 					case Directions.NORTH:
-						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][0],dirRoom,d);
+						for(int x=0;x<this.subMap.length;x++)
+							this.linkRoom(this.subMap[x][0],dirRoom,d);
 						break;
 					case Directions.SOUTH:
-						for(int x=0;x<subMap.length;x++)
-							linkRoom(subMap[x][subMap[0].length-1],dirRoom,d);
+						for(int x=0;x<this.subMap.length;x++)
+							this.linkRoom(this.subMap[x][this.subMap[0].length-1],dirRoom,d);
 						break;
 					case Directions.EAST:
-						for(int y=0;y<subMap[0].length;y++)
-							linkRoom(subMap[subMap.length-1][y],dirRoom,d);
+						for(int y=0;y<this.subMap[0].length;y++)
+							this.linkRoom(this.subMap[this.subMap.length-1][y],dirRoom,d);
 						break;
 					case Directions.WEST:
-						for(int y=0;y<subMap[0].length;y++)
-							linkRoom(subMap[0][y],dirRoom,d);
+						for(int y=0;y<this.subMap[0].length;y++)
+							this.linkRoom(this.subMap[0][y],dirRoom,d);
 						break;
 					case Directions.UP:
-						for(int x=0;x<subMap.length;x++)
-							for(int y=0;y<subMap[0].length;y++)
-								linkRoom(subMap[x][y],dirRoom,d);
+						for(int x=0;x<this.subMap.length;x++)
+							for(int y=0;y<this.subMap[0].length;y++)
+								this.linkRoom(this.subMap[x][y],dirRoom,d);
 						break;
 					case Directions.DOWN:
-						for(int x=0;x<subMap.length;x++)
-							for(int y=0;y<subMap[0].length;y++)
-								linkRoom(subMap[x][y],dirRoom,d);
+						for(int x=0;x<this.subMap.length;x++)
+							for(int y=0;y<this.subMap[0].length;y++)
+								this.linkRoom(this.subMap[x][y],dirRoom,d);
 						break;
 				}
 			}
@@ -216,64 +216,64 @@ public class Grid extends StdRoom implements GridLocale
 
 	public void buildGrid()
 	{
-		clearGrid();
-		subMap=new Room[size][size];
-		for(int x=0;x<size;x++)
-			for(int y=0;y<size;y++)
+		this.clearGrid();
+		this.subMap=new Room[this.size][this.size];
+		for(int x=0;x<this.size;x++)
+			for(int y=0;y<this.size;y++)
 			{
 				Room newRoom=getGridRoom(x,y);
 				if(newRoom!=null)
 				{
-					subMap[x][y]=newRoom;
-					if((y>0)&&(subMap[x][y-1]!=null))
-						linkRoom(newRoom,subMap[x][y-1],Directions.NORTH);
-					if((x>0)&&(subMap[x-1][y]!=null))
-						linkRoom(newRoom,subMap[x-1][y],Directions.WEST);
+					this.subMap[x][y]=newRoom;
+					if((y>0)&&(this.subMap[x][y-1]!=null))
+						this.linkRoom(newRoom,this.subMap[x][y-1],Directions.NORTH);
+					if((x>0)&&(this.subMap[x-1][y]!=null))
+						this.linkRoom(newRoom,this.subMap[x-1][y],Directions.WEST);
 					CMMap.map.addElement(newRoom);
 				}
 			}
-		buildFinalLinks();
+		this.buildFinalLinks();
 	}
 
 	public void clearGrid()
 	{
-		if(subMap!=null)
+		if(this.subMap!=null)
 		{
-			for(int x=0;x<subMap.length;x++)
-				for(int y=0;y<subMap[x].length;y++)
+			for(int x=0;x<this.subMap.length;x++)
+				for(int y=0;y<this.subMap[x].length;y++)
 				{
-					Room room=subMap[x][y];
+					Room room=this.subMap[x][y];
 					CMMap.map.remove(room);
 				}
-			subMap=null;
+			this.subMap=null;
 		}
-		alts=new Room[Directions.NUM_DIRECTIONS];
+		this.alts=new Room[Directions.NUM_DIRECTIONS];
 	}
 
 	protected Room getGridRoom(int x, int y)
 	{
-		if((x<0)||(y<0)||(y>=subMap[0].length)||(x>=subMap.length)) return null;
+		if((x<0)||(y<0)||(y>=this.subMap[0].length)||(x>=this.subMap.length)) return null;
 		GridChild gc=new GridChild();
 		gc.parent=this;
 		gc.setID("");
 		gc.setAreaID(this.getAreaID());
-		gc.setDisplayText(displayText);
-		gc.setDescription(description);
-		gc.domainCondition=domainCondition;
-		gc.domainType=domainType;
+		gc.setDisplayText(this.displayText);
+		gc.setDescription(this.description);
+		gc.domainCondition=this.domainCondition;
+		gc.domainType=this.domainType;
 		int c=-1;
-		if(displayTexts!=null)
-		if(displayTexts.length>0)
+		if(this.displayTexts!=null)
+		if(this.displayTexts.length>0)
 		{
-			c=Dice.roll(1,displayTexts.length,0)-1;
-			gc.setDisplayText(displayTexts[c]);
+			c=Dice.roll(1,this.displayTexts.length,0)-1;
+			gc.setDisplayText(this.displayTexts[c]);
 		}
-		if(descriptions!=null)
-		if(descriptions.length>0)
+		if(this.descriptions!=null)
+		if(this.descriptions.length>0)
 		{
-			if((c<0)||(c>descriptions.length))
-				c=Dice.roll(1,descriptions.length,0)-1;
-			gc.setDescription(descriptions[c]);
+			if((c<0)||(c>this.descriptions.length))
+				c=Dice.roll(1,this.descriptions.length,0)-1;
+			gc.setDescription(this.descriptions[c]);
 		}
 
 		return gc;
@@ -288,8 +288,8 @@ public class Grid extends StdRoom implements GridLocale
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.target()==this))
 		{
-			if(subMap==null)
-				buildGrid();
+			if(this.subMap==null)
+				this.buildGrid();
 			MOB mob=affect.source();
 			if((mob.location()!=null)&&(mob.location().ID().length()>0))
 			{
@@ -324,12 +324,12 @@ public class Grid extends StdRoom implements GridLocale
 			super();
 			if(parent!=null)
 			{
-				domainType=((Room)parent).domainType();
-				domainCondition=((Room)parent).domainConditions();
+				this.domainType=((Room)parent).domainType();
+				this.domainCondition=((Room)parent).domainConditions();
 				if(parent.baseEnvStats()!=null)
 				{
-					setBaseEnvStats(parent.baseEnvStats().cloneStats());
-					recoverEnvStats();
+					this.setBaseEnvStats(parent.baseEnvStats().cloneStats());
+					this.recoverEnvStats();
 				}
 			}
 			myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
