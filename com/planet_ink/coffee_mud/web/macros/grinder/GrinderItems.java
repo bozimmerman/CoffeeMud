@@ -6,12 +6,13 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class GrinderItems
 {
-	public static String editItem(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
+	public static String editItem(ExternalHTTPRequests httpReq, 
+								  Hashtable parms, 
+								  Room R)
 	{
 		Hashtable reqs=httpReq.getRequestParameters();
 		String itemCode=(String)reqs.get("ITEM");
 		if(itemCode==null) return "@break@";
-		int itemNum=Util.s_int(itemCode);
 
 		String mobNum=(String)reqs.get("MOB");
 		String newClassID=(String)reqs.get("CLASSES");
@@ -23,7 +24,7 @@ public class GrinderItems
 		if(itemCode.equals("NEW"))
 			I=CMClass.getItem(newClassID);
 		else
-		if(mobNum!=null)
+		if((mobNum!=null)&&(mobNum.length()>0))
 		{
 			M=R.fetchInhabitant(Util.s_int(mobNum)-1);
 			if(M==null)

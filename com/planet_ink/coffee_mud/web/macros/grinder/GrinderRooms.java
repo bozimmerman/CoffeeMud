@@ -160,65 +160,14 @@ public class GrinderRooms
 				if(MATCHING==null)
 					break;
 				else
-				if(Util.s_int(MATCHING)>0)
 				{
-					if((Util.s_int(MATCHING)-1)<allitems.size())
-						happilyAddItem((Item)allitems.elementAt(Util.s_int(MATCHING)-1),R);
-				}
-				else
-				if(MATCHING.indexOf("@")>0)
-				{
-					for(int m=0;m<RoomData.items.size();m++)
+					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+					if(I2!=null)
 					{
-						Item I2=(Item)RoomData.items.elementAt(m);
-						if(MATCHING.equals(""+I2))
-						{
+						if(Util.s_int(MATCHING)>0)
+							happilyAddItem(I2,R);
+						else
 							happilyAddItem((Item)I2.copyOf(),R);
-							break;
-						}
-					}
-				}
-				else
-				{
-					boolean found=false;
-					for(int m=0;m<CMClass.items.size();m++)
-					{
-						Item I2=(Item)CMClass.items.elementAt(m);
-						if(CMClass.className(I2).equals(MATCHING))
-						{	
-							happilyAddItem((Item)I2.copyOf(),R);
-							break;
-						}
-					}
-					if(!found)
-					for(int m=0;m<CMClass.armor.size();m++)
-					{
-						Item I2=(Item)CMClass.armor.elementAt(m);
-						if(CMClass.className(I2).equals(MATCHING))
-						{	
-							happilyAddItem((Item)I2.copyOf(),R);
-							break;
-						}
-					}
-					if(!found)
-					for(int m=0;m<CMClass.weapons.size();m++)
-					{
-						Item I2=(Item)CMClass.weapons.elementAt(m);
-						if(CMClass.className(I2).equals(MATCHING))
-						{	
-							happilyAddItem((Item)I2.copyOf(),R);
-							break;
-						}
-					}
-					if(!found)
-					for(int m=0;m<CMClass.miscMagic.size();m++)
-					{
-						Item I2=(Item)CMClass.miscMagic.elementAt(m);
-						if(CMClass.className(I2).equals(MATCHING))
-						{	
-							happilyAddItem((Item)I2.copyOf(),R);
-							break;
-						}
 					}
 				}
 			}
