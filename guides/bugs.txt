@@ -1,2 +1,1 @@
-Figure out the animal resource
-all the meats need to be listed in pounds
+Move time to its own class.

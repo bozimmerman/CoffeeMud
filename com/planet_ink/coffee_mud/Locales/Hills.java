@@ -25,6 +25,9 @@ public class Hills extends StdRoom
 		new Integer(EnvResource.RESOURCE_BERRIES),
 		new Integer(EnvResource.RESOURCE_OLIVES),
 		new Integer(EnvResource.RESOURCE_RICE),
+		new Integer(EnvResource.RESOURCE_LEATHER),
+		new Integer(EnvResource.RESOURCE_FEATHERS),
+		new Integer(EnvResource.RESOURCE_EGGS),
 		new Integer(EnvResource.RESOURCE_POTATOES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
