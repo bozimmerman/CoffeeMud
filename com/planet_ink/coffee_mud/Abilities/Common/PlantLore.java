@@ -21,7 +21,7 @@ public class PlantLore extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("Archon",10,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Speculate();}
+	public Environmental newInstance(){	return new PlantLore();}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
