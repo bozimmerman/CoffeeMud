@@ -574,6 +574,7 @@ public class StdRoom
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
 	}
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	private void look(MOB mob, boolean careAboutBrief)
 	{

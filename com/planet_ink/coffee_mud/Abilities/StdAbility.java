@@ -280,7 +280,9 @@ public class StdAbility implements Ability, Cloneable
 		}
 		return (Item)target;
 	}
-
+	
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 
 	private void cloneFix(Ability E){}
 	public Environmental copyOf()

@@ -354,7 +354,7 @@ public class ItemData extends StdWebMacro
 									break;
 						}
 						old=old.toUpperCase()+";";
-						for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -449,7 +449,7 @@ public class ItemData extends StdWebMacro
 					{
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-						for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");

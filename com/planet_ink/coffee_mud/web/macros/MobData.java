@@ -70,7 +70,7 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=ABLES"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
+				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 				{
 					String cnam=((Ability)a.nextElement()).ID();
 					str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -84,7 +84,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-			for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -128,7 +128,7 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD WIDTH=100%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=BLESS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
+				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 				{
 					String cnam=((Ability)a.nextElement()).ID();
 					str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -142,7 +142,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=BLESS"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Blessing");
-			for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);

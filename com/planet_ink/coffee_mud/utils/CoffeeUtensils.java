@@ -7,24 +7,96 @@ import java.io.*;
 
 public class CoffeeUtensils
 {
-	public static String id(Object e)
+	public static Trap getATrap(Environmental unlockThis)
 	{
-		if(e!=null)
-			if(e instanceof Environmental)
-				return ((Environmental)e).ID();
+		Trap theTrap=null;
+		int roll=(int)Math.round(Math.random()*100.0);
+		if(unlockThis instanceof Exit)
+		{
+			if(((Exit)unlockThis).hasADoor())
+			{
+				if(((Exit)unlockThis).hasALock())
+				{
+					if(roll<20)
+						theTrap=(Trap)CMClass.getAbility("Trap_Open");
+					else
+					if(roll<80)
+						theTrap=(Trap)CMClass.getAbility("Trap_Unlock");
+					else
+						theTrap=(Trap)CMClass.getAbility("Trap_Enter");
+				}
+				else
+				{
+					if(roll<50)
+						theTrap=(Trap)CMClass.getAbility("Trap_Open");
+					else
+						theTrap=(Trap)CMClass.getAbility("Trap_Enter");
+				}
+			}
 			else
-			if(e instanceof Race)
-				return ((Race)e).ID();
+				theTrap=(Trap)CMClass.getAbility("Trap_Enter");
+		}
+		else
+		if(unlockThis instanceof Container)
+		{
+			if(((Container)unlockThis).hasALid())
+			{
+				if(((Container)unlockThis).hasALock())
+				{
+					if(roll<20)
+						theTrap=(Trap)CMClass.getAbility("Trap_Open");
+					else
+					if(roll<80)
+						theTrap=(Trap)CMClass.getAbility("Trap_Unlock");
+					else
+						theTrap=(Trap)CMClass.getAbility("Trap_Get");
+				}
+				else
+				{
+					if(roll<50)
+						theTrap=(Trap)CMClass.getAbility("Trap_Open");
+					else
+						theTrap=(Trap)CMClass.getAbility("Trap_Get");
+				}
+			}
 			else
-			if(e instanceof CharClass)
-				return ((CharClass)e).ID();
-			else
-			if(e instanceof Behavior)
-				return ((Behavior)e).ID();
-			else
-			if(e instanceof Clan)
-				return ((Clan)e).ID();
-		return "";
+				theTrap=(Trap)CMClass.getAbility("Trap_Get");
+		}
+		else
+		if(unlockThis instanceof Item)
+			theTrap=(Trap)CMClass.getAbility("Trap_Get");
+		return theTrap;
+	}
+
+	public static Trap fetchMyTrap(Environmental myThang)
+	{
+		if(myThang==null) return null;
+		for(int a=0;a<myThang.numAffects();a++)
+		{
+			Ability A=myThang.fetchAffect(a);
+			if((A!=null)&&(A instanceof  Trap))
+				return (Trap)A;
+		}
+		return null;
+	}
+
+	public static void setTrapped(Environmental myThang, boolean isTrapped)
+	{
+		Trap t=getATrap(myThang);
+		t.setReset(50);
+		setTrapped(myThang,t,isTrapped);
+	}
+	public static void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
+	{
+		for(int a=0;a<myThang.numAffects();a++)
+		{
+			Ability A=myThang.fetchAffect(a);
+			if((A!=null)&&(A instanceof Trap))
+				A.unInvoke();
+		}
+
+		if((isTrapped)&&(myThang.fetchAffect(theTrap.ID())==null))
+			myThang.addAffect(theTrap);
 	}
 
 	public static boolean containsString(String toSrchStr, String srchStr)

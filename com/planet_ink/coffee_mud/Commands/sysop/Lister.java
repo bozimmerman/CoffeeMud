@@ -449,31 +449,31 @@ public class Lister
 			s.rawPrintln(reallyList(CMClass.charClasses()).toString());
 		else
 		if("SPELLS".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.SPELL).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SPELL).toString());
 		else
 		if("SONGS".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.SONG).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SONG).toString());
 		else
 		if("PRAYERS".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.PRAYER).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.PRAYER).toString());
 		else
 		if("PROPERTIES".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.PROPERTY).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.PROPERTY).toString());
 		else
 		if("THIEFSKILLS".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.THIEF_SKILL).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.THIEF_SKILL).toString());
 		else
 		if("SKILLS".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.SKILL).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.SKILL).toString());
 		else
 		if("QUESTS".startsWith(listThis))
 			mob.tell(listQuests().toString());
 		else
 		if("DISEASES".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.DISEASE).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.DISEASE).toString());
 		else
 		if("POISONS".startsWith(listThis))
-			s.rawPrintln(reallyList(CMClass.sortedAbilities(),Ability.DISEASE).toString());
+			s.rawPrintln(reallyList(CMClass.abilities(),Ability.DISEASE).toString());
 		else
 		if("TICKS".startsWith(listThis))
 			mob.tell(ExternalPlay.listTicks(-1).toString());

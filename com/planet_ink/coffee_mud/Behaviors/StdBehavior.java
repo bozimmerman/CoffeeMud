@@ -78,6 +78,7 @@ public class StdBehavior implements Behavior
 
 	public String getParms(){return parms;}
 	public void setParms(String parameters){parms=parameters;}
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

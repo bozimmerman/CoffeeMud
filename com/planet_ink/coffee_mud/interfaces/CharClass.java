@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
-public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListener
+public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListener, Comparable
 {
 	public static final int ARMOR_ANY=0;
 	public static final int ARMOR_CLOTH=1;

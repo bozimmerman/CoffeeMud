@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.Vector;
-public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener
+public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, Comparable
 {
 	public String ID();
 	public String name();

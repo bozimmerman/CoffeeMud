@@ -97,7 +97,7 @@ public class Thief_Trap extends ThiefSkill
 
 		boolean success=profficiencyCheck(+((mob.envStats().level()
 											 -trapThis.envStats().level())*3),auto);
-		Trap theOldTrap=CMClass.fetchMyTrap(trapThis);
+		Trap theOldTrap=CoffeeUtensils.fetchMyTrap(trapThis);
 		if(theOldTrap!=null)
 		{
 			if(theOldTrap.disabled())

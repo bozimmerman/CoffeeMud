@@ -6,7 +6,7 @@ import java.util.*;
  * something that is affected by, or affects
  * the environment around them.
  */
-public interface Behavior extends Cloneable, Tickable, MsgListener
+public interface Behavior extends Cloneable, Tickable, MsgListener, Comparable
 {
 	/** General descriptive ID for this
 	 * object.	Includes everything from 

@@ -1859,6 +1859,7 @@ public class StdMOB implements MOB
 	}
 
 	public boolean isMonster(){	return (mySession==null);}
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public boolean isASysOp(Room of)
 	{

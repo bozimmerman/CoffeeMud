@@ -481,7 +481,7 @@ public class MOBloader
 			+"  CMPASS='"+mob.password()+"'"
 			+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
 			+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STRENGTH)
-			+", CMRACE='"+CoffeeUtensils.id(mob.baseCharStats().getMyRace())+"'"
+			+", CMRACE='"+CMClass.id(mob.baseCharStats().getMyRace())+"'"
 			+", CMDEXT="+mob.baseCharStats().getStat(CharStats.DEXTERITY)
 			+", CMCONS="+mob.baseCharStats().getStat(CharStats.CONSTITUTION)
 			+", CMGEND='"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"'"
@@ -744,7 +744,7 @@ public class MOBloader
 			+mob.ID()
 			+"','"+mob.password()
 			+"','"+mob.baseCharStats().getMyClassesStr()
-			+"','"+CoffeeUtensils.id(mob.baseCharStats().getMyRace())
+			+"','"+CMClass.id(mob.baseCharStats().getMyRace())
 			+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');";
 			D.update(str);
 			DBConnector.DBDone(D);

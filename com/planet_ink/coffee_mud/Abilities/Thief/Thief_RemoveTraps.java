@@ -41,7 +41,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 		boolean success=profficiencyCheck(+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
-		Trap theTrap=CMClass.fetchMyTrap(unlockThis);
+		Trap theTrap=CoffeeUtensils.fetchMyTrap(unlockThis);
 		Trap opTrap=null;
 		if(unlockThis instanceof Exit)
 		{
@@ -50,9 +50,9 @@ public class Thief_RemoveTraps extends ThiefSkill
 			{
 				Exit exit=mob.location().getReverseExit(dirCode);
 				if(exit!=null)
-					opTrap=CMClass.fetchMyTrap(exit);
+					opTrap=CoffeeUtensils.fetchMyTrap(exit);
 				Trap roomTrap=null;
-				if(nextRoom!=null) roomTrap=CMClass.fetchMyTrap(nextRoom);
+				if(nextRoom!=null) roomTrap=CoffeeUtensils.fetchMyTrap(nextRoom);
 				if((theTrap!=null)&&(theTrap.disabled())&&(roomTrap!=null))
 				{
 					opTrap=null;

@@ -307,6 +307,8 @@ public class StdRace implements Race
 		return true;
 	}
 	
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 	protected Item makeResource(String name, int type)
 	{
 		Item I=null;

@@ -153,6 +153,8 @@ public class Property implements Ability, Cloneable
 		return defaultValue;
 	}
 	
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 	protected static int getVal(String text, String key)
 	{
 		text=text.toUpperCase();

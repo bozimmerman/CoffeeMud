@@ -469,9 +469,9 @@ public class RoomLoader
 					+") values ("
 					+"'"+room.ID()+"',"
 					+e+","
-					+"'"+CoffeeUtensils.id(thisExit)+"',"
+					+"'"+CMClass.id(thisExit)+"',"
 					+"'"+((thisExit==null)?" ":thisExit.text())+" ',"
-					+"'"+CoffeeUtensils.id(thisRoom)+"')";
+					+"'"+CMClass.id(thisRoom)+"')";
 					D.update(str);
 					DBConnector.DBDone(D);
 				}

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.web.macros;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.CMClass;
 import com.planet_ink.coffee_mud.exceptions.*;
 import java.util.*;
 
@@ -15,6 +16,8 @@ public class StdWebMacro implements WebMacro
 	{
 		return "[Unimplemented macro!]";
 	}
+	
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	
 	protected StringBuffer helpHelp(StringBuffer s)
 	{

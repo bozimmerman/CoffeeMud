@@ -203,6 +203,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public void affect(Environmental myHost, Affect affect)
 	{
 	}
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void gainExperience(MOB mob, 
 							   MOB victim, 

@@ -4,7 +4,7 @@ import com.planet_ink.coffee_mud.web.*;
 import com.planet_ink.coffee_mud.exceptions.*;
 
 
-public interface WebMacro
+public interface WebMacro extends Comparable
 {
 	public String ID();
 	public String name();

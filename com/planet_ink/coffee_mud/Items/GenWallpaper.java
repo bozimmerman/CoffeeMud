@@ -92,6 +92,7 @@ public class GenWallpaper implements Item
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats){}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void setMiscText(String newText)
 	{
 		Vector V=XMLManager.parseAllXML(newText);

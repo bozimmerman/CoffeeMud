@@ -332,6 +332,8 @@ public class StdArea implements Area
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
 
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 	public String text()
 	{
 		return Generic.getPropertiesStr(this,true);

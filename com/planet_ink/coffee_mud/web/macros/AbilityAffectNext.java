@@ -19,7 +19,7 @@ public class AbilityAffectNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(Enumeration a=CMClass.sortedAbilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;

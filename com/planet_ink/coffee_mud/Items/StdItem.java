@@ -355,6 +355,8 @@ public class StdItem implements Item
 		return miscText;
 	}
 
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(destroyed)

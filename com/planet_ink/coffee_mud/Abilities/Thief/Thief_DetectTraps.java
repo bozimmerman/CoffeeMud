@@ -41,7 +41,7 @@ public class Thief_DetectTraps extends ThiefSkill
 
 		boolean success=profficiencyCheck(+((mob.envStats().level()
 											 -unlockThis.envStats().level())*3),auto);
-		Trap theTrap=CMClass.fetchMyTrap(unlockThis);
+		Trap theTrap=CoffeeUtensils.fetchMyTrap(unlockThis);
 		if(unlockThis instanceof Exit)
 		{
 			dirCode=ExternalPlay.getMyDirCode((Exit)unlockThis,mob.location(),dirCode);
@@ -50,8 +50,8 @@ public class Thief_DetectTraps extends ThiefSkill
 				Exit exit=mob.location().getReverseExit(dirCode);
 				Trap opTrap=null;
 				Trap roomTrap=null;
-				if(nextRoom!=null) roomTrap=CMClass.fetchMyTrap(nextRoom);
-				if(exit!=null) opTrap=CMClass.fetchMyTrap(exit);
+				if(nextRoom!=null) roomTrap=CoffeeUtensils.fetchMyTrap(nextRoom);
+				if(exit!=null) opTrap=CoffeeUtensils.fetchMyTrap(exit);
 				if((theTrap!=null)&&(opTrap!=null))
 				{
 					if((theTrap.disabled())&&(!opTrap.disabled()))

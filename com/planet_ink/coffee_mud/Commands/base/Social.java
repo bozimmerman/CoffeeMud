@@ -111,6 +111,7 @@ public class Social implements Environmental
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public Environmental newInstance()
 	{ return new Social();}
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	private static final String[] CODES={"CLASS","NAME"};
 	public String[] getStatCodes(){return CODES;}

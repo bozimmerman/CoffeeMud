@@ -10,7 +10,7 @@ public class TrappedChest extends LargeChest
 	{
 		super();
 		Trap t=(Trap)CMClass.getAbility("Trap_Trap");
-		if(t!=null) CMClass.setTrapped(this,t,true);
+		if(t!=null) CoffeeUtensils.setTrapped(this,t,true);
 		material=EnvResource.RESOURCE_OAK;
 		isLocked=false;
 	}

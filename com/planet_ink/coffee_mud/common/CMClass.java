@@ -13,8 +13,7 @@ public class CMClass extends ClassLoader
 	private static Vector races=new Vector();
 	private static Vector charClasses=new Vector();
 	private static Vector MOBs=new Vector();
-	private static Hashtable abilities=new Hashtable();
-	private static Vector sortedAbilities=new Vector();
+	private static Vector abilities=new Vector();
 	private static Vector locales=new Vector();
 	private static Vector exits=new Vector();
 	private static Vector items=new Vector();
@@ -42,19 +41,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration areaTypes(){return areaTypes.elements();}
 	public static Enumeration extraCmds(){return extraCmds.elements();}
 	public static Enumeration abilities(){return abilities.elements();}
-	public static synchronized Enumeration sortedAbilities()
-	{
-		if(sortedAbilities.size()!=abilities.size())
-		{
-			sortedAbilities=new Vector();
-			Object[] sorted=(Object[])(new TreeSet(abilities.keySet())).toArray();
-			for(int i=0;i<sorted.length;i++)
-				sortedAbilities.addElement(abilities.get((String)sorted[i]));
-		}
-		return sortedAbilities.elements();
-	}
-	public static Ability randomAbility()
-	{ return (Ability)new Vector(abilities.values()).elementAt((int)Math.round(Math.floor(Math.random()*new Integer(abilities.size()).doubleValue())));	}
+	public static Ability randomAbility(){ return (Ability)abilities.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(abilities.size()).doubleValue())));}
 	
 	public static Item getItem(String calledThis)
 	{
@@ -65,8 +52,6 @@ public class CMClass extends ClassLoader
 			thisItem=(Item)getEnv(weapons,calledThis);
 		if(thisItem==null)
 			thisItem=(Item)getEnv(miscMagic,calledThis);
-		if(thisItem!=null)
-			thisItem=(Item)thisItem.newInstance();
 		return thisItem;
 	}
 	
@@ -85,23 +70,9 @@ public class CMClass extends ClassLoader
 		if(thisItem==null)
 			thisItem=getEnv(miscMagic,calledThis);
 		if(thisItem==null)
-		{
-			for(int i=0;i<MOBs.size();i++)
-			{
-				MOB mob=(MOB)MOBs.elementAt(i);
-
-				if(className(mob).equalsIgnoreCase(calledThis))
-				{
-					thisItem=mob;
-					break;
-				}
-			}
-		}
+			thisItem=getEnv(MOBs,calledThis);
 		if(thisItem==null)
-			thisItem=(Environmental)getGlobal(abilities,calledThis);
-		
-		if(thisItem!=null)
-			thisItem=thisItem.newInstance();
+			thisItem=getEnv(abilities,calledThis);
 		
 		if((thisItem==null)&&(charClasses.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Unknown '"+calledThis+"'.");
@@ -179,27 +150,39 @@ public class CMClass extends ClassLoader
 	}
 	public static MOB getMOB(String calledThis)
 	{
-		for(int i=0;i<MOBs.size();i++)
+		return (MOB)getEnv(MOBs,calledThis);
+	}
+	
+	public static Object getGlobal(Vector list, String ID)
+	{
+		if(list.size()==0) return null;
+		int start=0;
+		int end=list.size()-1;
+		while(start<=end)
 		{
-			MOB mob=(MOB)MOBs.elementAt(i);
-
-			if(className(mob).equalsIgnoreCase(calledThis))
-				return (MOB)mob.newInstance();
+			int mid=(end+start)/2;
+			int comp=classID(list.elementAt(mid)).compareToIgnoreCase(ID);
+			if(comp==0) 
+				return list.elementAt(mid);
+			else
+			if(comp>0) 
+				end=mid-1;
+			else
+				start=mid+1;
+			
 		}
 		return null;
 	}
 	public static Ability getAbility(String calledThis)
 	{
-		Ability A=(Ability)abilities.get(calledThis);
-		if(A==null)
-			A=(Ability)getGlobal(abilities,calledThis);
+		Ability A=(Ability)getGlobal(abilities,calledThis);
 		if(A!=null)
 			A=(Ability)A.newInstance();
 		return A;
 	}
 	public static Ability findAbility(String calledThis)
 	{
-		Ability A=(Ability)abilities.get(calledThis);
+		Ability A=(Ability)getGlobal(abilities,calledThis);
 		if(A==null)
 			A=(Ability)CoffeeUtensils.fetchEnvironmental(abilities,calledThis,true);
 		if(A==null)
@@ -209,7 +192,7 @@ public class CMClass extends ClassLoader
 	}
 	public static Ability findAbility(String calledThis, CharStats charStats)
 	{
-		Ability A=(Ability)abilities.get(calledThis);
+		Ability A=(Ability)getGlobal(abilities,calledThis);
 		if(A==null)
 		{
 			Vector As=new Vector();
@@ -233,32 +216,25 @@ public class CMClass extends ClassLoader
 
 	public static Environmental getEnv(Vector fromThese, String calledThis)
 	{
-		for(int i=0;i<fromThese.size();i++)
-		{
-			Environmental E=(Environmental)fromThese.elementAt(i);
-			if(E.ID().equalsIgnoreCase(calledThis))
-				return E.newInstance();
-		}
-		return null;
-	}
-
-	public static Object getGlobal(Vector fromThese, String calledThis)
-	{
-		for(int i=0;i<fromThese.size();i++)
-			if(CoffeeUtensils.id(fromThese.elementAt(i)).equalsIgnoreCase(calledThis))
-				return fromThese.elementAt(i);
-		return null;
+		Environmental E=(Environmental)getGlobal(fromThese,calledThis);
+		if(E!=null) return E.newInstance();
+		return E;
 	}
 
 	public static Object getGlobal(Hashtable fromThese, String calledThis)
 	{
-		for(Enumeration e=fromThese.elements();e.hasMoreElements();)
+		Object o=fromThese.get(calledThis);
+		if(o==null)
 		{
-			Object o=e.nextElement();
-			if(CoffeeUtensils.id(o).equalsIgnoreCase(calledThis))
-				return o;
+			for(Enumeration e=fromThese.elements();e.hasMoreElements();)
+			{
+				o=e.nextElement();
+				if(classID(o).equalsIgnoreCase(calledThis))
+					return o;
+			}
+			return null;
 		}
-		return null;
+		return o;
 	}
 
 	public static boolean loadClasses(INI page)
@@ -289,92 +265,92 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Locales loaded    : "+locales.size());
 		if(locales.size()==0) return false;
 
-		abilities=loadHashListToObj(prefix+"Abilities"+File.separatorChar,page.getStr("ABILITIES"),"com.planet_ink.coffee_mud.interfaces.Ability");
+		abilities=loadVectorListToObj(prefix+"Abilities"+File.separatorChar,page.getStr("ABILITIES"),"com.planet_ink.coffee_mud.interfaces.Ability");
 		if(abilities.size()==0) return false;
 
 		if((page.getStr("ABILITIES")!=null)
 		&&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
 		{
-			Hashtable tempH;
+			Vector tempV;
 			int size=0;
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Ranger"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Ranger"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Paladin"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Paladin"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			
-			size+=tempH.size();
+			size+=tempV.size();
 			Log.sysOut("MUD","Fighter Skills    : "+size);
-			addH(tempH,abilities);
+			addV(tempV,abilities);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Druid"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Chants loaded     : "+tempH.size());
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Druid"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			Log.sysOut("MUD","Chants loaded     : "+tempV.size());
+			addV(tempV,abilities);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Languages loaded  : "+tempH.size());
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			Log.sysOut("MUD","Languages loaded  : "+tempV.size());
+			addV(tempV,abilities);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Diseases"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Diseases"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Poisons"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Poisons"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
 			Log.sysOut("MUD","Properties loaded : "+size);
-			addH(tempH,abilities);
+			addV(tempV,abilities);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Prayers loaded    : "+tempH.size());
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			Log.sysOut("MUD","Prayers loaded    : "+tempV.size());
+			addV(tempV,abilities);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Common"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Common"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			size+=tempH.size();
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			size+=tempV.size();
+			addV(tempV,abilities);
 			Log.sysOut("MUD","Skills loaded     : "+size);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Songs loaded      : "+tempH.size());
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			Log.sysOut("MUD","Songs loaded      : "+tempV.size());
+			addV(tempV,abilities);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Spells loaded     : "+tempH.size());
-			addH(tempH,abilities);
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			Log.sysOut("MUD","Spells loaded     : "+tempV.size());
+			addV(tempV,abilities);
 		
-			tempH=loadHashListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
-			Log.sysOut("MUD","Traps loaded      : "+tempH.size());
-			addH(tempH,abilities);
-			
+			tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"%DEFAULT%","com.planet_ink.coffee_mud.interfaces.Ability");
+			Log.sysOut("MUD","Traps loaded      : "+tempV.size());
+			addV(tempV,abilities);
+			abilities=new Vector(new TreeSet(abilities));
 		}
 
 		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"),"com.planet_ink.coffee_mud.interfaces.Item");
@@ -451,7 +427,7 @@ public class CMClass extends ClassLoader
 		races=new Vector();
 		charClasses=new Vector();
 		MOBs=new Vector();
-		abilities=new Hashtable();
+		abilities=new Vector();
 		locales=new Vector();
 		exits=new Vector();
 		items=new Vector();
@@ -461,7 +437,6 @@ public class CMClass extends ClassLoader
 		miscMagic=new Vector();
 		clantypes=new Vector();
 		areaTypes=new Vector();
-		sortedAbilities=new Vector();
 	}
 
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
@@ -502,7 +477,7 @@ public class CMClass extends ClassLoader
 			x=auxPath.indexOf(";");
 		}
 		loadObjectListToObj(v,filePath,auxPath,ancester);
-		return v;
+		return new Vector(new TreeSet(v));;
 	}
 	public static void loadListToObj(Object toThis, String filePath, boolean aux, String ancestor)
 	{
@@ -620,96 +595,58 @@ public class CMClass extends ClassLoader
 		return (ancestorCl.isAssignableFrom(cl)) ;
 	}
 
-	public static Trap getATrap(Environmental unlockThis)
+	public static String classID(Object e)
 	{
-		Trap theTrap=null;
-		int roll=(int)Math.round(Math.random()*100.0);
-		if(unlockThis instanceof Exit)
+		if(e!=null)
 		{
-			if(((Exit)unlockThis).hasADoor())
-			{
-				if(((Exit)unlockThis).hasALock())
-				{
-					if(roll<20)
-						theTrap=(Trap)getAbility("Trap_Open");
-					else
-					if(roll<80)
-						theTrap=(Trap)getAbility("Trap_Unlock");
-					else
-						theTrap=(Trap)getAbility("Trap_Enter");
-				}
-				else
-				{
-					if(roll<50)
-						theTrap=(Trap)getAbility("Trap_Open");
-					else
-						theTrap=(Trap)getAbility("Trap_Enter");
-				}
-			}
+			if(e instanceof Room)
+				return className(e);
 			else
-				theTrap=(Trap)getAbility("Trap_Enter");
-		}
-		else
-		if(unlockThis instanceof Container)
-		{
-			if(((Container)unlockThis).hasALid())
-			{
-				if(((Container)unlockThis).hasALock())
-				{
-					if(roll<20)
-						theTrap=(Trap)getAbility("Trap_Open");
-					else
-					if(roll<80)
-						theTrap=(Trap)getAbility("Trap_Unlock");
-					else
-						theTrap=(Trap)getAbility("Trap_Get");
-				}
-				else
-				{
-					if(roll<50)
-						theTrap=(Trap)getAbility("Trap_Open");
-					else
-						theTrap=(Trap)getAbility("Trap_Get");
-				}
-			}
+			if(e instanceof MOB)
+				return className(e);
 			else
-				theTrap=(Trap)getAbility("Trap_Get");
+			if(e instanceof Environmental)
+				return ((Environmental)e).ID();
+			else
+			if(e instanceof Race)
+				return ((Race)e).ID();
+			else
+			if(e instanceof CharClass)
+				return ((CharClass)e).ID();
+			else
+			if(e instanceof Behavior)
+				return ((Behavior)e).ID();
+			else
+			if(e instanceof Clan)
+				return ((Clan)e).ID();
+			else
+			if(e instanceof WebMacro)
+				return ((WebMacro)e).ID();
 		}
-		else
-		if(unlockThis instanceof Item)
-			theTrap=(Trap)CMClass.getAbility("Trap_Get");
-		return theTrap;
+		return className(e);
 	}
-
-	public static Trap fetchMyTrap(Environmental myThang)
+	
+	public static String id(Object e)
 	{
-		if(myThang==null) return null;
-		for(int a=0;a<myThang.numAffects();a++)
-		{
-			Ability A=myThang.fetchAffect(a);
-			if((A!=null)&&(A instanceof  Trap))
-				return (Trap)A;
-		}
-		return null;
-	}
-
-	public static void setTrapped(Environmental myThang, boolean isTrapped)
-	{
-		Trap t=getATrap(myThang);
-		t.setReset(50);
-		setTrapped(myThang,t,isTrapped);
-	}
-	public static void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
-	{
-		for(int a=0;a<myThang.numAffects();a++)
-		{
-			Ability A=myThang.fetchAffect(a);
-			if((A!=null)&&(A instanceof Trap))
-				A.unInvoke();
-		}
-
-		if((isTrapped)&&(myThang.fetchAffect(theTrap.ID())==null))
-			myThang.addAffect(theTrap);
+		if(e!=null)
+			if(e instanceof Environmental)
+				return ((Environmental)e).ID();
+			else
+			if(e instanceof Race)
+				return ((Race)e).ID();
+			else
+			if(e instanceof CharClass)
+				return ((CharClass)e).ID();
+			else
+			if(e instanceof Behavior)
+				return ((Behavior)e).ID();
+			else
+			if(e instanceof Clan)
+				return ((Clan)e).ID();
+			else
+			if(e instanceof WebMacro)
+				return ((WebMacro)e).ID();
+		return "";
 	}
 
 }

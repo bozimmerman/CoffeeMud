@@ -452,6 +452,7 @@ public class StdExit implements Exit
 			break;
 		}
 	}
+	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
