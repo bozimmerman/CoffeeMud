@@ -55,7 +55,7 @@ public class Spell_Dragonfire extends Spell
 
 					int maxDie =  adjustedLevel(mob);
 					int damage = Dice.roll(maxDie,3,6);
-					if((!msg.wasModified())||(msg2.wasModified()))
+					if((msg.wasModified())||(msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));
 
 					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The dragonfire <DAMAGE> <T-NAME>!");

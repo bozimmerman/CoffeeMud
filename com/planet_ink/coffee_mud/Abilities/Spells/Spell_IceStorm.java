@@ -54,7 +54,7 @@ public class Spell_IceStorm extends Spell
 
 					int numDice = adjustedLevel(mob);
 					int damage = Dice.roll(numDice, 15, 10);
-					if((!msg.wasModified())||(msg2.wasModified()))
+					if((msg.wasModified())||(msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));
 					damage = (int)Math.round(Util.div(damage,2.0));
 					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_FROSTING,"The freezing blast <DAMAGE> <T-NAME>!");
