@@ -86,7 +86,7 @@ public class Chant_BlueMoon extends Chant
 		}
 		if(target.fetchAffect(ID())!=null)
 		{
-			mob.tell("This place is already under the red moon.");
+			mob.tell("This place is already under the blue moon.");
 			return false;
 		}
 

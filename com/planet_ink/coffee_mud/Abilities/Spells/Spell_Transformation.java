@@ -21,7 +21,7 @@ public class Spell_Transformation extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> no longer seem(s) so brutish.");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so brutish.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

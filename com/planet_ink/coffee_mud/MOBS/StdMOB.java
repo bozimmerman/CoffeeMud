@@ -987,7 +987,7 @@ public class StdMOB implements MOB
 					if(!Sense.canBeSeenBy(affect.target(),this))
 					{
 						if(affect.target() instanceof Item)
-							tell("You don't see "+affect.target()+" here.");
+							tell("You don't see "+affect.target().name()+" here.");
 						else
 							tell("You can't see that!");
 						return false;

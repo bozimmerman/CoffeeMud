@@ -355,7 +355,23 @@ public class SocialProcessor
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
-			if((thisSession.mob()!=null)&&(!thisSession.killFlag())&&(thisSession.mob().name().equalsIgnoreCase(targetName)))
+			if((thisSession.mob()!=null)
+			   &&(!thisSession.killFlag())
+			   &&((thisSession.mob().name().equalsIgnoreCase(targetName))
+				  ||(thisSession.mob().Name().equalsIgnoreCase(targetName))))
+			{
+				target=thisSession.mob();
+				break;
+			}
+		}
+		if(target==null)
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session thisSession=(Session)Sessions.elementAt(s);
+			if((thisSession.mob()!=null)
+			   &&(!thisSession.killFlag())
+			   &&((CoffeeUtensils.containsString(thisSession.mob().name(),targetName))
+				  ||(CoffeeUtensils.containsString(thisSession.mob().Name(),targetName))))
 			{
 				target=thisSession.mob();
 				break;

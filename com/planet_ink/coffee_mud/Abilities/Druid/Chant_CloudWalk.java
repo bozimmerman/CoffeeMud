@@ -23,7 +23,7 @@ public class Chant_CloudWalk extends Chant
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> float(s) down to the ground.");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> float(s) down to the ground.");
 
 		super.unInvoke();
 
