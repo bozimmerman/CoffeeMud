@@ -123,8 +123,23 @@ public class MOBTeacher extends CombatAbilities
 				x=s.lastIndexOf("\'");
 				if(x>0) s=s.substring(0,x);
 
+				if(s.startsWith("\"")) s=s.substring(1).trim();
+				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				if(s.toUpperCase().endsWith("PLEASE"))
 					s=s.substring(0,s.length()-6).trim();
+				if(s.startsWith("\"")) s=s.substring(1).trim();
+				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.toUpperCase().startsWith("PLEASE "))
+				{
+					giveABonus=true;
+					s=s.substring(6).trim();
+				}
+				if(s.startsWith("\"")) s=s.substring(1).trim();
+				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
+				if(s.toUpperCase().startsWith("ME "))
+					s=s.substring(3).trim();
+				if(s.startsWith("\"")) s=s.substring(1).trim();
+				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				if(s.toUpperCase().startsWith("PLEASE "))
 				{
 					giveABonus=true;
@@ -132,13 +147,8 @@ public class MOBTeacher extends CombatAbilities
 				}
 				if(s.toUpperCase().startsWith("ME "))
 					s=s.substring(3).trim();
-				if(s.toUpperCase().startsWith("PLEASE "))
-				{
-					giveABonus=true;
-					s=s.substring(6).trim();
-				}
-				if(s.toUpperCase().startsWith("ME "))
-					s=s.substring(3).trim();
+				if(s.startsWith("\"")) s=s.substring(1).trim();
+				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),mob.charStats().getMyClass().ID());
 				if(myAbility==null)
 				{

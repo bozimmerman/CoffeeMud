@@ -12,10 +12,14 @@ public interface ShopKeeper extends MOB
 	public final static int ONLYBASEINVENTORY=7;
 	public final static int TRAINER=8;
 	public final static int CASTER=9;
+	public final static int JEWELLER=10;
+	public final static int ALCHEMIST=11;
+	public final static int BANKER=12;
+	
 	public final static String[] SOLDCODES={
 		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
 		"PETS","LEATHER","ONLYBASEINVENTORY","TRAINER",
-		"CASTER"};
+		"CASTER","JEWELLER","ALCHEMIST","BANKER"};
 	
 	public int whatIsSold();
 	public void setWhatIsSold(int newSellCode);

@@ -214,7 +214,7 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(shopkeeper instanceof Banker)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 			{
 				shopkeeper=(MOB)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
@@ -245,7 +245,7 @@ public class ShopKeepers
 				return;
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_BUY,"<S-NAME> deposit(s) "+thisThang.name()+" into <S-HIS-HER> account with <T-NAMESELF>.");
+		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_DEPOSIT,"<S-NAME> deposit(s) "+thisThang.name()+" into <S-HIS-HER> account with <T-NAMESELF>.");
 		if(!mob.location().okAffect(newMsg))
 			return;
 		mob.location().send(mob,newMsg);
@@ -264,7 +264,7 @@ public class ShopKeepers
 			}
 			commands.removeElementAt(0);
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+			if((shopkeeper!=null)&&(shopkeeper instanceof Banker)&&(Sense.canBeSeenBy(shopkeeper,mob)))
 			{
 				shopkeeper=(MOB)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
@@ -285,17 +285,13 @@ public class ShopKeepers
 			commands.removeElementAt(0);
 		}
 		String thisName=Util.combine(commands,0);
-		Item thisThang=new SocialProcessor().possibleGold(mob,thisName);
-		if(thisThang==null)
+		Item thisThang=((Banker)shopkeeper).findDepositInventory(mob,thisName);
+		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
 		{
-			thisThang=mob.fetchCarried(null,thisName);
-			if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
-			{
-				mob.tell("You don't seem to be carrying that.");
-				return;
-			}
+			mob.tell("That doesn't appear to be available.");
+			return;
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_BUY,"<S-NAME> withdraw(s) "+thisThang.name()+" from <S-HIS-HER> account with "+shopkeeper.name()+".");
+		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) "+thisThang.name()+" from <S-HIS-HER> account with "+shopkeeper.name()+".");
 		if(!mob.location().okAffect(newMsg))
 			return;
 		mob.location().send(mob,newMsg);

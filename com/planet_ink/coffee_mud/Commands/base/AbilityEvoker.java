@@ -10,9 +10,7 @@ public class AbilityEvoker
 	public void gain(MOB mob, Vector commands)
 		throws Exception
 	{
-		Vector V=new Vector();
-		V.addElement("SAY");
-		V.addElement(Util.combine(commands,0));
+		commands.insertElementAt(0,"SAY");
 		ExternalPlay.doCommand(mob,V);
 	}
 	private boolean evokedBy(Ability thisAbility, String thisWord)
