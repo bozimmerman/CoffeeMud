@@ -309,6 +309,7 @@ public class Quests implements Cloneable, Quest
 							R.showHappens(CMMsg.MSG_OK_ACTION,null);
 						}
 					}
+					else
 					if(cmd.equals("MOBGROUP"))
 					{
 						MG=null;
