@@ -202,7 +202,7 @@ public class ProcessSMTPrequest extends Thread
 																		  from,
 																		  "ALL",
 																		  subject,
-																		  fdat,-1);
+																		  CoffeeFilter.fullInFilter(fdat),-1);
 									}
 									else
 									{

@@ -634,7 +634,7 @@ public class SMTPserver extends Thread implements Tickable
 							   toM.playerStats().getEmail(),
 							   usePrivateRules?toM.playerStats().getEmail():replyTo+"@"+domainName(),
 							   subj,
-							   msg);
+							   CoffeeFilter.simpleOutFilter(msg));
 			}
 			catch(java.io.IOException ioe)
 			{

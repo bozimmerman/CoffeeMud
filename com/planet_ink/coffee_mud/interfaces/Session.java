@@ -80,12 +80,7 @@ public interface Session
 		throws IOException;
 	public String readlineContinue()
 		throws IOException;
-	public String filter(Environmental source,
-						 Environmental target,
-						 Environmental tool,
-						 String msg,
-						 boolean wrapOnly);
-
+	
 	public Vector previousCMD();
 	
 	public MOB mob();
@@ -93,6 +88,9 @@ public interface Session
 	
 	public void setTermID(int tid);
 	public int getTermID();
+	public String makeEscape(int c);
+	public int getColor(char c);
+	public int currentColor();
 	
 	public String getAddress();
 	public int getStatus();

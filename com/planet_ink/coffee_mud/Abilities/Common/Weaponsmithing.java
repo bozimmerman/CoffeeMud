@@ -158,6 +158,7 @@ public class Weaponsmithing extends CraftingSkill
 		&&(student.fetchAbility("Specialization_EdgedWeapon")==null)
 		&&(student.fetchAbility("Specialization_FlailedWeapon")==null)
 		&&(student.fetchAbility("Specialization_Polearm")==null)
+		&&(student.fetchAbility("Specialization_Hammer")==null)
 		&&(student.fetchAbility("Specialization_Sword")==null)
 		&&(student.fetchAbility("Specialization_Ranged")==null))
 		{
