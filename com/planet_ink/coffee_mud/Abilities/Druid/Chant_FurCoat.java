@@ -68,7 +68,7 @@ public class Chant_FurCoat extends Chant
 			return false;
 		}
 		
-		if(mob.charStats().getMyRace()!=mob.baseCharStats().getMyRace())
+		if(Druid_ShapeShift.isShapeShifted(mob))
 		{
 			mob.tell("You cannot invoke this chant in your present form.");
 			return false;

@@ -70,11 +70,15 @@ public class Thief_Steal extends ThiefSkill
 		else
 		{
 			String str=null;
+			int code=Affect.MSG_THIEF_ACT;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Item.INVENTORY)))
 					str="<S-NAME> steal(s) "+stolen.name()+" from <T-NAMESELF>.";
 				else
+				{
+					code=Affect.MSG_QUIETMOVEMENT;
 					str="<S-NAME> attempt(s) to steal from <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
+				}
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
@@ -82,7 +86,7 @@ public class Thief_Steal extends ThiefSkill
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

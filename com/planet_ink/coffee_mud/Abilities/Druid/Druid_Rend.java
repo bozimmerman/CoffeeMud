@@ -24,9 +24,9 @@ public class Druid_Rend extends StdAbility
 			mob.tell("You are too far away to rend!");
 			return false;
 		}
-		if(mob.fetchAffect("Druid_DruidicPass")==null)
+		if(!Druid_ShapeShift.isShapeShifted(mob))
 		{
-			mob.tell("You must be in your animal form to bite.");
+			mob.tell("You must be in your animal form to rend.");
 			return false;
 		}
 		if(mob.charStats().getMyRace().bodyMask()[Race.BODY_LEG]==0)

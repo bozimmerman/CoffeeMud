@@ -121,7 +121,5 @@ public class Chant_SummonElemental extends Chant
 		newMOB.setStartRoom(null);
 		newMOB.addNonUninvokableAffect(this);
 		return(newMOB);
-
-
 	}
 }

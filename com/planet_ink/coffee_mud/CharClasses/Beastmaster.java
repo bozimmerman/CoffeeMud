@@ -54,7 +54,7 @@ public class Beastmaster extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_Hunger",true);
 
-CMAble.addCharAbilityMapping(ID(),6,"Druid_Shapeshift2",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Druid_ShapeShift2",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_VenomWard",false);
 			
@@ -72,7 +72,7 @@ CMAble.addCharAbilityMapping(ID(),6,"Druid_Shapeshift2",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_CharmAnimal",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_EnhanceBody",true);
 			
-CMAble.addCharAbilityMapping(ID(),11,"Druid_Shapeshift3",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Druid_ShapeShift3",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_CheetahBurst",true);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_Attack2",true);
@@ -90,7 +90,7 @@ CMAble.addCharAbilityMapping(ID(),11,"Druid_Shapeshift3",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_Hawkeye",true);
 
-CMAble.addCharAbilityMapping(ID(),16,"Druid_ShapeShift4",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Druid_ShapeShift4",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_AnimalSpy",true);
 			
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",true);
@@ -102,7 +102,7 @@ CMAble.addCharAbilityMapping(ID(),16,"Druid_ShapeShift4",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SoaringEagle",true);
 
-CMAble.addCharAbilityMapping(ID(),21,"Druid_ShapeShift5",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Druid_ShapeShift5",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Berzerk",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Skill_AttackHalf",true);

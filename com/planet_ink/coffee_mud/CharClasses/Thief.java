@@ -27,6 +27,7 @@ public class Thief extends StdCharClass
 				Weapon.CLASS_DAGGER};
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
+	
 	public Thief()
 	{
 		super();
@@ -158,6 +159,7 @@ public class Thief extends StdCharClass
 			   &&(affect.tool()!=null)
 			   &&(affect.tool() instanceof Ability)
 			   &&(affect.tool().ID().equals("Thief_Steal")
+				  ||affect.tool().ID().equals("Thief_Robbery")
 				  ||affect.tool().ID().equals("Thief_Swipe")))
 				gainExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10);
 		}

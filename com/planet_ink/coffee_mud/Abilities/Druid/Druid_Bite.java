@@ -24,7 +24,7 @@ public class Druid_Bite extends StdAbility
 			mob.tell("You are too far away to bite!");
 			return false;
 		}
-		if(mob.fetchAffect("Druid_DruidicPass")==null)
+		if(!Druid_ShapeShift.isShapeShifted(mob))
 		{
 			mob.tell("You must be in your animal form to bite.");
 			return false;

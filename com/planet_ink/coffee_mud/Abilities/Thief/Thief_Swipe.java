@@ -23,6 +23,12 @@ public class Thief_Swipe extends ThiefSkill
 			mob.tell("Swipe from whom?");
 			return false;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
+		
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -73,11 +79,15 @@ public class Thief_Swipe extends ThiefSkill
 				goldTaken=target.getMoney();
 
 			String str=null;
+			int code=Affect.MSG_THIEF_ACT;
 			if(!auto)
 				if(goldTaken > 0)
 					str="<S-NAME> pick(s) <T-HIS-HER> pocket for "+goldTaken+" gold.";
 				else
+				{
 					str="<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!";
+					code=Affect.MSG_QUIETMOVEMENT;
+				}
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
@@ -86,7 +96,7 @@ public class Thief_Swipe extends ThiefSkill
 				hisStr=null;
 
 
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

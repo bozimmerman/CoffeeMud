@@ -18,9 +18,10 @@ public class Druid_ShapeShift extends StdAbility
 	public Environmental newInstance(){	return new Druid_ShapeShift();}
 	public int classificationCode(){return Ability.SKILL;}
 
-	private int myRaceCode=-1;
-	private Race newRace=null;
-	private String raceName="";
+	public int myRaceCode=-1;
+	public Race newRace=null;
+	public String raceName="";
+	
 	public String displayText()
 	{
 		if((myRaceCode<0)||(newRace==null))
@@ -42,7 +43,15 @@ public class Druid_ShapeShift extends StdAbility
 	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",      "Bear",    "Scarab",     "Gorilla",  "Bull"},
 	{"WereBat","Manticore","WereWolf","Griffon","Naga",       "WereBear","ManScorpion","Sasquatch","Minotaur"}
 	};
-
+	private static String[] forms={"Rodent form",
+								   "Feline form",
+								   "K-9 form",
+								   "Bird form",
+								   "Snake form",
+								   "Bear form",
+								   "Insect form",
+								   "Monkey form",
+								   "Bovine form"};
 
 	public void setMiscText(String newText)
 	{
@@ -82,61 +91,166 @@ public class Druid_ShapeShift extends StdAbility
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().getMyRace().name().toLowerCase()+" form.");
 	}
 
-
+	public void setRaceName(MOB mob)
+	{
+		int raceLevel=4;
+		int classLevel=CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this);
+		if(classLevel<6)
+			raceLevel=0;
+		else
+		if(classLevel<12)
+			raceLevel=1;
+		else
+		if(classLevel<18)
+			raceLevel=2;
+		else
+		if(classLevel<24)
+			raceLevel=3;
+		raceName=shapes[raceLevel][myRaceCode];
+		newRace=CMClass.getRace(races[raceLevel][myRaceCode]);
+	}
+						
+	
+	public static boolean isShapeShifted(MOB mob)
+	{
+		if(mob==null) return false;
+		for(int a=0;a<mob.numAffects();a++)
+		{
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&(A instanceof Druid_ShapeShift))
+				return true;
+		}
+		return false;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Ability A=mob.fetchAffect(ID());
-		if(A!=null)
+		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
-			A.unInvoke();
-			return true;
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&(A instanceof Druid_ShapeShift))
+			{
+				A.unInvoke();
+				return true;
+			}
 		}
 
-		if(mob.isMonster()) return false;
-
+		int[] racesTaken=new int[forms.length];
+		Vector allShapeshifts=new Vector();
+		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
+			racesTaken[myRaceCode]++;
+		
+		for(int a=0;a<mob.numAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if((A!=null)&&(A instanceof Druid_ShapeShift))
+			{
+				Druid_ShapeShift D=(Druid_ShapeShift)A;
+				allShapeshifts.addElement(D);
+				if((D.myRaceCode>=0)&&(D.myRaceCode<racesTaken.length))
+					racesTaken[D.myRaceCode]++;
+			}
+		}
+		
 		if(myRaceCode<0)
 		{
-			if(mob.isInCombat())
+			if(mob.isMonster())
+			{
+				myRaceCode=Dice.roll(1,racesTaken.length,-1);
+				while(racesTaken[myRaceCode]>0)
+					myRaceCode=Dice.roll(1,racesTaken.length,-1);
+			}
+			else
+			if(mob.isInCombat()) 
 				return false;
-			try{
-			if(!mob.session().confirm("You have not yet chosen your form, would you like to now (Y/n)?","Y"))
-				return false;
-			StringBuffer str=new StringBuffer("Choose from the following:\n\r");
-			str.append("1) Rodent form\n\r");
-			str.append("2) Feline form\n\r");
-			str.append("3) K-9 form\n\r");
-			str.append("4) Bird form\n\r");
-			str.append("5) Snake form\n\r");
-			str.append("6) Bear form\n\r");
-			str.append("7) Insect form\n\r");
-			str.append("8) Monkey form\n\r");
-			str.append("9) Bovine form\n\r");
-			str.append("Please select: ");
-			String choice=mob.session().choose(str.toString(),"123456789","");
-			myRaceCode=Util.s_int(choice)-1;
-			}catch(Exception e){};
+			else
+			{
+				try{
+				if(!mob.session().confirm("You have not yet chosen your form, would you like to now (Y/n)?","Y"))
+					return false;
+				StringBuffer str=new StringBuffer("Choose from the following:\n\r");
+				StringBuffer choices=new StringBuffer("");
+				for(int i=0;i<forms.length;i++)
+				{
+					if(racesTaken[i]==0)
+					{
+						str.append(Util.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
+						choices.append(""+(i+1));
+					}
+				}
+				str.append("Please select: ");
+				String choice=mob.session().choose(str.toString(),choices.toString(),"");
+				myRaceCode=Util.s_int(choice)-1;
+				}catch(Exception e){};
+			}
 		}
-		if(myRaceCode<0) return false;
+		
+		if(myRaceCode<0) 
+			return false;
 		else
 		{
 			setMiscText(""+myRaceCode);
-			int raceLevel=4;
-			int classLevel=CMAble.qualifyingClassLevel(mob,this);
-			if(classLevel<6)
-				raceLevel=0;
-			else
-			if(classLevel<12)
-				raceLevel=1;
-			else
-			if(classLevel<18)
-				raceLevel=2;
-			else
-			if(classLevel<24)
-				raceLevel=3;
-			raceName=shapes[raceLevel][myRaceCode];
-			newRace=CMClass.getRace(races[raceLevel][myRaceCode]);
+			setRaceName(mob);
 		}
 
+		// now check for alternate shapeshifts
+		if((triggerStrings().length>0)&&(commands.size()>0)&&(allShapeshifts.size()>1))
+		{
+			Vector V=allShapeshifts;
+			allShapeshifts=new Vector();
+			while(V.size()>0)
+			{
+				Ability choice=null;
+				int sortByLevel=Integer.MAX_VALUE;;
+				for(int v=0;v<V.size();v++)
+				{
+					Ability A=(Ability)V.elementAt(v);
+					int lvl=CMAble.qualifyingLevel(mob,A);
+					if(lvl<=0) lvl=CMAble.lowestQualifyingLevel(A.ID());
+					if(lvl<sortByLevel)
+					{
+						sortByLevel=lvl;
+						choice=A;
+					}
+				}
+				if(choice==null) break;
+				allShapeshifts.addElement(choice);
+				V.removeElement(choice);
+			}
+			String parm=Util.combine(commands,0);
+			StringBuffer list=new StringBuffer("");
+			for(int i=0;i<allShapeshifts.size();i++)
+			{
+				Druid_ShapeShift A=(Druid_ShapeShift)allShapeshifts.elementAt(i);
+				if(A.myRaceCode>=0)
+				{
+					if((A.raceName==null)||(A.raceName.length()==0))
+						A.setRaceName(mob);
+					if((A.raceName==null)||(A.raceName.length()==0))
+						list.append(Util.padLeft(""+(i+1),2)+") Not yet chosen.\n\r");
+					else
+					{
+						list.append(Util.padLeft(""+(i+1),2)+") "+A.raceName+" ("+forms[A.myRaceCode]+")\n\r");
+						if(CoffeeUtensils.containsString(A.raceName,parm))
+							return A.invoke(mob,new Vector(),givenTarget,auto);
+						if(CoffeeUtensils.containsString(forms[A.myRaceCode],parm))
+							return A.invoke(mob,new Vector(),givenTarget,auto);
+					}
+				}
+			}
+			int iparm=Util.s_int(parm);
+			if(iparm>0)
+			{
+				if(iparm<=allShapeshifts.size())
+				{
+					Ability A=(Ability)allShapeshifts.elementAt(iparm-1);
+					return A.invoke(mob,new Vector(),givenTarget,auto);
+				}
+			}
+			mob.tell("'"+parm+"' is an illegal form!\n\rValid forms include: \n\r"+list.toString());
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -1093,7 +1093,7 @@ public class Generic
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". AttackAdjustment: '"+E.envStats().attackAdjustment()+"'.");
+		mob.tell(showNumber+". AttackAdjustment: '"+E.baseEnvStats().attackAdjustment()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setAttackAdjustment(getNumericData(mob,"Enter a new value\n\r:",E.baseEnvStats().attackAdjustment()));
 	}

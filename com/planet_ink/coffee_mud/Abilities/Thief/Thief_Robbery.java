@@ -43,6 +43,12 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("Rob what from whom?");
 			return false;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
+		
 		String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
@@ -108,11 +114,15 @@ public class Thief_Robbery extends ThiefSkill
 		else
 		{
 			String str=null;
+			int code=Affect.MSG_THIEF_ACT;
 			if(!auto)
 				if(stolen!=null)
 					str="<S-NAME> rob(s) "+stolen.name()+" from <T-NAMESELF>.";
 				else
+				{
 					str="<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
+					code=Affect.MSG_QUIETMOVEMENT;
+				}
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;
@@ -120,7 +130,7 @@ public class Thief_Robbery extends ThiefSkill
 			if(Dice.rollPercentage()<discoverChance)
 				hisStr=null;
 
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
+			FullMsg msg=new FullMsg(mob,target,this,code,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

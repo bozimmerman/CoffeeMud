@@ -42,7 +42,7 @@ public class Chant_Feralness extends Chant
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		if((affected instanceof MOB)
-		&&(((MOB)affected).fetchAffect("Druid_ShapeShift")==null))
+		&&(!Druid_ShapeShift.isShapeShifted((MOB)affected)))
 			unInvoke();
 		return true;
 	}
@@ -91,12 +91,12 @@ public class Chant_Feralness extends Chant
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(mob.fetchAffect("Druid_ShapeShift")==null)
+				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
 					Ability A=mob.fetchAbility("Druid_ShapeShift");
 					if(A!=null) A.invoke(mob,new Vector(),null,false);
 				}
-				if(mob.fetchAffect("Druid_ShapeShift")==null)
+				if(!Druid_ShapeShift.isShapeShifted(mob))
 				{
 					mob.tell("You failed to shapeshift.");
 					return false;
