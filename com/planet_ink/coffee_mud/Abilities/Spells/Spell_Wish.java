@@ -507,8 +507,16 @@ public class Spell_Wish extends Spell
 				int amount=25;
 				if((x>=0)&&(Util.isNumber(wsh.substring(x).trim())))
 				   amount=Util.s_int(wsh.substring(x).trim());
-				mob.charStats().getCurrentClass().loseExperience(mob,amount);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				if(target!=mob) 
+				{
+					mob.charStats().getCurrentClass().loseExperience(mob,amount*4);
+					mob.tell("Your wish has drained you of "+(amount*4)+" experience points.");
+				}
+				else
+				{
+					mob.charStats().getCurrentClass().loseExperience(mob,amount);
+					mob.tell("Your wish has drained you of "+amount+" experience points.");
+				}
 				((MOB)target).charStats().getCurrentClass().gainExperience((MOB)target,null,((MOB)target).getLeigeID(),amount,false);
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,target.name()+" gains experience!");
 				return true;

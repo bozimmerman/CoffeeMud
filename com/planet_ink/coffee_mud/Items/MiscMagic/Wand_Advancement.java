@@ -19,7 +19,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 		material=EnvResource.RESOURCE_OAK;
 		baseGoldValue=20000;
 		recoverEnvStats();
-		secretWord="LEVEL UP, LEVEL ALL UP";
+		secretWord="LEVEL UP";
 	}
 
 	public Environmental newInstance()
@@ -29,12 +29,12 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);
-		secretWord="LEVEL UP, LEVEL ALL UP";
+		secretWord="LEVEL UP";
 	}
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		secretWord="LEVEL UP, LEVEL ALL UP";
+		secretWord="LEVEL UP";
 	}
 
 
@@ -60,22 +60,9 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 						if(mob.location().okAffect(mob,msg))
 						{
 							mob.location().send(mob,msg);
-							target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
-						}
-
-					}
-				}
-				x=affect.targetMessage().toUpperCase().indexOf("'LEVEL ALL UP'");
-				if(x>=0)
-				{
-					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob)))
-					{
-						this.setUsesRemaining(this.usesRemaining()-1);
-						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
-						if(mob.location().okAffect(mob,msg))
-						{
-							mob.location().send(mob,msg);
-							while(target.envStats().level()<30)
+							if(target.getExpNeededLevel()==Integer.MAX_VALUE)
+								target.charStats().getCurrentClass().level(target);
+							else
 								target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
 						}
 

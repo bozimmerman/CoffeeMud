@@ -61,6 +61,12 @@ public class StdMOB implements MOB
 	public int getExpNextLevel(){return ExpNextLevel;}
 	public int getExpNeededLevel()
 	{
+		if(!isMonster())
+		{
+			if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
+			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)<=baseEnvStats().level()))
+				return Integer.MAX_VALUE;
+		}
 		if(ExpNextLevel<=getExperience())
 			ExpNextLevel=getExperience()+1000;
 		return ExpNextLevel-getExperience();
@@ -1105,6 +1111,20 @@ public class StdMOB implements MOB
 
 			switch(affect.sourceMinor())
 			{
+			case Affect.TYP_DEATH:
+				if((!isMonster())
+				&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
+				&&(baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
+				{
+					curState().setHitPoints(1);
+					if((affect.tool()!=null)
+					&&(affect.tool()!=this)
+					&&(affect.tool() instanceof MOB))
+					   ((MOB)affect.tool()).tell(name()+" is immortal, and can not die.");
+					mob.tell("You are immortal, and can not die.");
+					return false;
+				}
+				break;
 			case Affect.TYP_ENTER:
 				movesSinceTick++;
 				break;
@@ -1768,6 +1788,7 @@ public class StdMOB implements MOB
 
 			if((affect.othersMinor()==Affect.TYP_DEATH)&&(victim!=null))
 			{
+				MOB victim=this.victim;
 				if(victim==affect.source())
 					setVictim(null);
 				else

@@ -115,9 +115,15 @@ public class Lacquerring extends CommonSkill
 		}
 
 		writing=Util.combine(commands,0).toLowerCase();
+		boolean darkFlag=false;
+		if(writing.startsWith("dark "))
+		{
+			darkFlag=true;
+			writing=writing.substring(5).trim();
+		}
 		if(" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)
 		{
-			commonTell(mob,"You can't lacquer anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple.");
+			commonTell(mob,"You can't lacquer anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -125,6 +131,7 @@ public class Lacquerring extends CommonSkill
 		verb="lacquerring "+target.name()+" "+writing;
 		displayText="You are "+verb;
 		found=target;
+		if(darkFlag) writing=Util.capitalize(writing);
 		if(!profficiencyCheck(0,auto)) writing="";
 		int duration=60-mob.envStats().level();
 		if(duration<12) duration=12;

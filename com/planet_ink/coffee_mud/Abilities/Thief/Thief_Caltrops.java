@@ -64,6 +64,9 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 			mob.tell("Caltrops have already been tossed down here.");
 			return false;
 		}
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+		
 		boolean success=profficiencyCheck(0,auto);
 		Environmental target=mob.location();
 		if(success)

@@ -284,7 +284,8 @@ public class StdCharClass implements CharClass, Cloneable
 				mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homage+".^N");
 		}
 
-		while(mob.getExperience()>=mob.getExpNextLevel())
+		while((mob.getExperience()>=mob.getExpNextLevel())
+		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
 			level(mob);
 	}
 
@@ -444,7 +445,10 @@ public class StdCharClass implements CharClass, Cloneable
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();
-			mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
+			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
+				mob.charStats().getCurrentClass().level(mob);
+			else
+				mob.charStats().getCurrentClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
 			int newAttack=mob.baseEnvStats().attackAdjustment()-oldattack;
 			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-newAttack);
 			mob.recoverEnvStats();

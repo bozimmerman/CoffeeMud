@@ -96,7 +96,11 @@ public class PlayerData extends StdWebMacro
 		case 14: str.append(Math.round(Util.div(M.getAgeHours(),60.0))+", "); break;
 		case 15: str.append(M.getPractices()+", "); break;
 		case 16: str.append(M.getExperience()+", "); break;
-		case 17: str.append(M.getExpNextLevel()+", "); break;
+		case 17: if(M.getExpNeededLevel()==Integer.MAX_VALUE)
+					str.append("N/A, ");
+				 else
+					str.append(M.getExpNextLevel()+", "); 
+				 break;
 		case 18: str.append(M.getTrains()+", "); break;
 		case 19: str.append(M.getMoney()+", "); break;
 		case 20: str.append(M.getWorshipCharID()+", "); break;

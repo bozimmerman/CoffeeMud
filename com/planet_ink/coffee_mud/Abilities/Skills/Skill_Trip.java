@@ -19,6 +19,9 @@ public class Skill_Trip extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Trip();}
 	public long flags(){return Ability.FLAG_MOVING;}
+	private int enhancement=0;
+	public int abilityCode(){return enhancement;}
+	public void setAbilityCode(int newCode){enhancement=newCode;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -104,6 +107,7 @@ public class Skill_Trip extends StdAbility
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
+		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.DEXTERITY));
 		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
 		boolean success=profficiencyCheck(adjustment,auto);
 		success=success&&(target.charStats().getMyRace().bodyMask()[Race.BODY_LEG]>0);

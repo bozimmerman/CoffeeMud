@@ -62,7 +62,7 @@ public class Spell_Augury extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", encanting.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", incanting.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				boolean aggressiveMonster=false;
@@ -92,7 +92,7 @@ public class Spell_Augury extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,null,"<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", encanting, but then loses concentration.");
+			beneficialWordsFizzle(mob,null,"<S-NAME> point(s) <S-HIS-HER> finger "+Directions.getDirectionName(dirCode)+", incanting, but then loses concentration.");
 
 
 		// return whether it worked

@@ -112,9 +112,15 @@ public class Dyeing extends CommonSkill
 			return false;
 		}
 		writing=Util.combine(commands,0).toLowerCase();
+		boolean darkFlag=false;
+		if(writing.startsWith("dark "))
+		{
+			darkFlag=true;
+			writing=writing.substring(5).trim();
+		}
 		if(" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)
 		{
-			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple.");
+			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -122,6 +128,7 @@ public class Dyeing extends CommonSkill
 		verb="dyeing "+target.name()+" "+writing;
 		displayText="You are "+verb;
 		found=target;
+		if(darkFlag) writing=Util.capitalize(writing);
 		if(!profficiencyCheck(0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if((target.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)

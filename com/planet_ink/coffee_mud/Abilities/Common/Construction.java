@@ -188,6 +188,7 @@ public class Construction extends CommonSkill
 							X.setName("a wooden gate");
 							X.setDescription("");
 							X.setDisplayText("");
+							X.setOpenDelayTicks(9999);
 							X.setExitParams("gate","close","open","a closed gate");
 							X.setDoorsNLocks(true,false,true,false,false,false);
 							X.text();
@@ -210,6 +211,7 @@ public class Construction extends CommonSkill
 							X.setName("a door");
 							X.setDescription("");
 							X.setDisplayText("");
+							X.setOpenDelayTicks(9999);
 							X.setExitParams("door","close","open","a closed door");
 							X.setDoorsNLocks(true,false,true,false,false,false);
 							X.text();

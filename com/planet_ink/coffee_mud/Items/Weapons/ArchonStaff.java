@@ -63,14 +63,26 @@ public class ArchonStaff extends Staff implements Wand, ArchonOnly
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
-					while(target.envStats().level()<30)
-						target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
+					int destLevel=CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL);
+					if(destLevel==0) destLevel=30;
+					if(destLevel<=target.baseEnvStats().level())
+						destLevel=100;
+					while(target.baseEnvStats().level()<destLevel)
+					{
+						if(target.getExpNeededLevel()==Integer.MAX_VALUE)
+							target.charStats().getCurrentClass().level(target);
+						else
+							target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
+					}
 				}
 				else
 				if(message.toUpperCase().indexOf("LEVEL UP")>0)
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
-					target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
+					if(target.getExpNeededLevel()==Integer.MAX_VALUE)
+						target.charStats().getCurrentClass().level(target);
+					else
+						target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1,false);
 					return;
 				}
 				else

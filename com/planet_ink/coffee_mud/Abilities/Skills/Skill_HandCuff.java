@@ -24,6 +24,11 @@ public class Skill_HandCuff extends StdAbility
 
 	public Environmental newInstance(){	return new Skill_HandCuff();}
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
+	}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

@@ -1184,7 +1184,13 @@ public class TelnetSession extends Thread implements Session
 				case 'v': { buf.append(mob().curState().getMovement()); c++; break;}
 				case 'V': { buf.append(mob().maxState().getMovement()); c++; break;}
 				case 'x': { buf.append(mob().getExperience()); c++; break;}
-				case 'X': { buf.append(mob().getExpNeededLevel()); c++; break;}
+				case 'X': { 
+							  if(mob().getExpNeededLevel()==Integer.MAX_VALUE)
+								buf.append("N/A"); 
+							  else
+								buf.append(mob().getExpNeededLevel()); 
+							  c++; break;
+						  }
 				case 'g': { buf.append(mob().getMoney()); c++; break;}
 				case 'a': { buf.append(mob().getAlignment()); c++; break;}
 				case 'A': { buf.append(CommonStrings.alignmentStr(mob().getAlignment())); c++; break;}

@@ -76,7 +76,7 @@ public class Spell_EndlessRoad extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> encant(s) to <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) to <T-NAMESELF>!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
@@ -92,7 +92,7 @@ public class Spell_EndlessRoad extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> encant(s) to <T-NAMESELF>, but the spell fizzles");
+			return maliciousFizzle(mob,target,"<S-NAME> incant(s) to <T-NAMESELF>, but the spell fizzles");
 
 		// return whether it worked
 		return success;

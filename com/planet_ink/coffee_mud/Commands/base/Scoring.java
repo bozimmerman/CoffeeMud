@@ -244,12 +244,22 @@ public class Scoring
 		msg.append("You have ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds of encumbrance.\n\r");
 		msg.append("You have ^!"+mob.getPractices()+"^? practices, ^!"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
 		msg.append("You have scored ^!"+mob.getExperience()+"^? experience points, and have been online for ^!"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
-		msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
+		if((CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)>0)
+		&&(mob.baseEnvStats().level()>CommonStrings.getIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL)))
+			msg.append("You are immortal, and will not gain further levels through experience.\n\r");
+		else
+		if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
+			msg.append("You will not gain further levels through experience.\n\r");
+		else
+			msg.append("You need ^!"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
 		msg.append("Your alignment is      : ^H"+CommonStrings.alignmentStr(mob.getAlignment())+" ("+mob.getAlignment()+")^?.\n\r");
 		msg.append("Your armored defense is: ^H"+CommonStrings.armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your combat prowess is : ^H"+CommonStrings.fightingProwessStr(adjustedAttack)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 
+		if(Sense.isBound(mob))
+			msg.append("^!You are bound.^?\n\r");
+		
 		if(Sense.isFalling(mob))
 			msg.append("^!You are falling!!!^?\n\r");
 		else
@@ -867,7 +877,7 @@ public class Scoring
 	}
 	public static void where(MOB mob, Vector commands)
 	{
-		int adjust=Util.s_int(Util.combine(commands,0));
+		int adjust=Util.s_int(Util.combine(commands,1));
 		DVector levelsVec=new DVector(2);
 		DVector mobsVec=new DVector(2);
 		DVector alignVec=new DVector(2);

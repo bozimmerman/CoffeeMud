@@ -41,6 +41,7 @@ public interface EnvStats extends Cloneable
 	public final static int IS_CLIMBING=16384;
 	public final static int IS_FALLING=32768;
 	public final static int IS_LIGHTSOURCE=65536;
+	public final static int IS_BOUND=131072;
 
 	public int sensesMask(); // mobs
 	public int disposition(); // items, mobs
@@ -126,7 +127,8 @@ public interface EnvStats extends Cloneable
 													"ISGLOWING",
 													"ISCLIMBING",
 													"ISFALLING",
-													"ISLIGHT"};
+													"ISLIGHT",
+													"ISBOUND"};
 	public static final String[] dispositionsDesc= {"Is never seen",
 													"Is hidden",
 													"Is invisible",
@@ -143,5 +145,6 @@ public interface EnvStats extends Cloneable
 													"Is glowing",
 													"Is climbing",
 													"Is falling",
-													"Is a light source"};
+													"Is a light source",
+													"Is bound"};
 }

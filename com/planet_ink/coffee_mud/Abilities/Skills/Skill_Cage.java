@@ -57,7 +57,7 @@ public class Skill_Cage extends StdAbility
 			if(Sense.isSleeping(target)
 			||(!Sense.canMove(target))
 			||((target.amFollowing()==mob))
-			||(Sense.isBound(target)))
+			||(Sense.isBoundOrHeld(target)))
 				ok=true;
 		}
 		if(!ok)

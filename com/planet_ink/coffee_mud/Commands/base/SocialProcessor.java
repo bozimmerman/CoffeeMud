@@ -290,12 +290,18 @@ public class SocialProcessor
 	public static void report(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
-			say(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()
+		{
+			StringBuffer buf=new StringBuffer(
+							    "say \"I have "+mob.curState().getHitPoints()
 							   +"/"+mob.maxState().getHitPoints()+" hit points, "
 							   +mob.curState().getMana()+"/"+mob.maxState().getMana()
 							   +" mana, "+mob.curState().getMovement()
-							   +"/"+mob.maxState().getMovement()+" move, and need "
-							   +mob.getExpNeededLevel()+" to level.\""));
+							   +"/"+mob.maxState().getMovement()+" move");
+			if(mob.getExpNeededLevel()<Integer.MAX_VALUE)
+			   buf.append(", and need "+mob.getExpNeededLevel()+" to level");
+			buf.append(".\"");
+			say(mob,Util.parse(buf.toString()));
+		}
 		else
 		{
 			String s=Util.combine(commands,1).toUpperCase();

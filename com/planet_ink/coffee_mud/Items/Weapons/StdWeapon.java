@@ -123,7 +123,9 @@ public class StdWeapon extends StdItem implements Weapon
 						A.invoke(affect.source(),affect.target(),true);
 				}
 				else
-				if((hurt>50)&&((this instanceof Electronics)||(hurt>200)))
+				if((hurt>100)
+				&&((this instanceof Electronics)
+				   ||(hurt>(tmob.maxState().getHitPoints()/20))))
 				{
 					switch(weaponType())
 					{

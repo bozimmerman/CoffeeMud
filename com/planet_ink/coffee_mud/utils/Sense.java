@@ -163,7 +163,15 @@ public class Sense
 
 	public static boolean isBound(Environmental E)
 	{
+		if((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND)
+			return true;
+		return false;
+	}
+	public static boolean isBoundOrHeld(Environmental E)
+	{
 		if(E==null) return false;
+		if((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND) 
+			return true;
 		for(int a=0;a<E.numAffects();a++)
 		{
 			Ability A=E.fetchAffect(a);
@@ -267,6 +275,8 @@ public class Sense
 			if((((Item)seen).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
 				Say.append(" (^wmithril aura^?)");
 		
+		if(isBound(seen))
+			Say.append(" (^Wbound^?)");
 		if(isFlying(seen))
 			Say.append(" (^pflying^?)");
 		if(isFalling(seen))
@@ -291,6 +301,8 @@ public class Sense
 		if(Sense.isHidden(seen1)!=Sense.isHidden(seen2))
 			return false;
 		if(Sense.isFlying(seen1)!=Sense.isFlying(seen2))
+			return false;
+		if(Sense.isBound(seen1)!=Sense.isBound(seen2))
 			return false;
 		if(Sense.isFalling(seen1)!=Sense.isFalling(seen2))
 			return false;

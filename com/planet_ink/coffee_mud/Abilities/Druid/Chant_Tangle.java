@@ -17,6 +17,11 @@ public class Chant_Tangle extends Chant
 	public Environmental newInstance(){	return new Chant_Tangle();}
 	public long flags(){return Ability.FLAG_BINDING;}
 
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
+	}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

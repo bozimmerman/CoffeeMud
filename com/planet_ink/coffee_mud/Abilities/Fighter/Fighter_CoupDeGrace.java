@@ -65,14 +65,14 @@ public class Fighter_CoupDeGrace extends StdAbility
 
 		int levelDiff=target.envStats().level()-adjustedLevel(mob);
 		if(levelDiff>0)
-			levelDiff=levelDiff*5;
+			levelDiff=levelDiff*3;
 		else
 			levelDiff=0;
 		mob.curState().adjMovement(-150,mob.maxState());
-		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*3));
+		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*2));
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
-		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/2))))
+		if((success)&&((dmg<50)||(dmg<(target.maxState().getHitPoints()/5))))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.MASK_GENERAL:0),null);
 			if(mob.location().okAffect(mob,msg))

@@ -54,7 +54,7 @@ public class Spell_Shove extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> encant(s) and shove(s) at <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> get(s) shoved back!":"<S-NAME> incant(s) and shove(s) at <T-NAMESELF>.");
 			if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 			{
 				if((!msg.wasModified())&&(target.location()==mob.location()))
@@ -77,7 +77,7 @@ public class Spell_Shove extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,"<S-NAME> encant(s), but nothing seems to happen.");
+			return maliciousFizzle(mob,null,"<S-NAME> incant(s), but nothing seems to happen.");
 
 
 		// return whether it worked

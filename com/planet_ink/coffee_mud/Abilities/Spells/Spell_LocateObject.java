@@ -22,12 +22,39 @@ public class Spell_LocateObject extends Spell
 			return false;
 		}
 
-		int levelFind=0;
-		if((mob.isASysOp(mob.location()))&&(Util.s_int((String)commands.lastElement())>0))
-		{
-			levelFind=Util.s_int((String)commands.lastElement());
-			commands.remove(commands.lastElement());
-		}
+		int minLevel=Integer.MIN_VALUE;
+		int maxLevel=Integer.MAX_VALUE;
+		String s=(String)commands.lastElement();
+		boolean levelAdjust=false;
+		while((mob.isASysOp(mob.location()))
+		&&(commands.size()>1)
+		&&(Util.s_int(s)>0)
+			||(s.startsWith(">"))
+			||(s.startsWith("<")))
+			{
+				levelAdjust=true;
+				boolean lt=true;
+				if(s.startsWith(">"))
+				{
+					lt=false;
+					s=s.substring(1);
+				}
+				else
+				if(s.startsWith("<"))
+					s=s.substring(1);
+				int levelFind=Util.s_int(s);
+				
+				if(lt) 
+					maxLevel=levelFind;
+				else 
+					minLevel=levelFind;
+				
+				commands.removeElementAt(commands.size()-1);
+				if(commands.size()>1)
+					s=(String)commands.lastElement();
+				else
+					s="";
+			}
 		String what=Util.combine(commands,0);
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -65,19 +92,17 @@ public class Spell_LocateObject extends Spell
 						item=inhab.fetchInventory(what);
 						if((item==null)&&(CoffeeUtensils.getShopKeeper(inhab)!=null))
 							item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
-						if((item!=null)&&
-						   (item instanceof Item)&&
-						   ((Sense.canSee(item))||(mob.isASysOp(room))))
+						if((item!=null)
+						&&(item instanceof Item)
+						&&((Sense.canSee(item))||(mob.isASysOp(room)))
+						&&(item.envStats().level()>minLevel)
+						&&(item.envStats().level()<maxLevel))
 						{
-							if((levelFind==0)
-							 ||(item.envStats().level()<=levelFind))
-							{
-								String str=item.name()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle()+"'.";
-								if(mob.isASysOp(null))
-									mob.tell(str);
-								else
-									itemsFound.addElement(str);
-							}
+							String str=item.name()+((!levelAdjust)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle()+"'.";
+							if(mob.isASysOp(null))
+								mob.tell(str);
+							else
+								itemsFound.addElement(str);
 						}
 					}
 				}

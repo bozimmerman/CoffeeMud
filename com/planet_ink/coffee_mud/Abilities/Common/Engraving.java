@@ -69,6 +69,7 @@ public class Engraving extends CommonSkill
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ROCK)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PLASTIC)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL))
 		||(!target.isGeneric()))

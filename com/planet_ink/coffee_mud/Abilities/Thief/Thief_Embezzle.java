@@ -62,22 +62,21 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		Vector accounts=bank.getAccountNames();
 		String victim="";
-		Vector choices=new Vector();
-		for(int i=0;i<accounts.size();i++)
+		int tries=0;
+		Coins coins=null;
+		int amount=0;
+		while((coins==null)&&((++tries)<10))
 		{
-			String name=(String)accounts.elementAt(i);
-			Item coins=bank.findDepositInventory(name,"1");
-			if((coins!=null)&&(coins instanceof Coins)&&((((Coins)coins).numberOfCoins()/50)>0))
-				choices.addElement(name);
+			String possVic=(String)accounts.elementAt(Dice.roll(1,accounts.size(),-1));
+			Item C=bank.findDepositInventory(possVic,"1");
+			if((C!=null)&&(C instanceof Coins)&&((((Coins)C).numberOfCoins()/50)>0))
+			{
+				coins=(Coins)C;
+				victim=possVic;
+				amount=coins.numberOfCoins()/50;
+				break;
+			}
 		}
-		if(choices.size()==0)
-		{
-			mob.tell(target.name()+" doesn't seem to maintain any accounts worth embezzling from.");
-			return false;
-		}
-		victim=(String)choices.elementAt(Dice.roll(1,choices.size(),-1));
-		Coins coins=(Coins)bank.findDepositInventory(victim,"1");
-		int amount=coins.numberOfCoins()/50;
 		int classLevel=mob.charStats().getClassLevel("Burglar");
 		if((classLevel>0)
 		&&(amount>(1000*classLevel)))
@@ -87,7 +86,7 @@ public class Thief_Embezzle extends ThiefSkill
 			return false;
 
 		boolean success=profficiencyCheck(-(levelDiff),auto);
-		if(success)
+		if((success)&&(amount>0)&&(coins!=null))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_THIEF_ACT,"<S-NAME> embezzle(s) "+amount+" gold from the "+victim+" account maintained by <T-NAME>.");
 			if(mob.location().okAffect(mob,msg))

@@ -6,6 +6,7 @@ Programming.html updates: 	need special section for languages, poisons, diseases
 GenRaces
 GenCharClasses -- zappercheck on quals
 racial abilities (abilities tied to the race)
+certain days of the year to be special "holidays", and have my mobs celebrate by dancing in the streets!
 property on abilities that describes what to say when already affected by it.
 race specific questions to have during the character creation process -- stored where?
 Some solution for variable eq on mobs -- use rejuv!
@@ -26,6 +27,7 @@ resource override parameter allows for resources to APPEAR as different names. F
 have a setting for no prompt, which also takes out the blank line after the prompt.
 possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
 LYING DOWN position?
+Kneeling position (for prayers/serves and anything else that may need it).
 group formations as an alternative way of determining range
 if you tell enough 'sentient'(?) muds a rumour it spreads throughout town/area/world?
 quest points could be used to raise max stat (but not the actual stat).
@@ -340,6 +342,8 @@ Verbal cast
 	Spells cannot be cast in this fashion when the caster is mute.
 Deliver
 	The caster may send a specified item to a specified mob.
+Regurgitate
+	spell
 Juggernaut
 	Allows the caster to become immune to any attack and take zero damage
 	Increases the casters strength to 50
@@ -486,7 +490,9 @@ of mana, all participants must be female, all participants must be wearing a gol
 specific day of the year, phase of the moon, time of day, combination of any of these, etc.  Anyhow, the caster
 leads the spell and after several rounds, the effect takes place.  These are spells that only a true caster
 can learn and lead.  Mages would lead Mystic Rites, Clerics lead rituals, and druids would lead a chorus in
-order to achieve the effect they are going after.  
+order to achieve the effect they are going after.   group spells can change room types 
+(RAISE MOUNTAINS, etc, etc.) of rooms owned by clan/caster.
+
 
 
 

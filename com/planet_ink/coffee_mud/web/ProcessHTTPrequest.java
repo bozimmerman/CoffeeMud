@@ -232,7 +232,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	public void addRequestParameters(String key, String value)
 	{
-		requestParametersTable.remove(key);
+		getRequestParameters().remove(key);
 		requestParametersTable.put(key,value);
 		resetRequestEncodedParameters();
 	}

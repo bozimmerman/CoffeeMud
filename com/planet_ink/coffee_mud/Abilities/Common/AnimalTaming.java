@@ -118,7 +118,7 @@ public class AnimalTaming extends CommonSkill
 				commonTell(mob,"You can't tame "+M.name()+".");
 				return false;
 			}
-			if((Sense.canMove(M))&&(!Sense.isBound(M)))
+			if((Sense.canMove(M))&&(!Sense.isBoundOrHeld(M)))
 			{
 				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
 				return false;

@@ -1308,18 +1308,16 @@ public class Arrest extends StdBehavior
 								if(!W.arrestingOfficer.isInCombat())
 									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("RESISTMSG"),false,false);
 
-								Ability A=CMClass.getAbility("Fighter_Whomp");
+								Ability A=CMClass.getAbility("Skill_ArrestingSap");
 								if(A!=null){
-									int curPoints=W.criminal.curState().getHitPoints();
-									double pct=Util.div(curPoints,W.criminal.maxState().getHitPoints());
-									A.setProfficiency((int)(100-Math.round(Util.mul(pct,50))));
-									if(!A.invoke(officer,W.criminal,(curPoints<25)))
+									int curPoints=(int)Math.round(Util.div(W.criminal.curState().getHitPoints(),W.criminal.maxState().getHitPoints())*100.0);
+									A.setProfficiency(100);
+									A.setAbilityCode(10);
+									if(!A.invoke(officer,W.criminal,(curPoints<=25)))
 									{
 										A=CMClass.getAbility("Skill_Trip");
-										curPoints=W.criminal.curState().getHitPoints();
-										pct=Util.div(curPoints,W.criminal.maxState().getHitPoints());
-										A.setProfficiency((int)(100-Math.round(Util.mul(pct,50))));
-										if(!A.invoke(officer,W.criminal,(curPoints<25)))
+										A.setAbilityCode(10);
+										if(!A.invoke(officer,W.criminal,(curPoints<=50)))
 											ExternalPlay.postAttack(officer,W.criminal,officer.fetchWieldedItem());
 									}
 								}
@@ -1334,6 +1332,8 @@ public class Arrest extends StdBehavior
 								if(A!=null)	A.invoke(officer,W.criminal,true);
 								W.criminal.makePeace();
 								makePeace(officer.location());
+								A=W.criminal.fetchAffect("Skill_ArrestingSap");
+								if(A!=null)A.unInvoke();
 								A=W.criminal.fetchAffect("Fighter_Whomp");
 								if(A!=null)A.unInvoke();
 								A=W.criminal.fetchAffect("Skill_Trip");

@@ -26,7 +26,7 @@ public class Skill_EscapeBonds extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!Sense.isBound(mob))
+		if(!Sense.isBoundOrHeld(mob))
 		{
 			mob.tell("You don't seem to be bound by anything you can escape!");
 			return false;

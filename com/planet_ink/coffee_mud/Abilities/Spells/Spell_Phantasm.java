@@ -108,7 +108,7 @@ public class Spell_Phantasm extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> encant(s), calling on the name of "+type+".^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s), calling on the name of "+type+".^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -124,7 +124,7 @@ public class Spell_Phantasm extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> encant(s) to summon a "+type+", but fails.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) to summon a "+type+", but fails.");
 
 		// return whether it worked
 		return success;

@@ -407,6 +407,7 @@ public class CommonSkill extends StdAbility
 			case EnvResource.MATERIAL_CLOTH:
 			case EnvResource.MATERIAL_PAPER:
 			case EnvResource.MATERIAL_WOODEN:
+			case EnvResource.MATERIAL_GLASS:
 			case EnvResource.MATERIAL_PLASTIC:
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:

@@ -214,6 +214,7 @@ public class MUD extends Thread implements Host
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST,page.getStr("COMMONTRAINCOST"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_LANGPRACCOST,page.getStr("LANGPRACCOST"));
 		CommonStrings.setIntVar(CommonStrings.SYSTEMI_LANGTRAINCOST,page.getStr("LANGTRAINCOST"));
+		CommonStrings.setIntVar(CommonStrings.SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
 		Vector compress=Util.parseCommas(page.getStr("COMPRESS").toUpperCase());
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBCOMPRESS,compress.contains("GENMOBS"));

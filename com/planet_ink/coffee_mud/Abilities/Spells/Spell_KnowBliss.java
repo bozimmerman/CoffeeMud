@@ -97,7 +97,7 @@ public class Spell_KnowBliss extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> encant(s) happily at <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) happily at <T-NAMESELF>!^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -118,7 +118,7 @@ public class Spell_KnowBliss extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> encant(s) happily at <T-NAMESELF>, but nothing more happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> incant(s) happily at <T-NAMESELF>, but nothing more happens.");
 
 		// return whether it worked
 		return success;
