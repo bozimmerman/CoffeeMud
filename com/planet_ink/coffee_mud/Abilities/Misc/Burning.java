@@ -48,10 +48,14 @@ public class Burning extends StdAbility
 									break;
 								case EnvResource.MATERIAL_CLOTH:
 								case EnvResource.MATERIAL_PAPER:
+								case EnvResource.MATERIAL_PLASTIC:
 									durationOfBurn=5+I.envStats().weight();
 									break;
 								case EnvResource.MATERIAL_WOODEN:
 									durationOfBurn=40+(I.envStats().weight()*2);
+									break;
+								case EnvResource.MATERIAL_ENERGY:
+									durationOfBurn=1;
 									break;
 								}
 								Burning B=new Burning();
@@ -66,6 +70,7 @@ public class Burning extends StdAbility
 					case EnvResource.MATERIAL_LIQUID:
 					case EnvResource.MATERIAL_METAL:
 					case EnvResource.MATERIAL_MITHRIL:
+					case EnvResource.MATERIAL_ENERGY:
 					case EnvResource.MATERIAL_PRECIOUS:
 					case EnvResource.MATERIAL_ROCK:
 						break;
@@ -82,6 +87,7 @@ public class Burning extends StdAbility
 					{
 					case EnvResource.MATERIAL_LIQUID:
 					case EnvResource.MATERIAL_METAL:
+					case EnvResource.MATERIAL_ENERGY:
 					case EnvResource.MATERIAL_MITHRIL:
 					case EnvResource.MATERIAL_PRECIOUS:
 					case EnvResource.MATERIAL_ROCK:
@@ -132,6 +138,7 @@ public class Burning extends StdAbility
 			case EnvResource.MATERIAL_METAL:
 			case EnvResource.MATERIAL_MITHRIL:
 			case EnvResource.MATERIAL_PRECIOUS:
+			case EnvResource.MATERIAL_ENERGY:
 			case EnvResource.MATERIAL_ROCK:
 				mob.tell("Ouch!! "+Util.capitalize(affected.name())+" is HOT!");
 				break;
@@ -167,6 +174,7 @@ public class Burning extends StdAbility
 				case EnvResource.MATERIAL_METAL:
 				case EnvResource.MATERIAL_MITHRIL:
 				case EnvResource.MATERIAL_PRECIOUS:
+				case EnvResource.MATERIAL_ENERGY:
 				case EnvResource.MATERIAL_ROCK:
 					return true;
 				default:

@@ -1,8 +1,34 @@
+where to show areas for you to level in
+channel emote : command
 wizemote command
 tread water for water surfaces with water beneath
 add floating num to resources -- whether the item will float
 mobile parm LEASH=X rooms from start
-
+ability to view wear location, weapon class/type in VIEW command
+encumbrance slows you down?
+in the skill MASON, could you add to the desription of archways the type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room?
+pour command as a reverse fill
+locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
+putting a change bag into a changebag should combine your notes.
+ability to deposit in someone elses bank account
+Room descriptions varying by the time of day.
+Commonskill Furnishing used to add descriptions to furnitures/doors. Only adds, doesn't subtract or replace. Kinda like engraving, except for furniture type items. 
+foraging add Tobacco to the resource list
+smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
+some sort of emote/social channel?
+barbarian skill improved throwing...does extra damage with hurled items.
+Song that does the same thing as Mana Pool. Very bard-like, so it should be a lower level.
+common skill PACKAGING...allows you to crate up a bunch of resources into one large unit. must be unpackaged to be used (using the packaging skill to unpack.)
+BLACKSMITH chain....works like rope, but heavy and metal.
+TAILOR pillow, sheets, blanket, large pillow, cushion
+Thief skill ALERTNESS gives one random description from an item in the room upon entry into that room.. For example: A thief walks into a room. He gets the room description. His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin. It randomly selects one of those items (the coin) and issues a LOOK COIN command.
+can the death/morgue strings be specified by the player's deity?
+1) Can DEATH allow you to specify room by the god of the player, with a default room for unholy folks?
+2) Can MORGUE get a setting 'DEATH' so the body goes with the person
+hate to do it to you... some zapper for deity requests, if at all possible.... 
+Minimum stat requirements... like +CHA 17 for a requirement for the goddess of beauty type of thing
+And minimum gold on hand or item requirements... like +GOLD 2 +ITEM "IRON POT" for the God of Wealth
+could 'Gods' just list the gods, then with a param of the name display the details?  Even with just 4 gods in place, it's getting to be scroll crazy
  Programming.html update
 	need special section for languages
 	need special section for poisons
@@ -12,26 +38,20 @@ mobile parm LEASH=X rooms from start
 //****** next version ********************************************************
 GenRaces
 GenCharClasses -- zappercheck on quals
-ability to view wear location, weapon class/type in VIEW command
 racial abilities (abilities tied to the race)
-encumbrance/ wearing heavy armor slow you down?
 property on abilities that describes what to say when already affected by it.
 race specific questions to have during the character creation process -- stored where?
 Some solution for variable eq on mobs -- use rejuv!
 construct addition--peephole. a window on a door (sortof)
 ability to make windows in Construction, Masonry
-pour command as a reverse fill
-locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
 mason POOL will convert the room into a Water room, with 1 level of underwater added for free
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
 Mortgages (bankers lend large amounts of money at interest, start taking away property if you don't pay up)
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
-putting a change bag into a changebag should combine your notes.
 SMTP capability
 give rooms maximum weight saveable to db
 Bandage common skill Using cloth type materials, the player with this skill can bandage a severely wounded player, raising their HP.  Probably only about 5% HP per pound of cloth or less.  Only let the skill work on people less than about 30% of max HP.  Good for limping back to town for a cleric, but doesn't ruin the need for a cleric.  And it's another use for cloth. 
 on your back for wearing backpacks
-ability to deposit in someone elses bank account
 add energy as a base material type -- update import
 autosneak thief skill
 zapper check on quests and questchats for eligible players
@@ -40,7 +60,6 @@ Arrest allowing players to bring bountys to the judge.
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 Arrest idea: banned substances (get, drop, eq, etc)
 apply languages to writing as well. Should be simple, right? ha!
-Room descriptions varying by the time of day.
 Weather affecting movement, flooding, slipping, vision.  Behaviors for floods and fires.
 Conquest Area behavior
 animate golem spell
@@ -50,31 +69,25 @@ YAWNS.  if you get too fatigued, you may get this disease, which is contagious. 
 Obessity.  It doesn't change your WEIGHT, per se.  It creates a unseeable undroppable item of FAT for the duration of the obessity.  You can get rid of Obessity with a cure disease, or by remaining hungry for a good while.  You contract obessity by overeatting.
 Alcoholism.  If you drink too much alcohol, you risk gaining this disease.  If you don't drink a glass of alcohol every 3 MUD hours, then you get a -10 to attack and defense.  This penalty is cummulative until you drink alcohol, or you go 5 MUD days without alcohol.  Staying logged off for 5 MUD isn't suffecient....I hope.
 jewelmaking should allow you to add jewels to any item
-smokable stuff, mouth position pipes, smokable resources, etc.
 parse out all the commands into classes, so that access can be class based, and time req can be determined
-could you expand the languages to include GOBLIN, GIANT, TERRAN (earth), AQUAN (water), IGNAN(fire), and AURIAL(air), and SYLVAN (woodland)? How much work is this?
+could you expand the languages to include GOBLIN, GIANT, TERRAN (earth), AQUAN (water), IGNAN(fire), and AURIAL(air), and SYLVAN (woodland)?
 BOOKS! paper with multiple pages to post on. Add to the papermaking skill. Also add Poster, Banner, and Screen.
-TaxCollector Area Behavior. Designated mob wanders an area and charges taxesbased on the last time that you have paid taxes.
+TaxCollector MOB Behavior. Designated mob wanders an area and charges taxesbased on the last time that you have paid taxes.
 a behavior that watches the weather... in foul or cold weather, items of certain material types would cost more
 readables that can load text from a text file
-ability to have random formulaic weapons, armor.
+ability to have random formulaic weapons, armor -- do somehow with rejuv field
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
 Allergies - nuff said
-missing resources: wax, flowers, plastic, rubber, ebony, ivory, nuts, bread, wafer/cracker, yew
 msx support
-some sort of emote/social channel?
 
 From Aereon:
 masonry tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.
 Barbarian skills (SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) TACTICS, gives bonuses to combat in those terrains. Also allows a Barbarian to HIDE in that type of terrain if he remains in a room of that type for more than 2 minutes....
 resource override parameter allows for resources to APPEAR as different names. For example ResourceOverride(berries smurfberries)
 have a setting for no prompt, which also takes out the blank line after the prompt.
-Commonskill Furnishing used to add descriptions to furnitures/doors. Only adds, doesn't subtract or replace. Kinda like engraving, except for furniture type items. 
 blacksmith TRASHCAN. A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes.
 sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
 Barbarian skill Smoke Signals. Requires a fire. puffs of smoke produce a message for all in the area who can read smoke signals (has smoke signal skill). To all others it says you see puffs of smoke in the air. Totally a role-playing skill. Can't think of practical use, other than communication that could be done with a tell....
-Song that does the same thing as Mana Pool. Very bard-like, so it should be a lower level.
-Another related skill could be Investigation, which does a look on all wallpapers in the room upon command.
 barbarian skill GUARDTOTEM. Requires 6 scalps of the same race. Prevents creatures of that race from entering into the guarded area.should prevent only 50% of the time, reduced if the level of MOB is greater than Barbar who set the totem
 Barbarian skill SCALPING, as discussed on the group....can't think of practical purposes, though....
 Barbarian skill WARTOTEM. Requires 3 scalps of the same type of critter. The Barbarian drops the scalps, and does WARTOTEM command. Any critter of that race that fights in the room with the totem suffers penalties to attack and damage.
@@ -83,14 +96,8 @@ Barbarians should be able to LEATHERWORK the scalps into SCALP armors. SCALPS sh
 Corruption - each casting reduces target alignment by target level points. evil prayer
 barbarian skill Fragmentation A critical shot enhancement for barbarians that only works with thrown weapons, does an EXTRA 3 times damage, but destroys the thrown weapon in the process. (I am visualizing an axe that slams so hard into it's oponenent that the shaft splits and buries into the enemy as well...)
 new common skill FABRICATING....includes any assembly-type work.....cigarettes, computers, cars, robots, sensors, etc.
-CARPENTRY add Smokepipe.
 construct needs to be able to modify door descriptions
-common skill PACKAGING...allows you to crate up a bunch of resources into one large unit. must be unpackaged to be used (using the packaging skill to unpack.)
-barbarian skill improved throwing...does extra damage with hurled items.
-foraging add Tobacco to the resource list
-BLACKSMITH chain....works like rope, but heavy and metal.
-TAILOR pillow, sheets, blanket, large pillow, cushion
-Thief skill ALERTNESS gives one random description from an item in the room upon entry into that room.. For example: A thief walks into a room. He gets the room description. His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin. It randomly selects one of those items (the coin) and issues a LOOK COIN command.
+we need a property that allows a MOB to use a general skill whenever a player is present. For example, making the lumberjack chop if a player enters a room
 
 From Lee:
 Mana batteries - hold x amount of mana....and takes FOREVER to recharge, but character can draw mana out to recharge very quickly, like when in a fight.  Nature of battery prevents more than one in an inventory at a time.  This idea needs some flushing out to keep players from abusing it.

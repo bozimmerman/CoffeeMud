@@ -143,7 +143,8 @@ public class StdWeapon extends StdItem implements Weapon
 			if((subjectToWearAndTear())
 			&&(Dice.rollPercentage()<5)
 			&&(affect.source().rangeToTarget()==0)
-			&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*5)))
+			&&((!Sense.isABonusItems(this))||(Dice.rollPercentage()>envStats().level()*5))
+			&&((material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_ENERGY))
 			{
 				setUsesRemaining(usesRemaining()-1);
 				if((usesRemaining()<=0)

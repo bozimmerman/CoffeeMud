@@ -58,7 +58,7 @@ public class Druid_DruidicPass extends StdAbility
 			mob.tell("You can't see anywhere to pass that way.");
 			return false;
 		}
-		Exit opExit=room.getPairedExit(dirCode);
+		Exit opExit=room.getReverseExit(dirCode);
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

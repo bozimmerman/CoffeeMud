@@ -115,7 +115,7 @@ public class Chant_HowlersMoon extends Chant
 		{
 			Room room=R.getRoomInDir(d);
 			Exit exit=R.getExitInDir(d);
-			Exit opExit=R.getPairedExit(d);
+			Exit opExit=R.getReverseExit(d);
 			if((room!=null)
 			&&((room.domainType()&Room.INDOORS)==0)
 			&&((room.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0)

@@ -24,6 +24,7 @@ public class Spell_Ignite extends Spell
 			durationOfBurn=20+I.envStats().weight();
 			break;
 		case EnvResource.MATERIAL_CLOTH:
+		case EnvResource.MATERIAL_PLASTIC:
 		case EnvResource.MATERIAL_PAPER:
 			durationOfBurn=5+I.envStats().weight();
 			break;

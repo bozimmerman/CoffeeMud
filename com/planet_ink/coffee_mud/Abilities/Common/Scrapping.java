@@ -98,6 +98,7 @@ public class Scrapping extends CommonSkill
 		case EnvResource.MATERIAL_FLESH:
 		case EnvResource.MATERIAL_LIQUID:
 		case EnvResource.MATERIAL_PAPER:
+		case EnvResource.MATERIAL_ENERGY:
 		case EnvResource.MATERIAL_VEGETATION:
 			{ okMaterial=false; break;}
 		}
@@ -136,6 +137,7 @@ public class Scrapping extends CommonSkill
 		fire=null;
 		if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
 		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PLASTIC)
 		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL))
 		{
 			fire=getRequiredFire(mob);

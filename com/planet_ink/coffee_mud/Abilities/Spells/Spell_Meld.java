@@ -32,9 +32,11 @@ public class Spell_Meld extends Spell
 					EnvResource.MATERIAL_LEATHER,
 					EnvResource.MATERIAL_VEGETATION,
 					EnvResource.MATERIAL_WOODEN,
+					EnvResource.MATERIAL_PLASTIC,
 					EnvResource.MATERIAL_METAL,
 					EnvResource.MATERIAL_ROCK,
 					EnvResource.MATERIAL_PRECIOUS,
+					EnvResource.MATERIAL_ENERGY,
 					EnvResource.MATERIAL_MITHRIL,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99};
 
 	private int getHeiarchy(int material)

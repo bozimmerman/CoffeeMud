@@ -399,6 +399,7 @@ public class CommonSkill extends StdAbility
 				break;
 			}
 			case EnvResource.MATERIAL_LIQUID:
+			case EnvResource.MATERIAL_ENERGY:
 			{
 				I=CMClass.getItem("GenLiquidResource");
 				break;
@@ -406,6 +407,7 @@ public class CommonSkill extends StdAbility
 			case EnvResource.MATERIAL_CLOTH:
 			case EnvResource.MATERIAL_PAPER:
 			case EnvResource.MATERIAL_WOODEN:
+			case EnvResource.MATERIAL_PLASTIC:
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
 			{

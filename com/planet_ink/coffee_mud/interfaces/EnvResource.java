@@ -16,6 +16,8 @@ public interface EnvResource extends Item
 	public final static int MATERIAL_ROCK=10<<8;
 	public final static int MATERIAL_LIQUID=11<<8;
 	public final static int MATERIAL_PRECIOUS=12<<8;
+	public final static int MATERIAL_ENERGY=13<<8;
+	public final static int MATERIAL_PLASTIC=14<<8;
 
 	public final static int MATERIAL_MASK=255<<8;
 	
@@ -33,7 +35,9 @@ public interface EnvResource extends Item
 	"PAPER",
 	"ROCK",
 	"LIQUID",
-	"PRECIOUS"};
+	"PRECIOUS",
+	"ENERGY",
+	"PLASTIC"};
 	
 	public final static int RESOURCE_NOTHING=MATERIAL_UNKNOWN|0;
 	public final static int RESOURCE_MEAT=MATERIAL_FLESH|1;
@@ -134,6 +138,19 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_MUSHROOMS=MATERIAL_VEGETATION|96;
 	public final static int RESOURCE_HERBS=MATERIAL_VEGETATION|97;
 	public final static int RESOURCE_VINE=MATERIAL_VEGETATION|98;
+	public final static int RESOURCE_FLOWERS=MATERIAL_VEGETATION|99;
+	public final static int RESOURCE_PLASTIC=MATERIAL_PLASTIC|100;
+	public final static int RESOURCE_RUBBER=MATERIAL_PLASTIC|101;
+	public final static int RESOURCE_EBONY=MATERIAL_ROCK|102;
+	public final static int RESOURCE_IVORY=MATERIAL_ROCK|103;
+	public final static int RESOURCE_WAX=MATERIAL_FLESH|104;
+	public final static int RESOURCE_NUTS=MATERIAL_VEGETATION|105;
+	public final static int RESOURCE_BREAD=MATERIAL_VEGETATION|106;
+	public final static int RESOURCE_CRACKER=MATERIAL_VEGETATION|107;
+	public final static int RESOURCE_YEW=MATERIAL_WOODEN|108;
+	public final static int RESOURCE_DUST=MATERIAL_ROCK|109;
+	public final static int RESOURCE_PIPEWEED=MATERIAL_VEGETATION|110;
+	public final static int RESOURCE_ENERGY=MATERIAL_ENERGY|111;
 	
 	public final static int RESOURCE_MASK=255;	
 
@@ -236,9 +253,23 @@ public interface EnvResource extends Item
 	"HONEY", // 94
 	"BARLEY", // 95
 	"MUSHROOMS", // 96
-	"HERBS", // 98
-	"VINE"
+	"HERBS", // 97
+	"VINE", // 98
+	"FLOWERS", // 99
+	"PLASTIC", // 100
+	"RUBBER", // 101
+	"EBONY", // 102
+	"IVORY", // 103
+	"WAX", // 104
+	"NUTS", // 105
+	"BREAD", // 106
+	"CRACKER", // 107
+	"YEW", // 108
+	"DUST", // 109
+	"PIPEWEED", // 110
+	"ENERGY" // 111
 	};
+	
 	public final static int[][] RESOURCE_DATA={ // full code, base value, frequency, strength (1-10)
 	{RESOURCE_NOTHING,0,0,0}, 
 	{RESOURCE_MEAT,4,20,1}, 
@@ -338,6 +369,19 @@ public interface EnvResource extends Item
 	{RESOURCE_BARLEY,1,20,1}, 
 	{RESOURCE_MUSHROOMS,1,20,1},
 	{RESOURCE_HERBS,1,10,1},
-	{RESOURCE_VINE,1,10,1}
+	{RESOURCE_VINE,1,10,1},
+	{RESOURCE_FLOWERS,1,10,1},
+	{RESOURCE_PLASTIC,25,0,4}, 
+	{RESOURCE_RUBBER,25,0,1}, 
+	{RESOURCE_EBONY,5,5,5}, 
+	{RESOURCE_IVORY,5,5,3}, 
+	{RESOURCE_WAX,1,0,0}, 
+	{RESOURCE_NUTS,0,20,0}, 
+	{RESOURCE_BREAD,3,0,0}, 
+	{RESOURCE_CRACKER,2,0,0}, 
+	{RESOURCE_YEW,15,2,5}, 
+	{RESOURCE_DUST,0,20,0}, 
+	{RESOURCE_PIPEWEED,3,10,1}, 
+	{RESOURCE_ENERGY,30,0,4}, 
 	};
 }

@@ -18,41 +18,32 @@ public class Thief_SilentLoot extends ThiefSkill
 	private Item item=null;
 	public Environmental newInstance(){	return new Thief_SilentLoot();	}
 
-	public void affect(Environmental myHost, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		super.affect(myHost,affect);
+		if(!super.okAffect(myHost,affect))
+			return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((affect.sourceMinor()==Affect.TYP_DEATH)
 			&&(affect.source()!=affected)
+			&&(Sense.canBeSeenBy(affect.source(),(MOB)affected))
+			&&(affect.source().location()==((MOB)affected).location())
 			&&((affect.source().inventorySize())>0))
 			{
-				item=affect.source().fetchCarried(null,"all");
+				Item item=affect.source().fetchCarried(null,"all");
 				if(item==null) item=affect.source().fetchWornItem("all");
-				if(item!=null)
-					affect.addTrailerMsg(new FullMsg((MOB)affected,affect.source(),this,Affect.MSG_THIEF_ACT|Affect.MASK_MALICIOUS,"You silently autoloot "+item.name()+" from the corpse of "+affect.source().name(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
-			}
-			else
-			if((affect.sourceMinor()==Affect.TYP_DELICATE_HANDS_ACT)
-			&&(affect.tool()==this)
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof MOB)
-			&&(affect.amISource((MOB)affected)))
-			{
-				MOB mob=(MOB)affect.source();
-				MOB target=(MOB)affect.target();
-				if((item!=null)&&(target.isMine(item)))
+				if((item!=null)&&(affect.source().isMine(item)))
 				{
 					item.unWear();
 					item.removeFromOwnerContainer();
 					item.setContainer(null);
-					mob.location().addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
-					ExternalPlay.get(mob,null,item,true);
+					((MOB)affected).location().addItemRefuse(item,Item.REFUSE_MONSTER_EQ);
+					if(((MOB)affected).location().show((MOB)affected,item,Affect.MSG_THIEF_ACT,null))
+						affect.addTrailerMsg(new FullMsg((MOB)affected,item,this,Affect.MSG_GET,"You silently autoloot "+item.name()+" from the corpse of "+affect.source().name(),Affect.MSG_GET,null,Affect.NO_EFFECT,null));
 				}
-				else
-					mob.tell("Oops.. it's GONE!");
 			}
 		}
+		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

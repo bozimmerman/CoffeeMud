@@ -127,10 +127,13 @@ public class Chant_SummonTornado extends Chant
 							case EnvResource.MATERIAL_PAPER:
 							case EnvResource.MATERIAL_VEGETATION:
 							case EnvResource.MATERIAL_WOODEN:
+							case EnvResource.MATERIAL_PLASTIC:
 								I.setUsesRemaining(I.usesRemaining()-50);
 								break;
 							case EnvResource.MATERIAL_METAL:
 								I.setUsesRemaining(I.usesRemaining()-20);
+								break;
+							case EnvResource.MATERIAL_ENERGY:
 								break;
 							}
 							if(I.usesRemaining()<=0)

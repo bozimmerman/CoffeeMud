@@ -125,6 +125,11 @@ public class StdCharClass implements CharClass, Cloneable
 					||(allowedArmorLevel()==CharClass.ARMOR_NONMETAL))
 						ok=false;
 					break;
+				case EnvResource.MATERIAL_ENERGY:
+					if((allowedArmorLevel()==CharClass.ARMOR_METALONLY)
+					||(allowedArmorLevel()==CharClass.ARMOR_VEGAN))
+					   return false;
+					break;
 				case EnvResource.MATERIAL_CLOTH:
 					if((allowedArmorLevel()==CharClass.ARMOR_METALONLY)
 					||((allowedArmorLevel()==CharClass.ARMOR_VEGAN)
@@ -134,6 +139,7 @@ public class StdCharClass implements CharClass, Cloneable
 						  ||(I.material()==EnvResource.RESOURCE_WOOL))))
 						ok=false;
 					break;
+				case EnvResource.MATERIAL_PLASTIC:
 				case EnvResource.MATERIAL_WOODEN:
 				case EnvResource.MATERIAL_ROCK:
 					if((allowedArmorLevel()==CharClass.ARMOR_CLOTH)

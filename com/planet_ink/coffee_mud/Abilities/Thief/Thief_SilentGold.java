@@ -17,31 +17,30 @@ public class Thief_SilentGold extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_SilentGold();}
 
-	public void affect(Environmental myHost, Affect affect)
+	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		super.affect(myHost,affect);
+		if(!super.okAffect(myHost,affect))
+			return false;
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			if((affect.sourceMinor()==Affect.TYP_DEATH)
 			&&(affect.source()!=affected)
+			&&(Sense.canBeSeenBy(affect.source(),(MOB)affected))
+			&&(affect.source().location()==((MOB)affected).location())
 			&&((affect.source().getMoney()/10)>0))
-				affect.addTrailerMsg(new FullMsg((MOB)affected,affect.source(),this,Affect.MSG_THIEF_ACT|Affect.MASK_MALICIOUS,"You silently autoloot "+(affect.source().getMoney()/10)+" gold from the corpse of "+affect.source().name(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
-			else
-			if((affect.sourceMinor()==Affect.TYP_DELICATE_HANDS_ACT)
-			&&(affect.tool()==this)
-			&&(affect.target()!=null)
-			&&(affect.target() instanceof MOB)
-			&&(affect.amISource((MOB)affected)))
 			{
-				MOB mob=(MOB)affect.source();
-				MOB target=(MOB)affect.target();
-				int gold=((MOB)affect.target()).getMoney()/10;
-				mob.setMoney(mob.getMoney()+gold);
-				target.setMoney(target.getMoney()-gold);
-				mob.recoverEnvStats();
-				target.recoverEnvStats();
+				Item C=CMClass.getItem("StdCoins");
+				C.baseEnvStats().setAbility(((MOB)affect.target()).getMoney()/10);
+				C.recoverEnvStats();
+				affect.source().setMoney(affect.source().getMoney()-C.baseEnvStats().ability());
+				affect.source().recoverEnvStats();
+				((MOB)affected).location().addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+				((MOB)affected).location().recoverRoomStats();
+				if(((MOB)affected).location().show((MOB)affected,C,Affect.MSG_THIEF_ACT,null))
+					affect.addTrailerMsg(new FullMsg((MOB)affected,C,this,Affect.MSG_GET,"You silently autoloot "+(affect.source().getMoney()/10)+" gold from the corpse of "+affect.source().name(),Affect.MSG_GET,null,Affect.NO_EFFECT,null));
 			}
 		}
+		return true;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -26,7 +26,7 @@ public class DoorwayGuardian extends StdBehavior
 			if(dir>=0)
 				if(room.getExitInDir(dir)!=null)
 				{
-					Exit[] exits={room.getExitInDir(dir),room.getPairedExit(dir)};
+					Exit[] exits={room.getExitInDir(dir),room.getReverseExit(dir)};
 					return exits;
 				}
 		}
@@ -35,7 +35,7 @@ public class DoorwayGuardian extends StdBehavior
 			Exit E=room.getExitInDir(d);
 			if((E!=null)&&(E.hasADoor()))
 			{
-				Exit[] exits={E,room.getPairedExit(d)};
+				Exit[] exits={E,room.getReverseExit(d)};
 				return exits;
 			}
 		}

@@ -113,8 +113,72 @@ public class Reset
 		}
 	}
 	
+	private static int rightImportMat(MOB mob, Item I)
+		throws java.io.IOException
+	{
+		if((I!=null)&&(I.description().trim().length()>0))
+		{
+			int x=I.description().trim().indexOf(" ");
+			int y=I.description().trim().lastIndexOf(" ");
+			if((x<0)||((x>0)&&(y<0)))
+			{
+				String s=I.description().trim().toLowerCase();
+				int rightMat=-1;
+				for(int i=0;i<Import.objDescs.length;i++)
+				{
+					if(Import.objDescs[i][0].equals(s))
+					{
+						rightMat=Util.s_int(Import.objDescs[i][1]);
+						break;
+					}
+				}
+				s=I.description().trim().toUpperCase();
+				if(rightMat<0)
+				{
+					Log.sysOut("Reset","Unconventional material: "+I.description());
+					for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+					{
+						if(EnvResource.RESOURCE_DESCS[i].equals(s))
+						{
+							rightMat=EnvResource.RESOURCE_DATA[i][0];
+							break;
+						}
+					}
+				}
+				if(rightMat<0)
+					Log.sysOut("Reset","Unknown material: "+I.description());
+				else
+				if(I.material()!=rightMat)
+				{
+					if(mob!=null)
+					{
+						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+EnvResource.RESOURCE_DESCS[rightMat&EnvResource.RESOURCE_MASK]+" (y/N)?","N"))
+						{
+							I.setMaterial(rightMat);
+							I.setDescription("");
+							return rightMat;
+						}
+					}
+					else
+					{
+						Log.sysOut("Reset","Changed "+I.name()+"/"+I.displayText()+" material to "+EnvResource.RESOURCE_DESCS[rightMat&EnvResource.RESOURCE_MASK]+"!");
+						I.setMaterial(rightMat);
+						I.setDescription("");
+						return rightMat;
+					}
+				}
+				else
+				{
+					I.setDescription("");
+					return rightMat;
+				}
+			}
+		}
+		return -1;
+	}
 	
 	public static void resetSomething(MOB mob, Vector commands)
+		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
 		if(commands.size()<1)
@@ -257,6 +321,66 @@ public class Reset
 			mob.session().println("done!");
 		}
 		else
+		if(s.equalsIgnoreCase("worldmatconfirm"))
+		{
+			if(mob.session()==null) return;
+			mob.session().print("working...");
+			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			{
+				Area A=(Area)a.nextElement();
+				A.toggleMobility(false);
+				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.roomID().length()>0)
+					{
+						resetRoom(R);
+						boolean changedMOBS=false;
+						boolean changedItems=false;
+						for(int i=0;i<R.numItems();i++)
+							changedItems=changedItems||rightImportMat(null,R.fetchItem(i))>=0;
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M=R.fetchInhabitant(m);
+							if(M==mob) continue;
+							if(!M.isEligibleMonster()) continue;
+							for(int i=0;i<M.inventorySize();i++)
+								changedMOBS=changedMOBS||rightImportMat(null,M.fetchInventory(i))>=0;
+							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+							if(SK!=null)
+							{
+								Vector V=SK.getUniqueStoreInventory();
+								for(int i=V.size()-1;i>=0;i--)
+								{
+									Environmental E=(Environmental)V.elementAt(i);
+									if(E instanceof Item)
+									{
+										Item I=(Item)E;
+										boolean didSomething=false;
+										didSomething=rightImportMat(null,I)>=0;
+										changedMOBS=changedMOBS||didSomething;
+										if(didSomething)
+										{
+											int numInStock=SK.numberInStock(I);
+											SK.delStoreInventory(I);
+											SK.addStoreInventory(I,numInStock);
+										}
+									}
+								}
+							}
+						}
+						if(changedItems)
+							ExternalPlay.DBUpdateItems(R);
+						if(changedMOBS)
+							ExternalPlay.DBUpdateMOBs(R);
+						mob.session().print(".");
+					}
+				}
+				A.toggleMobility(true);
+			}
+			mob.session().println("done!");
+		}
+		else
 		if(s.equalsIgnoreCase("arearacemat"))
 		{
 			// this is just utility code and will change frequently
@@ -294,6 +418,7 @@ public class Reset
 				{
 					MOB M=R.fetchInhabitant(m);
 					if(M==mob) continue;
+					if(!M.isEligibleMonster()) continue;
 					Race R2=(Race)rememberM.get(M.Name());
 					if(R2!=null)
 					{

@@ -70,7 +70,7 @@ public class Chant_SummonMount extends Chant
 		{
 			Room room=mob.location().getRoomInDir(d);
 			Exit exit=mob.location().getExitInDir(d);
-			Exit opExit=mob.location().getPairedExit(d);
+			Exit opExit=mob.location().getReverseExit(d);
 			if((room!=null)
 			&&((room.domainType()&Room.INDOORS)==0)
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)

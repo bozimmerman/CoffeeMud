@@ -9,7 +9,7 @@ import java.util.*;
 public class GenLantern extends GenLightSource
 {
 	public String ID(){	return "GenLantern";}
-	public static final int DURATION_TICKS=400;
+	public static final int DURATION_TICKS=800;
 	public GenLantern()
 	{
 		super();

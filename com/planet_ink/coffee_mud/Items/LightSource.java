@@ -8,7 +8,7 @@ public class LightSource extends StdItem implements Light
 {
 	public String ID(){	return "LightSource";}
 	protected boolean lit=false;
-	protected int durationTicks=150;
+	protected int durationTicks=200;
 	protected boolean destroyedWhenBurnedOut=true;
 	protected boolean goesOutInTheRain=true;
 

@@ -13,7 +13,7 @@ Marionette	1	10	5	1	GenItem		0		0
 % Wheel	1	20	10	1	GenItem		0		0
 % Bucket	1	20	20	5	GenWater		15		0
 % Plaque	1	20	5	20	GenItem		0		0
-Torch	15	15	5	10	GenLightSource		50		0
+Torch	15	15	5	10	GenLightSource		200		0
 Small % Table	1	15	30	15	GenRideable	TABLE	20		0
 Small % Desk	1	15	30	15	GenRideable	TABLE	20		0
 Small % Stool	1	15	10	3	GenChair	CHAIR	1		0

@@ -704,8 +704,10 @@ public class ItemData extends StdWebMacro
 				{
 				case EnvResource.MATERIAL_MITHRIL:
 				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_ENERGY:
 					break;
 				case EnvResource.MATERIAL_WOODEN:
+				case EnvResource.MATERIAL_PLASTIC:
 					damage-=4;
 					baseattack-=0;
 					break;
@@ -730,7 +732,7 @@ public class ItemData extends StdWebMacro
 					baseattack-=30;
 					break;
 				}
-				switch(material&EnvResource.RESOURCE_MASK)
+				switch(material)
 				{
 				case EnvResource.RESOURCE_BALSA:
 				case EnvResource.RESOURCE_LIMESTONE:
@@ -764,6 +766,7 @@ public class ItemData extends StdWebMacro
 				switch(material&EnvResource.MATERIAL_MASK)
 				{
 				case EnvResource.MATERIAL_WOODEN:
+				case EnvResource.MATERIAL_ENERGY:
 					break;
 				case EnvResource.MATERIAL_METAL:
 				case EnvResource.MATERIAL_MITHRIL:
@@ -775,6 +778,7 @@ public class ItemData extends StdWebMacro
 					baseattack-=10;
 					break;
 				case EnvResource.MATERIAL_LEATHER:
+				case EnvResource.MATERIAL_PLASTIC:
 					damage-=2;
 					baseattack-=0;
 					break;
@@ -791,7 +795,7 @@ public class ItemData extends StdWebMacro
 					baseattack-=30;
 					break;
 				}
-				switch(material&EnvResource.RESOURCE_MASK)
+				switch(material)
 				{
 				case EnvResource.RESOURCE_LIMESTONE:
 				case EnvResource.RESOURCE_FLINT:
@@ -840,8 +844,10 @@ public class ItemData extends StdWebMacro
 				case EnvResource.MATERIAL_METAL:
 				case EnvResource.MATERIAL_MITHRIL:
 				case EnvResource.MATERIAL_PRECIOUS:
+				case EnvResource.MATERIAL_ENERGY:
 					lvl=metalPoints[i];
 					break;
+				case EnvResource.MATERIAL_PLASTIC:
 				case EnvResource.MATERIAL_LEATHER:
 				case EnvResource.MATERIAL_GLASS:
 				case EnvResource.MATERIAL_ROCK:
@@ -881,9 +887,12 @@ public class ItemData extends StdWebMacro
 						break;
 					case EnvResource.MATERIAL_LEATHER:
 					case EnvResource.MATERIAL_GLASS:
+					case EnvResource.MATERIAL_PLASTIC:
 					case EnvResource.MATERIAL_ROCK:
 					case EnvResource.MATERIAL_WOODEN:
 						weightpts+=Item.wornHeavyPts[i+1][1];
+						break;
+					case EnvResource.MATERIAL_ENERGY:
 						break;
 					default:
 						weightpts+=Item.wornHeavyPts[i+1][0];
@@ -895,7 +904,7 @@ public class ItemData extends StdWebMacro
 			int cost=(int)Math.round(((pts*pts) + new Integer(materialvalue).doubleValue()) 
 									 * ( weightpts / 2));
 			int armor=(int)Math.round(totalpts);
-			switch(material&EnvResource.RESOURCE_MASK)
+			switch(material)
 			{
 				case EnvResource.RESOURCE_BALSA:
 				case EnvResource.RESOURCE_LIMESTONE:

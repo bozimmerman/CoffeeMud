@@ -39,6 +39,7 @@ public class Aggressive extends StdBehavior
 		&&((!mob.isMonster())||(fightMOBs))
 		&&(monster.location()!=null)
 		&&(monster.location().isInhabitant(mob))
+		&&(monster.location().getArea().getMobility())
 		&&(canFreelyBehaveNormal(monster))
 		&&(Sense.canBeSeenBy(mob,monster))
 		&&(!mob.isASysOp(mob.location())))
@@ -64,6 +65,7 @@ public class Aggressive extends StdBehavior
 	{
 		if(!canFreelyBehaveNormal(observer)) return false;
 		MOB startItWith=null;
+		if(observer.location().getArea().getMobility())
 		for(int i=0;i<observer.location().numInhabitants();i++)
 		{
 			MOB mob=observer.location().fetchInhabitant(i);

@@ -73,6 +73,7 @@ public class Spell_Shatter extends Spell
 					case EnvResource.MATERIAL_PAPER:
 					case EnvResource.MATERIAL_CLOTH:
 					case EnvResource.MATERIAL_VEGETATION:
+					case EnvResource.MATERIAL_PLASTIC:
 					case EnvResource.MATERIAL_LEATHER:
 					case EnvResource.MATERIAL_FLESH:
 						damage=(int)Math.round(Util.div(damage,3.0));
@@ -85,6 +86,9 @@ public class Spell_Shatter extends Spell
 						damage=(int)Math.round(Util.mul(damage,2.0));
 						break;
 					case EnvResource.MATERIAL_PRECIOUS:
+						break;
+					case EnvResource.MATERIAL_ENERGY:
+						damage=0;
 						break;
 					}
 					target.setUsesRemaining(target.usesRemaining()-damage);

@@ -46,6 +46,7 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&EnvResource.MATERIAL_MASK)
 			{
 			case EnvResource.MATERIAL_CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_PLASTIC:
 			case EnvResource.MATERIAL_GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_METAL:
@@ -63,6 +64,7 @@ public class StdArmor extends StdContainer implements Armor
 			case EnvResource.MATERIAL_PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
+			case EnvResource.MATERIAL_PLASTIC:
 			case EnvResource.MATERIAL_GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_FLESH:
 			case EnvResource.MATERIAL_LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
@@ -81,6 +83,7 @@ public class StdArmor extends StdContainer implements Armor
 			case EnvResource.MATERIAL_CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
+			case EnvResource.MATERIAL_PLASTIC:
 			case EnvResource.MATERIAL_GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_FLESH:
 			case EnvResource.MATERIAL_LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
@@ -97,6 +100,7 @@ public class StdArmor extends StdContainer implements Armor
 			case EnvResource.MATERIAL_PAPER:
 			case EnvResource.MATERIAL_CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_PLASTIC:
 			case EnvResource.MATERIAL_PRECIOUS:
 			case EnvResource.MATERIAL_GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_FLESH:
@@ -324,6 +328,36 @@ public class StdArmor extends StdContainer implements Armor
 						break;
 					}
 					break;
+				case EnvResource.MATERIAL_PLASTIC:
+					switch(weaponType)
+					{
+					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_GASSING:
+						break;
+					case Weapon.TYPE_BURSTING:
+					case Weapon.TYPE_MELTING:
+						if(Dice.rollPercentage()<5)
+							setUsesRemaining(usesRemaining()-Dice.roll(1,10,0));
+						break;
+					case Weapon.TYPE_BURNING:
+						if(Dice.rollPercentage()==1)
+							setUsesRemaining(usesRemaining()-1);
+						break;
+					case Weapon.TYPE_BASHING:
+					case Weapon.TYPE_STRIKING:
+					case Weapon.TYPE_NATURAL:
+						if(Dice.rollPercentage()<5)
+							setUsesRemaining(usesRemaining()-Dice.roll(1,4,0));
+						break;
+					case Weapon.TYPE_PIERCING:
+					case Weapon.TYPE_SHOOT:
+						if(Dice.rollPercentage()<5)
+							setUsesRemaining(usesRemaining()-Dice.roll(1,8,0));
+						break;
+					case Weapon.TYPE_SLASHING:
+						break;
+					}
+					break;
 				case EnvResource.MATERIAL_ROCK:
 				case EnvResource.MATERIAL_PRECIOUS:
 					switch(weaponType)
@@ -382,6 +416,8 @@ public class StdArmor extends StdContainer implements Armor
 							setUsesRemaining(usesRemaining()-1);
 						break;
 					}
+					break;
+				case EnvResource.MATERIAL_ENERGY:
 					break;
 				default:
 					if(Dice.rollPercentage()==1)
@@ -455,7 +491,11 @@ public class StdArmor extends StdContainer implements Armor
 		case EnvResource.MATERIAL_PRECIOUS:
 		case EnvResource.MATERIAL_VEGETATION:
 		case EnvResource.MATERIAL_FLESH:
-			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_ACID)+2);
+		case EnvResource.MATERIAL_PLASTIC:
+			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)+2);
+			break;
+		case EnvResource.MATERIAL_ENERGY:
+			affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+2);
 			break;
 		}
 	}

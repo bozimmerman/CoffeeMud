@@ -9,7 +9,7 @@ import java.util.*;
 public class Lantern extends LightSource
 {
 	public String ID(){	return "Lantern";}
-	public static final int DURATION_TICKS=400;
+	public static final int DURATION_TICKS=800;
 	public Lantern()
 	{
 		super();

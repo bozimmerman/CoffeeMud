@@ -23,7 +23,7 @@ public class GenLightSource extends GenItem implements Light
 		isReadable=false;
 		destroyedWhenBurnedOut=true;
 		setMaterial(EnvResource.RESOURCE_OAK);
-		setDuration(150);
+		setDuration(200);
 	}
 
 	public Environmental newInstance()

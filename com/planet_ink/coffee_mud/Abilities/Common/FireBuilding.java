@@ -128,6 +128,7 @@ public class FireBuilding extends CommonSkill
 				break;
 			case EnvResource.MATERIAL_CLOTH:
 			case EnvResource.MATERIAL_PAPER:
+			case EnvResource.MATERIAL_PLASTIC:
 				durationOfBurn=5+lighting.envStats().weight();
 				break;
 			case EnvResource.MATERIAL_WOODEN:
@@ -142,6 +143,7 @@ public class FireBuilding extends CommonSkill
 			case EnvResource.MATERIAL_GLASS:
 			case EnvResource.MATERIAL_LIQUID:
 			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_ENERGY:
 			case EnvResource.MATERIAL_MITHRIL:
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
