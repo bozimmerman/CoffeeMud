@@ -57,7 +57,16 @@ public class BaseItemParser extends StdCommand
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>0;i--)
 		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
-		    { fromDex=i; containerDex=i+1;  break;}
+		    { 
+		        fromDex=i; 
+			    containerDex=i+1;
+			    if(((containerDex+1)<commands.size())
+			    &&((((String)commands.elementAt(containerDex)).equalsIgnoreCase("all"))
+			    ||(Util.s_int((String)commands.elementAt(containerDex))>0)))
+			        containerDex++;
+			    break;
+			}
+		
 		String possibleContainerID=Util.combine(commands,containerDex);
 		    
 		boolean allFlag=false;
@@ -97,14 +106,15 @@ public class BaseItemParser extends StdCommand
 				V.addElement(thisThang);
 				if(V.size()==1)
 				{
-				    while((!allFlag)&&(fromDex>=0)&&(commands.size()>fromDex))
+				    while((fromDex>=0)&&(commands.size()>fromDex))
 						commands.removeElementAt(fromDex);
 				    while(commands.size()>containerDex)
 						commands.removeElementAt(containerDex);
 					preWord="";
 				}
 			}
-			if(thisThang==null) return V;
+			if(thisThang==null)
+			    return V;
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxContained));

@@ -122,10 +122,10 @@ public class Say extends StdCommand
 		    theWord+="(s) to";
 		else
 		    theWord+="(s)";
-		String fromSelf="^T^<SAY \""+target.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+		String fromSelf="^T^<SAY \""+((target!=null)?target.name():mob.name())+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		String toTarget="^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
-			msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'^</SAY^>^?");
+			msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" '"+combinedCommands+"'^</SAY^>^?");
 		else
 			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
 		
