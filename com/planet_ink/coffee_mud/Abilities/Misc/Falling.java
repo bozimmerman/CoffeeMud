@@ -125,6 +125,8 @@ public class Falling extends StdAbility
 				temporarilyDisable=false;
 				if(!canFallFrom(mob.location(),direction))
 					return stopFalling(mob);
+				else
+					return true;
 			}
 		}
 		else

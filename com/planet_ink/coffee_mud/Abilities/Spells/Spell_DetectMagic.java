@@ -35,7 +35,8 @@ public class Spell_DetectMagic extends Spell
 		&&(affected instanceof MOB)
 		&&(affect.target()!=null)
 		&&(affect.amISource((MOB)affected))
-		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING))
+		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
+		&&(Sense.canBeSeenBy(affect.target(),affected)))
 		{
 			String msg2=null;
 			for(int a=0;a<affect.target().numAffects();a++)
@@ -45,8 +46,8 @@ public class Spell_DetectMagic extends Spell
 				&&(!A.isAutoInvoked())
 				&&(A.displayText().length()>0)
 				&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
-				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
 				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)))
 				{
 					if(msg2==null)
