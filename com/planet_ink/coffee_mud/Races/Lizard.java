@@ -46,7 +46,7 @@ public class Lizard extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public String heathText(MOB mob)
+	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

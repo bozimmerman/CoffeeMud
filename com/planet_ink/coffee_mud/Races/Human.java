@@ -45,7 +45,7 @@ public class Human extends StdRace
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}
-	public String heathText(MOB mob)
+	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
