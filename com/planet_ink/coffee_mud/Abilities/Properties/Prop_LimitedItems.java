@@ -38,39 +38,8 @@ public class Prop_LimitedItems extends Property
 			return "Only "+Util.s_int(text())+" may exist.";
 	}
 
-	public void affectEnvStats(Environmental E, EnvStats affectableStats)
+	private void countIfNecessary(Item I)
 	{
-		super.affectEnvStats(E,affectableStats);
-		
-		if((!(E instanceof Item))||(((Item)E).owner()==null))
-			return;
-		
-		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
-			return;
-		
-		if(norecurse) return;
-		norecurse=true;
-		
-		if(destroy) ((Item)affected).destroy();
-		
-		synchronized(playersLoaded)
-		{
-			if(!playersLoaded[0])
-			{
-				playersLoaded[0]=true;
-				Log.sysOut("Prop_LimitedItems","Checking player inventories");
-				Vector V=CMClass.DBEngine().getUserList();
-				for(int v=0;v<V.size();v++)
-				{
-					MOB M=CMMap.getLoadPlayer((String)((Vector)V.elementAt(v)).firstElement());
-					if((M.location()!=null)&&(M.location().isInhabitant(M)))
-						Log.sysOut("Prop_LimitedItems",M.name()+" is in the Game!!!");
-				}
-				Log.sysOut("Prop_LimitedItems","Done checking player inventories");
-			}
-		}
-		
-		Item I=(Item)E;
 		if(Sense.isInTheGame(I))
 		{
 			int max=Util.s_int(text());
@@ -109,6 +78,55 @@ public class Prop_LimitedItems extends Property
 				}
 			}
 		}
+	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		super.executeMsg(host,msg);
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+		&&(affected instanceof Item)
+		&&((!(((Item)affected).owner() instanceof MOB))
+		   ||((MOB)((Item)affected).owner()).playerStats()==null))
+			countIfNecessary((Item)affected);
+	}
+	
+	public void affectEnvStats(Environmental E, EnvStats affectableStats)
+	{
+		super.affectEnvStats(E,affectableStats);
+		
+		if((!(E instanceof Item))||(((Item)E).owner()==null))
+			return;
+		
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return;
+		
+		if(norecurse) return;
+		norecurse=true;
+		
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_UNLOCATABLE);
+		
+		if(destroy) ((Item)affected).destroy();
+		
+		synchronized(playersLoaded)
+		{
+			if(!playersLoaded[0])
+			{
+				playersLoaded[0]=true;
+				Log.sysOut("Prop_LimitedItems","Checking player inventories");
+				Vector V=CMClass.DBEngine().getUserList();
+				for(int v=0;v<V.size();v++)
+				{
+					MOB M=CMMap.getLoadPlayer((String)((Vector)V.elementAt(v)).firstElement());
+					if((M.location()!=null)&&(M.location().isInhabitant(M)))
+						Log.sysOut("Prop_LimitedItems",M.name()+" is in the Game!!!");
+				}
+				Log.sysOut("Prop_LimitedItems","Done checking player inventories");
+			}
+		}
+		if((((Item)affected).owner() instanceof MOB)
+		&&(((MOB)((Item)affected).owner()).playerStats()!=null))
+			countIfNecessary((Item)affected);
 		norecurse=false;
 	}
 }
