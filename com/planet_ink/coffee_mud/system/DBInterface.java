@@ -165,4 +165,7 @@ public class DBInterface implements DatabaseEngine
 	{ DataLoader.DBDeleteClass(classID);}
 	public void DBCreateClass(String classID,String data)
 	{ DataLoader.DBCreateClass(classID,data);}
+	
+	public String errorStatus(){return DBConnector.errorStatus().toString();}
+	public void resetconnections(){DBConnector.reconnect();}
 }

@@ -3,6 +3,9 @@ import java.util.*;
 
 public interface DatabaseEngine
 {
+	public String errorStatus();
+	public void resetconnections();
+	
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadContent(Room thisRoom, Hashtable rooms);
 	public void DBUpdateExits(Room room);

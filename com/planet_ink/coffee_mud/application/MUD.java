@@ -229,7 +229,7 @@ public class MUD extends Thread implements MudHost
 		
 		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
-		if(DBerrors.length()==0)
+		if((DBerrors.length()==0)||(DBerrors.startsWith("OK!")))
 			Log.sysOut("MUD","Database connection successful.");
 		else
 		{

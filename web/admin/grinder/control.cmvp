@@ -1,11 +1,86 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SYSOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Control Panel</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.CONTROL.action=action;
+			document.CONTROL.submit();
+		}
+		function Disable(checked,field)
+		{
+			document.CONTROL.action='/grinder/control.cmvp';
+			document.CONTROL.QUERY.value='CHANGEDISABLE';
+			document.CONTROL.FIELD.value=field;
+			if(checked)	
+				document.CONTROL.VALUE.value='';
+			else	
+				document.CONTROL.VALUE.value='on';
+			document.CONTROL.submit();
+		}
+		function Reset(checked,field,value)
+		{
+			document.CONTROL.action='/grinder/control.cmvp';
+			document.CONTROL.QUERY.value='RESET';
+			document.CONTROL.FIELD.value=field;
+			document.CONTROL.VALUE.value=value;
+			document.CONTROL.submit();
+		}
+		function Query(checked,field,value)
+		{
+			document.CONTROL.action='/grinder/control.cmvp';
+			document.CONTROL.QUERY.value='QUERY';
+			document.CONTROL.FIELD.value=field;
+			document.CONTROL.VALUE.value=value;
+			document.CONTROL.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<FORM NAME=CONTROL TARGET=_top METHOD=POST ACTION="control.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=QUERY VALUE="">
+<INPUT TYPE=HIDDEN NAME=FIELD VALUE="">
+<INPUT TYPE=HIDDEN NAME=VALUE VALUE="">
+<CENTER><FONT COLOR=RED><B>@if?!CheckReqParm?FIELD=&QUERY=@ @ControlPanel?QUERY=@@RequestParameter?QUERY@@&FIELD=@@RequestParameter?FIELD@@&VALUE=@@RequestParameter?VALUE@@ @ @endif@</B></FONT></CENTER>
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Control Panel</H2></FONT></TD></TR>
+	<TR>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=SAVETHREAD @ControlPanel?QUERY=DISABLE&FIELD=SAVETHREAD@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Save Thread</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=UTILITHREAD @ControlPanel?QUERY=DISABLE&FIELD=UTILITHREAD@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Time/Utility Thread</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=CLANTICKS  @ControlPanel?QUERY=DISABLE&FIELD=CLANTICKS@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Clan Thread</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=MUDCHAT  @ControlPanel?QUERY=DISABLE&FIELD=MUDCHAT@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Mud Chatting</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=ARREST @ControlPanel?QUERY=DISABLE&FIELD=ARREST@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Arrest Behavior</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=CONQUEST @ControlPanel?QUERY=DISABLE&FIELD=CONQUEST@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Conquerable Behavior</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=SCRIPTABLE  @ControlPanel?QUERY=DISABLE&FIELD=SCRIPTABLE@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Scriptable Behavior</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=EMOTERS  @ControlPanel?QUERY=DISABLE&FIELD=EMOTERS@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Emoter Behaviors</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=MOBILITY @ControlPanel?QUERY=DISABLE&FIELD=MOBILITY@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Mobile Behaviors</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=QUESTS @ControlPanel?QUERY=DISABLE&FIELD=QUESTS@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable Quests</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=RANDOMMONSTERS  @ControlPanel?QUERY=DISABLE&FIELD=RANDOMMONSTERS@ ONCLICK="Disable(this.checked,this.name);"><FONT COLOR=WHITE>Disable RandomMonsters Behavior</FONT></TD>
+		<TD WIDTH=25% ALIGN=LEFT><BR></TD>
+	</TR>
+	<TR><TD WIDTH=100% COLSPAN=4 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>&nbsp;</H2></FONT></TD></TR>
+	<TR>
+		<TD WIDTH=50% COLSPAN=2 ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=DATABASE2 ONCLICK="Query(this.checked,'DATABASE','');"><FONT COLOR=WHITE>Query Database Engine</FONT></TD>
+		<TD WIDTH=50% COLSPAN=2 ALIGN=LEFT><INPUT TYPE=CHECKBOX NAME=DATABASE1 ONCLICK="if(confirm('Reset your database connections?'))Reset(this.checked,'DATABASE','');"><FONT COLOR=WHITE>Reset Database Connections</FONT></TD>
+	</TR>
+	</TABLE>
+	<CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</CENTER>
 </BODY>
 </HTML>
+@endif@
+@endif@

@@ -159,6 +159,14 @@ public class CommonStrings extends Scriptable
 		for(int v=0;v<V.size();v++)
 			disVars.add((String)V.elementAt(v));
 	}
+	public static void setDisableVar(String var, boolean delete)
+	{
+		if((var!=null)&&(delete)&&(disVars.size()>0))
+			disVars.remove(var);
+		else
+		if((var!=null)&&(!delete))
+			disVars.add(var);
+	}
 	
 	public static boolean isDebugging(String key)
 	{ return (dbgVars.size()>0)&&dbgVars.contains(key);}

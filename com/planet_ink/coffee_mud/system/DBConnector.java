@@ -6,15 +6,32 @@ import java.sql.SQLException;
 public class DBConnector
 {
 	private static DBConnections DBs=null;
+	private static String DBClass="";
+	private static String DBService="";
+	private static String DBUser="";
+	private static String DBPass="";
+	private static int numConnections=0;
+	private static boolean DoErrorQueueing=false;
 	
 	public static void connect (String NEWDBClass,
 					  		    String NEWDBService, 
 								String NEWDBUser, 
 								String NEWDBPass, 
 								int NEWnumConnections,
-								boolean DoErrorQueueing)
+								boolean NEWDoErrorQueueing)
 	{
-		DBs=new DBConnections(NEWDBClass,NEWDBService,NEWDBUser,NEWDBPass,NEWnumConnections,DoErrorQueueing);
+		DBClass=NEWDBClass;
+		DBService=NEWDBService;
+		DBUser=NEWDBUser;
+		DBPass=NEWDBPass;
+		numConnections=NEWnumConnections;
+		DoErrorQueueing=NEWDoErrorQueueing;
+		reconnect();
+	}
+	public static void reconnect()
+	{
+		if(DBs!=null){ DBs.deregisterDriver(); DBs.killConnections();}
+		DBs=new DBConnections(DBClass,DBService,DBUser,DBPass,numConnections,DoErrorQueueing);
 	}
 	
 	public static int getRecordCount(DBConnection D, ResultSet R)
@@ -202,5 +219,11 @@ public class DBConnector
 	 * @return StringBuffer	complete error status
 	 */
 	public static StringBuffer errorStatus()
-	{ return DBs.errorStatus();}
+	{ 
+		StringBuffer status=DBs.errorStatus();
+		if(status.length()==0)
+			return new StringBuffer("OK! Connections in use="+DBs.numInUse()+"/"+DBs.numConnectionsMade());
+		else
+			return new StringBuffer("<BR>"+status.toString().replaceAll("\n","<BR>")+"Connections in use="+DBs.numInUse()+"/"+DBs.numConnectionsMade());
+	}
 }
