@@ -174,7 +174,8 @@ public class Generic
 		}
 		else
 		if(E instanceof Area)
-			return getExtraEnvPropertiesStr(E);
+			return XMLManager.convertXMLtoTag("ARCHP",((Area)E).getArchivePath())
+				   +getExtraEnvPropertiesStr(E);
 		else
 		if(E instanceof Ability)
 			return XMLManager.convertXMLtoTag("AWRAP",E.text());
@@ -247,11 +248,6 @@ public class Generic
 
 		text.append(XMLManager.convertXMLtoTag("FLAG",envFlags(E)));
 
-		if(E instanceof Area)
-		{
-			text.append(XMLManager.convertXMLtoTag("ARCHP",((Area)E).getArchivePath()));
-		}
-		
 		if(E instanceof Exit)
 		{
 			Exit exit=(Exit)E;
@@ -1147,7 +1143,10 @@ public class Generic
 		}
 		else
 		if(E instanceof Area)
+		{
+			((Area)E).setArchivePath(XMLManager.getValFromPieces(V,"ARCHP"));
 			setExtraEnvProperties(E,V);
+		}
 		else
 		if(E instanceof Ability)
 			E.setMiscText(XMLManager.getValFromPieces(V,"AWRAP"));
@@ -1308,11 +1307,6 @@ public class Generic
 
 		setEnvFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
 
-		if(E instanceof Area)
-		{
-			((Area)E).setArchivePath(XMLManager.getValFromPieces(buf,"ARCHP"));
-		}
-		
 		if(E instanceof Exit)
 		{
 			Exit exit=(Exit)E;
