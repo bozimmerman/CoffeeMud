@@ -36,7 +36,7 @@ public class Teach extends StdCommand
 		if(realAbility!=null)
 			myAbility=mob.fetchAbility(realAbility.ID());
 		else
-			myAbility=mob.fetchAbility(abilityName);
+			myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
 			mob.tell(getScr("AbilityEvoker","teacherr3",abilityName));

@@ -415,7 +415,6 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=(MOB)V.elementAt(1);
 					LegalWarrant W=(laws!=null)?laws.getWarrant(mob,0):null;
-System.out.println(mob.name()+"/"+officer.name()+"/"+laws+"/"+W);
 					if(W!=null)
 					{
 						if((W.arrestingOfficer()==null)||(W.arrestingOfficer().location()!=mob.location()))
@@ -503,6 +502,25 @@ System.out.println(mob.name()+"/"+officer.name()+"/"+laws+"/"+W);
 				return false;
 			case Law.MOD_CONTROLPOINTS:
 				if(V!=null){V.clear();V.addElement(new Integer(0));}
+				return false;
+			case Law.MOD_FORGIVENAME:
+				if(laws!=null)
+				{
+					boolean didSomething=false;
+					if((V!=null)&&(V.elementAt(1) instanceof String))
+					{
+						for(int i=0;i<laws.warrants().size();i++)
+						{
+							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+							if((isStillACrime(W))&&(EnglishParser.containsString(W.criminal().name(),(String)V.elementAt(1))))
+							{
+								didSomething=true;
+								W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+(long)10);
+							}
+						}
+					}
+					return didSomething;
+				}
 				return false;
 			}
 		}

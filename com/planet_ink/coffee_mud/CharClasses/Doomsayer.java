@@ -38,44 +38,47 @@ public class Doomsayer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_Ember",true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_CurseFlames",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_CurseFlames",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtFire",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtFire",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",true);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",true);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_FlameWeapon",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_FlameWeapon",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Cannibalism",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_CurseMetal",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_CurseMetal",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Fighter_Intimidate",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_CurseMind",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_CurseMind",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Plague",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Plague",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Prayer_Demonshield",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_Demonshield",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_AuraHarm",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_MassDeafness",false);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
@@ -85,11 +88,12 @@ public class Doomsayer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_CurseLuck",false);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassBlindness",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_DemonicConsumption",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_DemonicConsumption",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
@@ -102,7 +106,6 @@ public class Doomsayer extends Cleric
 
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"FIRE",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Sermon",false);
 
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_FireHealing",true);
 		}

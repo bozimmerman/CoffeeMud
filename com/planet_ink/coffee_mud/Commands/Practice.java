@@ -33,7 +33,7 @@ public class Practice extends StdCommand
 		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
 			MOB possTeach=mob.location().fetchInhabitant(i);
-			if((possTeach!=null)&&(possTeach.fetchAbility(abilityName)!=null)&&(possTeach!=mob))
+			if((possTeach!=null)&&(possTeach.findAbility(abilityName)!=null)&&(possTeach!=mob))
 			{
 				teacher=possTeach;
 				break;
@@ -46,7 +46,7 @@ public class Practice extends StdCommand
 			return false;
 		}
 
-		Ability myAbility=mob.fetchAbility(abilityName);
+		Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
 			mob.tell(getScr("AbilityEvoker","pracerr3",abilityName));
@@ -58,7 +58,7 @@ public class Practice extends StdCommand
 			return false;
 		}
 
-		Ability teacherAbility=mob.fetchAbility(abilityName);
+		Ability teacherAbility=mob.findAbility(abilityName);
 		if(teacherAbility==null)
 		{
 			mob.tell(getScr("AbilityEvoker","pracerr4",teacher.name(),abilityName));

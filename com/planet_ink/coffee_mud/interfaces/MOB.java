@@ -209,5 +209,6 @@ public interface MOB
 	public int numLearnedAbilities();
 	public int numAbilities();
 	public Ability fetchAbility(int index);
+	public Ability findAbility(String name);
 	public Ability fetchAbility(String ID);
 }

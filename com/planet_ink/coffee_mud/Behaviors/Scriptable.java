@@ -3697,7 +3697,7 @@ public class Scriptable extends StdBehavior
 				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
 				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
-					Ability A=((MOB)newTarget).fetchAbility(cast);
+					Ability A=((MOB)newTarget).findAbility(cast);
 					if(A!=null)((MOB)newTarget).delAbility(A);
 				}
 				break;

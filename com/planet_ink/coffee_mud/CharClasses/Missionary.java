@@ -38,68 +38,69 @@ public class Missionary extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_DivineLuck",true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AiryForm",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AiryForm",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Prayer_HolyWind",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_HolyWind",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Wings",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Wings",false);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Etherealness",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Etherealness",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Prayer_ChainStrike",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_ChainStrike",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Monolith",0,"AIR",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Monolith",0,"AIR",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Gateway",true);
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Gateway",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",true);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_Weather",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UndeniableFaith",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"AIR",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Sermon",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"AIR",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_ElectricHealing",false);
 
-			CMAble.addCharAbilityMapping(ID(),30,"Prayer_ElectricHealing",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Sermon",true);
 		}
 	}
 

@@ -40,25 +40,25 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_AnimateSkeleton",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_UndeadInvisibility",true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_AnimateZombie",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_AnimateZombie",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",true);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Prayer_AnimateGhoul",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_AnimateGhoul",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AnimateGhast",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AnimateGhast",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",true);
@@ -71,9 +71,10 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Prayer_AnimateSpectre",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_AnimateSpectre",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_FeignLife",false);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",true);
 
@@ -81,14 +82,15 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_AnimateGhost",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_AnimateGhost",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_HealUndead",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Prayer_AnimateMummy",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_AnimateMummy",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Vampirism",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
@@ -98,8 +100,8 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AnimateVampire",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AnimateVampire",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",true);
 		}
 	}
 

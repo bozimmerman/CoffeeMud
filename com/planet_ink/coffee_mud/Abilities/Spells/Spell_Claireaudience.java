@@ -79,6 +79,7 @@ public class Spell_Claireaudience extends Spell
 				}
 			}
 		}
+		if(target instanceof Deity) target=null;
 		Room newRoom=mob.location();
 		if(target!=null)
 			newRoom=target.location();

@@ -1,8 +1,64 @@
-and if I embezzle while having money on the account i lose it and it goes to that 4000
-!Bundles should entertain larger groups of resources
-make Age create a player
-finish Prop_lotsforsale, retest property
-add Prop_AreaForSale
+Comprehend languages no longer translates TELLs in other languages.
+Try out Artisans
+Test: mass blindness, aura harm, aura healing, mass deafness, holy day, 
+Test: undeniable faith, aura of intolerance, aura of divine edict, holy shield
+Test: Divine Resistance, Curse Luck, sanctum, feign life, remove death mark
+Test: Vampirism, Cannibalism, Cure Vampirism, Cure Cannibalism, Divine Perspective
+Test: Sense Disease, Forgive, Absorption
+Clerics - need more skills in general, and more unique skills especially.
+
+Druids meed more Qualifying chants, and more qualifying in general as opposed to gaining. 
+Druids of all kinds suffer double duration on all crafting skills -- need a flag
+
+Chants
+Acid Rain  May only be cast during rain storm. Turns rain into damage-dealing acid that affects all enemies.  
+Hippieness  if a mob, loses clan loyalty.  Is unable to perform common skills.  randomly removes clothing and streaks.
+Magenetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
+Brittle  Causes an item, regardless of condition to become extremely brittle and shatter when used  (detect magic is only way to see -- works by watching for condition change of any kind, then BOOM gone)
+Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
+crossbreed to allow mixed races, but both races must be pure.
+Plant Snare and Entangle should have min durations
+Find Plant This chant acts like a tack to target a plant
+Sense Plants This chant acts like one room plant lore that emotes as you walk around.
+Find Gem  target a gem type and it tracks you there
+Sense Gems  This chant acts like a one room gems lore that emotes as you walk around.
+Find Ore  target a rock/metal type and it tracks you there
+Sense Ores  This chant acts like a one room ores lore that emotes as you walk around.
+Raging Vegetation (Area) acts like a slow for all opponents. Slows mobs/players trying to walk through area -- makes them stop and hack the vegetation.
+Restore Nature causes the ground to absorb all manufactured items (armor/weapons/containers/etc/clothing -- metal/cloth) on the ground in the area!
+Wilderness Lore  This skill will tell a Ranger or Barbarian the Type of terrain that he is in (If outdoors), and the type of climate of the area (Cold, Dry). Low level skill, perhaps 12?  
+
+Thieves
+Alertness  gives one random description from an item in the room upon entry into that  For example: A thief walks into a room. He gets the room description.  His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin.  It randomly selects one of those items (the coin) and issues a LOOK COIN command.  
+Autosneak  Nuff Said  
+Improved stealing/swiping  Burglar to be able to steal from signifigantly higher MOBs  
+Mug allows STEAL during a fight.  STEAL should be disabled during a fight, but MUG will accomplish this task during a fight. Similar to Slip Item and Strip Item.  
+Countertracking  an active skill that prevents you from being found with the  tracking skill.  
+Pick  should LOCK unlocked (but lockable) doors.  
+Squatting  Makes an area/room your own for a little while  
+Panhandling  allows a mob to set up in a location, and if a successful check is made, causes passing players/mobs to toss a few coins his way.  
+
+Side Kick  Allows the monk an extra attack each round  The extra attack is dealt to a mob that the monk is not currently targetting  
+Back hand  Allows the monk an extra attack each round  The extra attack is dealt to a mob that the monk is not currently targetting  Side kick is prerequisite.  
+Smoke Signals  Requires a fire. Puffs of smoke produce a message for all in the area who can  read smoke signals (has smoke signal skill). To all others it says you see  puffs of smoke in the air. Totally a role-playing skill. Can't think of  
+Scalp Barbarian(5), Templar(10), Assassin (10), or Thief(20)  
+Fragmentation   A critical shot enhancement for barbarians that only works with thrown weapons,  does an EXTRA 3 times damage, but destroys the thrown weapon in the process.  
+(SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) Tactics  gives bonuses to combat in those terrains. Also allows a Barbarian to  HIDE in that type of terrain if he remains in a room of that type for more  than 2 minutes....  
+Improved Throwing  Barbarian does extra damage with hurled items.  
+Battering  aka Barbarian lock picking.  
+Grab opponent  prevents them from changing range, allows one fewer attack from barbar  
+Bodytoss  take a grabbed opponent and chunk him 2 ranges out. Causes damage to him  based on your proficiency.  
+Piledrive  follows up a bodytoss with a powerful elbow attack. must have bodytoss to use.  
+Gouge blinds opponent for a lot longer than dirt. Harder to use.  
+Bodyshield allows you to take a PINNED opponent, and use him as a shield, with him  taking damage instead of you. Works 50% of time if your skill is 100%,  and both enemies are your level, 75% of time if your pinned opponenet  is 20 levels lower than you, or the other attacker is 20 levels lower  than you, and near 100% if both are 20 levels lower than you....  
+Weapon Catch  If you are disarmed, it will make a weaponcatch check. If it  succedes, you catch the weapon, losing one attack. Otherwise,  the weapon falls to the ground.  
+Shield Block - like dodge, but requires a shield
+Improved Shield Defence  grants extra bonuses when using shield.  
+AutoBashing  grants an extra BASH attack every round. Mana and Movement for each  autobash.  
+Mounted Charge  as the name implies. Barbarian Charge skill applied to mounted  warriors. Paladin skill.  
+Tactics  for fighters, gives allies bonus to hit.  
+Farshot  Allows the player to shoot at one range increment more than normal maximum range for the ranged weapon.  
+Counter Attack  Allows an extra attack after a successful Parry.  
 
 time to re-balance the classes
 mutable body parts, with ability to grant powers

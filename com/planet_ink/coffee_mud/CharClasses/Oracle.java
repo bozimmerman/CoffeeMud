@@ -34,37 +34,38 @@ public class Oracle extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_SenseLife",true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseUndead",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseUndead",false);
 
-			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_SenseAlignment",true);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_ControlUndead",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_ControlUndead",false);
 
-			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Spell_DetectMetal",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_DetectMetal",false);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Spell_Augury",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Spell_Augury",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
-			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Spell_Farsight",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Spell_Farsight",false);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_SenseHidden",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_Spellcraft",false);
@@ -73,19 +74,19 @@ public class Oracle extends Cleric
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
 
-			CMAble.addCharAbilityMapping(ID(),14,"Prayer_CureCritical",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_CureCritical",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Spell_KnowValue",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Spell_KnowValue",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Spell_LocateObject",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Spell_LocateObject",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_SeeAura",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_SeeAura",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
 
@@ -96,11 +97,12 @@ public class Oracle extends Cleric
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BlessItem",true);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHeal",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHeal",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Prayer_DivinePerspective",false);
 		}
 	}
 

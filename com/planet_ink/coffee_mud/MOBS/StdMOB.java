@@ -2628,6 +2628,13 @@ public class StdMOB implements MOB
 		}
 		return null;
 	}
+	public Ability findAbility(String ID)
+	{
+		Ability A=(Ability)EnglishParser.fetchEnvironmental(abilities,ID,false);
+		if(A==null) A=(Ability)EnglishParser.fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,false);
+		if(A==null) A=fetchAbility(ID);
+		return A;
+	}
 
 	public void addNonUninvokableEffect(Ability to)
 	{

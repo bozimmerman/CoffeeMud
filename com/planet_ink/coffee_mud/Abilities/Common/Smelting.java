@@ -179,20 +179,8 @@ public class Smelting extends CommonSkill
 			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
 			return false;
 		}
-		int amountResource1=0;
-		int amountResource2=0;
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
-			&&(I.container()==null))
-			{
-				if(I.material()==EnvResource.RESOURCE_DATA[resourceCode1][0])
-					amountResource1++;
-				if(I.material()==EnvResource.RESOURCE_DATA[resourceCode2][0])
-					amountResource2++;
-			}
-		}
+		int amountResource1=findNumberOfResource(mob.location(),EnvResource.RESOURCE_DATA[resourceCode1][0]);
+		int amountResource2=findNumberOfResource(mob.location(),EnvResource.RESOURCE_DATA[resourceCode2][0]);
 		if(amountResource1==0)
 		{
 			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");
@@ -208,22 +196,8 @@ public class Smelting extends CommonSkill
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
-		int Resource1Destroyed=amountMaking;
-		int Resource2Destroyed=amountMaking;
-		for(int i=mob.location().numItems()-1;i>=0;i--)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof EnvResource)
-			&&(I.container()==null))
-			{
-				if((I.material()==EnvResource.RESOURCE_DATA[resourceCode1][0])
-				&&((--Resource1Destroyed)>=0))
-					I.destroy();
-				if((I.material()==EnvResource.RESOURCE_DATA[resourceCode2][0])
-				&&((--Resource2Destroyed)>=0))
-					I.destroy();
-			}
-		}
+		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode1][0],null,null);
+		destroyResources(mob.location(),amountMaking,EnvResource.RESOURCE_DATA[resourceCode2][0],null,null);
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
 		amountMaking+=amountMaking;
 		building=(Item)makeResource(EnvResource.RESOURCE_DATA[doneResourceCode][0],false);

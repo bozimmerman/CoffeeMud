@@ -40,59 +40,64 @@ public class Healer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",true);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",false);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",true);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
 
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CureSerious",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
 
-			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
 
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",true);
 
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Prayer_GodLight",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_DispelEvil",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Prayer_GodLight",false);
 
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Prayer_CureVampirism",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_CureDisease",true);
 
-			CMAble.addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_CureCritical",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_AuraHeal",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Prayer_HolyAura",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_HolyAura",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Prayer_HolyShield",true);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Calm",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Prayer_CureCannibalism",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",true);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Prayer_DispelUndead",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_DispelUndead",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Prayer_DivineResistance",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",true);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Heal",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Atonement",false);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BlessItem",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BlessItem",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHeal",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassCureDisease",false);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
-			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Sermon",false);
 
 		}
 	}

@@ -91,6 +91,7 @@ public class Spell_Scry extends Spell
 				}
 			}
 		}
+		if(target instanceof Deity) target=null;
 		Room newRoom=mob.location();
 		if(target!=null)
 			newRoom=target.location();
