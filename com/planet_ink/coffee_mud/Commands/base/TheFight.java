@@ -280,7 +280,7 @@ public class TheFight
 				boolean found=ExternalPlay.DBUserSearch(deadMOB,target.ID());
 				if(found)
 				{
-					Body=target.killMeDead();
+					Body=target.killMeDead(true);
 					ExternalPlay.destroyUser(deadMOB);
 				}
 			}
@@ -299,7 +299,7 @@ public class TheFight
 			}
 		}
 
-		if(Body==null) Body=target.killMeDead();
+		if(Body==null) Body=target.killMeDead(true);
 
 		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
 

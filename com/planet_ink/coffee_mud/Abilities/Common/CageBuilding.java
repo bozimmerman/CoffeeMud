@@ -22,7 +22,7 @@ public class CageBuilding extends Wainwrighting
 		Vector V=(Vector)Resources.getResource("CAGEBUILD RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"cagebuilding.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"cagebuilding.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("CageBuilding","Recipes not found!");

@@ -24,7 +24,7 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		return new StdRideable();
 	}
-	public DeadBody killMeDead()
+	public DeadBody killMeDead(boolean createBody)
 	{
 		while(riders.size()>0)
 		{
@@ -35,7 +35,7 @@ public class StdRideable extends StdMOB implements Rideable
 				delRider(mob);
 			}
 		}
-		return super.killMeDead();
+		return super.killMeDead(createBody);
 	}
 	
 	// common item/mob stuff

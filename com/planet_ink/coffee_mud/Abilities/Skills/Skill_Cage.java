@@ -89,7 +89,7 @@ public class Skill_Cage extends StdAbility
 		CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
 		if((success)&&(caged.cageMe(target)))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT|Affect.MASK_MALICIOUS,null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,null);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -105,8 +105,7 @@ public class Skill_Cage extends StdAbility
 				if(mob.location().okAffect(mob,putMsg))
 				{
 					mob.location().send(mob,putMsg);
-					DeadBody body=target.killMeDead();
-					body.destroyThis();
+					target.killMeDead(false);
 				}
 				else
 					((Item)caged).destroyThis();

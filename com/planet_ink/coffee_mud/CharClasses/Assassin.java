@@ -124,7 +124,7 @@ public class Assassin extends Thief
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_AttackHalf",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
 			
-			CMAble.addCharAbilityMapping(ID(),30,"Thief_ShadowStrike",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Thief_Shadowstrike",true);
 		}
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)

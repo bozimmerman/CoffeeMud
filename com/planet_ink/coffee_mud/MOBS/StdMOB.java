@@ -625,11 +625,13 @@ public class StdMOB implements MOB
 			}
 		}
 	}
-	public DeadBody killMeDead()
+	public DeadBody killMeDead(boolean createBody)
 	{
 		Room deathRoom=location();
 		if(location()!=null) location().delInhabitant(this);
-		DeadBody Body=charStats().getMyRace().getCorpse(this,deathRoom);
+		DeadBody Body=null;
+		if(createBody)
+			Body=charStats().getMyRace().getCorpse(this,deathRoom);
 		amDead=true;
 		makePeace();
 		setRiding(null);
@@ -651,7 +653,7 @@ public class StdMOB implements MOB
 		setFollowing(null);
 		if((!isMonster())&&(soulMate()==null))
 			bringToLife(CMMap.getDeathRoom(this),true);
-		Body.startTicker(deathRoom);
+		if(Body!=null) Body.startTicker(deathRoom);
 		deathRoom.recoverRoomStats();
 		return Body;
 	}

@@ -71,10 +71,10 @@ public class Doppleganger extends StdMOB
 		return super.tick(ticking,tickID);
 	}
 
-	public DeadBody killMeDead()
+	public DeadBody killMeDead(boolean createBody)
 	{
 		revert();
-		return super.killMeDead();
+		return super.killMeDead(createBody);
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)

@@ -43,6 +43,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		E.addAffect(T);
+		T.setBorrowed(E,true);
 		ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,mob.envStats().level()*30);
 		return T;
 	}

@@ -38,7 +38,7 @@ public class Spell_MagicItem extends Spell
 		}
 
 		commands.removeElementAt(commands.size()-1);
-		Item wand=(Wand)target;
+		Item wand=(Item)target;
 
 		String spellName=Util.combine(commands,0).trim();
 		Spell wandThis=null;
@@ -103,7 +103,7 @@ public class Spell_MagicItem extends Spell
 				}
 				else
 				{
-					Ability A=CMClass.getAbility("Prop_HaveAdjuster");
+					Ability A=CMClass.getAbility("Prop_HaveSpellCast");
 					A.setMiscText(wandThis.ID()+";");
 					wand.addNonUninvokableAffect(A);
 				}

@@ -26,6 +26,11 @@ ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM commo
 Perhaps a little modification to have the mob act as a better assassin, 
 Assassin: Assassinate skill to auto-kill, lose something else though
 Prancers: Dancing bards who get special ability
+a Lizard M Bo, could you direct me to how to review all of the races stats? Lizardmen should be nice and strong, but this guy has a -1 to STR, -6 to INT, and -8 to CHA.
+druidic chant HARDEN FLESH gives an armor coating, and avoids affects of weather. WINTER COAT grows a lot of fur, and grants protection against elements as well as some cold resistance.
+on your webpage, can you list the classes by prime class, and then available subclasses? The shear number of classes is starting to get a little confusing...(And I have seen them all!)
+create a WISH LOG so that every time someone casts a wish, it updates the log with the wish. This way the Archons can see what people are wishing for, and it will help us figure out phrasings of wishes.
+when you get SEX created, druids should have some chants that affect it: Mating Instinct , a geas to find a creature of same race/opposite gender. Find Mate , a chant to track someone of opposite sex (closest?) that can be cast on others (CHANT find mate zara) will make zara be able to find a mate of (elf male) type. Feel Sex makes sexual activities more intense, basically just giving WONDERFUL sex results. YEARN SEX is a chant that makes the target suffer 8 WIS until they have sex (or the chant wears off). CROSSGENDER is a chant that maker any gender valid for sex. HOMOSEXUALITY, duh. NEUTER is a chant that makes no gender sexually viable. SPEED BIRTH creates a lvl 1 MOB of that Race, after sex. FERTILITY makes a BIRTH produce more offspring.
 
 //****** next version ********************************************************
 possible to have NE SE SW NW directions?

@@ -150,7 +150,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		MOB target=null;
 		if(V.size()>0)
-			target=(MOB)V.elementAt(Dice.roll(1,V.size(),0));
+			target=(MOB)V.elementAt(Dice.roll(1,V.size(),-1));
 		if(target==null)
 		{
 			mob.tell("You've never heard of '"+target.name()+"'.");
@@ -183,7 +183,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(levelDiff,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
+		FullMsg msg=new FullMsg(mob,target,this,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_THIEF_ACT,Affect.MSG_THIEF_ACT,"<S-NAME> whisper(s) to a dark figure stepping out of the shadows.  The person nods and slips away.");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

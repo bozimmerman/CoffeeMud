@@ -964,14 +964,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(affect.tool() instanceof MOB)
 					{
+						storeInventory.addElement(((MOB)affect.tool()).copyOf());
 						((MOB)affect.tool()).setFollowing(null);
 						if((((MOB)affect.tool()).baseEnvStats().rejuv()>0)
 						&&(((MOB)affect.tool()).baseEnvStats().rejuv()<Integer.MAX_VALUE)
 						&&(((MOB)affect.tool()).getStartRoom()!=null))
-						{
-							DeadBody body=((MOB)affect.tool()).killMeDead();
-							body.destroyThis();
-						}
+							((MOB)affect.tool()).killMeDead(false);
 						else
 							((MOB)affect.tool()).destroy();
 					}

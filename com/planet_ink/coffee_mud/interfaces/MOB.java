@@ -50,7 +50,7 @@ public interface MOB
 
 	/** Combat and death */
 	public boolean amDead();
-	public DeadBody killMeDead();
+	public DeadBody killMeDead(boolean createBody);
 	public boolean isInCombat();
 	public void bringToLife(Room newLocation, boolean resetStats);
 	public void destroy();

@@ -52,6 +52,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 			if((M!=null)&&(msg.source().location()!=null))
 				M.bringToLife(msg.source().location(),true);
 			destroyThis();
+			return;
 		}
 		super.affect(myHost,msg);
 	}

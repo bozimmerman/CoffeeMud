@@ -40,16 +40,14 @@ public class Spell_Anchor extends Spell
 
 		if((affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
-		&&("spell_summon;spell_gate".toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
+		&&("spell_summon;spell_gate;spell_dismissal".toUpperCase().indexOf(affect.tool().ID().toUpperCase())>=0))
 		{
 			Room roomS=null;
 			Room roomD=null;
-			if((affect.target()!=null)&&(affect.target() instanceof MOB)&&(((MOB)affect.target()).location()!=null))
+			if((affect.target()!=null)&&(affect.target() instanceof MOB))
 				roomD=((MOB)affect.target()).location();
-			else
 			if((affect.source()!=null)&&(affect.source().location()!=null))
 				roomS=affect.source().location();
-			else
 			if((affect.target()!=null)&&(affect.target() instanceof Room))
 				roomD=(Room)affect.target();
 
