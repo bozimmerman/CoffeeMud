@@ -301,7 +301,7 @@ public class TheFight
 			for(int i=0;i<target.inventorySize();)
 			{
 				Item thisItem=target.fetchInventory(i);
-				if(thisItem!=null)
+				if((thisItem!=null)&&(thisItem.savable()))
 				{
 					if(target.isMonster())
 					{

@@ -25,6 +25,9 @@ public class GlowingMageArmor extends StdArmor
 	{
 		return new GlowingMageArmor();
 	}
+	
+	public boolean savable(){return false;}
+	
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))

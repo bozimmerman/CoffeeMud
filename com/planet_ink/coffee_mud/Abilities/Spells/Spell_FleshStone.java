@@ -48,6 +48,15 @@ public class Spell_FleshStone extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
+		if(affect.source().getVictim()==mob)
+			affect.source().setVictim(null);
+		if(mob.isInCombat()) mob.makePeace();
+		mob.recoverMaxState();
+		mob.resetToMaxState();
+		mob.curState().setHunger(1000);
+		mob.curState().setThirst(1000);
+		mob.recoverCharStats();
+		mob.recoverEnvStats();
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -67,7 +76,7 @@ public class Spell_FleshStone extends Spell
 			   &&(affect.tool()!=null)
 			   &&(affect.tool() instanceof Spell_StoneFlesh))
 			{
-				affect.source().tell("The statue seems to smile.");
+				affect.source().location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) to smile.");
 			}
 			else
 			{
@@ -82,17 +91,13 @@ public class Spell_FleshStone extends Spell
 					return false;
 			}
 		}
-
-		mob.recoverMaxState();
-		mob.resetToMaxState();
-		mob.curState().setHunger(1000);
-		mob.curState().setThirst(1000);
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-		if(mob.isInCombat())
-			mob.makePeace();
-
-		return super.okAffect(affect);
+		if(!super.okAffect(affect))
+			return false;
+		
+		if(affect.source().getVictim()==mob)
+			affect.source().setVictim(null);
+		if(mob.isInCombat()) mob.makePeace();
+		return true;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

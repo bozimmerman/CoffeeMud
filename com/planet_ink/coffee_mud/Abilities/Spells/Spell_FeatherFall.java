@@ -59,6 +59,7 @@ public class Spell_FeatherFall extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
+		if(target==null) target=mob;
 		if(target==null) return false;
 
 		// the invoke method for spells receives as
@@ -76,15 +77,15 @@ public class Spell_FeatherFall extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> become(s) very light!":"<S-NAME> invoke(s) immediate lightness.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<S-NAME> become(s) very light!":"<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a spell, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a spell upon <T-NAMESELF>, but nothing happens.");
 		// return whether it worked
 		return success;
 	}

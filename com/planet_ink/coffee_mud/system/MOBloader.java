@@ -306,7 +306,9 @@ public class MOBloader
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
-				if((thisItem!=null)&&(thisItem.location()==item))
+				if((thisItem!=null)
+				&&(thisItem.savable())
+				&&(thisItem.location()==item))
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMCHIT ("
