@@ -104,8 +104,8 @@ public class StdDrink extends StdContainer implements Drink
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_DRINK:
-				amountOfLiquidRemaining-=10;
-				boolean thirsty=mob.curState().getThirst()==0;
+				amountOfLiquidRemaining-=amountOfThirstQuenched;
+				boolean thirsty=mob.curState().getThirst()<=0;
 				boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState());
 				if(thirsty)
 					mob.tell("You are no longer thirsty.");

@@ -66,7 +66,7 @@ public class StdFood extends StdItem implements Food
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_EAT:
-				boolean hungry=mob.curState().getHunger()==0;
+				boolean hungry=mob.curState().getHunger()<=0;
 				boolean full=!mob.curState().adjHunger(amountOfNourishment,mob.maxState());
 				if(hungry)
 					mob.tell("You are no longer hungry.");

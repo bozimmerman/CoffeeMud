@@ -12,7 +12,7 @@ public class Wineskin extends StdDrink
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a wineskin";
-		amountOfThirstQuenched=50;
+		amountOfThirstQuenched=200;
 		amountOfLiquidHeld=1000;
 		amountOfLiquidRemaining=1000;
 		baseEnvStats.setWeight(10);
