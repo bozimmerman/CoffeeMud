@@ -2198,15 +2198,17 @@ IDs</EM></TD>
       the portal will take you, or a list of rooms (separated by semicolons) to 
       which the portal might take you.</TD></TR>
   <TR>
-    <TD><EM>Exit Direction Name</EM></TD>
-    <TD>This field, when not blank, will cause the portal to be listed among the
-    exits in the room.  This field will hold the name of the direction, while the
-    portal's "Name" will be the room description.</TD></TR>
+    <TD><EM>Exit Direction 
+    Name</EM></TD>
+    <TD>This field, when not blank, will cause the portal 
+      to be listed among the exits in the room. This field will hold the name of 
+      the direction, while the portal's "Name" will be the room 
+  description.</TD></TR>
   <TR>
     <TD><EM>Exit Closed Text</EM></TD>
-    <TD>If the Exit Direction Name is not empty, and the portal has a door/lid, then
-    this field will be displayed instead of the "name" in the exits list.</TD></TR>
-      </TABLE></P>
+    <TD>If the Exit Direction Name is not empty, and the 
+      portal has a door/lid, then this field will be displayed instead of the 
+      "name" in the exits list.</TD></TR></TABLE></P>
 <P><STRONG><A name=geni21>The "GenClanItem", "GenClanCommonContainer", 
 "GenClanCommonItem", "GenClanContainer", "GenClanFlag", "GenClanPamphlet", and 
 "GenClanSpecialItem"</A></STRONG></STRONG></STRONG></P>
@@ -2406,8 +2408,8 @@ are available to make items more perilous: "Bomb_AcidBurst", "Bomb_Explosive",
 or drinkables into poisons - "Poison_Alcohol", "Poison_BeeSting", 
 "Poison_Bloodboil", "Poison_Decreptifier", "Poison_Firebreather", 
 "Poison_Ghoultouch", "Poison_GoblinDrip", "Poison_Heartstopper", 
-"Poison_Liquor", "Poison_Mindsap", "Poison_Peppersauce", "Poison_Rotten", "Poison_Slumberall", 
-"Poison_Venom", "Poison_XXX"</P>
+"Poison_Liquor", "Poison_Mindsap", "Poison_Peppersauce", "Poison_Rotten", 
+"Poison_Slumberall", "Poison_Venom", "Poison_XXX"</P>
 <P>For&nbsp; "non-Generic" items, the following properties 
 will be presented during modification (see Appendix&nbsp;A for more 
 information):<BR></P>
@@ -6724,9 +6726,9 @@ any time, 'clanexile' a member - as well as members can 'clanresign' </P>
 the clantalk channel to talk to your clan, as well as use the 'Clan 
 Home'&nbsp;and 'Clan Donate' spells. The 'clanhome' location and the 
 'clandonate' location can be set by bosses using the 'clanhomeset' and 
-'clandonateset' commands. Clan morgues can be designated with the 'clanmorgueset' command.
-Bosses and treasurers may deal with any Clan bankers 
-in your game. If MINCLANMEMBERS don't at least login in DAYSCLANDEATH days, then 
+'clandonateset' commands. Clan morgues can be designated with the 
+'clanmorgueset' command. Bosses and treasurers may deal with any Clan bankers in 
+your game. If MINCLANMEMBERS don't at least login in DAYSCLANDEATH days, then 
 the clan will be purged automatically. </P>
 <P align=left><STRONG><FONT 
 color=#9400d3 size=4>Q. What does Hunger/Thirst/Fatigue 
@@ -6806,148 +6808,261 @@ else with CMROOMS or ORDER security privileges&nbsp;is the in the same room as
 them.</P></SPAN></SPAN></SPAN></SPAN></DIV></SPAN></DIV></SPAN></DIV>
 <P class=MsoNormal><STRONG><FONT 
 color=green size=5><A name=appe>Appendix E: Quests</A></FONT></STRONG></P>
-<P>Quests are tasks which can be completed by players for prizes, typically 
-quest points, experience, money, or all three.&nbsp; Quest tasks, the monitoring 
-of their completion and status, as well as their availability, can all be 
-automated by CoffeeMud. </P>
-<P>A quest is created by an Archon using the <STRONG>CREATE QUEST</STRONG> 
-[SCRIPT] command from the command line. Where [SCRIPT] is a either a complete 
-quest script, where each command line is terminated by a semicolon (;), or a 
-load command of the form LOAD=[SCRIPT PATH]. An example of a create script using 
-a load command is as follows:</P>
-<P><STRONG>CREATE QUEST</STRONG> LOAD=c:/temp/myquest.txt</P>
-<P>To load one of the built-in quests, for instance, use:</P>
-<P><STRONG>CREATE QUEST</STRONG> LOAD=quests/robbed/robbed.quest</P>
-<P>Quests may be&nbsp;started automatically (autoquests) from inside the quest 
-script by including&nbsp;the SET WAIT and SET INTERVAL commands, or 
-they&nbsp;may be started manually by using the <STRONG>MODIFY QUEST</STRONG> 
-[QUEST NAME] command. </P>
-<P>Quests can be listed, to see their status, using the <STRONG>LIST 
-QUESTS</STRONG> command. </P>
-<P>Quests can be removed from the list using the <STRONG>DESTROY QUEST</STRONG> 
-[QUEST NAME] command.</P>
-<P>Quests can be saved using the <STRONG>SAVE QUESTS</STRONG> command. Quests 
-saved this way will be restored during the next CoffeeMud reboot. </P>
+<P>Quests are tasks which can be completed by players for 
+prizes, typically quest points, experience, money, or all three.&nbsp; Quest 
+tasks, the monitoring of their completion and status, as well as their 
+availability, can all be automated by CoffeeMud. </P>
+<P>A quest is created by an Archon using the <STRONG>CREATE QUEST</STRONG> [SCRIPT] command from the command 
+line. Where [SCRIPT] is a either a complete quest script, where each command 
+line is terminated by a semicolon (;), or a load command of the form 
+LOAD=[SCRIPT PATH]. An example of a create script using a load command is as 
+follows:</P>
+<P><STRONG>CREATE QUEST</STRONG> 
+LOAD=c:/temp/myquest.txt</P>
+<P>To load one of the built-in quests, for instance, 
+use:</P>
+<P><STRONG>CREATE QUEST</STRONG> 
+LOAD=quests/robbed/robbed.quest</P>
+<P>Quests may be&nbsp;started automatically (autoquests) 
+from inside the quest script by including&nbsp;the SET WAIT and SET INTERVAL 
+commands, or they&nbsp;may be started manually by using the <STRONG>MODIFY QUEST</STRONG> [QUEST NAME] command. </P>
+<P>Quests can be listed, to see their status, using the 
+<STRONG>LIST QUESTS</STRONG> command. </P>
+<P>Quests can be removed from the list using the <STRONG>DESTROY QUEST</STRONG> [QUEST NAME] command.</P>
+<P>Quests can be saved using the <STRONG>SAVE QUESTS</STRONG> command. Quests saved this way will be 
+restored during the next CoffeeMud reboot. </P>
 <P><FONT color=#4169e1 size=4><STRONG>Quest Scripts</STRONG></FONT></P>
-<P>When creating a new quest using the <STRONG>CREATE QUEST</STRONG> [SCRIPT] 
-command, whether you use the load command to specify an external script, or 
-include the script directly into the create command, the quest script commands 
-are as follows:</P>
-<P>SET NAME [QUEST NAME] - the *unique* name of your quest. This is a required 
-command! </P>
-<P>SET DURATION [#TICKS] - # of ticks (4 second periods) the quest will last 
-once started. This is a required command! </P>
-<P>SET WAIT [#TICKS] - minimum # ticks to wait between auto-starts of the quest. 
-Required for auto-quests only! </P>
-<P>SET INTERVAL [#TICKS] - random # ticks (1-#TICKS) to wait between 
-auto-starting the quest, AFTER the WAIT period (see above) is over. Required for 
-auto-quests! </P>
-<P>IMPORT MOBS [XML FILE PATH] - this will import a list of custom mobs from a 
-.CMARE file generated using the EXPORT ROOM MOBS command. The parameter must be 
-the path and file name of the file. </P>
-<P>IMPORT ITEMS [XML FILE PATH] - this will import a list of custom items from a 
-.CMARE file generated using the EXPORT ROOM ITEMS command. The parameter must be 
-the path and file name of the file. </P>
-<P>SET AREA ([AREA NAME]) - will set the current designated area to the area 
-specified. Although this does nothing in itself, it is important for the several 
-commands which load mobs and items. The area name ANY may be given to choose a 
-random area. If no area name is given, this will CLEAR the area designation. 
-This can have a profound impact on how subsequent mob or item loading, or room 
-setting commands work. </P>
-<P>SET ROOM ([ROOM NAME]) - will set the current designated room to the one 
-specified. If a room or area has been previously designated, and not cleared 
-(see SET AREA), then the room will be selected from the designated area 
-according to the room name criteria. Otherwise, a room from the whole map will 
-be chosen. If a room name of ANY is given, then the room will be chosen randomly 
-from the world, or the area if designated. If no room name is given, this will 
-effectly clear the room designation (but it will not clear the area 
-designation!). </P>
-<P>SET LOCALE ([LOCALE]) - will set the current designated room to the one with 
-the specified class name. If a room or area has been previously designated, and 
+<P>When creating a new quest using the <STRONG>CREATE QUEST</STRONG> [SCRIPT] command, whether you use the 
+load command to specify an external script, or include the script directly into 
+the create command, the quest script commands are as follows:</P>
+<P>SET NAME [QUEST NAME] - the *unique* name of your quest. 
+This is a required command! </P>
+<P>SET DURATION [#TICKS] - # of ticks (4 second periods) 
+the quest will last once started. This is a required command! </P>
+<P>SET WAIT [#TICKS] - minimum # ticks to wait between 
+auto-starts of the quest. Required for auto-quests only! </P>
+<P>SET INTERVAL [#TICKS] - random # ticks (1-#TICKS) to 
+wait between auto-starting the quest, AFTER the WAIT period (see above) is over. 
+Required for auto-quests! </P>
+<P>IMPORT MOBS [XML FILE PATH] - this will import a list of 
+custom mobs from a .CMARE file generated using the EXPORT ROOM MOBS command. The 
+parameter must be the path and file name of the file. </P>
+<P>IMPORT ITEMS [XML FILE PATH] - this will import a list 
+of custom items from a .CMARE file generated using the EXPORT ROOM ITEMS 
+command. The parameter must be the path and file name of the file. </P>
+<P>SET AREA ([AREA NAME]) - will set the current designated 
+area to the area specified. Although this does nothing in itself, it is 
+important for the several commands which load mobs and items. The area name ANY 
+may be given to choose a random area. If no area name is given, this will CLEAR 
+the area designation. This can have a profound impact on how subsequent mob or 
+item loading, or room setting commands work. </P>
+<P>SET ROOM ([ROOM NAME]) - will set the current designated 
+room to the one specified. If a room or area has been previously designated, and 
 not cleared (see SET AREA), then the room will be selected from the designated 
-area according to the locale criteria. Otherwise, a room from the whole map will 
-be chosen. If a locale of ANY is given, then the room will be chosen randomly 
-from the world, or the area if designated. If no locale is given, this will 
-effectly clear the room designation (but it will not clear the area 
+area according to the room name criteria. Otherwise, a room from the whole map 
+will be chosen. If a room name of ANY is given, then the room will be chosen 
+randomly from the world, or the area if designated. If no room name is given, 
+this will effectly clear the room designation (but it will not clear the area 
 designation!). </P>
-<P>SET MOBGROUP ([MOB NAME]) - will designate a set of mobs with the given name. 
+<P>SET LOCALE ([LOCALE]) - will set the current designated 
+room to the one with the specified class name. If a room or area has been 
+previously designated, and not cleared (see SET AREA), then the room will be 
+selected from the designated area according to the locale criteria. Otherwise, a 
+room from the whole map will be chosen. If a locale of ANY is given, then the 
+room will be chosen randomly from the world, or the area if designated. If no 
+locale is given, this will effectly clear the room designation (but it will not 
+clear the area designation!). </P>
+<P>SET MOBGROUP ([MOB NAME]) - will designate a set of mobs 
+with the given name. If the name ends with MASK=..., then a mask similar in 
+functionality to the one described in the Prop_HaveZapper will apply in addition 
+to the name mask entered. The mobs chosen will be selected from those in the 
+designated area (if one was designated) or the world. The mobs must exist 
+somewhere in the map for this command to work. </P>
+<P>SET MOB ([MOB NAME]) - will set the current mob to one 
+with the given name. If the name ends with MASK=..., then a mask similar in 
+functionality to the one described in the Prop_HaveZapper will apply in addition 
+to the name mask entered. Ths mob chosen will be selected from a MOBGROUP if one 
+has been set. Otherwise, the mob chosen will be selected from those in the 
+designated area (if one was designated) or the world. The mob must exist 
+somewhere in the map for this command to work. If a room has been previously 
+designated, then this command will bring the mob to that room. If a room or area 
+has not been designated (or was cleared), then this command will designate a new 
+room and area. </P>
+<P>SET MOBTYPE ([CLASS]) - will set the current mob to one 
+with the given class name. Ths mob chosen will be selected from a MOBGROUP if 
+one has been set. Otherwise, the mob chosen will be selected from those in the 
+designated area (if one was designated) or the world. The mob must exist 
+somewhere in the map for this command to work. If a room has been previously 
+designated, then this command will bring the mob to that room. If a room or area 
+has not been designated (or was cleared), then this command will designate a new 
+room and area. </P>
+<P>SET ITEM ([ITEM NAME]) - will set the current item to 
+one with the given name. The item chosen will be selected from those in the 
+designated area (if one was designated) or the world. The item must exist 
+somewhere in a room on the map for this command to work. If a room has been 
+previously designated, then this command will bring the item to that room. If a 
+room or area has not been designated (or was cleared), then this command will 
+designate a new room and area. </P>
+<P>SET ITEMTYPE ([CLASS]) - will set the current item to 
+one with the given class name. The item chosen will be selected from those in 
+the designated area (if one was designated) or the world. The item must exist 
+somewhere in a room on the map for this command to work. If a room has been 
+previously designated, then this command will bring the item to that room. If a 
+room or area has not been designated (or was cleared), then this command will 
+designate a new room and area. </P>
+<P>LOAD MOB [MOB NAME] - will instantiate a mob of the 
+given name from the list of mobs imported using the IMPORT MOBS command above. 
 If the name ends with MASK=..., then a mask similar in functionality to the one 
 described in the Prop_HaveZapper will apply in addition to the name mask 
-entered. The mobs chosen will be selected from those in the designated area (if 
-one was designated) or the world. The mobs must exist somewhere in the map for 
-this command to work. </P>
-<P>SET MOB ([MOB NAME]) - will set the current mob to one with the given name. 
-If the name ends with MASK=..., then a mask similar in functionality to the one 
-described in the Prop_HaveZapper will apply in addition to the name mask 
-entered. Ths mob chosen will be selected from a MOBGROUP if one has been set. 
-Otherwise, the mob chosen will be selected from those in the designated area (if 
-one was designated) or the world. The mob must exist somewhere in the map for 
-this command to work. If a room has been previously designated, then this 
-command will bring the mob to that room. If a room or area has not been 
-designated (or was cleared), then this command will designate a new room and 
-area. </P>
-<P>SET MOBTYPE ([CLASS]) - will set the current mob to one with the given class 
-name. Ths mob chosen will be selected from a MOBGROUP if one has been set. 
-Otherwise, the mob chosen will be selected from those in the designated area (if 
-one was designated) or the world. The mob must exist somewhere in the map for 
-this command to work. If a room has been previously designated, then this 
-command will bring the mob to that room. If a room or area has not been 
-designated (or was cleared), then this command will designate a new room and 
-area. </P>
-<P>SET ITEM ([ITEM NAME]) - will set the current item to one with the given 
-name. The item chosen will be selected from those in the designated area (if one 
-was designated) or the world. The item must exist somewhere in a room on the map 
-for this command to work. If a room has been previously designated, then this 
-command will bring the item to that room. If a room or area has not been 
-designated (or was cleared), then this command will designate a new room and 
-area. </P>
-<P>SET ITEMTYPE ([CLASS]) - will set the current item to one with the given 
-class name. The item chosen will be selected from those in the designated area 
-(if one was designated) or the world. The item must exist somewhere in a room on 
-the map for this command to work. If a room has been previously designated, then 
-this command will bring the item to that room. If a room or area has not been 
-designated (or was cleared), then this command will designate a new room and 
-area. </P>
-<P>LOAD MOB [MOB NAME] - will instantiate a mob of the given name from the list 
-of mobs imported using the IMPORT MOBS command above. If the name ends with 
-MASK=..., then a mask similar in functionality to the one described in the 
-Prop_HaveZapper will apply in addition to the name mask entered. This selected 
-mob will be set as the current mob. If a room has been previously designated, 
-then this command will create the mob in that room. If a room or area has not 
-been designated (or was cleared), then this command will designate a random room 
-and area. </P>
-<P>LOAD ITEM [ITEM NAME] - will instantiate an item of the given name from the 
-list of items imported using the IMPORT ITEMS command above. This item will be 
-set as the current item. If a room has been previously designated, then this 
-command will create the item in that room. If a room or area has not been 
-designated (or was cleared), then this command will designate a random room and 
-area. GIVE ITEM - will give the currently designated item (designated using the 
-SET ITEM, or LOAD ITEM command) to the currently designated mob (designated 
-using the SET MOB, or LOAD MOB command). </P>
-<P>GIVE BEHAVIOR [BEHAVIOR ID] [PARAMETERS] - The behavior ID must be a valid 
-behavior class name. The parameters are any parameters you wish to pass to the 
-behavior. This command will give the currently designated mob, item, or mobgroup 
-(designated using the set or load commands) the above behavior. GIVE ABILITY 
-[ABILITY ID] [PARAMETERS] - The ability ID must be a valid ability class name. 
-The parameters are any parameters you wish to pass to the ability. This command 
-will give the currently designated mob, or mobgroup (designated using the set or 
-load commands) the above ability. </P>
-<P>GIVE AFFECT [ABILITY ID] [PARAMETERS] - The ability ID must be a valid 
-ability class name. The parameters are any parameters you wish to pass to the 
-ability. This command will give the currently designated mob, item, or mobgroup 
-(designated using the set or load commands) the above affect. </P>
-<P>GIVE FOLLOWER [MOB NAME] - The mob name is a mob which will be selected from 
-the list of previously designated mobs (designated using the load or set mob 
-commands). This mob will be made into a follower of the CURRENTLY designated 
-mob. This command does not change the current mob designation, nor does it 
-change the location of either mob. </P>
+entered. This selected mob will be set as the current mob. If a room has been 
+previously designated, then this command will create the mob in that room. If a 
+room or area has not been designated (or was cleared), then this command will 
+designate a random room and area. </P>
+<P>LOAD ITEM [ITEM NAME] - will instantiate an item of the 
+given name from the list of items imported using the IMPORT ITEMS command above. 
+This item will be set as the current item. If a room has been previously 
+designated, then this command will create the item in that room. If a room or 
+area has not been designated (or was cleared), then this command will designate 
+a random room and area. GIVE ITEM - will give the currently designated item 
+(designated using the SET ITEM, or LOAD ITEM command) to the currently 
+designated mob (designated using the SET MOB, or LOAD MOB command). </P>
+<P>GIVE BEHAVIOR [BEHAVIOR ID] [PARAMETERS] - The behavior 
+ID must be a valid behavior class name. The parameters are any parameters you 
+wish to pass to the behavior. This command will give the currently designated 
+mob, item, or mobgroup (designated using the set or load commands) the above 
+behavior. GIVE ABILITY [ABILITY ID] [PARAMETERS] - The ability ID must be a 
+valid ability class name. The parameters are any parameters you wish to pass to 
+the ability. This command will give the currently designated mob, or mobgroup 
+(designated using the set or load commands) the above ability. </P>
+<P>GIVE AFFECT [ABILITY ID] [PARAMETERS] - The ability ID 
+must be a valid ability class name. The parameters are any parameters you wish 
+to pass to the ability. This command will give the currently designated mob, 
+item, or mobgroup (designated using the set or load commands) the above affect. 
+</P>
+<P>GIVE FOLLOWER [MOB NAME] - The mob name is a mob which 
+will be selected from the list of previously designated mobs (designated using 
+the load or set mob commands). This mob will be made into a follower of the 
+CURRENTLY designated mob. This command does not change the current mob 
+designation, nor does it change the location of either mob. </P>
 <P><FONT color=#4169e1 size=4><STRONG>Final Quest Notes:</STRONG></FONT></P>
-<P>This stuff may seem complicated, but just make sure you carefully examine the 
-sample quests found in the CoffeeMud resources directory! Also, remember that 
-quest script errors are always sent out to your mud.log, so check their often 
-when starting up a new quest!</P>
-<P class=MsoNormal><A name=appf><STRONG><FONT color=#008000 size=5>Appendix F: 
-Index</FONT></STRONG></A></P>
+<P>This stuff may seem complicated, but just make sure you 
+carefully examine the sample quests found in the CoffeeMud resources directory! 
+Also, remember that quest script errors are always sent out to your mud.log, so 
+check their often when starting up a new quest!</P>
+<P class=MsoNormal><A name=appf><STRONG><FONT color=#008000 size=5>
+Appendix F: Socials</FONT></STRONG></A></P>
+<P>Socials are those miscellaneous and happy little emoting blurbs that help 
+make muds a more fun and realistic place for players to interact.&nbsp; Without 
+them, players couldn't smile, roll their eyes, or flip anyone off without 
+considerable typing.&nbsp; The command line includes a social creator and 
+editor:</P>
+<P><STRONG>CREATE SOCIAL TWIGGLE</STRONG><BR><BR>This starts the creation 
+process for a social called TWIGGLE.&nbsp; There are actually three different 
+kinds of TWIGGLE we will make: TWIGGLE (no parameters), TWIGGLE SELF, and 
+TWIGGLE (to&nbsp;a target).&nbsp; This is type 1 of 3.<BR><BR><EM>You wave your 
+arms...<BR>Social name 'TWIGGLE' Enter new.<BR>:&nbsp;<BR></EM><BR>This is here 
+in case you want to change the social name before you create it. Doubtful, so 
+just hit ENTER and skip it.<BR><BR><EM>(No change)<BR>Target=NONE<BR>Change 
+T)arget, S)elf, N)one:&nbsp;</EM><BR><BR> This is where you choose the social 
+type. For type1 socials, this would be None.<BR><BR><EM>(No change)<BR>You see 
+'null'.&nbsp; Enter new.<BR>: <BR></EM><BR>This is what you as a player would 
+see when you perform the social.<BR><BR><STRONG>You wiggle your 
+toes.</STRONG><BR><BR><EM>Your action type=MOVEMENT<BR>Change W)ords, M)ovement 
+(small), S)ound, L)arge Movement&nbsp;<BR></EM><BR> This is the requirement of 
+the social. Small movement just needs hands, fingers, toes, lips, and other 
+small body movements, while large movements require legs, and often moving the 
+entire body. I tend to not use the Words one, and I leave sounds for, well, 
+yelling and such. This particular social involves toes, thus it's a M)ovement. 
+Type "<STRONG>M</STRONG>" for that.</P>
+<P><EM>Others see 'null'.&nbsp; Enter new.<BR>:&nbsp;<BR></EM><BR>This is what 
+the people in the room see when you perform a 
+social.<BR><BR><STRONG>&lt;S-NAME&gt; wiggles &lt;S-HIS-HER&gt; 
+toes.</STRONG><BR><BR>&lt;S-NAME&gt; means Source Name. Character performing the 
+social is the source. I'll have a list of usable tags at the end of this 
+tutorial for you.<BR><BR><STRONG>Others Effect type=HANDS<BR>Change W)ords, 
+M)ovement (w/noise), S)ound, V)isual, H)ands:&nbsp;<BR></STRONG><BR> This is 
+what others in the room need to be able to know you're performing a social. This 
+social involves toe wiggling, so I would recommend Visual. If you're curious 
+about Hands, that would be left for handshakes, highfives, etc.&nbsp;</P>
+<P>And that concludes the creation of our TWIGGLE social, type 
+1.<BR><BR><STRONG>CREATE SOCIAL TWIGGLE SELF</STRONG><BR><BR>Ahh. Part 2, the 
+SELF portion.<BR><BR><EM>You wave your arms...<BR>Social name 'TWIGGLE' Enter 
+new.<BR>: <BR></EM><BR>Like the above, you don't need to change the 
+name.<BR><BR><EM>(No change)<BR>Target=NONE<BR>Change T)arget, S)elf, 
+N)one:&nbsp;<BR></EM><BR>Because this portion is the SELF portion, choose 
+"<STRONG>S</STRONG>". <BR><BR><EM>You see 'null'.&nbsp; Enter new.<BR>: 
+<BR></EM><BR>This is what you see when you perform the social TWIGGLE 
+SELF.<BR><BR><STRONG>You glaze over while you try to wiggle your toes at 
+yourself.</STRONG><BR><BR><EM>Your action type=MOVEMENT<BR>Change W)ords, 
+M)ovement (small), S)ound, L)arge Movement<BR></EM><BR>You need toes to wiggle 
+them, right? <STRONG>M</STRONG>)ovement for that. <BR><BR><EM>Others see 
+'null'.&nbsp; Enter new.<BR>:<BR></EM><BR>What the others in the room see when 
+you perform the social.<BR><BR><STRONG>&lt;S-NAME&gt; wiggles &lt;S-HIS-HER&gt; 
+toes at &lt;S-HIM-HERSELF&gt;. Very odd.<BR></STRONG><BR><EM>Others Effect 
+type=HANDS<BR>Change W)ords, M)ovement (w/noise), S)ound, V)isual, 
+H)ands:<BR></EM><BR>They need to see it happen, right? I would guess it's a 
+<STRONG>V</STRONG>)isual requirement.</P>
+<P>And that concludes the creation of our type 2 TWIGGLE social.</P>
+<P><STRONG>CREATE SOCIAL TWIGGLE &lt;T-NAME&gt;<BR></STRONG><BR>Yay!&nbsp;Type 
+3! The TARGET! &lt;T-NAME&gt; is the Target Name.<BR><BR><EM>You wave your 
+arms...<BR>Social name 'TWIGGLE' Enter new.<BR>: <BR></EM><BR>I doubt you would 
+still need to change the name. You have type one and two. Why make 3 
+different?<BR><BR><EM>(No change)<BR>Target=NONE<BR>Change T)arget, S)elf, 
+N)one:<BR></EM><BR>It's the TARGET portion of social creation, so choose 
+"<STRONG>T</STRONG>".<BR><BR><EM>You see 'null'.&nbsp; Enter 
+new.<BR>:<BR></EM><BR>What you would see when you perform TWIGGLE [Target] (ex: 
+TWIGGLE VIRAX).<BR><BR><STRONG>You wiggle your toes at &lt;T-NAME&gt;. How 
+cute.</STRONG><BR><BR>The display would replace the tag with the appropriate 
+name, and in this example it would be Virax.<BR><BR><EM>Your action 
+type=MOVEMENT<BR>Change W)ords, M)ovement (small), S)ound, L)arge 
+Movement<BR></EM><BR>We have toes we'll need to wiggle. 
+<STRONG>M</STRONG>)ovement.<BR><BR><EM>Others see 'null'.&nbsp; Enter 
+new.<BR>:<BR></EM><BR>What those bystanders 
+witness.<BR><BR><STRONG>&lt;S-NAME&gt; wiggles &lt;S-HIS-HER&gt; toes at 
+&lt;T-NAME&gt;. Very strange.</STRONG><BR><BR><EM>Others Effect 
+type=HANDS<BR>Change W)ords, M)ovement (w/noise), S)ound, V)isual, 
+H)ands:<BR></EM><BR>I'd say another thing they would have to see. Don't you? 
+<STRONG>V</STRONG>)isual.<BR><BR><EM>Target sees 'null'.&nbsp; Enter 
+new.<BR>:<BR></EM><BR>If you were the unfortunate victim, this is what you would 
+see.<BR><BR><STRONG>&lt;S-NAME&gt; wiggles &lt;S-HIS-HER&gt; toes at 
+you.</STRONG><BR><BR><EM>Target Effect type=HEARING NOISE<BR>Change W)ords, 
+M)ovement (w/noise), S)ound, V)isual, H)ands:<BR></EM><BR>You see them wiggling 
+their toes, so this would also be <STRONG>V</STRONG>)isual.<BR><BR><EM>You see 
+when no target 'null'.&nbsp; Enter new.<BR>:<BR></EM><BR>This is what you would 
+see if the target you want to use the social against isn't 
+there.<BR><BR><STRONG>Sorry. They aren't here for that lovely toe 
+wiggle.</STRONG><BR><BR>This concludes the social creation process. Enjoy 
+creating your own socials, folks! To modify an existing social, purely use 
+MODIFY SOCIAL [NAME] (i.e. MODIFY SOCIAL BONK, MODIFY SOCIAL HIGHFIVE 
+&lt;T-NAME&gt;) or even MODIFY SOCIAL PAT SELF) What this does is it goes 
+through the command list like you are creating that particular social, but with 
+the information that is already stored on it. What you can do is just hit ENTER 
+until you get to the part of the social you want to change and change it 
+accordingly.</P>
+<P>======= AND NOW FOR THE LIST OF TAGS ======= <BR>&lt;S-HIS-HER&gt; Outputs 
+'Your' if Observer=Source, otherwise 'His'/'Her'. <BR>&lt;S-HIM-HER&gt; Outputs 
+'You' if Observer=Source, otherwise 'Him'/'Her'. <BR>&lt;S-NAME&gt; Outputs 
+'You' if Observer=Source, otherwise the Name. <BR>&lt;S-NAMESELF&gt; Outputs 
+'Yourself' if Observer=Source, otherwise the Name <BR>&lt;S-HE-SHE&gt; Outputs 
+'You' if Observer=Source, otherwise 'He'/'She' <BR>&lt;S-IS-ARE&gt; Outputs 
+'Are' if Observer=Source, otherwise 'Is'. <BR>&lt;S-HAS-HAVE&gt; Outputs 'Have' 
+if Observer=Source, otherwise 'Has'. <BR>&lt;S-YOUPOSS&gt; Outputs 'Your' if 
+Observer=Source, otherwise the Name`s <BR>&lt;S-HIM-HERSELF&gt; Outputs 
+'Yourself' if Observer=Source, otherwise the 'Himself'/'Herself' 
+<BR>&lt;S-HIS-HERSELF&gt; Outputs 'Yourself' if Observer=Source, otherwise the 
+'Hisself'/'Herself' <BR>&lt;T-HIS-HER&gt; Outputs 'You' if Observer=Target, 
+otherwise 'His'/'Her'. <BR>&lt;T-HIM-HER&gt; Outputs 'You' if Observer=Target, 
+otherwise 'Him'/'Her'. <BR>&lt;T-NAME&gt; Outputs 'You' if Observer=Target, 
+otherwise the Name. <BR>&lt;T-NAMESELF&gt; Outputs 'Yourself' if 
+Observer=Target, otherwise the Name <BR>&lt;T-HE-SHE&gt; Outputs 'You' if 
+Observer=Target, otherwise 'He'/'She' <BR>&lt;T-IS-ARE&gt; Outputs 'Are' if 
+Observer=Target, otherwise 'Is'. <BR>&lt;T-HAS-HAVE&gt; Outputs 'Have' if 
+Observer=Target, otherwise 'Has'. <BR>&lt;T-YOUPOSS&gt; Outputs 'Your' if 
+Observer=Target, otherwise the Name with an '`s' <BR>&lt;T-HIM-HERSELF&gt; 
+Outputs 'Yourself' if Observer=Source, otherwise the 'Himself'/'Herself' 
+<BR>&lt;T-HIS-HERSELF&gt; Outputs 'Yourself' if Observer=Source, otherwise the 
+'Hisself'/'Herself'</P>
+<P class=MsoNormal><A name=appg><STRONG><FONT color=#008000 size=5>Appendix G: Index</FONT></STRONG></A></P>
 <TABLE width="100%">
   
   <TR>
@@ -7231,12 +7346,19 @@ color=green size=3>Appendices</FONT></STRONG></P>
       >Appendix B (StdMOBS)</FONT></A></TD>
     <TD bgColor=lightgrey><A href="#appc" ><FONT color=black 
       >Appendix C (GenWeapons / GenArmor)</FONT></A></TD>
+</TR><TR> 
     <TD bgColor=lightgrey><A href="#appd" ><FONT color=black 
       >Appendix D (FAQ)</FONT></A></TD>
     <TD bgColor=lightgrey><A href="#appe" ><FONT color=black 
       >Appendix E (Quests)</FONT></A></TD>
     <TD bgColor=lightgrey><A href="#appf" ><FONT color=black 
-      >Appendix F 
-(top)</FONT></A></TD></TR></TABLE>
+      >Appendix F (Socials)</FONT></A></TD>
+</TR><TR> 
+    <TD bgColor=lightgrey><A href="#appg" ><FONT color=black 
+      >Appendix G (top)</FONT></A></TD>
+    <TD bgColor=lightgrey><BR></TD>
+    <TD bgColor=lightgrey><BR></TD>
+</TR>
+</TABLE>
 </BODY>
 </HTML>
