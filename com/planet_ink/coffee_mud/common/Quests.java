@@ -936,7 +936,7 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', cannot give item, no item set.");
 							error=true; break;
 						}
-						if(M==null)
+						if((M==null)&&(MG!=null))
 						{
 							if(!isQuiet)
 								Log.errOut("Quests","Quest '"+name()+"', cannot give item, no mob set.");
@@ -948,7 +948,20 @@ public class Quests implements Cloneable, Quest
 								Log.errOut("Quests","Quest '"+name()+"', cannot give item, parameter unnecessarily given: '"+Util.combine(p,2)+"'.");
 							error=true; break;
 						}
-						M.giveItem(I);
+						Vector toSet=new Vector();
+						if(M!=null) 
+							toSet.addElement(M);
+						else
+						if(MG!=null) 
+							toSet=MG;
+						for(int i=0;i<toSet.size();i++)
+						{
+							M=(MOB)toSet.elementAt(i);
+							if(!stuff.contains(M))
+								stuff.addElement(M);
+							M.giveItem(I);
+							I=(Item)I.copyOf();
+						}
 					}
 					else
 					if(cmd.equals("ABILITY"))
@@ -981,6 +994,8 @@ public class Quests implements Cloneable, Quest
 						for(int i=0;i<toSet.size();i++)
 						{
 							M=(MOB)toSet.elementAt(i);
+							if(!stuff.contains(M))
+								stuff.addElement(M);
 							Vector V=new Vector();
 							V.addElement(M);
 							if(M.fetchAbility(A3.ID())!=null)
@@ -1034,6 +1049,8 @@ public class Quests implements Cloneable, Quest
 						for(int i=0;i<toSet.size();i++)
 						{
 							E=(Environmental)toSet.elementAt(i);
+							if(!stuff.contains(E))
+								stuff.addElement(E);
 							Vector V=new Vector();
 							V.addElement(E);
 							if(E.fetchBehavior(B.ID())!=null)
@@ -1083,6 +1100,8 @@ public class Quests implements Cloneable, Quest
 						for(int i=0;i<toSet.size();i++)
 						{
 							E=(Environmental)toSet.elementAt(i);
+							if(!stuff.contains(E))
+								stuff.addElement(E);
 							Vector V=new Vector();
 							V.addElement(E);
 							if(E.fetchEffect(A3.ID())!=null)

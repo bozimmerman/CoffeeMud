@@ -1,19 +1,10 @@
-I have turned on Silent AutoGold but Muse can see me loot corpses anyway
-Zenthlas I have noticed that sometimes that if you kill something... and it repops it can`t be trageted again
-destroy for players - player version does an action, like tears, or throws down, or rips, depending on item material.
-Finish Taxidermy
-?ability to MLOAD and OLOAD from a cmare file
-SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
-?MPOLOAD ability to load item into a room
-add limb, wield dagger, hold dagger, hold twohandedsword ->bug
-big mouth should apply to more than just mobs, allow to eat anything
+test SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
 where - should do items and mobs, area, or world.
 Something to hunt multiplayers with 1. the closest (in milliseconds) commands were entered by tested players and 2. the frequency of information command entry, eating drinking, ordered vs real command entry, variation of commands, socials, speech
 importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
 This leads me to a a suggestion for CoffeeMud, a greater logging system, i was thinking another subfolder for logs, one log for the server log
-Ability to design space ship areas with portals
 Ability to buy space ship areas, and add them to shopkeepers
-Some solution for variable eq on mobs -- use rejuv! 
+Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
 mutable body parts, with ability to grant powers
