@@ -385,9 +385,9 @@ public class RoomLoader
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item thisItem=room.fetchItem(i);
-			if((thisItem!=null)&&(!done.contains(thisItem)))
+			if((thisItem!=null)&&(!done.contains(""+thisItem)))
 			{
-				done.addElement(thisItem);
+				done.addElement(""+thisItem);
 				thisItem.setDispossessionTime(0); // saved items won't clear!
 				try
 				{

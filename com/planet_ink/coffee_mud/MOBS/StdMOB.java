@@ -1604,7 +1604,7 @@ public class StdMOB implements MOB
 			if(msg.targetMinor()==CMMsg.TYP_HEALING)
 			{
 				int amt=msg.value();
-				if(amt>0)
+				if((amt>0)&&(!amDead))
 					curState().adjHitPoints(amt,maxState());
 			}
 			else
@@ -1643,21 +1643,18 @@ public class StdMOB implements MOB
 				ExternalPlay.flee(mob,"");
 				break;
 			case CMMsg.TYP_EXPCHANGE:
-				if((msg.tool()!=null)
-				&&(msg.tool() instanceof ExperiencePoints))
 				{
-					ExperiencePoints EXP=(ExperiencePoints)msg.tool();
 					MOB victim=null;
 					if(msg.target() instanceof MOB)
 						victim=(MOB)msg.target();
-					if(EXP.maxRange()>=0)
+					if(msg.value()>=0)
 						charStats().getCurrentClass().gainExperience(this,
 																	 victim,
-																	 EXP.text(),
-																	 EXP.maxRange(),
-																	 Util.s_bool(EXP.displayText()));
+																	 msg.targetMessage(),
+																	 msg.value(),
+																	 Util.s_bool(msg.othersMessage()));
 					else
-						charStats().getCurrentClass().loseExperience(this,-EXP.maxRange());
+						charStats().getCurrentClass().loseExperience(this,-msg.value());
 				}
 				break;
 			case CMMsg.TYP_DEATH:

@@ -594,7 +594,7 @@ public class MOBloader
 		{
 			Item thisItem=mob.fetchInventory(i);
 			if((thisItem!=null)
-			&&(!done.contains(thisItem))
+			&&(!done.contains(""+thisItem))
 			&&(thisItem.savable()))
 			{
 				String
@@ -622,7 +622,7 @@ public class MOBloader
 				+thisItem.baseEnvStats().height()+")";
 				if(!V.contains(str))
 					V.addElement(str);
-				done.addElement(thisItem);
+				done.addElement(""+thisItem);
 			}
 		}
 	}
