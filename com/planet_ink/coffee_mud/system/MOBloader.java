@@ -346,7 +346,10 @@ public class MOBloader
 				if((follower!=null)&&(follower.isMonster()))
 				{
 					if(location==null) location=follower.getStartRoom();
-					follower.bringToLife(location,true);
+					if(follower.baseState().getHitPoints()<1)
+						follower.bringToLife(location,true);
+					else
+						follower.bringToLife(location,false);
 					location.showOthers(follower,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				}
 			}

@@ -15,6 +15,7 @@ public interface Container extends Item
 	public boolean canContain(Environmental E);
 	public long containTypes();
 	public void setContainTypes(long containTypes);
+	public void emptyPlease();
 	
 	public static final int CONTAIN_ANYTHING=0;
 	public static final int CONTAIN_LIQUID=1;

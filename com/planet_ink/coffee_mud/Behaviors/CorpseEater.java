@@ -32,12 +32,8 @@ public class CorpseEater extends ActiveTicker
 				Item I=thisRoom.fetchItem(i);
 				if((I!=null)&&(I instanceof DeadBody)&&(Sense.canBeSeenBy(I,mob)||Sense.canSmell(mob)))
 				{
-					for(int i2=0;i2<thisRoom.numItems();i2++)
-					{
-						Item I2=thisRoom.fetchItem(i2);
-						if((I2!=null)&&(I2.container()==I))
-							I2.setContainer(null);
-					}
+					if(I instanceof Container)
+						((Container)I).emptyPlease();
 					thisRoom.show(mob,null,I,Affect.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");
 					I.destroyThis();
 					return true;

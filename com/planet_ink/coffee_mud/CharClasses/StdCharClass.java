@@ -507,7 +507,7 @@ public class StdCharClass implements CharClass, Cloneable
 		return true;
 	}
 
-	private boolean isValidBeneficiary(MOB killer, 
+	protected boolean isValidBeneficiary(MOB killer, 
 									   MOB killed, 
 									   MOB mob,
 									   Hashtable followers)

@@ -1962,6 +1962,7 @@ public class Scriptable extends StdBehavior
 			case 3: // speech_prog
 				if((affect.sourceMinor()==Affect.TYP_SPEAK)
 				&&(!affect.amISource(monster))
+				&&(affect.othersMessage()!=null)
 				&&(canFreelyBehaveNormal(monster)))
 				{
 					String msg=affect.othersMessage().toUpperCase();

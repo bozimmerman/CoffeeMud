@@ -132,7 +132,7 @@ CMAble.addCharAbilityMapping(ID(),17,"BombMaking",false);
 		return super.okAffect(myHost,affect);
 	}
 	
-	public String statQualifications(){return "Dexterity 9+ Charisma 9+";}
+	public String statQualifications(){return "Dexterity 9+ Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
@@ -141,10 +141,10 @@ CMAble.addCharAbilityMapping(ID(),17,"BombMaking",false);
 				mob.tell("You need at least a 9 Dexterity to become a Trapper.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA)<=8)
+		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Trapper.");
+				mob.tell("You need at least a 9 Constitution to become a Trapper.");
 			return false;
 		}
 		return super.qualifiesForThisClass(mob,quiet);

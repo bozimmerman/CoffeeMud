@@ -400,19 +400,19 @@ public class StdMOB implements MOB
 		setFollowing(null);
 		if(!isMonster())
 		{
-			ExternalPlay.DBUpdateFollowers(this);
 			for(int f=numFollowers()-1;f>=0;f--)
 			{
 				MOB follower=fetchFollower(f);
-				if((follower!=null)&&(follower.amFollowing()==this))
+				if(follower!=null)
 				{
-					if(follower.isMonster())
-						follower.killMeDead(false);
-					else
+					if(!follower.isMonster())
 					{
 						follower.setFollowing(null);
 						delFollower(follower);
 					}
+					else
+					if(follower.location()!=null)
+						follower.killMeDead(false);
 				}
 			}
 		}

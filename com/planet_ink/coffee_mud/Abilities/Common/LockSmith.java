@@ -9,8 +9,8 @@ import java.io.File;
 public class LockSmith extends CommonSkill
 {
 	public String ID() { return "LockSmith"; }
-	public String name(){ return "Locksmith";}
-	private static final String[] triggerStrings = {"LOCKSMITH"};
+	public String name(){ return "Locksmithing";}
+	private static final String[] triggerStrings = {"LOCKSMITH","LOCKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private Item building=null;

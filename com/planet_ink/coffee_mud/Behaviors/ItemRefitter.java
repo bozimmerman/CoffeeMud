@@ -85,6 +85,8 @@ public class ItemRefitter extends StdBehavior
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, a perfect fit!  Thanks for your business' to <T-NAMESELF>.^?");
 			affect.addTrailerMsg(newMsg);
+			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_DROP,null);
+			affect.addTrailerMsg(newMsg);
 		}
 	}
 }

@@ -1,9 +1,4 @@
 GAES still isn't done
-followers need to be done right
 MovingRoom behavior?
 Reimplement SysOpModLocale
 mailto:marqphex@iname.com?subject=Glitch/Broken Code
-I just killed two ofcol city guards: Ivan killed first, we got 23 xp, lion killed second we got 23xp. Look into the pet & druid xp split code
-gain new skills and spells.
-ability gaining -- look for qualified skills first, instead of first thing to come along.
-

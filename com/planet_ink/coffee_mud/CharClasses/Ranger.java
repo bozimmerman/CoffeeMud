@@ -143,7 +143,7 @@ public class Ranger extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	private boolean isValidBeneficiary(MOB killer, 
+	protected boolean isValidBeneficiary(MOB killer, 
 									   MOB killed, 
 									   MOB mob,
 									   Hashtable followers)

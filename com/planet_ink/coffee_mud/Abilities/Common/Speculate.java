@@ -7,8 +7,8 @@ import java.util.*;
 public class Speculate extends CommonSkill
 {
 	public String ID() { return "Speculate"; }
-	public String name(){ return "Speculate";}
-	private static final String[] triggerStrings = {"SPECULATE"};
+	public String name(){ return "Speculating";}
+	private static final String[] triggerStrings = {"SPECULATE","SPECULATING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private static boolean mapped=false;
 	

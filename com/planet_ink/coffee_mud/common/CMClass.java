@@ -197,16 +197,26 @@ public class CMClass extends ClassLoader
 	}
 	public static Ability findAbility(String calledThis, CharStats charStats)
 	{
-		Ability A=findAbility(calledThis);
-		if(A==null) 
-			return null;
-		for(int c=0;c<charStats.numClasses();c++)
+		Ability A=(Ability)abilities.get(calledThis);
+		if(A==null)
 		{
-			CharClass C=charStats.getMyClass(c);
-			if(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0)
-				return (Ability)A.newInstance();
+			Vector As=new Vector();
+			for(Enumeration e=abilities();e.hasMoreElements();)
+			{
+				A=(Ability)e.nextElement();
+				for(int c=0;c<charStats.numClasses();c++)
+				{
+					CharClass C=charStats.getMyClass(c);
+					if(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0)
+					{	As.addElement(A); break;}
+				}
+			}
+			A=(Ability)CoffeeUtensils.fetchEnvironmental(As,calledThis,true);
+			if(A==null)
+				A=(Ability)CoffeeUtensils.fetchEnvironmental(As,calledThis,false);
 		}
-		return null;
+		if(A!=null)A=(Ability)A.newInstance();
+		return A;
 	}
 
 	public static Environmental getEnv(Vector fromThese, String calledThis)

@@ -73,6 +73,8 @@ public class ItemIdentifier extends StdBehavior
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);
+			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_DROP,null);
+			affect.addTrailerMsg(newMsg);
 		}
 	}
 }

@@ -575,6 +575,15 @@ public class StdContainer extends StdItem implements Container
 		}while(!nothingDone);
 	}
 	
+	public void emptyPlease()
+	{
+		Vector V=getContents();
+		for(int v=0;v<V.size();v++)
+		{
+			Item I=(Item)V.elementAt(v);
+			I.setContainer(null);
+		}
+	}
 	protected void reallyGetContents(Item container, Environmental own, Vector V)
 	{
 		if(container==null) return;

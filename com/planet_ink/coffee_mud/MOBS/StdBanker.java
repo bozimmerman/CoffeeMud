@@ -272,14 +272,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case Affect.TYP_DEPOSIT:
 				{
 					if(affect.tool() instanceof Container)
-					{
-					    Vector V=((Container)affect.tool()).getContents();
-					    for(int i=0;i<V.size();i++)
-					    {
-							Item I=(Item)V.elementAt(i);
-							I.setContainer(null);
-					    }
-					}
+						((Container)affect.tool()).emptyPlease();
 					FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
 					location().send(this,msg);
 					msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
