@@ -927,7 +927,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		String prompt="Recipe Data for";
 		mob.tell(showNumber+". "+prompt+": "+E.getCommonSkillID()+".");
-		mob.tell(Util.padRight(" ",(""+showNumber).length()+2+prompt.length())+": "+E.getRecipeCodeLine()+".");
+		mob.tell(Util.padRight(" ",(""+showNumber).length()+2+prompt.length())+": "+Util.replaceAll(E.getRecipeCodeLine(),"\t",",")+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		while(!mob.session().killFlag())
 		{
@@ -963,7 +963,7 @@ public class BaseGenerics extends StdCommand
 		}
 		String newName=mob.session().prompt("Enter new data line\n\r:","");
 		if(newName.length()>0)
-			E.setRecipeCodeLine(newName);
+			E.setRecipeCodeLine(Util.replaceAll(newName,",","\t"));
 		else
 			mob.tell("(no change)");
 	}

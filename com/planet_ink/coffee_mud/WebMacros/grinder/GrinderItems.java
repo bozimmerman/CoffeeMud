@@ -435,7 +435,7 @@ public class GrinderItems
 			    break;
 			case 79: // recipedata
 			    if(I instanceof Recipe)
-			        ((Recipe)I).setRecipeCodeLine(old);
+			        ((Recipe)I).setRecipeCodeLine(Util.replaceAll(old,",","\t"));
 			    break;
 			}
 		}
