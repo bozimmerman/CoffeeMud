@@ -5,7 +5,7 @@ link unlink save sysmsgs
 take unloadhelp dumpfile
 reset order ticktock list
 ^HModules^N  
-import export xml
+import export xml i3
 
 ^HSkills^N
 genchar possess goto wizinv

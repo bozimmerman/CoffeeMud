@@ -11,4 +11,8 @@ public interface I3Interface
 	public boolean i3online();
 	public void i3chanwho(MOB mob, String channel, String mudName);
 	public void giveChannelsList(MOB mob);
+	public void i3channelAdd(MOB mob, String channel);
+	public void i3channelListen(MOB mob, String channel);
+	public void i3channelRemove(MOB mob, String channel);
+	public void i3mudInfo(MOB mob, String parms);
 }

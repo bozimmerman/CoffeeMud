@@ -69,9 +69,11 @@ public class IMudClient implements I3Interface
 	public void i3channelAdd(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
-		if((channel==null)||(channel.length()==0)||(Intermud.getLocalChannel(channel).length()>0))
+		if((channel==null)
+		   ||(channel.length()==0)
+		   ||(Intermud.getLocalChannel(channel).length()==0))
 		{
-			mob.tell("You must specify a non-existant InterMud 3 channel name.");
+			mob.tell("You must specify a channel name listed in your INI file.");
 			return;
 		}
 		ChannelAdd ck=new ChannelAdd();
@@ -85,9 +87,11 @@ public class IMudClient implements I3Interface
 	public void i3channelListen(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
-		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
+		if((channel==null)
+		   ||(channel.length()==0)
+		   ||(Intermud.getLocalChannel(channel).length()==0))
 		{
-			mob.tell("You must specify an InterMud 3 channel name.");
+			mob.tell("You must specify a channel name listed in your INI file.");
 			return;
 		}
 		ChannelListen ck=new ChannelListen();
@@ -190,12 +194,43 @@ public class IMudClient implements I3Interface
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
 	
+	public void i3mudInfo(MOB mob, String parms)
+	{
+		if((mob==null)||(!i3online())) return;
+		if(mob.isMonster()) return;
+		MudList list=Intermud.getAllMudsList();
+		StringBuffer buf=new StringBuffer("\n\r");
+		if(list!=null)
+		{
+			Hashtable l=list.getMuds();
+			for(Enumeration e=l.elements();e.hasMoreElements();)
+			{
+				Mud m=(Mud)e.nextElement();
+				if((m.state<0)&&(CoffeeUtensils.containsString(m.mud_name,parms)))
+				{
+					buf.append(Util.padRight("Name",10)+": "+m.mud_name+"\n\r");
+					buf.append(Util.padRight("Address",10)+": "+m.address+"\n\r");
+					buf.append(Util.padRight("Port",10)+": "+m.player_port+"\n\r");
+					buf.append(Util.padRight("Admin@",10)+": "+m.admin_email+"\n\r");
+					buf.append(Util.padRight("Base",10)+": "+m.base_mudlib+"\n\r");
+					buf.append(Util.padRight("MudLib",10)+": "+m.mudlib+"\n\r");
+					buf.append(Util.padRight("Type",10)+": "+m.mud_type+"\n\r");
+					buf.append(Util.padRight("Driver",10)+": "+m.driver+"\n\r");
+					buf.append(Util.padRight("Status",10)+": "+m.status+"\n\r");
+					break;
+				}
+			}
+		}
+		if(buf.length()<10) buf.append("Not found!");
+		mob.session().unfilteredPrintln(buf.toString());
+	}
 	public void giveMudList(MOB mob)
 	{
 		if((mob==null)||(!i3online())) return;
 		if(mob.isMonster()) return;
 		StringBuffer buf=new StringBuffer("\n\rI3 Mud List:\n\r");
 		MudList list=Intermud.getAllMudsList();
+		Vector V=new Vector();
 		if(list!=null)
 		{
 			Hashtable l=list.getMuds();
@@ -203,7 +238,25 @@ public class IMudClient implements I3Interface
 			{
 				Mud m=(Mud)e.nextElement();
 				if(m.state<0)
-					buf.append("["+Util.padRight(m.mud_name,20)+"] "+m.address+" ("+m.player_port+")\n\r");
+				{
+					boolean done=false;
+					for(int v=0;v<V.size();v++)
+					{
+						Mud m2=(Mud)V.elementAt(v);
+						if(m2.mud_name.toUpperCase().compareTo(m.mud_name.toUpperCase())>0)
+						{
+							V.insertElementAt(m,v);
+							done=true;
+							break;
+						}
+					}
+					if(!done) V.addElement(m);
+				}
+			}
+			for(int v=0;v<V.size();v++)
+			{
+				Mud m=(Mud)V.elementAt(v);
+				buf.append("["+Util.padRight(m.mud_name,20)+"] "+m.address+" ("+m.player_port+")\n\r");
 			}
 		}
 		mob.session().unfilteredPrintln(buf.toString());

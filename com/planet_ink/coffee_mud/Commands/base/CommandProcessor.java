@@ -285,17 +285,11 @@ public class CommandProcessor
 				case CommandSet.HOLD:
 					itemUsage.hold(mob,commands);
 					break;
-				case CommandSet.I3CHANNELS:
+				case CommandSet.I3:
 					if(!(ExternalPlay.i3().i3online()))
 						mob.tell("I3 is unavailable.");
 					else
-						ExternalPlay.i3().giveChannelsList(mob);
-					break;
-				case CommandSet.I3LIST:
-					if(!(ExternalPlay.i3().i3online()))
-						mob.tell("I3 is unavailable.");
-					else
-						ExternalPlay.i3().giveMudList(mob);
+						sysopSkills.i3(mob,commands);
 					break;
 				case CommandSet.I3LOCATE:
 					if(!(ExternalPlay.i3().i3online()))

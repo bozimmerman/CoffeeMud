@@ -610,7 +610,7 @@ public class MUD extends Thread implements Host
 	{
 		Log.startLogFiles();
 		
-		String nameID="Unnamed CoffeeMud";
+		nameID="Unnamed CoffeeMud";
 		if(a.length>0)
 		{
 			nameID="";

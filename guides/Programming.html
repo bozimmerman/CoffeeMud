@@ -1573,19 +1573,18 @@ It describes any special bonuses received due to being this class.
 The outfit method should give the character any Class-Specific equipment they
 may need.  Clothing and so forth is actually covered by Races.
 </FONT></P>
-<pre>
-	public String weaponLimitations(){return "Weapons?  What for?";}
+<pre>	public String weaponLimitations(){return "Weapons?  What for?";}
 	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
-		if(affect.amISource(myChar)&&(!myChar.isMonster()))
+		if(affect.amISource(myChar)&amp;&amp;(!myChar.isMonster()))
 		{
-			if((affect.tool()!=null)
-			&&(affect.tool() instanceof Ability)
-			&&(myChar.isMine(affect.tool()))
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
+			if((affect.tool()!=
+			null) &amp;&amp;(affect.tool() instanceof
+			Ability)
+			&amp;&amp;(myChar.isMine(affect.tool()))
+			&amp;&amp;(!armorCheck(myChar)))
+				{if(Dice.rollPercentage()&gt;myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 				{
 					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
 					return false;
@@ -1593,20 +1592,20 @@ may need.  Clothing and so forth is actually covered by Races.
 			}
 			else
 			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-			&&(affect.tool()!=null)
-			&&(affect.tool() instanceof Weapon))
+			&amp;&amp;(affect.tool()!=null)
+			&amp;&amp;(affect.tool() instanceof Weapon))
 			{
-				int classification=((Weapon)affect.tool()).weaponClassification();
+				int classification=
+				((Weapon)affect.tool()).weaponClassification();
 				switch(classification)
-				{
-				case Weapon.CLASS_SWORD:
-				case Weapon.CLASS_RANGED:
-				case Weapon.CLASS_THROWN:
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_DAGGER:
+				{ case
+				Weapon.CLASS_SWORD: case
+				Weapon.CLASS_RANGED: case
+				Weapon.CLASS_THROWN: case
+				Weapon.CLASS_NATURAL: case
+					Weapon.CLASS_DAGGER:
 					break;
-				default:
-					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
+					default:if(Dice.rollPercentage()&gt;(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
 						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 						return false;
@@ -1656,7 +1655,181 @@ method may be in order.  Check the Mage and Cleric classes for more information.
 <IMG src="images/dragon.jpg">
 </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 color=green><STRONG>Races:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code a Race.</FONT></P>
+<P align=left><FONT size=4>A Race, in CoffeeMud, 
+contributes very little to functionality, but quite a bit to the role
+playing and other "soft" aspects of the game..&nbsp;&nbsp; For this reason,
+everyone is encouraged to code as many races as humanly possible.  The more,
+the better!&nbsp; Let's take a look at a simple one here:</FONT></P>
+<pre>
+package com.planet_ink.coffee_mud.Races;
+
+import java.util.*;
+import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+
+public class Grumbler extends StdRace
+{
+</pre>
+<P align=left><FONT size=4>Our Grumbler race will define all 
+of the basic elements of a filled-out race.&nbsp;</FONT></P>
+<pre>
+	public String ID(){	return "Dragon"; }
+	public String name(){ return "Dragon"; }
+	public String racialCategory(){return "Dragon";}
+	protected static Vector resources=new Vector();
+	public boolean playerSelectable(){return false;}
+</pre>
+<P align=left><FONT size=4>The first 
+methods return the unique ID of the Race (which must always match the java/class 
+file name) and the name() method is the displayable name of the Race.&nbsp; The 
+third method is very important, as it defines the category into which this race 
+falls.&nbsp; There is no hard rule to determine when a new category should be 
+created versus using an old one.&nbsp; Some of the uses of racial categories 
+include the Ranger Favored Enemy skill, as well as most of the race-based 
+restrictions on doors and with shopkeepers.&nbsp; In many ways, the racial 
+category is more important than the name of the race itself, if functionality is 
+considered.&nbsp; Lastly, return true from playerSelectable if you want players 
+to be able to select this race when they create their characters.</FONT></P>
+<pre>
+	protected int shortestMale(){return 84;}
+	protected int shortestFemale(){return 78;}
+	protected int heightVariance(){return 80;}
+	protected int lightestWeight(){return 2000;}
+	protected int weightVariance(){return 500;}
+</pre>
+<P align=left><FONT size=4>These 
+methods, as you might have guessed, establish parameters for the base height and 
+weight of a typical monster of this type.&nbsp; A random number from 
+0-heightVariance() will be added to the shortedMale/shortestFemale value to 
+determine height, while a random number from 0-weightVariance will be added to 
+lightestWeight to determine that.</FONT></P>
+<pre>
+	protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
+</pre>
+<P align=left><FONT size=4>This method 
+establishes where a creature of this type may NOT wear something.&nbsp; In this 
+case, we forbid any wielded items, or anything worn around the waist, on hands 
+or feet,&nbsp;or about the body.&nbsp; Anywhere else is fine.&nbsp; Return 0 if 
+you do not wish any restrictions on wearing.</FONT></P>
+<pre>
+	 public void affectEnvStats(Environmental affected, EnvStats
+	affectableStats)
+		{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
+	}
+</pre>
+<P align=left><FONT size=4>This sample 
+of the affectEnvStats method we discussed in the digressions above makes sure 
+that all creatures of this race can see in the infrared spectrum.</FONT></P>
+<pre>
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,15);
+		affectableStats.setStat(CharStats.DEXTERITY,25);
+		affectableStats.setStat(CharStats.INTELLIGENCE,5);
+	}
+</pre>
+<P align=left><FONT size=4>This sample 
+of the affectCharStats&nbsp;method we discussed in the digressions above 
+establishes a base strength, dexterity, and intelligence for all creatures of 
+this race.&nbsp; As this is the ONLY way to modify a MOBs stats short of magical 
+equipment, it should be used with care!</FONT></P>
+<pre>
+	public void startRacing(MOB mob, boolean verifyOnly)
+	{
+		super.startRacing(mob,verifyOnly);
+		Ability A=CMClass.getAbility("Draconic");
+		if(A!=null)
+		{
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+			if(mob.isMonster())
+				A.invoke(mob,mob,true);
+		}
+	}
+</pre>
+<P align=left><FONT size=4>The 
+startRacing method simply allows you to give creatures of this race any special 
+abilities for being the race.&nbsp; In this case, we give the creature a 
+language (Draconic), and if they are not a player, we automatically make them 
+speak the language (via the invoke method -- see below on Spell creation).</FONT></P>
+<pre>
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("huge claws");
+			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
+		}
+		return naturalWeapon;
+	}
+</pre>
+<P align=left><FONT size=4>This method 
+allows you to create (see item creation above) a special weapon to serve the 
+creature whenever they are not wielding something.&nbsp; Since our Grumbler 
+cannot wield weapons anyway, it is important to give them some big piercing claws.</FONT></P>
+<pre>
+	  public String
+	healthText(MOB
+		mob) {double
+
+		pct=
+			     (Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints())); if(pct&lt;.10) return "^r" + mob.name()
+		+
+		"^ris
+			raging in bloody pain!^N"; else if(pct&lt;.20) return "^r" + mob.name()
+		+
+		"^ris
+			covered in blood.^N"; else if(pct&lt;.30) return "^r" + mob.name() + "^r is bleeding
+		badly
+		fromlots
+			of wounds.^N"; else if(pct&lt;.50) return "^y" + mob.name() + "^y has some bloody
+		wounds
+		andgashed
+			scales.^N"; else if(pct&lt;.60) return "^p" + mob.name() + "^p has a
+		few
+		bloodywounds.^N";
+			else if(pct&lt;.70) return "^p" + mob.name() + "^p is cut and
+		bruised
+		heavily.^N";else
+			if(pct&lt;.90) return "^g" + mob.name() + "^g has a few bruises and scratched
+		scales.^N";
+		elseif(pct&lt;.99)
+			return "^g" + mob.name() + "^g has a few small bruises.^N";
+		else
+			return "^c" + mob.name() + "^c is in perfect health^N";
+	}
+</pre>
+<P align=left><FONT size=4>Although 
+the programmer is welcome to skip the above method and use the defaults from the 
+StdRace class, this allows you to set special health messages for creatures of this type.</FONT></P>
+<pre>
+	public Vector myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==
+			0)
+				{
+				resources.addElement(makeResource ("a "+name().toLowerCase()+"
+				claw",EnvResource.RESOURCE_BONE)); for(inti=
+					0;i&lt;10;i++)
+					resources.addElement(makeResource ("a strip of "+name().toLowerCase()+"
+				hide",EnvResource.RESOURCE_SCALES)); for(inti=0;i&lt;10;i++)
+					resources.addElement(makeResource
+					("a pound of "+name().toLowerCase()+" meat",EnvResource.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				("some "+name().toLowerCase()+" blood",EnvResource.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
+	}
+}
+</pre>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -1666,10 +1839,13 @@ method may be in order.  Check the Mage and Cleric classes for more information.
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
-<P align=left></P>
-<P align=left><FONT size=5><STRONG>
-<IMG src="images/chomper.jpg">
-</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left></P><FONT size=5>
+<P align=left><FONT size=4>And lastly, the above method allows you to determine 
+what sorts of materials are gotten from this creature whenever the dead corpse 
+is Butchered.</FONT></P>
+<P align=left><FONT size=4></FONT>&nbsp;</P>
+<P align=left><STRONG>
+<IMG src="images/chomper.jpg"> </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5 color=navy><STRONG>Exits:</STRONG></FONT></P>
 <P align=left><FONT size=4>How to code an Exit.</FONT></P>
 <P align=left></P>
