@@ -28,18 +28,14 @@ public class GlowingMageArmor extends StdArmor
 	
 	public boolean savable(){return false;}
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		affectEnvStats(affected,affectableStats);
-		if(amWearingAt(Item.INVENTORY))
-		   destroyThis();
-	}
-	
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))
 			return false;
 
+		if((amWearingAt(Item.INVENTORY))&&(!amDestroyed()))
+		   destroyThis();
+		
 		MOB mob=affect.source();
 		if(!affect.amITarget(this))
 			return true;
