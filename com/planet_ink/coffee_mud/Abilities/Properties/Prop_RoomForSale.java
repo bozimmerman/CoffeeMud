@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -34,21 +35,26 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public int landPrice()
 	{
+		if(text().length()==0)
+		    return 100000;
 		int price=0;
-		if(text().indexOf("/")<0)
-			price=Util.s_int(text());
-		else
-			price=Util.s_int(text().substring(text().indexOf("/")+1));
+		int index=text().length();
+		while((--index)>=0)
+		{
+			if(Character.isDigit(text().charAt(index)))
+			    price=(price*10)+Util.s_int(""+text().charAt(index));
+			else
+			if(!Character.isWhitespace(text().charAt(index)))
+			    break;
+		}
+			    
 		if(price<=0) price=100000;
 		return price;
 	}
-	public void setLandPrice(int price){
-		String owner=landOwner();
-		if(owner.length()>0)
-			setMiscText(owner+"/"+price);
-		else
-			setMiscText(""+price);
-	}
+	
+	public void setLandPrice(int price)
+	{   setMiscText(landOwner()+"/"+(rentalProperty()?"RENTAL ":"")+price); }
+	
 	public String landOwner()
 	{
 		if(text().indexOf("/")<0) return "";
@@ -56,10 +62,15 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	public void setLandOwner(String owner)
+	{   setMiscText(owner+"/"+(rentalProperty()?"RENTAL ":"")+landPrice()); }
+
+	public boolean rentalProperty()
 	{
-		int price=landPrice();
-		setMiscText(owner+"/"+price);
-	}
+		if(text().indexOf("/")<0) return false;
+	    return text().indexOf("RENTAL",text().indexOf("/"))>0;
+    }
+	public void setRentalProperty(boolean truefalse)
+	{	setMiscText(landOwner()+"/"+(truefalse?"RENTAL ":"")+landPrice());}
 
 	// update title, since it may affect clusters, worries about ALL involved
 	public void updateTitle()
@@ -84,6 +95,27 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		if((msg.targetMinor()==CMMsg.TYP_GET)
+		&&(msg.target() instanceof Item)
+		&&(((Item)msg.target()).owner() instanceof Room)
+		&&(landOwner().length()>0)
+		&&(msg.source().location()!=null)
+		&&(!CoffeeUtensils.doesHavePriviledgesHere(msg.source(),msg.source().location())))
+        {
+		    Room R=msg.source().location();
+			Behavior B=CoffeeUtensils.getLegalBehavior(R);
+			if(B!=null)
+			{
+			    for(int m=0;m<R.numInhabitants();m++)
+			    {
+			        MOB M=R.fetchInhabitant(m);
+			        if(CoffeeUtensils.doesHavePriviledgesHere(M,R))
+			            return;
+			    }
+			    
+			}
+        }
+		else
 		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(affected instanceof Room))
 		{

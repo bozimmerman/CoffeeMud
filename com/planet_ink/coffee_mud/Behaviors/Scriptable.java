@@ -4718,7 +4718,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
-					trigger=trigger.substring(9).trim();
+					trigger=trigger.substring(8).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
@@ -4792,7 +4792,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
-					trigger=trigger.substring(9).trim();
+					trigger=trigger.substring(11).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();
@@ -4861,7 +4861,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)))
 				{
-					trigger=trigger.substring(9).trim();
+					trigger=trigger.substring(8).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim().toUpperCase();

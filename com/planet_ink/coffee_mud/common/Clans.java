@@ -82,24 +82,27 @@ public class Clans implements Clan, Tickable
 	public long calculateMapPoints()
 	{
 		long points=0;
+		HashSet done=new HashSet();
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
 			Area A=(Area)e.nextElement();
-			Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-			if((V!=null)&&(V.size()>0))
+			Behavior B=CoffeeUtensils.getLegalBehavior(A);
+			if(B!=null)
 			{
-				Behavior B=(Behavior)V.firstElement();
-				V.clear();
+				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				boolean response=B.modifyBehavior(A,CMClass.sampleMOB(),V);
+				Environmental E=CoffeeUtensils.getLegalObject(A);
+				boolean response=B.modifyBehavior(E,CMClass.sampleMOB(),V);
 				if(response
+				&&(!done.contains(E))
 				&&(V.size()==1)
 				&&(V.firstElement() instanceof String)
 				&&(((String)V.firstElement()).equals(ID())))
 				{
+				    done.add(E);
 					V.clear();
 					V.addElement(new Integer(Law.MOD_CONTROLPOINTS));
-					if((B.modifyBehavior(A,CMClass.sampleMOB(),V))
+					if((B.modifyBehavior(E,CMClass.sampleMOB(),V))
 					&&(V.size()==1)
 					&&(V.firstElement() instanceof Integer))
 						points+=((Integer)V.firstElement()).longValue();
@@ -435,16 +438,17 @@ public class Clans implements Clan, Tickable
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
 			Area A=(Area)e.nextElement();
-			Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-			if((V!=null)&&(V.size()>0)&&(V.firstElement() instanceof Behavior))
+			Behavior B=CoffeeUtensils.getLegalBehavior(A);
+			if(B!=null)
 			{
-				Behavior B=(Behavior)V.firstElement();
-				V.clear();
+			    Environmental E=CoffeeUtensils.getLegalObject(A);
+				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				if(B.modifyBehavior(A,mob,V)
+				if(B.modifyBehavior(E,mob,V)
 				&&(V.size()>0)
 				&&(V.firstElement() instanceof String)
-				&&(((String)V.firstElement()).equals(ID())))
+				&&(((String)V.firstElement()).equals(ID()))
+				&&((control==null)||(!control.contains(A.name()))))
 				{
 					if(control==null) control=new Vector();
 					control.addElement(A.name());

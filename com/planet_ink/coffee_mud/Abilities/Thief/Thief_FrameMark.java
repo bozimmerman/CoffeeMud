@@ -45,14 +45,6 @@ public class Thief_FrameMark extends ThiefSkill
 			return A.ticks;
 		return -1;
 	}
-	public Behavior getArrest(Area A)
-	{
-		if(A==null) return null;
-		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()==0) return null;
-		return (Behavior)V.firstElement();
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getMark(mob);
@@ -63,9 +55,9 @@ public class Thief_FrameMark extends ThiefSkill
 		}
 
 		Behavior B=null;
-		if(mob.location()!=null) B=getArrest(mob.location().getArea());
+		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
 		if((B==null)
-		||(!B.modifyBehavior(mob.location().getArea(),mob,new Integer(6))))
+		||(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,new Integer(6))))
 		{
 			mob.tell("You aren't wanted for anything here.");
 			return false;
@@ -92,7 +84,7 @@ public class Thief_FrameMark extends ThiefSkill
 			Vector V=new Vector();
 			V.addElement(new Integer(0));
 			V.addElement(target);
-			B.modifyBehavior(mob.location().getArea(),mob,V);
+			B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,V);
 		}
 		return success;
 	}

@@ -258,17 +258,13 @@ public class MOBTeacher extends CombatAbilities
 					CommonMsgs.say(monster,mob,"Try the QUALIFY command.",true,false);
 					return;
 				}
-				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),mob.charStats());
+				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
-					CommonMsgs.say(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
-					return;
-				}
-				//ensureCharClass();
-				myAbility=monster.fetchAbility(myAbility.ID());
-				if(myAbility==null)
-				{
-					CommonMsgs.say(monster,mob,"I'm sorry, I don't know "+s,true,false);
+				    if(CMClass.findAbility(s.trim().toUpperCase())==null)
+						CommonMsgs.say(monster,mob,"I'm sorry, I've never heard of "+s,true,false);
+				    else
+						CommonMsgs.say(monster,mob,"I'm sorry, I don't know "+s,true,false);
 					return;
 				}
 				if(giveABonus)

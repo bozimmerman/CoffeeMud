@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -31,14 +32,6 @@ public class Skill_FalseArrest extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 50;}
 
-	public Behavior getArrest(Area A)
-	{
-		if(A==null) return null;
-		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()==0) return null;
-		return (Behavior)V.firstElement();
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -55,29 +48,32 @@ public class Skill_FalseArrest extends BardSkill
 		}
 
 		Behavior B=null;
-		Area A=null;
+		Environmental E=null;
 		if(mob.location()!=null)
 		{
-			B=getArrest(mob.location().getArea());
-			if((B==null)||(!B.modifyBehavior(mob.location().getArea(),target,new Integer(Law.MOD_HASWARRANT))))
+			B=CoffeeUtensils.getLegalBehavior(mob.location());
+			if((B==null)||(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,new Integer(Law.MOD_HASWARRANT))))
 				B=null;
 			else
-				A=mob.location().getArea();
+				E=CoffeeUtensils.getLegalObject(mob.location());
 		}
 
 		if(B==null)
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
-			A=(Area)e.nextElement();
+			Area A=(Area)e.nextElement();
 			if(Sense.canAccess(mob,A))
 			{
-				B=getArrest(A);
+				B=CoffeeUtensils.getLegalBehavior(A);
 				if((B!=null)
-				&&(B.modifyBehavior(A,target,new Integer(Law.MOD_HASWARRANT))))
+				&&(B.modifyBehavior(CoffeeUtensils.getLegalObject(A),target,new Integer(Law.MOD_HASWARRANT))))
+				{
+					E=CoffeeUtensils.getLegalObject(A);
 					break;
+				}
 			}
 			B=null;
-			A=null;
+			E=null;
 		}
 
 		if(B==null)
@@ -103,7 +99,7 @@ public class Skill_FalseArrest extends BardSkill
 			Vector V=new Vector();
 			V.addElement(new Integer(Law.MOD_ARREST));
 			V.addElement(mob);
-			if(!B.modifyBehavior(A,target,V))
+			if(!B.modifyBehavior(E,target,V))
 			{
 				mob.tell("You are not able to arrest "+target.name()+" at this time.");
 				return false;

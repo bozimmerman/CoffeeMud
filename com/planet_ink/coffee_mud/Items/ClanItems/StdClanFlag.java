@@ -53,17 +53,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 			if(mob==null) return "";
 			R=mob.location();
 		}
-		Area A=null;
-		Behavior B=null;
-		Vector V=null;
-		if(R!=null)	A=R.getArea();
-		if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-		if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
+		Behavior B=CoffeeUtensils.getLegalBehavior(R);
 		if(B!=null)
 		{
-			V.clear();
+			Vector V=new Vector();
 			V.addElement(new Integer(code));
-			if((B.modifyBehavior(A,mob,V))
+			if((B.modifyBehavior(CoffeeUtensils.getLegalObject(R),mob,V))
 			&&(V.size()>0)
 			&&(V.firstElement() instanceof String))
 				return ((String)V.firstElement());
@@ -144,7 +139,6 @@ public class StdClanFlag extends StdItem implements ClanItem
 					LandTitle T=null;
 					Area A=null;
 					Behavior B=null;
-					Vector V=null;
 					if(R!=null)
 					{
 						A=R.getArea();
@@ -155,14 +149,13 @@ public class StdClanFlag extends StdItem implements ClanItem
 					   &&((!T.landOwner().equals(msg.source().getLiegeID()))||(!msg.source().isMarriedToLiege()))
 					   &&(!T.landOwner().equals(msg.source().Name()))))
 					{
-						if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-						if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
+						if(A!=null) B=CoffeeUtensils.getLegalBehavior(A);
 						boolean ok=false;
 						if(B!=null)
 						{
-							V.clear();
+							Vector V=new Vector();
 							V.addElement(new Integer(Law.MOD_RULINGCLAN));
-							if((B.modifyBehavior(A,msg.source(),V))
+							if((B.modifyBehavior(CoffeeUtensils.getLegalObject(A),msg.source(),V))
 							&&(V.size()>0)
 							&&(V.firstElement() instanceof String))
 								ok=true;

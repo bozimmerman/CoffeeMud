@@ -491,6 +491,25 @@ public class CMClass extends ClassLoader
 		return A;
 	}
 
+	public static Ability findAbility(String calledThis, MOB mob)
+	{
+		Ability A=(Ability)getGlobal(abilities,calledThis);
+		if(A==null)
+		{
+			Vector As=new Vector();
+			for(int a=0;a<mob.numAbilities();a++)
+			{
+			    Ability B=mob.fetchAbility(a);
+			    if(B!=null) As.addElement(B);
+			}
+			A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,true);
+			if(A==null)
+				A=(Ability)EnglishParser.fetchEnvironmental(As,calledThis,false);
+		}
+		if(A!=null)A=(Ability)A.newInstance();
+		return A;
+	}
+	
 	public static Environmental getEnv(Vector fromThese, String calledThis)
 	{
 		Environmental E=(Environmental)getGlobal(fromThese,calledThis);

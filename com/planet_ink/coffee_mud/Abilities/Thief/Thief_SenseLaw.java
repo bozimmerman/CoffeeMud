@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -34,7 +35,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	protected Room oldroom=null;
 	protected String lastReport="";
 
-	public Vector getLawMen(Area hostArea, Room room, Behavior B)
+	public Vector getLawMen(Environmental legalObject, Room room, Behavior B)
 	{
 		if(room==null) return empty;
 		if(room.numInhabitants()==0) return empty;
@@ -43,18 +44,10 @@ public class Thief_SenseLaw extends ThiefSkill
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			MOB M=room.fetchInhabitant(m);
-			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(hostArea,M,new Integer(Law.MOD_ISELLIGOFFICER))))
+			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(legalObject,M,new Integer(Law.MOD_ISELLIGOFFICER))))
 				V.addElement(M);
 		}
 		return V;
-	}
-
-	public Behavior getArrest(Area A)
-	{
-		if(A==null) return null;
-		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()==0) return null;
-		return (Behavior)V.firstElement();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -64,11 +57,11 @@ public class Thief_SenseLaw extends ThiefSkill
 			MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(!mob.isMonster()))
 			{
-				Behavior B=getArrest(mob.location().getArea());
+				Behavior B=CoffeeUtensils.getLegalBehavior(mob.location());
 				if(B==null)
 					return super.tick(ticking,tickID);
 				StringBuffer buf=new StringBuffer("");
-				Vector V=getLawMen(mob.location().getArea(),mob.location(),B);
+				Vector V=getLawMen(CoffeeUtensils.getLegalObject(mob.location()),mob.location(),B);
 				for(int l=0;l<V.size();l++)
 				{
 					MOB M=(MOB)V.elementAt(l);

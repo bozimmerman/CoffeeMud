@@ -596,13 +596,13 @@ public class StdArea implements Area
 			statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(Util.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 			statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
 			s.append("Population     : "+statData[Area.AREASTAT_POPULATION]+"\n\r");
-			Vector V=Sense.flaggedBehaviors(this,Behavior.FLAG_LEGALBEHAVIOR);
-			if((V!=null)&&(V.size()>0)&&(V.firstElement() instanceof Behavior))
+			Behavior B=CoffeeUtensils.getLegalBehavior(this);
+			if(B!=null)
 			{
-				Behavior B=(Behavior)V.firstElement();
-				V.clear();
+			    Environmental E=CoffeeUtensils.getLegalObject(this);
+				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
-				if(B.modifyBehavior(this,CMClass.sampleMOB(),V)
+				if(B.modifyBehavior(E,CMClass.sampleMOB(),V)
 				&&(V.size()>0)
 				&&(V.firstElement() instanceof String))
 				{

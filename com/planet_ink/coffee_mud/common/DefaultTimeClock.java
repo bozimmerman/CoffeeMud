@@ -180,7 +180,8 @@ public class DefaultTimeClock implements TimeClock
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB mob=R.fetchInhabitant(m);
-					if(!mob.isMonster())
+					if((mob!=null)
+					&&(!mob.isMonster()))
 					{
 						if(CoffeeUtensils.hasASky(R)
 						&&(!Sense.isSleeping(mob))

@@ -69,6 +69,49 @@ public class CoffeeUtensils
 				return EnvResource.RESOURCE_DATA[i][0];
 		return -1;
 	}
+	public static Behavior getLegalBehavior(Area A)
+	{
+		if(A==null) return null;
+		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()>0) return (Behavior)V.firstElement();
+	    Behavior B=null;
+		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		{
+		    B=getLegalBehavior((Area)e.nextElement());
+		    if(B!=null) break;
+		}
+		return B;
+	}
+	public static Behavior getLegalBehavior(Room R)
+	{
+		if(R==null) return null;
+		Vector V=Sense.flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()>0) return (Behavior)V.firstElement();
+		return getLegalBehavior(R.getArea());
+	}
+	public static Environmental getLegalObject(Area A)
+	{
+		if(A==null) return null;
+		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()>0) return A;
+	    Environmental E=null;
+	    Area A2=null;
+		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		{
+		    A2=(Area)e.nextElement();
+		    E=getLegalObject(A2);
+		    if(E!=null) return E;
+		}
+		return E;
+	}
+	public static Environmental getLegalObject(Room R)
+	{
+		if(R==null) return null;
+		Vector V=Sense.flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()>0) return R;
+		return getLegalObject(R.getArea());
+	}
+
 	public static int getRandomResourceOfMaterial(int material)
 	{
 		material=material&EnvResource.MATERIAL_MASK;

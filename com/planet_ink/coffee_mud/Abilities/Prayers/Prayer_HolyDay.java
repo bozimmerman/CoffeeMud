@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -76,12 +77,16 @@ public class Prayer_HolyDay extends Prayer
 		if(((Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
 			||(Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 			||(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)))
-		&&(msg.source().getClanID().length()>0)
-		&&(Sense.flaggedBehaviors(affected,Behavior.FLAG_LEGALBEHAVIOR).size()>0)
-		&&(((Behavior)Sense.flaggedBehaviors(affected,Behavior.FLAG_LEGALBEHAVIOR).firstElement()).modifyBehavior(affected,msg.source(),new Integer(Law.MOD_CONTROLPOINTS))))
+		&&(msg.source().getClanID().length()>0))
 		{
-			msg.source().tell("You can be no conquest on the holy day of "+godName+".");
-			return false;
+			Behavior B=null;
+			if(msg.source().location()!=null) 
+			    B=CoffeeUtensils.getLegalBehavior(msg.source().location());
+			if((B!=null)&&(B).modifyBehavior(CoffeeUtensils.getLegalObject(msg.source().location()),msg.source(),new Integer(Law.MOD_CONTROLPOINTS)))
+			{
+				msg.source().tell("There can be no conquest on the holy day of "+godName+".");
+				return false;
+			}
 		}
 		return super.okMessage(host,msg);
 	}

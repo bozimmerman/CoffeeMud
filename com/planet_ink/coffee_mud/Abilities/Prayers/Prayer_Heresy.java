@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -33,9 +34,8 @@ public class Prayer_Heresy extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Vector Bs=Sense.flaggedBehaviors(mob.location().getArea(),Behavior.FLAG_LEGALBEHAVIOR);
 		Behavior B=null;
-		if((Bs!=null)&&(Bs.size()>0)) B=(Behavior)Bs.firstElement();
+		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
 
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -74,7 +74,7 @@ public class Prayer_Heresy extends Prayer
 					if(lvl>Law.ACTION_HIGHEST) lvl=Law.ACTION_HIGHEST;
 					V.addElement(Law.ACTION_DESCS[lvl]);//sentence
 					V.addElement("Angering "+D.name()+" will bring doom upon us all!");
-					B.modifyBehavior(mob.location().getArea(),target,V);
+					B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,V);
 				}
 			}
 

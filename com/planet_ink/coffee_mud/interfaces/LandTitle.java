@@ -27,4 +27,6 @@ public interface LandTitle extends Environmental
 	public void updateLot();
 	public void updateTitle();
 	public Vector getPropertyRooms();
+	public boolean rentalProperty();
+	public void setRentalProperty(boolean truefalse);
 }

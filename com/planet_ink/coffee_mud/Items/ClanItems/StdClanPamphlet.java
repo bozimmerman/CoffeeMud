@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.ClanItems;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.*;
 
@@ -58,18 +59,13 @@ public class StdClanPamphlet extends StdClanItem
 			if((!((MOB)owner()).getClanID().equals(clanID()))
 			||(((--tradeTime)<=0)))
 			{
-				Area A=null;
-				Behavior B=null;
-				Vector V=null;
-				if(R!=null)	A=R.getArea();
-				if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-				if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
+				Behavior B=CoffeeUtensils.getLegalBehavior(R);
 				if(B!=null)
 				{
-					V.clear();
+					Vector V=new Vector();
 					V.addElement(new Integer(Law.MOD_RULINGCLAN));
 					rulingClan="";
-					if((B.modifyBehavior(A,(MOB)owner(),V))
+					if((B.modifyBehavior(CoffeeUtensils.getLegalObject(R),(MOB)owner(),V))
 					&&(V.size()>0)
 					&&(V.firstElement() instanceof String))
 						rulingClan=(String)V.firstElement();

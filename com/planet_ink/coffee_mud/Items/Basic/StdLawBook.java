@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.*;
 
@@ -61,17 +62,16 @@ public class StdLawBook extends StdItem
 			if(!mob.isMonster())
 			{
 				Area A=CMMap.getArea(readableText());
-				Vector VB=null;
-				if(A!=null)	VB=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-				if((VB==null)||(VB.size()==0))
+				Behavior B=CoffeeUtensils.getLegalBehavior(A);
+				if(B==null)
 				{
 					msg.source().tell("The pages appear blank, and damaged.");
 					return;
 				}
-				Behavior B=(Behavior)VB.firstElement();
-				VB=new Vector();
+				Vector VB=new Vector();
+				Environmental legalO=CoffeeUtensils.getLegalObject(A);
 				VB.addElement(new Integer(Law.MOD_LEGALINFO));
-				B.modifyBehavior(A,mob,VB);
+				B.modifyBehavior(legalO,mob,VB);
 				Law theLaw=(Law)VB.firstElement();
 
 				int which=-1;
@@ -84,7 +84,7 @@ public class StdLawBook extends StdItem
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
 				if((!allowedToModify)
-				&&(B.modifyBehavior(A,mob,V))
+				&&(B.modifyBehavior(legalO,mob,V))
 				&&(V.size()==1)
 				&&(V.firstElement() instanceof String))
 				{
@@ -99,7 +99,7 @@ public class StdLawBook extends StdItem
 				}
 
 				if((allowedToModify)&&(!theLaw.lawIsActivated()))
-					changeTheLaw(A,B,mob,theLaw,"ACTIVATED","TRUE");
+					changeTheLaw(legalO,B,mob,theLaw,"ACTIVATED","TRUE");
 
 				try{
 					if(which<1)
@@ -119,7 +119,7 @@ public class StdLawBook extends StdItem
 						if(mob.session()!=null)
 							mob.tell(Util.replaceAll(getFromTOC("P1"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")),"<AREA>",A.name()));
 						break;
-					case 2:	doOfficersAndJudges(A,B,theLaw,mob); break;
+					case 2:	doOfficersAndJudges(A,B,legalO,theLaw,mob); break;
 					case 3:	doVictimsOfCrime(A,B,theLaw,mob); break;
 					case 4: doJailPolicy(A,B,theLaw,mob); break;
 					case 5: doParoleAndRelease(A,B,theLaw,mob); break;
@@ -140,9 +140,8 @@ public class StdLawBook extends StdItem
 			try
 			{
 				Area A=CMMap.getArea(readableText());
-				Vector VB=null;
-				if(A!=null)	VB=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-				if((VB==null)||(VB.size()==0))
+				Environmental E=CoffeeUtensils.getLegalObject(A);
+				if(E==null)
 				{
 					msg.source().tell("The pages appear blank, and too damaged to write on.");
 					return;
@@ -179,7 +178,7 @@ public class StdLawBook extends StdItem
 		return "";
 	}
 
-	public void changeTheLaw(Area A,
+	public void changeTheLaw(Environmental A,
 							 Behavior B,
 							 MOB mob,
 							 Law theLaw,
@@ -985,7 +984,11 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doOfficersAndJudges(Area A, Behavior B, Law theLaw, MOB mob)
+	public void doOfficersAndJudges(Area A, 
+							        Behavior B,
+							        Environmental legalO,
+							        Law theLaw, 
+							        MOB mob)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -1002,10 +1005,10 @@ public class StdLawBook extends StdItem
 				{
 					Room R2=M.getStartRoom();
 					if(R==null) R=M.location();
-					if(B.modifyBehavior(A,M,new Integer(Law.MOD_ISOFFICER)))
+					if(B.modifyBehavior(legalO,M,new Integer(Law.MOD_ISOFFICER)))
 						duhOfficers.append(M.name()+" from room '"+R2.displayText()+"'\n\r");
 					else
-					if(B.modifyBehavior(A,M,new Integer(Law.MOD_ISJUDGE)))
+					if(B.modifyBehavior(legalO,M,new Integer(Law.MOD_ISJUDGE)))
 						duhJudge=M.name()+" from room '"+R2.displayText()+"'\n\r";
 				}
 			}

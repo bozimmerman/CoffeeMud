@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -32,19 +33,10 @@ public class Skill_Warrants extends BardSkill
 	public int classificationCode(){return Ability.SKILL;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
-	public Behavior getArrest(Area A)
-	{
-		if(A==null) return null;
-		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()==0) return null;
-		return (Behavior)V.firstElement();
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Behavior B=null;
-		if(mob.location()!=null)
-			B=getArrest(mob.location().getArea());
+		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -59,7 +51,7 @@ public class Skill_Warrants extends BardSkill
 				if(B!=null)
 				{
 					V.addElement(new Integer(2));
-					B.modifyBehavior(mob.location().getArea(),mob,V);
+					B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,V);
 				}
 				if(V.size()==0)
 				{

@@ -46,14 +46,13 @@ public class StdTitle extends StdItem implements LandTitle
 		recoverEnvStats();
 	}
 
-
-
 	public int landPrice()
 	{
 		LandTitle A=fetchALandTitle();
 		if(A==null)	return 0;
 		return A.landPrice();
 	}
+	
 	public void setLandPrice(int price)
 	{
 		LandTitle A=fetchALandTitle();
@@ -61,6 +60,22 @@ public class StdTitle extends StdItem implements LandTitle
 		A.setLandPrice(price);
 		A.updateTitle();
 	}
+	
+	public boolean rentalProperty()
+	{
+		LandTitle A=fetchALandTitle();
+		if(A==null)	return false;
+		return A.rentalProperty();
+	}
+	
+	public void setRentalProperty(boolean truefalse)
+	{
+		LandTitle A=fetchALandTitle();
+		if(A==null)	return;
+		A.setRentalProperty(truefalse);
+		A.updateTitle();
+	}
+	
 	public String landOwner()
 	{
 		LandTitle A=fetchALandTitle();

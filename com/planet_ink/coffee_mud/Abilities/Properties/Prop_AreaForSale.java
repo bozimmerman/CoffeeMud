@@ -33,21 +33,26 @@ public class Prop_AreaForSale extends Property implements LandTitle
 
 	public int landPrice()
 	{
+		if(text().length()==0)
+		    return 100000;
 		int price=0;
-		if(text().indexOf("/")<0)
-			price=Util.s_int(text());
-		else
-			price=Util.s_int(text().substring(text().indexOf("/")+1));
+		int index=text().length();
+		while((--index)>=0)
+		{
+			if(Character.isDigit(text().charAt(index)))
+			    price=(price*10)+Util.s_int(""+text().charAt(index));
+			else
+			if(!Character.isWhitespace(text().charAt(index)))
+			    break;
+		}
+			    
 		if(price<=0) price=100000;
 		return price;
 	}
-	public void setLandPrice(int price){
-		String owner=landOwner();
-		if(owner.length()>0)
-			setMiscText(owner+"/"+price);
-		else
-			setMiscText(""+price);
-	}
+	
+	public void setLandPrice(int price)
+	{   setMiscText(landOwner()+"/"+(rentalProperty()?"RENTAL ":"")+price); }
+	
 	public String landOwner()
 	{
 		if(text().indexOf("/")<0) return "";
@@ -55,11 +60,16 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	public void setLandOwner(String owner)
-	{
-		int price=landPrice();
-		setMiscText(owner+"/"+price);
-	}
+	{   setMiscText(owner+"/"+(rentalProperty()?"RENTAL ":"")+landPrice()); }
 
+	public boolean rentalProperty()
+	{
+		if(text().indexOf("/")<0) return false;
+	    return text().indexOf("RENTAL",text().indexOf("/"))>0;
+    }
+	public void setRentalProperty(boolean truefalse)
+	{	setMiscText(landOwner()+"/"+(truefalse?"RENTAL ":"")+landPrice());}
+	
 	// update title, since it may affect clusters, worries about ALL involved
 	public void updateTitle()
 	{

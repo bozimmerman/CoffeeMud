@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -32,9 +33,8 @@ public class Prayer_Forgive extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Vector Bs=Sense.flaggedBehaviors(mob.location().getArea(),Behavior.FLAG_LEGALBEHAVIOR);
 		Behavior B=null;
-		if((Bs!=null)&&(Bs.size()>0)) B=(Behavior)Bs.firstElement();
+		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
 
 		String name=Util.combine(commands,0);
 		if(name.trim().length()==0)
@@ -47,7 +47,7 @@ public class Prayer_Forgive extends Prayer
 		{
 			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
 			warrants.addElement(name);
-			if(!B.modifyBehavior(mob.location().getArea(),mob,warrants))
+			if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),mob,warrants))
 				warrants.clear();
 		}
 
