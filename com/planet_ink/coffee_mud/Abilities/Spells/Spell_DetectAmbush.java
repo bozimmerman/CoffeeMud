@@ -55,8 +55,11 @@ public class Spell_DetectAmbush extends Spell
 				}
 			}
 			lastRoom=R;
-			mob.tell("Potential danger in that direction stops you for a second.");
-			return false;
+			if(found)
+			{
+				mob.tell("Potential danger in that direction stops you for a second.");
+				return false;
+			}
 		}
 
 		return super.okAffect(myHost,msg);

@@ -21,9 +21,10 @@ public class Prayer_DrunkenStupor extends Prayer
 	{
 		if(inebriation==null)
 		{
+			
+			inebriation=CMClass.getAbility("Inebriation");
 			inebriation.makeLongLasting();
 			inebriation.makeNonUninvokable();
-			inebriation=CMClass.getAbility("Inebriation");
 			inebriation.setAffectedOne(affected);
 		}
 		return inebriation;

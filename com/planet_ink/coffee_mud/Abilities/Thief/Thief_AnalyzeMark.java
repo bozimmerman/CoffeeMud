@@ -44,6 +44,7 @@ public class Thief_AnalyzeMark extends ThiefSkill
 			&&(getMarkTicks(mob)>15)
 			&&((mob.fetchAbility(ID())==null)||profficiencyCheck(0,false)))
 			{
+				if(Dice.rollPercentage()>90) helpProfficiency((MOB)affected);
 				StringBuffer str=ExternalPlay.getScore((MOB)msg.target());
 				if(!mob.isMonster())
 					mob.session().unfilteredPrintln(str.toString());

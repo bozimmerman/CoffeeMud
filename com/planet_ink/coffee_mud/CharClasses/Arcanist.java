@@ -105,9 +105,8 @@ public class Arcanist extends Thief
 			
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",true);
 			
-			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",true);
-			CMAble.addCharAbilityMapping(ID(),23,"Spell_Charm",false);
-			
+			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",false);
+		
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_Disenchant",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 		

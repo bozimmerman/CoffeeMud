@@ -72,6 +72,12 @@ public class Prayer_LinkedHealth extends Prayer
 			mob.tell(target.name()+"'s health is already linked with someones!");
 			return false;
 		}
+		
+		if(!mob.getGroupMembers(new Hashtable()).contains(target))
+		{
+			mob.tell(target.name()+" is not in your group.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -37,6 +37,18 @@ public class Thief_Con extends ThiefSkill
 			return false;
 		}
 
+		if(target.isInCombat())
+		{
+			mob.tell(target.name()+" is too busy fighting right now.");
+			return false;
+		}
+		
+		if(mob.isInCombat())
+		{
+			mob.tell("You are too busy fighting right now.");
+			return false;
+		}
+		
 		if(commands.size()<1)
 		{
 			mob.tell("Con "+target.charStats().himher()+" into doing what?");

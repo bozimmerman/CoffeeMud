@@ -70,9 +70,9 @@ public class Thief_Distract extends ThiefSkill
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((Sense.isSitting(target)||Sense.isSleeping(target)))
+		if((Sense.isSitting(mob)||Sense.isSleeping(mob)))
 		{
-			mob.tell(target.name()+" is on the floor!");
+			mob.tell("You are on the floor!");
 			return false;
 		}
 

@@ -744,7 +744,7 @@ public class Clans implements Clan, Tickable
 			DVector members=getMemberList();
 			int activeMembers=0;
 			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_MUDDAY*Host.TICK_TIME;
-			int[] numTypes=new int[Clan.ROL_DESCS.length];
+			int[] numTypes=new int[Clan.POSORDER.length];
 			for(int j=0;j<members.size();j++)
 			{
 				long lastLogin=((Long)members.elementAt(j,3)).longValue();
