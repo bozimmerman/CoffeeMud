@@ -43,6 +43,12 @@ public class Spell_Teleport extends Spell
 			return false;
 		}
 
+		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
+		
 		Room newRoom=null;
 		int tries=0;
 		while((tries<20)&&(newRoom==null))

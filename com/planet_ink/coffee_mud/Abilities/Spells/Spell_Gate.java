@@ -46,6 +46,12 @@ public class Spell_Gate extends Spell
 			return false;
 		}
 
+		if(Sense.isSitting(mob)||Sense.isSleeping(mob))
+		{
+			mob.tell("You need to stand up!");
+			return false;
+		}
+		
 		Vector candidates=new Vector();
 		MOB target=null;
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
