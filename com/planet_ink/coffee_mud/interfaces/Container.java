@@ -28,6 +28,7 @@ public interface Container extends Item
 	public static final int CONTAIN_READABLES=128;
 	public static final int CONTAIN_SCROLLS=256;
 	public static final int CONTAIN_CAGED=512;
+	public static final int CONTAIN_KEYS=1024;
 	public static final String[] CONTAIN_DESCS={"ANYTHING",
 												"LIQUID",
 												"COINS",
@@ -38,5 +39,6 @@ public interface Container extends Item
 												"BODIES",
 												"READABLES",
 												"SCROLLS",
-												"CAGED ANIMALS"};
+												"CAGED ANIMALS",
+												"KEYS"};
 }

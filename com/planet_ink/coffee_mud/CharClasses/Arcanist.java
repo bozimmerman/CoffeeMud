@@ -27,6 +27,7 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
+			CMAble.addCharAbilityMapping(ID(),1,"ThievesCant",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
@@ -45,6 +46,7 @@ public class Arcanist extends Thief
 			
 			CMAble.addCharAbilityMapping(ID(),5,"PaperMaking",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Revoke",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
 			
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",false);

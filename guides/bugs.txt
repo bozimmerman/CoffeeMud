@@ -1,6 +1,2 @@
 GAES still isn't done
-journal date bug? (SQL Server 2000) Single QUOTE in journal
 When I boot a player, they're still listed according to the website and archon command 'where', but not to 'who'.. Plus, after having done it,t he CPU time is way up.
-2nd Attack! 
-unfollow a pet before killing it
-

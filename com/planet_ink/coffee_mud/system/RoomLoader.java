@@ -205,8 +205,14 @@ public class RoomLoader
 			if(ride!=null)
 			{
 				Environmental E=(Environmental)itemNums.get(ride);
-				if((E!=null)&&(E instanceof Rideable))
-					M.setRiding((Rideable)E);
+				if(E!=null)
+				{
+					if(E instanceof Rideable)
+						M.setRiding((Rideable)E);
+					else
+					if(E instanceof MOB)
+						M.setFollowing((MOB)E);
+				}
 			}
 		}
 	}
@@ -499,6 +505,16 @@ public class RoomLoader
 			for(int m=0;m<mobs.size();m++)
 			{
 				MOB thisMOB=(MOB)mobs.elementAt(m);
+				
+				String ride=null;
+				if(thisMOB.riding()!=null) 
+					ride=""+thisMOB.riding();
+				else
+				if(thisMOB.amFollowing()!=null) 
+					ride=""+thisMOB.amFollowing();
+				else
+					ride="";
+				
 				D=DBConnector.DBFetch();
 				str=
 				 "INSERT INTO CMROCH ("
@@ -518,7 +534,7 @@ public class RoomLoader
 				 +thisMOB.baseEnvStats().level()+","
 				 +thisMOB.baseEnvStats().ability()+","
 				 +thisMOB.baseEnvStats().rejuv()+","
-				 +"'"+((thisMOB.riding()!=null)?(""+thisMOB.riding()):"")+"'"
+				 +"'"+ride+"'"
 				 +")";
 				D.update(str);
 				DBConnector.DBDone(D);

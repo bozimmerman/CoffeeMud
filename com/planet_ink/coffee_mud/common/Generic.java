@@ -474,11 +474,11 @@ public class Generic
 					String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
 					MOB newMOB=CMClass.getMOB(mClass);
 					if(newMOB==null) return unpackErr("Room","null 'mClass': "+mClass+" in room "+newRoom.ID());
-					if(newMOB instanceof Rideable)
-					{
-						String iden=XMLManager.getValFromPieces(mblk.contents,"MIDEN");
-						if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newMOB);
-					}
+					
+					// for rideables AND leaders now!
+					String iden=XMLManager.getValFromPieces(mblk.contents,"MIDEN");
+					if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newMOB);
+					
 					newMOB.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT")));
 					newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
 					newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
@@ -541,6 +541,9 @@ public class Generic
 						Environmental E=(Environmental)identTable.get(ride);
 						if(E instanceof Rideable)
 							M.setRiding((Rideable)E);
+						else
+						if(E instanceof MOB)
+							M.setFollowing((MOB)E);
 					}
 				}
 			}
@@ -1026,7 +1029,7 @@ public class Generic
 					{
 						buf.append("<RMOB>");
 						buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
-						if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))
+						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
 							buf.append(XMLManager.convertXMLtoTag("MIDEN",""+mob));
 						buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
 						buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
@@ -1034,6 +1037,9 @@ public class Generic
 						buf.append(XMLManager.convertXMLtoTag("MTEXT",parseOutAngleBrackets(mob.text())));
 						if(mob.riding()!=null)
 							buf.append(XMLManager.convertXMLtoTag("MRIDE",""+mob.riding()));
+						else
+						if(mob.amFollowing()!=null)
+							buf.append(XMLManager.convertXMLtoTag("MRIDE",""+mob.amFollowing()));
 						else
 							buf.append("<MRIDE />");
 						buf.append("</RMOB>");

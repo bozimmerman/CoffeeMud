@@ -1,4 +1,5 @@
 auction system (see mailing list)
+have babble work for gossip/tell/gtell
 Improve maps to divide area into sections
 Prancers: Dancing bards who get special ability
 Druid Subclasses

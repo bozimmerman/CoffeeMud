@@ -111,6 +111,5 @@ public class Tick extends Thread
 				break;
 			}
 		}
-		Log.sysOut("Tick","Shutdown.");
 	}
 }

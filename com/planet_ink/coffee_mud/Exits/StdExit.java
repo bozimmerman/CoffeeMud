@@ -312,12 +312,13 @@ public class StdExit implements Exit
 						Item item=mob.fetchInventory(i);
 						if((item!=null)
 						&&(item instanceof Key)
-						&&(item.container()==null)
+						&&((Key)item).getKey().equals(keyName())
+						&&((item.container()==null)
+						   ||((item.container().container()==null)
+							  &&(item.container() instanceof Container)
+							  &&((((Container)item.container()).containTypes()&Container.CONTAIN_KEYS)>0)))
 						&&(Sense.canBeSeenBy(item,mob)))
-						{
-							if(((Key)item).getKey().equals(keyName()))
-								return true;
-						}
+							return true;
 					}
 					mob.tell("You don't seem to have the key.");
 					return false;

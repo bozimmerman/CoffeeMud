@@ -1,12 +1,13 @@
-% Cup	1	20	1	1	GenWater		5
-% Mug	1	20	1	1	GenWater		5
-% Plate	1	20	1	1	GenContainer		5
-% Pot	1	30	2	6	GenWater		15
-% Pan	1	30	2	6	GenContainer		15
-% Pitcher	1	30	2	1	GenWater		15
-% Wand	12	30	1	3	GenWand		
-% Wok	3	30	3	7	GenContainer		25
-Hooded Lantern	6	50	10	150	GenLantern		0
-% Lantern	6	40	7	100	GenLantern		0
-% Bowl	1	20	1	1	GenWater		5
-% Statue	12	120	450	100	GenItem	STATUE	0
+% Cup	1	20	1	1	GenWater		5	
+% Key Ring	1	10	1	1	GenContainer	1024	100
+% Mug	1	20	1	1	GenWater		5	
+% Plate	1	20	1	1	GenContainer		5	
+% Pot	1	30	2	6	GenWater		15	
+% Pan	1	30	2	6	GenContainer		15	
+% Pitcher	1	30	2	1	GenWater		15	
+% Wand	12	30	1	3	GenWand			
+% Wok	3	30	3	7	GenContainer		25	
+% Hooded Lantern	6	50	10	150	GenLantern		0	
+% Lantern	6	40	7	100	GenLantern		0	
+% Bowl	1	20	1	1	GenWater		5	
+% Statue	12	120	450	100	GenItem	STATUE	0	

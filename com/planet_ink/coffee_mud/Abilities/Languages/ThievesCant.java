@@ -15,7 +15,6 @@ public class ThievesCant extends Language
 	{
 		super();
 		if(!mapped){mapped=true;
-				CMAble.addCharAbilityMapping("Thief",1,ID(),true);
 				CMAble.addCharAbilityMapping("Bard",10,ID(),false);}
 	}
 	public Environmental newInstance(){	return new ThievesCant();}

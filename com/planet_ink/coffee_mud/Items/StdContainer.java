@@ -234,12 +234,13 @@ public class StdContainer extends StdItem implements Container
 							Item item=mob.fetchInventory(i);
 							if((item!=null)
 							&&(item instanceof Key)
-							&&(item.container()==null)
+							&&((Key)item).getKey().equals(keyName())
+							&&((item.container()==null)
+							   ||((item.container().container()==null)
+								  &&(item.container() instanceof Container)
+								  &&((((Container)item.container()).containTypes()&Container.CONTAIN_KEYS)>0)))
 							&&(Sense.canBeSeenBy(item,mob)))
-							{
-								if(((Key)item).getKey().equals(keyName()))
-									return true;
-							}
+								return true;
 						}
 						mob.tell("You don't have the key.");
 						return false;
@@ -446,6 +447,10 @@ public class StdContainer extends StdItem implements Container
 				case CONTAIN_DAGGERS:
 					if((E instanceof Weapon)
 					&&(((Weapon)E).weaponClassification()==Weapon.CLASS_DAGGER))
+						return true;
+					break;
+				case CONTAIN_KEYS:
+					if(E instanceof Key)
 						return true;
 					break;
 				case CONTAIN_OTHERWEAPONS:

@@ -13,6 +13,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public int overrideMana(){return 5;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
+	protected int trainsRequired(){return 1;}
+	protected int practicesRequired(){return 0;}
+	
 	private static boolean mapped=false;
 	protected Vector baseInventory=new Vector();
 	protected Hashtable inventorySize=new Hashtable();

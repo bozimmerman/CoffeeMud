@@ -30,7 +30,8 @@ public class InstantDeath extends ActiveTicker
 			MOB M=R.fetchInhabitant(i);
 			if((spareMe!=null)&&(spareMe==M))
 				continue;
-			if(M!=null) V.addElement(M);
+			if((M!=null)&&(!M.isASysOp(R)))
+				V.addElement(M);
 		}
 		for(int v=0;v<V.size();v++)
 		{

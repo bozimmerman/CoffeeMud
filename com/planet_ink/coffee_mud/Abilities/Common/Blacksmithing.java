@@ -236,6 +236,8 @@ public class Blacksmithing extends CommonSkill
 				((Container)building).setLidsNLocks(true,false,true,false);
 				((Container)building).setKeyName(new Double(Math.random()).toString());
 			}
+			else
+				((Container)building).setContainTypes(Util.s_long(misctype));
 		}
 		if(building instanceof Drink)
 		{
