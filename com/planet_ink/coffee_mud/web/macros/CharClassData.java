@@ -66,24 +66,27 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
 					int ah=C.getMinHitPointsLevel()+((C.getMaxHitPointsLevel()-C.getMinHitPointsLevel())/2);
-					str.append("("+avgMath(10,ah,10,20)+"/"+avgMath(18,ah,10,20)+"/"+avgMath(25,ah,10,20)+") ");
-					str.append("("+avgMath(10,ah,50,20)+"/"+avgMath(18,ah,50,20)+"/"+avgMath(25,ah,50,20)+") ");
-					str.append("("+avgMath(10,ah,90,20)+"/"+avgMath(18,ah,90,20)+"/"+avgMath(25,ah,90,20)+") ");
+					int maxCon=18+C.maxStatAdjustments()[CharStats.CONSTITUTION];
+					str.append("("+avgMath(10,ah,10,20)+"/"+avgMath(18,ah,10,20)+"/"+avgMath(maxCon,ah,10,20)+") ");
+					str.append("("+avgMath(10,ah,50,20)+"/"+avgMath(18,ah,50,20)+"/"+avgMath(maxCon,ah,50,20)+") ");
+					str.append("("+avgMath(10,ah,90,20)+"/"+avgMath(18,ah,90,20)+"/"+avgMath(maxCon,ah,90,20)+") ");
 				}
 					
 				if(parms.containsKey("AVGMANA"))
 				{
 					int ah=C.getBonusManaLevel();
-					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(25,ah,10,100)+") ");
-					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(25,ah,50,100)+") ");
-					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(25,ah,90,100)+") ");
+					int maxInt=18+C.maxStatAdjustments()[CharStats.INTELLIGENCE];
+					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(maxInt,ah,10,100)+") ");
+					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(maxInt,ah,50,100)+") ");
+					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxInt,ah,90,100)+") ");
 				}
 				if(parms.containsKey("AVGMOVEMENT"))
 				{
 					int ah=C.getMovementMultiplier();
-					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(25,ah,10,100)+") ");
-					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(25,ah,50,100)+") ");
-					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(25,ah,90,100)+") ");
+					int maxStrength=18+C.maxStatAdjustments()[CharStats.STRENGTH];
+					str.append("("+avgMath(10,ah,10,100)+"/"+avgMath(18,ah,10,100)+"/"+avgMath(maxStrength,ah,10,100)+") ");
+					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(maxStrength,ah,50,100)+") ");
+					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxStrength,ah,90,100)+") ");
 				}
 				
 				StringBuffer preReqName=new StringBuffer(CharStats.TRAITS[C.getAttackAttribute()].toLowerCase());

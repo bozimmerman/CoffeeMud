@@ -8,6 +8,7 @@ public class Archon_Multiwatch extends ArchonSkill
 {
 	public String ID() { return "Archon_Multiwatch"; }
 	public String name(){ return "Multiwatch";}
+	public String displayText(){return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.INDIFFERENT;}
