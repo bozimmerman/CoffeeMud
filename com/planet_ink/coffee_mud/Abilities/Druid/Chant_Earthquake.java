@@ -7,8 +7,8 @@ import java.util.*;
 public class Chant_Earthquake extends Chant
 {
 	public String ID() { return "Chant_Earthquake"; }
-	public String name(){ return "Earthquake";}
-	public String displayText(){return "(Earthquake)";}
+	public String name(){ return "Quake";}
+	public String displayText(){return "(Quaking)";}
 	public int quality(){return Ability.MALICIOUS;}
 	public int maxRange(){return 3;}
 	protected int canAffectCode(){return 0;}

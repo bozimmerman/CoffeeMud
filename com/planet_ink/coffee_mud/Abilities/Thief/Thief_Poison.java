@@ -8,7 +8,7 @@ import java.util.*;
 public class Thief_Poison extends ThiefSkill
 {
 	public String ID() { return "Thief_Poison"; }
-	public String name(){ return "Poison";}
+	public String name(){ return "Poisoning";}
 	public String displayText(){ return "(Poisoned)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}

@@ -2,4 +2,3 @@ bug look for alternate materials in the common skills
 Damn Scriptable Behavior
 poison looks funny too.
 view.n A large golden statue adorns 
-Put qualifying levels in the classes list for <ABILITY> help

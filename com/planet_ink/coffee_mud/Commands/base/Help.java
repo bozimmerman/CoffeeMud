@@ -203,9 +203,9 @@ public class Help
 					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
 						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
-						if((!C.ID().equalsIgnoreCase("Archon"))
-						&&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0))
-							avail.addElement(C.name());
+						int lvl=CMAble.getQualifyingLevel(C.ID(),A.ID());
+						if((!C.ID().equalsIgnoreCase("Archon"))&&(lvl>=0))
+							avail.addElement(C.name()+"("+lvl+")");
 					}
 					for(int c=0;c<avail.size();c++)
 					{

@@ -9,7 +9,7 @@ public class Poison extends StdAbility
 {
 	int poisonTick=3;
 	public String ID() { return "Poison"; }
-	public String name(){ return "Poison";}
+	public String name(){ return "Poisonous";}
 	public String displayText(){ return "(Poisoned)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
