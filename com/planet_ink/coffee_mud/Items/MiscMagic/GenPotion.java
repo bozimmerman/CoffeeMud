@@ -56,14 +56,23 @@ public class GenPotion extends GenWater implements Potion
 			{
 			case Affect.TYP_DRINK:
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
+				{
 					drinkIfAble(mob,this);
+					mob.tell(name()+" vanishes!");
+					this.destroyThis();
+				}
 				else
+				{
 					affect.addTrailerMsg(new FullMsg(affect.source(),affect.target(),affect.tool(),affect.NO_EFFECT,null,affect.targetCode(),affect.targetMessage(),affect.NO_EFFECT,null));
+					super.affect(affect);
+				}
 				break;
 			default:
+				super.affect(affect);
 				break;
 			}
 		}
-		super.affect(affect);
+		else
+			super.affect(affect);
 	}
 }

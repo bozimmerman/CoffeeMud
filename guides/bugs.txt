@@ -1,15 +1,11 @@
-no exp loss for recall?
-Endurance does anything?
-Allow melded GenItems to inheret effects.
-Make potions disappear on quaffing
-dropping a lit torch in a dark room doesn't lighten up the room if it was dark to begin with.
-patrolman doesn't break up fights.
+!Allow melded GenItems to inheret effects.
+!Make potions disappear on quaffing
 ???a thug was fighting me with a hefty length of chain , but I got a lead pipe from him, instead.
 ???if you have already read a spell off of a scroll, casting read magic on it again says that you don't have a scroll
 ???when trying to identify with multiple words, it has problems, IE troll gang jacket said you don't see 'jacket gang trooll' here. I don't know how it got the extra o...it wasn't in my typing... 
 ???the read scroll bug reported earlier comes from any read scroll in the room... or so it seems
 when identifying objects sometimes it will list an armor bonus as armor-10, sometimes armor 10, and will list Str bonuses as +1, when all of these are indeed positive bonuses....
-if you cast obscure self on someone else, it says that your spell fizzles, since he is affected by that spell.
-when a person looks blurry (affected by the blur spell) that description should be added to their description for look commands.
+!if you cast obscure self on someone else, it says that your spell fizzles, since he is affected by that spell.
+???when a person looks blurry (affected by the blur spell) that description should be added to their description for look commands.
+dropping a lit torch in a dark room doesn't lighten up the room if it was dark to begin with.
 dropping a torch in a room never helps
-the animals have autoold on if I have it on.

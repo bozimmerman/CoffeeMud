@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Fighter;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.system.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
@@ -39,16 +40,19 @@ public class Fighter_Endurance extends StdAbility
 	public boolean tick(int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return false;
+			return super.tick(tickID);
 
 		MOB mob=(MOB)affected;
 
 		if((profficiencyCheck(0,false))
 		&&(!mob.isInCombat())
-		&&((mob.curState().getHitPoints()<mob.maxState().getHitPoints())
-		||(mob.curState().getMana()<mob.maxState().getMana())))
+		&&(tickID==Host.MOB_TICK)
+		&&(mob.curState().getHitPoints()<mob.maxState().getHitPoints()))
 		{
+Log.sysOut("BLAH","B4-"+mob.curState().getHitPoints());
 			mob.curState().adjState(mob,mob.maxState());
+Log.sysOut("BLAH","AF-"+mob.curState().getHitPoints());
+			
 			helpProfficiency(mob);
 		}
 		return super.tick(tickID);

@@ -120,6 +120,7 @@ public class LightSource extends StdItem implements Light
 				invoker=(MOB)affected;
 				if(!this.amWearingAt(Item.INVENTORY))
 					heldBy=affected;
+				// what happens when it is moved to inventory?
 			}
 			else
 			if(affected instanceof Room)

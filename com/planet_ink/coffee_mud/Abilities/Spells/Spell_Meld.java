@@ -93,6 +93,8 @@ public class Spell_Meld extends Spell
 			return false;
 		}
 
+		Environmental melded=null;
+		
 		if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 		{
 			if(shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_NECK)
@@ -178,7 +180,6 @@ public class Spell_Meld extends Spell
 				x=itemTwoName.indexOf("melded together");
 				if(x>0) itemTwoName=itemTwoName.substring(0,x).trim();
 
-
 				String newName=itemOneName+" and "+itemTwoName+" melded together";
 				if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 				{
@@ -245,7 +246,7 @@ public class Spell_Meld extends Spell
 					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
 					gc.baseEnvStats().setAbility(itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability());
-					gc.recoverEnvStats();
+					melded=gc;
 					mob.addInventory(gc);
 				}
 				else
@@ -268,7 +269,7 @@ public class Spell_Meld extends Spell
 					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
 					gc.baseEnvStats().setAbility(itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability());
-					gc.recoverEnvStats();
+					melded=gc;
 					mob.addInventory(gc);
 				}
 				else
@@ -296,8 +297,16 @@ public class Spell_Meld extends Spell
 					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
 					gc.baseEnvStats().setAbility(itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability());
-					gc.recoverEnvStats();
+					melded=gc;
 					mob.addInventory(gc);
+				}
+				if(melded!=null)
+				{
+					for(int a=0;a<itemOne.numAffects();a++)
+						melded.addAffect(itemOne.fetchAffect(a));
+					for(int a=0;a<itemTwo.numAffects();a++)
+						melded.addAffect(itemTwo.fetchAffect(a));
+					melded.recoverEnvStats();
 				}
 				itemOne.destroyThis();
 				itemTwo.destroyThis();
