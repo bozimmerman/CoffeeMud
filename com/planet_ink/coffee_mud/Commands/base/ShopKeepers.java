@@ -30,6 +30,11 @@ public class ShopKeepers
 
 	public static MOB parseShopkeeper(MOB mob, Vector commands, String error)
 	{
+		if(commands.size()==0)
+		{
+			mob.tell(error);
+			return null;
+		}
 		commands.removeElementAt(0);
 
 		Vector V=shopkeepers(mob);

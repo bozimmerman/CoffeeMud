@@ -26,10 +26,10 @@ public class Thief_Forgery extends ThiefSkill
 		Item target=mob.fetchInventory((String)commands.lastElement());
 		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+target.name()+"' here.");
+			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
 			return false;
 		}
-		commands.removeElement(commands.lastElement());
+		commands.removeElementAt(commands.size()-1);
 
 		if((target==null)
 		   ||(!target.isGeneric())
