@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Spell_DemonGate extends Spell
 {
+	MOB myMonster=null;
 	MOB myTarget=null;
 	public Spell_DemonGate()
 	{
@@ -55,6 +56,26 @@ public class Spell_DemonGate extends Spell
 		return super.tick(tickID);
 	}
 	
+	public void unInvoke()
+	{
+		super.unInvoke();
+		if((myMonster!=null)&&(invoker!=null))
+		{
+			MOB targ=myMonster;
+			myMonster=null;
+			targ.destroy();
+		}
+	}
+
+	
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDamage(affectableStats.damage()+20);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100);
+		affectableStats.setArmor(affectableStats.armor()+20);
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -69,16 +90,16 @@ public class Spell_DemonGate extends Spell
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level());
+				myMonster = determineMonster(mob, mob.envStats().level());
 				if(Dice.rollPercentage()<25)
-					target.setVictim(mob);
+					myMonster.setVictim(mob);
 				else
 				{
-					target.setVictim(mob.getVictim());
-					ExternalPlay.follow(target,mob,true);
+					myMonster.setVictim(mob.getVictim());
+					ExternalPlay.follow(myMonster,mob,true);
 				}
 				invoker=mob;
-				beneficialAffect(mob,target,0);
+				beneficialAffect(mob,myMonster,0);
 			}
 		}
 		else
@@ -112,10 +133,6 @@ public class Spell_DemonGate extends Spell
 		newMOB.bringToLife(caster.location());
 		newMOB.setStartRoom(null);
 		caster.location().recoverRoomStats();
-		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseEnvStats().attackAdjustment()+100);
-		newMOB.baseEnvStats().setSpeed(3);
-		newMOB.baseEnvStats().setDamage(newMOB.baseEnvStats().damage()+20);
-		newMOB.recoverEnvStats();
 		return(newMOB);
 
 
