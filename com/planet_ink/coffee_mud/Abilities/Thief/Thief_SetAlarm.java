@@ -37,7 +37,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	{
 		sprung=true;
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if(sprung){	return;	}
@@ -92,12 +92,12 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 						}
 					}
 				}
-					
+
 			}
 		}
 		return true;
 	}
-		
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		String whatToalarm=Util.combine(commands,0);
@@ -115,8 +115,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		
-		FullMsg msg=new FullMsg(mob,alarmThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?alarmThis.displayName()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.displayName()+"."));
+
+		FullMsg msg=new FullMsg(mob,alarmThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			invoker=mob;

@@ -33,12 +33,12 @@ public class Spell_Ignite extends Spell
 		default:
 			return;
 		}
-		mob.location().showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" ignites!");
+		mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" ignites!");
 		Ability B=CMClass.getAbility("Burning");
 		B.setProfficiency(durationOfBurn);
 		B.invoke(mob,I,true);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
@@ -46,10 +46,10 @@ public class Spell_Ignite extends Spell
 		if((!(target instanceof MOB))
 		&&(!(target instanceof Item)))
 		{
-			mob.tell("You can't ignite '"+target.displayName()+"'!");
+			mob.tell("You can't ignite '"+target.name()+"'!");
 			return false;
 		}
-			
+
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

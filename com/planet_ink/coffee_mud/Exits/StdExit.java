@@ -34,12 +34,12 @@ public class StdExit implements Exit
 	public StdExit()
 	{
 	}
-	public String name(){ return name;}
+	public String Name(){ return name;}
 	public void setName(String newName){name=newName;}
-	public String displayName()
-	{ 
+	public String name()
+	{
 		if(envStats().newName()!=null) return envStats().newName();
-		return name();
+		return name;
 	}
 	public EnvStats envStats()
 	{
@@ -349,7 +349,7 @@ public class StdExit implements Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+room.ID()+")^? "+room.displayText()+Sense.colorCodes(room,mob)+" ");
+				Say.append("^H("+room.roomID()+")^? "+room.displayText()+Sense.colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
@@ -424,7 +424,7 @@ public class StdExit implements Exit
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
-					mob.tell("There is nothing written on "+displayName()+".");
+					mob.tell("There is nothing written on "+name()+".");
 			}
 			else
 				mob.tell("You can't see that!");

@@ -149,14 +149,14 @@ public class Cooking extends CommonSkill
 			if((((I.material()&EnvResource.MATERIAL_VEGETATION)>0)
 				||((I.material()&EnvResource.MATERIAL_LIQUID)>0)
 				||((I.material()&EnvResource.MATERIAL_FLESH)>0))
-				&&(Util.parse(I.displayName()).size()>0))
-					ing=((String)Util.parse(I.displayName()).lastElement()).toUpperCase();
+				&&(Util.parse(I.name()).size()>0))
+					ing=((String)Util.parse(I.name()).lastElement()).toUpperCase();
 			else
-				ing=I.displayName();
-			Integer INT=(Integer)h.get(ing+"/"+I.name().toUpperCase());
+				ing=I.name();
+			Integer INT=(Integer)h.get(ing+"/"+I.Name().toUpperCase());
 			if(INT==null) INT=new Integer(0);
 			INT=new Integer(INT.intValue()+1);
-			h.put(ing+"/"+I.name().toUpperCase(),INT);
+			h.put(ing+"/"+I.Name().toUpperCase(),INT);
 		}
 		return h;
 	}
@@ -251,7 +251,7 @@ public class Cooking extends CommonSkill
 		{
 			boolean found=false;
 			String ingredient=(String)e.nextElement();
-			
+
 			if(honorHerbs()&&ingredient.toUpperCase().startsWith("HERBS/")) // herbs exception
 				found=true;
 			else
@@ -369,7 +369,7 @@ public class Cooking extends CommonSkill
 		}
 		if(!(target instanceof Container))
 		{
-			commonTell(mob,"There's nothing in "+target.displayName()+" to "+cookWordShort()+"!");
+			commonTell(mob,"There's nothing in "+target.name()+" to "+cookWordShort()+"!");
 			return false;
 		}
 		switch(target.material()&EnvResource.MATERIAL_MASK)
@@ -381,7 +381,7 @@ public class Cooking extends CommonSkill
 		case EnvResource.MATERIAL_PRECIOUS:
 			break;
 		default:
-			commonTell(mob,target.displayName()+" is not suitable to "+cookWordShort()+" in.");
+			commonTell(mob,target.name()+" is not suitable to "+cookWordShort()+" in.");
 			return false;
 		}
 
@@ -525,7 +525,7 @@ public class Cooking extends CommonSkill
 			if((I instanceof EnvResource)
 			&&(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
 			{
-				String name=I.name();
+				String name=I.Name();
 				if(name.endsWith(" meat"))
 					name=name.substring(0,name.length()-5);
 				if(name.endsWith(" flesh"))

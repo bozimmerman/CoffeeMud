@@ -20,7 +20,7 @@ public class Bard extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Bard()
 	{
 		super();
@@ -88,10 +88,10 @@ public class Bard extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Song_Rebirth",true);
 		}
 	}
-	
-	public void gainExperience(MOB mob, 
-							   MOB victim, 
-							   String homage, 
+
+	public void gainExperience(MOB mob,
+							   MOB victim,
+							   String homage,
 							   int amount)
 	{
 		double theAmount=new Integer(amount).doubleValue();
@@ -156,7 +156,7 @@ public class Bard extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
@@ -189,7 +189,7 @@ public class Bard extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 						return false;
 					}
 					break;

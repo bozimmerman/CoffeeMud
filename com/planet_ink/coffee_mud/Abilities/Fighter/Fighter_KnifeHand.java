@@ -17,7 +17,7 @@ public class Fighter_KnifeHand extends StdAbility
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Fighter_KnifeHand();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -52,13 +52,13 @@ public class Fighter_KnifeHand extends StdAbility
 		if(student==null) return true;
 		if((student.fetchAbility("Fighter_MonkeyPunch")==null))
 		{
-			teacher.tell(student.displayName()+" has not yet learned to Monkey Punch.");
-			student.tell("You need to learn the Monkey Punch to learn "+displayName()+".");
+			teacher.tell(student.name()+" has not yet learned to Monkey Punch.");
+			student.tell("You need to learn the Monkey Punch to learn "+name()+".");
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean anyWeapons(MOB mob)
 	{
 		for(int i=0;i<mob.inventorySize();i++)

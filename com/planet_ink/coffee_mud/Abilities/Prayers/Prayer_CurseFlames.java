@@ -31,7 +31,7 @@ public class Prayer_CurseFlames extends Prayer
 
 
 		boolean success=profficiencyCheck(0,auto);
-		
+
 		Item fireSource=null;
 		for(int i=0;i<target.inventorySize();i++)
 		{
@@ -42,7 +42,7 @@ public class Prayer_CurseFlames extends Prayer
 				break;
 			}
 		}
-		
+
 		if(fireSource==null)
 		for(int i=0;i<mob.location().numItems();i++)
 		{
@@ -60,7 +60,7 @@ public class Prayer_CurseFlames extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"Suddenly "+fireSource.displayName()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".  Suddenly "+fireSource.displayName()+" flares up and attacks <T-HIM-HER>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".  Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_FIRE|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
 			{

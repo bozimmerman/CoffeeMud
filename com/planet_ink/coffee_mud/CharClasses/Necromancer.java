@@ -14,13 +14,13 @@ public class Necromancer extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-		
+
 	protected boolean disableAlignedWeapons(){return true;}
 	protected boolean disableClericSpellGrant(){return true;}
 	protected boolean disableAlignedSpells(){return true;}
-	
+
 	private int tickDown=0;
-	
+
 	public Necromancer()
 	{
 		maxStat[CharStats.WISDOM]=22;
@@ -30,7 +30,7 @@ public class Necromancer extends Cleric
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
@@ -39,69 +39,69 @@ public class Necromancer extends Cleric
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_AnimateSkeleton",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_UndeadInvisibility",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Desecrate",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_AnimateZombie",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_AnimateGhoul",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AnimateGhast",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Plague",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_AnimateSpectre",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_GreatCurse",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Anger",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_AnimateGhost",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_Hellfire",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_AnimateMummy",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_AnimateDead",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_AnimateVampire",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
 		}
 	}
-	
+
 	public boolean playerSelectable()
 	{
 		return true;
@@ -146,15 +146,15 @@ public class Necromancer extends Cleric
 			{
 				int align=myChar.getAlignment();
 				Ability A=(Ability)affect.tool();
-		
-				if(A.appropriateToMyAlignment(align))	
+
+				if(A.appropriateToMyAlignment(align))
 					return true;
 				int hq=holyQuality(A);
-					
+
 				int basis=0;
 				if(hq==1000)
 				{
-					myChar.tell("The good nature of "+A.displayName()+" disrupts your prayer.");
+					myChar.tell("The good nature of "+A.name()+" disrupts your prayer.");
 					return false;
 				}
 				else
@@ -166,21 +166,21 @@ public class Necromancer extends Cleric
 					if(basis<0) basis=basis*-1;
 					basis-=10;
 				}
-		
+
 				if(Dice.rollPercentage()>basis)
 					return true;
 
 				if(hq==0)
-					myChar.tell("The evil nature of "+A.displayName()+" disrupts your prayer.");
+					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
 				else
 				if(hq==1000)
-					myChar.tell("The goodness of "+A.displayName()+" disrupts your prayer.");
+					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
 				else
 				if(align>650)
-					myChar.tell("The anti-good nature of "+A.displayName()+" disrupts your thought.");
+					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
 				else
 				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.displayName()+" disrupts your thought.");
+					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
 				return false;
 			}
 			else
@@ -201,7 +201,7 @@ public class Necromancer extends Cleric
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Weapon))
 			{
-				
+
 				if((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_EDGED)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_POLEARM)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_AXE)
@@ -209,7 +209,7 @@ public class Necromancer extends Cleric
 					return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 					return false;
 				}
 			}
@@ -217,8 +217,8 @@ public class Necromancer extends Cleric
 		return true;
 	}
 
-	protected boolean isValidBeneficiary(MOB killer, 
-									   MOB killed, 
+	protected boolean isValidBeneficiary(MOB killer,
+									   MOB killed,
 									   MOB mob,
 									   Hashtable followers)
 	{
@@ -231,7 +231,7 @@ public class Necromancer extends Cleric
 			return true;
 		return false;
 	}
-	
+
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");

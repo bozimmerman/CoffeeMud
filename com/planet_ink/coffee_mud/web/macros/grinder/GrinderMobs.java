@@ -18,7 +18,7 @@ public class GrinderMobs
 		}
 		return "";
 	}
-	
+
 	public static void happilyAddItem(Item I, MOB M)
 	{
 		if(I.subjectToWearAndTear())
@@ -29,7 +29,7 @@ public class GrinderMobs
 		M.recoverCharStats();
 		M.recoverMaxState();
 	}
-	
+
 	public static String abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numAbilities()>0)
@@ -58,7 +58,7 @@ public class GrinderMobs
 		}
 		return "";
 	}
-	
+
 	public static String blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numBlessings()>0)
@@ -85,7 +85,7 @@ public class GrinderMobs
 		}
 		return "";
 	}
-	
+
 	public static String editMob(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
 		Hashtable reqs=httpReq.getRequestParameters();
@@ -93,15 +93,15 @@ public class GrinderMobs
 		if(mobCode==null) return "@break@";
 
 		String newClassID=(String)reqs.get("CLASSES");
-		
+
 		ExternalPlay.resetRoom(R);
-		
+
 		MOB M=null;
 		if(mobCode.equals("NEW"))
 			M=CMClass.getMOB(newClassID);
 		else
 			M=RoomData.getMOBFromCode(R,mobCode);
-		
+
 		if(M==null)
 		{
 			StringBuffer str=new StringBuffer("No MOB?!");
@@ -111,7 +111,7 @@ public class GrinderMobs
 			{
 				MOB M2=R.fetchInhabitant(m);
 				if((M2!=null)&&(M2.isEligibleMonster()))
-				   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+				   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 			}
 			return str.toString();
 		}
@@ -119,7 +119,7 @@ public class GrinderMobs
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
 			M=CMClass.getMOB(newClassID);
 		M.setStartRoom(R);
-		
+
 		Vector allitems=new Vector();
 		while(oldM.inventorySize()>0)
 		{
@@ -127,7 +127,7 @@ public class GrinderMobs
 			allitems.addElement(I);
 			oldM.delInventory(I);
 		}
-		
+
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
 						  "RACE","GENDER","HEIGHT","WEIGHT",
@@ -147,7 +147,7 @@ public class GrinderMobs
 			}
 			String old=(String)reqs.get(parm);
 			if(old==null) old="";
-			
+
 			if((M.isGeneric()||(!generic)))
 			switch(o)
 			{
@@ -279,7 +279,7 @@ public class GrinderMobs
 				error=GrinderMobs.blessings((Deity)M,httpReq,parms);
 				if(error.length()>0) return error;
 			}
-			
+
 			if(httpReq.getRequestParameters().containsKey("ITEM1"))
 			{
 				for(int i=1;;i++)
@@ -309,7 +309,7 @@ public class GrinderMobs
 				ShopKeeper K=(ShopKeeper)M;
 				Vector inventory=K.getUniqueStoreInventory();
 				K.clearStoreInventory();
-				
+
 				int num=1;
 				String MATCHING=(String)httpReq.getRequestParameters().get("SHP"+num);
 				String theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
@@ -365,7 +365,7 @@ public class GrinderMobs
 					theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
 				}
 			}
-		
+
 			for(int i=0;i<allitems.size();i++)
 			{
 				Item I=(Item)allitems.elementAt(i);
@@ -379,7 +379,7 @@ public class GrinderMobs
 					I.setContainer(null);
 			}
 		}
-		
+
 		M.recoverEnvStats();
 		M.recoverCharStats();
 		M.recoverMaxState();

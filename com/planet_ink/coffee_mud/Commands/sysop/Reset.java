@@ -6,17 +6,17 @@ import java.util.*;
 public class Reset
 {
 	private Reset(){}
-	
+
 	public static String getOpenRoomID(String AreaID)
 	{
 		int highest=0;
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if((R.getArea().name().equals(AreaID))
-			&&(R.ID().startsWith(AreaID+"#")))
+			if((R.getArea().Name().equals(AreaID))
+			&&(R.roomID().startsWith(AreaID+"#")))
 			{
-				int newnum=Util.s_int(R.ID().substring(AreaID.length()+1));
+				int newnum=Util.s_int(R.roomID().substring(AreaID.length()+1));
 				if(newnum>=highest)
 					highest=newnum+1;
 			}
@@ -55,7 +55,7 @@ public class Reset
 					R.getArea().toggleMobility(false);
 					resetRoom(R);
 					boolean somethingDone=false;
-					mob.tell(R.ID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
+					mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
 					somethingDone=false;
 					for(int m=0;m<R.numInhabitants();m++)
 					{
@@ -82,12 +82,12 @@ public class Reset
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					MOB M=R.fetchInhabitant(i);
-					if(names.contains(M.name())) continue;
-					names.put(M.name(),M.name());
+					if(names.contains(M.Name())) continue;
+					names.put(M.Name(),M.Name());
 					if(Sense.isGolem(M))
-						is.append(M.name()+" ");
+						is.append(M.Name()+" ");
 					else
-						isnot.append(M.name()+" ");
+						isnot.append(M.Name()+" ");
 				}
 			}
 			mob.tell("IS-"+is.toString());
@@ -108,12 +108,12 @@ public class Reset
 				Room R=(Room)r.nextElement();
 				resetRoom(R);
 				boolean somethingDone=false;
-				mob.tell(R.ID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
+				mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I=R.fetchItem(i);
 					if(I.ID().equalsIgnoreCase("GenWallpaper")) continue;
-					String str=mob.session().prompt(" "+I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+					String str=mob.session().prompt(" "+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 					if(str.length()>0)
 					for(int ii=0;ii<EnvResource.RESOURCE_DESCS.length;ii++)
 					{
@@ -133,12 +133,12 @@ public class Reset
 				{
 					MOB M=R.fetchInhabitant(m);
 					if(M==mob) continue;
-					String str=mob.session().prompt(" "+M.name()+"/"+M.charStats().getMyRace().ID(),"");
+					String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
 					if(str.length()>0)
 					{
 						Race R2=CMClass.getRace(str);
 						if(R2==null)
-							str=mob.session().prompt(" "+M.name()+"/"+M.charStats().getMyRace().ID(),"");
+							str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
 						else
 						if(R2!=null)
 						{
@@ -153,7 +153,7 @@ public class Reset
 					for(int i=M.inventorySize()-1;i>=0;i--)
 					{
 						Item I=M.fetchInventory(i);
-						str=mob.session().prompt("   "+I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+						str=mob.session().prompt("   "+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 						if(str.equalsIgnoreCase("delete"))
 						{
 							M.delInventory(I);
@@ -183,7 +183,7 @@ public class Reset
 							if(E instanceof Item)
 							{
 								Item I=(Item)E;
-								str=mob.session().prompt(" - "+I.name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
+								str=mob.session().prompt(" - "+I.Name()+"/"+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK],"");
 								if(str.equalsIgnoreCase("delete"))
 								{
 									SK.delStoreInventory(I);

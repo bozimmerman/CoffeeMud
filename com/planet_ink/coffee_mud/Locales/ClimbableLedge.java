@@ -10,6 +10,7 @@ import java.util.*;
 
 public class ClimbableLedge extends ClimbableSurface
 {
+	public String ID(){return "ClimbableLedge";}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(Sense.isSleeping(this))

@@ -71,7 +71,7 @@ public class Fighter_BodyFlip extends StdAbility
 
 		if((Sense.isSitting(target)||Sense.isSleeping(target)))
 		{
-			mob.tell(target.displayName()+" is already on the floor!");
+			mob.tell(target.name()+" is already on the floor!");
 			return false;
 		}
 
@@ -87,12 +87,12 @@ public class Fighter_BodyFlip extends StdAbility
 		}
 		if(target.riding()!=null)
 		{
-			mob.tell("You can't flip someone "+target.riding().stateString(target)+" "+target.riding().displayName()+"!");
+			mob.tell("You can't flip someone "+target.riding().stateString(target)+" "+target.riding().name()+"!");
 			return false;
 		}
 		if(Sense.isFlying(target))
 		{
-			mob.tell(target.displayName()+" is flying and can't be flipped over!");
+			mob.tell(target.name()+" is flying and can't be flipped over!");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

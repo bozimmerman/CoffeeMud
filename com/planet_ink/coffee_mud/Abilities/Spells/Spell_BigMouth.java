@@ -32,7 +32,7 @@ public class Spell_BigMouth extends Spell
 			{
 				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus()+target.adjustedArmor()));
 				if(!isHit)
-					mob.tell("You fail to eat "+target.displayName());
+					mob.tell("You fail to eat "+target.name());
 				else
 					affect.modify(affect.source(),affect.target(),affect.tool(),
 							  affect.sourceCode()|Affect.MASK_GENERAL,affect.sourceMessage(),
@@ -41,13 +41,13 @@ public class Spell_BigMouth extends Spell
 			}
 			else
 			{
-				mob.tell(target.displayName()+" is too large to eat, even with the big mouth!");
+				mob.tell(target.name()+" is too large to eat, even with the big mouth!");
 				return false;
 			}
 		}
 		return super.okAffect(myHost,affect);
 	}
-	
+
 	private Room Stomach = null;
 	private int digestDown=4;
 	private Room lastKnownLocation=null;
@@ -118,7 +118,7 @@ public class Spell_BigMouth extends Spell
 		else
 		if(mob.amDead())
 			kill();
-		
+
 		if((affected instanceof Room)
 		&&(((Room)affected).numInhabitants()==0))
 			unInvoke();
@@ -151,7 +151,7 @@ public class Spell_BigMouth extends Spell
 		if((affect.amISource(mob))
 		&&((affect.sourceMinor()==Affect.TYP_QUIT)||(affect.sourceMinor()==Affect.TYP_DEATH)))
 			kill();
-		
+
 		super.affect(myHost,affect);
 	}
 
@@ -159,7 +159,7 @@ public class Spell_BigMouth extends Spell
 	{
 		// undo the affects of this spell
 		if(affected==null) return;
-		
+
 		Environmental thang=affected;
 		super.unInvoke();
 
@@ -185,17 +185,17 @@ public class Spell_BigMouth extends Spell
 	{
 		MOB target=mob;
 		if(target==null) return false;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		if(Stomach==null)
 		{
 			Stomach = CMClass.getLocale("StdRoom");
 			lastKnownLocation=mob.location();
 			if(lastKnownLocation!=null)
 				Stomach.setArea(lastKnownLocation.getArea());
-			Stomach.setName("The Stomach of "+mob.displayName());
-			Stomach.setDescription("You are in the stomach of "+mob.displayName()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			Stomach.setName("The Stomach of "+mob.name());
+			Stomach.setDescription("You are in the stomach of "+mob.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
 		}
 
 		// the invoke method for spells receives as

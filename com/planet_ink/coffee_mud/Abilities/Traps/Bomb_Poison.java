@@ -12,7 +12,7 @@ public class Bomb_Poison extends StdBomb
 	protected int trapLevel(){return 5;}
 	public String requiresToSet(){return "some poison";}
 	public Environmental newInstance(){	return new Bomb_Poison();}
-	
+
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
 		Vector offenders=new Vector();
@@ -25,7 +25,7 @@ public class Bomb_Poison extends StdBomb
 		}
 		return offenders;
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -45,7 +45,7 @@ public class Bomb_Poison extends StdBomb
 			setMiscText(((Ability)V.firstElement()).ID());
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public void spring(MOB target)
 	{
 		if(target.location()!=null)
@@ -53,7 +53,7 @@ public class Bomb_Poison extends StdBomb
 			if((!invoker().mayIFight(target))||(target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the poison gas!");
 			else
-			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.displayName()+" spews poison gas all over <T-NAME>!"))
+			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.name()+" spews poison gas all over <T-NAME>!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());
@@ -62,5 +62,5 @@ public class Bomb_Poison extends StdBomb
 			}
 		}
 	}
-	
+
 }

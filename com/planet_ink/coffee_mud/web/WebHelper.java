@@ -28,16 +28,16 @@ public class WebHelper
 		s.append("<br><hr><i>");
 		s.append(HTTPserver.ServerVersionString);
 		s.append("</i></body></html>");
-		
+
 		return s.toString().getBytes();
 	}
 
-	
+
 	// jef: util functions for the web server
-	
+
 	// nb: modified game (commands/sysop/Import.java & Rooms.java)
 	//  to erase this resource whenever it erases the in-game area list
-	
+
 	private static final int AT_MAX_COL = 3;
 	public static String htmlAreaTbl(HTTPserver webServer)
 	{
@@ -46,7 +46,7 @@ public class WebHelper
 		{
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}
-	
+
 		Vector areasVec=new Vector();
 
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
@@ -76,12 +76,12 @@ public class WebHelper
 			}
 
 			msg.append("<td");
-				
+
 			if (percent == 100)
 				msg.append(" colspan=\"" + AT_MAX_COL + "\"");	//last element is width of remainder
 			else
 				msg.append(" width=\"" + percent + "%\"");
-			
+
 			msg.append(" class=\"cmAreaTblEntry\">");
 			msg.append((String)areasVec.elementAt(i));
 			msg.append("</td>");
@@ -108,17 +108,17 @@ public class WebHelper
 			s.append("<li class=\"cmPlayerListEntry");
 			MOB m = session.mob();
 			if((m!=null)&&(!Sense.isSeen(m))) continue;
-			
-			if ( (m!=null) && (m.displayName() != null) 
-				&& (m.displayName().length() > 0) )
+
+			if ( (m!=null) && (m.name() != null)
+				&& (m.name().length() > 0) )
 			{
 				// jef: nb - only shows full sysops, not subops
 				if ( m.isASysOp(null) )
 					s.append("Archon");
 				s.append("\">");
-				s.append(m.displayName());
+				s.append(m.name());
 				s.append(" ");
-				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null 
+				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null
 					&& m.charStats().raceName().length() > 0
 					&& !m.charStats().raceName().equals("MOB"))
 				{
@@ -143,7 +143,7 @@ public class WebHelper
 				s.append("[logging in]");
 			}
 			s.append("\r\n");
-		}	
+		}
 		return s.toString();
 	}
 }

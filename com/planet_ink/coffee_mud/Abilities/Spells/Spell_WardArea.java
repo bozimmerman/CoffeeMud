@@ -17,7 +17,7 @@ public class Spell_WardArea extends Spell implements Trap
 	public Environmental newInstance(){	return new Spell_WardArea();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	private boolean sprung=false;
-	
+
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}
 	public boolean disabled(){return sprung;}
@@ -56,7 +56,7 @@ public class Spell_WardArea extends Spell implements Trap
 		return true;
 	}
 
-	
+
 	public void spring(MOB mob)
 	{
 		if(affected==null)
@@ -77,7 +77,7 @@ public class Spell_WardArea extends Spell implements Trap
 			newCaster.recoverEnvStats();
 			newCaster.recoverCharStats();
 			if(invoker()!=null)
-				newCaster.setLeigeID(invoker().name());
+				newCaster.setLeigeID(invoker().Name());
 			newCaster.setLocation((Room)affected);
 			try
 			{
@@ -90,7 +90,7 @@ public class Spell_WardArea extends Spell implements Trap
 		unInvoke();
 		sprung=true;
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
@@ -106,7 +106,7 @@ public class Spell_WardArea extends Spell implements Trap
 			}
 		}
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

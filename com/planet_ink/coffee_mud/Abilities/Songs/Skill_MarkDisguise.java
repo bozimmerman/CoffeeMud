@@ -13,7 +13,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 	public Environmental newInstance(){	return new Skill_MarkDisguise();}
 	private static final String[] triggerStrings = {"MARKDISGUISE"};
 	public String[] triggerStrings(){return triggerStrings;}
-	
+
 	public MOB mark=null;
 
 	public MOB getMark(MOB mob)
@@ -30,7 +30,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			return A.ticks;
 		return -1;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Skill_Disguise A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
@@ -41,20 +41,20 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			mob.tell("You remove your disguise.");
 			return true;
 		}
-		
+
 		MOB target=getMark(mob);
 		if(target==null)
 		{
 			mob.tell("You need to have marked someone before you can disguise yourself as him or her.");
 			return false;
 		}
-		
+
 		if(getMarkTicks(mob)<15)
 		{
 			mob.tell("You'll need to observe your mark a little longer (15 ticks) before you can get the disguise right.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -73,14 +73,14 @@ public class Skill_MarkDisguise extends Skill_Disguise
 				A.values[2]=target.charStats().genderName();
 				A.values[3]=target.charStats().raceName();
 				A.values[4]=""+target.envStats().height();
-				A.values[5]=target.displayName();
+				A.values[5]=target.name();
 				A.values[6]=target.charStats().displayClassName();
 				if(Sense.isGood(target))
 					A.values[7]="good";
 				else
 				if(Sense.isEvil(target))
 					A.values[7]="evil";
-				
+
 				mob.recoverCharStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();
@@ -90,6 +90,6 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			return beneficialVisualFizzle(mob,null,"<S-NAME> turn(s) away and then back, but look(s) the same.");
 		return success;
 	}
-	
-	
+
+
 }

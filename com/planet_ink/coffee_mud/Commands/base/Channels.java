@@ -89,7 +89,7 @@ public class Channels
 			&&(!ses.mob().amDead())
 			&&(ses.mob().location()!=null)
 			&&(!Util.isSet(ses.mob().getChannelMask(),channelInt)))
-				buf.append("["+Util.padRight(ses.mob().displayName(),20)+"]\n\r");
+				buf.append("["+Util.padRight(ses.mob().name(),20)+"]\n\r");
 		}
 		if(buf.length()==0)
 			mob.tell(head+"Nobody!");
@@ -223,7 +223,7 @@ public class Channels
 		cmdSet.put(new String("CLANTALK"),new Integer(CommandSet.CHANNEL));
 		cmdSet.put("NO"+(new String("CLANTALK")),new Integer(CommandSet.NOCHANNEL));
 		numChannelsLoaded++;
-		
+
 		channelNames.addElement(new String("AUCTION"));
 		channelLevels.addElement(new Integer(0));
 		ichannelList.addElement("");
@@ -280,12 +280,12 @@ public class Channels
 		if(systemMsg)
 		{
 		  String str="["+channelName+"] '"+Util.combine(commands,0)+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.displayName()+str);
+		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
 		else
 		{
 		  String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
-		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.displayName()+str);
+		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
 		if(mob.location().okAffect(mob,msg))
 		{
@@ -366,7 +366,7 @@ public class Channels
 			mob.setChannelMask(0);
 		}
 	}
-	
+
 	public static void auction(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -413,7 +413,7 @@ public class Channels
 			}
 			else
 				V.addElement("0");
-			
+
 			String s=Util.combine(commands,1);
 			Environmental E=mob.fetchInventory(null,s);
 			if((E==null)||(E instanceof MOB))
@@ -421,7 +421,7 @@ public class Channels
 				mob.tell("'"+s+"' is not an item you can auction.");
 				return;
 			}
-			if((!mob.isMonster())&&(!mob.session().confirm("Auction "+E.displayName()+" with a starting bid of "+((String)V.firstElement())+" (Y/n)? ","Y")))
+			if((!mob.isMonster())&&(!mob.session().confirm("Auction "+E.name()+" with a starting bid of "+((String)V.firstElement())+" (Y/n)? ","Y")))
 				return;
 			auctionA=CMClass.getAbility("Prop_Auction");
 			auctionA.invoke(mob,V,E,false);

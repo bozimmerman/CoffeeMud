@@ -7,7 +7,7 @@ import java.util.*;
 public class FrontDoor
 {
 	private FrontDoor(){}
-	
+
 	private static boolean classOkForMe(MOB mob, CharClass thisClass)
 	{
 		if((thisClass.playerSelectable())
@@ -18,7 +18,7 @@ public class FrontDoor
 			return true;
 		return false;
 	}
-	
+
 	private static Vector classQualifies(MOB mob)
 	{
 		Vector them=new Vector();
@@ -35,7 +35,7 @@ public class FrontDoor
 	{
 		if(login.length()>20) return false;
 		if(login.trim().indexOf(" ")>=0) return false;
-		
+
 		login=login.toUpperCase().trim();
 		Vector V=Util.parse(login);
 		for(int v=V.size()-1;v>=0;v--)
@@ -60,21 +60,21 @@ public class FrontDoor
 		{
 			MOB D=(MOB)d.nextElement();
 			if((CoffeeUtensils.containsString(D.ID(),login))
-			||(CoffeeUtensils.containsString(D.name(),login)))
+			||(CoffeeUtensils.containsString(D.Name(),login)))
 				return false;
 		}
 		for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 		{
 			MOB M=(MOB)m.nextElement();
-			if((CoffeeUtensils.containsString(M.ID(),login))
-			||(CoffeeUtensils.containsString(M.displayName(),login)))
+			if((CoffeeUtensils.containsString(M.Name(),login))
+			||(CoffeeUtensils.containsString(M.name(),login)))
 				return false;
 		}
 		for(Enumeration e=CMMap.players();e.hasMoreElements();)
 		{
 			MOB tm=(MOB)e.nextElement();
 			if((CoffeeUtensils.containsString(tm.ID(),login))
-			||(CoffeeUtensils.containsString(tm.name(),login)))
+			||(CoffeeUtensils.containsString(tm.Name(),login)))
 				return false;
 
 		}
@@ -121,12 +121,12 @@ public class FrontDoor
 		{
 			mob.session().print("password:");
 			String password=mob.session().blockingIn();
-			if((mob.password().equalsIgnoreCase(password))&&(mob.name().trim().length()>0))
+			if((mob.password().equalsIgnoreCase(password))&&(mob.Name().trim().length()>0))
 			{
 				if(((mob.getEmail()==null)||(mob.getEmail().length()==0))
 				   &&(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION")))
 				{
-					if(!Scoring.email(mob,null,true)) 
+					if(!Scoring.email(mob,null,true))
 						return false;
 					ExternalPlay.DBUpdateEmail(mob);
 				}
@@ -137,7 +137,7 @@ public class FrontDoor
 					Session thisSession=(Session)Sessions.elementAt(s);
 					if((thisSession.mob()!=null)&&(thisSession!=mob.session()))
 					{
-						if((thisSession.mob().ID().equals(mob.ID())))
+						if((thisSession.mob().Name().equals(mob.Name())))
 						{
 							swapMade=true;
 							Room oldRoom=thisSession.mob().location();
@@ -148,16 +148,16 @@ public class FrontDoor
 							thisSession.mob().setSession(mob.session());
 							thisSession.setMob(null);
 							thisSession.setKillFlag(true);
-							Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().name()+".");
+							Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().Name()+".");
 							mob.session().mob().bringToLife(oldRoom,false);
 							return true;
 						}
 					}
 				}
 				MOB oldMOB=mob;
-				if(CMMap.getPlayer(oldMOB.ID())!=null)
+				if(CMMap.getPlayer(oldMOB.Name())!=null)
 				{
-					oldMOB.session().setMob((MOB)CMMap.getPlayer(oldMOB.ID()));
+					oldMOB.session().setMob((MOB)CMMap.getPlayer(oldMOB.Name()));
 					mob=oldMOB.session().mob();
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
@@ -180,7 +180,7 @@ public class FrontDoor
 				else
 				{
 					ExternalPlay.DBReadMOB(mob);
-					mob.setUserInfo(mob.ID(),password);
+					mob.setUserInfo(mob.Name(),password);
 					if(mob.baseCharStats()!=null)
 					{
 						mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
@@ -195,7 +195,7 @@ public class FrontDoor
 			}
 			else
 			{
-				Log.sysOut("FrontDoor","Failed login: "+mob.name());
+				Log.sysOut("FrontDoor","Failed login: "+mob.Name());
 				mob.setUserInfo("","");
 				mob.session().println("\n\rInvalid password.\n\r");
 				return false;
@@ -221,7 +221,7 @@ public class FrontDoor
 					if(password.length()==0)
 						mob.session().println("\n\rYou must enter a password to continue.");
 				}
-				
+
 				boolean emailReq=(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
 				while(true)
 				{
@@ -237,7 +237,7 @@ public class FrontDoor
 					mob.session().println("\n\rThat email address combination was invalid.\n\r");
 				}
 				mob.setUserInfo(login,password);
-				Log.sysOut("FrontDoor","Creating user: "+mob.name());
+				Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 
 				mob.setBitmap(0);
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
@@ -349,7 +349,7 @@ public class FrontDoor
 											  +mob.charStats().getStats(maxStat)
 											  +Util.padRight("TOTAL POINTS",15)+": "
 											  +CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT)+"/"+(18*6));
-						
+
 						mob.session().println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 
 						if(!mob.session().confirm("^!Would you like to re-roll (y/N)?^N","N"))
@@ -451,10 +451,10 @@ public class FrontDoor
 				mob.bringToLife(mob.getStartRoom(),true);
 				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				ExternalPlay.DBCreateCharacter(mob);
-				if(CMMap.getPlayer(mob.ID())==null)
+				if(CMMap.getPlayer(mob.Name())==null)
 					CMMap.addPlayer(mob);
 
-				Log.sysOut("FrontDoor","Created user: "+mob.name());
+				Log.sysOut("FrontDoor","Created user: "+mob.Name());
 				return true;
 			}
 			return false;
@@ -462,7 +462,7 @@ public class FrontDoor
 		mob.session().println("\n\r");
 		return true;
 	}
-	
+
 	public static void showTheNews(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -475,7 +475,7 @@ public class FrontDoor
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
-			boolean mineAble=to.equalsIgnoreCase(mob.name())||from.equalsIgnoreCase(mob.name());
+			boolean mineAble=to.equalsIgnoreCase(mob.Name())||from.equalsIgnoreCase(mob.Name());
 			if((last>mob.lastDateTime())
 			&&(to.equals("ALL")||mineAble))
 			{

@@ -47,7 +47,7 @@ public class Prayer_Earthshield extends Prayer
 	{
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already affected by "+displayName()+".");
+			mob.tell("You are already affected by "+name()+".");
 			return false;
 		}
 
@@ -55,9 +55,9 @@ public class Prayer_Earthshield extends Prayer
 			return false;
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{

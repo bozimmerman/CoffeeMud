@@ -43,7 +43,7 @@ public class Fighter_CoupDeGrace extends StdAbility
 			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
 			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
 			{
-				mob.tell("You cannot coup de grace with a "+ww.displayName()+"!");
+				mob.tell("You cannot coup de grace with a "+ww.name()+"!");
 				return false;
 			}
 			if(mob.curState().getMovement()<150)
@@ -64,9 +64,9 @@ public class Fighter_CoupDeGrace extends StdAbility
 			return false;
 
 		int levelDiff=target.envStats().level()-adjustedLevel(mob);
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*5;
-		else 
+		else
 			levelDiff=0;
 		mob.curState().adjMovement(-150,mob.maxState());
 		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*3));

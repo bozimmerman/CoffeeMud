@@ -33,26 +33,26 @@ public class Spell_AnimateWeapon extends Spell
 					ExternalPlay.postDamage(invoker(),invoker().getVictim(),(Item)affected,
 											Dice.roll(1,affected.envStats().damage(),5),
 											Affect.MASK_GENERAL|Affect.TYP_WEAPONATTACK,
-											((Weapon)affected).weaponType(),affected.displayName()+" attacks and <DAMAGE> <T-NAME>!");
+											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
 			else
 			if(Dice.rollPercentage()>75)
 			switch(Dice.roll(1,5,0))
 			{
 			case 1:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.displayName()+" twiches a bit.");
+				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
 				break;
 			case 2:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.displayName()+" is looking for trouble.");
+				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" is looking for trouble.");
 				break;
 			case 3:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.displayName()+" practices its moves.");
+				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" practices its moves.");
 				break;
 			case 4:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.displayName()+" makes a few fake attacks.");
+				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
 				break;
 			case 5:
-				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.displayName()+" dances around.");
+				invoker().location().showHappens(Affect.MSG_OK_VISUAL,affected.name()+" dances around.");
 				break;
 			}
 		}
@@ -86,7 +86,7 @@ public class Spell_AnimateWeapon extends Spell
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room))
-			((Room)((Item)affected).owner()).showHappens(Affect.MSG_OK_ACTION,affected.displayName()+" stops moving.");
+			((Room)((Item)affected).owner()).showHappens(Affect.MSG_OK_ACTION,affected.name()+" stops moving.");
 		super.unInvoke();
 	}
 

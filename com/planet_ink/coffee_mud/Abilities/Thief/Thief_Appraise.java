@@ -55,9 +55,9 @@ public class Thief_Appraise extends ThiefSkill
 				allWeight=(int)Math.round(Util.mul(allWeight,deviance));
 			}
 			StringBuffer str=new StringBuffer("");
-			str.append(target.displayName()+" is made of "+EnvResource.RESOURCE_DESCS[materialCode&EnvResource.RESOURCE_MASK]+" is worth about "+realValue+" gold.");
+			str.append(target.name()+" is made of "+EnvResource.RESOURCE_DESCS[materialCode&EnvResource.RESOURCE_MASK]+" is worth about "+realValue+" gold.");
 			if(target instanceof Armor)
-				str.append("\n\r"+target.displayName()+" is a size "+height+".");
+				str.append("\n\r"+target.name()+" is a size "+height+".");
 			if(weight!=allWeight)
 				str.append("\n\rIt weighs "+weight+" pounds empty and "+allWeight+" pounds right now.");
 			else

@@ -18,7 +18,7 @@ public class Spell_Mend extends Spell
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 		if(!target.subjectToWearAndTear())
-		{	mob.tell(target.displayName()+" cannot be mended."); return false;}
+		{	mob.tell(target.name()+" cannot be mended."); return false;}
 
 		if(!super.invoke(mob,commands, givenTarget, auto))
 			return false;
@@ -34,7 +34,7 @@ public class Spell_Mend extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target.usesRemaining()>=100)
-					mob.tell("Nothing happens to "+target.displayName()+".");
+					mob.tell("Nothing happens to "+target.name()+".");
 				else
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> begin(s) to glow and mend!");

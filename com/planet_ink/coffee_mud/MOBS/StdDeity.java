@@ -42,14 +42,14 @@ public class StdDeity extends StdMOB implements Deity
 	public String getWorshipRequirements(){return worshipReqs;}
 	public void setWorshipRequirements(String reqs){worshipReqs=reqs;}
 	public String getClericRitual(){
-		if(clericRitual.trim().length()==0) return "SAY Bless me "+displayName();
+		if(clericRitual.trim().length()==0) return "SAY Bless me "+name();
 		return clericRitual;}
 	public void setClericRitual(String ritual){
 		clericRitual=ritual;
 		parseTriggers(clericTriggers,ritual);
 	}
 	public String getWorshipRitual(){
-		if(worshipRitual.trim().length()==0) return "SAY Bless me "+displayName();
+		if(worshipRitual.trim().length()==0) return "SAY Bless me "+name();
 		return worshipRitual;}
 	public void setWorshipRitual(String ritual){
 		worshipRitual=ritual;
@@ -103,7 +103,7 @@ public class StdDeity extends StdMOB implements Deity
 				if(A==null)
 					buf.append("the player casts '"+DT.parm1+"'");
 				else
-					buf.append("the player casts '"+A.displayName()+"'");
+					buf.append("the player casts '"+A.name()+"'");
 				}
 				break;
 			case TRIGGER_EMOTE:
@@ -159,22 +159,22 @@ public class StdDeity extends StdMOB implements Deity
 
 	public String getClericRequirementsDesc()
 	{
-		return "The following may be clerics of "+displayName()+": "+ExternalPlay.zapperDesc(getClericRequirements());
+		return "The following may be clerics of "+name()+": "+ExternalPlay.zapperDesc(getClericRequirements());
 	}
 	public String getClericTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+displayName()+" are bestowed to "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericTriggers)+".";
+			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericTriggers)+".";
 		return "";
 	}
 	public String getWorshipRequirementsDesc()
 	{
-		return "The following are acceptable worshipers of "+displayName()+": "+ExternalPlay.zapperDesc(getWorshipRequirements());
+		return "The following are acceptable worshipers of "+name()+": "+ExternalPlay.zapperDesc(getWorshipRequirements());
 	}
 	public String getWorshipTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+displayName()+" are bestowed to "+charStats().hisher()+" worshippers whenever they do the following: "+getTriggerDesc(worshipTriggers)+".";
+			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" worshippers whenever they do the following: "+getTriggerDesc(worshipTriggers)+".";
 		return "";
 	}
 
@@ -199,33 +199,33 @@ public class StdDeity extends StdMOB implements Deity
 		case Affect.TYP_SERVE:
 			if(msg.source().getMyDeity()==this)
 			{
-				msg.source().tell("You already worship "+displayName()+".");
+				msg.source().tell("You already worship "+name()+".");
 				return false;
 			}
 			if(msg.source().getMyDeity()!=null)
 			{
-				msg.source().tell("You already worship "+msg.source().getMyDeity().displayName()+".");
+				msg.source().tell("You already worship "+msg.source().getMyDeity().name()+".");
 				return false;
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
 			{
 				if(!ExternalPlay.zapperCheck(getClericRequirements(),msg.source()))
 				{
-					msg.source().tell("You are unworthy of serving "+displayName()+".");
+					msg.source().tell("You are unworthy of serving "+name()+".");
 					return false;
 				}
 			}
 			else
 			if(!ExternalPlay.zapperCheck(getWorshipRequirements(),msg.source()))
 			{
-				msg.source().tell("You are unworthy of "+displayName()+".");
+				msg.source().tell("You are unworthy of "+name()+".");
 				return false;
 			}
 			break;
 		case Affect.TYP_REBUKE:
 			if(!msg.source().getWorshipCharID().equals(name()))
 			{
-				msg.source().tell("You do not worship "+displayName()+".");
+				msg.source().tell("You do not worship "+name()+".");
 				return false;
 			}
 			break;
@@ -312,7 +312,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		super.affect(myHost,msg);
 		if(norecurse) return;
-		
+
 		if(msg.amITarget(this))
 		switch(msg.targetMinor())
 		{
@@ -324,12 +324,12 @@ public class StdDeity extends StdMOB implements Deity
 			removeBlessings(msg.source());
 			if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 			{
-				msg.source().tell("You feel the wrath of "+displayName()+"!");
+				msg.source().tell("You feel the wrath of "+name()+"!");
 				msg.source().charStats().getCurrentClass().unLevel(msg.source());
 			}
 			else
 			{
-				msg.source().tell(displayName()+" takes "+xpwrath+" of experience from you.");
+				msg.source().tell(name()+" takes "+xpwrath+" of experience from you.");
 				msg.source().charStats().getCurrentClass().loseExperience(msg.source(),xpwrath);
 			}
 			break;
@@ -364,31 +364,31 @@ public class StdDeity extends StdMOB implements Deity
 						&&(msg.target() instanceof Container)
 						&&(msg.tool()!=null)
 						&&(msg.tool() instanceof Item)
-						&&(CoffeeUtensils.containsString(msg.tool().displayName(),DT.parm1))
-						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm2)))
+						&&(CoffeeUtensils.containsString(msg.tool().name(),DT.parm1))
+						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm2)))
 							yup=true;
 						break;
 					case TRIGGER_BURNTHING:
 					case TRIGGER_DRINK:
 					case TRIGGER_EAT:
 						if((msg.target()!=null)
-						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm1)))
+						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm1)))
 						   yup=true;
 						break;
 					case TRIGGER_INROOM:
 						if((msg.source().location()!=null)
-						&&(msg.source().location().ID().equals(DT.parm1)))
+						&&(msg.source().location().roomID().equals(DT.parm1)))
 							yup=true;
 						break;
 					case TRIGGER_RIDING:
 						if((msg.source().riding()!=null)
-						&&(CoffeeUtensils.containsString(msg.source().riding().displayName(),DT.parm1)))
+						&&(CoffeeUtensils.containsString(msg.source().riding().name(),DT.parm1)))
 						   yup=true;
 						break;
 					case TRIGGER_CAST:
 						if((msg.tool()!=null)
 						&&((msg.tool().ID().equalsIgnoreCase(DT.parm1))
-						||(CoffeeUtensils.containsString(msg.tool().displayName(),DT.parm1))))
+						||(CoffeeUtensils.containsString(msg.tool().name(),DT.parm1))))
 							yup=true;
 						break;
 					case TRIGGER_EMOTE:
@@ -401,7 +401,7 @@ public class StdDeity extends StdMOB implements Deity
 						&&(((Item)msg.tool()).baseGoldValue()>=Util.s_int(DT.parm1))
 						&&(msg.target()!=null)
 						&&(msg.target() instanceof Container)
-						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm2)))
+						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm2)))
 							yup=true;
 						break;
 					case TRIGGER_PUTMATERIAL:
@@ -411,7 +411,7 @@ public class StdDeity extends StdMOB implements Deity
 							||((((Item)msg.tool()).material()&EnvResource.MATERIAL_MASK)==Util.s_int(DT.parm1)))
 						&&(msg.target()!=null)
 						&&(msg.target() instanceof Container)
-						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm2)))
+						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm2)))
 							yup=true;
 						break;
 					case TRIGGER_BURNMATERIAL:
@@ -440,25 +440,25 @@ public class StdDeity extends StdMOB implements Deity
 				}
 				if((yup)||(TRIG_WATCH[DT.triggerCode]==-999))
 				{
-					boolean[] checks=(boolean[])trigParts.get(msg.source().name());
+					boolean[] checks=(boolean[])trigParts.get(msg.source().Name());
 					if(yup)
 					{
 						recheck=true;
-						trigTimes.remove(msg.source().name());
-						trigTimes.put(msg.source().name(),new Long(System.currentTimeMillis()));
+						trigTimes.remove(msg.source().Name());
+						trigTimes.put(msg.source().Name(),new Long(System.currentTimeMillis()));
 						if((checks==null)||(checks.length!=V.size()))
 						{
 							checks=new boolean[V.size()];
-							trigParts.put(msg.source().name(),checks);
+							trigParts.put(msg.source().Name(),checks);
 						}
 					}
 					if(checks!=null) checks[v]=yup;
 				}
 			}
-			
+
 			if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 			{
-				boolean[] checks=(boolean[])trigParts.get(msg.source().name());
+				boolean[] checks=(boolean[])trigParts.get(msg.source().Name());
 				if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 				{
 					boolean rollingTruth=checks[0];
@@ -557,7 +557,7 @@ public class StdDeity extends StdMOB implements Deity
 		for(int a=0;a<numBlessings();a++)
 		{
 			Ability A=fetchBlessing(a);
-			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.name().equalsIgnoreCase(ID))))
+			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
 		return (Ability)CoffeeUtensils.fetchEnvironmental(blessings,ID,false);
@@ -613,7 +613,7 @@ public class StdDeity extends StdMOB implements Deity
 						DT.triggerCode=TRIGGER_PUTTHING;
 						if(V.size()<3)
 						{
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
+							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=Util.combine(V,1,V.size()-2);
@@ -631,7 +631,7 @@ public class StdDeity extends StdMOB implements Deity
 						DT.triggerCode=TRIGGER_PUTVALUE;
 						if(V.size()<3)
 						{
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
+							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=""+Util.s_int((String)V.elementAt(1));
@@ -643,7 +643,7 @@ public class StdDeity extends StdMOB implements Deity
 						DT.triggerCode=TRIGGER_BURNVALUE;
 						if(V.size()<3)
 						{
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
+							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=""+Util.s_int((String)Util.combine(V,1));
@@ -673,7 +673,7 @@ public class StdDeity extends StdMOB implements Deity
 						}
 						if(!found)
 						{
-							Log.errOut("StdDeity",name()+"- Unknown material: "+trig);
+							Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
 							break;
 						}
 					}
@@ -683,7 +683,7 @@ public class StdDeity extends StdMOB implements Deity
 						DT.triggerCode=TRIGGER_PUTMATERIAL;
 						if(V.size()<3)
 						{
-							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig);
+							Log.errOut("StdDeity",Name()+"- Illegal trigger: "+trig);
 							break;
 						}
 						DT.parm1=(String)V.elementAt(1);
@@ -708,7 +708,7 @@ public class StdDeity extends StdMOB implements Deity
 						}
 						if(!found)
 						{
-							Log.errOut("StdDeity",name()+"- Unknown material: "+trig);
+							Log.errOut("StdDeity",Name()+"- Unknown material: "+trig);
 							break;
 						}
 					}
@@ -743,7 +743,7 @@ public class StdDeity extends StdMOB implements Deity
 						DT.parm1=Util.combine(V,1);
 						if(CMClass.findAbility(DT.parm1)==null)
 						{
-							Log.errOut("StdDeity",name()+"- Illegal SPELL in: "+trig);
+							Log.errOut("StdDeity",Name()+"- Illegal SPELL in: "+trig);
 							break;
 						}
 					}
@@ -770,14 +770,14 @@ public class StdDeity extends StdMOB implements Deity
 					}
 					else
 					{
-						Log.errOut("StdDeity",name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
+						Log.errOut("StdDeity",Name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
 						break;
 					}
 					putHere.addElement(DT);
 				}
 				else
 				{
-					Log.errOut("StdDeity",name()+"- Illegal trigger (need more parameters): "+trig);
+					Log.errOut("StdDeity",Name()+"- Illegal trigger (need more parameters): "+trig);
 					break;
 				}
 			}

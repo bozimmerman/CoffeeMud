@@ -22,7 +22,7 @@ public class Chant_SummonPlants extends Chant
 		if(littlePlants==null)
 			return;
 		if(canBeUninvoked())
-			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.displayName()+" wither"+(littlePlants.displayName().startsWith("s")?"":"s")+" away.");
+			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.name()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -74,11 +74,11 @@ public class Chant_SummonPlants extends Chant
 			break;
 		}
 		newItem.baseEnvStats().setWeight(1);
-		newItem.setSecretIdentity(mob.name());
+		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" sprout(s) up here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
@@ -91,7 +91,7 @@ public class Chant_SummonPlants extends Chant
 	{
 		return buildPlant(mob,room);
 	}
-	
+
 	public boolean rightPlace(MOB mob,boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
@@ -99,7 +99,7 @@ public class Chant_SummonPlants extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		
+
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
@@ -109,11 +109,11 @@ public class Chant_SummonPlants extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!rightPlace(mob,auto)) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

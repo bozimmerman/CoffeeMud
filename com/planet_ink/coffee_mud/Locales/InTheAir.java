@@ -8,6 +8,7 @@ import java.util.*;
 
 public class InTheAir extends StdRoom
 {
+	public String ID(){return "InTheAir";}
 	public InTheAir()
 	{
 		super();

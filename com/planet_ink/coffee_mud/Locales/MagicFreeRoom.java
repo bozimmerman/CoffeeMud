@@ -6,6 +6,7 @@ import java.util.*;
 
 public class MagicFreeRoom extends StdRoom
 {
+	public String ID(){return "MagicFreeRoom";}
 	public MagicFreeRoom()
 	{
 		super();

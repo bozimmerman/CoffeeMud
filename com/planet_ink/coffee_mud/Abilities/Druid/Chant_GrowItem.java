@@ -115,7 +115,7 @@ public class Chant_GrowItem extends Chant
 			if(V2.size()>0)
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -146,7 +146,7 @@ public class Chant_GrowItem extends Chant
 					mob.tell("For some reason, the chant failed...");
 					return false;
 				}
-				
+
 				Item building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 				if(building==null)
 				{
@@ -187,7 +187,7 @@ public class Chant_GrowItem extends Chant
 						((Key)key).setKey(((Container)building).keyName());
 						key.setName("a wooden key");
 						key.setDisplayText("a small wooden key sits here");
-						key.setDescription("looks like a key to "+building.displayName());
+						key.setDescription("looks like a key to "+building.name());
 						key.recoverEnvStats();
 						key.text();
 					}
@@ -262,19 +262,19 @@ public class Chant_GrowItem extends Chant
 					if(building instanceof Container)
 						((Container)building).setCapacity(0);
 				}
-				
+
 				//Behavior B=CMClass.getBehavior("Decay");
 				//B.setParms("min=490 max=490 chance=100");
 				//building.addBehavior(B);
-				
+
 				building.recoverEnvStats();
 				building.text();
 				building.recoverEnvStats();
-				
+
 				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
 				if(key!=null)
 					mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,building.displayName()+" grows out of a tree and drops.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");
 				mob.location().recoverEnvStats();
 			}
 		}

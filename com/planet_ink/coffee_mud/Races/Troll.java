@@ -16,11 +16,11 @@ public class Troll extends StdRace
 	protected int weightVariance(){return 200;}
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Troll-kin";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
@@ -66,36 +66,36 @@ public class Troll extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is near to heartless death!^N";
+			return "^r" + mob.name() + "^r is near to heartless death!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName() + "^r is covered in torn slabs of flesh.^N";
+			return "^r" + mob.name() + "^r is covered in torn slabs of flesh.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName() + "^r is gored badly with lots of tears.^N";
+			return "^r" + mob.name() + "^r is gored badly with lots of tears.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName() + "^y has numerous gory tears and gashes.^N";
+			return "^y" + mob.name() + "^y has numerous gory tears and gashes.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName() + "^y has some gory tears and gashes.^N";
+			return "^y" + mob.name() + "^y has some gory tears and gashes.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName() + "^p has a few gory wounds.^N";
+			return "^p" + mob.name() + "^p has a few gory wounds.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName() + "^p is cut and bruised heavily.^N";
+			return "^p" + mob.name() + "^p is cut and bruised heavily.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName() + "^g has some minor cuts and bruises.^N";
+			return "^g" + mob.name() + "^g has some minor cuts and bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName() + "^g has a few bruises and scratches.^N";
+			return "^g" + mob.name() + "^g has a few bruises and scratches.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName() + "^g has a few small bruises.^N";
+			return "^g" + mob.name() + "^g has a few small bruises.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect health^N";
+			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
 	public Vector myResources()
 	{

@@ -33,7 +33,7 @@ public class Chant_SummonSapling extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((affected!=null)
@@ -61,7 +61,7 @@ public class Chant_SummonSapling extends Chant
 			mob.destroy();
 		}
 	}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
@@ -71,7 +71,7 @@ public class Chant_SummonSapling extends Chant
 		&&(msg.sourceMinor()==Affect.TYP_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
@@ -101,7 +101,7 @@ public class Chant_SummonSapling extends Chant
 			if(V2.size()>0)
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -155,7 +155,7 @@ public class Chant_SummonSapling extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.displayName()+"!");
+		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

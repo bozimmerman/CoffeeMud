@@ -177,7 +177,7 @@ public class CreateEdit
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
-					if(room.ID().equalsIgnoreCase(allWord))
+					if(room.roomID().equalsIgnoreCase(allWord))
 					{
 						theRoom=room;
 						break;
@@ -188,7 +188,7 @@ public class CreateEdit
 					commands=new Vector();
 					commands.addElement("DESTROY");
 					commands.addElement("ROOM");
-					commands.addElement(theRoom.ID());
+					commands.addElement(theRoom.roomID());
 					destroy(mob,commands);
 				}
 				else
@@ -247,21 +247,21 @@ public class CreateEdit
 		if(commandType.equals("ITEMS"))
 		{
 			Rooms.clearDebriAndRestart(mob.location(),1);
-			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
+			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
 		if(commandType.equals("ROOM"))
 		{
 			Rooms.clearDebriAndRestart(mob.location(),0);
-			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
+			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
 		if(commandType.equals("MOBS"))
 		{
 			Rooms.clearDebriAndRestart(mob.location(),2);
-			Resources.removeResource("HELP_"+mob.location().name().toUpperCase());
+			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 		}
 		else
@@ -372,7 +372,7 @@ public class CreateEdit
 						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
 						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-						if(showFlag<=0) 
+						if(showFlag<=0)
 						{
 							showFlag=-1;
 							ok=true;
@@ -382,8 +382,8 @@ public class CreateEdit
 				else
 					Generic.genMiscSet(mob,thang);
 				thang.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.displayName()+" shake(s) under the transforming power.");
-				Log.sysOut("CreateEdit",mob.ID()+" modified item "+thang.ID()+".");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
+				Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.ID()+".");
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
@@ -404,7 +404,7 @@ public class CreateEdit
 						if(showFlag<-900){ ok=true; break;}
 						if(showFlag>0){ showFlag=-1; continue;}
 						showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-						if(showFlag<=0) 
+						if(showFlag<=0)
 						{
 							showFlag=-1;
 							ok=true;
@@ -414,8 +414,8 @@ public class CreateEdit
 				else
 					Generic.genMiscSet(mob,thang);
 				thang.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.displayName()+" shake(s) under the transforming power.");
-				Log.sysOut("CreateEdit",mob.ID()+" modified mob "+thang.ID()+".");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
+				Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.ID()+".");
 			}
 			else
 			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
@@ -440,8 +440,8 @@ public class CreateEdit
 							}
 						}
 					}
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.displayName()+" shake(s) under the transforming power.");
-					Log.sysOut("CreateEdit",mob.ID()+" modified exit "+thang.ID()+".");
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
+					Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thang.ID()+".");
 				}
 				else
 				{
@@ -465,14 +465,14 @@ public class CreateEdit
 		mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		Rooms.link(mob,commands);
 	}
-	
+
 	public static void copy(MOB mob, Vector commands)
 		throws Exception
 	{
 		mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 		Utils.newSomething(mob,commands);
 	}
-	
+
 	public static void create(MOB mob, Vector commands)
 		throws Exception
 	{

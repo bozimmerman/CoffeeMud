@@ -9,7 +9,7 @@ public class AbilityData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	// valid parms include help, ranges, quality, target, alignment, domain, 
+	// valid parms include help, ranges, quality, target, alignment, domain,
 	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -26,7 +26,7 @@ public class AbilityData extends StdWebMacro
 				{
 					StringBuffer s=ExternalPlay.getHelpText(A.ID());
 					if(s==null)
-						s=ExternalPlay.getHelpText(A.name());
+						s=ExternalPlay.getHelpText(A.Name());
 					str.append(helpHelp(s));
 				}
 				if(parms.containsKey("RANGES"))
@@ -101,7 +101,7 @@ public class AbilityData extends StdWebMacro
 					boolean good=!notgood;
 					boolean neutral=!notneutral;
 					boolean evil=!notevil;
-					
+
 					if(good&&neutral&&evil)
 						str.append("Unaligned/Doesn't matter, ");
 					else
@@ -128,7 +128,7 @@ public class AbilityData extends StdWebMacro
 					if(thang.length()>0)
 					{
 						thang.setCharAt(0,Character.toUpperCase(thang.charAt(0)));
-						
+
 						int x=thang.toString().indexOf("/");
 						if(x>0) thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
 						str.append(thang.toString()+", ");
@@ -140,7 +140,7 @@ public class AbilityData extends StdWebMacro
 					if((className!=null)&&(className.length()>0))
 					{
 						boolean defaultGain=CMAble.getDefaultGain(className,A.ID());
-						if(!defaultGain) 
+						if(!defaultGain)
 							str.append("(Qualify), ");
 					}
 				}

@@ -66,7 +66,7 @@ public class WandArchon extends StdWand
 		case Affect.TYP_GET:
 			if(mob.charStats().getClassLevel("Archon")<0)
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,displayName()+" flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,name()+" flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
@@ -87,21 +87,21 @@ public class WandArchon extends StdWand
 				MOB target=(MOB)afftarget;
 				if(message.toUpperCase().indexOf("LEVEL ALL UP")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.displayName()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
 					while(target.envStats().level()<30)
 						target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1);
 				}
 				else
 				if(message.toUpperCase().indexOf("LEVEL UP")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.displayName()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
 					target.charStats().getCurrentClass().gainExperience(target,null,null,target.getExpNeededLevel()+1);
 					return;
 				}
 				else
 				if(message.toUpperCase().indexOf("REFRESH")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.displayName()+" glows brightly at <T-NAME>.");
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
 					target.recoverMaxState();
 					target.resetToMaxState();
 					target.tell("You feel refreshed!");
@@ -110,10 +110,10 @@ public class WandArchon extends StdWand
 				else
 				if(message.toUpperCase().indexOf("BURN")>0)
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.displayName()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;
-					ExternalPlay.postDamage(mob,target,null,(++flameDamage),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,me.displayName()+" <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,null,(++flameDamage),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,me.name()+" <DAMAGE> <T-NAME>!");
 					return;
 				}
 			}

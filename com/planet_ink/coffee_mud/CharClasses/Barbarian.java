@@ -24,7 +24,7 @@ public class Barbarian extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Barbarian()
 	{
 		super();
@@ -45,7 +45,7 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Charge",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",false);
@@ -57,7 +57,7 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Disarm",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Berzerk",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Rescue",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true); 
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Spring",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Apothecary",0,"ANTIDOTES",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",false);
@@ -71,6 +71,7 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Endurance",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Skill_IdentifyPoison",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Stonebody",true);
 			CMAble.addCharAbilityMapping(ID(),30,"Fighter_Shrug",true);
@@ -108,7 +109,7 @@ public class Barbarian extends StdCharClass
 	{
 		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
 		MOB myChar=(MOB)myHost;
-		
+
 		if((affect.amITarget(myChar))
 		   &&(affect.tool()!=null)
 		   &&(affect.tool() instanceof Weapon)
@@ -127,7 +128,7 @@ public class Barbarian extends StdCharClass
 		{
 			if(Dice.rollPercentage()<=myChar.charStats().getClassLevel(this))
 			{
-				myChar.location().show(myChar,null,affect.source(),Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+affect.tool().displayName()+" attack from <O-NAMESELF>!");
+				myChar.location().show(myChar,null,affect.source(),Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+affect.tool().name()+" attack from <O-NAMESELF>!");
 				return false;
 			}
 		}
@@ -141,14 +142,14 @@ public class Barbarian extends StdCharClass
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().displayName()+" attempt due to <S-HIS-HER> armor!");
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
 					return false;
 				}
 			}
 		}
 		return super.okAffect(myChar,affect);
 	}
-	
+
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");

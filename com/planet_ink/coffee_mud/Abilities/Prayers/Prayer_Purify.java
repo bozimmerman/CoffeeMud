@@ -24,10 +24,10 @@ public class Prayer_Purify extends Prayer
 		if((!(target instanceof Food))
 			&&(!(target instanceof Drink)))
 		{
-			mob.tell("You cannot purify "+target.displayName()+"!");
+			mob.tell("You cannot purify "+target.name()+"!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -74,7 +74,7 @@ public class Prayer_Purify extends Prayer
 					((Potion)target).setSpellList("Prayer_Sober");
 				}
 				if(doneSomething)
-					mob.location().showHappens(Affect.MSG_OK_VISUAL,target.displayName()+" appears purified!");
+					mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" appears purified!");
 				target.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

@@ -15,7 +15,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public boolean canBeUninvoked(){return false;}
 	protected int trainsRequired(){return 1;}
 	protected int practicesRequired(){return 0;}
-	
+
 	private static boolean mapped=false;
 	protected Vector baseInventory=new Vector();
 	protected Hashtable inventorySize=new Hashtable();
@@ -60,7 +60,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			inventorySize=new Hashtable();
 			stockValues=new Hashtable();
 			if(text.length()==0) return;
-			
+
 			Vector buf=XMLManager.parseAllXML(text);
 			if(buf==null)
 			{
@@ -101,7 +101,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			baseInventory=V;
 		}
 	}
-	
+
 	public void affectEnvStats(Environmental E, EnvStats affectableStats)
 	{
 		if(E instanceof MOB)
@@ -116,7 +116,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			}
 		}
 	}
-	
+
 	public int whatIsSold(){return ShopKeeper.DEAL_INVENTORYONLY;}
 	public void setWhatIsSold(int newSellCode){}
 	private void updateBaseStoreInventory()
@@ -141,7 +141,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		return null;
 	}
-	
+
 	private int stockValue(Item I)
 	{
 		if(I==null) return 0;
@@ -154,7 +154,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		Vector V=getUniqueStoreInventory();
 		for(int x=0;x<V.size();x++)
-			if(thisThang.sameAs((Item)baseInventory.elementAt(x))) 
+			if(thisThang.sameAs((Item)baseInventory.elementAt(x)))
 				return true;
 		return false;
 	}
@@ -171,11 +171,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				if((lastE.isGeneric())&&(E.isGeneric()))
 				{
-					if(E.name().equals(lastE.name()))
+					if(E.Name().equals(lastE.Name()))
 						ok=false;
 				}
 				else
-				if(CMClass.className(lastE).equals(CMClass.className(E)))
+				if(lastE.ID().equals(E.ID()))
 					ok=false;
 			}
 
@@ -185,14 +185,14 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				Environmental EE=(Environmental)V.elementAt(v);
 				if((EE.isGeneric())&&(E.isGeneric()))
 				{
-					if(E.name().equals(EE.name()))
+					if(E.Name().equals(EE.Name()))
 					{
 						ok=false;
 						break;
 					}
 				}
 				else
-				if(CMClass.className(EE).equals(CMClass.className(E)))
+				if(EE.ID().equals(E.ID()))
 					ok=false;
 			}
 
@@ -207,16 +207,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public void addStoreInventory(Environmental thisThang)
 	{ addStoreInventory(thisThang,1); }
 	public void addStoreInventory(Environmental thisThang, int number)
-	{ 
+	{
 		if(thisThang instanceof Item)
 			addStoreInventory(thisThang,number,stockValue((Item)thisThang));
 		else
 			addStoreInventory(thisThang,number,1);
 	}
 	public void addStoreInventory(Environmental thisThang, int number, int val)
-	{ 
+	{
 		if(thisThang==null) return;
-							
+
 		Item I=getBaseItem(thisThang);
 		if(I!=null)
 		{
@@ -237,7 +237,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public void delStoreInventory(Environmental thisThang)
 	{
 		if(thisThang==null) return;
-		
+
 		boolean doneSomething=false;
 		Vector V=getBaseInventory();
 		for(int i=0;i<V.size();i++)
@@ -275,7 +275,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			}
 		}
 		return 0;
-		
+
 	}
 	public Environmental getStock(String name, MOB mob)
 	{
@@ -329,7 +329,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		return baseInventory;
 	}
-	
+
 	public String storeKeeperString(){return "Only my Inventory";}
 	public void clearStoreInventory(){setMiscText("");}
 	public String prejudiceFactors(){return "";}
@@ -337,9 +337,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if((affected==null)||(!(affected instanceof MOB))) 
+		if((affected==null)||(!(affected instanceof MOB)))
 			return super.okAffect(myHost,affect);
-		
+
 		MOB mob=affect.source();
 		MOB M=(MOB)affected;
 		if(affect.amITarget(M))
@@ -348,18 +348,18 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
-				mob.tell("You'll have to talk to "+M.displayName()+" about that.");
+				mob.tell("You'll have to talk to "+M.name()+" about that.");
 				return false;
 			case Affect.TYP_BUY:
 			case Affect.TYP_VIEW:
 			{
 				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().name(),mob)))
+				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
 				{
 					if((affect.targetMinor()!=Affect.TYP_VIEW)
 					&&(yourValue(mob,affect.tool(),true)>Money.totalMoney(mob)))
 					{
-						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+affect.tool().displayName()+".",false,false);
+						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
 						return false;
 					}
 					if(affect.tool() instanceof Item)
@@ -397,12 +397,12 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 	public void affect(Environmental myHost, Affect affect)
 	{
-		if((affected==null)||(!(affected instanceof MOB))) 
+		if((affected==null)||(!(affected instanceof MOB)))
 		{
 			super.affect(myHost,affect);
 			return;
 		}
-		
+
 		MOB M=(MOB)affected;
 		if(affect.amITarget(M))
 		{
@@ -411,16 +411,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 			case Affect.TYP_VIEW:
 				super.affect(myHost,affect);
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
-					ExternalPlay.quickSay(M,affect.source(),"Interested in "+affect.tool().displayName()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
+				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().Name(),mob)))
+					ExternalPlay.quickSay(M,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
 				break;
 			case Affect.TYP_BUY:
 				super.affect(myHost,affect);
 				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().name(),mob)))
+				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
 				{
 					int price=yourValue(mob,affect.tool(),true);
-					Vector products=removeSellableProduct(affect.tool().name(),mob);
+					Vector products=removeSellableProduct(affect.tool().Name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					Money.subtractMoney(M,mob,price);
@@ -506,7 +506,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);
-				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.displayName(),totalWidth-csize);
+				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
 				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");
@@ -517,7 +517,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		return msg;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()==0)
@@ -558,7 +558,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.recoverMaxState();
 			return true;
 		}
-		
+
 		Environmental target=null;
 		int val=-1;
 		if(commands.size()>1)
@@ -579,10 +579,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		{
 			Item I=mob.fetchCarried(null,itemName+addendumStr);
 			if(I==null) break;
-			if(target==null) 
+			if(target==null)
 				target=I;
-			else 
-			if(!target.sameAs(I)) 
+			else
+			if(!target.sameAs(I))
 				break;
 			if(Sense.canBeSeenBy(I,mob))
 				V.addElement(I);
@@ -595,22 +595,22 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			commonTell(mob,"You don't seem to be carrying '"+itemName+"'.");
 			return false;
 		}
-		
+
 		if((numberInStock(target)<=0)&&(val<=0))
 		{
 			commonTell(mob,"You failed to specify a price for '"+itemName+"'.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		if(!profficiencyCheck(0,auto))
 		{
 			commonTell(mob,target,null,"You fail to put <T-NAME> up for sale.");
 			return false;
 		}
-		
+
 		FullMsg msg=new FullMsg(mob,target,Affect.MSG_SELL,"<S-NAME> put(s) <T-NAME> up for sale.");
 		if(mob.location().okAffect(mob,msg))
 		{

@@ -27,11 +27,11 @@ public class StdCharClass implements CharClass, Cloneable
 	{
 		return false;
 	}
-	
+
 	public void cloneFix(CharClass C)
 	{
 	}
-	
+
 	public CharClass copyOf()
 	{
 		try
@@ -46,17 +46,17 @@ public class StdCharClass implements CharClass, Cloneable
 			return this;
 		}
 	}
-	
+
 	public boolean loaded(){return true;}
 	public void setLoaded(boolean truefalse){};
-	
+
 	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{ return duration;}
 
 	public boolean tick(Tickable myChar, int tickID){
 		return true;
 	}
-	
+
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
@@ -96,11 +96,11 @@ public class StdCharClass implements CharClass, Cloneable
 	public String otherBonuses(){return "";}
 	public String statQualifications(){return "";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	
+
 	public boolean armorCheck(MOB mob)
 	{
 		if(allowedArmorLevel()==CharClass.ARMOR_ANY) return true;
-		
+
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
@@ -194,7 +194,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		return true;
@@ -205,9 +205,9 @@ public class StdCharClass implements CharClass, Cloneable
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public void gainExperience(MOB mob, 
-							   MOB victim, 
-							   String homage, 
+	public void gainExperience(MOB mob,
+							   MOB victim,
+							   String homage,
 							   int amount)
 	{
 		if(victim!=null)
@@ -224,11 +224,11 @@ public class StdCharClass implements CharClass, Cloneable
 				double levelFactor=Util.div(levelDiff,levelLimit);
 				theAmount=theAmount+Util.mul(levelFactor,amount);
 			}
-				
+
 			double victimFactor=Util.div((500.0-new Integer(victim.getAlignment()).doubleValue()),10.0);
 			double mobFactor=Util.div(Math.abs(500.0-new Integer(mob.getAlignment()).doubleValue()),1000.0)+0.5;
 			mob.setAlignment(mob.getAlignment()+(int)Math.round(mobFactor*victimFactor));
-				
+
 			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
 			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));
 		}
@@ -241,7 +241,7 @@ public class StdCharClass implements CharClass, Cloneable
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
 				if(sire.charStats()!=null)
-					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.displayName(),sireShare);
+					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.name(),sireShare);
 			}
 		}
 
@@ -252,7 +252,7 @@ public class StdCharClass implements CharClass, Cloneable
 		else
 		if(amount>0)
 			mob.tell("^N^!You gain ^H"+amount+"^N^! experience point"+homage+".^N");
-			
+
 		while(mob.getExperience()>=mob.getExpNextLevel())
 			level(mob);
 	}
@@ -280,7 +280,7 @@ public class StdCharClass implements CharClass, Cloneable
 	protected int neededToBeLevel(int level)
 	{
 		int neededLevel=1000;
-		
+
 		if(level==0)
 			neededLevel=0;
 		else
@@ -291,7 +291,7 @@ public class StdCharClass implements CharClass, Cloneable
 				neededLevel+=1000+(75*(breakLevel-1))+(25*(i-(breakLevel-1)));
 		return neededLevel;
 	}
-	
+
 	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
 	{
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
@@ -318,7 +318,7 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
 		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
-		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " + 
+		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
 		int mvGain=(int)Math.round(Util.mul(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0),getMovementMultiplier()));
@@ -447,9 +447,9 @@ public class StdCharClass implements CharClass, Cloneable
 		theNews.append("and ^H"+trainGain+"^N training sessions.\n\r^N");
 
 		mob.tell(theNews.toString());
-		
+
 		grantAbilities(mob,false);
-		
+
 		// check for autoinvoking abilities
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -458,7 +458,7 @@ public class StdCharClass implements CharClass, Cloneable
 			&&(CMAble.qualifiesByLevel(mob,A)))
 				A.autoInvocation(mob);
 		}
-		
+
 		// wrap it all up
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
@@ -503,8 +503,8 @@ public class StdCharClass implements CharClass, Cloneable
 		return true;
 	}
 
-	protected boolean isValidBeneficiary(MOB killer, 
-									   MOB killed, 
+	protected boolean isValidBeneficiary(MOB killer,
+									   MOB killed,
 									   MOB mob,
 									   Hashtable followers)
 	{
@@ -516,7 +516,7 @@ public class StdCharClass implements CharClass, Cloneable
 			return true;
 		return false;
 	}
-	
+
 	public Hashtable dispenseExperience(MOB killer, MOB killed)
 	{
 		if((killer==null)||(killed==null)) return new Hashtable();

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class CaveRoom extends StdRoom
 {
+	public String ID(){return "CaveRoom";}
 	public CaveRoom()
 	{
 		super();

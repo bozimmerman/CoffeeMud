@@ -79,13 +79,13 @@ public class Engraving extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		writing=Util.combine(commands,0);
-		verb="engraving on "+target.displayName();
+		verb="engraving on "+target.name();
 		displayText="You are "+verb;
 		found=target;
 		if(!profficiencyCheck(0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) engraving on "+target.displayName());
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) engraving on "+target.name());
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

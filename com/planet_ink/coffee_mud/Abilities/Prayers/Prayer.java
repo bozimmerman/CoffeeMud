@@ -17,7 +17,7 @@ public class Prayer extends StdAbility
 	private static final String[] triggerStrings = {"PRAY","PR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.PRAYER;}
-	
+
 	public final static int HOLY_EVIL=0;
 	public final static int HOLY_NEUTRAL=1;
 	public final static int HOLY_GOOD=2;
@@ -34,19 +34,19 @@ public class Prayer extends StdAbility
 	protected String prayWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return "pray(s) to "+mob.getMyDeity().displayName();
+			return "pray(s) to "+mob.getMyDeity().name();
 		else
 			return "pray(s)";
 	}
-	
+
 	protected String prayForWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return "pray(s) for "+mob.getMyDeity().displayName();
+			return "pray(s) for "+mob.getMyDeity().name();
 		else
 			return "pray(s)";
 	}
-	
+
 	protected String inTheNameOf(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
@@ -56,7 +56,7 @@ public class Prayer extends StdAbility
 	protected String hisHerDiety(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return mob.getMyDeity().displayName();
+			return mob.getMyDeity().name();
 		return "<S-HIS-HER> god";
 	}
 	protected String ofDiety(MOB mob)
@@ -68,11 +68,11 @@ public class Prayer extends StdAbility
 	protected String prayingWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return "praying to "+mob.getMyDeity().displayName();
+			return "praying to "+mob.getMyDeity().name();
 		else
 			return "praying";
 	}
-	
+
 	public boolean appropriateToMyAlignment(int alignment)
 	{
 		switch(holyQuality())

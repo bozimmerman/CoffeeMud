@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.utils.Directions;
 import java.util.*;
 public class StdMaze extends StdGrid
 {
+	public String ID(){return "StdMaze";}
 	public StdMaze()
 	{
 		super();

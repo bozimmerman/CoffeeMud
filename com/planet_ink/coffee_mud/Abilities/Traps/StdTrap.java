@@ -15,9 +15,9 @@ public class StdTrap extends StdAbility implements Trap
 	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new StdTrap();}
-	
+
 	public int baseRejuvTime(int level)
-	{	
+	{
 		int time=((30-level)*30);
 		if(time<1) time=1;
 		return time;
@@ -26,18 +26,18 @@ public class StdTrap extends StdAbility implements Trap
 	{
 		return level*30;
 	}
-	
+
 	protected boolean sprung=false;
 	protected int reset=60; // 5 minute reset is standard
-	
+
 	protected boolean disabled=false;
-	
+
 	public boolean disabled(){
 		return (sprung&&disabled)
 			   ||(affected==null)
 			   ||(affected.fetchAffect(ID())==null);
 	}
-	public void disable(){ 
+	public void disable(){
 		disabled=true;
 		sprung=true;
 		if(!canBeUninvoked())
@@ -63,7 +63,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(invoker==null) return benefactor;
 		return super.invoker();
 	}
-	
+
 	public int classificationCode()
 	{
 		return Ability.TRAP;
@@ -86,7 +86,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return super.okAffect(myHost,affect);
 	}
-	
+
 	public void activateBomb()
 	{
 		if(isABomb())
@@ -97,7 +97,7 @@ public class StdTrap extends StdAbility implements Trap
 			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
 		}
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if(!sprung)
@@ -161,29 +161,29 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		if(E.fetchAffect(ID())!=null)
 		{
-			mob.tell("This trap is already set on "+E.displayName()+".");
+			mob.tell("This trap is already set on "+E.name()+".");
 			return false;
 		}
 		if(!canAffect(E))
 		{
-			mob.tell("You can't set '"+displayName()+"' on "+E.displayName()+".");
+			mob.tell("You can't set '"+name()+"' on "+E.name()+".");
 			return false;
 		}
 		if((canAffectCode()&Ability.CAN_EXITS)==Ability.CAN_EXITS)
 		{
 			if((E instanceof Item)&&(!(E instanceof Container)))
 			{
-				mob.tell(E.displayName()+" has no lid, so '"+displayName()+"' cannot be set on it.");
+				mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 			if(((E instanceof Exit)&&(!(((Exit)E).hasADoor()))))
 			{
-				mob.tell(E.displayName()+" has no door, so '"+displayName()+"' cannot be set on it.");
+				mob.tell(E.name()+" has no door, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 			if(((E instanceof Container)&&(!(((Container)E).hasALid()))))
 			{
-				mob.tell(E.displayName()+" has no lid, so '"+displayName()+"' cannot be set on it.");
+				mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 		}
@@ -202,12 +202,12 @@ public class StdTrap extends StdAbility implements Trap
 			ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,baseDestructTime(qualifyingClassLevel));
 		return T;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;
-		
+
 		if(tickID==Host.TRAP_DESTRUCTION)
 		{
 			if(canBeUninvoked())
@@ -250,9 +250,9 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return true;
 	}
-	
+
 	public boolean sprung(){return sprung&&(!disabled());}
-	
+
 	public void spring(MOB target)
 	{
 		sprung=true;
@@ -261,7 +261,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(!isABomb())
 			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
 	}
-	
+
 	protected Item findFirstResource(Room room, String other)
 	{
 		if((other==null)||(other.length()==0))
@@ -293,7 +293,7 @@ public class StdTrap extends StdAbility implements Trap
 				return findMostOfMaterial(room,(i<<8));
 		return null;
 	}
-	
+
 	protected Item findMostOfMaterial(Room room, int material)
 	{
 		int most=0;
@@ -317,9 +317,9 @@ public class StdTrap extends StdAbility implements Trap
 				}
 			}
 		}
-		return mostItem;	   
+		return mostItem;
 	}
-	
+
 	protected void destroyResources(Room room, int resource, int number)
 	{
 		for(int i=room.numItems()-1;i>=0;i--)
@@ -332,7 +332,7 @@ public class StdTrap extends StdAbility implements Trap
 				I.destroyThis();
 		}
 	}
-	
+
 	protected int findNumberOfResource(Room room, int resource)
 	{
 		int foundWood=0;
@@ -347,5 +347,5 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return foundWood;
 	}
-	
+
 }

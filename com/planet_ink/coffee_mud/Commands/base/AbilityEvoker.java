@@ -36,7 +36,7 @@ public class AbilityEvoker extends Scriptable
 		{
 			if(((String)thisAbility.triggerStrings()[i]).equalsIgnoreCase(thisWord))
 			{
-				if((thisAbility.displayName().toUpperCase().startsWith(secondWord)))
+				if((thisAbility.name().toUpperCase().startsWith(secondWord)))
 					return true;
 			}
 		}
@@ -95,7 +95,7 @@ public class AbilityEvoker extends Scriptable
 				if((thisAbility!=null)
 				&&(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase())))
 				{
-					if(thisAbility.displayName().equalsIgnoreCase(secondWord))
+					if(thisAbility.name().equalsIgnoreCase(secondWord))
 					{
 						evokableAbility=thisAbility;
 						foundMoreThanOne=false;
@@ -138,7 +138,7 @@ public class AbilityEvoker extends Scriptable
 					Ability thisAbility=mob.fetchAbility(a);
 					if((thisAbility!=null)
 					&&(evokedBy(thisAbility,evokeWord))
-					&&(thisAbility.displayName().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
+					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
 					{
 						evokableAbility=thisAbility;
 						commands.removeElementAt(0);
@@ -204,13 +204,13 @@ public class AbilityEvoker extends Scriptable
 			return;
 		if(student.fetchAbility(myAbility.ID())!=null)
 		{
-			mob.tell(getScr("AbilityEvoker","teacherr4",student.displayName()));
+			mob.tell(getScr("AbilityEvoker","teacherr4",student.name()));
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,student,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(mob,msg))
 			return;
-		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","teaches",myAbility.displayName()));
+		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","teaches",myAbility.name()));
 		if(!mob.location().okAffect(mob,msg))
 			return;
 		myAbility.teach(mob,student);
@@ -262,7 +262,7 @@ public class AbilityEvoker extends Scriptable
 		Ability teacherAbility=mob.fetchAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr4",teacher.displayName(),abilityName));
+			mob.tell(getScr("AbilityEvoker","pracerr4",teacher.name(),abilityName));
 			return;
 		}
 
@@ -273,7 +273,7 @@ public class AbilityEvoker extends Scriptable
 		FullMsg msg=new FullMsg(teacher,mob,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(mob,msg))
 			return;
-		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","practices",myAbility.displayName()));
+		msg=new FullMsg(teacher,mob,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","practices",myAbility.name()));
 		if(!mob.location().okAffect(mob,msg))
 			return;
 		teacherAbility.practice(teacher,mob);

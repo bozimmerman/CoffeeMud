@@ -15,7 +15,7 @@ public class Chant_GrowFood extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors to try this.");
@@ -28,11 +28,11 @@ public class Chant_GrowFood extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		
+
 		int material=-1;
 		Vector choices=new Vector();
 		String s=Util.combine(commands,0);
-		
+
 		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
 		{
 			int code=EnvResource.RESOURCE_DATA[i][0];
@@ -48,12 +48,12 @@ public class Chant_GrowFood extends Chant
 			mob.tell("'"+s+"' is not a recognized form of food or herbs!");
 			return false;
 		}
-		
+
 		if((material<0)&&(choices.size()>0))
 			material=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
-		
+
 		if(material<0) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -80,7 +80,7 @@ public class Chant_GrowFood extends Chant
 				newItem.recoverEnvStats();
 				newItem.setMiscText(newItem.text());
 				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" pops out of the ground.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" pops out of the ground.");
 				mob.location().recoverEnvStats();
 			}
 		}

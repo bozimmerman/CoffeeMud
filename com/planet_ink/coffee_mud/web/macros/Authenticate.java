@@ -23,7 +23,7 @@ public class Authenticate extends StdWebMacro
 				return "false";
 		}
 	}
-	
+
 	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
 
@@ -33,7 +33,7 @@ public class Authenticate extends StdWebMacro
 		for(Enumeration p=CMMap.players();p.hasMoreElements();)
 		{
 			MOB mob2=(MOB)p.nextElement();
-			if(mob2.name().equalsIgnoreCase(login))
+			if(mob2.Name().equalsIgnoreCase(login))
 			{ mob=mob2; break;}
 		}
 		if(mob==null)
@@ -49,7 +49,7 @@ public class Authenticate extends StdWebMacro
 		}
 		return mob;
 	}
-	
+
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
 		MOB mob=getAuthenticatedMOB(login);
@@ -61,14 +61,14 @@ public class Authenticate extends StdWebMacro
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.name())))
-				if(A.amISubOp(mob.name()))
+			if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
+				if(A.amISubOp(mob.Name()))
 				{ subOp=true; break;}
 		}
 		httpReq.addRequestParameters("SUBOP",""+(sysop||subOp));
-		return mob.password().equalsIgnoreCase(password)&&(mob.name().trim().length()>0);
+		return mob.password().equalsIgnoreCase(password)&&(mob.Name().trim().length()>0);
 	}
-	
+
 	private static char ABCeq(char C)
 	{
 		for(int A=0;A<ABCs.length();A++)
@@ -126,7 +126,7 @@ public class Authenticate extends StdWebMacro
 		}
 		return INTOME.toString();
 	}
-	
+
 	public static String getLogin(ExternalHTTPRequests httpReq)
 	{
 		String login=(String)httpReq.getRequestParameters().get("LOGIN");
@@ -138,7 +138,7 @@ public class Authenticate extends StdWebMacro
 		login=Decrypt(auth);
 		return login;
 	}
-	
+
 	public static String getPassword(ExternalHTTPRequests httpReq)
 	{
 		String password=(String)httpReq.getRequestParameters().get("PASSWORD");

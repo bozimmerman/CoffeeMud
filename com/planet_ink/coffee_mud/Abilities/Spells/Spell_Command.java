@@ -33,7 +33,7 @@ public class Spell_Command extends Spell
 
 		if(!target.mayIFight(mob))
 		{
-			mob.tell("You can't command "+target.displayName()+".");
+			mob.tell("You can't command "+target.name()+".");
 			return false;
 		}
 

@@ -19,7 +19,7 @@ public class ItemMender extends StdBehavior
 			cost+=100+(item.envStats().level()*2);
 		return cost;
 	}
-	
+
 	public boolean okAffect(Environmental affecting, Affect affect)
 	{
 		if(!super.okAffect(affecting,affect))
@@ -50,7 +50,7 @@ public class ItemMender extends StdBehavior
 			else
 			if(tool.usesRemaining()==100)
 			{
-				ExternalPlay.quickSay(observer,source,tool.displayName()+" doesn't require repair.",true,false);
+				ExternalPlay.quickSay(observer,source,tool.name()+" doesn't require repair.",true,false);
 				return false;
 			}
 			if(source.getMoney()<cost(tool))
@@ -73,7 +73,7 @@ public class ItemMender extends StdBehavior
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB observer=(MOB)affecting;
-		
+
 		if((source!=observer)
 		&&(affect.amITarget(observer))
 		&&(affect.targetMinor()==Affect.TYP_GIVE)

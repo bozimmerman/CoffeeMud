@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Woods extends StdRoom
 {
+	public String ID(){return "Woods";}
 	public Woods()
 	{
 		super();

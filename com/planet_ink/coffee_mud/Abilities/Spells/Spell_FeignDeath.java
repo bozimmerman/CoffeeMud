@@ -79,7 +79,7 @@ public class Spell_FeignDeath extends Spell
 		if((affect.amITarget(mob))&&(!affect.amISource(mob))
 		   &&(!Util.bset(affect.targetMajor(),Affect.MASK_GENERAL)))
 		{
-			mob.tell(mob.displayName()+" doesn't seem to be here.");
+			mob.tell(mob.name()+" doesn't seem to be here.");
 			return false;
 		}
 		return true;
@@ -125,9 +125,9 @@ public class Spell_FeignDeath extends Spell
 				if(follower!=null)
 					follower.setFollowing(null);
 			}
-			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.displayName()+" is DEAD!!!^.^?\n\r");
-			Body.setName("the body of "+target.displayName());
-			Body.setDisplayText("the body of "+target.displayName()+" lies here.");
+			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!^.^?\n\r");
+			Body.setName("the body of "+target.name());
+			Body.setDisplayText("the body of "+target.name()+" lies here.");
 			Body.baseEnvStats().setWeight(target.envStats().weight()+100);
 			deathRoom.addItem(Body);
 			Body.recoverEnvStats();

@@ -15,7 +15,7 @@ public class Taxidermy extends CommonSkill
 	private String foundShortName="";
 	private boolean messedUp=false;
 	private static boolean mapped=false;
-	
+
 	public Taxidermy()
 	{
 		super();
@@ -57,10 +57,10 @@ public class Taxidermy extends CommonSkill
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
 			return false;
 		}
-		foundShortName=I.name();
+		foundShortName=I.Name();
 		if((!(I instanceof DeadBody))||(I.rawSecretIdentity().indexOf("/")<0))
 		{
-			commonTell(mob,"You don't know how to stuff "+I.displayName()+".");
+			commonTell(mob,"You don't know how to stuff "+I.name()+".");
 			return false;
 		}
 		for(int i=0;i<mob.location().numItems();i++)
@@ -68,7 +68,7 @@ public class Taxidermy extends CommonSkill
 			Item I2=mob.location().fetchItem(i);
 			if(I2.container()==I)
 			{
-				commonTell(mob,"You need to remove the contents of "+I2.displayName()+" first.");
+				commonTell(mob,"You need to remove the contents of "+I2.name()+" first.");
 				return false;
 			}
 		}
@@ -84,10 +84,10 @@ public class Taxidermy extends CommonSkill
 		}
 		if(foundWood<woodRequired)
 		{
-			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to stuff "+I.displayName()+".  There is not enough here.  Are you sure you set it all on the ground first?");
+			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to stuff "+I.name()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
-		
+
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -103,7 +103,7 @@ public class Taxidermy extends CommonSkill
 				I2.destroyThis();
 		}
 		messedUp=!profficiencyCheck(0,auto);
-		if(found!=null)	foundShortName=I.name();
+		if(found!=null)	foundShortName=I.Name();
 		int duration=15+(woodRequired/3)-mob.envStats().level();
 		if(duration>65) duration=65;
 		if(duration<10) duration=10;
@@ -118,10 +118,10 @@ public class Taxidermy extends CommonSkill
 		found.setDisplayText("the stuffed body of "+name+" stands here");
 		found.setDescription(desc);
 		found.recoverEnvStats();
-		displayText="You are stuffing "+I.displayName();
-		verb="stuffing "+I.displayName();
+		displayText="You are stuffing "+I.name();
+		verb="stuffing "+I.name();
 		I.destroyThis();
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.displayName()+".");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) stuffing "+I.name()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

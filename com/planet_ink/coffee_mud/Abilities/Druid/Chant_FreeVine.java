@@ -34,10 +34,10 @@ public class Chant_FreeVine extends Chant
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if(!target.charStats().getMyRace().ID().equals("Vine"))
 		{
-			mob.tell(target.displayName()+" can not be uprooted.");
+			mob.tell(target.name()+" can not be uprooted.");
 			return false;
 		}
 

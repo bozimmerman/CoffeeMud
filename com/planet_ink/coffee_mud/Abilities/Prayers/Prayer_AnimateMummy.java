@@ -21,7 +21,7 @@ public class Prayer_AnimateMummy extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(target.displayName()+" doesn't look dead yet.");
+			mob.tell(target.name()+" doesn't look dead yet.");
 			return false;
 		}
 		if(!(target instanceof DeadBody))
@@ -43,7 +43,7 @@ public class Prayer_AnimateMummy extends Prayer
 			description="It looks dead.";
 		else
 			description+="\n\rIt also looks dead.";
-		
+
 		if(body.baseEnvStats().level()<20)
 		{
 			mob.tell("This creature is too weak to create a mummy from.");

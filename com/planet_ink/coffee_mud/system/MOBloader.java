@@ -10,13 +10,13 @@ public class MOBloader
 
 	public static boolean DBReadUserOnly(MOB mob)
 	{
-		if(mob.ID().length()==0) return false;
+		if(mob.Name().length()==0) return false;
 		boolean found=false;
 		DBConnection D=null;
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+mob.ID()+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 			while(R.next())
 			{
 				CharStats stats=mob.baseCharStats();
@@ -88,10 +88,10 @@ public class MOBloader
 		}
 		return found;
 	}
-	
+
 	public static void DBRead(MOB mob)
 	{
-		if(mob.ID().length()==0) return;
+		if(mob.Name().length()==0) return;
 
 		DBReadUserOnly(mob);
 
@@ -100,7 +100,7 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
 			Hashtable itemNums=new Hashtable();
 			Hashtable itemLocs=new Hashtable();
 			while(R.next())
@@ -115,7 +115,7 @@ public class MOBloader
 					itemNums.put(itemNum,newItem);
 					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
-					if(loc.length()>0) 
+					if(loc.length()>0)
 					{
 						Item container=(Item)itemNums.get(loc);
 						if(container!=null)
@@ -152,12 +152,12 @@ public class MOBloader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 
-		
+
 		// now grab the abilities
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAB WHERE CMUSERID='"+mob.ID()+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
 			while(R.next())
 			{
 				String abilityID=DBConnections.getRes(R,"CMABID");
@@ -184,7 +184,7 @@ public class MOBloader
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 
-		if(CMMap.getPlayer(mob.ID())==null)
+		if(CMMap.getPlayer(mob.Name())==null)
 			CMMap.addPlayer(mob);
 	}
 
@@ -211,7 +211,7 @@ public class MOBloader
 		}
 		return V;
 	}
-	
+
 	public static void listUsers(MOB mob, int sortBy)
 	{
 		DBConnection D=null;
@@ -265,7 +265,7 @@ public class MOBloader
 			while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=5))
 			{
 				if(oldSet==allUsers) allUsers=new Vector();
-				
+
 				if((sortBy<3)||(sortBy>4))
 				{
 					Vector selected=(Vector)oldSet.firstElement();
@@ -297,11 +297,11 @@ public class MOBloader
 					}
 				}
 			}
-				
+
 			for(int u=0;u<allUsers.size();u++)
 			{
 				Vector U=(Vector)allUsers.elementAt(u);
-				
+
 				head.append("[");
 				head.append(Util.padRight((String)U.elementAt(2),8)+" ");
 				head.append(Util.padRight((String)U.elementAt(1),10)+" ");
@@ -375,7 +375,7 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
 			while(R.next())
 			{
 				String MOBID=DBConnections.getRes(R,"CMFOID");
@@ -428,7 +428,7 @@ public class MOBloader
 			D=DBConnector.DBFetch();
 			str="UPDATE CMCHAR SET"
 			+"  CMLSIP='"+mob.session().getAddress()+"'"
-			+"  WHERE CMUSERID='"+mob.ID()+"'";
+			+"  WHERE CMUSERID='"+mob.Name()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
 		}
@@ -439,7 +439,7 @@ public class MOBloader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 	}
-	
+
 	public static void DBUpdateEmail(MOB mob)
 	{
 		if(mob.session()==null) return;
@@ -451,7 +451,7 @@ public class MOBloader
 			D=DBConnector.DBFetch();
 			str="UPDATE CMCHAR SET"
 			+"  CMEMAL='"+mob.getEmail()+"'"
-			+"  WHERE CMUSERID='"+mob.ID()+"'";
+			+"  WHERE CMUSERID='"+mob.Name()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
 		}
@@ -467,7 +467,7 @@ public class MOBloader
 	{
 		Vector dateJunk=new Vector();
 		DBClanFill(clan,members,roles,dateJunk);
-	}	
+	}
 
 	public static void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
 	{
@@ -494,7 +494,7 @@ public class MOBloader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 	}
-	
+
 	public static void DBUpdateClan(String name, String clan, int role)
 	{
 		DBConnection D=null;
@@ -505,7 +505,7 @@ public class MOBloader
 			M.setClanID(clan);
 			M.setClanRole(role);
 		}
-		
+
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -523,18 +523,18 @@ public class MOBloader
 			if(D!=null) DBConnector.DBDone(D);
 		}
 	}
-	
+
 	public static void DBUpdate(MOB mob)
 	{
-		if(mob.ID().length()==0)
+		if(mob.Name().length()==0)
 		{
 			DBCreateCharacter(mob);
 			return;
 		}
 
 		DBConnection D=null;
-		String strStartRoomID=(mob.getStartRoom()!=null)?mob.getStartRoom().ID():"";
-		String strOtherRoomID=(mob.location()!=null)?mob.location().ID():"";
+		String strStartRoomID=(mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"";
+		String strOtherRoomID=(mob.location()!=null)?mob.location().roomID():"";
 		String str=null;
 		try
 		{
@@ -543,7 +543,7 @@ public class MOBloader
 			+"  CMPASS='"+mob.password()+"'"
 			+", CMCLAS='"+mob.baseCharStats().getMyClassesStr()+"'"
 			+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STRENGTH)
-			+", CMRACE='"+CMClass.id(mob.baseCharStats().getMyRace())+"'"
+			+", CMRACE='"+mob.baseCharStats().getMyRace().ID()+"'"
 			+", CMDEXT="+mob.baseCharStats().getStat(CharStats.DEXTERITY)
 			+", CMCONS="+mob.baseCharStats().getStat(CharStats.CONSTITUTION)
 			+", CMGEND='"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"'"
@@ -579,14 +579,14 @@ public class MOBloader
 			+", CMCLAN='"+mob.getClanID()+"'"
 			+", CMCLRO="+mob.getClanRole()
 			+", CMEMAL='"+mob.getEmail()+"'"
-			+"  WHERE CMUSERID='"+mob.ID()+"'";
+			+"  WHERE CMUSERID='"+mob.Name()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
 
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMCHAR SET"
 			+" CMDESC='"+mob.description()+"'"
-			+" WHERE CMUSERID='"+mob.ID()+"'");
+			+" WHERE CMUSERID='"+mob.Name()+"'");
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -620,7 +620,7 @@ public class MOBloader
 				+"CMITAB, "
 				+"CMHEIT"
 				+") values ("
-				+"'"+mob.ID()+"',"
+				+"'"+mob.Name()+"',"
 				+"'"+(thisItem)+"',"
 				+"'"+thisItem.ID()+"',"
 				+"'"+thisItem.text()+" ',"
@@ -638,9 +638,9 @@ public class MOBloader
 
 	public static void DBUpdateItems(MOB mob)
 	{
-		if(mob.ID().length()==0) return;
+		if(mob.Name().length()==0) return;
 		Vector V=new Vector();
-		V.addElement("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"'");
+		V.addElement("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
 		if(mob.inventorySize()>0)
 			DBUpdateContents(mob,V);
 		DBConnection D=DBConnector.DBFetch();
@@ -661,10 +661,10 @@ public class MOBloader
 
 	public static void DBUpdateFollowers(MOB mob)
 	{
-		if(mob.ID().length()==0) return;
+		if(mob.Name().length()==0) return;
 		Vector V=new Vector();
 		DBConnection D=DBConnector.DBFetch();
-		V.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"'");
+		V.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			MOB thisMOB=mob.fetchFollower(f);
@@ -679,7 +679,7 @@ public class MOBloader
 				+"CMFOLV, "
 				+"CMFOAB"
 				+") values ("
-				+"'"+mob.ID()+"',"
+				+"'"+mob.Name()+"',"
 				+f+","
 				+"'"+CMClass.className(thisMOB)+"',"
 				+"'"+thisMOB.text()+" ',"
@@ -706,12 +706,12 @@ public class MOBloader
 
 	public static void DBDelete(MOB mob)
 	{
-		if(mob.ID().length()==0) return;
+		if(mob.Name().length()==0) return;
 		DBConnection D=null;
 		try
 		{
 			D=DBConnector.DBFetch();
-			D.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.ID()+"'");
+			D.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
 			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
@@ -749,10 +749,10 @@ public class MOBloader
 
 	public static void DBUpdateAbilities(MOB mob)
 	{
-		if(mob.ID().length()==0) return;
+		if(mob.Name().length()==0) return;
 		DBConnection D=DBConnector.DBFetch();
 		Vector V=new Vector();
-		V.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.ID()+"'");
+		V.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability thisAbility=mob.fetchAbility(a);
@@ -765,7 +765,7 @@ public class MOBloader
 				+"CMABPF,"
 				+"CMABTX"
 				+") values ("
-				+"'"+mob.ID()+"',"
+				+"'"+mob.Name()+"',"
 				+"'"+thisAbility.ID()+"',"
 				+thisAbility.profficiency()+",'"
 				+thisAbility.text()+"'"
@@ -790,7 +790,7 @@ public class MOBloader
 
 	public static void DBCreateCharacter(MOB mob)
 	{
-		if(mob.ID().length()==0) return;
+		if(mob.Name().length()==0) return;
 		DBConnection D=null;
 		String str=null;
 		try
@@ -804,10 +804,10 @@ public class MOBloader
 			+"CMRACE, "
 			+"CMGEND "
 			+") VALUES ('"
-			+mob.ID()
+			+mob.Name()
 			+"','"+mob.password()
 			+"','"+mob.baseCharStats().getMyClassesStr()
-			+"','"+CMClass.id(mob.baseCharStats().getMyRace())
+			+"','"+mob.baseCharStats().getMyRace().ID()
 			+"','"+((char)mob.baseCharStats().getStat(CharStats.GENDER))+"');";
 			D.update(str);
 			DBConnector.DBDone(D);

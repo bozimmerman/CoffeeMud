@@ -14,7 +14,7 @@ public class GrinderMap
     public int Xbound=0;
     public int Ybound=0;
 	public Area area=null;
-	
+
 	public GrinderMap(Area A)
 	{
 		area=A;
@@ -22,14 +22,14 @@ public class GrinderMap
 		for(Enumeration r=A.getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(R.ID().length()>0)
+			if(R.roomID().length()>0)
 			{
 				GrinderRoom GR=new GrinderRoom(R);
 				areaMap.addElement(GR);
 			}
 		}
 	}
-	
+
     public void rebuildGrid()
     {
 		if(areaMap==null) return;
@@ -39,14 +39,14 @@ public class GrinderMap
 	    for(int x=0;x<areaMap.size();x++)
 	        if(((GrinderRoom)areaMap.elementAt(x)).x<xoffset)
 	            xoffset=((GrinderRoom)areaMap.elementAt(x)).x;
-        	            
+
 	    for(int y=0;y<areaMap.size();y++)
 	        if(((GrinderRoom)areaMap.elementAt(y)).y<yoffset)
 	            yoffset=((GrinderRoom)areaMap.elementAt(y)).y;
-        	            
+
 	    xoffset=xoffset*-1;
 	    yoffset=yoffset*-1;
-        	    
+
 	    Xbound=0;
 	    Ybound=0;
 	    for(int x=0;x<areaMap.size();x++)
@@ -68,7 +68,7 @@ public class GrinderMap
 	        hashRooms.put(room.roomID,room);
 	    }
     }
-    
+
     public void rePlaceRooms()
     {
         if(areaMap==null)
@@ -78,7 +78,7 @@ public class GrinderMap
         placeRooms();
         rebuildGrid();
     }
-	
+
     private GrinderRoom getProcessedRoomAt(Hashtable processed, int x, int y)
     {
         for(Enumeration e=processed.elements();e.hasMoreElements();)
@@ -89,7 +89,7 @@ public class GrinderMap
         }
         return null;
     }
-    
+
     public GrinderRoom getRoom(Vector allRooms, String ID)
     {
         for(int r=0;r<allRooms.size();r++)
@@ -100,9 +100,9 @@ public class GrinderMap
         }
         return null;
     }
-    
+
     private final static int CLUSTERSIZE=3;
-    
+
     private boolean isEmptyCluster(Hashtable processed, int x, int y)
     {
         for(Enumeration e=processed.elements();e.hasMoreElements();)
@@ -115,7 +115,7 @@ public class GrinderMap
         }
         return true;
     }
-    
+
     private void findEmptyCluster(Hashtable processed, Vector XY)
     {
         int x=((Integer)XY.elementAt(0)).intValue();
@@ -148,7 +148,7 @@ public class GrinderMap
             spacing+=1;
         }
     }
-    
+
     public boolean anythingThatDirection(GrinderRoom room, int direction)
     {
         GrinderDir D=room.doors[direction];
@@ -156,12 +156,12 @@ public class GrinderMap
             return false;
         return true;
     }
-    
+
     public void placeRooms()
     {
         if(areaMap==null) return;
         if(areaMap.size()==0) return;
-        
+
         for(int i=0;i<areaMap.size();i++)
         {
             GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
@@ -174,7 +174,7 @@ public class GrinderMap
                     dir.positionedAlready=false;
             }
         }
-        
+
         Hashtable processed=new Hashtable();
         boolean doneSomething=true;
         while((areaMap.size()>processed.size())&&(doneSomething))
@@ -207,7 +207,7 @@ public class GrinderMap
         if(areaMap.size()>processed.size())
             Log.errOut("GrinderMap",areaMap.size()-processed.size()+" room(s) were not placed.");
     }
-	
+
 	public StringBuffer getHTMLTable(ExternalHTTPRequests httpReq)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -307,12 +307,12 @@ public class GrinderMap
 							}
 							buf.append(">");
 							String roomID=GR.roomID;
-							if(roomID.startsWith(area.name()+"#"))
+							if(roomID.startsWith(area.Name()+"#"))
 							    roomID=roomID.substring(roomID.indexOf("#"));
 							try
 							{
 								buf.append("<a name=\""+URLEncoder.encode(GR.roomID,"UTF-8")+"\" href=\"javascript:Clicked('rmmenu.cmvp','','"+GR.roomID+"','');\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");
-							}  
+							}
 							catch(java.io.UnsupportedEncodingException e)
 							{
 								Log.errOut("GrinderMap","Wrong Encoding");
@@ -361,7 +361,7 @@ public class GrinderMap
 		buf.append("</TABLE>");
 		return buf;
 	}
-									 
+
 	private GrinderRoom getRoomInDir(GrinderRoom room, int d)
 	{
 	    switch(d)
@@ -376,16 +376,16 @@ public class GrinderMap
 	            break;
 	        case Directions.EAST:
 	            if(room.x<Xbound)
-	                return grid[room.x+1][room.y]; 
+	                return grid[room.x+1][room.y];
 	            break;
 	        case Directions.WEST:
 	            if(room.x>0)
-	                return grid[room.x-1][room.y]; 
+	                return grid[room.x-1][room.y];
 	            break;
 	    }
 		return null;
 	}
-	
+
 	private int findRelGridDir(GrinderRoom room, String roomID)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -396,7 +396,7 @@ public class GrinderMap
 		}
 		return -1;
 	}
-	
+
     private String getDoorLabelGif(int d, GrinderRoom room, ExternalHTTPRequests httpReq)
 	{
 	    GrinderDir dir=(GrinderDir)room.doors[d];
@@ -412,7 +412,7 @@ public class GrinderMap
 	    }
 	    else
 	        roomPointer=getRoomInDir(room,d);
-		
+
 	    if((dir.room.length()>0)&&((roomPointer==null)||((roomPointer!=null)&&(!roomPointer.roomID.equals(dir.room)))))
     	    dirLetter+="R";
 		String theRest=".gif\" BORDER=0 ALT=\""+Directions.getDirectionName(d)+" to "+dir.room+"\"></a>";
@@ -426,11 +426,11 @@ public class GrinderMap
 			return "<a href=\"javascript:Clicked('edxmenu.cmvp','"+Directions.getDirectionName(d)+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/O"+dirLetter+theRest;
     }
 
-	public void placeRoom(GrinderRoom room, 
-                                int favoredX, 
-                                int favoredY, 
-                                Hashtable processed, 
-                                Vector allRooms, 
+	public void placeRoom(GrinderRoom room,
+                                int favoredX,
+                                int favoredY,
+                                Hashtable processed,
+                                Vector allRooms,
                                 boolean doNotDefer,
 								boolean passTwo,
 								int depth)
@@ -469,17 +469,17 @@ public class GrinderMap
             room.x=favoredX;
             room.y=favoredY;
         }
-        
-        // once done, is never undone.  A room is 
+
+        // once done, is never undone.  A room is
         // considered processed only once!
         processed.put(room.roomID,room);
-        
+
         for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
         {
             String roomID=null;
             if(room.doors[d]!=null)
                 roomID=((GrinderDir)room.doors[d]).room;
-			
+
             if((roomID!=null)
 			&&(roomID.length()>0)
 			&&(processed.get(roomID)==null)

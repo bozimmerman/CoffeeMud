@@ -51,7 +51,7 @@ public class Prayer_ProtGood extends Prayer
 				Prayer bob=(Prayer)affect.tool();
 				if(bob.holyQuality()==Prayer.HOLY_GOOD)
 				{
-					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of "+affect.source().displayName()+".");
+					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The unholy field around <S-NAME> protect(s) <S-HIM-HER> from the goodly magic attack of "+affect.source().name()+".");
 					return false;
 				}
 			}
@@ -93,7 +93,7 @@ public class Prayer_ProtGood extends Prayer
 	{
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already affected by "+displayName()+".");
+			mob.tell("You are already affected by "+name()+".");
 			return false;
 		}
 

@@ -33,7 +33,7 @@ public class Thief_Con extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.INTELLIGENCE)<3))
 		{
-			mob.tell("You can't con "+target.displayName()+".");
+			mob.tell("You can't con "+target.name()+".");
 			return false;
 		}
 

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Plains extends StdRoom
 {
+	public String ID(){return "Plains";}
 	public Plains()
 	{
 		super();

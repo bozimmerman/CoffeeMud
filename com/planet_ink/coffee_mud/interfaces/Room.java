@@ -4,6 +4,9 @@ import java.util.*;
 
 public interface Room extends Environmental
 {
+	public String roomID();
+	public void setRoomID(String newRoomID);
+	
 	public final static int INDOORS=128;
 	
 	public final static int DOMAIN_OUTDOORS_CITY=0;
@@ -61,8 +64,6 @@ public interface Room extends Environmental
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
 	
-	public void setID(String newID);
-	public String objectID();
 	public void startItemRejuv();
 	public void recoverRoomStats();
 	

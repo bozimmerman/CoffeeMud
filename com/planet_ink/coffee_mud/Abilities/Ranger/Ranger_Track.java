@@ -17,7 +17,7 @@ public class Ranger_Track extends StdAbility
 	private static final String[] triggerStrings = {"TRACK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 	public Environmental newInstance(){	return new Ranger_Track();}
@@ -135,7 +135,7 @@ public class Ranger_Track extends StdAbility
 			if(R.fetchInhabitant(mobName)!=null)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -143,10 +143,10 @@ public class Ranger_Track extends StdAbility
 			if((R!=null)&&(R.fetchInhabitant(mobName)!=null))
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,true);
-		
+
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
 			target=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
@@ -154,7 +154,7 @@ public class Ranger_Track extends StdAbility
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
 			theTrail.addElement(mob.location());
-			
+
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
@@ -164,7 +164,7 @@ public class Ranger_Track extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(tracking "+target.displayName()+")";
+				displayText="(tracking "+target.name()+")";
 				Ranger_Track newOne=(Ranger_Track)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);

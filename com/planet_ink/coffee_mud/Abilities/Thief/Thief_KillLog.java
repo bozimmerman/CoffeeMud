@@ -45,21 +45,21 @@ public class Thief_KillLog extends ThiefSkill
 		str.append("</MOBS>");
 		return str.toString();
 	}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		if((mark!=null)
 		&&msg.amISource(mark)
 		&&(msg.sourceMinor()==Affect.TYP_DEATH))
 		{
-			String[] set=(String[])theList.get(mark.name());
+			String[] set=(String[])theList.get(mark.Name());
 			if(set==null)
 			{
 				set=new String[4];
-				set[0]=mark.name();
+				set[0]=mark.Name();
 				set[2]="1";
 				set[3]="0";
-				theList.put(mark.name(),set);
+				theList.put(mark.Name(),set);
 			}
 			set[1]=""+mark.envStats().level();
 			set[3]=new Integer(Util.s_int(set[3])+1).toString();
@@ -72,7 +72,7 @@ public class Thief_KillLog extends ThiefSkill
 		}
 		super.affect(myHost,msg);
 	}
-	
+
 	public void setMiscText(String str)
 	{
 		theList.clear();
@@ -96,7 +96,7 @@ public class Thief_KillLog extends ThiefSkill
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -108,14 +108,14 @@ public class Thief_KillLog extends ThiefSkill
 			mark=m;
 			if(mark!=null)
 			{
-				String[] set=(String[])theList.get(mark.name());
+				String[] set=(String[])theList.get(mark.Name());
 				if(set==null)
 				{
 					set=new String[4];
-					set[0]=mark.name();
+					set[0]=mark.Name();
 					set[2]="0";
 					set[3]="0";
-					theList.put(mark.name(),set);
+					theList.put(mark.Name(),set);
 				}
 				set[1]=""+mark.envStats().level();
 				set[2]=new Integer(Util.s_int(set[2])+1).toString();
@@ -128,7 +128,7 @@ public class Thief_KillLog extends ThiefSkill
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -154,7 +154,7 @@ public class Thief_KillLog extends ThiefSkill
 						addOne=one;
 					}
 				}
-				if(addOne==null) 
+				if(addOne==null)
 					break;
 				else
 					order.addElement(addOne);
@@ -178,6 +178,6 @@ public class Thief_KillLog extends ThiefSkill
 			mob.tell("You failed to recall your log.");
 			return false;
 		}
-		
+
 	}
 }

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class MountainSurface extends ClimbableSurface
 {
+	public String ID(){return "MountainSurface";}
 	public MountainSurface()
 	{
 		super();

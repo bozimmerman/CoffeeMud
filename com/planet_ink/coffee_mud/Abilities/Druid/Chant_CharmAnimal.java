@@ -76,7 +76,7 @@ public class Chant_CharmAnimal extends Chant
 
 		if(!Sense.isAnimalIntelligence(target))
 		{
-			mob.tell(target.displayName()+" is not an animal!");
+			mob.tell(target.name()+" is not an animal!");
 			return false;
 		}
 

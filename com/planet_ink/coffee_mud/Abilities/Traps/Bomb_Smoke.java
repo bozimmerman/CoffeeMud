@@ -12,7 +12,7 @@ public class Bomb_Smoke extends StdBomb
 	protected int trapLevel(){return 2;}
 	public String requiresToSet(){return "something wooden";}
 	public Environmental newInstance(){	return new Bomb_Smoke();}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -31,7 +31,7 @@ public class Bomb_Smoke extends StdBomb
 			if((!invoker().mayIFight(target))||(target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the smoke bomb!");
 			else
-			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.displayName()+" explodes smoke into <T-YOUPOSS> eyes!"))
+			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.name()+" explodes smoke into <T-YOUPOSS> eyes!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility("Spell_Blindness");
@@ -39,5 +39,5 @@ public class Bomb_Smoke extends StdBomb
 			}
 		}
 	}
-	
+
 }

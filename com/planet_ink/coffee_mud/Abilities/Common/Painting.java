@@ -54,7 +54,7 @@ public class Painting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"<S-NAME> completely mess(es) up painting "+building.displayName()+".");
+						commonTell(mob,"<S-NAME> completely mess(es) up painting "+building.name()+".");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -77,7 +77,7 @@ public class Painting extends CommonSkill
 		messedUp=false;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		int completion=25;
 		if(str.equalsIgnoreCase("wall"))
 		{
@@ -107,9 +107,9 @@ public class Painting extends CommonSkill
 					if((I!=null)
 					&&(I.displayText().length()==0)
 					&&(!I.isGettable())
-					&&((" "+I.displayName().toUpperCase()+" ").indexOf(vstr)>=0))
+					&&((" "+I.name().toUpperCase()+" ").indexOf(vstr)>=0))
 					{
-						if(S.confirm("'"+I.displayName()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))
+						if(S.confirm("'"+I.name()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))
 						{
 							I.destroyThis();
 							return true;
@@ -135,8 +135,8 @@ public class Painting extends CommonSkill
 			}
 			if((I.material()!=EnvResource.RESOURCE_COTTON)
 			&&(I.material()!=EnvResource.RESOURCE_SILK)
-			&&(!I.name().toUpperCase().endsWith("CANVAS"))
-			&&(!I.name().toUpperCase().endsWith("SILKSCREEN")))
+			&&(!I.Name().toUpperCase().endsWith("CANVAS"))
+			&&(!I.Name().toUpperCase().endsWith("SILKSCREEN")))
 			{
 				commonTell(mob,"You cannot paint on '"+str+"'.");
 				return false;
@@ -163,13 +163,13 @@ public class Painting extends CommonSkill
 			building.baseEnvStats().setLevel(I.baseEnvStats().level());
 			I.destroyThis();
 		}
-		String startStr="<S-NAME> start(s) painting "+building.displayName()+".";
-		displayText="You are painting "+building.displayName();
-		verb="painting "+building.displayName();
+		String startStr="<S-NAME> start(s) painting "+building.name()+".";
+		displayText="You are painting "+building.name();
+		verb="painting "+building.name();
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();
-		
+
 		messedUp=!profficiencyCheck(0,auto);
 		completion=completion-mob.envStats().level()+5;
 		if(completion<10) completion=10;

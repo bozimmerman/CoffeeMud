@@ -16,11 +16,11 @@ public class Dwarf extends StdRace
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Dwarf";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return true;}
 
@@ -63,17 +63,17 @@ public class Dwarf extends StdRace
 		s1.setName("a grey work tunic");
 		s1.setDisplayText("a grey work tunic has been left here.");
 		s1.setDescription("There are lots of little loops and folks for hanging tools about it.");
-		
+
 		Armor s2=CMClass.getArmor("GenShoes");
 		s2.setName("a pair of hefty work boots");
 		s2.setDisplayText("some hefty work boots have been left here.");
 		s2.setDescription("Thick and well worn boots with very tough souls.");
-			
+
 		Armor p1=CMClass.getArmor("GenPants");
 		p1.setName("some hefty work pants");
 		p1.setDisplayText("some hefty work pants have been left here.");
 		p1.setDescription("There are lots of little loops and folks for hanging tools about it.");
-		
+
 		wearOutfit(mob,s1,s2,p1);
 	}
 	public Weapon myNaturalWeapon()
@@ -84,36 +84,36 @@ public class Dwarf extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is nearly dead!^N";
+			return "^r" + mob.name() + "^r is nearly dead!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName() + "^r is covered in blood.^N";
+			return "^r" + mob.name() + "^r is covered in blood.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName() + "^r is bleeding from cuts and gashes.^N";
+			return "^r" + mob.name() + "^r is bleeding from cuts and gashes.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName() + "^y has numerous wounds.^N";
+			return "^y" + mob.name() + "^y has numerous wounds.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName() + "^y has some wounds.^N";
+			return "^y" + mob.name() + "^y has some wounds.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName() + "^p has a few cuts.^N";
+			return "^p" + mob.name() + "^p has a few cuts.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName() + "^p is cut.^N";
+			return "^p" + mob.name() + "^p is cut.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName() + "^g has some bruises.^N";
+			return "^g" + mob.name() + "^g has some bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName() + "^g is very winded.^N";
+			return "^g" + mob.name() + "^g is very winded.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName() + "^g is slightly winded.^N";
+			return "^g" + mob.name() + "^g is slightly winded.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect health^N";
+			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
 	public Vector myResources()
 	{

@@ -74,7 +74,7 @@ public class Blacksmithing extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've ruined "+building.displayName()+"!");
+						commonTell(mob,"You've ruined "+building.name()+"!");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -197,9 +197,9 @@ public class Blacksmithing extends CommonSkill
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) smithing "+building.displayName()+".";
-		displayText="You are smithing "+building.displayName();
-		verb="smithing "+building.displayName();
+		startStr="<S-NAME> start(s) smithing "+building.name()+".";
+		displayText="You are smithing "+building.name();
+		verb="smithing "+building.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

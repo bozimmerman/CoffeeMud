@@ -34,7 +34,7 @@ public class Chant_Shillelagh extends Chant
 			if(((affected!=null)&&(affected instanceof Item))
 			&&((((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB)))
-				((MOB)((Item)affected).owner()).tell("The enchantment on "+((Item)affected).displayName()+" fades.");
+				((MOB)((Item)affected).owner()).tell("The enchantment on "+((Item)affected).name()+" fades.");
 		}
 		super.unInvoke();
 	}
@@ -58,7 +58,7 @@ public class Chant_Shillelagh extends Chant
 		}
 		if(((Weapon)target).fetchAffect(this.ID())!=null)
 		{
-			mob.tell(target.displayName()+" is already enchanted.");
+			mob.tell(target.name()+" is already enchanted.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

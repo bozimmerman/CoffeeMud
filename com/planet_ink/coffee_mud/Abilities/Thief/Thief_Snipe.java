@@ -17,7 +17,7 @@ public class Thief_Snipe extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Snipe();}
 	protected int overrideMana(){return 100;}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isInCombat())
@@ -27,7 +27,7 @@ public class Thief_Snipe extends ThiefSkill
 		}
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		if(!Sense.aliveAwakeMobile(mob,true))
 		{
 			mob.tell("You need to stand up!");
@@ -35,7 +35,7 @@ public class Thief_Snipe extends ThiefSkill
 		}
 		if(Sense.canBeSeenBy(mob,target))
 		{
-			mob.tell(target.displayName()+" is watching you too closely.");
+			mob.tell(target.name()+" is watching you too closely.");
 			return false;
 		}
 		Item w=mob.fetchWieldedItem();
@@ -52,7 +52,7 @@ public class Thief_Snipe extends ThiefSkill
 			mob.tell("You need a ranged weapon to snipe.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -76,7 +76,7 @@ public class Thief_Snipe extends ThiefSkill
 				{
 					Ability hide=mob.fetchAbility("Thief_Hide");
 					if(hide!=null) hide.invoke(mob,null,false);
-						
+
 					mob.location().recoverRoomStats();
 					if(Sense.canBeSeenBy(mob,target))
 					{

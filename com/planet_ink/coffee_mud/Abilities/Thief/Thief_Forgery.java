@@ -15,7 +15,7 @@ public class Thief_Forgery extends ThiefSkill
 	private static final String[] triggerStrings = {"FORGERY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Forgery();}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -26,7 +26,7 @@ public class Thief_Forgery extends ThiefSkill
 		Item target=mob.fetchInventory((String)commands.lastElement());
 		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+target.displayName()+"' here.");
+			mob.tell("You don't see '"+target.name()+"' here.");
 			return false;
 		}
 		commands.removeElement(commands.lastElement());
@@ -42,10 +42,10 @@ public class Thief_Forgery extends ThiefSkill
 		String forgeWhat=Util.combine(commands,0);
 		if(forgeWhat.length()==0)
 		{
-			mob.tell("Forge what onto '"+target.displayName()+"'?  Try a spell name, a room ID, or a bank note name.");
+			mob.tell("Forge what onto '"+target.name()+"'?  Try a spell name, a room ID, or a bank note name.");
 			return false;
 		}
-		
+
 		String newName="";
 		String newDisplay="";
 		String newDescription="";
@@ -54,8 +54,8 @@ public class Thief_Forgery extends ThiefSkill
 		if(room!=null)
 		{
 			Item I=CMClass.getItem("StdTitle");
-			((LandTitle)I).setLandRoomID(room.ID());
-			newName=I.displayName();
+			((LandTitle)I).setLandRoomID(room.roomID());
+			newName=I.name();
 			newDescription=I.description();
 			newDisplay=I.displayText();
 			newSecretIdentity=I.secretIdentity();
@@ -65,7 +65,7 @@ public class Thief_Forgery extends ThiefSkill
 			Ability A=CMClass.findAbility(forgeWhat);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
 			{
-				mob.tell("You can't forge '"+A.displayName()+"'.");
+				mob.tell("You can't forge '"+A.name()+"'.");
 				return false;
 			}
 			else
@@ -82,12 +82,12 @@ public class Thief_Forgery extends ThiefSkill
 					mob.tell("That already has real spells on it!");
 					return false;
 				}
-				else					  
+				else
 				{
-					newName=target.displayName();
+					newName=target.name();
 					newDisplay=target.displayText();
 					newDescription=target.description();
-					newSecretIdentity="a scroll of "+A.displayName()+" Charges: 10\n";
+					newSecretIdentity="a scroll of "+A.name()+" Charges: 10\n";
 				}
 			}
 		}
@@ -99,7 +99,7 @@ public class Thief_Forgery extends ThiefSkill
 				Item note=Money.makeNote(coins[i],null,null);
 				if(CoffeeUtensils.containsString(note.name(),forgeWhat))
 				{
-					newName=note.displayName();
+					newName=note.name();
 					newDisplay=note.displayText();
 					newDescription=note.description();
 					newSecretIdentity=note.rawSecretIdentity();
@@ -113,12 +113,12 @@ public class Thief_Forgery extends ThiefSkill
 			return false;
 		}
 		forgeWhat=newName;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		
+
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_THIEF_ACT,"<S-NAME> forge(s) "+forgeWhat+" on <T-NAMESELF>.");

@@ -31,7 +31,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		return new StdContainer();
 	}
-	
+
 	public int capacity()
 	{
 		return capacity;
@@ -57,7 +57,7 @@ public class StdContainer extends StdItem implements Container
 					Item newitem=(Item)affect.tool();
 					if(hasALid()&&(!isOpen()))
 					{
-						mob.tell(displayName()+" is closed.");
+						mob.tell(name()+" is closed.");
 						return false;
 					}
 					else
@@ -81,26 +81,26 @@ public class StdContainer extends StdItem implements Container
 					else
 					if(capacity<=0)
 					{
-						mob.tell("You can't put anything in "+displayName()+"!");
+						mob.tell("You can't put anything in "+name()+"!");
 						return false;
 					}
 					else
 					{
 						if(!canContain(newitem))
 						{
-							mob.tell("You can't put "+newitem.displayName()+" in "+displayName()+".");
+							mob.tell("You can't put "+newitem.name()+" in "+name()+".");
 							return false;
 						}
 						else
 						if(newitem.envStats().weight()>capacity)
 						{
-							mob.tell(newitem.displayName()+" won't fit in "+displayName()+".");
+							mob.tell(newitem.name()+" won't fit in "+name()+".");
 							return false;
 						}
 						else
 						if((recursiveWeight(this)+newitem.envStats().weight())>capacity)
 						{
-							mob.tell(displayName()+" is full.");
+							mob.tell(name()+" is full.");
 							return false;
 						}
 						if((!affect.source().isMine(this))&&(affect.source().isMine(newitem)))
@@ -126,19 +126,19 @@ public class StdContainer extends StdItem implements Container
 						else
 						if(hasALid()&&(!isOpen()))
 						{
-							mob.tell(displayName()+" is closed.");
+							mob.tell(name()+" is closed.");
 							return false;
 						}
 						else
 						if(mob.envStats().level()<newitem.envStats().level()-10)
 						{
-							mob.tell(newitem.displayName()+" is too powerful to endure possessing it.");
+							mob.tell(newitem.name()+" is too powerful to endure possessing it.");
 							return false;
 						}
 						else
 						if((recursiveWeight(newitem)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 						{
-							mob.tell(newitem.displayName()+" is too heavy.");
+							mob.tell(newitem.name()+" is too heavy.");
 							return false;
 						}
 						else
@@ -153,7 +153,7 @@ public class StdContainer extends StdItem implements Container
 				else
 				if((recursiveWeight(this)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 				{
-					mob.tell(displayName()+" is too heavy.");
+					mob.tell(name()+" is too heavy.");
 					return false;
 				}
 				break;
@@ -162,7 +162,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					if(!hasALid)
 					{
-						mob.tell("There is nothing to close on "+displayName()+".");
+						mob.tell("There is nothing to close on "+name()+".");
 						return false;
 					}
 					else
@@ -170,26 +170,26 @@ public class StdContainer extends StdItem implements Container
 				}
 				else
 				{
-					mob.tell(displayName()+" is already closed.");
+					mob.tell(name()+" is already closed.");
 					return false;
 				}
 				//break;
 			case Affect.TYP_OPEN:
 				if(!hasALid)
 				{
-					mob.tell("There is nothing to open on "+displayName()+".");
+					mob.tell("There is nothing to open on "+name()+".");
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(displayName()+" is already open!");
+					mob.tell(name()+" is already open!");
 					return false;
 				}
 				else
 				{
 					if(isLocked)
 					{
-						mob.tell(displayName()+" is locked.");
+						mob.tell(name()+" is locked.");
 						return false;
 					}
 					else
@@ -200,12 +200,12 @@ public class StdContainer extends StdItem implements Container
 			case Affect.TYP_UNLOCK:
 				if(!hasALid)
 				{
-					mob.tell("There is nothing to lock or unlock on "+displayName()+".");
+					mob.tell("There is nothing to lock or unlock on "+name()+".");
 					return false;
 				}
 				if(isOpen)
 				{
-					mob.tell(displayName()+" is open!");
+					mob.tell(name()+" is open!");
 					return false;
 				}
 				else
@@ -218,13 +218,13 @@ public class StdContainer extends StdItem implements Container
 				{
 					if((!isLocked)&&(affect.targetMinor()==Affect.TYP_UNLOCK))
 					{
-						mob.tell(displayName()+" is not locked.");
+						mob.tell(name()+" is not locked.");
 						return false;
 					}
 					else
 					if((isLocked)&&(affect.targetMinor()==Affect.TYP_LOCK))
 					{
-						mob.tell(displayName()+" is already locked.");
+						mob.tell(name()+" is already locked.");
 						return false;
 					}
 					else
@@ -324,7 +324,7 @@ public class StdContainer extends StdItem implements Container
 						buf.append(description()+"\n\r");
 					if((isOpen)&&((capacity()>0)||(!(this instanceof Armor))))
 					{
-						buf.append(displayName()+" contains:\n\r");
+						buf.append(name()+" contains:\n\r");
 						Vector newItems=new Vector();
 						if((this instanceof Drink)&&(((Drink)this).liquidRemaining()>0))
 						{
@@ -341,7 +341,7 @@ public class StdContainer extends StdItem implements Container
 							l.recoverEnvStats();
 							newItems.addElement(l);
 						}
-							
+
 						if(mob.isMine(this))
 						{
 							for(int i=0;i<mob.inventorySize();i++)
@@ -367,7 +367,7 @@ public class StdContainer extends StdItem implements Container
 					}
 					else
 					if(hasALid())
-						buf.append(displayName()+" is closed.");
+						buf.append(name()+" is closed.");
 					mob.tell(buf.toString());
 				}
 				else
@@ -417,14 +417,14 @@ public class StdContainer extends StdItem implements Container
 				if((thisItem!=null)&&(thisItem.container()==thisContainer))
 					weight+=recursiveWeight(thisItem);
 			}
-				
+
 		return weight;
 	}
 
 	public long containTypes(){return containType;}
 	public void setContainTypes(long containTypes){containType=containTypes;}
 	public boolean canContain(Environmental E)
-	{ 
+	{
 		if (!(E instanceof Item)) return false;
 		if(containType==0) return true;
 		for(int i=0;i<20;i++)
@@ -484,9 +484,9 @@ public class StdContainer extends StdItem implements Container
 				}
 		return false;
 	}
-		
 
-	
+
+
 
 	public boolean isLocked(){return isLocked;}
 	public boolean hasALock(){return hasALock;}
@@ -542,9 +542,9 @@ public class StdContainer extends StdItem implements Container
 	{
 		miscText=newKeyName;
 	}
-	protected static void recursiveDropMOB(MOB mob, 
-										   Room room, 
-										   Item thisContainer, 
+	protected static void recursiveDropMOB(MOB mob,
+										   Room room,
+										   Item thisContainer,
 										   boolean bodyFlag)
 	{
 		// caller is responsible for recovering any env
@@ -579,7 +579,7 @@ public class StdContainer extends StdItem implements Container
 			}
 		}while(!nothingDone);
 	}
-	
+
 	public void emptyPlease()
 	{
 		Vector V=getContents();
@@ -620,7 +620,7 @@ public class StdContainer extends StdItem implements Container
 			}
 		}
 	}
-	
+
 	public Vector getContents()
 	{
 		Vector V=new Vector();

@@ -22,14 +22,14 @@ public class Skill_Haggle extends StdAbility
 		super.affectCharStats(affectedMOB,affectableStats);
 		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+10);
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		String cmd="";
 		if(commands.size()>0)
 			cmd=((String)commands.firstElement()).toUpperCase();
-	
+
 		if((commands.size()<2)||((!cmd.equals("BUY")&&(!cmd.equals("SELL")))))
 		{
 			mob.tell("You must specify BUY, SELL, an item, and possibly a ShopKeeper (unless it is implied).");
@@ -43,7 +43,7 @@ public class Skill_Haggle extends StdAbility
 			mob.tell(Util.capitalize(cmd)+" what?");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -60,7 +60,7 @@ public class Skill_Haggle extends StdAbility
 				try{
 					commands.insertElementAt(Util.capitalize(cmd),0);
 					ExternalPlay.doCommand(mob,commands);
-					commands.addElement(shopkeeper.displayName());
+					commands.addElement(shopkeeper.name());
 				}catch(Exception e){Log.errOut("Skill_Haggle",e);}
 				mob.delAffect(this);
 				mob.recoverCharStats();

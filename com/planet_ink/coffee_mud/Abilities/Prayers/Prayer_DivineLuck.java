@@ -32,7 +32,7 @@ public class Prayer_DivineLuck extends Prayer
 		CharStats.SAVE_UNDEAD,
 		CharStats.SAVE_WATER,
 		CharStats.SAVE_TRAPS};
-		
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
@@ -78,7 +78,7 @@ public class Prayer_DivineLuck extends Prayer
 	{
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already affected by "+displayName()+".");
+			mob.tell("You are already affected by "+name()+".");
 			return false;
 		}
 
@@ -87,7 +87,7 @@ public class Prayer_DivineLuck extends Prayer
 
 		Environmental target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

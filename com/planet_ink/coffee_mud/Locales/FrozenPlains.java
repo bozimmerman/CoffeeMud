@@ -6,6 +6,7 @@ import java.util.*;
 
 public class FrozenPlains extends Plains
 {
+	public String ID(){return "FrozenPlains";}
 	public FrozenPlains()
 	{
 		super();

@@ -54,7 +54,7 @@ public class Spell_DispelMagic extends Spell
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		int diff=revokeThis.invoker().envStats().level()-mob.envStats().level();
 		if(diff<0) diff=0;
 		else diff=diff*-20;
@@ -62,7 +62,7 @@ public class Spell_DispelMagic extends Spell
 		boolean success=profficiencyCheck(diff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?revokeThis.displayName()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.displayName()+" from <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -70,7 +70,7 @@ public class Spell_DispelMagic extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to dispel "+revokeThis.displayName()+" from <T-NAMESELF>, but flub(s) it.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to dispel "+revokeThis.name()+" from <T-NAMESELF>, but flub(s) it.");
 
 
 		// return whether it worked

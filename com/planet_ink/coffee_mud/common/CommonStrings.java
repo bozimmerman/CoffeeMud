@@ -11,7 +11,7 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_SHOWDAMAGE=4;
 	public static final int SYSTEM_EMAILREQ=5;
 	public static final int NUM_SYSTEM=6;
-	
+
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
 	public static final int SYSTEMI_MAXSTAT=2;
@@ -20,41 +20,41 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_DAYSCLANDEATH=5;
 	public static final int SYSTEMI_MINCLANLEVEL=6;
 	public static final int NUMI_SYSTEM=7;
-	
+
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];
 
 	public static int pkillLevelDiff=26;
-	
+
 	public static int getPKillLevelDiff(){return pkillLevelDiff;}
-	
+
 	public static String getVar(int varNum)
 	{
 		if((varNum<0)||(varNum>=NUM_SYSTEM)) return "";
 		if(sysVars[varNum]==null) return "";
 		return sysVars[varNum];
 	}
-	
+
 	public static int getIntVar(int varNum)
 	{
 		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return -1;
 		if(sysInts[varNum]==null) return -1;
 		return sysInts[varNum].intValue();
 	}
-	
+
 	public static void setIntVar(int varNum, int val)
 	{
 		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
 		sysInts[varNum]=new Integer(val);
 	}
-	
+
 	public static void setIntVar(int varNum, String val)
 	{
 		if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
 		if(val==null) val="0";
 		sysInts[varNum]=new Integer(Util.s_int(val));
 	}
-	
+
 	public static void setVar(int varNum, String val)
 	{
 		if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
@@ -71,7 +71,7 @@ public class CommonStrings extends Scriptable
 			break;
 		}
 	}
-	
+
 	public static String[] standardColorLookups()
 	{
 		if(clookup==null)
@@ -106,12 +106,12 @@ public class CommonStrings extends Scriptable
 			// I M - item, mob
 			clookup[(int)'I']="^g";
 			clookup[(int)'M']="^p";
-			
+
 			// h m v - prompt colors - deprecated!!
 			clookup[(int)'h']="^c";
 			clookup[(int)'m']="^c";
 			clookup[(int)'v']="^c";
-			
+
 			// fixed system colors, 1= bright, 0=dark
 			clookup[(int)'w']="\033[1;37m";
 			clookup[(int)'g']="\033[1;32m";
@@ -136,8 +136,8 @@ public class CommonStrings extends Scriptable
 		}
 		return clookup;
 	}
-	
-	
+
+
 	public static String standardHitWord(int type, int damage)
 	{
 		if(type<0) type=Weapon.TYPE_BURSTING;
@@ -157,7 +157,7 @@ public class CommonStrings extends Scriptable
 		else if(damage<=225) damnCode=12;
 		else if(damage<=300) damnCode=13;
 		else damnCode=14;
-		
+
 		switch(damnCode)
 		{
 			case 7: return "massacre(s)";
@@ -309,7 +309,7 @@ public class CommonStrings extends Scriptable
 		}
 		return "";
 	}
-	
+
 	public static String armorStr(int armor){
 		return (armor<0)?armorStrs[0]:(
 			   (armor>200)?armorStrs[armorStrs.length-1]+" ("+armor+")":(
@@ -346,8 +346,8 @@ public class CommonStrings extends Scriptable
 		int dexTool=str.indexOf("<TOOLNAME>");
 		return str.substring(0,dexTool)+weaponName+str.substring(dexTool+10);
 	}
-	
-	
+
+
 	public static String standardHitString(int weaponType, int weaponClass, int damageAmount,  String weaponName)
 	{
 		if((weaponName==null)||(weaponName.length()==0))
@@ -363,22 +363,22 @@ public class CommonStrings extends Scriptable
 			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+weaponName;
 		}
 	}
-	
+
 	public static String standardMobCondition(MOB mob)
 	{
 		switch((int)Math.round(Math.floor((Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10)))
 		{
-		case 0:	return "^r" + mob.displayName() + "^r is hovering on deaths door!^N";
-		case 1:	return "^r" + mob.displayName() + "^r is covered in blood.^N";
-		case 2:	return "^r" + mob.displayName() + "^r is bleeding badly from lots of wounds.^N";
-		case 3:	return "^y" + mob.displayName() + "^y has numerous bloody wounds and gashes.^N";
-		case 4:	return "^y" + mob.displayName() + "^y has some bloody wounds and gashes.^N";
-		case 5:	return "^p" + mob.displayName() + "^p has a few bloody wounds.^N";
-		case 6:	return "^p" + mob.displayName() + "^p is cut and bruised.^N";
-		case 7:	return "^g" + mob.displayName() + "^g has some minor cuts and bruises.^N";
-		case 8:	return "^g" + mob.displayName() + "^g has a few bruises and scratches.^N";
-		case 9:	return "^g" + mob.displayName() + "^g has a few small bruises.^N";
-		default: return "^c" + mob.displayName() + "^c is in perfect health^N";
+		case 0:	return "^r" + mob.name() + "^r is hovering on deaths door!^N";
+		case 1:	return "^r" + mob.name() + "^r is covered in blood.^N";
+		case 2:	return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N";
+		case 3:	return "^y" + mob.name() + "^y has numerous bloody wounds and gashes.^N";
+		case 4:	return "^y" + mob.name() + "^y has some bloody wounds and gashes.^N";
+		case 5:	return "^p" + mob.name() + "^p has a few bloody wounds.^N";
+		case 6:	return "^p" + mob.name() + "^p is cut and bruised.^N";
+		case 7:	return "^g" + mob.name() + "^g has some minor cuts and bruises.^N";
+		case 8:	return "^g" + mob.name() + "^g has a few bruises and scratches.^N";
+		case 9:	return "^g" + mob.name() + "^g has a few small bruises.^N";
+		default: return "^c" + mob.name() + "^c is in perfect health^N";
 		}
 	}
 
@@ -403,7 +403,7 @@ public class CommonStrings extends Scriptable
 	public static void resistanceMsgs(Affect affect, MOB source, MOB target)
 	{
 		if(affect.wasModified()) return;
-		
+
 		if(target.amDead()) return;
 
 		String tool=null;
@@ -419,7 +419,7 @@ public class CommonStrings extends Scriptable
 				endPart=".";
 			else
 		    if(affect.tool() instanceof Ability)
-				tool=((Ability)affect.tool()).displayName();
+				tool=((Ability)affect.tool()).name();
 		}
 		String tackOn=null;
 		switch(affect.targetMinor())
@@ -441,7 +441,7 @@ public class CommonStrings extends Scriptable
 			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,tackOn));
 		affect.tagModified(true);
 	}
-																														
+
 	public static String[] armorStrs={
 	"nonexistant",				//0
 	"covered",					//1
@@ -454,7 +454,7 @@ public class CommonStrings extends Scriptable
 	"heavily armored",			//8
 	"completely armored",		//9
 	"divinely armored",			//10
-	"practically unhittable",	//11	
+	"practically unhittable",	//11
 	"almost impenetrable",		//12
 	"almost invincible",		//13
 	"invincible!"				//14
@@ -472,7 +472,7 @@ public class CommonStrings extends Scriptable
 	"extremely dangerous",	//9
 	"deadly",				//10
 	"extremely deadly",		//11
-	"a dealer of death",	//12	
+	"a dealer of death",	//12
 	"a master of death",	//13
 	"death incarnate!"		//14
 	};

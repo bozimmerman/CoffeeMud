@@ -42,7 +42,7 @@ public class GenWand extends GenItem implements Wand
 			readableText=theSpell.ID();
 		secretWord=StdWand.getWandWord(readableText);
 	}
-	
+
 	public void setReadableText(String text)
 	{
 		super.setReadableText(text);
@@ -55,9 +55,9 @@ public class GenWand extends GenItem implements Wand
 	}
 	public int value()
 	{
-		if(usesRemaining()<=0) 
+		if(usesRemaining()<=0)
 			return 0;
-		else 
+		else
 			return super.value();
 	}
 
@@ -67,7 +67,7 @@ public class GenWand extends GenItem implements Wand
 		Ability A=getSpell();
 		if(A!=null)
 		{
-			id="'A wand of "+A.displayName()+"' Charges: "+usesRemaining()+"\n\r"+id;
+			id="'A wand of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
 			return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 		}
 		return id;
@@ -86,7 +86,7 @@ public class GenWand extends GenItem implements Wand
 	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
-		
+
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_WAND_USE:

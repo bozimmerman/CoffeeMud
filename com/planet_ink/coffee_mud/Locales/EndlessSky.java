@@ -7,6 +7,7 @@ import java.util.*;
 
 public class EndlessSky extends StdGrid
 {
+	public String ID(){return "EndlessSky";}
 	protected boolean crossLinked=false;
 
 	public EndlessSky()

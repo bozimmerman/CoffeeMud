@@ -6,6 +6,7 @@ import java.util.*;
 
 public class GreatLake extends StdGrid
 {
+	public String ID(){return "GreatLake";}
 	public GreatLake()
 	{
 		super();

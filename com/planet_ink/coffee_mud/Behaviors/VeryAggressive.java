@@ -15,7 +15,7 @@ public class VeryAggressive extends Aggressive
 	{
 		return new VeryAggressive();
 	}
-	
+
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -35,7 +35,7 @@ public class VeryAggressive extends Aggressive
 		return ExternalPlay.zapperCheck(getParms(),M);
 	}
 
-	public static void tickVeryAggressively(Tickable ticking, 
+	public static void tickVeryAggressively(Tickable ticking,
 											int tickID,
 											boolean wander,
 											Behavior B)
@@ -43,19 +43,19 @@ public class VeryAggressive extends Aggressive
 		if(tickID!=Host.MOB_TICK) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
-		
+
 		// ridden things dont wander!
 		if(ticking instanceof Rideable)
 			if(((Rideable)ticking).numRiders()>0)
 				return;
-		
+
 		if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
 		||(!Sense.canTaste(mob)))
 		   return;
 
 		// let's not do this 100%
 		if(Dice.rollPercentage()>15) return;
-		
+
 		Room thisRoom=mob.location();
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
@@ -71,7 +71,7 @@ public class VeryAggressive extends Aggressive
 			Exit exit=thisRoom.getExitInDir(d);
 			if((room!=null)
 			   &&(exit!=null)
-			   &&(wander||room.getArea().name().equals(thisRoom.getArea().name())))
+			   &&(wander||room.getArea().Name().equals(thisRoom.getArea().Name())))
 			{
 				if(exit.isOpen())
 				{

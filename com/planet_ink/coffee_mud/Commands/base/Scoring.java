@@ -44,15 +44,15 @@ public class Scoring
 
 	public static void destroyUser(MOB deadMOB)
 	{
-		if(CMMap.getPlayer(deadMOB.ID())!=null)
+		if(CMMap.getPlayer(deadMOB.Name())!=null)
 		{
-		   deadMOB=(MOB)CMMap.getPlayer(deadMOB.ID());
+		   deadMOB=(MOB)CMMap.getPlayer(deadMOB.Name());
 		   CMMap.delPlayer(deadMOB);
 		}
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=(Session)Sessions.elementAt(s);
-			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().ID().equals(deadMOB.ID())))
+			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
 			   deadMOB=S.mob();
 		}
 		FullMsg msg=new FullMsg(deadMOB,null,Affect.MSG_RETIRE,"A horrible death cry is heard throughout the land.");
@@ -79,7 +79,7 @@ public class Scoring
 			deadMOB.session().setKillFlag(true);
 			deadMOB.session().setMob(null);
 		}
-		Log.sysOut("Scoring",deadMOB.displayName()+" has retired!");
+		Log.sysOut("Scoring",deadMOB.name()+" has retired!");
 	}
 
 	public static void retire(MOB mob)
@@ -121,7 +121,7 @@ public class Scoring
 		while(items.size()>0)
 		{
 			Item item=(Item)items.elementAt(0);
-			String str=(useName||(item.displayText().length()==0))?item.displayName():item.displayText();
+			String str=(useName||(item.displayText().length()==0))?item.name():item.displayText();
 			int reps=0;
 			items.removeElement(item);
 			int here=0;
@@ -132,7 +132,7 @@ public class Scoring
 					break;
 				else
 				{
-					String str2=(useName||(item2.displayText().length()==0))?item2.displayName():item2.displayText();
+					String str2=(useName||(item2.displayText().length()==0))?item2.name():item2.displayText();
 					if(str2.length()==0)
 						items.removeElement(item2);
 					else
@@ -162,12 +162,12 @@ public class Scoring
 					say.append("^H("+CMClass.className(item)+")^N ");
 				say.append("^I");
 				if(useName)
-					say.append(item.displayName());
+					say.append(item.name());
 				else
 				if(item.displayText().length()>0)
 					say.append(item.displayText());
 				else
-					say.append(item.displayName());
+					say.append(item.name());
 				say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
 			}
 		}
@@ -193,7 +193,7 @@ public class Scoring
 			levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name();
 		else
 			levelStr=mob.charStats().getCurrentClass().name()+" "+classLevel+"/"+mob.envStats().level();
-		msg.append("You are ^H"+mob.name()+"^? the ^H"+levelStr+"^?.\n\r");
+		msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
 		if(classLevel<mob.envStats().level())
 		{
 			msg.append("You also have levels in: ");
@@ -262,7 +262,7 @@ public class Scoring
 			msg.append("^!You are standing.^?\n\r");
 
 		if(mob.riding()!=null)
-			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().displayName()+".^?\n\r");
+			msg.append("^!You are "+mob.riding().stateString(mob)+" "+mob.riding().name()+".^?\n\r");
 
 		if(Sense.isInvisible(mob))
 			msg.append("^!You are invisible.^?\n\r");
@@ -294,7 +294,7 @@ public class Scoring
 		for(Enumeration d=CMMap.deities();d.hasMoreElements();)
 		{
 			Deity D=(Deity)d.nextElement();
-			msg.append("\n\r^x"+D.displayName()+"^.^?\n\r");
+			msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 			msg.append(D.description()+"\n\r");
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 			msg.append(D.getClericRequirementsDesc()+"\n\r");
@@ -302,7 +302,7 @@ public class Scoring
 			{
 				msg.append("Blessings: ");
 				for(int b=0;b<D.numBlessings();b++)
-					msg.append(D.fetchBlessing(b).displayName()+" ");
+					msg.append(D.fetchBlessing(b).name()+" ");
 				msg.append("\n\r");
 				msg.append(D.getWorshipTriggerDesc()+"\n\r");
 				msg.append(D.getClericTriggerDesc()+"\n\r");
@@ -529,7 +529,7 @@ public class Scoring
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^N"+Util.padRight(thisAbility.displayName(),(col==3)?18:19));
+					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^N"+Util.padRight(thisAbility.name(),(col==3)?18:19));
 				}
 			}
 			if(thisLine.length()>0)
@@ -592,7 +592,7 @@ public class Scoring
 						col=1;
 					}
 					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "
-					+Util.padRight(A.displayName(),19)+" "
+					+Util.padRight(A.name(),19)+" "
 					+Util.padRight(A.requirements(),(col==2)?12:13));
 				}
 			}
@@ -629,7 +629,7 @@ public class Scoring
 				{
 					if(Sense.canBeSeenBy(thisItem,seer))
 					{
-						String name=thisItem.displayName();
+						String name=thisItem.name();
 						if(name.length()>53) name=name.substring(0,50)+"...";
 						msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 					}
@@ -790,7 +790,7 @@ public class Scoring
 		}
 		mob.tell(msg.toString());
 	}
-	
+
 	public static void areas(MOB mob)
 	{
 		Vector areasVec=new Vector();
@@ -798,7 +798,7 @@ public class Scoring
 		{
 			Area A=(Area)a.nextElement();
 			if((!Sense.isHidden(A))||(mob.isASysOp(null)))
-				areasVec.addElement(A.displayName());
+				areasVec.addElement(A.name());
 		}
 		Collections.sort((List)areasVec);
 		StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
@@ -820,9 +820,9 @@ public class Scoring
 	public static boolean email(MOB mob, Vector commands, boolean confirmOnly)
 		throws IOException
 	{
-		if(mob.session()==null) 
+		if(mob.session()==null)
 			return true;
-		
+
 		if((mob.getEmail()==null)||(mob.getEmail().length()==0))
 			mob.session().println("\n\rYou have no email address on file for this character.");
 		else

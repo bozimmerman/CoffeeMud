@@ -108,9 +108,13 @@ public class StdArea implements Area
 	public StdArea()
 	{
 	}
-	public String name(){ return name;}
+	public String name()
+	{
+		if(envStats().newName()!=null) return envStats().newName();
+		return name;
+	}
 	public void setName(String newName){name=newName;}
-	public String displayName(){return name();}
+	public String Name(){return name;}
 	public EnvStats envStats()
 	{
 		return envStats;
@@ -159,7 +163,7 @@ public class StdArea implements Area
 		}
 		return "th";
 	}
-	
+
 	public boolean canSeeTheMoon(Room room)
 	{
 		if(((timeCode!=Area.TIME_NIGHT)&&(timeCode!=Area.TIME_DUSK))
@@ -180,7 +184,7 @@ public class StdArea implements Area
 			return true;
 		}
 	}
-	
+
 	public String timeDescription(MOB mob, Room room)
 	{
 		StringBuffer timeDesc=new StringBuffer("");
@@ -215,10 +219,10 @@ public class StdArea implements Area
 		}
 		return timeDesc.toString();
 	}
-	
+
 	public String getArchivePath(){return archPath;}
 	public void setArchivePath(String pathFile){archPath=pathFile;}
-	
+
 	public int climateType(){return climateID;}
 	public void setClimateType(int newClimateType)
 	{
@@ -361,7 +365,7 @@ public class StdArea implements Area
 	public void setDisplayText(String newDisplayText){}
 
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	
+
 	public String text()
 	{
 		return Generic.getPropertiesStr(this,true);
@@ -477,8 +481,8 @@ public class StdArea implements Area
 				A.affect(this,affect);
 		}
 		if((affect.sourceMinor()==Affect.TYP_RETIRE)
-		&&(amISubOp(affect.source().name())))
-			delSubOp(affect.source().name());
+		&&(amISubOp(affect.source().Name())))
+			delSubOp(affect.source().Name());
 	}
 
 	public void tickControl(boolean start)
@@ -789,13 +793,13 @@ public class StdArea implements Area
 							for(int i=0;i<rustThese.size();i++)
 							{
 								Item I=(Item)rustThese.elementAt(i);
-								M.tell("Your "+I.displayName()+" rusts in the "+weatherDesc+".");
+								M.tell("Your "+I.name()+" rusts in the "+weatherDesc+".");
 								I.setUsesRemaining(I.usesRemaining()-1);
 								if(I.usesRemaining()<=0)
 								{
 									if(M.location()!=null)
 									{
-										FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.displayName()+" is destroyed!",null,I.displayName()+" owned by "+M.displayName()+" is destroyed!");
+										FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
 										if(M.location().okAffect(M,msg))
 											M.location().send(M,msg);
 									}
@@ -1184,7 +1188,7 @@ public class StdArea implements Area
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
-			if(R.ID().length()>0)
+			if(R.roomID().length()>0)
 			{
 				if(R instanceof GridLocale)
 					((GridLocale)R).buildGrid();
@@ -1203,7 +1207,7 @@ public class StdArea implements Area
 	public void fillInAreaRoom(Room R)
 	{
 		R.clearSky();
-		if(R.ID().length()>0)
+		if(R.roomID().length()>0)
 		{
 			if(R instanceof GridLocale)
 				((GridLocale)R).buildGrid();

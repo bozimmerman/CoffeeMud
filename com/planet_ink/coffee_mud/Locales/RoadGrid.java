@@ -6,6 +6,7 @@ import java.util.*;
 
 public class RoadGrid extends StdGrid
 {
+	public String ID(){return "RoadGrid";}
 	public RoadGrid()
 	{
 		super();

@@ -8,12 +8,12 @@ import java.util.*;
 public class StdRoom
 	implements Room
 {
-	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+	public String ID(){return "StdRoom";}
+	protected String myID="room#";
 	protected String name="the room";
 	protected String displayText="Standard Room";
 	protected String miscText="";
 	protected String description="";
-	private String objectID=myID;
 	protected Area myArea=null;
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -40,20 +40,16 @@ public class StdRoom
 		recoverEnvStats();
 	}
 
-	public String ID()
+	public String roomID()
 	{
 		return myID	;
 	}
-	public String objectID()
-	{
-		return objectID;
-	}
-	public String name(){ return name;}
+	public String Name(){ return name;}
 	public void setName(String newName){name=newName;}
-	public String displayName()
-	{ 
+	public String name()
+	{
 		if(envStats().newName()!=null) return envStats().newName();
-		return name();
+		return name;
 	}
 	public Environmental newInstance()
 	{
@@ -174,7 +170,7 @@ public class StdRoom
 		if(newMiscText.trim().length()>0)
 			Generic.setPropertiesStr(this,newMiscText,true);
 	}
-	public void setID(String newID)
+	public void setRoomID(String newID)
 	{
 		myID=newID;
 	}
@@ -202,7 +198,7 @@ public class StdRoom
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
 			EndlessSky sky=new EndlessSky();
 			sky.setArea(getArea());
-			sky.setID("");
+			sky.setRoomID("");
 			rawDoors()[Directions.UP]=sky;
 			rawExits()[Directions.UP]=o;
 			sky.rawDoors()[Directions.DOWN]=this;
@@ -216,7 +212,7 @@ public class StdRoom
 					thatRoom.giveASky(depth+1);
 					thatSky=thatRoom.rawDoors()[Directions.UP];
 				}
-				if((thatSky!=null)&&(thatSky.ID().length()==0)&&(thatSky instanceof EndlessSky))
+				if((thatSky!=null)&&(thatSky.roomID().length()==0)&&(thatSky instanceof EndlessSky))
 				{
 					sky.rawDoors()[d]=thatSky;
 					Exit xo=rawExits()[d];
@@ -239,7 +235,7 @@ public class StdRoom
 		if(!skyedYet) return;
 		Room room=rawDoors()[Directions.UP];
 		if(room==null) return;
-		if((room.ID().length()==0)&&(room instanceof EndlessSky))
+		if((room.roomID().length()==0)&&(room instanceof EndlessSky))
 		{
 			((EndlessSky)room).clearGrid();
 			rawDoors()[Directions.UP]=null;
@@ -259,7 +255,7 @@ public class StdRoom
 		if(resourceCode>=0)
 			resourceFound=System.currentTimeMillis();
 	}
-	
+
 	public int myResource()
 	{
 		if(resourceFound!=0)
@@ -594,9 +590,9 @@ public class StdRoom
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(myArea!=null)
-				Say.append("^!Area  :^N("+myArea.name()+")"+"\n\r");
-			Say.append("^!Locale:^N("+CMClass.className(this)+")"+"\n\r");
-			Say.append("^H("+ID()+")^N ");
+				Say.append("^!Area  :^N("+myArea.Name()+")"+"\n\r");
+			Say.append("^!Locale:^N("+ID()+")"+"\n\r");
+			Say.append("^H("+roomID()+")^N ");
 		}
 		if((Sense.canBeSeenBy(this,mob))
 		   ||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
@@ -637,7 +633,7 @@ public class StdRoom
 				if(mob2.displayText(mob).length()>0)
 					Say.append(mob2.displayText(mob));
 				else
-					Say.append(mob2.displayName());
+					Say.append(mob2.name());
 				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
 			}
 		}

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class WoodsMaze extends StdMaze
 {
+	public String ID(){return "WoodsMaze";}
 	public WoodsMaze()
 	{
 		super();

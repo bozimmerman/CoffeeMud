@@ -17,8 +17,8 @@ public class SaveThread extends Thread
 	public SaveThread()
 	{
 		super("SaveThread");
-	}	
-	
+	}
+
 	public void itemSweep()
 	{
 		long itemKillTime=System.currentTimeMillis();
@@ -47,7 +47,7 @@ public class SaveThread extends Thread
 			}
 		}
 	}
-	
+
 	public void checkHealth()
 	{
 		long lastDateTime=System.currentTimeMillis();
@@ -61,7 +61,7 @@ public class SaveThread extends Thread
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
-					Log.errOut("SaveThread",mob.displayName()+" in room "+R.ID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
+					Log.errOut("SaveThread",mob.name()+" in room "+R.roomID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
 				}
 			}
 		}
@@ -80,7 +80,7 @@ public class SaveThread extends Thread
 
 			}
 		}
-		
+
 		for(int s=0;s<Sessions.size();s++)
 		{
 			TelnetSession S=(TelnetSession)Sessions.elementAt(s);
@@ -96,7 +96,7 @@ public class SaveThread extends Thread
 						check=check*5;
 					if(time>(check*10))
 					{
-						Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
+						Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
 						Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
 						Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 						S.setKillFlag(true);
@@ -105,7 +105,7 @@ public class SaveThread extends Thread
 					else
 					if(time>check)
 					{
-						Log.errOut("SaveThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
+						Log.errOut("SaveThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
 						Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
 						Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					}
@@ -113,7 +113,7 @@ public class SaveThread extends Thread
 				else
 				if(time>(60000))
 				{
-					Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().name())+", out for "+time);
+					Log.errOut("SaveThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
 					Log.errOut("SaveThread","STATUS  was :"+S.getStatus());
 					Log.errOut("SaveThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					S.setKillFlag(true);
@@ -121,13 +121,13 @@ public class SaveThread extends Thread
 				}
 			}
 		}
-		
+
 		StringBuffer ok=DBConnector.errorStatus();
 		if(ok.length()!=0)
 			Log.errOut("Save Thread","DB: "+ok);
 
 	}
-	
+
 	public void shutdown()
 	{
 		shutDown=true;
@@ -190,10 +190,10 @@ public class SaveThread extends Thread
 				Log.errOut("SaveThread",e);
 			}
 		}
-		
+
 		// force final time save!
 		if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
-		
+
 		Log.sysOut("SaveThread","Shutdown complete.");
 	}
 }

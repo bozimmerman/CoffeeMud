@@ -54,7 +54,7 @@ public class Spell_Permanency extends Spell
 				}
 				if(theOne==null)
 				{
-					mob.tell("There does not appear to be any of your spells on "+target.displayName()+" which can be made permanent.");
+					mob.tell("There does not appear to be any of your spells on "+target.name()+" which can be made permanent.");
 					return false;
 				}
 				else
@@ -63,7 +63,7 @@ public class Spell_Permanency extends Spell
 					mob.tell("You lose "+exp+" experience points.");
 					mob.charStats().getCurrentClass().loseExperience(mob,exp);
 					theOne.makeNonUninvokable();
-					mob.location().show(mob,target,null,Affect.MSG_OK_VISUAL,"The quality of "+theOne.displayName()+" inside <T-NAME> glows!");
+					mob.location().show(mob,target,null,Affect.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
 				}
 			}
 

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class EndlessOcean extends StdGrid
 {
+	public String ID(){return "EndlessOcean";}
 	public EndlessOcean()
 	{
 		super();

@@ -11,7 +11,7 @@ public class Prayer_Avatar extends Prayer
 	public String name(){ return "Avatar";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public int holyQuality(){ return HOLY_EVIL;}
-	public String displayText(){ 
+	public String displayText(){
 		if((invoker()!=null)&&(invoker().getWorshipCharID().length()>0))
 			return "(You are the AVATAR of "+invoker().getWorshipCharID()+")";
 		else
@@ -51,9 +51,9 @@ public class Prayer_Avatar extends Prayer
 		{
 			MOB mob=(MOB)affected;
 			if(mob.getMyDeity()!=null)
-				affectedStats.setName(mob.displayName()+" the Avatar of "+mob.getMyDeity().displayName());
+				affectedStats.setName(mob.name()+" the Avatar of "+mob.getMyDeity().name());
 			else
-				affectedStats.setName(mob.displayName()+" the Avatar");
+				affectedStats.setName(mob.name()+" the Avatar");
 			int levels=mob.charStats().getClassLevel("Avatar");
 			if(levels<0) levels=mob.envStats().level();
 		}
@@ -125,9 +125,9 @@ public class Prayer_Avatar extends Prayer
 			return false;
 		}
 
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		int levels=mob.charStats().getClassLevel("Avatar");
 		if(levels<0) levels=mob.envStats().level();
 		else
@@ -136,8 +136,8 @@ public class Prayer_Avatar extends Prayer
 			mob.tell("You have lost this ability for all time.");
 			return false;
 		}
-		
-		
+
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

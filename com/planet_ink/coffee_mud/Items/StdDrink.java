@@ -46,7 +46,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
 	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
 	public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
-	
+
 	public boolean containsDrink()
 	{
 		if((liquidRemaining()<1)
@@ -74,7 +74,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					{
 						if(!containsDrink())
 						{
-							mob.tell(displayName()+" is empty.");
+							mob.tell(name()+" is empty.");
 							return false;
 						}
 						if((liquidType()==EnvResource.RESOURCE_SALTWATER)
@@ -95,7 +95,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					{
 						if(liquidRemaining()>=amountOfLiquidHeld)
 						{
-							mob.tell(displayName()+" is full.");
+							mob.tell(name()+" is full.");
 							return false;
 						}
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
@@ -103,22 +103,22 @@ public class StdDrink extends StdContainer implements Drink,Item
 							Drink thePuddle=(Drink)affect.tool();
 							if(!thePuddle.containsDrink())
 							{
-								mob.tell(thePuddle.displayName()+" is empty.");
+								mob.tell(thePuddle.name()+" is empty.");
 								return false;
 							}
 							if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
 							{
 								mob.tell("There is still some "+EnvResource.RESOURCE_DESCS[liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()
-										 +" left in "+displayName()+".  You must empty it before you can fill it with "
+										 +" left in "+name()+".  You must empty it before you can fill it with "
 										 +EnvResource.RESOURCE_DESCS[thePuddle.liquidType()&EnvResource.RESOURCE_MASK].toLowerCase()+".");
 								return false;
-								
+
 							}
 							return true;
 						}
 						else
 						{
-							mob.tell("You can't fill "+displayName()+" from that.");
+							mob.tell("You can't fill "+name()+" from that.");
 							return false;
 						}
 					}

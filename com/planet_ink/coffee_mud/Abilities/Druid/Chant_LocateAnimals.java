@@ -13,11 +13,11 @@ public class Chant_LocateAnimals extends Chant
 	public String name(){ return "Locate Animals";}
 	private String displayText="(Locating Animals)";
 	public String displayText(){return displayText;}
-	
+
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 	public Environmental newInstance(){	return new Chant_LocateAnimals();}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -84,7 +84,7 @@ public class Chant_LocateAnimals extends Chant
 		}
 		return null;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.fetchAffect(this.ID())!=null)
@@ -111,10 +111,10 @@ public class Chant_LocateAnimals extends Chant
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(animalHere(R)!=null) 
+			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -122,10 +122,10 @@ public class Chant_LocateAnimals extends Chant
 			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);
-		
+
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
 			target=animalHere((Room)theTrail.firstElement());
@@ -142,7 +142,7 @@ public class Chant_LocateAnimals extends Chant
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(seeking "+target.displayName()+")";
+				displayText="(seeking "+target.name()+")";
 				Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);

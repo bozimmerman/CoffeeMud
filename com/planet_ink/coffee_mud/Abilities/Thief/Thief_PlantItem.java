@@ -15,7 +15,7 @@ public class Thief_PlantItem extends ThiefSkill
 	private static final String[] triggerStrings = {"PLANTITEM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_PlantItem();}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -35,10 +35,10 @@ public class Thief_PlantItem extends ThiefSkill
 			return false;
 		}
 		commands.removeElement(commands.lastElement());
-		
+
 		Item item=super.getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(item==null) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -60,7 +60,7 @@ public class Thief_PlantItem extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to plant "+item.displayName()+" on <T-NAMESELF>, but fail(s).");
+			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to plant "+item.name()+" on <T-NAMESELF>, but fail(s).");
 		return success;
 	}
 }

@@ -29,7 +29,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		if(M==null) return false;
 		if(!M.isMonster()) return false;
-		name=M.name();
+		name=M.Name();
 		displayText=M.displayText();
 		description=M.description();
 		baseEnvStats().setLevel(M.baseEnvStats().level());

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class UnderSaltWaterMaze extends StdMaze
 {
+	public String ID(){return "UnderSaltWaterMaze";}
 	public UnderSaltWaterMaze()
 	{
 		super();

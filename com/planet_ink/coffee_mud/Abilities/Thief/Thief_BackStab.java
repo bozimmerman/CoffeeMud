@@ -36,7 +36,7 @@ public class Thief_BackStab extends ThiefSkill
 
 		if(Sense.canBeSeenBy(mob,target))
 		{
-			mob.tell(target.displayName()+" is watching you too closely to do that.");
+			mob.tell(target.name()+" is watching you too closely to do that.");
 			return false;
 		}
 

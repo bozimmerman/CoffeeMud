@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.utils.Sense;
 import com.planet_ink.coffee_mud.utils.Util;
 public class IndoorUnderWater extends StdRoom implements Drink
 {
+	public String ID(){return "IndoorUnderWater";}
 	public IndoorUnderWater()
 	{
 		super();

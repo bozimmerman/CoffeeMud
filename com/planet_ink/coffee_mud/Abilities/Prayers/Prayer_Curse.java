@@ -35,7 +35,7 @@ public class Prayer_Curse extends Prayer
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).displayName()+" is lifted.");
+				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).name()+" is lifted.");
 			super.unInvoke();
 			return;
 		}

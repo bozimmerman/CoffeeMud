@@ -28,13 +28,13 @@ public class Skill_Disguise extends StdAbility
 	private static final String[] triggerStrings = {"DISGUISE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	private final static String[] whats={
 		//0!     1!      2!    3!     4!       5!     6!      7!
 		"WEIGHT","LEVEL","SEX","RACE","HEIGHT","NAME","CLASS","ALIGNMENT"};
 	private final static int[] levels={2,10,4,12,6,8,0,18};
 	protected final static String[] values=new String[whats.length];
-	
+
 	public void affectEnvStats(Environmental myHost, EnvStats affectableStats)
 	{
 		if(values[5]!=null)
@@ -46,7 +46,7 @@ public class Skill_Disguise extends StdAbility
 			if(values[7].equalsIgnoreCase("evil"))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_EVIL);
 	}
-	
+
 	public void affectCharStats(MOB myHost, CharStats affectableStats)
 	{
 		if(values[3]!=null)
@@ -58,7 +58,7 @@ public class Skill_Disguise extends StdAbility
 		if(values[6]!=null)
 			affectableStats.setDisplayClassName(values[6]);
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(!super.okAffect(myHost,msg)) return false;
@@ -73,8 +73,8 @@ public class Skill_Disguise extends StdAbility
 			String omsg=null;
 			if(msg.othersMessage()!=null)
 			{
-				omsg=Util.replaceAll(msg.othersMessage(),"<T-NAME>",mob.displayName());
-				omsg=Util.replaceAll(omsg,"<T-NAMESELF>",mob.displayName());
+				omsg=Util.replaceAll(msg.othersMessage(),"<T-NAME>",mob.name());
+				omsg=Util.replaceAll(omsg,"<T-NAMESELF>",mob.name());
 			}
 			msg.modify(msg.source(),this,msg.tool(),
 					   msg.sourceCode(),msg.sourceMessage(),
@@ -98,7 +98,7 @@ public class Skill_Disguise extends StdAbility
 			if(!mob.isMonster())
 			{
 				String levelStr=mob.charStats().displayClassLevel(mob,false);
-				myDescription.append(mob.displayName()+" the "+mob.charStats().raceName()+" is a "+levelStr+".\n\r");
+				myDescription.append(mob.name()+" the "+mob.charStats().raceName()+" is a "+levelStr+".\n\r");
 			}
 			int height=mob.envStats().height();
 			int weight=mob.baseEnvStats().weight();
@@ -112,15 +112,15 @@ public class Skill_Disguise extends StdAbility
 			msg.source().tell(myDescription.toString());
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!ID().equals("Skill_Disguise"))
 			return super.invoke(mob,commands,givenTarget,auto);
-		
+
 		Skill_Disguise A=(Skill_Disguise)mob.fetchAffect("Skill_Disguise");
 		if(A==null) A=(Skill_Disguise)mob.fetchAffect("Skill_MarkDisguise");
-		
+
 		String validChoices="Weight, sex, race, height, name, level, class, or alignment";
 		if(commands.size()==0)
 		{
@@ -145,7 +145,7 @@ public class Skill_Disguise extends StdAbility
 		{
 			mob.tell("Disguise what? '"+what+"' is not a valid choice.  Valid choices are: "+validChoices+".");
 			return false;
-					 
+
 		}
 		if((CMAble.qualifyingLevel(mob,this)>0)
 		   &&(CMAble.qualifyingClassLevel(mob,this)<levels[which]))
@@ -160,7 +160,7 @@ public class Skill_Disguise extends StdAbility
 			return false;
 		}
 		String how=Util.combine(commands,0);
-		
+
 		int adjustment=0;
 		switch(which)
 		{
@@ -259,7 +259,7 @@ public class Skill_Disguise extends StdAbility
 			break;
 		}
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

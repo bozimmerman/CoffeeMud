@@ -8,16 +8,21 @@ import java.util.*;
  */
 public interface Environmental extends Cloneable, Tickable, StatsAffecting, MsgListener, Comparable
 {
-	/** General descriptive ID for this
-	 * object.	Includes everything from
-	 * an item ID (Dagger, etc), to a particular
-	 * users name "Bob the Avenger" */
-	public String ID();
-	public String name();
-	public void setName(String newName);
-	public String displayName();
+	public String ID();  // the class name of the object
+	
+	// the real name of the object
+	public String name(); // the potentially modified name of the thing
+	public String Name(); // the base name of the thing
+	public void setName(String newName); // set the base name of the object
+	
+	// how the object appears at rest, 
 	public String displayText();
 	public void setDisplayText(String newDisplayText);
+	
+	// Text displayed when this item is LOOKED at
+	public String description();
+	public void setDescription(String newDescription);
+	
 	public Environmental copyOf();
 	public boolean isGeneric();
 
@@ -29,9 +34,6 @@ public interface Environmental extends Cloneable, Tickable, StatsAffecting, MsgL
 	public void setMiscText(String newMiscText);
 	public String text();
 
-	/** Text displayed when this item is LOOKED at*/
-	public String description();
-	public void setDescription(String newDescription);
 
 	/** return a new instance of the object*/
 	public Environmental newInstance();

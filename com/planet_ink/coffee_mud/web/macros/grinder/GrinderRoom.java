@@ -13,14 +13,14 @@ public class GrinderRoom
 	public GrinderRoom(Room R)
 	{
 		room=R;
-		roomID=R.ID();
+		roomID=R.roomID();
         for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
         {
             GrinderDir D=new GrinderDir();
 			Room R2=R.rawDoors()[d];
             if(R2!=null)
             {
-                D.room=R2.ID();
+                D.room=R2.roomID();
 				Exit E2=R.rawExits()[d];
                 if(E2!=null)
 					D.exit=E2;

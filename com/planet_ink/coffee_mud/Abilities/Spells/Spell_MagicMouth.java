@@ -22,7 +22,7 @@ public class Spell_MagicMouth extends Spell
 
 	public void doMyThing()
 	{
-		myRoomContainer.showHappens(Affect.MSG_NOISE,"\n\r\n\r"+affected.displayName()+" says '"+message+"'.\n\r\n\r");
+		myRoomContainer.showHappens(Affect.MSG_NOISE,"\n\r\n\r"+affected.name()+" says '"+message+"'.\n\r\n\r");
 		unInvoke();
 		return;
 	}
@@ -97,7 +97,7 @@ public class Spell_MagicMouth extends Spell
 		}
 		if(target instanceof MOB)
 		{
-			mob.tell("You can't can't cast this on "+target.displayName()+".");
+			mob.tell("You can't can't cast this on "+target.name()+".");
 			return false;
 		}
 

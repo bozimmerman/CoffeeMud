@@ -12,7 +12,7 @@ public class Bomb_Water extends StdBomb
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "a water container";}
 	public Environmental newInstance(){	return new Bomb_Water();}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -32,12 +32,12 @@ public class Bomb_Water extends StdBomb
 			if((target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the water bomb!");
 			else
-			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.displayName()+" explodes water all over <T-NAME>!"))
+			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.name()+" explodes water all over <T-NAME>!"))
 			{
 				super.spring(target);
 				ExternalPlay.extinguish(invoker(),target,7);
 			}
 		}
 	}
-	
+
 }

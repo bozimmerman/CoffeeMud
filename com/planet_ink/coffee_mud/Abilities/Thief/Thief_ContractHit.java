@@ -32,7 +32,7 @@ public class Thief_ContractHit extends ThiefSkill
 			}
 		super.affect(myHost,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(invoker()!=null))
@@ -47,7 +47,7 @@ public class Thief_ContractHit extends ThiefSkill
 			&&(mob.location()!=null)
 			&&(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{
-				
+
 				hitting=true;
 				int num=Dice.roll(1,3,3);
 				int level=mob.envStats().level();
@@ -124,7 +124,7 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			if((M!=null)&&(M.location()!=null))
 			{
-				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.displayName()+".");
+				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
 				M.tell("'It is done.'");
 			}
 		}
@@ -134,7 +134,7 @@ public class Thief_ContractHit extends ThiefSkill
 			M.destroy();
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<1)
@@ -171,19 +171,19 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		if(!mob.mayIFight(target))
 		{
-			mob.tell("You are not allowed to put out a hit on "+target.displayName()+".");
+			mob.tell("You are not allowed to put out a hit on "+target.name()+".");
 			return false;
 		}
-		
+
 		int level=target.envStats().level();
 		if(level>mob.envStats().level()) level=mob.envStats().level();
 		int goldRequired=100*level;
 		if(mob.getMoney()<goldRequired)
 		{
-			mob.tell("You'll need at least "+goldRequired+" gold to put a hit out on "+target.displayName()+".");
+			mob.tell("You'll need at least "+goldRequired+" gold to put a hit out on "+target.name()+".");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -195,7 +195,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			
+
 			mob.setMoney(mob.getMoney()-goldRequired);
 			if(success)
 				maliciousAffect(mob,target,target.envStats().level()+10,0);

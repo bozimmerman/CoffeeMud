@@ -96,9 +96,9 @@ public class Spell_MarkerSummoning extends Spell
 				for(int i=0;i<items.size();i++)
 				{
 					Item I=(Item)items.elementAt(i);
-					oldRoom.showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" disappears in a summoning swirl!");
+					oldRoom.showHappens(Affect.MSG_OK_VISUAL,I.name()+" disappears in a summoning swirl!");
 					newRoom.bringItemHere(I);
-					newRoom.showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" appears in a burst of light!");
+					newRoom.showHappens(Affect.MSG_OK_VISUAL,I.name()+" appears in a burst of light!");
 				}
 			}
 

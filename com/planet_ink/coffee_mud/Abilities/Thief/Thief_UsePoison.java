@@ -28,7 +28,7 @@ public class Thief_UsePoison extends ThiefSkill
 		}
 		return offenders;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -46,7 +46,7 @@ public class Thief_UsePoison extends ThiefSkill
 		&&(!(target instanceof Drink))
 		&&(!(target instanceof Weapon)))
 		{
-			mob.tell("You don't know how to poison "+target.displayName()+".");
+			mob.tell("You don't know how to poison "+target.name()+".");
 			return false;
 		}
 		Item poison=mob.fetchCarried(null,Util.combine(commands,1));
@@ -58,10 +58,10 @@ public class Thief_UsePoison extends ThiefSkill
 		Vector V=returnOffensiveAffects(poison);
 		if((V.size()==0)||(!(poison instanceof Drink)))
 		{
-			mob.tell(poison.displayName()+" is not a poison!");
+			mob.tell(poison.name()+" is not a poison!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

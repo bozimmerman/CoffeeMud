@@ -28,10 +28,10 @@ public class GoodGuardian extends StdBehavior
 					if((B!=null)&&(B.grantsAggressivenessTo(inhab.getVictim())))
 						return inhab;
 				}
-				
+
 				if((BrotherHelper.isBrother(inhab,observer))&&(victim==null))
 					victim=inhab.getVictim();
-				
+
 				if((inhab.getAlignment()<350)
 				||(inhab.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")))
 					victim=inhab;
@@ -39,11 +39,11 @@ public class GoodGuardian extends StdBehavior
 		}
 		return victim;
 	}
-	
+
 	public static void keepPeace(MOB observer, MOB victim)
 	{
 		if(!canFreelyBehaveNormal(observer)) return;
-		
+
 		if(victim!=null)
 		{
 			if(!BrotherHelper.isBrother(victim,observer))
@@ -63,7 +63,7 @@ public class GoodGuardian extends StdBehavior
 				   &&(inhab.getVictim().isInCombat())
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))))
 				{
-					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().displayName();
+					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
 					FullMsg msgs=new FullMsg(observer,inhab,Affect.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okAffect(observer,msgs))
 					{

@@ -40,7 +40,7 @@ public class Chant_PlantWall extends Chant
 			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(affect.tool().maxRange()>0))
 			{
-				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> fire(s) at the plant wall with "+affect.tool().displayName()+".^?");
+				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> fire(s) at the plant wall with "+affect.tool().name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{
@@ -55,7 +55,7 @@ public class Chant_PlantWall extends Chant
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.displayName()+".^?");
+ 				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{

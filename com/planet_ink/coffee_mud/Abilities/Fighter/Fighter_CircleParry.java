@@ -56,7 +56,7 @@ public class Fighter_CircleParry extends StdAbility
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_RANGED)
 				&&(((Weapon)attackerWeapon).weaponClassification()!=Weapon.CLASS_THROWN))
 				{
-					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.displayName()+" attack from <T-NAME>!");
+					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> circle-parr(ys) "+attackerWeapon.name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-60,false))
 					&&(!lastTime)
 					&&(mob.location().okAffect(mob,msg)))

@@ -9,7 +9,7 @@ import java.io.*;
 public class Mobs
 {
 	private Mobs(){}
-	
+
 	private static void updateMOBS(MOB meMOB, Room thisOne)
 	{
 		thisOne.delInhabitant(meMOB);
@@ -36,13 +36,13 @@ public class Mobs
 			return false;
 		}
 
-		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.ID()+"' forever.  Are you SURE?! (y/N)?","N"))
+		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.Name()+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
 			ExternalPlay.destroyUser(deadMOB);
 			mob.tell("The user '"+Util.combine(commands,2)+"' is no more!\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"A horrible death cry can be heard throughout the land.");
 		}
-		Log.sysOut("Mobs",mob.ID()+" destroyed user "+deadMOB.ID()+".");
+		Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
 		return true;
 	}
 	public static boolean destroy(MOB mob, Vector commands)
@@ -64,15 +64,15 @@ public class Mobs
 		{
 			if(!deadMOB.isMonster())
 			{
-				mob.tell(deadMOB.displayName()+" is a PLAYER!!\n\r");
+				mob.tell(deadMOB.name()+" is a PLAYER!!\n\r");
 				if(!doneSomething)
 					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 				return false;
 			}
 			doneSomething=true;
 			deadMOB.destroy();
-			mob.location().showHappens(Affect.MSG_OK_VISUAL,deadMOB.displayName()+" vanishes in a puff of smoke.");
-			Log.sysOut("Mobs",mob.ID()+" destroyed mob "+deadMOB.ID()+".");
+			mob.location().showHappens(Affect.MSG_OK_VISUAL,deadMOB.name()+" vanishes in a puff of smoke.");
+			Log.sysOut("Mobs",mob.Name()+" destroyed mob "+deadMOB.Name()+".");
 			deadMOB=(MOB)mob.location().fetchInhabitant(mobID);
 			if(!allFlag) break;
 		}
@@ -118,7 +118,7 @@ public class Mobs
 				modMOB.baseEnvStats().setLevel(newLevel);
 				modMOB.recoverCharStats();
 				modMOB.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.displayName()+" shakes under the transforming power.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 		}
 		else
@@ -127,7 +127,7 @@ public class Mobs
 			int newAbility=Util.s_int(restStr);
 			modMOB.baseEnvStats().setAbility(newAbility);
 			modMOB.recoverEnvStats();
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.displayName()+" shakes under the transforming power.");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 		}
 		else
 		if(command.equals("REJUV"))
@@ -137,14 +137,14 @@ public class Mobs
 			{
 				modMOB.baseEnvStats().setRejuv(newRejuv);
 				modMOB.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.displayName()+" shakes under the transforming power.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 			else
 			{
 				modMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 				modMOB.recoverEnvStats();
-				mob.tell(modMOB.displayName()+" will now never rejuvinate.");
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.displayName()+" shakes under the transforming power.");
+				mob.tell(modMOB.name()+" will now never rejuvinate.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 		}
 		else
@@ -154,14 +154,14 @@ public class Mobs
 				Generic.genMiscSet(mob,modMOB);
 			else
 				modMOB.setMiscText(restStr);
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.displayName()+" shakes under the transforming power.");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 		}
 		else
 		{
 			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, REJUV, or MISC.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 		}
-		Log.sysOut("Mobs",mob.ID()+" modified mob "+modMOB.ID()+".");
+		Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");
 	}
 
 	public static void create(MOB mob, Vector commands)
@@ -192,9 +192,9 @@ public class Mobs
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(mob.location(),true);
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.displayName()+" instantiates from the Java plain.");
+		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 		if(newMOB.isGeneric())
 			Generic.genMiscSet(mob,newMOB);
-		Log.sysOut("Mobs",mob.ID()+" created mob "+newMOB.ID()+".");
+		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
 	}
 }

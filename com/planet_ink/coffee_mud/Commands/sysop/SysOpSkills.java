@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.utils.*;
 public class SysOpSkills
 {
 	private SysOpSkills(){}
-	
+
 	public static void ticktock(MOB mob, Vector commands)
 	{
 		Area A=CMMap.getFirstArea();
@@ -18,7 +18,7 @@ public class SysOpSkills
 		mob.tell("..tick..tock..");
 		A.tickTock(h);
 	}
-	
+
 	public static void load(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -45,7 +45,7 @@ public class SysOpSkills
 		else
 			mob.tell(Util.capitalize(what)+" "+name+" was not loaded.");
 	}
-	
+
 	public static void unload(MOB mob, Vector commands)
 	{
 		String str=Util.combine(commands,1);
@@ -98,7 +98,7 @@ public class SysOpSkills
 			mob.tell("Resource '"+key+"' unloaded.");
 		}
 	}
-	
+
 	public static void ban(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
@@ -125,7 +125,7 @@ public class SysOpSkills
 		str.append(banMe+"\n\r");
 		Resources.saveFileResource("banned.ini");
 	}
-	
+
 	public static void boot(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
@@ -140,7 +140,7 @@ public class SysOpSkills
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=Sessions.elementAt(s);
-			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().displayName(),whom)))
+			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().name(),whom)))
 			{
 				if(S==mob.session())
 				{
@@ -150,7 +150,7 @@ public class SysOpSkills
 				else
 				if((mob.isASysOp(S.mob().location())))
 				{
-					mob.tell("You boot "+S.mob().displayName());
+					mob.tell("You boot "+S.mob().name());
 					if(S.mob().location()!=null)
 						S.mob().location().show(S.mob(),null,Affect.MSG_OK_VISUAL,"Something is happening to <S-NAME>.");
 					S.setKillFlag(true);
@@ -236,7 +236,7 @@ public class SysOpSkills
 		else
 			i3Error(mob);
 	}
-	
+
 	public static void toggleSysopMsgs(MOB mob)
 	{
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
@@ -265,7 +265,7 @@ public class SysOpSkills
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session S=Sessions.elementAt(s);
-				if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().displayName(),name)))
+				if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().name(),name)))
 				{ M=S.mob(); break;}
 			}
 			if(M==null)
@@ -275,14 +275,13 @@ public class SysOpSkills
 			}
 			if(M.getStartRoom()==M.location())
 			{
-				mob.tell(M.displayName()+" is already at their beacon.");
+				mob.tell(M.name()+" is already at their beacon.");
 				return;
 			}
 			M.setStartRoom(M.location());
-			mob.tell("You have modified "+M.displayName()+"'s beacon.");
+			mob.tell("You have modified "+M.name()+"'s beacon.");
 		}
 	}
-	
 	private static MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=(MOB)CMClass.getMOB("StdMOB");
@@ -398,7 +397,7 @@ public class SysOpSkills
 			if(S.amSnooping(mob.session()))
 			{
 				if(S.mob()!=null)
-					mob.tell("You stop snooping on "+S.mob().displayName()+".");
+					mob.tell("You stop snooping on "+S.mob().name()+".");
 				else
 					mob.tell("You stop snooping on someone.");
 				doneSomething=true;
@@ -416,7 +415,7 @@ public class SysOpSkills
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=Sessions.elementAt(s);
-			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().displayName(),whom)))
+			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().name(),whom)))
 			{
 				if(S==mob.session())
 				{
@@ -427,7 +426,7 @@ public class SysOpSkills
 				if((!S.amSnooping(mob.session()))
 				&&(mob.isASysOp(S.mob().location())))
 				{
-					mob.tell("You start snooping on "+S.mob().displayName()+".");
+					mob.tell("You start snooping on "+S.mob().name()+".");
 					S.startSnooping(mob.session());
 					snoop=true;
 					break;
@@ -437,7 +436,7 @@ public class SysOpSkills
 		if(!snoop)
 		mob.tell("You can't find anyone by that name.");
 	}
-	
+
 	public static MOB AverageClassMOB(MOB mob, int level, CharClass C, int numTries)
 	{
 		MOB avgMob=(MOB)levelMOBup(level,C);
@@ -552,7 +551,6 @@ public class SysOpSkills
 			mob.tell("Go where? Try a Room ID, player name, area name, or room text!");
 			return false;
 		}
-		
 		commands.removeElementAt(0);
 		boolean chariot=false;
 		if(((String)commands.lastElement()).equalsIgnoreCase("!"))
@@ -562,7 +560,7 @@ public class SysOpSkills
 		}
 		Room curRoom=mob.location();
 		StringBuffer cmd = new StringBuffer(Util.combine(commands,0));
-		
+
 		int dirCode=Directions.getGoodDirectionCode(cmd.toString());
 		if(dirCode>=0)
 			room=mob.location().rawDoors()[dirCode];
@@ -572,7 +570,7 @@ public class SysOpSkills
 		{
 			if((cmd.charAt(0)=='#')&&(curRoom!=null))
 			{
-				cmd.insert(0,curRoom.getArea().name());
+				cmd.insert(0,curRoom.getArea().Name());
 				room = CMMap.getRoom(cmd.toString());
 			}
 			else
@@ -582,7 +580,7 @@ public class SysOpSkills
 					Session thisSession=(Session)Sessions.elementAt(s);
 					if((thisSession.mob()!=null) && (!thisSession.killFlag())
 					&&(thisSession.mob().location()!=null)
-					&&(thisSession.mob().displayName().equalsIgnoreCase(cmd.toString())))
+					&&(thisSession.mob().name().equalsIgnoreCase(cmd.toString())))
 					{
 						room = thisSession.mob().location();
 						break;
@@ -594,7 +592,7 @@ public class SysOpSkills
 						Session thisSession=(Session)Sessions.elementAt(s);
 						if((thisSession.mob()!=null)&&(!thisSession.killFlag())
 						&&(thisSession.mob().location()!=null)
-						&&(CoffeeUtensils.containsString(thisSession.mob().displayName(),cmd.toString())))
+						&&(CoffeeUtensils.containsString(thisSession.mob().name(),cmd.toString())))
 						{
 							room = thisSession.mob().location();
 							break;
@@ -724,7 +722,7 @@ public class SysOpSkills
 		}
 
 		if(target!=null)
-			targetName=target.displayName();
+			targetName=target.name();
 
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
@@ -844,9 +842,9 @@ public class SysOpSkills
 	{
 	  	StringBuffer Message=new StringBuffer("");
 	  	int alignType=1;
-	  	if(S.mob().getAlignment()<350) 
+	  	if(S.mob().getAlignment()<350)
 	  		alignType=0;
-	  	else 
+	  	else
 	  	if(S.mob().getAlignment()<650) alignType= 2;
 	  	switch(alignType)
 	  	{
@@ -864,7 +862,7 @@ public class SysOpSkills
 	  	Message.append("'.^N");
 	  	S.stdPrintln(Message.toString());
 	}
-	
+
 	public static void announce(MOB mob,Vector commands)
 	{
 		if(commands.size()>1)
@@ -887,7 +885,7 @@ public class SysOpSkills
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(mob.isASysOp(S.mob().location()))
-					&&(CoffeeUtensils.containsString(S.mob().displayName(),(String)commands.elementAt(1))))
+					&&(CoffeeUtensils.containsString(S.mob().name(),(String)commands.elementAt(1))))
 					{
 						sendAnnounce(Util.combine(commands,2),S);
 						found=true;

@@ -44,7 +44,7 @@ public class Chant_ChantWard extends Chant
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The ward around <S-NAME> inhibits "+affect.tool().displayName()+"!");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The ward around <S-NAME> inhibits "+affect.tool().name()+"!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);
@@ -58,10 +58,10 @@ public class Chant_ChantWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchAffect(ID())!=null)
 		{
-			target.tell("You are already affected by "+displayName()+".");
+			target.tell("You are already affected by "+name()+".");
 			return false;
 		}
-		
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

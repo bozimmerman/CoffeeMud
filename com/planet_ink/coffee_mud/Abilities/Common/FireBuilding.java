@@ -100,7 +100,7 @@ public class FireBuilding extends CommonSkill
 			if(lighting==null) return false;
 			if((!lighting.isGettable())||(lighting.displayText().length()==0))
 			{
-				commonTell(mob,"For some reason, "+lighting.displayName()+" just won't catch.");
+				commonTell(mob,"For some reason, "+lighting.name()+" just won't catch.");
 				return false;
 			}
 			if(lighting instanceof Light)
@@ -108,7 +108,7 @@ public class FireBuilding extends CommonSkill
 				Light l=(Light)lighting;
 				if(l.isLit())
 				{
-					commonTell(mob,l.displayName()+" is already lit!");
+					commonTell(mob,l.name()+" is already lit!");
 					return false;
 				}
 				commonTell(mob,"Just hold this item to light it.");
@@ -141,7 +141,7 @@ public class FireBuilding extends CommonSkill
 				commonTell(mob,"That won't burn.");
 				return false;
 			}
-			verb="lighting "+lighting.displayName();
+			verb="lighting "+lighting.name();
 		}
 
 		switch(mob.location().getArea().weatherType(mob.location()))

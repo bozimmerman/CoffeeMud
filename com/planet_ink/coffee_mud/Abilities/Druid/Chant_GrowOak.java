@@ -22,12 +22,12 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		Item newItem=CMClass.getStdItem("GenItem");
 		String name=Util.startWithAorAn(EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
-		newItem.setDisplayText(newItem.displayName()+" grows here.");
+		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
 		newItem.baseEnvStats().setWeight(10000);
 		newItem.setGettable(false);
 		newItem.setMaterial(material);
-		newItem.setSecretIdentity(mob.name());
+		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
@@ -41,7 +41,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		room.recoverEnvStats();
 		return newItem;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -96,7 +96,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			{
 				Item I=R.fetchItem(i);
 				if((I!=null)
-				   &&(I.secretIdentity().equals(mob.name()))
+				   &&(I.secretIdentity().equals(mob.Name()))
 				   &&(I.fetchAffect(ID())!=null))
 				{
 					mob.tell("Each druid is allowed but one oak at a time.");
@@ -105,7 +105,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			}
 		}
 		if(super.invoke(mob,commands,givenTarget,auto))
-		{ 
+		{
 			if(!auto)mob.curState().setMana(0);
 			return true;
 		}

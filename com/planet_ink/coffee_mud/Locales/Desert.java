@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Desert extends StdRoom
 {
+	public String ID(){return "Desert";}
 	public Desert()
 	{
 		super();

@@ -12,7 +12,7 @@ public class BrotherHelper extends StdBehavior
 	{
 		return new BrotherHelper();
 	}
-	
+
 	public static boolean isBrother(MOB target, MOB observer)
 	{
 		if((observer.getStartRoom()!=null)
@@ -23,7 +23,7 @@ public class BrotherHelper extends StdBehavior
 			return true;
 		return false;
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class

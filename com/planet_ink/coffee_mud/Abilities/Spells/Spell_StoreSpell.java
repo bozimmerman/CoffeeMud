@@ -13,7 +13,7 @@ public class Spell_StoreSpell extends Spell
 	public Environmental newInstance(){	return new Spell_StoreSpell();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public String spellName="";
-	
+
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
 						   String message,
@@ -24,7 +24,7 @@ public class Spell_StoreSpell extends Spell
 			Environmental target=null;
 			if((mob.location()!=null))
 				target=afftarget;
-			String name=me.displayName().toUpperCase();
+			String name=me.name().toUpperCase();
 			if(name.startsWith("A ")) name=name.substring(2).trim();
 			if(name.startsWith("AN ")) name=name.substring(3).trim();
 			if(name.startsWith("THE ")) name=name.substring(4).trim();
@@ -44,11 +44,11 @@ public class Spell_StoreSpell extends Spell
 					A=CMClass.getAbility(text().substring(0,x));
 				}
 				if(A==null)
-					mob.tell("Something seems wrong with "+me.displayName()+".");
+					mob.tell("Something seems wrong with "+me.name()+".");
 				else
 				if(charges<=0)
 				{
-					mob.tell(me.displayName()+" seems spent.");
+					mob.tell(me.name()+" seems spent.");
 					me.delAffect(this);
 				}
 				else
@@ -57,9 +57,9 @@ public class Spell_StoreSpell extends Spell
 					A=(Ability)A.newInstance();
 					Vector V=new Vector();
 					if(target!=null)
-						V.addElement(target.displayName());
+						V.addElement(target.name());
 					V.addElement(message);
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.displayName()+" glows brightly.");
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.name()+" glows brightly.");
 					A.invoke(mob, V, target, true);
 				}
 			}
@@ -69,7 +69,7 @@ public class Spell_StoreSpell extends Spell
 	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
-		
+
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_WAND_USE:
@@ -85,7 +85,7 @@ public class Spell_StoreSpell extends Spell
 		}
 		super.affect(myHost,affect);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -101,12 +101,12 @@ public class Spell_StoreSpell extends Spell
 		}
 		if(!(target instanceof Item))
 		{
-			mob.tell("You can't enchant '"+target.displayName()+"'.");
+			mob.tell("You can't enchant '"+target.name()+"'.");
 			return false;
 		}
-		
+
 		Item item=(Item)target;
-		
+
 		commands.removeElementAt(commands.size()-1);
 
 		String spellName=Util.combine(commands,0).trim();
@@ -117,7 +117,7 @@ public class Spell_StoreSpell extends Spell
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&(A.isBorrowed(mob)||(CMAble.qualifiesByLevel(mob,A)))
-			&&(A.displayName().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
 		}
@@ -129,7 +129,7 @@ public class Spell_StoreSpell extends Spell
 		Ability A=item.fetchAffect(ID());
 		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(wandThis.ID()+"/")))
 		{
-			mob.tell("'"+item.displayName()+"' already has a different spell stored in it.");
+			mob.tell("'"+item.name()+"' already has a different spell stored in it.");
 			return false;
 		}
 		else
@@ -141,7 +141,7 @@ public class Spell_StoreSpell extends Spell
 		int charges=0;
 		int x=A.text().indexOf("/");
 		if(x>=0) charges=Util.s_int(A.text().substring(x+1));
-		
+
 		// lose all the mana!
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

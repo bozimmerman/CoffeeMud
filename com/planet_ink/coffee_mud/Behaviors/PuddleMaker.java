@@ -13,7 +13,7 @@ public class PuddleMaker extends StdBehavior
 	{
 		return new PuddleMaker();
 	}
-	
+
 	public boolean coldWetWeather(int weather)
 	{
 		switch(weather)
@@ -58,7 +58,7 @@ public class PuddleMaker extends StdBehavior
 			pct=Util.s_int(getParms());
 		return pct;
 	}
-	
+
 	public void makePuddle(Room R, int oldWeather, int newWeather)
 	{
 		for(int i=0;i<R.numItems();i++)
@@ -66,8 +66,8 @@ public class PuddleMaker extends StdBehavior
 			Item I=R.fetchItem(i);
 			if((I instanceof Drink)
 			   &&(!I.isGettable())
-			   &&((I.displayName().toLowerCase().indexOf("puddle")>=0)
-				  ||(I.displayName().toLowerCase().indexOf("snow")>=0)))
+			   &&((I.name().toLowerCase().indexOf("puddle")>=0)
+				  ||(I.name().toLowerCase().indexOf("snow")>=0)))
 					return;
 		}
 		Item I=CMClass.getItem("GenLiquidResource");
@@ -91,14 +91,14 @@ public class PuddleMaker extends StdBehavior
 		R.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
 		R.recoverRoomStats();
 	}
-						   
-	
-	
+
+
+
 	int lastWeather=-1;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		
+
 		if(anyWetWeather(lastWeather))
 		{
 			if(ticking instanceof Room)
@@ -127,7 +127,7 @@ public class PuddleMaker extends StdBehavior
 					}
 			}
 		}
-		
+
 		if(ticking instanceof Room)
 			lastWeather=((Room)ticking).getArea().weatherType((Room)ticking);
 		else

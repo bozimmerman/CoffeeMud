@@ -17,7 +17,7 @@ public class ItemIdentifier extends StdBehavior
 		int cost=500+(item.envStats().level()*20);
 		return cost;
 	}
-	
+
 	public boolean okAffect(Environmental affecting, Affect affect)
 	{
 		if(!super.okAffect(affecting,affect))
@@ -54,7 +54,7 @@ public class ItemIdentifier extends StdBehavior
 		if(!canFreelyBehaveNormal(affecting))
 			return;
 		MOB observer=(MOB)affecting;
-		
+
 		if((source!=observer)
 		&&(affect.amITarget(observer))
 		&&(affect.targetMinor()==Affect.TYP_GIVE)
@@ -69,7 +69,7 @@ public class ItemIdentifier extends StdBehavior
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) <T-NAME> very closely.");
 			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+affect.tool().displayName()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)affect.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r"+((Item)affect.tool()).secretIdentity()+"'^?.");
+			newMsg=new FullMsg(observer,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+affect.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)affect.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r"+((Item)affect.tool()).secretIdentity()+"'^?.");
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);

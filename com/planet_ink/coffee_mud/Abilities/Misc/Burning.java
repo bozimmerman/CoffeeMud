@@ -13,7 +13,7 @@ public class Burning extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Burning();}
-	
+
 	private boolean reversed(){return profficiency()==100;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -92,7 +92,7 @@ public class Burning extends StdAbility
 					I.setUsesRemaining(I.usesRemaining()-1);
 			}
 		}
-		
+
 		// might want to add the ability for it to spread
 		return true;
 	}
@@ -101,13 +101,13 @@ public class Burning extends StdAbility
 	{
 		if(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_FIRE)-50))
 		{
-			mob.tell("Ouch!!, "+affected.displayName()+" is on fire!");
+			mob.tell("Ouch!!, "+affected.name()+" is on fire!");
 			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),Affect.NO_EFFECT,Weapon.TYPE_BURNING,null);
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect))
@@ -136,13 +136,13 @@ public class Burning extends StdAbility
 			if((C instanceof Drink)
 			   &&(((Drink)C).containsDrink()))
 			{
-				affect.addTrailerMsg(new FullMsg(invoker,null,Affect.MSG_OK_VISUAL,I.displayName()+" is extinguished."));
+				affect.addTrailerMsg(new FullMsg(invoker,null,Affect.MSG_OK_VISUAL,I.name()+" is extinguished."));
 				I.delAffect(this);
 			}
 		}
-		super.affect(myHost,affect);											 
+		super.affect(myHost,affect);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

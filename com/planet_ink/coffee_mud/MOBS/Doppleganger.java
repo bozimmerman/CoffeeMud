@@ -94,7 +94,7 @@ public class Doppleganger extends StdMOB
 			{
 				location().show(this,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on a new form!");
 				mimicing=affect.source();
-				Username=mimicing.name();
+				Username=mimicing.Name();
 				setDisplayText(mimicing.displayText());
 				setDescription(mimicing.description());
 				setBaseEnvStats(mimicing.baseEnvStats().cloneStats());

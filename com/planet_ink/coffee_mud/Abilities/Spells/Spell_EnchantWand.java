@@ -48,7 +48,7 @@ public class Spell_EnchantWand extends Spell
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&(A.isBorrowed(mob)||(CMAble.qualifiesByLevel(mob,A)))
-			&&(A.displayName().toUpperCase().startsWith(spellName.toUpperCase()))
+			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
 				wandThis=(Spell)A;
 		}
@@ -60,7 +60,7 @@ public class Spell_EnchantWand extends Spell
 
 		if(wand.getSpell()!=null)
 		{
-			mob.tell("A spell has already been enchanted into '"+wand.displayName()+"'.");
+			mob.tell("A spell has already been enchanted into '"+wand.name()+"'.");
 			return false;
 		}
 		// lose all the mana!
@@ -68,7 +68,7 @@ public class Spell_EnchantWand extends Spell
 			return false;
 
 		if(!auto)mob.curState().setMana(0);
-		
+
 		int experienceToLose=10*CMAble.lowestQualifyingLevel(wandThis.ID());
 		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");

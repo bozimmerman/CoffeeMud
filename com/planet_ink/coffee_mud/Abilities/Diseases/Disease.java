@@ -22,10 +22,10 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected String DISEASE_DONE(){return "Your disease has run its coarse.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
-	
+
 	public int abilityCode(){return 0;}
 	private boolean processing=false;
-	
+
 	protected int diseaseTick=DISEASE_DELAY();
 
 	protected boolean catchIt(MOB mob, Environmental target)
@@ -119,8 +119,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&((affect.amITarget(mob))||(affect.amISource(mob)))
 			&&(affect.tool()!=null)
 			&&(affect.tool().ID().equals("Social"))
-			&&(affect.tool().name().equals("MATE <T-NAME>")
-				||affect.tool().name().equals("SEX <T-NAME>")))
+			&&(affect.tool().Name().equals("MATE <T-NAME>")
+				||affect.tool().Name().equals("SEX <T-NAME>")))
 				catchIt(mob,affect.amITarget(mob)?affect.source():affect.target());
 		}
 		else
@@ -146,7 +146,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 					if((Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONSUMPTION))
 					||(Util.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT)))
 					{
-						
+
 						if((myItem instanceof Food)
 						&&(affect.amITarget(myItem)))
 							catchIt(affect.source(),affect.source());

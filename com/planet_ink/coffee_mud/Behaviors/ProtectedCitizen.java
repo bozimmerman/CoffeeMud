@@ -14,7 +14,7 @@ public class ProtectedCitizen extends ActiveTicker
 	private String cityguard=null;
 	private String[] claims=null;
 	private int radius=7;
-	
+
 	public Behavior newInstance()
 	{
 		return new ProtectedCitizen();
@@ -33,7 +33,7 @@ public class ProtectedCitizen extends ActiveTicker
 		radius=getParmVal(parms,"radius",radius);
 		claims=null;
 	}
-	
+
 	public String getCityguardName()
 	{
 		if(cityguard!=null) return cityguard;
@@ -50,7 +50,7 @@ public class ProtectedCitizen extends ActiveTicker
 		{ cityguard=defcityguard; return cityguard;}
 		return cityguard;
 	}
-	
+
 	public String[] getClaims()
 	{
 		if(claims!=null) return claims;
@@ -79,7 +79,7 @@ public class ProtectedCitizen extends ActiveTicker
 			claims[i]=(String)V.elementAt(i);
 		return claims;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -96,12 +96,12 @@ public class ProtectedCitizen extends ActiveTicker
 				&&(M.getVictim()==mob.getVictim()))
 				   return true;
 			}
-			
+
 			try{
 			ExternalPlay.doCommand(mob,Util.parse("YELL "+getClaims()[Dice.roll(1,getClaims().length,-1)]));
 			}catch(Exception e){}
-			
-			
+
+
 			Room thisRoom=mob.location();
 			Vector V=new Vector();
 			ExternalPlay.getRadiantRooms(thisRoom,V,true,radius);
@@ -110,7 +110,7 @@ public class ProtectedCitizen extends ActiveTicker
 				Room R=(Room)V.elementAt(v);
 				MOB M=R.fetchInhabitant(getCityguardName());
 				if((M!=null)
-				&&(R.getArea().name().equals(mob.location().getArea().name()))
+				&&(R.getArea().Name().equals(mob.location().getArea().Name()))
 				&&(M!=mob.getVictim())
 				&&(Sense.aliveAwakeMobile(M,true))
 				&&(!M.isInCombat())

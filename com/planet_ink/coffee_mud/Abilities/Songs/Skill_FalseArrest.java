@@ -16,7 +16,7 @@ public class Skill_FalseArrest extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Skill_FalseArrest();}
 	protected int overrideMana(){return 50;}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -31,12 +31,12 @@ public class Skill_FalseArrest extends StdAbility
 			mob.tell("Not while you are fighting!");
 			return false;
 		}
-		
+
 		Behavior B=null;
 		Area A=null;
 		if(mob.location()!=null)
 			B=mob.location().fetchBehavior("Arrest");
-		
+
 		if(B==null)
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
@@ -47,18 +47,18 @@ public class Skill_FalseArrest extends StdAbility
 			B=null;
 			A=null;
 		}
-		
+
 		if(B==null)
 		{
 			mob.tell(target.name()+" is not wanted for anything, anywhere.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		
+
 		if(!success)
 		{
 			beneficialWordsFizzle(mob,target,"<S-NAME> frown(s) at <T-NAMESELF>, but lose(s) the nerve.");

@@ -10,6 +10,7 @@ import java.util.*;
 
 public class OverTheLedge extends InTheAir
 {
+	public String ID(){return "OverTheLedge";}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(Sense.isSleeping(this))

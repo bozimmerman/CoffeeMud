@@ -17,10 +17,10 @@ public class MobData extends StdWebMacro
 				return i;
 		return -1;
 	}
-	
-	public static String senses(Environmental E, 
+
+	public static String senses(Environmental E,
 								boolean firstTime,
-								ExternalHTTPRequests httpReq, 
+								ExternalHTTPRequests httpReq,
 								Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -37,7 +37,7 @@ public class MobData extends StdWebMacro
 		}
 		return str.toString();
 	}
-	
+
 	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -95,7 +95,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	
+
 	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -153,7 +153,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	
+
 	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -245,15 +245,15 @@ public class MobData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				if(E.getUniqueStoreInventory().contains(O))
-					str.append("<OPTION SELECTED VALUE=\""+(getShopCardinality(E,O)+1)+"\">"+O.name()+" ("+CMClass.className(O)+")");
+					str.append("<OPTION SELECTED VALUE=\""+(getShopCardinality(E,O)+1)+"\">"+O.Name()+" ("+O.ID()+")");
 				else
 				if(RoomData.items.contains(O))
-					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.name()+" ("+CMClass.className(O)+")");
+					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+" ("+O.ID()+")");
 				else
 				if(RoomData.mobs.contains(O))
-					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.name()+" ("+CMClass.className(O)+")");
+					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+" ("+O.ID()+")");
 				else
-					str.append("<OPTION SELECTED VALUE=\""+CMClass.className(O)+"\">"+O.name()+" ("+CMClass.className(O)+")");
+					str.append("<OPTION SELECTED VALUE=\""+O.ID()+"\">"+O.Name()+" ("+O.ID()+")");
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>Stock:");
 				str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(i+1)+" VALUE=\""+theparm+"\">");
@@ -279,12 +279,12 @@ public class MobData extends StdWebMacro
 			for(int i=0;i<RoomData.items.size();i++)
 			{
 				Item I=(Item)RoomData.items.elementAt(i);
-				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
 			for(int i=0;i<RoomData.mobs.size();i++)
 			{
 				MOB I=(MOB)RoomData.mobs.elementAt(i);
-				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
 			for(int r=0;r<sortedA.length;r++)
 			{
@@ -299,7 +299,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -308,10 +308,10 @@ public class MobData extends StdWebMacro
 		if(last==null) return " @break@";
 		String mobCode=(String)reqs.get("MOB");
 		if(mobCode==null) return "@break@";
-		
+
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
 			return httpReq.getMUD().gameStatusStr();
-		
+
 		Room R=null;
 		for(int i=0;i<httpReq.cache().size();i++)
 		{
@@ -327,13 +327,13 @@ public class MobData extends StdWebMacro
 			ExternalPlay.resetRoom(R);
 			httpReq.cache().addElement(R);
 		}
-		
+
 		MOB M=null;
 		if(mobCode.equals("NEW"))
 			M=CMClass.getMOB("GenMob");
 		else
 			M=RoomData.getMOBFromCode(R,mobCode);
-		
+
 		if((M==null)||(!M.isEligibleMonster()))
 		{
 			StringBuffer str=new StringBuffer("No MOB?!");
@@ -343,25 +343,25 @@ public class MobData extends StdWebMacro
 			{
 				MOB M2=R.fetchInhabitant(m);
 				if((M2!=null)&&(M2.isEligibleMonster()))
-				   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+				   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 			}
 			return str.toString();
 		}
-		
+
 		// important generic<->non generic swap!
 		String newClassID=(String)reqs.get("CLASSES");
 		if((newClassID!=null)
 		&&(!newClassID.equals(CMClass.className(M)))
 		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
-		
+
 		boolean changedClass=((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"));
 		changedClass=changedClass&&(mobCode.equals("NEW"));
 		boolean changedLevel=((reqs.get("CHANGEDLEVEL")!=null)&&((String)reqs.get("CHANGEDLEVEL")).equals("true"));
 		boolean firstTime=(reqs.get("ACTION")==null)
 				||(!((String)reqs.get("ACTION")).equals("MODIFYMOB"))
 				||(changedClass);
-		
+
 		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
 		{
 			int level=M.baseEnvStats().level();
@@ -379,7 +379,7 @@ public class MobData extends StdWebMacro
 			reqs.put("ATTACK",""+M.baseEnvStats().attackAdjustment());
 			reqs.put("MONEY",""+M.getMoney());
 		}
-		
+
 		StringBuffer str=new StringBuffer("");
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  "LEVEL","ABILITY","REJUV","MISCTEXT",
@@ -397,12 +397,12 @@ public class MobData extends StdWebMacro
 			switch(o)
 			{
 			case 0: // name
-				if(firstTime) old=M.name();
+				if(firstTime) old=M.Name();
 				str.append(old);
 				break;
 			case 1: // classes
 				{
-					if(firstTime) old=CMClass.className(M); 
+					if(firstTime) old=CMClass.className(M);
 					Vector sortMe=new Vector();
 					for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 						sortMe.addElement(CMClass.className(m.nextElement()));
@@ -418,30 +418,30 @@ public class MobData extends StdWebMacro
 				}
 				break;
 			case 2: // displaytext
-				if(firstTime) old=M.displayText(); 
+				if(firstTime) old=M.displayText();
 				str.append(old);
 				break;
 			case 3: // description
-				if(firstTime) old=M.description(); 
+				if(firstTime) old=M.description();
 				str.append(old);
 				break;
 			case 4: // level
-				if(firstTime) old=""+M.baseEnvStats().level(); 
+				if(firstTime) old=""+M.baseEnvStats().level();
 				str.append(old);
 				break;
 			case 5: // ability;
-				if(firstTime) old=""+M.baseEnvStats().ability(); 
+				if(firstTime) old=""+M.baseEnvStats().ability();
 				str.append(old);
 				break;
 			case 6: // rejuv;
-				if(firstTime) old=""+M.baseEnvStats().rejuv(); 
+				if(firstTime) old=""+M.baseEnvStats().rejuv();
 				if(old.equals(""+Integer.MAX_VALUE))
 					str.append("0");
 				else
 					str.append(old);
 				break;
 			case 7: // misctext
-				if(firstTime) old=M.text(); 
+				if(firstTime) old=M.text();
 				str.append(old);
 				break;
 			case 8: // race
@@ -491,27 +491,27 @@ public class MobData extends StdWebMacro
 				}
 				break;
 			case 10: // height
-				if(firstTime) old=""+M.baseEnvStats().height(); 
+				if(firstTime) old=""+M.baseEnvStats().height();
 				str.append(old);
 				break;
 			case 11: // weight
-				if(firstTime) old=""+M.baseEnvStats().weight(); 
+				if(firstTime) old=""+M.baseEnvStats().weight();
 				str.append(old);
 				break;
 			case 12: // speed
-				if(firstTime) old=""+M.baseEnvStats().speed(); 
+				if(firstTime) old=""+M.baseEnvStats().speed();
 				str.append(old);
 				break;
 			case 13: // attack
-				if(firstTime) old=""+M.baseEnvStats().attackAdjustment(); 
+				if(firstTime) old=""+M.baseEnvStats().attackAdjustment();
 				str.append(old);
 				break;
 			case 14: // damage
-				if(firstTime) old=""+M.baseEnvStats().damage(); 
+				if(firstTime) old=""+M.baseEnvStats().damage();
 				str.append(old);
 				break;
 			case 15: // armor
-				if(firstTime) old=""+M.baseEnvStats().armor(); 
+				if(firstTime) old=""+M.baseEnvStats().armor();
 				str.append(old);
 				break;
 			case 16: // alignment
@@ -628,7 +628,7 @@ public class MobData extends StdWebMacro
 			}
 			if(firstTime)
 				reqs.put(okparms[o],old.equals("checked")?"on":old);
-				
+
 		}
 		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 		str.append(MobData.senses(M,firstTime,httpReq,parms));
@@ -638,7 +638,7 @@ public class MobData extends StdWebMacro
 			str.append(MobData.blessings((Deity)M,httpReq,parms));
 		if(M instanceof ShopKeeper)
 			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms));
-		
+
 		if(parms.containsKey("ITEMLIST"))
 		{
 			Vector classes=new Vector();
@@ -677,12 +677,12 @@ public class MobData extends StdWebMacro
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
 				if(M.isMine(I))
-					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.name()+" ("+CMClass.className(I)+")"+((I.container()==null)?"":(" in "+I.container().name()))+((I.amWearingAt(Item.INVENTORY))?"":" (worn/wielded)"));
+					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.INVENTORY))?"":" (worn/wielded)"));
 				else
 				if(itemlist.contains(I))
-					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 				else
-					str.append("<OPTION SELECTED VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
+					str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
@@ -695,7 +695,7 @@ public class MobData extends StdWebMacro
 			for(int i=0;i<itemlist.size();i++)
 			{
 				Item I=(Item)itemlist.elementAt(i);
-				str.append("<OPTION VALUE=\""+I+"\">"+I.name()+" ("+CMClass.className(I)+")");
+				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
 			Vector sortMe=new Vector();
 			for(Enumeration i=CMClass.items();i.hasMoreElements();)
@@ -729,7 +729,7 @@ public class MobData extends StdWebMacro
 		}
 		if(firstTime)
 			httpReq.resetRequestEncodedParameters();
-			
+
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))
 			strstr=strstr.substring(0,strstr.length()-2);

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class WaterSurface extends StdRoom implements Drink
 {
+	public String ID(){return "WaterSurface";}
 	public WaterSurface()
 	{
 		super();
@@ -34,7 +35,7 @@ public class WaterSurface extends StdRoom implements Drink
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
 			UnderWaterGrid sea=new UnderWaterGrid();
 			sea.setArea(getArea());
-			sea.setID("");
+			sea.setRoomID("");
 			rawDoors()[Directions.DOWN]=sea;
 			rawExits()[Directions.DOWN]=o;
 			sea.rawDoors()[Directions.UP]=this;
@@ -48,7 +49,7 @@ public class WaterSurface extends StdRoom implements Drink
 					thatRoom.giveASky(depth+1);
 					thatSea=thatRoom.rawDoors()[Directions.DOWN];
 				}
-				if((thatSea!=null)&&(thatSea.ID().length()==0)&&(thatSea instanceof UnderWaterGrid))
+				if((thatSea!=null)&&(thatSea.roomID().length()==0)&&(thatSea instanceof UnderWaterGrid))
 				{
 					sea.rawDoors()[d]=thatSea;
 					sea.rawExits()[d]=rawExits()[d];
@@ -63,14 +64,14 @@ public class WaterSurface extends StdRoom implements Drink
 			CMMap.addRoom(sea);
 		}
 	}
-	
+
 	public void clearSky()
 	{
 		if(!skyedYet) return;
 		super.clearSky();
 		Room room=rawDoors()[Directions.DOWN];
 		if(room==null) return;
-		if((room.ID().length()==0)&&(room instanceof UnderWaterGrid))
+		if((room.roomID().length()==0)&&(room instanceof UnderWaterGrid))
 		{
 			((UnderWaterGrid)room).clearGrid();
 			rawDoors()[Directions.UP]=null;
@@ -81,12 +82,12 @@ public class WaterSurface extends StdRoom implements Drink
 			skyedYet=false;
 		}
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if(Sense.isSleeping(this)) 
+		if(Sense.isSleeping(this))
 			return super.okAffect(myHost,affect);
-		
+
 		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 			||(affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_FLEE))
@@ -138,7 +139,7 @@ public class WaterSurface extends StdRoom implements Drink
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
-		if((affect.target() instanceof Item) 
+		if((affect.target() instanceof Item)
 		&&((affect.targetMinor()==Affect.TYP_DROP)
 			||((affect.targetMinor()==Affect.TYP_THROW)
 			   &&(affect.tool()!=null)

@@ -49,8 +49,8 @@ public class Thief_Steal extends ThiefSkill
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		
-		if(levelDiff>0) 
+
+		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
@@ -73,7 +73,7 @@ public class Thief_Steal extends ThiefSkill
 			int code=Affect.MSG_THIEF_ACT;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Item.INVENTORY)))
-					str="<S-NAME> steal(s) "+stolen.displayName()+" from <T-NAMESELF>.";
+					str="<S-NAME> steal(s) "+stolen.name()+" from <T-NAMESELF>.";
 				else
 				{
 					code=Affect.MSG_QUIETMOVEMENT;

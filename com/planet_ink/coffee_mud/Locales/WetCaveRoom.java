@@ -6,6 +6,7 @@ import java.util.*;
 
 public class WetCaveRoom extends CaveRoom
 {
+	public String ID(){return "WetCaveRoom";}
 	public WetCaveRoom()
 	{
 		super();

@@ -8,6 +8,7 @@ import java.util.*;
 
 public class StdGrid extends StdRoom implements GridLocale
 {
+	public String ID(){return "StdGrid";}
 	protected Room[] alts=new Room[Directions.NUM_DIRECTIONS];
 	protected Room[][] subMap=null;
 	protected Vector descriptions=new Vector();
@@ -70,7 +71,7 @@ public class StdGrid extends StdRoom implements GridLocale
 
 		if(subMap==null) buildGrid();
 
-		if(loc.ID().length()==0) // might be a child of an adjacent grid!
+		if(loc.roomID().length()==0) // might be a child of an adjacent grid!
 		{
 			for(int x=0;x<Directions.NUM_DIRECTIONS-1;x++)
 				if((doors[x]!=null)
@@ -295,7 +296,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(subMap==null) subMap=new Room[xsize][ysize];
 		if((x<0)||(y<0)||(y>=subMap[0].length)||(x>=subMap.length)) return null;
 		Room gc=CMClass.getLocale(getChildLocaleID());
-		gc.setID("");
+		gc.setRoomID("");
 		gc.setArea(getArea());
 		gc.setDisplayText(displayText);
 		gc.setDescription(description);
@@ -329,7 +330,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		&&(affect.target()==this))
 		{
 			MOB mob=affect.source();
-			if((mob.location()!=null)&&(mob.location().ID().length()>0))
+			if((mob.location()!=null)&&(mob.location().roomID().length()>0))
 			{
 				Room altRoom=getAltRoomFrom(mob.location());
 				if(altRoom==null)

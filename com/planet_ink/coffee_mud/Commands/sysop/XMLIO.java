@@ -45,15 +45,15 @@ public class XMLIO
 					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(R.ID().length()>0)
-							roomXML.append(R.ID()+";");
+						if(R.roomID().length()>0)
+							roomXML.append(R.roomID()+";");
 					}
 				}
 				else
 				if(newList.equalsIgnoreCase("AREA"))
 				{
 					for(Enumeration a=CMMap.areas();a.hasMoreElements();)
-						roomXML.append(((Area)a.nextElement()).name()+";");
+						roomXML.append(((Area)a.nextElement()).Name()+";");
 				}
 				else
 				if(newList.equalsIgnoreCase("LOCALE"))
@@ -138,8 +138,8 @@ public class XMLIO
 					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if((R.ID().length()>0)&&(R.getArea().name().equalsIgnoreCase(newList)))
-							roomXML.append(R.ID()+";");
+						if((R.roomID().length()>0)&&(R.getArea().Name().equalsIgnoreCase(newList)))
+							roomXML.append(R.roomID()+";");
 					}
 				}
 				roomXML.append("</LIST>");
@@ -248,7 +248,7 @@ public class XMLIO
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R.ID().equalsIgnoreCase(possID))
+				if(R.roomID().equalsIgnoreCase(possID))
 				{
 				   room=R;
 				   break;
@@ -268,7 +268,7 @@ public class XMLIO
 			Rooms.clearTheRoom(room);
 			ExternalPlay.DBReadContent(room,null);
 			StringBuffer roomXML=new StringBuffer("");
-			roomXML.append("<ROOMID>"+room.ID()+"</ROOMID>");
+			roomXML.append("<ROOMID>"+room.roomID()+"</ROOMID>");
 			roomXML.append("<ROOMCONTENTS>");
 			roomXML.append("<ROOMMOBS>");
 			int num=0;
@@ -328,12 +328,12 @@ public class XMLIO
 		else
 		{
 			String roomID=XMLManager.returnXMLValue(Util.combine(commands,0),"ROOMID");
-			if((roomID.length()>0)&&(!roomID.equalsIgnoreCase(room.ID())))
+			if((roomID.length()>0)&&(!roomID.equalsIgnoreCase(room.roomID())))
 			{
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(R.ID().equalsIgnoreCase(roomID))
+					if(R.roomID().equalsIgnoreCase(roomID))
 					{
 					   room=R;
 					   break;
@@ -437,7 +437,7 @@ public class XMLIO
 			}
 
 			Rooms.clearDebriAndRestart(room,0);
-			Log.sysOut("CNTNTXML",mob.name()+" updated content of room "+room.ID()+".");
+			Log.sysOut("CNTNTXML",mob.Name()+" updated content of room "+room.roomID()+".");
 			mob.session().rawPrintln("<RESPONSE>Done.</RESPONSE>");
 			return;
 		}
@@ -452,7 +452,7 @@ public class XMLIO
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R.ID().equalsIgnoreCase(possID))
+				if(R.roomID().equalsIgnoreCase(possID))
 				{
 				   room=R;
 				   break;
@@ -471,9 +471,9 @@ public class XMLIO
 		{
 			StringBuffer roomXML=new StringBuffer("");
 			roomXML.append("<ROOM>");
-			roomXML.append(XMLManager.convertXMLtoTag("ROOMID",room.ID()));
+			roomXML.append(XMLManager.convertXMLtoTag("ROOMID",room.roomID()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMCLASS",CMClass.className(room)));
-			roomXML.append(XMLManager.convertXMLtoTag("ROOMAREA",room.getArea().name()));
+			roomXML.append(XMLManager.convertXMLtoTag("ROOMAREA",room.getArea().Name()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMDISPLAYTEXT",room.displayText()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMDESCRIPTION",room.description()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMTEXT",room.text()));
@@ -483,15 +483,15 @@ public class XMLIO
 				Exit exit=room.rawExits()[d];
 				Exit opExit=null;
 				roomXML.append("<ROOM"+Directions.getDirectionName(d).toUpperCase()+">");
-				if((door!=null)&&(door.ID().length()>0))
+				if((door!=null)&&(door.roomID().length()>0))
 				{
-					roomXML.append(XMLManager.convertXMLtoTag("DOOR",door.ID()));
+					roomXML.append(XMLManager.convertXMLtoTag("DOOR",door.roomID()));
 					opExit=door.rawExits()[Directions.getOpDirectionCode(d)];
 				}
 				else
 					roomXML.append("<DOOR></DOOR>");
 				roomXML.append("<EXIT>");
-				if((exit!=null)&&(door!=null)&&(door.ID().length()>0))
+				if((exit!=null)&&(door!=null)&&(door.roomID().length()>0))
 				{
 					roomXML.append(XMLManager.convertXMLtoTag("EXITCLASS",CMClass.className(exit)));
 					roomXML.append(XMLManager.convertXMLtoTag("EXITTEXT",exit.text()));
@@ -527,22 +527,22 @@ public class XMLIO
 				if(newRoom==null) return;
 				isNewRoom=true;
 				room=newRoom;
-				room.setID(Reset.getOpenRoomID(newArea.name()));
+				room.setRoomID(Reset.getOpenRoomID(newArea.Name()));
 				room.setArea(newArea);
-				newID=room.ID();
+				newID=room.roomID();
 				ExternalPlay.DBCreateRoom(room,newRoomClass);
 				CMMap.addRoom(room);
 				response=newID;
-				Log.sysOut("ROOMXML",mob.name()+" created room "+room.ID()+".");
+				Log.sysOut("ROOMXML",mob.Name()+" created room "+room.roomID()+".");
 			}
 			else
 			{
-				if((!room.ID().equalsIgnoreCase(newID))&&(newID.length()>0))
+				if((!room.roomID().equalsIgnoreCase(newID))&&(newID.length()>0))
 				{
 					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(R.ID().equalsIgnoreCase(newID))
+						if(R.roomID().equalsIgnoreCase(newID))
 						{
 						   room=R;
 						   break;
@@ -551,10 +551,10 @@ public class XMLIO
 					if(room!=mob.location())
 						room.bringMobHere(mob,true);
 				}
-				Log.sysOut("ROOMXML",mob.name()+" updated room "+room.ID()+".");
+				Log.sysOut("ROOMXML",mob.Name()+" updated room "+room.roomID()+".");
 			}
 
-			room.setID(newID);
+			room.setRoomID(newID);
 			room.setDisplayText(newDisplay);
 			room.setDescription(newDescription);
 			room.setArea(newArea);
@@ -572,7 +572,7 @@ public class XMLIO
 				{
 					newDoor=XMLManager.returnXMLValue(block,"DOOR");
 					if(((newDoor.length()==0)&&(door==null))
-					   ||(newDoor.length()>0)&&(door!=null)&&(door.ID().equals(newDoor)))
+					   ||(newDoor.length()>0)&&(door!=null)&&(door.roomID().equals(newDoor)))
 					{
 						// its alllll good
 					}
@@ -639,7 +639,7 @@ public class XMLIO
 				{
 					Room R2=(Room)r2.nextElement();
 					if((R2==R)&&(r!=r2))
-						Log.errOut("ROOMXML",R.ID()+"="+R2.ID());
+						Log.errOut("ROOMXML",R.roomID()+"="+R2.roomID());
 				}
 
 			}

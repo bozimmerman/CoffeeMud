@@ -14,7 +14,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonHouseplant();}
 	private boolean processing=false;
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affect.amITarget(littlePlants))
@@ -50,7 +50,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		}
 		return true;
 	}
-	
+
 	public static Item buildHouseplant(MOB mob, Room room)
 	{
 		Item newItem=(Item)CMClass.getItem("GenItem");
@@ -93,12 +93,12 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 			newItem.setDescription("Happy flowers with little blue and purple blooms.");
 			break;
 		}
-		newItem.setSecretIdentity(mob.name());
+		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" appears here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" appears here.");
 		Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

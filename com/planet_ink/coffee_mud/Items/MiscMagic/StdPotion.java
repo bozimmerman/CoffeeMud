@@ -33,9 +33,9 @@ public class StdPotion extends StdDrink implements Potion
 	public boolean isDrunk(){return (miscText.toUpperCase().indexOf(";DRUNK")>=0);}
 	public int value()
 	{
-		if(isDrunk()) 
+		if(isDrunk())
 			return 0;
-		else 
+		else
 			return super.value();
 	}
 
@@ -121,7 +121,7 @@ public class StdPotion extends StdDrink implements Potion
 				return true;
 		return super.okAffect(myHost,affect);
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
@@ -133,7 +133,7 @@ public class StdPotion extends StdDrink implements Potion
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
 				{
 					drinkIfAble(mob,this);
-					mob.tell(displayName()+" vanishes!");
+					mob.tell(name()+" vanishes!");
 					destroyThis();
 				}
 				else

@@ -50,7 +50,7 @@ public class StdInnKey extends StdKey implements InnKey
 			myShopkeeper=sk;
 			int y=sk.numberInStock(this);
 			name="key to room "+(y+1);
-			description="The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+sk.displayName()+", when you leave.";
+			description="The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+sk.name()+", when you leave.";
 			miscText="INN"+(y+1);
 		}
 	}

@@ -31,7 +31,7 @@ public class Prayer_LinkedHealth extends Prayer
 		{
 			if(buddy!=null)
 			{
-				mob.tell("Your health is no longer linked with "+buddy.displayName()+".");
+				mob.tell("Your health is no longer linked with "+buddy.name()+".");
 				Ability A=buddy.fetchAffect(ID());
 				if(A!=null) A.unInvoke();
 			}
@@ -53,7 +53,7 @@ public class Prayer_LinkedHealth extends Prayer
 			{
 				int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
 				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
-				ExternalPlay.postDamage(affect.source(),buddy,this,recovery,Affect.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+affect.target().displayName()+".");
+				ExternalPlay.postDamage(affect.source(),buddy,this,recovery,Affect.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+affect.target().name()+".");
 			}
 		}
 		return true;
@@ -69,7 +69,7 @@ public class Prayer_LinkedHealth extends Prayer
 		}
 		if(target.fetchAffect(ID())!=null)
 		{
-			mob.tell(target.displayName()+"'s health is already linked with someones!");
+			mob.tell(target.name()+"'s health is already linked with someones!");
 			return false;
 		}
 

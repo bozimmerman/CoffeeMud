@@ -14,14 +14,14 @@ public class Trap_Boomerang extends StdTrap
 	protected int trapLevel(){return 24;}
 	public String requiresToSet(){return "";}
 	public Environmental newInstance(){	return new Trap_Boomerang();}
-	
+
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			boolean ok=((invoker()!=null)&&(invoker().location()!=null));
 			if((!ok)||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.displayName()+"!");
+				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.name()+"!");
 			else
 			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap!"))
 			{

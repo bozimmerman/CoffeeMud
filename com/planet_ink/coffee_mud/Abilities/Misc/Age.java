@@ -18,7 +18,7 @@ public class Age extends StdAbility
 	public String accountForYourself(){return displayText();}
 	public String displayText()
 	{
-		long start=Util.s_long(text());			
+		long start=Util.s_long(text());
 		long days=((System.currentTimeMillis()-start)/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days;
 		long months=days/30;
 		if(days<1)
@@ -39,7 +39,7 @@ public class Age extends StdAbility
 		if(l==0) return;
 		if(norecurse) return;
 		norecurse=true;
-		
+
 		long day=60000; // one minute
 		day*=(long)60; // one hour
 		day*=(long)24; // on day
@@ -69,7 +69,7 @@ public class Age extends StdAbility
 					babe.baseState().setMana(10);
 					babe.baseState().setMovement(20);
 					if(following!=null)
-						babe.setLeigeID(following.name());
+						babe.setLeigeID(following.Name());
 					babe.recoverCharStats();
 					babe.recoverEnvStats();
 					babe.recoverMaxState();
@@ -115,13 +115,13 @@ public class Age extends StdAbility
 		}
 		norecurse=false;
 	}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
 		doThang();
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -16,14 +16,14 @@ public class EarthElemental extends StdRace
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Earth Elemental";}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
-	
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -39,36 +39,36 @@ public class EarthElemental extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is near destruction!^N";
+			return "^r" + mob.name() + "^r is near destruction!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName() + "^r is massively cracked and damaged.^N";
+			return "^r" + mob.name() + "^r is massively cracked and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName() + "^r is extremeley cracked and damaged.^N";
+			return "^r" + mob.name() + "^r is extremeley cracked and damaged.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName() + "^y is very cracked and damaged.^N";
+			return "^y" + mob.name() + "^y is very cracked and damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName() + "^y is cracked and damaged.^N";
+			return "^y" + mob.name() + "^y is cracked and damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName() + "^p is cracked and slightly damaged.^N";
+			return "^p" + mob.name() + "^p is cracked and slightly damaged.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName() + "^p is showing large cracks.^N";
+			return "^p" + mob.name() + "^p is showing large cracks.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName() + "^g is showing some cracks.^N";
+			return "^g" + mob.name() + "^g is showing some cracks.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName() + "^g is showing small cracks.^N";
+			return "^g" + mob.name() + "^g is showing small cracks.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect condition.^N";
+			return "^c" + mob.name() + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

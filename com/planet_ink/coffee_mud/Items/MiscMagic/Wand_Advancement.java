@@ -56,7 +56,7 @@ public class Wand_Advancement extends StdWand
 					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.displayName()+" at <T-NAMESELF>, who begins to glow softly.");
+						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
 						if(mob.location().okAffect(mob,msg))
 						{
 							mob.location().send(mob,msg);
@@ -71,7 +71,7 @@ public class Wand_Advancement extends StdWand
 					if((usesRemaining()>0)&&(useTheWand(CMClass.getAbility("Falling"),mob)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.displayName()+" at <T-NAMESELF>, who begins to glow softly.");
+						FullMsg msg=new FullMsg(mob,affect.target(),null,Affect.MSG_HANDS,Affect.MSG_OK_ACTION,Affect.MSG_OK_ACTION,"<S-NAME> point(s) "+this.name()+" at <T-NAMESELF>, who begins to glow softly.");
 						if(mob.location().okAffect(mob,msg))
 						{
 							mob.location().send(mob,msg);

@@ -10,7 +10,7 @@ public class StdTitle extends StdItem implements LandTitle
 	public String ID(){	return "StdTitle";}
 	public String displayText() {return "an official looking document sits here";}
 	public int baseGoldValue() {return landPrice();}
-	public int value() 
+	public int value()
 	{
 		if(name().indexOf("(Copy)")>=0)
 			baseGoldValue=10;
@@ -19,7 +19,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return baseGoldValue;
 	}
 	public void setBaseGoldValue(int newValue) {setLandPrice(newValue);}
-	
+
 	public StdTitle()
 	{
 		super();
@@ -35,7 +35,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		return new StdTitle();
 	}
-	
+
 	public int landPrice()
 	{
 		LandTitle A=fetchLandTitle(null);
@@ -43,7 +43,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return A.landPrice();
 	}
 	public void setLandPrice(int price)
-	{ 
+	{
 		LandTitle A=fetchLandTitle(null);
 		if(A==null)	return;
 		A.setLandPrice(price);
@@ -66,7 +66,7 @@ public class StdTitle extends StdItem implements LandTitle
 	{
 		return text();
 	}
-	
+
 	public void updateTitleName()
 	{
 		if(!name.startsWith("the title to"))
@@ -78,13 +78,13 @@ public class StdTitle extends StdItem implements LandTitle
 				name="the title to rooms around "+((Room)V.firstElement()).ID();
 		}
 	}
-	
+
 	public void setLandRoomID(String landID)
 	{
 		setMiscText(landID);
 		updateTitleName();
 	}
-	
+
 	public void updateLot(Room R, LandTitle T)
 	{
 		if(T==null)
@@ -92,7 +92,7 @@ public class StdTitle extends StdItem implements LandTitle
 		if(T==null) return;
 		T.updateLot(R,T);
 	}
-	
+
 	public void updateTitle()
 	{
 		Room R=CMMap.getRoom(landRoomID());
@@ -102,7 +102,7 @@ public class StdTitle extends StdItem implements LandTitle
 			if(A!=null) A.updateTitle();
 		}
 	}
-	
+
 	public Vector getRooms()
 	{
 		Room R=CMMap.getRoom(landRoomID());
@@ -113,7 +113,7 @@ public class StdTitle extends StdItem implements LandTitle
 		}
 		return new Vector();
 	}
-	
+
 	private LandTitle fetchLandTitle(Room R)
 	{
 		if(R==null)
@@ -133,7 +133,7 @@ public class StdTitle extends StdItem implements LandTitle
 			{ A=(LandTitle)R.fetchAffect(a); break;}
 		return A;
 	}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
@@ -166,7 +166,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.tool()==this)
 		&&(msg.source()!=null)
 		&&(landOwner().length()>0)
-		&&((msg.source().name().equals(landOwner()))
+		&&((msg.source().Name().equals(landOwner()))
 			||((msg.source().getClanID().equals(landOwner()))))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB))
@@ -185,7 +185,7 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Ungiveable room: "+landRoomID());
 				return;
 			}
-			A.setLandOwner(msg.target().name());
+			A.setLandOwner(msg.target().Name());
 			A.updateTitle();
 			updateLot(R,A);
 			recoverEnvStats();
@@ -210,12 +210,12 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unbuyable room: "+landRoomID());
 				return;
 			}
-			
+
 			if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
 			&&(msg.source().getClanID().length()>0))
 				A.setLandOwner(msg.source().getClanID());
 			else
-				A.setLandOwner(msg.source().name());
+				A.setLandOwner(msg.source().Name());
 			A.updateTitle();
 			updateLot(R,A);
 			recoverEnvStats();

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class HotRoom extends StdRoom
 {
+	public String ID(){return "HotRoom";}
 	public HotRoom()
 	{
 		super();

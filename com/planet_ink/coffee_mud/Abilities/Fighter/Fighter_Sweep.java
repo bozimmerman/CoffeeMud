@@ -22,7 +22,7 @@ public class Fighter_Sweep extends StdAbility
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()/2);
 		affectableStats.setDamage(affectableStats.damage()/3);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
@@ -42,13 +42,13 @@ public class Fighter_Sweep extends StdAbility
 			if((m.rangeToTarget()<0)||(m.rangeToTarget()>0))
 				h.remove(m);
 		}
-		
+
 		if(h.size()==0)
 		{
 			mob.tell("There aren't enough enough targets in range!");
 			return false;
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
@@ -58,7 +58,7 @@ public class Fighter_Sweep extends StdAbility
 		Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
-			mob.tell("You cannot sweep with "+wp.displayName()+"!");
+			mob.tell("You cannot sweep with "+wp.name()+"!");
 			return false;
 		}
 

@@ -19,7 +19,7 @@ public class Chant_FortifyFood extends Chant
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -27,13 +27,13 @@ public class Chant_FortifyFood extends Chant
 
 		if(!(target instanceof Food))
 		{
-			mob.tell(target.displayName()+" is not edible.");
+			mob.tell(target.name()+" is not edible.");
 			return false;
 		}
-		
+
 		if(((Food)target).nourishment()>1000)
 		{
-			mob.tell(target.displayName()+" is already well fortified.");
+			mob.tell(target.name()+" is already well fortified.");
 			return false;
 		}
 

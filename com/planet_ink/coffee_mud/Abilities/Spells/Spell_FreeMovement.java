@@ -53,7 +53,7 @@ public class Spell_FreeMovement extends Spell
 				if((!Sense.aliveAwakeMobile(newMOB,true))
 				   ||(!A.okAffect(newMOB,msg)))
 				{
-					affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.displayName()+"."));
+					affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The uninhibiting barrier around <S-NAME> repels the "+A.name()+"."));
 					return false;
 				}
 			}

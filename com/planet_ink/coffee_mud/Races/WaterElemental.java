@@ -16,11 +16,11 @@ public class WaterElemental extends StdRace
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Water Elemental";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
@@ -44,42 +44,42 @@ public class WaterElemental extends StdRace
 		}
 		return naturalWeapon;
 	}
-	
+
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is almost dry!^N";
+			return "^r" + mob.name() + "^r is almost dry!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName() + "^r is dripping alot and is almost dried out.^N";
+			return "^r" + mob.name() + "^r is dripping alot and is almost dried out.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName() + "^r is dripping alot and steaming massively.^N";
+			return "^r" + mob.name() + "^r is dripping alot and steaming massively.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName() + "^y is dripping alot and steaming a lot.^N";
+			return "^y" + mob.name() + "^y is dripping alot and steaming a lot.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName() + "^y is dripping and steaming.^N";
+			return "^y" + mob.name() + "^y is dripping and steaming.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName() + "^p is dripping and starting to steam.^N";
+			return "^p" + mob.name() + "^p is dripping and starting to steam.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName() + "^p is dripping more.^N";
+			return "^p" + mob.name() + "^p is dripping more.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName() + "^g is showing some dripping.^N";
+			return "^g" + mob.name() + "^g is showing some dripping.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName() + "^g is showing small drips.^N";
+			return "^g" + mob.name() + "^g is showing small drips.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect condition.^N";
+			return "^c" + mob.name() + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

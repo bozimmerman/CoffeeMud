@@ -14,7 +14,7 @@ public class Spell_MassDisintegrate extends Spell
 	public Environmental newInstance(){	return new Spell_MassDisintegrate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Hashtable h=ExternalPlay.properTargets(this,mob,auto);
@@ -44,7 +44,7 @@ public class Spell_MassDisintegrate extends Spell
 		}
 		if(h.size()>0)
 			avgLevel=avgLevel/h.size();
-		
+
 		boolean success=false;
 		success=profficiencyCheck(-(avgLevel*2),auto);
 
@@ -78,7 +78,7 @@ public class Spell_MassDisintegrate extends Spell
 			for(int i=0;i<V.size();i++)
 			{
 				Item I=(Item)V.elementAt(i);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" disintegrates!");
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" disintegrates!");
 				I.destroyThis();
 			}
 		}

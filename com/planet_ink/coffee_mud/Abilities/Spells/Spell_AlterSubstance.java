@@ -15,7 +15,7 @@ public class Spell_AlterSubstance extends Spell
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 	public String newName="";
 	public int oldMaterial=0;
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -30,14 +30,14 @@ public class Spell_AlterSubstance extends Spell
 			Item I=(Item)affected;
 			I.setMaterial(oldMaterial);
 			if(I.owner() instanceof Room)
-				((Room)I.owner()).showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" reverts to its natural form.");
+				((Room)I.owner()).showHappens(Affect.MSG_OK_VISUAL,I.name()+" reverts to its natural form.");
 			else
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(I.displayName()+" reverts to its natural form.");
+				((MOB)I.owner()).tell(I.name()+" reverts to its natural form.");
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		String material="";
@@ -104,7 +104,7 @@ public class Spell_AlterSubstance extends Spell
 				target.setMaterial(newMaterial);
 				String oldResourceName=EnvResource.RESOURCE_DESCS[oldMaterial&EnvResource.RESOURCE_MASK];
 				String oldMaterialName=EnvResource.MATERIAL_DESCS[(oldMaterial&EnvResource.MATERIAL_MASK)>>8];
-				String oldName=target.displayName().toUpperCase();
+				String oldName=target.name().toUpperCase();
 				oldName=Util.replaceAll(oldName,oldResourceName,material);
 				oldName=Util.replaceAll(oldName,oldMaterialName,material);
 				if(oldName.indexOf(material)<0)

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class DesertGrid extends StdGrid
 {
+	public String ID(){return "DesertGrid";}
 	public DesertGrid()
 	{
 		super();

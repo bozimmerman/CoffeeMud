@@ -7,6 +7,7 @@ import java.util.*;
 
 public class CaveSurface extends ClimbableSurface
 {
+	public String ID(){return "CaveSurface";}
 	public CaveSurface()
 	{
 		super();

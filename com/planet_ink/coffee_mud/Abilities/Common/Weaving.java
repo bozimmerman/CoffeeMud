@@ -74,12 +74,12 @@ public class Weaving extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.displayName()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
 						else
 						if(refitting)
-							commonEmote(mob,"<S-NAME> completely mess(es) up refitting "+building.displayName()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up refitting "+building.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> completely mess(es) up weaving "+building.displayName()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up weaving "+building.name()+".");
 					}
 					else
 					{
@@ -159,20 +159,20 @@ public class Weaving extends CommonSkill
 			}
 			if(!building.subjectToWearAndTear())
 			{
-				commonTell(mob,"You can't mend "+building.displayName()+".");
+				commonTell(mob,"You can't mend "+building.name()+".");
 				return false;
 			}
 			if(((Item)building).usesRemaining()>=100)
 			{
-				commonTell(mob,building.displayName()+" is in good condition already.");
+				commonTell(mob,building.name()+" is in good condition already.");
 				return false;
 			}
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.displayName()+".";
-			displayText="You are mending "+building.displayName();
-			verb="mending "+building.displayName();
+			startStr="<S-NAME> start(s) mending "+building.name()+".";
+			displayText="You are mending "+building.name();
+			verb="mending "+building.name();
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -200,15 +200,15 @@ public class Weaving extends CommonSkill
 			}
 			if(((Item)building).envStats().height()==0)
 			{
-				commonTell(mob,building.displayName()+" is already the right size.");
+				commonTell(mob,building.name()+" is already the right size.");
 				return false;
 			}
 			refitting=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+building.displayName()+".";
-			displayText="You are refitting "+building.displayName();
-			verb="refitting "+building.displayName();
+			startStr="<S-NAME> start(s) refitting "+building.name()+".";
+			displayText="You are refitting "+building.name();
+			verb="refitting "+building.name();
 		}
 		else
 		{
@@ -284,9 +284,9 @@ public class Weaving extends CommonSkill
 			else
 				itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) weaving "+building.displayName()+".";
-			displayText="You are weaving "+building.displayName();
-			verb="weaving "+building.displayName();
+			startStr="<S-NAME> start(s) weaving "+building.name()+".";
+			displayText="You are weaving "+building.name();
+			verb="weaving "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired/2);
@@ -312,7 +312,7 @@ public class Weaving extends CommonSkill
 			}
 			if(building instanceof Armor)
 			{
-				
+
 				if(capacity>0)
 				{
 					((Armor)building).setCapacity(capacity+woodRequired);

@@ -645,7 +645,7 @@ public class TelnetSession extends Thread implements Session
 									lastWord=buf.charAt(i)+lastWord;
 								lastWord=Util.removeColors(lastWord).trim().toUpperCase();
 							}
-							
+
 							int lastParen=(c2=='S')?loop+2:loop+3;
 							if((lastWord.equals("A")||lastWord.equals("YOU")||lastWord.equals("1")||doSagain))
 							{
@@ -733,7 +733,7 @@ public class TelnetSession extends Thread implements Session
 									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
-										replacement=regarding.displayName();
+										replacement=regarding.name();
 								}
 								break;
 							case NAMESELF:
@@ -753,7 +753,7 @@ public class TelnetSession extends Thread implements Session
 									if(source==target)
 										replacement=((regarding instanceof MOB)?(((MOB)regarding).charStats().himher()+"self"):"itself");
 									else
-										replacement=regarding.displayName();
+										replacement=regarding.name();
 								}
 								break;
 							case YOUPOSS:
@@ -767,7 +767,7 @@ public class TelnetSession extends Thread implements Session
 									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
 										replacement=((regarding instanceof MOB)?"someone's":"something's");
 									else
-										replacement=regarding.displayName()+"'s";
+										replacement=regarding.name()+"'s";
 								}
 								break;
 							case HISHER:
@@ -940,9 +940,9 @@ public class TelnetSession extends Thread implements Session
 
 		if((firstAlpha>=0)&&(firstAlpha<buf.length()))
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-		if ((currentColor != ((int)'N'))&&(termID>0)) 
+		if ((currentColor != ((int)'N'))&&(termID>0))
 			buf.append(makeEscape((int)'N'));
-		
+
 		/* fabulous debug code
 		for(int i=0;i<buf.length();i+=25)
 		{
@@ -1223,11 +1223,11 @@ public class TelnetSession extends Thread implements Session
 								  buf.append(mob().location().getArea().name());
 							  c++; break; }
 				case 'R': {   if((mob().location()!=null)&&(mob().isASysOp(mob().location())))
-								  buf.append(mob().location().ID());
+								  buf.append(mob().location().roomID());
 							  c++; break; }
 				case 'e': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))
-								  buf.append(victim.displayName());
+								  buf.append(victim.name());
 							  c++; break; }
 				case 'E': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))
@@ -1319,7 +1319,7 @@ public class TelnetSession extends Thread implements Session
 				{
 					status=Session.STATUS_LOGIN2;
 					if((!killFlag)&&(mob!=null))
-						Log.sysOut("Session","login: "+mob.name());
+						Log.sysOut("Session","login: "+mob.Name());
 					needPrompt=true;
 					Vector CMDS=null;
 					while((!killFlag)&&(mob!=null))
@@ -1331,7 +1331,7 @@ public class TelnetSession extends Thread implements Session
 						if(input!=null)
 							enque(0,Util.parse(input));
 						if(mob==null) break;
-						
+
 						if((((MOB)mob).lastTickedDateTime()>lastStop)
 						||(!mob.isInCombat()))
 						{
@@ -1354,7 +1354,7 @@ public class TelnetSession extends Thread implements Session
 								}
 								needPrompt=true;
 							}
-							
+
 						}
 						if((needPrompt)&&(waiting))
 						{
@@ -1430,7 +1430,7 @@ public class TelnetSession extends Thread implements Session
 					mob.location().send(mob,msg);
 			}
 			mob.setLastDateTime(System.currentTimeMillis());
-			Log.sysOut("Session","logout: "+mob.name());
+			Log.sysOut("Session","logout: "+mob.Name());
 			mob.destroy();
 			mob.setSession(null);
 			mob=null;

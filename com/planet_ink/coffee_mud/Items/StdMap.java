@@ -180,7 +180,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R.getArea().name().trim().equalsIgnoreCase(area))
+				if(R.getArea().Name().trim().equalsIgnoreCase(area))
 				{
 					MapRoom mr=new MapRoom();
 					mr.r=R;
@@ -191,8 +191,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 
 		return mapRooms;
 	}
-	
-	
+
+
 	public StringBuffer[][] finishMapMaking()
 	{
 		Vector mapRooms=makeMapRooms();
@@ -270,8 +270,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 				if(map[x][y]==null) map[x][y]=new StringBuffer("");
 		return map;
 	}
-	
-	
+
+
 	public StringBuffer[][] getMyMappedRoom()
 	{
 		if(oldLevel!=envStats().level())
@@ -372,7 +372,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
         for(int r=0;r<allRooms.size();r++)
         {
             MapRoom room=(MapRoom)allRooms.elementAt(r);
-            if(room.r.ID().equalsIgnoreCase(ID))
+            if(room.r.roomID().equalsIgnoreCase(ID))
                 return room;
         }
         return null;
@@ -491,7 +491,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
                 Room dir=room.r.rawDoors()[d];
                 if(dir!=null)
 				{
-					MapRoom rm=getRoom(areaMap,dir.ID());
+					MapRoom rm=getRoom(areaMap,dir.roomID());
 					if(rm!=null)
 	                    rm.positionedAlready=false;
 				}
@@ -579,7 +579,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 					}
 				}
 				else
-					mob.tell(displayName()+" appears to be blank.");
+					mob.tell(name()+" appears to be blank.");
 			}
 			else
 				mob.tell("You can't see that!");
@@ -587,7 +587,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		}
 		super.affect(myHost,affect);
 	}
-	
+
     public void placeRoom(MapRoom room,
 							int favoredX,
 							int favoredY,
@@ -611,8 +611,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
                             Room RD=roomToBlame.r.rawDoors()[rd];
 							if(RD!=null)
 							{
-								MapRoom MR=getRoom(allRooms,RD.ID());
-								if((RD!=null)&&(RD.ID().equals(room.r.ID()))&&(MR!=null)&&(!MR.positionedAlready))
+								MapRoom MR=getRoom(allRooms,RD.roomID());
+								if((RD!=null)&&(RD.roomID().equals(room.r.roomID()))&&(MR!=null)&&(!MR.positionedAlready))
 								    return;
 							}
                         }
@@ -641,7 +641,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 			Exit exit=null;
             if(room.r.rawDoors()[d]!=null)
 			{
-                roomID=room.r.rawDoors()[d].ID();
+                roomID=room.r.rawDoors()[d].roomID();
 				exit=room.r.rawExits()[d];
 			}
 

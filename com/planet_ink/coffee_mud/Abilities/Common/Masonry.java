@@ -80,7 +80,7 @@ public class Masonry extends CommonSkill
 					case BUILD_ROOF:
 						{
 							Room R=CMClass.getLocale("StoneRoom");
-							R.setID(room.ID());
+							R.setRoomID(room.roomID());
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
 							R.setArea(room.getArea());
@@ -187,7 +187,7 @@ public class Masonry extends CommonSkill
 							if(dir<0)
 							{
 								Room R=CMClass.getLocale("Plains");
-								R.setID(room.ID());
+								R.setRoomID(room.roomID());
 								R.setDisplayText(room.displayText());
 								R.setDescription(room.description());
 								R.setArea(room.getArea());
@@ -317,7 +317,7 @@ public class Masonry extends CommonSkill
 		}
 
 		int woodRequired=woodReq[doingCode];
-		
+
 		if(doingCode==BUILD_TITLE)
 		{
 			String title=Util.combine(commands,1);

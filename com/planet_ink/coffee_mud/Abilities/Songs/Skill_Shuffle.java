@@ -21,10 +21,10 @@ public class Skill_Shuffle extends StdAbility
 	{
 		if((Sense.isSitting(mob)||Sense.isSleeping(mob)))
 		{
-			mob.tell(mob.displayName()+" must stand up first!");
+			mob.tell(mob.name()+" must stand up first!");
 			return false;
 		}
-		
+
 		if(mob.isInCombat())
 		{
 			mob.tell("Not while you are fighting!");

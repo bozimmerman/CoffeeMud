@@ -39,7 +39,7 @@ public class Prayer_MassMobility extends Prayer
 				if((!Sense.aliveAwakeMobile(newMOB,true))
 				   ||(!A.okAffect(newMOB,msg)))
 				{
-					mob.location().show(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.displayName()+" from <T-NAME>.");
+					mob.location().show(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"The aura around <S-NAME> repels the "+A.name()+" from <T-NAME>.");
 					return false;
 				}
 			}

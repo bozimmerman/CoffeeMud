@@ -6,6 +6,7 @@ import java.util.*;
 
 public class FrozenMountains extends Mountains
 {
+	public String ID(){return "FrozenMountains";}
 	public FrozenMountains()
 	{
 		super();

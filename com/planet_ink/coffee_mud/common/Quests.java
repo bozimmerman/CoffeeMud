@@ -13,19 +13,19 @@ public class Quests implements Cloneable, Quest
 	protected Vector stuff=new Vector();
 	protected Vector winners=new Vector();
 	protected int minWait=-1;
-	protected int maxWait=-1;							  
+	protected int maxWait=-1;
 	protected int waitRemaining=-1;
 	protected int ticksRemaining=-1;
-	
+
 	// the unique name of the quest
 	public String name(){return name;}
 	public void setName(String newName){name=newName;}
-	
+
 	// the duration, in ticks
 	public int duration(){return duration;}
 	public void setDuration(int newTicks){duration=newTicks;}
-	
-	// the rest of the script.  This may be semicolon-seperated instructions, 
+
+	// the rest of the script.  This may be semicolon-seperated instructions,
 	// or a LOAD command followed by the quest script path.
 	public void setScript(String parm){
 		parms=parm;
@@ -75,8 +75,8 @@ public class Quests implements Cloneable, Quest
 			}
 		}
 	}
-	
-	// this will execute the quest script.  If the quest is running, it 
+
+	// this will execute the quest script.  If the quest is running, it
 	// will call stopQuest first to shut it down.
 	public void startQuest()
 	{
@@ -117,7 +117,7 @@ public class Quests implements Cloneable, Quest
 						for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 						{
 							Area A2=(Area)e.nextElement();
-							if(CoffeeUtensils.containsString(A2.name(),areaName))
+							if(CoffeeUtensils.containsString(A2.Name(),areaName))
 							{
 								A=A2; break;
 							}
@@ -286,7 +286,7 @@ public class Quests implements Cloneable, Quest
 								choices0.addElement(R2);
 							}
 							else
-							if(R2.ID().equalsIgnoreCase(localeName))
+							if(R2.roomID().equalsIgnoreCase(localeName))
 							{
 								choices=choices0;
 								choices0.addElement(R2);
@@ -343,7 +343,7 @@ public class Quests implements Cloneable, Quest
 								MOB M2=R2.fetchInhabitant(i);
 								if((M2!=null)&&(M2.isMonster()))
 								{
-									String mname=M2.displayName().toUpperCase();
+									String mname=M2.name().toUpperCase();
 									String mdisp=M2.displayText().toUpperCase();
 									String mdesc=M2.description().toUpperCase();
 									if(mobName.equalsIgnoreCase("any"))
@@ -422,7 +422,7 @@ public class Quests implements Cloneable, Quest
 								Item I2=R2.fetchItem(i);
 								if(I2!=null)
 								{
-									String iname=I2.displayName().toUpperCase();
+									String iname=I2.name().toUpperCase();
 									String idisp=I2.displayText().toUpperCase();
 									String idesc=I2.description().toUpperCase();
 									if(itemName.equalsIgnoreCase("any"))
@@ -596,7 +596,7 @@ public class Quests implements Cloneable, Quest
 						{
 							MOB M2=(MOB)loadedMobs.elementAt(i);
 							if((mobName.equalsIgnoreCase("any"))
-							||(CoffeeUtensils.containsString(M2.displayName(),mobName))
+							||(CoffeeUtensils.containsString(M2.name(),mobName))
 							||(CoffeeUtensils.containsString(M2.displayText(),mobName))
 							||(CoffeeUtensils.containsString(M2.description(),mobName)))
 								choices.addElement(M2);
@@ -648,7 +648,7 @@ public class Quests implements Cloneable, Quest
 						{
 							Item I2=(Item)loadedItems.elementAt(i);
 							if((itemName.equalsIgnoreCase("any"))
-							||(CoffeeUtensils.containsString(I2.displayName(),itemName))
+							||(CoffeeUtensils.containsString(I2.name(),itemName))
 							||(CoffeeUtensils.containsString(I2.displayText(),itemName))
 							||(CoffeeUtensils.containsString(I2.description(),itemName)))
 								choices.addElement(I2);
@@ -679,14 +679,14 @@ public class Quests implements Cloneable, Quest
 						E=I;
 						if(!stuff.contains(I))
 							stuff.addElement(I);
-						
+
 					}
 					else
 					{
 						Log.errOut("Quest '"+name()+"', unknown load type '"+cmd+"'.");
 						error=true; break;
 					}
-					
+
 				}
 				else
 				if(cmd.equals("GIVE"))
@@ -718,7 +718,7 @@ public class Quests implements Cloneable, Quest
 							{
 								MOB M2=(MOB)E2;
 								if((mobName.equalsIgnoreCase("any"))
-								||(CoffeeUtensils.containsString(M2.displayName(),mobName))
+								||(CoffeeUtensils.containsString(M2.name(),mobName))
 								||(CoffeeUtensils.containsString(M2.displayText(),mobName))
 								||(CoffeeUtensils.containsString(M2.description(),mobName)))
 									choices.addElement(M2);
@@ -778,7 +778,7 @@ public class Quests implements Cloneable, Quest
 							A3.setMiscText(Util.combine(p,3));
 							A3.setProfficiency(100);
 						}
-						else 
+						else
 						{
 							A3.setMiscText(Util.combine(p,3));
 							A3.setProfficiency(100);
@@ -809,7 +809,7 @@ public class Quests implements Cloneable, Quest
 							B=E.fetchBehavior(B.ID());
 							B.setParms(Util.combine(p,3));
 						}
-						else 
+						else
 						{
 							B.setParms(Util.combine(p,3));
 							E.addBehavior(B);
@@ -840,7 +840,7 @@ public class Quests implements Cloneable, Quest
 							A3.makeLongLasting();
 							A3.setMiscText(Util.combine(p,3));
 						}
-						else 
+						else
 						{
 							A3.setMiscText(Util.combine(p,3));
 							if(M!=null)
@@ -879,9 +879,9 @@ public class Quests implements Cloneable, Quest
 			ExternalPlay.startTickDown(this,Host.QUEST_TICK,1);
 		}
 	}
-	
-	// this will stop executing of the quest script.  It will clean up 
-	// any objects or mobs which may have been loaded, restoring map 
+
+	// this will stop executing of the quest script.  It will clean up
+	// any objects or mobs which may have been loaded, restoring map
 	// mobs to their previous state.
 	public void stopQuest()
 	{
@@ -931,12 +931,12 @@ public class Quests implements Cloneable, Quest
 	public int waitInterval(){return maxWait;}
 	public void setWaitInterval(int wait){maxWait=wait;}
 	public int waitRemaining(){return waitRemaining;}
-	
+
 	// if the quest has a winner, this is him.
 	public void declareWinner(String name)
 	{
 		name=name.trim();
-		if(name.length()==0) 
+		if(name.length()==0)
 			return;
 		Vector V=getWinners();
 		if(!wasWinner(name))
@@ -986,7 +986,7 @@ public class Quests implements Cloneable, Quest
 		}
 		return false;
 	}
-	
+
 	// informational
 	public boolean running(){return ticksRemaining>=0;}
 	public boolean waiting(){return waitRemaining>=0;}
@@ -994,9 +994,9 @@ public class Quests implements Cloneable, Quest
 	public int minsRemaining(){return new Long(ticksRemaining*Host.TICK_TIME/60000).intValue();}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(tickID!=Host.QUEST_TICK) 
+		if(tickID!=Host.QUEST_TICK)
 			return false;
-		
+
 		if(running())
 		{
 			ticksRemaining--;
@@ -1019,7 +1019,7 @@ public class Quests implements Cloneable, Quest
 		}
 		return true;
 	}
-	
+
 	public int wasQuestMob(String name)
 	{
 		int num=1;
@@ -1028,7 +1028,7 @@ public class Quests implements Cloneable, Quest
 			Environmental E=(Environmental)stuff.elementAt(i);
 			if(E instanceof MOB)
 			{
-				if(E.displayName().equalsIgnoreCase(name))
+				if(E.name().equalsIgnoreCase(name))
 					return num;
 				num++;
 			}
@@ -1043,7 +1043,7 @@ public class Quests implements Cloneable, Quest
 			Environmental E=(Environmental)stuff.elementAt(i);
 			if(E instanceof Item)
 			{
-				if(E.displayName().equalsIgnoreCase(name))
+				if(E.name().equalsIgnoreCase(name))
 					return num;
 				num++;
 			}
@@ -1053,7 +1053,7 @@ public class Quests implements Cloneable, Quest
 	public String getQuestObjectName(int i)
 	{
 		Environmental E=getQuestObject(i);
-		if(E!=null) return E.name();
+		if(E!=null) return E.Name();
 		return "";
 	}
 	public Environmental getQuestObject(int i)
@@ -1097,13 +1097,13 @@ public class Quests implements Cloneable, Quest
 	public String getQuestMobName(int i)
 	{
 		MOB M=getQuestMob(i);
-		if(M!=null) return M.displayName();
+		if(M!=null) return M.name();
 		return "";
 	}
 	public String getQuestItemName(int i)
 	{
 		Item I=getQuestItem(i);
-		if(I!=null) return I.displayName();
+		if(I!=null) return I.name();
 		return "";
 	}
 	public int wasQuestObject(String name)
@@ -1111,7 +1111,7 @@ public class Quests implements Cloneable, Quest
 		for(int i=0;i<stuff.size();i++)
 		{
 			Environmental E=(Environmental)stuff.elementAt(i);
-			if(E.displayName().equalsIgnoreCase(name))
+			if(E.name().equalsIgnoreCase(name))
 				return (i+1);
 		}
 		return -1;
@@ -1121,7 +1121,7 @@ public class Quests implements Cloneable, Quest
 		if((i>=0)&&(i<stuff.size()))
 		{
 			Environmental E=(Environmental)stuff.elementAt(i);
-			if(E.displayName().equalsIgnoreCase(name))
+			if(E.name().equalsIgnoreCase(name))
 				return true;
 		}
 		return false;
@@ -1163,7 +1163,7 @@ public class Quests implements Cloneable, Quest
 		}
 		return script;
 	}
-	
+
 	public static int numQuests(){return quests.size();}
 	public static Quests fetchQuest(int i){
 		try{

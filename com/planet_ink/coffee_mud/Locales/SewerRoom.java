@@ -6,6 +6,7 @@ import java.util.*;
 
 public class SewerRoom extends StdRoom
 {
+	public String ID(){return "SewerRoom";}
 	public SewerRoom()
 	{
 		super();

@@ -11,8 +11,8 @@ public class SysopSocials
 {
 	private SysopSocials(){}
 
-	
-	
+
+
 	public static void create(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -42,7 +42,7 @@ public class SysopSocials
 				Socials.resetSocialsList();
 				Socials.save();
 			}
-			Log.sysOut("SysopSocials",mob.ID()+" created social "+soc2.name()+".");
+			Log.sysOut("SysopSocials",mob.Name()+" created social "+soc2.name()+".");
 		}
 	}
 
@@ -279,7 +279,7 @@ public class SysopSocials
 				Socials.resetSocialsList();
 				Socials.save();
 			}
-			Log.sysOut("SysopSocials",mob.ID()+" modified social "+soc2.name()+".");
+			Log.sysOut("SysopSocials",mob.Name()+" modified social "+soc2.name()+".");
 		}
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
 	}
@@ -323,7 +323,7 @@ public class SysopSocials
 			}
 			else
 				mob.location().showHappens(Affect.MSG_OK_ACTION,"The happiness of all mankind has just increased!");
-			Log.sysOut("SysopSocials",mob.ID()+" destroyed social "+soc2.name()+".");
+			Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
 		}
 
 	}

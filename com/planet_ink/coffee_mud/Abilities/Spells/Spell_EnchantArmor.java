@@ -33,7 +33,7 @@ public class Spell_EnchantArmor extends Spell
 			return false;
 
 		mob.charStats().getCurrentClass().loseExperience(mob,50);
-		
+
 		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
@@ -45,7 +45,7 @@ public class Spell_EnchantArmor extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target.envStats().ability()>2)
-					mob.tell(target.displayName()+" cannot be enchanted further.");
+					mob.tell(target.name()+" cannot be enchanted further.");
 				else
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> glows!");

@@ -29,8 +29,8 @@ public class Language extends StdAbility
 	public void setBeingSpoken(boolean beingSpoken){spoken=beingSpoken;}
 	public Hashtable translationHash(){ return new Hashtable(); }
 	public Vector translationVector(){ return new Vector(); }
-	
-	
+
+
 	protected String fixCase(String like,String make)
 	{
 		StringBuffer s=new StringBuffer(make);
@@ -49,7 +49,7 @@ public class Language extends StdAbility
 		else
 			return Character.toLowerCase(make);
 	}
-	protected String translate(String word) 
+	protected String translate(String word)
 	{
 		if(translationHash().contains(word.toUpperCase()))
 			return fixCase(word,(String)translationHash().get(word.toUpperCase()));
@@ -60,9 +60,9 @@ public class Language extends StdAbility
 			if(choices==null) choices=(String[])translationVector().lastElement();
 			return choices[Dice.roll(1,choices.length,-1)];
 		}
-		return word; 
+		return word;
 	}
-	
+
 	protected String getMsgFromAffect(String msg)
 	{
 		if(msg==null) return null;
@@ -81,7 +81,7 @@ public class Language extends StdAbility
 			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
 		return affmsg;
 	}
-	
+
 	protected int numChars(String words)
 	{
 		int num=0;
@@ -92,7 +92,7 @@ public class Language extends StdAbility
 		}
 		return num;
 	}
-	
+
 	protected String messChars(String words, int numToMess)
 	{
 		numToMess=numToMess/2;
@@ -113,7 +113,7 @@ public class Language extends StdAbility
 		}
 		return w.toString();
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if((beingSpoken())
@@ -187,7 +187,7 @@ public class Language extends StdAbility
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!auto) 
+		if(!auto)
 		{
 			for(int a=0;a<mob.numAffects();a++)
 			{
@@ -203,13 +203,13 @@ public class Language extends StdAbility
 				}
 			}
 			isAnAutoEffect=false;
-			mob.tell("You are now speaking "+displayName()+".");
+			mob.tell("You are now speaking "+name()+".");
 		}
 		else
 			setBeingSpoken(true);
 		return true;
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
@@ -243,5 +243,5 @@ public class Language extends StdAbility
 			}
 		}
 	}
-	
+
 }

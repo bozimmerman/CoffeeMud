@@ -27,7 +27,7 @@ public class Chant_Nectar extends Chant
 			Item littleSpring=(Item)affected;
 			Room SpringLocation=CoffeeUtensils.roomLocation(littleSpring);
 			if(canBeUninvoked())
-				SpringLocation.showHappens(Affect.MSG_OK_VISUAL,littleSpring.displayName()+" dries up.");
+				SpringLocation.showHappens(Affect.MSG_OK_VISUAL,littleSpring.name()+" dries up.");
 			super.unInvoke();
 			if(canBeUninvoked())
 			{
@@ -37,7 +37,7 @@ public class Chant_Nectar extends Chant
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -61,7 +61,7 @@ public class Chant_Nectar extends Chant
 		{
 			Vector commands=new Vector();
 			commands.addElement("DRINK");
-			commands.addElement(littleSpring.displayName()+"$");
+			commands.addElement(littleSpring.name()+"$");
 			try{
 				ExternalPlay.doCommand(M,commands);
 			}catch(Exception e){}
@@ -91,7 +91,7 @@ public class Chant_Nectar extends Chant
 		}
 		super.affect(myHost,affect);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
@@ -126,7 +126,7 @@ public class Chant_Nectar extends Chant
 				if(A!=null) newItem.addNonUninvokableAffect(A);
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" starts flowing here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				drank=new Vector();
 				lastNum=-1;
 				beneficialAffect(mob,newItem,0);

@@ -21,7 +21,7 @@ public class Gaian extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Gaian()
 	{
 		super();
@@ -39,30 +39,30 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Herbology",0,false);
 			CMAble.addCharAbilityMapping(ID(),1,"Foraging",50,true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonFlower",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonHerb",true);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonFood",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonIvy",true);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonVine",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_FreeVine",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Specialization_BluntWeapon",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Barkskin",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Ranger_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_GrowClub",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Root",true);
 
@@ -100,12 +100,13 @@ public class Gaian extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_VampireVine",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Chlorophyll",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_DistantOvergrowth",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",true);
-			
+			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
+
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_Treehouse",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_VineMass",true);
 
@@ -120,7 +121,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_BrownMold",true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
 		}
 	}
@@ -130,9 +131,9 @@ public class Gaian extends StdCharClass
 		return true;
 	}
 
-	
-	protected boolean isValidBeneficiary(MOB killer, 
-									   MOB killed, 
+
+	protected boolean isValidBeneficiary(MOB killer,
+									   MOB killed,
 									   MOB mob,
 									   Hashtable followers)
 	{
@@ -210,7 +211,7 @@ public class Gaian extends StdCharClass
 					}
 			}
 		}
-		
+
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -225,7 +226,7 @@ public class Gaian extends StdCharClass
 			&&((room.domainType()&Room.INDOORS)==0)
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
-			
+
 			if(classLevel>=5)
 			{
 				if(Sense.isInDark(room))
@@ -250,7 +251,7 @@ public class Gaian extends StdCharClass
 			}
 		}
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
@@ -285,7 +286,7 @@ public class Gaian extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 						return false;
 					}
 					break;

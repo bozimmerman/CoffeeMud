@@ -6,6 +6,7 @@ import java.util.*;
 
 public class SwampGrid extends StdGrid
 {
+	public String ID(){return "SwampGrid";}
 	public SwampGrid()
 	{
 		super();

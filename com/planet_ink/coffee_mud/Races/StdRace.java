@@ -18,14 +18,14 @@ public class StdRace implements Race
 	protected int weightVariance(){return 10;}
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unknown";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
-	
+
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
-	
+
 	public boolean playerSelectable(){return false;}
 
 	public Race copyOf()
@@ -41,7 +41,7 @@ public class StdRace implements Race
 			return this;
 		}
 	}
-	
+
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -56,7 +56,7 @@ public class StdRace implements Race
 	{
 
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!(myHost instanceof MOB)) return true;
@@ -97,7 +97,7 @@ public class StdRace implements Race
 				break;
 			case Affect.TYP_HOLD:
 			case Affect.TYP_WIELD:
-				if((forbiddenWornBits()&Item.HELD)==0) 
+				if((forbiddenWornBits()&Item.HELD)==0)
 					break;
 			case Affect.TYP_WEAR:
 				if((affect.target()!=null)
@@ -107,13 +107,13 @@ public class StdRace implements Race
 					switch(affect.targetMinor())
 					{
 						case Affect.TYP_WEAR:
-							affect.source().tell("You lack the anatomy to wear "+affect.target().displayName()+".");
+							affect.source().tell("You lack the anatomy to wear "+affect.target().name()+".");
 							break;
 						case Affect.TYP_HOLD:
-							affect.source().tell("You lack the anatomy to hold "+affect.target().displayName()+".");
+							affect.source().tell("You lack the anatomy to hold "+affect.target().name()+".");
 							break;
 						case Affect.TYP_WIELD:
-							affect.source().tell("You lack the anatomy to wield "+affect.target().displayName()+".");
+							affect.source().tell("You lack the anatomy to wield "+affect.target().name()+".");
 							break;
 					}
 					return false;
@@ -152,8 +152,8 @@ public class StdRace implements Race
 		&&(affect.tool().ID().equals("Social"))
 		&&(myChar.charStats().getStat(CharStats.GENDER)==((int)'F'))
 		&&(affect.source().charStats().getStat(CharStats.GENDER)==((int)'M'))
-		&&(affect.tool().name().equals("MATE <T-NAME>")
-			||affect.tool().name().equals("SEX <T-NAME>"))
+		&&(affect.tool().Name().equals("MATE <T-NAME>")
+			||affect.tool().Name().equals("SEX <T-NAME>"))
 		&&(Sense.isSitting(myChar))
 		&&(Sense.isSitting(affect.source()))
 		&&((myChar.amFollowing()==affect.source())
@@ -229,12 +229,12 @@ public class StdRace implements Race
 			naturalWeapon=(Weapon)CMClass.getWeapon("Natural");
 		return naturalWeapon;
 	}
-	
+
 	public String healthText(MOB mob)
 	{
 		return CommonStrings.standardMobCondition(mob);
 	}
-	
+
 	public Weapon funHumanoidWeapon()
 	{
 		if(naturalWeaponChoices==null)
@@ -300,7 +300,7 @@ public class StdRace implements Race
  		else
 			stats.setHeight(shortestFemale()+heightModifier);
 	}
-	
+
 	public boolean canWear(Item item)
 	{
 		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits())>0))
@@ -310,9 +310,9 @@ public class StdRace implements Race
 			return false;
 		return true;
 	}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	
+
 	protected Item makeResource(String name, int type)
 	{
 		Item I=null;
@@ -354,9 +354,9 @@ public class StdRace implements Race
 				 +C.getStat(C.CONSTITUTION)
 				 +C.getStat(C.CHARISMA));
 		}
-		
+
 	}
-	
+
 	public DeadBody getCorpse(MOB mob, Room room)
 	{
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
@@ -365,9 +365,9 @@ public class StdRace implements Race
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		if(!mob.isMonster())
 			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
-		Body.setName("the body of "+mob.displayName());
-		Body.setSecretIdentity(mob.displayName()+"/"+mob.description());
-		Body.setDisplayText("the body of "+mob.displayName()+" lies here.");
+		Body.setName("the body of "+mob.name());
+		Body.setSecretIdentity(mob.name()+"/"+mob.description());
+		Body.setDisplayText("the body of "+mob.name()+" lies here.");
 		room.addItem(Body);
 		Body.recoverEnvStats();
 		for(int i=0;i<mob.numAffects();i++)

@@ -14,7 +14,7 @@ public class AreaNext extends StdWebMacro
 		Hashtable parms=parseParms(parm);
 		String last=(String)httpReq.getRequestParameters().get("AREA");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.getRequestParameters().remove("AREA");
 			return "";
 		}
@@ -22,15 +22,15 @@ public class AreaNext extends StdWebMacro
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.name().equals(lastID))))
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))
 			{
-				httpReq.getRequestParameters().put("AREA",A.name());
+				httpReq.getRequestParameters().put("AREA",A.Name());
 				if(!Sense.isHidden(A))
 					return "";
 				else
-					last=A.name();
+					last=A.Name();
 			}
-			lastID=A.name();
+			lastID=A.Name();
 		}
 		httpReq.getRequestParameters().put("AREA","");
 		if(parms.containsKey("EMPTYOK"))

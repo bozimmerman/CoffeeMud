@@ -91,13 +91,13 @@ public class Thief_Sap extends ThiefSkill
 
 			if(Sense.canBeSeenBy(mob,target))
 			{
-				mob.tell(target.displayName()+" is watching you way too closely.");
+				mob.tell(target.name()+" is watching you way too closely.");
 				return false;
 			}
 
 			if(mob.envStats().weight()<(target.envStats().weight()-100))
 			{
-				mob.tell(target.displayName()+" is way to big to knock out!");
+				mob.tell(target.name()+" is way to big to knock out!");
 				return false;
 			}
 		}

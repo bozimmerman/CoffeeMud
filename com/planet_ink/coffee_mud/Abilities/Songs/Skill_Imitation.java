@@ -22,9 +22,9 @@ public class Skill_Imitation extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public String lastID="";
 	public int craftType(){return Ability.SPELL;}
-	
+
 	public Hashtable immitations=new Hashtable();
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
@@ -41,9 +41,9 @@ public class Skill_Imitation extends StdAbility
 			&&(!immitations.containsKey(msg.tool().name())))
 				immitations.put(msg.tool().name(),msg.othersMessage());
 		}
-		
+
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		String cmd=(commands.size()>0)?Util.combine(commands,0).toUpperCase():"";
@@ -70,8 +70,8 @@ public class Skill_Imitation extends StdAbility
 		}
 		if(target==null) target=mob.getVictim();
 		if(target==null) target=mob;
-		
-														 
+
+
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

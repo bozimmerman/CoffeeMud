@@ -7,8 +7,8 @@ import com.planet_ink.coffee_mud.web.macros.RoomData;
 
 public class GrinderItems
 {
-	public static String editItem(ExternalHTTPRequests httpReq, 
-								  Hashtable parms, 
+	public static String editItem(ExternalHTTPRequests httpReq,
+								  Hashtable parms,
 								  Room R)
 	{
 		Hashtable reqs=httpReq.getRequestParameters();
@@ -17,9 +17,9 @@ public class GrinderItems
 
 		String mobNum=(String)reqs.get("MOB");
 		String newClassID=(String)reqs.get("CLASSES");
-		
+
 		ExternalPlay.resetRoom(R);
-		
+
 		Item I=null;
 		MOB M=null;
 		if((mobNum!=null)&&(mobNum.length()>0))
@@ -34,7 +34,7 @@ public class GrinderItems
 				{
 					MOB M2=R.fetchInhabitant(m);
 					if((M2!=null)&&(M2.isEligibleMonster()))
-					   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 				}
 				return str.toString();
 			}
@@ -46,7 +46,7 @@ public class GrinderItems
 			I=RoomData.getItemFromCode(M,itemCode);
 		else
 			I=RoomData.getItemFromCode(R,itemCode);
-		
+
 		if(I==null)
 		{
 			StringBuffer str=new StringBuffer("No Item?!");
@@ -56,21 +56,21 @@ public class GrinderItems
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I2=R.fetchItem(i);
-					if(I2!=null) str.append(I2.name()+"="+RoomData.getItemCode(R,I2));
+					if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 				}
 			else
 				for(int i=0;i<M.inventorySize();i++)
 				{
 					Item I2=M.fetchInventory(i);
-					if(I2!=null) str.append(I2.name()+"="+RoomData.getItemCode(M,I2));
+					if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
 				}
 			return str.toString();
 		}
 		Item oldI=I;
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(I))))
 			I=CMClass.getItem(newClassID);
-		
-		
+
+
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  " LEVEL"," ABILITY"," REJUV"," MISCTEXT",
 						  "MATERIALS","ISGENERIC","ISREADABLE","READABLETEXT",
@@ -95,7 +95,7 @@ public class GrinderItems
 			}
 			String old=(String)reqs.get(parm);
 			if(old==null) old="";
-			
+
 			if((I.isGeneric()||(!generic)))
 			switch(o)
 			{
@@ -374,7 +374,7 @@ public class GrinderItems
 			error=GrinderAreas.doAffectsNBehavs(I,httpReq,parms);
 			if(error.length()>0) return error;
 		}
-		
+
 		I.recoverEnvStats();
 		I.text();
 		if(itemCode.equals("NEW"))

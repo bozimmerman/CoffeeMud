@@ -27,7 +27,7 @@ public class Trap_Infected extends StdTrap
 		}
 		return offenders;
 	}
-	
+
 	private Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
@@ -45,7 +45,7 @@ public class Trap_Infected extends StdTrap
 		}
 		return null;
 	}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -58,7 +58,7 @@ public class Trap_Infected extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -77,7 +77,7 @@ public class Trap_Infected extends StdTrap
 			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off an infectous trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) that "+affected.displayName()+" is infected!"))
+			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) that "+affected.name()+" is infected!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Road extends StdRoom
 {
+	public String ID(){return "Road";}
 	public Road()
 	{
 		super();

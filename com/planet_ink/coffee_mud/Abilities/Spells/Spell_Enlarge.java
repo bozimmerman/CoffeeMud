@@ -13,13 +13,13 @@ public class Spell_Enlarge extends Spell
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
 	public Environmental newInstance(){	return new Spell_Enlarge();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setWeight(affectableStats.weight()+9999);
 		affectableStats.setHeight(affectableStats.height()+9999);
-		affectableStats.setName(affected.displayName()+addOnString);
+		affectableStats.setName(affected.name()+addOnString);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -34,7 +34,7 @@ public class Spell_Enlarge extends Spell
 		}
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell(target.displayName()+" is already HUGE!");
+			mob.tell(target.name()+" is already HUGE!");
 			return false;
 		}
 

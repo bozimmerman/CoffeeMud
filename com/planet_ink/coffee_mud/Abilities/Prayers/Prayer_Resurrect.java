@@ -40,9 +40,9 @@ public class Prayer_Resurrect extends Prayer
 				invoker=mob;
 				mob.location().send(mob,msg);
 				int x=0;
-				if((body instanceof DeadBody)&&((x=body.name().toUpperCase().indexOf("BODY OF"))>=0))
+				if((body instanceof DeadBody)&&((x=body.Name().toUpperCase().indexOf("BODY OF"))>=0))
 				{
-					String mobName=body.name().substring(x+7).trim();
+					String mobName=body.Name().substring(x+7).trim();
 					MOB rejuvedMOB=CMMap.getPlayer(mobName);
 					if(rejuvedMOB!=null)
 					{

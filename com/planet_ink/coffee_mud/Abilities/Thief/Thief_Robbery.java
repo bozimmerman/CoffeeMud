@@ -29,13 +29,13 @@ public class Thief_Robbery extends ThiefSkill
 			   ||(msg.targetMinor()==Affect.TYP_VALUE)
 			   ||(msg.targetMinor()==Affect.TYP_VIEW))
 			{
-				msg.source().tell(affected.displayName()+" looks unwilling to do business with you.");
+				msg.source().tell(affected.name()+" looks unwilling to do business with you.");
 				return false;
 			}
 		}
 		return super.okAffect(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<2)
@@ -48,7 +48,7 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("Not while you are fighting!");
 			return false;
 		}
-		
+
 		String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
@@ -80,7 +80,7 @@ public class Thief_Robbery extends ThiefSkill
 				mob.tell(mob,target,stolen,"You cannot rob '<O-NAME>' from <T-NAME>.");
 				return false;
 			}
-			if(!shop.doIHaveThisInStock(stolen.name(),mob))
+			if(!shop.doIHaveThisInStock(stolen.Name(),mob))
 				stolen=null;
 		}
 
@@ -117,7 +117,7 @@ public class Thief_Robbery extends ThiefSkill
 			int code=Affect.MSG_THIEF_ACT;
 			if(!auto)
 				if(stolen!=null)
-					str="<S-NAME> rob(s) "+stolen.displayName()+" from <T-NAMESELF>.";
+					str="<S-NAME> rob(s) "+stolen.name()+" from <T-NAMESELF>.";
 				else
 				{
 					str="<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
@@ -146,7 +146,7 @@ public class Thief_Robbery extends ThiefSkill
 				}
 				if(stolen!=null)
 				{
-					Vector products=shop.removeSellableProduct(stolen.name(),mob);
+					Vector products=shop.removeSellableProduct(stolen.Name(),mob);
 					stolen=(Environmental)products.firstElement();
 					if(stolen instanceof Item)
 					{

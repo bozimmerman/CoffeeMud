@@ -8,7 +8,7 @@ import java.io.*;
 public class Items
 {
 	private Items(){}
-	
+
 	public static boolean destroy(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -30,9 +30,9 @@ public class Items
 		{
 			deadItem.destroyThis();
 			mob.location().recoverRoomStats();
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,deadItem.displayName()+" disintegrates!");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
 			doneSomething=true;
-			Log.sysOut("Items",mob.ID()+" destroyed item "+deadItem.ID()+".");
+			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.ID()+".");
 			deadItem=null;
 			if(!allFlag) deadItem=mob.fetchInventory(null,itemID);
 			if(deadItem==null) deadItem=(Item)mob.location().fetchItem(null,itemID);
@@ -78,7 +78,7 @@ public class Items
 			{
 				modItem.baseEnvStats().setLevel(newLevel);
 				modItem.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.displayName()+" shake(s) under the transforming power.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 		}
 		else
@@ -87,7 +87,7 @@ public class Items
 			int newAbility=Util.s_int(restStr);
 			modItem.baseEnvStats().setAbility(newAbility);
 			modItem.recoverEnvStats();
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.displayName()+" shake(s) under the transforming power.");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
 		if(command.equals("HEIGHT"))
@@ -95,7 +95,7 @@ public class Items
 			int newAbility=Util.s_int(restStr);
 			modItem.baseEnvStats().setHeight(newAbility);
 			modItem.recoverEnvStats();
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.displayName()+" shake(s) under the transforming power.");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
 		if(command.equals("REJUV"))
@@ -105,14 +105,14 @@ public class Items
 			{
 				modItem.baseEnvStats().setRejuv(newRejuv);
 				modItem.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.displayName()+" shake(s) under the transforming power.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 			else
 			{
 				modItem.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 				modItem.recoverEnvStats();
-				mob.tell(modItem.displayName()+" will now never rejuvinate.");
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.displayName()+" shake(s) under the transforming power.");
+				mob.tell(modItem.name()+" will now never rejuvinate.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 		}
 		else
@@ -122,7 +122,7 @@ public class Items
 			if(newUses>=0)
 			{
 				modItem.setUsesRemaining(newUses);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.displayName()+" shake(s) under the transforming power.");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 		}
 		else
@@ -132,14 +132,14 @@ public class Items
 				Generic.genMiscSet(mob,modItem);
 			else
 				modItem.setMiscText(restStr);
-			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.displayName()+" shake(s) under the transforming power.");
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
 		{
 			mob.tell("...but failed to specify an aspect.  Try LEVEL, ABILITY, HEIGHT, REJUV, USES, or MISC.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 		}
-		Log.sysOut("Items",mob.ID()+" modified item "+modItem.ID()+".");
+		Log.sysOut("Items",mob.Name()+" modified item "+modItem.ID()+".");
 	}
 
 	public static void create(MOB mob, Vector commands)
@@ -163,21 +163,21 @@ public class Items
 		}
 
 		if(((newItem.ID().toUpperCase().indexOf("ARCHON")>=0)
-			||(newItem.name().toUpperCase().indexOf("ARCHON")>=0))
+			||(newItem.Name().toUpperCase().indexOf("ARCHON")>=0))
 		   &&(!mob.isASysOp(null)))
 		{
 			mob.tell("NO!");
 			return;
 		}
-		
+
 		if(newItem.subjectToWearAndTear())
 			newItem.setUsesRemaining(100);
 		mob.location().addItem(newItem);
-		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" drops from the sky.");
+		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 
 		if(newItem.isGeneric())
 			Generic.genMiscSet(mob,newItem);
 		mob.location().recoverRoomStats();
-		Log.sysOut("Items",mob.ID()+" created item "+newItem.ID()+".");
+		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
 	}
 }

@@ -21,7 +21,7 @@ public class Common extends Language
 	}
 	public Environmental newInstance(){	return new Common();}
 	public int profficiency(){return 100;}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		for(int a=0;a<mob.numAffects();a++)
@@ -29,11 +29,11 @@ public class Common extends Language
 			Ability A=mob.fetchAffect(a);
 			if((A!=null)&&(A instanceof Language))
 				((Language)A).setBeingSpoken(false);
-				
+
 		}
 		isAnAutoEffect=false;
 		if(!auto)
-			mob.tell("You are now speaking "+displayName()+".");
+			mob.tell("You are now speaking "+name()+".");
 		return true;
 	}
 }

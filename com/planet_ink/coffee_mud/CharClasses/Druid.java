@@ -21,7 +21,7 @@ public class Druid extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Druid()
 	{
 		super();
@@ -37,7 +37,7 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Herbology",0,false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
@@ -48,55 +48,55 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SensePoison",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SummonFood",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Moonbeam",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseLife",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_Tangle",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonFire",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_LocateAnimals",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_Farsight",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_FeelElectricity",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Sunray",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Treeform",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_Hunger",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_FeelCold",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_WarpWood",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_ControlFire",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_VenomWard",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_CalmWind",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_Barkskin",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_WaterWalking",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_AnimalFriendship",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_FeelHeat",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_GrowClub",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_WindGust",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_Poison",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_Treemind",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_WhisperWard",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_BreatheWater",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_HoldAnimal",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_PlantBed",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_LightningWard",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_ColdWard",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_IllusionaryForest",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"Herbalism",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_Fertilization",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_CharmAnimal",false);
@@ -105,40 +105,41 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_FireWard",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_Shillelagh",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_SummonPeace",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_DistantGrowth",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_PlantMaze",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_GasWard",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonAnimal",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_Nectar",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_SummonHeat",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),20,"PlantLore",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonCold",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SummonInsects",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_AnimalSpy",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_SummonRain",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_PlantSnare",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Treemorph",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonWind",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_GrowItem",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonLightning",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonMount",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonElemental",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_Feralness",false);
@@ -155,9 +156,9 @@ public class Druid extends StdCharClass
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
-		
+
 		Vector grantable=new Vector();
-		
+
 		int level=mob.charStats().getClassLevel(this);
 		int numChants=2;
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
@@ -193,8 +194,8 @@ public class Druid extends StdCharClass
 			}
 		}
 	}
-	
-	
+
+
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
@@ -266,7 +267,7 @@ public class Druid extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 						return false;
 					}
 					break;
@@ -275,8 +276,8 @@ public class Druid extends StdCharClass
 		return true;
 	}
 
-	protected boolean isValidBeneficiary(MOB killer, 
-									   MOB killed, 
+	protected boolean isValidBeneficiary(MOB killer,
+									   MOB killed,
 									   MOB mob,
 									   Hashtable followers)
 	{
@@ -289,7 +290,7 @@ public class Druid extends StdCharClass
 			return true;
 		return false;
 	}
-	
+
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class HillsGrid extends StdGrid
 {
+	public String ID(){return "HillsGrid";}
 	public HillsGrid()
 	{
 		super();

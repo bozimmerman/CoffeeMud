@@ -7,6 +7,7 @@ import java.util.*;
 
 public class WetCaveMaze extends StdMaze
 {
+	public String ID(){return "WetCaveMaze";}
 	public WetCaveMaze()
 	{
 		super();

@@ -42,7 +42,7 @@ public class Thief_Trap extends ThiefSkill
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				buf.append(Util.padRight(T.displayName(),15)+" ");
+				buf.append(Util.padRight(T.name(),15)+" ");
 				if(T.canAffect(mob.location()))
 					buf.append(Util.padRight("Rooms",17)+" ");
 				else
@@ -70,7 +70,7 @@ public class Thief_Trap extends ThiefSkill
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				if(CoffeeUtensils.containsString(T.displayName(),name))
+				if(CoffeeUtensils.containsString(T.name(),name))
 					theTrap=T;
 			}
 			if(theTrap==null)
@@ -78,7 +78,7 @@ public class Thief_Trap extends ThiefSkill
 				mob.tell("'"+name+"' is not a valid trap name.  Try TRAP LIST.");
 				return false;
 			}
-		
+
 			String whatToTrap=Util.combine(commands,0);
 			int dirCode=Directions.getGoodDirectionCode(whatToTrap);
 			if((trapThis==null)&&(whatToTrap.equalsIgnoreCase("room")||whatToTrap.equalsIgnoreCase("here")))
@@ -109,7 +109,7 @@ public class Thief_Trap extends ThiefSkill
 			}
 		}
 
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.displayName()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>."));
+		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -31,7 +31,7 @@ public class AntiVagrant extends StdBehavior
 				if(observer.location().okAffect(observer,msg))
 				{
 					observer.location().send(observer,msg);
-					target.tell(observer.displayName()+" shakes you awake.");
+					target.tell(observer.name()+" shakes you awake.");
 					ExternalPlay.standIfNecessary(target);
 				}
 			}

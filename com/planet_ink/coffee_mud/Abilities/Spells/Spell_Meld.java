@@ -60,7 +60,7 @@ public class Spell_Meld extends Spell
 		}
 
 		Environmental melded=null;
-		
+
 		if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 		{
 			if(shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_NECK)
@@ -82,7 +82,7 @@ public class Spell_Meld extends Spell
 			}
 			else
 			{
-				mob.tell(itemOne.displayName()+" and "+itemTwo.displayName()+" aren't worn in compatible places, and thus can't be melded.");
+				mob.tell(itemOne.name()+" and "+itemTwo.name()+" aren't worn in compatible places, and thus can't be melded.");
 				return false;
 			}
 		}
@@ -91,22 +91,22 @@ public class Spell_Meld extends Spell
 		{
 			if(!itemOne.canBeWornAt(Item.HELD))
 			{
-				mob.tell(itemOne.displayName()+" can't be held, and thus can't be melded with "+itemTwo.displayName()+".");
+				mob.tell(itemOne.name()+" can't be held, and thus can't be melded with "+itemTwo.name()+".");
 				return false;
 			}
 			if(!itemTwo.canBeWornAt(Item.HELD))
 			{
-				mob.tell(itemTwo.displayName()+" can't be held, and thus can't be melded with "+itemOne.displayName()+".");
+				mob.tell(itemTwo.name()+" can't be held, and thus can't be melded with "+itemOne.name()+".");
 				return false;
 			}
 			if(itemOne.rawLogicalAnd())
 			{
-				mob.tell(itemOne.displayName()+" is two handed, and thus can't be melded with "+itemTwo.displayName()+".");
+				mob.tell(itemOne.name()+" is two handed, and thus can't be melded with "+itemTwo.name()+".");
 				return false;
 			}
 			if(itemTwo.rawLogicalAnd())
 			{
-				mob.tell(itemTwo.displayName()+" is two handed, and thus can't be melded with "+itemOne.displayName()+".");
+				mob.tell(itemTwo.name()+" is two handed, and thus can't be melded with "+itemOne.name()+".");
 				return false;
 			}
 		}
@@ -138,13 +138,13 @@ public class Spell_Meld extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> meld(s) "+itemOne.displayName()+" and "+itemTwo.displayName()+".^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> meld(s) "+itemOne.name()+" and "+itemTwo.name()+".^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 
-				String itemOneName=itemOne.name();
-				String itemTwoName=itemTwo.name();
+				String itemOneName=itemOne.Name();
+				String itemTwoName=itemTwo.Name();
 				int x=itemOneName.indexOf("melded together");
 				if(x>0) itemOneName=itemOneName.substring(0,x).trim();
 				x=itemTwoName.indexOf("melded together");
@@ -306,7 +306,7 @@ public class Spell_Meld extends Spell
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) "+itemOne.displayName()+" and "+itemTwo.displayName()+", but fail(s).");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> attempt(s) "+itemOne.name()+" and "+itemTwo.name()+", but fail(s).");
 
 		// return whether it worked
 		return success;

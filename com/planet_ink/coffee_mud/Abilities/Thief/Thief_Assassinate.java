@@ -37,7 +37,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 			MOB mob=(MOB)affected;
 
-			
+
 			if(mob.location()==null) return false;
 			if(mob.location().isInhabitant(tracking))
 			{
@@ -51,7 +51,7 @@ public class Thief_Assassinate extends ThiefSkill
 					ExternalPlay.postAttack(mob,tracking,mob.fetchWieldedItem());
 				return false;
 			}
-			
+
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				Room nextRoom=mob.location().getRoomInDir(d);
@@ -64,7 +64,7 @@ public class Thief_Assassinate extends ThiefSkill
 					nextDirection=d; break;
 				}
 			}
-			
+
 			if(nextDirection==999)
 			{
 				mob.tell("The trail seems to pause here.");
@@ -167,7 +167,7 @@ public class Thief_Assassinate extends ThiefSkill
 		else
 		{
 			if(givenTarget!=null)
-				mobName=givenTarget.displayName();
+				mobName=givenTarget.name();
 			else
 				mobName=Util.combine(commands,0);
 			if(mobName.length()==0)
@@ -211,7 +211,7 @@ public class Thief_Assassinate extends ThiefSkill
 				if(R.fetchInhabitant(mobName)!=null)
 					rooms.addElement(R);
 			}
-		
+
 			if(rooms.size()<=0)
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
@@ -220,17 +220,17 @@ public class Thief_Assassinate extends ThiefSkill
 					rooms.addElement(R);
 			}
 		}
-		
+
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,true);
-		
+
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
 
 		if((success)&&(theTrail!=null)&&(tracking!=null))
 		{
 			theTrail.addElement(mob.location());
-			
+
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
@@ -240,7 +240,7 @@ public class Thief_Assassinate extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(tracking "+tracking.displayName()+")";
+				displayText="(tracking "+tracking.name()+")";
 				Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
@@ -249,7 +249,7 @@ public class Thief_Assassinate extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track "+tracking.displayName()+" for assassination, but fail(s).");
+			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track "+tracking.name()+" for assassination, but fail(s).");
 
 
 		// return whether it worked

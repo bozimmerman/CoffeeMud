@@ -145,11 +145,11 @@ public class Trap_Trap extends StdAbility implements Trap
 			String spell=text();
 			int x=spell.indexOf(";");
 			Vector V=new Vector();
-			V.addElement(mob.displayName());
+			V.addElement(mob.name());
 			if(x>0)
 			{
 				V=Util.parse(spell.substring(x+1));
-				V.insertElementAt(mob.displayName(),0);
+				V.insertElementAt(mob.name(),0);
 				spell=spell.substring(0,x);
 			}
 			Ability A=CMClass.findAbility(spell);
@@ -222,7 +222,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(invoker==null) return benefactor;
 		return super.invoker();
 	}
-	
+
 	public int classificationCode()
 	{
 		return Ability.TRAP;
@@ -277,7 +277,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				R.rawDoors()[Directions.DOWN]=null;
 				R.rawExits()[Directions.DOWN]=null;
 			}
-			/** 
+			/**
 			don't do this, cuz someone might still be down there.
 			myPitUp.rawDoors()[Directions.UP]=null;
 			myPitUp.rawExits()[Directions.UP]=null;
@@ -291,7 +291,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		}
 		super.unInvoke();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

@@ -18,7 +18,7 @@ public class ClassRaceNext extends StdWebMacro
 		if(C==null) return " @break";
 		String last=(String)httpReq.getRequestParameters().get("RACE");
 		if(parms.containsKey("RESET"))
-		{	
+		{
 			if(last!=null) httpReq.getRequestParameters().remove("RACE");
 			return "";
 		}

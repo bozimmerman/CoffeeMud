@@ -36,12 +36,12 @@ public class Spell_DetectWater extends Spell
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
 			&&(Sense.canBeSeenBy(I,mob)))
-				msg.append(I.displayName()+" contains some sort of liquid.\n\r");
+				msg.append(I.name()+" contains some sort of liquid.\n\r");
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
-			if(msg.toString().indexOf(I.container().displayName()+" contains some sort of liquid.")<0)
-				msg.append(I.container().displayName()+" contains some sort of liquid.\n\r");
+			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
+				msg.append(I.container().name()+" contains some sort of liquid.\n\r");
 		return msg.toString();
 	}
 	public String waterHere(MOB mob, Environmental E, Item container)
@@ -99,7 +99,7 @@ public class Spell_DetectWater extends Spell
 				StringBuffer msg2=new StringBuffer("");
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)
-					return E.displayName()+" is carrying some liquids.";
+					return E.name()+" is carrying some liquids.";
 			}
 			if(CoffeeUtensils.getShopKeeper((MOB)E)!=null)
 			{
@@ -111,7 +111,7 @@ public class Spell_DetectWater extends Spell
 					if(E2 instanceof Item)
 						waterCheck(mob,(Item)E2,container,msg2);
 					if(msg2.length()>0)
-						return E.displayName()+" has some liquids in stock.";
+						return E.name()+" has some liquids in stock.";
 				}
 			}
 		}
@@ -220,7 +220,7 @@ public class Spell_DetectWater extends Spell
 		}
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		boolean success=profficiencyCheck(0,auto);
 

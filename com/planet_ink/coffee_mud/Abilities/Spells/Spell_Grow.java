@@ -15,7 +15,7 @@ public class Spell_Grow extends Spell
 	public Environmental newInstance(){	return new Spell_Grow();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;}
 	private int oldWeight=0;
-							  
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -31,7 +31,7 @@ public class Spell_Grow extends Spell
 		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)/2);
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+(invoker().envStats().level()/5));
 	}
-	
+
 	public void unInvoke()
 	{
 		if(affected instanceof MOB)
@@ -53,7 +53,7 @@ public class Spell_Grow extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell(target.displayName()+" is already HUGE!");
+			mob.tell(target.name()+" is already HUGE!");
 			return false;
 		}
 

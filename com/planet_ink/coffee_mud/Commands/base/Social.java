@@ -19,7 +19,7 @@ public class Social implements Environmental
 
 	public String ID() { return "Social"; }
 	public String name(){ return Social_name;}
-	public String displayName(){return name();}
+	public String Name(){return name();}
 	public void setName(String newName){Social_name=newName;}
 	public String You_see(){return You_see;};
 	public String Third_party_sees(){return Third_party_sees;};

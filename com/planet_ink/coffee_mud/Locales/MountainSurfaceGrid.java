@@ -6,6 +6,7 @@ import java.util.*;
 
 public class MountainSurfaceGrid extends StdGrid
 {
+	public String ID(){return "MountainSurfaceGrid";}
 	public MountainSurfaceGrid()
 	{
 		super();

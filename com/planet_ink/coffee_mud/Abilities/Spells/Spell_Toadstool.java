@@ -22,10 +22,10 @@ public class Spell_Toadstool extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			if(affected.displayName().indexOf(" ")>0)
-				affectableStats.setName("a "+newRace.name()+" called "+affected.displayName());
+			if(affected.name().indexOf(" ")>0)
+				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
-				affectableStats.setName(affected.displayName()+" the "+newRace.name());
+				affectableStats.setName(affected.name()+" the "+newRace.name());
 			newRace.setHeightWeight(affectableStats,'M');
 		}
 		affectableStats.setLevel(1);

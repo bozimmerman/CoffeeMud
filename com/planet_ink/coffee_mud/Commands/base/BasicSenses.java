@@ -27,7 +27,7 @@ public class BasicSenses
 				return;
 			}
 			if(ID.equalsIgnoreCase("SELF"))
-				ID=mob.displayName();
+				ID=mob.name();
 			Environmental thisThang=null;
 			int dirCode=Directions.getGoodDirectionCode(ID);
 			if(dirCode>=0)
@@ -128,7 +128,7 @@ public class BasicSenses
 			mob.tell("Change your password to what?");
 			return;
 		}
-		mob.setUserInfo(mob.name(),Util.combine(commands,1));
+		mob.setUserInfo(mob.Name(),Util.combine(commands,1));
 		mob.tell("Your password has been changed.");
 	}
 

@@ -26,7 +26,7 @@ public class Druid_MyPlants extends StdAbility
 		{
 			Item I=R.fetchItem(i);
 			if((I!=null)
-			&&(I.rawSecretIdentity().equals(mob.name()))
+			&&(I.rawSecretIdentity().equals(mob.Name()))
 			&&(I.owner()!=null)
 			&&(I.owner() instanceof Room))
 			{
@@ -46,7 +46,7 @@ public class Druid_MyPlants extends StdAbility
 		}
 		return null;
 	}
-	
+
 	public static Vector myPlantRooms(MOB mob)
 	{
 		Vector V=new Vector();
@@ -58,8 +58,8 @@ public class Druid_MyPlants extends StdAbility
 		}
 		return V;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -87,7 +87,7 @@ public class Druid_MyPlants extends StdAbility
 						while(I!=null)
 						{
 							yourPlants.append(Util.padRight(""+(++plantNum),3)+" ");
-							yourPlants.append(Util.padRight(I.displayName(),20)+" ");
+							yourPlants.append(Util.padRight(I.name(),20)+" ");
 							yourPlants.append(Util.padRight(R.displayText(),40));
 							yourPlants.append("\n\r");
 							I=myPlant(R,mob,++i);

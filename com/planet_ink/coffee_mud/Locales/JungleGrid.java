@@ -6,6 +6,7 @@ import java.util.*;
 
 public class JungleGrid extends StdGrid
 {
+	public String ID(){return "JungleGrid";}
 	public JungleGrid()
 	{
 		super();

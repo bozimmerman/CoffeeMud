@@ -16,7 +16,7 @@ public class Chant_PlantMaze extends Chant
 	public Environmental newInstance(){	return new Chant_PlantMaze();}
 	Room oldRoom=null;
 	Item thePlants=null;
-	
+
 	public boolean tick(Tickable ticking,int tickID)
 	{
 		if((thePlants==null)||(thePlants.owner()==null)||(!(thePlants.owner() instanceof Room)))
@@ -26,7 +26,7 @@ public class Chant_PlantMaze extends Chant
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -67,13 +67,13 @@ public class Chant_PlantMaze extends Chant
 			mob.tell("There doesn't appear to be any plants here you can control!");
 			return false;
 		}
-		
-		if(mob.location().ID().length()==0)
+
+		if(mob.location().roomID().length()==0)
 		{
 			mob.tell("You cannot invoke the plant maze here.");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -95,11 +95,11 @@ public class Chant_PlantMaze extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Something is happening...");
-				
+
 				Room newRoom=CMClass.getLocale("WoodsMaze");
 				((GridLocale)newRoom).setXSize(10);
 				((GridLocale)newRoom).setYSize(10);
-				String s=((String)Util.parse(thePlants.displayName()).lastElement()).toLowerCase();
+				String s=((String)Util.parse(thePlants.name()).lastElement()).toLowerCase();
 				if(!s.endsWith("s"))s=s+"s";
 				String nos=s.substring(0,s.length()-1).toLowerCase();
 				newRoom.setDisplayText(Util.capitalize(nos)+" Maze");
@@ -131,7 +131,7 @@ public class Chant_PlantMaze extends Chant
 				{
 					Room R=mob.location().rawDoors()[d];
 					Exit E=mob.location().rawExits()[d];
-					if((R!=null)&&(R.ID().length()>0))
+					if((R!=null)&&(R.roomID().length()>0))
 					{
 						newRoom.rawDoors()[d]=R;
 						newRoom.rawExits()[d]=E;
@@ -146,15 +146,15 @@ public class Chant_PlantMaze extends Chant
 					MOB follower=(MOB)oldRoom.fetchInhabitant(m);
 					everyone.addElement(follower);
 				}
-				
+
 				if(V.size()>0)
 				for(int m=0;m<everyone.size();m++)
 				{
 					MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					Room newerRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
-					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of "+thePlants.displayName()+".");
-					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.displayName()+".");
+					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
+					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
 					if(oldRoom.okAffect(follower,leaveMsg)&&newerRoom.okAffect(follower,enterMsg))
 					{
 						if(follower.isInCombat())

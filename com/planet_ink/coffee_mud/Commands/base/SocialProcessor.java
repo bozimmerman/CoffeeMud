@@ -40,7 +40,7 @@ public class SocialProcessor
 	public static void vassals(MOB mob, Vector commands)
 	{
 		mob.tell("The following players are in your service:");
-		ExternalPlay.vassals(mob,mob.name());
+		ExternalPlay.vassals(mob,mob.Name());
 	}
 
 	public static void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
@@ -53,7 +53,7 @@ public class SocialProcessor
 		{
 			if(tellFlag)
 			{
-				String targetName=target.displayName();
+				String targetName=target.name();
 				if(targetName.indexOf("@")>=0)
 				{
 					String mudName=targetName.substring(targetName.indexOf("@")+1);
@@ -65,7 +65,7 @@ public class SocialProcessor
 				}
 				else
 				{
-					FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_TELL,"^TYou tell "+target.displayName()+" '"+text+"'^?^.",Affect.MSG_TELL,"^T"+mob.displayName()+" tell(s) you '"+text+"'^?^.",Affect.NO_EFFECT,null);
+					FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_TELL,"^TYou tell "+target.name()+" '"+text+"'^?^.",Affect.MSG_TELL,"^T"+mob.name()+" tell(s) you '"+text+"'^?^.",Affect.NO_EFFECT,null);
 					if((mob.location().okAffect(mob,msg))
 					&&(target.okAffect(target,msg)))
 					{
@@ -107,7 +107,7 @@ public class SocialProcessor
 	public static void hire(MOB mob, String rest)
 	{
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
-		if((target!=null)&&(!target.displayName().equalsIgnoreCase(rest))&&(rest.length()<4))
+		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
 		   target=null;
 		if((target!=null)&&(!Sense.canBeSeenBy(target,mob)))
 			target=null;
@@ -123,7 +123,7 @@ public class SocialProcessor
 	public static void fire(MOB mob, String rest)
 	{
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
-		if((target!=null)&&(!target.displayName().equalsIgnoreCase(rest))&&(rest.length()<4))
+		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
 		   target=null;
 		if((target!=null)&&(!Sense.canBeSeenBy(target,mob)))
 			target=null;
@@ -155,7 +155,7 @@ public class SocialProcessor
 		{
 			String possibleTarget=(String)commands.elementAt(1);
 			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
-			if((target!=null)&&(!target.displayName().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
 			if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
 				commands.removeElementAt(1);
@@ -211,7 +211,7 @@ public class SocialProcessor
 		{
 			String possibleTarget=(String)commands.elementAt(1);
 			target=mob.location().fetchFromRoomFavorMOBs(null,possibleTarget,Item.WORN_REQ_ANY);
-			if((target!=null)&&(!target.displayName().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
+			if((target!=null)&&(!target.name().equalsIgnoreCase(possibleTarget))&&(possibleTarget.length()<4))
 			   target=null;
 			if((target!=null)
 			&&(Sense.canBeSeenBy(target,mob))
@@ -257,8 +257,8 @@ public class SocialProcessor
 						Rider M=R.fetchRider(r);
 						if(M!=null)
 						{
-							msg=new FullMsg(mob,M,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.displayName()+" '"+combinedCommands+"'^?",
-											Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.displayName()+" '"+combinedCommands+"'^?",
+							msg=new FullMsg(mob,M,null,Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'^?",
+											Affect.MSG_SPEAK,"^T<S-NAME> whisper(s) around "+R.name()+" '"+combinedCommands+"'^?",
 											Affect.NO_EFFECT,null);
 							if(mob.location().okAffect(mob,msg))
 								mob.location().sendOthers(mob,msg);
@@ -296,10 +296,10 @@ public class SocialProcessor
 			mob.tell("No one has told you anything yet!");
 			return;
 		}
-		if((mob.replyTo().name().indexOf("@")<0)
-		&&(CMMap.getPlayer(mob.replyTo().name())==null))
+		if((mob.replyTo().Name().indexOf("@")<0)
+		&&(CMMap.getPlayer(mob.replyTo().Name())==null))
 		{
-			mob.tell(mob.replyTo().name()+" is no longer logged in.");
+			mob.tell(mob.replyTo().Name()+" is no longer logged in.");
 			return;
 		}
 		quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
@@ -318,7 +318,7 @@ public class SocialProcessor
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
-			if((thisSession.mob()!=null)&&(!thisSession.killFlag())&&(thisSession.mob().displayName().equalsIgnoreCase(targetName)))
+			if((thisSession.mob()!=null)&&(!thisSession.killFlag())&&(thisSession.mob().name().equalsIgnoreCase(targetName)))
 			{
 				target=thisSession.mob();
 				break;

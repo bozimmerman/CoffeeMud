@@ -20,21 +20,21 @@ public class Prayer_FortifyFood extends Prayer
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		if(!(target instanceof Food))
 		{
-			mob.tell(target.displayName()+" is not edible.");
+			mob.tell(target.name()+" is not edible.");
 			return false;
 		}
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(((Food)target).nourishment()>1000)
 		{
-			mob.tell(target.displayName()+" is already well fortified.");
+			mob.tell(target.name()+" is already well fortified.");
 			return false;
 		}
 

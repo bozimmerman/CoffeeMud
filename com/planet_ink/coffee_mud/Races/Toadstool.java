@@ -16,11 +16,11 @@ public class Toadstool extends StdRace
 	protected int weightVariance(){return 1;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Unique";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -52,33 +52,33 @@ public class Toadstool extends StdRace
 		}
 		return naturalWeapon;
 	}
-	
+
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is almost squashed!^N";
+			return "^r" + mob.name() + "^r is almost squashed!^N";
 		else
 		if(pct<.25)
-			return "^y" + mob.displayName() + "^y is severely gashed and bruised.^N";
+			return "^y" + mob.name() + "^y is severely gashed and bruised.^N";
 		else
 		if(pct<.40)
-			return "^p" + mob.displayName() + "^p has lots of gashes and bruises.^N";
+			return "^p" + mob.name() + "^p has lots of gashes and bruises.^N";
 		else
 		if(pct<.55)
-			return "^p" + mob.displayName() + "^p has some serious bruises.^N";
+			return "^p" + mob.name() + "^p has some serious bruises.^N";
 		else
 		if(pct<.70)
-			return "^g" + mob.displayName() + "^g has some bruises.^N";
+			return "^g" + mob.name() + "^g has some bruises.^N";
 		else
 		if(pct<.85)
-			return "^g" + mob.displayName() + "^g has a few small bruises.^N";
+			return "^g" + mob.name() + "^g has a few small bruises.^N";
 		else
 		if(pct<.95)
-			return "^g" + mob.displayName() + "^g is barely bruised.^N";
+			return "^g" + mob.name() + "^g is barely bruised.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect condition^N";
+			return "^c" + mob.name() + "^c is in perfect condition^N";
 	}
 	public Vector myResources()
 	{

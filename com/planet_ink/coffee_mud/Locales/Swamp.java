@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Swamp extends StdRoom
 {
+	public String ID(){return "Swamp";}
 	public Swamp()
 	{
 		super();

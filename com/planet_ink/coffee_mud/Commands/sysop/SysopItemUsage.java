@@ -8,7 +8,7 @@ import java.util.*;
 public class SysopItemUsage
 {
 	private SysopItemUsage(){}
-	
+
 	public static void take(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
@@ -35,7 +35,7 @@ public class SysopItemUsage
 		Item I=victim.fetchInventory(itemName);
 		if((I==null)||((I!=null)&&(!Sense.canBeSeenBy(I,mob))))
 		{
-			mob.tell(victim.displayName()+" doesn't seem to have a '"+itemName+"'.");
+			mob.tell(victim.name()+" doesn't seem to have a '"+itemName+"'.");
 			return;
 		}
 		I.remove();

@@ -10,7 +10,7 @@ import java.util.*;
 public class Import
 {
 	private Import(){}
-	
+
 	private static String getAreaName(Vector V)
 	{
 		// find area line first
@@ -86,7 +86,7 @@ public class Import
 			Log.errOut("Import","Cannot find room class "+newClass+".");
 			return R;
 		}
-		R2.setID(R.ID());
+		R2.setRoomID(R.roomID());
 		R2.setArea(R.getArea());
 		R2.setDescription(R.description());
 		R2.setDisplayText(R.displayText());
@@ -667,7 +667,7 @@ public class Import
 
 		switch(val1)
 		{
-		case 0: ((Weapon)I).setWeaponClassification(Weapon.CLASS_RANGED); 
+		case 0: ((Weapon)I).setWeaponClassification(Weapon.CLASS_RANGED);
 				if(name.toUpperCase().indexOf("BOW")>=0)
 				{
 					((Weapon)I).setAmmoCapacity(20);
@@ -679,19 +679,19 @@ public class Import
 				break;
 		case 1: ((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD); break;
 		case 2: ((Weapon)I).setWeaponClassification(Weapon.CLASS_EDGED); break;
-		case 3: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); 
+		case 3: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM);
 				((Weapon)I).setRanges(0,1);
 				((Weapon)I).setRawLogicalAnd(true);
 				break;
 		case 4: ((Weapon)I).setWeaponClassification(Weapon.CLASS_BLUNT); break;
 		case 5: ((Weapon)I).setWeaponClassification(Weapon.CLASS_AXE); break;
-		case 6: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED); 
+		case 6: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED);
 				((Weapon)I).setRanges(0,1);
 				break;
-		case 7: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED); 
+		case 7: ((Weapon)I).setWeaponClassification(Weapon.CLASS_FLAILED);
 				((Weapon)I).setRanges(0,1);
 				break;
-		case 8: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); 
+		case 8: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM);
 				((Weapon)I).setRanges(0,1);
 				((Weapon)I).setRawLogicalAnd(true);
 				break;
@@ -819,8 +819,8 @@ public class Import
 				return M;
 			}
 		}
-			
-		
+
+
 		for(int m=0;m<mobData.size();m++)
 		{
 			Vector objV=null;
@@ -1519,10 +1519,10 @@ public class Import
 		return null;
 	}
 
-	private static Item getItem(String OfThisID, 
-						 MOB mob, 
+	private static Item getItem(String OfThisID,
+						 MOB mob,
 						 String areaName,
-						 Vector objectData, 
+						 Vector objectData,
 						 Vector objProgData,
 						 Hashtable doneItems)
 	{
@@ -1627,7 +1627,7 @@ public class Import
 				else
 				if(obj.toUpperCase().endsWith("CORPSE")) objType=99;
 				else
-				if(obj.equalsIgnoreCase("jukebox")) 
+				if(obj.equalsIgnoreCase("jukebox"))
 					continue;// NO JUKE BOXES!
 			}
 			else
@@ -1806,7 +1806,7 @@ public class Import
 					 I.baseEnvStats().setAbility(val1);
 					 break;
 			case 21: I=CMClass.getStdItem("GenItem"); break;
-			case 22: I=CMClass.getStdItem("GenBoat"); 
+			case 22: I=CMClass.getStdItem("GenBoat");
 					 break;
 			case 23: I=CMClass.getStdItem("GenCorpse"); break;
 			case 24: I=CMClass.getStdItem("GenCorpse"); break;
@@ -1999,7 +1999,7 @@ public class Import
 				I.setMaterial(EnvResource.RESOURCE_SILVER);
 				materialchange=true;
 			}
-			
+
 			if(materialchange)
 			    I.setDescription("");
 
@@ -2093,7 +2093,7 @@ public class Import
 				{
 					String codesLine=eatNextLine(objV);
 					if(Util.numBits(codesLine)!=2)
-						returnAnError(mob,"Malformed 'A' code for item "+objectID+", "+I.name()+": "+codesLine+", area="+areaName);
+						returnAnError(mob,"Malformed 'A' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName);
 					else
 					{
 						int num=Util.s_int(Util.getBit(codesLine,0));
@@ -2190,7 +2190,7 @@ public class Import
 				{
 					String codesLine=eatNextLine(objV);
 					if(Util.numBits(codesLine)!=4)
-						returnAnError(mob,"Malformed 'F' code for item "+objectID+", "+I.name()+": "+codesLine+", area="+areaName);
+						returnAnError(mob,"Malformed 'F' code for item "+objectID+", "+I.Name()+": "+codesLine+", area="+areaName);
 					else
 					{
 						String codeType=Util.getBit(codesLine,0);
@@ -2346,7 +2346,7 @@ public class Import
 				{
 				}
 				else
-					returnAnError(mob,"Unknown code for item "+objectID+", "+I.name()+": "+codeLine+", area="+areaName);
+					returnAnError(mob,"Unknown code for item "+objectID+", "+I.Name()+": "+codeLine+", area="+areaName);
 			}
 			if(adjuster.text().length()>0)
 				I.addNonUninvokableAffect(adjuster);
@@ -2368,7 +2368,7 @@ public class Import
 
 	public static String socialFix(String str)
 	{
-		
+
 		str=Util.replaceAll(str,"$n","<S-NAME>");
 		str=Util.replaceAll(str,"$N","<T-NAMESELF>");
 		str=Util.replaceAll(str,"$m","<S-HIM-HER>");
@@ -2381,7 +2381,7 @@ public class Import
 		if(str.equals("$")) return "";
 		return str.trim();
 	}
-	
+
 	public static Room findRoomSomewhere(String roomID, String areaName, Hashtable doneRooms)
 	{
 		if(roomID.startsWith("#"))
@@ -2401,7 +2401,7 @@ public class Import
 
 	public static boolean localDeleteArea(MOB mob, Vector reLinkTable, String areaName)
 	{
-		if(mob.location().getArea().name().equalsIgnoreCase(areaName))
+		if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
 		{
 			mob.tell("You dip!  You are IN that area!  Leave it first...");
 			return false;
@@ -2411,12 +2411,12 @@ public class Import
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(!R.getArea().name().equalsIgnoreCase(areaName))
+				if(!R.getArea().Name().equalsIgnoreCase(areaName))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
 						Room dirR=R.rawDoors()[d];
-						if((dirR!=null)&&(dirR.getArea().name().equalsIgnoreCase(areaName)))
-							reLinkTable.addElement(R.ID()+"/"+d+"/"+dirR.ID());
+						if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
+							reLinkTable.addElement(R.roomID()+"/"+d+"/"+dirR.roomID());
 					}
 			}
 			while(true)
@@ -2425,7 +2425,7 @@ public class Import
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(R.getArea().name().equalsIgnoreCase(areaName))
+					if(R.getArea().Name().equalsIgnoreCase(areaName))
 					{
 						foundOne=R;
 						break;
@@ -2445,7 +2445,7 @@ public class Import
 		}
 		return true;
 	}
-	
+
 	public static void areimport(MOB mob, Vector commands)
 	{
 		boolean prompt=true;
@@ -2472,7 +2472,7 @@ public class Import
 			commands.removeElementAt(0);
 			prompt=false;
 		}
-		
+
 		// continue pre-processing
 		for(int areaFile=commands.size()-1;areaFile>=0;areaFile--)
 		{
@@ -2486,10 +2486,10 @@ public class Import
 				commands.removeElementAt(areaFile);
 			}
 		}
-		
+
 		Vector mobData=new Vector();
 		Vector objectData=new Vector();
-		
+
 		for(int areaFile=0;areaFile<commands.size();areaFile++)
 		{
 		Vector areaData=new Vector();
@@ -2502,7 +2502,7 @@ public class Import
 		Vector newRooms=new Vector();
 		Vector socialData=new Vector();
 		Vector reLinkTable=null;
-		
+
 		String areaFileName=(String)commands.elementAt(areaFile);
 		// read in the .are file
 		StringBuffer buf=Resources.getFile(areaFileName);
@@ -2556,7 +2556,7 @@ public class Import
 				int num=areas.size();
 				int a=0;
 				while(areas.size()>0)
-				{	
+				{
 					if(mob.session()!=null)
 						mob.session().rawPrint("Unpacking area #"+(a+1)+"/"+num+"...");
 					Vector area=(Vector)areas.firstElement();
@@ -2570,11 +2570,11 @@ public class Import
 						||(mob.session().confirm("Area: \""+areaName+"\" exists, obliterate first?","N")))
 						{
 							if(reLinkTable==null) reLinkTable=new Vector();
-							if(mob.location().getArea().name().equalsIgnoreCase(areaName))
+							if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
 								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 								{
 									Room R=(Room)r.nextElement();
-									if((R!=null)&&(!R.getArea().name().equalsIgnoreCase(areaName)))
+									if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
 									{
 										R.bringMobHere(mob,true);
 										break;
@@ -2599,7 +2599,7 @@ public class Import
 						a++;
 					}
 				}
-				Log.sysOut("Import",mob.name()+" imported "+areaFileName);
+				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 				mob.tell("Area(s) successfully imported!");
 				continue;
 			}
@@ -2637,7 +2637,7 @@ public class Import
 				}
 				else
 				{
-					Log.sysOut("Import",mob.name()+" imported "+areaFileName);
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 					mob.tell("Area successfully imported!");
 					continue;
 				}
@@ -2661,7 +2661,7 @@ public class Import
 							{
 								Room dirR=R2.rawDoors()[d];
 								if((dirR!=null)&&(dirR==R))
-									reLinkTable.addElement(R2.ID()+"/"+d+"/"+dirR.ID());
+									reLinkTable.addElement(R2.roomID()+"/"+d+"/"+dirR.roomID());
 							}
 						}
 						Rooms.obliterateRoom(R);
@@ -2676,7 +2676,7 @@ public class Import
 				}
 				else
 				{
-					Log.sysOut("Import",mob.name()+" imported "+areaFileName);
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 					mob.tell("Room successfully imported!");
 					continue;
 				}
@@ -2705,7 +2705,7 @@ public class Import
 						M.bringToLife(mob.location(),true);
 					}
 					mob.location().recoverRoomStats();
-					Log.sysOut("Import",mob.name()+" imported "+areaFileName);
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 					mob.tell("MOB(s) successfully imported!");
 					continue;
 				}
@@ -2732,7 +2732,7 @@ public class Import
 						mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 					}
 					mob.location().recoverRoomStats();
-					Log.sysOut("Import",mob.name()+" imported "+areaFileName);
+					Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 					mob.tell("Item(s) successfully imported!");
 					continue;
 				}
@@ -2744,7 +2744,7 @@ public class Import
 			mob.tell(e.getMessage());
 			return;
 		}
-			
+
 
 		Vector V=Resources.getFileLineVector(buf);
 
@@ -2763,7 +2763,7 @@ public class Import
 					String word=codeLine.trim().toUpperCase();
 					int x=word.indexOf(" ");
 					if(x>0) word=word.substring(0,x).trim();
-						
+
 					Social S1=Socials.FetchSocial(word);
 					Social S2=Socials.FetchSocial(word+" <T-NAME>");
 					Social S3=Socials.FetchSocial(word+" SELF");
@@ -2775,10 +2775,10 @@ public class Import
 						Socials.addSocial(S1);
 						changing=false;
 					}
-						
+
 					String str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
-						
+
 					if((S1.You_see()==null)||(!S1.You_see().equals(str)))
 					{
 						if(changing)
@@ -2786,10 +2786,10 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S1.setYou_see(str);
 					}
-						
+
 					str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
-						
+
 					if((S1.Third_party_sees()==null)||(!S1.Third_party_sees().equals(str)))
 					{
 						if(changing)
@@ -2797,7 +2797,7 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S1.setThird_party_sees(str);
 					}
-						
+
 					changing=true;
 					str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
@@ -2808,7 +2808,7 @@ public class Import
 						Socials.addSocial(S2);
 						changing=false;
 					}
-						
+
 					if((S2.You_see()==null)||(!S2.You_see().equals(str)))
 					{
 						if(changing)
@@ -2816,10 +2816,10 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S2.setYou_see(str);
 					}
-						
+
 					str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
-						
+
 					if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
 					{
 						if(changing)
@@ -2827,10 +2827,10 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S2.setThird_party_sees(str);
 					}
-						
+
 					str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
-						
+
 					if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
 					{
 						if(changing)
@@ -2838,10 +2838,10 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S2.setTarget_sees(str);
 					}
-						
+
 					str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
-						
+
 					if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
 					{
 						if(changing)
@@ -2849,7 +2849,7 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S2.setSee_when_no_target(str);
 					}
-						
+
 					changing=true;
 					str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
@@ -2860,7 +2860,7 @@ public class Import
 						Socials.addSocial(S3);
 						changing=false;
 					}
-						
+
 					if((S3.You_see()==null)||(!S3.You_see().equals(str)))
 					{
 						if(changing)
@@ -2868,10 +2868,10 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S3.setYou_see(str);
 					}
-						
+
 					str=socialFix(eatNextLine(socialData));
 					if(str.startsWith("#")) continue;
-						
+
 					if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
 					{
 						if(changing)
@@ -2879,10 +2879,10 @@ public class Import
 						if((!changing)||(mob.session().confirm("?","Y")))
 							S3.setThird_party_sees(str);
 					}
-						
+
 				}
 			}
-			Log.sysOut("Import",mob.name()+" imported socials from "+areaFileName);
+			Log.sysOut("Import",mob.Name()+" imported socials from "+areaFileName);
 			Socials.save();
 		}
 		catch(Exception e)
@@ -2891,7 +2891,7 @@ public class Import
 			mob.tell(e.getMessage());
 			return;
 		}
-		
+
 		if((roomData.size()==0)||(areaData.size()==0))
 		{
 			if(!didSocials)
@@ -2913,7 +2913,7 @@ public class Import
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R.getArea().name().equalsIgnoreCase(areaName))
+				if(R.getArea().Name().equalsIgnoreCase(areaName))
 				{
 					exists=true;
 					break;
@@ -2936,7 +2936,7 @@ public class Import
 				return;
 
 			mob.tell("Loading and Linking Rooms...");
-			Log.sysOut("Import",mob.name()+" imported "+areaName+" from "+areaFileName);
+			Log.sysOut("Import",mob.Name()+" imported "+areaName+" from "+areaFileName);
 			// begin initial room-read
 			// build first room structures, leaving rest for later.
 			Room lastRoom=null;
@@ -2965,21 +2965,21 @@ public class Import
 
 				Room R=CMClass.getLocale("StdRoom");
 				String plainRoomID=eatNextLine(roomV);
-				R.setID(plainRoomID);
+				R.setRoomID(plainRoomID);
 				R.setDisplayText(Util.safetyFilter(eatLineSquiggle(roomV)));
 				R.setDescription(Util.safetyFilter(eatLineSquiggle(roomV)));
 				R.setArea(A);
 				String codeLine=eatNextLine(roomV);
-				if((!R.ID().startsWith("#"))
+				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
 				||(Util.numBits(codeLine)<2)
 				||(Util.numBits(codeLine)>3))
 				{
-					returnAnError(mob,"Malformed room! Aborting this room "+R.ID()+", display="+R.displayText()+", description="+R.description()+", numBits="+Util.numBits(codeLine)+", area="+areaName);
+					returnAnError(mob,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+Util.numBits(codeLine)+", area="+areaName);
 					continue;
 				}
 				else
-					R.setID(areaName+R.ID());
+					R.setRoomID(areaName+R.roomID());
 				int codeBits=getBitMask(codeLine,0);
 				int sectorType=getBitMask(codeLine,1);
 				if(Util.numBits(codeLine)==3)
@@ -3040,7 +3040,7 @@ public class Import
 							R=changeRoomClass(R,"CaveRoom");
 						break;
 					}
-						
+
 				}
 
 				Ability prop_RoomCapacity=CMClass.getAbility("Prop_ReqCapacity");
@@ -3127,7 +3127,7 @@ public class Import
 				if(restrictor.text().length()>0)
 					R.addNonUninvokableAffect(restrictor);
 
-				roomV.insertElementAt(R.ID(),0);
+				roomV.insertElementAt(R.roomID(),0);
 				CMMap.addRoom(R);
 				newRooms.addElement(R);
 				if(plainRoomID.startsWith("#"))
@@ -3196,17 +3196,17 @@ public class Import
 						case 4: dirCode=4; break;
 						case 5: dirCode=5; break;
 						default:
-								returnAnError(mob,"Room: "+R.ID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName);
+								returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName);
 								continue;
 						}
 						if(Util.numBits(codeStr)!=3)
 						{
-							returnAnError(mob,"Room: "+R.ID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName);
+							returnAnError(mob,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName);
 							continue;
 						}
 						if((R.rawExits()[dirCode]!=null)||(R.rawDoors()[dirCode]!=null))
 						{
-							returnAnError(mob,"Room: "+R.ID()+", Redundant exit codeStr "+codeStr+".  Aborting exit, area="+areaName);
+							returnAnError(mob,"Room: "+R.roomID()+", Redundant exit codeStr "+codeStr+".  Aborting exit, area="+areaName);
 							continue;
 						}
 						int exitFlag=( Util.s_int(Util.getBit(codeStr,0)) & 31);
@@ -3272,22 +3272,22 @@ public class Import
 								name="ground";
 							}
 						}
-						E.setExitParams(name,E.closeWord(),E.openWord(),E.name()+", closed");
+						E.setExitParams(name,E.closeWord(),E.openWord(),E.Name()+", closed");
 						E.setDescription(descStr);
 						R.rawExits()[dirCode]=E;
 						Exit opExit=null;
-						if(((linkRoom==null)||(linkRoom.getArea().name()!=R.getArea().name()))&&(linkRoomID>=0))
+						if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
 						{
 							for(Enumeration r2=CMMap.rooms();r2.hasMoreElements();)
 							{
 								Room R2=(Room)r2.nextElement();
-								if((R2.ID().endsWith("#"+linkRoomID))&&(R2!=R))
+								if((R2.roomID().endsWith("#"+linkRoomID))&&(R2!=R))
 								{
 									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 									{
 										Exit E3=R2.rawExits()[d];
 										if(E3!=null)
-											if(R.ID().endsWith(E3.closeWord()))
+											if(R.roomID().endsWith(E3.closeWord()))
 											{
 												opExit=E3;
 												R2.rawDoors()[d]=R;
@@ -3295,7 +3295,7 @@ public class Import
 									}
 									if(opExit==null)
 										if((prompt)&&
-										  (!mob.session().confirm(R.ID()+" links to #"+linkRoomID+". Found "+R2.ID()+". Link?","Y")))
+										  (!mob.session().confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
 											continue;
 									linkRoom=R2;
 									if(opExit!=null)
@@ -3313,7 +3313,7 @@ public class Import
 						}
 						R.rawDoors()[dirCode]=linkRoom;
 						if((linkRoom==null)&&(linkRoomID>=0))
-							returnAnError(mob,"Room: "+R.ID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName);
+							returnAnError(mob,"Room: "+R.roomID()+" links "+Directions.getDirectionName(dirCode)+"ward to unknown room #"+linkRoomID+", area="+areaName);
 					}
 					else
 					if(nextLine.toUpperCase().startsWith("H"))
@@ -3352,7 +3352,7 @@ public class Import
 							returnAnError(mob,"Reset error (no mob) on line: "+s+", area="+areaName);
 						else
 							M.bringToLife(R,true);
-								
+
 					}
 				}
 				else
@@ -3541,7 +3541,7 @@ public class Import
 						case 4: dirCode=4; break;
 						case 5: dirCode=5; break;
 						default:
-							returnAnError(mob,"Room: "+R.ID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier, area="+areaName);
+							returnAnError(mob,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier, area="+areaName);
 						}
 						if(dirCode<Directions.NUM_DIRECTIONS)
 						{
@@ -3577,7 +3577,7 @@ public class Import
 								DefaultsClosed=true;
 								break;
 							default:
-								returnAnError(mob,"Room: "+R.ID()+", Unknown door code: "+lockBit+", area="+areaName);
+								returnAnError(mob,"Room: "+R.roomID()+", Unknown door code: "+lockBit+", area="+areaName);
 								break;
 							}
 							E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
@@ -3601,7 +3601,7 @@ public class Import
 				Room shopRoom=(Room)petShops.get(storeRoom);
 				ShopKeeper shopKeeper=null;
 				if(shopRoom==null)
-					returnAnError(mob,"Unknown store room: "+storeRoom.ID()+", area="+areaName);
+					returnAnError(mob,"Unknown store room: "+storeRoom.roomID()+", area="+areaName);
 				else
 				for(int i=0;i<shopRoom.numInhabitants();i++)
 				{
@@ -3610,7 +3610,7 @@ public class Import
 					{ shopKeeper=(ShopKeeper)sk; break;	}
 				}
 				if(shopKeeper==null)
-					returnAnError(mob,"Unknown shopkeeper not in room: "+storeRoom.ID()+", area="+areaName);
+					returnAnError(mob,"Unknown shopkeeper not in room: "+storeRoom.roomID()+", area="+areaName);
 				else
 				while(storeRoom.numInhabitants()>0)
 				{
@@ -3638,7 +3638,7 @@ public class Import
 							Item I=smurfRoom.fetchItem(i);
 							if((I!=null)
 							&&(I.displayText().length()>0)
-							&&(I.displayText().indexOf(lookItem.name())>=0))
+							&&(I.displayText().indexOf(lookItem.Name())>=0))
 							{
 								String description=lookItem.description();
 								smurfRoom.delItem(lookItem);
@@ -3682,7 +3682,7 @@ public class Import
 							ExternalPlay.DBUpdateExits(sourceRoom);
 					}
 				}
-			mob.session().println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).ID()+"\n\r");
+			mob.session().println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).roomID()+"\n\r");
 		}
 		catch(Exception e)
 		{
@@ -3712,13 +3712,13 @@ public class Import
 			((Area)a.nextElement()).fillInAreaRooms();
 		mob.session().println("done!");
 	}
-	
+
 	public static void export(MOB mob, Vector commands)
 	{
 		String commandType="";
 		String fileName="";
 		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path
-		
+
 		commands.removeElementAt(0);
 		if(commands.size()>0)
 		{
@@ -3732,7 +3732,7 @@ public class Import
 			mob.tell("Export what?  Room, or Area?");
 			return;
 		}
-		
+
 		String subType="DATA";
 		if(commands.size()>0)
 		{
@@ -3748,7 +3748,7 @@ public class Import
 			else
 			if(sub.equalsIgnoreCase("data"))
 				commands.removeElementAt(0);
-			
+
 			if(commands.size()==0)
 			{
 				mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump.");
@@ -3784,13 +3784,13 @@ public class Import
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(mob.session()!=null)
-					mob.session().rawPrint("Reading area '"+mob.location().getArea().name()+"'...");
+					mob.session().rawPrint("Reading area '"+mob.location().getArea().Name()+"'...");
 				xml=com.planet_ink.coffee_mud.common.Generic.getAreaXML(mob.location().getArea(),mob.session(),true).toString();
 				if(fileNameCode==2){
 					if(mob.location().getArea().getArchivePath().length()>0)
 						fileName=fileName+File.separatorChar+mob.location().getArea().getArchivePath();
 					else
-						fileName=fileName+File.separatorChar+mob.location().getArea().name();
+						fileName=fileName+File.separatorChar+mob.location().getArea().Name();
 				}
 				if(mob.session()!=null)
 					mob.session().rawPrintln("!");
@@ -3815,7 +3815,7 @@ public class Import
 							if(A.getArchivePath().length()>0)
 								name=fileName+File.separatorChar+A.getArchivePath();
 							else
-								name=fileName+File.separatorChar+A.name();
+								name=fileName+File.separatorChar+A.Name();
 							reallyExport(mob,name,buf.toString());
 							buf=new StringBuffer("");
 						}
@@ -3835,7 +3835,7 @@ public class Import
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(mob.session()!=null)
-					mob.session().rawPrint("Reading area mobs '"+mob.location().getArea().name()+"'...");
+					mob.session().rawPrint("Reading area mobs '"+mob.location().getArea().Name()+"'...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
 				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 				{
@@ -3871,14 +3871,14 @@ public class Import
 			int type=0;
 			if(subType.equalsIgnoreCase("WEAPONS"))
 			{
-				if(fileNameCode==2) 
+				if(fileNameCode==2)
 					fileName=fileName+File.separatorChar+"weapons";
 				type=1;
 			}
 			else
 			if(subType.equalsIgnoreCase("ARMOR"))
 			{
-				if(fileNameCode==2) 
+				if(fileNameCode==2)
 					fileName=fileName+File.separatorChar+"armor";
 				type=2;
 			}
@@ -3887,7 +3887,7 @@ public class Import
 			{
 				fileName=fileName+File.separatorChar+"items";
 			}
-			
+
 			Hashtable found=new Hashtable();
 			if(commandType.equalsIgnoreCase("ROOM"))
 				xml="<ITEMS>"+com.planet_ink.coffee_mud.common.Generic.getRoomItems(mob.location(),found,type).toString()+"</ITEMS>";
@@ -3895,7 +3895,7 @@ public class Import
 			if(commandType.equalsIgnoreCase("AREA"))
 			{
 				if(mob.session()!=null)
-					mob.session().rawPrint("Reading area "+subType.toLowerCase()+" '"+mob.location().getArea().name()+"'...");
+					mob.session().rawPrint("Reading area "+subType.toLowerCase()+" '"+mob.location().getArea().Name()+"'...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
 				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 				{
@@ -3932,7 +3932,7 @@ public class Import
 		if(mob==null) return;
 		if(xml==null) return;
 		if(xml.length()==0) return;
-		
+
 		if(fileName.equalsIgnoreCase("SCREEN"))
 		{
 			mob.tell("Here it is:\n\r\n\r");
@@ -3958,7 +3958,7 @@ public class Import
 			}
 		}
 	}
-	
+
 	public static void merge(MOB mob, Vector commands)
 	{
 		Vector placesToDo=new Vector();
@@ -4041,7 +4041,7 @@ public class Import
 			mob.tell("File not found at: '"+filename+"'!");
 			return;
 		}
-		
+
 		Vector changes=new Vector();
 		Vector onfields=new Vector();
 		Vector ignore=new Vector();
@@ -4229,7 +4229,7 @@ public class Import
 		// now do the merge...
 		if(mob.session()!=null)
 			mob.session().rawPrint("Merging and saving...");
-		Log.sysOut("Import",mob.name()+" merged '"+filename+"'.");
+		Log.sysOut("Import",mob.Name()+" merged '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{
 			Room R=(Room)placesToDo.elementAt(r);
@@ -4288,12 +4288,12 @@ public class Import
 			if(mob.session()!=null)	mob.session().rawPrint(".");
 			R.getArea().toggleMobility(oldMobility);
 		}
-		
+
 		if(mob.session()!=null)	mob.session().rawPrintln("!\n\rDone!");
 		for(int i=0;i<placesToDo.size();i++)
 			((Room)placesToDo.elementAt(i)).getArea().toggleMobility(true);
 	}
-	
+
 	private static boolean tryMerge(MOB mob,
 									Room room,
 									Environmental E,
@@ -4331,7 +4331,7 @@ public class Import
 				}
 				else
 					fieldsToCheck=(Vector)efields.clone();
-				
+
 				boolean checkedOut=fieldsToCheck.size()>0;
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
@@ -4357,7 +4357,7 @@ public class Import
 						if(!E.getStat(field).equals(E2.getStat(field)))
 						{
 							E.setStat(field,E2.getStat(field));
-							Log.sysOut("Merge","The "+Util.capitalize(field)+" field on "+E.name()+" in "+room.ID()+" was changed to "+E2.getStat(field)+".");
+							Log.sysOut("Merge","The "+Util.capitalize(field)+" field on "+E.Name()+" in "+room.roomID()+" was changed to "+E2.getStat(field)+".");
 							didAnything=true;
 						}
 					}

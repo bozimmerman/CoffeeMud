@@ -21,8 +21,8 @@ public class AreaNameEncoded extends StdWebMacro
 			{
 				try
 				{
-					return URLEncoder.encode(A.name(),"UTF-8");
-				}  
+					return URLEncoder.encode(A.Name(),"UTF-8");
+				}
 				catch(java.io.UnsupportedEncodingException e)
 				{
 					Log.errOut(name(),"Wrong Encoding");

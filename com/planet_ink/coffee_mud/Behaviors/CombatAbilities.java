@@ -40,13 +40,13 @@ public class CombatAbilities extends StdBehavior
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(ticking==null) return true;
 		MOB mob=(MOB)ticking;
-		
+
 		if(tickID!=Host.MOB_TICK) return true;
 		if(!canActAtAll(mob)) return true;
 		if(!mob.isInCombat()) return true;
@@ -94,7 +94,7 @@ public class CombatAbilities extends StdBehavior
 
 			tryThisOne.setProfficiency(Dice.roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
-			V.addElement(victim.displayName());
+			V.addElement(victim.name());
 			tryThisOne.invoke(mob,V,victim,false);
 		}
 		else
@@ -118,7 +118,7 @@ public class CombatAbilities extends StdBehavior
 			{
 				Vector V=new Vector();
 				V.addElement("hold");
-				V.addElement(backupWand.displayName());
+				V.addElement(backupWand.name());
 				try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
 			}
 			else
@@ -134,7 +134,7 @@ public class CombatAbilities extends StdBehavior
 						victim=mob;
 					Vector V=new Vector();
 					V.addElement("say");
-					V.addElement(victim.displayName());
+					V.addElement(victim.name());
 					V.addElement(((Wand)myWand).magicWord());
 					try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
 				}

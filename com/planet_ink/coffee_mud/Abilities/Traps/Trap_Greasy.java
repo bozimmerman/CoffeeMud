@@ -15,7 +15,7 @@ public class Trap_Greasy extends StdTrap
 	public String requiresToSet(){return "a container of lamp oil";}
 	public Environmental newInstance(){	return new Trap_Greasy();}
 	int times=20;
-	
+
 	private Item getPoison(MOB mob)
 	{
 		if(mob==null) return null;
@@ -31,7 +31,7 @@ public class Trap_Greasy extends StdTrap
 		}
 		return null;
 	}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
@@ -43,7 +43,7 @@ public class Trap_Greasy extends StdTrap
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
@@ -62,7 +62,7 @@ public class Trap_Greasy extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap! "+Util.capitalize(affected.displayName())+" ignites!"))
+			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap! "+Util.capitalize(affected.name())+" ignites!"))
 			{
 				super.spring(target);
 				target.location().show(target,this,null,Affect.MSG_DROP,"<S-NAME> drop(s) the greasy <T-NAME>!");

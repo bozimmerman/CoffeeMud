@@ -55,14 +55,14 @@ public class Chant_AntTrain extends Chant
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 		if(!(target instanceof Item))
 		{
-			mob.tell("The ants can't carry "+target.displayName()+"!");
+			mob.tell("The ants can't carry "+target.name()+"!");
 			return false;
 		}
 

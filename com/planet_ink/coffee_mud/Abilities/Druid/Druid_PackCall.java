@@ -37,7 +37,7 @@ public class Druid_PackCall extends StdAbility
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public void unInvoke()
 	{
 		MOB mob=(MOB)affected;
@@ -50,7 +50,7 @@ public class Druid_PackCall extends StdAbility
 			mob.destroy();
 		}
 	}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
@@ -60,7 +60,7 @@ public class Druid_PackCall extends StdAbility
 		&&(msg.sourceMinor()==Affect.TYP_QUIT))
 			unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
@@ -90,13 +90,13 @@ public class Druid_PackCall extends StdAbility
 			mob.tell("You must be in your animal form to call the pack.");
 			return false;
 		}
-		
+
 		if(mob.numFollowers()>=mob.maxFollowers())
 		{
 			mob.tell("You can't have any more followers!");
 			return false;
 		}
-		
+
 		Vector choices=new Vector();
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
@@ -105,13 +105,13 @@ public class Druid_PackCall extends StdAbility
 			if((R!=null)&&(E!=null)&&(E.isOpen())&&(d!=Directions.UP))
 				choices.addElement(new Integer(d));
 		}
-		
+
 		if(choices.size()==0)
 		{
 			mob.tell("Your call would not be heard here.");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -164,7 +164,7 @@ public class Druid_PackCall extends StdAbility
 					if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 					newMOB.setStartRoom(null);
 					int dir=((Integer)choices.elementAt(Dice.roll(1,choices.size(),-1))).intValue();
-					newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) "+victim.displayName()+"!");
+					newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> arrive(s) "+Directions.getFromDirectionName(dir)+" and attack(s) "+victim.name()+"!");
 					ExternalPlay.follow(newMOB,mob,true);
 					if(newMOB.amFollowing()!=mob)
 					{

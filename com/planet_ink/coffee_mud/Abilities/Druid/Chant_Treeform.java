@@ -64,7 +64,7 @@ public class Chant_Treeform extends Chant
 			else
 			{
 				Item item=CMClass.getItem("GenResource");
-				item.setName(mob.name());
+				item.setName(mob.Name());
 				item.setDescription(mob.description());
 				item.setDisplayText(mob.displayText());
 				item.setMaterial(EnvResource.RESOURCE_WOOD);
@@ -96,7 +96,7 @@ public class Chant_Treeform extends Chant
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setName("a tree that reminds you of "+affected.displayName());
+		affectableStats.setName("a tree that reminds you of "+affected.name());
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
@@ -149,7 +149,7 @@ public class Chant_Treeform extends Chant
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
-		
+
 		if(target.fetchAffect(this.ID())!=null)
 		{
 			target.tell("You are already a tree.");

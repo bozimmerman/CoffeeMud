@@ -75,7 +75,7 @@ public class Dyeing extends CommonSkill
 					if(!d.endsWith("^?")) desc.append("^?");
 					if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
 					found.setDescription(desc.toString());
-					found.setName(fixColor(found.name(),writing));
+					found.setName(fixColor(found.Name(),writing));
 					found.setDisplayText(fixColor(found.displayText(),writing));
 					found.text();
 				}
@@ -116,7 +116,7 @@ public class Dyeing extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		verb="dyeing "+target.displayName()+" "+writing;
+		verb="dyeing "+target.name()+" "+writing;
 		displayText="You are "+verb;
 		found=target;
 		if(!profficiencyCheck(0,auto)) writing="";
@@ -124,7 +124,7 @@ public class Dyeing extends CommonSkill
 		if((target.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
 			duration*=2;
 		if(duration<6) duration=6;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) dyeing "+target.displayName());
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) dyeing "+target.name());
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -35,7 +35,7 @@ public class LockSmith extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've ruined "+building.displayName()+"!");
+						commonTell(mob,"You've ruined "+building.name()+"!");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -161,8 +161,8 @@ public class LockSmith extends CommonSkill
 				if((A!=null)&&(A instanceof LandTitle))
 				{ titleInName=((LandTitle)A).landOwner(); break;}
 			}
-			if(!(titleInName.equals(mob.name())
-			   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().name())))))
+			if(!(titleInName.equals(mob.Name())
+			   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().Name())))))
 			{
 				Room R2=mob.location().getRoomInDir(dir);
 				if(R2!=null)
@@ -173,8 +173,8 @@ public class LockSmith extends CommonSkill
 					{ titleInName=((LandTitle)A).landOwner(); break;}
 				}
 			}
-			if(!(titleInName.equals(mob.name())
-			   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().name())))))
+			if(!(titleInName.equals(mob.Name())
+			   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().Name())))))
 			{
 				commonTell(mob,"You'll need the permission of the owner to do that.");
 				return false;
@@ -246,9 +246,9 @@ public class LockSmith extends CommonSkill
 		String itemName=(EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]+" key").toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.displayName()+".";
-		displayText="You are working on "+(keyFlag?"a key for ":"")+workingOn.displayName();
-		verb="working on "+(keyFlag?"a key for ":"")+workingOn.displayName();
+		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
+		displayText="You are working on "+(keyFlag?"a key for ":"")+workingOn.name();
+		verb="working on "+(keyFlag?"a key for ":"")+workingOn.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		((Key)building).setKey("keyName");

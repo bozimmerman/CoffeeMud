@@ -21,10 +21,10 @@ public class Spell_ImprovedPolymorph extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			if(affected.displayName().indexOf(" ")>0)
-				affectableStats.setName("a "+newRace.name()+" called "+affected.displayName());
+			if(affected.name().indexOf(" ")>0)
+				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
-				affectableStats.setName(affected.displayName()+" the "+newRace.name());
+				affectableStats.setName(affected.name()+" the "+newRace.name());
 			newRace.setHeightWeight(affectableStats,'M');
 		}
 	}
@@ -68,7 +68,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		Race R=CMClass.getRace(race);
 		if(R==null)
 		{
-			mob.tell("You can't turn "+target.displayName()+" into a '"+race+"'!");
+			mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
 			return false;
 		}
 

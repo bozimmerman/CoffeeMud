@@ -92,7 +92,7 @@ public class BribeGateGuard extends StdBehavior
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob.name()))
+			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob.Name()))
 				mine.addElement(V2);
 		}
 		for(int v=0;v<mine.size();v++)
@@ -140,7 +140,7 @@ public class BribeGateGuard extends StdBehavior
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
-			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob.name()))
+			if(((String)V2.elementAt(1)).equalsIgnoreCase(mob.Name()))
 				mine.addElement(V2);
 		}
 		for(int v=0;v<mine.size();v++)
@@ -157,7 +157,7 @@ public class BribeGateGuard extends StdBehavior
   private void writeBalance(Coins balance, MOB mob)
   {
     // write an entry for that mob
-    ExternalPlay.DBWriteJournal(gates(),mob.name(),CMClass.className(balance),"COINS",Generic.getPropertiesStr(balance,true),-1);
+    ExternalPlay.DBWriteJournal(gates(),mob.Name(),CMClass.className(balance),"COINS",Generic.getPropertiesStr(balance,true),-1);
   }
 
 	public static int getVal(String text, String key, int defaultValue)
@@ -278,7 +278,7 @@ public class BribeGateGuard extends StdBehavior
           Exit exit=(Exit)affect.tool();
           int dir=findGate(observer);
           Exit e=observer.location().getExitInDir(dir);
-          if(exit.name().equals(e.name())) // the player is walking through the gate.  NOW we charge their balance
+          if(exit.Name().equals(e.Name())) // the player is walking through the gate.  NOW we charge their balance
           {
             charge(price(),source);
           }

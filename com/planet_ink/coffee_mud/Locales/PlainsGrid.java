@@ -6,6 +6,7 @@ import java.util.*;
 
 public class PlainsGrid extends StdGrid
 {
+	public String ID(){return "PlainsGrid";}
 	public PlainsGrid()
 	{
 		super();

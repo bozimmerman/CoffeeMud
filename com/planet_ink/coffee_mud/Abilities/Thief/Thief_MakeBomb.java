@@ -40,7 +40,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				buf.append(Util.padRight(T.displayName(),15)+" ");
+				buf.append(Util.padRight(T.name(),15)+" ");
 				buf.append(T.requiresToSet()+"\n\r");
 			}
 			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());
@@ -58,7 +58,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			for(int r=0;r<traps.size();r++)
 			{
 				Trap T=(Trap)traps.elementAt(r);
-				if(CoffeeUtensils.containsString(T.displayName(),name))
+				if(CoffeeUtensils.containsString(T.name(),name))
 					theTrap=T;
 			}
 			if(theTrap==null)
@@ -66,7 +66,7 @@ public class Thief_MakeBomb extends ThiefSkill
 				mob.tell("'"+name+"' is not a valid bomb name.  Try BOMB LIST.");
 				return false;
 			}
-		
+
 			trapThis=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 			if(trapThis==null) return false;
 			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
@@ -90,7 +90,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			}
 		}
 
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.displayName()+" begins to glow!":"<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>."));
+		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to make a bomb out of <T-NAMESELF>."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

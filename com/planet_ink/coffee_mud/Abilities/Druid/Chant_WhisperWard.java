@@ -136,7 +136,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 		}
 		if(target instanceof MOB)
 		{
-			mob.tell("You can't can't cast this on "+target.displayName()+".");
+			mob.tell("You can't can't cast this on "+target.name()+".");
 			return false;
 		}
 

@@ -27,20 +27,20 @@ public class GrinderRooms
 		R.addItem(I);
 		R.recoverRoomStats();
 	}
-	
+
 	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
 		Room oldR=R;
-		
+
 		// class!
 		String className=(String)httpReq.getRequestParameters().get("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
-		
+
 		ExternalPlay.resetRoom(R);
-		
+
 		if(!className.equalsIgnoreCase(CMClass.className(R)))
 		{
 			R=CMClass.getLocale(className);
@@ -59,21 +59,21 @@ public class GrinderRooms
 			CMMap.delRoom(oldR);
 			CMMap.addRoom(R);
 			R.setArea(oldR.getArea());
-			R.setID(oldR.ID());
+			R.setRoomID(oldR.roomID());
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];
 			for(int d=0;d<R.rawExits().length;d++)
 				R.rawExits()[d]=oldR.rawExits()[d];
 			redoAllMyDamnRooms=true;
 		}
-		
+
 		// name
 		String name=(String)httpReq.getRequestParameters().get("NAME");
 		if((name==null)||(name.length()==0))
 			return "Please enter a name for this room.";
 		R.setDisplayText(name);
-		
-		
+
+
 		// description
 		String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
 		if(desc==null)desc="";
@@ -89,10 +89,10 @@ public class GrinderRooms
 			((GridLocale)R).setYSize(Util.s_int(y));
 			((GridLocale)R).clearGrid();
 		}
-		
+
 		String err=GrinderAreas.doAffectsNBehavs(R,httpReq,parms);
 		if(err.length()>0) return err;
-		
+
 		// here's where you resolve items and mobs
 		Vector allmobs=new Vector();
 		int skip=0;
@@ -122,7 +122,7 @@ public class GrinderRooms
 				allitems.addElement(I);
 			oldR.delItem(I);
 		}
-		
+
 		if(httpReq.getRequestParameters().containsKey("MOB1"))
 		{
 			for(int i=1;;i++)
@@ -159,16 +159,16 @@ public class GrinderRooms
 				{
 					MOB M2=(MOB)m.nextElement();
 					if((CMClass.className(M2).equals(MATCHING)))
-					{	
+					{
 						happilyAddMob((MOB)M2.copyOf(),R);
-						break;	
+						break;
 					}
 				}
 			}
 		}
 		else
 			return "No MOB Data!";
-			
+
 
 		if(httpReq.getRequestParameters().containsKey("ITEM1"))
 		{
@@ -192,8 +192,8 @@ public class GrinderRooms
 		}
 		else
 			return "No Item Data!";
-		
-		
+
+
 		for(int i=0;i<allitems.size();i++)
 		{
 			Item I=(Item)allitems.elementAt(i);
@@ -212,7 +212,7 @@ public class GrinderRooms
 			if(!R.isInhabitant(M))
 				M.destroy();
 		}
-		
+
 		if(redoAllMyDamnRooms)
 		{
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
@@ -235,15 +235,15 @@ public class GrinderRooms
 		R.startItemRejuv();
 		return "";
 	}
-	
-	
-	
+
+
+
 	public static String delRoom(Room R)
 	{
 		ExternalPlay.obliterateRoom(R);
 		return "";
 	}
-	
+
 	public static Room createLonelyRoom(Area A, Room linkTo, int dir, boolean copyThisOne)
 	{
 		Room newRoom=null;
@@ -260,10 +260,10 @@ public class GrinderRooms
 		else
 		{
 			newRoom=CMClass.getLocale("StdRoom");
-			newRoom.setDisplayText("Title of "+newRoom.ID());
-			newRoom.setDescription("Description of "+newRoom.ID());
+			newRoom.setDisplayText("Title of "+newRoom.roomID());
+			newRoom.setDescription("Description of "+newRoom.roomID());
 		}
-		newRoom.setID(ExternalPlay.getOpenRoomID(A.name()));
+		newRoom.setRoomID(ExternalPlay.getOpenRoomID(A.Name()));
 		newRoom.setArea(A);
 		if(linkTo!=null)
 		{
@@ -280,7 +280,7 @@ public class GrinderRooms
 		newRoom.getArea().fillInAreaRoom(newRoom);
 		return newRoom;
 	}
-	
+
 	public static String createRoom(Room R, int dir, boolean copyThisOne)
 	{
 		R.clearSky();

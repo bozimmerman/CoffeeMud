@@ -16,11 +16,11 @@ public class TreeGolem extends StdRace
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Vegetation";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
@@ -77,36 +77,36 @@ public class TreeGolem extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is near destruction!^N";
+			return "^r" + mob.name() + "^r is near destruction!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName() + "^r is massively splintered and broken.^N";
+			return "^r" + mob.name() + "^r is massively splintered and broken.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName() + "^r is extremeley splintered and broken.^N";
+			return "^r" + mob.name() + "^r is extremeley splintered and broken.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName() + "^y is very splintered and broken.^N";
+			return "^y" + mob.name() + "^y is very splintered and broken.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName() + "^y is splintered and broken.^N";
+			return "^y" + mob.name() + "^y is splintered and broken.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName() + "^p is splintered and slightly broken.^N";
+			return "^p" + mob.name() + "^p is splintered and slightly broken.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName() + "^p has lost lots of leaves.^N";
+			return "^p" + mob.name() + "^p has lost lots of leaves.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName() + "^g has lost some more leaves.^N";
+			return "^g" + mob.name() + "^g has lost some more leaves.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName() + "^g has lost a few leaves.^N";
+			return "^g" + mob.name() + "^g has lost a few leaves.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect condition.^N";
+			return "^c" + mob.name() + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

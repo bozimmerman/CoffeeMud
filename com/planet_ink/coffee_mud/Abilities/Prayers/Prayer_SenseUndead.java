@@ -42,7 +42,7 @@ public class Prayer_SenseUndead extends Prayer
 			{
 				MOB mob=lastRoom.fetchInhabitant(i);
 				if((mob!=null)&&(mob!=affected)&&(mob.charStats()!=null)&&(mob.charStats().getMyRace()!=null)&&(mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-					mob.tell(mob.displayName()+" gives off a cold dark vibe.");
+					mob.tell(mob.name()+" gives off a cold dark vibe.");
 			}
 		}
 		return true;
@@ -62,7 +62,7 @@ public class Prayer_SenseUndead extends Prayer
 		}
 
 		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		boolean success=profficiencyCheck(0,auto);
 

@@ -17,17 +17,17 @@ public class ItemData extends StdWebMacro
 		if(last==null) return " @break@";
 		String itemCode=(String)reqs.get("ITEM");
 		if(itemCode==null) return "@break@";
-		
+
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
 			return httpReq.getMUD().gameStatusStr();
-		
+
 		String mobNum=(String)reqs.get("MOB");
-		
+
 		Room R=null;
 		for(int i=0;i<httpReq.cache().size();i++)
 		{
 			Object O=httpReq.cache().elementAt(i);
-			if((O instanceof Room)&&(((Room)O).ID().equals(last)))
+			if((O instanceof Room)&&(((Room)O).roomID().equals(last)))
 				R=(Room)O;
 		}
 		if(R==null)
@@ -38,7 +38,7 @@ public class ItemData extends StdWebMacro
 			ExternalPlay.resetRoom(R);
 			httpReq.cache().addElement(R);
 		}
-		
+
 		Item I=null;
 		MOB M=null;
 		if((mobNum!=null)&&(mobNum.length()>0))
@@ -53,7 +53,7 @@ public class ItemData extends StdWebMacro
 				{
 					MOB M2=R.fetchInhabitant(m);
 					if((M2!=null)&&(M2.isEligibleMonster()))
-					   str.append(M2.name()+"="+RoomData.getMOBCode(R,M2));
+					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 				}
 				return str.toString();
 			}
@@ -67,7 +67,7 @@ public class ItemData extends StdWebMacro
 			I=CMClass.getItem("GenItem");
 		else
 			I=RoomData.getItemFromCode(R,itemCode);
-		
+
 		if(I==null)
 		{
 			StringBuffer str=new StringBuffer("No Item?!");
@@ -77,7 +77,7 @@ public class ItemData extends StdWebMacro
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I2=R.fetchItem(i);
-					if(I2!=null) str.append(I2.name()+"="+RoomData.getItemCode(R,I2));
+					if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 				}
 			else
 				for(int i=0;i<M.inventorySize();i++)
@@ -87,7 +87,7 @@ public class ItemData extends StdWebMacro
 				}
 			return str.toString();
 		}
-		
+
 		Item oldI=I;
 		// important generic<->non generic swap!
 		String newClassID=(String)reqs.get("CLASSES");
@@ -95,7 +95,7 @@ public class ItemData extends StdWebMacro
 		&&(!newClassID.equals(CMClass.className(I)))
 		&&(CMClass.getItem(newClassID)!=null))
 			I=CMClass.getItem(newClassID);
-		
+
 		boolean firstTime=(reqs.get("ACTION")==null)
 				||(!((String)reqs.get("ACTION")).equals("MODIFYITEM"))
 				||(((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"))&&(itemCode.equals("NEW")));
@@ -129,12 +129,12 @@ public class ItemData extends StdWebMacro
 				switch(o)
 				{
 				case 0: // name
-					if(firstTime) old=I.name();
+					if(firstTime) old=I.Name();
 					str.append(old);
 					break;
 				case 1: // classes
 					{
-						if(firstTime) old=CMClass.className(I); 
+						if(firstTime) old=CMClass.className(I);
 						Vector sortMe=new Vector();
 						for(Enumeration i=CMClass.items();i.hasMoreElements();)
 							sortMe.addElement(CMClass.className(i.nextElement()));
@@ -156,30 +156,30 @@ public class ItemData extends StdWebMacro
 					}
 					break;
 				case 2: // displaytext
-					if(firstTime) old=I.displayText(); 
+					if(firstTime) old=I.displayText();
 					str.append(old);
 					break;
 				case 3: // description
-					if(firstTime) old=I.description(); 
+					if(firstTime) old=I.description();
 					str.append(old);
 					break;
 				case 4: // level
-					if(firstTime) old=""+I.baseEnvStats().level(); 
+					if(firstTime) old=""+I.baseEnvStats().level();
 					str.append(old);
 					break;
 				case 5: // ability;
-					if(firstTime) old=""+I.baseEnvStats().ability(); 
+					if(firstTime) old=""+I.baseEnvStats().ability();
 					str.append(old);
 					break;
 				case 6: // rejuv;
-					if(firstTime) old=""+I.baseEnvStats().rejuv(); 
+					if(firstTime) old=""+I.baseEnvStats().rejuv();
 					if(old.equals(""+Integer.MAX_VALUE))
 						str.append("0");
 					else
 						str.append(old);
 					break;
 				case 7: // misctext
-					if(firstTime) old=I.text(); 
+					if(firstTime) old=I.text();
 					str.append(old);
 					break;
 				case 8: // materials
@@ -228,7 +228,7 @@ public class ItemData extends StdWebMacro
 					if(I instanceof Armor) return "true";
 					else return "false";
 				case 18: // armor
-					if(firstTime) old=""+I.baseEnvStats().armor(); 
+					if(firstTime) old=""+I.baseEnvStats().armor();
 					str.append(old);
 					break;
 				case 19: // worn data
@@ -254,7 +254,7 @@ public class ItemData extends StdWebMacro
 					}
 					break;
 				case 20: // height
-					if(firstTime) old=""+I.baseEnvStats().height(); 
+					if(firstTime) old=""+I.baseEnvStats().height();
 					str.append(old);
 					break;
 				case 21: // is weapon
@@ -283,11 +283,11 @@ public class ItemData extends StdWebMacro
 					}
 					break;
 				case 24: // attack
-					if(firstTime) old=""+I.baseEnvStats().attackAdjustment(); 
+					if(firstTime) old=""+I.baseEnvStats().attackAdjustment();
 					str.append(old);
 					break;
 				case 25: // damage
-					if(firstTime) old=""+I.baseEnvStats().damage(); 
+					if(firstTime) old=""+I.baseEnvStats().damage();
 					str.append(old);
 					break;
 				case 26: // min range
@@ -299,38 +299,38 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 28: // secret identity
-					if(firstTime) old=I.rawSecretIdentity(); 
+					if(firstTime) old=I.rawSecretIdentity();
 					str.append(old);
 					break;
 				case 29: // is gettable
-					if(firstTime) 
-						old=I.isGettable()?"checked":""; 
-					else 
-					if(old.equals("on")) 
+					if(firstTime)
+						old=I.isGettable()?"checked":"";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
 				case 30: // is removable
-					if(firstTime) 
-						old=I.isRemovable()?"checked":""; 
-					else 
-					if(old.equals("on")) 
+					if(firstTime)
+						old=I.isRemovable()?"checked":"";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
 				case 31: // is droppable
-					if(firstTime) 
-						old=I.isDroppable()?"checked":""; 
-					else 
-					if(old.equals("on")) 
+					if(firstTime)
+						old=I.isDroppable()?"checked":"";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
 				case 32: // is two handed
-					if(firstTime) 
-						old=I.rawLogicalAnd()?"checked":""; 
-					else 
-					if(old.equals("on")) 
+					if(firstTime)
+						old=I.rawLogicalAnd()?"checked":"";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
@@ -358,7 +358,7 @@ public class ItemData extends StdWebMacro
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
-							if(old.indexOf(";"+cnam.toUpperCase()+";")>=0) 
+							if(old.indexOf(";"+cnam.toUpperCase()+";")>=0)
 								str.append(" SELECTED");
 							str.append(">"+cnam);
 						}
@@ -368,15 +368,15 @@ public class ItemData extends StdWebMacro
 					if(I instanceof Wand) return "true";
 					else return "false";
 				case 36: // uses
-					if(firstTime) old=""+I.usesRemaining(); 
+					if(firstTime) old=""+I.usesRemaining();
 					str.append(old);
 					break;
 				case 37: // value
-					if(firstTime) old=""+I.baseGoldValue(); 
+					if(firstTime) old=""+I.baseGoldValue();
 					str.append(old);
 					break;
 				case 38: // weight
-					if(firstTime) old=""+I.baseEnvStats().weight(); 
+					if(firstTime) old=""+I.baseEnvStats().weight();
 					str.append(old);
 					break;
 				case 39: // is map
@@ -398,17 +398,17 @@ public class ItemData extends StdWebMacro
 					for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 					{
 						Area A2=(Area)a.nextElement();
-						str.append("<OPTION VALUE=\""+A2.name()+"\"");
-						if(mask.indexOf(";"+A2.name().toUpperCase()+";")>=0) str.append(" SELECTED");
+						str.append("<OPTION VALUE=\""+A2.Name()+"\"");
+						if(mask.indexOf(";"+A2.Name().toUpperCase()+";")>=0) str.append(" SELECTED");
 						str.append(">"+A2.name());
 					}
 					}
 					break;
 				case 41: // is readable
-					if(firstTime) 
-						old=I.isReadable()?"checked":""; 
-					else 
-					if(old.equals("on")) 
+					if(firstTime)
+						old=I.isReadable()?"checked":"";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
@@ -480,17 +480,17 @@ public class ItemData extends StdWebMacro
 					break;
 				case 52: // has a lid
 					if((firstTime)&&(I instanceof Container))
-						old=((Container)I).hasALid()?"checked":""; 
-					else 
-					if(old.equals("on")) 
+						old=((Container)I).hasALid()?"checked":"";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
 				case 53: // has a lock
 					if((firstTime)&&(I instanceof Container))
-						old=((Container)I).hasALock()?"checked":""; 
-					else 
-					if(old.equals("on")) 
+						old=((Container)I).hasALock()?"checked":"";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
@@ -525,7 +525,7 @@ public class ItemData extends StdWebMacro
 								str.append("<OPTION VALUE=\""+RoomData.getItemCode(R,I2)+"\"");
 								if(old.equals(RoomData.getItemCode(R,I2)))
 									str.append(" SELECTED");
-								str.append(">"+I2.name()+" ("+CMClass.className(I2)+")"+((I2.container()==null)?"":(" in "+I2.container().name())));
+								str.append(">"+I2.Name()+" ("+I2.ID()+")"+((I2.container()==null)?"":(" in "+I2.container().Name())));
 							}
 						}
 					}
@@ -544,7 +544,7 @@ public class ItemData extends StdWebMacro
 								str.append("<OPTION VALUE=\""+RoomData.getItemCode(M,I2)+"\"");
 								if(old.equals(RoomData.getItemCode(M,I2)))
 									str.append(" SELECTED");
-								str.append(">"+I2.name()+" ("+CMClass.className(I2)+")"+((I2.container()==null)?"":(" in "+I2.container().name())));
+								str.append(">"+I2.Name()+" ("+I2.ID()+")"+((I2.container()==null)?"":(" in "+I2.container().Name())));
 							}
 						}
 					}
@@ -558,14 +558,14 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 60: // is two handed
-					if(firstTime) 
-						old=I.rawLogicalAnd()?"":"checked"; 
-					else 
+					if(firstTime)
+						old=I.rawLogicalAnd()?"":"checked";
+					else
 					{
 						old=(String)reqs.get("ISTWOHANDED");
 						oldold=old;
 						if(old==null) old="";
-						if(old.equals("")) 
+						if(old.equals(""))
 							old="checked";
 					}
 					str.append(old);
@@ -577,18 +577,18 @@ public class ItemData extends StdWebMacro
 					if(I instanceof Scroll) return "true";
 					else return "false";
 				case 63: // being worn
-					if(firstTime) 
-						old=I.amWearingAt(Item.INVENTORY)?"":"checked"; 
-					else 
-					if(old.equals("on")) 
+					if(firstTime)
+						old=I.amWearingAt(Item.INVENTORY)?"":"checked";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
 				case 64: // non-locatable
-					if(firstTime) 
-						old=Sense.canSee(I)?"":"checked"; 
-					else 
-					if(old.equals("on")) 
+					if(firstTime)
+						old=Sense.canSee(I)?"":"checked";
+					else
+					if(old.equals("on"))
 						old="checked";
 					str.append(old);
 					break;
@@ -625,14 +625,14 @@ public class ItemData extends StdWebMacro
 				}
 				if(firstTime)
 					reqs.put(okparms[o],old.equals("checked")?"on":old);
-				
+
 			}
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
 			str.append(AreaData.affectsNBehaves(I,httpReq,parms));
-		
+
 			if(firstTime)
 				httpReq.resetRequestEncodedParameters();
-			
+
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);

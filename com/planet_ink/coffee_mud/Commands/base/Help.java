@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class Help
 {
 	private Help(){}
-	
+
 	public static Properties getArcHelpFile()
 	{
 		Properties arcHelpFile=(Properties)Resources.getResource("ARCHON HELP FILE");
@@ -106,7 +106,7 @@ public class Help
 		}
 		return topicBuffer;
 	}
-	
+
 	public static void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
 	{
 		StringBuffer topicBuffer=(StringBuffer)Resources.getResource(resName);
@@ -134,7 +134,7 @@ public class Help
 			mob.session().rawPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.");
 	}
 
-	
+
 	public static StringBuffer getHelpText(String helpStr)
 	{
 		if(getHelpFile().size()==0)
@@ -146,8 +146,8 @@ public class Help
 		thisTag=getHelpText(helpStr,getArcHelpFile());
 		return thisTag;
 	}
-	
-					
+
+
 	public static String fixHelp(String tag, String str)
 	{
 		if(str.startsWith("<ABILITY>"))
@@ -240,7 +240,7 @@ public class Help
 						boolean good=!notgood;
 						boolean neutral=!notneutral;
 						boolean evil=!notevil;
-					
+
 						if(good&&neutral&&evil)
 							prepend.append("Unaligned/Doesn't matter");
 						else
@@ -340,7 +340,7 @@ public class Help
 		}
 		return str;
 	}
-	
+
 	public static StringBuffer getHelpText(String helpStr,Properties rHelpFile)
 	{
 		// the area exception
@@ -364,7 +364,7 @@ public class Help
 		if(thisTag==null){thisTag=rHelpFile.getProperty("CHANT_"+helpStr); if(thisTag!=null) helpStr="CHANT_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr); if(thisTag!=null) helpStr="BEHAVIOR_"+helpStr;}
-		
+
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
 		{
 			String thisOtherTag=rHelpFile.getProperty(thisTag);
@@ -380,7 +380,7 @@ public class Help
 			return null;
 		return new StringBuffer(fixHelp(helpStr,thisTag));
 	}
-	
+
 	public static void help(MOB mob, String helpStr)
 	{
 		if(getHelpFile().size()==0)

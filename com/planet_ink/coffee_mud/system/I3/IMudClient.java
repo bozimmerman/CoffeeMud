@@ -25,20 +25,20 @@ public class IMudClient implements I3Interface
 		}
 		WhoPacket wk=new WhoPacket();
 		wk.type=Packet.WHO_REQUEST;
-		wk.sender_name=mob.name();
+		wk.sender_name=mob.Name();
 		wk.target_mud=mudName;
 		wk.who=new Vector();
 		try{
 		wk.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
-	
+
+
 	public boolean i3online()
 	{
 		return Intermud.isConnected();
 	}
-	
+
 	public void i3chanwho(MOB mob, String channel, String mudName)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -58,14 +58,14 @@ public class IMudClient implements I3Interface
 			return;
 		}
 		ChannelWhoRequest ck=new ChannelWhoRequest();
-		ck.sender_name=mob.name();
+		ck.sender_name=mob.Name();
 		ck.target_mud=Intermud.translateName(mudName);
 		ck.channel=channel;
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3channelAdd(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -77,13 +77,13 @@ public class IMudClient implements I3Interface
 			return;
 		}
 		ChannelAdd ck=new ChannelAdd();
-		ck.sender_name=mob.name();
+		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3channelListen(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -95,14 +95,14 @@ public class IMudClient implements I3Interface
 			return;
 		}
 		ChannelListen ck=new ChannelListen();
-		ck.sender_name=mob.name();
+		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		ck.onoff="1";
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3channelSilence(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -114,14 +114,14 @@ public class IMudClient implements I3Interface
 			return;
 		}
 		ChannelListen ck=new ChannelListen();
-		ck.sender_name=mob.name();
+		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		ck.onoff="0";
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3channelRemove(MOB mob, String channel)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -131,13 +131,13 @@ public class IMudClient implements I3Interface
 			return;
 		}
 		ChannelDelete ck=new ChannelDelete();
-		ck.sender_name=mob.name();
+		ck.sender_name=mob.Name();
 		ck.channel=channel;
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3tell(MOB mob, String tellName, String mudName, String message)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -163,8 +163,8 @@ public class IMudClient implements I3Interface
 		}
 		mob.tell("You tell "+tellName+" '"+message+"'");
 		TellPacket tk=new TellPacket();
-		tk.sender_name=mob.name();
-		tk.sender_visible_name=mob.name();
+		tk.sender_name=mob.Name();
+		tk.sender_visible_name=mob.Name();
 		tk.target_mud=Intermud.translateName(mudName);
 		tk.target_name=tellName;
 		tk.message=message;
@@ -172,7 +172,7 @@ public class IMudClient implements I3Interface
 		tk.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3channel(MOB mob, String channelName, String message)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -189,14 +189,14 @@ public class IMudClient implements I3Interface
 
 		ChannelPacket ck=new ChannelPacket();
 		ck.channel=channelName; // ck will translate it for us
-		ck.sender_name=mob.name();
-		ck.sender_visible_name=mob.name();
+		ck.sender_name=mob.Name();
+		ck.sender_visible_name=mob.Name();
 		ck.message=message;
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3locate(MOB mob, String mobName)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -207,13 +207,13 @@ public class IMudClient implements I3Interface
 		}
 
 		LocateQueryPacket ck=new LocateQueryPacket();
-		ck.sender_name=mob.name();
+		ck.sender_name=mob.Name();
 		ck.user_name=mobName;
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
 	}
-	
+
 	public void i3mudInfo(MOB mob, String parms)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -281,7 +281,7 @@ public class IMudClient implements I3Interface
 		}
 		mob.session().unfilteredPrintln(buf.toString());
 	}
-	
+
 	public void giveChannelsList(MOB mob)
 	{
 		if((mob==null)||(!i3online())) return;
@@ -300,7 +300,7 @@ public class IMudClient implements I3Interface
 		}
 		mob.session().unfilteredPrintln(buf.toString());
 	}
-	
+
 	public boolean isI3channel(String channelName)
 	{
 		if(!i3online()) return false;

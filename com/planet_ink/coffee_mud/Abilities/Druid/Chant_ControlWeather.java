@@ -13,7 +13,7 @@ public class Chant_ControlWeather extends Chant
 	protected int canAffectCode(){return Ability.CAN_AREAS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_ControlWeather();}
-	
+
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(!super.okAffect(myHost,msg)) return false;
@@ -36,7 +36,7 @@ public class Chant_ControlWeather extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

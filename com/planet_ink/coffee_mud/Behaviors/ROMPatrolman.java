@@ -40,7 +40,7 @@ public class ROMPatrolman extends StdBehavior
 			if((R!=observer.location())&&(R.numPCInhabitants()>0))
 				R.showHappens(Affect.MSG_NOISE,"You hear a shrill whistling sound in the distance.");
 		}
- 
+
 		Item weapon=observer.fetchWieldedItem();
 		if(weapon==null) weapon=observer.myNaturalWeapon();
 		boolean makePeace=false;
@@ -74,7 +74,7 @@ public class ROMPatrolman extends StdBehavior
 			observer.location().show(observer,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'Settle down, you hooligans!'^?");
 			break;
 		 }
-		
+
 		if(makePeace)
 		{
 			Room room=observer.location();
@@ -87,7 +87,7 @@ public class ROMPatrolman extends StdBehavior
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))
 				&&(observer.getAlignment()>350)))
 				{
-					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().displayName();
+					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
 					FullMsg msgs=new FullMsg(observer,inhab,Affect.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okAffect(observer,msgs))
 					{

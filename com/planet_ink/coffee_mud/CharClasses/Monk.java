@@ -22,7 +22,7 @@ public class Monk extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Monk()
 	{
 		super();
@@ -43,7 +43,7 @@ public class Monk extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Kick",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Fighter_MonkeyPunch",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Hide",false);
@@ -58,7 +58,7 @@ public class Monk extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Fighter_KnifeHand",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Trip",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Fighter_AxKick",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true); 
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BodyFlip",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_CatchProjectile",true);
@@ -137,7 +137,7 @@ public class Monk extends StdCharClass
 		}
 		return false;
 	}
-	
+
 	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level.  Receives 2%/lvl unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives 2%/level trap avoidance.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -175,11 +175,11 @@ public class Monk extends StdCharClass
 		int attArmor=((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1;
 		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
-	
+
 	public void outfit(MOB mob)
 	{
 	}
-	
+
 	public String weaponLimitations(){return "May use any weapon, but prefers unarmed.";}
 	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid skill failure.";}
 	public boolean okAffect(Environmental myHost, Affect affect)
@@ -195,7 +195,7 @@ public class Monk extends StdCharClass
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.DEXTERITY)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().displayName()+" attempt due to <S-HIS-HER> armor!");
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
 					return false;
 				}
 			}

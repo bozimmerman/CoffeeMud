@@ -26,7 +26,7 @@ public class StdCageRideable extends StdRideable
 	{
 		return new StdCageRideable();
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affect.amITarget(this))&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
@@ -39,9 +39,9 @@ public class StdCageRideable extends StdRideable
 					buf.append(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight: "+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rDeath : "+dispossessionTimeLeftString()+"\n\r"+description()+"'\n\rKey  : "+keyName()+"\n\rMisc  :'"+text());
 				else
 					buf.append(description()+"\n\r");
-				buf.append(displayName()+" contains:\n\r");
+				buf.append(name()+" contains:\n\r");
 				Vector newItems=new Vector();
-							
+
 				if(mob.isMine(this))
 				{
 					for(int i=0;i<mob.inventorySize();i++)

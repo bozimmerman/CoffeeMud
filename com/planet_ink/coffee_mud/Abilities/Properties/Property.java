@@ -9,8 +9,8 @@ public class Property implements Ability, Cloneable
 {
 	public String ID() { return "Property"; }
 	public String name(){ return "a Property";}
+	public String Name(){return name();}
 	public String description(){return "";}
-	public String displayName(){return name();}
 	public String displayText(){return "";}
 	protected boolean borrowed=false;
 	protected String miscText="";

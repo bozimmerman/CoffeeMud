@@ -21,7 +21,7 @@ public class Spell_FoolsGold extends Spell
 		destroyOnNextTick=false;
 		return false;
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
@@ -57,16 +57,16 @@ public class Spell_FoolsGold extends Spell
 				switch(amount)
 				{
 				case 1:
-					gold.setName("a gold coin"); 
-					gold.setDisplayText("a gold coin sits here"); 
+					gold.setName("a gold coin");
+					gold.setDisplayText("a gold coin sits here");
 					break;
 				case 2:
-					gold.setName("two gold coins"); 
-					gold.setDisplayText("two gold coins sit here"); 
+					gold.setName("two gold coins");
+					gold.setDisplayText("two gold coins sit here");
 					break;
 				default:
-					gold.setName("a pile of "+amount+" gold coins"); 
-					gold.setDisplayText(gold.displayName()+" sit here"); 
+					gold.setName("a pile of "+amount+" gold coins");
+					gold.setDisplayText(gold.name()+" sit here");
 					break;
 				}
 				gold.baseEnvStats().setWeight(0);

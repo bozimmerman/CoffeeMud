@@ -140,13 +140,13 @@ public class StdMOB implements MOB
 	private double speeder=0.0;
 	protected int atRange=-1;
 
-	public String name()
+	public String Name()
 	{
 		return Username;
 	}
 	public void setName(String newName){Username=newName;}
-	public String displayName()
-	{ 
+	public String name()
+	{
 		if(envStats().newName()!=null) return envStats().newName();
 		return Username;
 	}
@@ -159,7 +159,7 @@ public class StdMOB implements MOB
 		return new StdMOB();
 	}
 	public StdMOB(){}
-	
+
 	private void cloneFix(MOB E)
 	{
 
@@ -722,7 +722,7 @@ public class StdMOB implements MOB
 	public String displayText(MOB viewer)
 	{
 		if((displayText.length()==0)
-		   ||(!displayName().equals(name()))
+		   ||(!name().equals(name()))
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
@@ -730,7 +730,7 @@ public class StdMOB implements MOB
 		   ||(isInCombat()))
 		{
 			StringBuffer sendBack=null;
-			sendBack=new StringBuffer(displayName());
+			sendBack=new StringBuffer(name());
 			sendBack.append(" ");
 			sendBack.append(Sense.dispositionString(this,Sense.flag_is));
 			sendBack.append(" here");
@@ -740,7 +740,7 @@ public class StdMOB implements MOB
 				if(riding()==viewer)
 					sendBack.append("YOU");
 				else
-					sendBack.append(riding().displayName());
+					sendBack.append(riding().name());
 			}
 			else
 			if((this instanceof Rideable)
@@ -764,7 +764,7 @@ public class StdMOB implements MOB
 						if(rider==viewer)
 							sendBack.append("you");
 						else
-							sendBack.append(rider.displayName());
+							sendBack.append(rider.name());
 					}
 
 				}
@@ -775,7 +775,7 @@ public class StdMOB implements MOB
 				if(getVictim()==viewer)
 					sendBack.append("YOU");
 				else
-					sendBack.append(getVictim().displayName());
+					sendBack.append(getVictim().name());
 			}
 			sendBack.append(".");
 			return sendBack.toString();
@@ -931,7 +931,7 @@ public class StdMOB implements MOB
 						tell("You like "+amFollowing().charStats().himher()+" too much.");
 						return false;
 					}
-					if((getLeigeID().length()>0)&&(target.name().equals(getLeigeID())))
+					if((getLeigeID().length()>0)&&(target.Name().equals(getLeigeID())))
 					{
 						tell("You are serving '"+getLeigeID()+"'!");
 						return false;
@@ -987,7 +987,7 @@ public class StdMOB implements MOB
 					if((!Sense.canBeSeenBy(affect.target(),this))
 					&&(!(isMine(affect.target())&&(affect.target() instanceof Item))))
 					{
-						mob.tell("You don't see '"+affect.target().displayName()+"' here.");
+						mob.tell("You don't see '"+affect.target().name()+"' here.");
 						return false;
 					}
 					if(!Sense.canTaste(this))
@@ -1003,7 +1003,7 @@ public class StdMOB implements MOB
 				&&(!(isMine(affect.target())&&(affect.target() instanceof Item)))
 				&&(!(isInCombat()&&(affect.target()==victim))))
 				{
-					mob.tell("You don't see '"+affect.target().displayName()+"' here.");
+					mob.tell("You don't see '"+affect.target().name()+"' here.");
 					return false;
 				}
 				if(!Sense.aliveAwakeMobile(this,false))
@@ -1096,15 +1096,15 @@ public class StdMOB implements MOB
 					{
 						if(!Sense.canBeHeardBy(this,affect.target()))
 						{
-							tell(affect.target().displayName()+" can't hear you!");
+							tell(affect.target().name()+" can't hear you!");
 							return false;
 						}
 						else
 						if((!((affect.target() instanceof MOB)
-						&&(((MOB)affect.target()).getLeigeID().equals(name()))))
-						&&(!affect.target().name().equals(getLeigeID())))
+						&&(((MOB)affect.target()).getLeigeID().equals(Name()))))
+						&&(!affect.target().Name().equals(getLeigeID())))
 						{
-							tell(affect.target().displayName()+" does not serve you, and you do not serve "+affect.target().displayName()+".");
+							tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
 							return false;
 						}
 					}
@@ -1133,7 +1133,7 @@ public class StdMOB implements MOB
 					break;
 				if(!Sense.canBeHeardBy(this,affect.target()))
 				{
-					tell(affect.target().displayName()+" can't hear you!");
+					tell(affect.target().name()+" can't hear you!");
 					return false;
 				}
 				if(getLeigeID().length()>0)
@@ -1169,7 +1169,7 @@ public class StdMOB implements MOB
 			   &&(rangeToTarget()>maxRange(affect.tool())))
 			{
 				String newstr="<S-NAME> advance(s) at ";
-				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.displayName(),Affect.MSG_ADVANCE,newstr+"you",Affect.MSG_ADVANCE,newstr+target.displayName());
+				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.name(),Affect.MSG_ADVANCE,newstr+"you",Affect.MSG_ADVANCE,newstr+target.name());
 				boolean ok=location().okAffect(this,affect);
 				if(ok) setAtRange(rangeToTarget()-1);
 				if(victim!=null)
@@ -1222,13 +1222,13 @@ public class StdMOB implements MOB
 				}
 				if((useRange>=0)&&(maxRange(tool)<useRange))
 				{
-					mob.tell("You are too far away from "+target.displayName()+" to use "+tool.displayName()+".");
+					mob.tell("You are too far away from "+target.name()+" to use "+tool.name()+".");
 					return false;
 				}
 				else
 				if((useRange>=0)&&(minRange(tool)>useRange))
 				{
-					mob.tell("You are too close to "+target.displayName()+" to use "+tool.displayName()+".");
+					mob.tell("You are too close to "+target.name()+" to use "+tool.name()+".");
 					if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 					&&(tool instanceof Weapon)
 					&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
@@ -1255,7 +1255,7 @@ public class StdMOB implements MOB
 
 				if(!mayIFight(mob))
 				{
-					mob.tell("You are not allowed to attack "+displayName()+".");
+					mob.tell("You are not allowed to attack "+name()+".");
 					mob.setVictim(null);
 					if(victim==mob) setVictim(null);
 					return false;
@@ -1331,14 +1331,14 @@ public class StdMOB implements MOB
 			case Affect.TYP_WIELD:
 			case Affect.TYP_MOUNT:
 			case Affect.TYP_DISMOUNT:
-				mob.tell("You can't do that to "+displayName()+".");
+				mob.tell("You can't do that to "+name()+".");
 				return false;
 			case Affect.TYP_GIVE:
 				if(affect.tool()==null) return false;
 				if(!(affect.tool() instanceof Item)) return false;
 				if(!Sense.canBeSeenBy(affect.tool(),this))
 				{
-					mob.tell(displayName()+" can't see what you are giving.");
+					mob.tell(name()+" can't see what you are giving.");
 					return false;
 				}
 				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
@@ -1349,7 +1349,7 @@ public class StdMOB implements MOB
 					msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
 					if(!location().okAffect(affect.target(),msg))
 					{
-						mob.tell(affect.target().displayName()+" cannot seem to accept "+affect.tool().displayName()+".");
+						mob.tell(affect.target().name()+" cannot seem to accept "+affect.tool().name()+".");
 						return false;
 					}
 				}
@@ -1357,7 +1357,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_FOLLOW:
 				if(numFollowers()>=maxFollowers())
 				{
-					mob.tell(displayName()+" can't accept any more followers.");
+					mob.tell(name()+" can't accept any more followers.");
 					return false;
 				}
 				break;
@@ -1424,13 +1424,13 @@ public class StdMOB implements MOB
 				break;
 			case Affect.TYP_REBUKE:
 				if(((affect.target()==null)&&(getLeigeID().length()>0))
-				||((affect.target()!=null)&&(affect.target().name().equals(getLeigeID()))))
+				||((affect.target()!=null)&&(affect.target().Name().equals(getLeigeID()))))
 					setLeigeID("");
 				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				break;
 			case Affect.TYP_SERVE:
 				if((affect.target()!=null)&&(!(affect.target() instanceof Deity)))
-					setLeigeID(affect.target().name());
+					setLeigeID(affect.target().Name());
 				tell(this,affect.target(),affect.tool(),affect.sourceMessage());
 				break;
 			case Affect.TYP_EXAMINESOMETHING:
@@ -1438,11 +1438,11 @@ public class StdMOB implements MOB
 				{
 					StringBuffer myDescription=new StringBuffer("");
 					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
+						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r");
 					if(!isMonster())
 					{
 						String levelStr=charStats().displayClassLevel(this,false);
-						myDescription.append(displayName()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
+						myDescription.append(name()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
 					}
 					if(envStats().height()>0)
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
@@ -1454,7 +1454,7 @@ public class StdMOB implements MOB
 				break;
 			case Affect.TYP_READSOMETHING:
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
-					tell("There is nothing written on "+displayName());
+					tell("There is nothing written on "+name());
 				break;
 			case Affect.TYP_SIT:
 				{
@@ -1533,7 +1533,7 @@ public class StdMOB implements MOB
 		if((affect.targetCode()!=Affect.NO_EFFECT)&&(affect.amITarget(this)))
 		{
 			int targetMajor=affect.targetMajor();
-			
+
 			// malicious by itself is pure pain
 			if(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 			{
@@ -1594,11 +1594,11 @@ public class StdMOB implements MOB
 			{
 				StringBuffer myDescription=new StringBuffer("");
 				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
+					myDescription.append(Name()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().roomID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
 				{
 					String levelStr=charStats().displayClassLevel(this,false);
-					myDescription.append(displayName()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
+					myDescription.append(name()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
 				}
 				if(envStats().height()>0)
 					myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
@@ -1609,7 +1609,7 @@ public class StdMOB implements MOB
 			}
 			else
 			if((affect.targetMinor()==Affect.TYP_REBUKE)
-			&&(affect.source().name().equals(getLeigeID())))
+			&&(affect.source().Name().equals(getLeigeID())))
 				setLeigeID("");
 			else
 			if(Util.bset(targetMajor,affect.MASK_CHANNEL))
@@ -1997,7 +1997,7 @@ public class StdMOB implements MOB
 	{
 		if(mob.isASysOp(mob.location())
 		||(amFollowing()==mob)
-		||(getLeigeID().equals(mob.name()))
+		||(getLeigeID().equals(mob.Name()))
 		||((getClanID().length()>0)
 			&&(getClanID().equals(mob.getClanID()))
 			&&((mob.getClanRole()==Clan.POS_LEADER)
@@ -2126,7 +2126,7 @@ public class StdMOB implements MOB
 		{
 			Ability A=fetchAbility(a);
 			if((A!=null)
-			&&((A.ID().equalsIgnoreCase(ID))||(A.name().equalsIgnoreCase(ID))))
+			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
 		return (Ability)CoffeeUtensils.fetchEnvironmental(abilities,ID,false);
@@ -2295,7 +2295,7 @@ public class StdMOB implements MOB
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
 			setVictim(target);//ExternalPlay.postAttack(this,target,fetchWieldedItem());
 	}
-	
+
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
 	public String getStat(String code){
 		switch(getCodeNum(code))

@@ -14,7 +14,7 @@ public class Chant_Treehouse extends Chant
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	public Environmental newInstance(){	return new Chant_Treehouse();}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -26,7 +26,7 @@ public class Chant_Treehouse extends Chant
 		if(canBeUninvoked())
 		{
 			Room R=room.getRoomInDir(Directions.UP);
-			if((R!=null)&&(R.ID().equalsIgnoreCase("")))
+			if((R!=null)&&(R.roomID().equalsIgnoreCase("")))
 			{
 				R.showHappens(Affect.MSG_OK_VISUAL,"The treehouse fades away...");
 				while(R.numInhabitants()>0)
@@ -68,7 +68,7 @@ public class Chant_Treehouse extends Chant
 			mob.tell("This magic will not work here.");
 			return false;
 		}
-		if(mob.location().ID().length()==0)
+		if(mob.location().roomID().length()==0)
 		{
 			mob.tell("This magic will not work here.");
 			return false;
@@ -79,7 +79,7 @@ public class Chant_Treehouse extends Chant
 			mob.tell("You can't create a treehouse here!");
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -110,7 +110,7 @@ public class Chant_Treehouse extends Chant
 				mob.location().rawExits()[Directions.UP]=CMClass.getExit("ClimbableExit");
 				newRoom.rawDoors()[Directions.DOWN]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
-				A.setMiscText(mob.location().ID());
+				A.setMiscText(mob.location().roomID());
 				Exit E=CMClass.getExit("ClimbableExit");
 				E.addNonUninvokableAffect(A);
 				newRoom.rawExits()[Directions.DOWN]=E;
@@ -120,12 +120,12 @@ public class Chant_Treehouse extends Chant
 					if((R!=null)
 					   &&(d!=Directions.DOWN)
 					   &&(d!=Directions.UP)
-					   &&(R.ID().length()>0)
+					   &&(R.roomID().length()>0)
 					   &&((R.domainType()&Room.INDOORS)==0))
 					{
 						newRoom.rawDoors()[d]=R;
 						A=CMClass.getAbility("Prop_RoomView");
-						A.setMiscText(R.ID());
+						A.setMiscText(R.roomID());
 						E=CMClass.getExit("Impassable");
 						E.addNonUninvokableAffect(A);
 						newRoom.rawExits()[d]=E;

@@ -26,7 +26,7 @@ public class Scrapping extends CommonSkill
 		displayText="You are scrapping...";
 		verb="scrapping";
 		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",20,ID(),false);
+					CMAble.addCharAbilityMapping("Archon",20,ID(),false);
 		}
 	}
 	public Environmental newInstance(){	return new Scrapping();}
@@ -89,7 +89,7 @@ public class Scrapping extends CommonSkill
 			return false;
 		}
 		boolean okMaterial=true;
-		oldItemName=I.name();
+		oldItemName=I.Name();
 		switch(I.material()&EnvResource.MATERIAL_MASK)
 		{
 		case EnvResource.MATERIAL_FLESH:
@@ -100,7 +100,7 @@ public class Scrapping extends CommonSkill
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,"You don't know how to scrap "+I.displayName()+".");
+			commonTell(mob,"You don't know how to scrap "+I.name()+".");
 			return false;
 		}
 		Vector V=new Vector();
@@ -119,7 +119,7 @@ public class Scrapping extends CommonSkill
 			Item I2=mob.location().fetchItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
-				commonTell(mob,"You need to remove the contents of "+I2.displayName()+" first.");
+				commonTell(mob,"You need to remove the contents of "+I2.name()+" first.");
 				return false;
 			}
 		}
@@ -129,7 +129,7 @@ public class Scrapping extends CommonSkill
 			commonTell(mob,"You don't have enough here to get anything from.");
 			return false;
 		}
-		
+
 		fire=null;
 		if(((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
 		||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
@@ -150,7 +150,7 @@ public class Scrapping extends CommonSkill
 				return false;
 			}
 		}
-		
+
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -163,7 +163,7 @@ public class Scrapping extends CommonSkill
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		int duration=35+V.size()-mob.envStats().level();
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.displayName()+".");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

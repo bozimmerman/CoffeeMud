@@ -39,8 +39,8 @@ public class Spell_KnowOrigin extends Spell
 						if((M!=null)
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.name())!=null)
-						&&(!M.fetchInventory(me.name()).amWearingAt(Item.INVENTORY)))
+						&&(M.fetchInventory(me.Name())!=null)
+						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
 							return M.getStartRoom();
 					}
 				}
@@ -57,7 +57,7 @@ public class Spell_KnowOrigin extends Spell
 						if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null))
 						{
 							ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
-							if(S.doIHaveThisInStock(me.name(),null))
+							if(S.doIHaveThisInStock(me.Name(),null))
 								return M.getStartRoom();
 						}
 					}
@@ -75,8 +75,8 @@ public class Spell_KnowOrigin extends Spell
 						if((M!=null)
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.name())!=null)
-						&&(M.fetchInventory(me.name()).amWearingAt(Item.INVENTORY)))
+						&&(M.fetchInventory(me.Name())!=null)
+						&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
 							return M.getStartRoom();
 					}
 				}
@@ -85,13 +85,13 @@ public class Spell_KnowOrigin extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R.fetchItem(null,me.name())!=null))
+				if((R!=null)&&(R.fetchItem(null,me.Name())!=null))
 				   return R;
 			}
 		}
 		return null;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
@@ -108,7 +108,7 @@ public class Spell_KnowOrigin extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.tell(target.displayName()+" seems to come from '"+R.displayText()+"'.");
+				mob.tell(target.name()+" seems to come from '"+R.displayText()+"'.");
 			}
 		}
 		else

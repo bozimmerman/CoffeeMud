@@ -30,7 +30,7 @@ public class Chant_ControlFire extends Chant
 
 
 		boolean success=profficiencyCheck(0,auto);
-		
+
 		Item fireSource=null;
 		for(int i=0;i<target.inventorySize();i++)
 		{
@@ -41,7 +41,7 @@ public class Chant_ControlFire extends Chant
 				break;
 			}
 		}
-		
+
 		if(fireSource==null)
 		for(int i=0;i<mob.location().numItems();i++)
 		{
@@ -59,7 +59,7 @@ public class Chant_ControlFire extends Chant
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"Suddenly "+fireSource.displayName()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly "+fireSource.displayName()+" flares up and attacks <T-HIM-HER>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?":"^S<S-NAME> chant(s) to <T-NAMESELF>.  Suddenly "+fireSource.name()+" flares up and attacks <T-HIM-HER>!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_FIRE|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
 			{

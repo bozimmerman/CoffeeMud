@@ -34,18 +34,18 @@ public class Thief_Racketeer extends ThiefSkill
 		}
 		if(CoffeeUtensils.getShopKeeper(target)==null)
 		{
-			mob.tell("You can't get protection money from "+target.displayName()+".");
+			mob.tell("You can't get protection money from "+target.name()+".");
 			return false;
 		}
 		Ability A=target.fetchAffect(ID());
 		if(A!=null)
 		{
 			if(A.invoker()==mob)
-				mob.tell(target.displayName()+" has already been extracted from today.");
+				mob.tell(target.name()+" has already been extracted from today.");
 			else
 			{
-				mob.tell(target.displayName()+" is already under "+A.invoker().displayName()+"'s protection.");
-				A.invoker().tell("Word on the street is that "+mob.displayName()+" is trying to push into your business with "+target.displayName()+".");
+				mob.tell(target.name()+" is already under "+A.invoker().name()+"'s protection.");
+				A.invoker().tell("Word on the street is that "+mob.name()+" is trying to push into your business with "+target.name()+".");
 			}
 			return false;
 		}

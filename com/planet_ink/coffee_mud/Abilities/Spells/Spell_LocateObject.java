@@ -21,7 +21,7 @@ public class Spell_LocateObject extends Spell
 			mob.tell("Locate what?");
 			return false;
 		}
-		
+
 		int levelFind=0;
 		if((mob.isASysOp(mob.location()))&&(Util.s_int((String)commands.lastElement())>0))
 		{
@@ -48,7 +48,7 @@ public class Spell_LocateObject extends Spell
 					Environmental item=room.fetchItem(null,what);
 					if((item!=null)&&(Sense.canSee(item)))
 					{
-						String str=item.displayName()+" is in a place called '"+room.displayText()+"'.";
+						String str=item.name()+" is in a place called '"+room.displayText()+"'.";
 						if(mob.isASysOp(null))
 							mob.tell(str);
 						else
@@ -58,7 +58,7 @@ public class Spell_LocateObject extends Spell
 					{
 						MOB inhab=room.fetchInhabitant(i);
 						if(inhab==null) break;
-						
+
 						item=inhab.fetchInventory(what);
 						if((item==null)&&(CoffeeUtensils.getShopKeeper(inhab)!=null))
 							item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
@@ -67,7 +67,7 @@ public class Spell_LocateObject extends Spell
 							if((levelFind==0)
 							 ||(item.envStats().level()<=levelFind))
 							{
-								String str=item.displayName()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.displayName()+" in a place called '"+room.displayText()+"'.";
+								String str=item.name()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.";
 								if(mob.isASysOp(null))
 									mob.tell(str);
 								else

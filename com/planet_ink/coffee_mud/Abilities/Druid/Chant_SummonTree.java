@@ -21,12 +21,12 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		Item newItem=CMClass.getStdItem("GenItem");
 		String name=Util.startWithAorAn(EnvResource.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
-		newItem.setDisplayText(newItem.displayName()+" grows here.");
+		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
 		newItem.baseEnvStats().setWeight(10000);
 		newItem.setGettable(false);
 		newItem.setMaterial(material);
-		newItem.setSecretIdentity(mob.name());
+		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
@@ -39,7 +39,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		room.recoverEnvStats();
 		return newItem;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -67,10 +67,10 @@ public class Chant_SummonTree extends Chant_SummonPlants
 			PlantsLocation.setResource(oldMaterial);
 		super.unInvoke();
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		
+
 		material=EnvResource.RESOURCE_OAK;
 		if((mob.location().myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 			material=mob.location().myResource();
@@ -87,7 +87,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 			if(V2.size()>0)
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
-		
+
 		return super.invoke(mob,commands,givenTarget,auto);
 	}
 }

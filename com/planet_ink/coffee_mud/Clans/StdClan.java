@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
 /**
-  * @author=Jeremy Vyska 
+  * @author=Jeremy Vyska
   */
 public class StdClan implements Clan
 {
@@ -50,7 +50,7 @@ public class StdClan implements Clan
 
 	public String getDetail(MOB mob)
 	{
-		Clan C=this; 
+		Clan C=this;
 		StringBuffer msg=new StringBuffer("");
 		msg.append(""+C.typeName()+" Profile: "+C.ID()+"\n\r"
 		          +"-----------------------------------------------------------------\n\r"
@@ -115,10 +115,10 @@ public class StdClan implements Clan
 		}
 		return "Clan";
 	}
-		
+
 
 	public int getSize()
-	{ 
+	{
 		Vector members=new Vector();
 		return getSize(members);
 	}
@@ -156,12 +156,12 @@ public class StdClan implements Clan
 
 	public String getDonation() { return clanDonationRoom; }
 	public void setDonation(String newDonation) { clanDonationRoom=newDonation; }
-	  
+
 	public Vector getMemberList()
 	{
 		Vector members=new Vector();
 		ExternalPlay.DBClanFill(this.ID(), members, new Vector());
-		return members;    
+		return members;
 	}
 
 	public Vector getMemberList(int PosFilter)
@@ -174,11 +174,11 @@ public class StdClan implements Clan
 			MOB mob=CMClass.getMOB("StdMOB");
 			mob.setName((String)members.elementAt(s));
 			ExternalPlay.DBReadUserOnly(mob);
-			if(mob.getClanRole()==PosFilter) filteredMembers.addElement(mob.ID());
+			if(mob.getClanRole()==PosFilter) filteredMembers.addElement(mob.Name());
 		}
 		return filteredMembers;
 	}
-	
+
 	public int getTopRank() { return Clan.POS_BOSS; }
 
 	public void update()

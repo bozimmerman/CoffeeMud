@@ -30,14 +30,14 @@ public class StdJournal extends StdItem
 		case Affect.TYP_WRITE:
 			if((!ExternalPlay.zapperCheck(getWriteReq(),affect.source()))&&(!affect.source().isASysOp(null)))
 			{
-				affect.source().tell("You are not allowed to write on "+displayName());
+				affect.source().tell("You are not allowed to write on "+name());
 				return false;
 			}
 			return true;
 		}
 		return super.okAffect(myHost,affect);
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
@@ -52,14 +52,14 @@ public class StdJournal extends StdItem
 			{
 				if(!ExternalPlay.zapperCheck(getReadReq(),mob))
 				{
-					mob.tell("You are not allowed to read "+displayName()+".");
+					mob.tell("You are not allowed to read "+name()+".");
 					return;
 				}
 				int which=-1;
 				if(Util.s_long(affect.targetMessage())>0)
 					which=Util.s_int(affect.targetMessage());
 				long lastTime=mob.lastDateTime();
-				StringBuffer entry=DBRead(name(),mob.name(),which-1,lastTime);
+				StringBuffer entry=DBRead(Name(),mob.Name(),which-1,lastTime);
 				boolean mineAble=false;
 				if(entry.charAt(0)=='#')
 				{
@@ -99,13 +99,13 @@ public class StdJournal extends StdItem
 							String replyMsg=mob.session().prompt("Enter your response\n\r: ");
 							if(replyMsg.trim().length()>0)
 							{
-								ExternalPlay.DBWriteJournal(name(),mob.name(),"","",replyMsg,which-1);
+								ExternalPlay.DBWriteJournal(Name(),mob.Name(),"","",replyMsg,which-1);
 								mob.tell("Reply added.");
 							}
 							else
 								mob.tell("Aborted.");
 						}
-								
+
 					}
 					catch(IOException e)
 					{
@@ -155,7 +155,7 @@ public class StdJournal extends StdItem
 						mob.tell("Aborted.");
 						return;
 					}
-					ExternalPlay.DBWriteJournal(name(),mob.name(),to,subject,message,-1);
+					ExternalPlay.DBWriteJournal(Name(),mob.Name(),to,subject,message,-1);
 					mob.tell("Journal entry added.");
 				}
 				return;
@@ -168,7 +168,7 @@ public class StdJournal extends StdItem
 		}
 		super.affect(myHost,affect);
 	}
-	
+
 	public StringBuffer DBRead(String Journal, String username, int which, long lastTimeDate)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -183,7 +183,7 @@ public class StdJournal extends StdItem
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null) return buf;
 		}
-							 
+
 		if((which<0)||(which>=journal.size()))
 		{
 			for(int j=0;j<journal.size();j++)
@@ -228,7 +228,7 @@ public class StdJournal extends StdItem
 		}
 		return buf;
 	}
-	
+
 	private String getReadReq()
 	{
 		if(readableText().length()==0) return "";

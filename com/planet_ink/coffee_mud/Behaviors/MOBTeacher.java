@@ -188,7 +188,7 @@ public class MOBTeacher extends CombatAbilities
 
 				if(mob.fetchAbility(myAbility.ID())!=null)
 				{
-					ExternalPlay.quickSay(monster,mob,"But you already know '"+myAbility.displayName()+"'.",true,false);
+					ExternalPlay.quickSay(monster,mob,"But you already know '"+myAbility.name()+"'.",true,false);
 					return;
 				}
 				myAbility.setProfficiency(75);
@@ -199,7 +199,7 @@ public class MOBTeacher extends CombatAbilities
 				FullMsg msg=new FullMsg(monster,mob,null,Affect.MSG_SPEAK,null);
 				if(!monster.location().okAffect(monster,msg))
 					return;
-				msg=new FullMsg(monster,mob,null,Affect.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.displayName()+"'.");
+				msg=new FullMsg(monster,mob,null,Affect.MSG_OK_ACTION,"<S-NAME> teach(es) <T-NAMESELF> '"+myAbility.name()+"'.");
 				if(!monster.location().okAffect(monster,msg))
 					return;
 				myAbility.teach(monster,mob);

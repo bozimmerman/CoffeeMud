@@ -48,7 +48,7 @@ public class Immunities extends StdAbility
 		{
 			String immunityName="certain";
 			if(affect.tool()!=null)
-				immunityName=affect.tool().displayName();
+				immunityName=affect.tool().name();
 			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"<S-NAME> seems immune to "+immunityName+" attacks from <T-NAME>.");
 			return false;
 		}

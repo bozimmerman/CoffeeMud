@@ -7,6 +7,7 @@ import java.util.*;
 
 public class ClimbableSurface extends StdRoom
 {
+	public String ID(){return "ClimbableSurface";}
 	public ClimbableSurface()
 	{
 		super();

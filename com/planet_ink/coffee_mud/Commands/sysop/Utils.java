@@ -8,7 +8,7 @@ import java.util.*;
 public class Utils
 {
 	private Utils(){}
-	
+
 	public static void newSomething(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0); // copy
@@ -22,7 +22,7 @@ public class Utils
 		if(commands.size()>1)
 		{
 			number=Util.s_int((String)commands.firstElement());
-			if(number<1) 
+			if(number<1)
 				number=1;
 			else
 				commands.removeElementAt(0);
@@ -34,7 +34,7 @@ public class Utils
 			E=mob.location();
 		else
 			E=mob.location().fetchFromRoomFavorItems(null,name,Item.WORN_REQ_UNWORNONLY);
-		
+
 		if(E==null)	E=mob.fetchInventory(name);
 		if(E==null)
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
@@ -83,10 +83,10 @@ public class Utils
 				if(i==0)
 				{
 					if(number>1)
-						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.displayName()+"s instantiate from the Java plain.");
+						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.name()+"s instantiate from the Java plain.");
 					else
-						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.displayName()+" instantiates from the Java plain.");
-					Log.sysOut("SysopUtils",mob.ID()+" copied "+number+" mob "+newMOB.ID()+".");
+						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
+					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" mob "+newMOB.Name()+".");
 				}
 			}
 			else
@@ -100,10 +100,10 @@ public class Utils
 				if(i==0)
 				{
 					if(number>1)
-						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.displayName()+"s drop from the sky.");
+						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s drop from the sky.");
 					else
-						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" drops from the sky.");
-					Log.sysOut("SysopUtils",mob.ID()+" copied "+number+" item "+newItem.ID()+".");
+						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+					Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" item "+newItem.ID()+".");
 				}
 			}
 			else
@@ -122,7 +122,7 @@ public class Utils
 					if(room.rawExits()[dirCode]==null)
 						room.rawExits()[dirCode]=CMClass.getExit("Open");
 					newRoom.rawExits()[Directions.getOpDirectionCode(dirCode)]=(Exit)(room.rawExits()[dirCode].copyOf());
-					newRoom.setID(ExternalPlay.getOpenRoomID(room.getArea().name()));
+					newRoom.setRoomID(ExternalPlay.getOpenRoomID(room.getArea().Name()));
 					newRoom.setArea(room.getArea());
 					ExternalPlay.DBCreateRoom(newRoom,CMClass.className(newRoom));
 					ExternalPlay.DBUpdateExits(newRoom);
@@ -139,7 +139,7 @@ public class Utils
 							room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+room.displayText()+"s fall "+Directions.getInDirectionName(dirCode)+".");
 						else
 							room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+room.displayText()+" falls "+Directions.getInDirectionName(dirCode)+".");
-						Log.sysOut("SysopUtils",mob.ID()+" copied "+number+" rooms "+room.ID()+".");
+						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+room.roomID()+".");
 					}
 					else
 						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+room.displayText()+" falls "+Directions.getInDirectionName(dirCode)+".");
@@ -148,7 +148,7 @@ public class Utils
 			}
 			else
 			{
-				mob.tell("I can't just make a copy of a '"+E.displayName()+"'.\n\r");
+				mob.tell("I can't just make a copy of a '"+E.name()+"'.\n\r");
 				room.showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 				break;
 			}

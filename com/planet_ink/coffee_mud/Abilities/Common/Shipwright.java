@@ -73,9 +73,9 @@ public class Shipwright extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.displayName()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
 						else
-							commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.displayName()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.name()+".");
 					}
 					else
 					{
@@ -107,8 +107,8 @@ public class Shipwright extends CommonSkill
 		if(student==null) return true;
 		if(student.fetchAbility("Carpentry")==null)
 		{
-			teacher.tell(student.displayName()+" has not yet learned carpentry.");
-			student.tell("You need to learn carpentry before you can learn "+displayName()+".");
+			teacher.tell(student.name()+" has not yet learned carpentry.");
+			student.tell("You need to learn carpentry before you can learn "+name()+".");
 			return false;
 		}
 
@@ -160,20 +160,20 @@ public class Shipwright extends CommonSkill
 			}
 			if(!building.subjectToWearAndTear())
 			{
-				commonTell(mob,"You can't mend "+building.displayName()+".");
+				commonTell(mob,"You can't mend "+building.name()+".");
 				return false;
 			}
 			if(((Item)building).usesRemaining()>=100)
 			{
-				commonTell(mob,building.displayName()+" is in good condition already.");
+				commonTell(mob,building.name()+" is in good condition already.");
 				return false;
 			}
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.displayName()+".";
-			displayText="You are mending "+building.displayName();
-			verb="mending "+building.displayName();
+			startStr="<S-NAME> start(s) mending "+building.name()+".";
+			displayText="You are mending "+building.name();
+			verb="mending "+building.name();
 		}
 		else
 		{
@@ -242,9 +242,9 @@ public class Shipwright extends CommonSkill
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) carving "+building.displayName()+".";
-			displayText="You are carving "+building.displayName();
-			verb="carving "+building.displayName();
+			startStr="<S-NAME> start(s) carving "+building.name()+".";
+			displayText="You are carving "+building.name();
+			verb="carving "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);

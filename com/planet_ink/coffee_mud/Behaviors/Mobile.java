@@ -12,7 +12,7 @@ public class Mobile extends ActiveTicker
 	public boolean grantsMobility(){return true;}
 	protected boolean wander=false;
 	protected Vector restrictedLocales=null;
-	
+
 	public Mobile()
 	{
 		super();
@@ -25,17 +25,17 @@ public class Mobile extends ActiveTicker
 	{
 		return new Mobile();
 	}
-	
+
 	public boolean okRoomForMe(Room currentRoom, Room newRoom)
 	{
 		if(currentRoom==null) return false;
 		if(newRoom==null) return false;
-		if((!wander)&&(!currentRoom.getArea().name().equals(newRoom.getArea().name())))
+		if((!wander)&&(!currentRoom.getArea().Name().equals(newRoom.getArea().Name())))
 		   return false;
 		if(restrictedLocales==null) return true;
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
-	
+
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
@@ -50,7 +50,7 @@ public class Mobile extends ActiveTicker
 			else
 			if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 			{
-				if(restrictedLocales==null) 
+				if(restrictedLocales==null)
 					restrictedLocales=new Vector();
 				if(s.equalsIgnoreCase("+ALL"))
 					restrictedLocales.clear();
@@ -91,7 +91,7 @@ public class Mobile extends ActiveTicker
 						if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
 							restrictedLocales.addElement(new Integer(code));
 					}
-					
+
 				}
 			}
 		}
@@ -109,7 +109,7 @@ public class Mobile extends ActiveTicker
 			if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
 			||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
 				return true;
-			
+
 			Room thisRoom=mob.location();
 			if(thisRoom instanceof GridLocale)
 			{

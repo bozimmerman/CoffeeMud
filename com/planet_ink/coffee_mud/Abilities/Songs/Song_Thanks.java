@@ -36,38 +36,38 @@ public class Song_Thanks extends Song
 			switch(Dice.roll(1,10,0))
 			{
 			case 1:
-				ExternalPlay.quickSay(mob,invoker,"Thank you "+invoker.displayName()+"!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"Thank you "+invoker.name()+"!",false,false);
 				break;
 			case 2:
-				ExternalPlay.quickSay(mob,invoker,"Thanks for being you, "+invoker.displayName()+"!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"Thanks for being you, "+invoker.name()+"!",false,false);
 				break;
 			case 3:
-				ExternalPlay.quickSay(mob,invoker,"Thanks "+invoker.displayName()+"!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"Thanks "+invoker.name()+"!",false,false);
 				break;
 			case 4:
-				ExternalPlay.quickSay(mob,invoker,"You are great, "+invoker.displayName()+"!  Thanks!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"You are great, "+invoker.name()+"!  Thanks!",false,false);
 				break;
 			case 5:
-				ExternalPlay.quickSay(mob,invoker,"I appreciate you, "+invoker.displayName()+"!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"I appreciate you, "+invoker.name()+"!",false,false);
 				break;
 			case 6:
-				ExternalPlay.quickSay(mob,invoker,"Keep it up, "+invoker.displayName()+"! Thanks!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"Keep it up, "+invoker.name()+"! Thanks!",false,false);
 				break;
 			case 7:
-				ExternalPlay.quickSay(mob,invoker,"Thanks a lot, "+invoker.displayName()+"!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"Thanks a lot, "+invoker.name()+"!",false,false);
 				break;
 			case 8:
-				ExternalPlay.quickSay(mob,invoker,"Thank you dearly, "+invoker.displayName()+"!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"Thank you dearly, "+invoker.name()+"!",false,false);
 				break;
 			case 9:
-				ExternalPlay.quickSay(mob,invoker,"Thank you always, "+invoker.displayName()+"!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"Thank you always, "+invoker.name()+"!",false,false);
 				break;
 			case 10:
-				ExternalPlay.quickSay(mob,invoker,"You're the best, "+invoker.displayName()+"! Thanks!",false,false);
+				ExternalPlay.quickSay(mob,invoker,"You're the best, "+invoker.name()+"! Thanks!",false,false);
 				break;
 			}
 			try
-			{	ExternalPlay.doCommand(mob,Util.parse("GIVE 1 "+invoker.displayName()));	}
+			{	ExternalPlay.doCommand(mob,Util.parse("GIVE 1 "+invoker.name()));	}
 			catch(Exception e){}
 		}
 		return true;

@@ -32,9 +32,9 @@ public class Prayer_FreezeMetal extends Prayer
 		if(msg.targetMinor()==Affect.TYP_GET)
 		{
 			if(I.amWearingAt(Item.INVENTORY))
-				msg.source().tell(affected.displayName()+" is too cold!");
+				msg.source().tell(affected.name()+" is too cold!");
 			else
-				msg.source().tell(affected.displayName()+" is frozen stuck!");
+				msg.source().tell(affected.name()+" is frozen stuck!");
 			return false;
 		}
 		return true;
@@ -69,7 +69,7 @@ public class Prayer_FreezeMetal extends Prayer
 				int damage=Dice.roll(1,3,1);
 				if(item.subjectToWearAndTear())
 					item.setUsesRemaining(item.usesRemaining()-1);
-				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURSTING,item.displayName()+" <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
 			}
 		}
 		return true;

@@ -21,7 +21,7 @@ public class Beastmaster extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Beastmaster()
 	{
 		super();
@@ -37,18 +37,18 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",100,false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_HardenSkin",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SensePoison",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocateAnimals",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Ranger_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Farsight",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_CalmAnimal",true);
 
@@ -57,11 +57,11 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Druid_ShapeShift2",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_VenomWard",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Druid_Bite",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_AnimalFriendship",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Trip",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_FurCoat",false);
 
@@ -71,7 +71,7 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Intimidate",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_CharmAnimal",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_EnhanceBody",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Druid_ShapeShift3",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_CheetahBurst",true);
 
@@ -79,35 +79,36 @@ public class Beastmaster extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_Pin",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_BreatheWater",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_BullStrength",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Bind",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonAnimal",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_CatsGrace",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"AnimalTraining",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_BlindFighting",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_Hawkeye",true);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Druid_ShapeShift4",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_AnimalSpy",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Plague",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Hibernation",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_AntTrain",true);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Chant_Bloodhound",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_SoaringEagle",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Druid_ShapeShift5",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Berzerk",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Skill_AttackHalf",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_NeutralizePoison",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_UnicornsHealth",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Ambush",false);
@@ -125,7 +126,7 @@ public class Beastmaster extends StdCharClass
 		return true;
 	}
 
-	
+
 	public String statQualifications(){return "Constitution 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -157,7 +158,7 @@ public class Beastmaster extends StdCharClass
 	public String armorLimitations(){return "Must wear cloth, paper, leather, or vegetation armor to avoid chant failure.";}
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
@@ -192,7 +193,7 @@ public class Beastmaster extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 						return false;
 					}
 					break;
@@ -201,8 +202,8 @@ public class Beastmaster extends StdCharClass
 		return true;
 	}
 
-	protected boolean isValidBeneficiary(MOB killer, 
-										 MOB killed, 
+	protected boolean isValidBeneficiary(MOB killer,
+										 MOB killed,
 										 MOB mob,
 										 Hashtable followers)
 	{
@@ -215,7 +216,7 @@ public class Beastmaster extends StdCharClass
 			return true;
 		return false;
 	}
-	
+
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");

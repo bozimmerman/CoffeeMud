@@ -40,7 +40,7 @@ public class GenMap extends StdMap
 
 	public void setReadableText(String newReadableText)
 	{
-		String oldName=name();
+		String oldName=Name();
 		String oldDesc=description();
 		readableText=newReadableText;
 		doMapArea();

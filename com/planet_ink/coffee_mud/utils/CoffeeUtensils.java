@@ -19,7 +19,7 @@ public class CoffeeUtensils
 		}
 		return null;
 	}
-	
+
 	public static Trap getATrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
@@ -120,7 +120,7 @@ public class CoffeeUtensils
 		int x=toSrchStr.toUpperCase().indexOf(srchStr.toUpperCase());
 		if(x<0) return false;
 
-		if(x==0) 
+		if(x==0)
 			return true;
 		else
 		{
@@ -136,7 +136,7 @@ public class CoffeeUtensils
 		srchStr=srchStr.toUpperCase();
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
-		
+
 		boolean allFlag=false;
 		if(srchStr.startsWith("ALL "))
 		{
@@ -146,7 +146,7 @@ public class CoffeeUtensils
 		else
 		if(srchStr.equalsIgnoreCase("ALL"))
 			allFlag=true;
-		
+
 		int dot=srchStr.lastIndexOf(".");
 		int occurrance=0;
 		if(dot>0)
@@ -176,8 +176,8 @@ public class CoffeeUtensils
 				{
 					Environmental thisThang=(Environmental)list.elementAt(i);
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||thisThang.displayName().equalsIgnoreCase(srchStr)
-					   ||thisThang.name().equalsIgnoreCase(srchStr))
+					   ||thisThang.name().equalsIgnoreCase(srchStr)
+					   ||thisThang.Name().equalsIgnoreCase(srchStr))
 						if((!allFlag)||(thisThang.displayText().length()>0))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -193,7 +193,7 @@ public class CoffeeUtensils
 				for(int i=0;i<list.size();i++)
 				{
 					Environmental thisThang=(Environmental)list.elementAt(i);
-					if((containsString(thisThang.displayName(),srchStr)||containsString(thisThang.name(),srchStr))
+					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||(thisThang.displayText().length()>0)))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -253,7 +253,7 @@ public class CoffeeUtensils
 					occurrance=0;
 			}
 		}
-		
+
 		if(list.get(srchStr)!=null)
 			return (Environmental)list.get(srchStr);
 		int myOccurrance=occurrance;
@@ -263,8 +263,8 @@ public class CoffeeUtensils
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
 				if(thisThang.ID().equalsIgnoreCase(srchStr)
-				||thisThang.name().equalsIgnoreCase(srchStr)
-				||thisThang.displayName().equalsIgnoreCase(srchStr))
+				||thisThang.Name().equalsIgnoreCase(srchStr)
+				||thisThang.name().equalsIgnoreCase(srchStr))
 					if((!allFlag)||(thisThang.displayText().length()>0))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -276,7 +276,7 @@ public class CoffeeUtensils
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
-				if((containsString(thisThang.displayName(),srchStr)||containsString(thisThang.name(),srchStr))
+				if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 				&&((!allFlag)||(thisThang.displayText().length()>0)))
 					if((--myOccurrance)<=0)
 						return thisThang;
@@ -329,7 +329,7 @@ public class CoffeeUtensils
 					occurrance=0;
 			}
 		}
-		
+
 		int myOccurrance=occurrance;
 		if(exactOnly)
 		{
@@ -338,8 +338,8 @@ public class CoffeeUtensils
 				Environmental thisThang=(Environmental)list[i];
 				if(thisThang!=null)
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
-					||thisThang.name().equalsIgnoreCase(srchStr)
-					||thisThang.displayName().equalsIgnoreCase(srchStr))
+					||thisThang.Name().equalsIgnoreCase(srchStr)
+					||thisThang.name().equalsIgnoreCase(srchStr))
 						if((!allFlag)||(thisThang.displayText().length()>0))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -352,7 +352,7 @@ public class CoffeeUtensils
 			{
 				Environmental thisThang=(Environmental)list[i];
 				if(thisThang!=null)
-					if((containsString(thisThang.displayName(),srchStr)||containsString(thisThang.name(),srchStr))
+					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||(thisThang.displayText().length()>0)))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -418,8 +418,8 @@ public class CoffeeUtensils
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
 					&&(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||(thisThang.name().equalsIgnoreCase(srchStr))
-					   ||(thisThang.displayName().equalsIgnoreCase(srchStr))))
+					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
+					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
 						if((!allFlag)||(thisThang.displayText().length()>0))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -438,7 +438,7 @@ public class CoffeeUtensils
 
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
-					&&((containsString(thisThang.displayName(),srchStr)||containsString(thisThang.name(),srchStr))
+					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -474,7 +474,7 @@ public class CoffeeUtensils
 		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(M.location().numPCInhabitants()>0)))
 			B.tick(M,Host.MOB_TICK);
 	}
-	
+
 	public static Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;
@@ -488,24 +488,24 @@ public class CoffeeUtensils
 		   return ((MOB)((Item)E).owner()).location();
 		return null;
 	}
-	
+
 	//int attChance=(int)(adjArmor+adjAttack);
 	public static boolean normalizeAndRollLess(int score)
 	{
 		return (Dice.rollPercentage()<normalizeBy5(score));
 	}
-	
+
 	public static int normalizeBy5(int score)
 	{
-		if(score>95) 
+		if(score>95)
 			return 95;
 		else
 		if(score<5)
 			return 5;
 		return score;
 	}
-	
-	
+
+
 
 }
 

@@ -22,7 +22,7 @@ public class Chant_WindSnatcher extends Chant
 		"Prayer_HolyWind",
 		"Spell_GustOfWind"
 		};
-	
+
 	public boolean isSpell(String ID)
 	{
 		for(int i=0;i<windSpells.length;i++)
@@ -54,7 +54,7 @@ public class Chant_WindSnatcher extends Chant
 		if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
 		   &&(isSpell(affect.tool().ID())))
 		{
-			affect.source().location().show(invoker,null,affect.MSG_OK_VISUAL,"A form around <S-NAME> snatches "+affect.tool().displayName()+".");
+			affect.source().location().show(invoker,null,affect.MSG_OK_VISUAL,"A form around <S-NAME> snatches "+affect.tool().name()+".");
 			return false;
 		}
 		return true;

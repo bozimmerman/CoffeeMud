@@ -27,7 +27,7 @@ public class AnimalTrading extends CommonSkill
 	{
 		Environmental taming=null;
 		Item cage=null;
-		
+
 		MOB shopkeeper=ExternalPlay.parseShopkeeper(mob,commands,"Sell what to whom?");
 		if(shopkeeper==null) return false;
 		if(commands.size()==0)
@@ -35,7 +35,7 @@ public class AnimalTrading extends CommonSkill
 			commonTell(mob,"Sell what?");
 			return false;
 		}
-		
+
 		String str=Util.combine(commands,0);
 		MOB M=mob.location().fetchInhabitant(str);
 		if(M!=null)
@@ -47,12 +47,12 @@ public class AnimalTrading extends CommonSkill
 			}
 			if((!M.isMonster())||(!Sense.isAnimalIntelligence(M)))
 			{
-				commonTell(mob,"You can't sell "+M.displayName()+".");
+				commonTell(mob,"You can't sell "+M.name()+".");
 				return false;
 			}
 			if((Sense.canMove(M))&&(!Sense.isBound(M)))
 			{
-				commonTell(mob,M.displayName()+" doesn't seem willing to cooperate.");
+				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
 				return false;
 			}
 			taming=M;
@@ -81,7 +81,7 @@ public class AnimalTrading extends CommonSkill
 			{
 				String last=(String)commands.lastElement();
 				Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Item.WORN_REQ_ANY);
-				if(E==null) 
+				if(E==null)
 				if((E!=null)
 				&&(E instanceof Item)
 				&&(E instanceof Container)
@@ -99,12 +99,12 @@ public class AnimalTrading extends CommonSkill
 			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,Util.combine(commands,0),Item.WORN_REQ_ANY);
 			if((taming==null)||(!Sense.canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,"You don't see any creatures in "+cage.displayName()+" called '"+Util.combine(commands,0)+"'.");
+				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+Util.combine(commands,0)+"'.");
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		if(profficiencyCheck(0,auto))

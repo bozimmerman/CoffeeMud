@@ -10,7 +10,7 @@ public class DelayedTransporter extends ActiveTicker
 	public String ID(){return "DelayedTransporter";}
 	private Hashtable transportees=new Hashtable();
 	private Vector destRoomNames=new Vector();
-	
+
 	public DelayedTransporter()
 	{
 		minTicks=5;maxTicks=5;chance=100;
@@ -20,7 +20,7 @@ public class DelayedTransporter extends ActiveTicker
 	{
 		return new DelayedTransporter();
 	}
-	
+
 	public void setParms(String newParms)
 	{
 		String myParms=newParms;
@@ -43,13 +43,13 @@ public class DelayedTransporter extends ActiveTicker
 			}
 			else
 				myParms="";
-			
+
 			if(CMMap.getRoom(thisRoom)!=null)
 				destRoomNames.addElement(thisRoom);
 		}
 		parms=newParms;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -60,11 +60,11 @@ public class DelayedTransporter extends ActiveTicker
 			MOB inhab=room.fetchInhabitant(i);
 			if(inhab!=null)
 			{
-				Integer I=(Integer)transportees.get(inhab.name());
+				Integer I=(Integer)transportees.get(inhab.Name());
 				if(I==null)
 				{
 					I=new Integer(0);
-					transportees.put(inhab.name(),I);
+					transportees.put(inhab.Name(),I);
 				}
 				boolean gone=false;
 				if(I.intValue()>=minTicks)
@@ -82,7 +82,7 @@ public class DelayedTransporter extends ActiveTicker
 				if(!gone)
 				{
 					I=new Integer(I.intValue()+1);
-					transportees.put(inhab.name(),I);
+					transportees.put(inhab.Name(),I);
 				}
 			}
 		}

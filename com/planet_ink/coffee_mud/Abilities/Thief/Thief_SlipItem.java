@@ -49,12 +49,12 @@ public class Thief_SlipItem extends ThiefSkill
 		Item stolen=target.fetchWornItem(itemToSteal);
 		if((stolen==null)||(!Sense.canBeSeenBy(stolen,mob)))
 		{
-			mob.tell(target.displayName()+" doesn't seem to be wearing '"+itemToSteal+"'.");
+			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");
 			return false;
 		}
 		if(stolen.amWearingAt(Item.WIELD))
 		{
-			mob.tell(target.displayName()+" is wielding "+stolen.displayName()+"! Try disarm!");
+			mob.tell(target.name()+" is wielding "+stolen.name()+"! Try disarm!");
 			return false;
 		}
 
@@ -63,8 +63,8 @@ public class Thief_SlipItem extends ThiefSkill
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		
-		if(levelDiff>0) 
+
+		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
@@ -74,21 +74,21 @@ public class Thief_SlipItem extends ThiefSkill
 		{
 			if(Dice.rollPercentage()>discoverChance)
 			{
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.displayName()+" off <T-NAME>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.displayName()+" off you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.displayName()+" off <T-NAME> and fails!");
+				FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to slip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to slip "+stolen.name()+" off <T-NAME> and fails!");
 				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
 			else
-				mob.tell(auto?"":"You fumble the attempt to slip "+stolen.displayName()+" off "+target.displayName()+".");
+				mob.tell(auto?"":"You fumble the attempt to slip "+stolen.name()+" off "+target.name()+".");
 		}
 		else
 		{
 			String str=null;
 			if(!auto)
 				if((stolen!=null)&&(!stolen.amWearingAt(Item.INVENTORY)))
-					str="<S-NAME> slip(s) "+stolen.displayName()+" off <T-NAMESELF>.";
+					str="<S-NAME> slip(s) "+stolen.name()+" off <T-NAMESELF>.";
 				else
-					str="<S-NAME> attempt(s) to slip "+stolen.displayName()+" off <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
+					str="<S-NAME> attempt(s) to slip "+stolen.name()+" off <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;

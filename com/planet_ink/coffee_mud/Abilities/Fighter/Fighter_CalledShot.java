@@ -12,7 +12,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 	private static final String[] triggerStrings = {"CALLEDSHOT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Fighter_CalledShot();}
-	
+
 	protected boolean prereqs(MOB mob)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
@@ -25,7 +25,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 			mob.tell("You must be in combat to call a shot!");
 			return false;
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
@@ -35,7 +35,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 		Weapon wp=(Weapon)w;
 		if((wp.weaponClassification()!=Weapon.CLASS_RANGED)&&(wp.weaponClassification()!=Weapon.CLASS_THROWN))
 		{
-			mob.tell("You cannot shoot with "+wp.displayName()+"!");
+			mob.tell("You cannot shoot with "+wp.name()+"!");
 			return false;
 		}
 		return true;

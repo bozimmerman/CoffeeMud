@@ -11,21 +11,21 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	public String name(){ return "Putting many rooms up for sale";}
 	public Environmental newInstance(){	return new Prop_LotsForSale();}
 
-	
+
 	private static boolean isCleanRoom(Room fromRoom, Room theRoom)
 	{
 		if(theRoom==null) return true;
-		
-		if((theRoom.ID().length()>0)
+
+		if((theRoom.roomID().length()>0)
 		&&((getLandTitle(theRoom)==null)||(getLandTitle(theRoom).landOwner().length()>0)))
 			return false;
-		
+
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Room R=theRoom.rawDoors()[d];
 			if((R!=null)
 			   &&(R!=fromRoom)
-			   &&(R.ID().length()>0)
+			   &&(R.roomID().length()>0)
 			   &&((getLandTitle(R)==null)||(getLandTitle(R).landOwner().length()>0)))
 				return false;
 		}
@@ -73,7 +73,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				if(R2==null)
 				{
 					R2=CMClass.getLocale(CMClass.className(R));
-					R2.setID(ExternalPlay.getOpenRoomID(R.getArea().name()));
+					R2.setRoomID(ExternalPlay.getOpenRoomID(R.getArea().Name()));
 					R2.setArea(R.getArea());
 					Ability newTitle=null;
 					for(int a=0;a<R.numAffects();a++)
@@ -89,13 +89,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					}
 					if(newTitle!=null)
 						((LandTitle)newTitle).setLandOwner("");
-						
+
 					R.rawDoors()[d]=R2;
 					R.rawExits()[d]=CMClass.getExit("Open");
 					R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
 					R2.rawExits()[Directions.getOpDirectionCode(d)]=CMClass.getExit("Open");
 					updateExits=true;
-						
+
 					ExternalPlay.DBCreateRoom(R2,CMClass.className(R2));
 					CMMap.addRoom(R2);
 					colorForSale(R2,true);

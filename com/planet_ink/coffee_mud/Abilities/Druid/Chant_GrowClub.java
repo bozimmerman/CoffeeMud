@@ -37,7 +37,7 @@ public class Chant_GrowClub extends Chant
 			if(V2.size()>0)
 				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -51,8 +51,8 @@ public class Chant_GrowClub extends Chant
 				mob.location().send(mob,msg);
 				Weapon newItem=(Weapon)CMClass.getWeapon("GenWeapon");
 				newItem.setName(EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase()+" club");
-				newItem.setName(Util.startWithAorAn(newItem.name()));
-				newItem.setDisplayText(newItem.displayName()+" sits here");
+				newItem.setName(Util.startWithAorAn(newItem.Name()));
+				newItem.setDisplayText(newItem.name()+" sits here");
 				newItem.setDescription("It looks like the limb of a tree.");
 				newItem.setMaterial(material);
 				newItem.baseEnvStats().setWeight(10);

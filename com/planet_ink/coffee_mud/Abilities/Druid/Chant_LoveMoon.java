@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_LoveMoon extends Chant
 {
 	public String ID() { return "Chant_LoveMoon"; }
-	public String name(){ return "Love Moon";} 
+	public String name(){ return "Love Moon";}
 	public String displayText(){return "(Love Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
@@ -25,7 +25,7 @@ public class Chant_LoveMoon extends Chant
 			super.unInvoke();
 			return;
 		}
-		
+
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			mob.tell("You are no longer under the love moon.");
@@ -62,25 +62,25 @@ public class Chant_LoveMoon extends Chant
 					MOB M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 					try{
 					if(Dice.rollPercentage()==1)
-						ExternalPlay.doCommand(mob,Util.parse("MATE "+M.displayName()));
+						ExternalPlay.doCommand(mob,Util.parse("MATE "+M.name()));
 					else
 					if(Dice.rollPercentage()>10)
 						switch(Dice.roll(1,5,0))
 						{
 						case 1:
-							mob.tell("You feel strange urgings towards "+M.displayName()+".");
+							mob.tell("You feel strange urgings towards "+M.name()+".");
 							break;
 						case 2:
-							mob.tell("You have strong happy feelings towards "+M.displayName()+".");
+							mob.tell("You have strong happy feelings towards "+M.name()+".");
 							break;
 						case 3:
-							mob.tell("You feel very appreciative of "+M.displayName()+".");
+							mob.tell("You feel very appreciative of "+M.name()+".");
 							break;
 						case 4:
-							mob.tell("You feel very close to "+M.displayName()+".");
+							mob.tell("You feel very close to "+M.name()+".");
 							break;
 						case 5:
-							mob.tell("You feel lovingly towards "+M.displayName()+".");
+							mob.tell("You feel lovingly towards "+M.name()+".");
 							break;
 						}
 					}catch(Exception e){}

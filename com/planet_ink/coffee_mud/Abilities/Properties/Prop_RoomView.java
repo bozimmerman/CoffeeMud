@@ -15,13 +15,13 @@ public class Prop_RoomView extends Property
 
 	public String accountForYourself()
 	{ return "Different View of "+text();	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
-		if((newRoom==null)||(!newRoom.ID().equalsIgnoreCase(text().trim())))
+		if((newRoom==null)||(!newRoom.roomID().equalsIgnoreCase(text().trim())))
 			newRoom=CMMap.getRoom(text());
 		if(newRoom==null) return super.okAffect(myHost,affect);
-		
+
 		if((affected!=null)
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Item))
 		&&(affect.amITarget(affected))

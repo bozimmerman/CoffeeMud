@@ -28,7 +28,7 @@ public class Skill_UndeadInvisibility extends StdAbility
 			   &&(affect.source().charStats().getMyRace().racialCategory().equals("Undead"))
 			   &&(affect.source().getVictim()!=target))
 			{
-				affect.source().tell("You don't see "+target.displayName());
+				affect.source().tell("You don't see "+target.name());
 				if(target.getVictim()==affect.source())
 				{
 					target.makePeace();

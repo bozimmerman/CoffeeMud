@@ -22,7 +22,7 @@ public class Disease_Chlamydia extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> scratch(es) <S-HIS-HER> privates.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> scratch(es) <S-HIS-HER> privates.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -38,13 +38,13 @@ public class Disease_Chlamydia extends Disease
 		}
 		return true;
 	}
-	
+
 	public void affectCharState(MOB affected, CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		affectableState.setMovement(affectableState.getMovement()/2);
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affected==null) return super.okAffect(myHost,affect);
@@ -54,8 +54,8 @@ public class Disease_Chlamydia extends Disease
 			if(((affect.amITarget(mob))||(affect.amISource(mob)))
 			&&(affect.tool()!=null)
 			&&(affect.tool().ID().equals("Social"))
-			&&(affect.tool().name().equals("MATE <T-NAME>")
-			||affect.tool().name().equals("SEX <T-NAME>")))
+			&&(affect.tool().Name().equals("MATE <T-NAME>")
+			||affect.tool().Name().equals("SEX <T-NAME>")))
 			{
 				affect.source().tell(mob,null,null,"<S-NAME> really do(es)n't feel like it.");
 				return false;

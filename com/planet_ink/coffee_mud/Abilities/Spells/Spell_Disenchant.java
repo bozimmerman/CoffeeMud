@@ -64,7 +64,7 @@ public class Spell_Disenchant extends Spell
 					target.baseEnvStats().setAbility(0);
 					doneSomething=true;
 				}
-				
+
 				Vector affects=new Vector();
 				for(int a=target.numAffects()-1;a>=0;a--)
 				{
@@ -88,7 +88,7 @@ public class Spell_Disenchant extends Spell
 					target.recoverEnvStats();
 				}
 				else
-					mob.tell(target.displayName()+" doesn't seem to be enchanted.");
+					mob.tell(target.name()+" doesn't seem to be enchanted.");
 			}
 
 		}

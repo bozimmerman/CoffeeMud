@@ -46,10 +46,10 @@ public class Skill_Cage extends StdAbility
 				}
 			}
 		}
-		
+
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		
+
 		boolean ok=false;
 		if((target.isMonster())
 		&&(Sense.isAnimalIntelligence(target)))
@@ -62,13 +62,13 @@ public class Skill_Cage extends StdAbility
 		}
 		if(!ok)
 		{
-			mob.tell(target.displayName()+" won't seem to let you.");
+			mob.tell(target.name()+" won't seem to let you.");
 			return false;
 		}
-		
+
 		if(cage==null)
 		{
-			mob.tell("Cage "+target.displayName()+" where?");
+			mob.tell("Cage "+target.name()+" where?");
 			return false;
 		}
 

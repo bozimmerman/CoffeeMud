@@ -19,10 +19,10 @@ public class Thief_Mark extends ThiefSkill
 	public Environmental newInstance(){	return new Thief_Mark();}
 	public MOB mark=null;
 	public int ticks=0;
-	
+
 	public String displayText(){
 		if(mark!=null)
-			return "(Marked: "+mark.displayName()+", "+ticks+" ticks)";
+			return "(Marked: "+mark.name()+", "+ticks+" ticks)";
 		else
 			return "";
 	}
@@ -37,7 +37,7 @@ public class Thief_Mark extends ThiefSkill
 		}
 		super.affect(myHost,msg);
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -71,12 +71,12 @@ public class Thief_Mark extends ThiefSkill
 			   &&(!Sense.canBeSeenBy(mob,mark)))
 			{
 				ticks++;
-				setMiscText(mark.name()+"/"+ticks);
+				setMiscText(mark.Name()+"/"+ticks);
 			}
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(commands.size()<1)
@@ -91,7 +91,7 @@ public class Thief_Mark extends ThiefSkill
 			mob.tell("You cannot mark yourself!");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -112,7 +112,7 @@ public class Thief_Mark extends ThiefSkill
 			}
 			((Thief_Mark)A).mark=target;
 			((Thief_Mark)A).ticks=0;
-			A.setMiscText(target.name()+"/0");
+			A.setMiscText(target.Name()+"/0");
 		}
 		return success;
 	}

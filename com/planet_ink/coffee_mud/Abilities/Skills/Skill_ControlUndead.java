@@ -28,7 +28,7 @@ public class Skill_ControlUndead extends StdAbility
 		{
 			if((!invoker().isInCombat())&&(affect.source().getVictim()!=invoker()))
 			{
-				affect.source().tell("You're too submissive towards "+invoker().displayName());
+				affect.source().tell("You're too submissive towards "+invoker().name());
 				if(invoker().getVictim()==affect.source())
 				{
 					invoker().makePeace();

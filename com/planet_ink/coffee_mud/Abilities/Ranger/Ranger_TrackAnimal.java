@@ -17,7 +17,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	private static final String[] triggerStrings = {"TRACKANIMAL"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 
@@ -89,7 +89,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	public MOB animalHere(Room room)
 	{
 		if(room==null) return null;
-		
+
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB mob=room.fetchInhabitant(i);
@@ -98,8 +98,8 @@ public class Ranger_TrackAnimal extends StdAbility
 		}
 		return null;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!Sense.aliveAwakeMobile(mob,false))
@@ -140,10 +140,10 @@ public class Ranger_TrackAnimal extends StdAbility
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(animalHere(R)!=null) 
+			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -151,10 +151,10 @@ public class Ranger_TrackAnimal extends StdAbility
 			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,true);
-		
+
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
 			target=animalHere((Room)theTrail.firstElement());
@@ -171,7 +171,7 @@ public class Ranger_TrackAnimal extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(tracking "+target.displayName()+")";
+				displayText="(tracking "+target.name()+")";
 				Ranger_TrackAnimal newOne=(Ranger_TrackAnimal)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);

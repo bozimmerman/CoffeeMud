@@ -14,11 +14,11 @@ public class Shaman extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-		
+
 	protected boolean disableAlignedWeapons(){return true;}
 	protected boolean disableClericSpellGrant(){return true;}
 	protected boolean disableAlignedSpells(){return true;}
-	
+
 	public Shaman()
 	{
 		maxStat[CharStats.WISDOM]=22;
@@ -28,93 +28,93 @@ public class Shaman extends Cleric
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CauseLight",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_FortifyFood",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Curse",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_EarthMud",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Freedom",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_Paralyze",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_Earthshield",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_RemovePoison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_Poison",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_Sober",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Rockskin",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Tremor",true);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_CureBlindness",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindness",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_RockFlesh",true);
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_FleshRock",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",true);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Skill_Meditation",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"EARTH",true);
-						
+
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_AcidHealing",true);
 		}
 	}
-	
+
 	public boolean playerSelectable()
 	{
 		return true;
@@ -127,7 +127,7 @@ public class Shaman extends Cleric
 		}
 		return;
 	}
-	
+
 	public String statQualifications(){return "Wisdom 9+ Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -167,26 +167,26 @@ public class Shaman extends Cleric
 			{
 				int align=myChar.getAlignment();
 				Ability A=(Ability)affect.tool();
-		
-				if(A.appropriateToMyAlignment(align))	
+
+				if(A.appropriateToMyAlignment(align))
 					return true;
 				int hq=holyQuality(A);
-					
+
 				if((hq==500)||((align>=150)&&(align<=850)))
 					return true;
-				
+
 				int basis=(500-align)/20;
 				if(basis<0) basis=basis*-1;
 				basis-=10;
-		
+
 				if(Dice.rollPercentage()>basis)
 					return true;
 
 				if(align>650)
-					myChar.tell("The anti-good nature of "+A.displayName()+" disrupts your thought.");
+					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
 				else
 				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.displayName()+" disrupts your thought.");
+					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
 				return false;
 			}
 			else
@@ -194,13 +194,13 @@ public class Shaman extends Cleric
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Weapon))
 			{
-				
+
 				if((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_BLUNT)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_HAMMER))
 					return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 					return false;
 				}
 			}

@@ -75,7 +75,7 @@ public class JewelMaking extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've ruined "+building.displayName()+"!");
+						commonTell(mob,"You've ruined "+building.name()+"!");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -211,9 +211,9 @@ public class JewelMaking extends CommonSkill
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstOther.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) making "+building.displayName()+".";
-		displayText="You are making "+building.displayName();
-		verb="making "+building.displayName();
+		startStr="<S-NAME> start(s) making "+building.name()+".";
+		displayText="You are making "+building.name();
+		verb="making "+building.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

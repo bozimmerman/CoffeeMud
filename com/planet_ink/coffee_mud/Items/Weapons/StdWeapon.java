@@ -45,10 +45,10 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		String id=super.secretIdentity();
 		if(envStats().ability()>0)
-			id=displayName()+" +"+envStats().ability()+((id.length()>0)?"\n":"")+id;
+			id=name()+" +"+envStats().ability()+((id.length()>0)?"\n":"")+id;
 		else
 		if(envStats().ability()<0)
-			id=displayName()+" "+envStats().ability()+((id.length()>0)?"\n":"")+id;
+			id=name()+" "+envStats().ability()+((id.length()>0)?"\n":"")+id;
 		return id+"\n\rAttack: "+envStats().attackAdjustment()+", Damage: "+envStats().damage();
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -70,7 +70,7 @@ public class StdWeapon extends StdItem implements Weapon
 	public void affect(Environmental myHost, Affect affect)
 	{
 		super.affect(myHost,affect);
-		
+
 		if((affect.amITarget(this))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING)
 		&&(Sense.canBeSeenBy(this,affect.source())))
@@ -119,7 +119,7 @@ public class StdWeapon extends StdItem implements Weapon
 					}
 					else
 						A=CMClass.getAbility("Disease_Infection");
-					
+
 					if((A!=null)&&(affect.target().fetchAffect(A.ID())==null))
 						A.invoke(affect.source(),affect.target(),true);
 				}
@@ -141,7 +141,7 @@ public class StdWeapon extends StdItem implements Weapon
 					}
 				}
 			}
-			
+
 			if((subjectToWearAndTear())
 			&&(Dice.rollPercentage()<5)
 			&&(affect.source().rangeToTarget()==0)
@@ -154,7 +154,7 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					MOB owner=(MOB)owner();
 					setUsesRemaining(100);
-					affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,displayName()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,displayName()+" being wielded by <S-NAME> is destroyed!"));
+					affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
 					remove();
 					destroyThis();
 					owner.recoverEnvStats();
@@ -169,7 +169,7 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		if(!super.okAffect(myHost,affect))
 			return false;
-			
+
 		if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 		   &&(affect.tool()==this)
 		   &&(requiresAmmunition())
@@ -196,7 +196,7 @@ public class StdWeapon extends StdItem implements Weapon
 						   ||(I.container()!=null)
 						   ||(!I.rawSecretIdentity().equalsIgnoreCase(ammunitionType()))))
 						{
-							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.displayName()+".");
+							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.name()+".");
 							int howMuchToTake=ammunitionCapacity();
 							if(I.usesRemaining()<howMuchToTake)
 								howMuchToTake=I.usesRemaining();
@@ -221,21 +221,21 @@ public class StdWeapon extends StdItem implements Weapon
 		}
 		return true;
 	}
-	
+
 	public void setUsesRemaining(int newUses)
 	{
 		if(newUses==Integer.MAX_VALUE)
 			newUses=100;
 		super.setUsesRemaining(newUses);
 	}
-	
+
 	private String weaponHealth()
 	{
 		if(usesRemaining()>=100)
 			return "";
 		else
 		if(usesRemaining()>=95)
-			return displayName()+" looks slightly used ("+usesRemaining()+"%)";
+			return name()+" looks slightly used ("+usesRemaining()+"%)";
 		else
 		if(usesRemaining()>=85)
 		{
@@ -246,9 +246,9 @@ public class StdWeapon extends StdItem implements Weapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return displayName()+" is somewhat dull ("+usesRemaining()+"%)";
-			default: 
-				 return displayName()+" is somewhat worn ("+usesRemaining()+"%)";
+				return name()+" is somewhat dull ("+usesRemaining()+"%)";
+			default:
+				 return name()+" is somewhat worn ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -261,9 +261,9 @@ public class StdWeapon extends StdItem implements Weapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return displayName()+" is dull ("+usesRemaining()+"%)";
-			default: 
-				 return displayName()+" is worn ("+usesRemaining()+"%)";
+				return name()+" is dull ("+usesRemaining()+"%)";
+			default:
+				 return name()+" is worn ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -276,32 +276,32 @@ public class StdWeapon extends StdItem implements Weapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return displayName()+" has some notches and chinks ("+usesRemaining()+"%)";
-			default: 
-				return displayName()+" is damaged ("+usesRemaining()+"%)";
+				return name()+" has some notches and chinks ("+usesRemaining()+"%)";
+			default:
+				return name()+" is damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		if(usesRemaining()>25)
-			return displayName()+" is heavily damaged ("+usesRemaining()+"%)";
+			return name()+" is heavily damaged ("+usesRemaining()+"%)";
 		else
-			return displayName()+" is so damaged, it is practically harmless ("+usesRemaining()+"%)";
+			return name()+" is so damaged, it is practically harmless ("+usesRemaining()+"%)";
 	}
 	public String missString()
 	{
-		return CommonStrings.standardMissString(weaponType,weaponClassification,displayName(),useExtendedMissString);
+		return CommonStrings.standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
 	}
 	public String hitString(int damageAmount)
 	{
-		return CommonStrings.standardHitString(weaponType,weaponClassification,damageAmount,displayName());
+		return CommonStrings.standardHitString(weaponType,weaponClassification,damageAmount,name());
 	}
 	public int minRange(){return minRange;}
 	public int maxRange(){return maxRange;}
 	public void setRanges(int min, int max){minRange=min;maxRange=max;}
 	public boolean requiresAmmunition()
 	{
-		if((readableText()==null)||(this instanceof Wand)) 
-			return false; 
+		if((readableText()==null)||(this instanceof Wand))
+			return false;
 		return readableText().length()>0;
 	};
 	public void setAmmunitionType(String ammo)
@@ -329,7 +329,7 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		if((subjectToWearAndTear())&&(usesRemaining()<1000))
 			return (int)Math.round(Util.mul(super.value(),Util.div(usesRemaining(),100)));
-		else 
+		else
 			return super.value();
 	}
 	public boolean subjectToWearAndTear()
@@ -339,5 +339,5 @@ public class StdWeapon extends StdItem implements Weapon
 			&&(usesRemaining()<=1000)
 			&&(usesRemaining()>=0));
 	}
-	
+
 }

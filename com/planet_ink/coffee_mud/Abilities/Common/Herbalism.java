@@ -22,7 +22,7 @@ public class Herbalism extends CommonSkill
 	{
 		super();
 	}
-	
+
 	public Environmental newInstance(){ return new Herbalism();	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -39,9 +39,9 @@ public class Herbalism extends CommonSkill
 			else
 			if(tickUp==0)
 			{
-				commonEmote(mob,"<S-NAME> start(s) brewing "+building.displayName()+".");
-				displayText="You are brewing "+building.displayName();
-				verb="brewing "+building.displayName();
+				commonEmote(mob,"<S-NAME> start(s) brewing "+building.name()+".");
+				displayText="You are brewing "+building.name();
+				verb="brewing "+building.name();
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -109,7 +109,7 @@ public class Herbalism extends CommonSkill
 					&&(level>=0)
 					&&(mob.envStats().level()>=level))
 					{
-						buf.append(Util.padRight(A.displayName(),20)+" "+Util.padRight(""+level,5)+" ");
+						buf.append(Util.padRight(A.name(),20)+" "+Util.padRight(""+level,5)+" ");
 						for(int i=2;i<V.size();i++)
 						{
 							String s=((String)V.elementAt(i)).toLowerCase();
@@ -142,17 +142,17 @@ public class Herbalism extends CommonSkill
 			}
 			if(!(building instanceof Container))
 			{
-				commonTell(mob,"There's nothing in "+building.displayName()+" to brew!");
+				commonTell(mob,"There's nothing in "+building.name()+" to brew!");
 				return false;
 			}
 			if(!(building instanceof Drink))
 			{
-				commonTell(mob,"You can't drink out of a "+building.displayName()+".");
+				commonTell(mob,"You can't drink out of a "+building.name()+".");
 				return false;
 			}
 			if(((Drink)building).liquidRemaining()==0)
 			{
-				commonTell(mob,"The "+building.displayName()+" contains no liquid base.  Water is probably fine.");
+				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
 			String recipeName=Util.combine(commands,0);
@@ -168,7 +168,7 @@ public class Herbalism extends CommonSkill
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(mob.envStats().level()>=level)
-					&&(A.displayName().equalsIgnoreCase(recipeName)))
+					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
 						recipe=V;
@@ -186,7 +186,7 @@ public class Herbalism extends CommonSkill
 				experienceToLose+=CMAble.qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMAble.qualifyingClassLevel(mob,theSpell)*5;
 			}
-			
+
 			Vector V=((Container)building).getContents();
 			// first check for all the right stuff
 			for(int i=2;i<recipe.size();i++)
@@ -198,13 +198,13 @@ public class Herbalism extends CommonSkill
 					for(int v=0;v<V.size();v++)
 					{
 						Item I=(Item)V.elementAt(v);
-						if(CoffeeUtensils.containsString(I.name(),ingredient)
+						if(CoffeeUtensils.containsString(I.Name(),ingredient)
 						||(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 					}
 					if(!ok)
 					{
-						commonTell(mob,"This brew requires "+ingredient.toLowerCase()+".  Please place some inside the "+building.displayName()+" and try again.");
+						commonTell(mob,"This brew requires "+ingredient.toLowerCase()+".  Please place some inside the "+building.name()+" and try again.");
 						return false;
 					}
 				}
@@ -218,17 +218,17 @@ public class Herbalism extends CommonSkill
 				{
 					String ingredient=((String)recipe.elementAt(i)).trim();
 					if(ingredient.length()>0)
-						if(CoffeeUtensils.containsString(I.name(),ingredient)
+						if(CoffeeUtensils.containsString(I.Name(),ingredient)
 						||(EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 				}
 				if(!ok)
 				{
-					commonTell(mob,"The "+I.displayName()+" must be removed from the "+building.displayName()+" before starting.");
+					commonTell(mob,"The "+I.name()+" must be removed from the "+building.name()+" before starting.");
 					return false;
 				}
 			}
-			
+
 			if(experienceToLose<10) experienceToLose=10;
 
 			if(!super.invoke(mob,commands,givenTarget,auto))
@@ -236,12 +236,12 @@ public class Herbalism extends CommonSkill
 
 			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
-			oldName=building.displayName();
+			oldName=building.name();
 			building.destroyThis();
 			building=CMClass.getItem("GenPotion");
 			((Potion)building).setSpellList(theSpell.ID());
-			building.setName("a potion of "+theSpell.displayName().toLowerCase());
-			building.setDisplayText("a potion of "+theSpell.displayName().toLowerCase()+" sits here.");
+			building.setName("a potion of "+theSpell.name().toLowerCase());
+			building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
 			building.setDescription("");
 			building.recoverEnvStats();
 			building.text();

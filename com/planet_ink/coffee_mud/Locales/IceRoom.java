@@ -6,6 +6,7 @@ import java.util.*;
 
 public class IceRoom extends StdRoom
 {
+	public String ID(){return "IceRoom";}
 	public IceRoom()
 	{
 		super();

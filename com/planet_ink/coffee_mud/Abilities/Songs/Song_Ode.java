@@ -14,11 +14,11 @@ public class Song_Ode extends Song
 	public Environmental newInstance(){	return new Song_Ode();	}
 	public MOB whom=null;
 	protected String songOf(){ return "Ode"+((whom==null)?"":" to "+whom.name())+"";}
-	
+
 	public Hashtable getSongs()
 	{
 		Hashtable H=new Hashtable();
 		return H;
 	}
-	
+
 }

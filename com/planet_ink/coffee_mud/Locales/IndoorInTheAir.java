@@ -9,6 +9,7 @@ import java.util.*;
 
 public class IndoorInTheAir extends StdRoom
 {
+	public String ID(){return "IndoorInTheAir";}
 	public IndoorInTheAir()
 	{
 		super();

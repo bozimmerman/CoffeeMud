@@ -71,9 +71,9 @@ public class ScrimShaw extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.displayName()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
 						else
-							commonTell(mob,"<S-NAME> completely mess(es) up scrimshawing "+building.displayName()+".");
+							commonTell(mob,"<S-NAME> completely mess(es) up scrimshawing "+building.name()+".");
 					}
 					else
 					{
@@ -143,20 +143,20 @@ public class ScrimShaw extends CommonSkill
 			}
 			if(!building.subjectToWearAndTear())
 			{
-				commonTell(mob,"You can't mend "+building.displayName()+".");
+				commonTell(mob,"You can't mend "+building.name()+".");
 				return false;
 			}
 			if(((Item)building).usesRemaining()>=100)
 			{
-				commonTell(mob,building.displayName()+" is in good condition already.");
+				commonTell(mob,building.name()+" is in good condition already.");
 				return false;
 			}
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.displayName()+".";
-			displayText="You are mending "+building.displayName();
-			verb="mending "+building.displayName();
+			startStr="<S-NAME> start(s) mending "+building.name()+".";
+			displayText="You are mending "+building.name();
+			verb="mending "+building.name();
 		}
 		else
 		{
@@ -223,9 +223,9 @@ public class ScrimShaw extends CommonSkill
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) scrimshawing "+building.displayName()+".";
-			displayText="You are scrimshawing "+building.displayName();
-			verb="scrimshawing "+building.displayName();
+			startStr="<S-NAME> start(s) scrimshawing "+building.name()+".";
+			displayText="You are scrimshawing "+building.name();
+			verb="scrimshawing "+building.name();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
@@ -267,7 +267,7 @@ public class ScrimShaw extends CommonSkill
 					((Key)key).setKey(((Container)building).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
-					key.setDescription("looks like a key to "+building.displayName());
+					key.setDescription("looks like a key to "+building.name());
 					key.recoverEnvStats();
 					key.text();
 				}

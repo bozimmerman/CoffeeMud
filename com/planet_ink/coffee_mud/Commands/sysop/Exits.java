@@ -9,11 +9,11 @@ import java.io.*;
 public class Exits
 {
 	private Exits(){}
-	
+
 	public static void create(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(mob.location().ID().equals(""))
+		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -42,7 +42,7 @@ public class Exits
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		
+
 		Exit opExit=mob.location().rawExits()[direction];
 		Room opRoom=mob.location().rawDoors()[direction];
 
@@ -85,14 +85,14 @@ public class Exits
 		}
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		if(opRoom!=null) opRoom.getArea().fillInAreaRoom(opRoom);
-		Log.sysOut("Exits",mob.location().ID()+" exits changed by "+mob.ID()+".");
+		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
 	}
 
 
 	public static void modify(MOB mob, Vector commands)
 		throws IOException
 	{
-		if(mob.location().ID().equals(""))
+		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -150,13 +150,13 @@ public class Exits
 			}
 		}
 		mob.location().getArea().fillInAreaRoom(mob.location());
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,thisExit.displayName()+" shake(s) under the transforming power.");
-		Log.sysOut("Exits",mob.location().ID()+" exits changed by "+mob.ID()+".");
+		mob.location().show(mob,null,Affect.MSG_OK_ACTION,thisExit.name()+" shake(s) under the transforming power.");
+		Log.sysOut("Exits",mob.location().roomID()+" exits changed by "+mob.Name()+".");
 	}
 
 	public static void destroy(MOB mob, Vector commands)
 	{
-		if(mob.location().ID().equals(""))
+		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -189,6 +189,6 @@ public class Exits
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
-		Log.sysOut("Exits",mob.location().ID()+" exits destroyed by "+mob.ID()+".");
+		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 }

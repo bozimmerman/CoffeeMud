@@ -14,7 +14,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonFungus();}
 	private boolean processing=false;
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if((affect.amITarget(littlePlants))
@@ -49,7 +49,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		}
 		return true;
 	}
-	
+
 	public static Item buildFungus(MOB mob, Room room)
 	{
 		Item newItem=(Item)CMClass.getItem("GenFoodResource");
@@ -87,12 +87,12 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 			newItem.setDescription("");
 			break;
 		}
-		newItem.setSecretIdentity(mob.name());
+		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" sprouts up here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprouts up here.");
 		Chant_SummonFungus newChant=new Chant_SummonFungus();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

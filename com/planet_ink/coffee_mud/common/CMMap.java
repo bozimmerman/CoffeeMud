@@ -19,30 +19,30 @@ public class CMMap
 	}
 	// areas
 	public static int numAreas() { return areasList.size(); }
-	public static void addArea(Area newOne) 
-	{ 
+	public static void addArea(Area newOne)
+	{
 		areasList.addElement(newOne);
 	}
-	public static void delArea(Area oneToDel) 
-	{ 
-		areasList.remove(oneToDel); 
+	public static void delArea(Area oneToDel)
+	{
+		areasList.remove(oneToDel);
 	}
-	public static Area getArea(String calledThis) 
-	{ 
+	public static Area getArea(String calledThis)
+	{
 		for(Enumeration a=areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if(A.name().equalsIgnoreCase(calledThis))
+			if(A.Name().equalsIgnoreCase(calledThis))
 				return A;
 		}
 		return null;
 	}
-	public static Enumeration areas(){ 
+	public static Enumeration areas(){
 		return areasList.elements();
 	}
 	public static Area getFirstArea()
 	{
-		if (areas().hasMoreElements()) 
+		if (areas().hasMoreElements())
 			return (Area) areas().nextElement();
 		return null;
 	}
@@ -57,8 +57,8 @@ public class CMMap
 		}
 		return A;
 	}
-	
-	
+
+
 	public static int numRooms() { return roomsList.size(); }
 	public static void addRoom(Room newOne)
 	{
@@ -79,12 +79,12 @@ public class CMMap
 		for (Enumeration i=rooms(); i.hasMoreElements();)
 		{
 			R = (Room)i.nextElement();
-			if (R.ID().equalsIgnoreCase(calledThis))
+			if (R.roomID().equalsIgnoreCase(calledThis))
 				return R;
 		}
 		return null;
 	}
-	public static Enumeration rooms() { 
+	public static Enumeration rooms() {
 		return roomsList.elements();
 	}
 	public static void replaceRoom(Room newOne, Room oldOne)
@@ -97,7 +97,7 @@ public class CMMap
 	}
 	public static Room getFirstRoom()
 	{
-		if (rooms().hasMoreElements()) 
+		if (rooms().hasMoreElements())
 			return (Room) rooms().nextElement();
 		return null;
 	}
@@ -112,16 +112,16 @@ public class CMMap
 		}
 		return R;
 	}
-	
+
 	public static int numDeities() { return deitiesList.size(); }
-	public static void addDeity(Deity newOne) 
-	{ 
-		if (!deitiesList.contains(newOne)) 
-			deitiesList.add(newOne); 
+	public static void addDeity(Deity newOne)
+	{
+		if (!deitiesList.contains(newOne))
+			deitiesList.add(newOne);
 	}
-	public static void delDeity(Deity oneToDel) 
-	{ 
-		deitiesList.remove(oneToDel); 
+	public static void delDeity(Deity oneToDel)
+	{
+		deitiesList.remove(oneToDel);
 	}
 	public static Deity getDeity(String calledThis)
 	{
@@ -129,13 +129,13 @@ public class CMMap
 		for (Enumeration i=deities(); i.hasMoreElements();)
 		{
 			D = (Deity)i.nextElement();
-			if (D.name().equalsIgnoreCase(calledThis))
+			if (D.Name().equalsIgnoreCase(calledThis))
 				return D;
 		}
 		return null;
 	}
 	public static Enumeration deities() { return deitiesList.elements(); }
-	
+
 	public static int numPlayers() { return playersList.size(); }
 	public static void addPlayer(MOB newOne) { playersList.add(newOne); }
 	public static void delPlayer(MOB oneToDel) { playersList.remove(oneToDel); }
@@ -146,13 +146,13 @@ public class CMMap
 		for (Enumeration p=players(); p.hasMoreElements();)
 		{
 			M = (MOB)p.nextElement();
-			if (M.name().equalsIgnoreCase(calledThis)) 
+			if (M.Name().equalsIgnoreCase(calledThis))
 				return M;
 		}
 		return null;
 	}
 	public static Enumeration players() { return playersList.elements(); }
-	
+
 	public static Room getStartRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
@@ -163,7 +163,7 @@ public class CMMap
 			roomID=(String)startRooms.get(align);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)startRooms.get("ALL");
-		
+
 		Room room=null;
 		if((roomID!=null)&&(roomID.length()>0))
 			room=getRoom(roomID);
@@ -173,7 +173,7 @@ public class CMMap
 			room=getFirstRoom();
 		return room;
 	}
-	
+
 	public static Room getDeathRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
@@ -184,7 +184,7 @@ public class CMMap
 			roomID=(String)deathRooms.get(align);
 		if((roomID==null)||(roomID.length()==0))
 			roomID=(String)deathRooms.get("ALL");
-		
+
 		Room room=null;
 		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")));
 			room=mob.getStartRoom();
@@ -196,7 +196,7 @@ public class CMMap
 			room=getFirstRoom();
 		return room;
 	}
-	
+
 	private static void pageRooms(INI page, Hashtable table, String start)
 	{
 		for(Enumeration r=CMClass.races();r.hasMoreElements();)
@@ -217,7 +217,7 @@ public class CMMap
 		thisOne=page.getProperty(start+"_EVIL");
 		if((thisOne!=null)&&(thisOne.length()>0))
 			table.put("EVIL",thisOne);
-		
+
 		thisOne=page.getProperty(start);
 		if((thisOne!=null)&&(thisOne.length()>0))
 			table.put("ALL",thisOne);
@@ -228,7 +228,7 @@ public class CMMap
 				table.put("ALL",thisOne);
 		}
 	}
-	
+
 	public static void initStartRooms(INI page)
 	{
 		startRooms=new Hashtable();

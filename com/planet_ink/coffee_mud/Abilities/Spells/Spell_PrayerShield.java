@@ -45,7 +45,7 @@ public class Spell_PrayerShield extends Spell
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,null,null,Affect.MSG_OK_VISUAL,"The shield around <S-NAME> blocks off "+affect.tool().displayName()+"!");
+			mob.location().show(mob,null,null,Affect.MSG_OK_VISUAL,"The shield around <S-NAME> blocks off "+affect.tool().name()+"!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

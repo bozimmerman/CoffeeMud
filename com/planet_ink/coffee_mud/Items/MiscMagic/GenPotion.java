@@ -40,12 +40,12 @@ public class GenPotion extends GenWater implements Potion
 	{
 		return StdScroll.makeSecretIdentity("potion",super.secretIdentity(),"",getSpells(this));
 	}
-	
+
 	public int value()
 	{
-		if(isDrunk()) 
+		if(isDrunk())
 			return 0;
-		else 
+		else
 			return super.value();
 	}
 
@@ -67,7 +67,7 @@ public class GenPotion extends GenWater implements Potion
 				return true;
 		return super.okAffect(myHost,affect);
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
@@ -79,7 +79,7 @@ public class GenPotion extends GenWater implements Potion
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
 				{
 					drinkIfAble(mob,this);
-					mob.tell(displayName()+" vanishes!");
+					mob.tell(name()+" vanishes!");
 					this.destroyThis();
 				}
 				else

@@ -49,7 +49,7 @@ public class Spell_FakeSpring extends Spell
 		{
 			if(affect.targetMinor()==Affect.TYP_FILL)
 			{
-				affect.source().tell(affect.target().displayName()+" is full.");
+				affect.source().tell(affect.target().name()+" is full.");
 				return false;
 			}
 		}
@@ -80,7 +80,7 @@ public class Spell_FakeSpring extends Spell
 				}
 
 				Drink W=(Drink)CMClass.getItem("GenWater");
-				W.setName(newItem.name());
+				W.setName(newItem.Name());
 				W.setDisplayText(newItem.displayText());
 				W.setDescription(newItem.description());
 				W.baseEnvStats().setWeight(newItem.baseEnvStats().weight());
@@ -88,7 +88,7 @@ public class Spell_FakeSpring extends Spell
 				W.setThirstQuenched(0);
 				W.recoverEnvStats();
 				mob.location().addItem((Item)W);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" starts flowing here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=W;
 				beneficialAffect(mob,W,0);

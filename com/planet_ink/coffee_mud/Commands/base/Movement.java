@@ -72,7 +72,7 @@ public class Movement extends Scriptable
 			if((e!=null)&&(r!=null))
 			{
 				if((Sense.canBeSeenBy(e,mob))
-				&&((e.displayName().equalsIgnoreCase(enterWhat))
+				&&((e.name().equalsIgnoreCase(enterWhat))
 				||(e.displayText().equalsIgnoreCase(enterWhat))
 				||(r.displayText().equalsIgnoreCase(enterWhat))
 				||(e.description().equalsIgnoreCase(enterWhat))))
@@ -89,7 +89,7 @@ public class Movement extends Scriptable
 			if((e!=null)&&(r!=null))
 			{
 				if((Sense.canBeSeenBy(e,mob))
-				&&(((CoffeeUtensils.containsString(e.displayName().toUpperCase(),enterWhat))
+				&&(((CoffeeUtensils.containsString(e.name().toUpperCase(),enterWhat))
 				||(CoffeeUtensils.containsString(e.displayText().toUpperCase(),enterWhat))
 				||(CoffeeUtensils.containsString(r.displayText().toUpperCase(),enterWhat))
 				||(CoffeeUtensils.containsString(e.description().toUpperCase(),enterWhat)))))
@@ -176,14 +176,14 @@ public class Movement extends Scriptable
 					if(rMOB.location()==sourceRoom)
 					{
 						if(rMOB.riding()!=null)
-							rMOB.tell(getScr("Movement","youride",rMOB.riding().displayName(),Directions.getDirectionName(directionCode)));
+							rMOB.tell(getScr("Movement","youride",rMOB.riding().name(),Directions.getDirectionName(directionCode)));
 						if(!move(rMOB,directionCode,flee,false,true))
 							fallOff=true;
 					}
 					if(fallOff)
 					{
 						if(rMOB.riding()!=null)
-							rMOB.tell(getScr("Movement","youfalloff",rMOB.riding().displayName()));
+							rMOB.tell(getScr("Movement","youfalloff",rMOB.riding().name()));
 						rMOB.setRiding(null);
 					}
 				}
@@ -268,7 +268,7 @@ public class Movement extends Scriptable
 				if(!move(((MOB)riding),directionCode,false,false,true))
 				{
 					if(theRider instanceof MOB)
-						((MOB)theRider).tell(getScr("Movement","rideerr1",((MOB)riding).displayName()));
+						((MOB)theRider).tell(getScr("Movement","rideerr1",((MOB)riding).name()));
 					r=r-1;
 					for(;r>=0;r--)
 					{
@@ -319,8 +319,8 @@ public class Movement extends Scriptable
 		FullMsg leaveMsg=null;
 		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
-			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,getScr("Movement","sridesin",mob.riding().displayName(),otherDirectionName));
-			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sfleeswith",mob.riding().displayName(),directionName):getScr("Movement","srides",mob.riding().displayName(),directionName)));
+			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,getScr("Movement","sridesin",mob.riding().name(),otherDirectionName));
+			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?getScr("Movement","youflee",directionName):null),leaveCode,null,leaveCode,((flee)?getScr("Movement","sfleeswith",mob.riding().name(),directionName):getScr("Movement","srides",mob.riding().name(),directionName)));
 		}
 		else
 		{
@@ -401,7 +401,7 @@ public class Movement extends Scriptable
 					if((follower.location()==thisRoom)
 					   &&(!Util.bset(follower.getBitmap(),MOB.ATT_AUTOGUARD)))
 					{
-						follower.tell(getScr("Movement","youfollow",mob.displayName(),Directions.getDirectionName(directionCode)));
+						follower.tell(getScr("Movement","youfollow",mob.name(),Directions.getDirectionName(directionCode)));
 						if(!move(follower,directionCode,false,false,false))
 						{
 							//follower.setFollowing(null);
@@ -470,7 +470,7 @@ public class Movement extends Scriptable
 			if(whatToDo.startsWith("PUR"))
 			{
 				MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
-				boolean found=ExternalPlay.DBUserSearch(deadMOB,mob.ID());
+				boolean found=ExternalPlay.DBUserSearch(deadMOB,mob.Name());
 				if(found)
 				{
 					ExternalPlay.destroyUser(deadMOB);
@@ -738,7 +738,7 @@ public class Movement extends Scriptable
 			}
 			if(!Sense.isSleeping(M))
 			{
-				mob.tell(getScr("Movement","wakeerr2",M.displayName()));
+				mob.tell(getScr("Movement","wakeerr2",M.name()));
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,M,null,Affect.MSG_NOISYMOVEMENT,getScr("Movement","wakeother"));
@@ -869,7 +869,7 @@ public class Movement extends Scriptable
 			   ||((RI.riding() instanceof Item)&&(!mob.location().isContent((Item)RI.riding())))
 			   ||(!Sense.canBeSeenBy(RI.riding(),mob)))
 			{
-				mob.tell(getScr("Movement","dismounterr3",RI.displayName()));
+				mob.tell(getScr("Movement","dismounterr3",RI.name()));
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,RI.riding(),RI,Affect.MSG_DISMOUNT,getScr("Movement","dismounts2"));

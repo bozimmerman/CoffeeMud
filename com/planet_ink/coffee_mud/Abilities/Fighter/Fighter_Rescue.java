@@ -22,17 +22,17 @@ public class Fighter_Rescue extends StdAbility
 		if(mob==null) return false;
 		MOB imfighting=mob.getVictim();
 		MOB target=null;
-		
+
 		if((commands.size()==0)
 		&&(imfighting!=null)
 		&&(imfighting!=mob)
 		&&(imfighting.getVictim()!=null)
 		&&(imfighting.getVictim()!=mob))
 			target=imfighting.getVictim();
-		
+
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
-		
+
 		if(target==null) return false;
 		MOB monster=target.getVictim();
 
@@ -44,7 +44,7 @@ public class Fighter_Rescue extends StdAbility
 
 		if(monster.getVictim()==mob)
 		{
-			mob.tell("You are already taking the blows from "+monster.displayName()+".");
+			mob.tell("You are already taking the blows from "+monster.name()+".");
 			return false;
 		}
 

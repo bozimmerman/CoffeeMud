@@ -6,6 +6,7 @@ import java.util.*;
 
 public class StoneGrid extends StdRoom
 {
+	public String ID(){return "StoneGrid";}
 	public StoneGrid()
 	{
 		super();

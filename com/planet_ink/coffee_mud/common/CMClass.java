@@ -744,12 +744,6 @@ public class CMClass extends ClassLoader
 	{
 		if(e!=null)
 		{
-			if(e instanceof Room)
-				return className(e);
-			else
-			if(e instanceof MOB)
-				return className(e);
-			else
 			if(e instanceof Environmental)
 				return ((Environmental)e).ID();
 			else
@@ -762,36 +756,11 @@ public class CMClass extends ClassLoader
 			if(e instanceof Behavior)
 				return ((Behavior)e).ID();
 			else
-			if(e instanceof Clan)
-				return className(e);
-			else
 			if(e instanceof WebMacro)
 				return ((WebMacro)e).ID();
+			else
+				return className(e);
 		}
-		return className(e);
-	}
-	
-	public static String id(Object e)
-	{
-		if(e!=null)
-			if(e instanceof Environmental)
-				return ((Environmental)e).ID();
-			else
-			if(e instanceof Race)
-				return ((Race)e).ID();
-			else
-			if(e instanceof CharClass)
-				return ((CharClass)e).ID();
-			else
-			if(e instanceof Behavior)
-				return ((Behavior)e).ID();
-			else
-			if(e instanceof Clan)
-				return ((Clan)e).ID();
-			else
-			if(e instanceof WebMacro)
-				return ((WebMacro)e).ID();
 		return "";
 	}
-
 }

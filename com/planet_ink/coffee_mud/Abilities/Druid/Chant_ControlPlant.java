@@ -29,21 +29,21 @@ public class Chant_ControlPlant extends Chant
 		}
 		return null;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
 		if(myPlant==null) return false;
-		
+
 		if(isPlant(myPlant)==null)
 		{
-			mob.tell("You can't control "+myPlant.displayName()+".");
+			mob.tell("You can't control "+myPlant.name()+".");
 			return false;
 		}
-		
-		if(myPlant.rawSecretIdentity().equals(mob.name()))
+
+		if(myPlant.rawSecretIdentity().equals(mob.Name()))
 		{
-			mob.tell("You already control "+myPlant.displayName()+".");
+			mob.tell("You already control "+myPlant.name()+".");
 			return false;
 		}
 
@@ -61,8 +61,8 @@ public class Chant_ControlPlant extends Chant
 				mob.location().send(mob,msg);
 				Ability A=isPlant(myPlant);
 				if(A!=null)	A.setInvoker(mob);
-				mob.tell("You wrest control of "+myPlant.displayName()+" from "+myPlant.secretIdentity()+".");
-				myPlant.setSecretIdentity(mob.name());
+				mob.tell("You wrest control of "+myPlant.name()+" from "+myPlant.secretIdentity()+".");
+				myPlant.setSecretIdentity(mob.Name());
 			}
 
 		}

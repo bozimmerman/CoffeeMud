@@ -9,7 +9,7 @@ public class CharClassData extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	// parameters include help, playable, max stats, pracs, trains, hitpoints,
-	// mana, movement, attack, weapons, armor, limits, bonuses, 
+	// mana, movement, attack, weapons, armor, limits, bonuses,
 	// prime, quals, startingeq
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -32,10 +32,10 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("PLAYABLE"))
 					str.append(C.playerSelectable()+", ");
-				
+
 				if(parms.containsKey("BASECLASS"))
 					str.append(C.baseClass()+", ");
-				
+
 				if(parms.containsKey("MAXSTATS"))
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 						str.append(CharStats.TRAITS[i]+"("+C.maxStat()[i]+"), ");

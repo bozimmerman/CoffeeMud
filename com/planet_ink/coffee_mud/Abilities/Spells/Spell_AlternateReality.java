@@ -50,7 +50,7 @@ public class Spell_AlternateReality extends Spell
 			Hashtable H=invoker().getGroupMembers(new Hashtable());
 			if(H.contains(affect.target()))
 			{
-				affect.source().tell("But you are on "+invoker().displayName()+"'s side!");
+				affect.source().tell("But you are on "+invoker().name()+"'s side!");
 				if(invoker().getVictim()!=affected)
 					((MOB)affected).setVictim(invoker().getVictim());
 				return false;

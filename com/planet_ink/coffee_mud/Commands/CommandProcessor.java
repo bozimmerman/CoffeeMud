@@ -14,7 +14,7 @@ public class CommandProcessor
 	public static Host myHost=null;
 
 	private CommandProcessor(){}
-	
+
 	public static void doCommand(MOB mob, Vector commands)
 		throws Exception
 	{
@@ -134,7 +134,7 @@ public class CommandProcessor
 				case CommandSet.BUG:
 					if(Util.combine(commands,1).length()>0)
 					{
-						ExternalPlay.DBWriteJournal("SYSTEM_BUGS",mob.name(),"ALL","BUG",Util.combine(commands,1),-1);
+						ExternalPlay.DBWriteJournal("SYSTEM_BUGS",mob.Name(),"ALL","BUG",Util.combine(commands,1),-1);
 						mob.tell("Thank you for your assistance in debugging CoffeeMud!");
 					}
 					else
@@ -374,7 +374,7 @@ public class CommandProcessor
 				case CommandSet.IDEA:
 					if(Util.combine(commands,1).length()>0)
 					{
-						ExternalPlay.DBWriteJournal("SYSTEM_IDEAS",mob.name(),"ALL","IDEA",Util.combine(commands,1),-1);
+						ExternalPlay.DBWriteJournal("SYSTEM_IDEAS",mob.Name(),"ALL","IDEA",Util.combine(commands,1),-1);
 						mob.tell("Thank you for your contribution!");
 					}
 					else
@@ -620,7 +620,7 @@ public class CommandProcessor
 				case CommandSet.TYPO:
 					if(Util.combine(commands,1).length()>0)
 					{
-						ExternalPlay.DBWriteJournal("SYSTEM_TYPOS",mob.name(),"ALL","TYPOS",Util.combine(commands,1),-1);
+						ExternalPlay.DBWriteJournal("SYSTEM_TYPOS",mob.Name(),"ALL","TYPOS",Util.combine(commands,1),-1);
 						mob.tell("Thank you for your assistance!");
 					}
 					else
@@ -719,7 +719,7 @@ public class CommandProcessor
 		else
 		{
 			Social social=Socials.FetchSocial(commands);
-			if(social!=null) 
+			if(social!=null)
 				social.invoke(mob,commands,null,false);
 			else
 				mob.tell("Huh?\n\r");
@@ -751,12 +751,12 @@ public class CommandProcessor
 				externalCommand=Util.combine(commands,2);
 		}
 		if(keepItDown)
-			Log.errOut("CommandProcessor",mob.name()+" starts system shutdown...");
+			Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");
 		else
 		if(externalCommand!=null)
-			Log.errOut("CommandProcessor",mob.name()+" starts system restarting '"+externalCommand+"'...");
+			Log.errOut("CommandProcessor",mob.Name()+" starts system restarting '"+externalCommand+"'...");
 		else
-			Log.errOut("CommandProcessor",mob.name()+" starts system restart...");
+			Log.errOut("CommandProcessor",mob.Name()+" starts system restart...");
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_SHUTDOWN,null);
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -834,7 +834,7 @@ public class CommandProcessor
 
 				if (thisSession==null) continue;
 				if (thisSession.killFlag() || (thisSession.mob()==null)) continue;
-				if (allFlag || thisSession.mob().displayName().equalsIgnoreCase(targetName))
+				if (allFlag || thisSession.mob().name().equalsIgnoreCase(targetName))
 				{
 					if (rawMode)
 						thisSession.rawPrintln(fileText.toString());

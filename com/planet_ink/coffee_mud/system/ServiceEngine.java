@@ -89,7 +89,7 @@ public class ServiceEngine
 		}
 		return false;
 	}
-	
+
 	public static void suspendTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,true);}
 	public static void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
 	private static boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
@@ -139,7 +139,7 @@ public class ServiceEngine
 		return false;
 	}
 
-	
+
 	public static StringBuffer report()
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -178,7 +178,7 @@ public class ServiceEngine
 				}
 			}
 		}
-			
+
 		buf.append("There are ^H"+totalTickers+"^? ticking objects in ^H"+tickGroup.size()+"^? threads.\n\r");
 		buf.append("The ticking objects have consumed: ^H"+Util.returnTime(totalMillis,totalTicks)+"^?.\n\r");
 		buf.append("The most active group, #^H"+topGroupNumber+"^?, has consumed: ^H"+Util.returnTime(topGroupMillis,topGroupTicks)+"^?.\n\r");
@@ -218,7 +218,7 @@ public class ServiceEngine
 		}
 		return buf;
 	}
-	
+
 	public static void tickAllTickers(Room here)
 	{
 		for(int v=0;v<tickGroup.size();v++)
@@ -293,7 +293,7 @@ public class ServiceEngine
 		}
 		Log.errOut("ServiceEngine","Shutdown complete.");
 	}
-	
+
 	public synchronized static void clearDebri(Room room, int taskCode)
 	{
 		for(int v=0;v<tickGroup.size();v++)

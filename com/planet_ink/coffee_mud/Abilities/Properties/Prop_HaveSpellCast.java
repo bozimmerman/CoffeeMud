@@ -24,12 +24,12 @@ public class Prop_HaveSpellCast extends Property
 		{
 			Ability A=(Ability)V.elementAt(v);
 			if(V.size()==1)
-				id+=A.displayName();
+				id+=A.name();
 			else
 			if(v==(V.size()-1))
-				id+="and "+A.displayName();
+				id+="and "+A.name();
 			else
-				id+=A.displayName()+", ";
+				id+=A.name()+", ";
 		}
 		if(V.size()>0)
 			id="Casts "+id+" on the owner.";
@@ -71,7 +71,7 @@ public class Prop_HaveSpellCast extends Property
 				}
 			}
 			x++;
-			
+
 		}
 		lastMOB=null;
 	}

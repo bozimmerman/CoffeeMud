@@ -16,7 +16,7 @@ public class Prayer_FountainLife extends Prayer
 	private Room SpringLocation=null;
 	private Item littleSpring=null;
 	public Environmental newInstance(){	return new Prayer_FountainLife();}
-	
+
 	public void unInvoke()
 	{
 		if(SpringLocation==null)
@@ -45,7 +45,7 @@ public class Prayer_FountainLife extends Prayer
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		if(!auto)mob.curState().setMana(0);
 
 		// now see if it worked
@@ -67,7 +67,7 @@ public class Prayer_FountainLife extends Prayer
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" starts flowing here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,0);

@@ -98,7 +98,7 @@ public class Spell_FleshStone extends Spell
 		// can get them out of it.
 		if(affected instanceof MOB)
 		{
-			//affectableStats.setReplacementName("a statue of "+affected.displayName());
+			//affectableStats.setReplacementName("a statue of "+affected.name());
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
@@ -181,7 +181,7 @@ public class Spell_FleshStone extends Spell
 					target.makePeace();
 					ExternalPlay.standIfNecessary(target);
 					statue=CMClass.getItem("GenItem");
-					String name=target.displayName();
+					String name=target.name();
 					if(name.startsWith("A ")) name="a "+name.substring(2);
 					if(name.startsWith("An ")) name="an "+name.substring(3);
 					if(name.startsWith("The ")) name="the "+name.substring(4);

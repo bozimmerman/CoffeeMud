@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_BlueMoon extends Chant
 {
 	public String ID() { return "Chant_BlueMoon"; }
-	public String name(){ return "Blue Moon";}  
+	public String name(){ return "Blue Moon";}
 	public String displayText(){return "(Blue Moon)";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
@@ -39,7 +39,7 @@ public class Chant_BlueMoon extends Chant
 		}
 		return true;
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!super.okAffect(myHost,affect))
@@ -59,7 +59,7 @@ public class Chant_BlueMoon extends Chant
 		}
 		return true;
 	}
-	
+
 	public static boolean moonInSky(Room R, Ability Acheck)
 	{
 		if(R==null) return false;
@@ -69,7 +69,7 @@ public class Chant_BlueMoon extends Chant
 			Ability A=R.fetchAffect(a);
 			if((A!=null)
 			&&(A!=Acheck)
-			&&(A.name().endsWith(" Moon"))
+			&&(A.Name().endsWith(" Moon"))
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
 				return true;
 		}

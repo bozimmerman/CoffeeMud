@@ -17,7 +17,7 @@ public class AbilityName extends StdWebMacro
 		{
 			Ability A=CMClass.getAbility(last);
 			if(A!=null)
-				return A.name();
+				return A.Name();
 		}
 		return "";
 	}

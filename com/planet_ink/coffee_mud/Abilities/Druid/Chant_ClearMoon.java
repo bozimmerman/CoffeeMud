@@ -8,13 +8,13 @@ import java.util.*;
 public class Chant_ClearMoon extends Chant
 {
 	public String ID() { return "Chant_ClearMoon"; }
-	public String name(){ return "Clear Moon";} 
+	public String name(){ return "Clear Moon";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_ClearMoon();}
 
-	
+
 	public void clearMoons(Environmental E)
 	{
 		if(E!=null)
@@ -23,11 +23,11 @@ public class Chant_ClearMoon extends Chant
 			Ability A=E.fetchAffect(a);
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-			&&(A.name().endsWith(" Moon")))
+			&&(A.Name().endsWith(" Moon")))
 				A.unInvoke();
 		}
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))

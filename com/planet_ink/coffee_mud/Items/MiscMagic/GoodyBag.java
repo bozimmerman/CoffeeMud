@@ -34,7 +34,7 @@ public class GoodyBag extends BagOfEndlessness
 			((MOB)owner()).addInventory(I);
 		I.recoverEnvStats();
 	}
-	
+
 	public void addMoney(int value)
 	{
 		Container I=(Container)CMClass.getItem("GenContainer");
@@ -42,11 +42,11 @@ public class GoodyBag extends BagOfEndlessness
 		I.setContainTypes(Container.CONTAIN_COINS);
 		putInBag(I);
 		Coins money=Money.makeNote(value,this.owner(),I);
-		I.setName(money.name()+" sleeve");
-		I.setDisplayText(money.name()+" sleeve has been left here.");
+		I.setName(money.Name()+" sleeve");
+		I.setDisplayText(money.Name()+" sleeve has been left here.");
 		I.recoverEnvStats();
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if((!alreadyFilled)&&(owner()!=null))

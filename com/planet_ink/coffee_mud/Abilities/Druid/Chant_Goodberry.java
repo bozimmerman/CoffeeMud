@@ -21,10 +21,10 @@ public class Chant_Goodberry extends Chant
 		&&(!(newTarget instanceof Pill))
 		&&(((Food)newTarget).material()==EnvResource.RESOURCE_BERRIES)
 		&&(newTarget.container()==originaltarget.container())
-		&&(newTarget.displayName().equals(originaltarget.displayName())))
+		&&(newTarget.name().equals(originaltarget.name())))
 		{
 			Pill newItem=(Pill)CMClass.getItem("GenPill");
-			newItem.setName(newTarget.displayName());
+			newItem.setName(newTarget.name());
 			newItem.setDisplayText(newTarget.displayText());
 			newItem.setDescription(newTarget.description());
 			newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
@@ -44,8 +44,8 @@ public class Chant_Goodberry extends Chant
 		}
 		return false;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
@@ -53,7 +53,7 @@ public class Chant_Goodberry extends Chant
 
 		Environmental owner=target.owner();
 		if(owner==null) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -61,10 +61,10 @@ public class Chant_Goodberry extends Chant
 
 		if((!(target instanceof Food))||(((Food)target).material()!=EnvResource.RESOURCE_BERRIES))
 		{
-			mob.tell(target.displayName()+" is not berries.");
+			mob.tell(target.name()+" is not berries.");
 			return false;
 		}
-		
+
 		if(success)
 		{
 			int numAffected=Dice.roll(1,adjustedLevel(mob)/7,1);

@@ -17,7 +17,7 @@ public class Pregnancy extends StdAbility
 		{
 			int y=text().indexOf("/",x+1);
 			if(y<0) return "";
-			long start=Util.s_long(text().substring(0,x));			
+			long start=Util.s_long(text().substring(0,x));
 			long days=((System.currentTimeMillis()-start)/Host.TICK_TIME)/Host.TICKS_PER_DAY; // down to days;
 			long months=days/30;
 			if(days<1)
@@ -42,7 +42,7 @@ public class Pregnancy extends StdAbility
 	public int classificationCode(){return Ability.PROPERTY;}
 	private boolean labor=false;
 	private int ticksInLabor=0;
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -68,7 +68,7 @@ public class Pregnancy extends StdAbility
 						ticksInLabor++;
 						if(ticksInLabor>45)
 						{
-							String name=mob.name()+" jr.";
+							String name=mob.Name()+" jr.";
 							Vector races=new Vector();
 							races.addElement(mob.baseCharStats().getMyRace().ID());
 							char gender='F';
@@ -86,15 +86,15 @@ public class Pregnancy extends StdAbility
 								}
 								catch(java.io.IOException e){};
 							}
-							String desc="The "+sondat+" of "+mob.name();
+							String desc="The "+sondat+" of "+mob.Name();
 							if(z>y)
 							{
 								races.addElement(text().substring(z+1));
 								desc+=" and "+text().substring(y+1,z);
 							}
 							desc+=".";
-					
-							mob.location().show(mob,null,Affect.MSG_NOISE,"***** "+mob.displayName().toUpperCase()+" GIVE(S) BIRTH ******");
+
+							mob.location().show(mob,null,Affect.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
 							Ability A=mob.fetchAffect(ID());
 							Ability A2=mob.fetchAbility(ID());
 							if(A!=null) mob.delAffect(A);
@@ -143,7 +143,7 @@ public class Pregnancy extends StdAbility
 						}
 						else
 							mob.tell("You are in labor!!");
-							
+
 					}
 					else
 					if((months<=1)&&(Dice.rollPercentage()<2))
@@ -156,7 +156,7 @@ public class Pregnancy extends StdAbility
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -169,7 +169,7 @@ public class Pregnancy extends StdAbility
 		long end=start+add;
 		if(success)
 		{
-			setMiscText(start+"/"+end+"/"+mob.ID()+"/"+mob.charStats().getMyRace().ID());
+			setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
 			Ability A=(Ability)copyOf();
 			target.addAbility(A);
 			A.autoInvocation(target);

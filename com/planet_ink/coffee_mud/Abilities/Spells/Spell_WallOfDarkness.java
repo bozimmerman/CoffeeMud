@@ -36,7 +36,7 @@ public class Spell_WallOfDarkness extends Spell
 		{
 			if((affect.tool()!=null)&&(affect.tool() instanceof Ability))
 			{
-				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().displayName()+".");
+				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
 				return false;
 			}
 			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
@@ -45,7 +45,7 @@ public class Spell_WallOfDarkness extends Spell
 			&&(!((Weapon)affect.tool()).amWearingAt(Item.INVENTORY))
 			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
-				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().displayName()+".");
+				mob.tell("You cannot see through the wall of darkness to target "+mob.getVictim().name()+".");
 				if(mob.isMonster())
 					ExternalPlay.remove(mob,(Weapon)affect.tool(),false);
 				return false;

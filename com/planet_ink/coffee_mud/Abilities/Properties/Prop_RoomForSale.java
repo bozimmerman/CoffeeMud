@@ -11,14 +11,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	public String name(){ return "Putting a room up for sale";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public Environmental newInstance(){	return new Prop_RoomForSale();}
-	
+
 	private final static String theStr=" This lot is for sale (look id).";
 	private boolean confirmedUser=false;
 	private int lastNumItems=-1;
 
 	public String accountForYourself()
 	{ return "For Sale";	}
-	
+
 	public int landPrice()
 	{
 		int price=0;
@@ -41,28 +41,28 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(text().indexOf("/")<0) return "";
 		return text().substring(0,text().indexOf("/"));
 	}
-	
+
 	public void setLandOwner(String owner)
 	{
 		int price=landPrice();
 		setMiscText(owner+"/"+price);
 	}
-	
+
 	public void updateTitle()
 	{
 		Room R=CMMap.getRoom(landRoomID());
 		if(R==null) return;
 		ExternalPlay.DBUpdateRoom(R);
 	}
-	
+
 	public String landRoomID(){
-		if(affected!=null)
-			return affected.ID();
+		if((affected!=null)&&(affected instanceof Room))
+			return ((Room)affected).roomID();
 		return "";
 	}
-	
+
 	public void setLandRoomID(String landID){}
-	
+
 	public static LandTitle getLandTitle(Room R)
 	{
 		LandTitle oldTitle=null;
@@ -71,7 +71,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			{ oldTitle=(LandTitle)R.fetchAffect(a); break;}
 		return oldTitle;
 	}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
@@ -94,7 +94,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			ExternalPlay.DBUpdateTheseMOBs(R,mobs);
 		}
 	}
-	
+
 	public void colorForSale(Room R, boolean reset)
 	{
 		if(R.description().indexOf(theStr)<0)
@@ -106,21 +106,21 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 			R.setDescription(R.description()+theStr);
 			ExternalPlay.DBUpdateRoom(R);
-			
+
 			Item I=R.fetchItem(null,"id$");
 			if((I==null)||(!I.ID().equals("GenWallpaper")))
 			{
 				I=CMClass.getItem("GenWallpaper");
 				I.setReadable(true);
 				I.setName("id");
-				I.setReadableText("This room is "+R.ID());
-				I.setDescription("This room is "+R.ID());
+				I.setReadableText("This room is "+R.roomID());
+				I.setDescription("This room is "+R.roomID());
 				R.addItem(I);
 				ExternalPlay.DBUpdateItems(R);
 			}
 		}
 	}
-	
+
 	public Vector getRooms()
 	{
 		Vector V=new Vector();
@@ -128,7 +128,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		if(R!=null) V.addElement(R);
 		return V;
 	}
-	
+
 	public void updateLot(Room R, LandTitle T)
 	{
 		if(R==null) R=CMMap.getRoom(landRoomID());
@@ -171,24 +171,24 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					return;
 				}
 			}
-			
+
 			int x=R.description().indexOf(theStr);
 			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x)+R.description().substring(x+1));
 				ExternalPlay.DBUpdateRoom(R);
 			}
-			
-			// this works on the priciple that 
+
+			// this works on the priciple that
 			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
 			// 2. if an item has ONLY been added, the dispossessiontime will be != null
 			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
-			if(lastNumItems<0) 
+			if(lastNumItems<0)
 				lastNumItems=R.numItems();
-			else 
+			else
 			if(R.numItems()!=lastNumItems)
 				updateItems=true;
-			
+
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);

@@ -22,7 +22,7 @@ public class Mage extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Mage()
 	{
 		super();
@@ -259,7 +259,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_DemonGate",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_PolymorphSelf",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Permanency",false);
-			
+
 			// level 30
 			CMAble.addCharAbilityMapping(ID(),30,"Spell_Wish",false);
 		}
@@ -294,9 +294,9 @@ public class Mage extends StdCharClass
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
-		
+
 		Vector grantable=new Vector();
-		
+
 		int level=mob.charStats().getClassLevel(this);
 		int numSpells=3;
 		if(level<8)
@@ -339,7 +339,7 @@ public class Mage extends StdCharClass
 			}
 		}
 	}
-	
+
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");
@@ -383,7 +383,7 @@ public class Mage extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 						return false;
 					}
 				}

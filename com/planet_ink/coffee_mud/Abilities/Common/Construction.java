@@ -89,7 +89,7 @@ public class Construction extends CommonSkill
 					case BUILD_ROOF:
 						{
 							Room R=CMClass.getLocale("WoodRoom");
-							R.setID(room.ID());
+							R.setRoomID(room.roomID());
 							R.setDisplayText(room.displayText());
 							R.setDescription(room.description());
 							R.setArea(room.getArea());
@@ -213,7 +213,7 @@ public class Construction extends CommonSkill
 							if(dir<0)
 							{
 								Room R=CMClass.getLocale("Plains");
-								R.setID(room.ID());
+								R.setRoomID(room.roomID());
 								R.setDisplayText(room.displayText());
 								R.setDescription(room.description());
 								R.setArea(room.getArea());

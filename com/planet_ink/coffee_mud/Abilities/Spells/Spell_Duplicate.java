@@ -23,7 +23,7 @@ public class Spell_Duplicate extends Spell
 			mob.tell("You'll need to pick it up first.");
 			return false;
 		}
-				
+
 		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
 		{
 			mob.tell("You need to be at full mana to cast this.");
@@ -35,7 +35,7 @@ public class Spell_Duplicate extends Spell
 
 		mob.tell("You lose "+(target.envStats().level()*5)+" experience points.");
 		mob.charStats().getCurrentClass().loseExperience(mob,target.envStats().level()*5);
-		
+
 		if(!auto)mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
@@ -46,7 +46,7 @@ public class Spell_Duplicate extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,target.displayName()+" blurs and divides into two!");
+				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
 				Item newTarget=(Item)target.copyOf();
 				newTarget.recoverEnvStats();
 				if(target.owner() instanceof MOB)

@@ -42,16 +42,16 @@ public class StdCoins extends StdItem implements Coins
 	public String displayText()
 	{
 		if(envStats().ability()==1)
-			return displayName()+" sits here.";
+			return name()+" sits here.";
 		else
-			return displayName()+" sit here.";
+			return name()+" sit here.";
 	}
 	public void recoverEnvStats()
 	{
 		baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 	}
-	
+
 	public boolean putCoinsBack()
 	{
 		Coins alternative=null;

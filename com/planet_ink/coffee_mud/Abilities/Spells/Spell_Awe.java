@@ -25,7 +25,7 @@ public class Spell_Awe extends Spell
 			&&(affect.source().getVictim()!=target)
 			&&(Dice.rollPercentage()>((affect.source().envStats().level()-target.envStats().level())*10)))
 			{
-				affect.source().tell("You are too much in awe of "+target.displayName());
+				affect.source().tell("You are too much in awe of "+target.name());
 				if(target.getVictim()==affect.source())
 				{
 					target.makePeace();

@@ -18,7 +18,7 @@ public class Ranger_FindWater extends StdAbility
 	private static final String[] triggerStrings = {"FINDWATER"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	
+
 	private Vector theTrail=null;
 	public int nextDirection=-2;
 	public Environmental newInstance(){	return new Ranger_FindWater();}
@@ -28,7 +28,7 @@ public class Ranger_FindWater extends StdAbility
 			return;
 		super.unInvoke();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -120,15 +120,15 @@ public class Ranger_FindWater extends StdAbility
 			if(((I instanceof Drink))
 			&&(((Drink)I).containsDrink())
 			&&(Sense.canBeSeenBy(I,mob)))
-				msg.append(I.displayName()+" contains some sort of liquid.\n\r");
+				msg.append(I.name()+" contains some sort of liquid.\n\r");
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
-			if(msg.toString().indexOf(I.container().displayName()+" contains some sort of liquid.")<0)
-				msg.append(I.container().displayName()+" contains some sort of liquid.\n\r");
+			if(msg.toString().indexOf(I.container().name()+" contains some sort of liquid.")<0)
+				msg.append(I.container().name()+" contains some sort of liquid.\n\r");
 		return msg.toString();
 	}
-	
+
 	public String waterHere(MOB mob, Environmental E, Item container)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -184,7 +184,7 @@ public class Ranger_FindWater extends StdAbility
 				StringBuffer msg2=new StringBuffer("");
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)
-					return E.displayName()+" is carrying some liquids.";
+					return E.name()+" is carrying some liquids.";
 			}
 			if(CoffeeUtensils.getShopKeeper((MOB)E)!=null)
 			{
@@ -196,14 +196,14 @@ public class Ranger_FindWater extends StdAbility
 					if(E2 instanceof Item)
 						waterCheck(mob,(Item)E2,container,msg2);
 					if(msg2.length()>0)
-						return E.displayName()+" has some liquids in stock.";
+						return E.name()+" has some liquids in stock.";
 				}
 			}
 		}
 		return msg.toString();
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.fetchAffect(this.ID())!=null)
@@ -221,17 +221,17 @@ public class Ranger_FindWater extends StdAbility
 			mob.tell(here);
 			return true;
 		}
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		Vector rooms=new Vector();
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(waterHere(mob,R,null).length()>0) 
+			if(waterHere(mob,R,null).length()>0)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()<=0)
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -239,7 +239,7 @@ public class Ranger_FindWater extends StdAbility
 			if(waterHere(mob,R,null).length()>0)
 				rooms.addElement(R);
 		}
-		
+
 		if(rooms.size()>0)
 			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);
 

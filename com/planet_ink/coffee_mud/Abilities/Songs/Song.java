@@ -20,7 +20,7 @@ public class Song extends StdAbility
 	protected boolean skipStandardSongInvoke(){return false;}
 	protected boolean mindAttack(){return false;}
 	protected boolean skipStandardSongTick(){return false;}
-	protected String songOf(){return "Song of "+displayName();}
+	protected String songOf(){return "Song of "+name();}
 
 	public Song referenceSong=null;
 

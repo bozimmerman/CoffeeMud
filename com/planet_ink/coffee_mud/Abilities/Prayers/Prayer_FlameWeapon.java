@@ -48,7 +48,7 @@ public class Prayer_FlameWeapon extends Prayer
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= baseEnvStats().level();
-					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,"The flame around "+affected.displayName()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,"The flame around "+affected.name()+" "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,flameDamage)+" <T-NAME>!"));
 					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.NO_EFFECT,Affect.MASK_HURT+flameDamage,Affect.NO_EFFECT,null));
 				}
 			}
@@ -69,12 +69,12 @@ public class Prayer_FlameWeapon extends Prayer
 				&&((((Weapon)affected).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
 				{
 					if((((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-						((MOB)((Item)affected).owner()).tell("The flames around "+((Item)affected).displayName()+" consume it.");
+						((MOB)((Item)affected).owner()).tell("The flames around "+((Item)affected).name()+" consume it.");
 					destroyMe=(Item)affected;
 				}
 				else
 				if((((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-					((MOB)((Item)affected).owner()).tell("The flames around "+((Item)affected).displayName()+" fade.");
+					((MOB)((Item)affected).owner()).tell("The flames around "+((Item)affected).name()+" fade.");
 			}
 		}
 		super.unInvoke();
@@ -95,7 +95,7 @@ public class Prayer_FlameWeapon extends Prayer
 		}
 		if(((Weapon)target).fetchAffect(this.ID())!=null)
 		{
-			mob.tell(target.displayName()+" is already enflamed.");
+			mob.tell(target.name()+" is already enflamed.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

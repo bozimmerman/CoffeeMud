@@ -7,6 +7,7 @@ import java.util.*;
 
 public class UnderSaltWaterGrid extends StdGrid
 {
+	public String ID(){return "UnderSaltWaterGrid";}
 	public UnderSaltWaterGrid()
 	{
 		super();

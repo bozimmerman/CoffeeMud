@@ -17,7 +17,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Room R2=R.getRoomInDir(d);
-			if((R2!=null)&&(R2.ID().length()>0)&&(!V.contains(R2)))
+			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))
 			{
 				Ability A=R2.fetchAffect(ID());
 				if((R2.getArea()==R.getArea())&&(A!=null))
@@ -30,7 +30,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			}
 		}
 	}
-	
+
 	public Vector getRooms()
 	{
 		Room R=CMMap.getRoom(landRoomID());
@@ -39,8 +39,8 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		fillCluster(R,V);
 		return V;
 	}
-	
-	
+
+
 	public void updateTitle()
 	{
 		Vector V=getRooms();
@@ -56,18 +56,18 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			ExternalPlay.DBUpdateRoom(R);
 		}
 	}
-	
+
 	public String landRoomID(){
-		if(affected!=null)
-			return affected.ID();
+		if((affected!=null)&&(affected instanceof Room))
+			return ((Room)affected).roomID();
 		return "";
 	}
-	
+
 	public void justUpdateLot(Room R, LandTitle T)
 	{
 		super.updateLot(R,T);
 	}
-	
+
 	public void updateLot(Room R, LandTitle T)
 	{
 		if(R==null) R=CMMap.getRoom(landRoomID());

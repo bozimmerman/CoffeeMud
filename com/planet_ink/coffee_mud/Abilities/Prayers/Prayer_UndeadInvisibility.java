@@ -41,7 +41,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			   &&(affect.source().charStats().getMyRace().racialCategory().equals("Undead"))
 			   &&(affect.source().getVictim()!=target))
 			{
-				affect.source().tell("You don't see "+target.displayName());
+				affect.source().tell("You don't see "+target.name());
 				if(target.getVictim()==affect.source())
 				{
 					target.makePeace();
@@ -72,7 +72,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 	{
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already affected by "+displayName()+".");
+			mob.tell("You are already affected by "+name()+".");
 			return false;
 		}
 

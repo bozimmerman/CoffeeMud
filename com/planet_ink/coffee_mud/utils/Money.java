@@ -154,7 +154,7 @@ public class Money
 		changeBag.setContainTypes(Container.CONTAIN_COINS);
 		changeBag.setDescription("");
 		banker.addInventory(changeBag);
-		
+
 		int totalWeight=0;
 		while(value>=10000000)
 		{
@@ -241,7 +241,7 @@ public class Money
 				return null;
 			}
 		}
-		
+
 		if(customer.isMine(changeBag))
 		{
 			Vector V=changeBag.getContents();
@@ -253,7 +253,7 @@ public class Money
 				&&(I!=changeBag)
 				&&(I instanceof Container)
 				&&(((Container)I).isOpen())
-				&&(I.name().equals(changeBag.name())))
+				&&(I.Name().equals(changeBag.Name())))
 				{
 					for(int v=0;v<V.size();v++)
 						((Item)V.elementAt(v)).setContainer(I);
@@ -267,7 +267,7 @@ public class Money
 			ExternalPlay.drop(banker,changeBag,true);
 		return changeBag;
 	}
-	
+
 
 	public static void subtractMoney(MOB banker, MOB mob, int amount)
 	{

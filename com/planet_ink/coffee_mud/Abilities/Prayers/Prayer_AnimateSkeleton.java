@@ -21,7 +21,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(target.displayName()+" doesn't look dead yet.");
+			mob.tell(target.name()+" doesn't look dead yet.");
 			return false;
 		}
 		if(!(target instanceof DeadBody))

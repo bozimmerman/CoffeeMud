@@ -76,7 +76,7 @@ public class Thiefness extends CombatAbilities
 					if(I!=null)
 						V.addElement(I.ID());
 				}
-				V.addElement(victim.displayName());
+				V.addElement(victim.name());
 				if(A!=null)
 				{
 					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));

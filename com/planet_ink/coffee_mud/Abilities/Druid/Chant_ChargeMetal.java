@@ -31,7 +31,7 @@ public class Chant_ChargeMetal extends Chant
 		}
 		return null;
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(!super.okAffect(myHost,msg))
@@ -104,7 +104,7 @@ public class Chant_ChargeMetal extends Chant
 		else
 		if(target instanceof Item)
 		{
-			mob.tell(target.displayName()+" is not made of metal!");
+			mob.tell(target.name()+" is not made of metal!");
 			return false;
 		}
 		// the invoke method for spells receives as

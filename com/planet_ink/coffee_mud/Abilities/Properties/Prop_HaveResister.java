@@ -159,7 +159,7 @@ public class Prop_HaveResister extends Property
 				{
 					if(Prop_HaveResister.checkProtection(me,"teleport"))
 					{
-						affect.source().tell("You can't seem to fixate on '"+mob.displayName()+"'.");
+						affect.source().tell("You can't seem to fixate on '"+mob.name()+"'.");
 						return false;
 					}
 				}

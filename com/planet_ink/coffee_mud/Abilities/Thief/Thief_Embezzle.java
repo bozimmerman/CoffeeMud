@@ -26,7 +26,7 @@ public class Thief_Embezzle extends ThiefSkill
 			return false;
 		}
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,0));
-		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		if((target==null)||(target.amDead())||(!Sense.canBeSeenBy(target,mob)))
 		{
@@ -35,29 +35,29 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		if(!(target instanceof Banker))
 		{
-			mob.tell("You can't embezzle from "+target.displayName()+"'s accounts.");
+			mob.tell("You can't embezzle from "+target.name()+"'s accounts.");
 			return false;
 		}
 		Banker bank=(Banker)target;
 		Ability A=target.fetchAffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.displayName()+" is watching "+target.charStats().hisher()+" books too closely.");
+			mob.tell(target.name()+" is watching "+target.charStats().hisher()+" books too closely.");
 			return false;
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		
+
 		if(((!target.mayIFight(mob))&&(levelDiff<10)))
 		{
 			mob.tell("You cannot embezzle from "+target.charStats().himher()+".");
 			return false;
 		}
-		
-		Item myCoins=bank.findDepositInventory(mob.name(),"1");
+
+		Item myCoins=bank.findDepositInventory(mob.Name(),"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
-			mob.tell("You don't have your own account with "+target.displayName()+".");
+			mob.tell("You don't have your own account with "+target.name()+".");
 			return false;
 		}
 		Vector accounts=bank.getAccountNames();
@@ -72,7 +72,7 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		if(choices.size()==0)
 		{
-			mob.tell(target.displayName()+" doesn't seem to maintain any accounts worth embezzling from.");
+			mob.tell(target.name()+" doesn't seem to maintain any accounts worth embezzling from.");
 			return false;
 		}
 		victim=(String)choices.elementAt(Dice.roll(1,choices.size(),-1));
@@ -82,7 +82,7 @@ public class Thief_Embezzle extends ThiefSkill
 		if((classLevel>0)
 		&&(amount>(1000*classLevel)))
 		   amount=(1000*classLevel);
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -97,9 +97,9 @@ public class Thief_Embezzle extends ThiefSkill
 				bank.delDepositInventory(victim,coins);
 				coins.setNumberOfCoins(coins.numberOfCoins()-amount);
 				bank.addDepositInventory(victim,coins);
-				bank.delDepositInventory(mob.name(),coins);
+				bank.delDepositInventory(mob.Name(),coins);
 				((Coins)myCoins).setNumberOfCoins(((Coins)myCoins).numberOfCoins()+amount);
-				bank.addDepositInventory(mob.name(),coins);
+				bank.addDepositInventory(mob.Name(),coins);
 			}
 		}
 		else

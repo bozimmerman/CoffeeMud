@@ -16,11 +16,11 @@ public class Gnome extends StdRace
 	protected int weightVariance(){return 50;}
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Gnome";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return true;}
 
@@ -63,12 +63,12 @@ public class Gnome extends StdRace
 		s1.setName("a small patchy tunic");
 		s1.setDisplayText("a small patchy tunic has been left here.");
 		s1.setDescription("This small tunic is made of bits and pieces of many other shirts, it seems.  There are lots of tiny hidden compartments on it, and loops for hanging tools.");
-		
+
 		Armor s2=CMClass.getArmor("GenShoes");
 		s2.setName("a pair of small shoes");
 		s2.setDisplayText("a pair of small shoes lie here.");
 		s2.setDescription("This pair of small shoes appears to be a hodgepodge of materials and workmanship.");
-			
+
 		Armor p1=CMClass.getArmor("GenPants");
 		p1.setName("a pair of small patchy pants");
 		p1.setDisplayText("a pair of small patchy pants lie here.");
@@ -82,36 +82,36 @@ public class Gnome extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is curiously close to death.^N";
+			return "^r" + mob.name() + "^r is curiously close to death.^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName() + "^r is covered in excessive bloody wounds.^N";
+			return "^r" + mob.name() + "^r is covered in excessive bloody wounds.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName() + "^r is bleeding badly from a plethora of small wounds.^N";
+			return "^r" + mob.name() + "^r is bleeding badly from a plethora of small wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName() + "^y has numerous bloody wounds and unexpected gashes.^N";
+			return "^y" + mob.name() + "^y has numerous bloody wounds and unexpected gashes.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName() + "^y has some alarming wounds and small gashes.^N";
+			return "^y" + mob.name() + "^y has some alarming wounds and small gashes.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName() + "^p has some small unwanted bloody wounds.^N";
+			return "^p" + mob.name() + "^p has some small unwanted bloody wounds.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName() + "^p is cut and bruised in strange places.^N";
+			return "^p" + mob.name() + "^p is cut and bruised in strange places.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName() + "^g has some small cuts and bruises.^N";
+			return "^g" + mob.name() + "^g has some small cuts and bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName() + "^g has a few bruises and interesting scratches.^N";
+			return "^g" + mob.name() + "^g has a few bruises and interesting scratches.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName() + "^g has a few small curious bruises.^N";
+			return "^g" + mob.name() + "^g has a few small curious bruises.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect health^N";
+			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
 	public Vector myResources()
 	{

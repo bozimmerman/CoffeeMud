@@ -7,8 +7,7 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 public class MagicShelter extends StdRoom
 {
-
-
+	public String ID(){return "MagicShelter";}
 	public MagicShelter()
 	{
 		super();

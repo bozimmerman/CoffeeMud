@@ -9,7 +9,7 @@ import java.util.*;
 public class ShopKeepers
 {
 	private ShopKeepers(){}
-	
+
 	private static Vector shopkeepers(MOB mob)
 	{
 		if(mob==null) return null;
@@ -31,9 +31,9 @@ public class ShopKeepers
 	public static MOB parseShopkeeper(MOB mob, Vector commands, String error)
 	{
 		commands.removeElementAt(0);
-		
+
 		Vector V=shopkeepers(mob);
-		if(V.size()==0) 
+		if(V.size()==0)
 		{
 			mob.tell(error);
 			return null;
@@ -70,8 +70,8 @@ public class ShopKeepers
 			return shopkeeper;
 		}
 	}
-	
-	
+
+
 	public static boolean doesOwnThisProperty(MOB mob, Room room)
 	{
 		String titleInName="";
@@ -84,7 +84,7 @@ public class ShopKeepers
 		}
 		if(titleInName==null) return false;
 		if(titleInName.length()==0) return false;
-		if(titleInName.equals(mob.name())) return true;
+		if(titleInName.equals(mob.Name())) return true;
 		if(titleInName.equals(mob.getClanID()))
 		{
 			if((mob.getClanRole()==Clan.POS_LEADER)
@@ -93,7 +93,7 @@ public class ShopKeepers
 		}
 		return false;
 	}
-	
+
 	public static void sell(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=parseShopkeeper(mob,commands,"Sell what to whom?");
@@ -103,7 +103,7 @@ public class ShopKeepers
 			mob.tell("Sell what?");
 			return;
 		}
-		
+
 		String thisName=Util.combine(commands,0);
 		boolean doneSomething=false;
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -176,7 +176,7 @@ public class ShopKeepers
 		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
 		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(shopkeeper.displayName()+" is not a shopkeeper!");
+			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
 			return;
 		}
 		do
@@ -212,10 +212,10 @@ public class ShopKeepers
 		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
 		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(shopkeeper.displayName()+" is not a shopkeeper!");
+			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
 			return;
 		}
-		
+
 		do
 		{
 			Environmental thisThang=CoffeeUtensils.getShopKeeper(shopkeeper).getStock(thisName,mob);
@@ -232,8 +232,8 @@ public class ShopKeepers
 			doneSomething=true;
 		}while(allFlag);
 	}
-	
-	
+
+
 
 	public static void deposit(MOB mob, Vector commands)
 	{
@@ -241,7 +241,7 @@ public class ShopKeepers
 		if(shopkeeper==null) return;
 		if(!(shopkeeper instanceof Banker))
 		{
-			mob.tell("You can not deposit anything with "+shopkeeper.displayName()+".");
+			mob.tell("You can not deposit anything with "+shopkeeper.name()+".");
 			return;
 		}
 		if(commands.size()==0)
@@ -265,16 +265,16 @@ public class ShopKeepers
 			return;
 		mob.location().send(mob,newMsg);
 	}
-	
 
-	
+
+
 	public static void withdraw(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=parseShopkeeper(mob,commands,"Withdraw how much from whom?");
 		if(shopkeeper==null) return;
 		if(!(shopkeeper instanceof Banker))
 		{
-			mob.tell("You can not withdraw anything from "+shopkeeper.displayName()+".");
+			mob.tell("You can not withdraw anything from "+shopkeeper.name()+".");
 			return;
 		}
 		if(commands.size()==0)
@@ -291,7 +291,7 @@ public class ShopKeepers
 				mob.tell("Withdraw how much?");
 				return;
 			}
-			
+
 			commands.removeElement(commands.lastElement());
 		}
 		if(((String)commands.lastElement()).equalsIgnoreCase("gold"))
@@ -304,13 +304,13 @@ public class ShopKeepers
 			}
 			commands.removeElement(commands.lastElement());
 		}
-		   
+
 		String thisName=Util.combine(commands,0);
 		Item thisThang=null;
 		if(thisName.equalsIgnoreCase("all"))
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob.name(),""+Integer.MAX_VALUE);
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob.Name(),""+Integer.MAX_VALUE);
 		else
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob.name(),thisName);
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob.Name(),thisName);
 		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("That doesn't appear to be available.  Try LIST.");
@@ -330,19 +330,19 @@ public class ShopKeepers
 				}
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.displayName()+".");
+		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".");
 		if(!mob.location().okAffect(mob,newMsg))
 			return;
 		mob.location().send(mob,newMsg);
 	}
-	
-	
-	
+
+
+
 	public static void list(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
 		Vector V=new Vector();
-		if(commands.size()==0)	
+		if(commands.size()==0)
 			V=shopkeepers(mob);
 		else
 		{
@@ -373,6 +373,6 @@ public class ShopKeepers
 		}
 	}
 
-	
-	
+
+
 }

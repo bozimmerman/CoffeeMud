@@ -32,9 +32,9 @@ public class Spell_Cogniportive extends Spell
 						if((M!=null)
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.name())!=null)
-						&&(!M.fetchInventory(me.name()).amWearingAt(Item.INVENTORY)))
-							return M.getStartRoom().ID();
+						&&(M.fetchInventory(me.Name())!=null)
+						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+							return M.getStartRoom().roomID();
 					}
 				}
 			}
@@ -50,8 +50,8 @@ public class Spell_Cogniportive extends Spell
 						if((M!=null)&&(CoffeeUtensils.getShopKeeper(M)!=null))
 						{
 							ShopKeeper S=CoffeeUtensils.getShopKeeper(M);
-							if(S.doIHaveThisInStock(me.name(),null))
-								return M.getStartRoom().ID();
+							if(S.doIHaveThisInStock(me.Name(),null))
+								return M.getStartRoom().roomID();
 						}
 					}
 				}
@@ -68,9 +68,9 @@ public class Spell_Cogniportive extends Spell
 						if((M!=null)
 						&&(M.isMonster())
 						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.name())!=null)
-						&&(M.fetchInventory(me.name()).amWearingAt(Item.INVENTORY)))
-							return M.getStartRoom().ID();
+						&&(M.fetchInventory(me.Name())!=null)
+						&&(M.fetchInventory(me.Name()).amWearingAt(Item.INVENTORY)))
+							return M.getStartRoom().roomID();
 					}
 				}
 			}
@@ -78,13 +78,13 @@ public class Spell_Cogniportive extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R.fetchItem(null,me.name())!=null))
-				   return R.ID();
+				if((R!=null)&&(R.fetchItem(null,me.Name())!=null))
+				   return R.roomID();
 			}
 		}
 		return "";
 	}
-	
+
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
 						   Item me)
@@ -101,7 +101,7 @@ public class Spell_Cogniportive extends Spell
 				target=afftarget;
 			Room home=CMMap.getRoom(text());
 			if(home==null)
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.displayName()+".");
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
 			else
 			{
 				Hashtable h=ExternalPlay.properTargets(this,mob,false);
@@ -130,11 +130,11 @@ public class Spell_Cogniportive extends Spell
 			}
 		}
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
-		
+
 		if(affected instanceof Item)
 		switch(affect.targetMinor())
 		{
@@ -167,7 +167,7 @@ public class Spell_Cogniportive extends Spell
 		}
 		super.affect(myHost,affect);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
@@ -182,7 +182,7 @@ public class Spell_Cogniportive extends Spell
 		Ability A=target.fetchAffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.displayName()+" is already cogniportive!");
+			mob.tell(target.name()+" is already cogniportive!");
 			return false;
 		}
 

@@ -46,9 +46,9 @@ public class ClanCommands
 							M.setName(qual);
 							if(ExternalPlay.DBReadUserOnly(M))
 							{
-								clanAnnounce(mob,"New Member: "+mob.ID());
+								clanAnnounce(mob,"New Member: "+mob.Name());
 								ExternalPlay.DBUpdateClan(qual, mob.getClanID(), Clan.POS_MEMBER);
-								mob.tell(M.ID()+" has been accepted into to "+C.typeName()+" '"+C.ID()+"'.");
+								mob.tell(M.Name()+" has been accepted into to "+C.typeName()+" '"+C.ID()+"'.");
 								ExternalPlay.DBReadMOB(M);
 								addClanHomeSpell(M);
 								return false;
@@ -61,10 +61,10 @@ public class ClanCommands
 						}
 						else
 						{
-							clanAnnounce(mob,"New Member: "+mob.ID());
+							clanAnnounce(mob,"New Member: "+mob.Name());
 							ExternalPlay.DBUpdateClan(qual, mob.getClanID(), Clan.POS_MEMBER);
-							mob.tell(M.ID()+" has been accepted into "+C.typeName()+" '"+C.ID()+"'.");
-							M.tell(mob.ID()+" has accepted you as a member of "+C.typeName()+" '"+C.ID()+"'.");
+							mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.ID()+"'.");
+							M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.ID()+"'.");
 							addClanHomeSpell(M);
 							return false;
 						}
@@ -87,7 +87,7 @@ public class ClanCommands
 		mob.tell(msg.toString());
 		return false;
 	}
-	
+
 	public static boolean clanapply(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
@@ -102,10 +102,10 @@ public class ClanCommands
 					if((AbilityHelper.zapperCheck(C.getAcceptanceSettings(),mob))
 					&&(AbilityHelper.zapperCheck("-<"+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL),mob)))
 					{
-						ExternalPlay.DBUpdateClan(mob.ID(), C.ID(), Clan.POS_APPLICANT);
+						ExternalPlay.DBUpdateClan(mob.Name(), C.ID(), Clan.POS_APPLICANT);
 						Vector msgVector=new Vector();
 						msgVector.addElement(new String("CLANTALK"));
-						msgVector.addElement(new String("New Applicant: "+mob.ID()));
+						msgVector.addElement(new String("New Applicant: "+mob.Name()));
 						Channels.channel(mob,msgVector,true);
 					}
 					else
@@ -130,7 +130,7 @@ public class ClanCommands
 		mob.tell(msg.toString());
 		return false;
 	}
-	
+
 	public static boolean clanassign(MOB mob, Vector commands)
 	{
 		String qual=((String)commands.elementAt(1)).toUpperCase();
@@ -173,7 +173,7 @@ public class ClanCommands
 							if(ExternalPlay.DBReadUserOnly(M))
 							{
 								newPos=changeRole(M,C,pos);
-								mob.tell(M.ID()+" has been assigned to be a "+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
+								mob.tell(M.Name()+" has been assigned to be a "+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
 								return false;
 							}
 							else
@@ -185,7 +185,7 @@ public class ClanCommands
 						else
 						{
 							newPos=changeRole(M,C,pos);
-							mob.tell(M.ID()+" has been assigned to be a "+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
+							mob.tell(M.Name()+" has been assigned to be a "+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
 							M.tell("You have been assigned to be a"+Clans.getRoleName(newPos,false,false)+" of "+C.typeName()+" '"+C.ID()+"'.");
 							return false;
 						}
@@ -236,11 +236,11 @@ public class ClanCommands
 			mob.tell("Unknown role '"+position+"'");
 			return 0;
 		}
-		clanAnnounce(mob,mob.ID()+" changed from "+Clans.getRoleName(mob.getClanRole(),true,false)+" to "+Clans.getRoleName(newPos,true,false));
-		ExternalPlay.DBUpdateClan(mob.ID(), clan.ID(), newPos);
+		clanAnnounce(mob,mob.Name()+" changed from "+Clans.getRoleName(mob.getClanRole(),true,false)+" to "+Clans.getRoleName(newPos,true,false));
+		ExternalPlay.DBUpdateClan(mob.Name(), clan.ID(), newPos);
 		return newPos;
 	}
-	
+
 	public static boolean clandetails(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
@@ -269,7 +269,7 @@ public class ClanCommands
 		mob.tell(msg.toString());
 		return false;
 	}
-	
+
 	public static boolean clanexile(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
@@ -309,9 +309,9 @@ public class ClanCommands
 							M.setName(qual);
 							if(ExternalPlay.DBReadUserOnly(M))
 							{
-								clanAnnounce(mob,"Member exiled: "+mob.ID());
+								clanAnnounce(mob,"Member exiled: "+mob.Name());
 								ExternalPlay.DBUpdateClan(qual, "", 0);
-								mob.tell(M.ID()+" has been exiled from "+C.typeName()+" '"+C.ID()+"'.");
+								mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.ID()+"'.");
 								ExternalPlay.DBReadMOB(M);
 								delClanHomeSpell(M);
 								return false;
@@ -324,9 +324,9 @@ public class ClanCommands
 						}
 						else
 						{
-							clanAnnounce(mob,"Member exiled: "+mob.ID());
+							clanAnnounce(mob,"Member exiled: "+mob.Name());
 							ExternalPlay.DBUpdateClan(qual, "", 0);
-							mob.tell(M.ID()+" has been exiled from Clan '"+C.ID()+"'.");
+							mob.tell(M.Name()+" has been exiled from Clan '"+C.ID()+"'.");
 							M.tell("You have been exiled from Clan '"+C.ID()+"'.");
 							delClanHomeSpell(M);
 							return false;
@@ -350,7 +350,7 @@ public class ClanCommands
 		mob.tell(msg.toString());
 		return false;
 	}
-	
+
 	public static boolean clanhomeset(MOB mob, Vector commands)
 	{
 		LandTitle l=null;
@@ -385,7 +385,7 @@ public class ClanCommands
 				{
 					if(l.landOwner().equalsIgnoreCase(mob.getClanID()))
 					{
-						C.setRecall(R.ID());
+						C.setRecall(R.roomID());
 						C.update();
 						mob.tell("Your clan home is now set to "+R.name()+".");
 						clanAnnounce(mob, "Your clan donation is now set to "+R.name()+".");
@@ -440,7 +440,7 @@ public class ClanCommands
 				{
 					if(l.landOwner().equalsIgnoreCase(mob.getClanID()))
 					{
-						C.setDonation(R.ID());
+						C.setDonation(R.roomID());
 						C.update();
 						mob.tell("Your clan donation is now set to "+R.name()+".");
 						clanAnnounce(mob, "Your clan donation is now set to "+R.name()+".");
@@ -460,7 +460,7 @@ public class ClanCommands
 		}
 		return false;
 	}
-	
+
 	public static boolean clanlist(MOB mob,Vector commands)
 	{
 		ClanMaster master=null;
@@ -502,8 +502,8 @@ public class ClanCommands
 		mob.location().send(mob,newMsg);
 		return false;
 	}
-	
-	
+
+
 	public static boolean clanreject(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
@@ -544,7 +544,7 @@ public class ClanCommands
 							if(ExternalPlay.DBReadUserOnly(M))
 							{
 								ExternalPlay.DBUpdateClan(qual, "", 0);
-								mob.tell(M.ID()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
+								mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
 								return false;
 							}
 							else
@@ -556,7 +556,7 @@ public class ClanCommands
 						else
 						{
 							ExternalPlay.DBUpdateClan(qual, "", 0);
-							mob.tell(M.ID()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
+							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.ID()+"'.");
 							M.tell("You have been rejected as a member of "+C.typeName()+" '"+C.ID()+"'.");
 							return false;
 						}
@@ -579,8 +579,8 @@ public class ClanCommands
 		mob.tell(msg.toString());
 		return false;
 	}
-	
-	
+
+
 	public static boolean clanresign(MOB mob, Vector commands)
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -595,8 +595,8 @@ public class ClanCommands
 				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
 				if(check.equalsIgnoreCase("Y"))
 				{
-					clanAnnounce(mob,new String("Member resigned: "+mob.ID()));
-					ExternalPlay.DBUpdateClan(mob.ID(), "", 0);
+					clanAnnounce(mob,new String("Member resigned: "+mob.Name()));
+					ExternalPlay.DBUpdateClan(mob.Name(), "", 0);
 					delClanHomeSpell(mob);
 				}
 				else
@@ -709,7 +709,7 @@ public class ClanCommands
 				mob.tell("Withdraw how much?");
 				return false;
 			}
-			
+
 			commands.removeElement(commands.lastElement());
 		}
 		if(((String)commands.lastElement()).equalsIgnoreCase("gold"))
@@ -867,7 +867,7 @@ public class ClanCommands
 				if(C!=null)
 				{
 					msg.append("Clan "+C.ID()+" exists and is awaiting approval (type 'CLANLIST' and I'll show you what clans are pending).  You may 'CLANAPPLY' to join them.");
-					
+
 				}
 				else
 				{
@@ -902,7 +902,7 @@ public class ClanCommands
 	{
 		M.addAbility(CMClass.findAbility("Spell_ClanHome"));
 		(M.fetchAbility("Spell_ClanHome")).setProfficiency(50);
-		ExternalPlay.DBUpdateMOB(M);		
+		ExternalPlay.DBUpdateMOB(M);
 	}
 
 	public static void delClanHomeSpell(MOB mob)

@@ -23,7 +23,7 @@ public class Herbology extends CommonSkill
 											"sage","damiana","sarsaparilla",
 											"elder","thyme","gentian",
 											"valerian","marjoram","yerba mate"};
-	
+
 	public Herbology()
 	{
 		super();
@@ -42,18 +42,18 @@ public class Herbology extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(messedUp)
-					commonTell(mob,"You lose your concentration on "+found.displayName()+".");
+					commonTell(mob,"You lose your concentration on "+found.name()+".");
 				else
 				{
 					String herb=herbList[Dice.roll(1,herbList.length,-1)].toLowerCase();
-					commonTell(mob,found.displayName()+" appears to be "+herb+".");
-					String name=found.name();
+					commonTell(mob,found.name()+" appears to be "+herb+".");
+					String name=found.Name();
 					name=name.substring(0,name.length()-5).trim();
 					if(name.length()>0)
 						found.setName(name+" "+herb);
 					else
 						found.setName("some "+herb);
-					found.setDisplayText(found.name()+" is here");
+					found.setDisplayText(found.Name()+" is here");
 					found.setDescription("");
 					found.text();
 				}
@@ -80,8 +80,8 @@ public class Herbology extends CommonSkill
 			commands.remove(commands.firstElement());
 
 		if((target.material()!=EnvResource.RESOURCE_HERBS)
-		||((!target.name().toUpperCase().endsWith(" HERBS"))
-		   &&(!target.name().equalsIgnoreCase("herbs")))
+		||((!target.Name().toUpperCase().endsWith(" HERBS"))
+		   &&(!target.Name().equalsIgnoreCase("herbs")))
 		||(!(target instanceof EnvResource))
 		||(!target.isGeneric()))
 		{
@@ -90,14 +90,14 @@ public class Herbology extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		verb="studying "+target.displayName();
+		verb="studying "+target.name();
 		displayText="You are "+verb;
 		found=target;
 		messedUp=false;
 		if(!profficiencyCheck(0,auto)) messedUp=true;
 		int duration=10-(mob.envStats().level()/3);
 		if(duration<2) duration=2;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.displayName()+".");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

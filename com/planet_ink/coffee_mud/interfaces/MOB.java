@@ -6,10 +6,10 @@ import java.util.*;
  * A MOB is a creature in the system, from a user
  * down to a goblin
  */
-public interface MOB 
+public interface MOB
 	extends Environmental, Rider
 {
-	
+
 	public static final int ATT_AUTOGOLD=1;
 	public static final int ATT_AUTOLOOT=2;
 	public static final int ATT_AUTOEXITS=4;
@@ -23,7 +23,7 @@ public interface MOB
 	public static final int ATT_AUTOWEATHER=1024;
 	public static final int ATT_AUTODRAW=2048;
 	public static final int ATT_AUTOGUARD=4096;
-	
+
 	public static final boolean[] AUTOREV={false,
 										   false,
 										   false,
@@ -50,7 +50,7 @@ public interface MOB
 										   "AUTOWEATHER",
 										   "AUTODRAW",
 										   "AUTOGUARD"};
-	
+
 	/** When the USER last logged off */
 	public long lastDateTime();
 	public long lastUpdated();
@@ -66,7 +66,7 @@ public interface MOB
 	public void setBitmap(int bitmap);
 	public String getEmail();
 	public void setEmail(String newAdd);
-	
+
 	/** Some general statistics about MOBs.  See the
 	 * CharStats class (in interfaces) for more info. */
 	public CharStats baseCharStats();
@@ -93,8 +93,8 @@ public interface MOB
 	public int adjustedAttackBonus();
 	public int adjustedArmor();
 	public int adjustedDamage(Weapon weapon, MOB target);
-	
-	
+
+
 	/** If the MOB is controlled by a USER, this
 	 * will point to the controlling session object*/
 	public Session session();
@@ -113,7 +113,7 @@ public interface MOB
 	public boolean isASysOp(Room of);
 	public MOB soulMate();
 	public void setSoulMate(MOB mob);
-	
+
 	// gained attributes
 	public long getAgeHours();
 	public int getPractices();
@@ -128,7 +128,7 @@ public interface MOB
 	public void setPractices(int newVal);
 	public void setTrains(int newVal);
 	public void setMoney(int newVal);
-	
+
 	// the core state values
 	public CharState curState();
 	public CharState maxState();
@@ -137,7 +137,7 @@ public interface MOB
 	public void setBaseState(CharState newState);
 	public void resetToMaxState();
 	public Weapon myNaturalWeapon();
-	
+
 	// misc characteristics
 	public String getWorshipCharID();
 	public String getLeigeID();
@@ -156,13 +156,13 @@ public interface MOB
 	public void setQuestPoint(int newVal);
 	public long lastTickedDateTime();
 	public int movesSinceLastTick();
-	
+
 	// location!
 	public Room getStartRoom();
 	public void setStartRoom(Room newVal);
 	public Room location();
 	public void setLocation(Room newRoom);
-	
+
 	/** Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */
 	public void addInventory(Item item);
@@ -179,7 +179,7 @@ public interface MOB
 	public boolean amWearingSomethingHere(long wornCode);
 	public boolean isMine(Environmental env);
 	public void confirmWearability();
-	
+
 	/** Manipulation of followers */
 	public void addFollower(MOB follower);
 	public void delFollower(MOB follower);
@@ -193,7 +193,7 @@ public interface MOB
 	public Hashtable getGroupMembers(Hashtable list);
 	public Hashtable getRideBuddies(Hashtable list);
 	public boolean isEligibleMonster();
-	
+
 	/** Manipulation of ability objects, which includes
 	 * spells, traits, skills, etc.*/
 	public void addAbility(Ability to);

@@ -61,14 +61,14 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		if(student==null) return true;
 		if((student.fetchAbility("Specialization_Sword")==null))
 		{
-			teacher.tell(student.displayName()+" has not yet specialized in swords.");
-			student.tell("You need to specialize in swords to learn "+displayName()+".");
+			teacher.tell(student.name()+" has not yet specialized in swords.");
+			student.tell("You need to specialize in swords to learn "+name()+".");
 			return false;
 		}
 		if(student.fetchAbility("Weaponsmithing")==null)
 		{
-			teacher.tell(student.displayName()+" has not yet learned weaponsmithing.");
-			student.tell("You need to learn weaponsmithing before you can learn "+displayName()+".");
+			teacher.tell(student.name()+" has not yet learned weaponsmithing.");
+			student.tell("You need to learn weaponsmithing before you can learn "+name()+".");
 			return false;
 		}
 
@@ -148,9 +148,9 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		completion=50-CMAble.qualifyingClassLevel(mob,this);
 		String itemName="the Holy Avenger";
 		building.setName(itemName);
-		String startStr="<S-NAME> start(s) crafting "+building.displayName()+".";
-		displayText="You are crafting "+building.displayName();
-		verb="crafting "+building.displayName();
+		String startStr="<S-NAME> start(s) crafting "+building.name()+".";
+		displayText="You are crafting "+building.name();
+		verb="crafting "+building.name();
 		int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
@@ -160,15 +160,15 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		building.baseEnvStats().setLevel(mob.envStats().level());
 		building.baseEnvStats().setAbility(5);
 
-		int highestAttack=CMAble.qualifyingClassLevel(mob,this)/2;
-		int highestDamage=CMAble.qualifyingClassLevel(mob,this)/2;
+		int highestAttack=(CMAble.qualifyingClassLevel(mob,this)/2);
+		int highestDamage=CMAble.qualifyingClassLevel(mob,this);
 		Weapon w=(Weapon)building;
 		w.setWeaponClassification(Weapon.CLASS_SWORD);
 		w.setWeaponType(Weapon.TYPE_SLASHING);
 		w.setRanges(w.minRange(),1);
 		building.setRawLogicalAnd(true);
 		building.baseEnvStats().setAttackAdjustment(highestAttack+(hardness*5));
-		building.baseEnvStats().setDamage(highestDamage+hardness);
+		building.baseEnvStats().setDamage(highestDamage+(hardness*2));
 		Ability A=CMClass.getAbility("Prop_HaveZapper");
 		A.setMiscText("-CLASS +Paladin -ALIGNMENT +Good");
 		building.addNonUninvokableAffect(A);

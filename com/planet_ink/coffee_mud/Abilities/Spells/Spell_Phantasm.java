@@ -26,7 +26,7 @@ public class Spell_Phantasm extends Spell
 				MOB mob=(MOB)affected;
 				if(myTarget==null)
 					myTarget=mob.getVictim();
-				
+
 				if((myTarget!=mob.getVictim())
 				   ||(myTarget==null))
 				{
@@ -40,7 +40,7 @@ public class Spell_Phantasm extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(!super.okAffect(myHost,msg)) return false;
@@ -51,7 +51,7 @@ public class Spell_Phantasm extends Spell
 			MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)&&(msg.sourceMinor()==Affect.TYP_CAST_SPELL))
 			{
-				mob.tell(mob.displayName()+" seems strangely unaffected by your magic.");
+				mob.tell(mob.name()+" seems strangely unaffected by your magic.");
 				return false;
 			}
 		}
@@ -69,7 +69,7 @@ public class Spell_Phantasm extends Spell
 				unInvoke();
 			else
 			if(msg.amITarget(mob)&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
-				msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_QUIT,msg.source().displayName()+"'s attack somehow went THROUGH "+mob.displayName()+"."));
+				msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_QUIT,msg.source().name()+"'s attack somehow went THROUGH "+mob.name()+"."));
 		}
 	}
 
@@ -89,7 +89,7 @@ public class Spell_Phantasm extends Spell
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		
+
 		if(commands.size()==0)
 		{
 			mob.tell("You must specify the type of creature to create a phantasm of!");

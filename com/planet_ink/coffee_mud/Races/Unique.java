@@ -16,11 +16,11 @@ public class Unique extends StdRace
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unique";}
-	
+
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
-	
+
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
@@ -29,36 +29,36 @@ public class Unique extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.displayName() + "^r is pulsating in an unstable rage!^N";
+			return "^r" + mob.name() + "^r is pulsating in an unstable rage!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.displayName() + "^r is massively and amazingly angry.^N";
+			return "^r" + mob.name() + "^r is massively and amazingly angry.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.displayName() + "^r is very angry.^N";
+			return "^r" + mob.name() + "^r is very angry.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.displayName() + "^y is somewhat angry.^N";
+			return "^y" + mob.name() + "^y is somewhat angry.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.displayName() + "^y is very irritated.^N";
+			return "^y" + mob.name() + "^y is very irritated.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.displayName() + "^p is starting to show irritation.^N";
+			return "^p" + mob.name() + "^p is starting to show irritation.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.displayName() + "^p is definitely serious and concerned.^N";
+			return "^p" + mob.name() + "^p is definitely serious and concerned.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.displayName() + "^g is growing serious and concerned.^N";
+			return "^g" + mob.name() + "^g is growing serious and concerned.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.displayName() + "^g is definitely unamused and is starting to notice.^N";
+			return "^g" + mob.name() + "^g is definitely unamused and is starting to notice.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.displayName() + "^g is no longer amused, though still unconcerned.^N";
+			return "^g" + mob.name() + "^g is no longer amused, though still unconcerned.^N";
 		else
-			return "^c" + mob.displayName() + "^c is in perfect condition.^N";
+			return "^c" + mob.name() + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

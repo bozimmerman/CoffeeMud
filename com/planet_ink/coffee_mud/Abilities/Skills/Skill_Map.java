@@ -17,10 +17,10 @@ public class Skill_Map extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Map();}
-	
+
 	Vector roomsMappedAlready=new Vector();
 	protected Item map=null;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -54,8 +54,8 @@ public class Skill_Map extends StdAbility
 		}
 		super.affect(myHost,msg);
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Ability A=mob.fetchAffect(ID());
@@ -84,7 +84,7 @@ public class Skill_Map extends StdAbility
 			mob.tell("You can't map on a scroll.");
 			return false;
 		}
-		
+
 		if(item instanceof com.planet_ink.coffee_mud.interfaces.Map)
 		{
 			if(!item.ID().equals("BardMap"))
@@ -115,7 +115,7 @@ public class Skill_Map extends StdAbility
 				{
 					Item B=CMClass.getItem("BardMap");
 					B.setContainer(item.container());
-					B.setName(item.name());
+					B.setName(item.Name());
 					B.setBaseEnvStats(item.baseEnvStats());
 					B.setBaseValue(item.baseGoldValue()*2);
 					B.setDescription(item.description());
@@ -133,11 +133,11 @@ public class Skill_Map extends StdAbility
 					item=B;
 				}
 				map=item;
-				if((!roomsMappedAlready.contains(mob.location().ID()))
-				&&(mob.location().ID().length()>0))
+				if((!roomsMappedAlready.contains(mob.location().roomID()))
+				&&(mob.location().roomID().length()>0))
 				{
-					roomsMappedAlready.addElement(mob.location().ID());
-					map.setReadableText(map.readableText()+";"+mob.location().ID());
+					roomsMappedAlready.addElement(mob.location().roomID());
+					map.setReadableText(map.readableText()+";"+mob.location().roomID());
 					if(map instanceof com.planet_ink.coffee_mud.interfaces.Map)
 						((com.planet_ink.coffee_mud.interfaces.Map)map).doMapArea();
 				}

@@ -13,14 +13,14 @@ public class Decay extends ActiveTicker
 		minTicks=50;maxTicks=50;chance=100;
 		tickReset();
 	}
-	
+
 	boolean activated=false;
 
 	public Behavior newInstance()
 	{
 		return new Decay();
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -49,20 +49,20 @@ public class Decay extends ActiveTicker
 				item.destroyThis();
 				if(E instanceof MOB)
 				{
-					((MOB)E).tell(item.displayName()+" vanishes!");
+					((MOB)E).tell(item.name()+" vanishes!");
 					((MOB)E).recoverEnvStats();
 					((MOB)E).recoverCharStats();
 					((MOB)E).recoverMaxState();
 				}
 				else
 				if(E instanceof Room)
-					((Room)E).showHappens(Affect.MSG_OK_VISUAL,item.displayName()+" vanishes!");
+					((Room)E).showHappens(Affect.MSG_OK_VISUAL,item.name()+" vanishes!");
 				room.recoverRoomStats();
 			}
 		}
 		return true;
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class

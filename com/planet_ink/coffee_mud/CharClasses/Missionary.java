@@ -14,11 +14,11 @@ public class Missionary extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-		
+
 	protected boolean disableAlignedWeapons(){return true;}
 	protected boolean disableClericSpellGrant(){return true;}
 	protected boolean disableAlignedSpells(){return true;}
-	
+
 	public Missionary()
 	{
 		maxStat[CharStats.WISDOM]=22;
@@ -28,79 +28,79 @@ public class Missionary extends Cleric
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_RestoreSmell",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_DivineLuck",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseEvil",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseGood",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_SenseLife",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Bury",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CreateFood",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),6,"Prayer_CreateWater",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),7,"Prayer_ElectricStrike",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),8,"Prayer_ProtParalyzation",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),9,"Prayer_AiryForm",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_RestoreVoice",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseMagic",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Prayer_SenseInvisible",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_SenseHidden",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Prayer_ProtPoison",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),12,"Prayer_ProtDisease",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_BloodMoon",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),14,"Prayer_HolyWind",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Wings",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),16,"Prayer_Etherealness",true);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_AttackHalf",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),17,"Prayer_Blindsight",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_BladeBarrier",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Prayer_ProtectElements",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),19,"Prayer_ChainStrike",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Monolith",0,"AIR",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Gateway",true);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_Weather",false);
-			
+
 			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
-			
+
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_SummonElemental",0,"AIR",true);
-						
+
 			CMAble.addCharAbilityMapping(ID(),30,"Prayer_ElectricHealing",true);
 		}
 	}
-	
+
 	public boolean playerSelectable()
 	{
 		return true;
@@ -122,7 +122,7 @@ public class Missionary extends Cleric
 		CharStats.SAVE_UNDEAD,
 		CharStats.SAVE_WATER,
 		CharStats.SAVE_TRAPS};
-		
+
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
@@ -131,7 +131,7 @@ public class Missionary extends Cleric
 				affectableStats.getStat(allSaves[i])
 					+(affectableStats.getClassLevel(this)));
 	}
-	
+
 	public void tick(MOB myChar, int tickID)
 	{
 		if(tickID==Host.MOB_TICK)
@@ -139,7 +139,7 @@ public class Missionary extends Cleric
 		}
 		return;
 	}
-	
+
 	public String statQualifications(){return "Wisdom 9+ Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -179,11 +179,11 @@ public class Missionary extends Cleric
 			{
 				int align=myChar.getAlignment();
 				Ability A=(Ability)affect.tool();
-		
-				if(A.appropriateToMyAlignment(align))	
+
+				if(A.appropriateToMyAlignment(align))
 					return true;
 				int hq=holyQuality(A);
-					
+
 				int basis=0;
 				if(hq==0)
 					basis=align/10;
@@ -192,15 +192,15 @@ public class Missionary extends Cleric
 					basis=(1000-align)/10;
 				else
 					return true;
-		
+
 				if(Dice.rollPercentage()>basis)
 					return true;
 
 				if(hq==0)
-					myChar.tell("The evil nature of "+A.displayName()+" disrupts your prayer.");
+					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
 				else
 				if(hq==1000)
-					myChar.tell("The goodness of "+A.displayName()+" disrupts your prayer.");
+					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
 				return false;
 			}
 			else
@@ -208,7 +208,7 @@ public class Missionary extends Cleric
 			&&(affect.tool()!=null)
 			&&(affect.tool() instanceof Weapon))
 			{
-				
+
 				if((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_BLUNT)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_THROWN)
@@ -216,7 +216,7 @@ public class Missionary extends Cleric
 					return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 					return false;
 				}
 			}

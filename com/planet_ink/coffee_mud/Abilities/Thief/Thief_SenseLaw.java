@@ -19,7 +19,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	public static final Vector empty=new Vector();
 	protected Room oldroom=null;
 	protected String lastReport="";
-	
+
 	public Vector getLawMen(Room room, Behavior B)
 	{
 		if(room==null) return empty;
@@ -34,7 +34,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		}
 		return V;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -51,7 +51,7 @@ public class Thief_SenseLaw extends ThiefSkill
 				{
 					MOB M=(MOB)V.elementAt(l);
 					if(Sense.canBeSeenBy(M,mob))
-						buf.append(M.displayName()+" is an officer of the law.  ");
+						buf.append(M.name()+" is an officer of the law.  ");
 					else
 						buf.append("There is an officer of the law here.  ");
 				}
@@ -79,7 +79,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean autoInvocation(MOB mob)
 	{
 		if(mob.charStats().getCurrentClass().ID().equals("Archon"))

@@ -18,7 +18,7 @@ public class Thief_Bind extends ThiefSkill
 	private int maxRange=0;
 	public int maxRange(){return maxRange;}
 	public int minRange(){return 0;}
-	
+
 	public int amountRemaining=500;
 	public String ropeName="the ropes";
 
@@ -51,15 +51,15 @@ public class Thief_Bind extends ThiefSkill
 		return super.okAffect(myHost,affect);
 	}
 
-	
+
 	public void setAffectedOne(Environmental E)
 	{
 		if(!(E instanceof Item))
 			super.setAffectedOne(E);
 		else
-			ropeName=E.displayName();
+			ropeName=E.name();
 	}
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -84,7 +84,7 @@ public class Thief_Bind extends ThiefSkill
 
 		if((!Sense.isSleeping(target))&&(!auto))
 		{
-			mob.tell(target.displayName()+" doesn't look willing to cooperate.");
+			mob.tell(target.name()+" doesn't look willing to cooperate.");
 			return false;
 		}
 		if((mob.isInCombat())&&(!auto))

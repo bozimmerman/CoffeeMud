@@ -8,11 +8,11 @@ import java.util.*;
 public class Rooms
 {
 	private Rooms(){}
-	
+
 	private static void exitifyNewPortal(MOB mob, Room room, int direction)
 	{
 		Room opRoom=mob.location().rawDoors()[direction];
-		if((opRoom!=null)&&(opRoom.ID().length()==0))
+		if((opRoom!=null)&&(opRoom.roomID().length()==0))
 			opRoom=null;
 		Room reverseRoom=null;
 		if(opRoom!=null)
@@ -43,7 +43,7 @@ public class Rooms
 
 	public static void create(MOB mob, Vector commands)
 	{
-		if(mob.location().ID().equals(""))
+		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -76,8 +76,8 @@ public class Rooms
 		else
 		{
 			thisRoom.setArea(mob.location().getArea());
-			thisRoom.setID(Reset.getOpenRoomID(mob.location().getArea().name()));
-			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.ID());
+			thisRoom.setRoomID(Reset.getOpenRoomID(mob.location().getArea().Name()));
+			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.roomID());
 			thisRoom.setDescription("");
 			ExternalPlay.DBCreateRoom(thisRoom,Locale);
 			CMMap.addRoom(thisRoom);
@@ -97,7 +97,7 @@ public class Rooms
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		mob.location().getArea().fillInAreaRoom(thisRoom);
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a block of earth falls from the sky.\n\r");
-		Log.sysOut("Rooms",mob.ID()+" created room "+thisRoom.ID()+".");
+		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}
 
 	public static void link(MOB mob, Vector commands)
@@ -115,7 +115,7 @@ public class Rooms
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		if(mob.location().ID().equals(""))
+		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -137,7 +137,7 @@ public class Rooms
 
 		mob.location().recoverRoomStats();
 		mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly a portal opens up in the landscape.\n\r");
-		Log.sysOut("Rooms",mob.ID()+" linked to room "+thisRoom.ID()+".");
+		Log.sysOut("Rooms",mob.Name()+" linked to room "+thisRoom.roomID()+".");
 	}
 
 	private static void flunkCmd1(MOB mob)
@@ -158,8 +158,8 @@ public class Rooms
 		if(mob.location().getArea()==null) return;
 		Area myArea=mob.location().getArea();
 
-		String oldName=myArea.name();
-		Resources.removeResource("HELP_"+myArea.name().toUpperCase());
+		String oldName=myArea.Name();
+		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		if(commands.size()==2)
 		{
 			int showFlag=-1;
@@ -180,7 +180,7 @@ public class Rooms
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-				if(showFlag<=0) 
+				if(showFlag<=0)
 				{
 					showFlag=-1;
 					ok=true;
@@ -283,21 +283,21 @@ public class Rooms
 				flunkCmd2(mob);
 				return;
 			}
-			Log.sysOut("Rooms",mob.ID()+" modified area "+myArea.name()+".");
+			Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 		}
 
-		if((!myArea.name().equals(oldName))&&(!mob.isMonster()))
+		if((!myArea.Name().equals(oldName))&&(!mob.isMonster()))
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
 				for(Enumeration r=myArea.getMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if((R.ID().startsWith(oldName+"#"))
-					&&(CMMap.getRoom(myArea.name()+"#"+R.ID().substring(oldName.length()+1))==null))
+					if((R.roomID().startsWith(oldName+"#"))
+					&&(CMMap.getRoom(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
 					{
-						String oldID=R.ID();
-						R.setID(myArea.name()+"#"+R.ID().substring(oldName.length()+1));
+						String oldID=R.roomID();
+						R.setRoomID(myArea.Name()+"#"+R.roomID().substring(oldName.length()+1));
 						ExternalPlay.DBReCreate(R,oldID);
 					}
 					else
@@ -331,7 +331,7 @@ public class Rooms
 	public static void modify(MOB mob, Vector commands)
 		throws Exception
 	{
-		if(mob.location().ID().equals(""))
+		if(mob.location().roomID().equals(""))
 		{
 			mob.tell("This command is invalid from within a GridLocaleChild room.");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -360,7 +360,7 @@ public class Rooms
 				if(showFlag<-900){ ok=true; break;}
 				if(showFlag>0){ showFlag=-1; continue;}
 				showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-				if(showFlag<=0) 
+				if(showFlag<=0)
 				{
 					showFlag=-1;
 					ok=true;
@@ -404,8 +404,8 @@ public class Rooms
 						A=ExternalPlay.DBCreateArea(restStr,areaType);
 						mob.location().setArea(A);
 						CMMap.delRoom(mob.location());
-						String oldID=mob.location().ID();
-						mob.location().setID(checkID);
+						String oldID=mob.location().roomID();
+						mob.location().setRoomID(checkID);
 
 						ExternalPlay.DBReCreate(mob.location(),oldID);
 
@@ -508,7 +508,7 @@ public class Rooms
 			return;
 		}
 		mob.location().recoverRoomStats();
-		Log.sysOut("Rooms",mob.ID()+" modified room "+mob.location().ID()+".");
+		Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
 	}
 
 	public static void obliterateRoom(Room deadRoom)
@@ -537,7 +537,7 @@ public class Rooms
 					if((R.rawExits()[dir]!=null)&&(R.rawExits()[dir].isGeneric()))
 					{
 						Exit GE=(Exit)R.rawExits()[dir];
-						GE.setExitParams(GE.doorName(),deadRoom.ID(),GE.openWord(),GE.closedText());
+						GE.setExitParams(GE.doorName(),deadRoom.roomID(),GE.openWord(),GE.closedText());
 					}
 				}
 			}
@@ -549,7 +549,7 @@ public class Rooms
 			MOB mob2=deadRoom.fetchInhabitant(mb);
 			if(mob2!=null)
 			{
-				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().ID())!=null))
+				if((mob2.getStartRoom()!=deadRoom)&&(mob2.getStartRoom()!=null)&&(CMMap.getRoom(mob2.getStartRoom().roomID())!=null))
 					mob2.getStartRoom().bringMobHere(mob2,true);
 				else
 				{
@@ -628,11 +628,11 @@ public class Rooms
 			}
 
 			if(!confirmed)
-				if(!mob.session().confirm("You are fixing permanantly destroy Room \""+deadRoom.ID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
+				if(!mob.session().confirm("You are fixing permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
 			obliterateRoom(deadRoom);
 			mob.tell("The sound of massive destruction rings in your ears.");
 			mob.location().showOthers(mob,null,Affect.MSG_NOISE,"The sound of massive destruction rings in your ears.");
-			Log.sysOut("Rooms",mob.ID()+" destroyed room "+deadRoom.ID()+".");
+			Log.sysOut("Rooms",mob.Name()+" destroyed room "+deadRoom.roomID()+".");
 		}
 		else
 		{
@@ -641,7 +641,7 @@ public class Rooms
 			ExternalPlay.DBUpdateExits(mob.location());
 			mob.location().getArea().fillInAreaRoom(mob.location());
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"A wall of inhibition falls "+Directions.getInDirectionName(direction)+".");
-			Log.sysOut("Rooms",mob.ID()+" unlinked direction "+Directions.getDirectionName(direction)+" from room "+mob.location().ID()+".");
+			Log.sysOut("Rooms",mob.Name()+" unlinked direction "+Directions.getDirectionName(direction)+" from room "+mob.location().roomID()+".");
 		}
 	}
 
@@ -654,7 +654,7 @@ public class Rooms
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R.getArea().name().equalsIgnoreCase(areaName))
+				if(R.getArea().Name().equalsIgnoreCase(areaName))
 				{
 					foundOne=R;
 					break;
@@ -668,7 +668,7 @@ public class Rooms
 		ExternalPlay.DBDeleteArea(A);
 		CMMap.delArea(A);
 	}
-	
+
 	public static void destroyArea(MOB mob, Vector commands)
 		throws Exception
 	{
@@ -700,7 +700,7 @@ public class Rooms
 		if(!confirmed);
 		if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
 		{
-			if(mob.location().getArea().name().equalsIgnoreCase(areaName))
+			if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
 			{
 				mob.tell("You dip!  You are IN that area!  Leave it first...");
 				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
@@ -713,7 +713,7 @@ public class Rooms
 		if(confirmed)
 		{
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");
-			Log.sysOut("Rooms",mob.ID()+" destroyed area "+areaName+".");
+			Log.sysOut("Rooms",mob.Name()+" destroyed area "+areaName+".");
 		}
 	}
 

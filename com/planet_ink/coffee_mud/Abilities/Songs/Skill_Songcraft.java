@@ -20,7 +20,7 @@ public class Skill_Songcraft extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public String lastID="";
 	public int craftType(){return Ability.SONG;}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
@@ -43,7 +43,7 @@ public class Skill_Songcraft extends StdAbility
 			Ability A=(Ability)copyOf();
 			A.setMiscText(msg.tool().ID());
 			lastID=msg.tool().ID();
-			msg.addTrailerMsg(new FullMsg(mob,msg.source(),A,Affect.MSG_OK_VISUAL,"<T-NAME> cast '"+msg.tool().displayName()+"'.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
+			msg.addTrailerMsg(new FullMsg(mob,msg.source(),A,Affect.MSG_OK_VISUAL,"<T-NAME> cast '"+msg.tool().name()+"'.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
 			helpProfficiency(mob);
 		}
 	}

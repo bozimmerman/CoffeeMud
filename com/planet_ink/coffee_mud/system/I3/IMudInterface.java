@@ -106,7 +106,7 @@ public class IMudInterface implements ImudServices, Serializable
 			Session ses=(Session)Sessions.elementAt(s);
 			if((!ses.killFlag())&&(ses.mob()!=null)
 			&&(!ses.mob().amDead())
-			&&(ses.mob().name().equalsIgnoreCase(mobName))
+			&&(ses.mob().Name().equalsIgnoreCase(mobName))
 			&&(ses.mob().location()!=null))
 				return ses.mob();
 		}
@@ -200,7 +200,7 @@ public class IMudInterface implements ImudServices, Serializable
 				int lvl=getLocalLevel(channelName);
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
-					String str="^Q"+mob.displayName()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
+					String str="^Q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str);
 				}
 				else
@@ -231,7 +231,7 @@ public class IMudInterface implements ImudServices, Serializable
 				for(Enumeration p=CMMap.players();p.hasMoreElements();)
 				{
 					MOB M=(MOB)p.nextElement();
-					if(M.name().equalsIgnoreCase(lk.user_name))
+					if(M.Name().equalsIgnoreCase(lk.user_name))
 					{
 						smob=M;
 						stat="exists, but not logged in";
@@ -250,7 +250,7 @@ public class IMudInterface implements ImudServices, Serializable
 				if(smob!=null)
 				{
 					if(!Sense.isSeen(smob)) stat+=" and wizinv";
-					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,smob.name(),0,stat);
+					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,smob.Name(),0,stat);
 					try{
 					lpk.send();
 					}catch(Exception e){Log.errOut("IMudClient",e);}
@@ -357,7 +357,7 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(Sense.isSeen(smob)))
 					{
 						Vector whoV2=new Vector();
-						whoV2.addElement(smob.displayName());
+						whoV2.addElement(smob.name());
 						whoV2.addElement(new Integer((int)(ses.getIdleMillis()/1000)));
 						whoV2.addElement(smob.charStats().displayClassLevel(smob,true));
 						whoV.addElement(whoV2);

@@ -51,15 +51,15 @@ public class Alchemy extends CommonSkill
 			{
 				if((theSpell.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 				{
-					commonEmote(mob,"<S-NAME> start(s) praying for "+building.displayName()+".");
-					displayText="You are praying for "+building.displayName();
-					verb="praying for "+building.displayName();
+					commonEmote(mob,"<S-NAME> start(s) praying for "+building.name()+".");
+					displayText="You are praying for "+building.name();
+					verb="praying for "+building.name();
 				}
 				else
 				{
-					commonEmote(mob,"<S-NAME> start(s) brewing "+building.displayName()+".");
-					displayText="You are brewing "+building.displayName();
-					verb="brewing "+building.displayName();
+					commonEmote(mob,"<S-NAME> start(s) brewing "+building.name()+".");
+					displayText="You are brewing "+building.name();
+					verb="brewing "+building.name();
 				}
 			}
 		}
@@ -150,7 +150,7 @@ public class Alchemy extends CommonSkill
 					&&(spellLevel(mob,spell)>=0)
 					&&(mob.envStats().level()>=spellLevel(mob,spell)))
 					{
-						buf.append(Util.padRight(A.displayName(),25)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -177,17 +177,17 @@ public class Alchemy extends CommonSkill
 			}
 			if(!(building instanceof Container))
 			{
-				commonTell(mob,"There's nothing in "+building.displayName()+" to cook!");
+				commonTell(mob,"There's nothing in "+building.name()+" to cook!");
 				return false;
 			}
 			if(!(building instanceof Drink))
 			{
-				commonTell(mob,"You can't drink out of a "+building.displayName()+".");
+				commonTell(mob,"You can't drink out of a "+building.name()+".");
 				return false;
 			}
 			if(((Drink)building).liquidRemaining()==0)
 			{
-				commonTell(mob,"The "+building.displayName()+" contains no liquid base.  Water is probably fine.");
+				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
 			if(building.material()!=EnvResource.RESOURCE_GLASS)
@@ -207,7 +207,7 @@ public class Alchemy extends CommonSkill
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(mob.envStats().level()>=spellLevel(mob,spell))
-					&&(A.displayName().equalsIgnoreCase(recipeName)))
+					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
 						ingredient=(String)V.elementAt(1);
@@ -262,7 +262,7 @@ public class Alchemy extends CommonSkill
 					found=true;
 					if(V.size()>0)
 					{
-						commonTell(mob,"The extraneous stuff from the "+building.displayName()+" must be removed before starting.");
+						commonTell(mob,"The extraneous stuff from the "+building.name()+" must be removed before starting.");
 						return false;
 					}
 				}
@@ -274,13 +274,13 @@ public class Alchemy extends CommonSkill
 						found=true;
 					else
 					{
-						commonTell(mob,"The "+I.displayName()+" must be removed from the "+building.displayName()+" before starting.");
+						commonTell(mob,"The "+I.name()+" must be removed from the "+building.name()+" before starting.");
 						return false;
 					}
 				}
 				if(!found)
 				{
-					commonTell(mob,"This potion requires "+ingredient+".  Please place some inside the "+building.displayName()+" and try again.");
+					commonTell(mob,"This potion requires "+ingredient+".  Please place some inside the "+building.name()+" and try again.");
 					return false;
 				}
 			}
@@ -291,12 +291,12 @@ public class Alchemy extends CommonSkill
 
 			mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
-			oldName=building.displayName();
+			oldName=building.name();
 			building.destroyThis();
 			building=CMClass.getItem("GenPotion");
 			((Potion)building).setSpellList(theSpell.ID());
-			building.setName("a potion of "+theSpell.displayName().toLowerCase());
-			building.setDisplayText("a potion of "+theSpell.displayName().toLowerCase()+" sits here.");
+			building.setName("a potion of "+theSpell.name().toLowerCase());
+			building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
 			building.setDescription("");
 			building.recoverEnvStats();
 			building.text();

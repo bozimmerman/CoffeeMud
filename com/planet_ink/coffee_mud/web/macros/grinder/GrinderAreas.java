@@ -12,15 +12,15 @@ public class GrinderAreas
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if((A.amISubOp(mob.name()))||(mob.isASysOp(null)))
+			if((A.amISubOp(mob.Name()))||(mob.isASysOp(null)))
 				if((pickedA!=null)&&(pickedA==A))
-					AreaList.append("<OPTION SELECTED VALUE=\""+A.name()+"\">"+A.name());
+					AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
 				else
-					AreaList.append("<OPTION VALUE=\""+A.name()+"\">"+A.name());
+					AreaList.append("<OPTION VALUE=\""+A.Name()+"\">"+A.name());
 		}
 		return AreaList.toString();
 	}
-	
+
 	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numBehaviors()>0)
@@ -70,18 +70,18 @@ public class GrinderAreas
 		}
 		return "";
 	}
-	
+
 	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		String last=(String)httpReq.getRequestParameters().get("AREA");
 		if((last==null)||(last.length()==0)) return "Old area name not defined!";
 		Area A=CMMap.getArea(last);
 		if(A==null) return "Old Area not defined!";
-		
+
 		boolean redoAllMyDamnRooms=false;
 		Vector allMyDamnRooms=null;
 		String oldName=null;
-		
+
 		// class!
 		String className=(String)httpReq.getRequestParameters().get("CLASSES");
 		if((className==null)||(className.length()==0))
@@ -97,16 +97,16 @@ public class GrinderAreas
 				return "The class you chose does not exist.  Choose another.";
 			CMMap.delArea(oldA);
 			CMMap.addArea(A);
-			A.setName(oldA.name());
+			A.setName(oldA.Name());
 			redoAllMyDamnRooms=true;
 		}
-		
+
 		// name
 		String name=(String)httpReq.getRequestParameters().get("NAME");
 		if((name==null)||(name.length()==0))
 			return "Please enter a name for this area.";
 		name=name.trim();
-		if(!name.equals(A.name().trim()))
+		if(!name.equals(A.Name().trim()))
 		{
 			if(CMMap.getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
@@ -114,15 +114,15 @@ public class GrinderAreas
 			for(Enumeration r=A.getMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMMap.delArea(A);
-			oldName=A.name();
+			oldName=A.Name();
 			ExternalPlay.DBDeleteArea(A);
 			A=ExternalPlay.DBCreateArea(name,CMClass.className(A));
 			A.setName(name);
 			redoAllMyDamnRooms=true;
-			httpReq.getRequestParameters().put("AREA",A.name());
+			httpReq.getRequestParameters().put("AREA",A.Name());
 			httpReq.resetRequestEncodedParameters();
 		}
-		
+
 		// climate
 		if(httpReq.getRequestParameters().containsKey("CLIMATE"))
 		{
@@ -153,20 +153,20 @@ public class GrinderAreas
 				else
 					break;
 		}
-		
+
 		// description
 		String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
 		if(desc==null)desc="";
 		A.setDescription(desc);
-		
+
 		// archive file
 		String file=(String)httpReq.getRequestParameters().get("ARCHP");
 		if(file==null)file="";
 		A.setArchivePath(file);
-		
+
 		String err=GrinderAreas.doAffectsNBehavs(A,httpReq,parms);
 		if(err.length()>0) return err;
-		
+
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
 		{
 			for(int r=0;r<allMyDamnRooms.size();r++)
@@ -175,12 +175,12 @@ public class GrinderAreas
 				R.setArea(A);
 				if(oldName!=null)
 				{
-					if((R.ID().startsWith(oldName+"#"))
-					&&(CMMap.getRoom(A.name()+"#"+R.ID().substring(oldName.length()+1))==null))
+					if((R.roomID().startsWith(oldName+"#"))
+					&&(CMMap.getRoom(A.Name()+"#"+R.roomID().substring(oldName.length()+1))==null))
 					{
-						
-						String oldID=R.ID();
-						R.setID(A.name()+"#"+R.ID().substring(oldName.length()+1));
+
+						String oldID=R.roomID();
+						R.setRoomID(A.Name()+"#"+R.roomID().substring(oldName.length()+1));
 						ExternalPlay.DBReCreate(R,oldID);
 					}
 					else

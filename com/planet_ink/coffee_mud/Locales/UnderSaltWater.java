@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.*;
 public class UnderSaltWater extends UnderWater
 {
+	public String ID(){return "UnderSaltWater";}
 	public UnderSaltWater()
 	{
 		super();

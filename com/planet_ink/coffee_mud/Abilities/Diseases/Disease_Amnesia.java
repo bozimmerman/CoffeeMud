@@ -40,7 +40,7 @@ public class Disease_Amnesia extends Disease
 		&&(mob.fetchAbility(affect.tool().ID())==affect.tool())
 		&&(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_MIND)+10)))
 		{
-			mob.tell("You can't remember "+affect.tool().displayName()+"!");
+			mob.tell("You can't remember "+affect.tool().name()+"!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

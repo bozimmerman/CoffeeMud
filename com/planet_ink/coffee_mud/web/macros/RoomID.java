@@ -17,7 +17,7 @@ public class RoomID extends StdWebMacro
 		{
 			Room R=CMMap.getRoom(last);
 			if(R!=null)
-				return R.ID();
+				return R.roomID();
 		}
 		return "";
 	}

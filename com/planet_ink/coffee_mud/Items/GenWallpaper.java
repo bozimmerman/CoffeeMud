@@ -20,11 +20,11 @@ public class GenWallpaper implements Item
 	public Rideable riding(){return null;}
 	public void setRiding(Rideable one){};
 
-	public String name(){ return name;}
-	public String displayName()
+	public String Name(){ return name;}
+	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
-		return name();
+		return Name();
 	}
 	public void setName(String newName){name=newName;}
 	public EnvStats envStats()
@@ -111,7 +111,7 @@ public class GenWallpaper implements Item
 	}
 	public String text()
 	{	StringBuffer text=new StringBuffer("");
-		text.append(XMLManager.convertXMLtoTag("NAME",name()));
+		text.append(XMLManager.convertXMLtoTag("NAME",Name()));
 		text.append(XMLManager.convertXMLtoTag("DESC",description()));
 		text.append(XMLManager.convertXMLtoTag("FLAG",Generic.envFlags(this)));
 		text.append(XMLManager.convertXMLtoTag("READ",readableText()));
@@ -164,7 +164,7 @@ public class GenWallpaper implements Item
 		case Affect.TYP_GET:
 			if((affect.tool()==null)||(affect.tool() instanceof MOB))
 			{
-				mob.tell("You can't get "+displayName()+".");
+				mob.tell("You can't get "+name()+".");
 				return false;
 			}
 			break;
@@ -174,7 +174,7 @@ public class GenWallpaper implements Item
 		default:
 			break;
 		}
-		mob.tell("You can't do that to "+displayName()+".");
+		mob.tell("You can't do that to "+name()+".");
 		return false;
 	}
 
@@ -190,7 +190,7 @@ public class GenWallpaper implements Item
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if(description().length()==0)
-					mob.tell("You don't see anything special about "+this.displayName());
+					mob.tell("You don't see anything special about "+this.name());
 				else
 					mob.tell(description());
 			}
@@ -203,7 +203,7 @@ public class GenWallpaper implements Item
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
-					mob.tell("There is nothing written on "+displayName()+".");
+					mob.tell("There is nothing written on "+name()+".");
 			}
 			else
 				mob.tell("You can't see that!");
@@ -249,7 +249,7 @@ public class GenWallpaper implements Item
 	public Behavior fetchBehavior(String ID){return null;}
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
-	
+
 	private static final String[] CODES={"CLASS","NAME","DESCRIPTION","ISREADABLE","READABLETEXT"};
 	public String[] getStatCodes(){return CODES;}
 	private int getCodeNum(String code){

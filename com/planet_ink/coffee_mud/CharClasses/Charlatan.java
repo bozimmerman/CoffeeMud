@@ -20,7 +20,7 @@ public class Charlatan extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+
 	public Charlatan()
 	{
 		super();
@@ -37,7 +37,7 @@ public class Charlatan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",true);
-	
+
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
@@ -66,7 +66,7 @@ public class Charlatan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_MarkDisguise",false);
 		}
 	}
-	
+
 	public boolean playerSelectable()
 	{
 		return true;
@@ -111,7 +111,7 @@ public class Charlatan extends StdCharClass
 				w.wearAt(Item.WIELD);
 		}
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(!(myHost instanceof MOB)) return super.okAffect(myHost,affect);
@@ -144,7 +144,7 @@ public class Charlatan extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
 						return false;
 					}
 					break;
@@ -160,25 +160,25 @@ public class Charlatan extends StdCharClass
 			   &&((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 			   &&(Dice.roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
 			{
-				myChar.location().show(affect.source(),myChar,Affect.MSG_OK_ACTION,"<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle "+affect.tool().displayName()+".");
+				myChar.location().show(affect.source(),myChar,Affect.MSG_OK_ACTION,"<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle "+affect.tool().name()+".");
 				return false;
 			}
 		}
-		
+
 		return super.okAffect(myChar,affect);
 	}
-	
+
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
-		
+
 		// if he already has one, don't give another!
 		if(!mob.isMonster())
 		{
 			int classLevel=mob.baseCharStats().getClassLevel(this);
 			if(classLevel<2) return;
 			if((classLevel%2)!=0) return;
-			
+
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability A=mob.fetchAbility(a);
@@ -201,13 +201,13 @@ public class Charlatan extends StdCharClass
 			if(A!=null)	giveMobAbility(mob,A,0,"",isBorrowedClass);
 		}
 	}
-	
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+(2*affectableStats.getClassLevel(this)));
 	}
-	
+
 	public void level(MOB mob)
 	{
 		Vector V=new Vector();
@@ -229,7 +229,7 @@ public class Charlatan extends StdCharClass
 		if(able!=null)
 		{
 			String type=Ability.TYPE_DESCS[(able.classificationCode()&Ability.ALL_CODES)].toLowerCase();
-			mob.tell("^NYou have learned the secret to the "+type+" ^H"+able.displayName()+"^?.^N");
+			mob.tell("^NYou have learned the secret to the "+type+" ^H"+able.name()+"^?.^N");
 		}
 	}
 }

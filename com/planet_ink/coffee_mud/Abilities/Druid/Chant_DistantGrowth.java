@@ -22,7 +22,7 @@ public class Chant_DistantGrowth extends Chant
 			mob.tell("Grow plants where?");
 			return false;
 		}
-		
+
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Room anyRoom=null;
 		Room newRoom=null;
@@ -73,7 +73,7 @@ public class Chant_DistantGrowth extends Chant
 			{
 				mob.location().send(mob,msg);
 				Item newItem=Chant_SummonPlants.buildPlant(mob,newRoom);
-				mob.tell("You feel a new connection with "+newItem.displayName());
+				mob.tell("You feel a new connection with "+newItem.name());
 			}
 		}
 		else

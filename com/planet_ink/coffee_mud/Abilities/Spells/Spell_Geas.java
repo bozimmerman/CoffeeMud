@@ -19,10 +19,10 @@ public class Spell_Geas extends Spell
 	public int maxRange(){return 5;}
 	public Environmental newInstance(){	return new Spell_Geas();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-	
+
 	// should be set to TRUE when the geas is BEING completed!
 	private boolean completed=false;
-	
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -36,7 +36,7 @@ public class Spell_Geas extends Spell
 				mob.tell("You have completed your geas.");
 			else
 				mob.tell("You have been released from your geas.");
-			
+
 			if((mob.isMonster())
 			&&(!mob.amDead())
 			&&(mob.location()!=null)
@@ -60,7 +60,7 @@ public class Spell_Geas extends Spell
 		&&((msg.targetCode()-Affect.MASK_HURT)>0))
 			ExternalPlay.postPanic(mob,msg);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)&&(!completed))
@@ -73,7 +73,7 @@ public class Spell_Geas extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isMonster())
@@ -82,7 +82,7 @@ public class Spell_Geas extends Spell
 			ExternalPlay.quickSay(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
 			return false;
 		}
-		
+
 		if(commands.size()<2)
 		{
 			mob.tell("You need to specify a target creature, and a geas to place on them.");
@@ -94,18 +94,18 @@ public class Spell_Geas extends Spell
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.INTELLIGENCE)<5)
 		{
-			mob.tell(target.displayName()+" is too stupid to understand the instructions!");
+			mob.tell(target.name()+" is too stupid to understand the instructions!");
 			return false;
 		}
 		// kill x, bring x, find x, get x, social x, eat x, drink x, buy x,
-		// sell x, do a skill x, open x, close x, go x, go to x, emote x, 
-		// look x, follow x, give x x, hold x, lock x, unlock x, channel x, 
-		// practice x, read x, say x, sit, sit x, sleep, sleep x, stand, 
-		// take x, tell x x, wear x, wield x, hold x, mount x, dismount, 
+		// sell x, do a skill x, open x, close x, go x, go to x, emote x,
+		// look x, follow x, give x x, hold x, lock x, unlock x, channel x,
+		// practice x, read x, say x, sit, sit x, sleep, sleep x, stand,
+		// take x, tell x x, wear x, wield x, hold x, mount x, dismount,
 		// serve x, rebuke x, crawl x, enter x, deposit x, withdraw x,
-		// hire x, fire x, 
-		
-		
+		// hire x, fire x,
+
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -121,9 +121,9 @@ public class Spell_Geas extends Spell
 				if(target.location()==mob.location())
 				{
 					maliciousAffect(mob,target,0,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
-					
+
 					mob.tell("Geas isn't even CLOSE to being done yet...");
-					
+
 					target.makePeace();
 					if(mob.getVictim()==target)
 						mob.makePeace();

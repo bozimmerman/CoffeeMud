@@ -47,9 +47,9 @@ public class Fighter_WeaponBreak extends StdAbility
 			return false;
 
 		int levelDiff=mob.getVictim().envStats().level()-adjustedLevel(mob);
-		if(levelDiff>0) 
+		if(levelDiff>0)
 			levelDiff=levelDiff*5;
-		else 
+		else
 			levelDiff=0;
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		int chance=(-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.DEXTERITY)*2));
@@ -62,7 +62,7 @@ public class Fighter_WeaponBreak extends StdAbility
 		&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
-			String str=auto?hisWeapon.displayName()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.displayName()+"!";
+			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.remove();
 			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okAffect(mob,msg))
@@ -73,7 +73,7 @@ public class Fighter_WeaponBreak extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to destroy "+hisWeapon.displayName()+" and fail(s)!");
+			return maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!");
 		return success;
 	}
 

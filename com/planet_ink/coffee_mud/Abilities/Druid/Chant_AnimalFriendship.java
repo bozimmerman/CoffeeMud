@@ -21,7 +21,7 @@ public class Chant_AnimalFriendship extends Chant
 			MOB target=(MOB)affect.target();
 			if((!target.isInCombat())&&(affect.source().getVictim()!=target))
 			{
-				affect.source().tell("You feel too friendly towards "+target.displayName());
+				affect.source().tell("You feel too friendly towards "+target.name());
 				if(target.getVictim()==affect.source())
 				{
 					target.makePeace();

@@ -9,11 +9,11 @@ public class Hireling extends StdBehavior
 {
 	public String ID(){return "Hireling";}
 	public Behavior newInstance(){	return new Hireling();}
-	
+
 	private Hashtable partials=new Hashtable();
 	private String workingFor="";
 	private long onTheJobUntil=0;
-	
+
 	private int price()
 	{
 		int price=100;
@@ -21,7 +21,7 @@ public class Hireling extends StdBehavior
 			price=Util.s_int(getParms().substring(0,getParms().indexOf(";")));
 		return price;
 	}
-	
+
 	private int minutes()
 	{
 		int mins=30;
@@ -29,7 +29,7 @@ public class Hireling extends StdBehavior
 			mins=Util.s_int(getParms().substring(getParms().indexOf(";")+1));
 		return mins;
 	}
-	
+
 	public void allDone(MOB observer)
 	{
 		workingFor="";
@@ -41,7 +41,7 @@ public class Hireling extends StdBehavior
 			if(observer.location().getExitInDir(d)!=null)
 				if(observer.location().getExitInDir(d).isOpen())
 				{
-					direction=d; 
+					direction=d;
 					break;
 				}
 				else
@@ -51,7 +51,7 @@ public class Hireling extends StdBehavior
 		if(observer.getStartRoom()!=null)
 			observer.getStartRoom().bringMobHere(observer,false);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -110,7 +110,7 @@ public class Hireling extends StdBehavior
 		}
 		return true;
 	}
-	
+
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any
 	 * and every affect listed in the Affect class
@@ -120,7 +120,7 @@ public class Hireling extends StdBehavior
 		super.affect(affecting,affect);
 		MOB source=affect.source();
 		if(!canActAtAll(affecting)) return;
-		
+
 		MOB observer=(MOB)affecting;
 		if((affect.sourceMinor()==Affect.TYP_QUIT)
 		&&(affect.amISource(observer)||affect.amISource(observer.amFollowing())))
@@ -151,38 +151,38 @@ public class Hireling extends StdBehavior
 		   &&(affect.tool() instanceof Coins))
 		{
 			int given=((Coins)affect.tool()).numberOfCoins();
-			if(partials.get(affect.source().name())!=null)
+			if(partials.get(affect.source().Name())!=null)
 			{
-				given+=((Integer)partials.get(affect.source().name())).intValue();
-				partials.remove(affect.source().name());
+				given+=((Integer)partials.get(affect.source().Name())).intValue();
+				partials.remove(affect.source().Name());
 			}
 			if(given<price())
 			{
 				if(onTheJobUntil!=0)
 				{
-					if(workingFor.equals(source.name()))
+					if(workingFor.equals(source.Name()))
 						ExternalPlay.quickSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
 						ExternalPlay.quickSay(observer,source,"Sorry, I'm on the job right now.  Give me "+(price()-given)+" more later on and I'll work.",true,false);
 				}
 				else
 					ExternalPlay.quickSay(observer,source,"My price is "+price()+".  Give me "+(price()-given)+" more and I'll work.",true,false);
-				partials.put(affect.source().name(),new Integer(given));
+				partials.put(affect.source().Name(),new Integer(given));
 			}
 			else
 			{
 				if(onTheJobUntil!=0)
 				{
-					if(workingFor.equals(source.name()))
+					if(workingFor.equals(source.Name()))
 						ExternalPlay.quickSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
 						ExternalPlay.quickSay(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
-					partials.put(affect.source().name(),new Integer(given));
+					partials.put(affect.source().Name(),new Integer(given));
 				}
 				else
 				{
 					if(given>price())
-						partials.put(affect.source().name(),new Integer(given-price()));
+						partials.put(affect.source().Name(),new Integer(given-price()));
 					StringBuffer skills=new StringBuffer("");
 					for(int a=0;a<observer.numAbilities();a++)
 					{
@@ -191,7 +191,7 @@ public class Hireling extends StdBehavior
 							A.setProfficiency(50+observer.envStats().level()-CMAble.lowestQualifyingLevel(A.ID()));
 						skills.append(", "+A.name());
 					}
-					workingFor=source.name();
+					workingFor=source.Name();
 					onTheJobUntil=System.currentTimeMillis();
 					onTheJobUntil+=(minutes()*IQCalendar.MILI_MINUTE);
 					ExternalPlay.follow(observer,source,false);

@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 public class SaltWaterSurface extends WaterSurface
 {
+	public String ID(){return "SaltWaterSurface";}
 	public SaltWaterSurface()
 	{
 		super();
@@ -16,7 +17,7 @@ public class SaltWaterSurface extends WaterSurface
 	}
 	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
-	
+
 	public void giveASky(int depth)
 	{
 		if(skyedYet) return;
@@ -31,7 +32,7 @@ public class SaltWaterSurface extends WaterSurface
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
 			UnderSaltWaterGrid sea=new UnderSaltWaterGrid();
 			sea.setArea(getArea());
-			sea.setID("");
+			sea.setRoomID("");
 			rawDoors()[Directions.DOWN]=sea;
 			rawExits()[Directions.DOWN]=o;
 			sea.rawDoors()[Directions.UP]=this;
@@ -45,7 +46,7 @@ public class SaltWaterSurface extends WaterSurface
 					thatRoom.giveASky(depth+1);
 					thatSea=thatRoom.rawDoors()[Directions.DOWN];
 				}
-				if((thatSea!=null)&&(thatSea.ID().length()==0)&&(thatSea instanceof UnderSaltWaterGrid))
+				if((thatSea!=null)&&(thatSea.roomID().length()==0)&&(thatSea instanceof UnderSaltWaterGrid))
 				{
 					sea.rawDoors()[d]=thatSea;
 					sea.rawExits()[d]=rawExits()[d];
@@ -60,14 +61,14 @@ public class SaltWaterSurface extends WaterSurface
 			CMMap.addRoom(sea);
 		}
 	}
-	
+
 	public void clearSky()
 	{
 		if(!skyedYet) return;
 		super.clearSky();
 		Room room=rawDoors()[Directions.DOWN];
 		if(room==null) return;
-		if((room.ID().length()==0)&&(room instanceof UnderSaltWaterGrid))
+		if((room.roomID().length()==0)&&(room instanceof UnderSaltWaterGrid))
 		{
 			((UnderSaltWaterGrid)room).clearGrid();
 			rawDoors()[Directions.UP]=null;
@@ -78,5 +79,5 @@ public class SaltWaterSurface extends WaterSurface
 			skyedYet=false;
 		}
 	}
-	
+
 }

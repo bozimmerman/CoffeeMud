@@ -108,7 +108,7 @@ public class StdClanMaster extends StdMOB implements ClanMaster
 									V.addElement(CLAN_FADE)
 									clansChange.addElement(V);
 								}
-							}	
+							}
 							else
 							{
 								switch(C.getStatus)
@@ -199,10 +199,10 @@ public class StdClanMaster extends StdMOB implements ClanMaster
 								newClan.setName(doubleCheck);
 								newClan.setStatus(Clan.STATUS_PENDING);
 								Clans.createClan(newClan);
-								ExternalPlay.DBUpdateClan(mob.name(),newClan.getName(),newClan.getTopRank());
+								ExternalPlay.DBUpdateClan(mob.Name(),newClan.getName(),newClan.getTopRank());
 								com.planet_ink.coffee_mud.Commands.base.ClanCommands.addClanHomeSpell(mob);
 								com.planet_ink.coffee_mud.Commands.base.ClanCommands.clanAnnounce(mob, "Your new clan is online and can now accept applicants.");
-								
+
 							}
 							else
 								return;

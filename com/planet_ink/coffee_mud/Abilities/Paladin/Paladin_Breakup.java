@@ -36,7 +36,7 @@ public class Paladin_Breakup extends StdAbility
 			return false;
 		if(!target.isInCombat())
 		{
-			mob.tell(target.displayName()+" is not fighting anyone!");
+			mob.tell(target.name()+" is not fighting anyone!");
 			return false;
 		}
 
@@ -48,7 +48,7 @@ public class Paladin_Breakup extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> exude(s) a peaceful aura.":"<S-NAME> break(s) up the fight between <T-NAME> and "+target.getVictim().displayName()+".");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> exude(s) a peaceful aura.":"<S-NAME> break(s) up the fight between <T-NAME> and "+target.getVictim().name()+".");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

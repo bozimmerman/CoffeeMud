@@ -8,8 +8,8 @@ import com.planet_ink.coffee_mud.utils.*;
 public class AreaData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	
-	
+
+
 	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -159,7 +159,7 @@ public class AreaData extends StdWebMacro
 		}
 		return str;
 	}
-	
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -168,7 +168,7 @@ public class AreaData extends StdWebMacro
 
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
 			return httpReq.getMUD().gameStatusStr();
-		
+
 		if(last.length()>0)
 		{
 			Area A=CMMap.getArea(last);
@@ -177,8 +177,8 @@ public class AreaData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=ExternalPlay.getHelpText("AREA_"+A.name());
-					if(s==null)	s=ExternalPlay.getHelpText(A.name());
+					StringBuffer s=ExternalPlay.getHelpText("AREA_"+A.Name());
+					if(s==null)	s=ExternalPlay.getHelpText(A.Name());
 					str.append(helpHelp(s));
 				}
 				if(parms.containsKey("CLIMATES"))
@@ -215,7 +215,7 @@ public class AreaData extends StdWebMacro
 				{
 					String name=(String)httpReq.getRequestParameters().get("NAME");
 					if((name==null)||(name.length()==0))
-						name=A.name();
+						name=A.Name();
 					str.append(name);
 				}
 				if(parms.containsKey("ARCHP"))
@@ -245,9 +245,9 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("TESTSTUFF"))
 					str.append(A.text());
-				
+
 				str.append(AreaData.affectsNBehaves(A,httpReq,parms));
-				
+
 				if(parms.containsKey("SUBOPS"))
 				{
 					String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");
@@ -278,7 +278,7 @@ public class AreaData extends StdWebMacro
 						desc=A.description();
 					str.append(desc);
 				}
-									 
+
 				if(parms.containsKey("SEASON"))
 					str.append(Area.SEASON_DESCS[A.getSeasonCode()]+", ");
 				if(parms.containsKey("TODCODE"))

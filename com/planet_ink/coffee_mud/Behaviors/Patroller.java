@@ -10,9 +10,9 @@ public class Patroller extends ActiveTicker
 	public String ID(){return "Patroller";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public boolean grantsMobility(){return true;}
-	
+
 	private int step=0;
-	
+
 	public Patroller()
 	{
 		super();
@@ -40,7 +40,7 @@ public class Patroller extends ActiveTicker
 			path=path.substring(x+1).trim();
 			x=path.indexOf(";");
 		}
-		if(path.length()>0)	
+		if(path.length()>0)
 			V.addElement(path);
 		if(V.size()>1)
 			for(int i=V.size()-1;i>=0;i--)
@@ -56,7 +56,7 @@ public class Patroller extends ActiveTicker
 			}
 		return V;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -67,7 +67,7 @@ public class Patroller extends ActiveTicker
 			if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
 			||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
 				return true;
-			
+
 			Room thisRoom=mob.location();
 			Room thatRoom=null;
 			if(thisRoom instanceof GridLocale)
@@ -81,25 +81,25 @@ public class Patroller extends ActiveTicker
 			if(steps.size()==0) return true;
 			if((step<0)||(step>=steps.size())) step=0;
 			String nxt=(String)steps.elementAt(step);
-			
+
 			if((nxt.equalsIgnoreCase("RESTART"))&&(step>0))
 			{
 				step=0;
 				nxt=(String)steps.elementAt(step);
 			}
-			
+
 			if(nxt.equalsIgnoreCase("."))
 			{
 				step++;
 				return true;
 			}
-			
+
 			int direction=Directions.getGoodDirectionCode(nxt);
 			if(direction<0)
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=thisRoom.getRoomInDir(d);
-					if(R.ID().toUpperCase().endsWith(nxt.toUpperCase()))
+					if(R.roomID().toUpperCase().endsWith(nxt.toUpperCase()))
 					{
 						thatRoom=R;
 						direction=d;
@@ -108,7 +108,7 @@ public class Patroller extends ActiveTicker
 				}
 			else
 				thatRoom=thisRoom.getRoomInDir(direction);
-			
+
 			if((direction<0)||(thatRoom==null))
 				return true;
 			Exit E=thisRoom.getExitInDir(direction);
@@ -143,7 +143,7 @@ public class Patroller extends ActiveTicker
 					}
 				}
 				if(!E.isOpen()) return true;
-				
+
 				Ability A=mob.fetchAbility("Thief_Sneak");
 				if(A!=null)
 				{

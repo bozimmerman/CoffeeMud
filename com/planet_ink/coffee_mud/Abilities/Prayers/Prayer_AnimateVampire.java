@@ -14,7 +14,7 @@ public class Prayer_AnimateVampire extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_AnimateVampire();}
 
-	
+
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -30,7 +30,7 @@ public class Prayer_AnimateVampire extends Prayer
 		}
 		return super.okAffect(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
@@ -38,7 +38,7 @@ public class Prayer_AnimateVampire extends Prayer
 
 		if(target==mob)
 		{
-			mob.tell(target.displayName()+" doesn't look dead yet.");
+			mob.tell(target.name()+" doesn't look dead yet.");
 			return false;
 		}
 		if(!(target instanceof DeadBody))
@@ -60,7 +60,7 @@ public class Prayer_AnimateVampire extends Prayer
 			description="It looks dead.";
 		else
 			description+="\n\rIt also looks dead.";
-		
+
 		if(body.baseEnvStats().level()<25)
 		{
 			mob.tell("This creature is too weak to create a vampire from.");

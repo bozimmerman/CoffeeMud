@@ -17,11 +17,11 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_DeathTrap();}
 	private boolean sprung=false;
-	
+
 	public boolean disabled(){return false;}
 	public void disable(){ unInvoke();}
 	public boolean sprung(){return false;}
-	
+
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}
 	public void setReset(int Reset){}
@@ -44,7 +44,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if((!sprung)&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_TRAPS)))
 			ExternalPlay.postDeath(invoker(),M,null);
 	}
-	
+
 	public void affect(Environmental myHost, Affect msg)
 	{
 		if((msg.targetMinor()==Affect.TYP_ENTER)
@@ -57,7 +57,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			ExternalPlay.postDeath(invoker(),msg.source(),msg);
 		super.affect(myHost,msg);
 	}
-	
+
 	protected Item findMostOfMaterial(Room room, int material)
 	{
 		int most=0;
@@ -81,9 +81,9 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 				}
 			}
 		}
-		return mostItem;	   
+		return mostItem;
 	}
-	
+
 	protected int findNumberOfResource(Room room, int resource)
 	{
 		int foundWood=0;
@@ -98,7 +98,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		}
 		return foundWood;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -116,8 +116,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		}
 		return true;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room trapThis=mob.location();
@@ -130,8 +130,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			mob.tell("You need 100 pounds of raw metal to build this trap.");
 			return false;
 		}
-		
-		
+
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -145,10 +145,10 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			&&((--woodDestroyed)>=0))
 				I.destroyThis();
 		}
-		
+
 		boolean success=profficiencyCheck(0,auto);
-		
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.displayName()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
+
+		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -10,7 +10,7 @@ import java.io.*;
 public class Generic
 {
 	private Generic(){}
-	
+
 	private static final long maxLength=65535;
 	// showNumber should always be a valid number no less than 1
 	// showFlag should be a valid number for editing, or -1 for skipping
@@ -19,7 +19,7 @@ public class Generic
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Name: '"+E.name()+"'.");
+		mob.tell(showNumber+". Name: '"+E.Name()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a new one\n\r:","");
 		if(newName.length()>0)
@@ -59,7 +59,7 @@ public class Generic
 		CMMap.delRoom(oldR);
 		CMMap.addRoom(R);
 		R.setArea(oldR.getArea());
-		R.setID(oldR.ID());
+		R.setRoomID(oldR.roomID());
 		for(int d=0;d<R.rawDoors().length;d++)
 			R.rawDoors()[d]=oldR.rawDoors()[d];
 		for(int d=0;d<R.rawExits().length;d++)
@@ -100,7 +100,7 @@ public class Generic
 				allitems.addElement(I);
 			oldR.delItem(I);
 		}
-		
+
 		for(int i=0;i<allitems.size();i++)
 		{
 			Item I=(Item)allitems.elementAt(i);
@@ -131,7 +131,7 @@ public class Generic
 				M.destroy();
 			}
 		}
-		
+
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R2=(Room)r.nextElement();
@@ -151,7 +151,7 @@ public class Generic
 		R.startItemRejuv();
 		return R;
 	}
-	
+
 	static Room genRoomType(MOB mob, Room R, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -165,7 +165,7 @@ public class Generic
 			if(newRoom==null)
 				mob.tell("'"+newName+"' does not exist. No Change.");
 			else
-			if(mob.session().confirm("This will change the room type of room '"+R.ID()+"'.  Are you absolutely sure (y/N)? ","N"))
+			if(mob.session().confirm("This will change the room type of room '"+R.roomID()+"'.  Are you absolutely sure (y/N)? ","N"))
 				R=changeRoomType(R,newRoom);
 			R.recoverRoomStats();
 		}
@@ -284,7 +284,7 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
+
 	public static void genExitMisc(MOB mob, Exit E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -325,12 +325,12 @@ public class Generic
 				E.setReadable(false);
 		}
 	}
-	
+
 	public static void genReadable1(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		
+
 		if((E instanceof Wand)
 		 ||(E instanceof Scroll)
 		 ||(E instanceof Pill)
@@ -349,12 +349,12 @@ public class Generic
 		else
 			E.setReadable(genGenericPrompt(mob,showNumber+". Is this item readable",E.isReadable()));
 	}
-		
+
 	public static void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		
+
 		if((E.isReadable())
 		 ||(E instanceof Wand)
 		 ||(E instanceof Scroll)
@@ -402,7 +402,7 @@ public class Generic
 					mob.tell(showNumber+". Assigned Read Text: '"+E.readableText()+"'.");
 					ok=true;
 				}
-				
+
 				if((showFlag!=showNumber)&&(showFlag>-999)) return;
 				String newName=mob.session().prompt("Enter something new (?)\n\r:","");
 				if((E instanceof Wand)
@@ -495,7 +495,7 @@ public class Generic
 			}
 		}
 	}
-	
+
 	public static void genGettable(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -524,8 +524,8 @@ public class Generic
 					  else
 						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()|EnvStats.CAN_NOT_SEE);
 					  break;
-			case 'E': if(E instanceof Weapon) 
-						  E.setRawLogicalAnd(!E.rawLogicalAnd()); 
+			case 'E': if(E instanceof Weapon)
+						  E.setRawLogicalAnd(!E.rawLogicalAnd());
 					  break;
 			}
 		}
@@ -596,10 +596,10 @@ public class Generic
 				int mask=disps[i];
 				if(letter==Character.toUpperCase(c.charAt(0)))
 				{
-					toggleDispositionMask(E,mask); 
+					toggleDispositionMask(E,mask);
 					break;
 				}
-				letter++;	
+				letter++;
 			}
 		}
 	}
@@ -613,7 +613,7 @@ public class Generic
 				prompt+="(Y/n): ";
 			else
 				prompt+="(y/N): ";
-			
+
 			return mob.session().confirm(prompt,val?"Y":"N");
 		}
 		catch(IOException e)
@@ -630,7 +630,7 @@ public class Generic
 		else
 			E.baseEnvStats().setSensesMask(current&((int)(EnvStats.ALLMASK-mask)));
 	}
-	
+
 	public static void toggleClimateMask(Area A, int mask)
 	{
 		int current=A.climateType();
@@ -728,10 +728,10 @@ public class Generic
 				int mask=senses[i];
 				if(letter==Character.toUpperCase(c.charAt(0)))
 				{
-					toggleSensesMask(E,mask); 
+					toggleSensesMask(E,mask);
 					break;
 				}
-				letter++;	
+				letter++;
 			}
 		}
 	}
@@ -752,7 +752,7 @@ public class Generic
 					+"\n\r   Open ticks: "+E.openDelayTicks());
 			return;
 		}
-		
+
 		if(genGenericPrompt(mob,"Has a door",E.hasADoor()))
 		{
 			HasDoor=true;
@@ -801,8 +801,8 @@ public class Generic
 		}
 		return canContain.substring(2);
 	}
-	
-	
+
+
 	public static void genLidsNLocks(MOB mob, Container E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -840,7 +840,7 @@ public class Generic
 					E.setContainTypes(E.containTypes()|Util.pow(2,found-1));
 			}
 		}
-		
+
 		if(genGenericPrompt(mob,"Has a lid ",E.hasALid()))
 		{
 			E.setLidsNLocks(true,false,E.hasALock(),E.isLocked());
@@ -892,7 +892,7 @@ public class Generic
 			if(E.baseEnvStats().rejuv()==0)
 			{
 				E.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-				mob.tell(E.name()+" will now never rejuvinate.");
+				mob.tell(E.Name()+" will now never rejuvinate.");
 			}
 		}
 		else
@@ -961,7 +961,7 @@ public class Generic
 		}
 	}
 
-	
+
 	public static int getNumericData(MOB mob, String prompt, int oldValue)
 		throws IOException
 	{
@@ -974,7 +974,7 @@ public class Generic
 		}
 		return numValue;
 	}
-	
+
 	public static double getDoubleData(MOB mob, String prompt, double oldValue)
 		throws IOException
 	{
@@ -987,7 +987,7 @@ public class Generic
 		}
 		return numValue;
 	}
-	
+
 	public static void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -1189,7 +1189,7 @@ public class Generic
 			mob.tell(showNumber+". Ammo required: "+(E.requiresAmmunition()?E.ammunitionType():"NO"));
 			return;
 		}
-		
+
 		if(mob.session().confirm("Does this weapon require ammunition (default="+defaultAmmo+") (Y/N)?",defaultAmmo))
 		{
 			mob.tell("\n\rAmmo type: '"+E.ammunitionType()+"'.");
@@ -1235,7 +1235,7 @@ public class Generic
 			}
 		}
 	}
-	
+
 	public static void genWeaponType(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -1300,7 +1300,7 @@ public class Generic
 		}
 	}
 
-	
+
 	public static void genMaterialCode(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -1694,7 +1694,7 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
+
 	public static void genShopkeeper1(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -1728,7 +1728,7 @@ public class Generic
 			E.setWhatIsSold(newValue);
 		}
 	}
-	
+
 	public static void genShopkeeper2(MOB mob, ShopKeeper E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -1784,7 +1784,7 @@ public class Generic
 							{
 								boolean alreadyHasIt=false;
 
-								if(E.doIHaveThisInStock(item.name(),null))
+								if(E.doIHaveThisInStock(item.Name(),null))
 								   alreadyHasIt=true;
 
 								if(!alreadyHasIt)
@@ -2023,7 +2023,7 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
+
 	public static void genGridLocaleY(MOB mob, GridLocale E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2036,7 +2036,7 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
-	
+
 	public static void genWornLocation(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -2148,7 +2148,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2193,7 +2193,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2240,7 +2240,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2273,7 +2273,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2317,7 +2317,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2369,7 +2369,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2426,7 +2426,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2476,7 +2476,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2520,7 +2520,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2587,7 +2587,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2606,7 +2606,7 @@ public class Generic
 
 		mob.tell("\n\rNow don't forget to equip him with stuff before saving!\n\r");
 	}
-	
+
 	public static void modifyPlayer(MOB mob, MOB me)
 		throws IOException
 	{
@@ -2618,12 +2618,12 @@ public class Generic
 		int showFlag=-1;
 		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
 			showFlag=-999;
-		String oldName=me.ID();
+		String oldName=me.Name();
 		while(!ok)
 		{
 			int showNumber=0;
 			genName(mob,me,++showNumber,showFlag);
-			while((!me.name().equals(oldName))&&(ExternalPlay.DBUserSearch(null,me.name())))
+			while((!me.Name().equals(oldName))&&(ExternalPlay.DBUserSearch(null,me.Name())))
 			{
 				mob.tell("The name given cannot be chosen, as it is already being used.");
 				genName(mob,me,showNumber,showFlag);
@@ -2654,7 +2654,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;
@@ -2662,7 +2662,7 @@ public class Generic
 				me.recoverMaxState();
 				me.recoverEnvStats();
 				me.resetToMaxState();
-				if(!oldName.equals(me.ID()))
+				if(!oldName.equals(me.Name()))
 				{
 					MOB fakeMe=(MOB)me.copyOf();
 					fakeMe.setName(oldName);
@@ -2673,13 +2673,13 @@ public class Generic
 			}
 		}
 	}
-	
+
 	public static void modifyGenShopkeeper(MOB mob, ShopKeeper me)
 		throws IOException
 	{
 		if(mob.isMonster())
 			return;
-		if(!(me instanceof MOB)) 
+		if(!(me instanceof MOB))
 			return;
 		MOB mme=(MOB)me;
 		boolean ok=false;
@@ -2727,7 +2727,7 @@ public class Generic
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}
 			showFlag=Util.s_int(mob.session().prompt("Edit which? ",""));
-			if(showFlag<=0) 
+			if(showFlag<=0)
 			{
 				showFlag=-1;
 				ok=true;

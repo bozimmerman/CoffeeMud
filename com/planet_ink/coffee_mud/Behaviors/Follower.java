@@ -68,7 +68,7 @@ public class Follower extends StdBehavior
 
 			if(otherRoom!=null)
 			{
-				if(!otherRoom.getArea().name().equals(thisRoom.getArea().name()))
+				if(!otherRoom.getArea().Name().equals(thisRoom.getArea().Name()))
 					direction=-1;
 			}
 			else

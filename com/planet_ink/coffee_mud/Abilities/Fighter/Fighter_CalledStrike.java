@@ -18,7 +18,7 @@ public class Fighter_CalledStrike extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_CalledStrike();}
 	public int classificationCode(){ return Ability.SKILL;}
-	
+
 	protected String gone="";
 	protected long code=0;
 	protected long bit=0;
@@ -28,7 +28,7 @@ public class Fighter_CalledStrike extends StdAbility
 	{
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-100);
 	}
-	
+
 	protected boolean amputate()
 	{
 		MOB mob=(MOB)affected;
@@ -48,7 +48,7 @@ public class Fighter_CalledStrike extends StdAbility
 			Item limb=CMClass.getItem("GenItem");
 			limb.setName("a "+gone);
 			limb.setDisplayText("a bloody "+gone+" is sitting here.");
-			limb.setSecretIdentity(target.displayName()+"`s bloody "+gone+".");
+			limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
 			limb.baseEnvStats().setLevel(1);
 			limb.baseEnvStats().setWeight(5);
 			limb.recoverEnvStats();
@@ -68,7 +68,7 @@ public class Fighter_CalledStrike extends StdAbility
 		mob.confirmWearability();
 		return true;
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB))||(target==null))
@@ -110,7 +110,7 @@ public class Fighter_CalledStrike extends StdAbility
 			mob.tell("You must be in combat to call a strike!");
 			return false;
 		}
-		
+
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
@@ -120,16 +120,16 @@ public class Fighter_CalledStrike extends StdAbility
 		Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
-			mob.tell("You cannot amputate with "+wp.displayName()+"!");
+			mob.tell("You cannot amputate with "+wp.name()+"!");
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(!prereqs(mob)) return false;
-		
+
 		gone="";
 		code=0;
 		bit=0;
@@ -155,7 +155,7 @@ public class Fighter_CalledStrike extends StdAbility
 		if(V.size()==0)
 		{
 			if(!auto)
-				mob.tell("There is nothing left on "+target.displayName()+" to cut off!");
+				mob.tell("There is nothing left on "+target.name()+" to cut off!");
 			return false;
 		}
 		if(mob.isMonster())
@@ -193,7 +193,7 @@ public class Fighter_CalledStrike extends StdAbility
 				return false;
 			}
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

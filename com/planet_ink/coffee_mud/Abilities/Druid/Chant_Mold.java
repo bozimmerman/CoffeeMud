@@ -22,7 +22,7 @@ public class Chant_Mold extends Chant
 			return;
 		Item item=(Item)affected;
 		super.unInvoke();
-		
+
 		if(canBeUninvoked())
 			item.destroyThis();
 	}
@@ -35,10 +35,10 @@ public class Chant_Mold extends Chant
 		   ||(target instanceof Room)
 		   ||(target instanceof Exit))
 		{
-			mob.tell("You can't cast this on "+target.displayName()+".");
+			mob.tell("You can't cast this on "+target.name()+".");
 			return false;
 		}
-		
+
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

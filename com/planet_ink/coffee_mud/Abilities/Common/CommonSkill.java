@@ -34,7 +34,7 @@ public class CommonSkill extends StdAbility
 	private int yield=1;
 	public int abilityCode(){return yield;}
 	public void setAbilityCode(int newCode){yield=newCode;}
-	
+
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
@@ -140,8 +140,8 @@ public class CommonSkill extends StdAbility
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
 			if(str.startsWith("You")) str="I"+str.substring(3);
-			if(target!=null) str=Util.replaceAll(str,"<T-NAME>",target.displayName());
-			if(tool!=null)  str=Util.replaceAll(str,"<O-NAME>",tool.displayName());
+			if(target!=null) str=Util.replaceAll(str,"<T-NAME>",target.name());
+			if(tool!=null)  str=Util.replaceAll(str,"<O-NAME>",tool.name());
 			ExternalPlay.quickSay(mob,null,str,false,false);
 		}
 		else
@@ -225,7 +225,7 @@ public class CommonSkill extends StdAbility
 				return findMostOfMaterial(room,(i<<8));
 		return null;
 	}
-	
+
 	protected Item findMostOfMaterial(Room room, int material)
 	{
 		int most=0;
@@ -249,9 +249,9 @@ public class CommonSkill extends StdAbility
 				}
 			}
 		}
-		return mostItem;	   
+		return mostItem;
 	}
-	
+
 	protected int findNumberOfResource(Room room, int resource)
 	{
 		int foundWood=0;
@@ -266,7 +266,7 @@ public class CommonSkill extends StdAbility
 		}
 		return foundWood;
 	}
-	
+
 	protected Environmental makeResource(int myResource)
 	{
 		if(myResource<0)

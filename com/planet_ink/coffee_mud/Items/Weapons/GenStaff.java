@@ -45,9 +45,9 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 	public int value()
 	{
-		if(usesRemaining()<=0) 
+		if(usesRemaining()<=0)
 			return 0;
-		else 
+		else
 			return super.value();
 	}
 	public void setSpell(Ability theSpell)
@@ -68,7 +68,7 @@ public class GenStaff extends GenWeapon implements Wand
 		String id=super.secretIdentity();
 		Ability A=getSpell();
 		if(A!=null)
-			id="'A staff of "+A.displayName()+"' Charges: "+usesRemaining()+"\n\r"+id;
+			id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 

@@ -29,19 +29,19 @@ public class Trap_WeaponSwing extends StdTrap
 		}
 		return null;
 	}
-	
+
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
 		Item I=getPoison(mob);
 		setMiscText("3/a club");
 		if(I!=null){
-			setMiscText(""+I.baseEnvStats().damage()+"/"+I.displayName());
+			setMiscText(""+I.baseEnvStats().damage()+"/"+I.name());
 			I.destroyThis();
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
-	
+
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

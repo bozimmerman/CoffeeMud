@@ -11,7 +11,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 	public String name(){ return "Vampire Vine";}
 	public String displayText(){return "(Vampire Vine)";}
 	public Environmental newInstance(){	return new Chant_VampireVine();}
-	
+
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
 		if(!super.okAffect(myHost,msg)) return false;
@@ -30,10 +30,10 @@ public class Chant_VampireVine extends Chant_SummonVine
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	public MOB determineMonster(MOB caster, int material)
 	{
 		MOB victim=caster.getVictim();
@@ -66,7 +66,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		//if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.displayName()+"!");
+		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

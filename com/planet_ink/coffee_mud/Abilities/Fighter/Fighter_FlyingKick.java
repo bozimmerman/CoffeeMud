@@ -27,13 +27,13 @@ public class Fighter_FlyingKick extends StdAbility
 		if(student==null) return true;
 		if((student.fetchAbility("Fighter_AxKick")==null))
 		{
-			teacher.tell(student.displayName()+" has not yet learned the Ax Kick skill.");
-			student.tell("You need to learn the Ax Kick skill to learn "+displayName()+".");
+			teacher.tell(student.name()+" has not yet learned the Ax Kick skill.");
+			student.tell("You need to learn the Ax Kick skill to learn "+name()+".");
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))

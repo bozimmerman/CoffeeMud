@@ -38,10 +38,10 @@ public class Disease_Lycanthropy extends Disease
 		if(!(affected instanceof MOB)) return;
 		if(lycanRace()!=null)
 		{
-			if(affected.displayName().indexOf(" ")>0)
-				affectableStats.setName("a "+lycanRace().name()+" called "+affected.displayName());
+			if(affected.name().indexOf(" ")>0)
+				affectableStats.setName("a "+lycanRace().name()+" called "+affected.name());
 			else
-				affectableStats.setName(affected.displayName()+" the "+lycanRace().name());
+				affectableStats.setName(affected.name()+" the "+lycanRace().name());
 			lycanRace().setHeightWeight(affectableStats,'M');
 		}
 	}
@@ -51,7 +51,7 @@ public class Disease_Lycanthropy extends Disease
 		if(lycanRace()!=null)
 			affectableStats.setMyRace(lycanRace());
 	}
-	
+
 	public MOB victimHere(Room room, MOB mob)
 	{
 		if(room==null) return null;
@@ -68,10 +68,10 @@ public class Disease_Lycanthropy extends Disease
 		}
 		return null;
 	}
-	
+
 	private boolean findVictim(MOB mob, Room room, Vector rooms, int depth)
 	{
-		if(depth>5) 
+		if(depth>5)
 			return false;
 		if(victimHere(room,mob)!=null)
 		{
@@ -94,13 +94,13 @@ public class Disease_Lycanthropy extends Disease
 		}
 		return false;
 	}
-	
+
 	public void tickLycanthropically(MOB mob)
 	{
 		if(mob==null) return;
 		if(mob.location()==null) return;
 		if(mob.isInCombat()) return;
-		
+
 		if((Dice.rollPercentage()<15)
 		&&((mob.location().domainType()&Room.INDOORS)>0))
 			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> howl(s) at the moon! ARROOOOOOOO!!!!");
@@ -142,20 +142,20 @@ public class Disease_Lycanthropy extends Disease
 					else
 					if(Dice.rollPercentage()<15)
 						mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> sniff(s) at the air.");
-						
+
 				}
 				else
 					deathTrail=null;
 			}
 		}
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
 		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
-		
+
 		MOB mob=(MOB)affected;
 		if(!changed)
 		{

@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class StdBanker extends StdShopKeeper implements Banker
 {
 	public String ID(){return "StdBanker";}
-	
+
 	protected double coinInterest=0.008;
 	protected double itemInterest=-0.001;
 	protected static final Integer allDown=new Integer(new Long(Area.A_FULL_DAY*Host.TIME_TICK_DELAY*5).intValue());
@@ -53,7 +53,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public void addDepositInventory(String mob, Item thisThang)
 	{
-		String name=thisThang.name();
+		String name=thisThang.Name();
 		if(thisThang instanceof Coins) name="COINS";
 		ExternalPlay.DBWriteJournal(bankChain(),mob,CMClass.className(thisThang),name,Generic.getPropertiesStr(thisThang,true),-1);
 	}
@@ -66,7 +66,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			Vector V2=(Vector)V.elementAt(v);
 			String fullName=((String)V2.elementAt(4));
 			if((money&&(fullName.equals("COINS")))
-			||((fullName.equals(thisThang.name()))&&(((String)V2.elementAt(3)).equals(CMClass.className(thisThang)))))
+			||((fullName.equals(thisThang.Name()))&&(((String)V2.elementAt(3)).equals(CMClass.className(thisThang)))))
 			{
 				ExternalPlay.DBDeleteJournal(((String)V2.elementAt(0)),Integer.MAX_VALUE);
 				break;
@@ -249,7 +249,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected int getBalance(MOB mob)
 	{
-		Item old=findDepositInventory(mob.name(),""+Integer.MAX_VALUE);
+		Item old=findDepositInventory(mob.Name(),""+Integer.MAX_VALUE);
 		if((old!=null)&&(old instanceof Coins))
 			return ((Coins)old).numberOfCoins();
 		return 0;
@@ -257,7 +257,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected int minBalance(MOB mob)
 	{
-		Vector V=getDepositedItems(mob.name());
+		Vector V=getDepositedItems(mob.Name());
 		int min=0;
 		for(int v=0;v<V.size();v++)
 		{
@@ -289,13 +289,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 						Coins older=(Coins)affect.tool();
 						Coins item=(Coins)CMClass.getItem("StdCoins");
 						int newNum=older.numberOfCoins();
-						Item old=findDepositInventory(affect.source().name(),""+Integer.MAX_VALUE);
+						Item old=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
 						if((old!=null)&&(old instanceof Coins))
 							newNum+=((Coins)old).numberOfCoins();
 						item.setNumberOfCoins(newNum);
 						if(old!=null)
-							delDepositInventory(affect.source().name(),old);
-						addDepositInventory(affect.source().name(),item);
+							delDepositInventory(affect.source().Name(),old);
+						addDepositInventory(affect.source().Name(),item);
 						if(affect.targetMinor()==Affect.TYP_GIVE)
 						{
 							setMoney(getMoney()-((Coins)affect.tool()).numberOfCoins());
@@ -306,8 +306,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					else
 					{
-						addDepositInventory(affect.source().name(),(Item)affect.tool());
-					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().displayName()+" is safe with us.",true,false);
+						addDepositInventory(affect.source().Name(),(Item)affect.tool());
+					    ExternalPlay.quickSay(this,mob,"Thank you, "+affect.tool().name()+" is safe with us.",true,false);
 						((Item)affect.tool()).destroyThis();
 					}
 				}
@@ -317,13 +317,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					Item old=(Item)affect.tool();
 					if(old instanceof Coins)
 					{
-						Item item=findDepositInventory(affect.source().name(),""+Integer.MAX_VALUE);
+						Item item=findDepositInventory(affect.source().Name(),""+Integer.MAX_VALUE);
 						if((item!=null)&&(item instanceof Coins))
 						{
 							Coins coins=(Coins)item;
 							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
 							coins.recoverEnvStats();
-							delDepositInventory(affect.source().name(),item);
+							delDepositInventory(affect.source().Name(),item);
 							com.planet_ink.coffee_mud.utils.Money.giveMoney(mob,affect.source(),((Coins)old).numberOfCoins());
 							if(coins.numberOfCoins()<=0)
 							{
@@ -332,7 +332,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 							else
 							{
-								addDepositInventory(affect.source().name(),item);
+								addDepositInventory(affect.source().Name(),item);
 							    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
 							}
 						}
@@ -341,7 +341,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					else
 					{
-						delDepositInventory(affect.source().name(),old);
+						delDepositInventory(affect.source().Name(),old);
 					    ExternalPlay.quickSay(this,mob,"Thank you for your trust.",true,false);
 						if(location()!=null)
 							location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
@@ -363,7 +363,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case Affect.TYP_LIST:
 			{
 				super.affect(myHost,affect);
-				Vector V=getDepositedItems(mob.name());
+				Vector V=getDepositedItems(mob.Name());
 				StringBuffer msg=new StringBuffer("\n\r");
 				String c="^x[Item                              ] ";
 				msg.append(c+c+"^.^N\n\r");
@@ -380,7 +380,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 					otherThanCoins=true;
 					String col=null;
-					col="["+Util.padRight(I.displayName(),34)+"] ";
+					col="["+Util.padRight(I.name(),34)+"] ";
 					if((++colNum)>2)
 					{
 						msg.append("\n\r");
@@ -417,7 +417,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		}
 		else
 		if(affect.sourceMinor()==Affect.TYP_RETIRE)
-			delAllDeposits(affect.source().name());
+			delAllDeposits(affect.source().Name());
 		super.affect(myHost,affect);
 	}
 
@@ -456,7 +456,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						return false;
 					}
 					if((!(affect.tool() instanceof Coins))
-					&&(findDepositInventory(affect.source().name(),affect.tool().name())==null))
+					&&(findDepositInventory(affect.source().Name(),affect.tool().Name())==null))
 					{
 						ExternalPlay.quickSay(this,mob,"You want WHAT?",true,false);
 						return false;
@@ -490,7 +490,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return super.okAffect(myHost,affect);
 			case Affect.TYP_LIST:
 			{
-				if(numberDeposited(affect.source().name())==0)
+				if(numberDeposited(affect.source().Name())==0)
 				{
 					StringBuffer msg=new StringBuffer("You don't have an account with us, I'm afraid.");
 					if(coinInterest!=0.0)

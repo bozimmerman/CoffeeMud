@@ -23,7 +23,7 @@ public class Emoter extends ActiveTicker
 		super.setParms(newParms);
 		emotes=null;
 	}
-	
+
 	protected Vector emotes=null;
 	protected boolean broadcast=false;
 
@@ -101,7 +101,7 @@ public class Emoter extends ActiveTicker
 		}
 		return emotes;
 	}
-	
+
 	private void emoteHere(Room room, MOB emoter, Vector emote, boolean Wrapper)
 	{
 		if(room==null) return;
@@ -173,9 +173,9 @@ public class Emoter extends ActiveTicker
 				MOB mob=getBehaversMOB(ticking);
 				String name=ticking.name();
 				if(ticking instanceof Environmental)
-					name=((Environmental)ticking).displayName();
+					name=((Environmental)ticking).name();
 				if(mob!=null)
-					emoter.setName(name+" belonging to "+mob.displayName());
+					emoter.setName(name+" belonging to "+mob.name());
 				else
 					emoter.setName(name);
 			}

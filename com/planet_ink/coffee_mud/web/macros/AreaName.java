@@ -17,7 +17,7 @@ public class AreaName extends StdWebMacro
 		{
 			Area A=CMMap.getArea(last);
 			if(A!=null)
-				return A.name();
+				return A.Name();
 		}
 		return "";
 	}

@@ -8,6 +8,7 @@ import java.util.*;
 
 public class IndoorWaterSurface extends StdRoom implements Drink
 {
+	public String ID(){return "IndoorWaterSurface";}
 	public IndoorWaterSurface()
 	{
 		super();

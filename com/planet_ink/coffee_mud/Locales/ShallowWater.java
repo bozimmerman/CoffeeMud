@@ -6,6 +6,7 @@ import java.util.*;
 
 public class ShallowWater extends StdRoom implements Drink
 {
+	public String ID(){return "ShallowWater";}
 	public ShallowWater()
 	{
 		super();

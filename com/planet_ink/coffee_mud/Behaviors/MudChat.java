@@ -45,7 +45,7 @@ public class MudChat extends StdBehavior
 		}
 		return rsc;
 	}
-	
+
 	private static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
 		StringBuffer rsc=Resources.getFileResource(resourceName);
@@ -168,9 +168,9 @@ public class MudChat extends StdBehavior
 
 	private Vector getMyChatGroup(MOB forMe, Vector chatGroups)
 	{
-		if((myChatGroup!=null)&&(myOldName.equals(forMe.name())))
+		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
 			return myChatGroup;
-		myOldName=forMe.name();
+		myOldName=forMe.Name();
 		Vector V=matchChatGroup(myOldName.toUpperCase(),chatGroups);
 		if(V!=null) return V;
 		V=matchChatGroup(forMe.description(),chatGroups);
@@ -223,17 +223,17 @@ public class MudChat extends StdBehavior
 				finalCommand="say \""+finalCommand.substring(1).trim()+"\"";
 			else
 			if(target!=null)
-				finalCommand="say \""+target.displayName()+"\" "+finalCommand.trim();
+				finalCommand="say \""+target.name()+"\" "+finalCommand.trim();
 
 			if(finalCommand.indexOf("$r")>=0)
 				finalCommand=Util.replaceAll(finalCommand,"$r",rest);
 			if((target!=null)&&(finalCommand.indexOf("$t")>=0))
-				finalCommand=Util.replaceAll(finalCommand,"$t",target.displayName());
+				finalCommand=Util.replaceAll(finalCommand,"$t",target.name());
 			if((source!=null)&&(finalCommand.indexOf("$n")>=0))
-				finalCommand=Util.replaceAll(finalCommand,"$n",source.displayName());
+				finalCommand=Util.replaceAll(finalCommand,"$n",source.name());
 			if(finalCommand.indexOf("$$")>=0)
 				finalCommand=Util.replaceAll(finalCommand,"$$","$");
-	
+
 			Vector V=Util.parse(finalCommand);
 			V.insertElementAt(new Integer(RESPONSE_DELAY),0);
 			for(int f=0;f<responseQue.size();f++)

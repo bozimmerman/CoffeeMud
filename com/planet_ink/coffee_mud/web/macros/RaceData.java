@@ -12,7 +12,7 @@ public class RaceData extends StdWebMacro
 	// valid parms include HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES,
 	// HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
 	// CLASSES, LANGS
-	
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -142,11 +142,11 @@ public class RaceData extends StdWebMacro
 						Ability A=mob.fetchAbility(i);
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.LANGUAGE))
 							if(A.profficiency()==0)
-								str.append(A.name()+", ");
+								str.append(A.Name()+", ");
 							else
-								str.append(A.name()+"("+A.profficiency()+"%), ");
+								str.append(A.Name()+"("+A.profficiency()+"%), ");
 					}
-					
+
 				}
 				if(parms.containsKey("LANGS"))
 				{
@@ -155,11 +155,11 @@ public class RaceData extends StdWebMacro
 						Ability A=mob.fetchAbility(i);
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
 							if(A.profficiency()==0)
-								str.append(A.name()+", ");
+								str.append(A.Name()+", ");
 							else
-								str.append(A.name()+"("+A.profficiency()+"%), ");
+								str.append(A.Name()+"("+A.profficiency()+"%), ");
 					}
-					
+
 				}
 				if(parms.containsKey("STARTINGEQ"))
 				{
@@ -167,7 +167,7 @@ public class RaceData extends StdWebMacro
 					{
 						Item I=mob.fetchInventory(i);
 						if(I!=null)
-							str.append(I.name()+", ");
+							str.append(I.Name()+", ");
 					}
 				}
 				if(parms.containsKey("CLASSES"))

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class TreeSurface extends ClimbableSurface
 {
+	public String ID(){return "TreeSurface";}
 	public TreeSurface()
 	{
 		super();

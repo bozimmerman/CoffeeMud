@@ -32,7 +32,7 @@ public class Skill_Bash extends StdAbility
 
 		if((Sense.isSitting(target)||Sense.isSleeping(target)))
 		{
-			mob.tell(target.displayName()+" must stand up first!");
+			mob.tell(target.name()+" must stand up first!");
 			return false;
 		}
 
@@ -52,7 +52,7 @@ public class Skill_Bash extends StdAbility
 				Weapon w=CMClass.getWeapon("ShieldWeapon");
 				if((w!=null)&&(thisSheild!=null))
 				{
-					w.setName(thisSheild.displayName());
+					w.setName(thisSheild.name());
 					w.setDisplayText(thisSheild.displayText());
 					w.setDescription(thisSheild.description());
 					w.baseEnvStats().setDamage(thisSheild.envStats().level()+5);

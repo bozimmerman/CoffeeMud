@@ -6,6 +6,7 @@ import java.util.*;
 
 public class IndoorShallowWater extends ShallowWater implements Drink
 {
+	public String ID(){return "IndoorShallowWater";}
 	public IndoorShallowWater()
 	{
 		super();

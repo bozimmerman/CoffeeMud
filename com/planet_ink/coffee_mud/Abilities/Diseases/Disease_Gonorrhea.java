@@ -22,7 +22,7 @@ public class Disease_Gonorrhea extends Disease
 	protected String DISEASE_START(){return "^G<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> squeeze(s) <S-HIS-HER> privates uncomfortably.";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_STD;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
@@ -48,13 +48,13 @@ public class Disease_Gonorrhea extends Disease
 		}
 		return true;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-5);
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		if(affected==null) return super.okAffect(myHost,affect);
@@ -64,8 +64,8 @@ public class Disease_Gonorrhea extends Disease
 			if(((affect.amITarget(mob))||(affect.amISource(mob)))
 			&&(affect.tool()!=null)
 			&&(affect.tool().ID().equals("Social"))
-			&&(affect.tool().name().equals("MATE <T-NAME>")
-			||affect.tool().name().equals("SEX <T-NAME>")))
+			&&(affect.tool().Name().equals("MATE <T-NAME>")
+			||affect.tool().Name().equals("SEX <T-NAME>")))
 			{
 				affect.source().tell(mob,null,null,"<S-NAME> really do(es)n't feel like it.");
 				return false;

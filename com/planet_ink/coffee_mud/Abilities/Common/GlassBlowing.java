@@ -74,7 +74,7 @@ public class GlassBlowing extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"A "+building.displayName()+" explodes!");
+						commonTell(mob,"A "+building.name()+" explodes!");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -189,9 +189,9 @@ public class GlassBlowing extends CommonSkill
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) blowing "+building.displayName()+".";
-		displayText="You are blowing "+building.displayName();
-		verb="blowing "+building.displayName();
+		startStr="<S-NAME> start(s) blowing "+building.name()+".";
+		displayText="You are blowing "+building.name();
+		verb="blowing "+building.name();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);

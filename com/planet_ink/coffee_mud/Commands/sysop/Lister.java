@@ -9,7 +9,7 @@ import java.io.*;
 public class Lister
 {
 	private Lister(){}
-	
+
 	public static StringBuffer reallyList(Hashtable these, int ofType)
 	{
 		return reallyList(these,ofType,null);
@@ -66,7 +66,7 @@ public class Lister
 			}
 			if((likeRoom!=null)&&(thisThang instanceof Room))
 			{
-				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
+				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
 				   list=null;
 			}
 			if(list!=null)
@@ -110,7 +110,7 @@ public class Lister
 			}
 			if((likeRoom!=null)&&(thisThang instanceof Room))
 			{
-				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
+				if((((Room)thisThang).roomID().length()>0)&&(!((Room)thisThang).getArea().Name().equals(likeRoom.getArea().Name())))
 				   list=null;
 			}
 			if(list!=null)
@@ -136,8 +136,8 @@ public class Lister
 		for(Enumeration r=these;r.hasMoreElements();)
 		{
 			Room thisThang=(Room)r.nextElement();
-			String thisOne=(String)thisThang.ID();
-			if((thisOne.length()>0)&&(thisThang.getArea().name().equals(likeRoom.getArea().name())))
+			String thisOne=(String)thisThang.roomID();
+			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
 				lines.append(Util.padRight(thisOne,24)+": "+thisThang.displayText()+"\n\r");
 		}
 		lines.append("\n\r");
@@ -159,7 +159,7 @@ public class Lister
 			if (thisSession.mob() != null)
 			{
 				lines.append(Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ");
-				lines.append("^!"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
+				lines.append("^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ");
 			}
 			else
 			{
@@ -248,7 +248,7 @@ public class Lister
 		}
 		return buf;
 	}
-	
+
 	public static void where(MOB mob, Vector commands)
 	{
 		StringBuffer lines=new StringBuffer("^x");
@@ -264,11 +264,11 @@ public class Lister
 				{
 					if(mob.isASysOp(thisSession.mob().location()))
 					{
-						lines.append("^!"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
+						lines.append("^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ");
 						if(thisSession.mob().location() != null )
 						{
 							lines.append(thisSession.mob().location().displayText());
-							lines.append(" ("+thisSession.mob().location().ID()+")");
+							lines.append(" ("+thisSession.mob().location().roomID()+")");
 						}
 						else
 							lines.append("^!(no location)^?");
@@ -293,12 +293,12 @@ public class Lister
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);
-					if((CoffeeUtensils.containsString(M.displayName(),who))
+					if((CoffeeUtensils.containsString(M.name(),who))
 					||(CoffeeUtensils.containsString(M.displayText(),who)))
 					{
-						lines.append("^!"+Util.padRight(M.displayName(),17)+"^?| ");
+						lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
 						lines.append(R.displayText());
-						lines.append(" ("+R.ID()+")");
+						lines.append(" ("+R.roomID()+")");
 						lines.append("\n\r");
 					}
 				}
@@ -306,7 +306,7 @@ public class Lister
 		}
 		mob.tell(lines.toString()+"^.");
 	}
-	
+
 	public static StringBuffer listReports(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -403,7 +403,7 @@ public class Lister
 		}
 		return buf;
 	}
-	
+
 	public static void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -414,7 +414,7 @@ public class Lister
 
 		Session s=mob.session();
 		if(s==null) return;
-		
+
 		String listThis=Util.combine(commands,0).toUpperCase();
 		String listWord=((String)commands.firstElement()).toUpperCase();
 

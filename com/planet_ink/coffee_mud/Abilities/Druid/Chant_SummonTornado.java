@@ -14,7 +14,7 @@ public class Chant_SummonTornado extends Chant
 	protected int canTargetCode(){return 0;}
 	public int quality(){return Ability.MALICIOUS;}
 	public Environmental newInstance(){	return new Chant_SummonTornado();}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -44,7 +44,7 @@ public class Chant_SummonTornado extends Chant
 				mob.location().send(mob,msg);
 			return false;
 		}
-		
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -134,7 +134,7 @@ public class Chant_SummonTornado extends Chant
 							}
 							if(I.usesRemaining()<=0)
 							{
-								mob.location().showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" is destroyed!");
+								mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" is destroyed!");
 								I.destroyThis();
 							}
 						}

@@ -41,7 +41,7 @@ public class Prayer_SenseInvisible extends Prayer
 	{
 		if(mob.fetchAffect(this.ID())!=null)
 		{
-			mob.tell("You are already affected by "+displayName()+".");
+			mob.tell("You are already affected by "+name()+".");
 			return false;
 		}
 
@@ -50,7 +50,7 @@ public class Prayer_SenseInvisible extends Prayer
 
 		Environmental target=mob;
 		if((auto)&&(givenTarget!=null)) target=givenTarget;
-		
+
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

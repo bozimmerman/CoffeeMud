@@ -16,7 +16,7 @@ public class Thief_FrameMark extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_FrameMark();}
 	protected int overrideMana(){return 50;}
-	
+
 	public MOB getMark(MOB mob)
 	{
 		Thief_Mark A=(Thief_Mark)mob.fetchAffect("Thief_Mark");
@@ -39,7 +39,7 @@ public class Thief_FrameMark extends ThiefSkill
 			mob.tell("You need to have marked someone before you can frame him or her.");
 			return false;
 		}
-		
+
 		Behavior B=null;
 		if(mob.location()!=null)
 		{
@@ -55,17 +55,17 @@ public class Thief_FrameMark extends ThiefSkill
 		}
 		if(mob.getMoney()<(target.envStats().level()*1000))
 		{
-			mob.tell("You'll need at least "+(target.envStats().level()*1000)+" gold on hand to frame "+target.displayName()+".");
+			mob.tell("You'll need at least "+(target.envStats().level()*1000)+" gold on hand to frame "+target.name()+".");
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		int levelDiff=(target.envStats().level()-mob.envStats().level()*15);
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(levelDiff,auto);
-		
+
 		mob.setMoney(mob.getMoney()-(target.envStats().level()*1000));
 
 		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> frame(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);

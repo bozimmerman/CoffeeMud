@@ -51,7 +51,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			Environmental E=(Environmental)baseInventory.elementAt(x);
 			if((thisThang.isGeneric())&&(E.isGeneric()))
 			{
-				if(thisThang.name().equals(E.name()))
+				if(thisThang.Name().equals(E.Name()))
 					return true;
 			}
 			else
@@ -96,11 +96,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				if((lastE.isGeneric())&&(E.isGeneric()))
 				{
-					if(E.name().equals(lastE.name()))
+					if(E.Name().equals(lastE.Name()))
 						ok=false;
 				}
 				else
-				if(CMClass.className(lastE).equals(CMClass.className(E)))
+				if(lastE.ID().equals(E.ID()))
 					ok=false;
 			}
 
@@ -110,14 +110,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				Environmental EE=(Environmental)V.elementAt(v);
 				if((EE.isGeneric())&&(E.isGeneric()))
 				{
-					if(E.name().equals(EE.name()))
+					if(E.Name().equals(EE.Name()))
 					{
 						ok=false;
 						break;
 					}
 				}
 				else
-				if(CMClass.className(EE).equals(CMClass.className(E)))
+				if(EE.ID().equals(E.ID()))
 					ok=false;
 			}
 
@@ -222,11 +222,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				Environmental E=(Environmental)baseInventory.elementAt(v);
 				if((thisThang.isGeneric())&&(E.isGeneric()))
 				{
-					if(thisThang.name().equals(E.name()))
+					if(thisThang.Name().equals(E.Name()))
 						baseInventory.removeElement(E);
 				}
 				else
-				if(CMClass.className(thisThang).equals(CMClass.className(E)))
+				if(thisThang.ID().equals(E.ID()))
 					baseInventory.removeElement(E);
 			}
 		}
@@ -235,14 +235,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			Environmental E=(Environmental)storeInventory.elementAt(v);
 			if((thisThang.isGeneric())&&(E.isGeneric()))
 			{
-				if(thisThang.name().equals(E.name()))
+				if(thisThang.Name().equals(E.Name()))
 				{
 					storeInventory.removeElement(E);
 					duplicateInventory.remove(E);
 				}
 			}
 			else
-			if(CMClass.className(thisThang).equals(CMClass.className(E)))
+			if(thisThang.ID().equals(E.ID()))
 			{
 				storeInventory.removeElement(E);
 				duplicateInventory.remove(E);
@@ -355,7 +355,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			Environmental E=(Environmental)storeInventory.elementAt(v);
 			if((likeThis.isGeneric())&&(E.isGeneric()))
 			{
-				if(E.name().equals(likeThis.name()))
+				if(E.Name().equals(likeThis.Name()))
 				{
 					Integer possNum=(Integer)duplicateInventory.get(E);
 					if(possNum!=null)
@@ -365,7 +365,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 			}
 			else
-			if(CMClass.className(E).equals(CMClass.className(likeThis)))
+			if(E.ID().equals(likeThis.ID()))
 			{
 				Integer possNum=(Integer)duplicateInventory.get(E);
 				if(possNum!=null)
@@ -419,7 +419,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return item;
 	}
-	
+
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{
 		MOB mob=affect.source();
@@ -475,12 +475,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_VIEW:
 			{
 				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().name(),mob)))
+				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
 				{
 					if((affect.targetMinor()!=Affect.TYP_VIEW)
 					&&(yourValue(mob,affect.tool(),true)>com.planet_ink.coffee_mud.utils.Money.totalMoney(mob)))
 					{
-						ExternalPlay.quickSay(this,mob,"You can't afford to buy "+affect.tool().displayName()+".",false,false);
+						ExternalPlay.quickSay(this,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
 						return false;
 					}
 					if(affect.tool() instanceof Item)
@@ -598,7 +598,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return V;
 	}
-	
+
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if(affect.amITarget(this))
@@ -618,7 +618,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case Affect.TYP_VALUE:
 				super.affect(myHost,affect);
-				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().displayName()+".",true,false);
+				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".",true,false);
 				break;
 			case Affect.TYP_SELL:
 				super.affect(myHost,affect);
@@ -626,7 +626,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
 					mob.recoverEnvStats();
-					mob.tell(displayName()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().displayName()+".");
+					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
 					if(affect.tool() instanceof Item)
 					{
 						Item item=(Item)affect.tool();
@@ -675,15 +675,15 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case Affect.TYP_VIEW:
 				super.affect(myHost,affect);
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
-					ExternalPlay.quickSay(this,affect.source(),"Interested in "+affect.tool().displayName()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
+				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().Name(),mob)))
+					ExternalPlay.quickSay(this,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
 				break;
 			case Affect.TYP_BUY:
 				super.affect(myHost,affect);
 				if((affect.tool()!=null)
-				&&(doIHaveThisInStock(affect.tool().name(),mob)))
+				&&(doIHaveThisInStock(affect.tool().Name(),mob)))
 				{
-					Vector products=removeSellableProduct(affect.tool().name(),mob);
+					Vector products=removeSellableProduct(affect.tool().Name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
 					com.planet_ink.coffee_mud.utils.Money.subtractMoney(this,mob,yourValue(mob,product,true));
@@ -735,7 +735,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							Vector V=new Vector();
 							if(A.canTarget(mob))
 							{
-								V.addElement(mob.displayName()+"$");
+								V.addElement(mob.name()+"$");
 								A.invoke(this,V,mob,true);
 							}
 							else
@@ -744,7 +744,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								Item I=mob.fetchWieldedItem();
 								if(I==null) I=mob.fetchWornItem(Item.HELD);
 								if(I==null) return;
-								V.addElement(I.displayName()+"$");
+								V.addElement(I.name()+"$");
 								addInventory(I);
 								A.invoke(this,V,I,true);
 								delInventory(I);
@@ -903,7 +903,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		&&(getStartRoom()!=null)
 		&&(getStartRoom().getArea()!=null))
 		{
-			String name=mob.name();
+			String name=mob.Name();
 			if(whatISell==DEAL_CLANDSELLER)
 				name=mob.getClanID();
 			Vector roomsHandling=new Vector();
@@ -917,11 +917,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					for(int v=0;v<V2.size();v++)
 						roomsHandling.addElement(V2.elementAt(v));
 					Item I=CMClass.getItem("GenTitle");
-					((LandTitle)I).setLandRoomID(R.ID());
+					((LandTitle)I).setLandRoomID(R.roomID());
 					if(((LandTitle)I).landOwner().equals(name))
 					{
-						if(!I.name().endsWith(" (Copy)"))
-							I.setName(I.name()+" (Copy)");
+						if(!I.Name().endsWith(" (Copy)"))
+							I.setName(I.Name()+" (Copy)");
 					}
 					else
 					if(((LandTitle)I).landOwner().length()>0)
@@ -980,7 +980,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);
-				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.displayName(),totalWidth-csize);
+				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
 				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");

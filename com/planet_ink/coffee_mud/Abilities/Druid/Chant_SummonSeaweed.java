@@ -14,7 +14,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonSeaweed();}
 	protected boolean seaOk(){return true;}
-	
+
 	public static Item buildSeaweed(MOB mob, Room room)
 	{
 		Item newItem=(Item)CMClass.getItem("GenItem");
@@ -48,11 +48,11 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 			break;
 		}
 		newItem.baseEnvStats().setWeight(1);
-		newItem.setSecretIdentity(mob.name());
+		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" sprout(s) up here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
@@ -65,7 +65,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 	{
 		return buildSeaweed(mob,room);
 	}
-	
+
 	public boolean rightPlace(MOB mob,boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
@@ -73,7 +73,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		
+
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		   &&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
@@ -82,6 +82,6 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		}
 		return true;
 	}
-	
-		
+
+
 }
