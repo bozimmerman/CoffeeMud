@@ -10,17 +10,17 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Spell_Gaes extends Spell
+public class Spell_Geas extends Spell
 {
-	public String ID() { return "Spell_Gaes"; }
-	public String name(){return "Gaes";}
-	public String displayText(){return "(Gaes to "+text()+")";}
+	public String ID() { return "Spell_Geas"; }
+	public String name(){return "Geas";}
+	public String displayText(){return "(Geas to "+text()+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int maxRange(){return 5;}
-	public Environmental newInstance(){	return new Spell_Gaes();}
+	public Environmental newInstance(){	return new Spell_Geas();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	
-	// should be set to TRUE when the gaes is BEING completed!
+	// should be set to TRUE when the geas is BEING completed!
 	private boolean completed=false;
 	
 	public void unInvoke()
@@ -33,9 +33,9 @@ public class Spell_Gaes extends Spell
 		if(canBeUninvoked())
 		{
 			if(completed)
-				mob.tell(mob,null,"You have completed your gaes.");
+				mob.tell(mob,null,"You have completed your geas.");
 			else
-				mob.tell(mob,null,"You have been released from your gaes.");
+				mob.tell(mob,null,"You have been released from your geas.");
 			
 			if((mob.isMonster())
 			   &&(!mob.amDead())
@@ -103,13 +103,13 @@ public class Spell_Gaes extends Spell
 		if(mob.isMonster())
 		{
 			mob.location().show(mob,null,Affect.MSG_NOISE,"<S-NAME> sigh(s).");
-			ExternalPlay.quickSay(mob,null,"You know, if I had any ambitions, I would put the gaes on myself!",false,false);
+			ExternalPlay.quickSay(mob,null,"You know, if I had any ambitions, I would put the geas on myself!",false,false);
 			return false;
 		}
 		
 		if(commands.size()<2)
 		{
-			mob.tell("You need to specify a target creature, and a gaes to place on them.");
+			mob.tell("You need to specify a target creature, and a geas to place on them.");
 			return false;
 		}
 		Vector name=Util.parse((String)commands.elementAt(0));
@@ -138,16 +138,15 @@ public class Spell_Gaes extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> place(s) a powerful gaes upon <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> place(s) a powerful geas upon <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
 				{
-					target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> smile(s) most peculiarly!");
 					maliciousAffect(mob,target,0,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
 					
-					mob.tell("Gaes isn't even CLOSE to being done yet...");
+					mob.tell("Geas isn't even CLOSE to being done yet...");
 					
 					target.makePeace();
 					if(mob.getVictim()==target)
@@ -162,7 +161,7 @@ public class Spell_Gaes extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to place a gaes on <T-NAMESELF>, but fails.");
+			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to place a geas on <T-NAMESELF>, but fails.");
 
 		// return whether it worked
 		return success;

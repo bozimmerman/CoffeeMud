@@ -92,7 +92,7 @@ public class Spell_Wish extends Spell
 			// cast wish to have restoration cast on me
 			// cast wish to cast bless on me
 			// cast wish to cast disintegrate on orc
-			// cast wish to cast gaes on orc to kill bob
+			// cast wish to cast geas on orc to kill bob
 			
 			mob.location().send(mob,msg);
 			StringBuffer wish=new StringBuffer(myWish);

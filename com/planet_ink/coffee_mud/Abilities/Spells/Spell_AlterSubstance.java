@@ -105,11 +105,17 @@ public class Spell_AlterSubstance extends Spell
 				String oldResourceName=EnvResource.RESOURCE_DESCS[oldMaterial&EnvResource.RESOURCE_MASK];
 				String oldMaterialName=EnvResource.MATERIAL_DESCS[(oldMaterial&EnvResource.MATERIAL_MASK)>>8];
 				String oldName=target.name().toUpperCase();
-System.out.println(oldName+"/"+oldResourceName+"/"+oldMaterialName);
 				oldName=oldName.replaceAll(oldResourceName,material);
 				oldName=oldName.replaceAll(oldMaterialName,material);
+				if(oldName.indexOf(material)<0)
+				{
+					int x=oldName.lastIndexOf(" ");
+					if(x<0)
+						oldName=material+" "+oldName;
+					else
+						oldName=oldName.substring(0,x)+" "+material+oldName.substring(x);
+				}
 				newName=Util.capitalize(oldName);
-System.out.println(newName+"/"+oldResourceName+"/"+oldMaterialName);
 				beneficialAffect(mob,target,100);
 			}
 

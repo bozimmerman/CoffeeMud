@@ -12,7 +12,7 @@ public class Spell_GravitySlam extends Spell
 	public int maxRange(){return 5;}
 	public int quality(){return MALICIOUS;};
 	public Environmental newInstance(){ return new Spell_GravitySlam();}
-	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
