@@ -283,7 +283,7 @@ public class Scoring
 					if(Sense.canBeSeenBy(thisItem,seer))
 					{
 						String name=thisItem.name();
-						if(name.length()>20) name=name.substring(0,17)+"...";
+						if(name.length()>53) name=name.substring(0,50)+"...";
 						msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 					}
 					else

@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.interfaces;
 public interface CharStats extends Cloneable
 {
 	
-	public final static double AVG_VALUE=11.0;
+	public final static double AVG_VALUE=10.0;
 	public int getStrength();
 	public int getDexterity();
 	public int getConstitution();

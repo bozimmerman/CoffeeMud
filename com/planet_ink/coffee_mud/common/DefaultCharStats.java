@@ -83,14 +83,14 @@ public class DefaultCharStats implements Cloneable, CharStats
 	public void reRoll()
 	{
 		double avg=0.0;
-		while((avg<(AVG_VALUE-0.25))&&(avg>(AVG_VALUE+0.25)))
+		while((Math.floor(avg)!=AVG_VALUE)||(avg==0.0))
 		{
-			Strength=3+(int)Math.floor(Math.random()*16);
-			Intelligence=3+(int)Math.floor(Math.random()*16);
-			Dexterity=3+(int)Math.floor(Math.random()*16);
-			Wisdom=3+(int)Math.floor(Math.random()*16);
-			Constitution=3+(int)Math.floor(Math.random()*16);
-			Charisma=3+(int)Math.floor(Math.random()*16);
+			Strength=3+(int)Math.floor(Math.random()*16.0);
+			Intelligence=3+(int)Math.floor(Math.random()*16.0);
+			Dexterity=3+(int)Math.floor(Math.random()*16.0);
+			Wisdom=3+(int)Math.floor(Math.random()*16.0);
+			Constitution=3+(int)Math.floor(Math.random()*16.0);
+			Charisma=3+(int)Math.floor(Math.random()*16.0);
 			avg=Util.div((Strength+Intelligence+Dexterity+Wisdom+Constitution+Charisma),6.0);
 		}
 	}

@@ -101,6 +101,8 @@ public class Spell_Meld extends Spell
 			   ||shinBone(itemOne,itemTwo,Item.ON_HEAD,Item.ON_TORSO)
 			   ||shinBone(itemOne,itemTwo,Item.ON_NECK,Item.ON_TORSO)
 			   ||shinBone(itemOne,itemTwo,Item.ON_TORSO,Item.ON_ARMS)
+			   ||shinBone(itemOne,itemTwo,Item.ON_TORSO,Item.ON_WAIST)
+			   ||shinBone(itemOne,itemTwo,Item.ON_WAIST,Item.ON_LEGS)
 			   ||shinBone(itemOne,itemTwo,Item.ON_ARMS,Item.ON_LEFT_WRIST)
 			   ||shinBone(itemOne,itemTwo,Item.ON_ARMS,Item.ON_HANDS)
 			   ||shinBone(itemOne,itemTwo,Item.ON_HANDS,Item.ON_LEFT_WRIST)
