@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
-public class CommonStrings
+public class CommonStrings extends Scriptable
 {
 	public static String[] clookup=null;
 	public static final int SYSTEM_PKILL=0;
