@@ -23,22 +23,25 @@ public class Look extends StdCommand
 		if(mob.location()==null) return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
+			Environmental thisThang=null;
+			
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("at")))
 			   commands.removeElementAt(1);
 			else
 			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("to")))
 			   commands.removeElementAt(1);
 			String ID=Util.combine(commands,1);
-
+			
 			if((ID.toUpperCase().startsWith("EXIT")&&(commands.size()==2)))
 			{
 				mob.location().listExits(mob);
 				return false;
 			}
 			if(ID.equalsIgnoreCase("SELF"))
-				ID=mob.name();
-			Environmental thisThang=null;
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
+				thisThang=mob;
+			
+			if(thisThang==null)
+				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
 			if((thisThang==null)
 			&&(commands.size()>2)
 			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
