@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.CharClasses;
-
 import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -35,10 +34,7 @@ public class Healer extends Cleric
 	protected boolean disableClericSpellGrant(MOB mob){return true;}
 	protected int alwaysFlunksThisQuality(){return 0;}
 
-	private int fiveDown=5;
-	private int tenDown=10;
-	private int twentyDown=20;
-
+	private DVector downs=new DVector(4);
 	public Healer()
 	{
 		maxStatAdj[CharStats.WISDOM]=4;
@@ -138,43 +134,70 @@ public class Healer extends Cleric
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
 		MOB myChar=(MOB)ticking;
-		if((tickID==MudHost.TICK_MOB)&&(myChar.charStats().getClassLevel(this)>=30))
+		if((tickID==MudHost.TICK_MOB)
+		&&(myChar.charStats().getClassLevel(this)>=30)
+		&&(myChar.getAlignment()>=650))
 		{
-			if(((--fiveDown)>1)&&((--tenDown)>1)&&((--twentyDown)>1)) return true;
-
-			HashSet followers=myChar.getGroupMembers(new HashSet());
-			if(myChar.location()!=null)
-				for(int i=0;i<myChar.location().numInhabitants();i++)
+		    int x=downs.indexOf(myChar.Name());
+			int fiveDown=5;
+			int tenDown=10;
+			int twentyDown=20;
+			if(x>=0)
+			{
+			    fiveDown=((Integer)downs.elementAt(x,2)).intValue();
+			    tenDown=((Integer)downs.elementAt(x,3)).intValue();
+			    twentyDown=((Integer)downs.elementAt(x,4)).intValue();
+				if(((--fiveDown)<=0)||((--tenDown)<=0)||((--twentyDown)<=0))
 				{
-					MOB M=myChar.location().fetchInhabitant(i);
-					if((M!=null)
-					&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
-						followers.add(M);
+					HashSet followers=myChar.getGroupMembers(new HashSet());
+					if(myChar.location()!=null)
+						for(int i=0;i<myChar.location().numInhabitants();i++)
+						{
+							MOB M=myChar.location().fetchInhabitant(i);
+							if((M!=null)
+							&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
+								followers.add(M);
+						}
+					if((fiveDown)<=0)
+					{
+						fiveDown=5;
+						Ability A=CMClass.getAbility("Prayer_CureLight");
+						if(A!=null)
+						for(Iterator e=followers.iterator();e.hasNext();)
+						{
+						    MOB M=(MOB)e.next();
+						    if(M.curState().getHitPoints()<M.maxState().getHitPoints())
+								A.invoke(myChar,M,true,0);
+						}
+					}
+					else
+					if((tenDown)<=0)
+					{
+						tenDown=10;
+						Ability A=CMClass.getAbility("Prayer_RemovePoison");
+						if(A!=null)
+						for(Iterator e=followers.iterator();e.hasNext();)
+						{
+						    MOB M=(MOB)e.next();
+							A.invoke(myChar,M,true,0);
+						}
+					}
+					else
+					if((twentyDown)<=0)
+					{
+						twentyDown=10;
+						Ability A=CMClass.getAbility("Prayer_CureDisease");
+						if(A!=null)
+						for(Iterator e=followers.iterator();e.hasNext();)
+							A.invoke(myChar,((MOB)e.next()),true,0);
+					}
 				}
-			if((fiveDown)<=0)
-			{
-				fiveDown=5;
-				Ability A=CMClass.getAbility("Prayer_CureLight");
-				if(A!=null)
-				for(Iterator e=followers.iterator();e.hasNext();)
-					A.invoke(myChar,((MOB)e.next()),true,0);
+			    downs.setElementAt(x,2,new Integer(fiveDown));
+			    downs.setElementAt(x,3,new Integer(tenDown));
+			    downs.setElementAt(x,4,new Integer(twentyDown));
 			}
-			if((tenDown)<=0)
-			{
-				tenDown=10;
-				Ability A=CMClass.getAbility("Prayer_RemovePoison");
-				if(A!=null)
-				for(Iterator e=followers.iterator();e.hasNext();)
-					A.invoke(myChar,((MOB)e.next()),true,0);
-			}
-			if((twentyDown)<=0)
-			{
-				twentyDown=10;
-				Ability A=CMClass.getAbility("Prayer_CureDisease");
-				if(A!=null)
-				for(Iterator e=followers.iterator();e.hasNext();)
-					A.invoke(myChar,((MOB)e.next()),true,0);
-			}
+			else
+				downs.addElement(myChar.Name(),new Integer(fiveDown),new Integer(tenDown),new Integer(twentyDown));
 		}
 		return super.tick(myChar,tickID);
 	}

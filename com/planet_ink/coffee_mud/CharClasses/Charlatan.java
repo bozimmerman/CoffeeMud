@@ -242,7 +242,8 @@ public class Charlatan extends StdCharClass
 				   ||(lql==classLevel-1)
 				   ||(classLevel>=25))
 				&&(!CMAble.getSecretSkill(A.ID()))
-				&&(!CMAble.classOnly("Archon",A.ID())))
+				&&(!CMAble.classOnly("Archon",A.ID()))
+				&&(CMAble.qualifiesByAnyCharClass(A.ID())))
 					choices.addElement(A);
 			}
 			if(choices.size()==0) return;

@@ -308,6 +308,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
 			if((!EX.out)
 			&&(EX.destRoomID.equalsIgnoreCase(roomID))
+			&&(EX.dir==direction)
 			&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<ySize())&&(EX.y<ySize()))
 				return getMakeGridRoom(EX.x,EX.y);
 		}

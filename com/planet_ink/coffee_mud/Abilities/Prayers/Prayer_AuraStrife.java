@@ -62,7 +62,6 @@ public class Prayer_AuraStrife extends Prayer
 		if(!super.tick(ticking,tickID)) return false;
 		if((tickID==MudHost.TICK_MOB)
 		&&(invoker()!=null)
-		&&(invoker().getAlignment()<350)
 		&&(affected!=null)
 		&&(affected instanceof MOB))
 		{
@@ -90,7 +89,7 @@ public class Prayer_AuraStrife extends Prayer
 				}
 			}
 			else
-			if(mob.location()!=null)
+			if((mob.location()!=null)&&(invoker().getAlignment()<350))
 			for(int m=0;m<mob.location().numInhabitants();m++)
 			{
 				MOB M=mob.location().fetchInhabitant(m);

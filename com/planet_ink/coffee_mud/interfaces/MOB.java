@@ -108,6 +108,7 @@ public interface MOB
 	public DeadBody killMeDead(boolean createBody);
 	public boolean isInCombat();
 	public void bringToLife(Room newLocation, boolean resetStats);
+	public void bringToLife();
 	public void removeFromGame();
 	public boolean amActive();
 	public void destroy();

@@ -79,7 +79,6 @@ public class Connection implements java.sql.Connection
    public java.sql.PreparedStatement prepareStatement(String sql) throws java.sql.SQLException
    {
       log("prepareStatement");
-      // XXX
       return null;
    }
    public java.sql.PreparedStatement prepareStatement(String sql,int a) throws java.sql.SQLException
@@ -177,7 +176,6 @@ public class Connection implements java.sql.Connection
    public java.sql.DatabaseMetaData getMetaData() throws java.sql.SQLException
    {
       log("getMetaData");
-      // XXX?
       return null;
    }
    public void setReadOnly (boolean readOnly) throws java.sql.SQLException

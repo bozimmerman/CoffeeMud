@@ -87,25 +87,25 @@ class ResultSet implements java.sql.ResultSet
    {
       //String s=getString(columnIndex);
       if (nullFlag) return null;
-      throw new java.sql.SQLException(); // XXX
+      throw new java.sql.SQLException();
    }
    public java.sql.Blob getBlob(int columnIndex) throws java.sql.SQLException
    {
       //String s=getString(columnIndex);
       if (nullFlag) return null;
-      throw new java.sql.SQLException(); // XXX
+      throw new java.sql.SQLException();
    }
    public java.sql.Clob getClob(int columnIndex) throws java.sql.SQLException
    {
       //String s=getString(columnIndex);
       if (nullFlag) return null;
-      throw new java.sql.SQLException(); // XXX
+      throw new java.sql.SQLException();
    }
    public java.sql.Ref getRef(int columnIndex) throws java.sql.SQLException
    {
       //String s=getString(columnIndex);
       if (nullFlag) return null;
-      throw new java.sql.SQLException(); // XXX
+      throw new java.sql.SQLException();
    }
 
    public boolean getBoolean(int columnIndex) throws java.sql.SQLException
@@ -241,11 +241,11 @@ class ResultSet implements java.sql.ResultSet
    }
    public Object getObject(int columnIndex) throws java.sql.SQLException
    {
-      return getString(columnIndex); // XXX
+      return getString(columnIndex);
    }
    public Object getObject(int columnIndex,java.util.Map m) throws java.sql.SQLException
    {
-      return getString(columnIndex); // XXX
+      return getString(columnIndex);
    }
    public java.net.URL getURL(int columnIndex) throws java.sql.SQLException
    {

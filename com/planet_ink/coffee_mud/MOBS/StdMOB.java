@@ -514,6 +514,17 @@ public class StdMOB implements MOB
 	public int getClanRole(){return clanRole;}
 	public void setClanRole(int role){clanRole=role;}
 
+	public void bringToLife()
+	{
+		amDead=false;
+		pleaseDestroy=false;
+
+		// will ensure no duplicate ticks, this obj, this id
+		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
+		if(tickStatus==Tickable.STATUS_NOT)
+			tick(this,MudHost.TICK_MOB); // slap on the butt
+	}
+	
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;

@@ -3318,7 +3318,7 @@ public class Scriptable extends StdBehavior
 			else
 			if(val.startsWith("+"))
 			{
-				// add via +XXX form
+				// add via +number form
 				val=val.substring(1);
 				int amount=Util.s_int(val);
 				String num=(String)H.get(key);
@@ -3327,7 +3327,7 @@ public class Scriptable extends StdBehavior
 			else
 			if(val.startsWith("-"))
 			{
-				// subtract -XXX form
+				// subtract -number form
 				val=val.substring(1);
 				int amount=Util.s_int(val);
 				String num=(String)H.get(key);
@@ -3336,7 +3336,7 @@ public class Scriptable extends StdBehavior
 			else
 			if(val.startsWith("*"))
 			{
-				// multiply via *XXX form
+				// multiply via *number form
 				val=val.substring(1);
 				int amount=Util.s_int(val);
 				String num=(String)H.get(key);
@@ -3345,7 +3345,7 @@ public class Scriptable extends StdBehavior
 			else
 			if(val.startsWith("/"))
 			{
-				// divide /XXX form
+				// divide /number form
 				val=val.substring(1);
 				int amount=Util.s_int(val);
 				String num=(String)H.get(key);

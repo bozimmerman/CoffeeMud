@@ -69,6 +69,7 @@ public class Prayer_CureDisease extends Prayer
 			}
 		}
 		else
+		if(!auto)
 			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
 
 

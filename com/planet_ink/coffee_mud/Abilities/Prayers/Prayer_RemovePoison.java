@@ -81,6 +81,7 @@ public class Prayer_RemovePoison extends Prayer
 			}
 		}
 		else
+		if(!auto)
 			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" that <T-NAME> be purified of <T-HIS-HER> poisons, but there is no answer.");
 
 

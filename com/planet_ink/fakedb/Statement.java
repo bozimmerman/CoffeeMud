@@ -59,7 +59,6 @@ public class Statement implements java.sql.Statement
    }
    public java.sql.ResultSet executeQuery(String sql) throws java.sql.SQLException
    {
-      //log(sql); // XXX
 
       try {
          String[] token=new String[1];
@@ -299,7 +298,7 @@ public class Statement implements java.sql.Statement
    {}
    public int getMaxFieldSize() throws java.sql.SQLException
    {
-      return 0; // XXX
+      return 0; 
    }
    public void setMaxFieldSize(int max) throws java.sql.SQLException
    {
@@ -337,7 +336,6 @@ public class Statement implements java.sql.Statement
    public boolean execute(String sql) throws java.sql.SQLException
    {
       log("execute "+sql);
-      // XXX
       return false;
    }
    public boolean execute(String sql,int a) throws java.sql.SQLException
@@ -350,7 +348,6 @@ public class Statement implements java.sql.Statement
    public java.sql.ResultSet getResultSet() throws java.sql.SQLException
    {
       log("getResultSet");
-      // XXX
       return null;
    }
    public int getUpdateCount() throws java.sql.SQLException

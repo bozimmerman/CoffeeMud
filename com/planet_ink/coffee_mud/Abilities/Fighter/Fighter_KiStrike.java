@@ -40,6 +40,7 @@ public class Fighter_KiStrike extends StdAbility
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(!done)
+		&&(msg.tool() instanceof Weapon)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
 			done=true;

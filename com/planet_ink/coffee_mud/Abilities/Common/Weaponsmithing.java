@@ -225,7 +225,7 @@ public class Weaponsmithing extends CraftingSkill
 			int toggler=1;
 			int toggleTop=3;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",21)+" "+Util.padRight("Amt",3)+" ");
+				buf.append(Util.padRight("Item",20)+" "+Util.padRight("Amt",3)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -238,7 +238,7 @@ public class Weaponsmithing extends CraftingSkill
 					if((level<=mob.envStats().level())
 					&&(canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))
 					{
-						buf.append(Util.padRight(item,21)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,20)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}

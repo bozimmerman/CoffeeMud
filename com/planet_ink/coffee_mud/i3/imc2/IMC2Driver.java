@@ -349,10 +349,11 @@ public final class IMC2Driver extends Thread {
        imc_sequencenumber = imc_now;
 
         for(int i=0;i<channelMap.length;i++)
-		{
-			chan_mask.put(channelMap[i][0],channelMap[i][1]);
-			chan_conf.put(channelMap[i][0],channelMap[i][2]);
-		}
+            if((channelMap[i][0]!=null)&&(channelMap[i][1]!=null)&&(channelMap[i][2]!=null))
+			{
+				chan_mask.put(channelMap[i][0],channelMap[i][1]);
+				chan_conf.put(channelMap[i][0],channelMap[i][2]);
+			}
 		
 		imc_name=loginName;
 		imc_log_on=1; // logging?

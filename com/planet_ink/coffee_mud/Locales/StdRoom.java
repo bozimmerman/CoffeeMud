@@ -844,7 +844,8 @@ public class StdRoom
 			else
 				mob.setRiding(null);
 		}
-		oldRoom.recoverRoomStats();
+		if(oldRoom!=null)
+			oldRoom.recoverRoomStats();
 		recoverRoomStats();
 	}
 

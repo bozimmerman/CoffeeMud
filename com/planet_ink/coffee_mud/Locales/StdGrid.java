@@ -97,6 +97,7 @@ public class StdGrid extends StdRoom implements GridLocale
 					CMMap.CrossExit EX=(CMMap.CrossExit)gridexits.elementAt(d);
 					if((!EX.out)
 					&&(EX.destRoomID.equalsIgnoreCase(roomID))
+					&&(EX.dir==direction)
 					&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<ySize())&&(EX.y<ySize())
 					&&(grid[EX.x][EX.y]!=null))
 						return grid[EX.x][EX.y];

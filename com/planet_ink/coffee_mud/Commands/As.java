@@ -62,17 +62,25 @@ public class As extends StdCommand
 		Session oldSession=M.session();
 		Room oldRoom=M.location();
 		boolean inside=(oldRoom!=null)?oldRoom.isInhabitant(M):false;
+		boolean dead=M.amDead();
 		M.setSession(mySession);
 		mySession.setMob(M);
 		if(((String)commands.firstElement()).equalsIgnoreCase("here")
 		   ||((String)commands.firstElement()).equalsIgnoreCase("."))
 		{
-			mob.location().bringMobHere(M,false);
+		    if((M.location()!=mob.location())&&(!mob.location().isInhabitant(M)))
+				mob.location().bringMobHere(M,false);
 			commands.removeElementAt(0);
+		}
+		if(dead) M.bringToLife();
+		if((M.location()==null)&&(oldRoom==null)&&(mob.location()!=null))
+		{
+		    inside=false;
+			mob.location().bringMobHere(M,false);
 		}
 		M.doCommand(commands);
 		if(M.playerStats()!=null) M.playerStats().setUpdated(0);
-		if((oldRoom!=null)&&(inside))
+		if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
 			oldRoom.bringMobHere(M,false);
 		else
 		{
@@ -82,6 +90,7 @@ public class As extends StdCommand
 		}
 		M.setSession(oldSession);
 		mySession.setMob(mob);
+		if(dead) M.removeFromGame();
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

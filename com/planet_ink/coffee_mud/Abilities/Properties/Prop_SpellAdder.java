@@ -106,7 +106,7 @@ public class Prop_SpellAdder extends Property
 		int x=A.text().indexOf("%");
 		if(x<0)
 		{
-			if(Dice.rollPercentage()<defaultPct)
+			if(Dice.rollPercentage()<=defaultPct)
 				return true;
 			else
 				return false;
@@ -123,7 +123,7 @@ public class Prop_SpellAdder extends Property
 					x=-1;
 				mul=mul*10;
 			}
-			if(Dice.rollPercentage()<tot)
+			if(Dice.rollPercentage()<=tot)
 				return true;
 			else
 				return false;

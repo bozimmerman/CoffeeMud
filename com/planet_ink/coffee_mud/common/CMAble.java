@@ -106,6 +106,21 @@ public class CMAble
 			lowestQualifyingLevelMap.put(ability,new Integer(qualLevel));
 	}
 	
+	public static boolean qualifiesByAnyCharClass(String abilityID)
+	{
+		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		{
+			CharClass C=(CharClass)e.nextElement();
+			if(completeAbleMap.containsKey(C.ID()))
+			{
+				Hashtable ableMap=(Hashtable)completeAbleMap.get(C.ID());
+				if(ableMap.containsKey(abilityID)) 
+					return true;
+			}
+		}
+		return false;
+	}
+	
 	public static int lowestQualifyingLevel(String ability)
 	{
 		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(ability);

@@ -68,7 +68,7 @@ public class StdContainer extends StdItem implements Container
 				{
 					if(!Sense.isDroppable((Item)msg.tool()))
 					{
-						mob.tell("You can't seem to let go of "+name()+".");
+						mob.tell("You can't seem to let go of "+msg.tool().name()+".");
 						return false;
 					}
 					Item newitem=(Item)msg.tool();
