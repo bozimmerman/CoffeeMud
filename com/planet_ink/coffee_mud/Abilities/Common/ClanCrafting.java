@@ -298,7 +298,11 @@ public class ClanCrafting extends CommonSkill
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
+		{
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+C.typeName()+" "+C.name()).toLowerCase();
+			if(misctype.length()>0)
+				building.setReadableText(misctype);
+		}
 		else
 		{
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+mob.location().getArea().name()).toLowerCase();
@@ -329,6 +333,12 @@ public class ClanCrafting extends CommonSkill
 		{
 			((ClanItem)building).setClanID(mob.getClanID());
 			((ClanItem)building).setCIType(Util.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
+			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
+			{
+				building.setMaterial(EnvResource.MATERIAL_PAPER);
+				building.setReadable(true);
+				building.setReadableText("Hear the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
+			}
 		}
 
 		if(spell.length()>0)

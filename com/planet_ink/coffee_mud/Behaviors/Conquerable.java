@@ -71,6 +71,8 @@ public class Conquerable extends Arrest
 				if(V!=null)
 				{
 					V.clear();
+					StringBuffer str=new StringBuffer("");
+					V.addElement(str.toString());
 				}
 				return true;
 			default:
@@ -94,7 +96,9 @@ public class Conquerable extends Arrest
 		&&(allowLaw)
 		&&(!Sense.isAnimalIntelligence(M))
 		&&(M.location()!=null)
-		&&((!M.isMonster())||Sense.isMobile(M)))
+		&&((!M.isMonster())||Sense.isMobile(M))
+		&&(holdingClan.length()>0)
+		&&(M.getClanID().equals(holdingClan)))
 			for(int i=0;i<M.inventorySize();i++)
 			{
 				Item I=M.fetchInventory(i);
@@ -112,7 +116,9 @@ public class Conquerable extends Arrest
 		if((M!=null)
 		&&(allowLaw)
 		&&(!Sense.isAnimalIntelligence(M))
-		&&(M.location()!=null))
+		&&(M.location()!=null)
+		&&(holdingClan.length()>0)
+		&&(M.getClanID().equals(holdingClan)))
 			for(int i=0;i<M.inventorySize();i++)
 			{
 				Item I=M.fetchInventory(i);

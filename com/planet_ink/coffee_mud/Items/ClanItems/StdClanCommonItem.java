@@ -10,7 +10,6 @@ public class StdClanCommonItem extends StdClanItem
 	public String ID(){	return "StdClanCommonItem";}
 	public Environmental newInstance(){ return new StdClanCommonItem();}
 	private int workDown=0;
-	public static final Vector empty=new Vector();
 	public StdClanCommonItem()
 	{
 		super();
@@ -21,18 +20,20 @@ public class StdClanCommonItem extends StdClanItem
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
+		setCIType(ClanItem.CI_GATHERITEM);
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!StdClanItem.standardTick(this,tickID))
+		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Host.TICK_CLANITEM)
 		&&(owner() instanceof MOB)
 		&&(((MOB)owner()).isMonster())
 		&&(readableText().length()>0)
+		&&(((MOB)owner()).getClanID().equals(clanID()))
 		&&((--workDown)<=0)
 		&&(!Sense.isAnimalIntelligence((MOB)owner())))
 		{
@@ -43,25 +44,22 @@ public class StdClanCommonItem extends StdClanItem
 				Ability A=CMClass.getAbility(readableText());
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
 				{
-					empty.clear();
 					A.setProfficiency(100);
-					if(M.inventorySize()>0)
+					if(M.inventorySize()>1)
 					{
-						Item I=M.fetchInventory(Dice.roll(1,M.inventorySize(),-1));
-						if(I!=null)
-						{
-							Vector V=new Vector();
-							V.addElement(I.name());
-						}
-						else
-							A.invoke(M,empty,null,false);
+						Item I=null;
+						while((M.inventorySize()>1)&&((I==null)||(I==this)))
+							I=M.fetchInventory(Dice.roll(1,M.inventorySize(),-1));
+						Vector V=new Vector();
+						if(I!=null)	V.addElement(I.name());
+						A.invoke(M,V,null,false);
 					}
 					else
-						A.invoke(M,empty,null,false);
+						A.invoke(M,new Vector(),null,false);
 				}
 
 			}
 		}
-		return super.tick(ticking,tickID);
+		return true;
 	}
 }

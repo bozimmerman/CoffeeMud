@@ -2,11 +2,11 @@ package com.planet_ink.coffee_mud.Items.ClanItems;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Items.StdContainer;
+import com.planet_ink.coffee_mud.Items.StdItem;
 import java.util.*;
 
 
-public class StdClanFlag extends StdContainer implements ClanItem
+public class StdClanFlag extends StdItem implements ClanItem
 {
 	public String ID(){	return "StdClanFlag";}
 	public Environmental newInstance(){ return new StdClanFlag();}
@@ -24,7 +24,7 @@ public class StdClanFlag extends StdContainer implements ClanItem
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
-		capacity=100;
+		setCIType(ClanItem.CI_FLAG);
 		material=EnvResource.RESOURCE_COTTON;
 		recoverEnvStats();
 	}

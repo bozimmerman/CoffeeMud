@@ -59,6 +59,11 @@ public class FireBuilding extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if((mob.isMonster()
+		&&(!Sense.isAnimalIntelligence(mob)))
+		&&(commands.size()==0))
+			commands.addElement("fire");
+		
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Light what?  Try light fire, or light torch...");
