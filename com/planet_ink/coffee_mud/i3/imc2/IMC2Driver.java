@@ -861,6 +861,9 @@ public final class IMC2Driver extends Thread {
 		StringBuffer str=new StringBuffer(res);
 		for(int i=0;i<str.length()-1;i++)
 		{
+			if(str.charAt(i)=='`')
+				str.setCharAt(i,'\'');
+			else
 			if(str.charAt(i)=='^')
 			switch(str.charAt(i+1))
 			{
