@@ -9,7 +9,7 @@ import java.util.*;
 public class Paladin_Courage extends Paladin
 {
 	public String ID() { return "Paladin_Courage"; }
-	public String name(){ return "Paladin's Courage";}
+	public String name(){ return "Paladin`s Courage";}
 	public Paladin_Courage()
 	{
 		super();

@@ -6,11 +6,6 @@
 <BODY BGCOLOR=#000066 TEXT=#FFFFFF>
 <H3>@AbilityName@ (@AbilityData?domain@)</H3>
 <PRE>
-Quality  : @AbilityData?quality@
-Target   : @AbilityData?target@
-Range    : @AbilityData?ranges@
-Invoked  : @AbilityData?auto@
-Alignment: @AbilityData?alignment@
 @AbilityData?help@
 </PRE>
 </BODY>

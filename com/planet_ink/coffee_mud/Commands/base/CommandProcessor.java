@@ -790,6 +790,179 @@ public class CommandProcessor
 		return thisTag;
 	}
 	
+					
+	public String fixHelp(String tag, String str)
+	{
+		if(str.startsWith("<ABILITY>"))
+		{
+			str=str.substring(9);
+			String name=tag;
+			int type=-1;
+			if(name.startsWith("SPELL_"))
+			{
+				type=Ability.SPELL;
+				name=name.substring(6);
+			}
+			else
+			if(name.startsWith("PRAYER_"))
+			{
+				type=Ability.PRAYER;
+				name=name.substring(7);
+			}
+			else
+			if(name.startsWith("SONG_"))
+			{
+				type=Ability.SONG;
+				name=name.substring(5);
+			}
+			else
+			if(name.startsWith("CHANT_"))
+			{
+				type=Ability.CHANT;
+				name=name.substring(6);
+			}
+			name=name.replace('_',' ');
+			for(int a=0;a<CMClass.abilities.size();a++)
+			{
+				Ability A=(Ability)CMClass.abilities.elementAt(a);
+				if(A.ID().equalsIgnoreCase(tag)
+				   &&((type<0)||(type==(A.classificationCode()&Ability.ALL_CODES)))
+				   ||(A.name().equalsIgnoreCase(name)))
+				{
+					StringBuffer prepend=new StringBuffer("");
+					type=(A.classificationCode()&Ability.ALL_CODES);
+					String typeStr="Skill";
+					prepend.append("\n\r");
+					switch(type)
+					{
+					case Ability.SPELL:
+						prepend.append(Util.padRight("Spell",9));
+						break;
+					case Ability.PRAYER:
+						prepend.append(Util.padRight("Prayer",9));
+						break;
+					case Ability.CHANT:
+						prepend.append(Util.padRight("Chant",9));
+						break;
+					case Ability.SONG:
+						prepend.append(Util.padRight("Song",9));
+						break;
+					default:
+						prepend.append(Util.padRight("Skill",9));
+						break;
+					}
+					prepend.append(": "+A.name());
+					if(type==Ability.SPELL)
+					{
+						prepend.append("\n\rSchool   : ");
+						int school=(A.classificationCode()&Ability.ALL_DOMAINS)>>5;
+						prepend.append(Util.capitalize(Ability.DOMAIN_DESCS[school]));
+					}
+					prepend.append("\n\rAvailable: ");
+					for(int c=0;c<CMClass.charClasses.size();c++)
+					{
+						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+						if((!C.ID().equalsIgnoreCase("Archon"))
+						&&(CMAble.getQualifyingLevel(C.ID(),A.ID())>=0))
+							prepend.append(C.name()+" ");
+					}
+					if(type==Ability.PRAYER)
+					{
+						prepend.append("\n\rAlignment: ");
+						boolean notgood=(!A.appropriateToMyAlignment(1000));
+						boolean notneutral=(!A.appropriateToMyAlignment(500));
+						boolean notevil=(!A.appropriateToMyAlignment(0));
+						boolean good=!notgood;
+						boolean neutral=!notneutral;
+						boolean evil=!notevil;
+					
+						if(good&&neutral&&evil)
+							prepend.append("Unaligned/Doesn't matter");
+						else
+						if(neutral&&notgood&&notevil)
+							prepend.append("Neutral");
+						else
+						if(good&&notevil)
+							prepend.append("Good");
+						else
+						if(evil&&notgood)
+							prepend.append("Evil");
+					}
+					if(!A.isAutoInvoked())
+					{
+						prepend.append("\n\rQuality  : ");
+						switch(A.quality())
+						{
+						case Ability.MALICIOUS:
+							prepend.append("Malicious");
+							break;
+						case Ability.BENEFICIAL_OTHERS:
+						case Ability.BENEFICIAL_SELF:
+							prepend.append("Always Beneficial");
+							break;
+						case Ability.OK_OTHERS:
+						case Ability.OK_SELF:
+							prepend.append("Sometimes Beneficial");
+							break;
+						case Ability.INDIFFERENT:
+							prepend.append("Circumstantial");
+							break;
+						}
+						prepend.append("\n\rTargets  : ");
+						switch(A.quality())
+						{
+						case Ability.INDIFFERENT:
+							{
+								prepend.append("Item or Room, ");
+							}
+							break;
+						case Ability.MALICIOUS:
+							prepend.append("Others");
+							break;
+						case Ability.BENEFICIAL_OTHERS:
+						case Ability.OK_OTHERS:
+							prepend.append("Caster or others");
+							break;
+						case Ability.BENEFICIAL_SELF:
+						case Ability.OK_SELF:
+							prepend.append("Caster only");
+							break;
+						}
+						prepend.append("\n\rRange    : ");
+						int min=A.minRange();
+						int max=A.maxRange();
+						if(min+max==0)
+							prepend.append("Touch, or not applicable");
+						else
+						{
+							if(min==0)
+								prepend.append("Touch");
+							else
+								prepend.append("Range "+min);
+							if(max>0)
+								prepend.append(" - Range "+max);
+						}
+						if((A.triggerStrings()!=null)
+						   &&(A.triggerStrings().length>0))
+						{
+							prepend.append("\n\rCommands : ");
+							for(int i=0;i<A.triggerStrings().length;i++)
+							{
+								prepend.append(A.triggerStrings()[i]);
+								if(i<(A.triggerStrings().length-1))
+								   prepend.append(", ");
+							}
+						}
+					}
+					else
+						prepend.append("\n\rInvoked  : Automatic");
+					str=prepend.toString()+"\n\r"+str;
+				}
+			}
+		}
+		return str;
+	}
+	
 	public StringBuffer getHelpText(String helpStr,Properties rHelpFile)
 	{
 		// the area exception
@@ -807,12 +980,12 @@ public class CommandProcessor
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
 		String thisTag=rHelpFile.getProperty(helpStr);
-		if(thisTag==null) thisTag=rHelpFile.getProperty("SPELL_"+helpStr);
-		if(thisTag==null) thisTag=rHelpFile.getProperty("PRAYER_"+helpStr);
-		if(thisTag==null) thisTag=rHelpFile.getProperty("SONG_"+helpStr);
-		if(thisTag==null) thisTag=rHelpFile.getProperty("CHANT_"+helpStr);
-		if(thisTag==null) thisTag=rHelpFile.getProperty("PROP_"+helpStr);
-		if(thisTag==null) thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr);
+		if(thisTag==null){thisTag=rHelpFile.getProperty("SPELL_"+helpStr); if(thisTag!=null) helpStr="SPELL_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("PRAYER_"+helpStr); if(thisTag!=null) helpStr="PRAYER_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("SONG_"+helpStr); if(thisTag!=null) helpStr="SONG_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("CHANT_"+helpStr); if(thisTag!=null) helpStr="CHANT_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
+		if(thisTag==null){thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr); if(thisTag!=null) helpStr="BEHAVIOR_"+helpStr;}
 		
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
 		{
@@ -820,11 +993,14 @@ public class CommandProcessor
 			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))
 				thisTag=null;
 			else
+			{
+				helpStr=thisTag;
 				thisTag=thisOtherTag;
+			}
 		}
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
 			return null;
-		return new StringBuffer(thisTag);
+		return new StringBuffer(fixHelp(helpStr,thisTag));
 	}
 	
 	public void help(MOB mob, String helpStr)

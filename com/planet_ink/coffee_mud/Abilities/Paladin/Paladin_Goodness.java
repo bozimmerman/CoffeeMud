@@ -9,7 +9,7 @@ import java.util.*;
 public class Paladin_Goodness extends Paladin
 {
 	public String ID() { return "Paladin_Goodness"; }
-	public String name(){ return "Paladin's Goodness";}
+	public String name(){ return "Paladin`s Goodness";}
 	private boolean tickTock=false;
 	public Paladin_Goodness()
 	{

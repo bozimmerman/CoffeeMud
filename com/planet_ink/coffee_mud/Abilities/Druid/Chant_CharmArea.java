@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_CharmArea extends Chant
 {
 	public String ID() { return "Chant_CharmArea"; }
-	public String name(){ return "Calm Area";}
+	public String name(){ return "Charm Area";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

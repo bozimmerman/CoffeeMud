@@ -1,4 +1,3 @@
-Better spell help
 Some sort of Archon-only Journal that you can add banned address to (and remove).
 And the last IP the player connects from would be nice to have in the player-table
 Archons can't boot players off? (shutdowns down count)

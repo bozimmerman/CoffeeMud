@@ -8,7 +8,7 @@ import java.util.*;
 public class Thief_Peek extends ThiefSkill
 {
 	public String ID() { return "Thief_Peek"; }
-	public String name(){ return "Peeks";}
+	public String name(){ return "Peek";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){return Ability.INDIFFERENT;}

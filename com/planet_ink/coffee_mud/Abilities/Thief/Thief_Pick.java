@@ -9,7 +9,7 @@ import java.util.*;
 public class Thief_Pick extends ThiefSkill
 {
 	public String ID() { return "Thief_Pick"; }
-	public String name(){ return "Pick locks";}
+	public String name(){ return "Pick Locks";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	public int quality(){return Ability.INDIFFERENT;}

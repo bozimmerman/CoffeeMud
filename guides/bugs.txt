@@ -1,3 +1,2 @@
 bug look for alternate materials in the common skills
-putting stuff in a spring loses it?  Can't get stuff from a spring?
 need to really test new zapper for level, class, sysop, alignment, etc.
