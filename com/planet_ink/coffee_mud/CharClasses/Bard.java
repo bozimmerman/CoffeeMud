@@ -27,7 +27,6 @@ public class Bard extends StdCharClass
 	public String baseClass(){return ID();}
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
-	public int getBonusManaLevel(){return 6;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}

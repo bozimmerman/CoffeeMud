@@ -4247,10 +4247,13 @@ public class BaseGenerics extends StdCommand
 			genText(mob,me,++showNumber,showFlag,"Name","NAME");
 			genText(mob,me,++showNumber,showFlag,"Base Class","BASE");
 			genBool(mob,me,++showNumber,showFlag,"Player Class","PLAYER");
-			genInt(mob,me,++showNumber,showFlag,"Min HP/Level","LVLMINHP");
-			genInt(mob,me,++showNumber,showFlag,"Max HP/Level","LVLMAXHP");
+			genInt(mob,me,++showNumber,showFlag,"HP Con Divisor","HPDIV");
+			genInt(mob,me,++showNumber,showFlag,"HP #Dice","HPDICE");
+			genInt(mob,me,++showNumber,showFlag,"HP Die","HPDIE");
+			genInt(mob,me,++showNumber,showFlag,"Mana Divisor","MANADIV");
+			genInt(mob,me,++showNumber,showFlag,"Mana #Dice","MANADICE");
+			genInt(mob,me,++showNumber,showFlag,"Mana Die","MANADIE");
 			genInt(mob,me,++showNumber,showFlag,"Prac/Level","LVLPRAC");
-			genInt(mob,me,++showNumber,showFlag,"Mana/Level","LVLMANA");
 			genInt(mob,me,++showNumber,showFlag,"Attack/Level","LVLATT");
 			genAttackAttribute(mob,me,++showNumber,showFlag,"Attack Attribute","ATTATT");
 			genInt(mob,me,++showNumber,showFlag,"Practices/1stLvl","FSTPRAC");

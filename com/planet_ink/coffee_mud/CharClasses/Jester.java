@@ -27,7 +27,6 @@ public class Jester extends StdCharClass
 	public String baseClass(){return "Bard";}
 	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
-	public int getBonusManaLevel(){return 4;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getMovementMultiplier(){return 16;}
 	public int getAttackAttribute(){return CharStats.CHARISMA;}

@@ -25,10 +25,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public String ID(){return "StdCharClass";}
 	public String name(){return "mob";}
 	public String baseClass(){return ID();}
-	public int getMinHitPointsLevel(){return 2;}
-	public int getMaxHitPointsLevel(){return 12;}
 	public int getBonusPracLevel(){return 0;}
-	public int getBonusManaLevel(){return 7;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STRENGTH;}
 	public int getPracsFirstLevel(){return 5;}
@@ -493,7 +490,6 @@ public class StdCharClass implements CharClass, Cloneable
 		int maxConStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.CONSTITUTION));
 		if(conStat>maxConStat) conStat=maxConStat;
-//		int newHitPointGain=(int)Math.floor(Util.mul(Util.div(conStat,18.0),(getMinHitPointsLevel()+Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()))));
 		int newHitPointGain=(int)Math.floor(Util.div(conStat,getHPDivisor())+Dice.roll(getHPDice(),getHPDie(),0));
 		if(newHitPointGain<=0)
 		{
@@ -536,7 +532,6 @@ public class StdCharClass implements CharClass, Cloneable
 		int maxManStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
 		if(manStat>maxManStat) manStat=maxManStat;
-//		int manaGain=(int)Math.round(Util.mul(Util.div(manStat,18.0),getBonusManaLevel()));
 		int manaGain=(int)Math.floor(Util.div(manStat,getManaDivisor())+Dice.roll(getManaDice(),getManaDie(),0));
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
@@ -645,7 +640,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public int getLevelMana(MOB mob)
 	{
-		return 100+(int)Math.round(Util.mul(mob.baseEnvStats().level()-1,Util.mul(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),18.0),getBonusManaLevel())));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),getHPDivisor())))+(getHPDie()*(getHPDice()+1)/2));
 	}
 
 	public int getLevelAttack(MOB mob)

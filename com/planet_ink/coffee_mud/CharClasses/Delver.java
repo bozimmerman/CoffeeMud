@@ -25,10 +25,7 @@ public class Delver extends StdCharClass
 	public String ID(){return "Delver";}
 	public String name(){return "Delver";}
 	public String baseClass(){return "Druid";}
-	public int getMinHitPointsLevel(){return 5;}
-	public int getMaxHitPointsLevel(){return 22;}
 	public int getBonusPracLevel(){return 2;}
-	public int getBonusManaLevel(){return 6;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}

@@ -25,10 +25,13 @@ public class GenCharClass extends StdCharClass
 	protected String ID="GenCharClass";
 	protected String name="genmob";
 	protected String baseClass="Commoner";
-	protected int minHitPointsLevel=2;
-	protected int maxHitPointsLevel=12;
+	protected int hpDivisor=3;
+	protected int hpDice=1;
+	protected int hpDie=6;
+	protected int manaDivisor=3;
+	protected int manaDice=1;
+	protected int manaDie=6;
 	protected int bonusPracLevel=0;
-	protected int bonusManaLevel=15;
 	protected int bonusAttackLevel=1;
 	protected int attackAttribute=CharStats.STRENGTH;
 	protected int pracsFirstLevel=5;
@@ -52,10 +55,7 @@ public class GenCharClass extends StdCharClass
 	public String ID(){return ID;}
 	public String name(){return name;}
 	public String baseClass(){return baseClass;}
-	public int getMinHitPointsLevel(){return minHitPointsLevel;}
-	public int getMaxHitPointsLevel(){return maxHitPointsLevel;}
 	public int getBonusPracLevel(){return bonusPracLevel;}
-	public int getBonusManaLevel(){return bonusManaLevel;}
 	public int getBonusAttackLevel(){return bonusAttackLevel;}
 	public int getAttackAttribute(){return attackAttribute;}
 	public int getPracsFirstLevel(){return pracsFirstLevel;}
@@ -158,10 +158,13 @@ public class GenCharClass extends StdCharClass
 		str.append("<CCLASS><ID>"+ID()+"</ID>");
 		str.append(XMLManager.convertXMLtoTag("NAME",name()));
 		str.append(XMLManager.convertXMLtoTag("BASE",baseClass()));
-		str.append(XMLManager.convertXMLtoTag("LVLMINHP",""+minHitPointsLevel));
-		str.append(XMLManager.convertXMLtoTag("LVLMAXHP",""+maxHitPointsLevel));
+		str.append(XMLManager.convertXMLtoTag("HPDIV",""+hpDivisor));
+		str.append(XMLManager.convertXMLtoTag("HPDICE",""+hpDice));
+		str.append(XMLManager.convertXMLtoTag("HPDIE",""+hpDie));
 		str.append(XMLManager.convertXMLtoTag("LVLPRAC",""+bonusPracLevel));
-		str.append(XMLManager.convertXMLtoTag("LVLMANA",""+bonusManaLevel));
+		str.append(XMLManager.convertXMLtoTag("MANADIV",""+manaDivisor));
+		str.append(XMLManager.convertXMLtoTag("MANADICE",""+manaDice));
+		str.append(XMLManager.convertXMLtoTag("MANADIE",""+manaDie));
 		str.append(XMLManager.convertXMLtoTag("LVLATT",""+bonusAttackLevel));
 		str.append(XMLManager.convertXMLtoTag("ATTATT",""+attackAttribute));
 		str.append(XMLManager.convertXMLtoTag("FSTPRAC",""+pracsFirstLevel));
@@ -256,10 +259,15 @@ public class GenCharClass extends StdCharClass
 		if((base==null)||(base.length()==0))
 			return;
 		baseClass=base;
-		minHitPointsLevel=XMLManager.getIntFromPieces(classData,"LVLMINHP");
-		maxHitPointsLevel=XMLManager.getIntFromPieces(classData,"LVLMAXHP");
+		hpDivisor=XMLManager.getIntFromPieces(classData,"HPDIV");
+		if(hpDivisor==0) hpDivisor=3;
+		hpDice=XMLManager.getIntFromPieces(classData,"HPDICE");
+		hpDie=XMLManager.getIntFromPieces(classData,"HPDIE");
 		bonusPracLevel=XMLManager.getIntFromPieces(classData,"LVLPRAC");
-		bonusManaLevel=XMLManager.getIntFromPieces(classData,"LVLMANA");
+		manaDivisor=XMLManager.getIntFromPieces(classData,"MANADIV");
+		if(manaDivisor==0) manaDivisor=3;
+		manaDice=XMLManager.getIntFromPieces(classData,"MANADICE");
+		manaDie=XMLManager.getIntFromPieces(classData,"MANADIE");
 		bonusAttackLevel=XMLManager.getIntFromPieces(classData,"LVLATT");
 		attackAttribute=XMLManager.getIntFromPieces(classData,"ATTATT");
 		trainsFirstLevel=XMLManager.getIntFromPieces(classData,"FSTTRAN");
@@ -355,14 +363,14 @@ public class GenCharClass extends StdCharClass
 		return VA;
 	}
 	
-	protected static String[] CODES={"ID","NAME","BASE","LVLMINHP","LVLMAXHP",
-									 "LVLPRAC","LVLMANA","LVLATT","ATTATT","FSTTRAN",
+	protected static String[] CODES={"ID","NAME","BASE","HPDIV","HPDICE",
+									 "LVLPRAC","MANADIV","LVLATT","ATTATT","FSTTRAN",
 									 "FSTPRAC","LVLDAM","LVLMOVE","ARMOR","STRWEAP",
 									 "STRARM","STRLMT","STRBON","QUAL","PLAYER",
 									 "ESTATS","ASTATS","CSTATS","ASTATE","NUMCABLE",
 									 "GETCABLE","GETCABLELVL","GETCABLEPROF","GETCABLEGAIN","GETCABLESECR",
 									 "GETCABLEPARM","NUMWEP","GETWEP", "NUMOFT","GETOFTID",
-									 "GETOFTPARM"
+									 "GETOFTPARM","HPDIE","MANADICE","MANADIE"
 									 };
 	public String getStat(String code)
 	{
@@ -379,10 +387,10 @@ public class GenCharClass extends StdCharClass
 		case 0: return ID;
 		case 1: return name;
 		case 2: return baseClass;
-		case 3: return ""+minHitPointsLevel;
-		case 4: return ""+maxHitPointsLevel;
+		case 3: return ""+hpDivisor;
+		case 4: return ""+hpDice;
 		case 5: return ""+bonusPracLevel;
-		case 6: return ""+bonusManaLevel;
+		case 6: return ""+manaDivisor;
 		case 7: return ""+bonusAttackLevel;
 		case 8: return ""+attackAttribute;
 		case 9: return ""+trainsFirstLevel;
@@ -412,6 +420,7 @@ public class GenCharClass extends StdCharClass
 		case 33: return ""+((outfit()!=null)?outfit().size():0);
 		case 34: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
 		case 35: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
+		case 36: return ""+hpDie;
 		}
 		return "";
 	}
@@ -431,10 +440,10 @@ public class GenCharClass extends StdCharClass
 		case 0: ID=val; break;
 		case 1: name=val; break;
 		case 2: baseClass=val; break;
-		case 3: minHitPointsLevel=Util.s_int(val); break;
-		case 4: maxHitPointsLevel=Util.s_int(val); break;
+		case 3: hpDivisor=Util.s_int(val); break;
+		case 4: hpDie=Util.s_int(val); break;
 		case 5: bonusPracLevel=Util.s_int(val); break;
-		case 6: bonusManaLevel=Util.s_int(val); break;
+		case 6: manaDivisor=Util.s_int(val); break;
 		case 7: bonusAttackLevel=Util.s_int(val); break;
 		case 8: attackAttribute=Util.s_int(val); break;
 		case 9: trainsFirstLevel=Util.s_int(val); break;
@@ -497,6 +506,9 @@ public class GenCharClass extends StdCharClass
 					 }
 					 break;
 				 }
+		case 36: hpDice=Util.s_int(val); break;
+		case 37: manaDice=Util.s_int(val); break;
+		case 38: manaDie=Util.s_int(val); break;
 		}
 	}
 	public String[] getStatCodes(){return CODES;}

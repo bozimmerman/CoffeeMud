@@ -47,10 +47,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public int getLevelAttack(MOB mob);
 	public int getLevelArmor(MOB mob);
 	public int getLevelDamage(MOB mob);
-	public int getMinHitPointsLevel();
-	public int getMaxHitPointsLevel();
 	public int getBonusPracLevel();
-	public int getBonusManaLevel();
 	public int getBonusAttackLevel();
 	public int getAttackAttribute();
 	public int getPracsFirstLevel();

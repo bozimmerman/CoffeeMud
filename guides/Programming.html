@@ -1895,14 +1895,17 @@ baseClass of "Fighter". This means that the Fighter class is one of the classes
 which may be chosen by a new player (since it's ID() and baseClass() are the 
 same), and that any of the baseClass() "Fighter" classes may switch amongst each 
 other. If your CoffeeMud system is using the multi-class or single classing 
-system, this method is irrelevant.</FONT></P><pre>public int getMinHitPointsLevel(){return 1;}
-public int getMaxHitPointsLevel(){return 10;}
+system, this method is irrelevant.</FONT></P>
+<pre>
+	public int getHPDivisor(){return 3;}
+	public int getHPDice(){return 1;}
+	public int getHPDie(){return 6;}
 </PRE>
 <P align=left><FONT size=4>Next come 
 the hit point ranges.&nbsp;&nbsp;When a player with this class gains a 
-level,&nbsp;a random roll between the min and max hit point values will 
-determine the bonus hit points, and any Constitution bonuses will be added 
-thereafter.</FONT></P><pre>public int getPracsFirstLevel(){return 3;}
+level,these values will determine hit points gained based on class and constitution.</FONT></P>
+<pre>
+public int getPracsFirstLevel(){return 3;}
 public int getTrainsFirstLevel(){return 1;}
 public int getBonusPracLevel(){return 0;}
 </PRE>
@@ -1919,12 +1922,16 @@ Intelligence, Wisdom, Dexterity, Constitution, or Charisma) are used to
 determine any attack bonuses whenever the player gains a level.&nbsp; Usually 
 this is Strength. The number of bonus attack points received by a player when a 
 level is gained is determined by dividing the players score in this attribute by 
-6, and then adding the value returned by getBonusAttackLevel(). </FONT></P><pre>public int getBonusManaLevel(){return 5;}
+6, and then adding the value returned by getBonusAttackLevel(). </FONT></P>
+<pre>
+	public int getManaDivisor(){return 3;}
+	public int getManaDice(){return 1;}
+	public int getManaDie(){return 6;}
 </PRE>
-<P align=left><FONT size=4>This method 
+<P align=left><FONT size=4>These methods
 determines how much mana a player receives when they gain a level in this class. 
-The formula is determined by dividing the players intelligence score by 18, and 
-then multiplying that result by this value. </FONT></P><pre>public int getLevelsPerBonusDamage(){ return 25;}
+</FONT></P>
+<pre>public int getLevelsPerBonusDamage(){ return 25;}
 </PRE>
 <P align=left><FONT size=4>This score 
 determines how many levels a player must make, in this class, before they will 

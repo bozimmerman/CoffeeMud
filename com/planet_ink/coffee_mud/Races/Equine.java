@@ -31,6 +31,14 @@ public class Equine extends StdRace
 	public int weightVariance(){return 100;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD|Item.ON_EARS|Item.ON_EYES;}
 	public String racialCategory(){return "Equine";}
+	private String[]racialAbilityNames={"Fighter_Kick"};
+	private int[]racialAbilityLevels={5};
+	private int[]racialAbilityProfficiencies={40};
+	private boolean[]racialAbilityQuals={false};
+	protected String[] racialAbilityNames(){return racialAbilityNames;}
+	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
+	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };

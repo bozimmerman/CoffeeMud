@@ -2116,7 +2116,7 @@ public class Scriptable extends StdBehavior
 		{
 			int y=evaluable.indexOf("(");
 			int z=evaluable.indexOf(")");
-			String preFab=uevaluable.substring(0,y).trim();
+			String preFab=(y>=0)?uevaluable.substring(0,y).trim():"";
 			Integer funcCode=(Integer)funcH.get(preFab);
 			if(funcCode==null) funcCode=new Integer(0);
 			if(y==0)
