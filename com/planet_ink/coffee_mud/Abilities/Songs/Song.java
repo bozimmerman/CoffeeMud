@@ -158,6 +158,7 @@ public class Song extends StdAbility
 								follower.location().send(follower,msg3);
 								if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 								{
+									newOne.setBorrowed(follower,true);
 									if(follower!=mob)
 										follower.addEffect((Ability)newOne.copyOf());
 									else

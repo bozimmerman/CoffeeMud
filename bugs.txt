@@ -1,17 +1,11 @@
 are stats working?
 cast scry with no target gives a list.
-When Hellfire (and it's equivs) are used against he same align, it shouldn't give the same message as to when you fail to cast. it should be something like: is unaffected by your hellfire.
-potions aren't working. I modified a heal potion into a flameshield potion and it still didn't work.
-Blib had Song of Distraction added to his affects list in a permenant way. I don't know how. Maybe song of Distraction is bugged? Maybe caused by a reboot? I don't know.
 After lstrike, if I am still drowsy, it will tell me I follow the leader when they move, and I don't
 When creating a locked door from your room, it creates the door on your side at your level, but the door on the opposite side is level 0.
 the coin quest needs to stipulate that the QUESTOR can not be in the same room as the QUEST COIN.
 You may want to add some things to certain sectors, such as city, where people can`t randomly practice skills like fish or mining in the city.
 add another thing to report: report affects, to show what spells are cast on the person
 Have rooms generate their resources instead of skills
-be able to stat eq, and stat inv
-Is there anything at this time one can do to an indoor room to allow ridables into it?  For such indoor areas as a blacksmith shop where horses get re-shoed, or a stable.
-sculpt statue of the great Alramus That syntax no longer works, which is a great shame, since mobs cannot be scripted to make statues for people, not can hireling mobs make statues.
 
 SMTP Server
 

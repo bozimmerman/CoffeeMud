@@ -186,8 +186,18 @@ public class Sculpting extends CraftingSkill
 				commands.removeElementAt(commands.size()-1);
 			}
 			String recipeName=Util.combine(commands,0);
+			String rest="";
 			Vector foundRecipe=null;
 			Vector matches=matchingRecipeNames(recipes,recipeName);
+			if(matches.size()==0)
+			{
+				matches=matchingRecipeNames(recipes,(String)commands.firstElement());
+				if(matches.size()>0)
+				{
+					recipeName=(String)commands.firstElement();
+					rest=Util.combine(commands,1);
+				}
+			}
 			for(int r=0;r<matches.size();r++)
 			{
 				Vector V=(Vector)matches.elementAt(r);
@@ -257,21 +267,30 @@ public class Sculpting extends CraftingSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=Util.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			key=null;
-			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
+			if((misctype.equalsIgnoreCase("statue"))&&((!mob.isMonster())||(rest.length()>0)))
 			{
-				try
+				String of="";
+				if(rest.length()>0)
+					of=rest;
+				else
 				{
-					String of=mob.session().prompt("What is this a statue of?","");
-					if(of.trim().length()==0)
+					try
+					{
+						of=mob.session().prompt("What is this a statue of?","");
+						if(of.trim().length()==0)
+							return false;
+					}
+					catch(java.io.IOException x)
+					{
 						return false;
-					building.setName(itemName+" of "+of.trim());
-					building.setDisplayText(itemName+" of "+of.trim()+" is here");
-					building.setDescription(itemName+" of "+of.trim()+". ");
+					}
 				}
-				catch(java.io.IOException x)
-				{
-					return false;
-				}
+				of=of.trim();
+				if(of.startsWith("of "))
+					of=of.substring(3).trim();
+				building.setName(itemName+" of "+of);
+				building.setDisplayText(itemName+" of "+of+" is here");
+				building.setDescription(itemName+" of "+of+". ");
 			}
 			else
 			if(building instanceof Container)

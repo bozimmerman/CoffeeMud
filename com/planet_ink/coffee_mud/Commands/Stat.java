@@ -176,7 +176,16 @@ public class Stat extends BaseAbleLister
 		{
 			String s=((String)commands.elementAt(0)).toUpperCase();
 			if("EQUIPMENT".startsWith(s))
+			{
 				ableTypes=-2;
+				commands.removeElementAt(0);
+			}
+			else
+			if("INVENTORY".startsWith(s))
+			{
+				ableTypes=-3;
+				commands.removeElementAt(0);
+			}
 			else
 			for(int a=0;a<Ability.TYPE_DESCS.length;a++)
 			{
@@ -225,6 +234,9 @@ public class Stat extends BaseAbleLister
 		else
 		if(ableTypes==-2)
 			str=CommonMsgs.getEquipment(mob,target);
+		else
+		if(ableTypes==-3)
+			str=CommonMsgs.getInventory(mob,target);
 		else
 			str=CommonMsgs.getScore(target);
 		if(!mob.isMonster())

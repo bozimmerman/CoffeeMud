@@ -280,6 +280,7 @@ public class Play extends StdAbility
 								{
 									if(persistantSong())
 									{
+										newOne.setBorrowed(follower,true);
 										if(follower!=mob)
 											follower.addEffect((Ability)newOne.copyOf());
 										else
