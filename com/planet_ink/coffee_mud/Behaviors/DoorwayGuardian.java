@@ -13,18 +13,31 @@ public class DoorwayGuardian extends StdBehavior
 		return new DoorwayGuardian();
 	}
 
-	public Exit getParmExit(MOB monster)
+	public Exit[] getParmExits(MOB monster)
 	{
 		if(monster==null) return null;
 		if(monster.location()==null) return null;
 		if(getParms().length()==0) return null;
+		Room room=monster.location();
 		Vector V=Util.parse(getParms());
 		for(int v=0;v<V.size();v++)
 		{
 			int dir=Directions.getGoodDirectionCode((String)V.elementAt(v));
-			if(dir<0) return null;
-			if(monster.location().getExitInDir(dir)!=null)
-				return monster.location().getExitInDir(dir);
+			if(dir>=0)
+				if(room.getExitInDir(dir)!=null)
+				{
+					Exit[] exits={room.getExitInDir(dir),room.getPairedExit(dir)};
+					return exits;
+				}
+		}
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			Exit E=room.getExitInDir(d);
+			if(E.hasADoor())
+			{
+				Exit[] exits={E,room.getPairedExit(d)};
+				return exits;
+			}
 		}
 		return null;
 	}
@@ -40,11 +53,9 @@ public class DoorwayGuardian extends StdBehavior
 		MOB mob=affect.source();
 		if(!canFreelyBehaveNormal(oking)) return true;
 		MOB monster=(MOB)oking;
-		if(affect.target()==null) return true;
-		if(!Sense.canBeSeenBy(affect.source(),oking))
-			return true;
 		if((mob.location()==monster.location())
 		&&(mob!=monster)
+		&&(affect.target()!=null)
 		&&(!BrotherHelper.isBrother(mob,monster))
 		&&(Sense.canSenseMoving(mob,monster))
 		&&(!ExternalPlay.zapperCheck(getParms(),mob)))
@@ -52,11 +63,14 @@ public class DoorwayGuardian extends StdBehavior
 			if(affect.target() instanceof Exit)
 			{
 				Exit exit=(Exit)affect.target();
-				if(!exit.hasADoor()) return true;
-				Exit texit=getParmExit(monster);
-				if((texit!=null)&&(texit!=exit)) return true;
+				Exit texit[]=getParmExits(monster);
+				if((texit!=null)
+				&&(texit[0]!=exit)
+				&&(texit[1]!=exit))
+					return true;
 
-				if(affect.targetMinor()!=Affect.TYP_CLOSE)
+				if((affect.targetMinor()!=Affect.TYP_CLOSE)
+				&&(affect.targetMinor()!=Affect.TYP_LOCK))
 				{
 					FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
 					if(monster.location().okAffect(msgs))
@@ -72,9 +86,11 @@ public class DoorwayGuardian extends StdBehavior
 			&&(affect.tool() instanceof Exit))
 			{
 				Exit exit=(Exit)affect.tool();
-				if(!exit.hasADoor()) return true;
-				Exit texit=getParmExit(monster);
-				if((texit!=null)&&(texit!=exit)) return true;
+				Exit texit[]=getParmExits(monster);
+				if((texit!=null)
+				&&(texit[0]!=exit)
+				&&(texit[1]!=exit))
+					return true;
 				
 				FullMsg msgs=new FullMsg(monster,mob,Affect.MSG_NOISYMOVEMENT,"<S-NAME> won't let <T-NAME> through there.");
 				if(monster.location().okAffect(msgs))

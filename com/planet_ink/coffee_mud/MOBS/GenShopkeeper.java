@@ -25,7 +25,7 @@ public class GenShopkeeper extends StdShopKeeper
 	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
 	public String text()
 	{
-		miscText=Generic.getPropertiesStr(this,false);
+		miscText=Util.compressString(Generic.getPropertiesStr(this,false));
 		return super.text();
 	}
 

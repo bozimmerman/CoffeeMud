@@ -27,7 +27,7 @@ public class GenRideable extends StdRideable
 
 	public String text()
 	{
-		miscText=Generic.getPropertiesStr(this,false);
+		miscText=Util.compressString(Generic.getPropertiesStr(this,false));
 		return super.text();
 	}
 

@@ -1118,8 +1118,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return V;
 	}
-	public String prejudiceFactors(){return miscText;}
-	public void setPrejudiceFactors(String factors){miscText=factors;}
+	public String prejudiceFactors(){return Util.decompressString(miscText);}
+	public void setPrejudiceFactors(String factors){miscText=Util.compressString(factors);}
 
 	private StringBuffer listInventory(MOB mob)
 	{

@@ -30,7 +30,7 @@ public class StdMOB implements MOB
 	protected boolean pleaseDestroy=false;
 	protected String description="";
 	protected String displayText="";
-	protected String miscText="";
+	protected byte[] miscText=null;
 
 	/* instantiated item types word, contained, owned*/
 	protected Vector inventory=new Vector();
@@ -410,12 +410,7 @@ public class StdMOB implements MOB
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		amDead=false;
-		recoverEnvStats();
-		recoverCharStats();
-		recoverMaxState();
-		if(resetStats)
-			resetToMaxState();
-		setMiscText(miscText);
+		setMiscText(Util.decompressString(miscText));
 		if(getStartRoom()==null)
 			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
 		setLocation(newLocation);
@@ -444,6 +439,9 @@ public class StdMOB implements MOB
 				A.autoInvocation(this);
 		}
 		location().recoverRoomStats();
+		if((!isGeneric())&&(resetStats))
+			resetToMaxState();
+		
 		if(Sense.isSleeping(this))
 			tell("(You are asleep)");
 		else
@@ -752,11 +750,11 @@ public class StdMOB implements MOB
 	}
 	public void setMiscText(String newText)
 	{
-		miscText=newText;
+		miscText=Util.compressString(newText);
 	}
 	public String text()
 	{
-		return miscText;
+		return Util.decompressString(miscText);
 	}
 
 	public boolean isCorrectPass(String possiblePassword)
