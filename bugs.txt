@@ -1,5 +1,8 @@
 ?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
-?Test: Shield Block, Far Shot, Counter Att, AutoBash, Weapon Catch, Body Shield
+?Test: Shield Block, Far Shot, Body Shield
+scrimshaw knife is bash/blunt!
+Sounder EAT EAT_ROOM
+
 
 Delver:
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  

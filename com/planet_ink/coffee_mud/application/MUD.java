@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.i3.*;
 import com.planet_ink.coffee_mud.i3.server.*;
 import com.planet_ink.coffee_mud.web.*;
+import com.planet_ink.coffee_mud.web.espresso.*;
 
 
 public class MUD extends Thread implements MudHost
@@ -25,6 +26,7 @@ public class MUD extends Thread implements MudHost
 	public static Server imserver=null;
 	public static HTTPserver webServerThread=null;
 	public static HTTPserver adminServerThread=null;
+    public static EspressoServer espserver=null;
 	public static Vector mudThreads=new Vector();
 	public static DVector accessed=new DVector(2);
 	public static Vector autoblocked=new Vector();
@@ -251,6 +253,22 @@ public class MUD extends Thread implements MudHost
 		else
 			CMClass.registerExternalHTTP(new ProcessHTTPrequest(null,null,null,true));
 
+        if(page.getBoolean("RUNESPRESSOSERVER"))
+        {
+			try
+			{
+			    int espport=page.getInt("ESPRESSOPORT");
+			    if(espport==0) espport=27755;
+			    espserver=new EspressoServer((MudHost)mudThreads.firstElement(),espport);
+			    espserver.start();
+			    espserver.loadEspressoCommands();
+			}
+			catch(Exception e)
+			{
+			    Log.errOut("MUD",e);
+			}
+        }
+		
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading base classes");
 		if(!CMClass.loadClasses(page))
 		{
@@ -658,6 +676,16 @@ public class MUD extends Thread implements MudHost
 			Log.sysOut("MUD","Admin Web Server stopped.");
 			if(S!=null)S.println("Admin Web Server stopped");
 		}
+		
+		if(espserver!=null)
+		{
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...espresso server");
+			espserver.shutdown(S);
+			espserver = null;
+			Log.sysOut("MUD","Espresso Server stopped.");
+			if(S!=null)S.println("Espresso Server stopped");
+		}
+		
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
 		HTTPserver.unloadWebMacros();
 		Scripts.clear();
