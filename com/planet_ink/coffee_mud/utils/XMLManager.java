@@ -26,7 +26,7 @@ public class XMLManager
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
 	 */
-	private  static int s_int(String INT)
+	private static int s_int(String INT)
 	{
 		int sint=0;
 		try{ sint=Integer.parseInt(INT); }
@@ -135,6 +135,10 @@ public class XMLManager
 		public String value="";
 		public Vector parms=null;
 		public Vector contents=null;
+		public int outerStart=-1;
+		public int innerStart=-1;
+		public int innerEnd=-1;
+		public int outerEnd=-1;
 		public void addContent(XMLpiece x)
 		{
 			if(x==null) return;
@@ -155,63 +159,6 @@ public class XMLManager
 		return blk;
 	}
 	
-	private static int findEndingTag(String buf, String tag)
-	{
-		if((buf==null)||(buf.length()==0)) return -1;
-		
-		int x=buf.indexOf("</"+tag+">");
-		if(x>=0) return x+("</"+tag+">").length();
-		
-		int newPos=0;
-		while(newPos<buf.length())
-		{
-			int check=buf.indexOf(tag,newPos);
-			if(check<0) return -1;
-			
-			if(check<2)
-				newPos+=2;
-			else
-			if(check==(buf.length()-1))
-			   return -1;
-			else
-			if(((!Character.isWhitespace(buf.charAt(check+tag.length())))&&(buf.charAt(check+tag.length())!='>'))
-			||((!Character.isWhitespace(buf.charAt(check-1)))&&(buf.charAt(check-1)!='/')))
-			   newPos=check+1;
-			else
-			{
-				boolean foundslash=false;
-				for(x=check-1;x>=0;x--)
-					if((buf.charAt(x)=='<')&&(foundslash))
-					{
-						check=x;
-						break;
-					}
-					else
-					if((buf.charAt(x)=='/')&&(!foundslash))
-						foundslash=true;
-					else
-					if(!Character.isWhitespace(buf.charAt(x)))
-					{
-					   newPos=check+1;
-					   break;
-					}
-				if((check==x)&&(x>=0)&&foundslash)
-				{
-					for(x=check+1;x<buf.length();x++)
-						if(buf.charAt(x)=='>')
-							return x+1;
-						else
-						if(buf.charAt(x)=='<')
-						{
-							newPos=check+1;
-							break;
-						}
-				}
-			}
-			
-		}
-		return -1;
-	}
 	
 	public static String getValFromPieces(Vector V, String tag)
 	{
@@ -307,124 +254,91 @@ public class XMLManager
 		return s_double(getValFromPieces(V,tag));
 	}
 	
-	
-	private static int findCompetingTag(String buf, String tag)
+	public static XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
 	{
-		if((buf==null)||(buf.length()==0)) return -1;
-		
-		int x=buf.indexOf("<"+tag+">");
-		if(x>=0) return x;
-		
-		int newPos=0;
-		while(newPos<buf.length())
+		start=buf.indexOf("<",start);
+		if(start<0) return null;
+		int end=buf.indexOf(">",start);
+		if(end<0) return null;
+		while(buf.substring(start+1,end).trim().length()==0)
 		{
-			int check=buf.indexOf(tag,newPos);
-			if(check<0) return -1;
-			
-			if(check==0)
-				newPos++;
-			else
-			if(check==(buf.length()-1))
-			   return -1;
-			else
-			if(((!Character.isWhitespace(buf.charAt(check+tag.length())))&&(buf.charAt(check+tag.length())!='>'))
-			||((!Character.isWhitespace(buf.charAt(check-1)))&&(buf.charAt(check-1)!='/')))
-			   newPos=check+1;
+			start=buf.indexOf("<",end);
+			if(start<0) return null;
+			end=buf.indexOf(">",start);
+			if(end<0) return null;
+		}
+		int nextStart=buf.indexOf("<",start+1);
+		while((nextStart>=0)&&(nextStart<end))
+		{
+			start=nextStart;
+			nextStart=buf.indexOf("<",start+1);
+		}
+		Vector parmList=new Vector();
+		String tag=parseOutParms(buf.substring(start+1,end).trim(),parmList).toUpperCase().trim();
+		if(!tag.startsWith("/"))
+		{
+			XMLpiece piece=new XMLpiece();
+			piece.parms=parmList;
+			if(tag.endsWith("/"))
+			{
+				piece.tag=tag.substring(0,tag.length()-1);
+				piece.value="";
+				piece.contents=new Vector();
+				piece.outerStart=start;
+				piece.outerEnd=end;
+			}
 			else
 			{
-				for(x=check-1;x>=0;x--)
-					if(buf.charAt(x)=='<')
-					{
-						check=x;
-						break;
-					}
-					else
-					if(!Character.isWhitespace(buf.charAt(x)))
-					{
-					   newPos=check+1;
-					   break;
-					}
-				if((check==x)&&(x>=0))
+				piece.tag=tag;
+				piece.outerStart=start;
+				piece.innerStart=end+1;
+				piece.contents=new Vector();
+				XMLpiece next=null;
+				while(next!=piece)
 				{
-					for(x=check+1;x<buf.length();x++)
-						if(buf.charAt(x)=='>')
-							return check;
-						else
-						if(buf.charAt(x)=='<')
-						{
-							newPos=check+1;
-							break;
-						}
+					next=nextXML(buf,piece,end+1);
+					if(next==null) // this was probably a faulty start tag
+						return nextXML(buf,parent,end+1);
+					else
+					if(next!=piece)
+					{
+						end=next.outerEnd;
+						piece.addContent(next);
+					}
 				}
 			}
+			return piece;
 		}
-		return -1;
+		else
+		{
+			tag=tag.substring(1);
+			if((parent!=null)&&(tag.equals(parent.tag)))
+			{
+				parent.value=buf.substring(parent.innerStart,start);
+				parent.innerEnd=start;
+				parent.outerEnd=end;
+				return parent;
+			}
+		}
+		return null;
 	}
 	
-	private static String completeBlock(String buf, String tag)
-	{
-		int possEnd=findEndingTag(buf.toUpperCase(),tag);
-		if(possEnd<0) return buf;
-		String possBlock=buf.substring(0,possEnd);
-		
-		int possMid=findCompetingTag(possBlock.toUpperCase(),tag);
-		if(possMid<0) return possBlock;
-		if(possMid>possEnd) return possBlock;
-		
-		String subBuf=buf.substring(possMid);
-		int newPos=subBuf.indexOf(">");
-		if(newPos<0) return possBlock;
-		newPos+=possMid;
-		String newBlock=completeBlock(buf.substring(newPos+1),tag);
-		newPos+=newBlock.length();
-		
-		int newPossEnd=findEndingTag(buf.substring(newPos+1).toUpperCase(),tag);
-		if(newPossEnd<0) return buf.substring(0,newPos);
-		return buf.substring(0,newPos+newPossEnd+1);
-	}
 	
 	public static Vector parseAllXML(String buf)
+	{ return parseAllXML(new StringBuffer(buf));}
+		
+	public static Vector parseAllXML(StringBuffer buf)
 	{
-		Vector xml=null;
-		int position=0;
-		while(position<buf.length())
+		Vector V=new Vector();
+		int end=-1;
+		XMLpiece next=nextXML(buf,null,end+1);
+		while(next!=null)
 		{
-			int startTag=buf.indexOf("<",position);
-			if(startTag<0) break;
-			int endofTag=buf.indexOf(">",startTag);
-			if(endofTag<0) break;
-			endofTag++;
-			position=endofTag;
-			
-			XMLpiece piece=new XMLpiece();
-			
-			Vector parmList=new Vector();
-			String tag=parseOutParms(buf.substring(startTag+1,endofTag-1).trim(),parmList);
-			piece.tag=tag.toUpperCase().trim();
-			if(parmList.size()>0)
-				piece.parms=parmList;
-			
-			if((!tag.endsWith("/"))&&(findEndingTag(buf.substring(endofTag).toUpperCase(),tag)<0))
-				break;
-			else
-			{
-				if(!tag.endsWith("/"))
-				{
-					String wholeBlock=completeBlock(buf.substring(endofTag),tag);
-					position+=wholeBlock.length();
-					int z=wholeBlock.lastIndexOf("<");
-					if(z>=0) wholeBlock=wholeBlock.substring(0,z);
-					piece.contents=parseAllXML(wholeBlock.trim());
-					piece.value=wholeBlock.trim();
-				}
-				if(piece.contents==null)
-					piece.contents=new Vector();
-			}
-			
-			if(xml==null) xml=new Vector();
-			xml.addElement(piece);
+			end=next.outerEnd;
+			V.addElement(next);
+			next=nextXML(buf,null,end+1);
 		}
-		return xml;
+		return V;
 	}
 	
 	

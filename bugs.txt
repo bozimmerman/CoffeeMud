@@ -1,3 +1,4 @@
+compare trip and body flip
 code something to examine all items and make sure they aren't overboard.
 code something to coffeemudify all the beds 
 do tims readable with pages

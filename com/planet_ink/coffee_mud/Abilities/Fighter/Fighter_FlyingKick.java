@@ -16,7 +16,7 @@ public class Fighter_FlyingKick extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_FlyingKick();}
 	public int classificationCode(){return Ability.SKILL;}
-	protected int overrideMana(){return 100;}
+	protected int overrideMana(){return 0;}
 	public int minRange(){return 1;}
 	public int maxRange(){return 5;}
 	public int usageType(){return USAGE_MOVEMENT;}
