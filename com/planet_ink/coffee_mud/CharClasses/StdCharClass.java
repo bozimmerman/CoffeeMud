@@ -525,6 +525,11 @@ public class StdCharClass implements CharClass, Cloneable
 		return 2+(mob.baseEnvStats().level());
 	}
 
+	public double getLevelSpeed(MOB mob)
+	{
+		return 1.0+Math.floor(Util.div(mob.baseEnvStats().level(),25.0));
+	}
+
 	public int getLevelMove(MOB mob)
 	{
 		int move=100;
@@ -555,7 +560,6 @@ public class StdCharClass implements CharClass, Cloneable
 			return true;
 		return false;
 	}
-
 	public Hashtable dispenseExperience(MOB killer, MOB killed)
 	{
 		if((killer==null)||(killed==null)) return new Hashtable();

@@ -234,10 +234,11 @@ public class CreateEdit
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session session=(Session)Sessions.elementAt(s);
-				if(session.mob()!=null)
+				MOB M=session.mob();
+				if(M!=null)
 				{
-					ExternalPlay.DBUpdateMOB(session.mob());
-					ExternalPlay.DBUpdateFollowers(session.mob());
+					ExternalPlay.DBUpdateMOB(M);
+					ExternalPlay.DBUpdateFollowers(M);
 				}
 			}
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"A feeling of permanency envelopes everyone.\n\r");

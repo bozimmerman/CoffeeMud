@@ -9,7 +9,7 @@ GenRaces
 GenCharClasses -- zappercheck on quals
 ability to view wear location, weapon class/type in VIEW command
 racial abilities (abilities tied to the race)
-encumbrance/ wearing heavy armor slow  you down?
+encumbrance/ wearing heavy armor slow you down?
 property on abilities that describes what to say when already affected by it.
 like, I'd like some race specific questions to have during the character creation process
 Some solution for variable eq on mobs
@@ -24,11 +24,11 @@ property to allow ongoing payments to hirelings -- they're permanent, so long as
 putting a change bag into a changebag should combine your notes.
 SMTP capability
 on your back for wearing backpacks
-add floating num to resources
+add floating num to resources -- whether the item will float
+ability to deposit in someone elses bank account
 add energy as a base material type -- update import
-why does kick ignore stoneskin (or viceversa.
+autosneak thief skill
 zapper check on quests and questchats for eligible players
-behavior to have a mob read from a journal, tell a story, sing a song (fee?)
 ability/skill to drain mana from dead bodies
 Arrest allowing players to bring bountys to the judge.
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.

@@ -499,7 +499,7 @@ public class Lister
 						if(thisSession.mob().location() != null )
 						{
 							lines.append(thisSession.mob().location().displayText());
-							lines.append(" ("+thisSession.mob().location().roomID()+")");
+							lines.append(" ("+CMMap.getExtendedRoomID(thisSession.mob().location())+")");
 						}
 						else
 							lines.append("^!(no location)^?");

@@ -12,6 +12,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 	public String displayText(){ return "(a disease)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	private static final String[] triggerStrings = {"DISEASE"};
+	public String[] triggerStrings(){return triggerStrings;}
 	public int quality(){return Ability.MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 	public Environmental newInstance(){	return new Disease();}

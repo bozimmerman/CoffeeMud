@@ -532,31 +532,46 @@ public class StdRoom
 		Area myArea=getArea();
 		if(myArea!=null)
 			myArea.affectEnvStats(this,envStats());
-		if(affects!=null)
-		for(Enumeration e=affects.elements();e.hasMoreElements();)
-			((Ability)e.nextElement()).affectEnvStats(this,envStats);
-		for(Enumeration e=contents.elements();e.hasMoreElements();)
-			((Item)e.nextElement()).affectEnvStats(this,envStats);
-		for(Enumeration e=inhabitants.elements();e.hasMoreElements();)
-			((MOB)e.nextElement()).affectEnvStats(this,envStats);
+		
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if(A!=null) A.affectEnvStats(this,envStats);
+		}
+		for(int i=0;i<numItems();i++)
+		{
+			Item I=fetchItem(i);
+			if(I!=null) I.affectEnvStats(this,envStats);
+		}
+		for(int m=0;m<numInhabitants();m++)
+		{
+			MOB M=fetchInhabitant(m);
+			if(M!=null) M.affectEnvStats(this,envStats);
+		}
 	}
 	public void recoverRoomStats()
 	{
 		recoverEnvStats();
-		for(Enumeration e=inhabitants.elements();e.hasMoreElements();)
+		for(int m=0;m<numInhabitants();m++)
 		{
-			MOB mob=(MOB)e.nextElement();
-			mob.recoverCharStats();
-			mob.recoverEnvStats();
-			mob.recoverMaxState();
+			MOB M=fetchInhabitant(m);
+			if(M!=null)
+			{
+				M.recoverCharStats();
+				M.recoverEnvStats();
+				M.recoverMaxState();
+			}
 		}
 		for(int d=0;d<exits.length;d++)
 		{
 			Exit X=exits[d];
 			if(X!=null) X.recoverEnvStats();
 		}
-		for(Enumeration e=contents.elements();e.hasMoreElements();)
-			((Item)e.nextElement()).recoverEnvStats();
+		for(int i=0;i<numItems();i++)
+		{
+			Item I=fetchItem(i);
+			if(I!=null) I.recoverEnvStats();
+		}
 	}
 
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)

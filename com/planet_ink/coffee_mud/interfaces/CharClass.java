@@ -32,6 +32,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public boolean canAdvance(MOB mob, int abilityCode);
 	public int getMaxStat(int abilityCode);
 	public int getLevelMana(MOB mob);
+	public double getLevelSpeed(MOB mob);
 	public int getLevelMove(MOB mob);
 	public int getLevelAttack(MOB mob);
 	public int getLevelArmor(MOB mob);

@@ -4756,6 +4756,11 @@ public class Import
 									break;
 								}
 								E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
+								if(E.hasADoor()&&E.name().equals("the ground"))
+								{
+									E.setName("a door");
+									E.setExitParams("door","close","open","a door, closed.");
+								}
 							}
 						}
 					}

@@ -193,7 +193,7 @@ public class RandomTraps extends ActiveTicker
 	{
 		super.tick(ticking,tickID);
 		for(int i=maintained.size()-1;i>=0;i--)
-			if(CoffeeUtensils.getATrap(((Environmental)maintained))==null)
+			if(CoffeeUtensils.fetchMyTrap((Environmental)maintained.elementAt(i))==null)
 				maintained.removeElementAt(i);
 		if(maintained.size()>=maxTraps)
 			return true;
@@ -227,23 +227,30 @@ public class RandomTraps extends ActiveTicker
 				else
 					break;
 				
-				for(int r=0;r<elligible.size();r++)
+				if(elligible.size()==0)
+					break;
+				
+				int oldSize=elligible.size();
+				for(int r=0;r<oldSize;r++)
 				{
 					Room R=(Room)elligible.elementAt(r);
 					if((doAnyDoors)||(doAnyLockedDoors))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
 						Exit E=R.getExitInDir(d);
-						if((R.getRoomInDir(d)!=null)&&(E!=null))
+						if((R.getRoomInDir(d)!=null)
+						&&(E!=null)
+						&&((E.hasADoor())
+						&&(!E.isOpen()))
+						&&(!elligible.contains(E))
+						&&((R.getReverseExit(d)==null)
+						   ||(!elligible.contains(R.getReverseExit(d)))))
 						{
-							if((E.hasADoor())&&(!E.isOpen()))
-							{
-								if(E.hasALock()&&(E.isLocked())&&(doAnyLockedDoors))
-									elligible.addElement(E);
-								else
-								if(doAnyDoors)
-									elligible.addElement(E);
-							}
+							if(E.hasALock()&&(E.isLocked())&&(doAnyLockedDoors))
+								elligible.addElement(E);
+							else
+							if(doAnyDoors)
+								elligible.addElement(E);
 						}
 					}
 					
@@ -251,7 +258,9 @@ public class RandomTraps extends ActiveTicker
 					for(int i=0;i<R.numItems();i++)
 					{
 						Item I=R.fetchItem(i);
-						if((I.isGettable())&&(!I.ID().endsWith("Wallpaper")))
+						if((I.isGettable())
+						&&(!elligible.contains(I))
+						&&(!I.ID().endsWith("Wallpaper")))
 						{
 							if(I instanceof Container)
 							{
@@ -279,6 +288,13 @@ public class RandomTraps extends ActiveTicker
 				while((elligible.size()>0)&&(elligible.firstElement() instanceof Room))
 					elligible.removeElementAt(0);
 				
+				for(int e=elligible.size()-1;e>=0;e--)
+				{
+					if((maintained.contains(elligible.elementAt(e)))
+					||(CoffeeUtensils.fetchMyTrap((Environmental)elligible.elementAt(e))!=null))
+						elligible.removeElementAt(e);
+				}
+				
 				if(elligible.size()==0)
 					break;
 				
@@ -294,12 +310,27 @@ public class RandomTraps extends ActiveTicker
 				
 				Trap T=(Trap)elligibleTraps.elementAt(Dice.roll(1,elligibleTraps.size(),-1));
 				T=(Trap)T.copyOf();
-				T.makeNonUninvokable();
 				T.setProfficiency(100);
+				T.makeLongLasting();
 				T.setBorrowed(E,true);
-				Room R=CoffeeUtensils.roomLocation(E);
-				Log.sysOut("RandomTraps",E.name()+" in "+((R!=null)?R.roomID():"null")+" had "+T.name()+" set.");
+				/*
+					Room R=CoffeeUtensils.roomLocation(E);
+					String rname=(R!=null)?CMMap.getExtendedRoomID(R):"";
+					if((E instanceof Exit)&&(ticking instanceof Area))
+					{
+						for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
+						{
+							Room R2=(Room)r.nextElement();
+							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								if(R2.rawExits()[d]==E)
+								{ rname=CMMap.getExtendedRoomID(R2)+" "+Directions.getDirectionName(d); break;}
+							if(rname.length()>0) break;
+						}
+					}
+					Log.sysOut("RandomTraps",E.name()+" in "+rname+" had "+T.name()+" set.");
+				*/
 				E.addAffect(T);
+				maintained.addElement(E);
 			}
 		}
 		return true;

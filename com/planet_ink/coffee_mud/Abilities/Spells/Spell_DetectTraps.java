@@ -41,10 +41,7 @@ public class Spell_DetectTraps extends Spell
 		StringBuffer msg=new StringBuffer("");
 		if(E==null) return msg.toString();
 		if((E instanceof Room)&&(Sense.canBeSeenBy(E,mob)))
-		{
-			Room room=(Room)E;
 			msg.append(trapCheck(mob.location()));
-		}
 		else
 		if((E instanceof Container)&&(Sense.canBeSeenBy(E,mob)))
 		{
@@ -60,7 +57,6 @@ public class Spell_DetectTraps extends Spell
 		else
 		if((E instanceof Exit)&&(Sense.canBeSeenBy(E,mob)))
 		{
-			int dir=-1;
 			Room room=mob.location();
 			if(room!=null)
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

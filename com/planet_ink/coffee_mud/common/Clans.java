@@ -405,15 +405,6 @@ public class Clans implements Clan, Tickable
 				Log.errOut("Unable to tick "+C.name()+"!");
 				return true;
 			}
-			for(int j=0;j<lastDates.size();j++)
-			{
-				MOB M2=(MOB)CMMap.getPlayer((String)members.elementAt(j));
-				if(M2!=null) lastDates.setElementAt(new Long(M2.lastTickedDateTime()),j);
-				long lastLogin=((Long)lastDates.elementAt(j)).longValue();
-				if((System.currentTimeMillis()-lastLogin)<deathMilis)
-					activeMembers++;
-			}
-
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
 			{
 				if(C.getStatus()==Clan.CLANSTATUS_FADING)
@@ -425,7 +416,7 @@ public class Clans implements Clan, Tickable
 					{
 						String s=(String)members.elementAt(j);
 						long lastLogin=((Long)lastDates.elementAt(j)).longValue();
-						buf.append(s+" on "+new IQCalendar(lastLogin)+"  ");
+						buf.append(s+" on "+new IQCalendar(lastLogin).d2String()+"  ");
 					}
 					Log.sysOut("Clans","Clan '"+C.getName()+" had the following membership: "+buf.toString());
 				}

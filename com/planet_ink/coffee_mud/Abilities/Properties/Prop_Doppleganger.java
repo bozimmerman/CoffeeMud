@@ -23,6 +23,7 @@ public class Prop_Doppleganger extends Property
 		{
 			lastLevelChangers=false;
 			MOB mob=(MOB)affected;
+
 			if((mob.location()!=null)
 			&&(Sense.aliveAwakeMobile(mob,true))
 			&&(mob.curState().getHitPoints()>=mob.maxState().getHitPoints())

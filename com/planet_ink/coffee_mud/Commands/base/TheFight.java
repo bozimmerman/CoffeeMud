@@ -583,9 +583,12 @@ public class TheFight
 				ExternalPlay.postAttack(mob,(MOB)target,item);
 			else
 			{
-				FullMsg msg=new FullMsg(mob,item,mob.location(),Affect.MASK_MALICIOUS|Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> at "+target.name()+".");
+				FullMsg msg=new FullMsg(mob,item,mob.location(),Affect.MASK_MALICIOUS|Affect.MSG_THROW,null);
 				if(mob.location().okAffect(mob,msg))
+				{
+					mob.location().show(mob,target,item,Affect.MSG_OK_ACTION,"<S-NAME> throw(s) <O-NAME> at <T-NAMESELF>.");
 					mob.location().send(mob,msg);
+				}
 			}
 		}
 		else

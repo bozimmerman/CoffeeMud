@@ -75,8 +75,6 @@ public class Spell_Flameshield extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
-
 		affectableStats.setArmor(affectableStats.armor()-5);
 	}
 

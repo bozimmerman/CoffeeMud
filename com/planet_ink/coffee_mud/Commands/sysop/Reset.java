@@ -37,13 +37,36 @@ public class Reset
 	public static int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
 		throws java.io.IOException
 	{
+		int nochange=0;
+		if(I instanceof Weapon)
+		{
+			Weapon W=(Weapon)I;
+			if((W.requiresAmmunition())&&(W.ammunitionCapacity()>0))
+			{
+				String str=mob.session().prompt(lead+I.Name()+" requires ("+W.ammunitionType()+"): ");
+				if(str.length()>0)
+				{
+					if((str.trim().length()==0)||(str.equalsIgnoreCase("no")))
+					{
+						W.setAmmunitionType("");
+						W.setAmmoCapacity(0);
+						W.setUsesRemaining(100);
+						str=mob.session().prompt(lead+I.Name()+" new weapon type: ");
+						W.setWeaponType(Util.s_int(str));
+					}
+					else
+						W.setAmmunitionType(str.trim());
+					nochange=1;
+				}
+			}
+		}
 		Integer IT=(Integer)rememberI.get(I.Name());
 		if(IT!=null)
 		{
 			if(IT.intValue()==I.material())
 			{
 				mob.tell(lead+I.Name()+" still "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
-				return 0;
+				return nochange;
 			}
 			I.setMaterial(IT.intValue());
 			mob.tell(lead+I.Name()+" Changed to "+EnvResource.RESOURCE_DESCS[I.material()&EnvResource.RESOURCE_MASK]);
@@ -58,7 +81,7 @@ public class Reset
 			if(str.length()==0)
 			{
 				rememberI.put(I.Name(),new Integer(I.material()));
-				return 0;
+				return nochange;
 			}
 			if(str.equals("?"))
 				mob.tell(I.Name()+"/"+I.displayText()+"/"+I.description());
@@ -204,6 +227,34 @@ public class Reset
 				mob.tell("No rooms were found which needed renaming.");
 			else
 				mob.tell("Done renumbering rooms.");
+		}
+		else
+		if(s.equalsIgnoreCase("groundlydoors"))
+		{
+			if(mob.session()==null) return;
+			mob.session().print("working...");
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				boolean changed=false;
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Exit E=R.rawExits()[d];
+					if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
+					{
+						E.setName("a door");
+						E.setExitParams("door","close","open","a door, closed.");
+						changed=true;
+					}
+				}
+				if(changed)
+				{
+					Log.sysOut("Reset","Groundly doors in "+R.roomID()+" fixed.");
+					ExternalPlay.DBUpdateExits(R);
+				}
+				mob.session().print(".");
+			}
+			mob.session().println("done!");
 		}
 		else
 		if(s.equalsIgnoreCase("arearacemat"))

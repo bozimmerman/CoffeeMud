@@ -654,40 +654,34 @@ public class ClanCommands
 
 	public static void clanCreate(MOB mob, Vector commands)
 	{
-		String qual=Util.combine(commands,1).toUpperCase();
 		StringBuffer msg=new StringBuffer("");
-		if(qual.length()>0)
+		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
 		{
-			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+			if(!mob.isMonster())
 			{
-				Clan C=Clans.getClan(qual);
-				if(C!=null)
+				int cost=CommonStrings.getIntVar(CommonStrings.SYSTEMI_CLANCOST);
+				if(cost>0)
 				{
-					msg.append("Clan "+C.ID()+" exists and is awaiting approval (type 'CLANLIST' and I'll show you what clans are pending).  You may 'CLANAPPLY' to join them.");
-
-				}
-				else
-				if(!mob.isMonster())
-				{
-					int cost=CommonStrings.getIntVar(CommonStrings.SYSTEMI_CLANCOST);
-					if(cost>0)
+					if(Money.totalMoney(mob)<cost)
 					{
-						if(Money.totalMoney(mob)<cost)
-						{
-							mob.tell("It costs "+cost+" gold to create a clan.  You don't have it.");
-							return;
-						}
-						Money.subtractMoney(null,mob,cost);
+						mob.tell("It costs "+cost+" gold to create a clan.  You don't have it.");
+						return;
 					}
-					mob.tell("There is no Clan by that name.");
-					try
+					Money.subtractMoney(null,mob,cost);
+				}
+				try
+				{
+					String check=mob.session().prompt("Are you sure you want to found a new clan (y/N)?","N");
+					if(check.equalsIgnoreCase("Y"))
 					{
-						String check=mob.session().prompt("Do you want to found a new clan (y/N)?","N");
-						if(check.equalsIgnoreCase("Y"))
+						String doubleCheck=mob.session().prompt("Enter the name of your new Clan exactly how you want it:","");
+						if(doubleCheck.length()<1)
+							return;
+						Clan C=Clans.getClan(doubleCheck);
+						if(C!=null)
+							msg.append("Clan "+C.ID()+" exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.");
+						else
 						{
-							String doubleCheck=mob.session().prompt("Re-enter the name of your new Clan exactly how you want it:","");
-							if(doubleCheck.length()<1)
-								return;
 							String lastCheck=mob.session().prompt("Is '"+doubleCheck+"' correct (y/N)?", "N");
 							if(lastCheck.equalsIgnoreCase("Y"))
 							{
@@ -701,19 +695,15 @@ public class ClanCommands
 							}
 						}
 					}
-					catch(java.io.IOException e)
-					{
-					}
 				}
-			}
-			else
-			{
-				msg.append("You are already a member of "+mob.getClanID()+". You need to resign from your before you can create one.");
+				catch(java.io.IOException e)
+				{
+				}
 			}
 		}
 		else
 		{
-			msg.append("You haven't specified the name for the Clan you are trying to create.");
+			msg.append("You are already a member of "+mob.getClanID()+". You need to resign from your before you can create one.");
 		}
 		mob.tell(msg.toString());
 	}

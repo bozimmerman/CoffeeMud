@@ -830,16 +830,35 @@ public class SysOpSkills
 			}
 		}
 		else
-		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.nextElement();
-			MOB M=null;
-			int num=0;
-			while((num==0)||(M!=null))
+			for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 			{
-				M=curRoom.fetchInhabitant(mobname+"."+num);
-				if((M!=null)&&(!V.contains(M)))
-				   V.addElement(M);
+				Room R=(Room)r.nextElement();
+				MOB M=null;
+				int num=1;
+				while((num<=1)||(M!=null))
+				{
+					M=R.fetchInhabitant(mobname+"."+num);
+					if((M!=null)&&(!V.contains(M)))
+					   V.addElement(M);
+					num++;
+				}
+			}
+			if(V.size()==0)
+			{
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					MOB M=null;
+					int num=1;
+					while((num<=1)||(M!=null))
+					{
+						M=R.fetchInhabitant(mobname+"."+num);
+						if((M!=null)&&(!V.contains(M)))
+						   V.addElement(M);
+						num++;
+					}
+				}
 			}
 		}
 		
@@ -868,22 +887,18 @@ public class SysOpSkills
 			mob.tell("You aren't powerful enough to do that. Try 'GO'.");
 			return false;
 		}
-		if(curRoom==room)
+		for(int i=0;i<V.size();i++)
 		{
-			mob.tell("Done.");
-			return true;
-		}
-		else
-		{
-			for(int i=0;i<V.size();i++)
+			MOB M=(MOB)V.elementAt(i);
+			if(!room.isInhabitant(M))
 			{
-				MOB M=(MOB)V.elementAt(i);
 				room.bringMobHere(M,true);
-				ExternalPlay.look(M,null,true);
+				if(!M.isMonster())
+					ExternalPlay.look(M,null,true);
 			}
-			mob.tell("Done.");
-			return true;
 		}
+		mob.tell("Done.");
+		return true;
 	}
 	public static MOB getTarget(MOB mob, Vector commands, boolean quiet)
 	{

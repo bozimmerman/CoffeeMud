@@ -265,7 +265,11 @@ public class MOBloader
 					if(lvl.length()>0) level+=Util.s_int(lvl);
 					thisUser.addElement(new Integer(level).toString());
 					thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
-					thisUser.addElement(DBConnections.getRes(R,"CMDATE"));
+					MOB M=(MOB)CMMap.getPlayer((String)thisUser.firstElement());
+					if(M!=null)
+						thisUser.addElement(""+M.lastTickedDateTime());
+					else
+						thisUser.addElement(DBConnections.getRes(R,"CMDATE"));
 					thisUser.addElement(DBConnections.getRes(R,"CMEMAL"));
 					allUsers.addElement(thisUser);
 				}
@@ -427,7 +431,11 @@ public class MOBloader
 				int role=(int)DBConnector.getLongRes(R,"CMCLRO");
 				members.addElement(username);
 				roles.addElement(new Integer(role));
-				lastDates.addElement(new Long(lastDateTime));
+				MOB M=(MOB)CMMap.getPlayer(username);
+				if(M!=null)
+					lastDates.addElement(new Long(M.lastTickedDateTime()));
+				else
+					lastDates.addElement(new Long(lastDateTime));
 			}
 			DBConnector.DBDone(D);
 		}

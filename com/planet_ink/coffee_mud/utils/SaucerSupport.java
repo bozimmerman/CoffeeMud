@@ -189,11 +189,11 @@ public class SaucerSupport
 	
 	public static boolean nameCheck(Vector V, char plusMinus, int fromHere, MOB mob)
 	{
-		Vector names=Util.parse(mob.name());
+		Vector names=Util.parse(mob.name().toUpperCase());
 		for(int v=0;v<names.size();v++)
 			if(fromHere(V,plusMinus,fromHere,(String)names.elementAt(v)))
 				return true;
-		names=Util.parse(mob.displayText());
+		names=Util.parse(mob.displayText().toUpperCase());
 		for(int v=0;v<names.size();v++)
 			if(fromHere(V,plusMinus,fromHere,(String)names.elementAt(v)))
 				return true;
@@ -563,11 +563,13 @@ public class SaucerSupport
 						return false;
 					break;
 				case 14: // -Clan
-					if(!fromHere(V,'+',v+1,mob.getClanID())) 
+					if((mob.getClanID().length()==0)
+					||(!fromHere(V,'+',v+1,mob.getClanID().toUpperCase())))
 						return false;
 					break;
 				case 15: // +Clan
-					if(fromHere(V,'-',v+1,mob.getClanID())) 
+					if((mob.getClanID().length()>0)
+					&&(fromHere(V,'-',v+1,mob.getClanID().toUpperCase())))
 						return false;
 					break;
 				case 16: // +names
