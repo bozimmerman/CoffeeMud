@@ -59,46 +59,4 @@ public class Prayer extends StdAbility
 		}
 		return;
 	}
-
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
-	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
-		if(auto) return true;
-		
-		int align=mob.getAlignment();
-		
-		if(appropriateToMyAlignment(align))	return true;
-		
-		int basis=0;
-		if(holyQuality()==Prayer.HOLY_EVIL)
-			basis=align/10;
-		else
-		if(holyQuality()==Prayer.HOLY_GOOD)
-			basis=(1000-align)/10;
-		else
-		{
-			basis=(500-align)/10;
-			if(basis<0) basis=basis*-1;
-			basis-=10;
-		}
-		
-		if(Dice.rollPercentage()>basis)
-			return true;
-
-		if(holyQuality()==Prayer.HOLY_EVIL)
-			mob.tell("The evil nature of "+name()+" disrupts your prayer.");
-		else
-		if(holyQuality()==Prayer.HOLY_GOOD)
-			mob.tell("The goodness of "+name()+" disrupts your prayer.");
-		else
-		if(mob.getAlignment()>650)
-			mob.tell("The anti-good nature of "+name()+" disrupts your thought.");
-		else
-		if(mob.getAlignment()<350)
-			mob.tell("The anti-evil nature of "+name()+" disrupts your thought.");
-					 
-		return false;
-	}
 }

@@ -1,3 +1,4 @@
 remove all on held things.
 bug look for alternate materials in the common skills
 Damn Scriptable Behavior
+Your gods help in prayers to gods name!

@@ -21,9 +21,15 @@ public class Cleric extends StdCharClass
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
+	protected boolean disableAlignedWeapons(){return false;}
+	protected boolean disableAlignedSpells(){return false;}
+	protected boolean disableClericSpellGrant(){return false;}
+	
 	public Cleric()
 	{
 		super();
+		if(disableClericSpellGrant()) return;
+		
 		maxStat[CharStats.WISDOM]=25;
 		if(!loaded())
 		{
@@ -148,6 +154,8 @@ public class Cleric extends StdCharClass
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		
+		if(disableClericSpellGrant()) return;
+		
 		// if he already has one, don't give another!
 		if(!mob.isMonster())
 		{
@@ -207,50 +215,110 @@ public class Cleric extends StdCharClass
 	public String otherLimitations(){return "Using prayers outside your alignment introduces failure chance.";}
 	public String weaponLimitations(){return "To avoid fumbling: Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.";}
 
+	protected int holyQuality(Ability A)
+	{
+		boolean notgood=(!A.appropriateToMyAlignment(1000));
+		boolean notneutral=(!A.appropriateToMyAlignment(500));
+		boolean notevil=(!A.appropriateToMyAlignment(0));
+		boolean good=!notgood;
+		boolean neutral=!notneutral;
+		boolean evil=!notevil;
+		if(notgood&&notneutral&&evil) return 0;
+		if(notevil&&notneutral&&good) return 1000;
+		return 500;
+	}
+	
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(!super.okAffect(myChar, affect))
 			return false;
 
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
-		if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
-		&&(affect.tool()!=null)
-		&&(affect.tool() instanceof Weapon))
 		{
-			int classification=((Weapon)affect.tool()).weaponClassification();
-			if(myChar.getAlignment()<350)
+			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			&&(!disableAlignedSpells())
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Ability)
+			&&(myChar.isMine(affect.tool()))
+			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
 			{
-				if((classification==Weapon.CLASS_POLEARM)
-				||(classification==Weapon.CLASS_SWORD)
-				||(classification==Weapon.CLASS_AXE)
-				||(classification==Weapon.CLASS_NATURAL)
-				||(classification==Weapon.CLASS_EDGED))
+				int align=myChar.getAlignment();
+				Ability A=(Ability)affect.tool();
+		
+				if(A.appropriateToMyAlignment(align))	
 					return true;
-			}
-			else
-			if(myChar.getAlignment()<650)
-			{
-				if((classification==Weapon.CLASS_BLUNT)
-				||(classification==Weapon.CLASS_RANGED)
-				||(classification==Weapon.CLASS_THROWN)
-				||(classification==Weapon.CLASS_STAFF)
-				||(classification==Weapon.CLASS_NATURAL)
-				||(classification==Weapon.CLASS_SWORD))
+				int hq=holyQuality(A);
+					
+				int basis=0;
+				if(hq==0)
+					basis=align/10;
+				else
+				if(hq==1000)
+					basis=(1000-align)/10;
+				else
+				{
+					basis=(500-align)/10;
+					if(basis<0) basis=basis*-1;
+					basis-=10;
+				}
+		
+				if(Dice.rollPercentage()>basis)
 					return true;
-			}
-			else
-			{
-				if((classification==Weapon.CLASS_BLUNT)
-				||(classification==Weapon.CLASS_FLAILED)
-				||(classification==Weapon.CLASS_STAFF)
-				||(classification==Weapon.CLASS_NATURAL)
-				||(classification==Weapon.CLASS_HAMMER))
-					return true;
-			}
-			if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-			{
-				myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+
+				if(hq==0)
+					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+				else
+				if(hq==1000)
+					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+				else
+				if(align>650)
+					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
+				else
+				if(align<350)
+					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
 				return false;
+			}
+			else
+			if((affect.sourceMinor()==Affect.TYP_WEAPONATTACK)
+			&&(!disableAlignedWeapons())
+			&&(affect.tool()!=null)
+			&&(affect.tool() instanceof Weapon))
+			{
+				int classification=((Weapon)affect.tool()).weaponClassification();
+				if(myChar.getAlignment()<350)
+				{
+					if((classification==Weapon.CLASS_POLEARM)
+					||(classification==Weapon.CLASS_SWORD)
+					||(classification==Weapon.CLASS_AXE)
+					||(classification==Weapon.CLASS_NATURAL)
+					||(classification==Weapon.CLASS_EDGED))
+						return true;
+				}
+				else
+				if(myChar.getAlignment()<650)
+				{
+					if((classification==Weapon.CLASS_BLUNT)
+					||(classification==Weapon.CLASS_RANGED)
+					||(classification==Weapon.CLASS_THROWN)
+					||(classification==Weapon.CLASS_STAFF)
+					||(classification==Weapon.CLASS_NATURAL)
+					||(classification==Weapon.CLASS_SWORD))
+						return true;
+				}
+				else
+				{
+					if((classification==Weapon.CLASS_BLUNT)
+					||(classification==Weapon.CLASS_FLAILED)
+					||(classification==Weapon.CLASS_STAFF)
+					||(classification==Weapon.CLASS_NATURAL)
+					||(classification==Weapon.CLASS_HAMMER))
+						return true;
+				}
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
+				{
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+					return false;
+				}
 			}
 		}
 		return true;
