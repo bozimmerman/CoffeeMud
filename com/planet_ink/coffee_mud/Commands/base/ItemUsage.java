@@ -143,7 +143,7 @@ public class ItemUsage
 					if(container!=null)
 					{
 						if(((Container)container).isOpen())
-							mob.tell("You don't see anything in "+container.name()+".");
+							mob.tell("You don't see that in "+container.name()+".");
 						else
 							mob.tell(container.name()+" is closed.");
 					}

@@ -257,7 +257,8 @@ public class StdRace implements Race
 	protected Item makeResource(String name, int type)
 	{
 		Item I=null;
-		if((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+		if(((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+		||((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
 			I=CMClass.getItem("GenFoodResource");
 		else
 		if((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)

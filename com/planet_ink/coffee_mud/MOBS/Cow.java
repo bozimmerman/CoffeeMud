@@ -55,6 +55,29 @@ public class Cow extends StdMOB implements Drink
 			if(full)
 				mob.tell("You have drunk all you can.");
 		}
+		else
+		if((affect.tool()==this)
+		&&(affect.targetMinor()==Affect.TYP_FILL)
+		&&(affect.target()!=null)
+		&&(affect.target() instanceof Container))
+		{
+			Item container=(Item)affect.target();
+			Item I=CMClass.getItem("GenLiquidResource");
+			I.setName("some milk");
+			I.setDisplayText("some milk has been left here.");
+			I.setDescription("It looks like milk");
+			I.setMaterial(EnvResource.RESOURCE_MILK);
+			I.setBaseValue(EnvResource.RESOURCE_DATA[EnvResource.RESOURCE_MILK&EnvResource.RESOURCE_MASK][1]);
+			I.baseEnvStats().setWeight(1);
+			I.recoverEnvStats();
+			I.setLocation(container);
+			if(container.myOwner()!=null)
+				if(container.myOwner() instanceof MOB)
+					((MOB)container.myOwner()).addInventory(I);
+				else
+				if(container.myOwner() instanceof Room)
+					((Room)container.myOwner()).addItem(I);
+		}
 	}
 	public int thirstQuenched(){return 100;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}

@@ -340,7 +340,7 @@ public class StdContainer extends StdItem implements Container
 		}
 		super.affect(affect);
 	}
-	private int recursiveRoomWeight(MOB mob, Item thisContainer)
+	protected int recursiveRoomWeight(MOB mob, Item thisContainer)
 	{
 		int weight=thisContainer.envStats().weight();
 		for(int i=0;i<mob.location().numItems();i++)
@@ -365,7 +365,7 @@ public class StdContainer extends StdItem implements Container
 		isLocked=newIsLocked;
 	}
 
-	private static void recursiveGetRoom(MOB mob, Item thisContainer)
+	protected static void recursiveGetRoom(MOB mob, Item thisContainer)
 	{
 
 		// caller is responsible for recovering any env
@@ -407,7 +407,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		miscText=newKeyName;
 	}
-	private static void recursiveDropMOB(MOB mob, Item thisContainer)
+	protected static void recursiveDropMOB(MOB mob, Item thisContainer)
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
@@ -436,7 +436,7 @@ public class StdContainer extends StdItem implements Container
 		}while(!nothingDone);
 	}
 	
-	private void reallyGetContents(Item container, Environmental own, Vector V)
+	protected void reallyGetContents(Item container, Environmental own, Vector V)
 	{
 		if(container==null) return;
 		if(own instanceof MOB)

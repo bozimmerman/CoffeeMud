@@ -73,7 +73,8 @@ wheat bread	FOOD	WHEAT	1	Dough	2
 bread	FOOD	Dough	1				
 corn bread	FOOD	CORN	2	Dough	1		
 focacia	FOOD	Bread	1	OLIVES	1	Cheese	1
-pizza	FOOD	Dough	2	TOMATOE	1	Cheese	1
+% pizza	FOOD	Dough	2	TOMATOES	1	Cheese	1	MEAT	-1	BEEF	-1
+cheese pizza	FOOD	Dough	2	TOMATOES	1	Cheese	1	
 caesar salad	FOOD	GREENS	2	EGGS	1	OLIVES	-1
 stuffed peppers	FOOD	PEPPERS	1	Cheese 	-1		
 dolmas	FOOD	RICE	2	GRAPES	1		
@@ -84,4 +85,4 @@ kabobs	FOOD	PEPPERS	1	MEAT	-1	FISH	-1	BEEF	-1	POULTRY	-1	PORK	-1	MUTTON	-1
 fish n chips	FOOD	FISH	1	POTATO	1										
 % fetticini	FOOD	FISH	1	Pasta	2										
 spaghetti	FOOD	Pasta	2	TOMATOES	1										
-spaghetti n % meatballs	FOOD	Pasta	2	TOMATOE	1	BEEF	1								
+spaghetti n % meatballs	FOOD	Pasta	2	TOMATOES	1	BEEF	1								
