@@ -10,7 +10,6 @@ public class GrinderRooms
 	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
 		if(R==null) return "Old Room not defined!";
-		
 		boolean redoAllMyDamnRooms=false;
 		Room oldR=R;
 		
@@ -18,6 +17,9 @@ public class GrinderRooms
 		String className=(String)httpReq.getRequestParameters().get("CLASS");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
+		
+		ExternalPlay.resetRoom(R);
+		
 		if(!className.equalsIgnoreCase(CMClass.className(R)))
 		{
 			R=CMClass.getLocale(className);
@@ -31,6 +33,10 @@ public class GrinderRooms
 				R.rawDoors()[d]=oldR.rawDoors()[d];
 			for(int d=0;d<R.rawExits().length;d++)
 				R.rawExits()[d]=oldR.rawExits()[d];
+			for(int i=0;i<oldR.numInhabitants();i++)
+				R.addInhabitant(oldR.fetchInhabitant(i));
+			for(int i=0;i<oldR.numItems();i++)
+				R.addItem(oldR.fetchItem(i));
 			redoAllMyDamnRooms=true;
 		}
 		

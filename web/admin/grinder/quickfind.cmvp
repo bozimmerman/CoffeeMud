@@ -1,11 +1,10 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SYSOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 
-<P>&nbsp;</P>
+@MUDGrinder?QUICKFIND@
 
-</BODY>
-</HTML>
+@AddFile?/grinder/modarea.cmvp@
+
+@endif@ 
+@endif@ 

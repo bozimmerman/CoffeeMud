@@ -30,17 +30,14 @@ public class ExitData extends StdWebMacro
 							   "ISCLIMBING",
 							   "ISFALLING"};
 		for(int d=0;d<dispositions.length;d++)
-		{
-			int power=(d==0)?1:(2<<(d-1));
 			if(parms.containsKey(dispositions[d]))
 			{
 				String parm=(String)httpReq.getRequestParameters().get(dispositions[d]);
 				if(parm==null)
-					parm=(((E.baseEnvStats().disposition()&power)>0)?"on":"");
+					parm=(((E.baseEnvStats().disposition()&(1<<d))>0)?"on":"");
 				if(parm.length()>0)
 					str.append("checked");
 			}
-		}
 		return str.toString();
 	}
 	
@@ -69,6 +66,7 @@ public class ExitData extends StdWebMacro
 		if(E!=null)
 		{
 			StringBuffer str=new StringBuffer("");
+			boolean resetIfNecessary=false;
 			String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
 							  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
 							  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
@@ -79,6 +77,7 @@ public class ExitData extends StdWebMacro
 			if(parms.containsKey(okparms[o]))
 			{
 				String old=(String)httpReq.getRequestParameters().get(okparms[o]);
+				String oldold=old;
 				switch(o)
 				{
 				case 0: // name
@@ -228,12 +227,12 @@ public class ExitData extends StdWebMacro
 				case 20: // restrictedalignments
 					String mask=E.alignmentRestrictedMask();
 					String[] alignments={"GOOD","NEUTRAL","EVIL"};
-					if(httpReq.getRequestParameters().containsKey("RESTRICTEDALIGNMENTS1"))
+					if(httpReq.getRequestParameters().containsKey("RESTRICTEDALIGNMENTS"))
 					{
-						mask="";
+						mask=((String)httpReq.getRequestParameters().get("RESTRICTEDALIGNMENTS"))+" ";
 						for(int i=1;;i++)
 						{
-							String selection=(String)httpReq.getRequestParameters().get("RESTRICTEDALIGNMENTS"+(new Integer(i).toString()));
+							String selection=(String)httpReq.getRequestParameters().get("RESTRICTEDALIGNMENTS"+i);
 							if(selection!=null)
 								mask+=selection+" ";
 							else
@@ -245,47 +244,33 @@ public class ExitData extends StdWebMacro
 					for(int i=0;i<alignments.length;i++)
 					{
 						str.append("<OPTION VALUE=\""+alignments[i]+"\"");
-						if(mask.indexOf(alignments[i])>0)
+						if(mask.toUpperCase().indexOf(alignments[i])>=0)
 							str.append(" SELECTED");
 						str.append(">"+alignments[i]);
 					}
 					str.append("</SELECT>");
 					break;
 				case 21: // is generic
-					old=(String)httpReq.getRequestParameters().get("CLASSES");
-					if((old==null)||(old.length()==0))
-						old=CMClass.className(E);
-					Exit E3=CMClass.getExit(old);
-					if(E3!=null)
-					{
-						httpReq.getRequestParameters().put("ISGENERIC",""+E3.isGeneric());
-						httpReq.resetRequestEncodedParameters();
-					}
+					httpReq.getRequestParameters().put("ISGENERIC",""+E.isGeneric());
+					httpReq.resetRequestEncodedParameters();
 					break;
 				}
+				if((oldold==null)&&(old!=null))
+				{
+					resetIfNecessary=true;
+					httpReq.getRequestParameters().put(okparms[o],old.equals("checked")?"on":old);
+				}
+				
 			}
 			str.append(ExitData.dispositions(E,httpReq,parms));
 			str.append(AreaData.affectsNBehaves(E,httpReq,parms));
+			E.recoverEnvStats();
+			E.text();
+			ExternalPlay.DBUpdateExits(R);
 			
-			//adjustments
-			if(E.hasADoor())
-			{
-				E.setClassRestricted(false);
-				E.setAlignmentRestricted(false);
-				if(E.hasALock())
-					E.setReadable(false);
-			}
-			else
-			{
-				E.setDoorsNLocks(false,true,false,false,false,false);
-				E.setReadable(false);
-				if(E.classRestricted())
-					E.setAlignmentRestricted(false);
-				if(E.alignmentRestricted())
-					E.setClassRestricted(false);
-			}
-				
-									 
+			if(resetIfNecessary)
+				httpReq.resetRequestEncodedParameters();
+			
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);

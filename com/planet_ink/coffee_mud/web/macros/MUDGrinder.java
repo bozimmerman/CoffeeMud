@@ -93,9 +93,51 @@ public class MUDGrinder extends StdWebMacro
 			if(R==null) return "@break@";
 			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
 			if(dir<0) return "@break@";
-			String errMsg=GrinderExits.editExit(R,dir);
+			String errMsg=GrinderExits.editExit(R,dir,httpReq,parms);
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
+		}
+		else
+		if(parms.containsKey("QUICKFIND"))
+		{
+			String find=(String)httpReq.getRequestParameters().get("QUICKFIND");
+			if(find==null) return "@break@";
+			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			if(AREA==null) return "";
+			if(AREA.length()==0) return "";
+			Area A=CMMap.getArea(AREA);
+			if(A==null) return "";
+			for(int a=0;a<A.getMyMap().size();a++)
+			{
+				Room R=(Room)A.getMyMap().elementAt(a);
+				if(R.ID().toUpperCase().endsWith(find.toUpperCase()))
+				{
+					httpReq.getRequestParameters().put("ROOM",R.ID());
+					httpReq.resetRequestEncodedParameters();
+					return "";
+				}
+			}
+			for(int a=0;a<A.getMyMap().size();a++)
+			{
+				Room R=(Room)A.getMyMap().elementAt(a);
+				if(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0)
+				{
+					httpReq.getRequestParameters().put("ROOM",R.ID());
+					httpReq.resetRequestEncodedParameters();
+					return "";
+				}
+			}
+			for(int a=0;a<A.getMyMap().size();a++)
+			{
+				Room R=(Room)A.getMyMap().elementAt(a);
+				if(R.description().toUpperCase().indexOf(find.toUpperCase())>=0)
+				{
+					httpReq.getRequestParameters().put("ROOM",R.ID());
+					httpReq.resetRequestEncodedParameters();
+					return "";
+				}
+			}
+			return "";
 		}
 		else
 		if(parms.containsKey("LINKEXIT"))
