@@ -80,7 +80,7 @@ public class Monk extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Listen",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Fighter_LightningStrike",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_ReturnProjectile",false);
-			CMAble.addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Fighter_AtemiStrike",true);
 		}
 	}
 

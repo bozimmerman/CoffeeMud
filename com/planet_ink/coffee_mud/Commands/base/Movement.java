@@ -475,7 +475,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatTounlock));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,getScr("Movement","sopens",unlockThis.name()));
+		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,getScr("Movement","sunlocks",unlockThis.name()));
 		if(unlockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
