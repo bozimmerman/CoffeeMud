@@ -46,8 +46,6 @@ public class Skill_Enslave extends StdAbility
 	private int hungerTickDown=HUNGERTICKMAX;
 	private Room lastRoom=null;
 	
-	//TODO: slavetrading shopkeepers that add enslave, and set startroom to null
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell
