@@ -213,7 +213,7 @@ public class Charlatan extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 
 		// if he already has one, don't give another!
-		if(!mob.isMonster())
+		if(mob.playerStats()!=null)
 		{
 			int classLevel=mob.baseCharStats().getClassLevel(this);
 			if(classLevel<2) return;

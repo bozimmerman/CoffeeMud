@@ -216,10 +216,15 @@ public class MOBTeacher extends CombatAbilities
 			{
 				boolean giveABonus=false;
 				String s=msg.sourceMessage().substring(x+5).trim();
-				x=s.lastIndexOf("`");
-				if(x>0) s=s.substring(0,x);
 				x=s.lastIndexOf("\'");
-				if(x>0) s=s.substring(0,x);
+				if(x>0)
+					s=s.substring(0,x);
+				else
+				{
+					x=s.lastIndexOf("`");
+					if(x>0) 
+						s=s.substring(0,x);
+				}
 
 				if(s.startsWith("\"")) s=s.substring(1).trim();
 				if(s.endsWith("\"")) s=s.substring(0,s.length()-1);

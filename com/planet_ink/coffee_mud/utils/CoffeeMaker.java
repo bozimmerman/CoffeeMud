@@ -1462,6 +1462,11 @@ public class CoffeeMaker
 					return;
 				}
 				Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"ACLASS"));
+				if(newOne==null)
+				{
+					Log.errOut("CoffeeMaker","Unknown ability "+XMLManager.getValFromPieces(ablk.contents,"ACLASS")+" on "+M.name()+", skipping.");
+					continue;
+				}
 				Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"ADATA");
 				if((adat==null)||(newOne==null))
 				{
@@ -1505,6 +1510,11 @@ public class CoffeeMaker
 					return;
 				}
 				Item newOne=CMClass.getItem(XMLManager.getValFromPieces(iblk.contents,"ICLASS"));
+				if(newOne==null)
+				{
+					Log.errOut("CoffeeMaker","Unknown item "+XMLManager.getValFromPieces(iblk.contents,"ICLASS")+" on "+M.name()+", skipping.");
+					continue;
+				}
 				Vector idat=XMLManager.getRealContentsFromPieces(iblk.contents,"IDATA");
 				if((idat==null)||(newOne==null))
 				{
@@ -1731,12 +1741,12 @@ public class CoffeeMaker
 						Vector idat=XMLManager.getRealContentsFromPieces(dblk,"KLDATA");
 						if(newOne==null) newOne=CMClass.getUnknown(itemi);
 						if(newOne==null)
+							Log.errOut("CoffeeMaker","Unknown tool "+itemi+" of "+E.name()+" ("+E.ID()+").  Skipping.");
+						else
 						{
-							Log.errOut("CoffeeMaker","Error parsing 'TOOL DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
-							return;
+							setPropertiesStr(newOne,idat,true);
+							((DeadBody)E).setKillingTool(newOne);
 						}
-						setPropertiesStr(newOne,idat,true);
-						((DeadBody)E).setKillingTool(newOne);
 					}
 					else
 						((DeadBody)E).setKillingTool(null);
@@ -1792,6 +1802,11 @@ public class CoffeeMaker
 							return;
 						}
 						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"BLCLASS"));
+						if(newOne==null)
+						{
+							Log.errOut("CoffeeMaker","Unknown bless "+XMLManager.getValFromPieces(ablk.contents,"BLCLASS")+" on "+E.name()+", skipping.");
+							continue;
+						}
 						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"BLDATA");
 						if((adat==null)||(newOne==null))
 						{
@@ -1814,6 +1829,11 @@ public class CoffeeMaker
 							return;
 						}
 						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"CUCLASS"));
+						if(newOne==null)
+						{
+							Log.errOut("CoffeeMaker","Unknown curse "+XMLManager.getValFromPieces(ablk.contents,"CUCLASS")+" on "+E.name()+", skipping.");
+							continue;
+						}
 						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"CUDATA");
 						if((adat==null)||(newOne==null))
 						{
@@ -1836,6 +1856,11 @@ public class CoffeeMaker
 							return;
 						}
 						Ability newOne=CMClass.getAbility(XMLManager.getValFromPieces(ablk.contents,"POCLASS"));
+						if(newOne==null)
+						{
+							Log.errOut("CoffeeMaker","Unknown power "+XMLManager.getValFromPieces(ablk.contents,"POCLASS")+" on "+E.name()+", skipping.");
+							continue;
+						}
 						Vector adat=XMLManager.getRealContentsFromPieces(ablk.contents,"PODATA");
 						if((adat==null)||(newOne==null))
 						{
@@ -1892,6 +1917,11 @@ public class CoffeeMaker
 						if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
 							newOne=CMClass.getMOB(itemi);
 						if(newOne==null) newOne=CMClass.getUnknown(itemi);
+						if(newOne==null)
+						{
+							Log.errOut("CoffeeMaker","Unknown item "+itemi+" on "+E.name()+", skipping.");
+							continue;
+						}
 						if((idat==null)||(newOne==null))
 						{
 							Log.errOut("CoffeeMaker","Error parsing 'SHOP DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
@@ -2327,8 +2357,8 @@ public class CoffeeMaker
 				String bparms=XMLManager.getValFromPieces(ablk.contents,"BPARMS");
 				if(newOne==null)
 				{
-					Log.errOut("CoffeeMaker","Error parsing 'BHAVE DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
-					return;
+					Log.errOut("CoffeeMaker","Unknown behavior "+XMLManager.getValFromPieces(ablk.contents,"BCLASS")+" on "+E.name()+", skipping.");
+					continue;
 				}
 				newOne.setParms(restoreAngleBrackets(bparms));
 				E.addBehavior(newOne);
@@ -2355,8 +2385,8 @@ public class CoffeeMaker
 				String aparms=XMLManager.getValFromPieces(ablk.contents,"ATEXT");
 				if(newOne==null)
 				{
-					Log.errOut("CoffeeMaker","Error parsing 'AFF DATA' of "+E.name()+" ("+E.ID()+").  Load aborted");
-					return;
+					Log.errOut("CoffeeMaker","Unknown affect "+XMLManager.getValFromPieces(ablk.contents,"ACLASS")+" on "+E.name()+", skipping.");
+					continue;
 				}
 				newOne.setMiscText(restoreAngleBrackets(aparms));
 				E.addNonUninvokableEffect(newOne);

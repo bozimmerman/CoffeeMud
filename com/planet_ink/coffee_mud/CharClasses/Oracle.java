@@ -188,7 +188,8 @@ public class Oracle extends Cleric
 		super.grantAbilities(mob,isBorrowedClass);
 
 		// if he already has one, don't give another!
-		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
+		if((mob.playerStats()!=null)
+		&&(mob.charStats().getClassLevel(this)>=30))
 		{
 			if(numNonQualified(mob)>=maxNonQualified(mob)) return;
 			

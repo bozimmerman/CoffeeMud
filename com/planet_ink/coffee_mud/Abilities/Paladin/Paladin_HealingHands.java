@@ -45,7 +45,8 @@ public class Paladin_HealingHands extends StdAbility
 			return false;
 		}
 
-		if(mob.curState().getMana()==0)
+		int healing=1+((int)Math.round(Util.div(adjustedLevel(mob),5.0)));
+		if(mob.curState().getMana()<healing)
 		{
 			mob.tell("You don't have enough mana to do that.");
 			return false;
@@ -76,8 +77,9 @@ public class Paladin_HealingHands extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.curState().adjMana(-(1+(int)Math.round(Util.div(adjustedLevel(mob),5.0))),mob.maxState());
-				int healing=1+(int)Math.round(Util.div(adjustedLevel(mob),5.0));
+				int manaLost=healing;
+				if(manaLost>0) manaLost=manaLost*-1;
+				mob.curState().adjMana(manaLost,mob.maxState());
 				MUDFight.postHealing(mob,target,this,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,healing,null);
 				target.tell("You feel a little better!");
 			}

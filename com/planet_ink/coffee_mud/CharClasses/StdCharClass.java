@@ -566,7 +566,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public void loseExperience(MOB mob, int amount)
 	{
-		if((mob.isMonster())||(mob.soulMate()!=null)) return;
+		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		mob.setExperience(mob.getExperience()-amount);
         if((mob.getLiegeID().length()>0)&&(amount>2))
@@ -602,7 +602,7 @@ public class StdCharClass implements CharClass, Cloneable
 	{
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CommonStrings.msp("level_gain.wav",60));
 		theNews.append(levelAdjuster(mob,1));
-		if(!mob.isMonster())
+		if(mob.playerStats()!=null)
 		{
 			CommonMsgs.channel("WIZINFO","",mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)

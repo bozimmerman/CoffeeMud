@@ -747,7 +747,7 @@ public class Arrest extends StdBehavior
 
 	public boolean isElligibleOfficer(Law laws, MOB M, Area myArea)
 	{
-		if((M.isMonster())&&(M.location()!=null))
+		if((M!=null)&&(M.isMonster())&&(M.location()!=null))
 		{
 			if((myArea!=null)&&(M.location().getArea()!=myArea)) return false;
 
@@ -770,12 +770,13 @@ public class Arrest extends StdBehavior
 		for(int i=0;i<R.numInhabitants();i++)
 		{
 			MOB M=R.fetchInhabitant(i);
-			if((M!=criminal)
-			   &&(M.location()!=null)
-			   &&(M.location().getArea()==myArea)
-			   &&((victim==null)||(M!=victim))
-			   &&(isElligibleOfficer(laws,M,myArea))
-			   &&(Sense.canBeSeenBy(criminal,M)))
+			if((M!=null)
+			&&(M!=criminal)
+			&&(M.location()!=null)
+			&&(M.location().getArea()==myArea)
+			&&((victim==null)||(M!=victim))
+			&&(isElligibleOfficer(laws,M,myArea))
+			&&(Sense.canBeSeenBy(criminal,M)))
 				return M;
 		}
 		return null;
@@ -791,12 +792,12 @@ public class Arrest extends StdBehavior
 		if((myArea!=null)&&(R.getArea()!=myArea)) return null;
 		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if(M==null)
-		for(Enumeration e=myArea.getMap();e.hasMoreElements();)
-		{
-			Room R2=(Room)e.nextElement();
-			M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
-			if(M!=null) break;
-		}
+			for(Enumeration e=myArea.getMap();e.hasMoreElements();)
+			{
+				Room R2=(Room)e.nextElement();
+				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
+				if(M!=null) break;
+			}
 		return M;
 	}
 

@@ -154,7 +154,7 @@ public class Minstrel extends StdCharClass
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
-		if(mob.isMonster())
+		if(mob.playerStats()==null)
 		{
 			Vector V=CMAble.getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
