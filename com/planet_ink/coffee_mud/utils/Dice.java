@@ -134,14 +134,12 @@ public class Dice
         if (randomizer == null)
             seed();
 
-        if (die == 0)
-            die = 6;
-
         int total = 0;
+		
+		if(die>0)
         for (int i = 0; i < number; i++)
-        {
             total += (Math.abs(randomizer.nextInt() % die)) + 1;
-        }
+		
         total += modifier;
         return total;
     }
