@@ -152,9 +152,34 @@ public class GrinderAreas
 				Room R=(Room)allMyDamnRooms.elementAt(r);
 				R.setArea(A);
 				if(oldName!=null)
-					ExternalPlay.DBUpdateRoom(R);
+				{
+					if((R.ID().startsWith(oldName+"#"))
+					&&(CMMap.getRoom(A.name()+"#"+R.ID().substring(oldName.length()+1))==null))
+					{
+						
+						String oldID=R.ID();
+						R.setID(A.name()+"#"+R.ID().substring(oldName.length()+1));
+						ExternalPlay.DBReCreate(R,oldID);
+					}
+					else
+						ExternalPlay.DBUpdateRoom(R);
+				}
 			}
 			A.clearMap();
+			if(oldName!=null)
+			for(int r=0;r<CMMap.numRooms();r++)
+			{
+				Room R=(Room)CMMap.getRoom(r);
+				boolean doIt=false;
+				for(int d=0;d<R.rawDoors().length;d++)
+				{
+					Room R2=(Room)R.rawDoors()[d];
+					if((R2!=null)&&(R2.getArea()==A))
+					{ doIt=true; break;}
+				}
+				if(doIt)
+					ExternalPlay.DBUpdateExits(R);
+			}
 		}
 		ExternalPlay.DBUpdateArea(A);
 		return "";

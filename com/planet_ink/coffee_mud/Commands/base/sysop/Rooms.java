@@ -261,7 +261,32 @@ public class Rooms
 			{
 				Vector areaMap=myArea.getMyMap();
 				for(int r=0;r<areaMap.size();r++)
-					ExternalPlay.DBUpdateRoom((Room)areaMap.elementAt(r));
+				{
+					Room R=(Room)areaMap.elementAt(r);
+					if((R.ID().startsWith(oldName+"#"))
+					&&(CMMap.getRoom(myArea.name()+"#"+R.ID().substring(oldName.length()+1))==null))
+					{
+						String oldID=R.ID();
+						R.setID(myArea.name()+"#"+R.ID().substring(oldName.length()+1));
+						ExternalPlay.DBReCreate(R,oldID);
+					}
+					else
+						ExternalPlay.DBUpdateRoom(R);
+				}
+				myArea.clearMap();
+				for(int r=0;r<CMMap.numRooms();r++)
+				{
+					Room R=(Room)CMMap.getRoom(r);
+					boolean doIt=false;
+					for(int d=0;d<R.rawDoors().length;d++)
+					{
+						Room R2=(Room)R.rawDoors()[d];
+						if((R2!=null)&&(R2.getArea()==myArea))
+						{ doIt=true; break;}
+					}
+					if(doIt)
+						ExternalPlay.DBUpdateExits(R);
+				}
 			}
 			else
 				myArea.setName(oldName);

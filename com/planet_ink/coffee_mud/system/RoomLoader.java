@@ -493,6 +493,11 @@ public class RoomLoader
 					+"WHERE CMROID='"+oldID+"'");
 			DBConnector.DBDone(D);
 
+			D=DBConnector.DBFetch();
+			D.update("UPDATE CMCHAR SET "
+					+"CMROID='"+room.ID()+"' "
+					+"WHERE CMROID='"+oldID+"'");
+			DBConnector.DBDone(D);
 		}
 		catch(SQLException sqle)
 		{
