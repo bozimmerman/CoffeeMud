@@ -1,4 +1,4 @@
-name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell										
+name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell
 % Slippers	1	10	3	5	GenArmor	FEET	0	2	0	
 % Socks	1	10	2	2	GenArmor	FEET	0	2	0	
 % Stockings	3	20	1	10	GenArmor	FEET	0	2	0	

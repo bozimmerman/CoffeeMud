@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 import java.io.IOException;
 
@@ -76,6 +77,113 @@ public class BaseGenerics extends StdCommand
 			A.setAuthorID(newName);
 		else
 			mob.tell("(no change)");
+	}
+
+	static void genTimeClock(MOB mob, Area A, int showNumber, int showFlag)
+	throws IOException
+	{
+
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		TimeClock TC=A.getTimeObj();
+		StringBuffer report=new StringBuffer("");
+		if(TC==DefaultTimeClock.globalClock)
+			report.append("Default");
+		else
+		{
+		    report.append(TC.getHoursInDay()+" hrs-day/");
+		    report.append(TC.getDaysInMonth()+" days-mn/");
+		    report.append(TC.getMonthsInYear()+" mnths-yr");
+		}
+		mob.tell(showNumber+". Calendar: '"+report.toString()+"'.");
+		if(TC==DefaultTimeClock.globalClock) return;
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName="";
+		while(newName.length()==0)
+		{
+			report=new StringBuffer("\n\rCalendar/Clock settings:\n\r");
+		    report.append("1. "+TC.getHoursInDay()+" hours per day\n\r");
+		    report.append("2. Dawn Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DAWN]+"\n\r");
+		    report.append("3. Day Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DAY]+"\n\r");
+		    report.append("4. Dusk Hour: "+TC.getDawnToDusk()[TimeClock.TIME_DUSK]+"\n\r");
+		    report.append("5. Night Hour: "+TC.getDawnToDusk()[TimeClock.TIME_NIGHT]+"\n\r");
+		    report.append("6. Weekdays: "+Util.toStringList(TC.getWeekNames())+"\n\r");
+		    report.append("7. Months: "+Util.toStringList(TC.getMonthNames())+"\n\r");
+		    report.append("8. Year Title(s): "+Util.toStringList(TC.getYearNames()));
+		    mob.tell(report.toString());
+			newName=mob.session().prompt("Enter one to change: ","");
+			if(newName.length()==0) break;
+			int which=Util.s_int(newName);
+			
+			if((which<0)||(which>8))
+				mob.tell("Invalid: "+which);
+			else
+			if(which<=5)
+			{
+			    newName="";
+			    String newNum=mob.session().prompt("Enter a new number: ","");
+			    int val=Util.s_int(newNum);
+			    if(newNum.length()==0)
+			        mob.tell("No Change");
+			    else
+				switch(which)
+			    {
+		        case 1:
+		            TC.setHoursInDay(val);
+		            break;
+		        case 2:
+		            TC.getDawnToDusk()[TimeClock.TIME_DAWN]=val;
+		            break;
+		        case 3:
+		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
+                        mob.tell("That value is before the dawn!");
+		            else
+			            TC.getDawnToDusk()[TimeClock.TIME_DAY]=val;
+		            break;
+		        case 4:
+		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
+                        mob.tell("That value is before the dawn!");
+		            else
+		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAY]>=val))
+                        mob.tell("That value is before the day!");
+		            else
+			            TC.getDawnToDusk()[TimeClock.TIME_DUSK]=val;
+		            break;
+		        case 5:
+		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAWN]>=val))
+                        mob.tell("That value is before the dawn!");
+		            else
+		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DAY]>=val))
+                        mob.tell("That value is before the day!");
+		            else
+		            if((val>=0)&&(TC.getDawnToDusk()[TimeClock.TIME_DUSK]>=val))
+                        mob.tell("That value is before the dusk!");
+		            else
+			            TC.getDawnToDusk()[TimeClock.TIME_NIGHT]=val;
+		            break;
+			    }
+			}
+			else
+			{
+			    newName="";
+			    String newNum=mob.session().prompt("Enter a new list (comma delimited)\n\r: ","");
+			    if(newNum.length()==0)
+			        mob.tell("No Change");
+			    else
+			    switch(which)
+			    {
+		        case 6:
+		            TC.setDaysInWeek(Util.toStringArray(Util.parseCommas(newNum,true)));
+		            break;
+		        case 7:
+		            TC.setMonthsInYear(Util.toStringArray(Util.parseCommas(newNum,true)));
+		            break;
+		        case 8:
+		            TC.setYearNames(Util.toStringArray(Util.parseCommas(newNum,true)));
+		            break;
+			    }
+			}
+		}
+		TC.save();
 	}
 
 	static void genClan(MOB mob, MOB E, int showNumber, int showFlag)

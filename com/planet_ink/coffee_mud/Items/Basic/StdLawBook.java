@@ -129,6 +129,7 @@ public class StdLawBook extends StdItem
 					case 9: doIllegalSkill(A,B,theLaw,mob); break;
 					case 10: doIllegalEmotation(A,B,theLaw,mob); break;
 					case 11: doTaxLaw(A,B,theLaw,mob); break;
+					case 12: doBannedSubstances(A,B,theLaw,mob); break;
 					}
 				}
 				catch(Exception e)
@@ -449,6 +450,96 @@ public class StdLawBook extends StdItem
 						for(int c=0;c<newBits.length;c++)
 							changeTheLaw(A,B,mob,theLaw,"CRIME"+(c+1),newBits[c]);
 						changeTheLaw(A,B,mob,theLaw,"CRIME"+(newBits.length+1),"");
+						if(newValue!=null)
+							mob.tell("Changed.");
+						else
+							mob.tell("Deleted.");
+					}
+				}
+				else
+					break;
+			}
+		}
+	}
+
+	public void doBannedSubstances(Area A, Behavior B, Law theLaw, MOB mob)
+	throws IOException
+	{
+		if(mob.session()==null) return;
+		mob.tell(getFromTOC("P10"+(theLaw.hasModifiableLaws()?"MOD":"")));
+		while(true)
+		{
+			StringBuffer str=new StringBuffer("");
+			str.append(Util.padRight("#  Items",20)+" "+shortLawHeader()+"\n\r");
+			for(int x=0;x<theLaw.bannedSubstances().size();x++)
+			{
+				String crime=Util.combineWithQuotes((Vector)theLaw.bannedSubstances().elementAt(x),0);
+				String[] set=(String[])theLaw.bannedBits().elementAt(x);
+				str.append(Util.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
+			}
+			str.append("A. ADD A NEW ONE\n\r");
+			mob.session().colorOnlyPrintln(str.toString());
+			if(!theLaw.hasModifiableLaws())
+				break;
+			String s=mob.session().prompt("\n\rEnter number to modify, A, or RETURN: ","");
+			if(s.length()==0)
+				break;
+			else
+			if(s.equalsIgnoreCase("A"))
+			{
+				s=mob.session().prompt("\n\rEnter item key words or resource types to make illegal: ","");
+				if(s.length()>0)
+				{
+				    s=s.toUpperCase();
+					String[] newValue=modifyLaw(A,B,theLaw,mob,null);
+					if(newValue!=null)
+					{
+						StringBuffer s2=new StringBuffer(s+";");
+						for(int i=0;i<newValue.length;i++)
+						{
+							s2.append(newValue[i]);
+							if(i<(newValue.length-1))
+								s2.append(";");
+						}
+						changeTheLaw(A,B,mob,theLaw,"BANNED"+(theLaw.bannedBits().size()+1),s2.toString());
+						mob.tell("Added.");
+					}
+				}
+			}
+			else
+			{
+				int x=Util.s_int(s);
+				if((x>0)&&(x<=theLaw.bannedSubstances().size()))
+				{
+					String[] crimeSet=(String[])theLaw.bannedBits().elementAt(x-1);
+					String[] oldLaw=crimeSet;
+					String[] newValue=modifyLaw(A,B,theLaw,mob,crimeSet);
+					if(newValue!=oldLaw)
+					{
+						if(newValue!=null) 
+							theLaw.bannedBits().setElementAt(newValue,x-1);
+						else
+						{
+							theLaw.bannedSubstances().removeElementAt(x-1);
+							theLaw.bannedBits().removeElementAt(x-1);
+						}
+						String[] newBits=new String[theLaw.bannedBits().size()];
+						for(int c=0;c<theLaw.bannedSubstances().size();c++)
+						{
+							String crimeWords=Util.combineWithQuotes((Vector)theLaw.bannedSubstances().elementAt(c),0);
+							String[] thisLaw=(String[])theLaw.bannedBits().elementAt(c);
+							StringBuffer s2=new StringBuffer("");
+							for(int i=0;i<thisLaw.length;i++)
+							{
+								s2.append(thisLaw[i]);
+								if(i<(thisLaw.length-1))
+									s2.append(";");
+							}
+							newBits[c]=crimeWords+";"+s2.toString();
+						}
+						for(int c=0;c<newBits.length;c++)
+							changeTheLaw(A,B,mob,theLaw,"BANNED"+(c+1),newBits[c]);
+						changeTheLaw(A,B,mob,theLaw,"BANNED"+(newBits.length+1),"");
 						if(newValue!=null)
 							mob.tell("Changed.");
 						else

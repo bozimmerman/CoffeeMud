@@ -134,12 +134,6 @@ public final class IMC2Driver extends Thread {
 		}
     }
 	
-    final public void ev_keepalive(Object param)
-    {
-        imc_send_isalive("*@*");
-        imc_register_call_out(150, "ev_keepalive", null);
-    }
-
     public void ev_request_keepalive(Object param)
     {
         imc_request_keepalive();
@@ -1297,7 +1291,7 @@ public final class IMC2Driver extends Thread {
         }
 
         d.name = imc_playerof(d.name);
-		tracef(8, "Message sent to " + d.name+", "+p.type+", "+Util.toStringList(p.value));
+		tracef(8, "Received message was sent to " + d.name+", "+p.type+", "+Util.toStringList(p.value));
 
         if (p.type.equals("who")) {
             tracef(8, "Who request received from " + p.i.from);
@@ -1475,6 +1469,16 @@ public final class IMC2Driver extends Thread {
         imc_initdata(out);
         out.type = "is-alive";
         out.from = "*";
+        if(reqFrom.endsWith("*"))
+        {
+            Log.errOut("IMC2 SPAM DETECTED: "+reqFrom+"!");
+            try
+            {
+                int x=5/0;
+                System.out.println(x);
+            }
+            catch(Exception e){ Log.errOut("IMC2",e);}
+        }
         out.to = reqFrom;
         imc_addkey(out, "versionid", IMC_VERSIONID);
         imc_addkey(out, "networkname", this_imcmud.network);

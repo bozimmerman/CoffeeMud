@@ -99,6 +99,8 @@ public class Arrest extends StdBehavior
 
 		private Vector otherCrimes=new Vector();
 		private Vector otherBits=new Vector();
+		private Vector bannedSubstances=new Vector();
+		private Vector bannedBits=new Vector();
 		private Hashtable abilityCrimes=new Hashtable();
 		private Hashtable basicCrimes=new Hashtable();
 		private Hashtable taxLaws=new Hashtable();
@@ -139,6 +141,8 @@ public class Arrest extends StdBehavior
 
 		public Vector otherCrimes()	{ return otherCrimes;}
 		public Vector otherBits() { return otherBits;}
+		public Vector bannedSubstances() { return bannedSubstances;}
+		public Vector bannedBits() { return bannedBits;}
 		public Hashtable abilityCrimes(){ return abilityCrimes;}
 		public Hashtable basicCrimes(){ return basicCrimes;}
 		public Hashtable taxLaws(){return taxLaws;}
@@ -519,6 +523,8 @@ public class Arrest extends StdBehavior
 			abilityCrimes.clear();
 			otherCrimes.clear();
 			otherBits.clear();
+			bannedSubstances.clear();
+			bannedBits.clear();
 			for(Enumeration e=laws.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
@@ -537,6 +543,19 @@ public class Arrest extends StdBehavior
 							else
 								bits[i]="";
 						otherBits.addElement(bits);
+					}
+					else
+					if(key.startsWith("BANNED"))
+					{
+						bannedSubstances.addElement(Util.parse(words.substring(0,x)));
+						String[] bits=new String[Law.BIT_NUMBITS];
+						Vector parsed=Util.parseSemicolons(words.substring(x+1),false);
+						for(int i=0;i<Law.BIT_NUMBITS;i++)
+							if(i<parsed.size())
+								bits[i]=(String)parsed.elementAt(i);
+							else
+								bits[i]="";
+						bannedBits.addElement(bits);
 					}
 					else
 					if((key.startsWith("$")&&(CMClass.getAbility(key.substring(1))!=null))
@@ -2138,6 +2157,34 @@ public class Arrest extends StdBehavior
 		if((msg.othersCode()!=CMMsg.NO_EFFECT)
 		   &&(msg.othersMessage()!=null))
 		{
+		    if((msg.targetMinor()==CMMsg.TYP_GET)
+		    &&(msg.target() instanceof Item)
+		    &&(laws.bannedSubstances().size()>0))
+		    {
+		        String rsc=EnvResource.RESOURCE_DESCS[((Item)msg.target()).material()&EnvResource.RESOURCE_MASK].toUpperCase();
+				for(int i=0;i<laws.bannedSubstances().size();i++)
+				{
+					Vector V=(Vector)laws.bannedSubstances().elementAt(i);
+					for(int v=0;v<V.size();v++)
+					{
+						if((EnglishParser.containsString(msg.target().name(),(String)V.elementAt(v)))
+						||rsc.equalsIgnoreCase((String)V.elementAt(v)))
+						{
+							String[] info=(String[])laws.bannedBits().elementAt(i);
+							fillOutWarrant(msg.source(),
+											laws,
+											myArea,
+											msg.target(),
+											info[Law.BIT_CRIMELOCS],
+											info[Law.BIT_CRIMEFLAGS],
+											info[Law.BIT_CRIMENAME],
+											info[Law.BIT_SENTENCE],
+											info[Law.BIT_WARNMSG]);
+						}
+					}
+				}
+		        
+		    }
 			if(msg.sourceMinor()==CMMsg.TYP_ENTER)
 			{
 				if((laws.basicCrimes().containsKey("NUDITY"))

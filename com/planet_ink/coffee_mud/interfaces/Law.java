@@ -169,6 +169,8 @@ public interface Law
 		public void changeStates(LegalWarrant W, int state);
 		public Vector otherCrimes();
 		public Vector otherBits();
+		public Vector bannedSubstances();
+		public Vector bannedBits();
 		public Hashtable abilityCrimes();
 		public Hashtable basicCrimes();
 		public Hashtable taxLaws();

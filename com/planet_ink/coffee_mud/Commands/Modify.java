@@ -389,6 +389,7 @@ public class Modify extends BaseGenerics
 				genAuthor(mob,myArea,++showNumber,showFlag);
 				genTechLevel(mob,myArea,++showNumber,showFlag);
 				genClimateType(mob,myArea,++showNumber,showFlag);
+				genTimeClock(mob,myArea,++showNumber,showFlag);
 				genArchivePath(mob,myArea,++showNumber,showFlag);
                 genParentAreas(mob,myArea,++showNumber,showFlag);
                 genChildAreas(mob,myArea,++showNumber,showFlag);
