@@ -157,6 +157,9 @@ public class Weaving extends CommonSkill
 			commonTell(mob,buf.toString());
 			return true;
 		}
+		if(str.equalsIgnoreCase("scan"))
+			return publicScan(mob,commands);
+		else
 		if(str.equalsIgnoreCase("mend"))
 		{
 			building=null;
