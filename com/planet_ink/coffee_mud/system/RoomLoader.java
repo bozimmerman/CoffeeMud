@@ -7,9 +7,25 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class RoomLoader
 {
-	public static void DBRead(Vector h)
+	public static void DBRead(Vector areas, Vector h)
 	{
 		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMAREA");
+			while(R.next())
+			{
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("Area",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+			return;
+		}
+		
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -24,7 +40,15 @@ public class RoomLoader
 				else
 				{
 					newRoom.setID(roomID);
-					newRoom.setAreaID(DBConnections.getRes(R,"CMAREA"));
+					String areaName=DBConnections.getRes(R,"CMAREA");
+					Area myArea=CMMap.getArea(areaName);
+					if(myArea==null)
+					{
+						myArea=(Area)CMClass.getAreaType("StdArea").copyOf();
+						myArea.setName(areaName);
+						CMMap.AREAS.addElement(myArea);
+					}
+					newRoom.setArea(myArea);
 					newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
 					newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
 					newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
@@ -373,7 +397,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			String str="UPDATE CMROOM SET "
-					+"CMAREA='"+room.getAreaID()+"',"
+					+"CMAREA='"+room.getArea().name()+"',"
 					+"CMDESC1='"+room.displayText()+" ',"
 					+"CMDESC2='"+room.description()+" ',"
 					+"CMROTX='"+room.text()+" '"
@@ -399,7 +423,7 @@ public class RoomLoader
 			D=DBConnector.DBFetch();
 			D.update("UPDATE CMROOM SET "
 					+"CMROID='"+room.ID()+"', "
-					+"CMAREA='"+room.getAreaID()+"' "
+					+"CMAREA='"+room.getArea().name()+"' "
 					+"WHERE CMROID='"+oldID+"'");
 			DBConnector.DBDone(D);
 
@@ -449,7 +473,7 @@ public class RoomLoader
 			+") values ("
 			+"'"+room.ID()+"',"
 			+"'"+LocaleID+"',"
-			+"'"+room.getAreaID()+"',"
+			+"'"+room.getArea().name()+"',"
 			+"'"+room.displayText()+" ',"
 			+"'"+room.description()+" ',"
 			+"'"+room.text()+" ')";

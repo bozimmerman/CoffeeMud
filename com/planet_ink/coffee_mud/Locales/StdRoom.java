@@ -10,11 +10,11 @@ public class StdRoom
 {
 	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	protected String name="room";
-	protected String myAreaID="StdArea";
 	protected String displayText="Standard Room";
 	protected String miscText="";
 	protected String description="";
 	private String objectID=myID;
+	protected Area myArea=null;
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
@@ -116,17 +116,17 @@ public class StdRoom
 		if(newMiscText.trim().length()>0)
 			Generic.setPropertiesStr(this,newMiscText,true);
 	}
-	public String getAreaID()
+	public Area getArea()
 	{
-		return myAreaID;
+		return myArea;
 	}
 	public void setID(String newID)
 	{
 		myID=newID;
 	}
-	public void setAreaID(String newArea)
+	public void setArea(Area newArea)
 	{
-		myAreaID=newArea;
+		myArea=newArea;
 	}
 
 	protected void giveASky(Room room)
@@ -140,7 +140,7 @@ public class StdRoom
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway").newInstance();
 			EndlessSky sky=new EndlessSky();
-			sky.setAreaID(room.getAreaID());
+			sky.setArea(room.getArea());
 			sky.setID("");
 			room.doors()[Directions.UP]=sky;
 			room.exits()[Directions.UP]=o;
@@ -152,6 +152,9 @@ public class StdRoom
 
 	public boolean okAffect(Affect affect)
 	{
+		if(!getArea().okAffect(affect))
+			return false;
+		
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -173,7 +176,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
+						if((otherRoom!=null)&&(otherRoom.getArea().name().equals(getArea().name())))
 						   if(!otherRoom.okAffect(affect)) return false;
 					}
 				}
@@ -228,6 +231,9 @@ public class StdRoom
 
 	public void affect(Affect affect)
 	{
+		
+		getArea().affect(affect);
+		
 		if(affect.amITarget(this))
 		{
 			MOB mob=(MOB)affect.source();
@@ -263,7 +269,7 @@ public class StdRoom
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getAreaID().equals(getAreaID())))
+						if((otherRoom!=null)&&(otherRoom.getArea().name().equals(getArea().name())))
 						   otherRoom.affect(affect);
 					}
 				}
@@ -300,6 +306,7 @@ public class StdRoom
 			if(A!=null)
 				A.affect(affect);
 		}
+		
 	}
 
 	public void startItemRejuv()
@@ -360,6 +367,7 @@ public class StdRoom
 	public void recoverEnvStats()
 	{
 		envStats=baseEnvStats.cloneStats();
+		getArea().affectEnvStats(this,envStats());
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability affect=fetchAffect(a);
@@ -407,6 +415,7 @@ public class StdRoom
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
+		getArea().affectEnvStats(affected,affectableStats);
 		if(envStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition();
@@ -418,16 +427,20 @@ public class StdRoom
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{}//rooms will never be asked this, so this method should always do NOTHING
+	{
+		getArea().affectCharStats(affectedMob,affectableStats);
+	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{}//rooms will never be asked this, so this method should always do NOTHING
+	{
+		getArea().affectCharState(affectedMob,affectableMaxState);
+	}
 
 	public void look(MOB mob)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if(mob.readSysopMsgs())
 		{
-			Say.append("^BArea  :^N("+myAreaID+")"+"\n\r");
+			Say.append("^BArea  :^N("+myArea.name()+")"+"\n\r");
 			Say.append("^BLocale:^N("+CMClass.className(this)+")"+"\n\r");
 			Say.append("^H("+ID()+")^N ");
 		}

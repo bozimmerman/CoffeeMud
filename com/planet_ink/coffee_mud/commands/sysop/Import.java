@@ -87,7 +87,7 @@ public class Import
 		}
 		R2=(Room)R2.newInstance();
 		R2.setID(R.ID());
-		R2.setAreaID(R.getAreaID());
+		R2.setArea(R.getArea());
 		R2.setDescription(R.description());
 		R2.setDisplayText(R.displayText());
 		R2.setName(R.name());
@@ -2242,7 +2242,7 @@ public class Import
 			for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 			{
 				Room r=(Room)e.nextElement();
-				if(r.getAreaID().equalsIgnoreCase(areaName))
+				if(r.getArea().name().equalsIgnoreCase(areaName))
 				{
 					exists=true;
 					break;
@@ -2253,7 +2253,7 @@ public class Import
 				if((!prompt)
 				||(mob.session().confirm("Area: \""+areaName+"\" exists, obliterate first?","N")))
 				{
-					if(mob.location().getAreaID().equalsIgnoreCase(areaName))
+					if(mob.location().getArea().name().equalsIgnoreCase(areaName))
 					{
 						mob.tell("You dip!  You are IN that area!  Leave it first...");
 						return;
@@ -2264,11 +2264,11 @@ public class Import
 						for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 						{
 							Room r=(Room)e.nextElement();
-							if(!r.getAreaID().equalsIgnoreCase(areaName))
+							if(!r.getArea().name().equalsIgnoreCase(areaName))
 								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								{
 									Room dirR=r.doors()[d];
-									if((dirR!=null)&&(dirR.getAreaID().equalsIgnoreCase(areaName)))
+									if((dirR!=null)&&(dirR.getArea().name().equalsIgnoreCase(areaName)))
 										reLinkTable.addElement(r.ID()+"/"+d+"/"+dirR.ID());
 								}
 						}
@@ -2278,7 +2278,7 @@ public class Import
 							for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 							{
 								Room r=(Room)e.nextElement();
-								if(r.getAreaID().equalsIgnoreCase(areaName))
+								if(r.getArea().name().equalsIgnoreCase(areaName))
 								{
 									foundOne=r;
 									break;
@@ -2321,11 +2321,21 @@ public class Import
 				else
 					continue;
 
+				Area A=CMMap.getArea(areaName);
+				if(A==null)
+				{
+					Resources.removeResource("areasList");
+					A=(Area)CMClass.getAreaType("StdArea").copyOf();
+					A.setName(areaName);
+					CMMap.AREAS.addElement(A);
+// *** BLAH CREATE THE DAMN AREA HERE!!!
+				}
+				
 				Room R=CMClass.getLocale("StdRoom");
 				R.setID(eatNextLine(roomV));
 				R.setDisplayText(Util.safetyFilter(eatLineSquiggle(roomV)));
 				R.setDescription(Util.safetyFilter(eatLineSquiggle(roomV)));
-				R.setAreaID(areaName);
+				R.setArea(A);
 				String codeLine=eatNextLine(roomV);
 				if((!R.ID().startsWith("#"))
 				||(R.displayText().length()==0)

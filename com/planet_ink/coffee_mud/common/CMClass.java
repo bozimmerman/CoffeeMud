@@ -18,6 +18,7 @@ public class CMClass
 	public static Vector weapons=new Vector();
 	public static Vector armor=new Vector();
 	public static Vector miscMagic=new Vector();
+	public static Vector areaTypes=new Vector();
 
 	public static Item getItem(String calledThis)
 	{
@@ -140,6 +141,13 @@ public class CMClass
 			Log.sysOut("CMClass","Unknown Locale '"+calledThis+"'.");
 		return thisItem;
 	}
+	public static Area getAreaType(String calledThis)
+	{
+		Area thisItem= (Area)getEnv(areaTypes,calledThis);
+		if((thisItem==null)&&(areaTypes.size()>0)&&(calledThis.length()>0))
+			Log.sysOut("CMClass","Unknown Area '"+calledThis+"'.");
+		return thisItem;
+	}
 	public static Exit getExit(String calledThis)
 	{
 		Exit thisItem= (Exit)getEnv(exits,calledThis);
@@ -221,6 +229,10 @@ public class CMClass
 		exits=loadVectorListToObj(prefix+"Exits"+File.separatorChar);
 		Log.sysOut("MUD","Exit Types loaded : "+exits.size());
 		if(exits.size()==0) return false;
+
+		areaTypes=loadVectorListToObj(prefix+"Areas"+File.separatorChar);
+		Log.sysOut("MUD","Area Types loaded : "+areaTypes.size());
+		if(areaTypes.size()==0) return false;
 
 		locales=loadVectorListToObj(prefix+"Locales"+File.separatorChar);
 		Log.sysOut("MUD","Locales loaded    : "+locales.size());
@@ -307,6 +319,7 @@ public class CMClass
 		weapons=new Vector();
 		armor=new Vector();
 		miscMagic=new Vector();
+		areaTypes=new Vector();
 	}
 
 	public static Hashtable loadHashListToObj(String filePath)

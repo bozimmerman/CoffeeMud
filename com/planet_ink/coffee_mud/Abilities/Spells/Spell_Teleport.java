@@ -43,7 +43,7 @@ public class Spell_Teleport extends Spell
 		for(int m=0;m<CMMap.map.size();m++)
 		{
 			Room room=(Room)CMMap.map.elementAt(m);
-			if(room.getAreaID().toUpperCase().startsWith(areaName))
+			if(room.getArea().name().toUpperCase().startsWith(areaName))
 				numRooms++;
 		}
 
@@ -61,7 +61,7 @@ public class Spell_Teleport extends Spell
 			for(int m=0;m<CMMap.map.size();m++)
 			{
 				Room room=(Room)CMMap.map.elementAt(m);
-				if(room.getAreaID().toUpperCase().startsWith(areaName))
+				if(room.getArea().name().toUpperCase().startsWith(areaName))
 				{
 					if(roomNum==0)
 					{

@@ -54,7 +54,7 @@ public class Lister
 			}
 			if((likeRoom!=null)&&(thisThang instanceof Room))
 			{
-				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getAreaID().equals(likeRoom.getAreaID())))
+				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
 				   ok=false;
 			}
 			if(ok)
@@ -90,7 +90,7 @@ public class Lister
 			}
 			if(likeRoom!=null)
 			{
-				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getAreaID().equals(likeRoom.getAreaID())))
+				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
 				   ok=false;
 			}
 			if(ok)
@@ -115,7 +115,7 @@ public class Lister
 		{
 			Room thisThang=(Room)these.elementAt(m);
 			String thisOne=(String)thisThang.ID();
-			if((thisOne.length()>0)&&(thisThang.getAreaID().equals(likeRoom.getAreaID())))
+			if((thisOne.length()>0)&&(thisThang.getArea().name().equals(likeRoom.getArea().name())))
 				lines.append(Util.padRight(thisOne,24)+": "+thisThang.displayText()+"\n\r");
 		}
 		lines.append("\n\r");

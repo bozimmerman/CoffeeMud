@@ -1,1 +1,6 @@
-paladins limited to GOOD cleric spells
+have the tick confirm someones victim -- fighting the wolf for all of zaras pets is bad.
+areas -- fix looping through areas
+area -- search for stdarea and fix all creations
+
+
+

@@ -87,8 +87,8 @@ public class Rooms
 		else
 		{
 			thisRoom=(Room)thisRoom.newInstance();
-			thisRoom.setAreaID(mob.location().getAreaID());
-			thisRoom.setID(getOpenRoomID(mob.location().getAreaID()));
+			thisRoom.setArea(mob.location().getArea());
+			thisRoom.setID(getOpenRoomID(mob.location().getArea().name()));
 			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.ID());
 			thisRoom.setDescription("");
 			ExternalPlay.DBCreate(thisRoom,Locale);
@@ -172,16 +172,20 @@ public class Rooms
 		if(command.equalsIgnoreCase("AREA"))
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
-
+			Area A=CMMap.getArea(restStr);
 			String checkID=getOpenRoomID(restStr);
-			if(checkID.endsWith("#0"))
+			if(A==null)
 			{
 				if(!mob.isMonster())
 				{
 					if(mob.session().confirm("\n\rThis command will create a BRAND NEW AREA\n\r with Area code '"+restStr+"'.  Are you SURE (y/N)?","N"))
 					{
+						
 						Resources.removeResource("areasList");
-						mob.location().setAreaID(restStr);
+						A=(Area)CMClass.getAreaType("StdArea").copyOf();
+						A.setName(restStr);
+						CMMap.AREAS.addElement(A);
+						mob.location().setArea(A);
 						CMMap.map.remove(mob.location());
 						String oldID=mob.location().ID();
 						mob.location().setID(checkID);
@@ -213,7 +217,7 @@ public class Rooms
 			}
 			else
 			{
-				mob.location().setAreaID(restStr);
+				mob.location().setArea(A);
 				ExternalPlay.DBUpdateRoom(mob.location());
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"This area twitches.\n\r");
 			}
@@ -406,7 +410,7 @@ public class Rooms
 		for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 		{
 			Room r=(Room)e.nextElement();
-			if(r.getAreaID().equalsIgnoreCase(areaName))
+			if(r.getArea().name().equalsIgnoreCase(areaName))
 			{
 				foundOne=r;
 				break;
@@ -423,7 +427,7 @@ public class Rooms
 		if(!confirmed);
 		if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
 		{
-			if(mob.location().getAreaID().equalsIgnoreCase(areaName))
+			if(mob.location().getArea().name().equalsIgnoreCase(areaName))
 			{
 				mob.tell("You dip!  You are IN that area!  Leave it first...");
 				mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
@@ -439,7 +443,7 @@ public class Rooms
 			for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
 			{
 				Room r=(Room)e.nextElement();
-				if(r.getAreaID().equalsIgnoreCase(areaName))
+				if(r.getArea().name().equalsIgnoreCase(areaName))
 				{
 					foundOne=r;
 					break;

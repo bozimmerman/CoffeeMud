@@ -69,7 +69,7 @@ public class Follower extends StdBehavior
 
 			if(otherRoom!=null)
 			{
-				if(!otherRoom.getAreaID().equals(thisRoom.getAreaID()))
+				if(!otherRoom.getArea().name().equals(thisRoom.getArea().name()))
 					direction=-1;
 			}
 			else

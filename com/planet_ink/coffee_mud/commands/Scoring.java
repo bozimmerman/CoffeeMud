@@ -367,10 +367,10 @@ public class Scoring
 			for(int m=0;m<CMMap.map.size();m++)
 			{
 				Room room=(Room)CMMap.map.elementAt(m);
-				if(areasHash.get(room.getAreaID())==null)
+				if(areasHash.get(room.getArea().name())==null)
 				{
-					areasHash.put(room.getAreaID(),room.getAreaID());
-					areasVec.addElement(room.getAreaID());
+					areasHash.put(room.getArea().name(),room.getArea().name());
+					areasVec.addElement(room.getArea().name());
 				}
 			}
 			Collections.sort((List)areasVec);

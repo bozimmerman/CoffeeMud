@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import java.util.*;
 public class CMMap
 {
+	public static Vector AREAS=new Vector();
 	public static Vector map=new Vector();
 	public static Hashtable MOBs=new Hashtable();
 
@@ -37,7 +38,19 @@ public class CMMap
 	public static void unLoad()
 	{
 		map=new Vector();
+		AREAS=new Vector();
 		MOBs=new Hashtable();
 		startRoom=null;
+	}
+	
+	public static Area getArea(String areaName)
+	{
+		for(int a=0;a<AREAS.size();a++)
+		{
+			Area A=(Area)AREAS.elementAt(a);
+			if(A.name().equalsIgnoreCase(areaName))
+				return A;
+		}
+		return null;
 	}
 }

@@ -1,5 +1,16 @@
 Add Area objects and Tables and Affect/Properties!
 
+Allow classes and directories to be assigned in the INI file in addition to the default path.
+
+From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file
+(A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and
+should be assignable to GENMOBS via a new tag.
+
+More WeaponTypes, with text file (Resource)? descriptions.  These should also be
+assignable to MOBs at build time, or to GENMOBs via a new tag.
+
+Add CoffeeMud area files!
+
 Buy command for standard mobs, to facilitate trades.
 
 0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where 
@@ -28,8 +39,6 @@ vassels, providing incentive to assist the vassel.
 
 Seperate commands to objects, like abilities.  This will provide the easy addition of custom commands.
 
-Allow classes and directories to be assigned in the INI file in addition to the default path.
-
 To make mouted riding possible, allow Environmentals to modify displayText.  Mounted animals
 will take half of all combat damage, will add to attack ability, and increase movement and will
 act as a container for the purposes of cargo.
@@ -52,16 +61,9 @@ Following thing would be automatic, if an Exit and Direction extensions are used
 If you are adventurous, put the Archon GenProperties modifiers into a method so that Generic object 
 properties can be more easily added without affecting the ONE class.
 
-Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard
-
-From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file
-(A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and
-should be assignable to GENMOBS via a new tag.
-
-More WeaponTypes, with text file (Resource)? descriptions.  These should also be
-assignable to MOBs at build time, or to GENMOBs via a new tag.
-
 PlayerKill flag
+
+Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard
 
 SubClasses: 
 Wild Mage: 50% chance similar (diff) spell is cast (higher level, perhaps)

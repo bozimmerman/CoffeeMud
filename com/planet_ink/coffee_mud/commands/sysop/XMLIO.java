@@ -57,10 +57,10 @@ public class XMLIO
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room R=(Room)CMMap.map.elementAt(m);
-						if(h.get(R.getAreaID())==null)
+						if(h.get(R.getArea().name())==null)
 						{
-							roomXML.append(R.getAreaID()+";");
-							h.put(R.getAreaID(),R.getAreaID());
+							roomXML.append(R.getArea().name()+";");
+							h.put(R.getArea().name(),R.getArea().name());
 						}
 					}
 				}
@@ -147,7 +147,7 @@ public class XMLIO
 					for(int m=0;m<CMMap.map.size();m++)
 					{
 						Room R=(Room)CMMap.map.elementAt(m);
-						if((R.ID().length()>0)&&(R.getAreaID().equalsIgnoreCase(newList)))
+						if((R.ID().length()>0)&&(R.getArea().name().equalsIgnoreCase(newList)))
 							roomXML.append(R.ID()+";");
 					}
 				}
@@ -488,7 +488,7 @@ public class XMLIO
 			roomXML.append("<ROOM>");
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMID",room.ID()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMCLASS",CMClass.className(room)));
-			roomXML.append(XMLManager.convertXMLtoTag("ROOMAREA",room.getAreaID()));
+			roomXML.append(XMLManager.convertXMLtoTag("ROOMAREA",room.getArea().name()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMDISPLAYTEXT",room.displayText()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMDESCRIPTION",room.description()));
 			roomXML.append(XMLManager.convertXMLtoTag("ROOMTEXT",room.text()));
@@ -527,10 +527,20 @@ public class XMLIO
 			if(roomBlock.length()<10) return;
 			String newID=XMLManager.returnXMLValue(roomBlock,"ROOMID");
 			String newRoomClass=XMLManager.returnXMLValue(roomBlock,"ROOMCLASS");
-			String newArea=XMLManager.returnXMLValue(roomBlock,"ROOMAREA");
+			String newAreaStr=XMLManager.returnXMLValue(roomBlock,"ROOMAREA");
 			String newDisplay=XMLManager.returnXMLValue(roomBlock,"ROOMDISPLAYTEXT");
 			String newDescription=XMLManager.returnXMLValue(roomBlock,"ROOMDESCRIPTION");
 
+			Area newArea=CMMap.getArea(newAreaStr);
+			if(newArea==null)
+			{
+				Resources.removeResource("areasList");
+				newArea=(Area)CMClass.getAreaType("StdArea").copyOf();
+				newArea.setName(newAreaStr);
+				CMMap.AREAS.addElement(newArea);
+// *** BLAH BLAH fix area creation				
+			}
+			
 			boolean isNewRoom=false;
 			if(newID.equalsIgnoreCase("NEW"))
 			{
@@ -538,8 +548,8 @@ public class XMLIO
 				if(newRoom==null) return;
 				isNewRoom=true;
 				room=(Room)newRoom.newInstance();
-				room.setID(myRooms.getOpenRoomID(newArea));
-				room.setAreaID(newArea);
+				room.setID(myRooms.getOpenRoomID(newArea.name()));
+				room.setArea(newArea);
 				newID=room.ID();
 				ExternalPlay.DBCreate(room,newRoomClass);
 				CMMap.map.addElement(room);
@@ -568,7 +578,7 @@ public class XMLIO
 			room.setID(newID);
 			room.setDisplayText(newDisplay);
 			room.setDescription(newDescription);
-			room.setAreaID(newArea);
+			room.setArea(newArea);
 
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{

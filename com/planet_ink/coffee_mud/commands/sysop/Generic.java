@@ -72,7 +72,7 @@ public class Generic
 					}
 				}
 				newRoom.setID(R.ID());
-				newRoom.setAreaID(R.getAreaID());
+				newRoom.setArea(R.getArea());
 				newRoom.setDisplayText(R.displayText());
 				newRoom.setDescription(R.description());
 				for(int r=0;r<CMMap.map.size();r++)

@@ -89,7 +89,7 @@ public class Scriptable extends ActiveTicker
 			||(r.ID().endsWith("#"+thisName))
 			||(r.fetchFromRoomFavorMOBs(null,thisName)!=null))
 			{
-				if((imHere!=null)&&(imHere.getAreaID().equals(r.getAreaID())))
+				if((imHere!=null)&&(imHere.getArea().name().equals(r.getArea().name())))
 					inAreaRoom=r;
 				else
 					room=r;
@@ -114,7 +114,7 @@ public class Scriptable extends ActiveTicker
 				E=r.fetchItem(null,thisName);
 			if(E!=null)
 			{
-				if((imHere!=null)&&(imHere.getAreaID().equals(r.getAreaID())))
+				if((imHere!=null)&&(imHere.getArea().name().equals(r.getArea().name())))
 					areaThing=E;
 				else
 					thing=E;

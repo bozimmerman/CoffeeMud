@@ -55,7 +55,7 @@ public class Mobile extends ActiveTicker
 						}
 					}
 
-					if((!otherRoom.getAreaID().equals(thisRoom.getAreaID()))&&(this.getParms().toUpperCase().indexOf("WANDER")<0))
+					if((!otherRoom.getArea().name().equals(thisRoom.getArea().name()))&&(this.getParms().toUpperCase().indexOf("WANDER")<0))
 						direction=-1;
 					else
 						break;
