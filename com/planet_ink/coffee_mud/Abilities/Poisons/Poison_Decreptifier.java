@@ -13,7 +13,7 @@ public class Poison_Decreptifier extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Decreptifier();}
 	
-	protected int POISON_TICKS(){return 20;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 25;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 5;}
 	protected String POISON_DONE(){return "The poison runs its course.";}
 	protected String POISON_START(){return "^G<S-NAME> seem(s) weakened!^?";}

@@ -13,7 +13,7 @@ public class Poison_Bloodboil extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Bloodboil();}
 	
-	protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 20;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 2;}
 	protected String POISON_DONE(){return "Your blood stops burning.";}
 	protected String POISON_START(){return "^R<S-NAME> turn(s) red.^?";}

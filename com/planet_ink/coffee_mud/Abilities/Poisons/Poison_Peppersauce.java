@@ -13,7 +13,7 @@ public class Poison_Peppersauce extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Peppersauce();}
 	
-	protected int POISON_TICKS(){return 5;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "Your eyes clear up.";}
 	protected String POISON_START(){return "^G<S-NAME> go(es) blind!^?";}
