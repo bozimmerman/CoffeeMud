@@ -318,8 +318,6 @@ public class TelnetSession extends Thread implements Session
 	
 	public final String makeEscape(int c)
 	{
-		String s = null;
-		
 		if (termID == 1 && c != -1)
 		{
 			if(clookup==null)

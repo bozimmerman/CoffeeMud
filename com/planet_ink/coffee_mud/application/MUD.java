@@ -15,8 +15,6 @@ public class MUD extends Thread implements Host
 	public INI page=null;
 	public boolean keepDown=true;
 	public String execExternalCommand=null;
-	public Socket sock=null;
-	public ServerSocket servsock=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)1.2;
 	public static final float HOST_VERSION_MINOR=(float)5.0;
@@ -97,7 +95,7 @@ public class MUD extends Thread implements Host
 		}
 		
 		Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
-		
+		System.out.println();
 		Log.sysOut("MUD","CoffeeMud v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR);
 		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
@@ -183,6 +181,8 @@ public class MUD extends Thread implements Host
 	public void run()
 	{
 		int q_len = 6;
+		Socket sock=null;
+		ServerSocket servsock=null;
 
 
 		if (!isOK)	return;
@@ -228,6 +228,17 @@ public class MUD extends Thread implements Host
 			if((t!=null)&&(t instanceof Exception))
 				Log.errOut("MUD",((Exception)t));
 			Log.sysOut("MUD","CoffeeMud Server thread stopped!.");
+		}
+		
+		try
+		{
+			if(servsock!=null)
+				servsock.close();
+			if(sock!=null)
+				sock.close();
+		}
+		catch(IOException e)
+		{
 		}
 	}
 
@@ -293,16 +304,6 @@ public class MUD extends Thread implements Host
 
 		this.keepDown=keepItDown;
 		this.execExternalCommand=externalCommand;
-		try
-		{
-			if(this.servsock!=null)
-				this.servsock.close();
-			if(this.sock!=null)
-				this.sock.close();
-		}
-		catch(IOException e)
-		{
-		}
 		offlineReason=new String("Shutdown: you are the special lucky chosen one!");
 		this.interrupt();
 	}
