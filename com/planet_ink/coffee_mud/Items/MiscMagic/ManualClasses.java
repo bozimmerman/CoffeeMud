@@ -44,7 +44,7 @@ public class ManualClasses extends StdItem implements MiscMagic
 						else
 						{
 							this.setUsesRemaining(this.usesRemaining()-1);
-							mob.tell("The manual glows softly, enveloping you in it's wisdom.");
+							mob.tell("The manual glows softly, enveloping you in its wisdom.");
 							CharClass lastC=null;
 							CharClass thisC=null;
 							for(int c=0;c<CMClass.charClasses.size();c++)

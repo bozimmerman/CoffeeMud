@@ -17,18 +17,62 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 	public Socket sock=null;
 	public ServerSocket servsock=null;
+
+	public static final float HOST_VERSION_MAJOR=(float)1.2;
+	public static final float HOST_VERSION_MINOR=(float)5.0;
 	
+	private boolean acceptConnections=false;
+	private String offlineReason=new String("UNKNOWN");
+	public boolean isOK = false;
+	
+	public MUD()
+	{
+		super("MUD-host");
+
+		isOK = false;
+		
+		if (!loadPropPage())
+		{
+			Log.errOut("MUD","ERROR: Unable to read ini file.");
+			offlineReason=new String("A terminal error has occured!");
+		}
+		else
+		{
+			isOK = true;
+			offlineReason=new String("Booting");
+		}
+		acceptConnections = false;
+	}	
+	
+	private boolean loadPropPage()
+	{
+		if (page==null || !page.loaded)
+		{
+			page=new INI("coffeemud.ini");
+			if(!page.loaded)
+				return false;
+		}
+		return true;
+	}
+
 	public void fatalStartupError(int type)
 	{
 		String str=null;
 		switch(type)
 		{
 		case 1:
-			str="Unable to read ini file. Exiting.";
+			str="ERROR: initHost() will not run without properties. Exiting.";
 			break;
 		case 2:
 			str="Map is empty?! Exiting.";
 			break;
+		case 3:
+			str="Database init failed. Exiting.";
+			break;
+		case 4:
+			str="Fatal exception. Exiting.";
+			break;
+			//...
 		default:
 			str="Fatal error loading classes.  Make sure you start up coffeemud from the directory containing the class files.";
 			break;
@@ -37,21 +81,31 @@ public class MUD extends Thread implements Host
 		this.interrupt();
 	}
 	
-	public void run()
+
+	private boolean initHost()
 	{
-		int q_len = 6;
+		if (!isOK)
+		{
+			this.interrupt();
+			return false;
+		}
 
-		page=new INI("coffeemud.ini");
-		if(!page.loaded)
+		if ((page == null) || (!page.loaded))
+		{
 			fatalStartupError(1);
+			return false;
+		}
+		
 		Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
-		DBConnector.DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
-		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
-
-		Log.sysOut("MUD","CoffeeMud v1.2");
+		
+		Log.sysOut("MUD","CoffeeMud v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR);
 		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		Log.sysOut("MUD","Starting...\n\r");
+		
+		DBConnector.DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
+		offlineReason=new String("Booting: connecting to database");
+		DBConnector.connect(page.getStr("DBCLASS"),page.getStr("DBSERVICE"),page.getStr("DBUSER"),page.getStr("DBPASS"),page.getInt("DBCONNECTIONS"),true);
 		String DBerrors=DBConnector.errorStatus().toString();
 		if(DBerrors.length()==0)
 			Log.sysOut("MUD","Database connection successful.");
@@ -59,6 +113,8 @@ public class MUD extends Thread implements Host
 		{
 			Log.errOut("MUD","Fatal database error: "+DBerrors);
 			System.exit(-1);
+			//fatalStartupError(3);
+			//return false;
 		}
 		if(DBConnector.DBConfirmDeletions)
 			Log.sysOut("MUD","DB Deletions will be confirmed.");
@@ -67,7 +123,10 @@ public class MUD extends Thread implements Host
 		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems());
 
 		if(!CMClass.loadClasses())
+		{
 			fatalStartupError(0);
+			return false;
+		}
 
 		int numChannelsLoaded=commandProcessor.channels.loadChannels(page.getStr("CHANNELS"),commandProcessor.commandSet);
 		commandProcessor.myHost=this;
@@ -75,10 +134,12 @@ public class MUD extends Thread implements Host
 
 		commandProcessor.socials.load("resources"+File.separatorChar+"socials.txt");
 		if(!commandProcessor.socials.loaded)
-			Log.errOut("MUD","Unable to load socials from socials.txt!");
+			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
 		else
 			Log.sysOut("MUD","Socials loaded    : "+commandProcessor.socials.num());
 
+		Log.sysOut("MUD","Loading map...");
+		offlineReason=new String("Booting: loading rooms (this can take a while).");
 		RoomLoader.DBRead(CMMap.map);
 		Log.sysOut("MUD","Mapped rooms      : "+CMMap.map.size());
 		if(CMMap.map.size()==0)
@@ -94,81 +155,91 @@ public class MUD extends Thread implements Host
 			CMMap.map.addElement(room);
 		}
 
-		CMMap.setStartRoom(page.getStr("START"));
-
-		commandProcessor.commandSet.loadAbilities(CMClass.abilities);
-
+		offlineReason=new String("Booting: readying for connections.");
 		try
 		{
-			servsock=new ServerSocket(page.getInt("PORT"), q_len);
+			CMMap.setStartRoom(page.getStr("START"));
+
+			commandProcessor.commandSet.loadAbilities(CMClass.abilities);
 
 			saveThread=new SaveThread();
 			saveThread.start();
 			Log.sysOut("MUD","Save thread started");
+		}
+		catch (Throwable t)
+		{
+			Log.sysOut("MUD","CoffeeMud Server initHost() failed");
+			fatalStartupError(4);
+			return false;
+		}
+
+		acceptConnections = true;
+		Log.sysOut("MUD","Initialization complete. Port: "+page.getInt("PORT"));
+		offlineReason=new String("UNKNOWN");
+		return true;
+	}
+	
+	
+	public void run()
+	{
+		int q_len = 6;
 
 
-			Log.sysOut("MUD","Now listening on port "+page.getInt("PORT")+".");
-			
+		if (!isOK)	return;
+		if ((page == null) || (!page.loaded))
+		{
+			Log.errOut("MUD","ERROR: Host thread will not run with no properties.");
+			return;
+		}
+		
+		try
+		{
+			servsock=new ServerSocket(page.getInt("PORT"), q_len);
+
 			while(true)
 			{
 				sock=servsock.accept();
-				Log.sysOut("MUD","Got a connection.");
-				PrintWriter out=new PrintWriter(sock.getOutputStream());
-				StringBuffer introText=Resources.getFileResource("intro.txt");
-				if(introText!=null)
-					out.println(introText.toString());
-				BufferedReader in=new BufferedReader(new InputStreamReader(sock.getInputStream()));
-				TelnetSession S=new TelnetSession(sock,in,out);
-				S.start();
-				Sessions.addElement(S);
+				
+				if (acceptConnections)
+				{
+					Log.sysOut("MUD","Got a connection.");
+					StringBuffer introText=Resources.getFileResource("intro.txt");
+					TelnetSession S=new TelnetSession(sock,
+						introText != null ? introText.toString() : null);
+					S.start();
+					Sessions.addElement(S);
+				}
+				else
+				{
+					Log.sysOut("MUD","Rejecting a connection.");
+					StringBuffer rejectText=Resources.getFileResource("offline.txt");
+					PrintWriter out = new PrintWriter(sock.getOutputStream());
+					out.println("\n\rOFFLINE: " + offlineReason+"\n\r");
+					out.flush();
+					out.println(rejectText);
+					out.flush();
+					out.close();
+					sock = null;
+				}
 			}
 		}
 		catch(Throwable t)
 		{
+			if((t!=null)&&(t instanceof Exception))
+				Log.errOut("MUD",((Exception)t));
 			Log.sysOut("MUD","CoffeeMud Server thread stopped!.");
 		}
 	}
 
-	public static void main(String a[]) throws IOException
-	{
-		Log.startLogFiles();
-		
-		try
-		{
-			while(true)
-			{
-				MUD mud=new MUD();
-				mud.start();
-				mud.join();
-				System.gc();
-				System.runFinalization();
-				boolean keepDown=mud.keepDown;
-				String external=mud.execExternalCommand;
-				mud=null;
-				System.gc();
-				System.runFinalization();
-				if(Thread.activeCount()>1)
-					Log.sysOut(Thread.activeCount()+" thread(s) still active.");
-				if(keepDown)
-					break;
-				if(external!=null)
-				{
-					//Runtime r=Runtime.getRuntime();
-					//Process p=r.exec(external);
-					Log.sysOut("Attempted to execute '"+external+"'.");
-					break;
-				}
-			}
-		}
-		catch(InterruptedException e)
-		{
-			Log.errOut("MUD",e);
-		}
-	}
-	
+
 	public void shutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		if(saveThread==null) return;
+
+		offlineReason=new String("Shutting down" + (keepItDown? "..." : " and restarting...") );
+		acceptConnections = false;
+		Log.sysOut("MUD","Host will now reject new connections.");
+		S.println("Host will now reject new connections.");
 
 		saveThread.shutdown();
 		saveThread.interrupt();
@@ -216,13 +287,12 @@ public class MUD extends Thread implements Host
 			S.println("Restarting...");
 		S.logoff();
 		try{Thread.sleep(500);}catch(Exception i){}
-		if(Sessions.size()>0)
-			Sessions.elementAt(0).logoff();
 		System.gc();
 		System.runFinalization();
 		try{Thread.sleep(500);}catch(Exception i){}
-		keepDown=keepItDown;
-		execExternalCommand=externalCommand;
+
+		this.keepDown=keepItDown;
+		this.execExternalCommand=externalCommand;
 		try
 		{
 			if(this.servsock!=null)
@@ -233,7 +303,61 @@ public class MUD extends Thread implements Host
 		catch(IOException e)
 		{
 		}
+		offlineReason=new String("Shutdown: you are the special lucky chosen one!");
 		this.interrupt();
 	}
 
+
+	public static void threadList(ThreadGroup tGroup)
+	{
+		int ac = tGroup.activeCount();
+		Thread tArray[] = new Thread [ac+1];
+		tGroup.enumerate(tArray);
+		for (int i = 0; i<ac; ++i)
+		{
+			if (tArray[i] != null && tArray[i].isAlive())
+				Log.sysOut("MUD", "-->Thread: "+tArray[i].getName() + "\n\r");
+		}
+	}
+	
+	public static void main(String a[]) throws IOException
+	{
+		Log.startLogFiles();
+		
+		try
+		{
+			while(true)
+			{
+				MUD mud=new MUD();
+				mud.start();
+				mud.initHost();
+				mud.join();
+				System.gc();
+				System.runFinalization();
+				boolean keepDown=mud.keepDown;
+				String external=mud.execExternalCommand;
+				mud=null;
+				System.gc();
+				System.runFinalization();
+				if(Thread.activeCount()>1)
+				{
+					Log.sysOut("MUD","WARNING: " + (Thread.activeCount()-1) +" other thread(s) are still active!");
+					threadList(Thread.currentThread().getThreadGroup());
+				}
+				if(keepDown)
+					break;
+				if(external!=null)
+				{
+					//Runtime r=Runtime.getRuntime();
+					//Process p=r.exec(external);
+					Log.sysOut("Attempted to execute '"+external+"'.");
+					break;
+				}
+			}
+		}
+		catch(InterruptedException e)
+		{
+			Log.errOut("MUD",e);
+		}
+	}
 }

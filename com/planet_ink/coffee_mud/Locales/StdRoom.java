@@ -401,14 +401,14 @@ public class StdRoom
 		StringBuffer Say=new StringBuffer("");
 		if(mob.readSysopMsgs())
 		{
-			Say.append("Area  :("+myAreaID+")"+"\n\r");
-			Say.append("Locale:("+CMClass.className(this)+")"+"\n\r");
-			Say.append("("+ID()+")");
+			Say.append("^BArea  :^N("+myAreaID+")"+"\n\r");
+			Say.append("^BLocale:^N("+CMClass.className(this)+")"+"\n\r");
+			Say.append("^H("+ID()+")^N ");
 		}
 		if((Sense.canBeSeenBy(this,mob))||(mob.readSysopMsgs()))
 		{
-			Say.append(displayText()+Sense.colorCodes(this,mob)+"\n\r");
-			Say.append(description()+"\n\r\n\r");
+			Say.append("^R" + displayText()+Sense.colorCodes(this,mob)+"^L\n\r");
+			Say.append("^L" + description()+"^N\n\r\n\r");
 		}
 		for(int c=0;c<contents.size();c++)
 		{
@@ -418,11 +418,14 @@ public class StdRoom
 				{
 					Say.append("     ");
 					if(mob.readSysopMsgs())
-						Say.append("("+CMClass.className(item)+") ");
+						Say.append("^H("+CMClass.className(item)+")^N ");
+
+					Say.append("^I");
 					if(item.displayText().length()>0)
-						Say.append(item.displayText()+Sense.colorCodes(item,mob)+"\n\r");
+						Say.append(item.displayText());
 					else
-						Say.append(item.name()+Sense.colorCodes(item,mob)+"\n\r");
+						Say.append(item.name());
+					Say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
 				}
 		}
 		for(int i=0;i<inhabitants.size();i++)
@@ -431,11 +434,14 @@ public class StdRoom
 			if((mob2!=mob)&&((Sense.canBeSeenBy(mob2,mob)))&&((mob2.displayText().length()>0)||(mob.readSysopMsgs())))
 			{
 				if(mob.readSysopMsgs())
-					Say.append("("+CMClass.className(mob2)+") ");
+					Say.append("^H("+CMClass.className(mob2)+")^N ");
+
+				Say.append("^M");
 				if(mob2.displayText().length()>0)
-					Say.append(mob2.displayText()+Sense.colorCodes(mob2,mob)+"\n\r");
+					Say.append(mob2.displayText());
 				else
-					Say.append(mob2.name()+Sense.colorCodes(mob2,mob)+"\n\r");
+					Say.append(mob2.name());
+				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
 			}
 		}
 		if(Say.length()==0)
@@ -506,7 +512,7 @@ public class StdRoom
 			if(exit!=null)
 				Say=exit.viewableText(mob, room);
 			if(Say.length()>0)
-				mob.tell(Util.padRight(Dir,5)+": "+Say);
+				mob.tell("^D" + Util.padRight(Dir,5)+":^N ^d"+Say+"^N");
 		}
 	}
 

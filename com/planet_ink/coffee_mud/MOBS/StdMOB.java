@@ -10,6 +10,8 @@ public class StdMOB implements MOB
 	protected Calendar LastDateTime=Calendar.getInstance();
 	protected int channelMask;
 
+	protected int termID = 0;	//0:plain, 1:ansi
+	
 	protected CharStats baseCharStats=new DefaultCharStats();
 	protected CharStats charStats=new DefaultCharStats();
 
@@ -69,7 +71,12 @@ public class StdMOB implements MOB
 	public void setPractices(int newVal){ Practices=newVal;}
 	public void setTrains(int newVal){ Trains=newVal;}
 	public void setMoney(int newVal){ Money=newVal;}
-	public void setBitmap(int newVal){ attributesBitmap=newVal;}
+	public void setBitmap(int newVal)
+	{ 
+		attributesBitmap=newVal;
+		if(mySession!=null)
+			mySession.setTermID(((attributesBitmap&MOB.ATT_ANSI)>0)?1:0);
+	}
 
 	protected int minuteCounter=0;
 
@@ -488,6 +495,7 @@ public class StdMOB implements MOB
 	public void setSession(Session newSession)
 	{
 		mySession=newSession;
+		setBitmap(getBitmap());
 	}
 
 	public String displayText()
@@ -846,7 +854,7 @@ public class StdMOB implements MOB
 						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
 					if(!isMonster())
 						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
-					myDescription.append(name()+" "+ExternalPlay.mobCondition(this)+"\n\r\n\r");
+					myDescription.append(ExternalPlay.mobCondition(this)+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
 					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
 					mob.tell(myDescription.toString());
@@ -1019,7 +1027,7 @@ public class StdMOB implements MOB
 					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
 					myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
-				myDescription.append(name()+" "+ExternalPlay.mobCondition(this)+"\n\r\n\r");
+				myDescription.append(ExternalPlay.mobCondition(this)+"\n\r\n\r");
 				myDescription.append(description()+"\n\r\n\r");
 				myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
 				mob.tell(myDescription.toString());
@@ -1129,7 +1137,7 @@ public class StdMOB implements MOB
 				{
 					if(!Sense.canBreathe(this))
 					{
-						this.location().show(this,this,Affect.MSG_OK_VISUAL,"<S-NAME> can't breathe!");
+						this.location().show(this,this,Affect.MSG_OK_VISUAL,"^Z<S-NAME> can't breathe!^?");
 						curState().adjHitPoints(-(int)Math.round(Math.random()*6.0),maxState());
 					}
 					if(isInCombat())
@@ -1160,7 +1168,7 @@ public class StdMOB implements MOB
 						{
 							MOB target=this.getVictim();
 							if((target!=null)&&(!target.amDead())&&(Sense.canBeSeenBy(target,this)))
-								session().print(target.name()+" "+ExternalPlay.mobCondition(target)+"\n\r\n\r");
+								session().print(ExternalPlay.mobCondition(target)+"\n\r\n\r");
 						}
 					}
 					else
@@ -1504,5 +1512,15 @@ public class StdMOB implements MOB
 		||(source.amFollowing()==this)
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
 			ExternalPlay.postAttack(this,target,fetchWieldedItem());
+	}
+	public int getTermID()
+	{
+		return termID;
+	}
+	public void setTermID(int tid)
+	{
+		termID = tid != 0 ? 1 : 0;
+		if(mySession!=null)
+			mySession.setTermID(tid);
 	}
 }

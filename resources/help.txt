@@ -1,24 +1,23 @@
-MOVEMENT                            COMMUNICATION
+^HMOVEMENT^N                            ^HCOMMUNICATION^?
 north south east west up down       gossip chat gratz greet
 exits recall                        answer quote say tell channels
 sleep wake rest stand               quiet emote socials yell
 
-COMBAT/SPELLS/SKILLS                INFORMATION
+^HCOMBAT/SPELLS/SKILLS^?                ^HINFORMATION^?
 kill backstab flee wimpy rescue     help credits commands areas
 climb bash disarm dirt trip         report score attributes who
 spells skills prayers songs         description topics
 pray practice cast sing
-                                    GROUPS
-OBJECTS                             follow group gtell split
+                                    ^HGROUPS^?
+^HOBJECTS^?                             follow group gtell split
 inventory equipment look compare    
-get put drop give                   OTHER
+get put drop give                   ^HOTHER^?
 wear wield hold eat drink           ! quit password train qualify
-lock unlock open close pick
-list buy sell value                 CLASSES
-                                    fighter mage cleric thief 
-HELP                                ranger paladin bard
-help commands bug topics
-** enter help 'command name' 
-for more help!
-                       
+lock unlock open close pick         ansi noansi
+list buy sell value                 
+                                    ^HCLASSES^?
+^HHELP^?                                fighter mage cleric thief 
+help commands bug topics            ranger paladin bard
+
+** enter ^HHELP 'command name'^? or ^HTOPICS^? for more help!
 

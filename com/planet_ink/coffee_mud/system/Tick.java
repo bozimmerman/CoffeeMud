@@ -12,8 +12,18 @@ public class Tick extends Thread
 {
 	public Vector tickers=new Vector();
 
+	private static int tickObjCounter=0;
 	public Tick()
 	{
+		super("Tick."+tickObjCounter);
+		++tickObjCounter;
+		this.start();
+	}
+
+	public Tick(String a_name)
+	{
+		super("Tick." + a_name + "." + tickObjCounter);
+		++tickObjCounter;
 		this.start();
 	}
 

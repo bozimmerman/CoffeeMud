@@ -254,7 +254,7 @@ public class XMLIO
 	
 	public void contentxml(MOB mob, Vector commands)
 	{
-		if(commands.size()==1)
+		if(commands.size()>=1)
 		{
 			String possID=Util.combine(commands,0);
 			Room room=null;
@@ -271,7 +271,7 @@ public class XMLIO
 			{
 				if(room!=mob.location())
 					room.bringMobHere(mob,true);
-				commands.removeElementAt(0);
+				commands.removeAllElements();
 			}
 		}
 
@@ -456,8 +456,7 @@ public class XMLIO
 	
 	public void roomxml(MOB mob, Vector commands)
 	{
-
-		if(commands.size()==1)
+		if(commands.size()>=1)
 		{
 			String possID=Util.combine(commands,0);
 			Room room=null;
@@ -474,7 +473,7 @@ public class XMLIO
 			{
 				if(room!=mob.location())
 					room.bringMobHere(mob,true);
-				commands.removeElementAt(0);
+				commands.removeAllElements();
 			}
 		}
 

@@ -27,6 +27,7 @@ public class CommandProcessor
 	public XMLIO xmlIO=new XMLIO();
 	public Reset reset=new Reset();
 	public Properties helpFile=null;
+	public Properties arcHelpFile=null;
 	public Host myHost=null;
 
 	public void doCommand(MOB mob, Vector commands)
@@ -45,6 +46,25 @@ public class CommandProcessor
 				{
 				case CommandSet.AFFECT:
 					scoring.affected(mob);
+					break;
+				case CommandSet.ANSI:
+					if(!mob.isMonster())
+					{
+						mob.setBitmap(mob.getBitmap()|MOB.ATT_ANSI);
+						mob.tell("^BANSI^N ^Hcolour^N enabled.\n\r");
+					}
+					break;
+				case CommandSet.ARCHELP:
+					if(mob.isASysOp())
+						arcHelp(mob,Util.combine(commands,1));
+					else
+						mob.tell("Only an Archon should even care...\n\r");
+					break;
+				case CommandSet.ARCTOPICS:
+					if(mob.isASysOp())
+						arcTopics(mob);
+					else
+						mob.tell("Only an Archon should even care...\n\r");
 					break;
 				case CommandSet.AREAS:
 					scoring.areas(mob);
@@ -118,6 +138,12 @@ public class CommandProcessor
 					break;
 				case CommandSet.DROP:
 					itemUsage.drop(mob,commands);
+					break;
+				case CommandSet.DUMPFILE:
+					if(mob.isASysOp())
+						cmdDumpfile(mob,commands);
+					else
+						mob.tell("Huh?\n\r");
 					break;
 				case CommandSet.EAST:
 					movement.move(mob,Directions.EAST,false);
@@ -202,6 +228,14 @@ public class CommandProcessor
 						createEdit.edit(mob,commands);
 					else
 						mob.tell("Only the Archons may modify things.\n\r");
+					break;
+				case CommandSet.NOANSI:
+					if(!mob.isMonster())
+					{
+						if((mob.getBitmap()&MOB.ATT_ANSI)>0)
+							mob.setBitmap(mob.getBitmap()-MOB.ATT_ANSI);
+						mob.tell("ANSI colour disabled.\n\r");
+					}
 					break;
 				case CommandSet.NOFOLLOW:
 					grouping.nofollow(mob,true);
@@ -351,6 +385,13 @@ public class CommandProcessor
 				case CommandSet.UNLINK:
 					createEdit.destroy(mob,commands);
 					break;
+				case CommandSet.UNLOADHELP:
+
+					if(mob.isASysOp())
+						unloadHelpFile(mob);
+					else
+						mob.tell("Only the Archons may unload the help files...\n\r");
+					break;
 				case CommandSet.UP:
 					movement.move(mob,Directions.UP,false);
 					break;
@@ -409,6 +450,50 @@ public class CommandProcessor
 		return;
 	}
 
+	private void unloadHelpFile(MOB mob)
+	{
+		if(Resources.getResource("PLAYER TOPICS")!=null)
+			Resources.removeResource("PLAYER TOPICS");
+		if(Resources.getResource("ARCHON TOPICS")!=null)
+			Resources.removeResource("ARCHON TOPICS");
+		if(Resources.getResource("help.txt")!=null)
+			Resources.removeResource("help.txt");
+		if(Resources.getResource("races.txt")!=null)
+			Resources.removeResource("races.txt");
+		if(Resources.getResource("newchar.txt")!=null)
+			Resources.removeResource("newchar.txt");
+		if(Resources.getResource("stats.txt")!=null)
+			Resources.removeResource("stats.txt");
+		if(Resources.getResource("classes.txt")!=null)
+			Resources.removeResource("classes.txt");
+		if(Resources.getResource("alignment.txt")!=null)
+			Resources.removeResource("alignment.txt");
+		if(Resources.getResource("arc_help.txt")!=null)
+			Resources.removeResource("arc_help.txt");
+		helpFile=null;
+		arcHelpFile=null;
+			
+		// also the intro page
+		if(Resources.getResource("intro.txt")!=null)
+			Resources.removeResource("intro.txt");
+			
+		if(Resources.getResource("offline.txt")!=null)
+			Resources.removeResource("offline.txt");
+			
+		mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");
+	}
+
+	private boolean getArcHelpFile()
+	{
+		if(arcHelpFile==null)
+		{
+			arcHelpFile=new Properties();
+			try{arcHelpFile.load(new FileInputStream("resources"+File.separatorChar+"arc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+		}
+		if(arcHelpFile==null) return false;
+		return true;
+	}
+	
 	private boolean getHelpFile()
 	{
 		if(helpFile==null)
@@ -425,22 +510,44 @@ public class CommandProcessor
 		return true;
 	}
 
-
 	public void topics(MOB mob)
 	{
-		StringBuffer topicBuffer=(StringBuffer)Resources.getResource("COFFEEMUD TOPICS");
+		if(!getHelpFile())
+		{
+			mob.tell("No help is available.");
+			return;
+		}
+		
+		doTopics(mob,helpFile,"HELP", "PLAYER TOPICS");
+	}
+
+	public void arcTopics(MOB mob)
+	{
+		if(!getArcHelpFile())
+		{
+			mob.tell("No archon help is available.");
+			return;
+		}
+		
+		doTopics(mob,arcHelpFile,"AHELP", "ARCHON TOPICS");
+	}
+	
+	private void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
+	{
+		StringBuffer topicBuffer=(StringBuffer)Resources.getResource(resName);
 		if(topicBuffer==null)
 		{
 			topicBuffer=new StringBuffer();
-			if(!getHelpFile())
-			{
-				mob.tell("No help is available.");
-				return;
-			}
 
 			Vector reverseList=new Vector();
-			for(Enumeration e=helpFile.keys();e.hasMoreElements();)
-				reverseList.addElement((String)e.nextElement());
+			for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+			{
+				String ptop = (String)e.nextElement();
+				String thisTag=rHelpFile.getProperty(ptop);
+				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=25)
+					|| (rHelpFile.getProperty(thisTag)== null) )
+						reverseList.addElement(ptop);
+			}
 
 			Collections.sort((List)reverseList);
 			topicBuffer=new StringBuffer("Help topics: \n\r\n\r");
@@ -461,10 +568,10 @@ public class CommandProcessor
 					topicBuffer.append(Util.padRight((String)reverseList.elementAt(i),19)+" ");
 			}
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));
-			Resources.submitResource("COFFEEMUD TOPICS",topicBuffer);
+			Resources.submitResource(resName,topicBuffer);
 		}
 		if((topicBuffer!=null)&&(!mob.isMonster()))
-			mob.session().rawPrintln(topicBuffer.toString()+"\n\r\n\rEnter HELP TOPIC NAME for more information.");
+			mob.session().rawPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.");
 	}
 
 	public void help(MOB mob, String helpStr)
@@ -473,22 +580,50 @@ public class CommandProcessor
 		{
 			StringBuffer helpText=Resources.getFileResource("help.txt");
 			if((helpText!=null)&&(mob.session()!=null))
-				mob.session().rawPrintln(helpText.toString());
+				mob.session().unfilteredPrintln(helpText.toString());
 			return;
 		}
 		else
-			helpStr=helpStr.toUpperCase().trim();
-		if(!getHelpFile())
 		{
-			mob.tell("No help is available.");
+			if(!getHelpFile())
+			{
+				mob.tell("No help is available.");
+				return;
+			}
+		}
+		doHelp(mob,helpStr,helpFile);
+	}
+
+	public void arcHelp(MOB mob, String helpStr)
+	{
+		if(helpStr.length()==0)
+		{
+			StringBuffer helpText=Resources.getFileResource("arc_help.txt");
+			if((helpText!=null)&&(mob.session()!=null))
+				mob.session().unfilteredPrintln(helpText.toString());
 			return;
 		}
+		else
+		{
+			if(!getArcHelpFile())
+			{
+				mob.tell("No archon help is available.");
+				return;
+			}
+		}
+		doHelp(mob,helpStr,arcHelpFile);
+	}
+
+	private void doHelp(MOB mob, String helpStr, Properties rHelpFile)
+	{
+		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
-		String thisTag=helpFile.getProperty(helpStr);
+		String thisTag=rHelpFile.getProperty(helpStr);
+
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<25))
 		{
-			String thisOtherTag=helpFile.getProperty(thisTag);
+			String thisOtherTag=rHelpFile.getProperty(thisTag);
 			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))
 				thisTag=null;
 			else
@@ -530,4 +665,83 @@ public class CommandProcessor
 		else
 			Log.errOut("CommandProcessor","Shutdown failed.  No host.");
 	}
+	
+	public void cmdDumpfile(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("dumpfile {raw} username|all {filename1 ...}");
+			return;
+		}
+		commands.removeElementAt(0);
+
+		int numFiles = 0;
+		int numSessions = 0;
+		boolean rawMode=false;
+		
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("raw"))
+		{
+			rawMode = true;
+			commands.removeElementAt(0);
+		}
+
+		String targetName = new String((String)commands.elementAt(0));
+		boolean allFlag=(targetName.equalsIgnoreCase("all"));
+
+		commands.removeElementAt(0);
+
+		// so they can do dumpfile (username) RAW filename too
+		if(!rawMode && ( ((String)commands.elementAt(0)).equalsIgnoreCase("raw")) )
+		{
+			rawMode = true;
+			commands.removeElementAt(0);
+		}
+		
+		StringBuffer fileText = new StringBuffer("");
+		while (commands.size() > 0)
+		{
+			boolean wipeAfter = true;
+			String fn = new String ( (String)commands.elementAt(0) );
+			// don't allow any path characters!
+			fn.replace('/','_');
+			fn.replace('\\','_');
+			fn.replace(':','_');
+			
+			if (Resources.getResource(fn) != null)
+				wipeAfter = false;
+				
+			StringBuffer ft = Resources.getFileResource(fn);
+			if (ft != null && ft.length() > 0)
+			{
+				fileText.append("\n\r");
+				fileText.append(ft);
+				++numFiles;
+			}
+		
+			if (wipeAfter)
+				Resources.removeResource(fn);
+			commands.removeElementAt(0);
+			
+		}
+		if (fileText.length() > 0)
+		{
+			for(int s=0;s<Sessions.size();s++)
+			{
+				Session thisSession=(Session)Sessions.elementAt(s);
+				
+				if (thisSession==null) continue;
+				if (thisSession.killFlag() || (thisSession.mob()==null)) continue;
+				if (allFlag || thisSession.mob().name().equalsIgnoreCase(targetName))
+				{
+					if (rawMode)
+						thisSession.rawPrintln(fileText.toString());
+					else
+						thisSession.colorOnlyPrintln(fileText.toString());
+					++numSessions;
+				}
+			}
+		}
+		mob.tell("dumped " + numFiles + " files to " + numSessions + " user(s)");
+	}
+	
 }

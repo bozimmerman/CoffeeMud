@@ -1,11 +1,9 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
 
-<P>&nbsp;</P>
+*********************************************
+***                                       ***
+***           SERVER IS OFFLINE           ***
+***                                       ***
+***      try again in a few minutes!      ***
+***                                       ***
+*********************************************
 
-</BODY>
-</HTML>

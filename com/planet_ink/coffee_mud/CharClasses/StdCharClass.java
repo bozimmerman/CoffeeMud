@@ -119,7 +119,7 @@ public class StdCharClass implements CharClass
 		}
 
 		mob.setExperience(mob.getExperience()+amount);
-		mob.tell("You gain "+amount+" experience points.");
+		mob.tell("^BYou gain ^H"+amount+"^? experience points.^N");
 		while(mob.getExperience()>mob.getExpNextLevel())
 			level(mob);
 	}
@@ -128,9 +128,9 @@ public class StdCharClass implements CharClass
 	{
 		if(mob.envStats().level()<2)
 			return;
-		mob.tell("\n\rYou've lost a level!!");
+		mob.tell("\n\r^ZYou've lost a level!!!^N");
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()-1);
-		mob.tell("You are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+".\n\r");
+		mob.tell("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+"^N.\n\r");
 
 		levelAdjuster(mob,-1);
 
@@ -154,7 +154,7 @@ public class StdCharClass implements CharClass
 
 		StringBuffer theNews=new StringBuffer("");
 
-		theNews.append("You are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+".\n\r");
+		theNews.append("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+".^N\n\r");
 
 		int newHitPointGain=minHitPointsPerLevel+(int)Math.floor(Math.random()*(maxHitPointsPerLevel-minHitPointsPerLevel))+minHitPointsPerLevel;
 		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getConstitution(),2.0))-4;
@@ -162,24 +162,25 @@ public class StdCharClass implements CharClass
 		newHitPointGain=newHitPointGain*adjuster;
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
-		theNews.append("You have gained "+newHitPointGain+" hit points, ");
+		theNews.append("^BYou have gained ^H"+newHitPointGain+"^B hit " + 
+			(newHitPointGain!=1?"points":"point") + ", ^H");
 
 		int mvGain=(int)Math.round(Util.div(mob.charStats().getStrength(),9.0)*12);
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
-		theNews.append(mvGain+" move points, ");
+		theNews.append(mvGain+"^B move " + (mvGain!=1?"points":"point") + ", ^H");
 
 		int attGain=(int)Math.round(Util.div(mob.charStats().getCurStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
-		theNews.append(attGain+" attack points, ");
+		theNews.append(attGain+"^B attack " + (attGain!=1?"points":"point") + ", ^H");
 
 		int manaGain=(int)Math.round(Util.div(mob.charStats().getIntelligence(),18.0)*manaMultiplier);
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
-		theNews.append(manaGain+" points of mana, ");
+		theNews.append(manaGain+"^B " + (manaGain!=1?"points":"point") + " of mana,");
 
 		mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+(damageBonusPerLevel*adjuster));
 		mob.recoverMaxState();
@@ -258,18 +259,19 @@ public class StdCharClass implements CharClass
 
 	public void level(MOB mob)
 	{
-		StringBuffer theNews=new StringBuffer("You have L E V E L E D ! ! ! ! ! \n\r\n\r");
+		StringBuffer theNews=new StringBuffer("^XYou have L E V E L E D ! ! ! ! ! ^N\n\r\n\r");
 		theNews.append(levelAdjuster(mob,1));
 
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getWisdom(),4.0))+bonusPracLevel;
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
-		theNews.append(practiceGain+" practices, ");
+		theNews.append("^H" + practiceGain+"^B practice " +
+			( practiceGain != 1? "sessions" : "session" ) + ", ");
 
 		int trainGain=1;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and "+trainGain+" training point.\n\r");
+		theNews.append("and ^H"+trainGain+"^B training point.\n\r^N");
 
 		mob.tell(theNews.toString());
 		

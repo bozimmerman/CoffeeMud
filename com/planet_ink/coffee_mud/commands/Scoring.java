@@ -37,7 +37,7 @@ public class Scoring
 	{
 		StringBuffer msg=getInventory(mob,mob);
 		if(msg.length()==0)
-			mob.tell("You are carrying:\n\rNothing!\n\r");
+			mob.tell("You are carrying:\n\r^BNothing!^?\n\r");
 		else
 		if(!mob.isMonster())
 			mob.session().rawPrintln("You are carrying:\n\r"+msg.toString());
@@ -52,115 +52,118 @@ public class Scoring
 
 
 		StringBuffer msg=new StringBuffer("");
-		msg.append("You are "+mob.name()+" the level "+mob.envStats().level()+" "+mob.charStats().getMyClass().name()+".\n\r");
-		msg.append("You are a "+((mob.charStats().getGender()=='M')?"male":"female")+" "+mob.charStats().getMyRace().name());
+
+		msg.append("You are ^H"+mob.name()+"^? the level ^B"+mob.envStats().level()+" "+mob.charStats().getMyClass().name()+"^?.\n\r");
+		msg.append("You are a ^B"+((mob.charStats().getGender()=='M')?"male":"female")+" "+mob.charStats().getMyRace().name() + "^?");
 		if(mob.getWorshipCharID().length()>0)
-			msg.append(" who worships "+mob.getWorshipCharID()+"\n\r");
+			msg.append(" who worships ^H"+mob.getWorshipCharID()+"^?");
 		msg.append(".\n\r");
-		msg.append("\n\rYour stats are: \n\r"+mob.charStats().getStats(mob.charStats().getMyClass().maxStat())+"\n\r");
-		msg.append("You have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, ");
-		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, and ");
-		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" movement.\n\r");
-		msg.append("You have "+mob.envStats().weight()+"/"+mob.maxCarry()+" pounds of encumbrance.\n\r");
-		msg.append("You have "+mob.getPractices()+" practices, "+mob.getTrains()+" training sessions, and "+mob.getQuestPoint()+" quest points.\n\r");
-		msg.append("You have scored "+mob.getExperience()+" experience points, and have been online for "+Math.round(Util.div(mob.getAgeHours(),60.0))+" hours.\n\r");
-		msg.append("You need "+(mob.getExpNeededLevel())+" experience points to level.\n\r");
-		msg.append("Your alignment is      : "+alignmentStr(mob)+" ("+mob.getAlignment()+").\n\r");
-		msg.append("Your armored defense is: "+theFight.armorStr(adjustedArmor)+"\n\r");
-		msg.append("Your combat prowess is : "+theFight.fightingProwessStr(adjustedAttack)+"\n\r");
-		msg.append("Wimpy is set to "+mob.getWimpHitPoint()+" hit points.\n\r");
+		msg.append("\n\rYour stats are: \n\r^B"+mob.charStats().getStats(mob.charStats().getMyClass().maxStat())+"^?\n\r");
+		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? hit points, ^H");
+		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? mana, and ^H");
+		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? movement.\n\r");
+		msg.append("You have ^B"+mob.envStats().weight()+"^?/^B"+mob.maxCarry()+"^? pounds of encumbrance.\n\r");
+		msg.append("You have ^B"+mob.getPractices()+"^? practices, ^B"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
+		msg.append("You have scored ^B"+mob.getExperience()+"^? experience points, and have been online for ^B"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
+		msg.append("You need ^B"+(mob.getExpNeededLevel())+"^? experience points to advance to the next level.\n\r");
+		msg.append("Your alignment is      : ^H"+alignmentStr(mob)+" ("+mob.getAlignment()+")^?.\n\r");
+		msg.append("Your armored defense is: ^H"+theFight.armorStr(adjustedArmor)+"^?.\n\r");
+		msg.append("Your combat prowess is : ^H"+theFight.fightingProwessStr(adjustedAttack)+"^?.\n\r");
+		msg.append("Wimpy is set to ^B"+mob.getWimpHitPoint()+"^? hit points.\n\r");
 
 		if(Sense.isSleeping(mob))
-			msg.append("You are sleeping.\n\r");
+			msg.append("^BYou are sleeping.^?\n\r");
 		else
 		if(Sense.isSitting(mob))
-			msg.append("You are resting.\n\r");
+			msg.append("^BYou are resting.^?\n\r");
 		else
 		if(Sense.isSwimming(mob))
-			msg.append("You are swimming.\n\r");
+			msg.append("^BYou are swimming.^?\n\r");
 		else
 		if(Sense.isClimbing(mob))
-			msg.append("You are climbing.\n\r");
+			msg.append("^BYou are climbing.^?\n\r");
 		else
 		if(Sense.isFlying(mob))
-			msg.append("You are flying.\n\r");
+			msg.append("^BYou are flying.^?\n\r");
 		else
-			msg.append("You are standing.\n\r");
+			msg.append("^BYou are standing.^?\n\r");
 
 		if(Sense.isInvisible(mob))
-			msg.append("You are invisible.\n\r");
+			msg.append("^BYou are invisible.^?\n\r");
 		if(Sense.isHidden(mob))
-			msg.append("You are hidden.\n\r");
+			msg.append("^BYou are hidden.^?\n\r");
 		if(Sense.isSneaking(mob))
-			msg.append("You are sneaking.\n\r");
+			msg.append("^BYou are sneaking.^?\n\r");
 
 		if(mob.curState().getHunger()<1)
-			msg.append("You are hungry.\n\r");
+			msg.append("^BYou are hungry.^?\n\r");
 		if(mob.curState().getThirst()<1)
-			msg.append("You are thirsty.\n\r");
-		msg.append("\n\rYou are affected by: "+getAffects(mob)+"\n\r");
+			msg.append("^BYou are thirsty.^?\n\r");
+		msg.append("\n\r^BYou are affected by:^? "+getAffects(mob)+"\n\r");
+
 		if(!mob.isMonster())
-			mob.session().rawPrintln(msg.toString());
+			mob.session().unfilteredPrintln(msg.toString());
 	}
 
 	public void affected(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\rYou are affected by: "+getAffects(mob)+"\n\r");
+		msg.append("\n\r^BYou are affected by:^? "+getAffects(mob)+"\n\r");
 		if(!mob.isMonster())
-			mob.session().rawPrintln(msg.toString());
+			mob.session().colorOnlyPrintln(msg.toString());
 	}
 
 	public void skills(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		if(getAbilities(mob,Ability.THIEF_SKILL).length()<10)
-			msg.append("\n\rYour skills: "+getAbilities(mob,Ability.SKILL)+"\n\r");
+			msg.append("\n\r^HYour skills:^? "+getAbilities(mob,Ability.SKILL)+"\n\r");
 		else
 		{
-			msg.append("\n\rGeneral skills: "+getAbilities(mob,Ability.SKILL)+"\n\r");
-			msg.append("\n\rThief skills: "+getAbilities(mob,Ability.THIEF_SKILL)+"\n\r");
+			msg.append("\n\r^HGeneral skills:^? "+getAbilities(mob,Ability.SKILL)+"\n\r");
+			msg.append("\n\r^HThief skills:^? "+getAbilities(mob,Ability.THIEF_SKILL)+"\n\r");
 		}
 
 		if(!mob.isMonster())
-			mob.session().rawPrintln(msg.toString());
+			mob.session().unfilteredPrintln(msg.toString());
 	}
 
 	public void qualify(MOB mob)
 	{
-		StringBuffer msg=new StringBuffer("You now qualify for the following:");
-		msg.append("\n\rGeneral Skills: "+getQualifiedAbilities(mob,Ability.SKILL)+"\n\r");
-		msg.append("\n\rThief Skills: "+getQualifiedAbilities(mob,Ability.THIEF_SKILL)+"\n\r");
-		msg.append("\n\rSpells: "+getQualifiedAbilities(mob,Ability.SPELL)+"\n\r");
-		msg.append("\n\rPrayers: "+getQualifiedAbilities(mob,Ability.PRAYER)+"\n\r");
-		msg.append("\n\rSongs: "+getQualifiedAbilities(mob,Ability.SONG)+"\n\r");
+		StringBuffer msg=new StringBuffer("^BYou now qualify for the following:^?");
+		msg.append("\n\r^HGeneral Skills:^? "+getQualifiedAbilities(mob,Ability.SKILL)+"\n\r");
+		msg.append("\n\r^HThief Skills:^? "+getQualifiedAbilities(mob,Ability.THIEF_SKILL)+"\n\r");
+		msg.append("\n\r^HSpells:^? "+getQualifiedAbilities(mob,Ability.SPELL)+"\n\r");
+		msg.append("\n\r^HPrayers:^? "+getQualifiedAbilities(mob,Ability.PRAYER)+"\n\r");
+		msg.append("\n\r^HSongs:^? "+getQualifiedAbilities(mob,Ability.SONG)+"\n\r");
 		if(!mob.isMonster())
-			mob.session().rawPrintln(msg.toString());
+			mob.session().unfilteredPrintln(msg.toString());
 	}
 
 	public void prayers(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\rPrayers known: "+getAbilities(mob,Ability.PRAYER)+"\n\r");
+		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.PRAYER)+"\n\r");
 		if(!mob.isMonster())
-			mob.session().rawPrintln(msg.toString());
+			mob.session().unfilteredPrintln(msg.toString());
 	}
 
 	public void songs(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\rSongs known: "+getAbilities(mob,Ability.SONG)+"\n\r");
+		msg.append("\n\r^HSongs known:^? "+getAbilities(mob,Ability.SONG)+"\n\r");
 		if(!mob.isMonster())
-			mob.session().rawPrintln(msg.toString());
+			mob.session().unfilteredPrintln(msg.toString());
 	}
 
 	public void spells(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append("\n\rYour spells: "+getAbilities(mob,Ability.SPELL)+"\n\r");
+		msg.append("\n\r^HYour spells:^? "+getAbilities(mob,Ability.SPELL)+"\n\r");
 		if(!mob.isMonster())
-			mob.session().rawPrintln(msg.toString());
+			mob.session().unfilteredPrintln(msg.toString());
 	}
+
 
 	public StringBuffer getAffects(MOB affected)
 	{
@@ -200,20 +203,20 @@ public class Scoring
 				if((thisAbility.envStats().level()==l)&&(thisAbility.classificationCode()==ofType))
 				{
 					if(thisLine.length()==0)
-						thisLine.append("\n\rLevel "+l+":\n\r");
+						thisLine.append("\n\rLevel ^B"+l+"^?:\n\r");
 					if((++col)>3)
 					{
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("["+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%] "+Util.padRight(thisAbility.name(),19));
+					thisLine.append("[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^B"+Util.padRight(thisAbility.name(),19) + "^?");
 				}
 			}
 			if(thisLine.length()>0)
 				msg.append(thisLine);
 		}
 		if(msg.length()==0)
-			msg.append("None!");
+			msg.append("^BNone!^?");
 		return msg;
 	}
 
@@ -288,14 +291,14 @@ public class Scoring
 			msg.append("(nothing you can see right now)");
 		else
 		if(msg.length()==0)
-			msg.append("(nothing)\n\r");
+			msg.append("^B(nothing)^?\n\r");
 
 		return msg;
 	}
 	public void equipment(MOB mob)
 	{
 		if(!mob.isMonster())
-			mob.session().rawPrintln("You are wearing:\n\r"+getEquipment(mob,mob));
+			mob.session().unfilteredPrintln("You are wearing:\n\r"+getEquipment(mob,mob));
 	}
 
 	public String shortAlignmentStr(MOB mob)
@@ -337,12 +340,12 @@ public class Scoring
 	public void commands(MOB mob, CommandSet commandSet)
 	{
 		if(!mob.isMonster())
-			mob.session().rawPrintln("Complete commands list: \n\r"+commandSet.commandList());
+			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandSet.commandList());
 	}
 	public void socials(MOB mob, Socials socials)
 	{
 		if(!mob.isMonster())
-			mob.session().rawPrintln("Complete socials list: \n\r"+socials.getSocialsList());
+			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+socials.getSocialsList());
 	}
 
 	public void areas(MOB mob)
@@ -363,7 +366,7 @@ public class Scoring
 				}
 			}
 			Collections.sort((List)areasVec);
-			StringBuffer msg=new StringBuffer("Complete areas list: \n\r");
+			StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
 			int col=0;
 			for(int i=0;i<areasVec.size();i++)
 			{
@@ -382,6 +385,6 @@ public class Scoring
 
 
 		if(!mob.isMonster())
-			mob.session().rawPrintln(areasList.toString());
+			mob.session().colorOnlyPrintln(areasList.toString());
 	}
 }

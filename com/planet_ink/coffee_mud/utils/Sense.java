@@ -217,30 +217,30 @@ public class Sense
 		StringBuffer Say=new StringBuffer("");
 
 		if((Sense.isEvil(seen))&&(Sense.canSeeEvil(seer)))
-			Say.append(" (glowing red)");
+			Say.append(" (glowing ^rred^?)");
 		if((Sense.isGood(seen))&&(Sense.canSeeGood(seer)))
-			Say.append(" (glowing blue)");
+			Say.append(" (glowing ^bblue^?)");
 		if((Sense.isInvisible(seen))&&(Sense.canSeeInvisible(seer)))
-			Say.append(" (invisible)");
+			Say.append(" (^yinvisible^?)");
 		if((Sense.isSneaking(seen))&&(Sense.canSeeSneakers(seer)))
-			Say.append(" (sneaking)");
+			Say.append(" (^ysneaking^?)");
 		if((Sense.isHidden(seen))&&(Sense.canSeeHidden(seer)))
-			Say.append(" (hidden)");
+			Say.append(" (^yhidden^?)");
 		if((Sense.isInfrared(seen))
 		&&(Sense.canSeeInfrared(seer))
 		&&(seer instanceof MOB)
 		&&(isInDark(((MOB)seer).location())))
-			Say.append(" (heat aura)");
+			Say.append(" (^rheat aura^?)");
 		if((Sense.isABonusItems(seen))&&(Sense.canSeeBonusItems(seer)))
-			Say.append(" (glowing white)");
+			Say.append(" (glowing ^wwhite^?)");
 		//if(isSitting(seen))
 		//	Say.append(" (sitting)");
 		//if(isSleeping(seen))
 		//	Say.append(" (sleeping)");
 		if(isFlying(seen))
-			Say.append(" (flying)");
+			Say.append(" (^pflying^?)");
 		if((isLight(seen))&&(seen instanceof Item))
-			Say.append(" (glowing)");
+			Say.append(" (^gglowing^?)");
 		return Say;
 	}
 

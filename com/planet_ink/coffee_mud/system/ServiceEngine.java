@@ -21,7 +21,7 @@ public class ServiceEngine
 				tickGroup.removeElementAt(v);
 			else
 			{
-				if((tock==null)&&(almostTock.tickers.size()<25))
+				if((tock==null)&&(almostTock.tickers.size()<Host.MAX_TICK_CLIENTS))
 					tock=almostTock;
 				for(int t=0;t<almostTock.tickers.size();t++)
 				{
@@ -116,7 +116,7 @@ public class ServiceEngine
 					msg.append("\n\r");
 					col=1;
 				}
-				msg.append(Util.padRight(""+v,4)+Util.padRight(E.name(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+oo,10));
+				msg.append(Util.padRight(""+v,4)+Util.padRight(E.ID(),18)+" "+Util.padRight(id+"",5)+Util.padRight(pr+"/"+oo,10));
 			}
 		}
 		return msg;

@@ -61,38 +61,38 @@ public class TheFight
 	public String mobCondition(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
+	
 		if(pct<.10)
-			return "is hovering on deaths door.";
+			return "^r" + mob.name() + "^r is hovering on deaths door!^N";
 		else
 		if(pct<.20)
-			return "is covered in blood.";
+			return "^r" + mob.name() + "^r is covered in blood.^N";
 		else
 		if(pct<.30)
-			return "is bleeding badly from lots of wounds.";
+			return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N";
 		else
 		if(pct<.40)
-			return "has numerous bloody wounds and gashes.";
+			return "^y" + mob.name() + "^y has numerous bloody wounds and gashes.^N";
 		else
 		if(pct<.50)
-			return "has some bloody wounds and gashes.";
+			return "^y" + mob.name() + "^y has some bloody wounds and gashes.^N";
 		else
 		if(pct<.60)
-			return "has a few bloody wounds.";
+			return "^p" + mob.name() + "^p has a few bloody wounds.^N";
 		else
 		if(pct<.70)
-			return "is cut and bruised.";
+			return "^p" + mob.name() + "^p is cut and bruised.^N";
 		else
 		if(pct<.80)
-			return "has some minor cuts and bruises.";
+			return "^g" + mob.name() + "^g has some minor cuts and bruises.^N";
 		else
 		if(pct<.90)
-			return "has a few bruises and scratches.";
+			return "^g" + mob.name() + "^g has a few bruises and scratches.^N";
 		else
 		if(pct<.99)
-			return "has a few small bruises.";
+			return "^g" + mob.name() + "^g has a few small bruises.^N";
 		else
-			return "is in perfect health";
-
+			return "^c" + mob.name() + "^c is in perfect health^N";
 	}
 
 	public Hashtable allPossibleCombatants(MOB mob)

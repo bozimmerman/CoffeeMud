@@ -33,7 +33,7 @@ public class Bard extends StdCharClass
 		if(mob.baseCharStats().getDexterity() <= 8)
 			return false;
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
-		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
+		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
 			return(false);
 
 		return true;

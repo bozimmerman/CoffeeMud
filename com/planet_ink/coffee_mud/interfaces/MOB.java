@@ -30,7 +30,6 @@ public interface MOB
 	public String rawDisplayText();
 	public int maxCarry();
 
-	
 	/** Whether this MOB is dead.*/
 	public boolean amDead();
 	public void raiseFromDead();
@@ -138,4 +137,5 @@ public interface MOB
 	public static final int ATT_AUTOLOOT=2;
 	public static final int ATT_AUTOEXITS=4;
 	public static final int ATT_AUTOASSIST=8;
+	public static final int ATT_ANSI=16;
 }

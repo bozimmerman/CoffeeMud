@@ -11,6 +11,13 @@ public class SaveThread extends Thread
 	private static boolean shutDown=false;
 
 	public Calendar lastDateTime=Calendar.getInstance();
+	
+	
+	public SaveThread()
+	{
+		super("SaveThread");
+	}	
+	
 	public void checkHealth()
 	{
 		Calendar itemKillTime=Calendar.getInstance();

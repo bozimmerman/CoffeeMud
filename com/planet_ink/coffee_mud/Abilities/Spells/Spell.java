@@ -18,7 +18,7 @@ public class Spell extends StdAbility
 		miscText="";
 		triggerStrings.addElement("CAST");
 		triggerStrings.addElement("CA");
-
+		triggerStrings.addElement("C");
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 	}

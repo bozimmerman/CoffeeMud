@@ -60,6 +60,6 @@ public class Archon extends StdCharClass
 
 	public void level(MOB mob)
 	{
-		mob.tell("You leveled... not that it matters.");
+		mob.tell("^HYou leveled... not that it matters.^N");
 	}
 }

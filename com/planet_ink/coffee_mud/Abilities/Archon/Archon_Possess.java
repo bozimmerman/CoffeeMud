@@ -62,7 +62,7 @@ public class Archon_Possess extends ArchonSkill
 		target.setSoulMate(mob);
 		mob.setSession(null);
 		ExternalPlay.look(target,null,true);
-		target.tell("Your spirit has changed bodies...");
+		target.tell("^HYour spirit has changed bodies...");
 		return true;
 	}
 
@@ -77,7 +77,7 @@ public class Archon_Possess extends ArchonSkill
 		s.setMob(mob.soulMate());
 		mob.soulMate().setSession(s);
 		mob.setSession(null);
-		mob.soulMate().tell("Your spirit has returned to your body...\n\r\n\r");
+		mob.soulMate().tell("^HYour spirit has returned to your body...\n\r\n\r^N");
 		ExternalPlay.look(mob.soulMate(),null,true);
 		mob.setSoulMate(null);
 	}

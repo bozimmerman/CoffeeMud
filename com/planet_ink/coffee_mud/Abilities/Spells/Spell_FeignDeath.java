@@ -130,11 +130,11 @@ public class Spell_FeignDeath extends Spell
 			peaceAt(target);
 			deathRoom=mob.location();
 			Body=(DeadBody)CMClass.getItem("Corpse");
-			beneficialAffect(mob,mob,0);
+			beneficialAffect(mob,target,0);
 
 			while(target.numFollowers()>0)
 				target.fetchFollower(0).setFollowing(null);
-			deathRoom.show(target,null,Affect.MSG_OK_ACTION,target.name()+" is DEAD!!!\n\r");
+			deathRoom.show(target,null,Affect.MSG_OK_ACTION,"^Z"+target.name()+" is DEAD!!!\n\r");
 			Body.setName("the body of "+target.name());
 			Body.setDisplayText("the body of "+target.name()+" lies here.");
 			Body.baseEnvStats().setWeight(target.envStats().weight()+100);

@@ -37,7 +37,7 @@ public class ManualArchon extends StdItem implements MiscMagic
 			case Affect.TYP_READSOMETHING:
 				if(mob.isMine(this))
 				{
-					mob.tell("The manual glows softly, enveloping you magical energy.");
+					mob.tell("The manual glows softly, enveloping you in its magical energy.");
 					Session session=mob.session();
 					CharClass newClass=(CharClass)CMClass.getCharClass("Archon");
 					if((session!=null)&&(newClass!=null))

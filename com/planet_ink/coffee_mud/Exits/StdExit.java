@@ -300,10 +300,10 @@ public class StdExit implements Exit
 		if(mob.readSysopMsgs())
 		{
 			if(room==null)
-				Say.append("(null) ");
+				Say.append("^Z(null)^? ");
 			else
-				Say.append("("+room.ID()+") "+room.displayText()+Sense.colorCodes(room,mob)+" ");
-			Say.append("via ("+ID()+") "+(isOpen()?displayText():closedText()));
+				Say.append("^H("+room.ID()+")^? "+room.displayText()+Sense.colorCodes(room,mob)+" ");
+			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
 		if(isOpen())

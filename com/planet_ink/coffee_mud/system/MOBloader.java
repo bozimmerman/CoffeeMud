@@ -56,6 +56,7 @@ public class MOBloader
 				mob.baseEnvStats().setAttackAdjustment(Util.s_int(DBConnections.getRes(R,"CMATTA")));
 				mob.baseEnvStats().setArmor(Util.s_int(DBConnections.getRes(R,"CMAMOR")));
 				mob.baseEnvStats().setDamage(Util.s_int(DBConnections.getRes(R,"CMDAMG")));
+				mob.setBitmap(Util.s_int(DBConnections.getRes(R,"CMBTMP")));
 			}
 			DBConnector.DBDone(D);
 		}
@@ -273,6 +274,7 @@ public class MOBloader
 			+", CMATTA="+mob.baseEnvStats().attackAdjustment()
 			+", CMAMOR="+mob.baseEnvStats().armor()
 			+", CMDAMG="+mob.baseEnvStats().damage()
+			+", CMBTMP="+mob.getBitmap()
 			+" WHERE CMUSERID='"+mob.ID()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);

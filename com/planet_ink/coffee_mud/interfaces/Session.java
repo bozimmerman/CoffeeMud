@@ -34,6 +34,8 @@ public interface Session
 	public void unfilteredPrintln(String msg);
 	public void unfilteredPrint(String msg);
 	
+	public void colorOnlyPrintln(String msg);
+	public void colorOnlyPrint(String msg);
 	
 	public String prompt(String Message, String Default)
 		throws IOException;
@@ -66,4 +68,9 @@ public interface Session
 	
 	public MOB mob();
 	public void setMob(MOB newmob);
+	
+	public void setTermID(int tid);
+	public int getTermID();
+	
+	public String getAddress();
 }

@@ -121,6 +121,87 @@ public class Lister
 		lines.append("\n\r");
 		return lines;
 	}
+
+	public StringBuffer listSessions(MOB mob)
+	{
+		StringBuffer lines=new StringBuffer("^Xstatus | Valid | Name             | Location             ^?\n\r");
+		for(int s=0;s<Sessions.size();s++)
+		{
+			Session thisSession=(Session)Sessions.elementAt(s);
+			
+			lines.append ( thisSession.killFlag() ? "^HCLOSING^?|" : " open  |" );
+			
+			if (thisSession.mob() != null)
+			{
+				lines.append ( (thisSession.mob().session() == thisSession) ? "  yes  " : "  ^HNO!^? " );
+				lines.append ("[^B" + Util.padRight(thisSession.mob().name(),18) + "^?] " );
+				if ( thisSession.mob().location() != null )
+					lines.append ( thisSession.mob().location().ID() );
+				else
+					lines.append ( "^B(no location)^?" );
+			}
+			else
+				lines.append ( "      ^B-nameless, mobless-^?" );
+			lines.append ("\n\r");
+			lines.append ("            IP: " + thisSession.getAddress() + "\n\r");
+		}
+		return lines;
+	}
+
+	public void dumpThreadGroup(StringBuffer lines,ThreadGroup tGroup)
+	{
+		int ac = tGroup.activeCount();
+		int agc = tGroup.activeGroupCount();
+		Thread tArray[] = new Thread [ac+1];
+		ThreadGroup tgArray[] = new ThreadGroup [agc+1];
+		
+		tGroup.enumerate(tArray,false);
+		tGroup.enumerate(tgArray,false);
+
+		lines.append(" ^HTGRP^?  ^H" + tGroup.getName() + "^?\n\r");
+
+		for (int i = 0; i<ac; ++i)
+		{
+			if (tArray[i] != null)
+			{
+				lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
+				lines.append(tArray[i].getName() + "\n\r");
+			}
+		}
+
+		if (agc > 0)
+		{
+			lines.append("{\n\r");
+			for (int i = 0; i<agc; ++i)
+			{
+				if (tgArray[i] != null)
+					dumpThreadGroup(lines,tgArray[i]);
+			}
+			lines.append("}\n\r");
+		}
+	}
+	
+
+	public StringBuffer listThreads(MOB mob)
+	{
+		StringBuffer lines=new StringBuffer("^XStatus|Name                 ^?\n\r");
+		try
+		{
+			ThreadGroup topTG = Thread.currentThread().getThreadGroup();
+			while (topTG != null && topTG.getParent() != null)
+				topTG = topTG.getParent();
+			if (topTG != null)
+				dumpThreadGroup(lines,topTG);
+		
+		}
+		catch (Exception e)
+		{
+			lines.append ("\n\rBastards! Exception while listing threads: " + e.getMessage() + "\n\r");
+		}
+		return lines;
+			
+	}
+	
 	public void list(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -194,6 +275,12 @@ public class Lister
 		if("USERS".startsWith(listThis))
 			ExternalPlay.listUsers(mob);
 		else
-			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, or AREA.");
+		if("SESSIONS".startsWith(listThis))
+			mob.tell(listSessions(mob).toString());
+		else
+		if("THREADS".startsWith(listThis))
+			mob.tell(listThreads(mob).toString());
+		else
+			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS or AREA.");
 	}
 }

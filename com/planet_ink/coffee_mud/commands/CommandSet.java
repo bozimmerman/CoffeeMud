@@ -109,12 +109,23 @@ public class CommandSet extends Hashtable
 	public static final int XML=97;
 	public static final int RESET=98;
 	public static final int CHANNELS=99;
+	public static final int ANSI=100;
+	public static final int NOANSI=101;
+	public static final int UNLOADHELP=102;
+	public static final int ARCHELP=103;
+	public static final int ARCTOPICS=104;
+	public static final int DUMPFILE=105;
 
 
 	public CommandSet()
 	{
 		put("AFFECT",new Integer(AFFECT));
 			put("AFF",new Integer(AFFECT));
+		put("ANSI",new Integer(ANSI));
+		put("ARCHELP",new Integer(ARCHELP));
+			put("AHELP",new Integer(ARCHELP));
+		put("ARCTOPICS",new Integer(ARCTOPICS));
+			put("ATOPICS",new Integer(ARCTOPICS));
 		put("AREAS",new Integer(AREAS));
 		put("AUTOLOOT",new Integer(AUTOLOOT));
 		put("AUTOGOLD",new Integer(AUTOGOLD));
@@ -142,12 +153,14 @@ public class CommandSet extends Hashtable
 		put("DRINK",new Integer(DRINK));
 		put("DROP",new Integer(DROP));
 			put("DRO",new Integer(DROP));
+		put("DUMPFILE",new Integer(DUMPFILE));
 		put("EAST",new Integer(EAST));
 			put("E",new Integer(EAST));
 		put("EAT",new Integer(EAT));
 		put("EMOTE",new Integer(EMOTE));
 		put("EQUIPMENT",new Integer(EQUIPMENT));
 			put("EQ",new Integer(EQUIPMENT));
+			put("EQUIP",new Integer(EQUIPMENT));
 		put("EXAMINE",new Integer(EXAMINE));
 			put("EXA",new Integer(EXAMINE));
 			put("EXAM",new Integer(EXAMINE));
@@ -168,6 +181,7 @@ public class CommandSet extends Hashtable
 		put("IMPORT",new Integer(IMPORT));
 		put("INVENTORY",new Integer(INVENTORY));
 			put("INV",new Integer(INVENTORY));
+			put("I",new Integer(INVENTORY));
 		put("KILL",new Integer(KILL));
 		put("LIST",new Integer(LIST));
 			put("LI",new Integer(LIST));
@@ -175,7 +189,10 @@ public class CommandSet extends Hashtable
 		put("LOCK",new Integer(LOCK));
 		put("LOOK",new Integer(LOOK));
 			put("LOO",new Integer(LOOK));
+			put("LO",new Integer(LOOK));
+			put("L",new Integer(LOOK));
 		put("MODIFY",new Integer(MODIFY));
+		put("NOANSI",new Integer(NOANSI));
 		put("NORTH",new Integer(NORTH));
 			put("N",new Integer(NORTH));
 		put("NOFOLLOW",new Integer(NOFOLLOW));
@@ -213,6 +230,7 @@ public class CommandSet extends Hashtable
 		put("SKILLS",new Integer(SKILLS));
 			put("SK",new Integer(SKILLS));
 		put("SLEEP",new Integer(SLEEP));
+			put("SL",new Integer(SLEEP));
 		put("SOCIALS",new Integer(SOCIALS));
 		put("SOUTH",new Integer(SOUTH));
 			put("S",new Integer(SOUTH));
@@ -232,6 +250,7 @@ public class CommandSet extends Hashtable
 			put("TR",new Integer(TRAIN));
 		put("UNLOCK",new Integer(UNLOCK));
 		put("UNLINK",new Integer(UNLINK));
+		put("UNLOADHELP",new Integer(UNLOADHELP));
 		put("UP",new Integer(UP));
 			put("U",new Integer(UP));
 		put("VALUE",new Integer(VALUE));

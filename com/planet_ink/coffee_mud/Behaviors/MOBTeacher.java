@@ -40,9 +40,9 @@ public class MOBTeacher extends CombatAbilities
 			monster.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
 		if(getParms().toUpperCase().indexOf("CLE")>=0)
 			monster.baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
-		if(getParms().toUpperCase().indexOf("PAL")>=0)
-			monster.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
 		if(getParms().toUpperCase().indexOf("RAN")>=0)
+			monster.baseCharStats().setMyClass(CMClass.getCharClass("Ranger"));
+		if(getParms().toUpperCase().indexOf("PAL")>=0)
 			monster.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
 		if(getParms().toUpperCase().indexOf("BAR")>=0)
 			monster.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));

@@ -1,4 +1,4 @@
-Welcome to CoffeeMud!
+^HWelcome to CoffeeMud!^N
 
 Thanks for deciding to create a new character.  As this is a brand new software venture, we encourage users to have as many characters as they like in order to more fully test the system.
 

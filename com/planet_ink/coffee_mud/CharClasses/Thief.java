@@ -125,6 +125,6 @@ public class Thief extends StdCharClass
 		int attArmor=((int)Math.round(Util.div(mob.charStats().getDexterity(),9.0)))+1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
-		mob.tell("Your stealthiness grants you a defensive bonus of "+attArmor+".");
+		mob.tell("^BYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 }

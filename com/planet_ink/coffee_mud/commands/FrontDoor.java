@@ -24,7 +24,7 @@ public class FrontDoor
 		login=login.trim();
 
 		if(login.indexOf(" ")>0) return false;
-		if((" SHIT FUCK CUNT ASS PUSSY COCK DAMN ").indexOf(" "+login.toUpperCase()+" ")>=0)
+		if((" SHIT FUCK CUNT FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP ADMIN SYSOP ").indexOf(" "+login.toUpperCase()+" ")>=0)
 			return false;
 		for(int m=0;m<CMClass.MOBs.size();m++)
 		{
@@ -141,16 +141,32 @@ public class FrontDoor
 				}
 				mob.setUserInfo(login,password,Calendar.getInstance());
 				Log.sysOut("FrontDoor","Creating user: "+mob.name());
+				
+				mob.session().setTermID(0);
+				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
+					mob.session().setTermID(1);
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("races.txt").toString());
 
-				mob.session().print("\n\rPlease choose from the following races: ");
+				mob.session().print("\n\r^BPlease choose from the following races:^N\n\r");
+
+				StringBuffer tmpStrB=new StringBuffer("[");
+				boolean tmpFirst = true;
 				for(int r=0;r<CMClass.races.size();r++)
 				{
 					Race thisRace=(Race)CMClass.races.elementAt(r);
 					if(thisRace.playerSelectable())
-						mob.session().print(thisRace.name()+" ");
+					{
+						if (!tmpFirst)
+							tmpStrB.append(", ");
+						else
+							tmpFirst = false;
+						tmpStrB.append("^H"+thisRace.name()+"^?");
+					}
 				}
+				tmpStrB.append("]");
+				mob.session().print(tmpStrB.toString());
+					
 				Race newRace=null;
 				while(newRace==null)
 				{
@@ -181,22 +197,21 @@ public class FrontDoor
 							}
 						}
 					if(newRace!=null)
-						if(!mob.session().confirm("Is "+newRace.name()+" correct (Y/n)?","Y"))
+						if(!mob.session().confirm("^BIs ^H"+newRace.name()+"^? correct (Y/n)?^N","Y"))
 							newRace=null;
 				}
-				mob.baseCharStats().setMyRace(newRace);
-
+				
 				String Gender="";
 				while(Gender.length()==0)
-					Gender=mob.session().choose("\n\rWhat is your gender (M/F)?","MF","");
+					Gender=mob.session().choose("\n\r^BWhat is your gender (M/F)?^N","MF","");
 
 				mob.baseCharStats().setGender(Gender.toUpperCase().charAt(0));
-
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
 
 				boolean mayCont=true;
 				int maxStat[]={18,18,18,18,18,18};
+				StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
 				while(mayCont)
 				{
 					mob.baseCharStats().reRoll();
@@ -205,15 +220,28 @@ public class FrontDoor
 					if(V.size()>1)
 					{
 						StringBuffer classes=new StringBuffer("");
+						listOfClasses = new StringBuffer("");
 						for(int v=0;v<V.size();v++)
 							if(v==V.size()-1)
-								classes.append("and "+((CharClass)V.elementAt(v)).name());
+							{
+								if (v != 0)
+								{
+									classes.append("^?and ^?");
+									listOfClasses.append("^?or ^?");
+								}
+								classes.append(((CharClass)V.elementAt(v)).name());
+								listOfClasses.append(((CharClass)V.elementAt(v)).name());
+							}
 							else
-								classes.append(((CharClass)V.elementAt(v)).name()+", ");
+							{
+								classes.append(((CharClass)V.elementAt(v)).name()+"^?, ^?");
+								listOfClasses.append(((CharClass)V.elementAt(v)).name()+"^?, ^?");
+							}
 
-						mob.session().println("Your current stats are: \n\r"+mob.baseCharStats().getStats(maxStat));
-						mob.session().println("This would qualify you for "+classes.toString()+".");
-						if(!mob.session().confirm("Would you like to re-roll (y/N)?","N"))
+						mob.session().println("Your current stats are: \n\r"+mob.charStats().getStats(maxStat));
+						mob.session().println("This would qualify you for ^H"+classes.toString()+"^N.");
+							
+						if(!mob.session().confirm("^BWould you like to re-roll (y/N)?^N","N"))
 							mayCont=false;
 					}
 				}
@@ -221,7 +249,8 @@ public class FrontDoor
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("classes.txt").toString());
 
-				mob.session().print("\n\rPlease choose from the following Classes: ");
+				mob.session().print("\n\r^BPlease choose from the following Classes:\n\r");
+				mob.session().print("^H[" + listOfClasses.toString() + "]^N");
 				for(int c=0;c<CMClass.charClasses.size();c++)
 				{
 					CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
@@ -255,9 +284,15 @@ public class FrontDoor
 								break;
 							}
 					}
-					if(newClass!=null)
+					if((newClass!=null)
+					&&(newClass.playerSelectable())
+					&&(newClass.qualifiesForThisClass(mob)))
+					{
 						if(!mob.session().confirm("Is "+newClass.name()+" correct (Y/n)?","Y"))
 							newClass=null;
+					}
+					else
+						newClass=null;
 				}
 				mob.baseCharStats().setMyClass(newClass);
 

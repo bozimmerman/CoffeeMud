@@ -1,11 +1,11 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+^HArchon help^N
+^HCommands^N
+create destroy link modify
+list unlink save sysmsgs
+take unloadhelp dumpfile
+^HModules^N  
+import xml
 
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+^HSkills^N
+chargen possess goto wizinv
+** enter ^HAHELP 'command name'^N or ^BATOPICS^N for more help!

@@ -4,7 +4,7 @@ ms	CLAP <T-NAME>	You clap at his performance.	<S-NAME> claps at <T-NAME>'s perfo
 mo	BLUSH <T-NAME>	You get flustered upon seeing <T-HIM-HER>.	<S-NAME> blushes as he sees <T-NAME> here.	<S-NAME> blushes as he sees you here.  Such an effect on people!	
 mo	EYEBROW <T-NAME>	You raise your eyebrow at <T-NAME>.	<S-NAME> raises an eyebrow at <T-NAME>'s weird actions.	<S-NAME> raises an eyebrow at you.	
 mo	GRIN	You grin evilly.	<S-NAME> grins evilly.		
-mo	BLUSH	You blush.	<S-NAME> blushes.		
+mo	BLUSH	You ^rblush^?.	<S-NAME> ^rblushes^?.		
 ss	FART	Stinky!			
 ov	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAME>.	<S-NAME> bows before you.	
 ww	APOLOGIZE <T-NAME>	You might as well apologize because he sure as hell won't.	<S-NAME> apologizes to <T-NAME> with a very sincere look on his face.	<S-NAME> apologizes to you and begs for forgiveness.	
