@@ -354,16 +354,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 						item.setNumberOfCoins(newNum);
 						if(old!=null) delDepositInventory(owner,old);
 						addDepositInventory(owner,item);
-						if(msg.targetMinor()==CMMsg.TYP_GIVE)
-						{
-							setMoney(getMoney()-((Coins)msg.tool()).numberOfCoins());
-							if(getMoney()<0) setMoney(0);
-							recoverEnvStats();
-						}
+						setMoney(getMoney()-((Coins)msg.tool()).numberOfCoins());
+						if(getMoney()<0) setMoney(0);
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 						    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+getBalance(owner)+" gold coins.",true,false);
 						else
 						    CommonMsgs.say(this,mob,"Ok, your new balance is "+getBalance(owner)+" gold coins.",true,false);
+						recoverEnvStats();
 					}
 					else
 					{

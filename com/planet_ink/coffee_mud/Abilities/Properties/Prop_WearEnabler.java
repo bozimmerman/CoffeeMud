@@ -73,7 +73,6 @@ public class Prop_WearEnabler extends Property
 			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				String t=A.text();
-				A=(Ability)A.copyOf();
 				Vector V2=new Vector();
 				if(t.length()>0)
 				{

@@ -43,9 +43,9 @@ public class Herbology extends CommonSkill
 				{
 					String herb=herbList[Dice.roll(1,herbList.length,-1)].toLowerCase();
 					
-					if(found.secretIdentity().length()>0)
+					if(found.rawSecretIdentity().length()>0)
 					{	
-						herb=found.secretIdentity();
+						herb=found.rawSecretIdentity();
 						found.setSecretIdentity("");
 					}
 					

@@ -119,7 +119,43 @@ public class Foraging extends CommonSkill
 				{
 					Vector V=(Vector)H.get(mob.location().ID());
 					if((V!=null)&&(V.size()>0))
-						found.setSecretIdentity((String)V.elementAt(Dice.roll(1,V.size(),-1)));
+					{
+						int total=0;
+						for(int i=0;i<V.size();i++)
+						{
+							String s=(String)V.elementAt(i);
+							int x=s.indexOf(" ");
+							if((x>=0)&&(Util.isNumber(s.substring(0,x).trim())))
+								total+=Util.s_int(s.substring(0,x).trim());
+							else
+								total+=10;
+						}
+						int choice=Dice.roll(1,total,-1);
+						total=0;
+						for(int i=0;i<V.size();i++)
+						{
+							String s=(String)V.elementAt(i);
+							int x=s.indexOf(" ");
+							if((x>=0)&&(Util.isNumber(s.substring(0,x).trim())))
+							{
+								total+=Util.s_int(s.substring(0,x).trim());
+								if(choice<=total)
+								{
+									found.setSecretIdentity((String)s.substring(x+1).trim());
+									break;
+								}
+							}
+							else
+							{
+								total+=10;
+								if(choice<=total)
+								{
+									found.setSecretIdentity(s);
+									break;
+								}
+							}
+						}
+					}
 				}
 			}
 			mob.location().send(mob,msg);
