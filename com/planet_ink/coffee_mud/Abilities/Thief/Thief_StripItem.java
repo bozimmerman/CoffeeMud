@@ -53,7 +53,11 @@ public class Thief_StripItem extends ThiefSkill
 			return false;
 		}
 
-		boolean success=profficiencyCheck(-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15)),auto);
+		if(levelDiff>0) 
+			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
+		else
+			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
+		boolean success=profficiencyCheck(levelDiff,auto);
 
 		if(!success)
 		{

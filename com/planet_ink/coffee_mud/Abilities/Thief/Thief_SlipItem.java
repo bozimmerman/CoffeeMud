@@ -63,7 +63,12 @@ public class Thief_SlipItem extends ThiefSkill
 			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		boolean success=profficiencyCheck(-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15)),auto);
+		
+		if(levelDiff>0) 
+			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15));
+		else
+			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
+		boolean success=profficiencyCheck(levelDiff,auto);
 
 		if(!success)
 		{

@@ -208,7 +208,11 @@ public class ExternalPlay
 	{
 		if(player!=null) player.quickSay(mob,target,text,isPrivate,tellFlag);
 	}
-
+	public static MOB parseShopkeeper(MOB mob, Vector commands, String error)
+	{
+		if(player!=null) return player.parseShopkeeper(mob,commands,error);
+		return null;
+	}
 	public static StringBuffer getScore(MOB mob)
 	{
 		if(player!=null) return player.getScore(mob);

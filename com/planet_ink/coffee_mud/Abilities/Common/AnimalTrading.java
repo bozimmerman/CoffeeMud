@@ -23,40 +23,17 @@ public class AnimalTrading extends CommonSkill
 	}
 	public Environmental newInstance(){	return new AnimalTrading();}
 
-	private static MOB shopkeeper(Room here, MOB mob)
-	{
-		for(int i=0;i<here.numInhabitants();i++)
-		{
-			MOB thisMOB=here.fetchInhabitant(i);
-			if((thisMOB!=null)
-			&&(CoffeeUtensils.getShopKeeper(thisMOB)!=null)
-			&&(Sense.canBeSeenBy(thisMOB,mob)))
-				return thisMOB;
-		}
-		return null;
-	}
-	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Environmental taming=null;
 		Item cage=null;
 		
-		MOB shopkeeper=shopkeeper(mob.location(),mob);
-		if(shopkeeper==null)
+		MOB shopkeeper=ExternalPlay.parseShopkeeper(mob,commands,"Sell what to whom?");
+		if(shopkeeper==null) return false;
+		if(commands.size()==0)
 		{
-			if(commands.size()<3)
-			{
-				mob.tell("Sell what to whom?");
-				return false;
-			}
-			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
-			else
-			{
-				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' buying anything.");
-				return false;
-			}
+			mob.tell("Sell what?");
+			return false;
 		}
 		
 		String str=Util.combine(commands,0);

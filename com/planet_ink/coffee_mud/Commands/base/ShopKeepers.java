@@ -60,9 +60,12 @@ public class ShopKeepers
 			MOB shopkeeper=(MOB)V.firstElement();
 			if(commands.size()>1)
 			{
-				shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+				MOB M=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
 				if((shopkeeper!=null)&&(CoffeeUtensils.getShopKeeper(shopkeeper)!=null)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+				{
+					shopkeeper=M;
 					commands.removeElementAt(commands.size()-1);
+				}
 			}
 			return shopkeeper;
 		}

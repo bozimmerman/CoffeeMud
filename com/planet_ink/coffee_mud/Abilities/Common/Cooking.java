@@ -13,6 +13,7 @@ public class Cooking extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	protected static String cookWordShort(){return "cook";};
 	protected static String cookWord(){return "cooking";};
+	protected static boolean honorHerbs(){return true;}
 
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
@@ -229,6 +230,7 @@ public class Cooking extends CommonSkill
 				String ingredient2=(String)contents[i];
 				int amount2=amounts[i];
 				if((amount2>0)
+				&&((!honorHerbs())||(!ingredient2.toUpperCase().startsWith("HERBS/")))
 				&&(!ingredient2.toUpperCase().startsWith("WATER/")))
 				{
 					String content=contents[i];
@@ -249,6 +251,10 @@ public class Cooking extends CommonSkill
 		{
 			boolean found=false;
 			String ingredient=(String)e.nextElement();
+			
+			if(honorHerbs()&&ingredient.toUpperCase().startsWith("HERBS/")) // herbs exception
+				found=true;
+			else
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
 				String ingredient2=(String)Vr.elementAt(vr);
@@ -543,16 +549,24 @@ public class Cooking extends CommonSkill
 			finalDish.setDescription("It looks "+((burnt)?"burnt!":"good!"));
 			food.setNourishment(0);
 			if(!burnt)
-			for(int v=0;v<contents.size();v++)
 			{
-				Item I=(Item)contents.elementAt(v);
-				if(I instanceof Food)
-					food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment()));
+				boolean timesTwo=false;
+				for(int v=0;v<contents.size();v++)
+				{
+					Item I=(Item)contents.elementAt(v);
+					if((I.material()==EnvResource.RESOURCE_HERBS)&&(honorHerbs()))
+						timesTwo=true;
+					else
+					if(I instanceof Food)
+						food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment()));
+				}
+				if(timesTwo) food.setNourishment(food.nourishment()*2);
 			}
 			for(int v=0;v<contents.size();v++)
 			{
 				Item I=(Item)contents.elementAt(v);
-				food.baseEnvStats().setWeight(food.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
+				if((I.material()!=EnvResource.RESOURCE_HERBS)||(!honorHerbs()))
+					food.baseEnvStats().setWeight(food.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
 			}
 			food.setNourishment(food.nourishment()/finalAmount);
 			food.baseEnvStats().setWeight(food.baseEnvStats().weight()/finalAmount);

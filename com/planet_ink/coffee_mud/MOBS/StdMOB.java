@@ -292,7 +292,7 @@ public class StdMOB implements MOB
 	{
 		double str=new Integer(charStats().getStat(CharStats.STRENGTH)).doubleValue();
 		double bodyWeight=new Integer(baseEnvStats().weight()).doubleValue();
-		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/100.0) + str*10.0);
+		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + str*5.0);
 	}
 	public int maxFollowers()
 	{

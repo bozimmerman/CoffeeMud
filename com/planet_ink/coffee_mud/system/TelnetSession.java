@@ -155,7 +155,7 @@ public class TelnetSession extends Thread implements Session
 	{
 		if(cmds==null) return;
 		if(cmds.size()==0) return;
-		if((cmds.size()>0)&&(((String)cmds.elementAt(0)).trim().equals("!")))
+		if((cmds.size()>0)&&(((String)cmds.elementAt(0)).trim().startsWith("!")))
 			return;
 
 		previousCmd.removeAllElements();
@@ -1203,12 +1203,12 @@ public class TelnetSession extends Thread implements Session
 			{
 				switch(prompt.charAt(++c))
 				{
-				case 'h': { buf.append("^h"+mob().curState().getHitPoints()); c++; break;}
-				case 'H': { buf.append("^h"+mob().maxState().getHitPoints()); c++; break;}
-				case 'm': { buf.append("^m"+mob().curState().getMana()); c++; break;}
-				case 'M': { buf.append("^m"+mob().maxState().getMana()); c++; break;}
-				case 'v': { buf.append("^v"+mob().curState().getMovement()); c++; break;}
-				case 'V': { buf.append("^v"+mob().maxState().getMovement()); c++; break;}
+				case 'h': { buf.append(mob().curState().getHitPoints()); c++; break;}
+				case 'H': { buf.append(mob().maxState().getHitPoints()); c++; break;}
+				case 'm': { buf.append(mob().curState().getMana()); c++; break;}
+				case 'M': { buf.append(mob().maxState().getMana()); c++; break;}
+				case 'v': { buf.append(mob().curState().getMovement()); c++; break;}
+				case 'V': { buf.append(mob().maxState().getMovement()); c++; break;}
 				case 'x': { buf.append(mob().getExperience()); c++; break;}
 				case 'X': { buf.append(mob().getExpNeededLevel()); c++; break;}
 				case 'g': { buf.append(mob().getMoney()); c++; break;}

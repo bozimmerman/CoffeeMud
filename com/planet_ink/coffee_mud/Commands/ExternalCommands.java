@@ -100,6 +100,11 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return AbilityEvoker.getToEvoke(mob,commands);
 	}
+	public MOB parseShopkeeper(MOB mob, Vector commands, String error)
+	{
+		return ShopKeepers.parseShopkeeper(mob,commands,error);
+	}
+							   
 	public void postDamage(MOB attacker, 
 						   MOB target, 
 						   Environmental weapon, 

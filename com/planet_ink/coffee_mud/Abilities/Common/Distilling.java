@@ -15,6 +15,7 @@ public class Distilling extends Cooking
 	protected static String cookWordShort(){return "distill";};
 	protected static String cookWord(){return "distilling";};
 	public Environmental newInstance(){	return new Distilling();}
+	protected static boolean honorHerbs(){return false;}
 	private static boolean myMapped=false;
 
 	public Distilling()

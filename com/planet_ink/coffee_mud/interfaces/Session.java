@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.IOException;
 public interface Session
 {
-	public static final String defaultPrompt="^N<%hhp %mm %vmv^N>";
+	public static final String defaultPrompt="^N<^c%hhp %mm %vmv^N>";
 	public String[] clookup();
 	
 	public void rawPrintln(String msg);

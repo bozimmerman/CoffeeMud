@@ -421,14 +421,15 @@ public class StdAbility implements Ability, Cloneable
 				return false;
 
 			int manaConsumed=50;
-			int qualifyingLevel=CMAble.qualifyingLevel(mob,this);
-			
 			int diff=0;
-			if(qualifyingLevel<0)
-				diff=0;
-			else
-				diff=CMAble.qualifyingClassLevel(mob,this)-qualifyingLevel;
-
+			for(int c=0;c<mob.charStats().numClasses();c++)
+			{
+				CharClass C=mob.charStats().getMyClass(c);
+				int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),ID());
+				if(qualifyingLevel>=0)
+					diff+=(mob.charStats().getClassLevel(C.ID())-qualifyingLevel);
+			}
+			
 			if(diff>0)
 			switch(diff)
 			{

@@ -101,10 +101,12 @@ public class CommonStrings extends Scriptable
 			// I M - item, mob
 			clookup[(int)'I']="^g";
 			clookup[(int)'M']="^p";
-			// h m v - prompt colors
+			
+			// h m v - prompt colors - deprecated!!
 			clookup[(int)'h']="^c";
 			clookup[(int)'m']="^c";
 			clookup[(int)'v']="^c";
+			
 			// fixed system colors, 1= bright, 0=dark
 			clookup[(int)'w']="\033[1;37m";
 			clookup[(int)'g']="\033[1;32m";

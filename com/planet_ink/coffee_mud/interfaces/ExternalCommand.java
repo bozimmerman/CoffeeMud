@@ -24,6 +24,7 @@ public interface ExternalCommand
 	public StringBuffer getEquipment(MOB seer, MOB mob);
 	public void doCommand(MOB mob, Vector commands)
 		throws Exception;
+	public MOB parseShopkeeper(MOB mob, Vector commands, String error);
 	public boolean get(MOB mob, Item container, Item getThis, boolean quiet);
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet);
 	public void read(MOB mob, Environmental thisThang, String theRest);

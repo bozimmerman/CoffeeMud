@@ -701,10 +701,7 @@ public class Scoring
 						   {"Room Descriptions","L"},
 						   {"Doors","d"},
 						   {"Items","I"},
-						   {"MOBs","M"},
-						   {"Prompt Color","h"},
-						   {"Prompt Mana","m"},
-						   {"Prompt Move","v"}};
+						   {"MOBs","M"}};
 		String[][] theColors={{"White","w"},
 							  {"Green","g"},
 							  {"Blue","b"},
@@ -743,7 +740,7 @@ public class Scoring
 			{
 				num--;
 				buf=new StringBuffer("");
-				buf.append("\n\r^h"+Util.padLeft(""+(num+1),2)+"^N)"+Util.padRight(theSet[num][0],20)+":");
+				buf.append("\n\r^c"+Util.padLeft(""+(num+1),2)+"^N)"+Util.padRight(theSet[num][0],20)+":");
 				String what=clookup[(int)theSet[num][1].charAt(0)];
 				if(what!=null)
 				for(int ii=0;ii<theColors.length;ii++)

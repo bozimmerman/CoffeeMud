@@ -15,6 +15,7 @@ public class Apothecary extends Cooking
 	protected static String cookWordShort(){return "mix";};
 	protected static String cookWord(){return "mixing";};
 	public Environmental newInstance(){	return new Apothecary();}
+	protected static boolean honorHerbs(){return false;}
 
 	
 	protected synchronized Vector loadRecipes()
