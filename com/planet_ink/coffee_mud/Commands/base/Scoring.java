@@ -352,11 +352,11 @@ public class Scoring
 		if(qual.length()>0)
 		{
 			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
-				if(Ability.DOMAIN_DESCS[i].startsWith(qual))
+				if(Ability.DOMAIN_DESCS[i].startsWith(qual.toUpperCase()))
 				{ domain=i<<5; break;}
 				else
 				if((Ability.DOMAIN_DESCS[i].indexOf("/")>=0)
-				&&(Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).startsWith(qual)))
+				&&(Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).startsWith(qual.toUpperCase())))
 				{ domain=i<<5; break;}
 			if(domain>0)
 			{
