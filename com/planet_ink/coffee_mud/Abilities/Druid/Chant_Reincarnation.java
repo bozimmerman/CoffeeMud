@@ -10,7 +10,7 @@ public class Chant_Reincarnation extends Chant
 {
 	public String ID() { return "Chant_Reincarnation"; }
 	public String name(){ return "Reincarnation";}
-	public String displayText(){return "(Reincarnation Geis)";}
+	public String displayText(){return "(Reincarnation Geas)";}
 	public int quality(){return Ability.OK_OTHERS;}
 	public Environmental newInstance(){	return new Chant_Reincarnation();}
 	public boolean canBeUninvoked(){return false;}
@@ -49,7 +49,7 @@ public class Chant_Reincarnation extends Chant
 			if((affected==null)||(!(affected instanceof MOB)))
 				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
-			mob.tell("Your reincarnation geis is lifted as your form solidifies.");
+			mob.tell("Your reincarnation geas is lifted as your form solidifies.");
 			if(newRace!=null)
 				mob.baseCharStats().setMyRace(newRace);
 			mob.delAffect(this);
@@ -106,7 +106,7 @@ public class Chant_Reincarnation extends Chant
 		{
 			int modifier=0;
 			if(target!=mob) modifier=Affect.MASK_MALICIOUS;
-			FullMsg msg=new FullMsg(mob,target,this,modifier|affectType(auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geis!^?":"^S<S-NAME> chant(s) a reincarnation geis upon <T-NAMESELF>.^?"));
+			FullMsg msg=new FullMsg(mob,target,this,modifier|affectType(auto),(auto?"^S<S-NAME> get(s) put under a reincarnation geas!^?":"^S<S-NAME> chant(s) a reincarnation geas upon <T-NAMESELF>.^?"));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -114,7 +114,7 @@ public class Chant_Reincarnation extends Chant
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a reincarnation geis, but nothing happens.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) for a reincarnation geas, but nothing happens.");
 
 		return success;
 	}

@@ -32,12 +32,9 @@ public class Minstrel extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Alchemy",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Juggle",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_BellyRolling",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",100,true);

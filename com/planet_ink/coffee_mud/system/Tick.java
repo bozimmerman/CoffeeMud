@@ -39,6 +39,7 @@ public class Tick extends Thread
 	{
 		tickers.removeAllElements();
 		this.interrupt();
+		this.stop();
 	}
 
 	public static boolean tickTicker(TockClient C, Vector tickers)

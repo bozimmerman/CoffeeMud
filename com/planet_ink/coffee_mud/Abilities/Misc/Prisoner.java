@@ -10,7 +10,7 @@ public class Prisoner extends StdAbility
 {
 	public String ID() { return "Prisoner"; }
 	public String name(){ return "Prisoner";}
-	public String displayText(){ return "(Prisoner's Geis)";}
+	public String displayText(){ return "(Prisoner's Geas)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prisoner();}
@@ -21,20 +21,20 @@ public class Prisoner extends StdAbility
 		if(affect.sourceMinor()==affect.TYP_RECALL)
 		{
 			if((affect.source()!=null)&&(affect.source().location()!=null))
-				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but a geis prevents <S-HIM-HER>.");
+				affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>.");
 			return false;
 		}
 		else
 		if(affect.sourceMinor()==Affect.TYP_FLEE)
 		{
-			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to flee, but a geis prevents <S-HIM-HER>.");
+			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to flee, but a geas prevents <S-HIM-HER>.");
 			return false;
 		}
 		else
 		if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
 		   &&(affect.targetMinor()==Affect.TYP_LEAVE))
 		{
-			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geis prevents <S-HIM-HER>.");
+			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geas prevents <S-HIM-HER>.");
 			return false;
 		}
 		else
@@ -44,7 +44,7 @@ public class Prisoner extends StdAbility
 		   &&(affect.source().location()!=null)
 		   &&(!affect.source().location().getArea().name().equals(((Room)affect.target()).getArea().name())))
 		{
-			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geis prevents <S-HIM-HER>.");
+			affect.source().location().show(affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to escape patrole, but a geas prevents <S-HIM-HER>.");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

@@ -112,7 +112,16 @@ public class SaveThread extends Thread
 		for(int x=0;x<tryToKill.size();x++)
 		{
 			Tick almostTock=(Tick)ServiceEngine.tickGroup.elementAt(x);
+			Vector objs=new Vector();
+			for(int i=0;i<almostTock.tickers.size();i++)
+				objs.addElement(almostTock.tickers.elementAt(i));
 			almostTock.shutdown();
+			ServiceEngine.tickGroup.removeElement(almostTock);
+			for(int i=0;i<objs.size();i++)
+			{
+				TockClient c=(TockClient)objs.elementAt(i);
+				ServiceEngine.startTickDown(c.clientObject,c.tickID,c.reTickDown);
+			}
 		}
 
 		for(int s=0;s<Sessions.size();s++)

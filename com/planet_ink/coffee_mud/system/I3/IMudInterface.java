@@ -13,7 +13,7 @@ public class IMudInterface implements ImudServices, Serializable
 	public String version="CoffeeMud 4.0";
 	public String name="CoffeeMud";
 	public String i3state="Open to the public";
-	public int port=4455;
+	public int port=5555;
 	public String[][] channels={{"diku_chat","CHAT","0"},
 								{"diku_immortals","GOSSIP","32"},
 								{"diku_code","GREET","0"}};

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.web.*;
 public class MUD extends Thread implements Host
 {
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)8.6;
+	public static final float HOST_VERSION_MINOR=(float)8.7;
 
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
@@ -37,7 +37,7 @@ public class MUD extends Thread implements Host
 	public final static String ServerVersionString = "CoffeeMUD-MainServer/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
 	public boolean acceptConnections=false;
-	public int port=4455;
+	public int port=5555;
 	ServerSocket servsock=null;
 
 	public MUD()
