@@ -24,7 +24,7 @@ public class GoodExecutioner  extends StdBehavior
 			if((B!=null)&&(B.grantsAggressivenessTo(M)))
 				return true;
 		}
-		return (((M.getAlignment()<350)&&(M.isMonster()))
+		return (((M.getAlignment()<350)&&(M.isMonster())&&(!Sense.isBoundOrHeld(M)))
 		||((M.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
 		   &&(M.isMonster())));
 	}

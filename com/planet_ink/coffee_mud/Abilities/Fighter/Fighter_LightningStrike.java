@@ -144,10 +144,13 @@ public class Fighter_LightningStrike extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				for(int i=0;i<CMAble.qualifyingClassLevel(mob,this);i++)
-					if(!target.amDead())
+					if((!target.amDead())&&(!anyWeapons(mob)))
 						MUDFight.postAttack(mob,target,null);
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");
-				success=maliciousAffect(mob,mob,7,-1);
+				if(!anyWeapons(mob))
+				{
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");
+					success=maliciousAffect(mob,mob,7,-1);
+				}
 			}
 		}
 		else
