@@ -56,12 +56,13 @@ public class Trap_Boulders extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a boulder trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
-			{
-				super.spring(target);
-				int damage=Dice.roll(trapLevel(),20,1);
-				ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
-			}
+			if(invoker().mayIFight(target))
+				if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trigger(s) a trap!"))
+				{
+					super.spring(target);
+					int damage=Dice.roll(trapLevel(),20,1);
+					ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"Dozens of boulders <DAMAGE> <T-NAME>!");
+				}
 		}
 	}
 }

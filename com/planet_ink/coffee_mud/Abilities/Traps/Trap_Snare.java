@@ -44,14 +44,15 @@ public class Trap_Snare extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) tripping a snare trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trip(s) a snare trap and get(s) all tangled up!"))
-			{
-				super.spring(target);
-				target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_SITTING);
-				target.recoverEnvStats();
-				Ability A=CMClass.getAbility("Thief_Bind");
-				A.startTickDown(invoker(),target,99999);
-			}
+			if(invoker().mayIFight(target))
+				if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> trip(s) a snare trap and get(s) all tangled up!"))
+				{
+					super.spring(target);
+					target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_SITTING);
+					target.recoverEnvStats();
+					Ability A=CMClass.getAbility("Thief_Bind");
+					A.startTickDown(invoker(),target,99999);
+				}
 		}
 	}
 }

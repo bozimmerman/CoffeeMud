@@ -77,15 +77,16 @@ public class Trap_SporeTrap extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap which sends spores flying around!"))
-			{
-				super.spring(target);
-				Ability A=CMClass.getAbility(text());
-				if(A==null) A=CMClass.getAbility("Disease_Cold");
-				if(A!=null) A.invoke(invoker(),target,true);
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
-			}
+			if(invoker().mayIFight(target))
+				if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap which sends spores flying around!"))
+				{
+					super.spring(target);
+					Ability A=CMClass.getAbility(text());
+					if(A==null) A=CMClass.getAbility("Disease_Cold");
+					if(A!=null) A.invoke(invoker(),target,true);
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
+				}
 		}
 	}
 }

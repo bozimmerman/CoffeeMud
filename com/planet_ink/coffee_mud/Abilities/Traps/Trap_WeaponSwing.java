@@ -55,7 +55,9 @@ public class Trap_WeaponSwing extends StdTrap
 	}
 	public void spring(MOB target)
 	{
-		if((target!=invoker())&&(target.location()!=null))
+		if((target!=invoker())
+		   &&(target.location()!=null)
+			&&(invoker().mayIFight(target)))
 		{
 			int x=text().indexOf("/");
 			int dam=3;

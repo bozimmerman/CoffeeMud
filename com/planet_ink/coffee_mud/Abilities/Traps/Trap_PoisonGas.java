@@ -86,7 +86,8 @@ public class Trap_PoisonGas extends StdTrap
 				{
 					MOB M=target.location().fetchInhabitant(i);
 					if((M!=null)&&(M!=invoker())&&(A!=null))
-						A.invoke(invoker(),M,true);
+						if(invoker().mayIFight(M))
+							A.invoke(invoker(),M,true);
 				}
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();

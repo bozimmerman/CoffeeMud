@@ -111,6 +111,7 @@ public class Trap_RoomPit extends StdTrap
 		if(target.envStats().weight()<5)
 			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
+		if(invoker().mayIFight(target))
 		{
 			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);

@@ -77,15 +77,16 @@ public class Trap_NeedlePrick extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) touching a needle!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> prick(s) <S-HIM-HERSELF> on needle trap!"))
-			{
-				super.spring(target);
-				Ability A=CMClass.getAbility(text());
-				if(A==null) A=CMClass.getAbility("Poison");
-				if(A!=null) A.invoke(invoker(),target,true);
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
-			}
+			if(invoker().mayIFight(target))
+				if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> prick(s) <S-HIM-HERSELF> on needle trap!"))
+				{
+					super.spring(target);
+					Ability A=CMClass.getAbility(text());
+					if(A==null) A=CMClass.getAbility("Poison");
+					if(A!=null) A.invoke(invoker(),target,true);
+					if((canBeUninvoked())&&(affected instanceof Item))
+						disable();
+				}
 		}
 	}
 }

@@ -92,10 +92,11 @@ public class Trap_CrushingRoom extends StdTrap
 					{
 						MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(M!=invoker()))
-						{
-							int damage=Dice.roll(trapLevel(),30,1);
-							ExternalPlay.postDamage(invoker(),M,this,damage,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The crushing walls <DAMAGE> <T-NAME>!");
-						}
+							if(invoker().mayIFight(M))
+							{
+								int damage=Dice.roll(trapLevel(),30,1);
+								ExternalPlay.postDamage(invoker(),M,this,damage,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The crushing walls <DAMAGE> <T-NAME>!");
+							}
 					}
 				}
 				else
