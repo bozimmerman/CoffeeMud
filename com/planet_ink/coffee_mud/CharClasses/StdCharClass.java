@@ -513,7 +513,7 @@ public class StdCharClass implements CharClass
 			{
 				beneficiaries.put(mob,mob);
 				totalLevels+=mob.envStats().level();
-				expAmount+=(10*beneficiaries.size());
+				expAmount+=10;
 			}
 		}
 		if(beneficiaries.size()>0)
