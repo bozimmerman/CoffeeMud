@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
+import java.util.Vector;
+
 
 public interface LandTitle
 {
@@ -9,4 +11,6 @@ public interface LandTitle
 	public String landRoomID();
 	public void setLandRoomID(String landID);
 	public void updateLot(Room R, LandTitle T);
+	public void updateTitle();
+	public Vector getRooms();
 }

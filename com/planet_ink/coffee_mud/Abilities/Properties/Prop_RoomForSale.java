@@ -48,6 +48,13 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		setMiscText(owner+"/"+price);
 	}
 	
+	public void updateTitle()
+	{
+		Room R=CMMap.getRoom(landRoomID());
+		if(R==null) return;
+		ExternalPlay.DBUpdateRoom(R);
+	}
+	
 	public String landRoomID(){
 		if(affected!=null)
 			return affected.ID();
@@ -114,6 +121,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 	
+	public Vector getRooms()
+	{
+		Vector V=new Vector();
+		Room R=CMMap.getRoom(landRoomID());
+		if(R!=null) V.addElement(R);
+		return V;
+	}
+	
 	public void updateLot(Room R, LandTitle T)
 	{
 		if(R==null) R=CMMap.getRoom(landRoomID());
@@ -158,7 +173,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 			
 			int x=R.description().indexOf(theStr);
-			if(x>0)
+			if(x>=0)
 			{
 				R.setDescription(R.description().substring(0,x)+R.description().substring(x+1));
 				ExternalPlay.DBUpdateRoom(R);

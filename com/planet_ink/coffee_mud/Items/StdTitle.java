@@ -8,28 +8,22 @@ import java.util.*;
 public class StdTitle extends StdItem implements LandTitle
 {
 	public String ID(){	return "StdTitle";}
-	public String name()
-	{ 
-		String str="the title to "+landRoomID();
-		if(baseEnvStats().weight()>0)
-			str+=" (Copy)";
-		return str;
-	}
 	public String displayText() {return "an official looking document sits here";}
 	public int baseGoldValue() {return landPrice();}
 	public int value() 
 	{
-		if(baseEnvStats().weight()>0)
-			return 10;
+		if(name().indexOf("(Copy)")>=0)
+			baseGoldValue=10;
 		else
-			return landPrice();
+			baseGoldValue=landPrice();
+		return baseGoldValue;
 	}
 	public void setBaseGoldValue(int newValue) {setLandPrice(newValue);}
 	
 	public StdTitle()
 	{
 		super();
-		baseEnvStats.setWeight(0);
+		name="a standard title";
 		description="Give or Sell this title to transfer ownership. **DON'T LOSE THIS!**";
 		baseGoldValue=10000;
 		miscText="Who Knows?";
@@ -53,9 +47,7 @@ public class StdTitle extends StdItem implements LandTitle
 		LandTitle A=fetchLandTitle(null);
 		if(A==null)	return;
 		A.setLandPrice(price);
-		Room R=CMMap.getRoom(landRoomID());
-		if(R==null) return;
-		ExternalPlay.DBUpdateRoom(R);
+		A.updateTitle();
 	}
 	public String landOwner()
 	{
@@ -68,18 +60,58 @@ public class StdTitle extends StdItem implements LandTitle
 		LandTitle A=fetchLandTitle(null);
 		if(A==null)	return;
 		A.setLandOwner(owner);
-		Room R=CMMap.getRoom(landRoomID());
-		if(R==null) return;
-		ExternalPlay.DBUpdateRoom(R);
+		A.updateTitle();
 	}
-	public String landRoomID(){return text();}
-	public void setLandRoomID(String landID){setMiscText(landID);}
+	public String landRoomID()
+	{
+		return text();
+	}
+	
+	public void updateTitleName()
+	{
+		if(!name.startsWith("the title to"))
+		{
+			Vector V=getRooms();
+			if(V.size()<2)
+				name="the title to "+landRoomID();
+			else
+				name="the title to rooms around "+((Room)V.firstElement()).ID();
+		}
+	}
+	
+	public void setLandRoomID(String landID)
+	{
+		setMiscText(landID);
+		updateTitleName();
+	}
+	
 	public void updateLot(Room R, LandTitle T)
 	{
 		if(T==null)
 			T=fetchLandTitle(R);
 		if(T==null) return;
 		T.updateLot(R,T);
+	}
+	
+	public void updateTitle()
+	{
+		Room R=CMMap.getRoom(landRoomID());
+		if(R!=null)
+		{
+			LandTitle A=(LandTitle)fetchLandTitle(R);
+			if(A!=null) A.updateTitle();
+		}
+	}
+	
+	public Vector getRooms()
+	{
+		Room R=CMMap.getRoom(landRoomID());
+		if(R!=null)
+		{
+			LandTitle A=(LandTitle)fetchLandTitle(R);
+			if(A!=null) return A.getRooms();
+		}
+		return new Vector();
 	}
 	
 	private LandTitle fetchLandTitle(Room R)
@@ -125,8 +157,7 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
 			A.setLandOwner("");
-			baseEnvStats().setWeight(0);
-			ExternalPlay.DBUpdateRoom(R);
+			A.updateTitle();
 			updateLot(R,A);
 			recoverEnvStats();
 		}
@@ -155,8 +186,7 @@ public class StdTitle extends StdItem implements LandTitle
 				return;
 			}
 			A.setLandOwner(msg.target().name());
-			baseEnvStats().setWeight(0);
-			ExternalPlay.DBUpdateRoom(R);
+			A.updateTitle();
 			updateLot(R,A);
 			recoverEnvStats();
 		}
@@ -186,8 +216,7 @@ public class StdTitle extends StdItem implements LandTitle
 				A.setLandOwner(msg.source().getClanID());
 			else
 				A.setLandOwner(msg.source().name());
-			baseEnvStats().setWeight(0);
-			ExternalPlay.DBUpdateRoom(R);
+			A.updateTitle();
 			updateLot(R,A);
 			recoverEnvStats();
 		}

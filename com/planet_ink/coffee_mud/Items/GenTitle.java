@@ -36,7 +36,10 @@ public class GenTitle extends StdTitle
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
 	public String landRoomID(){return readableText;}
-	public void setLandRoomID(String landID){readableText=landID;}
+	public void setLandRoomID(String landID){
+		readableText=landID;
+		updateTitleName();
+	}
 	public void setMiscText(String newText)
 	{
 		miscText="";

@@ -30,7 +30,8 @@ public class GenCoins extends GenItem implements Coins
 	public boolean isGeneric(){return true;}
 	public void recoverEnvStats()
 	{
-		if(((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)&&((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER))
+		if(((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+		&&((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER))
 			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 		// import not to sup this, otherwise 'ability' makes it magical!
@@ -101,9 +102,9 @@ public class GenCoins extends GenItem implements Coins
 			if((affect.amITarget(this))||((affect.tool()==this)))
 			{
 				setContainer(null);
+				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
 				remove();
 				destroyThis();
-				affect.source().setMoney(affect.source().getMoney()+envStats().ability());
 				affect.source().location().recoverRoomStats();
 			}
 			break;

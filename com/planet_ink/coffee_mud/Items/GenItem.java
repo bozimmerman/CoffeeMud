@@ -41,31 +41,6 @@ public class GenItem extends StdItem
 		recoverEnvStats();
 	}
 	
-	protected String 	name="an ordinary item";
-	protected String	displayText="a nondescript item sits here doing nothing.";
-	protected String 	description="It looks like something.";
-	protected Item 		myContainer=null;
-	protected int 		myUses=Integer.MAX_VALUE;
-	protected long 		myWornCode=Item.INVENTORY;
-	protected String 	miscText="";
-	protected String	secretIdentity=null;
-	protected boolean	wornLogicalAnd=false;
-	protected long 		properWornBitmap=Item.HELD;
-	protected int		baseGoldValue=0;
-	protected boolean	isReadable=false;
-	protected boolean	isGettable=true;
-	protected boolean	isDroppable=true;
-	protected boolean	isRemovable=true;
-	protected int		material=EnvResource.RESOURCE_COTTON;
-	protected Environmental owner=null;
-	protected long dispossessionTime=0;
-
-	protected Vector affects=new Vector();
-	protected Vector behaviors=new Vector();
-
-	protected EnvStats envStats=new DefaultEnvStats();
-	protected EnvStats baseEnvStats=new DefaultEnvStats();
-
 	public String getStat(String code)
 	{ return Generic.getGenItemStat(this,code);}
 	public void setStat(String code, String val)
