@@ -64,7 +64,7 @@ public class CoffeeUtensils
 		return V;
 	}
 
-	public static Trap getATrap(Environmental unlockThis)
+	public static Trap makeADeprecatedTrap(Environmental unlockThis)
 	{
 		Trap theTrap=null;
 		int roll=(int)Math.round(Math.random()*100.0);
@@ -125,21 +125,10 @@ public class CoffeeUtensils
 		return theTrap;
 	}
 
-	public static Trap fetchMyTrap(Environmental myThang)
-	{
-		if(myThang==null) return null;
-		for(int a=0;a<myThang.numEffects();a++)
-		{
-			Ability A=myThang.fetchEffect(a);
-			if((A!=null)&&(A instanceof  Trap))
-				return (Trap)A;
-		}
-		return null;
-	}
 
 	public static void setTrapped(Environmental myThang, boolean isTrapped)
 	{
-		Trap t=getATrap(myThang);
+		Trap t=makeADeprecatedTrap(myThang);
 		t.setReset(50);
 		setTrapped(myThang,t,isTrapped);
 	}
@@ -156,6 +145,17 @@ public class CoffeeUtensils
 			myThang.addEffect(theTrap);
 	}
 
+	public static Trap fetchMyTrap(Environmental myThang)
+	{
+		if(myThang==null) return null;
+		for(int a=0;a<myThang.numEffects();a++)
+		{
+			Ability A=myThang.fetchEffect(a);
+			if((A!=null)&&(A instanceof  Trap))
+				return (Trap)A;
+		}
+		return null;
+	}
 	public static boolean reachableItem(MOB mob, Environmental I)
 	{
 		if((I==null)||(!(I instanceof Item)))

@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.*;
 
 public class Spell_Spellbinding extends Spell
 {
@@ -39,6 +40,41 @@ public class Spell_Spellbinding extends Spell
 			affectableState.setMana(0);
 	}
 
+	public String text()
+	{
+		if(spellbindings.size()==0)
+			return super.text();
+		try
+		{
+			ByteArrayOutputStream bytes=new ByteArrayOutputStream();
+			new ObjectOutputStream(bytes).writeObject(spellbindings);
+			return Util.toByteList(bytes.toByteArray());
+		}
+		catch(Exception e)
+		{ 
+			Log.errOut("Spell_Spellbinding",e);
+		}
+		return super.text();
+	}
+	
+	public void setMiscText(String text)
+	{
+		if(text.length()==0)
+			spellbindings=new DVector(2);
+		else
+		{
+			try
+			{
+				ByteArrayInputStream bytes=new ByteArrayInputStream(Util.fromByteList(text));
+				spellbindings=(DVector)new ObjectInputStream(bytes).readObject();
+			}
+			catch(Exception e)
+			{ 
+				Log.errOut("Spell_Spellbinding",e);
+			}
+		}
+	}
+	
 	protected String getMsgFromAffect(String msg)
 	{
 		if(msg==null) return null;
@@ -84,7 +120,8 @@ public class Spell_Spellbinding extends Spell
 							A.invoke(msg.source(),new Vector(),null,false);
 						msg.source().curState().setMana(curMana);
 					}
-					spellbindings.removeElementAt(v);
+					if(canBeUninvoked())
+						spellbindings.removeElementAt(v);
 				}
 		}
 		if((spellbindings.size()==0)&&(canBeUninvoked()))

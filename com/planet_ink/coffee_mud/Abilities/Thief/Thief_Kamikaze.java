@@ -27,17 +27,14 @@ public class Thief_Kamikaze extends ThiefSkill
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item I=mob.fetchInventory(i);
-				if((I!=null)
-				&&(I.container()==null)
-				&&(CoffeeUtensils.getATrap(I)!=null))
+				if((I!=null)&&(I.container()==null))
 				{
-					Trap T=CoffeeUtensils.getATrap(I);
-					if(T.isABomb())
+					Trap T=CoffeeUtensils.fetchMyTrap(I);
+					if((T!=null)&&(T.isABomb()))
 					{
 						if(!I.amWearingAt(Item.INVENTORY))
 							CommonMsgs.remove(mob,I,true);
-						if(I.amWearingAt(Item.INVENTORY))
-							CommonMsgs.drop(mob,I,false,false);
+						CommonMsgs.drop(mob,I,false,false);
 						if(I.owner() instanceof Room)
 						{
 							Room R=(Room)I.owner();
@@ -105,7 +102,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int amountRequired=target.getMoney()+(int)(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
+		int amountRequired=(int)(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
 
 		if(mob.getMoney()<amountRequired)
 		{
@@ -114,19 +111,21 @@ public class Thief_Kamikaze extends ThiefSkill
 			return false;
 		}
 		
-		boolean bombsFound=false;
-		for(int i=0;i<mob.inventorySize();i++)
+		Trap bombFound=null;
+		for(int i=0;i<target.inventorySize();i++)
 		{
-			Item I=mob.fetchInventory(i);
-			if((I!=null)
-			&&(I.container()==null)
-			&&(CoffeeUtensils.getATrap(I)!=null))
+			Item I=target.fetchInventory(i);
+			if((I!=null)&&(I.container()==null))
 			{
-				bombsFound=true;
-				break;
+				Trap T=CoffeeUtensils.fetchMyTrap(I);
+				if((T!=null)&&(T.isABomb()))
+				{
+					bombFound=T;
+					break;
+				}
 			}
 		}
-		if(!bombsFound)
+		if(bombFound==null)
 		{
 			mob.tell(target.name()+" must have some bombs for this to work.");
 			return false;
@@ -148,9 +147,10 @@ public class Thief_Kamikaze extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.setMoney(mob.getMoney()+amountRequired);
+				target.setMoney(target.getMoney()+amountRequired);
 				target.recoverEnvStats();
 				beneficialAffect(mob,target,2);
+				((Trap)bombFound).activateBomb();
 				commands=new Vector();
 				commands.addElement("GO");
 				commands.addElement(s);

@@ -282,7 +282,7 @@ public class Mage extends StdCharClass
 
 			// level 30
 			if(ID().equals("Mage"))
-				CMAble.addCharAbilityMapping(ID(),30,"Spell_Wish",true);
+				CMAble.addCharAbilityMapping(ID(),30,"Spell_Spellbinding",true);
 		}
 	}
 

@@ -29,6 +29,7 @@ public class Alterer extends SpecialistMage
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_GravitySlam",25,true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_AlterSubstance",25,true);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Duplicate",25,true);
+			CMAble.addCharAbilityMapping(ID(),30,"Spell_Wish",25,true);
 		}
 	}
 }

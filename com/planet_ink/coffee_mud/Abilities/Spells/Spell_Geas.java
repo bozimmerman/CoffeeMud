@@ -69,6 +69,8 @@ public class Spell_Geas extends Spell
 		{
 			if((STEP.que!=null)&&(STEP.que.size()==0))
 			{
+				if(((MOB)ticking).isInCombat())
+					return true; // let them finish fighting.
 				unInvoke();
 				return false;
 			}

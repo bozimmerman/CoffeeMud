@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.utils;
 import java.util.*;
 
-public class DVector implements Cloneable
+public class DVector implements Cloneable, java.io.Serializable
 {
 	private int dimensions=1;
 	private Vector[] stuff=null;

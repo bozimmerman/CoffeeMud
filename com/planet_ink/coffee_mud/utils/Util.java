@@ -11,6 +11,27 @@ public class Util
 	private static byte[] encodeBuffer = new byte[65536];
 	private static Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
 	private static Inflater decompresser = new Inflater();
+	private static String hex="0123456789ABCDEF";
+	
+	public static String toByteList(byte[] bytes)
+	{
+		StringBuffer str=new StringBuffer("");
+		for(int b=0;b<bytes.length;b++)
+			str.append(Byte.toString(bytes[b])+";");
+		return str.toString();
+	}
+	public static byte[] fromByteList(String str)
+	{
+		Vector V=parseSemicolons(str,true);
+		if(V.size()>0)
+		{
+			byte[] bytes=new byte[V.size()];
+			for(int b=0;b<V.size();b++)
+				bytes[b]=Byte.parseByte((String)V.elementAt(b));
+			return bytes;
+		}
+		return new byte[0];
+	}
 	
 	
 	public static String repeat(String str1, int times)
