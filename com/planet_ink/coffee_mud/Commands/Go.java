@@ -352,7 +352,8 @@ public class Go extends StdCommand
 					{
 						num=Util.s_int(s);
 						v++;
-						s=(String)commands.elementAt(v);
+						if(v<commands.size())
+							s=(String)commands.elementAt(v);
 					}
 					else
 					if(("NSEWUDnsewud".indexOf(s.charAt(s.length()-1))>=0)
