@@ -929,16 +929,16 @@ public class StdMOB implements MOB
 			{
 				Vector topCMD=(Vector)commandQue.elementAt(0,1);
 				int topTick=((Integer)commandQue.elementAt(0,2)).intValue();
-				commandQue.removeElement(topCMD);
-				if(topTick<2)
+				commandQue.removeElementAt(0);
+				if((--topTick)<2)
 					returnable=topCMD;
 				else
-					commandQue.insertElementAt(0,topCMD,new Integer(topTick-1));
+					commandQue.insertElementAt(0,topCMD,new Integer(topTick));
 			}
 		}
 		if(returnable!=null)
 			doCommand(EnglishParser.findCommand(this,returnable),returnable);
-	}
+	} 
 
 	public void doCommand(Vector commands)
 	{
@@ -978,10 +978,11 @@ public class StdMOB implements MOB
 			Object O=EnglishParser.findCommand(this,commands);
 			if(O==null){ tell("Huh?!"); return;}
 
-			if((O instanceof Command)&&(((Command)O).ticksToExecute()>0))
+			if(O instanceof Command)
 				tickDown=((Command)O).ticksToExecute();
 
-			if(!isInCombat())
+			if(((!isInCombat())&&(tickDown<2))
+			||(tickDown==0))
 			{
 				doCommand(O,commands);
 				return;

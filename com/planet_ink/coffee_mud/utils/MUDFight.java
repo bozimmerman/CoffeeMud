@@ -412,26 +412,6 @@ public class MUDFight
 			target.setSoulMate(null);
 		}
 
-		if((deadMoney>0)&&(myAmountOfDeadMoney>0))
-		for(int g=0;g<goldLooters.size();g++)
-		{
-			Item C=CMClass.getItem("StdCoins");
-			C.baseEnvStats().setAbility(myAmountOfDeadMoney);
-			C.setContainer(Body);
-			C.recoverEnvStats();
-			deathRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
-			deathRoom.recoverRoomStats();
-			MOB mob=(MOB)goldLooters.elementAt(g);
-			if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-				mob.tell("You'll need to dismount to get gold off the body.");
-			else
-			if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-				mob.tell("You'll need to disembark to get gold off the body.");
-			else
-			if(Sense.canBeSeenBy(Body,mob))
-				CommonMsgs.get(mob,Body,C,false);
-		}
-
 		if((source!=null)
 		&&(source.location()==deathRoom)
 		&&(deathRoom.isInhabitant(source))
@@ -453,6 +433,26 @@ public class MUDFight
 					CommonMsgs.get(source,Body,item,false);
 			}
 			deathRoom.recoverRoomStats();
+		}
+		
+		if((deadMoney>0)&&(myAmountOfDeadMoney>0))
+		for(int g=0;g<goldLooters.size();g++)
+		{
+			Item C=CMClass.getItem("StdCoins");
+			C.baseEnvStats().setAbility(myAmountOfDeadMoney);
+			C.setContainer(Body);
+			C.recoverEnvStats();
+			deathRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+			deathRoom.recoverRoomStats();
+			MOB mob=(MOB)goldLooters.elementAt(g);
+			if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+				mob.tell("You'll need to dismount to get gold off the body.");
+			else
+			if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+				mob.tell("You'll need to disembark to get gold off the body.");
+			else
+			if(Sense.canBeSeenBy(Body,mob))
+				CommonMsgs.get(mob,Body,C,false);
 		}
 	}
 

@@ -16,7 +16,7 @@ public class AutoNotify extends StdCommand
 		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTONOTIFY))
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTONOTIFY));
-			mob.tell("Notificatoin of the arrival of your FRIENDS is now off.");
+			mob.tell("Notification of the arrival of your FRIENDS is now off.");
 		}
 		else
 		{

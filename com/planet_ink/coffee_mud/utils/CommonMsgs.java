@@ -31,7 +31,7 @@ public class CommonMsgs
 			return (StringBuffer)V.firstElement();
 		return new StringBuffer("");
 	}
-	public static StringBuffer getEquipment(MOB mob, MOB viewer)
+	public static StringBuffer getEquipment(MOB viewer, MOB mob)
 	{
 		Vector V=new Vector();
 		V.addElement(viewer);
@@ -40,7 +40,7 @@ public class CommonMsgs
 			return (StringBuffer)V.elementAt(1);
 		return new StringBuffer("");
 	}
-	public static StringBuffer getInventory(MOB mob, MOB viewer)
+	public static StringBuffer getInventory(MOB viewer, MOB mob)
 	{
 		Vector V=new Vector();
 		V.addElement(viewer);

@@ -75,7 +75,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		//		super( "HTTPrq-"+ instanceCnt++ +"-" + a_sock.getInetAddress().toString() );
 		// thread name contains just the instance counter (faster)
 		//  and short enough to use in log
-		super( "HTTPrq-"+a_webServer.getPartialName()+ instanceCnt++ );
+		super( "HTTPrq-"+((a_webServer!=null)?a_webServer.getPartialName():"")+ instanceCnt++ );
 		page = a_page;
 		webServer = a_webServer;
 		sock = a_sock;

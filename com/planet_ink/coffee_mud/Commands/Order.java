@@ -11,49 +11,9 @@ public class Order extends StdCommand
 	private String[] access={"ORDER"};
 	public String[] getAccessWords(){return access;}
 
-	private final static String[] unacceptableOrders={
-          "SERVE",
-          "REBUKE",
-          "CLANAPPLY",
-          "CLANACCEPT",
-          "CLANREJECT",
-          "CLANASSIGN",
-          "CLANEXILE",
-		  "NOTEACH",
-          "CLANRESIGN",
-          "CLANHOMESET",
-          "CLANVOTE",
-          "CLANDECLARE",
-          "CLANQUAL",
-          "CLANDONATESET",
-          "CLANCREATE",
-          "CLANPREMISE",
-          "PASSWORD",
-          "EMAIL",
-          "QUIT",
-          "DESCRIPTION",
-          "WITHDRAW",
-          "DEPOSIT",
-          "BUY",
-          "SELL",
-          "GAIN",
-          "TRAIN",
-          "PRACTICE",
-          "FRIENDS",
-          "IDEA",
-          "BUG",
-          "TYPO",
-          "PLAYERKILL",
-          "PROMPT",
-          "REPLY",
-		  "TELL"
-	};
-
-
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		//*TODO Order should check Command object
 		if(commands.size()<3)
 		{
 			mob.tell("Order who do to what?");
@@ -111,17 +71,15 @@ public class Order extends StdCommand
 		}
 
 		commands.removeElementAt(0);
+		Object O=EnglishParser.findCommand(mob,commands);
 		String order=Util.combine(commands,0);
-		String ORDER=((String)commands.firstElement()).toUpperCase();
-        for(int i=0;i<unacceptableOrders.length;i++)
-        {
-			if((unacceptableOrders[i].startsWith(ORDER))
-			&&(!mob.isASysOp(mob.location())))
-			{
-				mob.tell("You can't order anyone to '"+order+"'.");
-				return false;
-			}
-        }
+		if((!mob.isASysOp(mob.location()))
+		&&(O instanceof Command)
+		&&(!((Command)O).canBeOrdered()))
+		{
+			mob.tell("You can't order anyone to '"+order+"'.");
+			return false;
+		}
 
 		Vector doV=new Vector();
 		for(int v=0;v<V.size();v++)

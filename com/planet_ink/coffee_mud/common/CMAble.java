@@ -245,6 +245,31 @@ public class CMAble
 			return student.charStats().getClassLevel(theClass);
 	}
 
+	public static Object lowestQualifyingClassRace(MOB student, Ability A)
+	{
+		if(student==null) return null;
+		int theLevel=-1;
+		CharClass theClass=null;
+		for(int c=student.charStats().numClasses()-1;c>=0;c--)
+		{
+			CharClass C=student.charStats().getMyClass(c);
+			int level=CMAble.getQualifyingLevel(C.ID(),A.ID());
+			int classLevel=student.charStats().getClassLevel(C);
+			if((level>=0)
+			&&(classLevel>=level)
+			&&((theLevel<0)||(theLevel>=level)))
+			{
+				theLevel=level;
+				theClass=C;
+			}
+		}
+		int level=CMAble.getQualifyingLevel(student.charStats().getMyRace().ID(),A.ID());
+		if((level>=0)
+		&&((theClass==null)||((student.baseEnvStats().level()>=level)&&(theLevel>level))))
+			return student.charStats().getMyRace();
+		return theClass;
+	}
+
 	
 	public static boolean qualifiesByCurrentClassAndLevel(MOB student, Ability A)
 	{

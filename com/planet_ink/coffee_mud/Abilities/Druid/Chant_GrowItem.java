@@ -27,7 +27,7 @@ public class Chant_GrowItem extends Chant
 	private static final int RCP_CONTAINMASK=9;
 	private static final int RCP_SPELL=10;
 
-	protected static Vector loadList(StringBuffer str)
+	protected Vector loadList(StringBuffer str)
 	{
 		Vector V=new Vector();
 		if(str==null) return V;

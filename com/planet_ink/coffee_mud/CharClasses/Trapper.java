@@ -118,16 +118,19 @@ public class Trapper extends Thief
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{
-				if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
+				if(CMAble.lowestQualifyingClassRace(myChar,(Ability)msg.tool())==this)
 				{
-					myChar.tell("You don't know how to hide outside the wilderness.");
-					return false;
-				}
-				else
-				if(msg.tool().ID().equalsIgnoreCase("Thief_Sneak"))
-				{
-					myChar.tell("You don't know how to sneak outside the wilderness.");
-					return false;
+					if(msg.tool().ID().equalsIgnoreCase("Thief_Hide"))
+					{
+						myChar.tell("You don't know how to hide outside the wilderness.");
+						return false;
+					}
+					else
+					if(msg.tool().ID().equalsIgnoreCase("Thief_Sneak"))
+					{
+						myChar.tell("You don't know how to sneak outside the wilderness.");
+						return false;
+					}
 				}
 			}
 		}

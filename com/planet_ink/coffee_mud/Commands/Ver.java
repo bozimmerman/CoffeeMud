@@ -13,8 +13,7 @@ public class Ver extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		//*TODO FIx Ver
-		//mob.tell(myHost.getVer());
+		mob.tell("CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER));
 		mob.tell("(C) 2000-2004 Bo Zimmerman");
 		mob.tell("bo@zimmers.net");
 		mob.tell("http://www.zimmers.net/home/mud.html");

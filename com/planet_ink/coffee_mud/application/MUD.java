@@ -9,18 +9,14 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.i3.*;
 import com.planet_ink.coffee_mud.i3.server.*;
-import com.planet_ink.coffee_mud.Commands.*;
-import com.planet_ink.coffee_mud.Commands.base.*;
-import com.planet_ink.coffee_mud.Commands.sysop.*;
 import com.planet_ink.coffee_mud.web.*;
 
 
 public class MUD extends Thread implements MudHost
 {
-	public static final float HOST_VERSION_MAJOR=(float)4.1;
-	public static final long  HOST_VERSION_MINOR=4;
+	public static final float HOST_VERSION_MAJOR=(float)4.2;
+	public static final long  HOST_VERSION_MINOR=0;
 
-	public static String nameID="My Mud";
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
 	public static SaveThread saveThread=null;
@@ -257,8 +253,7 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
 
-		int numChannelsLoaded=Channels.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"),CommandSet.getInstance());
-		CommandProcessor.myHost=(MudHost)mudThreads.firstElement();
+		int numChannelsLoaded=ChannelSet.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"));
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
 		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: loading socials");
@@ -309,8 +304,6 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: readying for connections.");
 		try
 		{
-			CommandProcessor.commandSet.loadAbilities(CMClass.abilities());
-
 			saveThread=new SaveThread();
 			saveThread.start();
 
@@ -333,15 +326,15 @@ public class MUD extends Thread implements MudHost
 				String playstate=page.getStr("I3STATE");
 				if((playstate==null)||(playstate.length()==0))
 					playstate="Open to the public";
-				IMudInterface imud=new IMudInterface(nameID,
-													 nameID+" v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER),
+				IMudInterface imud=new IMudInterface(CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME),
+													 "CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER),
 													 ((MUD)mudThreads.firstElement()).getPort(),
 													 playstate,
-													 Channels.iChannelsArray());
+													 ChannelSet.iChannelsArray());
 				imserver=new Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;
-				imserver.start(nameID,i3port,imud);
+				imserver.start(CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME),i3port,imud);
 			}
 		}
 		catch(Exception e)
@@ -625,9 +618,9 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
 		Socials.clearAllSocials();
 		Clans.shutdownClans();
-		Channels.unloadChannels();
+		ChannelSet.unloadChannels();
 
-		Help.unloadHelpFile(null);
+		MUDHelp.unloadHelpFile(null);
 
 		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...unloading classes");
 		CMClass.unload();
@@ -755,7 +748,7 @@ public class MUD extends Thread implements MudHost
 		CMClass.registerI3Interface(new IMudClient());
 		CMClass.registerExternalHTTP(new ProcessHTTPrequest(null,null,null,true));
 		
-		nameID="";
+		String nameID="";
 		String iniFile="coffeemud.ini";
 		if(a.length>0)
 		{

@@ -549,7 +549,7 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 
-		commands=loadVectorListToObj(prefix+"Commands"+File.separatorChar+"extra"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
+		commands=loadVectorListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
 		Log.sysOut("MUD","Commands loaded   : "+commands.size());
 		if(commands.size()==0) return false;
 		for(int c=0;c<commands.size();c++)
@@ -788,10 +788,26 @@ public class CMClass extends ClassLoader
 						if(O!=null)
 						{
 							if(toThis instanceof Hashtable)
-								((Hashtable)toThis).put(itemName.trim(),O);
+							{
+								Hashtable H=(Hashtable)toThis;
+								if(H.containsKey(itemName.trim()))
+									H.remove(itemName.trim());
+								H.put(itemName.trim(),O);
+							}
 							else
 							if(toThis instanceof Vector)
-								((Vector)toThis).addElement(O);
+							{
+								Vector V=(Vector)toThis;
+								boolean doNotAdd=false;
+								for(int v=0;v<V.size();v++)
+									if(className(V.elementAt(v)).equals(itemName))
+									{
+										V.setElementAt(O,v);
+										doNotAdd=true;
+										break;
+									}
+								if(!doNotAdd) V.addElement(O);
+							}
 						}
 					}
 					catch(Exception e)

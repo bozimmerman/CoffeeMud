@@ -46,15 +46,8 @@ public class Shutdown extends StdCommand
 		else
 			Log.errOut("CommandProcessor",mob.Name()+" starts system restart...");
 		mob.tell("Starting shutdown...");
-		//*TODO Fix Shutdown!!
 
-		//if(ExternalPlay.myHost!=null)
-		//	myHost.shutdown(mob.session(),keepItDown,externalCommand);
-		//else
-		//{
-			mob.tell("Shutdown failed.  No host.");
-			Log.errOut("CommandProcessor","Shutdown failed.  No host.");
-		//}
+		com.planet_ink.coffee_mud.application.MUD.globalShutdown(mob.session(),keepItDown,externalCommand);
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

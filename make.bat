@@ -29,9 +29,6 @@ IF "%1" == "docs" GOTO :DOCS
 %JAVACPATH% -deprecation com/planet_ink/coffee_mud/CharClasses/*.java
 %JAVACPATH% -deprecation com/planet_ink/coffee_mud/Clans/*.java
 %JAVACPATH% -deprecation com/planet_ink/coffee_mud/commands/*.java
-%JAVACPATH% -deprecation com/planet_ink/coffee_mud/commands/base/*.java
-%JAVACPATH% -deprecation com/planet_ink/coffee_mud/commands/sysop/*.java
-%JAVACPATH% -deprecation com/planet_ink/coffee_mud/commands/extra/*.java
 %JAVACPATH% -deprecation com/planet_ink/coffee_mud/common/*.java
 %JAVACPATH% -deprecation com/planet_ink/coffee_mud/exceptions/*.java
 %JAVACPATH% -deprecation com/planet_ink/coffee_mud/Exits/*.java

@@ -14,7 +14,7 @@ public class Look extends StdCommand
 		throws java.io.IOException
 	{
 		boolean quiet=false;
-		if((commands.size()>0)&&(((String)commands.firstElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
+		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
 		{
 			commands.removeElementAt(commands.size()-1);
 			quiet=true;

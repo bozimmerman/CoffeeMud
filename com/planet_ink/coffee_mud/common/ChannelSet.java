@@ -15,6 +15,11 @@ public class ChannelSet
 	protected static Vector channelMasks=new Vector();
 	protected static Vector ichannelList=new Vector();
 	
+	public static int getNumChannels()
+	{
+		return channelNames.size();
+	}
+	
 	public static String getChannelMask(int i)
 	{
 		if((i>=0)&&(i<channelMasks.size()))

@@ -1,10 +1,5 @@
 package com.planet_ink.coffee_mud.Abilities.Spells;
 
-//**********************************************
-// the colosal exception to the unbroken rule!!!
-import com.planet_ink.coffee_mud.Commands.base.*;
-//**********************************************
-
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;

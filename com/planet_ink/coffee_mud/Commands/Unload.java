@@ -48,7 +48,7 @@ public class Unload extends StdCommand
 			}
 			if(str.equalsIgnoreCase("help"))
 			{
-				com.planet_ink.coffee_mud.Commands.base.Help.unloadHelpFile(mob);
+				MUDHelp.unloadHelpFile(mob);
 				return false;
 			}
 			if(str.equalsIgnoreCase("all"))

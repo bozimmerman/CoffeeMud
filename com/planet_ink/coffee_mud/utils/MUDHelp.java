@@ -428,4 +428,40 @@ public class MUDHelp
 		}
 		return helpFile;
 	}
+	
+	public static void unloadHelpFile(MOB mob)
+	{
+		if(Resources.getResource("PLAYER TOPICS")!=null)
+			Resources.removeResource("PLAYER TOPICS");
+		if(Resources.getResource("ARCHON TOPICS")!=null)
+			Resources.removeResource("ARCHON TOPICS");
+		if(Resources.getResource("help"+File.separatorChar+"help.txt")!=null)
+			Resources.removeResource("help"+File.separatorChar+"help.txt");
+		if(Resources.getResource("text"+File.separatorChar+"races.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"races.txt");
+		if(Resources.getResource("text"+File.separatorChar+"newchar.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"newchar.txt");
+		if(Resources.getResource("text"+File.separatorChar+"stats.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"stats.txt");
+		if(Resources.getResource("text"+File.separatorChar+"classes.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"classes.txt");
+		if(Resources.getResource("text"+File.separatorChar+"alignment.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"alignment.txt");
+		if(Resources.getResource("help"+File.separatorChar+"arc_help.txt")!=null)
+			Resources.removeResource("help"+File.separatorChar+"arc_help.txt");
+		if(Resources.getResource("MAIN HELP FILE")!=null)
+			Resources.removeResource("MAIN HELP FILE");
+		if(Resources.getResource("ARCHON HELP FILE")!=null)
+			Resources.removeResource("ARCHON HELP FILE");
+
+		// also the intro page
+		if(Resources.getResource("text"+File.separatorChar+"intro.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"intro.txt");
+
+		if(Resources.getResource("text"+File.separatorChar+"offline.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"offline.txt");
+
+		if(mob!=null)
+			mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");
+	}
 }

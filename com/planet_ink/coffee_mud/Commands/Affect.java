@@ -12,20 +12,24 @@ public class Affect extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("");
-		for(int a=0;a<mob.numEffects();a++)
+		Session S=mob.session();
+		if(S!=null)
 		{
-			Ability thisAffect=mob.fetchEffect(a);
-			if((thisAffect!=null)&&(thisAffect.displayText().length()>0))
-				msg.append("\n\r^S"+thisAffect.displayText());
+			StringBuffer msg=new StringBuffer("");
+			msg.append("\n\r^!You are affected by:^? ");
+			for(int a=0;a<mob.numEffects();a++)
+			{
+				Ability thisAffect=mob.fetchEffect(a);
+				if((thisAffect!=null)&&(thisAffect.displayText().length()>0))
+					msg.append("\n\r^S"+thisAffect.displayText());
+			}
+			if(msg.length()==0)
+				msg.append("Nothing!");
+			else
+				msg.append("^?");
+			msg.append("\n\r");
+			S.colorOnlyPrintln(msg.toString());
 		}
-		if(msg.length()==0)
-			msg.append("Nothing!");
-		else
-			msg.append("^?");
-		msg.append("\n\r^!You are affected by:^? "+msg.toString()+"\n\r");
-		if(!mob.isMonster())
-			mob.session().colorOnlyPrintln(msg.toString());
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -842,6 +842,21 @@ public class EnglishParser extends Scriptable implements Tickable
 		Social social=Socials.FetchSocial(commands,true);
 		if(social!=null) return social;
 
+		for(int c=0;c<ChannelSet.getNumChannels();c++)
+		{
+			if(ChannelSet.getChannelName(c).equalsIgnoreCase(firstWord))
+			{
+				C=CMClass.getCommand("Channel");
+				if(C!=null) return C;
+			}
+			else
+			if(("NO"+ChannelSet.getChannelName(c)).equalsIgnoreCase(firstWord))
+			{
+				C=CMClass.getCommand("NoChannel");
+				if(C!=null) return C;
+			}
+		}
+		
 		// second, inexacting pass
 		// first, exacting pass
 		C=CMClass.findCommandByTrigger(firstWord,false);
@@ -858,6 +873,21 @@ public class EnglishParser extends Scriptable implements Tickable
 
 		social=Socials.FetchSocial(commands,false);
 		if(social!=null) return social;
+		
+		for(int c=0;c<ChannelSet.getNumChannels();c++)
+		{
+			if(ChannelSet.getChannelName(c).startsWith(firstWord))
+			{
+				C=CMClass.getCommand("Channel");
+				if(C!=null) return C;
+			}
+			else
+			if(("NO"+ChannelSet.getChannelName(c)).startsWith(firstWord))
+			{
+				C=CMClass.getCommand("NoChannel");
+				if(C!=null) return C;
+			}
+		}
 		return null;
 	}
 

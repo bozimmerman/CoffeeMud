@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.exceptions.HTTPRedirectException;
 import java.util.*;
 import java.io.*;
 

@@ -40,7 +40,7 @@ public class Spell_Permanency extends Spell
 					 &&(!A.isAutoInvoked())
 					 &&(A.canBeUninvoked())
 					 &&(A instanceof StdAbility)
-					 &&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY))
+					 &&((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL))
 					{
 						theOne=(StdAbility)A;
 						break;

@@ -220,7 +220,8 @@ public class StdClanItem extends StdItem implements ClanItem
 	{
 		if((msg.amITarget(myHost))
 		&&(msg.targetMinor()==CMMsg.TYP_GET)
-		&&(((ClanItem)myHost).clanID().length()>0))
+		&&(((ClanItem)myHost).clanID().length()>0)
+		&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
 		{
 			MOB M=(MOB)msg.source();
 			if((M.getClanID().length()>0)
