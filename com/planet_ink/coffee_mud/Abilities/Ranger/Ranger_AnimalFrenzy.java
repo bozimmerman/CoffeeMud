@@ -20,29 +20,6 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	public Environmental newInstance(){	return new Ranger_AnimalFrenzy();}
 	public int classificationCode(){ return Ability.SKILL;}
 
-	public boolean okAffect(Affect affect)
-	{
-		if(!super.okAffect(affect))
-			return false;
-
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
-
-		MOB mob=(MOB)affect.source();
-		if((rangersGroup!=null)
-		&&(affected==invoker)
-		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
-		&&(rangersGroup.contains(affect.source()))
-		&&(Sense.aliveAwakeMobile(mob,true))
-		&&(profficiencyCheck(-90+invoker.charStats().getStat(CharStats.STRENGTH),false)))
-		{
-			double pctRecovery=(Util.div(profficiency(),100.0)*4.0);
-			int bonus=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
-			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+bonus,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
-		}
-		return true;
-	}
-	
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID)) return false;
@@ -102,6 +79,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 		if((invoker!=null)&&(affected!=invoker)&&(invoker.isInCombat()))
 		{
 			int invoAtt=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),invoker.envStats().attackAdjustment()));
+			int damBonus=(int)Math.round(Util.mul(affectableStats.damage(),(Util.div(profficiency(),100.0)*4.0)));
+			affectableStats.setDamage(affectableStats.damage()+damBonus);
 			if(affectableStats.attackAdjustment()<invoAtt)
 				affectableStats.setAttackAdjustment(invoAtt);
 		}

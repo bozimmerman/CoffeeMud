@@ -187,7 +187,7 @@ public class StdCharClass implements CharClass
 	public void unLevel(MOB mob)
 	{
 		if(mob.baseEnvStats().level()<2) return;
-		mob.tell("\n\r^ZYou've lost a level!!!^N");
+		mob.tell("\n\r^ZYou've lost a level!!!^.^N");
 
 		levelAdjuster(mob,-1);
 		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();

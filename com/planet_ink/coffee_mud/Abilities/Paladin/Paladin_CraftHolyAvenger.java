@@ -77,8 +77,6 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		String str=(String)commands.elementAt(0);
-		String startStr=null;
 		int completion=16;
 		fire=null;
 		for(int i=0;i<mob.location().numItems();i++)
@@ -150,7 +148,7 @@ public class Paladin_CraftHolyAvenger extends com.planet_ink.coffee_mud.Abilitie
 		completion=50-CMAble.qualifyingClassLevel(mob,this);
 		String itemName="the Holy Avenger";
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) crafting "+building.name()+".";
+		String startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();
 		verb="crafting "+building.name();
 		int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
