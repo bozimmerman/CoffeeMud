@@ -45,6 +45,18 @@ public class Spell_Wish extends Spell
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
 		}
 	}
+	
+	public void wishDrain(MOB mob, int expLoss)
+	{
+		if(mob==null) return;
+		MUDFight.postExperience(mob,null,null,-expLoss,false);
+		mob.tell("Your wish drains "+(expLoss)+" experience points and a point of constitution from you.");
+		mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)-1);
+		mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)-1);
+		mob.recoverCharStats();
+		if(mob.charStats().getStat(CharStats.CONSTITUTION)<1)
+			MUDFight.postDeath(mob,mob,null);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -56,7 +68,7 @@ public class Spell_Wish extends Spell
 		}
 
 		String myWish=Util.combine(commands,0);
-		if(mob.envStats().level()<20)
+		if(((!auto)&&(mob.envStats().level()<20))||(mob.charStats().getStat(CharStats.CONSTITUTION)<2))
 		{
 			mob.tell("You are too weak to wish.");
 			return false;
@@ -181,8 +193,7 @@ public class Spell_Wish extends Spell
 				}
 				if(experienceRequired<=0)
 					experienceRequired=0;
-				MUDFight.postExperience(mob,null,null,-(baseLoss+experienceRequired),false);
-				mob.tell("Your wish has drained you of "+(baseLoss+experienceRequired)+" experience points.");
+				wishDrain(mob,(baseLoss+experienceRequired));
 				return true;
 			}
 
@@ -240,8 +251,7 @@ public class Spell_Wish extends Spell
 					recallRoom=((MOB)target).getStartRoom();
 				if(recallRoom!=null)
 				{
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					bringThangHere(mob,recallRoom,target);
 					return true;
 				}
@@ -287,8 +297,7 @@ public class Spell_Wish extends Spell
 						mob.setExperience(exp);
 					}
 				}
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				wishDrain(mob,baseLoss);
 				return true;
 			}
 
@@ -375,9 +384,8 @@ public class Spell_Wish extends Spell
 				}
 				if(newRoom!=null)
 				{
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
 					bringThangHere(mob,newRoom,target);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					return true;
 				}
 			}
@@ -394,8 +402,7 @@ public class Spell_Wish extends Spell
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is healthier!");
 					tm.curState().setHitPoints(tm.maxState().getHitPoints());
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					return true;
 				}
 				else
@@ -404,16 +411,14 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is healthier!");
 					tm.baseState().setHitPoints(tm.baseState().getHitPoints()+2);
 					tm.recoverMaxState();
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					return true;
 				}
 				if((myWish.indexOf("MANA")>=0)&&(tm.curState().getMana()<tm.maxState().getMana()))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more mana!");
 					tm.curState().setMana(tm.maxState().getMana());
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					return true;
 				}
 				else
@@ -422,16 +427,14 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more mana!");
 					tm.baseState().setMana(tm.baseState().getMana()+2);
 					tm.recoverMaxState();
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					return true;
 				}
 				if((myWish.indexOf("MOVE")>=0)&&(tm.curState().getMovement()<tm.maxState().getMovement()))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more move points!");
 					tm.curState().setMovement(tm.maxState().getMovement());
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					return true;
 				}
 				else
@@ -440,8 +443,7 @@ public class Spell_Wish extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" has more move points!");
 					tm.baseState().setMovement(tm.baseState().getMovement()+5);
 					tm.recoverMaxState();
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					return true;
 				}
 
@@ -458,8 +460,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" MAN ")>=0)
 			||(myWish.indexOf(" BOY ")>=0)))
 			{
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				wishDrain(mob,baseLoss);
 				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'M');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now male!");
@@ -472,8 +473,7 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" LIGHTER ")>=0)
 			||(myWish.indexOf(" LOSE WEIGHT ")>=0)))
 			{
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				wishDrain(mob,baseLoss);
 				int weight=((MOB)target).baseEnvStats().weight();
 				weight-=50;
 				if(weight<=0) weight=1;
@@ -488,8 +488,7 @@ public class Spell_Wish extends Spell
 			&&((myWish.indexOf(" HEAVIER ")>=0)
 			||(myWish.indexOf(" GAIN WEIGHT ")>=0)))
 			{
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				wishDrain(mob,baseLoss);
 				int weight=((MOB)target).baseEnvStats().weight();
 				weight+=50;
 				((MOB)target).baseEnvStats().setWeight(weight);
@@ -529,8 +528,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" SHORT ")>=0)
 			||(myWish.indexOf(" LITTLE ")>=0)))
 			{
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				wishDrain(mob,baseLoss);
 				int weight=((MOB)target).baseEnvStats().height();
 				weight-=12;
 				if(weight<=0) weight=5;
@@ -546,8 +544,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" BIG ")>=0)
 			||(myWish.indexOf(" TALL ")>=0)))
 			{
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				wishDrain(mob,baseLoss);
 				int weight=((MOB)target).baseEnvStats().height();
 				weight+=12;
 				((MOB)target).baseEnvStats().setHeight(weight);
@@ -568,8 +565,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WOMAN ")>=0)
 			||(myWish.indexOf(" GIRL ")>=0)))
 			{
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+				wishDrain(mob,baseLoss);
 				((MOB)target).baseCharStats().setStat(CharStats.GENDER,'F');
 				((MOB)target).recoverCharStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now female!");
@@ -593,8 +589,7 @@ public class Spell_Wish extends Spell
 						baseLoss+=500;
 						mob.baseCharStats().getCurrentClass().unLevel(mob);
 					}
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+					wishDrain(mob,baseLoss);
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
 					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.GENDER));
@@ -621,8 +616,7 @@ public class Spell_Wish extends Spell
 				{
 					CharClass oldC=mob.baseCharStats().getCurrentClass();
 					baseLoss+=1000;
-					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
-					MUDFight.postExperience(mob,null,null,-baseLoss,false);
+					wishDrain(mob,baseLoss);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
@@ -671,20 +665,21 @@ public class Spell_Wish extends Spell
 					{
 						if(CMAble.lowestQualifyingLevel(A.ID())>25)
 						{
+							MUDFight.postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points, but that is beyond your wishing ability.");
 							return false;
 						}
 						if(tm.fetchAbility(A.ID())!=null)
 						{
 							A=tm.fetchAbility(A.ID());
+							MUDFight.postExperience(mob,null,null,-baseLoss,false);
 							mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 						}
 						else
 						{
 							tm.addAbility(A);
 							baseLoss+=500;
-							MUDFight.postExperience(mob,null,null,-baseLoss,false);
-							mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
+							wishDrain(mob,baseLoss);
 							mob.baseCharStats().getCurrentClass().unLevel(mob);
 							mob.baseCharStats().getCurrentClass().unLevel(mob);
 						}
@@ -794,8 +789,7 @@ public class Spell_Wish extends Spell
 					baseLoss-=10;
 					break;
 				}
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
+				wishDrain(mob,baseLoss);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-1);
 				else
@@ -832,8 +826,7 @@ public class Spell_Wish extends Spell
 					baseLoss+=10;
 					break;
 				}
-				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
-				MUDFight.postExperience(mob,null,null,-baseLoss,false);
+				wishDrain(mob,baseLoss);
 				mob.baseCharStats().getCurrentClass().unLevel(mob);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
