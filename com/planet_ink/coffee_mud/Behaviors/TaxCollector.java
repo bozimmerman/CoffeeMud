@@ -103,9 +103,9 @@ public class TaxCollector extends StdBehavior
 			&&(M!=mob)
 			&&((mob.getClanID().length()==0)
 			   ||(M.getClanID().length()==0)
-			   ||(!M.getClanID().equals(mob.getClanID()))
+			   ||(!M.getClanID().equals(mob.getClanID())))
 			&&(!Sense.isAnimalIntelligence(M))
-			&&(Sense.canBeSeenBy(M,mob))))
+			&&(Sense.canBeSeenBy(M,mob)))
 			{
 				int money=MoneyUtils.totalMoney(M);
 				if(money>0)
