@@ -18,7 +18,7 @@ public class Sasquatch extends Gorilla
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+5);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.DEXTERITY)+5);
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+5);
 	}
 	public Vector myResources()
 	{

@@ -31,6 +31,12 @@ public class Centipede extends StdRace
 		affectableStats.setStat(CharStats.DEXTERITY,3);
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 	}
+	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	{
+		super.affectEnvStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+	}
 	public String arriveStr()
 	{
 		return "crawls in";

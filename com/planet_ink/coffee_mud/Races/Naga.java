@@ -27,7 +27,7 @@ public class Naga extends Python
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.SAVE_PIOSON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
-		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.DEXTERITY)+5);
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+7);
 	}
 	public Vector myResources()
 	{
