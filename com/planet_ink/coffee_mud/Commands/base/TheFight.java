@@ -242,27 +242,37 @@ public class TheFight
 			   &&(msg.sourceCode()>0)
 			   &&(allDisplayMessage.equals(msg.sourceMessage()))
 			   &&(damageType>=0)
-			   &&((msg.targetCode()&Affect.MASK_HURT)>0))
+			   &&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
 			{
-				int replace=allDisplayMessage.indexOf("<DAMAGE>");
-				if(replace>=0)
+				if(weapon instanceof Weapon)
 				{
-					int dmg=msg.targetCode()-Affect.MASK_HURT;
-					String damageWord=null;
-					if(weapon instanceof Weapon)
-						damageWord=((Weapon)weapon).hitString(dmg);
-					else
-						damageWord=standardHitWord(damageType,dmg);
-					allDisplayMessage=allDisplayMessage.substring(0,replace)+damageWord+allDisplayMessage.substring(replace+8);
-					msg.modify(msg.source(),
-							   msg.target(),
-							   msg.tool(),
-							   msg.sourceCode(),
-							   allDisplayMessage,
-							   msg.targetCode(),
-							   allDisplayMessage,
-							   msg.othersCode(),
-							   allDisplayMessage);
+					int replace=allDisplayMessage.indexOf("<DAMAGE>");
+					if(replace>=0)
+					{
+						int dmg=msg.targetCode()-Affect.MASK_HURT;
+						String damageWord=standardHitWord(damageType,dmg);
+						allDisplayMessage=allDisplayMessage.substring(0,replace)+damageWord+allDisplayMessage.substring(replace+8);
+					}
+				}
+				FullMsg msg2=new FullMsg(msg.source(),
+										 msg.target(),
+										 msg.tool(),
+										 msg.sourceCode(),
+										 allDisplayMessage,
+										 msg.othersCode(),
+										 allDisplayMessage,
+										 msg.othersCode(),
+										 allDisplayMessage);
+				target.location().send(target,msg2);
+				msg.modify(msg.source(),
+						   msg.target(),
+						   msg.tool(),
+						   Affect.NO_EFFECT,
+						   null,
+						   msg.targetCode(),
+						   null,
+						   Affect.NO_EFFECT,
+						   null);
 				}
 			}
 			target.location().send(target,msg);
