@@ -17,7 +17,6 @@ public class Arrest extends StdBehavior
 	}
 	private Vector oldWarrants=new Vector();
 	private Vector warrants=new Vector();
-	private Properties laws=null;
 	private Vector otherCrimes=new Vector();
 	private Vector otherBits=new Vector();
 	private Vector officerNames=new Vector();
@@ -70,11 +69,11 @@ public class Arrest extends StdBehavior
 
 	private Properties getLaws()
 	{
+		String lawName=getParms();
+		if(lawName.length()==0)	lawName="laws.ini";
+		Properties laws=(Properties)Resources.getResource("LEGAL-"+lawName);
 		if(laws==null)
 		{
-			String lawName=getParms();
-			if(lawName.length()==0)
-				lawName="laws.ini";
 			laws=new Properties();
 			try{laws.load(new FileInputStream("resources"+File.separatorChar+lawName));}
 			catch(IOException e)
@@ -82,6 +81,7 @@ public class Arrest extends StdBehavior
 				Log.errOut("Arrest","Unable to load: "+lawName+", legal system inoperable.");
 				return laws;
 			}
+			Resources.submitResource("LEGAL-"+lawName,laws);
 			String officers=(String)laws.get("OFFICERS");
 			if((officers!=null)&&(officers.length()>0))
 				officerNames=Util.parse(officers);
@@ -257,6 +257,7 @@ public class Arrest extends StdBehavior
 	
 	public boolean judgeMe(MOB judge, MOB officer, MOB criminal, ArrestWarrant W)
 	{
+		Properties laws=getLaws();
 		switch(highestCrimeAction(criminal))
 		{
 		case ACTION_WARN:
@@ -466,7 +467,7 @@ public class Arrest extends StdBehavior
 		if(mob.location()==null) return false;
 		if((myArea!=null)&&(mob.location().getArea()!=myArea)) 
 			return false;
-
+		
 		// is there a witness
 		MOB witness=getWitness(myArea,mob);
 		if(witness==null) return false;
@@ -567,7 +568,7 @@ public class Arrest extends StdBehavior
 		// is the victim a protected race?
 		if(victim!=null)
 		{
-			String races=(String)laws.get("PROTECTED");
+			String races=(String)getLaws().get("PROTECTED");
 			if((races!=null)&&(races.length()>0)&&(!CoffeeUtensils.containsString(races,victim.charStats().getMyRace().racialCategory())))
 			   return false;
 		}
@@ -642,8 +643,7 @@ public class Arrest extends StdBehavior
 		super.affect(affecting, affect);
 		if(!(affecting instanceof Area)) return;
 		Area myArea=(Area)affecting;
-		
-		if(laws==null) laws=getLaws();
+		Properties laws=getLaws();
 		if(affect.source()==null) return;
 		
 		if(affect.sourceMinor()==Affect.TYP_DEATH)
@@ -928,10 +928,9 @@ public class Arrest extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.AREA_TICK) return;
-		if(laws==null) laws=getLaws();
 		if(!(ticking instanceof Area)) return;
 		Area myArea=(Area)ticking;
-		
+		Properties laws=getLaws();
 		
 		
 		Hashtable handled=new Hashtable();

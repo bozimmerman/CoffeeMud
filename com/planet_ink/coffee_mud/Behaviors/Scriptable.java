@@ -9,7 +9,6 @@ public class Scriptable extends StdBehavior
 {
 	public String ID(){return "Scriptable";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
-	private Vector scripts=null;
 	private MOB lastToHurtMe=null;
 	private Room lastKnownLocation=null;
 	private Vector que=new Vector();
@@ -17,12 +16,6 @@ public class Scriptable extends StdBehavior
 	public Behavior newInstance()
 	{
 		return new Scriptable();
-	}
-
-	public void setParms(String newParms)
-	{
-		scripts=null;
-		super.setParms(newParms);
 	}
 
 	protected class ScriptableResponse
@@ -1095,6 +1088,17 @@ public class Scriptable extends StdBehavior
 		}
 	}
 
+	protected Vector getScripts()
+	{
+		Vector scripts=(Vector)Resources.getResource("SCRIPTABLE: "+getParms());
+		if(scripts==null)
+		{
+			scripts=parseScripts(getParms());
+			Resources.submitResource("SCRIPTABLE: "+getParms(),scripts);
+		}
+		return scripts;
+	}
+	
 	public void affect(Environmental affecting, Affect affect)
 	{
 		super.affect(affecting,affect);
@@ -1105,9 +1109,8 @@ public class Scriptable extends StdBehavior
 			lastKnownLocation=monster.location();
 		else
 			return;
-
-		if(scripts==null)
-			scripts=parseScripts(getParms());
+		
+		Vector scripts=getScripts();
 
 		if(affect.source()==null) return;
 
@@ -1265,8 +1268,7 @@ public class Scriptable extends StdBehavior
 		if(ticking instanceof MOB)
 		{
 			MOB mob=(MOB)ticking;
-			if(scripts==null)
-				scripts=parseScripts(getParms());
+			Vector scripts=getScripts();
 
 			if(!mob.amDead())
 				lastKnownLocation=mob.location();

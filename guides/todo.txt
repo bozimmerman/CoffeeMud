@@ -1,6 +1,3 @@
-NEW EVEOCATION SPELLS: Elemental array, ELEMENTAL STORM. The Array showers forth 6 bolts of elemental energy of various natures, each doing the damage of a magic bolt of equivalent level (only 1 bolt, though, not a lot)
-When a MOB with a disease dies, it should contaminate any meat/blood in it's body, making it mildly poisonous. I will have some poison information with the thieves....
-SCRIM should also have knife and comb.
 racial abilities (abilities tied to the race)
 Perhaps a little modification to have the mob act as a better assassin, 
 gen-wizard player editor
@@ -22,6 +19,7 @@ Space ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
 Create Docking areas.
+Etching would be an awesome new skill! To Etch symbols on you gear. Liatshard hold a Platinum Giant Sword with an Eagle Etched on it.
 ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. (We would want to distribute them out over the 1st 10 levels).  It is possible that the ARTISAN will GAIN a skill that he already took.  Could be a problem writing that code.  ARTISANS have a special ability to DECORATE.  This would allow any item that they want to become a permenant item in that room.  The item has a REJUV rate of 999999 or something silly like that, so it will be rejuved anytime you do a reboot, but at almost no other time.  They would also need the TRADE command, allowing players a safe trade of items.  TRADE HELM 1000.  <to other player> DO YOU AGREE TO GIVE 1000 FOR THE BLACK HELM (y/N)?  The ARTISAN would have prime attributes of WIS and CHA. (They need to be charming to sell their goods, they really need the WIS to get the practices.)  ARTISANS would have a few combat abilities (because they may need to hunt, forage, mine and chop through a few monsters to get their goods.)  Basically looking like a bard for combat abilities.  Heck, give them a couple of BARDIC SONGS to qualify for (just city based ones, though.)  ARTISANS should be able to get the SCROLL, CLARIFY SCROLL, ENCHANT ARMOR, and ENCHANT WEAPON spells at equal level or lower to a MAGE.  I would love it if they could get CURE LIGHT WOUNDS without being able to pray (so that they could put it in a potion or on a scroll) as well as a few other simple prayers and spells.
 Assassin: Assassinate skill to auto-kill, lose something else though
 Prancers: Dancing bards who get special ability
