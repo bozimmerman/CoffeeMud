@@ -50,7 +50,9 @@ public class AntiVagrant extends StdBehavior
 			for(int i=0;i<observer.location().numInhabitants();i++)
 			{
 				MOB mob=observer.location().fetchInhabitant(i);
-				if((mob!=observer)&&((Sense.isSitting(mob))||(Sense.isSleeping(mob))))
+				if((mob!=null)
+				&&(mob!=observer)
+				&&((Sense.isSitting(mob))||(Sense.isSleeping(mob))))
 				{
 				   target=mob;
 				   break;
