@@ -125,7 +125,6 @@ public class CommonSkill extends StdAbility
 			{
 			case EnvResource.MATERIAL_LEATHER:
 			case EnvResource.MATERIAL_FLESH:
-				MOB M=null;
 				switch(myResource)
 				{
 				case EnvResource.RESOURCE_MUTTON:
@@ -248,18 +247,19 @@ public class CommonSkill extends StdAbility
 			mob.tell("You are in combat!");
 			return false;
 		}
+		if(!Sense.canBeSeenBy(mob.location(),mob))
+		{
+			mob.tell("You can't see to do that!");
+			return false;
+		}
 		for(int a=mob.numAffects()-1;a>=0;a--)
 		{
 			Ability A=mob.fetchAffect(a);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL))
 			{
-				if(A.ID().equals(ID()))
-					A.unInvoke();
-				else
-				{
-					mob.tell("You are too busy to do any "+verb+" right now.");
-					return false;
-				}
+				if(A instanceof CommonSkill)
+					((CommonSkill)A).aborted=true;
+				A.unInvoke();
 			}
 		}
 		isAnAutoEffect=false;

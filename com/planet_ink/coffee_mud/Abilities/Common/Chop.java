@@ -63,7 +63,7 @@ public class Chop extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(found!=null)
+			if((found!=null)&&(!aborted))
 			{
 				int amount=Dice.roll(1,20,10);
 				String s="s";

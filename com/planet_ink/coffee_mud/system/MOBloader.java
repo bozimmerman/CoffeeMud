@@ -424,7 +424,7 @@ public class MOBloader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBUpdateItems","Delete Failed.");
 			}
 			DBConnector.DBDone(D);
@@ -450,7 +450,7 @@ public class MOBloader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mob.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBUpdateFollowers","Delete Failed.");
 			}
 			DBConnector.DBDone(D);
@@ -498,7 +498,7 @@ public class MOBloader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+mob.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBDeleteMOB","Delete Failed.");
 			}
 			DBConnector.DBDone(D);
@@ -548,7 +548,7 @@ public class MOBloader
 			if(DBConnector.DBConfirmDeletions)
 			{
 				ResultSet R=D.query("SELECT * FROM CMCHAB WHERE CMUSERID='"+mob.ID()+"'");
-				if(R.next())
+				if((R!=null)&&(R.next()))
 					Log.errOut("DBUpdateAbilitiess","Delete Failed.");
 			}
 			DBConnector.DBDone(D);

@@ -12,12 +12,12 @@ public class Hunt extends CommonSkill
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Forage";
+		name="Hunt";
 
-		displayText="You are foraging...";
-		verb="foraging";
+		displayText="You are hunting...";
+		verb="hunting";
 		miscText="";
-		triggerStrings.addElement("FORAGE");
+		triggerStrings.addElement("HUNT");
 		quality=Ability.INDIFFERENT;
 
 		recoverEnvStats();
@@ -27,6 +27,27 @@ public class Hunt extends CommonSkill
 	public Environmental newInstance()
 	{
 		return new Hunt();
+	}
+	
+	public Room nearByRoom()
+	{
+		Vector possibilities=new Vector();
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			if(d!=Directions.UP)
+			{
+				Room room=activityRoom.getRoomInDir(d);
+				Exit exit=activityRoom.getExitInDir(d);
+				if((room!=null)&&(exit!=null)&&(exit.isOpen()))
+					possibilities.addElement(new Integer(d));
+			}
+		}
+		if(possibilities.size()>0)
+		{
+			int dir=((Integer)possibilities.elementAt(Dice.roll(1,possibilities.size(),-1))).intValue();
+			return activityRoom.getRoomInDir(dir);
+		}
+		return null;
 	}
 	
 	public void moveFound()
@@ -98,7 +119,7 @@ public class Hunt extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((found!=null)&&(found instanceof MOB)&&(!found.amDead())&&(found.location()!=null)&&(!found.isInCombat()))
+			if((found!=null)&&(!found.amDead())&&(found.location()!=null)&&(!found.isInCombat()))
 			{
 				if(found.location()==mob.location())
 					moveFound();
@@ -119,19 +140,29 @@ public class Hunt extends CommonSkill
 		activityRoom=null;
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
+		Room room=nearByRoom();
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+		   &&(room!=null)
+		   &&(resourceType!=EnvResource.RESOURCE_FISH)
+		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+		   ||(resourceType==EnvResource.RESOURCE_BLOOD)
+		   ||(resourceType==EnvResource.RESOURCE_BONE)
+		   ||(resourceType==EnvResource.RESOURCE_EGGS)
+		   ||(resourceType==EnvResource.RESOURCE_FEATHERS)
+		   ||(resourceType==EnvResource.RESOURCE_FUR)
+		   ||(resourceType==EnvResource.RESOURCE_HIDE)
+		   ||(resourceType==EnvResource.RESOURCE_MILK)
+		   ||(resourceType==EnvResource.RESOURCE_SCALES)
+		   ||(resourceType==EnvResource.RESOURCE_WOOL)
+		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)))
 		{
 			found=(MOB)makeResource(resourceType);
 			foundShortName=found.name();
 			int x=0;
 			if((x=foundShortName.lastIndexOf(" "))>=0)
 				foundShortName=foundShortName.substring(x).trim().toLowerCase();
-			found.envStats().setDisposition(EnvStats.IS_SEEN);
-			found.bringToLife(mob.location());
-			found.recoverEnvStats();
-			moveFound();
+			found.bringToLife(room);
 		}
 		int duration=10+(mob.envStats().level()/4);
 		beneficialAffect(mob,mob,duration);

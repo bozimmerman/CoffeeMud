@@ -14,6 +14,7 @@ public class StdArea implements Area
 	protected int currentWeather=Area.WEATHER_CLEAR;
 	protected int nextWeather=Area.WEATHER_CLEAR;
 	protected Vector myRooms=null;
+	protected boolean mobility=true;
 
 	protected static int year=1;
 	protected static int month=1;
@@ -245,6 +246,7 @@ public class StdArea implements Area
 	}
 	
 	
+	public void toggleMobility(boolean onoff){mobility=onoff;}
 	public boolean amISubOp(String username)
 	{
 		for(int s=subOps.size()-1;s>=0;s--)
@@ -359,6 +361,13 @@ public class StdArea implements Area
 		{
 			Ability A=fetchAffect(a);
 			if((A!=null)&&(!A.okAffect(affect)))
+				return false;
+		}
+		if(!mobility)
+		{
+			if((affect.sourceMinor()==Affect.TYP_ENTER)
+			||(affect.sourceMinor()==Affect.TYP_LEAVE)
+			||(affect.sourceMinor()==Affect.TYP_FLEE))
 				return false;
 		}
 		return true;

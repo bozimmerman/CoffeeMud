@@ -94,6 +94,7 @@ public interface Area extends Environmental
 	public StringBuffer getAreaStats();
 	public Vector getMyMap();
 	public void clearMap();
+	public void toggleMobility(boolean onoff);
 	
 	public void addSubOp(String username);
 	public void delSubOp(String username);

@@ -58,7 +58,7 @@ public class Mine extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(found!=null)
+			if((found!=null)&&(!aborted))
 			{
 				int amount=Dice.roll(1,3,0);
 				String s="s";
@@ -84,6 +84,21 @@ public class Mine extends CommonSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
+		   &&(resourceType!=EnvResource.RESOURCE_SAND)
+		   &&(resourceType!=EnvResource.RESOURCE_CLAY)
+		   &&(resourceType!=EnvResource.RESOURCE_CHINA)
+		   &&(resourceType!=EnvResource.RESOURCE_CRYSTAL)
+		   &&(resourceType!=EnvResource.RESOURCE_OPAL)
+		   &&(resourceType!=EnvResource.RESOURCE_AMETHYST)
+		   &&(resourceType!=EnvResource.RESOURCE_GARNET)
+		   &&(resourceType!=EnvResource.RESOURCE_AMBER)
+		   &&(resourceType!=EnvResource.RESOURCE_AQUAMARINE)
+		   &&(resourceType!=EnvResource.RESOURCE_CRYSOBERYL)
+		   &&(resourceType!=EnvResource.RESOURCE_TOPAZ)
+		   &&(resourceType!=EnvResource.RESOURCE_DIAMOND)
+		   &&(resourceType!=EnvResource.RESOURCE_GEM)
+		   &&(resourceType!=EnvResource.RESOURCE_GLASS)
+		   &&(resourceType!=EnvResource.RESOURCE_PEARL)
 		   &&(((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
 		   ||((resourceType&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
