@@ -10,7 +10,6 @@ public class Song_Rebirth extends Song
 {
 	public String ID() { return "Song_Rebirth"; }
 	public String name(){ return "Rebirth";}
-	public String displayText(){ return "(Song of Rebirth)";}
 	public int quality(){ return INDIFFERENT;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public Environmental newInstance(){	return new Song_Rebirth();}
@@ -30,9 +29,9 @@ public class Song_Rebirth extends Song
 		unsing(mob);
 		if(success)
 		{
-			String str=auto?"The song of "+displayName()+" begins to play!":"^S<S-NAME> begin(s) to sing the Song of "+displayName()+".^?";
+			String str=auto?"The "+songOf()+" begins to play!":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the Song of "+displayName()+" over again.^?";
+				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(mob,msg))

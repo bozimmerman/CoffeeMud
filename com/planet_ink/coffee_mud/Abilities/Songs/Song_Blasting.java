@@ -10,7 +10,6 @@ public class Song_Blasting extends Song
 {
 	public String ID() { return "Song_Blasting"; }
 	public String name(){ return "Blasting";}
-	public String displayText(){ return "(Song of Blasting)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Song_Blasting();	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

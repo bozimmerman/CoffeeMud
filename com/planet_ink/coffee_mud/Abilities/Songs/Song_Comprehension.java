@@ -10,7 +10,6 @@ public class Song_Comprehension extends Song
 {
 	public String ID() { return "Song_Comprehension"; }
 	public String name(){ return "Comprehension";}
-	public String displayText(){ return "(Song of Comprehension)";}
 	public int quality(){ return OK_OTHERS;}
 	public Environmental newInstance(){	return new Song_Comprehension();}
 	

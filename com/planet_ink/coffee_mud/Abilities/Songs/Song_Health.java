@@ -10,7 +10,6 @@ public class Song_Health extends Song
 {
 	public String ID() { return "Song_Health"; }
 	public String name(){ return "Health";}
-	public String displayText(){ return "(Song of Health)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Song_Health();}
 

@@ -10,7 +10,6 @@ public class Song_Dexterity extends Song
 {
 	public String ID() { return "Song_Dexterity"; }
 	public String name(){ return "Dexterity";}
-	public String displayText(){ return "(Song of Dexterity)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	private int amount=0;
 	public Environmental newInstance(){	return new Song_Dexterity();}

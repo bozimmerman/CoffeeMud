@@ -10,7 +10,6 @@ public class Song_Charm extends Song
 {
 	public String ID() { return "Song_Charm"; }
 	public String name(){ return "Suave";}
-	public String displayText(){ return "(Song of the Suave)";}
 	public int quality(){ return INDIFFERENT;}
 	public Environmental newInstance()
 	{

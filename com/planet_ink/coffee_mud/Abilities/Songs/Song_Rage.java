@@ -9,7 +9,6 @@ public class Song_Rage extends Song
 {
 	public String ID() { return "Song_Rage"; }
 	public String name(){ return "Rage";}
-	public String displayText(){ return "(Song of Rage)";}
 	public int quality(){ return MALICIOUS;}
 	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Rage();}

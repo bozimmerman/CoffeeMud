@@ -10,7 +10,6 @@ public class Song_Mute extends Song
 {
 	public String ID() { return "Song_Mute"; }
 	public String name(){ return "Muting";}
-	public String displayText(){ return "(Song of Muting)";}
 	public int quality(){ return MALICIOUS;}
 	public Environmental newInstance(){	return new Song_Mute();	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -9,7 +9,6 @@ public class Song_Protection extends Song
 {
 	public String ID() { return "Song_Protection"; }
 	public String name(){ return "Protection";}
-	public String displayText(){ return "(Song of Protection)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Song_Protection();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

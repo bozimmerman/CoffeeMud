@@ -9,7 +9,6 @@ public class Song_Nothing extends Song
 {
 	public String ID() { return "Song_Nothing"; }
 	public String name(){ return "Nothing";}
-	public String displayText(){ return "(Song of Nothing at All)";}
 	public int quality(){ return MALICIOUS;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	public Song_Nothing()

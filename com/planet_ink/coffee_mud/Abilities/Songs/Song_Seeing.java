@@ -10,7 +10,6 @@ public class Song_Seeing extends Song
 {
 	public String ID() { return "Song_Seeing"; }
 	public String name(){ return "Seeing";}
-	public String displayText(){ return "(Song of Seeing)";}
 	public int quality(){ return OK_OTHERS;}
 	public Environmental newInstance(){	return new Song_Seeing();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -10,7 +10,6 @@ public class Song_Inebriation extends Song
 {
 	public String ID() { return "Song_Inebriation"; }
 	public String name(){ return "Drunkenness";}
-	public String displayText(){ return "(Song of Drunkenness)";}
 	public int quality(){ return MALICIOUS;}
 	protected boolean mindAttack(){return true;}
 	public Environmental newInstance(){	return new Song_Inebriation();}

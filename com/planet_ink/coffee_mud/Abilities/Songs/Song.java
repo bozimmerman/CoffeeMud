@@ -9,7 +9,7 @@ public class Song extends StdAbility
 {
 	public String ID() { return "Song"; }
 	public String name(){ return "a Song";}
-	public String displayText(){ return "";}
+	public String displayText(){ return "("+songOf()+")";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	private static final String[] triggerStrings = {"SING","SI"};
@@ -20,6 +20,7 @@ public class Song extends StdAbility
 	protected boolean skipStandardSongInvoke(){return false;}
 	protected boolean mindAttack(){return false;}
 	protected boolean skipStandardSongTick(){return false;}
+	protected String songOf(){return "Song of "+displayName();}
 
 	public Song referenceSong=null;
 
@@ -88,9 +89,9 @@ public class Song extends StdAbility
 		unsing(mob);
 		if(success)
 		{
-			String str=auto?"^SThe song of "+displayName()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the Song of "+displayName()+".^?";
+			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the Song of "+displayName()+" over again.^?";
+				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(mob,msg))

@@ -10,7 +10,6 @@ public class Song_Flight extends Song
 {
 	public String ID() { return "Song_Flight"; }
 	public String name(){ return "Flight";}
-	public String displayText(){ return "(Song of Flight)";}
 	public int quality(){ return INDIFFERENT;}
 	public Environmental newInstance(){	return new Song_Flight();}
 	protected boolean skipStandardSongInvoke(){return true;}
@@ -43,9 +42,9 @@ public class Song_Flight extends Song
 		unsing(mob);
 		if(success)
 		{
-			String str=auto?"^SThe song of "+displayName()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the Song of "+displayName()+".^?";
+			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the Song of "+displayName()+" over again.^?";
+				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(mob,msg))

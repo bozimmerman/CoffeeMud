@@ -10,7 +10,6 @@ public class Song_Thanks extends Song
 {
 	public String ID() { return "Song_Thanks"; }
 	public String name(){ return "Thanks";}
-	public String displayText(){ return "(Song of Thanks)";}
 	public int quality(){ return MALICIOUS;}
 	protected boolean skipStandardSongInvoke(){return true;}
 	protected boolean mindAttack(){return true;}
@@ -88,9 +87,9 @@ public class Song_Thanks extends Song
 		unsing(mob);
 		if(success)
 		{
-			String str=auto?"^SThe song of "+displayName()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the Song of "+displayName()+".^?";
+			String str=auto?"^SThe "+songOf()+" begins to play!^?":"^S<S-NAME> begin(s) to sing the "+songOf()+".^?";
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
-				str="^S<S-NAME> start(s) the Song of "+displayName()+" over again.^?";
+				str="^S<S-NAME> start(s) the "+songOf()+" over again.^?";
 
 			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(mob,msg))

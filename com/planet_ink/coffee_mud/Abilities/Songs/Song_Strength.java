@@ -10,7 +10,6 @@ public class Song_Strength extends Song
 {
 	public String ID() { return "Song_Strength"; }
 	public String name(){ return "Strength";}
-	public String displayText(){ return "(Song of Strength)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	public Environmental newInstance(){	return new Song_Strength();}
 	
