@@ -89,9 +89,8 @@ public class Flee extends Go
 			else
 			if(whatToDo.startsWith("PUR"))
 			{
-				MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
-				boolean found=CMClass.DBEngine().DBUserSearch(deadMOB,mob.Name());
-				if(found)
+				MOB deadMOB=CMMap.getLoadPlayer(mob.Name());
+				if(deadMOB!=null)
 				{
 					CoffeeUtensils.obliteratePlayer(deadMOB,false);
 					return false;

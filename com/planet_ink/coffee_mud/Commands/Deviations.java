@@ -27,6 +27,41 @@ public class Deviations extends StdCommand
 	public String[] getAccessWords(){return access;}
 	public int ticksToExecute(){return 0;}
 	public boolean canBeOrdered(){return true;}
+	
+	private String mobHeader() 
+	{
+		StringBuffer str=new StringBuffer();
+		str.append("\n\r");
+		str.append(Util.padRight("Name",20)+" ");
+		str.append(Util.padRight("Lvl",4)+" ");
+		str.append(Util.padRight("Att",5)+" ");
+		str.append(Util.padRight("Dmg",5)+" ");
+		str.append(Util.padRight("Armor",5)+" ");
+		str.append(Util.padRight("Speed",5)+" ");
+		str.append(Util.padRight("Rejuv",5)+" ");
+		str.append(Util.padRight("Gold",5)+" ");
+		str.append(Util.padRight("Align",5)+" ");
+		str.append(Util.padRight("Worn",5));
+		str.append("\n\r");
+		return str.toString();
+	}
+	private String itemHeader() 
+	{
+		StringBuffer str=new StringBuffer();
+		str.append("\n\r");
+		str.append(Util.padRight("Name",20)+" ");
+		str.append(Util.padRight("Type",10)+" ");
+		str.append(Util.padRight("Lvl",4)+" ");
+		str.append(Util.padRight("Att",5)+" ");
+		str.append(Util.padRight("Dmg",5)+" ");
+		str.append(Util.padRight("Armor",5)+" ");
+		str.append(Util.padRight("Value",5)+" ");
+		str.append(Util.padRight("Rejuv",5)+" ");
+		str.append(Util.padRight("Wght.",4)+" ");
+		str.append(Util.padRight("Size",4));
+		str.append("\n\r");
+		return str.toString();
+	}
 
 	private void fillCheckDeviations(Room R, String type, Vector check)
 	{
@@ -80,7 +115,7 @@ public class Deviations extends StdCommand
 	private String getDeviation(int val, Hashtable vals, String key)
 	{
 		if(!vals.containsKey(key))
-			return "N/A";
+			return " - ";
 		int val2=Util.s_int((String)vals.get(key));
 		return getDeviation(val,val2);
 	}
@@ -140,16 +175,8 @@ public class Deviations extends StdCommand
 			check.addElement(E);
 		StringBuffer str=new StringBuffer("");
 		str.append("Deviations Report:\n\r");
-		str.append(Util.padRight("Name",20)+" ");
-		str.append(Util.padRight("Lvl",5)+" ");
-		str.append(Util.padRight("Att",5)+" ");
-		str.append(Util.padRight("Dmg",5)+" ");
-		str.append(Util.padRight("Val",5)+" ");
-		str.append(Util.padRight("Weigt",5)+" ");
-		str.append(Util.padRight("Speed",5)+" ");
-		str.append(Util.padRight("MinRg",5)+" ");
-		str.append(Util.padRight("MaxRg",5)+" ");
-		str.append("\n\r");
+		StringBuffer itemResults = new StringBuffer();
+		StringBuffer mobResults = new StringBuffer();
 		for(int c=0;c<check.size();c++)
 		{
 			if(check.elementAt(c) instanceof Item)
@@ -164,50 +191,72 @@ public class Deviations extends StdCommand
 								(W==null)?0:W.weaponClassification(),
 								I.maxRange(),
 								I.rawProperLocationBitmap());
-				str.append(Util.padRight(I.name(),20)+" ");
-				str.append(Util.padRight(""+I.envStats().level(),5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											I.baseEnvStats().attackAdjustment(),
-											vals,"ATTACK"),5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											I.baseEnvStats().damage(),
-											vals,"DAMAGE"),5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											I.baseGoldValue(),
-											vals,"VALUE"),5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											I.baseEnvStats().weight(),
-											vals,"WEIGHT"),5)+" ");
-				str.append(Util.padRight("N/A",5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											I.minRange(),
-											vals,"MINRANGE"),5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											I.maxRange(),
-											vals,"MAXRANGE"),5)+" ");
-				str.append("\n\r");
+				itemResults.append(Util.padRight(I.name(),20)+" ");
+				itemResults.append(Util.padRight(I.ID(),10)+" ");
+				itemResults.append(Util.padRight(""+I.envStats().level(),4)+" ");
+				itemResults.append(Util.padRight(""+getDeviation(
+												I.baseEnvStats().attackAdjustment(),
+												vals,"ATTACK"),5)+" ");
+				itemResults.append(Util.padRight(""+getDeviation(
+												I.baseEnvStats().damage(),
+												vals,"DAMAGE"),5)+" ");
+				itemResults.append(Util.padRight(""+getDeviation(
+												I.baseEnvStats().damage(),
+												vals,"ARMOR"),5)+" ");
+				itemResults.append(Util.padRight(""+getDeviation(
+												I.baseGoldValue(),
+												vals,"VALUE"),5)+" ");
+				itemResults.append(Util.padRight(""+((I.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+I.envStats().rejuv()),5)+" ");
+				if(I instanceof Weapon) 
+					itemResults.append(Util.padRight(""+I.baseEnvStats().weight(),4));
+				else
+					itemResults.append(Util.padRight(""+getDeviation(
+													I.baseEnvStats().weight(),
+													vals, "WEIGHT"), 4)+" ");
+				if(I instanceof Armor)
+					itemResults.append(Util.padRight(""+((Armor)I).envStats().height(),4));
+				else
+					itemResults.append(Util.padRight(" - ",4)+" ");
+				itemResults.append("\n\r");
 			}
 			else
 			{
 				MOB M=(MOB)check.elementAt(c);
-				str.append(Util.padRight(M.name(),20)+" ");
-				str.append(Util.padRight(""+M.envStats().level(),5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											M.baseEnvStats().attackAdjustment(),
-											M.baseCharStats().getCurrentClass().getLevelAttack(M)),5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											M.baseEnvStats().damage(),
-											M.baseCharStats().getCurrentClass().getLevelDamage(M)),5)+" ");
-				str.append(Util.padRight("N/A",5)+" ");
-				str.append(Util.padRight("N/A",5)+" ");
-				str.append(Util.padRight(""+getDeviation(
-											(int)Math.round(M.baseEnvStats().speed()),
-											(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
-				str.append(Util.padRight("N/A",5)+" ");
-				str.append(Util.padRight("N/A",5)+" ");
-				str.append("\n\r");
+				mobResults.append(Util.padRight(M.name(),20)+" ");
+				mobResults.append(Util.padRight(""+M.envStats().level(),4)+" ");
+				mobResults.append(Util.padRight(""+getDeviation(
+												M.baseEnvStats().attackAdjustment(),
+												M.baseCharStats().getCurrentClass().getLevelAttack(M)),5)+" ");
+				mobResults.append(Util.padRight(""+getDeviation(
+												M.baseEnvStats().damage(),
+												M.baseCharStats().getCurrentClass().getLevelDamage(M)),5)+" ");
+				mobResults.append(Util.padRight(""+getDeviation(
+												M.baseEnvStats().armor(),
+												M.baseCharStats().getCurrentClass().getLevelArmor(M)),5)+" ");
+				mobResults.append(Util.padRight(""+getDeviation(
+												(int)Math.round(M.baseEnvStats().speed()),
+												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
+				mobResults.append(Util.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
+				int properMoney = 0;
+				if(M.baseCharStats().getMyRace().availability()==Race.AVAILABLE_ALL)
+					properMoney=M.envStats().level()*5;
+				else
+					properMoney=M.envStats().level();
+				mobResults.append(Util.padRight(""+getDeviation(M.getMoney(),properMoney),5)+" ");
+				mobResults.append(Util.padRight(""+M.getAlignment(),5)+" ");
+				int reallyWornCount = 0;
+				for(int j=0;j<M.inventorySize();j++) 
+				{
+					Item Iw=M.fetchInventory(j);
+					if(!(Iw.amWearingAt(Item.INVENTORY))) 
+						reallyWornCount++;
+				}
+				mobResults.append(Util.padRight(""+reallyWornCount,5)+" ");
+				mobResults.append("\n\r");
 			}
 		}
+		if(itemResults.length()>0) str.append(itemHeader()+itemResults.toString());
+		if(mobResults.length()>0) str.append(mobHeader()+mobResults.toString());
 		return str;
 	}
 
@@ -217,7 +266,7 @@ public class Deviations extends StdCommand
 		mob.tell(deviations(mob,Util.combine(commands,1)).toString());
 		return false;
 	}
-	
+
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public boolean securityCheck(MOB mob)
 	{

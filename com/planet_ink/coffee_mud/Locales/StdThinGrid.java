@@ -24,7 +24,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdThinGrid";}
 	
-	public final static int DIVISOR=5;
 	public final static long EXPIRATION=60000;
 	
 	protected Vector descriptions=new Vector();
@@ -32,11 +31,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	
 	protected int xsize=5;
 	protected int ysize=5;
-	protected int registeredSize=0;
 	
-	protected final DVector rooms=new  DVector(4);
-	protected static final Hashtable used=new Hashtable();
-	protected static final Hashtable totalSizes=new Hashtable();
+	protected final DVector rooms=new DVector(4);
 
 	public StdThinGrid()
 	{

@@ -195,32 +195,29 @@ public class SaveThread extends Thread
 				{
 					Vector warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
 					long foundWarning=-1;
+					StringBuffer warnStr=new StringBuffer("");
 					if((warnedOnes!=null)&&(warnedOnes.size()>0))
-					{
-						boolean changed=false;
-						StringBuffer warnStr=new StringBuffer("");
 						for(int b=0;b<warnedOnes.size();b++)
 						{
-							String B=(String)warnedOnes.elementAt(b);
+							String B=((String)warnedOnes.elementAt(b)).trim();
 							if(B.trim().length()>0)
 							{
 								if(B.toUpperCase().startsWith(name.toUpperCase()+" "))
-									foundWarning=Util.s_long(B.substring(name.length()+1).trim());
+								{
+									int lastSpace=B.lastIndexOf(" ");
+									foundWarning=Util.s_long(B.substring(lastSpace+1).trim());
+								}
 								warnStr.append(B+"\n");
 							}
 						}
-						if((foundWarning<0)||(foundWarning<when))
-						{
-							warnStr.append(name+" "+System.currentTimeMillis()+"\n");
-							Resources.updateResource("warnedplayers.ini",warnStr);
-							Resources.saveFileResource("warnedplayers.ini");
-						}
-					}
 					if((foundWarning<0)||(foundWarning<when))
 					{
 						MOB M=CMMap.getLoadPlayer(name);
-						if(M!=null)
+						if((M!=null)&&(M.playerStats()!=null))
 						{
+							warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
+							Resources.updateResource("warnedplayers.ini",warnStr);
+							Resources.saveFileResource("warnedplayers.ini");
 							warnPrePurge(M,when-warn);
 						}
 					}

@@ -396,9 +396,8 @@ public class MUDFight
 				else
 				if(whatToDo.startsWith("PUR"))
 				{
-					MOB deadMOB=(MOB)CMClass.getMOB("StdMOB");
-					boolean found=CMClass.DBEngine().DBUserSearch(deadMOB,target.name());
-					if(found)
+					MOB deadMOB=CMMap.getLoadPlayer(target.Name());
+					if(deadMOB!=null)
 					{
 						Body=target.killMeDead(true);
 						CoffeeUtensils.obliteratePlayer(deadMOB,false);

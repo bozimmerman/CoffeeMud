@@ -92,7 +92,7 @@ public class BaseGenerics extends StdCommand
 				else
 				if(newName.length()>0)
 				{
-					E.setName(newName);
+					E.setClanID(newName);
 					E.setClanRole(Clan.POS_MEMBER);
 				}
 				else
