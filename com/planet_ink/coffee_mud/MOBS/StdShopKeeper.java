@@ -580,7 +580,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			val=product.baseEnvStats().level()*25;
 		if(mob==null) return val;
 
-		double halfPrice=Math.round(Util.div(val,2.0));
+		//double halfPrice=Math.round(Util.div(val,2.0));
 		double quarterPrice=Math.round(Util.div(val,4.0));
 		
 		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30

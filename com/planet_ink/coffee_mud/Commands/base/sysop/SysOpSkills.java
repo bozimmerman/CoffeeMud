@@ -225,9 +225,9 @@ public class SysOpSkills
 
 		if(avgMob!=null)
 		{
-			avgMob.setSession(mob.session());
-			ExternalPlay.score(avgMob);
-			avgMob.setSession(null);
+			StringBuffer msg=ExternalPlay.getScore(avgMob);
+			if(!mob.isMonster())
+				mob.session().unfilteredPrintln(msg.toString());
 		}
 		return true;
 	}

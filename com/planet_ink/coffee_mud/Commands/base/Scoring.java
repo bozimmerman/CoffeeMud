@@ -101,6 +101,12 @@ public class Scoring
 	
 	public void score(MOB mob)
 	{
+		StringBuffer msg=getScore(mob);
+		if(!mob.isMonster())
+			mob.session().unfilteredPrintln(msg.toString());
+	}
+	public StringBuffer getScore(MOB mob)
+	{
 		TheFight theFight=new TheFight();
 
 		int adjustedArmor=100-(int)theFight.adjustedArmor(mob);
@@ -160,8 +166,7 @@ public class Scoring
 			msg.append("^BYou are thirsty.^?\n\r");
 		msg.append("\n\r^BYou are affected by:^? "+getAffects(mob)+"\n\r");
 
-		if(!mob.isMonster())
-			mob.session().unfilteredPrintln(msg.toString());
+		return msg;
 	}
 
 	public void affected(MOB mob)

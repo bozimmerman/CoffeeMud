@@ -72,7 +72,7 @@ public class Skill_Resistance extends StdAbility
 				case Affect.TYP_UNDEAD:
 					if(profficiencyCheck(0,false))
 					{
-						Prop_HaveResister.resistAffect(affect,mob,this);
+						ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
 						if(affect.wasModified())
 							helpProfficiency(mob);
 					}

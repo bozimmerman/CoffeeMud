@@ -158,9 +158,10 @@ public class ExternalPlay
 		if(player!=null) player.quickSay(mob,target,text,isPrivate,tellFlag);
 	}
 
-	public static void score(MOB mob)
+	public static StringBuffer getScore(MOB mob)
 	{
-		if(player!=null) player.score(mob);
+		if(player!=null) return player.getScore(mob);
+		return new StringBuffer("");
 	}
 	public static void startTickDown(Environmental E,
 									 int tickID,

@@ -142,12 +142,14 @@ public class Mage extends StdCharClass
 			// level 16
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_ChainLightening",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Choke",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Spell_PredictWeather",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Cloudkill",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_Web",false);
 			// level 17
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_ClarifyScroll",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Spell_RechargeWand",false);
 			// level 18
+			CMAble.addCharAbilityMapping(ID(),18,"Spell_SeeAura",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Delude",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Portal",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Summon",false);
@@ -156,6 +158,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_StoneFlesh",false);
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_ImprovedInvisibility",false);
 			// level 20
+			CMAble.addCharAbilityMapping(ID(),20,"Spell_Scry",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
 			// level 21
 			CMAble.addCharAbilityMapping(ID(),21,"Spell_Command",false);

@@ -28,7 +28,6 @@ public class Ring_Ornamental extends Ring
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 
-		Random randomizer = new Random(System.currentTimeMillis());
 		int ringType = Dice.roll(1,14,-1);
 
 		this.envStats.setLevel(ringType);

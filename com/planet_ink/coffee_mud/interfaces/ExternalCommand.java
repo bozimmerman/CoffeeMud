@@ -36,7 +36,7 @@ public interface ExternalCommand
 	public String shortAlignmentStr(int al);
 	public String alignmentStr(int al);
 	public StringBuffer getInventory(MOB seer, MOB mob);
-	public void score(MOB mob);
+	public StringBuffer getScore(MOB mob);
 	public StringBuffer showWho(MOB who, boolean shortForm);
 	public String standardMobCondition(MOB mob);
 	public StringBuffer niceLister(MOB mob, Vector items, boolean useName);

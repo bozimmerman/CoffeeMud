@@ -135,9 +135,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.socialProcessor.quickSay(mob,target,text,isPrivate,tellFlag);
 	}
-	public void score(MOB mob)
+	public StringBuffer getScore(MOB mob)
 	{
-		processor.scoring.score(mob);
+		return processor.scoring.getScore(mob);
 	}
 	public StringBuffer showWho(MOB who, boolean shortForm)
 	{

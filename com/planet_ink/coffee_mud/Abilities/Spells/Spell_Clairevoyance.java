@@ -39,12 +39,11 @@ public class Spell_Clairevoyance extends Spell
 		&&(affect.amISource((MOB)affected))
 		&&(affect.sourceMinor()==Affect.TYP_EXAMINESOMETHING)
 		&&(invoker!=null)
-		&&(invoker instanceof MOB)
 		&&(affect.target()!=null)
 		&&((((MOB)invoker).location()!=((MOB)affected).location())||(!(affect.target() instanceof Room))))
 		{
 			FullMsg newAffect=new FullMsg(invoker,affect.target(),Affect.TYP_EXAMINESOMETHING,null);
-			affect.target().affect(affect);
+			affect.target().affect(newAffect);
 		}
 	}
 	
@@ -88,7 +87,7 @@ public class Spell_Clairevoyance extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) clairevoyance, calling '"+mobName+"'.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> invoke(s) clairevoyance, calling '"+mobName+"'.");
 			FullMsg msg2=new FullMsg(mob,target,this,affectType,null);
 			if((mob.location().okAffect(msg))&&((newRoom==mob.location())||(newRoom.okAffect(msg2))))
 			{
