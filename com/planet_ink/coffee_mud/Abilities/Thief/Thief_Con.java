@@ -61,6 +61,16 @@ public class Thief_Con extends ThiefSkill
 			mob.tell("You can't con someone to follow.");
 			return false;
 		}
+		
+		Object O=EnglishParser.findCommand(target,commands);
+		if(O instanceof Command)
+		{
+			if(!((Command)O).canBeOrdered())
+			{
+				mob.tell("You can't con someone into doing that.");
+				return false;
+			}
+		}
 
 		int oldProfficiency=profficiency();
 

@@ -46,19 +46,21 @@ public class StdCageRideable extends StdRideable
 					buf.append(name()+" contains:\n\r");
 				Vector newItems=new Vector();
 
-				if(mob.isMine(this))
+				if(owner instanceof MOB)
 				{
-					for(int i=0;i<mob.inventorySize();i++)
+					MOB M=(MOB)owner;
+					for(int i=0;i<M.inventorySize();i++)
 					{
-						Item item=mob.fetchInventory(i);
+						Item item=M.fetchInventory(i);
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
 					buf.append(CMLister.niceLister(mob,newItems,true));
 				}
 				else
+				if(owner instanceof Room)
 				{
-					Room room=mob.location();
+					Room room=(Room)owner;
 					if(room!=null)
 					for(int i=0;i<room.numItems();i++)
 					{

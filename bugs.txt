@@ -1,10 +1,15 @@
-add reset MOBSTATS ROOM *, MOBSTATS AREA *, MOBSTATS WORLD *, 
-overview grid type thingy
+In room New Thalos#9789 (A saltwatersurface) it does not allow you to swim west [to a shore room] (gives the --you need to swim or ride a boat that way--message). Riding a boat seems to work all of the time, though. I have tried to find out what the problem is by walking into other sea rooms (and swimming and riding a boat), but I found no correlation. 38 ) Loki       that same room (New Thalos#9789) gives the error message (You need to swim or ride a boat that way.) when you try to recall!
+fix bribe
+add alerts to journals, and expiration
+bug When adding new laws to page 10 (and possibly other pages) the parser erroneously places info one field short of where it should be....for example, I was trying to make it a crime to say SHIT. It put the name as warning, the flags as Swearing in Public (should have been the name), it put the Flags in the location mask field, and the justification in the Sentence field. All in all, messed up.'
+VeryAggressive(-MOB -SYSOP -TATTOOS +NORFENKILLER) still attacks mobs that have the NORFENKILLER tattoo.
+some way to attach email systems to channels!! make the wiz email system channel based!
+if oracles gain levels while not active/awake then they don't get their non-class skill.
+overview grid type thingy -- thin grid
+map command.  its moronic, but there you go.
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
 Can't type: gain paladin's goodness had to type gain goodness
-the DISPLAY command should also show the contents of an open container.
-Katarina got BANISH as one of her 'every other level random out of class skill gain.'
 An archon should ALWAYS be able to see a subop when wizinv.
 Second bug. I believe Axlen had this one before.. Plinia (daughter) become a follower mob. But there's two of her. What's up with this? Anyway.. following that. I managed to get one of her arrested. The cityguard took'er into Hero territory at the top of the rainbow bridge. Not good.
 

@@ -265,6 +265,57 @@ public class Reset extends StdCommand
 			mob.tell(V.size()+" records done.");
 		}
 		else
+		if(s.equalsIgnoreCase("mobstats"))
+		{
+			s="room";
+			if(commands.size()>1) s=(String)commands.elementAt(1);
+			Vector rooms=new Vector();
+			if(s.toUpperCase().startsWith("ROOM"))
+				rooms.addElement(mob.location());
+			else
+			if(s.toUpperCase().startsWith("AREA"))
+				for(Enumeration e=mob.location().getArea().getMap();e.hasMoreElements();)
+					rooms.addElement(((Room)e.nextElement()));
+			else
+			if(s.toUpperCase().startsWith("WORLD"))
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					rooms.addElement(((Room)e.nextElement()));
+			else
+			{
+				mob.tell("Try ROOM, AREA, or WORLD.");
+				return false;
+			}
+
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				R.getArea().toggleMobility(false);
+				CoffeeUtensils.resetRoom(R);
+				boolean somethingDone=false;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M=R.fetchInhabitant(m);
+					if((M.isEligibleMonster())
+					&&(M.getStartRoom()==R))
+					{
+						MOB M2=M.baseCharStats().getCurrentClass().fillOutMOB(null,M.baseEnvStats().level());
+						M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
+						M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
+						M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
+						M.recoverEnvStats();
+						somethingDone=true;
+					}
+				}
+				if(somethingDone)
+				{
+					mob.tell("Room "+R.roomID()+" done.");
+					CMClass.DBEngine().DBUpdateMOBs(R);
+				}
+				R.getArea().toggleMobility(true);
+			}
+
+		}
+		else
 		if(s.equalsIgnoreCase("groundlydoors"))
 		{
 			if(mob.session()==null) return false;
@@ -709,7 +760,7 @@ public class Reset extends StdCommand
 			mob.tell("Done.");
 		}
 		else
-			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREARACEMAT *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
+			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, AREARACEMAT *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
 		return false;
 	}
 
