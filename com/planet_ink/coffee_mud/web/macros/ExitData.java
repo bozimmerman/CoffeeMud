@@ -122,6 +122,7 @@ public class ExitData extends StdWebMacro
 				break;
 			case 8: // closedtext
 				if(firstTime) old=E.closedText(); 
+				if(old.length()==0) old="a closed door";
 				str.append(old);
 				break;
 			case 9: // defaultsclosed
@@ -191,8 +192,9 @@ public class ExitData extends StdWebMacro
 					return "true";
 				else
 					return "false";
-			case 23: // closedtext
+			case 23: // door name
 				if(firstTime) old=E.doorName(); 
+				if(old.length()==0) old="door";
 				str.append(old);
 				break;
 			}

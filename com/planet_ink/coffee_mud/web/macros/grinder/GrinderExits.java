@@ -122,8 +122,7 @@ public class GrinderExits
 			case 22: // is generic
 				break;
 			case 23: // door name
-				if(!E.isGeneric())
-					E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
+				E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
 				break;
 			}
 		}

@@ -193,9 +193,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 						int newBalance=0;
 						if(coinItem!=null)
 							newBalance=coinItem.numberOfCoins();
-						newBalance+=(int)Math.round(Util.mul(newBalance,1.0+coinInterest));
+						newBalance+=(int)Math.round(Util.mul(newBalance,coinInterest));
 						if(totalValue>0)
-							newBalance+=(int)Math.round(Util.mul(totalValue,1.0+itemInterest));
+							newBalance+=(int)Math.round(Util.mul(totalValue,itemInterest));
 						if(newBalance<0)
 						{
 							for(int v=0;v<V.size();v++)

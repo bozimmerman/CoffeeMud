@@ -50,6 +50,7 @@ public class MUDGrinder extends StdWebMacro
 			Area A=getLoggedArea(httpReq,mob);
 			if(A==null) return "@break@";
 			ExternalPlay.obliterateArea(A.name());
+			Log.sysOut("Grinder",mob.name()+" obliterated area "+A.name());
 			return "The area "+A.name()+" has been successfully deleted.";
 		}
 		else
@@ -63,6 +64,7 @@ public class MUDGrinder extends StdWebMacro
 				A=ExternalPlay.DBCreateArea(AREA,"StdArea");
 			else
 				return "false";
+			Log.sysOut("Grinder","Someone added area "+A.name());
 			return "true";
 		}
 		else
@@ -75,6 +77,7 @@ public class MUDGrinder extends StdWebMacro
 			if(A==null) return "";
 			String error=GrinderAreas.modifyArea(httpReq,parms);
 			AREA=(String)httpReq.getRequestParameters().get("AREA");
+			Log.sysOut("Grinder","Someone edited area "+A.name());
 			if(error==null) error="";
 			httpReq.getRequestParameters().put("ERRMSG",error);
 			httpReq.resetRequestEncodedParameters();
@@ -88,6 +91,7 @@ public class MUDGrinder extends StdWebMacro
 			if(R==null) return "@break@";
 			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
 			if(dir<0) return "@break@";
+			Log.sysOut("Grinder",mob.name()+" deleted exit "+dir+" from "+R.ID());
 			String errMsg=GrinderExits.delExit(R,dir);
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
@@ -101,6 +105,7 @@ public class MUDGrinder extends StdWebMacro
 			if(R==null) return "@break@";
 			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
 			if(dir<0) return "@break@";
+			Log.sysOut("Grinder",mob.name()+" modified exit "+dir+" from "+R.ID());
 			String errMsg=GrinderExits.editExit(R,dir,httpReq,parms);
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
@@ -160,6 +165,7 @@ public class MUDGrinder extends StdWebMacro
 			if(R2==null) return "@break@";
 			int dir2=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("OLDLINK"));
 			if(dir2<0) return "@break@";
+			Log.sysOut("Grinder",mob.name()+" linked exit "+dir+" from "+R.ID());
 			String errMsg=GrinderExits.linkRooms(R,R2,dir,dir2);
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
@@ -180,7 +186,10 @@ public class MUDGrinder extends StdWebMacro
 			if(R2==null) 
 				errMsg="No external room with ID '"+oldroom+"' found.";
 			else
+			{
 				errMsg=GrinderExits.linkRooms(R,R2,dir,Directions.getOpDirectionCode(dir));
+				Log.sysOut("Grinder",mob.name()+" linked area "+R.ID()+" to "+R2.ID());
+			}
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
 		}
@@ -192,6 +201,7 @@ public class MUDGrinder extends StdWebMacro
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
 			if(R==null) return "@break@";
 			String errMsg=GrinderRooms.editRoom(httpReq,parms,R);
+			Log.sysOut("Grinder",mob.name()+" modified room "+R.ID());
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
 		}
@@ -203,6 +213,7 @@ public class MUDGrinder extends StdWebMacro
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
 			if(R==null) return "@break@";
 			String errMsg=GrinderItems.editItem(httpReq,parms,R);
+			Log.sysOut("Grinder",mob.name()+" modified item in room "+R.ID());
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
 		}
@@ -214,6 +225,7 @@ public class MUDGrinder extends StdWebMacro
 			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
 			if(R==null) return "@break@";
 			String errMsg=GrinderMobs.editMob(httpReq,parms,R);
+			Log.sysOut("Grinder",mob.name()+" modified mob in room "+R.ID());
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
 		}
@@ -231,6 +243,7 @@ public class MUDGrinder extends StdWebMacro
 					httpReq.getRequestParameters().put("LINK","");
 					break;
 				}
+			Log.sysOut("Grinder",mob.name()+" deleted room "+R.ID());
 			String errMsg=GrinderRooms.delRoom(R);
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			httpReq.resetRequestEncodedParameters();
@@ -249,7 +262,10 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			R=R.rawDoors()[dir];
 			if(R!=null)
+			{
 				httpReq.getRequestParameters().put("ROOM",R.ID());
+				Log.sysOut("Grinder",mob.name()+" added room "+R.ID());
+			}
 			httpReq.getRequestParameters().put("LINK","");
 			httpReq.resetRequestEncodedParameters();
 		}
