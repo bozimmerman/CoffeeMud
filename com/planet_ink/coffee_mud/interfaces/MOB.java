@@ -57,8 +57,6 @@ public interface MOB
 	/** Where this MOB is currently*/
 	public Room location();
 	public void setLocation(Room newRoom);
-	public Rideable riding();
-	public void setRiding(Rideable ride);
 	
 	/** If the MOB is controlled by a USER, this
 	 * will point to the controlling session object*/
@@ -99,15 +97,17 @@ public interface MOB
 	public void resetToMaxState();
 	public Weapon myNaturalWeapon();
 	
-	// mental characteristics
+	// misc characteristics
 	public String getWorshipCharID();
 	public int getAlignment();
 	public int getWimpHitPoint();
 	public int getQuestPoint();
+	public Rideable riding();
 	public void setAlignment(int newVal);
 	public void setWorshipCharID(String newVal);
 	public void setWimpHitPoint(int newVal);
 	public void setQuestPoint(int newVal);
+	public void setRiding(Rideable ride);
 	
 	// location!
 	public Room getStartRoom();
@@ -128,7 +128,7 @@ public interface MOB
 	public boolean amWearingSomethingHere(long wornCode);
 	public boolean isMine(Environmental env);
 	
-	/** Manipulation of followers.*/
+	/** Manipulation of followers */
 	public void addFollower(MOB follower);
 	public void delFollower(MOB follower);
 	public int numFollowers();

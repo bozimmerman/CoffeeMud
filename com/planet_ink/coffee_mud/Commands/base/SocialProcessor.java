@@ -628,4 +628,40 @@ public class SocialProcessor
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
+	public void rebuke(MOB mob, Vector commands)
+	{
+		if(commands.size()<2)
+		{
+			mob.tell("Rebuke whom?");
+			return;
+		}
+		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
+		if(target==null)
+			if(!Util.combine(commands,1).equalsIgnoreCase(mob.getWorshipCharID()))
+			{
+				mob.tell("There's nobody here called '"+Util.combine(commands,1)+"' and you aren't serving '"+Util.combine(commands,1)+"'.");
+				return;
+			}
+		FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getWorshipCharID()+".");
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+	}
+	public void serve(MOB mob, Vector commands)
+	{
+		if(commands.size()<2)
+		{
+			mob.tell("Serve whom?");
+			return;
+		}
+		commands.removeElementAt(0);
+		MOB recipient=mob.location().fetchInhabitant(Util.combine(commands,0));
+		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
+		{
+			mob.tell("I don't see "+Util.combine(commands,0)+" here.");
+			return;
+		}
+		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_SERVE,"<S-NAME> swear(s) fealty to <T-NAMESELF>.");
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+	}
 }

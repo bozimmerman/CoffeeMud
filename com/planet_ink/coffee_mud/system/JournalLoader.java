@@ -38,6 +38,9 @@ public class JournalLoader
 				if(D!=null) DBConnector.DBDone(D);
 				return null;
 			}
+			
+			// sorting SUCKED  I like KNOWING where the messages will be
+			/*
 			Vector oldJournal=journal;
 			journal=new Vector();
 			while(oldJournal.size()>0)
@@ -60,6 +63,7 @@ public class JournalLoader
 					journal.addElement(useEntry);
 				}
 			}
+			*/
 		}
 		return journal;
 	}

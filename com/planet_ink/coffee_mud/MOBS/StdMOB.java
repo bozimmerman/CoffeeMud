@@ -546,7 +546,6 @@ public class StdMOB implements MOB
 		if((riding()!=null)&&(!riding().amRiding(this)))
 			riding().addRider(this);
 	}
-	
 	public Session session()
 	{
 		return mySession;
@@ -724,6 +723,11 @@ public class StdMOB implements MOB
 						tell("You can't attack "+riding().name()+" right now.");
 						return false;
 					}
+					if((WorshipCharID.length()>0)&&(target.name().equals(WorshipCharID)))
+					{
+						tell("You are serving '"+WorshipCharID+"'!");
+						return false;
+					}
 					
 					// establish and enforce range
 					if((atRange<0)&&(riding()!=null))
@@ -893,7 +897,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
 			case Affect.TYP_READSOMETHING:
-				if(mob.isInCombat())
+				if(isInCombat())
 				{
 					// the door-for-fleeing exception!
 					if(((affect.sourceMinor()==Affect.TYP_OPEN)||(affect.sourceMinor()==Affect.TYP_CLOSE))
@@ -901,6 +905,41 @@ public class StdMOB implements MOB
 					   &&(affect.target() instanceof Exit))
 						break;
 					tell("Not while you are fighting!");
+					return false;
+				}
+				break;
+			case Affect.TYP_REBUKE:
+				if(affect.target()!=null)
+				{
+					if(!Sense.canBeHeardBy(this,affect.target()))
+					{
+						tell(affect.target().name()+" can't hear you!");
+						return false;
+					}
+					else
+					if(!((affect.target() instanceof MOB)&&(((MOB)affect.target()).getWorshipCharID().equals(name()))))
+					{
+						tell(affect.target().name()+" does not serve you.");
+						return false;
+					}
+				}
+				else
+				if(getWorshipCharID().length()==0)
+				{
+					tell("You aren't serving anyone!");
+					return false;
+				}
+				break;
+			case Affect.TYP_SERVE:
+				if(affect.target()==null) return false;
+				if(!Sense.canBeHeardBy(this,affect.target()))
+				{
+					tell(affect.target().name()+" can't hear you!");
+					return false;
+				}
+				if(WorshipCharID.length()>0)
+				{
+					tell("You are already serving '"+WorshipCharID+"'.");
 					return false;
 				}
 				break;
@@ -1128,6 +1167,14 @@ public class StdMOB implements MOB
 
 			switch(affect.sourceMinor())
 			{
+			case Affect.TYP_REBUKE:
+				if((affect.target()==null)&&(WorshipCharID.length()>0))
+					WorshipCharID="";
+				break;
+			case Affect.TYP_SERVE:
+				if(affect.target()!=null)
+					WorshipCharID=affect.target().name();
+				break;
 			case Affect.TYP_EXAMINESOMETHING:
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
 				{
@@ -1272,6 +1319,10 @@ public class StdMOB implements MOB
 				myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
 				mob.tell(myDescription.toString());
 			}
+			else
+			if((affect.targetMinor()==Affect.TYP_REBUKE)
+			&&(Sense.canBeHeardBy(affect.source(),this)))
+				WorshipCharID="";
 			
 			int targetMajor=affect.targetMajor();
 			if((Util.bset(targetMajor,Affect.AFF_SOUNDEDAT))

@@ -271,7 +271,7 @@ public class TheFight
 					MOB mob=(MOB)e.nextElement();
 					int myAmount=(int)Math.round(Util.mul(expAmount,Util.div(mob.envStats().level(),totalLevels)));
 					if(myAmount>100) myAmount=100;
-					mob.charStats().getMyClass().gainExperience(mob,target,myAmount);
+					mob.charStats().getMyClass().gainExperience(mob,target,"",myAmount);
 				}
 			}
 			while(target.numFollowers()>0)

@@ -157,12 +157,12 @@ public class StdJournal extends StdItem
 	{
 		StringBuffer buf=new StringBuffer("");
 		Vector journal=ExternalPlay.DBReadJournal(Journal);
-		if(which<0)
+		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
 			buf.append("\n\r "+Util.padRight("#",5)+Util.padRight("From",16)+Util.padRight("To",16)+"Subject\n\r");
 			buf.append("---------------------------------------------\n\r");
+			if(journal==null) return buf;
 		}
-		if(journal==null) return buf;
 		if((which<0)||(which>=journal.size()))
 		{
 			for(int j=0;j<journal.size();j++)

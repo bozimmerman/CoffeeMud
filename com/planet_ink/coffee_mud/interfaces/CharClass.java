@@ -8,7 +8,7 @@ public interface CharClass
 	public boolean qualifiesForThisClass(MOB mob);
 
 	public void newCharacter(MOB mob, boolean isBorrowedClass);
-	public void gainExperience(MOB mob, MOB victim, int amount);
+	public void gainExperience(MOB mob, MOB victim, String homage, int amount);
 	public void level(MOB mob);
 	public void unLevel(MOB mob);
 	public void outfit(MOB mob);

@@ -77,7 +77,7 @@ public class SysOpSkills
 				break;
 			}
 			int oldattack=mob.baseEnvStats().attackAdjustment();
-			mob.charStats().getMyClass().gainExperience(mob,null,mob.getExpNeededLevel()+1);
+			mob.charStats().getMyClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();

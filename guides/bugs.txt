@@ -1,4 +1,1 @@
 Range bug, This is a bug, because thief shouldn't be able to stab the MOB if the mob is at a range, OR the mob shouldn't have to advance at thief if thief isn't at range....
-Journal bug! If you read 1 past the last item, it lets you reply!
-Still need to do saves for StdMOBs (and Undead), and the Properties
-

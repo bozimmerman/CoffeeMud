@@ -303,6 +303,28 @@ public class StdArmor extends StdItem implements Armor
 				affectableStats.setArmor(affectableStats.armor()-envStats().ability());
 		}
 	}
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		if(!amWearingAt(Item.INVENTORY))
+		switch(material())
+		{
+		case Item.METAL: 
+			affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)-2);
+			break;
+		case Item.LEATHER: 
+			affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+2);
+			break;
+		case Item.MITHRIL: 
+			affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+2);
+			break;
+		case Item.CLOTH: 
+			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)-2);
+			break;
+		case Item.GLASS: 
+			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_ACID)+2);
+			break;
+		}
+	}
 	public int value()
 	{
 		if(usesRemaining()<100)

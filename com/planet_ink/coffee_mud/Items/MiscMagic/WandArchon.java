@@ -38,13 +38,13 @@ public class WandArchon extends StdWand
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
 					while(target.envStats().level()<30)
-						target.charStats().getMyClass().gainExperience(target,null,target.getExpNeededLevel()+1);
+						target.charStats().getMyClass().gainExperience(target,null,null,target.getExpNeededLevel()+1);
 				}
 				else
 				if(message.toUpperCase().indexOf("LEVEL UP")>0)
 				{
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,me.name()+" glows brightly at <T-NAME>.");
-					target.charStats().getMyClass().gainExperience(target,null,target.getExpNeededLevel()+1);
+					target.charStats().getMyClass().gainExperience(target,null,null,target.getExpNeededLevel()+1);
 					return;
 				}
 				else

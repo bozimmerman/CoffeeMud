@@ -329,6 +329,9 @@ public class CommandProcessor
 				case CommandSet.READ:
 					itemUsage.read(mob,commands);
 					break;
+				case CommandSet.REBUKE:
+					socialProcessor.rebuke(mob,commands);
+					break;
 				case CommandSet.REMOVE:
 					itemUsage.remove(mob,commands);
 					break;
@@ -367,6 +370,9 @@ public class CommandProcessor
 					break;
 				case CommandSet.SELL:
 					socialProcessor.sell(mob,commands);
+					break;
+				case CommandSet.SERVE:
+					socialProcessor.serve(mob,commands);
 					break;
 				case CommandSet.SIT:
 					movement.sit(mob);

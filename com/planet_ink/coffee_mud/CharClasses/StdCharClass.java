@@ -89,7 +89,10 @@ public class StdCharClass implements CharClass
 	{
 	}
 
-	public void gainExperience(MOB mob, MOB victim, int amount)
+	public void gainExperience(MOB mob, 
+							   MOB victim, 
+							   String homage, 
+							   int amount)
 	{
 		int levelLimit=6;
 		double theAmount=new Integer(amount).doubleValue();
@@ -114,9 +117,22 @@ public class StdCharClass implements CharClass
 			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
 			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));
 		}
+		if((homage!=null)&&(mob.getWorshipCharID().length()>0)&&(amount>2))
+		{
+			MOB sire=(MOB)CMMap.MOBs.get(mob.getWorshipCharID());
+			if(sire!=null)
+			{
+				int sireShare=(int)Math.round(Util.div(amount,10.0));
+				if(sireShare<=0) sireShare=1;
+				amount-=sireShare;
+				if((sire.charStats()!=null)&&(sire.charStats().getMyClass()!=null))
+					sire.charStats().getMyClass().gainExperience(sire,null," from "+mob.name(),sireShare);
+			}
+		}
 
 		mob.setExperience(mob.getExperience()+amount);
-		mob.tell("^BYou gain ^H"+amount+"^? experience points.^N");
+		if(homage==null) homage="";
+		mob.tell("^BYou gain ^H"+amount+"^? experience points"+homage+".^N");
 		while(mob.getExperience()>mob.getExpNextLevel())
 			level(mob);
 	}
@@ -239,7 +255,7 @@ public class StdCharClass implements CharClass
 				break;
 			}
 			int oldattack=mob.baseEnvStats().attackAdjustment();
-			mob.charStats().getMyClass().gainExperience(mob,null,mob.getExpNeededLevel()+1);
+			mob.charStats().getMyClass().gainExperience(mob,null,null,mob.getExpNeededLevel()+1);
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();

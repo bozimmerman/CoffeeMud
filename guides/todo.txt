@@ -11,10 +11,7 @@
 ! Armor damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.  
 ! banks! (Well, the moneychanger behavior is good enough).
 ! exp from sac/des also based on level of the body.  Set body levels based on char level.
-
-Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
-of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
-vassels, providing incentive to assist the vassel.
+! Serve and Rebuke commands.  Any character may take on a leige. A Leige receives 10% of all experience gained by the vassels, providing incentive to assist the vassel.
 
 Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting. 
 

@@ -180,28 +180,33 @@ public class Grouping
 			return;
 		}
 		String whomToOrder=(String)commands.elementAt(0);
-		MOB target=null;
-		if(mob.isASysOp(mob.location()))
+		MOB target=target=mob.location().fetchInhabitant(whomToOrder);
+		boolean canFollow=false;
+		if((target!=null)
+		&&((mob.isASysOp(mob.location()))
+		||(target.amFollowing()==mob)
+		||(target.getWorshipCharID().equals(mob.name()))))
+		   canFollow=true;
+		
+		if((target==null)
+		&&(Sense.canBeSeenBy(target,mob))
+		&&(Sense.canBeHeardBy(mob,target))
+		&&(target.location()==mob.location()))
 		{
-			target=mob.location().fetchInhabitant(whomToOrder);
-			if((target==null)||(!Sense.canBeSeenBy(target,mob))||(target.location()!=mob.location()))
-			{
-				mob.tell("'"+whomToOrder+"' doesn't seem to be here.");
-				return;
-			}
+			mob.tell("'"+whomToOrder+"' doesn't seem to be here.");
+			return;
 		}
 		else
+		if(!canFollow)
 		{
-			target=mob.fetchFollower(whomToOrder);
-			if((target==null)||(!Sense.canBeSeenBy(target,mob))||(target.location()!=mob.location()))
-			{
-				mob.tell("'"+whomToOrder+"' doesn't seem to be following you.");
-				return;
-			}
+			mob.tell("You can't order '"+whomToOrder+"' around.");
+			return;
 		}
 		commands.removeElementAt(0);
 		Integer commandCodeObj=(Integer)(new CommandSet()).get((String)commands.elementAt(0));
-		if((commandCodeObj!=null)&&(commandCodeObj.intValue()==CommandSet.ORDER))
+		if((!mob.isASysOp(mob.location()))
+		   &&(commandCodeObj!=null)
+		   &&(commandCodeObj.intValue()==CommandSet.ORDER))
 		{
 			mob.tell("You cannot order someone to follow.");
 			return;
