@@ -783,7 +783,7 @@ public class StdRoom
 			if((item!=null)&&(item.container()==null))
 				viewItems.addElement(item);
 		}
-		Say.append(CMLister.niceLister(mob,viewItems,false,"RItem",""));
+		Say.append(CMLister.niceLister(mob,viewItems,false,"RItem"," \"*\""));
 
 		for(int i=0;i<numInhabitants();i++)
 		{
@@ -797,7 +797,7 @@ public class StdRoom
 					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 						Say.append("^H("+CMClass.className(mob2)+")^N ");
 
-					Say.append("^M^<RMob^>");
+					Say.append("^M^<RMob \""+mob2.name()+"\"^>");
 					if(mob2.displayText(mob).length()>0)
 						Say.append(mob2.displayText(mob));
 					else

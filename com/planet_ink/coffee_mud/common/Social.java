@@ -147,8 +147,8 @@ public class Social implements Environmental
 		String See_when_no_target=See_when_no_target();
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
 		FullMsg msg=null;
-		String str=makeTarget?"":"^Q^q["+channelName+"] ";
-		String end=makeTarget?"":"^?^.";
+		String str=makeTarget?"":"^Q^q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
+		String end=makeTarget?"":"^</CHANNEL^>^?^.";
 		if((Target==null)&&(targetable()))
 			msg=new FullMsg(mob,null,this,CMMsg.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else

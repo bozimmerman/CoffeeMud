@@ -1072,13 +1072,13 @@ public final class IMC2Driver extends Thread {
 		if(channelName.length()==0) return;
 		int channelInt=ChannelSet.getChannelInt(channelName);
 		if(channelInt<0) return;
-		String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+text+"'^?^.";
+		String str="^Q^q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"'^</CHANNEL^>^?^.";
 		if(emote>0) 
 		{
 			if(emote==1)
-				str="^Q^q["+channelName+"] "+from+" "+text+"^?^.";
+				str="^Q^q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+from+" "+text+"^</CHANNEL^>^?^.";
 			else
-				str="^Q^q["+channelName+"] "+text+"^?^.";
+				str="^Q^q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+text+"^</CHANNEL^>^?^.";
 		}
 				
 		msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);

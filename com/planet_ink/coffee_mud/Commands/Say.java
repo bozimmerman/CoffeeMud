@@ -118,13 +118,17 @@ public class Say extends StdCommand
 		combinedCommands=CommonStrings.applyFilter(combinedCommands,CommonStrings.SYSTEM_SAYFILTER);
 
 		FullMsg msg=null;
+		if((!theWord.equalsIgnoreCase("ask"))&&(target!=null))
+		    theWord+="(s) to";
+		else
+		    theWord+="(s)";
+		String fromSelf="^T^<SAY \""+target.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
+		String toTarget="^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+" <T-NAMESELF> '"+combinedCommands+"'^</SAY^>^?";
 		if(target==null)
-			msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'^?");
+			msg=new FullMsg(mob,null,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'^</SAY^>^?");
 		else
-		if(theWord.equalsIgnoreCase("ask"))
-			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> ask(s) <T-NAMESELF> '"+combinedCommands+"'^?");
-		else
-			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'^?");
+			msg=new FullMsg(mob,target,null,CMMsg.MSG_SPEAK,fromSelf,toTarget,fromSelf);
+		
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

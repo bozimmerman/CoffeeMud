@@ -122,15 +122,15 @@ public class StdJournal extends StdItem
 							repeat=false;
 							try
 							{
-								String prompt="R)eply ";
+								String prompt="^<MENU^>R^</MENU^>)eply ";
 								String cmds="R";
 								if((CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0)
 								&&(from.length()>0))
-									prompt+="E)mail "; cmds+="E";
+									prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
 								if(msg.value()>0){ prompt+="S)top "; cmds+="S";}
 								else
-								{ prompt+="N)ext "; cmds+="N";}
-								if(mineAble){ prompt+="D)elete "; cmds+="D";}
+								{ prompt+="^<MENU^>N^</MENU^>)ext "; cmds+="N";}
+								if(mineAble){ prompt+="^<MENU^>D^</MENU^>)elete "; cmds+="D";}
 								prompt+="or RETURN: ";
 								String s=mob.session().choose(prompt,cmds+"\n","\n");
 								if(s.equalsIgnoreCase("S"))
@@ -366,7 +366,7 @@ public class StdJournal extends StdItem
 					    continue;
 					else
 					    selection.append(" ");
-					selection.append(Util.padRight((j+1)+"",3)+") "
+					selection.append("^<JRNL \""+name()+"\"^>"+Util.padRight((j+1)+"",3)+"^</JRNL^>) "
 								   +((shortFormat)?"":""
 								   +Util.padRight(from,10)+" "
 								   +Util.padRight(to,10)+" ")
@@ -424,7 +424,7 @@ public class StdJournal extends StdItem
 			catch(HTTPRedirectException e){}
 
 			if(to.equals("ALL")||mineAble)
-				buf.append("\n\r"+Util.padRight((which+1)+"",3)+")\n\r"
+				buf.append("\n\r^<JRNL \""+name()+"\"^>"+Util.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
 						   +"\n\rDATE: "+IQCalendar.d2String(Util.s_long(date))

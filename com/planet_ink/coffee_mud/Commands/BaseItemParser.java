@@ -55,7 +55,7 @@ public class BaseItemParser extends StdCommand
 
 		int fromDex=-1;
 		int containerDex=commands.size()-1;
-		for(int i=commands.size()-2;i>=1;i--)
+		for(int i=commands.size()-2;i>0;i--)
 		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
 		    { fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=Util.combine(commands,containerDex);
@@ -145,7 +145,6 @@ public class BaseItemParser extends StdCommand
 				commands.removeElementAt(fromDex);
 		    while(commands.size()>containerDex)
 				commands.removeElementAt(containerDex);
-			commands.removeElementAt(commands.size()-1);
 			return (Item)thisThang;
 		}
 		return null;

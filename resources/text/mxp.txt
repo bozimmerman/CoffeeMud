@@ -1,36 +1,46 @@
 <!-- Elements to support the Automapper -->
 <!ELEMENT RName '<B>' FLAG="RoomName">
-<!ELEMENT RDesc FLAG='RoomDesc'>
+<!ELEMENT RDesc EMPTY FLAG='RoomDesc'>
 <!ELEMENT RExits '<FONT COLOR=Blue>' FLAG='RoomExit'>
-
+<!-- ********************************************************************* -->
 <!-- The next element is used to define a room exit link that sends the exit direction to the MUD if the user clicks on it -->
-<!ELEMENT EX '<SEND>'>
-
+<!ELEMENT EX '<SEND HREF="&text;|LOOK &text;|OPEN &text;|CLOSE &text;|LOCK &text;|UNLOCK &text;" hint="Right-mouse client to affect the exit|&text;|LOOK &text;|OPEN &text;|CLOSE &text;|LOCK &text;|UNLOCK &text;">'>
+<!-- ********************************************************************* -->
 <!-- tags dealing with room items -->
 <!ELEMENT CRItem '<SEND HREF="GET &quot;&text;&quot; from &quot;&container;&quot;" hint="Right-mouse client to get from object|GET &text; from &container;">'>
 <!ELEMENT CMItem '<SEND HREF="GET &quot;&text;&quot; from &quot;&container;&quot;" hint="Right-mouse client to get from object|GET &text; from &container;">'>
-<!ELEMENT RItem '<SEND HREF="GET &text;|LOOK &text;|DRINK &text;" hint="Right-mouse client to use this object|GET &text;|LOOK &text;|DRINK &text;">'>
-<!ELEMENT MItem '<SEND HREF="WEAR &text;|DROP &text;|LOOK &text;|DRINK &text;|EAT &text;|HOLD &text;" hint="Right-mouse client to use this object|WEAR &text;|DROP &text;|LOOK &text;|DRINK &text;|EAT &text;|HOLD &text;">'>
+<!ELEMENT MItem '<SEND HREF="WEAR &text;|DROP &text;|LOOK &text;|DRINK &text;|EAT &text;|HOLD &text;|READ &text;" hint="Right-mouse client to use this object|WEAR &text;|DROP &text;|LOOK &text;|DRINK &text;|EAT &text;|HOLD &text;|READ &text;">'>
 <!ELEMENT EItem '<SEND HREF="REMOVE &text;|LOOK &text;" hint="Right-mouse client to use this object|REMOVE &text;|LOOK &text;">'>
-<!ELEMENT RMob '<SEND HREF="CONSIDER &text;|LOOK &text;|KILL &text;" hint="Right-mouse client to affect this creature|CONSIDER &text;|LOOK &text;|KILL &text;">'>
-
+<!ELEMENT RItem '<SEND HREF="GET &name;|LOOK &name;|DRINK &name;|READ &name;" hint="Right-mouse client to use this object|GET &name;|LOOK &name;|DRINK &name;|READ &name;">' ATT='name'>
+<!ELEMENT RMob '<SEND HREF="CONSIDER &name;|LOOK &name;|KILL &name;" hint="Right-mouse client to affect this creature|CONSIDER &name;|LOOK &name;|KILL &name;">' ATT='name'>
+<!-- ********************************************************************* -->
 <!-- miscellaneous tags -->
-<!ELEMENT FIGHT FLAG='Fight'>
+<!ELEMENT FIGHT EMPTY FLAG='Fight'>
 <!ELEMENT HELP '<SEND HREF="HELP &text;" hint="Click to view the help entry.">'>
 <!ELEMENT SHOP '<SEND HREF="VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;" hint="Right-mouse client to use this object|VIEW &quot;&text;&quot; &quot;&shopkeeper;&quot;|BUY &quot;&text;&quot; &quot;&shopkeeper;&quot;">'>
 <!ELEMENT Health EMPTY ATT='name'>
 <!ELEMENT HealthText EMPTY ATT='name'>
-<!ELEMENT ScoreImg '<IMAGE "&name;" URL="http://coffeemud.homeip.net:27744/images/" ALIGN=RIGHT H=70 W=70>' ATT='name'>
+<!ELEMENT TELL '<SEND HREF="TELL &name;" PROMPT hint="Click to reply.|TELL &name;">' ATT='name'>
+<!ELEMENT SAY '<SEND HREF="SAY &name;" PROMPT hint="Click to reply.|SAY &name;">' ATT='name'>
+<!ELEMENT GTELL '<SEND HREF="GTELL" PROMPT hint="Click to reply.|GTELL">' ATT='name'>
+<!ELEMENT CHANNEL '<SEND HREF="&name; " PROMPT hint="Click to reply.|&name; ">' ATT='name'>
+<!ELEMENT JRNL '<SEND HREF="READ &text; &quot;&name;&quot;" hint="Click to read.|READ &text; &quot;&name;&quot;">' ATT='name'>
+<!ELEMENT MENU '<SEND>'>
+<!-- ********************************************************************* -->
+<!-- image related tags -->
+<!-- due to bugs in ZMUD, the following image tags are commented out -->
+<!-- <!ELEMENT ScoreImg '<IMAGE "&name;" URL="http://coffeemud.homeip.net:27744/images/" ALIGN=RIGHT H=70 W=70>' ATT='name'> -->
+<!ELEMENT ScoreImg EMPTY ATT='name'>
 <GAUGE hp Max=maxhp color=green Caption="Hit Points">
 <GAUGE mana Max=maxmana color=yellow Caption="Mana">
 <GAUGE move Max=maxmove color=white Caption="Movement">
 <GAUGE vichp Max=vicmaxhp color=red Caption="Enemy Damage">
-
+<!-- ********************************************************************* -->
 <!-- the next elements deal with the MUD prompt -->
 <!ELEMENT Prompt FLAG="Prompt">
-<!ELEMENT Hp FLAG="Set hp">
-<!ELEMENT MaxHp FLAG="Set maxhp">
-<!ELEMENT Mana FLAG="Set mana">
-<!ELEMENT MaxMana FLAG="Set maxmana">
+<!ELEMENT Hp EMPTY FLAG="Set hp">
+<!ELEMENT MaxHp EMPTY FLAG="Set maxhp">
+<!ELEMENT Mana EMPTY FLAG="Set mana">
+<!ELEMENT MaxMana EMPTY FLAG="Set maxmana">
 <!ELEMENT Move FLAG="Set move">
-<!ELEMENT MaxMove FLAG="Set maxmove">
+<!ELEMENT MaxMove EMPTY FLAG="Set maxmove">
