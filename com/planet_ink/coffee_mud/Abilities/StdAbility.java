@@ -239,7 +239,18 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		return target;
 	}
 
-	public Environmental getAnyTarget(MOB mob, Vector commands, Environmental givenTarget, int wornReqCode)
+	
+	public Environmental getAnyTarget(MOB mob, 
+									  Vector commands, 
+									  Environmental givenTarget, 
+									  int wornReqCode)
+	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,false);}
+	
+	public Environmental getAnyTarget(MOB mob, 
+									  Vector commands, 
+									  Environmental givenTarget, 
+									  int wornReqCode,
+									  boolean checkOthersInventory)
 	{
 		String targetName=Util.combine(commands,0);
 		Environmental target=null;
@@ -262,6 +273,27 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 				||targetName.equalsIgnoreCase("here")
 				||targetName.equalsIgnoreCase("place")))
 				target=mob.location();
+			if((target==null)&&(checkOthersInventory))
+				for(int i=0;i<mob.location().numInhabitants();i++)
+				{
+					MOB M=mob.location().fetchInhabitant(i);
+					target=M.fetchInventory(targetName);
+					if(target!=null)
+					{
+						switch(wornReqCode)
+						{
+						case Item.WORN_REQ_UNWORNONLY:
+							if(!((Item)target).amWearingAt(Item.INVENTORY))
+								continue;
+							break;
+						case Item.WORN_REQ_WORNONLY:
+							if(((Item)target).amWearingAt(Item.INVENTORY))
+								continue;
+							break;
+						}
+						break;
+					}
+				}
 		}
 		if(target!=null) targetName=target.name();
 		
