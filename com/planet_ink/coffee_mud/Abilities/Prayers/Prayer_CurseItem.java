@@ -134,6 +134,7 @@ public class Prayer_CurseItem extends Prayer
 					Prayer_Curse.endIt(target,0);
 					success=maliciousAffect(mob,target,0,-1);
 					target.recoverEnvStats();
+					mob.recoverEnvStats();
 				}
 			}
 		}

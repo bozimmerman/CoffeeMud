@@ -181,12 +181,17 @@ public class StdArmor extends StdItem implements Armor
 				case EnvResource.MATERIAL_PAPER:
 					switch(tool.weaponType())
 					{
+					case Weapon.TYPE_BURSTING:
+					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_MELTING:
+					case Weapon.TYPE_STRIKING:
+						break;
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-15);
 						break;
 					case Weapon.TYPE_BASHING:
-					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()==1)
 							setUsesRemaining(usesRemaining()-1);
@@ -202,10 +207,15 @@ public class StdArmor extends StdItem implements Armor
 				case EnvResource.MATERIAL_GLASS:
 					switch(tool.weaponType())
 					{
+					case Weapon.TYPE_BURSTING:
+					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_MELTING:
+					case Weapon.TYPE_STRIKING:
+						break;
 					case Weapon.TYPE_BURNING:
 						break;
 					case Weapon.TYPE_BASHING:
-					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()<10)
 							setUsesRemaining(usesRemaining()-10);
@@ -221,12 +231,17 @@ public class StdArmor extends StdItem implements Armor
 				case EnvResource.MATERIAL_LEATHER:
 					switch(tool.weaponType())
 					{
+					case Weapon.TYPE_BURSTING:
+					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_MELTING:
+					case Weapon.TYPE_STRIKING:
+						break;
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()<25)
 							setUsesRemaining(usesRemaining()-15);
 						break;
 					case Weapon.TYPE_BASHING:
-					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-1);
@@ -251,12 +266,17 @@ public class StdArmor extends StdItem implements Armor
 				case EnvResource.MATERIAL_PRECIOUS:
 					switch(tool.weaponType())
 					{
+					case Weapon.TYPE_BURSTING:
+					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_MELTING:
+					case Weapon.TYPE_STRIKING:
+						break;
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()==1)
 							setUsesRemaining(usesRemaining()-1);
 						break;
 					case Weapon.TYPE_BASHING:
-					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-2);
@@ -272,12 +292,17 @@ public class StdArmor extends StdItem implements Armor
 				case EnvResource.MATERIAL_WOODEN:
 					switch(tool.weaponType())
 					{
+					case Weapon.TYPE_BURSTING:
+					case Weapon.TYPE_FROSTING:
+					case Weapon.TYPE_GASSING:
+					case Weapon.TYPE_MELTING:
+					case Weapon.TYPE_STRIKING:
+						break;
 					case Weapon.TYPE_BURNING:
 						if(Dice.rollPercentage()<20)
 							setUsesRemaining(usesRemaining()-4);
 						break;
 					case Weapon.TYPE_BASHING:
-					case Weapon.TYPE_BURSTING:
 					case Weapon.TYPE_NATURAL:
 						if(Dice.rollPercentage()<5)
 							setUsesRemaining(usesRemaining()-2);

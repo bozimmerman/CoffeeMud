@@ -10,6 +10,10 @@ public interface Weapon extends Item
 	public final static int TYPE_BURNING=4;
 	public final static int TYPE_BURSTING=5;
 	public final static int TYPE_SHOOT=6;
+	public final static int TYPE_FROSTING=7;
+	public final static int TYPE_GASSING=8;
+	public final static int TYPE_MELTING=9;
+	public final static int TYPE_STRIKING=10;
 	public final static String[] typeDescription={
 	"NATURAL",
 	"SLASHING",
@@ -17,7 +21,11 @@ public interface Weapon extends Item
 	"BASHING",
 	"BURNING",
 	"BURSTING",
-	"SHOOTING"};
+	"SHOOTING",
+	"FROSTING",
+	"GASSING",
+	"MELTING",
+	"STRIKING"};
 
 
 	// weapon classifications

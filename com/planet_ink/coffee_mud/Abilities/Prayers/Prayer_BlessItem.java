@@ -95,6 +95,7 @@ public class Prayer_BlessItem extends Prayer
 				Prayer_Bless.endIt(target,0);
 				beneficialAffect(mob,target,0);
 				target.recoverEnvStats();
+				mob.recoverEnvStats();
 			}
 		}
 		else

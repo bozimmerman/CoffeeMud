@@ -23,112 +23,173 @@ public class CommonStrings
 		case Weapon.TYPE_NATURAL:
 			switch(damnCode)
 			{
-			case 0: stringCode= 0; break;
-			case 1: stringCode= 1; break;
-			case 2: stringCode= 2; break;
-			case 3: stringCode= 9; break;
-			case 4: stringCode=10; break;
-			case 5: stringCode=11; break;
-			case 6: stringCode= 6; break;
-			case 7: stringCode= 7; break;
-			case 8: stringCode= 8; break;
-			case 9: stringCode= 16; break;
+			case 0: return "scratch(es)";
+			case 1: return "graze(s)";
+			case 2: return "hit(s)";
+			case 3: return "cut(s)";
+			case 4: return "hurt(s)";
+			case 5: return "rip(s)";
+			case 6: return "crunch(es)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_SLASHING:
 			switch(damnCode)
 			{
-			case 0: stringCode= 0; break;
-			case 1: stringCode= 1; break;
-			case 2: stringCode=12; break;
-			case 3: stringCode= 9; break;
-			case 4: stringCode=13; break;
-			case 5: stringCode=14; break;
-			case 6: stringCode=28; break;
-			case 7: stringCode= 7; break;
-			case 8: stringCode= 8; break;
-			case 9: stringCode= 16; break;
+			case 0: return "scratch(es)";
+			case 1: return "graze(s)";
+			case 2: return "wound(s)";
+			case 3: return "cut(s)";
+			case 4: return "slice(s)";
+			case 5: return "gut(s)";
+			case 6: return "murder(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_PIERCING:
 			switch(damnCode)
 			{
-			case 0: stringCode= 0; break;
-			case 1: stringCode= 1; break;
-			case 2: stringCode=17; break;
-			case 3: stringCode= 9; break;
-			case 4: stringCode=18; break;
-			case 5: stringCode=19; break;
-			case 6: stringCode=28; break;
-			case 7: stringCode= 7; break;
-			case 8: stringCode= 8; break;
-			case 9: stringCode= 16; break;
+			case 0: return "scratch(es)";
+			case 1: return "graze(s)";
+			case 2: return "prick(s)";
+			case 3: return "cut(s)";
+			case 4: return "stab(s)";
+			case 5: return "pierce(s)";
+			case 6: return "murder(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_BASHING:
 			switch(damnCode)
 			{
-			case 0: stringCode= 0; break;
-			case 1: stringCode= 1; break;
-			case 2: stringCode= 2; break;
-			case 3: stringCode= 3; break;
-			case 4: stringCode= 4; break;
-			case 5: stringCode= 5; break;
-			case 6: stringCode= 6; break;
-			case 7: stringCode= 7; break;
-			case 8: stringCode= 8; break;
-			case 9: stringCode= 16; break;
+			case 0: return "scratch(es)";
+			case 1: return "graze(s)";
+			case 2: return "hit(s)";
+			case 3: return "smash(es)";
+			case 4: return "bash(es)";
+			case 5: return "crush(es)";
+			case 6: return "crunch(es)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_BURNING:
 			switch(damnCode)
 			{
-			case 0: stringCode=20; break;
-			case 1: stringCode=21; break;
-			case 2: stringCode=22; break;
-			case 3: stringCode=23; break;
-			case 4: stringCode=24; break;
-			case 5: stringCode=25; break;
-			case 6: stringCode=29; break;
-			case 7: stringCode= 7; break;
-			case 8: stringCode= 8; break;
-			case 9: stringCode= 16; break;
+			case 0: return "warm(s)";
+			case 1: return "heat(s)";
+			case 2: return "singe(s)";
+			case 3: return "burn(s)";
+			case 4: return "flame(s)";
+			case 5: return "scorch(es)";
+			case 6: return "incinerate(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_SHOOT:
 			switch(damnCode)
 			{
-			case 0: stringCode= 0; break;
-			case 1: stringCode= 1; break;
-			case 2: stringCode= 2; break;
-			case 3: stringCode=19; break;
-			case 4: stringCode=19; break;
-			case 5: stringCode=26; break;
-			case 6: stringCode=28; break;
-			case 7: stringCode= 7; break;
-			case 8: stringCode= 8; break;
-			case 9: stringCode= 16; break;
+			case 0: return "scratch(es)";
+			case 1: return "graze(s)";
+			case 2: return "hit(s)";
+			case 3: return "pierce(s)";
+			case 4: return "pierce(s)";
+			case 5: return "decimate(s)";
+			case 6: return "murder(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		case Weapon.TYPE_BURSTING:
 		default:
 			switch(damnCode)
 			{
-			case 0: stringCode= 0; break;
-			case 1: stringCode= 1; break;
-			case 2: stringCode=12; break;
-			case 3: stringCode= 9; break;
-			case 4: stringCode=27; break;
-			case 5: stringCode=26; break;
-			case 6: stringCode=28; break;
-			case 7: stringCode= 7; break;
-			case 8: stringCode= 8; break;
-			case 9: stringCode= 16; break;
+			case 0: return "scratch(es)";
+			case 1: return "graze(s)";
+			case 2: return "wound(s)";
+			case 3: return "cut(s)";
+			case 4: return "badly damage(s)";
+			case 5: return "decimate(s)";
+			case 6: return "murder(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
+			}
+			break;
+		case Weapon.TYPE_FROSTING:
+			switch(damnCode)
+			{
+			case 0: return "chill(s)";
+			case 1: return "cool(s)";
+			case 2: return "ice(s)";
+			case 3: return "frost(s)";
+			case 4: return "blister(s)";
+			case 5: return "blast(s)";
+			case 6: return "incinerate(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
+			}
+			break;
+		case Weapon.TYPE_GASSING:
+			switch(damnCode)
+			{
+			case 0: return "annoy(s)";
+			case 1: return "gass(es)";
+			case 2: return "gass(es)";
+			case 3: return "choke(s)";
+			case 4: return "choke(s)";
+			case 5: return "decimate(s)";
+			case 6: return "murder(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
+			}
+			break;
+		case Weapon.TYPE_MELTING:
+			switch(damnCode)
+			{
+			case 0: return "sting(s)";
+			case 1: return "sting(s)";
+			case 2: return "burn(s)";
+			case 3: return "burn(s)";
+			case 4: return "scorch(es)";
+			case 5: return "melt(s)";
+			case 6: return "melt(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
+			}
+			break;
+		case Weapon.TYPE_STRIKING:
+			switch(damnCode)
+			{
+			case 0: return "sting(s)";
+			case 1: return "charge(s)";
+			case 2: return "singe(s)";
+			case 3: return "burn(s)";
+			case 4: return "scorch(es)";
+			case 5: return "blast(s)";
+			case 6: return "incinerate(s)";
+			case 7: return "MASSACRE(S)";
+			case 8: return "DESTROY(S)";
+			case 9: return "OBLITERATE(S)";
 			}
 			break;
 		}
 		return hws[stringCode];
 	}
+	
 	public static String armorStr(int armor){
 		return (armor<0)?armorStrs[0]:(
 			   (armor>200)?armorStrs[armorStrs.length-1]+" ("+armor+")":(
@@ -274,38 +335,6 @@ public class CommonStrings
 	"almost impenetrable",		//12
 	"almost invincible",		//13
 	"invincible!"				//14
-	};
-	public final static String[] hws={
-		"scratch(es)",		//0
-		"graze(s)",			//1
-		"hit(s)",			//2
-		"smash(es)",		//3
-		"bash(es)",			//4
-		"crush(es)",		//5
-		"crunch(es)",		//6
-		"MASSACRE(S)",		//7
-		"DESTROY(S)",		//8
-		"cut(s)",			//9
-		"hurt(s)",			//10
-		"rip(s)",			//11
-		"wound(s)",			//12
-		"slice(s)",			//13
-		"gut(s)",			//14
-		"decimate(s)",		//15
-		"OBLITERATE(S)",	//16
-		"prick(s)",			//17
-		"stab(s)",			//18
-		"pierce(s)",		//19
-		"warm(s)",			//20
-		"heat(s)",			//21
-		"singe(s)",			//22
-		"burn(s)",			//23
-		"flame(s)",			//24
-		"scorch(es)",		//25
-		"decimate(s)",		//26
-		"badly damage(s)",	//27
-		"murder(s)",		//28
-		"incinerate(s)",	//29
 	};
 	public final static String[] fightStrs={
 	"none",					//0

@@ -147,7 +147,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					target.location().send(target,msg);
 					if(msg.wasModified())
 						dmg=(int)Math.round(Util.div(dmg,2.0));
-					ExternalPlay.postDamage(mob,target,this,dmg,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_BURNING,"The gas <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,dmg,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
 				}
 			}
 		}
@@ -161,7 +161,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				target.location().send(target,msg);
 				if(msg.wasModified())
 					dmg=(int)Math.round(Util.div(dmg,2.0));
-				ExternalPlay.postDamage(target,target,this,dmg,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_BURSTING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(target,target,this,dmg,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 			}
 		}
 	}

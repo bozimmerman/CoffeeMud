@@ -19,6 +19,11 @@ public class Arquebus extends StdWeapon
 		baseEnvStats().setAttackAdjustment(-1);
 		baseEnvStats().setDamage(10);
 
+		setAmmunitionType("bullets");
+		setAmmoCapacity(1);
+		setAmmoRemaining(1);
+		minRange=0;
+		maxRange=5;
 		baseGoldValue=500;
 		recoverEnvStats();
 		wornLogicalAnd=true;

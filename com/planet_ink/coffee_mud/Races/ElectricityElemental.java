@@ -36,7 +36,7 @@ public class ElectricityElemental extends StdRace
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("a deadly spark");
-			naturalWeapon.setWeaponType(Weapon.TYPE_BURNING);
+			naturalWeapon.setWeaponType(Weapon.TYPE_STRIKING);
 		}
 		return naturalWeapon;
 	}

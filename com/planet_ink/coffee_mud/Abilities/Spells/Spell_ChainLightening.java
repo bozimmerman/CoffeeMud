@@ -82,7 +82,7 @@ public class Spell_ChainLightening extends Spell
 					if((!msg.wasModified())&&(!msg2.wasModified()))
 						damage = (int)Math.round(Util.div(damage,2.0));
 					if(target.location()==mob.location())
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_BURNING,"The bolt <DAMAGE> <T-NAME>!");
+						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
 				}
 			}
 		}

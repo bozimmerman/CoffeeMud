@@ -87,6 +87,7 @@ public class Chant_Shillelagh extends Chant
 				beneficialAffect(mob,target,0);
 				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> glow(s)!");
 				target.recoverEnvStats();
+				mob.recoverEnvStats();
 			}
 		}
 		else

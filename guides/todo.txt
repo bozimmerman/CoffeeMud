@@ -39,6 +39,20 @@ an ability to tell how many HP a MOB has
 
 an ability to resist TRIP, another to resist DISARM, another to resist WHOMP
 
+trashcan behavior that can be added to items to destroy unwanted items.
+the arrest behavior
+gen-wizard player editor
+property to force an object to decay once worn/picked up
+viewer/editor for items/mobs worldwide
+SPECULATE skill to determine what resources are available in a given area.
+mime behavior: A MOB will mimic any social that you do.
+pillow social to start a pillow fight
+aroma property. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
+cause stink spell. Also radiates from room.
+new social= smurf
+new items to add to the CARVE list and the SCULPT list Toy,Door, Wall, Chop Sticks, Bookshelf, Desk, Ladder, Steps, Fountain, Podium,Bridge, Coffin/sarcophogus,
+the Artisan is created, players can start building their houses at high enough levels, in appropriate areas.
+Steps would allow him to build up or down. Roofs and floors are free. Each new room requires 3 new walls before you can expand it further.
 
 
 MONK.  Master of unarmed/unarmored combat.  Get's defense bonus from WISDOM similar to a thief.  PRIME ATT: WIS and DEX (22 ea).  Gets faster attacks than a fighter, damage increases ONLY with unarmed similar to a fighter, Immunities similar to a paladin, except faster.  Also gains elemental resistances, similar to the resist spells.  Get's MEDITATION.

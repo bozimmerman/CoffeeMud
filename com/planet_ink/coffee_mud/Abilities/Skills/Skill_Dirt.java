@@ -107,7 +107,7 @@ public class Skill_Dirt extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is blinded!");
+				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> blinded!");
 				maliciousAffect(mob,target,3,-1);
 			}
 		}

@@ -36,7 +36,7 @@ public class AirElemental extends StdRace
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
 			naturalWeapon.setName("a swirling gust");
-			naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
+			naturalWeapon.setWeaponType(Weapon.TYPE_GASSING);
 		}
 		return naturalWeapon;
 	}

@@ -83,7 +83,7 @@ public class HolyAvenger extends TwoHandedSword
 				int damage=Dice.roll(1,15,0);
 				if(msg.wasModified())
 					damage=damage/2;
-				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURNING,damage)+" <T-HIM-HER>>!"));
+				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),Affect.MSG_OK_ACTION,name()+" dispels evil within <T-NAME> and "+CommonStrings.standardHitWord(Weapon.TYPE_BURSTING,damage)+" <T-HIM-HER>>!"));
 				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affect.target(),null,Affect.NO_EFFECT,Affect.MASK_HURT+damage,Affect.NO_EFFECT,null));
 			}
 		}

@@ -67,7 +67,7 @@ public class Prayer_LinkedHealth extends Prayer
 			{
 				int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),2.0));
 				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
-				ExternalPlay.postDamage(affect.source(),buddy,this,recovery,Affect.MSG_OK_VISUAL,Weapon.TYPE_BURNING,"<T-NAME> absorb(s) damage from the harm to "+affect.target().name()+".");
+				ExternalPlay.postDamage(affect.source(),buddy,this,recovery,Affect.MSG_OK_VISUAL,Weapon.TYPE_BURSTING,"<T-NAME> absorb(s) damage from the harm to "+affect.target().name()+".");
 			}
 		}
 		return true;

@@ -73,6 +73,7 @@ public class Spell_EnchantWeapon extends Spell
 					target.baseEnvStats().setAbility(target.baseEnvStats().ability()+1);
 					target.baseEnvStats().setLevel(target.baseEnvStats().level()+3);
 					target.recoverEnvStats();
+					mob.recoverEnvStats();
 				}
 			}
 

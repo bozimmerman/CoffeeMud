@@ -18,7 +18,6 @@ public class Spell_Tourettes extends Spell
 		// what the affected mob sees when they
 		// bring up their affected list.
 		displayText="(Tourettes)";
-		miscText="DISEASE";
 
 		canAffectCode=Ability.CAN_MOBS;
 		canTargetCode=Ability.CAN_MOBS;
@@ -38,6 +37,9 @@ public class Spell_Tourettes extends Spell
 	{
 		return new Spell_Tourettes();
 	}
+	
+	public String text(){return "DISEASE";}
+	
 	public int classificationCode()
 	{
 		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;

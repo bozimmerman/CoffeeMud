@@ -74,7 +74,7 @@ public class Spell_Frost extends Spell
 					damage = (int)Math.round(Util.div(damage,2.0));
 
 				if(target.location()==mob.location())
-					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_BURSTING,"The frost <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_COLD,Weapon.TYPE_FROSTING,"The frost <DAMAGE> <T-NAME>!");
 			}
 		}
 		else

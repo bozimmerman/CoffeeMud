@@ -58,10 +58,16 @@ public class Chant_Earthquake extends Chant
 		if(canBeUninvoked)
 		{
 			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+			{
+				FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+				if(mob.location().okAffect(msg))
+				{
+					mob.location().send(mob,msg);
+					ExternalPlay.standIfNecessary(mob);
+				}
+			}
 			else
 				mob.tell("The movement under your feet stops.");
-			ExternalPlay.standIfNecessary(mob);
 		}
 	}
 

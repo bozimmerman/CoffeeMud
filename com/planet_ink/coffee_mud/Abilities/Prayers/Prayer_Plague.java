@@ -18,7 +18,6 @@ public class Prayer_Plague extends Prayer
 		quality=Ability.MALICIOUS;
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(12);
-		miscText="DISEASE";
 
 		canAffectCode=Ability.CAN_MOBS;
 		canTargetCode=Ability.CAN_MOBS;
@@ -30,6 +29,8 @@ public class Prayer_Plague extends Prayer
 		return new Prayer_Plague();
 	}
 
+	public String text(){return "DISEASE";}
+	
 	public boolean tick(int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -42,7 +43,9 @@ public class Prayer_Plague extends Prayer
 			MOB mob=(MOB)affected;
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
-			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level(),Affect.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
+			int dmg=mob.envStats().level()/2;
+			if(dmg<1) dmg=1;
+			ExternalPlay.postDamage(invoker,mob,this,dmg,Affect.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
 				if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))

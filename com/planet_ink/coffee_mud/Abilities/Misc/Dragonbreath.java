@@ -58,28 +58,28 @@ public class Dragonbreath extends StdAbility
 				autoPhrase="A blast of lightning bursts erupt!";
 				stuffWord="bolt";
 				castPhrase="<S-NAME> shoot(s) numerous bursts of lightning from <S-HIS-HER> mouth!";
-				WeaponType=Weapon.TYPE_BURSTING;
+				WeaponType=Weapon.TYPE_STRIKING;
 				break;
 		case 'c':
 				puffPhrase="<S-NAME> puff(s) cold air from <S-HIS-HER> mouth.";
 				autoPhrase="A blast of frozen air erupts!";
 				stuffWord="cold";
 				castPhrase="<S-NAME> blast(s) a frozen cone from <S-HIS-HER> mouth!";
-				WeaponType=Weapon.TYPE_BURSTING;
+				WeaponType=Weapon.TYPE_FROSTING;
 				break;
 		case 'a':
 				puffPhrase="<S-NAME> dribble(s) acid harmlessly from <S-HIS-HER> mouth.";
 				autoPhrase="A spray of acid erupts!";
 				stuffWord="acid";
 				castPhrase="<S-NAME> spray(s) acid from <S-HIS-HER> mouth!";
-				WeaponType=Weapon.TYPE_BURNING;
+				WeaponType=Weapon.TYPE_MELTING;
 				break;
 		case 'g':
 				puffPhrase="<S-NAME> puff(s) gas harmlessly from <S-HIS-HER> mouth.";
 				autoPhrase="A cloud of deadly gas descends!";
 				stuffWord="gas";
 				castPhrase="<S-NAME> blow(s) deadly gas from <S-HIS-HER> mouth!";
-				WeaponType=Weapon.TYPE_BURSTING;
+				WeaponType=Weapon.TYPE_GASSING;
 				break;
 
 		}

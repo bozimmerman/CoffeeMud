@@ -119,7 +119,7 @@ public class Spell_Cloudkill extends Spell
 					if(target.location()==mob.location())
 					{
 						this.maliciousAffect(mob,target,2,-1);
-						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_BURSTING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
 					}
 				}
 			}
