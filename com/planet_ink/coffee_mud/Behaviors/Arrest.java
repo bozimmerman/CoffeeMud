@@ -1548,7 +1548,11 @@ public class Arrest extends StdBehavior
 									makePeace(officer.location());
 									ExternalPlay.standIfNecessary(W.criminal);
 									A=CMClass.getAbility("Skill_Track");
-									if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true);
+									if(A!=null)
+									{
+										A.setAbilityCode(1);
+										A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true);
+									}
 									makePeace(officer.location());
 								}
 								else
@@ -1646,7 +1650,11 @@ public class Arrest extends StdBehavior
 							if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
 							{
 								Ability A=CMClass.getAbility("Skill_Track");
-								if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail)),W.jail,true);
+								if(A!=null)
+								{
+									A.setAbilityCode(1);
+									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail)),W.jail,true);
+								}
 							}
 							else
 							if((Dice.rollPercentage()>75)&&(chitChat2.size()>0))

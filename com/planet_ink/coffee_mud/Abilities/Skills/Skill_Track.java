@@ -18,6 +18,10 @@ public class Skill_Track extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
+	private Hashtable cachedPaths=new Hashtable();
+	private int cacheCode=-1;
+	public int abilityCode(){return cacheCode;}
+	public void setAbilityCode(int newCode){cacheCode=newCode;}
 	
 	private Vector theTrail=null;
 	public int nextDirection=-2;
@@ -201,8 +205,6 @@ public class Skill_Track extends StdAbility
 			if(R!=null) rooms.addElement(R);
 		}
 		
-		
-		
 		if(rooms.size()<=0)
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
@@ -219,13 +221,18 @@ public class Skill_Track extends StdAbility
 				rooms.addElement(R);
 		}
 		
-		if(rooms.size()>0)
-			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,false);
 		
-		MOB target=null;
-		if((theTrail!=null)&&(theTrail.size()>0))
-			target=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
-
+		if(rooms.size()>0)
+		{
+			theTrail=null;
+			if((cacheCode==1)&&(rooms.size()==1))
+				theTrail=(Vector)cachedPaths.get(CMMap.getExtendedRoomID(mob.location())+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()));
+			if(theTrail==null)
+				theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,false);
+			if((cacheCode==1)&&(rooms.size()==1))
+				cachedPaths.put(CMMap.getExtendedRoomID(mob.location())+"->"+CMMap.getExtendedRoomID((Room)rooms.firstElement()),theTrail);
+		}
+		
 		if((success)&&(theTrail!=null))
 		{
 			theTrail.addElement(mob.location());
@@ -239,7 +246,7 @@ public class Skill_Track extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Skill_Track newOne=(Skill_Track)this.copyOf();
+				Skill_Track newOne=(Skill_Track)copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();

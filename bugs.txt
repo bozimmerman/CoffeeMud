@@ -1,2 +1,0 @@
-difference report for a given mob against all others of same level/race, ditto for weapons/armor -- compare the stuff to tims spec sheet
-look at jonathans moving room problem -- reply to msg

@@ -1,5 +1,4 @@
 smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
-mobile parm LEASH=X rooms from start
 locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
 in the skill MASON, could you add to the desription of archways the type of stone used to make it...A magestic MARBLE archway towers above you? Also, could that description replace the room description of the next room?
 putting a change bag into a changebag should combine your notes.
@@ -11,7 +10,7 @@ It displays to new users (News doesn't) It displays EVERY time they login (News 
 tread water for water surfaces with water beneath
 add floating num to resources -- whether the item will float
 barbarian skill improved throwing...does extra damage with hurled items.
-Song that does the same thing as Mana Pool. Very bard-like, so it should be a lower level.
+difference report for a given mob against all others of same level/race, ditto for weapons/armor -- compare the stuff to tims spec sheet
 common skill PACKAGING...allows you to crate up a bunch of resources into one large unit. must be unpackaged to be used (using the packaging skill to unpack.)
 Thief skill ALERTNESS gives one random description from an item in the room upon entry into that room.. For example: A thief walks into a room. He gets the room description. His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin. It randomly selects one of those items (the coin) and issues a LOOK COIN command.
 can the death/morgue strings be specified by the player's deity?
@@ -81,7 +80,7 @@ Barbarian skill Smoke Signals. Requires a fire. puffs of smoke produce a message
 barbarian skill GUARDTOTEM. Requires 6 scalps of the same race. Prevents creatures of that race from entering into the guarded area.should prevent only 50% of the time, reduced if the level of MOB is greater than Barbar who set the totem
 Barbarian skill SCALPING, as discussed on the group....can't think of practical purposes, though....
 Barbarian skill WARTOTEM. Requires 3 scalps of the same type of critter. The Barbarian drops the scalps, and does WARTOTEM command. Any critter of that race that fights in the room with the totem suffers penalties to attack and damage.
-Spell Think Tank--Collective Mind--Mana Pool: all party members divide the cost of any mana consumption. IE a wizard casts a spell that costs 100 mana while partied with 3 other people, each lose 25 mana.
+Song Mana Pool--Think Tank--Collective Mind: all party members divide the cost of any mana consumption. IE a wizard casts a spell that costs 100 mana while partied with 3 other people, each lose 25 mana.
 Barbarians should be able to LEATHERWORK the scalps into SCALP armors. SCALPS should have a value of 3 (1 better than leather, 1 worse than scales). Other than that, all scalps must be of the same critter for the purpose of leathworking a piece of armor.
 barbarian skill Fragmentation A critical shot enhancement for barbarians that only works with thrown weapons, does an EXTRA 3 times damage, but destroys the thrown weapon in the process. (I am visualizing an axe that slams so hard into it's oponenent that the shaft splits and buries into the enemy as well...)
 new common skill FABRICATING....includes any assembly-type work.....cigarettes, computers, cars, robots, sensors, etc.
@@ -89,7 +88,6 @@ construct needs to be able to modify door descriptions
 we need a property that allows a MOB to use a general skill whenever a player is present. For example, making the lumberjack chop if a player enters a room
 
 From Lee:
-Mana batteries - hold x amount of mana....and takes FOREVER to recharge, but character can draw mana out to recharge very quickly, like when in a fight.  Nature of battery prevents more than one in an inventory at a time.  This idea needs some flushing out to keep players from abusing it.
 Techno-magic weapons/armor  Weapons would draw mana as ammo from the wielder in order to deal damage.  Laser/ray guns would be prime candidates for this as would something akin to a lightsaber.  Techno magic items would draw mana from the user for each strike and give some sort of effect, ie a spell cast or damage reduction.  Tradeoff:  these would be great weapons/armor, but could quickly deplete the character of mana in a fight.
 Open wormhole.  Allows a character to open a wormhole for quick transportation. 
 Predict wormhole.  A lower level spell allowing the character to predict the opening of a naturally occuring wormhole.
@@ -98,12 +96,6 @@ Tech armors.  Basically, an item than is a rideable version of #5.  The characte
 Tinkerer player class.  Player class with the ability to create, modify, repair tech items. 
 FTL travel.  Some areas in space are so far apart, that they may only be reached via Faster-Than-Light travel of some sort.
 Probes.  Space ships may send out probes to investigate planets, other space ships, etc.  Some probes are better than others---might not be blocked by shields, etc---cost more money, higher level, though.
-Ability absorbtion prayer.  Allows the casting mage to absorb an ability from a target with a successful strike.  Following restrictions would apply:
-    1)  ability absorbed is random 
-    2)  ability absorbed might be combat prowess, defense, and/or character attribute 
-    3)  if the caster already has the ability, a small, albeit temporary increase to proficiency will result. 
-    4)  caster may only have one absorbed ability at a time.  absorbing another replaces the previous absorbed ability.
-Song of cadence.  Allows all members in a group to have the same movement rate regardless of encumbrance, strength, movement points.....
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.

@@ -22,7 +22,13 @@ public class Spell_Hungerless extends Spell
 		affected.curState().setHunger(affectableMaxState.getHunger());
 	}
 
-
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(affected instanceof MOB)
+			((MOB)affected).curState().setHunger(((MOB)affected).maxState().getHunger());
+		return super.tick(ticking, tickID);
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

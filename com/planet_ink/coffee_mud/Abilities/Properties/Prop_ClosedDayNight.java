@@ -212,7 +212,11 @@ public class Prop_ClosedDayNight extends Property
 						if(sk!=null)
 							ExternalPlay.quickSay((MOB)affected,null,(shopMsg!=null)?shopMsg:"Sorry, I'm off right now.  Try me tomorrow.",false,false);
 						Ability A=CMClass.getAbility("Skill_Track");
-						if(A!=null)	A.invoke(mob,R,true);
+						if(A!=null)
+						{
+							A.setAbilityCode(1);
+							A.invoke(mob,R,true);
+						}
 						return true;
 					}
 				}
@@ -240,7 +244,11 @@ public class Prop_ClosedDayNight extends Property
 						if(mob.fetchAffect("Skill_Track")!=null)
 							return true;
 						Ability A=CMClass.getAbility("Skill_Track");
-						if(A!=null)	A.invoke(mob,mob.getStartRoom(),true);
+						if(A!=null)
+						{
+							A.setAbilityCode(1);
+							A.invoke(mob,mob.getStartRoom(),true);
+						}
 						return true;
 					}
 				}

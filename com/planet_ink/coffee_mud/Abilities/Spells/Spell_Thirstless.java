@@ -22,6 +22,13 @@ public class Spell_Thirstless extends Spell
 		affected.curState().setThirst(affectableMaxState.getThirst());
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(affected instanceof MOB)
+			((MOB)affected).curState().setThirst(((MOB)affected).maxState().getThirst());
+		return super.tick(ticking, tickID);
+	}
+	
 
 	public void unInvoke()
 	{

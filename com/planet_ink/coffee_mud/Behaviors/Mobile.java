@@ -12,12 +12,15 @@ public class Mobile extends ActiveTicker
 	public long flags(){return Behavior.FLAG_MOBILITY;}
 	protected boolean wander=false;
 	protected boolean dooropen=false;
+	protected int leash=0;
+	protected Hashtable leashHash=null;
 	protected Vector restrictedLocales=null;
 
 	public Mobile()
 	{
 		super();
 		minTicks=10; maxTicks=30; chance=100;
+		leash=0;
 		wander=false;
 		dooropen=false;
 		restrictedLocales=null;
@@ -33,6 +36,30 @@ public class Mobile extends ActiveTicker
 		if(currentRoom==null) return false;
 		if(newRoom==null) return false;
 		if(restrictedLocales==null) return true;
+		if(leash>0)
+		{
+			if(leashHash==null)	leashHash=new Hashtable();
+			Integer DISTNOW=(Integer)leashHash.get(currentRoom);
+			Integer DISTTHEN=(Integer)leashHash.get(newRoom);
+			if(DISTNOW==null)
+			{
+				DISTNOW=new Integer(0);
+				leashHash.put(currentRoom,DISTNOW);
+			}
+			if(DISTTHEN==null)
+			{
+				DISTTHEN=new Integer(DISTNOW.intValue()+1);
+				leashHash.put(newRoom,DISTNOW);
+			}
+			if(DISTTHEN.intValue()>(DISTNOW.intValue()+1))
+			{
+				DISTTHEN=new Integer(DISTNOW.intValue()+1);
+				leashHash.remove(newRoom);
+				leashHash.put(newRoom,DISTTHEN);
+			}
+			if(DISTTHEN.intValue()>leash)
+				return false;
+		}
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
 
@@ -41,7 +68,10 @@ public class Mobile extends ActiveTicker
 		super.setParms(newParms);
 		wander=false;
 		dooropen=false;
+		leash=0;
+		leashHash=null;
 		restrictedLocales=null;
+		leash=getParmVal(newParms,"LEASH",0);
 		Vector V=Util.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{

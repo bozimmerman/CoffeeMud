@@ -182,6 +182,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 
 	public void affect(Environmental myHost, Affect affect)
 	{
+		super.affect(myHost,affect);
 		if((affect.target()==null)||(!(affect.target() instanceof MOB)))
 			return ;
 
@@ -194,6 +195,5 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		&&(mob.isMine(this))
 		&&(rollChance()))
 			CommonStrings.resistanceMsgs(affect,affect.source(),mob);
-		return ;
 	}
 }

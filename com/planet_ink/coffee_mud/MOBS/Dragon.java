@@ -372,8 +372,9 @@ public class Dragon extends StdMOB
 	protected boolean trySwallowWhole()
 	{
 		if(Stomach==null) return true;
-		if (Sense.aliveAwakeMobile(this,true)&&
-			(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
+		if (Sense.aliveAwakeMobile(this,true)
+			&&(rangeToTarget()==0)
+			&&(Sense.canHear(this)||Sense.canSee(this)||Sense.canSmell(this)))
 		{
 			MOB TastyMorsel = getVictim();
 			if(TastyMorsel==null) return true;
@@ -394,9 +395,9 @@ public class Dragon extends StdMOB
 											   Affect.MASK_GENERAL|Affect.TYP_JUSTICE,
 											   Affect.MSG_NOISYMOVEMENT,
 											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
-					if(this.location().okAffect(TastyMorsel,EatMsg))
+					if(location().okAffect(TastyMorsel,EatMsg))
 					{
-						this.location().send(TastyMorsel,EatMsg);
+						location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);
 						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 						Stomach.send(TastyMorsel,enterMsg);
@@ -475,7 +476,7 @@ public class Dragon extends StdMOB
 			// ===== get the tasty morsels
 			MOB TastyMorsel = Stomach.fetchInhabitant(x);
 			if((TastyMorsel!=null)&&(location()!=null))
-				this.location().bringMobHere(TastyMorsel,false);
+				location().bringMobHere(TastyMorsel,false);
 		}
 
 		// =====move the inventory of the stomach to the room
@@ -485,7 +486,7 @@ public class Dragon extends StdMOB
 			Item PartiallyDigestedItem = Stomach.fetchItem(y);
 			if((PartiallyDigestedItem!=null)&&(location()!=null))
 			{
-				this.location().addItemRefuse(PartiallyDigestedItem,Item.REFUSE_PLAYER_DROP);
+				location().addItemRefuse(PartiallyDigestedItem,Item.REFUSE_PLAYER_DROP);
 				Stomach.delItem(PartiallyDigestedItem);
 			}
 		}

@@ -15,12 +15,6 @@ public class Spell_FeignInvisibility extends Spell
 	public Environmental newInstance(){	return new Spell_FeignInvisibility();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-	}
-
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,7 +53,7 @@ public class Spell_FeignInvisibility extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-            mob.tell("You fade from view");
+                mob.tell("You fade from view");
 				beneficialAffect(mob,target,mob.envStats().level()*3);
 			}
 		}

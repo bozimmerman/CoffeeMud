@@ -56,6 +56,7 @@ public class Spell_Permanency extends Spell
 					int exp=10*CMAble.lowestQualifyingLevel(theOne.ID());
 					mob.tell("You lose "+exp+" experience points.");
 					mob.charStats().getCurrentClass().loseExperience(mob,exp);
+					theOne.makeLongLasting();
 					theOne.makeNonUninvokable();
 					mob.location().show(mob,target,null,Affect.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
 				}

@@ -107,8 +107,9 @@ public class MOBEater extends ActiveTicker
 	protected boolean trySwallowWhole(MOB mob)
 	{
 		if(Stomach==null) return true;
-		if (Sense.aliveAwakeMobile(mob,true)&&
-			(Sense.canHear(mob)||Sense.canSee(mob)||Sense.canSmell(mob)))
+		if (Sense.aliveAwakeMobile(mob,true)
+			&&(mob.rangeToTarget()==0)
+			&&(Sense.canHear(mob)||Sense.canSee(mob)||Sense.canSmell(mob)))
 		{
 			MOB TastyMorsel = mob.getVictim();
 			if(TastyMorsel==null) return true;
