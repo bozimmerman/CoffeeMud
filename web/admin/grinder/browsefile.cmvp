@@ -1,11 +1,91 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>File/Script Editor</title>
+	<script language=JavaScript>
+	<!--
+		function openUp(named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			var w2=window.open("/ahelp.cmvp?TOPIC="+named,"Help",strFeatures,false);
+		}
+		function GoForIt()
+		{
+			if(document.FILEBROWSE.FILE.value=='')
+			{
+				alert('No file name specified!');
+				return;
+			}
+			if(confirm('Save your changes?'))
+			{
+				document.FILEBROWSE.FUNCTION.value='CREATE';
+				document.FILEBROWSE.submit();
+			}
+		}
+		function DeleteIt()
+		{
+		
+			@if?!CheckReqParm?FILE=@
+				if(confirm('Delete the file?'))
+				{
+					document.FILEBROWSE.FUNCTION.value='DELETE';
+					document.FILEBROWSE.submit();
+				}
+			@else@
+				alert('You cannot delete this file -- it does not yet exist.');
+			@endif@
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=FILEBROWSE TARGET=_top METHOD=POST ACTION="browsefile.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=NEW VALUE="">
+<P ALIGN=RIGHT><A href="javascript:openUp('SCRIPTABLE');"><FONT COLOR=PINK><I>scriptable help</I></FONT></A></P>
+<FONT COLOR=YELLOW>File: <B>@RequestParameter?PATH@
+@if?!CheckReqParm?FILE=@
+	@RequestParameter?FILE@<INPUT TYPE=HIDDEN NAME=FILE VALUE="@RequestParameter?FILE@">
+@else@
+	<INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=FILE VALUE="new.script">
+@endif@
+</B></FONT><BR>
+@if?!CheckReqParm?SCRIPT=@
+	@if?CheckReqParm?FUNCTION=CREATE@
+		<FONT COLOR=RED><B>@FileMgr?CREATE@</B></FONT>
+	@else@
+		@if?CheckReqParm?FUNCTION=DELETE@
+			<SCRIPT LANGUAGE=JavaScript>
+			<!--
+				alert('@FileMgr?DELETE@');
+				window.close();
+			//-->
+			</SCRIPT>
+		@endif@
+	@endif@
+@endif@
+<TEXTAREA ROWS=25 COLS=85 NAME=SCRIPT>@if?!CheckReqParm?FILE=@ 
+@FileInfo?DATA@ @endif@</TEXTAREA>
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR><TD ALIGN=CENTER WIDTH=33%>
+	<INPUT TYPE=BUTTON NAME=Submit VALUE="Submit" ONCLICK="GoForIt();">
+</TD>
+<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=Close VALUE="Close" ONCLICK="window.close();">
+</TD>
+<TD WIDTH=33% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=Delete VALUE="Delete" ONCLICK="DeleteIt();">
+</TD>
+</TR>
+</TABLE>
+</FORM>
 </BODY>
 </HTML>
+@endif@
+@endif@

@@ -4,9 +4,14 @@
 @if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
-	<title>Manage Quests</title>
+	<title>Manage Quests/Scripts</title>
 	<script language=JavaScript>
 	<!--
+		function Browse(named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=250,alwaysRaised=yes,dependent=yes";
+			var w2=window.open("/grinder/browse.cmvp?AUTH=@Authenticate?AUTH@&PATH="+named,"Browse",strFeatures,false);
+		}
 		function Refresh()
 		{
 			document.QUESTS.QUEST.value="";
@@ -37,7 +42,8 @@
 </head>
 <body BGCOLOR=BLACK>
 <CENTER>
-<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
+<BR CLEAR=RIGHT>
 <FORM NAME=QUESTS TARGET=_top METHOD=POST ACTION="quests.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=QUEST VALUE="">
@@ -57,7 +63,10 @@
 	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud 4.0 Quests Manager</H2></FONT></TD></TR>
 	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Name</FONT></B></TD>
 	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Status</FONT></B></TD>
-	<TD WIDTH=30%><BR></TD>
+	<TD WIDTH=30%>
+(<A HREF="javascript:Browse('resources/progs/');"><FONT COLOR=WHITE><B>Browse Scripts</B></FONT></a>)
+&nbsp;(<A HREF="javascript:Browse('resources/quests/');"><FONT COLOR=WHITE><B>Browse Quests</B></FONT></a>)
+	</TD>
 	</TR>
 	@QuestNext?RESET@
 	@loop@

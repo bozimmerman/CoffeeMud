@@ -26,14 +26,13 @@ href="http://localhost:27744/">http://localhost:27744/</A></P>
 <P><A href="http://localhost:27777/">http://localhost:27777/</A></P>
 
 <p><b>What it does and doesn't do:</b><br>
-It only supports GET and HEAD requests (I think HEAD is HTTP 1.1, but it's supported anyway).
-It does not support POST (or, for that matter, PUT, DELETE, OPTIONS or TRACE...)
-<br>
+It only supports GET, POST&nbsp;and HEAD 
+requests (I think HEAD is HTTP 1.1, but it's supported anyway).&nbsp; 
 It does not cache.
 </p>
 
 <p><b>Security:</b><br>
-In the default CoffeeMUD installation, the server named admin is bound to 127.0.0.1 (localhost) - this
+In the default CoffeeMUD installation, the server named admin&nbsp;may be&nbsp;bound to 127.0.0.1 (localhost) - this
 means it will not accept external connections (see below).<br>
 The servers will not permit access to a directory or file outside their base directory tree (which 
 includes mounted virtual directories, see below); attempts will generate a log message and return
@@ -115,66 +114,186 @@ link BACK from a virtual directory with a RELATIVE link, unless you rely on the 
 remove redundancies; instead, specify a path from the root ('/') - 
 e.g., instead of ../index.cmvp specify /index.cmvp.
 </p>
-
-<p><b>CoffeeMUD Virtual Pages:</b><br>
-  Kind of misnamed (these pages in their original, very different incarnation didn't exist 
-at all), this is typically a HTML or plaintext file that is preprocessed by the server 
-before being dispatched to  the browser. Preprocessing is a simple search-and-replace; NO ACCOUNT is taken of where the macro appears within
-the file (ie, macros within comments or quoted strings will  be replaced). Some examples of
-macros already defined include:</p>
-<ul>
-	<li><b>@MUDSERVERVERSION@</b>: Returns the name and version of the mud server.
-	<li><b>@WEBSERVERVERSION@</b>: Returns the name and version of the web server.
-
-	<li><b>@MUDSERVERPORT@</b>: Returns the port number the mud server is running on.
-	<li><b>@WEBSERVERPORT@</b>: Returns the port number the web server is running on.
-
-	<li><b>@MUDSERVERSTATUS@</b>: Returns 
-  a string showing the status of the mud server (note that there's no @WEB 
-  equivalent - if it wasn't running, you wouldn't be able to see it!) 
-  <LI><STRONG>@MUDGRINDER@: </STRONG>  
-      The main processing macro for the MUDGrinder area-editing tool.&nbsp; This 
-  macro runs as an admin macro.&nbsp; See the MUDGrinder guide for more information. 
-  <LI><STRONG>@ADDFILE?filename@: </STRONG>Insert the contents of the file 
-  "filename" into the current document.
-  <LI><STRONG>@IF?macroName@: </STRONG>Removes the content between this macro 
-  and the corresponding @else@ or @endif@ unless the macro "macroName" specified 
-  evaluates to the string "true".&nbsp; 
-  <LI><STRONG>@REQUESTPARAMETER?parmname@: </STRONG>Inserts the value of GET 
-  request parameter specified by "parmname".
-  <LI><STRONG>@LOOP@: </STRONG>Repeatedly inserts into the page the contents 
-  between this macro and the corresponding @back@ until a @break@ macro located 
-  inside the block is processed.&nbsp; This @break@ string is most often 
-  returned by a macro processed within the block.
-  <LI><STRONG>@CHECKREQPARM?parmname=value@: </STRONG>            Evaluates
-		to the string "true" if the specified GET request parameters is equal to the value given.
-
-	<li><STRONG>@NUMPLAYERS@</STRONG>: Returns the number of players online.
-	<li><b>@PLAYERLIST@</b>: Returns a series of HTML &lt;LI&gt; elements;
-		the enclosing list elements (&lt;UL&gt;..&lt;/UL&gt; or &lt;OL&gt;..&lt;/OL&gt;) are not
-		part of this string and so must be defined in the surronding page.  Additionally, each
-		element will have their style-sheet class set to either <I>cmPlayerListEntry</I> or,
-		if applicable, <I>cmPlayerListEntryArchon</I>.
-	<li><b>@AREATBL@</b>: Returns a formatted HTML table containing all the areas currently installed in the
+<P><b>CoffeeMUD Virtual Pages:</b><br>
+  Kind of misnamed (these pages in their original, very 
+different incarnation didn't exist at all), this is typically a HTML or 
+plaintext file that is preprocessed by the server before being dispatched to the 
+browser. Preprocessing is a simple search-and-replace; NO ACCOUNT is taken of 
+where the macro appears within the file (ie, macros within comments or quoted 
+strings will be replaced). </P>
+<P>Macros are always surrounded by the AT sign (@), and are thus delineated in 
+the page.&nbsp; Any parameters required for a macro always follow the macro name 
+and a Question Mark (?).&nbsp; Further parameters are seperated by the Ampersand 
+(&amp;) character.&nbsp; Each parameter may optionally be an equation, where the 
+name is on the left of an equal sign, and its value on the right.&nbsp; An 
+example of all this in action would be:</P>
+<P>@MacroName?PARAMETER&amp;PARM2=VALUE&amp;PARM3@</P>
+<P>Macros may be embedded in each other ONLY if the embedded macros are part of 
+the parameters of the host macro, which means they must follow&nbsp;the Question 
+Mark.&nbsp;&nbsp; Also, for each level of embedding, an extra At sign (@) 
+character is used around the macro.&nbsp; To avoid confusion, the closing At 
+signs (@) should be seperated by spaces.&nbsp; Here is an example of embedded 
+Macros (in this case, two macros are used for each of two parameters to a first 
+macro (MacroOne):</P>
+<P>@MacroOne?@@MacroTwo?PARM@@&amp;@@MacroThree?PARM@@ @</P>
+<P>Notice the space before the final At sign (@).&nbsp; Now, here is an example 
+of double-embedding, where MacroThree is embedded as the parameter to MacroTwo, 
+which is embedded as the parameter to MacroOne:</P>
+<P>@MacroOne?@@MacroTwo?@@@MacroThree?PARM@@@ @@ @</P>
+<P>Here are the macros defined so far.&nbsp; Keep in mind 
+the difference between a Macro parameter (things which follow the first Question 
+mark in a macro), and a Request Parameter (data submitted from a &lt;FORM&gt; on 
+a web page, or on the URL line of a GET request).</P>
+<TABLE BORDER=1 WIDTH="100%">
+<TR><TD WIDTH="25%"><B>Macro</B></TD><TD><B>Description&gt;</B></TD></TR>
+<TR><TD>AbilityAffectNext</TD><TD></TD></TR>
+<TR><TD>AbilityData</TD><TD></TD></TR>
+<TR><TD>AbilityDomainNext</TD><TD></TD></TR>
+<TR><TD>AbilityID</TD><TD></TD></TR>
+<TR><TD>AbilityName</TD><TD></TD></TR>
+<TR><TD>AbilityPlayerNext</TD><TD></TD></TR>
+<TR><TD>AbilityTypeNext</TD><TD></TD></TR>
+<TR><TD>AddFile</TD><TD>The parameters for this macro are a list of file 
+      names.&nbsp; Inserts the contents of the files&nbsp; into the current 
+      document.</TD></TR>
+<TR><TD>AddRequestParameter</TD><TD>  The parameters for this macro are one 
+      or more Request Parameter names and values.&nbsp; 
+      Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually 
+      used to provide literal data for other macros which may require certain 
+      Request parameter data.</TD></TR>
+<TR><TD>AreaData</TD><TD></TD></TR>
+<TR><TD>AreaName</TD><TD></TD></TR>
+<TR><TD>AreaNameEncoded</TD><TD></TD></TR>
+<TR><TD>AreaNext</TD><TD></TD></TR>
+<TR><TD>AreaTbl</TD><TD> Returns a formatted HTML table containing all the areas currently installed in the
 		game; as with @PLAYERLIST@, the enclosing &lt;TABLE&gt;..&lt;/TABLE&gt; must still be 
-		specified. Each &lt;TD&gt; element has style-sheet class <I>cmAreaTblEntry</I>. The area 
-		list may only be obtained while the mud server is running; otherwise a simple table 
-		containing a game-not-running message is returned.
-	<li><b>@HTTPSTATUS@</b>: Returns the http return code; 
-		this is normally of no use ("200 OK") unless customising the error page.
-	<li><b>@HTTPSTATUSINFO@</b>: Returns additional http status information;
-		this is normally of no use unless customising the error page.
-	<li><b>@HTTPCLIENTIP@</b>: Returns the 
-  client's IP address.</li>     
-</ul>
-
-<p><b>Customising the error page:</b><br>
-Simply create a file <I>error.cmvp</I> (or whatever the v.p. extension is) 
-in the template directory of the server; at some point on the page you
-should use the @HTTPSTATUS@ and @HTTPSTATUSINFO@ macros.
-Note that the template directory is served as though it were in the specified path - images and 
-stylesheets should therefore go in the server's base directory.
-</p>
+		specified. Each &lt;TD&gt; element has style-sheet class <I>cmAreaTblEntry</I>. 
+      The area list may only be obtained while the mud server is running; 
+      otherwise a simple table containing a game-not-running message is 
+      returned.</TD></TR>
+<TR><TD>Authenticate</TD><TD></TD></TR>
+<TR><TD>back</TD><TD>Denotes the looping point for a @loop@ block.&nbsp; 
+      See the @loop@ macro.</TD></TR>
+<TR><TD>BanListMgr</TD><TD></TD></TR>
+<TR><TD>BaseCharClassName</TD><TD></TD></TR>
+<TR><TD>BaseCharClassNext</TD><TD></TD></TR>
+<TR><TD>BehaviorNext</TD><TD></TD></TR>
+<TR><TD>break</TD><TD>Stops inserting text into a web page at the current 
+      point, skips ahead to the next @back@ macro found, and starts again.&nbsp; 
+      If no @back@ macro is found, the page will not continue to be 
+      evaluated.&nbsp; See the @loop@ macro.&nbsp; This macro is actually 
+      returned by many other macros as a means of creating breaks in 
+loops.</TD></TR>
+<TR><TD>CharClassData</TD><TD></TD></TR>
+<TR><TD>CharClassID</TD><TD></TD></TR>
+<TR><TD>CharClassName</TD><TD></TD></TR>
+<TR><TD>CharClassNext</TD><TD></TD></TR>
+<TR><TD>CheckReqParm</TD><TD>Evaluates to the string "true" if the specified 
+      Request parameters is equal to the values for them&nbsp;given. For 
+      example, @CheckReqParm?PARM=VALUE@ would return "true" if the PARM request 
+      parameter is "VALUE", and "false" otherwise.&nbsp; See the @if?@ macro for 
+      more information on how this may be useful.</TD></TR>
+<TR><TD>ChkReqParmBreak</TD><TD>Evaulates to the string " @break@" (see&nbsp;the 
+      break macro) if the specified Request parameters are NOT equal to the 
+      values given.&nbsp; It returns "" otherwise.&nbsp; For example, 
+      @ChkReqParmBreak?PARM=VALUE@ would return "" if PARM is equal to VALUE, 
+      and @break@ otherwise. See the @loop@ macro for more information on how 
+      this might be useful.</TD></TR>
+<TR><TD>ClassRaceNext</TD><TD></TD></TR>
+<TR><TD>CrossClassAbilities</TD><TD></TD></TR>
+<TR><TD>else</TD><TD>Creates an exception to an @if?@ macro.</TD></TR>
+<TR><TD>endif</TD><TD>Denotes the end of an @if?@ block.&nbsp; See the 
+      @if?@ macro.</TD></TR>
+<TR><TD>ExitData</TD><TD></TD></TR>
+<TR><TD>HelpTopics</TD><TD></TD></TR>
+<TR><TD>HTTPclientIP</TD><TD>Returns the client's IP address.</TD></TR>
+<TR><TD>HTTPstatus</TD><TD>Returns the http return code; this is normally of 
+      no use ("200 OK") unless customising the error page.</TD></TR>
+<TR><TD>HTTPstatusInfo</TD><TD>Returns additional http status information; this is 
+      normally of no use unless customising the error page.</TD></TR>
+<TR><TD>if</TD><TD>The Single, Required&nbsp;parameter for this 
+      macro is another macro name&nbsp;which evaluates to the words "true" or 
+      something else (which is defined as false).&nbsp;That macro does not 
+      follow the embedding rules above.&nbsp; This macro requires an @endif@ 
+      macro, and may optionally have an @else@ macro.&nbsp; The "!" character 
+      may follow the "?" to negate the value of the expression.&nbsp; For 
+      example: @if?CheckReqParm?PARM=VALUE@&nbsp; @if?!CheckReqParm?PARM=VALUE@ 
+      would return true and false (or vis-versa) depending whether the request 
+      parameter PARM was equal to VALUE.</TD></TR>
+<TR><TD>ItemData</TD><TD></TD></TR>
+<TR><TD>JournalFunction</TD><TD></TD></TR>
+<TR><TD>JournalInfo</TD><TD></TD></TR>
+<TR><TD>JournalMessageNext</TD><TD></TD></TR>
+<TR><TD>JournalName</TD><TD></TD></TR>
+<TR><TD>JournalNext</TD><TD></TD></TR>
+<TR><TD>LevelNext</TD><TD></TD></TR>
+<TR><TD>LevelNumber</TD><TD></TD></TR>
+<TR><TD>LogViewer</TD><TD></TD></TR>
+<TR><TD>loop</TD><TD>Repeatedly inserts into the page the contents 
+      between this macro and the corresponding @back@ until a @break@ macro 
+      located inside the block is processed.&nbsp; This @break@ string is most 
+      often returned by a macro processed within the block, but may also be 
+      embedded in an @if?@ macro block as well.</TD></TR>
+<TR><TD>MobData</TD><TD></TD></TR>
+<TR><TD>MUDGrinder</TD><TD>The main processing macro for the MUDGrinder 
+      area-editing tool.&nbsp; This macro runs as an admin macro.&nbsp; See the 
+      MUDGrinder guide for more information.&nbsp; There are too many parameters 
+      and options here to mention.</TD></TR>
+<TR><TD>MUDServerPort</TD><TD>Returns the port number the mud server is running 
+      on.</TD></TR>
+<TR><TD>MUDServerStatus</TD><TD>Returns a string showing the status of the mud 
+      server (note that there's no WEB equivalent - if it wasn't running, you 
+      wouldn't be able to see it!)</TD></TR>
+<TR><TD>MUDServerVersion</TD><TD>Returns the name and version of the mud 
+  server.</TD></TR>
+<TR><TD>NumPlayers</TD><TD>Returns the number of players online which can be 
+      seen (no WizInvisibles)</TD></TR>
+<TR><TD>PlayerData</TD><TD></TD></TR>
+<TR><TD>PlayerDelete</TD><TD></TD></TR>
+<TR><TD>PlayerID</TD><TD></TD></TR>
+<TR><TD>PlayerList</TD><TD>Returns a series of HTML &lt;LI&gt; elements; the 
+      enclosing list elements (&lt;UL&gt;..&lt;/UL&gt; or 
+      &lt;OL&gt;..&lt;/OL&gt;) are not part of this string and so must be 
+      defined in the surronding page. Additionally, each element will have their 
+      style-sheet class set to either <I 
+      >cmPlayerListEntry</I> or, if applicable, <I 
+      >cmPlayerListEntryArchon</I>.</TD></TR>
+<TR><TD>PlayerNext</TD><TD></TD></TR>
+<TR><TD>PlayerOnline</TD><TD></TD></TR>
+<TR><TD>QuestData</TD><TD></TD></TR>
+<TR><TD>QuestMgr</TD><TD></TD></TR>
+<TR><TD>QuestNext</TD><TD></TD></TR>
+<TR><TD>RaceClassNext</TD><TD></TD></TR>
+<TR><TD>RaceData</TD><TD></TD></TR>
+<TR><TD>RaceID</TD><TD></TD></TR>
+<TR><TD>RaceName</TD><TD></TD></TR>
+<TR><TD>RequestParameter</TD><TD>Inserts the&nbsp;value of the Request Parameter(s) 
+      specified in the macro parameters.</TD></TR>
+<TR><TD>RequestParameterEncoded</TD><TD>Inserts the value of the Request Parameter(s) 
+      specified in the macro parameters, formatted for a valid GET 
+request.</TD></TR>
+<TR><TD>RequestParametersEncoded</TD><TD>Inserts the names and values of all Request 
+      Parameters, formatted for a valid GET request.</TD></TR>
+<TR><TD>ResourceMgr</TD><TD></TD></TR>
+<TR><TD>RoomData</TD><TD></TD></TR>
+<TR><TD>RoomID</TD><TD></TD></TR>
+<TR><TD>RoomName</TD><TD></TD></TR>
+<TR><TD>StdWebMacro</TD><TD></TD></TR>
+<TR><TD>SystemInfo</TD><TD></TD></TR>
+<TR><TD>WebServerName</TD><TD></TD></TR>
+<TR><TD>WebServerPort</TD><TD>Returns the port number the web server is running 
+      on.</TD></TR>
+<TR><TD>WebServerVersion</TD><TD>Returns the name and version of the web 
+  server.</TD></TR>
+</TABLE>     
+      
+  <P><b>Customising the error page:</b><br>
+Simply create a file <I>error.cmvp</I> (or 
+whatever the v.p. extension is) in the template directory of the server; at some 
+point on the page you should use the @HTTPSTATUS@ and @HTTPSTATUSINFO@ macros. 
+Note that the template directory is served as though it were in the specified 
+path - images and stylesheets should therefore go in the server's base 
+directory.</P>
 
 <p><b>Adding new macros to CMVP:</b><br>
 Create the new .java file in the <I>com/planet_ink/coffee_mud/web/macros</I> directory; all classes

@@ -1,11 +1,63 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 
-<P>&nbsp;</P>
-
+<html>
+<head>
+	<title>Browsing: @RequestParameter?PATH@</title>
+	<script language=JavaScript>
+	<!--
+		function OpenFile(action)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+			w=window.open("browsefile.cmvp?"+action,"Filer",strFeatures, false);
+		}
+		function NewDir(named)
+		{
+			document.BROWSE.PATH.value=document.BROWSE.PATH.value+named+"/";
+			document.BROWSE.submit();
+		}
+		function NewFile(action)
+		{
+			OpenFile(action);
+		}
+		function BackDir()
+		{
+			var l=document.BROWSE.PATH.value.length;
+			if(l>1)
+			{
+				var x=document.BROWSE.PATH.value.substring(0,l-1).lastIndexOf('/');
+				if(x>=0)
+					document.BROWSE.PATH.value=document.BROWSE.PATH.value.substring(0,x+1);
+				else
+					return;
+			}
+			document.BROWSE.submit();			
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=BROWSE TARGET=_top METHOD=POST ACTION="browse.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
+<a href="javascript:BackDir()"><FONT COLOR=YELLOW>..</FONT></a><BR>
+@FileNext?RESET@
+@loop@
+@FileNext@
+	@if?FileInfo?ISDIRECTORY@
+		<a href="javascript:NewDir('@RequestParameter?FILE@')"><FONT COLOR=YELLOW>@RequestParameter?FILE@</FONT></a>
+	@else@
+		@if?FileInfo?ISFILE@
+		<a href="javascript:OpenFile('@RequestParametersEncoded@')"><FONT COLOR=WHITE>@RequestParameter?FILE@</FONT>
+		@endif@
+	@endif@
+	<BR>
+@back@
+<a href="javascript:NewFile('@RequestParametersEncoded@');"><FONT COLOR=WHITE>*create new file*</FONT></a><BR>
+</FORM>
 </BODY>
 </HTML>
+@endif@
+@endif@

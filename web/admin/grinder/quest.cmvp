@@ -48,38 +48,36 @@
 <P ALIGN=RIGHT><A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>help</I></FONT></A></P>
 <BR>
 <TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>
-@if?!CheckReqParm?QUEST=@
-	@QuestData?SCRIPT@
-@else@
-	set name MyQuest
-	#   Set the quest name
+@if?!CheckReqParm?QUEST=@ @QuestData?SCRIPT@ @else@
+set name MyQuest
+#   Set the quest name
 
 	set duration 450
-	#   The duration of the quest is 30 minutes (450 ticks).  
-	#   The scripts on the mobs will do the rest...
-	
-	#    Some Sample Commands below: Use help for more!
-	#
-	#set wait 200
-	#set interval 25
-	#   For auto-quests: wait about 15 mins between quests
-	#set area Midgaard
-	#   inform the quest that it occurs in Midgaard
-	#set mobtype ShopKeeper
-	#   load up any mob from the above area of type shopkeeper. 
-	#   This command will set a room!
-	#give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
-	#   load the above behavior into the last mob 
-	#   (in this case, the shopkeeper)
-	#set locale CityStreet 
-	#   find any locale in Midgaard of type CityStreet
-	#set mob "the thief"
-	#   load up any mob from area with that name.  
-	#   Since a room was set above,  this will move the mob into 
-	#   the room (locale CityStreet)
-	#give behavior Scriptable "LOAD=quests/robbed/thief.script"
-	#   load the above behavior into the last mob 
-	#   (in this case, the thief)
+#   The duration of the quest is 30 minutes (450 ticks).  
+#   The scripts on the mobs will do the rest...
+
+#    Some Sample Commands below: Use help for more!
+#
+#set wait 200
+#set interval 25
+#   For auto-quests: wait about 15 mins between quests
+#set area Midgaard
+#   inform the quest that it occurs in Midgaard
+#set mobtype ShopKeeper
+#   load up any mob from the above area of type shopkeeper. 
+#   This command will set a room!
+#give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
+#   load the above behavior into the last mob 
+#   (in this case, the shopkeeper)
+#set locale CityStreet 
+#   find any locale in Midgaard of type CityStreet
+#set mob "the thief"
+#   load up any mob from area with that name.  
+#   Since a room was set above,  this will move the mob into 
+#   the room (locale CityStreet)
+#give behavior Scriptable "LOAD=quests/robbed/thief.script"
+#   load the above behavior into the last mob 
+#   (in this case, the thief)
 @endif@
 </TEXTAREA>
 <BR>

@@ -13,9 +13,6 @@ import com.planet_ink.coffee_mud.exceptions.*;
 // largely based on info from the relevant RFCs
 //  and http://www.jmarshall.com/easy/http/
 
-// TODO / NOT IMPLEMENTED:
-// POST!
-
 // although this technically doesn't *need* to be a thread,
 //  (ie. it only runs once, responding to request)
 //  if it wasn't one the webserver would get bogged down every time
@@ -119,15 +116,16 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 
 			// should always be uppercase, but I allow for mixed-case anyway
-			// only handles GET & HEAD requests, not POSTS
-			// (or the obscure ones: PUT, DELETE, OPTIONS and TRACE)
+			// only handles GET, simple POST, & HEAD requests
+			// (not the obscure ones: PUT, DELETE, OPTIONS and TRACE)
 			if (command.equalsIgnoreCase("HEAD"))
 			{
 				headersOnly = true;
 				command = "GET";
 			}
 			else
-			if (command.equalsIgnoreCase("GET"))
+			if((command.equalsIgnoreCase("GET"))
+			||(command.equalsIgnoreCase("POST")))
 			{
 
 				try
@@ -167,17 +165,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				{
 					Log.errOut(getName(),"Received wrong encoding");
 				}
-			}
-			else
-			if (command.equalsIgnoreCase("POST"))
-			{
-				requestMain = inTok.nextToken();
-				String postText = "";
-				while(inTok.hasMoreTokens())
-				{
-					postText = inTok.nextToken();
-				}
-				requestParametersEncoded = postText;
 			}
 			else
 			{
@@ -700,7 +687,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	{
 		String hdrRedirectTo = null;
 
-
 		BufferedReader sin = null;
 		DataOutputStream sout = null;
 
@@ -712,13 +698,12 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			//sout = new DataOutputStream(new BufferedOutputStream(sock.getOutputStream()));
 			sout = new DataOutputStream(sock.getOutputStream());
-			sin = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 
 			GrabbedFile requestedFile;
 			headersOnly = false;
 
 			virtualPage = false;
-			boolean processOK = process(getHTTPRequest(sin));
+			boolean processOK = process(getHTTPRequest(sock.getInputStream()));
 
 			if (processOK)
 			{
@@ -985,35 +970,70 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		return "";
 	}
 
-	public String getHTTPRequest(BufferedReader sin)
+	private byte[] getData(InputStream sin)
+	{
+		ByteArrayOutputStream out=new ByteArrayOutputStream();
+		try
+		{
+			while(true)
+			{
+				while(sin.available()>0)
+					out.write(sin.read());
+				try{Thread.sleep(50);}catch(Exception e){}
+				if(sin.available()==0)
+					break;
+			}
+		}
+		catch(Exception e)
+		{
+		};
+		return out.toByteArray();					
+	}
+	
+	public String getHTTPRequest(InputStream sin)
 	{
 		try
 		{
-			String inLine = sin.readLine();
+			byte[] inData = getData(sin);
 			//Log.sysOut("HTTP",inLine);
-			if(inLine==null) return "";
+			if((inData==null)||(inData.length==0)) 
+				return "";
 			
+			String inLine=new String(inData);
 			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")))
 			{
-				return inLine;
+				for(int i=0;i<inLine.length();i++)
+					if((inLine.charAt(i)=='\n')||(inLine.charAt(i)=='\r'))
+						return inLine.substring(0,i);
 			}
-			StringBuffer inData = new StringBuffer("");
-			inData.append(inLine+" ");
-			
-			while(inLine.toUpperCase().indexOf("SUBMIT")<0)
+			else
+			if(inLine.startsWith("POST"))
 			{
-				inLine = sin.readLine();
-				//Log.sysOut("HTTP",inLine);
+				String firstLine=null;
+				for(int i=0;i<inLine.length()-4;i++)
+					if(inLine.charAt(i)=='\n')
+					{
+						if(firstLine==null)
+							firstLine=inLine.substring(0,i);
+						else
+						if((inLine.charAt(i+2)=='\n')
+						&&(firstLine!=null))
+						{
+							int x=firstLine.lastIndexOf(" ");
+							inLine=inLine.substring(i+3);
+							int y=inLine.indexOf("\r");
+							if(y<0) y=inLine.indexOf("\n");
+							while((y>0)&&((inLine.charAt(y-1)=='\n')||(inLine.charAt(y-1)=='\r')))
+								y--;
+							if((x>=0)&&(y>=0))
+							{
+								String returnable=firstLine.substring(0,x)+"?"+inLine.substring(0,y)+firstLine.substring(x);
+								return returnable;
+							}
+						}
+					}
 			}
-			if(inLine.toUpperCase().indexOf("REFERER")>0)
-			{
-				int x = 0;
-				x = inLine.indexOf("?");
-				inLine = inLine.substring(x+1);
-			}
-			inData.append(inLine);
-			//Log.sysOut("HTTPParms",inData.toString());
-			return inData.toString();
+			return inLine;
 		}
 		catch (Exception e)
 		{

@@ -37,7 +37,7 @@ public class ChkReqParmBreak extends StdWebMacro
 				if((check==null)&&(equals.length()==0))
 					return "";
 				if(check==null) return " @break@";
-				if(check.equalsIgnoreCase(equals))
+				if(!check.equalsIgnoreCase(equals))
 					return " @break@";
 			}
 		}

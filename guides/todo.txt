@@ -1,7 +1,8 @@
 Bard Subclasses
 Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
 script editor in mudgrinder
-macro help files
+Finish WebServer.html macro help files update
+Programming.html update
 
 //****** next version ********************************************************
 friends list, for filter who
