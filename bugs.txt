@@ -1,3 +1,8 @@
+return "^c" + mob.name() + "^c is in perfect health^N"; doesn't end in period
+error logging: For example:/18/2004 9:02 PM Error Room Couldn't set exit for unknown room 'BM#2' And make it: 3/18/2004 9:02 PM Error Room Couldn't set North exit for 'Avan#17'
+For Artisan, can we make the experience less spammy?  Maybe just give total experience earned at the end of the skill attempt instead of showing 1 exp per tick?
+We could use a way to show the last 5 or 10 messages sent on the channels.  It's difficult to keep track of conversation (you can easily miss something) during combat.
+
 My Skeletons are Leveling... I'm a Necromancer!!!
 Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, ?Autosneak
 Test: Improved Swipe, Mug, Kamikaze, Side Kick, Back Hand, Shield Block
