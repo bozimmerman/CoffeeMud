@@ -26,6 +26,29 @@ public class Chant_Earthquake extends Chant
 	}
 
 
+	private MOB lastMOB=null;
+	public boolean okAffect(Affect msg)
+	{
+		// undo the affects of this spell
+		if((affected==null)||(!(affected instanceof MOB)))
+			return super.okAffect(msg);
+		MOB mob=(MOB)affected;
+		if((msg.amISource(mob))
+		&&(msg.sourceMinor()==Affect.TYP_STAND)
+		&&(mob.location()!=null))
+		{
+			if(mob!=lastMOB)
+			{
+				lastMOB=mob;
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> attempt(s) to stand up, and falls back down!");
+			}
+			else
+				lastMOB=null;
+			return false;
+		}
+		return super.okAffect(msg);
+	}
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

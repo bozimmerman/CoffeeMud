@@ -77,8 +77,6 @@ public class Farming extends CommonSkill
 			F.unInvoked=false;
 			F.tickDown=50;
 			F.startTickDown(room,50);
-if(room.fetchAffect(ID())!=null)
-	invoker().tell(""+(((Farming)room.fetchAffect(ID())).tickDown)+"/"+(((Farming)room.fetchAffect(ID())).unInvoked));
 		}
 	}
 
@@ -93,6 +91,11 @@ if(room.fetchAffect(ID())!=null)
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		verb="planting";
+		if((mob.location().domainType()&Room.INDOORS)>0)
+		{
+			commonTell(mob,"You can't plant anything indoors!");
+			return false;
+		}
 		if(mob.location().fetchAffect("Farming")!=null)
 		{
 			commonTell(mob,"It looks like a crop is already growing here.");

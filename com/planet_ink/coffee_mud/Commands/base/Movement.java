@@ -592,7 +592,7 @@ public class Movement
 			mob.tell("You are already asleep!");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SLEEP,"<S-NAME> lay(s) down and take(s) a nap.");
+			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_SLEEP,Scripts.get("Movement-sleep"));
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}

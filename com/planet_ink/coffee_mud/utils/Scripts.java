@@ -6,23 +6,31 @@ public class Scripts
 	private Scripts(){}
 	
 	private static String language="en";
-	private static String country="US";
+	private static String country="TX";
 	private static Locale currentLocale;
 	private static ResourceBundle messages;
 
 	
-	private static void setLocale(String lang, String state)
+	public static void setLocale(String lang, String state)
 	{
-		country=state;
-		language=lang;
+		if((lang!=null)&&(state!=null)&&(lang.length()>0)&&(state.length()>0))
+		{
+			country=state;
+			language=lang;
+		}
 		currentLocale = new Locale(language, country);
 		messages = ResourceBundle.getBundle("resources/messages", currentLocale);
 	}
 	
-	private String get(String tag)
+	public static String get(String tag)
 	{
-		if(messages==null) setLocale("en","us");
+		if(messages==null) setLocale(language,country);
 		return messages.getString(tag);
+	}
+	
+	public static void clear()
+	{
+		messages=null;
 	}
 	
 }

@@ -537,8 +537,9 @@ public class MUD extends Thread implements Host
 		}
 		offlineReason="Shutting down...unloading macros";
 		HTTPserver.unloadWebMacros();
+		Scripts.clear();
 		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
-
+		
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut("MUD","CoffeeMud shutdown complete.");
 		S.println("CoffeeMud shutdown complete.");
@@ -682,6 +683,7 @@ public class MUD extends Thread implements Host
 				Log.sysOut("MUD","(C) 2000-2003 Bo Zimmerman");
 				Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		
+				Scripts.setLocale(page.getStr("LANGUAGE"),page.getStr("COUNTRY"));
 				if(MUD.isOK)
 				{
 					mudThreads=new Vector();

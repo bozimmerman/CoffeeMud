@@ -24,6 +24,7 @@ add Arch to mason, that modifies an open passageway with a Majestic Arch
 possible to have NE SE SW NW directions?
 rain/show/swim causes some metals to rust (take minute damage).
 Amnesia as a disease
+prop_reflecting to reflect spell damage back to the caster, put on shield items
 eggs that hatch
 merchant class with haggle skill to lower prices HAGGLE 300 item
 can sit AT tables and have conversation heard only at the table.

@@ -83,7 +83,7 @@ public class Skill_Meditation extends StdAbility
 		&&(Sense.isSitting(mob)))
 		{
 			double man=new Integer((mob.charStats().getStat(CharStats.INTELLIGENCE)+mob.charStats().getStat(CharStats.WISDOM))).doubleValue();
-			mob.curState().adjMana((int)Math.round((man*.1)+mob.envStats().level()),mob.maxState());
+			mob.curState().adjMana((int)Math.round((man*.1)+(mob.envStats().level()/2)),mob.maxState());
 		}
 		else
 		{
