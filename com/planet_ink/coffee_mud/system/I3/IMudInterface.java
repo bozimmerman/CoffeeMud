@@ -306,7 +306,7 @@ public class IMudInterface implements ImudServices, Serializable
 						buf.append("["+Util.padRight(nom,20)+"]\n\r");
 					}
 					smob.session().unfilteredPrintln(buf.toString());
-					smob.session().setPromptFlag();
+					smob.session().setPromptFlag(true);
 					break;
 				}
 			}

@@ -8,7 +8,7 @@ import java.util.*;
 public class Paladin_Defend extends StdAbility
 {
 	public String ID() { return "Paladin_Defend"; }
-	public String name(){ return "Defence";}
+	public String name(){ return "All Defence";}
 	private static final String[] triggerStrings = {"DEFENCE"};
 	public int quality(){return Ability.OK_SELF;}
 	public String[] triggerStrings(){return triggerStrings;}

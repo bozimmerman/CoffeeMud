@@ -23,11 +23,13 @@ public class Farming extends CommonSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Foraging();}
+	public Environmental newInstance(){	return new Farming();}
 
 	public boolean tick(int tickID)
 	{
-		if((affected!=null)&&(affected instanceof Room)&&(tickID==Host.MOB_TICK))
+		if((affected!=null)
+		   &&(affected instanceof Room)
+		   &&(tickID==Host.MOB_TICK))
 		{
 			MOB mob=(MOB)invoker();
 			if(tickUp==6)
@@ -55,12 +57,11 @@ public class Farming extends CommonSkill
 					int amount=Dice.roll(1,20,0)*(usesRemaining());
 					String s="s";
 					if(amount==1) s="";
-					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to grow "+amount+" pound"+s+" of "+foundShortName+" here.");
+					room.showHappens(Affect.MSG_OK_VISUAL,amount+" pound"+s+" of "+foundShortName+" have grown here.");
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
-						mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
-						ExternalPlay.get(mob,null,newFound,true);
+						room.addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
 					}
 				}
 			}
@@ -72,9 +73,12 @@ public class Farming extends CommonSkill
 		   &&(aff!=room)
 		   &&(room!=null))
 		{
-			unInvoked=false;
-			tickUp=0;
-			startTickDown(room,50);
+			Farming F=((Farming)copyOf());
+			F.unInvoked=false;
+			F.tickDown=50;
+			F.startTickDown(room,50);
+if(room.fetchAffect(ID())!=null)
+	invoker().tell(""+(((Farming)room.fetchAffect(ID())).tickDown)+"/"+(((Farming)room.fetchAffect(ID())).unInvoked));
 		}
 	}
 

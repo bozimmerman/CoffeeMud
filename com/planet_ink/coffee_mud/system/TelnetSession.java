@@ -401,9 +401,9 @@ public class TelnetSession extends Thread implements Session
 		needPrompt=true;
 	}
 	
-	public void setPromptFlag()
+	public void setPromptFlag(boolean truefalse)
 	{
-		needPrompt=true;
+		needPrompt=truefalse;
 	}
 
 	public String prompt(String Message, String Default)

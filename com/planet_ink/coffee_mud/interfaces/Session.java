@@ -33,7 +33,7 @@ public interface Session
 						Environmental Target,
 						String msg);
 	
-	public void setPromptFlag();
+	public void setPromptFlag(boolean truefalse);
 	
 	
 	public void unfilteredPrintln(String msg);

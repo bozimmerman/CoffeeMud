@@ -653,12 +653,7 @@ public class StdMOB implements MOB
 		}
 		setFollowing(null);
 		if((!isMonster())&&(soulMate()==null))
-		{
-			Room rebirthRoom=CMMap.getDeathRoom(this);
-			if(deathRoom==rebirthRoom)
-				try{Thread.sleep(Host.TICK_TIME+500);}catch(Exception x){}
-			bringToLife(rebirthRoom,true);
-		}
+			bringToLife(CMMap.getDeathRoom(this),true);
 		Body.startTicker(deathRoom);
 		deathRoom.recoverRoomStats();
 		return Body;

@@ -110,11 +110,11 @@ public class CMMap
 		
 		Room room=null;
 		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")));
-			room=getStartRoom(mob);
+			room=mob.getStartRoom();
 		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
 			room=getRoom(roomID);
 		if(room==null)
-			room=getStartRoom(mob);
+			room=mob.getStartRoom();
 		if((room==null)&&(map.size()>0))
 			room=(Room)map.firstElement();
 		return room;

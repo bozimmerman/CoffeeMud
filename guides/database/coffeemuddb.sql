@@ -50,7 +50,7 @@ CREATE TABLE CMCHAR (
 	CMWEIT int NULL ,
 	CMPRPT char (250) NULL,
 	CMCOLR char (50) NULL,
-	CMLSIP char (100) NULL
+	CMLSIP char (100) NULL,
 	CMCLAN char (100) NULL,
 	CMCLRO integer NULL,
 );

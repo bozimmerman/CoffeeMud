@@ -161,13 +161,16 @@ public class Help
 				name=name.substring(6);
 			}
 			name=name.replace('_',' ');
+			Vector helpedPreviously=new Vector();
 			for(int a=0;a<CMClass.abilities.size();a++)
 			{
 				Ability A=(Ability)CMClass.abilities.elementAt(a);
-				if(A.ID().equalsIgnoreCase(tag)
-				   &&((type<0)||(type==(A.classificationCode()&Ability.ALL_CODES)))
-				   ||(A.name().equalsIgnoreCase(name)))
+				if((A.ID().equalsIgnoreCase(tag)
+						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_CODES)))
+					||(A.name().equalsIgnoreCase(name)))
+				&&(!helpedPreviously.contains(A)))
 				{
+					helpedPreviously.addElement(A);
 					StringBuffer prepend=new StringBuffer("");
 					type=(A.classificationCode()&Ability.ALL_CODES);
 					prepend.append("\n\r");

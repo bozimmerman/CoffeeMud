@@ -99,7 +99,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.BEACON:
 					if(mob.isASysOp(mob.location()))
-						SysOpSkills.beacon(mob);
+						SysOpSkills.beacon(mob,commands);
 					else
 						mob.tell("You are not powerful enough to do that.\n\r");
 					break;
