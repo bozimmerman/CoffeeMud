@@ -32,7 +32,8 @@ public class Bomb_Spores extends StdBomb
 		Vector V=returnOffensiveAffects(E);
 		if((!(E instanceof Food))||(V.size()==0))
 		{
-			mob.tell("You need some diseased meat to make this out of.");
+			if(mob!=null)
+				mob.tell("You need some diseased meat to make this out of.");
 			return false;
 		}
 		return true;

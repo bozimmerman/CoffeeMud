@@ -63,7 +63,8 @@ public class Trap_Needle extends StdTrap
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
 		Item I=getPoison(mob);
-		if(I==null)
+		if((I==null)
+		&&(mob!=null))
 		{
 			mob.tell("You'll need to set down some poison first.");
 			return false;

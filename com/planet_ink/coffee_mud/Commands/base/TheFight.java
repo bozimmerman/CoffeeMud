@@ -880,7 +880,7 @@ public class TheFight
 				Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
-				if(ItemUsage.get(mob,container,(Item)getThis,quiet,"draw"))
+				if(ItemUsage.get(mob,container,(Item)getThis,quiet,"draw",false))
 				{
 					if(getThis.container()==null)
 					{

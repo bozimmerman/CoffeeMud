@@ -116,6 +116,24 @@ public class StdTrap extends StdAbility implements Trap
 		{
 			if(affect.amITarget(affected))
 			{
+				if((affected instanceof Exit)
+				&&(((Exit)affected).hasADoor())
+				&&(((Exit)affected).hasALock())
+				&&(((Exit)affected).isLocked()))
+				{
+					if(affect.targetMinor()==Affect.TYP_UNLOCK)
+						spring(affect.source());
+				}
+				else
+				if((affected instanceof Container)
+				&&(((Container)affected).hasALid())
+				&&(((Container)affected).hasALock())
+				&&(((Container)affected).isLocked()))
+				{
+					if(affect.targetMinor()==Affect.TYP_UNLOCK)
+						spring(affect.source());
+				}
+				else
 				if(affect.targetMinor()==Affect.TYP_OPEN)
 					spring(affect.source());
 			}
@@ -165,36 +183,42 @@ public class StdTrap extends StdAbility implements Trap
 	}
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
-		if(!maySetTrap(mob,mob.envStats().level()))
-		{
-			mob.tell("You are not high enough level ("+trapLevel()+") to set that trap.");
-			return false;
-		}
+		if(mob!=null)
+			if(!maySetTrap(mob,mob.envStats().level()))
+			{
+				mob.tell("You are not high enough level ("+trapLevel()+") to set that trap.");
+				return false;
+			}
 		if(E.fetchAffect(ID())!=null)
 		{
-			mob.tell("This trap is already set on "+E.name()+".");
+			if(mob!=null)
+				mob.tell("This trap is already set on "+E.name()+".");
 			return false;
 		}
 		if(!canAffect(E))
 		{
-			mob.tell("You can't set '"+name()+"' on "+E.name()+".");
+			if(mob!=null)
+				mob.tell("You can't set '"+name()+"' on "+E.name()+".");
 			return false;
 		}
 		if((canAffectCode()&Ability.CAN_EXITS)==Ability.CAN_EXITS)
 		{
 			if((E instanceof Item)&&(!(E instanceof Container)))
 			{
-				mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+				if(mob!=null)
+					mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 			if(((E instanceof Exit)&&(!(((Exit)E).hasADoor()))))
 			{
-				mob.tell(E.name()+" has no door, so '"+name()+"' cannot be set on it.");
+				if(mob!=null)
+					mob.tell(E.name()+" has no door, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 			if(((E instanceof Container)&&(!(((Container)E).hasALid()))))
 			{
-				mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+				if(mob!=null)
+					mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 		}

@@ -50,10 +50,13 @@ public class Trap_SpikePit extends Trap_RoomPit
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
-		if(getDagger(mob)==null)
+		if(mob!=null)
 		{
-			mob.tell("You'll need to set down some dagger-class weapons first.");
-			return false;
+			if(getDagger(mob)==null)
+			{
+				mob.tell("You'll need to set down some dagger-class weapons first.");
+				return false;
+			}
 		}
 		return true;
 	}

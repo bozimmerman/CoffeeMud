@@ -14,7 +14,7 @@
 		function Clicked(action)
 		{
 			document.AREAEDIT.action=action;
-			document.AREAEDIT.target="_top";"
+			document.AREAEDIT.target="_top";
 			document.AREAEDIT.submit();
 		}
 		function Clicked2(action)

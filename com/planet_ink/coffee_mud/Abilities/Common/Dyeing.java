@@ -102,6 +102,9 @@ public class Dyeing extends CommonSkill
 			commands.remove(commands.firstElement());
 
 		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LIQUID)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{

@@ -448,13 +448,16 @@ public class Help
 			}
 		}
 		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
-		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
-			Area A=(Area)e.nextElement();
-			if(CoffeeUtensils.containsString(A.name(),helpStr))
+			String ahelpStr=helpStr.replaceAll("_"," ").trim();
+			for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 			{
-				helpStr=A.name();
-				break;
+				Area A=(Area)e.nextElement();
+				if(CoffeeUtensils.containsString(A.name(),ahelpStr))
+				{
+					helpStr=A.name();
+					break;
+				}
 			}
 		}
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))

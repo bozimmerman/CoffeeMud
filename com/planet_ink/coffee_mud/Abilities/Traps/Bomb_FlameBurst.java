@@ -21,7 +21,8 @@ public class Bomb_FlameBurst extends StdBomb
 		||(!((((Drink)E).containsDrink())||(((Drink)E).liquidType()!=EnvResource.RESOURCE_LAMPOIL)))
 		   &&(((Item)E).material()!=EnvResource.RESOURCE_LAMPOIL))
 		{
-			mob.tell("You need some lamp oil to make this out of.");
+			if(mob!=null)
+				mob.tell("You need some lamp oil to make this out of.");
 			return false;
 		}
 		return true;

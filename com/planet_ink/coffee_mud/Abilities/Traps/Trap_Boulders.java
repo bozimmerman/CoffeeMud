@@ -18,32 +18,38 @@ public class Trap_Boulders extends StdTrap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
-		if(I!=null)
-			super.destroyResources(mob.location(),I.material(),50);
+		if(mob!=null)
+		{
+			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+			if(I!=null)
+				super.destroyResources(mob.location(),I.material(),50);
+		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
 	
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
-		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
-		if((I==null)
-		||(super.findNumberOfResource(mob.location(),I.material())<50))
+		if(mob!=null)
 		{
-			mob.tell("You'll need to set down at least 50 pounds of rock first.");
-			return false;
-		}
-		if(E instanceof Room)
-		{
-			Room R=(Room)E;
-			if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
-			   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-			   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
-			   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS))
+			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+			if((I==null)
+			||(super.findNumberOfResource(mob.location(),I.material())<50))
 			{
-				mob.tell("You can only set this trap in caves, or by mountains or hills.");
+				mob.tell("You'll need to set down at least 50 pounds of rock first.");
 				return false;
+			}
+			if(E instanceof Room)
+			{
+				Room R=(Room)E;
+				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
+				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)
+				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS))
+				{
+					mob.tell("You can only set this trap in caves, or by mountains or hills.");
+					return false;
+				}
 			}
 		}
 		return true;

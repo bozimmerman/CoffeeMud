@@ -47,7 +47,8 @@ public class Trap_Ignition extends StdTrap
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
 		Item I=getPoison(mob);
-		if(I==null)
+		if((I==null)
+		&&(mob!=null))
 		{
 			mob.tell("You'll need to set down a container of lamp oil first.");
 			return false;

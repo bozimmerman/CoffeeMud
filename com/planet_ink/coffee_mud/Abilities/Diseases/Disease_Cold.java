@@ -34,7 +34,8 @@ public class Disease_Cold extends Disease
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
-		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
+		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION))
+		&&(!mob.isMonster()))
 		{
 			mob.delAffect(this);
 			Ability A=CMClass.getAbility("Disease_Pneumonia");

@@ -18,21 +18,27 @@ public class Trap_Spark extends StdTrap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
-		if(I!=null)
-			super.destroyResources(mob.location(),I.material(),10);
+		if(mob!=null)
+		{
+			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
+			if(I!=null)
+				super.destroyResources(mob.location(),I.material(),10);
+		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
 	
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
-		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
-		if((I==null)
-		||(super.findNumberOfResource(mob.location(),I.material())<10))
+		if(mob!=null)
 		{
-			mob.tell("You'll need to set down at least 10 pounds of metal first.");
-			return false;
+			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_METAL);
+			if((I==null)
+			||(super.findNumberOfResource(mob.location(),I.material())<10))
+			{
+				mob.tell("You'll need to set down at least 10 pounds of metal first.");
+				return false;
+			}
 		}
 		return true;
 	}

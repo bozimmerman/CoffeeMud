@@ -65,7 +65,8 @@ public class Trap_Infected extends StdTrap
 		Item I=getPoison(mob);
 		if(I==null)
 		{
-			mob.tell("You'll need to set down some diseased food first.");
+			if(mob!=null)
+				mob.tell("You'll need to set down some diseased food first.");
 			return false;
 		}
 		return true;

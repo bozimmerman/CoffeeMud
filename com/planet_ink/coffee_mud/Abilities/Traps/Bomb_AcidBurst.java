@@ -19,7 +19,8 @@ public class Bomb_AcidBurst extends StdBomb
 		if((!(E instanceof Item))
 		||(((Item)E).material()!=EnvResource.RESOURCE_LEMONS))
 		{
-			mob.tell("You need some lemons to make this out of.");
+			if(mob!=null)
+				mob.tell("You need some lemons to make this out of.");
 			return false;
 		}
 		return true;

@@ -58,9 +58,13 @@ public class Trap_FloodRoom extends StdTrap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
-		if(I!=null)	super.destroyResources(mob.location(),I.material(),100);
-		killWaterskins(mob);
+		Item I=null;
+		if(mob!=null)
+		{
+			I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+			if(I!=null)	super.destroyResources(mob.location(),I.material(),100);
+			killWaterskins(mob);
+		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
 	
@@ -68,24 +72,28 @@ public class Trap_FloodRoom extends StdTrap
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
-		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
-		if((I==null)
-		||(super.findNumberOfResource(mob.location(),I.material())<100))
+		if(mob!=null)
 		{
-			mob.tell("You'll need to set down at least 100 pounds of stone first.");
-			return false;
-		}
-		if(numWaterskins(mob)<=10)
-		{
-			mob.tell("You'll need to set down at least 10 water containers first.");
-			return false;
+			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_ROCK);
+			if((I==null)
+			||(super.findNumberOfResource(mob.location(),I.material())<100))
+			{
+				mob.tell("You'll need to set down at least 100 pounds of stone first.");
+				return false;
+			}
+			if(numWaterskins(mob)<=10)
+			{
+				mob.tell("You'll need to set down at least 10 water containers first.");
+				return false;
+			}
 		}
 		if(E instanceof Room)
 		{
 			Room R=(Room)E;
 			if((R.domainType()&Room.INDOORS)==0)
 			{
-				mob.tell("You can only set this trap indoors.");
+				if(mob!=null)
+					mob.tell("You can only set this trap indoors.");
 				return false;
 			}
 		}

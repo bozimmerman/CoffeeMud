@@ -56,7 +56,8 @@ public class Trap_SnakePit extends Trap_RoomPit
 		if(!super.canSetTrapOn(mob,E)) return false;
 		if(getCagedAnimal(mob)==null)
 		{
-			mob.tell("You'll need to set down some caged snakes first.");
+			if(mob!=null)
+				mob.tell("You'll need to set down some caged snakes first.");
 			return false;
 		}
 		return true;

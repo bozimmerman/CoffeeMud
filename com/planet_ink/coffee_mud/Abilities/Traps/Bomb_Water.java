@@ -20,7 +20,8 @@ public class Bomb_Water extends StdBomb
 		||(((Drink)E).liquidHeld()!=((Drink)E).liquidRemaining())
 		||(((Drink)E).liquidType()!=EnvResource.RESOURCE_FRESHWATER))
 		{
-			mob.tell("You need a full water container to make this out of.");
+			if(mob!=null)
+				mob.tell("You need a full water container to make this out of.");
 			return false;
 		}
 		return true;

@@ -1205,7 +1205,7 @@ public class TelnetSession extends Thread implements Session
 							  c++; break; }
 				case 'E': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))
-								  buf.append(victim.charStats().getMyRace().healthText(victim));
+								  buf.append(victim.charStats().getMyRace().healthText(victim)+"\n\r");
 							  c++; break; }
 				case 'B': { buf.append("\n\r"); c++; break;}
 				case 'd': {	  MOB victim=mob().getVictim();

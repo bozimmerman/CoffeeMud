@@ -19,7 +19,8 @@ public class Bomb_Noxious extends StdBomb
 		if((!(E instanceof Item))
 		||(((Item)E).material()!=EnvResource.RESOURCE_EGGS))
 		{
-			mob.tell("You an egg to make this out of.");
+			if(mob!=null)
+				mob.tell("You an egg to make this out of.");
 			return false;
 		}
 		return true;

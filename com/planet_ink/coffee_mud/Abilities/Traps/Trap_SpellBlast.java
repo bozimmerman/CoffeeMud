@@ -49,7 +49,8 @@ public class Trap_SpellBlast extends StdTrap
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
 		Item I=getPoison(mob);
-		if(I==null)
+		if((I==null)
+		&&(mob!=null))
 		{
 			mob.tell("You'll need to set down a scroll with a spell first.");
 			return false;

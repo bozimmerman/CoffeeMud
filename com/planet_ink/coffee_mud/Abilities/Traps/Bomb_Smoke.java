@@ -19,7 +19,8 @@ public class Bomb_Smoke extends StdBomb
 		if((!(E instanceof Item))
 		||((((Item)E).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN))
 		{
-			mob.tell("You something wooden to make this out of.");
+			if(mob!=null)
+				mob.tell("You something wooden to make this out of.");
 			return false;
 		}
 		return true;

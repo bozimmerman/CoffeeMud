@@ -32,7 +32,8 @@ public class Bomb_Poison extends StdBomb
 		Vector V=returnOffensiveAffects(E);
 		if((!(E instanceof Drink))||(V.size()==0))
 		{
-			mob.tell("You need some poison to make this out of.");
+			if(mob!=null)
+				mob.tell("You need some poison to make this out of.");
 			return false;
 		}
 		return true;

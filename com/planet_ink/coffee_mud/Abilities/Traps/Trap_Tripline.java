@@ -20,18 +20,24 @@ public class Trap_Tripline extends StdTrap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH);
-		if(I!=null) I.destroy();
+		if(mob!=null)
+		{
+			Item I=findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH);
+			if(I!=null) I.destroy();
+		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
 	
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
-		if(findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH)==null)
+		if(mob!=null)
 		{
-			mob.tell("You'll need to set down at least a pound of cloth first.");
-			return false;
+			if(findMostOfMaterial(mob.location(),EnvResource.MATERIAL_CLOTH)==null)
+			{
+				mob.tell("You'll need to set down at least a pound of cloth first.");
+				return false;
+			}
 		}
 		return true;
 	}

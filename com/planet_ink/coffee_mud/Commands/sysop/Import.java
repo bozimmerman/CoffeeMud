@@ -1220,10 +1220,13 @@ public class Import
 		if(str1.startsWith("'")) str1=str1.substring(1);
 		for(int wt=0;wt<weaponTypes.length;wt++)
 			if(str1.startsWith(weaponTypes[wt][0]))
-			{ val1=Util.s_int(str1); break;}
+			{ val1=Util.s_int(weaponTypes[wt][1]); break;}
+		if(val1==0)
+			for(int wt=0;wt<weaponTypes.length;wt++)
+				if(name.toLowerCase().indexOf(weaponTypes[wt][0])>=0)
+				{ val1=Util.s_int(weaponTypes[wt][1]); break;}
 		if((name.toUpperCase().endsWith("HAMMER"))&&(val1==4))
 			val1=11;
-
 		switch(val1)
 		{
 		case 0: ((Weapon)I).setWeaponClassification(Weapon.CLASS_RANGED);
@@ -2773,7 +2776,10 @@ public class Import
 				{"silver",""+EnvResource.RESOURCE_STEEL},
 				{"gold",""+EnvResource.RESOURCE_GOLD},
 				{"iron",""+EnvResource.RESOURCE_IRON},
+				{"dragonscales",""+EnvResource.RESOURCE_SCALES},
+				{"dragonscale",""+EnvResource.RESOURCE_SCALES},
 				{"mithril",""+EnvResource.RESOURCE_MITHRIL},
+				{"bone",""+EnvResource.RESOURCE_BONE},
 				{"adamantite",""+EnvResource.RESOURCE_ADAMANTITE},
 				{"steel",""+EnvResource.RESOURCE_STEEL},
 				{"lead",""+EnvResource.RESOURCE_LEAD},

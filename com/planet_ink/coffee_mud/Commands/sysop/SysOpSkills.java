@@ -830,11 +830,19 @@ public class SysOpSkills
 			}
 		}
 		else
+		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
-			MOB M=curRoom.fetchInhabitant(mobname);
-			if(M!=null)
-				V.addElement(M);
+			Room R=(Room)r.nextElement();
+			MOB M=null;
+			int num=0;
+			while((num==0)||(M!=null))
+			{
+				M=curRoom.fetchInhabitant(mobname+"."+num);
+				if((M!=null)&&(!V.contains(M)))
+				   V.addElement(M);
+			}
 		}
+		
 		if(V.size()==0)
 		{
 			mob.tell("Transfer whom?  '"+mobname+"' is unknown to you.");
@@ -842,7 +850,10 @@ public class SysOpSkills
 		}
 		
 		StringBuffer cmd = new StringBuffer(Util.combine(commands,1));
-		room=findRoomLiberally(mob,cmd);
+		if(cmd.equals("here")||cmd.equals("."))
+			room=mob.location();
+		else
+			room=findRoomLiberally(mob,cmd);
 
 		if(room==null)
 		{

@@ -379,6 +379,15 @@ public class Clans implements Clan, Tickable
 		}
 	}
 	
+	public static void tickAllClans()
+	{
+		for(int c=0;c<all.size();c++)
+		{
+			Clan C=(Clan)all.elementAt(c);
+			C.tick(C,Host.CLAN_TICK);
+		}
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickID!=Host.CLAN_TICK)
@@ -391,18 +400,34 @@ public class Clans implements Clan, Tickable
 			int activeMembers=0;
 			ExternalPlay.DBClanFill(C.getName(),members,new Vector(),lastDates);
 			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_DAY*Host.TICK_TIME;
-			for(int j=0;j<members.size();j++)
+			if(members.size()!=lastDates.size())
 			{
+				Log.errOut("Unable to tick "+C.name()+"!");
+				return true;
+			}
+			for(int j=0;j<lastDates.size();j++)
+			{
+				MOB M2=(MOB)CMMap.getPlayer((String)members.elementAt(j));
+				if(M2!=null) lastDates.setElementAt(new Long(M2.lastTickedDateTime()),j);
 				long lastLogin=((Long)lastDates.elementAt(j)).longValue();
 				if((System.currentTimeMillis()-lastLogin)<deathMilis)
 					activeMembers++;
 			}
+
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
 			{
 				if(C.getStatus()==Clan.CLANSTATUS_FADING)
 				{
 					Log.sysOut("Clans","Clan '"+C.getName()+" deleted with only "+activeMembers+" having logged on lately.");
 					destroyClan(C);
+					StringBuffer buf=new StringBuffer("");
+					for(int j=0;j<lastDates.size();j++)
+					{
+						String s=(String)members.elementAt(j);
+						long lastLogin=((Long)lastDates.elementAt(j)).longValue();
+						buf.append(s+" on "+new IQCalendar(lastLogin)+"  ");
+					}
+					Log.sysOut("Clans","Clan '"+C.getName()+" had the following membership: "+buf.toString());
 				}
 				else
 				{

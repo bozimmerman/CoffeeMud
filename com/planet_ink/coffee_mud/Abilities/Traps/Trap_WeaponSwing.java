@@ -45,11 +45,14 @@ public class Trap_WeaponSwing extends StdTrap
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
-		Item I=getPoison(mob);
-		if(I==null)
+		if(mob!=null)
 		{
-			mob.tell("You'll need to set down a melee weapon first.");
-			return false;
+			Item I=getPoison(mob);
+			if(I==null)
+			{
+				mob.tell("You'll need to set down a melee weapon first.");
+				return false;
+			}
 		}
 		return true;
 	}

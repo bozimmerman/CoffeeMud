@@ -32,7 +32,7 @@ public class Items
 			mob.location().recoverRoomStats();
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,deadItem.name()+" disintegrates!");
 			doneSomething=true;
-			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.ID()+".");
+			Log.sysOut("Items",mob.Name()+" destroyed item "+deadItem.name()+".");
 			deadItem=null;
 			if(!allFlag) deadItem=mob.fetchInventory(null,itemID);
 			if(deadItem==null) deadItem=(Item)mob.location().fetchItem(null,itemID);

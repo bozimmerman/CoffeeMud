@@ -49,12 +49,15 @@ public class Trap_SporeTrap extends StdTrap
 	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
 	{
 		if(E==null) return null;
-		Item I=getPoison(mob);
-		if(I!=null){
-			Vector V=returnOffensiveAffects(I);
-			if(V.size()>0)
-				setMiscText(((Ability)V.firstElement()).ID());
-			I.destroy();
+		if(mob!=null)
+		{
+			Item I=getPoison(mob);
+			if(I!=null){
+				Vector V=returnOffensiveAffects(I);
+				if(V.size()>0)
+					setMiscText(((Ability)V.firstElement()).ID());
+				I.destroy();
+			}
 		}
 		return super.setTrap(mob,E,classLevel,qualifyingClassLevel);
 	}
@@ -63,7 +66,8 @@ public class Trap_SporeTrap extends StdTrap
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
 		Item I=getPoison(mob);
-		if(I==null)
+		if((I==null)
+		&&(mob!=null))
 		{
 			mob.tell("You'll need to set down some diseased food first.");
 			return false;

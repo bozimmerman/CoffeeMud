@@ -14,7 +14,8 @@ public class Spell_SpellTurning extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){return new Spell_SpellTurning();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ABJURATION;}
-
+	private boolean oncePerRound=false;
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -37,14 +38,17 @@ public class Spell_SpellTurning extends Spell
 
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))
+		&&(!oncePerRound)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL)
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Ability)
 		&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 		&&(!mob.amDead())
+		&&(mob!=affect.source())
 		&&((mob.fetchAbility(ID())==null)||profficiencyCheck(-(affect.source().envStats().level()*2),false)))
 		{
+			oncePerRound=true;
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The field around <S-NAME> reflects the spell!");
 			Ability A=(Ability)affect.tool();
 			A.invoke(mob,affect.source(),true);
@@ -53,7 +57,13 @@ public class Spell_SpellTurning extends Spell
 		return true;
 	}
 
-
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		oncePerRound=false;
+		return super.tick(ticking,tickID);
+	}
+	
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
