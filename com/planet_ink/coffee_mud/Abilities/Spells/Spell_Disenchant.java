@@ -30,8 +30,12 @@ public class Spell_Disenchant extends Spell
 			{
 				mob.location().send(mob,msg);
 				boolean doneSomething=false;
+				int level=target.baseEnvStats().level();
 				if(target instanceof Wand)
 				{
+					Ability A=((Wand)target).getSpell();
+					if(A!=null)
+						level=level-CMAble.lowestQualifyingLevel(A.ID())+2;
 					((Wand)target).setSpell(null);
 					((Wand)target).setUsesRemaining(0);
 					doneSomething=true;
@@ -58,9 +62,7 @@ public class Spell_Disenchant extends Spell
 				else
 				if(target.envStats().ability()>0)
 				{
-					target.baseEnvStats().setLevel(target.baseEnvStats().level()-(mob.envStats().level()*3));
-					if(target.baseEnvStats().level()<=0)
-						target.baseEnvStats().setLevel(1);
+					level=level-(target.baseEnvStats().ability()*3);
 					target.baseEnvStats().setAbility(0);
 					doneSomething=true;
 				}
@@ -76,6 +78,7 @@ public class Spell_Disenchant extends Spell
 				{
 					Ability A=(Ability)affects.elementAt(a);
 					A.unInvoke();
+					level=level-1;
 					target.delAffect(A);
 					doneSomething=true;
 				}
@@ -85,6 +88,8 @@ public class Spell_Disenchant extends Spell
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
 					if((target.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
 						target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()-EnvStats.IS_BONUS);
+					if(level<=0) level=1;
+					target.baseEnvStats().setLevel(level);
 					target.recoverEnvStats();
 				}
 				else

@@ -61,13 +61,35 @@ public class Burning extends StdAbility
 							}
 						}
 					}
-					((Item)affected).destroy();
+					switch(((Item)affected).material()&EnvResource.MATERIAL_MASK)
+					{
+					case EnvResource.MATERIAL_LIQUID:
+					case EnvResource.MATERIAL_METAL:
+					case EnvResource.MATERIAL_MITHRIL:
+					case EnvResource.MATERIAL_PRECIOUS:
+					case EnvResource.MATERIAL_ROCK:
+						break;
+					default:
+						((Item)affected).destroy();
+						break;
+					}
 					((Room)E).recoverRoomStats();
 				}
 				else
 				if(E instanceof MOB)
 				{
-					((Item)affected).destroy();
+					switch(((Item)affected).material()&EnvResource.MATERIAL_MASK)
+					{
+					case EnvResource.MATERIAL_LIQUID:
+					case EnvResource.MATERIAL_METAL:
+					case EnvResource.MATERIAL_MITHRIL:
+					case EnvResource.MATERIAL_PRECIOUS:
+					case EnvResource.MATERIAL_ROCK:
+						break;
+					default:
+						((Item)affected).destroy();
+						break;
+					}
 					((MOB)E).location().recoverRoomStats();
 				}
 				return false;

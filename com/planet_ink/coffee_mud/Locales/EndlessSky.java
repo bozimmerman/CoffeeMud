@@ -90,7 +90,7 @@ public class EndlessSky extends StdGrid
 	public void buildGrid()
 	{
 		clearGrid();
-		synchronized(alts)
+		try
 		{
 			Exit ox=CMClass.getExit("Open");
 			subMap=new Room[xsize][ysize];
@@ -123,6 +123,10 @@ public class EndlessSky extends StdGrid
 				linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
 			for(int x=1;x<subMap.length;x++)
 				linkRoom(subMap[x][0],subMap[x-1][subMap[x-1].length-1],Directions.UP,ox,ox);
+		}
+		catch(Exception e)
+		{
+			clearGrid();
 		}
 	}
 }

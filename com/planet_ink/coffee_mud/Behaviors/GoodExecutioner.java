@@ -43,8 +43,11 @@ public class GoodExecutioner  extends StdBehavior
 			MOB oldFollowing=source.amFollowing();
 			source.setFollowing(null);
 			boolean yep=Aggressive.startFight(observer,source,true);
-			if(yep)	ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
-			else oldFollowing.setFollowing(oldFollowing);
+			if(yep)	
+				ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
+			else
+			if(oldFollowing!=null)
+				source.setFollowing(oldFollowing);
 		}
 	}
 }

@@ -77,8 +77,6 @@ public class Prop_TattooAdder extends Property
 					affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
 					A.setMiscText(A.text().substring(0,x+1)+A.text().substring(x+2+tattooName.length()));
 				}
-				else
-					affect.source().tell("You already have the "+tattooName+" tattoo.");
 			}
 			else
 			{

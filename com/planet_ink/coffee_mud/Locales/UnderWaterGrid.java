@@ -85,7 +85,7 @@ public class UnderWaterGrid extends StdGrid
 	public void buildGrid()
 	{
 		clearGrid();
-		synchronized(alts)
+		try
 		{
 			subMap=new Room[xsize][ysize];
 			Exit ox=CMClass.getExit("Open");
@@ -118,6 +118,10 @@ public class UnderWaterGrid extends StdGrid
 				linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
 			for(int x=1;x<subMap.length;x++)
 				linkRoom(subMap[x][0],subMap[x-1][subMap[x].length-1],Directions.UP,ox,ox);
+		}
+		catch(Exception e)
+		{
+			clearGrid();
 		}
 	}
 }

@@ -123,7 +123,8 @@ public class Scriptable extends StdBehavior
 		"NUMMOBSROOM", // 45
 		"NUMITEMSROOM", // 46
 		"MOBITEM", // 47
-		"NUMITEMSMOB" // 48
+		"NUMITEMSMOB", // 48
+		"HASTATTOO" // 49
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -157,7 +158,8 @@ public class Scriptable extends StdBehavior
 		"MPTRACKTO", // 29
 		"MPAFFECT", // 30
 		"MPBEHAVE", // 31
-		"MPUNBEHAVE"  //32
+		"MPUNBEHAVE",  //32
+		"MPTATTOO" // 33
 	};
 
 	public Behavior newInstance()
@@ -950,6 +952,29 @@ public class Scriptable extends StdBehavior
 					returnable=(CoffeeUtensils.containsString(which.name(),arg3)
 								||CoffeeUtensils.containsString(which.Name(),arg3)
 								||CoffeeUtensils.containsString(which.displayText(),arg3));
+				break;
+			}
+			case 49: // hastattoo
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem,msg);
+				if(arg2.length()==0)
+				{
+					Log.errOut("Scriptable","HASTATTOO Syntax -- "+monster.Name()+", "+evaluable);
+					break;
+				}
+				else
+				if((E!=null)&&(E instanceof MOB))
+				{
+					Ability A=((MOB)E).fetchAbility("Prop_Tattoo");
+					if(A!=null)
+						returnable=A.text().indexOf(";"+arg2.toUpperCase()+";")>=0;
+					else
+						returnable=false;
+				}
+				else
+					returnable=false;
 				break;
 			}
 			case 48: // numitemsmob
@@ -2489,8 +2514,8 @@ public class Scriptable extends StdBehavior
 			}
 			case 2: // mpecho
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getBit(s,1));
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				String m=Util.getCleanBit(s,1);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				if((newTarget!=null)||(m.startsWith("$")))
 					lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1)));
 				else
@@ -2499,8 +2524,7 @@ public class Scriptable extends StdBehavior
 			}
 			case 13: // mpunaffect
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				if(newTarget!=null)
 				for(int a=newTarget.numAffects()-1;a>=0;a--)
 				{
@@ -2512,25 +2536,22 @@ public class Scriptable extends StdBehavior
 			}
 			case 3: // mpslay
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(6).trim());
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
-				if(newTarget!=null)
-					ExternalPlay.postDeath(newTarget,monster,null);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
+					ExternalPlay.postDeath((MOB)newTarget,monster,null);
 				break;
 			}
 			case 16: // mpset
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				String arg2=Util.getCleanBit(s,2);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
-				Environmental E=null;
-				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,m,Item.WORN_REQ_ANY);
-				if(E!=null)
+				if(newTarget!=null)
 				{
 					boolean found=false;
-					for(int i=0;i<E.getStatCodes().length;i++)
+					for(int i=0;i<newTarget.getStatCodes().length;i++)
 					{
-						if(E.getStatCodes()[i].equalsIgnoreCase(arg2))
+						if(newTarget.getStatCodes()[i].equalsIgnoreCase(arg2))
 						{
 							found=true; break;
 						}
@@ -2538,21 +2559,20 @@ public class Scriptable extends StdBehavior
 
 					if(!found)
 					{
-						Log.errOut("Scriptable","MPSET Syntax -- "+monster.Name()+", unknown stat: "+arg2+" for "+E.Name());
+						Log.errOut("Scriptable","MPSET Syntax -- "+monster.Name()+", unknown stat: "+arg2+" for "+newTarget.Name());
 						break;
 					}
-					E.setStat(arg2,arg3);
+					newTarget.setStat(arg2,arg3);
 				}
 				break;
 			}
 			case 11: // mpexp
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				int t=Util.s_int(varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2)));
-				if((t>0)&&(newTarget!=null))
+				if((t>0)&&(newTarget!=null)&&(newTarget instanceof MOB))
 				{
-					Hashtable group=newTarget.getGroupMembers(new Hashtable());
+					Hashtable group=((MOB)newTarget).getGroupMembers(new Hashtable());
 					if(!group.contains(newTarget))
 						group.put(newTarget,newTarget);
 					for(Enumeration e=group.elements();e.hasMoreElements();)
@@ -2612,33 +2632,30 @@ public class Scriptable extends StdBehavior
 			}
 			case 7: // mpechoat
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
-				if(newTarget!=null)
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					s=Util.getPastBit(s,1).trim();
-					lastKnownLocation.showSource(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+					lastKnownLocation.showSource((MOB)newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
 				}
 				break;
 			}
 			case 8: // mpechoaround
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
-				if(newTarget!=null)
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					s=Util.getPastBit(s,1).trim();
-					lastKnownLocation.showOthers(newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
+					lastKnownLocation.showOthers((MOB)newTarget,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,msg,s));
 				}
 				break;
 			}
 			case 9: // mpcast
 			{
 				String cast=Util.getCleanBit(s,1);
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
 				Ability A=null;
 				if(cast!=null) A=CMClass.findAbility(cast);
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setProfficiency(100);
@@ -2649,11 +2666,10 @@ public class Scriptable extends StdBehavior
 			case 30: // mpaffect
 			{
 				String cast=Util.getCleanBit(s,1);
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				Ability A=null;
 				if(cast!=null) A=CMClass.findAbility(cast);
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setMiscText(m2);
@@ -2664,11 +2680,10 @@ public class Scriptable extends StdBehavior
 			case 31: // mpbehave
 			{
 				String cast=Util.getCleanBit(s,1);
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
 				String m2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				Behavior A=null;
 				if(cast!=null) A=CMClass.getBehavior(cast);
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setParms(m2);
@@ -2679,8 +2694,7 @@ public class Scriptable extends StdBehavior
 			case 32: // mpunbehave
 			{
 				String cast=Util.getCleanBit(s,1);
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,2),source,monster,target,primaryItem,secondaryItem,msg);
 				if(newTarget!=null)
 				{
 					Behavior A=newTarget.fetchBehavior(cast);
@@ -2688,20 +2702,49 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 33: // mptattoo
+			{
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				String tattooName=Util.getCleanBit(s,2);
+				if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
+				{
+					MOB themob=(MOB)newTarget;
+					boolean tattooMinus=tattooName.startsWith("-");
+					if(tattooMinus)	tattooName=tattooName.substring(1);
+
+					Ability A=themob.fetchAbility("Prop_Tattoo");
+					if(A==null)
+					{
+						A=CMClass.getAbility("Prop_Tattoo");
+						A.setBorrowed(themob,false);
+						themob.addAbility(A);
+					}
+					int x=A.text().indexOf(";"+tattooName.toUpperCase()+";");
+					if(x>=0)
+					{
+						if(tattooMinus)
+							A.setMiscText(A.text().substring(0,x+1)+A.text().substring(x+2+tattooName.length()));
+					}
+					else
+					{
+						if(A.text().length()==0) A.setMiscText(";");
+						A.setMiscText(A.text()+tattooName.toUpperCase()+";");
+					}
+				}
+				break;
+			}
 			case 10: // mpkill
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
-				if(newTarget!=null)
-					monster.setVictim(newTarget);
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
+					monster.setVictim((MOB)newTarget);
 				break;
 			}
 			case 12: // mppurge
 			{
 				if(lastKnownLocation!=null)
 				{
-					s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
-					Environmental E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,s,Item.WORN_REQ_UNWORNONLY);
+					Environmental E=getArgumentItem(s.substring(7).trim(),source,monster,target,primaryItem,secondaryItem,msg);
 					if(E!=null)
 					{
 						if(E instanceof MOB)
@@ -2868,15 +2911,14 @@ public class Scriptable extends StdBehavior
 			}
 			case 18: // mpforce
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1));
-				MOB newTarget=lastKnownLocation.fetchInhabitant(m);
-				if(newTarget!=null)
+				if((newTarget!=null)&&(newTarget instanceof MOB))
 				{
 					try
 					{
 						Vector V=Util.parse(s);
-						ExternalPlay.doCommand(newTarget,V);
+						ExternalPlay.doCommand((MOB)newTarget,V);
 					}
 					catch(Exception e)
 					{
@@ -2886,24 +2928,22 @@ public class Scriptable extends StdBehavior
 			}
 			case 20: // mpsetvar
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				Environmental E=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
-				Environmental E=null;
-				E=lastKnownLocation.fetchFromRoomFavorMOBs(null,m,Item.WORN_REQ_ANY);
 				if((E!=null)&&(arg2.length()>0))
 					mpsetvar(E.Name(),arg2,arg3);
 				break;
 			}
 			case 28: // mpdamage
 			{
-				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				Environmental newTarget=getArgumentItem(Util.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg);
 				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,2));
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,3));
 				String arg4=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,4));
-				MOB E=lastKnownLocation.fetchInhabitant(m);
-				if((E!=null)&&(arg2.length()>0))
+				if((newTarget!=null)&&(arg2.length()>0)&&(newTarget instanceof MOB))
 				{
+					MOB E=(MOB)newTarget;
 					int min=Util.s_int(arg2);
 					int max=Util.s_int(arg3);
 					if(max<min) max=min;

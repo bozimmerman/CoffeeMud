@@ -11,6 +11,7 @@ public class Spell_DispelMagic extends Spell
 	public String name(){return "Dispel Magic";}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS|CAN_ROOMS;}
 	public Environmental newInstance(){	return new Spell_DispelMagic();	}
+	public int quality(){ return MALICIOUS;}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -62,7 +63,14 @@ public class Spell_DispelMagic extends Spell
 		boolean success=profficiencyCheck(diff,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
+			int affectType=affectType(auto);
+			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
+			||(mob==target)
+			||(mob.getGroupMembers(new Hashtable()).containsKey(target)))
+				affectType=Affect.MSG_CAST_VERBAL_SPELL;
+			if(auto) affectType=affectType|Affect.MASK_GENERAL;
+			
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?revokeThis.name()+" is dispelled from <T-NAME>.":"^S<S-NAME> dispel(s) "+revokeThis.name()+" from <T-NAMESELF>.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

@@ -22,6 +22,7 @@ Mortgages (bankers lend large amounts of money at interest, start taking away pr
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 putting a change bag into a changebag should combine your notes.
 SMTP capability
+why does kick ignore stoneskin (or viceversa.
 zapper check on quests and questchats for eligible players
 behavior to have a mob read from a journal, tell a story, sing a song (fee?)
 ability/skill to drain mana from dead bodies

@@ -108,6 +108,8 @@ public class WebHelper
 			s.append("<li class=\"cmPlayerListEntry");
 			MOB m = session.mob();
 			if((m!=null)&&(!Sense.isSeen(m))) continue;
+			if((m!=null)&&(m.soulMate()!=null))
+				m=m.soulMate();
 
 			if ( (m!=null) && (m.name() != null)
 				&& (m.name().length() > 0) )

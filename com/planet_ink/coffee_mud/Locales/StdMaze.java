@@ -126,7 +126,7 @@ public class StdMaze extends StdGrid
 	public void buildGrid()
 	{
 		clearGrid();
-		synchronized(alts)
+		try
 		{
 			subMap=new Room[xsize][ysize];
 			for(int x=0;x<subMap.length;x++)
@@ -141,6 +141,10 @@ public class StdMaze extends StdGrid
 				}
 			buildMaze();
 			buildFinalLinks();
+		}
+		catch(Exception e)
+		{
+			clearGrid();
 		}
 	}
 }

@@ -316,20 +316,28 @@ public class TheFight
 
 		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
 
-		if((source!=null)&&(source.location()==deathRoom)&&(deathRoom.isInhabitant(source)))
+		Vector goldLooters=new Vector();
+		for(Enumeration e=beneficiaries.keys();e.hasMoreElements();)
 		{
-			if((deadMoney>0)&&(Util.bset(source.getBitmap(),MOB.ATT_AUTOGOLD)))
+			MOB M=(MOB)e.nextElement();
+			if(((Util.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
+			&&(!goldLooters.contains(M)))
+			&&(M.location()==deathRoom)
+			&&(deathRoom.isInhabitant(M)))
+			   goldLooters.addElement(M);
+		}
+		if(deadMoney>0)
+			for(int g=0;g<goldLooters.size();g++)
 			{
-				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell("You'll need to dismount to get gold off the body.");
+				MOB mob=(MOB)goldLooters.elementAt(g);
+				if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+					mob.tell("You'll need to dismount to get gold off the body.");
 				else
-				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell("You'll need to disembark to get gold off the body.");
+				if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+					mob.tell("You'll need to disembark to get gold off the body.");
 				else
-				for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 				{
-					MOB mob=(MOB)e.nextElement();
-					int myAmount=(int)Math.round(Util.div(deadMoney,beneficiaries.size()));
+					int myAmount=(int)Math.round(Util.div(deadMoney,goldLooters.size()));
 					if(myAmount>0)
 					{
 						Item C=CMClass.getItem("StdCoins");
@@ -343,23 +351,26 @@ public class TheFight
 					}
 				}
 			}
-			if(Util.bset(source.getBitmap(),MOB.ATT_AUTOLOOT))
+			
+		if((source!=null)
+		&&(source.location()==deathRoom)
+		&&(deathRoom.isInhabitant(source))
+		&&(Util.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
+		{
+			if((source.riding()!=null)&&(source.riding() instanceof MOB))
+				source.tell("You'll need to dismount to loot the body.");
+			else
+			if((source.riding()!=null)&&(source.riding() instanceof MOB))
+				source.tell("You'll need to disembark to loot the body.");
+			else
+			for(int i=deathRoom.numItems()-1;i>=0;i--)
 			{
-				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell("You'll need to dismount to loot the body.");
-				else
-				if((source.riding()!=null)&&(source.riding() instanceof MOB))
-					source.tell("You'll need to disembark to loot the body.");
-				else
-				for(int i=deathRoom.numItems()-1;i>=0;i--)
-				{
-					Item item=deathRoom.fetchItem(i);
-					if((item!=null)
-					&&(item.container()==Body)
-					&&(Sense.canBeSeenBy(Body,source))
-					&&(Sense.canBeSeenBy(item,source)))
-						ExternalPlay.get(source,Body,item,false);
-				}
+				Item item=deathRoom.fetchItem(i);
+				if((item!=null)
+				&&(item.container()==Body)
+				&&(Sense.canBeSeenBy(Body,source))
+				&&(Sense.canBeSeenBy(item,source)))
+					ExternalPlay.get(source,Body,item,false);
 			}
 			deathRoom.recoverRoomStats();
 		}

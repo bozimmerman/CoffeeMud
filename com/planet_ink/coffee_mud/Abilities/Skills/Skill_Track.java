@@ -185,7 +185,9 @@ public class Skill_Track extends StdAbility
 		}
 
 		boolean success=profficiencyCheck(0,auto);
-
+		if(givenTarget==null)
+			givenTarget=CMMap.getRoom(mobName);
+		
 		Vector rooms=new Vector();
 		if(givenTarget instanceof Room)
 			rooms.addElement(givenTarget);

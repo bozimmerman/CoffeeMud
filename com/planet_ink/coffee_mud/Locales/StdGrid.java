@@ -97,17 +97,16 @@ public class StdGrid extends StdRoom implements GridLocale
 
 	public Room[][] getBuiltGrid()
 	{
-		synchronized(alts)
-		{
-			if(subMap==null) buildGrid();
-			return subMap;
-		}
+		if(subMap==null) buildGrid();
+		if(subMap!=null) return (Room[][])subMap.clone();
+		return null;
 	}
 	
 	public Vector getAllRooms()
 	{
 		Vector V=new Vector();
 		Room[][] subMap=getBuiltGrid();
+		if(subMap!=null)
 		for(int x=0;x<subMap.length;x++)
 			for(int y=0;y<subMap[x].length;y++)
 				V.addElement(subMap[x][y]);
@@ -254,7 +253,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void buildGrid()
 	{
 		clearGrid();
-		synchronized(alts)
+		try
 		{
 			subMap=new Room[xsize][ysize];
 			Exit ox=CMClass.getExit("Open");
@@ -274,35 +273,38 @@ public class StdGrid extends StdRoom implements GridLocale
 				}
 			buildFinalLinks();
 		}
+		catch(Exception e)
+		{
+			clearGrid();
+		}
 	}
 	public boolean isMyChild(Room loc)
 	{
 		Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
-			for(int x=0;x<subMap.length;x++)
-				for(int y=0;y<subMap[x].length;y++)
-				{
-					Room room=subMap[x][y];
-					if(room==loc) return true;
-				}
+		for(int x=0;x<subMap.length;x++)
+			for(int y=0;y<subMap[x].length;y++)
+			{
+				Room room=subMap[x][y];
+				if(room==loc) return true;
+			}
 		return false;
 	}
 
 	public void clearGrid()
 	{
-		synchronized(alts)
+		try
 		{
 			if(subMap!=null)
-			{
-				for(int x=0;x<subMap.length;x++)
-					for(int y=0;y<subMap[x].length;y++)
-					{
-						Room room=subMap[x][y];
-						CMMap.delRoom(room);
-					}
-				subMap=null;
-			}
+			for(int x=0;x<subMap.length;x++)
+				for(int y=0;y<subMap[x].length;y++)
+				{
+					Room room=subMap[x][y];
+					CMMap.delRoom(room);
+				}
+			subMap=null;
 		}
+		catch(Exception e){}
 		alts=new Room[Directions.NUM_DIRECTIONS];
 	}
 
@@ -310,6 +312,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	{
 		if(roomID().length()==0) return "";
 		Room[][] subMap=getBuiltGrid();
+		if(subMap!=null)
 		for(int x=0;x<subMap.length;x++)
 			for(int y=0;y<subMap[x].length;y++)
 				if(subMap[x][y]==loc)
@@ -329,6 +332,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		Room[][] subMap=getBuiltGrid();
 		int x=Util.s_int(childCode.substring(len,comma));
 		int y=Util.s_int(childCode.substring(comma+1,childCode.length()-1));
+		if(subMap!=null)
 		if((x<subMap.length)&&(y<subMap[x].length))
 			return subMap[x][y];
 		return null;

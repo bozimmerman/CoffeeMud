@@ -128,10 +128,10 @@ public class StdCharClass implements CharClass, Cloneable
 				case EnvResource.MATERIAL_CLOTH:
 					if((allowedArmorLevel()==CharClass.ARMOR_METALONLY)
 					||((allowedArmorLevel()==CharClass.ARMOR_VEGAN)
-					   &&(((I.material()&EnvResource.RESOURCE_MASK)==EnvResource.RESOURCE_HIDE)
-						  ||((I.material()&EnvResource.RESOURCE_MASK)==EnvResource.RESOURCE_FUR)
-						  ||((I.material()&EnvResource.RESOURCE_MASK)==EnvResource.RESOURCE_FEATHERS)
-						  ||((I.material()&EnvResource.RESOURCE_MASK)==EnvResource.RESOURCE_WOOL))))
+					   &&((I.material()==EnvResource.RESOURCE_HIDE)
+						  ||(I.material()==EnvResource.RESOURCE_FUR)
+						  ||(I.material()==EnvResource.RESOURCE_FEATHERS)
+						  ||(I.material()==EnvResource.RESOURCE_WOOL))))
 						ok=false;
 					break;
 				case EnvResource.MATERIAL_WOODEN:

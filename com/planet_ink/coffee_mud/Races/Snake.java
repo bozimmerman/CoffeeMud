@@ -92,7 +92,7 @@ public class Snake extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				("a pair of "+name().toLowerCase()+" fangs",EnvResource.RESOURCE_SCALES));
+				("a pair of "+name().toLowerCase()+" fangs",EnvResource.RESOURCE_BONE));
 				resources.addElement(makeResource
 				("some "+name().toLowerCase()+" scales",EnvResource.RESOURCE_SCALES));
 				resources.addElement(makeResource

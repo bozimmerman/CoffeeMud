@@ -394,11 +394,6 @@ public class Grouping
 
 	public static void split(MOB mob, Vector commands)
 	{
-		if(mob.numFollowers()==0)
-		{
-			mob.tell("You have no followers!");
-			return;
-		}
 		if(commands.size()<2)
 		{
 			mob.tell("Split how much gold?");
@@ -412,13 +407,22 @@ public class Grouping
 		}
 
 		int num=0;
-		for(int f=0;f<mob.numFollowers();f++)
+		Hashtable H=mob.getGroupMembers(new Hashtable());
+		for(Enumeration e=H.keys();e.hasMoreElements();)
 		{
-			MOB recipient=mob.fetchFollower(f);
-			if((recipient!=null)
-			   &&(recipient.amFollowing()==mob)
-			   &&(!recipient.isMonster()))
+			MOB recipient=(MOB)e.nextElement();
+			if((!recipient.isMonster())
+			&&(recipient!=mob)
+			&&(recipient.location()==mob.location())
+			&&(mob.location().isInhabitant(recipient)))
 				num++;
+			else
+				H.remove(recipient);
+		}
+		if(num==0)
+		{
+			mob.tell("No one appears to be eligible to receive any of your gold.");
+			return;
 		}
 
 		gold=(int)Math.floor(Util.div(gold,num+1));
@@ -428,26 +432,18 @@ public class Grouping
 			mob.tell("You don't have that much gold.");
 			return;
 		}
-		boolean eligible=false;
-		for(int f=0;f<mob.numFollowers();f++)
+		for(Enumeration e=H.keys();e.hasMoreElements();)
 		{
-			MOB recipient=mob.fetchFollower(f);
-			if((recipient!=null)
-			   &&(recipient.amFollowing()==mob)
-			   &&(!recipient.isMonster()))
-			{
-				mob.setMoney(mob.getMoney()-gold);
-				Item C=(Item)CMClass.getItem("StdCoins");
-				C.baseEnvStats().setAbility(gold);
-				C.recoverEnvStats();
-				mob.addInventory(C);
-				FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-				if(mob.location().okAffect(mob,newMsg))
-					mob.location().send(mob,newMsg);
-				eligible=true;
-			}
+			MOB recipient=(MOB)e.nextElement();
+			mob.setMoney(mob.getMoney()-gold);
+			Item C=(Item)CMClass.getItem("StdCoins");
+			C.baseEnvStats().setAbility(gold);
+			C.recoverEnvStats();
+			mob.addInventory(C);
+			FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			if(mob.location().okAffect(mob,newMsg))
+				mob.location().send(mob,newMsg);
 		}
-		if(!eligible) mob.tell("No one appears to be eligible to receive any of your gold.");
 	}
 
 	public static void dress(MOB mob, Vector commands)

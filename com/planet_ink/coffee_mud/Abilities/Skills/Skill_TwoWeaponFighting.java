@@ -19,8 +19,31 @@ public class Skill_TwoWeaponFighting extends StdAbility
 	
 	private boolean middleOfTheFight=false;
 	private Weapon lastWeapon=null;
+	private Weapon lastPrimary=null;
 	public Environmental newInstance(){	return new Skill_TwoWeaponFighting();	}
 
+	
+	private Weapon getFirstWeapon(MOB mob)
+	{
+		if((lastPrimary!=null)
+		&&(lastPrimary.amWearingAt(Item.WIELD))
+		&&(!lastPrimary.amWearingAt(Item.HELD))
+		&&(lastPrimary.container()==null))
+			return lastPrimary;
+		Weapon weapon=null;
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item item=mob.fetchInventory(i);
+			if((item instanceof Weapon)
+			    &&(item.amWearingAt(Item.WIELD))
+				&&(!item.amWearingAt(Item.HELD))
+			    &&(item.container()==null))
+			{ weapon=(Weapon)item; break; }
+		}
+		lastPrimary=weapon;
+		return weapon;
+	}
+	
 	private Weapon getSecondWeapon(MOB mob)
 	{
 		if((lastWeapon!=null)
@@ -48,14 +71,13 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		{
 			MOB mob=(MOB)affected;
 			
-			if((affectableStats.speed()>=2.0)&&(lastWeapon!=null))
-				affectableStats.setSpeed(affectableStats.speed()-1.0);
-			if(middleOfTheFight)
+			if((getSecondWeapon(mob)!=null)&&(getFirstWeapon(mob)!=null))
 			{
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
-				Item w=mob.fetchWieldedItem();
-				if((w!=null)&&(lastWeapon!=null))
-					affectableStats.setDamage(affectableStats.damage()-w.envStats().damage()+lastWeapon.envStats().damage());
+				if((affectableStats.speed()>=2.0)&&(lastWeapon!=null))
+					affectableStats.setSpeed(affectableStats.speed()-1.0);
+				else
+				if(lastWeapon!=null)
+					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/5));
 			}
 		}
 	}
@@ -69,27 +91,28 @@ public class Skill_TwoWeaponFighting extends StdAbility
 			{
 				if(Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
 					ExternalPlay.drawIfNecessary(mob,true);
+				Item primaryWeapon=getFirstWeapon(mob);
 				Item weapon=getSecondWeapon(mob);
 				if((weapon!=null) // try to wield anything!
+				&&(primaryWeapon!=null)
 				&&(mob.rangeToTarget()>=0)
 				&&(mob.rangeToTarget()>=weapon.minRange())
 				&&(mob.rangeToTarget()<=weapon.maxRange())
 				&&(Sense.aliveAwakeMobile(mob,true))
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)
-				&&(!Sense.isSitting(mob)))
+				&&(!Sense.isSitting(mob))
+				&&(profficiencyCheck(0,false)))
 				{
-					if(mob.fetchAffect(mob.numAffects()-1)!=this)
-					{
-						mob.delAffect(this);
-						mob.addAffect(this);
-					}
-					middleOfTheFight=true;
+					primaryWeapon.setRawWornCode(Item.HELD);
+					weapon.setRawWornCode(Item.WIELD);
 					mob.recoverEnvStats();
 					ExternalPlay.postAttack(mob,mob.getVictim(),weapon);
-					middleOfTheFight=false;
+					weapon.setRawWornCode(Item.HELD);
+					primaryWeapon.setRawWornCode(Item.WIELD);
 					mob.recoverEnvStats();
-					helpProfficiency(mob);
+					if(Dice.rollPercentage()==1)
+						helpProfficiency(mob);
 				}
 			}
 		}

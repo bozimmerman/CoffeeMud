@@ -475,6 +475,30 @@ public class Import
 			else
 			if(word.startsWith("BARK SKIN")) i=224;
 			else
+			if(word.startsWith("STEEL SKIN")) i=224;
+			else
+			if(word.startsWith("LETHARGIC MIS")) i=214;
+			else
+			if(word.startsWith("BLACK DEATH")) i=213;
+			else
+			if(word.startsWith("DISGRACE")) i=225;
+			else
+			if(word.startsWith("POWER WORD ST")) i=226;
+			else
+			if(word.startsWith("MASTER HEAL")) i=227;
+			else
+			if(word.startsWith("SCREAM")) i=32;
+			else
+			if(word.startsWith("SEVERITY FO")) i=23;
+			else
+			if(word.startsWith("HOLY WORD")) i=228;
+			else
+			if(word.startsWith("MASS HEAL")) i=229;
+			else
+			if(word.startsWith("ACID RAIN")) i=230;
+			else
+			if(word.startsWith("ETHEREAL FORM")) i=231;
+			else
 			{
 				Log.sysOut("Unknown spell: "+word);
 				return "";
@@ -587,6 +611,13 @@ public class Import
 		case 222: return "Prayer_CauseSerious";
 		case 223: return "";
 		case 224: return "Chant_Barkskin";
+		case 225: return "Spell_Tourettes";
+		case 226: return "Spell_Misstep";
+		case 227: return "Prayer_Restoration";
+		case 228: return "Prayer_HolyWord";
+		case 229: return "Prayer_MassHeal";
+		case 230: return "Spell_AcidFog";
+		case 231: return "Prayer_Etherealness";
 		default:
 			Log.sysOut("Unknown spell num: "+i);
 			break;
@@ -594,6 +625,35 @@ public class Import
 		return "";
 	}
 
+	private static int importNumber(String s)
+	{
+		StringBuffer str=new StringBuffer("");
+		for(int i=0;i<s.length();i++)
+			switch(s.charAt(i))
+			{
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				str.append(s.charAt(i));
+				break;
+			case 'x':
+			case 'X':
+			case 'Z':
+			case ' ': 
+				break;
+			default:
+				return 0;
+			}
+		return Util.s_int(str.toString());
+	}
+	
 	private static void readBlocks(Vector buf,
 						   Vector areaData,
 						   Vector roomData,
@@ -690,7 +750,7 @@ public class Import
 					useThisOne=socialData;
 				}
 				else
-				if((Util.s_int(s)>0)&&(wasUsingThisOne!=null))
+				if((importNumber(s)>0)&&(wasUsingThisOne!=null))
 				{
 					Vector V=new Vector();
 					wasUsingThisOne.addElement(V);
@@ -726,7 +786,10 @@ public class Import
 			}
 		}
 		if(helpsToEat.size()>0)
+		{
 			Log.sysOut("Import","Ate "+helpsToEat.size()+" unsupported lines.");
+			helpsToEat.clear();
+		}
 	}
 
 	private static void doWeapon(Weapon I, String name, int val1, String str1, int val2, int val3, int val4, String str4)
@@ -999,15 +1062,17 @@ public class Import
 
 
 			if((!mobID.startsWith("#"))
-			||(mobName.length()==0)
-			||(Util.numBits(codeStr1)<3)
+			||((mobName.length()==0)
+			&&((Util.numBits(codeStr1)<3)
 			||(Util.numBits(codeStr1)>4)
 			||(Util.numBits(codeStr2)<2)
-			||(Util.numBits(codeStr3)<2))
+			||(Util.numBits(codeStr3)<2))))
 			{
 				returnAnError(mob,"Malformed mob! Aborting this mob "+mobID+", display="+mobDisplay+", simple="+simpleName+", name="+mobName+", codeStr1="+codeStr1+", codeStr2="+codeStr2+", codeStr3="+codeStr3+"!");
 				continue;
 			}
+			if(mobName.length()==0)
+				mobName="Unknown";
 			int actFlag=getBitMask(codeStr1,0);
 			int affFlag=getBitMask(codeStr1,1);
 			int aliFlag=Util.s_int(Util.getBit(codeStr1,2));
@@ -1203,7 +1268,7 @@ public class Import
 				M.addNonUninvokableAffect(CMClass.getAbility("Prayer_Plague"));
 
 			if(Util.isSet(affFlag,24))
-				M.addNonUninvokableAffect(CMClass.getAbility("Prop_SafePet"));
+				M.addNonUninvokableAffect(CMClass.getAbility("Spell_Weaken"));
 
 			if(Util.isSet(affFlag,25))
 				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
@@ -1611,9 +1676,34 @@ public class Import
 						continue;
 
 					String special=Util.getBit(s,2).toUpperCase().trim();
-					if((special.equals("SPEC_CAST_MAGE"))
-					||(special.equals("SPEC_CAST_SENESCHAL")))
+					if(special.equals("SPEC_CAST_MAGE"))
 						M.addBehavior(CMClass.getBehavior("Mageness"));
+					else
+					if(special.equals("SPEC_CAST_SENESCHAL"))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
+						M.addAbility(CMClass.getAbility("Spell_Blindness"));
+						M.addAbility(CMClass.getAbility("Spell_DispelMagic"));
+						M.addAbility(CMClass.getAbility("Spell_Weaken"));
+						M.addAbility(CMClass.getAbility("Spell_AcidArrow"));
+						M.addAbility(CMClass.getAbility("Spell_Fireball"));
+						M.addAbility(CMClass.getAbility("Spell_AcidFog"));
+						M.addAbility(CMClass.getAbility("Spell_Lightning"));
+						M.addAbility(CMClass.getAbility("Undead_WeakEnergyDrain"));
+						M.addAbility(CMClass.getAbility("Prayer_Plague"));
+					}
+					else
+					if(special.equals("SPEC_CAST_BEHOLDER"))
+					{
+						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
+						M.addAbility(CMClass.getAbility("Spell_Spook"));
+						M.addAbility(CMClass.getAbility("Spell_Slow"));
+						M.addAbility(CMClass.getAbility("Prayer_Harm"));
+						M.addAbility(CMClass.getAbility("Prayer_CauseCritical"));
+						M.addAbility(CMClass.getAbility("Prayer_CauseSerious"));
+						M.addAbility(CMClass.getAbility("Spell_DispelMagic"));
+						
+					}
 					else
 					if(special.equals("SPEC_THIEF"))
 						M.addBehavior(CMClass.getBehavior("Thiefness"));
@@ -1666,7 +1756,8 @@ public class Import
 					if(special.equals("SPEC_FIDO"))
 						M.addBehavior(CMClass.getBehavior("CorpseEater"));
 					else
-					if(special.equals("SPEC_MAYOR"))
+					if((special.equals("SPEC_MAYOR"))
+					||(special.equals("SPEC_CAPTAIN")))
 						M.addBehavior(CMClass.getBehavior("MudChat"));
 					else
 					if(special.equals("SPEC_JANITOR"))
@@ -1817,15 +1908,17 @@ public class Import
 			String codeStr3=eatNextLine(objV);
 
 			if((!objectID.startsWith("#"))
-			||(objectName.length()==0)
-			||(Util.numBits(codeStr1)<3)
+			||((objectName.length()==0)
+			&&((Util.numBits(codeStr1)<3)
 			||(Util.numBits(codeStr1)>4)
 			||(Util.numBits(codeStr2)<4)
-			||(codeStr3.length()==0))
+			||(codeStr3.length()==0))))
 			{
 				returnAnError(mob,"Malformed object! Aborting this object "+objectID+", display="+objectDisplay+", simple="+simpleName+", name="+objectName+", codeStr1="+codeStr1+", codeStr2="+codeStr2+", codeStr3="+codeStr3+", area="+areaName);
 				continue;
 			}
+			if(objectName.length()==0)
+				objectName="Unknown";
 			boolean circleForm=false;
 			String obj=Util.getBit(codeStr1,0);
 			if((obj.trim().length()>1)&&(Character.isLetter(obj.charAt(0))))
@@ -2329,7 +2422,29 @@ public class Import
 					if(I.description().length()>0)
 						I.setDescription(I.description()+"%0D");
 					eatLineSquiggle(objV);
-					I.setDescription(I.description()+Util.safetyFilter(eatLineSquiggle(objV)));
+					boolean squiggleFound=false;
+					for(int y=0;y<objV.size();y++)
+					{
+						String ts=(String)objV.elementAt(y);
+						if(ts.indexOf("~")>=0)
+						{
+							squiggleFound=true;
+							break;
+						}
+						if(ts.equals("A")
+						   ||ts.equals("E")
+						   ||ts.equals("L")
+						   ||ts.equals("F"))
+						{
+							objV.insertElementAt("~",y);
+							squiggleFound=true;
+							break;
+						}
+					}
+					if(!squiggleFound)
+						objV.addElement("~");
+					String desc=Util.safetyFilter(eatLineSquiggle(objV));
+					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
 						I.setReadableText(fixReadableContent(I.description()));
 				}
@@ -2766,7 +2881,7 @@ public class Import
 		Vector mobData=new Vector();
 		Vector objectData=new Vector();
 
-		multiArea=commands.size()>0;
+		multiArea=commands.size()>1;
 		for(int areaFile=0;areaFile<commands.size();areaFile++)
 		{
 		Vector areaData=new Vector();
@@ -3495,7 +3610,7 @@ public class Import
 					else
 					if(nextLine.toUpperCase().startsWith("D"))
 					{
-						int dirCode=Util.s_int(nextLine.substring(1));
+						int dirCode=Util.s_int(Util.getBit(nextLine,0).substring(1).trim());
 						String descStr=Util.safetyFilter(eatLineSquiggle(roomV));
 						String nameStr=Util.safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
@@ -3518,7 +3633,7 @@ public class Import
 						}
 						if((R.rawExits()[dirCode]!=null)||(R.rawDoors()[dirCode]!=null))
 						{
-							returnAnError(mob,"Room: "+R.roomID()+", Redundant exit codeStr "+codeStr+".  Aborting exit, area="+areaName);
+							returnAnError(mob,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName);
 							continue;
 						}
 						int exitFlag=( Util.s_int(Util.getBit(codeStr,0)) & 31);
@@ -3561,7 +3676,7 @@ public class Import
 											 hasLock,defaultsLocked,defaultsLocked);
 						}
 						E.setDisplayText(descStr);
-						String name=Util.getBit(nameStr,0).trim();
+						String name=Util.getCleanBit(nameStr,0).trim();
 						if(name.equalsIgnoreCase("SECRET"))
 						{
 							name="secret door";
@@ -3642,6 +3757,12 @@ public class Import
 					if(nextLine.toUpperCase().startsWith("H"))
 					{
 						// hit point heal rate
+						// not important enough to generate an error from
+					}
+					else
+					if(nextLine.toUpperCase().startsWith("O"))
+					{
+						// ?
 						// not important enough to generate an error from
 					}
 					else
@@ -3836,7 +3957,10 @@ public class Import
 							}
 							I.recoverEnvStats();
 							if(I instanceof Container)
+							{
+								containerHash.remove(itemID);
 								containerHash.put(itemID,I);
+							}
 						}
 					}
 				}
@@ -4035,7 +4159,7 @@ public class Import
 					}
 				}
 			}
-			mob.session().print("\nResets...");
+			mob.session().print("\n\rResets...");
 
 			// try to re-link olde room links
 			if(reLinkTable!=null)
@@ -4066,7 +4190,10 @@ public class Import
 			if(newRooms.size()==0)
 				mob.session().println("\nDone? No Room!\n\r");
 			else
+			if(!multiArea)
 				mob.session().println("\nDone!!!!!!  A good room to look at would be "+((Room)newRooms.elementAt(0)).roomID()+"\n\r");
+			else
+				mob.session().println("Done!!!\n\r");
 		}
 		catch(Exception e)
 		{
@@ -4097,6 +4224,7 @@ public class Import
 			saveRoom.recoverRoomStats();
 			mob.session().print(".");
 		}
+		mob.session().println("!");
 		
 		if(laterLinks.size()>0)
 		{

@@ -81,6 +81,8 @@ public class Farming extends CommonSkill
 
 	public boolean isPotentialCrop(Room R, int code)
 	{
+		if(R==null) return false;
+		if(R.resourceChoices()==null) return false;
 		for(int i=0;i<R.resourceChoices().size();i++)
 			if(((Integer)R.resourceChoices().elementAt(i)).intValue()==code)
 				return true;

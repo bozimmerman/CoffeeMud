@@ -117,8 +117,14 @@ public class BasicSenses
 			mob.tell("Change your description to what?");
 			return;
 		}
-		mob.setDescription(Util.combine(commands,1));
-		mob.tell("Your description has been changed.");
+		String s=Util.combine(commands,1);
+		if(s.length()>255)
+			mob.tell("Your description exceeds 255 characters in length.  Please re-enter a shorter one.");
+		else
+		{
+			mob.setDescription(s);
+			mob.tell("Your description has been changed.");
+		}
 	}
 
 	public static void password(MOB mob, Vector commands)

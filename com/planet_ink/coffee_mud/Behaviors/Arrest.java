@@ -791,27 +791,31 @@ public class Arrest extends StdBehavior
 			}
 		}
 		   
-		if(affect.sourceMinor()==Affect.TYP_DEATH)
+		if((affect.sourceMinor()==Affect.TYP_DEATH)
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof MOB))
 		{
 			String info=(String)laws.get("MURDER");
-			if((info!=null)&&(info.length()>0))
+			MOB criminal=(MOB)affect.tool();
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
 				ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
-				if((W.victim!=null)&&(W.victim==affect.source()))
-				{
-					fillOutWarrant(W.criminal,
-								   myArea,
-								   W.victim,
-								   getBit(info,BIT_CRIMELOCS),
-								   getBit(info,BIT_CRIMEFLAGS),
-								   getBit(info,BIT_CRIMENAME),
-								   getBit(info,BIT_SENTENCE),
-								   getBit(info,BIT_WARNMSG));
-				}
-				else
-				if(W.criminal==affect.source())
+				if((W.victim!=null)
+				&&(W.criminal!=null)
+				&&(W.victim==affect.source())
+				&&(W.criminal==criminal))
 					warrants.removeElement(W);
+			}
+			if((info!=null)&&(info.length()>0))
+			{
+				fillOutWarrant(criminal,
+							   myArea,
+							   affect.source(),
+							   getBit(info,BIT_CRIMELOCS),
+							   getBit(info,BIT_CRIMEFLAGS),
+							   getBit(info,BIT_CRIMENAME),
+							   getBit(info,BIT_SENTENCE),
+							   getBit(info,BIT_WARNMSG));
 			}
 		}
 		boolean arrestMobs=false;
@@ -866,21 +870,53 @@ public class Arrest extends StdBehavior
 		}
 
 		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		   &&(affect.target()!=null)
-		   &&((affect.tool()==null)||(affect.source().isMine(affect.tool())))
-		   &&(affect.target()!=affect.source())
-		   &&(!affect.target().name().equals(affect.source().name())))
+		&&(affect.target()!=null)
+		&&((affect.tool()==null)||(affect.source().isMine(affect.tool())))
+		&&(affect.target()!=affect.source())
+		&&(!affect.target().name().equals(affect.source().name()))
+		&&(affect.target() instanceof MOB)
+		&&(!isTheJudge((MOB)affect.target())))
 		{
-			String info=(String)laws.get("ASSAULT");
-			if((info!=null)&&(info.length()>0))
-				fillOutWarrant(affect.source(),
-								myArea,
-								affect.target(),
-								getBit(info,BIT_CRIMELOCS),
-								getBit(info,BIT_CRIMEFLAGS),
-								getBit(info,BIT_CRIMENAME),
-								getBit(info,BIT_SENTENCE),
-								getBit(info,BIT_WARNMSG));
+			boolean justResisting=false;
+			if(isAnyKindOfOfficer((MOB)affect.target()))
+				for(int i=warrants.size()-1;i>=0;i--)
+				{
+					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+					if((W.criminal==affect.source())
+					&&(W.arrestingOfficer!=null)
+					&&(W.criminal.location()!=null)
+					&&(W.criminal.location().isInhabitant(W.arrestingOfficer)))
+					{
+						justResisting=true;
+						break;
+					}
+				}
+			if(justResisting)
+			{
+				String info=(String)laws.get("RESISTINGARREST");
+				if((info!=null)&&(info.length()>0))
+					fillOutWarrant(affect.source(),
+									myArea,
+									null,
+									getBit(info,BIT_CRIMELOCS),
+									getBit(info,BIT_CRIMEFLAGS),
+									getBit(info,BIT_CRIMENAME),
+									getBit(info,BIT_SENTENCE),
+									getBit(info,BIT_WARNMSG));
+			}
+			else
+			{
+				String info=(String)laws.get("ASSAULT");
+				if((info!=null)&&(info.length()>0))
+					fillOutWarrant(affect.source(),
+									myArea,
+									affect.target(),
+									getBit(info,BIT_CRIMELOCS),
+									getBit(info,BIT_CRIMEFLAGS),
+									getBit(info,BIT_CRIMENAME),
+									getBit(info,BIT_SENTENCE),
+									getBit(info,BIT_WARNMSG));
+			}
 		}
 
 		if((affect.othersCode()!=Affect.NO_EFFECT)
