@@ -26,6 +26,7 @@ public class Spell_MagicMissile extends Spell
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		maxRange=1;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

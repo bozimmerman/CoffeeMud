@@ -899,7 +899,16 @@ public class StdMOB implements MOB
 				}
 				if(this.amFollowing()==mob)
 					setFollowing(null);
-				if((!isInCombat())&&(isMonster())) // playerkill check
+				if(isInCombat())
+				{
+					if((rangeToTarget()>0)
+					&&(getVictim()!=affect.source())
+					&&(affect.source().getVictim()==this)
+					&&(affect.source().rangeToTarget()==0))
+					   setVictim(affect.source());
+				}
+				else
+				if(isMonster()) // playerkill check
 					setVictim((MOB)affect.source());
 			}
 

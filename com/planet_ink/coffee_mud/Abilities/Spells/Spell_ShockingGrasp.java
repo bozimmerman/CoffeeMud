@@ -29,7 +29,6 @@ public class Spell_ShockingGrasp extends Spell
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
-		maxRange=0;
 	}
 
 	public Environmental newInstance()

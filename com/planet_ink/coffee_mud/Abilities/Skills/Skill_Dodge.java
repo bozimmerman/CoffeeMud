@@ -44,8 +44,7 @@ public class Skill_Dodge extends StdAbility
 
 		if(affect.amITarget(mob)
 		   &&(Sense.aliveAwakeMobile(mob,true))
-		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
-		   &&(mob.rangeToTarget()==0))
+		   &&(affect.targetMinor()==Affect.TYP_WEAPONATTACK))
 		{
 			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((profficiencyCheck(mob.charStats().getDexterity()-90,false))

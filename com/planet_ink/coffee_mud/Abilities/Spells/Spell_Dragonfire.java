@@ -28,6 +28,7 @@ public class Spell_Dragonfire extends Spell
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
+		maxRange=1;
 	}
 
 	public Environmental newInstance()

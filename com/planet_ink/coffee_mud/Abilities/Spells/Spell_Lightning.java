@@ -26,6 +26,8 @@ public class Spell_Lightning extends Spell
 		isAutoinvoked=false;
 
 		baseEnvStats().setLevel(8);
+		maxRange=1;
+		minRange=1;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -30,7 +30,7 @@ public class Prayer extends StdAbility
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=0;
-		maxRange=2;
+		maxRange=0;
 	}
 
 	public int classificationCode()

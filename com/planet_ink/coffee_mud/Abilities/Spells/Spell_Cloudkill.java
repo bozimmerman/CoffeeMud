@@ -30,6 +30,7 @@ public class Spell_Cloudkill extends Spell
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 		minRange=1;
+		maxRange=1;
 	}
 
 	public Environmental newInstance()

@@ -298,12 +298,17 @@ public class MUD extends Thread implements Host
 			Session session=Sessions.elementAt(s);
 			if(session.mob()!=null)
 			{
+				offlineReason=new String("Shutting down" + (keepItDown? "...Saving "+session.mob().name() : " and restarting...") );
 				MOBloader.DBUpdate(session.mob());
+				offlineReason=new String("Shutting down" + (keepItDown? "...Saving followers of "+session.mob().name() : " and restarting...") );
 				MOBloader.DBUpdateFollowers(session.mob());
+				offlineReason=new String("Shutting down" + (keepItDown? "...Done saving "+session.mob().name() : " and restarting...") );
+				offlineReason="Done saving mob "+session.mob().name();
 			}
 		}
 		Log.sysOut("MUD","All users saved.");
 		S.println("All users saved.");
+		offlineReason=new String("Shutting down" + (keepItDown? "...Users saved" : " and restarting...") );
 
 		while(Sessions.size()>0)
 		{
@@ -311,22 +316,31 @@ public class MUD extends Thread implements Host
 			if(S2==S)
 				Sessions.removeElementAt(0);
 			else
+			{
+				offlineReason=new String("Shutting down" + (keepItDown? "...Stopping session "+S2.getTermID() : " and restarting...") );
 				S2.logoff();
+				offlineReason=new String("Shutting down" + (keepItDown? "...Done stopping session "+S2.getTermID() : " and restarting...") );
+			}
 		}
 		S.println("All users logged off.");
 
+		offlineReason=new String("Shutting down" + (keepItDown? "...shutting down service engine" : " and restarting...") );
 		ServiceEngine.shutdownAll();
 		S.println("All threads stopped.");
 
+		offlineReason=new String("Shutting down" + (keepItDown? "...closing db connections" : " and restarting...") );
 		DBConnector.killConnections();
 		Log.sysOut("MUD","All users saved.");
 		S.println("Database connections closed.");
 
+		offlineReason=new String("Shutting down" + (keepItDown? "...unloading classes" : " and restarting...") );
 		CMClass.unload();
+		offlineReason=new String("Shutting down" + (keepItDown? "...unloading map" : " and restarting...") );
 		CMMap.unLoad();
 		page=null;
-		CMClass.unload();
+		offlineReason=new String("Shutting down" + (keepItDown? "...unloading resources" : " and restarting...") );
 		Resources.clearResources();
+		offlineReason=new String("Shutting down" + (keepItDown? "..." : " and restarting...") );
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut("MUD","CoffeeMud shutdown complete.");
 		S.println("CoffeeMud shutdown complete.");

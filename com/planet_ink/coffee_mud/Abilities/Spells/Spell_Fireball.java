@@ -24,6 +24,7 @@ public class Spell_Fireball extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=1;
+		maxRange=2;
 
 		baseEnvStats().setLevel(7);
 

@@ -29,6 +29,7 @@ public class Spell_ChainLightening extends Spell
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();
 		minRange=1;
+		maxRange=1;
 	}
 
 	public Environmental newInstance()

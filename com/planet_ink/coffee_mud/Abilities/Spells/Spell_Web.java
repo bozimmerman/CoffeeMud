@@ -29,6 +29,8 @@ public class Spell_Web extends Spell
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
+		minRange=1;
+		maxRange=2;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -65,8 +65,13 @@ public class Fighter_WeaponBreak extends StdAbility
 			levelDiff=0;
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
 		boolean success=profficiencyCheck((-levelDiff)+(-(mob.getVictim().charStats().getDexterity()*2)),auto)&&(auto||ExternalPlay.isHit(mob,mob.getVictim()));
-		if((success)&&(hisWeapon!=null)&&(hisWeapon.envStats().ability()==0)&&(!Sense.isABonusItems(hisWeapon))
-		&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
+		if((success)
+		   &&(hisWeapon!=null)
+		   &&(hisWeapon.envStats().ability()==0)
+		   &&(!Sense.isABonusItems(hisWeapon))
+		   &&((mob.rangeToTarget()<0)||(mob.rangeToTarget()==0))
+		&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
+		   ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.remove();
