@@ -679,8 +679,7 @@ public class ItemUsage
 		do
 		{
 			Item thisItem=mob.fetchWornItem(Util.combine(commands,0)+addendumStr);
-			if((thisItem==null)
-			   ||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
+			if(thisItem==null)
 			{
 				if(!doneSomething)
 					mob.tell("You don't seem to be wearing that.");

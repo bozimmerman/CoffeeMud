@@ -110,11 +110,7 @@ public class LightSource extends StdItem implements Light
 				if(myLight.owner() instanceof Room)
 				{
 					if(((Room)myLight.owner()).numInhabitants()>0)
-					{
-						MOB mob=((Room)myLight.owner()).fetchInhabitant(0);
-						if(mob!=null)
-							((Room)myLight.owner()).show(mob,null,Affect.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
-					}
+						((Room)myLight.owner()).showHappens(Affect.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
 					if(myLight.destroyedWhenBurnedOut())
 						myLight.destroyThis();
 					((Room)myLight.owner()).recoverRoomStats();
@@ -126,6 +122,10 @@ public class LightSource extends StdItem implements Light
 					myLight.setDuration(0);
 					if(myLight.destroyedWhenBurnedOut())
 						myLight.destroyThis();
+					((MOB)myLight.owner()).recoverEnvStats();
+					((MOB)myLight.owner()).recoverCharStats();
+					((MOB)myLight.owner()).recoverMaxState();
+					((MOB)myLight.owner()).recoverEnvStats();
 					((MOB)myLight.owner()).location().recoverRoomStats();
 				}
 			}

@@ -490,11 +490,6 @@ public class StdItem implements Item
 				mob.tell(msg.toString());
 				return false;
 			}
-			if(!canWear(mob))
-			{
-				mob.tell("Your hands are full.");
-				return false;
-			}
 			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to hold "+name()+".");
@@ -504,6 +499,23 @@ public class StdItem implements Item
 			{
 				mob.tell("That looks too advanced for you.");
 				return false;
+			}
+			if(!canWear(mob))
+			{
+				Item alreadyWearing=mob.fetchWornItem(Item.HELD);
+				if(alreadyWearing!=null)
+				{
+					if(!ExternalPlay.remove(mob,alreadyWearing))
+					{
+						mob.tell("Your hands are full.");
+						return false;
+					}
+				}
+				else
+				{
+					mob.tell("Your hands are full.");
+					return false;
+				}
 			}
 			return true;
 		case Affect.TYP_WEAR:
@@ -517,16 +529,6 @@ public class StdItem implements Item
 				mob.tell("You are already wearing "+name()+".");
 				return false;
 			}
-			if(!canWear(mob))
-			{	
-				long cantWearAt=whereCantWear(mob);
-				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
-				if(alreadyWearing!=null)
-					mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
-				else
-					mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
-				return false;
-			}
 			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to wear "+name()+".");
@@ -536,6 +538,24 @@ public class StdItem implements Item
 			{
 				mob.tell("That looks too advanced for you.");
 				return false;
+			}
+			if(!canWear(mob))
+			{	
+				long cantWearAt=whereCantWear(mob);
+				Item alreadyWearing=mob.fetchWornItem(cantWearAt);
+				if(alreadyWearing!=null)
+				{
+					if(!ExternalPlay.remove(mob,alreadyWearing))
+					{
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						return false;
+					}
+				}
+				else
+				{
+					mob.tell("You are already wearing something on your "+Sense.wornLocation(cantWearAt)+".");
+					return false;
+				}
 			}
 			return true;
 		case Affect.TYP_WIELD:
@@ -549,20 +569,6 @@ public class StdItem implements Item
 				mob.tell("That's already being wielded.");
 				return false;
 			}
-			if(mob.amWearingSomethingHere(Item.WIELD))
-			{
-				Item alreadyWearing=mob.fetchWornItem(Item.WIELD);
-				if(alreadyWearing!=null)
-					mob.tell("You are already wielding "+alreadyWearing.name()+".");
-				else
-					mob.tell("You are already wielding something.");
-				return false;
-			}
-			if(!canWear(mob))
-			{	
-				mob.tell("You can't wield "+name()+", your hands are full.");
-				return false;
-			}
 			if(!mob.charStats().getMyRace().canWear(this))
 			{
 				mob.tell("You lack the anatomy to wield "+name()+".");
@@ -573,11 +579,33 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
+			if(mob.amWearingSomethingHere(Item.WIELD))
+			{
+				Item alreadyWearing=mob.fetchWornItem(Item.WIELD);
+				if(alreadyWearing!=null)
+				{
+					if(!ExternalPlay.remove(mob,alreadyWearing))
+					{
+						mob.tell("You are already wielding "+alreadyWearing.name()+".");
+						return false;
+					}
+				}
+				else
+				{
+					mob.tell("You are already wielding something.");
+					return false;
+				}
+			}
+			if(!canWear(mob))
+			{	
+				mob.tell("You can't wield "+name()+", your hands are full.");
+				return false;
+			}
 			return true;
 		case Affect.TYP_GET:
 			if((affect.tool()==null)||(affect.tool() instanceof MOB))
 			{
-				if(!Sense.canBeSeenBy(this,mob))
+				if((!Sense.canBeSeenBy(this,mob))&&(amWearingAt(Item.INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;

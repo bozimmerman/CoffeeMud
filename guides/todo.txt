@@ -18,6 +18,14 @@ Deadly weak-bridge exit.  If too much weight, you fall and die.
 Deadly rope-bridge or narrow ledge exit.  Balance required not to fall and die.  Dex check
 for most, or Balance skill for thieves.  
 
+scrimshaw common skill
+property to eliminate save thread clearing of an item
+also, flag itemtransporter to make items not clearable.
+clear out the sky after some delay
+try to attach skys AGAIN
+Mining, Foraging, Etc ought to be able to accept a parameter, so MINE IRON would do mine, but would stop mining if you found something other than IRON, and tell you where you might try looking.
+CONTINUAL LIGHT spell
+
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help.
 
