@@ -598,7 +598,7 @@ public class Generic
 		Area newArea=ExternalPlay.DBCreateArea(areaName,areaClass);
 		if(newArea==null) return unpackErr("Area","null 'area'");
 
-		newArea.setDescription(XMLManager.getValFromPieces(aV,"ADESC"));
+		newArea.setDescription(Util.safetyFilter(XMLManager.getValFromPieces(aV,"ADESC")));
 		newArea.setClimateType(XMLManager.getIntFromPieces(aV,"ACLIM"));
 		newArea.setTechLevel(XMLManager.getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(XMLManager.getValFromPieces(aV,"ASUBS"));

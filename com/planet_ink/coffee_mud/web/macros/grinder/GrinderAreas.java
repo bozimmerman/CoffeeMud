@@ -156,7 +156,7 @@ public class GrinderAreas
 		// description
 		String desc=httpReq.getRequestParameter("DESCRIPTION");
 		if(desc==null)desc="";
-		A.setDescription(desc);
+		A.setDescription(Util.safetyFilter(desc));
 
 		// archive file
 		String file=httpReq.getRequestParameter("ARCHP");

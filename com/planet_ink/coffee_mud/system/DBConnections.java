@@ -360,9 +360,10 @@ public class DBConnections
 	 */
 	public static long getLongRes(ResultSet Results, String Field)
 	{
+		String Val=null;
 		try
 		{
-			String Val=Results.getString(Field);
+			Val=Results.getString(Field);
 			if((Val!=null)&&(Val.trim().length()>0))
 				return Long.parseLong(Val.trim());
 			else
