@@ -4,7 +4,6 @@ I can put my armor back on after I start most dances and they don`t get stopped.
 Lorrel has just grown up! His password is the same as Esuom`s. Only Lorrel doesn`t seem to achually exist when I attempt to log him in.
 
 SMTP Server
-SMTP Client
 put email forwarding
 figure out mailing lists
 
