@@ -53,7 +53,8 @@ public class Vagrant extends StdBehavior
 			}
 			else
 			{
-				mob.location().show(mob,mob.location(),Affect.MSG_SLEEP,"<S-NAME> curl(s) on the ground and go(es) to sleep.");
+				if(Sense.aliveAwakeMobile(mob))
+					mob.location().show(mob,mob.location(),Affect.MSG_SLEEP,"<S-NAME> curl(s) on the ground and go(es) to sleep.");
 				if(Sense.isSleeping(mob))
 					sleepForTicks=Dice.roll(1,10,0);
 			}
