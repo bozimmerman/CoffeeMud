@@ -26,9 +26,9 @@ public class Mobs
 		}
 
 		MOB deadMOB=(MOB)CMClass.getMOB("StdMOB").newInstance();
-		ExternalPlay.DBUserSearch(deadMOB,Util.combine(commands,2));
+		boolean found=ExternalPlay.DBUserSearch(deadMOB,Util.combine(commands,2));
 
-		if(deadMOB.ID().length()==0)
+		if(!found)
 		{
 			mob.tell("The user '"+Util.combine(commands,2)+"' does not exist!\n\r");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");

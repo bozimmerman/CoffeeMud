@@ -40,7 +40,7 @@ public class Spell_LocateObject extends Spell
 		}
 		
 		int levelFind=0;
-		if((mob.isASysOp())&&(Util.s_int((String)commands.lastElement())>0))
+		if((mob.isASysOp(mob.location()))&&(Util.s_int((String)commands.lastElement())>0))
 		{
 			levelFind=Util.s_int((String)commands.lastElement());
 			commands.remove(commands.lastElement());

@@ -551,10 +551,11 @@ public class MOBloader
 		}
 	}
 
-	public static void DBUserSearch(MOB mob, String Login)
+	public static boolean DBUserSearch(MOB mob, String Login)
 	{
 		DBConnection D=null;
-		mob.setUserInfo("","",Calendar.getInstance());
+		boolean returnable=false;
+		if(mob!=null) mob.setUserInfo("","",Calendar.getInstance());
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -562,11 +563,15 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");
-				String password=DBConnector.getRes(R,"CMPASS");
-				Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
 				if(Login.equalsIgnoreCase(username))
 				{
-					mob.setUserInfo(username,password,newCalendar);
+					returnable=true;
+					if(mob!=null)
+					{
+						String password=DBConnector.getRes(R,"CMPASS");
+						Calendar newCalendar=(Calendar)IQCalendar.string2Date(DBConnector.getRes(R,"CMDATE"));
+						mob.setUserInfo(username,password,newCalendar);
+					}
 					break;
 				}
 			}
@@ -577,6 +582,7 @@ public class MOBloader
 			Log.errOut("MOB",sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+		return returnable;
 	}
 
 }

@@ -247,9 +247,10 @@ public class ExternalPlay
 		if(sysPlayer!=null) return sysPlayer.listTicks();
 		return new StringBuffer();
 	}
-	public static void DBUserSearch(MOB mob, String Login)
+	public static boolean DBUserSearch(MOB mob, String Login)
 	{
-		if(sysPlayer!=null) sysPlayer.DBUserSearch(mob,Login);
+		if(sysPlayer!=null) return sysPlayer.DBUserSearch(mob,Login);
+		return false;
 	}
 	
 }

@@ -27,5 +27,5 @@ public interface ExternalSystem
 	public void DBUpdateArea(Area A);
 	public void clearDebri(Room room, int taskCode);
 	public StringBuffer listTicks();
-	public void DBUserSearch(MOB mob, String Login);
+	public boolean DBUserSearch(MOB mob, String Login);
 }

@@ -60,8 +60,8 @@ public class FrontDoor
 
 		if(login.equalsIgnoreCase("You"))
 			return false;
-		ExternalPlay.DBUserSearch(mob,login);
-		if(mob.ID().trim().length()>0)
+		boolean found=ExternalPlay.DBUserSearch(mob,login);
+		if(found)
 		{
 			mob.session().print("password:");
 			String password=mob.session().blockingIn();

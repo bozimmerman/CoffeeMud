@@ -1272,12 +1272,16 @@ public class StdMOB implements MOB
 		return false;
 	}
 
-	public boolean isASysOp()
+	public boolean isASysOp(Room of)
 	{
 		if(isMonster()) return false;
 		if(baseCharStats()==null) return false;
 		if(baseCharStats().getMyClass()==null) return false;
 		if(this.baseCharStats().getMyClass().ID().equals("Archon"))
+			return true;
+		if(of==null) return false;
+		if(of.getArea()==null) return false;
+		if(of.getArea().amISubOp(Username))
 			return true;
 		return false;
 	}

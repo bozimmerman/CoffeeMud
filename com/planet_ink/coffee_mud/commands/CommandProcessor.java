@@ -55,13 +55,13 @@ public class CommandProcessor
 					}
 					break;
 				case CommandSet.ARCHELP:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						arcHelp(mob,Util.combine(commands,1));
 					else
 						mob.tell("Only an Archon should even care...\n\r");
 					break;
 				case CommandSet.ARCTOPICS:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						arcTopics(mob);
 					else
 						mob.tell("Only an Archon should even care...\n\r");
@@ -113,7 +113,7 @@ public class CommandProcessor
 					scoring.commands(mob,commandSet);
 					break;
 				case CommandSet.CREATE:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						createEdit.create(mob,commands);
 					else
 						mob.tell("Only the Archons may create.\n\r");
@@ -125,7 +125,7 @@ public class CommandProcessor
 					basicSenses.description(mob,commands);
 					break;
 				case CommandSet.DESTROY:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						createEdit.destroy(mob,commands);
 					else
 						mob.tell("Only the Archons may destroy things this way.  Did you mean kill?\n\r");
@@ -140,7 +140,7 @@ public class CommandProcessor
 					itemUsage.drop(mob,commands);
 					break;
 				case CommandSet.DUMPFILE:
-					if(mob.isASysOp())
+					if(mob.isASysOp(null))
 						cmdDumpfile(mob,commands);
 					else
 						mob.tell("Huh?\n\r");
@@ -197,7 +197,7 @@ public class CommandProcessor
 					itemUsage.hold(mob,commands);
 					break;
 				case CommandSet.IMPORT:
-					if(mob.isASysOp())
+					if(mob.isASysOp(null))
 						importer.areimport(mob,commands);
 					else
 						mob.tell("Only the Archons may Import.\n\r");
@@ -212,7 +212,7 @@ public class CommandProcessor
 					socialProcessor.list(mob,commands);
 					break;
 				case CommandSet.LINK:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						createEdit.link(mob,commands);
 					else
 						mob.tell("Only the Archons may link rooms.\n\r");
@@ -224,7 +224,7 @@ public class CommandProcessor
 					basicSenses.look(mob,commands,false);
 					break;
 				case CommandSet.MODIFY:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						createEdit.edit(mob,commands);
 					else
 						mob.tell("Only the Archons may modify things.\n\r");
@@ -304,13 +304,13 @@ public class CommandProcessor
 					socialProcessor.report(mob);
 					break;
 				case CommandSet.RESET:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						reset.resetSomething(mob,commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");
 					break;
 				case CommandSet.SAVE:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						createEdit.save(mob,commands);
 					else
 						mob.tell("Your game is automatically being saved while you play.\n\r");
@@ -319,7 +319,7 @@ public class CommandProcessor
 					socialProcessor.cmdSay(mob,commands);
 					break;
 				case CommandSet.SHUTDOWN:
-					if(mob.isASysOp())
+					if(mob.isASysOp(null))
 						shutdown(mob, commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");
@@ -358,11 +358,11 @@ public class CommandProcessor
 					movement.stand(mob);
 					break;
 				case CommandSet.SYSMSGS:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						mob.toggleReadSysopMsgs();
 					break;
 				case CommandSet.TAKE:
-					if(mob.isASysOp())
+					if(mob.isASysOp(mob.location()))
 						sysopItemUsage.take(mob,commands);
 					else
 						basicSenses.mundaneTake(mob,commands);
@@ -387,7 +387,7 @@ public class CommandProcessor
 					break;
 				case CommandSet.UNLOADHELP:
 
-					if(mob.isASysOp())
+					if(mob.isASysOp(null))
 						unloadHelpFile(mob);
 					else
 						mob.tell("Only the Archons may unload the help files...\n\r");
@@ -420,7 +420,7 @@ public class CommandProcessor
 					basicSenses.wimpy(mob,commands);
 					break;
 				case CommandSet.XML:
-					if(mob.isASysOp())
+					if(mob.isASysOp(null))
 						xmlIO.xml(mob,commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");

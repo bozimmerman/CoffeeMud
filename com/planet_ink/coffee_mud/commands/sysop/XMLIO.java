@@ -53,7 +53,6 @@ public class XMLIO
 				else
 				if(newList.equalsIgnoreCase("AREA"))
 				{
-					Hashtable h=new Hashtable();
 					for(int a=0;a<CMMap.AREAS.size();a++)
 						roomXML.append(((Area)CMMap.AREAS.elementAt(a)).name()+";");
 				}

@@ -56,9 +56,9 @@ public class ExternalSystems implements ExternalSystem
 	{
 		ServiceEngine.clearDebri(room,taskCode);
 	}
-	public void DBUserSearch(MOB mob, String Login)
+	public boolean DBUserSearch(MOB mob, String Login)
 	{
-		MOBloader.DBUserSearch(mob,Login);
+		return MOBloader.DBUserSearch(mob,Login);
 	}
 	public StringBuffer listTicks()
 	{

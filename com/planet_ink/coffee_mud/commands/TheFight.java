@@ -29,7 +29,7 @@ public class TheFight
 		}
 		boolean reallyKill=false;
 		String whomToKill=Util.combine(commands,1);
-		if(mob.isASysOp()&&(!mob.isMonster()))
+		if(mob.isASysOp(mob.location())&&(!mob.isMonster()))
 		{
 			if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("DEAD"))
 			{

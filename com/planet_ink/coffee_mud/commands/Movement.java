@@ -43,7 +43,7 @@ public class Movement
 		
 		FullMsg enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
 		FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flees":Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName);
-		if((exit==null)&&(!mob.isASysOp()))
+		if((exit==null)&&(!mob.isASysOp(destRoom)))
 		{
 			mob.tell("You can't go that way.");
 			return false;

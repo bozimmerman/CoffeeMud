@@ -325,7 +325,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if(!mob.isASysOp())
+				if(!mob.isASysOp(mob.location()))
 				{
 					mob.tell("The Shopkeeper is not accepting charity.");
 					return false;
@@ -418,7 +418,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_GIVE:
-				if((affect.tool()!=null)&&((doISellThis(affect.tool())))||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp())))
+				if((affect.tool()!=null)&&((doISellThis(affect.tool())))||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp(mob.location()))))
 					storeInventory.addElement(affect.tool());
 				break;
 			case Affect.TYP_VALUE:

@@ -28,10 +28,10 @@ public class Prop_RoomLevels extends Property
 		   &&(affect.amITarget(affected))
 		   &&(affect.targetMinor()==Affect.TYP_ENTER))
 		{
-			if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(affect.source().isASysOp()))
+			if((text().toUpperCase().indexOf("ALL")>=0)||(text().length()==0)||(affect.source().isASysOp((Room)affected)))
 				return super.okAffect(affect);
 
-			if((text().toUpperCase().indexOf("SYSOP")>=0)&&(!affect.source().isASysOp()))
+			if((text().toUpperCase().indexOf("SYSOP")>=0)&&(!affect.source().isASysOp((Room)affected)))
 			{
 				affect.source().tell("That way is restricted.  You are not allowed.");
 				return false;

@@ -147,6 +147,146 @@ public class Rooms
 		mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
+	private void flunkCmd2(MOB mob)
+	{
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB] [TEXT]\n\r");
+		mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+	}
+	public void modifyArea(MOB mob, Vector commands)
+		throws Exception
+	{
+		if(mob.location()==null) return;
+		if(mob.location().getArea()==null) return;
+		Area myArea=mob.location().getArea();
+		
+		String oldName=myArea.name();
+		Resources.removeResource("HELP_"+myArea.name().toUpperCase());
+		if(commands.size()==2)
+		{
+			new Generic().genName(mob,myArea);
+			new Generic().genDescription(mob,myArea);
+			new Generic().genClimateType(mob,myArea);
+			new Generic().genSubOps(mob,myArea);
+			new Generic().genBehaviors(mob,myArea);
+			new Generic().genAffects(mob,myArea);
+		}
+		else
+		{
+			if(commands.size()<3) { flunkCmd1(mob); return;}
+
+			String command=((String)commands.elementAt(2)).toUpperCase();
+			String restStr="";
+			if(commands.size()>=3)
+				restStr=Util.combine(commands,3);
+
+			if(command.equalsIgnoreCase("NAME"))
+			{
+				if(commands.size()<4) { flunkCmd2(mob); return;}
+				mob.location().setName(restStr);
+			}
+			else
+			if(command.equalsIgnoreCase("DESC"))
+			{
+				if(commands.size()<4) { flunkCmd2(mob); return;}
+				mob.location().setDescription(restStr);
+			}
+			else
+			if(command.equalsIgnoreCase("CLIMATE"))
+			{
+				if(commands.size()<4) { flunkCmd2(mob); return;}
+				int newClimate=0;
+				for(int i=0;i<restStr.length();i++)
+					switch(Character.toUpperCase(restStr.charAt(i)))
+					{
+					case 'R':
+						newClimate=newClimate|Area.CLIMASK_WET;
+						break;
+					case 'H':
+						newClimate=newClimate|Area.CLIMASK_HOT;
+						break;
+					case 'C':
+						newClimate=newClimate|Area.CLIMASK_COLD;
+						break;
+					case 'W':
+						newClimate=newClimate|Area.CLIMATE_WINDY;
+						break;
+					case 'N':
+						// do nothing
+						break;
+					default:
+						mob.tell("Invalid CLIMATE code: '"+restStr.charAt(i)+"'.  Valid codes include: R)AINY, H)OT, C)OLD, W)INDY, N)ORMAL.\n\r");
+						mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+						return;
+					}
+				myArea.setClimateType(newClimate);
+			}
+			else
+			if(command.equalsIgnoreCase("ADDSUB"))
+			{
+				if((commands.size()<4)||(!ExternalPlay.DBUserSearch(null,restStr)))
+				{ 
+					mob.tell("Unknown or invalid username given.\n\r");
+					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				}
+				myArea.addSubOp(restStr);
+			}
+			else
+			if(command.equalsIgnoreCase("DELSUB"))
+			{
+				if((commands.size()<4)||(!myArea.amISubOp(restStr)))
+				{ 
+					mob.tell("Unknown or invalid subOp name given.  Valid names are: "+myArea.getSubOpList()+".\n\r");
+					mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				}
+				myArea.delSubOp(restStr);
+			}
+			else
+			if(command.equalsIgnoreCase("AFFECTS"))
+			{
+				new Generic().genAffects(mob,mob.location());
+				myArea.recoverEnvStats();
+			}
+			else
+			if(command.equalsIgnoreCase("BEHAVIORS"))
+			{
+				new Generic().genBehaviors(mob,mob.location());
+				myArea.recoverEnvStats();
+			}
+			else
+			{
+				flunkCmd2(mob);
+				return;
+			}
+			Log.sysOut("Rooms",mob.ID()+" modified area "+myArea.name()+".");
+		}
+		
+		if((!myArea.name().equals(oldName))&&(!mob.isMonster()))
+		{
+			String newName=myArea.name();
+			myArea.setName(oldName);
+			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
+			{
+				// get rooms list from old name
+				Vector areaMap=myArea.getMyMap();
+				
+				// effectively recreates an area record with a new name
+				ExternalPlay.DBDeleteArea(myArea);
+				myArea.setName(newName);
+				CMMap.AREAS.removeElement(ExternalPlay.DBCreateArea(newName,CMClass.className(myArea)));
+				// done with that.
+				
+				// now re-save all rooms with new area name
+				for(int r=0;r<areaMap.size();r++)
+				{
+					Room R=(Room)areaMap.elementAt(r);
+					R.setArea(myArea);
+					ExternalPlay.DBUpdateRoom(R);
+				}
+			}
+		}
+		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
+		ExternalPlay.DBUpdateArea(myArea);
+	}
 	public void modify(MOB mob, Vector commands)
 		throws Exception
 	{
@@ -265,8 +405,8 @@ public class Rooms
 		}
 		else
 		{
-			mob.tell("You have failed to specify an aspect.  Try AREA, NAME, AFFECTS, BEHAVIORS, or DESCRIPTION.\n\r");
-			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			flunkCmd1(mob); 
+			return;
 		}
 		Log.sysOut("Rooms",mob.ID()+" modified room "+mob.location().ID()+".");
 	}
@@ -415,17 +555,7 @@ public class Rooms
 		}
 
 		String areaName=Util.combine(commands,2);
-		Room foundOne=null;
-		for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
-		{
-			Room r=(Room)e.nextElement();
-			if(r.getArea().name().equalsIgnoreCase(areaName))
-			{
-				foundOne=r;
-				break;
-			}
-		}
-		if(foundOne==null)
+		if(CMMap.getArea(areaName)==null)
 		{
 			mob.tell("There is no such area as '"+areaName+"'");
 			mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
@@ -445,7 +575,8 @@ public class Rooms
 			else
 				confirmed=true;
 		}
-		foundOne=CMClass.getLocale("StdRoom");
+		
+		Room foundOne=mob.location();
 		while(foundOne!=null)
 		{
 			foundOne=null;
@@ -461,6 +592,11 @@ public class Rooms
 			if(foundOne!=null)
 				new Rooms().obliterateRoom(mob,foundOne);
 		}
+		
+		Area A=CMMap.getArea(areaName);
+		ExternalPlay.DBDeleteArea(A);
+		CMMap.AREAS.removeElement(A);
+		
 		if(confirmed)
 		{
 			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"A thunderous boom of destruction is heard in the distance.");

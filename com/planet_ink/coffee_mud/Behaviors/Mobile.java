@@ -71,7 +71,7 @@ public class Mobile extends ActiveTicker
 			for(int m=0;m<thisRoom.numInhabitants();m++)
 			{
 				MOB inhab=thisRoom.fetchInhabitant(m);
-				if((inhab!=null)&&(inhab.isASysOp()))
+				if((inhab!=null)&&(inhab.isASysOp(thisRoom)))
 					move=false;
 			}
 			if(move)

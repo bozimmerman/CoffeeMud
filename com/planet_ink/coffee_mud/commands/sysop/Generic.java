@@ -10,7 +10,6 @@ import java.io.*;
 
 public class Generic
 {
-
 	public final long maxLength=65535;
 	public Lister myLister=new Lister();
 
@@ -162,6 +161,34 @@ public class Generic
 		else
 			mob.tell("(no change)");
 	}
+	
+	void genSubOps(MOB mob, Area A)
+		throws IOException
+	{
+		String newName="Q";
+		while(newName.length()>0)
+		{
+			mob.tell("\n\rArea SubOperator user names: "+A.getSubOpList());
+			newName=mob.session().prompt("Enter a name to add or remove\n\r:","");
+			if(newName.length()>0)
+			{
+				if(A.amISubOp(newName))
+				{
+					A.delSubOp(newName);
+					mob.tell("SubOperator removed.");
+				}
+				else
+				if(ExternalPlay.DBUserSearch(null,newName))
+				{
+					A.addSubOp(newName);
+					mob.tell("SubOperator added.");
+				}
+				else
+					mob.tell("'"+newName+"' is not recognized as a valid user name.");
+			}
+		}
+	}
+	
 	void genCloseWord(MOB mob, Exit E)
 		throws IOException
 	{
@@ -478,7 +505,39 @@ public class Generic
 		else
 			E.baseEnvStats().setSensesMask(current&((int)(Sense.ALLMASK-mask)));
 	}
+	void toggleClimateMask(Area A, int mask)
+	{
+		int current=A.climateType();
+		if((current&mask)==0)
+			A.setClimateType(current|mask);
+		else
+			A.setClimateType(current&((int)(Sense.ALLMASK-mask)));
+	}
 
+	
+	
+	void genClimateType(MOB mob, Area A)
+		throws IOException
+	{
+		String c="Q";
+		while(!c.equals("\n"))
+		{
+			mob.session().println(" ");
+			mob.session().println("R) Wet and Rainy    : "+((A.climateType()&Area.CLIMASK_WET)>0));
+			mob.session().println("H) Excessively hot  : "+((A.climateType()&Area.CLIMASK_HOT)>0));
+			mob.session().println("C) Excessively cold : "+((A.climateType()&Area.CLIMASK_COLD)>0));
+			mob.session().println("W) Very windy       : "+((A.climateType()&Area.CLIMATE_WINDY)>0));
+			c=mob.session().choose("Enter one to change, or ENTER when done: ","RHCWR\n","\n").toUpperCase();
+			switch(c.charAt(0))
+			{
+			case 'C': toggleClimateMask(A,Area.CLIMASK_COLD); break;
+			case 'H': toggleClimateMask(A,Area.CLIMASK_HOT); break;
+			case 'R': toggleClimateMask(A,Area.CLIMASK_WET); break;
+			case 'W': toggleClimateMask(A,Area.CLIMATE_WINDY); break;
+			}
+		}
+	}
+	
 	void genSensesMask(MOB mob, Environmental E)
 		throws IOException
 	{
