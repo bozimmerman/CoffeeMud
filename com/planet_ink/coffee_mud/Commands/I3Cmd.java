@@ -38,7 +38,7 @@ public class I3Cmd extends StdCommand
 			mob.tell("I3 is unavailable.");
 		else
 		if(str.equalsIgnoreCase("list"))
-			CMClass.I3Interface().giveMudList(mob);
+			CMClass.I3Interface().giveI3MudList(mob);
 		else
 		if(str.equalsIgnoreCase("add"))
 		{
@@ -52,7 +52,7 @@ public class I3Cmd extends StdCommand
 		}
 		else
 		if(str.equalsIgnoreCase("channels"))
-			CMClass.I3Interface().giveChannelsList(mob);
+			CMClass.I3Interface().giveI3ChannelsList(mob);
 		else
 		if(str.equalsIgnoreCase("delete"))
 		{

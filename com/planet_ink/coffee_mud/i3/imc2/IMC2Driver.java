@@ -49,7 +49,6 @@ public final class IMC2Driver extends Thread {
         int level; /* trust level */
         int wizi; /* wizi level */
     }
-
     static final int PERM_NONE = 0;
     static final int PERM_PLAYER = 1;
     static final int PERM_IMMORTAL = 2;
@@ -60,9 +59,11 @@ public final class IMC2Driver extends Thread {
     public hubinfo this_imcmud = new hubinfo();
     public siteinfo imc_siteinfo = new siteinfo();
     imc_statistics imc_stats = new imc_statistics();
-    int imc_active; /* Connection state */
+    public int imc_active; /* Connection state */
 
     long HeartBeat = 0; // elapsed heartbeats
+	call_out c_thread=null;
+	call_in c_thread2=null;
 
     Hashtable muds = new Hashtable();
     Hashtable channels = new Hashtable();
@@ -71,7 +72,6 @@ public final class IMC2Driver extends Thread {
     
     public Hashtable chan_conf = new Hashtable();
 	public Hashtable chan_mask = new Hashtable();
-
     DataInputStream in;
     DataOutputStream out;
 
@@ -81,11 +81,11 @@ public final class IMC2Driver extends Thread {
     /* refresh timeout */
     final static int  IMC_TIMEOUT = 650;
 
-    final static int CHAN_OPEN     = 1;
-    final static int CHAN_CLOSED   = 2;
-    final static int CHAN_PRIVATE  = 3;
-    final static int CHAN_COPEN    = 4;
-    final static int CHAN_CPRIVATE = 5;
+    public final static int CHAN_OPEN     = 1;
+    public final static int CHAN_CLOSED   = 2;
+    public final static int CHAN_PRIVATE  = 3;
+    public final static int CHAN_COPEN    = 4;
+    public final static int CHAN_CPRIVATE = 5;
 
     /* max length of any mud name */
     final static int IMC_MNAME_LENGTH = 20;
@@ -97,10 +97,10 @@ public final class IMC2Driver extends Thread {
     final static int IMC_NAME_LENGTH = (IMC_MNAME_LENGTH + IMC_PNAME_LENGTH + 1);
 
     /* activation states */
-    final static int IA_NONE = 0;
-    final static int IA_CONFIG1 = 1;
-    final static int IA_CONFIG2 = 2;
-    final static int IA_UP = 3;
+    public final static int IA_NONE = 0;
+    public final static int IA_CONFIG1 = 1;
+    public final static int IA_CONFIG2 = 2;
+    public final static int IA_UP = 3;
 
     /* connection states */
     final static int IMC_CLOSED = 0; /* No active connection */
@@ -109,14 +109,12 @@ public final class IMC2Driver extends Thread {
     final static int IMC_CONNECTED = 3; /* Fully connected */
 
     final static int IMC_VERSION = 2;
-    final static String IMC_VERSIONID  = "IMC2 4.00 for JavaMUD";
+    final static String IMC_VERSIONID  = "IMC2 4.00 for CoffeeMud";
 
     final void tracef(int level, String s)
     {
-        // this is the log function
-        // it should be replaced with the mud driver log function
-        // if other muds are using this class
-        Log.errOut("IMC2",s);
+		if((level<1)&&(CMSecurity.isDebugging("IMC2")))
+			Log.debugOut("IMC2",level+"/"+s);
     }
 
     final void send_to_player(String name, String text)
@@ -182,6 +180,17 @@ public final class IMC2Driver extends Thread {
 	      return explodeNicely(s, " ");
 	}
 
+	public void shutdown()
+	{
+		try{
+		if(c_thread!=null)
+			c_thread.interrupt();
+		if(c_thread2!=null)
+			c_thread2.interrupt();
+		this.interrupt();
+		}catch(Exception e){}
+	}
+	
 	final public static String[] explodeNicely(String s, String separator)
 	{
 	    StringTokenizer st = new StringTokenizer(s, separator);
@@ -248,8 +257,8 @@ public final class IMC2Driver extends Thread {
         this_imcmud.insize = 1024;
         this_imcmud.outsize = 1024;
 
-        buf = "PW " + imc_name + " " + this_imcmud.clientpw + " version=" +
-            IMC_VERSION;
+        buf = "PW " + imc_name.trim() + " " + this_imcmud.clientpw + " version=" +
+            IMC_VERSION+" autosetup "+this_imcmud.serverpw;
         do_imcsend(buf);
 
         imc_write_to_socket(out);
@@ -301,10 +310,9 @@ public final class IMC2Driver extends Thread {
         return true;
     }
 
-    final public void ev_imc_firstrefresh(Object param)
+    final public void ev_imc_firstrefresh()
     {
         PACKET out = new PACKET();
-
         if (this_imcmud == null || imc_active < IA_UP)
             return;
 
@@ -333,7 +341,6 @@ public final class IMC2Driver extends Thread {
           tracef(0,  "imc_startup: called with imc_active = "+imc_active );
           return false;
        }
-
        imc_now = new Date().getTime()/1000;                  /* start our clock */
        imc_boot = new Date();
 
@@ -356,6 +363,7 @@ public final class IMC2Driver extends Thread {
 		imc_siteinfo.details="Custom Java-based Mud";
 		imc_siteinfo.www=web;
 		this_imcmud.hubname=hub;
+		this_imcmud.host=hub;
 		this_imcmud.port=port;
 		this_imcmud.clientpw=passclient;
 		this_imcmud.serverpw=passsrvr;
@@ -371,8 +379,11 @@ public final class IMC2Driver extends Thread {
        if( imc_active == IA_CONFIG2 && ( this_imcmud.autoconnect || force ) )
        {
           if( imc_startup_network() )
-               return true;
-            imc_active = IA_NONE;
+		  {
+				ev_imc_firstrefresh();
+				return true;
+		  }
+		  imc_active = IA_NONE;
        }
        return false;
     }
@@ -386,25 +397,56 @@ public final class IMC2Driver extends Thread {
     final String normal2(String data)
     {
 //        data = Util.replaceAll(data, "\\\"", "\"");
-
-        data = Util.replaceAll(data, "^r", "&BOLD&RED");
-        data = Util.replaceAll(data, "^R", "&RED");
-        data = Util.replaceAll(data, "^y", "&BOLD&YELLOW");
-        data = Util.replaceAll(data, "^Y", "&YELLOW");
-        data = Util.replaceAll(data, "^g", "&BOLD&GREEN");
-        data = Util.replaceAll(data, "^G", "&GREEN");
-        data = Util.replaceAll(data, "^b", "&BOLD&BLUE");
-        data = Util.replaceAll(data, "^B", "&BLUE");
-        data = Util.replaceAll(data, "^p", "&BOLD&MAGENTA");
-        data = Util.replaceAll(data, "^P", "&MAGENTA");
-        data = Util.replaceAll(data, "^w", "&BOLD&BLACK");
-        data = Util.replaceAll(data, "^W", "&BLACK");
-        data = Util.replaceAll(data, "^c", "&BOLD&CYAN");
-        data = Util.replaceAll(data, "^C", "&CYAN");
-        data = Util.replaceAll(data, "^W", "&OFF");
-        data = Util.replaceAll(data, "~w", "&WHITE");
-
-        return data;
+		StringBuffer str=new StringBuffer(data);
+		for(int i=0;i<str.length()-1;i++)
+		{
+			if(str.charAt(i)=='~')
+			switch(str.charAt(i+1))
+			{
+				case 'R':
+				case 'r':
+				case 'y':
+				case 'Y':
+				case 'g':
+				case 'G':
+				case 'b':
+				case 'B':
+				case 'w':
+				case 'W':
+				case 'c':
+				case 'C': str.setCharAt(i,'^'); break;
+				case 'm': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
+				case 'M': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
+				case 'p': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
+				case 'P': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
+				case 'z': str.setCharAt(i,'^'); str.setCharAt(i+1,'R'); break;
+				case 'x':
+				case 'u':
+				case 'v':
+				case 'i':
+				case '$':
+				case 's':
+				case 'Z':
+				case 'X': 
+				case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'W'); break;
+				case 'd': str.setCharAt(i,'^'); str.setCharAt(i+1,'w'); break;
+				case '!': str.setCharAt(i,'^'); str.setCharAt(i+1,'.'); break;
+				case 'L': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
+			}
+			else
+			if(str.charAt(i)=='^')
+			switch(str.charAt(i+1))
+			{
+			case 'O': str.setCharAt(i+1,'y'); break;
+			}
+			else
+			if(str.charAt(i)=='&')
+			switch(str.charAt(i+1))
+			{
+			case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
+			}
+		}
+        return str.toString();
     }
 
     /* printkeys: print key-value pairs, escaping values */
@@ -440,6 +482,17 @@ public final class IMC2Driver extends Thread {
             "Transmitted bytes:   "+imc_stats.tx_bytes+"\\n\\r"+
             "Packets dropped:     "+imc_stats.sequence_drops+"\\n\\n\\r"+
             "Last IMC Boot:       "+imc_boot.toString()+"\\n\\r";
+    }
+    final public String do_imcinfo()
+    {
+        return "IMC Statistics:\\n\\r\\n"+
+			"Site Name           :"+imc_siteinfo.name+"\\n\\r"+
+			"Site Host           :"+sa.getInetAddress()+"\\n\\r"+
+			"Site Port           :"+imc_siteinfo.port+"\\n\\r"+
+			"Web Address         :"+imc_siteinfo.www+"\\n\\r"+
+			"Email               :"+imc_siteinfo.email+"\\n\\r"+
+			"Codebase            :"+imc_siteinfo.base+"\\n\\r"+
+			"IMC Version         :"+IMC_VERSIONID+"\\n\\r";
     }
 
     final PACKET interpret2(String argument )
@@ -573,7 +626,7 @@ public final class IMC2Driver extends Thread {
         IMC_CHANNEL c;
 
         if(channels.get(name)!=null)
-                return (IMC_CHANNEL) channels.get(name);
+            return (IMC_CHANNEL) channels.get(name);
         return null;
     }
 
@@ -586,7 +639,7 @@ public final class IMC2Driver extends Thread {
 
        int pos = fullname.indexOf("@");
        if(pos > -1)
-           buf = fullname.substring(pos+1, fullname.length());
+           buf = fullname.substring(pos+1);
         else
             buf = "*";
 
@@ -840,24 +893,24 @@ public final class IMC2Driver extends Thread {
 	    // Char macros
 	    StringBuffer res = new StringBuffer(str);
 	    // ANSI color macros
-	    res = replaceSB(res, "&YELLOW&BOLD","^y");
-	    res = replaceSB(res, "&RED&BOLD", "^r");
-	    res = replaceSB(res, "&BLUE&BOLD", "^b");
-	    res = replaceSB(res, "&GREEN&BOLD", "^g");
-	    res = replaceSB(res, "&MAGENTA&BOLD", "^p");
-	    res = replaceSB(res, "&WHITE&BOLD", "^w");
-	    res = replaceSB(res, "&CYAN&BOLD", "^c");
-	    res = replaceSB(res, "&OFF&BOLD", "^w");
+		res = replaceSB(res, "^Y","~Y");
+		res = replaceSB(res, "^R", "~R");
+		res = replaceSB(res, "^B", "~B");
+		res = replaceSB(res, "^G", "~G");
+		res = replaceSB(res, "^P", "~M");
+		res = replaceSB(res, "^W", "~W");
+		res = replaceSB(res, "^C", "~C");
 
-	    res = replaceSB(res, "&YELLOW","^Y");
-	    res = replaceSB(res, "&RED", "^R");
-	    res = replaceSB(res, "&BLUE", "^B");
-	    res = replaceSB(res, "&GREEN", "^G");
-	    res = replaceSB(res, "&MAGENTA", "^P");
-	    res = replaceSB(res, "&WHITE", "^W");
-	    res = replaceSB(res, "&CYAN", "^C");
+		res = replaceSB(res, "^y","~y");
+		res = replaceSB(res, "^r", "~r");
+		res = replaceSB(res, "^b", "~b");
+		res = replaceSB(res, "^g", "~g");
+		res = replaceSB(res, "^p", "~m");
+		res = replaceSB(res, "^w", "~w");
+		res = replaceSB(res, "^c", "~c");
 
-	    res = replaceSB(res, "&OFF", "^w");
+		res = replaceSB(res, "^?", "~!");
+		res = replaceSB(res, "^.", "~!");
 
 	    return res.toString();
 	}
@@ -877,10 +930,12 @@ public final class IMC2Driver extends Thread {
 			&&(smob.location()!=null)
 			&&(Sense.isSeen(smob)))
 			{
-				str.append(Util.padRight(smob.name(),20)+Util.padRight(smob.charStats().displayClassLevel(smob,true),10)+"\r\n");
-				//whoV2.addElement(smob.name());
-				//whoV2.addElement(new Integer((int)(ses.getIdleMillis()/1000)));
-				//whoV2.addElement(smob.charStats().displayClassLevel(smob,true));
+				str.append(Util.padRight(smob.charStats().displayClassLevel(smob,true),10)
+						   +Util.padRight(smob.charStats().displayClassLevel(smob,true),5)
+						   +Util.padRight(smob.name(),20));
+				if((ses.getIdleMillis()/1000)>1)
+					str.append("(idle: "+(ses.getIdleMillis()/1000)+")");
+				str.append("\r\n");
 			}
 		}
 		if(str.length()==0) return "Nobody!";
@@ -912,6 +967,9 @@ public final class IMC2Driver extends Thread {
         else
         if(type.equals("istats"))
             imc_addkey(out, "text", do_imcstats());
+        else
+        if(type.equals("info"))
+            imc_addkey(out, "text", do_imcinfo());
         else
         if(type.equals("help"))
             imc_addkey(out, "text", who_help());
@@ -983,28 +1041,46 @@ public final class IMC2Driver extends Thread {
 		}
 		return null;
 	}
+	
+	public REMOTEINFO getIMC2Mud(String named)
+	{
+		Hashtable l=query_muds();
+		if(l.containsKey(named)) return (REMOTEINFO)l.get(named);
+		for(Enumeration e=l.elements();e.hasMoreElements();)
+		{
+			REMOTEINFO m=(REMOTEINFO)e.nextElement();
+			if(m.name.equalsIgnoreCase(named))
+				return m;
+		}
+		return null;
+	}
 
-    final void imc_recv_chat(imc_char_data d, String from, String channel, String text)
+    final void imc_recv_chat(imc_char_data d, String from, String channel, String text, int emote)
     {
         StringTokenizer st = new StringTokenizer(channel, ":");
         if (st.countTokens() > 1) {
             channel = st.nextToken();
             channel = st.nextToken();
         }
+		else
+		if(st.countTokens()> 0)
+			channel=st.nextToken();
 
 		MOB mob=CMClass.getMOB("StdMOB");
 		mob.setName(from);
 		mob.setLocation(CMClass.getLocale("StdRoom"));
 		String channelName=channel;
 		FullMsg msg=null;
-
 		if(from.toUpperCase().endsWith(imc_name.toUpperCase()))
 		   return;
 		if(channelName.length()==0)
 			return;
+		channelName=read_channel_name(channelName);
+		if(channelName.length()==0) return;
 		int channelInt=ChannelSet.getChannelInt(channelName);
 		if(channelInt<0) return;
 		String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+text+"'^?^.";
+		if(emote>0) str="^Q^q["+channelName+"] "+text+"^?^.";
 		msg=new FullMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 
 		ChannelSet.channelQueUp(channelInt,msg);
@@ -1055,7 +1131,7 @@ public final class IMC2Driver extends Thread {
         text = Util.replaceAll(text, "\\n\\r", "\n\r");
         String lines[] = explodeNicely(text, "\\n\\r");
 
-        send_to_player(d.name, "\n\r"+text+"&OFF");
+        send_to_player(d.name, "\n\r"+text+"^.^?");
     }
 
     final void imc_recv_ping_reply(imc_char_data d, String from, String path)
@@ -1064,7 +1140,7 @@ public final class IMC2Driver extends Thread {
 
        StringBuffer text = new StringBuffer("Traceroute information for "+from+"\n\r");
 
-       text.append("&CYANSend path:&OFF   ");
+       text.append("^cSend path:^?   ");
        for(int i = 0; i < route.length; i++)
        {
            if (i > 0)
@@ -1072,7 +1148,7 @@ public final class IMC2Driver extends Thread {
            text.append(route[i]);
        }
        text.append("\n\r");
-       text.append("&CYANReturn path:&OFF ");
+       text.append("^cReturn path:^? ");
        for(int i= route.length-1; i >= 0; i--)
        {
            if (i < route.length-1)
@@ -1084,13 +1160,35 @@ public final class IMC2Driver extends Thread {
    }
 
 
-    final String read_channel_name(String _hubname)
+    final String read_channel_name(String channame)
     {
-        String local_name = (String) chan_conf.get(_hubname);
-        if(local_name == null) local_name = "(PRIVATE)";
-        
-        return local_name;
+		if(channame==null) return "";
+		channame=channame.toUpperCase();
+		for(Enumeration e=chan_conf.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
+			String val=((String)chan_conf.get(key)).toUpperCase();
+			if(val.equals(channame))
+				return key;
+			if(val.endsWith(":"+channame))
+				return key;
+			if(channame.endsWith(":"+val))
+				return key;
+		}
+        return "";
     }
+	
+	public IMC_CHANNEL getAnIMC2Channel(String name)
+	{
+		name=name.toUpperCase();
+		for(Enumeration e=channels.elements();e.hasMoreElements();)
+		{
+			IMC_CHANNEL c=(IMC_CHANNEL)e.nextElement();
+			if(read_channel_name(c.name).equalsIgnoreCase(name))
+				return c;
+		}
+		return null;
+	}
 
     final void imc_recv_update(String from, String chan, String owner,
                          String operators, String policy, String invited,
@@ -1162,7 +1260,8 @@ public final class IMC2Driver extends Thread {
     }
 
 
-    final public Hashtable query_channels() {
+    final public Hashtable query_channels() 
+	{
         return channels;
     }
 
@@ -1182,13 +1281,14 @@ public final class IMC2Driver extends Thread {
         d.invis = 0;
 
         String to_mud = imc_mudof(d.name);
-        if (!to_mud.equalsIgnoreCase(imc_name) && !to_mud.equals("*")) {
-            tracef(8, "Message was not sent to this mud.");
+        if (!to_mud.equalsIgnoreCase(imc_name) && !to_mud.equals("*")) 
+		{
+            tracef(8, "Message was for "+to_mud+", not "+imc_name+" -- rejecting!");
             return;
         }
 
         d.name = imc_playerof(d.name);
-        tracef(8, "Message sent to " + d.name);
+        tracef(8, "Message sent to " + d.name+", "+p.type+", "+p.value);
 
         if (p.type.equals("who")) {
             tracef(8, "Who request received from " + p.i.from);
@@ -1235,7 +1335,7 @@ public final class IMC2Driver extends Thread {
         if (p.type.equals("ice-msg-b")) {
             tracef(8, "Chat received from " + p.i.from);
             imc_recv_chat(d, p.i.from, imc_getkey(p, "channel", "ICHAT"),
-                          imc_getkey(p, "text", ""));
+                          imc_getkey(p, "text", ""),Util.s_int(imc_getkey(p,"emote","0")));
         }
 
         if (p.type.equals("ice-update")) {
@@ -1269,24 +1369,25 @@ public final class IMC2Driver extends Thread {
 
     final public void imc_read_from_socket(DataInputStream in) {
         try {
-            if (in.available() > 0) {
+            if ((in!=null)&&(in.available() > 0))
+			{
                 String s = in.readLine();
-                if (s == null)
-                    return;
+                if (s == null) return;
 
-                if (s.length() > 0) {
+                if (s.length() > 0) 
+				{
                     tracef(8, "imc: received '" + s + "'");
                     if (s.startsWith("PW "))
                         check_password(s);
                     else {
                         PACKET p = interpret2(s);
-                        exec_commands(p);
+                        if(p!=null) exec_commands(p);
                     }
                 }
             }
         }
         catch (Exception e) {
-            Log.errOut("IMC2Driver", "read socket error: " + e.toString());
+			Log.errOut("IMC2Driver", "read: "+e.getMessage());
         }
     }
 
@@ -1337,65 +1438,6 @@ public final class IMC2Driver extends Thread {
             imc_addkey(out, "flags", imc_siteinfo.flags);
 
         imc_send(out);
-    }
-
-    final public LinkedList imc_query_mudlist() {
-        LinkedList imclist = new LinkedList();
-        imclist.add("Active muds on IMC:");
-        imclist.add(
-            "&CYANName              &BOLDIMC Version                              " +
-            "&OFF&GREENNetwork     &BOLDHub&OFF\n\r\n\r");
-
-        Enumeration e = muds.keys();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            REMOTEINFO r = (REMOTEINFO) muds.get(key);
-            if (r != null) {
-                imclist.add("&CYAN" + Util.padLeft(key, 17) + " " +
-                            "&BOLD" + Util.padLeft(r.version, 40) +
-                            " " +
-                            "&OFF&GREEN" + Util.padLeft(r.network, 11) +
-                            " " +
-                            "&BOLD&GREEN" + r.hub + "&OFF");
-            }
-        }
-
-        return imclist;
-    }
-
-    final public LinkedList imc_query_chanlist() {
-        LinkedList imclist = new LinkedList();
-        imclist.add("&CYANName                   &BOLDLocal name      " +
-                    "&OFF&GREENOwner              &BOLDLevel    " +
-                    "Policy&OFF\n\r\n\r");
-
-        Enumeration e = channels.keys();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            IMC_CHANNEL r = (IMC_CHANNEL) channels.get(key);
-            if (r != null) {
-                String policy = "final public";
-                if (r.policy == CHAN_PRIVATE)
-                    policy = "(private)";
-                else
-                if (r.policy == CHAN_COPEN)
-                    policy = "open";
-                else
-                if (r.policy == this.CHAN_CPRIVATE)
-                    policy = "(cprivate)";
-
-                imclist.add("&CYAN" + Util.padLeft(key, 22) + " " +
-                            "&BOLD" + Util.padLeft(r.local_name, 15) +
-                            " " +
-                            "&OFF&GREEN" + Util.padLeft(r.owner, 18) +
-                            " " +
-                            "&OFF&GREEN" + Util.padLeft(""+r.level, 8) +
-                            " " +
-                            "&BOLD&GREEN" + policy + "&OFF");
-            }
-        }
-
-        return imclist;
     }
 
     /* send a keepalive to everyone */
@@ -1508,12 +1550,13 @@ public final class IMC2Driver extends Thread {
         imc_send_who(test, "@" + mudname, type);
     }
 
-    final public void imc_send_who(String name, String mudname, int level, int invis) {
+    final public void imc_send_who(String name, String mudname, String type, int level, int invis) 
+	{
         imc_char_data test = new imc_char_data();
         test.name = name;
         test.level = level;
         test.invis = invis;
-        imc_send_who(test, "@" + mudname, "who");
+        imc_send_who(test, "@" + mudname, type);
     }
 
     final public String imc_send_tell(String from, String to, String text, int level,
@@ -1564,8 +1607,8 @@ public final class IMC2Driver extends Thread {
 
         replies.put(from.name, to);
 
-        String chatText = "You imcptell " + to + " '&BOLD&CYAN" + argument +
-            "&OFF'.";
+        String chatText = "You tell " + to + " '^c" + argument +
+            "'^?.";
         return chatText;
     }
 
@@ -1588,8 +1631,8 @@ public final class IMC2Driver extends Thread {
 
         imc_send(out);
 
-        String chatText = "You imcptell " + to + " '&BOLD&CYAN" + argument +
-            "&OFF'.";
+        String chatText = "You tell " + to + " ^c'" + argument +
+            "'^?.";
         return chatText;
     }
 
@@ -1625,10 +1668,10 @@ public final class IMC2Driver extends Thread {
         if (argument.startsWith(", ") || emote == 1)
             text = from.name + "@" + this.imc_name;
 
-        String chatText = "&CYAN&BOLD" + from.name + "@" + this.imc_name +
-            " &OFF&BLUE[&OFF&YELLOW&BOLD<&GREEN" + chan +
-            "&YELLOW&BOLD>&BLUE]" +
-            "&OFF " + text + "&OFF";
+        String chatText = from.name + "@" + this.imc_name +
+            " [" + chan +
+            "] " +
+            " " + text + "^?";
 
         LinkedList l = (LinkedList) chanhist.get(chan);
         if (l == null)
@@ -1647,15 +1690,15 @@ public final class IMC2Driver extends Thread {
         String params[] = explodeNicely(cmd);
 
         if (params.length < 2) {
-            s.append("&GREENSyntax: &CYANimcpsettings show   - &CYAN&BOLDlists IMC network functions and IMC channels\n\r" +
-                     "&OFF&CYAN        imcpsettings subscribe +channel - &OFF&CYAN&BOLDcreates a subscription to a channel\n\r" +
-                     "&OFF&CYAN        imcpsettings subscribe -channel - &OFF&CYAN&BOLDdeletes a subscription to a channel\n\r" +
-                     "&OFF&CYAN        imcpsettings blacklist +mud - &OFF&CYAN&BOLDadds a mud to the blacklist\n\r" +
-                     "&OFF&CYAN        imcpsettings blacklist -mud - &OFF&CYAN&BOLDremoves a mud from the blacklist\n\r" +
-                     "&OFF&CYAN        imcpsettings blacklist +person@mud - &OFF&CYAN&BOLDadds a player to the blacklist\n\r" +
-                     "&OFF&CYAN        imcpsettings blacklist -person@mud - &OFF&CYAN&BOLDremoves a player from the blacklist\n\r" +
-                     "&OFF&CYAN        imcpsettings function +nfunction  - &OFF&CYAN&BOLDswitches on a network function\n\r" +
-                     "&OFF&CYAN        imcpsettings function -nfunction  - &OFF&CYAN&BOLDswitches off a network function\n\r");
+            s.append("&GREENSyntax: ^cimcpsettings show   - ^clists IMC network functions and IMC channels\n\r" +
+                     "^c        imcpsettings subscribe +channel - ^ccreates a subscription to a channel\n\r" +
+                     "^c        imcpsettings subscribe -channel - ^cdeletes a subscription to a channel\n\r" +
+                     "^c        imcpsettings blacklist +mud - ^cadds a mud to the blacklist\n\r" +
+                     "^c        imcpsettings blacklist -mud - ^cremoves a mud from the blacklist\n\r" +
+                     "^c        imcpsettings blacklist +person@mud - ^cadds a player to the blacklist\n\r" +
+                     "^c        imcpsettings blacklist -person@mud - ^cremoves a player from the blacklist\n\r" +
+                     "^c        imcpsettings function +nfunction  - ^cswitches on a network function\n\r" +
+                     "^c        imcpsettings function -nfunction  - ^cswitches off a network function\n\r");
         }
 
         return s.toString();
@@ -1664,12 +1707,16 @@ public final class IMC2Driver extends Thread {
     final public void run() {
         imc_read_from_socket(in);
         HeartBeat = 0;
-
-        call_in c_thread2 = new call_in(this);
-        c_thread2.start();
-
-        call_out c_thread = new call_out(this);
-        c_thread.start();
+		if(c_thread2==null)
+		{
+			c_thread2 = new call_in(this);
+			c_thread2.start();
+		}
+		if(c_thread==null)
+		{
+			c_thread = new call_out(this);
+			c_thread.start();
+		}
 
         while (true) {
             HeartBeat++;

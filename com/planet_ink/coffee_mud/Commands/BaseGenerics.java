@@ -4774,8 +4774,9 @@ public class BaseGenerics extends StdCommand
 					fakeMe.setName(oldName);
 					CMClass.DBEngine().DBDeleteMOB(fakeMe);
 					CMClass.DBEngine().DBCreateCharacter(me);
-					CMClass.DBEngine().DBUpdateMOB(me);
 				}
+				CMClass.DBEngine().DBUpdateMOB(me);
+				CMClass.DBEngine().DBUpdateFollowers(me);
 			}
 		}
 	}

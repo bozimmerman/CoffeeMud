@@ -64,10 +64,10 @@ public class Tell extends StdCommand
 			{
 				String mudName=targetName.substring(targetName.indexOf("@")+1);
 				targetName=targetName.substring(0,targetName.indexOf("@"));
-				if(!(CMClass.I3Interface().i3online()))
-					mob.tell("I3 is unavailable.");
-				else
+				if(CMClass.I3Interface().i3online()||CMClass.I3Interface().imc2online())
 					CMClass.I3Interface().i3tell(mob,targetName,mudName,combinedCommands);
+				else
+					mob.tell("Intermud is unavailable.");
 				return false;
 			}
 			else

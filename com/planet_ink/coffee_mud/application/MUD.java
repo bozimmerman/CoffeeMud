@@ -320,18 +320,25 @@ public class MUD extends Thread implements MudHost
 			{
 				imc2server=new IMC2Driver();
 				if(!imc2server.imc_startup(false,
-										page.getStr("IMC2LOGIN"),
-										"",
-										page.getStr("IMC2MYEMAIL"),
-										page.getStr("IMC2MYWEB"),
-										page.getStr("IMC2HUBNAME"),
+										page.getStr("IMC2LOGIN").trim(),
+										CommonStrings.getVar(CommonStrings.SYSTEM_MUDNAME),
+										page.getStr("IMC2MYEMAIL").trim(),
+										page.getStr("IMC2MYWEB").trim(),
+										page.getStr("IMC2HUBNAME").trim(),
 										page.getInt("IMC2HUBPORT"),
-										page.getStr("IMC2PASS1"),
-										page.getStr("IMC2PASS2"),
-										imc2server.buildChannelMap(page.getStr("IMC2CHANNELS"))))
+										page.getStr("IMC2PASS1").trim(),
+										page.getStr("IMC2PASS2").trim(),
+										imc2server.buildChannelMap(page.getStr("IMC2CHANNELS").trim())))
 				{
 					Log.errOut("MUD","IMC2 Failed to start!");
 					imc2server=null;
+				}
+				else
+				{
+					CMClass.I3Interface().registerIMC2(imc2server);
+					imc2server.start();
+					Log.sysOut("IMC2 (C)1996-2002 Java by: Istvan David");
+					Log.sysOut("IMC2 Client of "+page.getStr("IMC2HUBNAME").trim()+".");
 				}
 			}
 		}
@@ -575,13 +582,22 @@ public class MUD extends Thread implements MudHost
 
 		if(imserver!=null)
 		{
-			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...IMServer");
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...I3Server");
 			imserver.shutdown();
 			imserver=null;
-			if(S!=null)S.println("IMServer stopped");
-			Log.sysOut("MUD","IMServer stopped");
+			if(S!=null)S.println("I3Server stopped");
+			Log.sysOut("MUD","I3Server stopped");
 		}
 
+		if(imc2server!=null)
+		{
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...IMC2Server");
+			imc2server.shutdown();
+			imc2server=null;
+			if(S!=null)S.println("IMC2Server stopped");
+			Log.sysOut("MUD","IMC2Server stopped");
+		}
+		
 		if(S!=null)S.print("Stopping player sessions...");
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Stopping sessions");
 		while(Sessions.size()>0)

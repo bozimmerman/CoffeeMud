@@ -78,7 +78,8 @@ public class BaseChanneler extends StdCommand
 				channelTo(ses,areareq,channelInt,msg,mob);
 			}
 		}
-		if((CMClass.I3Interface().i3online())&&(CMClass.I3Interface().isI3channel(channelName)))
+		if((CMClass.I3Interface().i3online()&&(CMClass.I3Interface().isI3channel(channelName)))
+		||(CMClass.I3Interface().imc2online()&&(CMClass.I3Interface().isIMC2channel(channelName))))
 			CMClass.I3Interface().i3channel(mob,channelName,message);
 	}
 }

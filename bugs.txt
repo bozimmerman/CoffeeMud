@@ -1,6 +1,4 @@
-test command reloading, due to commandword dealy
 don't let a pending login login again!
-save a player after modify, always!
 bodies set to disappear after death don't do so.
 1. EmberBud Import: Margate.are: n of 11656 door is not there
 2. EmberBud Import: Margate.are: 11752 should have been no_mob (code 0, but makes me wonder about 8)

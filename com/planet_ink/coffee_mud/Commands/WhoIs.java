@@ -23,8 +23,9 @@ public class WhoIs extends Who
 
 		if(mobName.startsWith("@"))
 		{
-			if(!(CMClass.I3Interface().i3online()))
-				mob.tell("I3 is unavailable.");
+			if((!(CMClass.I3Interface().i3online()))
+			&&(!CMClass.I3Interface().imc2online()))
+				mob.tell("Intermud is unavailable.");
 			else
 				CMClass.I3Interface().i3who(mob,mobName.substring(1));
 			return false;
