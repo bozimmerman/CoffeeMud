@@ -69,7 +69,7 @@ public class StdFood extends StdItem implements Food
 				boolean hungry=mob.curState().getHunger()==0;
 				boolean full=!mob.curState().adjHunger(amountOfNourishment,mob.maxState());
 				if(hungry)
-					mob.tell("You are no longer thirsty.");
+					mob.tell("You are no longer hungry.");
 				else
 				if(full)
 					mob.tell("You are full.");

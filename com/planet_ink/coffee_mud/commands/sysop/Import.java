@@ -1544,7 +1544,7 @@ public class Import
 					 break;
 			case 11: I=(Item)CMClass.getArmor("GenArmor");
 					 I.baseEnvStats().setArmor(0);
-					adjuster=CMClass.getAbility("Prop_WearAdjuster");
+					 adjuster=CMClass.getAbility("Prop_WearAdjuster");
 					 break;
 			case 12: I=(Item)CMClass.getStdItem("GenItem");
 					 if(hasReadableContent(objectName))
@@ -1687,7 +1687,10 @@ public class Import
 			// the relation of this stuff is vital!  must follow properlocation setting
 			// and the getttable setting ONLY!!!
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			if((adjuster.ID().equals("Prop_HaveAdjuster"))&&(I.rawProperLocationBitmap()>0))
+			if((adjuster.ID().equals("Prop_HaveAdjuster"))
+			&&(I.rawProperLocationBitmap()>0)
+			&&(I.rawProperLocationBitmap()!=9)
+			&&(objType!=12))
 			{
 				adjuster=CMClass.getAbility("Prop_WearAdjuster");
 				if(I.ID().equals("GenItem"))
@@ -2112,7 +2115,6 @@ public class Import
 				I.addNonUninvokableAffect(caster);
 			if(resister.text().length()>0)
 				I.addNonUninvokableAffect(resister);
-			
 			return I;
 		}
 		return null;
