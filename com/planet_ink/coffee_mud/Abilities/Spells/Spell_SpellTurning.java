@@ -75,7 +75,7 @@ public class Spell_SpellTurning extends Spell
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A reflective barrier appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) an reflective barrier of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A reflective barrier appears around <T-NAMESELF>.":"^S<S-NAME> invoke(s) a reflective barrier of protection around <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
