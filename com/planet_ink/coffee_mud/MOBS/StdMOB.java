@@ -1008,6 +1008,30 @@ public class StdMOB implements MOB
 				else
 				if(isMonster()) // playerkill check
 					setVictim((MOB)affect.source());
+				
+				if(affect.targetMinor()!=Affect.TYP_WEAPONATTACK)
+				{
+					int chanceToFail=Integer.MIN_VALUE;
+					int saveCode=-1;
+					for(int c=0;c<CharStats.affectTypeMap.length;c++)
+						if(affect.targetMinor()==CharStats.affectTypeMap[c])
+						{	saveCode=c; chanceToFail=charStats().getSave(c); break;}
+					if((chanceToFail>Integer.MIN_VALUE)&&(!affect.wasModified()))
+					{
+						chanceToFail+=(envStats().level()-affect.source().envStats().level());
+						if(chanceToFail<5)
+							chanceToFail=5;
+						else
+						if(chanceToFail>95)
+						   chanceToFail=95;
+						
+						if(Dice.rollPercentage()<chanceToFail)
+						{
+							ExternalPlay.resistanceMsgs(affect,affect.source(),this);
+							affect.tagModified(true);
+						}
+					}
+				}
 			}
 
 			if((rangeToTarget()>0)&&(!isInCombat()))
@@ -1214,26 +1238,6 @@ public class StdMOB implements MOB
 				}
 				else
 				{
-					int chanceToFail=Integer.MIN_VALUE;
-					int saveCode=-1;
-					for(int c=0;c<CharStats.affectTypeMap.length;c++)
-						if(affect.targetMinor()==CharStats.affectTypeMap[c])
-						{	saveCode=c; chanceToFail=charStats().getSave(c); break;}
-					if((chanceToFail>Integer.MIN_VALUE)&&(!affect.wasModified()))
-					{
-						chanceToFail+=(envStats().level()-affect.source().envStats().level());
-						if(chanceToFail<5)
-							chanceToFail=5;
-						else
-						if(chanceToFail>95)
-						   chanceToFail=95;
-						
-						if(Dice.rollPercentage()<chanceToFail)
-						{
-							ExternalPlay.resistanceMsgs(affect,affect.source(),this);
-							affect.tagModified(true);
-						}
-					}
 					// what is this?  a malicious, weapon attack not attached to hurt or weaponstrike!
 					if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
 						ExternalPlay.strike(affect.source(),this,(Weapon)affect.tool(),true);
