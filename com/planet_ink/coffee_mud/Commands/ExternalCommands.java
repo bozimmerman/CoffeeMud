@@ -58,7 +58,7 @@ public class ExternalCommands implements ExternalCommand
 	}
 	public Vector getTopics(boolean archonHelp, boolean standardHelp)
 	{
-		return Help.getTopics(archonHelp,standardHelp);
+		return com.planet_ink.coffee_mud.Commands.base.Help.getTopics(archonHelp,standardHelp);
 	}
 
 	public String getOpenRoomID(String areaName)
@@ -177,7 +177,7 @@ public class ExternalCommands implements ExternalCommand
 	}
 	public StringBuffer getHelpText(String helpStr, MOB forMOB)
 	{
-		return Help.getHelpText(helpStr,forMOB);
+		return com.planet_ink.coffee_mud.Commands.base.Help.getHelpText(helpStr,forMOB);
 	}
 	public StringBuffer getInventory(MOB seer, MOB mob)
 	{

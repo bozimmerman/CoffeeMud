@@ -507,4 +507,74 @@ public class Sense
 		}
 		return "";
 	}
+	
+	public static StringBuffer niceLister(MOB mob, Vector items, boolean useName)
+	{
+		StringBuffer say=new StringBuffer("");
+		while(items.size()>0)
+		{
+			Item item=(Item)items.elementAt(0);
+			String str=null;
+			if((!useName)&&(!item.name().equals(item.Name())))
+				str=item.name()+" is here.";
+			else
+				str=(useName||(item.displayText().length()==0))?item.name():item.displayText();
+			int reps=0;
+			items.removeElement(item);
+			int here=0;
+			while(here<items.size())
+			{
+				Item item2=(Item)items.elementAt(here);
+				if(item2==null)
+					break;
+				else
+				{
+					String str2=null;
+					if((!useName)&&(!item2.name().equals(item2.Name())))
+						str2=item2.name()+" is here.";
+					else
+						str2=(useName||(item2.displayText().length()==0))?item2.name():item2.displayText();
+					if(str2.length()==0)
+						items.removeElement(item2);
+					else
+					if((str.equals(str2))
+					&&(Sense.seenTheSameWay(mob,item,item2)))
+					{
+						reps++;
+						items.removeElement(item2);
+					}
+					else
+						here++;
+				}
+			}
+			if(Sense.canBeSeenBy(item,mob)
+			&&((item.displayText().length()>0)
+			    ||Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
+				||useName))
+			{
+				if(reps==0)	say.append("      ");
+				else
+				if(reps>=99)
+					say.append("("+Util.padLeftPreserve(""+(reps+1),3)+") ");
+				else
+				if(reps>0)
+					say.append(" ("+Util.padLeftPreserve(""+(reps+1),2)+") ");
+				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+					say.append("^H("+CMClass.className(item)+")^N ");
+				say.append("^I");
+				if(useName)
+					say.append(item.name());
+				else
+				if(!item.name().equals(item.Name()))
+					say.append(item.name()+" is here.");
+				else
+				if(item.displayText().length()>0)
+					say.append(item.displayText());
+				else
+					say.append(item.name());
+				say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
+			}
+		}
+		return say;
+	}
 }
