@@ -72,7 +72,13 @@ public class GenCoins extends GenItem implements Coins
 	    recoverEnvStats();
 	}
 	public double getDenomination(){return denomination;}
-	public void setDenomination(double valuePerCoin){denomination=valuePerCoin; setDynamicMaterial();}
+	public void setDenomination(double valuePerCoin)
+	{
+	    if(valuePerCoin==0.0)
+	        valuePerCoin=1.0;
+	    denomination=valuePerCoin; 
+	    setDynamicMaterial();
+	}
 	public double getTotalValue(){return Util.mul(getDenomination(),getNumberOfCoins());}
 	public String getCurrency(){return currency;}
 	public void setCurrency(String named){currency=named; setDynamicMaterial();}

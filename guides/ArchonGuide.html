@@ -1312,7 +1312,14 @@ bring one of these things into the world, you have only to call its true name
 using the create command.&nbsp; To create a Longsword, for instance, issue the 
 command "create Longsword".&nbsp; It will then fall from the sky onto the floor 
 or ground before you.</P>
-<P><STRONG><A name=geni1>The "GenItem", "GenCoins", "GenResource", "GenMirror", and 
+<P>To find out what items are available for you to create, you can enter "list 
+items".&nbsp; Entering "create &lt;itemname&gt;" will prove the true incantation 
+for almost all of the items on this list.&nbsp; An exception, however, is the 
+GenRideable.&nbsp; Since there is both an Item and a&nbsp;MOB version of that 
+name, you will need to further qualify your create command by entering "create 
+item GenRideable" or "create mob GenRideable".</P>
+<P><STRONG><A name=geni1>The 
+"GenItem", "GenCoins", "GenResource", "GenMirror", and 
 "GenReadable"</A></STRONG></P>
 <P>These represent some of the basic items your ordinary 
 denizen will use every day.&nbsp; A GenItem and 
@@ -1379,7 +1386,7 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
     <TD><EM>Is This Item 
       Gettable</EM></TD>
     <TD>whether the item can be picked up off the ground. 
-  </TD></TR>
+    </TD></TR>
   <TR>
     <TD><EM>Is This Item 
       Droppable</EM></TD>
@@ -1393,7 +1400,8 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
   <TR>
     <TD><EM>Is This Item 
       Locatable</EM></TD>
-    <TD>whether the item can be found with the Locate Object spell. </TD></TR>
+    <TD>whether the item can be found with the Locate 
+      Object spell. </TD></TR>
   <TR>
     <TD><EM>Is This Item 
       Readable</EM></TD>
@@ -2628,6 +2636,12 @@ again.&nbsp; Summoning a goblin into an ordinary room&nbsp;is as simple as
 entering "create Goblin".&nbsp; This will create a standard Goblin in the room 
 you are standing in.&nbsp; To make him stay there, even after you reboot, you 
 must save the room as described in the section below on saving rooms.</P>
+<P>To find out what mobs are available for you to create, you can enter "list 
+mobs".&nbsp; Entering "create &lt;mobname&gt;" will prove the true incantation 
+for almost all of the creatures on this list.&nbsp; An exception, however, is 
+the GenRideable.&nbsp; Since there is both an Item and a&nbsp;MOB version of 
+that name, you will need to further qualify your create command by entering 
+"create mob GenRideable" or "create item GenRideable".</P>
 <P>If&nbsp;you wish to create your goblin a Grid-type 
 locale, extra consideration is required.&nbsp; Locale types like MountainsGrid, 
 WoodsGrid, WoodsMaze, PlainsGrid, DesertMaze, etc.. can all contain nasty 

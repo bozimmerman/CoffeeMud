@@ -39,4 +39,3 @@ cinnamon rolls	FOOD		28	dough	2	cinnamon	1	sugar	1
 % pizza	FOOD		29	dough	2	tomatoes	1	cheese	1	meat	-1	beef	-1
 swiss steak	FOOD		29	beef	1	tomatoes	1	carrots	1	water	1		
 shortcake	FOOD		30	dough	1	sugar	1	eggs	1				
-chocolate cream pie	FOOD		86	chocolate	2	cream	1	pie crust	1	hot fudge	1		

@@ -380,7 +380,7 @@ public class Cooking extends CraftingSkill
 		randomRecipeFix(mob,allRecipes,commands,autoGenerate);
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Recipe",16)+" ingredients required\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("^xRecipe",20)+"^.^? ^wIngredients required^N\n\r");
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				Vector Vr=(Vector)allRecipes.elementAt(r);
@@ -391,7 +391,7 @@ public class Cooking extends CraftingSkill
 					int level=Util.s_int((String)Vr.elementAt(RCP_LEVEL));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(Util.capitalize(replacePercent(item,"")),16)+" ");
+						buf.append("^c"+Util.padRight(Util.capitalize(replacePercent(item,"")),20)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 						{
 							String ingredient=(String)Vr.elementAt(vr);

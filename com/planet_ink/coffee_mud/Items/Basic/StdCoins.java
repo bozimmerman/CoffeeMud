@@ -97,7 +97,7 @@ public class StdCoins extends StdItem implements Coins
 	    }
 	    else
 	    {
-	        setDenomination(0.0);
+	        setDenomination(1.0);
 	        setCurrency("");
 	    }
 	}

@@ -33,8 +33,4 @@ beef sandwich	FOOD		28	beef	1	bread	1	greens	-1	tomatoes	-1
 pork sandwich	FOOD		29	Pork	1	bread	1	greens	-1	tomatoes	-1						
 garden salad	FOOD		29	greens	1	tomatoes	1	onions	1	peppers	1	carrots	1				
 chef's salad	FOOD		30	greens	1	poultry	1	eggs	1	tomatoes	1	peppers	1	carrots	1	onions	1
-chocolate covered nuts	FOOD		54	nuts	1	chocolate	1	cherries	1								
-PB&B sandwich	FOOD		67	bread	1	peanut butter	1	banana	1	grape jelly	1						
 strawberry shortcake	FOOD		76	shortcake	1	strawberries	1	cream	2								
-chococream cherry candies	FOOD		88	cream	1	chocolate	1	nuts	1	cherries	1	hot fudge	1				
-peanut butter candies	FOOD		91	peanut butter	1	wheat	1	sugar	1	hot fudge	1						
