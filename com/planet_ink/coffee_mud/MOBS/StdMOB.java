@@ -409,7 +409,7 @@ public class StdMOB implements MOB
 	}
 	public boolean amActive()
 	{
-		return pleaseDestroy;
+		return !pleaseDestroy;
 	}
 
 
