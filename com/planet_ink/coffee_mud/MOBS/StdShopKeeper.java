@@ -708,6 +708,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					mob.setMoney(mob.getMoney()+val);
 					mob.recoverEnvStats();
 					mob.tell(name()+" pays you "+val+" for "+msg.tool().name()+".");
+					if(msg.tool() instanceof LandTitle)
+					{
+						Object removeKey=null;
+						for(Enumeration e=titleSets.keys();e.hasMoreElements();)
+						{ Object O=e.nextElement();if(titleSets.get(O)==msg.tool()) removeKey=O; break;}
+						if(removeKey!=null) titleSets.remove(removeKey);
+					}
 					if(msg.tool() instanceof Item)
 					{
 						Item item=(Item)msg.tool();
@@ -828,6 +835,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						FullMsg msg2=new FullMsg(mob,product,this,CMMsg.MSG_GET,null);
 						if((product instanceof LandTitle)||(location().okMessage(mob,msg2)))
 						{
+							if(product instanceof LandTitle)
+							{
+								Object removeKey=null;
+								for(Enumeration e=titleSets.keys();e.hasMoreElements();)
+								{ Object O=e.nextElement();if(titleSets.get(O)==product) removeKey=O; break;}
+								if(removeKey!=null) titleSets.remove(removeKey);
+							}
 							tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 							location().send(mob,msg2);
 							if((msg.tool() instanceof InnKey)&&(location()!=null))

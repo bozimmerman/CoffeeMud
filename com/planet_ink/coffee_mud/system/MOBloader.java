@@ -518,6 +518,18 @@ public class MOBloader
 		mob.playerStats().setUpdated(System.currentTimeMillis());
 	}
 
+	public static void DBUpdatePassword(MOB mob)
+	{
+		if(mob.Name().length()==0) return;
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return;
+
+		DBConnector.update(
+		"UPDATE CMCHAR SET"
+		+"  CMPASS='"+pstats.password()+"'"
+		+"  WHERE CMUSERID='"+mob.Name()+"'");
+	}
+	
 	public static void DBUpdateJustMOB(MOB mob)
 	{
 		if(mob.Name().length()==0)
@@ -849,6 +861,44 @@ public class MOBloader
 		return returnable;
 	}
 
+	public static String[] DBFetchEmailData(String name)
+	{
+		String[] data=new String[2];
+		for(Enumeration e=CMMap.players();e.hasMoreElements();)
+		{
+			MOB M=(MOB)e.nextElement();
+			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
+			{
+				data[0]=M.playerStats().getEmail();
+				data[1]=""+((M.getBitmap()&MOB.ATT_AUTOFORWARD)==MOB.ATT_AUTOFORWARD);
+				return data;
+			}
+		}
+		DBConnection D=null;
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
+			if(R!=null)
+			while(R.next())
+			{
+				String username=DBConnector.getRes(R,"CMUSERID");
+				int btmp=Util.s_int(DBConnector.getRes(R,"CMBTMP"));
+				String temail=DBConnector.getRes(R,"CMEMAL");
+				R.close();
+				DBConnector.DBDone(D);
+				data[0]=temail;
+				data[1]=""+((btmp&MOB.ATT_AUTOFORWARD)==MOB.ATT_AUTOFORWARD);
+				return data;
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+		return null;
+	}
 	public static String DBEmailSearch(String email)
 	{
 		DBConnection D=null;

@@ -232,6 +232,7 @@ public class Skill_Juggle extends BardSkill
 			}
 			else
 			if((invoker()!=null)
+			&&(!unInvoked)
 			&&(affected==invoker())
 			&&(msg.amISource(invoker()))
 			&&(msg.target() instanceof Armor)

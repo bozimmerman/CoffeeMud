@@ -36,6 +36,8 @@ public interface DatabaseEngine
 	public void DBDeleteClan(Clan C);
 	public void DBCreateClan(Clan C);
 	public void DBUpdateEmail(MOB mob);
+	public void DBUpdatePassword(MOB mob);
+	public String[] DBFetchEmailData(String name);
 	public String DBEmailSearch(String email);
 	public Vector getUserList();
 	public Vector userList();

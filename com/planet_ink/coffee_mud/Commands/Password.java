@@ -22,6 +22,7 @@ public class Password extends StdCommand
 		}
 		pstats.setPassword(Util.combine(commands,1));
 		mob.tell("Your password has been changed.");
+		CMClass.DBEngine().DBUpdatePassword(mob);
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

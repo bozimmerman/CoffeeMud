@@ -44,6 +44,7 @@ public class TelnetSession extends Thread implements Session
 
 	private boolean lastWasCR=false;
 	private boolean lastWasLF=false;
+	private boolean suspendCommandLine=false;
 
 	public long lastStart=System.currentTimeMillis();
 	public long lastStop=System.currentTimeMillis();
@@ -1079,30 +1080,39 @@ public class TelnetSession extends Thread implements Session
 		if((in==null)||(out==null)) return "";
 		input=new StringBuffer("");
 		long start=System.currentTimeMillis();
-		while((!killFlag)
-		&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
+		try
 		{
-			try
+			suspendCommandLine=true;
+			while((!killFlag)
+			&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
 			{
-				int c=in.read();
-				if(c<0)
-					throw new IOException("reset by peer");
-				else
-				if(c==255) handleIAC();
-				else
-				if (appendInput(c))
-					break;
+				try
+				{
+					int c=in.read();
+					if(c<0)
+						throw new IOException("reset by peer");
+					else
+					if(c==255) handleIAC();
+					else
+					if (appendInput(c))
+						break;
+				}
+				catch(InterruptedIOException e)
+				{
+				}
 			}
-			catch(InterruptedIOException e)
-			{
-			}
-		}
-		if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
-			throw new java.io.InterruptedIOException("Timed Out.");
+			suspendCommandLine=false;
+			if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
+				throw new java.io.InterruptedIOException("Timed Out.");
 		
-		String inStr=preFilter(input);
-		input=new StringBuffer("");
-		return inStr;
+			String inStr=preFilter(input);
+			input=new StringBuffer("");
+			return inStr;
+		}
+		finally
+		{
+			suspendCommandLine=false;
+		}
 	}
 	
 	public String blockingIn()
@@ -1322,6 +1332,7 @@ public class TelnetSession extends Thread implements Session
 				mob=newMob;
 				status=Session.STATUS_LOGIN;
 				Command C=CMClass.getCommand("FrontLogin");
+				String input=null;
 				if((C!=null)&&(C.execute(mob,null)))
 				{
 					status=Session.STATUS_LOGIN2;
@@ -1334,7 +1345,13 @@ public class TelnetSession extends Thread implements Session
 						status=Session.STATUS_OK;
 						lastLoopTop=System.currentTimeMillis();
 						waiting=true;
-						String input=readlineContinue();
+						if(suspendCommandLine)
+						{
+							input=null;
+							try{Thread.sleep(100);}catch(Exception e){}
+						}
+						else
+							input=readlineContinue();
 						if(input!=null)
 						{
 							lastKeystroke=System.currentTimeMillis();

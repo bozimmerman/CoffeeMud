@@ -269,7 +269,10 @@ public class BaseGenerics extends StdCommand
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a new one to reset\n\r:","");
 		if((newName.length()>0)&&(E.playerStats()!=null))
+		{
 			E.playerStats().setPassword(newName);
+			CMClass.DBEngine().DBUpdatePassword(E);
+		}
 		else
 			mob.tell("(no change)");
 	}

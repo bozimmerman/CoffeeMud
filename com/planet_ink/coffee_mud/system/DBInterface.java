@@ -31,6 +31,12 @@ public class DBInterface implements DatabaseEngine
 	public String DBEmailSearch(String email)
 	{ return MOBloader.DBEmailSearch(email);}
 	
+	public void DBUpdatePassword(MOB mob)
+	{ MOBloader.DBUpdatePassword(mob);}
+	
+	public String[] DBFetchEmailData(String name)
+	{ return MOBloader.DBFetchEmailData(name);}
+		
 	public void DBUpdateFollowers(MOB mob)
 	{MOBloader.DBUpdateFollowers(mob);}
 

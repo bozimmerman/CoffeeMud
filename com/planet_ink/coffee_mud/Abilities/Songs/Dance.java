@@ -104,6 +104,7 @@ public class Dance extends StdAbility
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if((invoker()!=null)
+		&&(!unInvoked)
 		&&(affected==invoker())
 		&&(msg.amISource(invoker()))
 		&&(msg.target() instanceof Armor)

@@ -362,7 +362,7 @@ public class JewelMaking extends CraftingSkill
 			int[] pm={EnvResource.MATERIAL_MITHRIL,EnvResource.MATERIAL_METAL};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"metal",pm,
-												1,otherRequired,null,
+												otherRequired.length()>0?1:0,otherRequired,null,
 												false,
 												autoGenerate);
 			if(data==null) return false;

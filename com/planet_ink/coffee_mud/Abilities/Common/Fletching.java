@@ -216,7 +216,7 @@ public class Fletching extends CraftingSkill
 			int[] pm={EnvResource.MATERIAL_WOODEN};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"wood",pm,
-												1,otherRequired,null,
+												(otherRequired.length()>0)?1:0,otherRequired,null,
 												false,
 												autoGenerate);
 			if(data==null) return false;

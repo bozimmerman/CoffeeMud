@@ -26,6 +26,7 @@ public interface MOB
 	public static final int ATT_AUTOIMPROVE=16384;
 	public static final int ATT_NOTEACH=32768;
 	public static final int ATT_AUTONOTIFY=65536;
+	public static final int ATT_AUTOFORWARD=131070;
 
 	public static final long SHEATH_TIME=3*MudHost.TICK_TIME;
 
