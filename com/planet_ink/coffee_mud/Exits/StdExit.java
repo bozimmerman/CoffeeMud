@@ -149,6 +149,15 @@ public class StdExit implements Exit
 		case Affect.TYP_OK_ACTION:
 			return true;
 		case Affect.TYP_ENTER:
+			if((!Sense.canBeSeenBy(this,affect.source()))
+			&&(Sense.canSee(affect.source()))
+			&&(!Sense.isGlowing(this))
+			&&((Sense.isHidden(this)&&(!Sense.canSeeHidden(affect.source())))
+				||(Sense.isInvisible(this)&&(!Sense.canSeeInvisible(affect.source())))))
+			{
+				mob.tell("You can't go that way.");
+				return false;
+			}
 			if((hasADoor)&&(!isOpen))
 			{
 				mob.tell("The "+doorName+" is "+closeName+"d.");

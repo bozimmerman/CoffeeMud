@@ -366,6 +366,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						ExternalPlay.quickSay(this,mob,"I won't buy that back unless you put the key in it.",true,false);
 						return false;
 					}
+					FullMsg msg=new FullMsg(affect.source(),affect.tool(),Affect.MSG_DROP,null);
+					if(!mob.location().okAffect(msg))
+						return false;
 					return true;
 				}
 				ExternalPlay.quickSay(this,mob,"I'm sorry, I'm not buying those.",true,false);

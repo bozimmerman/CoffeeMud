@@ -113,7 +113,7 @@ public class MOBTeacher extends CombatAbilities
 				}
 				if(s.toUpperCase().startsWith("ME "))
 					s=s.substring(3).trim();
-				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase());
+				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),mob.charStats().getMyClass().ID());
 				if(myAbility==null)
 				{
 					ExternalPlay.quickSay(monster,mob,"I'm sorry, I've never heard of "+s,true,false);

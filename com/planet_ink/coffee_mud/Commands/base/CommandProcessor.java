@@ -209,6 +209,9 @@ public class CommandProcessor
 				case CommandSet.FOLLOW:
 					grouping.follow(mob,commands);
 					break;
+				case CommandSet.GAIN:
+					abilityEvoker.gain(mob,commands);
+					break;
 				case CommandSet.GET:
 					itemUsage.get(mob,commands);
 					break;

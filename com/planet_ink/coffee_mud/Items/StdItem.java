@@ -457,7 +457,12 @@ public class StdItem implements Item
 		if(affect.targetCode()==Affect.NO_EFFECT)
 			return true;
 		else
-		if((Util.bset(affect.targetCode(),Affect.MASK_MAGIC))&&(!this.isGettable()))
+		if((Util.bset(affect.targetCode(),Affect.MASK_MAGIC))
+		&&(!this.isGettable())
+		&&((this.displayText().length()==0)
+		   ||((affect.tool()!=null)
+			&&(affect.tool() instanceof Ability)
+			&&(((Ability)affect.tool()).quality()==Ability.MALICIOUS))))
 		{
 			mob.tell("Please don't do that.");
 			return false;

@@ -15,6 +15,7 @@ public class Common extends Language
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		CMAble.addCharAbilityMapping("All",1,ID(),100,true);
+		profficiency=100;
 	}
 	public Environmental newInstance()
 	{

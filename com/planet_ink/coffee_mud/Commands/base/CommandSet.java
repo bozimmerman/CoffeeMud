@@ -137,6 +137,7 @@ public class CommandSet extends Hashtable
 	public static final int RETIRE=125;
 	public static final int TYPO=126;
 	public static final int IDEA=127;
+	public static final int GAIN=128;
 
 	public CommandSet()
 	{
@@ -203,6 +204,7 @@ public class CommandSet extends Hashtable
 		put("FLEE",new Integer(FLEE));
 		put("FOLLOW",new Integer(FOLLOW));
 			put("FOL",new Integer(FOLLOW));
+		put("GAIN",new Integer(GAIN));
 		put("GET",new Integer(GET));
 		put("GIVE",new Integer(GIVE));
 		put("GO",new Integer(GO));

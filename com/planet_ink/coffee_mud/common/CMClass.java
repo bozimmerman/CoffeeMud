@@ -199,6 +199,18 @@ public class CMClass extends ClassLoader
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}
+	public static Ability findAbility(String calledThis, String charClassName)
+	{
+		Vector ables=new Vector();
+		for(int a=0;a<abilities.size();a++)
+			if(CMAble.getQualifyingLevel(charClassName,((Ability)abilities.elementAt(a)).ID())>=0)
+				ables.addElement(abilities.elementAt(a));
+		Ability A=(Ability)CoffeeUtensils.fetchEnvironmental(ables,calledThis,true);
+		if(A==null)
+			A=(Ability)CoffeeUtensils.fetchEnvironmental(ables,calledThis,false);
+		if(A!=null)A=(Ability)A.newInstance();
+		return A;
+	}
 
 	public static Environmental getEnv(Vector fromThese, String calledThis)
 	{

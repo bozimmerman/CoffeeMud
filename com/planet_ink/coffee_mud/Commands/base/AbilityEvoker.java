@@ -7,6 +7,14 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class AbilityEvoker
 {
+	public void gain(MOB mob, Vector commands)
+		throws Exception
+	{
+		Vector V=new Vector();
+		V.addElement("SAY");
+		V.addElement(Util.combine(commands,0));
+		ExternalPlay.doCommand(mob,V);
+	}
 	private boolean evokedBy(Ability thisAbility, String thisWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().size();i++)
@@ -160,7 +168,12 @@ public class AbilityEvoker
 
 
 		String abilityName=Util.combine(commands,0);
-		Ability myAbility=mob.fetchAbility(abilityName);
+		Ability realAbility=CMClass.findAbility(abilityName,student.charStats().getMyClass().ID());
+		Ability myAbility=null;
+		if(realAbility!=null) 
+			myAbility=mob.fetchAbility(realAbility.ID());
+		else
+			myAbility=mob.fetchAbility(abilityName);
 		if(myAbility==null)
 		{
 			mob.tell("You don't seem to know "+abilityName+".");
