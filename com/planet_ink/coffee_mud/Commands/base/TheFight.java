@@ -54,7 +54,7 @@ public class TheFight
 			{
 				mob.location().send(mob,msg);
 				target.curState().setHitPoints(0);
-				die(mob,target);
+				postDeath(mob,target,null);
 			}
 		}
 		else
@@ -132,6 +132,33 @@ public class TheFight
 	}
 
 
+	public void postDeath(MOB source, MOB target, Affect addHere)
+	{
+		if(target==null) return;
+		Room deathRoom=target.location();
+		if(deathRoom==null) return;
+		FullMsg msg=new FullMsg(target,null,null,
+			Affect.MSG_OK_VISUAL,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r",
+			Affect.MSG_OK_VISUAL,null,
+			Affect.MSG_OK_VISUAL,"^F<S-NAME> is DEAD!!!^?\n\r");
+		FullMsg msg2=new FullMsg(target,null,source,
+			Affect.MSG_DEATH,null,
+			Affect.MSG_DEATH,null,
+			Affect.MSG_DEATH,null);
+		if(addHere!=null)
+		{
+			addHere.addTrailerMsg(msg);
+			addHere.addTrailerMsg(msg2);
+		}
+		else
+		if((deathRoom!=null)&&(deathRoom.okAffect(msg)))
+		{
+			deathRoom.send(target,msg);
+			if(deathRoom.okAffect(msg2))
+				deathRoom.send(target,msg2);
+		}
+	}
+	
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target))) 
@@ -201,16 +228,10 @@ public class TheFight
 		}
 	}
 
-	public void die(MOB source, MOB target)
+	public void justDie(MOB source, MOB target)
 	{
 		if(target==null) return;
 		Room deathRoom=target.location();
-		FullMsg msg=new FullMsg(target,null,null,
-			Affect.MSG_DEATH,"^F^*!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^?^.\n\r",
-			Affect.MSG_DEATH,"ARGH!",
-			Affect.MSG_DEATH,"^F<S-NAME> is DEAD!!!^?\n\r");
-		if((deathRoom!=null)&&(deathRoom.okAffect(msg)))
-			deathRoom.send(target,msg);
 		
 		Hashtable beneficiaries=new Hashtable();
 		if((source!=null)&&(source.charStats()!=null))

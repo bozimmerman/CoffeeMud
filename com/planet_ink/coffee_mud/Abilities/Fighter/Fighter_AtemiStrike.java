@@ -30,7 +30,7 @@ public class Fighter_AtemiStrike extends StdAbility
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				ExternalPlay.die(invoker,mob);
+				ExternalPlay.postDeath(invoker,mob,null);
 		}
 	}
 

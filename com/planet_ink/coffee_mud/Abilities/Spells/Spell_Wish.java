@@ -275,7 +275,7 @@ public class Spell_Wish extends Spell
 				{ 
 					int exp=mob.getExperience();
 					//int hp=((MOB)target).curState().getHitPoints();
-					ExternalPlay.die(mob,(MOB)target);
+					ExternalPlay.postDeath(mob,(MOB)target,null);
 					if(mob.getExperience()>exp)
 					{
 						baseLoss=mob.getExperience()-exp;

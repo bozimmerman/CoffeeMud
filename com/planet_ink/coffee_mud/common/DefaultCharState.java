@@ -197,7 +197,7 @@ public class DefaultCharState implements Cloneable, CharState
 						mob.tell("YOU ARE DYING OF THIRST!");
 					if(hungry)
 						mob.tell("YOU ARE DYING OF HUNGER!");
-					ExternalPlay.die(null,mob);
+					ExternalPlay.postDeath(null,mob,null);
 				}
 				else
 				if(ticksThirsty>DEATH_THIRST_TICKS-30)

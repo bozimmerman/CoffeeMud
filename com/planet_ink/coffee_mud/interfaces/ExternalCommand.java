@@ -8,7 +8,8 @@ public interface ExternalCommand
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
 	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success);
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless);
-	public void die(MOB source, MOB target);
+	public void justDie(MOB source, MOB target);
+	public void postDeath(MOB source, MOB target,Affect addHere);
 	public void drawIfNecessary(MOB mob);
 
 	// other actions

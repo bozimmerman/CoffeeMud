@@ -117,9 +117,13 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postWeaponDamage(source,target,weapon,success);
 	}
-	public static void die(MOB source, MOB target)
+	public static void postDeath(MOB source, MOB target,Affect addHere)
 	{
-		if(player!=null) player.die(source,target);
+		if(player!=null) player.postDeath(source,target,addHere);
+	}
+	public static void justDie(MOB source, MOB target)
+	{
+		if(player!=null) player.justDie(source,target);
 	}
 	public static Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{

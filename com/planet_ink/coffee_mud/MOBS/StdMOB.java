@@ -1323,6 +1323,13 @@ public class StdMOB implements MOB
 
 			switch(affect.sourceMinor())
 			{
+			case Affect.TYP_DEATH:
+				if((affect.tool()!=null)&&(affect.tool() instanceof MOB))
+					ExternalPlay.justDie((MOB)affect.tool(),this);
+				else
+					ExternalPlay.justDie(null,this);
+				tell(this,affect.target(),affect.sourceMessage());
+				break;
 			case Affect.TYP_REBUKE:
 				if(((affect.target()==null)&&(getLeigeID().length()>0))
 				||((affect.target()!=null)&&(affect.target().name().equals(getLeigeID()))))
@@ -1437,7 +1444,7 @@ public class StdMOB implements MOB
 				if(dmg>0)
 				{
 					if((!curState().adjHitPoints(-dmg,maxState()))&&(location()!=null))
-						ExternalPlay.die(affect.source(),this);
+						ExternalPlay.postDeath(affect.source(),this,affect);
 					else
 					if((curState().getHitPoints()<getWimpHitPoint())&&(isInCombat()))
 						ExternalPlay.flee(this,"");
