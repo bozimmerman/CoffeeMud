@@ -23,6 +23,9 @@ public class MUD extends Thread implements Host
 	private String offlineReason=new String("UNKNOWN");
 	public boolean isOK = false;
 	
+	public ServerSocket servsock=null;
+
+
 	public MUD()
 	{
 		super("MUD-host");
@@ -182,8 +185,7 @@ public class MUD extends Thread implements Host
 	{
 		int q_len = 6;
 		Socket sock=null;
-		ServerSocket servsock=null;
-
+		boolean serverOK = false;
 
 		if (!isOK)	return;
 		if ((page == null) || (!page.loaded))
@@ -195,6 +197,9 @@ public class MUD extends Thread implements Host
 		try
 		{
 			servsock=new ServerSocket(page.getInt("PORT"), q_len);
+
+			//jef
+			serverOK = true;
 
 			while(true)
 			{
@@ -208,6 +213,8 @@ public class MUD extends Thread implements Host
 						introText != null ? introText.toString() : null);
 					S.start();
 					Sessions.addElement(S);
+					// jef: whoops...
+					sock = null;
 				}
 				else
 				{
@@ -225,11 +232,18 @@ public class MUD extends Thread implements Host
 		}
 		catch(Throwable t)
 		{
-			if((t!=null)&&(t instanceof Exception))
-				Log.errOut("MUD",((Exception)t));
-			Log.sysOut("MUD","CoffeeMud Server thread stopped!.");
+			if (servsock == null && serverOK)
+			{
+				if((t!=null)&&(t instanceof Exception))
+					Log.errOut("MUD",((Exception)t));
+			}
+
+			if (!serverOK)
+				isOK = false;
 		}
 		
+		Log.sysOut("MUD","CoffeeMud Server cleaning up.");
+
 		try
 		{
 			if(servsock!=null)
@@ -240,6 +254,25 @@ public class MUD extends Thread implements Host
 		catch(IOException e)
 		{
 		}
+
+		Log.sysOut("MUD","CoffeeMud Server thread stopped!");
+	}
+
+	
+	public void interrupt()
+	{
+		if(servsock!=null)
+		{
+			try
+			{
+				servsock.close();
+				servsock = null;
+			}
+			catch(IOException e)
+			{
+			}
+		}
+		super.interrupt();
 	}
 
 

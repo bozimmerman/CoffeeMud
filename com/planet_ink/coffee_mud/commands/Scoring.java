@@ -27,10 +27,10 @@ public class Scoring
 			msg.append("(nothing you can see right now)");
 		else
 		if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
-			msg.append("(some gold coins you can't see)");
+			msg.append("(some ^ygold^? coins you can't see)");
 		else
 		if(mob.getMoney()>0)
-			msg.append(mob.getMoney()+" gold coins.\n\r");
+			msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
 		return msg;
 	}
 	public void inventory(MOB mob)
@@ -209,7 +209,7 @@ public class Scoring
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^B"+Util.padRight(thisAbility.name(),19) + "^?");
+					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^N"+Util.padRight(thisAbility.name(),19));
 				}
 			}
 			if(thisLine.length()>0)
@@ -250,13 +250,13 @@ public class Scoring
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("["+Util.padRight(""+l,3)+"] "+Util.padRight(thisAbility.name(),20));
+					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "+Util.padRight(thisAbility.name(),20));
 				}
 			}
 			if(thisLine.length()>0)
 			{
 				if(msg.length()==0)
-					msg.append("\n\r[Lvl]                     [Lvl]                     [Lvl]\n\r");
+					msg.append("\n\r^N[^HLvl^?]                     [^HLvl^?]                     [^HLvl^?]\n\r");
 				msg.append(thisLine);
 			}
 		}
@@ -273,15 +273,15 @@ public class Scoring
 		for(int l=0;l<16;l++)
 		{
 			int wornCode=new Double(Math.pow(new Integer(2).doubleValue(),new Integer(l).doubleValue())).intValue();
-			String header="("+Sense.wornLocation(wornCode)+")";
-			header+=Util.SPACES.substring(0,20-header.length())+": ";
+			String header="^N(^H"+Sense.wornLocation(wornCode)+"^?)";
+			header+=Util.SPACES.substring(0,26-header.length())+": ^B";
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item thisItem=mob.fetchInventory(i);
 				if((thisItem.location()==null)&&(thisItem.amWearingAt(wornCode)))
 				{
 					if(Sense.canBeSeenBy(thisItem,seer))
-						msg.append(header+thisItem.name()+Sense.colorCodes(thisItem,seer)+"\n\r");
+						msg.append(header+thisItem.name()+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 					else
 						foundButUnseen=true;
 				}

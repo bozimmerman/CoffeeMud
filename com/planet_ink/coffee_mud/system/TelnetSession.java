@@ -665,27 +665,22 @@ public class TelnetSession extends Thread implements Session
 									if (csl > 0)
 										buf.replace(loop,loop+2 ,colorEscStr);
 								}
-
+								if (loop == 0)
+									firstAlpha = csl;
 								if (csl == 0)
 								{
 									// remove the color code
 									buf.deleteCharAt(loop);
 									buf.deleteCharAt(loop);
+									loop-=1;
 								}
-
-
-								//jef: assumption - only one color code at start
-								//  of string - dumb, but I'm lazy
-								if (loop == 0)
+								else
 								{
-									firstAlpha = csl;
+									loop+=csl-1;	// already processed 1 char
+									len+=csl;		// does not count for any length
 								}
-
-								loop+=csl-1;	// already processed 1 char
-								len+=csl;		// does not count for any length
 							}
 						}
-
 						break;
 					}
 				default:
@@ -695,6 +690,7 @@ public class TelnetSession extends Thread implements Session
 				loop++;
 			}
 
+			
 			if((len<buf.length())&&(loop!=lastSp)&&(lastSp>=0))
 			{
 				if(buf.charAt(lastSp+1)==' ')
