@@ -144,11 +144,11 @@ public class Pregnancy extends StdAbility
 
 					}
 					else
-					if((months<=1)&&(Dice.rollPercentage()<2))
-						mob.tell("Ouch! -- You had a nasty labor pain.");
+					if((months<=1)&&(Dice.rollPercentage()==1))
+						mob.tell("Ouch! -- You had a labor pain!");
 					else
-					if((months<=3)&&(Dice.rollPercentage()==1))
-						mob.tell("You had a labor pain.");
+					if((months<=3)&&(Dice.rollPercentage()==1)&&(Dice.rollPercentage()==1))
+						mob.tell("You feel a kick in your gut.");
 				}
 			}
 		}

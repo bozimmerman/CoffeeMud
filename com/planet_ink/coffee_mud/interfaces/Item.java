@@ -112,41 +112,41 @@ public interface Item extends Environmental, Rider
 		0.25, //ON_LEFT_FINGER
 		0.25, //ON_RIGHT_FINGER
 		0.5, //ON_FEET
-		1.0, //HELD
-		1.0, //WIELD
+		1.5, //HELD
+		0.5, //WIELD
 		0.5, //ON_HANDS
 		0.01, //FLOATING_NEARBY
-		0.5, //ON_WAIST
+		1.0, //ON_WAIST
 		2.0, //ON_LEGS
 		0.25, //ON_EYES
 		0.25, //ON_EARS
-		1.0, //ABOUT_BODY
+		1.5, //ABOUT_BODY
 		0.01, //ON_MOUTH
 		1.0  //ON_BACK
 	};
 	
 	public static final double[][] wornHeavyPts={ // cloth, leather, metal
-		{0.0,	0.0,	0.0},//inventory
-		{1.0,	2.0,	3.0},//ON_HEAD
-		{0.5,	1.0,	1.5},//ON_NECK
-		{3.0,	6.0,	9.0},//ON_TORSO
-		{1.5,	3.0,	4.5},//ON_ARMS
-		{0.5,	1.0,	1.5},//ON_LEFT_WRIST
-		{0.5,	1.0,	1.5},//ON_RIGHT_WRIST
-		{0.0,	0.0,	0.0},//ON_LEFT_FINGER
-		{0.0,	0.0,	0.0},//ON_RIGHT_FINGER
-		{1.0,	2.0,	3.0},//ON_FEET
-		{1.5,	3.0,	4.5},//HELD
-		{1.5,	3.0,	4.5},//WIELD
-		{0.5,	1.0,	1.5},//ON_HANDS
-		{0.0,	0.0,	0.0},//FLOATING_NEARBY
+		{0.0,	0.0,	0.0}, //inventory
+		{1.0,	2.0,	3.0}, //ON_HEAD
+		{0.5,	1.0,	1.5}, //ON_NECK
+		{3.0,	6.0,	9.0}, //ON_TORSO
+		{1.5,	3.0,	4.5}, //ON_ARMS
+		{0.5,	1.0,	1.5}, //ON_LEFT_WRIST
+		{0.5,	1.0,	1.5}, //ON_RIGHT_WRIST
+		{0.1,	0.2,	0.25},//ON_LEFT_FINGER
+		{0.1,	0.2,	0.25},//ON_RIGHT_FINGER
+		{1.0,	2.0,	3.0}, //ON_FEET
+		{1.5,	3.0,	4.5}, //HELD
+		{1.5,	3.0,	4.5}, //WIELD
+		{0.5,	1.0,	1.5}, //ON_HANDS
+		{0.0,	0.0,	0.0}, //FLOATING_NEARBY
 		{0.5,	1.0,	1.5}, //ON_WAIST
-		{1.5,	3.0,	4.5},//ON_LEGS
-		{0.0,	0.0,	0.0},//ON_EYES
-		{0.0,	0.0,	0.0},//ON_EARS
-		{1.0,	2.0,	3.0},//ABOUT_BODY
-		{0.0,	0.0,	0.0},//ON_MOUTH
-		{1.0,	2.0,	3.0}//ON_BACK
+		{1.5,	3.0,	4.5}, //ON_LEGS
+		{0.1,	0.2,	0.25},//ON_EYES
+		{0.1,	0.2,	0.25},//ON_EARS
+		{1.0,	2.0,	3.0}, //ABOUT_BODY
+		{0.1,	0.2,	0.25},//ON_MOUTH
+		{1.0,	2.0,	3.0}  //ON_BACK
 	};
 	public static final String[] wornLocation={
 		"inventory",

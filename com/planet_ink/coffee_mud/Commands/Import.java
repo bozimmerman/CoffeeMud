@@ -3266,6 +3266,7 @@ public class Import extends StdCommand
 							}
 
 						}
+						else
 						if(codeType.equals("A"))
 						{
 							int dis=0;

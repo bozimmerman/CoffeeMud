@@ -2352,9 +2352,9 @@ public class CoffeeMaker
 		else
 		if(I instanceof Armor)
 		{
-			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,50,60,70,80,90};
+			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
 			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
-			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,47};
+			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
 			double pts=0.0;
 			if(level<0) level=0;
 			int materialCode=material&EnvResource.MATERIAL_MASK;

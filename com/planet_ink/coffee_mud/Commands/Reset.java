@@ -226,63 +226,6 @@ public class Reset extends StdCommand
 			mob.tell(V.size()+" records done.");
 		}
 		else
-		if(s.equalsIgnoreCase("mobstats"))
-		{
-			s="room";
-			if(commands.size()>1) s=(String)commands.elementAt(1);
-			Vector rooms=new Vector();
-			if(s.toUpperCase().startsWith("ROOM"))
-				rooms.addElement(mob.location());
-			else
-			if(s.toUpperCase().startsWith("AREA"))
-				for(Enumeration e=mob.location().getArea().getMap();e.hasMoreElements();)
-					rooms.addElement(((Room)e.nextElement()));
-			else
-			if(s.toUpperCase().startsWith("WORLD"))
-				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-					rooms.addElement(((Room)e.nextElement()));
-			else
-			{
-				mob.tell("Try ROOM, AREA, or WORLD.");
-				return false;
-			}
-
-			for(Enumeration r=rooms.elements();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				R.getArea().toggleMobility(false);
-				CoffeeUtensils.resetRoom(R);
-				boolean somethingDone=false;
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					MOB M=R.fetchInhabitant(m);
-					if((M.isEligibleMonster())
-					&&(M.getStartRoom()==R))
-					{
-						MOB M2=
-						M.baseCharStats().getCurrentClass().buildMOB(null,
-																	M.baseEnvStats().level(),
-																	M.getAlignment(),
-																	M.baseEnvStats().weight(),
-																	M.getWimpHitPoint(),
-																	(char)M.baseCharStats().getStat(CharStats.GENDER));
-						M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
-						M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
-						M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
-						M.recoverEnvStats();
-						somethingDone=true;
-					}
-				}
-				if(somethingDone)
-				{
-					mob.tell("Room "+R.roomID()+" done.");
-					CMClass.DBEngine().DBUpdateMOBs(R);
-				}
-				R.getArea().toggleMobility(true);
-			}
-
-		}
-		else
 		if(s.equalsIgnoreCase("arearoomids"))
 		{
 			Area A=mob.location().getArea();
@@ -345,26 +288,6 @@ public class Reset extends StdCommand
 					CMClass.DBEngine().DBUpdateExits(R);
 				}
 				mob.session().print(".");
-			}
-			mob.session().println("done!");
-		}
-		else
-		if(s.equalsIgnoreCase("conquestinstall"))
-		{
-			if(mob.session()==null) return false;
-			mob.session().print("working...");
-			for(Enumeration r=CMMap.areas();r.hasMoreElements();)
-			{
-				Area A=(Area)r.nextElement();
-				Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-				if((V==null)||(V.size()==0))
-				{
-					Behavior B=CMClass.getBehavior("Conquerable");
-					B.setParms("JOURNAL=\"The Conquest Chronicles\" LAW=TRUE");
-					A.addBehavior(B);
-					CMClass.DBEngine().DBUpdateArea(A.Name(),A);
-					mob.session().print(".");
-				}
 			}
 			mob.session().println("done!");
 		}
@@ -443,42 +366,6 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("smalleropendoors"))
-		{
-			if(mob.session()==null) return false;
-			mob.session().print("working...");
-			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				boolean changed=false;
-				if(R.roomID().length()>0)
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				{
-					Exit E=R.rawExits()[d];
-					if((E!=null)
-					&&(E.isGeneric())
-					&&(!E.hasADoor())
-					&&E.name().equalsIgnoreCase("the ground")
-					&&(!E.isReadable())
-					&&(E.temporaryDoorLink().length()==0)
-					&&(E.displayText().equals(E.description())))
-					{
-						Exit E2=CMClass.getExit("OpenDescriptable");
-						E2.setMiscText(E.displayText());
-						R.rawExits()[d]=E2;
-						changed=true;
-					}
-				}
-				if(changed)
-				{
-					Log.sysOut("Reset","Fat doors in "+R.roomID()+" fixed.");
-					CMClass.DBEngine().DBUpdateExits(R);
-				}
-				mob.session().print(".");
-			}
-			mob.session().println("done!");
-		}
-		else
 		if(s.equalsIgnoreCase("worldmatconfirm"))
 		{
 			if(mob.session()==null) return false;
@@ -540,6 +427,75 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
+		if(s.equalsIgnoreCase("worlditemfixer"))
+		{
+			if(mob.session()==null) return false;
+			mob.session().print("working...");
+			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			{
+				Area A=(Area)a.nextElement();
+				A.toggleMobility(false);
+				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.roomID().length()>0)
+					{
+						CoffeeUtensils.resetRoom(R);
+						boolean changedMOBS=false;
+						boolean changedItems=false;
+						for(int i=0;i<R.numItems();i++)
+						{
+							Item I=R.fetchItem(i);
+							if(itemFix(I))
+								changedItems=true;
+						}
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							MOB M=R.fetchInhabitant(m);
+							if(M==mob) continue;
+							if(!M.isEligibleMonster()) continue;
+							for(int i=0;i<M.inventorySize();i++)
+							{
+								Item I=M.fetchInventory(i);
+								if(itemFix(I))
+									changedMOBS=true;
+							}
+							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
+							if(SK!=null)
+							{
+								Vector V=SK.getUniqueStoreInventory();
+								for(int i=V.size()-1;i>=0;i--)
+								{
+									Environmental E=(Environmental)V.elementAt(i);
+									if(E instanceof Item)
+									{
+										Item I=(Item)E;
+										boolean didSomething=false;
+										didSomething=itemFix(I);
+										changedMOBS=changedMOBS||didSomething;
+										if(didSomething)
+										{
+											int numInStock=SK.numberInStock(I);
+											int stockPrice=SK.stockPrice(I);
+											SK.delStoreInventory(I);
+											SK.addStoreInventory(I,numInStock,stockPrice);
+										}
+									}
+								}
+							}
+						}
+						if(changedItems)
+							CMClass.DBEngine().DBUpdateItems(R);
+						if(changedMOBS)
+							CMClass.DBEngine().DBUpdateMOBs(R);
+						mob.session().print(".");
+					}
+				}
+				A.toggleMobility(true);
+			}
+			mob.session().println("done!");
+		}
+		else
 		if(s.equalsIgnoreCase("bedfixer"))
 		{
 			if(mob.session()==null) return false;
@@ -561,67 +517,6 @@ public class Reset extends StdCommand
 						}
 						if(changedItems)
 							CMClass.DBEngine().DBUpdateItems(R);
-						mob.session().print(".");
-					}
-				}
-				A.toggleMobility(true);
-			}
-			mob.session().println("done!");
-		}
-		else
-		if(s.equalsIgnoreCase("worlddescclear"))
-		{
-			if(mob.session()==null) return false;
-			mob.session().print("working...");
-			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
-			{
-				Area A=(Area)a.nextElement();
-				A.toggleMobility(false);
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(R.roomID().length()>0)
-					{
-						CoffeeUtensils.resetRoom(R);
-						boolean changedMOBS=false;
-						boolean changedItems=false;
-						for(int i=0;i<R.numItems();i++)
-							changedItems=changedItems||rightImportMat(mob,R.fetchItem(i),true)>=0;
-						for(int m=0;m<R.numInhabitants();m++)
-						{
-							MOB M=R.fetchInhabitant(m);
-							if(M==mob) continue;
-							if(!M.isEligibleMonster()) continue;
-							for(int i=0;i<M.inventorySize();i++)
-								changedMOBS=changedMOBS||rightImportMat(mob,M.fetchInventory(i),true)>=0;
-							ShopKeeper SK=CoffeeUtensils.getShopKeeper(M);
-							if(SK!=null)
-							{
-								Vector V=SK.getUniqueStoreInventory();
-								for(int i=V.size()-1;i>=0;i--)
-								{
-									Environmental E=(Environmental)V.elementAt(i);
-									if(E instanceof Item)
-									{
-										Item I=(Item)E;
-										boolean didSomething=false;
-										didSomething=rightImportMat(mob,I,true)>=0;
-										changedMOBS=changedMOBS||didSomething;
-										if(didSomething)
-										{
-											int numInStock=SK.numberInStock(I);
-											int stockPrice=SK.stockPrice(I);
-											SK.delStoreInventory(I);
-											SK.addStoreInventory(I,numInStock,stockPrice);
-										}
-									}
-								}
-							}
-						}
-						if(changedItems)
-							CMClass.DBEngine().DBUpdateItems(R);
-						if(changedMOBS)
-							CMClass.DBEngine().DBUpdateMOBs(R);
 						mob.session().print(".");
 					}
 				}
@@ -815,9 +710,197 @@ public class Reset extends StdCommand
 			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREARACEMAT *, MOBSTATS ROOM *, MOBSTATS AREA *, MOBSTATS WORLD *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
 		return false;
 	}
-	public int ticksToExecute(){return 0;}
-	public boolean canBeOrdered(){return true;}
-	public boolean arcCommand(){return true;}
+	
+	public boolean itemFix(Item I)
+	{
+		if((I instanceof Weapon)||(I instanceof Armor))
+		{
+			int lvl=I.envStats().level();
+			Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
+			if(ADJ==null) ADJ=I.fetchEffect("Prop_HaveAdjuster");
+			if(ADJ==null) ADJ=I.fetchEffect("Prop_RideAdjuster");
+			Ability RES=I.fetchEffect("Prop_WearResister");
+			if(RES==null) RES=I.fetchEffect("Prop_HaveResister");
+			Ability CAST=I.fetchEffect("Prop_WearSpellCast");
+			int castMul=1;
+			if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast");
+			if(CAST==null) CAST=I.fetchEffect("Prop_UseSpellCast2");
+			if(CAST==null) CAST=I.fetchEffect("Prop_HaveSpellCast");
+			if(CAST==null){ CAST=I.fetchEffect("Prop_FightSpellCast"); castMul=-1;}
+			int[] LVLS=getItemLevels(I,ADJ,RES,CAST);
+			LVLS[0]=timsBaseLevel(I,ADJ);
+			LVLS[1]=levelsFromAbility(I);
+			LVLS[2]=levelsFromCaster(I,CAST);
+			LVLS[3]=levelsFromAdjuster(I,ADJ);
+			int TLVL=totalLevels(LVLS);
+			if(TLVL<=0) return false;
+			
+		}
+		return false;
+	}
+	
+	public int[] getItemLevels(Item I, Ability ADJ, Ability RES, Ability CAST)
+	{
+		int[] LVLS=new int[5];
+		LVLS[0]=timsBaseLevel(I,ADJ);
+		LVLS[1]=levelsFromAbility(I);
+		LVLS[2]=levelsFromCaster(I,CAST);
+		LVLS[3]=levelsFromAdjuster(I,ADJ);
+		return LVLS;
+	}
+	
+	public int totalLevels(int[] levels)
+	{ 
+		int lvl=levels[0]; 
+		for(int i=1;i<levels.length;i++) 
+		    lvl+=levels[i]; 
+		return lvl;
+	}
+	
+	public static int timsBaseLevel(Item I, Ability ADJ)
+	{
+		int level=0;
+		int otherDam=0;
+		int otherAtt=0;
+		int otherArm=0;
+		if(ADJ!=null)
+		{
+			otherArm=Util.getParmPlus(ADJ.text(),"arm")*-1;
+			otherAtt=Util.getParmPlus(ADJ.text(),"att");
+			otherDam=Util.getParmPlus(ADJ.text(),"dam");
+		}
+		int curArmor=I.baseEnvStats().armor()+otherArm;
+		double curAttack=new Integer(I.baseEnvStats().attackAdjustment()+otherAtt).doubleValue();
+		double curDamage=new Integer(I.baseEnvStats().damage()+otherDam).doubleValue();
+		if(I instanceof Weapon)
+		{
+			double weight=new Integer(I.baseEnvStats().weight()).doubleValue();
+			if(weight<1.0) weight=1.0;
+			double range=new Integer(I.maxRange()).doubleValue();
+			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
+		}
+		else
+		{
+			long worndata=I.rawProperLocationBitmap();
+			double weightpts=0;
+			for(int i=0;i<Item.wornWeights.length-1;i++)
+			{
+				if(Util.isSet(worndata,i))
+				{
+					weightpts+=Item.wornWeights[i+1];
+					if(!I.rawLogicalAnd()) break;
+				}
+			}
+			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
+			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
+			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
+			double pts=0.0;
+			int materialCode=I.material()&EnvResource.MATERIAL_MASK;
+			int[] useArray=null;
+			switch(materialCode)
+			{
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL:
+			case EnvResource.MATERIAL_PRECIOUS:
+			case EnvResource.MATERIAL_ENERGY:
+				useArray=metalPoints;
+				break;
+			case EnvResource.MATERIAL_PLASTIC:
+			case EnvResource.MATERIAL_LEATHER:
+			case EnvResource.MATERIAL_GLASS:
+			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_WOODEN:
+				useArray=leatherPoints;
+				break;
+			default:
+				useArray=clothPoints;
+				break;
+			}
+			int which=(int)Math.round(Util.div(curArmor,weightpts)+1);
+			if(which<0) which=0;
+			if(which>=useArray.length)
+				which=useArray.length-1;
+			level=useArray[which];
+		}
+		return level;
+	}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int levelsFromAbility(Item savedI)
+	{ return savedI.baseEnvStats().ability()*5;}
+	
+	public int levelsFromCaster(Item savedI, Ability CAST)
+	{
+		int level=0;
+		if(CAST!=null)
+		{
+			String ID=CAST.ID().toUpperCase();
+			Vector theSpells=new Vector();
+			String names=CAST.text();
+			int del=names.indexOf(";");
+			while(del>=0)
+			{
+				String thisOne=names.substring(0,del);
+				Ability A=(Ability)CMClass.getAbility(thisOne);
+				if(A!=null)	theSpells.addElement(A);
+				names=names.substring(del+1);
+				del=names.indexOf(";");
+			}
+			Ability A=(Ability)CMClass.getAbility(names);
+			if(A!=null) theSpells.addElement(A);
+			for(int v=0;v<theSpells.size();v++)
+			{
+				A=(Ability)theSpells.elementAt(v);
+				int mul=1;
+				if(A.quality()==Ability.MALICIOUS) mul=-1;
+				if(ID.indexOf("HAVE")>=0)
+					level+=(mul*CMAble.lowestQualifyingLevel(A.ID()));
+				else
+					level+=(mul*CMAble.lowestQualifyingLevel(A.ID())/2);
+			}
+		}
+		return level;
+	}
+	public int levelsFromAdjuster(Item savedI, Ability ADJ)
+	{
+		int level=0;
+		if(ADJ!=null)
+		{
+			String newText=ADJ.text();
+			int ab=Util.getParmPlus(newText,"abi");
+			int arm=Util.getParmPlus(newText,"arm")*-1;
+			int att=Util.getParmPlus(newText,"att");
+			int dam=Util.getParmPlus(newText,"dam");
+			if(savedI instanceof Weapon)
+				level+=(arm*2);
+			else
+			if(savedI instanceof Armor)
+			{
+				level+=(att/2);
+				level+=(dam*3);
+			}
+			level+=ab*5;
+			
+			
+			int dis=Util.getParmPlus(newText,"dis");
+			if(dis!=0) level+=5;
+			int sen=Util.getParmPlus(newText,"sen");
+			if(sen!=0) level+=5;
+			level+=(int)Math.round(5.0*Util.getParmDoublePlus(newText,"spe"));
+			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+			{
+				int stat=Util.getParmPlus(newText,CharStats.TRAITS[i].substring(0,3).toLowerCase());
+				int max=Util.getParmPlus(newText,("max"+(CharStats.TRAITS[i].substring(0,3).toLowerCase())));
+				level+=(stat*5);
+				level+=(max*5);
+			}
+
+			int hit=Util.getParmPlus(newText,"hit");
+			int man=Util.getParmPlus(newText,"man");
+			int mv=Util.getParmPlus(newText,"mov");
+			level+=(hit/5);
+			level+=(man/5);
+			level+=(mv/5);
+		}
+		return level;
+	}
 }

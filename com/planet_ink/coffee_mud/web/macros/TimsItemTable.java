@@ -152,75 +152,62 @@ public class TimsItemTable extends StdWebMacro
 		int otherArm=0;
 		if(ADJ!=null)
 		{
-			//otherArm=Util.getParmPlus(ADJ.text(),"arm")*-1;
-			//otherAtt=Util.getParmPlus(ADJ.text(),"att");
-			//otherDam=Util.getParmPlus(ADJ.text(),"dam");
+			otherArm=Util.getParmPlus(ADJ.text(),"arm")*-1;
+			otherAtt=Util.getParmPlus(ADJ.text(),"att");
+			otherDam=Util.getParmPlus(ADJ.text(),"dam");
 		}
 		int curArmor=savedI.baseEnvStats().armor()+otherArm;
-		int curFight=(savedI.baseEnvStats().damage()+savedI.baseEnvStats().attackAdjustment()+otherDam+otherAtt)/2;
+		double curAttack=new Integer(savedI.baseEnvStats().attackAdjustment()+otherAtt).doubleValue();
+		double curDamage=new Integer(savedI.baseEnvStats().damage()+otherDam).doubleValue();
 		if(I instanceof Weapon)
 		{
-			int lastFight=Integer.MAX_VALUE;
-			int newFight=Integer.MIN_VALUE;
-			while(level<200)
-			{
-				vals=CoffeeMaker.timsItemAdjustments(I,
-													level,
-													I.material(),
-													I.baseEnvStats().weight(),
-													I.rawLogicalAnd()?2:1,
-													((Weapon)I).weaponClassification(),
-													I.maxRange(),
-													0);
-				int newDam=Util.s_int((String)vals.get("DAMAGE"));
-				int newAtt=Util.s_int((String)vals.get("ATTACK"));
-				lastFight=newFight;
-				newFight=((newDam+newAtt)/2);
-				if(curFight==((newDam+newAtt)/2))
-					break;
-				else
-				if(curFight==(((newDam+newAtt)/2)+1))
-					break;
-				else
-				if((newFight>curFight)
-				&&(lastFight<curFight))
-				{
-					level--;
-					break;
-				}
-				level++;
-			}
+			double weight=new Integer(I.baseEnvStats().weight()).doubleValue();
+			if(weight<1.0) weight=1.0;
+			double range=new Integer(savedI.maxRange()).doubleValue();
+			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
 		}
 		else
 		{
-			int lastArm=Integer.MAX_VALUE;
-			int newArm=Integer.MIN_VALUE;
-			while(level<200)
+			long worndata=savedI.rawProperLocationBitmap();
+			double weightpts=0;
+			for(int i=0;i<Item.wornWeights.length-1;i++)
 			{
-				vals=CoffeeMaker.timsItemAdjustments(I,
-													level,
-													I.material(),
-													I.baseEnvStats().weight(),
-													I.rawLogicalAnd()?2:1,
-													0,
-													0,
-													I.rawProperLocationBitmap());
-				lastArm=newArm;
-				newArm=Util.s_int((String)vals.get("ARMOR"));
-				if(newArm==curArmor)
-					break;
-				else
-				if(newArm==curArmor-1)
-					break;
-				else
-				if((newArm>curArmor)
-				&&(lastArm<curArmor))
+				if(Util.isSet(worndata,i))
 				{
-					level--;
-					break;
+					weightpts+=Item.wornWeights[i+1];
+					if(!I.rawLogicalAnd()) break;
 				}
-				level++;
 			}
+			int[] leatherPoints={ 0, 0, 1, 5,10,16,23,31,40,49,58,67,76,85,94};
+			int[] clothPoints=  { 0, 3, 7,12,18,25,33,42,52,62,72,82,92,102};
+			int[] metalPoints=  { 0, 0, 0, 0, 1, 3, 5, 8,12,17,23,30,38,46,54,62,70,78,86,94};
+			double pts=0.0;
+			int materialCode=savedI.material()&EnvResource.MATERIAL_MASK;
+			int[] useArray=null;
+			switch(materialCode)
+			{
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL:
+			case EnvResource.MATERIAL_PRECIOUS:
+			case EnvResource.MATERIAL_ENERGY:
+				useArray=metalPoints;
+				break;
+			case EnvResource.MATERIAL_PLASTIC:
+			case EnvResource.MATERIAL_LEATHER:
+			case EnvResource.MATERIAL_GLASS:
+			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_WOODEN:
+				useArray=leatherPoints;
+				break;
+			default:
+				useArray=clothPoints;
+				break;
+			}
+			int which=(int)Math.round(Util.div(curArmor,weightpts)+1);
+			if(which<0) which=0;
+			if(which>=useArray.length)
+				which=useArray.length-1;
+			level=useArray[which];
 		}
 		level+=I.baseEnvStats().ability()*5;
 		if(CAST!=null)
@@ -257,9 +244,14 @@ public class TimsItemTable extends StdWebMacro
 			int arm=Util.getParmPlus(newText,"arm")*-1;
 			int att=Util.getParmPlus(newText,"att");
 			int dam=Util.getParmPlus(newText,"dam");
-			level+=(arm*3);
-			level+=(att/2);
-			level+=(dam*3);
+			if(savedI instanceof Weapon)
+				level+=(arm*2);
+			else
+			if(savedI instanceof Armor)
+			{
+				level+=(att/2);
+				level+=(dam*3);
+			}
 			level+=ab*5;
 			
 			

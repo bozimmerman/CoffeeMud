@@ -13,7 +13,8 @@ public class Fighter_AtemiStrike extends StdAbility
 	private static final String[] triggerStrings = {"ATEMI"};
 	public int quality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int canAffectCode(){return 0;}
+	protected int canAffectCode(){return 0; }
+	protected int overrideMana(){return 100; }
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_AtemiStrike();	}
 	public int classificationCode(){ return Ability.SKILL;}

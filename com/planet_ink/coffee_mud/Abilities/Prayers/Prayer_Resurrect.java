@@ -75,6 +75,35 @@ public class Prayer_Resurrect extends Prayer
 						body.destroy();
 						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 						mob.location().recoverRoomStats();
+						Vector whatsToDo=Util.parse(CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERDEATH));
+						for(int w=0;w<whatsToDo.size();w++)
+						{
+							String whatToDo=(String)whatsToDo.elementAt(w);
+							if(whatToDo.startsWith("UNL"))
+								rejuvedMOB.charStats().getCurrentClass().level(rejuvedMOB);
+							else
+							if(whatToDo.startsWith("ASTR"))
+							{}
+							else
+							if(whatToDo.startsWith("PUR"))
+							{}
+							else
+							if((whatToDo.trim().equals("0"))||(Util.s_int(whatToDo)>0))
+							{
+								int expLost=Util.s_int(whatToDo);
+								rejuvedMOB.tell("^F^*You regain "+expLost+" experience points.^?^.");
+								MUDFight.postExperience(rejuvedMOB,null,null,expLost,false);
+							}
+							else
+							if(whatToDo.length()<3)
+								continue;
+							else
+							{
+								int expLost=100*rejuvedMOB.envStats().level();
+								rejuvedMOB.tell("^F^*You regain "+expLost+" experience points.^?^.");
+								MUDFight.postExperience(rejuvedMOB,null,null,expLost,false);
+							}
+						}
 					}
 					else
 						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");

@@ -358,6 +358,12 @@ public class CoffeeUtensils
 		if(room==null) return;
 		boolean mobile=room.getMobility();
 		room.toggleMobility(false);
+		for(int t=0;t<room.numEffects();t++)
+			if(room.fetchEffect(t) instanceof LandTitle)
+			{
+				CMClass.DBEngine().DBUpdateItems(room);
+				break;
+			}
 		CoffeeUtensils.clearTheRoom(room);
 		CMClass.DBEngine().DBReadContent(room,null);
 		room.toggleMobility(mobile);

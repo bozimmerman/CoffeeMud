@@ -163,8 +163,7 @@ public class UtiliThread extends Thread
 					if(time>(check*10))
 					{
 						Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
-						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus());
-						Log.errOut("UtiliThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", "+"LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 						status="killing session ";
 						S.setKillFlag(true);
 						S.interrupt();
@@ -177,16 +176,16 @@ public class UtiliThread extends Thread
 					if(time>check)
 					{
 						Log.errOut("UtiliThread","Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
-						Log.errOut("UtiliThread","STATUS  was :"+S.getStatus());
-						Log.errOut("UtiliThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+						if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
+							Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					}
 				}
 				else
 				if(time>(60000))
 				{
 					Log.errOut("UtiliThread","KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+", out for "+time);
-					Log.errOut("UtiliThread","STATUS  was :"+S.getStatus());
-					Log.errOut("UtiliThread","LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+					if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
+					Log.errOut("UtiliThread","STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
 					status="killing session ";
 					S.setKillFlag(true);
 					S.interrupt();

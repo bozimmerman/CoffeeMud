@@ -11,7 +11,7 @@ public class Spell_GreaterInvisibility extends Spell
 	public String name(){return "Greater Invisibility";}
 	public String displayText(){return "(Greater Invisibility)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_GreaterInvisibility();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ILLUSION;}
 
@@ -69,6 +69,7 @@ public class Spell_GreaterInvisibility extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fade(s) from view!");
+				
 				beneficialAffect(mob,target,0);
 			}
 		}
