@@ -560,6 +560,11 @@ public class Channels
 		}
 		if(auctionA==null)
 		{
+			if(commands.size()==1)
+			{
+				mob.tell("There is nothing up for auction right now.");
+				return;
+			}
 			Vector V=new Vector();
 			if((commands.size()>2)
 			&&((Util.s_int((String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))

@@ -346,7 +346,7 @@ public class StdExit implements Exit
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
-		if(((Sense.canBeSeenBy(this,mob))||isOpen())
+		if(((Sense.canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
 		&&(Sense.isSeen(this)))
 			if(isOpen())
 			{
@@ -354,7 +354,7 @@ public class StdExit implements Exit
 					Say.append("darkness");
 				else
 				if(displayText().length()>0)
-					Say.append(displayText());
+					Say.append(displayText()+Sense.colorCodes(this,mob));
 				else
 				if(room!=null)
 					Say.append(room.displayText()+Sense.colorCodes(room,mob));

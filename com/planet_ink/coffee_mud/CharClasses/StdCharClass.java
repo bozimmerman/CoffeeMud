@@ -19,7 +19,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public int getPracsFirstLevel(){return 5;}
 	public int getTrainsFirstLevel(){return 3;}
 	public int getLevelsPerBonusDamage(){ return 1;}
-	public int getMovementMultiplier(){return 6;}
+	public int getMovementMultiplier(){return 5;}
 	protected int maxStat[]={18,18,18,18,18,18};
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 

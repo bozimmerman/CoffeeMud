@@ -19,8 +19,8 @@ public class StdAbility implements Ability, Cloneable
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}
-	protected int trainsRequired(){return 1;}
-	protected int practicesRequired(){return 0;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 	protected int practicesToPractice(){return 1;}
 	public long flags(){return 0;}
 	protected int overrideMana(){return -1;}

@@ -548,7 +548,8 @@ public class Generic
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		int[] disps={EnvStats.IS_HIDDEN,
+		int[] disps={EnvStats.IS_INVISIBLE,
+					 EnvStats.IS_HIDDEN,
 					 EnvStats.IS_NOT_SEEN,
 					 EnvStats.IS_BONUS,
 					 EnvStats.IS_GLOWING,
@@ -559,7 +560,8 @@ public class Generic
 					 EnvStats.IS_GOOD};
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			String[] briefs={"hide",
+			String[] briefs={"invisible",
+							 "hide",
 							 "unseen",
 							 "magical",
 							 "glowing",

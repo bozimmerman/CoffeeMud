@@ -16,8 +16,8 @@ public class Language extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	protected int trainsRequired(){return 0;}
-	protected int practicesRequired(){return 1;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_LANGTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_LANGPRACCOST);}
 	public int classificationCode(){return Ability.LANGUAGE;}
 	public Environmental newInstance(){	return new Language();}
 

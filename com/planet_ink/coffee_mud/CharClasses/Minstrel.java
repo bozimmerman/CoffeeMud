@@ -131,8 +131,6 @@ public class Minstrel extends StdCharClass
 		return true;
 	}
 
-	public int getMovementMultiplier(){return 18;}
-	
 	public String statQualifications(){return "Charisma 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

@@ -10,8 +10,8 @@ public class Scrapping extends CommonSkill
 	public String name(){ return "Scrapping";}
 	private static final String[] triggerStrings = {"SCRAP","SCRAPPING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected int trainsRequired(){return 1;}
-	protected int practicesRequired(){return 0;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
 	private Item found=null;
 	private Item fire=null;

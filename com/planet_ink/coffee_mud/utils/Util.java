@@ -130,11 +130,11 @@ public class Util
 			compresser.setInput(s.getBytes("UTF-8"));
 			compresser.finish();
 			
-			if(s.length()>encodeBuffer.length)
-				encodeBuffer=new byte[s.length()];
-
 			synchronized (encodeBuffer)
 			{
+				if(s.length()>encodeBuffer.length)
+					encodeBuffer=new byte[s.length()];
+
 				int len = compresser.deflate(encodeBuffer);
 				result = new byte[len];
 				System.arraycopy(encodeBuffer, 0, result, 0, len);

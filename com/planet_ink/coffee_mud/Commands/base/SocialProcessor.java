@@ -84,6 +84,8 @@ public class SocialProcessor
 								}
 								msg.trailerMsgs().clear();
 							}
+							if(mob.playerStats()!=null)
+								mob.playerStats().setReplyTo(target);
 							if(target.playerStats()!=null)
 								target.playerStats().setReplyTo(mob);
 						}

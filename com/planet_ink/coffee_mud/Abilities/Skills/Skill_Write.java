@@ -15,8 +15,8 @@ public class Skill_Write extends StdAbility
 	private static final String[] triggerStrings = {"WRITE","WR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
-	protected int trainsRequired(){return 0;}
-	protected int practicesRequired(){return 3;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
 	public Environmental newInstance(){	return new Skill_Write();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

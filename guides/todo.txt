@@ -1,7 +1,5 @@
-Spell--Arcane Mark. Leaves writing in the description field of item. Alteration Magic. At least lvl 10
-Arcane Possession. Wear Zapper Abjuration spell. Probably LVL 14
-Boomerang--Conjuration 20-24. Item returns to owner
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
+wizinfo channel
 
 Programming.html update
 	Updates to Locales, Mobs, Items for misc. methods.
@@ -41,9 +39,9 @@ parse out all the commands into classes, so that access can be class based, and 
 could you expand the languages to include GOBLIN, GIANT, TERRAN (earth), AQUAN (water), IGNAN(fire), and AURIAL(air), and SYLVAN (woodland)? How much work is this?
 BOOKS! paper with multiple pages to post on. Add to the papermaking skill. Also add Poster, Banner, and Screen.
 TaxCollector Area Behavior. Designated mob wanders an area and charges taxesbased on the last time that you have paid taxes.
-PROPERTY--InnateFear. Monster flees from listed MOBs.
 a behavior that watches the weather... in foul or cold weather, items of certain material types would cost more
 readables that can load text from a text file
+ability to have random formulaic weapons, armor.
 
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.

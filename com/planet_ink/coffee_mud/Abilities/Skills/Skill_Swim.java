@@ -17,8 +17,8 @@ public class Skill_Swim extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Swim();}
-	protected int trainsRequired(){return 0;}
-	protected int practicesRequired(){return 2;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -13,8 +13,8 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	public int overrideMana(){return 5;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	protected int trainsRequired(){return 1;}
-	protected int practicesRequired(){return 0;}
+	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLTRAINCOST);}
+	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
 	private static boolean mapped=false;
 	protected Vector baseInventory=new Vector();
