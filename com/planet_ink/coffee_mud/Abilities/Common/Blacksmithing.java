@@ -218,6 +218,16 @@ public class Blacksmithing extends CommonSkill
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+		if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
+		{
+			String of=mob.session().prompt("What is this a statue of?","");
+			if(of.trim().length()==0)
+				return false;
+			building.setName(itemName+" of "+of.trim());
+			building.setDisplayText(itemName+" of "+of.trim()+" is here");
+			building.setDescription(itemname+" of "+of.trim()+". ");
+		}
+		else
 		if(building instanceof Container)
 		{
 			((Container)building).setCapacity(capacity+woodRequired);
