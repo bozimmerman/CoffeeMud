@@ -320,12 +320,18 @@ public class MUDFight
 		if((source!=null)&&(source.charStats()!=null))
 		{
 			CharClass C=source.charStats().getCurrentClass();
-			if(source.isMonster()
-			   &&(source.amFollowing()!=null)
-			   &&(!source.amFollowing().isMonster())
-			   &&(source.amFollowing().charStats()!=null))
-				C=source.amFollowing().charStats().getCurrentClass();
-
+			MOB M=source;
+			HashSet checked=new HashSet();
+			checked.add(M);
+			while(M.isMonster()
+			&&(M.amFollowing()!=null)
+			&&(!checked.contains(M.amFollowing())))
+			{
+				M=M.amFollowing();
+				checked.add(M);
+			}
+			if((!M.isMonster())&&(M.charStats()!=null))
+				C=M.charStats().getCurrentClass();
 			beneficiaries=C.dispenseExperience(source,target);
 		}
 

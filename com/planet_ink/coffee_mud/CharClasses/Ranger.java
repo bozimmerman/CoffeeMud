@@ -173,13 +173,13 @@ public class Ranger extends StdCharClass
 	protected boolean isValidBeneficiary(MOB killer, 
 									   MOB killed, 
 									   MOB mob,
-									   Hashtable followers)
+									   HashSet followers)
 	{
 		if((mob!=null)
 		&&(!mob.amDead())
 		&&((!mob.isMonster())||(!Sense.isAnimalIntelligence(mob)))
 		&&((mob.getVictim()==killed)
-		 ||(followers.get(mob)!=null)
+		 ||(followers.contains(mob))
 		 ||(mob==killer)))
 			return true;
 		return false;
