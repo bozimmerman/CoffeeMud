@@ -16,6 +16,11 @@ public class Socials
 	public Hashtable soc=new Hashtable();
 	public String socialsList=null;
 
+	public void addSocial(Social S)
+	{
+		soc.put(S.Social_name,S);
+	}
+	
 	public void load(String newFilename)
 	{
 		filename=newFilename;
@@ -27,10 +32,11 @@ public class Socials
 			while(getline!=null)
 			{
 				int x=getline.indexOf("\t");
-				if(x>0)
+				if(x>=0)
 				{
 					Social socobj=new Social();
 					String s=getline.substring(0,x).toUpperCase();
+					if(s.length()>0)
 					switch(s.charAt(0))
 					{
 					case 'W':
@@ -45,7 +51,11 @@ public class Socials
 					case 'O':
 						socobj.sourceCode=Affect.MSG_NOISYMOVEMENT;
 						break;
+					default:
+						socobj.sourceCode=Affect.MSG_HANDS;
+						break;
 					}
+					if(s.length()>1)
 					switch(s.charAt(1))
 					{
 					case 'T':
@@ -67,6 +77,10 @@ public class Socials
 					case 'O':
 						socobj.othersCode=Affect.MSG_OK_VISUAL;
 						socobj.targetCode=Affect.MSG_OK_VISUAL;
+						break;
+					default:
+						socobj.othersCode=Affect.MSG_NOISYMOVEMENT;
+						socobj.targetCode=Affect.MSG_NOISYMOVEMENT;
 						break;
 					}
 					getline=getline.substring(x+1);
@@ -96,12 +110,11 @@ public class Socials
 									else
 										socobj.See_when_no_target=getline;
 
-									soc.put(socobj.Social_name,socobj);
 								}
 							}
+							soc.put(socobj.Social_name,socobj);
 						}
 					}
-
 				}
 				getline=reader.readLine();
 			}
@@ -172,10 +185,27 @@ public class Socials
 		{
 			FileWriter writer=new FileWriter(filename,false);
 			StringBuffer buf=new StringBuffer("");
+			Vector V=new Vector();
 			for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 			{
+				com.planet_ink.coffee_mud.Commands.base.Social S1=(com.planet_ink.coffee_mud.Commands.base.Social)e.nextElement();
+				for(int i=0;i<V.size();i++)
+				{
+					com.planet_ink.coffee_mud.Commands.base.Social S2=(com.planet_ink.coffee_mud.Commands.base.Social)
+						V.elementAt(i);
+					if(S1.equals(S2))
+					{
+						V.insertElementAt(S1,i);
+						break;
+					}
+				}
+				if(!V.contains(S1))
+					V.addElement(S1);
+			}
+			for(int v=0;v<V.size();v++)
+			{
 				com.planet_ink.coffee_mud.Commands.base.Social
-					I=(com.planet_ink.coffee_mud.Commands.base.Social)e.nextElement();
+					I=(com.planet_ink.coffee_mud.Commands.base.Social)V.elementAt(v);
 
 				switch(I.sourceCode)
 				{
@@ -190,6 +220,9 @@ public class Socials
 					break;
 				case Affect.MSG_NOISYMOVEMENT:
 					buf.append('o');
+					break;
+				default:
+					buf.append(' ');
 					break;
 				}
 				switch(I.targetCode)
@@ -208,6 +241,9 @@ public class Socials
 					break;
 				case Affect.MSG_OK_VISUAL:
 					buf.append('o');
+					break;
+				default:
+					buf.append(' ');
 					break;
 				}
 				buf.append('\t');

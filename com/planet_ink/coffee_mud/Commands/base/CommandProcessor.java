@@ -23,7 +23,7 @@ public class CommandProcessor
 	public Lister sysopLister=new Lister();
 	public TheFight theFight=new TheFight(grouping);
 	public CreateEdit createEdit=new CreateEdit(socials);
-	public Import importer=new Import();
+	public Import importer=new Import(socials);
 	public SysopItemUsage sysopItemUsage=new SysopItemUsage();
 	public SysOpSkills sysopSkills=new SysOpSkills();
 	public XMLIO xmlIO=new XMLIO();

@@ -2,12 +2,20 @@ package com.planet_ink.coffee_mud.Commands.base.sysop;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.Commands.base.*;
 import java.io.*;
 import java.util.*;
 
 
 public class Import
 {
+	Socials socials=null;
+						
+	public Import(Socials theSocials)
+	{
+		socials=theSocials;
+	}
+	
 	private String getAreaName(Vector V)
 	{
 		// find area line first
@@ -2314,6 +2322,33 @@ public class Import
 		return null;
 	}
 
+	
+	public String replaceAll(String str, String thisStr, String withThisStr)
+	{
+		for(int i=str.length()-1;i>=0;i--)
+		{
+			if(str.charAt(i)==thisStr.charAt(0))
+				if(str.substring(i).startsWith(thisStr))
+					str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+		}
+		return str;
+	}
+	public String socialFix(String str)
+	{
+		
+		str=replaceAll(str,"$n","<S-NAME>");
+		str=replaceAll(str,"$N","<T-NAMESELF>");
+		str=replaceAll(str,"$m","<S-HIM-HER>");
+		str=replaceAll(str,"$M","<T-HIM-HER>");
+		str=replaceAll(str,"$s","<S-HIS-HER>");
+		str=replaceAll(str,"$S","<T-HIS-HER>");
+		str=replaceAll(str,"$e","<S-HE-SHE>");
+		str=replaceAll(str,"$E","<T-HE-SHE>");
+		str=replaceAll(str,"`","\'");
+		if(str.equals("$")) return "";
+		return str.trim();
+	}
+	
 	public Room findRoomSomewhere(String roomID, String areaName, Hashtable doneRooms)
 	{
 		if(roomID.startsWith("#"))
@@ -2467,21 +2502,157 @@ public class Import
 		// sort the data into general blocks, and identify area
 		mob.tell("\n\rSorting data from file '"+areaFileName+"'...");
 		readBlocks(V,areaData,roomData,mobData,resetData,objectData,mobProgData,objProgData,shopData,specialData,socialData);
-		if(socialData.size()>0)
+		boolean didSocials=false;
+		try
 		{
-			
+			while(socialData.size()>0)
+			{
+				String codeLine=eatNextLine(socialData);
+				if((!codeLine.startsWith("#"))&&(codeLine.trim().length()>0))
+				{
+					didSocials=true;
+					String word=codeLine.trim().toUpperCase();
+					int x=word.indexOf(" ");
+					if(x>0) word=word.substring(0,x).trim();
+						
+					Social S1=socials.FetchSocial(word);
+					Social S2=socials.FetchSocial(word+" <T-NAME>");
+					Social S3=socials.FetchSocial(word+" SELF");
+					boolean changing=true;
+					if((S1==null)||(!S1.Social_name.toUpperCase().equals(word)))
+					{
+						S1=new Social();
+						S1.Social_name=word;
+						socials.addSocial(S1);
+						changing=false;
+					}
+						
+					String str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+						
+					if((S1.You_see==null)||(!S1.You_see.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S1.Social_name+"' from '"+S1.You_see+"', you see, to: '"+str+"'");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S1.You_see=str;
+					}
+						
+					str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+						
+					if((S1.Third_party_sees==null)||(!S1.Third_party_sees.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S1.Social_name+"' from '"+S1.Third_party_sees+"', others see, to: '"+str+"'");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S1.Third_party_sees=str;
+					}
+						
+					changing=true;
+					str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+					if(S2==null)
+					{
+						S2=new Social();
+						S2.Social_name=word+" <T-NAME>";
+						socials.addSocial(S2);
+						changing=false;
+					}
+						
+					if((S2.You_see==null)||(!S2.You_see.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S2.Social_name+"' from '"+S2.You_see+"', you see, to: '"+str+"'");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S2.You_see=str;
+					}
+						
+					str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+						
+					if((S2.Third_party_sees==null)||(!S2.Third_party_sees.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S2.Social_name+"', others see from '"+S2.Third_party_sees+"', to: '"+str+"'");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S2.Third_party_sees=str;
+					}
+						
+					str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+						
+					if((S2.Target_sees==null)||(!S2.Target_sees.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S2.Social_name+"', target sees from '"+S2.Target_sees+"', to: '"+str+"'");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S2.Target_sees=str;
+					}
+						
+					str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+						
+					if((S2.See_when_no_target==null)||(!S2.See_when_no_target.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S2.Social_name+"', no target sees from '"+S2.See_when_no_target+"', to: '"+str+"'");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S2.See_when_no_target=str;
+					}
+						
+					changing=true;
+					str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+					if(S3==null)
+					{
+						S3=new Social();
+						S3.Social_name=word+" SELF";
+						socials.addSocial(S3);
+						changing=false;
+					}
+						
+					if((S3.You_see==null)||(!S3.You_see.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S3.Social_name+"', you see from '"+S3.You_see+"', to: '"+str+"''");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S3.You_see=str;
+					}
+						
+					str=socialFix(eatNextLine(socialData));
+					if(str.startsWith("#")) continue;
+						
+					if((S3.Third_party_sees==null)||(!S3.Third_party_sees.equals(str)))
+					{
+						if(changing)
+						mob.session().rawPrint("Change '"+S3.Social_name+"', others see from '"+S3.Third_party_sees+"', to: '"+str+"'");
+						if((!changing)||(mob.session().confirm("?","Y")))
+							S3.Third_party_sees=str;
+					}
+						
+				}
+			}
+			socials.save();
+		}
+		catch(Exception e)
+		{
+			Log.errOut("Import",e);
+			mob.tell(e.getMessage());
+			return;
 		}
 		
 		if((roomData.size()==0)||(areaData.size()==0))
 		{
-			if(socialData.size()<10)
+			if(!didSocials)
 				mob.tell("Missing data! It is very unlikely this is an .are file.");
 			return;
 		}
 		String areaName=getAreaName(areaData);
 		if((areaName==null)||((areaName!=null)&&(areaName.length()==0)))
 		{
-			mob.tell("#AREA tag not found!");
+			if(!didSocials)
+				mob.tell("#AREA tag not found!");
 			return;
 		}
 
