@@ -3,7 +3,7 @@ Test: Far Shot, Body Shield, PK-ALWAYS-X, boulderbash, cave fishing, darkvision
 Test: Deep Darkness, Sense Metal, Tether, Endure Rust, Magnetic Field
 Test: Den, Rockfeet, Earthpocket, Golem Form, Crystal Growth, 1 Moon Change
 Test: Sacred Earth, Labyrinth, Mass Fungal Growth, Distant Fungal Growth, Stone Friend
-Test: Unbreakable, Homeopathy, Snatch Light
+Test: Unbreakable, Homeopathy, Snatch Light, Summon Rock Golem
 Could you set it to auto-detect based on the inventory of the shop whether the items will fit in one column or two?  With some shops, the item names are long enough that two columns are poor fits.
 put a conquered mob on a home property, quit, log back on, see if this error occurs.
 MudChat should find ALL alternative answers and weigh them ALL against each other
