@@ -174,12 +174,6 @@ public class Thief extends StdCharClass
 		super.executeMsg(myHost,msg);
 	}
 
-	protected boolean isAllowedWeapon(int wclass){
-		for(int i=0;i<allowedWeapons.length;i++)
-			if(wclass==allowedWeapons[i]) return true;
-		return false;
-	}
-
 	public void unLevel(MOB mob)
 	{
 		if(mob.envStats().level()<2)
