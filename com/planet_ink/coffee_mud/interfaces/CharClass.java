@@ -68,7 +68,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	};
 	
 	public static final String[] ARMOR_LONGDESC={
-		"Any",
+		"May wear any armor.",
 		"Must wear cloth, vegetation, or paper based armor.",
 		"Must wear leather, cloth, or vegetation based armor.",
 		"Must wear non-metal armor.",
@@ -77,5 +77,41 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	};
 	
 	public static final int WEAPONS_ANY=0;
-	
+	public static final int WEAPONS_DAGGERONLY=1;
+	public static final int WEAPONS_THIEFLIKE=2;
+	public static final int WEAPONS_NATURAL=3;
+	public static final int WEAPONS_BURGLAR=4;
+	public static final int WEAPONS_ROCKY=5;
+	public static final int WEAPONS_MAGELIKE=6;
+	public static final int WEAPONS_EVILCLERIC=7;
+	public static final int WEAPONS_GOODCLERIC=8;
+	public static final int WEAPONS_NEUTRALCLERIC=9;
+	public static final int WEAPONS_ALLCLERIC=10;
+	public static final int[][] WEAPONS_SETS={
+/*0*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
+/*1*/{Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER},
+/*2*/{Weapon.CLASS_SWORD,Weapon.CLASS_RANGED,Weapon.CLASS_THROWN,Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER},
+/*3*/{EnvResource.MATERIAL_WOODEN,EnvResource.MATERIAL_UNKNOWN,EnvResource.MATERIAL_VEGETATION,EnvResource.MATERIAL_FLESH,EnvResource.MATERIAL_LEATHER},
+/*4*/{Weapon.CLASS_NATURAL,Weapon.CLASS_SWORD,Weapon.CLASS_FLAILED,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER},
+/*5*/{EnvResource.MATERIAL_ROCK,EnvResource.MATERIAL_UNKNOWN,EnvResource.MATERIAL_GLASS,EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL,EnvResource.MATERIAL_PRECIOUS},
+/*6*/{Weapon.CLASS_NATURAL,Weapon.CLASS_DAGGER,Weapon.CLASS_STAFF},
+/*7*/{Weapon.CLASS_EDGED,Weapon.CLASS_POLEARM,Weapon.CLASS_AXE,Weapon.CLASS_SWORD,Weapon.CLASS_DAGGER},
+/*8*/{Weapon.CLASS_BLUNT,Weapon.CLASS_HAMMER,Weapon.CLASS_FLAILED,Weapon.CLASS_NATURAL,Weapon.CLASS_STAFF},
+/*9*/{Weapon.CLASS_BLUNT,Weapon.CLASS_RANGED,Weapon.CLASS_THROWN,Weapon.CLASS_STAFF,Weapon.CLASS_NATURAL,Weapon.CLASS_SWORD},
+/*10*/{Weapon.CLASS_AXE,Weapon.CLASS_BLUNT,Weapon.CLASS_DAGGER,Weapon.CLASS_EDGED,Weapon.CLASS_FLAILED,Weapon.CLASS_HAMMER,Weapon.CLASS_NATURAL,Weapon.CLASS_POLEARM,Weapon.CLASS_RANGED,Weapon.CLASS_STAFF,Weapon.CLASS_SWORD,Weapon.CLASS_THROWN},
+	};
+	public static final String[] WEAPONS_LONGDESC={
+/*0*/"May use any weapons.",
+/*1*/"Must use dagger-like or natural weapons.",
+/*2*/"Must use swords, daggers, natural, or ranged weapons.",
+/*3*/"Must use wooden, plant-based, or leather weapons.",
+/*4*/"Must use sword, daggers, flailed, blunt, or natural weapons.",
+/*5*/"Must use stone, crystal, metal, or glass weapons.",
+/*6*/"Must use daggers, staves, or natural weapons.",
+/*7*/"Must use polearms, axes, swords, daggers, or edged weapons.",
+/*8*/"Must use hammers, staves, flailed, natural, or blunt weapons.",
+/*9*/"Must use swords, staves, natural, ranged, or blunt weapons",
+/*10*/"Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer."
+	};
+		
 }

@@ -20,6 +20,8 @@ public class Thief extends StdCharClass
 	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 
 
@@ -150,8 +152,6 @@ public class Thief extends StdCharClass
 		return outfitChoices;
 	}
 	
-	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
-	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(myHost instanceof MOB)

@@ -14,11 +14,11 @@ public class Shaman extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-
-	protected boolean disableAlignedWeapons(){return true;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected boolean disableClericSpellGrant(){return true;}
-	protected boolean disableAlignedSpells(){return true;}
-
+	
 	public Shaman()
 	{
 		maxStatAdj[CharStats.WISDOM]=4;
@@ -151,7 +151,6 @@ public class Shaman extends Cleric
 
 	public String otherBonuses(){return "Never fumbles neutral prayers, receives smallest prayer fumble chance, and receives 1pt/level of acid damage reduction.";}
 	public String otherLimitations(){return "Using non-neutral prayers introduces small failure chance.  Vulnerable to electric attacks.";}
-	public String weaponLimitations(){return "May use Blunt and Hammer-like weapons only.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -162,52 +161,6 @@ public class Shaman extends Cleric
 
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-			{
-				int align=myChar.getAlignment();
-				Ability A=(Ability)msg.tool();
-
-				if(A.appropriateToMyAlignment(align))
-					return true;
-				int hq=holyQuality(A);
-
-				if((hq==500)||((align>=150)&&(align<=850)))
-					return true;
-
-				int basis=(500-align)/20;
-				if(basis<0) basis=basis*-1;
-				basis-=10;
-
-				if(Dice.rollPercentage()>basis)
-					return true;
-
-				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
-				else
-				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
-				return false;
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-
-				if((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_BLUNT)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_HAMMER))
-					return true;
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-					return false;
-				}
-			}
-			else
 			if((msg.amITarget(myChar))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.sourceMinor()==CMMsg.TYP_ACID))

@@ -13,11 +13,12 @@ public class Templar extends Cleric
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-
-	protected boolean disableAlignedWeapons(){return true;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
+	protected int alwaysFlunksThisQuality(){return 1000;}
 	protected boolean disableClericSpellGrant(){return true;}
-	protected boolean disableAlignedSpells(){return true;}
 
 	private int tickDown=0;
 
@@ -131,7 +132,7 @@ public class Templar extends Cleric
 				if(A!=null) A.invoke(myChar,myChar,true);
 			}
 		}
-		return;
+		super.tick(myChar,tickID);
 	}
 
 	public String statQualifications(){return "Wisdom 9+ Strength 9+";}
@@ -154,65 +155,6 @@ public class Templar extends Cleric
 
 	public String otherBonuses(){return "Receives Aura of Strife which increases in power.";}
 	public String otherLimitations(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
-	public String weaponLimitations(){return "";}
-
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(!super.okMessage(myChar, msg))
-			return false;
-
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
-		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-			{
-				int align=myChar.getAlignment();
-				Ability A=(Ability)msg.tool();
-
-				if(A.appropriateToMyAlignment(align))
-					return true;
-				int hq=holyQuality(A);
-
-				int basis=0;
-				if(hq==1000)
-				{
-					myChar.tell("The good nature of "+A.name()+" disrupts your prayer.");
-					return false;
-				}
-				else
-				if(hq==0)
-					basis=align/10;
-				else
-				{
-					basis=(500-align)/10;
-					if(basis<0) basis=basis*-1;
-					basis-=10;
-				}
-
-				if(Dice.rollPercentage()>basis)
-					return true;
-
-				if(hq==0)
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
-				else
-				if(hq==1000)
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
-				else
-				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
-				else
-				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
-				return false;
-			}
-		}
-		return true;
-	}
 
 	public Vector outfit()
 	{

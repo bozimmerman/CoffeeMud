@@ -25,7 +25,8 @@ public class GenCharClass extends StdCharClass
 	protected String otherBonuses="";
 	protected String qualifications="";
 	protected boolean playerSelectable=false;
-	protected HashSet disallowedWeapons=null; // set of Integers for weapon classes
+	protected HashSet disallowedWeaponSet=null; // set of Integers for weapon classes
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
 	protected CharStats setStats=null;
 	protected CharStats adjStats=null;
 	protected EnvStats adjEStats=null;
@@ -53,18 +54,16 @@ public class GenCharClass extends StdCharClass
 	
 	public String weaponLimitations()
 	{
-		if((disallowedWeapons==null)||(disallowedWeapons.size()==0))
+		if((disallowedWeaponClasses(null)==null)||(disallowedWeaponClasses(null).size()==0))
 			return "No limitations.";
 		StringBuffer str=new StringBuffer("The following weapon types may not be used:");
-		for(Iterator i=disallowedWeapons.iterator();i.hasNext();)
+		for(Iterator i=disallowedWeaponClasses(null).iterator();i.hasNext();)
 		{
 			Integer I=(Integer)i.next();
 			str.append(Weapon.classifictionDescription[I.intValue()]);
 		}
 		return str.toString();
 	}
-	public String armorLimitations()
-	{ return ARMOR_LONGDESC[allowedArmorLevel];}
 
 	public void cloneFix(CharClass C)
 	{
@@ -88,46 +87,6 @@ public class GenCharClass extends StdCharClass
 	public boolean loaded(){return true;}
 	public void setLoaded(boolean truefalse){};
 
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) 
-			return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)
-		&&(!myChar.isMonster()))
-		{
-			if((allowedArmorLevel()!=CharClass.ARMOR_ANY)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Ability)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>myChar.charStats().getStat(getAttackAttribute())*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+msg.tool().name()+" attempt due to <S-HIS-HER> armor!");
-					return false;
-				}
-			}
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(disallowedWeapons!=null)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-				if(((disallowedWeapons.contains(new Integer(((Weapon)msg.tool()).weaponClassification())))
-				&&(myChar.fetchWieldedItem()!=null)))
-				{
-					if(Dice.rollPercentage()>myChar.charStats().getStat(getAttackAttribute())*2)
-					{
-						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-						return false;
-					}
-				}
-			}
-		}
-		return super.okMessage(myChar,msg);
-	}
-	
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!super.qualifiesForThisClass(mob,quiet))
@@ -242,12 +201,12 @@ public class GenCharClass extends StdCharClass
 			str.append("</CABILITIES>");
 		}
 		
-		if((disallowedWeapons==null)||(disallowedWeapons.size()==0))	
+		if((disallowedWeaponSet==null)||(disallowedWeaponSet.size()==0))	
 			str.append("<NOWEAPS/>");
 		else
 		{
 			str.append("<NOWEAPS>");
-			for(Iterator i=disallowedWeapons.iterator();i.hasNext();)
+			for(Iterator i=disallowedWeaponSet.iterator();i.hasNext();)
 			{
 				Integer I=(Integer)i.next();
 				str.append(XMLManager.convertXMLtoTag("WCLASS",""+I.intValue()));
@@ -339,16 +298,16 @@ public class GenCharClass extends StdCharClass
 		
 		// now WEAPON RESTRICTIONS!
 		xV=XMLManager.getRealContentsFromPieces(classData,"NOWEAPS");
-		disallowedWeapons=null;
+		disallowedWeaponSet=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
-			disallowedWeapons=new HashSet();
+			disallowedWeaponSet=new HashSet();
 			for(int x=0;x<xV.size();x++)
 			{
 				XMLManager.XMLpiece iblk=(XMLManager.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("WCLASS"))||(iblk.contents==null))
 					continue;
-				disallowedWeapons.add(new Integer(Util.s_int(iblk.value)));
+				disallowedWeaponSet.add(new Integer(Util.s_int(iblk.value)));
 			}
 		}
 		
@@ -438,8 +397,8 @@ public class GenCharClass extends StdCharClass
 		case 28: return (String)getAbleSet().elementAt(num,4);
 		case 29: return (String)getAbleSet().elementAt(num,5);
 		case 30: return (String)getAbleSet().elementAt(num,6);
-		case 31: return ""+((disallowedWeapons!=null)?disallowedWeapons.size():0);
-		case 32: return Util.toStringList(disallowedWeapons);
+		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
+		case 32: return Util.toStringList(disallowedWeaponSet);
 		case 33: return ""+((outfit()!=null)?outfit().size():0);
 		case 34: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
 		case 35: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
@@ -496,19 +455,19 @@ public class GenCharClass extends StdCharClass
 											  Util.s_bool(tempables[4]));
 				break;
 		case 31: if(Util.s_int(val)==0) 
-					 disallowedWeapons=null; 
+					 disallowedWeaponSet=null; 
 				 else 
-					 disallowedWeapons=new HashSet();
+					 disallowedWeaponSet=new HashSet();
 				 break;
 		case 32: Vector V=Util.parseCommas(val,true);
 				 if(V.size()>0)
 				 {
-					disallowedWeapons=new HashSet();
+					disallowedWeaponSet=new HashSet();
 					for(int v=0;v<V.size();v++)
-						disallowedWeapons.add(new Integer(Util.s_int((String)V.elementAt(v))));
+						disallowedWeaponSet.add(new Integer(Util.s_int((String)V.elementAt(v))));
 				 }
 				 else
-					 disallowedWeapons=null;
+					 disallowedWeaponSet=null;
 				 break;
 		case 33: if(Util.s_int(val)==0) outfitChoices=null; break;
 		case 34: {   if(outfitChoices==null) outfitChoices=new Vector();

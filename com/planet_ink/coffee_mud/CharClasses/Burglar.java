@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import java.util.*;
 
 public class Burglar extends Thief
 {
@@ -11,6 +12,8 @@ public class Burglar extends Thief
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_BURGLAR;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	
 	public Burglar()
 	{
@@ -106,7 +109,6 @@ public class Burglar extends Thief
 		}
 	}
 	public String statQualifications(){return "Dexterity 9+ Charisma 9+";}
-	public String weaponLimitations(){return "To avoid fumble chance, must be sword, flailed, blunt, natural, or dagger-like weapon.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)

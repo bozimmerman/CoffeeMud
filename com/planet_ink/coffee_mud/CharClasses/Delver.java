@@ -23,6 +23,8 @@ public class Delver extends StdCharClass
 	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_OREONLY;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_ROCKY;}
+	private HashSet requiredWeaponMaterials=buildRequiredWeaponMaterials();
+	protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
 	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
 	public Delver()
@@ -168,8 +170,6 @@ public class Delver extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String weaponLimitations(){return "To avoid fumbling, must be metal, glass, or stone weapons.";}
-	public String armorLimitations(){return "Must wear metal, glass, or stone armors to avoid chant failure.";}
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "";}
 

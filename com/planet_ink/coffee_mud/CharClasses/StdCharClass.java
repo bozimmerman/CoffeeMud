@@ -23,6 +23,12 @@ public class StdCharClass implements CharClass, Cloneable
 	protected int maxStatAdj[]={0,0,0,0,0,0};
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	protected Vector outfitChoices=null;
+	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
+	protected HashSet disallowedWeaponClasses(MOB mob){return null;}
+	protected HashSet requiredWeaponMaterials(){return null;}
+	protected int requiredArmorSourceMinor(){return -1;}
+	protected String armorFailMessage(){return "<S-NAME> fumble(s) <S-HIS-HER> <SKILL> due to <S-HIS-HER> armor!";}
 
 	public boolean isGeneric(){return false;}
 	public boolean playerSelectable()
@@ -88,15 +94,92 @@ public class StdCharClass implements CharClass, Cloneable
 		}
 		return true;
 	}
-	public String weaponLimitations(){return "";}
-	public String armorLimitations(){return "";}
+	public String weaponLimitations()
+	{ return WEAPONS_LONGDESC[allowedWeaponLevel()];}
+	public String armorLimitations()
+	{ return ARMOR_LONGDESC[allowedArmorLevel()];}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "";}
 	public String statQualifications(){return "";}
-	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	
+	protected HashSet buildDisallowedWeaponClasses(){return buildDisallowedWeaponClasses(allowedWeaponLevel());}
+	protected HashSet buildDisallowedWeaponClasses(int lvl)
+	{
+		if(lvl==CharClass.WEAPONS_ANY)
+			return null;
+		int[] set=CharClass.WEAPONS_SETS[lvl];
+		HashSet H=new HashSet();
+		if(set[0]>Weapon.classifictionDescription.length)
+			return null;
+		for(int i=0;i<Weapon.classifictionDescription.length;i++)
+		{
+			boolean found=false;
+			for(int s=0;s<set.length;s++)
+				if(set[0]==i) found=true;
+			if(!found) H.add(new Integer(i));
+		}
+		return H;
+	}
+	protected HashSet buildRequiredWeaponMaterials()
+	{
+		if(allowedWeaponLevel()==CharClass.WEAPONS_ANY)
+			return null;
+		int[] set=CharClass.WEAPONS_SETS[allowedWeaponLevel()];
+		if(set[0]>Weapon.classifictionDescription.length)
+		{
+			HashSet H=new HashSet();
+			for(int s=0;s<set.length;s++)
+				H.add(new Integer(set[s]));
+			return H;
+		}
+		else
+			return null;
+	}
 
-	public boolean armorCheck(MOB mob)
-	{   return CoffeeUtensils.armorCheck(mob,allowedArmorLevel());}
+
+	protected boolean isQualifyingAuthority(MOB mob, Ability A)
+	{
+		if(CMAble.getQualifyingLevel(ID(),true,A.ID())<=0)
+			return false;
+		if(mob.charStats().getCurrentClass()==this)
+			return true;
+		for(int i=(mob.charStats().numClasses()-2);i>=0;i--) // last one is current
+		{
+			CharClass C=mob.charStats().getMyClass(i);
+			if((C!=null)&&(CMAble.getQualifyingLevel(C.ID(),true,A.ID())<=mob.charStats().getClassLevel(C)))
+				return (C==this);
+		}
+		return false;
+	}
+	
+	
+	protected boolean armorCheck(MOB mob, int sourceCode, Environmental E)
+	{   
+		if(!(E instanceof Ability)) return true;
+		if((allowedArmorLevel()!=CharClass.ARMOR_ANY)
+		&&((requiredArmorSourceMinor()<0)||(sourceCode&CMMsg.MINOR_MASK)==requiredArmorSourceMinor())
+		&&(isQualifyingAuthority(mob,(Ability)E))
+		&&(mob.isMine(E))
+		&&(!E.ID().equals("Skill_Recall"))
+		&&(!CoffeeUtensils.armorCheck(mob,allowedArmorLevel()))
+		&&(Dice.rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2)))
+			return false;
+		return true;
+	}
+	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
+	{
+		if(((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)
+		&&(E instanceof Weapon)
+		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&EnvResource.MATERIAL_MASK))))
+			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(new Integer(((Weapon)E).weaponClassification())))))
+		&&(Dice.rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
+		&&(mob.fetchWieldedItem()!=null))
+		{
+			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+E.name()+".");
+			return false;
+		}
+		return true;
+	}
 
 	protected void giveMobAbility(MOB mob, Ability A, int profficiency, String defaultParm, boolean isBorrowedClass)
 	{ giveMobAbility(mob,A,profficiency,defaultParm,isBorrowedClass,true);}
@@ -162,8 +245,24 @@ public class StdCharClass implements CharClass, Cloneable
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
+		MOB myChar=(MOB)myHost;
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster()))
+		{
+			if(!armorCheck(myChar,msg.sourceCode(),msg.tool()))
+			{
+				if(msg.tool()==null)
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>","maneuver"));
+				else
+					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,Util.replaceAll(armorFailMessage(),"<SKILL>",msg.tool().name()+" attempt"));
+				return false;
+			}
+			if(!weaponCheck(myChar,msg.sourceCode(),msg.tool()))
+				return false;
+		}
 		return true;
 	}
+	
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

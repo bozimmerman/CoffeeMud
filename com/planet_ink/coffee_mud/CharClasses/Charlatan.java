@@ -21,6 +21,8 @@ public class Charlatan extends StdCharClass
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Charlatan()
 	{
@@ -141,8 +143,6 @@ public class Charlatan extends StdCharClass
 
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
-	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level!";}
 	public Vector outfit()

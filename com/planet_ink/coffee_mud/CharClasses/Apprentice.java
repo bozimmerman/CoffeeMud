@@ -21,6 +21,8 @@ public class Apprentice extends StdCharClass
 	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(){return disallowedWeapons;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 
 
@@ -120,9 +122,6 @@ public class Apprentice extends StdCharClass
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-
-	public String weaponLimitations(){return "To avoid fumble chance, must use natural, or dagger-like weapon.";}
-	public String armorLimitations(){return "Must wear cloth, or vegetation based armor to avoid skill failure.";}
 
 	public Vector outfit()
 	{

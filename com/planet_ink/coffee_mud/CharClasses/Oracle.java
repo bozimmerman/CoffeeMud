@@ -14,10 +14,11 @@ public class Oracle extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-
-	protected boolean disableAlignedWeapons(){return true;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_GOODCLERIC;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected boolean disableClericSpellGrant(){return true;}
-	protected boolean disableAlignedSpells(){return true;}
+	protected int alwaysFlunksThisQuality(){return 0;}
 
 	public Oracle()
 	{
@@ -140,7 +141,6 @@ public class Oracle extends Cleric
 
 	public String otherBonuses(){return "Receives a non-class skill at 30th level, and every Oracle level thereafter.";}
 	public String otherLimitations(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
-	public String weaponLimitations(){return "May use Blunt, Flailed weapons, Hammers, and Natural (unarmed) weapons only.";}
 
 	private int numNonQualified(MOB mob)
 	{
@@ -209,73 +209,6 @@ public class Oracle extends Cleric
 
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-			{
-				int align=myChar.getAlignment();
-				Ability A=(Ability)msg.tool();
-
-				if(A.appropriateToMyAlignment(align))
-					return true;
-				int hq=holyQuality(A);
-
-				int basis=0;
-				if(hq==0)
-				{
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
-					return false;
-				}
-				else
-				if(myChar.getAlignment()<500)
-					basis=100;
-				else
-				if(hq==1000)
-					basis=(1000-align)/10;
-				else
-				{
-					basis=(500-align)/10;
-					if(basis<0) basis=basis*-1;
-					basis-=10;
-				}
-
-				if(Dice.rollPercentage()>basis)
-					return true;
-
-				if(hq==0)
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
-				else
-				if(hq==1000)
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
-				else
-				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
-				else
-				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
-				return false;
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-
-				if((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_BLUNT)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_HAMMER)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_FLAILED)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL))
-					return true;
-				if(myChar.fetchWieldedItem()==null) return true;
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-					return false;
-				}
-			}
-			else
 			if((msg.amITarget(myChar))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&((msg.sourceMinor()==CMMsg.TYP_COLD)

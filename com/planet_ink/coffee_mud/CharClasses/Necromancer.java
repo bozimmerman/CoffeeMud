@@ -14,10 +14,11 @@ public class Necromancer extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-
-	protected boolean disableAlignedWeapons(){return true;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_EVILCLERIC;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected boolean disableClericSpellGrant(){return true;}
-	protected boolean disableAlignedSpells(){return true;}
+	protected int alwaysFlunksThisQuality(){return 1000;}
 
 	private int tickDown=0;
 
@@ -132,7 +133,6 @@ public class Necromancer extends Cleric
 
 	public String otherBonuses(){return "Becomes Lich upon death after reaching 30th level Necromancer.  Undead followers will not drain experience.";}
 	public String otherLimitations(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
-	public String weaponLimitations(){return "May only use sword, axe, polearm, and some edged weapons.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -143,52 +143,6 @@ public class Necromancer extends Cleric
 
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-			{
-				int align=myChar.getAlignment();
-				Ability A=(Ability)msg.tool();
-
-				if(A.appropriateToMyAlignment(align))
-					return true;
-				int hq=holyQuality(A);
-
-				int basis=0;
-				if(hq==1000)
-				{
-					myChar.tell("The good nature of "+A.name()+" disrupts your prayer.");
-					return false;
-				}
-				else
-				if(hq==0)
-					basis=align/10;
-				else
-				{
-					basis=(500-align)/10;
-					if(basis<0) basis=basis*-1;
-					basis-=10;
-				}
-
-				if(Dice.rollPercentage()>basis)
-					return true;
-
-				if(hq==0)
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
-				else
-				if(hq==1000)
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
-				else
-				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
-				else
-				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
-				return false;
-			}
-			else
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			   &&(myChar.baseCharStats().getClassLevel(this)>=30)
 			   &&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
@@ -199,24 +153,6 @@ public class Necromancer extends Cleric
 					myChar.tell("You are being transformed into a "+newRace.name()+"!!");
 					myChar.baseCharStats().setMyRace(newRace);
 					myChar.recoverCharStats();
-				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-
-				if((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_EDGED)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_POLEARM)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_DAGGER)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_AXE)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_SWORD))
-					return true;
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-					return false;
 				}
 			}
 		}

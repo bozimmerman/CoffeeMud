@@ -10,10 +10,6 @@ public class Assassin extends Thief
 	private static boolean abilitiesLoaded2=false;
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
-	
-	public String weaponLimitations(){return "";}
-	protected boolean isAllowedWeapon(int wclass){ return true;}
-	
 	public String statQualifications(){return "Dexterity 9+ Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

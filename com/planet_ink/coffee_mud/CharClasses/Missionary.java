@@ -14,10 +14,10 @@ public class Missionary extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-
-	protected boolean disableAlignedWeapons(){return true;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_NEUTRALCLERIC;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected boolean disableClericSpellGrant(){return true;}
-	protected boolean disableAlignedSpells(){return true;}
 
 	public Missionary()
 	{
@@ -139,14 +139,6 @@ public class Missionary extends Cleric
 					+(affectableStats.getClassLevel(this)));
 	}
 
-	public void tick(MOB myChar, int tickID)
-	{
-		if(tickID==MudHost.TICK_MOB)
-		{
-		}
-		return;
-	}
-
 	public String statQualifications(){return "Wisdom 9+ Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -167,7 +159,6 @@ public class Missionary extends Cleric
 
 	public String otherBonuses(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
 	public String otherLimitations(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
-	public String weaponLimitations(){return "May use Blunt, Ranged weapons, and Swords only.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -178,56 +169,6 @@ public class Missionary extends Cleric
 
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))
-			{
-				int align=myChar.getAlignment();
-				Ability A=(Ability)msg.tool();
-
-				if(A.appropriateToMyAlignment(align))
-					return true;
-				int hq=holyQuality(A);
-
-				int basis=0;
-				if(hq==0)
-					basis=align/10;
-				else
-				if(hq==1000)
-					basis=(1000-align)/10;
-				else
-					return true;
-
-				if(Dice.rollPercentage()>basis)
-					return true;
-
-				if(hq==0)
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
-				else
-				if(hq==1000)
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
-				return false;
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-
-				if((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_BLUNT)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)
-				||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_SWORD))
-					return true;
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-					return false;
-				}
-			}
-			else
 			if((msg.amITarget(myChar))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.sourceMinor()==CMMsg.TYP_ELECTRIC))

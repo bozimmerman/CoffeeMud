@@ -17,13 +17,21 @@ public class Cleric extends StdCharClass
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
+	private HashSet disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
+	private HashSet disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
+	private HashSet disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);
+	protected HashSet disallowedWeaponClasses(MOB mob)
+	{
+		if(mob.getAlignment()<=350) return disallowedWeaponsE;
+		if(mob.getAlignment()>=650) return disallowedWeaponsG;
+		return disallowedWeaponsN;
+	}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-
-	protected boolean disableAlignedWeapons(){return false;}
-	protected boolean disableAlignedSpells(){return false;}
 	protected boolean disableClericSpellGrant(){return false;}
+	protected int alwaysFlunksThisQuality(){return -1;}
 
 	public Cleric()
 	{
@@ -220,7 +228,6 @@ public class Cleric extends StdCharClass
 	}
 
 	public String otherLimitations(){return "Using prayers outside your alignment introduces failure chance.";}
-	public String weaponLimitations(){return "To avoid fumbling: Evil must use polearm, sword, axe, edged, or natural.  Neutral must use blunt, ranged, thrown, staff, natural, or sword.  Good must use blunt, flailed, natural, staff, or hammer.";}
 
 	protected int holyQuality(Ability A)
 	{
@@ -245,7 +252,6 @@ public class Cleric extends StdCharClass
 		if(msg.amISource(myChar)&&(!myChar.isMonster()))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(!disableAlignedSpells())
 			&&(msg.tool()!=null)
 			&&(myChar.isMine(msg.tool()))
 			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
@@ -257,20 +263,49 @@ public class Cleric extends StdCharClass
 				if(A.appropriateToMyAlignment(align))
 					return true;
 				int hq=holyQuality(A);
-
 				int basis=0;
-				if(hq==0)
-					basis=align/10;
-				else
-				if(hq==1000)
-					basis=(1000-align)/10;
-				else
+				
+				switch(alwaysFlunksThisQuality())
 				{
-					basis=(500-align)/10;
-					if(basis<0) basis=basis*-1;
-					basis-=10;
+				case 0:
+					if(align<500)
+					{
+						myChar.tell("Your immoral strife disrupts the prayer.");
+						return false;
+					}
+					if(hq==0) basis=100;
+					break;
+				case 500:
+					if((align>350)&&(align<650))
+					{
+						myChar.tell("Your moral weakness disrupts the prayer.");
+						return false;
+					}
+					if(hq==500) basis=100;
+					break;
+				case 1000:
+					if(align>500)
+					{
+						myChar.tell("Your moral confusion disrupts the prayer.");
+						return false;
+					}
+					if(hq==1000) basis=100;
+					break;
 				}
-
+				if(basis==0)
+				{
+					if(hq==0)
+						basis=align/10;
+					else
+					if(hq==1000)
+						basis=(1000-align)/10;
+					else
+					{
+						basis=(500-align)/10;
+						if(basis<0) basis=basis*-1;
+						basis-=10;
+					}
+				}
 				if(Dice.rollPercentage()>basis)
 					return true;
 
@@ -286,49 +321,6 @@ public class Cleric extends StdCharClass
 				if(align<350)
 					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
 				return false;
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(!disableAlignedWeapons())
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-				int classification=((Weapon)msg.tool()).weaponClassification();
-				if(myChar.getAlignment()<350)
-				{
-					if((classification==Weapon.CLASS_POLEARM)
-					||(classification==Weapon.CLASS_SWORD)
-					||(classification==Weapon.CLASS_AXE)
-					||(classification==Weapon.CLASS_DAGGER)
-					||(classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_EDGED))
-						return true;
-				}
-				else
-				if(myChar.getAlignment()<650)
-				{
-					if((classification==Weapon.CLASS_BLUNT)
-					||(classification==Weapon.CLASS_RANGED)
-					||(classification==Weapon.CLASS_THROWN)
-					||(classification==Weapon.CLASS_STAFF)
-					||(classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_SWORD))
-						return true;
-				}
-				else
-				{
-					if((classification==Weapon.CLASS_BLUNT)
-					||(classification==Weapon.CLASS_FLAILED)
-					||(classification==Weapon.CLASS_STAFF)
-					||(classification==Weapon.CLASS_NATURAL)
-					||(classification==Weapon.CLASS_HAMMER))
-						return true;
-				}
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-					return false;
-				}
 			}
 		}
 		return true;

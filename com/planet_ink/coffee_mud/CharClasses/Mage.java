@@ -24,6 +24,8 @@ public class Mage extends StdCharClass
 	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_MAGELIKE;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
 	public Mage()
@@ -376,8 +378,6 @@ public class Mage extends StdCharClass
 		return outfitChoices;
 	}
 	
-	public String weaponLimitations(){return "To avoid fumble chance, must use dagger, staff, or natural weapon.";}
-	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid spell failure.";}
 
 	public void level(MOB mob)
 	{

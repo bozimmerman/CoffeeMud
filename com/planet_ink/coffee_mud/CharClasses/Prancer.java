@@ -22,6 +22,8 @@ public class Prancer extends StdCharClass
 	protected String armorFailMessage(){return "<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Prancer()
 	{
@@ -148,8 +150,6 @@ public class Prancer extends StdCharClass
 
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
-	public String armorLimitations(){return "Must wear cloth or vegetation armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
 	public Vector outfit()
 	{

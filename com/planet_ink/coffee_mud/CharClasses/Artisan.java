@@ -20,6 +20,8 @@ public class Artisan extends StdCharClass
 	public boolean loaded(){return abilitiesLoaded;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	public boolean playerSelectable(){	return true;}
 
@@ -166,9 +168,6 @@ public class Artisan extends StdCharClass
 		}
 		return outfitChoices;
 	}
-
-	public String weaponLimitations(){return "To avoid fumble chance, must use natural, or dagger-like weapon.";}
-	public String armorLimitations(){return "Must wear cloth, or vegetation based armor to avoid skill failure.";}
 
 	public String otherBonuses(){return "Gains experience when using common skills.";}
 }

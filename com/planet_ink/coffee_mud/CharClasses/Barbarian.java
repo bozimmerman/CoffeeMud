@@ -141,8 +141,6 @@ public class Barbarian extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String weaponLimitations(){return "";}
-	public String armorLimitations(){return "Must use non-metal armors to avoid skill failure.";}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);

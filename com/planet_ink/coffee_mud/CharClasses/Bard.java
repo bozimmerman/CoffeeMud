@@ -22,6 +22,8 @@ public class Bard extends StdCharClass
 	protected String armorFailMessage(){return "<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
+	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 
 	public Bard()
 	{
@@ -139,8 +141,6 @@ public class Bard extends StdCharClass
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
-	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives bonus combat experience when in a group.";}
 	public Vector outfit()

@@ -216,8 +216,4 @@ public class Monk extends StdCharClass
 	{
 		return null;
 	}
-	
-
-	public String weaponLimitations(){return "May use any weapon, but prefers unarmed.";}
-	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid skill failure.";}
 }
