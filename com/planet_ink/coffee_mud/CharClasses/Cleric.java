@@ -32,7 +32,7 @@ public class Cleric extends StdCharClass
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
-	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_ALLCLERIC;}
 	private HashSet disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
 	private HashSet disallowedWeaponsN=buildDisallowedWeaponClasses(CharClass.WEAPONS_NEUTRALCLERIC);
 	private HashSet disallowedWeaponsE=buildDisallowedWeaponClasses(CharClass.WEAPONS_EVILCLERIC);

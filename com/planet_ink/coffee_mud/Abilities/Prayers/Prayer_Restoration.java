@@ -69,6 +69,17 @@ public class Prayer_Restoration extends Prayer
 					target.recoverEnvStats();
 					target.recoverMaxState();
 				}
+				
+				A=target.fetchEffect("Fighter_AtemiStrike");
+				if((A!=null)&&(A.canBeUninvoked()))
+				{
+					target.delEffect(A);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> atemi damage is healed!");
+					target.recoverCharStats();
+					target.recoverEnvStats();
+					target.recoverMaxState();
+				}
+				
 				A=target.fetchEffect("Undead_EnergyDrain");
 				if(A!=null)
 				{

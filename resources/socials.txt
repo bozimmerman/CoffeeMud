@@ -410,7 +410,7 @@ mo	BLUSH <T-NAME>	You get flustered upon seeing <T-HIM-HER>.	<S-NAME> blushes as
 ww	PINCH	You say, 'A pinch of this, and a dab of that.'	<S-NAME> says, 'A pinch of this and a dab of that.'		
 mo	BITE SELF	You bite your knuckle in anguish.	<S-NAME> bites <S-HIS-HER> knuckle in anguish...the tragedy!		
 mt	NOOGIE <T-NAME>	You grab <T-NAMESELF>, get <T-HIM-HER> in a head lock and NOOGIE <T-HIM-HER>!	<S-NAME> grabs <T-NAMESELF> in a head lock and NOOGIES <T-HIM-HER>... ARGH!!!	Oh NO, <S-NAME> grabs you, throws you in a head lock and NOOGIES you!	That person has gone off to other lands...
-ov	PIE <T-NAME>	You toss a pie at <T-NAMESELF> and hit <T-HIM-HER> right in the FACE!	<S-NAME> tosses a pie at <T-NAMESELF> and hits <S-HIM-HER> right in the FACE!	<S-NAME> tossed a pie in your face... and now you are all covered in GOO!	That person isn't here...
+ov	PIE <T-NAME>	You toss a pie at <T-NAMESELF> and hit <T-HIM-HER> right in the FACE!	<S-NAME> tosses a pie at <T-NAMESELF> and hits <T-HIM-HER> right in the FACE!	<S-NAME> tossed a pie in your face... and now you are all covered in GOO!	That person isn't here...
 ss	GASP <T-NAME>	You gasp as you realize what <T-HE-SHE> did.	<S-NAME> gasps as <S-HE-SHE> realizes what <T-NAMESELF> did.	<S-NAME> gasps as <S-HE-SHE> realizes what you did.	You need to panic.
 ss	CHORTLE <T-NAME>	You chortle mischievously at <T-NAMESELF>.	<S-NAME> chortles mischievously at <T-NAMESELF>.	<S-NAME> chortles mischievously at you.	Took you a while to get that....they aren't here.
 ov	MOSH <T-NAME>	You mosh sadistically against <T-NAMESELF> ... you WILL be punished.	<S-NAME> bounces off of <T-NAMESELF> in a vain attempt to mosh... what a LOSER.	<S-NAME> slams into you, moshing painfully against you.  That REALLY hurts!	Hmmm...  your victim found a new dance partner.
@@ -608,7 +608,7 @@ mo	MASSAGE SELF	You practice yoga as you try to massage yourself.	<S-NAME> gives
 ww	GRUMBLE	You grumble distractedly to yourself	<S-NAME> grumbles and growls. You wonder what's wrong...		
 ov	BOUNCE SELF	You bounce your head like a basketball.	<S-NAME> plays basketball with <S-HIS-HER> head.		
 ww	TOAST <T-NAME>	You raise your glass of champagne to <T-HIS-HER>.	<S-NAME> silently toasts <T-NAMESELF>.	<S-NAME> silently toasts you.	Your object of praise is absent.
-mo	HEAD <T-NAME>	You toss your head haughtily at <T-NAMESELF>.	<S-NAME> tosses her head haughtily at <T-NAMESELF>... what an ATTITUDE!	<S-NAME> tossed <S-HIS-HER> head haughtily at you... :(	That person is AWOL.
+mo	HEAD <T-NAME>	You toss your head haughtily at <T-NAMESELF>.	<S-NAME> tosses <S-HIS-HER> head haughtily at <T-NAMESELF>... what an ATTITUDE!	<S-NAME> tossed <S-HIS-HER> head haughtily at you... :(	That person is AWOL.
 mo	MATE <T-NAME>	You make passionate love to <T-HIM-HER>.	<S-NAME> makes passionate love to <T-NAMESELF>.	<S-NAME> makes passionate love to you.	Sorry, friend, I can't see that person here.
 mo	EGRIN	You grin evilly.	<S-NAME> grins evilly.		
 mo	PECK SELF	You must REALLY like yourself.	<S-NAME> tries in vain to wrap <S-HIS-HER> lips around <S-HIS-HER> cheeks.		

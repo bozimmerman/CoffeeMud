@@ -1,8 +1,6 @@
-diff levels of drunk
-use the diploma room! add the ability to set a start room for newbies different from recall.
+mutable racial body parts, with ability to grant powers. items to wear on customized body parts.
 Install ship battery
 
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
 ability to deposit a container and its contents.
-mutable racial body parts, with ability to grant powers. items to wear on customized body parts.
 document real estate, space ship selling, genairlock
