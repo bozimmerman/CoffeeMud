@@ -407,71 +407,93 @@ public class EnglishParser extends Scriptable implements Tickable
 			Room R=null;
 			Item I=null;
 			Vector inven=null;
+			boolean seekMOBS=false;
+			boolean seekItems=false;
+			boolean seekRooms=false;
+			for(int p=0;p<poss.size();p++)
+			{
+				Hashtable map=(Hashtable)poss.elementAt(p);
+				String that=(String)map.get("%m");
+				if(that!=null) seekMOBS=true;
+				that=(String)map.get("%i");
+				if(that!=null) seekItems=true;
+				that=(String)map.get("%r"); 
+				if(that!=null) seekRooms=true;
+			}
 			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 			{
 				R=(Room)e.nextElement();
-				roomStuff.addElement(R.roomTitle());
-				roomStuff.addElement(R.roomDescription());
-				for(int i=0;i<R.numItems();i++)
+				if(seekRooms)
 				{
-					I=R.fetchItem(i);
-					if((I!=null)&&(!itemList.contains(I.name())))
-					{
-					   itemList.addElement(I.name());
-					   itemList.addElement(I.displayText());
-					}
+					roomStuff.addElement(R.roomTitle());
+					roomStuff.addElement(R.roomDescription());
 				}
-				for(Enumeration p=CMMap.players();p.hasMoreElements();)
-				{
-					M=(MOB)p.nextElement();
-					if((M!=null)&&(!mobList.contains(M.name())))
+				if(seekItems)
+					for(int i=0;i<R.numItems();i++)
 					{
-					   mobList.addElement(M.name());
-					   mobList.addElement(M.displayText());
+						I=R.fetchItem(i);
+						if((I!=null)&&(!itemList.contains(I.name())))
+						{
+						   itemList.addElement(I.name());
+						   itemList.addElement(I.displayText());
+						}
 					}
-				}
+				if(seekMOBS)
+					for(Enumeration p=CMMap.players();p.hasMoreElements();)
+					{
+						M=(MOB)p.nextElement();
+						if((M!=null)&&(!mobList.contains(M.name())))
+						{
+						   mobList.addElement(M.name());
+						   mobList.addElement(M.displayText());
+						}
+					}
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					M=R.fetchInhabitant(m);
 					if((M!=null)&&(!mobList.contains(M.name())))
 					{
 					   mobList.addElement(M.name());
-					   mobList.addElement(M.displayText());
-					   for(int i=0;i<M.inventorySize();i++)
+					   if(seekMOBS)
+						   mobList.addElement(M.displayText());
+					   if(seekItems)
 					   {
-							I=M.fetchInventory(i);
-							if((I!=null)&&(!itemList.contains(I.name())))
-							{
-							   itemList.addElement(I.name());
-							   itemList.addElement(I.displayText());
-							}
-					   }
-					   SK=CoffeeUtensils.getShopKeeper(M);
-					   if((SK!=null)
-					   &&(SK.whatIsSold()!=ShopKeeper.DEAL_CLANDSELLER)
-					   &&(SK.whatIsSold()!=ShopKeeper.DEAL_LANDSELLER))
-					   {
-						   inven=SK.getUniqueStoreInventory();
-						   for(int a=0;a<inven.size();a++)
+						   for(int i=0;i<M.inventorySize();i++)
 						   {
-							   if(inven.elementAt(a) instanceof Item)
+								I=M.fetchInventory(i);
+								if((I!=null)&&(!itemList.contains(I.name())))
+								{
+								   itemList.addElement(I.name());
+								   itemList.addElement(I.displayText());
+								}
+						   }
+						   SK=CoffeeUtensils.getShopKeeper(M);
+						   if((SK!=null)
+						   &&(SK.whatIsSold()!=ShopKeeper.DEAL_CLANDSELLER)
+						   &&(SK.whatIsSold()!=ShopKeeper.DEAL_LANDSELLER))
+						   {
+							   inven=SK.getUniqueStoreInventory();
+							   for(int a=0;a<inven.size();a++)
 							   {
-									I=(Item)inven.elementAt(a);
-									if((I!=null)&&(!itemList.contains(I.name())))
-									{
-									   itemList.addElement(I.name());
-									   itemList.addElement(I.displayText());
-									}
-							   }
-							   else
-							   if(inven.elementAt(a) instanceof MOB)
-							   {
-									M2=(MOB)inven.elementAt(a);
-									if((M2!=null)&&(!mobList.contains(M2.name())))
-									{
-										mobList.addElement(M2.name());
-										mobList.addElement(M2.displayText());
-									}
+								   if(inven.elementAt(a) instanceof Item)
+								   {
+										I=(Item)inven.elementAt(a);
+										if((I!=null)&&(!itemList.contains(I.name())))
+										{
+										   itemList.addElement(I.name());
+										   itemList.addElement(I.displayText());
+										}
+								   }
+								   else
+								   if(inven.elementAt(a) instanceof MOB)
+								   {
+										M2=(MOB)inven.elementAt(a);
+										if((M2!=null)&&(!mobList.contains(M2.name())))
+										{
+										    itemList.addElement(M2.name());
+										    itemList.addElement(M2.displayText());
+										}
+								   }
 							   }
 						   }
 					   }
