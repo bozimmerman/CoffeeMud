@@ -12,6 +12,8 @@ public class Common extends Language
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="Common";
+		canBeUninvoked=true;
+		isAutoinvoked=false;
 		CMAble.addCharAbilityMapping("All",1,ID(),100,true);
 	}
 	public Environmental newInstance()
