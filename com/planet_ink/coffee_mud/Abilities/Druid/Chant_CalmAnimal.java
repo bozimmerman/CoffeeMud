@@ -5,9 +5,9 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Druid_CalmAnimal extends Chant
+public class Chant_CalmAnimal extends Chant
 {
-	public Druid_CalmAnimal()
+	public Chant_CalmAnimal()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -20,7 +20,7 @@ public class Druid_CalmAnimal extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_CalmAnimal();
+		return new Chant_CalmAnimal();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

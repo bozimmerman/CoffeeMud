@@ -6,9 +6,9 @@ import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
 
-public class Druid_CalmWind extends Chant
+public class Chant_CalmWind extends Chant
 {
-	public Druid_CalmWind()
+	public Chant_CalmWind()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -28,14 +28,16 @@ public class Druid_CalmWind extends Chant
 
 	public Environmental newInstance()
 	{
-		return new Druid_CalmWind();
+		return new Chant_CalmWind();
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
+		if((mob.location().domainType()&Room.INDOORS)>0)
+		{
+			mob.tell("You must be outdoors for this chant to work.");
 			return false;
-
+		}
 		switch(mob.location().getArea().weatherType(mob.location()))
 		{
 		case Area.WEATHER_WINDY:
@@ -54,8 +56,11 @@ public class Druid_CalmWind extends Chant
 			return false;
 		}
 
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 		int size=mob.location().getArea().getMyMap().size();
-		size=size-(mob.envStats().level()*10);
+		size=size-(mob.envStats().level()*20);
 		if(size<0) size=0;
 		boolean success=profficiencyCheck(-size,auto);
 		if(success)
