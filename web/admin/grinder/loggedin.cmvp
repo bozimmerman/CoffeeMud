@@ -21,6 +21,11 @@
 			document.SELECTAREA.action=action;
 			document.SELECTAREA.submit();
 		}
+		function Threads()
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("thread.cmvp?AUTH=@Authenticate?AUTH@&TICKGROUPCOUNTER=0","Thread",strFeatures, false);
+		}
 	//-->
 	</script>
 </head>
@@ -43,6 +48,8 @@
 	<A href="javascript:Clicked('banners.cmvp')"><FONT COLOR=WHITE>Banned List</FONT></a>
 	<BR>
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
+	<BR>
+	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
 </TD></TR>
 </TABLE>
 <P>

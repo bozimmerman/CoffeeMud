@@ -1,11 +1,73 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Thread Group #@RequestParameter?TICKGROUPCOUNTER@</title>
+	<script language=JavaScript>
+	<!--
+		function ReOpen(which)
+		{
+			document.THREAD.TICKGROUPCOUNTER.value=which;
+			document.THREAD.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=THREAD TARGET=_top METHOD=GET ACTION="thread.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=TICKGROUPCOUNTER VALUE="@RequestParameter?TICKGROUPCOUNTER@">
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+	<TD WIDTH=80%>
+@AddRequestParameter?TICKGROUPCT=0@
+@AddRequestParameter?TICKGROUPSZ=@@SystemInfo?tickGroupSize@@ @
+@loop@
+	@ChkReqParmBreak?TICKGROUPCT=@@RequestParameter?TICKGROUPSZ@@ @
+	<A HREF="javascript:ReOpen('@RequestParameter?TICKGROUPCT@')"><FONT COLOR=WHITE> @RequestParameter?TICKGROUPCT@</FONT></a>
+	@AddRequestParameter?TICKGROUPCT=++@
+@back@
+	</TD>
+	<TD WIDTH=20% ALIGN=RIGHT>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="javascript:window.close();">
+	</TD>
+</TR>
+</TABLE>
+<BR>
+	<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><H2><FONT COLOR=BLACK>Thread Group #@RequestParameter?TICKGROUPCOUNTER@</FONT></H2></TD></TR>
+	<TR>
+		<TD WIDTH=30% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Object</FONT></TD>
+		<TD WIDTH=8% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>ID</FONT></TD>
+		<TD WIDTH=8% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Down</FONT></TD>
+		<TD WIDTH=8% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>ReTick</FONT></TD>
+		<TD WIDTH=25% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Last</FONT></TD>
+		<TD WIDTH=25% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Duration</FONT></TD>
+	</TR>
+	@AddRequestParameter?TICKSIZESIZE=@@SystemInfo?tickerssize@@@RequestParameter?TICKGROUPCOUNTER@@@ @@ @
+	@AddRequestParameter?TICKSIZECOUNTER=0@
+	
+	@loop@
+		@ChkReqParmBreak?TICKSIZECOUNTER=@@RequestParameter?TICKSIZESIZE@@ @
+	
+		<TR>
+		<TD><FONT COLOR=WHITE>
+		@if?SystemInfo?tickerSuspended@* @endif@
+		@SystemInfo?tickerName@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
+		<TD ALIGN=CENTER><FONT COLOR=WHITE>@SystemInfo?tickerID@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
+		<TD ALIGN=CENTER><FONT COLOR=WHITE>@SystemInfo?tickerTickDown@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
+		<TD ALIGN=CENTER><FONT COLOR=WHITE>@SystemInfo?tickerReTickDown@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
+		<TD><FONT COLOR=WHITE>@SystemInfo?tickerlaststartdate@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
+		<TD><FONT COLOR=WHITE>@SystemInfo?tickerLastDuration@@RequestParameter?TICKGROUPCOUNTER@@-@@RequestParameter?TICKSIZECOUNTER@@ @</FONT></TD>
+		</TR>
+		
+		@AddRequestParameter?TICKSIZECOUNTER=++@
+	@back@
+	</TABLE>
+</FORM>
 </BODY>
 </HTML>
+@endif@
+@endif@

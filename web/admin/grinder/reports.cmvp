@@ -44,20 +44,5 @@ The ticking players have consumed: <FONT COLOR=#CCFFFF>@SystemInfo?totalMOBMilli
 The most active mob has been '<FONT COLOR=#CCFFFF>@SystemInfo?topMOBClient@</FONT>'<BR>
 That mob has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topMOBMillisTimePlusAverage@</FONT>.<BR>
 </FONT>
-
-@AddRequestParameter?TICKGROUPCOUNTER=0@
-Try: @AddRequestParameter?TICKGROUPSIZE=@@SystemInfo?tickGroupSize@@ @
-
-@loop@
-	@ChkReqParmBreak?TICKGROUPCOUNTER=@@RequestParameter?TICKGROUPSIZE@@ @
-	
-	<FONT COLOR=WHITE>@RequestParameter?TICKGROUPCOUNTER@</FONT>
-	
-	@AddRequestParameter?TICKGROUPCOUNTER=++@
-	
-@back@
-<FONT COLOR=WHITE>
-</BODY>
-</HTML>
 @endif@
 @endif@
