@@ -76,7 +76,7 @@ public class Smelting extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(building!=null)
+			if((building!=null)&&(!aborted))
 			{
 				if(messedUp)
 					mob.tell("You ruin "+building.name()+"!");

@@ -16,7 +16,6 @@ public class GlassBlowing extends CommonSkill
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
-	private static final int RCP_ARMORDMG=8;
 	
 	private Item building=null;
 	private Item fire=null;
@@ -75,7 +74,7 @@ public class GlassBlowing extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(building!=null)
+			if((building!=null)&&(!aborted))
 			{
 				if(messedUp)
 					mob.tell("A "+building.name()+" explodes!");
@@ -212,11 +211,10 @@ public class GlassBlowing extends CommonSkill
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
 		building.setBaseValue(Util.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
-		building.setMaterial(EnvResource.MATERIAL_GLASS);
+		building.setMaterial(EnvResource.RESOURCE_GLASS);
 		building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 		int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-		int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 		if(building instanceof Container)
 		{
 			((Container)building).setCapacity(capacity+woodRequired);

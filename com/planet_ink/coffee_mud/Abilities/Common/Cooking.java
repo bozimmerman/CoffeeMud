@@ -286,8 +286,7 @@ public class Cooking extends CommonSkill
 		finalAmount=0;
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
+		
 		if(!mob.isMine(target))
 		{
 			mob.tell("You'll need to pick that up first.");
@@ -508,6 +507,8 @@ public class Cooking extends CommonSkill
 		//***********************************************
 		//* done figuring out recipe
 		//***********************************************
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
 		
 		FullMsg msg=new FullMsg(mob,cooking,null,Affect.MSG_NOISYMOVEMENT,Affect.MSG_OK_ACTION,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) cooking something in <T-NAME>.");
 		if(mob.location().okAffect(msg))

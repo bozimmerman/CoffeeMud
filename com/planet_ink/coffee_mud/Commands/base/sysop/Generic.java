@@ -434,7 +434,7 @@ public class Generic
 							if(newType.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
 								newValue=EnvResource.RESOURCE_DATA[i][0];
 					if(newValue>=0)
-						E.setMaterial(newValue);
+						((Drink)E).setLiquidType(newValue);
 					else
 						mob.tell("(no change)");
 				}

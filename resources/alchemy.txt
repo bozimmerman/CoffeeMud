@@ -31,7 +31,7 @@ Spell_DetectInvisible	EGGS
 Spell_ResistElectricity	OAK
 Spell_GraceOfTheCat	GREENS
 Spell_WeaknessCold	CLAY
-Spell_Invisibility	SILVER
+Spell_Invisibility	GLASS
 Spell_LightSensitivity	ZINC
 Spell_Tourettes	HOPS
 Spell_ManaBurn	MUTTON
@@ -67,10 +67,10 @@ Spell_Choke	CACTUS
 Spell_MageClaws	BONE
 Spell_MindFog	COAL
 Spell_FreeMovement	BLOOD
-Spell_Delude	GLASS
+Spell_Delude	SILVER
 Spell_ResistPetrification	GARNET
 Spell_FleshStone	STONE
-Spell_ImprovedInvisibility	SILVER
+Spell_ImprovedInvisibility	GLASS
 Spell_Nightmare	BLOOD
 Spell_Immunity	MITHRIL
 Spell_MindBlock	BALSA

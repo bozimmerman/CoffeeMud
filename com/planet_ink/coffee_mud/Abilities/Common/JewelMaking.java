@@ -76,7 +76,7 @@ public class JewelMaking extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(building!=null)
+			if((building!=null)&&(!aborted))
 			{
 				if(messedUp)
 					mob.tell("You've ruined "+building.name()+"!");

@@ -77,7 +77,7 @@ public class Fletching extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(building!=null)
+			if((building!=null)&&(!aborted))
 			{
 				if(messedUp)
 				{

@@ -34,7 +34,7 @@ public class FireBuilding extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 		{
 			MOB mob=(MOB)affected;
 			if(failed)

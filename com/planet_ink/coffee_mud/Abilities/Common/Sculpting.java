@@ -16,9 +16,7 @@ public class Sculpting extends CommonSkill
 	private static final int RCP_CLASSTYPE=5;
 	private static final int RCP_MISCTYPE=6;
 	private static final int RCP_CAPACITY=7;
-	private static final int RCP_ARMORDMG=8;
-	
-	
+
 	private Item building=null;
 	private Item key=null;
 	private boolean mending=false;
@@ -73,7 +71,7 @@ public class Sculpting extends CommonSkill
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(building!=null)
+			if((building!=null)&&(!aborted))
 			{
 				if(messedUp)
 				{
@@ -249,7 +247,6 @@ public class Sculpting extends CommonSkill
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			String misctype=(String)foundRecipe.elementAt(this.RCP_MISCTYPE);
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			key=null;
 			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 			{
@@ -297,47 +294,6 @@ public class Sculpting extends CommonSkill
 				else
 				if(misctype.equalsIgnoreCase("BED"))
 					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
-			}
-			if(building instanceof Weapon)
-			{
-				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
-				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
-				{
-					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
-						((Weapon)building).setWeaponClassification(cl);
-				}
-				building.baseEnvStats().setDamage(armordmg);
-				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
-				((Weapon)building).setRawLogicalAnd((capacity>1));
-			}
-			if(building instanceof Armor)
-			{
-				((Armor)building).baseEnvStats().setArmor(armordmg);
-				((Armor)building).setRawProperLocationBitmap(0);
-				for(int wo=1;wo<Item.wornLocation.length;wo++)
-				{
-					String WO=Item.wornLocation[wo].toUpperCase();
-					if(misctype.equalsIgnoreCase(WO))
-					{
-						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-					||(misctype.toUpperCase().endsWith("||"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-					||(misctype.toUpperCase().endsWith("&&"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(true);
-					}
-				}
 			}
 			if(building instanceof Light)
 			{

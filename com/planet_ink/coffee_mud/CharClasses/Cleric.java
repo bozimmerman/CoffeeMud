@@ -120,17 +120,17 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Heal",true);
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Harm",true);
 			
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_HolyWord",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Nullification",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Prayer_UnholyWord",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BlessItem",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
 			
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHeal",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_LinkedHealth",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Prayer_MassHarm",true);
 			
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_BlessItem",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Disenchant",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Prayer_CurseItem",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_HolyWord",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_Nullification",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Prayer_UnholyWord",true);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",true);
