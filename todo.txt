@@ -1,3 +1,4 @@
+
 Misc/Architecture:
 =================
 smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
@@ -112,6 +113,23 @@ Bandage
 	per pound of cloth or less.  Only let the skill work on people less 
 	than about 30% of max HP.  Good for limping back to town for a cleric, 
 	but doesn't ruin the need for a cleric.  And it's another use for cloth. 
+Knowledge Skills
+	A knowledge skill would create a database of various information, 
+	depending on the skill it would actually search the racial database 
+	of dragons, and parse out useful information to the player, based 
+	on level and percent skill. you could have Knowledge skills on RACES, 
+	AREAS, WEAPONS, ARMOR, LEATHERWORKING, etc.
+ImprovedDrinking
+	resistance to innebriation...
+Gambling skill
+	that gives you a bump in any game of chance.
+DirtyGambling 
+	skill that gives you a really big bump...but you may get caught, 
+	which starts combat.
+Master Armorsmith
+	depending on race, allows you to make a few spiffy items. For 
+	example, Master Armorsmith would allow a Dwarf to make 
+	DwarvenFieldPlate, with added bonus to STR and protection
 Additions/Updates
 	locksmith BOLTLOCK a lock that can only be unlocked from one direction. 
 		Should be pickable from the other direction, just not unlocked with a key.
@@ -195,6 +213,24 @@ Bodyshield
 	and both enemies are your level, 75% of time if your pinned opponenet 
 	is 20 levels lower than you, or the other attacker is 20 levels lower 
 	than you, and near 100% if both are 20 levels lower than you....
+Weapon Catch
+	If you are disarmed, it will make a weaponcatch check. If it 
+	succedes, you catch the weapon, losing one attack. Otherwise, 
+	the weapon falls to the ground.
+Improved Shield Defence
+	grants extra bonuses when using shield.
+AutoBashing
+	grants an extra BASH attack every round. Mana and Movement for each 
+	autobash.
+Mounted Charge
+	as the name implies. Barbarian Charge skill applied to mounted 
+	warriors. Paladin skill.
+Tactics 
+	for fighters, gives allies bonus to hit. 
+Strategy
+	improves all combat skills for everyone in your CLAN. Boss/Leader only.
+Fracture
+	Causes damage to enemy armor.
 
 	
 
@@ -211,11 +247,13 @@ Improved stealing/swiping
 	Burglar to be able to steal from signifigantly higher MOBs
 Mug
 	allows STEAL during a fight.
+Countertracking
+	an active skill that prevents you from being found with the 
+	tracking skill.
 Additions/Updates
 	Pick should LOCK unlocked (but lockable) doors.
-
-
-
+Squatting
+	Makes an area/room your own for a little while
 
 Spells:
 =======

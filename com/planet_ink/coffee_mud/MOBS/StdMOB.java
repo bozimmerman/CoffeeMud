@@ -757,6 +757,14 @@ public class StdMOB implements MOB
 				if(riding()==viewer)
 					sendBack.append("YOU");
 				else
+				if(!Sense.canBeSeenBy(riding(),viewer))
+				{
+					if(riding() instanceof Item)
+						sendBack.append("something");
+					else
+						sendBack.append("someone");
+				}
+				else
 					sendBack.append(riding().name());
 			}
 			else
@@ -781,6 +789,14 @@ public class StdMOB implements MOB
 						if(rider==viewer)
 							sendBack.append("you");
 						else
+						if(!Sense.canBeSeenBy(riding(),viewer))
+						{
+							if(riding() instanceof Item)
+								sendBack.append("something");
+							else
+								sendBack.append("someone");
+						}
+						else
 							sendBack.append(rider.name());
 					}
 
@@ -791,6 +807,9 @@ public class StdMOB implements MOB
 				sendBack.append(" fighting ");
 				if(getVictim()==viewer)
 					sendBack.append("YOU");
+				else
+				if(!Sense.canBeSeenBy(getVictim(),viewer))
+					sendBack.append("someone");
 				else
 					sendBack.append(getVictim().name());
 			}
