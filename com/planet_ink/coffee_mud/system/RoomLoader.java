@@ -172,9 +172,9 @@ public class RoomLoader
 			thisRoom.recoverRoomStats();
 		}
 		
-		for(Iterator a=CMMap.areas();a.hasNext();)
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			StringBuffer s=A.getAreaStats();
 			Resources.submitResource("HELP_"+A.name().toUpperCase(),s);
 		}

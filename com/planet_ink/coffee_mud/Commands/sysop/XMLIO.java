@@ -42,9 +42,9 @@ public class XMLIO
 				roomXML.append("<LIST>");
 				if(newList.equalsIgnoreCase("ROOM"))
 				{
-					for(Iterator r=CMMap.rooms();r.hasNext();)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.next();
+						Room R=(Room)r.nextElement();
 						if(R.ID().length()>0)
 							roomXML.append(R.ID()+";");
 					}
@@ -52,8 +52,8 @@ public class XMLIO
 				else
 				if(newList.equalsIgnoreCase("AREA"))
 				{
-					for(Iterator a=CMMap.areas();a.hasNext();)
-						roomXML.append(((Area)a.next()).name()+";");
+					for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+						roomXML.append(((Area)a.nextElement()).name()+";");
 				}
 				else
 				if(newList.equalsIgnoreCase("LOCALE"))
@@ -135,9 +135,9 @@ public class XMLIO
 				}
 				else
 				{
-					for(Iterator r=CMMap.rooms();r.hasNext();)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.next();
+						Room R=(Room)r.nextElement();
 						if((R.ID().length()>0)&&(R.getArea().name().equalsIgnoreCase(newList)))
 							roomXML.append(R.ID()+";");
 					}
@@ -245,9 +245,9 @@ public class XMLIO
 		{
 			String possID=Util.combine(commands,0);
 			Room room=null;
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.ID().equalsIgnoreCase(possID))
 				{
 				   room=R;
@@ -330,9 +330,9 @@ public class XMLIO
 			String roomID=XMLManager.returnXMLValue(Util.combine(commands,0),"ROOMID");
 			if((roomID.length()>0)&&(!roomID.equalsIgnoreCase(room.ID())))
 			{
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if(R.ID().equalsIgnoreCase(roomID))
 					{
 					   room=R;
@@ -449,9 +449,9 @@ public class XMLIO
 		{
 			String possID=Util.combine(commands,0);
 			Room room=null;
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.ID().equalsIgnoreCase(possID))
 				{
 				   room=R;
@@ -539,9 +539,9 @@ public class XMLIO
 			{
 				if((!room.ID().equalsIgnoreCase(newID))&&(newID.length()>0))
 				{
-					for(Iterator r=CMMap.rooms();r.hasNext();)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.next();
+						Room R=(Room)r.nextElement();
 						if(R.ID().equalsIgnoreCase(newID))
 						{
 						   room=R;
@@ -632,12 +632,12 @@ public class XMLIO
 			if(room!=mob.location())
 				room.bringMobHere(mob,true);
 			mob.session().rawPrintln("<RESPONSE>"+response+"</RESPONSE>");
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
-				for(Iterator r2=CMMap.rooms();r2.hasNext();)
+				Room R=(Room)r.nextElement();
+				for(Enumeration r2=CMMap.rooms();r2.hasMoreElements();)
 				{
-					Room R2=(Room)r2.next();
+					Room R2=(Room)r2.nextElement();
 					if((R2==R)&&(r!=r2))
 						Log.errOut("ROOMXML",R.ID()+"="+R2.ID());
 				}

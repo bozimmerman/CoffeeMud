@@ -215,9 +215,9 @@ public class GrinderRooms
 		
 		if(redoAllMyDamnRooms)
 		{
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R2=(Room)r.next();
+				Room R2=(Room)r.nextElement();
 				for(int d=0;d<R2.rawDoors().length;d++)
 					if(R2.rawDoors()[d]==oldR)
 					{

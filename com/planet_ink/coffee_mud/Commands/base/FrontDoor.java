@@ -56,9 +56,9 @@ public class FrontDoor
 			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
 				return false;
 		}
-		for(Iterator d=CMMap.deities();d.hasNext();)
+		for(Enumeration d=CMMap.deities();d.hasMoreElements();)
 		{
-			MOB D=(MOB)d.next();
+			MOB D=(MOB)d.nextElement();
 			if((CoffeeUtensils.containsString(D.ID(),login))
 			||(CoffeeUtensils.containsString(D.name(),login)))
 				return false;
@@ -70,9 +70,9 @@ public class FrontDoor
 			||(CoffeeUtensils.containsString(tm.name(),login)))
 				return false;
 		}
-		for(Iterator e=CMMap.players();e.hasNext();)
+		for(Enumeration e=CMMap.players();e.hasMoreElements();)
 		{
-			MOB tm=(MOB)e.next();
+			MOB tm=(MOB)e.nextElement();
 			if((CoffeeUtensils.containsString(tm.ID(),login))
 			||(CoffeeUtensils.containsString(tm.name(),login)))
 				return false;

@@ -58,9 +58,9 @@ public class Scoring
 		FullMsg msg=new FullMsg(deadMOB,null,Affect.MSG_RETIRE,"A horrible death cry is heard throughout the land.");
 		if(deadMOB.location()!=null)
 			deadMOB.location().send(deadMOB,msg);
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if((R!=null)&&(R!=deadMOB.location()))
 			{
 				if(R.okAffect(msg))
@@ -296,9 +296,9 @@ public class Scoring
 	public static void gods(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("\n\r^HThe known deities:^? \n\r");
-		for(Iterator d=CMMap.deities();d.hasNext();)
+		for(Enumeration d=CMMap.deities();d.hasMoreElements();)
 		{
-			Deity D=(Deity)d.next();
+			Deity D=(Deity)d.nextElement();
 			msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 			msg.append(D.description()+"\n\r");
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
@@ -788,9 +788,9 @@ public class Scoring
 	public static void areas(MOB mob)
 	{
 		Vector areasVec=new Vector();
-		for(Iterator a=CMMap.areas();a.hasNext();)
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			if((!Sense.isHidden(A))||(mob.isASysOp(null)))
 				areasVec.addElement(A.name());
 		}

@@ -11,23 +11,21 @@ public class Help
 {
 	private Help(){}
 	
-	private static Properties helpFile=null;
-	private static Properties arcHelpFile=null;
-	
-	public static boolean getArcHelpFile()
+	public static Properties getArcHelpFile()
 	{
+		Properties arcHelpFile=(Properties)Resources.getResource("ARCHON HELP FILE");
 		if(arcHelpFile==null)
 		{
 			arcHelpFile=new Properties();
 			try{arcHelpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"arc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
 		}
-		if(arcHelpFile==null)
-			return false;
-		return true;
+		return arcHelpFile;
 	}
 
-	public static boolean getHelpFile()
+	public static Properties getHelpFile()
 	{
+		Properties helpFile=(Properties)Resources.getResource("MAIN HELP FILE");
 		if(helpFile==null)
 		{
 			helpFile=new Properties();
@@ -39,14 +37,15 @@ public class Help
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"songs_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"prayer_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"chant_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			Resources.submitResource("MAIN HELP FILE",helpFile);
 		}
-		if(helpFile==null) return false;
-		return true;
+		return helpFile;
 	}
 
 	public static void topics(MOB mob)
 	{
-		if(!getHelpFile())
+		Properties helpFile=getHelpFile();
+		if(helpFile.size()==0)
 		{
 			mob.tell("No help is available.");
 			return;
@@ -57,7 +56,8 @@ public class Help
 
 	public static void arcTopics(MOB mob)
 	{
-		if(!getArcHelpFile())
+		Properties arcHelpFile=getArcHelpFile();
+		if(arcHelpFile.size()==0)
 		{
 			mob.tell("No archon help is available.");
 			return;
@@ -118,13 +118,13 @@ public class Help
 	
 	public static StringBuffer getHelpText(String helpStr)
 	{
-		if(!getHelpFile())
+		if(getHelpFile().size()==0)
 			return null;
 		if(helpStr.length()==0) return null;
-		StringBuffer thisTag=getHelpText(helpStr,helpFile);
+		StringBuffer thisTag=getHelpText(helpStr,getHelpFile());
 		if(thisTag!=null) return thisTag;
-		if(!getArcHelpFile()) return null;
-		thisTag=getHelpText(helpStr,arcHelpFile);
+		if(getArcHelpFile().size()==0) return null;
+		thisTag=getHelpText(helpStr,getArcHelpFile());
 		return thisTag;
 	}
 	
@@ -364,7 +364,7 @@ public class Help
 	
 	public static void help(MOB mob, String helpStr)
 	{
-		if(!getHelpFile())
+		if(getHelpFile().size()==0)
 		{
 			mob.tell("No help is available.");
 			return;
@@ -373,7 +373,7 @@ public class Help
 		if(helpStr.length()==0)
 			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt");
 		else
-			thisTag=getHelpText(helpStr,helpFile);
+			thisTag=getHelpText(helpStr,getHelpFile());
 		if(thisTag==null)
 			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
 		else
@@ -383,7 +383,7 @@ public class Help
 
 	public static void arcHelp(MOB mob, String helpStr)
 	{
-		if(!getArcHelpFile())
+		if(getArcHelpFile().size()==0)
 		{
 			mob.tell("No archon help is available.");
 			return;
@@ -421,7 +421,7 @@ public class Help
 			}
 		}
 		else
-			thisTag=getHelpText(helpStr,arcHelpFile);
+			thisTag=getHelpText(helpStr,getArcHelpFile());
 		if(thisTag==null)
 			mob.tell("No archon help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
 		else
@@ -449,8 +449,10 @@ public class Help
 			Resources.removeResource("text"+File.separatorChar+"alignment.txt");
 		if(Resources.getResource("help"+File.separatorChar+"arc_help.txt")!=null)
 			Resources.removeResource("help"+File.separatorChar+"arc_help.txt");
-		helpFile=null;
-		arcHelpFile=null;
+		if(Resources.getResource("MAIN HELP FILE")!=null)
+			Resources.removeResource("MAIN HELP FILE");
+		if(Resources.getResource("ARCHON HELP FILE")!=null)
+			Resources.removeResource("ARCHON HELP FILE");
 
 		// also the intro page
 		if(Resources.getResource("text"+File.separatorChar+"intro.txt")!=null)

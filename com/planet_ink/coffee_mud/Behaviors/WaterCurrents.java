@@ -96,9 +96,9 @@ public class WaterCurrents extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(Iterator r=((Area)ticking).getMap();r.hasNext();)
+				for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 					||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)

@@ -30,9 +30,9 @@ public class Authenticate extends StdWebMacro
 	public static MOB getAuthenticatedMOB(String login)
 	{
 		MOB mob=null;
-		for(Iterator p=CMMap.players();p.hasNext();)
+		for(Enumeration p=CMMap.players();p.hasMoreElements();)
 		{
-			MOB mob2=(MOB)p.next();
+			MOB mob2=(MOB)p.nextElement();
 			if(mob2.name().equalsIgnoreCase(login))
 			{ mob=mob2; break;}
 		}
@@ -58,9 +58,9 @@ public class Authenticate extends StdWebMacro
 		boolean sysop=mob.isASysOp(null);
 		httpReq.getRequestParameters().put("SYSOP",""+sysop);
 		String AREA=(String)httpReq.getRequestParameters().get("AREA");
-		for(Iterator a=CMMap.areas();a.hasNext();)
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.name())))
 				if(A.amISubOp(mob.name()))
 				{ subOp=true; break;}

@@ -49,9 +49,9 @@ public class WebHelper
 	
 		Vector areasVec=new Vector();
 
-		for(Iterator a=CMMap.areas();a.hasNext();)
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			if(!Sense.isHidden(A))
 				areasVec.addElement(A.name());
 		}

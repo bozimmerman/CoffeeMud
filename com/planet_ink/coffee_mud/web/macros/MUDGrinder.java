@@ -120,9 +120,9 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
-			for(Iterator r=A.getMap();r.hasNext();)
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.ID().toUpperCase().endsWith(find.toUpperCase()))
 				{
 					httpReq.getRequestParameters().put("ROOM",R.ID());
@@ -130,9 +130,9 @@ public class MUDGrinder extends StdWebMacro
 					return "";
 				}
 			}
-			for(Iterator r=A.getMap();r.hasNext();)
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0)
 				{
 					httpReq.getRequestParameters().put("ROOM",R.ID());
@@ -140,9 +140,9 @@ public class MUDGrinder extends StdWebMacro
 					return "";
 				}
 			}
-			for(Iterator r=A.getMap();r.hasNext();)
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.description().toUpperCase().indexOf(find.toUpperCase())>=0)
 				{
 					httpReq.getRequestParameters().put("ROOM",R.ID());

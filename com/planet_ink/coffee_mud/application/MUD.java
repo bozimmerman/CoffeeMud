@@ -237,9 +237,9 @@ public class MUD extends Thread implements Host
 		Log.sysOut("MUD","Loading map...");
 		offlineReason="Booting: loading rooms (0% completed).";
 		RoomLoader.DBRead((Host)mudThreads.firstElement());
-		for(Iterator a=CMMap.areas();a.hasNext();)
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			offlineReason="Booting: filling map ("+A.name()+")";
 			A.fillInAreaRooms();
 		}

@@ -49,9 +49,9 @@ public class Spell_ConjureNexus extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if(R!=null)
 			for(int a=0;a<R.numAffects();a++)
 			{

@@ -37,17 +37,17 @@ public class Utils
 		
 		if(E==null)	E=mob.fetchInventory(name);
 		if(E==null)
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				E=R.fetchInhabitant(name);
 				if(E==null) E=R.fetchItem(null,name);
 				if(E!=null) break;
 			}
 		if(E==null)
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB mob2=R.fetchInhabitant(m);

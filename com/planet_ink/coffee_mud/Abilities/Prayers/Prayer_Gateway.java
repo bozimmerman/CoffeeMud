@@ -50,9 +50,9 @@ public class Prayer_Gateway extends Prayer
 			return false;
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if(CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
 			{
 			   newRoom=R;

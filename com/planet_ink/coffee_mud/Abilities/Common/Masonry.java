@@ -113,9 +113,9 @@ public class Masonry extends CommonSkill
 							for(int d=0;d<R.rawExits().length;d++)
 								R.rawExits()[d]=room.rawExits()[d];
 							R.startItemRejuv();
-							for(Iterator r=CMMap.rooms();r.hasNext();)
+							for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 							{
-								Room R2=(Room)r.next();
+								Room R2=(Room)r.nextElement();
 								for(int d=0;d<R2.rawDoors().length;d++)
 									if(R2.rawDoors()[d]==room)
 									{
@@ -213,9 +213,9 @@ public class Masonry extends CommonSkill
 								for(int d=0;d<R.rawExits().length;d++)
 									R.rawExits()[d]=room.rawExits()[d];
 								R.startItemRejuv();
-								for(Iterator r=CMMap.rooms();r.hasNext();)
+								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 								{
-									Room R2=(Room)r.next();
+									Room R2=(Room)r.nextElement();
 									for(int d=0;d<R2.rawDoors().length;d++)
 										if(R2.rawDoors()[d]==room)
 										{
@@ -323,9 +323,9 @@ public class Masonry extends CommonSkill
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-			for(Iterator r=mob.location().getArea().getMap();r.hasNext();)
+			for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.displayText().equalsIgnoreCase(title))
 				{
 					commonTell(mob,"That title has already been taken.  Choose another.");

@@ -16,6 +16,18 @@ public class Resources
 		resource=new Vector();
 	}
 	
+	public static Vector findResourceKeys(String srch)
+	{
+		Vector V=new Vector();
+		for(int i=0;i<resourceIDs.size();i++)
+		{
+			String key=(String)resourceIDs.elementAt(i);
+			if((srch.length()==0)||(key.toUpperCase().indexOf(srch.toUpperCase())>=0))
+				V.addElement(key);
+		}
+		return V;
+	}
+	
 	public static Object getResource(String ID)
 	{
 		for(int i=0;i<resourceIDs.size();i++)

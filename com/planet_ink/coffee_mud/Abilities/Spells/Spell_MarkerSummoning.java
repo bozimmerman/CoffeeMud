@@ -16,9 +16,9 @@ public class Spell_MarkerSummoning extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room oldRoom=null;
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if(R!=null)
 			for(int a=0;a<R.numAffects();a++)
 			{

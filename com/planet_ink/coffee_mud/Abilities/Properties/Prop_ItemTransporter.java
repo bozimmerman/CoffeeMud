@@ -49,9 +49,9 @@ public class Prop_ItemTransporter extends Property
 			roomDestination=null;
 			mobDestination=null;
 			nextDestination=null;
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room room=(Room)r.next();
+				Room room=(Room)r.nextElement();
 				Ability A=room.fetchAffect("Prop_ItemTransReceiver");
 				if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 					possibilities.addElement(room);

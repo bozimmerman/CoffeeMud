@@ -34,9 +34,9 @@ public class ROMPatrolman extends StdBehavior
 		if(victim==null) return;
 		if(BrotherHelper.isBrother(victim,observer)) return;
 		observer.location().show(observer,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***");
-		for(Iterator r=observer.location().getArea().getMap();r.hasNext();)
+		for(Enumeration r=observer.location().getArea().getMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if((R!=observer.location())&&(R.numPCInhabitants()>0))
 				R.showHappens(Affect.MSG_NOISE,"You hear a shrill whistling sound in the distance.");
 		}

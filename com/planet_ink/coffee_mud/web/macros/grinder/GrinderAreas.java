@@ -9,9 +9,9 @@ public class GrinderAreas
 	public static String getAreaList(Area pickedA, MOB mob)
 	{
 		StringBuffer AreaList=new StringBuffer("");
-		for(Iterator a=CMMap.areas();a.hasNext();)
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			if((A.amISubOp(mob.name()))||(mob.isASysOp(null)))
 				if((pickedA!=null)&&(pickedA==A))
 					AreaList.append("<OPTION SELECTED VALUE=\""+A.name()+"\">"+A.name());
@@ -89,8 +89,8 @@ public class GrinderAreas
 		if(!className.equalsIgnoreCase(CMClass.className(A)))
 		{
 			allMyDamnRooms=new Vector();
-			for(Iterator r=A.getMap();r.hasNext();)
-				allMyDamnRooms.addElement(r.next());
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
+				allMyDamnRooms.addElement(r.nextElement());
 			Area oldA=A;
 			A=CMClass.getAreaType(className);
 			if(A==null)
@@ -110,8 +110,8 @@ public class GrinderAreas
 			if(CMMap.getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector();
-			for(Iterator r=A.getMap();r.hasNext();)
-				allMyDamnRooms.addElement(r.next());
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
+				allMyDamnRooms.addElement(r.nextElement());
 			CMMap.delArea(A);
 			oldName=A.name();
 			ExternalPlay.DBDeleteArea(A);
@@ -183,9 +183,9 @@ public class GrinderAreas
 			}
 			A.clearMap();
 			if(oldName!=null)
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				boolean doIt=false;
 				for(int d=0;d<R.rawDoors().length;d++)
 				{

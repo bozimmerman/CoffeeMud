@@ -126,15 +126,15 @@ public class Spell_Wish extends Spell
 			Environmental foundThang=null;
 			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORN_REQ_UNWORNONLY);
 			foundThang=maybeAdd(E,thangsFound,foundThang);
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room room=(Room)r.next();
+				Room room=(Room)r.nextElement();
 				E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORN_REQ_UNWORNONLY);
 				foundThang=maybeAdd(E,thangsFound,foundThang);
 			}
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room room=(Room)r.next();
+				Room room=(Room)r.nextElement();
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB mob2=room.fetchInhabitant(m);
@@ -365,9 +365,9 @@ public class Spell_Wish extends Spell
 				if(dir>=0)
 					newRoom=mob.location().getRoomInDir(dir);
 				if(newRoom==null)
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room room=(Room)r.next();
+					Room room=(Room)r.nextElement();
 					if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),locationWish.trim()))
 					{
 					   newRoom=room;

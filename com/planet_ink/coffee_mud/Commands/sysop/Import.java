@@ -2387,9 +2387,9 @@ public class Import
 		}
 		else
 		{
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(!R.getArea().name().equalsIgnoreCase(areaName))
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
@@ -2401,9 +2401,9 @@ public class Import
 			while(true)
 			{
 				Room foundOne=null;
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if(R.getArea().name().equalsIgnoreCase(areaName))
 					{
 						foundOne=R;
@@ -2550,9 +2550,9 @@ public class Import
 						{
 							if(reLinkTable==null) reLinkTable=new Vector();
 							if(mob.location().getArea().name().equalsIgnoreCase(areaName))
-								for(Iterator r=CMMap.rooms();r.hasNext();)
+								for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 								{
-									Room R=(Room)r.next();
+									Room R=(Room)r.nextElement();
 									if((R!=null)&&(!R.getArea().name().equalsIgnoreCase(areaName)))
 									{
 										R.bringMobHere(mob,true);
@@ -2632,9 +2632,9 @@ public class Import
 					if(R!=null)
 					{
 						reLinkTable=new Vector();
-						for(Iterator r=CMMap.rooms();r.hasNext();)
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 						{
-							Room R2=(Room)r.next();
+							Room R2=(Room)r.nextElement();
 							if(R2!=R)
 							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 							{
@@ -2889,9 +2889,9 @@ public class Import
 		{
 			// confirm area creation/overwrite
 			boolean exists=false;
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.getArea().name().equalsIgnoreCase(areaName))
 				{
 					exists=true;
@@ -3257,9 +3257,9 @@ public class Import
 						Exit opExit=null;
 						if(((linkRoom==null)||(linkRoom.getArea().name()!=R.getArea().name()))&&(linkRoomID>=0))
 						{
-							for(Iterator r2=CMMap.rooms();r2.hasNext();)
+							for(Enumeration r2=CMMap.rooms();r2.hasMoreElements();)
 							{
-								Room R2=(Room)r2.next();
+								Room R2=(Room)r2.nextElement();
 								if((R2.ID().endsWith("#"+linkRoomID))&&(R2!=R))
 								{
 									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -3687,8 +3687,8 @@ public class Import
 			Room saveRoom=(Room)e.nextElement();
 			saveRoom.getArea().toggleMobility(true);
 		}
-		for(Iterator a=CMMap.areas();a.hasNext();)
-			((Area)a.next()).fillInAreaRooms();
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			((Area)a.nextElement()).fillInAreaRooms();
 		mob.session().println("done!");
 	}
 	
@@ -3747,9 +3747,9 @@ public class Import
 			else
 			{
 				StringBuffer buf=new StringBuffer("<AREAS>");
-				for(Iterator a=CMMap.areas();a.hasNext();)
+				for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 				{
-					Area A=(Area)a.next();
+					Area A=(Area)a.nextElement();
 					if(A!=null)
 					{
 						if(mob.session()!=null)
@@ -3774,9 +3774,9 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading area mobs '"+mob.location().getArea().name()+"'...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Iterator r=mob.location().getArea().getMap();r.hasNext();)
+				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
 					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomMobs(R,found).toString());
 				}
@@ -3789,9 +3789,9 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading world mobs ...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
 					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomMobs(R,found).toString());
 				}
@@ -3819,9 +3819,9 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading area "+subType.toLowerCase()+" '"+mob.location().getArea().name()+"'...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Iterator r=mob.location().getArea().getMap();r.hasNext();)
+				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
 					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomItems(R,found,type).toString());
 				}
@@ -3834,9 +3834,9 @@ public class Import
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading world "+subType.toLowerCase()+" ...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
 					buf.append(com.planet_ink.coffee_mud.common.Generic.getRoomItems(R,found,type).toString());
 				}
@@ -4087,9 +4087,9 @@ public class Import
 			return;
 		}
 		if(placesToDo.size()==0)
-		for(Iterator a=CMMap.areas();a.hasNext();)
+		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			placesToDo.addElement(A);
 		}
 		if(placesToDo.size()==0)
@@ -4103,9 +4103,9 @@ public class Import
 			{
 				Area A=(Area)placesToDo.elementAt(i);
 				placesToDo.removeElement(A);
-				for(Iterator r=A.getMap();r.hasNext();)
+				for(Enumeration r=A.getMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					placesToDo.addElement(R);
 				}
 			}

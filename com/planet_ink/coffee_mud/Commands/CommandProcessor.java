@@ -590,11 +590,11 @@ public class CommandProcessor
 					else
 						mob.tell("You lack the power to link rooms.\n\r");
 					break;
-				case CommandSet.UNLOADHELP:
+				case CommandSet.UNLOAD:
 					if(mob.isASysOp(null))
-						Help.unloadHelpFile(mob);
+						SysOpSkills.unload(mob,commands);
 					else
-						mob.tell("Only the Archons may unload the help files...\n\r");
+						mob.tell("Only the Archons may unload stuff!\n\r");
 					break;
 				case CommandSet.UNDRESS:
 					Grouping.undress(mob,commands);
@@ -713,9 +713,9 @@ public class CommandProcessor
 		else
 			Log.errOut("CommandProcessor",mob.name()+" starts system restart...");
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_SHUTDOWN,null);
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			R.send(mob,msg);
 		}
 		if(myHost!=null)

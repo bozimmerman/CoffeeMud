@@ -30,9 +30,9 @@ public class Spell_Gate extends Spell
 
 		Vector candidates=new Vector();
 		MOB target=null;
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room room=(Room)r.next();
+			Room room=(Room)r.nextElement();
 			if(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
 			   ||(mob.isASysOp(room)))
 			{

@@ -5,10 +5,11 @@ import com.planet_ink.coffee_mud.interfaces.*;
 
 public class CMAble
 {
-	private int qualLevel=-1;
-	private boolean autoGain=false;
-	private int defaultProfficiency=0;
-	private String defaultParm="";
+	public String abilityName="";
+	public int qualLevel=-1;
+	public boolean autoGain=false;
+	public int defaultProfficiency=0;
+	public String defaultParm="";
 								
 	private static Hashtable classAbleMap=new Hashtable();
 	private static Hashtable lowestQualifyingLevelMap=new Hashtable();
@@ -38,6 +39,15 @@ public class CMAble
 		if(ableMap.containsKey(ability))
 			ableMap.remove(ability);
 	}
+	
+	public static Enumeration getClassAbles(String charClass)
+	{
+		if(!classAbleMap.containsKey(charClass))
+			classAbleMap.put(charClass,new Hashtable());
+		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+		return ableMap.elements();
+	}
+	
 	public static void addCharAbilityMapping(String charClass, 
 											 int qualLevel,
 											 String ability, 
@@ -48,6 +58,7 @@ public class CMAble
 		delCharAbilityMapping(charClass,ability);
 		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
 		CMAble able=new CMAble();
+		able.abilityName=ability;
 		able.qualLevel=qualLevel;
 		able.autoGain=autoGain;
 		able.defaultParm=defaultParam;

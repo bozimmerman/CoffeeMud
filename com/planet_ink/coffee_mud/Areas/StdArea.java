@@ -626,9 +626,9 @@ public class StdArea implements Area
 			
 			if(say!=null)
 			{
-				for(Iterator r=getMap();r.hasNext();)
+				for(Enumeration r=getMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if((R.domainType()&Room.INDOORS)==0)
 					for(int i=0;i<R.numInhabitants();i++)
 					{
@@ -955,9 +955,9 @@ public class StdArea implements Area
 	public void raiseLowerTheSunEverywhere()
 	{
 		Area A=this;
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
 			{
 				R.recoverEnvStats();
@@ -1149,9 +1149,9 @@ public class StdArea implements Area
 	
 	public void fillInAreaRooms()
 	{
-		for(Iterator r=getMap();r.hasNext();)
+		for(Enumeration r=getMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			R.clearSky();
 			if(R.ID().length()>0)
 			{
@@ -1160,9 +1160,9 @@ public class StdArea implements Area
 			}
 		}
 		myRooms=null;
-		for(Iterator r=getMap();r.hasNext();)
+		for(Enumeration r=getMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			R.clearSky();
 			R.giveASky(0);
 		}
@@ -1239,9 +1239,9 @@ public class StdArea implements Area
 		int medianLevel=0;
 		long totalAlignments=0;
 		int averageAlignment=0;
-		for(Iterator r=getMap();r.hasNext();)
+		for(Enumeration r=getMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB mob=R.fetchInhabitant(i);
@@ -1295,18 +1295,18 @@ public class StdArea implements Area
 		if(mapSize()==0) return null;
 		return (Room)myRooms.elementAt(Dice.roll(1,mapSize(),-1));
 	}
-	public synchronized Iterator getMap()
+	public synchronized Enumeration getMap()
 	{
-		if(myRooms!=null) return myRooms.iterator();
+		if(myRooms!=null) return myRooms.elements();
 		Vector myMap=new Vector();
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if(R.getArea()==this)
 				myMap.addElement(R);
 		}
 		myRooms=myMap;
-		return myMap.iterator();
+		return myMap.elements();
 	}
 	
 	public int nextWeatherType(Room room)

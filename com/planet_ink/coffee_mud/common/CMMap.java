@@ -14,8 +14,8 @@ public class CMMap
 
 	private static void theWorldChanged()
 	{
-		for (Iterator a=areas(); a.hasNext();)
-			((Area)a.next()).clearMap();
+		for (Enumeration a=areas(); a.hasMoreElements();)
+			((Area)a.nextElement()).clearMap();
 	}
 	// areas
 	public static int numAreas() { return areasList.size(); }
@@ -29,21 +29,21 @@ public class CMMap
 	}
 	public static Area getArea(String calledThis) 
 	{ 
-		for(Iterator a=areas();a.hasNext();)
+		for(Enumeration a=areas();a.hasMoreElements();)
 		{
-			Area A=(Area)a.next();
+			Area A=(Area)a.nextElement();
 			if(A.name().equalsIgnoreCase(calledThis))
 				return A;
 		}
 		return null;
 	}
-	public static Iterator areas(){ 
-		return ((Vector)areasList.clone()).iterator();
+	public static Enumeration areas(){ 
+		return areasList.elements();
 	}
 	public static Area getFirstArea()
 	{
-		if (areas().hasNext()) 
-			return (Area) areas().next();
+		if (areas().hasMoreElements()) 
+			return (Area) areas().nextElement();
 		return null;
 	}
 	
@@ -64,23 +64,16 @@ public class CMMap
 	{
 		Room R = null;
 
-		for (Iterator i=rooms(); i.hasNext();)
+		for (Enumeration i=rooms(); i.hasMoreElements();)
 		{
-			R = (Room)i.next();
+			R = (Room)i.nextElement();
 			if (R.ID().equalsIgnoreCase(calledThis))
 				return R;
 		}
 		return null;
 	}
-	public static Iterator rooms() { 
-		return ((Vector)roomsList.clone()).iterator();
-	}
-	public static Vector makeRoomVector()
-	{
-		Vector V=new Vector();
-		for(Iterator r=rooms();r.hasNext();)
-			V.addElement((Room)r.next());
-		return V;
+	public static Enumeration rooms() { 
+		return roomsList.elements();
 	}
 	public static void replaceRoom(Room newOne, Room oldOne)
 	{
@@ -92,8 +85,8 @@ public class CMMap
 	}
 	public static Room getFirstRoom()
 	{
-		if (rooms().hasNext()) 
-			return (Room) rooms().next();
+		if (rooms().hasMoreElements()) 
+			return (Room) rooms().nextElement();
 		return null;
 	}
 	public static Room getRandomRoom()
@@ -121,15 +114,15 @@ public class CMMap
 	public static Deity getDeity(String calledThis)
 	{
 		Deity D = null;
-		for (Iterator i=deities(); i.hasNext();)
+		for (Enumeration i=deities(); i.hasMoreElements();)
 		{
-			D = (Deity)i.next();
+			D = (Deity)i.nextElement();
 			if (D.name().equalsIgnoreCase(calledThis))
 				return D;
 		}
 		return null;
 	}
-	public static Iterator deities() { return deitiesList.iterator(); }
+	public static Enumeration deities() { return deitiesList.elements(); }
 	
 	public static int numPlayers() { return playersList.size(); }
 	public static void addPlayer(MOB newOne) { playersList.add(newOne); }
@@ -138,15 +131,15 @@ public class CMMap
 	{
 		MOB M = null;
 
-		for (Iterator p=players(); p.hasNext();)
+		for (Enumeration p=players(); p.hasMoreElements();)
 		{
-			M = (MOB)p.next();
+			M = (MOB)p.nextElement();
 			if (M.name().equalsIgnoreCase(calledThis)) 
 				return M;
 		}
 		return null;
 	}
-	public static Iterator players() { return ((Vector)playersList.clone()).iterator(); }
+	public static Enumeration players() { return playersList.elements(); }
 	
 	public static Room getStartRoom(MOB mob)
 	{

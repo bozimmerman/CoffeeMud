@@ -10,9 +10,9 @@ public class Reset
 	public static String getOpenRoomID(String AreaID)
 	{
 		int highest=0;
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if((R.getArea().name().equals(AreaID))
 			&&(R.ID().startsWith(AreaID+"#")))
 			{
@@ -52,9 +52,9 @@ public class Reset
 			resetArea(A);
 			A.toggleMobility(false);
 			try{
-			for(Iterator r=A.getMap();r.hasNext();)
+			for(Enumeration r=A.getMap();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				resetRoom(R);
 				boolean somethingDone=false;
 				mob.tell(R.ID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
@@ -193,9 +193,9 @@ public class Reset
 	{
 		boolean mobile=area.getMobility();
 		area.toggleMobility(false);
-		for(Iterator r=area.getMap();r.hasNext();)
+		for(Enumeration r=area.getMap();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			resetRoom(R);
 		}
 		area.fillInAreaRooms();

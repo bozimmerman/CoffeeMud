@@ -22,9 +22,9 @@ public class SaveThread extends Thread
 	public void itemSweep()
 	{
 		long itemKillTime=System.currentTimeMillis();
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			LandTitle T=null;
 			for(int a=0;a<R.numAffects();a++)
 			{
@@ -52,9 +52,9 @@ public class SaveThread extends Thread
 	{
 		long lastDateTime=System.currentTimeMillis();
 		lastDateTime-=(20*IQCalendar.MILI_MINUTE);
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB mob=(MOB)R.fetchInhabitant(m);
@@ -150,9 +150,9 @@ public class SaveThread extends Thread
 				tickTotal++;
 				Thread.sleep(Host.TIME_TICK_DELAY);
 				lastStart=System.currentTimeMillis();
-				for(Iterator p=CMMap.players();p.hasNext();)
+				for(Enumeration p=CMMap.players();p.hasMoreElements();)
 				{
-					MOB mob=(MOB)p.next();
+					MOB mob=(MOB)p.nextElement();
 					if(!mob.isMonster())
 					{
 						MOBloader.DBUpdate(mob);

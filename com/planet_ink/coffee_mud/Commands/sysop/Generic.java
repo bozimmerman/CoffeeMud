@@ -62,9 +62,9 @@ public class Generic
 					if(I!=null)
 						newRoom.addItem(I);
 				}
-				for(Iterator e=CMMap.players();e.hasNext();)
+				for(Enumeration e=CMMap.players();e.hasMoreElements();)
 				{
-					MOB mob2=(MOB)e.next();
+					MOB mob2=(MOB)e.nextElement();
 					if(mob2.getStartRoom()==R)
 					{
 						mob2.setStartRoom(newRoom);
@@ -77,9 +77,9 @@ public class Generic
 				newRoom.setArea(R.getArea());
 				newRoom.setDisplayText(R.displayText());
 				newRoom.setDescription(R.description());
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room room=(Room)r.next();
+					Room room=(Room)r.nextElement();
 					if(room==R)
 					{
 						CMMap.replaceRoom(newRoom,room);

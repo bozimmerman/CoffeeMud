@@ -430,9 +430,9 @@ public class Generic
 		}
 		
 		// find any mis-linked exits and fix them!
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			boolean changed=false;
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
@@ -631,9 +631,9 @@ public class Generic
 			else
 			{
 				buf.append("<AROOMS>");
-				for(Iterator r=area.getMap();r.hasNext();)
+				for(Enumeration r=area.getMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if(S!=null) S.rawPrint(".");
 					if((R!=null)&&(R.ID()!=null)&&(R.ID().length()>0))
 						buf.append(getRoomXML(R,true)+"\n\r");

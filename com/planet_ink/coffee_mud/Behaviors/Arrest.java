@@ -1265,16 +1265,16 @@ public class Arrest extends StdBehavior
 							&&(Sense.aliveAwakeMobile(judge,true)))
 							{
 								Room jail=null;
-								for(Iterator r=judge.location().getArea().getMap();r.hasNext();)
+								for(Enumeration r=judge.location().getArea().getMap();r.hasMoreElements();)
 								{
-									Room R=(Room)r.next();
+									Room R=(Room)r.nextElement();
 									if(CoffeeUtensils.containsString(R.displayText(),(String)laws.get("JAIL")))
 									{ jail=R; break; }
 								}
 								if(jail==null)
-								for(Iterator r=judge.location().getArea().getMap();r.hasNext();)
+								for(Enumeration r=judge.location().getArea().getMap();r.hasMoreElements();)
 								{
-									Room R=(Room)r.next();
+									Room R=(Room)r.nextElement();
 									if(CoffeeUtensils.containsString(R.description(),(String)laws.get("JAIL")))
 									{ jail=R; break; }
 								}

@@ -43,28 +43,32 @@ public class Lister
 		{
 			String thisOne=(String)e.nextElement();
 			Object thisThang=these.get(thisOne);
-			boolean ok=true;
+			String list=null;
+			if(thisThang instanceof String)
+				list=(String)thisThang;
+			else
+				list=CMClass.className(thisThang);
 			if(ofType>=0)
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
 				{
 					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
-						ok=false;
+						list=null;
 				}
 			}
 			if((likeRoom!=null)&&(thisThang instanceof Room))
 			{
 				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
-				   ok=false;
+				   list=null;
 			}
-			if(ok)
+			if(list!=null)
 			{
 				if(++column>3)
 				{
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(CMClass.className(thisThang),24));
+				lines.append(Util.padRight(list,24));
 			}
 		}
 		lines.append("\n\r");
@@ -72,48 +76,58 @@ public class Lister
 	}
 
 	public static StringBuffer reallyList(Vector these, int ofType, Room likeRoom)
+	{ return reallyList(these.elements(),ofType,likeRoom);}
+	public static StringBuffer reallyList(Enumeration these, Room likeRoom)
+	{ return reallyList(these,-1,likeRoom);}
+	public static StringBuffer reallyList(Enumeration these, int ofType, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
-		if(these.size()==0) return lines;
+		if(!these.hasMoreElements()) return lines;
 		int column=0;
-		for(int i=0;i<these.size();i++)
+		for(Enumeration e=these;e.hasMoreElements();)
 		{
-			Object thisThang=these.elementAt(i);
-			boolean ok=true;
+			Object thisThang=e.nextElement();
+			String list=null;
+			if(thisThang instanceof String)
+				list=(String)thisThang;
+			else
+				list=CMClass.className(thisThang);
 			if(ofType>=0)
 			{
 				if((thisThang!=null)&&(thisThang instanceof Ability))
 				{
 					if((((Ability)thisThang).classificationCode()&Ability.ALL_CODES)!=ofType)
-						ok=false;
+						list=null;
 				}
 			}
-			if(likeRoom!=null)
+			if((likeRoom!=null)&&(thisThang instanceof Room))
 			{
 				if((((Room)thisThang).ID().length()>0)&&(!((Room)thisThang).getArea().name().equals(likeRoom.getArea().name())))
-				   ok=false;
+				   list=null;
 			}
-			if(ok)
+			if(list!=null)
 			{
 				if(++column>3)
 				{
 					lines.append("\n\r");
 					column=1;
 				}
-				lines.append(Util.padRight(CMClass.className(thisThang),24));
+				lines.append(Util.padRight(list,24));
 			}
 		}
 		lines.append("\n\r");
 		return lines;
 	}
 	public static StringBuffer roomDetails(Vector these, Room likeRoom)
+	{return roomDetails(these.elements(),likeRoom);}
+	public static StringBuffer roomDetails(Enumeration these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
-		if(these.size()==0) return lines;
+		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
-		for(int m=0;m<these.size();m++)
+		for(Enumeration r=these;r.hasMoreElements();)
 		{
-			Room thisThang=(Room)these.elementAt(m);
+			Room thisThang=(Room)r.nextElement();
 			String thisOne=(String)thisThang.ID();
 			if((thisOne.length()>0)&&(thisThang.getArea().name().equals(likeRoom.getArea().name())))
 				lines.append(Util.padRight(thisOne,24)+": "+thisThang.displayText()+"\n\r");
@@ -267,9 +281,9 @@ public class Lister
 		}
 		else
 		{
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if((R!=null)&&(mob.isASysOp(R)))
 				for(int m=0;m<R.numInhabitants();m++)
 				{
@@ -359,10 +373,10 @@ public class Lister
 			mob.tell(reallyList(CMClass.MOBs).toString());
 		else
 		if("ROOMS".startsWith(listThis))
-			mob.tell(roomDetails(CMMap.makeRoomVector(),mob.location()).toString());
+			mob.tell(roomDetails(CMMap.rooms(),mob.location()).toString());
 		else
 		if("AREA".startsWith(listThis))
-			mob.tell(reallyList(CMMap.makeRoomVector(),mob.location()).toString());
+			mob.tell(reallyList(CMMap.rooms(),mob.location()).toString());
 		else
 		if("LOCALES".startsWith(listThis))
 			mob.tell(reallyList(CMClass.locales).toString());
@@ -440,6 +454,9 @@ public class Lister
 		if("THREADS".startsWith(listThis))
 			mob.tell(listThreads(mob).toString());
 		else
-			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, or AREA.");
+		if("RESOURCES".startsWith(listThis))
+			mob.tell(reallyList(Resources.findResourceKeys("")).toString());
+		else
+			mob.tell("Can't list those, try ITEMS, ARMOR, WEAPONS, MOBS, ROOMS, LOCALES, EXITS, RACES, CLASSES, MAGIC, SPELLS, SONGS, PRAYERS, BEHAVIORS, SKILLS, THIEFSKILLS, PROPERTIES, TICKS, LOG, USERS, SESSIONS, THREADS, BUGS, IDEAS, TYPOS, REPORTS, BANNED, RESOURCES, or AREA.");
 	}
 }

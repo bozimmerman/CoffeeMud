@@ -106,7 +106,7 @@ public interface Area extends Environmental
 	
 	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);
-	public Iterator getMap();
+	public Enumeration getMap();
 	public int mapSize();
 	public Room getRandomRoom();
 	public void clearMap();

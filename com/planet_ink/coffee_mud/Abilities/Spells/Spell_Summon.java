@@ -31,9 +31,9 @@ public class Spell_Summon extends Spell
 
 		Room oldRoom=null;
 		MOB target=null;
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room room=(Room)r.next();
+			Room room=(Room)r.nextElement();
 			if(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
 			   ||(mob.isASysOp(room)))
 			{

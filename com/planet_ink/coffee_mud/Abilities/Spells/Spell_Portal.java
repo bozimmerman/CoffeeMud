@@ -50,9 +50,9 @@ public class Spell_Portal extends Spell
 			return false;
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room room=(Room)r.next();
+			Room room=(Room)r.nextElement();
 			if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
 			{
 			   newRoom=room;

@@ -155,9 +155,9 @@ public class CreateEdit
 			{
 				Room theRoom=null;
 				if(allWord.length()>0)
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room room=(Room)r.next();
+					Room room=(Room)r.nextElement();
 					if(room.ID().equalsIgnoreCase(allWord))
 					{
 						theRoom=room;
@@ -344,9 +344,9 @@ public class CreateEdit
 					boolean showOnly=false;
 					Generic.genMiscText(mob,thang,showOnly);
 					thang.recoverEnvStats();
-					for(Iterator r=CMMap.rooms();r.hasNext();)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room room=(Room)r.next();
+						Room room=(Room)r.nextElement();
 						for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 						{
 							Exit exit=room.rawExits()[e2];

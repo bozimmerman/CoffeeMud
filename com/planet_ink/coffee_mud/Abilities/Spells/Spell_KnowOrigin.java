@@ -28,9 +28,9 @@ public class Spell_KnowOrigin extends Spell
 		{
 			Item me=(Item)meThang;
 			// check mobs worn items first!
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R!=null)
 				{
 					for(int s=0;s<R.numInhabitants();s++)
@@ -46,9 +46,9 @@ public class Spell_KnowOrigin extends Spell
 				}
 			}
 			// check shopkeepers second!
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R!=null)
 				{
 					for(int s=0;s<R.numInhabitants();s++)
@@ -64,9 +64,9 @@ public class Spell_KnowOrigin extends Spell
 				}
 			}
 			// check mobs inventory items third!
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R!=null)
 				{
 					for(int s=0;s<R.numInhabitants();s++)
@@ -82,9 +82,9 @@ public class Spell_KnowOrigin extends Spell
 				}
 			}
 			// check room stuff last
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if((R!=null)&&(R.fetchItem(null,me.name())!=null))
 				   return R;
 			}

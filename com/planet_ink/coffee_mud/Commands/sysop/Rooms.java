@@ -268,9 +268,9 @@ public class Rooms
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
-				for(Iterator r=myArea.getMap();r.hasNext();)
+				for(Enumeration r=myArea.getMap();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					if((R.ID().startsWith(oldName+"#"))
 					&&(CMMap.getRoom(myArea.name()+"#"+R.ID().substring(oldName.length()+1))==null))
 					{
@@ -282,9 +282,9 @@ public class Rooms
 						ExternalPlay.DBUpdateRoom(R);
 				}
 				myArea.clearMap();
-				for(Iterator r=CMMap.rooms();r.hasNext();)
+				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)r.next();
+					Room R=(Room)r.nextElement();
 					boolean doIt=false;
 					for(int d=0;d<R.rawDoors().length;d++)
 					{
@@ -373,9 +373,9 @@ public class Rooms
 						ExternalPlay.DBReCreate(mob.location(),oldID);
 
 						CMMap.addRoom(mob.location());
-						for(Iterator r=CMMap.rooms();r.hasNext();)
+						for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 						{
-							Room R=(Room)r.next();
+							Room R=(Room)r.nextElement();
 							for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 							{
 								Room thatRoom=R.rawDoors()[dir];
@@ -473,9 +473,9 @@ public class Rooms
 			}
 		}
 		CMMap.delRoom(deadRoom);
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			boolean changes=false;
 			for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 			{
@@ -600,9 +600,9 @@ public class Rooms
 		while(foundOne!=null)
 		{
 			foundOne=null;
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				if(R.getArea().name().equalsIgnoreCase(areaName))
 				{
 					foundOne=R;

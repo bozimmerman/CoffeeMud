@@ -120,9 +120,9 @@ public class Scriptable extends StdBehavior
 		Room room=CMMap.getRoom(thisName);
 		if(room!=null) return room;
 		Room inAreaRoom=null;
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			if((CoffeeUtensils.containsString(R.name(),thisName))
 			||(R.ID().endsWith("#"+thisName))
 			||(R.fetchFromRoomFavorMOBs(null,thisName,Item.WORN_REQ_UNWORNONLY)!=null))
@@ -142,9 +142,9 @@ public class Scriptable extends StdBehavior
 		if(thisName.length()==0) return null;
 		Environmental thing=null;
 		Environmental areaThing=null;
-		for(Iterator r=CMMap.rooms();r.hasNext();)
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
-			Room R=(Room)r.next();
+			Room R=(Room)r.nextElement();
 			Environmental E=null;
 			if(mob)
 				E=R.fetchInhabitant(thisName);
@@ -1090,11 +1090,11 @@ public class Scriptable extends StdBehavior
 
 	protected Vector getScripts()
 	{
-		Vector scripts=(Vector)Resources.getResource("SCRIPTABLE: "+getParms());
+		Vector scripts=(Vector)Resources.getResource("PARSED SCRIPTS: "+getParms());
 		if(scripts==null)
 		{
 			scripts=parseScripts(getParms());
-			Resources.submitResource("SCRIPTABLE: "+getParms(),scripts);
+			Resources.submitResource("PARSED SCRIPTS: "+getParms(),scripts);
 		}
 		return scripts;
 	}

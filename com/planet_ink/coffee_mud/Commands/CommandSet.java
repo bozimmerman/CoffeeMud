@@ -112,7 +112,7 @@ public class CommandSet extends Hashtable
 	public static final int CHANNELS=99;
 	public static final int ANSI=100;
 	public static final int BEACON=101;
-	public static final int UNLOADHELP=102;
+	public static final int UNLOAD=102;
 	public static final int ARCHELP=103;
 	public static final int ARCTOPICS=104;
 	public static final int DUMPFILE=105;
@@ -398,7 +398,7 @@ public class CommandSet extends Hashtable
 		put("UNDRESS",new Integer(UNDRESS));
 		put("UNLOCK",new Integer(UNLOCK));
 		put("UNLINK",new Integer(UNLINK));
-		put("UNLOADHELP",new Integer(UNLOADHELP));
+		put("UNLOAD",new Integer(UNLOAD));
 		put("UP",new Integer(UP));
 			put("U",new Integer(UP));
 		put("VALUE",new Integer(VALUE));

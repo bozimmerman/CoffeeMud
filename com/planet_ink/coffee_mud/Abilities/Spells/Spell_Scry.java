@@ -65,9 +65,9 @@ public class Spell_Scry extends Spell
 			target=mob.location().fetchInhabitant(mobName);
 		if(target==null)
 		{
-			for(Iterator r=CMMap.rooms();r.hasNext();)
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
-				Room room=(Room)r.next();
+				Room room=(Room)r.nextElement();
 				MOB mob2=room.fetchInhabitant(mobName);
 				if(mob2!=null){ target=mob2; break;}
 			}

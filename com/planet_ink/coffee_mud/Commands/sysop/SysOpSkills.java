@@ -20,6 +20,38 @@ public class SysOpSkills
 	}
 	
 	
+	public static void unload(MOB mob, Vector commands)
+	{
+		String str=Util.combine(commands,1);
+		if(str.length()==0)
+		{
+			mob.tell("UNLOAD what?");
+			return;
+		}
+		if(str.equalsIgnoreCase("help"))
+		{
+			com.planet_ink.coffee_mud.Commands.base.Help.unloadHelpFile(mob);
+			return;
+		}
+		if(str.equalsIgnoreCase("all"))
+		{
+			mob.tell("All resources unloaded.");
+			Resources.clearResources();
+		}
+		Vector V=Resources.findResourceKeys(str);
+		if(V.size()==0)
+		{
+			mob.tell("Unknown resource '"+str+"'.  Use LIST RESOURCES.");
+			return;
+		}
+		for(int v=0;v<V.size();v++)
+		{
+			String key=(String)V.elementAt(v);
+			Resources.removeResource(key);
+			mob.tell("Resource '"+key+"' unloaded.");
+		}
+	}
+	
 	public static void ban(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
@@ -525,9 +557,9 @@ public class SysOpSkills
 				{
 					Vector candidates=new Vector();
 					MOB target=null;
-					for(Iterator r=CMMap.rooms();r.hasNext();)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.next();
+						Room R=(Room)r.nextElement();
 						target=R.fetchInhabitant(cmd.toString());
 						if(target!=null)
 							candidates.addElement(target);
@@ -540,9 +572,9 @@ public class SysOpSkills
 				}
 				if(room==null)
 				{
-					for(Iterator a=CMMap.areas();a.hasNext();)
+					for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 					{
-						Area A=(Area)a.next();
+						Area A=(Area)a.nextElement();
 						if((CoffeeUtensils.containsString(A.name(),cmd.toString()))
 						&&(A.mapSize()>0))
 						{
@@ -554,9 +586,9 @@ public class SysOpSkills
 				if(room==null)
 				{
 					String areaName=cmd.toString().toUpperCase();
-					for(Iterator r=CMMap.rooms();r.hasNext();)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.next();
+						Room R=(Room)r.nextElement();
 						if(CoffeeUtensils.containsString(R.displayText(),areaName))
 						{
 						   room=R;
@@ -564,9 +596,9 @@ public class SysOpSkills
 						}
 					}
 					if(room==null)
-					for(Iterator r=CMMap.rooms();r.hasNext();)
+					for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 					{
-						Room R=(Room)r.next();
+						Room R=(Room)r.nextElement();
 						if(CoffeeUtensils.containsString(R.description(),areaName))
 						{
 						   room=R;
@@ -653,10 +685,10 @@ public class SysOpSkills
 			target=mob.location().fetchInhabitant(MOBname);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 		{
-			Iterator r=mob.isASysOp(null)?CMMap.rooms():mob.location().getArea().getMap();
-			for(;r.hasNext();)
+			Enumeration r=mob.isASysOp(null)?CMMap.rooms():mob.location().getArea().getMap();
+			for(;r.hasMoreElements();)
 			{
-				Room R=(Room)r.next();
+				Room R=(Room)r.nextElement();
 				MOB mob2=R.fetchInhabitant(MOBname);
 				if((mob2!=null)&&(mob2.isMonster()))
 				{
