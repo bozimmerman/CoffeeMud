@@ -27,15 +27,17 @@ public class Spell_TrueSight extends Spell
 			mob.tell("You no longer have true sight.");
 	}
 
-	public void executeMsg(Environmental E, CMMsg msg)
+	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
+		if(!super.okMessage(myHost,msg)) return false;
+		if((affected==null)||(!(affected instanceof MOB)))
+		   return true;
 		if((msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
-		&&(affected!=null)
-		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.target()!=null)
 		&&(!msg.target().name().equals(msg.target().Name())))
-			msg.source().tell(msg.target().name()+" is truely "+msg.target().Name()+".");
+			msg.addTrailerMsg(new FullMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,msg.target().name()+" is truely "+msg.target().Name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+		return true;
 	}
 
 

@@ -1,10 +1,6 @@
-?Test: Prop_RideZapper, Prop_RideAdjuster, Prop_RideResister
-?Test: High Marks, Improved Distraction, Improved Peek, Improved Steal
-?Test: Improved Swipe, Kamikaze, Shield Block, Far Shot, Counter Attack
-?Test: AutoBash, Weapon Catch, Body Shield, carpentry list
-ca geas melancholy kill cityguard
-pets still getting exp
-Retooling a room needs to fix start rooms of players
+?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
+?Test: Shield Block, Far Shot, Counter Att, AutoBash, Weapon Catch, Body Shield
+True Sight does not penetrate DISGUISE like intended.
 
 Fighters:
 Smoke Signals  Requires a fire. Puffs of smoke produce a message for all in the area who can  read smoke signals (has smoke signal skill). To all others it says you see  puffs of smoke in the air. Totally a role-playing skill. Can't think of  

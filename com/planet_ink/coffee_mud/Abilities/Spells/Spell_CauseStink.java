@@ -59,7 +59,7 @@ public class Spell_CauseStink extends Spell
 				Room R=room.getRoomInDir(d);
 				if((R!=null)&&(R.numPCInhabitants()>0))
 					R.showHappens(CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,
-								  "There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d)));
+								  "There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d))+".");
 			}
 		}
 		return true;
