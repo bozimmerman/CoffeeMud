@@ -62,9 +62,9 @@ public class Skill_Swim extends StdAbility
 			mob.tell("Swim where?");
 			return false;
 		}
+        Room r=mob.location().getRoomInDir(dirCode);
 		if(!placeToSwim(mob.location()))
 		{
-			Room r=mob.location().getRoomInDir(dirCode);
 			if(!placeToSwim(r))
 			{
 				mob.tell("There is no water to swim on that way.");
@@ -72,13 +72,12 @@ public class Skill_Swim extends StdAbility
 			}
 		}
         else
+		if((r!=null)
+		&&(r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+		&&(r.domainType()==Room.DOMAIN_INDOORS_AIR))
         {
-            //Room r=mob.location().getRoomInDir(dirCode);
-            //if (!placeToSwim(r))
-            //{
-            //   mob.tell("There is no water to swim on that way.");
-            //    return false;
-            //}
+            mob.tell("There is no water to swim on that way.");
+            return false;
         }
 
 		if((mob.riding()!=null)
