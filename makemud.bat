@@ -37,3 +37,5 @@ c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\system\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\utils\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\web\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\web\macros\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\web\macros\grinder\*.java
+c:\jdk1.3\bin\javac com\planet_ink\fakedb\*.java
