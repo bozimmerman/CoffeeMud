@@ -1,33 +1,79 @@
-a pair of Clappers	1	10	2	2	GenItem	HELD&&WIELD	WOOD	
-Pan Pipe	1	10	2	2	GenItem	HELD&&MOUTH	METAL	
-a pair of Symbols	2	15	3	3	GenItem	HELD&&WIELD	METAL	
-Kazoo	2	50	10	10	GenItem	HELD&&MOUTH	WOOD	
-Tamborine	3	30	6	6	GenItem	HELD&&WIELD	WOOD	
-Lyre	3	40	8	8	GenItem	HELD&&WIELD	WOOD	
-Triangle	4	30	6	6	GenItem	HELD&&WIELD	METAL	
-Trumsheit	4	60	12	12	GenItem	HELD&&WIELD	WOOD	
-Drum	5	50	10	10	GenItem	HELD&&WIELD	WOOD	
-Ukulele	5	40	8	8	GenItem	HELD&&WIELD	WOOD	
-Bongo	6	30	6	6	GenItem	HELD&&WIELD	WOOD	
-Piccolo	6	30	6	6	GenItem	HELD&&MOUTH	METAL	
-Fiddle	7	60	12	12	GenItem	HELD&&WIELD	WOOD	
-Flute	8	60	12	12	GenItem	HELD&&MOUTH	METAL	
-Bass Drum	8	100	40	40	GenItem	HELD&&WIELD	WOOD	
-Oboe	9	50	10	10	GenItem	HELD&&MOUTH	WOOD	
-Bugle	9	60	12	12	GenItem	HELD&&MOUTH	METAL	
-a pair of Castanets	10	30	6	6	GenItem	HELD&&WIELD	WOOD	
-Harp	11	100	20	20	GenItem	HELD&&WIELD	WOOD	ELF   
-Bagpipes	12	100	20	20	GenItem	HELD&&MOUTH	WOOD	HUMAN
-Cornet	13	50	10	10	GenItem	HELD&&MOUTH	METAL	HALFLING
-Violin	14	80	16	16	GenItem	HELD&&WIELD	WOOD	ELF   
-Clarinet	15	70	14	14	GenItem	HELD&&MOUTH	WOOD	HALFELF
-Viola	16	100	20	20	GenItem	HELD&&WIELD	WOOD	HUMAN HALFLING
-Basson	17	100	20	20	GenItem	HELD&&MOUTH	WOOD	HALFELF
-Trumpet	18	100	20	20	GenItem	HELD&&MOUTH	METAL	DWARF
-Snare Drum	19	80	16	16	GenItem	HELD&&WIELD	METAL	DWARF GNOME
-Mandolin	20	120	24	24	GenItem	HELD&&WIELD	WOOD	HUMAN
-Trombone	21	150	30	30	GenItem	HELD&&MOUTH	METAL	DWARF
-Guitar	22	150	30	30	GenItem	HELD&&WIELD	WOOD	ELF HALFELF
-Harmonica	23	50	10	10	GenItem	HELD&&MOUTH	METAL	HALFLING
-Saxophone	24	120	24	24	GenItem	HELD&&MOUTH	METAL	GNOME
-Portable Organ	25	200	100	100	GenItem	HELD&&WIELD	WOOD	GNOME
+a pair of Clappers	1	10	2	14	GenItem	HELD&&WIELD	WOOD		woods
+Pan Pipe	1	10	2	40	GenItem	HELD&&MOUTH	METAL		flutes
+a pair of Symbols	2	15	3	60	GenItem	HELD&&WIELD	METAL		cymbals
+a pair of Maracas	2	30	4	38	GenItem	HELD&&WIELD	WOOD		woods
+Kazoo	2	30	6	42	GenItem	HELD&&MOUTH	WOOD		clarinets
+Cowbell	3	20	2	60	GenItem	HELD&&WIELD	METAL		cymbals
+Fife	3	50	3	56	GenItem	HELD&&MOUTH	WOOD		flutes
+Tamborine	3	30	6	42	GenItem	HELD&&WIELD	WOOD		drums
+Lyre	3	40	8	56	GenItem	HELD&&WIELD	WOOD		harps
+Hunting Horn	4	50	6	160	GenItem	HELD&&MOUTH	METAL		horns
+Shawm	4	60	6	72	GenItem	HELD&&MOUTH	WOOD		oboes
+Triangle	4	30	6	120	GenItem	HELD&&WIELD	METAL		cymbals
+Trumsheit	4	60	12	84	GenItem	HELD&&WIELD	WOOD		guitars
+Flageolet	5	75	4	190	GenItem	HELD&&MOUTH	METAL		flutes
+Ukulele	5	40	8	56	GenItem	HELD&&WIELD	WOOD		guitars
+Drum	5	50	10	70	GenItem	HELD&&WIELD	WOOD		drums
+Bongo	6	30	6	42	GenItem	HELD&&WIELD	WOOD		drums
+Piccolo	6	30	6	120	GenItem	HELD&&MOUTH	METAL		flutes
+Crwth	6	50	14	78	GenItem	HELD&&WIELD	WOOD		guitars
+Zurna	7	60	8	76	GenItem	HELD&&MOUTH	WOOD		oboes
+Fiddle	7	60	12	84	GenItem	HELD&&WIELD	WOOD		violins
+Timpani	7	60	20	100	GenItem	HELD&&WIELD	WOOD		drums
+Tuba	7	100	50	700	GenItem	HELD&&MOUTH	METAL		tubas
+Flute	8	60	12	240	GenItem	HELD&&MOUTH	METAL		flutes
+Sackbut	8	120	20	440	GenItem	HELD&&MOUTH	METAL		trombones
+Bass Drum	8	100	40	180	GenItem	HELD&&WIELD	WOOD		drums
+Lute	9	50	10	70	GenItem	HELD&&WIELD	WOOD		guitars
+Oboe	9	50	10	70	GenItem	HELD&&MOUTH	WOOD		oboes
+Bugle	9	60	12	240	GenItem	HELD&&MOUTH	METAL		trumpets
+Gong	9	100	20	400	GenItem	HELD&&WIELD	METAL		cymbals
+a pair of Castanets	10	30	6	42	GenItem	HELD&&WIELD	WOOD		woods
+Recorder	10	20	6	32	GenItem	HELD&&MOUTH	WOOD		flutes
+Sousaphone	10	150	38	680	GenItem	HELD&&MOUTH	METAL		tubas
+Basset Horn	11	60	14	88	GenItem	HELD&&MOUTH	WOOD	HALFELF	clarinets
+Harp	11	100	20	140	GenItem	HELD&&WIELD	WOOD	ELF   	harps
+Marimba	11	80	40	560	GenRideable	1	METAL	DWARF	xylophones
+Banjo	12	50	12	74	GenItem	HELD&&WIELD	WOOD	HALFLING	guitars
+Bagpipes	12	100	20	140	GenItem	HELD&&MOUTH	WOOD	HUMAN DWARF	oboes
+Posuane	12	130	22	480	GenItem	HELD&&MOUTH	METAL	HALFELF	trombones
+Carillon	12	100	36	560	GenRideable	1	METAL	GNOME	xylophones
+Cornet	13	50	10	200	GenItem	HELD&&MOUTH	METAL	HALFLING	trumpets
+a pair of Cymbals	13	60	10	220	GenItem	HELD&&WIELD	METAL	DWARF	cymbals
+Cithara	13	100	20	140	GenItem	HELD&&WIELD	WOOD	HUMAN	guitars
+Violin	14	80	16	112	GenItem	HELD&&WIELD	WOOD	ELF   	violins
+Chimes	14	100	18	380	GenItem	HELD&&WIELD	METAL	GNOME HALFELF	cymbals
+Clarinet	15	70	14	98	GenItem	HELD&&MOUTH	WOOD	HALFELF	clarinets
+Celesta	15	120	18	420	GenRideable	1	METAL	ELF	xylophones
+Baritone	15	120	40	640	GenItem	HELD&&MOUTH	METAL	DWARF	tubas
+Cello	15	120	40	200	GenItem	HELD&&WIELD	WOOD	HUMAN	violins
+Tenor Drums	16	40	8	160	GenItem	HELD&&WIELD	METAL	ELF	drums
+French Horn	16	180	20	560	GenItem	HELD&&MOUTH	METAL	HALFELF	horns
+Viola	16	100	20	140	GenItem	HELD&&WIELD	WOOD	HUMAN HALFLING	violins
+Basson	17	100	20	140	GenItem	HELD&&MOUTH	WOOD	HALFELF	oboes
+Double Bass	17	120	30	180	GenItem	HELD&&WIELD	WOOD	HUMAN	violins
+Helicon	17	140	40	680	GenItem	HELD&&MOUTH	METAL	GNOME	tubas
+Bass Clarinet	18	80	16	112	GenItem	HELD&&MOUTH	WOOD	HALFELF	clarinets
+Trumpet	18	100	20	400	GenItem	HELD&&MOUTH	METAL	DWARF ELF	trumpets
+Dulcimer	18	180	24	228	GenRideable	1	WOOD	HUMAN HALFLING	pianos
+Glockenspiel	18	200	60	1000	GenRideable	1	METAL	GNOME	xylophones
+English Horn	19	80	16	112	GenItem	HELD&&MOUTH	WOOD	HUMAN	oboes
+Snare Drum	19	80	16	320	GenItem	HELD&&WIELD	METAL	DWARF GNOME	drums
+Clavicord	19	180	30	240	GenRideable	1	WOOD	ELF	pianos
+Euphonium	19	140	36	640	GenItem	HELD&&MOUTH	METAL	GNOME	tubas
+Mandolin	20	120	24	168	GenItem	HELD&&WIELD	WOOD	HUMAN	violins
+Xylophone	20	150	30	600	GenItem	HELD&&WIELD	METAL	GNOME	xylophones
+Alto Clarinet	21	80	12	104	GenItem	HELD&&MOUTH	WOOD	ELF HALFLING	clarinets
+Trombone	21	150	30	600	GenItem	HELD&&MOUTH	METAL	DWARF	trombones
+Guitar	22	150	30	210	GenItem	HELD&&WIELD	WOOD	ELF HALFELF	guitars
+Accordian	22	250	40	330	GenItem	HELD&&WIELD	WOOD	HALFLING	organs
+Harmonica	23	50	10	200	GenItem	HELD&&MOUTH	METAL	HALFLING	harmonicas
+Contrabass Tuba	23	180	60	960	GenItem	HELD&&MOUTH	METAL	DWARF GNOME	tubas
+Saxophone	24	120	24	480	GenItem	HELD&&MOUTH	METAL	GNOME	clarinets
+Harpsicord	24	180	60	300	GenRideable	1	WOOD	HUMAN	pianos
+Hydraulis	24	500	300	4000	GenRideable	4	METAL	GNOME HALFELF	organs
+Portable Organ	25	200	100	400	GenItem	HELD&&WIELD	WOOD	GNOME	organs
+Piano	30	200	200	600	GenRideable	2	WOOD		pianos
+Bass Trombone	35	180	40	760	GenItem	HELD&&MOUTH	METAL		trombones
+Contrabassoon	40	120	22	164	GenItem	HELD&&MOUTH	WOOD		oboes
+Organ	45	300	200	2600	GenRideable	3	METAL		organs

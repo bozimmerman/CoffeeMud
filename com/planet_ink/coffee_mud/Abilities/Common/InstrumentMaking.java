@@ -210,7 +210,7 @@ public class InstrumentMaking extends CommonSkill
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		String type=(String)foundRecipe.elementAt(RCP_TYPE);
-		building.setSecretIdentity("A type of '"+type+"'.  This one is the work of "+mob.Name()+".");
+		building.setSecretIdentity("Belongs to the instrument family of '"+type+"'.  This one is the work of "+mob.Name()+".");
 		if(building instanceof Rideable)
 		{
 			((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
