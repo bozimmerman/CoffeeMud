@@ -1,0 +1,22 @@
+MUDGrinder 1.0 release notes:
+
+MUDGrinder 1.0 is the newest release of the area/room editor for CoffeeMud v1.0.  It is highly version sensitive.  If you are not using the old version 1.0 build of CoffeeMud, MUDGrinder probably won't work.  
+
+If you have not read the Archon's Guide from www.zimmers.net/home/mud.html, you need to.  Without a thorough understanding of the concepts therein, you will be thoroughly lost in MUDGrinder.
+
+MUDGrinder supports room/exit editing and room linking.  It also supports room populating with both items and mobs.  MUDGrinder has full Generic Object support, including the GenExits, GenMobs (including GenShopkeeper) and all the several GenItem/Weapon/Armor/etc.  If you don't know any of the concepts in this paragraph mean, MUDGrinder is not for you.
+
+MUDGrinder is a beta product.  Use it at your own risk.  I highly recommend that you verify any changes you make using the traditional telnet interface.  You can also close and reopen your area frequently to verify that the changes are "taking".  Report any bugs to bo@zimmers.net.
+
+MUDGrinder is started as a Java application by loading the class of the same name.  It has one optional parameter -- a number of milliseconds.  This is an optimization number denoting the performance of the communication between MUDGrinder and CoffeeMud.  The lower this number is, the better the performance, but the lower the reliability.  Too low, and you may not even be able to log in!  The default is 250 milliseconds.
+
+MUDGrinder works by logging into CoffeeMud using the traditional telnet port, and then making use of some Archon skills to communicate via XML.  In order to login to MUDGrinder, you must have an Archon account on the CoffeeMud you are connecting to.  If you don't, it won't work.  DO NOT EVER EVER LOG IN twice using the same Archon account when using MUDGrinder.  That means don't login using the same account with two MUDGrinders, or even with one MUDGrinder and one telnet connection.  MUDGrinder needs your body all to itself in order to work.  CoffeeMud won't let you anyways.
+
+MUDGrinder supports double-click editing on rooms and exits.  Also note the tool-tips on the exits.  
+
+When editing a room/exit/mob/item, you may notice lots of grayed-out fields.  For the most part, these fields are IRRELEVANT for the object you are editing, and should be disregarded.  This means that when you are editing your DrowWarrior, and the grayed-out alignment reads "GOOD", you can ignore this -- your DrowWarrior has not had a change of heart.
+
+MUDGrinder was a lot of work, and Bo deserves lots of beer and pats on the back for writing it.  Provide this to him, as it is a requirement for using the MUDGrinder.
+
+And yes, if you havn't noticed, Sip, MUDGrinder, and CoffeeMud are all stupid Java puns.  Either laugh, or deal with it.
+
