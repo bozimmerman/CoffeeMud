@@ -107,12 +107,22 @@ public class StdGrid extends StdRoom implements GridLocale
 		return this.alts[oldDirCode];
 	}
 
+	protected static void halfLink(Room room, Room loc, int dirCode)
+	{
+		if(room==null) return;
+		if(loc==null) return;
+		if(room.rawDoors()[dirCode]!=null) return;
+		Exit o=(Exit)CMClass.getExit("Open");
+		room.rawDoors()[dirCode]=loc;
+		room.rawExits()[dirCode]=o;
+	}
+	
 	protected static void linkRoom(Room room, Room loc, int dirCode)
 	{
 		if(loc==null) return;
 		if(room==null) return;
 		int opCode=Directions.getOpDirectionCode(dirCode);
-		Exit o=(Exit)CMClass.getExit("Open").newInstance();
+		Exit o=(Exit)CMClass.getExit("Open");
 		if(room.rawDoors()[dirCode]!=null) return;
 		room.rawDoors()[dirCode]=loc;
 		room.rawExits()[dirCode]=o;
