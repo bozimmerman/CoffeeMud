@@ -140,8 +140,8 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_SummonFear",false);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SpeedTime",false);
-CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",false);
-CMAble.addCharAbilityMapping(ID(),25,"Chant_Feralness",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_Feralness",false);
 
 			CMAble.addCharAbilityMapping(ID(),30,"Chant_Reincarnation",true);
 		}

@@ -20,21 +20,15 @@ public class Chant_SummonSapling extends Chant
 		if(tickID==Host.MOB_TICK)
 		{
 			if((affected!=null)
-			   &&(affected instanceof MOB)
-			   &&(invoker!=null))
+			&&(affected instanceof MOB)
+			&&(invoker!=null))
 			{
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
 				||(!mob.isInCombat())
 				||(mob.location()!=invoker.location())))
-				{
-					if(!mob.amDead())
-						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) still and tree-like.");
-					mob.delAffect(this);
-					if(mob.amDead()) mob.setLocation(null);
-					mob.destroy();
-				}
+					unInvoke();
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -44,15 +38,36 @@ public class Chant_SummonSapling extends Chant
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(affect.amISource((MOB)affected))
-		&&(affect.targetMinor()==Affect.TYP_LEAVE))
+		&&(affect.amISource((MOB)affected)))
 		{
-			affect.source().tell("You can't really go anywhere -- you are rooted!");
-			return false;
+			if(affect.targetMinor()==Affect.TYP_LEAVE)
+			{
+				affect.source().tell("You can't really go anywhere -- you are rooted!");
+				return false;
+			}
+			
+			if(affect.sourceMinor()==Affect.TYP_DEATH)
+			{
+				unInvoke();
+				return false;
+			}
 		}
 		return super.okAffect(myHost,affect);
 	}
 
+	public void unInvoke()
+	{
+		MOB mob=(MOB)affected;
+		super.unInvoke();
+		if((canBeUninvoked())&&(mob!=null))
+		{
+			if(mob.location()!=null)
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> grow(s) still and tree-like.");
+			if(mob.amDead()) mob.setLocation(null);
+			mob.destroy();
+		}
+	}
+	
 	public void affect(Environmental myHost, Affect msg)
 	{
 		super.affect(myHost,msg);
@@ -99,12 +114,12 @@ public class Chant_SummonSapling extends Chant
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from another Plain.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) and summon(s) help from the trees.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
-				target.addNonUninvokableAffect(this);
+				beneficialAffect(mob,target,0);
 				ExternalPlay.follow(target,mob,true);
 			}
 		}
@@ -118,7 +133,9 @@ public class Chant_SummonSapling extends Chant
 	{
 		MOB victim=caster.getVictim();
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
-		newMOB.baseEnvStats().setLevel(adjustedLevel(caster)/4);
+		int level=adjustedLevel(caster)/4;
+		if(level<1) level=1;
+		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("WoodGolem"));
 		String resourceName=EnvResource.RESOURCE_DESCS[material&EnvResource.RESOURCE_MASK].toLowerCase();
 		String name=resourceName+" sapling";
@@ -143,7 +160,6 @@ public class Chant_SummonSapling extends Chant
 		if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 		newMOB.setStartRoom(null);
-		newMOB.addNonUninvokableAffect(this);
 		return(newMOB);
 	}
 }

@@ -57,7 +57,7 @@ public class StdWeapon extends StdItem implements Weapon
 		if(amWearingAt(Item.WIELD))
 		{
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()+(envStats().ability()*5)));
-			affectableStats.setDamage(affectableStats.damage()+(envStats().damage()*(envStats().ability()+1)));
+			affectableStats.setDamage(affectableStats.damage()+(envStats().damage()+(envStats().ability()+1)));
 		}
 	}
 	public void recoverEnvStats()
