@@ -246,9 +246,10 @@ public class Thief_Assassinate extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,tracking,this,CMMsg.MSG_THIEF_ACT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF> for assassination.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			if(mob.location().okMessage(mob,msg))
+			if((mob.location().okMessage(mob,msg))&&(tracking.okMessage(tracking,msg)))
 			{
 				mob.location().send(mob,msg);
+				tracking.executeMsg(tracking,msg);
 				invoker=mob;
 				displayText="(tracking "+tracking.name()+")";
 				Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();

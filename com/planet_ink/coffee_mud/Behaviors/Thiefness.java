@@ -62,26 +62,25 @@ public class Thiefness extends CombatAbilities
 			if((victim!=null)&&(!victim.isASysOp(victim.location())))
 			{
 				Vector V=new Vector();
-				Ability A=mob.fetchAbility("Thief_Steal");
-				if(A==null)
-					A=mob.fetchAbility("Thief_Swipe");
-				else
-				{
-					Item I=null;
-					for(int i=0;i<victim.inventorySize();i++)
-					{
-						Item potentialI=victim.fetchInventory(i);
-						if((potentialI!=null)
-						&&(potentialI.amWearingAt(Item.INVENTORY))
-						&&(Sense.canBeSeenBy(potentialI,mob)))
-							I=potentialI;
-					}
-					if(I!=null)
-						V.addElement(I.ID());
-				}
-				V.addElement(victim.name());
+				Ability A=mob.fetchAbility((Dice.rollPercentage()>50)?(mob.isInCombat()?"Thief_Mug":"Thief_Steal"):"Thief_Swipe");
 				if(A!=null)
 				{
+					if(!A.ID().equalsIgnoreCase("Thief_Swipe"))
+					{
+						Item I=null;
+						for(int i=0;i<victim.inventorySize();i++)
+						{
+							Item potentialI=victim.fetchInventory(i);
+							if((potentialI!=null)
+							&&(potentialI.amWearingAt(Item.INVENTORY))
+							&&(Sense.canBeSeenBy(potentialI,mob)))
+								I=potentialI;
+						}
+						if(I!=null)
+							V.addElement(I.ID());
+					}
+					if(!A.ID().equalsIgnoreCase("Thief_Mug"))
+						V.addElement(victim.name());
 					A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
 					A.invoke(mob,V,null,false);
 				}

@@ -242,12 +242,16 @@ public class StdAbility implements Ability, Cloneable
 				target=mob.location();
 		}
 		if(target!=null) targetName=target.name();
-		if((target==null)||((givenTarget==null)&&(!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
+		
+		if((target==null)
+		||((givenTarget==null)
+		   &&(!Sense.canBeSeenBy(target,mob))
+		   &&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
 				mob.tell("You don't see that here.");
 			else
-			if((givenTarget==null)||(!Sense.isSleeping(mob)))
+			if(!Sense.isSleeping(mob))
 				mob.tell("You don't see '"+targetName+"' here.");
 			return null;
 		}
@@ -304,7 +308,11 @@ public class StdAbility implements Ability, Cloneable
 				target=mob.fetchCarried(container,targetName);
 		}
 		if(target!=null) targetName=target.name();
-		if((target==null)||((givenTarget==null)&&(target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))
+		
+		if((target==null)
+		||(!(target instanceof Item))
+		||((target!=null)
+		   &&((givenTarget==null)&&(!Sense.canBeSeenBy(target,mob)))))
 		{
 			if(targetName.length()==0)
 				mob.tell("You need to be more specific.");
@@ -314,7 +322,7 @@ public class StdAbility implements Ability, Cloneable
 				if(targetName.trim().length()==0)
 					mob.tell("You don't see that here.");
 				else
-				if((givenTarget==null)||(!Sense.isSleeping(mob)))
+				if(!Sense.isSleeping(mob))
 					mob.tell("You don't see anything called '"+targetName+"' here.");
 			}
 			else

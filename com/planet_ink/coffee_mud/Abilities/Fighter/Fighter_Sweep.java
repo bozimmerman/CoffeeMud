@@ -37,7 +37,7 @@ public class Fighter_Sweep extends StdAbility
 			return false;
 		}
 		HashSet h=properTargets(mob,givenTarget,false);
-		for(Iterator e=h.iterator();e.hasNext();)
+		for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
 		{
 			MOB m=(MOB)e.next();
 			if((m.rangeToTarget()<0)||(m.rangeToTarget()>0))

@@ -89,12 +89,13 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Thief_Shadow",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Thief_Shadow",true);
 
-			CMAble.addCharAbilityMapping(ID(),18,"Thief_Detection",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Thief_Detection",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Spell_Refit",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Spell_Refit",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Spell_LightenItem",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
 
@@ -102,9 +103,9 @@ public class Arcanist extends Thief
 
 			CMAble.addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
 
-			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Spell_Mend",true);
 
-			CMAble.addCharAbilityMapping(ID(),24,"Spell_Disenchant",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Spell_Disenchant",false);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_StoreSpell",false);

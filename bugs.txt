@@ -1,15 +1,12 @@
-Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, 
-Test: Improved Swipe, Palm
+Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, Autosneak
+Test: Improved Swipe, Palm, Mug, Alertness, Countertracking, Careful Step, 
+Test: Squatting, Linguistic Comprehension, Arsonry, Tag Turf, Graffiti, Panhandling
+Test: 
+Default statistics page is not right
 
-Thieves
-Palm - silent get for thieves
-Alertness  gives one random description from an item in the room upon entry into that  For example: A thief walks into a room. He gets the room description.  His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin.  It randomly selects one of those items (the coin) and issues a LOOK COIN command.  
-Improved stealing/swiping  Burglar to be able to steal from signifigantly higher MOBs  
-Mug allows STEAL during a fight.  STEAL should be disabled during a fight, but MUG will accomplish this task during a fight. Similar to Slip Item and Strip Item.  
-Countertracking  an active skill that prevents you from being found with the  tracking skill.  
-Squatting  Makes an area/room your own for a little while  
-Panhandling  allows a mob to set up in a location, and if a successful check is made, causes passing players/mobs to toss a few coins his way.  
+Kamikaze  Requires Make Bomb. Targets a follower of the thief who is holding a bomb. Once that follower is ordered to GO , he will become a suicide bomber, adding his HP to the damage of the bomb. Has a secondary effect of making any law enforcement in the area increase all punishments by 1 level if a terrorist activity has occurred in the past mudweek. May (eventually) increase the selling prices of all shopkeepers in the area.  
 
+Fighters:
 Side Kick  Allows the monk an extra attack each round  The extra attack is dealt to a mob that the monk is not currently targetting  
 Back hand  Allows the monk an extra attack each round  The extra attack is dealt to a mob that the monk is not currently targetting  Side kick is prerequisite.  
 Smoke Signals  Requires a fire. Puffs of smoke produce a message for all in the area who can  read smoke signals (has smoke signal skill). To all others it says you see  puffs of smoke in the air. Totally a role-playing skill. Can't think of  
@@ -17,7 +14,6 @@ Scalp Barbarian(5), Templar(10), Assassin (10), or Thief(20)
 Fragmentation   A critical shot enhancement for barbarians that only works with thrown weapons,  does an EXTRA 3 times damage, but destroys the thrown weapon in the process.  
 (SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) Tactics  gives bonuses to combat in those terrains. Also allows a Barbarian to  HIDE in that type of terrain if he remains in a room of that type for more  than 2 minutes....  
 Improved Throwing  Barbarian does extra damage with hurled items.  
-Battering  aka Barbarian lock picking.  
 Grab opponent  prevents them from changing range, allows one fewer attack from barbar  
 Bodytoss  take a grabbed opponent and chunk him 2 ranges out. Causes damage to him  based on your proficiency.  
 Piledrive  follows up a bodytoss with a powerful elbow attack. must have bodytoss to use.  

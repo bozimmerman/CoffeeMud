@@ -126,35 +126,20 @@ public class FireBuilding extends CommonSkill
 				}
 				return false;
 			}
-			switch(lighting.material()&EnvResource.MATERIAL_MASK)
+			durationOfBurn=Sense.burnStatus(lighting);
+			if(durationOfBurn<0)
 			{
-			case EnvResource.MATERIAL_LEATHER:
-				durationOfBurn=20+lighting.envStats().weight();
-				break;
-			case EnvResource.MATERIAL_CLOTH:
-			case EnvResource.MATERIAL_PAPER:
-			case EnvResource.MATERIAL_PLASTIC:
-				durationOfBurn=5+lighting.envStats().weight();
-				break;
-			case EnvResource.MATERIAL_WOODEN:
-				completion=25-mob.envStats().level();
-				durationOfBurn=150+(lighting.envStats().weight()*5);
-				break;
-			case EnvResource.MATERIAL_VEGETATION:
-			case EnvResource.MATERIAL_FLESH:
 				commonTell(mob,"You need to cook that, if you can.");
 				return false;
-			case EnvResource.MATERIAL_UNKNOWN:
-			case EnvResource.MATERIAL_GLASS:
-			case EnvResource.MATERIAL_LIQUID:
-			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_ENERGY:
-			case EnvResource.MATERIAL_MITHRIL:
-			case EnvResource.MATERIAL_ROCK:
-			case EnvResource.MATERIAL_PRECIOUS:
+			}
+			else
+			if(durationOfBurn==0)
+			{
 				commonTell(mob,"That won't burn.");
 				return false;
 			}
+			if((lighting.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+				completion=25-mob.envStats().level();
 			verb="lighting "+lighting.name();
 		}
 
@@ -186,7 +171,7 @@ public class FireBuilding extends CommonSkill
 		durationOfBurn=durationOfBurn*abilityCode();
 		if(completion<4) completion=4;
 
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) building a fire.");
+		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> start(s) building a fire.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

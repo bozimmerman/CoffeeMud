@@ -165,9 +165,10 @@ public class Ranger_Track extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_QUIETMOVEMENT,mob.isMonster()?null:"<S-NAME> begin(s) to track <T-NAMESELF>.");
-			if(mob.location().okMessage(mob,msg))
+			if((mob.location().okMessage(mob,msg))&&(target.okMessage(target,msg)))
 			{
 				mob.location().send(mob,msg);
+				target.executeMsg(target,msg);
 				invoker=mob;
 				displayText="(tracking "+target.name()+")";
 				Ranger_Track newOne=(Ranger_Track)this.copyOf();

@@ -598,6 +598,39 @@ public class Sense
 		return false;
 	}
 
+	
+	public static int burnStatus(Environmental E)
+	{
+		if(E instanceof Item)
+		{
+			Item lighting=(Item)E;
+			switch(lighting.material()&EnvResource.MATERIAL_MASK)
+			{
+			case EnvResource.MATERIAL_LEATHER:
+				return 20+lighting.envStats().weight();
+			case EnvResource.MATERIAL_CLOTH:
+			case EnvResource.MATERIAL_PAPER:
+			case EnvResource.MATERIAL_PLASTIC:
+				return 5+lighting.envStats().weight();
+			case EnvResource.MATERIAL_WOODEN:
+				return 150+(lighting.envStats().weight()*5);
+			case EnvResource.MATERIAL_VEGETATION:
+			case EnvResource.MATERIAL_FLESH:
+				return -1;
+			case EnvResource.MATERIAL_UNKNOWN:
+			case EnvResource.MATERIAL_GLASS:
+			case EnvResource.MATERIAL_LIQUID:
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_ENERGY:
+			case EnvResource.MATERIAL_MITHRIL:
+			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_PRECIOUS:
+				return 0;
+			}
+		}
+		return 0;
+	}
+	
 	public static String wornLocation(long wornCode)
 	{
 		for(int wornNum=0;wornNum<20;wornNum++)
