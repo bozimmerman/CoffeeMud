@@ -35,8 +35,9 @@ public class Weaponsmithing extends CraftingSkill
 	private static boolean mapped=false;
 	public Weaponsmithing()
 	{
-		if(!mapped){mapped=true;
-					CMAble.addCharAbilityMapping("All",1,ID(),false);}
+		if(ID().equals("Weaponsmithing")&&(!mapped))
+		{mapped=true;
+		 CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public Environmental newInstance(){	return new Weaponsmithing();}
 
