@@ -235,7 +235,7 @@ public class RoomData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("ROOM");
+		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
 		if(last.length()==0) return "";
 
@@ -261,14 +261,14 @@ public class RoomData extends StdWebMacro
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("NAME"))
 		{
-			String name=(String)httpReq.getRequestParameters().get("NAME");
+			String name=httpReq.getRequestParameter("NAME");
 			if((name==null)||(name.length()==0))
 				name=R.displayText();
 			str.append(name);
 		}
 		if(parms.containsKey("CLASSES"))
 		{
-			String className=(String)httpReq.getRequestParameters().get("CLASSES");
+			String className=httpReq.getRequestParameter("CLASSES");
 			if((className==null)||(className.length()==0))
 				className=CMClass.className(R);
 			Vector sortMe=new Vector();
@@ -289,7 +289,7 @@ public class RoomData extends StdWebMacro
 
 		if(parms.containsKey("DESCRIPTION"))
 		{
-			String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
+			String desc=httpReq.getRequestParameter("DESCRIPTION");
 			if((desc==null)||(desc.length()==0))
 				desc=R.description();
 			str.append(desc);
@@ -297,14 +297,14 @@ public class RoomData extends StdWebMacro
 
 		if((parms.containsKey("XGRID"))&&(R instanceof GridLocale))
 		{
-			String size=(String)httpReq.getRequestParameters().get("XGRID");
+			String size=httpReq.getRequestParameter("XGRID");
 			if((size==null)||(size.length()==0))
 				size=((GridLocale)R).xSize()+"";
 			str.append(size);
 		}
 		if((parms.containsKey("YGRID"))&&(R instanceof GridLocale))
 		{
-			String size=(String)httpReq.getRequestParameters().get("YGRID");
+			String size=httpReq.getRequestParameter("YGRID");
 			if((size==null)||(size.length()==0))
 				size=((GridLocale)R).ySize()+"";
 			str.append(size);
@@ -319,12 +319,12 @@ public class RoomData extends StdWebMacro
 		{
 			Vector classes=new Vector();
 			Vector moblist=null;
-			if(httpReq.getRequestParameters().containsKey("MOB1"))
+			if(httpReq.isRequestParameter("MOB1"))
 			{
 				moblist=mobs;
 				for(int i=1;;i++)
 				{
-					String MATCHING=(String)httpReq.getRequestParameters().get("MOB"+i);
+					String MATCHING=httpReq.getRequestParameter("MOB"+i);
 					if(MATCHING==null)
 						break;
 					else
@@ -410,12 +410,12 @@ public class RoomData extends StdWebMacro
 		{
 			Vector classes=new Vector();
 			Vector itemlist=null;
-			if(httpReq.getRequestParameters().containsKey("ITEM1"))
+			if(httpReq.isRequestParameter("ITEM1"))
 			{
 				itemlist=items;
 				for(int i=1;;i++)
 				{
-					String MATCHING=(String)httpReq.getRequestParameters().get("ITEM"+i);
+					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
 					if(MATCHING==null)
 						break;
 					else

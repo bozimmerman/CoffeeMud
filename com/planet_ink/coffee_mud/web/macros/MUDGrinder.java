@@ -20,7 +20,7 @@ public class MUDGrinder extends StdWebMacro
 		if(parms!=null)
 		if(parms.containsKey("AREAMAP"))
 		{
-			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
@@ -56,7 +56,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDAREA"))
 		{
-			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "false";
 			if(AREA.length()==0) return "false";
 			Area A=CMMap.getArea(AREA);
@@ -70,52 +70,49 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITAREA"))
 		{
-			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
 			String error=GrinderAreas.modifyArea(httpReq,parms);
-			AREA=(String)httpReq.getRequestParameters().get("AREA");
+			AREA=httpReq.getRequestParameter("AREA");
 			Log.sysOut("Grinder","Someone edited area "+A.Name());
 			if(error==null) error="";
-			httpReq.getRequestParameters().put("ERRMSG",error);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",error);
 		}
 		else
 		if(parms.containsKey("DELEXIT"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
 			if(dir<0) return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" deleted exit "+dir+" from "+R.roomID());
 			String errMsg=GrinderExits.delExit(R,dir);
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITEXIT"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
 			if(dir<0) return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" modified exit "+dir+" from "+R.roomID());
 			String errMsg=GrinderExits.editExit(R,dir,httpReq,parms);
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("QUICKFIND"))
 		{
-			String find=(String)httpReq.getRequestParameters().get("QUICKFIND");
+			String find=httpReq.getRequestParameter("QUICKFIND");
 			if(find==null) return "@break@";
-			String AREA=(String)httpReq.getRequestParameters().get("AREA");
+			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
@@ -125,8 +122,7 @@ public class MUDGrinder extends StdWebMacro
 				Room R=(Room)r.nextElement();
 				if(R.roomID().toUpperCase().endsWith(find.toUpperCase()))
 				{
-					httpReq.getRequestParameters().put("ROOM",R.roomID());
-					httpReq.resetRequestEncodedParameters();
+					httpReq.addRequestParameters("ROOM",R.roomID());
 					return "";
 				}
 			}
@@ -135,8 +131,7 @@ public class MUDGrinder extends StdWebMacro
 				Room R=(Room)r.nextElement();
 				if(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0)
 				{
-					httpReq.getRequestParameters().put("ROOM",R.roomID());
-					httpReq.resetRequestEncodedParameters();
+					httpReq.addRequestParameters("ROOM",R.roomID());
 					return "";
 				}
 			}
@@ -145,8 +140,7 @@ public class MUDGrinder extends StdWebMacro
 				Room R=(Room)r.nextElement();
 				if(R.description().toUpperCase().indexOf(find.toUpperCase())>=0)
 				{
-					httpReq.getRequestParameters().put("ROOM",R.roomID());
-					httpReq.resetRequestEncodedParameters();
+					httpReq.addRequestParameters("ROOM",R.roomID());
 					return "";
 				}
 			}
@@ -157,29 +151,28 @@ public class MUDGrinder extends StdWebMacro
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
 			if(dir<0) return "@break@";
-			Room R2=CMMap.getRoom((String)httpReq.getRequestParameters().get("OLDROOM"));
+			Room R2=CMMap.getRoom(httpReq.getRequestParameter("OLDROOM"));
 			if(R2==null) return "@break@";
-			int dir2=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("OLDLINK"));
+			int dir2=Directions.getGoodDirectionCode(httpReq.getRequestParameter("OLDLINK"));
 			if(dir2<0) return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" linked exit "+dir+" from "+R.roomID());
 			String errMsg=GrinderExits.linkRooms(R,R2,dir,dir2);
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("LINKAREA"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
 			if(dir<0) return "@break@";
-			String oldroom=(String)httpReq.getRequestParameters().get("OLDROOM");
+			String oldroom=httpReq.getRequestParameter("OLDROOM");
 			if(oldroom==null) oldroom="";
 			Room R2=CMMap.getRoom(oldroom);
 			String errMsg="";
@@ -190,91 +183,85 @@ public class MUDGrinder extends StdWebMacro
 				errMsg=GrinderExits.linkRooms(R,R2,dir,Directions.getOpDirectionCode(dir));
 				Log.sysOut("Grinder",mob.Name()+" linked area "+R.roomID()+" to "+R2.roomID());
 			}
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITROOM"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
 			String errMsg=GrinderRooms.editRoom(httpReq,parms,R);
 			Log.sysOut("Grinder",mob.Name()+" modified room "+R.roomID());
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITITEM"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
 			String errMsg=GrinderItems.editItem(httpReq,parms,R);
 			Log.sysOut("Grinder",mob.Name()+" modified item in room "+R.roomID());
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("EDITMOB"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
 			String errMsg=GrinderMobs.editMob(httpReq,parms,R);
 			Log.sysOut("Grinder",mob.Name()+" modified mob in room "+R.roomID());
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("DELROOM"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
 			for(int d=0;d<R.rawDoors().length;d++)
 				if(R.rawDoors()[d]!=null)
 				{
-					httpReq.getRequestParameters().put("ROOM",R.rawDoors()[d].roomID());
-					httpReq.getRequestParameters().put("LINK","");
+					httpReq.addRequestParameters("ROOM",R.rawDoors()[d].roomID());
+					httpReq.addRequestParameters("LINK","");
 					break;
 				}
 			Log.sysOut("Grinder",mob.Name()+" deleted room "+R.roomID());
 			String errMsg=GrinderRooms.delRoom(R);
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
 		else
 		if(parms.containsKey("ADDROOM"))
 		{
 			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
-			Room R=CMMap.getRoom((String)httpReq.getRequestParameters().get("ROOM"));
+			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
-			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
+			int dir=Directions.getGoodDirectionCode(httpReq.getRequestParameter("LINK"));
 			if(dir<0) return "@break@";
-			String copyThisOne=(String)httpReq.getRequestParameters().get("COPYROOM");
+			String copyThisOne=httpReq.getRequestParameter("COPYROOM");
 			String errMsg=GrinderRooms.createRoom(R,dir,(copyThisOne!=null)&&(copyThisOne.equalsIgnoreCase("ON")));
-			httpReq.getRequestParameters().put("ERRMSG",errMsg);
+			httpReq.addRequestParameters("ERRMSG",errMsg);
 			R=R.rawDoors()[dir];
 			if(R!=null)
 			{
-				httpReq.getRequestParameters().put("ROOM",R.roomID());
+				httpReq.addRequestParameters("ROOM",R.roomID());
 				Log.sysOut("Grinder",mob.Name()+" added room "+R.roomID());
 			}
-			httpReq.getRequestParameters().put("LINK","");
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("LINK","");
 		}
 		return "";
 	}
 
 	private Area getLoggedArea(ExternalHTTPRequests httpReq, MOB mob)
 	{
-		String AREA=(String)httpReq.getRequestParameters().get("AREA");
+		String AREA=httpReq.getRequestParameter("AREA");
 		if(AREA==null) return null;
 		if(AREA.length()==0) return null;
 		Area A=CMMap.getArea(AREA);

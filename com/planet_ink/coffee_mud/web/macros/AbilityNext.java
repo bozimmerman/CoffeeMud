@@ -12,40 +12,27 @@ public class AbilityNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("ABILITY");
+		String last=httpReq.getRequestParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.getRequestParameters().remove("ABILITY");
+			if(last!=null) httpReq.removeRequestParameter("ABILITY");
 			return "";
 		}
-		String ableType=(String)httpReq.getRequestParameters().get("ABILITYTYPE");
+		String ableType=httpReq.getRequestParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
-		String domainType=(String)httpReq.getRequestParameters().get("DOMAIN");
+		String domainType=httpReq.getRequestParameter("DOMAIN");
 		if((domainType!=null)&&(domainType.length()>0))
 			parms.put("DOMAIN",domainType);
 		
 		String lastID="";
-		String playerName=(String)httpReq.getRequestParameters().get("PLAYER");
-		if((playerName!=null)&&(playerName.length()>0))
-		{
-			MOB M=PlayerNext.getMOB(playerName);
-			if(M==null)	playerName=null;
-		}
-
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_CODES;
-			String className=(String)httpReq.getRequestParameters().get("CLASS");
+			String className=httpReq.getRequestParameter("CLASS");
 			
-			if((playerName!=null)&&(playerName.length()>0)&&(CMMap.getPlayer(playerName)!=null))
-			{
-				MOB M=CMMap.getPlayer(playerName);
-				okToShow=M.fetchAbility(A.ID())!=null;
-			}
-			else
 			if((className!=null)&&(className.length()>0))
 			{
 				int level=CMAble.getQualifyingLevel(className,A.ID());
@@ -53,7 +40,7 @@ public class AbilityNext extends StdWebMacro
 					okToShow=false;
 				else
 				{
-					String levelName=(String)httpReq.getRequestParameters().get("LEVEL");
+					String levelName=httpReq.getRequestParameter("LEVEL");
 					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
 						okToShow=false;
 				}
@@ -65,7 +52,7 @@ public class AbilityNext extends StdWebMacro
 					okToShow=false;
 				else
 				{
-					String levelName=(String)httpReq.getRequestParameters().get("LEVEL");
+					String levelName=httpReq.getRequestParameter("LEVEL");
 					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
 						okToShow=false;
 				}
@@ -93,13 +80,13 @@ public class AbilityNext extends StdWebMacro
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 				{
-					httpReq.getRequestParameters().put("ABILITY",A.ID());
+					httpReq.addRequestParameters("ABILITY",A.ID());
 					return "";
 				}
 				lastID=A.ID();
 			}
 		}
-		httpReq.getRequestParameters().put("ABILITY","");
+		httpReq.addRequestParameters("ABILITY","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else

@@ -19,10 +19,7 @@ public class Authenticate extends StdWebMacro
 		{
 			String login=getLogin(httpReq);
 			if((parms!=null)&&(parms.containsKey("SETPLAYER")))
-			{
-				httpReq.getRequestParameters().remove("PLAYER");
-				httpReq.getRequestParameters().put("PLAYER",login);
-			}
+				httpReq.addRequestParameters("PLAYER",login);
 			if(authenticated(httpReq,login,getPassword(httpReq)))
 				return "true";
 			else
@@ -63,7 +60,7 @@ public class Authenticate extends StdWebMacro
 		boolean subOp=false;
 		boolean sysop=mob.isASysOp(null);
 		httpReq.addRequestParameters("SYSOP",""+sysop);
-		String AREA=(String)httpReq.getRequestParameters().get("AREA");
+		String AREA=httpReq.getRequestParameter("AREA");
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
@@ -135,10 +132,10 @@ public class Authenticate extends StdWebMacro
 
 	public static String getLogin(ExternalHTTPRequests httpReq)
 	{
-		String login=(String)httpReq.getRequestParameters().get("LOGIN");
+		String login=httpReq.getRequestParameter("LOGIN");
 		if((login!=null)&&(login.length()>0))
 			return login;
-		String auth=(String)httpReq.getRequestParameters().get("AUTH");
+		String auth=httpReq.getRequestParameter("AUTH");
 		if(auth==null) return "";
 		if(auth.indexOf("-")>=0) auth=auth.substring(0,auth.indexOf("-"));
 		login=Decrypt(auth);
@@ -147,10 +144,10 @@ public class Authenticate extends StdWebMacro
 
 	public static String getPassword(ExternalHTTPRequests httpReq)
 	{
-		String password=(String)httpReq.getRequestParameters().get("PASSWORD");
+		String password=httpReq.getRequestParameter("PASSWORD");
 		if((password!=null)&&(password.length()>0))
 			return password;
-		String auth=(String)httpReq.getRequestParameters().get("AUTH");
+		String auth=httpReq.getRequestParameter("AUTH");
 		if(auth==null) return "";
 		if(auth.indexOf("-")>=0) auth=auth.substring(auth.indexOf("-")+1);
 		password=Decrypt(auth);

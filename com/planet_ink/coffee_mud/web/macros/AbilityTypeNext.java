@@ -12,10 +12,10 @@ public class AbilityTypeNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("ABILITYTYPE");
+		String last=httpReq.getRequestParameter("ABILITYTYPE");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.getRequestParameters().remove("ABILITYTYPE");
+			if(last!=null) httpReq.removeRequestParameter("ABILITYTYPE");
 			return "";
 		}
 		String lastID="";
@@ -24,12 +24,12 @@ public class AbilityTypeNext extends StdWebMacro
 			String S=Ability.TYPE_DESCS[i];
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!S.equals(lastID))))
 			{
-				httpReq.getRequestParameters().put("ABILITYTYPE",S);
+				httpReq.addRequestParameters("ABILITYTYPE",S);
 				return "";
 			}
 			lastID=S;
 		}
-		httpReq.getRequestParameters().put("ABILITYTYPE","");
+		httpReq.addRequestParameters("ABILITYTYPE","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else

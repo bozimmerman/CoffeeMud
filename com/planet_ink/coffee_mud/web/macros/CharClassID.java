@@ -11,7 +11,7 @@ public class CharClassID extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		String last=(String)httpReq.getRequestParameters().get("CLASS");
+		String last=httpReq.getRequestParameter("CLASS");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{

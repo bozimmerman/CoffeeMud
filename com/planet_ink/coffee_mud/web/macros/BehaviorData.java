@@ -12,7 +12,7 @@ public class BehaviorData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("BEHAVIOR");
+		String last=httpReq.getRequestParameter("BEHAVIOR");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{

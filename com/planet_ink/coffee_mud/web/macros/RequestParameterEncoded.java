@@ -19,8 +19,8 @@ public class RequestParameterEncoded extends StdWebMacro
 			String key=(String)e.nextElement();
 			try
 			{
-				if(httpReq.getRequestParameters().containsKey(key))
-					str+=URLEncoder.encode((String)httpReq.getRequestParameters().get(key),"UTF-8");
+				if(httpReq.isRequestParameter(key))
+					str+=URLEncoder.encode(httpReq.getRequestParameter(key),"UTF-8");
 			}  
 			catch(java.io.UnsupportedEncodingException ex)
 			{

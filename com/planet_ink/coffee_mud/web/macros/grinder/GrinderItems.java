@@ -11,12 +11,11 @@ public class GrinderItems
 								  Hashtable parms,
 								  Room R)
 	{
-		Hashtable reqs=httpReq.getRequestParameters();
-		String itemCode=(String)reqs.get("ITEM");
+		String itemCode=httpReq.getRequestParameter("ITEM");
 		if(itemCode==null) return "@break@";
 
-		String mobNum=(String)reqs.get("MOB");
-		String newClassID=(String)reqs.get("CLASSES");
+		String mobNum=httpReq.getRequestParameter("MOB");
+		String newClassID=httpReq.getRequestParameter("CLASSES");
 
 		ExternalPlay.resetRoom(R);
 
@@ -93,7 +92,7 @@ public class GrinderItems
 				generic=false;
 				parm=parm.substring(1);
 			}
-			String old=(String)reqs.get(parm);
+			String old=httpReq.getRequestParameter(parm);
 			if(old==null) old="";
 
 			if((I.isGeneric()||(!generic)))
@@ -160,12 +159,12 @@ public class GrinderItems
 					I.baseEnvStats().setArmor(Util.s_int(old));
 				break;
 			case 19: // worn data
-				if((I instanceof Armor)&&(reqs.containsKey("WORNDATA")))
+				if((I instanceof Armor)&&(httpReq.isRequestParameter("WORNDATA")))
 				{
-					int climate=Util.s_int((String)reqs.get("WORNDATA"));
+					int climate=Util.s_int(httpReq.getRequestParameter("WORNDATA"));
 					for(int i=1;;i++)
-						if(reqs.containsKey("WORNDATA"+(new Integer(i).toString())))
-							climate=climate|Util.s_int((String)reqs.get("WORNDATA"+(new Integer(i).toString())));
+						if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
+							climate=climate|Util.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
 						else
 							break;
 					((Armor)I).setRawProperLocationBitmap(climate);
@@ -222,12 +221,12 @@ public class GrinderItems
 			case 34: // readable spells
 				if(((I instanceof Pill)||(I instanceof Scroll)||(I instanceof Potion))&&(CMClass.className(I).indexOf("SuperPill")<0))
 				{
-					if(httpReq.getRequestParameters().containsKey("READABLESPELLS"))
+					if(httpReq.isRequestParameter("READABLESPELLS"))
 					{
-						old=";"+(String)httpReq.getRequestParameters().get("READABLESPELLS");
+						old=";"+httpReq.getRequestParameter("READABLESPELLS");
 						for(int i=1;;i++)
-							if(httpReq.getRequestParameters().containsKey("READABLESPELLS"+(new Integer(i).toString())))
-								old+=";"+(String)httpReq.getRequestParameters().get("READABLESPELLS"+(new Integer(i).toString()));
+							if(httpReq.isRequestParameter("READABLESPELLS"+(new Integer(i).toString())))
+								old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(new Integer(i).toString()));
 							else
 								break;
 					}
@@ -256,12 +255,12 @@ public class GrinderItems
 			case 40: // map areas
 				if(I instanceof com.planet_ink.coffee_mud.interfaces.Map)
 				{
-					if(httpReq.getRequestParameters().containsKey("MAPAREAS"))
+					if(httpReq.isRequestParameter("MAPAREAS"))
 					{
-						old=";"+(String)httpReq.getRequestParameters().get("MAPAREAS");
+						old=";"+httpReq.getRequestParameter("MAPAREAS");
 						for(int i=1;;i++)
-							if(httpReq.getRequestParameters().containsKey("MAPAREAS"+(new Integer(i).toString())))
-								old+=";"+(String)httpReq.getRequestParameters().get("MAPAREAS"+(new Integer(i).toString()));
+							if(httpReq.isRequestParameter("MAPAREAS"+(new Integer(i).toString())))
+								old+=";"+httpReq.getRequestParameter("MAPAREAS"+(new Integer(i).toString()));
 							else
 								break;
 					}
@@ -353,13 +352,13 @@ public class GrinderItems
 			case 61: // is key
 				break;
 			case 62: // content types
-				if((I instanceof Container)&&(reqs.containsKey("CONTENTTYPES")))
+				if((I instanceof Container)&&(httpReq.isRequestParameter("CONTENTTYPES")))
 				{
-					long content=Util.s_long((String)reqs.get("CONTENTTYPES"));
+					long content=Util.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
 					if(content>0)
 					for(int i=1;;i++)
-						if(reqs.containsKey("CONTENTTYPES"+(new Integer(i).toString())))
-							content=content|Util.s_int((String)reqs.get("CONTENTTYPES"+(new Integer(i).toString())));
+						if(httpReq.isRequestParameter("CONTENTTYPES"+(new Integer(i).toString())))
+							content=content|Util.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
 						else
 							break;
 					((Container)I).setContainTypes(content);
@@ -433,13 +432,12 @@ public class GrinderItems
 		if(M==null)
 		{
 			ExternalPlay.DBUpdateItems(R);
-			httpReq.getRequestParameters().put("ITEM",RoomData.getItemCode(R,I));
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(R,I));
 		}
 		else
 		{
-			if((reqs.get("BEINGWORN")!=null)
-			   &&(((String)reqs.get("BEINGWORN")).equals("on")))
+			if((httpReq.isRequestParameter("BEINGWORN"))
+			   &&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
 			{
 				if(I.amWearingAt(Item.INVENTORY))
 					I.wearIfPossible(M);
@@ -447,9 +445,8 @@ public class GrinderItems
 			else
 				I.wearAt(Item.INVENTORY);
 			ExternalPlay.DBUpdateMOBs(R);
-			httpReq.getRequestParameters().put("MOB",RoomData.getMOBCode(R,M));
-			httpReq.getRequestParameters().put("ITEM",RoomData.getItemCode(M,I));
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
+			httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
 		}
 		R.startItemRejuv();
 		return "";

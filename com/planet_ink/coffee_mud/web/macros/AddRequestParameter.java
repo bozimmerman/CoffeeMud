@@ -17,7 +17,13 @@ public class AddRequestParameter extends StdWebMacro
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
-			httpReq.addRequestParameters(key,(String)parms.get(key));
+			String val=(String)parms.get(key);
+			if((val!=null)&&(val.equals("++")&&(httpReq.isRequestParameter(key))))
+				val=""+(Util.s_int(httpReq.getRequestParameter(key))+1);
+			else
+			if((val!=null)&&(val.equals("--")&&(httpReq.isRequestParameter(key))))
+				val=""+(Util.s_int(httpReq.getRequestParameter(key))-1);
+			httpReq.addRequestParameters(key,val);
 		}
 		return str;
 	}

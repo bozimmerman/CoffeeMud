@@ -14,7 +14,7 @@ public class AbilityData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("ABILITY");
+		String last=httpReq.getRequestParameter("ABILITY");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
@@ -134,9 +134,9 @@ public class AbilityData extends StdWebMacro
 						str.append(thang.toString()+", ");
 					}
 				}
-				if(parms.containsKey("QUALIFYQ")&&(httpReq.getRequestParameters().get("CLASS")!=null))
+				if(parms.containsKey("QUALIFYQ")&&(httpReq.isRequestParameter("CLASS")))
 				{
-					String className=(String)httpReq.getRequestParameters().get("CLASS");
+					String className=httpReq.getRequestParameter("CLASS");
 					if((className!=null)&&(className.length()>0))
 					{
 						boolean defaultGain=CMAble.getDefaultGain(className,A.ID());

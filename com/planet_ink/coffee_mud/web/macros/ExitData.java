@@ -19,7 +19,7 @@ public class ExitData extends StdWebMacro
 		{
 			if(parms.containsKey(EnvStats.dispositionsNames[d]))
 			{
-				String parm=(String)httpReq.getRequestParameters().get(EnvStats.dispositionsNames[d]);
+				String parm=httpReq.getRequestParameter(EnvStats.dispositionsNames[d]);
 				if(firstTime)
 					parm=(((E.baseEnvStats().disposition()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
@@ -32,9 +32,8 @@ public class ExitData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		Hashtable reqs=httpReq.getRequestParameters();
 
-		String last=(String)reqs.get("ROOM");
+		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
 		Room R=CMMap.getRoom(last);
 		if(R==null) return "@break@";
@@ -42,7 +41,7 @@ public class ExitData extends StdWebMacro
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
 			return httpReq.getMUD().gameStatusStr();
 
-		String linkdir=(String)reqs.get("LINK");
+		String linkdir=httpReq.getRequestParameter("LINK");
 		if(linkdir==null) return "@break@";
 		int link=Directions.getGoodDirectionCode(linkdir);
 		if((link<0)||(link>=Directions.NUM_DIRECTIONS)) return " @break@";
@@ -50,13 +49,13 @@ public class ExitData extends StdWebMacro
 		Exit E=R.rawExits()[link];
 
 		// important generic<->non generic swap!
-		String newClassID=(String)reqs.get("CLASSES");
+		String newClassID=httpReq.getRequestParameter("CLASSES");
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(E))))
 				E=CMClass.getExit(newClassID);
 
-		boolean firstTime=(reqs.get("ACTION")==null)
-					||(!((String)reqs.get("ACTION")).equals("MODIFYEXIT"))
-					||(((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true")));
+		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
+					||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYEXIT"))
+					||(((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true")));
 
 		if(E==null) return "@break@";
 
@@ -71,7 +70,7 @@ public class ExitData extends StdWebMacro
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
-			String old=(String)reqs.get(okparms[o]);
+			String old=httpReq.getRequestParameter(okparms[o]);
 			if(old==null) old="";
 			switch(o)
 			{
@@ -199,16 +198,13 @@ public class ExitData extends StdWebMacro
 				break;
 			}
 			if(firstTime)
-				reqs.put(okparms[o],old.equals("checked")?"on":old);
+				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
 
 		}
 		str.append(ExitData.dispositions(E,firstTime,httpReq,parms));
 		str.append(AreaData.affectsNBehaves(E,httpReq,parms));
 		E.recoverEnvStats();
 		E.text();
-
-		if(firstTime)
-			httpReq.resetRequestEncodedParameters();
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

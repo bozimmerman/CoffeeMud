@@ -17,8 +17,8 @@ public class RequestParameter extends StdWebMacro
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
-			if(httpReq.getRequestParameters().containsKey(key))
-				str+=(String)httpReq.getRequestParameters().get(key);
+			if(httpReq.isRequestParameter(key))
+				str+=httpReq.getRequestParameter(key);
 		}
 		return str;
 	}

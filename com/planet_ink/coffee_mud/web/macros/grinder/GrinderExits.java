@@ -11,7 +11,7 @@ public class GrinderExits
 		E.baseEnvStats().setDisposition(0);
 		for(int d=0;d<EnvStats.dispositionsNames.length;d++)
 		{
-			String parm=(String)httpReq.getRequestParameters().get(EnvStats.dispositionsNames[d]);
+			String parm=httpReq.getRequestParameter(EnvStats.dispositionsNames[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|(1<<d));
 		}
@@ -24,7 +24,7 @@ public class GrinderExits
 		if(E==null) return "No Exit to edit?!";
 		
 		// important generic<->non generic swap!
-		String newClassID=(String)httpReq.getRequestParameters().get("CLASSES");
+		String newClassID=httpReq.getRequestParameter("CLASSES");
 		if((newClassID!=null)&&(!CMClass.className(E).equals(newClassID)))
 		{
 			E=CMClass.getExit(newClassID);
@@ -47,7 +47,7 @@ public class GrinderExits
 				generic=false;
 				parm=parm.substring(1);
 			}
-			String old=(String)httpReq.getRequestParameters().get(parm);
+			String old=httpReq.getRequestParameter(parm);
 			if(old==null) old="";
 			if(E.isGeneric()||(!generic))
 			switch(o)
@@ -140,7 +140,7 @@ public class GrinderExits
 			E.setDoorsNLocks(false,true,false,false,false,false);
 				
 		ExternalPlay.DBUpdateExits(R);
-		String makeSame=(String)httpReq.getRequestParameters().get("MAKESAME");
+		String makeSame=httpReq.getRequestParameter("MAKESAME");
 		if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
 		{
 			Room R2=R.rawDoors()[dir];

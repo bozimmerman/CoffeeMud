@@ -11,7 +11,7 @@ public class LevelNumber extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		String last=(String)httpReq.getRequestParameters().get("LEVEL");
+		String last=httpReq.getRequestParameter("LEVEL");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 			return last;

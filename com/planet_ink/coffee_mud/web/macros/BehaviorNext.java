@@ -12,10 +12,10 @@ public class BehaviorNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("BEHAVIOR");
+		String last=httpReq.getRequestParameter("BEHAVIOR");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.getRequestParameters().remove("BEHAVIOR");
+			if(last!=null) httpReq.removeRequestParameter("BEHAVIOR");
 			return "";
 		}
 		String lastID="";
@@ -24,12 +24,12 @@ public class BehaviorNext extends StdWebMacro
 			Behavior B=(Behavior)b.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.ID().equals(lastID))))
 			{
-				httpReq.getRequestParameters().put("BEHAVIOR",B.ID());
+				httpReq.addRequestParameters("BEHAVIOR",B.ID());
 				return "";
 			}
 			lastID=B.ID();
 		}
-		httpReq.getRequestParameters().put("BEHAVIOR","");
+		httpReq.addRequestParameters("BEHAVIOR","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else

@@ -12,10 +12,10 @@ public class AreaNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("AREA");
+		String last=httpReq.getRequestParameter("AREA");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.getRequestParameters().remove("AREA");
+			if(last!=null) httpReq.removeRequestParameter("AREA");
 			return "";
 		}
 		String lastID="";
@@ -24,7 +24,7 @@ public class AreaNext extends StdWebMacro
 			Area A=(Area)a.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))
 			{
-				httpReq.getRequestParameters().put("AREA",A.Name());
+				httpReq.addRequestParameters("AREA",A.Name());
 				if(!Sense.isHidden(A))
 					return "";
 				else
@@ -32,7 +32,7 @@ public class AreaNext extends StdWebMacro
 			}
 			lastID=A.Name();
 		}
-		httpReq.getRequestParameters().put("AREA","");
+		httpReq.addRequestParameters("AREA","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else

@@ -17,11 +17,11 @@ public class AreaData extends StdWebMacro
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
-			if(httpReq.getRequestParameters().containsKey("BEHAV1"))
+			if(httpReq.isRequestParameter("BEHAV1"))
 			{
 				int num=1;
-				String behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-				String theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+				String behav=httpReq.getRequestParameter("BEHAV"+num);
+				String theparm=httpReq.getRequestParameter("BDATA"+num);
 				while((behav!=null)&&(theparm!=null))
 				{
 					if(behav.length()>0)
@@ -30,8 +30,8 @@ public class AreaData extends StdWebMacro
 						theparms.addElement(theparm);
 					}
 					num++;
-					behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-					theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+					behav=httpReq.getRequestParameter("BEHAV"+num);
+					theparm=httpReq.getRequestParameter("BDATA"+num);
 				}
 			}
 			else
@@ -91,11 +91,11 @@ public class AreaData extends StdWebMacro
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
-			if(httpReq.getRequestParameters().containsKey("AFFECT1"))
+			if(httpReq.isRequestParameter("AFFECT1"))
 			{
 				int num=1;
-				String behav=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-				String theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+				String behav=httpReq.getRequestParameter("AFFECT"+num);
+				String theparm=httpReq.getRequestParameter("ADATA"+num);
 				while((behav!=null)&&(theparm!=null))
 				{
 					if(behav.length()>0)
@@ -104,8 +104,8 @@ public class AreaData extends StdWebMacro
 						theparms.addElement(theparm);
 					}
 					num++;
-					behav=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-					theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+					behav=httpReq.getRequestParameter("AFFECT"+num);
+					theparm=httpReq.getRequestParameter("ADATA"+num);
 				}
 			}
 			else
@@ -163,7 +163,7 @@ public class AreaData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("AREA");
+		String last=httpReq.getRequestParameter("AREA");
 		if(last==null) return " @break@";
 
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
@@ -184,12 +184,12 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("CLIMATES"))
 				{
 					int climate=A.climateType();
-					if(httpReq.getRequestParameters().containsKey("CLIMATE"))
+					if(httpReq.isRequestParameter("CLIMATE"))
 					{
-						climate=Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"));
+						climate=Util.s_int(httpReq.getRequestParameter("CLIMATE"));
 						for(int i=1;;i++)
-							if(httpReq.getRequestParameters().containsKey("CLIMATE"+(new Integer(i).toString())))
-								climate=climate|Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"+(new Integer(i).toString())));
+							if(httpReq.isRequestParameter("CLIMATE"+(new Integer(i).toString())))
+								climate=climate|Util.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
 							else
 								break;
 					}
@@ -213,21 +213,21 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("NAME"))
 				{
-					String name=(String)httpReq.getRequestParameters().get("NAME");
+					String name=httpReq.getRequestParameter("NAME");
 					if((name==null)||(name.length()==0))
 						name=A.Name();
 					str.append(name);
 				}
 				if(parms.containsKey("ARCHP"))
 				{
-					String path=(String)httpReq.getRequestParameters().get("ARCHP");
+					String path=httpReq.getRequestParameter("ARCHP");
 					if((path==null)||(path.length()==0))
 						path=A.getArchivePath();
 					str.append(path);
 				}
 				if(parms.containsKey("CLASSES"))
 				{
-					String className=(String)httpReq.getRequestParameters().get("CLASS");
+					String className=httpReq.getRequestParameter("CLASS");
 					if((className==null)||(className.length()==0))
 						className=CMClass.className(A);
 					Vector sortMeA=new Vector();
@@ -250,13 +250,13 @@ public class AreaData extends StdWebMacro
 
 				if(parms.containsKey("SUBOPS"))
 				{
-					String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");
+					String subOps=httpReq.getRequestParameter("SUBOPS");
 					if((subOps==null)||(subOps.length()==0))
 						subOps=A.getSubOpList();
 					else
 					for(int i=1;;i++)
-						if(httpReq.getRequestParameters().containsKey("SUBOPS"+(new Integer(i).toString())))
-							subOps+=";"+(String)httpReq.getRequestParameters().get("SUBOPS"+(new Integer(i).toString()));
+						if(httpReq.isRequestParameter("SUBOPS"+(new Integer(i).toString())))
+							subOps+=";"+httpReq.getRequestParameter("SUBOPS"+(new Integer(i).toString()));
 						else
 							break;
 					Vector V=ExternalPlay.userList();
@@ -273,7 +273,7 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("DESCRIPTION"))
 				{
-					String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
+					String desc=httpReq.getRequestParameter("DESCRIPTION");
 					if((desc==null)||(desc.length()==0))
 						desc=A.description();
 					str.append(desc);

@@ -12,10 +12,10 @@ public class AbilityAffectNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("ABILITY");
+		String last=httpReq.getRequestParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.getRequestParameters().remove("ABILITY");
+			if(last!=null) httpReq.removeRequestParameter("ABILITY");
 			return "";
 		}
 		String lastID="";
@@ -26,7 +26,7 @@ public class AbilityAffectNext extends StdWebMacro
 			int classType=A.classificationCode()&Ability.ALL_CODES;
 			if(CMAble.getQualifyingLevel("Archon",A.ID())>=0)
 				continue;
-			String ableType=(String)httpReq.getRequestParameters().get("ABILITYTYPE");
+			String ableType=httpReq.getRequestParameter("ABILITYTYPE");
 			if((ableType!=null)&&(ableType.length()>0))
 				parms.put(ableType,ableType);
 			boolean containsOne=false;
@@ -40,13 +40,13 @@ public class AbilityAffectNext extends StdWebMacro
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))
 				{
-					httpReq.getRequestParameters().put("ABILITY",A.ID());
+					httpReq.addRequestParameters("ABILITY",A.ID());
 					return "";
 				}
 				lastID=A.ID();
 			}
 		}
-		httpReq.getRequestParameters().put("ABILITY","");
+		httpReq.addRequestParameters("ABILITY","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else

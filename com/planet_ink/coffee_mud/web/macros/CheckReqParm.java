@@ -16,7 +16,7 @@ public class CheckReqParm extends StdWebMacro
 		{
 			String key=(String)e.nextElement();
 			String equals=(String)parms.get(key);
-			String check=(String)httpReq.getRequestParameters().get(key);
+			String check=httpReq.getRequestParameter(key);
 			if((check==null)&&(equals.length()==0))
 				return "true";
 			if(check==null) return "false";

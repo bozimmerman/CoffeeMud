@@ -35,7 +35,7 @@ public class GrinderRooms
 		Room oldR=R;
 
 		// class!
-		String className=(String)httpReq.getRequestParameters().get("CLASSES");
+		String className=httpReq.getRequestParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this room.";
 
@@ -68,23 +68,23 @@ public class GrinderRooms
 		}
 
 		// name
-		String name=(String)httpReq.getRequestParameters().get("NAME");
+		String name=httpReq.getRequestParameter("NAME");
 		if((name==null)||(name.length()==0))
 			return "Please enter a name for this room.";
 		R.setDisplayText(name);
 
 
 		// description
-		String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
+		String desc=httpReq.getRequestParameter("DESCRIPTION");
 		if(desc==null)desc="";
 		R.setDescription(desc);
 
 		if(R instanceof GridLocale)
 		{
-			String x=(String)httpReq.getRequestParameters().get("XGRID");
+			String x=httpReq.getRequestParameter("XGRID");
 			if(x==null)x="";
 			((GridLocale)R).setXSize(Util.s_int(x));
-			String y=(String)httpReq.getRequestParameters().get("YGRID");
+			String y=httpReq.getRequestParameter("YGRID");
 			if(y==null)y="";
 			((GridLocale)R).setYSize(Util.s_int(y));
 			((GridLocale)R).clearGrid();
@@ -123,11 +123,11 @@ public class GrinderRooms
 			oldR.delItem(I);
 		}
 
-		if(httpReq.getRequestParameters().containsKey("MOB1"))
+		if(httpReq.isRequestParameter("MOB1"))
 		{
 			for(int i=1;;i++)
 			{
-				String MATCHING=(String)httpReq.getRequestParameters().get("MOB"+i);
+				String MATCHING=httpReq.getRequestParameter("MOB"+i);
 				if(MATCHING==null)
 					break;
 				else
@@ -170,11 +170,11 @@ public class GrinderRooms
 			return "No MOB Data!";
 
 
-		if(httpReq.getRequestParameters().containsKey("ITEM1"))
+		if(httpReq.isRequestParameter("ITEM1"))
 		{
 			for(int i=1;;i++)
 			{
-				String MATCHING=(String)httpReq.getRequestParameters().get("ITEM"+i);
+				String MATCHING=httpReq.getRequestParameter("ITEM"+i);
 				if(MATCHING==null)
 					break;
 				else

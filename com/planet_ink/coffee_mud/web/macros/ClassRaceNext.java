@@ -12,14 +12,14 @@ public class ClassRaceNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String cclass=(String)httpReq.getRequestParameters().get("CLASS");
+		String cclass=httpReq.getRequestParameter("CLASS");
 		if(cclass.trim().length()==0) return " @break@";
 		CharClass C=CMClass.getCharClass(cclass.trim());
 		if(C==null) return " @break";
-		String last=(String)httpReq.getRequestParameters().get("RACE");
+		String last=httpReq.getRequestParameter("RACE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.getRequestParameters().remove("RACE");
+			if(last!=null) httpReq.removeRequestParameter("RACE");
 			return "";
 		}
 		String lastID="";
@@ -39,13 +39,13 @@ public class ClassRaceNext extends StdWebMacro
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!R.ID().equals(lastID))))
 				{
-					httpReq.getRequestParameters().put("RACE",R.ID());
+					httpReq.addRequestParameters("RACE",R.ID());
 					return "";
 				}
 				lastID=R.ID();
 			}
 		}
-		httpReq.getRequestParameters().put("RACE","");
+		httpReq.addRequestParameters("RACE","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else

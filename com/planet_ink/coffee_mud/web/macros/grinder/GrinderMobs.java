@@ -12,7 +12,7 @@ public class GrinderMobs
 		E.baseEnvStats().setSensesMask(0);
 		for(int d=0;d<EnvStats.sensesNames.length;d++)
 		{
-			String parm=(String)httpReq.getRequestParameters().get(EnvStats.sensesNames[d]);
+			String parm=httpReq.getRequestParameter(EnvStats.sensesNames[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()|(1<<d));
 		}
@@ -39,10 +39,10 @@ public class GrinderMobs
 				E.delAffect(E.fetchAffect(A.ID()));
 			E.delAbility(A);
 		}
-		if(httpReq.getRequestParameters().containsKey("ABLES1"))
+		if(httpReq.isRequestParameter("ABLES1"))
 		{
 			int num=1;
-			String aff=(String)httpReq.getRequestParameters().get("ABLES"+num);
+			String aff=httpReq.getRequestParameter("ABLES"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
@@ -53,7 +53,7 @@ public class GrinderMobs
 					B.autoInvocation(E);
 				}
 				num++;
-				aff=(String)httpReq.getRequestParameters().get("ABLES"+num);
+				aff=httpReq.getRequestParameter("ABLES"+num);
 			}
 		}
 		return "";
@@ -67,10 +67,10 @@ public class GrinderMobs
 			if(A!=null)
 				E.delBlessing(A);
 		}
-		if(httpReq.getRequestParameters().containsKey("BLESS1"))
+		if(httpReq.isRequestParameter("BLESS1"))
 		{
 			int num=1;
-			String aff=(String)httpReq.getRequestParameters().get("BLESS"+num);
+			String aff=httpReq.getRequestParameter("BLESS"+num);
 			while(aff!=null)
 			{
 				if(aff.length()>0)
@@ -80,7 +80,7 @@ public class GrinderMobs
 					E.addBlessing(B);
 				}
 				num++;
-				aff=(String)httpReq.getRequestParameters().get("BLESS"+num);
+				aff=httpReq.getRequestParameter("BLESS"+num);
 			}
 		}
 		return "";
@@ -88,11 +88,10 @@ public class GrinderMobs
 
 	public static String editMob(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
-		Hashtable reqs=httpReq.getRequestParameters();
-		String mobCode=(String)reqs.get("MOB");
+		String mobCode=httpReq.getRequestParameter("MOB");
 		if(mobCode==null) return "@break@";
 
-		String newClassID=(String)reqs.get("CLASSES");
+		String newClassID=httpReq.getRequestParameter("CLASSES");
 
 		ExternalPlay.resetRoom(R);
 
@@ -145,7 +144,7 @@ public class GrinderMobs
 				generic=false;
 				parm=parm.substring(1);
 			}
-			String old=(String)reqs.get(parm);
+			String old=httpReq.getRequestParameter(parm);
 			if(old==null) old="";
 
 			if((M.isGeneric()||(!generic)))
@@ -280,11 +279,11 @@ public class GrinderMobs
 				if(error.length()>0) return error;
 			}
 
-			if(httpReq.getRequestParameters().containsKey("ITEM1"))
+			if(httpReq.isRequestParameter("ITEM1"))
 			{
 				for(int i=1;;i++)
 				{
-					String MATCHING=(String)httpReq.getRequestParameters().get("ITEM"+i);
+					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
 					if(MATCHING==null)
 						break;
 					else
@@ -304,15 +303,15 @@ public class GrinderMobs
 				return "No Item Data!";
 
 			if((M instanceof ShopKeeper)
-			&&(httpReq.getRequestParameters().containsKey("SHP1")))
+			&&(httpReq.isRequestParameter("SHP1")))
 			{
 				ShopKeeper K=(ShopKeeper)M;
 				Vector inventory=K.getUniqueStoreInventory();
 				K.clearStoreInventory();
 
 				int num=1;
-				String MATCHING=(String)httpReq.getRequestParameters().get("SHP"+num);
-				String theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
+				String MATCHING=httpReq.getRequestParameter("SHP"+num);
+				String theparm=httpReq.getRequestParameter("SDATA"+num);
 				while((MATCHING!=null)&&(theparm!=null))
 				{
 					if(MATCHING==null)
@@ -361,8 +360,8 @@ public class GrinderMobs
 							K.addStoreInventory(O.copyOf(),Util.s_int(theparm));
 					}
 					num++;
-					MATCHING=(String)httpReq.getRequestParameters().get("SHP"+num);
-					theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
+					MATCHING=httpReq.getRequestParameter("SHP"+num);
+					theparm=httpReq.getRequestParameter("SDATA"+num);
 				}
 			}
 
@@ -396,8 +395,7 @@ public class GrinderMobs
 		}
 		R.recoverRoomStats();
 		ExternalPlay.DBUpdateMOBs(R);
-		httpReq.getRequestParameters().put("MOB",RoomData.getMOBCode(R,M));
-		httpReq.resetRequestEncodedParameters();
+		httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
 		return "";
 	}
 }

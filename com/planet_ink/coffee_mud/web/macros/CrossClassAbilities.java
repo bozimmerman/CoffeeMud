@@ -12,7 +12,7 @@ public class CrossClassAbilities extends StdWebMacro
 	{
 		Vector rowsFavoring=new Vector();
 		Vector allOtherRows=new Vector();
-		String sort=(String)httpReq.getRequestParameters().get("SORTBY");
+		String sort=httpReq.getRequestParameter("SORTBY");
 		int sortByClassNum=-1;
 		if((sort!=null)&&(sort.length()>0))
 		{

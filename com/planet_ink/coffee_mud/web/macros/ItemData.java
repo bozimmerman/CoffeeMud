@@ -12,16 +12,15 @@ public class ItemData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		Hashtable reqs=httpReq.getRequestParameters();
-		String last=(String)reqs.get("ROOM");
+		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
-		String itemCode=(String)reqs.get("ITEM");
+		String itemCode=httpReq.getRequestParameter("ITEM");
 		if(itemCode==null) return "@break@";
 
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
 			return httpReq.getMUD().gameStatusStr();
 
-		String mobNum=(String)reqs.get("MOB");
+		String mobNum=httpReq.getRequestParameter("MOB");
 
 		Room R=null;
 		for(int i=0;i<httpReq.cache().size();i++)
@@ -90,15 +89,15 @@ public class ItemData extends StdWebMacro
 
 		Item oldI=I;
 		// important generic<->non generic swap!
-		String newClassID=(String)reqs.get("CLASSES");
+		String newClassID=httpReq.getRequestParameter("CLASSES");
 		if((newClassID!=null)
 		&&(!newClassID.equals(CMClass.className(I)))
 		&&(CMClass.getItem(newClassID)!=null))
 			I=CMClass.getItem(newClassID);
 
-		boolean firstTime=(reqs.get("ACTION")==null)
-				||(!((String)reqs.get("ACTION")).equals("MODIFYITEM"))
-				||(((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"))&&(itemCode.equals("NEW")));
+		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
+				||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYITEM"))
+				||(((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"))&&(itemCode.equals("NEW")));
 
 		if(I!=null)
 		{
@@ -123,7 +122,7 @@ public class ItemData extends StdWebMacro
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
-				String old=(String)reqs.get(okparms[o]);
+				String old=httpReq.getRequestParameter(okparms[o]);
 				String oldold=old;
 				if(old==null) old="";
 				switch(o)
@@ -234,12 +233,12 @@ public class ItemData extends StdWebMacro
 				case 19: // worn data
 					{
 					long climate=I.rawProperLocationBitmap();
-					if(reqs.containsKey("WORNDATA"))
+					if(httpReq.isRequestParameter("WORNDATA"))
 					{
-						climate=Util.s_int((String)reqs.get("WORNDATA"));
+						climate=Util.s_int(httpReq.getRequestParameter("WORNDATA"));
 						for(int i=1;;i++)
-							if(reqs.containsKey("WORNDATA"+(new Integer(i).toString())))
-								climate=climate|Util.s_int((String)reqs.get("WORNDATA"+(new Integer(i).toString())));
+							if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
+								climate=climate|Util.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
 							else
 								break;
 					}
@@ -344,12 +343,12 @@ public class ItemData extends StdWebMacro
 							old=";"+((Pill)I).getSpellList();
 						if(I instanceof Scroll)
 							old=";"+((Scroll)I).getScrollText();
-						if(reqs.containsKey("READABLESPELLS"))
+						if(httpReq.isRequestParameter("READABLESPELLS"))
 						{
-							old=";"+(String)reqs.get("READABLESPELLS");
+							old=";"+httpReq.getRequestParameter("READABLESPELLS");
 							for(int i=1;;i++)
-								if(reqs.containsKey("READABLESPELLS"+(new Integer(i).toString())))
-									old+=";"+(String)reqs.get("READABLESPELLS"+(new Integer(i).toString()));
+								if(httpReq.isRequestParameter("READABLESPELLS"+(new Integer(i).toString())))
+									old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(new Integer(i).toString()));
 								else
 									break;
 						}
@@ -385,12 +384,12 @@ public class ItemData extends StdWebMacro
 				case 40: // map areas
 					{
 					String mask=";"+I.readableText();
-					if(reqs.containsKey("MAPAREAS"))
+					if(httpReq.isRequestParameter("MAPAREAS"))
 					{
-						mask=";"+(String)reqs.get("MAPAREAS");
+						mask=";"+httpReq.getRequestParameter("MAPAREAS");
 						for(int i=1;;i++)
-							if(reqs.containsKey("MAPAREAS"+(new Integer(i).toString())))
-								mask+=";"+(String)reqs.get("MAPAREAS"+(new Integer(i).toString()));
+							if(httpReq.isRequestParameter("MAPAREAS"+(new Integer(i).toString())))
+								mask+=";"+httpReq.getRequestParameter("MAPAREAS"+(new Integer(i).toString()));
 							else
 								break;
 					}
@@ -562,7 +561,7 @@ public class ItemData extends StdWebMacro
 						old=I.rawLogicalAnd()?"":"checked";
 					else
 					{
-						old=(String)reqs.get("ISTWOHANDED");
+						old=httpReq.getRequestParameter("ISTWOHANDED");
 						oldold=old;
 						if(old==null) old="";
 						if(old.equals(""))
@@ -599,13 +598,13 @@ public class ItemData extends StdWebMacro
 					if(I instanceof Container)
 					{
 						long contains=((Container)I).containTypes();
-						if(reqs.containsKey("CONTENTTYPES"))
+						if(httpReq.isRequestParameter("CONTENTTYPES"))
 						{
-							contains=Util.s_long((String)reqs.get("CONTENTTYPES"));
+							contains=Util.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
 							if(contains>0)
 							for(int i=1;;i++)
-								if(reqs.containsKey("CONTENTTYPES"+(new Integer(i).toString())))
-									contains=contains|Util.s_int((String)reqs.get("CONTENTTYPES"+(new Integer(i).toString())));
+								if(httpReq.isRequestParameter("CONTENTTYPES"+(new Integer(i).toString())))
+									contains=contains|Util.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
 								else
 									break;
 						}
@@ -624,14 +623,11 @@ public class ItemData extends StdWebMacro
 					break;
 				}
 				if(firstTime)
-					reqs.put(okparms[o],old.equals("checked")?"on":old);
+					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
 
 			}
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
 			str.append(AreaData.affectsNBehaves(I,httpReq,parms));
-
-			if(firstTime)
-				httpReq.resetRequestEncodedParameters();
 
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))

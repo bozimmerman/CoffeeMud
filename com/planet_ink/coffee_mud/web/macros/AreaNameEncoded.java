@@ -12,7 +12,7 @@ public class AreaNameEncoded extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		String last=(String)httpReq.getRequestParameters().get("AREA");
+		String last=httpReq.getRequestParameter("AREA");
 		if(last==null) return "";
 		if(last.length()>0)
 		{

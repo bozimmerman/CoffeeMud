@@ -12,10 +12,10 @@ public class LevelNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("LEVEL");
+		String last=httpReq.getRequestParameter("LEVEL");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.getRequestParameters().remove("LEVEL");
+			if(last!=null) httpReq.removeRequestParameter("LEVEL");
 			return "";
 		}
 		if((last==null)||(last.length()>0))
@@ -25,11 +25,11 @@ public class LevelNext extends StdWebMacro
 			level++;
 			if(level<=30)
 			{
-				httpReq.getRequestParameters().put("LEVEL",""+level);
+				httpReq.addRequestParameters("LEVEL",""+level);
 				return "";
 			}
 		}
-		httpReq.getRequestParameters().put("LEVEL","");
+		httpReq.addRequestParameters("LEVEL","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else

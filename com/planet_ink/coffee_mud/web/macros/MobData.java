@@ -28,7 +28,7 @@ public class MobData extends StdWebMacro
 		{
 			if(parms.containsKey(EnvStats.sensesNames[d]))
 			{
-				String parm=(String)httpReq.getRequestParameters().get(EnvStats.sensesNames[d]);
+				String parm=httpReq.getRequestParameter(EnvStats.sensesNames[d]);
 				if(firstTime)
 					parm=(((E.baseEnvStats().sensesMask()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
@@ -44,16 +44,16 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey("ABILITIES"))
 		{
 			Vector theclasses=new Vector();
-			if(httpReq.getRequestParameters().containsKey("ABLES1"))
+			if(httpReq.isRequestParameter("ABLES1"))
 			{
 				int num=1;
-				String behav=(String)httpReq.getRequestParameters().get("ABLES"+num);
+				String behav=httpReq.getRequestParameter("ABLES"+num);
 				while(behav!=null)
 				{
 					if(behav.length()>0)
 						theclasses.addElement(behav);
 					num++;
-					behav=(String)httpReq.getRequestParameters().get("ABLES"+num);
+					behav=httpReq.getRequestParameter("ABLES"+num);
 				}
 			}
 			else
@@ -102,16 +102,16 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey("BLESSINGS"))
 		{
 			Vector theclasses=new Vector();
-			if(httpReq.getRequestParameters().containsKey("BLESS1"))
+			if(httpReq.isRequestParameter("BLESS1"))
 			{
 				int num=1;
-				String behav=(String)httpReq.getRequestParameters().get("BLESS"+num);
+				String behav=httpReq.getRequestParameter("BLESS"+num);
 				while(behav!=null)
 				{
 					if(behav.length()>0)
 						theclasses.addElement(behav);
 					num++;
-					behav=(String)httpReq.getRequestParameters().get("BLESS"+num);
+					behav=httpReq.getRequestParameter("BLESS"+num);
 				}
 			}
 			else
@@ -161,11 +161,11 @@ public class MobData extends StdWebMacro
 		{
 			Vector theclasses=new Vector();
 			Vector theparms=new Vector();
-			if(httpReq.getRequestParameters().containsKey("SHP1"))
+			if(httpReq.isRequestParameter("SHP1"))
 			{
 				int num=1;
-				String MATCHING=(String)httpReq.getRequestParameters().get("SHP"+num);
-				String theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
+				String MATCHING=httpReq.getRequestParameter("SHP"+num);
+				String theparm=httpReq.getRequestParameter("SDATA"+num);
 				Vector inventory=E.getUniqueStoreInventory();
 				while((MATCHING!=null)&&(theparm!=null))
 				{
@@ -216,8 +216,8 @@ public class MobData extends StdWebMacro
 					}
 					theparms.addElement(theparm);
 					num++;
-					MATCHING=(String)httpReq.getRequestParameters().get("SHP"+num);
-					theparm=(String)httpReq.getRequestParameters().get("SDATA"+num);
+					MATCHING=httpReq.getRequestParameter("SHP"+num);
+					theparm=httpReq.getRequestParameter("SDATA"+num);
 				}
 			}
 			else
@@ -303,10 +303,9 @@ public class MobData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		Hashtable reqs=httpReq.getRequestParameters();
-		String last=(String)reqs.get("ROOM");
+		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
-		String mobCode=(String)reqs.get("MOB");
+		String mobCode=httpReq.getRequestParameter("MOB");
 		if(mobCode==null) return "@break@";
 
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
@@ -349,23 +348,23 @@ public class MobData extends StdWebMacro
 		}
 
 		// important generic<->non generic swap!
-		String newClassID=(String)reqs.get("CLASSES");
+		String newClassID=httpReq.getRequestParameter("CLASSES");
 		if((newClassID!=null)
 		&&(!newClassID.equals(CMClass.className(M)))
 		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
 
-		boolean changedClass=((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"));
+		boolean changedClass=((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"));
 		changedClass=changedClass&&(mobCode.equals("NEW"));
-		boolean changedLevel=((reqs.get("CHANGEDLEVEL")!=null)&&((String)reqs.get("CHANGEDLEVEL")).equals("true"));
-		boolean firstTime=(reqs.get("ACTION")==null)
-				||(!((String)reqs.get("ACTION")).equals("MODIFYMOB"))
+		boolean changedLevel=((httpReq.isRequestParameter("CHANGEDLEVEL"))&&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true"));
+		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
+				||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYMOB"))
 				||(changedClass);
 
 		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
 		{
 			int level=M.baseEnvStats().level();
-			if(reqs.get("LEVEL")!=null) level=Util.s_int((String)reqs.get("LEVEL"));
+			if(httpReq.isRequestParameter("LEVEL")) level=Util.s_int(httpReq.getRequestParameter("LEVEL"));
 			MOB M2=(MOB)M.copyOf();
 			M2.baseCharStats().getCurrentClass().buildMOB(M2,level,500,150,5,'M');
 			M.baseEnvStats().setRejuv((int)Math.round(Util.div((long)60000,Host.TICK_TIME)*2.0)*level);
@@ -373,11 +372,11 @@ public class MobData extends StdWebMacro
 			M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
 			M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
 			M.setMoney(M2.getMoney());
-			reqs.put("REJUV",""+M.baseEnvStats().rejuv());
-			reqs.put("ARMOR",""+M.baseEnvStats().armor());
-			reqs.put("DAMAGE",""+M.baseEnvStats().damage());
-			reqs.put("ATTACK",""+M.baseEnvStats().attackAdjustment());
-			reqs.put("MONEY",""+M.getMoney());
+			httpReq.addRequestParameters("REJUV",""+M.baseEnvStats().rejuv());
+			httpReq.addRequestParameters("ARMOR",""+M.baseEnvStats().armor());
+			httpReq.addRequestParameters("DAMAGE",""+M.baseEnvStats().damage());
+			httpReq.addRequestParameters("ATTACK",""+M.baseEnvStats().attackAdjustment());
+			httpReq.addRequestParameters("MONEY",""+M.getMoney());
 		}
 
 		StringBuffer str=new StringBuffer("");
@@ -392,7 +391,7 @@ public class MobData extends StdWebMacro
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
-			String old=(String)reqs.get(okparms[o]);
+			String old=httpReq.getRequestParameter(okparms[o]);
 			if(old==null) old="";
 			switch(o)
 			{
@@ -458,13 +457,13 @@ public class MobData extends StdWebMacro
 				{
 					Race R3=CMClass.getRace(old);
 					char G=(char)M.baseCharStats().getStat(CharStats.GENDER);
-					if((reqs.get("GENDER")!=null)&&(((String)reqs.get("GENDER")).length()>0))
-						G=((String)reqs.get("GENDER")).charAt(0);
+					if((httpReq.isRequestParameter("GENDER"))&&((httpReq.getRequestParameter("GENDER")).length()>0))
+						G=(httpReq.getRequestParameter("GENDER")).charAt(0);
 					if(R3!=null)
 					{
 						R3.setHeightWeight(M.baseEnvStats(),G);
-						reqs.put("WEIGHT",""+M.baseEnvStats().weight());
-						reqs.put("HEIGHT",""+M.baseEnvStats().height());
+						httpReq.addRequestParameters("WEIGHT",""+M.baseEnvStats().weight());
+						httpReq.addRequestParameters("HEIGHT",""+M.baseEnvStats().height());
 					}
 				}
 				break;
@@ -627,7 +626,7 @@ public class MobData extends StdWebMacro
 				break;
 			}
 			if(firstTime)
-				reqs.put(okparms[o],old.equals("checked")?"on":old);
+				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
 
 		}
 		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
@@ -643,12 +642,12 @@ public class MobData extends StdWebMacro
 		{
 			Vector classes=new Vector();
 			Vector itemlist=null;
-			if(httpReq.getRequestParameters().containsKey("ITEM1"))
+			if(httpReq.isRequestParameter("ITEM1"))
 			{
 				itemlist=RoomData.items;
 				for(int i=1;;i++)
 				{
-					String MATCHING=(String)httpReq.getRequestParameters().get("ITEM"+i);
+					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
 					if(MATCHING==null)
 						break;
 					else
@@ -727,8 +726,6 @@ public class MobData extends StdWebMacro
 			str.append("<INPUT TYPE=BUTTON NAME=ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
 			str.append("</TD></TR></TABLE>");
 		}
-		if(firstTime)
-			httpReq.resetRequestEncodedParameters();
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

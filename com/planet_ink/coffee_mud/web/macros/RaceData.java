@@ -16,7 +16,7 @@ public class RaceData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("RACE");
+		String last=httpReq.getRequestParameter("RACE");
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{

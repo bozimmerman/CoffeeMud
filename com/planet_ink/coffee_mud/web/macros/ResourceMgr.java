@@ -13,10 +13,10 @@ public class ResourceMgr extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("RESOURCE");
+		String last=httpReq.getRequestParameter("RESOURCE");
 		if(parms.containsKey("RESET"))
 		{
-			if(last!=null) httpReq.getRequestParameters().remove("RESOURCE");
+			if(last!=null) httpReq.removeRequestParameter("RESOURCE");
 			return "";
 		}
 		else
@@ -29,12 +29,12 @@ public class ResourceMgr extends StdWebMacro
 				String key=(String)V.elementAt(i);
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!key.equals(lastID))))
 				{
-					httpReq.getRequestParameters().put("RESOURCE",key);
+					httpReq.addRequestParameters("RESOURCE",key);
 					return "";
 				}
 				lastID=key;
 			}
-			httpReq.getRequestParameters().put("RESOURCE","");
+			httpReq.addRequestParameters("RESOURCE","");
 			if(parms.containsKey("EMPTYOK"))
 				return "<!--EMPTY-->";
 			else
@@ -43,7 +43,7 @@ public class ResourceMgr extends StdWebMacro
 		else
 		if(parms.containsKey("DELETE"))
 		{
-			String key=(String)httpReq.getRequestParameters().get("RESOURCE");
+			String key=httpReq.getRequestParameter("RESOURCE");
 			if((key!=null)&&(Resources.getResource(key)!=null))
 			{
 				Resources.removeResource(key);

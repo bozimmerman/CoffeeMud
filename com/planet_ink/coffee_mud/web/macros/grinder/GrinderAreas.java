@@ -25,11 +25,11 @@ public class GrinderAreas
 	{
 		while(E.numBehaviors()>0)
 			E.delBehavior(E.fetchBehavior(0));
-		if(httpReq.getRequestParameters().containsKey("BEHAV1"))
+		if(httpReq.isRequestParameter("BEHAV1"))
 		{
 			int num=1;
-			String behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-			String theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+			String behav=httpReq.getRequestParameter("BEHAV"+num);
+			String theparm=httpReq.getRequestParameter("BDATA"+num);
 			while((behav!=null)&&(theparm!=null))
 			{
 				if(behav.length()>0)
@@ -42,17 +42,17 @@ public class GrinderAreas
 					B.startBehavior(E);
 				}
 				num++;
-				behav=(String)httpReq.getRequestParameters().get("BEHAV"+num);
-				theparm=(String)httpReq.getRequestParameters().get("BDATA"+num);
+				behav=httpReq.getRequestParameter("BEHAV"+num);
+				theparm=httpReq.getRequestParameter("BDATA"+num);
 			}
 		}
 		while(E.numAffects()>0)
 			E.delAffect(E.fetchAffect(0));
-		if(httpReq.getRequestParameters().containsKey("AFFECT1"))
+		if(httpReq.isRequestParameter("AFFECT1"))
 		{
 			int num=1;
-			String aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-			String theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+			String aff=httpReq.getRequestParameter("AFFECT"+num);
+			String theparm=httpReq.getRequestParameter("ADATA"+num);
 			while((aff!=null)&&(theparm!=null))
 			{
 				if(aff.length()>0)
@@ -64,8 +64,8 @@ public class GrinderAreas
 					E.addNonUninvokableAffect(B);
 				}
 				num++;
-				aff=(String)httpReq.getRequestParameters().get("AFFECT"+num);
-				theparm=(String)httpReq.getRequestParameters().get("ADATA"+num);
+				aff=httpReq.getRequestParameter("AFFECT"+num);
+				theparm=httpReq.getRequestParameter("ADATA"+num);
 			}
 		}
 		return "";
@@ -73,7 +73,7 @@ public class GrinderAreas
 
 	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable parms)
 	{
-		String last=(String)httpReq.getRequestParameters().get("AREA");
+		String last=httpReq.getRequestParameter("AREA");
 		if((last==null)||(last.length()==0)) return "Old area name not defined!";
 		Area A=CMMap.getArea(last);
 		if(A==null) return "Old Area not defined!";
@@ -83,7 +83,7 @@ public class GrinderAreas
 		String oldName=null;
 
 		// class!
-		String className=(String)httpReq.getRequestParameters().get("CLASSES");
+		String className=httpReq.getRequestParameter("CLASSES");
 		if((className==null)||(className.length()==0))
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.className(A)))
@@ -102,7 +102,7 @@ public class GrinderAreas
 		}
 
 		// name
-		String name=(String)httpReq.getRequestParameters().get("NAME");
+		String name=httpReq.getRequestParameter("NAME");
 		if((name==null)||(name.length()==0))
 			return "Please enter a name for this area.";
 		name=name.trim();
@@ -119,28 +119,27 @@ public class GrinderAreas
 			A=ExternalPlay.DBCreateArea(name,CMClass.className(A));
 			A.setName(name);
 			redoAllMyDamnRooms=true;
-			httpReq.getRequestParameters().put("AREA",A.Name());
-			httpReq.resetRequestEncodedParameters();
+			httpReq.addRequestParameters("AREA",A.Name());
 		}
 
 		// climate
-		if(httpReq.getRequestParameters().containsKey("CLIMATE"))
+		if(httpReq.isRequestParameter("CLIMATE"))
 		{
-			int climate=Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"));
+			int climate=Util.s_int(httpReq.getRequestParameter("CLIMATE"));
 			for(int i=1;;i++)
-				if(httpReq.getRequestParameters().containsKey("CLIMATE"+(new Integer(i).toString())))
-					climate=climate|Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"+(new Integer(i).toString())));
+				if(httpReq.isRequestParameter("CLIMATE"+(new Integer(i).toString())))
+					climate=climate|Util.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
 				else
 					break;
 			A.setClimateType(climate);
 		}
 
 		// tech level
-		if(httpReq.getRequestParameters().containsKey("TECHLEVEL"))
-			A.setClimateType(Util.s_int((String)httpReq.getRequestParameters().get("TECHLEVEL")));
+		if(httpReq.isRequestParameter("TECHLEVEL"))
+			A.setClimateType(Util.s_int(httpReq.getRequestParameter("TECHLEVEL")));
 
 		// modify subop list
-		String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");
+		String subOps=httpReq.getRequestParameter("SUBOPS");
 		Vector V=A.getSubOpVectorList();
 		for(int v=0;v<V.size();v++)
 			A.delSubOp((String)V.elementAt(v));
@@ -148,19 +147,19 @@ public class GrinderAreas
 		{
 			A.addSubOp(subOps);
 			for(int i=1;;i++)
-				if(httpReq.getRequestParameters().containsKey("SUBOPS"+(new Integer(i).toString())))
-					A.addSubOp((String)httpReq.getRequestParameters().get("SUBOPS"+(new Integer(i).toString())));
+				if(httpReq.isRequestParameter("SUBOPS"+(new Integer(i).toString())))
+					A.addSubOp(httpReq.getRequestParameter("SUBOPS"+(new Integer(i).toString())));
 				else
 					break;
 		}
 
 		// description
-		String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
+		String desc=httpReq.getRequestParameter("DESCRIPTION");
 		if(desc==null)desc="";
 		A.setDescription(desc);
 
 		// archive file
-		String file=(String)httpReq.getRequestParameters().get("ARCHP");
+		String file=httpReq.getRequestParameter("ARCHP");
 		if(file==null)file="";
 		A.setArchivePath(file);
 

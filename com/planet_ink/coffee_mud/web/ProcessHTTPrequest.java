@@ -226,11 +226,29 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	public void addRequestParameters(String key, String value)
 	{
+		requestParametersTable.remove(key);
 		requestParametersTable.put(key,value);
 		resetRequestEncodedParameters();
 	}
 	
-	public Hashtable getRequestParameters()
+	public boolean isRequestParameter(String key)
+	{
+		if(key==null) return false;
+		return getRequestParameters().containsKey(key);
+	}
+	public void removeRequestParameter(String key)
+	{
+		if(key==null) return;
+		getRequestParameters().remove(key);
+		resetRequestEncodedParameters();
+	}
+	public String getRequestParameter(String key)
+	{
+		if(key==null) return null;
+		return (String)getRequestParameters().get(key);
+	}
+		
+	private Hashtable getRequestParameters()
 	{
 		// have we already parsed the parameters?
 		if (requestParametersTable != null)
@@ -309,13 +327,28 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	}
 
 
-	private String parseFoundMacro(StringBuffer s, int i)
+	private String parseFoundMacro(StringBuffer s, int i, boolean lookOnly)
 	{
 		String foundMacro=null;
 		boolean extend=false;
+		boolean didadeed=false;
 		for(int x=i+1;x<s.length();x++)
 		{
-			if(s.charAt(x)=='@')
+			if((s.charAt(x)=='@')
+			&&(extend)
+			&&(x<(s.length()-1))
+			&&(s.charAt(x+1)=='@'))
+			{
+				didadeed=true;
+				if(!lookOnly)
+					s.deleteCharAt(x);
+				while((x<s.length())&&(s.charAt(x)=='@'))
+					x++;
+				x--;
+			}
+			else
+			if((s.charAt(x)=='@')
+			&&((!extend)||(x>=s.length()-1)||(s.charAt(x+1)!='@')))
 			{
 				foundMacro=s.substring(i+1,x);
 				break;
@@ -336,7 +369,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i);
+				String foundMacro=parseFoundMacro(s,i,true);
 				if(foundMacro!=null)
 				{
 					if(foundMacro.equalsIgnoreCase("loop"))
@@ -390,7 +423,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i);
+				String foundMacro=parseFoundMacro(s,i,true);
 				if(foundMacro!=null)
 				{
 					if(foundMacro.startsWith("if?"))
@@ -412,11 +445,28 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		throws HTTPRedirectException, HTTPServerException
 	{
 		int x=foundMacro.indexOf("?");
-		String parms=null;
+		StringBuffer parms=null;
 		if(x>=0)
 		{
-			parms=foundMacro.substring(x+1);
+			parms=new StringBuffer(foundMacro.substring(x+1));
 			foundMacro=foundMacro.substring(0,x);
+			int y=parms.indexOf("@");
+			while(y>=0)
+			{
+				String newFoundMacro=parseFoundMacro(parms,y,false);
+				if((newFoundMacro!=null)&&(newFoundMacro.length()>0))
+				{
+					int l=newFoundMacro.length();
+					String qq=runMacro(newFoundMacro);
+					if (qq != null)
+						parms.replace(y,y+l+2, qq );
+					else
+						parms.replace(y,y+l+2, "[error]" );
+				}
+				else
+					break;
+				y=parms.indexOf("@");
+			}
 		}
 		if(foundMacro.length()==0)
 			return "";
@@ -430,7 +480,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				q = "[error]";
 			}
 			else
-				q=W.runMacro(this,parms);
+			if(parms==null)
+				q=W.runMacro(this,null);
+			else
+				q=W.runMacro(this,parms.toString());
 			if (q != null)
 				return q;
 			else
@@ -446,7 +499,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			if(s.charAt(i)=='@')
 			{
-				String foundMacro=parseFoundMacro(s,i);
+				String foundMacro=parseFoundMacro(s,i,true);
 				if(foundMacro!=null)
 				{
 					if(foundMacro.startsWith("if?"))
@@ -483,7 +536,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			{
 				if(s.charAt(i)=='@')
 				{
-					String foundMacro=parseFoundMacro(s,i);
+					String foundMacro=parseFoundMacro(s,i,false);
 					if(foundMacro!=null)
 					{
 						if(foundMacro.startsWith("if?"))

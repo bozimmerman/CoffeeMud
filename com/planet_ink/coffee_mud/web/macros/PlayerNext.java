@@ -26,14 +26,14 @@ public class PlayerNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=(String)httpReq.getRequestParameters().get("PLAYER");
+		String last=httpReq.getRequestParameter("PLAYER");
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.getRequestParameters().remove("PLAYER");
+			if(last!=null) httpReq.removeRequestParameter("PLAYER");
 			return "";
 		}
 		String lastID="";
-		String sort=(String)httpReq.getRequestParameters().get("SORTBY");
+		String sort=httpReq.getRequestParameter("SORTBY");
 		if(sort==null) sort="";
 		Vector V=(Vector)httpReq.getRequestObjects().get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
@@ -75,12 +75,12 @@ public class PlayerNext extends StdWebMacro
 			String user=(String)V.elementAt(i);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.equals(lastID))))
 			{
-				httpReq.getRequestParameters().put("PLAYER",user);
+				httpReq.addRequestParameters("PLAYER",user);
 				return "";
 			}
 			lastID=user;
 		}
-		httpReq.getRequestParameters().put("PLAYER","");
+		httpReq.addRequestParameters("PLAYER","");
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		else
