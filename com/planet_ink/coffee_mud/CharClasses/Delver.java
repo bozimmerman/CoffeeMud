@@ -94,8 +94,7 @@ CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labrynth",false);
-CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
-//Fungus Feet 	Makes target's feet break out in a very painful fungal growth. This brings the target to his knees (fights from a sitting position.) This disease lasts a considerable amount of time. Causes feet to fall off if not cured in 100/LVL mudhours. Duration should be fairly high, like 1 mudhour per level. 
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
 
 			
 CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
@@ -106,8 +105,7 @@ CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 
-CMAble.addCharAbilityMapping(ID(),21,"Chant_Worms",false);
-//worms disease that damages opponent (from the inside out....uggghhh) 
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_Worms",false);
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_SenseGems",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);

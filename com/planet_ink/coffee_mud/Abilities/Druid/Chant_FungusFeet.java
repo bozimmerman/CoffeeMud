@@ -5,15 +5,16 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chant_Plague extends Chant implements DiseaseAffect
+public class Chant_FungusFeet extends Chant implements DiseaseAffect
 {
-	public String ID() { return "Chant_Plague"; }
-	public String name(){ return "Summon Plague";}
-	public String displayText(){return "(Plague)";}
+	public String ID() { return "Chant_FungusFeet"; }
+	public String name(){ return "Fungus Feet";}
+	public String displayText(){return "(Fungus Feet)";}
 	public int quality(){return Ability.MALICIOUS;}
-	public Environmental newInstance(){	return new Chant_Plague();}
-	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
-	int plagueDown=4;
+	public Environmental newInstance(){	return new Chant_FungusFeet();}
+	public int abilityCode(){return 0;}
+	int plagueDown=8;
+	double drawups=1.0;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -24,28 +25,36 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 		if((--plagueDown)<=0)
 		{
 			MOB mob=(MOB)affected;
-			plagueDown=4;
+			plagueDown=10;
 			if(invoker==null) invoker=mob;
-			int dmg=(mob.envStats().level()/2)+1;
-			MUDFight.postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
-			if(mob.location()==null) return false;
-			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
-			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchEffect(ID())==null))
-				if(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_DISEASE))
+			drawups+=.1;
+			if(drawups>=3.1)
+			{
+				if((mob.location()!=null)&&(Sense.isInTheGame(mob)))
 				{
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
-					maliciousAffect(invoker,target,88,-1);
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOU-POSS> feet rot off!");
+					Ability A=CMClass.getAbility("Amputation");
+					if(A!=null)
+					{
+						while(A.invoke(mob,Util.parse("foot"),mob,true));
+						mob.recoverCharStats();
+						mob.recoverEnvStats();
+						mob.recoverMaxState();
+					}
+					unInvoke();
 				}
+			}
+			else
+				MUDFight.postDamage(invoker,mob,this,1,CMMsg.TYP_DISEASE,-1,"<T-NAME> feel(s) the fungus between <T-HIS-HER> toes eating <T-HIS-HER> feet away!");
 		}
 		return true;
 	}
 
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharState(MOB affected, CharState affectableState)
 	{
-		super.affectCharStats(affected,affectableStats);
+		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
-		affectableStats.setStat(CharStats.CONSTITUTION,3);
-		affectableStats.setStat(CharStats.DEXTERITY,3);
+		affectableState.setMovement((int)Math.round(Util.div(affectableState.getMovement(),drawups)));
 	}
 
 	public void unInvoke()
@@ -58,7 +67,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			if((mob.location()!=null)&&(!mob.amDead()))
+			if((mob.location()!=null)&&(!mob.amDead())&&(mob.getWearPositions(Item.ON_FEET)>0))
 			{
 				Ability A=mob.fetchEffect("TemporaryImmunity");
 				if(A==null)
@@ -70,7 +79,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 					A.makeLongLasting();
 				}
 				A.setMiscText("+"+ID());
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The sores on <S-YOUPOSS> face clear up.");
+				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The fungus on <S-YOUPOSS> feet dies and falls off.");
 			}
 	}
 
@@ -79,6 +88,12 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		
+		if(target.charStats().getBodyPart(Race.BODY_FOOT)==0)
+		{
+			mob.tell(target.name()+" has no feet!");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -90,7 +105,7 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-NAMESELF>!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|CMMsg.MASK_MALICIOUS,auto?"":"^S<S-NAME> chant(s) at <T-YOUPOSS> feet!^?");
 			FullMsg msg2=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
@@ -99,13 +114,13 @@ public class Chant_Plague extends Chant implements DiseaseAffect
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					invoker=mob;
-					maliciousAffect(mob,target,88,-1);
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
+					maliciousAffect(mob,target,Integer.MAX_VALUE/2,-1);
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A fungus sprouts up between <S-YOUPOSS> toes!");
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-YOUPOSS> feet, but nothing happens.");
 
 
 		// return whether it worked

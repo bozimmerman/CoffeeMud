@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
+import java.util.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
@@ -135,7 +136,7 @@ public class StdWeapon extends StdItem implements Weapon
 					default:
 						{
 							Ability A=CMClass.getAbility("Amputation");
-							if(A!=null) A.invoke(msg.source(),msg.target(),true);
+							if(A!=null) A.invoke(msg.source(),new Vector(),msg.target(),true);
 						}
 						break;
 					}

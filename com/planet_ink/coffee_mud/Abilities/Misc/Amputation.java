@@ -309,6 +309,20 @@ public class Amputation extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		String choice="";
+		if(givenTarget!=null)
+		{
+			if((commands.size()>0)&&(((String)commands.firstElement()).equals(givenTarget.name())))
+				commands.removeElementAt(0);
+			choice=Util.combine(commands,0);
+			commands.clear();
+		}
+		else
+		if(commands.size()>1)
+		{
+			choice=(String)commands.lastElement();
+			commands.removeElementAt(commands.size()-1);
+		}
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
@@ -331,7 +345,22 @@ public class Amputation extends StdAbility
 					mob.tell("There is nothing left on "+target.name()+" to amputate!");
 				return false;
 			}
-			String gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
+			String gone=null;
+			if(choice.length()>0)
+			{
+				for(int i=0;i<VN.size();i++)
+					if(EnglishParser.containsString((String)VN.elementAt(i),choice))
+					{ gone=(String)VN.elementAt(i); break;}
+				if(gone==null)
+				{
+					if(!auto)
+						mob.tell("There is nothing left on "+target.name()+" called '"+gone+"'!");
+					return false;
+				}
+			}
+				
+			if(gone==null)
+				gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
 
 			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),str);
