@@ -8,6 +8,7 @@ public class CMSecurity
 	private CMSecurity(){}
 	private static final long startTime=System.currentTimeMillis();
 	private static Hashtable groups=new Hashtable();
+	private static Vector compiledSysop=null;
 	
 	public static final int SEC_MASK_GLOBAL=65536;
 	
@@ -53,14 +54,16 @@ public class CMSecurity
 		"BOOT", "BAN", "CMDSOCIALS", "CMDQUESTS", "ORDERPLAYERS"
 		};
 	
-	public static boolean isASysOp(MOB mob)
+	
+	public static void setSysOp(String zapCheck)
 	{
-		if(mob==null) return false;
-		if(mob.baseCharStats()==null) return false;
-		if(mob.baseCharStats().getClassLevel("Archon")>=0)
-			return true;
-		return false;
+		if((zapCheck==null)||(zapCheck.trim().length()==0))
+			zapCheck="-ANYCLASS +Archon";
+		compiledSysop=MUDZapper.zapperCompile(zapCheck);
 	}
+	
+	public static boolean isASysOp(MOB mob)
+	{ return MUDZapper.zapperCheck(compiledSysop,mob);}
 	
 	public static boolean isAllowed(MOB mob, Room room, int code)
 	{

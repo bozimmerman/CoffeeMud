@@ -1,3 +1,4 @@
+add days of week, months, and years to scripts
 document real estate and space ship selling, document genairlock?
 The programmer's guide still shows the playerSelectable method btw.
 Christening Prayer, Chant Bestow Name, pregnancy change, domesticate name change

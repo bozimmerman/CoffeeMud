@@ -228,7 +228,9 @@ public class MUD extends Thread implements MudHost
 		Vector nocache=Util.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE,nocache.contains("GENMOBS"));
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
-
+		
+		
+		CMSecurity.setSysOp(page.getStr("SYSOP"));
 		CMSecurity.setDisableVars(page.getStr("DISABLE"));
 		if(page.getStr("DISABLE").trim().length()>0)
 			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));

@@ -76,6 +76,14 @@ public class MUDZapper
 			zapCodes.put("-AREA",new Integer(31));
 			zapCodes.put("+AREA",new Integer(32));
 			zapCodes.put("+ITEM",new Integer(33));
+			zapCodes.put("+CLASS",new Integer(34));  // for compiled use ONLY
+			zapCodes.put("+ALIGNMENT",new Integer(35));  // for compiled use ONLY
+			zapCodes.put("+GENDER",new Integer(36));  // for compiled use ONLY
+			zapCodes.put("+LVLGR",new Integer(37));  // for compiled use ONLY
+			zapCodes.put("+LVLGE",new Integer(38));  // for compiled use ONLY
+			zapCodes.put("+LVLLT",new Integer(39));  // for compiled use ONLY
+			zapCodes.put("+LVLLE",new Integer(40));  // for compiled use ONLY
+			zapCodes.put("+LVLEQ",new Integer(41));  // for compiled use ONLY
 		}
 		return zapCodes;
 	}
@@ -214,6 +222,41 @@ public class MUDZapper
 		return false;
 	}
 
+	public static Vector levelCompiledHelper(String str, char c, Vector entry)
+	{
+		if(entry==null) entry=new Vector();
+		if(str.startsWith(c+">="))
+		{
+			entry.addElement(zapCodes.get("LVLGE"));
+			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
+		}
+		else
+		if(str.startsWith(c+"<="))
+		{
+			entry.addElement(zapCodes.get("LVLLE"));
+			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
+		}
+		else
+		if(str.startsWith(c+">"))
+		{
+			entry.addElement(zapCodes.get("LVLGT"));
+			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
+		}
+		else
+		if(str.startsWith(c+"<"))
+		{
+			entry.addElement(zapCodes.get("LVLLT"));
+			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
+		}
+		else
+		if(str.startsWith(c+"="))
+		{
+			entry.addElement(zapCodes.get("LVLEQ"));
+			entry.addElement(new Integer(Util.s_int(str.substring(3).trim())));
+		}
+		return entry;
+	}
+	
 	public static StringBuffer levelHelp(String str, char c, String append)
 	{
 		if(str.startsWith(c+">="))
@@ -385,7 +428,7 @@ public class MUDZapper
 							buf.append("Male, ");
 						if(fromHere(V,'+',v+1,"FEMALE"))
 							buf.append("Female, ");
-						if(fromHere(V,'+',v+1,"FEMALE"))
+						if(fromHere(V,'+',v+1,"NEUTER"))
 							buf.append("Neuter");
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -480,7 +523,7 @@ public class MUDZapper
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v);
-							if((!zapCodes.containsKey(str2))&&(str.startsWith("-")))
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
 								buf.append(str2+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -530,7 +573,7 @@ public class MUDZapper
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass())
-							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+							&&(fromHere(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
 								buf.append(C.name()+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -606,7 +649,7 @@ public class MUDZapper
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v);
-							if((!zapCodes.containsKey(str2))&&(str.startsWith("-")))
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
 								buf.append(str2+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -669,6 +712,295 @@ public class MUDZapper
 		return buf.toString();
 	}
 
+	public static Vector zapperCompile(String text)
+	{
+		Vector buf=new Vector();
+		if(text.trim().length()==0) return buf;
+		getZapCodes();
+		Vector V=Util.parse(text.toUpperCase());
+		for(int v=0;v<V.size();v++)
+		{
+			String str=(String)V.elementAt(v);
+			int val=-1;
+			if(zapCodes.containsKey(str))
+				switch(((Integer)zapCodes.get(str)).intValue())
+				{
+				case 0: // -class
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C=(CharClass)c.nextElement();
+							if(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))
+								entry.addElement(C.name());
+						}
+					}
+					break;
+				case 1: // -baseclass
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C=(CharClass)c.nextElement();
+							if((C.ID().equals(C.baseClass())
+							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+								entry.addElement(C.name());
+						}
+					}
+					break;
+				case 2: // -Race
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						Vector cats=new Vector();
+						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						{
+							Race R=(Race)r.nextElement();
+							String cat=R.name().toUpperCase();
+							if(cat.length()>6) cat=cat.substring(0,6);
+							if((!cats.contains(R.name())
+							&&(fromHere(V,'+',v+1,cat))))
+							   cats.addElement(R.name());
+						}
+						for(int c=0;c<cats.size();c++)
+							entry.addElement(((String)cats.elementAt(c)));
+					}
+					break;
+				case 12: // -Racecats
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						Vector cats=new Vector();
+						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						{
+							Race R=(Race)r.nextElement();
+							String cat=R.racialCategory().toUpperCase();
+							if((!cats.contains(R.racialCategory())
+							&&(fromHere(V,'+',v+1,cat))))
+							   cats.addElement(R.racialCategory());
+						}
+						for(int c=0;c<cats.size();c++)
+							entry.addElement(((String)cats.elementAt(c)));
+					}
+					break;
+				case 3: // -Alignment
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(int c=0;c<=1000;c+=500)
+						{
+							String C=CommonStrings.shortAlignmentStr(c);
+							if(fromHere(V,'+',v+1,C.toUpperCase().substring(0,3)))
+								entry.addElement(C);
+						}
+					}
+					break;
+				case 4: // -Gender
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						if(fromHere(V,'+',v+1,"MALE"))
+							entry.addElement("M");
+						if(fromHere(V,'+',v+1,"FEMALE"))
+							entry.addElement("F");
+						if(fromHere(V,'+',v+1,"NEUTER"))
+							entry.addElement("N");
+					}
+					break;
+				case 5: // -Levels
+				case 6: // -ClassLevels
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(int v2=v+1;v2<V.size();v2++)
+							levelCompiledHelper((String)V.elementAt(v2),'+',entry);
+					}
+					break;
+				case 7: // -Tattoos
+				case 14: // -Clan
+				case 9: // -Names
+				case 32: // -Area
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str.startsWith("+")))
+								entry.addElement(str2);
+						}
+					}
+					break;
+				case 8: // +Tattoos
+				case 15: // +Clan
+				case 16: // +Names
+				case 13: // +racecats
+				case 31: // +Area
+				case 33: // +Item
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v);
+							if((!zapCodes.containsKey(str2))&&(str2.startsWith("-")))
+								entry.addElement(str2);
+						}
+					}
+					break;
+				case 10: // -Player
+				case 11: // -MOB
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						break;
+					}
+				case 17: // -anyclass
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C=(CharClass)c.nextElement();
+							if((C.ID().equals(C.baseClass())
+							&&(fromHere(V,'+',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+								entry.addElement(C.name());
+						}
+					}
+					break;
+				case 18: // +anyclass
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C=(CharClass)c.nextElement();
+							if((C.ID().equals(C.baseClass())
+							&&(fromHere(V,'-',v+1,Util.padRight(C.name(),4).toUpperCase().trim()))))
+								entry.addElement(C.name());
+						}
+					}
+					break;
+				case 19: // -str
+				case 20: // -int
+				case 21: // -wis
+				case 22: // -dex
+				case 23: // -con
+				case 24: // -cha
+				case 25: // +str
+				case 26: // +int
+				case 27: // +wis
+				case 28: // +dex
+				case 29: // +con
+				case 30: // +cha
+					{
+						val=((++v)<V.size())?Util.s_int((String)V.elementAt(v)):0;
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get(str));
+						entry.addElement(new Integer(val));
+						break;
+					}
+				}
+			else
+			{
+				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				{
+					CharClass C=(CharClass)c.nextElement();
+					if(str.startsWith("-"+Util.padRight(C.name(),4).toUpperCase().trim()))
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get("+CLASS"));
+						entry.addElement(C.name());
+					}
+				}
+				Vector cats=new Vector();
+				for(Enumeration r=CMClass.races();r.hasMoreElements();)
+				{
+					Race R=(Race)r.nextElement();
+					String cat=R.racialCategory().toUpperCase();
+					if(cat.length()>6) cat=cat.substring(0,6);
+					if((str.startsWith("-"+cat))&&(!cats.contains(R.racialCategory())))
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get("+RACECAT"));
+						entry.addElement(R.racialCategory());
+					}
+				}
+				for(int c=0;c<=1000;c+=500)
+				{
+					String C=CommonStrings.shortAlignmentStr(c);
+					if(str.startsWith("-"+C.toUpperCase().substring(0,3)))
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement((Integer)zapCodes.get("+ALIGNMENT"));
+						entry.addElement(C);
+					}
+				}
+				if(str.startsWith("-MALE"))
+				{
+					Vector entry=new Vector();
+					buf.addElement(entry);
+					entry.addElement((Integer)zapCodes.get("+GENDER"));
+					entry.addElement("M");
+				}
+				if(str.startsWith("-FEMALE"))
+				{
+					Vector entry=new Vector();
+					buf.addElement(entry);
+					entry.addElement((Integer)zapCodes.get("+GENDER"));
+					entry.addElement("F");
+				}
+				if(str.startsWith("-NEUTER"))
+				{
+					Vector entry=new Vector();
+					buf.addElement(entry);
+					entry.addElement((Integer)zapCodes.get("+GENDER"));
+					entry.addElement("N");
+				}
+				Vector entry=levelCompiledHelper(str,'-',null);
+				if((entry!=null)&&(entry.size()>0))
+					buf.addElement(entry);
+			}
+		}
+		return buf;
+	}
+
+	public static boolean zapperCheck(Vector cset, MOB mob)
+	{
+		if(mob==null) return true;
+		if(mob.charStats()==null) return true;
+		if((cset==null)||(cset.size()==0)) return true;
+		getZapCodes();
+		for(int v=0;v<cset.size();v++)
+		{
+			Vector V=(Vector)cset.elementAt(v);
+			if(V.size()>0)
+			switch(((Integer)V.firstElement()).intValue())
+			{
+				
+			}
+		}
+		return true;
+	}
+	
 	public static boolean zapperCheck(String text, MOB mob)
 	{
 		if(mob==null) return true;
