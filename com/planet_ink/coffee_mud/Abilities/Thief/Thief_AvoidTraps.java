@@ -22,4 +22,12 @@ public class Thief_AvoidTraps extends ThiefSkill
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_TRAPS,affectableStats.getStat(CharStats.SAVE_TRAPS)+(profficiency()/2));
 	}
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID)) return false;
+		if((affected!=null)&&(affected instanceof MOB)
+		&&(Dice.roll(1,1000,0)==1000))
+			helpProfficiency((MOB)affected);
+		return true;
+	}
 }

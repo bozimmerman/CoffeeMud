@@ -37,6 +37,8 @@ public class StdRace implements Race
 										 
 	public boolean playerSelectable(){return false;}
 
+	public boolean fertile(){return true;}
+	
 	public Race copyOf()
 	{
 		try
@@ -169,6 +171,7 @@ public class StdRace implements Race
 
 		MOB myChar=(MOB)myHost;
 		if((affect.amITarget(myChar))
+		&&(fertile())
 		&&(affect.tool()!=null)
 		&&(affect.tool().ID().equals("Social"))
 		&&(myChar.charStats().getStat(CharStats.GENDER)==((int)'F'))
@@ -179,6 +182,7 @@ public class StdRace implements Race
 		&&((ID().equals("Human"))
 		   ||(affect.source().charStats().getMyRace().ID().equals("Human"))
 		   ||(affect.source().charStats().getMyRace().ID().equals(ID())))
+		&&(affect.source().charStats().getMyRace().fertile())
 		&&(myChar.location()==affect.source().location())
 		&&(!myChar.amWearingSomethingHere(Item.ON_LEGS))
 		&&(!affect.source().amWearingSomethingHere(Item.ON_LEGS))

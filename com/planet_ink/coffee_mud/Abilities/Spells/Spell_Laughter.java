@@ -80,7 +80,8 @@ public class Spell_Laughter extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(-(target.envStats().level()*5),auto);
+		if(levelDiff<0) levelDiff=0;
+		boolean success=profficiencyCheck(-(levelDiff*5),auto);
 
 		if(success)
 		{

@@ -25,14 +25,14 @@ public class Prayer_DemonicConsumption extends Prayer
 
 		boolean success=false;
 		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-		if(target instanceof Item)
-			success=profficiencyCheck(((mob.envStats().level()-target.envStats().level())*25),auto);
-		else
+		if(!(target instanceof Item))
 		{
 			if(!auto)
 				affectType=affectType|Affect.MASK_MALICIOUS;
-			success=profficiencyCheck(-(target.envStats().level()*3),auto);
 		}
+		int levelDiff=target.envStats().level()-mob.envStats().level();
+		if(levelDiff<0) levelDiff=0;
+		success=profficiencyCheck(-(levelDiff*20),auto);
 
 		if(auto)affectType=affectType|Affect.MASK_GENERAL;
 

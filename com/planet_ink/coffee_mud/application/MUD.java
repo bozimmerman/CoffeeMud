@@ -513,40 +513,49 @@ public class MUD extends Thread implements Host
 	}
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
+		Log.sysOut("MUD","Started shutdown");
+		if(S!=null)S.println("Starting shutdown!");
 		if((saveThread==null)||(utiliThread==null)) return;
 
 		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
 		for(int i=0;i<mudThreads.size();i++)
 			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
-		Log.sysOut("MUD","Host will now reject new connections.");
+		Log.sysOut("MUD","New Connections are now closed");
 		if(S!=null)S.println("Host will now reject new connections.");
 
 		offlineReason="Shutting down...Quests";
 		Quests.shutdown();
 
+		if(S!=null)S.print("Saving players...");
 		offlineReason="Shutting down...Saving players...";
 		saveThread.savePlayers();
-		if(S!=null)S.println("All users saved.");
+		if(S!=null)S.println("done");
+		Log.sysOut("MUD","All users saved.");
+		
+		
 		offlineReason="Shutting down...Save Thread";
 		saveThread.shutdown();
 		saveThread.interrupt();
 		saveThread=null;
-		if(S!=null)S.println("Save thread stopped.");
+		if(S!=null)S.println("Save thread stopped");
 		offlineReason="Shutting down...Utility Thread";
 		utiliThread.shutdown();
 		utiliThread.interrupt();
 		utiliThread=null;
-		if(S!=null)S.println("Utility thread stopped.");
+		if(S!=null)S.println("Utility thread stopped");
+		Log.sysOut("MUD","Utility/Save Threads stopped.");
 		
 
-		offlineReason="Shutting down...IMServer";
 		if(imserver!=null)
 		{
+			offlineReason="Shutting down...IMServer";
 			imserver.shutdown();
 			imserver=null;
-			if(S!=null)S.println("IMServer stopped.");
+			if(S!=null)S.println("IMServer stopped");
+			Log.sysOut("MUD","IMServer stopped");
 		}
 
+		if(S!=null)S.print("Stopping player sessions...");
 		offlineReason="Shutting down...Stopping sessions";
 		while(Sessions.size()>0)
 		{
@@ -559,17 +568,21 @@ public class MUD extends Thread implements Host
 				S2.logoff();
 				offlineReason="Shutting down...Done stopping session "+S2.getAddress();
 			}
+			if(S!=null)S.print(".");
 		}
-		if(S!=null)S.println("All users logged off.");
+		if(S!=null)S.println("All users logged off");
+		Log.sysOut("MUD","All users logged off.");
 
+		if(S!=null)S.print("Stopping all threads...");
 		offlineReason="Shutting down...shutting down service engine";
 		ServiceEngine.shutdownAll();
-		if(S!=null)S.println("All threads stopped.");
+		if(S!=null)S.println("done");
+		Log.sysOut("MUD","Map Threads Stopped.");
 
 		offlineReason="Shutting down...closing db connections";
 		DBConnector.killConnections();
-		Log.sysOut("MUD","All users saved.");
-		if(S!=null)S.println("Database connections closed.");
+		if(S!=null)S.println("Database connections closed");
+		Log.sysOut("MUD","Database connections closed.");
 
 		offlineReason="Shutting down...Clearing socials, clans, channels";
 		Socials.clearAllSocials();
@@ -586,17 +599,25 @@ public class MUD extends Thread implements Host
 		offlineReason="Shutting down...unloading resources";
 		Resources.clearResources();
 		webCommon=null;
+		Log.sysOut("MUD","Resources Cleared.");
+		if(S!=null)S.println("All resources unloaded");
+		
+		
 		if(webServerThread!=null)
 		{
 			offlineReason="Shutting down...pub webserver";
 			webServerThread.shutdown(S);
 			webServerThread = null;
+			Log.sysOut("MUD","Public Web Server stopped.");
+			if(S!=null)S.println("Public Web Server stopped");
 		}
 		if(adminServerThread!=null)
 		{
 			offlineReason="Shutting down...admin webserver";
 			adminServerThread.shutdown(S);
 			adminServerThread = null;
+			Log.sysOut("MUD","Admin Web Server stopped.");
+			if(S!=null)S.println("Admin Web Server stopped");
 		}
 		offlineReason="Shutting down...unloading macros";
 		HTTPserver.unloadWebMacros();

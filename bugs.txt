@@ -1,4 +1,4 @@
-Can this pretty, pretty please take a param of how much material you're trying to smelt?
+!Can this pretty, pretty please take a param of how much material you're trying to smelt?
 make sure import cmare handles rooms with containers in containers with items ok
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 !Masonry	POOL will convert the room into a Water room, with 1 level of underwater added for free
@@ -12,3 +12,10 @@ SECSPERTICK- number of real life seconds between each game "tick".
 HOURSPERDAY- number of real life hours in one game day.
 DAYSPERMONTH- number of game days that make up a game month.
 DAYSPERYEAR- number of game days that makes up a game year.
+Englarge object REALLY needs to uninvoke when scrapping, butchering, etc are used.
+!UNDEAD should not be able to get pregnant, nor register as life by the spells
+A sengir Scholar was killed by one touch of my flameshield. It just said that it warmed him, but he died
+!the Mako Shark is treading water. He needs to be underwater.
+!verify the tells during shutdown please.. they dont look right
+amputation does not affect wear position
+clan bosses cant enchant.. need autopromote for clan and guild types

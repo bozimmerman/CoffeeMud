@@ -102,6 +102,9 @@ public class UnderWater extends StdRoom implements Drink
 						foundNormal=foundNormal||(A.profficiency()<=0);
 					}
 					else
+					if((!Util.bset(mob.baseEnvStats().disposition(),EnvStats.IS_SWIMMING))
+					&&(!mob.charStats().getMyRace().racialCategory().equals("Amphibian"))
+					&&(!mob.charStats().getMyRace().racialCategory().equals("Fish")))
 						needToFall.addElement(mob);
 				}
 			}

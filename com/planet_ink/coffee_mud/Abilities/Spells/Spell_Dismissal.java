@@ -24,7 +24,11 @@ public class Spell_Dismissal extends Spell
 
 		boolean success=false;
 		if(target.getStartRoom()==null)
-			success=profficiencyCheck(-(target.envStats().level()*3),auto);
+		{
+			int levelDiff=target.envStats().level()-mob.envStats().level();
+			if(levelDiff<0) levelDiff=0;
+			success=profficiencyCheck(-(levelDiff*5),auto);
+		}
 		else
 			success=profficiencyCheck(0,auto);
 

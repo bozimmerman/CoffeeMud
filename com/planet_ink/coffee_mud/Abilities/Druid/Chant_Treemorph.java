@@ -158,7 +158,9 @@ public class Chant_Treemorph extends Chant
 			return false;
 
 
-		boolean success=profficiencyCheck(-(target.envStats().level()*3),auto);
+		int levelDiff=target.envStats().level()-mob.envStats().level();
+		if(levelDiff<0) levelDiff=0;
+		boolean success=profficiencyCheck(-(levelDiff*10),auto);
 		treeForm=CMClass.getRace("TreeGolem");
 		if(success)
 		{

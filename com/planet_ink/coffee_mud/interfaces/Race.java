@@ -14,6 +14,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public int getMaxWeight();
 	public long forbiddenWornBits();
 	public int[] bodyMask();
+	public boolean fertile();
 	
 	public void outfit(MOB mob);
 	public boolean canWear(Item item);

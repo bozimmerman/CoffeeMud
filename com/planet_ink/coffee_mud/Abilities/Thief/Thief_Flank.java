@@ -66,11 +66,8 @@ public class Thief_Flank extends ThiefSkill
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(canBeUninvoked())
-		{
-			if(!mob.amDead())
-				mob.tell("You are no longer flanking "+target.name()+".");
-		}
+		if((canBeUninvoked())&&(mob!=null)&&(target!=null)&&(!mob.amDead()))
+			mob.tell("You are no longer flanking "+target.name()+".");
 		super.unInvoke();
 	}
 

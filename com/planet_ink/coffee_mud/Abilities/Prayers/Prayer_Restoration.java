@@ -80,7 +80,7 @@ public class Prayer_Restoration extends Prayer
 				{
 					A.unInvoke();
 					target.delAffect(A);
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer cold and weak!");
 					target.recoverCharStats();
 					target.recoverEnvStats();
 					target.recoverMaxState();

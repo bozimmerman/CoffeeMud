@@ -16,6 +16,7 @@ public class ElectricityElemental extends StdRace
 	public int weightVariance(){return 100;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Electricity Elemental";}
+	public boolean fertile(){return false;}
 
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

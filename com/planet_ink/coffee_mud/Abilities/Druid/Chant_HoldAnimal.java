@@ -60,7 +60,9 @@ public class Chant_HoldAnimal extends Chant
 			return false;
 
 
-		boolean success=profficiencyCheck(-(target.envStats().level()*2),auto);
+		int levelDiff=target.envStats().level()-mob.envStats().level();
+		if(levelDiff<0) levelDiff=0;
+		boolean success=profficiencyCheck(-(levelDiff*5),auto);
 
 		if(success)
 		{

@@ -16,12 +16,14 @@ public class Undead extends StdRace
 	public int weightVariance(){return 100;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Undead";}
+	public boolean fertile(){return false;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
+	
 	public boolean playerSelectable(){return false;}
 
 	public void affectCharState(MOB affectedMOB, CharState affectableState)

@@ -52,15 +52,6 @@ public class Spell_Hold extends Spell
 			return false;
 		}
 
-		// if they can't hear the sleep spell, it
-		// won't happen
-		if((!auto)&&(!Sense.canBeHeardBy(mob,target)))
-		{
-			mob.tell(target.charStats().HeShe()+" can't hear your words.");
-			return false;
-		}
-
-
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -69,7 +60,7 @@ public class Spell_Hold extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(-(target.envStats().level()*2),auto);
+		boolean success=profficiencyCheck(-(levelDiff*5),auto);
 
 		if(success)
 		{
