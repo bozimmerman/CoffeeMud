@@ -47,7 +47,12 @@ public class Spell_FleshStone extends Spell
 		MOB mob=(MOB)affected;
 		if(affect.source().getVictim()==mob)
 			affect.source().setVictim(null);
-		if(mob.isInCombat()) mob.makePeace();
+		if(mob.isInCombat())
+		{
+			if(mob.getVictim()!=null)
+				mob.getVictim().makePeace();
+			mob.makePeace();
+		}
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		mob.curState().setHunger(1000);
@@ -76,6 +81,14 @@ public class Spell_FleshStone extends Spell
 				affect.source().location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> seem(s) to smile.");
 			}
 			else
+			if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
+			{
+				affect.source().tell("Attack a statue?!");
+				affect.source().setVictim(null);
+				mob.setVictim(null);
+				return false;
+			}
+			else
 			{
 				Item item=CMClass.getItem("GenItem");
 				item.setName(mob.name());
@@ -93,7 +106,12 @@ public class Spell_FleshStone extends Spell
 		
 		if(affect.source().getVictim()==mob)
 			affect.source().setVictim(null);
-		if(mob.isInCombat()) mob.makePeace();
+		if(mob.isInCombat())
+		{
+			if(mob.getVictim()!=null)
+				mob.getVictim().makePeace();
+			mob.makePeace();
+		}
 		return true;
 	}
 

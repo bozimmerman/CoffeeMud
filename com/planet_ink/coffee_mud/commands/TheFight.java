@@ -289,7 +289,7 @@ public class TheFight
 				target.tell("You lose 100 experience points.");
 			}
 			DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
-			Body.baseEnvStats().setWeight(target.envStats().weight());
+			Body.baseEnvStats().setWeight(target.baseEnvStats().weight());
 			if(!target.isMonster())
 				Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
 			deathRoom.addItem(Body);
