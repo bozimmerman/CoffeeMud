@@ -32,7 +32,10 @@ public class Prop_Invisibility extends Property
 		MOB mob=(MOB)affected;
 
 		if((affect.amISource(mob))&&(Util.bset(affect.sourceCode(),Affect.MASK_MALICIOUS)))
+		{
 			ticksSinceLoss=0;
+			mob.recoverEnvStats();
+		}
 		return;
 	}
 
@@ -46,7 +49,8 @@ public class Prop_Invisibility extends Property
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(ticksSinceLoss>30)
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
+		if(ticksSinceLoss>60)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 	}
 }

@@ -26,7 +26,7 @@ public class Spell_GustOfWind extends Spell
 		canBeUninvoked=true;
 		isAutoinvoked=false;
 		minRange=0;
-		maxRange=3;
+		maxRange=4;
 
 		uses=Integer.MAX_VALUE;
 		recoverEnvStats();

@@ -7,7 +7,7 @@ import java.util.*;
 
 public class ROMGangMember extends StdBehavior
 {
-	int tickTock=0;
+	int tickTock=5;
 	public ROMGangMember()
 	{
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -78,6 +78,7 @@ public class ROMGangMember extends StdBehavior
 		ExternalPlay.postAttack(observer,victim,weapon);
 	}
 	
+	
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -85,10 +86,10 @@ public class ROMGangMember extends StdBehavior
 		if(tickID!=Host.MOB_TICK) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
-		tickTock++;
-		if(tickTock>5)
+		tickTock--;
+		if(tickTock<=0)
 		{
-			tickTock=0;
+			tickTock=Dice.roll(1,10,0);
 			pickAFight(mob);
 		}
 	}

@@ -42,7 +42,10 @@ public class Prop_Hidden extends Property
 			 &&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
 			 &&(affect.sourceMinor()!=Affect.TYP_EXAMINESOMETHING)
 			 &&(affect.sourceMajor()>0))
+			{
 				ticksSinceLoss=0;
+				mob.recoverEnvStats();
+			}
 		}
 		return;
 	}
@@ -57,7 +60,8 @@ public class Prop_Hidden extends Property
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(ticksSinceLoss>10)
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+		if(ticksSinceLoss>30)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 	}
 }
