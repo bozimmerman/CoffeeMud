@@ -484,9 +484,10 @@ public class RoomLoader
 		}
 	}
 
-	public static void DBUpdateMOBs(Room room)
+	public static void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
 		if(room.ID().length()==0) return;
+		if(mobs==null) mobs=new Vector();
 		DBConnection D=null;
 		String str=null;
 		try
@@ -494,36 +495,32 @@ public class RoomLoader
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMROCH WHERE CMROID='"+room.ID()+"'");
 			DBConnector.DBDone(D);
-			for(int m=0;m<room.numInhabitants();m++)
+			for(int m=0;m<mobs.size();m++)
 			{
-				MOB thisMOB=room.fetchInhabitant(m);
-
-				if((thisMOB!=null)&&(thisMOB.isEligibleMonster()))
-				{
-					D=DBConnector.DBFetch();
-					str=
-					 "INSERT INTO CMROCH ("
-					 +"CMROID, "
-					 +"CMCHNM, "
-					 +"CMCHID, "
-					 +"CMCHTX, "
-					 +"CMCHLV, "
-					 +"CMCHAB, "
-					 +"CMCHRE, "
-					 +"CMCHRI "
-					 +") values ("
-					 +"'"+room.ID()+"',"
-					 +"'"+thisMOB+"',"
-					 +"'"+CMClass.className(thisMOB)+"',"
-					 +"'"+thisMOB.text()+" ',"
-					 +thisMOB.baseEnvStats().level()+","
-					 +thisMOB.baseEnvStats().ability()+","
-					 +thisMOB.baseEnvStats().rejuv()+","
-					 +"'"+((thisMOB.riding()!=null)?(""+thisMOB.riding()):"")+"'"
-					 +")";
-					D.update(str);
-					DBConnector.DBDone(D);
-				}
+				MOB thisMOB=(MOB)mobs.elementAt(m);
+				D=DBConnector.DBFetch();
+				str=
+				 "INSERT INTO CMROCH ("
+				 +"CMROID, "
+				 +"CMCHNM, "
+				 +"CMCHID, "
+				 +"CMCHTX, "
+				 +"CMCHLV, "
+				 +"CMCHAB, "
+				 +"CMCHRE, "
+				 +"CMCHRI "
+				 +") values ("
+				 +"'"+room.ID()+"',"
+				 +"'"+thisMOB+"',"
+				 +"'"+CMClass.className(thisMOB)+"',"
+				 +"'"+thisMOB.text()+" ',"
+				 +thisMOB.baseEnvStats().level()+","
+				 +thisMOB.baseEnvStats().ability()+","
+				 +thisMOB.baseEnvStats().rejuv()+","
+				 +"'"+((thisMOB.riding()!=null)?(""+thisMOB.riding()):"")+"'"
+				 +")";
+				D.update(str);
+				DBConnector.DBDone(D);
 			}
 		}
 		catch(SQLException sqle)
@@ -532,6 +529,19 @@ public class RoomLoader
 			Log.errOut("Room","UpdateMOBs"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
+	}
+	
+	public static void DBUpdateMOBs(Room room)
+	{
+		if(room.ID().length()==0) return;
+		Vector mobs=new Vector();
+		for(int m=0;m<room.numInhabitants();m++)
+		{
+			MOB thisMOB=room.fetchInhabitant(m);
+			if((thisMOB!=null)&&(thisMOB.isEligibleMonster()))
+				mobs.addElement(thisMOB);
+		}
+		DBUpdateTheseMOBs(room,mobs);
 	}
 
 

@@ -11,6 +11,7 @@ public interface ExternalSystem
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadContent(Room thisRoom, Hashtable rooms);
 	public void DBUpdateExits(Room room);
+	public void DBUpdateTheseMOBs(Room room, Vector mobs);
 	public void DBUpdateMOBs(Room room);
 	public void DBCreateRoom(Room room, String LocaleID);
 	public void DBUpdateRoom(Room room);

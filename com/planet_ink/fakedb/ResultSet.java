@@ -405,6 +405,7 @@ class ResultSet implements java.sql.ResultSet
       } else {
          iter=relation.index.values().iterator();
       }
+	  currentRow=0;
    }
    public boolean isBeforeFirst() { return false; }
    public void afterLast() throws java.sql.SQLException { throw new java.sql.SQLException(); }

@@ -74,6 +74,17 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		{
 			Room R=(Room)affected;
 			updateLot(R,this);
+			Vector mobs=new Vector();
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				MOB M=(MOB)R.fetchInhabitant(m);
+				if((M!=null)
+				&&(M.isEligibleMonster())
+				&&(M.getStartRoom()==R)
+				&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
+					mobs.addElement(M);
+			}
+			ExternalPlay.DBUpdateTheseMOBs(R,mobs);
 		}
 	}
 	

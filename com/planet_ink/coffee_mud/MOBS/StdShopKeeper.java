@@ -1075,6 +1075,15 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				val=CMAble.lowestQualifyingLevel(product.ID())*25;
 		}
 		else
+		if(product instanceof MOB)
+		{
+			Ability A=product.fetchAffect("Prop_Retainable");
+			if(A!=null)
+				val=Util.s_int(A.text());
+			if(val==0)
+				val=25*product.envStats().level();
+		}
+		else
 			val=CMAble.lowestQualifyingLevel(product.ID())*25;
 		if(mob==null) return val;
 		

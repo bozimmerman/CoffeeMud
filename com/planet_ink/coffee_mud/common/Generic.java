@@ -766,7 +766,9 @@ public class Generic
 		switch(type)
 		{
 		case 1: if(!(item instanceof Weapon)) return buf;
+				break;
 		case 2: if(!(item instanceof Armor)) return buf;
+				break;
 		}
 		if(item.displayText().length()>0)
 		{

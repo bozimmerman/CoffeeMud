@@ -247,6 +247,10 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateExits(room);
 	}
+	public static void DBUpdateTheseMOBs(Room room, Vector mobs)
+	{
+		if(sysPlayer!=null) sysPlayer.DBUpdateTheseMOBs(room,mobs);
+	}
 	public static void DBUpdateMOBs(Room room)
 	{
 		if(sysPlayer!=null) sysPlayer.DBUpdateMOBs(room);

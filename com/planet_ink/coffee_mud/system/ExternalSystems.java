@@ -48,6 +48,10 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdateExits(room);
 	}
+	public void DBUpdateTheseMOBs(Room room, Vector mobs)
+	{
+		RoomLoader.DBUpdateTheseMOBs(room,mobs);
+	}
 	public void DBUpdateMOBs(Room room)
 	{
 		RoomLoader.DBUpdateMOBs(room);

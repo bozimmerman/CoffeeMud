@@ -561,14 +561,14 @@ public class TheFight
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOGUARD);
 			mob.tell("You are now on guard. You will no longer follow group leaders.");
 			if(mob.isMonster())
-				mob.tell("I am now on guard.");
+				ExternalPlay.quickSay(mob,null,"I am now on guard.",false,false);
 		}
 		else
 		{
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOGUARD);
 			mob.tell("You are on longer on guard.  You will now follow group leaders.");
 			if(mob.isMonster())
-				mob.tell("I will now follow my group leader.");
+				ExternalPlay.quickSay(mob,null,"I will now follow my group leader.",false,false);
 		}
 	}
 
