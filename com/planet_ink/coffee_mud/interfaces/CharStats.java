@@ -7,6 +7,7 @@ public interface CharStats extends Cloneable
 	public static final int CONSTITUTION=3;
 	public static final int CHARISMA=4;
 	public static final int WISDOM=5;
+	public static final int NUM_BASE_STATS=6;
 	
 	public static final int GENDER=6;
 	

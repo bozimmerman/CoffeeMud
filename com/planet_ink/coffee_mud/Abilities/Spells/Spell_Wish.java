@@ -278,7 +278,7 @@ public class Spell_Wish extends Spell
 				if(target instanceof MOB)
 				{ 
 					int exp=mob.getExperience();
-					int hp=((MOB)target).curState().getHitPoints();
+					//int hp=((MOB)target).curState().getHitPoints();
 					ExternalPlay.die(mob,(MOB)target);
 					if(mob.getExperience()>exp)
 					{

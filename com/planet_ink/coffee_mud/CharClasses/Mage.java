@@ -173,6 +173,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),19,"Spell_ImprovedInvisibility",false);
 			// level 20
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_Scry",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Spell_ImprovedPolymorph",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
 			// level 21
 			CMAble.addCharAbilityMapping(ID(),21,"Spell_Command",false);
@@ -187,6 +188,7 @@ public class Mage extends StdCharClass
 			// level 24
 			// level 25
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Disintegrate",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Spell_PolymorphSelf",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Wish",false);
 		}
 	}
