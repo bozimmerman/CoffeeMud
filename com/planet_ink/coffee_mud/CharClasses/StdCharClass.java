@@ -21,6 +21,7 @@ public class StdCharClass implements CharClass
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getMovementMultiplier(){return 6;}
 	protected int maxStat[]={18,18,18,18,18,18};
+	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 
 	public boolean playerSelectable()
 	{

@@ -63,6 +63,10 @@ public class Thief_Swipe extends ThiefSkill
 			if(levelDiff>10) pct=0.05;
 			int goldTaken=(int)Math.round(new Integer(target.getMoney()).doubleValue()*pct*Math.random());
 			if(goldTaken>target.getMoney()) goldTaken=target.getMoney();
+			if((goldTaken<CMAble.qualifyingClassLevel(mob,this)))
+				goldTaken=CMAble.qualifyingClassLevel(mob,this);
+			if(goldTaken>target.getMoney())
+				goldTaken=target.getMoney();
 
 			String str=null;
 			if(!auto)
