@@ -8,27 +8,15 @@ import java.util.*;
 
 public class Specialization_Natural extends Specialization_Weapon
 {
+	public String ID() { return "Specialization_Natural"; }
+	public String name(){ return "Hand-to-hand combat";}
 	public Specialization_Natural()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hand-to-hand combat";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_NATURAL;
-
-		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Specialization_Natural();
-	}
+	public Environmental newInstance(){	return new Specialization_Natural();}
 
 	public void affect(Affect affect)
 	{

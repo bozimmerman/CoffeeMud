@@ -8,25 +8,13 @@ import java.util.*;
 
 public class Specialization_Hammer extends Specialization_Weapon
 {
+	public String ID() { return "Specialization_Hammer"; }
+	public String name(){ return "Hammer Specialization";}
 	public Specialization_Hammer()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hammer Specialization";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
 		weaponType=Weapon.CLASS_HAMMER;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Specialization_Hammer();
-	}
+	public Environmental newInstance(){	return new Specialization_Hammer();	}
 }

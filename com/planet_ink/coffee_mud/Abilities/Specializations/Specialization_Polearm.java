@@ -8,25 +8,13 @@ import java.util.*;
 
 public class Specialization_Polearm extends Specialization_Weapon
 {
+	public String ID() { return "Specialization_Polearm"; }
+	public String name(){ return "Polearm Specialization";}
 	public Specialization_Polearm()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Polearm Specialization";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
 		weaponType=Weapon.CLASS_POLEARM;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Specialization_Polearm();
-	}
+	public Environmental newInstance(){	return new Specialization_Polearm();	}
 }

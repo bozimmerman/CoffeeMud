@@ -8,26 +8,13 @@ import java.util.*;
 
 public class Specialization_Axe extends Specialization_Weapon
 {
-
+	public String ID() { return "Specialization_Axe"; }
+	public String name(){ return "Axe Specialization";}
 	public Specialization_Axe()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Axe Specialization";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_AXE;
-
-		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Specialization_Axe();
-	}
+	public Environmental newInstance(){	return new Specialization_Axe();}
 }

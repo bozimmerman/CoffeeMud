@@ -7,41 +7,21 @@ import java.util.*;
 
 public class Specialization_Weapon extends StdAbility
 {
+	public String ID() { return "Specialization_Weapon"; }
+	public String name(){ return "Weapon Specialization";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	
 	protected boolean activated=false;
 	protected int weaponType=-1;
 	protected int secondWeaponType=-1;
 
-	public Specialization_Weapon()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Weapon Specialization";
-		displayText="";
-		miscText="";
-
-		quality=Ability.BENEFICIAL_SELF;
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Specialization_Weapon();
-	}
-
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Specialization_Weapon();}
 
 	public void affect(Affect affect)
 	{

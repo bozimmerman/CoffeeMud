@@ -7,25 +7,13 @@ import java.util.*;
 
 public class Specialization_Sword extends Specialization_Weapon
 {
+	public String ID() { return "Specialization_Sword"; }
+	public String name(){ return "Sword Specialization";}
 	public Specialization_Sword()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sword Specialization";
-		displayText="";
-		miscText="";
-
-		canBeUninvoked=false;
-		isAutoinvoked=true;
-
-		baseEnvStats().setLevel(1);
 		weaponType=Weapon.CLASS_SWORD;
-
-		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Specialization_Sword();
-	}
+	public Environmental newInstance(){	return new Specialization_Sword();	}
 }
