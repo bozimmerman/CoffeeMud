@@ -41,7 +41,7 @@ public class Chant_LightningWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already warding lightning.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already warding lightning.");
 			return false;
 		}
 

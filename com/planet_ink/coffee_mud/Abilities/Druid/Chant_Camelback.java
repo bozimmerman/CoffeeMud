@@ -48,7 +48,7 @@ public class Chant_Camelback extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You already have a camel's back.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a camel's back.");
 			return false;
 		}
 

@@ -54,7 +54,7 @@ public class Chant_PredictWeather extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already detecting weather.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting weather.");
 			return false;
 		}
 

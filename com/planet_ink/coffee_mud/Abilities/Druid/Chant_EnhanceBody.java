@@ -45,7 +45,7 @@ public class Chant_EnhanceBody extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already enhanced.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already enhanced.");
 			return false;
 		}
 

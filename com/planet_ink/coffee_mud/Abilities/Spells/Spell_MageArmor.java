@@ -39,11 +39,12 @@ public class Spell_MageArmor extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=mob;		if(target==null) return false;
-
-		if(mob.fetchEffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already wearing mage armor.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already wearing mage armor.");
 			return false;
 		}
 

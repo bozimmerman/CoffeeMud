@@ -52,7 +52,7 @@ public class Chant_BreatheWater extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already a water breather.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already a water breather.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -52,9 +52,6 @@ public class Spell_DetectUndead extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -63,6 +60,9 @@ public class Spell_DetectUndead extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> detecting undead things.");
 			return false;
 		}
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

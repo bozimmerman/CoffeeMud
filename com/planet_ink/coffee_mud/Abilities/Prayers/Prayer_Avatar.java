@@ -118,15 +118,14 @@ public class Prayer_Avatar extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target==null) return false;
-		if(target.fetchEffect(ID())!=null)
-		{
-			mob.tell("You are already the AVATAR.");
-			return false;
-		}
-
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already the AVATAR.");
+			return false;
+		}
 
 		int levels=mob.charStats().getClassLevel("Avatar");
 		if(levels<0) levels=mob.envStats().level();

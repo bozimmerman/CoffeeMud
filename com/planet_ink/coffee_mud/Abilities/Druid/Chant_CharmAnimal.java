@@ -83,6 +83,9 @@ public class Chant_CharmAnimal extends Chant
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;
 		MOB mob=(MOB)affecting();
+		if((getCharmer()!=null)&&(!Sense.isInTheGame(getCharmer())))
+			unInvoke();
+		else
 		if((affected==mob)&&((mob.amFollowing()==null)||(mob.amFollowing()!=getCharmer())))
 			CommonMsgs.follow(mob,getCharmer(),true);
 		return super.tick(ticking,tickID);

@@ -308,6 +308,10 @@ public class ClanCrafting extends CraftingSkill
 				Sense.setReadable(building,true);
 				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
 			}
+			else
+			if((Sense.isReadable(building))
+			&&((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN))
+				building.setMaterial(EnvResource.MATERIAL_PAPER);
 		}
 
 		if(spell.length()>0)
@@ -359,6 +363,7 @@ public class ClanCrafting extends CraftingSkill
 			int hardPoints=(int)Math.round(Util.mul(hardBonus,hardness));
 			((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
 		}
+		
 		if(building instanceof Container)
 			if(capacity>0)
 			{

@@ -41,7 +41,7 @@ public class Chant_Bloodhound extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You already have a bloodhounds nose.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a bloodhounds nose.");
 			return false;
 		}
 

@@ -81,10 +81,12 @@ public class Prayer_BladeBarrier extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target==null) return false;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You already have the blade barrier.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the blade barrier.");
 			return false;
 		}
 

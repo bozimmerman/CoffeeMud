@@ -78,9 +78,6 @@ public class Thief_Squatting extends ThiefSkill
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -89,6 +86,9 @@ public class Thief_Squatting extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already squatting.");
 			return false;
 		}
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 		if(CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
 		{
 			mob.tell("You already own this property!");

@@ -34,9 +34,6 @@ public class Thief_Detection extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -46,6 +43,9 @@ public class Thief_Detection extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting hidden things.");
 			return false;
 		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

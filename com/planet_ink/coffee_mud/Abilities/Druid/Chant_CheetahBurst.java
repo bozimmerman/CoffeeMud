@@ -50,7 +50,7 @@ public class Chant_CheetahBurst extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already at a cheetah's speed.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already at a cheetah's speed.");
 			return false;
 		}
 

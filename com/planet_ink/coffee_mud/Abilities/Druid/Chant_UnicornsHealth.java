@@ -41,7 +41,7 @@ public class Chant_UnicornsHealth extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You already have the health of a unicorn.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the health of a unicorn.");
 			return false;
 		}
 

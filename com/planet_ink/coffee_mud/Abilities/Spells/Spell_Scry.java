@@ -100,7 +100,7 @@ public class Spell_Scry extends Spell
 		}
 		if(target instanceof Deity) target=null;
 		Room newRoom=mob.location();
-		if(target!=null)
+		if((target!=null)&&(target.amActive())&&(!target.amDead()))
 			newRoom=target.location();
 		else
 		{

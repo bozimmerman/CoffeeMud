@@ -92,7 +92,7 @@ public class Chant_Shapelessness extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already shapeless.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already shapeless.");
 			return false;
 		}
 		if((!auto)&&(!Chant_BlueMoon.moonInSky(mob.location(),null)))

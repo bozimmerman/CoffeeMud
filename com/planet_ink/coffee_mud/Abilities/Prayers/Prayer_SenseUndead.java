@@ -55,15 +55,15 @@ public class Prayer_SenseUndead extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchEffect(this.ID())!=null)
-		{
-			mob.tell("You are already sensing undead things.");
-			return false;
-		}
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already sensing undead things.");
+			return false;
+		}
+
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		if(success)

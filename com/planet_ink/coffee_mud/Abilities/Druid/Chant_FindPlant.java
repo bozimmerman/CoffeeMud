@@ -121,7 +121,7 @@ public class Chant_FindPlant extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already trying to "+name());
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already trying to "+name());
 			return false;
 		}
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);

@@ -127,9 +127,6 @@ public class Thief_Panhandling extends ThiefSkill
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -138,6 +135,9 @@ public class Thief_Panhandling extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already panhandling.");
 			return false;
 		}
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 		if(!Sense.isSitting(mob))
 		{
 			mob.tell("You must be sitting!");

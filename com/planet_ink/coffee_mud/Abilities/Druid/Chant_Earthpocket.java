@@ -112,13 +112,13 @@ public class Chant_Earthpocket extends Chant
 
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			target.tell("The earthpocket can only be summoned or seen in a cave.");
+			mob.tell("The earthpocket can only be summoned or seen in a cave.");
 			return false;
 		}
 		
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already connected with an earthpocket.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already connected with an earthpocket.");
 			return false;
 		}
 

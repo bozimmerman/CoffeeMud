@@ -44,7 +44,7 @@ public class Chant_Dragonsight extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You already have dragonsight.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> dragonsight.");
 			return false;
 		}
 

@@ -210,9 +210,6 @@ public class Spell_DetectWater extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -221,6 +218,10 @@ public class Spell_DetectWater extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting liquid things.");
 			return false;
 		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

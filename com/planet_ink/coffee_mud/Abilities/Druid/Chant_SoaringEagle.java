@@ -42,7 +42,7 @@ public class Chant_SoaringEagle extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You already have the wings of an eagle.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the wings of an eagle.");
 			return false;
 		}
 

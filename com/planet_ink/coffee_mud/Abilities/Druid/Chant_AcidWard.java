@@ -40,7 +40,7 @@ public class Chant_AcidWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already warding acid.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already warding acid.");
 			return false;
 		}
 

@@ -20,8 +20,6 @@ public class Fighter_Cartwheel extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=mob;
-		if(target==null) return false;
 		MOB victim=mob.getVictim();
 		if(victim==null)
 		{

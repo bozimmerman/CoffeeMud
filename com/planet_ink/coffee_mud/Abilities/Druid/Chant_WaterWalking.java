@@ -99,7 +99,7 @@ public class Chant_WaterWalking extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already a water walker.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already a water walker.");
 			return false;
 		}
 

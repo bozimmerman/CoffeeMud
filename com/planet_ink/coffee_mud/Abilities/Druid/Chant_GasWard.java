@@ -41,7 +41,7 @@ public class Chant_GasWard extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already warding gas.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already warding gas.");
 			return false;
 		}
 

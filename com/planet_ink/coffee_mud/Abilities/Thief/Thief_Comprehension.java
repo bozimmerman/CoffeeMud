@@ -97,13 +97,6 @@ public class Thief_Comprehension extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if(target==null) return false;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -113,6 +106,13 @@ public class Thief_Comprehension extends ThiefSkill
 			mob.tell("You already have comprehension.");
 			return false;
 		}
+
+		// the invoke method for spells receives as
+		// parameters the invoker, and the REMAINING
+		// command line parameters, divided into words,
+		// and added as String objects to a vector.
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

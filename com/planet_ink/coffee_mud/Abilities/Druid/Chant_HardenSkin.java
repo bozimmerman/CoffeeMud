@@ -49,7 +49,7 @@ public class Chant_HardenSkin extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You skin is already hard.");
+			mob.tell(target,null,null,"<S-YOUPOSS> skin is already hard.");
 			return false;
 		}
 

@@ -1,10 +1,4 @@
-When the target of scry is killed and you attempt to scry the creature again, it doesn't return any indication that the spell had actually gone through. (Normally it says they are not available, etc.)
-Charm does not fade when the caster dies.
-more on charm: At the moment of the caster's death, if you are grouped with other people, it starts sending a message that you like one of the party members too much, as if you are trying to attack, even if you aren't in the same room.
-I seem not able to write in the clan journal I have made
-If you are already affected by Mage Claws and try casting it again, it will not check to see if it's already in effect
 Bard master will not turn bards into Charlatans, says 'Only bards can do that.'
-okay I don't know if this is a bug or not but... I cast fiegn death next to lambert and he resurcted me... and I gained a level for it this could be a big loop hole for people to get fast levels.import cmare is NOT restoring containers properly -- see coffee grounds crafting info parm
 Something to hunt multiplayers with 1. the closest (in milliseconds) commands were entered by tested players and 2. the frequency of information command entry, eating drinking, ordered vs real command entry, variation of commands, socials, speech
 importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
 TEST AddRandomFile' that takes a directory as a parameter?  that'd make it not too hard to have rotating page graphics or random ad banners

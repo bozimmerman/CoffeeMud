@@ -128,19 +128,19 @@ public class Prayer_Revival extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if((mob.getWorshipCharID().length()==0)
-		||(CMMap.getDeity(mob.getWorshipCharID())==null))
-		{
-			mob.tell("You must worship a god to use this prayer.");
-			return false;
-		}
-		if(mob.fetchEffect(this.ID())!=null)
-		{
-			mob.tell("You are already participating in a revival.");
-			return false;
-		}
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		if((target.getWorshipCharID().length()==0)
+		||(CMMap.getDeity(target.getWorshipCharID())==null))
+		{
+			target.tell("You must worship a god to use this prayer.");
+			return false;
+		}
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already participating in a revival.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

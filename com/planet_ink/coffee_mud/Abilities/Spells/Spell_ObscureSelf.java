@@ -124,10 +124,11 @@ public class Spell_ObscureSelf extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("You are already obscure.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already obscure.");
 			return false;
 		}
 

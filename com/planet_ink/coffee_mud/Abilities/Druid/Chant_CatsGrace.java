@@ -40,7 +40,7 @@ public class Chant_CatsGrace extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You already have the grace of a cat.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> the grace of a cat.");
 			return false;
 		}
 

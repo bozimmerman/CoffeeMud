@@ -67,15 +67,17 @@ public class Spell_PolymorphSelf extends Spell
 		}
 		String race=Util.combine(commands,0);
 		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
 		Race R=CMClass.getRace(race);
 		if(R==null)
 		{
 			mob.tell("You can't turn yourself into a '"+race+"'!");
 			return false;
 		}
-		if(mob.fetchEffect(this.ID())!=null)
+		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already polymorphed.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already polymorphed.");
 			return false;
 		}
 

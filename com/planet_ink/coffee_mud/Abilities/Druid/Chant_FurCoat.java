@@ -67,7 +67,7 @@ public class Chant_FurCoat extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You already have a fur coat.");
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> a fur coat.");
 			return false;
 		}
 

@@ -58,7 +58,7 @@ public class Chant_PrayerWard extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already affected by "+name()+".");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
 

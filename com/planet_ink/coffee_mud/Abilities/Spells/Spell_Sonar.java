@@ -44,18 +44,18 @@ public class Spell_Sonar extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
-		if(mob.fetchEffect(this.ID())!=null)
-		{
-			mob.tell("You already have sonar.");
-			return false;
-		}
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> already <S-HAS-HAVE> sonar.");
+			return false;
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

@@ -94,6 +94,11 @@ public class Prayer_Etherealness extends Prayer
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 
+		if(target.fetchEffect(this.ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already ethereal.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

@@ -74,7 +74,7 @@ public class Chant_Root extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already rooted.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already rooted.");
 			return false;
 		}
 

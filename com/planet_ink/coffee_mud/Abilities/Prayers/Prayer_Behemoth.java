@@ -48,15 +48,14 @@ public class Prayer_Behemoth extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target==null) return false;
-		if(target.fetchEffect(ID())!=null)
-		{
-			mob.tell("You are already BEHEMOTH in size.");
-			return false;
-		}
-
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
+
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already BEHEMOTH in size.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

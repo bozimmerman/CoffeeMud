@@ -33,13 +33,6 @@ public class Spell_Delude extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		// the invoke method for spells receives as
-		// parameters the invoker, and the REMAINING
-		// command line parameters, divided into words,
-		// and added as String objects to a vector.
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -48,6 +41,13 @@ public class Spell_Delude extends Spell
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already deluding others.");
 			return false;
 		}
+		// the invoke method for spells receives as
+		// parameters the invoker, and the REMAINING
+		// command line parameters, divided into words,
+		// and added as String objects to a vector.
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 		boolean success=profficiencyCheck(mob,0,auto);
 
 

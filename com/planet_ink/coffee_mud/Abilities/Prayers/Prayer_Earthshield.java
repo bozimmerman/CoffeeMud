@@ -46,18 +46,18 @@ public class Prayer_Earthshield extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchEffect(this.ID())!=null)
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+
+		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already affected by "+name()+".");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already affected by "+name()+".");
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-
-		MOB target=mob;
-		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)

@@ -87,7 +87,7 @@ public class Chant_Stonewalking extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already "+name()+".");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already "+name()+".");
 			return false;
 		}
 

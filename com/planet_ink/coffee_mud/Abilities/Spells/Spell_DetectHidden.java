@@ -36,17 +36,17 @@ public class Spell_DetectHidden extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell("You are already detecting hidden things.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already detecting hidden things.");
 			return false;
 		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

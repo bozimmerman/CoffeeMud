@@ -81,7 +81,7 @@ public class Chant_Tether extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already tethered.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already tethered.");
 			return false;
 		}
 

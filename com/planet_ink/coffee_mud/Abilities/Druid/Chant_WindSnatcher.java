@@ -66,7 +66,7 @@ public class Chant_WindSnatcher extends Chant
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already snatching the wind.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already snatching the wind.");
 			return false;
 		}
 

@@ -77,7 +77,7 @@ public class Chant_CloudWalk extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			target.tell("You are already a cloud walker");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already a cloud walker");
 			return false;
 		}
 

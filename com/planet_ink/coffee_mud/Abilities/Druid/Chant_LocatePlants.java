@@ -97,7 +97,7 @@ public class Chant_LocatePlants extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already trying to find plant life.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already trying to find plant life.");
 			return false;
 		}
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);

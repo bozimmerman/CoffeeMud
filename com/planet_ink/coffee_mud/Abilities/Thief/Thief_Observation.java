@@ -36,9 +36,6 @@ public class Thief_Observation extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
 			target=(MOB)givenTarget;
@@ -47,6 +44,9 @@ public class Thief_Observation extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already observing.");
 			return false;
 		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
 

@@ -68,7 +68,7 @@ public class Fighter_Berzerk extends StdAbility
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You are already berzerk.");
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already berzerk.");
 			return false;
 		}
 

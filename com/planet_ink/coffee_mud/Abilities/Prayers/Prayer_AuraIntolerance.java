@@ -80,10 +80,12 @@ public class Prayer_AuraIntolerance extends Prayer
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;
-		if(target==null) return false;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("The aura of intolerance is already with you.");
+			mob.tell(target,null,null,"The aura of intolerance is already with <S-NAME>.");
 			return false;
 		}
 		if((!auto)&&((mob.getWorshipCharID().length()==0)

@@ -42,7 +42,7 @@ public class Chant_Barkskin extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			target.tell("You skin is already like bark.");
+			mob.tell(target,null,null,"<S-YOUPOSS> skin is already like bark.");
 			return false;
 		}
 
