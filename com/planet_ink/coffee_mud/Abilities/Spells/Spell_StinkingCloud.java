@@ -48,7 +48,8 @@ public class Spell_StinkingCloud extends Spell
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(affected instanceof MOB))
+		   &&(affected instanceof MOB)
+		   &&(msg.amISource((MOB)affected)))
 		{
 			MOB mob=(MOB)affected;
 			if(Sense.canSmell(mob))
@@ -69,7 +70,8 @@ public class Spell_StinkingCloud extends Spell
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
-		   &&(affected instanceof MOB))
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)))
 		{
 			switch(msg.sourceMinor())
 			{

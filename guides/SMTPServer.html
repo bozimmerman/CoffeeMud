@@ -15,30 +15,33 @@ that it do so that you can not even change it.</P>
 <P>Messages sent either directly or indirectly to the CoffeeMud SMTP Server MUST 
 follow ALL of&nbsp;these rules or face rejection:</P>
 <UL>
-  <LI>The email MUST be formatted in PLAIN TEXT</LI>
-  <LI>The DOMAIN must be correctly defined in the SMTP Server INI file 
-  (email.ini)</LI>
-  <LI>The email must be from:</LI>
+  <LI>The email MUST be formatted in PLAIN TEXT 
+  <LI>The DOMAIN must be correctly defined in the SMTP 
+  Server INI file (email.ini) 
+  <LI>The email must be from: 
   <UL>
-    <LI>a coffeemud journal name listed under JOURNALS in the&nbsp;SMTP 
-    Server&nbsp;INI file (email.ini)&nbsp;</LI>
+    <LI>a coffeemud journal name listed under JOURNALS in 
+    the&nbsp;SMTP Server&nbsp;INI file (email.ini)&nbsp; 
     <LI><STRONG>OR</STRONG>&nbsp;a coffeemud journal name&nbsp; at the local 
     domain: example: My_Journal<A 
-    href="mailto:My_Journal@coffeemud.homeip.net">@coffeemud.homeip.net</A>&nbsp;</LI>
-    <LI><STRONG>OR</STRONG>&nbsp;a local player name</LI>
+    href="mailto:My_Journal@coffeemud.homeip.net">@coffeemud.homeip.net</A>&nbsp; 
+
+    <LI><STRONG>OR</STRONG>&nbsp;a 
+    local player name 
     <LI><STRONG>OR</STRONG> a local player name at the local domain: example: <A 
-    href="mailto:brutus@coffeemud.homeip.net">brutus@coffeemud.homeip.net</A></LI>
+    href="mailto:brutus@coffeemud.homeip.net">brutus@coffeemud.homeip.net</A>
     <LI><STRONG>OR</STRONG>&nbsp;the email address which a player has on file in 
     their account. </LI></UL>
-  <LI>The email must be addressed to:</LI>
+  <LI>The email must be addressed to: 
   <UL>
     <LI>a coffeemud journal name&nbsp; at the local domain: example: 
     My_Journal<A 
-    href="mailto:My_Journal@coffeemud.homeip.net">@coffeemud.homeip.net</A>&nbsp;</LI>
+    href="mailto:My_Journal@coffeemud.homeip.net">@coffeemud.homeip.net</A>&nbsp; 
+
     <LI><STRONG>OR</STRONG> a local player name at the local domain: example: <A 
-    href="mailto:brutus@coffeemud.homeip.net">brutus@coffeemud.homeip.net</A></LI>
+    href="mailto:brutus@coffeemud.homeip.net">brutus@coffeemud.homeip.net</A>
     <LI><STRONG>OR</STRONG>&nbsp;the email address which a player has on file in 
-    their account.</LI></UL></UL>
+    their account.</LI></UL>     </LI></UL>
 <P><BR><BR><B>What it does and doesn't do:<BR></B>It&nbsp;accepts&nbsp;mail for 
 storage and eventual delivery if&nbsp;the security&nbsp;conditions are 
 met.&nbsp; It maintains mailing lists for journals.&nbsp; It provides security 
@@ -50,7 +53,7 @@ plain text messages due to journal interactions.&nbsp; <BR><BR>It supports HELO,
 EHLO, RCPT, MAIL, HELP, QUIT, NOOP, RSET, DATA, and DSN.</P>
 <P>It does not support EXPN, VRFY,&nbsp;VERB,&nbsp;ETRN, or any expanded 
 parameters to either MAIL or RCPT.</P>
-<P>&nbsp; </P>
+<P> </P>
 <P><B>Security:</B><BR>The SMTP Server&nbsp;may be&nbsp;bound to 127.0.0.1 
 (localhost) - this means it will not accept external connections.</P>
 <P>The SMTP Server only allows messages FROM valid users or journals TO valid 
@@ -67,10 +70,11 @@ this can be overridden. Options are placed in either 'web/common.ini' or
 'web/(servername).ini'; an option in the latter will override one in common. The 
 options are: </P>
 <UL>
-  <LI><B>PORT</B>=xx : <B>[REQUIRED]</B> <I>(e.g. PORT=80)</I> Sets the port 
-  number the web server will listen for HTTP requests on; this cannot be the 
-  same port as the main MUD server or another web servers. Identical to MUD 
-  server usage. Normally this would go in <I>web/(servername).ini</I>. 
+  <LI><B>PORT</B>=xx : <B>[REQUIRED]</B> <I>(e.g. PORT=25)</I> 
+  Sets the port number the&nbsp;server will listen for SMTP requests on; this 
+  cannot be the same port as the main MUD server or web servers. Identical to 
+  MUD server usage.&nbsp;There is normally no good reason&nbsp;to change from 
+  25, as that is what&nbsp;email clients will expect.&nbsp; 
   <LI><B>BACKLOG</B>=xx : <I>(e.g. BACKLOG=10)</I> Sets the number of requests 
   that can be queued by the internal TCP/IP stack. Identical to MUD server 
   usage. 

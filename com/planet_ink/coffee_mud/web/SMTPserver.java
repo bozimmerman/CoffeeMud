@@ -72,6 +72,12 @@ public class SMTPserver extends Thread implements Tickable
 			Log.errOut(getName(),"ERROR: required parameter missing: DOMAIN");
 			return false;
 		}
+		if (page.getStr("PORT").length()==0)
+		{
+			Log.errOut(getName(),"ERROR: required parameter missing: PORT");
+			return false;
+		}
+		
 		domain=page.getStr("DOMAIN");
 		mailbox=page.getStr("MAILBOX");
 		if(mailbox==null) mailbox="";
@@ -237,9 +243,9 @@ public class SMTPserver extends Thread implements Tickable
 
 		try
 		{
-			servsock=new ServerSocket(SMTPclient.DEFAULT_PORT, q_len, bindAddr);
+			servsock=new ServerSocket(page.getInt("PORT"), q_len, bindAddr);
 
-			Log.sysOut(getName(),"Started on port: "+SMTPclient.DEFAULT_PORT);
+			Log.sysOut(getName(),"Started on port: "+page.getInt("PORT"));
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
 

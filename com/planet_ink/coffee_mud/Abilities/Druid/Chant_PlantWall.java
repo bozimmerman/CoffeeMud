@@ -55,7 +55,7 @@ public class Chant_PlantWall extends Chant
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
- 				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
+ 				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the plant wall with "+w.name()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{
