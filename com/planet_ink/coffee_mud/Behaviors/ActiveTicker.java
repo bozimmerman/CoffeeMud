@@ -34,6 +34,19 @@ public class ActiveTicker extends StdBehavior
 		tickReset();
 	}
 
+	public String getParmsNoTicks()
+	{
+		String parms=getParms();
+		char c=';';
+		int x=parms.indexOf(c);
+		if(x<0){ c='/'; x=parms.indexOf(c);}
+		if(x>0)
+		{
+			parms=parms.substring(0,x);
+		}
+		return parms;
+	}
+	
 	protected boolean canAct(Tickable ticking, int tickID)
 	{
 		if((tickID==Host.MOB_TICK)

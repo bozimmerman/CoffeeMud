@@ -926,8 +926,11 @@ public class TelnetSession extends Thread implements Session
 			len=loop+78;
 		}
 
-		buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-		if ((currentColor != ((int)'N'))&&(termID>0)) buf.append(makeEscape((int)'N'));
+		if((firstAlpha>=0)&&(firstAlpha<buf.length()))
+			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
+		if ((currentColor != ((int)'N'))&&(termID>0)) 
+			buf.append(makeEscape((int)'N'));
+		
 		/* fabulous debug code
 		for(int i=0;i<buf.length();i+=25)
 		{
@@ -1116,7 +1119,7 @@ public class TelnetSession extends Thread implements Session
 	}
 
 	public String readlineContinue()
-		throws IOException
+		throws IOException, SocketException
 	{
 
 		if((in==null)||(out==null)) return "";

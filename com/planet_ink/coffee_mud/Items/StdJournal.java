@@ -13,7 +13,7 @@ public class StdJournal extends StdItem
 		super();
 		name="a journal";
 		displayText="a journal sits here.";
-		description="Enter 'READ [NUMBER] [JOURNAL]' to read an entry.%0D%0AUse your WRITE skill to add new entries. ";
+		description="Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ";
 		material=EnvResource.RESOURCE_PAPER;
 		isReadable=true;
 	}

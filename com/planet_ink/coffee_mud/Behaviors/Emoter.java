@@ -47,40 +47,6 @@ public class Emoter extends ActiveTicker
 		{
 			String parmText=newParms.substring(0,x);
 			newParms=newParms.substring(x+1);
-			Vector V=Util.parse(parmText);
-			for(int v=V.size()-1;v>=0;v--)
-			{
-				String str=((String)V.elementAt(v)).toUpperCase();
-				if(str.equals("BROADCAST"))
-				{
-					V.removeElementAt(v);
-					broadcast=true;
-				}
-				else
-				if(str.equals("NOBROADCAST"))
-				{
-					V.removeElementAt(v);
-					broadcast=false;
-				}
-				else
-				if(str.equals("VISUAL")||(str.equals("SIGHT")))
-				{
-					V.removeElementAt(v);
-					emoteType=EMOTE_VISUAL;
-				}
-				else
-				if(str.equals("AROMA")||(str.equals("SMELL")))
-				{
-					V.removeElementAt(v);
-					emoteType=EMOTE_SMELL;
-				}
-				else
-				if(str.equals("SOUND")||(str.equals("NOISE")))
-				{
-					V.removeElementAt(v);
-					emoteType=EMOTE_SOUND;
-				}
-			}
 		}
 		while(newParms.length()>0)
 		{
@@ -91,6 +57,41 @@ public class Emoter extends ActiveTicker
 			{
 				thisEmote=newParms.substring(0,x);
 				newParms=newParms.substring(x+1);
+				Vector V=Util.parse(thisEmote);
+				for(int v=V.size()-1;v>=0;v--)
+				{
+					String str=((String)V.elementAt(v)).toUpperCase();
+					if(str.equals("BROADCAST"))
+					{
+						V.removeElementAt(v);
+						broadcast=true;
+					}
+					else
+					if(str.equals("NOBROADCAST"))
+					{
+						V.removeElementAt(v);
+						broadcast=false;
+					}
+					else
+					if(str.equals("VISUAL")||(str.equals("SIGHT")))
+					{
+						V.removeElementAt(v);
+						emoteType=EMOTE_VISUAL;
+					}
+					else
+					if(str.equals("AROMA")||(str.equals("SMELL")))
+					{
+						V.removeElementAt(v);
+						emoteType=EMOTE_SMELL;
+					}
+					else
+					if(str.equals("SOUND")||(str.equals("NOISE")))
+					{
+						V.removeElementAt(v);
+						emoteType=EMOTE_SOUND;
+					}
+				}
+				thisEmote=Util.combine(V,0);
 			}
 			else
 				newParms="";
@@ -159,17 +160,17 @@ public class Emoter extends ActiveTicker
 				}
 				return true;
 			}
+			if(ticking instanceof Room)
+			{
+				emoter=CMClass.getMOB("StdMOB");
+				emoteHere((Room)ticking,emoter,emote,false);
+				return true;
+			}
 
 			Room room=getBehaversRoom(ticking);
 			if(room==null) return true;
 			if(ticking instanceof MOB)
 				emoter=(MOB)ticking;
-			else
-			if(ticking instanceof Room)
-			{
-				emoter=CMClass.getMOB("StdMOB");
-				emoter.setName(ticking.name());
-			}
 			else
 			{
 				emoter=CMClass.getMOB("StdMOB");
