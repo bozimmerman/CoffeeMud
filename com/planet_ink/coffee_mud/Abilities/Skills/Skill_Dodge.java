@@ -48,9 +48,11 @@ public class Skill_Dodge extends StdAbility
 
 		if(affect.amITarget(mob)&&(Sense.aliveAwakeMobile(mob,true))&&(affect.targetMinor()==Affect.TYP_WEAPONATTACK))
 		{
-			if(profficiencyCheck(mob.charStats().getDexterity()-85,false))
+			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
+			if((profficiencyCheck(mob.charStats().getDexterity()-85,false))
+			&&(mob.location().okAffect(msg)))
 			{
-				mob.location().send(mob,new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!"));
+				mob.location().send(mob,msg);
 				helpProfficiency(mob);
 				return false;
 			}

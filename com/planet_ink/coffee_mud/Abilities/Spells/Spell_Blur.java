@@ -53,7 +53,8 @@ public class Spell_Blur extends Spell
 			if(Dice.rollPercentage()<(pctDodge*2))
 			{
 				FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");
-				mob.location().send(mob,msg);
+				if(mob.location().okAffect(msg))
+					mob.location().send(mob,msg);
 				return false;
 			}
 		}

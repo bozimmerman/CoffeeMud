@@ -144,6 +144,7 @@ public class MOBEater extends ActiveTicker
 										   null,
 										   Affect.MSK_MALICIOUS_MOVE|Affect.TYP_ACID,
 										   "<S-NAME> Digests <T-NAMESELF>!!");
+				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
 				ExternalPlay.postDamage(mob,TastyMorsel,null,damage);

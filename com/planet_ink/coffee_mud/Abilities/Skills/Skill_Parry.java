@@ -55,9 +55,11 @@ public class Skill_Parry extends StdAbility
 				&&((attackerWeapon instanceof Weapon))
 				&&(((Weapon)attackerWeapon).weaponType()!=Weapon.TYPE_NATURAL)))
 				{
-					if(profficiencyCheck(mob.charStats().getDexterity()-75,false))
+					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+affect.source().fetchWieldedItem().name()+" attack from <T-NAME>!");
+					if((profficiencyCheck(mob.charStats().getDexterity()-75,false))
+					&&(mob.location().okAffect(msg)))
 					{
-						mob.location().send(mob,new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+affect.source().fetchWieldedItem().name()+" attack from <T-NAME>!"));
+						mob.location().send(mob,msg);
 						helpProfficiency(mob);
 						return false;
 					}

@@ -76,7 +76,8 @@ public class Spell_Grease extends Spell
                             case SIT:
 						        msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
 						        mob.envStats().setDisposition(mob.envStats().disposition() | Sense.IS_SITTING);
-						        mob.location().send(mob,msg);
+								if(mob.location().okAffect(msg))
+							        mob.location().send(mob,msg);
 						        return false;
                             case FUMBLE_WEAPON:
                                 weapon = (Item) mob.fetchWieldedItem();

@@ -48,8 +48,11 @@ public class TheFight
 		if(reallyKill)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_ACTION,"<S-NAME> touch(es) <T-NAMESELF>.");
-			mob.location().send(mob,msg);
-			doDamage(mob,target,target.curState().getHitPoints()+10);
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				doDamage(mob,target,target.curState().getHitPoints()+10);
+			}
 		}
 		else
 			postAttack(mob,target,mob.fetchWieldedItem());
@@ -731,10 +734,14 @@ public class TheFight
 									Affect.MSG_NOISYMOVEMENT,
 									hitString(weapon.weaponType(),damageInt,weapon.name()));
 			msg.tagModified(true);
-			source.location().send(source,msg);
-			msg=new FullMsg(source,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damageInt,Affect.NO_EFFECT,null);
+			// why was there no okaffect here?
 			if(source.location().okAffect(msg))
+			{
 				source.location().send(source,msg);
+				msg=new FullMsg(source,target,weapon,Affect.NO_EFFECT,Affect.MASK_HURT+damageInt,Affect.NO_EFFECT,null);
+				if(source.location().okAffect(msg))
+					source.location().send(source,msg);
+			}
 		}
 		else
 		{
@@ -743,7 +750,9 @@ public class TheFight
 									weapon,
 									Affect.MSG_NOISYMOVEMENT,
 									missString(weapon.weaponType(),weapon.name()));
-			source.location().send(source,msg);
+			// why was there no okaffect here?
+			if(source.location().okAffect(msg))
+				source.location().send(source,msg);
 		}
 	}
 

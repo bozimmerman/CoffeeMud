@@ -1,6 +1,6 @@
-MUDGrinder 1.2 release notes:
+MUDGrinder 1.0 release notes:
 
-MUDGrinder 1.2 is the newest release of the area/room editor for CoffeeMud v1.2.  It is highly version sensitive.  If you are not using the latest build of CoffeeMud, MUDGrinder probably won't work.  
+MUDGrinder 1.0 is the newest release of the area/room editor for CoffeeMud v1.0.  It is highly version sensitive.  If you are not using the old version 1.0 build of CoffeeMud, MUDGrinder probably won't work.  
 
 If you have not read the Archon's Guide from www.zimmers.net/home/mud.html, you need to.  Without a thorough understanding of the concepts therein, you will be thoroughly lost in MUDGrinder.
 

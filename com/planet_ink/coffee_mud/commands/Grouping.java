@@ -121,6 +121,7 @@ public class Grouping
 		{
 			FullMsg msg=new FullMsg(mob,mob.amFollowing(),null,Affect.MSG_OK_ACTION,"<S-NAME> stop(s) following <T-NAMESELF>.");
 			mob.setFollowing(null);
+			// no OKaffects, since the damn leader may not be here.
 			mob.location().send(mob,msg);
 		}
 		else
