@@ -600,7 +600,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							CommonMsgs.say(this,mob,"I'm sorry, the law prevents us from holding that much money in one account.",true,false);
 							return false;
 						}
-						if(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(this)))
+						if(!((Coins)msg.tool()).getCurrency().equalsIgnoreCase(BeanCounter.getCurrency(this)))
 						{
 						    CommonMsgs.say(this,mob,"I'm sorry, this bank only deals in "+BeanCounter.getDenominationName(BeanCounter.getCurrency(this))+".",true,false);
 						    return false;

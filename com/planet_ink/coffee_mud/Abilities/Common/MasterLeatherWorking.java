@@ -156,9 +156,9 @@ public class MasterLeatherWorking extends CraftingSkill
 		{
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
-			int toggleTop=4;
+			int toggleTop=3;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",14)+" "+Util.padRight("Amt",3)+" ");
+				buf.append(Util.padRight("Item",20)+" "+Util.padRight("Amt",3)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -170,7 +170,7 @@ public class MasterLeatherWorking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level+20<=mob.envStats().level())
 					{
-						buf.append(Util.padRight("Designer"+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight("Designer "+item,20)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -185,7 +185,7 @@ public class MasterLeatherWorking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+25)<=(mob.envStats().level()))
 					{
-						buf.append(Util.padRight("Cuirbouli "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight("Cuirbouli "+item,20)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -200,7 +200,7 @@ public class MasterLeatherWorking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+30)<=mob.envStats().level())
 					{
-						buf.append(Util.padRight("Reinforced "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight("Reinforced "+item,20)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -215,7 +215,7 @@ public class MasterLeatherWorking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+35)<=mob.envStats().level())
 					{
-						buf.append(Util.padRight("Masterwork "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight("Masterwork "+item,20)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -230,7 +230,7 @@ public class MasterLeatherWorking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+40)<=mob.envStats().level())
 					{
-						buf.append(Util.padRight("Laminar "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight("Laminar "+item,20)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -245,7 +245,7 @@ public class MasterLeatherWorking extends CraftingSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if((level+45)<=mob.envStats().level())
 					{
-						buf.append(Util.padRight("Battlemoulded "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight("Battlemoulded "+item,20)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
