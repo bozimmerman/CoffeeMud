@@ -467,12 +467,12 @@ public class TheFight
 		if(!Util.bset(mob.getBitmap(),MOB.ATT_AUTODRAW))
 		{
 			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTODRAW));
-			mob.tell("Auto weapon drawing has been turned on.  You will now draw a weapon when one is handy.");
+			mob.tell("Auto weapon drawing has been turned on.  You will now draw a weapon when one is handy, and sheath one a few seconds after combat.");
 		}
 		else
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTODRAW));
-			mob.tell("Auto weapon drawing has been turned off.  You will no longer draw your weapon automatically.");
+			mob.tell("Auto weapon drawing has been turned off.  You will no longer draw or sheath your weapon automatically.");
 		}
 	}
 
