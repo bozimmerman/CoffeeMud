@@ -1,12 +1,9 @@
-debug auction once and for all
-talking should end the singing/chanting -- mouth pos ends -- 
+Generic instead of 20 wearslot iteration, it loops through 18
+put area names in questchat
 prop_spelladder doesn't work?!
-no <> allowed in prompt cmd any more
 booting playerlist makes everyone appear at startroom.
 do the purge list -- have protected names list like ban, purge days by level
-19.  Locksmithing 		
-	1.  BOLTLOCK a lock that can only be unlocked from one direction. 	
-		1.  Should be pickable from the other direction, just not unlocked with a key. 
+debug auction once and for all
 20.  Jewelmaking 		
 	1.  allow you to add jewels to any item 	
 21.  Construction 		

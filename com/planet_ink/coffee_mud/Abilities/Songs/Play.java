@@ -100,6 +100,26 @@ public class Play extends StdAbility
 		return true;
 	}
 
+	public void affect(Environmental host, Affect msg)
+	{
+		super.affect(host,msg);
+		if((affected==invoker)
+		&&(msg.amISource(invoker))
+		&&(!unInvoked)
+		&&(instrument!=null))
+		{
+			if((msg.sourceMinor()==Affect.TYP_SPEAK)
+			&&(instrument.amWearingAt(Item.ON_MOUTH)))
+				unInvoke();
+			else
+			if(((msg.sourceMinor()==Affect.TYP_REMOVE)
+			   ||(msg.sourceMinor()==Affect.TYP_WEAR)
+			   ||(msg.sourceMinor()==Affect.TYP_WIELD))
+			&&(instrument.amWearingAt(Item.HELD)))
+				unInvoke();
+		}
+	}
+
 	protected static void unplay(MOB mob, MOB invoker, Ability song)
 	{
 		if(mob==null) return;

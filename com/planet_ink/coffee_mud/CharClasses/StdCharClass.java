@@ -272,6 +272,19 @@ public class StdCharClass implements CharClass, Cloneable
 					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
 		}
+		if((mob.getClanID().length()>0)&&(amount>2))
+		{
+			Clan C=Clans.getClan(mob.getClanID());
+			if((C!=null)&&(C.getTaxes()>0.0))
+			{
+				int clanshare=(int)Math.round(Util.mul(amount,C.getTaxes()));
+				if(clanshare>0)
+				{
+					amount-=clanshare;
+					C.adjExp(clanshare);
+				}
+			}
+		}
 
 		mob.setExperience(mob.getExperience()+amount);
 		if(homage==null) homage="";

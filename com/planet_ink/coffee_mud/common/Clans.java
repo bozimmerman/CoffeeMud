@@ -21,6 +21,8 @@ public class Clans implements Clan, Tickable
 	protected int clanType=Clan.TYPE_CLAN;
 	protected int ClanStatus=0;
 	protected Vector voteList=null;
+	protected long exp=0;
+	protected double taxRate=0.0;
 	
 	//*****************
 	public Hashtable relations=new Hashtable();
@@ -137,6 +139,19 @@ public class Clans implements Clan, Tickable
 		}
 		return voteList.elements();
 	}
+	
+	public long getExp(){return exp;}
+	public void setExp(long newexp){exp=newexp;}
+	public void adjExp(int howMuch)
+	{
+		exp=exp+howMuch;
+		if(howMuch<0) exp=0;
+	}
+	
+	public void setTaxes(double rate){
+		taxRate=rate;
+	}
+	public double getTaxes(){return taxRate;}
 	
 	public static void shutdownClans()
 	{
@@ -337,6 +352,12 @@ public class Clans implements Clan, Tickable
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_TREASURER,true,true),16)+":^.^N "+crewList(Clan.POS_TREASURER)+"\n\r"
 		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_STAFF,true,true),16)+":^.^N "+crewList(Clan.POS_STAFF)+"\n\r"
 		          +"^xTotal Members   :^.^N "+getSize()+"\n\r");
+		if((mob.getClanID().equalsIgnoreCase(ID()))
+		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+		{
+			msg.append("^xExperience Pts. :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
+			msg.append("^xExp. Tax Rate :^.^N "+getExp()+"\n\r");
+		}
 		if(all.size()>1)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
@@ -419,6 +440,8 @@ public class Clans implements Clan, Tickable
 				return (role==Clan.POS_BOSS)?1:-1;
 			case FUNC_CLANHOMESET:
 				return 0;
+			case FUNC_CLANTAX:
+				return 0;
 			case FUNC_CLANDONATESET:
 				return 0;
 			case FUNC_CLANREJECT:
@@ -451,6 +474,8 @@ public class Clans implements Clan, Tickable
 			case FUNC_CLANACCEPT:
 				return 0;
 			case FUNC_CLANASSIGN:
+				return 0;
+			case FUNC_CLANTAX:
 				return 0;
 			case FUNC_CLANEXILE:
 				return 0;
@@ -495,6 +520,8 @@ public class Clans implements Clan, Tickable
 				return 0;
 			case FUNC_CLANHOMESET:
 				return 0;
+			case FUNC_CLANTAX:
+				return 0;
 			case FUNC_CLANDONATESET:
 				return 0;
 			case FUNC_CLANREJECT:
@@ -531,6 +558,8 @@ public class Clans implements Clan, Tickable
 			case FUNC_CLANHOMESET:
 				return (role==Clan.POS_BOSS)?1:-1;
 			case FUNC_CLANDECLARE:
+				return (role==Clan.POS_BOSS)?1:-1;
+			case FUNC_CLANTAX:
 				return (role==Clan.POS_BOSS)?1:-1;
 			case FUNC_CLANDONATESET:
 				return (role==Clan.POS_BOSS)?1:-1;
@@ -601,6 +630,8 @@ public class Clans implements Clan, Tickable
 		StringBuffer str=new StringBuffer("");
 		str.append("<POLITICS>");
 		str.append(XMLManager.convertXMLtoTag("GOVERNMENT",""+getGovernment()));
+		str.append(XMLManager.convertXMLtoTag("TAXRATE",""+getTaxes()));
+		str.append(XMLManager.convertXMLtoTag("EXP",""+getExp()));
 		if(relations.size()==0)
 			str.append("<RELATIONS/>");
 		else
@@ -634,6 +665,8 @@ public class Clans implements Clan, Tickable
 		Vector poliData=XMLManager.getRealContentsFromPieces(xml,"POLITICS");
 		if(poliData==null){	Log.errOut("Clans","Unable to get POLITICS data."); return;}
 		government=XMLManager.getIntFromPieces(poliData,"GOVERNMENT");
+		exp=XMLManager.getLongFromPieces(poliData,"EXP");
+		taxRate=XMLManager.getDoubleFromPieces(poliData,"TAXRATE");
 		// now RESOURCES!
 		Vector xV=XMLManager.getRealContentsFromPieces(poliData,"RELATIONS");
 		if((xV!=null)&&(xV.size()>0))

@@ -204,6 +204,7 @@ public class CommandSet extends Hashtable
 	public static final int WIZEMOTE=191;
 	public static final int POUR=192;
 	public static final int CLANQUAL=193;
+	public static final int CLANTAX=194;
 
 	private CommandSet()
 	{

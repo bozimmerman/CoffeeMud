@@ -232,6 +232,9 @@ public class CommandProcessor
 		case CommandSet.CLANRESIGN:
 			ClanCommands.clanresign(mob,commands);
 			break;
+		case CommandSet.CLANTAX:
+			ClanCommands.clantax(mob,commands,mob.Name().equals(mob.getClanID()));
+			break;
 		case CommandSet.CLANVOTE:
 			ClanCommands.clanvote(mob,commands,mob.Name().equals(mob.getClanID()));
 			break;

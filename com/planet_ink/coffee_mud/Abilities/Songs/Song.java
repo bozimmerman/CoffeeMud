@@ -33,6 +33,16 @@ public class Song extends StdAbility
 	}
 
 	public Environmental newInstance(){	return new Song();}
+	
+	public void affect(Environmental host, Affect msg)
+	{
+		super.affect(host,msg);
+		if((affected==invoker)
+		&&(msg.amISource(invoker))
+		&&(!unInvoked)
+		&&(msg.sourceMinor()==Affect.TYP_SPEAK))
+			unInvoke();
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

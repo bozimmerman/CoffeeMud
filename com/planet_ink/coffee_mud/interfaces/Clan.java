@@ -107,6 +107,7 @@ public interface Clan extends Cloneable, Tickable
 	public static final int FUNC_CLANVOTEOTHER=12;
 	public static final int FUNC_CLANDEPOSITLIST=13;
 	public static final int FUNC_CLANDECLARE=14;
+	public static final int FUNC_CLANTAX=15;
 	
 	public int allowedToDoThis(MOB mob, int function);
 	
@@ -160,6 +161,13 @@ public interface Clan extends Cloneable, Tickable
 	public String getDonation();
 	public void setDonation(String newDonation);
   
+	public long getExp();
+	public void setExp(long exp);
+	public void adjExp(int howMuch);
+	
+	public void setTaxes(double rate);
+	public double getTaxes();
+	
 	public DVector getMemberList();
 	public DVector getMemberList(int PosFilter);
 

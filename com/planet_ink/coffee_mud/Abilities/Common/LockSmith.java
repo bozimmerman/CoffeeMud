@@ -17,6 +17,7 @@ public class LockSmith extends CommonSkill
 	private Environmental workingOn=null;
 	private boolean messedUp=false;
 	private static boolean mapped=false;
+	private boolean boltlock=false;
 	public LockSmith()
 	{
 		super();
@@ -92,6 +93,7 @@ public class LockSmith extends CommonSkill
 							((Exit)workingOn).setKeyName(((Key)building).getKey());
 							ExternalPlay.DBUpdateExits(mob.location());
 							if((exit2!=null)
+							   &&(!boltlock)
 							   &&(exit2.hasADoor())
 							   &&(exit2.isGeneric())
 							   &&(room2!=null))
@@ -127,7 +129,7 @@ public class LockSmith extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			commonTell(mob,"Locksmith what or where? Enter the name of a container or door direction.");
+			commonTell(mob,"Locksmith what or where? Enter the name of a container or door direction. Put the word \"boltlock\" in front of the door direction to make a one-way lock.");
 			return false;
 		}
 		String startStr=null;
@@ -137,6 +139,12 @@ public class LockSmith extends CommonSkill
 		workingOn=null;
 		messedUp=false;
 		int woodRequired=1;
+		boolean lboltlock=false;
+		if((commands.size()>0)&&("BOLTLOCK".startsWith(((String)commands.firstElement()).toUpperCase())))
+		{
+			lboltlock=true;
+			commands.removeElementAt(0);
+		}
 		String recipeName=Util.combine(commands,0);
 		int dir=Directions.getGoodDirectionCode(recipeName);
 		if(dir<0)
@@ -288,6 +296,7 @@ public class LockSmith extends CommonSkill
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			boltlock=lboltlock;
 			beneficialAffect(mob,mob,completion);
 		}
 		return true;
