@@ -75,7 +75,6 @@ public class Prop_RideAdjuster extends Property
 	{
 		ensureStarted();
 		if((affected !=null)
-		&&(affectedMOB instanceof Rider)
 		&&(((Rider)affectedMOB).riding()==affected))
 			Prop_HaveAdjuster.adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -84,7 +83,6 @@ public class Prop_RideAdjuster extends Property
 	{
 		ensureStarted();
 		if((affected !=null)
-		&&(affectedMOB instanceof Rider)
 		&&(((Rider)affectedMOB).riding()==affected))
 			Prop_HaveAdjuster.adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);

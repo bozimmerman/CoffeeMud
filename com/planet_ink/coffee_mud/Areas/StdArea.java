@@ -10,6 +10,7 @@ public class StdArea implements Area
 	protected String name="the area";
 	protected String description="";
 	protected String miscText="";
+	protected String archPath="";
 	protected int climateID=Area.CLIMASK_NORMAL;
 	protected int currentWeather=Area.WEATHER_CLEAR;
 	protected int nextWeather=Area.WEATHER_CLEAR;
@@ -213,6 +214,10 @@ public class StdArea implements Area
 		}
 		return timeDesc.toString();
 	}
+	
+	public String getArchivePath(){return archPath;}
+	public void setArchivePath(String pathFile){archPath=pathFile;}
+	
 	public int climateType(){return climateID;}
 	public void setClimateType(int newClimateType)
 	{

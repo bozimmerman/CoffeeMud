@@ -842,14 +842,17 @@ public class Scoring
 		String newEmail=mob.session().prompt("New E-mail Address:");
 		if(newEmail==null) return false;
 		newEmail=newEmail.trim();
-		if(newEmail.length()<6) return false;
-		if(newEmail.indexOf("@")<0) return false;
-		String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
-		if(confirmEmail==null) return false;
-		confirmEmail=confirmEmail.trim();
-		if(confirmEmail.length()==0) return false;
-		if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
-		mob.setEmail(confirmEmail);
+		if(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"))
+		{
+			if(newEmail.length()<6) return false;
+			if(newEmail.indexOf("@")<0) return false;
+			String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+			if(confirmEmail==null) return false;
+			confirmEmail=confirmEmail.trim();
+			if(confirmEmail.length()==0) return false;
+			if(!(newEmail.equalsIgnoreCase(confirmEmail))) return false;
+		}
+		mob.setEmail(newEmail);
 		ExternalPlay.DBUpdateEmail(mob);
 		return true;
 	}

@@ -30,7 +30,6 @@ public class Chant_SummonDustdevil extends Chant
 					unInvoke();
 				else
 				{
-					Room R=mob.location();
 					Vector V=new Vector();
 					for(int i=0;i<mob.location().numItems();i++)
 					{
@@ -171,7 +170,6 @@ public class Chant_SummonDustdevil extends Chant
 	}
 	public MOB determineMonster(MOB caster, int material)
 	{
-		MOB victim=caster.getVictim();
 		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
 		int level=3;
 		newMOB.baseEnvStats().setLevel(level);

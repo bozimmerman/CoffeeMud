@@ -51,7 +51,6 @@ public class Chant_WindSnatcher extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
 
-		MOB mob=(MOB)affected;
 		if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
 		   &&(isSpell(affect.tool().ID())))
 		{

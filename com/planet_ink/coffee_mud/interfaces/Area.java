@@ -87,6 +87,8 @@ public interface Area extends Environmental
 
 	public int getTechLevel();
 	public void setTechLevel(int level);
+	public String getArchivePath();
+	public void setArchivePath(String pathFile);
 
 	public int adjustWaterConsumption(int base, MOB mob, Room room);
 	public int adjustMovement(int base, MOB mob, Room room);

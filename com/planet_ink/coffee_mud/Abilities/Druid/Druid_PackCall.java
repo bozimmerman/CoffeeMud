@@ -130,7 +130,6 @@ public class Druid_PackCall extends StdAbility
 					MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
 					int MOBRaceCode=D.myRaceCode;
 					if(D.raceName==null) D.setRaceName(mob);
-					String MOBRaceName=D.raceName;
 					int level=1;
 					while(!D.raceName.equals(D.getRaceName(level,MOBRaceCode)))
 						level++;

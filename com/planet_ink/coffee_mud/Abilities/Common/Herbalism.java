@@ -187,7 +187,6 @@ public class Herbalism extends CommonSkill
 				experienceToLose-=CMAble.qualifyingClassLevel(mob,theSpell)*5;
 			}
 			
-			boolean found=false;
 			Vector V=((Container)building).getContents();
 			// first check for all the right stuff
 			for(int i=2;i<recipe.size();i++)

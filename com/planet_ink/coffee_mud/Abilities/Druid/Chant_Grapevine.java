@@ -33,7 +33,6 @@ public class Chant_Grapevine extends Chant
 	{
 		if((affected instanceof MOB)&&(myChants!=null))
 		{
-			MOB mob=(MOB)affected;
 			Vector V=myChants;
 			myChants=null;
 			for(int i=0;i<V.size();i++)

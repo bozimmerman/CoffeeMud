@@ -40,7 +40,6 @@ public class Chant_WarningWinds extends Chant
 			lastRoom=((MOB)affected).location();
 			Vector V=new Vector();
 			ExternalPlay.getRadiantRooms(lastRoom,V,false,2);
-			StringBuffer str=new StringBuffer("");
 			boolean fighting=false;
 			boolean enemy=false;
 			for(int r=0;r<V.size();r++)

@@ -81,7 +81,6 @@ public class Chant_PlantMaze extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Environmental target = mob.location();
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

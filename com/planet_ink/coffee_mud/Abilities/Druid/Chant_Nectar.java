@@ -74,7 +74,6 @@ public class Chant_Nectar extends Chant
 		if(affected!=null)
 		if(affect.amITarget(affected))
 		{
-			MOB mob=affect.source();
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_DRINK:
@@ -83,7 +82,7 @@ public class Chant_Nectar extends Chant
 					int hp=Dice.roll(1,M.charStats().getStat(CharStats.CONSTITUTION),0);
 					M.curState().adjHitPoints(hp,M.maxState());
 					int mana=Dice.roll(1,((M.charStats().getStat(CharStats.WISDOM)+M.charStats().getStat(CharStats.INTELLIGENCE))/2),0);
-					M.curState().adjMana(hp,M.maxState());
+					M.curState().adjMana(mana,M.maxState());
 				}
 				break;
 			default:

@@ -123,7 +123,8 @@ public class FrontDoor
 			String password=mob.session().blockingIn();
 			if((mob.password().equalsIgnoreCase(password))&&(mob.name().trim().length()>0))
 			{
-				if((mob.getEmail()==null)||(mob.getEmail().length()==0))
+				if(((mob.getEmail()==null)||(mob.getEmail().length()==0))
+				   &&(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION")))
 				{
 					if(!Scoring.email(mob,null,true)) 
 						return false;
@@ -221,11 +222,14 @@ public class FrontDoor
 						mob.session().println("\n\rYou must enter a password to continue.");
 				}
 				
+				boolean emailReq=(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
 				while(true)
 				{
-					String newEmail=mob.session().prompt("\n\rPlease enter your e-mail Address:");
-					String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
-					if((newEmail.length()>6)&&(newEmail.indexOf("@")>0)&&((newEmail.equalsIgnoreCase(confirmEmail))))
+					String newEmail=mob.session().prompt("\n\rEnter your e-mail address:");
+					String confirmEmail=newEmail;
+					if(emailReq) confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+					if(((newEmail.length()>6)&&(newEmail.indexOf("@")>0)&&((newEmail.equalsIgnoreCase(confirmEmail))))
+					   ||(!emailReq))
 					{
 						mob.setEmail(newEmail);
 						break;

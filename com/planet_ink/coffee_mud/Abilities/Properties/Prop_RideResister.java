@@ -35,7 +35,6 @@ public class Prop_RideResister extends Property
 	{
 		ensureStarted();
 		if((affected !=null)
-		&&(affectedMOB instanceof Rider)
 		&&(((Rider)affectedMOB).riding()==affected))
 			Prop_HaveResister.adjCharStats(affectedStats,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);

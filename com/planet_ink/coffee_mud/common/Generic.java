@@ -247,6 +247,11 @@ public class Generic
 
 		text.append(XMLManager.convertXMLtoTag("FLAG",envFlags(E)));
 
+		if(E instanceof Area)
+		{
+			text.append(XMLManager.convertXMLtoTag("ARCHP",((Area)E).getArchivePath()));
+		}
+		
 		if(E instanceof Exit)
 		{
 			Exit exit=(Exit)E;
@@ -1303,6 +1308,11 @@ public class Generic
 
 		setEnvFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
 
+		if(E instanceof Area)
+		{
+			((Area)E).setArchivePath(XMLManager.getValFromPieces(buf,"ARCHP"));
+		}
+		
 		if(E instanceof Exit)
 		{
 			Exit exit=(Exit)E;
