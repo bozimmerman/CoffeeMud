@@ -1,11 +1,35 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
-</HTML>
+% Skullcap	4	40	5	1	GenArmor	HEAD	0	3
+% Bonnet	1	10	2	2	GenArmor	HEAD	0	0
+% Sombrero	2	20	7	8	GenArmor	HEAD	0	1
+% Headband	2	20	2	2	GenArmor	HEAD	0	1
+% Cloak	3	30	10	7	GenArmor	NECK	0	2
+% Cape	2	20	10	7	GenArmor	NECK	0	1
+% Shawl	1	10	10	5	GenArmor	NECK	0	0
+% Mantle	2	20	5	5	GenArmor	NECK	0	1
+% Choker	2	20	2	1	GenArmor	NECK	0	1
+% Collar	3	30	2	1	GenArmor	NECK	0	2
+% Shirt	2	20	10	5	GenArmor	TORSO	0	1
+% Coat	4	40	15	20	GenArmor	TORSO	5	3
+% Jacket	3	30	12	20	GenArmor	TORSO	5	2
+% Trenchcoat	3	30	20	30	GenArmor	BODY	20	2
+% Vest	3	30	7	5	GenArmor	TORSO	0	2
+% Hauberk	4	40	5	5	GenArmor	TORSO	0	3
+% Jerkin	4	40	7	5	GenArmor	TORSO	0	3
+% Blouse	2	20	4	5	GenArmor	TORSO	0	1
+% Bikini	1	10	2	15	GenArmor	TORSO	0	0
+% Halter	2	20	2	15	GenArmor	TORSO	0	1
+% Armbands	3	30	2	2	GenArmor	ARMS	0	2
+% Pauldrons	4	40	5	1	GenArmor	ARMS	0	3
+% Sleeves	2	20	5	1	GenArmor	ARMS	0	1
+% Vambrace	4	40	5	5	GenArmor	LEFT WRIST||RIGHT WRIST	0	3
+% Cuffs	2	20	1	1	GenArmor	LEFT WRIST||RIGHT WRIST	0	1
+% Gloves	3	30	5	2	GenArmor	HANDS	0	2
+% Mitts	2	20	5	2	GenArmor	HANDS	0	1
+% Cestus	2	20	5	5	GenArmor	HANDS	0	1
+% Pants	2	20	10	10	GenArmor	LEGS	5	1
+% Leggings	2	20	10	10	GenArmor	LEGS	0	1
+% Skirt	3	30	5	8	GenArmor	LEGS	0	2
+% Tights	1	10	5	12	GenArmor	LEGS	0	0
+% Hose	1	10	5	13	GenArmor	LEGS	0	0
+% Slippers	1	10	5	5	GenArmor	FEET	0	0
+% Socks	1	10	2	5	GenArmor	FEET	0	0

@@ -4,10 +4,23 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
+import java.io.File;
 
 public class GlassBlowing extends CommonSkill
 {
+	private static final int RCP_FINALNAME=0;
+	private static final int RCP_LEVEL=1;
+	private static final int RCP_TICKS=2;
+	private static final int RCP_WOOD=3;
+	private static final int RCP_VALUE=4;
+	private static final int RCP_CLASSTYPE=5;
+	private static final int RCP_MISCTYPE=6;
+	private static final int RCP_CAPACITY=7;
+	private static final int RCP_ARMORDMG=8;
+	
 	private Item building=null;
+	private Item fire=null;
+	private boolean messedUp=false;
 	public GlassBlowing()
 	{
 		super();
