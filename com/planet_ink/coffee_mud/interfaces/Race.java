@@ -13,6 +13,7 @@ public interface Race extends Cloneable, Tickable, StatsAffecting, MsgListener, 
 	public DeadBody getCorpse(MOB mob, Room room);
 	public Vector myResources();
 	public String racialCategory();
+	public void reRoll(MOB mob, CharStats C);
 	public Race copyOf();
 	public int[] bodyMask();
 	

@@ -32,7 +32,7 @@ CMGOLD integer NULL
 CMWIMP integer NULL
 CMQUES integer NULL
 CMROID string NULL
-CMDATE datetime NULL
+CMDATE string NULL
 CMCHAN integer NULL
 CMATTA integer NULL
 CMAMOR integer NULL

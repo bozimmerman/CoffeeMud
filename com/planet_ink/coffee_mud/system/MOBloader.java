@@ -60,9 +60,7 @@ public class MOBloader
 					roomID=roomID.substring(0,x);
 				}
 				mob.setStartRoom(CMMap.getRoom(roomID));
-				String dateTimeStr=DBConnections.getRes(R,"CMDATE");
-				long lastDateTime=IQCalendar.string2Millis(dateTimeStr);
-				mob.setLastDateTime(lastDateTime);
+				mob.setLastDateTime(Util.s_long(DBConnections.getRes(R,"CMDATE")));
 				mob.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
 				mob.setUserInfo(username,password);
 				mob.baseEnvStats().setAttackAdjustment(Util.s_int(DBConnections.getRes(R,"CMATTA")));
@@ -482,8 +480,7 @@ public class MOBloader
 			while(R.next())
 			{
 				String username=DBConnector.getRes(R,"CMUSERID");
-				String dateTimeStr=DBConnections.getRes(R,"CMDATE");
-				long lastDateTime=IQCalendar.string2Millis(dateTimeStr);
+				long lastDateTime=Util.s_long(DBConnections.getRes(R,"CMDATE"));
 				int role=(int)DBConnector.getLongRes(R,"CMCLRO");
 				members.addElement(username);
 				roles.addElement(new Integer(role));
@@ -568,7 +565,7 @@ public class MOBloader
 			+", CMWIMP="+mob.getWimpHitPoint()
 			+", CMQUES="+mob.getQuestPoint()
 			+", CMROID='"+strStartRoomID+"||"+strOtherRoomID+"'"
-			+", CMDATE='"+IQCalendar.d2mysqlString(mob.lastDateTime())+"'"
+			+", CMDATE='"+mob.lastDateTime()+"'"
 			+", CMCHAN="+mob.getChannelMask()
 			+", CMATTA="+mob.baseEnvStats().attackAdjustment()
 			+", CMAMOR="+mob.baseEnvStats().armor()

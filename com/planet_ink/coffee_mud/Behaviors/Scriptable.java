@@ -93,7 +93,8 @@ public class Scriptable extends StdBehavior
 		"IF", //19
 		"MPSETVAR", //20
 		"MPENDQUEST",//21
-		"MPQUESTWIN" //22
+		"MPQUESTWIN", //22
+		"MPSTARTQUEST" //23
 	};
 
 	public Behavior newInstance()
@@ -1885,6 +1886,13 @@ public class Scriptable extends StdBehavior
 				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(10).trim());
 				Quest Q=Quests.fetchQuest(s);
 				if(Q!=null) Q.stopQuest();
+				break;
+			}
+			case 23: //MPSTARTQUEST
+			{
+				s=varify(source,target,monster,primaryItem,secondaryItem,s.substring(10).trim());
+				Quest Q=Quests.fetchQuest(s);
+				if(Q!=null) Q.startQuest();
 				break;
 			}
 			case 22: //MPQUESTWIN

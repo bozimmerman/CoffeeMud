@@ -47,7 +47,7 @@ CREATE TABLE CMCHAR (
 	CMWIMP int NULL ,
 	CMQUES int NULL ,
 	CMROID char (100) NULL ,
-	CMDATE datetime NULL ,
+	CMDATE char (50) NULL ,
 	CMCHAN int NULL ,
 	CMATTA int NULL ,
 	CMAMOR int NULL ,
@@ -204,7 +204,7 @@ CREATE TABLE CMJRNL (
 	CMJKEY char (50) ,
 	CMJRNL char (50) NULL ,
 	CMFROM char (50) NULL ,
-	CMDATE int  NULL ,
+	CMDATE char (50) NULL ,
 	CMTONM char (50) NULL ,
 	CMSUBJ char (100) NULL ,
 	CMMSGT text NULL 

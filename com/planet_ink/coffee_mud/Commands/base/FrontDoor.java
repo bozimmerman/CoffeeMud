@@ -321,7 +321,7 @@ public class FrontDoor
 				StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
 				while(mayCont)
 				{
-					mob.baseCharStats().reRoll();
+					mob.baseCharStats().getMyRace().reRoll(mob,mob.baseCharStats());
 					mob.recoverCharStats();
 					Vector V=classQualifies(mob);
 					if(V.size()>1)

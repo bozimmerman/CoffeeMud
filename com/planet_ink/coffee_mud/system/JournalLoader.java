@@ -182,8 +182,8 @@ public class JournalLoader
 				+(Journal+from+date+Math.random())
 				+"','"+Journal
 				+"','"+from
-				+"',"+date
-				+",'"+to
+				+"','"+date
+				+"','"+to
 				+"','"+subject
 				+"','"+message+"');";
 				D.update(str);
