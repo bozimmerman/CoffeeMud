@@ -23,7 +23,8 @@ Players currently online: <b>@NUMPLAYERS@</B>
 </B></FONT></TD></TR>
 <TR><TD WIDTH=100%>
 <BR>
-<LI><a href="mudintro.html"><FONT COLOR=GREEN><B>Introduction</B></FONT></a>
+<LI><a href="mudintro.html"><FONT COLOR=GREEN><B>What are MUDs?</B></FONT></a>
+<LI><a href="cmintro.html"><FONT COLOR=GREEN><B>What is CoffeeMUD?</B></FONT></a>
 <LI><a href="helps.cmvp?FIRSTLETTER=A"><FONT COLOR=GREEN><B>Help Topics</B></FONT></a>
 <LI><a href="guides/Features.html"><FONT COLOR=GREEN><B>CoffeeMud features</B></FONT></a>
 <LI><a href="areas.cmvp"><FONT COLOR=GREEN><B>Installed Areas Information</B></FONT></a>
