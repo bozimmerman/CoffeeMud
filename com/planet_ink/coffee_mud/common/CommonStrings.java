@@ -64,9 +64,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
 	public static final int SYSTEMB_ROOMDCOMPRESS=2;
 	public static final int SYSTEMB_MOBDCOMPRESS=3;
-	public static final int SYSTEMB_ACCEPTINGCONNECTIONS=4;
-	public static final int SYSTEMB_MUDSTARTED=5;
-	public static final int NUMB_SYSTEM=6;
+	public static final int SYSTEMB_MUDSTARTED=4;
+	public static final int NUMB_SYSTEM=5;
 
 	private static String[] sysVars=new String[NUM_SYSTEM];
 	private static Integer[] sysInts=new Integer[NUMI_SYSTEM];

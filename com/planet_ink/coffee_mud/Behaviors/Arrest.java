@@ -1363,7 +1363,7 @@ public class Arrest extends StdBehavior
 
 	protected boolean theLawIsEnabled()
 	{
-		return true;
+		return (CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED));
 	}
 
 	public void executeMsg(Environmental affecting, CMMsg msg)

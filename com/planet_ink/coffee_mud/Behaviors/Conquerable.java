@@ -668,54 +668,53 @@ public class Conquerable extends Arrest
 					}
 				}
 			}
-
-			if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
-			&&(myArea!=null)
-			&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
+		}
+		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		&&(myArea!=null)
+		&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
+		{
+			CMClass.DBEngine().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+			StringBuffer data=new StringBuffer("");
+			data.append(XMLManager.convertXMLtoTag("CLANID",holdingClan));
+			data.append("<ACITEMS>");
+			synchronized(clanItems)
 			{
-				CMClass.DBEngine().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
-				StringBuffer data=new StringBuffer("");
-				data.append(XMLManager.convertXMLtoTag("CLANID",holdingClan));
-				data.append("<ACITEMS>");
-				synchronized(clanItems)
+				for(int i=0;i<clanItems.size();i++)
 				{
-					for(int i=0;i<clanItems.size();i++)
+					ClanItem I=(ClanItem)clanItems.elementAt(i);
+					Room R=CoffeeUtensils.roomLocation(I);
+					if((R!=null)
+					&&(R.getArea()==myHost)
+					&&(I instanceof Item)
+					&&(!((Item)I).amDestroyed())
+					&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent((Item)I))))
 					{
-						ClanItem I=(ClanItem)clanItems.elementAt(i);
-						Room R=CoffeeUtensils.roomLocation(I);
-						if((R!=null)
-						&&(R.getArea()==myHost)
-						&&(I instanceof Item)
-						&&(!((Item)I).amDestroyed())
-						&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent((Item)I))))
+						data.append("<ACITEM>");
+						if(((Item)I).owner() instanceof Room)
+							data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(R)));
+						else
+						if(((Item)I).owner() instanceof MOB)
 						{
-							data.append("<ACITEM>");
-							if(((Item)I).owner() instanceof Room)
-								data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(R)));
-							else
-							if(((Item)I).owner() instanceof MOB)
+							MOB M=(MOB)((Item)I).owner();
+							if((M.getStartRoom()!=null)
+							&&(M.getStartRoom().getArea()==myArea))
 							{
-								MOB M=(MOB)((Item)I).owner();
-								if((M.getStartRoom()!=null)
-								&&(M.getStartRoom().getArea()==myArea))
-								{
-									data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(M.getStartRoom())));
-									data.append(XMLManager.convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
-								}
+								data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(M.getStartRoom())));
+								data.append(XMLManager.convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
 							}
-							data.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(I)));
-							data.append(XMLManager.convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
-							data.append(XMLManager.convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
-							data.append(XMLManager.convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
-							data.append(XMLManager.convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
-							data.append(XMLManager.convertXMLtoTag("ITEXT",CoffeeMaker.parseOutAngleBrackets(I.text())));
-							data.append("</ACITEM>");
 						}
+						data.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(I)));
+						data.append(XMLManager.convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
+						data.append(XMLManager.convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
+						data.append(XMLManager.convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
+						data.append(XMLManager.convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
+						data.append(XMLManager.convertXMLtoTag("ITEXT",CoffeeMaker.parseOutAngleBrackets(I.text())));
+						data.append("</ACITEM>");
 					}
 				}
-				data.append("</ACITEMS>");
-				CMClass.DBEngine().DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}
+			data.append("</ACITEMS>");
+			CMClass.DBEngine().DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 		}
 	}
 

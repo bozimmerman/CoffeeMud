@@ -533,6 +533,7 @@ public class MUD extends Thread implements MudHost
 	}
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,false);
 		CommonStrings.setVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 		Log.sysOut("MUD","Started shutdown, notifying all objects...");
 		if(S!=null)S.print("Notifying all objects of shutdown...");
