@@ -41,7 +41,7 @@ public class Amputation extends StdAbility
 	private static final String[] triggerStrings = {"AMPUTATE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public boolean canBeUninvoked(){return false;}
-	public int classificationCode(){return Ability.PROPERTY;}
+	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private Vector missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];
@@ -407,6 +407,23 @@ public class Amputation extends StdAbility
 		}
 		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
 		if(!theRest.contains(gone)) theRest.addElement(gone);
+		Injury I=(Injury)target.fetchEffect("Injury");
+		if(I!=null)
+		{
+		    Vector V=null;
+			for(int i=0;i<I.injuries.length;i++)
+			{
+			    V=I.injuries[i];
+			    if(V!=null)
+			    for(int v=0;v<V.size();v++)
+				    if(((String)V.elementAt(v)).equalsIgnoreCase(gone))
+				    {
+				        V.removeElementAt(v);
+				        if(V.size()==0) I.injuries[i]=null;
+				        break;
+				    }
+			}
+		}
 		for(int i=0;i<theRest.size();i++)
 			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
 		return limb;

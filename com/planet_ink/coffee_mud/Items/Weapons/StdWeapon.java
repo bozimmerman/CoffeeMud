@@ -347,7 +347,7 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public String hitString(int damageAmount)
 	{
-		return CommonStrings.standardHitString(weaponType,weaponClassification,damageAmount,name());
+		return CommonStrings.standardHitString(weaponClassification,damageAmount,name());
 	}
 	public int minRange()
 	{

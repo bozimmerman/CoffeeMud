@@ -31,6 +31,7 @@ public class Prop_ClanEquipment extends Property
 	public String name() { return "Clan Equipment"; }
 	public boolean bubbleAffect() { return true; }
 	protected int canAffectCode() { return Ability.CAN_ITEMS; }
+	protected boolean activated=false;
 	protected String type = "";
 	protected int TypeOfEffect = 0;
 	protected int WeaponType = 0;
@@ -288,6 +289,7 @@ public class Prop_ClanEquipment extends Property
 		if ( (affected != null)
 		    && (affected instanceof Armor)
 		    && (! (affected instanceof Shield))
+		    && (activated)
 		    && (! ( (Armor) affected).amWearingAt(Item.INVENTORY)))
 		{
 			Prop_HaveResister.adjCharStats(affectedStats, EQadjCharStats);
@@ -300,12 +302,20 @@ public class Prop_ClanEquipment extends Property
 		super.executeMsg(myHost, msg);
 		MOB mob = null;
 		MOB source = null;
-		if ( (affected != null) && (affected instanceof Item)) {
-		if ( ( ( (Item) affected).owner() != null) &&
-		    ( (Item) affected).owner()instanceof MOB) {
-		  mob = (MOB) ( (Item) affected).owner();
+		if ( (affected != null) && (affected instanceof Item)) 
+		{
+			if ( ( ( (Item) affected).owner() != null) &&
+			    ( (Item) affected).owner()instanceof MOB) {
+			  mob = (MOB) ( (Item) affected).owner();
+			}
 		}
-		}
+		// if held by the wrong clan, it is inactive.
+		if((mob!=null)&&(mob.getClanID().equalsIgnoreCase(clanName)))
+		    activated=true;
+		else
+		    activated=false;
+		if(!activated) return;
+		
 		if (msg.source() != null) {
 		source = msg.source();
 
@@ -400,33 +410,5 @@ public class Prop_ClanEquipment extends Property
 			default:
 			  break;
 			}
-
-		/*
-		 **************************************
-		 * Clan Use - Fires on any GET or GIVE
-		 **************************************
-		 */
-		if ( ( (msg.sourceMinor() == CMMsg.TYP_GET) &&
-		      (msg.target() == affected))
-		    ||
-		    ( (msg.sourceMinor() == CMMsg.TYP_GIVE) && (msg.tool() == affected)))
-		{
-			// Check to see if the person getting the equipment is of the same clan
-			// if they're not (or not an archon), STRIP THAT PROP!!
-			if ( (msg.source() != null)
-			    && ( (source.getClanID() == null) ||
-			         (! (source.getClanID().equalsIgnoreCase(clanName))))
-			    && (! CMSecurity.isAllowed(source,source.location(),"CMDITEMS")))
-			{
-				FullMsg msg2 = new FullMsg(source, null, CMMsg.MSG_OK_ACTION,
-				                          "The magic on " + affected.Name() +
-				                          " fizzles away at <S-YOUPOSS> touch.");
-				if (source.location().okMessage(source, msg2))
-				{
-					source.location().send(source, msg2);
-					affected.delEffect(this);
-				}
-			}
-		}
 	}
 }

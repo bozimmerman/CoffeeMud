@@ -1939,6 +1939,14 @@ public class StdMOB implements MOB
 						&&(getWimpHitPoint()>0)
 						&&(isInCombat()))
 							MUDFight.postPanic(this,msg);
+						else
+						if((Util.div(maxState().getHitPoints(),curState().getHitPoints())>=2.5)
+						&&(!Sense.isGolem(this))
+						&&(fetchEffect("Injury")==null))
+						{
+						    Ability A=CMClass.getAbility("Injury");
+						    if(A!=null) A.invoke(this,Util.makeVector(msg),this,true,0);
+						}
 					}
 				}
 			}

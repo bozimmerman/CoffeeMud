@@ -598,19 +598,18 @@ public class CommonStrings extends Scriptable
 	}
 
 
-	public static String standardHitString(int weaponType, int weaponClass, int damageAmount,  String weaponName)
+	public static String standardHitString(int weaponClass, int damageAmount,  String weaponName)
 	{
 		if((weaponName==null)||(weaponName.length()==0))
 			weaponClass=Weapon.CLASS_NATURAL;
-		boolean showDamn=CommonStrings.getVar(CommonStrings.SYSTEM_SHOWDAMAGE).equalsIgnoreCase("YES");
 		switch(weaponClass)
 		{
 		case Weapon.CLASS_RANGED:
-			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>."+msp("arrow.wav",20);
+			return "<S-NAME> fire(s) "+weaponName+" at <T-NAMESELF> and <DAMAGE> <T-HIM-HER>."+msp("arrow.wav",20);
 		case Weapon.CLASS_THROWN:
-			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-HIM-HER>."+msp("arrow.wav",20);
+			return "<S-NAME> throw(s) "+weaponName+" at <T-NAMESELF> and <DAMAGE> <T-HIM-HER>."+msp("arrow.wav",20);
 		default:
-			return "<S-NAME> "+standardHitWord(weaponType,damageAmount)+((showDamn)?" ("+damageAmount+")":"")+" <T-NAMESELF> with "+weaponName+"."+msp("punch"+Dice.roll(1,4,0)+".wav",20);
+			return "<S-NAME> <DAMAGE> <T-NAMESELF> with "+weaponName+"."+msp("punch"+Dice.roll(1,4,0)+".wav",20);
 		}
 	}
 
