@@ -1,5 +1,4 @@
-bugs review (hold, delete, reply, email)
-holding a torch has no immediate affect on group members who cant see in a dark room
+test interaction between limbs and eq
 need need need a portal fixer -- the tzbrakas training acad.
 Keno: A card with 10 x 8 squares, you choose up to 10 (20 in non video keno) numbers and then 20 balls are drawn each with a non repeating number between 1 and 80. The number of matches are then looked up on a table and multiplied by your bet. The odds are a hypergeometric distribution. Terminology: http://www.gamingtoday.com/Glossary/keno.cfm Sample Payoff: http://casinopassion.s5.com/keno.html
 item generation behavior?

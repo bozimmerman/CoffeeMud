@@ -288,8 +288,7 @@ public class Import extends StdCommand
 			&&(areaName.charAt(40)==' '))
 				areaName=areaName.substring(21,41).trim();
 			else
-			if((areaName.charAt(12)=='{')
-			||(areaName.charAt(13)=='{'))
+			if((areaName.length()>13)&&((areaName.charAt(12)=='{')||(areaName.charAt(13)=='{')))			
 			{
 				int x=areaName.indexOf("}",12);
 				if(x>12)
@@ -2931,7 +2930,7 @@ public class Import extends StdCommand
 			case 15: if(EnglishParser.containsString(objectName,"belt")
 					 ||EnglishParser.containsString(objectName,"bandolier")
 					 ||EnglishParser.containsString(objectName,"sheath"))
-						I=CMClass.getStdItem("GenArmor");
+						I=CMClass.getArmor("GenArmor");
 					 else
 						I=CMClass.getStdItem("GenContainer");
 					 ((Container)I).setCapacity(val1);
