@@ -33,7 +33,7 @@ public class StdPill extends StdFood implements Pill
 
 		setName("a pill");
 		baseEnvStats.setWeight(1);
-		setDisplayText("An strange pill lies here.");
+		setDisplayText("A strange pill lies here.");
 		setDescription("Large and round, with strange markings.");
 		secretIdentity="Surely this is a potent pill!";
 		baseGoldValue=200;

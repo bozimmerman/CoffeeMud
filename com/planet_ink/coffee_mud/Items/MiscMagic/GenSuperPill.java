@@ -29,7 +29,7 @@ public class GenSuperPill extends GenPill
 
 		setName("a pill");
 		baseEnvStats.setWeight(1);
-		setDisplayText("An strange pill lies here.");
+		setDisplayText("A strange pill lies here.");
 		setDescription("Large and round, with strange markings.");
 		secretIdentity="";
 		baseGoldValue=200;
