@@ -45,7 +45,7 @@ public class Generic
 		return s;
 	}
 	
-	private static int flags(Environmental E)
+	public static int envFlags(Environmental E)
 	{
 		int f=0;
 		if(E instanceof Item)
@@ -99,7 +99,7 @@ public class Generic
 		return f;
 	}
 
-	private static void setFlags(Environmental E, int f)
+	public static void setEnvFlags(Environmental E, int f)
 	{
 		if(E instanceof Item)
 		{
@@ -188,7 +188,7 @@ public class Generic
 		StringBuffer text=new StringBuffer("");
 		text.append(getEnvPropertiesStr(E));
 
-		text.append(XMLManager.convertXMLtoTag("FLAG",flags(E)));
+		text.append(XMLManager.convertXMLtoTag("FLAG",envFlags(E)));
 
 		if(E instanceof Exit)
 		{
@@ -762,7 +762,7 @@ public class Generic
 
 		setEnvProperties(E,buf);
 
-		setFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
+		setEnvFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
 
 		if(E instanceof Exit)
 		{

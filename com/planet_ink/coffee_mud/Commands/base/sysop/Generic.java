@@ -751,7 +751,12 @@ public class Generic
 			modifyGenContainer(mob,(Container)E);
 		else
 		if(E instanceof Item)
-			modifyGenItem(mob,(Item)E);
+		{
+			if(E.ID().equals("GenWallpaper"))
+				modifyGenWallpaper(mob,(Item)E);
+			else
+				modifyGenItem(mob,(Item)E);
+		}
 	}
 
 	void genMiscText(MOB mob, Environmental E)
@@ -1652,6 +1657,27 @@ public class Generic
 			genDisposition(mob,me);
 			genBehaviors(mob,me);
 			genAffects(mob,me);
+			ok=true;
+			if(me.text().length()>=maxLength)
+			{
+				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+				ok=false;
+			}
+		}
+		mob.recoverEnvStats();
+	}
+
+	public void modifyGenWallpaper(MOB mob, Item me)
+		throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		while(!ok)
+		{
+			genName(mob,me);
+			genDescription(mob,me);
+			genReadable(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{

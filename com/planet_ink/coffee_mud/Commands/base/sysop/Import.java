@@ -2619,16 +2619,15 @@ public class Import
 						Item I=null;
 						if(hasReadableContent(nameString))
 						{
-							I=CMClass.getStdItem("GenReadable");
+							I=CMClass.getStdItem("GenWallpaper");
+							I.setReadable(true);
 							I.setReadableText(fixReadableContent(descString));
 						}
 						else
-							I=CMClass.getStdItem("GenItem");
+							I=CMClass.getStdItem("GenWallpaper");
 						I.setName(nameString);
 						I.setDisplayText("");
 						I.setDescription(descString);
-						I.setGettable(false);
-						I.baseEnvStats().setWeight(0);
 						R.addItem(I);
 					}
 					else
