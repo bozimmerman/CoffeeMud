@@ -550,6 +550,11 @@ public class StdItem implements Item
 			if(this instanceof Rideable)
 				return true;
 			break;
+		case CMMsg.TYP_RELOAD:
+			if((this instanceof Weapon)
+			&&(((Weapon)this).requiresAmmunition()))
+				return true;
+			break;
 		case CMMsg.TYP_HOLD:
 			if(!alreadyWornMsg(msg.source(),this))
 				return false;
