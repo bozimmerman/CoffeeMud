@@ -1,76 +1,18 @@
+Fighter 30/Monk 30/Barbar 3 fumbles kick with leather armor
+add email to player editor
+Autogold will take gold from corpses before they disintegrate.
+import cmare is NOT restoring containers properly -- see coffee grounds
+a guard tried to trip me when he was bound. so i had to kick his ass while he was tied up.
 Something to hunt multiplayers with 1. the closest (in milliseconds) commands were entered by tested players and 2. the frequency of information command entry, eating drinking, ordered vs real command entry, variation of commands, socials, speech
 importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.
-Abilility to do Archon commands in Scriptable.
 MOBReSave doesn't work? Creates dups?
 crafting info parm
-The blessing of a healer will make you drop things that are in containers. I don`t think that`s very logical, do they jump out of the bag?
-Several of my playtesters have pointed out that fletch bullets doesn't seem to work. I had them try fletch Pack of 50 Bullets with no results. Everything else in fletch works cept th
 compressing genmob data would be really great!
 AddRandomFile' that takes a directory as a parameter?  that'd make it not too hard to have rotating page graphics or random ad banners
-Wish does not check to see if the person targeted is in the room, and then casts the wish upon the caster. Example, Kylandaria wished for Fayte to be immune to fire, and ended up with being immune herself.
 This leads me to a a suggestion for CoffeeMud, a greater logging system, i was thinking another subfolder for logs, one log for the server log
-
+Ability to design space ship areas with portals
+Ability to buy space ship areas, and add them to shopkeepers
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
 mutable body parts, with ability to grant powers
-
-Every Page 
-Notification of instant messages, greeting, date/time 
-Navigation menu bar (text, image, or combination format) 
-Forum navigation links or text (index/category/board/message... etc.)
-Forum Index
-Stats including: newest member, total members, total posts, most recent post 
-Graphical alert of new messages in each board 
-Date/member of latest posts in each board 
-Name of board moderators 
-Ability to mark every post in the forum "as read" 
-Options not accessible to guests are "hidden" for them 
-Flat text or javascript fading news, with YaBBC enabled
-Topic Index
-Graphical alert each new or updated topic 
-Date/member of latest posts in each topic 
-Names of the board moderators 
-'Jump to' box for instant jump to a different board or category 
-Ability to mark every post in the board "as read" 
-Options not accessible to guests are "hidden" for them
-Topic Display
-Number of reply on each post 
-Author information, such as email, # posts, membergroup, IM links and userpic 
-Option to view profile of authors 
-Ability to quote messages or reply 
-Date of each post listed 
-User/Moderator ability to delete or modify posts 
-Option to display a "printer-friendly" copy of the page 
-Option to send a friend the topic
-Post Page
-Easy to use editor-style interface 
-Option to receive notification of replies 
-Option to disable smileys 
-Full 'editor' bar for inserting smileys and YaBBC tags 
-Input field autojump javascript 
-Full preview ability 
-Option to receive topic "notification" 
-Option to disable smileys
-Other Pages
-Recent posts 
-XX number of posts by a certain member 
-Forum post search 
-Full members list
-Other Features
-Full administration and moderating options 
-Ability to change settings and template on the fly 
-Full YaBBC code in posts, with error-checking galore 
-Integrated instant messaging system for member to member communication 
-Ability to customize the layout colors and CSS via one template 
-Private Boards in which only certain membergroups can access 
-Login length options 
-Delete registered members 
-Full profile options, including signature, settings, and personal information 
-Email all registered users 
-'Maintenance Mode' for major board administration 
-Online help for users and admins 
-Moderator/Administrator ability to move topics 
-Simple registration form and option to generate random password 
-Post icons to designate the message type 
-Admin option to disable the YaBBC code
