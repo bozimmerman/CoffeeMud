@@ -25,6 +25,7 @@ public class WaterElemental extends StdRace
 	public int[] racialAbilityProfficiencies(){return null;}
 	public boolean[] racialAbilityQuals(){return null;}
 	public boolean fertile(){return false;}
+	public boolean uncharmable(){return true;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

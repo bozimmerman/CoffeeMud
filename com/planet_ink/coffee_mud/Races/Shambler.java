@@ -16,6 +16,7 @@ public class Shambler extends StdRace
 	public int weightVariance(){return 30;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.HELD;}
 	public String racialCategory(){return "Vegetation";}
+	public boolean uncharmable(){return true;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,1 ,0 ,1 ,0 ,2 ,2 ,1 ,2 ,2 ,0 ,0 ,1 ,0 ,1 ,0 };

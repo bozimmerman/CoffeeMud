@@ -26,15 +26,17 @@ public class Chant_Hippieness extends Chant
 		   affected.setClanID("");
 	}
 
-	public boolean okAffect(Environmental host, CMMsg msg)
+	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if((affected instanceof MOB)
-		   &&(((MOB)affected).getClanID().length()>0)
-		   &&(oldClan.length()>0))
+		&&(((MOB)affected).getClanID().length()>0)
+		&&(oldClan.length()>0))
 			((MOB)affected).setClanID("");
+		
 		if((msg.source()==affected)
 		&&(msg.tool() instanceof Ability)
-		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CRAFTING)))
+		&&((Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CRAFTING))
+		   ||((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.COMMON_SKILL)))
 		{
 			msg.source().tell("No, man... work is so bourgeois...");
 			return false;
@@ -49,18 +51,24 @@ public class Chant_Hippieness extends Chant
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(mob.fetchFirstWornItem(Item.ON_MOUTH)!=null)
-				return true;
+			boolean mouthed=mob.fetchFirstWornItem(Item.ON_MOUTH)!=null;
 			Room R=mob.location();
-			if((R!=null)&&(R.numItems()>0))
+			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
 			{
 				Item I=R.fetchItem(Dice.roll(1,R.numItems(),-1));
 				if((I!=null)&&(I.fitsOn(Item.ON_MOUTH)))
 					CommonMsgs.get(mob,I.container(),I,false);
 			}
+			
 			if(mob.inventorySize()>0)
 			{
 				Item I=mob.fetchInventory(Dice.roll(1,mob.inventorySize(),-1));
+				if(mouthed)
+				{
+					if((I!=null)&&(!I.amWearingAt(Item.INVENTORY))&&(!I.amWearingAt(Item.ON_MOUTH)))
+						CommonMsgs.remove(mob,I,false);
+				}
+				else
 				if((I!=null)&&(I instanceof Light)&&(I.fitsOn(Item.ON_MOUTH)))
 				{
 					if((I instanceof Container)

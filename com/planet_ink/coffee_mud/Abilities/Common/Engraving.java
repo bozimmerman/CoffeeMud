@@ -86,7 +86,7 @@ public class Engraving extends CommonSkill
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=30-mob.envStats().level();
 		if(duration<6) duration=6;
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) engraving on "+target.name());
+		FullMsg msg=new FullMsg(mob,target,CMMsg.MSG_HANDS,"<S-NAME> start(s) engraving on <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

@@ -1,11 +1,30 @@
 fix pregnancy for crossbreeds
-Test: Annul, Divorce, Wilderness Lore, Acid Rain, Hippieness, Brittle, Reabsorb
-Test: Animal growth, Crossbreed
-Raging Vegetation (Area) acts like a slow for all opponents. Slows mobs/players trying to walk through area -- makes them stop and hack the vegetation.
+ticket taker behavior
+Test: Crossbreed, ?Plant Choke, ?Plant Constriction
+Test: ?Plant Trap
 
-Delver
-Magenetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
-Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
+Desired stats=
+# of players
+Highest # of players logged on
+# of deaths
+# PK deaths
+# of players per level
+Might also be cool if the stats could be popped into a table with timestamps, then you could track those stats over time....
+# of players per race/class/gender/faith/clan
+Boot-time (remember that count-down request for off-line messages?)
+Avg time spent in groups
+Avg time spent in an area (presumably would flag an area with prop/behavior to turn on that tracking)
+Num of players: #####
+	New Within 7 Days ##
+	New Within 30 Days ##
+	New Within 90 Days ##
+Active players per day/week/month
+Average hours played (total)
+Average time played (session)
+Age of characters? 
+Sex, Marital Status (thinking of the new additions here) Divorces?
+# of clans, # areas under control, longest area to be controled by a
+clan, # of clans at war.  
 
 Thieves
 Alertness  gives one random description from an item in the room upon entry into that  For example: A thief walks into a room. He gets the room description.  His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin.  It randomly selects one of those items (the coin) and issues a LOOK COIN command.  
@@ -39,6 +58,34 @@ Tactics  for fighters, gives allies bonus to hit.
 Farshot  Allows the player to shoot at one range increment more than normal maximum range for the ranged weapon.  
 Counter Attack  Allows an extra attack after a successful Parry.  
 
+Delver
+Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
+Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
+//CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",false);
+//CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonFungus",true);
+//CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",false);
+//CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",false);
+//CMAble.addCharAbilityMapping(ID(),25,"Chant_BrownMold",true);
+Cavein Does damage if target is MOB. Can be used to block an exit for duration of spell if target is EXIT. 
+Boulderbash Causes a large rock to hurl itself at the enemy. 
+Volcanic Chasm will convert room (for time being) to a CHASM room that does massive heat damage to non-flyers/climbers. 
+Summon Rock Golem 	
+Crystal growth 	creates crystaline items that have very low hardnesses, made of crystal (STONE), but similar to other recipes from Tailor, Armorsmith, and Weaponsmith. 
+Labrynth 	like plantmaze, but underground 
+Den 	creates a room off of a cave room. The room will be temporary (1 mud day per 5 levels), but accessible through normal means. 
+Stonewalking 	While in a cave, stone, or mountain -type room, the Delver is intangible and undetectable until he attacks or gets an item. 
+Drifting 	This is a levitate that allows the delver to move along the ceiling of a cave (reverse gravity). Outside, it should make the delver fall up. While drifting, the delver can only move at crawl speeds. This is similar to beholders and grells movement abilities. 
+Tremor sense 	This chant enables the druid to sense any ground movement within 3 squares of his position. 
+Darkvision 	
+worms disease that damages opponent (from the inside out....uggghhh) 
+Echo Songs 	When cast on a bard, makes his songs extend to all adjacent (indoor) rooms. 
+Fungus Feet 	Makes target's feet break out in a very painful fungal growth. This brings the target to his knees (fights from a sitting position.) This disease lasts a considerable amount of time. Causes feet to fall off if not cured in 100/LVL mudhours. Duration should be fairly high, like 1 mudhour per level. 
+Deep darkness 	causes darkness. 
+Snatch light 	snuffs out light sources for duration of chant. 
+Fodder Signal 	a Faerie Fire that makes MOBs aggressive towards the target. 
+Unbreakable protects an item from damage for the duration of the spell. Gives item 100% resistance to spells/prayers/chants/songs as well. 
+Distant fungal growth
+
 time to re-balance the classes
 ability to wish for body parts, ability to wish for lower level items (making level lower)
 mutable body parts, with ability to grant powers
@@ -46,6 +93,4 @@ Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
 Blood should act as a cure light wounds to a vampire. that is...if a blood resource is drunk by a vampire, he should regain some hit points.
-Don't know how many emotes there are for the kid.. but just as some ideas.. I'd like.. if I drop him.. He cries.. or if anyone else but the parents hold the kid for like.. so long.. it cries for it's parents.. and I think it'd also be cool.. if after a year old.. it not only cries for them.. but cries out, Momma or Dadda . It'd also be cool if the baby emoted stuff like, wiggles their toes. or makes a spit bubble. you know.. those stupid things parents get over excited about. 7  ) Sendasien  Oh Oh! and what about, chews on their finger. holds up a finger. cries for no reason. streches. makes baby noises. Just things.. to always remind the parent they have a baby. The more the baby does.. the more fun!! :D I love you guys!That babies will cry for their fathers too!!Oh oh! What about the babies.. falling asleep ..maybe they coudl even wake up crying.. or.. just.. wake up.. that'd be fun too
-Don't know if I ideaed this before or not.. but pregnant women to gain weight?
 Why do I need to stand to embroider? I would think it's easier to do it sitting down!

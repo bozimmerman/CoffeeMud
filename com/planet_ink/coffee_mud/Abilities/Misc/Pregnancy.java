@@ -43,6 +43,7 @@ public class Pregnancy extends StdAbility
 	private boolean labor=false;
 	private int ticksInLabor=0;
 
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
@@ -284,7 +285,7 @@ public class Pregnancy extends StdAbility
 							I.recoverEnvStats();
 							mob.location().addItem(I);
 							Behavior B=CMClass.getBehavior("Emoter");
-							B.setParms("min=1 max=500 chance=10;crys.;wants its mommy.;smiles.");
+							B.setParms(Age.happyBabyEmoter);
 							I.addBehavior(B);
 							I.text();
 						}

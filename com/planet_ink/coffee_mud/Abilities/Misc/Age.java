@@ -31,6 +31,10 @@ public class Age extends StdAbility
 	}
 	private boolean norecurse=false;
 
+	public final static String happyBabyEmoter="min=1 max=500 chance=10;cries for no reason.;loves its mommy.;loves its daddy.;smiles.;makes a spit bubble.;wiggles its toes.;chews on their finger.;holds up a finger.;stretches its little body.";
+	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
+	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries;cries.";
+	
 	private void doThang()
 	{
 		if(affected==null) return;
@@ -214,6 +218,26 @@ public class Age extends StdAbility
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		if((affected instanceof Item)&&((msg.target()==affected)||(msg.tool()==affected)))
+		{
+			Behavior B=affected.fetchBehavior("Emoter");
+			if(B==null)
+			{
+				B=CMClass.getBehavior("Emoter");
+				if(B!=null)
+					affected.addBehavior(B);
+			}
+			if(((Item)affected).owner() instanceof Room)
+			{ if(!B.getParms().equalsIgnoreCase(downBabyEmoter)) B.setParms(downBabyEmoter);}
+			else
+			if(((Item)affected).owner() instanceof MOB)
+			{
+				if(affected.description().toUpperCase().indexOf(((Item)affected).owner().name())<=0)
+				{ if(!B.getParms().equalsIgnoreCase(otherBabyEmoter)) B.setParms(otherBabyEmoter);}
+				else
+				{ if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) B.setParms(happyBabyEmoter);}
+			}
+		}
 		doThang();
 	}
 

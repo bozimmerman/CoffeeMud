@@ -8,8 +8,8 @@ import java.io.File;
 public class Lacquerring extends CommonSkill
 {
 	public String ID() { return "Lacquerring"; }
-	public String name(){ return "Lacquerring";}
-	private static final String[] triggerStrings = {"LACQUERRING","LACQUER"};
+	public String name(){ return "Lacquering";}
+	private static final String[] triggerStrings = {"LACQUERING","LACQUER"};
 	public String[] triggerStrings(){return triggerStrings;}
 
 	private Item found=null;
@@ -18,8 +18,8 @@ public class Lacquerring extends CommonSkill
 	public Lacquerring()
 	{
 		super();
-		displayText="You are lacquerring...";
-		verb="lacquerring";
+		displayText="You are lacquering...";
+		verb="lacquering";
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
@@ -61,7 +61,7 @@ public class Lacquerring extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonEmote(mob,"<S-NAME> mess(es) up the lacquerring.");
+					commonEmote(mob,"<S-NAME> mess(es) up the lacquering.");
 				else
 				{
 					StringBuffer desc=new StringBuffer(found.description());
@@ -128,14 +128,14 @@ public class Lacquerring extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		verb="lacquerring "+target.name()+" "+writing;
+		verb="lacquering "+target.name()+" "+writing;
 		displayText="You are "+verb;
 		found=target;
 		if(darkFlag) writing=Util.capitalize(writing);
 		if(!profficiencyCheck(mob,0,auto)) writing="";
 		int duration=60-mob.envStats().level();
 		if(duration<12) duration=12;
-		FullMsg msg=new FullMsg(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) lacquerring "+target.name());
+		FullMsg msg=new FullMsg(mob,target,CMMsg.MSG_HANDS,"<S-NAME> start(s) lacquering <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

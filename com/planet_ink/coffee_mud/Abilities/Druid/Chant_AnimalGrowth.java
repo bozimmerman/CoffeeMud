@@ -10,7 +10,7 @@ public class Chant_AnimalGrowth extends Chant
 	public String ID() { return "Chant_AnimalGrowth"; }
 	public String name(){ return "Animal Growth";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
-	public String displayText(){return "(Behemoth)";}
+	public String displayText(){return "(Animal Growth)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_AnimalGrowth();}
@@ -82,6 +82,7 @@ public class Chant_AnimalGrowth extends Chant
 				mob.location().send(mob,msg);
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> grow(s) to an ENORMOUS size!");
 				beneficialAffect(mob,target,0);
+				mob.location().recoverRoomStats();
 			}
 		}
 		else

@@ -35,7 +35,8 @@ public class StdRace implements Race
 	public boolean[] racialAbilityQuals(){return null;}
 	public String[] culturalAbilityNames(){return null;}
 	public int[] culturalAbilityProfficiencies(){return null;}
-
+	public boolean uncharmable(){return false;}
+	
 	public boolean playerSelectable(){return false;}
 
 	public boolean fertile(){return true;}
@@ -72,6 +73,16 @@ public class StdRace implements Race
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
+		if(uncharmable()
+		&&(msg.target()==myHost)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
+		&&(myHost instanceof MOB)
+		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
+		{
+			msg.source().location().show(msg.source(),myHost,CMMsg.MSG_OK_VISUAL,"<T-NAME> seem(s) unaffected by the charm magic from <S-NAMESELF>.");
+			return false;
+		}
 		return true;
 	}
 

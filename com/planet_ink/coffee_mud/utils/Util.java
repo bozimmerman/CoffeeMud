@@ -246,6 +246,14 @@ public class Util
 		return s.toString().substring(2);
 	}
 	
+	public static Vector makeVector(String[] O)
+	{ 
+		Vector V=new Vector();
+		if(O!=null)
+		for(int s=0;s<O.length;s++)
+			V.addElement(O[s]);
+		return V;
+	}
 	public static Vector makeVector()
 	{ return new Vector();}
 	public static Vector makeVector(Object O)

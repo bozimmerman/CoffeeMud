@@ -17,6 +17,7 @@ public class FireElemental extends StdRace
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Fire Elemental";}
 	public boolean fertile(){return false;}
+	public boolean uncharmable(){return true;}
 
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
