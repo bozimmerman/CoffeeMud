@@ -69,7 +69,7 @@ public class Prayer_Plague extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -58,26 +58,19 @@ public class Skill_Map extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		Ability A=mob.fetchAffect(ID());
+		if(A!=null)
+		{
+			A.unInvoke();
+			return true;
+		}
 		if(mob.charStats().getStat(CharStats.INTELLIGENCE)<5)
 		{
 			mob.tell("You are too stupid to actually make a map.");
 			return false;
 		}
-		Item target=mob.fetchCarried(null,(String)commands.elementAt(0));
-		if(target==null)
-		{
-			target=mob.location().fetchItem(null,(String)commands.elementAt(0));
-			if((target!=null)&&(target.isGettable()))
-			{
-				mob.tell("You don't have that.");
-				return false;
-			}
-		}
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
-		{
-			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
-			return false;
-		}
+		Item target=getTarget(mob,null,givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
+		if(target==null)return false;
 
 		Item item=target;
 		if((item==null)||((item!=null)&&(!item.isReadable())))
