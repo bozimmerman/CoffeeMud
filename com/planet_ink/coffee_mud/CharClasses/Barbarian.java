@@ -169,22 +169,6 @@ public class Barbarian extends StdCharClass
 				return false;
 			}
 		}
-		else
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
-		{
-			if((msg.tool()!=null)
-			&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-			&&(myChar.isMine(msg.tool()))
-			&&(!msg.tool().ID().equals("Skill_Recall"))
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+msg.tool().name()+" attempt due to <S-HIS-HER> armor!");
-					return false;
-				}
-			}
-		}
 		return super.okMessage(myChar,msg);
 	}
 

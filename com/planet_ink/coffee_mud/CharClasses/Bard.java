@@ -16,10 +16,12 @@ public class Bard extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	protected String armorFailMessage(){return "<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
+	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 
 	public Bard()
 	{
@@ -150,52 +152,5 @@ public class Bard extends StdCharClass
 			outfitChoices.addElement(w);
 		}
 		return outfitChoices;
-	}
-
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
-		{
-			boolean spellLike=((msg.tool()!=null)
-							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))
-							   &&(myChar.isMine(msg.tool()))
-							   &&(!msg.tool().ID().equals("Skill_Recall")));
-			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
-			&&(msg.tool()!=null)
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+msg.tool().name()+"!");
-					return false;
-				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-				int classification=((Weapon)msg.tool()).weaponClassification();
-				switch(classification)
-				{
-				case Weapon.CLASS_SWORD:
-				case Weapon.CLASS_RANGED:
-				case Weapon.CLASS_THROWN:
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_DAGGER:
-					break;
-				default:
-					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-					{
-						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-						return false;
-					}
-					break;
-				}
-			}
-		}
-		return super.okMessage(myChar,msg);
 	}
 }

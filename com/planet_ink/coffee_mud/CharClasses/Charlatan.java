@@ -16,10 +16,11 @@ public class Charlatan extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 4;}
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 
 	public Charlatan()
 	{
@@ -174,45 +175,6 @@ public class Charlatan extends StdCharClass
 					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGE_MOVEMENTINDEX]/4,myChar.maxState());
 				if(Util.bset(A.usageType(),Ability.USAGE_HITPOINTS))
 					myChar.curState().adjMovement(A.usageCost(myChar)[Ability.USAGE_HITPOINTSINDEX]/4,myChar.maxState());
-			}
-
-
-			boolean spellLike=((msg.tool()!=null)
-							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))
-							   &&(myChar.isMine(msg.tool()))
-							   &&(!msg.tool().ID().equals("Skill_Recall")));
-			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
-			&&(msg.tool()!=null)
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> mess up <S-HIS-HER> "+msg.tool().name()+"!");
-					return false;
-				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-				int classification=((Weapon)msg.tool()).weaponClassification();
-				switch(classification)
-				{
-				case Weapon.CLASS_SWORD:
-				case Weapon.CLASS_RANGED:
-				case Weapon.CLASS_THROWN:
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_DAGGER:
-					break;
-				default:
-					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-					{
-						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-						return false;
-					}
-					break;
-				}
 			}
 		}
 		else

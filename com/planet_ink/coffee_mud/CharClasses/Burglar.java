@@ -10,6 +10,7 @@ public class Burglar extends Thief
 	private static boolean abilitiesLoaded2=false;
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_BURGLAR;}
 	
 	public Burglar()
 	{
@@ -105,18 +106,7 @@ public class Burglar extends Thief
 		}
 	}
 	public String statQualifications(){return "Dexterity 9+ Charisma 9+";}
-	protected static int[] allowedWeapons={ 
-				Weapon.CLASS_SWORD,
-				Weapon.CLASS_BLUNT,
-				Weapon.CLASS_FLAILED,
-				Weapon.CLASS_NATURAL,
-				Weapon.CLASS_DAGGER};
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, flailed, blunt, natural, or dagger-like weapon.";}
-	protected boolean isAllowedWeapon(int wclass){
-		for(int i=0;i<allowedWeapons.length;i++)
-			if(wclass==allowedWeapons[i]) return true;
-		return false;
-	}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)

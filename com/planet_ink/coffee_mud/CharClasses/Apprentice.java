@@ -16,13 +16,11 @@ public class Apprentice extends StdCharClass
 	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 25;}
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int getTrainsFirstLevel(){return 6;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
-	protected static int[] allowedWeapons={
-				Weapon.CLASS_NATURAL,
-				Weapon.CLASS_DAGGER};
+	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 
 
@@ -126,12 +124,6 @@ public class Apprentice extends StdCharClass
 	public String weaponLimitations(){return "To avoid fumble chance, must use natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear cloth, or vegetation based armor to avoid skill failure.";}
 
-	protected boolean isAllowedWeapon(int wclass){
-		for(int i=0;i<allowedWeapons.length;i++)
-			if(wclass==allowedWeapons[i]) return true;
-		return false;
-	}
-
 	public Vector outfit()
 	{
 		if(outfitChoices==null)
@@ -143,45 +135,5 @@ public class Apprentice extends StdCharClass
 		return outfitChoices;
 	}
 	
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)
-		&&(msg.source().charStats().getCurrentClass()==this)			  
-		&&(!myChar.isMonster()))
-		{
-			boolean spellLike=((msg.tool()!=null)
-							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))
-							   &&(myChar.isMine(msg.tool()))
-							   &&(!msg.tool().ID().equals("Skill_Recall")));
-			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.INTELLIGENCE)*2))
-				{
-					String name="in <S-HIS-HER> maneuver";
-					if(spellLike)
-						name=msg.tool().name().toLowerCase();
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
-					return false;
-				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-				int classification=((Weapon)msg.tool()).weaponClassification();
-				if(!isAllowedWeapon(classification))
-					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.WISDOM)*2))
-					{
-						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-						return false;
-					}
-			}
-		}
-		return super.okMessage(myChar,msg);
-	}
 	public String otherBonuses(){return "";}
 }

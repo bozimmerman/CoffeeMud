@@ -18,10 +18,13 @@ public class Mage extends StdCharClass
 	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getPracsFirstLevel(){return 6;}
 	public int getTrainsFirstLevel(){return 3;}
-	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
+	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_MAGELIKE;}
+	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
 	public Mage()
 	{
@@ -375,46 +378,6 @@ public class Mage extends StdCharClass
 	
 	public String weaponLimitations(){return "To avoid fumble chance, must use dagger, staff, or natural weapon.";}
 	public String armorLimitations(){return "Must wear cloth, vegetation, or paper based armor to avoid spell failure.";}
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
-		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&((msg.tool()==null)
-			   ||((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)&&(myChar.isMine(msg.tool()))))
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
-					return false;
-				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-				int classification=((Weapon)msg.tool()).weaponClassification();
-				switch(classification)
-				{
-				case Weapon.CLASS_STAFF:
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_DAGGER:
-					break;
-				default:
-					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
-					{
-						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-						return false;
-					}
-				}
-			}
-		}
-		return super.okMessage(myChar,msg);
-	}
 
 	public void level(MOB mob)
 	{

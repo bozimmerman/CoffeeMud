@@ -16,15 +16,10 @@ public class Thief extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
-	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
-	protected static int[] allowedWeapons={
-				Weapon.CLASS_SWORD,
-				Weapon.CLASS_RANGED,
-				Weapon.CLASS_THROWN,
-				Weapon.CLASS_NATURAL,
-				Weapon.CLASS_DAGGER};
+	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 
 
@@ -183,45 +178,6 @@ public class Thief extends StdCharClass
 		for(int i=0;i<allowedWeapons.length;i++)
 			if(wclass==allowedWeapons[i]) return true;
 		return false;
-	}
-
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
-		{
-			boolean spellLike=((msg.tool()!=null)
-							   &&((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0))
-							   &&(myChar.isMine(msg.tool()))
-							   &&(!msg.tool().ID().equals("Skill_Recall")));
-			if((spellLike||((msg.sourceMajor()&CMMsg.MASK_DELICATE)>0))
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-				{
-					String name="in <S-HIS-HER> maneuver";
-					if(spellLike)
-						name=msg.tool().name().toLowerCase();
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
-					return false;
-				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-			{
-				int classification=((Weapon)msg.tool()).weaponClassification();
-				if(!isAllowedWeapon(classification))
-					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
-					{
-						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-						return false;
-					}
-			}
-		}
-		return super.okMessage(myChar,msg);
 	}
 
 	public void unLevel(MOB mob)

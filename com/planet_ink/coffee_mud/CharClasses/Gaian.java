@@ -17,10 +17,13 @@ public class Gaian extends StdCharClass
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
-	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
+	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
+	public int allowedWeaponLevel(){return CharClass.WEAPONS_NATURAL;}
+	public int requiredArmorSourceMinor(){return CMMsg.TYP_CAST_SPELL;}
 
 	public Gaian()
 	{
@@ -258,50 +261,6 @@ public class Gaian extends StdCharClass
 					}
 			}
 		}
-	}
-
-	public boolean okMessage(Environmental myHost, CMMsg msg)
-	{
-		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
-		MOB myChar=(MOB)myHost;
-		if(!super.okMessage(myChar, msg))
-			return false;
-
-		if(msg.amISource(myChar)&&(!myChar.isMonster()))
-		{
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&((msg.tool()==null)
-			   ||((CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)&&(myChar.isMine(msg.tool()))))
-			&&(!armorCheck(myChar)))
-			{
-				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
-				{
-					myChar.location().show(myChar,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
-					return false;
-				}
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK)
-			&&(msg.tool()!=null)
-			&&(msg.tool() instanceof Weapon))
-				switch(((Weapon)msg.tool()).material()&EnvResource.MATERIAL_MASK)
-				{
-				case EnvResource.MATERIAL_WOODEN:
-				case EnvResource.MATERIAL_UNKNOWN:
-				case EnvResource.MATERIAL_LEATHER:
-				case EnvResource.MATERIAL_VEGETATION:
-				case EnvResource.MATERIAL_FLESH:
-					break;
-				default:
-					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.CONSTITUTION)*2)
-					{
-						myChar.location().show(myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+msg.tool().name()+".");
-						return false;
-					}
-					break;
-				}
-		}
-		return true;
 	}
 
 	public Vector outfit()
