@@ -2664,6 +2664,9 @@ public class Generic
 	{
 		if(mob.isMonster())
 			return;
+		if(!(me instanceof MOB)) 
+			return;
+		MOB mme=(MOB)me;
 		boolean ok=false;
 		int showFlag=-1;
 		if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_EDITORTYPE)>0)
@@ -2677,12 +2680,12 @@ public class Generic
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me,++showNumber,showFlag);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseCharStats().getCurrentClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+				mme.baseCharStats().getCurrentClass().buildMOB(mme,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 			genRejuv(mob,me,++showNumber,showFlag);
-			genRace(mob,me,++showNumber,showFlag);
+			genRace(mob,mme,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
-			genGender(mob,me,++showNumber,showFlag);
+			genGender(mob,mme,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
 				me.baseEnvStats().setDamage((int)Math.round(Util.div(me.baseEnvStats().damage(),me.baseEnvStats().speed())));
@@ -2690,9 +2693,9 @@ public class Generic
 			genDamage(mob,me,++showNumber,showFlag);
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
-			genAlignment(mob,me,++showNumber,showFlag);
-			genMoney(mob,me,++showNumber,showFlag);
-			genAbilities(mob,me,++showNumber,showFlag);
+			genAlignment(mob,mme,++showNumber,showFlag);
+			genMoney(mob,mme,++showNumber,showFlag);
+			genAbilities(mob,mme,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
 			genShopkeeper1(mob,me,++showNumber,showFlag);
@@ -2713,10 +2716,10 @@ public class Generic
 			{
 				showFlag=-1;
 				ok=true;
-				me.recoverCharStats();
-				me.recoverMaxState();
+				mme.recoverCharStats();
+				mme.recoverMaxState();
 				me.recoverEnvStats();
-				me.resetToMaxState();
+				mme.resetToMaxState();
 				if(me.text().length()>=maxLength)
 				{
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");

@@ -10,14 +10,14 @@ public class ShopKeepers
 {
 	private ShopKeepers(){}
 	
-	private static ShopKeeper shopkeeper(Room here, MOB mob)
+	private static MOB shopkeeper(Room here, MOB mob)
 	{
 		if(here==null) return null;
 		for(int i=0;i<here.numInhabitants();i++)
 		{
 			MOB thisMOB=here.fetchInhabitant(i);
 			if((thisMOB!=null)&&(thisMOB instanceof ShopKeeper)&&(Sense.canBeSeenBy(thisMOB,mob)))
-				return (ShopKeeper)thisMOB;
+				return thisMOB;
 		}
 		return null;
 	}

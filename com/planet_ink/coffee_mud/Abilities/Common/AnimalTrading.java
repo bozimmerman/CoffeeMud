@@ -23,7 +23,7 @@ public class AnimalTrading extends CommonSkill
 	}
 	public Environmental newInstance(){	return new AnimalTrading();}
 
-	private static ShopKeeper shopkeeper(Room here, MOB mob)
+	private static MOB shopkeeper(Room here, MOB mob)
 	{
 		for(int i=0;i<here.numInhabitants();i++)
 		{
@@ -31,7 +31,7 @@ public class AnimalTrading extends CommonSkill
 			if((thisMOB!=null)
 			&&(thisMOB instanceof ShopKeeper)
 			&&(Sense.canBeSeenBy(thisMOB,mob)))
-				return (ShopKeeper)thisMOB;
+				return thisMOB;
 		}
 		return null;
 	}

@@ -23,7 +23,7 @@ public class Skill_Haggle extends StdAbility
 		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+10);
 	}
 	
-	private static ShopKeeper shopkeeper(Room here, MOB mob)
+	private static MOB shopkeeper(Room here, MOB mob)
 	{
 		for(int i=0;i<here.numInhabitants();i++)
 		{
@@ -31,7 +31,7 @@ public class Skill_Haggle extends StdAbility
 			if((thisMOB!=null)
 			&&(thisMOB instanceof ShopKeeper)
 			&&(Sense.canBeSeenBy(thisMOB,mob)))
-				return (ShopKeeper)thisMOB;
+				return thisMOB;
 		}
 		return null;
 	}

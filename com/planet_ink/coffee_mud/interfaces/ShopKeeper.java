@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
-public interface ShopKeeper extends MOB
+public interface ShopKeeper extends Environmental
 {
 	public final static int DEAL_ANYTHING=0;
 	public final static int DEAL_GENERAL=1;
