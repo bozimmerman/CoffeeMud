@@ -112,7 +112,10 @@ public class Spell_TeleportationWard extends Spell
 				if((target instanceof Room)
 				&&((CoffeeUtensils.doesOwnThisProperty(mob,((Room)target)))
 					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),((Room)target))))))
+				{
 					target.addNonUninvokableEffect(this);
+					CMClass.DBEngine().DBUpdateRoom((Room)target);
+				}
 				else
 					beneficialAffect(mob,target,0);
 			}

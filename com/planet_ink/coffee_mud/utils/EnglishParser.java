@@ -858,7 +858,6 @@ public class EnglishParser extends Scriptable implements Tickable
 		}
 		
 		// second, inexacting pass
-		// first, exacting pass
 		C=CMClass.findCommandByTrigger(firstWord,false);
 		if(C!=null) return C;
 
@@ -868,22 +867,31 @@ public class EnglishParser extends Scriptable implements Tickable
 			if(A.triggerStrings()!=null)
 				for(int t=0;t<A.triggerStrings().length;t++)
 					if(A.triggerStrings()[t].toUpperCase().startsWith(firstWord))
+					{
+						commands.setElementAt(A.triggerStrings()[t],0);
 						return A;
+					}
 		}
 
 		social=Socials.FetchSocial(commands,false);
-		if(social!=null) return social;
+		if(social!=null)
+		{
+			commands.setElementAt(social.ID(),0);
+			return social;
+		}
 		
 		for(int c=0;c<ChannelSet.getNumChannels();c++)
 		{
 			if(ChannelSet.getChannelName(c).startsWith(firstWord))
 			{
+				commands.setElementAt(ChannelSet.getChannelName(c),0);
 				C=CMClass.getCommand("Channel");
 				if(C!=null) return C;
 			}
 			else
 			if(("NO"+ChannelSet.getChannelName(c)).startsWith(firstWord))
 			{
+				commands.setElementAt(ChannelSet.getChannelName(c),0);
 				C=CMClass.getCommand("NoChannel");
 				if(C!=null) return C;
 			}

@@ -107,6 +107,7 @@ public class Spell_Mirage extends Spell
 					{
 						A.setMiscText(CMMap.getExtendedRoomID(newRoom));
 						mob.location().addNonUninvokableEffect(A);
+						CMClass.DBEngine().DBUpdateRoom(mob.location());
 					}
 				}
 				else

@@ -188,7 +188,7 @@ public interface Clan extends Cloneable, Tickable
 
 	public int getClanRelations(String id);
 	public long getLastRelationChange(String id);
-	public void setClanRelations(String id, int rel);
+	public void setClanRelations(String id, int rel, long time);
 	
 	public int getGovernment();
 	public void setGovernment(int type);

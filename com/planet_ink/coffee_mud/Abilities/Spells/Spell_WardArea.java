@@ -186,7 +186,10 @@ public class Spell_WardArea extends Spell implements Trap
 				setMiscText(mob.Name());
 				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				{
 					mob.location().addNonUninvokableEffect((Ability)copyOf());
+					CMClass.DBEngine().DBUpdateRoom(mob.location());
+				}
 				else
 					beneficialAffect(mob,mob.location(),9999);
 				shooter=null;

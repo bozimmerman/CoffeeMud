@@ -69,7 +69,10 @@ public class Chant_MuddyGrounds extends Chant
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The ground here turns to MUD!");
 				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
+				{
 					mob.location().addNonUninvokableEffect(this);
+					CMClass.DBEngine().DBUpdateRoom(mob.location());
+				}
 				else
 					beneficialAffect(mob,mob.location(),0);
 			}

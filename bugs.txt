@@ -1,7 +1,4 @@
-we cant declare war due to day restrictions
-prop_peacemaker doesn't work?!
-skill trigger words have to be spelled out now?!
-also, after combat, queued commands just keep rolling
+duplication should not work on potions.
 chants/spells/etc should have parm to stop listing at specified level, update help
 Courante Dance doesn't seem to give party members extra attacks.
 code something to examine all items and make sure they aren't overboard.

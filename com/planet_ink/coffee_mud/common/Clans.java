@@ -218,12 +218,12 @@ public class Clans implements Clan, Tickable
 		if(i!=null) return (long)i[1];
 		return 0;
 	}
-	public void setClanRelations(String id, int rel)
+	public void setClanRelations(String id, int rel, long time)
 	{
 		relations.remove(id.toUpperCase());
 		long[] i=new long[2];
 		i[0]=(long)rel;
-		i[1]=System.currentTimeMillis();
+		i[1]=time;
 		relations.put(id.toUpperCase(),i);
 	}
 
@@ -712,7 +712,7 @@ public class Clans implements Clan, Tickable
 					continue;
 				String relClanID=XMLManager.getValFromPieces(iblk.contents,"CLAN");
 				int rel=XMLManager.getIntFromPieces(iblk.contents,"STATUS");
-				setClanRelations(relClanID,rel);
+				setClanRelations(relClanID,rel,0);
 			}
 		}
 	}

@@ -672,7 +672,12 @@ public class StdMOB implements MOB
 
 	public void setVictim(MOB mob)
 	{
-		if(mob==null) setAtRange(-1);
+		if(mob==null)
+		{	
+			setAtRange(-1);
+			if(victim!=null)
+				commandQue.clear();
+		}
 		if(victim==mob) return;
 		if(mob==this) return;
 

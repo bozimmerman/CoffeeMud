@@ -408,6 +408,41 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
+		if(s.equalsIgnoreCase("goldceilingfixer"))
+		{
+			if(mob.session()==null) return false;
+			mob.session().print("working...");
+			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
+			{
+				Area A=(Area)a.nextElement();
+				A.toggleMobility(false);
+				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					if(R.roomID().length()==0) continue;
+					CoffeeUtensils.resetRoom(R);
+					boolean didSomething=false;
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						MOB M=(MOB)R.fetchInhabitant(i);
+						if((M.isMonster())
+						&&(M.getStartRoom()==R)
+						&&(M.getMoney()>(M.baseEnvStats().level()*20)))
+						{
+							M.setMoney(M.baseEnvStats().level()*20);
+							Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+".");
+							didSomething=true;
+						}
+					}
+					mob.session().print(".");
+					if(didSomething)
+						CMClass.DBEngine().DBUpdateMOBs(R);
+				}
+				A.toggleMobility(true);
+			}
+			mob.session().println("done!");
+		}
+		else
 		if(s.equalsIgnoreCase("smalleropendoors"))
 		{
 			if(mob.session()==null) return false;

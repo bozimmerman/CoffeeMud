@@ -113,6 +113,17 @@ public class Chant_Treehouse extends Chant
 				A.setMiscText(CMMap.getExtendedRoomID(mob.location()));
 				Exit E=CMClass.getExit("ClimbableExit");
 				E.addNonUninvokableEffect(A);
+				A=CMClass.getAbility("Prop_PeaceMaker");
+				if(A!=null) newRoom.addEffect(A);
+				A=CMClass.getAbility("Prop_NoRecall");
+				if(A!=null) newRoom.addEffect(A);
+				A=CMClass.getAbility("Prop_NoSummon");
+				if(A!=null) newRoom.addEffect(A);
+				A=CMClass.getAbility("Prop_NoTeleport");
+				if(A!=null) newRoom.addEffect(A);
+				A=CMClass.getAbility("Prop_NoTeleportOut");
+				if(A!=null) newRoom.addEffect(A);
+				
 				newRoom.rawExits()[Directions.DOWN]=E;
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
