@@ -42,52 +42,54 @@ public class Spell_ChainLightening extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?");
-			while(damage>0)
-			for(int i=0;i<targets.size();i++)
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?"))
 			{
-				MOB target=(MOB)targets.elementAt(i);
-				if(target.amDead()||(target.location()!=mob.location()))
+				while(damage>0)
+				for(int i=0;i<targets.size();i++)
 				{
-					int count=0;
-					for(int i2=0;i2<targets.size();i2++)
+					MOB target=(MOB)targets.elementAt(i);
+					if(target.amDead()||(target.location()!=mob.location()))
 					{
-						MOB M2=(MOB)targets.elementAt(i2);
-						if((!M2.amDead())
-						   &&(mob.location()!=null)
-						   &&(mob.location().isInhabitant(M2))
-						   &&(M2.location()==mob.location()))
-							 count++;
+						int count=0;
+						for(int i2=0;i2<targets.size();i2++)
+						{
+							MOB M2=(MOB)targets.elementAt(i2);
+							if((!M2.amDead())
+							   &&(mob.location()!=null)
+							   &&(mob.location().isInhabitant(M2))
+							   &&(M2.location()==mob.location()))
+								 count++;
+						}
+						if(count<2)
+							return true;
+						continue;
 					}
-					if(count<2)
-						return true;
-					continue;
-				}
 
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				boolean oldAuto=auto;
-				if((target==mob)||(myGroup.contains(target)))
-				   auto=true;
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.MASK_GENERAL:0),null);
-				auto=oldAuto;
-				if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
-				{
-					mob.location().send(mob,msg);
-					mob.location().send(mob,msg2);
-					invoker=mob;
-
-					int dmg=damage;
-					if((!msg.wasModified())&&(!msg2.wasModified()))
-						dmg = (int)Math.round(Util.div(dmg,2.0));
-					if(target.location()==mob.location())
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					boolean oldAuto=auto;
+					if((target==mob)||(myGroup.contains(target)))
+					   auto=true;
+					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
+					FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_ELECTRIC|(auto?Affect.MASK_GENERAL:0),null);
+					auto=oldAuto;
+					if((mob.location().okAffect(mob,msg))&&((mob.location().okAffect(mob,msg2))))
 					{
-						ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
-						damage = (int)Math.round(Util.div(damage,2.0));
-						if(damage<5){ damage=0; break;}
+						mob.location().send(mob,msg);
+						mob.location().send(mob,msg2);
+						invoker=mob;
+
+						int dmg=damage;
+						if((!msg.wasModified())&&(!msg2.wasModified()))
+							dmg = (int)Math.round(Util.div(dmg,2.0));
+						if(target.location()==mob.location())
+						{
+							ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The bolt <DAMAGE> <T-NAME>!");
+							damage = (int)Math.round(Util.div(damage,2.0));
+							if(damage<5){ damage=0; break;}
+						}
 					}
 				}
 			}

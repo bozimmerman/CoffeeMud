@@ -114,7 +114,7 @@ public class Falling extends StdAbility
 				&&(room.getExitInDir(direction)!=null)
 				&&(room.getExitInDir(direction).isOpen()))
 				{
-					room.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls "+addStr+".");
+					room.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> falls "+addStr+".");
 					Vector V=new Vector();
 					recursiveRoomItems(V,item,room);
 					for(int v=0;v<V.size();v++)
@@ -124,7 +124,7 @@ public class Falling extends StdAbility
 						nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
 					}
 					room=nextRoom;
-					nextRoom.show(invoker,null,Affect.MSG_OK_ACTION,item.name()+" falls in from "+(reversed()?"below":"above")+".");
+					nextRoom.show(invoker,null,item,Affect.MSG_OK_ACTION,"<O-NAME> falls in from "+(reversed()?"below":"above")+".");
 					return true;
 				}
 				else

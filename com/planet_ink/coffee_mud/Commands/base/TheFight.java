@@ -542,7 +542,7 @@ public class TheFight
 		else
 		{
 			FullMsg msg=new FullMsg(mob,item,target,Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> "+Directions.getInDirectionName(dir).toLowerCase()+".");
-			FullMsg msg2=new FullMsg(mob,item,target,Affect.MSG_THROW,item.name()+" fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
+			FullMsg msg2=new FullMsg(mob,item,target,Affect.MSG_THROW,"<T-NAME> fly(s) in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+".");
 			if(mob.location().okAffect(mob,msg)&&((Room)target).okAffect(mob,msg2))
 			{
 				mob.location().send(mob,msg);
@@ -696,7 +696,7 @@ public class TheFight
 			Container container=(Container)containers.elementAt(i);
 			if(ExternalPlay.remove(mob,putThis,true))
 			{
-				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> sheath(s) "+putThis.name()+" in <T-NAME>");
+				FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> sheath(s) <O-NAME> in <T-NAME>");
 				if(mob.location().okAffect(mob,putMsg))
 					mob.location().send(mob,putMsg);
 			}

@@ -36,21 +36,21 @@ public class Prop_WearZapper extends Property
 		case Affect.TYP_HOLD:
 			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,myItem.name()+" flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,Affect.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
 		case Affect.TYP_WEAR:
 			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,myItem.name()+" flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,Affect.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;
 		case Affect.TYP_WIELD:
 			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,myItem.name()+" flashes and falls out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,myItem,Affect.MSG_OK_VISUAL,"<O-NAME> flashes and falls out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;

@@ -86,19 +86,34 @@ public interface Room extends Environmental
 	
 	public void send(MOB source, Affect msg);
 	public void sendOthers(MOB source, Affect msg);
-	public void show(MOB source,
-					 Environmental target,
-					 int allCode,
-					 String allMessage);
 	public void showHappens(int allCode, String allMessage);
-	public void showOthers(MOB source,
-						   Environmental target,
-						   int allCode,
-						   String allMessage);
-	public void showSource(MOB source,
-						   Environmental target,
-						   int allCode,
-						   String allMessage);
+	public boolean show(MOB source,
+						Environmental target,
+						int allCode,
+						String allMessage);
+	public boolean show(MOB source,
+						Environmental target,
+						Environmental tool,
+						int allCode,
+						String allMessage);
+	public boolean showOthers(MOB source,
+						      Environmental target,
+						      int allCode,
+						      String allMessage);
+	public boolean showSource(MOB source,
+						      Environmental target,
+						      int allCode,
+						      String allMessage);
+	public boolean showOthers(MOB source,
+							  Environmental target,
+							  Environmental tool,
+							  int allCode,
+							  String allMessage);
+	public boolean showSource(MOB source,
+							  Environmental target,
+							  Environmental tool,
+							  int allCode,
+							  String allMessage);
 	
 	public MOB fetchInhabitant(String inhabitantID);
 	public void addInhabitant(MOB mob);

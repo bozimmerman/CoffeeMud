@@ -53,7 +53,7 @@ public class Fighter_DeflectProjectile extends StdAbility
 				if(!mob.location().isContent(w))
 					return true;
 			}
-			FullMsg msg=new FullMsg(mob,w,Affect.MSG_GET,"<S-NAME> deflect(s) the <T-NAME> shot by "+affect.source().name()+"!");
+			FullMsg msg=new FullMsg(mob,w,affect.source(),Affect.MSG_GET,"<S-NAME> deflect(s) the <T-NAME> shot by <O-NAME>!");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

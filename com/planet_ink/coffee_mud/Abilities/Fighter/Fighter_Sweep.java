@@ -73,26 +73,28 @@ public class Fighter_Sweep extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"^F<S-NAME> sweep(s)!^?");
-			invoker=mob;
-			mob.addAffect(this);
-			mob.recoverEnvStats();
-			for(Enumeration e=h.elements();e.hasMoreElements();)
+			if(mob.location().show(mob,null,this,Affect.MSG_NOISYMOVEMENT,"^F<S-NAME> sweep(s)!^?"))
 			{
-				MOB target=(MOB)e.nextElement();
-				// it worked, so build a copy of this ability,
-				// and add it to the affects list of the
-				// affected MOB.  Then tell everyone else
-				// what happened.
-				FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_OK_ACTION|(auto?Affect.MASK_GENERAL:0),null);
-				if(mob.location().okAffect(mob,msg))
+				invoker=mob;
+				mob.addAffect(this);
+				mob.recoverEnvStats();
+				for(Enumeration e=h.elements();e.hasMoreElements();)
 				{
-					mob.location().send(mob,msg);
-					ExternalPlay.postAttack(mob,target,w);
+					MOB target=(MOB)e.nextElement();
+					// it worked, so build a copy of this ability,
+					// and add it to the affects list of the
+					// affected MOB.  Then tell everyone else
+					// what happened.
+					FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_OK_ACTION|(auto?Affect.MASK_GENERAL:0),null);
+					if(mob.location().okAffect(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						ExternalPlay.postAttack(mob,target,w);
+					}
 				}
+				mob.delAffect(this);
+				mob.recoverEnvStats();
 			}
-			mob.delAffect(this);
-			mob.recoverEnvStats();
 		}
 		else
 			return maliciousFizzle(mob,null,"<S-NAME> fail(s) to sweep.");

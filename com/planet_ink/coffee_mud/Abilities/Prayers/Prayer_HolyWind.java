@@ -82,7 +82,7 @@ public class Prayer_HolyWind extends Prayer
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> "+prayWord(mob)+" for the holy wind to blow through here.^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"A horrendous wind gust blows through here.":"^S<S-NAME> "+prayWord(mob)+" for the holy wind to blow through here.^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

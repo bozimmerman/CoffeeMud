@@ -38,9 +38,11 @@ public class Fighter_Cleave extends StdAbility
 		{
 			Item w=mob.fetchWieldedItem();
 			if(w==null) w=mob.myNaturalWeapon();
-			mob.location().show(mob,nextTarget,Affect.MSG_NOISYMOVEMENT,"<S-NAME> CLEAVE(S) INTO <T-NAME>!!");
-			ExternalPlay.postAttack(mob,nextTarget,w);
-			helpProfficiency(mob);
+			if(mob.location().show(mob,nextTarget,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> CLEAVE(S) INTO <T-NAME>!!"))
+			{
+				ExternalPlay.postAttack(mob,nextTarget,w);
+				helpProfficiency(mob);
+			}
 		}
 		thisTarget=null;
 		nextTarget=null;

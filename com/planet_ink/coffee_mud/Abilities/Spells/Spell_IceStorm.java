@@ -35,7 +35,7 @@ public class Spell_IceStorm extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"A ferocious ice storm appears!":"^S<S-NAME> evoke(s) a ferocious ice storm!^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

@@ -63,7 +63,7 @@ public class Spell_Permanency extends Spell
 					mob.tell("You lose "+exp+" experience points.");
 					mob.charStats().getCurrentClass().loseExperience(mob,exp);
 					theOne.makeNonUninvokable();
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
+					mob.location().show(mob,target,null,Affect.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
 				}
 			}
 

@@ -38,7 +38,7 @@ public class Chant_Tangle extends Chant
 			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
 			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+thePlants.name()+".");
+				mob.location().show(mob,null,thePlants,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against <O-NAME>.");
 				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
 				if(amountRemaining<0)
 					unInvoke();
@@ -60,7 +60,7 @@ public class Chant_Tangle extends Chant
 		if(canBeUninvoked())
 		{
 			if(!mob.amDead())
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of "+thePlants.name());
+				mob.location().show(mob,null,thePlants,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of <O-NAME>.");
 			ExternalPlay.standIfNecessary(mob);
 		}
 	}
@@ -88,22 +88,24 @@ public class Chant_Tangle extends Chant
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> begin(s) to chant.^?");
-			// it worked, so build a copy of this ability,
-			// and add it to the affects list of the
-			// affected MOB.  Then tell everyone else
-			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-			if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> begin(s) to chant.^?"))
 			{
-				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				// it worked, so build a copy of this ability,
+				// and add it to the affects list of the
+				// affected MOB.  Then tell everyone else
+				// what happened.
+				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
+				if((mob.location().okAffect(mob,msg))&&(target.fetchAffect(this.ID())==null))
 				{
-					amountRemaining=200;
-					if(target.location()==mob.location())
+					mob.location().send(mob,msg);
+					if(!msg.wasModified())
 					{
-						success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
-						target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> become(s) stuck in "+thePlants.name()+" as they grow and twist around <S-HIM-HER>!");
+						amountRemaining=200;
+						if(target.location()==mob.location())
+						{
+							success=maliciousAffect(mob,target,(adjustedLevel(mob)*10),-1);
+							target.location().show(target,null,thePlants,Affect.MSG_OK_ACTION,"<S-NAME> become(s) stuck in <O-NAME> as they grow and twist around <S-HIM-HER>!");
+						}
 					}
 				}
 			}

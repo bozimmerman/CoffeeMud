@@ -372,7 +372,7 @@ public class Grouping
 				C.baseEnvStats().setAbility(gold);
 				C.recoverEnvStats();
 				mob.addInventory(C);
-				FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.MSG_GIVE,"<S-NAME> give(s) "+C.name()+" to <T-NAMESELF>.");
+				FullMsg newMsg=new FullMsg(mob,recipient,C,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 				if(mob.location().okAffect(mob,newMsg))
 					mob.location().send(mob,newMsg);
 				eligible=true;
@@ -434,7 +434,7 @@ public class Grouping
 						if(mob.location().okAffect(mob,msg))
 						{
 							mob.location().send(mob,msg);
-							mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> put(s) "+item.name()+" on <T-NAMESELF>.");
+							mob.location().show(mob,target,item,Affect.MSG_QUIETMOVEMENT,"<S-NAME> put(s) <O-NAME> on <T-NAMESELF>.");
 						}
 						else
 							mob.tell("You cannot seem to get "+item.name()+" on "+target.name()+".");
@@ -497,7 +497,7 @@ public class Grouping
 					{
 						mob.location().send(mob,msg);
 						if(ExternalPlay.get(mob,null,item,true))
-							mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> take(s) "+item.name()+" off <T-NAMESELF>.");
+							mob.location().show(mob,target,item,Affect.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
 					}
 					else
 						mob.tell("You cannot seem to get "+item.name()+" off "+target.name()+".");

@@ -117,7 +117,7 @@ public class Spell_StinkingCloud extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"A stinking cloud of orange and green gas appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"A stinking cloud of orange and green gas appears!":"^S<S-NAME> incant(s) and wave(s) <S-HIS-HER> arms around.  A horrendous cloud of green and orange gas appears!^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

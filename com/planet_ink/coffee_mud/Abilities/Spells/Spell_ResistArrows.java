@@ -47,7 +47,7 @@ public class Spell_ResistArrows extends Spell
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((Weapon)affect.tool()).ammunitionType()+" from <T-NAME>!");
+			mob.location().show(mob,affect.source(),affect.tool(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> absorbs the "+((Weapon)affect.tool()).ammunitionType()+" from <T-NAME>!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

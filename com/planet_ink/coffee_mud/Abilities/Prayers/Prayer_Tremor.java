@@ -95,7 +95,7 @@ public class Prayer_Tremor extends Prayer
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" thunderously.^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

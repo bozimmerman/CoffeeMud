@@ -132,7 +132,7 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void gas(MOB mob)
 	{
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in "+affected.name()+"!");
+		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <O-NAME>!");
 		if(mob.envStats().level()>15)
 		{
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"The room fills with gas!");
@@ -169,7 +169,7 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void needle(MOB mob)
 	{
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in "+affected.name()+"!");
+		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in <O-NAME>!");
 		MOB target=mob;
 		int dmg=Dice.roll(target.envStats().level(),5,1);
 		FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
@@ -187,7 +187,7 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void blade(MOB mob)
 	{
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in "+affected.name()+"!");
+		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in <O-NAME>!");
 		MOB target=mob;
 		int dmg=Dice.roll(target.envStats().level(),2,0);
 		FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
@@ -204,7 +204,7 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	public void victimOfSpell(MOB mob)
 	{
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in "+affected.name()+"!");
+		mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <O-NAME>!");
 		String spell=text();
 		int x=spell.indexOf(";");
 		Vector V=new Vector();

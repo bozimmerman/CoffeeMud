@@ -72,7 +72,7 @@ public class Spell_FoolsGold extends Spell
 				gold.baseEnvStats().setWeight(0);
 				gold.recoverEnvStats();
 				mob.addInventory(gold);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> hold(s) "+gold.name());
+				mob.location().show(mob,null,gold,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> hold(s) <O-NAME>.");
 				destroyOnNextTick=false;
 				beneficialAffect(mob,gold,0);
 			}

@@ -53,7 +53,7 @@ public class Spell_IronGrip extends Spell
 			&&(mob.isMine((Item)affect.target()))
 			&&(((Item)affect.target()).amWearingAt(Item.WIELD)))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of "+affect.target().name()+", but <S-HIS-HER> grip is too strong!");
+				mob.location().show(mob,null,affect.target(),Affect.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
 				return false;
 			}
 		}

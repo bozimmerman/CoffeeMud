@@ -67,11 +67,11 @@ public class ItemIdentifier extends StdBehavior
 			source.recoverEnvStats();
 			FullMsg newMsg=new FullMsg(affect.source(),observer,null,Affect.MSG_OK_ACTION,"<S-NAME> give(s) "+cost+" gold coins to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) "+affect.tool().name()+" very closely.");
+			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) <T-NAME> very closely.");
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,null,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) '"+affect.tool().name()+" is made of "+EnvResource.RESOURCE_DESCS[((Item)affect.tool()).material()&EnvResource.RESOURCE_MASK].toLowerCase()+".\n\r"+((Item)affect.tool()).secretIdentity()+"'^?.");
 			affect.addTrailerMsg(newMsg);
-			newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) "+affect.tool().name()+" to <T-NAMESELF>.");
+			newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);
 		}
 	}

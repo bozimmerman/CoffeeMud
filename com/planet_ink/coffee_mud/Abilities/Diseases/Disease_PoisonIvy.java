@@ -33,7 +33,7 @@ public class Disease_PoisonIvy extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
+			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
 			return true;
 		}
 		return true;

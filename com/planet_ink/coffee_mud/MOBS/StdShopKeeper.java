@@ -641,7 +641,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		changeBag.setCapacity(totalWeight);
 		changeBag.recoverEnvStats();
 		changeBag.text();
-		FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) "+changeBag.name()+" to <T-NAMESELF>.");
+		FullMsg newMsg=new FullMsg(banker,customer,changeBag,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME>_PUT to <T-NAMESELF>.");
 		if(banker.location().okAffect(banker,newMsg))
 		{
 			banker.location().send(banker,newMsg);

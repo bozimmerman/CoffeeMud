@@ -88,7 +88,7 @@ public class ShopKeepers
 					mob.tell("You don't see '"+thisName+"' here.");
 				return;
 			}
-			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_SELL,"<S-NAME> sell(s) "+thisThang.name()+" to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_SELL,"<S-NAME> sell(s) <O-NAME> to <T-NAMESELF>.");
 			if(!mob.location().okAffect(mob,newMsg))
 				return;
 			mob.location().send(mob,newMsg);
@@ -256,7 +256,7 @@ public class ShopKeepers
 					mob.tell("There doesn't appear to be any for sale.  Try LIST.");
 				return;
 			}
-			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_BUY,"<S-NAME> buy(s) "+thisThang.name()+" from <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_BUY,"<S-NAME> buy(s) <O-NAME> from <T-NAMESELF>.");
 			if(!mob.location().okAffect(mob,newMsg))
 				return;
 			mob.location().send(mob,newMsg);
@@ -304,7 +304,7 @@ public class ShopKeepers
 				return;
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_DEPOSIT,"<S-NAME> deposit(s) "+thisThang.name()+" into <S-HIS-HER> account with <T-NAMESELF>.");
+		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
 		if(!mob.location().okAffect(mob,newMsg))
 			return;
 		mob.location().send(mob,newMsg);
@@ -387,7 +387,7 @@ public class ShopKeepers
 				}
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) "+thisThang.name()+" from <S-HIS-HER> account with "+shopkeeper.name()+".");
+		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".");
 		if(!mob.location().okAffect(mob,newMsg))
 			return;
 		mob.location().send(mob,newMsg);

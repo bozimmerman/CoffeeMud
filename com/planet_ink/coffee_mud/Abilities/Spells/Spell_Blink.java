@@ -64,16 +64,16 @@ public class Spell_Blink extends Spell
 						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) again.");
 						break;
 					case 1:
-						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a bit further from "+mob.getVictim().name()+".");
+						mob.location().show(mob,null,mob.getVictim(),Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a bit further from <O-NAMESELF>.");
 						break;
 					case 2:
-						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) much further from "+mob.getVictim().name()+".");
+						mob.location().show(mob,null,mob.getVictim(),Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) much further from <O-NAMESELF>.");
 						break;
 					case -1:
-						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a bit closer to "+mob.getVictim().name()+".");
+						mob.location().show(mob,null,mob.getVictim(),Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) a bit closer to <O-NAMESELF>.");
 						break;
 					case -2:
-						mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) much closer to "+mob.getVictim().name()+".");
+						mob.location().show(mob,null,mob.getVictim(),Affect.MSG_OK_VISUAL,"<S-NAME> vanish(es) and reappear(s) much closer to <O-NAMESELF>.");
 						break;
 					}
 				}

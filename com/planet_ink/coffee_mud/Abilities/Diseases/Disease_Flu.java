@@ -33,7 +33,7 @@ public class Disease_Flu extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
+			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
 			int damage=Dice.roll(2,invoker.envStats().level()+1,1);
 			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
 			catchIt(mob);

@@ -39,8 +39,8 @@ public class Spell_MirrorImage extends Spell
 				int numberOfTargets = numberOfImages + 1;
 				if(randomizer.nextInt() % numberOfTargets == 0)
 				{
-					mob.location().show(mob,affect.source(),Affect.MSG_OK_ACTION,"<T-NAME> attack(s) a mirrored image!");
-					numberOfImages--;
+					if(mob.location().show(mob,affect.source(),Affect.MSG_NOISYMOVEMENT,"<T-NAME> attack(s) a mirrored image!"))
+						numberOfImages--;
 					return false;
 				}
 			}

@@ -34,12 +34,13 @@ public class Thief_Bind extends ThiefSkill
 			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
 			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ropes binding <S-HIM-HER>.");
-				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
-				if(amountRemaining<0)
-					unInvoke();
-				else
-					return false;
+				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ropes binding <S-HIM-HER>."))
+				{
+					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+					if(amountRemaining<0)
+						unInvoke();
+				}
+				return false;
 			}
 		}
 		return super.okAffect(myHost,affect);

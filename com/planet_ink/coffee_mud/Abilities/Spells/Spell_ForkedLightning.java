@@ -34,7 +34,7 @@ public class Spell_ForkedLightning extends Spell
 		if(success)
 		{
 
-			mob.location().show(mob,null,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of forked lightning.^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of forked lightning.^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

@@ -58,10 +58,12 @@ public class Skill_Disarm extends StdAbility
 		   &&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 			  ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
-			mob.location().show(mob,mob.getVictim(),Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!");
-			FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
-			if(mob.location().okAffect(mob,msg))
-				mob.location().send(mob.getVictim(),msg);
+			if(mob.location().show(mob,mob.getVictim(),Affect.MSG_NOISYMOVEMENT,auto?"<T-NAME> is disarmed!":"<S-NAME> disarm(s) <T-NAMESELF>!"))
+			{
+				FullMsg msg=new FullMsg(mob.getVictim(),hisWeapon,null,Affect.MSG_DROP,null);
+				if(mob.location().okAffect(mob,msg))
+					mob.location().send(mob.getVictim(),msg);
+			}
 		}
 		else
 			maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to disarm <T-NAMESELF> and fail(s)!");

@@ -124,7 +124,7 @@ public class Barbarian extends StdCharClass
 		{
 			if(Dice.rollPercentage()<=myChar.charStats().getClassLevel(this))
 			{
-				myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+affect.tool().name()+" attack from "+affect.source().name()+"!");
+				myChar.location().show(myChar,null,affect.source(),Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+affect.tool().name()+" attack from <O-NAMESELF>!");
 				return false;
 			}
 		}

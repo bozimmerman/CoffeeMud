@@ -105,7 +105,7 @@ public class Dragonbreath extends StdAbility
 
 			if(text().length()==0)
 				setMiscText("");
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase);
+			if(mob.location().show(mob,null,this,Affect.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

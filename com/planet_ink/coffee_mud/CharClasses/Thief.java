@@ -33,49 +33,78 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Edged",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
+			
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_Appraise",true);
+CMAble.addCharAbilityMapping(ID(),2,"Thief_SneakAttack",true);
+			
+			CMAble.addCharAbilityMapping(ID(),3,"Thief_Appraise",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",true);
+			
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
+			
 			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Dirt",true);
+			
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",true);
+			
 			CMAble.addCharAbilityMapping(ID(),7,"Thief_Peek",true);
+CMAble.addCharAbilityMapping(ID(),7,"Thief_Poison",true);
+			
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
+			
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_Listen",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Parry",true);
+			
 			CMAble.addCharAbilityMapping(ID(),10,"Thief_BackStab",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Thief_Haggle",false);
+			
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Steal",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_Trip",true);
+			
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_Snatch",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Skill_TwoWeaponFighting",true);
+
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Observation",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Bind",true);
+			
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Surrender",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
+			
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_SilentGold",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
+			
 			CMAble.addCharAbilityMapping(ID(),16,"Thief_SilentLoot",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
+			
 			CMAble.addCharAbilityMapping(ID(),17,"Thief_Shadow",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",true);
+			
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_Search",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
+			
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Distract",true);
+			
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Lore",true);
+			
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Sap",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Thief_Poison",true);
+			
+CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",true);
+			
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",true);
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_Charm",false);
+			
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Bribe",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
+			
+CMAble.addCharAbilityMapping(ID(),25,"Thief_Ambush",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Ventrilloquate",false);
+CMAble.addCharAbilityMapping(ID(),40,"Thief_Nondetection",false);
 		}
 	}
 

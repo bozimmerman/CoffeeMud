@@ -33,7 +33,7 @@ public class Spell_Disenchant extends Spell
 					mob.tell(target.name()+" doesn't seem to be enchanted.");
 				else
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,target.name()+" fades and becomes dull!");
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
 					target.baseEnvStats().setLevel(target.baseEnvStats().level()-(mob.envStats().level()*3));
 					if(target.baseEnvStats().level()<=0)
 						target.baseEnvStats().setLevel(1);

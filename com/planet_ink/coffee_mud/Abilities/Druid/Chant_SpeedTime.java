@@ -30,7 +30,7 @@ public class Chant_SpeedTime extends Chant
 				for(int i=0;i<(adjustedLevel(mob)/2);i++)
 					ExternalPlay.tickAllTickers(mob.location());
 				if(CMMap.numAreas()>0) CMMap.getFirstArea().tickTock(1);
-				mob.location().show(mob,null,affectType(auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
+				mob.location().show(mob,null,this,affectType(auto),auto?"It stops.":"^S<S-NAME> stop(s) chanting.^?");
 			}
 		}
 		else

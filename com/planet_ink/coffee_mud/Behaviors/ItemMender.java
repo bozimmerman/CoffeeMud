@@ -85,7 +85,7 @@ public class ItemMender extends StdBehavior
 			source.setMoney(source.getMoney()-cost);
 			source.recoverEnvStats();
 			((Item)affect.tool()).setUsesRemaining(100);
-			FullMsg newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) "+affect.tool().name()+" and "+cost+" coins to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> and "+cost+" coins to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,null,Affect.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.^?");
 			affect.addTrailerMsg(newMsg);

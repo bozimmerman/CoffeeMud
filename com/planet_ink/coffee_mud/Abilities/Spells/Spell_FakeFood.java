@@ -55,7 +55,7 @@ public class Spell_FakeFood extends Spell
 					Food F2=(Food)F.copyOf();
 					F2.recoverEnvStats();
 					mob.location().addItemRefuse(F2,Item.REFUSE_RESOURCE);
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,F2.name()+" appears!");
+					mob.location().show(mob,null,F2,Affect.MSG_OK_VISUAL,"<O-NAME> appears!");
 				}
 			}
 		}

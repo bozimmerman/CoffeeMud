@@ -108,12 +108,14 @@ public class Prayer_Monolith extends Prayer
 					Item w=mob.fetchWieldedItem();
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
-					mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of stone with "+w.name()+".^?");
-					amountRemaining-=mob.envStats().damage();
-					if(amountRemaining<0)
+					if(mob.location().show(mob,null,w,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of stone with <O-NAME>.^?"))
 					{
-						deathNotice="The monolith of stone is destroyed!";
-						((Item)affected).destroyThis();
+						amountRemaining-=mob.envStats().damage();
+						if(amountRemaining<0)
+						{
+							deathNotice="The monolith of stone is destroyed!";
+							((Item)affected).destroyThis();
+						}
 					}
 					return false;
 				}

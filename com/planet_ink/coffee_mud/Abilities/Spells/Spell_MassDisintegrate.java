@@ -50,7 +50,7 @@ public class Spell_MassDisintegrate extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"Something is happening!":"^S<S-NAME> wave(s) <S-HIS-HER> arms and utter(s) a trecherous spell!^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

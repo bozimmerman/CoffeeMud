@@ -32,12 +32,13 @@ public class Spell_Repulsion extends Spell
 		{
 			if(affect.sourceMinor()==Affect.TYP_ADVANCE)
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the repulsion field.");
-				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
-				if(amountRemaining<0)
-					unInvoke();
-				else
-					return false;
+				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the repulsion field."))
+				{
+					amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
+					if(amountRemaining<0)
+						unInvoke();
+				}
+				return false;
 			}
 		}
 		return super.okAffect(myHost,affect);
@@ -78,7 +79,7 @@ public class Spell_Repulsion extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and cast(s) a spell.^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

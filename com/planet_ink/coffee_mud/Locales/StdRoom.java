@@ -812,30 +812,74 @@ public class StdRoom
 		FullMsg msg=new FullMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		send(everywhereMOB,msg);
 	}
-	public void show(MOB source,
+	public boolean show(MOB source,
 					 Environmental target,
 					 int allCode,
 					 String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
+		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+			return false;
 		send(source,msg);
+		return true;
 	}
-	public void showOthers(MOB source,
+	public boolean show(MOB source,
+					 Environmental target,
+					 Environmental tool,
+					 int allCode,
+					 String allMessage)
+	{
+		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
+		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+			return false;
+		send(source,msg);
+		return true;
+	}
+	public boolean showOthers(MOB source,
 						   Environmental target,
 						   int allCode,
 						   String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
+		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+			return false;
 		reallySend(source,msg);
+		return true;
 	}
-
-	public void showSource(MOB source,
+	public boolean showOthers(MOB source,
+						   Environmental target,
+						   Environmental tool,
+						   int allCode,
+						   String allMessage)
+	{
+		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
+		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+			return false;
+		reallySend(source,msg);
+		return true;
+	}
+	public boolean showSource(MOB source,
 						   Environmental target,
 						   int allCode,
 						   String allMessage)
 	{
 		FullMsg msg=new FullMsg(source,target,null,allCode,allCode,allCode,allMessage);
+		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+			return false;
 		source.affect(source,msg);
+		return true;
+	}
+	public boolean showSource(MOB source,
+						   Environmental target,
+						   Environmental tool,
+						   int allCode,
+						   String allMessage)
+	{
+		FullMsg msg=new FullMsg(source,target,tool,allCode,allCode,allCode,allMessage);
+		if((!Util.bset(allCode,Affect.MASK_GENERAL))&&(!okAffect(source,msg)))
+			return false;
+		source.affect(source,msg);
+		return true;
 	}
 
 	public Exit[] rawExits()

@@ -41,7 +41,7 @@ public class Butchering extends CommonSkill
 					}
 					else
 					{
-						mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up "+body.name()+".");
+						mob.location().show(mob,null,body,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up <O-NAME>.");
 						Vector resources=body.charStats().getMyRace().myResources();
 						Ability useSpellCast=body.fetchAffect("Prop_UseSpellCast2");
 						for(int i=0;i<mob.location().numItems();i++)

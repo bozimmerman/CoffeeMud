@@ -195,17 +195,9 @@ public class ItemUsage
 					   boolean quiet,
 					   String getWord)
 	{
-		String theWhat=getThis.name();
 		Environmental target=getThis;
 		Environmental tool=null;
-		if(container!=null)
-		{
-			tool=getThis;
-			target=container;
-			theWhat+=" from "+container.name();
-		}
-
-		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) "+theWhat);
+		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> "+getWord+"(s) <O-NAME>"+((container==null)?".":"from <T-NAME>."));
 		if(!mob.location().okAffect(mob,msg))
 			return false;
 		mob.location().send(mob,msg);
@@ -417,7 +409,7 @@ public class ItemUsage
 		for(int i=0;i<V.size();i++)
 		{
 			Environmental putThis=(Environmental)V.elementAt(i);
-			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) "+putThis.name()+" in <T-NAME>");
+			FullMsg putMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) <O-NAME> in <T-NAME>");
 			if(mob.location().okAffect(mob,putMsg))
 				mob.location().send(mob,putMsg);
 			if(putThis instanceof Coins)
@@ -475,7 +467,7 @@ public class ItemUsage
 		for(int i=0;i<V.size();i++)
 		{
 			Environmental fillThis=(Environmental)V.elementAt(i);
-			FullMsg fillMsg=new FullMsg(mob,fillThis,fillFromThis,Affect.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from "+fillFromThis.name()+".");
+			FullMsg fillMsg=new FullMsg(mob,fillThis,fillFromThis,Affect.MSG_FILL,"<S-NAME> fill(s) <T-NAME> from <O-NAME>.");
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
 				if(get(mob,null,(Item)fillThis,false))

@@ -63,7 +63,7 @@ public class Skill_Swim extends StdAbility
 			mob.location().send(mob,msg);
 			success=profficiencyCheck(0,auto);
 			if(!success)
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the water, making no progress.");
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) against the water, making no progress.");
 			else
 			{
 				if(mob.fetchAffect(ID())==null)

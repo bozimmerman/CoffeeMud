@@ -482,7 +482,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatToOpen));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,getScr("Movement","sopens",openThis.name()));
+		FullMsg msg=new FullMsg(mob,openThis,null,Affect.MSG_OPEN,getScr("Movement","sopens"));
 		if(openThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -509,7 +509,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatTounlock));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,getScr("Movement","sunlocks",unlockThis.name()));
+		FullMsg msg=new FullMsg(mob,unlockThis,null,Affect.MSG_UNLOCK,getScr("Movement","sunlocks"));
 		if(unlockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -536,7 +536,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatToClose));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,getScr("Movement","scloses",closeThis.name()));
+		FullMsg msg=new FullMsg(mob,closeThis,null,Affect.MSG_CLOSE,getScr("Movement","scloses"));
 		if(closeThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -605,7 +605,7 @@ public class Movement extends Scriptable
 			mob.tell(getScr("Movement","youdontsee",whatTolock));
 			return;
 		}
-		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,getScr("Movement","slocks",lockThis.name()));
+		FullMsg msg=new FullMsg(mob,lockThis,null,Affect.MSG_LOCK,getScr("Movement","slocks"));
 		if(lockThis instanceof Exit)
 			roomOkAndAffectFully(msg,mob.location(),dirCode);
 		else
@@ -635,9 +635,9 @@ public class Movement extends Scriptable
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=getScr("Movement","sitmounton",((Rideable)E).mountString(Affect.TYP_SIT,mob),E.name());
+			mountStr=getScr("Movement","sitmounton",((Rideable)E).mountString(Affect.TYP_SIT,mob));
 		else
-			mountStr=getScr("Movement","sitson",E.name());
+			mountStr=getScr("Movement","sitson");
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SIT,mountStr);
 		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
@@ -659,9 +659,9 @@ public class Movement extends Scriptable
 		}
 		String mountStr=null;
 		if(E instanceof Rideable)
-			mountStr=getScr("Movement","sleepmounton",((Rideable)E).mountString(Affect.TYP_SLEEP,mob),E.name());
+			mountStr=getScr("Movement","sleepmounton",((Rideable)E).mountString(Affect.TYP_SLEEP,mob));
 		else
-			mountStr=getScr("Movement","sleepson",E.name());
+			mountStr=getScr("Movement","sleepson");
 		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,mountStr);
 		if(mob.location().okAffect(mob,msg))
 			mob.location().send(mob,msg);
@@ -792,14 +792,14 @@ public class Movement extends Scriptable
 		if(recipient instanceof Rideable)
 		{
 			if(RI!=null)
-				mountStr=getScr("Movement","mountonto",RI.name());
+				mountStr=getScr("Movement","mountonto");
 			else
 				mountStr=getScr("Movement","mounton",((Rideable)recipient).mountString(Affect.TYP_MOUNT,mob));
 		}
 		else
 		{
 			if(RI!=null)
-				mountStr=getScr("Movement","mountsto",RI.name());
+				mountStr=getScr("Movement","mountsto");
 			else
 				mountStr=getScr("Movement","mounts");
 		}
@@ -838,7 +838,7 @@ public class Movement extends Scriptable
 				mob.tell(getScr("Movement","dismounterr3",RI.name()));
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,RI.riding(),RI,Affect.MSG_DISMOUNT,getScr("Movement","dismounts2",RI.name()));
+			FullMsg msg=new FullMsg(mob,RI.riding(),RI,Affect.MSG_DISMOUNT,getScr("Movement","dismounts2"));
 			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}

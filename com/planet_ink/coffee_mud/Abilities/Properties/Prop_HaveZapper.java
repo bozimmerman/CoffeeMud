@@ -41,7 +41,7 @@ public class Prop_HaveZapper extends Property
 		case Affect.TYP_GET:
 			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,affected.name()+" flashes and flys out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flys out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;

@@ -126,7 +126,7 @@ public class Spell_FakeArmor extends Spell
 				armor.baseEnvStats().setWeight(0);
 				armor.recoverEnvStats();
 				mob.addInventory(armor);
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) "+armor.name());
+				mob.location().show(mob,null,armor,Affect.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=armor;
 				beneficialAffect(mob,armor,0);
 			}

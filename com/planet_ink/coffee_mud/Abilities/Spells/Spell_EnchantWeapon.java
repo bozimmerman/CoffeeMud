@@ -47,7 +47,7 @@ public class Spell_EnchantWeapon extends Spell
 					mob.tell(target.name()+" cannot be enchanted further.");
 				else
 				{
-					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,target.name()+" glows!");
+					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<T-NAME> glows!");
 					target.baseEnvStats().setAbility(target.baseEnvStats().ability()+1);
 					target.baseEnvStats().setLevel(target.baseEnvStats().level()+3);
 					target.recoverEnvStats();

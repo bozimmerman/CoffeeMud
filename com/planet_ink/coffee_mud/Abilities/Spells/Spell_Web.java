@@ -36,12 +36,13 @@ public class Spell_Web extends Spell
 			&&((Util.bset(affect.sourceMajor(),Affect.MASK_HANDS))
 			||(Util.bset(affect.sourceMajor(),Affect.MASK_MOVE))))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web.");
-				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
-				if(amountRemaining<0)
-					unInvoke();
-				else
-					return false;
+				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web."))
+				{
+					amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+					if(amountRemaining<0)
+						unInvoke();
+				}
+				return false;
 			}
 		}
 		return super.okAffect(myHost,affect);
@@ -83,7 +84,7 @@ public class Spell_Web extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> arms.^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

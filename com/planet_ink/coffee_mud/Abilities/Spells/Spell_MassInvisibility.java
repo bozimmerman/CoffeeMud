@@ -73,7 +73,7 @@ public class Spell_MassInvisibility extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> arms and speak(s) softly.^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

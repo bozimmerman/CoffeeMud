@@ -66,13 +66,19 @@ public class Paladin_Defend extends StdAbility
 			if(fullRound) 
 			{
 				MOB mob=(MOB)affected;
+				if(!mob.isInCombat())
+					unInvoke();
 				if(mob.location()!=null)
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage.");
-				MOB victim=mob.getVictim();
-				if((victim!=null)&&(victim.getVictim()==mob))
-					victim.makePeace();
-				mob.makePeace();
-				unInvoke();
+				{
+					if(mob.location().show(mob,null,this,Affect.MSG_OK_VISUAL,"<S-YOUPOSS> successful defence <S-HAS-HAVE> allowed <S-HIM-HER> to disengage."))
+					{
+						MOB victim=mob.getVictim();
+						if((victim!=null)&&(victim.getVictim()==mob))
+							victim.makePeace();
+						mob.makePeace();
+						unInvoke();
+					}
+				}
 			}
 			fullRound=true;
 		}

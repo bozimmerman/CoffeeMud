@@ -46,7 +46,7 @@ public class Spell_ResistPiercing extends Spell
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> deflects "+affect.tool().name()+" attack from <T-NAME>!");
+			mob.location().show(mob,affect.source(),affect.tool(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> deflects <O-NAME> attack from <T-NAME>!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

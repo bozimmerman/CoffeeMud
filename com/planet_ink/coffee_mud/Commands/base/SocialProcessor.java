@@ -393,7 +393,7 @@ public class SocialProcessor
 		for(int i=0;i<V.size();i++)
 		{
 			Environmental giveThis=(Environmental)V.elementAt(i);
-			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,Affect.MSG_GIVE,"<S-NAME> give(s) "+giveThis.name()+" to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,Affect.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			if(mob.location().okAffect(mob,newMsg))
 				mob.location().send(mob,newMsg);
 			else

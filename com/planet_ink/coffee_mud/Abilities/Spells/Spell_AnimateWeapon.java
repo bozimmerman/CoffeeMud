@@ -28,7 +28,7 @@ public class Spell_AnimateWeapon extends Spell
 																   +((Item)affected).envStats().attackAdjustment()
 																   +invoker().getVictim().adjustedArmor()));
 				if((!isHit)||(!(affected instanceof Weapon)))
-					invoker().location().show(invoker(),invoker().getVictim(),Affect.MSG_OK_ACTION,affected.name()+" attacks <T-NAME> and misses!");
+					invoker().location().show(invoker(),invoker().getVictim(),affected,Affect.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					ExternalPlay.postDamage(invoker(),invoker().getVictim(),(Item)affected,
 											Dice.roll(1,affected.envStats().damage(),5),

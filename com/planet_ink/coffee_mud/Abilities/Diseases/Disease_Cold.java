@@ -42,7 +42,7 @@ public class Disease_Cold extends Disease
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
+			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
 			if(mob.curState().getHitPoints()>((2*invoker.envStats().level())+1))
 			{
 				int damage=Dice.roll(2,invoker.envStats().level(),1);

@@ -36,12 +36,13 @@ public class Spell_Ensnare extends Spell
 			case Affect.TYP_ADVANCE:
 			case Affect.TYP_LEAVE:
 			case Affect.TYP_FLEE:
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ensnarement.");
-				amountRemaining-=mob.envStats().level();
-				if(amountRemaining<0)
-					unInvoke();
-				else
-					return false;
+				if(mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the ensnarement."))
+				{
+					amountRemaining-=mob.envStats().level();
+					if(amountRemaining<0)
+						unInvoke();
+				}
+				return false;
 			}
 		}
 		return super.okAffect(myHost,affect);
@@ -84,7 +85,7 @@ public class Spell_Ensnare extends Spell
 
 		if(success)
 		{
-			mob.location().show(mob,null,affectType(auto),auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?");
+			if(mob.location().show(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> speak(s) and wave(s) <S-HIS-HER> fingers at the ground.^?"))
 			for(Enumeration f=h.elements();f.hasMoreElements();)
 			{
 				MOB target=(MOB)f.nextElement();

@@ -40,22 +40,24 @@ public class Spell_WallOfIce extends Spell
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
 				Room room=mob.location();
-				room.show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of ice with "+w.name()+".^?");
-				amountRemaining-=mob.envStats().damage();
-				if(amountRemaining<0)
+				if(room.show(mob,null,w,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of ice with <O-NAME>.^?"))
 				{
-					deathNotice="The wall of ice shatters!!!";
-					for(int i=0;i<room.numInhabitants();i++)
+					amountRemaining-=mob.envStats().damage();
+					if(amountRemaining<0)
 					{
-						MOB M=room.fetchInhabitant(i);
-						if((M.isInCombat())
-						&&(M.getVictim()==invoker)
-						&&(M.rangeToTarget()>0)
-						&&(M.rangeToTarget()<3)
-						&&(!M.amDead()))
-							ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+						deathNotice="The wall of ice shatters!!!";
+						for(int i=0;i<room.numInhabitants();i++)
+						{
+							MOB M=room.fetchInhabitant(i);
+							if((M.isInCombat())
+							&&(M.getVictim()==invoker)
+							&&(M.rangeToTarget()>0)
+							&&(M.rangeToTarget()<3)
+							&&(!M.amDead()))
+								ExternalPlay.postDamage(invoker,M,this,Dice.roll(M.envStats().level()/2,6,0),Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+						}
+						((Item)affected).destroyThis();
 					}
-					((Item)affected).destroyThis();
 				}
 				return false;
 			}
