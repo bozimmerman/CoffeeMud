@@ -34,11 +34,15 @@ public class Spell_Summon extends Spell
 		for(int m=0;m<CMMap.numRooms();m++)
 		{
 			Room room=CMMap.getRoom(m);
-			target=room.fetchInhabitant(areaName);
-			if(target!=null)
+			if(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
+			   ||(mob.isASysOp(room)))
 			{
-				oldRoom=room;
-				break;
+				target=room.fetchInhabitant(areaName);
+				if(target!=null)
+				{
+					oldRoom=room;
+					break;
+				}
 			}
 		}
 

@@ -22,15 +22,17 @@ public class Spell_Teleport extends Spell
 			return false;
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
-		int numRooms=0;
+		Vector candidates=new Vector();
 		for(int m=0;m<CMMap.numRooms();m++)
 		{
 			Room room=CMMap.getRoom(m);
-			if(room.getArea().name().toUpperCase().startsWith(areaName))
-				numRooms++;
+			if((room.getArea().name().toUpperCase().startsWith(areaName))
+			&&(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
+			   ||(mob.isASysOp(room))))
+				candidates.addElement(room);
 		}
 
-		if(numRooms==0)
+		if(candidates.size()==0)
 		{
 			mob.tell("You don't know of an area called '"+Util.combine(commands,0)+"'.");
 			return false;
@@ -40,21 +42,7 @@ public class Spell_Teleport extends Spell
 		int tries=0;
 		while((tries<20)&&(newRoom==null))
 		{
-			int roomNum=Dice.roll(1,numRooms,-1);
-			for(int m=0;m<CMMap.numRooms();m++)
-			{
-				Room room=CMMap.getRoom(m);
-				if(room.getArea().name().toUpperCase().startsWith(areaName))
-				{
-					if(roomNum==0)
-					{
-						newRoom=room;
-						break;
-					}
-					else
-						roomNum--;
-				}
-			}
+			newRoom=(Room)candidates.elementAt(Dice.roll(1,candidates.size(),-1));
 			FullMsg enterMsg=new FullMsg(mob,newRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null);
 			Session session=mob.session();
 			mob.setSession(null);

@@ -33,9 +33,13 @@ public class Spell_Gate extends Spell
 		for(int m=0;m<CMMap.numRooms();m++)
 		{
 			Room room=CMMap.getRoom(m);
-			target=room.fetchInhabitant(areaName);
-			if(target!=null)
-				candidates.addElement(target);
+			if(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
+			   ||(mob.isASysOp(room)))
+			{
+				target=room.fetchInhabitant(areaName);
+				if(target!=null)
+					candidates.addElement(target);
+			}
 		}
 		Room newRoom=null;
 		if(candidates.size()>0)

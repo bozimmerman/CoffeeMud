@@ -479,7 +479,8 @@ public class BasicSenses
 			for(int a=0;a<CMMap.numAreas();a++)
 			{
 				Area A=(Area)CMMap.getArea(a);
-				tellMe.append(Util.padRight(A.name(),20)+": "+A.weatherDescription(room)+"\n\r");
+				if(!Sense.isHidden(A))
+					tellMe.append(Util.padRight(A.name(),20)+": "+A.weatherDescription(room)+"\n\r");
 			}
 			mob.tell(tellMe.toString());
 			return;

@@ -29,7 +29,9 @@ public class Chant_DistantGrowth extends Chant
 		for(int m=0;m<CMMap.numRooms();m++)
 		{
 			Room room=CMMap.getRoom(m);
-			if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
+			if((CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
+			&&(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
+			   ||(mob.isASysOp(room))))
 			{
 			   anyRoom=room;
 			   if((room.domainType()&Room.INDOORS)==0)
