@@ -28,6 +28,117 @@ public class Generic
 			mob.tell("(no change)");
 	}
 
+	public static Room changeRoomType(Room R, Room newRoom)
+	{
+		if((R==null)||(newRoom==null)) return R;
+		Room oldR=R;
+		R=newRoom;
+		for(int a=oldR.numAffects()-1;a>=0;a--)
+		{
+			Ability A=oldR.fetchAffect(a);
+			if(A!=null)
+			{
+				A.unInvoke();
+				oldR.delAffect(A);
+			}
+		}
+		ExternalPlay.deleteTick(oldR,-1);
+		CMMap.delRoom(oldR);
+		CMMap.addRoom(R);
+		R.setArea(oldR.getArea());
+		R.setID(oldR.ID());
+		for(int d=0;d<R.rawDoors().length;d++)
+			R.rawDoors()[d]=oldR.rawDoors()[d];
+		for(int d=0;d<R.rawExits().length;d++)
+			R.rawExits()[d]=oldR.rawExits()[d];
+		R.setDisplayText(oldR.displayText());
+		R.setDescription(oldR.description());
+		if(R instanceof GridLocale)
+		{
+			((GridLocale)R).setXSize(((GridLocale)oldR).xSize());
+			((GridLocale)R).setYSize(((GridLocale)oldR).ySize());
+			((GridLocale)R).clearGrid();
+		}
+		Vector allmobs=new Vector();
+		int skip=0;
+		while(oldR.numInhabitants()>(skip))
+		{
+			MOB M=oldR.fetchInhabitant(skip);
+			if(M.isEligibleMonster())
+			{
+				if(!allmobs.contains(M))
+					allmobs.addElement(M);
+				oldR.delInhabitant(M);
+			}
+			else
+			if(oldR!=R)
+			{
+				oldR.delInhabitant(M);
+				R.bringMobHere(M,true);
+			}
+			else
+				skip++;
+		}
+		Vector allitems=new Vector();
+		while(oldR.numItems()>0)
+		{
+			Item I=oldR.fetchItem(0);
+			if(!allitems.contains(I))
+				allitems.addElement(I);
+			oldR.delItem(I);
+		}
+		
+		for(int i=0;i<allitems.size();i++)
+		{
+			Item I=(Item)allitems.elementAt(i);
+			if(!R.isContent(I))
+			{
+				if(I.subjectToWearAndTear())
+					I.setUsesRemaining(100);
+				I.recoverEnvStats();
+				R.addItem(I);
+				R.recoverRoomStats();
+			}
+		}
+		for(int m=0;m<allmobs.size();m++)
+		{
+			MOB M=(MOB)allmobs.elementAt(m);
+			if(!R.isInhabitant(M))
+			{
+				MOB M2=(MOB)M.copyOf();
+				M2.setStartRoom(R);
+				M2.setLocation(R);
+				M2.envStats().setRejuv(5000);
+				M2.recoverCharStats();
+				M2.recoverEnvStats();
+				M2.recoverMaxState();
+				M2.resetToMaxState();
+				M2.bringToLife(R,true);
+				R.recoverRoomStats();
+				M.destroy();
+			}
+		}
+		
+		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+		{
+			Room R2=(Room)r.nextElement();
+			for(int d=0;d<R2.rawDoors().length;d++)
+				if(R2.rawDoors()[d]==oldR)
+				{
+					R2.rawDoors()[d]=R;
+					if(R2 instanceof GridLocale)
+						((GridLocale)R2).buildGrid();
+				}
+		}
+		R.getArea().clearMap();
+		R.getArea().fillInAreaRoom(R);
+		ExternalPlay.DBUpdateRoom(R);
+		ExternalPlay.DBUpdateMOBs(R);
+		ExternalPlay.DBUpdateItems(R);
+		R.startItemRejuv();
+		return R;
+	}
+	
 	static Room genRoomType(MOB mob, Room R, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -39,70 +150,10 @@ public class Generic
 		{
 			Room newRoom=CMClass.getLocale(newName);
 			if(newRoom==null)
-			{
 				mob.tell("'"+newName+"' does not exist. No Change.");
-			}
 			else
-			if(mob.session().confirm("This will change the room type of room '"+R.ID()+"'.  This is a dangerous procedure.  Are you absolutely sure (y/N)? ","N"))
-			{
-				mob.tell("\n\rWorking...");
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				{
-					newRoom.rawExits()[d]=R.rawExits()[d];
-					newRoom.rawDoors()[d]=R.rawDoors()[d];
-				}
-				for(int x=0;x<R.numInhabitants();x++)
-				{
-					MOB inhab=R.fetchInhabitant(x);
-					if(inhab!=null)
-					{
-						newRoom.addInhabitant(inhab);
-						inhab.setLocation(newRoom);
-					}
-				}
-				for(int x=0;x<R.numItems();x++)
-				{
-					Item I=R.fetchItem(x);
-					if(I!=null)
-						newRoom.addItem(I);
-				}
-				for(Enumeration e=CMMap.players();e.hasMoreElements();)
-				{
-					MOB mob2=(MOB)e.nextElement();
-					if(mob2.getStartRoom()==R)
-					{
-						mob2.setStartRoom(newRoom);
-						ExternalPlay.DBUpdateMOB(mob2);
-					}
-				}
-				if(R instanceof GridLocale)
-					((GridLocale)R).clearGrid();
-				newRoom.setID(R.ID());
-				newRoom.setArea(R.getArea());
-				newRoom.setDisplayText(R.displayText());
-				newRoom.setDescription(R.description());
-				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
-				{
-					Room room=(Room)r.nextElement();
-					if(room==R)
-					{
-						CMMap.replaceRoom(newRoom,room);
-						room=newRoom;
-					}
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-					{
-						if(room.rawDoors()[d]==R)
-							room.rawDoors()[d]=newRoom;
-					}
-					for(int i=0;i<room.numInhabitants();i++)
-					{
-						MOB mob2=room.fetchInhabitant(i);
-						if((mob2!=null)&&(mob2.getStartRoom()==room))
-							mob2.setStartRoom(newRoom);
-					}
-				}
-				R=newRoom;
-			}
+			if(mob.session().confirm("This will change the room type of room '"+R.ID()+"'.  Are you absolutely sure (y/N)? ","N"))
+				R=changeRoomType(R,newRoom);
 			R.recoverRoomStats();
 		}
 		else

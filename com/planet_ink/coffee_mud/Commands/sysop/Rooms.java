@@ -142,7 +142,7 @@ public class Rooms
 
 	private static void flunkCmd1(MOB mob)
 	{
-		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, XGRID, YGRID] [TEXT]\n\r");
+		mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID] [TEXT]\n\r");
 		mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 	}
 
@@ -339,8 +339,7 @@ public class Rooms
 			while(!ok)
 			{
 				int showNumber=0;
-				// too dangerous
-				//Generic.genRoomType(mob,mob.location());
+				Generic.genRoomType(mob,mob.location(),++showNumber,showFlag);
 				Generic.genDisplayText(mob,mob.location(),++showNumber,showFlag);
 				Generic.genDescription(mob,mob.location(),++showNumber,showFlag);
 				if(mob.location() instanceof GridLocale)
@@ -439,6 +438,19 @@ public class Rooms
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			mob.location().setDisplayText(restStr);
 			ExternalPlay.DBUpdateRoom(mob.location());
+			mob.location().showHappens(Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
+		}
+		else
+		if(command.equalsIgnoreCase("CLASS"))
+		{
+			if(commands.size()<4) { flunkCmd1(mob); return;}
+			Room newRoom=CMClass.getLocale(restStr);
+			if(newRoom==null)
+			{
+				mob.tell("'"+restStr+"' is not a valid room locale.");
+				return;
+			}
+			Generic.changeRoomType(mob.location(),newRoom);
 			mob.location().showHappens(Affect.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else

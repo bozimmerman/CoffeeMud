@@ -1,4 +1,3 @@
 GAES still isn't done
-CONFIRM FOLLOWER CODE!
 MovingRoom behavior?
 Reimplement SysOpModLocale
