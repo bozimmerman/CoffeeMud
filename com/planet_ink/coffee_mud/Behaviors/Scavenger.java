@@ -36,8 +36,8 @@ public class Scavenger extends ActiveTicker
 			}
 
 			Vector V=new Vector();
-			V.addElement(new String("GET"));
-			V.addElement(new String("ALL"));
+			V.addElement("GET");
+			V.addElement("ALL");
 			try
 			{
 				ExternalPlay.doCommand(mob,V);

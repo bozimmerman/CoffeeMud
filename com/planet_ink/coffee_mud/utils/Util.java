@@ -12,6 +12,21 @@ public class Util
 	private static Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
 	private static Inflater decompresser = new Inflater();
 	
+	public static String startWithAorAn(String str)
+	{
+		if(str.length()==0) 
+			return str;
+		if((!str.toUpperCase().startsWith("A "))
+		&&(!str.toUpperCase().startsWith("AN "))
+		&&(!str.toUpperCase().startsWith("THE "))
+		&&(!str.toUpperCase().startsWith("SOME ")))
+			if("aeiouAEIOU".indexOf(str.charAt(0))>=0) 
+				return "an "+str;
+			else
+				return "a "+str;
+		return str;
+	}
+	
 	public static String decompressString(byte[] b)
 	{
 		try

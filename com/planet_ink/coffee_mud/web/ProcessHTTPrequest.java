@@ -74,7 +74,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	{
 		// thread name contains both an instance counter and the client's IP address
 		//  (too long)
-		//		super( new String("HTTPrq-"+ instanceCnt++ +"-" + a_sock.getInetAddress().toString() ));
+		//		super( "HTTPrq-"+ instanceCnt++ +"-" + a_sock.getInetAddress().toString() );
 		// thread name contains just the instance counter (faster)
 		//  and short enough to use in log
 		super( "HTTPrq-"+a_webServer.getPartialName()+ instanceCnt++ );
@@ -140,7 +140,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 			catch (NoSuchElementException e)
 			{
-				request = new String("/");
+				request = "/";
 			}
 			int p = request.indexOf("?");
 			if (p == -1)
@@ -696,7 +696,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					mimetype = getMimeType(exten);
 
 					if (mimetype.length() == 0)
-						mimetype = new String("application/octet-stream");	// default to raw binary
+						mimetype = "application/octet-stream";	// default to raw binary
 
 					if (page.getStr("VIRTUALPAGEEXTENSION").equalsIgnoreCase(exten) )
 						virtualPage = true;
@@ -713,7 +713,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					catch (IOException e)
 					{
 						status = S_500;
-						statusExtra = new String("IO error while reading URL <I>" + request +"</I>");
+						statusExtra = "IO error while reading URL <I>" + request +"</I>";
 						processOK = false;
 					}
 				}
@@ -722,11 +722,11 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			// build error page
 			if (!processOK || replyData == null)
 			{
-				//mimetype = new String("text/html");
+				//mimetype = "text/html";
 				mimetype = getMimeType(page.getStr("VIRTUALPAGEEXTENSION"));
 
 				if (mimetype.length() == 0)
-					mimetype = new String("application/octet-stream");	// default to raw binary
+					mimetype = "application/octet-stream";	// default to raw binary
 
 				// try to get an error page from the template directory
 				//  if it doesn't exist, make a simple error page and return that
@@ -757,7 +757,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				{
 					// make the builtin error page
 					virtualPage = false;
-					mimetype = new String("text/html");
+					mimetype = "text/html";
 					replyData = WebHelper.makeErrorPage(status,statusExtra);
 				}
 

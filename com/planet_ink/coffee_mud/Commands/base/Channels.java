@@ -78,7 +78,7 @@ public class Channels
 			mob.tell("You must specify a valid channel name. Try CHANNELS for a list.");
 			return;
 		}
-		String head=new String("\n\rListening on "+channel+":\n\r");
+		String head="\n\rListening on "+channel+":\n\r";
 		StringBuffer buf=new StringBuffer("");
 		for(int s=0;s<Sessions.size();s++)
 		{

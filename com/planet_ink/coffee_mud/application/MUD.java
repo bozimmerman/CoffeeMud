@@ -28,7 +28,7 @@ public class MUD extends Thread implements Host
 	public static HTTPserver webServerThread=null;
 	public static HTTPserver adminServerThread=null;
 	public static Vector mudThreads=new Vector();
-	private static String offlineReason=new String("UNKNOWN");
+	private static String offlineReason="UNKNOWN";
 	
 	public static boolean serverIsRunning = false;
 	public static boolean isOK = false;
@@ -211,7 +211,7 @@ public class MUD extends Thread implements Host
 		ExternalPlay.setPlayer(ExternalCommands.getInstance(), new ExternalSystems(), new IMudClient());
 
 
-		offlineReason=new String("Booting: loading base classes");
+		offlineReason="Booting: loading base classes";
 		if(!CMClass.loadClasses(page))
 		{
 			fatalStartupError(t,0);
@@ -222,7 +222,7 @@ public class MUD extends Thread implements Host
 		CommandProcessor.myHost=(Host)mudThreads.firstElement();
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
-		offlineReason=new String("Booting: loading socials");
+		offlineReason="Booting: loading socials";
 		Socials.load("resources"+File.separatorChar+"socials.txt");
 		if(!Socials.isLoaded())
 			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
@@ -230,9 +230,9 @@ public class MUD extends Thread implements Host
 			Log.sysOut("MUD","Socials loaded    : "+Socials.num());
 		
 		Log.sysOut("MUD","Loading map...");
-		offlineReason=new String("Booting: loading rooms (0% completed).");
+		offlineReason="Booting: loading rooms (0% completed).";
 		RoomLoader.DBRead((Host)mudThreads.firstElement(), CMMap.getAreaVector(),CMMap.getRoomVector());
-		offlineReason=new String("Booting: filling map.");
+		offlineReason="Booting: filling map.";
 		for(int a=0;a<CMMap.numAreas();a++)
 			CMMap.getArea(a).fillInAreaRooms();
 		Log.sysOut("MUD","Mapped rooms      : "+CMMap.numRooms()+" in "+CMMap.numAreas()+" areas");
@@ -256,7 +256,7 @@ public class MUD extends Thread implements Host
 			ExternalPlay.DBUpdateItems(room);
 		}
 
-		offlineReason=new String("Booting: readying for connections.");
+		offlineReason="Booting: readying for connections.";
 		try
 		{
 			CommandProcessor.commandSet.loadAbilities(CMClass.abilities);
@@ -300,7 +300,7 @@ public class MUD extends Thread implements Host
 			((MUD)mudThreads.elementAt(i)).acceptConnections=true;
 		Log.sysOut("MUD","Initialization complete.");
 		ExternalPlay.setSystemStarted();
-		offlineReason=new String("UNKNOWN");
+		offlineReason="UNKNOWN";
 		return true;
 	}
 	
@@ -446,19 +446,19 @@ public class MUD extends Thread implements Host
 	{
 		if(saveThread==null) return;
 
-		offlineReason=new String("Shutting down" + (keepItDown? "..." : " and restarting...") );
+		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
 		for(int i=0;i<mudThreads.size();i++)
 			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
 		Log.sysOut("MUD","Host will now reject new connections.");
 		S.println("Host will now reject new connections.");
 
-		offlineReason=new String("Shutting down...Save Thread");
+		offlineReason="Shutting down...Save Thread";
 		saveThread.shutdown();
 		saveThread.interrupt();
 		saveThread=null;
 		S.println("Save thread stopped.");
 
-		offlineReason=new String("Shutting down...IMServer");
+		offlineReason="Shutting down...IMServer";
 		if(imserver!=null)
 		{
 			imserver.shutdown();
@@ -471,18 +471,18 @@ public class MUD extends Thread implements Host
 			Session session=Sessions.elementAt(s);
 			try
 			{
-				offlineReason=new String("Shutting down...Saving "+session.mob().name());
+				offlineReason="Shutting down...Saving "+session.mob().name();
 				MOBloader.DBUpdate(session.mob());
-				offlineReason=new String("Shutting down...Saving followers of "+session.mob().name());
+				offlineReason="Shutting down...Saving followers of "+session.mob().name();
 				MOBloader.DBUpdateFollowers(session.mob());
-				offlineReason=new String("Shutting down...Done saving "+session.mob().name());
+				offlineReason="Shutting down...Done saving "+session.mob().name();
 				offlineReason="Done saving mob "+session.mob().name();
 			}
 			catch(java.lang.NullPointerException n){}
 		}
 		Log.sysOut("MUD","All users saved.");
 		S.println("All users saved.");
-		offlineReason=new String("Shutting down...Users saved");
+		offlineReason="Shutting down...Users saved";
 
 		while(Sessions.size()>0)
 		{
@@ -491,18 +491,18 @@ public class MUD extends Thread implements Host
 				Sessions.removeElementAt(0);
 			else
 			{
-				offlineReason=new String("Shutting down...Stopping session "+S2.getTermID());
+				offlineReason="Shutting down...Stopping session "+S2.getTermID();
 				S2.logoff();
-				offlineReason=new String("Shutting down...Done stopping session "+S2.getTermID());
+				offlineReason="Shutting down...Done stopping session "+S2.getTermID();
 			}
 		}
 		S.println("All users logged off.");
 
-		offlineReason=new String("Shutting down...shutting down service engine");
+		offlineReason="Shutting down...shutting down service engine";
 		ServiceEngine.shutdownAll();
 		S.println("All threads stopped.");
 
-		offlineReason=new String("Shutting down...closing db connections");
+		offlineReason="Shutting down...closing db connections";
 		DBConnector.killConnections();
 		Log.sysOut("MUD","All users saved.");
 		S.println("Database connections closed.");
@@ -512,29 +512,29 @@ public class MUD extends Thread implements Host
 
 		Help.unloadHelpFile(null);
 		
-		offlineReason=new String("Shutting down...unloading classes");
+		offlineReason="Shutting down...unloading classes";
 		CMClass.unload();
-		offlineReason=new String("Shutting down...unloading map");
+		offlineReason="Shutting down...unloading map";
 		CMMap.unLoad();
 		page=null;
-		offlineReason=new String("Shutting down...unloading resources");
+		offlineReason="Shutting down...unloading resources";
 		Resources.clearResources();
 		webCommon=null;
 		if(webServerThread!=null)
 		{
-			offlineReason=new String("Shutting down...pub webserver");
+			offlineReason="Shutting down...pub webserver";
 			webServerThread.shutdown(S);
 			webServerThread = null;
 		}
 		if(adminServerThread!=null)
 		{
-			offlineReason=new String("Shutting down...admin webserver");
+			offlineReason="Shutting down...admin webserver";
 			adminServerThread.shutdown(S);
 			adminServerThread = null;
 		}
-		offlineReason=new String("Shutting down...unloading macros");
+		offlineReason="Shutting down...unloading macros";
 		HTTPserver.unloadWebMacros();
-		offlineReason=new String("Shutting down" + (keepItDown? "..." : " and restarting...") );
+		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
 
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut("MUD","CoffeeMud shutdown complete.");
@@ -549,7 +549,7 @@ public class MUD extends Thread implements Host
 
 		keepDown=keepItDown;
 		execExternalCommand=externalCommand;
-		offlineReason=new String("Shutdown: you are the special lucky chosen one!");
+		offlineReason="Shutdown: you are the special lucky chosen one!";
 		for(int m=mudThreads.size()-1;m>=0;m--)
 			((MUD)mudThreads.elementAt(m)).interrupt();
 	}
@@ -664,12 +664,12 @@ public class MUD extends Thread implements Host
 				{
 					Log.errOut("MUD","ERROR: Unable to read ini file.");
 					System.out.println("MUD/ERROR: Unable to read ini file.");
-					offlineReason=new String("A terminal error has occured!");
+					offlineReason="A terminal error has occured!";
 				}
 				else
 				{
 					isOK = true;
-					offlineReason=new String("Booting");
+					offlineReason="Booting";
 				}
 				if(page!=null)
 					Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));

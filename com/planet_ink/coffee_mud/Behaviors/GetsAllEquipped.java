@@ -36,11 +36,11 @@ public class GetsAllEquipped extends ActiveTicker
 
 			DoneEquipping=true;
 			Vector V=new Vector();
-			V.addElement(new String("GET"));
-			V.addElement(new String("ALL"));
+			V.addElement("GET");
+			V.addElement("ALL");
 			Vector V1=new Vector();
-			V1.addElement(new String("WEAR"));
-			V1.addElement(new String("ALL"));
+			V1.addElement("WEAR");
+			V1.addElement("ALL");
 			try
 			{
 				ExternalPlay.doCommand(mob,V);

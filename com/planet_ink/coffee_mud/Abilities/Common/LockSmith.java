@@ -255,16 +255,7 @@ public class LockSmith extends CommonSkill
 		completion=15-((mob.envStats().level()-workingOn.envStats().level()));
 		if(keyFlag) completion=completion/2;
 		String itemName=(EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]+" key").toLowerCase();
-		if((!itemName.toUpperCase().startsWith("A "))
-		&&(!itemName.toUpperCase().startsWith("AN "))
-		&&(!itemName.toUpperCase().startsWith("THE "))
-		&&(!itemName.toUpperCase().startsWith("SOME ")))
-		{
-			if(new String("aeiou").indexOf(Character.toLowerCase(itemName.charAt(0)))>=0)
-				itemName="an "+itemName;
-			else
-				itemName="a "+itemName;
-		}
+		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
 		displayText="You are working on "+(keyFlag?"a key for ":"")+workingOn.name();
