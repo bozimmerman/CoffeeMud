@@ -59,15 +59,6 @@ public class Skill_Disguise extends BardSkill
 			affectableStats.setDisplayClassName(values[6]);
 	}
 
-	public boolean legalName(String name)
-	{
-		MOB M=CMMap.getPlayer(Util.capitalize(name));
-		if(M==null) return true;
-		if(M.charStats().getClassLevel("Archon")>=0)
-			return false;
-		return true;
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
@@ -239,9 +230,9 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			else
-			if(!legalName(how))
+			if(CMClass.DBEngine().DBUserSearch(null,how))
 			{
-				mob.tell("You cannot disguise yourself as an Archon.");
+				mob.tell("You cannot disguise yourself as an player except through Mark Disguise.");
 				return false;
 			}
 			else

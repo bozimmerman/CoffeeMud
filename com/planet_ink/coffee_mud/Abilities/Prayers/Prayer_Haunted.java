@@ -46,7 +46,6 @@ public class Prayer_Haunted extends Prayer
 				Item I=R.fetchItem(i);
 				if((I!=null)
 				&&(I instanceof DeadBody)
-				&&(I.rawSecretIdentity().indexOf("FAKE")<0)
 				&&(I.container()==null)
 				&&(I.rawSecretIdentity().length()>0)
 				&&(I.rawSecretIdentity().indexOf("/")>0))

@@ -34,7 +34,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_MUDVER=23;
 	public static final int SYSTEM_MUDSTATUS=24;
 	public static final int SYSTEM_MUDPORTS=25;
-	public static final int NUM_SYSTEM=26;
+	public static final int SYSTEM_CORPSEGUARD=26;
+	public static final int NUM_SYSTEM=27;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;

@@ -436,7 +436,7 @@ public class List extends StdCommand
 		head.append("] Character name\n\r");
 		Vector allUsers=CMClass.DBEngine().getUserList();
 		Vector oldSet=allUsers;
-		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=5))
+		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=6))
 		{
 			if(oldSet==allUsers) allUsers=new Vector();
 

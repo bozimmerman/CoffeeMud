@@ -24,8 +24,7 @@ public class Prayer_AnimateSpectre extends Prayer
 			mob.tell(target.name()+" doesn't look dead yet.");
 			return false;
 		}
-		if((!(target instanceof DeadBody))
-		||(((DeadBody)target).rawSecretIdentity().indexOf("FAKE")>=0))
+		if(!(target instanceof DeadBody))
 		{
 			mob.tell("You can't animate that.");
 			return false;

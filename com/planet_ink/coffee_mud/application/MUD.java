@@ -184,6 +184,7 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTEO,page.getStr("CLANVOTEO"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
 		CommonStrings.setVar(CommonStrings.SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
+        CommonStrings.setVar(CommonStrings.SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			CommonStrings.setIntVar(CommonStrings.SYSTEMI_MANACONSUMEAMT,-100);
 		else

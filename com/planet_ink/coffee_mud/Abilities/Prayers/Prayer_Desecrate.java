@@ -23,7 +23,7 @@ public class Prayer_Desecrate extends Prayer
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
 
-		if((!(target instanceof DeadBody))||(target.secretIdentity().indexOf("FAKE")>=0))
+		if((!(target instanceof DeadBody))||(target.rawSecretIdentity().equalsIgnoreCase("FAKE")))
 		{
 			mob.tell("You may only desecrate the dead.");
 			return false;

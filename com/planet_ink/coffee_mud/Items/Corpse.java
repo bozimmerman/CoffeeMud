@@ -68,15 +68,49 @@ public class Corpse extends GenContainer implements DeadBody
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((msg.amITarget(this)||(msg.tool()==this))
-		&&(msg.targetMinor()==CMMsg.TYP_GET)
-		&&((envStats().ability()>10)||(Sense.isABonusItems(this)))
-		&&(rawSecretIdentity().indexOf("/")>=0)
-		&&(rawSecretIdentity().toUpperCase().startsWith(msg.source().Name().toUpperCase()+"/"))
-		&&(CMMap.getBodyRoom(msg.source())!=msg.source().location()))
-		{
-			msg.source().tell("You are prevented from touching "+name()+".");
-			return false;
-		}
-		return true;
+        &&(msg.targetMinor()==CMMsg.TYP_GET)
+        &&((envStats().ability()>10)||(Sense.isABonusItems(this)))
+        &&(rawSecretIdentity().indexOf("/")>=0))
+        {
+            if(((MOB)msg.source()).isASysOp((Room)myHost))
+                return true;
+            if(msg.source().isMonster())
+                return true;
+            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
+                return true;
+            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY")) 
+			{
+                if (rawSecretIdentity().startsWith(msg.source().Name()+"/")) 
+					return true;
+                else 
+				{
+                    msg.source().tell("Hey - that's not yours!");
+                    return false;
+                }
+	        }
+            if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PLAYERKILL")) 
+			{
+                if((((rawSecretIdentity().startsWith(msg.source().Name()+"/")))
+                ||(Util.bset(envStats().ability(),64))
+                    &&(Util.bset(((MOB)msg.source()).getBitmap(), MOB.ATT_PLAYERKILL))))
+				{
+                    return true;
+                }
+                else 
+                if(!(Util.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL))) 
+				{
+                    msg.source().tell("You can not get that.  You are not a player killer.");
+                    return false;
+                }
+				else
+                if(!Util.bset(envStats().ability(),64))
+				{
+					int x=rawSecretIdentity().indexOf("/");
+                    msg.source().tell("You can not get that.  "+rawSecretIdentity().substring(0,x)+" is not a player killer.");
+                    return false;
+                }
+			}
+        }
+        return true;
 	}
 }

@@ -317,14 +317,21 @@ public class StdRace implements Race
 		Body.setCharStats(mob.baseCharStats().cloneCharStats());
 		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
-		Body.baseEnvStats().setAbility(mob.isMonster()?0:11);
+		int ability=0;
+		if(!mob.isMonster())
+		{
+			ability=11;
+			if(Util.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL))
+				ability=ability|64;
+		}
+		Body.baseEnvStats().setAbility(ability);
 		if(!mob.isMonster())
 			Body.baseEnvStats().setDisposition(Body.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		if(!mob.isMonster())
 			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
-		Body.setName("the body of "+mob.name());
-		Body.setSecretIdentity(mob.name()+"/"+mob.description());
-		Body.setDisplayText("the body of "+mob.name()+" lies here.");
+		Body.setName("the body of "+mob.Name());
+		Body.setSecretIdentity(mob.Name()+"/"+mob.description());
+		Body.setDisplayText("the body of "+mob.Name()+" lies here.");
 		if(room!=null)
 			room.addItem(Body);
 		Body.recoverEnvStats();

@@ -24,8 +24,7 @@ public class Prayer_PreserveBody extends Prayer
 			mob.tell(target.name()+" doesn't look dead yet.");
 			return false;
 		}
-		if((!(target instanceof DeadBody))
-		||(((DeadBody)target).rawSecretIdentity().indexOf("FAKE")>=0))
+		if((!(target instanceof DeadBody))||(((DeadBody)target).rawSecretIdentity().indexOf("/")<0))
 		{
 			mob.tell("You can't preserve that.");
 			return false;

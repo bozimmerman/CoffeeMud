@@ -18,7 +18,7 @@ public class Prayer_Resurrect extends Prayer
 	{
 		Item body=this.getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
 		if(body==null) return false;
-		if((!(body instanceof DeadBody))||(body.rawSecretIdentity().indexOf("FAKE")>=0))
+		if((!(body instanceof DeadBody))||(body.rawSecretIdentity().indexOf("/")<0))
 		{
 			mob.tell("You can't resurrect that.");
 			return false;
@@ -39,10 +39,10 @@ public class Prayer_Resurrect extends Prayer
 			{
 				invoker=mob;
 				mob.location().send(mob,msg);
-				int x=0;
-				if((body instanceof DeadBody)&&((x=body.Name().toUpperCase().indexOf("BODY OF"))>=0))
+				int x=body.rawSecretIdentity().indexOf("/");
+				if((body instanceof DeadBody)&&(x>=0))
 				{
-					String mobName=body.Name().substring(x+7).trim();
+					String mobName=body.secretIdentity().substring(0,x).trim();
 					MOB rejuvedMOB=CMMap.getPlayer(mobName);
 					if(rejuvedMOB!=null)
 					{
