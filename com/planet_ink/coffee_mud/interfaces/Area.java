@@ -18,6 +18,10 @@ public interface Area extends Environmental
 	public final static int WEATHER_WINTER_COLD=12;
 	public final static int NUM_WEATHER=13;
 	
+	public final static String[] WEATHER_DESCS=
+	{ "CLEAR","CLOUDY","WINDY","RAIN","THUNDERSTORM","SNOW","HAIL","HEAT","SLEET","BLIZZARD","DUST","DROUGHT","COLD"};
+	
+	
 	public final static int CLIMASK_NORMAL=0;
 	public final static int CLIMASK_WET=1;
 	public final static int CLIMASK_COLD=2;
@@ -25,6 +29,7 @@ public interface Area extends Environmental
 	public final static int CLIMASK_HOT=8;
 	public final static int CLIMASK_DRY=16;
 	public final static int NUM_CLIMATES=6;
+	public final static int ALL_CLIMATE_MASK=31;
 	
 	public final static int A_FULL_DAY=16; // groups of 10 minutes, so 2 hours, 40 minutes=24 hours.
 	public final static int DAYS_IN_MONTH=30; // number of days in a month
@@ -39,6 +44,7 @@ public interface Area extends Environmental
 	public final static int SEASON_SUMMER=1;
 	public final static int SEASON_FALL=2;
 	public final static int SEASON_WINTER=3;
+	public final static String[] SEASON_DESCS={"SPRING","SUMMER","FALL","WINTER"};
 	
 	public int weatherType(Room room);
 	public int nextWeatherType(Room room);
@@ -46,6 +52,8 @@ public interface Area extends Environmental
 	public String nextWeatherDescription(Room room);
 	public int climateType();
 	public int getSeasonCode();
+	public void setNextWeatherType(int weatherCode);
+	public void setCurrentWeatherType(int weatherCode);
 	
 	public void setClimateType(int newClimateType);
 	public String getWeatherDescription();

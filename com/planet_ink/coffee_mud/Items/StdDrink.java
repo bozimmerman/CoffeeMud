@@ -42,7 +42,8 @@ public class StdDrink extends StdContainer implements Drink
 	{
 		if((liquidRemaining()<1)
 		||
-		 ((myOwner()!=null)
+		 ((!isGettable())
+		&&(myOwner()!=null)
 		&&(myOwner() instanceof Room)
 		&&(((Room)myOwner()).getArea()!=null)
 		&&(((Room)myOwner()).getArea().weatherType((Room)myOwner())==Area.WEATHER_DROUGHT)))

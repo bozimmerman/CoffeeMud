@@ -34,6 +34,73 @@ public class StdArea implements Area
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 	protected static int windDirection=Directions.NORTH;
 
+	private final static 
+	int[] seasonalWeather={  
+		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*SPRING*/  40, 20, 10, 14,  5,  1,  0,  5,  0,  0,  0,  0,  5,  
+		/*SUMMER*/  31, 20, 5,  10, 12,  0,  0, 20,  0,  0,  1,  1,  0,
+		/*FALL*/    37, 10, 15, 15, 10,  5,  2,  5,  2,  1,  0,  0, 10,  
+		/*WINTER*/  32, 15, 11,  4,  2,  7,  3,  0,  3,  3,  0,  0, 20,  
+	};
+			
+	private final static 
+	int[] cold={
+		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*SPRING*/  -5, -5,  5,-10,  0,  5,  0, -5,  5,  0,  0,  0,  10,
+		/*SUMMER*/   5,  1,  5,  0,  0,  1,  1,-20,  1,  1,  0,  0,  5,
+		/*FALL*/     0,  0,  1, -5,  0,  1,  1, -5,  1,  1,  0,  0,  5,
+		/*WINTER*/ -15,  0,  0, -4, -2,  5,  2,  0,  2,  2,  0,  0,  10,
+	};
+	private final static 
+	int[] hot={
+		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*SPRING*/   5,  5, -5, 10,  0, -5,  0,  5, -5,  0,  0,  0, -10,
+		/*SUMMER*/  -5, -1, -5,  0,  0, -1, -1, 20, -1, -1,  0,  0, -5,
+		/*FALL*/     0,  0, -1,  5,  0, -1, -1,  5, -1, -1,  0,  0, -5,
+		/*WINTER*/  15,  0,  0,  4,  2, -5, -2,  0, -2, -2,  0,  0, -10,
+	};
+	private final static 
+	int[] dry={
+		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*SPRING*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
+		/*SUMMER*/  10,-22,  0,  0,  0,  0,  0,  0,  0,  0,  6,  6,   0,
+		/*FALL*/    10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
+		/*WINTER*/  10,-15,  0,  0,  0,  0,  0,  2,  0,  0,  0,  3,   0,
+	};
+	private final static 
+	int[] wet={
+		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*SPRING*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
+		/*SUMMER*/ -10, 22,  0,  0,  0,  0,  0,  0,  0,  0, -6, -6,   0,
+		/*FALL*/   -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,  -2,
+		/*WINTER*/ -10, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0, -3,   2,
+	};
+	private final static 
+	int[] windy={
+		/*          -   CL  WD  RA  TH  SN  HA  HE  SL  BL  DU  DR  WC*/
+		/*SPRING*/ -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
+		/*SUMMER*/ -10,  0, 11,  0,  0,  0,  0, -2,  0,  0,  0,  1,   0,
+		/*FALL*/   -10,  0, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   0,
+		/*WINTER*/ -10, -2, 10,  0,  0,  0,  0,  0,  0,  0,  0,  0,   2,
+	};
+	private final static 
+	int[] changeMap=		{
+	/*				     -    CL   WD   RA   TH   SN   HA   HE   SL   BL   DU   DR   WC*/
+	/*CLEAR*/			85,    0,   0,-100,-100,-100,-100,   0,-100,-100,   0, -20,   0,
+	/*CLOUDY*/			 0,   75,   0,   0,   0,   0,   0,   0,   0,   0,-100,-100,   0,
+	/*WINDY*/			 0,    0,  25,-100,-100,-100,-100,-100,-100,-100,   1,   0,   0,
+	/*RAIN*/			-5,    5,   0,  50,   5, -20,   0,-100, -20,-100,-100,-100,   0,
+	/*THUNDERSTORM*/	-5,   10,   5,   5,  35,-100,   0,   0,   0,-100,-100,-100,   0,
+	/*SNOW*/			-5,    5,   0,-100,-100,  35,-100,-100,-100,   5,-100,-100,   5,
+	/*HAIL*/			-5,    5,   0,   0,   0,-100,  10,-100,   0,-100,-100,-100,   5,
+	/*HEAT*/			 0,    0,   0,   0,   0,   0,   0,  50,   0,   0,   0,   1,   0,
+	/*SLEET*/			-5,    5,   0,   0,   0,   0,   0,   0,  10,   0,-100,   0,   5,
+	/*BLIZZ*/			-5,    5,   0,-100,-100,   5,-100,-100,-100,  15,-100,   0,  10,
+	/*DUST*/			-5,  -10,  20,-100,-100,-100,-100,   0,-100,-100,  15,   0,   0,
+	/*DROUGHT*/		   -15,  -15,   0,-100,-100,-100,-100,   0,-100,-100,   1,  85,   0,
+	/*WINTER*/			 0,    0,   0,   0,-100,-100,-100,-100,-100,-100,-100,  -5,  85,
+	};
+			
 	public StdArea()
 	{
 	}
@@ -348,235 +415,90 @@ public class StdArea implements Area
 	}
 	
 	
+	public int[] addMaskAndReturn(int[] one, int[] two)
+	{
+		if(one.length!=two.length)
+			return one;
+		int[] returnable=new int[one.length];
+		for(int o=0;o<one.length;o++)
+			returnable[o]=one[o]+two[o];
+		return returnable;
+	}
+	
 	public void weatherTick()
 	{
-		if(true)//if((--weatherTicker)<=0)
+		if((--weatherTicker)<=0)
 		{
+			int[] seasonal=new int[seasonalWeather.length];
+			seasonal=addMaskAndReturn(seasonalWeather,seasonal);
+			
+			if((climateType()&Area.CLIMASK_COLD)>0)
+				seasonal=addMaskAndReturn(seasonal,cold);
+			
+			if((climateType()&Area.CLIMASK_HOT)>0)
+				seasonal=addMaskAndReturn(seasonal,hot);
+			
+			if((climateType()&Area.CLIMASK_DRY)>0)
+				seasonal=addMaskAndReturn(seasonal,dry);
+			
+			if((climateType()&Area.CLIMASK_WET)>0)
+				seasonal=addMaskAndReturn(seasonal,wet);
+			
+			if((climateType()&Area.CLIMATE_WINDY)>0)
+				seasonal=addMaskAndReturn(seasonal,windy);
 				
 			weatherTicker=WEATHER_TICK_DOWN;
-			int[] changeChance=new int[Area.NUM_WEATHER];
-			for(int c=0;c<changeChance.length;c++) changeChance[c]=50;
-			changeChance[Area.WEATHER_BLIZZARD]=85;
-			changeChance[Area.WEATHER_CLEAR]=15;
-			changeChance[Area.WEATHER_CLOUDY]=25;
-			changeChance[Area.WEATHER_DROUGHT]=15;
-			changeChance[Area.WEATHER_DUSTSTORM]=85;
-			changeChance[Area.WEATHER_HAIL]=90;
-			changeChance[Area.WEATHER_HEAT_WAVE]=50;
-			changeChance[Area.WEATHER_RAIN]=50;
-			changeChance[Area.WEATHER_SLEET]=90;
-			changeChance[Area.WEATHER_SNOW]=65;
-			changeChance[Area.WEATHER_THUNDERSTORM]=65;
-			changeChance[Area.WEATHER_WINDY]=25;
-			changeChance[Area.WEATHER_WINTER_COLD]=15;
+			
 			
 			String say=null;
-			int oldWeather=currentWeather;
-			if(Dice.rollPercentage()<changeChance[currentWeather])
+			int goodWeatherTotal=0;
+			int possibleNextWeather=nextWeather;
+			for(int g=0;g<Area.NUM_WEATHER;g++)
 			{
-				int[] chanceToDo=new int[Area.NUM_WEATHER];
-				chanceToDo[Area.WEATHER_CLEAR]=25;
-				chanceToDo[Area.WEATHER_WINDY]=10;
+				int seasonalNum=seasonal[(getSeasonCode()*Area.NUM_WEATHER)+g];
+				int changeNum=changeMap[(nextWeather*Area.NUM_WEATHER)+g];
+				int chance=seasonalNum+changeNum;
+				if(chance>0) goodWeatherTotal+=chance;
+			}
+			StringBuffer buf=new StringBuffer(name()+"/"+(Area.SEASON_DESCS[getSeasonCode()])+"/"+Area.WEATHER_DESCS[nextWeather]+"->");
+			for(int g=0;g<Area.NUM_WEATHER;g++)
+			{
+				int seasonalNum=seasonal[(getSeasonCode()*Area.NUM_WEATHER)+g];
+				int changeNum=changeMap[(nextWeather*Area.NUM_WEATHER)+g];
+				int chance=seasonalNum+changeNum;
+				if(chance>0)
+					buf.append(Area.WEATHER_DESCS[g]+"="+chance+"("+seasonalNum+"+"+changeNum+"), ");
+			}
+			int newGoodWeatherNum=Dice.roll(1,goodWeatherTotal,-1);
 				
-				if((climateType()&Area.CLIMATE_WINDY)>0) chanceToDo[Area.WEATHER_WINDY]+=25;
-				if((climateType()&Area.CLIMASK_WET)>0) chanceToDo[Area.WEATHER_CLOUDY]+=25;
-				if((climateType()&Area.CLIMASK_DRY)>0) chanceToDo[Area.WEATHER_CLOUDY]-=25;
-				if((climateType()&Area.CLIMASK_HOT)>0) chanceToDo[Area.WEATHER_HEAT_WAVE]+=25;
-				if((climateType()&Area.CLIMASK_COLD)>0) chanceToDo[Area.WEATHER_WINTER_COLD]+=25;
-				switch(getSeasonCode())
+			int tempWeatherTotal=0;
+			for(int g=0;g<Area.NUM_WEATHER;g++)
+			{
+				int chance=(seasonal[(getSeasonCode()*NUM_WEATHER)+g]+changeMap[(nextWeather*Area.NUM_WEATHER)+g]);
+				if(chance>0)
 				{
-				case Area.SEASON_FALL:
-					chanceToDo[Area.WEATHER_CLEAR]+=25;
-					chanceToDo[Area.WEATHER_CLOUDY]+=10;
-					chanceToDo[Area.WEATHER_WINTER_COLD]+=10;
-					chanceToDo[Area.WEATHER_HEAT_WAVE]-=10;
-					break;
-				case Area.SEASON_SPRING:
-					chanceToDo[Area.WEATHER_CLEAR]+=25;
-					chanceToDo[Area.WEATHER_CLOUDY]+=15;
-					chanceToDo[Area.WEATHER_WINTER_COLD]-=10;
-					chanceToDo[Area.WEATHER_HEAT_WAVE]+=10;
-					break;
-				case Area.SEASON_WINTER:
-					chanceToDo[Area.WEATHER_CLOUDY]+=30;
-					chanceToDo[Area.WEATHER_HEAT_WAVE]-=20;
-					chanceToDo[Area.WEATHER_WINTER_COLD]+=20;
-					break;
-				case Area.SEASON_SUMMER:
-					chanceToDo[Area.WEATHER_CLOUDY]+=10;
-					chanceToDo[Area.WEATHER_HEAT_WAVE]+=20;
-					chanceToDo[Area.WEATHER_WINTER_COLD]-=20;
-					break;
+					tempWeatherTotal+=chance;
+					if(newGoodWeatherNum<tempWeatherTotal)
+					{
+						possibleNextWeather=g;
+						break;
+					}
+				}
+			}
+			int oldWeather=currentWeather;
+			if(possibleNextWeather!=nextWeather)
+			{
+				
+				switch(Dice.rollPercentage())
+				{
+				case 1: windDirection=Directions.NORTH; break;
+				case 2: windDirection=Directions.SOUTH; break;
+				case 3: windDirection=Directions.WEST; break;
+				case 4: windDirection=Directions.EAST; break;
 				}
 				
-				String stopWord=getWeatherStop(oldWeather);
-				switch(nextWeather)
-				{
-				case Area.WEATHER_CLEAR:
-					break;
-				case Area.WEATHER_HEAT_WAVE:
-					chanceToDo[Area.WEATHER_HEAT_WAVE]=0;
-					chanceToDo[Area.WEATHER_WINTER_COLD]=0;
-					if((climateType()&Area.CLIMASK_HOT)>0)
-					{
-						chanceToDo[Area.WEATHER_DROUGHT]+=15;
-						if((climateType()&Area.CLIMASK_DRY)>0)
-							chanceToDo[Area.WEATHER_DROUGHT]+=15;
-					}
-					else
-					if((climateType()&Area.CLIMASK_DRY)>0)
-						chanceToDo[Area.WEATHER_DROUGHT]=5;
-					break;
-				case Area.WEATHER_WINTER_COLD:
-					chanceToDo[Area.WEATHER_WINTER_COLD]=0;
-					chanceToDo[Area.WEATHER_HEAT_WAVE]=0;
-					break;
-				case Area.WEATHER_CLOUDY:
-					chanceToDo[Area.WEATHER_CLOUDY]=0;
-					if((climateType()&Area.CLIMASK_WET)>0)
-					{
-						if((climateType()&Area.CLIMASK_COLD)>0)
-						{
-							chanceToDo[Area.WEATHER_SNOW]+=20;
-							chanceToDo[Area.WEATHER_HAIL]+=20;
-							chanceToDo[Area.WEATHER_RAIN]+=10;
-							chanceToDo[Area.WEATHER_SLEET]+=10;
-							chanceToDo[Area.WEATHER_BLIZZARD]+=5;
-						}
-						else
-						if((climateType()&Area.CLIMASK_HOT)>0)
-						{
-							chanceToDo[Area.WEATHER_THUNDERSTORM]+=20;
-							chanceToDo[Area.WEATHER_RAIN]+=35;
-						}
-						else
-						{
-							chanceToDo[Area.WEATHER_SNOW]+=5;
-							chanceToDo[Area.WEATHER_HAIL]+=5;
-							chanceToDo[Area.WEATHER_SLEET]+=1;
-							chanceToDo[Area.WEATHER_THUNDERSTORM]+=10;
-							chanceToDo[Area.WEATHER_RAIN]+=25;
-						}
-					}
-					else
-					if((climateType()&Area.CLIMASK_DRY)>0)
-					{
-						if((climateType()&Area.CLIMASK_COLD)>0)
-						{
-							chanceToDo[Area.WEATHER_SNOW]+=10;
-							chanceToDo[Area.WEATHER_HAIL]+=2;
-							chanceToDo[Area.WEATHER_SLEET]+=2;
-							chanceToDo[Area.WEATHER_RAIN]+=1;
-						}
-						else
-						if((climateType()&Area.CLIMASK_HOT)>0)
-						{
-							chanceToDo[Area.WEATHER_THUNDERSTORM]+=1;
-							chanceToDo[Area.WEATHER_RAIN]+=5;
-						}
-						else
-						{
-							chanceToDo[Area.WEATHER_RAIN]+=5;
-							chanceToDo[Area.WEATHER_THUNDERSTORM]+=1;
-							chanceToDo[Area.WEATHER_SNOW]+=1;
-							chanceToDo[Area.WEATHER_HAIL]+=1;
-							chanceToDo[Area.WEATHER_SLEET]+=1;
-						}
-					}
-					else
-					{
-						if((climateType()&Area.CLIMASK_COLD)>0)
-						{
-							chanceToDo[Area.WEATHER_SNOW]+=10;
-							chanceToDo[Area.WEATHER_HAIL]+=10;
-							chanceToDo[Area.WEATHER_SLEET]+=2;
-							chanceToDo[Area.WEATHER_BLIZZARD]+=1;
-							chanceToDo[Area.WEATHER_RAIN]+=5;
-						}
-						else
-						if((climateType()&Area.CLIMASK_HOT)>0)
-						{
-							chanceToDo[Area.WEATHER_THUNDERSTORM]+=10;
-							chanceToDo[Area.WEATHER_RAIN]+=20;
-						}
-						else
-						{
-							chanceToDo[Area.WEATHER_THUNDERSTORM]+=5;
-							chanceToDo[Area.WEATHER_RAIN]+=10;
-						}
-					}
-					break;
-				case Area.WEATHER_DUSTSTORM:
-					chanceToDo[Area.WEATHER_CLOUDY]=0;
-					chanceToDo[Area.WEATHER_HAIL]=0;
-					chanceToDo[Area.WEATHER_RAIN]=0;
-					chanceToDo[Area.WEATHER_SLEET]=0;
-					chanceToDo[Area.WEATHER_SNOW]=0;
-					chanceToDo[Area.WEATHER_THUNDERSTORM]=0;
-					break;
-				case Area.WEATHER_RAIN:
-				case Area.WEATHER_THUNDERSTORM:
-					chanceToDo[Area.WEATHER_DROUGHT]=0;
-					chanceToDo[Area.WEATHER_DUSTSTORM]=0;
-					break;
-				case Area.WEATHER_SLEET:
-				case Area.WEATHER_HAIL:
-				case Area.WEATHER_SNOW:
-				case Area.WEATHER_BLIZZARD:
-					chanceToDo[Area.WEATHER_HEAT_WAVE]=0;
-					chanceToDo[Area.WEATHER_DUSTSTORM]=0;
-					chanceToDo[Area.WEATHER_DROUGHT]=0;
-					break;
-				case Area.WEATHER_WINDY:
-					if((climateType()&Area.CLIMASK_WET)>0)
-					{
-						if((climateType()&Area.CLIMASK_COLD)>0)
-							chanceToDo[Area.WEATHER_CLOUDY]+=20;
-						else
-						if((climateType()&Area.CLIMASK_HOT)>0)
-							chanceToDo[Area.WEATHER_CLOUDY]+=30;
-					}
-					else
-					if((climateType()&Area.CLIMASK_DRY)>0)
-					{
-						chanceToDo[Area.WEATHER_CLOUDY]-=10;
-						if((climateType()&Area.CLIMASK_HOT)>0)
-						{
-							chanceToDo[Area.WEATHER_CLOUDY]-=15;
-							chanceToDo[Area.WEATHER_DUSTSTORM]+=10;
-						}
-					}
-					else
-					{
-						chanceToDo[Area.WEATHER_CLOUDY]-=5;
-						if((climateType()&Area.CLIMASK_HOT)>0)
-							chanceToDo[Area.WEATHER_CLOUDY]-=5;
-					}
-					break;
-				}
-				int newWeather=nextWeather;
-				
-				
-				int goodWeatherTotal=0;
-				for(int g=0;g<Area.NUM_WEATHER;g++)
-					if(chanceToDo[g]>0)
-						goodWeatherTotal+=chanceToDo[g];
-					}
-				int newGoodWeatherNum=Dice.roll(1,goodWeatherTotal,-1);
-				
-				int tempWeatherTotal=0;
-				for(int g=0;g<Area.NUM_WEATHER;g++)
-					if(chanceToDo[g]>0)
-					{
-						tempWeatherTotal+=chanceToDo[g];
-						if(newGoodWeatherNum<tempWeatherTotal)
-						{
-							nextWeather=g;
-							break;
-						}
-					}
-				currentWeather=newWeather;
-				
+				currentWeather=nextWeather;
+				nextWeather=possibleNextWeather;
 				// 0=say nothing;
 				// 1=say weatherdescription only
 				// 2=say stop word only
@@ -597,6 +519,7 @@ public class StdArea implements Area
 				/*DROUGHT*/  		 2,  3,  3,  3,  3,  3,  3,  2,  3,  3,  1,  0,  3,
 				/*WINTER*/			 2,  3,  3,  3,  3,  1,  1,  3,  1,  1,  1,  1,  0,
 									};
+				String stopWord=getWeatherStop(oldWeather);
 				switch(sayMap[(oldWeather*Area.NUM_WEATHER)+currentWeather])
 				{
 				case 0: say=null; break;
@@ -606,15 +529,11 @@ public class StdArea implements Area
 				}
 			}
 			else
-			{
-Room r2=CMClass.getLocale("InTheAir");
-Log.systemOutWriter.println("SAME  -"+name()+"/"+climateType()+"/"+Util.padRight(weatherDescription(r2),60));
-				if(currentWeather==Area.WEATHER_THUNDERSTORM)
-					say="A bolt of lightning streaks across the sky.";
-			}
+			if(currentWeather==Area.WEATHER_THUNDERSTORM)
+				say="A bolt of lightning streaks across the sky.";
+			
 			if(say!=null)
 			{
-Log.systemOutWriter.println("CHANGE-"+name()+"/"+climateType()+"/"+Util.padRight(say,60));
 				Vector myMap=getMyMap();
 				for(int r=0;r<myMap.size();r++)
 				{
@@ -717,6 +636,13 @@ Log.systemOutWriter.println("CHANGE-"+name()+"/"+climateType()+"/"+Util.padRight
 				desc.append("swirls all around you.");
 			else
 				desc.append("pours down from above.");
+			break;
+		case Area.WEATHER_DUSTSTORM:
+			desc.append("An eye-stinging dust storm ");
+			if((climateType()&Area.CLIMATE_WINDY)>0)
+				desc.append("swirls all around you.");
+			else
+				desc.append("blows in from the "+Directions.getFromDirectionName(this.windDirection));
 			break;
 		case Area.WEATHER_BLIZZARD:
 			desc.append("A thunderous blizzard ");
