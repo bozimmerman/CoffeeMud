@@ -580,7 +580,7 @@ public class StdLawBook extends StdItem
 			StringBuffer str=new StringBuffer("");
 			str.append("1. PROPERTY TAX   : "+(Util.s_double(theLaw.getInternalStr("PROPERTYTAX")))+"%\n\r");
 			str.append("2. SALES TAX      : "+(Util.s_double(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
-			str.append("3. CITIZEN TAX    : "+(Util.s_double(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
+			str.append("3. CITIZEN TAX    : "+(Util.s_double(theLaw.getInternalStr("CITTAX")))+"%\n\r");
 			str.append("4. TAX EVASION    : "+shortLawDesc((String[])theLaw.taxLaws().get("TAXEVASION"))+"\n\r");
 			str.append("5. TREASURY       : ");
 			String S=theLaw.getInternalStr("TREASURY").trim();

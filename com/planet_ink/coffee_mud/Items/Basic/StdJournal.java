@@ -74,66 +74,131 @@ public class StdJournal extends StdItem
 					return;
 				}
 				int which=-1;
-				if(Util.s_long(msg.targetMessage())>0)
-					which=Util.s_int(msg.targetMessage());
-				Vector read=DBRead(Name(),mob.Name(),which-1,lastTime);
-				String from=(String)read.firstElement();
-				StringBuffer entry=(StringBuffer)read.lastElement();
-				boolean mineAble=false;
-				if(entry.charAt(0)=='#')
+				boolean newOnly=false;
+				boolean all=false;
+				Vector parse=Util.parse(msg.targetMessage());
+				for(int v=0;v<parse.size();v++)
 				{
-					which=-1;
-					entry.setCharAt(0,' ');
+				    String s=(String)parse.elementAt(v);
+					if(Util.s_long(s)>0)
+						which=Util.s_int(msg.targetMessage());
+					else
+					if(s.equalsIgnoreCase("NEW"))
+					    newOnly=true;
+					else
+					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
+					    all=true;
 				}
-				if((entry.charAt(0)=='*')
-				   ||(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")))
+				Vector read=DBRead(Name(),mob.Name(),which-1,lastTime, newOnly, all);
+				boolean megaRepeat=true;
+				while(megaRepeat)
 				{
-					mineAble=true;
-					entry.setCharAt(0,' ');
-				}
-				mob.tell(entry.toString()+"\n\r");
-				if((entry.toString().trim().length()>0)
-				&&(which>0)
-				&&(MUDZapper.zapperCheck(getWriteReq(),mob)||((CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))))
-				{
-					boolean repeat=true;
-					while(repeat)
+				    megaRepeat=false;
+					String from=(String)read.firstElement();
+					StringBuffer entry=(StringBuffer)read.lastElement();
+					boolean mineAble=false;
+					if(entry.charAt(0)=='#')
 					{
-						repeat=false;
-						try
+						which=-1;
+						entry.setCharAt(0,' ');
+					}
+					if((entry.charAt(0)=='*')
+					   ||(CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")))
+					{
+						mineAble=true;
+						entry.setCharAt(0,' ');
+					}
+					else
+					if((newOnly)&&(msg.value()>0))
+					    return;
+					mob.tell(entry.toString()+"\n\r");
+					if((entry.toString().trim().length()>0)
+					&&(which>0)
+					&&(MUDZapper.zapperCheck(getWriteReq(),mob)||((CMSecurity.isAllowed(msg.source(),msg.source().location(),"JOURNALS")))))
+					{
+						boolean repeat=true;
+						while(repeat)
 						{
-							String prompt="R)eply ";
-							String cmds="R";
-							if((CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0)
-							&&(from.length()>0))
-								prompt+="E)mail "; cmds+="E";
-							if(msg.value()>0){ prompt+="S)top "; cmds+="S";}
-							if(mineAble){ prompt+="D)elete "; cmds+="D";}
-							prompt+="or RETURN: ";
-							String s=mob.session().choose(prompt,cmds+"\n","\n");
-							if(s.equalsIgnoreCase("S"))
-								msg.setValue(0);
-							else
-							if(s.equalsIgnoreCase("E"))
+							repeat=false;
+							try
 							{
-								MOB M=CMMap.getLoadPlayer(from);
-								if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf("@")<0))
+								String prompt="R)eply ";
+								String cmds="R";
+								if((CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX).length()>0)
+								&&(from.length()>0))
+									prompt+="E)mail "; cmds+="E";
+								if(msg.value()>0){ prompt+="S)top "; cmds+="S";}
+								else
+								{ prompt+="N)ext "; cmds+="N";}
+								if(mineAble){ prompt+="D)elete "; cmds+="D";}
+								prompt+="or RETURN: ";
+								String s=mob.session().choose(prompt,cmds+"\n","\n");
+								if(s.equalsIgnoreCase("S"))
+									msg.setValue(0);
+								else
+								if(s.equalsIgnoreCase("N"))
 								{
-									mob.tell("Player '"+from+"' does not exist, or has no email address.");
-									repeat=true;
+								    while(entry!=null)
+								    {
+								        which++;
+										read=DBRead(Name(),mob.Name(),which-1,lastTime, newOnly, all);
+										entry=(StringBuffer)read.lastElement();
+										if(entry.toString().trim().length()>0)
+										{
+											if(entry.charAt(0)=='#')
+												return;
+											if((entry.charAt(0)=='*')||(!newOnly))
+											    break;
+										}
+								    }
+								    megaRepeat=true;
 								}
 								else
-								if(!mob.session().choose("Send email to "+M.Name()+" (Y/n)?","YN\n","Y").equalsIgnoreCase("N"))
+								if(s.equalsIgnoreCase("E"))
 								{
-									String replyMsg=mob.session().prompt("Enter your email response\n\r: ");
+									MOB M=CMMap.getLoadPlayer(from);
+									if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf("@")<0))
+									{
+										mob.tell("Player '"+from+"' does not exist, or has no email address.");
+										repeat=true;
+									}
+									else
+									if(!mob.session().choose("Send email to "+M.Name()+" (Y/n)?","YN\n","Y").equalsIgnoreCase("N"))
+									{
+										String replyMsg=mob.session().prompt("Enter your email response\n\r: ");
+										if(replyMsg.trim().length()>0)
+										{
+											CMClass.DBEngine().DBWriteJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),
+																			  mob.Name(),
+																			  M.Name(),
+																			  "RE: "+((String)read.elementAt(1)),
+																			  replyMsg,-1);
+											mob.tell("Email queued.");
+										}
+										else
+										{
+											mob.tell("Aborted.");
+											repeat=true;
+										}
+									}
+									else
+										repeat=true;
+								}
+								else
+								if(s.equalsIgnoreCase("D"))
+								{
+									CMClass.DBEngine().DBDeleteJournal(name(),which-1);
+									msg.setValue(-1);
+									mob.tell("Entry deleted.");
+								}
+								else
+								if(s.equalsIgnoreCase("R"))
+								{
+									String replyMsg=mob.session().prompt("Enter your response\n\r: ");
 									if(replyMsg.trim().length()>0)
 									{
-										CMClass.DBEngine().DBWriteJournal(CommonStrings.getVar(CommonStrings.SYSTEM_MAILBOX),
-																		  mob.Name(),
-																		  M.Name(),
-																		  "RE: "+((String)read.elementAt(1)),
-																		  replyMsg,-1);
-										mob.tell("Email queued.");
+										CMClass.DBEngine().DBWriteJournal(Name(),mob.Name(),"","",replyMsg,which-1);
+										mob.tell("Reply added.");
 									}
 									else
 									{
@@ -141,43 +206,19 @@ public class StdJournal extends StdItem
 										repeat=true;
 									}
 								}
-								else
-									repeat=true;
 							}
-							else
-							if(s.equalsIgnoreCase("D"))
+							catch(IOException e)
 							{
-								CMClass.DBEngine().DBDeleteJournal(name(),which-1);
-								msg.setValue(-1);
-								mob.tell("Entry deleted.");
+								Log.errOut("JournalItem",e.getMessage());
 							}
-							else
-							if(s.equalsIgnoreCase("R"))
-							{
-								String replyMsg=mob.session().prompt("Enter your response\n\r: ");
-								if(replyMsg.trim().length()>0)
-								{
-									CMClass.DBEngine().DBWriteJournal(Name(),mob.Name(),"","",replyMsg,which-1);
-									mob.tell("Reply added.");
-								}
-								else
-								{
-									mob.tell("Aborted.");
-									repeat=true;
-								}
-							}
-						}
-						catch(IOException e)
-						{
-							Log.errOut("JournalItem",e.getMessage());
 						}
 					}
+					else
+					if(which<0)
+						mob.tell(description());
+					else
+						mob.tell("That message is private.");
 				}
-				else
-				if(which<0)
-					mob.tell(description());
-				else
-					mob.tell("That message is private.");
 				return;
 			}
 			return;
@@ -274,7 +315,7 @@ public class StdJournal extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector DBRead(String Journal, String username, int which, long lastTimeDate)
+	public Vector DBRead(String Journal, String username, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
 		Vector reply=new Vector();
@@ -298,13 +339,14 @@ public class StdJournal extends StdItem
 			}
 		}
 
-		if(journal.size()>0)
-		{
-			reply.addElement(((Vector)journal.firstElement()).elementAt(1));
-			reply.addElement(((Vector)journal.firstElement()).elementAt(4));
-		}
 		if((which<0)||(which>=journal.size()))
 		{
+			if(journal.size()>0)
+			{
+				reply.addElement(((Vector)journal.firstElement()).elementAt(1));
+				reply.addElement(((Vector)journal.firstElement()).elementAt(4));
+			}
+			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
 				Vector entry=(Vector)journal.elementAt(j);
@@ -314,20 +356,47 @@ public class StdJournal extends StdItem
 				String subject=(String)entry.elementAt(4);
 				// message is 5, but dont matter.
 				String compdate=(String)entry.elementAt(6);
+				StringBuffer selection=new StringBuffer("");
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{
 					if(Util.s_long(compdate)>lastTimeDate)
-						buf.append("*");
+					    selection.append("*");
 					else
-						buf.append(" ");
-					buf.append(Util.padRight((j+1)+"",3)+") "
-							   +((shortFormat)?"":""
-							   +Util.padRight(from,10)+" "
-							   +Util.padRight(to,10)+" ")
-							   +Util.padRight(IQCalendar.d2String(Util.s_long(date)),19)+" "
-							   +Util.padRight(subject,25+(shortFormat?22:0))+"\n\r");
+					if(newOnly)
+					    continue;
+					else
+					    selection.append(" ");
+					selection.append(Util.padRight((j+1)+"",3)+") "
+								   +((shortFormat)?"":""
+								   +Util.padRight(from,10)+" "
+								   +Util.padRight(to,10)+" ")
+								   +Util.padRight(IQCalendar.d2String(Util.s_long(date)),19)+" "
+								   +Util.padRight(subject,25+(shortFormat?22:0))+"\n\r");
+					selections.addElement(selection);
 				}
 			}
+			int numToAdd=CommonStrings.getIntVar(CommonStrings.SYSTEMI_JOURNALLIMIT);
+			if((numToAdd==0)||(all)) numToAdd=Integer.MAX_VALUE;
+			for(int v=selections.size()-1;v>=0;v--)
+			{
+			    if(numToAdd==0){ selections.setElementAt("",v); continue;}
+			    StringBuffer str=(StringBuffer)selections.elementAt(v);
+			    if((newOnly)&&(str.charAt(0)!='*'))
+			    { selections.setElementAt("",v); continue;}
+			    numToAdd--;
+			}
+			boolean notify=false;
+			for(int v=0;v<selections.size();v++)
+			{
+			    if(!(selections.elementAt(v) instanceof StringBuffer))
+			    {
+			        notify=true;
+			        continue;
+			    }
+			    buf.append((StringBuffer)selections.elementAt(v));
+			}
+			if(notify)
+			    buf.append("\n\rUse READ ALL [JOURNAL] to see missing entries.");
 		}
 		else
 		{
@@ -337,6 +406,10 @@ public class StdJournal extends StdItem
 			String to=(String)entry.elementAt(3);
 			String subject=(String)entry.elementAt(4);
 			String message=(String)entry.elementAt(5);
+			
+			reply.addElement(entry.elementAt(1));
+			reply.addElement(entry.elementAt(4));
+			
 			//String compdate=(String)entry.elementAt(6);
 			boolean mineAble=to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username);
 			if(mineAble)

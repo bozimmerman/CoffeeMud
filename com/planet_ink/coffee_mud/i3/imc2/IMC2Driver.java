@@ -34,6 +34,7 @@ package com.planet_ink.coffee_mud.i3.imc2;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -53,6 +54,8 @@ public final class IMC2Driver extends Thread {
     static final int PERM_PLAYER = 1;
     static final int PERM_IMMORTAL = 2;
     static final int PERM_ADMIN = 3;
+    boolean shutdown=false;
+    boolean isShutdown=false;
 
     Date imc_boot = new Date();
     long imc_now,imc_sequencenumber,imc_prev_sequencenumber;
@@ -197,11 +200,21 @@ public final class IMC2Driver extends Thread {
 	{
 		try{
 		if(c_thread!=null)
-			c_thread.interrupt();
+			c_thread.shutdown();
+		}catch(Exception e){}
+		try{
 		if(c_thread2!=null)
 			c_thread2.interrupt();
-		this.interrupt();
 		}catch(Exception e){}
+		try{
+		    shutdown=true;
+			this.interrupt();
+		}catch(Exception e){}
+		
+		int i=0;
+		while (((++i)<60)&&(!c_thread.isShutdown)&&(!c_thread2.isShutdown)&&(!isShutdown))
+			try { sleep(1000);	}
+			catch (Exception ex) {}
 	}
 	
 	final public static String[] explodeNicely(String s, String separator)
@@ -262,10 +275,14 @@ public final class IMC2Driver extends Thread {
             return false;
         }
 
-        try {
+        try 
+        {
+            sa.setSoTimeout(60000);
             in = new DataInputStream(sa.getInputStream());
             out = new DataOutputStream(sa.getOutputStream());
-        } catch(Exception e) { }
+        } 
+        catch(Exception e) 
+        { }
 
         this_imcmud.state = IMC_CONNECTING;
         this_imcmud.insize = 1024;
@@ -1391,7 +1408,9 @@ public final class IMC2Driver extends Thread {
         }
         catch (Exception e) 
 		{
-			Log.errOut("IMC2Driver", "read: "+e.getMessage());
+            if((e.getMessage()==null)
+            ||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0))
+				Log.errOut("IMC2Driver", "read: "+e.getMessage());
 			if(e.getMessage().toUpperCase().indexOf("CONNECTION")>=0)
 			{
 				imc_active = IA_NONE;
@@ -1486,6 +1505,8 @@ public final class IMC2Driver extends Thread {
         extends Thread {
 
         IMC2Driver imc_client;
+        boolean shutdown=false;
+        public boolean isShutdown=false;
         int seq = 0;
 
         public call_out(IMC2Driver _imc_client) {
@@ -1494,10 +1515,18 @@ public final class IMC2Driver extends Thread {
             imc_client = _imc_client;
         }
 
-        final public void run() {
+		public void shutdown()
+		{
+		    shutdown=true;
+		    interrupt();
+		}
+		
+        final public void run() 
+        {
             if (imc_client == null)
                 return;
-            while (true) {
+            while (!shutdown) 
+            {
 //              tracef(1, "call_out: process call outs");
                 imc_client.imc_process_call_outs();
                 imc_client.imc_write_to_socket(out);
@@ -1512,6 +1541,7 @@ public final class IMC2Driver extends Thread {
                 catch (Exception e) {}
 
             }
+            isShutdown=true;
         }
     }
 
@@ -1519,6 +1549,8 @@ public final class IMC2Driver extends Thread {
         extends Thread {
 
         IMC2Driver imc_client;
+        boolean shutdown=false;
+        public boolean isShutdown=false;
 
         public call_in(IMC2Driver _imc_client) {
 			super("IMC2-call_in");
@@ -1526,10 +1558,18 @@ public final class IMC2Driver extends Thread {
             imc_client = _imc_client;
         }
 
-        final public void run() {
+		public void shutdown()
+		{
+		    shutdown=true;
+		    interrupt();
+		}
+        
+        final public void run() 
+        {
             if (imc_client == null)
                 return;
-            while (true) {
+            while (!shutdown) 
+            {
 //              tracef(1, "call_out: process call outs");
                 imc_client.imc_read_from_socket(in);
                 try {
@@ -1538,6 +1578,7 @@ public final class IMC2Driver extends Thread {
                 catch (Exception e) {}
 
             }
+            isShutdown=true;
         }
 
     }
@@ -1666,8 +1707,11 @@ public final class IMC2Driver extends Thread {
     }
 
     /* send a tell to a remote player */
-    final String imc_send_chat(imc_char_data from, String to, String argument,
-                         int isreply, int emote) {
+    final String imc_send_chat(imc_char_data from, 
+            					String to, 
+            					String argument,
+            					int isreply, 
+            					int emote) {
         PACKET out = new PACKET();
 
         if (imc_active < IA_UP)
@@ -1730,12 +1774,13 @@ public final class IMC2Driver extends Thread {
 		Log.sysOut("IMC2","(c) 1996-2002/Java port by Istvan David");
 		Log.sysOut("IMC2","Client connected to "+this_imcmud.host.trim());
 
-        while (true) {
+        while (!shutdown) {
             HeartBeat++;
             try {
                 sleep(2000);
             }
             catch (Exception e) {}
+            isShutdown=true;
         }
     }
 

@@ -154,7 +154,8 @@ public class Intermud implements Runnable, Persistent, Serializable
     public Vector              name_servers;
     public int                 password;
 
-    private Intermud(ImudServices imud, PersistentPeer p) {
+    private Intermud(ImudServices imud, PersistentPeer p) 
+    {
         super();
         intermud = imud;
         peer = p;
@@ -340,13 +341,14 @@ public class Intermud implements Runnable, Persistent, Serializable
     public void run() {
 
         try {
+            connection.setSoTimeout(60000);
             input = new DataInputStream(connection.getInputStream());
         }
         catch( java.io.IOException e ) {
             input = null;
             connected = false;
         }
-        while( connected ) {
+        while( connected && (!shutdown)) {
             Vector data;
 
             try { Thread.sleep(100); }
@@ -363,7 +365,10 @@ public class Intermud implements Runnable, Persistent, Serializable
                 String str;
 
                 try {
-                    int len = input.readInt();
+                    int len=0;
+                    while(!shutdown){try{
+	                    len = input.readInt();
+                    }catch(java.io.IOException e){if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) throw e;}}
 					if(len>65536)
 					{
 						int skipped=0;
@@ -374,7 +379,9 @@ public class Intermud implements Runnable, Persistent, Serializable
 					}
                     byte[] tmp = new byte[len];
 
-                    input.readFully(tmp);
+                    while(!shutdown){try{
+	                    input.readFully(tmp);
+                    }catch(java.io.IOException e){if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) throw e;}}
 					str=new String(tmp);
                 }
                 catch( java.io.IOException e ) {

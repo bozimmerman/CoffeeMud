@@ -64,7 +64,7 @@ public class TaxCollector extends StdBehavior
 		{
 			double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
 			if(cittax>0.0)
-			    owed[1]=(int)Math.round(Util.mul(MoneyUtils.totalMoney(M),cittax));
+			    owed[1]=(int)Math.round(Util.mul(MoneyUtils.totalMoney(M),Util.div(cittax,100.0)));
 		}
 		else
 			owed[1]=MoneyUtils.totalMoney(M)/10;

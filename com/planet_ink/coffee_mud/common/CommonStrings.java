@@ -92,6 +92,7 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MUDBACKLOG=24;
 	public static final int SYSTEMI_TICKSPERMUDDAY=25;
 	public static final int SYSTEMI_COMBATSYSTEM=26;
+	public static final int SYSTEMI_JOURNALLIMIT=27;
 	public static final int NUMI_SYSTEM=28;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
@@ -263,6 +264,8 @@ public class CommonStrings extends Scriptable
 		setIntVar(SYSTEMI_LANGPRACCOST,page.getStr("LANGPRACCOST"));
 		setIntVar(SYSTEMI_LANGTRAINCOST,page.getStr("LANGTRAINCOST"));
 		setIntVar(SYSTEMI_LASTPLAYERLEVEL,page.getStr("LASTPLAYERLEVEL"));
+		setIntVar(SYSTEMI_JOURNALLIMIT,page.getStr("JOURNALLIMIT"));
+		
 		
 		if(Util.s_int(page.getStr("HOURSINDAY"))>0)
 			DefaultTimeClock.globalClock.setHoursInDay(Util.s_int(page.getStr("HOURSINDAY")));
