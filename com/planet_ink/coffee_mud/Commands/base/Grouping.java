@@ -46,7 +46,7 @@ public class Grouping
 			head.append("^x[");
 			head.append(Util.padRight("Race",8)+" ");
 			head.append(Util.padRight("Class",12)+" ");
-			head.append(Util.padRight("Lvl",5));
+			head.append(Util.padRight("Level",7));
 			head.append("] Character name^N^.\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
@@ -81,7 +81,7 @@ public class Grouping
 			head.append("^x[");
 			head.append(Util.padRight("Race",8)+" ");
 			head.append(Util.padRight("Class",12)+" ");
-			head.append(Util.padRight("Lvl",5));
+			head.append(Util.padRight("Level",7));
 			head.append("] Character name^N^.\n\r");
 			mob.tell(head.toString()+msg.toString());
 		}
@@ -111,7 +111,7 @@ public class Grouping
 		else
 			levelStr=classLevel+"/"+who.envStats().level();
 		msg.append(Util.padRight(who.charStats().getCurrentClass().name(),12)+" ");
-		msg.append(Util.padRight(levelStr,5));
+		msg.append(Util.padRight(levelStr,7));
 		msg.append("] "+Util.padRight(who.name(),15));
 		if(!shortForm)
 		{

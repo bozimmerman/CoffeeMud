@@ -737,7 +737,20 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" NO IMMUN")>=0)
 			||(myWish.indexOf(" LOSE ")>=0)))
 			{
-				baseLoss+=1000;
+				switch(foundAttribute)
+				{
+				case CharStats.CHARISMA:
+				case CharStats.CONSTITUTION:
+				case CharStats.DEXTERITY:
+				case CharStats.INTELLIGENCE:
+				case CharStats.STRENGTH:
+				case CharStats.WISDOM:
+					baseLoss-=1000;
+					break;
+				default:
+					baseLoss-=10;
+					break;
+				}
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				mob.charStats().getCurrentClass().loseExperience(mob,baseLoss);
 				if(foundAttribute<=6)
@@ -762,7 +775,20 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS ")>=0)
 			||(myWish.indexOf(" TO BE ")>=0)))
 			{
-				baseLoss+=500;
+				switch(foundAttribute)
+				{
+				case CharStats.CHARISMA:
+				case CharStats.CONSTITUTION:
+				case CharStats.DEXTERITY:
+				case CharStats.INTELLIGENCE:
+				case CharStats.STRENGTH:
+				case CharStats.WISDOM:
+					baseLoss+=500;
+					break;
+				default:
+					baseLoss+=10;
+					break;
+				}
 				mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 				mob.charStats().getCurrentClass().loseExperience(mob,baseLoss);
 				mob.baseCharStats().getCurrentClass().unLevel(mob);

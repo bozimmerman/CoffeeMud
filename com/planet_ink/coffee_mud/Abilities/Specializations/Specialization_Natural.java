@@ -9,7 +9,7 @@ import java.util.*;
 public class Specialization_Natural extends Specialization_Weapon
 {
 	public String ID() { return "Specialization_Natural"; }
-	public String name(){ return "Hand-to-hand combat";}
+	public String name(){ return "Hand to hand combat";}
 	public Specialization_Natural()
 	{
 		super();

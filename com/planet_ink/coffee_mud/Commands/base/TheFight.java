@@ -70,7 +70,11 @@ public class TheFight
 			return;
 		}
 		else
+		if((!mob.mayPhysicallyAttack(target)))
+			mob.tell("You are not allowed to attack "+target.name()+".");
+		else
 			postAttack(mob,target,mob.fetchWieldedItem());
+		
 	}
 
 	public Hashtable allPossibleCombatants(MOB mob, boolean beRuthless)
@@ -129,7 +133,9 @@ public class TheFight
 
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{
-		if((attacker==null)||(!attacker.mayPhysicallyAttack(target))) return;
+		if((attacker==null)||(!attacker.mayPhysicallyAttack(target))) 
+			return;
+		
 		if((weapon==null)
 		&&((attacker.getBitmap()&MOB.ATT_AUTODRAW)==MOB.ATT_AUTODRAW))
 		{

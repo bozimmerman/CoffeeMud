@@ -134,7 +134,8 @@ public class AbilityEvoker
 			mob.tell("You don't know how to do that.");
 			return;
 		}
-		if(!CMAble.qualifiesByLevel(mob,evokableAbility))
+		if((CMAble.qualifyingLevel(mob,evokableAbility)>=0)
+		&&(!CMAble.qualifiesByLevel(mob,evokableAbility)))
 		{
 			mob.tell("You are not high enough level to do that.");
 			return;
