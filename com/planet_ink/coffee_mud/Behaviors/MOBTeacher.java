@@ -26,6 +26,16 @@ public class MOBTeacher extends CombatAbilities
 
 	private void setTheCharClass(MOB mob, CharClass C)
 	{
+System.out.print(mob.name()+"+"+C.ID()+"=");
+		if((mob.baseCharStats().numClasses()==1)
+		&&(mob.baseCharStats().getMyClass(0).ID().equals("StdCharClass"))
+		&&(!C.ID().equals("StdCharClass")))
+		{
+			mob.baseCharStats().setMyClasses(C.ID());
+			mob.baseCharStats().setMyLevels(""+mob.envStats().level());
+			mob.recoverCharStats();
+			return;
+		}
 		for(int i=0;i<mob.baseCharStats().numClasses();i++)
 		{
 			CharClass C1=mob.baseCharStats().getMyClass(i);
@@ -72,8 +82,10 @@ public class MOBTeacher extends CombatAbilities
 
 	private void ensureCharClass()
 	{
-		setTheCharClass(myMOB,CMClass.getCharClass("StdCharClass"));
+		myMOB.baseCharStats().setMyClasses("StdCharClass");
+		myMOB.baseCharStats().setMyLevels(""+myMOB.envStats().level());
 		myMOB.recoverCharStats();
+		
 		Hashtable myAbles=new Hashtable();
 		Ability A=null;
 		for(int a=0;a<myMOB.numAbilities();a++)
@@ -124,7 +136,7 @@ public class MOBTeacher extends CombatAbilities
 			
 			A=(Ability)CMClass.getAbility(s);
 			CharClass C=CMClass.getCharClass(s);
-			if(C!=null)
+			if((C!=null)&&(!C.ID().equals("StdCharClass")))
 			{
 				teachEverything=false;
 				setTheCharClass(myMOB,C);

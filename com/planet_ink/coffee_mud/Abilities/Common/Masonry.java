@@ -215,14 +215,14 @@ public class Masonry extends CraftingSkill
 							if(doingCode==BUILD_POOL)
 							{
 								Room R2=CMClass.getLocale("UnderWater");
-								R2.setRoomID(CMMap.getOpenRoomID(room.getArea().ID()));
+								R2.setRoomID(CMMap.getOpenRoomID(R.getArea().ID()));
 								R2.setDisplayText("Under the water");
 								R2.setDescription("You are swimming around under the water.");
 								R2.setArea(R.getArea());
 								R2.rawDoors()[Directions.UP]=R;
 								R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
 								R.rawDoors()[Directions.DOWN]=R2;
-								R2.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
+								R.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
 								LandTitle title=CoffeeUtensils.getLandTitle(R);
 								if((title!=null)&&(CoffeeUtensils.getLandTitle(R2)==null))
 								{

@@ -653,7 +653,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 64: // non-locatable
 					if(firstTime)
-						old=Sense.canSee(I)?"":"checked";
+						old=Sense.canBeLocated(I)?"":"checked";
 					else
 					if(old.equals("on"))
 						old="checked";

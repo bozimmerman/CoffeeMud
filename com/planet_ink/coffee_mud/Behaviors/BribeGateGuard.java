@@ -298,7 +298,7 @@ public class BribeGateGuard extends StdBehavior
 		  }
 		  return true;
 		}
-		if (!Sense.canBeSeenBy(msg.source(), oking)) {
+		if (!Sense.canBeSeenBy(msg.source(), monster)) {
 		  if (debug) {
 		    CommonMsgs.say( (MOB) oking, msg.source(),
 		                          "can't be seen", true, true);
@@ -393,7 +393,7 @@ public class BribeGateGuard extends StdBehavior
 		MOB observer = (MOB) affecting;
 		if ( (msg.sourceMinor() == CMMsg.TYP_ENTER)
 		    && (!msg.amISource(observer))
-		    && (Sense.canSenseMoving(msg.source(), affecting))
+		    && (Sense.canSenseMoving(msg.source(), observer))
 		    && (!msg.source().isMonster())) {
 		  // check if the msg.source() has paid enough.  if so, time to react
 		  if (checkBalance(price(), source)) {

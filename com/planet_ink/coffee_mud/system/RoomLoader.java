@@ -192,6 +192,7 @@ public class RoomLoader
 			if(R.next())
 			{
 				String txt=DBConnections.getRes(R,"CMDESC2");
+				R.close();
 				DBConnector.DBDone(D);
 				return txt;
 			}
@@ -219,6 +220,7 @@ public class RoomLoader
 				if(NUMID.equalsIgnoreCase(mobID))
 				{
 					String txt=DBConnections.getRes(R,"CMCHTX");
+					R.close();
 					DBConnector.DBDone(D);
 					return txt;
 				}

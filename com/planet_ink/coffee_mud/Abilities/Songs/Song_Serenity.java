@@ -17,7 +17,7 @@ public class Song_Serenity extends Song
 	{
 		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
-		if(!Sense.canBeHeardBy(invoker,affected)) return true;
+		if(!Sense.canBeHeardBy(invoker,(MOB)affected)) return true;
 
 		if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 		   &&(msg.amISource((MOB)affected))

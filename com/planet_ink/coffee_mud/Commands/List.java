@@ -1149,6 +1149,9 @@ public class List extends StdCommand
 		if("MAGIC".startsWith(listThis))
 			s.rawPrintln(CMLister.reallyList(CMClass.miscMagic()).toString());
 		else
+		if("TECH".startsWith(listThis))
+			s.rawPrintln(CMLister.reallyList(CMClass.miscTech()).toString());
+		else
 		if("CLANITEMS".startsWith(listThis))
 			s.rawPrintln(CMLister.reallyList(CMClass.clanItems()).toString());
 		else

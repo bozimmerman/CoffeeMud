@@ -1405,7 +1405,8 @@ public class StdMOB implements MOB
 					{
 						if(msg.target()!=null)
 						{
-							if(!Sense.canBeHeardBy(this,msg.target()))
+							if((msg.target() instanceof MOB)
+							&&(!Sense.canBeHeardBy(this,(MOB)msg.target())))
 							{
 								tell(msg.target().name()+" can't hear you!");
 								return false;
@@ -1451,7 +1452,8 @@ public class StdMOB implements MOB
 					}
 					if(msg.target() instanceof Deity)
 						break;
-					if(!Sense.canBeHeardBy(this,msg.target()))
+					if((msg.target() instanceof MOB)
+					&&(!Sense.canBeHeardBy(this,(MOB)msg.target())))
 					{
 						tell(msg.target().name()+" can't hear you!");
 						return false;

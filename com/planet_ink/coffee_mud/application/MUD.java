@@ -225,8 +225,8 @@ public class MUD extends Thread implements MudHost
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBDCOMPRESS,compress.contains("MOBDESC"));
 		Resources.setCompression(compress.contains("RESOURCES"));
 		Vector nocache=Util.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
-		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE,compress.contains("GENMOBS"));
-		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE,compress.contains("ROOMDESC"));
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MOBNOCACHE,nocache.contains("GENMOBS"));
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 
 		CommonStrings.setDisableVars(page.getStr("DISABLE"));
 		if(page.getStr("DISABLE").trim().length()>0)

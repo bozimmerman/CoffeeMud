@@ -106,7 +106,7 @@ public class GateGuard extends StdBehavior
 			&&(mob.location()!=null)
 			&&(mob.location()!=msg.source().location())
 			&&(!heardKnock)
-			&&(Sense.canHear(host))
+			&&(Sense.canHear(mob))
 			&&(canFreelyBehaveNormal(host)))
 			{
 				int dir=findGate(mob);

@@ -6,39 +6,45 @@ import java.util.Vector;
 
 public class Sense
 {
-	public static boolean canSee(Environmental E)
+	public static boolean canSee(MOB E)
 	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
-	public static boolean canSeeHidden(Environmental E)
+	public static boolean canBeLocated(Item E)
+	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)==0); }
+	public static boolean canSeeHidden(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)==EnvStats.CAN_SEE_HIDDEN); }
-	public static boolean canSeeInvisible(Environmental E)
+	public static boolean canSeeInvisible(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_INVISIBLE)==EnvStats.CAN_SEE_INVISIBLE); }
-	public static boolean canSeeEvil(Environmental E)
+	public static boolean canSeeEvil(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_EVIL)==EnvStats.CAN_SEE_EVIL); }
-	public static boolean canSeeGood(Environmental E)
+	public static boolean canSeeGood(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_GOOD)==EnvStats.CAN_SEE_GOOD); }
-	public static boolean canSeeSneakers(Environmental E)
+	public static boolean canSeeSneakers(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_SNEAKERS)==EnvStats.CAN_SEE_SNEAKERS); }
-	public static boolean canSeeBonusItems(Environmental E)
+	public static boolean canSeeBonusItems(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_BONUS)==EnvStats.CAN_SEE_BONUS); }
-	public static boolean canSeeInDark(Environmental E)
+	public static boolean canSeeInDark(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_DARK)==EnvStats.CAN_SEE_DARK); }
-	public static boolean canSeeVictims(Environmental E)
+	public static boolean canSeeVictims(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_VICTIM)==EnvStats.CAN_SEE_VICTIM); }
-	public static boolean canSeeInfrared(Environmental E)
+	public static boolean canSeeInfrared(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_INFRARED)==EnvStats.CAN_SEE_INFRARED); }
-	public static boolean canHear(Environmental E)
+	public static boolean canHear(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_HEAR)==0); }
-	public static boolean canMove(Environmental E)
+	public static boolean canMove(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_MOVE)==0); }
-	public static boolean canSmell(Environmental E)
+	public static boolean allowsMovement(Room R)
+	{ return (R!=null)&&((R.envStats().sensesMask()&EnvStats.SENSE_ROOMNOMOVEMENT)==0); }
+	public static boolean allowsMovement(Area A)
+	{ return (A!=null)&&((A.envStats().sensesMask()&EnvStats.SENSE_ROOMNOMOVEMENT)==0); }
+	public static boolean canSmell(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SMELL)==0); }
-	public static boolean canTaste(Environmental E)
+	public static boolean canTaste(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_TASTE)==0); }
-	public static boolean canSpeak(Environmental E)
+	public static boolean canSpeak(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SPEAK)==0); }
-	public static boolean canBreathe(Environmental E)
+	public static boolean canBreathe(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==0); }
-	public static boolean canSeeMetal(Environmental E)
+	public static boolean canSeeMetal(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
 	public static boolean isReadable(Item I)
 	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMREADABLE)==EnvStats.SENSE_ITEMREADABLE); }
@@ -204,7 +210,7 @@ public class Sense
 	public static boolean isFalling(Environmental E)
 	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_FALLING)==EnvStats.IS_FALLING); }
 
-	public static boolean canBeHeardBy(Environmental heard , Environmental hearer)
+	public static boolean canBeHeardBy(Environmental heard , MOB hearer)
 	{
 		if(hearer==heard) return true;
 		if(hearer==null)
@@ -218,13 +224,13 @@ public class Sense
 		return true;
 	}
 
-	public static boolean canSenseMoving(Environmental sensed, Environmental sensor)
+	public static boolean canSenseMoving(Environmental sensed, MOB sensor)
 	{
 		if(isSneaking(sensed)&&(!canSeeSneakers(sensor)))
 		   return false;
 		return (canBeHeardBy(sensed,sensor)||canBeSeenBy(sensed,sensor));
 	}
-
+	
 	public static boolean aliveAwakeMobile(MOB mob, boolean quiet)
 	{
 		if(mob==null) return false;
@@ -278,12 +284,12 @@ public class Sense
 		return false;
 	}
 
-	public static boolean canBeSeenBy(Environmental seen , Environmental seer)
+	public static boolean canBeSeenBy(Environmental seen , MOB seer)
 	{
 		if(seer==seen) return true;
 		if(seen==null) return true;
 
-		if((seer instanceof MOB)
+		if((seer!=null)
 		&&(Util.bset(((MOB)seer).getBitmap(),MOB.ATT_SYSOPMSGS)))
 			return true;
 
@@ -296,7 +302,7 @@ public class Sense
 		if((isHidden(seen))&&(!canSeeHidden(seer)))
 		   return false;
 
-		if((seer instanceof MOB)&&(!(seen instanceof Room)))
+		if((seer!=null)&&(!(seen instanceof Room)))
 		{
 			MOB mob=(MOB)seer;
 			if(mob.location()!=null)
@@ -327,7 +333,7 @@ public class Sense
 		}
 		return true;
 	}
-	public static StringBuffer colorCodes(Environmental seen , Environmental seer)
+	public static StringBuffer colorCodes(Environmental seen , MOB seer)
 	{
 		StringBuffer Say=new StringBuffer("^N");
 
@@ -370,7 +376,7 @@ public class Sense
 		return Say;
 	}
 
-	public static boolean seenTheSameWay(Environmental seer, Environmental seen1, Environmental seen2)
+	public static boolean seenTheSameWay(MOB seer, Environmental seen1, Environmental seen2)
 	{
 		if((Sense.isEvil(seen1)!=Sense.isEvil(seen2))&&(Sense.canSeeEvil(seer)))
 			return false;

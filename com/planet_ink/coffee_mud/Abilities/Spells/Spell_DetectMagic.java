@@ -36,7 +36,7 @@ public class Spell_DetectMagic extends Spell
 		&&(msg.target()!=null)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMinor()==CMMsg.TYP_EXAMINESOMETHING)
-		&&(Sense.canBeSeenBy(msg.target(),affected)))
+		&&(Sense.canBeSeenBy(msg.target(),(MOB)affected)))
 		{
 			String msg2=null;
 			for(int a=0;a<msg.target().numEffects();a++)

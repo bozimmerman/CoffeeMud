@@ -2238,6 +2238,7 @@ public class BaseGenerics extends StdCommand
 					mob.tell(CMLister.reallyList(CMClass.armor(),-1).toString());
 					mob.tell(CMLister.reallyList(CMClass.weapons(),-1).toString());
 					mob.tell(CMLister.reallyList(CMClass.miscMagic(),-1).toString());
+					mob.tell(CMLister.reallyList(CMClass.miscTech(),-1).toString());
 					mob.tell(CMLister.reallyList(CMClass.clanItems(),-1).toString());
 					mob.tell(CMLister.reallyList(CMClass.items(),-1).toString());
 					mob.tell(CMLister.reallyList(CMClass.mobTypes(),-1).toString());

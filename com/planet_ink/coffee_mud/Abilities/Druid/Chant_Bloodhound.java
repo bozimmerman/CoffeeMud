@@ -17,7 +17,7 @@ public class Chant_Bloodhound extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(Sense.canSmell(affected))
+		if((affected instanceof MOB)&&(Sense.canSmell((MOB)affected)))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 	}
 

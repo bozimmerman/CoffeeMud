@@ -19,13 +19,15 @@ public class CMClass extends ClassLoader
 	private static Vector weapons=new Vector();
 	private static Vector armor=new Vector();
 	private static Vector miscMagic=new Vector();
+	private static Vector miscTech=new Vector();
 	private static Vector clanItems=new Vector();
 	private static Vector areaTypes=new Vector();
 	private static Vector commands=new Vector();
 	private static Hashtable CommandWords=new Hashtable();
 	private static final String[] names={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
-		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS"
+		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
+		"MISCTECH"
 		};
 	private static final String[] ancestors={
 		"com.planet_ink.coffee_mud.interfaces.Race",
@@ -42,7 +44,8 @@ public class CMClass extends ClassLoader
 		"com.planet_ink.coffee_mud.interfaces.MiscMagic",
 		"com.planet_ink.coffee_mud.interfaces.Area",
 		"com.planet_ink.coffee_mud.interfaces.Command",
-		"com.planet_ink.coffee_mud.interfaces.ClanItem"
+		"com.planet_ink.coffee_mud.interfaces.ClanItem",
+		"com.planet_ink.coffee_mud.interfaces.Electronics"
 		};
 
 	public static Enumeration races(){return races.elements();}
@@ -57,6 +60,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration weapons(){return weapons.elements();}
 	public static Enumeration armor(){return armor.elements();}
 	public static Enumeration miscMagic(){return miscMagic.elements();}
+	public static Enumeration miscTech(){return miscTech.elements();}
 	public static Enumeration clanItems(){return clanItems.elements();}
 	public static Enumeration areaTypes(){return areaTypes.elements();}
 	public static Enumeration commands(){return commands.elements();}
@@ -114,6 +118,13 @@ public class CMClass extends ClassLoader
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.className(I));
 		}
+		for(Enumeration i=miscTech();i.hasMoreElements();)
+		{
+			Item I=(Item)i.nextElement();
+			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonGeneric)||(!I.isGeneric())))
+				V.addElement(CMClass.className(I));
+		}
 		for(Enumeration i=clanItems();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
@@ -134,6 +145,8 @@ public class CMClass extends ClassLoader
 			thisItem=(Item)getEnv(miscMagic,calledThis);
 		if(thisItem==null)
 			thisItem=(Item)getEnv(clanItems,calledThis);
+		if(thisItem==null)
+			thisItem=(Item)getEnv(miscTech,calledThis);
 		return thisItem;
 	}
 
@@ -192,6 +205,7 @@ public class CMClass extends ClassLoader
 		if(armor.contains(O)){ armor.removeElement(O); return true;}
 		if(miscMagic.contains(O)){ miscMagic.removeElement(O); return true;}
 		if(clanItems.contains(O)){ clanItems.removeElement(O); return true;}
+		if(miscTech.contains(O)){ miscTech.removeElement(O); return true;}
 		if(areaTypes.contains(O)){ areaTypes.removeElement(O); return true;}
 		if(commands.contains(O))
 		{
@@ -234,6 +248,7 @@ public class CMClass extends ClassLoader
 		case 12: set=areaTypes; break;
 		case 13: set=commands; break;
 		case 14: set=clanItems; break;
+		case 15: set=miscTech; break;
 		}
 		if(set==null) return false;
 
@@ -255,6 +270,7 @@ public class CMClass extends ClassLoader
 		case 12: areaTypes=new Vector(new TreeSet(areaTypes)); break;
 		case 13: commands=new Vector(new TreeSet(commands)); break;
 		case 14: clanItems=new Vector(new TreeSet(clanItems)); break;
+		case 15: miscTech=new Vector(new TreeSet(miscTech)); break;
 		}
 		return true;
 	}
@@ -274,6 +290,7 @@ public class CMClass extends ClassLoader
 		if(thisItem==null) thisItem=getGlobal(miscMagic,calledThis);
 		if(thisItem==null) thisItem=getGlobal(areaTypes,calledThis);
 		if(thisItem==null) thisItem=getGlobal(clanItems,calledThis);
+		if(thisItem==null) thisItem=getGlobal(miscTech,calledThis);
 		return thisItem;
 	}
 
@@ -286,6 +303,8 @@ public class CMClass extends ClassLoader
 			thisItem=getEnv(weapons,calledThis);
 		if(thisItem==null)
 			thisItem=getEnv(miscMagic,calledThis);
+		if(thisItem==null)
+			thisItem=getEnv(miscTech,calledThis);
 		if(thisItem==null)
 			thisItem=getEnv(MOBs,calledThis);
 		if(thisItem==null)
@@ -307,6 +326,9 @@ public class CMClass extends ClassLoader
 	{
 		return (Item)getEnv(miscMagic,calledThis);
 	}
+	public static Item getMiscTech(String calledThis)
+	{ return (Item)getEnv(miscTech,calledThis);}
+	
 	public static Armor getArmor(String calledThis)
 	{
 		return (Armor)getEnv(armor,calledThis);
@@ -581,7 +603,10 @@ public class CMClass extends ClassLoader
 		clanItems=loadVectorListToObj(prefix+"Items"+File.separatorChar+"ClanItems"+File.separatorChar,page.getStr("CLANITEMS"),"com.planet_ink.coffee_mud.interfaces.ClanItem");
 		Log.sysOut("MUD","Clan Items loaded : "+clanItems.size());
 
-		if((items.size()+weapons.size()+armor.size()+miscMagic.size()+clanItems.size())==0)
+		miscTech=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscTech"+File.separatorChar,page.getStr("MISCTECH"),"com.planet_ink.coffee_mud.interfaces.Electronics");
+		Log.sysOut("MUD","Electronic loaded : "+miscTech.size());
+
+		if((items.size()+weapons.size()+armor.size()+miscTech.size()+miscMagic.size()+clanItems.size())==0)
 			return false;
 
 		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar,page.getStr("BEHAVIORS"),"com.planet_ink.coffee_mud.interfaces.Behavior");
@@ -715,6 +740,7 @@ public class CMClass extends ClassLoader
 		weapons=new Vector();
 		armor=new Vector();
 		miscMagic=new Vector();
+		miscTech=new Vector();
 		areaTypes=new Vector();
 		clanItems=new Vector();
 		commands=new Vector();

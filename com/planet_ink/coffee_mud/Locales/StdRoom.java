@@ -153,8 +153,9 @@ public class StdRoom
 	}
 	public String description()
 	{
-		if((CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE))
-		&&(roomID().length()>0))
+		if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_ROOMDNOCACHE)
+		&&((description==null)||(description.length==0))
+		&&(roomID().trim().length()>0))
 		{
 			String txt=CMClass.DBEngine().DBReadRoomDesc(roomID());
 			if(txt==null)
@@ -331,12 +332,12 @@ public class StdRoom
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_LEAVE:
-				if((!Sense.canMove(this))||(!getMobility()))
+				if((!Sense.allowsMovement(this))||(!getMobility()))
 					return false;
 				break;
 			case CMMsg.TYP_FLEE:
 			case CMMsg.TYP_ENTER:
-				if((!Sense.canMove(this))||(!getMobility()))
+				if((!Sense.allowsMovement(this))||(!getMobility()))
 					return false;
 				if(!mob.isMonster())
 					giveASky(0);

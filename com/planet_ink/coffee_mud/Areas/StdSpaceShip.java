@@ -183,7 +183,7 @@ public class StdSpaceShip implements Area, SpaceObject
 			if((A!=null)&&(!A.okMessage(this,msg)))
 				return false;
 		}
-		if((!mobility)||(!Sense.canMove(this)))
+		if((!mobility)||(!Sense.allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)

@@ -37,7 +37,7 @@ public class Follower extends StdBehavior
 
 		if((direction<0)
 		&&(msg.amITarget(((MOB)affecting).location()))
-		&&(Sense.canBeSeenBy(mob,affecting))
+		&&(Sense.canBeSeenBy(mob,(MOB)affecting))
 		&&(msg.othersMessage()!=null)
 		&&((msg.targetMinor()==CMMsg.TYP_LEAVE)
 		 ||(msg.targetMinor()==CMMsg.TYP_FLEE)))

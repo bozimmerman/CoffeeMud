@@ -3791,7 +3791,7 @@ public class Scriptable extends StdBehavior
 				&&(msg.amITarget(lastKnownLocation))
 				&&(!msg.amISource(monster))
 				&&(canFreelyBehaveNormal(monster))
-				&&(Sense.canSenseMoving(msg.source(),affecting)))
+				&&((!(affecting instanceof MOB))||Sense.canSenseMoving(msg.source(),(MOB)affecting)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!msg.source().isMonster()))

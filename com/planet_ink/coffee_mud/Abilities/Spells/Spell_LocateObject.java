@@ -76,7 +76,7 @@ public class Spell_LocateObject extends Spell
 					if(!Sense.canAccess(mob,room)) continue;
 
 					Environmental item=room.fetchItem(null,what);
-					if((item!=null)&&(Sense.canSee(item)))
+					if((item!=null)&&(Sense.canBeLocated((Item)item)))
 					{
 						String str=item.name()+" is in a place called '"+room.roomTitle()+"'.";
 						if(mob.isASysOp(null))
@@ -94,7 +94,7 @@ public class Spell_LocateObject extends Spell
 							item=CoffeeUtensils.getShopKeeper(inhab).getStock(what,mob);
 						if((item!=null)
 						&&(item instanceof Item)
-						&&((Sense.canSee(item))||(mob.isASysOp(room)))
+						&&((Sense.canBeLocated((Item)item))||(mob.isASysOp(room)))
 						&&(item.envStats().level()>minLevel)
 						&&(item.envStats().level()<maxLevel))
 						{
