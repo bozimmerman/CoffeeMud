@@ -54,7 +54,7 @@ public class Prayer_AuraIntolerance extends Prayer
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected==null)||(!(affected instanceof Room)))
+		if((affected==null)||(!(affected instanceof MOB)))
 			return super.tick(ticking,tickID);
 		
 		if(!super.tick(ticking,tickID))
@@ -67,7 +67,7 @@ public class Prayer_AuraIntolerance extends Prayer
 			if((M!=null)
 			&&(M!=((MOB)affected))
 			&&((M.getWorshipCharID().length()==0)
-				||(((MOB)affected).getWorshipCharID().length()>0)&&(!M.getWorshipCharID().equals(invoker().getWorshipCharID()))))
+				||(((MOB)affected).getWorshipCharID().length()>0)&&(!M.getWorshipCharID().equals(((MOB)affected).getWorshipCharID()))))
 			{
 				if(M.getWorshipCharID().length()>0)
 					MUDFight.postDamage(((MOB)affected),M,this,3,CMMsg.MASK_GENERAL|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The intolerant aura around <S-NAME> <DAMAGE> <T-NAMESELF>!");

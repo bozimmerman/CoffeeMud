@@ -10,7 +10,6 @@ public class BaseClanner extends StdCommand
 	{
 		if((mob==null)||(C==null)) return false;
 		int allowed=C.allowedToDoThis(mob,function);
-		//System.out.println(mob.Name()+"/"+C.ID()+"/role="+mob.getClanRole()+"/f="+function+"/vnow="+voteIfNecessary+"/gvt="+C.getGovernment()+"/ans="+allowed);
 		if(allowed==1) return true;
 		if(allowed==-1) return false;
 		if(function==Clans.FUNC_CLANASSIGN)

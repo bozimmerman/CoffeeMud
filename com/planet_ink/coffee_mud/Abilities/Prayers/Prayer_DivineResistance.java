@@ -16,7 +16,7 @@ public class Prayer_DivineResistance extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	public Environmental newInstance(){	return new Prayer_DivineResistance();}
 	private HashSet permProts=new HashSet();
-	private int prots=3;
+	private int prots=4;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

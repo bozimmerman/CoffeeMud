@@ -21,6 +21,7 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Counting Areas");
 			ResultSet R=D.query("SELECT * FROM CMAREA");
 			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
@@ -60,6 +61,7 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Counting Rooms");
 			ResultSet R=D.query("SELECT * FROM CMROOM");
 			recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
@@ -119,6 +121,7 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Counting Exits");
 			ResultSet R=D.query("SELECT * FROM CMROEX");
 			Room thisRoom=null;
 			Room newRoom=null;
@@ -228,8 +231,10 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
+			if(setStatus)
+				CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Counting Items");
 			ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
-			recordCount=DBConnector.getRecordCount(D,R);
+			if(setStatus) recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{
@@ -287,8 +292,10 @@ public class RoomLoader
 		try
 		{
 			D=DBConnector.DBFetch();
+			if(setStatus)
+				CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting: Counting MOBS");
 			ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
-			recordCount=DBConnector.getRecordCount(D,R);
+			if(setStatus) recordCount=DBConnector.getRecordCount(D,R);
 			updateBreak=Util.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
 			{

@@ -89,7 +89,6 @@ public class Skill_FalseArrest extends BardSkill
 			Vector V=new Vector();
 			V.addElement(new Integer(Law.MOD_ARREST));
 			V.addElement(mob);
-System.out.println("!"+B.name());			
 			if(!B.modifyBehavior(A,target,V))
 			{
 				mob.tell("You are not able to arrest "+target.name()+" at this time.");

@@ -15,7 +15,7 @@ public class Prayer_CurseLuck extends Prayer
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_CurseLuck();}
 	private HashSet permProts=new HashSet();
-	private int prots=3;
+	private int prots=4;
 	boolean notAgain=false;
 
 	public void unInvoke()

@@ -24,8 +24,23 @@ public class Prayer_RemoveDeathMark extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(mob,0,auto);
+		Hashtable remove=new Hashtable();
+		Ability E=target.fetchEffect("Thief_Mark");
+		if(E!=null) remove.put(E,target);
+		E=target.fetchEffect("Thief_ContractHit");
+		if(E!=null) remove.put(E,target);
+		for(Enumeration e=CMMap.players();e.hasMoreElements();)
+		{
+			MOB M=(MOB)e.nextElement();
+			if((M!=null)&&(M!=target))
+			{
+				E=M.fetchEffect("Thief_Mark");
+				if((E!=null)&&(E.text().startsWith(target.Name()+"/")))
+					remove.put(E,M);			
+			}
+		}
 
-		if(success)
+		if((success)&&(remove.size()>0))
 		{
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
@@ -35,21 +50,14 @@ public class Prayer_RemoveDeathMark extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Ability E=target.fetchEffect("Thief_Mark");
-				if(E!=null) E.unInvoke();
-				E=target.fetchEffect("Thief_ContractHit");
-				if(E!=null) E.unInvoke();
-				target.recoverEnvStats();
-				for(Enumeration e=CMMap.players();e.hasMoreElements();)
+				for(Enumeration e=remove.keys();e.hasMoreElements();)
 				{
-					MOB M=(MOB)e.nextElement();
-					if((M!=null)&&(M!=target))
-					{
-						E=target.fetchEffect("Thief_Mark");
-						if((E!=null)&&(E.text().startsWith(target.Name()+"/")))
-							E.unInvoke();
-					}
+					Ability A=(Ability)e.nextElement();
+					MOB M=(MOB)remove.get(A);
+					A.unInvoke();
+					M.delEffect(A);
 				}
+					
 			}
 		}
 		else

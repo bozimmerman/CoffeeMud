@@ -26,11 +26,11 @@ public class Prayer_Absorption extends Prayer
 
 		super.unInvoke();
 
-		if((canBeUninvoked())&&(absorbed!=null))
+		if((canBeUninvoked())&&(absorbed!=null)&&(M!=null))
 		{
-			absorbed=null;
 			M.delAbility(absorbed);
 			M.tell("You forget all about "+absorbed.name()+".");
+			absorbed=null;
 		}
 	}
 
