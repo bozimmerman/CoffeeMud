@@ -10,8 +10,8 @@ public class StdGrid extends StdRoom implements GridLocale
 {
 	protected Room[] alts=new Room[Directions.NUM_DIRECTIONS];
 	protected Room[][] subMap=null;
-	protected String[] descriptions=null;
-	protected String[] displayTexts=null;
+	protected Vector descriptions=new Vector();
+	protected Vector displayTexts=new Vector();
 	protected int xsize=5;
 	protected int ysize=5;
 
@@ -34,51 +34,33 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
-		int numDs=0;
+		descriptions=new Vector();
 		int x=newDescription.indexOf("<P>");
 		while(x>=0)
 		{
-			numDs++;
-			x=newDescription.indexOf("<P>",x+2);
-		}
-		descriptions=new String[numDs+1];
-		x=newDescription.indexOf("<P>");
-		numDs=0;
-		while(x>=0)
-		{
-			descriptions[numDs]=newDescription.substring(0,x);
-			numDs++;
-			newDescription=newDescription.substring(x+3);
+			String s=newDescription.substring(0,x).trim();
+			if(s.length()>0) descriptions.addElement(s);
+			newDescription=newDescription.substring(x+3).trim();
 			x=newDescription.indexOf("<P>");
 		}
-		descriptions[numDs]=newDescription;
-		if(numDs>0)
-			description=descriptions[0];
+		if(newDescription.length()>0)
+			descriptions.addElement(newDescription);
 	}
 
 	public void setDisplayText(String newDisplayText)
 	{
 		super.setDisplayText(newDisplayText);
-		int numDs=0;
+		displayTexts=new Vector();
 		int x=newDisplayText.indexOf("<P>");
 		while(x>=0)
 		{
-			numDs++;
-			x=newDisplayText.indexOf("<P>",x+2);
-		}
-		displayTexts=new String[numDs+1];
-		x=newDisplayText.indexOf("<P>");
-		numDs=0;
-		while(x>=0)
-		{
-			displayTexts[numDs]=newDisplayText.substring(0,x);
-			numDs++;
-			newDisplayText=newDisplayText.substring(x+3);
+			String s=newDisplayText.substring(0,x).trim();
+			if(s.length()>0) displayTexts.addElement(s);
+			newDisplayText=newDisplayText.substring(x+3).trim();
 			x=newDisplayText.indexOf("<P>");
 		}
-		displayTexts[numDs]=newDisplayText;
-		if(numDs>0)
-			displayText=displayTexts[0];
+		if(newDisplayText.length()>0)
+			displayTexts.addElement(newDisplayText);
 	}
 
 	public Room getAltRoomFrom(Room loc)
@@ -319,17 +301,17 @@ public class StdGrid extends StdRoom implements GridLocale
 		gc.setDescription(description);
 		int c=-1;
 		if(displayTexts!=null)
-		if(displayTexts.length>0)
+		if(displayTexts.size()>0)
 		{
-			c=Dice.roll(1,displayTexts.length,-1);
-			gc.setDisplayText(displayTexts[c]);
+			c=Dice.roll(1,displayTexts.size(),-1);
+			gc.setDisplayText((String)displayTexts.elementAt(c));
 		}
 		if(descriptions!=null)
-		if(descriptions.length>0)
+		if(descriptions.size()>0)
 		{
-			if((c<0)||(c>descriptions.length))
-				c=Dice.roll(1,descriptions.length,-1);
-			gc.setDescription(descriptions[c]);
+			if((c<0)||(c>descriptions.size())||(descriptions.size()!=displayTexts.size()))
+				c=Dice.roll(1,descriptions.size(),-1);
+			gc.setDescription((String)descriptions.elementAt(c));
 		}
 		for(int a=0;a<numAffects();a++)
 			gc.addAffect((Ability)fetchAffect(a).copyOf());
