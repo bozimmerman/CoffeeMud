@@ -10,13 +10,25 @@ public class MindFlayer extends Humanoid
 	public String ID(){	return "MindFlayer"; }
 	public String name(){ return "MindFlayer"; }
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public boolean playerSelectable(){return false;}
 	public String racialCategory(){return "Illithid";}
+	private String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm"};
+	private int[]culturalAbilityProfficiencies={100,50};
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
+    private String[]racialAbilityNames={"Spell_DetectSentience","Spell_CombatPrecognition"};
+	private int[]racialAbilityLevels={10,30};
+	private int[]racialAbilityProfficiencies={50,30};
+	private boolean[]racialAbilityQuals={true,false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
-
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -16,8 +16,16 @@ public class UmberHulk extends StdRace
 	public int weightVariance(){return 200;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public boolean playerSelectable(){return false;}
 	protected static Vector resources=new Vector();
+    private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
+	private int[]racialAbilityLevels={1,10};
+	private int[]racialAbilityProfficiencies={100,50};
+	private boolean[]racialAbilityQuals={false,false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -26,9 +34,9 @@ public class UmberHulk extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,16);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,8);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,9);
+		affectableStats.setStat(CharStats.STRENGTH,16);
+		affectableStats.setStat(CharStats.DEXTERITY,8);
+		affectableStats.setStat(CharStats.INTELLIGENCE,9);
 	}
 	public String arriveStr()
 	{

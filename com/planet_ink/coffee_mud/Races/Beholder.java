@@ -16,13 +16,21 @@ public class Beholder extends StdRace
 	public int weightVariance(){return 100;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Unique";}
+    private String[]racialAbilityNames={"Spell_Sleep","Spell_FloatingDisc","Spell_Fear","Spell_Slow","Spell_Charm","Prayer_CauseCritical","Spell_DispelMagic","Spell_FleshStone","Prayer_DeathFinger","Spell_Disintegrate"};
+	private int[]racialAbilityLevels={1,1,1,5,10,10,15,20,30,30};
+	private int[]racialAbilityProfficiencies={50,50,50,50,50,50,100,50,50,50};
+	private boolean[]racialAbilityQuals={false,false,false,false,false,false,false,false,false,false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,10,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public boolean playerSelectable(){return false;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -31,7 +39,7 @@ public class Beholder extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,25);
+		affectableStats.setStat(CharStats.INTELLIGENCE,25);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,75);
 		affectableStats.setStat(CharStats.SAVE_MIND,100);
 	}

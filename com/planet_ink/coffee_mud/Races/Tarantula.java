@@ -16,13 +16,21 @@ public class Tarantula extends StdRace
 	public int weightVariance(){return 0;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE;}
 	public String racialCategory(){return "Arachnid";}
+    private String[]racialAbilityNames={"Poison_Venom"};
+	private int[]racialAbilityLevels={1};
+	private int[]racialAbilityProfficiencies={25};
+	private boolean[]racialAbilityQuals={false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public boolean playerSelectable(){return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -33,9 +41,9 @@ public class Tarantula extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.STRENGTH,3);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,3);
-		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.STRENGTH,3);
+		affectableStats.setStat(CharStats.DEXTERITY,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
 		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
 	}
 	public String arriveStr()

@@ -9,14 +9,29 @@ public class Aarakocran extends Harpy
 {
 	public String ID(){	return "Aarakocran"; }
 	public String name(){ return "Aarakocran"; }
-	public long forbiddenWornBits(){return 0;}
+	public long forbiddenWornBits(){return Item.ON_BACK|Item.ABOUT_BODY|Item.ON_FEET;}        
+	private String[]racialAbilityNames={"WingFlying"};
+	private int[]racialAbilityLevels={1};
+	private int[]racialAbilityProfficiencies={100};
+	private boolean[]racialAbilityQuals={false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-
+        
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+4);
+		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-2);
+	}
+        
 	public Vector myResources()
 	{
 		synchronized(resources)

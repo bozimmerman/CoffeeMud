@@ -12,10 +12,14 @@ public class Faerie extends SmallElfKin
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProfficiencies={100};
 	private boolean[]racialAbilityQuals={false};
-	protected String[] racialAbilityNames(){return racialAbilityNames;}
-	protected int[] racialAbilityLevels(){return racialAbilityLevels;}
-	protected int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
-	protected boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	private String[]culturalAbilityNames={"Fey","Foraging"};
+	private int[]culturalAbilityProfficiencies={100,50};
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProfficiencies(){return culturalAbilityProfficiencies;}
 	
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

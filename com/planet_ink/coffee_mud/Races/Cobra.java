@@ -11,6 +11,14 @@ public class Cobra extends Snake
 	public int lightestWeight(){return 15;}
 	public int weightVariance(){return 20;}
 	public String racialCategory(){return "Serpent";}
+    private String[]racialAbilityNames={"Poison_Heartstopper"};
+	private int[]racialAbilityLevels={5};
+	private int[]racialAbilityProfficiencies={30};
+	private boolean[]racialAbilityQuals={false};
+	public String[] racialAbilityNames(){return racialAbilityNames;}
+	public int[] racialAbilityLevels(){return racialAbilityLevels;}
+	public int[] racialAbilityProfficiencies(){return racialAbilityProfficiencies;}
+	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,1 ,0 ,1 ,0 };
@@ -20,7 +28,7 @@ public class Cobra extends Snake
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setPermaStat(CharStats.DEXTERITY,18);
+		affectableStats.setStat(CharStats.DEXTERITY,18);
 	}
 	public Vector myResources()
 	{
