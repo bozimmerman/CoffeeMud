@@ -9,20 +9,17 @@ import com.planet_ink.coffee_mud.exceptions.*;
 
 // quick & dirty web server for CoffeeMUD
 // (c) 2002 Jeff Kamenek
+// Extensive modifications by Bo Zimmerman
 
 // largely based on info from the relevant RFCs
 //  and http://www.jmarshall.com/easy/http/
 
-// although this technically doesn't *need* to be a thread,
-//  (ie. it only runs once, responding to request)
-//  if it wasn't one the webserver would get bogged down every time
-//  there were multiple simultaenous requests.
 public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 {
 	private INI page;
 	private Socket sock;
 
-	private static int instanceCnt = 0;
+	private static long instanceCnt = 0;
 
 	private String command = null;
 	private String request = null;

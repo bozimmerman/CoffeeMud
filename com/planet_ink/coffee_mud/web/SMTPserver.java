@@ -19,13 +19,16 @@ public class SMTPserver extends Thread
 	private MudHost mud;
 	private String serverDir = null;
 	private static boolean displayedBlurb=false;
+	private static String domain="coffeemud";
+	private static Vector relayIn=new Vector();
+	private static Vector relayOut=new Vector();
+											 
 	public final static String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
 	public SMTPserver(MudHost a_mud)
 	{
 		super("SMTP");
 		mud = a_mud;
-
 
 		if (!initServer())
 			isOK = false;
@@ -35,6 +38,9 @@ public class SMTPserver extends Thread
 
 	public MudHost getMUD()	{return mud;}
 	public String getServerDir() {return serverDir;}
+	public String domainName(){return domain;}
+	public Vector getRelayInSet(){return relayIn;}
+	public Vector getRelayOutSet(){return relayOut;}
 
 	public Properties getCommonPropPage()
 	{
@@ -60,6 +66,12 @@ public class SMTPserver extends Thread
 			Log.errOut(getName(),"ERROR: required parameter missing: PORT");
 			return false;
 		}
+		if (page.getStr("DOMAIN").length()==0)
+		{
+			Log.errOut(getName(),"ERROR: required parameter missing: DOMAIN");
+			return false;
+		}
+		domain=page.getStr("DOMAIN");
 
 		if (page.getStr("BASEDIRECTORY").length()==0)
 		{
@@ -147,7 +159,7 @@ public class SMTPserver extends Thread
 			{
 				sock=servsock.accept();
 
-				//ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page,isAdminServer);
+				ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
 				//W.equals(W); // this prevents an initialized by never used error
 				// nb - ProcessSMTPrequest is a Thread, but it .start()s in the constructor
 				//  if succeeds - no need to .start() it here
