@@ -21,5 +21,6 @@ public interface Host
 	
 	public final static int MAX_TICK_CLIENTS=32;
 	
+	public String getVer();
 	public void shutdown(Session S, boolean keepItDown, String externalCommand);
 }

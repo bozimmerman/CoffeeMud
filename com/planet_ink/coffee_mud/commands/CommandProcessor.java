@@ -238,7 +238,7 @@ public class CommandProcessor
 					}
 					break;
 				case CommandSet.NOFOLLOW:
-					grouping.nofollow(mob,true,true);
+					grouping.nofollow(mob,true,false);
 					break;
 				case CommandSet.NORTH:
 					movement.move(mob,Directions.NORTH,false);
@@ -397,6 +397,12 @@ public class CommandProcessor
 					break;
 				case CommandSet.VALUE:
 					socialProcessor.value(mob,commands);
+					break;
+				case CommandSet.VER:
+					mob.tell(myHost.getVer());
+					mob.tell("(C) 2000-2002 Bo Zimmerman");
+					mob.tell("bo@zimmers.net");
+					mob.tell("http://www.zimmers.net/home/mud.html");
 					break;
 				case CommandSet.WAKE:
 					movement.wake(mob);

@@ -115,7 +115,7 @@ public class CommandSet extends Hashtable
 	public static final int ARCHELP=103;
 	public static final int ARCTOPICS=104;
 	public static final int DUMPFILE=105;
-
+	public static final int VER=106;
 
 	public CommandSet()
 	{
@@ -256,6 +256,7 @@ public class CommandSet extends Hashtable
 			put("U",new Integer(UP));
 		put("VALUE",new Integer(VALUE));
 			put("VAL",new Integer(VALUE));
+		put("VER",new Integer(VER));
 		put("WAKE",new Integer(WAKE));
 		put("WEAR",new Integer(WEAR));
 		put("WEST",new Integer(WEST));

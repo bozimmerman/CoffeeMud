@@ -1,7 +1,6 @@
 Check aggressives behavior against hidden players who LOOK around.
 have the tick confirm someones victim -- fighting the wolf for all of zaras pets is bad.
 (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
-! Put a limit on followers based on charisma, enforce in shopkeeper, 1 for 3 is ok... 8 max! Add FOLLOW message!
 areas -- make possess, goto, and WizInv into commands  so that subops can do them.
 areas -- finish weather
 

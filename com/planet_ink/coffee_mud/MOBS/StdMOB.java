@@ -1607,12 +1607,12 @@ public class StdMOB implements MOB
 		if((amFollowing()==target)
 		||(target.amFollowing()==this)
 		||((target.amFollowing()!=null)&&(target.amFollowing()==this.amFollowing())))
-			ExternalPlay.postAttack(this,source,fetchWieldedItem());
+			setVictim(source);//ExternalPlay.postAttack(this,source,fetchWieldedItem());
 		else
 		if((amFollowing()==source)
 		||(source.amFollowing()==this)
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
-			ExternalPlay.postAttack(this,target,fetchWieldedItem());
+			setVictim(target);//ExternalPlay.postAttack(this,target,fetchWieldedItem());
 	}
 	public int getTermID()
 	{
