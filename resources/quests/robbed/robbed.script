@@ -1,0 +1,21 @@
+set area Midgaard
+# now, inform the quest that it occurs in Midgaard
+
+set mobtype ShopKeeper
+# load up any mob from area of type shopkeeper
+
+load behavior Scriptable("LOAD=quests/robbed/shopkeeper.script")
+# load the above behavior into the last mob
+
+set locate CityStreet 
+# find any locate in Midgaard of type CityStreet
+
+set mob "the thief"
+# load up any mob from are with that name
+
+
+
+duration 30
+# the duration of the quest is 30 minutes.  The scripts on the mobs will
+# do the rest...
+
