@@ -8,8 +8,8 @@ import java.io.File;
 
 public class Cobbling extends CraftingSkill
 {
-	public String ID() { return "COBBLING"; }
-	public String name(){ return "COBBLING";}
+	public String ID() { return "Cobbling"; }
+	public String name(){ return "Cobbling";}
 	private static final String[] triggerStrings = {"COBBLE","COBBLING"};
 	public String[] triggerStrings(){return triggerStrings;}
 
@@ -36,7 +36,6 @@ public class Cobbling extends CraftingSkill
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Environmental newInstance(){	return new Cobbling(); }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
