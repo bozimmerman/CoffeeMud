@@ -666,6 +666,7 @@ public class StdRoom
 	{
 		StringBuffer buf=new StringBuffer("");
 		int x=text.indexOf("<");
+		String elseStr=null;
 		while(x>=0)
 		{
 			buf.append(text.substring(0,x));
@@ -690,6 +691,7 @@ public class StdRoom
 					int num=Util.s_int(variationCodes[i][1].substring(1));
 					switch(variationCodes[i][1].charAt(0))
 					{
+					case 'D': elseStr=parseVariesCodes(dispute); break;
 					case 'W':
 						if(getArea().getClimateObj().weatherType(null)==num)
 							buf.append(parseVariesCodes(dispute));
@@ -710,7 +712,13 @@ public class StdRoom
 			else
 				x=text.indexOf("<");
 		}
-		buf.append(text);
+		if((buf.length()==0)&&(elseStr!=null))
+		{
+			buf.append(text);
+			buf.append(elseStr);
+		}
+		else
+			buf.append(text);
 		return buf.toString();
 	}
 

@@ -106,7 +106,8 @@ public interface Room extends Environmental
 		{"DUSTSTORM","W"+Climate.WEATHER_DUSTSTORM},
 		{"COLD","W"+Climate.WEATHER_WINTER_COLD},
 		{"HAIL","W"+Climate.WEATHER_HAIL},
-		{"CLOUDY","W"+Climate.WEATHER_CLOUDY}
+		{"CLOUDY","W"+Climate.WEATHER_CLOUDY},
+		{"ELSE","D0"}
 	};
 
 	public void startItemRejuv();

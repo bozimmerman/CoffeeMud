@@ -1,4 +1,3 @@
-a default description for rooms with  <varies> dealys
 mutable racial body parts, with ability to grant powers. items to wear on customized body parts.
 Install ship battery
 Injury -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.
