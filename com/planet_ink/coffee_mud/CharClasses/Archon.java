@@ -19,11 +19,7 @@ public class Archon extends StdCharClass
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),"Archon_CharGen",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Archon_GOTO",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Archon_Possess",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Archon_WizInvis",1,true);
-			CMAble.addCharAbilityMapping(ID(),"Skill_Resistance",1,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Resistance",true);
 		}
 	}
 
@@ -56,12 +52,7 @@ public class Archon extends StdCharClass
 						mine.autoInvocation(mob);
 				}
 				else
-				{
-					A=(Ability)A.copyOf();
-					A.setProfficiency(100);
-					A.setBorrowed(mob,true);
-					giveMobAbility(mob,A,true);
-				}
+					giveMobAbility(mob,A,100,true);
 			}
 		}
 	}

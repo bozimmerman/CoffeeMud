@@ -7,6 +7,7 @@ public class CMAble
 {
 	public int qualLevel=-1;
 	public boolean autoGain=false;
+	public int defaultProfficiency=0;
 								
 	public static Hashtable classAbleMap=new Hashtable();
 	public static Hashtable lowestQualifyingLevelMap=new Hashtable();
@@ -16,11 +17,12 @@ public class CMAble
 											 String ability, 
 											 boolean autoGain)
 	{
-		addCharAbilityMapping(charClass,ability,qualLevel,autoGain);
+		addCharAbilityMapping(charClass,qualLevel,ability,0,autoGain);
 	}
 	public static void addCharAbilityMapping(String charClass, 
-											 String ability, 
 											 int qualLevel,
+											 String ability, 
+											 int defaultProfficiency,
 											 boolean autoGain)
 	{
 		if(!classAbleMap.containsKey(charClass))
@@ -72,6 +74,18 @@ public class CMAble
 			return false;
 		CMAble able=(CMAble)ableMap.get(ability);
 		return able.autoGain;
+	}
+	
+	public static int getDefaultProfficiency(String charClass, 
+												 String ability)
+	{
+		if(!classAbleMap.containsKey(charClass))
+			return 0;
+		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+		if(!ableMap.containsKey(ability))
+			return 0;
+		CMAble able=(CMAble)ableMap.get(ability);
+		return able.defaultProfficiency;
 	}
 	
 	public static int lowestQualifyingLevel(String ability)

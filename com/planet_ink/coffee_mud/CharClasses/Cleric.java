@@ -24,11 +24,11 @@ public class Cleric extends StdCharClass
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CureLight",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_CauseLight",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Prayer_DetectLife",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Cleric_Turn",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
@@ -155,7 +155,7 @@ public class Cleric extends StdCharClass
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				giveMobAbility(mob,A, isBorrowedClass);
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
 		}
 		if(!mob.isMonster())
 			outfit(mob);

@@ -26,9 +26,9 @@ public class Mage extends StdCharClass
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",100,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",25,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",true);
 			// level 1
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_Erase",false);
@@ -194,7 +194,7 @@ public class Mage extends StdCharClass
 			if(A.qualifyingLevel(mob)>0)
 			{
 				if(CMAble.getDefaultGain(ID(),A.ID()))
-					this.giveMobAbility(mob,A,isBorrowedClass);
+					giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
 				else
 				if(A.classificationCode()==Ability.SPELL)
 					numTotal++;
@@ -219,7 +219,7 @@ public class Mage extends StdCharClass
 						{
 							if((A.qualifyingLevel(mob)==level)&&(given.get(A.ID())==null))
 							{
-								giveMobAbility(mob,A,isBorrowedClass);
+								giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
 								given.put(A.ID(),A);
 								numLevel++;
 							}
@@ -246,7 +246,7 @@ public class Mage extends StdCharClass
 					{
 						if((A.qualifyingLevel(mob)>18)&&(given.get(A.ID())==null))
 						{
-							giveMobAbility(mob,A,isBorrowedClass);
+							giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
 							given.put(A.ID(),A);
 							numLevel++;
 						}

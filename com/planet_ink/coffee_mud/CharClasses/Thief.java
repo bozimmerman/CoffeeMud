@@ -24,10 +24,10 @@ public class Thief extends StdCharClass
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Peek",true);
@@ -86,7 +86,7 @@ public class Thief extends StdCharClass
 		{
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if((A.qualifyingLevel(mob)>0)&&(CMAble.getDefaultGain(ID(),A.ID())))
-				this.giveMobAbility(mob,A,isBorrowedClass);
+				giveMobAbility(mob,A,CMAble.getDefaultProfficiency(ID(),A.ID()),isBorrowedClass);
 		}
 		if(!mob.isMonster())
 			outfit(mob);

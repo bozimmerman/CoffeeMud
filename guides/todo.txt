@@ -1,6 +1,12 @@
 ! Add Area objects and Tables and Affect/Properties!
 
-Allow classes and directories to be assigned in the INI file in addition to the default path.
+! Allow classes and directories to be assigned in the INI file in addition to the default path.
+
+! Create a custom command ability, include ability to override existing commands!
+
+Add Notes abilities -- really need for bug fix reporting!  Done this way: a Journal can be read, 
+it will list the posts for a given Journal.  A new command, Post, allows writing on Journals.  It
+will consult your Write ability for profficiency :).  
 
 From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file
 (A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and
@@ -9,13 +15,7 @@ should be assignable to GENMOBS via a new tag.
 More WeaponTypes, with text file (Resource)? descriptions.  These should also be
 assignable to MOBs at build time, or to GENMOBs via a new tag.
 
-Create a custom command ability, include ability to override existing commands!
-
 Add CoffeeMud area files!
-
-Add Notes abilities -- really need for bug fix reporting!  Done this way: a Journal can be read, 
-it will list the posts for a given Journal.  A new command, Post, allows writing on Journals.  It
-will consult your Write ability for profficiency :).  
 
 Buy command for standard mobs, to facilitate trades.
 
