@@ -263,17 +263,35 @@ public class MOBloader
 			{
 				if(oldSet==allUsers) allUsers=new Vector();
 				
-				Vector selected=(Vector)oldSet.firstElement();
-				for(int u=1;u<oldSet.size();u++)
+				if((sortBy<3)||(sortBy>4))
 				{
-					Vector V=(Vector)oldSet.elementAt(u);
-					if(((String)selected.elementAt(sortBy)).compareTo(((String)V.elementAt(sortBy)))>0)
-					   selected=V;
+					Vector selected=(Vector)oldSet.firstElement();
+					for(int u=1;u<oldSet.size();u++)
+					{
+						Vector V=(Vector)oldSet.elementAt(u);
+						if(((String)selected.elementAt(sortBy)).compareTo(((String)V.elementAt(sortBy)))>0)
+						   selected=V;
+					}
+					if(selected!=null)
+					{
+						oldSet.removeElement(selected);
+						allUsers.addElement(selected);
+					}
 				}
-				if(selected!=null)
+				else
 				{
-					oldSet.removeElement(selected);
-					allUsers.addElement(selected);
+					Vector selected=(Vector)oldSet.firstElement();
+					for(int u=1;u<oldSet.size();u++)
+					{
+						Vector V=(Vector)oldSet.elementAt(u);
+						if(Util.s_long((String)selected.elementAt(sortBy))>Util.s_long(((String)V.elementAt(sortBy))))
+						   selected=V;
+					}
+					if(selected!=null)
+					{
+						oldSet.removeElement(selected);
+						allUsers.addElement(selected);
+					}
 				}
 			}
 				
