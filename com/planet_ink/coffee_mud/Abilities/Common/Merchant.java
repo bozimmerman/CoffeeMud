@@ -420,7 +420,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					Vector products=removeSellableProduct(affect.tool().name(),mob);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
-System.out.println(price);
 					Money.setTotalMoney(M,mob,price);
 					M.setMoney(M.getMoney()+price);
 					mob.recoverEnvStats();
