@@ -737,7 +737,10 @@ public class StdRoom
 
 	public int pointsPerMove()
 	{
-		return 2;
+		if((domainType&Room.INDOORS)>0)
+			return 1;
+		else
+			return 2;
 	}
 
 	public void addAffect(Ability to)
