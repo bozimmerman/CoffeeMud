@@ -26,6 +26,7 @@ public class Plains extends StdRoom
 		new Integer(EnvResource.RESOURCE_BARLEY),
 		new Integer(EnvResource.RESOURCE_CORN),
 		new Integer(EnvResource.RESOURCE_RICE),
+		new Integer(EnvResource.RESOURCE_GREENS),
 		new Integer(EnvResource.RESOURCE_CARROTS),
 		new Integer(EnvResource.RESOURCE_TOMATOES),
 		new Integer(EnvResource.RESOURCE_FLINT),

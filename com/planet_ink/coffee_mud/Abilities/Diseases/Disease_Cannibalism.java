@@ -31,7 +31,7 @@ public class Disease_Cannibalism extends Disease
       {
          desiredMeat = "your race's";
       }
-      return "<S-NAME> no longer hunger for "+ affected +" meat.";
+      return "<S-NAME> no longer hunger for "+ desiredMeat +" meat.";
    }
 	protected String DISEASE_START()
    {
@@ -45,7 +45,7 @@ public class Disease_Cannibalism extends Disease
       {
          desiredMeat = "your race's";
       }
-      return "^G<S-NAME> hunger(s) for "+ affected +" meat.^?";
+      return "^G<S-NAME> hunger(s) for "+ desiredMeat +" meat.^?";
    }
 	protected String DISEASE_AFFECT(){return "";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
@@ -74,29 +74,25 @@ public class Disease_Cannibalism extends Disease
          if(source == null)
             return false;
 			MOB mob=(MOB)affected;
-         if(msg.targetCode() == Affect.TYP_EAT)
+         if(msg.targetMinor() == Affect.TYP_EAT)
          {
             Environmental food = msg.target();
-            if(food instanceof StdFood)
+            if((food!=null)
+			&&(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
             {
-               if(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0)
-               {
-                  FullMsg newMessage=new FullMsg(mob,food,this,0,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
-                  if(mob.location().okAffect(mob,newMessage))
-                  {
-                     mob.location().send(mob,newMessage);
-                  }
-                  return false;
-               }
+				FullMsg newMessage=new FullMsg(mob,null,this,Affect.MSG_OK_VISUAL,"^S<S-NAME> attempt(s) to eat "+ food.Name() +", but can't stomach it....^?");
+				if(mob.location().okAffect(mob,newMessage))
+					mob.location().send(mob,newMessage);
+				return false;
             }
          }
       }
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			if(msg.amISource(mob)
-			   &&(msg.tool()!=null)
-			   &&(msg.tool().ID().equals("Spell_Hungerless")))
+			if(msg.amITarget(mob)
+			&&(msg.tool()!=null)
+			&&(msg.tool().ID().equals("Spell_Hungerless")))
 			{
 				mob.tell("You don't feel any less hungry.");
 				return false;

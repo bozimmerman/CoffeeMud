@@ -100,6 +100,7 @@ public class Shaman extends Cleric
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",true);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_DrunkenStupor",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",false);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",true);
@@ -138,7 +139,7 @@ public class Shaman extends Cleric
 				mob.tell("You need at least a 9 Wisdom to become a Shaman.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=9)
+		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Constitution to become a Shaman.");

@@ -151,7 +151,7 @@ public class SkyWatcher extends StdCharClass
 				mob.tell("You need at least a 9 Constitution to become a SkyWatcher.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=9)
+		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a SkyWatcher.");

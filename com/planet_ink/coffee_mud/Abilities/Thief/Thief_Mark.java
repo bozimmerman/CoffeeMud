@@ -99,20 +99,25 @@ public class Thief_Mark extends ThiefSkill
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(levelDiff,auto);
 
-		FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-		if(mob.location().okAffect(mob,msg))
+		if(!success)
+			return beneficialVisualFizzle(mob,target,"<S-NAME> lose(s) <S-HIS-HER> concentration on <T-NAMESELF>.");
+		else
 		{
-			mob.location().send(mob,msg);
-			Ability A=mob.fetchAffect(ID());
-			if(A==null)
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT,"<S-NAME> mark(s) <T-NAMESELF>.",Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+			if(mob.location().okAffect(mob,msg))
 			{
-				A=(Ability)copyOf();
-				mob.addAffect(A);
-				A.makeNonUninvokable();
+				mob.location().send(mob,msg);
+				Ability A=mob.fetchAffect(ID());
+				if(A==null)
+				{
+					A=(Ability)copyOf();
+					mob.addAffect(A);
+					A.makeNonUninvokable();
+				}
+				((Thief_Mark)A).mark=target;
+				((Thief_Mark)A).ticks=0;
+				A.setMiscText(target.Name()+"/0");
 			}
-			((Thief_Mark)A).mark=target;
-			((Thief_Mark)A).ticks=0;
-			A.setMiscText(target.Name()+"/0");
 		}
 		return success;
 	}

@@ -125,7 +125,7 @@ public class Oracle extends Cleric
 				mob.tell("You need at least a 9 Wisdom to become a Oracle.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=9)
+		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Intelligence to become a Oracle.");

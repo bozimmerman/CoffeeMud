@@ -161,7 +161,7 @@ public class Gaian extends StdCharClass
 				mob.tell("You need at least a 9 Constitution to become a Gaian.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=9)
+		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Wisdom to become a Gaian.");

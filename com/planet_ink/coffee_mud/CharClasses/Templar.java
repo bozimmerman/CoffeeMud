@@ -94,6 +94,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassParalyze",true);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Sneak",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Corruption",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_CurseItem",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
@@ -138,7 +139,7 @@ public class Templar extends Cleric
 				mob.tell("You need at least a 9 Wisdom to become a Templar.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=9)
+		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Templar.");

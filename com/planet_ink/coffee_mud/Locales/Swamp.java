@@ -43,6 +43,7 @@ public class Swamp extends StdRoom
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_JADE),
 		new Integer(EnvResource.RESOURCE_SCALES),
+		new Integer(EnvResource.RESOURCE_COCOA),
 		new Integer(EnvResource.RESOURCE_COAL),
 		new Integer(EnvResource.RESOURCE_SUGAR),
 		new Integer(EnvResource.RESOURCE_CLAY),

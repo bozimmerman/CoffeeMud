@@ -99,6 +99,7 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_MassMobility",false);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Heal",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Atonement",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_BlessItem",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",false);
@@ -138,7 +139,7 @@ public class Purist extends Cleric
 				mob.tell("You need at least a 9 Wisdom to become a Purist.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.CHARISMA)<=9)
+		if(mob.baseCharStats().getStat(CharStats.CHARISMA)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Charisma to become a Purist.");

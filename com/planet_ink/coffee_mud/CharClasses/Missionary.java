@@ -87,6 +87,7 @@ public class Missionary extends Cleric
 			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Monolith",0,"AIR",true);
 
 			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Gateway",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_MoralBalance",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Prayer_Disenchant",true);
 
@@ -150,7 +151,7 @@ public class Missionary extends Cleric
 				mob.tell("You need at least a 9 Wisdom to become a Missionary.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=9)
+		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Dexterity to become a Missionary.");

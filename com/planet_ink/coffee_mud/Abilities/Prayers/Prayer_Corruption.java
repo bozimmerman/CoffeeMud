@@ -36,20 +36,20 @@ public class Prayer_Corruption extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-               mob.tell("Evil, vile thoughts fill your head.");
+					mob.tell("Evil, vile thoughts fill your head.");
 					int evilness=Dice.roll(10,adjustedLevel(mob),0);
-               int targetAlignment = target.getAlignment();
-               if(targetAlignment <= evilness)
-                  target.setAlignment(0);
-               else
-                  target.setAlignment(target.getAlignment() - evilness);
-               if(!target.isInCombat() && target.isMonster()) 
-               {
-                  if(mob.location().okAffect(mob,msg2))
-                  {
-                     mob.location().send(mob,msg2);
-                  }
-               }
+					int targetAlignment = target.getAlignment();
+					if(targetAlignment <= evilness)
+					   target.setAlignment(0);
+					else
+					   target.setAlignment(target.getAlignment() - evilness);
+					if(!target.isInCombat() && target.isMonster()) 
+					{
+					   if(mob.location().okAffect(mob,msg2))
+					   {
+					      mob.location().send(mob,msg2);
+					   }
+					}
 				}
 			}
 		}

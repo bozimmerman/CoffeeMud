@@ -143,7 +143,7 @@ public class Beastmaster extends StdCharClass
 				mob.tell("You need at least a 9 Constitution to become a Beastmaster.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=9)
+		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Strength to become a Beastmaster.");

@@ -131,7 +131,8 @@ public class Armorsmithing extends CommonSkill
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
 		Item IE=(Item)E;
-		if((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
+		if(((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
+		&&((IE.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL))
 		{
 			if(!quiet)
 				commonTell(mob,"That's not made of metal.  That can't be mended.");

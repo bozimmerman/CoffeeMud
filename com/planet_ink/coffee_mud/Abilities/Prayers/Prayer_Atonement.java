@@ -22,7 +22,7 @@ public class Prayer_Atonement extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-      FullMsg msg2=new FullMsg(target,mob,this,affectType(auto)|Affect.MASK_MALICIOUS,"<S-NAME> does not seem to like <T-NAME> messing with <S-HIS-HER> head.");
+		FullMsg msg2=new FullMsg(target,mob,this,affectType(auto)|Affect.MASK_MALICIOUS,"<S-NAME> does not seem to like <T-NAME> messing with <S-HIS-HER> head.");
 
 		if(success)
 		{
@@ -36,34 +36,34 @@ public class Prayer_Atonement extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-               mob.tell("Good, pure thoughts fill your head.");
+					mob.tell("Good, pure thoughts fill your head.");
 					int evilness=Dice.roll(10,adjustedLevel(mob),0);
-               int targetAlignment = target.getAlignment();
-               if(targetAlignment + evilness >= 1000)
-                  target.setAlignment(1000);
-               else
-                  target.setAlignment(target.getAlignment() + evilness);
-               if(!target.isInCombat() && target.isMonster()) 
-               {
-                  if(mob.location().okAffect(mob,msg2))
-                  {
-                     mob.location().send(mob,msg2);
-                  }
-               }
+					int targetAlignment = target.getAlignment();
+					if(targetAlignment + evilness >= 1000)
+					   target.setAlignment(1000);
+					else
+					   target.setAlignment(target.getAlignment() + evilness);
+					if(!target.isInCombat() && target.isMonster()) 
+					{
+						if(mob.location().okAffect(mob,msg2))
+						{
+						   mob.location().send(mob,msg2);
+						}
+					}
 				}
 			}
 		}
 		else
-      {
-         if(!target.isInCombat() && target.isMonster()) 
-         {
-            if(mob.location().okAffect(mob,msg2))
-            {
-               mob.location().send(mob,msg2);
-            }
-         }
+		{
+			if(!target.isInCombat() && target.isMonster()) 
+			{
+				if(mob.location().okAffect(mob,msg2))
+				{
+					mob.location().send(mob,msg2);
+				}
+			}
 			return beneficialWordsFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
-      }
+		}
 
 
 		// return whether it worked

@@ -116,7 +116,7 @@ public class Necromancer extends Cleric
 				mob.tell("You need at least a 9 Wisdom to become a Necromancer.");
 			return false;
 		}
-		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=9)
+		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=8)
 		{
 			if(!quiet)
 				mob.tell("You need at least a 9 Constitution to become a Necromancer.");

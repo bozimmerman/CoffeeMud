@@ -170,6 +170,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_ChangeSex",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_Haste",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_DestroyObject",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Spell_Enlightenment",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_MinorGlobe",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_Shelter",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Spell_Confusion",false);

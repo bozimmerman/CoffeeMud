@@ -54,7 +54,7 @@ public class Spell_WaterCannon extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob);
+				int maxDie=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
 				damage += Dice.roll(maxDie,8,15);
 				mob.location().send(mob,msg2);
 				if((msg2.wasModified())||(msg.wasModified()))
@@ -63,21 +63,20 @@ public class Spell_WaterCannon extends Spell
 				if(target.location()==mob.location())
 					ExternalPlay.postDamage(mob,target,this,damage,Affect.MASK_GENERAL|Affect.TYP_WATER,Weapon.TYPE_BASHING,"The water blast <DAMAGE> <T-NAME>!");
             
-            int percentage = Dice.roll(1, 100, 0);
-            if(percentage < 10)
-            {
-      			FullMsg msg3=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon");
-               if(mob.location().okAffect(mob,msg3))
-               {
-                  mob.location().send(mob, msg3);                  
-               }
-               affectEnvStats(target, target.envStats());
-            }
+				int percentage = Dice.roll(1, 100, 0);
+				if(percentage < 10)
+				{
+      				FullMsg msg3=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon");
+					if(mob.location().okAffect(mob,msg3))
+					{
+					   mob.location().send(mob, msg3);                  
+					}
+					affectEnvStats(target, target.envStats());
+				}
 			}
 		}
 		else
 			return maliciousFizzle(mob,target,"<S-NAME> incant(s) and point(s) at <T-NAMESELF>, but flub(s) the spell.");
-
 
 		// return whether it worked
 		return success;

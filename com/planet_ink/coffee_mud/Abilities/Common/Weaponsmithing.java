@@ -177,7 +177,8 @@ public class Weaponsmithing extends CommonSkill
 		if(!super.canMend(mob,E,quiet)) return false;
 		Item IE=(Item)E;
 		if((!(IE instanceof Weapon))
-		||((((Weapon)IE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
+		||(((((Weapon)IE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL)
+			&&((((Weapon)IE).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL)))
 		{
 			if(!quiet)
 				commonTell(mob,"You don't know how to mend that sort of thing.");
