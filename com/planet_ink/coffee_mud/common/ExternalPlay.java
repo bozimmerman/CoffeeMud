@@ -90,6 +90,10 @@ public class ExternalPlay
 		if(player!=null) return player.remove(mob,item,quiet);
 		return false;
 	}
+	public static void unfollow(MOB mob, boolean quiet)
+	{
+		if(plater!=null) player.unfollow(mob,quiet);
+	}
 	public static void follow(MOB mob, MOB tofollow, boolean quiet)
 	{
 		if(player!=null) player.follow(mob,tofollow,quiet);

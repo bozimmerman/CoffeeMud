@@ -119,7 +119,7 @@ public class Spell_Charm extends Spell
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND);
+					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
 					if(success)
 					{
 						ExternalPlay.follow(target,mob,false);

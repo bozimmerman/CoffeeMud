@@ -129,6 +129,8 @@ public class Skill_HandCuff extends StdAbility
 							oldAssist=target.getBitmap()&MOB.ATT_AUTOASSIST;
 							if(oldAssist>0)
 								target.setBitmap(target.getBitmap()-MOB.ATT_AUTOASSIST);
+							ExternalPlay.unfollow(target,true);
+							ExternalPlay.follow(target,target,true);
 							target.setFollowing(mob);
 						}
 					}

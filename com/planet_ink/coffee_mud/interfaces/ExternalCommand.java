@@ -29,6 +29,7 @@ public interface ExternalCommand
 	public void read(MOB mob, Environmental thisThang, String theRest);
 	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
 	public void follow(MOB mob, MOB tofollow, boolean quiet);
+	public void unfollow(MOB mob, boolean quiet);
 	public void makePeaceInGroup(MOB mob);
 	
 	// messages

@@ -82,8 +82,15 @@ public class Burning extends StdAbility
 
 		if((affected instanceof Item)&&(((Item)affected).owner() instanceof MOB))
 		{
-			if(!ouch((MOB)((Item)affected).owner()))
-				ExternalPlay.drop((MOB)((Item)affected).owner(),(Item)affected,false);
+			Item I=(Item)affected;
+			if(!ouch((MOB)I.owner()))
+				ExternalPlay.drop((MOB)I.owner(),I,false);
+			if(I.subjectToWearAndTear())
+			{
+				if((I.usesRemaining()<1000)
+				&&(I.usesRemaining()>1))
+					I.setUsesRemaining(I.usesRemaining()-1);
+			}
 		}
 		
 		// might want to add the ability for it to spread
@@ -114,6 +121,28 @@ public class Burning extends StdAbility
 		return true;
 	}
 
+	public void affect(Affect affect)
+	{
+		if((affected!=null)
+		&&(affected instanceof Item)
+		&&(affect.tool()!=null)
+		&&(affect.tool()==affected)
+		&&(affect.target()!=null)
+		&&(affect.target() instanceof Container)
+		&&(affect.targetMinor()==Affect.TYP_PUT))
+		{
+			Item I=(Item)affected;
+			Item C=(Container)affect.target();
+			if((C instanceof Drink)
+			   &&(((Drink)C).containsDrink()))
+			{
+				affect.addTrailerMsg(new FullMsg(invoker,null,Affect.MSG_OK_VISUAL,I.name()+" is extinguished."));
+				I.delAffect(this);
+			}
+		}
+		super.affect(affect);											 
+	}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -102,7 +102,7 @@ public class Chant_CharmAnimal extends Chant
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND);
+					success=maliciousAffect(mob,target,0,Affect.MSK_CAST_VERBAL|Affect.TYP_MIND|(auto?Affect.MASK_GENERAL:0));
 					if(success)
 					{
 						ExternalPlay.follow(target,mob,false);

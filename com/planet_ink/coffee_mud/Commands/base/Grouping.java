@@ -113,7 +113,7 @@ public class Grouping
 			levelStr=classLevel+"/"+who.envStats().level();
 		msg.append(Util.padRight(who.charStats().getCurrentClass().name(),7)+" ");
 		msg.append(Util.padRight(levelStr,5));
-		msg.append("] "+Util.padRight(who.name(),14));
+		msg.append("] "+Util.padRight(who.name(),13)+" ");
 		msg.append(Util.padRightPreserve("hp("+Util.padRightPreserve(""+who.curState().getHitPoints(),3)+"/"+Util.padRightPreserve(""+who.maxState().getHitPoints(),3)+")",12));
 		msg.append(Util.padRightPreserve("mn("+Util.padRightPreserve(""+who.curState().getMana(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMana(),3)+")",12));
 		msg.append(Util.padRightPreserve("mv("+Util.padRightPreserve(""+who.curState().getMovement(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMovement(),3)+")",12));
@@ -168,6 +168,22 @@ public class Grouping
 		}
 	}
 
+	public void unfollow(MOB mob, boolean quiet)
+	{
+		nofollow(mob,false,quiet);
+		Vector V=new Vector();
+		for(int f=0;f<mob.numFollowers();f++)
+		{
+			MOB F=mob.fetchFollower(f);
+			if(F!=null) V.addElement(F);
+		}
+		for(int v=0;v<V.size();v++)
+		{
+			MOB F=(MOB)V.elementAt(v);
+			nofollow(F,false,quiet);
+		}
+	}
+	
 	public void nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
 		if(mob.amFollowing()!=null)
@@ -246,12 +262,7 @@ public class Grouping
 		if((mob.getBitmap()&MOB.ATT_NOFOLLOW)==0)
 		{
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_NOFOLLOW);
-			for(int i=0;i<mob.numFollowers();i++)
-			{
-				MOB follower=mob.fetchFollower(i);
-				if((follower!=null)&&(follower.amFollowing()!=null)&&(follower.amFollowing()==mob))
-					nofollow(follower,false,false);
-			}
+			unfollow(mob,false);
 			mob.tell("You are no longer accepting followers.");
 		}
 		else

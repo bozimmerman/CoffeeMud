@@ -209,6 +209,15 @@ public class TheFight
 		if((mob.location()!=null)&&(mob.location().okAffect(msg)))
 			mob.location().send(mob,msg);
 	}
+	
+	private String replaceDamageTag(String str, int damage, int damageType)
+	{
+		if(str==null) return null;
+		int replace=str.indexOf("<DAMAGE>");
+		if(replace>=0)
+			return str.substring(0,replace)+CommonStrings.standardHitWord(damageType,damage)+str.substring(replace+8);
+		return str;
+	}
 
 	public void postDamage(MOB attacker, 
 						   MOB target, 
@@ -223,23 +232,23 @@ public class TheFight
 		FullMsg msg=new FullMsg(attacker,target,weapon,messageCode,Affect.MASK_HURT+damage,messageCode,allDisplayMessage);
 		if(target.location().okAffect(msg))
 		{
+			int targetCode=msg.targetCode();
+			if(Util.bset(targetCode,Affect.MASK_HURT))
+			{
+				damage=targetCode-Affect.MASK_HURT;
+				targetCode=Affect.MASK_HURT+damage;
+			}
+			
 			allDisplayMessage=msg.othersMessage();
 			if((allDisplayMessage!=null)
-			   &&(msg.sourceCode()>0)
-			   &&(allDisplayMessage.equals(msg.sourceMessage()))
-			   &&(damageType>=0)
-			   &&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
+			&&(msg.sourceCode()>0)
+			&&(allDisplayMessage.equals(msg.sourceMessage()))
+			&&(damageType>=0)
+			&&(Util.bset(targetCode,Affect.MASK_HURT)))
 			{
+				
 				if((weapon==null)||(!(weapon instanceof Weapon)))
-				{
-					int replace=allDisplayMessage.indexOf("<DAMAGE>");
-					if(replace>=0)
-					{
-						int dmg=msg.targetCode()-Affect.MASK_HURT;
-						String damageWord=CommonStrings.standardHitWord(damageType,dmg);
-						allDisplayMessage=allDisplayMessage.substring(0,replace)+damageWord+allDisplayMessage.substring(replace+8);
-					}
-				}
+					allDisplayMessage=replaceDamageTag(allDisplayMessage,damage,damageType);
 				FullMsg msg2=new FullMsg(msg.source(),
 										 msg.target(),
 										 msg.tool(),
@@ -255,11 +264,22 @@ public class TheFight
 						   msg.tool(),
 						   Affect.NO_EFFECT,
 						   null,
-						   msg.targetCode(),
+						   targetCode,
 						   null,
 						   Affect.NO_EFFECT,
 						   null);
 			}
+			
+			if(damageType>=0)
+			msg.modify(msg.source(),
+					   msg.target(),
+					   msg.tool(),
+					   msg.sourceCode(),
+					   replaceDamageTag(msg.sourceMessage(),damage,damageType),
+					   targetCode,
+					   replaceDamageTag(msg.targetMessage(),damage,damageType),
+					   msg.othersCode(),
+					   replaceDamageTag(msg.othersMessage(),damage,damageType));
 			target.location().send(target,msg);
 		}
 	}
