@@ -69,7 +69,7 @@ public class SaveThread extends Thread
 		boolean raiseLowerTheSun=A.setTimeOfDay(A.getTimeOfDay()+1);
 		if(A.getTimeOfDay()>=Area.A_FULL_DAY)
 		{
-			A.setTimeOfDay(0);
+			raiseLowerTheSun=A.setTimeOfDay(0);
 			A.setDayOfMonth(A.getDayOfMonth()+1);
 			if(A.getDayOfMonth()>Area.DAYS_IN_MONTH)
 			{
@@ -150,8 +150,10 @@ public class SaveThread extends Thread
 							switch(A.getTODCode())
 							{
 							case Area.TIME_DAWN:
-								mob.tell("The sun begins to rise in the west."); break;
+								mob.tell("The sun begins to rise in the west."); 
+								break;
 							case Area.TIME_DAY:
+								break;
 								//mob.tell("The sun is now shining brightly."); break;
 							case Area.TIME_DUSK:
 								mob.tell("The sun begins to set in the east."); break;
@@ -165,9 +167,9 @@ public class SaveThread extends Thread
 							{
 							case Area.TIME_DAWN:
 								mob.tell("It is now daytime."); break;
-							case Area.TIME_DAY:
+							case Area.TIME_DAY: break;
 								//mob.tell("The sun is now shining brightly."); break;
-							case Area.TIME_DUSK:
+							case Area.TIME_DUSK: break;
 								//mob.tell("It is almost nighttime."); break;
 							case Area.TIME_NIGHT:
 								mob.tell("It is nighttime."); break;
