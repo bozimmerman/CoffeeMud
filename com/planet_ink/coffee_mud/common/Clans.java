@@ -132,6 +132,7 @@ public class Clans implements Clan, Tickable
 						CV.votes.addElement(userID,new Boolean(yn));
 					}
 				}
+				voteList.addElement(CV);
 			}
 		}
 		return voteList.elements();
@@ -325,38 +326,45 @@ public class Clans implements Clan, Tickable
 	public String getDetail(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		msg.append(""+typeName()+" Profile: "+ID()+"\n\r"
+		msg.append("^x"+typeName()+" Profile   :^.^N "+ID()+"\n\r"
 		          +"-----------------------------------------------------------------\n\r"
 		          +getPremise()+"\n\r"
 		          +"-----------------------------------------------------------------\n\r"
-				  +"Type            : "+Util.capitalize(Clan.GVT_DESCS[getGovernment()])+"\n\r"
-				  +"Qualifications  : "+((getAcceptanceSettings().length()==0)?"Anyone may apply":SaucerSupport.zapperDesc(getAcceptanceSettings()))+"\n\r"
-		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+": "+crewList(Clan.POS_BOSS)+"\n\r"
-		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_LEADER,true,true),16)+": "+crewList(Clan.POS_LEADER)+"\n\r"
-		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_TREASURER,true,true),16)+": "+crewList(Clan.POS_TREASURER)+"\n\r"
-		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_STAFF,true,true),16)+": "+crewList(Clan.POS_STAFF)+"\n\r"
-		          +"Total Members   : "+getSize()+"\n\r");
+				  +"^xType            :^.^N "+Util.capitalize(Clan.GVT_DESCS[getGovernment()])+"\n\r"
+				  +"^xQualifications  :^.^N "+((getAcceptanceSettings().length()==0)?"Anyone may apply":SaucerSupport.zapperDesc(getAcceptanceSettings()))+"\n\r"
+		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+":^.^N "+crewList(Clan.POS_BOSS)+"\n\r"
+		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_LEADER,true,true),16)+":^.^N "+crewList(Clan.POS_LEADER)+"\n\r"
+		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_TREASURER,true,true),16)+":^.^N "+crewList(Clan.POS_TREASURER)+"\n\r"
+		          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_STAFF,true,true),16)+":^.^N "+crewList(Clan.POS_STAFF)+"\n\r"
+		          +"^xTotal Members   :^.^N "+getSize()+"\n\r");
 		if(all.size()>1)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append(Util.padRight("Interclan Relations",40)+": \n\r");
+			msg.append("^x"+Util.padRight("Clan Relations",16)+":^.^N \n\r");
 			for(Enumeration e=all.elements();e.hasMoreElements();)
 			{
 				Clan C=(Clan)e.nextElement();
 				if(C!=this)
-					msg.append(Util.padRight(C.name(),40)+": "+Util.capitalize(Clan.REL_DESCS[getClanRelations(C.ID())])+"\n\r");
+				{
+					msg.append("^x"+Util.padRight(C.name(),16)+":^.^N ");
+					msg.append(Util.capitalize(Clan.REL_DESCS[getClanRelations(C.ID())]));
+					int orel=C.getClanRelations(ID());
+					if(orel!=Clan.REL_NEUTRAL)
+						msg.append(" (<-"+Util.capitalize(Clan.REL_DESCS[orel])+")");
+					msg.append("\n\r");
+				}
 			}
 		}
 		if((mob.getClanID().equalsIgnoreCase(ID()))
 		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
 			msg.append("-----------------------------------------------------------------\n\r"
-			          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_MEMBER,true,true),16)
-					  +": "+crewList(Clan.POS_MEMBER)+"\n\r");
+			          +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_MEMBER,true,true),16)
+					  +":^.^N "+crewList(Clan.POS_MEMBER)+"\n\r");
 			if(allowedToDoThis(mob,Clan.FUNC_CLANACCEPT)>=0)
 			{
 				msg.append("-----------------------------------------------------------------\n\r"
-				        +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_APPLICANT,true,true),16)+": "+crewList(Clan.POS_APPLICANT)+"\n\r");
+				        +"^x"+Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_APPLICANT,true,true),16)+":^.^N "+crewList(Clan.POS_APPLICANT)+"\n\r");
 			}
 		}
 		return msg.toString();
@@ -672,6 +680,32 @@ public class Clans implements Clan, Tickable
 		return filteredMembers;
 	}
 
+	public int getNumVoters(int function)
+	{
+		Vector realmembers=new Vector();
+		Vector bosses=new Vector();
+		DVector members=getMemberList();
+		for(int m=0;m<members.size();m++)
+		{
+			if(((Integer)members.elementAt(m,2)).intValue()==Clan.POS_BOSS)
+			{
+				realmembers.addElement(members.elementAt(m,1));
+				bosses.addElement(members.elementAt(m,1));
+			}
+			else
+			if(((Integer)members.elementAt(m,2)).intValue()!=Clan.POS_APPLICANT)
+				realmembers.addElement(members.elementAt(m,1));
+		}
+		int numVotes=bosses.size();
+		if(getGovernment()==Clan.GVT_DEMOCRACY)
+			numVotes=realmembers.size();
+		else
+		if((getGovernment()==Clan.GVT_REPUBLIC)&&(function==Clan.FUNC_CLANASSIGN))
+			numVotes=realmembers.size();
+		return numVotes;
+	}
+	
+	
 	public int getTopRank() { 
 		if((getGovernment()>=0)
 		&&(getGovernment()<Clan.topRanks.length))
@@ -708,7 +742,6 @@ public class Clans implements Clan, Tickable
 			return true;
 		try{
 			DVector members=getMemberList();
-			Vector bosses=new Vector();
 			int activeMembers=0;
 			long deathMilis=CommonStrings.getIntVar(CommonStrings.SYSTEMI_DAYSCLANDEATH)*Host.TICKS_PER_MUDDAY*Host.TICK_TIME;
 			for(int j=0;j<members.size();j++)
@@ -716,8 +749,6 @@ public class Clans implements Clan, Tickable
 				long lastLogin=((Long)members.elementAt(j,3)).longValue();
 				if((System.currentTimeMillis()-lastLogin)<deathMilis)
 					activeMembers++;
-				if(((Integer)members.elementAt(j,2)).intValue()==Clan.POS_BOSS)
-					bosses.addElement(members.elementAt(j,1));
 			}
 			
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
@@ -790,14 +821,8 @@ public class Clans implements Clan, Tickable
 				duration=duration*Host.TICKS_PER_MUDDAY*Host.TICK_TIME;
 				for(Enumeration e=votes();e.hasMoreElements();)
 				{
-					int numVotes=bosses.size();
 					ClanVote CV=(ClanVote)e.nextElement();
-					if(getGovernment()==Clan.GVT_DEMOCRACY)
-						numVotes=members.size();
-					else
-					if((getGovernment()==Clan.GVT_REPUBLIC)&&(CV.function==Clan.FUNC_CLANASSIGN))
-						numVotes=members.size();
-						
+					int numVotes=getNumVoters(CV.function);
 					int quorum=50;
 					if(data.size()>1) quorum=Util.s_int((String)data.lastElement());
 					quorum=(int)Math.round(Util.mul(Util.div((int)quorum,100.0),numVotes));

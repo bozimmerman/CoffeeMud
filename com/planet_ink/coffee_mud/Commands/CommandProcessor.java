@@ -202,6 +202,9 @@ public class CommandProcessor
 		case CommandSet.CLANCREATE:
 			ClanCommands.clanCreate(mob,commands);
 			break;
+		case CommandSet.CLANDECLARE:
+			ClanCommands.clandeclare(mob,commands,mob.Name().equals(mob.getClanID()));
+			break;
 		case CommandSet.CLANDETAILS:
 			ClanCommands.clandetails(mob,commands);
 			break;

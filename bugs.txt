@@ -1,5 +1,5 @@
-also feel that talking should end the singing/chanting -- mouth pos ends -- 
-look into mobs on grid homes?
+debug auction once and for all
+talking should end the singing/chanting -- mouth pos ends -- 
 prop_spelladder doesn't work?!
 no <> allowed in prompt cmd any more
 booting playerlist makes everyone appear at startroom.

@@ -71,7 +71,7 @@ public interface Clan extends Cloneable, Tickable
 	public static final int[] topRanks={
 		POS_BOSS,
 		POS_BOSS,
-		POS_LEADER,
+		POS_BOSS,
 		POS_LEADER
 	};
 	
@@ -124,6 +124,7 @@ public interface Clan extends Cloneable, Tickable
 	public void updateVotes();
 	public void addVote(Object CV);
 	public void delVote(Object CV);
+	public int getNumVoters(int function);
 	
 	public int getSize();
 
