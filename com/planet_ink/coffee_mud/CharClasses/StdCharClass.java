@@ -53,6 +53,8 @@ public class StdCharClass implements CharClass, Cloneable
 	public int classDurationModifier(MOB myChar, Ability skill, int duration)
 	{ return duration;}
 
+	public void tick(MOB myChar, int tickID){return;}
+	
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))

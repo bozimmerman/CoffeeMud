@@ -84,7 +84,7 @@ public class Prayer_LinkedHealth extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) that <S-HIS-HER> health be linked with <T-NAME>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <S-HIS-HER> health be linked with <T-NAME>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -96,7 +96,7 @@ public class Prayer_LinkedHealth extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for a link with <T-NAME>, but <S-HIS-HER> plea is not answered.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a link with <T-NAME>, but <S-HIS-HER> plea is not answered.");
 
 
 		// return whether it worked

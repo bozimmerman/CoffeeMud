@@ -1798,6 +1798,8 @@ public class StdMOB implements MOB
 				Behavior B=fetchBehavior(b);
 				if(B!=null) B.tick(this,tickID);
 			}
+			
+			charStats().getCurrentClass().tick(this,tickID);
 		}
 		lastTickedDateTime=System.currentTimeMillis();
 		return !pleaseDestroy;

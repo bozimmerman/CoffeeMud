@@ -52,7 +52,7 @@ public class Prayer_CureDeafness extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A visible glow surrounds <T-NAME>.":"^S<S-NAME> pray(s) for <T-NAMESELF> to hear <S-HIS-HER> prayer.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A visible glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to hear <S-HIS-HER> prayer.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -61,7 +61,7 @@ public class Prayer_CureDeafness extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> pray(s) for <T-NAMESELF>, but nothing happens.");
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
 
 
 		// return whether it worked

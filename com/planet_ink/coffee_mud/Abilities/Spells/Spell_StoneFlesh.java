@@ -23,7 +23,9 @@ public class Spell_StoneFlesh extends Spell
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A!=null)&&(A.canBeUninvoked())&&(A.ID().equalsIgnoreCase("Spell_FleshStone")))
+			if((A!=null)&&(A.canBeUninvoked())
+			   &&((A.ID().equalsIgnoreCase("Spell_FleshStone"))
+				  ||(A.ID().equalsIgnoreCase("Prayer_FleshRock"))))
 			{
 				revokeThis=A;
 				break;

@@ -31,6 +31,22 @@ public class Prayer extends StdAbility
 	}
 	public Environmental newInstance(){	return new Prayer();}
 
+	protected String prayWord(MOB mob)
+	{
+		if(mob.getMyDiety()!=null)
+			return "pray(s) to "+mob.getMyDiety().name();
+		else
+			return "pray(s)";
+	}
+	
+	protected String prayForWord(MOB mob)
+	{
+		if(mob.getMyDiety()!=null)
+			return "pray(s) for "+mob.getMyDiety().name();
+		else
+			return "pray(s)";
+	}
+	
 	public boolean appropriateToMyAlignment(int alignment)
 	{
 		switch(holyQuality())

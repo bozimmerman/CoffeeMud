@@ -66,7 +66,7 @@ public class Prayer_Anger extends Prayer
 			}
 		}
 		else
-			maliciousFizzle(mob,null,"<S-NAME> pray(s) for rage, but nothing happens.");
+			maliciousFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for rage, but nothing happens.");
 
 
 		// return whether it worked

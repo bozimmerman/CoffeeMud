@@ -82,7 +82,7 @@ public class Prayer_ProtPoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> pray(s) for protection from poisons.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a anitidotal protection.":"^S<S-NAME> "+prayWord(mob)+" for protection from poisons.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -90,7 +90,7 @@ public class Prayer_ProtPoison extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for protection from poisons, but go(es) unanswered.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for protection from poisons, but go(es) unanswered.");
 
 
 		// return whether it worked

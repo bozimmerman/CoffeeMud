@@ -81,7 +81,7 @@ public class Prayer_Contagion extends Prayer
 			// affected MOB.  Then tell everyone else
 			// what happened.
 
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> pray(s) at <T-NAMESELF> for contagion.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"^S<S-NAME> "+prayWord(mob)+" for a contagion to inflict <T-NAMESELF>.^?");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.TYP_DISEASE|Affect.MASK_MALICIOUS,null);
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
@@ -92,7 +92,7 @@ public class Prayer_Contagion extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> pray(s) at <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
 
 
 		// return whether it worked

@@ -31,6 +31,10 @@ public class CommonSkill extends StdAbility
 	public Environmental newInstance()	{	return new CommonSkill();	}
 	public int classificationCode()	{	return Ability.COMMON_SKILL; }
 
+	private int yield=1;
+	public int usesRemaining(){return yield;}
+	public void setUsesRemaining(int newUses){yield=newUses;}
+	
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)

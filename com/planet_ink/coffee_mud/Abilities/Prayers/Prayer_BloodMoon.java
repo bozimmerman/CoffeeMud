@@ -63,7 +63,7 @@ public class Prayer_BloodMoon extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) that <T-NAME> feel pain.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for <T-NAME> to feel pain.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -72,7 +72,7 @@ public class Prayer_BloodMoon extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> pray(s) for the Blood Moon, but <S-HIS-HER> plea is not answered.");
+			return maliciousFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for the Blood Moon, but <S-HIS-HER> plea is not answered.");
 
 
 		// return whether it worked

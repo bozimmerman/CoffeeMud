@@ -26,7 +26,10 @@ public class Spell_Confusion extends Spell
 			return false;
 		MOB mob=(MOB)affected;
 		if(mob.isInCombat())
-			mob.setVictim(mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1)));
+		{
+			MOB newvictim=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+			if(newvictim!=mob) mob.setVictim(newvictim);
+		}
 		return super.tick(tickID);
 	}
 

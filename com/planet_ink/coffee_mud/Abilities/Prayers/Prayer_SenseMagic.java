@@ -59,7 +59,7 @@ public class Prayer_SenseMagic extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) sparkling eyes!":"^S<S-NAME> pray(s) for divine revelation, and <S-HIS-HER> eyes begin to sparkle.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) sparkling eyes!":"^S<S-NAME> "+prayWord(mob)+" for divine revelation, and <S-HIS-HER> eyes begin to sparkle.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -67,7 +67,7 @@ public class Prayer_SenseMagic extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,null,"<S-NAME> pray(s) for divine revelation, but <S-HIS-HER> prayer is not heard.");
+			return beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for divine revelation, but <S-HIS-HER> prayer is not heard.");
 
 
 		// return whether it worked

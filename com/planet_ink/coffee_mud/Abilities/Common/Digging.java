@@ -65,6 +65,7 @@ public class Digging extends CommonSkill
 					if(((found.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PRECIOUS)
 					&&((found.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_GLASS))
 						amount=Dice.roll(1,55,0);
+					amount=amount*(usesRemaining());
 					String s="s";
 					if(amount==1) s="";
 					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to dig out "+amount+" "+foundShortName+s+".");

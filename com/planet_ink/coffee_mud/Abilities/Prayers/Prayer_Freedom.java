@@ -59,7 +59,7 @@ public class Prayer_Freedom extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> pray(s) over <T-NAMESELF>, delivering a light unbinding touch.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) lightly touched.":"^S<S-NAME> "+prayForWord(mob)+" to deliver a light unbinding touch to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -71,7 +71,7 @@ public class Prayer_Freedom extends Prayer
 			}
 		}
 		else
-			this.beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) over <T-NAMESELF>, but nothing happens.");
+			this.beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
 		// return whether it worked
 		return success;
 	}

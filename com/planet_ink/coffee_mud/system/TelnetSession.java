@@ -1128,7 +1128,6 @@ public class TelnetSession extends Thread implements Session
 	public void logoff()
 	{
 		killFlag=true;
-		closeSocks();
 		this.interrupt();
 		try{Thread.sleep(1000);}catch(Exception i){}
 	}

@@ -29,7 +29,7 @@ public class Prayer_CureCritical extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A bright white glow surrounds <T-NAME>.":"^S<S-NAME> pray(s) over <T-NAMESELF>, delivering a critical healing touch.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A bright white glow surrounds <T-NAME>.":"^S<S-NAME> "+prayWord(mob)+", delivering a critical healing touch to <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -39,7 +39,7 @@ public class Prayer_CureCritical extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> pray(s) over <T-NAMESELF>, but <S-HIS-HER> god does not heed.");
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" for <T-NAMESELF>, but nothing happens.");
 
 		// return whether it worked
 		return success;

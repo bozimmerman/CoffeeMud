@@ -82,7 +82,7 @@ public class Prayer_MassMobility extends Prayer
 		if(auto) affectType=affectType|Affect.MASK_GENERAL;
 		if((success)&&(room!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> pray(s) to <S-HIS-HER> god for an aura of mobility!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"^S<S-NAME> "+prayWord(mob)+" for an aura of mobility!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -106,7 +106,7 @@ public class Prayer_MassMobility extends Prayer
 		}
 		else
 		{
-			beneficialWordsFizzle(mob,null,"<S-NAME> pray(s) to <S-HIS-HER> god, but nothing happens.");
+			beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+", but nothing happens.");
 			return false;
 		}
 		return success;

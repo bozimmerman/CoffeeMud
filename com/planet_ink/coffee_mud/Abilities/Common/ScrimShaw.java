@@ -284,6 +284,7 @@ public class ScrimShaw extends CommonSkill
 			}
 			if(building instanceof Weapon)
 			{
+				((Weapon)building).baseEnvStats().setAttackAdjustment(usesRemaining()-1);
 				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
 				((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
 				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)

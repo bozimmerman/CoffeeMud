@@ -37,7 +37,6 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_TurnUndead",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Convert",50,true);
@@ -57,6 +56,9 @@ public class Cleric extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtGood",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);
+			
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_ControlUndead",true);
 			
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Prayer_Deafness",false);

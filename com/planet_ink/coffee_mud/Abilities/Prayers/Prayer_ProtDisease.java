@@ -69,6 +69,9 @@ public class Prayer_ProtDisease extends Prayer
 			return false;
 		}
 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -80,7 +83,7 @@ public class Prayer_ProtDisease extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) disease protection.":"^S<S-NAME> pray(s) for protection from diseases.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) disease protection.":"^S<S-NAME> "+prayWord(mob)+" for protection from diseases.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -88,7 +91,7 @@ public class Prayer_ProtDisease extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for protection from diseases, but go(es) unanswered.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for protection from diseases, but go(es) unanswered.");
 
 
 		// return whether it worked

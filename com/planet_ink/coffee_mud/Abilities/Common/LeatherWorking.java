@@ -350,6 +350,7 @@ public class LeatherWorking extends CommonSkill
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+(multiplier-1);
 			if(building instanceof Weapon)
 			{
+				((Weapon)building).baseEnvStats().setAttackAdjustment(usesRemaining()-1);
 				((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
 				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
 				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
@@ -363,7 +364,7 @@ public class LeatherWorking extends CommonSkill
 			}
 			if(building instanceof Armor)
 			{
-				((Armor)building).baseEnvStats().setArmor(armordmg);
+				((Armor)building).baseEnvStats().setArmor(armordmg+(usesRemaining()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				if(capacity>0)
 				{

@@ -296,7 +296,7 @@ public class Scoring
 		for(int d=0;d<CMMap.numDieties();d++)
 		{
 			Diety D=CMMap.getDiety(d);
-			msg.append("\n\r^z"+D.name()+"^.^?\n\r");
+			msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 			msg.append(D.description()+"\n\r");
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 			msg.append(D.getClericRequirementsDesc()+"\n\r");

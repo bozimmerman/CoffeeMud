@@ -29,7 +29,7 @@ public class Prayer_Harm extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> pray(s) at <T-NAMESELF> for tremendous pain!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,auto?"<T-NAME> cringe(s) in pain.":"^S<S-NAME> "+prayWord(mob)+" to deliver tremendous pain at <T-NAMESELF>!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -41,7 +41,7 @@ public class Prayer_Harm extends Prayer
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> pray(s) at <T-NAMESELF>, but <S-HIS-HER> god does not heed.");
+			return maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+", but nothing happens.");
 
 
 		// return whether it worked

@@ -8,7 +8,7 @@ import java.util.*;
 public class Skill_TurnUndead extends StdAbility
 {
 	public String ID() { return "Skill_TurnUndead"; }
-	public String name(){ return "Turn/Control Undead";}
+	public String name(){ return "Turn Undead";}
 	public String displayText(){ return "(Turned)";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
@@ -23,19 +23,19 @@ public class Skill_TurnUndead extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((target.baseCharStats().getMyRace()!=null)&&(target.baseCharStats().getMyRace().ID().equals("Undead")))
+		if((target.baseCharStats().getMyRace()==null)
+		   ||(!target.baseCharStats().getMyRace().ID().equals("Undead")))
 		{
-			// good
-		}
-		else
-		{
-			if(mob.getAlignment()<350)
-				mob.tell(auto?"Only the undead can be controlled.":"You can only control the undead.");
-			else
-				mob.tell(auto?"Only the undead can be turned.":"You can only turn the undead.");
+			mob.tell(auto?"Only the undead can be turned.":"You can only turn the undead.");
 			return false;
 		}
 
+		if(mob.getAlignment()<350)
+		{
+			mob.tell("Only the riteous may turn the undead.");
+			return false;
+		}
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -57,14 +57,6 @@ public class Skill_TurnUndead extends StdAbility
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					if(mob.getAlignment()<350)
-					{
-						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> is now controlled.");
-						target.makePeace();
-						ExternalPlay.follow(target,mob,false);
-						ExternalPlay.makePeaceInGroup(mob);
-					}
-					else
 					if((mob.envStats().level()-target.envStats().level())>6)
 					{
 						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!"));
@@ -72,16 +64,8 @@ public class Skill_TurnUndead extends StdAbility
 					}
 					else
 					{
-						if(mob.getAlignment()<650)
-						{
-							mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) submissive.");
-							target.makePeace();
-						}
-						else
-						{
-							mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> shake(s) in fear!");
-							ExternalPlay.flee(target,"");
-						}
+						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> shake(s) in fear!");
+						ExternalPlay.flee(target,"");
 					}
 					invoker=mob;
 				}

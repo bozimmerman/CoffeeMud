@@ -266,35 +266,6 @@ public class Shipwright extends CommonSkill
 			int capacity=Util.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			key=null;
-			if((building instanceof Container)
-			&&(!(building instanceof Armor)))
-			{
-				if(capacity>0)
-					((Container)building).setCapacity(capacity+woodRequired);
-				if(misctype.equalsIgnoreCase("LID"))
-					((Container)building).setLidsNLocks(true,false,false,false);
-				else
-				if(misctype.equalsIgnoreCase("LOCK"))
-				{
-					((Container)building).setLidsNLocks(true,false,true,false);
-					((Container)building).setKeyName(new Double(Math.random()).toString());
-					key=CMClass.getItem("GenKey");
-					((Key)key).setKey(((Container)building).keyName());
-					key.setName("a key");
-					key.setDisplayText("a small key sits here");
-					key.setDescription("looks like a key to "+building.name());
-					key.recoverEnvStats();
-					key.text();
-				}
-			}
-			if(building instanceof Drink)
-			{
-				((Drink)building).setLiquidRemaining(0);
-				((Drink)building).setLiquidHeld(capacity*50);
-				((Drink)building).setThirstQuenched(250);
-				if((capacity*50)<250)
-					((Drink)building).setThirstQuenched(capacity*50);
-			}
 			if(building instanceof Rideable)
 			{
 				if(misctype.equalsIgnoreCase("CHAIR"))
@@ -305,53 +276,6 @@ public class Shipwright extends CommonSkill
 				else
 				if(misctype.equalsIgnoreCase("BED"))
 					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
-			}
-			if(building instanceof Weapon)
-			{
-				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
-				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
-				{
-					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
-						((Weapon)building).setWeaponClassification(cl);
-				}
-				building.baseEnvStats().setDamage(armordmg);
-				((Weapon)building).setRawProperLocationBitmap(Item.WIELD|Item.HELD);
-				((Weapon)building).setRawLogicalAnd((capacity>1));
-			}
-			if(building instanceof Armor)
-			{
-				((Armor)building).baseEnvStats().setArmor(armordmg);
-				((Armor)building).setRawProperLocationBitmap(0);
-				for(int wo=1;wo<Item.wornLocation.length;wo++)
-				{
-					String WO=Item.wornLocation[wo].toUpperCase();
-					if(misctype.equalsIgnoreCase(WO))
-					{
-						((Armor)building).setRawProperLocationBitmap(Util.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-					||(misctype.toUpperCase().endsWith("||"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-					||(misctype.toUpperCase().endsWith("&&"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|Util.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(true);
-					}
-				}
-			}
-			if(building instanceof Light)
-			{
-				((Light)building).setDuration(capacity);
-				if(building instanceof Container)
-					((Container)building).setCapacity(0);
 			}
 			building.recoverEnvStats();
 			building.text();

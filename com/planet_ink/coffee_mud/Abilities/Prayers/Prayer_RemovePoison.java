@@ -48,7 +48,7 @@ public class Prayer_RemovePoison extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> pray(s) that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) delivered from <T-HIS-HER> poisonous affliction.":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -60,7 +60,7 @@ public class Prayer_RemovePoison extends Prayer
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> pray(s) that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction, but there is no answer.");
+			beneficialWordsFizzle(mob,target,auto?"":"<S-NAME> "+prayWord(mob)+" that <T-NAME> be delivered from <T-HIS-HER> poisonous infliction, but there is no answer.");
 
 
 		// return whether it worked

@@ -60,7 +60,7 @@ public class Prayer_AnimateDead extends Prayer
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) over <T-NAMESELF> hungrily, calling on evil powers.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" for dark powers over <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -105,7 +105,7 @@ public class Prayer_AnimateDead extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for dark powers, but fail(s) miserably.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for dark powers, but fail(s) miserably.");
 
 
 		// return whether it worked

@@ -61,10 +61,10 @@ public class StdAbility implements Ability, Cloneable
 	public void setBorrowed(Environmental toMe, boolean truefalse) { borrowed=truefalse; }
 	public void setName(String newName){}
 	public void recoverEnvStats() {}
-	public int usesRemaining(){return 100;}
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public void setDisplayText(String newDisplayText){}
 	public void setDescription(String newDescription){}
+	public int usesRemaining(){return 100;}
 	public void setUsesRemaining(int newUses){}
 
 	// ** For most abilities, the following stuff actually matters */

@@ -50,6 +50,9 @@ public class Prayer_ProtectElements extends Prayer
 			return false;
 		}
 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -61,7 +64,7 @@ public class Prayer_ProtectElements extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) elemental protection.":"^S<S-NAME> pray(s) for elemental protection.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) elemental protection.":"^S<S-NAME> "+prayWord(mob)+" for elemental protection.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -69,7 +72,7 @@ public class Prayer_ProtectElements extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for elemental protection, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for elemental protection, but nothing happens.");
 
 
 		// return whether it worked

@@ -83,7 +83,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> pray(s) for a free mind and body.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) a free mind and body.":"^S<S-NAME> "+prayWord(mob)+" for a free mind and body.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -91,7 +91,7 @@ public class Prayer_ProtParalyzation extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for a free body and mind, but nothing happens.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for a free body and mind, but nothing happens.");
 
 
 		// return whether it worked

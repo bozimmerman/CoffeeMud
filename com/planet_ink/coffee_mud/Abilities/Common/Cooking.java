@@ -93,7 +93,7 @@ public class Cooking extends CommonSkill
 						((Item)V.elementAt(v)).destroyThis();
 					if((cooking instanceof Drink)&&(finalDish instanceof Drink))
 						((Drink)cooking).setLiquidRemaining(0);
-					for(int i=0;i<finalAmount;i++)
+					for(int i=0;i<finalAmount*(usesRemaining());i++)
 					{
 						Item food=((Item)finalDish.copyOf());
 						food.setMiscText(finalDish.text());

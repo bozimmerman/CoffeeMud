@@ -62,7 +62,7 @@ public class Prayer_Sanctuary extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> pray(s) that <T-NAME> be given sanctuary from harm.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> "+prayWord(mob)+" that <T-NAME> be given sanctuary from harm.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -71,7 +71,7 @@ public class Prayer_Sanctuary extends Prayer
 			}
 		}
 		else
-			return beneficialWordsFizzle(mob,target,"<S-NAME> pray(s) for sanctuary, but <S-HIS-HER> plea is not answered.");
+			return beneficialWordsFizzle(mob,target,"<S-NAME> "+prayWord(mob)+" for sanctuary, but <S-HIS-HER> plea is not answered.");
 
 
 		// return whether it worked

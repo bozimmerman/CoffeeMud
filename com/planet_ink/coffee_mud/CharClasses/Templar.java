@@ -14,10 +14,12 @@ public class Templar extends Cleric
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	
+		
 	protected boolean disableAlignedWeapons(){return true;}
 	protected boolean disableClericSpellGrant(){return true;}
 	protected boolean disableAlignedSpells(){return true;}
+	
+	private int tickDown=0;
 	
 	public Templar()
 	{
@@ -26,7 +28,6 @@ public class Templar extends Cleric
 		{
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_TurnUndead",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
@@ -103,7 +104,7 @@ public class Templar extends Cleric
 			CMAble.addCharAbilityMapping(ID(),25,"Skill_Attack3",true);
 			CMAble.addCharAbilityMapping(ID(),25,"Prayer_Regeneration",false);
 			
-			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Avatar",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Prayer_Avatar",true);
 		}
 	}
 	
@@ -112,6 +113,20 @@ public class Templar extends Cleric
 		return true;
 	}
 
+	public void tick(MOB myChar, int tickID)
+	{
+		if((tickID==Host.MOB_TICK)&&((--tickDown)<=0))
+		{
+			tickDown=5;
+			if(myChar.fetchAffect("Prayer_AuraStrife")==null)
+			{
+				Ability A=CMClass.getAbility("Prayer_AuraStrife");
+				A.invoke(myChar,myChar,true);
+			}
+		}
+		return;
+	}
+	
 	public String statQualifications(){return "Wisdom 9+ Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -130,6 +145,7 @@ public class Templar extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
+	public String otherBonuses(){return "Never fumbles evil prayers, and receives Aura of Strife which increases in power.";}
 	public String otherLimitations(){return "Using non-evil prayers introduces failure chance.";}
 	public String weaponLimitations(){return "";}
 

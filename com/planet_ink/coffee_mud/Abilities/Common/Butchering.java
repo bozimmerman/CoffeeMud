@@ -44,12 +44,15 @@ public class Butchering extends CommonSkill
 						mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up "+body.name()+".");
 						Vector resources=body.charStats().getMyRace().myResources();
 						body.destroyThis();
-						for(int i=0;i<resources.size();i++)
+						for(int y=0;y<usesRemaining();y++)
 						{
-							Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
-							newFound.recoverEnvStats();
-							mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
-							mob.location().recoverRoomStats();
+							for(int i=0;i<resources.size();i++)
+							{
+								Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
+								newFound.recoverEnvStats();
+								mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
+								mob.location().recoverRoomStats();
+							}
 						}
 					}
 				}

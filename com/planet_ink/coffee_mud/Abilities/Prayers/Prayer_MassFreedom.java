@@ -51,7 +51,7 @@ public class Prayer_MassFreedom extends Prayer
 		boolean nothingDone=true;
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> pray(s) for freedom, and the area begins to fill with divine glory.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"A feeling of freedom flows through the air":"^S<S-NAME> "+prayWord(mob)+" for freedom, and the area begins to fill with divine glory.^?");
 			Room room=mob.location();
 			if((room!=null)&&(room.okAffect(msg)))
 			{
@@ -80,7 +80,7 @@ public class Prayer_MassFreedom extends Prayer
 			}
 		}
 		else
-			this.beneficialWordsFizzle(mob,null,"<S-NAME> pray(s) for freedom, but nothing happens.");
+			this.beneficialWordsFizzle(mob,null,"<S-NAME> "+prayWord(mob)+" for freedom, but nothing happens.");
 
 		// return whether it worked
 		return success;

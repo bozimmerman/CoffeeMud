@@ -314,7 +314,7 @@ public class Tailoring extends CommonSkill
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-				((Armor)building).baseEnvStats().setArmor(armordmg);
+				((Armor)building).baseEnvStats().setArmor(armordmg+(usesRemaining()-1));
 				((Armor)building).setRawProperLocationBitmap(0);
 				for(int wo=1;wo<Item.wornLocation.length;wo++)
 				{
