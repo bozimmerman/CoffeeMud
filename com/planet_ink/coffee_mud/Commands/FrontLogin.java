@@ -498,6 +498,10 @@ public class FrontLogin extends StdCommand
 				}
 				mob.baseCharStats().setMyRace(newRace);
 
+				mob.baseState().setHitPoints(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTHP));
+				mob.baseState().setMovement(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMOVE));
+				mob.baseState().setMana(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMANA));
+				
 				String Gender="";
 				while(Gender.length()==0)
 					Gender=mob.session().choose("\n\r^!What is your gender (M/F)?^N","MF","");
@@ -621,9 +625,6 @@ public class FrontLogin extends StdCommand
 				mob.baseCharStats().setClassLevel(newClass,1);
 				mob.baseEnvStats().setSensesMask(0);
 
-				mob.baseState().setHitPoints(20);
-				mob.baseState().setMovement(100);
-				mob.baseState().setMana(100);
 
 				Item r=CMClass.getItem("Ration");
 				Item w=CMClass.getItem("Waterskin");

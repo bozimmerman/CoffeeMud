@@ -28,6 +28,7 @@ public class Archon extends StdCharClass
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	public boolean leveless(){return true;}
 
 	public Archon()
 	{
@@ -115,13 +116,11 @@ public class Archon extends StdCharClass
 				alreadyAble.put(A.ID(),A);
 			}
 		}
-		int classLevel=mob.charStats().getClassLevel(this);
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			int lvl=CMAble.getQualifyingLevel(ID(),true,A.ID());
 			if((lvl>0)
-			&&(lvl<=classLevel)
 			&&(!alreadyAble.containsKey(A.ID())))
 				giveMobAbility(mob,A,100,"",true,false);
 		}

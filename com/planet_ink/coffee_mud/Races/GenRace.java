@@ -54,9 +54,9 @@ public class GenRace extends StdRace
 	public boolean isGeneric(){return true;}
 
 	protected int disableFlags=0;
-	public boolean classless(){return (disableFlags&1)==1;}
-	public boolean leveless(){return (disableFlags&2)==2;}
-	public boolean expless(){return (disableFlags&4)==4;}
+	public boolean classless(){return (disableFlags&Race.GENFLAG_NOCLASS)==Race.GENFLAG_NOCLASS;}
+	public boolean leveless(){return (disableFlags&Race.GENFLAG_NOLEVELS)==Race.GENFLAG_NOLEVELS;}
+	public boolean expless(){return (disableFlags&Race.GENFLAG_NOEXP)==Race.GENFLAG_NOEXP;}
 	
 	//                     an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	protected int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -66,6 +66,7 @@ public class GenRace extends StdRace
 	protected CharStats adjStats=null;
 	protected EnvStats adjEStats=null;
 	protected CharState adjState=null;
+	protected CharState startAdjState=null;
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
 	protected Vector resourceChoices=null;
@@ -204,6 +205,10 @@ public class GenRace extends StdRace
 		if(adjState==null) str.append("<ASTATE/>");
 		else
 			str.append(XMLManager.convertXMLtoTag("ASTATE",CoffeeMaker.getCharStateStr(adjState)));
+		if(startAdjState==null) str.append("<STARTASTATE/>");
+		else
+			str.append(XMLManager.convertXMLtoTag("STARTASTATE",CoffeeMaker.getCharStateStr(startAdjState)));
+		str.append(XMLManager.convertXMLtoTag("DISFLAGS",""+disableFlags));
 		
 		if(myResources().size()==0)	str.append("<RESOURCES/>");
 		else
@@ -306,7 +311,7 @@ public class GenRace extends StdRace
 			return;
 		}
 		Vector raceData=XMLManager.getRealContentsFromPieces(xml,"RACE");
-		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data."); return;}
+		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+Util.padRight(parms,30)+"."); return;}
 		String id=XMLManager.getValFromPieces(raceData,"ID");
 		if(id.length()==0)
 		{
@@ -375,6 +380,10 @@ public class GenRace extends StdRace
 		adjState=null;
 		String aState=XMLManager.getValFromPieces(raceData,"ASTATE");
 		if(aState.length()>0){ adjState=new DefaultCharState(); CoffeeMaker.setCharState(adjState,aState);}
+		startAdjState=null;
+		disableFlags=XMLManager.getIntFromPieces(raceData,"DISFLAGS");
+		String saState=XMLManager.getValFromPieces(raceData,"STARTASTATE");
+		if(saState.length()>0){ startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,saState);}
 		String aging=XMLManager.getValFromPieces(raceData,"AGING");
 		Vector aV=Util.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
@@ -500,7 +509,8 @@ public class GenRace extends StdRace
 									 "NUMRABLE","GETRABLE","GETRABLEPROF","GETRABLEQUAL","GETRABLELVL",
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
-									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING"
+									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING",
+									 "DISFLAGS","STARTASTATE"
 									 };
 	public String getStat(String code)
 	{
@@ -560,9 +570,26 @@ public class GenRace extends StdRace
 		case 37: return (racialEffectParms==null)?"0":(""+racialEffectParms[num]);
 		case 38: return (racialEffectLevels==null)?"0":(""+racialEffectLevels[num]);
 		case 39: return Util.toStringList(getAgingChart());
+		case 40: return ""+disableFlags; 
+		case 41: return (startAdjState==null)?"":CoffeeMaker.getCharStateStr(startAdjState);
 		}
 		return "";
 	}
+	
+	public void startRacing(MOB mob, boolean verifyOnly)
+	{
+	    super.startRacing(mob,verifyOnly);
+	    if((!verifyOnly)&&(startAdjState!=null))
+	    {
+			mob.baseState().setFatigue(mob.baseState().getFatigue()+startAdjState.getFatigue());
+			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+startAdjState.getHitPoints());
+			mob.baseState().setHunger(mob.baseState().getHunger()+startAdjState.getHunger());
+			mob.baseState().setMana(mob.baseState().getMana()+startAdjState.getMana());
+			mob.baseState().setMovement(mob.baseState().getMovement()+startAdjState.getMovement());
+			mob.baseState().setThirst(mob.baseState().getThirst()+startAdjState.getThirst());
+	    }
+	}
+	
 	public void setStat(String code, String val)
 	{
 		int num=0;
@@ -716,6 +743,8 @@ public class GenRace extends StdRace
 					    getAgingChart()[v]=Util.s_int((String)aV.elementAt(v));
 		    		break;
 				 }
+		case 40: disableFlags=Util.s_int(val); break;
+		case 41: startAdjState=null;if(val.length()>0){startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,val);}break;
 		}
 	}
 	public String[] getStatCodes(){return CODES;}

@@ -163,6 +163,19 @@ public class Pregnancy extends StdAbility
 		CS.setThirst(CS.getThirst()/2);
 		GR.setStat("ASTATE",CoffeeMaker.getCharStateStr(CS));
 
+		CharState STARTCS=new DefaultCharState(0);
+		race1.affectCharState(babe,STARTCS);
+		race2.affectCharState(babe,STARTCS);
+		CS.setFatigue(STARTCS.getFatigue()/2);
+		CS.setHitPoints(STARTCS.getHitPoints()/2);
+		CS.setHunger(STARTCS.getHunger()/2);
+		CS.setMana(STARTCS.getMana()/2);
+		CS.setMovement(STARTCS.getMovement()/2);
+		CS.setThirst(STARTCS.getThirst()/2);
+		GR.setStat("STARTASTATE",CoffeeMaker.getCharStateStr(STARTCS));
+		
+		GR.setStat("DISFLAGS",""+(Util.s_int(race1.getStat("DISFLAGS"))|Util.s_int(race2.getStat("DISFLAGS"))));
+		
 		GR.setStat("NUMRSC","");
 		for(int i=0;i<nonHuman.myResources().size();i++)
 			GR.setStat("GETRSCID"+i,((Item)nonHuman.myResources().elementAt(i)).ID());

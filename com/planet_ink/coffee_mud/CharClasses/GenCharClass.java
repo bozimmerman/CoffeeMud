@@ -49,7 +49,11 @@ public class GenCharClass extends StdCharClass
 	protected CharStats adjStats=null;
 	protected EnvStats adjEStats=null;
 	protected CharState adjState=null;
+	protected CharState startAdjState=null;
 	protected int disableFlags=0;
+	public boolean raceless(){return (disableFlags&CharClass.GENFLAG_NORACE)==CharClass.GENFLAG_NORACE;}
+	public boolean leveless(){return (disableFlags&CharClass.GENFLAG_NOLEVELS)==CharClass.GENFLAG_NOLEVELS;}
+	public boolean expless(){return (disableFlags&CharClass.GENFLAG_NOEXP)==CharClass.GENFLAG_NOEXP;}
 	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
 	
 	public boolean isGeneric(){return true;}
@@ -67,10 +71,6 @@ public class GenCharClass extends StdCharClass
 	public String otherLimitations(){return otherLimitations;}
 	public String otherBonuses(){return otherBonuses;}
 	public int availabilityCode(){return selectability;}
-	
-	public boolean raceless(){return (disableFlags&1)==1;}
-	public boolean leveless(){return (disableFlags&2)==2;}
-	public boolean expless(){return (disableFlags&4)==4;}
 	
 	public String weaponLimitations()
 	{
@@ -195,6 +195,10 @@ public class GenCharClass extends StdCharClass
 		if(adjState==null) str.append("<ASTATE/>");
 		else
 			str.append(XMLManager.convertXMLtoTag("ASTATE",CoffeeMaker.getCharStateStr(adjState)));
+		if(startAdjState==null) str.append("<STARTASTATE/>");
+		else
+			str.append(XMLManager.convertXMLtoTag("STARTASTATE",CoffeeMaker.getCharStateStr(startAdjState)));
+		str.append(XMLManager.convertXMLtoTag("DISFLAGS",""+disableFlags));
 		
 		DVector ables=getAbleSet();
 		if((ables==null)||(ables.size()==0))
@@ -302,6 +306,10 @@ public class GenCharClass extends StdCharClass
 		adjState=null;
 		String aState=XMLManager.getValFromPieces(classData,"ASTATE");
 		if(aState.length()>0){ adjState=new DefaultCharState(); CoffeeMaker.setCharState(adjState,aState);}
+		startAdjState=null;
+		disableFlags=XMLManager.getIntFromPieces(classData,"DISFLAGS");
+		String saState=XMLManager.getValFromPieces(classData,"STARTASTATE");
+		if(saState.length()>0){ startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,saState);}
 
 		Vector xV=XMLManager.getRealContentsFromPieces(classData,"CABILITIES");
 		CMAble.delCharMappings(ID());
@@ -379,7 +387,8 @@ public class GenCharClass extends StdCharClass
 									 "ESTATS","ASTATS","CSTATS","ASTATE","NUMCABLE",
 									 "GETCABLE","GETCABLELVL","GETCABLEPROF","GETCABLEGAIN","GETCABLESECR",
 									 "GETCABLEPARM","NUMWEP","GETWEP", "NUMOFT","GETOFTID",
-									 "GETOFTPARM","HPDIE","MANADICE","MANADIE"
+									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
+									 "STARTASTATE"
 									 };
 	public String getStat(String code)
 	{
@@ -430,6 +439,10 @@ public class GenCharClass extends StdCharClass
 		case 34: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).ID():"");
 		case 35: return ""+((outfit()!=null)?((Item)outfit().elementAt(num)).text():"");
 		case 36: return ""+hpDie;
+		case 37: return ""+manaDice;
+		case 38: return ""+manaDie;
+		case 39: return ""+disableFlags; 
+		case 40: return (startAdjState==null)?"":CoffeeMaker.getCharStateStr(startAdjState);
 		}
 		return "";
 	}
@@ -518,7 +531,22 @@ public class GenCharClass extends StdCharClass
 		case 36: hpDice=Util.s_int(val); break;
 		case 37: manaDice=Util.s_int(val); break;
 		case 38: manaDie=Util.s_int(val); break;
+		case 39: disableFlags=Util.s_int(val); break;
+		case 40: startAdjState=null;if(val.length()>0){startAdjState=new DefaultCharState(0); CoffeeMaker.setCharState(startAdjState,val);}break;
 		}
+	}
+	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	{
+	    super.startCharacter(mob,isBorrowedClass,verifyOnly);
+	    if((!verifyOnly)&&(startAdjState!=null))
+	    {
+			mob.baseState().setFatigue(mob.baseState().getFatigue()+startAdjState.getFatigue());
+			mob.baseState().setHitPoints(mob.baseState().getHitPoints()+startAdjState.getHitPoints());
+			mob.baseState().setHunger(mob.baseState().getHunger()+startAdjState.getHunger());
+			mob.baseState().setMana(mob.baseState().getMana()+startAdjState.getMana());
+			mob.baseState().setMovement(mob.baseState().getMovement()+startAdjState.getMovement());
+			mob.baseState().setThirst(mob.baseState().getThirst()+startAdjState.getThirst());
+	    }
 	}
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){

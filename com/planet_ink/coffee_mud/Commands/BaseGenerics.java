@@ -3527,17 +3527,22 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genAState(MOB mob, Race R, int showNumber, int showFlag)
+	static void genAState(MOB mob, 
+	        			  Race R, 
+	        			  String field,
+	        			  String prompt,
+	        			  int showNumber, 
+	        			  int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		CharState S=new DefaultCharState(0);
-		CoffeeMaker.setCharState(S,R.getStat("ASTATE"));
+		CoffeeMaker.setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
 				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
-		mob.tell(showNumber+". State Adjustments: "+parts.toString()+".");
+		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
 		if(newName.length()>0)
@@ -3566,9 +3571,9 @@ public class BaseGenerics extends StdCommand
 						{ zereoed=false; break;}
 					}
 					if(zereoed)
-						R.setStat("ASTATE","");
+						R.setStat(field,"");
 					else
-						R.setStat("ASTATE",CoffeeMaker.getCharStateStr(S));
+						R.setStat(field,CoffeeMaker.getCharStateStr(S));
 				}
 				else
 					mob.tell("(no change)");
@@ -3697,17 +3702,22 @@ public class BaseGenerics extends StdCommand
 		else
 			mob.tell("(no change)");
 	}
-	static void genAState(MOB mob, CharClass R, int showNumber, int showFlag)
+	static void genAState(MOB mob, 
+	        			  CharClass R, 
+	        			  String field,
+	        			  String prompt,
+	        			  int showNumber, 
+	        			  int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		CharState S=new DefaultCharState(0);
-		CoffeeMaker.setCharState(S,R.getStat("ASTATE"));
+		CoffeeMaker.setCharState(S,R.getStat(field));
 		StringBuffer parts=new StringBuffer("");
 		for(int i=0;i<S.getCodes().length;i++)
 			if(Util.s_int(S.getStat(S.getCodes()[i]))!=0)
 				parts.append(Util.capitalize(S.getCodes()[i])+"("+S.getStat(S.getCodes()[i])+") ");
-		mob.tell(showNumber+". State Adjustments: "+parts.toString()+".");
+		mob.tell(showNumber+". "+prompt+": "+parts.toString()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName=mob.session().prompt("Enter a stat name\n\r:","");
 		if(newName.length()>0)
@@ -3736,9 +3746,9 @@ public class BaseGenerics extends StdCommand
 						{ zereoed=false; break;}
 					}
 					if(zereoed)
-						R.setStat("ASTATE","");
+						R.setStat(field,"");
 					else
-						R.setStat("ASTATE",CoffeeMaker.getCharStateStr(S));
+						R.setStat(field,CoffeeMaker.getCharStateStr(S));
 				}
 				else
 					mob.tell("(no change)");
@@ -4092,6 +4102,98 @@ public class BaseGenerics extends StdCommand
 			    break;
 			}
 		}
+	}
+
+	static void genRaceFlags(MOB mob, Race E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) 
+		    return;
+		
+		int flags=Util.s_int(E.getStat("DISFLAGS"));
+		StringBuffer sets=new StringBuffer("");
+	    if(Util.bset(flags,Race.GENFLAG_NOCLASS))
+		    sets.append("Classless ");
+	    if(Util.bset(flags,Race.GENFLAG_NOLEVELS))
+		    sets.append("Leveless ");
+	    if(Util.bset(flags,Race.GENFLAG_NOEXP))
+		    sets.append("Expless ");
+		
+		mob.tell(showNumber+". Extra Racial Flags: "+sets.toString()+".");
+		if((showFlag!=showNumber)&&(showFlag>-999)) 
+		    return;
+		String newName=mob.session().prompt("Enter: 1) Classless, 2) Leveless, 3) Expless\n\r:","");
+		switch(Util.s_int(newName))
+		{
+		case 1:
+		    if(Util.bset(flags,Race.GENFLAG_NOCLASS))
+		        flags=Util.unsetb(flags,Race.GENFLAG_NOCLASS);
+		    else
+		        flags=flags|Race.GENFLAG_NOCLASS;
+		    break;
+		case 2:
+		    if(Util.bset(flags,Race.GENFLAG_NOLEVELS))
+		        flags=Util.unsetb(flags,Race.GENFLAG_NOLEVELS);
+		    else
+		        flags=flags|Race.GENFLAG_NOLEVELS;
+		    break;
+		case 3:
+		    if(Util.bset(flags,Race.GENFLAG_NOEXP))
+		        flags=Util.unsetb(flags,Race.GENFLAG_NOEXP);
+		    else
+		        flags=flags|Race.GENFLAG_NOEXP;
+		    break;
+		default:
+			mob.tell("(no change)");
+			break;
+		}
+		E.setStat("DISFLAGS",""+flags);
+	}
+
+	static void genClassFlags(MOB mob, CharClass E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) 
+		    return;
+		
+		int flags=Util.s_int(E.getStat("DISFLAGS"));
+		StringBuffer sets=new StringBuffer("");
+	    if(Util.bset(flags,CharClass.GENFLAG_NORACE))
+		    sets.append("Raceless ");
+	    if(Util.bset(flags,CharClass.GENFLAG_NOLEVELS))
+		    sets.append("Leveless ");
+	    if(Util.bset(flags,CharClass.GENFLAG_NOEXP))
+		    sets.append("Expless ");
+		
+		mob.tell(showNumber+". Extra CharClass Flags: "+sets.toString()+".");
+		if((showFlag!=showNumber)&&(showFlag>-999)) 
+		    return;
+		String newName=mob.session().prompt("Enter: 1) Raceless, 2) Leveless, 3) Expless\n\r:","");
+		switch(Util.s_int(newName))
+		{
+		case 1:
+		    if(Util.bset(flags,CharClass.GENFLAG_NORACE))
+		        flags=Util.unsetb(flags,CharClass.GENFLAG_NORACE);
+		    else
+		        flags=flags|CharClass.GENFLAG_NORACE;
+		    break;
+		case 2:
+		    if(Util.bset(flags,CharClass.GENFLAG_NOLEVELS))
+		        flags=Util.unsetb(flags,CharClass.GENFLAG_NOLEVELS);
+		    else
+		        flags=flags|CharClass.GENFLAG_NOLEVELS;
+		    break;
+		case 3:
+		    if(Util.bset(flags,CharClass.GENFLAG_NOEXP))
+		        flags=Util.unsetb(flags,CharClass.GENFLAG_NOEXP);
+		    else
+		        flags=flags|CharClass.GENFLAG_NOEXP;
+		    break;
+		default:
+			mob.tell("(no change)");
+			break;
+		}
+		E.setStat("DISFLAGS",""+flags);
 	}
 
 	static void genRacialAbilities(MOB mob, Race E, int showNumber, int showFlag)
@@ -4483,7 +4585,9 @@ public class BaseGenerics extends StdCommand
 			genEStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
-			genAState(mob,me,++showNumber,showFlag);
+			genAState(mob,me,"ASTATE","CharState Adjustments",++showNumber,showFlag);
+			genAState(mob,me,"STARTASTATE","New Player CharState Adj.",++showNumber,showFlag);
+			genClassFlags(mob,me,++showNumber,showFlag);
 			genWeaponRestr(mob,me,++showNumber,showFlag,"Weapon Restr.","NUMWEP","GETWEP");
 			genOutfit(mob,me,++showNumber,showFlag);
 			genClassAbilities(mob,me,++showNumber,showFlag);
@@ -4527,7 +4631,9 @@ public class BaseGenerics extends StdCommand
 			genEStats(mob,me,++showNumber,showFlag);
 			genAStats(mob,me,"ASTATS","CharStat Adjustments",++showNumber,showFlag);
 			genAStats(mob,me,"CSTATS","CharStat Settings",++showNumber,showFlag);
-			genAState(mob,me,++showNumber,showFlag);
+			genAState(mob,me,"ASTATE","CharState Adjustments",++showNumber,showFlag);
+			genAState(mob,me,"STARTASTATE","New Player CharState Adj.",++showNumber,showFlag);
+			genRaceFlags(mob,me,++showNumber,showFlag);
 			genResources(mob,me,++showNumber,showFlag);
 			genOutfit(mob,me,++showNumber,showFlag);
 			genWeapon(mob,me,++showNumber,showFlag);

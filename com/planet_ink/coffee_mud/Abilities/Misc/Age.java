@@ -240,10 +240,10 @@ public class Age extends StdAbility
 					if(newMan.playerStats().getBirthday()==null)
 					    newMan.baseCharStats().setStat(CharStats.AGE,newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace()));
 					newMan.baseCharStats().setStat(CharStats.AGE,ellapsed);
+					newMan.baseState().setHitPoints(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTHP));
+					newMan.baseState().setMana(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMANA));
+					newMan.baseState().setMovement(CommonStrings.getIntVar(CommonStrings.SYSTEMI_STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.GENDER));
-					newMan.baseState().setHitPoints(20);
-					newMan.baseState().setMana(100);
-					newMan.baseState().setMovement(100);
 					newMan.baseCharStats().getMyRace().reRoll(newMan,newMan.baseCharStats());
 					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
 					newMan.baseCharStats().setMyClasses(";Apprentice");

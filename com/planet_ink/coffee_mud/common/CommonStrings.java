@@ -103,7 +103,10 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_INJPCTHPAMP=32;
 	public static final int SYSTEMI_INJPCTCHANCEAMP=33;
 	public static final int SYSTEMI_INJMULTIPLIER=34;
-	public static final int NUMI_SYSTEM=35;
+	public static final int SYSTEMI_STARTHP=35;
+	public static final int SYSTEMI_STARTMANA=36;
+	public static final int SYSTEMI_STARTMOVE=37;
+	public static final int NUMI_SYSTEM=38;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -297,6 +300,15 @@ public class CommonStrings extends Scriptable
 		    CommonStrings.setIntVar(SYSTEMI_INJPCTCHANCEAMP,Util.s_int((String)V.elementAt(3)));
 		    CommonStrings.setIntVar(SYSTEMI_INJMULTIPLIER,Util.s_int((String)V.elementAt(4)));
 		}
+		String stateVar=page.getStr("STARTHP");
+		if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
+		    CommonStrings.setIntVar(SYSTEMI_STARTHP,Util.s_int(stateVar));
+		stateVar=page.getStr("STARTMANA");
+		if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
+		    CommonStrings.setIntVar(SYSTEMI_STARTMANA,Util.s_int(stateVar));
+		stateVar=page.getStr("STARTMOVE");
+		if((stateVar.length()>0)&&(Util.isNumber(stateVar)))
+		    CommonStrings.setIntVar(SYSTEMI_STARTMOVE,Util.s_int(stateVar));
 		
 		Directions.ReInitialize(page.getInt("DIRECTIONS"));
 		

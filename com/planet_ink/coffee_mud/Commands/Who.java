@@ -58,7 +58,7 @@ public class Who extends StdCommand
 		if(!CMSecurity.isDisabled("LEVELS"))
 		{
 		    if(who.charStats().getMyRace().leveless()
-		    ||who.charStats().getMyRace().leveless())
+		    ||who.charStats().getCurrentClass().leveless())
 				msg.append(Util.padRight(" ",12)+" ");
 		    else
 				msg.append(Util.padRight(levelStr,7));
