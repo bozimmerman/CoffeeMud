@@ -84,6 +84,7 @@ public class Prayer_AnimateGhoul extends Prayer
 				newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 				newMOB.baseState().setMana(100);
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();

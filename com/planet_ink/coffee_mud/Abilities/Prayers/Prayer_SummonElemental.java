@@ -138,6 +138,7 @@ public class Prayer_SummonElemental extends Prayer
 			break;
 		}
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();

@@ -94,6 +94,7 @@ public class Prayer_AnimateGhast extends Prayer
 				B=CMClass.getBehavior("Aggressive");
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
 				newMOB.setMoney(0);

@@ -131,6 +131,7 @@ public class Chant_BrownMold extends Chant
 		newMOB.baseEnvStats().setAttackAdjustment(60);
 		newMOB.baseEnvStats().setArmor(0);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'N');
+		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();

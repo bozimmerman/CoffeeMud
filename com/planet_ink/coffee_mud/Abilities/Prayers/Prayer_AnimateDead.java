@@ -81,6 +81,7 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.baseState().setMana(0);
 				Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();
 				newMOB.recoverMaxState();

@@ -83,6 +83,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.baseState().setHitPoints(30*newMOB.baseEnvStats().level());
 				newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
 				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.baseState().setMana(100);
 				newMOB.recoverCharStats();
 				newMOB.recoverEnvStats();

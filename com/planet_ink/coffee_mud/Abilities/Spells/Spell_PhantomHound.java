@@ -143,6 +143,7 @@ public class Spell_PhantomHound extends Spell
 				beast.baseCharStats().setStat(CharStats.SAVE_ACID,200);
 				beast.baseCharStats().setStat(CharStats.SAVE_COLD,200);
 				beast.baseCharStats().setStat(CharStats.SAVE_ELECTRIC,200);
+				beast.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				beast.baseEnvStats().setAbility(100);
 				beast.baseState().setMana(100);
 				beast.baseState().setMovement(1000);
