@@ -13,38 +13,38 @@ import com.planet_ink.coffee_mud.utils.*;
 public class ClanLoader
 {
 
-  private static int currentRecordPos=1;
-  private static int recordCount=0;
+	private static int currentRecordPos=1;
+	private static int recordCount=0;
 
 	public static void updateBootStatus(Host myHost, String loading)
 	{
-    myHost.setGameStatusStr("Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
+		myHost.setGameStatusStr("Booting: Loading "+loading+" ("+currentRecordPos+" of "+recordCount+")");
 	}
 
-  public static void DBRead(Host myHost)
+	public static void DBRead(Host myHost)
 	{
 		DBConnection D=null;
-    Clan C=null;
+	    Clan C=null;
 		try
 		{
 			D=DBConnector.DBFetch();
 			ResultSet R=D.query("SELECT * FROM CMCLAN");
-      R.last();
-      recordCount=R.getRow();
-      R.beforeFirst();
+			R.last();
+			recordCount=R.getRow();
+			R.beforeFirst();
 			while(R.next())
 			{
-        currentRecordPos=R.getRow();
-        String name=DBConnections.getRes(R,"CMCLID");
-        C=Clans.getClanType(Util.s_int(DBConnections.getRes(R,"CMTYPE")));
-        C.setName(name);
-        C.setPremise(DBConnections.getRes(R,"CMDESC"));
-        C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
-        C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
-        C.setRecall(DBConnections.getRes(R,"CMRCLL"));
-        C.setDonation(DBConnections.getRes(R,"CMDNAT"));
+				currentRecordPos=R.getRow();
+				String name=DBConnections.getRes(R,"CMCLID");
+				C=Clans.getClanType(Util.s_int(DBConnections.getRes(R,"CMTYPE")));
+				C.setName(name);
+				C.setPremise(DBConnections.getRes(R,"CMDESC"));
+				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
+				C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
+				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
+				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
 				Clans.addElement(C);
-        updateBootStatus(myHost,"Clans");
+		        updateBootStatus(myHost,"Clans");
 			}
 			DBConnector.DBDone(D);
 		}
@@ -54,14 +54,14 @@ public class ClanLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
-    // log comment 
-  }
+		// log comment 
+	}
 
-  public static void DBUpdate(Clan C)
+	public static void DBUpdate(Clan C)
 	{
 		DBConnection D=null;
 		String str=null;
-    String sql=null;
+		String sql=null;
 		try
 		{
 			D=DBConnector.DBFetch();
@@ -82,9 +82,9 @@ public class ClanLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
-  }
+	}
 
-  public static void DBCreate(Clan C)
+	public static void DBCreate(Clan C)
 	{
 		if(C.ID().length()==0) return;
 		DBConnection D=null;
@@ -94,7 +94,7 @@ public class ClanLoader
 			D=DBConnector.DBFetch();
 			str="INSERT INTO CMCLAN ("
 			+"CMCLID,"
-      +"CMTYPE,"
+			+"CMTYPE,"
 			+"CMDESC,"
 			+"CMACPT,"
 			+"CMPOLI,"
@@ -102,10 +102,10 @@ public class ClanLoader
 			+"CMDNAT"
 			+") values ("
 			+"'"+C.ID()+"',"
-      +""+C.getType()+","
+			+""+C.getType()+","
 			+"'"+C.getPremise()+"',"
-      +"'"+C.getAcceptanceSettings()+"',"
-      +"'"+C.getPolitics()+"',"
+			+"'"+C.getAcceptanceSettings()+"',"
+			+"'"+C.getPolitics()+"',"
 			+"'"+C.getRecall()+"',"
 			+"'"+C.getDonation()+"')";
 			D.update(str);
@@ -118,13 +118,13 @@ public class ClanLoader
 			if(D!=null) DBConnector.DBDone(D);
 			return;
 		}
-  }
+	}
 
-  public static void DBDelete(Clan C)
+	public static void DBDelete(Clan C)
 	{
-    DBConnection D=null;
-    try
-    {
+		DBConnection D=null;
+		try
+		{
 			D=DBConnector.DBFetch();
 			D.update("DELETE FROM CMCLAN WHERE CMCLID='"+C.ID()+"'");
 			DBConnector.DBDone(D);
@@ -134,6 +134,6 @@ public class ClanLoader
 			Log.errOut("Clan","Delete"+sqle);
 			if(D!=null) DBConnector.DBDone(D);
 		}
-  }
+	}
 
 }

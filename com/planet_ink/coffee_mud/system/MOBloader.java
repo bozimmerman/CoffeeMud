@@ -413,7 +413,7 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCHAR where CLCLAN='"+clan+"'");
+			ResultSet R=D.query("SELECT * FROM CMCHAR where CMCLAN='"+clan+"'");
 			if(R!=null)
 			while(R.next())
 			{
@@ -445,7 +445,7 @@ public class MOBloader
 		try
 		{
 			D=DBConnector.DBFetch();
-			str="UPDATE CMCLAN SET"
+			str="UPDATE CMCHAR SET"
 			+"  CMCLAN='"+clan+"',"
 			+"  CMCLRO="+role+""
 			+"  WHERE CMUSERID='"+name+"'";

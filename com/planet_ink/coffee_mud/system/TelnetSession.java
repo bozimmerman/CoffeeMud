@@ -1128,6 +1128,7 @@ public class TelnetSession extends Thread implements Session
 	public void logoff()
 	{
 		killFlag=true;
+		closeSocks();
 		this.interrupt();
 		try{Thread.sleep(1000);}catch(Exception i){}
 	}
@@ -1191,6 +1192,36 @@ public class TelnetSession extends Thread implements Session
 			termID = 0;
 	}
 
+	private void closeSocks()
+	{
+		try
+		{
+			if(sock!=null)
+			{
+				status=Session.STATUS_LOGOUT6;
+				if(out!=null)
+					out.flush();
+				status=Session.STATUS_LOGOUT7;
+				sock.shutdownInput();
+				status=Session.STATUS_LOGOUT8;
+				sock.shutdownOutput();
+				status=Session.STATUS_LOGOUT9;
+				if(out!=null)
+					out.close();
+				status=Session.STATUS_LOGOUT10;
+				sock.close();
+				status=Session.STATUS_LOGOUT11;
+			}
+			in=null;
+			out=null;
+			sock=null;
+
+		}
+		catch(IOException e)
+		{
+		}
+	}
+	
 	public int getTermID()
 	{
 		return termID;
@@ -1339,32 +1370,7 @@ public class TelnetSession extends Thread implements Session
 		waiting=false;
 		needPrompt=false;
 
-		try
-		{
-			if(sock!=null)
-			{
-				status=Session.STATUS_LOGOUT6;
-				if(out!=null)
-					out.flush();
-				status=Session.STATUS_LOGOUT7;
-				sock.shutdownInput();
-				status=Session.STATUS_LOGOUT8;
-				sock.shutdownOutput();
-				status=Session.STATUS_LOGOUT9;
-				if(out!=null)
-					out.close();
-				status=Session.STATUS_LOGOUT10;
-				sock.close();
-				status=Session.STATUS_LOGOUT11;
-			}
-			in=null;
-			out=null;
-			sock=null;
-
-		}
-		catch(IOException e)
-		{
-		}
+		closeSocks();
 		//finally
 		//{
 		//}

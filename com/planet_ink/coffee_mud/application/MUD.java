@@ -229,6 +229,9 @@ public class MUD extends Thread implements Host
 		else
 			Log.sysOut("MUD","Socials loaded    : "+Socials.num());
 		
+		ClanLoader.DBRead((Host)mudThreads.firstElement());
+		Log.sysOut("MUD","Clans loaded      : "+Clans.size());
+		
 		Log.sysOut("MUD","Loading map...");
 		offlineReason="Booting: loading rooms (0% completed).";
 		RoomLoader.DBRead((Host)mudThreads.firstElement(), CMMap.getAreaVector(),CMMap.getRoomVector());

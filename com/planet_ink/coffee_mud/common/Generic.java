@@ -309,6 +309,8 @@ public class Generic
 			{
 				text.append(XMLManager.convertXMLtoTag("CLEREQ",((Diety)E).getClericRequirements()));
 				text.append(XMLManager.convertXMLtoTag("WORREQ",((Diety)E).getWorshipRequirements()));
+				text.append(XMLManager.convertXMLtoTag("CLERIT",((Diety)E).getClericRitual()));
+				text.append(XMLManager.convertXMLtoTag("WORRIT",((Diety)E).getWorshipRitual()));
 
 				itemstr=new StringBuffer("");
 				for(int b=0;b<((Diety)E).numBlessings();b++)
@@ -1294,6 +1296,8 @@ public class Generic
 				Diety godmob=(Diety)E;
 				godmob.setClericRequirements(XMLManager.getValFromPieces(buf,"CLEREQ"));
 				godmob.setWorshipRequirements(XMLManager.getValFromPieces(buf,"WORREQ"));
+				godmob.setClericRitual(XMLManager.getValFromPieces(buf,"CLERIT"));
+				godmob.setWorshipRitual(XMLManager.getValFromPieces(buf,"WORRIT"));
 				
 				V=XMLManager.getRealContentsFromPieces(buf,"BLESSINGS");
 				if(V==null)
