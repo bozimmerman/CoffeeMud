@@ -63,7 +63,13 @@ public class Skill_Revoke extends StdAbility
 		for(int a=0;a<target.numAffects();a++)
 		{
 			Ability A=(Ability)target.fetchAffect(a);
-			if((A!=null)&&(A.invoker()==mob)&&(A.canBeUninvoked()))
+			if((A!=null)
+			&&(A.invoker()==mob)
+			&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+			   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+			   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+			   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
+			&&(A.canBeUninvoked()))
 				revokeThis=A;
 		}
 

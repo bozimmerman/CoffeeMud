@@ -226,6 +226,16 @@ public class Spell_Wish extends Spell
 				myWish=" "+Util.combine(wishV,0).toUpperCase().trim()+" ";
 			}
 			
+			if((target!=null)
+			&&(target!=mob)
+			&&(target instanceof MOB)
+			&&(!((MOB)target).isMonster())
+			&&(!mob.mayIFight((MOB)target)))
+			{
+				mob.tell("You cannot cast wish on "+mob.name()+" until "+mob.charStats().heshe()+" permits you. You must both toggle your playerkill flags on.");
+				return false;
+			}
+			
 			// a wish for recall
 			if((myWish.startsWith(" TO BE RECALLED "))
 			||(myWish.startsWith(" TO RECALL "))
@@ -552,6 +562,11 @@ public class Spell_Wish extends Spell
 				Race R=CMClass.getRace((String)wishV.lastElement());
 				if(R!=null)
 				{
+					if(!((MOB)target).isMonster())
+					{
+						baseLoss+=500;
+						mob.charStats().getMyClass().loseExperience(mob,500);
+					}
 					mob.tell("Your wish has drained you of "+baseLoss+" experience points.");
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);

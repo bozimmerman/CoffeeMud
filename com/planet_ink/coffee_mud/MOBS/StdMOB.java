@@ -1293,7 +1293,8 @@ public class StdMOB implements MOB
 						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
 					if(!isMonster())
 						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
-					myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
+					if(envStats().height()>0)
+						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 					myDescription.append(healthText()+"\n\r\n\r");
 					myDescription.append(description()+"\n\r\n\r");
 					myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));
@@ -1438,7 +1439,8 @@ public class StdMOB implements MOB
 					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
 					myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a level "+envStats().level()+" "+charStats().getMyClass().name()+".\n\r");
-				myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
+				if(envStats().height()>0)
+					myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
 				myDescription.append(healthText()+"\n\r\n\r");
 				myDescription.append(description()+"\n\r\n\r");
 				myDescription.append(charStats().HeShe()+" is wearing:\n\r"+ExternalPlay.getEquipment(affect.source(),this));

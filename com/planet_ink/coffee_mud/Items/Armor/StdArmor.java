@@ -127,6 +127,7 @@ public class StdArmor extends StdItem implements Armor
 			return false;
 		if((affect.amITarget(this))
 		&&(envStats().height()>0)
+		&&(affect.source().envStats().height()>0)
 		&&(affect.targetMinor()==Affect.TYP_WEAR))
 		{
 			int devianceAllowed=200;

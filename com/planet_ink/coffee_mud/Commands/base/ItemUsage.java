@@ -136,7 +136,7 @@ public class ItemUsage
 
 			if((getThis==null)
 			||(!(getThis instanceof Item))
-			||(!Sense.canBeSeenBy(getThis,mob)))
+			||((!Sense.canBeSeenBy(getThis,mob))&&(!allFlag)))
 			{
 				if(!doneSomething)
 				{
@@ -153,10 +153,13 @@ public class ItemUsage
 				return;
 			}
 
-			if((last==getThis)||(!get(mob,container,(Item)getThis,false)))
+			if((last==getThis)
+			   ||(!Sense.canBeSeenBy(getThis,mob))
+			   ||(!get(mob,container,(Item)getThis,false)))
 				addendumStr="."+(++addendum);
 			last=getThis;
-			doneSomething=true;
+			if(Sense.canBeSeenBy(getThis,mob))
+				doneSomething=true;
 		}while(allFlag);
 	}
 
@@ -195,7 +198,9 @@ public class ItemUsage
 				allFlag=false;
 			else
 				dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
-			if((dropThis==null)||(dropThis.container()!=container)||(!Sense.canBeSeenBy(dropThis,mob)))
+			if((dropThis==null)
+			   ||(dropThis.container()!=container)
+			   ||((!Sense.canBeSeenBy(dropThis,mob))&&(!allFlag)))
 			{
 				if((!doneSomething)&&(Util.s_int(whatToDrop)<=0))
 					mob.tell("You aren't carrying that.");
@@ -208,11 +213,12 @@ public class ItemUsage
 				continue;
 			}
 
-			if(!drop(mob,dropThis))
+			if((!Sense.canBeSeenBy(dropThis,mob))||(!drop(mob,dropThis)))
 				addendumStr="."+(++addendum);
 
 			last=dropThis;
-			doneSomething=true;
+			if(Sense.canBeSeenBy(dropThis,mob))
+				doneSomething=true;
 		}while(allFlag);
 	}
 
@@ -265,7 +271,9 @@ public class ItemUsage
 				allFlag=false;
 			else
 				putThis=mob.fetchCarried(null,thingToPut+addendumStr);
-			if((putThis==null)||((putThis!=null)&&(!Sense.canBeSeenBy(putThis,mob))))
+			if((putThis==null)
+			   ||((putThis!=null)
+			   &&(!Sense.canBeSeenBy(putThis,mob))&&(!allFlag)))
 			{
 				if((!doneSomething)&&(Util.s_int(thingToPut)<=0))
 					mob.tell("I don't see '"+thingToPut+"' here.");
@@ -289,12 +297,15 @@ public class ItemUsage
 				mob.location().send(mob,newMsg);
 			}
 			FullMsg newMsg=new FullMsg(mob,container,putThis,Affect.MSG_PUT,"<S-NAME> put(s) "+putThis.name()+" in <T-NAME>");
-			if((last!=putThis)&&(mob.location().okAffect(newMsg)))
+			if((last!=putThis)
+			   &&(Sense.canBeSeenBy(putThis,mob))
+			   &&(mob.location().okAffect(newMsg)))
 				mob.location().send(mob,newMsg);
 			else
 				addendumStr="."+(++addendum);
 			last=putThis;
-			doneSomething=true;
+			if(Sense.canBeSeenBy(putThis,mob))
+				doneSomething=true;
 		}while(allFlag);
 	}
 
@@ -438,7 +449,9 @@ public class ItemUsage
 		do
 		{
 			Item thisItem=mob.fetchCarried(null,Util.combine(commands,0)+addendumStr);
-			if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
+			if((thisItem==null)
+			   ||((thisItem!=null)
+			   &&(!Sense.canBeSeenBy(thisItem,mob))&&(!allFlag)))
 			{
 				if(!doneSomething)
 					mob.tell("You don't seem to be carrying that.");
@@ -449,9 +462,10 @@ public class ItemUsage
 				addendumStr="."+(++addendum);
 				continue;
 			}
-			if((last==thisItem)||(!wear(mob,thisItem)))
+			if((last==thisItem)||(!Sense.canBeSeenBy(thisItem,mob))||(!wear(mob,thisItem)))
 				addendumStr="."+(++addendum);
-			doneSomething=true;
+			if(Sense.canBeSeenBy(thisItem,mob))
+				doneSomething=true;
 			last=thisItem;
 		}while(allFlag);
 	}
@@ -472,7 +486,9 @@ public class ItemUsage
 		do
 		{
 			Item thisItem=mob.fetchCarried(null,Util.combine(commands,0)+addendumStr);
-			if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
+			if((thisItem==null)
+			   ||((thisItem!=null)
+			   &&(!Sense.canBeSeenBy(thisItem,mob))&&(!allFlag)))
 			{
 				if(!doneSomething)
 					mob.tell("You don't seem to be carrying that.");
@@ -484,11 +500,13 @@ public class ItemUsage
 				continue;
 			}
 			if((last==thisItem)
+			||(!Sense.canBeSeenBy(thisItem,mob))
 			||(!alreadyWornMsg(mob,thisItem))
 			||(!hold(mob,thisItem)))
 				addendumStr="."+(++addendum);
 			last=thisItem;
-			doneSomething=true;
+			if(Sense.canBeSeenBy(thisItem,mob))
+				doneSomething=true;
 		}while(allFlag);
 	}
 
@@ -521,7 +539,9 @@ public class ItemUsage
 		commands.removeElementAt(0);
 
 		Item thisItem=mob.fetchCarried(null,Util.combine(commands,0));
-		if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
+		if((thisItem==null)
+		   ||((thisItem!=null)
+			  &&(!Sense.canBeSeenBy(thisItem,mob))))
 		{
 			mob.tell("You don't seem to be carrying that.");
 			return;
@@ -546,7 +566,9 @@ public class ItemUsage
 		{
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);
 			if((thisThang==null)
-			||((thisThang!=null)&&(!mob.isMine(thisThang))&&(!Sense.canBeSeenBy(thisThang,mob))))
+			||((thisThang!=null)
+			   &&(!mob.isMine(thisThang))
+			   &&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
 				return;
@@ -573,7 +595,9 @@ public class ItemUsage
 		Environmental thisThang=null;
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0),Item.WORN_REQ_ANY);
 		if((thisThang==null)
-		||((thisThang!=null)&&(!mob.isMine(thisThang))&&(!Sense.canBeSeenBy(thisThang,mob))))
+		||((thisThang!=null)
+		   &&(!mob.isMine(thisThang))
+		   &&(!Sense.canBeSeenBy(thisThang,mob))))
 		{
 			mob.tell("You don't see '"+Util.combine(commands,0)+"' here.");
 			return;
@@ -655,7 +679,8 @@ public class ItemUsage
 		do
 		{
 			Item thisItem=mob.fetchWornItem(Util.combine(commands,0)+addendumStr);
-			if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
+			if((thisItem==null)
+			   ||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
 			{
 				if(!doneSomething)
 					mob.tell("You don't seem to be wearing that.");
@@ -667,7 +692,8 @@ public class ItemUsage
 					mob.tell("You aren't wearing that.");
 				return;
 			}
-			if((last==thisItem)||(!remove(mob,thisItem)))
+			if((last==thisItem)
+			   ||(!remove(mob,thisItem)))
 				addendumStr="."+(++addendum);
 			last=thisItem;
 			doneSomething=true;

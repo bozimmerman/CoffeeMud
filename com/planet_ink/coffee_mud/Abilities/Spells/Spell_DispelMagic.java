@@ -50,6 +50,11 @@ public class Spell_DispelMagic extends Spell
 			{
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
+				&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)
+				   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT))
 				&&((A.invoker()==mob)
 				||(A.invoker().envStats().level()<=mob.envStats().level()+5)))
 					revokeThis=A;
