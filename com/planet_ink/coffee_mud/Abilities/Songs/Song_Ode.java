@@ -17,6 +17,8 @@ public class Song_Ode extends Song
 	
 	public Hashtable getSongs()
 	{
+		Hashtable H=new Hashtable();
+		return H;
 	}
 	
 }
