@@ -1,0 +1,2372 @@
+# This is a helper script.  Load it BEFORE card dealing scripts
+# two functions, dealCard and dealHouseCard
+
+LOAD=progs/unDeal.script~
+
+~
+FUNCTION_PROG dealCard
+	MPSETVAR $i NEXTSUIT $%RANDNUM(4)%
+	IF EVAL('$<$n DEALROUND>' == '1')
+	IF EVAL('$<$n CARD1>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an ace of spades card'
+			give "an ace of spades card" $n
+			say $n an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an ace of hearts card'
+			give "an ace of hearts card" $n
+			say $n an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an ace of diamonds card'
+			give "an ace of diamonds card" $n
+			say $n an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an ace of clubs card'
+			give "an ace of clubs card" $n
+			say $n an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a two of spades card'
+			give "a two of spades card" $n
+			say $n a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a two of hearts card'
+			give "a two of hearts card" $n
+			say $n a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a two of diamonds card'
+			give "a two of diamonds card" $n
+			say $n a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a two of clubs card'
+			give "a two of clubs card" $n
+			say $n a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a three of spades card'
+			give "a three of spades card" $n
+			say $n a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a three of hearts card'
+			give "a three of hearts card" $n
+			say $n a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a three of diamonds card'
+			give "a three of diamonds card" $n
+			say $n a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a three of clubs card'
+			give "a three of clubs card" $n
+			say $n a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a four of spades card'
+			give "a four of spades card" $n
+			say $n a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a four of hearts card'
+			give "a four of hearts card" $n
+			say $n a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a four of diamonds card'
+			give "a four of diamonds card" $n
+			say $n a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a four of clubs card'
+			give "a four of clubs card" $n
+			say $n a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a five of spades card'
+			give "a five of spades card" $n
+			say $n a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a five of hearts card'
+			give "a five of hearts card" $n
+			say $n a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a five of diamonds card'
+			give "a five of diamonds card" $n
+			say $n a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a five of clubs card'
+			give "a five of clubs card" $n
+			say $n a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a six of spades card'
+			give "a six of spades card" $n
+			say $n a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a six of hearts card'
+			give "a six of hearts card" $n
+			say $n a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a six of diamonds card'
+			give "a six of diamonds card" $n
+			say $n a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a six of clubs card'
+			give "a six of clubs card" $n
+			say $n a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a seven of spades card'
+			give "a seven of spades card" $n
+			say $n a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a seven of hearts card'
+			give "a seven of hearts card" $n
+			say $n a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a seven of diamonds card'
+			give "a seven of diamonds card" $n
+			say $n a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a seven of clubs card'
+			give "a seven of clubs card" $n
+			say $n a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an eight of spades card'
+			give "an eight of spades card" $n
+			say $n an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an eight of hearts card'
+			give "an eight of hearts card" $n
+			say $n an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an eight of diamonds card'
+			give "an eight of diamonds card" $n
+			say $n an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an eight of clubs card'
+			give "an eight of clubs card" $n
+			say $n an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a nine of spades card'
+			give "a nine of spades card" $n
+			say $n a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a nine of hearts card'
+			give "a nine of hearts card" $n
+			say $n a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a nine of diamonds card'
+			give "a nine of diamonds card" $n
+			say $n a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a nine of clubs card'
+			give "a nine of clubs card" $n
+			say $n a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a ten of spades card'
+			give "a ten of spades card" $n
+			say $n a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a ten of hearts card'
+			give "a ten of hearts card" $n
+			say $n a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a ten of diamonds card'
+			give "a ten of diamonds card" $n
+			say $n a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a ten of clubs card'
+			give "a ten of clubs card" $n
+			say $n a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Jack of spades card'
+			give "a Jack of spades card" $n
+			say $n a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Jack of hearts card'
+			give "a Jack of hearts card" $n
+			say $n a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Jack of diamonds card'
+			give "a Jack of diamonds card" $n
+			say $n a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Jack of clubs card'
+			give "a Jack of clubs card" $n
+			say $n a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Queen of spades card'
+			give "a Queen of spades card" $n
+			say $n a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Queen of hearts card'
+			give "a Queen of hearts card" $n
+			say $n a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Queen of diamonds card'
+			give "a Queen of diamonds card" $n
+			say $n a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Queen of clubs card'
+			give "a Queen of clubs card" $n
+			say $n a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD1>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a King of spades card'
+			give "a King of spades card" $n
+			say $n a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a King of hearts card'
+			give "a King of hearts card" $n
+			say $n a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a King of diamonds card'
+			give "a King of diamonds card" $n
+			say $n a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a King of clubs card'
+			give "a King of clubs card" $n
+			say $n a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '2')
+	IF EVAL('$<$n CARD2>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an ace of spades card'
+			give "an ace of spades card" $n
+			say $n an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an ace of hearts card'
+			give "an ace of hearts card" $n
+			say $n an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an ace of diamonds card'
+			give "an ace of diamonds card" $n
+			say $n an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an ace of clubs card'
+			give "an ace of clubs card" $n
+			say $n an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a two of spades card'
+			give "a two of spades card" $n
+			say $n a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a two of hearts card'
+			give "a two of hearts card" $n
+			say $n a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a two of diamonds card'
+			give "a two of diamonds card" $n
+			say $n a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a two of clubs card'
+			give "a two of clubs card" $n
+			say $n a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a three of spades card'
+			give "a three of spades card" $n
+			say $n a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a three of hearts card'
+			give "a three of hearts card" $n
+			say $n a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a three of diamonds card'
+			give "a three of diamonds card" $n
+			say $n a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a three of clubs card'
+			give "a three of clubs card" $n
+			say $n a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a four of spades card'
+			give "a four of spades card" $n
+			say $n a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a four of hearts card'
+			give "a four of hearts card" $n
+			say $n a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a four of diamonds card'
+			give "a four of diamonds card" $n
+			say $n a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a four of clubs card'
+			give "a four of clubs card" $n
+			say $n a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a five of spades card'
+			give "a five of spades card" $n
+			say $n a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a five of hearts card'
+			give "a five of hearts card" $n
+			say $n a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a five of diamonds card'
+			give "a five of diamonds card" $n
+			say $n a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a five of clubs card'
+			give "a five of clubs card" $n
+			say $n a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a six of spades card'
+			give "a six of spades card" $n
+			say $n a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a six of hearts card'
+			give "a six of hearts card" $n
+			say $n a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a six of diamonds card'
+			give "a six of diamonds card" $n
+			say $n a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a six of clubs card'
+			give "a six of clubs card" $n
+			say $n a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a seven of spades card'
+			give "a seven of spades card" $n
+			say $n a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a seven of hearts card'
+			give "a seven of hearts card" $n
+			say $n a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a seven of diamonds card'
+			give "a seven of diamonds card" $n
+			say $n a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a seven of clubs card'
+			give "a seven of clubs card" $n
+			say $n a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an eight of spades card'
+			give "an eight of spades card" $n
+			say $n an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an eight of hearts card'
+			give "an eight of hearts card" $n
+			say $n an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an eight of diamonds card'
+			give "an eight of diamonds card" $n
+			say $n an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an eight of clubs card'
+			give "an eight of clubs card" $n
+			say $n an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a nine of spades card'
+			give "a nine of spades card" $n
+			say $n a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a nine of hearts card'
+			give "a nine of hearts card" $n
+			say $n a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a nine of diamonds card'
+			give "a nine of diamonds card" $n
+			say $n a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a nine of clubs card'
+			give "a nine of clubs card" $n
+			say $n a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a ten of spades card'
+			give "a ten of spades card" $n
+			say $n a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a ten of hearts card'
+			give "a ten of hearts card" $n
+			say $n a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a ten of diamonds card'
+			give "a ten of diamonds card" $n
+			say $n a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a ten of clubs card'
+			give "a ten of clubs card" $n
+			say $n a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Jack of spades card'
+			give "a Jack of spades card" $n
+			say $n a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Jack of hearts card'
+			give "a Jack of hearts card" $n
+			say $n a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Jack of diamonds card'
+			give "a Jack of diamonds card" $n
+			say $n a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Jack of clubs card'
+			give "a Jack of clubs card" $n
+			say $n a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Queen of spades card'
+			give "a Queen of spades card" $n
+			say $n a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Queen of hearts card'
+			give "a Queen of hearts card" $n
+			say $n a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Queen of diamonds card'
+			give "a Queen of diamonds card" $n
+			say $n a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Queen of clubs card'
+			give "a Queen of clubs card" $n
+			say $n a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD2>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a King of spades card'
+			give "a King of spades card" $n
+			say $n a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a King of hearts card'
+			give "a King of hearts card" $n
+			say $n a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a King of diamonds card'
+			give "a King of diamonds card" $n
+			say $n a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a King of clubs card'
+			give "a King of clubs card" $n
+			say $n a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '3')
+	IF EVAL('$<$n CARD3>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an ace of spades card'
+			give "an ace of spades card" $n
+			say $n an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an ace of hearts card'
+			give "an ace of hearts card" $n
+			say $n an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an ace of diamonds card'
+			give "an ace of diamonds card" $n
+			say $n an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an ace of clubs card'
+			give "an ace of clubs card" $n
+			say $n an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a two of spades card'
+			give "a two of spades card" $n
+			say $n a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a two of hearts card'
+			give "a two of hearts card" $n
+			say $n a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a two of diamonds card'
+			give "a two of diamonds card" $n
+			say $n a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a two of clubs card'
+			give "a two of clubs card" $n
+			say $n a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a three of spades card'
+			give "a three of spades card" $n
+			say $n a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a three of hearts card'
+			give "a three of hearts card" $n
+			say $n a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a three of diamonds card'
+			give "a three of diamonds card" $n
+			say $n a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a three of clubs card'
+			give "a three of clubs card" $n
+			say $n a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a four of spades card'
+			give "a four of spades card" $n
+			say $n a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a four of hearts card'
+			give "a four of hearts card" $n
+			say $n a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a four of diamonds card'
+			give "a four of diamonds card" $n
+			say $n a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a four of clubs card'
+			give "a four of clubs card" $n
+			say $n a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a five of spades card'
+			give "a five of spades card" $n
+			say $n a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a five of hearts card'
+			give "a five of hearts card" $n
+			say $n a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a five of diamonds card'
+			give "a five of diamonds card" $n
+			say $n a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a five of clubs card'
+			give "a five of clubs card" $n
+			say $n a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a six of spades card'
+			give "a six of spades card" $n
+			say $n a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a six of hearts card'
+			give "a six of hearts card" $n
+			say $n a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a six of diamonds card'
+			give "a six of diamonds card" $n
+			say $n a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a six of clubs card'
+			give "a six of clubs card" $n
+			say $n a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a seven of spades card'
+			give "a seven of spades card" $n
+			say $n a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a seven of hearts card'
+			give "a seven of hearts card" $n
+			say $n a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a seven of diamonds card'
+			give "a seven of diamonds card" $n
+			say $n a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a seven of clubs card'
+			give "a seven of clubs card" $n
+			say $n a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an eight of spades card'
+			give "an eight of spades card" $n
+			say $n an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an eight of hearts card'
+			give "an eight of hearts card" $n
+			say $n an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an eight of diamonds card'
+			give "an eight of diamonds card" $n
+			say $n an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an eight of clubs card'
+			give "an eight of clubs card" $n
+			say $n an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a nine of spades card'
+			give "a nine of spades card" $n
+			say $n a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a nine of hearts card'
+			give "a nine of hearts card" $n
+			say $n a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a nine of diamonds card'
+			give "a nine of diamonds card" $n
+			say $n a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a nine of clubs card'
+			give "a nine of clubs card" $n
+			say $n a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a ten of spades card'
+			give "a ten of spades card" $n
+			say $n a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a ten of hearts card'
+			give "a ten of hearts card" $n
+			say $n a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a ten of diamonds card'
+			give "a ten of diamonds card" $n
+			say $n a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a ten of clubs card'
+			give "a ten of clubs card" $n
+			say $n a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Jack of spades card'
+			give "a Jack of spades card" $n
+			say $n a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Jack of hearts card'
+			give "a Jack of hearts card" $n
+			say $n a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Jack of diamonds card'
+			give "a Jack of diamonds card" $n
+			say $n a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Jack of clubs card'
+			give "a Jack of clubs card" $n
+			say $n a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Queen of spades card'
+			give "a Queen of spades card" $n
+			say $n a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Queen of hearts card'
+			give "a Queen of hearts card" $n
+			say $n a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Queen of diamonds card'
+			give "a Queen of diamonds card" $n
+			say $n a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Queen of clubs card'
+			give "a Queen of clubs card" $n
+			say $n a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD3>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a King of spades card'
+			give "a King of spades card" $n
+			say $n a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a King of hearts card'
+			give "a King of hearts card" $n
+			say $n a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a King of diamonds card'
+			give "a King of diamonds card" $n
+			say $n a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a King of clubs card'
+			give "a King of clubs card" $n
+			say $n a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '4')
+	IF EVAL('$<$n CARD4>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an ace of spades card'
+			give "an ace of spades card" $n
+			say $n an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an ace of hearts card'
+			give "an ace of hearts card" $n
+			say $n an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an ace of diamonds card'
+			give "an ace of diamonds card" $n
+			say $n an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an ace of clubs card'
+			give "an ace of clubs card" $n
+			say $n an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a two of spades card'
+			give "a two of spades card" $n
+			say $n a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a two of hearts card'
+			give "a two of hearts card" $n
+			say $n a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a two of diamonds card'
+			give "a two of diamonds card" $n
+			say $n a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a two of clubs card'
+			give "a two of clubs card" $n
+			say $n a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a three of spades card'
+			give "a three of spades card" $n
+			say $n a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a three of hearts card'
+			give "a three of hearts card" $n
+			say $n a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a three of diamonds card'
+			give "a three of diamonds card" $n
+			say $n a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a three of clubs card'
+			give "a three of clubs card" $n
+			say $n a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a four of spades card'
+			give "a four of spades card" $n
+			say $n a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a four of hearts card'
+			give "a four of hearts card" $n
+			say $n a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a four of diamonds card'
+			give "a four of diamonds card" $n
+			say $n a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a four of clubs card'
+			give "a four of clubs card" $n
+			say $n a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a five of spades card'
+			give "a five of spades card" $n
+			say $n a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a five of hearts card'
+			give "a five of hearts card" $n
+			say $n a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a five of diamonds card'
+			give "a five of diamonds card" $n
+			say $n a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a five of clubs card'
+			give "a five of clubs card" $n
+			say $n a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a six of spades card'
+			give "a six of spades card" $n
+			say $n a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a six of hearts card'
+			give "a six of hearts card" $n
+			say $n a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a six of diamonds card'
+			give "a six of diamonds card" $n
+			say $n a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a six of clubs card'
+			give "a six of clubs card" $n
+			say $n a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a seven of spades card'
+			give "a seven of spades card" $n
+			say $n a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a seven of hearts card'
+			give "a seven of hearts card" $n
+			say $n a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a seven of diamonds card'
+			give "a seven of diamonds card" $n
+			say $n a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a seven of clubs card'
+			give "a seven of clubs card" $n
+			say $n a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an eight of spades card'
+			give "an eight of spades card" $n
+			say $n an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an eight of hearts card'
+			give "an eight of hearts card" $n
+			say $n an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an eight of diamonds card'
+			give "an eight of diamonds card" $n
+			say $n an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an eight of clubs card'
+			give "an eight of clubs card" $n
+			say $n an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a nine of spades card'
+			give "a nine of spades card" $n
+			say $n a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a nine of hearts card'
+			give "a nine of hearts card" $n
+			say $n a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a nine of diamonds card'
+			give "a nine of diamonds card" $n
+			say $n a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a nine of clubs card'
+			give "a nine of clubs card" $n
+			say $n a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a ten of spades card'
+			give "a ten of spades card" $n
+			say $n a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a ten of hearts card'
+			give "a ten of hearts card" $n
+			say $n a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a ten of diamonds card'
+			give "a ten of diamonds card" $n
+			say $n a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a ten of clubs card'
+			give "a ten of clubs card" $n
+			say $n a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Jack of spades card'
+			give "a Jack of spades card" $n
+			say $n a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Jack of hearts card'
+			give "a Jack of hearts card" $n
+			say $n a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Jack of diamonds card'
+			give "a Jack of diamonds card" $n
+			say $n a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Jack of clubs card'
+			give "a Jack of clubs card" $n
+			say $n a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Queen of spades card'
+			give "a Queen of spades card" $n
+			say $n a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Queen of hearts card'
+			give "a Queen of hearts card" $n
+			say $n a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Queen of diamonds card'
+			give "a Queen of diamonds card" $n
+			say $n a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Queen of clubs card'
+			give "a Queen of clubs card" $n
+			say $n a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD4>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a King of spades card'
+			give "a King of spades card" $n
+			say $n a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a King of hearts card'
+			give "a King of hearts card" $n
+			say $n a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a King of diamonds card'
+			give "a King of diamonds card" $n
+			say $n a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a King of clubs card'
+			give "a King of clubs card" $n
+			say $n a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '5')
+	IF EVAL('$<$n CARD5>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an ace of spades card'
+			give "an ace of spades card" $n
+			say $n an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an ace of hearts card'
+			give "an ace of hearts card" $n
+			say $n an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an ace of diamonds card'
+			give "an ace of diamonds card" $n
+			say $n an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an ace of clubs card'
+			give "an ace of clubs card" $n
+			say $n an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a two of spades card'
+			give "a two of spades card" $n
+			say $n a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a two of hearts card'
+			give "a two of hearts card" $n
+			say $n a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a two of diamonds card'
+			give "a two of diamonds card" $n
+			say $n a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a two of clubs card'
+			give "a two of clubs card" $n
+			say $n a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a three of spades card'
+			give "a three of spades card" $n
+			say $n a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a three of hearts card'
+			give "a three of hearts card" $n
+			say $n a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a three of diamonds card'
+			give "a three of diamonds card" $n
+			say $n a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a three of clubs card'
+			give "a three of clubs card" $n
+			say $n a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a four of spades card'
+			give "a four of spades card" $n
+			say $n a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a four of hearts card'
+			give "a four of hearts card" $n
+			say $n a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a four of diamonds card'
+			give "a four of diamonds card" $n
+			say $n a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a four of clubs card'
+			give "a four of clubs card" $n
+			say $n a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a five of spades card'
+			give "a five of spades card" $n
+			say $n a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a five of hearts card'
+			give "a five of hearts card" $n
+			say $n a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a five of diamonds card'
+			give "a five of diamonds card" $n
+			say $n a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a five of clubs card'
+			give "a five of clubs card" $n
+			say $n a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a six of spades card'
+			give "a six of spades card" $n
+			say $n a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a six of hearts card'
+			give "a six of hearts card" $n
+			say $n a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a six of diamonds card'
+			give "a six of diamonds card" $n
+			say $n a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a six of clubs card'
+			give "a six of clubs card" $n
+			say $n a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a seven of spades card'
+			give "a seven of spades card" $n
+			say $n a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a seven of hearts card'
+			give "a seven of hearts card" $n
+			say $n a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a seven of diamonds card'
+			give "a seven of diamonds card" $n
+			say $n a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a seven of clubs card'
+			give "a seven of clubs card" $n
+			say $n a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'an eight of spades card'
+			give "an eight of spades card" $n
+			say $n an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'an eight of hearts card'
+			give "an eight of hearts card" $n
+			say $n an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'an eight of diamonds card'
+			give "an eight of diamonds card" $n
+			say $n an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'an eight of clubs card'
+			give "an eight of clubs card" $n
+			say $n an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a nine of spades card'
+			give "a nine of spades card" $n
+			say $n a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a nine of hearts card'
+			give "a nine of hearts card" $n
+			say $n a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a nine of diamonds card'
+			give "a nine of diamonds card" $n
+			say $n a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a nine of clubs card'
+			give "a nine of clubs card" $n
+			say $n a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a ten of spades card'
+			give "a ten of spades card" $n
+			say $n a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a ten of hearts card'
+			give "a ten of hearts card" $n
+			say $n a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a ten of diamonds card'
+			give "a ten of diamonds card" $n
+			say $n a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a ten of clubs card'
+			give "a ten of clubs card" $n
+			say $n a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Jack of spades card'
+			give "a Jack of spades card" $n
+			say $n a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Jack of hearts card'
+			give "a Jack of hearts card" $n
+			say $n a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Jack of diamonds card'
+			give "a Jack of diamonds card" $n
+			say $n a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Jack of clubs card'
+			give "a Jack of clubs card" $n
+			say $n a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a Queen of spades card'
+			give "a Queen of spades card" $n
+			say $n a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a Queen of hearts card'
+			give "a Queen of hearts card" $n
+			say $n a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a Queen of diamonds card'
+			give "a Queen of diamonds card" $n
+			say $n a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a Queen of clubs card'
+			give "a Queen of clubs card" $n
+			say $n a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n CARD5>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			MPOLOAD 'a King of spades card'
+			give "a King of spades card" $n
+			say $n a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			MPOLOAD 'a King of hearts card'
+			give "a King of hearts card" $n
+			say $n a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			MPOLOAD 'a King of diamonds card'
+			give "a King of diamonds card" $n
+			say $n a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			MPOLOAD 'a King of clubs card'
+			give "a King of clubs card" $n
+			say $n a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+~
+
+FUNCTION_PROG dealHouseCard
+	MPSETVAR $i NEXTSUIT $%RANDNUM(4)%
+	IF EVAL('$<$n DEALROUND>' == '1')
+	IF EVAL('$<$n DEALERCARD1>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD1>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '2')
+	IF EVAL('$<$n DEALERCARD2>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD2>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '3')
+	IF EVAL('$<$n DEALERCARD3>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD3>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '4')
+	IF EVAL('$<$n DEALERCARD4>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD4>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALROUND>' == '5')
+	IF EVAL('$<$n DEALERCARD5>' == '1')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an ace of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an ace of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an ace of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an ace of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '2')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a two of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a two of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a two of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a two of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '3')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a three of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a three of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a three of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a three of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '4')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a four of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a four of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a four of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a four of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '5')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a five of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a five of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a five of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a five of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '6')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a six of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a six of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a six of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a six of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '7')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a seven of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a seven of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a seven of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a seven of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '8')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets an eight of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets an eight of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets an eight of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets an eight of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '9')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a nine of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a nine of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a nine of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a nine of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '10')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a ten of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a ten of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a ten of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a ten of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '11')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Jack of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Jack of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Jack of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Jack of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '12')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a Queen of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a Queen of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a Queen of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a Queen of clubs
+		ENDIF
+	ENDIF
+	IF EVAL('$<$n DEALERCARD5>' == '13')
+		if VAR($i NEXTSUIT == '1')
+			say $n And the house gets a King of spades
+		ENDIF
+		if VAR($i NEXTSUIT == '2')
+			say $n And the house gets a King of hearts
+		ENDIF
+		if VAR($i NEXTSUIT == '3')
+			say $n And the house gets a King of diamonds
+		ENDIF
+		if VAR($i NEXTSUIT == '4')
+			say $n And the house gets a King of clubs
+		ENDIF
+	ENDIF
+	ENDIF
