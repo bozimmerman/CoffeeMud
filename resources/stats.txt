@@ -5,7 +5,7 @@
 
 ^ZDexterity:^? Agility and the ability to dodge blows is reflected in Dexterity.  The limit is ^B18^? for all classes except Thieves and Rangers.
 
-^ZConstitution:^? Health, stamina, and the ability to live through harder fights is reflected in Constitution.  The limit is ^B18^?.
+^ZConstitution:^? Health, stamina, and the ability to live through harder fights is reflected in Constitution.  The limit is ^B18^? for all classes except Druid.
 
 ^ZIntelligence:^? Memory and concentration, and the ability to gain greater profficiency in skills and spells through practice are reflected in Intelligence.  The limit is ^B18^? for all classes except Mages.
 

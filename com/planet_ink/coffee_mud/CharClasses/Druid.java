@@ -37,9 +37,10 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Druid_MyPlants",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_SenseLife",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Chant_Moonbeam",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Chant_PlantGrowth",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Chant_SummonPlants",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_Tangle",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Chant_CalmWind",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Chant_LocateAnimals",true);
@@ -62,16 +63,16 @@ public class Druid extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SummonMount",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SummonCold",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_WindGust",true);
-			CMAble.addCharAbilityMapping(ID(),13,"Chant_PlantTravel",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonRain",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_NeutralizePoison",true);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_SummonWind",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Chant_Treemind",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_PlantPass",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_ResistFire",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_Whisperward",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_WhisperWard",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_Treemind",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_ResistCold",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_SummonLightning",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Chant_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_ResistPoison",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Sunray",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_ResistGas",true);
@@ -98,7 +99,7 @@ public class Druid extends StdCharClass
 
 	public boolean playerSelectable()
 	{
-		return false;
+		return true;
 	}
 
 	public String statQualifications(){return "Constitution 9+";}
@@ -169,5 +170,12 @@ public class Druid extends StdCharClass
 
 	public void outfit(MOB mob)
 	{
+		Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");
+		if(mob.fetchInventory(w.ID())==null)
+		{
+			mob.addInventory(w);
+			if(!mob.amWearingSomethingHere(Item.WIELD))
+				w.wearAt(Item.WIELD);
+		}
 	}
 }

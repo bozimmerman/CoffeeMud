@@ -441,6 +441,7 @@ public class StdArea implements Area
 	{
 		if((--weatherTicker)<=0)
 		{
+			// create a seasonal CHANCE graph
 			int[] seasonal=new int[seasonalWeather.length];
 			seasonal=addMaskAndReturn(seasonalWeather,seasonal);
 			
@@ -459,6 +460,7 @@ public class StdArea implements Area
 			if((climateType()&Area.CLIMATE_WINDY)>0)
 				seasonal=addMaskAndReturn(seasonal,windy);
 				
+			// reset the weather ticker!
 			weatherTicker=WEATHER_TICK_DOWN;
 			
 			
@@ -467,26 +469,41 @@ public class StdArea implements Area
 			int possibleNextWeather=nextWeather;
 			for(int g=0;g<Area.NUM_WEATHER;g++)
 			{
+				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
 				int seasonalNum=seasonal[(getSeasonCode()*Area.NUM_WEATHER)+g];
+				// find the chance of changing from what it will be, to some new condition.
 				int changeNum=changeMap[(nextWeather*Area.NUM_WEATHER)+g];
+				// add them together to find the chance of a particular change in a particular season
+				// to a particular condition.
 				int chance=seasonalNum+changeNum;
+				// total all the change chances, negative means NO chance of this change
 				if(chance>0) goodWeatherTotal+=chance;
 			}
-			StringBuffer buf=new StringBuffer(name()+"/"+(Area.SEASON_DESCS[getSeasonCode()])+"/"+Area.WEATHER_DESCS[nextWeather]+"->");
+			
+			// some sort of debugging commentary
+			/*StringBuffer buf=new StringBuffer(name()+"/"+(Area.SEASON_DESCS[getSeasonCode()])+"/"+Area.WEATHER_DESCS[nextWeather]+"->");
 			for(int g=0;g<Area.NUM_WEATHER;g++)
 			{
 				int seasonalNum=seasonal[(getSeasonCode()*Area.NUM_WEATHER)+g];
 				int changeNum=changeMap[(nextWeather*Area.NUM_WEATHER)+g];
 				int chance=seasonalNum+changeNum;
-				if(chance>0)
-					buf.append(Area.WEATHER_DESCS[g]+"="+chance+"("+seasonalNum+"+"+changeNum+"), ");
-			}
+				//if(chance>0) buf.append(Area.WEATHER_DESCS[g]+"="+chance+"("+seasonalNum+"+"+changeNum+"), ");
+			}*/
+			
+			// roll a number from this to that.  Like the lottery, whosever number gets rolled wins!
 			int newGoodWeatherNum=Dice.roll(1,goodWeatherTotal,-1);
 				
+			// now, determine the winner!
 			int tempWeatherTotal=0;
 			for(int g=0;g<Area.NUM_WEATHER;g++)
 			{
-				int chance=(seasonal[(getSeasonCode()*NUM_WEATHER)+g]+changeMap[(nextWeather*Area.NUM_WEATHER)+g]);
+				// take the base chance for a seasonal weather occurrence (rain in winter, etc)
+				int seasonalNum=seasonal[(getSeasonCode()*Area.NUM_WEATHER)+g];
+				// find the chance of changing from what it will be, to some new condition.
+				int changeNum=changeMap[(nextWeather*Area.NUM_WEATHER)+g];
+				// add them together to find the chance of a particular change in a particular season
+				// to a particular condition.
+				int chance=seasonalNum+changeNum;
 				if(chance>0)
 				{
 					tempWeatherTotal+=chance;
@@ -497,10 +514,13 @@ public class StdArea implements Area
 					}
 				}
 			}
+			
+			// remember your olde weather
 			int oldWeather=currentWeather;
-			if(possibleNextWeather!=nextWeather)
+			currentWeather=nextWeather;
+			nextWeather=possibleNextWeather;
+			if(oldWeather!=currentWeather)
 			{
-				
 				switch(Dice.rollPercentage())
 				{
 				case 1: windDirection=Directions.NORTH; break;
@@ -509,8 +529,6 @@ public class StdArea implements Area
 				case 4: windDirection=Directions.EAST; break;
 				}
 				
-				currentWeather=nextWeather;
-				nextWeather=possibleNextWeather;
 				// 0=say nothing;
 				// 1=say weatherdescription only
 				// 2=say stop word only

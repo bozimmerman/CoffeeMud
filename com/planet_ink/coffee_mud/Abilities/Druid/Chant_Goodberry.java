@@ -64,6 +64,7 @@ public class Chant_Goodberry extends Chant
 					newItem.setDescription(target.description());
 					newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
 					newItem.baseEnvStats().setDisposition(EnvStats.IS_LIGHT);
+					newItem.setMiscText(newItem.text());
 					Item location=target.location();
 					target.destroyThis();
 					if(owner instanceof MOB)

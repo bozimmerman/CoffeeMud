@@ -14,7 +14,7 @@ public class Chant_SummonFire extends Chant
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Summon Water";
+		name="Summon Fire";
 		baseEnvStats().setLevel(5);
 
 		recoverEnvStats();
@@ -71,6 +71,7 @@ public class Chant_SummonFire extends Chant
 				I.setDescription("It consists of magically burning flames, consuming no fuel.");
 				I.recoverEnvStats();
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
+				I.setMiscText(I.text());
 				Ability B=CMClass.getAbility("Burning");
 				I.addNonUninvokableAffect(B);
 
