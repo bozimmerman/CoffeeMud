@@ -226,6 +226,12 @@ public class GrinderRooms
 							((GridLocale)R2).buildGrid();
 					}
 			}
+			for(Enumeration e=CMMap.players();e.hasMoreElements();)
+			{
+				MOB M=(MOB)e.nextElement();
+				if(M.getStartRoom()==oldR)
+					M.setStartRoom(R);
+			}
 			R.getArea().clearMap();
 		}
 		R.getArea().fillInAreaRoom(R);

@@ -189,7 +189,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		{"why %*","say You want me to answer why? I don't know why!"}
 	};
 
-	private static Vector findMatch(Vector req)
+	private static Vector findMatch(MOB mob, Vector req)
 	{
 		Vector possibilities=new Vector();
 		Hashtable map=new Hashtable();
@@ -248,8 +248,8 @@ public class EnglishParser extends Scriptable implements Tickable
 						map.put(code,str);
 						break;
 					case 'k':
-						if((Resources.getResource("ABILITY WORDS")!=null)
-						&&(!(((Vector)Resources.getResource("ABILITY WORDS")).contains(((String)req.elementAt(ri)).toUpperCase()))))
+						Object O=findCommand(mob,Util.makeVector(((String)req.elementAt(ri)).toUpperCase()));
+						if(O==null)
 						   reject=true;
 						else
 						{
@@ -271,6 +271,8 @@ public class EnglishParser extends Scriptable implements Tickable
 				map.clear();
 				continue;
 			}
+			if(CommonStrings.isDebugging("GEAS"))
+				Log.debugOut("GEAS","POSS-"+pmap[p][1]);
 			map.put("INSTR",pmap[p][1]);
 			possibilities.addElement(map);
 			map=new Hashtable();
@@ -323,7 +325,7 @@ public class EnglishParser extends Scriptable implements Tickable
 		Vector REQ=Util.parse(req.toLowerCase().trim());
 		for(int v=0;v<REQ.size();v++)
 			REQ.setElementAt(cleanWord((String)REQ.elementAt(v)),v);
-		Vector poss=findMatch(REQ);
+		Vector poss=findMatch(me,REQ);
 		if(poss.size()==0)
 		{
 			req=Util.combine(REQ,0);
@@ -339,8 +341,10 @@ public class EnglishParser extends Scriptable implements Tickable
 					}
 			}
 			REQ=Util.parse(req);
-			poss=findMatch(REQ);
+			poss=findMatch(me,REQ);
 		}
+		if(CommonStrings.isDebugging("GEAS"))
+			Log.debugOut("GEAS","POSSTOTAL-"+poss.size());
 		geasStep g=new geasStep();
 		if(poss.size()==0)
 			g.que.addElement("wanderquery "+req);
@@ -441,9 +445,13 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 				likelys.addElement(map);
 			}
+			if(CommonStrings.isDebugging("GEAS"))
+				Log.debugOut("GEAS","LIKELYTOTAL-"+likelys.size());
 			if(likelys.size()==0) likelys=poss;
 			Hashtable map=(Hashtable)likelys.elementAt(Dice.roll(1,likelys.size(),-1));
 			Vector all=Util.parseSemicolons((String)map.get("INSTR"),true);
+			if(CommonStrings.isDebugging("GEAS"))
+				Log.debugOut("GEAS",Util.toStringList(all));
 			g.que=new Vector();
 			for(int a=0;a<all.size();a++)
 				g.que.addElement(Util.parse((String)all.elementAt(a)));
@@ -488,20 +496,24 @@ public class EnglishParser extends Scriptable implements Tickable
 		{
 			bothering=null;
 			if((me==null)||(me.location()==null)) return;
-			if(msgOrQ!=null)
+			if((msgOrQ!=null)&&(!Sense.isAnimalIntelligence(me)))
 				for(int m=0;m<me.location().numInhabitants();m++)
 				{
 					MOB M=me.location().fetchInhabitant(m);
-					if((M!=null)&&(M!=me)&&(!bothered.contains(M)))
+					if((M!=null)&&(M!=me)&&(!Sense.isAnimalIntelligence(M))&&(!bothered.contains(M)))
 					{
 						CommonMsgs.say(me,M,msgOrQ,false,false);
 						bothering=M;
 						bothered.addElement(M);
+						if(CommonStrings.isDebugging("GEAS"))
+							Log.debugOut("GEAS","BOTHERING: "+bothering.name());
 						return;
 					}
 				}
 			if(!bothered.contains(me.location()))
 				bothered.addElement(me.location());
+			if(CommonStrings.isDebugging("GEAS"))
+				Log.debugOut("GEAS","BEINGMOBILE: "+moveCode);
 			if(moveCode==0)
 			{
 				if(!MUDTracker.beMobile(me,true,true,false,true,bothered))
@@ -567,9 +579,13 @@ public class EnglishParser extends Scriptable implements Tickable
 				return;
 			}
 			String s=(String)cur.firstElement();
+			if(CommonStrings.isDebugging("GEAS"))
+				Log.debugOut("GEAS","STEP-"+s);
 			if(s.equalsIgnoreCase("itemfind"))
 			{
 				String item=Util.combine(cur,1);
+				if(CommonStrings.isDebugging("GEAS"))
+					Log.debugOut("GEAS","ITEMFIND: "+item);
 				if((Util.isNumber(item)&&(Util.s_int(item)>0)))
 				{
 					if(me.getMoney()>=Util.s_int(item))
@@ -687,7 +703,7 @@ public class EnglishParser extends Scriptable implements Tickable
 					}
 				}
 				// if asked someone something, give them time to respond.
-				if((step>STEP_EVAL)&&(step<=STEP_INT4)&&(bothered!=null))
+				if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
 				{	step++; return;}
 				step=STEP_EVAL;
 				botherOrMove("Can you tell me where to find "+Util.combine(cur,1)+"?",0);
@@ -697,6 +713,8 @@ public class EnglishParser extends Scriptable implements Tickable
 			if(s.equalsIgnoreCase("mobfind"))
 			{
 				String name=Util.combine(cur,1);
+				if(CommonStrings.isDebugging("GEAS"))
+					Log.debugOut("GEAS","MOBFIND: "+name);
 				if(name.equalsIgnoreCase("you")) name=me.name();
 				if(name.equalsIgnoreCase("yourself")) name=me.name();
 				if(you!=null)
@@ -709,14 +727,21 @@ public class EnglishParser extends Scriptable implements Tickable
 				MOB M=me.location().fetchInhabitant(name);
 				if((M!=null)&&(M!=me)&&(Sense.canBeSeenBy(M,me)))
 				{
+					if(CommonStrings.isDebugging("GEAS"))
+						Log.debugOut("GEAS","MOBFIND-FOUND: "+name);
 					step=STEP_EVAL;
 					que.removeElementAt(0);
 					return;
 				}
 
 				// if asked someone something, give them time to respond.
-				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
-				{	step++; return;}
+				if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
+				{	
+					if(CommonStrings.isDebugging("GEAS"))
+						Log.debugOut("GEAS","MOBFIND-RESPONSEWAIT: "+bothering.name());
+					step++; 
+					return;
+				}
 				step=STEP_EVAL;
 				int code=0;
 				if((you!=null)&&(you.name().equalsIgnoreCase(name)))
@@ -728,6 +753,8 @@ public class EnglishParser extends Scriptable implements Tickable
 			if(s.toLowerCase().startsWith("find"))
 			{
 				String name=Util.combine(cur,1);
+				if(CommonStrings.isDebugging("GEAS"))
+					Log.debugOut("GEAS","FIND: "+name);
 				if(name.equalsIgnoreCase("you")) name=me.name();
 				if(name.equalsIgnoreCase("yourself")) name=me.name();
 				if(you!=null)
@@ -782,7 +809,7 @@ public class EnglishParser extends Scriptable implements Tickable
 				}
 
 				// if asked someone something, give them time to respond.
-				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
+				if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
 				{	step++; return;}
 				step=STEP_EVAL;
 				if(s.length()>4)
@@ -794,8 +821,10 @@ public class EnglishParser extends Scriptable implements Tickable
 			else
 			if(s.equalsIgnoreCase("wanderquery"))
 			{
+				if(CommonStrings.isDebugging("GEAS"))
+					Log.debugOut("GEAS","WANDERQUERY: "+Util.combine(cur,1));
 				// if asked someone something, give them time to respond.
-				if((step>STEP_EVAL)&&(bothering!=null)&&((step<=STEP_INT4)||(bothering.isMonster())))
+				if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
 				{	step++; return;}
 				step=STEP_EVAL;
 				botherOrMove("Can you help me "+Util.combine(cur,1)+"?",0);

@@ -204,6 +204,12 @@ public class Masonry extends CommonSkill
 											((GridLocale)R2).buildGrid();
 									}
 							}
+							for(Enumeration e=CMMap.players();e.hasMoreElements();)
+							{
+								MOB M=(MOB)e.nextElement();
+								if(M.getStartRoom()==room)
+									M.setStartRoom(R);
+							}
 							if(doingCode==BUILD_POOL)
 							{
 								Room R2=CMClass.getLocale("UnderWater");

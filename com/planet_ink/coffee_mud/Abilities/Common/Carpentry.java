@@ -143,9 +143,9 @@ public class Carpentry extends CommonSkill
 		{
 			StringBuffer buf=new StringBuffer("Item <S-NAME> <S-IS-ARE> skilled at carving:\n\r");
 			int toggler=1;
-			int toggleTop=2;
+			int toggleTop=3;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(Util.padRight("Item",33)+" "+Util.padRight("Wood",4)+" ");
+				buf.append(Util.padRight("Item",17)+" "+Util.padRight("Wood",5)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -157,7 +157,7 @@ public class Carpentry extends CommonSkill
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
 					if(level<=mob.envStats().level())
 					{
-						buf.append(Util.padRight(item,33)+" "+Util.padRight(""+wood,4)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(Util.padRight(item,17)+" "+Util.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
