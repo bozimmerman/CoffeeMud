@@ -229,7 +229,7 @@ public class StdRideable extends StdMOB implements Rideable
 			   &&((affect.source().riding()==this)
 				  ||(this.amRiding(affect.source()))))
 			{
-				affect.source().tell("You can't attack "+riding().name()+" right now.");
+				affect.source().tell("You can't attack "+name()+" right now.");
 				if(getVictim()==affect.source()) setVictim(null);
 				if(affect.source().getVictim()==this) affect.source().setVictim(null);
 				return false;
