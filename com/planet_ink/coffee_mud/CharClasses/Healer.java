@@ -217,7 +217,7 @@ public class Healer extends Cleric
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&(CMAble.getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 		&&(myChar.isMine(msg.tool()))
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER))

@@ -179,9 +179,9 @@ public class Beastmaster extends StdCharClass
 
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
+		&&(msg.tool() instanceof Ability)
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
-		&&(msg.tool()!=null)
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
 		&&(Dice.rollPercentage()<50))

@@ -109,10 +109,9 @@ public class Trapper extends Thief
 		MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
-		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(myChar.location()!=null)
-		&&(msg.tool() instanceof Ability)
 		&&(myChar.isMine(msg.tool())))
 		{
 			if((((myChar.location().domainType()&Room.INDOORS)>0))

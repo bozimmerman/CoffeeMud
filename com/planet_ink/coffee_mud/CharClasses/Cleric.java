@@ -255,7 +255,7 @@ public class Cleric extends StdCharClass
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
 		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 		&&(myChar.isMine(msg.tool()))
 		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
