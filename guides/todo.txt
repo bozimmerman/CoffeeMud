@@ -10,11 +10,9 @@
 
 ! From Maree: (Game/Heath Texts), the descriptions for the health of a MOB should be moved to a text file (A resource?), that is loaded.  The descriptions would be assigned to the MOB at build time, and should be assignable to GENMOBS via a new tag.
 
-! ranged combat?!
+! ranged combat?! Yes! And thrown weapons! And ranged pole-arms!
 
 Add CoffeeMud area files!
-
-Buy command for standard mobs, to facilitate trades.
 
 Languages!  Affects says and replies if you don't know a language spoken by the speaker.
 
@@ -26,26 +24,6 @@ remove rawness from Meat).
 
 Two-handed fighting
 
-ThievesTools required for picking locks, check/remove traps without severe penalty.
-
-HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
-animals will produce poisoned meat, of course.
-
-Meditation for Mage should be like Endurance for Fighter.
-
-Predict Weather spell!
-
-Lore skill for Bards.. allows an identify for them.
-
-More stuff for Fighters, especially Paladins and Rangers, who must use their 
-trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!
-
-Sweep would make a good Fighter ability, as would cleave!
-
-Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
-of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
-vassels, providing incentive to assist the vassel.
-
 Convert some properties to work with the new areas. Prop_NOMOB, etc..
 
 Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add
@@ -53,11 +31,9 @@ to attack ability, and increase movement and will act as a container for the pur
 Items will not appear in inventory, and be restrained to a terrain type (air, water, etc).  More than
 one person can mount an item (a boat).
 
-For trade skills, and to make spells more realistic, perfect the delay of these abilities, and
-allow some message to be displayed as they are put in Que.  For example "You start whittling" (delay)
-"You have completed your piece of art". (Combat should cancel this!)
-
-iron grip spell to thwart disarm
+Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
+of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
+vassels, providing incentive to assist the vassel.
 
 Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it 
 will send the items to the appropriate GateObject.  The GateObject can be either a container or not. 
@@ -70,8 +46,29 @@ Following thing would be automatic, if an Exit and Direction extensions are used
 
 PlayerKill flag
 
-Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard.  Please just create new MUDGrinder 
-derivatives of the standard Interfaces.
+ThievesTools required for picking locks, check/remove traps without severe penalty.
+
+HuntableAnimals that produce pieces of raw meat in inventory when killed.  Poisoned and poisoning 
+animals will produce poisoned meat, of course.
+
+For trade skills, and to make spells more realistic, perfect the delay of these abilities, and
+allow some message to be displayed as they are put in Que.  For example "You start whittling" (delay)
+"You have completed your piece of art". (Combat should cancel this!)
+
+Meditation for Mage should be like Endurance for Fighter.
+
+Predict Weather spell! Change weather! Call Lightening! Call hailstones!
+
+Lore skill for Bards.. allows an identify for them.
+
+More stuff for Fighters, especially Paladins and Rangers, who must use their 
+trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!
+
+Sweep would make a good Fighter ability, as would cleave!
+
+iron grip spell to thwart disarm
+
+Buy command for standard mobs, to facilitate trades.
 
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 guild.  These will be special Sub-Classes (derivatives of existing classes).  SubClasses: 
@@ -82,4 +79,7 @@ Priests of specific Gods: bonuses to like spells, lose others
 Knights Order: special sword as part of outfit?
 Prancers: Dancing bards who get special ability
 Illusionist: Illusion spells at 100%, get all of them
+
+Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard.  Please just create new MUDGrinder 
+derivatives of the standard Interfaces.
 
