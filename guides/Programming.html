@@ -1974,8 +1974,7 @@ include the Ranger Favored Enemy skill, as well as most of the race-based
 restrictions on doors and with shopkeepers.&nbsp; In many ways, the racial 
 category is more important than the name of the race itself, if functionality is 
 considered.&nbsp; Lastly, return true from playerSelectable if you want players 
-to be able to select this race when they create their characters.</FONT></P>
-<pre>protected int shortestMale(){return 84;}
+to be able to select this race when they create their characters.</FONT></P><pre>protected int shortestMale(){return 84;}
 protected int shortestFemale(){return 78;}
 protected int heightVariance(){return 80;}
 protected int lightestWeight(){return 2000;}
@@ -2007,9 +2006,7 @@ BODY_MOUTH, BODY_WAIST, BODY_TAIL, BODY_WING</FONT>. Remember that these can be
 found in the Race interface for you to reference.&nbsp; In the above example, we 
 find no antenea, 2 eyes, 2 ears, a head, neck, no arms or hands, a torso, 4 
 legs, 4 feet, anose, but&nbsp;no gill, and then a mouth, waist, tail, and 2 
-wings.</FONT></P>
-<PRE>
-	protected String[] racialAbilityNames={"Skill_Trip","Fighter_Whomp"};
+wings.</FONT></P><PRE>	protected String[] racialAbilityNames={"Skill_Trip","Fighter_Whomp"};
 	protected int[] racialAbilityLevels={1,3};
 	protected int[] racialAbilityProfficiencies={75,50};
 	protected boolean[] racialAbilityQuals={false,false};
@@ -2019,14 +2016,42 @@ wings.</FONT></P>
 		return V;
 	}
 </PRE>
-<P align=left><FONT size=4>Racial Abilities!</FONT></P>
-<PRE>
-	protected String[] culturalAbilityNames={"Dwarven","Mining"};
+<P align=left><FONT size=4>Our next 
+section here deals with Racial Abilities, which are defined as follows: A racial 
+ability is a skill that has a command word, and is not autoinvoked.&nbsp; A 
+racial ability may be qualified for or automatically gained.&nbsp; If 
+the&nbsp;skill is qualified for, then upon reaching the designated player level, 
+the player may GAIN the skill, and will have a default profficiency as 
+designated.&nbsp; If the skill is not qualified for, then it is automatically 
+gained.&nbsp; This means that all mobs or players of this race, who have 
+obtained the necessary player level, will have access to the use of the skill as 
+if they had learned it, and at the profficiency designated.&nbsp; Racial 
+Abilities are available to any mob or player of this race, even those affected 
+by Shape Shift, Polymorph, or similar skills.</FONT></P>
+<P align=left><FONT size=4>The first four variables define these skills.&nbsp; 
+All four variables are ordered with relative to each other.&nbsp; The 
+racialAbilityNames is a list of the Ability class ID.&nbsp; The 
+racialAbilityLevels is the level at which the skill is qualified for or 
+gained.&nbsp; The racialAbilityProfficiencies is the profficiency of skills 
+automatically gained.&nbsp; The racialAbilityQuals tells whether or not the 
+skill is automatically gained (false) or is only qualified for 
+(true).</FONT></P>
+<P align=left><FONT size=4>The method above (racialAbilities) will return a 
+Vector of Ability objects, with profficiency already set, appropriate to the mob 
+passed in.&nbsp; This vector should consist only of automatically gained 
+abilities appropriate to the level of the mob.&nbsp; If the four variables are 
+set properly, the programmer will not need to override the method from StdRace 
+unless there other gender-based or other special qualifications for skills not 
+defined by those four variables.</FONT></P><PRE>	protected String[] culturalAbilityNames={"Dwarven","Mining"};
 	protected int[] culturalAbilityProfficiencies={100,50};
 </PRE>
-<P align=left><FONT size=4>Cultural Abilities!</FONT></P>
-
-<pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+<P align=left><FONT size=4>Cultural 
+Abilities are defined as those skills which a mob or player of this race would 
+know through upbringing in the culture of that race, such as language.&nbsp; 
+Players Shape Shifted or Polymorphed into the race, since they did not grow up 
+in the culture, would not have automatic access to these skills per se.&nbsp; 
+These two variables are defined similarly to the Racial Abilities above.&nbsp; 
+</FONT></P><pre>public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 {
 	super.affectEnvStats(affected,affectableStats);
 	affectableStats.setSensesMask(affectableStats.sensesMask()
@@ -2053,7 +2078,13 @@ public void startRacing(MOB mob, boolean verifyOnly)
 	super.startRacing(mob,verifyOnly);
 }
 </PRE>
-<P align=left><FONT size=4>StartRacing is for what now?</FONT></P><pre>	
+<P align=left><FONT size=4>startRacing 
+is called whenever a player of this race logs on, or a mob of this race is 
+created.&nbsp; If there are any special properties of the mob or player which 
+must be set due to their being this race, this would be the appropriate method 
+in which to do so.&nbsp; This method is not called for Polymorph, Shape Shift, 
+or similar changes in race, but only for those whose permanent race is this 
+one.</FONT></P><pre>	
 public Weapon myNaturalWeapon()
 {
 	if(naturalWeapon==null)
@@ -2275,10 +2306,11 @@ not the BRIEF flag on a player&nbsp;should be&nbsp;overridden.&nbsp; Here are
 another set of useful methods:</FONT><FONT size=4></P>
 <P><PRE>	public String roomTitle() <BR>	public String roomDescription() </PRE>
 <P></P>
-<P align=left><FONT size=4>These methods&nbsp;return the title and description 
-of the room&nbsp;respectively.&nbsp; These methods are responsible for making 
-the title and description&nbsp;into a proper displayable format.&nbsp; They draw 
-on the values of the room object&nbsp;displayText() and description() methods 
+<P align=left><FONT size=4>These 
+methods&nbsp;return the title and description of the 
+room&nbsp;respectively.&nbsp; These methods are responsible for making the title 
+and description&nbsp;into a proper displayable format.&nbsp; They draw on the 
+values of the room object&nbsp;displayText() and description() methods 
 respectively, then parse that data&nbsp;for any&nbsp;special display codes, 
 though often that data is simply&nbsp;passed through.&nbsp;</FONT></P></FONT>
 <P align=left>The affect, and okAffect methods on rooms are 
