@@ -810,6 +810,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_WAND_USE:
 		case CMMsg.TYP_FIRE:
 		case CMMsg.TYP_CAST_SPELL:
+		case CMMsg.TYP_POISON: // for use poison
 			return true;
 		case CMMsg.TYP_FILL:
 			if(this instanceof Drink)

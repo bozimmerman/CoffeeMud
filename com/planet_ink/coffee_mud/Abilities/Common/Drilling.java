@@ -84,7 +84,7 @@ public class Drilling extends CommonSkill
 						{
 							CommonMsgs.get(mob,null,newFound,true);
 							if(mob.isMine(newFound))
-								newFound.setContainer(container);
+								newFound.setContainer((Container)container);
 						}
 					}
 				}
