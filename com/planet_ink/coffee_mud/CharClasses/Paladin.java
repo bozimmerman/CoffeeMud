@@ -7,23 +7,23 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Paladin extends StdCharClass
 {
+	public String ID(){return "Paladin";}
+	public String name(){return "Paladin";}
+	public int getMaxHitPointsLevel(){return 22;}
+	public int getBonusPracLevel(){return 0;}
+	public int getBonusManaLevel(){return 10;}
+	public int getBonusAttackLevel(){return 2;}
+	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getPracsFirstLevel(){return 3;}
+	public int getTrainsFirstLevel(){return 4;}
 	private static boolean abilitiesLoaded=false;
 	
 	public Paladin()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		maxHitPointsPerLevel=22;
 		maxStat[CharStats.STRENGTH]=22;
 		maxStat[CharStats.WISDOM]=22;
-		bonusPracLevel=0;
-		manaMultiplier=10;
-		attackAttribute=CharStats.STRENGTH;
-		bonusAttackLevel=2;
-		name=myID;
-		practicesAtFirstLevel=3;
-		trainsAtFirstLevel=4;
-		levelsPerBonusDamage=1;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;

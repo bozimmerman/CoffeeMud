@@ -7,15 +7,15 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Archon extends StdCharClass
 {
+	public String ID(){return "Archon";}
+	public String name(){return "Archon";}
 	private static boolean abilitiesLoaded=false;
 	
 	public Archon()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		for(int i=0;i<=5;i++)
 			maxStat[i]=25;
-		name=myID;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
@@ -73,7 +73,7 @@ public class Archon extends StdCharClass
 		mob.tell("^HYou leveled... not that it matters.^N");
 		levelAdjuster(mob,1);
 
-		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+bonusPracLevel;
+		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 

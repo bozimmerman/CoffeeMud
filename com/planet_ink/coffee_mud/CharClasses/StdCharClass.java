@@ -7,27 +7,18 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class StdCharClass implements CharClass
 {
-	protected String myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-	protected String name="MOB";
-	protected int minHitPointsPerLevel=2;
-	protected int maxHitPointsPerLevel=12;
+	public String ID(){return "StdCharClass";}
+	public String name(){return "mob";}
+	public int getMinHitPointsLevel(){return 2;}
+	public int getMaxHitPointsLevel(){return 12;}
+	public int getBonusPracLevel(){return 0;}
+	public int getBonusManaLevel(){return 15;}
+	public int getBonusAttackLevel(){return 1;}
+	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getPracsFirstLevel(){return 5;}
+	public int getTrainsFirstLevel(){return 3;}
+	public int getLevelsPerBonusDamage(){ return 1;}
 	protected int maxStat[]={18,18,18,18,18,18};
-	protected int bonusPracLevel=0;
-	protected int manaMultiplier=15;
-	protected int attackAttribute=CharStats.STRENGTH;
-	protected int bonusAttackLevel=1;
-	protected int practicesAtFirstLevel=5;
-	protected int trainsAtFirstLevel=3;
-	protected int levelsPerBonusDamage=1;
-
-	public String ID()
-	{
-		return myID;
-	}
-	public String name()
-	{
-		return name;
-	}
 
 	public boolean playerSelectable()
 	{
@@ -38,15 +29,6 @@ public class StdCharClass implements CharClass
 	{
 		return true;
 	}
-	public int getMinHitPointsLevel(){return this.minHitPointsPerLevel;}
-	public int getMaxHitPointsLevel(){return this.maxHitPointsPerLevel;}
-	public int getBonusPracLevel(){return this.bonusPracLevel;}
-	public int getBonusManaLevel(){return this.manaMultiplier;}
-	public int getBonusAttackLevel(){return this.bonusAttackLevel;}
-	public int getAttackAttribute(){return this.attackAttribute;}
-	public int getPracsFirstLevel(){return this.practicesAtFirstLevel;}
-	public int getTrainsFirstLevel(){return this.trainsAtFirstLevel;}
-	public int getLevelsPerBonusDamage(){ return this.levelsPerBonusDamage;}
 	public String weaponLimitations(){return "";}
 	public String armorLimitations(){return "";}
 	public String otherLimitations(){return "";}
@@ -78,8 +60,8 @@ public class StdCharClass implements CharClass
 	{
 		if(!verifyOnly)
 		{
-			mob.setPractices(mob.getPractices()+practicesAtFirstLevel);
-			mob.setTrains(mob.getTrains()+trainsAtFirstLevel);
+			mob.setPractices(mob.getPractices()+getPracsFirstLevel());
+			mob.setTrains(mob.getTrains()+getTrainsFirstLevel());
 			for(int a=0;a<CMClass.abilities.size();a++)
 			{
 				Ability A=(Ability)CMClass.abilities.elementAt(a);
@@ -206,7 +188,7 @@ public class StdCharClass implements CharClass
 
 		theNews.append("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+".^N\n\r");
 
-		int newHitPointGain=minHitPointsPerLevel+(int)Math.floor(Math.random()*(maxHitPointsPerLevel-minHitPointsPerLevel));
+		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
 		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;
 		if(newHitPointGain<=0) newHitPointGain=1;
 		newHitPointGain=newHitPointGain*adjuster;
@@ -221,20 +203,20 @@ public class StdCharClass implements CharClass
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
 		theNews.append(mvGain+"^! move " + (mvGain!=1?"points":"point") + ", ^H");
 
-		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
+		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(getAttackAttribute()),6.0))+getBonusAttackLevel();
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
 		theNews.append(attGain+"^! attack " + (attGain!=1?"points":"point") + ", ^H");
 
-		int manaGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0)*manaMultiplier);
+		int manaGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0)*getBonusManaLevel());
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^! " + (manaGain!=1?"points":"point") + " of mana,");
-		if((adjuster<0)&&(((mob.baseEnvStats().level()+1)%levelsPerBonusDamage)==0))
+		if((adjuster<0)&&(((mob.baseEnvStats().level()+1)%getLevelsPerBonusDamage())==0))
 			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
 		else
-		if((adjuster>0)&&((mob.baseEnvStats().level()%levelsPerBonusDamage)==0))
+		if((adjuster>0)&&((mob.baseEnvStats().level()%getLevelsPerBonusDamage())==0))
 			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+1);
 		mob.recoverMaxState();
 		return theNews;
@@ -329,7 +311,7 @@ public class StdCharClass implements CharClass
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^N\n\r\n\r");
 		theNews.append(levelAdjuster(mob,1));
 
-		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+bonusPracLevel;
+		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 		theNews.append("^H" + practiceGain+"^! practice " +
@@ -364,12 +346,12 @@ public class StdCharClass implements CharClass
 	}
 	public int getLevelMana(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),18.0)*manaMultiplier)));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),18.0)*getBonusManaLevel())));
 	}
 
 	public int getLevelAttack(MOB mob)
 	{
-		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
+		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(getAttackAttribute()),6.0))+getBonusAttackLevel();
 		return ((mob.baseEnvStats().level()-1)*attGain);
 	}
 

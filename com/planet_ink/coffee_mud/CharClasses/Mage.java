@@ -7,22 +7,22 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Mage extends StdCharClass
 {
+	public String ID(){return "Mage";}
+	public String name(){return "Mage";}
+	public int getMaxHitPointsLevel(){return 8;}
+	public int getBonusPracLevel(){return 4;}
+	public int getBonusManaLevel(){return 20;}
+	public int getBonusAttackLevel(){return 0;}
+	public int getAttackAttribute(){return CharStats.INTELLIGENCE;}
+	public int getLevelsPerBonusDamage(){ return 10;}
+	public int getPracsFirstLevel(){return 6;}
+	public int getTrainsFirstLevel(){return 3;}
 	private static boolean abilitiesLoaded=false;
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	public Mage()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		maxHitPointsPerLevel=8;
 		maxStat[CharStats.INTELLIGENCE]=25;
-		bonusPracLevel=4;
-		manaMultiplier=20;
-		attackAttribute=CharStats.INTELLIGENCE;
-		bonusAttackLevel=0;
-		name=myID;
-		practicesAtFirstLevel=6;
-		levelsPerBonusDamage=10;
-		trainsAtFirstLevel=3;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;

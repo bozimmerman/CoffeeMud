@@ -7,21 +7,21 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Druid extends StdCharClass
 {
+	public String ID(){return "Druid";}
+	public String name(){return "Druid";}
+	public int getMaxHitPointsLevel(){return 25;}
+	public int getBonusPracLevel(){return 2;}
+	public int getBonusManaLevel(){return 15;}
+	public int getBonusAttackLevel(){return 1;}
+	public int getAttackAttribute(){return CharStats.CONSTITUTION;}
+	public int getLevelsPerBonusDamage(){ return 6;}
 	private static boolean abilitiesLoaded=false;
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	
 	public Druid()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		maxHitPointsPerLevel=25;
 		maxStat[CharStats.CONSTITUTION]=25;
-		bonusPracLevel=2;
-		manaMultiplier=15;
-		attackAttribute=CharStats.CONSTITUTION;
-		bonusAttackLevel=1;
-		levelsPerBonusDamage=6;
-		name=myID;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;

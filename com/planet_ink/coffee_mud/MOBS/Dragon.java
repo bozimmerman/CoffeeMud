@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Dragon extends StdMOB
 {
-
+	private boolean started=false;
 	private int breatheDown=4;
 	private int swallowDown=5;
 	private int digestDown=4;
@@ -62,15 +62,14 @@ public class Dragon extends StdMOB
 
 	public void setupDragon(int colorValue, int ageValue)
 	{
-
-		// ===== set the parameter stuff
-		DragonAge = ageValue;
+		// ===== set the parameter stuff		DragonAge = ageValue;
 		DragonColor = colorValue;
 		baseEnvStats().setLevel(8*DragonAge);
 		baseEnvStats().setAbility(colorValue);
 		birthAge=8*DragonAge;
 		birthColor=colorValue;
 
+		if(!ExternalPlay.getSystemStarted()) return;
 		// ===== is it a male or female
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
@@ -94,8 +93,8 @@ public class Dragon extends StdMOB
 		{
 			ClawOne.wearAt(Item.WIELD);
 			ClawTwo.wearAt(Item.WIELD);
-			this.addInventory(ClawOne);
-			this.addInventory(ClawTwo);
+			addInventory(ClawOne);
+			addInventory(ClawTwo);
 		}
 
 		// ===== Set his defenses based upon his age as well
@@ -142,6 +141,7 @@ public class Dragon extends StdMOB
 
 		// ===== if the dragon is an adult or larger add the swallow whole
 		Stomach=null;
+		started=true;
 		// ===== Recover from birth.
 		recoverMaxState();
 		resetToMaxState();
@@ -227,6 +227,8 @@ public class Dragon extends StdMOB
 	{
 		if((!amDead())&&(tickID==Host.MOB_TICK))
 		{
+			if(!started)setupDragon(birthColor,DragonAge/8);
+			
 			if((Stomach==null)
 			&&(location()!=null)
 			&&(baseEnvStats().level()>=ADULT))
@@ -407,6 +409,7 @@ public class Dragon extends StdMOB
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
+		if(!started)setupDragon(birthColor,DragonAge/8);
 		charStats().setStat(CharStats.SAVE_MAGIC,charStats().getStat(CharStats.SAVE_MAGIC)+DragonAge*5);
 		switch(DragonColor)
 		{

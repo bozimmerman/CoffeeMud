@@ -7,21 +7,21 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Thief extends StdCharClass
 {
+	public String ID(){return "Thief";}
+	public String name(){return "Thief";}
+	public int getMaxHitPointsLevel(){return 16;}
+	public int getBonusPracLevel(){return 1;}
+	public int getBonusManaLevel(){return 12;}
+	public int getBonusAttackLevel(){return 1;}
+	public int getAttackAttribute(){return CharStats.DEXTERITY;}
+	public int getLevelsPerBonusDamage(){ return 5;}
 	private static boolean abilitiesLoaded=false;
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 	
 	public Thief()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		maxHitPointsPerLevel=16;
 		maxStat[CharStats.DEXTERITY]=25;
-		bonusPracLevel=1;
-		manaMultiplier=12;
-		attackAttribute=CharStats.DEXTERITY;
-		bonusAttackLevel=1;
-		levelsPerBonusDamage=5;
-		name=myID;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;

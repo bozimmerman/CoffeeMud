@@ -7,22 +7,21 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Fighter extends StdCharClass
 {
+	public String ID(){return "Fighter";}
+	public String name(){return "Fighter";}
 	private static boolean abilitiesLoaded=false;
-	
+	public int getMaxHitPointsLevel(){return 24;}
+	public int getBonusPracLevel(){return -1;}
+	public int getBonusManaLevel(){return 8;}
+	public int getBonusAttackLevel(){return 2;}
+	public int getAttackAttribute(){return CharStats.STRENGTH;}
+	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getPracsFirstLevel(){return 3;}
+	public int getTrainsFirstLevel(){return 4;}
 	public Fighter()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		maxHitPointsPerLevel=24;
 		maxStat[CharStats.STRENGTH]=25;
-		bonusPracLevel=-1;
-		manaMultiplier=8;
-		attackAttribute=CharStats.STRENGTH;
-		bonusAttackLevel=2;
-		name=myID;
-		practicesAtFirstLevel=3;
-		trainsAtFirstLevel=4;
-		levelsPerBonusDamage=1;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;

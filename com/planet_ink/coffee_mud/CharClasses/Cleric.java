@@ -7,20 +7,20 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Cleric extends StdCharClass
 {
+	public String ID(){return "Cleric";}
+	public String name(){return "Cleric";}
+	public int getMaxHitPointsLevel(){return 16;}
+	public int getBonusPracLevel(){return 2;}
+	public int getBonusManaLevel(){return 15;}
+	public int getBonusAttackLevel(){return 1;}
+	public int getAttackAttribute(){return CharStats.WISDOM;}
+	public int getLevelsPerBonusDamage(){ return 5;}
 	private static boolean abilitiesLoaded=false;
 	
 	public Cleric()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		maxHitPointsPerLevel=16;
 		maxStat[CharStats.WISDOM]=25;
-		bonusPracLevel=2;
-		manaMultiplier=15;
-		attackAttribute=CharStats.WISDOM;
-		bonusAttackLevel=1;
-		levelsPerBonusDamage=5;
-		name=myID;
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;

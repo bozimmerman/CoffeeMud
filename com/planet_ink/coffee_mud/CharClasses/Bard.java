@@ -7,21 +7,20 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Bard extends StdCharClass
 {
+	public String ID(){return "Bard";}
+	public String name(){return "Bard";}
+	public int getMaxHitPointsLevel(){return 18;}
+	public int getBonusPracLevel(){return 1;}
+	public int getBonusManaLevel(){return 8;}
+	public int getBonusAttackLevel(){return 1;}
+	public int getAttackAttribute(){return CharStats.DEXTERITY;}
+	public int getLevelsPerBonusDamage(){ return 4;}
 	private static boolean abilitiesLoaded=false;
 	
 	public Bard()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		maxHitPointsPerLevel=18;
 		maxStat[CharStats.CHARISMA]=25;
-		bonusPracLevel=1;
-		manaMultiplier=8;
-		attackAttribute=CharStats.DEXTERITY;
-		levelsPerBonusDamage=4;
-		bonusAttackLevel=1;
-		name=myID;
-		
 		if(!abilitiesLoaded)
 		{
 			abilitiesLoaded=true;
