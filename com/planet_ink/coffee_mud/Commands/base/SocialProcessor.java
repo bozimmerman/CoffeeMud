@@ -249,45 +249,6 @@ public class SocialProcessor
 		target.setReplyTo(mob);
 	}
 
-	public static void doSocial(Social social, MOB mob, Vector commands)
-	{
-		String targetStr="";
-		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
-			targetStr=(String)commands.elementAt(1);
-
-		Environmental Target=mob.location().fetchFromRoomFavorMOBs(null,targetStr,Item.WORN_REQ_ANY);
-		if((Target!=null)&&(!Sense.canBeSeenBy(Target,mob)))
-		   Target=null;
-
-		String You_see=social.You_see;
-		if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
-		String Third_party_sees=social.Third_party_sees;
-		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
-		String Target_sees=social.Target_sees;
-		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
-		String See_when_no_target=social.See_when_no_target;
-		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
-		if((Target==null)&&(targetStr.equals("")))
-		{
-			FullMsg msg=new FullMsg(mob,null,null,social.sourceCode,You_see,Affect.NO_EFFECT,null,social.othersCode,Third_party_sees);
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
-		else
-		if((Target==null)&&(!targetStr.equals("")))
-		{
-			FullMsg msg=new FullMsg(mob,null,null,social.sourceCode,See_when_no_target,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
-		else
-		{
-			FullMsg msg=new FullMsg(mob,Target,null,social.sourceCode,You_see,social.targetCode,Target_sees,social.othersCode,Third_party_sees);
-			if(mob.location().okAffect(msg))
-				mob.location().send(mob,msg);
-		}
-	}
-
 	public static void give(MOB mob, Vector commands, boolean involuntarily)
 	{
 		if(commands.size()<2)

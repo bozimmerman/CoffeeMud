@@ -1,5 +1,3 @@
-Wainsright - to create wagons -- but first, a rideable in a rideable is a puller!
-mime behavior: A MOB will mimic any social that you do.
 pillow social to start a pillow fight
 aromaemoter. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.
 new social= smurf
@@ -18,15 +16,14 @@ Need a jeweler shopkeeper
 we need a shopkeeper of type GROCER who buys all foodstuffs, as well as other RESOURCE based shopkeepers that will buy any metal, wood, or stone.
 qualify command should allow you to type QUALIFY ILLUSION to see what illusion spells you qualify for.
 new skill: Scrap--turns an item of at least 5lbs into 1 lb of material of the type it is made of.
-does eating raw meat confer a disease check? Salmonila, E-Coli, etc...
 add fountain, pit to the mason skill.
 add Arch to mason, that modifies an open passageway with a Majestic Arch
 possible to have NE SE SW NW directions?
-rain/show/swim causes some metals to rust (take minute damage).
+rain/snow/swim causes some metals to rust (take minute damage).
 Amnesia as a disease
 prop_reflecting to reflect spell damage back to the caster, put on shield items
 eggs that hatch
-merchant class with haggle skill to lower prices HAGGLE 300 item
+haggle skill to lower prices HAGGLE 300 item
 WHISPER command to talk to everyone at a table only LISTEN should counter it.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
@@ -36,7 +33,6 @@ add currents to water...
 an ability to tell how many HP a MOB has
 gen-wizard player editor
 Behavior & Skill libido - Property Pregnancy, Property Aging 
-titles for high levels.
 Auto quests, quests, questbox (Behavior)
 Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
 ReligiousHelper—Aids other MOBs of given religion
@@ -44,9 +40,10 @@ Sniper.  This allows a character to make a single ranged attack from a hidden po
 Sermon:  (Bard/Cleric) takes a lot of time and mana to cast, then acts like a mass follow for a short time.  (The MOBs, if they haven’t been provoked, will follow the cleric/bard for a short while.  After that while, they will RECALL to their starting location (or just destroy and refresh?))
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 When Underwater, all slashing and Bludgeoning damage is reduced by a factor of 3, after all other modifiers for damage have been calculated.
-When Underwater, movement is expended at 2* the rate.  If you run out of movement on water, you suffer a -50% to your swim check.
 'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 random monster property class which reads stats from a resource file
+Taxidermy
+
 
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 
 Assassin: Assassinate skill to auto-kill, lose something else though

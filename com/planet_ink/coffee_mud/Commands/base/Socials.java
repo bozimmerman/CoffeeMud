@@ -32,7 +32,7 @@ public class Socials
 
 	public static void addSocial(Social S)
 	{
-		soc.put(S.Social_name,S);
+		soc.put(S.name(),S);
 	}
 	
 	public static void load(String newFilename)
@@ -54,79 +54,79 @@ public class Socials
 					switch(s.charAt(0))
 					{
 					case 'W':
-						socobj.sourceCode=Affect.MSG_SPEAK;
+						socobj.setSourceCode(Affect.MSG_SPEAK);
 						break;
 					case 'M':
-						socobj.sourceCode=Affect.MSG_HANDS;
+						socobj.setSourceCode(Affect.MSG_HANDS);
 						break;
 					case 'S':
-						socobj.sourceCode=Affect.MSG_NOISE;
+						socobj.setSourceCode(Affect.MSG_NOISE);
 						break;
 					case 'O':
-						socobj.sourceCode=Affect.MSG_NOISYMOVEMENT;
+						socobj.setSourceCode(Affect.MSG_NOISYMOVEMENT);
 						break;
 					default:
-						socobj.sourceCode=Affect.MSG_HANDS;
+						socobj.setSourceCode(Affect.MSG_HANDS);
 						break;
 					}
 					if(s.length()>1)
 					switch(s.charAt(1))
 					{
 					case 'T':
-						socobj.othersCode=Affect.MSG_HANDS;
-						socobj.targetCode=Affect.MSG_HANDS;
+						socobj.setOthersCode(Affect.MSG_HANDS);
+						socobj.setTargetCode(Affect.MSG_HANDS);
 						break;
 					case 'S':
-						socobj.othersCode=Affect.MSG_NOISE;
-						socobj.targetCode=Affect.MSG_NOISE;
+						socobj.setOthersCode(Affect.MSG_NOISE);
+						socobj.setTargetCode(Affect.MSG_NOISE);
 						break;
 					case 'W':
-						socobj.othersCode=Affect.MSG_SPEAK;
-						socobj.targetCode=Affect.MSG_SPEAK;
+						socobj.setOthersCode(Affect.MSG_SPEAK);
+						socobj.setTargetCode(Affect.MSG_SPEAK);
 						break;
 					case 'V':
-						socobj.othersCode=Affect.MSG_NOISYMOVEMENT;
-						socobj.targetCode=Affect.MSG_NOISYMOVEMENT;
+						socobj.setOthersCode(Affect.MSG_NOISYMOVEMENT);
+						socobj.setTargetCode(Affect.MSG_NOISYMOVEMENT);
 						break;
 					case 'O':
-						socobj.othersCode=Affect.MSG_OK_VISUAL;
-						socobj.targetCode=Affect.MSG_OK_VISUAL;
+						socobj.setOthersCode(Affect.MSG_OK_VISUAL);
+						socobj.setTargetCode(Affect.MSG_OK_VISUAL);
 						break;
 					default:
-						socobj.othersCode=Affect.MSG_NOISYMOVEMENT;
-						socobj.targetCode=Affect.MSG_NOISYMOVEMENT;
+						socobj.setOthersCode(Affect.MSG_NOISYMOVEMENT);
+						socobj.setTargetCode(Affect.MSG_NOISYMOVEMENT);
 						break;
 					}
 					getline=getline.substring(x+1);
 					x=getline.indexOf("\t");
 					if(x>=0)
 					{
-						socobj.Social_name=getline.substring(0,x).toUpperCase();
+						socobj.setName(getline.substring(0,x).toUpperCase());
 						getline=getline.substring(x+1);
 						x=getline.indexOf("\t");
 						if(x>=0)
 						{
-							socobj.You_see=getline.substring(0,x);
+							socobj.setYou_see(getline.substring(0,x));
 							getline=getline.substring(x+1);
 							x=getline.indexOf("\t");
 							if(x>=0)
 							{
-								socobj.Third_party_sees=getline.substring(0,x);
+								socobj.setThird_party_sees(getline.substring(0,x));
 								getline=getline.substring(x+1);
 								x=getline.indexOf("\t");
 								if(x>=0)
 								{
-									socobj.Target_sees=getline.substring(0,x);
+									socobj.setTarget_sees(getline.substring(0,x));
 									getline=getline.substring(x+1);
 									x=getline.indexOf("\t");
 									if(x>=0)
-										socobj.See_when_no_target=getline.substring(0,x);
+										socobj.setSee_when_no_target(getline.substring(0,x));
 									else
-										socobj.See_when_no_target=getline;
+										socobj.setSee_when_no_target(getline);
 
 								}
 							}
-							soc.put(socobj.Social_name,socobj);
+							soc.put(socobj.name(),socobj);
 						}
 					}
 				}
@@ -221,7 +221,7 @@ public class Socials
 				com.planet_ink.coffee_mud.Commands.base.Social
 					I=(com.planet_ink.coffee_mud.Commands.base.Social)V.elementAt(v);
 
-				switch(I.sourceCode)
+				switch(I.sourceCode())
 				{
 				case Affect.MSG_SPEAK:
 					buf.append('w');
@@ -239,7 +239,7 @@ public class Socials
 					buf.append(' ');
 					break;
 				}
-				switch(I.targetCode)
+				switch(I.targetCode())
 				{
 				case Affect.MSG_HANDS:
 					buf.append('t');
@@ -261,11 +261,11 @@ public class Socials
 					break;
 				}
 				buf.append('\t');
-				buf.append(I.Social_name+"\t");
-				buf.append(I.You_see+"\t");
-				buf.append(I.Third_party_sees+"\t");
-				buf.append(I.Target_sees +"\t");
-				buf.append(I.See_when_no_target +"\r\n");
+				buf.append(I.name()+"\t");
+				buf.append(I.You_see()+"\t");
+				buf.append(I.Third_party_sees()+"\t");
+				buf.append(I.Target_sees() +"\t");
+				buf.append(I.See_when_no_target() +"\r\n");
 			}
 			writer.write(buf.toString());
 			writer.flush();
@@ -287,12 +287,12 @@ public class Socials
 		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 		{
 			Social I=(Social)e.nextElement();
-			int space=I.Social_name.indexOf(" ");
+			int space=I.name().indexOf(" ");
 			String name=null;
 			if(space>0)
-				name=I.Social_name.substring(0,space).trim().toUpperCase();
+				name=I.name().substring(0,space).trim().toUpperCase();
 			else
-				name=I.Social_name.trim().toUpperCase();
+				name=I.name().trim().toUpperCase();
 			if(uniqueList.get(name)==null)
 				uniqueList.put(name,name);
 		}

@@ -667,8 +667,8 @@ public class CommandProcessor
 		else
 		{
 			Social social=Socials.FetchSocial(commands);
-			if(social!=null)
-				SocialProcessor.doSocial(social,mob,commands);
+			if(social!=null) 
+				social.invoke(mob,commands,null,false);
 			else
 				mob.tell("Huh?\n\r");
 		}
