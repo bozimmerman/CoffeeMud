@@ -56,8 +56,8 @@ public class Prop_TattooAdder extends Property
 	
 	public void affect(Affect affect)
 	{
-		if((tattooCode>=0)
-		   &&((affect.targetCode()==tattooCode)||(affect.sourceCode()==tattooCode))
+		if((tattooCode()>=0)
+		   &&((affect.targetMinor()==tattooCode())||(affect.sourceMinor()==tattooCode()))
 		   &&(affect.amITarget(affected)||(affect.tool()==affected))
 		   &&(text().length()>0))
 		{
