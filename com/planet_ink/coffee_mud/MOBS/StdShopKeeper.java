@@ -1115,7 +1115,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if((A instanceof SpaceShip)
 					&&(Sense.isHidden(A)))
 					{
-						boolean related=myArea.isChild(A.Name());
+						boolean related=myArea.isChild(A)||A.isParent(myArea);
 						if(!related)
 							for(int p=0;p<myArea.getNumParents();p++)
 							{

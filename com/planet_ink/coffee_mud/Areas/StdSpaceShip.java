@@ -45,6 +45,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	
 	public String ID(){	return "StdSpaceShip";}
 	protected String name="a space ship";
+	protected Room dock=null;
 	protected String description="";
 	protected String miscText="";
 	protected Vector myRooms=null;
@@ -377,6 +378,88 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 
 	public void fillInAreaRoom(Room R){}
+	public void dockHere(Room R)
+	{
+		if(R==null) return;
+		if(dock!=null) unDock(false);
+		Room airLockRoom=null;
+		int airLockDir=-1;
+		Room backupRoom=null;
+		int backupDir=-1;
+		for(Enumeration e=getMap();e.hasMoreElements();)
+		{
+			Room R2=(Room)e.nextElement();
+			if(R2!=null)
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				if((R2.rawExits()[d]!=null)
+				&&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=this))
+				&&(R2.rawExits()[d].ID().endsWith("AirLock")))
+				{ 
+					airLockRoom=R2; 
+					R2.rawDoors()[d]=null; 
+					airLockDir=d; 
+					break;
+				}
+				
+				if((d<4)&&(R2.rawDoors()==null))
+				{
+					backupRoom=R2;
+					backupDir=d;
+				}
+			}
+			if(airLockDir>=0) break;
+		}
+		if(airLockRoom==null)
+		{
+			airLockRoom=backupRoom;
+			airLockDir=backupDir;
+		}
+		
+		if(airLockRoom!=null)
+		{
+			if(airLockRoom.rawDoors()[airLockDir]==null)
+				airLockRoom.rawDoors()[airLockDir]=R;
+			if(airLockRoom.rawExits()[airLockDir]==null)
+				airLockRoom.rawExits()[airLockDir]=CMClass.getExit("GenAirLock");
+			Item portal=CMClass.getMiscTech("GenSSPortal");
+			portal.setName(Name());
+			portal.setDisplayText(Name());
+			portal.setDescription(description());
+			portal.setReadableText(CMMap.getExtendedRoomID(R));
+			Sense.setGettable(portal,false);
+			R.addItem(portal);
+			portal.setDispossessionTime(0);
+			dock=R;
+			CMMap.delObjectInSpace(this);
+			R.recoverRoomStats();
+		}
+	}
+	public void unDock(boolean toSpace)
+	{
+		if(dock==null) return;
+		for(int i=0;i<dock.numItems();i++)
+		{
+			Item I=dock.fetchItem(i);
+			if(I.Name().equals(Name()))
+				I.destroy();
+		}
+		for(Enumeration e=getMap();e.hasMoreElements();)
+		{
+			Room R=(Room)e.nextElement();
+			if(R!=null)
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				if(R.rawDoors()[d]==dock)
+					R.rawDoors()[d]=null;
+			}
+		}
+		dock=null;
+		if(toSpace)
+		{
+			CMMap.addObjectToSpace(this);
+		}
+	}
 
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/

@@ -273,6 +273,21 @@ public class StdTitle extends StdItem implements LandTitle
 						return;
 					}
 					A.setLandPropertyID(AREA.Name());
+					if(AREA instanceof SpaceShip)
+					{
+						Room spacePort=msg.source().location();
+						Vector choices=new Vector();
+						for(Enumeration e=spacePort.getArea().getMap();e.hasMoreElements();)
+						{
+							Room R=(Room)e.nextElement();
+							if(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+							{ choices.addElement(R);}
+						}
+						if(choices.size()>0) spacePort=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
+						((SpaceShip)AREA).dockHere(spacePort);
+						msg.source().tell("Your ship is located at "+spacePort.displayText()+".");
+					}
+					
 				}
 				if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
 				&&(msg.source().getClanID().length()>0))
