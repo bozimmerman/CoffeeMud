@@ -46,7 +46,8 @@ public interface MOB
 										   false,
 										   false,
 										   false,
-										   false};
+										   false,
+										   true};
 	public static final String[] AUTODESC={"AUTOGOLD",
 										   "AUTOLOOT",
 										   "AUTOEXITS",
@@ -63,7 +64,8 @@ public interface MOB
 										   "SOUNDS",
 										   "AUTOIMPROVEMENT",
 										   "NOTEACH",
-										   "AUTONOTIFY"};
+										   "AUTONOTIFY",
+										   "AUTOFORWARD"};
 
 	public int getBitmap();
 	public void setBitmap(int bitmap);

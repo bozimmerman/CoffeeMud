@@ -15,7 +15,7 @@ public class Ignore extends StdCommand
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		Hashtable h=pstats.getIgnored();
+		HashSet h=pstats.getIgnored();
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)
@@ -23,8 +23,8 @@ public class Ignore extends StdCommand
 			else
 			{
 				StringBuffer str=new StringBuffer("You are ignoring: ");
-				for(Enumeration e=h.elements();e.hasMoreElements();)
-					str.append(((String)e.nextElement())+" ");
+				for(Iterator e=h.iterator();e.hasNext();)
+					str.append(((String)e.next())+" ");
 				mob.tell(str.toString());
 			}
 		}
@@ -43,12 +43,12 @@ public class Ignore extends StdCommand
 				mob.tell("No player by that name was found.");
 				return false;
 			}
-			if(h.get(M.Name())!=null)
+			if(h.contains(M.Name()))
 			{
 				mob.tell("That name is already on your list.");
 				return false;
 			}
-			h.put(M.Name(),M.Name());
+			h.add(M.Name());
 			mob.tell("The Player '"+M.Name()+"' has been added to your ignore list.");
 		}
 		else
@@ -60,7 +60,7 @@ public class Ignore extends StdCommand
 				mob.tell("Remove whom?");
 				return false;
 			}
-			if(h.get(name)==null)
+			if(!h.contains(name))
 			{
 				mob.tell("That name '"+name+"' does not appear on your list.  Watch your casing!");
 				return false;

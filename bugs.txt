@@ -1,8 +1,4 @@
-Half the time when I sign in, I have 10 hp out of full, about 50 mv out of full, and 100 mana out of full.
-I can put my armor back on after I start most dances and they don`t get stopped.
-(copy) not appearing next to your titles
-set stats from races should also set limits
-do something with cold rooms
+I noticed when I cast mute on spell casting mobs they can still incant and cast spells and use wands with key words.
 
 SMTP Server
 put email forwarding, per user basis.. no mailing list for
@@ -13,3 +9,4 @@ Some solution for variable eq on mobs -- use rejuv!
 	But how/when to set the "examine me later" flag?
 mutable body parts, with ability to grant powers
 
+A little thing, but it would come in handy - importing and exporting users.  It would help me for some particular scenarios and I bet it'll help folks that don't have high-powered databases to do backups with.

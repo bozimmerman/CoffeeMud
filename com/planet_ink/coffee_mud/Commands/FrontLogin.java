@@ -279,7 +279,7 @@ public class FrontLogin extends StdCommand
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
 					&&(S.mob().isASysOp(null)||(!mob.isASysOp(null)))
-					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
+					&&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
 						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
 				}
 				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
@@ -574,7 +574,7 @@ public class FrontLogin extends StdCommand
 					&&(S.mob()!=null)
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
-					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
+					&&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
 						S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
 				}
 				if((CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))

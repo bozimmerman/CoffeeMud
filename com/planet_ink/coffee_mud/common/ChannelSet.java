@@ -61,7 +61,7 @@ public class ChannelSet
 		&&(M.location()!=null)
 		&&((sender==null)
 			||(M.playerStats()==null)
-			||(!M.playerStats().getIgnored().containsKey(sender.Name())))
+			||(!M.playerStats().getIgnored().contains(sender.Name())))
 		&&(MUDZapper.zapperCheck(getChannelMask(i),M))
 		&&((sender==null)
 		   ||(!areaReq)

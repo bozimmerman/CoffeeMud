@@ -20,8 +20,8 @@ public interface PlayerStats
 	public void setColorStr(String color);
 	public String getPrompt();
 	public void setPrompt(String prompt);
-	public Hashtable getFriends();
-	public Hashtable getIgnored();
+	public HashSet getFriends();
+	public HashSet getIgnored();
 	public String getFriendsIgnoreStr();
 	public void setFriendsIgnoreStr(String str);
 	public String lastIP();

@@ -73,7 +73,7 @@ public class Who extends StdCommand
 			return false;
 		}
 
-		Hashtable friends=null;
+		HashSet friends=null;
 		if((mobName!=null)
 		&&(mobName.equalsIgnoreCase("friends"))
 		&&(mob.playerStats()!=null))
@@ -94,7 +94,7 @@ public class Who extends StdCommand
 			&&(!thisSession.killFlag())
 			&&((((mob2.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0)
 				||(mob.isASysOp(null))))
-			&&((friends==null)||(friends.containsKey(mob2.Name())||(friends.containsKey("All"))))
+			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
 			&&(mob2.envStats().level()>0))
 				msg.append(showWhoShort(mob2));
 		}

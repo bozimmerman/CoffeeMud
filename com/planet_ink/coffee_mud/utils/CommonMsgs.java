@@ -184,7 +184,7 @@ public class CommonMsgs
 				}
 				else
 				{
-					boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().containsKey(mob.Name())));
+					boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().contains(mob.Name())));
 					FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_TELL,"^TYou tell "+target.name()+" '"+text+"'^?^.",CMMsg.MSG_TELL,"^T"+mob.name()+" tell(s) you '"+text+"'^?^.",CMMsg.NO_EFFECT,null);
 					if((mob.location().okMessage(mob,msg))
 					&&((ignore)||(target.okMessage(target,msg))))

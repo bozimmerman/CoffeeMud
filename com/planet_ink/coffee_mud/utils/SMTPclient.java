@@ -25,16 +25,22 @@ public class SMTPclient
     protected Socket sock = null;
 
 	static Attribute doMXLookup( String hostName ) 
-		throws NamingException 
 	{
-		Hashtable env = new Hashtable();
-		env.put("java.naming.factory.initial",
-		        "com.sun.jndi.dns.DnsContextFactory");
-		DirContext ictx = new InitialDirContext( env );
-		Attributes attrs = ictx.getAttributes( hostName, new String[] { "MX" });
-		Attribute attr = attrs.get( "MX" );
-		if( attr == null ) return( null );
-		return( attr );
+		try
+		{
+			Hashtable env = new Hashtable();
+			env.put("java.naming.factory.initial",
+			        "com.sun.jndi.dns.DnsContextFactory");
+			DirContext ictx = new InitialDirContext( env );
+			Attributes attrs = ictx.getAttributes( hostName, new String[] { "MX" });
+			Attribute attr = attrs.get( "MX" );
+			if( attr == null ) return( null );
+			return( attr );
+		}
+		catch(javax.naming.NamingException x)
+		{
+		}
+		return null;
 	}
   
     /**
@@ -81,20 +87,31 @@ public class SMTPclient
     }
 	
 	public SMTPclient (String emailAddress) throws IOException, 
-												   BadEmailAddressException,
-												   NamingException
+												   BadEmailAddressException
 	{
 		int x=emailAddress.indexOf("@");
 		if(x<0) throw new BadEmailAddressException("Malformed email address");
 		String domain=emailAddress.substring(x+1).trim();
 		if(domain.length()==0) throw new BadEmailAddressException("Malformed email address");
+		Vector addys=new Vector();
 		Attribute mx=doMXLookup(domain);
-		if((mx==null)||(mx.size()==0))
-		   throw new BadEmailAddressException("No MX Record for '"+domain+"'");
 		boolean connected=false;
-		for(NamingEnumeration e=mx.getAll();e.hasMore();)
+		addys.addElement(domain);
+		try{
+			if((mx!=null)&&(mx.size()>0))
+			for(NamingEnumeration e=mx.getAll();e.hasMore();)
+			{
+				String hostid=(String)e.next();
+				if(!addys.contains(hostid))
+					addys.addElement(hostid);
+			}
+		}
+		catch(javax.naming.NamingException ne)
 		{
-			String hostid=(String)e.next();
+		}
+		for(Enumeration e=addys.elements();e.hasMoreElements();)
+		{
+			String hostid=(String)e.nextElement();
 			int y=hostid.lastIndexOf(" ");
 			if(y>=0) hostid=hostid.substring(y+1).trim();
 			try
@@ -112,7 +129,7 @@ public class SMTPclient
 				connected=true;
 				break;
 			}
-			catch(IOException ex)
+			catch(Exception ex)
 			{
 				// just try the next one.
 			}
@@ -131,7 +148,11 @@ public class SMTPclient
 	* @param message Message content
 	* @return NA
 	*/
-    public synchronized void sendMessage(String froaddress, String to_address, String subject, String message)
+    public synchronized void sendMessage(String froaddress, 
+										 String reply_address,
+										 String to_address, 
+										 String subject, 
+										 String message)
 	throws IOException
 	{
 		String rstr;
@@ -170,11 +191,17 @@ public class SMTPclient
 		if (!rstr.startsWith("354")) throw new ProtocolException(rstr);
 		send.print("MIME-Version: 1.0");
 		send.print(EOL);
+		send.print("Date: " + new IQCalendar().d2SString());
+		send.print(EOL);
 		send.print("From: " + froaddress);
 		send.print(EOL);
-		send.print("To: " + to_address);
-		send.print(EOL);
 		send.print("Subject: " + subject);
+		send.print(EOL);
+		send.print("Sender: " + froaddress);
+		send.print(EOL);
+		send.print("Reply-To: " + reply_address);
+		send.print(EOL);
+		send.print("To: " + to_address);
 		send.print(EOL);
 
 		// Create Date - we'll cheat by assuming that local clock is right

@@ -4,8 +4,8 @@ import java.util.*;
 
 public class DefaultPlayerStats implements PlayerStats
 {
-	private Hashtable friends=new Hashtable();
-	private Hashtable ignored=new Hashtable();
+	private HashSet friends=new HashSet();
+	private HashSet ignored=new HashSet();
 	private String lastIP="";
 	private long LastDateTime=System.currentTimeMillis();
 	private long lastUpdated=0;
@@ -41,20 +41,20 @@ public class DefaultPlayerStats implements PlayerStats
 			return prompt;
 	}
 
-	public Hashtable getHashFrom(String str)
+	public HashSet getHashFrom(String str)
 	{
-		Hashtable h=new Hashtable();
+		HashSet h=new HashSet();
 		if((str==null)||(str.length()==0)) return h;
 		int x=str.indexOf(";");
 		while(x>=0)
 		{
 			String fi=str.substring(0,x).trim();
-			if(fi.length()>0) h.put(fi,fi);
+			if(fi.length()>0) h.add(fi);
 			str=str.substring(x+1);
 			x=str.indexOf(";");
 		}
 		if(str.trim().length()>0)
-			h.put(str.trim(),str.trim());
+			h.add(str.trim());
 		return h;
 	}
 
@@ -69,15 +69,15 @@ public class DefaultPlayerStats implements PlayerStats
 		return fil;
 	}
 	
-	public Hashtable getFriends(){return friends;}
-	public Hashtable getIgnored(){return ignored;}
+	public HashSet getFriends(){return friends;}
+	public HashSet getIgnored(){return ignored;}
 	
-	private String getPrivateList(Hashtable h)
+	private String getPrivateList(HashSet h)
 	{
 		if((h==null)||(h.size()==0)) return "";
 		StringBuffer list=new StringBuffer("");
-		for(Enumeration e=h.elements();e.hasMoreElements();)
-			list.append(((String)e.nextElement())+";");
+		for(Iterator e=h.iterator();e.hasNext();)
+			list.append(((String)e.next())+";");
 		return list.toString();
 	}
 	/** When the USER last logged off */

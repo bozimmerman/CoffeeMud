@@ -5,6 +5,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.exceptions.*;
 
 public class SMTPserver extends Thread implements Tickable
 {
@@ -27,6 +28,8 @@ public class SMTPserver extends Thread implements Tickable
 	private static String domain="coffeemud";
 	private static String mailbox=null;
 	private static DVector journals=null;
+	
+	private HashSet oldEmailComplaints=new HashSet();
 											 
 	public final static String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
@@ -73,6 +76,8 @@ public class SMTPserver extends Thread implements Tickable
 		mailbox=page.getStr("MAILBOX");
 		if(mailbox==null) mailbox="";
 		else mailbox=mailbox.trim();
+		
+		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING,Util.s_bool(page.getStr("FORWARD")));
 		
 		String journalStr=page.getStr("JOURNALS");
 		if((journalStr==null)||(journalStr.length()>0))
@@ -278,6 +283,23 @@ public class SMTPserver extends Thread implements Tickable
 	}
 
 	public void shutdown()	{shutdown(null);}
+	
+	
+	private boolean rightTimeToSendEmail(long email)
+	{
+		long curr=System.currentTimeMillis();
+		IQCalendar IQE=new IQCalendar(email);
+		IQCalendar IQC=new IQCalendar(curr);
+		if(Util.absDiff(email,curr)<30) return true;
+		while(IQE.before(IQC))
+		{
+			if(Util.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<30) 
+				return true;
+			IQE.add(Calendar.DATE,1);
+		}
+		return false;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickStatus!=STATUS_NOT) return true;
@@ -285,8 +307,6 @@ public class SMTPserver extends Thread implements Tickable
 		tickStatus=STATUS_START;
 		if((tickID==MudHost.TICK_READYTOSTOP)||(tickID==MudHost.TICK_EMAIL))
 		{
-			Hashtable rememberedAddresses=new Hashtable();
-				
 			// this is where it should attempt any mail forwarding
 			// remember, a 5 day old private mail message is a goner
 			// remember that new to all messages need to be parsed
@@ -341,18 +361,7 @@ public class SMTPserver extends Thread implements Tickable
 			&&(mailboxName().length()>0))
 			{
 				Vector emails=CMClass.DBEngine().DBReadJournal(mailboxName());
-				if(emails!=null)
-				for(int e=0;e<emails.size();e++)
-				{
-					// **TODO check for forwarding, global AND individual
-					Vector mail=(Vector)emails.elementAt(e);
-					String key=(String)mail.elementAt(DatabaseEngine.JOURNAL_KEY);
-					String from=(String)mail.elementAt(DatabaseEngine.JOURNAL_FROM);
-					String to=(String)mail.elementAt(DatabaseEngine.JOURNAL_TO);
-					long date=Util.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE));
-					String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
-					String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
-				}
+				processEmails(emails,null,true);
 			}
 			lastAllProcessing=System.currentTimeMillis();
 		}
@@ -362,6 +371,119 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
+	public void processEmails(Vector emails, 
+							  String overrideReplyTo,
+							  boolean usePrivateRules)
+	{
+		if(emails!=null)
+		for(int e=0;e<emails.size();e++)
+		{
+			Vector mail=(Vector)emails.elementAt(e);
+			String key=(String)mail.elementAt(DatabaseEngine.JOURNAL_KEY);
+			String from=(String)mail.elementAt(DatabaseEngine.JOURNAL_FROM);
+			String to=(String)mail.elementAt(DatabaseEngine.JOURNAL_TO);
+			long date=Util.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE));
+			String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
+			String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
+			if(to.equalsIgnoreCase("ALL")) continue;
+			if(!rightTimeToSendEmail(date)) continue;
+			
+			// check for valid recipient
+			MOB toM=CMMap.getLoadPlayer(to);
+			if(toM==null)
+			{ 
+				Log.errOut("SMTPServer","Invalid to address '"+to+"' in email: "+msg);
+				CMClass.DBEngine().DBDeleteJournal(key);
+				continue;
+			}
+			
+			// check to see if the sender is ignored
+			if((toM.playerStats()!=null)
+			&&(toM.playerStats().getIgnored().contains(from)))
+			{
+				// email is ignored
+				CMClass.DBEngine().DBDeleteJournal(key);
+				continue;
+			}
+			
+			// check email age
+			if(usePrivateRules)
+			{
+				IQCalendar IQE=new IQCalendar(date);
+				IQE.add(IQCalendar.DATE,getEmailDays());
+				if(IQE.getTimeInMillis()<System.currentTimeMillis())
+				{
+					// email is a goner
+					CMClass.DBEngine().DBDeleteJournal(key);
+					continue;
+				}
+			}
+			if(Util.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
+				continue;
+			if((toM.playerStats()==null)
+			||(toM.playerStats().getEmail().length()==0)) // no email addy to forward TO
+				continue;
+			
+			SMTPclient SC=null;
+			try
+			{
+				SC=new SMTPclient(toM.playerStats().getEmail());
+			}
+			catch(BadEmailAddressException be)
+			{
+				if(!usePrivateRules)
+				{
+					// email is a goner if its a list
+					CMClass.DBEngine().DBDeleteJournal(key);
+					continue;
+				}
+				else
+				{
+					// otherwise it has its n days
+					continue;
+				}
+			}
+			catch(java.io.IOException ioe)
+			{
+				if(!oldEmailComplaints.contains(toM.Name()))
+				{
+					oldEmailComplaints.add(toM.Name());
+					Log.errOut("SMTPServer","Unable to find '"+toM.playerStats().getEmail()+"' for '"+toM.name()+"'.");
+				}
+				// it has 5 days to get better.
+				IQCalendar IQE=new IQCalendar(date);
+				IQE.add(IQCalendar.DATE,getFailureDays());
+				if(IQE.getTimeInMillis()<System.currentTimeMillis())
+				{
+					// email is a goner
+					CMClass.DBEngine().DBDeleteJournal(key);
+				}
+				continue;
+			}
+			
+			// one way or another, this email is HISTORY!
+			CMClass.DBEngine().DBDeleteJournal(key);
+			
+			String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
+			try
+			{
+				SC.sendMessage(from+"@"+domainName(),
+							   replyTo+"@"+domainName(),
+							   toM.playerStats().getEmail(),
+							   subj,
+							   msg);
+			}
+			catch(java.io.IOException ioe)
+			{
+				// failure to send, so, if private, tell the sender
+				
+			}
+			
+			// kaplah! On to next...
+		}
+	}
+	
+	
 	// interrupt does NOT interrupt the ServerSocket.accept() call...
 	//  override it so it does
 	public void interrupt()
@@ -385,6 +507,22 @@ public class SMTPserver extends Thread implements Tickable
 	public int getMaxMsgs()
 	{
 		String s=page.getStr("MAXMSGS");
+		if(s==null) return Integer.MAX_VALUE;
+		int x=Util.s_int(s);
+		if(x==0) return Integer.MAX_VALUE;
+		return x;
+	}
+	public int getEmailDays()
+	{
+		String s=page.getStr("EMAILDAYS");
+		if(s==null) return Integer.MAX_VALUE;
+		int x=Util.s_int(s);
+		if(x==0) return Integer.MAX_VALUE;
+		return x;
+	}
+	public int getFailureDays()
+	{
+		String s=page.getStr("FAILUREDAYS");
 		if(s==null) return Integer.MAX_VALUE;
 		int x=Util.s_int(s);
 		if(x==0) return Integer.MAX_VALUE;

@@ -207,7 +207,7 @@ public class Age extends StdAbility
 						&&(S.mob()!=null)
 						&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 						&&(S.mob().playerStats()!=null)
-						&&((S.mob().playerStats().getFriends().containsKey(newMan.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
+						&&((S.mob().playerStats().getFriends().contains(newMan.Name())||S.mob().playerStats().getFriends().contains("All"))))
 							S.mob().tell("^X"+newMan.Name()+" has just been created.^.^?");
 					}
 					CommonMsgs.channel("WIZINFO","",newMan.Name()+" has just been created.",true);

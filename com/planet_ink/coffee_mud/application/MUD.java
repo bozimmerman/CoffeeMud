@@ -259,7 +259,7 @@ public class MUD extends Thread implements MudHost
 		{
 			smtpServerThread = new SMTPserver((MudHost)mudThreads.firstElement());
 			smtpServerThread.start();
-			CMClass.ThreadEngine().startTickDown(smtpServerThread,MudHost.TICK_EMAIL,20);
+			CMClass.ThreadEngine().startTickDown(smtpServerThread,MudHost.TICK_EMAIL,60);
 		}
 
         if(page.getBoolean("RUNESPRESSOSERVER"))

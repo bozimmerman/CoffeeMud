@@ -33,6 +33,12 @@ public class Util
 		return new byte[0];
 	}
 	
+	public static long absDiff(long x, long y)
+	{
+		long d=x-y;
+		if(d<0) return d*(long)-1;
+		return d;
+	}
 	
 	public static String repeat(String str1, int times)
 	{
