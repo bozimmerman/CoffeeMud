@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_SummonMount extends StdAbility
+public class Paladin_SummonMount extends StdAbility
 {
-	public Skill_SummonMount()
+	public Paladin_SummonMount()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -15,7 +15,8 @@ public class Skill_SummonMount extends StdAbility
 		displayText="(Mount)";
 		miscText="";
 
-		triggerStrings.addElement("MOUNT");
+		quality=Ability.OK_SELF;
+		triggerStrings.addElement("CALLMOUNT");
 
 		canBeUninvoked=true;
 		isAutoinvoked=false;
@@ -26,7 +27,7 @@ public class Skill_SummonMount extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_SummonMount();
+		return new Paladin_SummonMount();
 	}
 	public int classificationCode()
 	{
@@ -37,12 +38,12 @@ public class Skill_SummonMount extends StdAbility
 	{
 		if(tickID==Host.MOB_TICK)
 		{
-			if((affected!=null)&&(affected instanceof MOB))
+			if((affected!=null)&&(affected instanceof MOB)&&(invoker!=null))
 			{
-				if(((MOB)affected).amFollowing()==null)
-				{
+				if(((((MOB)affected).amFollowing()==null)
+				||(((MOB)affected).location()!=invoker.location()))
+				&&(invoker.riding()!=affected))
 					((MOB)affected).destroy();
-				}
 			}
 		}
 		return super.tick(tickID);
@@ -53,6 +54,11 @@ public class Skill_SummonMount extends StdAbility
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
 			mob.tell("You must be outdoors to call your mount.");
+			return false;
+		}
+		if((!auto)&&(mob.getAlignment()<650))
+		{
+			mob.tell("Your alignment has alienated you from your god.");
 			return false;
 		}
 		Vector choices=new Vector();

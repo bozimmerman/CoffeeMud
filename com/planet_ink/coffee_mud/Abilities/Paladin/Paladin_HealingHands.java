@@ -1,13 +1,13 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Paladin;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Skill_HealingHands extends StdAbility
+public class Paladin_HealingHands extends StdAbility
 {
-	public Skill_HealingHands()
+	public Paladin_HealingHands()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -32,7 +32,7 @@ public class Skill_HealingHands extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_HealingHands();
+		return new Paladin_HealingHands();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -40,7 +40,7 @@ public class Skill_HealingHands extends StdAbility
 		if(!Sense.aliveAwakeMobile(mob,false))
 			return false;
 
-		if((!auto)&&(mob.getAlignment()<500))
+		if((!auto)&&(mob.getAlignment()<650))
 		{
 			mob.tell("Your alignment has alienated your god from you.");
 			return false;

@@ -250,12 +250,22 @@ public class CMClass extends ClassLoader
 		if(abilities.size()==0) return false;
 
 		Vector tempV;
+		int size=0;
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"");
+		if(tempV.size()==0) return false; addV(tempV,abilities);
+		size=tempV.size();
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Ranger"+File.separatorChar,"");
+		if(tempV.size()==0) return false; addV(tempV,abilities);
+		size+=tempV.size();
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Paladin"+File.separatorChar,"");
+		Log.sysOut("MUD","      All Fighters: "+(tempV.size()+size));
+		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"");
 		Log.sysOut("MUD","           Archon : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"");
-		Log.sysOut("MUD","          Fighter : "+tempV.size());
-		if(tempV.size()==0) return false; addV(tempV,abilities);
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"");
+		Log.sysOut("MUD","        Languages : "+tempV.size());
+		if(tempV.size()==0)  return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"");
 		Log.sysOut("MUD","             Misc : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
@@ -282,9 +292,6 @@ public class CMClass extends ClassLoader
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"");
 		Log.sysOut("MUD","            Traps : "+tempV.size());
-		if(tempV.size()==0)  return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"");
-		Log.sysOut("MUD","        Languages : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
 
 		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"));

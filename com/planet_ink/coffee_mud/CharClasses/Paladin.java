@@ -37,26 +37,35 @@ public class Paladin extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_LayHands",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Paladin_HealingHands",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",75,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Paladin_ImprovedResists",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_TurnUndead",true);
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_TwoWeaponFighting",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Paladin_SummonMount",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Cleave",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Paladin_DiseaseImmunity",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Paladin_MountedCombat",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Paladin_Defend",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Paladin_Courage",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Cleave",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Paladin_Breakup",true);
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Sweep",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Paladin_PoisonImmunity",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Paladin_Aura",true);
 			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
+			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Goodness",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Sweep",true);	
+			CMAble.addCharAbilityMapping(ID(),25,"Craft_HolyAvenger",true);
 			
 			// qualify for all prayers
 			Cleric c=new Cleric(); // make sure a cleric is available

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Skills;
+package com.planet_ink.coffee_mud.Abilities.Ranger;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
@@ -7,14 +7,14 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import java.util.*;
 
 
-public class Skill_FindWater extends StdAbility
+public class Ranger_FindWater extends StdAbility
 {
 	Room lastRoom=null;
 	private Vector theTrail=null;
 	private Hashtable lookedIn=null;
 	public int nextDirection=-2;
 	protected final static int TRACK_ATTEMPTS=25;
-	public Skill_FindWater()
+	public Ranger_FindWater()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
@@ -32,7 +32,7 @@ public class Skill_FindWater extends StdAbility
 
 	public Environmental newInstance()
 	{
-		return new Skill_FindWater();
+		return new Ranger_FindWater();
 	}
 	public int classificationCode()
 	{
@@ -338,7 +338,7 @@ public class Skill_FindWater extends StdAbility
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				Skill_FindWater newOne=(Skill_FindWater)this.copyOf();
+				Ranger_FindWater newOne=(Ranger_FindWater)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
