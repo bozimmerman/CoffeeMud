@@ -1,5 +1,3 @@
-^bNow it is time to choose your character's ^BClass^?, which is the career-path that they will follow in the game.^N
-
 ^XFighter :^? Fighters are brutish weapon masters, skilled in the art of killing.  They may specialize in any weapon type, and learn numerous new fighting techniques as they advance in level.  Fighters receive more hit points and attack bonuses per level than any other class, and are invaluable in a close melee.
 
 ^XThief   :^? Thieves are skillful, sly, and devious. They may only use ranged weapons and swords, and may only wear leather armor at best.  However, they come with numerous skills allowing them to survive in the dog-eat-dog world, including swiping and stealing; hiding, peeking, and sneaking; trapping, poisoning, and many others.  Thieves also qualify for many devious fighting abilities.

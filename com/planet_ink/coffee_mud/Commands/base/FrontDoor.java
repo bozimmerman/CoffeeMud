@@ -21,11 +21,22 @@ public class FrontDoor
 
 	private boolean isOkName(String login)
 	{
-		login=login.trim();
-
-		if(login.indexOf(" ")>0) return false;
-		if((" SHIT FUCK CUNT FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP ADMIN SYSOP ").indexOf(" "+login.toUpperCase()+" ")>=0)
-			return false;
+		if(login.length()>20) return false;
+		if(login.trim().indexOf(" ")>=0) return false;
+		
+		Vector V=Util.parse(login.toUpperCase().trim());
+		for(int v=V.size()-1;v>=0;v--)
+		{
+			String str=(String)V.elementAt(v);
+			if((" THE A AN ").indexOf(" "+str+" ")>=0)
+				V.removeElementAt(v);
+		}
+		for(int v=0;v<V.size();v++)
+		{
+			String str=(String)V.elementAt(v);
+			if((" YOU SHIT FUCK CUNT FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
+				return false;
+		}
 		for(int m=0;m<CMClass.MOBs.size();m++)
 		{
 			MOB tm=(MOB)CMClass.MOBs.elementAt(m);
@@ -41,10 +52,21 @@ public class FrontDoor
 				return false;
 
 		}
+		for(int c=0;c<login.length();c++)
+		{
+			char C=Character.toUpperCase(login.charAt(c));
+			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
+				return false;
+		}
 		return true;
-
 	}
 
+	public String nameFixer(String name)
+	{
+		return Character.toUpperCase(name.charAt(0))+name.substring(1).trim();
+	}
+	
+	
 	public boolean login(MOB mob)
 		throws IOException
 	{
@@ -58,8 +80,6 @@ public class FrontDoor
 		login=login.trim();
 		if(login.length()==0) return false;
 
-		if(login.equalsIgnoreCase("You"))
-			return false;
 		boolean found=ExternalPlay.DBUserSearch(mob,login);
 		if(found)
 		{
@@ -130,9 +150,9 @@ public class FrontDoor
 				mob.setUserInfo("","",Calendar.getInstance());
 			}
 			else
-			if(mob.session().confirm("\n\r'"+login+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
+			if(mob.session().confirm("\n\r'"+nameFixer(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
-
+				login=nameFixer(login.trim());
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("newchar.txt").toString());
 
 				String password="";
@@ -149,11 +169,9 @@ public class FrontDoor
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
 					mob.session().setTermID(1);
 
-				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("races.txt").toString());
+				mob.session().println(null,null,"\n\r\n\r^pChoose a race for your character.  Although races are meant primarily for role-playing purposes, there are some significant differences between the several races.  Enter '?' for a more descriptive list.^N");
 
-				mob.session().print("\n\r^BPlease choose from the following races:^N\n\r");
-
-				StringBuffer tmpStrB=new StringBuffer("[");
+				StringBuffer listOfRaces=new StringBuffer("[");
 				boolean tmpFirst = true;
 				for(int r=0;r<CMClass.races.size();r++)
 				{
@@ -161,47 +179,57 @@ public class FrontDoor
 					if(thisRace.playerSelectable())
 					{
 						if (!tmpFirst)
-							tmpStrB.append(", ");
+							listOfRaces.append(", ");
 						else
 							tmpFirst = false;
-						tmpStrB.append("^H"+thisRace.name()+"^?");
+						listOfRaces.append("^H"+thisRace.name()+"^?");
 					}
 				}
-				tmpStrB.append("]");
-				mob.session().print(tmpStrB.toString());
+				listOfRaces.append("]");
 
 				Race newRace=null;
 				while(newRace==null)
 				{
+					mob.session().print("\n\r^BPlease choose from the following races (?):^N\n\r");
+					mob.session().print(listOfRaces.toString());
 					String raceStr=mob.session().prompt("\n\r: ","");
-					newRace=CMClass.getRace(raceStr);
-					if((newRace!=null)&&(!newRace.playerSelectable()))
-						newRace=null;
-					if(newRace==null)
-						for(int r=0;r<CMClass.races.size();r++)
-						{
-							Race R=(Race)CMClass.races.elementAt(r);
-							if((R.name().equalsIgnoreCase(raceStr))
-							&&(R.playerSelectable()))
-							{
-								newRace=(Race)CMClass.races.elementAt(r);
-								break;
-							}
-						}
-					if(newRace==null)
-						for(int r=0;r<CMClass.races.size();r++)
-						{
-							Race R=(Race)CMClass.races.elementAt(r);
-							if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
-							&&(R.playerSelectable()))
-							{
-								newRace=(Race)CMClass.races.elementAt(r);
-								break;
-							}
-						}
-					if(newRace!=null)
-						if(!mob.session().confirm("^BIs ^H"+newRace.name()+"^? correct (Y/n)?^N","Y"))
+					if(raceStr.trim().equalsIgnoreCase("?"))
+						mob.session().println(null,null,"\n\r"+Resources.getFileResource("races.txt").toString());
+					else
+					{
+						newRace=CMClass.getRace(raceStr);
+						if((newRace!=null)&&(!newRace.playerSelectable()))
 							newRace=null;
+						if(newRace==null)
+							for(int r=0;r<CMClass.races.size();r++)
+							{
+								Race R=(Race)CMClass.races.elementAt(r);
+								if((R.name().equalsIgnoreCase(raceStr))
+								&&(R.playerSelectable()))
+								{
+									newRace=(Race)CMClass.races.elementAt(r);
+									break;
+								}
+							}
+						if(newRace==null)
+							for(int r=0;r<CMClass.races.size();r++)
+							{
+								Race R=(Race)CMClass.races.elementAt(r);
+								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
+								&&(R.playerSelectable()))
+								{
+									newRace=(Race)CMClass.races.elementAt(r);
+									break;
+								}
+							}
+						if(newRace!=null)
+						{
+							StringBuffer str=ExternalPlay.getHelpText(newRace.ID().toUpperCase());
+							if(str!=null) mob.tell("\n\r"+str.toString()+"\n\r");
+							if(!mob.session().confirm("^BIs ^H"+newRace.name()+"^? correct (Y/n)?^N","Y"))
+								newRace=null;
+						}
+					}
 				}
 				mob.baseCharStats().setMyRace(newRace);
 
@@ -250,46 +278,53 @@ public class FrontDoor
 							mayCont=false;
 					}
 				}
-				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("classes.txt").toString());
+				mob.session().println(null,null,"\n\r\n\r^bNow it is time to choose your character's ^BClass^?, which is the career-path that they will follow in the game.  This is your most important decision, choose wisely!  Enter '?' for a more descriptive list.^N");
 
-				mob.session().print("\n\r^BPlease choose from the following Classes:\n\r");
-				mob.session().print("^H[" + listOfClasses.toString() + "]^N");
 				CharClass newClass=null;
 				while(newClass==null)
 				{
+					mob.session().print("\n\r^BPlease choose from the following Classes:\n\r");
+					mob.session().print("^H[" + listOfClasses.toString() + "]^N");
 					String ClassStr=mob.session().prompt("\n\r: ","");
-					newClass=CMClass.getCharClass(ClassStr);
-					if(newClass==null)
-					for(int c=0;c<CMClass.charClasses.size();c++)
+					if(ClassStr.trim().equalsIgnoreCase("?"))
+						mob.session().println(null,null,"\n\r"+Resources.getFileResource("classes.txt").toString());
+					else
 					{
-						CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-						if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
-							if(thisClass.name().equalsIgnoreCase(ClassStr))
-							{
-								newClass=thisClass;
-								break;
-							}
-					}
-					if(newClass==null)
-					for(int c=0;c<CMClass.charClasses.size();c++)
-					{
-						CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
-						if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
-							if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
-							{
-								newClass=thisClass;
-								break;
-							}
-					}
-					if((newClass!=null)
-					&&(newClass.playerSelectable())
-					&&(newClass.qualifiesForThisClass(mob)))
-					{
-						if(!mob.session().confirm("Is "+newClass.name()+" correct (Y/n)?","Y"))
+						newClass=CMClass.getCharClass(ClassStr);
+						if(newClass==null)
+						for(int c=0;c<CMClass.charClasses.size();c++)
+						{
+							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
+							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
+								if(thisClass.name().equalsIgnoreCase(ClassStr))
+								{
+									newClass=thisClass;
+									break;
+								}
+						}
+						if(newClass==null)
+						for(int c=0;c<CMClass.charClasses.size();c++)
+						{
+							CharClass thisClass=(CharClass)CMClass.charClasses.elementAt(c);
+							if((thisClass.playerSelectable())&&thisClass.qualifiesForThisClass(mob))
+								if(thisClass.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
+								{
+									newClass=thisClass;
+									break;
+								}
+						}
+						if((newClass!=null)
+						&&(newClass.playerSelectable())
+						&&(newClass.qualifiesForThisClass(mob)))
+						{
+							StringBuffer str=ExternalPlay.getHelpText(newClass.ID().toUpperCase());
+							if(str!=null) mob.tell("\n\r"+str.toString()+"\n\r");
+							if(!mob.session().confirm("Is "+newClass.name()+" correct (Y/n)?","Y"))
+								newClass=null;
+						}
+						else
 							newClass=null;
 					}
-					else
-						newClass=null;
 				}
 				mob.baseCharStats().setMyClass(newClass);
 

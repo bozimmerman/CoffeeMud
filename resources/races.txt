@@ -1,5 +1,3 @@
-^pChoose a race for your character.  Although races are meant primarily for role-playing purposes, there are some significant differences between the several races.^N
-
 ^YDwarf   :^? Dwarves are shorter than humans, but much stockier, and enjoy sporting beards (including the women).  They receive one bonus Constitution point, but lose one Charisma point.  They also have Infravision, or the ability to see other creatures in the dark.  Dwarves may be Clerics, Fighters, or Thieves.
 
 ^YElf     :^? Elves are slightly shorter and more slender than humans, but are quick and agile.  They receive one bonus Dexterity point, but lose one Constitution point. Elves have Infravision, and may be Clerics, Fighters, Rangers, Mages, or Thieves.
