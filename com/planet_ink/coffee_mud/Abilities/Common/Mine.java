@@ -84,9 +84,6 @@ public class Mine extends CommonSkill
 			return false;
 		int resourceType=mob.location().myResource();
 		if((profficiencyCheck(0,auto))
-		   &&(resourceType!=EnvResource.RESOURCE_SAND)
-		   &&(resourceType!=EnvResource.RESOURCE_CLAY)
-		   &&(resourceType!=EnvResource.RESOURCE_CHINA)
 		   &&(resourceType!=EnvResource.RESOURCE_CRYSTAL)
 		   &&(resourceType!=EnvResource.RESOURCE_OPAL)
 		   &&(resourceType!=EnvResource.RESOURCE_AMETHYST)
