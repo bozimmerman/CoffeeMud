@@ -30,7 +30,7 @@ public class Chant_Drifting extends Chant
 			if((msg.sourceMinor()==CMMsg.TYP_ADVANCE)
 			||(msg.sourceMinor()==CMMsg.TYP_RETREAT))
 			{
-				mob.tell("You can't seem to move fast enough to do that!");
+				mob.tell("You can't seem to drift accurately enough to advance or retreat!");
 				return false;
 			}
 			else
@@ -60,10 +60,13 @@ public class Chant_Drifting extends Chant
 		   &&((((MOB)affected).location().domainType()&Room.INDOORS)==0))
 		{
 			((MOB)affected).makePeace();
+			if(Sense.isFlying(affected))
+				affected.envStats().setDisposition(affected.envStats().disposition()-EnvStats.IS_FLYING);
 			Ability A=CMClass.getAbility("Falling");
 			A.setAffectedOne(null);
 			A.setProfficiency(100);
 			A.invoke(null,null,affected,true);
+			affected.recoverEnvStats();
 		}
 		return true;
 	}

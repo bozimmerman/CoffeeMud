@@ -588,14 +588,32 @@ public class StdRoom
 			&((Integer.MAX_VALUE-(EnvStats.IS_DARK|EnvStats.IS_LIGHTSOURCE|EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
+		for(int a=0;a<numEffects();a++)
+		{
+			Ability A=fetchEffect(a);
+			if((A!=null)&&(A.bubbleAffect()))
+			   A.affectEnvStats(affected,affectableStats);
+		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
+		for(int a=0;a<numEffects();a++)
+		{
+			Ability A=fetchEffect(a);
+			if((A!=null)&&(A.bubbleAffect()))
+			   A.affectCharStats(affectedMob,affectableStats);
+		}
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
+		for(int a=0;a<numEffects();a++)
+		{
+			Ability A=fetchEffect(a);
+			if((A!=null)&&(A.bubbleAffect()))
+			   A.affectCharState(affectedMob,affectableMaxState);
+		}
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 

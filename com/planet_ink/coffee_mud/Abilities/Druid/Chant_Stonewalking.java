@@ -49,6 +49,8 @@ public class Chant_Stonewalking extends Chant
 			{
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+				affectableStats.setWeight(0);
+				affectableStats.setHeight(-1);
 			}
 		}
 	}

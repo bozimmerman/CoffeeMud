@@ -67,12 +67,10 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),10,"Chant_CrystalGrowth",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Druid_GolemForm",false);
 
-CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
-//Cavein Does damage if target is MOB. Can be used to block an exit for duration of spell if target is EXIT. 
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_CaveIn",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantPass",false);
 
-CMAble.addCharAbilityMapping(ID(),12,"Chant_RockThought",false);
-//Rockthought Makes the target stubborn. Short duration, but must repeat the next action for the entire duration. For example...delver casts rockthought. Mage casts magic missile. Mage casts MM, casts MM, casts MM, casts MM. I think 1 combat round per 4 delver levels.... 
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_RockThought",false);
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
@@ -87,18 +85,15 @@ CMAble.addCharAbilityMapping(ID(),12,"Chant_RockThought",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_BrownMold",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_SenseOres",false);
 
-CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
-//Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
 
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labrynth",false);
 			CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
 
 			
-CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
-//Rust Curse 	Causes all metal items on the target to start rusting at a pace of 1% per rand min=2 max=10 chance=20. Just equiped items rust. Duration of spell should be short enough that 100% items will probably survive a level 25 caster. 
-CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",false);
-//Tremor sense 	This chant enables the druid to sense any ground movement within 3 squares of his position. 
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
@@ -113,14 +108,12 @@ CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGems",false);
-CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
-//Volcanic Chasm will convert room (for time being) to a CHASM room that does massive heat damage to non-flyers/climbers. 
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);
 			
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonRockGolem",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",false); // make contageous
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_MetalMold",false);
 			
-CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
-//Explosive Decompression 	This is a double-whammy of a spell. The delver creates a huge explosion (lots of fire damage) to everyone in the room. After the explosion, EVERYONE in the room suffers from lack of oxygen (choking.) The big boom causes an end to combat, as well (everyone is thrown off of their feet). After ExpDecon is cast, you may reengage in combat, but will be without air. 
+			CMAble.addCharAbilityMapping(ID(),30,"Chant_ExplosiveDecompression",false);
 		}
 	}
 

@@ -5,14 +5,39 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chant_Plague extends Chant
+public class Chant_Rockthought extends Chant
 {
-	public String ID() { return "Chant_Plague"; }
-	public String name(){ return "Summon Plague";}
+	public String ID() { return "Chant_Rockthought"; }
+	public String name(){ return "Rockthought";}
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Chant_Plague();}
+	public Environmental newInstance(){	return new Chant_Rockthought();}
+	CMMsg stubb=null;
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((affected instanceof MOB)
+		&&(stubb==null)
+		&&(msg.amISource((MOB)affected))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL)
+		&&(msg.othersCode()!=CMMsg.NO_EFFECT)
+		&&(msg.othersMessage()!=null)
+		&&(msg.othersMessage().length()>0)))
+			stubb=msg;
+		super.executeMsg(host,msg);
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((affected instanceof MOB)
+		&&(stubb!=null)
+		&&(((MOB)affected).location()!=null)
+		&&(((MOB)affected).location().okMessage(affected,stubb)))
+			((MOB)affected).location().send((MOB)affected,stubb);
+		return super.tick(ticking,tickID);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -34,9 +59,13 @@ public class Chant_Plague extends Chant
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					Ability A=CMClass.getAbility("Disease_Plague");
-					if(A!=null)
-						return A.invoke(mob,target,auto);
+					stubb=null;
+					success=maliciousAffect(mob,target,20,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0));
+					if(success)
+					{
+						if(target.isInCombat()) target.makePeace();
+						target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) stubborn.");
+					}
 				}
 			}
 		}

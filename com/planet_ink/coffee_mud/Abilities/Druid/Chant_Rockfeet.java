@@ -24,7 +24,7 @@ public class Chant_Rockfeet extends Chant
 		if(affected instanceof MOB)
 			M=(MOB)affected;
 		super.unInvoke();
-		if((canBeUninvoked())&&(!M.amDead()))
+		if((canBeUninvoked())&&(M!=null)&&(!M.amDead()))
 			M.tell("Your hands and feet don't seem so heavy any more.");
 	}
 

@@ -151,7 +151,7 @@ public class HTTPserver extends Thread
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
-			Log.sysOut(getName(),"HTTPserver (c)2002 Jeff Kamenek");
+			//Log.sysOut(getName(),"HTTPserver (c)2002 Jeff Kamenek");
 		}
 
 		return true;
@@ -278,7 +278,7 @@ public class HTTPserver extends Thread
 		{
 		}
 
-		Log.sysOut(getName(),"Thread stopped!");
+		//Log.sysOut(getName(),"Thread stopped!");
 	}
 
 

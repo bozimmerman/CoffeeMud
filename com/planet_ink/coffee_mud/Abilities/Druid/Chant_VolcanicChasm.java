@@ -5,47 +5,61 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chant_AcidRain extends Chant
+public class Chant_VolcanicChasm extends Chant
 {
-	public String ID() { return "Chant_AcidRain"; }
-	public String name(){ return "Acid Rain";}
+	public String ID() { return "Chant_VolcanicChasm"; }
+	public String name(){ return "Volcanic Chasm";}
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_AcidRain();}
+	public Environmental newInstance(){	return new Chant_VolcanicChasm();}
 
-	public boolean isRaining(Room R)
-	{
-		if((R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_RAIN)
-		||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_SLEET)
-		||(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_THUNDERSTORM))
-			return true;
-		return false;
-	}
-	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
 			Room R=(Room)affected;
-			if(isRaining(R))
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB M=R.fetchInhabitant(i);
-				if((M!=null)&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_ACID)))
-					MUDFight.postDamage(invoker(),M,this,Dice.roll(1,M.envStats().level(),1),CMMsg.MASK_GENERAL|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid rain <DAMAGE> <T-NAME>!");
+				if((M!=null)&&(Dice.rollPercentage()>M.charStats().getSave(CharStats.SAVE_FIRE)))
+					MUDFight.postDamage(invoker(),M,this,Dice.roll(1,M.envStats().level(),1),CMMsg.MASK_GENERAL|CMMsg.TYP_FIRE,Weapon.TYPE_MELTING,"The extreme heat <DAMAGE> <T-NAME>!");
+			}
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.fetchItem(i);
+				if((I!=null)&&(!Sense.isOnFire(I)))
+				{
+					Ability A=CMClass.getAbility("Burning");
+					if(A!=null)	A.invoke(invoker(),I,true);
+				}
 			}
 		}
 		return true;
+	}
+	
+	protected boolean checked=false;
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((!checked)
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(affected instanceof Room))
+		{
+			checked=true;
+			if(!CMClass.ThreadEngine().isTicking(this,-1))
+				CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_SPELL_AFFECT,1);
+		}
+		super.executeMsg(host,msg);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-		if(!isRaining(target))
+		if((!auto)
+		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
 		{
-			mob.tell("This chant requires some rain.");
+			mob.tell("This chant only works in caves.");
 			return false;
 		}
 
@@ -64,7 +78,7 @@ public class Chant_AcidRain extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the rain.^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> chant(s) to the walls.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -76,13 +90,13 @@ public class Chant_AcidRain extends Chant
 						if((M!=null)&&(mob!=M))
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid rain starts pouring from the sky!");
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Flames and sulfurous steam leap from cracks opening around you!");
 					maliciousAffect(mob,target,0,-1);
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) to the rain, but the magic fades.");
+			return maliciousFizzle(mob,target,"<S-NAME> chant(s) the walls, but the magic fades.");
 		// return whether it worked
 		return success;
 	}

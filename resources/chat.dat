@@ -1,15 +1,9 @@
-#! /home/usrb/cbusch/bin/chat
-#Change the above line to where chat is located. If you using this 
-#as a stand alone script.
 #WARNING this file may contain offensive material!!!
 
-"Chat by Chris Busch
-"copyright 1993 all rights reserved
-"Includes and Socials by Jeremy Vyska
+"Chat Data by Chris Busch & Jeremy Vyska
+#copyright 1993 all rights reserved
+#Includes and Socials by Jeremy Vyska
 #cbusch@d.umn.edu
-#Please do not remove the above copyright.
-
-#Please see the doc file associated with this program.
 
 #There are several "operators" available:
 #  pattern matching:     Which work only in ( string | string & (str ~ str))
