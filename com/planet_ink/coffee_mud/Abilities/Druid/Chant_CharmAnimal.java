@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_CharmAnimal extends Chant
 {
 	public String ID() { return "Chant_CharmAnimal"; }
-	public String name(){ return "Calm Animal";}
+	public String name(){ return "Charm Animal";}
 	public String displayText(){return "(Charmed)";}
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}
