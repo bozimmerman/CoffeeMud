@@ -123,7 +123,7 @@ public class CoffeeTables
 		}
 	}
 	
-	public static void update(MOB mob, int type)
+	public static void update()
 	{
 		if(todays!=null)
 			CMClass.DBEngine().DBUpdateStat(todays.startTime(),todays.data());
