@@ -33,7 +33,9 @@ public class Log
 	* @param NA
 	* @return NA
 	*/
-	public static void Initialize(String newSYSMSGS, String newERRMSGS, String newDBGMSGS)
+	public static void Initialize(String newSYSMSGS, 
+								  String newERRMSGS, 
+								  String newDBGMSGS)
 	{
 		sysMsgs=newSYSMSGS;
 		errMsgs=newERRMSGS;
@@ -74,10 +76,10 @@ public class Log
 	* @param NA
 	* @return NA
 	*/
-	public static void startLogFiles()
+	public static void startLogFiles(int numberOfLogs)
 	{
 		// ===== pass in a null to force the temp directory
-		startLogFiles(null);
+		startLogFiles(null,numberOfLogs);
 	}
 	
 	/**
@@ -87,7 +89,7 @@ public class Log
 	* @param dirPath the place to create the file
 	* @return NA
 	*/
-	public static void startLogFiles(String dirPath)
+	public static void startLogFiles(String dirPath, int numberOfLogs)
 	{
 		try
 		{
@@ -115,6 +117,24 @@ public class Log
 			
 			// initializes the logging objects
 			systemOutWriter=new PrintWriter(System.out,true);
+			if(numberOfLogs>1)
+			{
+				try{ 
+					File f=new File("mud"+(numberOfLogs-1)+".log"); 
+					if(f.exists()) 
+						f.delete();
+				}catch(Exception e){}
+				for(int i=numberOfLogs-1;i>0;i--)
+				{
+					String inum=(i>0)?(""+i):"";
+					String inumm1=(i>1)?(""+(i-1)):"";
+					try{ 
+						File f=new File("mud"+inumm1+".log"); 
+						if(f.exists()) 
+							f.renameTo(new File("mud"+inum+".log"));
+					}catch(Exception e){}
+				}
+			}
 			File fileOut=new File("mud.log");
 			filePath = fileOut.getAbsolutePath();
 			FileOutputStream fileStream=new FileOutputStream(fileOut);

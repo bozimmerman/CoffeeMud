@@ -305,9 +305,9 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public int maxRange()
 	{
-		if(Util.isSet(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMAXRANGE))
-			return 100;
-		else
+		//if(Util.isSet(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMAXRANGE))
+		//	return 100;
+		//else
 			return maxRange;
 	}
 	public void setRanges(int min, int max){minRange=min;maxRange=max;}

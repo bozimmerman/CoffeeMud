@@ -16,7 +16,7 @@ public class MUD extends Thread implements MudHost
 {
 	public static final float HOST_VERSION_MAJOR=(float)4.2;
 	public static final long  HOST_VERSION_MINOR=2;
-
+	
 	public static boolean keepDown=true;
 	public static String execExternalCommand=null;
 	public static SaveThread saveThread=null;
@@ -750,7 +750,6 @@ public class MUD extends Thread implements MudHost
 
 	public static void main(String a[]) throws IOException
 	{
-		Log.startLogFiles();
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,false);
 		CommonStrings.setVar(CommonStrings.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
 		CMClass.registerEngines(new DBInterface(),new ServiceEngine());
@@ -785,6 +784,7 @@ public class MUD extends Thread implements MudHost
 			{
 				if (!loadPropPage(iniFile))
 				{
+					Log.startLogFiles(1);
 					Log.errOut("MUD","ERROR: Unable to read ini file.");
 					System.out.println("MUD/ERROR: Unable to read ini file.");
 					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"A terminal error has occured!");
@@ -795,7 +795,10 @@ public class MUD extends Thread implements MudHost
 					CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Booting");
 				}
 				if(page!=null)
+				{
+					Log.startLogFiles(page.getInt("NUMLOGS"));
 					Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
+				}
 
 				System.out.println();
 				Log.sysOut("MUD","CoffeeMud v"+CommonStrings.getVar(CommonStrings.SYSTEM_MUDVER));
