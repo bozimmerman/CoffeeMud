@@ -59,18 +59,16 @@ public class GateGuard extends StdBehavior
 		super.tick(ticking,tickID);
 
 		if(tickID!=Host.MOB_TICK) return;
-		if(!canFreelyBehaveNormal(ticking)) return;
-		MOB mob=(MOB)ticking;
-		int dir=findGate(mob);
-		if(dir<0) return;
-		Exit e=mob.location().getExitInDir(dir);
-		int numPlayers=mob.location().numPCInhabitants();
-		boolean nightTime=(mob.location().getArea().getTODCode()==Area.TIME_NIGHT);
 		tickTock++;
-		if(tickTock>2)
+		if(tickTock>1)
 		{
-			tickTock=0;
-			if(nightTime)
+			if(!canFreelyBehaveNormal(ticking)) return;
+			MOB mob=(MOB)ticking;
+			int dir=findGate(mob);
+			if(dir<0) return;
+			Exit e=mob.location().getExitInDir(dir);
+			int numPlayers=mob.location().numPCInhabitants();
+			if((mob.location().getArea().getTODCode()==Area.TIME_NIGHT))
 			{
 				if((!e.isLocked())&&(e.hasALock()))
 				{
@@ -102,7 +100,7 @@ public class GateGuard extends StdBehavior
 				else
 				if((numPlayers==0)&&(e.isOpen()))
 				{
-					FullMsg msg=new FullMsg(mob,e,Affect.MSG_OPEN,"<S-NAME> close(s) <T-NAME>.");
+					FullMsg msg=new FullMsg(mob,e,Affect.MSG_CLOSE,"<S-NAME> close(s) <T-NAME>.");
 					if(mob.location().okAffect(msg))
 						ExternalPlay.roomAffectFully(msg,mob.location(),dir);
 				}

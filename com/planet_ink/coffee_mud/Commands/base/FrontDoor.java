@@ -354,7 +354,6 @@ public class FrontDoor
 				mob.baseState().setMovement(100);
 				mob.baseState().setMana(100);
 
-				mob.setStartRoom(CMMap.startRoom());
 				Item r=(Item)CMClass.getItem("Ration");
 				Item w=(Item)CMClass.getItem("Waterskin");
 				Item t=(Item)CMClass.getItem("Torch");
@@ -392,7 +391,7 @@ public class FrontDoor
 					break;
 				}
 				mob.baseCharStats().getCurrentClass().outfit(mob);
-				mob.bringToLife(mob.location(),true);
+				mob.bringToLife(mob.getStartRoom(),true);
 				ExternalPlay.DBCreateCharacter(mob);
 				if(CMMap.MOBs.get(mob.ID())==null)
 					CMMap.MOBs.put(mob.ID(),mob);

@@ -63,16 +63,17 @@ public class StdJournal extends StdItem
 					which=-1;
 					entry.setCharAt(0,' ');
 				}
-				if((entry.charAt(0)=='*')||(mob.isASysOp(null)))
+				if((entry.charAt(0)=='*')
+				   ||(mob.isASysOp(null)))
 				{
 					mineAble=true;
 					entry.setCharAt(0,' ');
 				}
 				mob.tell(entry.toString()+"\n\r");
 				if((entry.toString().trim().length()>0)
-				   &&(which>0)
-				   &&((envStats().level()<=mob.envStats().level()))
-					||(mob.isASysOp(null)))
+				&&(which>0)
+				&&((envStats().level()<=mob.envStats().level())
+				 	||(mob.isASysOp(null))))
 				{
 					try
 					{

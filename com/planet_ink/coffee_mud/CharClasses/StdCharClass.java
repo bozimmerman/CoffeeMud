@@ -55,7 +55,7 @@ public class StdCharClass implements CharClass
 			if(mob.getTrains()<1)
 			{
 				if(!quiet)
-					mob.tell("You need a training point to become a "+name()+".");
+					mob.tell("You need a training session to become a "+name()+".");
 				return false;
 			}
 		}
@@ -418,12 +418,12 @@ public class StdCharClass implements CharClass
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 		theNews.append("^H" + practiceGain+"^N practice " +
-			( practiceGain != 1? "sessions" : "session" ) + ", ");
+			( practiceGain != 1? "points" : "point" ) + ", ");
 
 		int trainGain=1;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^N training point.\n\r^N");
+		theNews.append("and ^H"+trainGain+"^N training sessions.\n\r^N");
 
 		mob.tell(theNews.toString());
 		

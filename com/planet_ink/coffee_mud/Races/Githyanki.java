@@ -11,7 +11,7 @@ public class Githyanki extends Humanoid
 	public String name(){ return "Githyanki"; }
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
-	public String racialCategory(){return "Githyanki-kin";}
+	public String racialCategory(){return "Gith";}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

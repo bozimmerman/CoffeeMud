@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 public class CMMap
 {
@@ -8,12 +10,9 @@ public class CMMap
 	
 	public static Hashtable MOBs=new Hashtable();
 
-	private static Room startRoom=null;
-	
+	private static Hashtable startRooms=new Hashtable();
+	private static Hashtable deathRooms=new Hashtable();
 
-	public static Room startRoom(){return startRoom;}
-	public static void setStartRoom(Room newRoom)
-	{ startRoom=newRoom;}
 
 	public static int numRooms(){return map.size();}
 	public static void addRoom(Room newOne){map.addElement(newOne);theWorldChanged();}
@@ -46,22 +45,97 @@ public class CMMap
 	public static Room getRoom(int x){try{return (Room)map.elementAt(x);}catch(Exception e){};return null;}
 	public static Vector getRoomVector(){return map;}
 	
-	
 	public static int numAreas(){return AREAS.size();}
 	public static void addArea(Area newOne){AREAS.addElement(newOne);}
 	public static void delArea(Area oneToDel){try{AREAS.removeElement(oneToDel);}catch(Exception e){}}
 	public static Area getArea(int x){try{return (Area)AREAS.elementAt(x);}catch(Exception e){};return null;}
 	public static Vector getAreaVector(){return AREAS;}
 	
-	public static void setStartRoom(String preferred)
+	public static Room getStartRoom(MOB mob)
 	{
-		startRoom=getRoom(preferred);
-		if(startRoom==null)
-			startRoom=getRoom("START");
-		if(startRoom==null)
-			startRoom=getRoom("Start");
-		if((startRoom==null)&&(map.size()>0))
-			startRoom=(Room)map.elementAt(0);
+		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
+		race.replace(' ','_');
+		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
+		String roomID=(String)startRooms.get(race);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)startRooms.get(align);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)startRooms.get("ALL");
+		
+		Room room=null;
+		if((roomID!=null)&&(roomID.length()>0))
+			room=getRoom(roomID);
+		if(room==null)
+			room=getRoom("START");
+		if((room==null)&&(map.size()>0))
+			room=(Room)map.firstElement();
+		return room;
+	}
+	
+	public static Room getDeathRoom(MOB mob)
+	{
+		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
+		race.replace(' ','_');
+		String align=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase();
+		String roomID=(String)deathRooms.get(race);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)deathRooms.get(align);
+		if((roomID==null)||(roomID.length()==0))
+			roomID=(String)deathRooms.get("ALL");
+		
+		Room room=null;
+		if(roomID.equalsIgnoreCase("start"))
+			room=getStartRoom(mob);
+		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
+			room=getRoom(roomID);
+		if(room==null)
+			room=getStartRoom(mob);
+		if((room==null)&&(map.size()>0))
+			room=(Room)map.firstElement();
+		return room;
+	}
+	
+	private static void pageRooms(INI page, Hashtable table, String start)
+	{
+		table=new Hashtable();
+		for(int r=0;r<CMClass.races.size();r++)
+		{
+			Race R=(Race)CMClass.races.elementAt(r);
+			String cat=R.racialCategory().toUpperCase();
+			cat.replace(' ','_');
+			String thisOne=page.getProperty(start+"_"+R.racialCategory().toUpperCase());
+			if((thisOne!=null)&&(thisOne.length()>0))
+				table.put(R.racialCategory(),thisOne);
+		}
+		String thisOne=page.getProperty(start+"_GOOD");
+		if((thisOne!=null)&&(thisOne.length()>0))
+			table.put("GOOD",thisOne);
+		thisOne=page.getProperty(start+"_NEUTRAL");
+		if((thisOne!=null)&&(thisOne.length()>0))
+			table.put("NEUTRAL",thisOne);
+		thisOne=page.getProperty(start+"_EVIL");
+		if((thisOne!=null)&&(thisOne.length()>0))
+			table.put("EVIL",thisOne);
+		
+		thisOne=page.getProperty(start);
+		if((thisOne!=null)&&(thisOne.length()>0))
+			table.put("ALL",thisOne);
+		else
+		{
+			thisOne=page.getProperty(start+"_ALL");
+			if((thisOne!=null)&&(thisOne.length()>0))
+				table.put("ALL",thisOne);
+		}
+	}
+	
+	public static void initStartRooms(INI page)
+	{
+		pageRooms(page,startRooms,"START");
+	}
+
+	public static void initDeathRooms(INI page)
+	{
+		pageRooms(page,deathRooms,"DEATH");
 	}
 
 	public static Room getRoom(String calledThis)
@@ -80,7 +154,8 @@ public class CMMap
 		map=new Vector();
 		AREAS=new Vector();
 		MOBs=new Hashtable();
-		startRoom=null;
+		startRooms=new Hashtable();
+		deathRooms=new Hashtable();
 	}
 	
 	private static void theWorldChanged()

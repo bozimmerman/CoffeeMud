@@ -16,49 +16,35 @@ import com.planet_ink.coffee_mud.web.*;
 
 public class MUD extends Thread implements Host
 {
-	public String nameID="My Mud";
-	public SaveThread saveThread=null;
-	public INI page=null;
-	public boolean keepDown=true;
-	public String execExternalCommand=null;
-
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
 	public static final float HOST_VERSION_MINOR=(float)5.7;
 	
-	private boolean acceptConnections=false;
-	private String offlineReason=new String("UNKNOWN");
-	public boolean isOK = false;
+	public static String nameID="My Mud";
+	public static boolean keepDown=true;
+	public static String execExternalCommand=null;
+	public static SaveThread saveThread=null;
+	public static INI page=null;
+	public static INI webCommon=null;
+	public static Server imserver=null;
+	public static HTTPserver webServerThread=null;
+	public static HTTPserver adminServerThread=null;
+	public static Vector mudThreads=new Vector();
+	private static String offlineReason=new String("UNKNOWN");
 	
-	public ServerSocket servsock=null;
-	public Server imserver=null;
-	
-	public INI webCommon=null;
-	public HTTPserver webServerThread=null;
-	public HTTPserver adminServerThread=null;
+	public static boolean serverIsRunning = false;
+	public static boolean isOK = false;
 	public final static String ServerVersionString = "CoffeeMUD-MainServer/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
-	public boolean serverIsRunning = false;
+	
+	public boolean acceptConnections=false;
+	public int port=4444;
+	ServerSocket servsock=null;
 
-	public MUD(String mudName)
+	public MUD()
 	{
 		super("MUD-MainServer");
-
-		isOK = false;
-		nameID=mudName;
-		
-		if (!loadPropPage())
-		{
-			Log.errOut("MUD","ERROR: Unable to read ini file.");
-			offlineReason=new String("A terminal error has occured!");
-		}
-		else
-		{
-			isOK = true;
-			offlineReason=new String("Booting");
-		}
-		acceptConnections = false;
 	}	
 	
-	private boolean loadPropPage()
+	private static boolean loadPropPage()
 	{
 		if (page==null || !page.loaded)
 		{
@@ -69,7 +55,7 @@ public class MUD extends Thread implements Host
 		return true;
 	}
 
-	private boolean loadWebCommonPropPage()
+	private static boolean loadWebCommonPropPage()
 	{
 		if (webCommon==null || !webCommon.loaded)
 		{
@@ -85,7 +71,7 @@ public class MUD extends Thread implements Host
 		return webCommon;
 	}
 
-	public void fatalStartupError(int type)
+	public static void fatalStartupError(Thread t, int type)
 	{
 		String str=null;
 		switch(type)
@@ -110,7 +96,7 @@ public class MUD extends Thread implements Host
 			break;
 		}
 		Log.errOut("MUD",str);
-		this.interrupt();
+		t.interrupt();
 	}
 	
 
@@ -166,18 +152,18 @@ public class MUD extends Thread implements Host
     }
 
  	
-	private boolean initHost()
+	private static boolean initHost(Thread t)
 	{
 
 		if (!isOK)
 		{
-			this.interrupt();
+			t.interrupt();
 			return false;
 		}
 
 		if ((page == null) || (!page.loaded))
 		{
-			fatalStartupError(1);
+			fatalStartupError(t,1);
 			return false;
 		}
 
@@ -187,7 +173,7 @@ public class MUD extends Thread implements Host
 		}
 		if (!isOK)
 		{
-			fatalStartupError(5);
+			fatalStartupError(t,5);
 			return false;
 		}
 		
@@ -195,9 +181,9 @@ public class MUD extends Thread implements Host
 		{
 			if (loadWebCommonPropPage())
 			{
-				webServerThread = new HTTPserver(this,"pub");
+				webServerThread = new HTTPserver((Host)mudThreads.firstElement(),"pub");
 				webServerThread.start();
-				adminServerThread = new HTTPserver(this,"admin");
+				adminServerThread = new HTTPserver((Host)mudThreads.firstElement(),"admin");
 				adminServerThread.start();
 				if(!HTTPserver.loadWebMacros())
 					Log.errOut("MUD","Unable to loadWebMacros");
@@ -229,12 +215,12 @@ public class MUD extends Thread implements Host
 		offlineReason=new String("Booting: loading base classes");
 		if(!CMClass.loadClasses(page))
 		{
-			fatalStartupError(0);
+			fatalStartupError(t,0);
 			return false;
 		}
 
 		int numChannelsLoaded=commandProcessor.channels.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"),commandProcessor.commandSet);
-		commandProcessor.myHost=this;
+		commandProcessor.myHost=(Host)mudThreads.firstElement();
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
 		offlineReason=new String("Booting: loading socials");
@@ -246,16 +232,18 @@ public class MUD extends Thread implements Host
 
 		Log.sysOut("MUD","Loading map...");
 		offlineReason=new String("Booting: loading rooms (0% completed).");
-		RoomLoader.DBRead(this, CMMap.getAreaVector(),CMMap.getRoomVector());
+		RoomLoader.DBRead((Host)mudThreads.firstElement(), CMMap.getAreaVector(),CMMap.getRoomVector());
 		offlineReason=new String("Booting: filling map.");
 		for(int a=0;a<CMMap.numAreas();a++)
 			CMMap.getArea(a).fillInAreaRooms();
 		Log.sysOut("MUD","Mapped rooms      : "+CMMap.numRooms()+" in "+CMMap.numAreas()+" areas");
+		CMMap.initStartRooms(page);
+		CMMap.initDeathRooms(page);
+		
 		if(CMMap.numRooms()==0)
 		{
 			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
-			String id=page.getStr("START");
-			if(id.length()==0) id="START";
+			String id="START";
 			Area newArea=ExternalPlay.DBCreateArea("New Area","StdArea");
 			Room room=CMClass.getLocale("StdRoom");
 			room.setArea(newArea);
@@ -272,18 +260,16 @@ public class MUD extends Thread implements Host
 		offlineReason=new String("Booting: readying for connections.");
 		try
 		{
-			CMMap.setStartRoom(page.getStr("START"));
-
 			commandProcessor.commandSet.loadAbilities(CMClass.abilities);
 
 			saveThread=new SaveThread();
 			saveThread.start();
 			Log.sysOut("MUD","Save thread started");
 		}
-		catch (Throwable t)
+		catch (Throwable th)
 		{
 			Log.sysOut("MUD","CoffeeMud Server initHost() failed");
-			fatalStartupError(4);
+			fatalStartupError(t,4);
 			return false;
 		}
 		
@@ -294,7 +280,11 @@ public class MUD extends Thread implements Host
 				String playstate=page.getStr("I3STATE");
 				if((playstate==null)||(playstate.length()==0))
 					playstate="Open to the public";
-				IMudInterface imud=new IMudInterface(nameID,getVer(),getPort(),playstate,commandProcessor.channels.iChannelsArray());
+				IMudInterface imud=new IMudInterface(nameID,
+													 getGlobalVer(),
+													 ((MUD)mudThreads.firstElement()).getPort(),
+													 playstate,
+													 commandProcessor.channels.iChannelsArray());
 				imserver=new Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;
@@ -307,7 +297,8 @@ public class MUD extends Thread implements Host
 		}
 		
 
-		acceptConnections = true;
+		for(int i=0;i<mudThreads.size();i++)
+			((MUD)mudThreads.elementAt(i)).acceptConnections=true;
 		Log.sysOut("MUD","Initialization complete.");
 		ExternalPlay.setSystemStarted();
 		offlineReason=new String("UNKNOWN");
@@ -322,11 +313,6 @@ public class MUD extends Thread implements Host
 		serverIsRunning = false;
 
 		if (!isOK)	return;
-		
-		System.out.println();
-		Log.sysOut("MUD",getVer());
-		Log.sysOut("MUD","(C) 2000-2003 Bo Zimmerman");
-		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		
 		if ((page == null) || (!page.loaded))
 		{
@@ -354,9 +340,9 @@ public class MUD extends Thread implements Host
 		
 		try
 		{
-			servsock=new ServerSocket(page.getInt("PORT"), q_len, bindAddr);
+			servsock=new ServerSocket(port, q_len, bindAddr);
 
-			Log.sysOut("MUD","MUD Server started on port: "+page.getInt("PORT"));
+			Log.sysOut("MUD","MUD Server started on port: "+port);
 			if (bindAddr != null)
 				Log.sysOut("MUD","MUD Server bound to: "+bindAddr.toString());
 			serverIsRunning = true;
@@ -415,33 +401,22 @@ public class MUD extends Thread implements Host
 		{
 		}
 
-		Log.sysOut("MUD","CoffeeMud Server thread stopped!");
+		Log.sysOut("MUD","CoffeeMud Server on port "+port+" stopped!");
 	}
-
-	
-	public void interrupt()
-	{
-		if(servsock!=null)
-		{
-			try
-			{
-				servsock.close();
-				servsock = null;
-			}
-			catch(IOException e)
-			{
-			}
-		}
-		super.interrupt();
-	}
-
 
 	public void shutdown(Session S, boolean keepItDown, String externalCommand)
+	{
+		globalShutdown(S,keepItDown,externalCommand);
+		interrupt(); // kill the damn archon thread.
+	}
+	
+	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		if(saveThread==null) return;
 
 		offlineReason=new String("Shutting down" + (keepItDown? "..." : " and restarting...") );
-		acceptConnections = false;
+		for(int i=0;i<mudThreads.size();i++)
+			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
 		Log.sysOut("MUD","Host will now reject new connections.");
 		S.println("Host will now reject new connections.");
 
@@ -535,13 +510,44 @@ public class MUD extends Thread implements Host
 		System.runFinalization();
 		try{Thread.sleep(500);}catch(Exception i){}
 
-		this.keepDown=keepItDown;
-		this.execExternalCommand=externalCommand;
+		keepDown=keepItDown;
+		execExternalCommand=externalCommand;
 		offlineReason=new String("Shutdown: you are the special lucky chosen one!");
-		this.interrupt();
+		for(int m=mudThreads.size()-1;m>=0;m--)
+			((MUD)mudThreads.elementAt(m)).interrupt();
 	}
 
-
+	
+	public void interrupt()
+	{
+		if(servsock!=null)
+		{
+			try
+			{
+				servsock.close();
+				servsock = null;
+			}
+			catch(IOException e)
+			{
+			}
+		}
+		super.interrupt();
+	}
+	
+	public static int activeCount(ThreadGroup tGroup)
+	{
+		int realAC=0;
+		int ac = tGroup.activeCount();
+		Thread tArray[] = new Thread [ac+1];
+		tGroup.enumerate(tArray);
+		for (int i = 0; i<ac; ++i)
+		{
+			if (tArray[i] != null && tArray[i].isAlive())
+				realAC++;
+		}
+		return realAC;
+	}
+	
 	public static void threadList(ThreadGroup tGroup)
 	{
 		int ac = tGroup.activeCount();
@@ -554,9 +560,13 @@ public class MUD extends Thread implements Host
 		}
 	}
 	
-	public String getVer()
+	public static String getGlobalVer()
 	{
 		return "CoffeeMud v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR;
+	}
+	public String getVer()
+	{
+		return getGlobalVer();
 	}
 
 	public boolean isGameRunning()
@@ -566,11 +576,11 @@ public class MUD extends Thread implements Host
 	
 	public int getPort()
 	{
-		return page.getInt("PORT");
+		return port;
 	}
 	public String getPortStr()
 	{
-		return page.getStr("PORT");
+		return ""+port;
 	}
 	
 	public String ServerVersionString()
@@ -613,29 +623,61 @@ public class MUD extends Thread implements Host
 		{
 			while(true)
 			{
-				MUD mud=new MUD(nameID);
-				mud.start();
-				mud.initHost();
-				mud.join();
-				System.gc();
-				System.runFinalization();
-				boolean keepDown=mud.keepDown;
-				String external=mud.execExternalCommand;
-				mud=null;
-				System.gc();
-				System.runFinalization();
-				if(Thread.activeCount()>2)
+				isOK = false;
+				if (!loadPropPage())
 				{
-					Log.sysOut("MUD","WARNING: " + (Thread.activeCount()) +" other thread(s) are still active!");
+					Log.errOut("MUD","ERROR: Unable to read ini file.");
+					offlineReason=new String("A terminal error has occured!");
+				}
+				else
+				{
+					isOK = true;
+					offlineReason=new String("Booting");
+				}
+				
+				System.out.println();
+				Log.sysOut("MUD",getGlobalVer());
+				Log.sysOut("MUD","(C) 2000-2003 Bo Zimmerman");
+				Log.sysOut("MUD","www.zimmers.net/home/mud.html");
+		
+				mudThreads=new Vector();
+				String ports=page.getProperty("PORT");
+				int pdex=ports.indexOf(",");
+				while(pdex>0)
+				{
+					MUD mud=new MUD();
+					mud.acceptConnections=false;
+					mud.port=Util.s_int(ports.substring(0,pdex));
+					ports=ports.substring(pdex+1);
+					mud.start();
+					mudThreads.addElement(mud);
+					pdex=ports.indexOf(",");
+				}
+				MUD mud=new MUD();
+				mud.acceptConnections=false;
+				mud.port=Util.s_int(ports);
+				mud.start();
+				mudThreads.addElement(mud);
+				
+				initHost(Thread.currentThread());
+				((MUD)mudThreads.firstElement()).join();
+				
+				System.gc();
+				System.runFinalization();
+				
+				if(activeCount(Thread.currentThread().getThreadGroup())>1)
+				{
+					Log.sysOut("MUD","WARNING: " + activeCount(Thread.currentThread().getThreadGroup()) +" other thread(s) are still active!");
 					threadList(Thread.currentThread().getThreadGroup());
 				}
 				if(keepDown)
-					break;
-				if(external!=null)
+				   break;
+				if(execExternalCommand!=null)
 				{
 					//Runtime r=Runtime.getRuntime();
 					//Process p=r.exec(external);
-					Log.sysOut("Attempted to execute '"+external+"'.");
+					Log.sysOut("Attempted to execute '"+execExternalCommand+"'.");
+					execExternalCommand=null;
 					break;
 				}
 			}

@@ -227,7 +227,7 @@ public class BasicSenses
 		else
 		if(mob.getTrains()==0)
 		{
-			mob.tell("You don't seem to have enough training points to do that.");
+			mob.tell("You don't seem to have enough training sessions to do that.");
 			return;
 		}
 

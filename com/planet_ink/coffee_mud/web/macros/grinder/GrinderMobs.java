@@ -96,7 +96,7 @@ public class GrinderMobs
 						  "SPEED","ATTACK","DAMAGE","ARMOR",
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-						  "ISBANKER","COININT","ITEMINT","BANKNAME"};
+						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -199,6 +199,10 @@ public class GrinderMobs
 			case 27: // bank name
 				if(M instanceof Banker)
 					((Banker)M).setBankChain(old);
+				break;
+			case 28: // shopkeeper prejudices
+				if(M instanceof ShopKeeper)
+					((ShopKeeper)M).setPrejudiceFactors(old);
 				break;
 			}
 		}

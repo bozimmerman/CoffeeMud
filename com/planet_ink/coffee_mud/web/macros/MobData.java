@@ -322,7 +322,7 @@ public class MobData extends StdWebMacro
 						  "SPEED","ATTACK","DAMAGE","ARMOR",
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-						  "ISBANKER","COININT","ITEMINT","BANKNAME"};
+						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -529,6 +529,11 @@ public class MobData extends StdWebMacro
 			case 27: // bank name
 				if((firstTime)&&(M instanceof Banker))
 					old=""+((Banker)M).bankChain();
+				str.append(old);
+				break;
+			case 28:
+				if((firstTime)&&(M instanceof ShopKeeper))
+					old=((ShopKeeper)M).prejudiceFactors();
 				str.append(old);
 				break;
 			}

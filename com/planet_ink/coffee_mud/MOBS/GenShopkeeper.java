@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class GenShopkeeper extends StdShopKeeper
 {
+	private String PrejudiceFactors="";
 
 	public GenShopkeeper()
 	{
@@ -20,6 +21,8 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 	public boolean isGeneric(){return true;}
 
+	public String prejudiceFactors(){return PrejudiceFactors;}
+	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
 	public String text()
 	{
 		miscText=Generic.getPropertiesStr(this,false);

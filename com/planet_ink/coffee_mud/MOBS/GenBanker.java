@@ -6,8 +6,8 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 public class GenBanker extends StdBanker
 {
-
-	String bankChain="GenBank";
+	private String PrejudiceFactors="";
+	private String bankChain="GenBank";
 	
 	public GenBanker()
 	{
@@ -28,6 +28,8 @@ public class GenBanker extends StdBanker
 		return super.text();
 	}
 
+	public String prejudiceFactors(){return PrejudiceFactors;}
+	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
 	public String bankChain(){return bankChain;}
 	public void setBankChain(String name){bankChain=name;}
 	

@@ -43,6 +43,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public int whatIsSold(){return ShopKeeper.DEAL_BANKER;}
 	public void setWhatIsSold(int newSellCode){whatISell=ShopKeeper.DEAL_BANKER;}
+	public String prejudiceFactors(){return "";}
+	public void setPrejudiceFactors(String factors){}
 	
 	public String bankChain(){return text();}
 	public void setBankChain(String name){setMiscText(name);}
@@ -52,7 +54,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		String name=thisThang.name();
 		if(thisThang instanceof Coins) name="COINS";
 		ExternalPlay.DBWriteJournal(bankChain(),mob,CMClass.className(thisThang),name,Generic.getPropertiesStr(thisThang,true),-1);
-	};
+	}
 	public void delDepositInventory(String mob, Item thisThang)
 	{
 		Vector V=getDepositInventory(mob);

@@ -41,4 +41,6 @@ public interface ShopKeeper extends MOB
 	public Environmental getStock(String name, MOB mob);
 	public Environmental removeStock(String name, MOB mob);
 	public Item makeChange(MOB banker, MOB customer, int value);
+	public String prejudiceFactors();
+	public void setPrejudiceFactors(String factors);
 }

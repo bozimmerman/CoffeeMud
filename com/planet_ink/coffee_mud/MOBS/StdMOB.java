@@ -417,11 +417,7 @@ public class StdMOB implements MOB
 			resetToMaxState();
 		setMiscText(miscText);
 		if(getStartRoom()==null)
-			setStartRoom(CMMap.startRoom());
-		if(getStartRoom()==null)
-			setStartRoom((Room)CMMap.getRoom("START"));
-		if(getStartRoom()==null)
-			setStartRoom((Room)CMMap.getRoom(0));
+			setStartRoom(isMonster()?newLocation:CMMap.getStartRoom(this));
 		setLocation(newLocation);
 		if(location()==null)
 		{
@@ -626,7 +622,7 @@ public class StdMOB implements MOB
 		}
 		setFollowing(null);
 		if((!isMonster())&&(soulMate()==null))
-			bringToLife(getStartRoom(),true);
+			bringToLife(CMMap.getDeathRoom(this),true);
 		Body.startTicker(deathRoom);
 		deathRoom.recoverRoomStats();
 		return Body;

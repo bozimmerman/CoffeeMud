@@ -594,14 +594,14 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(student.getPractices()<practicesRequired())
 		{
-			teacher.tell(student.name()+" does not have enough practices to learn '"+name()+"'.");
-			student.tell("You do not have enough practices.");
+			teacher.tell(student.name()+" does not have enough practice points to learn '"+name()+"'.");
+			student.tell("You do not have enough practice points.");
 			return false;
 		}
 		if(student.getTrains()<trainsRequired())
 		{
-			teacher.tell(student.name()+" does not have enough training points to learn '"+name()+"'.");
-			student.tell("You do not have enough training points.");
+			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
+			student.tell("You do not have enough training sessions.");
 			return false;
 		}
 		int qLevel=CMAble.qualifyingLevel(student,this);

@@ -305,6 +305,7 @@ public class Generic
 			if(E instanceof ShopKeeper)
 			{
 				text.append(XMLManager.convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
+				text.append(XMLManager.convertXMLtoTag("PREJFC",((ShopKeeper)E).prejudiceFactors()));
 
 				Vector V=((ShopKeeper)E).getUniqueStoreInventory();
 				itemstr=new StringBuffer("");
@@ -960,6 +961,7 @@ public class Generic
 			{
 				ShopKeeper shopmob=(ShopKeeper)E;
 				shopmob.setWhatIsSold(XMLManager.getIntFromPieces(buf,"SELLCD"));
+				shopmob.setPrejudiceFactors(XMLManager.getValFromPieces(buf,"PREJFC"));
 
 				V=XMLManager.getRealContentsFromPieces(buf,"STORE");
 				if(V==null)
