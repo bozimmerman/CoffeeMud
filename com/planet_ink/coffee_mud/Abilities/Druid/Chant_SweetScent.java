@@ -24,7 +24,7 @@ public class Chant_SweetScent extends Chant
 			{
 				Room room=(Room)I.owner();
 				Vector rooms=new Vector();
-				SaucerSupport.getRadiantRooms(room,rooms,true,10);
+				SaucerSupport.getRadiantRooms(room,rooms,true,true,false,null,10);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB M=room.fetchInhabitant(i);

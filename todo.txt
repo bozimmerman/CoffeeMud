@@ -1,5 +1,5 @@
 Misc/Architecture:
-=================
+==================
 add floating num to resources -- whether the item will float
 clan boss deletion automatically assigns a new one
 Programming.html updates: 	need special section for languages, poisons, diseases, traps
@@ -14,6 +14,7 @@ Item Interactivity (Scriptable + socials that require an ITEM target) Tapping yo
 Mortgages (bankers lend large amounts of money at interest, start taking away property if you don't pay up)
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 SMTP capability
+save player affects
 give rooms maximum weight saveable to db
 zapper check on quests and questchats for eligible players
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
@@ -37,10 +38,13 @@ Corpses should note time/manner of death
 maybe doors in your house need to be able to stay in the state you last left them (unless they are SMARTdoors of the future....)
 ability to deposit in someone elses bank account
 
+
+
 New Commands:
 =============
 Push/Pull 
 	should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
+
 
 
 Properties:
@@ -48,6 +52,7 @@ Properties:
 Prop_Employed
 	Allows a MOB to use a general skill whenever a player is present. 
 	For example, making the lumberjack chop if a player enters a room
+
 
 
 Behaviors:
@@ -63,6 +68,7 @@ TaxCollector
 Additions/Updates
 	Arrest -- banned substances (get, drop, eq, etc)
 	Arrest allowing players to bring bountys to the judge.
+
 
 
 Common Skills:
@@ -148,6 +154,7 @@ Additions/Updates
 	paper making Poster, Banner, and Screen.
 	sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that 
 		hold water and people. 
+	pottery--BRICKS converts a clay resource to a stone
 	construct needs to be able to modify door descriptions
 	construct  peephole. a window on a door (sortof)
 	ability to make windows in Construction, Masonry
@@ -161,8 +168,8 @@ Additions/Updates
 	pottery flask, ewer, vase....and then at level 25+current level add a china version of each, so CHINA CUP, etc.
 	MASON and CONSTRUCT WINDOW exits...exits that require the CRAWL command.
 
-	
-	
+
+
 Fighter Skills:
 ==============
 Side Kick
@@ -234,7 +241,7 @@ Strategy
 Fracture
 	Causes damage to enemy armor.
 
-	
+
 
 Thief Skills:
 =============
@@ -396,8 +403,8 @@ Intangibility
 	Ranged attacks do no harm, but will target MOBs behind the target of spell.
 Mystic Light
 	autolighting for personal property
-	
-	
+
+
 
 Prayers/Chants:
 =======
@@ -439,7 +446,7 @@ Wild Mage
 
 
 Diseases:
-===================
+=========
 Vampirism (Change to current)
 	Causes the MOB to need to drink blood.
 	Will starve, despite eating food, hungerless spell, etc., without blood.
@@ -470,7 +477,7 @@ Allergies
 	Nuff said
 
 
-	
+
 Mobs:
 =====
 Hydra
@@ -495,7 +502,6 @@ order to achieve the effect they are going after.   group spells can change room
 
 
 
-
 Items:
 ======
 Mana Batteries
@@ -513,6 +519,7 @@ Joined/linked items
 Items of Slaying  
 	One time use items, instantly slays a race the item was targeted for
 	Crumbles to dust on attack, Whether strike was successful or not
+Crafty bag of common skill items
 
 
 
@@ -521,8 +528,7 @@ High Tech:
 Robots/Cyborgs/Androids
 Worm holes
 FTL travel
-Radioactivity
-	Lots can be done with this.
+Radioactivity Lots can be done with this.
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.

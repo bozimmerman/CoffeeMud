@@ -69,7 +69,10 @@ public class Song_Friendship extends Song
 		if(mob==null) return false;
 		if(mob==invoker) return true;
 		if(mob.amFollowing()!=invoker)
+		{
+			unInvoke();
 			return false;
+		}
 		return true;
 	}
 
@@ -81,6 +84,7 @@ public class Song_Friendship extends Song
 			super.unInvoke();
 			if(mob!=invoker)
 			{
+				mob.setFollowing(null);
 				ExternalPlay.standIfNecessary(mob);
 				if((mob.isMonster())&&(!Sense.isMobile(mob)))
 					CoffeeUtensils.wanderAway(mob,true,true);

@@ -56,7 +56,7 @@ public class PlantLore extends CommonSkill
 					{
 						StringBuffer str=new StringBuffer("");
 						Vector V=new Vector();
-						SaucerSupport.getRadiantRooms(room,V,true,2);
+						SaucerSupport.getRadiantRooms(room,V,true,true,false,null,2);
 						for(int v=0;v<V.size();v++)
 						{
 							Room R=(Room)V.elementAt(v);
