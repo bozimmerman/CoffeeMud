@@ -42,7 +42,12 @@ public class Skill_FalseArrest extends StdAbility
 
 		Behavior B=null;
 		Area A=null;
-		if(mob.location()!=null) B=getArrest(mob.location().getArea());
+		if(mob.location()!=null)
+		{
+			B=getArrest(mob.location().getArea());
+			if((B==null)||(!B.modifyBehavior(mob.location().getArea(),target,new Integer(6))))
+				B=null;
+		}
 
 		if(B==null)
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
@@ -51,7 +56,7 @@ public class Skill_FalseArrest extends StdAbility
 			if(Sense.canAccess(mob,A))
 			{
 				B=getArrest(A);
-				if((B!=null)&&(B.modifyBehavior(A,target,null)))
+				if((B!=null)&&(B.modifyBehavior(A,target,new Integer(6))))
 					break;
 			}
 			B=null;
@@ -79,6 +84,7 @@ public class Skill_FalseArrest extends StdAbility
 		{
 			mob.location().send(mob,msg);
 			Vector V=new Vector();
+			V.addElement(new Integer(1));
 			V.addElement(mob);
 			if(!B.modifyBehavior(A,target,V))
 			{

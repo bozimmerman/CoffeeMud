@@ -29,7 +29,7 @@ public class Thief_SenseLaw extends ThiefSkill
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			MOB M=(MOB)room.fetchInhabitant(m);
-			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(hostArea,M,null)))
+			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(hostArea,M,new Integer(5))))
 				V.addElement(M);
 		}
 		return V;

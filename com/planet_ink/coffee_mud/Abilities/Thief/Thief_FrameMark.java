@@ -51,7 +51,7 @@ public class Thief_FrameMark extends ThiefSkill
 		Behavior B=null;
 		if(mob.location()!=null) B=getArrest(mob.location().getArea());
 		if((B==null)
-		||(!B.modifyBehavior(mob.location().getArea(),mob,null)))
+		||(!B.modifyBehavior(mob.location().getArea(),mob,new Integer(6))))
 		{
 			mob.tell("You aren't wanted for anything here.");
 			return false;
@@ -75,7 +75,10 @@ public class Thief_FrameMark extends ThiefSkill
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			B.modifyBehavior(mob.location().getArea(),mob,target);
+			Vector V=new Vector();
+			V.addElement(new Integer(0));
+			V.addElement(target);
+			B.modifyBehavior(mob.location().getArea(),mob,V);
 		}
 		return success;
 	}

@@ -429,9 +429,13 @@ public class GrinderMap extends GrinderFlatMap
 		             + "height:200px; z-index:1000000" +
 		             "; left: 0px; top: 10px; visibility: show\">");
 		buf.append("<select name=\"layerSelect\" size=\"18\" onChange=\"showSelected()\">");
-		for (int z = minZ; z <= maxZ; z++) 
-		{
-			buf.append("<option value=\"MapLayer" + z + "\">Level " + z + "</option>");
+		for (int z = minZ; z <= maxZ; z++)   
+		{  
+		    buf.append("<option value=\"MapLayer" + z + "\"");  
+		    if(httpReq.getRequestParameter("MAPLAYER").equalsIgnoreCase("MapLayer"+z))
+				buf.append(" SELECTED");  
+		    buf.append(">Level " + z + "</option>");  
+		                          
 		}
 		buf.append("</select></div>");
 		for (int z = 0; z <= maxZ; z++) 

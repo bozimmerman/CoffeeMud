@@ -167,7 +167,7 @@ function checkLocation() {
 	</SCRIPT>
 </head>
 
-@if?!CheckReqParm?MAPSTYLE=@
+@if?CheckReqParm?MAPSTYLE=@
 	<BODY>
 @else@
 	@if?!CheckReqParm?MAPLEVEL=@ 

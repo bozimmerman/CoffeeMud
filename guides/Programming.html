@@ -1566,7 +1566,7 @@ such as Behavior.FLAG_MOBILITY, or Behavior.FLAG_TROUBLEMAKING.&nbsp; The last
 method (grantsAggressivenessTo) says whether or not this method would necessary 
 cause the host mob to attack the mob (M) in the parameter.</FONT></P><PRE>	public void startBehavior(Environmental forMe) 
 	{}
-	public boolean modifyBehavior(MOB mob, Object O)
+	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{ return false; }
 </PRE>
 <P align=left><FONT size=4>The next 

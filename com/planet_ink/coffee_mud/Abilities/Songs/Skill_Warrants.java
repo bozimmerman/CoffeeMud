@@ -41,7 +41,11 @@ public class Skill_Warrants extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				Vector V=new Vector();
-				if(B!=null) B.modifyBehavior(mob.location().getArea(),mob,V);
+				if(B!=null)
+				{
+					V.addElement(new Integer(2));
+					B.modifyBehavior(mob.location().getArea(),mob,V);
+				}
 				if(V.size()==0)
 				{
 					mob.tell("No one is wanted for anything here.");
