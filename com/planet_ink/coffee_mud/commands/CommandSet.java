@@ -120,6 +120,7 @@ public class CommandSet extends Hashtable
 	public static final int POSSESS=108;
 	public static final int GOTO=109;
 	public static final int WIZINV=110;
+	public static final int WEATHER=111;
 
 	public CommandSet()
 	{
@@ -267,6 +268,8 @@ public class CommandSet extends Hashtable
 		put("VER",new Integer(VER));
 		put("WAKE",new Integer(WAKE));
 		put("WEAR",new Integer(WEAR));
+		put("WEATHER",new Integer(WEATHER));
+			put("WEAT",new Integer(WEATHER));
 		put("WEST",new Integer(WEST));
 			put("W",new Integer(WEST));
 		put("WHOIS",new Integer(WHOIS));

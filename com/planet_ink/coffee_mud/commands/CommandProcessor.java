@@ -425,6 +425,9 @@ public class CommandProcessor
 				case CommandSet.WEAR:
 					itemUsage.wear(mob,commands);
 					break;
+				case CommandSet.WEATHER:
+					mob.tell(mob.location().getArea().weatherDescription(mob.location()));
+					break;
 				case CommandSet.WEST:
 					movement.move(mob,Directions.WEST,false);
 					break;
