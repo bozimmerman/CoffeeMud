@@ -109,7 +109,7 @@ public class Spell_FindFamiliar extends Spell
 			break;
 		case 6:
 			newMOB.setName("an owl");
-			newMOB.setDisplayText("a own is flying around here");
+			newMOB.setDisplayText("an owl is flying around here");
 			newMOB.setDescription("He looks wise beyond his years.");
 			newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Owl"));
