@@ -286,6 +286,8 @@ public class Cobbling extends CraftingSkill
 												0,null,null,
 												misctype.equalsIgnoreCase("BUNDLE"),
 												autoGenerate);
+			if(data==null) return false;
+			woodRequired=data[0][FOUND_AMT];
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;

@@ -47,7 +47,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 			if(littlePlants.fetchBehavior("Decay")==null)
 			{
 				Behavior B=CMClass.getBehavior("Decay");
-				B.setParms("min="+CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)+" max="+CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)+" chance=100");
+				B.setParms("min="+CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)+" max="+CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)+" chance=100");
 				littlePlants.addBehavior(B);
 				B.executeMsg(myHost,msg);
 			}

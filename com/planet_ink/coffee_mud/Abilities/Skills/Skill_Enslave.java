@@ -196,7 +196,7 @@ public class Skill_Enslave extends StdAbility
 		if(tickID==MudHost.TICK_MOB)
 		{
 			MOB mob=(MOB)ticking;
-			if((speedDown>-500)&&((--speedDown)<=0))
+			if((speedDown>-500)&&((--speedDown)>=0))
 			{
 			    for(int a=mob.numEffects()-1;a>=0;a--)
 			    {

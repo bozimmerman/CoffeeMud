@@ -141,7 +141,7 @@ public class Thief_Squatting extends ThiefSkill
 			failed=false;
 			room=mob.location();
 			title=T;
-			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
+			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)));
 		}
 		return success;
 	}

@@ -108,7 +108,7 @@ public class Thief_TagTurf extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			setMiscText(mob.Name());
-			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*5));
+			beneficialAffect(mob,target,asLevel,(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)));
 		}
 		return success;
 	}

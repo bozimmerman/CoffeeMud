@@ -93,7 +93,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_TICKSPERMUDDAY=25;
 	public static final int SYSTEMI_COMBATSYSTEM=26;
 	public static final int SYSTEMI_JOURNALLIMIT=27;
-	public static final int NUMI_SYSTEM=28;
+	public static final int SYSTEMI_TICKSPERMUDMONTH=28;
+	public static final int NUMI_SYSTEM=29;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -291,6 +292,7 @@ public class CommonStrings extends Scriptable
 									Util.s_int(page.getStr("NIGHTHR")));
 		
 		setIntVar(SYSTEMI_TICKSPERMUDDAY,""+((MudHost.TIME_UTILTHREAD_SLEEP*DefaultTimeClock.globalClock.getHoursInDay()/MudHost.TICK_TIME)));
+		setIntVar(SYSTEMI_TICKSPERMUDMONTH,""+""+((MudHost.TIME_UTILTHREAD_SLEEP*DefaultTimeClock.globalClock.getHoursInDay()*DefaultTimeClock.globalClock.getDaysInMonth()/MudHost.TICK_TIME)));
 		CMSecurity.setDisableVars(page.getStr("DISABLE"));
 		if(page.getStr("DISABLE").trim().length()>0)
 			Log.sysOut("MUD","Disabled subsystems: "+page.getStr("DISABLE"));

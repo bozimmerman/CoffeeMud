@@ -85,12 +85,12 @@ public class ClanDeclare extends BaseClanner
 
 					}
 					long last=C.getLastRelationChange(C2.ID());
-					if(last>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME))
+					if(last>(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME))
 					{
-						last=last+(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDDAY)*MudHost.TICK_TIME);
+						last=last+(CommonStrings.getIntVar(CommonStrings.SYSTEMI_TICKSPERMUDMONTH)*MudHost.TICK_TIME);
 						if(System.currentTimeMillis()<last)
 						{
-							mob.tell("You must wait at least 1 mud day between relation changes.");
+							mob.tell("You must wait at least 1 mud month between relation changes.");
 							return false;
 						}
 					}

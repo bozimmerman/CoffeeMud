@@ -188,7 +188,7 @@ public interface CMMsg extends Cloneable
 	public static final int MSG_AREAAFFECT=MASK_GENERAL|TYP_AREAAFFECT;
 	public static final int MSG_PUSH=MASK_HANDS|TYP_AREAAFFECT;
 	public static final int MSG_PULL=MASK_HANDS|TYP_PULL;
-	public static final int MSG_RECALL=MASK_MOUTH|MASK_SOUND|TYP_RECALL;
+	public static final int MSG_RECALL=MASK_SOUND|TYP_RECALL; // speak precludes animals
 	public static final int MSG_OPEN=MASK_HANDS|TYP_OPEN;
 	public static final int MSG_CLOSE=MASK_HANDS|TYP_CLOSE;
 	public static final int MSG_PUT=MASK_HANDS|TYP_PUT;
