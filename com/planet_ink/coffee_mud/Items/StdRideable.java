@@ -91,8 +91,9 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_ENTERIN:
 			return "in";
 		case Rideable.RIDEABLE_SIT:
-		case Rideable.RIDEABLE_TABLE:
 			return "on";
+		case Rideable.RIDEABLE_TABLE:
+			return "at";
 		case Rideable.RIDEABLE_LADDER:
 			return "climbing on";
 		case Rideable.RIDEABLE_SLEEP:
@@ -111,7 +112,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_SIT:
 			return "sit(s) on";
 		case Rideable.RIDEABLE_TABLE:
-			return "sit(s) on";
+			return "sit(s) at";
 		case Rideable.RIDEABLE_ENTERIN:
 			return "get(s) into";
 		case Rideable.RIDEABLE_LADDER:
@@ -132,9 +133,10 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_LAND:
 		case Rideable.RIDEABLE_WATER:
 			return "disembark(s) from";
+		case Rideable.RIDEABLE_TABLE:
+			return "get(s) up from";
 		case Rideable.RIDEABLE_SIT:
 		case Rideable.RIDEABLE_SLEEP:
-		case Rideable.RIDEABLE_TABLE:
 		case Rideable.RIDEABLE_LADDER:
 			return "get(s) off of";
 		case Rideable.RIDEABLE_ENTERIN:
@@ -150,8 +152,9 @@ public class StdRideable extends StdContainer implements Rideable
 		case Rideable.RIDEABLE_LAND:
 		case Rideable.RIDEABLE_WATER:
 			return "being ridden by";
+		case Rideable.RIDEABLE_TABLE: 
+			return "occupied by";
 		case Rideable.RIDEABLE_SIT:	return "";
-		case Rideable.RIDEABLE_TABLE: return "";
 		case Rideable.RIDEABLE_SLEEP: return "";
 		case Rideable.RIDEABLE_ENTERIN: return "occupied by";
 		case Rideable.RIDEABLE_LADDER: return "occupied by";

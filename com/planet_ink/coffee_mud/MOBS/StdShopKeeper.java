@@ -165,6 +165,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "My services as a Banker";
 		case DEAL_LANDSELLER:
 			return "Real estate";
+		case DEAL_CLANDSELLER:
+			return "Clan estates";
 		case DEAL_ANYTECHNOLOGY:
 			return "Any technology";
 		default:
@@ -272,6 +274,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		case DEAL_ALCHEMIST:
 			return (thisThang instanceof Potion);
 		case DEAL_LANDSELLER:
+		case DEAL_CLANDSELLER:
 			return (thisThang instanceof LandTitle);
 		case DEAL_ANYTECHNOLOGY:
 			return (thisThang instanceof Electronics);
@@ -285,7 +288,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
 			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
-		if((item==null)&&(whatISell==DEAL_LANDSELLER)&&(mob!=null))
+		if((item==null)
+		   &&(mob!=null)
+		   &&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER)))
 		{
 			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
@@ -332,7 +337,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
 			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
-		if((item==null)&&(whatISell==DEAL_LANDSELLER)&&(mob!=null))
+		if((item==null)
+		   &&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER))
+		   &&(mob!=null))
 		{
 			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
@@ -1123,10 +1130,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 	private Vector addRealEstate(Vector V,MOB mob)
 	{
-		if((whatISell==DEAL_LANDSELLER)
+		if(((whatISell==DEAL_LANDSELLER)||((whatISell==DEAL_CLANDSELLER)&&(mob.getClanID().length()>0)))
 		&&(getStartRoom()!=null)
 		&&(getStartRoom().getArea()!=null))
 		{
+			String name=mob.name();
+			if(whatISell==DEAL_CLANDSELLER)
+				name=mob.getClanID();
 			Vector rooms=getStartRoom().getArea().getMyMap();
 			for(int r=0;r<rooms.size();r++)
 			{
@@ -1136,7 +1146,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					Item I=CMClass.getItem("StdTitle");
 					((LandTitle)I).setLandRoomID(R.ID());
-					if(((LandTitle)I).landOwner().equals(mob.name()))
+					if(((LandTitle)I).landOwner().equals(name))
 						I.baseEnvStats().setWeight(1);
 					else
 					if(((LandTitle)I).landOwner().length()>0)
@@ -1148,7 +1158,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						LandTitle A2=null;
 						if(R2!=null)
 							A2=getTitle(R2);
-						if((A2!=null)&&(!A2.landOwner().equals(mob.name())))
+						if((A2!=null)&&(!A2.landOwner().equals(name)))
 						   continue;
 					}
 					I.recoverEnvStats();
@@ -1169,7 +1179,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		inventory=addRealEstate(inventory,mob);
 		if(inventory.size()==0) return msg;
 		
-		int totalCols=(whatISell==DEAL_LANDSELLER)?1:2;
+		int totalCols=((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER))?1:2;
 		int totalWidth=60/totalCols;
 		
 		for(int i=0;i<inventory.size();i++)

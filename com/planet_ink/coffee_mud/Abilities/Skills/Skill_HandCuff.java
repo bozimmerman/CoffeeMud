@@ -34,13 +34,24 @@ public class Skill_HandCuff extends StdAbility
 		// from trying to do ANYTHING except sleep
 		if(affect.amISource(mob))
 		{
+			if(((affect.sourceMinor()==Affect.TYP_FOLLOW)&&(affect.target()!=invoker()))
+			||((affect.sourceMinor()==Affect.TYP_NOFOLLOW)&&(affect.source().amFollowing()==invoker())))
+			{
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
+				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());
+				if(amountRemaining<0)
+					unInvoke();
+				else
+					return false;
+			}
+			else
 			if(affect.sourceMinor()==Affect.TYP_LEAVE)
 				return true;
 			else
-			if((affect.sourceMinor()==Affect.TYP_ENTER)
+			if(((affect.sourceMinor()==Affect.TYP_ENTER)
 			&&(affect.target()!=null)
 			&&(affect.target() instanceof Room)
-			&&(!((Room)affect.target()).isInhabitant(invoker)))
+			&&(!((Room)affect.target()).isInhabitant(invoker))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against <S-HIS-HER> cuffs.");
 				amountRemaining-=(mob.charStats().getStat(CharStats.STRENGTH)+mob.envStats().level());

@@ -26,7 +26,7 @@ rain/show/swim causes some metals to rust (take minute damage).
 Amnesia as a disease
 eggs that hatch
 merchant class with haggle skill to lower prices HAGGLE 300 item
-can sit at tables and have conversation heard only at the table.
+can sit AT tables and have conversation heard only at the table.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 Infection: Hitpoints are recovered at 1/2 rate. 

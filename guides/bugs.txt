@@ -3,3 +3,7 @@ bug look for alternate materials in the common skills
 Damn Scriptable Behavior
 Farming!
 merge fieldname 
+You hit the beggar with a strong jab
+The beggar is DEAD!!!
+
+The beggar swings at you and misses.

@@ -191,8 +191,9 @@ public class Grouping
 		if(mob.amFollowing()!=null)
 		{
 			FullMsg msg=new FullMsg(mob,mob.amFollowing(),null,Affect.MSG_NOFOLLOW,quiet?null:"<S-NAME> stop(s) following <T-NAMESELF>.");
-			// no OKaffects, since the damn leader may not be here.
-			mob.location().send(mob,msg);
+			// no room OKaffects, since the damn leader may not be here.
+			if(mob.okAffect(msg))
+				mob.location().send(mob,msg);
 		}
 		else
 		if(errorsOk)

@@ -134,7 +134,9 @@ public class StdTitle extends StdItem implements LandTitle
 		if((msg.targetMinor()==Affect.TYP_GIVE)
 		&&(msg.tool()==this)
 		&&(msg.source()!=null)
-		&&(msg.source().name().equals(landOwner()))
+		&&(landOwner().length()>0)
+		&&((msg.source().name().equals(landOwner()))
+			||((msg.source().getClanID().equals(landOwner()))))
 		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB))
 		{
@@ -178,7 +180,12 @@ public class StdTitle extends StdItem implements LandTitle
 				Log.errOut("StdTitle","Unbuyable room: "+landRoomID());
 				return;
 			}
-			A.setLandOwner(msg.source().name());
+			
+			if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
+			&&(msg.source().getClanID().length()>0))
+				A.setLandOwner(msg.source().getClanID());
+			else
+				A.setLandOwner(msg.source().name());
 			baseEnvStats().setWeight(0);
 			ExternalPlay.DBUpdateRoom(R);
 			updateLot(R,A);

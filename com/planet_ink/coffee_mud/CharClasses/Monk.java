@@ -142,8 +142,12 @@ public class Monk extends StdCharClass
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(Sense.isSleeping(affected)||Sense.isSitting(affected))
-			affectableStats.setArmor(affectableStats.armor()+(100-affected.baseEnvStats().armor()));
+		if((affected instanceof MOB)&&(!Sense.isSleeping(affected))&&(Sense.isSitting(affected)))
+		{
+			MOB mob=(MOB)affected;
+			int attArmor=(((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
+			affectableStats.setArmor(affectableStats.armor()-attArmor);
+		}
 		else
 		if((affected instanceof MOB)&&(!anyWeapons((MOB)affected)))
 		{
@@ -164,8 +168,6 @@ public class Monk extends StdCharClass
 	{
 		super.level(mob);
 		int attArmor=((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1;
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
 		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 	
