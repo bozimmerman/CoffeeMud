@@ -107,6 +107,7 @@ CMCLIM integer NULL
 CMSUBS string NULL
 CMDESC string NULL
 CMROTX string NULL
+CMTECH integer NULL
 
 CMJRNL
 CMJKEY string KEY

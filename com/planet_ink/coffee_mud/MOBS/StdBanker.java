@@ -19,7 +19,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		setDisplayText("A banker is waiting to serve you.");
 		setAlignment(1000);
 		setMoney(0);
-		whatISell=ShopKeeper.BANKER;
+		whatISell=ShopKeeper.DEAL_BANKER;
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
 
@@ -41,8 +41,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return new StdBanker();
 	}
 
-	public int whatIsSold(){return ShopKeeper.BANKER;}
-	public void setWhatIsSold(int newSellCode){whatISell=ShopKeeper.BANKER;}
+	public int whatIsSold(){return ShopKeeper.DEAL_BANKER;}
+	public void setWhatIsSold(int newSellCode){whatISell=ShopKeeper.DEAL_BANKER;}
 	
 	public String bankChain(){return text();}
 	public void setBankChain(String name){setMiscText(name);}

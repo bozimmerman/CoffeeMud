@@ -130,6 +130,10 @@ public class GrinderAreas
 			A.setClimateType(climate);
 		}
 
+		// tech level
+		if(httpReq.getRequestParameters().containsKey("TECHLEVEL"))
+			A.setClimateType(Util.s_int((String)httpReq.getRequestParameters().get("TECHLEVEL")));
+
 		// modify subop list
 		String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");
 		Vector V=A.getSubOpVectorList();

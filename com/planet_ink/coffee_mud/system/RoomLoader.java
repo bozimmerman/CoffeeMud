@@ -39,6 +39,7 @@ public class RoomLoader
 				A.setSubOpList(DBConnections.getRes(R,"CMSUBS"));
 				A.setDescription(DBConnections.getRes(R,"CMDESC"));
 				A.setMiscText(DBConnections.getRes(R,"CMROTX"));
+				A.setTechLevel((int)DBConnections.getLongRes(R,"CMTECH"));
 				A.tickControl(true);
 			}
 			DBConnector.DBDone(D);
@@ -535,14 +536,16 @@ public class RoomLoader
 			+"CMCLIM,"
 			+"CMSUBS,"
 			+"CMDESC,"
-			+"CMROTX"
+			+"CMROTX,"
+			+"CMTECH"
 			+") values ("
 			+"'"+A.name()+"',"
 			+"'"+CMClass.className(A)+"',"
 			+""+A.climateType()+","
 			+"'"+A.getSubOpList()+"',"
 			+"'"+A.description()+" ',"
-			+"'"+A.text()+" ')";
+			+"'"+A.text()+" ',"
+			+A.getTechLevel()+")";
 			D.update(str);
 			DBConnector.DBDone(D);
 		}
@@ -569,7 +572,8 @@ public class RoomLoader
 				+"CMCLIM="+A.climateType()+","
 				+"CMSUBS='"+A.getSubOpList()+"',"
 				+"CMDESC='"+A.description()+" ',"
-				+"CMROTX='"+A.text()+" '"
+				+"CMROTX='"+A.text()+" ',"
+				+"CMTECH="+A.getTechLevel()+" "
 				+"WHERE CMAREA='"+A.name()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);

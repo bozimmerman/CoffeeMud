@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.interfaces;
 
-public class Electronics
+public interface Electronics
 {
+	public int powerRemaining();
+	public void loadPower(int pow);
 }

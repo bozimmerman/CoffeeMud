@@ -501,7 +501,7 @@ public class MobData extends StdWebMacro
 					old=""+((ShopKeeper)M).whatIsSold();
 				for(int r=0;r<ShopKeeper.SOLDCODES.length;r++)
 				{
-					if((M instanceof Banker)||(r!=ShopKeeper.BANKER))
+					if((M instanceof Banker)||(r!=ShopKeeper.DEAL_BANKER))
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==Util.s_int(old))

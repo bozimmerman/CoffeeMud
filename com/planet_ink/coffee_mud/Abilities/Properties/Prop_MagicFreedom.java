@@ -25,10 +25,13 @@ public class Prop_MagicFreedom extends Property
 		||(Util.bset(affect.othersCode(),affect.MASK_MAGIC)))
 		{
 			Room room=null;
-			if((affect.target()!=null)&&(affect.target() instanceof MOB)&&(((MOB)affect.target()).location()!=null))
-				room=affect.source().location();
+			if((affect.target()!=null)
+			&&(affect.target() instanceof MOB)
+			&&(((MOB)affect.target()).location()!=null))
+				room=((MOB)affect.target()).location();
 			else
-			if((affect.source()!=null)&&(affect.source().location()!=null))
+			if((affect.source()!=null)
+			&&(affect.source().location()!=null))
 				room=affect.source().location();
 			if(room!=null)
 				room.showHappens(Affect.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");

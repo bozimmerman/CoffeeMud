@@ -51,7 +51,6 @@ public class Scriptable extends ActiveTicker
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
-			V.removeElementAt(v);
 			Vector script=new Vector();
 			while(s.length()>0)
 			{
@@ -70,7 +69,7 @@ public class Scriptable extends ActiveTicker
 					script.addElement(cmd);
 					s=s.substring(y+1).trim();
 				}
-				V.insertElementAt(script,v);
+				V.setElementAt(script,v);
 			}
 		}
 		return V;

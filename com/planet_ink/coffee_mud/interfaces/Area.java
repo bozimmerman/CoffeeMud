@@ -18,6 +18,11 @@ public interface Area extends Environmental
 	public final static int WEATHER_WINTER_COLD=12;
 	public final static int NUM_WEATHER=13;
 	
+	public final static int TECH_LOW=0;
+	public final static int TECH_MIXED=1;
+	public final static int TECH_HIGH=2;
+	public final static String[] TECH_DESCS={"Low Tech","Mixed Tech","High Tech"};
+	
 	public final static String[] WEATHER_DESCS=
 	{ "CLEAR","CLOUDY","WINDY","RAIN","THUNDERSTORM","SNOW","HAIL","HEAT","SLEET","BLIZZARD","DUST","DROUGHT","COLD"};
 	
@@ -69,6 +74,9 @@ public interface Area extends Environmental
 	public int getSeasonCode();
 	public void setNextWeatherType(int weatherCode);
 	public void setCurrentWeatherType(int weatherCode);
+
+	public int getTechLevel();
+	public void setTechLevel(int level);
 
 	public int adjustWaterConsumption(int base, MOB mob, Room room);
 	public int adjustMovement(int base, MOB mob, Room room);

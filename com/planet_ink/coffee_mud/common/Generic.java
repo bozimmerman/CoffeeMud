@@ -504,6 +504,7 @@ public class Generic
 		
 		newArea.setDescription(XMLManager.getValFromPieces(aV,"ADESC"));
 		newArea.setClimateType(XMLManager.getIntFromPieces(aV,"ACLIM"));
+		newArea.setTechLevel(XMLManager.getIntFromPieces(aV,"ATECH"));
 		newArea.setSubOpList(XMLManager.getValFromPieces(aV,"ASUBS"));
 		newArea.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(aV,"ADATA")));
 		ExternalPlay.DBUpdateArea(newArea);
@@ -535,6 +536,7 @@ public class Generic
 		buf.append(XMLManager.convertXMLtoTag("ADESC",area.description()));
 		buf.append(XMLManager.convertXMLtoTag("ACLIM",area.climateType()));
 		buf.append(XMLManager.convertXMLtoTag("ASUBS",area.getSubOpList()));
+		buf.append(XMLManager.convertXMLtoTag("ATECH",area.getTechLevel()));
 		buf.append(XMLManager.convertXMLtoTag("ADATA",area.text()));
 		if(andRooms)
 		{

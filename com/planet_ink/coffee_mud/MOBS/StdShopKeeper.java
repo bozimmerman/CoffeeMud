@@ -137,34 +137,36 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		switch(whatISell)
 		{
-		case ANYTHING:
+		case DEAL_ANYTHING:
 			return "*Anything*";
-		case GENERAL:
+		case DEAL_GENERAL:
 			return "General items";
-		case ARMOR:
+		case DEAL_ARMOR:
 			return "Armor";
-		case MAGIC:
+		case DEAL_MAGIC:
 			return "Miscellaneous Magic Items";
-		case WEAPONS:
+		case DEAL_WEAPONS:
 			return "Weapons";
-		case PETS:
+		case DEAL_PETS:
 			return "Pets";
-		case LEATHER:
+		case DEAL_LEATHER:
 			return "Leather";
-		case ONLYBASEINVENTORY:
+		case DEAL_INVENTORYONLY:
 			return "Only my Inventory";
-		case TRAINER:
+		case DEAL_TRAINER:
 			return "Training in skills/spells/prayers/songs";
-		case CASTER:
+		case DEAL_CASTER:
 			return "Caster of spells/prayers";
-		case ALCHEMIST:
+		case DEAL_ALCHEMIST:
 			return "Potions";
-		case JEWELLER:
+		case DEAL_JEWELLER:
 			return "Precious stones and jewellery";
-		case BANKER:
+		case DEAL_BANKER:
 			return "My services as a Banker";
-		case LANDSELLER:
+		case DEAL_LANDSELLER:
 			return "Real estate";
+		case DEAL_ANYTECHNOLOGY:
+			return "Any technology";
 		default:
 			return "... I have no idea WHAT I sell";
 		}
@@ -172,7 +174,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	public void addStoreInventory(Environmental thisThang, int number)
 	{
-		if((whatISell==ONLYBASEINVENTORY)&&(!inBaseInventory(thisThang)))
+		if((whatISell==DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
 			baseInventory.addElement(thisThang.copyOf());
 		if(thisThang instanceof InnKey)
 		{
@@ -196,7 +198,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 
 	public void delStoreInventory(Environmental thisThang)
 	{
-		if((whatISell==ONLYBASEINVENTORY)&&(inBaseInventory(thisThang)))
+		if((whatISell==DEAL_INVENTORYONLY)&&(inBaseInventory(thisThang)))
 		{
 			for(int v=baseInventory.size()-1;v>=0;v--)
 			{
@@ -237,29 +239,29 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return false;
 		switch(whatISell)
 		{
-		case ANYTHING:
+		case DEAL_ANYTHING:
 			return true;
-		case ARMOR:
+		case DEAL_ARMOR:
 			return (thisThang instanceof Armor);
-		case MAGIC:
+		case DEAL_MAGIC:
 			return (thisThang instanceof MiscMagic);
-		case WEAPONS:
+		case DEAL_WEAPONS:
 			return (thisThang instanceof Weapon);
-		case GENERAL:
+		case DEAL_GENERAL:
 			return ((thisThang instanceof Item)
 					&&(!(thisThang instanceof Armor))
 					&&(!(thisThang instanceof MiscMagic))
 					&&(!(thisThang instanceof Weapon))
 					&&(!(thisThang instanceof MOB))
 					&&(!(thisThang instanceof Ability)));
-		case LEATHER:
+		case DEAL_LEATHER:
 			return ((thisThang instanceof Item)
 					&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER));
-		case PETS:
+		case DEAL_PETS:
 			return (thisThang instanceof MOB);
-		case ONLYBASEINVENTORY:
+		case DEAL_INVENTORYONLY:
 			return (inBaseInventory(thisThang));
-		case JEWELLER:
+		case DEAL_JEWELLER:
 			return ((thisThang instanceof Item)
 					&&(((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_GLASS)
 					||((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
@@ -267,10 +269,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					||((Item)thisThang).canBeWornAt(Item.ON_NECK)
 					||((Item)thisThang).canBeWornAt(Item.ON_RIGHT_FINGER)
 					||((Item)thisThang).canBeWornAt(Item.ON_LEFT_FINGER)));
-		case ALCHEMIST:
+		case DEAL_ALCHEMIST:
 			return (thisThang instanceof Potion);
-		case LANDSELLER:
+		case DEAL_LANDSELLER:
 			return (thisThang instanceof LandTitle);
+		case DEAL_ANYTECHNOLOGY:
+			return (thisThang instanceof Electronics);
 		}
 
 		return false;
@@ -281,7 +285,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
 			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
-		if((item==null)&&(whatISell==LANDSELLER)&&(mob!=null))
+		if((item==null)&&(whatISell==DEAL_LANDSELLER)&&(mob!=null))
 		{
 			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
@@ -328,7 +332,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
 			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
-		if((item==null)&&(whatISell==LANDSELLER)&&(mob!=null))
+		if((item==null)&&(whatISell==DEAL_LANDSELLER)&&(mob!=null))
 		{
 			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
@@ -721,7 +725,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					}
 					if(affect.tool() instanceof Ability)
 					{
-						if((whatISell==TRAINER)&&(!((Ability)affect.tool()).canBeLearnedBy(new Teacher(),mob)))
+						if((whatISell==DEAL_TRAINER)&&(!((Ability)affect.tool()).canBeLearnedBy(new Teacher(),mob)))
 							return false;
 					}
 					return true;
@@ -767,7 +771,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_GIVE:
 				if((affect.tool()!=null)
 				   &&((doISellThis(affect.tool())))
-				   ||((whatISell==ShopKeeper.ONLYBASEINVENTORY)&&(mob.isASysOp(mob.location()))))
+				   ||((whatISell==DEAL_INVENTORYONLY)&&(mob.isASysOp(mob.location()))))
 					storeInventory.addElement(affect.tool());
 				break;
 			case Affect.TYP_VALUE:
@@ -895,7 +899,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(product instanceof Ability)
 					{
-						if(whatISell==TRAINER)
+						if(whatISell==DEAL_TRAINER)
 							((Ability)product).teach(new Teacher(),mob);
 						else
 						{
@@ -918,7 +922,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					StringBuffer str=listInventory(mob);
 					if(str.length()==0)
 					{
-						if(whatISell!=ShopKeeper.BANKER)
+						if(whatISell!=DEAL_BANKER)
 							ExternalPlay.quickSay(this,mob,"I have nothing for sale.",false,false);
 					}
 					else
@@ -941,10 +945,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		else
 		if(product instanceof Ability)
 		{
-			if(whatISell==TRAINER)
+			if(whatISell==DEAL_TRAINER)
 				val=CMAble.lowestQualifyingLevel(product.ID())*100;
 			else
-			if(whatISell==CASTER)
+			if(whatISell==DEAL_CASTER)
 				val=CMAble.lowestQualifyingLevel(product.ID())*25;
 		}
 		else
@@ -977,7 +981,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	
 	private Vector addRealEstate(Vector V,MOB mob)
 	{
-		if((whatISell==ShopKeeper.LANDSELLER)
+		if((whatISell==DEAL_LANDSELLER)
 		&&(getStartRoom()!=null)
 		&&(getStartRoom().getArea()!=null))
 		{
@@ -1014,7 +1018,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		inventory=addRealEstate(inventory,mob);
 		if(inventory.size()==0) return msg;
 		
-		int totalCols=(whatISell==ShopKeeper.LANDSELLER)?1:2;
+		int totalCols=(whatISell==DEAL_LANDSELLER)?1:2;
 		int totalWidth=60/totalCols;
 		
 		for(int i=0;i<inventory.size();i++)

@@ -13,6 +13,7 @@ public class StdArea implements Area
 	protected int climateID=Area.CLIMASK_NORMAL;
 	protected int currentWeather=Area.WEATHER_CLEAR;
 	protected int nextWeather=Area.WEATHER_CLEAR;
+	protected int techLevel=0;
 	protected Vector myRooms=null;
 	protected boolean mobility=true;
 
@@ -131,7 +132,8 @@ public class StdArea implements Area
 	}
 	public void setNextWeatherType(int weatherCode){nextWeather=weatherCode;}
 	public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
-
+	public int getTechLevel(){return techLevel;}
+	public void setTechLevel(int level){techLevel=level;}
 	public int weatherType(Room room)
 	{
 		if((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS))
@@ -365,6 +367,66 @@ public class StdArea implements Area
 			||(affect.sourceMinor()==Affect.TYP_LEAVE)
 			||(affect.sourceMinor()==Affect.TYP_FLEE))
 				return false;
+		}
+		if(getTechLevel()==Area.TECH_HIGH)
+		{
+			if((Util.bset(affect.sourceCode(),affect.MASK_MAGIC))
+			||(Util.bset(affect.targetCode(),affect.MASK_MAGIC))
+			||(Util.bset(affect.othersCode(),affect.MASK_MAGIC)))
+			{
+				Room room=null;
+				if((affect.target()!=null)
+				&&(affect.target() instanceof MOB)
+				&&(((MOB)affect.target()).location()!=null))
+					room=((MOB)affect.target()).location();
+				else
+				if((affect.source()!=null)
+				&&(affect.source().location()!=null))
+					room=affect.source().location();
+				if(room!=null)
+					room.showHappens(Affect.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
+				return false;
+			}
+		}
+		else
+		if(getTechLevel()==Area.TECH_LOW)
+		{
+			if((affect.tool()!=null)
+			&&(affect.tool() instanceof Electronics))
+			{
+				switch(affect.sourceMinor())
+				{
+				case Affect.TYP_BUY:
+				case Affect.TYP_CLOSE:
+				case Affect.TYP_DEPOSIT:
+				case Affect.TYP_DROP:
+				case Affect.TYP_EXAMINESOMETHING:
+				case Affect.TYP_GET:
+				case Affect.TYP_GIVE:
+				case Affect.TYP_OPEN:
+				case Affect.TYP_PUT:
+				case Affect.TYP_SELL:
+				case Affect.TYP_VALUE:
+				case Affect.TYP_VIEW:
+				case Affect.TYP_WITHDRAW:
+					break;
+				default:
+					{
+						Room room=null;
+						if((affect.target()!=null)
+						&&(affect.target() instanceof MOB)
+						&&(((MOB)affect.target()).location()!=null))
+							room=((MOB)affect.target()).location();
+						else
+						if((affect.source()!=null)
+						&&(affect.source().location()!=null))
+							room=affect.source().location();
+						if(room!=null)
+							room.showHappens(Affect.MSG_OK_VISUAL,"Technology doesn't seem to work here.");
+						return false;
+					}
+				}
+			}
 		}
 		return true;
 	}

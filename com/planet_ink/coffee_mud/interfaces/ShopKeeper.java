@@ -2,25 +2,27 @@ package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
 public interface ShopKeeper extends MOB
 {
-	public final static int ANYTHING=0;
-	public final static int GENERAL=1;
-	public final static int ARMOR=2;
-	public final static int MAGIC=3;
-	public final static int WEAPONS=4;
-	public final static int PETS=5;
-	public final static int LEATHER=6;
-	public final static int ONLYBASEINVENTORY=7;
-	public final static int TRAINER=8;
-	public final static int CASTER=9;
-	public final static int JEWELLER=10;
-	public final static int ALCHEMIST=11;
-	public final static int BANKER=12;
-	public final static int LANDSELLER=13;
+	public final static int DEAL_ANYTHING=0;
+	public final static int DEAL_GENERAL=1;
+	public final static int DEAL_ARMOR=2;
+	public final static int DEAL_MAGIC=3;
+	public final static int DEAL_WEAPONS=4;
+	public final static int DEAL_PETS=5;
+	public final static int DEAL_LEATHER=6;
+	public final static int DEAL_INVENTORYONLY=7;
+	public final static int DEAL_TRAINER=8;
+	public final static int DEAL_CASTER=9;
+	public final static int DEAL_JEWELLER=10;
+	public final static int DEAL_ALCHEMIST=11;
+	public final static int DEAL_BANKER=12;
+	public final static int DEAL_LANDSELLER=13;
+	public final static int DEAL_ANYTECHNOLOGY=14;
 	
 	public final static String[] SOLDCODES={
 		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
-		"PETS","LEATHER","ONLYBASEINVENTORY","TRAINER",
-		"CASTER","JEWELLERY","POTIONS","BANKER","LAND"};
+		"PETS","LEATHER","INVENTORY ONLY","TRAINER",
+		"CASTER","JEWELLERY","POTIONS","BANKER","LAND",
+		"ANY TECHNOLOGY"};
 	
 	public int whatIsSold();
 	public void setWhatIsSold(int newSellCode);

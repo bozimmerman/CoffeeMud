@@ -342,6 +342,11 @@ public class TheFight
 		}
 		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)>0)
 		{
+			if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ONEWAY"))
+			{
+				mob.tell("Once turned on, this flag may not be turned off again.");
+				return;
+			}
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 			mob.tell("Your playerkill flag has been turned off.");
 		}
