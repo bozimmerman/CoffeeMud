@@ -70,7 +70,8 @@ public class Prayer_Plague extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("The sores on your face clear up.");
+		if(canBeUninvoked)
+			mob.tell("The sores on your face clear up.");
 	}
 
 

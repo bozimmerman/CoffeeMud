@@ -144,7 +144,8 @@ public class Spell_Grease extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You manage to work your way out of the grease.");
+		if(canBeUninvoked)
+			mob.tell("You manage to work your way out of the grease.");
 	}
 
 

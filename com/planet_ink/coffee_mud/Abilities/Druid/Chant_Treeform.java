@@ -129,24 +129,27 @@ public class Chant_Treeform extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell("Your body returns to normal!");
-		if(oldState!=null)
+		if(canBeUninvoked)
 		{
-			mob.curState().setHitPoints(oldState.getHitPoints());
-			mob.curState().setHunger(oldState.getHunger());
-			mob.curState().setMana(oldState.getMana());
-			mob.curState().setMovement(oldState.getMovement());
-			mob.curState().setThirst(oldState.getThirst());
+			mob.tell("Your body returns to normal!");
+			if(oldState!=null)
+			{
+				mob.curState().setHitPoints(oldState.getHitPoints());
+				mob.curState().setHunger(oldState.getHunger());
+				mob.curState().setMana(oldState.getMana());
+				mob.curState().setMovement(oldState.getMovement());
+				mob.curState().setThirst(oldState.getThirst());
+			}
+			else
+			{
+				mob.curState().setHitPoints(1);
+				mob.curState().setMana(0);
+				mob.curState().setMovement(0);
+				mob.curState().setHunger(0);
+				mob.curState().setThirst(0);
+			}
+			ExternalPlay.standIfNecessary(mob);
 		}
-		else
-		{
-			mob.curState().setHitPoints(1);
-			mob.curState().setMana(0);
-			mob.curState().setMovement(0);
-			mob.curState().setHunger(0);
-			mob.curState().setThirst(0);
-		}
-		ExternalPlay.standIfNecessary(mob);
 	}
 
 

@@ -41,11 +41,14 @@ public class Prayer_LinkedHealth extends Prayer
 
 		super.unInvoke();
 
-		if(buddy!=null)
+		if(canBeUninvoked)
 		{
-			mob.tell("Your health is no longer linked with "+buddy.name()+".");
-			Ability A=buddy.fetchAffect(ID());
-			if(A!=null) A.unInvoke();
+			if(buddy!=null)
+			{
+				mob.tell("Your health is no longer linked with "+buddy.name()+".");
+				Ability A=buddy.fetchAffect(ID());
+				if(A!=null) A.unInvoke();
+			}
 		}
 	}
 

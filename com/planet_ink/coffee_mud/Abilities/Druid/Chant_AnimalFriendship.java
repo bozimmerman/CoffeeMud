@@ -60,7 +60,8 @@ public class Chant_AnimalFriendship extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You seem less animal friendly.");
+		if(canBeUninvoked)
+			mob.tell("You seem less animal friendly.");
 	}
 
 

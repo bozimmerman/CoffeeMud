@@ -57,7 +57,8 @@ public class Spell_Weaken extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to feel stronger.");
+		if(canBeUninvoked)
+			mob.tell("You begin to feel stronger.");
 	}
 
 

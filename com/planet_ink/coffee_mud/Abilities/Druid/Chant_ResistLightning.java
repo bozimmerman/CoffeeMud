@@ -39,7 +39,8 @@ public class Chant_ResistLightning extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your organic protection withers.");
+		if(canBeUninvoked)
+			mob.tell("Your organic protection withers.");
 
 		super.unInvoke();
 

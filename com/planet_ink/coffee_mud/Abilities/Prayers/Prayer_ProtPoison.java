@@ -37,7 +37,8 @@ public class Prayer_ProtPoison extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your natural defenses against poison take over.");
+		if(canBeUninvoked)
+			mob.tell("Your natural defenses against poison take over.");
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

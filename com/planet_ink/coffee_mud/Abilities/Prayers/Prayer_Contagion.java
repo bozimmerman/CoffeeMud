@@ -31,7 +31,8 @@ public class Prayer_Contagion extends Prayer
 	{
 		if(affected==null) return;
 		MOB mob=(MOB)affected;
-		mob.tell("The unholy contagion fades.");
+		if(canBeUninvoked)
+			mob.tell("The unholy contagion fades.");
 		super.unInvoke();
 	}
 	

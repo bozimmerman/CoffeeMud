@@ -90,7 +90,8 @@ public class Druid_ShapeShift extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		mob.tell("You have reverted to your normal form.");
+		if(canBeUninvoked)
+			mob.tell("You have reverted to your normal form.");
 	}
 
 

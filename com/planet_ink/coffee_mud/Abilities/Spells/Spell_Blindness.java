@@ -55,7 +55,8 @@ public class Spell_Blindness extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("Your vision returns.");
+		if(canBeUninvoked)
+			mob.tell("Your vision returns.");
 	}
 
 

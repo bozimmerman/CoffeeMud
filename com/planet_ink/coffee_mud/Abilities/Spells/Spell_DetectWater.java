@@ -44,9 +44,11 @@ public class Spell_DetectWater extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		lastRoom=null;
+		if(canBeUninvoked)
+			lastRoom=null;
 		super.unInvoke();
-		mob.tell(mob,null,"Your senses are no longer sensitive to liquids.");
+		if(canBeUninvoked)
+			mob.tell(mob,null,"Your senses are no longer sensitive to liquids.");
 	}
 	public String waterCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{

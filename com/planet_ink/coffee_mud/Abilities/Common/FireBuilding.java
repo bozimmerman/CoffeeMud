@@ -34,30 +34,33 @@ public class FireBuilding extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if(failed)
-				mob.tell("You failed to get the fire started.");
-			else
+			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 			{
-				if(lighting==null)
+				MOB mob=(MOB)affected;
+				if(failed)
+					mob.tell("You failed to get the fire started.");
+				else
 				{
-					Item I=CMClass.getItem("GenItem");
-					I.baseEnvStats().setWeight(50);
-					I.setName("a roaring campire");
-					I.setDisplayText("A roaring campire has been built here.");
-					I.setDescription("It consists of dry wood, burning.");
-					I.recoverEnvStats();
-					I.setMaterial(EnvResource.RESOURCE_WOOD);
-					mob.location().addItem(I);
-					lighting=I;
+					if(lighting==null)
+					{
+						Item I=CMClass.getItem("GenItem");
+						I.baseEnvStats().setWeight(50);
+						I.setName("a roaring campire");
+						I.setDisplayText("A roaring campire has been built here.");
+						I.setDescription("It consists of dry wood, burning.");
+						I.recoverEnvStats();
+						I.setMaterial(EnvResource.RESOURCE_WOOD);
+						mob.location().addItem(I);
+						lighting=I;
+					}
+					Ability B=CMClass.getAbility("Burning");
+					B.setProfficiency(durationOfBurn);
+					B.invoke(mob,lighting,true);
 				}
-				Ability B=CMClass.getAbility("Burning");
-				B.setProfficiency(durationOfBurn);
-				B.invoke(mob,lighting,true);
+				lighting=null;
 			}
-			lighting=null;
 		}
 		super.unInvoke();
 	}

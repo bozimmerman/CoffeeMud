@@ -39,17 +39,20 @@ public class Spell_Portal extends Spell
 
 	public void unInvoke()
 	{
-		if(newRoom!=null)
+		if(canBeUninvoked)
 		{
-			newRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
-			newRoom.rawDoors()[Directions.GATE]=null;
-			newRoom.rawExits()[Directions.GATE]=null;
-		}
-		if(oldRoom!=null)
-		{
-			oldRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
-			oldRoom.rawDoors()[Directions.GATE]=null;
-			oldRoom.rawExits()[Directions.GATE]=null;
+			if(newRoom!=null)
+			{
+				newRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+				newRoom.rawDoors()[Directions.GATE]=null;
+				newRoom.rawExits()[Directions.GATE]=null;
+			}
+			if(oldRoom!=null)
+			{
+				oldRoom.showHappens(Affect.MSG_OK_VISUAL,"The swirling portal closes.");
+				oldRoom.rawDoors()[Directions.GATE]=null;
+				oldRoom.rawExits()[Directions.GATE]=null;
+			}
 		}
 		super.unInvoke();
 	}

@@ -85,8 +85,11 @@ public class Spell_Charm extends Spell
 
 		super.unInvoke();
 
-		mob.tell("Your free-will returns.");
-		ExternalPlay.follow(mob,null,false);
+		if(canBeUninvoked)
+		{
+			mob.tell("Your free-will returns.");
+			ExternalPlay.follow(mob,null,false);
+		}
 	}
 
 

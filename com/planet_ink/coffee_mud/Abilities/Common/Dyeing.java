@@ -61,27 +61,30 @@ public class Dyeing extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if(writing.length()==0)
-				mob.tell("You mess up the dyeing.");
-			else
+			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 			{
-				StringBuffer desc=new StringBuffer(found.description());
-				for(int x=0;x<(desc.length()-1);x++)
+				MOB mob=(MOB)affected;
+				if(writing.length()==0)
+					mob.tell("You mess up the dyeing.");
+				else
 				{
-					if((desc.charAt(x)=='^')
-					&&(desc.charAt(x+1)!='?'))
-						desc.setCharAt(x+1,writing.charAt(0));
+					StringBuffer desc=new StringBuffer(found.description());
+					for(int x=0;x<(desc.length()-1);x++)
+					{
+						if((desc.charAt(x)=='^')
+						&&(desc.charAt(x+1)!='?'))
+							desc.setCharAt(x+1,writing.charAt(0));
+					}
+					String d=desc.toString();
+					if(!d.endsWith("^?")) desc.append("^?");
+					if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
+					found.setDescription(desc.toString());
+					found.setName(fixColor(found.name(),writing));
+					found.setDisplayText(fixColor(found.displayText(),writing));
+					found.text();
 				}
-				String d=desc.toString();
-				if(!d.endsWith("^?")) desc.append("^?");
-				if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
-				found.setDescription(desc.toString());
-				found.setName(fixColor(found.name(),writing));
-				found.setDisplayText(fixColor(found.displayText(),writing));
-				found.text();
 			}
 		}
 		super.unInvoke();

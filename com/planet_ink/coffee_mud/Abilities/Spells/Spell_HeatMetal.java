@@ -110,6 +110,7 @@ public class Spell_HeatMetal extends Spell
 			return;
 		}
 
+		if(canBeUninvoked)
 		if(affected instanceof MOB)
 		{
 			for(int i=0;i<affectedItems.size();i++)

@@ -34,13 +34,17 @@ public class Chant_SummonFire extends Chant
 			return;
 		if(littleFire==null)
 			return;
-		FireLocation.showHappens(Affect.MSG_OK_VISUAL,"The little magical fire goes out.");
+		if(canBeUninvoked)
+			FireLocation.showHappens(Affect.MSG_OK_VISUAL,"The little magical fire goes out.");
 		super.unInvoke();
-		Item fire=littleFire; // protects against uninvoke loops!
-		littleFire=null;
-		fire.destroyThis();
-		FireLocation.recoverRoomStats();
-		FireLocation=null;
+		if(canBeUninvoked)
+		{
+			Item fire=littleFire; // protects against uninvoke loops!
+			littleFire=null;
+			fire.destroyThis();
+			FireLocation.recoverRoomStats();
+			FireLocation=null;
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

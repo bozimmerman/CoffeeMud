@@ -48,7 +48,8 @@ public class Spell_Mirage extends Spell
 		if(!(affected instanceof Room))
 			return;
 		Room room=(Room)affected;
-		room.showHappens(Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
+		if(canBeUninvoked)
+			room.showHappens(Affect.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
 

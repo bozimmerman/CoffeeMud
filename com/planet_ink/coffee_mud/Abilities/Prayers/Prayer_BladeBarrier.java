@@ -41,7 +41,8 @@ public class Prayer_BladeBarrier extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your blade barrier disappears.");
+		if(canBeUninvoked)
+			mob.tell("Your blade barrier disappears.");
 	}
 
 	public void affect(Affect affect)

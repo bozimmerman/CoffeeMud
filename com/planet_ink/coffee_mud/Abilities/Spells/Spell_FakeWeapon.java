@@ -39,9 +39,12 @@ public class Spell_FakeWeapon extends Spell
 	{
 		if(myItem==null) return;
 		super.unInvoke();
-		Item item=myItem;
-		myItem=null;
-		item.destroyThis();
+		if(canBeUninvoked)
+		{
+			Item item=myItem;
+			myItem=null;
+			item.destroyThis();
+		}
 	}
 
 	public boolean okAffect(Affect affect)

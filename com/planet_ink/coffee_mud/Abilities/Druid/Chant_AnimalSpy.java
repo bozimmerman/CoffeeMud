@@ -37,10 +37,13 @@ public class Chant_AnimalSpy extends Chant
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		if(invoker!=null)
+		if(canBeUninvoked)
 		{
-			invoker.delAffect(this);
-			invoker.tell("Your connection with '"+spy.name()+"' fades.");
+			if(invoker!=null)
+			{
+				invoker.delAffect(this);
+				invoker.tell("Your connection with '"+spy.name()+"' fades.");
+			}
 		}
 		super.unInvoke();
 	}

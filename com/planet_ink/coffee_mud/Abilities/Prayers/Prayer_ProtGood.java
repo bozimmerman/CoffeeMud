@@ -98,7 +98,8 @@ public class Prayer_ProtGood extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your protection from goodness fades.");
+		if(canBeUninvoked)
+			mob.tell("Your protection from goodness fades.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

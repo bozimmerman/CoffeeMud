@@ -47,7 +47,8 @@ public class Spell_ResistDisease extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your immunizing protection fades away.");
+		if(canBeUninvoked)
+			mob.tell("Your immunizing protection fades away.");
 
 		super.unInvoke();
 

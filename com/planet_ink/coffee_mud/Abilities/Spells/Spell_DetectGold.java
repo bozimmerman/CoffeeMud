@@ -44,9 +44,11 @@ public class Spell_DetectGold extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		lastRoom=null;
+		if(canBeUninvoked)
+			lastRoom=null;
 		super.unInvoke();
-		mob.tell(mob,null,"Your senses are no longer as golden.");
+		if(canBeUninvoked)
+			mob.tell(mob,null,"Your senses are no longer as golden.");
 	}
 	public String metalCheck(MOB mob, Item I, Item container, StringBuffer msg)
 	{

@@ -63,15 +63,19 @@ public class Chant_WindGust extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		doneTicking=true;
+		if(canBeUninvoked)
+			doneTicking=true;
 		super.unInvoke();
-		if(!mob.amDead())
+		if(canBeUninvoked)
 		{
-			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
-			else
-				mob.tell("You regain your feet.");
-			ExternalPlay.standIfNecessary(mob);
+			if(!mob.amDead())
+			{
+				if(mob.location()!=null)
+					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet.");
+				else
+					mob.tell("You regain your feet.");
+				ExternalPlay.standIfNecessary(mob);
+			}
 		}
 	}
 

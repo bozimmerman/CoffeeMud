@@ -37,7 +37,8 @@ public class Chant_LocatePlants extends Chant
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		lastRoom=null;
+		if(canBeUninvoked)
+			lastRoom=null;
 		super.unInvoke();
 	}
 	public int nextDirectionFromHere(Room location)

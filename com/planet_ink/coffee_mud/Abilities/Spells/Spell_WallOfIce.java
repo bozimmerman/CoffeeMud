@@ -93,16 +93,19 @@ public class Spell_WallOfIce extends Spell
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if((theWall!=null)
-		&&(invoker!=null)
-		&&(theWall.owner()!=null)
-		&&(theWall.owner() instanceof Room)
-		&&(((Room)theWall.owner()).isContent(theWall)))
+		if(canBeUninvoked)
 		{
-			((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
-			Item wall=theWall;
-			theWall=null;
-			wall.destroyThis();
+			if((theWall!=null)
+			&&(invoker!=null)
+			&&(theWall.owner()!=null)
+			&&(theWall.owner() instanceof Room)
+			&&(((Room)theWall.owner()).isContent(theWall)))
+			{
+				((Room)theWall.owner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
+				Item wall=theWall;
+				theWall=null;
+				wall.destroyThis();
+			}
 		}
 	}
 

@@ -43,11 +43,14 @@ public class Spell_FakeSpring extends Spell
 		if(littleSpring==null)
 			return;
 		super.unInvoke();
-		Item spring=(Item)littleSpring; // protects against uninvoke loops!
-		littleSpring=null;
-		spring.destroyThis();
-		SpringLocation.recoverRoomStats();
-		SpringLocation=null;
+		if(canBeUninvoked)
+		{
+			Item spring=(Item)littleSpring; // protects against uninvoke loops!
+			littleSpring=null;
+			spring.destroyThis();
+			SpringLocation.recoverRoomStats();
+			SpringLocation=null;
+		}
 	}
 
 	public boolean okAffect(Affect affect)

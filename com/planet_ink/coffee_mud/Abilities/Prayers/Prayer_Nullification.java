@@ -53,6 +53,7 @@ public class Prayer_Nullification extends Prayer
 						if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
 						&&(((A.classificationCode()&Ability.ALL_CODES)==Ability.SPELL)
 						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
+						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.CHANT)
 						   ||((A.classificationCode()&Ability.ALL_CODES)==Ability.SONG)))
 						{
 							foundSomethingAtLeast=true;

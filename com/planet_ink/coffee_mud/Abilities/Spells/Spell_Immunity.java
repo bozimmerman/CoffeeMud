@@ -47,7 +47,8 @@ public class Spell_Immunity extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your immunity has passed.");
+		if(canBeUninvoked)
+			mob.tell("Your immunity has passed.");
 
 		super.unInvoke();
 

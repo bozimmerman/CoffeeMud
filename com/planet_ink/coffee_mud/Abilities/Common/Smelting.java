@@ -73,23 +73,26 @@ public class Smelting extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((building!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(messedUp)
-					mob.tell("You ruin "+building.name()+"!");
-				else
-				for(int i=0;i<amountMaking;i++)
+				MOB mob=(MOB)affected;
+				if((building!=null)&&(!aborted))
 				{
-					Item copy=(Item)building.copyOf();
-					copy.setMiscText(building.text());
-					copy.recoverEnvStats();
-					mob.location().addItemRefuse(copy);
+					if(messedUp)
+						mob.tell("You ruin "+building.name()+"!");
+					else
+					for(int i=0;i<amountMaking;i++)
+					{
+						Item copy=(Item)building.copyOf();
+						copy.setMiscText(building.text());
+						copy.recoverEnvStats();
+						mob.location().addItemRefuse(copy);
+					}
 				}
+				building=null;
 			}
-			building=null;
 		}
 		super.unInvoke();
 	}

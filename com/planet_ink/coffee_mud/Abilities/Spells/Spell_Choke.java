@@ -56,7 +56,8 @@ public class Spell_Choke extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to breathe easier.");
+		if(canBeUninvoked)
+			mob.tell("You begin to breathe easier.");
 	}
 
 

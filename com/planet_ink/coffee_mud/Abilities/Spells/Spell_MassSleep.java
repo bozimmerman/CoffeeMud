@@ -81,8 +81,11 @@ public class Spell_MassSleep extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell("You feel less drowsy.");
-		ExternalPlay.standIfNecessary(mob);
+		if(canBeUninvoked)
+		{
+			mob.tell("You feel less drowsy.");
+			ExternalPlay.standIfNecessary(mob);
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -46,7 +46,8 @@ public class Spell_MindBlock extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your anti-psionic field fades.");
+		if(canBeUninvoked)
+			mob.tell("Your anti-psionic field fades.");
 
 		super.unInvoke();
 

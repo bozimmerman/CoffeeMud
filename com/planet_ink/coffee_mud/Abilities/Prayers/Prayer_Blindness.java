@@ -46,7 +46,8 @@ public class Prayer_Blindness extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your vision returns.");
+		if(canBeUninvoked)
+			mob.tell("Your vision returns.");
 	}
 
 

@@ -62,11 +62,14 @@ public class Spell_DemonGate extends Spell
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if((myMonster!=null)&&(invoker!=null))
+		if(canBeUninvoked)
 		{
-			MOB targ=myMonster;
-			myMonster=null;
-			targ.destroy();
+			if((myMonster!=null)&&(invoker!=null))
+			{
+				MOB targ=myMonster;
+				myMonster=null;
+				targ.destroy();
+			}
 		}
 	}
 

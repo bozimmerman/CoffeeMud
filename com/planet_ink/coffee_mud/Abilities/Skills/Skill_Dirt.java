@@ -71,7 +71,8 @@ public class Skill_Dirt extends StdAbility
 
 		super.unInvoke();
 
-		mob.tell("You can see again!");
+		if(canBeUninvoked)
+			mob.tell("You can see again!");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

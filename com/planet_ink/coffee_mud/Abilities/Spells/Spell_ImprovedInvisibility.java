@@ -59,7 +59,8 @@ public class Spell_ImprovedInvisibility extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to fade back into view.");
+		if(canBeUninvoked)
+			mob.tell("You begin to fade back into view.");
 	}
 
 

@@ -48,23 +48,25 @@ public class Spell_Shelter extends Spell
 			return;
 		MOB mob=(MOB)affected;
 
-		int i=0;
-		while(i<shelter.numInhabitants())
+		if(canBeUninvoked)
 		{
-			mob=shelter.fetchInhabitant(0);
-			if(mob==null) break;
-			mob.tell(mob,null,"You return to your previous location.");
+			int i=0;
+			while(i<shelter.numInhabitants())
+			{
+				mob=shelter.fetchInhabitant(0);
+				if(mob==null) break;
+				mob.tell(mob,null,"You return to your previous location.");
 
-			FullMsg enterMsg=new FullMsg(mob,previousLocation,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere!");
-			shelter.delInhabitant(mob);
-			mob.setLocation(previousLocation);
-			previousLocation.addInhabitant(mob);
-			previousLocation.send(mob,enterMsg);
-			ExternalPlay.look(mob,null,true);
+				FullMsg enterMsg=new FullMsg(mob,previousLocation,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of nowhere!");
+				shelter.delInhabitant(mob);
+				mob.setLocation(previousLocation);
+				previousLocation.addInhabitant(mob);
+				previousLocation.send(mob,enterMsg);
+				ExternalPlay.look(mob,null,true);
+			}
+			shelter=null;
+			previousLocation=null;
 		}
-		shelter=null;
-		previousLocation=null;
-
 		super.unInvoke();
 	}
 

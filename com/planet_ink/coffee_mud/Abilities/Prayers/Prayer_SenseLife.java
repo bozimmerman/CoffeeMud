@@ -33,8 +33,11 @@ public class Prayer_SenseLife extends Prayer
 		MOB mob=(MOB)affected;
 		
 		super.unInvoke();
-		lastRoom=null;
-		mob.tell("Your life sensations fade.");
+		if(canBeUninvoked)
+		{
+			lastRoom=null;
+			mob.tell("Your life sensations fade.");
+		}
 	}
 	
 	public void messageTo(MOB mob)

@@ -78,13 +78,16 @@ public class Fighter_Whomp extends StdAbility
 
 		super.unInvoke();
 
-		if(!mob.amDead())
+		if(canBeUninvoked)
 		{
-			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
-			else
-				mob.tell("You feel less drowsy.");
-			ExternalPlay.standIfNecessary(mob);
+			if(!mob.amDead())
+			{
+				if(mob.location()!=null)
+					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> seem(s) less drowsy.");
+				else
+					mob.tell("You feel less drowsy.");
+				ExternalPlay.standIfNecessary(mob);
+			}
 		}
 	}
 

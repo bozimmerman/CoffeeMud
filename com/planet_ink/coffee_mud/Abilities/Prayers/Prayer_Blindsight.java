@@ -37,7 +37,8 @@ public class Prayer_Blindsight extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your natural vision returns.");
+		if(canBeUninvoked)
+			mob.tell("Your natural vision returns.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

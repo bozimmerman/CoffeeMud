@@ -68,7 +68,8 @@ public class Skill_Trip extends StdAbility
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		doneTicking=true;
+		if(canBeUninvoked)
+			doneTicking=true;
 		super.unInvoke();
 		if(!mob.amDead())
 		{

@@ -45,7 +45,8 @@ public class Prayer_SenseInvisible extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("The clearness fades from your eyes.");
+		if(canBeUninvoked)
+			mob.tell("The clearness fades from your eyes.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -47,7 +47,8 @@ public class Spell_FaerieFire extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "The faerie fire around <S-NAME> fades.");
+		if(canBeUninvoked)
+			mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "The faerie fire around <S-NAME> fades.");
 		super.unInvoke();
 	}
 

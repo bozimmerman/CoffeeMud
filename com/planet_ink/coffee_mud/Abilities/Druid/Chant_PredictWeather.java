@@ -37,9 +37,11 @@ public class Chant_PredictWeather extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		lastPrediction="";
+		if(canBeUninvoked)
+			lastPrediction="";
 		super.unInvoke();
-		mob.tell(mob,null,"Your senses are no longer sensitive to the weather.");
+		if(canBeUninvoked)
+			mob.tell(mob,null,"Your senses are no longer sensitive to the weather.");
 	}
 	public boolean tick(int tickID)
 	{

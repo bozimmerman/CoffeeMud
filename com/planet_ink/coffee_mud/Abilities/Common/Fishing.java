@@ -51,20 +51,23 @@ public class Fishing extends CommonSkill
 
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((found!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				int amount=Dice.roll(1,5,0);
-				String s="s";
-				if(amount==1) s="";
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");
-				for(int i=0;i<amount;i++)
+				MOB mob=(MOB)affected;
+				if((found!=null)&&(!aborted))
 				{
-					Item newFound=(Item)found.copyOf();
-					mob.location().addItemRefuse(newFound);
-					ExternalPlay.get(mob,null,newFound,true);
+					int amount=Dice.roll(1,5,0);
+					String s="s";
+					if(amount==1) s="";
+					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to catch "+amount+" pound"+s+" of "+foundShortName+".");
+					for(int i=0;i<amount;i++)
+					{
+						Item newFound=(Item)found.copyOf();
+						mob.location().addItemRefuse(newFound);
+						ExternalPlay.get(mob,null,newFound,true);
+					}
 				}
 			}
 		}

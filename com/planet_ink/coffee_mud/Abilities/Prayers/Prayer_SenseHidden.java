@@ -45,7 +45,8 @@ public class Prayer_SenseHidden extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your eyes are no longer opague.");
+		if(canBeUninvoked)
+			mob.tell("Your eyes are no longer opague.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -97,7 +97,8 @@ public class Chant_FeelHeat extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your hot feeling is gone.");
+		if(canBeUninvoked)
+			mob.tell("Your hot feeling is gone.");
 
 		super.unInvoke();
 

@@ -101,7 +101,8 @@ public class Prayer_ProtEvil extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your protection from evil fades.");
+		if(canBeUninvoked)
+			mob.tell("Your protection from evil fades.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -86,20 +86,23 @@ public class Alchemy extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((building!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(messedUp)
+				MOB mob=(MOB)affected;
+				if((building!=null)&&(!aborted))
 				{
-					if(oldName.length()>0)
-						mob.tell("Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+					if(messedUp)
+					{
+						if(oldName.length()>0)
+							mob.tell("Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+					}
+					else
+						mob.addInventory(building);
 				}
-				else
-					mob.addInventory(building);
+				building=null;
 			}
-			building=null;
 		}
 		super.unInvoke();
 	}

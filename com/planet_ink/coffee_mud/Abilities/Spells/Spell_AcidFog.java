@@ -70,8 +70,11 @@ public class Spell_AcidFog extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if((!mob.amDead())&&(mob.location()!=null))
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the acid fog!");
+		if(canBeUninvoked)
+		{
+			if((!mob.amDead())&&(mob.location()!=null))
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the acid fog!");
+		}
 	}
 		
 

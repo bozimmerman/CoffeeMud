@@ -46,7 +46,8 @@ public class Spell_MinorGlobe extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your great anti-magic globe fades.");
+		if(canBeUninvoked)
+			mob.tell("Your great anti-magic globe fades.");
 
 		super.unInvoke();
 

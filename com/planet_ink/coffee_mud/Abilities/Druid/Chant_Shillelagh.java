@@ -41,15 +41,14 @@ public class Chant_Shillelagh extends Chant
 
 	public void unInvoke()
 	{
-
-
 		// undo the affects of this spell
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(canBeUninvoked)
 		{
-			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell("The enchantment on "+((Item)affected).name()+" fades.");
-			super.unInvoke();
-			return;
+			if((affected==null)||(!(affected instanceof MOB)))
+			{
+				if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
+					((MOB)((Item)affected).owner()).tell("The enchantment on "+((Item)affected).name()+" fades.");
+			}
 		}
 		super.unInvoke();
 	}

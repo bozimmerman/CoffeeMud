@@ -43,27 +43,30 @@ public class Spell_TimeStop extends Spell
 		// undo the affects of this spell
 		if(affected==null)
 			return;
-		if(affected instanceof Room)
+		if(canBeUninvoked)
 		{
-			Room room=(Room)affected;
-			room.showHappens(Affect.MSG_OK_VISUAL, "Time starts moving again...");
-			if(invoker!=null)
+			if(affected instanceof Room)
 			{
-				Ability me=invoker.fetchAffect(ID());
-				if(me!=null)
-					me.unInvoke();
+				Room room=(Room)affected;
+				room.showHappens(Affect.MSG_OK_VISUAL, "Time starts moving again...");
+				if(invoker!=null)
+				{
+					Ability me=invoker.fetchAffect(ID());
+					if(me!=null)
+						me.unInvoke();
+				}
 			}
-		}
-		else
-		if(affected instanceof MOB)
-		{
-			MOB mob=(MOB)affected;
-			if(mob.location()!=null)
+			else
+			if(affected instanceof MOB)
 			{
-				mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Time starts moving again...");
-				Ability me=mob.location().fetchAffect(ID());
-				if(me!=null)
-					me.unInvoke();
+				MOB mob=(MOB)affected;
+				if(mob.location()!=null)
+				{
+					mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Time starts moving again...");
+					Ability me=mob.location().fetchAffect(ID());
+					if(me!=null)
+						me.unInvoke();
+				}
 			}
 		}
 		super.unInvoke();

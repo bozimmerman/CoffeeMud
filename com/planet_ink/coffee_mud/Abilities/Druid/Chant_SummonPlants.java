@@ -34,13 +34,17 @@ public class Chant_SummonPlants extends Chant
 			return;
 		if(littlePlants==null)
 			return;
-		PlantsLocation.show(invoker,null,Affect.MSG_OK_VISUAL,littlePlants.name()+" wither away.");
+		if(canBeUninvoked)
+			PlantsLocation.show(invoker,null,Affect.MSG_OK_VISUAL,littlePlants.name()+" wither away.");
 		super.unInvoke();
-		Item plants=littlePlants; // protects against uninvoke loops!
-		littlePlants=null;
-		plants.destroyThis();
-		PlantsLocation.recoverRoomStats();
-		PlantsLocation=null;
+		if(canBeUninvoked)
+		{
+			Item plants=littlePlants; // protects against uninvoke loops!
+			littlePlants=null;
+			plants.destroyThis();
+			PlantsLocation.recoverRoomStats();
+			PlantsLocation=null;
+		}
 	}
 
 	public void affect(Affect affect)

@@ -90,8 +90,8 @@ public class Prop_WizInvis extends Property
 			}
 			else
 				being.recoverEnvStats();
+			mob.tell("You begin to fade back into view.");
 		}
-		mob.tell("You begin to fade back into view.");
 	}
 
 	public boolean okAffect(Affect affect)

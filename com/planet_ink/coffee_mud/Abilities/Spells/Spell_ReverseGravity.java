@@ -86,32 +86,35 @@ public class Spell_ReverseGravity extends Spell
 		// undo the affects of this spell
 		if(affected==null)
 			return;
-		if(affected instanceof Room)
+		if(canBeUninvoked)
 		{
-			Room room=(Room)affected;
-			room.showHappens(Affect.MSG_OK_VISUAL, "Gravity returns to normal...");
-			if(invoker!=null)
+			if(affected instanceof Room)
 			{
-				Ability me=invoker.fetchAffect(ID());
-				if(me!=null) me.setProfficiency(0);
+				Room room=(Room)affected;
+				room.showHappens(Affect.MSG_OK_VISUAL, "Gravity returns to normal...");
+				if(invoker!=null)
+				{
+					Ability me=invoker.fetchAffect(ID());
+					if(me!=null) me.setProfficiency(0);
+				}
 			}
-		}
-		else
-		if(affected instanceof MOB)
-		{
-			MOB mob=(MOB)affected;
-			if(mob.location()!=null)
+			else
+			if(affected instanceof MOB)
 			{
-				mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Gravity returns to normal..");
-				Ability me=mob.location().fetchAffect(ID());
-				if(me!=null) me.setProfficiency(0);
+				MOB mob=(MOB)affected;
+				if(mob.location()!=null)
+				{
+					mob.location().show(mob, null, Affect.MSG_OK_VISUAL, "Gravity returns to normal..");
+					Ability me=mob.location().fetchAffect(ID());
+					if(me!=null) me.setProfficiency(0);
+				}
 			}
-		}
-		while(childrenAffects.size()>0)
-		{
-			Ability A=(Ability)childrenAffects.elementAt(0);
-			A.setProfficiency(0);
-			childrenAffects.removeElement(A);
+			while(childrenAffects.size()>0)
+			{
+				Ability A=(Ability)childrenAffects.elementAt(0);
+				A.setProfficiency(0);
+				childrenAffects.removeElement(A);
+			}
 		}
 		super.unInvoke();
 	}

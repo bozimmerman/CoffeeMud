@@ -117,10 +117,12 @@ public class Spell_MirrorImage extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		numberOfImages=0;
+		if(canBeUninvoked)
+			numberOfImages=0;
 		super.unInvoke();
 
-		mob.tell("Your mirror images fade away.");
+		if(canBeUninvoked)
+			mob.tell("Your mirror images fade away.");
 	}
 
 

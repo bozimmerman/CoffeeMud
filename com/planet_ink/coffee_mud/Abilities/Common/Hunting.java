@@ -124,17 +124,20 @@ public class Hunting extends CommonSkill
 
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((found!=null)&&(!found.amDead())&&(found.location()!=null)&&(!found.isInCombat()))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(found.location()==mob.location())
-					moveFound();
-				found.location().delInhabitant(found);
-				found.setLocation(null);
-				found.destroy();
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-HAS-HAVE> lost the trail.");
+				MOB mob=(MOB)affected;
+				if((found!=null)&&(!found.amDead())&&(found.location()!=null)&&(!found.isInCombat()))
+				{
+					if(found.location()==mob.location())
+						moveFound();
+					found.location().delInhabitant(found);
+					found.setLocation(null);
+					found.destroy();
+					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> <S-HAS-HAVE> lost the trail.");
+				}
 			}
 		}
 		super.unInvoke();

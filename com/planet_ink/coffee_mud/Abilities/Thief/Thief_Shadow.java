@@ -136,13 +136,16 @@ public class Thief_Shadow extends ThiefSkill
 	
 	public void unInvoke()
 	{
-		if((invoker!=null)&&(shadowing!=null))
+		if(canBeUninvoked)
 		{
-			invoker.delAffect(this);
-			setAffectedOne(shadowing);
-			((MOB)invoker).tell("You are no longer shadowing "+shadowing.name()+".");
+			if((invoker!=null)&&(shadowing!=null))
+			{
+				invoker.delAffect(this);
+				setAffectedOne(shadowing);
+				((MOB)invoker).tell("You are no longer shadowing "+shadowing.name()+".");
+			}
+			shadowing=null;
 		}
-		shadowing=null;
 		super.unInvoke();
 	}
 	

@@ -41,7 +41,8 @@ public class Prayer_Regeneration extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your regenerative powers go away.");
+		if(canBeUninvoked)
+			mob.tell("Your regenerative powers go away.");
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

@@ -64,9 +64,12 @@ public class Spell_FakeArmor extends Spell
 	{
 		if(myItem==null) return;
 		super.unInvoke();
-		Item item=myItem;
-		myItem=null;
-		item.destroyThis();
+		if(canBeUninvoked)
+		{
+			Item item=myItem;
+			myItem=null;
+			item.destroyThis();
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

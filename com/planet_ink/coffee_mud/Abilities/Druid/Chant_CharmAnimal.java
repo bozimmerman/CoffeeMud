@@ -81,8 +81,11 @@ public class Chant_CharmAnimal extends Chant
 
 		super.unInvoke();
 
-		mob.tell("Your free-will returns.");
-		ExternalPlay.follow(mob,null,false);
+		if(canBeUninvoked)
+		{
+			mob.tell("Your free-will returns.");
+			ExternalPlay.follow(mob,null,false);
+		}
 	}
 
 

@@ -47,7 +47,8 @@ public class Spell_ResistFire extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your cool protection warms up.");
+		if(canBeUninvoked)
+			mob.tell("Your cool protection warms up.");
 
 		super.unInvoke();
 

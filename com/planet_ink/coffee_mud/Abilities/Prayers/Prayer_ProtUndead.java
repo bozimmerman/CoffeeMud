@@ -73,7 +73,8 @@ public class Prayer_ProtUndead extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your protection from undead fades.");
+		if(canBeUninvoked)
+			mob.tell("Your protection from undead fades.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

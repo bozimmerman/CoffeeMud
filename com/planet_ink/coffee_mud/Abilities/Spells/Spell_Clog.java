@@ -55,7 +55,8 @@ public class Spell_Clog extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You mouth reverts to normal size.");
+		if(canBeUninvoked)
+			mob.tell("You mouth reverts to normal size.");
 	}
 
 

@@ -45,7 +45,8 @@ public class Chant_Sunray extends Chant
 
 		super.unInvoke();
 
-		mob.tell("Your vision returns.");
+		if(canBeUninvoked)
+			mob.tell("Your vision returns.");
 	}
 
 

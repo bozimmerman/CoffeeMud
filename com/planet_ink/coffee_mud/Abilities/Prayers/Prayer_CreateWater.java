@@ -33,13 +33,17 @@ public class Prayer_CreateWater extends Prayer
 			return;
 		if(littleSpring==null)
 			return;
-		SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The little spring dries up.");
+		if(canBeUninvoked)
+			SpringLocation.showHappens(Affect.MSG_OK_VISUAL,"The little spring dries up.");
 		super.unInvoke();
-		Item spring=littleSpring; // protects against uninvoke loops!
-		littleSpring=null;
-		spring.destroyThis();
-		SpringLocation.recoverRoomStats();
-		SpringLocation=null;
+		if(canBeUninvoked)
+		{
+			Item spring=littleSpring; // protects against uninvoke loops!
+			littleSpring=null;
+			spring.destroyThis();
+			SpringLocation.recoverRoomStats();
+			SpringLocation=null;
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

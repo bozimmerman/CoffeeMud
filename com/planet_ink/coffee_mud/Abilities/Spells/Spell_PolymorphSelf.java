@@ -69,7 +69,8 @@ public class Spell_PolymorphSelf extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		mob.tell("You feel more like yourself again.");
+		if(canBeUninvoked)
+			mob.tell("You feel more like yourself again.");
 	}
 
 

@@ -87,23 +87,26 @@ public class Cooking extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((cooking!=null)&&(!aborted)&&(finalRecipe!=null)&&(finalDish!=null))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				Vector V=cooking.getContents();
-				for(int v=0;v<V.size();v++)
-					((Item)V.elementAt(v)).destroyThis();
-				if((cooking instanceof Drink)&&(finalDish instanceof Drink))
-					((Drink)cooking).setLiquidRemaining(0);
-				for(int i=0;i<finalAmount;i++)
+				MOB mob=(MOB)affected;
+				if((cooking!=null)&&(!aborted)&&(finalRecipe!=null)&&(finalDish!=null))
 				{
-					Item food=((Item)finalDish.copyOf());
-					food.setMiscText(finalDish.text());
-					food.recoverEnvStats();
-					((MOB)cooking.owner()).addInventory(food);
-					food.setContainer(cooking);
+					Vector V=cooking.getContents();
+					for(int v=0;v<V.size();v++)
+						((Item)V.elementAt(v)).destroyThis();
+					if((cooking instanceof Drink)&&(finalDish instanceof Drink))
+						((Drink)cooking).setLiquidRemaining(0);
+					for(int i=0;i<finalAmount;i++)
+					{
+						Item food=((Item)finalDish.copyOf());
+						food.setMiscText(finalDish.text());
+						food.recoverEnvStats();
+						((MOB)cooking.owner()).addInventory(food);
+						food.setContainer(cooking);
+					}
 				}
 			}
 		}

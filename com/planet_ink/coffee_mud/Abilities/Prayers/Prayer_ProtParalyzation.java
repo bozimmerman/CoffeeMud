@@ -37,7 +37,8 @@ public class Prayer_ProtParalyzation extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your natural defenses against paralyzation take over.");
+		if(canBeUninvoked)
+			mob.tell("Your natural defenses against paralyzation take over.");
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

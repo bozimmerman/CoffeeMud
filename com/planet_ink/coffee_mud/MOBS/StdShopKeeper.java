@@ -305,6 +305,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		Environmental item=getStock(name);
 		if(item!=null)
 		{
+			if(item instanceof Ability)
+				return item;
+			
 			Integer possNum=(Integer)duplicateInventory.get(item);
 			if(possNum!=null)
 			{
@@ -548,7 +551,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						{
 							curState().setMana(maxState().getMana());
 							Vector V=new Vector();
-							V.addElement(mob.name());
+							V.addElement(mob.name()+"$");
 							((Ability)product).invoke(this,V,mob,true);
 							curState().setMana(maxState().getMana());
 						}

@@ -71,17 +71,20 @@ public class GlassBlowing extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((building!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(messedUp)
-					mob.tell("A "+building.name()+" explodes!");
-				else
-					mob.location().addItemRefuse(building);
+				MOB mob=(MOB)affected;
+				if((building!=null)&&(!aborted))
+				{
+					if(messedUp)
+						mob.tell("A "+building.name()+" explodes!");
+					else
+						mob.location().addItemRefuse(building);
+				}
+				building=null;
 			}
-			building=null;
 		}
 		super.unInvoke();
 	}

@@ -40,7 +40,8 @@ public class Chant_ResistCold extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your warm protection cools.");
+		if(canBeUninvoked)
+			mob.tell("Your warm protection cools.");
 
 		super.unInvoke();
 

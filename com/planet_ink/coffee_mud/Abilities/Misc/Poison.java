@@ -70,7 +70,8 @@ public class Poison extends StdAbility
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell(mob,null,"The poison runs its course.");
+		if(canBeUninvoked)
+			mob.tell(mob,null,"The poison runs its course.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

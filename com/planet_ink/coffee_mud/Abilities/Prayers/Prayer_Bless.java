@@ -51,13 +51,15 @@ public class Prayer_Bless extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
+			if(canBeUninvoked)
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
 				((MOB)((Item)affected).owner()).tell("The blessing on "+((Item)affected).name()+" fades.");
 			super.unInvoke();
 			return;
 		}
 		MOB mob=(MOB)affected;
-		mob.tell("Your aura of blessing fades.");
+		if(canBeUninvoked)
+			mob.tell("Your aura of blessing fades.");
 		super.unInvoke();
 	}
 

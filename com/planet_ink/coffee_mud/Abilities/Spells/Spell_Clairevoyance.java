@@ -40,6 +40,8 @@ public class Spell_Clairevoyance extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
+		
+		if(canBeUninvoked)
 		if(invoker!=null)
 			invoker.tell("Your visions of '"+mob.name()+"' fade.");
 		super.unInvoke();

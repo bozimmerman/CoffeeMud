@@ -32,19 +32,22 @@ public class Engraving extends CommonSkill
 	}
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if(writing.length()==0)
-				mob.tell("You mess up your engravey.");
-			else
+			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 			{
-				String desc=found.description();
-				int x=desc.indexOf(" Engraved on it are the words `");
-				int y=desc.lastIndexOf("`");
-				if((x>=0)&&(y>x))
-					desc=desc.substring(0,x);
-				found.setDescription(desc+" Engraved on it are the words `"+writing+"`.");
+				MOB mob=(MOB)affected;
+				if(writing.length()==0)
+					mob.tell("You mess up your engravey.");
+				else
+				{
+					String desc=found.description();
+					int x=desc.indexOf(" Engraved on it are the words `");
+					int y=desc.lastIndexOf("`");
+					if((x>=0)&&(y>x))
+						desc=desc.substring(0,x);
+					found.setDescription(desc+" Engraved on it are the words `"+writing+"`.");
+				}
 			}
 		}
 		super.unInvoke();

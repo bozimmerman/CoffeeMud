@@ -38,12 +38,15 @@ public class Chant_Hibernation extends Chant
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(!mob.amDead())
+		if(canBeUninvoked)
 		{
-			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> hibernation.");
-			else
-				mob.tell("Your hibernation ends.");
+			if(!mob.amDead())
+			{
+				if(mob.location()!=null)
+					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> hibernation.");
+				else
+					mob.tell("Your hibernation ends.");
+			}
 		}
 	}
 

@@ -46,12 +46,15 @@ public class Skill_Meditation extends StdAbility
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		if(!mob.amDead())
+		if(canBeUninvoked)
 		{
-			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> meditation.");
-			else
-				mob.tell("Your meditation ends.");
+			if(!mob.amDead())
+			{
+				if(mob.location()!=null)
+					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> end(s) <S-HIS-HER> meditation.");
+				else
+					mob.tell("Your meditation ends.");
+			}
 		}
 	}
 

@@ -852,7 +852,8 @@ public class StdAbility implements Ability, Cloneable
 			return false;
 
 		if((tickID==Host.MOB_TICK)
-		&&(tickDown!=Integer.MAX_VALUE))
+		&&(tickDown!=Integer.MAX_VALUE)
+		&&(canBeUninvoked))
 		{
 			if(tickDown<0)
 				return !unInvoked;

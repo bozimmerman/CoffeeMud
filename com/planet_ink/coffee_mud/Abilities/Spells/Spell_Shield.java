@@ -54,7 +54,8 @@ public class Spell_Shield extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to feel a bit more vulnerable.");
+		if(canBeUninvoked)
+			mob.tell("You begin to feel a bit more vulnerable.");
 	}
 
 

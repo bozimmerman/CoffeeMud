@@ -78,13 +78,16 @@ public class Thief_Sap extends ThiefSkill
 
 		super.unInvoke();
 
-		if(!mob.amDead())
+		if(canBeUninvoked)
 		{
-			if(mob.location()!=null)
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
-			else
-				mob.tell("You regain consciousness.");
-			ExternalPlay.standIfNecessary(mob);
+			if(!mob.amDead())
+			{
+				if(mob.location()!=null)
+					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) consciousness.");
+				else
+					mob.tell("You regain consciousness.");
+				ExternalPlay.standIfNecessary(mob);
+			}
 		}
 	}
 

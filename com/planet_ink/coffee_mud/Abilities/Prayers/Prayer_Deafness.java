@@ -45,7 +45,8 @@ public class Prayer_Deafness extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your hearing returns.");
+		if(canBeUninvoked)
+			mob.tell("Your hearing returns.");
 	}
 
 

@@ -46,6 +46,7 @@ public class Spell_Enthrall extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
+		if(mob.amFollowing()==null) return super.okAffect(affect);
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -84,8 +85,11 @@ public class Spell_Enthrall extends Spell
 
 		super.unInvoke();
 
-		mob.tell("Your free-will returns.");
-		ExternalPlay.follow(mob,null,false);
+		if(canBeUninvoked)
+		{
+			mob.tell("Your free-will returns.");
+			ExternalPlay.follow(mob,null,false);
+		}
 	}
 
 

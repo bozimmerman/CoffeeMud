@@ -77,7 +77,8 @@ public class Spell_Blur extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to come back into focus.");
+		if(canBeUninvoked)
+			mob.tell("You begin to come back into focus.");
 	}
 
 

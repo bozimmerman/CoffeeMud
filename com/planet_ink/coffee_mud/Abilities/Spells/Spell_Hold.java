@@ -60,8 +60,11 @@ public class Spell_Hold extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell("You can move again!");
-		ExternalPlay.standIfNecessary(mob);
+		if(canBeUninvoked)
+		{
+			mob.tell("You can move again!");
+			ExternalPlay.standIfNecessary(mob);
+		}
 	}
 
 

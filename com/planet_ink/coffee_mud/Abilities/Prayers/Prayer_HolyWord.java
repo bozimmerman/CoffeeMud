@@ -60,7 +60,8 @@ public class Prayer_HolyWord extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your blinding holy aura fades.");
+		if(canBeUninvoked)
+			mob.tell("Your blinding holy aura fades.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

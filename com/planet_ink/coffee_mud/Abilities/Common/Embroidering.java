@@ -32,19 +32,22 @@ public class Embroidering extends CommonSkill
 
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if(writing.length()==0)
-				mob.tell("You mess up your embroidery.");
-			else
+			if((affected!=null)&&(affected instanceof MOB)&&(!aborted))
 			{
-				String desc=found.description();
-				int x=desc.indexOf(" Embroidered on it are the words `");
-				int y=desc.lastIndexOf("`");
-				if((x>=0)&&(y>x))
-					desc=desc.substring(0,x);
-				found.setDescription(desc+" Embroidered on it are the words `"+writing+"`.");
+				MOB mob=(MOB)affected;
+				if(writing.length()==0)
+					mob.tell("You mess up your embroidery.");
+				else
+				{
+					String desc=found.description();
+					int x=desc.indexOf(" Embroidered on it are the words `");
+					int y=desc.lastIndexOf("`");
+					if((x>=0)&&(y>x))
+						desc=desc.substring(0,x);
+					found.setDescription(desc+" Embroidered on it are the words `"+writing+"`.");
+				}
 			}
 		}
 		super.unInvoke();

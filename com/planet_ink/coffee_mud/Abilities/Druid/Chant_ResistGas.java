@@ -39,7 +39,8 @@ public class Chant_ResistGas extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your filtering protection dissipates.");
+		if(canBeUninvoked)
+			mob.tell("Your filtering protection dissipates.");
 
 		super.unInvoke();
 

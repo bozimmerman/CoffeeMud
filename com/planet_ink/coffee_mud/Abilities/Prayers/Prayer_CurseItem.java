@@ -51,13 +51,15 @@ public class Prayer_CurseItem extends Prayer
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof MOB)))
 		{
+			if(canBeUninvoked)
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
 				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).name()+" is lifted.");
 			super.unInvoke();
 			return;
 		}
 		MOB mob=(MOB)affected;
-		mob.tell("The curse is lifted.");
+		if(canBeUninvoked)
+			mob.tell("The curse is lifted.");
 		super.unInvoke();
 	}
 

@@ -40,7 +40,8 @@ public class Chant_WaterBreathing extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell(mob,null,"Your ability to breathe underwater fades.");
+		if(canBeUninvoked)
+			mob.tell(mob,null,"Your ability to breathe underwater fades.");
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -50,23 +50,29 @@ public class Spell_Delay extends Spell
 			return;
 		if((shooter==null)||(parameters==null))
 			return;
-		MOB newCaster=CMClass.getMOB("StdMOB");
-		newCaster.setName("the thin air");
-		newCaster.setDescription(" ");
-		newCaster.setDisplayText(" ");
-		newCaster.baseEnvStats().setLevel(invoker.envStats().level());
-		newCaster.recoverEnvStats();
-		newCaster.setLocation((Room)affected);
-		try
+		if(canBeUninvoked)
 		{
-			shooter.invoke(newCaster,parameters,null,true);
+			MOB newCaster=CMClass.getMOB("StdMOB");
+			newCaster.setName("the thin air");
+			newCaster.setDescription(" ");
+			newCaster.setDisplayText(" ");
+			newCaster.baseEnvStats().setLevel(invoker.envStats().level());
+			newCaster.recoverEnvStats();
+			newCaster.setLocation((Room)affected);
+			try
+			{
+				shooter.invoke(newCaster,parameters,null,true);
+			}
+			catch(Exception e){Log.errOut("DELAY/"+Util.combine(parameters,0),e);}
+			newCaster.setLocation(null);
+			newCaster.destroy();
 		}
-		catch(Exception e){Log.errOut("DELAY/"+Util.combine(parameters,0),e);}
-		newCaster.setLocation(null);
-		newCaster.destroy();
 		super.unInvoke();
-		shooter=null;
-		parameters=null;
+		if(canBeUninvoked)
+		{
+			shooter=null;
+			parameters=null;
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

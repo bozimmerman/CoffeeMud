@@ -69,12 +69,15 @@ public class Fighter_Berzerk extends StdAbility
 
 			super.unInvoke();
 
-			if(mob.curState().getHitPoints()<=hpAdjustment)
-				mob.curState().setHitPoints(1);
-			else
-				mob.curState().adjHitPoints(-hpAdjustment,mob.maxState());
-			mob.tell(mob,null,"You fell calmer.");
-			mob.recoverMaxState();
+			if(canBeUninvoked)
+			{
+				if(mob.curState().getHitPoints()<=hpAdjustment)
+					mob.curState().setHitPoints(1);
+				else
+					mob.curState().adjHitPoints(-hpAdjustment,mob.maxState());
+				mob.tell(mob,null,"You fell calmer.");
+				mob.recoverMaxState();
+			}
 		}
 	}
 

@@ -47,7 +47,8 @@ public class Spell_ResistAcid extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your oily protection dries up.");
+		if(canBeUninvoked)
+			mob.tell("Your oily protection dries up.");
 
 		super.unInvoke();
 	}

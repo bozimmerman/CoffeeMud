@@ -68,7 +68,8 @@ public class Spell_Awe extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You seem less awesome.");
+		if(canBeUninvoked)
+			mob.tell("You seem less awesome.");
 	}
 
 

@@ -39,7 +39,8 @@ public class Prayer_Sanctuary extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("The sanctuary around you fades.");
+		if(canBeUninvoked)
+			mob.tell("The sanctuary around you fades.");
 	}
 
 	public boolean okAffect(Affect affect)

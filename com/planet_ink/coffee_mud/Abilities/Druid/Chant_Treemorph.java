@@ -136,14 +136,17 @@ public class Chant_Treemorph extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(tree!=null) tree.destroyThis();
-		mob.tell("You feel like your normal self again!");
-		mob.curState().setHitPoints(1);
-		mob.curState().setMana(0);
-		mob.curState().setMovement(0);
-		mob.curState().setHunger(0);
-		mob.curState().setThirst(0);
-		ExternalPlay.standIfNecessary(mob);
+		if(canBeUninvoked)
+		{
+			if(tree!=null) tree.destroyThis();
+			mob.tell("You feel like your normal self again!");
+			mob.curState().setHitPoints(1);
+			mob.curState().setMana(0);
+			mob.curState().setMovement(0);
+			mob.curState().setHunger(0);
+			mob.curState().setThirst(0);
+			ExternalPlay.standIfNecessary(mob);
+		}
 	}
 
 

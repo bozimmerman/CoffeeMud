@@ -56,22 +56,25 @@ public class Digging extends CommonSkill
 
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((found!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				int amount=1;
-				if(Dice.rollPercentage()>90)
-					amount++;
-				String s="s";
-				if(amount==1) s="";
-				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to dig out "+amount+" "+foundShortName+s+".");
-				for(int i=0;i<amount;i++)
+				MOB mob=(MOB)affected;
+				if((found!=null)&&(!aborted))
 				{
-					Item newFound=(Item)found.copyOf();
-					mob.location().addItemRefuse(newFound);
-					ExternalPlay.get(mob,null,newFound,true);
+					int amount=1;
+					if(Dice.rollPercentage()>90)
+						amount++;
+					String s="s";
+					if(amount==1) s="";
+					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to dig out "+amount+" "+foundShortName+s+".");
+					for(int i=0;i<amount;i++)
+					{
+						Item newFound=(Item)found.copyOf();
+						mob.location().addItemRefuse(newFound);
+						ExternalPlay.get(mob,null,newFound,true);
+					}
 				}
 			}
 		}

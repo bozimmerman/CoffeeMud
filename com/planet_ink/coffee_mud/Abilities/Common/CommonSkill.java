@@ -84,14 +84,17 @@ public class CommonSkill extends StdAbility
 
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if(aborted)
-				mob.tell("You stop "+verb);
-			else
-				mob.tell("You are done "+verb);
-			
+			if((affected!=null)&&(affected instanceof MOB))
+			{
+				MOB mob=(MOB)affected;
+				if(aborted)
+					mob.tell("You stop "+verb);
+				else
+					mob.tell("You are done "+verb);
+				
+			}
 		}
 		super.unInvoke();
 	}

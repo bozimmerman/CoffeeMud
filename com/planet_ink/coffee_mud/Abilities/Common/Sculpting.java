@@ -68,36 +68,39 @@ public class Sculpting extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((building!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(messedUp)
+				MOB mob=(MOB)affected;
+				if((building!=null)&&(!aborted))
 				{
-					if(mending)
-						mob.tell("You completely mess up mending "+building.name()+".");
-					else
-						mob.tell("You completely mess up sculpting "+building.name()+".");
-				}
-				else
-				{
-					if(mending)
-						building.setUsesRemaining(100);
+					if(messedUp)
+					{
+						if(mending)
+							mob.tell("You completely mess up mending "+building.name()+".");
+						else
+							mob.tell("You completely mess up sculpting "+building.name()+".");
+					}
 					else
 					{
-						mob.location().addItemRefuse(building);
-						if(key!=null)
+						if(mending)
+							building.setUsesRemaining(100);
+						else
 						{
-							mob.location().addItemRefuse(key);
-							key.setContainer(building);
+							mob.location().addItemRefuse(building);
+							if(key!=null)
+							{
+								mob.location().addItemRefuse(key);
+								key.setContainer(building);
+							}
 						}
 					}
 				}
+				building=null;
+				key=null;
+				mending=false;
 			}
-			building=null;
-			key=null;
-			mending=false;
 		}
 		super.unInvoke();
 	}

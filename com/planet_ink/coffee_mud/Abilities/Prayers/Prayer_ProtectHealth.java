@@ -38,7 +38,8 @@ public class Prayer_ProtectHealth extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your bodies natural defenses take over.");
+		if(canBeUninvoked)
+			mob.tell("Your bodies natural defenses take over.");
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

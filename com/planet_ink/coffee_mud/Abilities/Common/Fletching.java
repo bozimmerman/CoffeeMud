@@ -74,28 +74,31 @@ public class Fletching extends CommonSkill
 	
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((building!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if(messedUp)
+				MOB mob=(MOB)affected;
+				if((building!=null)&&(!aborted))
 				{
-					if(mending)
-						mob.tell("You completely mess up mending "+building.name()+".");
+					if(messedUp)
+					{
+						if(mending)
+							mob.tell("You completely mess up mending "+building.name()+".");
+						else
+							mob.tell("You completely mess up making "+building.name()+".");
+					}
 					else
-						mob.tell("You completely mess up making "+building.name()+".");
+					{
+						if(mending)
+							building.setUsesRemaining(100);
+						else
+							mob.location().addItemRefuse(building);
+					}
 				}
-				else
-				{
-					if(mending)
-						building.setUsesRemaining(100);
-					else
-						mob.location().addItemRefuse(building);
-				}
+				building=null;
+				mending=false;
 			}
-			building=null;
-			mending=false;
 		}
 		super.unInvoke();
 	}

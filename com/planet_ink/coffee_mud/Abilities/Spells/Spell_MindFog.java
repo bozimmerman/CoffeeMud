@@ -55,7 +55,8 @@ public class Spell_MindFog extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You feel a little less foggy in the head.");
+		if(canBeUninvoked)
+			mob.tell("You feel a little less foggy in the head.");
 	}
 
 

@@ -219,7 +219,8 @@ public class Spell_Delirium extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to feel a bit less delirius.");
+		if(canBeUninvoked)
+			mob.tell("You begin to feel a bit less delirius.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -113,8 +113,11 @@ public class Spell_StinkingCloud extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if((!mob.amDead())&&(mob.location()!=null))
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the stinking cloud!");
+		if(canBeUninvoked)
+		{
+			if((!mob.amDead())&&(mob.location()!=null))
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the stinking cloud!");
+		}
 	}
 		
 

@@ -40,8 +40,9 @@ public class Spell_Scry extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(invoker!=null)
-			invoker.tell("Your knowledge of '"+mob.name()+"' fades.");
+		if(canBeUninvoked)
+			if(invoker!=null)
+				invoker.tell("Your knowledge of '"+mob.name()+"' fades.");
 		super.unInvoke();
 
 	}

@@ -32,8 +32,11 @@ public class Chant_SenseLife extends Chant
 		MOB mob=(MOB)affected;
 		
 		super.unInvoke();
-		lastRoom=null;
-		mob.tell("Your life sensations fade.");
+		if(canBeUninvoked)
+		{
+			lastRoom=null;
+			mob.tell("Your life sensations fade.");
+		}
 	}
 	
 	public void messageTo(MOB mob)

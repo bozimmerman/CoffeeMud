@@ -57,7 +57,7 @@ public class Druid_DruidicPass extends StdAbility
 		}
 		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		{
-			mob.tell("The Druidic Pass does not work in a city.");
+			mob.tell("You must be in the wild to perform the Druidic Pass.");
 			return false;
 		}
 		String whatToOpen=Util.combine(commands,0);

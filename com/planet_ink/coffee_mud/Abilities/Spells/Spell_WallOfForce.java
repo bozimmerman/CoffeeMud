@@ -88,16 +88,19 @@ public class Spell_WallOfForce extends Spell
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if((theWall!=null)
-		&&(invoker!=null)
-		&&(theWall.owner()!=null)
-		&&(theWall.owner() instanceof Room)
-		&&(((Room)theWall.owner()).isContent(theWall)))
+		if(canBeUninvoked)
 		{
-			((Room)theWall.owner()).showHappens(Affect.MSG_OK_VISUAL,"The wall of force is gone.");
-			Item wall=theWall;
-			theWall=null;
-			wall.destroyThis();
+			if((theWall!=null)
+			&&(invoker!=null)
+			&&(theWall.owner()!=null)
+			&&(theWall.owner() instanceof Room)
+			&&(((Room)theWall.owner()).isContent(theWall)))
+			{
+				((Room)theWall.owner()).showHappens(Affect.MSG_OK_VISUAL,"The wall of force is gone.");
+				Item wall=theWall;
+				theWall=null;
+				wall.destroyThis();
+			}
 		}
 	}
 

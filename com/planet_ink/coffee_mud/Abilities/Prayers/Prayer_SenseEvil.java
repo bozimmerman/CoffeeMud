@@ -43,7 +43,8 @@ public class Prayer_SenseEvil extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("The red fades from your eyes.");
+		if(canBeUninvoked)
+			mob.tell("The red fades from your eyes.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

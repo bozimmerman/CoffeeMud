@@ -47,7 +47,8 @@ public class Spell_ResistElectricity extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your organic protection withers.");
+		if(canBeUninvoked)
+			mob.tell("Your organic protection withers.");
 
 		super.unInvoke();
 

@@ -46,7 +46,8 @@ public class Spell_Nondetection extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your undetectable field fades.");
+		if(canBeUninvoked)
+			mob.tell("Your undetectable field fades.");
 
 		super.unInvoke();
 

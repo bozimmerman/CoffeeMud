@@ -56,7 +56,8 @@ public class Spell_Feeblemind extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to remember some rather simple things--like your name.  The feeblemind spell must be wearing off.");
+		if(canBeUninvoked)
+			mob.tell("You begin to remember some rather simple things--like your name.  The feeblemind spell must be wearing off.");
 	}
 
 

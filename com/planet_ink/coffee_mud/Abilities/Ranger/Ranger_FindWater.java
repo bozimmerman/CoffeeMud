@@ -44,7 +44,8 @@ public class Ranger_FindWater extends StdAbility
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
-		lastRoom=null;
+		if(canBeUninvoked)
+			lastRoom=null;
 		super.unInvoke();
 	}
 	public int nextDirectionFromHere(Room location)

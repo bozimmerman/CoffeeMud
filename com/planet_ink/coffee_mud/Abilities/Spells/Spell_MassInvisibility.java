@@ -74,7 +74,8 @@ public class Spell_MassInvisibility extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell("You become visible again.");
+		if(canBeUninvoked)
+			mob.tell("You become visible again.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

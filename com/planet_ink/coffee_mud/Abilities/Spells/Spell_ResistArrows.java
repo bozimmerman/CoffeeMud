@@ -45,7 +45,8 @@ public class Spell_ResistArrows extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your arrow protection dissipates.");
+		if(canBeUninvoked)
+			mob.tell("Your arrow protection dissipates.");
 
 		super.unInvoke();
 

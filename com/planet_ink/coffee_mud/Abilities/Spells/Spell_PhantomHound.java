@@ -40,9 +40,10 @@ public class Spell_PhantomHound extends Spell
 	{
 		if(tickID==Host.MOB_TICK)
 		{
-			if((affected==null)
+			if(((affected==null)
 			||(unInvoked)
 			||(!(affected instanceof MOB)))
+				&&(canBeUninvoked))
 				unInvoke();
 			else
 			{

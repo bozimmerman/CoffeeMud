@@ -47,7 +47,8 @@ public class Spell_IronGrip extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your weapon hand turns back to flesh.");
+		if(canBeUninvoked)
+			mob.tell("Your weapon hand turns back to flesh.");
 
 		super.unInvoke();
 

@@ -100,7 +100,8 @@ public class Spell_WeaknessFire extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		mob.tell("Your fire weakness is now gone.");
+		if(canBeUninvoked)
+			mob.tell("Your fire weakness is now gone.");
 
 		super.unInvoke();
 

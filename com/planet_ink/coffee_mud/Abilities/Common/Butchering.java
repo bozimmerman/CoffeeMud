@@ -33,27 +33,30 @@ public class Butchering extends CommonSkill
 	}
 	public void unInvoke()
 	{
-		if((affected!=null)&&(affected instanceof MOB))
+		if(canBeUninvoked)
 		{
-			MOB mob=(MOB)affected;
-			if((body!=null)&&(!aborted))
+			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if((failed)||(!mob.location().isContent(body)))
+				MOB mob=(MOB)affected;
+				if((body!=null)&&(!aborted))
 				{
-					mob.tell("You messed up your butchering completely.");
-					body.destroyThis();
-				}
-				else
-				{
-					mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up "+body.name()+".");
-					Vector resources=body.charStats().getMyRace().myResources();
-					body.destroyThis();
-					for(int i=0;i<resources.size();i++)
+					if((failed)||(!mob.location().isContent(body)))
 					{
-						Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
-						newFound.recoverEnvStats();
-						mob.location().addItemRefuse(newFound);
-						mob.location().recoverRoomStats();
+						mob.tell("You messed up your butchering completely.");
+						body.destroyThis();
+					}
+					else
+					{
+						mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up "+body.name()+".");
+						Vector resources=body.charStats().getMyRace().myResources();
+						body.destroyThis();
+						for(int i=0;i<resources.size();i++)
+						{
+							Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
+							newFound.recoverEnvStats();
+							mob.location().addItemRefuse(newFound);
+							mob.location().recoverRoomStats();
+						}
 					}
 				}
 			}

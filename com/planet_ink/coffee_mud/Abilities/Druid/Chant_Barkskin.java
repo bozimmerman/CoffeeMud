@@ -47,7 +47,8 @@ public class Chant_Barkskin extends Chant
 			return;
 		MOB mob=(MOB)affected;
 		super.unInvoke();
-		mob.tell("Your skin returns to normal.");
+		if(canBeUninvoked)
+			mob.tell("Your skin returns to normal.");
 	}
 
 

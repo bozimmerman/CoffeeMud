@@ -47,9 +47,12 @@ public class Spell_Permanency extends Spell
 	
 	public void unInvoke()
 	{
-		if(permanentAbility!=null)
-			permanentAbility.setTickDownRemaining(oldTicksRemaining);
-		permanentAbility=null;
+		if(canBeUninvoked)
+		{
+			if(permanentAbility!=null)
+				permanentAbility.setTickDownRemaining(oldTicksRemaining);
+			permanentAbility=null;
+		}
 		super.unInvoke();
 		
 	}

@@ -44,7 +44,8 @@ public class Prayer_Paralyze extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("The paralysis eases out of your muscles.");
+		if(canBeUninvoked)
+			mob.tell("The paralysis eases out of your muscles.");
 	}
 
 

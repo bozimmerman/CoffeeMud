@@ -28,9 +28,14 @@ public class MOBEater extends ActiveTicker
 	public void startBehavior(Environmental forMe)
 	{
 		Stomach = CMClass.getLocale("StdRoom");
-		Stomach.setArea(lastKnownLocation.getArea());
-		Stomach.setName("The Stomach of "+forMe.name());
-		Stomach.setDescription("You are in the stomach of "+forMe.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+		if((forMe!=null)&&(forMe instanceof MOB))
+		{
+			lastKnownLocation=((MOB)forMe).location();
+			if(lastKnownLocation!=null)
+				Stomach.setArea(lastKnownLocation.getArea());
+			Stomach.setName("The Stomach of "+forMe.name());
+			Stomach.setDescription("You are in the stomach of "+forMe.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+		}
 	}
 
 	public void kill()

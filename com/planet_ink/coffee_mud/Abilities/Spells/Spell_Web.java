@@ -81,9 +81,12 @@ public class Spell_Web extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(!mob.amDead())
-			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the web.");
-		ExternalPlay.standIfNecessary(mob);
+		if(canBeUninvoked)
+		{
+			if(!mob.amDead())
+				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to break <S-HIS-HER> way free of the web.");
+			ExternalPlay.standIfNecessary(mob);
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -66,7 +66,8 @@ public class Regeneration extends StdAbility
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell(mob,null,"You feel less regenerative.");
+		if(canBeUninvoked)
+			mob.tell(mob,null,"You feel less regenerative.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

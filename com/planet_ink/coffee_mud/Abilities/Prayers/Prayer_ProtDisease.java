@@ -36,7 +36,8 @@ public class Prayer_ProtDisease extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("Your natural defenses against disease take over.");
+		if(canBeUninvoked)
+			mob.tell("Your natural defenses against disease take over.");
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

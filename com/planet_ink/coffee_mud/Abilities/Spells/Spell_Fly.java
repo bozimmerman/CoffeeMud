@@ -55,7 +55,8 @@ public class Spell_Fly extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You begin to float back down to the ground.");
+		if(canBeUninvoked)
+			mob.tell("You begin to float back down to the ground.");
 	}
 
 

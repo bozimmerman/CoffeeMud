@@ -65,7 +65,8 @@ public class Chant_Poison extends Chant
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell(mob,null,"The unholy poison runs its course.");
+		if(canBeUninvoked)
+			mob.tell(mob,null,"The unholy poison runs its course.");
 	}
 
 

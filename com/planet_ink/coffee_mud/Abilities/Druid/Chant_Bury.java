@@ -35,7 +35,7 @@ public class Chant_Bury extends Chant
 		}
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 		{
-			mob.tell("This chant does not work in the city.");
+			mob.tell("This chant does not work here.");
 			return false;
 		}
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);

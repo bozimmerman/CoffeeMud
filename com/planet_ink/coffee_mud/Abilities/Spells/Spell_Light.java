@@ -54,9 +54,11 @@ public class Spell_Light extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		Room room=((MOB)affected).location();
-		room.show(mob,null,Affect.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
+		if(canBeUninvoked)
+			room.show(mob,null,Affect.MSG_OK_VISUAL,"The light above <S-NAME> dims.");
 		super.unInvoke();
-		room.recoverRoomStats();
+		if(canBeUninvoked)
+			room.recoverRoomStats();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -45,12 +45,13 @@ public class Spell_SummonEnemy extends Spell
 	public void unInvoke()
 	{
 		super.unInvoke();
-		if(theMonster!=null)
-		{
-			MOB monster=theMonster;
-			theMonster=null;
-			monster.destroy();
-		}
+		if(canBeUninvoked)
+			if(theMonster!=null)
+			{
+				MOB monster=theMonster;
+				theMonster=null;
+				monster.destroy();
+			}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

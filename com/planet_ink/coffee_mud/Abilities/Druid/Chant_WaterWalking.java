@@ -103,7 +103,8 @@ public class Chant_WaterWalking extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell("You have a sinking feeling that your water walking ability is gone.");
+		if(canBeUninvoked)
+			mob.tell("You have a sinking feeling that your water walking ability is gone.");
 	}
 
 

@@ -47,13 +47,15 @@ public class Spell_MageArmor extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
+		if(canBeUninvoked)
 		if(theArmor!=null)
 		{
 			theArmor.destroyThis();
 			mob.location().recoverRoomStats();
 		}
 		super.unInvoke();
-		mob.tell("Your magical armor vanishes!");
+		if(canBeUninvoked)
+			mob.tell("Your magical armor vanishes!");
 	}
 
 

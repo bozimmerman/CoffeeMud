@@ -66,9 +66,12 @@ public class Spell_ManaBurn extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
-		if(mob.curState().getMana()<curMana)
-			mob.curState().adjMana(mob.curState().getMana()-curMana,mob.maxState());
-		curMana=mob.curState().getMana();
+		if(canBeUninvoked)
+		{
+			if(mob.curState().getMana()<curMana)
+				mob.curState().adjMana(mob.curState().getMana()-curMana,mob.maxState());
+			curMana=mob.curState().getMana();
+		}
 		
 	}
 	

@@ -49,19 +49,22 @@ public class Spell_FloatingDisc extends Spell
 		super.unInvoke();
 
 
-		if(item.amWearingAt(Item.FLOATING_NEARBY))
+		if(canBeUninvoked)
 		{
-			mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
-			item.remove();
-		}
-		if(wasntMine)
-			ExternalPlay.drop(mob,item);
-		wasntMine=false;
+			if(item.amWearingAt(Item.FLOATING_NEARBY))
+			{
+				mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
+				item.remove();
+			}
+			if(wasntMine)
+				ExternalPlay.drop(mob,item);
+			wasntMine=false;
 		
-		item.recoverEnvStats();
-		mob.recoverMaxState();
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
+			item.recoverEnvStats();
+			mob.recoverMaxState();
+			mob.recoverCharStats();
+			mob.recoverEnvStats();
+		}
 	}
 
 

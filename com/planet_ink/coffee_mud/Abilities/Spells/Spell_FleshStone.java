@@ -141,14 +141,17 @@ public class Spell_FleshStone extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		if(statue!=null) statue.destroyThis();
-		mob.tell("Your flesh returns to normal!");
-		mob.curState().setHitPoints(1);
-		mob.curState().setMana(0);
-		mob.curState().setMovement(0);
-		mob.curState().setHunger(0);
-		mob.curState().setThirst(0);
-		ExternalPlay.standIfNecessary(mob);
+		if(canBeUninvoked)
+		{
+			if(statue!=null) statue.destroyThis();
+			mob.tell("Your flesh returns to normal!");
+			mob.curState().setHitPoints(1);
+			mob.curState().setMana(0);
+			mob.curState().setMovement(0);
+			mob.curState().setHunger(0);
+			mob.curState().setThirst(0);
+			ExternalPlay.standIfNecessary(mob);
+		}
 	}
 
 
