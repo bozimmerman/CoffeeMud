@@ -99,7 +99,9 @@ public class Amputation extends StdAbility
 	{
 		MOB myChar=(MOB)affected;
 		if(myChar==null) return false;
-		if((affect.amISource(myChar))&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
+		if((affect.amISource(myChar))
+			&&(!Util.bset(affect.sourceMajor(),Affect.MASK_HURT))
+			&&((affect.sourceCode()&Affect.ACT_GENERAL)==0))
 		{
 			switch(affect.sourceMinor())
 			{
@@ -140,6 +142,8 @@ public class Amputation extends StdAbility
 					&&(!myChar.amWearingSomethingHere(Item.HELD))
 					&&(!myChar.amWearingSomethingHere(Item.WIELD)))
 						break;
+Log.sysOut("BLAH","Not done!");
+//******* need condition here.
 					switch(affect.targetMinor())
 					{
 						case Affect.TYP_WEAR:

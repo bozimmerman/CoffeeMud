@@ -69,7 +69,7 @@ public class Song_Lullibye extends Song
 			return true;
 
 
-		if((!Util.bset(affect.targetMajor(),Affect.ACT_GENERAL))
+		if((!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL))
 		&&(affect.targetMinor()==Affect.TYP_STAND)&&(asleep))
 			return false;
 		return true;
