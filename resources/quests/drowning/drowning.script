@@ -58,7 +58,7 @@ EXIT_PROG 99
 				mpoload QuestPoint
 				give "a quest point" "$f"
 			endif
-			mpoload 100
+			mpoload 1000
 			give 100 "$f"
 			mpquestwin $f drowning
 			mpsetvar $i DROWNING ''

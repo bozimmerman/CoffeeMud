@@ -61,7 +61,7 @@ GIVE_PROG 'the body of a smurf' 'the body of handy smurf' 'the body of grumpy sm
 				mpsetvar $i SMURFOCIDE DONE
 				say "$n" Wonderful!  Now I can make my famous smurf stew!
 				MPFORCE Azreal emote licks his lips.
-				mpexp $n 100
+				mpexp $n 1000
 				mpoload QuestPoint
 				give "a quest point" "$n"
 				mpquestwin $n smurfocide

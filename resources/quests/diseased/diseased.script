@@ -29,7 +29,7 @@ RAND_PROG 90
 		mpsetvar $i DISEASED $r
 		say "$<$i DISEASED>" You saved me!
 		if !QUESTWINNER('$<$i DISEASED>' diseased)
-			mpexp '$<$i DISEASED>' 100
+			mpexp '$<$i DISEASED>' 1000
 			mpoload QuestPoint
 			give "a quest point" "$<$i DISEASED>"
 		endif

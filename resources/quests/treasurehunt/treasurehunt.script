@@ -29,10 +29,12 @@ GIVE_PROG all
 			mpsetvar $i TREASUREHUNT FOUND
 			say "$n" Congratulations!
 			shake $n
-			mpexp $n 100
+			IF QUESTWINNER($n treasurehunt)
+				mpexp $n 1000
+				mpoload QuestPoint
+				give "a quest point" "$n"
+			endif
 			hold $[1 treasurehunt]
-			mpoload QuestPoint
-			give "a quest point" "$n"
 			mpquestwin $n treasurehunt
 			mpendquest treasurehunt
 		endif

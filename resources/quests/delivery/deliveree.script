@@ -10,7 +10,7 @@ SPEECH_PROG 'I have a delivery from'
 GIVE_PROG p a most secret note
 	whisper "$n" Thank you.  You've done well.
 	if !QUESTWINNER($n delivery)
-		mpexp $n 100
+		mpexp $n 1000
 		mpoload QuestPoint
 		give "a quest point" "$n"
 	endif

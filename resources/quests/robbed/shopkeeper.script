@@ -37,7 +37,7 @@ GIVE_PROG gold
 					mpsetvar $i ROBBED RECOVER
 					mpsetvar $n ROBBED  ''
 					say "$n" Thank you very much.  I hope he didn't give you too much trouble.  Here is your reward:
-					mpexp $n 100
+					mpexp $n 1000
 					mpoload QuestPoint
 					give "a quest point" "$n"
 					mpoload 100

@@ -52,7 +52,7 @@ GIVE_PROG p a lolly pop
 			mpsetvar $i LOLLY POP
 			say "$n" My lolly pop!  Thank you so so much!!!
 			hug $n
-			mpexp $n 100
+			mpexp $n 1000
 			hold "a lolly pop"
 			emote sucks on $k lolly pop.
 			mpoload QuestPoint
