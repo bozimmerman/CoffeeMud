@@ -123,26 +123,33 @@ public class Lister
 
 	public StringBuffer listSessions(MOB mob)
 	{
-		StringBuffer lines=new StringBuffer("^Xstatus | Valid | Name             | Location             ^?\n\r");
+		
+		StringBuffer lines=new StringBuffer("^X");
+		lines.append(Util.padRight("Status",7)+"| ");
+		lines.append(Util.padRight("Valid",7)+"| ");
+		lines.append(Util.padRight("Name",17)+"| ");
+		lines.append(Util.padRight("Location",17)+"| ");
+		lines.append(Util.padRight("IP",17)+"^?\n\r");
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session thisSession=(Session)Sessions.elementAt(s);
-
-			lines.append ( thisSession.killFlag() ? "^HCLOSING^?|" : " open  |" );
-
+			lines.append((thisSession.killFlag()?"^H":"")+Util.padRight(thisSession.killFlag()?"CLOSING":"open",7)+(thisSession.killFlag()?"^?":"")+"| ");
 			if (thisSession.mob() != null)
 			{
-				lines.append ( (thisSession.mob().session() == thisSession) ? "  yes  " : "  ^HNO!^? " );
-				lines.append ("[^B" + Util.padRight(thisSession.mob().name(),18) + "^?] " );
+				lines.append(Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),7)+"| ");
+				lines.append("^B"+Util.padRight(thisSession.mob().name(),17)+"^?| ");
 				if ( thisSession.mob().location() != null )
-					lines.append ( thisSession.mob().location().ID() );
+					lines.append(Util.padRight(thisSession.mob().location().ID(),17)+"| ");
 				else
-					lines.append ( "^B(no location)^?" );
+					lines.append(Util.padRight("^B(no location)^?",17)+"| ");
 			}
 			else
-				lines.append ( "      ^B-nameless, mobless-^?" );
-			lines.append ("\n\r");
-			lines.append ("            IP: " + thisSession.getAddress() + "\n\r");
+			{
+				lines.append(Util.padRight("UNKNOWN",7)+"| ");
+				lines.append(Util.padRight("NAMELESS",7)+"| ");
+				lines.append(Util.padRight("NOWHERE",17)+"| ");
+			}
+			lines.append(Util.padRight(thisSession.getAddress(),17)+"\n\r");
 		}
 		return lines;
 	}
