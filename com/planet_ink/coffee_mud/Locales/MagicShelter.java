@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 public class MagicShelter extends StdRoom
@@ -42,6 +43,7 @@ public class MagicShelter extends StdRoom
 	{
 		if(!super.okAffect(affect))
 			return false;
+		if(Sense.isSleeping(this)) return true;
 		if((affect.sourceMinor()==affect.TYP_RECALL)
 		||(affect.sourceMinor()==affect.TYP_LEAVE))
 		{

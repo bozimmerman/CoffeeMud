@@ -24,6 +24,7 @@ public class ClimbableSurface extends StdRoom
 	{
 		if(!super.okAffect(affect))
 			return false;
+		if(Sense.isSleeping(this)) return true;
 
 		if(affect.amITarget(this)
 		&&(Util.bset(affect.targetCode(),Affect.AFF_MOVEDON))
@@ -40,6 +41,7 @@ public class ClimbableSurface extends StdRoom
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
+		if(Sense.isSleeping(this)) return;
 
 		if((affect.target() instanceof Item)
 		   &&(!Sense.isFlying(affect.target())

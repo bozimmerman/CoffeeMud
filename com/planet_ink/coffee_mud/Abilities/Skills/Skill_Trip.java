@@ -93,7 +93,11 @@ public class Skill_Trip extends StdAbility
 			mob.tell("You need to stand up!");
 			return false;
 		}
-
+		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+		{
+			mob.tell("You are too far away to trip!");
+			return false;
+		}
 		if(Sense.isFlying(target))
 		{
 			mob.tell(target.name()+" is flying and can't be tripped!");

@@ -33,6 +33,11 @@ public class Fighter_Kick extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+		{
+			mob.tell("You are too far away to kick!");
+			return false;
+		}
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 

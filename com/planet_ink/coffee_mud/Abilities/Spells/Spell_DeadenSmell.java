@@ -90,7 +90,7 @@ public class Spell_DeadenSmell extends Spell
 			}
 		}
 		else
-			return beneficialFizzle(mob,target,"<S-NAME> point(s) and snort(s) at <T-NAMESELF>, but the spell fizzles.");
+			return beneficialVisualFizzle(mob,target,"<S-NAME> point(s) and snort(s) at <T-NAMESELF>, but the spell fizzles.");
 
 		// return whether it worked
 		return success;

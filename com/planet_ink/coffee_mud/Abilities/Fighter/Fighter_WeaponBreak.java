@@ -42,9 +42,9 @@ public class Fighter_WeaponBreak extends StdAbility
 			mob.tell("You must be in combat to do this!");
 			return false;
 		}
-		if(mob.rangeToTarget()>0)
+		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You must be in melee combat to do this!");
+			mob.tell("You are too far away to try that!");
 			return false;
 		}
 		if((!auto)&&(mob.fetchWieldedItem()==null))

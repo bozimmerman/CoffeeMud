@@ -68,7 +68,6 @@ public class Spell_FakeArmor extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		String armorName=Util.combine(commands,0);
 		String[] choices={"plate","chain","leather", "studded"};
 		String[] choices2={"helmet","shirt","leggings", "sleeves","boots"};
 		int choice=-1;

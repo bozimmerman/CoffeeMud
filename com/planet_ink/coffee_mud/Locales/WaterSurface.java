@@ -24,6 +24,7 @@ public class WaterSurface extends StdRoom
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect)) return false;
+		if(Sense.isSleeping(this)) return true;
 		
 		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 			||(affect.targetMinor()==Affect.TYP_ENTER)
@@ -65,7 +66,9 @@ public class WaterSurface extends StdRoom
 
 	public void affect(Affect affect)
 	{
-		if((affect.target() instanceof Item)&&(affect.targetMinor()==Affect.TYP_DROP))
+		if((affect.target() instanceof Item)
+		   &&(affect.targetMinor()==Affect.TYP_DROP)
+		   &&(!Sense.isSleeping(this)))
 			((Item)affect.target()).destroyThis();
 	}
 }

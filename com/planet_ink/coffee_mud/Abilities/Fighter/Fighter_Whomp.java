@@ -92,6 +92,11 @@ public class Fighter_Whomp extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
+		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+		{
+			mob.tell("You are too far away from your target to whomp!");
+			return false;
+		}
 		if((!auto)&&(mob.charStats().getStat(CharStats.STRENGTH)<18))
 		{
 			mob.tell("You need at least an 18 strength to do that.");

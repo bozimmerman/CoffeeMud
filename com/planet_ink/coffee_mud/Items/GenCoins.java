@@ -29,7 +29,8 @@ public class GenCoins extends GenItem implements Coins
 	public boolean isGeneric(){return true;}
 	public void recoverEnvStats()
 	{
-		baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
+		if((material!=Item.CLOTH)&&(material!=Item.PAPER))
+			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 		goldValue=envStats().ability();
 		// import not to sup this, otherwise 'ability' makes it magical!

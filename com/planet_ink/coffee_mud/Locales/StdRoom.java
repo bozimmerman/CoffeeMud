@@ -402,11 +402,8 @@ public class StdRoom
 		getArea().affectEnvStats(affected,affectableStats);
 		if(envStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
-		int disposition=envStats().disposition();
-		if((disposition&EnvStats.IS_DARK)==EnvStats.IS_DARK)
-			disposition=disposition-EnvStats.IS_DARK;
-		if((disposition&EnvStats.IS_LIGHT)==EnvStats.IS_LIGHT)
-			disposition=disposition-EnvStats.IS_LIGHT;
+		int disposition=envStats().disposition()
+			&((Integer.MAX_VALUE-(EnvStats.IS_DARK|EnvStats.IS_LIGHT|EnvStats.IS_SLEEPING)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 	}

@@ -8,7 +8,9 @@ import java.util.*;
 public class Spell_WallOfStone extends Spell
 {
 
-	public int amountRemaining=0;
+	private int amountRemaining=0;
+	private Item theWall=null;
+	private String deathNotice="";
 
 	public Spell_WallOfStone()
 	{
@@ -62,8 +64,12 @@ public class Spell_WallOfStone extends Spell
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
 				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"<S-NAME> hack(s) at the wall of stone with "+w.name()+".");
-				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
-				if(amountRemaining<0) ((Item)affected).destroyThis();
+				amountRemaining-=mob.envStats().damage();
+				if(amountRemaining<0) 
+				{
+					deathNotice="The wall of stone is destroyed!";
+					((Item)affected).destroyThis();
+				}
 				return false;
 			}
 		}
@@ -72,17 +78,22 @@ public class Spell_WallOfStone extends Spell
 
 	public void unInvoke()
 	{
-		if((affected!=null)
-		   &&(affected instanceof Item)
-		   &&(((Item)affected).myOwner()!=null)
-		   &&(((Item)affected).myOwner() instanceof Room))
-			((Room)((Item)affected).myOwner()).show(invoker,null,Affect.MSG_OK_VISUAL,"The wall of stone is destroyed!");
 		super.unInvoke();
+		if((theWall!=null)
+		&&(theWall.myOwner()!=null)
+		&&(theWall.myOwner() instanceof Room)
+		&&(((Room)theWall.myOwner()).isContent(theWall)))
+		{
+			((Room)theWall.myOwner()).show(invoker,null,Affect.MSG_OK_VISUAL,deathNotice);
+			Item wall=theWall;
+			theWall=null;
+			wall.destroyThis();
+		}
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if((!mob.isInCombat())||(mob.rangeToTarget()<2))
+		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
 			mob.tell("You really should be in ranged combat to cast this.");
 			return false;
@@ -129,6 +140,8 @@ public class Spell_WallOfStone extends Spell
 				I.setGettable(false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);
+				theWall=I;
+				deathNotice="The wall of stone vanishes!";
 				beneficialAffect(mob,I,0);
 			}
 		}

@@ -79,9 +79,8 @@ public class Spell_FindFamiliar extends Spell
 	public MOB determineMonster(MOB caster, int level)
 	{
 		
-		MOB newMOB=(MOB)CMClass.getMOB("GenRideable");
-		Rideable ride=(Rideable)newMOB;
-		newMOB.baseEnvStats().setAbility(11);
+		MOB newMOB=(MOB)CMClass.getMOB("GenMOB");
+		newMOB.baseEnvStats().setAbility(7);
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');

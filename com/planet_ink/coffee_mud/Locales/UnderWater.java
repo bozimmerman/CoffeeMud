@@ -33,6 +33,7 @@ public class UnderWater extends StdRoom
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect)) return false;
+		if(Sense.isSleeping(this)) return true;
 			  
 		if((affect.targetMinor()==affect.TYP_FIRE)
 		||(affect.targetMinor()==affect.TYP_GAS)

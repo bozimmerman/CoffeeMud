@@ -40,9 +40,9 @@ public class Skill_Disarm extends StdAbility
 			mob.tell("You must be in combat to do this!");
 			return false;
 		}
-		if(mob.rangeToTarget()>0)
+		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You must be in melee combat to do this!");
+			mob.tell("You are too far away to disarm!");
 			return false;
 		}
 		if(mob.fetchWieldedItem()==null)

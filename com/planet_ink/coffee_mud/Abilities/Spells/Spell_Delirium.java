@@ -193,8 +193,6 @@ public class Spell_Delirium extends Spell
 		String othersMessage=affect.othersMessage();
 		String sourceMessage=affect.sourceMessage();
 		String targetMessage=affect.targetMessage();
-		boolean somethingsChanged=false;
-		int x=0;
 		if((affect.amITarget(mob))&&(targetMessage!=null))
 		{
 			targetMessage=process(mob,process(mob,targetMessage,affect.target()),affect.target());
