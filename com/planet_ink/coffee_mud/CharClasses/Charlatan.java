@@ -39,31 +39,74 @@ public class Charlatan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Song_Nothing",true);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
+			
+			CMAble.addCharAbilityMapping(ID(),2,"Thief_Swipe",false);
+			
+			CMAble.addCharAbilityMapping(ID(),3,"Skill_Disguise",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",false);
+			
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Mark",false);
-			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_Disguise",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_Warrants",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",true);
+			
+			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Rescue",false);
+			
+			CMAble.addCharAbilityMapping(ID(),6,"Skill_Songcraft",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_ReadMagic",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Songcraft",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_FalseArrest",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Song_Detection",false);
+			
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_Imitation",true);
+			
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_Distract",false);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Imitation",false);
+			
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Warrants",false);
+			
 			CMAble.addCharAbilityMapping(ID(),10,"Skill_Dodge",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Song_Comprehension",false);
+			
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_FalseArrest",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Song_Comprehension",true);
+			
+			CMAble.addCharAbilityMapping(ID(),12,"Skill_Spellcraft",true);
 			CMAble.addCharAbilityMapping(ID(),12,"Ranger_Track",false);
-			CMAble.addCharAbilityMapping(ID(),12,"Skill_Spellcraft",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Spell_MagicMissile",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Song_Rage",false);
+			
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Map",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Song_Protection",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_Chantcraft",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Skill_Trip",false);
+			
+			CMAble.addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",true);
+			
+			CMAble.addCharAbilityMapping(ID(),15,"Skill_Chantcraft",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Song_Protection",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_SummonPlants",false);
+			
+			CMAble.addCharAbilityMapping(ID(),16,"Skill_Shuffle",false);
+			
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Skill_Prayercraft",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Thief_Swipe",false);
-			CMAble.addCharAbilityMapping(ID(),25,"Skill_MarkDisguise",false);
+			
+			CMAble.addCharAbilityMapping(ID(),18,"Skill_Prayercraft",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Prayer_CureLight",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Song_Mana",false);
+			
+			CMAble.addCharAbilityMapping(ID(),19,"Song_Knowledge",true);
+			
+			CMAble.addCharAbilityMapping(ID(),20,"Thief_Detection",true);
+			
+			CMAble.addCharAbilityMapping(ID(),21,"Song_Thanks",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Spell_LocateObject",false);
+			
+			CMAble.addCharAbilityMapping(ID(),22,"Skill_Parry",false);
+			
+			CMAble.addCharAbilityMapping(ID(),23,"Thief_Con",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Song_Strength",false);
+			
+			CMAble.addCharAbilityMapping(ID(),24,"Song_Disgust",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Thief_FrameMark",false);
+			
+			CMAble.addCharAbilityMapping(ID(),25,"Skill_MarkDisguise",true);
+			
+			// 30 -- cheaper skills
 		}
 	}
 
@@ -100,7 +143,7 @@ public class Charlatan extends StdCharClass
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Gains a random non-class skill or spell every other level!";}
+	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level!";}
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
@@ -118,6 +161,13 @@ public class Charlatan extends StdCharClass
 		MOB myChar=(MOB)myHost;
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
+			if((affect.tool()!=null)
+			&&(affect.tool() instanceof Ability)
+			&&(myChar.isMine(affect.tool()))
+			&&(myChar.charStats().getClassLevel(this)>=30)
+			&&(CMAble.getQualifyingLevel(ID(),affect.tool().ID())<1))
+				myChar.curState().adjMana(40,myChar.maxState());
+			else
 			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
 			&&(!armorCheck(myChar)))
 			{
@@ -164,8 +214,7 @@ public class Charlatan extends StdCharClass
 				return false;
 			}
 		}
-
-		return super.okAffect(myChar,affect);
+		return true;
 	}
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)

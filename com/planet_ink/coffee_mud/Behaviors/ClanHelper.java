@@ -58,7 +58,7 @@ public class ClanHelper extends StdBehavior
 				String reason="WE ARE UNDER ATTACK!! CHARGE!!";
 				if((observer.getClanID().equals(target.getClanID()))
 				&&(!observer.getClanID().equals(source.getClanID())))
-					reason=observer.getClanID().toUpperCase()+"s UNITE! CHARGE!";
+					reason=observer.getClanID().toUpperCase()+"S UNITE! CHARGE!";
 				if(yep)	ExternalPlay.quickSay(observer,null,reason,false,false);
 			}
 		}

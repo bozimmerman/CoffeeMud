@@ -733,13 +733,6 @@ public class StdAbility implements Ability, Cloneable
 			return false;
 		}
 
-		if(!CMAble.qualifiesByLevel(student,yourAbility))
-		{
-			teacher.tell(student.name()+" is not high enough level to practice '"+name()+"'.");
-			student.tell("You are not high enough level to practice '"+name()+"'.");
-			return false;
-		}
-
 		if(teacherAbility==null)
 		{
 			student.tell(teacher.name()+" does not know anything about '"+name()+"'.");

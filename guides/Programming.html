@@ -300,8 +300,9 @@ system to load and build, and take up a lot of database disk space.&nbsp; For
 this reason, using Standard instead of Generic whereever possible is always 
 good.&nbsp; </FONT></P>
 <P><FONT size=4>Each MOB must also 
-have a custom "newInstance" method as shown below.</FONT></P><PRE>public class MyNewMOB extends StdMOB 
+have custom "ID()" and "newInstance" methods as shown below.</FONT></P><PRE>public class MyNewMOB extends StdMOB 
 { 
+	public String ID(){	return "MyNewMOB";}
 	public MyNewMOB() 
 	{ 
 		super(); 
