@@ -8,7 +8,7 @@ import java.util.*;
 public class Spell_AnalyzeDweomer extends Spell
 {
 	public String ID() { return "Spell_AnalyzeDweomer"; }
-	public String name(){return "Analyze Dweomer";}
+	public String name(){return "Analyze Item";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Spell_AnalyzeDweomer();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
@@ -25,7 +25,7 @@ public class Spell_AnalyzeDweomer extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> analyze(s) the dweomer of <T-NAMESELF> carefully.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> analyze(s) the nature of <T-NAMESELF> carefully.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -82,7 +82,7 @@ public class Spell_AnalyzeDweomer extends Spell
 
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> analyze(s) the dweomer of <T-NAMESELF>, looking more frustrated every second.");
+			beneficialVisualFizzle(mob,target,"<S-NAME> analyze(s) the nature of <T-NAMESELF>, looking more frustrated every second.");
 
 
 		// return whether it worked
