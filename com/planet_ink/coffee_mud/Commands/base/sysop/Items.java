@@ -147,6 +147,14 @@ public class Items
 			return;
 		}
 
+		if(((newItem.ID().toUpperCase().indexOf("ARCHON")>=0)
+			||(newItem.name().toUpperCase().indexOf("ARCHON")>=0))
+		   &&(!mob.isASysOp(null)))
+		{
+			mob.tell("NO!");
+			return;
+		}
+		
 		newItem=(Item)newItem.newInstance();
 		mob.location().addItem(newItem);
 		mob.location().show(mob,null,Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");

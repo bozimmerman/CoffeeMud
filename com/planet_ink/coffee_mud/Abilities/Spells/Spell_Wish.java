@@ -179,7 +179,9 @@ public class Spell_Wish extends Spell
 					Log.sysOut("Wish",mob.ID()+" wished for mob "+newMOB.ID()+".");
 				}
 				else
-				if(foundThang instanceof Item)
+				if((foundThang instanceof Item)
+				   &&((foundThang.ID().toUpperCase().indexOf("ARCHON")<0))
+				   &&((foundThang.name().toUpperCase().indexOf("ARCHON")<0)))
 				{
 					Item newItem=(Item)foundThang.copyOf();
 					newItem.setLocation(null);
@@ -505,7 +507,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
 				CharClass C=CMClass.getCharClass((String)wishV.lastElement());
-				if(C!=null)
+				if((C!=null)&&(!C.name().equals("Archon")))
 				{
 					mob.baseCharStats().getMyClass().unLevel(mob);
 					((MOB)target).baseCharStats().setMyClass(C);
