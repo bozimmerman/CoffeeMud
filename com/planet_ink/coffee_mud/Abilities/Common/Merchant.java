@@ -570,6 +570,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			mob.recoverMaxState();
+			mob.tell(I.name()+" has been removed from your inventory list.");
 			return true;
 		}
 
