@@ -10,11 +10,11 @@ public class Mountains extends StdRoom
 	{
 		super();
 		name="the mountain";
+		baseEnvStats.setWeight(5);
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=5;
 	}
 	public Environmental newInstance()
 	{

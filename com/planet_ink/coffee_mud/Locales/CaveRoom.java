@@ -13,6 +13,7 @@ public class CaveRoom extends StdRoom
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the cave";
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
+		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_CAVE;
 

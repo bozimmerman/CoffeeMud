@@ -12,10 +12,10 @@ public class ClimbableSurface extends StdRoom
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the surface";
+		baseEnvStats.setWeight(4);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_ROCKS;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=4;
 	}
 	public Environmental newInstance()
 	{

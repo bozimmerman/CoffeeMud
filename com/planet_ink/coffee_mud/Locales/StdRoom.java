@@ -29,7 +29,6 @@ public class StdRoom
 	protected boolean mobility=true;
 	
 	// base move points and thirst points per round
-	protected int baseMove=2;
 	protected int baseThirst=1;
 	protected int myResource=-1;
 	protected Calendar resourceFound=null;
@@ -37,6 +36,8 @@ public class StdRoom
 	protected boolean skyedYet=false;
 	public StdRoom()
 	{
+		baseEnvStats.setWeight(2);
+		recoverEnvStats();
 	}
 
 	public String ID()
@@ -994,7 +995,7 @@ public class StdRoom
 	}
 
 	public int pointsPerMove(MOB mob)
-	{	return getArea().adjustMovement(baseMove,mob,this);	}
+	{	return getArea().adjustMovement(envStats().weight(),mob,this);	}
 	public int thirstPerRound(MOB mob)
 	{
 		switch(domainConditions())

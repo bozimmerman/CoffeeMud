@@ -15,11 +15,11 @@ public class UnderWater extends StdRoom implements Drink
 		name="the water";
 		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
+		baseEnvStats.setWeight(3);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_UNDERWATER;
 		domainCondition=Room.CONDITION_WET;
 		baseThirst=0;
-		baseMove=3;
 	}
 
 	public Environmental newInstance()

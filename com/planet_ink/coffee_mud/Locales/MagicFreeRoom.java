@@ -10,11 +10,11 @@ public class MagicFreeRoom extends StdRoom
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(1);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_STONE;
 		domainCondition=Room.CONDITION_NORMAL;
 		addAffect(CMClass.getAbility("Prop_MagicFreedom"));
-		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

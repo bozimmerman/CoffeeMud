@@ -14,10 +14,10 @@ public class IndoorInTheAir extends StdRoom
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the space";
+		baseEnvStats.setWeight(1);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_AIR;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

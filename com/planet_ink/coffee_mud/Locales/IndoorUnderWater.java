@@ -12,6 +12,7 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(3);
 		name="the water";
 		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
@@ -19,7 +20,6 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		domainType=Room.DOMAIN_INDOORS_UNDERWATER;
 		domainCondition=Room.CONDITION_WET;
 		baseThirst=0;
-		baseMove=3;
 	}
 
 	public Environmental newInstance()

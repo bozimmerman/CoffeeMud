@@ -107,6 +107,15 @@ public class StdGrid extends StdRoom implements GridLocale
 		return this.alts[oldDirCode];
 	}
 
+	public Vector getAllRooms()
+	{
+		if(subMap==null) buildGrid();
+		Vector V=new Vector();
+		for(int x=0;x<this.subMap.length;x++)
+			for(int y=0;y<this.subMap[0].length;y++)
+				V.addElement(subMap[x][y]);
+		return V;
+	}
 	protected static void halfLink(Room room, Room loc, int dirCode)
 	{
 		if(room==null) return;

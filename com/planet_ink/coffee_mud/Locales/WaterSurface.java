@@ -13,6 +13,7 @@ public class WaterSurface extends StdRoom implements Drink
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the water";
+		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
 		domainCondition=Room.CONDITION_WET;

@@ -10,10 +10,10 @@ public class MountainSurface extends ClimbableSurface
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(6);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=6;
 	}
 	public Environmental newInstance()
 	{

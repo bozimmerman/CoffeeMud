@@ -16,6 +16,7 @@ public class MagicShelter extends StdRoom
 		displayText="Magic Shelter";
 		description="You are in a domain of complete void and peace.";
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_MAGIC;
 		domainCondition=Room.CONDITION_NORMAL;
@@ -33,7 +34,6 @@ public class MagicShelter extends StdRoom
 			A.setMiscText(A.text()+text()+" Spell_Teleport Spell_Gate Spell_Portal Spell_Shelter");
 		}
 		this.addAffect(A);
-		baseMove=0;
 	}
 
 	public Environmental newInstance()

@@ -11,10 +11,10 @@ public class CityStreet extends StdRoom
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the street";
+		baseEnvStats.setWeight(1);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_CITY;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

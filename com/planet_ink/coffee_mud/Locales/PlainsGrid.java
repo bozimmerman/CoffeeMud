@@ -10,6 +10,7 @@ public class PlainsGrid extends StdGrid
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
 		domainCondition=Room.CONDITION_NORMAL;

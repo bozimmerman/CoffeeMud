@@ -13,11 +13,11 @@ public class InTheAir extends StdRoom
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(1);
 		name="the sky";
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_AIR;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

@@ -11,10 +11,10 @@ public class Jungle extends StdRoom
 		super();
 		name="the jungle";
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(3);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_JUNGLE;
 		domainCondition=Room.CONDITION_HOT;
-		baseMove=3;
 	}
 	public Environmental newInstance()
 	{

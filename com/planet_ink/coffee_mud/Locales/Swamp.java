@@ -11,10 +11,10 @@ public class Swamp extends StdRoom
 		super();
 		name="the swamp";
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(3);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_SWAMP;
 		domainCondition=Room.CONDITION_WET;
-		baseMove=3;
 	}
 	public Environmental newInstance()
 	{

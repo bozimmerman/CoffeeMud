@@ -12,10 +12,10 @@ public class CaveSurface extends ClimbableSurface
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
+		baseEnvStats.setWeight(4);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_CAVE;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=4;
 	}
 	public Environmental newInstance()
 	{

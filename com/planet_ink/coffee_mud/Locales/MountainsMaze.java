@@ -10,10 +10,10 @@ public class MountainsMaze extends StdMaze
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		baseEnvStats.setWeight(5);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=5;
 	}
 	public Environmental newInstance()
 	{

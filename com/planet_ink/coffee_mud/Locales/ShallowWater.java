@@ -11,6 +11,7 @@ public class ShallowWater extends StdRoom implements Drink
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the water";
+		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_ROCKS;
 		domainCondition=Room.CONDITION_WET;

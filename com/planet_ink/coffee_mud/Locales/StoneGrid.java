@@ -12,7 +12,8 @@ public class StoneGrid extends StdRoom
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		domainType=Room.DOMAIN_INDOORS_STONE;
 		domainCondition=Room.CONDITION_NORMAL;
-		baseMove=1;
+		baseEnvStats.setWeight(1);
+		recoverEnvStats();
 	}
 	public Environmental newInstance()
 	{
