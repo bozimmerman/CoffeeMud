@@ -259,6 +259,8 @@ public class Grid extends StdRoom implements GridLocale
 		gc.setAreaID(this.getAreaID());
 		gc.setDisplayText(displayText);
 		gc.setDescription(description);
+		gc.domainCondition=domainCondition;
+		gc.domainType=domainType;
 		int c=-1;
 		if(displayTexts!=null)
 		if(displayTexts.length>0)
