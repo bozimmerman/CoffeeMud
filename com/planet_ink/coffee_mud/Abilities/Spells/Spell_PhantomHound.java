@@ -47,7 +47,10 @@ public class Spell_PhantomHound extends Spell
 						a++;
 				}
 				if((!beast.isInCombat())||(beast.getVictim()!=victim))
+				{
+					if(beast.amDead()) beast.setLocation(null);
 					beast.destroy();
+				}
 				else
 				{
 					pointsLeft-=(victim.charStats().getStat(CharStats.INTELLIGENCE));
@@ -55,7 +58,11 @@ public class Spell_PhantomHound extends Spell
 					int pointsLost=beast.baseState().getHitPoints()-beast.curState().getHitPoints();
 					if(pointsLost>0)
 						pointsLeft-=pointsLost/4;
-					if(pointsLeft<0){ beast.destroy(); }
+					if(pointsLeft<0)
+					{
+						if(beast.amDead()) beast.setLocation(null);
+						beast.destroy(); 
+					}
 				}
 			}
 			
@@ -78,7 +85,10 @@ public class Spell_PhantomHound extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked)&&(mob!=null))
+		{
+			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
+		}
 	}
 	
 	public boolean okAffect(Affect affect)

@@ -570,6 +570,9 @@ public class CommandProcessor
 					mob.tell("bo@zimmers.net");
 					mob.tell("http://www.zimmers.net/home/mud.html");
 					break;
+				case CommandSet.VIEW:
+					shopKeepers.view(mob,commands);
+					break;
 				case CommandSet.WAKE:
 					movement.wake(mob);
 					break;

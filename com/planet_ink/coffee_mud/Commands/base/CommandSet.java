@@ -157,6 +157,7 @@ public class CommandSet extends Hashtable
 	public static final int PROMPT=145;
 	public static final int COLORSET=146;
 	public static final int AUTODRAW=147;
+	public static final int VIEW=148;
 
 	public CommandSet()
 	{
@@ -363,6 +364,7 @@ public class CommandSet extends Hashtable
 			put("V",new Integer(VALUE));
 		put("VASSALS",new Integer(VASSALS));
 		put("VER",new Integer(VER));
+		put("VIEW",new Integer(VIEW));
 		put("WAKE",new Integer(WAKE));
 		put("WEAR",new Integer(WEAR));
 		put("WEATHER",new Integer(WEATHER));

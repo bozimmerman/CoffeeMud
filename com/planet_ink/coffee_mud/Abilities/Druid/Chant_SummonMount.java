@@ -20,7 +20,10 @@ public class Chant_SummonMount extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked)&&(mob!=null))
+		{
+			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
+		}
 	}
 	
 	public void affect(Affect msg)
@@ -45,6 +48,7 @@ public class Chant_SummonMount extends Chant
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
 				{
 					mob.delAffect(this);
+					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
 			}

@@ -151,6 +151,7 @@ public interface Affect extends Cloneable
 	public static final int TYP_EMOTE=66;
 	public static final int TYP_QUIT=67;
 	public static final int TYP_SHUTDOWN=68;
+	public static final int TYP_VIEW=69;
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;
@@ -224,6 +225,6 @@ public interface Affect extends Cloneable
 	public static final int MSG_DEPOSIT=ACT_HANDS|TYP_DEPOSIT;
 	public static final int MSG_QUIT=ACT_GENERAL|TYP_QUIT;
 	public static final int MSG_SHUTDOWN=ACT_GENERAL|TYP_SHUTDOWN;
-	
+	public static final int MSG_VIEW=ACT_SOUND|ACT_MOUTH|TYP_VIEW;
 }
 

@@ -27,11 +27,12 @@ public class Spell_Charm extends Spell
 		// from trying to do ANYTHING except sleep
 		if((affect.amITarget(mob))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.source()==mob.amFollowing()))
-				unInvoke();
+		&&(affect.amISource(mob.amFollowing())))
+			unInvoke();
+		else
 		if((affect.amISource(mob))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.target()==mob.amFollowing()))
+		&&(affect.amITarget(mob.amFollowing())))
 		{
 			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
 			return false;

@@ -38,4 +38,5 @@ public interface ShopKeeper extends MOB
 	public int numberInStock(Environmental likeThis);
 	public Environmental getStock(String name, MOB mob);
 	public Environmental removeStock(String name, MOB mob);
+	public Item makeChange(MOB banker, MOB customer, int value);
 }

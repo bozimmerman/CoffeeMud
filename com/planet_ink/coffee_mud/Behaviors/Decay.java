@@ -33,6 +33,7 @@ public class Decay extends ActiveTicker
 				Room room=mob.location();
 				if(room!=null)
 				{
+					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 					room.recoverRoomStats();
 				}

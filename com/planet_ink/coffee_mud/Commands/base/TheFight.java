@@ -207,7 +207,7 @@ public class TheFight
 		
 		if(target.soulMate()==null)
 		{
-			int expLost=100;
+			int expLost=100*target.envStats().level();
 			target.tell("^F^*You lose "+expLost+" experience points.^?^^");
 			target.charStats().getMyClass().loseExperience(target,expLost);
 		}

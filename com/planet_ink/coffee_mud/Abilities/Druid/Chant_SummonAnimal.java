@@ -20,7 +20,10 @@ public class Chant_SummonAnimal extends Chant
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked)&&(mob!=null))
+		{
+			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
+		}
 	}
 	
 	public void affect(Affect msg)
@@ -86,7 +89,10 @@ public class Chant_SummonAnimal extends Chant
 					beneficialAffect(mob,target,0);
 				}
 				else
+				{
+					if(target.amDead()) target.setLocation(null);
 					target.destroy();
+				}
 				invoker=mob;
 			}
 		}

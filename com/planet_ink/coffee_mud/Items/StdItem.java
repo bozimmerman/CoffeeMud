@@ -654,6 +654,7 @@ public class StdItem implements Item
 			case Affect.TYP_GENERAL:
 			case Affect.TYP_SELL:
 			case Affect.TYP_VALUE:
+			case Affect.TYP_VIEW:
 			case Affect.TYP_GIVE:
 				return true;
 			}
@@ -673,6 +674,7 @@ public class StdItem implements Item
 		case Affect.TYP_BUY:
 		case Affect.TYP_SELL:
 		case Affect.TYP_VALUE:
+		case Affect.TYP_VIEW:
 				return true;
 		case Affect.TYP_OPEN:
 		case Affect.TYP_CLOSE:

@@ -19,7 +19,10 @@ public class Spell_SummonEnemy extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked)&&(mob!=null))
+		{
+			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
+		}
 	}
 	
 	public void affect(Affect msg)

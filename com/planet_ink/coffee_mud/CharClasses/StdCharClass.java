@@ -153,6 +153,12 @@ public class StdCharClass implements CharClass
 		mob.tell("\n\r^ZYou've lost a level!!!^N");
 
 		levelAdjuster(mob,-1);
+		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+getBonusPracLevel();
+		if(practiceGain<=0)practiceGain=1;
+		mob.setPractices(mob.getPractices()-practiceGain);
+		int trainGain=0;
+		if(trainGain<=0)trainGain=1;
+		mob.setTrains(mob.getTrains()-trainGain);
 		mob.tell("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+"^N.\n\r");
 
 		mob.recoverEnvStats();
@@ -192,6 +198,7 @@ public class StdCharClass implements CharClass
 		if(newHitPointGain<=0) newHitPointGain=1;
 		newHitPointGain=newHitPointGain*adjuster;
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
+		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
 		theNews.append("^!You have gained ^H"+newHitPointGain+"^! hit " + 
 			(newHitPointGain!=1?"points":"point") + ", ^H");

@@ -1005,6 +1005,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_UNLOCK:
 			case Affect.TYP_VALUE:
 			case Affect.TYP_SELL:
+			case Affect.TYP_VIEW:
 			case Affect.TYP_READSOMETHING:
 				if(isInCombat())
 				{

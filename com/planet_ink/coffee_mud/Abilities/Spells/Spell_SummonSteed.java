@@ -21,7 +21,10 @@ public class Spell_SummonSteed extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked)&&(mob!=null))
+		{
+			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
+		}
 	}
 	
 	public boolean tick(int tickID)
@@ -39,6 +42,7 @@ public class Spell_SummonSteed extends Spell
 				||((invoker!=null)&&(mob.location()!=invoker.location())&&(invoker.riding()!=affected))))
 				{
 					mob.delAffect(this);
+					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
 			}

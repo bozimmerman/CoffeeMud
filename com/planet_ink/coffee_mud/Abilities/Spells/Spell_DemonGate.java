@@ -28,7 +28,10 @@ public class Spell_DemonGate extends Spell
 					myTarget=mob.getVictim();
 				else
 				if(myTarget!=mob.getVictim())
+				{
+					if(((MOB)affected).amDead()) ((MOB)affected).setLocation(null);
 					((MOB)affected).destroy();
+				}
 			}
 		}
 		return super.tick(tickID);
@@ -49,7 +52,10 @@ public class Spell_DemonGate extends Spell
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked)&&(mob!=null))
+		{
+			if(mob.amDead()) mob.setLocation(null);
 			mob.destroy();
+		}
 	}
 	
 	

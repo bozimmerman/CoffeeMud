@@ -130,6 +130,62 @@ public class ShopKeepers
 		}while(allFlag);
 	}
 
+	public void view(MOB mob, Vector commands)
+	{
+		MOB shopkeeper=shopkeeper(mob.location(),mob);
+		if(shopkeeper==null)
+		{
+			if(commands.size()<3)
+			{
+				mob.tell("View what merchandise from whom?");
+				return;
+			}
+			commands.removeElementAt(0);
+			shopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
+			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper)&&(Sense.canBeSeenBy(shopkeeper,mob)))
+				commands.removeElementAt(commands.size()-1);
+			else
+			{
+				mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
+				return;
+			}
+		}
+		else
+		{
+			if(commands.size()<2)
+			{
+				mob.tell("View what merchandise?");
+				return;
+			}
+			commands.removeElementAt(0);
+		}
+		String thisName=Util.combine(commands,0);
+		boolean doneSomething=false;
+		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		if(thisName.toUpperCase().startsWith("ALL.")){ allFlag=true; thisName="ALL "+thisName.substring(4);}
+		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
+		if(!(shopkeeper instanceof ShopKeeper))
+		{
+			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			return;
+		}
+		do
+		{
+			Environmental thisThang=((ShopKeeper)shopkeeper).getStock(thisName,mob);
+			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
+			{
+				if(!doneSomething)
+					mob.tell("There doesn't appear to be any for sale.  Try LIST.");
+				return;
+			}
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_VIEW,null);
+			if(!mob.location().okAffect(newMsg))
+				return;
+			mob.location().send(mob,newMsg);
+			doneSomething=true;
+		}while(allFlag);
+	}
+
 	public void buy(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);

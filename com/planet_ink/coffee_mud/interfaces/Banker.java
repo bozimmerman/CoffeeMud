@@ -15,5 +15,4 @@ public interface Banker extends ShopKeeper
 	public double getItemInterest();
 	public String bankChain();
 	public void setBankChain(String name);
-	public void makeChange(MOB banker, MOB customer, int amount, Affect msg);
 }

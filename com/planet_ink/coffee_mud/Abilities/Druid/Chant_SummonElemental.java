@@ -27,6 +27,7 @@ public class Chant_SummonElemental extends Chant
 				||(mob.location()!=invoker.location())))
 				{
 					mob.delAffect(this);
+					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 				}
 			}

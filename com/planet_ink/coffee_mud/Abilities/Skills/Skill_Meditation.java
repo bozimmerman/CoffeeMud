@@ -71,8 +71,8 @@ public class Skill_Meditation extends StdAbility
 		if(tickID!=Host.MOB_TICK) return true;
 		if(!profficiencyCheck(0,false)) return true;
 		
-		if((mob.curState().getHunger()>0)
-		&&(mob.curState().getThirst()>0))
+		if((mob.curState().getHunger()<=0)
+		||(mob.curState().getThirst()<=0))
 		{
 			mob.tell("Your stomach growls!");
 			unInvoke();
