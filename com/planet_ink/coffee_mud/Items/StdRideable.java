@@ -56,6 +56,80 @@ public class StdRideable extends StdContainer implements Rideable
 		if(mob!=null)
 			riders.removeElement(mob);
 	}
+	public boolean mobileRideBasis()
+	{
+		switch(rideBasis)
+		{
+		case Rideable.RIDEABLE_AIR:
+		case Rideable.RIDEABLE_LAND:
+		case Rideable.RIDEABLE_WATER:
+			return true;
+		}
+		return false;
+	}
+	public String stateString()
+	{
+		switch(rideBasis)
+		{
+		case Rideable.RIDEABLE_AIR:
+		case Rideable.RIDEABLE_LAND:
+		case Rideable.RIDEABLE_WATER:
+			return "riding in";
+		case Rideable.RIDEABLE_SIT:
+		case Rideable.RIDEABLE_TABLE:
+			return "sitting on";
+		case Rideable.RIDEABLE_SLEEP:
+			return "lieing on";
+		}
+		return "riding in";
+	}
+	public String mountString()
+	{
+		switch(rideBasis)
+		{
+		case Rideable.RIDEABLE_AIR:
+		case Rideable.RIDEABLE_LAND:
+		case Rideable.RIDEABLE_WATER:
+			return "board(s)";
+		case Rideable.RIDEABLE_SIT:
+			return "sit(s) on";
+		case Rideable.RIDEABLE_TABLE:
+			return "sit(s) on";
+		case Rideable.RIDEABLE_SLEEP:
+			return "lie(s) down on";
+		}
+		return "board(s)";
+	}
+	public String dismountString()
+	{
+		switch(rideBasis)
+		{
+		case Rideable.RIDEABLE_AIR:
+		case Rideable.RIDEABLE_LAND:
+		case Rideable.RIDEABLE_WATER:
+			return "disembark(s) from";
+		case Rideable.RIDEABLE_SIT:
+		case Rideable.RIDEABLE_SLEEP:
+		case Rideable.RIDEABLE_TABLE:
+			return "get(s) off of";
+		}
+		return "disembark(s) from";
+	}
+	public String stateStringSubject()
+	{
+		switch(rideBasis)
+		{
+		case Rideable.RIDEABLE_AIR:
+		case Rideable.RIDEABLE_LAND:
+		case Rideable.RIDEABLE_WATER:
+			return "being ridden by";
+		case Rideable.RIDEABLE_SIT:	return "";
+		case Rideable.RIDEABLE_TABLE: return "";
+		case Rideable.RIDEABLE_SLEEP: return "";
+		}
+		return "";
+	}
+	
 	public void recoverEnvStats()
 	{
 		super.recoverEnvStats();
@@ -80,10 +154,10 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 	public String displayText()
 	{
- 		if(numRiders()>0)
+ 		if((numRiders()>0)&&(stateStringSubject().length()>0))
 		{
 			StringBuffer sendBack=new StringBuffer(name());
-			sendBack.append(" is being ridden by ");
+			sendBack.append(" "+stateStringSubject()+" ");
 			for(int r=0;r<numRiders();r++)
 			{
 				MOB rider=fetchRider(r);
@@ -113,31 +187,81 @@ public class StdRideable extends StdContainer implements Rideable
 		case Affect.TYP_DISMOUNT:
 			if(!amRiding(affect.source()))
 			{
-				affect.source().tell("You are not riding "+name()+"!");
+				affect.source().tell("You are not "+stateString()+" "+name()+"!");
 				if(affect.source().riding()==this)
 					affect.source().setRiding(null);
 				return false;
 			}
 			// protects from standard item rejection
 			return true;
+		case Affect.TYP_SIT:
+			if((rideBasis()==Rideable.RIDEABLE_SIT)
+			||(rideBasis()==Rideable.RIDEABLE_SLEEP))
+			{
+				if(amRiding(affect.source()))
+				{
+					affect.source().tell("You are already "+stateString()+" "+name()+"!");
+					affect.source().setRiding(this);
+					return false;
+				}
+				else
+				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+				{
+					// for items
+					affect.source().tell(name()+" is full.");
+					// for mobs
+					// affect.source().tell("No more can fit on "+name()+".");
+					return false;
+				}
+				return true;
+			}
+			break;
+		case Affect.TYP_SLEEP:
+			if((rideBasis()==Rideable.RIDEABLE_SIT)
+			||(rideBasis()==Rideable.RIDEABLE_SLEEP))
+			{
+				if(amRiding(affect.source()))
+				{
+					affect.source().tell("You are already "+stateString()+" "+name()+"!");
+					affect.source().setRiding(this);
+					return false;
+				}
+				else
+				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+				{
+					// for items
+					affect.source().tell(name()+" is full.");
+					// for mobs
+					// affect.source().tell("No more can fit on "+name()+".");
+					return false;
+				}
+				return true;
+			}
+			break;
 		case Affect.TYP_MOUNT:
-			if(amRiding(affect.source()))
+			if((rideBasis()==Rideable.RIDEABLE_LAND)
+			   ||(rideBasis()==Rideable.RIDEABLE_AIR)
+			   ||(rideBasis()==Rideable.RIDEABLE_WATER))
 			{
-				affect.source().tell("You are already riding "+name()+"!");
-				affect.source().setRiding(this);
-				return false;
+				if(amRiding(affect.source()))
+				{
+					affect.source().tell("You are already "+stateString()+" "+name()+"!");
+					affect.source().setRiding(this);
+					return false;
+				}
+				else
+				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+				{
+					// for items
+					affect.source().tell(name()+" is full.");
+					// for mobs
+					// affect.source().tell("No more can fit on "+name()+".");
+					return false;
+				}
+				// protects from standard item rejection
+				return true;
 			}
-			else
-			if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
-			{
-				// for items
-				affect.source().tell(name()+" is full.");
-				// for mobs
-				// affect.source().tell("No more can fit on "+name()+".");
-				return false;
-			}
-			// protects from standard item rejection
-			return true;
+			break;
 		case Affect.TYP_ENTER:
 			if(amRiding(affect.source())
 			   &&(affect.target()!=null)
@@ -171,7 +295,7 @@ public class StdRideable extends StdContainer implements Rideable
 					}
 					if(Sense.isSitting(affect.source()))
 					{
-						affect.source().tell("You cannot crawl while riding "+name()+".");
+						affect.source().tell("You cannot crawl while "+stateString()+" "+name()+".");
 						return false;
 					}
 				}
@@ -181,7 +305,7 @@ public class StdRideable extends StdContainer implements Rideable
 		case Affect.TYP_SELL:
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You cannot do that while riding "+name()+".");
+				affect.source().tell("You cannot do that while "+stateString()+" "+name()+".");
 				return false;
 			}
 			break;
@@ -193,7 +317,7 @@ public class StdRideable extends StdContainer implements Rideable
 			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(affect.target()!=this)&&(!amRiding((MOB)affect.target()))))
 			{
 				
-				affect.source().tell("You cannot do that while riding "+name()+".");
+				affect.source().tell("You cannot do that while "+stateString()+" "+name()+".");
 				return false;
 			}
 		}
@@ -205,10 +329,13 @@ public class StdRideable extends StdContainer implements Rideable
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:
+		case Affect.TYP_STAND:
 			if(amRiding(affect.source()))
 				affect.source().setRiding(null);
 			break;
 		case Affect.TYP_MOUNT:
+		case Affect.TYP_SIT:
+		case Affect.TYP_SLEEP:
 			if(!amRiding(affect.source()))
 				affect.source().setRiding(this);
 			break;

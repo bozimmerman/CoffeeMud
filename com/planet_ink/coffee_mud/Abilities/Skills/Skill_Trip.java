@@ -100,7 +100,7 @@ public class Skill_Trip extends StdAbility
 		}
 		if(target.riding()!=null)
 		{
-			mob.tell("You can't trip someone riding "+target.riding().name()+"!");
+			mob.tell("You can't trip someone "+target.riding().stateString()+" "+target.riding().name()+"!");
 			return false;
 		}
 		if(Sense.isFlying(target))
@@ -108,13 +108,6 @@ public class Skill_Trip extends StdAbility
 			mob.tell(target.name()+" is flying and can't be tripped!");
 			return false;
 		}
-
-		if(target.riding()!=null)
-		{
-			mob.tell(target.name()+" is riding "+mob.riding()+" and can't be tripped!");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 

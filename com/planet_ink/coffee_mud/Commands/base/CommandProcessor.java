@@ -149,7 +149,7 @@ public class CommandProcessor
 						mob.tell("You lack the power to destroy things this way.  Did you mean kill?\n\r");
 					break;
 				case CommandSet.DISMOUNT:
-					socialProcessor.dismount(mob,commands);
+					movement.dismount(mob,commands);
 					break;
 				case CommandSet.DOWN:
 					movement.standAndGo(mob,Directions.DOWN);
@@ -266,7 +266,7 @@ public class CommandProcessor
 						mob.tell("You lack the power to modify things.\n\r");
 					break;
 				case CommandSet.MOUNT:
-					socialProcessor.mount(mob,commands);
+					movement.mount(mob,commands);
 					break;
 				case CommandSet.NOANSI:
 					if(!mob.isMonster())
@@ -378,13 +378,13 @@ public class CommandProcessor
 					socialProcessor.serve(mob,commands);
 					break;
 				case CommandSet.SIT:
-					movement.sit(mob);
+					movement.sit(mob,commands);
 					break;
 				case CommandSet.SKILLS:
 					scoring.skills(mob);
 					break;
 				case CommandSet.SLEEP:
-					movement.sleep(mob);
+					movement.sleep(mob,commands);
 					break;
 				case CommandSet.SOCIALS:
 					scoring.socials(mob,socials);

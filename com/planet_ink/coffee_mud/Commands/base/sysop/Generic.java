@@ -1271,32 +1271,19 @@ public class Generic
 		}
 	}
 
-	private String rideDesc(int num)
-	{
-		String rideableType=null;
-		if(num==Rideable.RIDEABLE_WATER)
-			rideableType="Water-based (Floating)";
-		else
-		if(num==Rideable.RIDEABLE_AIR)
-			rideableType="Air-based (Flying)";
-		else
-			rideableType="Land-based";
-		return rideableType;
-	}
-	
 	void genRideable(MOB mob, Rideable R)
 		throws IOException
 	{
-		mob.tell("\n\rRideable Type: '"+rideDesc(R.rideBasis())+"'.");
+		mob.tell("\n\rRideable Type: '"+Rideable.RIDEABLE_DESCS[R.rideBasis()]+"'.");
 		boolean q=false;
-		String sel="LWA";
+		String sel="LWACBT";
 		while(!q)
 		{
 			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)
-					mob.tell(sel.charAt(i)+") "+rideDesc(i));
+					mob.tell(sel.charAt(i)+") "+Rideable.RIDEABLE_DESCS[i].toLowerCase());
 				q=false;
 			}
 			else

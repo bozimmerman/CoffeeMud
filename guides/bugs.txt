@@ -1,4 +1,1 @@
 the damage message is broken on Flameshield.  Whenever a royal guard attacks me and takes damage it says the flameshield around you flares up an <DAMAGE> the royal guard.  At the time, I am under the affects of Improved Inv, Mirror image, stoneskin, mage armor, et al. 
-
-the range bug is still there, zara can not cast summon at a range, but she
-is not in combat. It occurs when Zara initiates the combat, not theDragon.

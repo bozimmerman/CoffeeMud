@@ -582,14 +582,16 @@ public class StdMOB implements MOB
 			sendBack.append(" here");
 			if(riding()!=null)
 			{
-				sendBack.append(" riding ");
+				sendBack.append(" "+riding().stateString()+" ");
 				sendBack.append(riding().name());
 			}
 			else
-			if((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
+			if((this instanceof Rideable)
+			   &&(((Rideable)this).numRiders()>0)
+			   &&(((Rideable)this).stateStringSubject().length()>0))
 			{
 				Rideable me=(Rideable)this;
-				sendBack.append(" being ridden by ");
+				sendBack.append(" "+me.stateStringSubject()+" ");
 				for(int r=0;r<me.numRiders();r++)
 				{
 					MOB rider=me.fetchRider(r);

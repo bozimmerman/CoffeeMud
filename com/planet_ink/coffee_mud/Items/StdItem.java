@@ -572,7 +572,7 @@ public class StdItem implements Item
 				}
 				if((mob.riding()!=null)&&(mob.riding()==this))
 				{
-					mob.tell("You are riding "+name()+"!");
+					mob.tell("You are "+mob.riding().stateString()+" "+name()+"!");
 					return false;
 				}
 				return true;

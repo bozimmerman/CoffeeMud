@@ -574,60 +574,6 @@ public class SocialProcessor
 		return levelDiff;
 
 	}
-	
-	public void mount(MOB mob, Vector commands)
-	{
-		if(commands.size()<2)
-		{
-			mob.tell(((String)commands.elementAt(0))+" what?");
-			return;
-		}
-		commands.removeElementAt(0);
-		Environmental recipient=null;
-		Vector possRecipients=new Vector();
-		for(int m=0;m<mob.location().numInhabitants();m++)
-		{
-			MOB M=mob.location().fetchInhabitant(m);
-			if((M!=null)&&(M instanceof Rideable))
-				possRecipients.addElement(M);
-		}
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I!=null)&&(I instanceof Rideable))
-				possRecipients.addElement(I);
-		}
-		recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
-		if(recipient==null)
-			recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
-		if(recipient==null)
-			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0));
-		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
-		{
-			mob.tell("I don't see "+Util.combine(commands,0)+" here.");
-			return;
-		}
-		String word="mount(s) ";
-		if(recipient instanceof Item)
-			word="board(s) ";
-		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,"<S-NAME> "+word+"<T-NAMESELF>.");
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
-	}
-	public void dismount(MOB mob, Vector commands)
-	{
-		if(mob.riding()==null)
-		{
-			mob.tell("But you aren't riding anything?!");
-			return;
-		}
-		String word="dismount(s) ";
-		if(mob.riding() instanceof Item)
-			word="disembark(s) from ";
-		FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,"<S-NAME> "+word+"<T-NAMESELF>.");
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
-	}
 	public void rebuke(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)

@@ -37,6 +37,7 @@ public class StdRideable extends StdMOB implements Rideable
 	public int mobCapacity(){ return mobCapacity;}
 	public void setMobCapacity(int newCapacity){mobCapacity=newCapacity;}
 	public int numRiders(){return riders.size();}
+	public boolean mobileRideBasis(){return true;}
 	public MOB fetchRider(int which)
 	{
 		try	{ return (MOB)riders.elementAt(which);	}
@@ -79,6 +80,11 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		return riders.contains(mob);
 	}
+	public String stateString(){return "riding on";}
+	public String mountString(){return "mount(s)";}
+	public String dismountString(){return "dismount(s)";}
+	public String stateStringSubject(){return "being ridden by";}
+
 	public boolean okAffect(Affect affect)
 	{
 		switch(affect.targetMinor())
@@ -86,7 +92,7 @@ public class StdRideable extends StdMOB implements Rideable
 		case Affect.TYP_DISMOUNT:
 			if(!amRiding(affect.source()))
 			{
-				affect.source().tell("You are not riding "+name()+"!");
+				affect.source().tell("You are not "+stateString()+" "+name()+"!");
 				if(affect.source().riding()==this)
 					affect.source().setRiding(null);
 				return false;
@@ -96,7 +102,7 @@ public class StdRideable extends StdMOB implements Rideable
 		case Affect.TYP_MOUNT:
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You are already riding "+name()+"!");
+				affect.source().tell("You are already "+stateString()+" "+name()+"!");
 				affect.source().setRiding(this);
 				return false;
 			}
@@ -144,7 +150,7 @@ public class StdRideable extends StdMOB implements Rideable
 					}
 					if(Sense.isSitting(affect.source()))
 					{
-						affect.source().tell("You cannot crawl while riding "+name()+".");
+						affect.source().tell("You cannot crawl while "+stateString()+" "+name()+".");
 						return false;
 					}
 				}
@@ -156,7 +162,7 @@ public class StdRideable extends StdMOB implements Rideable
 		case Affect.TYP_SLEEP:
 			if(amRiding(affect.source()))
 			{
-				affect.source().tell("You cannot do that while riding "+name()+".");
+				affect.source().tell("You cannot do that while "+stateString()+" "+name()+".");
 				return false;
 			}
 			break;
@@ -167,7 +173,7 @@ public class StdRideable extends StdMOB implements Rideable
 			|| ((affect.tool()!=null)&&(affect.tool() instanceof Item)&&(affect.tool()!=this)&&(affect.source().location()!=null)&&(affect.source().location().isContent((Item)affect.tool())))
 			|| ((affect.sourceMinor()==Affect.TYP_GIVE)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(affect.target()!=this)&&(!amRiding((MOB)affect.target()))))
 			{
-				affect.source().tell("You cannot do that while riding "+name()+".");
+				affect.source().tell("You cannot do that while "+stateString()+" "+name()+".");
 				return false;
 			}
 		}
@@ -205,6 +211,7 @@ public class StdRideable extends StdMOB implements Rideable
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_DISMOUNT:
+		case Affect.TYP_STAND:
 			if(amRiding(affect.source()))
 				affect.source().setRiding(null);
 			break;

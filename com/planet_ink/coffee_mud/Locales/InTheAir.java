@@ -27,6 +27,11 @@ public class InTheAir extends StdRoom
 		if(!super.okAffect(affect)) return false;
 		return isOkAffect(this,affect);
 	}
+	public static Item ultimateParent(Item item)
+	{
+		if(item.location()==null) return item;
+		return ultimateParent(item.location());
+	}
 	public static boolean isOkAffect(Room room, Affect affect)
 	{
 		if(Sense.isSleeping(room)) return true;
@@ -94,10 +99,14 @@ public class InTheAir extends StdRoom
 		for(int i=0;i<needToFall.size();i++)
 		{
 			Environmental E=(Environmental)needToFall.elementAt(i);
-			Ability falling=CMClass.getAbility("Falling");
-			falling.setProfficiency(avg);
-			falling.setAffectedOne(room);
-			falling.invoke(null,null,E,true);
+			if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
+			||((E instanceof Item)&&(!Sense.isFlying(ultimateParent((Item)E)))))
+			{
+				Ability falling=CMClass.getAbility("Falling");
+				falling.setProfficiency(avg);
+				falling.setAffectedOne(room);
+				falling.invoke(null,null,E,true);
+			}
 		}
 		return true;
 	}

@@ -86,7 +86,7 @@ public class Movement
 
 		FullMsg enterMsg=null;
 		FullMsg leaveMsg=null;
-		if(mob.riding()!=null)
+		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
 			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> ride(s) "+mob.riding().name()+" in from "+otherDirectionName);
 			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flee(s) with ":"ride(s) ")+mob.riding().name()+" "+directionName);
@@ -120,7 +120,7 @@ public class Movement
 		if(!mob.okAffect(enterMsg))
 			return false;
 
-		if(mob.riding()==null)
+		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
 		{
 			mob.curState().expendEnergy(mob,mob.maxState(),true);
 			if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(mob),mob.maxState())))
@@ -135,7 +135,7 @@ public class Movement
 
 		Vector riders=null;
 		Rideable riding=mob.riding();
-		if(riding!=null)
+		if((riding!=null)&&(riding.mobileRideBasis()))
 		{
 			riders=new Vector();
 			for(int r=0;r<riding.numRiders();r++)
@@ -420,6 +420,60 @@ public class Movement
 			mob.location().send(mob,msg);
 	}
 
+	public void sit(MOB mob, Vector commands)
+	{
+		if(Sense.isSitting(mob))
+		{
+			mob.tell("You are already sitting!");
+			return;
+		}
+		if(commands.size()==1) sit(mob);
+		String possibleRideable=Util.combine(commands,1);
+		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
+		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
+		{
+			mob.tell("You don't see '"+possibleRideable+"' here.");
+			return;
+		}
+		if(E instanceof MOB)
+		{
+			mount(mob,commands);
+			return;
+		}
+		String mountStr=null;
+		if(E instanceof Rideable)
+			mountStr=((Rideable)E).mountString();
+		else
+			mountStr="sit(s) on";
+		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SIT,"<S-NAME> "+mountStr+" "+E.name()+".");
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+	}
+	public void sleep(MOB mob, Vector commands)
+	{
+		if(Sense.isSitting(mob))
+		{
+			mob.tell("You are already asleep!");
+			return;
+		}
+		if(commands.size()==1) sleep(mob);
+		String possibleRideable=Util.combine(commands,1);
+		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
+		if((E==null)||(!Sense.canBeSeenBy(E,mob)))
+		{
+			mob.tell("You don't see '"+possibleRideable+"' here.");
+			return;
+		}
+		String mountStr=null;
+		if(E instanceof Rideable)
+			mountStr=((Rideable)E).mountString();
+		else
+			mountStr="sleep(s) on";
+		FullMsg msg=new FullMsg(mob,E,null,Affect.MSG_SLEEP,"<S-NAME> "+mountStr+" "+E.name()+".");
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+	}
+	
 	public void sit(MOB mob)
 	{
 		if(Sense.isSitting(mob))
@@ -470,5 +524,53 @@ public class Movement
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}
+	}
+	
+	public void mount(MOB mob, Vector commands)
+	{
+		if(commands.size()<2)
+		{
+			mob.tell(((String)commands.elementAt(0))+" what?");
+			return;
+		}
+		commands.removeElementAt(0);
+		Environmental recipient=null;
+		Vector possRecipients=new Vector();
+		for(int m=0;m<mob.location().numInhabitants();m++)
+		{
+			MOB M=mob.location().fetchInhabitant(m);
+			if((M!=null)&&(M instanceof Rideable))
+				possRecipients.addElement(M);
+		}
+		for(int i=0;i<mob.location().numItems();i++)
+		{
+			Item I=mob.location().fetchItem(i);
+			if((I!=null)&&(I instanceof Rideable))
+				possRecipients.addElement(I);
+		}
+		recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),true);
+		if(recipient==null)
+			recipient=CoffeeUtensils.fetchEnvironmental(possRecipients,Util.combine(commands,0),false);
+		if(recipient==null)
+			recipient=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,0));
+		if((recipient==null)||((recipient!=null)&&(!Sense.canBeSeenBy(recipient,mob))))
+		{
+			mob.tell("I don't see "+Util.combine(commands,0)+" here.");
+			return;
+		}
+		FullMsg msg=new FullMsg(mob,recipient,null,Affect.MSG_MOUNT,"<S-NAME> "+mob.riding().mountString()+" <T-NAMESELF>.");
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
+	}
+	public void dismount(MOB mob, Vector commands)
+	{
+		if(mob.riding()==null)
+		{
+			mob.tell("But you aren't riding anything?!");
+			return;
+		}
+		FullMsg msg=new FullMsg(mob,mob.riding(),null,Affect.MSG_DISMOUNT,"<S-NAME> "+mob.riding().dismountString()+" <T-NAMESELF>.");
+		if(mob.location().okAffect(msg))
+			mob.location().send(mob,msg);
 	}
 }
