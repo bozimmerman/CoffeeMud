@@ -1806,6 +1806,119 @@ public class CoffeeMaker
 			}
 		}
 	}
+	
+	public static String getPlayerXML(MOB mob, HashSet custom)
+	{
+		if(mob==null) return "";
+		if(mob.Name().length()==0) return "";
+		PlayerStats pstats=mob.playerStats();
+		if(pstats==null) return "";
+
+		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
+		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
+		StringBuffer pfxml=new StringBuffer(pstats.getFriendsIgnoreStr());
+		if(mob.numTattoos()>0)
+		{
+			pfxml.append("<TATTS>");
+			for(int i=0;i<mob.numTattoos();i++)
+				pfxml.append(mob.fetchTattoo(i)+";");
+			pfxml.append("</TATTS>");
+		}
+		if(mob.numEducations()>0)
+		{
+			pfxml.append("<EDUS>");
+			for(int i=0;i<mob.numEducations();i++)
+				pfxml.append(mob.fetchEducation(i)+";");
+			pfxml.append("</EDUS>");
+		}
+		
+		StringBuffer str=new StringBuffer("");
+		str.append(XMLManager.convertXMLtoTag("NAME",mob.Name()));
+		str.append(XMLManager.convertXMLtoTag("PASS",pstats.password()));
+		str.append(XMLManager.convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
+		str.append(XMLManager.convertXMLtoTag("STR",mob.baseCharStats().getStat(CharStats.STRENGTH)));
+		str.append(XMLManager.convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
+		str.append(XMLManager.convertXMLtoTag("DEX",mob.baseCharStats().getStat(CharStats.DEXTERITY)));
+		str.append(XMLManager.convertXMLtoTag("CON",mob.baseCharStats().getStat(CharStats.CONSTITUTION)));
+		str.append(XMLManager.convertXMLtoTag("GEND",(char)mob.baseCharStats().getStat(CharStats.GENDER)));
+		str.append(XMLManager.convertXMLtoTag("WIS",mob.baseCharStats().getStat(CharStats.WISDOM)));
+		str.append(XMLManager.convertXMLtoTag("INT",mob.baseCharStats().getStat(CharStats.INTELLIGENCE)));
+		str.append(XMLManager.convertXMLtoTag("CHA",mob.baseCharStats().getStat(CharStats.CHARISMA)));
+		str.append(XMLManager.convertXMLtoTag("HIT",mob.baseState().getHitPoints()));
+		str.append(XMLManager.convertXMLtoTag("LVL",mob.baseCharStats().getMyLevelsStr()));
+		str.append(XMLManager.convertXMLtoTag("MANA",mob.baseState().getMana()));
+		str.append(XMLManager.convertXMLtoTag("MOVE",mob.baseState().getMovement()));
+		str.append(XMLManager.convertXMLtoTag("ALIG",mob.getAlignment()));
+		str.append(XMLManager.convertXMLtoTag("EXP",mob.getExperience()));
+		str.append(XMLManager.convertXMLtoTag("EXLV",mob.getExpNextLevel()));
+		str.append(XMLManager.convertXMLtoTag("WORS",mob.getWorshipCharID()));
+		str.append(XMLManager.convertXMLtoTag("PRAC",mob.getPractices()));
+		str.append(XMLManager.convertXMLtoTag("TRAI",mob.getTrains()));
+		str.append(XMLManager.convertXMLtoTag("AGEH",mob.getAgeHours()));
+		str.append(XMLManager.convertXMLtoTag("GOLD",mob.getMoney()));
+		str.append(XMLManager.convertXMLtoTag("WIMP",mob.getWimpHitPoint()));
+		str.append(XMLManager.convertXMLtoTag("QUES",mob.getQuestPoint()));
+		str.append(XMLManager.convertXMLtoTag("ROID",strStartRoomID+"||"+strOtherRoomID));
+		str.append(XMLManager.convertXMLtoTag("DATE",pstats.lastDateTime()));
+		str.append(XMLManager.convertXMLtoTag("CHAN",pstats.getChannelMask()));
+		str.append(XMLManager.convertXMLtoTag("ATTA",mob.baseEnvStats().attackAdjustment()));
+		str.append(XMLManager.convertXMLtoTag("AMOR",mob.baseEnvStats().armor()));
+		str.append(XMLManager.convertXMLtoTag("DAMG",mob.baseEnvStats().damage()));
+		str.append(XMLManager.convertXMLtoTag("BTMP",mob.getBitmap()));
+		str.append(XMLManager.convertXMLtoTag("LEIG",mob.getLiegeID()));
+		str.append(XMLManager.convertXMLtoTag("HEIT",mob.baseEnvStats().height()));
+		str.append(XMLManager.convertXMLtoTag("WEIT",mob.baseEnvStats().weight()));
+		str.append(XMLManager.convertXMLtoTag("PRPT",pstats.getPrompt()));
+		str.append(XMLManager.convertXMLtoTag("COLR",pstats.getColorStr()));
+		str.append(XMLManager.convertXMLtoTag("CLAN",mob.getClanID()));
+		str.append(XMLManager.convertXMLtoTag("LSIP",pstats.lastIP()));
+		str.append(XMLManager.convertXMLtoTag("CLRO",mob.getClanRole()));
+		str.append(XMLManager.convertXMLtoTag("EMAL",pstats.getEmail()));
+		str.append(XMLManager.convertXMLtoTag("PFIL",pfxml.toString()));
+		str.append(XMLManager.convertXMLtoTag("SAVE",mob.baseCharStats().getSavesStr()));
+		str.append(XMLManager.convertXMLtoTag("DESC",mob.description()));
+		str.append(getExtraEnvPropertiesStr(mob));
+		StringBuffer ablestr=new StringBuffer("");
+		for(int a=0;a<mob.numEffects();a++)
+		{
+			Ability A=mob.fetchEffect(a);
+			if((A!=null)&&(!A.isBorrowed(mob)))
+			{
+				ablestr.append("<ABLE>");
+				ablestr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
+				ablestr.append(XMLManager.convertXMLtoTag("APROFF",A.profficiency()));
+				ablestr.append(XMLManager.convertXMLtoTag("ATEXT",parseOutAngleBrackets(A.text())));
+				ablestr.append("</ABLE>");
+			}
+		}
+		str.append(XMLManager.convertXMLtoTag("ABILITIES",ablestr.toString()));
+		str.append(getGenMobInventory(mob));
+		StringBuffer fols=new StringBuffer("");
+		for(int f=0;f<mob.numFollowers();f++)
+		{
+			MOB thisMOB=mob.fetchFollower(f);
+			if((thisMOB!=null)&&(thisMOB.isMonster()))
+			{
+				fols.append("<FOLLOWER>");
+				fols.append(XMLManager.convertXMLtoTag("FCLAS",CMClass.className(thisMOB)));
+				fols.append(XMLManager.convertXMLtoTag("FTEXT",thisMOB.text()));
+				fols.append(XMLManager.convertXMLtoTag("FLEVL",thisMOB.baseEnvStats().level()));
+				fols.append(XMLManager.convertXMLtoTag("FABLE",thisMOB.baseEnvStats().ability()));
+				fols.append("</FOLLOWER>");
+			}
+		}
+		str.append(XMLManager.convertXMLtoTag("FOLLOWERS",fols.toString()));
+		if((mob.baseCharStats().getMyRace().isGeneric())
+		&&(!custom.contains(mob.baseCharStats().getMyRace())))
+		   custom.add(mob.baseCharStats().getMyRace());
+		for(int c=0;c<mob.baseCharStats().numClasses();c++)
+		{
+			CharClass C=mob.baseCharStats().getMyClass(c);
+			if((C.isGeneric())&&(!custom.contains(C)))
+				custom.add(C);
+		}
+		return str.toString();
+	}
 
 	private static String getExtraEnvPropertiesStr(Environmental E)
 	{

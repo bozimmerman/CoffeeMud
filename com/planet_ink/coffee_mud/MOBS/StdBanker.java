@@ -464,7 +464,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 					}
 				}
 
-				StringBuffer str=new StringBuffer("\n\r");
+				StringBuffer str=new StringBuffer("");
+				str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
 				String c="^x[Item                              ] ";
 				str.append(c+c+"^.^N\n\r");
 				int colNum=0;
@@ -495,29 +496,27 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+balance+"^? gold coins.");
 					else
-						str.append("Your balance with us is ^H"+balance+"^? gold coins.");
+						str.append("Your balance is ^H"+balance+"^? gold coins.");
 				}
 				if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
 				&&(mob.isMarriedToLiege()))
 				{
 					balance=getBalance(CMMap.getPlayer(mob.getLiegeID()));
-					str.append("Your spouses balance with us is ^H"+balance+"^? gold coins.");
+					str.append("Your spouses balance is ^H"+balance+"^? gold coins.");
 				}
 				if(coinInterest!=0.0)
 				{
 					double cci=Util.mul(Math.abs(coinInterest),100.0);
 					String ci=((coinInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					str.append("\n\rWe "+ci+"weekly on money deposited here.");
+					str.append("\n\rThey "+ci+"weekly on money deposited here.");
 				}
 				if(itemInterest!=0.0)
 				{
 					double cci=Util.mul(Math.abs(itemInterest),100.0);
 					String ci=((itemInterest>0.0)?"pay ":"charge ")+cci+"% interest ";
-					str.append("\n\rWe "+ci+"weekly on items kept with us.");
+					str.append("\n\rThey "+ci+"weekly on items deposited here.");
 				}
-				if(bankChain().length()>0)
-					str.append("\n\rI am a banker for "+bankChain()+".");
-				CommonMsgs.say(this,mob,str.toString()+"^T",true,false);
+				mob.tell(str.toString()+"^T");
 				return;
 			}
 			default:

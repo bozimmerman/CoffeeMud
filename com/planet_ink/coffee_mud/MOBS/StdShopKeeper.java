@@ -919,7 +919,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							CommonMsgs.say(this,mob,"I have nothing for sale.",false,false);
 					}
 					else
-						CommonMsgs.say(this,mob,"\n\r"+str+"^T",true,false);
+						mob.tell("\n\r"+str+"^T");
 				}
 				break;
 			default:

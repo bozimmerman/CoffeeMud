@@ -68,9 +68,16 @@ public class Export extends StdCommand
 		}
 		if((!commandType.equalsIgnoreCase("ROOM"))
 		&&(!commandType.equalsIgnoreCase("WORLD"))
+		&&(!commandType.equalsIgnoreCase("PLAYER"))
 		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
-			mob.tell("Export what?  Room, or Area?");
+			mob.tell("Export what?  Room, World, Player, or Area?");
+			return false;
+		}
+		if(commandType.equalsIgnoreCase("PLAYER")
+		&&(!mob.isASysOp(null)))
+		{
+			mob.tell("Only Archons may export player data.");
 			return false;
 		}
 
@@ -78,10 +85,11 @@ public class Export extends StdCommand
 		if(commands.size()>0)
 		{
 			String sub=((String)commands.firstElement()).toUpperCase().trim();
-			if(sub.equalsIgnoreCase("ITEMS")
-			||sub.equalsIgnoreCase("MOBS")
-			||sub.equalsIgnoreCase("WEAPONS")
-			||sub.equalsIgnoreCase("ARMOR"))
+			if((sub.equalsIgnoreCase("ITEMS")
+				||sub.equalsIgnoreCase("MOBS")
+				||sub.equalsIgnoreCase("WEAPONS")
+				||sub.equalsIgnoreCase("ARMOR"))
+			&&(!commandType.equalsIgnoreCase("PLAYER")))
 			{
 				subType=sub;
 				commands.removeElementAt(0);
@@ -121,6 +129,29 @@ public class Export extends StdCommand
 		String xml="";
 		if(subType.equalsIgnoreCase("DATA"))
 		{
+			if(commandType.equalsIgnoreCase("PLAYER"))
+			{
+				StringBuffer x=new StringBuffer("<PLAYERS>");
+				if(mob.session()!=null)
+					mob.session().rawPrint("Reading players...");
+				Vector V=CMClass.DBEngine().getUserList();
+				for(int v=0;v<V.size();v++)
+				{
+					Vector V2=(Vector)V.elementAt(v);
+					String name=(String)V2.elementAt(v);
+					if(mob.session()!=null) mob.session().rawPrint(".");
+					MOB M=CMMap.getLoadPlayer(name);
+					if(M!=null)
+					{
+						x.append("<PLAYER>");
+						x.append(CoffeeMaker.getPlayerXML(M,custom));
+						x.append("</PLAYER>");
+					}
+				}
+				if(fileNameCode==2) fileName=fileName+File.separatorChar+"player";
+				xml=x.toString()+"</PLAYERS>";
+			}
+			else
 			if(commandType.equalsIgnoreCase("ROOM"))
 			{
 				xml=CoffeeMaker.getRoomXML(mob.location(),custom,true).toString();

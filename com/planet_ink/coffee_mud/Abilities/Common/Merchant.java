@@ -451,7 +451,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					if(str.length()==0)
 						CommonMsgs.say(M,mob,"I have nothing for sale.",false,false);
 					else
-						CommonMsgs.say(M,mob,"\n\r"+str+"^T",true,false);
+						mob.tell("\n\r"+str+"^T");
 				}
 				break;
 			default:
@@ -529,7 +529,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			FullMsg msg=new FullMsg(mob,mob,CMMsg.MSG_LIST,null);
+			FullMsg msg=new FullMsg(mob,mob,CMMsg.MSG_LIST,"<S-NAME> review(s) <S-HIS-HER> inventory.");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 			return true;

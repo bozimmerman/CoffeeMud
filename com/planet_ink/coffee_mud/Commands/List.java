@@ -1243,7 +1243,7 @@ public class List extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			MOB shopkeeper=(MOB)V.elementAt(i);
-			FullMsg newMsg=new FullMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,null);
+			FullMsg newMsg=new FullMsg(mob,shopkeeper,null,CMMsg.MSG_LIST,(shopkeeper instanceof Banker)?"<S-NAME> review(s) <S-HIS-HER> account with <T-NAMESELF>.":"<S-NAME> review(s) <T-YOUPOSS> inventory.");
 			if(!mob.location().okMessage(mob,newMsg))
 				return false;
 			mob.location().send(mob,newMsg);
