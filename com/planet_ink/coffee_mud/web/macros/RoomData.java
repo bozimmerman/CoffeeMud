@@ -176,87 +176,6 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 	
-	public static boolean MOBSsame(MOB M, MOB M2)
-	{
-		if((CMClass.className(M).equals(CMClass.className(M2)))
-		&&(M.baseEnvStats().level()==M2.baseEnvStats().level())
-		&&(M.baseEnvStats().ability()==M2.baseEnvStats().ability())
-		&&(M.name().equals(M2.name()))
-		&&(M.baseEnvStats().rejuv()==M2.baseEnvStats().rejuv()))
-		{
-			int oldHeight=M.baseEnvStats().height();
-			int oldWeight=M.baseEnvStats().weight();
-			M.baseEnvStats().setHeight(M2.baseEnvStats().height());
-			M.baseEnvStats().setWeight(M2.baseEnvStats().weight());
-			String buf1=M.text();
-			String buf2=M2.text();
-			M.baseEnvStats().setHeight(oldHeight);
-			M.baseEnvStats().setWeight(oldWeight);
-			if(!buf1.equals(buf2))
-			{
-				try{
-					for(int l=0, l2=0;((l!=buf1.length())&&(l2!=buf2.length()));l++,l2++)
-					{
-						if(buf1.charAt(l)!=buf2.charAt(l2))
-							return false;
-						if(buf1.charAt(l)=='@')
-						{
-							while(buf1.charAt(++l)!='<');
-							while(buf2.charAt(++l2)!='<');
-						}
-					}
-				} 
-				catch(Exception e)
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-		else
-			return false;
-	}
-	
-	public static boolean ItemsSame(Item I, Item I2)
-	{
-		if((CMClass.className(I).equals(CMClass.className(I2)))
-		&&(I.baseEnvStats().level()==I2.baseEnvStats().level())
-		&&(I.baseEnvStats().ability()==I2.baseEnvStats().ability())
-		&&(I.baseEnvStats().rejuv()==I2.baseEnvStats().rejuv())
-		&&(I.usesRemaining()==I2.usesRemaining())
-		&&(I.name().equals(I2.name()))
-		&&(I.baseEnvStats().height()==I2.baseEnvStats().height()))
-		{
-			boolean returning=true;
-			I=(Item)I.copyOf();
-			I.wearAt(Item.INVENTORY);
-			I.setContainer(null);
-			int oldHeight=I.baseEnvStats().height();
-			I.baseEnvStats().setHeight(I2.baseEnvStats().height());
-			String buf1=I.text();
-			String buf2=I2.text();
-			I.baseEnvStats().setHeight(oldHeight);
-			if(buf1.equals(buf2))
-			{
-				try{
-					for(int l=0, l2=0;((l!=buf1.length())&&(l2!=buf2.length()));l++,l2++)
-					{
-						if(buf1.charAt(l)!=buf2.charAt(l2))
-						{ returning=false; break;}
-						if(buf1.charAt(l)=='@')
-						{
-							while(buf1.charAt(++l)!='<');
-							while(buf2.charAt(++l2)!='<');
-						}
-					}
-				} catch(Exception e){returning=false;}
-			}
-			return returning;
-		}
-		else
-			return false;
-	}
-	
 	public static Vector contributeMOBs(Vector inhabs)
 	{
 		for(int i=0;i<inhabs.size();i++)
@@ -268,7 +187,7 @@ public class RoomData extends StdWebMacro
 				for(int m=0;m<mobs.size();m++)
 				{
 					MOB M2=(MOB)mobs.elementAt(m);
-					if(MOBSsame(M,M2))
+					if(M.sameAs(M2))
 					{	found=true;	break;	}
 				}
 				if((!found)&&(M.isEligibleMonster()))
@@ -299,7 +218,7 @@ public class RoomData extends StdWebMacro
 				for(int i2=0;i2<items.size();i2++)
 				{
 					Item I2=(Item)items.elementAt(i2);
-					if(ItemsSame(I,I2))
+					if(I.sameAs(I2))
 					{	found=true;	break;	}
 				}
 				if(!found)

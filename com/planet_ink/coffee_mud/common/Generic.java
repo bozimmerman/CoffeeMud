@@ -1709,7 +1709,26 @@ public class Generic
 		case 14: return ""+M.baseEnvStats().speed();
 		case 15: return Generic.getExtraEnvPropertiesStr(M);
 		case 16: return Generic.getGenMobAbilities(M);
-		case 17: return Generic.getGenMobInventory(M);
+		case 17:{
+					StringBuffer str=new StringBuffer(Generic.getGenMobInventory(M));
+					int x=str.indexOf("<IID>");
+					while(x>0)
+					{
+						int y=str.indexOf("</IID>",x);
+						if(y>x)	str.delete(x,y+6);
+						else break;
+						x=str.indexOf("<IID>");
+					}
+					x=str.indexOf("<ILOC>");
+					while(x>0)
+					{
+						int y=str.indexOf("</ILOC>",x);
+						if(y>x)	str.delete(x,y+7);
+						else break;
+						x=str.indexOf("<ILOC>");
+					}
+					return str.toString();
+				}
 		}
 		return "";
 	}
