@@ -53,7 +53,7 @@ public class Tailoring extends CommonSkill
 		Vector V=(Vector)Resources.getResource("TAILOR RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"tailor.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"tailor.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Tailoring","Recipes not found!");

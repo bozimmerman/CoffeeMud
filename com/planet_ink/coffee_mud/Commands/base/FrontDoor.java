@@ -191,7 +191,7 @@ public class FrontDoor
 			if(mob.session().confirm("\n\r'"+Util.capitalize(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
 				login=Util.capitalize(login.trim());
-				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("newchar.txt").toString());
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"newchar.txt").toString());
 
 				String password="";
 				while(password.length()==0)
@@ -207,7 +207,7 @@ public class FrontDoor
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
 					mob.session().setTermID(1);
 
-				mob.session().println(null,null,Resources.getFileResource("races.txt").toString());
+				mob.session().println(null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
 
 				StringBuffer listOfRaces=new StringBuffer("[");
 				boolean tmpFirst = true;
@@ -232,7 +232,7 @@ public class FrontDoor
 					mob.session().print(listOfRaces.toString());
 					String raceStr=mob.session().prompt("\n\r: ","");
 					if(raceStr.trim().equalsIgnoreCase("?"))
-						mob.session().println(null,null,"\n\r"+Resources.getFileResource("races.txt").toString());
+						mob.session().println(null,null,"\n\r"+Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
 					else
 					{
 						newRace=CMClass.getRace(raceStr);
@@ -278,7 +278,7 @@ public class FrontDoor
 				mob.baseCharStats().setStat(CharStats.GENDER,(int)Gender.toUpperCase().charAt(0));
 				mob.baseCharStats().getMyRace().startRacing(mob,false);
 
-				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"stats.txt").toString());
 
 				boolean mayCont=true;
 				int maxStat[]={18,18,18,18,18,18};
@@ -320,7 +320,7 @@ public class FrontDoor
 							mayCont=false;
 					}
 				}
-				mob.session().println(null,null,Resources.getFileResource("classes.txt").toString());
+				mob.session().println(null,null,Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
 
 				CharClass newClass=null;
 				while(newClass==null)
@@ -329,7 +329,7 @@ public class FrontDoor
 					mob.session().print("^H[" + listOfClasses.toString() + "]^N");
 					String ClassStr=mob.session().prompt("\n\r: ","");
 					if(ClassStr.trim().equalsIgnoreCase("?"))
-						mob.session().println(null,null,"\n\r"+Resources.getFileResource("classes.txt").toString());
+						mob.session().println(null,null,"\n\r"+Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
 					else
 					{
 						newClass=CMClass.getCharClass(ClassStr);
@@ -391,7 +391,7 @@ public class FrontDoor
 				mob.recoverMaxState();
 				mob.resetToMaxState();
 
-				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("alignment.txt").toString());
+				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("text"+File.separatorChar+"alignment.txt").toString());
 
 				String alignment="";
 				while(alignment.length()==0)

@@ -71,7 +71,7 @@ public class Cooking extends CommonSkill
 		Vector V=(Vector)Resources.getResource("COOKING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"recipes.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"recipes.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Cook","Recipes not found!");

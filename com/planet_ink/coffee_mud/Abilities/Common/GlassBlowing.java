@@ -55,7 +55,7 @@ public class GlassBlowing extends CommonSkill
 		Vector V=(Vector)Resources.getResource("GLASS BLOWING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"glassblowing.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"glassblowing.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("GlassBlowing","Recipes not found!");

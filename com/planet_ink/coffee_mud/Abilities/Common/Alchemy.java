@@ -70,7 +70,7 @@ public class Alchemy extends CommonSkill
 		Vector V=(Vector)Resources.getResource("ALCHEMY RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"alchemy.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"alchemy.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Alchemy","Recipes not found!");

@@ -1,0 +1,13 @@
+\n\r\n\r^bNow it is time to choose your character's ^!Class^?, which is the career-path that they will follow in the game.  This is your most important decision, choose wisely!^N
+
+^xFighter :^.^? Fighters are brutish weapon masters, skilled in the art of killing, and invaluable in a close melee.  This also include Rangers, Paladins, Barbarians, and Monks.
+
+^xThief   :^.^? Thieves are skillful, sly, and devious, skilled at swiping, stealing, hiding, sneaking, trapping, poisoning, and more.
+
+^xBard    :^.^? Bards are traveling singers, whose "songs" can possess powerful magic, who also qualify for many thief skills.
+
+^xCleric  :^.^? Clerics are the great vassels of the Gods, who possess great magical abilities in their numerous "prayers".  This also includes numerous specialist devotional Cleric classes.
+
+^xMage    :^.^? Mages are masters of magic, and wielders of the great elemental powers.  This also includes Wild Mages, and Specialist Mage classes.
+
+^xDruid   :^.^? Druids are mystical guardians of the natural world, whose magic is drawn from earth, sea, and sky.

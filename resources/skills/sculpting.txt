@@ -1,0 +1,24 @@
+% Plaque	1	10	10	50	GenItem		0	0
+% Toy	1	10	5	1	GenItem		0	0
+% Chessboard	1	80	30	250	GenItem		0	0
+% Cup	1	20	10	0	GenWater		5	1
+% Mug	1	20	10	0	GenWater		5	1
+% Plate	1	20	10	0	GenContainer		5	0
+% Lamp	1	30	25	50	GenLantern		0	1
+% Bowl	1	20	10	0	GenWater		5	0
+% Podium	1	30	80	15	GenRideable	TABLE	40	0
+% Box	1	30	80	0	GenContainer		25	0
+% Book Shelf	6	40	70	10	GenRideable	TABLE	30	128
+% Desk	6	30	300	25	GenRideable	TABLE	100	0
+% Table	6	30	250	20	GenRideable	TABLE	150	0
+% Stool	6	30	50	6	GenChair	CHAIR	1	0
+% Chair	6	30	80	10	GenChair	CHAIR	1	0
+% Bench	6	40	180	15	GenChair	CHAIR	4	0
+% Bed	6	50	350	20	GenBed	BED	2	0
+% Statue	12	120	450	100	GenItem	STATUE	0	0
+% Pillar	3	30	50	25	GenRideable	TABLE	20	0
+% Bust	6	80	150	50	GenItem	STATUE	0	0
+% Figurine	3	40	30	25	GenItem	STATUE	0	0
+% Sarcophogus	3	40	200	20	GenContainer		500	64
+% Steps	12	80	400	5	GenRideable	LADDER	3	0
+% Fountain	12	120	500	120	GenFountain		0	1

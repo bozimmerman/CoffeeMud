@@ -50,7 +50,7 @@ public class ScrimShaw extends CommonSkill
 		Vector V=(Vector)Resources.getResource("SCRIMSHAW RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"scrimshaw.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"scrimshaw.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("ScrimShaw","Recipes not found!");

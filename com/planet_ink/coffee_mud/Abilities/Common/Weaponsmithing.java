@@ -60,7 +60,7 @@ public class Weaponsmithing extends CommonSkill
 		Vector V=(Vector)Resources.getResource("WEAPONSMITHING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"weaponsmith.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"weaponsmith.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Weaponsmithing","Recipes not found!");

@@ -52,7 +52,7 @@ public class Shipwright extends CommonSkill
 		Vector V=(Vector)Resources.getResource("SHIPWRIGHT RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"shipwright.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"shipwright.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Shipwright","Recipes not found!");

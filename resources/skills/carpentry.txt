@@ -1,0 +1,45 @@
+% Cup	1	10	8	1	GenWater		5		1
+% Toy	1	10	5	1	GenItem		0		0
+% Chopsticks	1	5	1	1	GenItem		0		0
+% Bookshelf	3	30	10	15	GenContainer		10		128
+% Scroll Case	3	30	10	10	GenContainer		3		256
+% Mug	1	10	8	1	GenWater		5		1
+% Plate	1	10	8	1	GenContainer		5		0
+% Pitcher	1	15	15	1	GenWater		15		1
+% Barrel	1	30	30	5	GenWater		50		0
+% Plaque	1	20	5	20	GenItem		0		0
+Torch	15	15	5	10	GenLightSource		50		0
+Small % Table	1	15	30	15	GenRideable	TABLE	20		0
+Small % Desk	1	15	30	15	GenRideable	TABLE	20		0
+Small % Stool	1	15	10	3	GenChair	CHAIR	1		0
+Small % Chair	1	15	15	5	GenChair	CHAIR	1		0
+% Podium	1	15	15	5	GenRideable	TABLE	1		0
+Small % Bench	1	20	20	10	GenChair	CHAIR	2	 	0
+Small % Bed	1	25	30	15	GenBed	BED	1	 	0
+Small % Box	1	15	15	5	GenContainer		5	 	0
+Sabots	3	20	10	15	GenShoes	FEET	0	3	0
+Clogs	3	30	10	15	GenShoes	FEET	0	4	0
+% Quarterstaff	3	15	10	1	GenWeapon	STAFF	2	5	0
+% Staff	3	20	15	3	GenWeapon	STAFF	2	6	0
+% Club	3	15	10	3	GenWeapon	BLUNT	1	3	0
+% Mace	3	20	20	5	GenWeapon	BLUNT	1	4	0
+Small % Shield	3	30	15	5	GenShield	HELD	1	6	0
+% Box	3	30	30	8	GenContainer		10		0
+% Table	6	30	60	20	GenRideable	TABLE	50		0
+% Coffin	6	40	50	35	GenContainer		500		64
+% Desk	6	30	60	20	GenRideable	TABLE	50		0
+% Stool	6	30	20	6	GenChair	CHAIR	1		0
+% Chair	6	30	30	10	GenChair	CHAIR	1		0
+% Bench	6	40	40	15	GenChair	CHAIR	4		0
+% Bed	6	50	60	20	GenBed	BED	2		0
+Small % Chest	6	50	20	20	GenContainer	LOCK	25		0
+% Ladder	6	40	20	10	GenRideable	LADDER	0		0
+% Shield	6	50	30	8	GenShield	HELD	1	10	0
+Large % Box	6	40	40	10	GenContainer	LID	50		0
+Large % Table	12	45	90	30	GenRideable	TABLE	100		0
+Ornate % Chair	12	45	45	15	GenChair	CHAIR	1		0
+Long % Bench	12	60	60	22	GenChair	CHAIR	6		0
+King sized % Bed	12	75	90	30	GenBed	BED	4		0
+% Chest	12	75	30	30	GenContainer	LOCK	50		0
+Large % Shield	12	75	40	16	GenShield	HELD	1	13	0
+Large % Chest	15	100	45	45	GenContainer	LOCK	100		0

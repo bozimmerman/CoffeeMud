@@ -341,14 +341,10 @@ public class Sense
 
 	public static boolean isInFlight(Environmental E)
 	{
+		if(E==null) return false;
 		if(Sense.isFlying(E)) return true;
-		if(E instanceof MOB)
-		{
-			if(((MOB)E).riding()==null) 
-				return false;
-			if(Sense.isFlying(((MOB)E).riding())) 
-				return true;
-		}
+		if(E instanceof Rider)
+			return isInFlight(((Rider)E).riding());
 		return false;
 	}
 	public static String wornLocation(long wornCode)

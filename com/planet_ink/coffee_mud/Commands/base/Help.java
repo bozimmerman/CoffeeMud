@@ -20,7 +20,7 @@ public class Help
 		if(arcHelpFile==null)
 		{
 			arcHelpFile=new Properties();
-			try{arcHelpFile.load(new FileInputStream("resources"+File.separatorChar+"arc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{arcHelpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"arc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 		}
 		if(arcHelpFile==null)
 			return false;
@@ -32,14 +32,14 @@ public class Help
 		if(helpFile==null)
 		{
 			helpFile=new Properties();
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"misc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"skill_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"common_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"spell_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"songs_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"prayer_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
-			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"chant_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"misc_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"skill_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"common_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"spell_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"songs_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"prayer_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
+			try{helpFile.load(new FileInputStream("resources"+File.separatorChar+"help"+File.separatorChar+"chant_help.ini"));}catch(IOException e){Log.errOut("CommandProcessor",e);}
 		}
 		if(helpFile==null) return false;
 		return true;
@@ -372,7 +372,7 @@ public class Help
 		}
 		StringBuffer thisTag=null;
 		if(helpStr.length()==0)
-			thisTag=Resources.getFileResource("help.txt");
+			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt");
 		else
 			thisTag=getHelpText(helpStr,helpFile);
 		if(thisTag==null)
@@ -392,7 +392,7 @@ public class Help
 		StringBuffer thisTag=null;
 		if(helpStr.length()==0)
 		{
-			thisTag=Resources.getFileResource("arc_help.txt");
+			thisTag=Resources.getFileResource("help"+File.separatorChar+"arc_help.txt");
 			if((thisTag!=null)&&(helpStr.equalsIgnoreCase("more")))
 			{
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
@@ -436,29 +436,29 @@ public class Help
 			Resources.removeResource("PLAYER TOPICS");
 		if(Resources.getResource("ARCHON TOPICS")!=null)
 			Resources.removeResource("ARCHON TOPICS");
-		if(Resources.getResource("help.txt")!=null)
-			Resources.removeResource("help.txt");
-		if(Resources.getResource("races.txt")!=null)
-			Resources.removeResource("races.txt");
-		if(Resources.getResource("newchar.txt")!=null)
-			Resources.removeResource("newchar.txt");
-		if(Resources.getResource("stats.txt")!=null)
-			Resources.removeResource("stats.txt");
-		if(Resources.getResource("classes.txt")!=null)
-			Resources.removeResource("classes.txt");
-		if(Resources.getResource("alignment.txt")!=null)
-			Resources.removeResource("alignment.txt");
-		if(Resources.getResource("arc_help.txt")!=null)
-			Resources.removeResource("arc_help.txt");
+		if(Resources.getResource("help"+File.separatorChar+"help.txt")!=null)
+			Resources.removeResource("help"+File.separatorChar+"help.txt");
+		if(Resources.getResource("text"+File.separatorChar+"races.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"races.txt");
+		if(Resources.getResource("text"+File.separatorChar+"newchar.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"newchar.txt");
+		if(Resources.getResource("text"+File.separatorChar+"stats.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"stats.txt");
+		if(Resources.getResource("text"+File.separatorChar+"classes.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"classes.txt");
+		if(Resources.getResource("text"+File.separatorChar+"alignment.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"alignment.txt");
+		if(Resources.getResource("help"+File.separatorChar+"arc_help.txt")!=null)
+			Resources.removeResource("help"+File.separatorChar+"arc_help.txt");
 		helpFile=null;
 		arcHelpFile=null;
 
 		// also the intro page
-		if(Resources.getResource("intro.txt")!=null)
-			Resources.removeResource("intro.txt");
+		if(Resources.getResource("text"+File.separatorChar+"intro.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"intro.txt");
 
-		if(Resources.getResource("offline.txt")!=null)
-			Resources.removeResource("offline.txt");
+		if(Resources.getResource("text"+File.separatorChar+"offline.txt")!=null)
+			Resources.removeResource("text"+File.separatorChar+"offline.txt");
 
 		if(mob!=null)
 			mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");

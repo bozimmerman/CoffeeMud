@@ -676,7 +676,7 @@ public class CommandProcessor
 
 	public static void credits(MOB mob)
 	{
-		StringBuffer credits=Resources.getFileResource("credits.txt");
+		StringBuffer credits=Resources.getFileResource("text"+File.separatorChar+"credits.txt");
 
 		if((credits!=null)&&(mob.session()!=null))
 			mob.session().rawPrintln(credits.toString());

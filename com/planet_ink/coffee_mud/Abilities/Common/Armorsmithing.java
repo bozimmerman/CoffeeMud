@@ -59,7 +59,7 @@ public class Armorsmithing extends CommonSkill
 		Vector V=(Vector)Resources.getResource("ARMORSMITHING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"armorsmith.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"armorsmith.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Armorsmithing","Recipes not found!");

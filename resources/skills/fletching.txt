@@ -1,0 +1,13 @@
+Blowgun	1	20	5	25	GenSling	darts	1	2	2	
+Staff-Sling	3	40	10	75	GenSling	bullets	10	4	4	LEATHER
+Sling	1	30	0	15	GenSling	bullets	50	2	2	LEATHER
+Short Bow	1	60	10	500	GenBow	arrows	20	4	3	
+Long Bow	3	80	15	750	GenBow	arrows	20	5	4	
+Composite Short Bow	6	130	15	750	GenBow	arrows	20	6	4	
+Composite Long Bow	9	150	20	1050	GenBow	arrows	20	7	5	
+Light Crossbow	12	150	20	650	GenBow	bolts	1	6	2	
+Heavy Crossbow	15	170	25	1250	GenBow	bolts	5	8	3	
+Quiver of 20 Arrows	1	40	5	25	GenItem	arrows	20			METAL
+Pack of 5 Bolts	1	30	2	25	GenItem	bolts	5			METAL
+Pack of 10 Bullets	1	20	0	5	GenItem	bullets	10			STONE
+Pack of 5 Blow-Darts	1	30	2	25	GenItem	darts	5			METAL

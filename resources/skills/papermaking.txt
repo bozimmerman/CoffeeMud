@@ -1,0 +1,6 @@
+a piece of paper	5	40	1	1	GenReadable	WOOD	0	
+a sheet of vellum	10	30	1	1	GenReadable	LEATHER	0	
+a sheet of parchment	5	10	1	1	GenReadable	HIDE	0	
+a canvas	5	20	10	5	GenReadable	COTTON	0	
+a sheet of silkscreen	15	50	5	20	GenReadable	SILK	0	
+a scroll	15	60	10	20	GenScroll	SILK	0	

@@ -2,8 +2,7 @@ package com.planet_ink.coffee_mud.Locales;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-import com.planet_ink.coffee_mud.utils.Directions;
-import com.planet_ink.coffee_mud.utils.Sense;
+import com.planet_ink.coffee_mud.utils.*;
 
 import java.util.*;
 
@@ -115,10 +114,31 @@ public class InTheAir extends StdRoom
 		&&(affect.amITarget(room)))
 		{
 			MOB mob=affect.source();
-			if((!Sense.isInFlight(mob))
-			&&(!Sense.isFalling(mob)))
+			if((!Sense.isInFlight(mob))&&(!Sense.isFalling(mob)))
 			{
 				mob.tell("You can't fly.");
+				return false;
+			}
+			if(Dice.rollPercentage()>50)
+			switch(room.getArea().weatherType(room))
+			{
+			case Area.WEATHER_BLIZZARD:
+				room.show(mob,null,Affect.MSG_OK_VISUAL,"The swirling blizzard inhibits <S-YOUPOSS> progress.");
+				return false;
+			case Area.WEATHER_HAIL:
+				room.show(mob,null,Affect.MSG_OK_VISUAL,"The hail storm inhibits <S-YOUPOSS> progress.");
+				return false;
+			case Area.WEATHER_RAIN:
+				room.show(mob,null,Affect.MSG_OK_VISUAL,"The rain storm inhibits <S-YOUPOSS> progress.");
+				return false;
+			case Area.WEATHER_SLEET:
+				room.show(mob,null,Affect.MSG_OK_VISUAL,"The biting sleet inhibits <S-YOUPOSS> progress.");
+				return false;
+			case Area.WEATHER_THUNDERSTORM:
+				room.show(mob,null,Affect.MSG_OK_VISUAL,"The thunderstorm inhibits <S-YOUPOSS> progress.");
+				return false;
+			case Area.WEATHER_WINDY:
+				room.show(mob,null,Affect.MSG_OK_VISUAL,"The hard winds inhibit <S-YOUPOSS> progress.");
 				return false;
 			}
 		}

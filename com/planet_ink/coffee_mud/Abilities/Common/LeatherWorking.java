@@ -43,7 +43,7 @@ public class LeatherWorking extends CommonSkill
 		Vector V=(Vector)Resources.getResource("LEATHERWORK RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"leatherworking.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"leatherworking.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("LeatherWorking","Recipes not found!");

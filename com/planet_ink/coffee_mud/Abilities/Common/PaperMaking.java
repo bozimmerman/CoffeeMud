@@ -48,7 +48,7 @@ public class PaperMaking extends CommonSkill
 		Vector V=(Vector)Resources.getResource("PAPERMAKING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"papermaking.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"papermaking.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("PaperMaking","Recipes not found!");

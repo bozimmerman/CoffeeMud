@@ -54,7 +54,7 @@ public class Pottery extends CommonSkill
 		Vector V=(Vector)Resources.getResource("POTTERY RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"pottery.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"pottery.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Pottery","Recipes not found!");

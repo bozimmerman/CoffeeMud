@@ -56,7 +56,7 @@ public class Smelting extends CommonSkill
 		Vector V=(Vector)Resources.getResource("SMELTING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"smelting.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"smelting.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Smelting","Recipes not found!");

@@ -42,7 +42,7 @@ public class Fletching extends CommonSkill
 		Vector V=(Vector)Resources.getResource("FLECTHING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"fletching.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"fletching.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Fletching","Recipes not found!");

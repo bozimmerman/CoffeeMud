@@ -55,7 +55,7 @@ public class Blacksmithing extends CommonSkill
 		Vector V=(Vector)Resources.getResource("BLACKSMITHING RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"blacksmith.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"blacksmith.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Blacksmith","Recipes not found!");

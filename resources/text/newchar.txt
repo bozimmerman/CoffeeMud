@@ -1,0 +1,9 @@
+^HWelcome to CoffeeMud!^N
+
+Thanks for deciding to create a new character.  As this is a brand new software venture, we encourage users to have as many characters as they like in order to more fully test the system.
+
+We hope you'll be coming back frequently to help us play test, and will give us as much feedback as possible.  We need all of your gripes, praises, and suggestions if our fledgling adventure can improve.
+
+You'll find that the character creation process is rather simple, but that the game itself is as complex and exciting as you make it.  You will be guided wizard-style through each question in creating your character.  
+
+If you are unfamiliar with MUDs, I recommend you check out the CoffeeMud website at http://www.zimmers.net/home/mud.html  for more information before proceeding.

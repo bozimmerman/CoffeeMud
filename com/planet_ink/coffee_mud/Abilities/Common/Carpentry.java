@@ -54,7 +54,7 @@ public class Carpentry extends CommonSkill
 		Vector V=(Vector)Resources.getResource("CARPENTRY RECIPES");
 		if(V==null)
 		{
-			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"carpentry.txt");
+			StringBuffer str=Resources.getFile("resources"+File.separatorChar+"skills"+File.separatorChar+"carpentry.txt");
 			V=loadList(str);
 			if(V.size()==0)
 				Log.errOut("Carpentry","Recipes not found!");
