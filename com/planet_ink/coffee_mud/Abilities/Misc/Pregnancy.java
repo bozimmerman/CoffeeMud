@@ -79,9 +79,20 @@ public class Pregnancy extends StdAbility
 							if(mob.session()!=null)
 							{
 								try{
-									String n=mob.session().prompt("What would you like to name your "+sondat+"? ","");
-									if(n.trim().length()!=0)
-										name=Util.capitalize(n);
+									while(name.indexOf(" ")>=0)
+									{
+										n=mob.session().prompt("What would you like to name your "+sondat+"? ","").trim().toLowerCase();
+										if(n.indexOf(" ")>=0)
+											mob.tell("Spaces are not allowed in names! Please enter another one.");
+										else
+										if(n.length()!=0)
+										{
+											if(CMClass.DBEngine().DBUserSearch(null,Util.capitalize(n))!=null)
+												mob.tell("That name is already taken.  Please enter a different one.");
+											else
+												name=Util.capitalize(n);
+										}
+									}
 								}
 								catch(java.io.IOException e){};
 							}
