@@ -22,9 +22,6 @@ public class GoodGuardian extends StdBehavior
 			MOB inhab=room.fetchInhabitant(i);
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
-				if(BrotherHelper.isBrother(inhab,observer))
-					return observer.getVictim();
-				else
 				for(int b=0;b<inhab.numBehaviors();b++)
 				{
 					Behavior B=inhab.fetchBehavior(b);
@@ -33,6 +30,10 @@ public class GoodGuardian extends StdBehavior
 						||(B.ID().toUpperCase().indexOf("AGGRESSIVE")>=0)))
 						return inhab;
 				}
+				
+				if(BrotherHelper.isBrother(inhab,observer))
+					return observer.getVictim();
+				
 				if((inhab.getAlignment()<350)
 				||(inhab.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief")))
 				{
@@ -62,7 +63,9 @@ public class GoodGuardian extends StdBehavior
 			for(int i=0;i<room.numInhabitants();i++)
 			{
 				MOB inhab=room.fetchInhabitant(i);
-				if((inhab!=null)&&(inhab.isInCombat())&&(inhab.getVictim().isInCombat())
+				if((inhab!=null)
+				   &&(inhab.isInCombat())
+				   &&(inhab.getVictim().isInCombat())
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))))
 				{
 					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();

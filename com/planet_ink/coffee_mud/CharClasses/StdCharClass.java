@@ -203,14 +203,19 @@ public class StdCharClass implements CharClass
 		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name()+"^N.\n\r");
 	}
 
+	private static final int breakLevel=25;
 	protected int neededToBeLevel(int level)
 	{
 		int neededLevel=1000;
+		
 		if(level==0)
 			neededLevel=0;
 		else
 		for(int i=1;i<level;i++)
-			neededLevel+=1000+(125*i);
+			if(i<breakLevel)
+				neededLevel+=1000+(125*i);
+			else
+				neededLevel+=1000+(125*(breakLevel-1))+(25*(i-(breakLevel-1)));
 		return neededLevel;
 	}
 	

@@ -29,12 +29,14 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			return true;
 
 		MOB mob=(MOB)affect.source();
-		if(rangersGroup.contains(affect.source())
-		&&(Sense.aliveAwakeMobile(mob,true))
+		if((rangersGroup!=null)
+		&&(affected==invoker)
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&(rangersGroup.contains(affect.source()))
+		&&(Sense.aliveAwakeMobile(mob,true))
 		&&(profficiencyCheck(-90+invoker.charStats().getStat(CharStats.STRENGTH),false)))
 		{
-			double pctRecovery=(Util.div(profficiency(),400.0)*Math.random());
+			double pctRecovery=(Util.div(profficiency(),100.0)*4.0);
 			int bonus=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));
 			affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()+bonus,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
 		}
@@ -46,16 +48,27 @@ public class Ranger_AnimalFrenzy extends StdAbility
 		if(!super.tick(tickID)) return false;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return false;
-		if(invoker==null) invoker=(MOB)affected;
+		if(invoker==null)
+		{
+			invoker=(MOB)affected;
+			rangersGroup=new Vector();
+		}
+		if(invoker!=affected) return true;
+		
 		if(rangersGroup!=null)
 		{
-			Hashtable h=((MOB)affected).getGroupMembers(new Hashtable());
+			Hashtable h=invoker.getGroupMembers(new Hashtable());
 			for(Enumeration e=h.elements();e.hasMoreElements();)
 			{
 				MOB mob=(MOB)e.nextElement();
 				if((!rangersGroup.contains(mob))
+				   &&(mob!=invoker)
+				   &&(mob.location()==invoker.location())
 				   &&(mob.charStats().getStat(CharStats.INTELLIGENCE)<2))
+				{
 					rangersGroup.addElement(mob);
+					mob.addNonUninvokableAffect((Ability)this.copyOf());
+				}
 			}
 			for(int i=rangersGroup.size()-1;i>=0;i--)
 			{
@@ -64,14 +77,21 @@ public class Ranger_AnimalFrenzy extends StdAbility
 					MOB mob=(MOB)rangersGroup.elementAt(i);
 					if((!h.contains(mob))
 					||(mob.location()!=invoker.location()))
+					{
+						Ability A=mob.fetchAffect(this.ID());
+						if((A!=null)&&(A.invoker()==invoker))
+							mob.delAffect(A);
 						rangersGroup.removeElement(mob);
+					}
 				}
 				catch(java.lang.ArrayIndexOutOfBoundsException e)
 				{
 				}
 			}
 		}
-		if(Dice.rollPercentage()==1) 
+		if((Dice.rollPercentage()==1) 
+		   &&(invoker.isInCombat())
+		   &&(rangersGroup.size()>0))
 			helpProfficiency(invoker);
 		return true;
 	}
@@ -79,18 +99,11 @@ public class Ranger_AnimalFrenzy extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(rangersGroup!=null)
-		for(int i=rangersGroup.size()-1;i>=0;i--)
+		if((invoker!=null)&&(affected!=invoker)&&(invoker.isInCombat()))
 		{
-			try
-			{
-				MOB mob=(MOB)rangersGroup.elementAt(i);
-				mob.envStats().setAttackAdjustment(
-					(int)Math.round(Util.mul(Util.div(profficiency(),100.0),affectableStats.attackAdjustment())));
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException e)
-			{
-			}
+			int invoAtt=(int)Math.round(Util.mul(Util.div(profficiency(),100.0),invoker.envStats().attackAdjustment()));
+			if(affectableStats.attackAdjustment()<invoAtt)
+				affectableStats.setAttackAdjustment(invoAtt);
 		}
 	}
 }
