@@ -46,41 +46,47 @@ public class Fighter_CoupDeGrace extends StdAbility
 				mob.tell("You cannot coup de grace with a "+ww.name()+"!");
 				return false;
 			}
-		}
-		if(!Sense.isSleeping(mob.getVictim()))
-		{
-			mob.tell(mob.getVictim().charStats().HeShe()+" is not prone!");
-			return false;
+			if(mob.curState().getMovement()<150)
+			{
+				mob.tell("You don't have the energy to try it.");
+				return false;
+			}
+			if(!Sense.isSleeping(mob.getVictim()))
+			{
+				mob.tell(mob.getVictim().charStats().HeShe()+" is not prone!");
+				return false;
+			}
 		}
 
-		int dmg=mob.getVictim().curState().getHitPoints();
+		MOB target=mob.getVictim();
+		int dmg=target.curState().getHitPoints();
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-adjustedLevel(mob);
+		int levelDiff=target.envStats().level()-adjustedLevel(mob);
 		if(levelDiff>0) 
 			levelDiff=levelDiff*5;
 		else 
 			levelDiff=0;
-		int chance=(-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.CONSTITUTION)*2));
+		mob.curState().adjMovement(-150,mob.maxState());
+		int chance=(-levelDiff)+(-(target.charStats().getStat(CharStats.CONSTITUTION)*2));
 		boolean hit=(auto)||(CoffeeUtensils.normalizeAndRollLess(mob.adjustedAttackBonus()+mob.getVictim().adjustedArmor()));
 		boolean success=profficiencyCheck(chance,auto)&&(hit);
-		if(success)
+		if((success)&&((dmg<50)||(dmg<target.maxState().getHitPoints())))
 		{
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),null);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),null);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				if(dmg<50)
-					mob.getVictim().curState().setHitPoints(0);
-				ExternalPlay.postDamage(mob,mob.getVictim(),ww,dmg,Affect.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!");
+				if(dmg<50) target.curState().setHitPoints(0);
+				ExternalPlay.postDamage(mob,target,ww,dmg,Affect.MSG_WEAPONATTACK,ww.weaponClassification(),auto?"":"<S-NAME> rear(s) back and Coup de Graces <T-NAME>!");
 				mob.location().recoverRoomStats();
 			}
 		}
 		else
 		{
 			String str=auto?"":"<S-NAME> attempt(s) a Coup de Grace and fail(s)!";
-			FullMsg msg=new FullMsg(mob,mob.getVictim(),null,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,str);
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,str);
 			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
 		}

@@ -23,7 +23,7 @@ public class LevelNext extends StdWebMacro
 			int level=0;
 			if(last!=null) level=Util.s_int(last);
 			level++;
-			if(level<26)
+			if(level<30)
 			{
 				httpReq.getRequestParameters().put("LEVEL",""+level);
 				return "";
