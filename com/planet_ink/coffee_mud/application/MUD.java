@@ -236,7 +236,7 @@ public class MUD extends Thread implements Host
 		}
 
 		acceptConnections = true;
-		Log.sysOut("MUD","Initialization complete. Port: "+page.getInt("PORT"));
+		Log.sysOut("MUD","Initialization complete.");
 		offlineReason=new String("UNKNOWN");
 		return true;
 	}
@@ -269,7 +269,7 @@ public class MUD extends Thread implements Host
 			}
 			catch (UnknownHostException e)
 			{
-				Log.errOut("WEB","ERROR: MUD Server could not bind to address " + page.getStr("BIND"));
+				Log.errOut("MUD","ERROR: MUD Server could not bind to address " + page.getStr("BIND"));
 				bindAddr = null;
 			}
 		}
