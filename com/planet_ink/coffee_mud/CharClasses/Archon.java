@@ -34,10 +34,23 @@ public class Archon extends StdCharClass
 			Ability A=(Ability)CMClass.abilities.elementAt(a);
 			if(A.qualifyingLevel(mob)>0)
 			{
-				A=(Ability)A.copyOf();
-				A.setProfficiency(100);
-				A.setBorrowed(mob,true);
-				giveMobAbility(mob,A,true);
+				Ability mine=mob.fetchAbility(A.ID());
+				if(mine!=null)
+				{
+					mine.setProfficiency(100);
+					mine.setBorrowed(mob,true);
+					if(mob.fetchAffect(A.ID())!=null)
+						mob.fetchAffect(A.ID()).setProfficiency(100);
+					else
+						mine.autoInvocation(mob);
+				}
+				else
+				{
+					A=(Ability)A.copyOf();
+					A.setProfficiency(100);
+					A.setBorrowed(mob,true);
+					giveMobAbility(mob,A,true);
+				}
 			}
 		}
 	}

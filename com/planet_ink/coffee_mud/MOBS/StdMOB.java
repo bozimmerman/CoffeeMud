@@ -1282,9 +1282,8 @@ public class StdMOB implements MOB
 	}
 	public MOB fetchFollower(MOB thisOne)
 	{
-		for(int f=0;f<followers.size();f++)
-			if(followers.elementAt(f)==thisOne)
-				return thisOne;
+		if(followers.contains(thisOne))
+			return thisOne;
 		return null;
 	}
 	public MOB fetchFollower(String ID)
@@ -1368,9 +1367,7 @@ public class StdMOB implements MOB
 	public void addNonUninvokableAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<affects.size();i++)
-			if(((Ability)affects.elementAt(i))==to)
-				return;
+		if(affects.contains(to)) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1379,9 +1376,7 @@ public class StdMOB implements MOB
 	public void addAffect(Ability to)
 	{
 		if(to==null) return;
-		for(int i=0;i<affects.size();i++)
-			if(((Ability)affects.elementAt(i))==to)
-				return;
+		if(affects.contains(to)) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -1472,25 +1467,19 @@ public class StdMOB implements MOB
 	{
 		if(env instanceof Item)
 		{
-			for(int i=0;i<inventory.size();i++)
-				if(inventory.elementAt(i)==env)
-					return true;
+			if(inventory.contains(env)) return true;
 			return false;
 		}
 		else
 		if(env instanceof MOB)
 		{
-			for(int i=0;i<followers.size();i++)
-				if(followers.elementAt(i)==env)
-					return true;
+			if(followers.contains(env)) return true;
 			return false;
 		}
 		else
 		if(env instanceof Ability)
 		{
-			for(int i=0;i<abilities.size();i++)
-				if(abilities.elementAt(i)==env)
-					return true;
+			if(abilities.contains(env)) return true;
 			return false;
 		}
 		return false;

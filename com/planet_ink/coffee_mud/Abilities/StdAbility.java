@@ -404,9 +404,10 @@ public class StdAbility implements Ability, Cloneable
 		{
 			if(Math.round((Util.div(mob.charStats().getIntelligence(),18.0))*100.0*Math.random())>50)
 			{
-			   A.setProfficiency(A.profficiency()+1);
-			   if((this!=A)&&(profficiency()<100))
-				   setProfficiency(profficiency()+1);
+				// very important, since these can be autoinvoked affects (copies)!
+				A.setProfficiency(A.profficiency()+1);
+				if((this!=A)&&(profficiency()<100))
+					setProfficiency(profficiency()+1);
 			}
 		}
 		else
@@ -555,7 +556,8 @@ public class StdAbility implements Ability, Cloneable
 				Ability thisAbility=mob.fetchAffect(this.ID());
 				if(thisAbility!=null)
 					return false;
-				mob.addAffect((Ability)this.copyOf());
+				Ability thatAbility=(Ability)this.copyOf();
+				mob.addAffect(thatAbility);
 				return true;
 			}
 		}

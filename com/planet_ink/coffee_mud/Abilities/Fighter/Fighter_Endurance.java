@@ -49,10 +49,7 @@ public class Fighter_Endurance extends StdAbility
 		&&(tickID==Host.MOB_TICK)
 		&&(mob.curState().getHitPoints()<mob.maxState().getHitPoints()))
 		{
-Log.sysOut("BLAH","B4-"+mob.curState().getHitPoints());
 			mob.curState().adjState(mob,mob.maxState());
-Log.sysOut("BLAH","AF-"+mob.curState().getHitPoints());
-			
 			helpProfficiency(mob);
 		}
 		return super.tick(tickID);
