@@ -65,7 +65,7 @@ public class Stat extends BaseAbleLister
 					 +Util.padRight("CONs",5)
 					 +Util.padRight("HIGH",5)
 					 +Util.padRight("ONLN",5)
-					 +Util.padRight("AVGM.",5)
+					 +Util.padRight("AVGM",5)
 					 +Util.padRight("NEWB",5)
 					 +Util.padRight("DTHs",5)
 					 +Util.padRight("PKDs",5)
