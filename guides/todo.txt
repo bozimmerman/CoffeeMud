@@ -1,12 +1,11 @@
 auction system (see mailing list)
-In order to allow cityguards to drag people to jail (and set them free), those under the keep of a cityguard obtain immunity to aggresive acts by other mobs.
-'law' area, intelligent MOBs should cry out when they're being attacked, and officers should come to their rescue.
 Improve maps to divide area into sections
-a Behavior you can apply to rooms that sets the resources available in that room type with a param that allows someone to choose to extend or override the resource list.
 Prancers: Dancing bards who get special ability
 druidic chant HARDEN FLESH gives an armor coating, and avoids affects of weather. WINTER COAT grows a lot of fur, and grants protection against elements as well as some cold resistance.
 when you get SEX created, druids should have some chants that affect it: Mating Instinct , a geas to find a creature of same race/opposite gender. Find Mate , a chant to track someone of opposite sex (closest?) that can be cast on others (CHANT find mate zara) will make zara be able to find a mate of (elf male) type. Feel Sex makes sexual activities more intense, basically just giving WONDERFUL sex results. YEARN SEX is a chant that makes the target suffer 8 WIS until they have sex (or the chant wears off). CROSSGENDER is a chant that maker any gender valid for sex. HOMOSEXUALITY, duh. NEUTER is a chant that makes no gender sexually viable. SPEED BIRTH creates a lvl 1 MOB of that Race, after sex. FERTILITY makes a BIRTH produce more offspring.
 Merchant common skill
+Druid Subclasses
+Bard Subclasses
 
 
 //****** next version ********************************************************
@@ -21,7 +20,6 @@ possible to have NE SE SW NW directions?
 racial abilities (abilities tied to the race)
 GenRaces
 GenCharClasses
-Quit restriction for playerkilling? 
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 ARTISAN:  Master of all the common skills.  Gets a bonus of 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. (We would want to distribute them out over the 1st 10 levels).  It is possible that the ARTISAN will GAIN a skill that he already took.  Could be a problem writing that code.  ARTISANS have a special ability to DECORATE.  This would allow any item that they want to become a permenant item in that room.  The item has a REJUV rate of 999999 or something silly like that, so it will be rejuved anytime you do a reboot, but at almost no other time.  They would also need the TRADE command, allowing players a safe trade of items.  TRADE HELM 1000.  <to other player> DO YOU AGREE TO GIVE 1000 FOR THE BLACK HELM (y/N)?  The ARTISAN would have prime attributes of WIS and CHA. (They need to be charming to sell their goods, they really need the WIS to get the practices.)  ARTISANS would have a few combat abilities (because they may need to hunt, forage, mine and chop through a few monsters to get their goods.)  Basically looking like a bard for combat abilities.  Heck, give them a couple of BARDIC SONGS to qualify for (just city based ones, though.)  ARTISANS should be able to get the SCROLL, CLARIFY SCROLL, ENCHANT ARMOR, and ENCHANT WEAPON spells at equal level or lower to a MAGE.  I would love it if they could get CURE LIGHT WOUNDS without being able to pray (so that they could put it in a potion or on a scroll) as well as a few other simple prayers and spells.
 Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.

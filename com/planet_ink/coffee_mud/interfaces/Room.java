@@ -56,6 +56,7 @@ public interface Room extends Environmental
 	public int domainType();
 	public int domainConditions();
 	public int myResource();
+	public void setResource(int resourceCode);
 	public Vector resourceChoices();
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();

@@ -95,7 +95,6 @@ public class Skill_Track extends StdAbility
 							{
 								Exit opExit=nextRoom.getExitInDir(opDirection);
 								if((opExit!=null)
-								&&(opExit==oldRoom.getPairedExit(nextDirection))
 								&&(opExit.hasADoor())
 								&&(opExit.isOpen()))
 								{
@@ -187,6 +186,13 @@ public class Skill_Track extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 
 		Vector rooms=new Vector();
+		if(givenTarget instanceof Room)
+			rooms.addElement(givenTarget);
+		else
+		if((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()!=null))
+			rooms.addElement(((MOB)givenTarget).location());
+		
+		if(rooms.size()<=0)
 		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();

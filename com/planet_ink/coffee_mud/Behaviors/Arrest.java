@@ -21,6 +21,7 @@ public class Arrest extends StdBehavior
 	private Vector otherBits=new Vector();
 	private Vector officerNames=new Vector();
 	private Vector chitChat=new Vector();
+	private Vector chitChat2=new Vector();
 	
 	private static final int ACTION_WARN=0;
 	private static final int ACTION_THREATEN=1;
@@ -44,6 +45,8 @@ public class Arrest extends StdBehavior
 	private static final int STATE_PAROLING=6;
 	private static final int STATE_JAILING=7;
 	private static final int STATE_EXECUTING=8;
+	private static final int STATE_MOVING2=9;
+	private static final int STATE_RELEASE=10;
 	
 	private static final int BIT_CRIMELOCS=0;
 	private static final int BIT_CRIMEFLAGS=1;
@@ -57,6 +60,8 @@ public class Arrest extends StdBehavior
 		public MOB victim=null;
 		public MOB witness=null;
 		public MOB arrestingOfficer=null;
+		public Room jail=null;
+		public Room releaseRoom=null;
 		public String crime="";
 		public int actionCode=-1;
 		public int jailTime=0;
@@ -114,6 +119,9 @@ public class Arrest extends StdBehavior
 			String chat=(String)laws.get("CHITCHAT");
 			if((chat!=null)&&(chat.length()>0))
 				chitChat=Util.parse(chat);
+			String chat2=(String)laws.get("CHITCHAT2");
+			if((chat2!=null)&&(chat2.length()>0))
+				chitChat2=Util.parse(chat2);
 			
 			for(Enumeration e=laws.keys();e.hasMoreElements();)
 			{
@@ -414,6 +422,41 @@ public class Arrest extends StdBehavior
 			return false;
 		}
 		return true;
+	}
+	
+	public Room getRoom(Area A, String roomstr)
+	{
+		Room jail=null;
+		Vector V=new Vector();
+		int x=roomstr.indexOf(";");
+		while(x>=0)
+		{
+			String s=roomstr.substring(0,x).trim();
+			if(s.length()>0)
+				V.addElement(s);
+			roomstr=roomstr.substring(x+1).trim();
+			x=roomstr.indexOf(";");
+		}
+		if(roomstr.trim().length()>0)
+			V.addElement(roomstr);
+		if(V.size()==0) return jail;
+		String which=(String)V.elementAt(Dice.roll(1,V.size(),-1));
+		jail=CMMap.getRoom(which);
+		if(jail==null)
+		for(Enumeration r=A.getMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if(CoffeeUtensils.containsString(R.displayText(),which))
+			{ jail=R; break; }
+		}
+		if(jail==null)
+		for(Enumeration r=A.getMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if(CoffeeUtensils.containsString(R.description(),which))
+			{ jail=R; break; }
+		}
+		return jail;
 	}
 	
 	public void fileAllWarrants(MOB mob)
@@ -869,6 +912,22 @@ public class Arrest extends StdBehavior
 		return null;
 	}
 	
+	public MOB getAnyElligibleOfficer(Area myArea, MOB criminal, MOB victim)
+	{
+		Room R=criminal.location();
+		if(R==null) return null;
+		if((myArea!=null)&&(R.getArea()!=myArea)) return null;
+		MOB M=getElligibleOfficerHere(myArea,R,criminal,victim);
+		if(M==null)
+		for(Enumeration e=myArea.getMap();e.hasMoreElements();)
+		{
+			Room R2=(Room)e.nextElement();
+			M=getElligibleOfficerHere(myArea,R2,criminal,victim);
+			if(M!=null) break;
+		}
+		return M;
+	}
+	
 	public MOB getElligibleOfficer(Area myArea, MOB criminal, MOB victim)
 	{
 		Room R=criminal.location();
@@ -1270,42 +1329,28 @@ public class Arrest extends StdBehavior
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
 							MOB judge=officer.location().fetchInhabitant((String)laws.get("JUDGE"));
-							setFree(W.criminal);
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
 							{
-								Room jail=null;
-								for(Enumeration r=judge.location().getArea().getMap();r.hasMoreElements();)
-								{
-									Room R=(Room)r.nextElement();
-									if(CoffeeUtensils.containsString(R.displayText(),(String)laws.get("JAIL")))
-									{ jail=R; break; }
-								}
-								if(jail==null)
-								for(Enumeration r=judge.location().getArea().getMap();r.hasMoreElements();)
-								{
-									Room R=(Room)r.nextElement();
-									if(CoffeeUtensils.containsString(R.description(),(String)laws.get("JAIL")))
-									{ jail=R; break; }
-								}
+								Room jail=getRoom(judge.location().getArea(),(String)laws.get("JAIL"));
 								if(jail!=null)
 								{
-									judge.location().show(judge,W.criminal,Affect.MSG_OK_VISUAL,"<S-NAME> banish(es) <T-NAME> to the jail!");
-									jail.bringMobHere(W.criminal,false);
-									if(W.criminal.location()==jail)
-									{
-										Ability A=CMClass.getAbility("Prisoner");
-										A.startTickDown(judge,W.criminal,W.jailTime);
-										W.criminal.recoverEnvStats();
-										W.criminal.recoverCharStats();
-									}
-									dismissOfficer(officer);
-									W.setArrestingOfficer(null);
-									W.criminal.tell("\n\r\n\r");
-									ExternalPlay.look(W.criminal,null,true);
+									makePeace(officer.location());
+									W.jail=jail;
+									// cuff him!
+									W.state=STATE_MOVING2;
+									Ability A=CMClass.getAbility("Skill_HandCuff");
+									if(A!=null)	A.invoke(officer,W.criminal,true);
+									W.criminal.makePeace();
+									makePeace(officer.location());
+									ExternalPlay.standIfNecessary(W.criminal);
+									A=CMClass.getAbility("Skill_Track");
+									if(A!=null)	A.invoke(officer,Util.parse(jail.ID()),jail,true);
+									makePeace(officer.location());
 								}
 								else
 								{
+									setFree(W.criminal);
 									ExternalPlay.quickSay(judge,W.criminal,"But since there IS no jail, I will let you go.",false,false);
 									dismissOfficer(officer);
 									W.setArrestingOfficer(null);
@@ -1362,6 +1407,129 @@ public class Arrest extends StdBehavior
 							unCuff(W.criminal);
 							W.setArrestingOfficer(null);
 							W.state=STATE_SEEKING;
+						}
+					}
+					break;
+				case STATE_MOVING2:
+					{
+						MOB officer=W.arrestingOfficer;
+						if((officer!=null)
+						&&(W.criminal.location().isInhabitant(officer))
+						&&(Sense.aliveAwakeMobile(officer,true))
+						&&(W.jail!=null))
+						{
+							if(W.criminal.curState().getMovement()<20)
+								W.criminal.curState().setMovement(20);
+							if(officer.curState().getMovement()<20)
+								officer.curState().setMovement(20);
+							makePeace(officer.location());
+							ExternalPlay.look(officer,null,true);
+							if(W.jail==W.criminal.location())
+							{
+								unCuff(W.criminal);
+								Ability A=CMClass.getAbility("Prisoner");
+								A.startTickDown(officer,W.criminal,W.jailTime);
+								W.criminal.recoverEnvStats();
+								W.criminal.recoverCharStats();
+								dismissOfficer(officer);
+								if(W.criminal.fetchAffect("Prisoner")==null)
+									setFree(W.criminal);
+								else
+									W.state=STATE_RELEASE;
+							}
+							else
+							if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
+							{
+								Ability A=CMClass.getAbility("Skill_Track");
+								if(A!=null)	A.invoke(officer,Util.parse(W.jail.ID()),W.jail,true);
+							}
+							else
+							if((Dice.rollPercentage()>75)&&(chitChat2.size()>0))
+								ExternalPlay.quickSay(officer,W.criminal,(String)chitChat2.elementAt(Dice.roll(1,chitChat2.size(),-1)),false,false);
+						}
+						else
+						{
+							unCuff(W.criminal);
+							W.setArrestingOfficer(null);
+							W.state=STATE_SEEKING;
+						}
+					}
+					break;
+				case STATE_RELEASE:
+					{
+						if((W.criminal.fetchAffect("Prisoner")==null)
+						&&(W.criminal.location()!=null)
+						&&(W.jail!=null))
+						{
+							if(W.criminal.location()==W.jail)
+							{
+								MOB officer=W.arrestingOfficer;
+								if((officer==null)
+								||(!Sense.aliveAwakeMobile(officer,true))
+								||(!W.criminal.location().isInhabitant(officer)))
+								{
+									W.arrestingOfficer=getAnyElligibleOfficer(W.jail.getArea(),W.criminal,W.victim);
+									if(W.arrestingOfficer==null) break;
+									officer=W.arrestingOfficer;
+									W.jail.bringMobHere(officer,false);
+									W.jail.show(officer,W.criminal,Affect.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
+									Ability A=CMClass.getAbility("Skill_HandCuff");
+									if(A!=null)	A.invoke(officer,W.criminal,true);
+								}
+								W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("RELEASEROOM"));
+								if(W.releaseRoom==null) W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("JUDGE"));
+								W.criminal.makePeace();
+								makePeace(officer.location());
+								Ability A=CMClass.getAbility("Skill_Track");
+								if(A!=null)	A.invoke(officer,Util.parse(W.releaseRoom.ID()),W.releaseRoom,true);
+							}
+							else
+							if(W.releaseRoom!=null)
+							{
+								MOB officer=W.arrestingOfficer;
+								if(W.criminal.location()==W.releaseRoom)
+								{
+									setFree(W.criminal);
+									
+									if(officer!=null)
+									{
+										if((Sense.aliveAwakeMobile(officer,true))
+										&&(W.criminal.location().isInhabitant(officer)))
+											ExternalPlay.quickSay(officer,null,(String)laws.get("LAWFREE"),false,false);
+										dismissOfficer(officer);
+									}
+								}
+								else
+								{
+									if((officer!=null)
+									&&(Sense.aliveAwakeMobile(officer,true))
+									&&(W.criminal.location().isInhabitant(officer)))
+									{
+										ExternalPlay.look(officer,null,true);
+										if(W.criminal.curState().getMovement()<20)
+											W.criminal.curState().setMovement(20);
+										if(officer.curState().getMovement()<20)
+											officer.curState().setMovement(20);
+										if(W.arrestingOfficer.fetchAffect("Skill_Track")==null)
+										{
+											Ability A=CMClass.getAbility("Skill_Track");
+											if(A!=null)	A.invoke(officer,Util.parse(W.releaseRoom.ID()),W.releaseRoom,true);
+										}
+									}
+									else
+									{
+										setFree(W.criminal);
+										if(officer!=null)
+											dismissOfficer(officer);
+									}
+								}
+							}
+							else
+							{
+								setFree(W.criminal);
+								if(W.arrestingOfficer!=null)
+									dismissOfficer(W.arrestingOfficer);
+							}
 						}
 					}
 					break;

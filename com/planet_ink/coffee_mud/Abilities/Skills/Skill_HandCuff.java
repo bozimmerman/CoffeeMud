@@ -83,6 +83,22 @@ public class Skill_HandCuff extends StdAbility
 					return false;
 			}
 		}
+		else
+		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
+		&&(affect.amITarget(affected))
+		&&(!mob.isInCombat())
+		&&(mob.amFollowing()!=null)
+		&&(affect.source().isMonster())
+		&&(affect.source().getVictim()!=mob))
+		{
+			affect.source().tell("You may not assault this prisoner.");
+			if(mob.getVictim()==affect.source())
+			{
+				mob.makePeace();
+				mob.setVictim(null);
+			}
+			return false;
+		}
 		return super.okAffect(myHost,affect);
 	}
 
@@ -111,12 +127,12 @@ public class Skill_HandCuff extends StdAbility
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((!Sense.isSleeping(target))&&(!Sense.isSitting(target)))
+		if((!Sense.isSleeping(target))&&(!Sense.isSitting(target))&&(!auto))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");
 			return false;
 		}
-		if(mob.isInCombat())
+		if(mob.isInCombat()&&(!auto))
 		{
 			mob.tell("Not while you are fighting!");
 			return false;

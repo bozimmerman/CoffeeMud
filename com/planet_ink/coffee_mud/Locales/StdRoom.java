@@ -247,17 +247,25 @@ public class StdRoom
 	}
 
 	public Vector resourceChoices(){return null;}
+	public void setResource(int resourceCode)
+	{
+		myResource=resourceCode;
+		resourceFound=0;
+		if(resourceCode>=0)
+			resourceFound=System.currentTimeMillis();
+	}
+	
 	public int myResource()
 	{
 		if(resourceFound!=0)
 		{
 			if(resourceFound<(System.currentTimeMillis()-(30*IQCalendar.MILI_MINUTE)))
-				myResource=-1;
+				setResource(-1);
 		}
 		if(myResource<0)
 		{
 			if(resourceChoices()==null)
-				myResource=-1;
+				setResource(-1);
 			else
 			{
 				int totalChance=0;
@@ -267,7 +275,7 @@ public class StdRoom
 					int chance=EnvResource.RESOURCE_DATA[resource&EnvResource.RESOURCE_MASK][2];
 					totalChance+=chance;
 				}
-				myResource=-1;
+				setResource(-1);
 				int theRoll=Dice.roll(1,totalChance,0);
 				totalChance=0;
 				for(int i=0;i<resourceChoices().size();i++)
@@ -277,8 +285,7 @@ public class StdRoom
 					totalChance+=chance;
 					if(theRoll<=totalChance)
 					{
-						myResource=resource;
-						resourceFound=System.currentTimeMillis();
+						setResource(resource);
 						break;
 					}
 				}
