@@ -13,12 +13,21 @@ public class Kill extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		MOB target=null;
 		if(commands.size()<2)
 		{
 			if(!mob.isInCombat())
+			{
 				mob.tell("Kill whom?");
-			return false;
+				return false;
+			}
+			else
+			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)!=MUDFight.COMBAT_DEFAULT)
+				return false;
+			else
+				target=mob.getVictim();
 		}
+		
 		boolean reallyKill=false;
 		String whomToKill=Util.combine(commands,1);
 		if(CMSecurity.isAllowed(mob,mob.location(),"KILLDEAD")&&(!mob.isMonster()))
@@ -31,13 +40,16 @@ public class Kill extends StdCommand
 			}
 		}
 
-		MOB target=mob.location().fetchInhabitant(whomToKill);
-		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		if(target==null)
 		{
-			mob.tell("I don't see '"+whomToKill+"' here.");
-			return false;
+			target=mob.location().fetchInhabitant(whomToKill);
+			if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+			{
+				mob.tell("I don't see '"+whomToKill+"' here.");
+				return false;
+			}
 		}
-		else
+		
 		if(reallyKill)
 		{
 			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F<S-NAME> touch(es) <T-NAMESELF>.^?");
@@ -47,21 +59,27 @@ public class Kill extends StdCommand
 				target.curState().setHitPoints(0);
 				MUDFight.postDeath(mob,target,null);
 			}
+			return false;
 		}
-		else
+		
 		if(mob.isInCombat())
 		{
-			if((mob.getVictim()!=null)&&(mob.getVictim()==target))
+			if(((mob.getVictim()!=null)
+			&&(mob.getVictim()==target)
+			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)))
+			{
 				mob.tell("^FYou are already fighting "+mob.getVictim().name()+".^?");
-			else
+				return false;
+			}
+			
 			if(mob.location().okMessage(mob,new FullMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
 			{
 				mob.tell("^FYou are now targeting "+target.name()+".^?");
 				mob.setVictim(target);
+				return false;
 			}
-			return false;
 		}
-		else
+		
 		if((!mob.mayPhysicallyAttack(target)))
 			mob.tell("You are not allowed to attack "+target.name()+".");
 		else

@@ -8,6 +8,10 @@ public class MUDFight
 {
 	private MUDFight(){};
 
+	public static final int COMBAT_DEFAULT=0;
+	public static final int COMBAT_QUEUE=1;
+	
+	
 	public static HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
 		HashSet h=new HashSet();

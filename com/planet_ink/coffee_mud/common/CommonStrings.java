@@ -66,7 +66,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEMI_MANACONSUMEAMT=23;
 	public static final int SYSTEMI_MUDBACKLOG=24;
 	public static final int SYSTEMI_TICKSPERMUDDAY=25;
-	public static final int NUMI_SYSTEM=26;
+	public static final int SYSTEMI_COMBATSYSTEM=26;
+	public static final int NUMI_SYSTEM=27;
 
 	public static final int SYSTEMB_MOBCOMPRESS=0;
 	public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -182,6 +183,13 @@ public class CommonStrings extends Scriptable
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-200);
 		else
 			setIntVar(SYSTEMI_MANACONSUMEAMT,Util.s_int(page.getStr("MANACONSUMEAMT").trim()));
+		
+		String s=page.getStr("COMBATSYSTEM");
+		if(s.equalsIgnoreCase("queue")) 
+			setIntVar(SYSTEMI_COMBATSYSTEM,1);
+		else
+			setIntVar(SYSTEMI_COMBATSYSTEM,0);
+		
 		setIntVar(SYSTEMI_MANACONSUMETIME,page.getStr("MANACONSUMETIME"));
 		setIntVar(SYSTEMI_PAGEBREAK,page.getStr("PAGEBREAK"));
 		setIntVar(SYSTEMI_MINMOVETIME,page.getStr("MINMOVETIME"));

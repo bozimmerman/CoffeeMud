@@ -2358,7 +2358,17 @@ public class StdMOB implements MOB
 
 					double curSpeed=Math.floor(speeder);
 					speeder+=Sense.isSitting(this)?(envStats().speed()/2.0):envStats().speed();
+					
+					
 					int numAttacks=(int)Math.round(Math.floor(speeder-curSpeed));
+					
+					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)!=MUDFight.COMBAT_DEFAULT)
+						while((numAttacks>0)&&(commandQue.size()>0))
+						{
+							dequeCommand();
+							numAttacks--;
+						}
+					
 					if(Sense.aliveAwakeMobile(this,true))
 					{
 						for(int s=0;s<numAttacks;s++)
@@ -2395,9 +2405,12 @@ public class StdMOB implements MOB
 							curState().adjMovement(-1,maxState());
 					}
 
+					if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)
+						dequeCommand();
+					
 					if(!isMonster())
 					{
-						MOB target=this.getVictim();
+						MOB target=getVictim();
 						if((target!=null)&&(!target.amDead())&&(Sense.canBeSeenBy(target,this)))
 							session().print(target.healthText()+"\n\r\n\r");
 					}
@@ -2410,8 +2423,8 @@ public class StdMOB implements MOB
 					&&(peaceTime>=SHEATH_TIME)
 					&&(Sense.aliveAwakeMobile(this,true)))
 						CommonMsgs.sheath(this,true);
+					dequeCommand();
 				}
-				dequeCommand();
 				tickStatus=Tickable.STATUS_OTHER;
 				if(!isMonster())
 				{

@@ -87,6 +87,12 @@ public class Skill_Dirt extends StdAbility
 			mob.tell(target.name()+" has no eyes, and would not be affected.");
 			return false;
 		}
+		
+		if((!auto)&&Sense.isFlying(mob))
+		{
+			mob.tell("You are too far from the ground to kick dirt.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
