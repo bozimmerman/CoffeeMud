@@ -76,9 +76,9 @@ public class CommonSkill extends StdAbility
 			{
 				MOB mob=(MOB)affected;
 				if(aborted)
-					mob.tell("You stop "+verb);
+					commonEmote(mob,"<S-NAME> stops "+verb);
 				else
-					mob.tell("You are done "+verb);
+					commonEmote(mob,"<S-NAME> <S-IS-ARE> done "+verb);
 				
 			}
 		}
@@ -129,6 +129,25 @@ public class CommonSkill extends StdAbility
 				V2.addElement("");
 		}
 		return V;
+	}
+	
+	protected void commonTell(MOB mob, String str)
+	{
+		if(mob.isMonster()&&(mob.amFollowing()!=null))
+		{
+			if(str.startsWith("You")) str="I"+str.substring(3);
+			ExternalPlay.quickSay(mob,null,str,false,false);
+		}
+		else
+			mob.tell(str);
+	}
+	
+	protected void commonEmote(MOB mob, String str)
+	{
+		if(mob.isMonster()&&(mob.amFollowing()!=null))
+			mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT|Affect.ACT_GENERAL,str);
+		else
+			mob.tell(mob,null,str);
 	}
 	
 	protected int lookingFor(int material, Room fromHere)
@@ -312,12 +331,12 @@ public class CommonSkill extends StdAbility
 	{
 		if(mob.isInCombat())
 		{
-			mob.tell("You are in combat!");
+			commonEmote(mob,"<S-NAME> is in combat!");
 			return false;
 		}
 		if(!Sense.canBeSeenBy(mob.location(),mob))
 		{
-			mob.tell("You can't see to do that!");
+			commonTell(mob,"You can't see to do that!");
 			return false;
 		}
 		for(int a=mob.numAffects()-1;a>=0;a--)
@@ -349,7 +368,7 @@ public class CommonSkill extends StdAbility
 
 		if(mob.curState().getMana()<manaConsumed)
 		{
-			mob.tell("You don't have enough mana to do that.");
+			commonTell(mob,"You don't have enough mana to do that.");
 			return false;
 		}
 		activityRoom=mob.location();

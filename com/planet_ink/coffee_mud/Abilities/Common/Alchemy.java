@@ -50,13 +50,13 @@ public class Alchemy extends CommonSkill
 			{
 				if((theSpell.classificationCode()&Ability.ALL_CODES)==Ability.PRAYER)
 				{
-					mob.tell("You start praying for "+building.name()+".");
+					commonEmote(mob,"<S-NAME> start(s) praying for "+building.name()+".");
 					displayText="You are praying for "+building.name();
 					verb="praying for "+building.name();
 				}
 				else
 				{
-					mob.tell("You start brewing "+building.name()+".");
+					commonEmote(mob,"<S-NAME> start(s) brewing "+building.name()+".");
 					displayText="You are brewing "+building.name();
 					verb="brewing "+building.name();
 				}
@@ -91,7 +91,7 @@ public class Alchemy extends CommonSkill
 					if(messedUp)
 					{
 						if(oldName.length()>0)
-							mob.tell("Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
+							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
 					}
 					else
 						mob.addInventory(building);
@@ -127,7 +127,7 @@ public class Alchemy extends CommonSkill
 	{
 		if(commands.size()<1)
 		{
-			mob.tell("Brew what? Enter \"brew list\" for a list.");
+			commonTell(mob,"Brew what? Enter \"brew list\" for a list.");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -154,13 +154,13 @@ public class Alchemy extends CommonSkill
 				}
 			}
 			if(toggler!=1) buf.append("\n\r");
-			mob.tell(buf.toString());
+			commonTell(mob,buf.toString());
 			return true;
 		}
 		else
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify what magic you wish to brew, and the container to brew it in.");
+			commonEmote(mob,"You must specify what magic you wish to brew, and the container to brew it in.");
 			return false;
 		}
 		else
@@ -170,27 +170,27 @@ public class Alchemy extends CommonSkill
 			if(building==null) return false;
 			if(!mob.isMine(building))
 			{
-				mob.tell("You'll need to pick that up first.");
+				commonTell(mob,"You'll need to pick that up first.");
 				return false;
 			}
 			if(!(building instanceof Container))
 			{
-				mob.tell("There's nothing in "+building.name()+" to cook!");
+				commonTell(mob,"There's nothing in "+building.name()+" to cook!");
 				return false;
 			}
 			if(!(building instanceof Drink))
 			{
-				mob.tell("You can't drink out of a "+building.name()+".");
+				commonTell(mob,"You can't drink out of a "+building.name()+".");
 				return false;
 			}
 			if(((Drink)building).liquidRemaining()==0)
 			{
-				mob.tell("The "+building.name()+" contains no liquid base.  Water is probably fine.");
+				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
 				return false;
 			}
 			if(building.material()!=EnvResource.RESOURCE_GLASS)
 			{
-				mob.tell("You can only brew into glass containers.");
+				commonTell(mob,"You can only brew into glass containers.");
 				return false;
 			}
 			String recipeName=Util.combine(commands,0);
@@ -214,12 +214,12 @@ public class Alchemy extends CommonSkill
 			}
 			if(theSpell==null)
 			{
-				mob.tell("You don't know how to brew '"+recipeName+"'.  Try \"brew list\" for a list.");
+				commonTell(mob,"You don't know how to brew '"+recipeName+"'.  Try \"brew list\" for a list.");
 				return false;
 			}
 			if(theSpell.profficiency()<75)
 			{
-				mob.tell("You are not profficient enough to brew that potion.");
+				commonTell(mob,"You don't have the profficiency to brew that potion.");
 				return false;
 			}
 			int experienceToLose=10;
@@ -245,7 +245,7 @@ public class Alchemy extends CommonSkill
 				}
 				if((fire==null)||(!mob.location().isContent(fire)))
 				{
-					mob.tell("You'll need to build a fire first.");
+					commonTell(mob,"There will need to build a fire first.");
 					return false;
 				}
 				experienceToLose+=theSpell.qualifyingLevel(mob)*15;
@@ -265,7 +265,7 @@ public class Alchemy extends CommonSkill
 					found=true;
 					if(V.size()>0)
 					{
-						mob.tell("You must remove the extraneous stuff from the "+building.name()+" before you start.");
+						commonTell(mob,"The extraneous stuff from the "+building.name()+" must be removed before starting.");
 						return false;
 					}
 				}
@@ -277,13 +277,13 @@ public class Alchemy extends CommonSkill
 						found=true;
 					else
 					{
-						mob.tell("You must remove the "+I.name()+" from the "+building.name()+" before you start.");
+						commonTell(mob,"The "+I.name()+" must be removed from the "+building.name()+" before starting.");
 						return false;
 					}
 				}
 				if(!found)
 				{
-					mob.tell("This potion requires "+ingrediant+".  Please place some inside the "+building.name()+" and try again.");
+					commonTell(mob,"This potion requires "+ingrediant+".  Please place some inside the "+building.name()+" and try again.");
 					return false;
 				}
 			}
@@ -293,7 +293,7 @@ public class Alchemy extends CommonSkill
 				return false;
 		
 			mob.charStats().getMyClass().loseExperience(mob,experienceToLose);
-			mob.tell("You lose "+experienceToLose+" experience points for the effort.");
+			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroyThis();
 			building=CMClass.getItem("GenPotion");

@@ -32,7 +32,7 @@ public class FireBuilding extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(failed)
-					mob.tell("You failed to get the fire started.");
+					commonTell(mob,"You failed to get the fire started.");
 				else
 				{
 					if(lighting==null)
@@ -61,7 +61,7 @@ public class FireBuilding extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("Light what?  Try light fire, or light torch...");
+			commonTell(mob,"Light what?  Try light fire, or light torch...");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -75,7 +75,7 @@ public class FireBuilding extends CommonSkill
 			lighting=null;
 			if((mob.location().domainType()&Room.INDOORS)>0)
 			{
-				mob.tell("You can't seem to find any deadwood around here.");
+				commonTell(mob,"You can't seem to find any deadwood around here.");
 				return false;
 			}
 			switch(mob.location().domainType())
@@ -87,7 +87,7 @@ public class FireBuilding extends CommonSkill
 			case Room.DOMAIN_OUTDOORS_WOODS:
 				break;
 			default:
-				mob.tell("You can't seem to find any dry deadwood around here.");
+				commonTell(mob,"You can't seem to find any dry deadwood around here.");
 				return false;
 			}
 			completion=25-mob.envStats().level();
@@ -100,7 +100,7 @@ public class FireBuilding extends CommonSkill
 			if(lighting==null) return false;
 			if((!lighting.isGettable())||(lighting.displayText().length()==0))
 			{
-				mob.tell("For some reason, "+lighting.name()+" just won't catch.");
+				commonTell(mob,"For some reason, "+lighting.name()+" just won't catch.");
 				return false;
 			}
 			if(lighting instanceof Light)
@@ -108,10 +108,10 @@ public class FireBuilding extends CommonSkill
 				Light l=(Light)lighting;
 				if(l.isLit())
 				{
-					mob.tell(l.name()+" is already lit!");
+					commonTell(mob,l.name()+" is already lit!");
 					return false;
 				}
-				mob.tell("Just hold this item to light it.");
+				commonTell(mob,"Just hold this item to light it.");
 				return false;
 			}
 			switch(lighting.material()&EnvResource.MATERIAL_MASK)
@@ -129,7 +129,7 @@ public class FireBuilding extends CommonSkill
 				break;
 			case EnvResource.MATERIAL_VEGETATION:
 			case EnvResource.MATERIAL_FLESH:
-				mob.tell("You need to cook that, if you can.");
+				commonTell(mob,"You need to cook that, if you can.");
 				return false;
 			case EnvResource.MATERIAL_UNKNOWN:
 			case EnvResource.MATERIAL_GLASS:
@@ -138,7 +138,7 @@ public class FireBuilding extends CommonSkill
 			case EnvResource.MATERIAL_MITHRIL:
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
-				mob.tell("That won't burn.");
+				commonTell(mob,"That won't burn.");
 				return false;
 			}
 			verb="lighting "+lighting.name();

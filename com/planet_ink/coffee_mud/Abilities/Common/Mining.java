@@ -33,14 +33,14 @@ public class Mining extends CommonSkill
 			{
 				if(found!=null)
 				{
-					mob.tell("You have found a vein of "+foundShortName+"!");
+					commonTell(mob,"You have found a vein of "+foundShortName+"!");
 					displayText="You are mining "+foundShortName;
 					verb="mining "+foundShortName;
 				}
 				else
 				{
 					StringBuffer str=new StringBuffer("You can't seem to find anything worth mining here.\n\r");
-					mob.tell(str.toString());
+					commonTell(mob,str.toString());
 					unInvoke();
 				}
 				

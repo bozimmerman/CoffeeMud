@@ -32,7 +32,7 @@ public class Embroidering extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					mob.tell("You mess up your embroidery.");
+					commonTell(mob,"You mess up your embroidery.");
 				else
 				{
 					String desc=found.description();
@@ -52,13 +52,13 @@ public class Embroidering extends CommonSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify what you want to embroider onto, and what words to embroider on it.");
+			commonTell(mob,"You must specify what you want to embroider onto, and what words to embroider on it.");
 			return false;
 		}
 		Item target=mob.fetchCarried(null,(String)commands.firstElement());
 		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
 		}
 		else
@@ -68,7 +68,7 @@ public class Embroidering extends CommonSkill
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			mob.tell("You can't embroider onto that material.");
+			commonTell(mob,"You can't embroider onto that material.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -36,7 +36,7 @@ public class Butchering extends CommonSkill
 				{
 					if((failed)||(!mob.location().isContent(body)))
 					{
-						mob.tell("You messed up your butchering completely.");
+						commonTell(mob,"You messed up your butchering completely.");
 						body.destroyThis();
 					}
 					else
@@ -66,13 +66,13 @@ public class Butchering extends CommonSkill
 		if(I==null) return false;
 		if(!(I instanceof DeadBody))
 		{
-			mob.tell("You can't butcher "+I.name()+".");
+			commonTell(mob,"You can't butcher "+I.name()+".");
 			return false;
 		}
 		Vector resources=((DeadBody)I).charStats().getMyRace().myResources();
 		if((resources==null)||(resources.size()==0))
 		{
-			mob.tell("There doesn't appear to be any good parts on "+I.name()+".");
+			commonTell(mob,"There doesn't appear to be any good parts on "+I.name()+".");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

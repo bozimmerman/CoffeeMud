@@ -33,7 +33,7 @@ public class Chopping extends CommonSkill
 			{
 				if(found!=null)
 				{
-					mob.tell("You have a good tree for "+foundShortName+".");
+					commonTell(mob,"You have a good tree for "+foundShortName+".");
 					displayText="You are chopping up "+foundShortName;
 					verb="chopping "+foundShortName;
 				}
@@ -45,7 +45,7 @@ public class Chopping extends CommonSkill
 						str.append("You might try elsewhere.");
 					else
 						str.append("You might try "+Directions.getInDirectionName(d)+".");
-					mob.tell(str.toString());
+					commonTell(mob,str.toString());
 					unInvoke();
 				}
 				

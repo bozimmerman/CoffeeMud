@@ -61,7 +61,7 @@ public class Dyeing extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					mob.tell("You mess up the dyeing.");
+					commonEmote(mob,"<S-NAME> mess(es) up the dyeing.");
 				else
 				{
 					StringBuffer desc=new StringBuffer(found.description());
@@ -89,13 +89,13 @@ public class Dyeing extends CommonSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify what you want to dye, and color to dye it.");
+			commonTell(mob,"You must specify what you want to dye, and color to dye it.");
 			return false;
 		}
 		Item target=mob.fetchCarried(null,(String)commands.firstElement());
 		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
 		}
 		else
@@ -105,13 +105,13 @@ public class Dyeing extends CommonSkill
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
-			mob.tell("You can't dye that material.");
+			commonTell(mob,"You can't dye that material.");
 			return false;
 		}
 		writing=Util.combine(commands,0).toLowerCase();
 		if(new String(" white green blue red yellow cyan purple ").indexOf(writing)<0)
 		{
-			mob.tell("You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple.");
+			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

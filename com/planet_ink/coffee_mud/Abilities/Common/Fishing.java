@@ -32,11 +32,11 @@ public class Fishing extends CommonSkill
 			if(tickUp==6)
 			{
 				if(found!=null)
-					mob.tell("You got a tug on the line!");
+					commonTell(mob,"You got a tug on the line!");
 				else
 				{
 					StringBuffer str=new StringBuffer("Nothing is biting around here.\n\r");
-					mob.tell(str.toString());
+					commonTell(mob,str.toString());
 					unInvoke();
 				}
 				
@@ -78,7 +78,7 @@ public class Fishing extends CommonSkill
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_UNDERWATER)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))
 		{
-			mob.tell("You are kidding, right?  Fish on dry land?");
+			commonTell(mob,"You are kidding, right?  Fish on dry land?");
 			return false;
 		}
 		verb="fishing";

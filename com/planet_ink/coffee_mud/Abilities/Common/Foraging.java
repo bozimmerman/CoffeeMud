@@ -33,7 +33,7 @@ public class Foraging extends CommonSkill
 			{
 				if(found!=null)
 				{
-					mob.tell("You have found some "+foundShortName+"!");
+					commonTell(mob,"You have found some "+foundShortName+"!");
 					displayText="You are foraging for "+foundShortName;
 					verb="foraging for "+foundShortName;
 				}
@@ -45,7 +45,7 @@ public class Foraging extends CommonSkill
 						str.append("You might try elsewhere.");
 					else
 						str.append("You might try "+Directions.getInDirectionName(d)+".");
-					mob.tell(str.toString());
+					commonTell(mob,str.toString());
 					unInvoke();
 				}
 				

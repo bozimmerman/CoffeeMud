@@ -34,14 +34,14 @@ public class Digging extends CommonSkill
 			{
 				if(found!=null)
 				{
-					mob.tell("You have found some "+foundShortName+"!");
+					commonTell(mob,"You have found some "+foundShortName+"!");
 					displayText="You are digging out "+foundShortName;
 					verb="digging out "+foundShortName;
 				}
 				else
 				{
 					StringBuffer str=new StringBuffer("You can't seem to find anything worth digging up here.\n\r");
-					mob.tell(str.toString());
+					commonTell(mob,str.toString());
 					unInvoke();
 				}
 				

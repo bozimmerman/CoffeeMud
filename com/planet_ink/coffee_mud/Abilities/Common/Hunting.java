@@ -93,8 +93,8 @@ public class Hunting extends CommonSkill
 			{
 				if(found!=null)
 				{
-					mob.tell("You have found some "+foundShortName+" tracks!");
-					mob.tell("You need to find the "+foundShortName+" nearby before the trail goes cold!");
+					commonTell(mob,"You have found some "+foundShortName+" tracks!");
+					commonTell(mob,"You need to find the "+foundShortName+" nearby before the trail goes cold!");
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
 					found.bringToLife(nearByRoom(),true);
@@ -107,7 +107,7 @@ public class Hunting extends CommonSkill
 						str.append("You might try elsewhere.");
 					else
 						str.append("You might try "+Directions.getInDirectionName(d)+".");
-					mob.tell(str.toString());
+					commonTell(mob,str.toString());
 					unInvoke();
 				}
 				

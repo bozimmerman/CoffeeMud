@@ -73,7 +73,7 @@ public class Pottery extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						mob.tell("You completely mess up "+building.name()+".");
+						commonEmote(mob,"<S-NAME> completely mess(es) up "+building.name()+".");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -87,7 +87,7 @@ public class Pottery extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("Make what? Enter \"pot list\" for a list.");
+			commonTell(mob,"Make what? Enter \"pot list\" for a list.");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -109,7 +109,7 @@ public class Pottery extends CommonSkill
 						buf.append(Util.padRight(item,20)+" "+wood+"\n\r");
 				}
 			}
-			mob.tell(buf.toString());
+			commonTell(mob,buf.toString());
 			return true;
 		}
 		fire=null;
@@ -124,7 +124,7 @@ public class Pottery extends CommonSkill
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			mob.tell("You'll need to build a fire first.");
+			commonTell(mob,"You need to build a fire first.");
 			return false;
 		}
 		building=null;
@@ -148,7 +148,7 @@ public class Pottery extends CommonSkill
 		}
 		if(foundRecipe==null)
 		{
-			mob.tell("You don't know how to make a '"+recipeName+"'.  Try \"pot list\" for a list.");
+			commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"pot list\" for a list.");
 			return false;
 		}
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
@@ -168,12 +168,12 @@ public class Pottery extends CommonSkill
 		}
 		if(foundWood==0)
 		{
-			mob.tell("There is no clay here to make anything from!  You might need to put it down first.");
+			commonTell(mob,"There is no clay here to make anything from!  It might need to put it down first.");
 			return false;
 		}
 		if(foundWood<woodRequired)
 		{
-			mob.tell("You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
+			commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -191,7 +191,7 @@ public class Pottery extends CommonSkill
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
 		{
-			mob.tell("There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
+			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
 		completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);

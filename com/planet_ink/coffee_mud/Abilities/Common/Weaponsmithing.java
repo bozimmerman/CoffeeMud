@@ -81,9 +81,9 @@ public class Weaponsmithing extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							mob.tell("You completely mess up mending "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
 						else
-							mob.tell("You completely mess up smithing "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up smithing "+building.name()+".");
 					}
 					else
 					{
@@ -172,7 +172,7 @@ public class Weaponsmithing extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("Make what? Enter \"weaponsmith list\" for a list, or \"weaponsmith mend <item>\".");
+			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, or \"weaponsmith mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -181,7 +181,7 @@ public class Weaponsmithing extends CommonSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer("Weapons you are skilled at making:\n\r");
+			StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
 			int toggler=1;
 			int toggleTop=4;
 			for(int r=0;r<toggleTop;r++)
@@ -204,7 +204,7 @@ public class Weaponsmithing extends CommonSkill
 				}
 			}
 			if(toggler!=1) buf.append("\n\r");
-			mob.tell(buf.toString());
+			commonEmote(mob,buf.toString());
 			return true;
 		}
 		if(str.equalsIgnoreCase("mend"))
@@ -219,17 +219,17 @@ public class Weaponsmithing extends CommonSkill
 			if((!(building instanceof Weapon))
 			||((((Weapon)building).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
 			{
-				mob.tell("You don't know how to mend that sort of thing.");
+				commonTell(mob,"You don't know how to mend that sort of thing.");
 				return false;
 			}
 			if(!building.subjectToWearAndTear())
 			{
-				mob.tell("You can't mend "+building.name()+".");
+				commonTell(mob,"You can't mend "+building.name()+".");
 				return false;
 			}
 			if(((Item)building).usesRemaining()>=100)
 			{
-				mob.tell(building.name()+" is in good condition already.");
+				commonTell(mob,building.name()+" is in good condition already.");
 				return false;
 			}
 			mending=true;
@@ -254,7 +254,7 @@ public class Weaponsmithing extends CommonSkill
 			}
 			if((fire==null)||(!mob.location().isContent(fire)))
 			{
-				mob.tell("You'll need to build a fire first.");
+				commonTell(mob,"A fire must be built first.");
 				return false;
 			}
 			building=null;
@@ -279,7 +279,7 @@ public class Weaponsmithing extends CommonSkill
 			}
 			if(foundRecipe==null)
 			{
-				mob.tell("You don't know how to make a '"+recipeName+"'.  Try \"weaponsmith list\" for a list.");
+				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"weaponsmith list\" for a list.");
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
@@ -311,7 +311,7 @@ public class Weaponsmithing extends CommonSkill
 			}
 			if(foundWood==0)
 			{
-				mob.tell("There is no metal here to make anything from!  You might need to put it down first.");
+				commonTell(mob,"There is no metal here to make anything from!  It might need to put it down first.");
 				return false;
 			}
 			if(firstWood.material()==EnvResource.RESOURCE_MITHRIL)
@@ -322,12 +322,12 @@ public class Weaponsmithing extends CommonSkill
 			if(woodRequired<1) woodRequired=1;
 			if(foundWood<woodRequired)
 			{
-				mob.tell("You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
+				commonTell(mob,"You need "+woodRequired+" pounds of "+EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)].toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 				return false;
 			}
 			if((otherRequired.length()>0)&&(firstOther==null))
 			{
-				mob.tell("You need a pound of "+otherRequired.toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
+				commonTell(mob,"You need a pound of "+otherRequired.toLowerCase()+" to construct a "+recipeName.toLowerCase()+".  There is not enough here.  Are you sure you set it all on the ground first?");
 				return false;
 			}
 			if(!super.invoke(mob,commands,givenTarget,auto))
@@ -349,7 +349,7 @@ public class Weaponsmithing extends CommonSkill
 			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 			if(building==null)
 			{
-				mob.tell("There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
 			completion=Util.s_int((String)foundRecipe.elementAt(this.RCP_TICKS))-((mob.envStats().level()-Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);

@@ -75,7 +75,7 @@ public class Smelting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						mob.tell("You ruin "+building.name()+"!");
+						commonEmote(mob,"<S-NAME> ruin(s) "+building.name()+"!");
 					else
 					for(int i=0;i<amountMaking;i++)
 					{
@@ -95,7 +95,7 @@ public class Smelting extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("Make what? Enter \"smelt list\" for a list.");
+			commonTell(mob,"Make what? Enter \"smelt list\" for a list.");
 			return false;
 		}
 		Vector recipes=loadRecipes();
@@ -118,7 +118,7 @@ public class Smelting extends CommonSkill
 						buf.append(Util.padRight(item,20)+" "+Util.padRight(metal1,20)+" "+metal2+"\n\r");
 				}
 			}
-			mob.tell(buf.toString());
+			commonTell(mob,buf.toString());
 			return true;
 		}
 		fire=null;
@@ -133,7 +133,7 @@ public class Smelting extends CommonSkill
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			mob.tell("You'll need to build a fire first.");
+			commonTell(mob,"Build a fire first.");
 			return false;
 		}
 		building=null;
@@ -157,7 +157,7 @@ public class Smelting extends CommonSkill
 		}
 		if(foundRecipe==null)
 		{
-			mob.tell("You don't know how to make '"+recipeName+"'.  Try \"smelt list\" for a list.");
+			commonTell(mob,"You don't know how to make '"+recipeName+"'.  Try \"smelt list\" for a list.");
 			return false;
 		}
 		String doneResourceDesc=(String)foundRecipe.elementAt(RCP_FINALNAME);
@@ -178,7 +178,7 @@ public class Smelting extends CommonSkill
 		}
 		if((resourceCode1<0)||(resourceCode2<0)||(doneResourceCode<0))
 		{
-			mob.tell("CoffeeMud error in this alloy.  Please let your local Archon know.");
+			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
 			return false;
 		}
 		int amountResource1=0;
@@ -197,12 +197,12 @@ public class Smelting extends CommonSkill
 		}
 		if(amountResource1==0)
 		{
-			mob.tell("There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  You might need to put it down first.");
+			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");
 			return false;
 		}
 		if(amountResource2==0)
 		{
-			mob.tell("There is no "+resourceDesc2+" here to make "+doneResourceDesc+" from.  You might need to put it down first.");
+			commonTell(mob,"There is no "+resourceDesc2+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

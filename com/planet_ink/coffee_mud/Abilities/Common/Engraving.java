@@ -33,7 +33,7 @@ public class Engraving extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					mob.tell("You mess up your engravey.");
+					commonTell(mob,"You mess up your engravey.");
 				else
 				{
 					String desc=found.description();
@@ -53,13 +53,13 @@ public class Engraving extends CommonSkill
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify what you want to engrave onto, and what words to engrave on it.");
+			commonTell(mob,"You must specify what you want to engrave onto, and what words to engrave on it.");
 			return false;
 		}
 		Item target=mob.fetchCarried(null,(String)commands.firstElement());
 		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't seem to have a '"+((String)commands.firstElement())+"'.");
+			commonTell(mob,"You don't seem to have a '"+((String)commands.firstElement())+"'.");
 			return false;
 		}
 		else
@@ -73,7 +73,7 @@ public class Engraving extends CommonSkill
 			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_MITHRIL))
 		||(!target.isGeneric()))
 		{
-			mob.tell("You can't engrave onto that material.");
+			commonTell(mob,"You can't engrave onto that material.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -58,7 +58,7 @@ public class Cooking extends CommonSkill
 			else
 			if(tickUp==0)
 			{
-				mob.tell("You start cooking up some "+finalDishName+".");
+				commonTell(mob,"You start cooking up some "+finalDishName+".");
 				displayText="You are cooking "+finalDishName;
 				verb="cooking "+finalDishName;
 			}
@@ -286,12 +286,12 @@ public class Cooking extends CommonSkill
 		
 		if(!mob.isMine(target))
 		{
-			mob.tell("You'll need to pick that up first.");
+			commonTell(mob,"You'll need to pick that up first.");
 			return false;
 		}
 		if(!(target instanceof Container))
 		{
-			mob.tell("There's nothing in "+target.name()+" to cook!");
+			commonTell(mob,"There's nothing in "+target.name()+" to cook!");
 			return false;
 		}
 		switch(target.material()&EnvResource.MATERIAL_MASK)
@@ -303,7 +303,7 @@ public class Cooking extends CommonSkill
 		case EnvResource.MATERIAL_PRECIOUS:
 			break;
 		default:
-			mob.tell(target.name()+" is not suitable to cook in.");
+			commonTell(mob,target.name()+" is not suitable to cook in.");
 			return false;
 		}
 		
@@ -318,7 +318,7 @@ public class Cooking extends CommonSkill
 		}
 		if((fire==null)||(!mob.location().isContent(fire)))
 		{
-			mob.tell("You'll need to build a fire first.");
+			commonTell(mob,"You'll need to build a fire first.");
 			return false;
 		}
 		burnt=!profficiencyCheck(0,auto);
@@ -347,7 +347,7 @@ public class Cooking extends CommonSkill
 		{
 			if(closeRecipes.size()==0)
 			{
-				mob.tell("You don't know how to make anything out of those ingrediants.");
+				commonTell(mob,"You don't know how to make anything out of those ingrediants.");
 				return false;
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)
@@ -364,7 +364,7 @@ public class Cooking extends CommonSkill
 						else
 						if(i==extra.size()-1) buf.append(", and "+((String)extra.elementAt(i)).toLowerCase());
 						else buf.append(", "+((String)extra.elementAt(i)).toLowerCase());
-					mob.tell(buf.toString()+".");
+					commonTell(mob,buf.toString()+".");
 				}
 				else
 				if(missing.size()>0)
@@ -375,7 +375,7 @@ public class Cooking extends CommonSkill
 						else
 						if(i==missing.size()-1) buf.append(", and "+((String)missing.elementAt(i)).toLowerCase());
 						else buf.append(", "+((String)missing.elementAt(i)).toLowerCase());
-					mob.tell(buf.toString()+".");
+					commonTell(mob,buf.toString()+".");
 				}
 			}
 			return false;
@@ -421,7 +421,7 @@ public class Cooking extends CommonSkill
 			if(finalRecipe==null)
 			{
 				for(int c=0;c<complaints.size();c++)
-					mob.tell(((String)complaints.elementAt(c)));
+					commonTell(mob,((String)complaints.elementAt(c)));
 				return false;
 			}
 		}
