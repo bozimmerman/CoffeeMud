@@ -16,6 +16,8 @@ public class Halfling extends StdRace
 	public int weightVariance(){return 50;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Halfling";}
+	protected String[] culturalAbilityNames={"Elvish","Cooking"};
+	protected int[] culturalAbilityProfficiencies={25,75};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -24,27 +26,6 @@ public class Halfling extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return true;}
 
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-		if(!verifyOnly)
-		{
-			Ability A=CMClass.getAbility("Elvish");
-			if(A!=null)
-			{
-				A.setProfficiency(50);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-			}
-			A=CMClass.getAbility("Cooking");
-			if(A!=null)
-			{
-				A.setProfficiency(50);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-			}
-		}
-	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

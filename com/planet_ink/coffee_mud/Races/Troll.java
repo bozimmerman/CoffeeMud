@@ -16,6 +16,8 @@ public class Troll extends StdRace
 	public int weightVariance(){return 200;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Troll-kin";}
+	protected String[] culturalAbilityNames={"Draconic"};
+	protected int[] culturalAbilityProfficiencies={50};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -48,21 +50,6 @@ public class Troll extends StdRace
 			naturalWeapon.setWeaponType(Weapon.TYPE_SLASHING);
 		}
 		return naturalWeapon;
-	}
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-		if(!verifyOnly)
-		{
-			Ability A=CMClass.getAbility("Draconic");
-			if(A!=null)
-			{
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-				if(mob.isMonster())
-					A.invoke(mob,mob,false);
-			}
-		}
 	}
 	public String healthText(MOB mob)
 	{

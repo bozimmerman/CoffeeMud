@@ -24,9 +24,14 @@ public class StdRace implements Race
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 	public int[] bodyMask(){return parts;}
 
+	private static final Vector empty=new Vector();
 	protected Weapon naturalWeapon=null;
 	protected Vector naturalWeaponChoices=null;
-
+	protected Vector racialAbilities=null;
+	protected String[] racialAbilityNames=null;
+	protected String[] culturalAbilityNames=null;
+	protected int[] culturalAbilityProfficiencies=null;
+										 
 	public boolean playerSelectable(){return false;}
 
 	public Race copyOf()
@@ -231,6 +236,21 @@ public class StdRace implements Race
 				mob.setTrains(mob.getTrains()+trainsAtFirstLevel());
 			}
 			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+			
+			if((culturalAbilityNames!=null)&&(culturalAbilityProfficiencies!=null)
+			   &&(culturalAbilityNames.length==culturalAbilityProfficiencies.length))
+			for(int a=0;a<culturalAbilityNames.length;a++)
+			{
+				Ability A=CMClass.getAbility(culturalAbilityNames[a]);
+				if(A!=null)
+				{
+					A.setProfficiency(culturalAbilityProfficiencies[a]);
+					mob.addAbility(A);
+					A.autoInvocation(mob);
+					if((mob.isMonster())&&((A.classificationCode()&Ability.ALL_CODES)==Ability.LANGUAGE))
+						A.invoke(mob,mob,false);
+				}
+			}
 		}
 	}
 	public Weapon myNaturalWeapon()
@@ -310,6 +330,7 @@ public class StdRace implements Race
  		else
 			stats.setHeight(shortestFemale()+heightModifier);
 	}
+	
 	public int getMaxWeight()
 	{
 		return lightestWeight()+weightVariance();
@@ -443,6 +464,28 @@ public class StdRace implements Race
 		}
 		return Body;
 	}
+	
+	public Vector racialAbilities()
+	{
+		if(racialAbilities!=null) return racialAbilities;
+		if(racialAbilityNames!=null)
+		{
+			racialAbilities=new Vector();
+			for(int i=0;i<racialAbilityNames.length;i++)
+			{
+				Ability A=CMClass.getAbility((String)racialAbilityNames[i]);
+				if(A!=null)
+				{
+					A.setProfficiency(100);
+					A.setBorrowed(null,true);
+					racialAbilities.addElement(A);
+				}
+			}
+			return racialAbilities;
+		}
+		return empty;
+	}
+
 	public String racialParms(){ return "";}
 	public void setRacialParms(String parms){}
 	protected static String[] CODES={"CLASS","PARMS"};

@@ -16,6 +16,8 @@ public class SmallElfKin extends StdRace
 	public int weightVariance(){return 5;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Elf";}
+	protected String[] culturalAbilityNames={"Elvish","Foraging"};
+	protected int[] culturalAbilityProfficiencies={100,50};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -24,29 +26,6 @@ public class SmallElfKin extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-		if(!verifyOnly)
-		{
-			Ability A=CMClass.getAbility("Elvish");
-			if(A!=null)
-			{
-				A.setProfficiency(100);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-				if(mob.isMonster())
-					A.invoke(mob,mob,false);
-			}
-			A=CMClass.getAbility("Foraging");
-			if(A!=null)
-			{
-				A.setProfficiency(50);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-			}
-		}
-	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

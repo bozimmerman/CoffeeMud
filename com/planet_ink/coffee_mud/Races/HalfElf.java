@@ -16,6 +16,8 @@ public class HalfElf extends StdRace
 	public int weightVariance(){return 90;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Elf";}
+	protected String[] culturalAbilityNames={"Elvish","Fishing"};
+	protected int[] culturalAbilityProfficiencies={50,50};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -28,23 +30,7 @@ public class HalfElf extends StdRace
 	{
 		super.startRacing(mob,verifyOnly);
 		if(!verifyOnly)
-		{
 			mob.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_INFRARED);
-			Ability A=CMClass.getAbility("Elvish");
-			if(A!=null)
-			{
-				A.setProfficiency(50);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-			}
-			A=CMClass.getAbility("Fishing");
-			if(A!=null)
-			{
-				A.setProfficiency(50);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-			}
-		}
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

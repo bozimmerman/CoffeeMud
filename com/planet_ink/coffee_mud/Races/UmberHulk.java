@@ -48,10 +48,6 @@ public class UmberHulk extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-	}
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

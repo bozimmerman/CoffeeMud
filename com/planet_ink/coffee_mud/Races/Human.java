@@ -17,6 +17,8 @@ public class Human extends StdRace
 	public long forbiddenWornBits(){return 0;}
 	protected int trainsAtFirstLevel(){return 2;}
 	public String racialCategory(){return "Human";}
+	protected String[] culturalAbilityNames={"Chopping"};
+	protected int[] culturalAbilityProfficiencies={50};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -36,20 +38,6 @@ public class Human extends StdRace
 		Armor s2=CMClass.getArmor("GenShoes");
 		Armor p1=CMClass.getArmor("GenPants");
 		wearOutfit(mob,s1,s2,p1);
-	}
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-		if(!verifyOnly)
-		{
-			Ability A=CMClass.getAbility("Chopping");
-			if(A!=null)
-			{
-				A.setProfficiency(50);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-			}
-		}
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

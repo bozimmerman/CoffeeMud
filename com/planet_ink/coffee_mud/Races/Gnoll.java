@@ -16,6 +16,8 @@ public class Gnoll extends StdRace
 	public int weightVariance(){return 80;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Gnoll";}
+	protected String[] culturalAbilityNames={"Orcish"};
+	protected int[] culturalAbilityProfficiencies={75};
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
@@ -24,22 +26,6 @@ public class Gnoll extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
-	public void startRacing(MOB mob, boolean verifyOnly)
-	{
-		super.startRacing(mob,verifyOnly);
-		if(!verifyOnly)
-		{
-			Ability A=CMClass.getAbility("Orcish");
-			if(A!=null)
-			{
-				A.setProfficiency(100);
-				mob.addAbility(A);
-				A.autoInvocation(mob);
-				if(mob.isMonster())
-					A.invoke(mob,mob,false);
-			}
-		}
-	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
