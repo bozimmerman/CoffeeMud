@@ -47,15 +47,6 @@ public class Spell_ElementalStorm extends Spell
 					 "Stream of water",
 					 "A spark",
 					 "A puff of gas"};
-		String[] msp={"fireball.wav",
-					  "fireball.wav",
-					  "water.wav",
-					  "water.wav",
-					  "lightning",
-					  ""};
-					 
-					 
-
 		if(success)
 		{
 			int numMissiles=types.length;

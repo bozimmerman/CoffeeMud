@@ -95,7 +95,6 @@ public class Skill_Buffoonery extends StdAbility
 		else
 			levelDiff=-(levelDiff*((!Sense.canBeSeenBy(mob,target))?1:2));
 
-		String str=null;
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_MALICIOUS)|(auto?Affect.MASK_GENERAL:0),auto?"":"<S-NAME> do(es) buffoonery to <T-NAMESELF>.");			if(mob.location().okAffect(mob,msg))
