@@ -3847,6 +3847,11 @@ public class Import
 				fileNameCode=0;
 			else
 			{
+				if(!mob.isASysOp(null))
+				{
+					mob.tell("Only Archons may export to a file.");
+					return;
+				}
 				File F=new File(fileName);
 				if(F.isDirectory())
 					fileNameCode=2;
@@ -4024,6 +4029,8 @@ public class Import
 		if(fileName.equalsIgnoreCase("SCREEN"))
 		{
 			mob.tell("Here it is:\n\r\n\r");
+			xml=xml.replace('\n',' ');
+			xml=xml.replace('\r',' ');
 			if(mob.session()!=null)
 				mob.session().rawPrintln(xml+"\n\r\n\r");
 		}

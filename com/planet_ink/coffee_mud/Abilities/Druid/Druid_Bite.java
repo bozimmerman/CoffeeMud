@@ -29,6 +29,11 @@ public class Druid_Bite extends StdAbility
 			mob.tell("You must be in your animal form to bite.");
 			return false;
 		}
+		if(mob.charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]==0)
+		{
+			mob.tell("You must have a mouth to bite!");
+			return false;
+		}
 		
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

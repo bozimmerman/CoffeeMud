@@ -7,14 +7,14 @@ import java.util.*;
 
 public class Druid_Rend extends StdAbility
 {
-	public String ID() { return "Druid_Bite"; }
-	public String name(){ return "Bite";}
-	private static final String[] triggerStrings = {"BITE"};
+	public String ID() { return "Druid_Rend"; }
+	public String name(){ return "Rend";}
+	private static final String[] triggerStrings = {"REND"};
 	public int quality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
-	public Environmental newInstance(){	return new Druid_Bite();}
+	public Environmental newInstance(){	return new Druid_Rend();}
 	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

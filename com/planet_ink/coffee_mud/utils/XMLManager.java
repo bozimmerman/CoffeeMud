@@ -401,8 +401,7 @@ public class XMLManager
 					int z=wholeBlock.lastIndexOf("<");
 					if(z>=0) wholeBlock=wholeBlock.substring(0,z);
 					piece.contents=parseAllXML(wholeBlock.trim());
-					if(piece.contents==null)
-						piece.value=wholeBlock.trim();
+					piece.value=wholeBlock.trim();
 				}
 				if(piece.contents==null)
 					piece.contents=new Vector();

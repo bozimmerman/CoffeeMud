@@ -5,8 +5,6 @@ set name delivery
 set wait 150
 set interval 1
 
-#since this quest relys on random specified mobs, most errors are turned OFF
-quiet
 
 import items quests/delivery/note.cmare
 #import our secret note
@@ -14,8 +12,13 @@ import items quests/delivery/note.cmare
 set area any
 # inform the quest that it occurs anywhere
 
+quiet
+# this makes sure we don't get a final error message
+
 set mobtype Human Elf Dwarf HalfElf Halfing Gnome Orc Goblin
 # load up any mob from the above area.  Will set a room!
+# since this quest relys on random specified mobs, most 
+# errors are turned off w/ quiet
 
 give behavior Scriptable LOAD=quests/delivery/deliverer.script
 # load the above behavior into the last mob (Human)

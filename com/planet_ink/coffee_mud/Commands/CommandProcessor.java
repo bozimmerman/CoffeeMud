@@ -320,10 +320,10 @@ public class CommandProcessor
 			mob.location().listExits(mob);
 			break;
 		case CommandSet.EXPORT:
-			if(mob.isASysOp(null))
+			if(mob.isASysOp(mob.location()))
 				Import.export(mob,commands);
 			else
-				mob.tell("Only the Archons may Export.\n\r");
+				mob.tell("You are not powerful enough here to do that.\n\r");
 			break;
 		case CommandSet.FEED:
 			Grouping.feed(mob,commands);

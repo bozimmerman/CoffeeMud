@@ -93,22 +93,25 @@ public class Decay extends ActiveTicker
 			if(affecting instanceof MOB)
 			{
 				if(((affect.targetMajor()&Affect.MASK_MALICIOUS)>0)
-				&&(!affect.source().isMonster()))
+				&&(!affect.source().isMonster())
+				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
 					activated=true;
 			}
 			else
 			if((affecting instanceof Armor)
 			||(affecting instanceof Weapon))
 			{
-				if((affect.targetMinor()==Affect.TYP_WEAR)
-				||(affect.targetMinor()==Affect.TYP_HOLD)
-				||(affect.targetMinor()==Affect.TYP_WIELD))
+				if(((affect.targetMinor()==Affect.TYP_WEAR)
+					||(affect.targetMinor()==Affect.TYP_HOLD)
+					||(affect.targetMinor()==Affect.TYP_WIELD))
+				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
 					activated=true;
 			}
 			else
 			if(affecting instanceof Item)
 			{
-				if(affect.targetMinor()==Affect.TYP_GET)
+				if((affect.targetMinor()==Affect.TYP_GET)
+				&&(SaucerSupport.zapperCheck(getParms(),affect.source())))
 					activated=true;
 			}
 		}

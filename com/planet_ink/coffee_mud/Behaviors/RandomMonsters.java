@@ -13,7 +13,6 @@ public class RandomMonsters extends ActiveTicker
 	protected Vector maintained=new Vector();
 	protected int minMonsters=1;
 	protected int maxMonsters=1;
-	protected String filename="";
 	protected Vector restrictedLocales=null;
 	
 	public void setParms(String newParms)
@@ -24,61 +23,62 @@ public class RandomMonsters extends ActiveTicker
 		if(x>=0)
 		{
 			oldParms=newParms.substring(0,x).trim();
-			filename=newParms.substring(x+1).trim();
-			x=filename.indexOf(";");
-			if(x>=0)
+			String extraParms=oldParms;
+			int extraX=newParms.indexOf("<MOBS>");
+			if(extraX<0)
 			{
-				String extraParms=filename.substring(x+1).trim();
-				filename=filename.substring(0,x);
-				Vector V=Util.parse(extraParms);
-				for(int v=0;v<V.size();v++)
+				String xtra=newParms.substring(x+1);
+				extraX=xtra.indexOf(";");
+				if(extraX>=0) extraParms=xtra.substring(extraX+1);
+			}
+			Vector V=Util.parse(extraParms);
+			for(int v=0;v<V.size();v++)
+			{
+				String s=(String)V.elementAt(v);
+				if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
 				{
-					String s=(String)V.elementAt(v);
-					if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
+					if(restrictedLocales==null)
+						restrictedLocales=new Vector();
+					if(s.equalsIgnoreCase("+ALL"))
+						restrictedLocales.clear();
+					else
+					if(s.equalsIgnoreCase("-ALL"))
 					{
-						if(restrictedLocales==null)
-							restrictedLocales=new Vector();
-						if(s.equalsIgnoreCase("+ALL"))
-							restrictedLocales.clear();
-						else
-						if(s.equalsIgnoreCase("-ALL"))
+						restrictedLocales.clear();
+						for(int i=0;i<Room.indoorDomainDescs.length;i++)
+							restrictedLocales.addElement(new Integer(Room.INDOORS+i));
+						for(int i=0;i<Room.outdoorDomainDescs.length;i++)
+							restrictedLocales.addElement(new Integer(i));
+					}
+					else
+					{
+						char c=s.charAt(0);
+						s=s.substring(1).toUpperCase().trim();
+						int code=-1;
+						for(int i=0;i<Room.indoorDomainDescs.length;i++)
+							if(Room.indoorDomainDescs[i].startsWith(s))
+								code=Room.INDOORS+i;
+						if(code>=0)
 						{
-							restrictedLocales.clear();
-							for(int i=0;i<Room.indoorDomainDescs.length;i++)
-								restrictedLocales.addElement(new Integer(Room.INDOORS+i));
-							for(int i=0;i<Room.outdoorDomainDescs.length;i++)
-								restrictedLocales.addElement(new Integer(i));
+							if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
+								restrictedLocales.removeElement(new Integer(code));
+							else
+							if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
+								restrictedLocales.addElement(new Integer(code));
 						}
-						else
+						code=-1;
+						for(int i=0;i<Room.outdoorDomainDescs.length;i++)
+							if(Room.outdoorDomainDescs[i].startsWith(s))
+								code=i;
+						if(code>=0)
 						{
-							char c=s.charAt(0);
-							s=s.substring(1).toUpperCase().trim();
-							int code=-1;
-							for(int i=0;i<Room.indoorDomainDescs.length;i++)
-								if(Room.indoorDomainDescs[i].startsWith(s))
-									code=Room.INDOORS+i;
-							if(code>=0)
-							{
-								if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
-									restrictedLocales.removeElement(new Integer(code));
-								else
-								if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
-									restrictedLocales.addElement(new Integer(code));
-							}
-							code=-1;
-							for(int i=0;i<Room.outdoorDomainDescs.length;i++)
-								if(Room.outdoorDomainDescs[i].startsWith(s))
-									code=i;
-							if(code>=0)
-							{
-								if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
-									restrictedLocales.removeElement(new Integer(code));
-								else
-								if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
-									restrictedLocales.addElement(new Integer(code));
-							}
+							if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
+								restrictedLocales.removeElement(new Integer(code));
+							else
+							if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
+								restrictedLocales.addElement(new Integer(code));
+						}
 
-						}
 					}
 				}
 			}
@@ -89,6 +89,8 @@ public class RandomMonsters extends ActiveTicker
 		parms=newParms;
 		if((restrictedLocales!=null)&&(restrictedLocales.size()==0))
 			restrictedLocales=null;
+		Vector monsters=getMonsters(null,newParms);
+		if(monsters!=null) monsters.size(); // so the compiler thinks I used it.
 	}
 	
 	public RandomMonsters()
@@ -108,6 +110,73 @@ public class RandomMonsters extends ActiveTicker
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
 
+	public Vector getMonsters(Tickable thang, String theseparms)
+	{
+		Vector monsters=null;
+		int x=theseparms.indexOf(";");
+		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
+		if(filename.trim().length()==0)
+		{
+			Log.errOut("RandomMonsters","Blank XML/filename: '"+filename+"'.");
+			return null;
+		}
+		int start=filename.indexOf("<MOBS>");
+		if((start>=0)&&(start<=20))
+		{
+			int end=start+20;
+			if(end>filename.length()) end=filename.length();
+			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
+			if(monsters!=null) return monsters;
+			monsters=new Vector();
+			String error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(filename.toString(),monsters,null);
+			if(error.length()>0)
+			{
+				Log.errOut("RandomMonsters","Error on import of xml for '"+((thang!=null)?thang.name():"null")+"': "+error+".");
+				return null;
+			}
+			if(monsters.size()<=0)
+			{
+				Log.errOut("RandomMonsters","No mobs loaded for '"+((thang!=null)?thang.name():"null")+"'.");
+				return null;
+			}
+			Resources.submitResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode(),monsters);
+		}
+		else
+		{
+			int extraSemicolon=filename.indexOf(";");
+			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
+			filename=filename.trim();
+			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
+			if(monsters!=null) return monsters;
+			StringBuffer buf=Resources.getFileResource(filename);
+			if((buf==null)||((buf!=null)&&(buf.length()<20)))
+			{
+				Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+				return null;
+			}
+			if(buf.substring(0,20).indexOf("<MOBS>")<0)
+			{
+				Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+				return null;
+			}
+			monsters=new Vector();
+			String error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),monsters,null);
+			if(error.length()>0)
+			{
+				Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"': "+error+".");
+				return null;
+			}
+			if(monsters.size()<=0)
+			{
+				Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+				return null;
+			}
+			Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
+		}
+		return monsters;
+	}
+	
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -121,39 +190,9 @@ public class RandomMonsters extends ActiveTicker
 			return true;
 		if((canAct(ticking,tickID))||(maintained.size()<minMonsters))
 		{
-			if(filename.trim().length()==0)
-			{
-				Log.errOut("RandomMonsters","Blank XML filename: '"+filename+"'.");
-				return true;
-			}
-			Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
-			if(monsters==null)
-			{
-				StringBuffer buf=Resources.getFileResource(filename);
-				if((buf==null)||((buf!=null)&&(buf.length()==0)))
-				{
-					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+ticking.name()+"'.");
-					return true;
-				}
-				if(buf.substring(0,20).indexOf("<MOBS>")<0)
-				{
-					Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+ticking.name()+"'.");
-					return true;
-				}
-				monsters=new Vector();
-				String error=com.planet_ink.coffee_mud.common.Generic.addMOBsFromXML(buf.toString(),monsters,null);
-				if(error.length()>0)
-				{
-					Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+ticking.name()+"': "+error+".");
-					return true;
-				}
-				if(monsters.size()<=0)
-				{
-					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+ticking.name()+"'.");
-					return true;
-				}
-				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
-			}
+			Vector monsters=getMonsters(ticking,getParms());
+			if(monsters==null) return true;
+			
 			int num=minMonsters;
 			if(maintained.size()>=minMonsters) 
 				num=maintained.size()+1;

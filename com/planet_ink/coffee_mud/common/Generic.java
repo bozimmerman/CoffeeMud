@@ -917,7 +917,8 @@ public class Generic
 			String mClass=XMLManager.getValFromPieces(mblk.contents,"MCLAS");
 			MOB newMOB=CMClass.getMOB(mClass);
 			if(newMOB==null) return unpackErr("MOBs","null 'mClass': "+mClass);
-			newMOB.setMiscText(restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT")));
+			String text=restoreAngleBrackets(XMLManager.getValFromPieces(mblk.contents,"MTEXT"));
+			newMOB.setMiscText(text);
 			newMOB.baseEnvStats().setLevel(XMLManager.getIntFromPieces(mblk.contents,"MLEVL"));
 			newMOB.baseEnvStats().setAbility(XMLManager.getIntFromPieces(mblk.contents,"MABLE"));
 			newMOB.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(mblk.contents,"MREJV"));
@@ -1532,7 +1533,7 @@ public class Generic
 			{
 				behaviorstr.append("<BHAVE>");
 				behaviorstr.append(XMLManager.convertXMLtoTag("BCLASS",CMClass.className(B)));
-				behaviorstr.append(XMLManager.convertXMLtoTag("BPARMS",B.getParms()));
+				behaviorstr.append(XMLManager.convertXMLtoTag("BPARMS",parseOutAngleBrackets(B.getParms())));
 				behaviorstr.append("</BHAVE>");
 			}
 		}
@@ -1546,7 +1547,7 @@ public class Generic
 			{
 				affectstr.append("<AFF>");
 				affectstr.append(XMLManager.convertXMLtoTag("ACLASS",CMClass.className(A)));
-				affectstr.append(XMLManager.convertXMLtoTag("ATEXT",A.text()));
+				affectstr.append(XMLManager.convertXMLtoTag("ATEXT",parseOutAngleBrackets(A.text())));
 				affectstr.append("</AFF>");
 			}
 		}
@@ -1639,7 +1640,7 @@ public class Generic
 					Log.errOut("Generic","Error parsing 'BHAVE DATA' of "+CMClass.className(newOne)+".  Load aborted");
 					return;
 				}
-				newOne.setParms(bparms);
+				newOne.setParms(restoreAngleBrackets(bparms));
 				E.addBehavior(newOne);
 			}
 		}
@@ -1667,7 +1668,7 @@ public class Generic
 					Log.errOut("Generic","Error parsing 'AFF DATA' of "+CMClass.className(newOne)+".  Load aborted");
 					return;
 				}
-				newOne.setMiscText(aparms);
+				newOne.setMiscText(restoreAngleBrackets(aparms));
 				E.addNonUninvokableAffect(newOne);
 			}
 		}
