@@ -37,7 +37,9 @@ public class Gnome extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)+1);
+		affectableStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,affectableStats.getStat(CharStats.MAX_INTELLIGENCE_ADJ)+1);
 		affectableStats.setStat(CharStats.WISDOM,affectableStats.getStat(CharStats.WISDOM)-1);
+		affectableStats.setStat(CharStats.MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.MAX_WISDOM_ADJ)-1);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+10);
 	}
 	public void outfit(MOB mob)

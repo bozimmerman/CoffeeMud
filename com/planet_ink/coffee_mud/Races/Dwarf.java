@@ -37,7 +37,9 @@ public class Dwarf extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)+1);
+		affectableStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.MAX_CONSTITUTION_ADJ)+1);
 		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)-1);
+		affectableStats.setStat(CharStats.MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.MAX_CHARISMA_ADJ)-1);
 		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+10);
 	}
 	public void outfit(MOB mob)
