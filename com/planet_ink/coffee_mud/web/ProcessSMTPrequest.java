@@ -122,8 +122,8 @@ public class ProcessSMTPrequest extends Thread
 							while(true)
 							{
 								String s2=lineR.readLine();
-								String s2u=s2.toUpperCase();
 								if(s2==null) break;
+								String s2u=s2.toUpperCase();
 								
 								if(startBuffering)
 									finalData.append(s2+cr);
@@ -134,61 +134,75 @@ public class ProcessSMTPrequest extends Thread
 								if(s2u.startsWith("SUBJECT: "))
 									subject=s2.substring(9).trim();
 								else
-								if(s2u.startsWith("CONTENT TYPE: ")||s2u.startsWith("CONTENT-TYPE: "))
+								if((s2u.startsWith("CONTENT TYPE: ")||s2u.startsWith("CONTENT-TYPE: "))
+								&&(!s2u.substring(14).trim().startsWith("TEXT/PLAIN")))
 								{
-									if(!s2u.substring(14).trim().startsWith("TEXT/PLAIN"));
-									{
-										replyData=("552 Message content type '"+s2u.substring(14).trim()+"' not accepted."+cr).getBytes();
-										subject=null;
-										break;
-									}
+									replyData=("552 Message content type '"+s2u.substring(14).trim()+"' not accepted."+cr).getBytes();
+									subject=null;
+									break;
 								}
 							}
 						}
 						catch(IOException e){}
 							
-						if((finalData.length()==0)&&(!startBuffering))
+						if((replyData!=null)&&(new String(replyData).startsWith("250")))
 						{
-							finalData=new StringBuffer(data.toString());
-							if(subject==null) subject="";
-						}
-							
-						if((finalData.length()>0)&&(subject!=null))
-						{
-							for(int i=0;i<to.size();i++)
+							if((finalData.length()==0)&&(!startBuffering))
 							{
-								String journal=server.getAnEmailJournal((String)to.elementAt(i));
-								if(journal!=null)
+								finalData=new StringBuffer(data.toString());
+								if(subject==null) subject="";
+							}
+							
+							if((finalData.length()>0)
+							&&(subject!=null))
+							{
+								for(int i=0;i<to.size();i++)
 								{
-									String fdat=finalData.toString().trim();
-									if(server.isASubscribeOnlyJournal(journal))
+									String journal=server.getAnEmailJournal((String)to.elementAt(i));
+									if(journal!=null)
 									{
+										String fdat=finalData.toString().trim();
 										if(!subject.trim().equalsIgnoreCase("subscribe")
 										&&(!subject.trim().equalsIgnoreCase("unsubscribe"))
 										&&(!fdat.trim().equalsIgnoreCase("subscribe"))
-										&&(!fdat.trim().equalsIgnoreCase("unsubscribe")))
+										&&(!fdat.trim().equalsIgnoreCase("unsubscribe"))
+										&&(server.isAForwardingJournal(journal)))
 										{
-											MOB M=CMMap.getLoadPlayer(from);
-											if((M==null)||(!M.isASysOp(null)))
+											if(server.isASubscribeOnlyJournal(journal))
 											{
-												replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
-												break;
+												MOB M=CMMap.getLoadPlayer(from);
+												if((M==null)||(!M.isASysOp(null)))
+												{
+													replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
+													break;
+												}
+											}
+											else
+											{
+												Hashtable lists=server.getMailingLists(null);
+												Vector mylist=null;
+												if(lists!=null)	mylist=(Vector)lists.get(journal);
+												if((mylist==null)||(!mylist.contains(from)))
+												{
+													replyData=("552 Mailbox '"+journal+"' only accepts messages from subscribers.  Send an email with 'subscribe' as the subject."+cr).getBytes();
+													break;
+												}
 											}
 										}
+										CMClass.DBEngine().DBWriteJournal(journal,
+																		  from,
+																		  "ALL",
+																		  subject,
+																		  fdat,-1);
 									}
-									CMClass.DBEngine().DBWriteJournal(journal,
-																	  from,
-																	  "ALL",
-																	  subject,
-																	  fdat,-1);
-								}
-								else
-								{
-									CMClass.DBEngine().DBWriteJournal(server.mailboxName(),
-																	  from,
-																	  (String)to.elementAt(i),
-																	  subject,
-																	  finalData.toString(),-1);
+									else
+									{
+										CMClass.DBEngine().DBWriteJournal(server.mailboxName(),
+																		  from,
+																		  (String)to.elementAt(i),
+																		  subject,
+																		  finalData.toString(),-1);
+									}
 								}
 							}
 						}
@@ -550,7 +564,8 @@ public class ProcessSMTPrequest extends Thread
 											if(server.getJournalCriteria(name).length()>0)
 											{
 												MOB M=CMMap.getPlayer(from);
-												if((M==null)||(!MUDZapper.zapperCheck(server.getJournalCriteria(name),M)))
+												if((M==null)
+												||(!MUDZapper.zapperCheck(server.getJournalCriteria(name),M)))
 												{
 													replyData=("552 User '"+from+"' may not send emails to '"+name+"'."+cr).getBytes();
 													jerror=true;
@@ -609,7 +624,6 @@ public class ProcessSMTPrequest extends Thread
 		}
 		catch (Exception e)
 		{
-Log.errOut(getName(),e);
 			Log.errOut(getName(),"Exception: " + e.getMessage() );
 		}
 		

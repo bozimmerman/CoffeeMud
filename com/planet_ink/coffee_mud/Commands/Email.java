@@ -24,7 +24,7 @@ public class Email extends StdCommand
 		{
 			if(commands==null) return true;
 			String change=mob.session().prompt("You currently have '"+pstats.getEmail()+"' set as the email address for this character.\n\rChange it (y/N)?","N");
-			if(change.startsWith("N")) return false;
+			if(change.toUpperCase().startsWith("N")) return false;
 		}
 		String newEmail=mob.session().prompt("New E-mail Address:");
 		if(newEmail==null) return false;

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.XMLManager;
 import java.util.*;
 
 public class DefaultPlayerStats implements PlayerStats
@@ -58,17 +59,6 @@ public class DefaultPlayerStats implements PlayerStats
 		return h;
 	}
 
-	private String getMyMsg(String fil, String subject)
-	{
-		int x=fil.indexOf("<"+subject+">");
-		if(x<0) return "";
-		fil=fil.substring(x+2+subject.length());
-		x=fil.indexOf("</"+subject+">");
-		if(x<0) return "";
-		fil=fil.substring(0,x);
-		return fil;
-	}
-	
 	public HashSet getFriends(){return friends;}
 	public HashSet getIgnored(){return ignored;}
 	
@@ -80,16 +70,16 @@ public class DefaultPlayerStats implements PlayerStats
 			list.append(((String)e.next())+";");
 		return list.toString();
 	}
-	/** When the USER last logged off */
-	/** User PASSWORD */
-	/** update USER information */
-	public String getFriendsIgnoreStr(){
-		return "<FRIENDS>"+getPrivateList(getFriends())+"</FRIENDS>"
-			+"<IGNORED>"+getPrivateList(getIgnored())+"</IGNORED>";
+	public String getFriendsIgnoreStr()
+	{
+		String f=getPrivateList(getFriends());
+		String i=getPrivateList(getIgnored());
+		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
+			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"");
 	}
 	public void setFriendsIgnoreStr(String str)
 	{
-		friends=getHashFrom(getMyMsg(str,"FRIENDS"));
-		ignored=getHashFrom(getMyMsg(str,"IGNORE"));
+		friends=getHashFrom(XMLManager.returnXMLBlock(str,"FRIENDS"));
+		ignored=getHashFrom(XMLManager.returnXMLBlock(str,"IGNORED"));
 	}
 }

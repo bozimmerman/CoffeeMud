@@ -199,7 +199,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		{
 			MOB mvictim=mob.getVictim();
 			MOB tvictim=target.getVictim();
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_HANDS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_DISEASE|(auto?CMMsg.MASK_GENERAL:0),"");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_HANDS|(auto?CMMsg.MASK_GENERAL:CMMsg.MASK_MALICIOUS)|CMMsg.TYP_DISEASE,"");
 			Room R=target.location();
 			if((R!=null)&&(R.okMessage(target,msg)))
 			{

@@ -453,6 +453,20 @@ public class CoffeeMaker
 				}
 				text.append(XMLManager.convertXMLtoTag("STORE",itemstr.toString()));
 			}
+			if(((MOB)E).numTattoos()>0)
+			{
+				text.append("<TATTS>");
+				for(int i=0;i<((MOB)E).numTattoos();i++)
+					text.append(((MOB)E).fetchTattoo(i)+";");
+				text.append("</TATTS>");
+			}
+			if(((MOB)E).numEducations()>0)
+			{
+				text.append("<EDUS>");
+				for(int i=0;i<((MOB)E).numEducations();i++)
+					text.append(((MOB)E).fetchEducation(i)+";");
+				text.append("</EDUS>");
+			}
 		}
 		return text.toString();
 	}
@@ -1717,6 +1731,14 @@ public class CoffeeMaker
 					}
 				}
 			}
+			Vector V9=Util.parseSemicolons(XMLManager.getValFromPieces(buf,"TATTS"),true);
+			while(((MOB)E).numTattoos()>0)((MOB)E).delTattoo(((MOB)E).fetchTattoo(0));
+			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo((String)V9.elementAt(v));
+			
+			V9=Util.parseSemicolons(XMLManager.getValFromPieces(buf,"EDUS"),true);
+			while(((MOB)E).numEducations()>0)((MOB)E).delEducation(((MOB)E).fetchEducation(0));
+			for(int v=0;v<V9.size();v++) ((MOB)E).addEducation((String)V9.elementAt(v));
+
 			if(E instanceof ShopKeeper)
 			{
 				ShopKeeper shopmob=(ShopKeeper)E;
@@ -2095,7 +2117,7 @@ public class CoffeeMaker
 									 "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
 									 "DISPOSITION","SENSES","ARMOR",
 									 "DAMAGE","ATTACK","SPEED","AFFBEHAV",
-									 "ABLES","INVENTORY"};
+									 "ABLES","INVENTORY","TATTS","EDUS"};
 
 	public static int getGenMobCodeNum(String code)
 	{
@@ -2150,6 +2172,17 @@ public class CoffeeMaker
 					}
 					return str.toString();
 				}
+		case 18:{StringBuffer str=new StringBuffer("");
+				 for(int i=0;i<M.numTattoos();i++)
+					 str.append(M.fetchTattoo(i)+";");
+				 return str.toString();
+				}
+		case 19:{StringBuffer str=new StringBuffer("");
+				 for(int i=0;i<M.numEducations();i++)
+					 str.append(M.fetchEducation(i)+";");
+				 return str.toString();
+				}
+				 
 		}
 		return "";
 	}
@@ -2206,6 +2239,20 @@ public class CoffeeMaker
 					if(I!=null) I.destroy();
 				}
 				setGenMobInventory(M,XMLManager.parseAllXML(val));
+			}
+			break;
+		case 18:
+			{
+				Vector V9=Util.parseSemicolons(val,true);
+				while(M.numTattoos()>0)M.delTattoo(M.fetchTattoo(0));
+				for(int v=0;v<V9.size();v++) M.addTattoo((String)V9.elementAt(v));
+			}
+			break;
+		case 19:
+			{
+				Vector V9=Util.parseSemicolons(val,true);
+				while(M.numEducations()>0)M.delEducation(M.fetchEducation(0));
+				for(int v=0;v<V9.size();v++) M.addEducation((String)V9.elementAt(v));
 			}
 			break;
 		}

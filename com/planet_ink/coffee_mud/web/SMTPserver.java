@@ -98,10 +98,26 @@ public class SMTPserver extends Thread implements Tickable
 					}
 					if(!journals.contains(s))
 					{
-						boolean forward=(parm.toUpperCase().startsWith("FORWARD ")||parm.toUpperCase().endsWith(" FORWARD")||(parm.toUpperCase().indexOf(" FORWARD ")>=0));
-						boolean subscribeOnly=(parm.toUpperCase().startsWith("SUBSCRIBEONLY ")||parm.toUpperCase().endsWith(" SUBSCRIBEONLY")||(parm.toUpperCase().indexOf(" SUBSCRIBEONLY ")>=0));
-						boolean keepAll=(parm.toUpperCase().startsWith("KEEPALL ")||parm.toUpperCase().endsWith(" KEEPALL")||(parm.toUpperCase().indexOf(" KEEPALL ")>=0));
-						journals.addElement(s,new Boolean(forward),new Boolean(subscribeOnly),new Boolean(keepAll),parm);
+						Vector PV=Util.parseSpaces(parm,true);
+						StringBuffer crit=new StringBuffer("");
+						boolean forward=false;
+						boolean subscribeOnly=false;
+						boolean keepAll=false;
+						for(int pv=0;pv<PV.size();pv++)
+						{
+							String ps=(String)PV.elementAt(pv);
+							if(ps.equalsIgnoreCase("forward"))
+								forward=true;
+							else
+							if(ps.equalsIgnoreCase("subscribeonly"))
+								subscribeOnly=true;
+							else
+							if(ps.equalsIgnoreCase("keepall"))
+								keepAll=true;
+							else
+								crit.append(s+" ");
+						}
+						journals.addElement(s,new Boolean(forward),new Boolean(subscribeOnly),new Boolean(keepAll),crit.toString().trim());
 					}
 				}
 			}
@@ -403,6 +419,7 @@ public class SMTPserver extends Thread implements Tickable
 									{
 										mylist.addElement(from);
 										updatedMailingLists=true;
+										CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.",-1);
 									}
 								}
 							}
@@ -421,6 +438,7 @@ public class SMTPserver extends Thread implements Tickable
 									{
 										mylist.removeElementAt(l);
 										updatedMailingLists=true;
+										CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now unsubscribed from "+name+". To subscribe again, send another email with a subject of subscribe.",-1);
 									}
 							}
 							else
@@ -473,7 +491,7 @@ public class SMTPserver extends Thread implements Tickable
 						if(isAForwardingJournal(name))
 						{
 							Vector emails=CMClass.DBEngine().DBReadJournal(name);
-							processEmails(emails,null,true);
+							processEmails(emails,name,false);
 						}
 					}
 			}
@@ -604,6 +622,7 @@ public class SMTPserver extends Thread implements Tickable
 				SC.sendMessage(from+"@"+domainName(),
 							   replyTo+"@"+domainName(),
 							   toM.playerStats().getEmail(),
+							   usePrivateRules?toM.playerStats().getEmail():replyTo+"@"+domainName(),
 							   subj,
 							   msg);
 			}

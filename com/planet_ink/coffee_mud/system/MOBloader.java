@@ -80,8 +80,17 @@ public class MOBloader
 				mob.setClanID(DBConnections.getRes(R,"CMCLAN"));
 				mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
 				pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
-				pstats.setFriendsIgnoreStr(DBConnections.getRes(R,"CMPFIL"));
+				String buf=DBConnections.getRes(R,"CMPFIL");
+				pstats.setFriendsIgnoreStr(buf);
 				stats.setSaves(DBConnections.getRes(R,"CMSAVE"));
+				Vector V9=Util.parseSemicolons(XMLManager.returnXMLBlock(buf,"TATTS"),true);
+				while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
+				for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
+			
+				V9=Util.parseSemicolons(XMLManager.returnXMLBlock(buf,"EDUS"),true);
+				while(mob.numEducations()>0)mob.delEducation(mob.fetchEducation(0));
+				for(int v=0;v<V9.size();v++) mob.addEducation((String)V9.elementAt(v));
+
 				found=true;
 			}
 		}
@@ -543,6 +552,22 @@ public class MOBloader
 
 		String strStartRoomID=(mob.getStartRoom()!=null)?CMMap.getExtendedRoomID(mob.getStartRoom()):"";
 		String strOtherRoomID=(mob.location()!=null)?CMMap.getExtendedRoomID(mob.location()):"";
+		StringBuffer pfxml=new StringBuffer(pstats.getFriendsIgnoreStr());
+		if(mob.numTattoos()>0)
+		{
+			pfxml.append("<TATTS>");
+			for(int i=0;i<mob.numTattoos();i++)
+				pfxml.append(mob.fetchTattoo(i)+";");
+			pfxml.append("</TATTS>");
+		}
+		if(mob.numEducations()>0)
+		{
+			pfxml.append("<EDUS>");
+			for(int i=0;i<mob.numEducations();i++)
+				pfxml.append(mob.fetchEducation(i)+";");
+			pfxml.append("</EDUS>");
+		}
+		
 		DBConnector.update(
 		"UPDATE CMCHAR SET"
 		+"  CMPASS='"+pstats.password()+"'"
@@ -585,7 +610,7 @@ public class MOBloader
 		+", CMLSIP='"+pstats.lastIP()+"'"
 		+", CMCLRO="+mob.getClanRole()
 		+", CMEMAL='"+pstats.getEmail()+"'"
-		+", CMPFIL='"+pstats.getFriendsIgnoreStr()+"'"
+		+", CMPFIL='"+pfxml.toString()+"'"
 		+", CMSAVE='"+mob.baseCharStats().getSavesStr()+"'"
 		+"  WHERE CMUSERID='"+mob.Name()+"'");
 

@@ -225,7 +225,6 @@ public class StdMOB implements MOB
 			if(B!=null)
 				behaviors.addElement((Behavior)B.copyOf());
 		}
-
 	}
 	public Environmental copyOf()
 	{
@@ -2803,7 +2802,7 @@ public class StdMOB implements MOB
 	{ 
 		if(tattoos==null) tattoos=new Vector();
 		if((fetchTattoo(of)==null)&&(of!=null)) 
-			tattoos.addElement(of.toUpperCase());
+			tattoos.addElement(of.toUpperCase().trim());
 	}
 	public void delTattoo(String of)
 	{ 
@@ -2815,7 +2814,7 @@ public class StdMOB implements MOB
 	public String fetchTattoo(String of){
 		try{
 			for(int i=0;i<numTattoos();i++)
-				if(fetchTattoo(i).equalsIgnoreCase(of)) return fetchTattoo(i);
+				if(fetchTattoo(i).equalsIgnoreCase(of.trim())) return fetchTattoo(i);
 		}catch(Exception e){}
 		return null;
 	}

@@ -148,6 +148,7 @@ public class SMTPclient
     public synchronized void sendMessage(String froaddress, 
 										 String reply_address,
 										 String to_address, 
+										 String mockto_address,
 										 String subject, 
 										 String message)
 	throws IOException
@@ -198,7 +199,7 @@ public class SMTPclient
 		send.print(EOL);
 		send.print("Reply-To: " + reply_address);
 		send.print(EOL);
-		send.print("To: " + to_address);
+		send.print("To: " + mockto_address);
 		send.print(EOL);
 
 		// Create Date - we'll cheat by assuming that local clock is right
