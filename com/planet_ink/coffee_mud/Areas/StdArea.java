@@ -639,7 +639,7 @@ public class StdArea implements Area
 			if((climateType()&Area.CLIMATE_WINDY)>0)
 				desc.append("swirls all around you.");
 			else
-				desc.append("blows in from the "+Directions.getFromDirectionName(this.windDirection));
+				desc.append("blows in from "+Directions.getFromDirectionName(this.windDirection));
 			break;
 		case Area.WEATHER_BLIZZARD:
 			desc.append("A thunderous blizzard ");
@@ -721,7 +721,7 @@ public class StdArea implements Area
 				desc.append("A hot "+(((climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
 			else
 				desc.append("A light "+(((climateType()&Area.CLIMASK_DRY)>0)?"dry ":"")+"wind ");
-			desc.append("blows from the "+Directions.getFromDirectionName(this.windDirection));
+			desc.append("blows from "+Directions.getFromDirectionName(this.windDirection));
 			break;
 		}
 		return desc.toString();

@@ -37,7 +37,7 @@ public class Prayer_BloodMoon extends Prayer
 
 		super.unInvoke();
 
-		mob.tell("The the blood moon over you fades.");
+		mob.tell("The blood moon over you fades.");
 	}
 
 	public boolean okAffect(Affect affect)
