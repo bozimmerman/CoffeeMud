@@ -54,11 +54,20 @@ public class GrinderExits
 						  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
 						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
 						  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS","ISGENERIC"};
+						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS"," MISCTEXT","ISGENERIC"};
 		for(int o=0;o<okparms.length;o++)
 		{
+			String parm=okparms[o];
+			boolean generic=true;
+			if(parm.startsWith(" "))
+			{
+				generic=false;
+				parm=parm.substring(1);
+			}
 			String old=(String)httpReq.getRequestParameters().get(okparms[o]);
 			if(old==null) old="";
+			
+			if(E.isGeneric()==generic)
 			switch(o)
 			{
 			case 0: // name
@@ -142,7 +151,10 @@ public class GrinderExits
 				if(E.alignmentRestricted())
 					E.setAlignmentRestrictedMask(mask.trim());
 				break;
-			case 21: // is generic
+			case 21: // misctext
+				E.setMiscText(old); 
+				break;
+			case 22: // is generic
 				break;
 			}
 		}

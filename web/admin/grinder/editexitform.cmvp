@@ -29,6 +29,11 @@
 			if(ME.selectedIndex>0)
 				ReShow();
 		}
+		function ChangedClass()
+		{
+			document.AREAEDIT.CHANGEDCLASS.value="true";
+			ReShow();
+		}
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/editexitform.cmvp';
@@ -46,6 +51,7 @@
 <FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editexitdone.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
+<INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
 <INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYEXIT">
@@ -53,7 +59,7 @@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Exit Class:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2>
-	<SELECT NAME=CLASSES ONCHANGE="ReShow();">
+	<SELECT NAME=CLASSES ONCHANGE="ChangedClass();">
 	@ExitData?CLASSES@
 	</SELECT>
 	</TD>
@@ -78,6 +84,13 @@
     &nbsp;Level Restricted: <INPUT TYPE=CHECKBOX NAME=LEVELRESTRICTED @ExitData?LEVELRESTRICTED@>
     </TD>
 </TR>
+@else@
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Parameters:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=MISCTEXT SIZE=60 VALUE="@ExitData?MISCTEXT@"></TD>
+</TR>
+@endif@
+@if?CheckReqParm?ISGENERIC=true@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Exit Flags:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2>

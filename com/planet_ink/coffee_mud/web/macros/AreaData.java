@@ -148,7 +148,6 @@ public class AreaData extends StdWebMacro
 		return str;
 	}
 	
-	// accepts season, todcode, weather, moon, stats, and help
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);

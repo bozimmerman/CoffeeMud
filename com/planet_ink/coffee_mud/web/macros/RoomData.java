@@ -169,8 +169,6 @@ public class RoomData extends StdWebMacro
 		return items;
 	}
 	
-	// valid parms include help, ranges, quality, target, alignment, domain, 
-	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -188,6 +186,8 @@ public class RoomData extends StdWebMacro
 				name=R.displayText();
 			str.append(name);
 		}
+		boolean classChanged=(((String)httpReq.getRequestParameters().get("CLASSCHANGED")!=null)
+							 &&(((String)httpReq.getRequestParameters().get("CLASSCHANGED")).equals("true")));
 		if(parms.containsKey("CLASSES"))
 		{
 			String className=(String)httpReq.getRequestParameters().get("CLASS");
@@ -279,7 +279,7 @@ public class RoomData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+i+"');\">");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+(i+1)+"');\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
@@ -332,11 +332,35 @@ public class RoomData extends StdWebMacro
 						}
 					}
 					else
-					for(int m=0;m<CMClass.items.size();m++)
 					{
-						Item I=(Item)CMClass.items.elementAt(m);
-						if(CMClass.className(I).equals(MATCHING))
-						{	classes.addElement(I); break;}
+						boolean found=false;
+						for(int m=0;m<CMClass.items.size();m++)
+						{
+							Item I=(Item)CMClass.items.elementAt(m);
+							if(CMClass.className(I).equals(MATCHING))
+							{	classes.addElement(I); found=true; break;}
+						}
+						if(!found)
+						for(int m=0;m<CMClass.armor.size();m++)
+						{
+							Item I=(Item)CMClass.armor.elementAt(m);
+							if(CMClass.className(I).equals(MATCHING))
+							{	classes.addElement(I); found=true; break;}
+						}
+						if(!found)
+						for(int m=0;m<CMClass.weapons.size();m++)
+						{
+							Item I=(Item)CMClass.weapons.elementAt(m);
+							if(CMClass.className(I).equals(MATCHING))
+							{	classes.addElement(I); found=true; break;}
+						}
+						if(!found)
+						for(int m=0;m<CMClass.miscMagic.size();m++)
+						{
+							Item I=(Item)CMClass.miscMagic.elementAt(m);
+							if(CMClass.className(I).equals(MATCHING))
+							{	classes.addElement(I); found=true; break;}
+						}
 					}
 				}
 			}
@@ -368,7 +392,7 @@ public class RoomData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+i+"');\">");
+				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+(i+1)+"');\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
@@ -382,6 +406,24 @@ public class RoomData extends StdWebMacro
 			for(int i=0;i<CMClass.items.size();i++)
 			{
 				Item I=(Item)CMClass.items.elementAt(i);
+				if(!I.isGeneric())
+				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
+			for(int i=0;i<CMClass.armor.size();i++)
+			{
+				Item I=(Item)CMClass.armor.elementAt(i);
+				if(!I.isGeneric())
+				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
+			for(int i=0;i<CMClass.weapons.size();i++)
+			{
+				Item I=(Item)CMClass.weapons.elementAt(i);
+				if(!I.isGeneric())
+				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
+			}
+			for(int i=0;i<CMClass.miscMagic.size();i++)
+			{
+				Item I=(Item)CMClass.miscMagic.elementAt(i);
 				if(!I.isGeneric())
 				str.append("<OPTION VALUE=\""+CMClass.className(I)+"\">"+I.name()+" ("+CMClass.className(I)+")");
 			}

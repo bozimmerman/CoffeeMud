@@ -41,8 +41,6 @@ public class ExitData extends StdWebMacro
 		return str.toString();
 	}
 	
-	// valid parms include help, ranges, quality, target, alignment, domain, 
-	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -56,6 +54,8 @@ public class ExitData extends StdWebMacro
 		Room R=CMMap.getRoom(last);
 		Exit E=((R==null)?null:R.rawExits()[link]);
 		
+		boolean classChanged=(((String)httpReq.getRequestParameters().get("CLASSCHANGED")!=null)
+							 &&(((String)httpReq.getRequestParameters().get("CLASSCHANGED")).equals("true")));
 		// important generic<->non generic swap!
 		String newClassID=(String)httpReq.getRequestParameters().get("CLASSES");
 		Exit E2=null;
@@ -72,7 +72,7 @@ public class ExitData extends StdWebMacro
 							  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
 							  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
 							  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
-							  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS","ISGENERIC"};
+							  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS","MISCTEXT","ISGENERIC"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -250,7 +250,12 @@ public class ExitData extends StdWebMacro
 					}
 					str.append("</SELECT>");
 					break;
-				case 21: // is generic
+				case 21: // misc text
+					if(old==null)
+						old=E.text(); 
+					str.append(old);
+					break;
+				case 22: // is generic
 					httpReq.getRequestParameters().put("ISGENERIC",""+E.isGeneric());
 					httpReq.resetRequestEncodedParameters();
 					break;

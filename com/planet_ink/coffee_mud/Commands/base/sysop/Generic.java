@@ -1614,6 +1614,40 @@ public class Generic
 
 
 
+	public void modifyGenItem(MOB mob, Item me)
+		throws IOException
+	{
+		if(mob.isMonster())
+			return;
+		boolean ok=false;
+		while(!ok)
+		{
+			genName(mob,me);
+			genDisplayText(mob,me);
+			genDescription(mob,me);
+			genLevel(mob,me);
+			genSecretIdentity(mob,me);
+			genMaterialCode(mob,me);
+			genGettable(mob,me);
+			genReadable(mob,me);
+			genRejuv(mob,me);
+			genAbility(mob,me);
+			genUses(mob,me);
+			genValue(mob,me);
+			genWeight(mob,me);
+			genDisposition(mob,me);
+			genBehaviors(mob,me);
+			genAffects(mob,me);
+			ok=true;
+			if(me.text().length()>=maxLength)
+			{
+				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
+				ok=false;
+			}
+		}
+		mob.recoverEnvStats();
+	}
+
 	public void modifyGenFood(MOB mob, Food me)
 		throws IOException
 	{
@@ -1665,40 +1699,6 @@ public class Generic
 			genReadable(mob,(Item)me);
 			genAffects(mob,me);
 			genDisposition(mob,me);
-			ok=true;
-			if(me.text().length()>=maxLength)
-			{
-				mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-				ok=false;
-			}
-		}
-		mob.recoverEnvStats();
-	}
-
-	public void modifyGenItem(MOB mob, Item me)
-		throws IOException
-	{
-		if(mob.isMonster())
-			return;
-		boolean ok=false;
-		while(!ok)
-		{
-			genName(mob,me);
-			genDisplayText(mob,me);
-			genDescription(mob,me);
-			genLevel(mob,me);
-			genSecretIdentity(mob,me);
-			genMaterialCode(mob,me);
-			genGettable(mob,me);
-			genReadable(mob,me);
-			genRejuv(mob,me);
-			genAbility(mob,me);
-			genUses(mob,me);
-			genValue(mob,me);
-			genWeight(mob,me);
-			genDisposition(mob,me);
-			genBehaviors(mob,me);
-			genAffects(mob,me);
 			ok=true;
 			if(me.text().length()>=maxLength)
 			{

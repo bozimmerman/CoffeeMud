@@ -179,13 +179,46 @@ public class GrinderRooms
 					}
 				}
 				else
-				for(int m=0;m<CMClass.items.size();m++)
 				{
-					Item I2=(Item)CMClass.items.elementAt(m);
-					if(CMClass.className(I2).equals(MATCHING))
-					{	
-						happilyAddItem((Item)I2.copyOf(),R);
-						break;
+					boolean found=false;
+					for(int m=0;m<CMClass.items.size();m++)
+					{
+						Item I2=(Item)CMClass.items.elementAt(m);
+						if(CMClass.className(I2).equals(MATCHING))
+						{	
+							happilyAddItem((Item)I2.copyOf(),R);
+							break;
+						}
+					}
+					if(!found)
+					for(int m=0;m<CMClass.armor.size();m++)
+					{
+						Item I2=(Item)CMClass.armor.elementAt(m);
+						if(CMClass.className(I2).equals(MATCHING))
+						{	
+							happilyAddItem((Item)I2.copyOf(),R);
+							break;
+						}
+					}
+					if(!found)
+					for(int m=0;m<CMClass.weapons.size();m++)
+					{
+						Item I2=(Item)CMClass.weapons.elementAt(m);
+						if(CMClass.className(I2).equals(MATCHING))
+						{	
+							happilyAddItem((Item)I2.copyOf(),R);
+							break;
+						}
+					}
+					if(!found)
+					for(int m=0;m<CMClass.miscMagic.size();m++)
+					{
+						Item I2=(Item)CMClass.miscMagic.elementAt(m);
+						if(CMClass.className(I2).equals(MATCHING))
+						{	
+							happilyAddItem((Item)I2.copyOf(),R);
+							break;
+						}
 					}
 				}
 			}

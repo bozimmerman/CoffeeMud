@@ -1,11 +1,418 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
+	<title>CoffeeMUD MUDGrinder</title>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+		function EditBehavior(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddBehavior(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+		function EditAffect(ME)
+		{
+			if(ME.selectedIndex==0)
+				ReShow();
+		}
+		function AddAffect(ME)
+		{
+			if(ME.selectedIndex>0)
+				ReShow();
+		}
+		function ChangedClass()
+		{
+			document.AREAEDIT.CHANGEDCLASS.value="true";
+			ReShow();
+		}
+		function ReShow()
+		{
+			document.AREAEDIT.action='/grinder/edititemform.cmvp';
+			document.AREAEDIT.target='MAP';
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</SCRIPT>
+</head>
 <BODY>
+<CENTER>
+<h3>Modify Item in room '@RoomID@'.</H3>
+<P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
+<BR>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/edititemdone.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
+<INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
+<INPUT TYPE=HIDDEN NAME=ITEM VALUE="@ReqParameter?ITEM@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYITEM">
+<TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Class:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2>
+	<SELECT NAME=CLASSES ONCHANGE="ChangedClass();">
+	@ItemData?CLASSES@
+	</SELECT>
+	</TD>
+</TR>
 
-<P>&nbsp;</P>
+@if?ItemData?ISGENERIC=false@
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Class Level:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LEVEL SIZE=5 VALUE="@ItemData?LEVEL@">
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Magic Level:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Rejuv. Ticks:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=REJUV SIZE=5 VALUE="@ItemData?REJUV@">
+    </TD>
+</TR>
+<TR>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Uses Code</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
+    </TD>
+</TR>
+@else@
+@if?ItemData?ISWALLPAPER=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Name:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@ItemData?NAME@"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Description:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DESCRIPTION SIZE=60 VALUE="@ItemData?DESCRIPTION@"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Readable Text (''=Not Readable):</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@"></TD>
+	</TR>
+@else@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Name:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@ItemData?NAME@"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Displayed:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DISPLAYTEXT SIZE=60 VALUE="@ItemData?DISPLAYTEXT@"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Description:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DESCRIPTION SIZE=60 VALUE="@ItemData?DESCRIPTION@"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Class Level:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LEVEL SIZE=5 VALUE="@ItemData?LEVEL@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Base Gold Value:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=VALUE SIZE=5 VALUE="@ItemData?VALUE@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Weight:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=WEIGHT SIZE=5 VALUE="@ItemData?WEIGHT@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Rejuv. Ticks:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=REJUV SIZE=5 VALUE="@ItemData?REJUV@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Behaviors:</B></FONT>
+		<BR><A target=HELP HREF="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+		@ItemData?BEHAVIORS@
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Affects:</B></FONT>
+		<BR><A target=HELP href="/archonables.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+		@ItemData?AFFECTS@
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Flags:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+			@if?ItemData?ISWEAPON=true@
+			<INPUT TYPE=CHECKBOX NAME=ISTWOHANDED @ItemData?ISTWOHANDED@>Is Two-Handed<BR>
+			@endif@
+			<INPUT TYPE=CHECKBOX NAME=ISGETTABLE @ItemData?ISGETTABLE@>Is Gettable<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISDROPPABLE @ItemData?ISDROPPABLE@>Is Droppable<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISREMOVABLE @ItemData?ISREMOVABLE@>Is Removable<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISINVISIBLE @ItemData?ISINVISIBLE@>Is Invisible<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISHIDDEN @ItemData?ISHIDDEN@>Is Hidden<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISSEEN @ItemData?ISSEEN@>Is Unseeable<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISBONUS @ItemData?ISBONUS@>Is Magical<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISLIGHT @ItemData?ISLIGHT@>Is Glowing (burning)<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISEVIL @ItemData?ISEVIL@>Is Evil<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISGOOD @ItemData?ISGOOD@>Is Good<BR>
+			<INPUT TYPE=CHECKBOX NAME=ISTRAPPED @ItemData?ISTRAPPED@>Is Trapped<BR>
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Material:</B></FONT>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=MATERIALS>
+		@ItemData?MATERIALS@
+		</SELECT>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Secret Identity:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=SECRETIDENTITY SIZE=60 VALUE="@ItemData?SECRETIDENTITY@"></TD>
+	</TR>
 
+@if?ItemData?ISMAP=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Assigned Map Areas:</B></FONT>
+		<INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="on">
+		</TD>
+	    <TD WIDTH=450 COLSPAN=2>@ItemData?MAPAREAS@</TD>
+	</TR>
+@else@
+@if?ItemData?ISARMOR=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Wearing Data:</B></FONT>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=WORNDATA MULTIPLE>
+	    @ItemData?WORNDATA@
+	    </SELECT>
+	    <BR>
+	    <INPUT TYPE=RADIO NAME=ISTWOHANDED value="on">Is worn on All above Locations.
+	    <BR>
+	    <INPUT TYPE=RADIO NAME=ISTWOHANDED value="">Is worn on ANY of the above Locations.
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Armor Level:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ARMOR SIZE=5 VALUE="@ItemData?ARMOR@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Condition ?/100</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=10 VALUE="@ItemData?USESREMAIN@"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Magic Level:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Solid Capacity:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CAPACITY SIZE=5 VALUE="@ItemData?CAPACITY@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Size (0=resizable):</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=HEIGHT SIZE=5 VALUE="@ItemData?HEIGHT@">
+	    <INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
+	    <INPUT TYPE=HIDDEN NAME=READABLETEXT VALUE="">
+	    </TD>
+	</TR>
+@else@
+@if?ItemData?ISFOOD=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Nourishment ?/1000:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NOURISHMENT SIZE=5 VALUE="@ItemData?NOURISHMENT@">
+	    <INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
+	    </TD>
+	</TR>
+	@if?ItemData?ISSUPERPILL@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spell Name or Parameters:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@">
+	    </TD>
+	</TR>
+	@else
+	@if?ItemData?ISPILL@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on eater:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=READABLESPELLS MULTIPLE>
+	    @IdeaData?READABLESPELLS@
+	    </SELECT>
+	    </TD>
+	</TR>
+	@endif@
+	@endif@
+@else@
+@if?ItemData?ISDRINK=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Liquid Capacity:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LIQUIDHELD SIZE=5 VALUE="@ItemData?LIQUIDHELD@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Quenched/Drink:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=QUENCHED SIZE=5 VALUE="@ItemData?QUENCHED@">
+	    <INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
+	    </TD>
+	</TR>
+	@if?ItemData?ISPOTION@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast on eater:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=READABLESPELLS MULTIPLE>
+	    @IdeaData?READABLESPELLS@
+	    </SELECT>
+	    </TD>
+	</TR>
+	@else@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Liquid:</B></FONT>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=LIQUIDTYPES>
+		@ItemData?LIQUIDTYPES@
+		</SELECT>
+		</TD>
+	</TR>
+	@endif@
+@else@
+@if?ItemData?ISWEAPON=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Attack Adj.:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ATTACK SIZE=5 VALUE="@ItemData?ATTACK@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Weapon Damage:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DAMAGE SIZE=5 VALUE="@ItemData?DAMAGE@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Weapon Type:</B></FONT>
+	    <TD WIDTH=450 COLSPAN=2>@ItemData?WEAPONTYPE@</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Weapon Class:</B></FONT>
+	    <TD WIDTH=450 COLSPAN=2>@ItemData?WEAPONCLASS@</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ranges:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    Min: <INPUT TYPE=TEXT NAME=MIN SIZE=3 VALUE="@ItemData?MINRANGE@">&nbsp;&nbsp;
+	    Max: <INPUT TYPE=TEXT NAME=MIN SIZE=3 VALUE="@ItemData?MAXRANGE@">
+	    </TD>
+	</TR>
+	@if?ItemData?ISWAND=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=READABLESPELL>
+	    @IdeaData?READABLESPELL@
+	    </SELECT>
+	    <INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
+	    </TD>
+	</TR>
+	@else
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ammunition (''=not required):</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    Type: <INPUT TYPE=TEXT NAME=MIN SIZE=7 VALUE="@ItemData?AMMOTYPE@">&nbsp;&nbsp;
+	    Max: <INPUT TYPE=TEXT NAME=MIN SIZE=3 VALUE="@ItemData?AMMMOCAP@">
+	    </TD>
+	</TR>
+	@endif@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Condition ?/100</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=10 VALUE="@ItemData?USESREMAIN@"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Magic Level:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
+	    </TD>
+	</TR>
+@else@
+@if?ItemData?ISCONTAINER=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Solid Capacity:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CAPACITY SIZE=5 VALUE="@ItemData?CAPACITY@">
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lid:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALID @ItemData?HASALID@ ONCLICK="ReShow();"></TD>
+	</TR>
+	@if?CheckReqParm?HASALID=on@
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Has a Lock:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=HASALOCK @ItemData?HASALOCK@ ONCLICK="ReShow();"></TD>
+		</TR>
+		@if?CheckReqParm?HASALOCK=on@
+		<TR>
+			<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Key Code:</B></FONT></TD>
+		    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=KEYCODE SIZE=5 VALUE="@ItemData?KEYCODE@">
+		    </TD>
+		</TR>
+		@endif@
+	@endif@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Uses Code</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
+	    </TD>
+	</TR>
+@else@
+	@if?ItemData?ISWAND=true@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spells to cast:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2>
+	    <SELECT NAME=READABLESPELL>
+	    @IdeaData?READABLESPELL@
+	    </SELECT>
+	    <INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
+	    </TD>
+	</TR>
+	@else
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Readable Text (''=Not Readable):</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=READABLETEXT SIZE=60 VALUE="@ItemData?READABLETEXT@"></TD>
+	</TR>
+	@endif@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Magic Level:</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=ABILITY SIZE=5 VALUE="@ItemData?ABILITY@">
+	    </TD>
+	</TR>
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Uses Code</B></FONT></TD>
+	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=USESREMAIN SIZE=5 VALUE="@ItemData?USESREMAIN@">
+	    </TD>
+	</TR>
+@endif@
+@endif@	
+@endif@	
+@endif@	
+@endif@	
+@endif@
+@endif@
+@endif@
+<TR>
+    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
+	<INPUT TYPE=SUBMIT VALUE="Submit">
+	</CENTER>
+	</TD>
+</TR>
+</TABLE>
+</FORM>
+</CENTER>
 </BODY>
 </HTML>
+@endif@
+@endif@
