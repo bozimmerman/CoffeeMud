@@ -877,7 +877,6 @@ public class Import
 			M.setStartRoom(putInRoom);
 			M.setLocation(putInRoom);
 			M.baseCharStats().setMyRace(R);
-			M.baseCharStats().getMyRace().setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
 
 			Behavior behavior=CMClass.getBehavior("Mobile");
 			if(Util.isSet(actFlag,5))
@@ -1126,7 +1125,8 @@ public class Import
 				case 4: M.baseEnvStats().setWeight(850); break;
 				case 5: M.baseEnvStats().setWeight(2000); break;
 				}
-
+				// ignore the above, coffeemud does it better!
+				M.baseCharStats().getMyRace().setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.GENDER));
 				int numAbiles=M.numAbilities();
 				//if(Util.isSet(off,0)) // no area killers in coffeemud
 				//if(Util.isSet(off,1)) // no circling in coffeemud

@@ -136,10 +136,10 @@ public class Scoring
 			msg.append(" worshipping ^H"+mob.getWorshipCharID()+"^?");
 		msg.append(".\n\r");
 		msg.append("\n\rYour stats are: \n\r^B"+mob.charStats().getStats(mob.charStats().getMyClass().maxStat())+"^?\n\r");
-		msg.append("You are "+mob.envStats().height()+" inches tall and weigh "+mob.baseEnvStats().weight()+" pounds.\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? hit points, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? mana, and ^H");
 		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? movement.\n\r");
+		msg.append("You are "+mob.envStats().height()+" inches tall and weigh "+mob.baseEnvStats().weight()+" pounds.\n\r");
 		msg.append("You have ^B"+mob.envStats().weight()+"^?/^B"+mob.maxCarry()+"^? pounds of encumbrance.\n\r");
 		msg.append("You have ^B"+mob.getPractices()+"^? practices, ^B"+mob.getTrains()+"^? training sessions, and ^H"+mob.getQuestPoint()+"^? quest points.\n\r");
 		msg.append("You have scored ^B"+mob.getExperience()+"^? experience points, and have been online for ^B"+Math.round(Util.div(mob.getAgeHours(),60.0))+"^? hours.\n\r");
