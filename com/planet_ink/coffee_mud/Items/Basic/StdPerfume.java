@@ -104,6 +104,21 @@ public class StdPerfume extends StdDrink implements Perfume
 		{
 			if(msg.targetMinor()==CMMsg.TYP_WEAR)
 			{
+				// the order that these things are checked in should
+				// be holy, and etched in stone.
+				for(int b=0;b<numBehaviors();b++)
+				{
+					Behavior B=fetchBehavior(b);
+					if(B!=null)
+						B.executeMsg(this,msg);
+				}
+
+				for(int a=0;a<numEffects();a++)
+				{
+					Ability A=fetchEffect(a);
+					if(A!=null)
+						A.executeMsg(this,msg);
+				}
 				amountOfLiquidRemaining-=amountOfThirstQuenched;
 				wearIfAble(msg.source(),this);
 				if(disappearsAfterDrinking)

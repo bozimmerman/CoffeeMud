@@ -51,7 +51,14 @@ public class Export extends StdCommand
 					fileName=fileName+".cmare";
 				File f=new File(fileName);
 				BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(f));
-				out.write(xml.getBytes());
+				for(int i=0;i<xml.length();i+=65536)
+				{
+				    if((i+65536)>=xml.length())
+						out.write(xml.substring(i).getBytes());
+				    else
+						out.write(xml.substring(i,i+65536).getBytes());
+				    out.flush();
+				}
 				out.close();
 				mob.tell("File '"+fileName+"' written.");
 			}
