@@ -426,9 +426,10 @@ public class TelnetSession extends Thread implements Session
 		print(Message);
 		String input=blockingIn();
 		if(input==null) return "";
-		if(input.endsWith('\\')) 
+		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
 			return input.substring(0,input.length()-1);
-		return input;
+		else
+			return input;
 	}
 
 	public void cmdExit(MOB mob, Vector commands)
