@@ -40,14 +40,14 @@ public class StdDeity extends StdMOB implements Deity
 	public String getWorshipRequirements(){return worshipReqs;}
 	public void setWorshipRequirements(String reqs){worshipReqs=reqs;}
 	public String getClericRitual(){
-		if(clericRitual.length()==0) return "SAY Bless me "+name();
+		if(clericRitual.trim().length()==0) return "SAY Bless me "+name();
 		return clericRitual;}
 	public void setClericRitual(String ritual){
 		clericRitual=ritual;
 		parseTriggers(clericTriggers,ritual);
 	}
 	public String getWorshipRitual(){
-		if(worshipRitual.length()==0) return "SAY Bless me "+name();
+		if(worshipRitual.trim().length()==0) return "SAY Bless me "+name();
 		return worshipRitual;}
 	public void setWorshipRitual(String ritual){
 		worshipRitual=ritual;
