@@ -18,7 +18,11 @@ public class Prayer_SenseAlignment extends Prayer
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if(target==mob) return false;
+		if(target==mob)
+		{
+			mob.tell("You already know your own alignment!.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
