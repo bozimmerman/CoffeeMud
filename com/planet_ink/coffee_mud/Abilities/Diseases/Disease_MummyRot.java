@@ -88,7 +88,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		if(success)
 		{
 			str=auto?"":"^S<S-NAME> extend(s) a rotting hand to <T-NAMESELF>!^?";
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD|(auto?Affect.MASK_GENERAL:0),str);
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_UNDEAD|(auto?Affect.MASK_GENERAL:0),str);
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

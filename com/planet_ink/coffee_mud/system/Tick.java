@@ -15,7 +15,31 @@ public class Tick extends Thread
 	public long milliTotal=0;
 	public long tickTotal=0;
 	
-	public Vector tickers=new Vector();
+	private Vector tickers=new Vector();
+	
+	public Enumeration tickers(){return tickers.elements();}
+	public int numTickers(){return tickers.size();}
+	public TockClient fetchTicker(int i){
+		try{
+			return (TockClient)tickers.elementAt(i);
+		}catch(Exception e){}
+		return null;
+	}
+	public void delTicker(TockClient C)
+	{
+		synchronized(tickers)
+		{
+			tickers.removeElement(C);
+		}
+	}
+	public void addTicker(TockClient C)
+	{
+		synchronized(tickers)
+		{
+			tickers.addElement(C);
+		}
+	}
+	
 
 	private static int tickObjCounter=0;
 	public Tick()
@@ -41,7 +65,7 @@ public class Tick extends Thread
 		this.interrupt();
 	}
 
-	public static boolean tickTicker(TockClient C, Vector tickers)
+	public static boolean tickTicker(TockClient C)
 	{
 		if(C.suspended) 
 			return false;
@@ -51,13 +75,8 @@ public class Tick extends Thread
 			C.tickDown=C.reTickDown;
 			try
 			{
-				boolean ok=C.clientObject.tick(C.clientObject,C.tickID);
-				if(!ok)
-					synchronized(tickers)
-					{
-						tickers.removeElement(C);
-						return true;
-					}
+				if(!C.clientObject.tick(C.clientObject,C.tickID)) 
+					return true;
 			}
 			catch(Exception t)
 			{
@@ -84,10 +103,9 @@ public class Tick extends Thread
 				lastClient=null;
 				if(ExternalPlay.getSystemStarted())
 				{
-					int i=0;
-					while(i<tickers.size())
+					for(Enumeration e=tickers();e.hasMoreElements();)
 					{
-						TockClient client=(TockClient)tickers.elementAt(i);
+						TockClient client=(TockClient)e.nextElement();
 						lastClient=client;
 						if((client.lastStart!=0)&&(client.lastStop!=0))
 						{
@@ -95,8 +113,8 @@ public class Tick extends Thread
 							client.tickTotal++;
 						}
 						client.lastStart=System.currentTimeMillis();
-						if(!tickTicker(client,tickers))
-							i++;
+						if(tickTicker(client))
+							delTicker(client);
 						client.lastStop=System.currentTimeMillis();
 					}
 				}
@@ -107,7 +125,7 @@ public class Tick extends Thread
 			}
 			if(tickers.size()==0)
 			{
-				ServiceEngine.tickGroup.removeElement(this);
+				ServiceEngine.delTickGroup(this);
 				break;
 			}
 		}

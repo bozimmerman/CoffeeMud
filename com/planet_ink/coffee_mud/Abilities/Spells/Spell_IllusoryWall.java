@@ -54,7 +54,7 @@ public class Spell_IllusoryWall extends Spell
 			beneficialVisualFizzle(mob,null,"<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+", but nothing happens.");
 		else
 		{
-			FullMsg msg=new FullMsg(mob,exit,null,affectType(auto),"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
+			FullMsg msg=new FullMsg(mob,exit,this,affectType(auto),"^S<S-NAME> whisper(s) "+Directions.getDirectionName(dirCode)+".^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

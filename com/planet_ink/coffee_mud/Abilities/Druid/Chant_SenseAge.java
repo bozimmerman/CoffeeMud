@@ -46,7 +46,7 @@ public class Chant_SenseAge extends Chant
 					if(M.isMonster())
 						mob.tell(target.name()+" is an adult.");
 					else
-						mob.tell(target.name()+" is an adult who has been "+M.getAgeHours()+" hours in the realm.");
+						mob.tell(target.name()+" is an adult who has been "+Math.round(Util.div(M.getAgeHours(),60.0))+" hours in the realm.");
 				}
 				else
 				{

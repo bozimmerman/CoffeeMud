@@ -67,9 +67,9 @@ public class SaveThread extends Thread
 		}
 
 		Vector tryToKill=new Vector();
-		for(int v=0;v<ServiceEngine.tickGroup.size();v++)
+		for(Enumeration v=ServiceEngine.tickGroups();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)ServiceEngine.tickGroup.elementAt(v);
+			Tick almostTock=(Tick)v.nextElement();
 			if((almostTock.awake)
 			&&(almostTock.lastStop<lastDateTime))
 			{
@@ -111,12 +111,12 @@ public class SaveThread extends Thread
 		}
 		for(int x=0;x<tryToKill.size();x++)
 		{
-			Tick almostTock=(Tick)ServiceEngine.tickGroup.elementAt(x);
+			Tick almostTock=(Tick)tryToKill.elementAt(x);
 			Vector objs=new Vector();
-			for(int i=0;i<almostTock.tickers.size();i++)
-				objs.addElement(almostTock.tickers.elementAt(i));
+			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
+				objs.addElement(e.nextElement());
 			almostTock.shutdown();
-			ServiceEngine.tickGroup.removeElement(almostTock);
+			ServiceEngine.delTickGroup(almostTock);
 			for(int i=0;i<objs.size();i++)
 			{
 				TockClient c=(TockClient)objs.elementAt(i);

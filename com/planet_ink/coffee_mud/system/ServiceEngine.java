@@ -7,20 +7,35 @@ import com.planet_ink.coffee_mud.utils.*;
 
 public class ServiceEngine
 {
-	public static Vector tickGroup=new Vector();
+	private static Vector tickGroup=new Vector();
+	public static Enumeration tickGroups(){return tickGroup.elements();}
+	public static void delTickGroup(Tick tock)
+	{
+		synchronized(tickGroup)
+		{
+			tickGroup.removeElement(tock);
+		}
+	}
+	public static void addTickGroup(Tick tock)
+	{
+		synchronized(tickGroup)
+		{
+			tickGroup.addElement(tock);
+		}
+	}
 
 	public static Tick confirmAndGetTickThread(Tickable E, int tickID)
 	{
 		Tick tock=null;
 
-		for(int v=0;v<tickGroup.size();v++)
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			if((tock==null)&&(almostTock.tickers.size()<Host.MAX_TICK_CLIENTS))
+			Tick almostTock=(Tick)v.nextElement();
+			if((tock==null)&&(almostTock.numTickers()<Host.MAX_TICK_CLIENTS))
 				tock=almostTock;
-			for(int t=0;t<almostTock.tickers.size();t++)
+			for(Enumeration t=almostTock.tickers();t.hasMoreElements();)
 			{
-				TockClient client=(TockClient)almostTock.tickers.elementAt(t);
+				TockClient client=(TockClient)t.nextElement();
 				if((client.clientObject==E)&&(client.tickID==tickID))
 					return null;
 			}
@@ -31,7 +46,7 @@ public class ServiceEngine
 		else
 		{
 			tock=new Tick();
-			tickGroup.addElement(tock);
+			addTickGroup(tock);
 			return tock;
 		}
 	}
@@ -45,29 +60,23 @@ public class ServiceEngine
 
 		TockClient client=new TockClient(E,numTicks,tickID);
 		if(client!=null)
-			synchronized(tock.tickers)
-			{
-				tock.tickers.addElement(client);
-			}
+			tock.addTicker(client);
 	}
 
 	public static boolean deleteTick(Tickable E, int tickID)
 	{
-		for(int v=0;v<tickGroup.size();v++)
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			synchronized (almostTock.tickers)
+			Tick almostTock=(Tick)v.nextElement();
+			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
 			{
-				for(int t=almostTock.tickers.size()-1;t>=0;t--)
+				TockClient C=(TockClient)e.nextElement();
+				Tickable E2=C.clientObject;
+				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
 				{
-					TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-					Tickable E2=C.clientObject;
-					if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
-					{
-						almostTock.tickers.removeElement(C);
-						if(tickID>=0)
-							return true;
-					}
+					almostTock.delTicker(C);
+					if(tickID>=0)
+						return true;
 				}
 			}
 		}
@@ -76,12 +85,12 @@ public class ServiceEngine
 
 	public static boolean isTicking(Tickable E, int tickID)
 	{
-		for(int v=0;v<tickGroup.size();v++)
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			for(int t=0;t<almostTock.tickers.size();t++)
+			Tick almostTock=(Tick)v.nextElement();
+			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
 			{
-				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
+				TockClient C=(TockClient)e.nextElement();
 				Tickable E2=C.clientObject;
 				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
 					return true;
@@ -94,12 +103,12 @@ public class ServiceEngine
 	public static void resumeTicking(Tickable E, int tickID){suspendResumeTicking(E,tickID,false);}
 	private static boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
-		for(int v=0;v<tickGroup.size();v++)
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			for(int t=0;t<almostTock.tickers.size();t++)
+			Tick almostTock=(Tick)v.nextElement();
+			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
 			{
-				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
+				TockClient C=(TockClient)e.nextElement();
 				Tickable E2=C.clientObject;
 				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
 					C.suspended=suspend;
@@ -201,29 +210,31 @@ public class ServiceEngine
 		long topObjectTicks=0;
 		int topObjectGroup=0;
 		Tickable topObjectClient=null;
-		for(int v=0;v<tickGroup.size();v++)
+		int num=0;
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			totalTickers+=almostTock.tickers.size();
+			Tick almostTock=(Tick)v.nextElement();
+			totalTickers+=almostTock.numTickers();
 			totalMillis+=almostTock.milliTotal;
 			totalTicks+=almostTock.tickTotal;
 			if(almostTock.milliTotal>topGroupMillis)
 			{
 				topGroupMillis=almostTock.milliTotal;
 				topGroupTicks=almostTock.tickTotal;
-				topGroupNumber=v;
+				topGroupNumber=num;
 			}
-			for(int i=0;i<almostTock.tickers.size();i++)
+			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
 			{
-				TockClient C=(TockClient)almostTock.tickers.elementAt(i);
+				TockClient C=(TockClient)e.nextElement();
 				if(C.milliTotal>topObjectMillis)
 				{
 					topObjectMillis=C.milliTotal;
 					topObjectTicks=C.tickTotal;
 					topObjectClient=C.clientObject;
-					topObjectGroup=v;
+					topObjectGroup=num;
 				}
 			}
+			num++;
 		}
 		if(itemCode.equalsIgnoreCase("freeMemory"))
 			return ""+(Runtime.getRuntime().freeMemory()/1000);
@@ -314,26 +325,25 @@ public class ServiceEngine
 
 	public static void tickAllTickers(Room here)
 	{
-		for(int v=0;v<tickGroup.size();v++)
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			int t=0;
-			while(t<almostTock.tickers.size())
+			Tick almostTock=(Tick)v.nextElement();
+			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
 			{
-				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
+				TockClient C=(TockClient)e.nextElement();
 				Tickable E2=C.clientObject;
 				if(isHere(E2,here))
 				{
-					if(!Tick.tickTicker(C,almostTock.tickers)) t++;
+					if(Tick.tickTicker(C))
+						almostTock.delTicker(C);
 				}
 				else
 				if((E2 instanceof Ability)
 				&&(isHere(((Ability)E2).affecting(),here)))
 				{
-					if(!Tick.tickTicker(C,almostTock.tickers)) t++;
+					if(Tick.tickTicker(C))
+						almostTock.delTicker(C);
 				}
-				else
-					t++;
 			}
 		}
 	}
@@ -355,7 +365,7 @@ public class ServiceEngine
 			if(grpstart<0) return"";
 			int group=Util.s_int(which.substring(grpstart));
 			if((group>=0)&&(group<tickGroup.size()))
-				return ""+((Tick)tickGroup.elementAt(group)).tickers.size();
+				return ""+((Tick)tickGroup.elementAt(group)).numTickers();
 			return "";
 		}
 		int group=-1;
@@ -368,8 +378,9 @@ public class ServiceEngine
 		}
 		if((group<0)||(client<0)||(group>=tickGroup.size())) return "";
 		Tick almostTock=(Tick)tickGroup.elementAt(group);
-		if(client>=almostTock.tickers.size()) return "";
-		TockClient C=(TockClient)almostTock.tickers.elementAt(client);
+		if(client>=almostTock.numTickers()) return "";
+		TockClient C=(TockClient)almostTock.fetchTicker(client);
+		if(C==null) return "";
 		
 		if(which.toLowerCase().startsWith("tickername"))
 		{
@@ -432,34 +443,31 @@ public class ServiceEngine
 
 	public synchronized static void clearDebri(Room room, int taskCode)
 	{
-		for(int v=0;v<tickGroup.size();v++)
+		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
 		{
-			Tick tock=(Tick)tickGroup.elementAt(v);
-			synchronized(tock.tickers)
+			Tick almostTock=(Tick)v.nextElement();
+			for(Enumeration e=almostTock.tickers();e.hasMoreElements();)
 			{
-				for(int o=tock.tickers.size()-1;o>=0;o--)
+				TockClient C=(TockClient)e.nextElement();
+				if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
 				{
-					TockClient C=(TockClient)tock.tickers.elementAt(o);
-					if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
+					ItemTicker I=(ItemTicker)C.clientObject;
+					if(I.properLocation()==room)
 					{
-						ItemTicker I=(ItemTicker)C.clientObject;
-						if(I.properLocation()==room)
-						{
-							tock.tickers.removeElement(C);
-							I.setProperLocation(null);
-						}
+						almostTock.delTicker(C);
+						I.setProperLocation(null);
 					}
-					else
-					if((C.clientObject instanceof MOB)&&((taskCode==0)||(taskCode==2)))
+				}
+				else
+				if((C.clientObject instanceof MOB)&&((taskCode==0)||(taskCode==2)))
+				{
+					MOB mob=(MOB)C.clientObject;
+					if((mob.getStartRoom()==room)
+					&&(mob.isMonster())
+					&&(!room.isInhabitant(mob)))
 					{
-						MOB mob=(MOB)C.clientObject;
-						if((mob.getStartRoom()==room)
-						&&(mob.isMonster())
-						&&(!room.isInhabitant(mob)))
-						{
-							mob.destroy();
-							tock.tickers.removeElement(C);
-						}
+						mob.destroy();
+						almostTock.delTicker(C);
 					}
 				}
 			}

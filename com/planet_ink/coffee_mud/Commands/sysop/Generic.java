@@ -193,16 +193,20 @@ public class Generic
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		mob.tell(showNumber+". Display: '"+E.displayText()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter something new (null == blended)\n\r:","");
+		String newName=null;
+		if(E instanceof Item)
+			newName=mob.session().prompt("Enter something new (null == blended)\n\r:","");
+		else
+			newName=mob.session().prompt("Enter something new\n\r:","");
 		if(newName.length()>0)
 		{
-			if(newName.trim().equalsIgnoreCase("null"))
+			if((E instanceof Item)&&(newName.trim().equalsIgnoreCase("null")))
 				newName="";
 			E.setDisplayText(newName);
 		}
 		else
 			mob.tell("(no change)");
-		if(E.displayText().length()==0)
+		if((E instanceof Item)&&(E.displayText().length()==0))
 			mob.tell("(blended)");
 	}
 	public static void genClosedText(MOB mob, Exit E, int showNumber, int showFlag)

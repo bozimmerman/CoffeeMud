@@ -80,7 +80,7 @@ public class Skill_Imitation extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),(String)immitations.get(found));
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_DELICATE_HANDS_ACT|(auto?Affect.MASK_GENERAL:0),(String)immitations.get(found));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

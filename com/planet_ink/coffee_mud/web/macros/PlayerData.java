@@ -93,7 +93,7 @@ public class PlayerData extends StdWebMacro
 		case 11: str.append(Util.capitalize(CommonStrings.fightingProwessStr(M.adjustedAttackBonus()))+", "); break;
 		case 12: str.append(Util.capitalize(CommonStrings.armorStr((-M.adjustedArmor())+50))+", "); break;
 		case 13: str.append(M.adjustedDamage(null,null)+", "); break;
-		case 14: str.append(M.getAgeHours()+", "); break;
+		case 14: str.append(Math.round(Util.div(M.getAgeHours(),60.0))+", "); break;
 		case 15: str.append(M.getPractices()+", "); break;
 		case 16: str.append(M.getExperience()+", "); break;
 		case 17: str.append(M.getExpNextLevel()+", "); break;

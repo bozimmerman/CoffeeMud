@@ -81,7 +81,7 @@ public class Fighter_Tumble extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
