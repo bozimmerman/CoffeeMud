@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Skill_Parry extends StdAbility
 {
+	boolean lastTime=false;
 	public Skill_Parry()
 	{
 		super();
@@ -57,12 +58,16 @@ public class Skill_Parry extends StdAbility
 				{
 					FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> parry(s) "+affect.source().fetchWieldedItem().name()+" attack from <T-NAME>!");
 					if((profficiencyCheck(mob.charStats().getDexterity()-70,false))
+					&&(!lastTime)
 					&&(mob.location().okAffect(msg)))
 					{
+						lastTime=true;
 						mob.location().send(mob,msg);
 						helpProfficiency(mob);
 						return false;
 					}
+					else
+						lastTime=false;
 				}
 			}
 		}

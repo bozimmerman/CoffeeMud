@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Skill_Dodge extends StdAbility
 {
+	boolean lastTime=false;
 	public Skill_Dodge()
 	{
 		super();
@@ -50,12 +51,16 @@ public class Skill_Dodge extends StdAbility
 		{
 			FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> dodge(s) the attack by <T-NAME>!");
 			if((profficiencyCheck(mob.charStats().getDexterity()-90,false))
+			&&(!lastTime)
 			&&(mob.location().okAffect(msg)))
 			{
+				lastTime=true;
 				mob.location().send(mob,msg);
 				helpProfficiency(mob);
 				return false;
 			}
+			else
+				lastTime=false;
 		}
 		return true;
 	}
