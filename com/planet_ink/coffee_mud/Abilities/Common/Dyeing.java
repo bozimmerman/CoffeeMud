@@ -104,7 +104,8 @@ public class Dyeing extends CommonSkill
 		else
 			commands.remove(commands.firstElement());
 		
-		if(((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+		if((((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+			&&((target.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
 		||(!target.isGeneric()))
 		{
 			mob.tell("You can't dye that material.");
@@ -123,6 +124,8 @@ public class Dyeing extends CommonSkill
 		found=target;
 		if(!profficiencyCheck(0,auto)) writing="";
 		int duration=30-mob.envStats().level();
+		if((target.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER)
+			duration*=2;
 		if(duration<6) duration=6;
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) dyeing "+target.name());
 		if(mob.location().okAffect(msg))
