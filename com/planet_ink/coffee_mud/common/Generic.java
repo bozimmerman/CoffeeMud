@@ -101,7 +101,7 @@ public class Generic
 			((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(E,((Item)E).isTrapped());
 	}
 
-	private static String getPropertiesStr(Environmental E, boolean fromTop)
+	public static String getPropertiesStr(Environmental E, boolean fromTop)
 	{
 		if(E==null)
 		{
@@ -254,15 +254,245 @@ public class Generic
 		}
 		return text.toString();
 	}
+	
+	public static String unpackErr(String where, String msg)
+	{
+		Log.errOut("Generic","unpack"+where+"FromXML: "+msg);
+		return msg;
+	}
+	
+	public static String unpackRoomFromXML(String buf, boolean andRooms)
+	{
+		Vector xml=XMLManager.parseAllXML(buf);
+		if(xml==null) return unpackErr("Room","null 'xml'");
+		Vector roomData=XMLManager.getRealContentsFromPieces(xml,"AROOM");
+		if(roomData==null) return unpackErr("Room","null 'roomData'");
+		return unpackRoomFromXML(roomData,andRooms);
+	}
+	
+	public static String unpackRoomFromXML(Vector xml, boolean andRooms)
+	{
+		String doorProblems="";
+		
+		Area myArea=CMMap.getArea(XMLManager.getValFromPieces(xml,"RAREA"));
+		if(myArea==null) return unpackErr("Room","null 'myArea'");
+		String roomClass=XMLManager.getValFromPieces(xml,"RCLAS");
+		Room newRoom=CMClass.getLocale(roomClass);
+		if(newRoom==null) return unpackErr("Room","null 'newRoom'");
+		newRoom.setID(XMLManager.getValFromPieces(xml,"ROOMID"));
+		if(newRoom.ID().equals("NEW")) newRoom.setID(ExternalPlay.getOpenRoomID(myArea.name()));
+		if(CMMap.getRoom(newRoom.ID())!=null) return "Room Exists: "+newRoom.ID();
+		newRoom.setArea(myArea);
+		ExternalPlay.DBCreateRoom(newRoom,roomClass);
+		CMMap.map.addElement(newRoom);
+		newRoom.setDisplayText(XMLManager.getValFromPieces(xml,"RDISP"));
+		newRoom.setDescription(XMLManager.getValFromPieces(xml,"RDESC"));
+		newRoom.setMiscText(XMLManager.getValFromPieces(xml,"RTEXT"));
+		Vector xV=XMLManager.getRealContentsFromPieces(xml,"ROOMEXITS");
+		if(xV==null) return unpackErr("Room","null 'xV'");
+		for(int x=0;x<xV.size();x++)
+		{
+			XMLManager.XMLpiece xblk=(XMLManager.XMLpiece)xV.elementAt(x);
+			if((!xblk.tag.equalsIgnoreCase("REXIT"))||(xblk.contents==null))
+				return unpackErr("Room","??"+xblk.tag);
+			int dir=XMLManager.getIntFromPieces(xblk.contents,"XDIRE");
+			if((dir<0)||(dir>=Directions.NUM_DIRECTIONS))
+				return unpackErr("Room","Unknown direction: "+dir);
+			
+			//Vector xxV=XMLManager.getRealContentsFromPieces(xml,"XDOOR");
+			
+			
+		}
+		return doorProblems;
+	}
+/*
+				buf.append("<REXIT>");
+				buf.append(XMLManager.convertXMLtoTag("XDIRE",e));
+				if(door==null)
+					buf.append("<XDOOR />");
+				else
+					buf.append(XMLManager.convertXMLtoTag("XDOOR",door.ID()));
+				if(exit==null)
+					buf.append("<XEXIT />");
+				else
+				{
+					buf.append("<EXIT>");
+					buf.append(XMLManager.convertXMLtoTag("EXID",exit.ID()));
+					buf.append(XMLManager.convertXMLtoTag("EXDAT",exit.text()));
+					buf.append("</EXIT>");
+				}
+				buf.append("</REXIT>");
+ */	
+	public static String unpackAreaFromXML(String buf, boolean andRooms)
+	{
+		Vector xml=XMLManager.parseAllXML(buf);
+		if(xml==null) return unpackErr("Area","null 'xml'");
+		Vector aV=XMLManager.getRealContentsFromPieces(xml,"AREA");
+		if(aV==null) return unpackErr("Area","null 'aV'");
+		String areaClass=XMLManager.getValFromPieces(aV,"ACLAS");
+		String areaName=XMLManager.getValFromPieces(aV,"ANAME");
+		if(CMMap.getArea(areaName)!=null) return "Area Exists: "+areaName;
+		if(CMClass.getAreaType(areaClass)==null) return unpackErr("Area","No class: "+areaClass);
+		Area newArea=ExternalPlay.DBCreateArea(areaName,areaClass);
+		if(newArea==null) return unpackErr("Area","null 'area'");
+		
+		newArea.setDescription(XMLManager.getValFromPieces(aV,"ADESC"));
+		newArea.setClimateType(XMLManager.getIntFromPieces(aV,"ACLIM"));
+		newArea.setSubOpList(XMLManager.getValFromPieces(aV,"ASUBS"));
+		newArea.setMiscText(XMLManager.getValFromPieces(aV,"ADATA"));
+		ExternalPlay.DBUpdateArea(newArea);
+		if(andRooms)
+		{
+			Vector rV=XMLManager.getRealContentsFromPieces(aV,"AROOMS");
+			if(rV==null) return unpackErr("Area","null 'rV'");
+			for(int r=0;r<rV.size();r++)
+			{
+				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)rV.elementAt(r);
+				if((!ablk.tag.equalsIgnoreCase("AROOM"))||(ablk.contents==null))
+					return unpackErr("Area","??"+ablk.tag);
+				String err=unpackRoomFromXML(ablk.contents,true);
+				if(err.length()>0) return err;
+			}
+		}
+		return "";
+	}
 
-	private static void setPropertiesStr(Environmental E, String buf, boolean fromTop)
+	public static StringBuffer getAreaXML(Area area, boolean andRooms)
+	{
+		StringBuffer buf=new StringBuffer("");
+		if(area==null) return buf;
+		buf.append("<AREA>");
+		buf.append(XMLManager.convertXMLtoTag("ACLAS",area.ID()));
+		buf.append(XMLManager.convertXMLtoTag("ANAME",area.name()));
+		buf.append(XMLManager.convertXMLtoTag("ADESC",area.description()));
+		buf.append(XMLManager.convertXMLtoTag("ACLIM",area.climateType()));
+		buf.append(XMLManager.convertXMLtoTag("ASUBS",area.getSubOpList()));
+		buf.append(XMLManager.convertXMLtoTag("ADATA",area.text()));
+		if(andRooms)
+		{
+			Vector rooms=area.getMyMap();
+			if(rooms.size()==0)
+				buf.append("<AROOMS />");
+			else
+			{
+				buf.append("<AROOMS>");
+				for(int r=0;r<rooms.size();r++)
+				{
+					Room room=(Room)rooms.elementAt(r);
+					if(room!=null)
+						buf.append(getRoomXML(room,true));
+				}
+				buf.append("</AROOMS>");
+			}
+		}
+		buf.append("</AREA>");
+		return buf;
+	}
+	
+	public static StringBuffer getRoomXML(Room room, boolean andContent)
+	{
+		StringBuffer buf=new StringBuffer("");
+		if(room==null) return buf;
+		
+		// do this quick before a tick messes it up!
+		Vector inhabs=new Vector();
+		ExternalPlay.resetRoom(room);
+		if(andContent)
+		for(int i=0;i<room.numInhabitants();i++)
+			inhabs.addElement(room.fetchInhabitant(i));
+		Vector items=new Vector();
+		if(andContent)
+		for(int i=0;i<room.numItems();i++)
+			inhabs.addElement(room.fetchItem(i));
+		
+		buf.append("<AROOM>");
+		buf.append(XMLManager.convertXMLtoTag("ROOMID",room.ID()));
+		buf.append(XMLManager.convertXMLtoTag("RAREA",room.getArea().name()));
+		buf.append(XMLManager.convertXMLtoTag("RCLAS",CMClass.className(room)));
+		buf.append(XMLManager.convertXMLtoTag("RDISP",room.displayText()));
+		buf.append(XMLManager.convertXMLtoTag("RDESC",room.description()));
+		buf.append(XMLManager.convertXMLtoTag("RTEXT",room.text()));
+		buf.append("<ROOMEXITS>");
+		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
+		{
+			Room door=room.doors()[e];
+			Exit exit=room.exits()[e];
+			if((door!=null)||(exit!=null))
+			{
+				buf.append("<REXIT>");
+				buf.append(XMLManager.convertXMLtoTag("XDIRE",e));
+				if(door==null)
+					buf.append("<XDOOR />");
+				else
+					buf.append(XMLManager.convertXMLtoTag("XDOOR",door.ID()));
+				if(exit==null)
+					buf.append("<XEXIT />");
+				else
+				{
+					buf.append("<EXIT>");
+					buf.append(XMLManager.convertXMLtoTag("EXID",exit.ID()));
+					buf.append(XMLManager.convertXMLtoTag("EXDAT",exit.text()));
+					buf.append("</EXIT>");
+				}
+				buf.append("</REXIT>");
+			}
+		}
+		buf.append("</ROOMEXITS>");
+		if(andContent)
+		{
+			buf.append("<ROOMCONTENT>");
+			if(inhabs.size()==0)
+				buf.append("<ROOMMOBS />");
+			else
+			{
+				buf.append("<ROOMMOBS>");
+				for(int i=0;i<inhabs.size();i++)
+				{
+					MOB mob=(MOB)inhabs.elementAt(i);
+					buf.append(XMLManager.convertXMLtoTag("MCLAS",CMClass.className(mob)));
+					buf.append(XMLManager.convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
+					buf.append(XMLManager.convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
+					buf.append(XMLManager.convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
+					buf.append(XMLManager.convertXMLtoTag("MTEXT",mob.text()));
+				}
+				buf.append("</ROOMMOBS>");
+			}
+			if(items.size()==0)
+				buf.append("<ROOMITEMS />");
+			else
+			{
+				buf.append("<ROOMITEMS>");
+				for(int i=0;i<items.size();i++)
+				{
+					Item item=(Item)items.elementAt(i);
+					buf.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(item)));
+					buf.append(XMLManager.convertXMLtoTag("IIDEN",""+item));
+					if(item.location()==null)
+						buf.append("<ILOCA />");
+					else
+						buf.append(XMLManager.convertXMLtoTag("ILOCA",""+item.location()));
+					buf.append(XMLManager.convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
+					buf.append(XMLManager.convertXMLtoTag("IUSES",item.usesRemaining()));
+					buf.append(XMLManager.convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
+					buf.append(XMLManager.convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
+					buf.append(XMLManager.convertXMLtoTag("ITEXT",item.text()));
+				}
+				buf.append("</ROOMITEMS>");
+			}
+			buf.append("</ROOMCONTENT>");
+		}
+		buf.append("</AROOM>");
+		return buf;
+	}
+	
+	public static void setPropertiesStr(Environmental E, String buf, boolean fromTop)
 	{
 		Vector V=XMLManager.parseAllXML(buf);
 		if(V==null)
-			Log.errOut("Generic","setPropertiesStr: null 'V'");
+			Log.errOut("Generic","setPropertiesStr: null 'V': "+((E==null)?"":E.name()));
 		else
 		if(E==null)
-			Log.errOut("Generic","setPropertiesStr: null 'E'");
+			Log.errOut("Generic","setPropertiesStr: null 'E': "+((E==null)?"":E.name()));
 		else
 		{
 			if(E.isGeneric())

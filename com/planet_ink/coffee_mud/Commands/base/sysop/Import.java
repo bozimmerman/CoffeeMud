@@ -643,6 +643,7 @@ public class Import
 		case 2: ((Weapon)I).setWeaponClassification(Weapon.CLASS_EDGED); break;
 		case 3: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); 
 				((Weapon)I).setRanges(1,1);
+				((Weapon)I).setRawLogicalAnd(true);
 				break;
 		case 4: ((Weapon)I).setWeaponClassification(Weapon.CLASS_BLUNT); break;
 		case 5: ((Weapon)I).setWeaponClassification(Weapon.CLASS_AXE); break;
@@ -654,6 +655,7 @@ public class Import
 				break;
 		case 8: ((Weapon)I).setWeaponClassification(Weapon.CLASS_POLEARM); 
 				((Weapon)I).setRanges(1,1);
+				((Weapon)I).setRawLogicalAnd(true);
 				break;
 		case 9: ((Weapon)I).setWeaponClassification(Weapon.CLASS_DAGGER); break;
 		case 10: ((Weapon)I).setWeaponClassification(Weapon.CLASS_STAFF); break;

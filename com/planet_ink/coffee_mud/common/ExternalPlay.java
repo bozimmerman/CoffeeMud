@@ -25,6 +25,16 @@ public class ExternalPlay
 		if(player!=null) return player.standardHitWord(weaponType,damageAmount);
 		return "";
 	}
+	public static String getOpenRoomID(String areaName)
+	{
+		if(player!=null) return player.getOpenRoomID(areaName);
+		return "";
+	}
+	public static void resetRoom(Room room)
+	{
+		if(player!=null) player.resetRoom(room);
+		
+	}
 	public static String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
 	{
 		if(player!=null) return player.standardMissString(weaponType,weaponClassification,weaponName,useExtendedMissString);

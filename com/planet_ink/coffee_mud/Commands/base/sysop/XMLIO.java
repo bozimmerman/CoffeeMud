@@ -534,7 +534,7 @@ public class XMLIO
 				if(newRoom==null) return;
 				isNewRoom=true;
 				room=(Room)newRoom.newInstance();
-				room.setID(myRooms.getOpenRoomID(newArea.name()));
+				room.setID(new Reset().getOpenRoomID(newArea.name()));
 				room.setArea(newArea);
 				newID=room.ID();
 				ExternalPlay.DBCreateRoom(room,newRoomClass);

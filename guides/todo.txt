@@ -16,6 +16,8 @@ Add CoffeeMud area files!
 
 Languages!  Affects says and replies if you don't know a language spoken by the speaker.
 
+Item damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.
+
 0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where 
 one could buy raw materials.  Facilities available there would be used, along with your skill, to 
 produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing, 

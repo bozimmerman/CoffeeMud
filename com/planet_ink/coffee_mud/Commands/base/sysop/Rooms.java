@@ -7,23 +7,6 @@ import java.util.*;
 
 public class Rooms
 {
-	public String getOpenRoomID(String AreaID)
-	{
-		int highest=0;
-		for(int m=0;m<CMMap.map.size();m++)
-		{
-			Room thisRoom=(Room)CMMap.map.elementAt(m);
-			if((thisRoom.getArea().name().equals(AreaID))
-			&&(thisRoom.ID().startsWith(AreaID+"#")))
-			{
-				int newnum=Util.s_int(thisRoom.ID().substring(AreaID.length()+1));
-				if(newnum>=highest)
-					highest=newnum+1;
-			}
-		}
-		return AreaID+highest;
-	}
-
 	private void exitifyNewPortal(MOB mob, Room room, int direction)
 	{
 
@@ -87,7 +70,7 @@ public class Rooms
 		{
 			thisRoom=(Room)thisRoom.newInstance();
 			thisRoom.setArea(mob.location().getArea());
-			thisRoom.setID(getOpenRoomID(mob.location().getArea().name()));
+			thisRoom.setID(new Reset().getOpenRoomID(mob.location().getArea().name()));
 			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.ID());
 			thisRoom.setDescription("");
 			ExternalPlay.DBCreateRoom(thisRoom,Locale);
@@ -304,7 +287,7 @@ public class Rooms
 		{
 			if(commands.size()<4) { flunkCmd1(mob); return;}
 			Area A=CMMap.getArea(restStr);
-			String checkID=getOpenRoomID(restStr);
+			String checkID=new Reset().getOpenRoomID(restStr);
 			if(A==null)
 			{
 				if(!mob.isMonster())

@@ -18,7 +18,14 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.itemUsage.remove(mob,item);
 	}
-
+	public void resetRoom(Room room)
+	{
+		processor.reset.room(room);
+	}
+	public String getOpenRoomID(String areaName)
+	{
+		return processor.reset.getOpenRoomID(areaName);
+	}
 	public void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		processor.theFight.postAttack(attacker,target,weapon);
