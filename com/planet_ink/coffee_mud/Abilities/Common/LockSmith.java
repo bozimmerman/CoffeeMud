@@ -161,8 +161,8 @@ public class LockSmith extends CommonSkill
 				if((A!=null)&&(A instanceof LandTitle))
 				{ titleInName=((LandTitle)A).landOwner(); break;}
 			}
-			if(!(titleInName.equals(mob.Name())
-			   ||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().Name())))))
+			if((!(titleInName.equals(mob.Name())||((mob.amFollowing()!=null)&&(titleInName.equals(mob.amFollowing().Name())))))
+			   &&(dir>=0))
 			{
 				Room R2=mob.location().getRoomInDir(dir);
 				if(R2!=null)

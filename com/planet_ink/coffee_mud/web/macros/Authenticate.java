@@ -27,35 +27,39 @@ public class Authenticate extends StdWebMacro
 		}
 	}
 
+	public static MOB getMOB(String last)
+	{
+		if(!ExternalPlay.getSystemStarted())
+			return null;
+
+		MOB M=CMMap.getPlayer(last);
+		if(M==null)
+			for(Enumeration p=CMMap.players();p.hasMoreElements();)
+			{
+				MOB mob2=(MOB)p.nextElement();
+				if(mob2.Name().equalsIgnoreCase(last))
+				{ M=mob2; break;}
+			}
+		MOB TM=CMClass.getMOB("StdMOB");
+		if((M==null)&&(ExternalPlay.DBUserSearch(TM,last)))
+		{
+			M=CMClass.getMOB("StdMOB");
+			M.setName(TM.Name());
+			ExternalPlay.DBReadMOB(M);
+			ExternalPlay.DBReadFollowers(M,false);
+			M.setUpdated(M.lastDateTime());
+			M.recoverEnvStats();
+			M.recoverCharStats();
+		}
+		return M;
+	}
+	
 	private static final String ABCs="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 	private static final String FILTER="peniswrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad";
 
-	public static MOB getAuthenticatedMOB(String login)
-	{
-		MOB mob=null;
-		for(Enumeration p=CMMap.players();p.hasMoreElements();)
-		{
-			MOB mob2=(MOB)p.nextElement();
-			if(mob2.Name().equalsIgnoreCase(login))
-			{ mob=mob2; break;}
-		}
-		if(mob==null)
-		{
-			mob=CMClass.getMOB("StdMOB");
-			mob.setName(login);
-			if(!ExternalPlay.DBUserSearch(mob,login))
-				return null;
-			if(!ExternalPlay.DBReadUserOnly(mob))
-				return null;
-			mob.recoverEnvStats();
-			mob.recoverCharStats();
-		}
-		return mob;
-	}
-
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
-		MOB mob=getAuthenticatedMOB(login);
+		MOB mob=getMOB(login);
 		if(mob==null) return false;
 		boolean subOp=false;
 		boolean sysop=mob.isASysOp(null);

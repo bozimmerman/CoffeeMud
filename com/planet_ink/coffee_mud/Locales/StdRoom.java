@@ -721,7 +721,7 @@ public class StdRoom
 	}
 	public Exit getReverseExit(int direction)
 	{
-		if(direction>=Directions.NUM_DIRECTIONS)
+		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
 		Room opRoom=getRoomInDir(direction);
 		if(opRoom!=null)
@@ -742,7 +742,7 @@ public class StdRoom
 
 	public Room getRoomInDir(int direction)
 	{
-		if(direction>=Directions.NUM_DIRECTIONS)
+		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
 		Room nextRoom=rawDoors()[direction];
 		if(nextRoom!=null)
@@ -757,7 +757,7 @@ public class StdRoom
 	}
 	public Exit getExitInDir(int direction)
 	{
-		if(direction>=Directions.NUM_DIRECTIONS)
+		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
 		return rawExits()[direction];
 	}

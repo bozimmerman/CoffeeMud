@@ -7,7 +7,6 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class MOBloader
 {
-
 	public static boolean DBReadUserOnly(MOB mob)
 	{
 		if(mob.Name().length()==0) return false;

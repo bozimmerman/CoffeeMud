@@ -9,23 +9,6 @@ public class PlayerNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public static MOB getMOB(String last)
-	{
-		if(!ExternalPlay.getSystemStarted())
-			return null;
-
-		MOB M=CMMap.getPlayer(last);
-		if((M==null)&&(ExternalPlay.DBUserSearch(null,last)))
-		{
-			M=CMClass.getMOB("StdMOB");
-			M.setName(last);
-			ExternalPlay.DBReadMOB(M);
-			ExternalPlay.DBReadFollowers(M,false);
-			M.setUpdated(M.lastDateTime());
-		}
-		return M;
-	}
-	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		if(!httpReq.getMUD().gameStatusStr().equalsIgnoreCase("OK"))
@@ -54,13 +37,13 @@ public class PlayerNext extends StdWebMacro
 				V=new Vector();
 				while(unV.size()>0)
 				{
-					MOB M=PlayerNext.getMOB((String)unV.firstElement());
+					MOB M=Authenticate.getMOB((String)unV.firstElement());
 					if(M==null) return " @break@";
 					String loweStr=PlayerData.getBasic(M,code);
 					MOB lowestM=M;
 					for(int i=1;i<unV.size();i++)
 					{
-						M=PlayerNext.getMOB((String)unV.elementAt(i));
+						M=Authenticate.getMOB((String)unV.elementAt(i));
 						if(M==null) return " @break@";
 						String val=PlayerData.getBasic(M,code);
 						if(val.compareTo(loweStr)<0)

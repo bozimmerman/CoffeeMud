@@ -260,12 +260,22 @@ public class Socials
 					buf.append(' ');
 					break;
 				}
+				String[] stuff=new String[5];
+				stuff[0]=I.name();
+				stuff[1]=I.You_see();
+				stuff[2]=I.Third_party_sees();
+				stuff[3]=I.Target_sees();
+				stuff[4]=I.See_when_no_target();
 				buf.append('\t');
-				buf.append(I.name()+"\t");
-				buf.append(I.You_see()+"\t");
-				buf.append(I.Third_party_sees()+"\t");
-				buf.append(I.Target_sees() +"\t");
-				buf.append(I.See_when_no_target() +"\n\r");
+				for(int i=0;i<stuff.length;i++)
+				{
+					if(stuff[i]==null)
+						buf.append("\t");
+					else
+						buf.append(stuff[i]+"\t");
+				}
+				buf.setCharAt(buf.length()-1,'\n');
+				buf.append('\r');
 			}
 			writer.write(buf.toString());
 			writer.flush();

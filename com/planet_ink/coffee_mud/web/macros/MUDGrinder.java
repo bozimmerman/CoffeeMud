@@ -37,7 +37,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("AREALIST"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Area pickedA=getLoggedArea(httpReq,mob);
 			return GrinderAreas.getAreaList(pickedA,mob);
@@ -45,7 +45,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELAREA"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Area A=getLoggedArea(httpReq,mob);
 			if(A==null) return "@break@";
@@ -84,7 +84,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELEXIT"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -97,7 +97,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITEXIT"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -149,7 +149,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("LINKEXIT"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -166,7 +166,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("LINKAREA"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -188,7 +188,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITROOM"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -199,7 +199,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITITEM"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -210,7 +210,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITMOB"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -221,7 +221,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELROOM"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -239,7 +239,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDROOM"))
 		{
-			MOB mob=Authenticate.getAuthenticatedMOB(Authenticate.getLogin(httpReq));
+			MOB mob=Authenticate.getMOB(Authenticate.getLogin(httpReq));
 			if(mob==null) return "@break@";
 			Room R=CMMap.getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";

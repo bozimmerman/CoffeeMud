@@ -309,6 +309,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 		StringBuffer theNews=new StringBuffer("");
 
+		mob.recoverCharStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));

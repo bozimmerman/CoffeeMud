@@ -45,7 +45,6 @@
 		<TABLE WIDTH=100% BORDER=1>
 			<TR>
 			@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
-			@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
 			@JournalNext?RESET@
 			@loop@
 				@JournalNext@<TD><a href="javascript:Clicked1('@JournalName@')"><FONT COLOR=WHITE>@JournalName@</FONT></a></TD>
@@ -56,7 +55,18 @@
 	</TR>
 	<TR><TD WIDTH=30% VALIGN=TOP>
 		@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
+		
 		@if?!CheckReqParm?JOURNAL=@
+		
+			@if?CheckReqParm?FUNCTION=DELETE@
+			<CENTER><FONT COLOR=RED><B>@JournalFunction?DELETE@</B></FONT></CENTER>
+			@endif@
+			@if?CheckReqParm?FUNCTION=NEWPOST@
+			<CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
+			@endif@
+			
+			@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+		
 			@JournalMessageNext?RESET@
 			<UL>
 			@loop@
@@ -70,51 +80,71 @@
 				</a>
 			@back@
 			</UL>
+			<INPUT TYPE=BUTTON NAME=POSTNEW VALUE="Compose New" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW');">
 		@endif@
 		</TD>
 		<TD WIDTH=70% VALIGN=TOP>
 		@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
+		
 		@if?!CheckReqParm?JOURNAL=@
-		@if?!CheckReqParm?JOURNALMESSAGE=@
-		<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
-		<TR>
-			<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
-			</TD>
-			<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
-		</TR>
-		<TR>
-			<TD><FONT COLOR=YELLOW>From: </FONT></TD>
-			<TD><FONT COLOR=WHITE>@JournalInfo?FROM@</FONT></TD>
-		</TR>
-		<TR>
-			<TD><FONT COLOR=YELLOW>To: </FONT></TD>
-			<TD><FONT COLOR=WHITE>@JournalInfo?TO@</FONT></TD>
-		</TR>
-		<TR>
-			<TD><FONT COLOR=YELLOW>Date: </FONT></TD>
-			<TD><FONT COLOR=WHITE>@JournalInfo?DATE@</FONT></TD>
-		</TR>
-		<TR>
-			<TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
-			<TD><FONT COLOR=WHITE>@JournalInfo?SUBJECT@</FONT></TD>
-		</TR>
-		</TABLE>
-		<HR>
-		<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT>
-		<HR>
-		<TEXTAREA NAME=NEWTEXT ROWS=3 COLS=40 WRAP=VIRTUAL>
-		</TEXTAREA>
-		<TABLE WIDTH=100% BORDER=0>
-		<TR>
-		<TD WIDTH=50% ALIGN=LEFT>
-		<INPUT TYPE=BUTTON NAME=REPLY VALUE="Submit Reply" ONCLICK="if(document.JOURNAL.NEWTEXT.value.length>0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','REPLY');">
-		</TD>
-		<TD WIDTH=50% ALIGN=RIGHT>
-		<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete Message" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
-		</TD>
-		</TR>
-		</TABLE>
-		@endif@
+			@if?CheckReqParm?FUNCTION=POSTNEW@
+				<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+				<TR>
+					<TD WIDTH=20%><FONT COLOR=YELLOW>To: </FONT>
+					</TD>
+					<TD WIDTH=80%><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=TO VALUE="ALL"></TD>
+				</TR>
+				<TR>
+					<TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
+					<TD><INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=SUBJECT></TD>
+				</TR>
+				</TABLE>
+				<TEXTAREA NAME=NEWTEXT ROWS=3 COLS=40 WRAP=VIRTUAL></TEXTAREA><BR>
+				<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit Post" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','NEWPOST');">
+			@else@
+				@if?!CheckReqParm?JOURNALMESSAGE=@
+					@if?CheckReqParm?FUNCTION=REPLY@
+					<CENTER><FONT COLOR=RED><B>@JournalFunction?REPLY@</B></FONT></CENTER>
+					@endif@
+				<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+				<TR>
+					<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
+					</TD>
+					<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+				</TR>
+				<TR>
+					<TD><FONT COLOR=YELLOW>From: </FONT></TD>
+					<TD><FONT COLOR=WHITE>@JournalInfo?FROM@</FONT></TD>
+				</TR>
+				<TR>
+					<TD><FONT COLOR=YELLOW>To: </FONT></TD>
+					<TD><FONT COLOR=WHITE>@JournalInfo?TO@</FONT></TD>
+				</TR>
+				<TR>
+					<TD><FONT COLOR=YELLOW>Date: </FONT></TD>
+					<TD><FONT COLOR=WHITE>@JournalInfo?DATE@</FONT></TD>
+				</TR>
+				<TR>
+					<TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
+					<TD><FONT COLOR=WHITE>@JournalInfo?SUBJECT@</FONT></TD>
+				</TR>
+				</TABLE>
+				<HR>
+				<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+				<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete Message" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
+				<HR>
+				<TEXTAREA NAME=NEWTEXT ROWS=3 COLS=40 WRAP=VIRTUAL></TEXTAREA>
+				<TABLE WIDTH=100% BORDER=0>
+				<TR>
+				<TD WIDTH=50% ALIGN=LEFT>
+				<INPUT TYPE=BUTTON NAME=REPLY VALUE="Submit Reply" ONCLICK="if(document.JOURNAL.NEWTEXT.value.length>0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','REPLY');">
+				</TD>
+				<TD WIDTH=50% ALIGN=RIGHT>
+				</TD>
+				</TR>
+				</TABLE>
+				@endif@
+			@endif@
 		@endif@
 		</TD>
 	</TR>

@@ -66,7 +66,7 @@ mo	CRINGE	You cringe in terror.	<S-NAME> cringes in terror!
 mo	LUST SELF	Oh, please! You aren't THAT great...	<S-NAME> lusts after <S-HIM-HERSELF>, lonely eh?		
 mo	SWOON	You swoon.	<S-NAME> swoons in absolute ecstasy.		
 ot	PECK <T-NAME>	Risking a slap to the face, you give <T-NAMESELF> a peck on the cheek.	<S-NAME> smiles and gives <T-NAMESELF> a chaste peck on the cheek.	<S-NAME> pecks you on the cheek, how sweet!	I guess you scared them away...
-mo	PALE	You feel the blood draining from your face.	null	null	null
+mo	PALE	You feel the blood draining from your face.			
 mo	NOD <T-NAME>	You nod at <T-NAMESELF>.	<S-NAME> nods at <T-NAMESELF>.	<S-NAME> nods at you.	Nod your head off -- they aren't here.
 ot	ROSE <T-NAME>	You give <T-HIM-HER> a pretty rose.	<S-NAME> hands <T-NAMESELF> a beautiful rose.	<S-NAME> hands you a beautiful ---'---,--{@	They seem to have left.
 ms	BKISS <T-NAME>	You blow a kiss at <T-NAMESELF> and wonder if <T-HE-SHE> will catch it.	<S-NAME> blows a kiss at <T-NAMESELF> ... isn't <S-HE-SHE> so CUTE?	<S-NAME> blows a kiss at you and hopes you'll blow one back at <S-HIM-HER>.	You kiss falls to the ground with no one to go to.
@@ -256,7 +256,7 @@ ov	WIGGY	You wiggy about.	<S-NAME> wiggies about.
 ss	RASPBERRY SELF	You try to stick your tongue out at yourself... somehow, it isn't the same.			
 ot	FONDLE	Who needs to be fondled ?			
 ss	CHORTLE	Heh.	<S-NAME> chortles mischievously.		
-oo	PILLOW <T-NAME>	You *WHACK* <T-NAMESELF> over the head with a pillow.	<S-NAME> *WHACKS* you over the head with a pillow.	null	null
+oo	PILLOW <T-NAME>	You *WHACK* <T-NAMESELF> over the head with a pillow.	<S-NAME> *WHACKS* you over the head with a pillow.		
 mo	BUFF	You buff your nails on your cloak.	<S-NAME> buffs <S-HIS-HER> nails on <S-HIS-HER> cloak.		
 ov	MOSH	You mosh insanely around the room!	<S-NAME> moshes insanely around the room!		
 mo	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.
@@ -614,7 +614,7 @@ mo	PISSED	You are PISSED!	<S-NAME> is PISSED so watch out!
 ww	SERENADE SELF	You sing a loud serenade to yourself.  What type of person are you?!	<S-NAME> serenades <S-HIM-HERSELF>.  What an ego!		
 oo	GOOSE	Who would you like to goose?			
 mo	NIBBLE SELF	You nibble on your OWN ear ???????????????????	<S-NAME> nibbles on <S-HIS-HER> OWN ear (I wonder how it is done !!).		
-mo	PALE SELF	You feel the blood draining from your face.	null	null	null
+mo	PALE SELF	You feel the blood draining from your face.			
 ss	LAUGH <T-NAME>	You laugh at <T-NAMESELF> mercilessly.	<S-NAME> laughs at <T-NAMESELF> mercilessly.	<S-NAME> laughs at you mercilessly.	You can't find the butt of your joke.
 mo	MATE	Umm, with yourself?			
 mo	MATE SELF	You make passionate love to yourself.	You don't want to know what <S-NAME> is doing right now.		

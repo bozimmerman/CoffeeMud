@@ -586,22 +586,28 @@ public class StdMOB implements MOB
 				+(((envStats().disposition()&EnvStats.IS_SLEEPING)>0)?30:0)
 				-50;
 	}
+	
 	public int adjustedDamage(Weapon weapon, MOB target)
 	{
 		double damageAmount=0.0;
-		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-			damageAmount = new Integer(Dice.roll(1, weapon.envStats().damage(),1)).doubleValue();
-		else
-			damageAmount = new Integer(Dice.roll(1, envStats().damage(), (charStats().getStat(CharStats.STRENGTH) / 3)-2)).doubleValue();
 		if(target!=null)
 		{
+			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
+				damageAmount = new Integer(Dice.roll(1, weapon.envStats().damage(),1)).doubleValue();
+			else
+				damageAmount = new Integer(Dice.roll(1, envStats().damage(), (charStats().getStat(CharStats.STRENGTH) / 3)-2)).doubleValue();
 			if(!Sense.canBeSeenBy(target,this)) damageAmount *=.5;
 			if(Sense.isSleeping(target)) damageAmount *=1.5;
 			else
 			if(Sense.isSitting(target)) damageAmount *=1.2;
-			if(curState().getHunger() < 1) damageAmount *= .8;
-			if(curState().getThirst() < 1) damageAmount *= .9;
 		}
+		else
+		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
+			damageAmount = new Integer(weapon.envStats().damage()+1).doubleValue();
+		else
+			damageAmount = new Integer(envStats().damage()+(charStats().getStat(CharStats.STRENGTH) / 3)-2).doubleValue();
+		if(curState().getHunger() < 1) damageAmount *= .8;
+		if(curState().getThirst() < 1) damageAmount *= .9;
 		if(damageAmount<1.0) damageAmount=1.0;
 		return (int)Math.round(damageAmount);
 	}

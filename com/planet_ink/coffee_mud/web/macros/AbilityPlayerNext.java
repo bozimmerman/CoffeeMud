@@ -32,7 +32,7 @@ public class AbilityPlayerNext extends StdWebMacro
 		String playerName=httpReq.getRequestParameter("PLAYER");
 		MOB M=null;
 		if((playerName!=null)&&(playerName.length()>0))
-			M=PlayerNext.getMOB(playerName);
+			M=Authenticate.getMOB(playerName);
 		if(M==null)
 		{
 			if(parms.containsKey("EMPTYOK"))
