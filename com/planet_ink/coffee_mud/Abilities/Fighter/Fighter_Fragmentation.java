@@ -18,6 +18,14 @@ public class Fighter_Fragmentation extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Fighter_Fragmentation();}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((msg.target() instanceof Weapon)
+		&&(msg.tool()==this))
+			((Weapon)msg.target()).destroy();
+		super.executeMsg(myHost,msg);
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected instanceof MOB)
@@ -26,13 +34,14 @@ public class Fighter_Fragmentation extends StdAbility
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0)
+		&&(msg.target() instanceof MOB)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			if(Dice.rollPercentage()<25) helpProfficiency((MOB)affected);
-			msg.addTrailerMsg(new FullMsg(msg.target(),msg.tool(),null,CMMsg.MSG_OK_VISUAL,"<O-NAME> fragment(s) in <T-NAME>!"));
+			msg.addTrailerMsg(new FullMsg((MOB)msg.target(),msg.tool(),this,CMMsg.MSG_OK_VISUAL,"<O-NAME> fragment(s) in <T-NAME>!"));
 			msg.setValue(msg.value()+(2*(int)Math.round(Util.mul(msg.value(),Util.div(profficiency(),100.0)))));
-			((Weapon)msg.tool()).destroy();
 		}
+			
 		return super.okMessage(myHost,msg);
 	}
 

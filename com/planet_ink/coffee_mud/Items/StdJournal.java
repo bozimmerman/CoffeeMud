@@ -284,4 +284,5 @@ public class StdJournal extends StdItem
 			return text.substring(0,readeq);
 		return text;
 	}
+	public void recoverEnvStats(){Sense.setReadable(this,true); super.recoverEnvStats();}
 }

@@ -47,34 +47,70 @@ public class Barbarian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Fighter_Charge",true);
+			
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",false);
+			
+			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
+			
 			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",false);
+			
+			CMAble.addCharAbilityMapping(ID(),5,"Fighter_SmokeSignals",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Scalp",false);
+			
 			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Cleave",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Battlecry",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Fighter_Battlecry",false);
+			
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_Disarm",false);
-			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Berzerk",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_Disarm",true);
+			
+			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Berzerk",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Fighter_Rescue",false);
+			
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Spring",true);
+			
+			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Spring",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Apothecary",0,"ANTIDOTES",false);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",false);
+			
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Fighter_JungleTactics",false);
+			
 			CMAble.addCharAbilityMapping(ID(),12,"Fighter_Intimidate",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Fighter_SwampTactics",false);
+			
 			CMAble.addCharAbilityMapping(ID(),13,"Fighter_Warcry",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Fighter_DesertTactics",false);
+			
+			CMAble.addCharAbilityMapping(ID(),14,"Fighter_ImprovedThrowing",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Fighter_MountainTactics",false);
+			
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),15,"Fighter_WeaponBreak",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Fighter_WeaponBreak",true);
+			
 			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Sweep",false);
-			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Rallycry",true);
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_MountedCombat",false);
-			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Endurance",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Skill_IdentifyPoison",false);
-			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Rallycry",false);
+			
+			CMAble.addCharAbilityMapping(ID(),17,"Skill_MountedCombat",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Fighter_HillsTactics",false);
+			
+			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Endurance",false);
+			
+			CMAble.addCharAbilityMapping(ID(),19,"Skill_IdentifyPoison",true);
+			
+			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
-			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Roll",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Fighter_BullRush",false);
+			
+			CMAble.addCharAbilityMapping(ID(),21,"Fighter_Roll",true);
+			
+			CMAble.addCharAbilityMapping(ID(),22,"Fighter_ForestTactics",false);
+			
+			CMAble.addCharAbilityMapping(ID(),23,"Fighter_BullRush",true);
+			
+			CMAble.addCharAbilityMapping(ID(),24,"Fighter_Fragmentation",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Fighter_PlainsTactics",false);
+			
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Stonebody",true);
+			
 			CMAble.addCharAbilityMapping(ID(),30,"Fighter_Shrug",true);
 		}
 	}

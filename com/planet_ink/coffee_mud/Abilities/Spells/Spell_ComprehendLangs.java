@@ -51,26 +51,33 @@ public class Spell_ComprehendLangs extends Spell
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
 		&&(!msg.amISource((MOB)affected))
-		&&((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
-		   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
-		&&(msg.tool() !=null)
-		&&(msg.sourceMessage()!=null)
-		&&(msg.tool() instanceof Ability)
-		&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
-		&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
+		&&(msg.tool() instanceof Ability))
 		{
-			String str=this.getMsgFromAffect(msg.sourceMessage());
-			if(str!=null)
+			if((msg.tool().ID().equals("Fighter_SmokeSignals"))
+			&&(msg.sourceCode()==CMMsg.NO_EFFECT)
+			&&(msg.targetCode()==CMMsg.NO_EFFECT)
+			&&(msg.othersMessage()!=null))
+				msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,"The smoke signals seem to say '"+msg.othersMessage()+"'.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+			else
+			if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+			   ||(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL)))
+			&&(msg.sourceMessage()!=null)
+			&&(((Ability)msg.tool()).classificationCode()==Ability.LANGUAGE)
+			&&(((MOB)affected).fetchEffect(msg.tool().ID())==null))
 			{
-				if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-					msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
-				else
-				if(msg.amITarget(null)&&(msg.targetMessage()!=null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
-				else
-				if(!msg.amITarget(null)&&(msg.othersMessage()!=null))
-					msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
+				String str=this.getMsgFromAffect(msg.sourceMessage());
+				if(str!=null)
+				{
+					if(Util.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+						msg.addTrailerMsg(new FullMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),this.subStitute(msg.othersMessage(),str)+" (translated from "+ID()+")"));
+					else
+					if(msg.amITarget(null)&&(msg.targetMessage()!=null))
+						msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,this.subStitute(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
+					else
+					if(!msg.amITarget(null)&&(msg.othersMessage()!=null))
+						msg.addTrailerMsg(new FullMsg(msg.source(),(MOB)affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,this.subStitute(msg.othersMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
+				}
 			}
 		}
 	}

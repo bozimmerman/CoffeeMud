@@ -79,7 +79,22 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 			super.unInvoke();
 			if(canBeUninvoked())
+			{
+				if(!mob.amDead())
+				{
+					Ability A=mob.fetchEffect("TemporaryImmunity");
+					if(A==null)
+					{
+						A=CMClass.getAbility("TemporaryImmunity");
+						A.setBorrowed(mob,false);
+						A.makeLongLasting();
+						mob.addEffect(A);
+						A.makeLongLasting();
+					}
+					A.setMiscText("+"+ID());
+				}
 				mob.tell(mob,null,this,DISEASE_DONE());
+			}
 		}
 		else
 			super.unInvoke();

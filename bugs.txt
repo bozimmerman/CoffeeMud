@@ -1,16 +1,9 @@
 ?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
 ?Test: Shield Block, Far Shot, Counter Att, AutoBash, Weapon Catch, Body Shield
-True Sight does not penetrate DISGUISE like intended.
-
-Fighters:
-Smoke Signals  Requires a fire. Puffs of smoke produce a message for all in the area who can  read smoke signals (has smoke signal skill). To all others it says you see  puffs of smoke in the air. Totally a role-playing skill. Can't think of  
-Scalp Barbarian(5), Templar(10), Assassin (10), or Thief(20)  
-Fragmentation   A critical shot enhancement for barbarians that only works with thrown weapons,  does an EXTRA 3 times damage, but destroys the thrown weapon in the process.  
-(SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) Tactics  gives bonuses to combat in those terrains. Also allows a Barbarian to  HIDE in that type of terrain if he remains in a room of that type for more  than 2 minutes....  
-Improved Throwing  Barbarian does extra damage with hurled items.  
-Grab opponent  prevents them from changing range, allows one fewer attack from barbar  
-Piledrive  follows up a bodytoss with a powerful elbow attack. must have bodytoss to use.  
-Tactics  for fighters, gives allies bonus to hit.  
+Test: Improved Throwing, Smoke Signals, Fragmentation, Scalp, Tactics
+diseases that don't kill you should go away
+break up report on combo in mudgrinder statistics
+geased the bartender to kill the bard, and he can't find him?!
 
 Delver:
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
@@ -51,7 +44,6 @@ Delver:
 6Stone friend 	A charm spell that works against STONE/METAL golems, and against EARTH elementals. 
 7Earthpocket  Creates a cart for the delver that can stonewalk with him. It is kinda like a floating disk spell, with the items locked inside a pocket of earth that only the delver can get to. I would love for it to be a cart type item, though. (to make it different.)  
 
-time to re-balance the classes:
 ability to wish for body parts, ability to wish for lower level items (making level lower)
 mutable body parts, with ability to grant powers
 Some solution for variable eq on mobs -- use rejuv! 

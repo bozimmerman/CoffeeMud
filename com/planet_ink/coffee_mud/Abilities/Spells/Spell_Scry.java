@@ -101,7 +101,19 @@ public class Spell_Scry extends Spell
 			return false;
 		}
 
-
+		Ability A=target.fetchEffect(ID());
+		if((A!=null)&&(A.invoker()==mob))
+		{
+			A.unInvoke();
+			return true;
+		}
+		else
+		if(A!=null)
+		{
+			mob.tell("You can't seem to focus on '"+mobName+"'.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
