@@ -131,8 +131,8 @@ Master Armorsmith
 	DwarvenFieldPlate, with added bonus to STR and protection
 Knowledge <common skill>
 	Ability to peruse the recipe file.
-Smoke Rings
-	Ability to make smoke rings.
+Knowledge <race>
+	Allow opponent knowledge of that racial cat.
 Sexual Techniques
 	Gives mana bonuses following sex with someone who has this skill.
 Additions/Updates

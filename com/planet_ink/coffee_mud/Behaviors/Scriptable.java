@@ -2736,7 +2736,10 @@ public class Scriptable extends StdBehavior
 				if((newTarget!=null)&&(A!=null))
 				{
 					A.setMiscText(m2);
-					A.invoke(monster,Util.parse(m2),newTarget,true);
+					if((A.classificationCode()&Ability.ALL_CODES)==A.PROPERTY)
+						newTarget.addNonUninvokableAffect(A);
+					else
+						A.invoke(monster,Util.parse(m2),newTarget,true);
 				}
 				break;
 			}

@@ -102,7 +102,8 @@ public class Skill_TwoWeaponFighting extends StdAbility
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)
 				&&(!Sense.isSitting(mob))
-				&&(profficiencyCheck(0,false)))
+				&&(profficiencyCheck(0,false))
+				&&(!mob.getVictim().amDead()))
 				{
 					primaryWeapon.setRawWornCode(Item.HELD);
 					weapon.setRawWornCode(Item.WIELD);

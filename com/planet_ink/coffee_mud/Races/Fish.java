@@ -49,15 +49,38 @@ public class Fish extends StdRace
 		}
 		return naturalWeapon;
 	}
+
+	public boolean isWaterRoom(Room R)
+	{
+		if(R==null) return false;
+		if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+		||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
+		||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			return true;
+		return false;
+	}
+	
+	public boolean okAffect(Environmental affected, Affect msg)
+	{
+		if((msg.targetMinor()==Affect.TYP_ENTER)
+		&&(msg.amISource((MOB)affected))
+		&&(msg.target() instanceof Room)
+		&&(msg.tool() instanceof Exit)
+		&&(!isWaterRoom((Room)msg.target())))
+		{
+			((MOB)affected).tell("That way looks too dry.");
+			return false;
+		}
+		return true;
+	}
+	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		MOB mob=(MOB)affected;
 		if(mob.location()!=null)
 	    {
-			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+			if(isWaterRoom(mob.location()))
 			{
 				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
 					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);

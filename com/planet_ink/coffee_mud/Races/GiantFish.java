@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class GiantFish extends StdRace
+public class GiantFish extends Fish
 {
 	public String ID(){	return "GiantFish"; }
 	public String name(){ return "Giant Fish"; }
@@ -26,6 +26,7 @@ public class GiantFish extends StdRace
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.STRENGTH,10);
 		affectableStats.setStat(CharStats.DEXTERITY,13);
 	}
 	public String arriveStr()
@@ -45,27 +46,6 @@ public class GiantFish extends StdRace
 			naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 		}
 		return naturalWeapon;
-	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		MOB mob=(MOB)affected;
-		if(mob.location()!=null)
-	    {
-			if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
-			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-			{
-				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
-					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
-			}
-			else
-			{
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
-				if((affectableStats.disposition()&EnvStats.IS_SWIMMING)>0)
-					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SWIMMING);
-			}
-		}
 	}
 	public Vector myResources()
 	{
