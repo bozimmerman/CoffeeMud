@@ -1,12 +1,16 @@
 ONCE_PROG
-	QUESTCHAT Help, I'm drowning!
+	if inlocale($i Water)
+		QUESTCHAT Help, I'm drowning!
+	else
+		mpendquest drowning
+	endif
 	mpsetvar $i DROWNING ''
 ~
 
 ALL_GREET_PROG 99
-	if var($i DROWNING == '') AND inroom($i WaterSurface)
+	if var($i DROWNING == '') AND inlocale($i Water)
 		if ispc($n)
-			say "$n" Thank goodness! I can't swim! Get me out of here!
+			say "$n" Thank goodness! I can't swim! Bring me a boat and get me out of here!
 			follow $n
 			mpsetvar $i DROWNING $n
 		endif
@@ -14,18 +18,18 @@ ALL_GREET_PROG 99
 ~
 
 RAND_PROG 90
-	if !inroom($i Water) and isfollow($i)
-		if var($i DROWNING != '')
-			say "$<$i DROWNING>" You saved me!
+	if (!inlocale($i Water))
+		if var($i DROWNING != '') and ishere($f)
+			say "$f" You saved me!
 			follow self
-			if !QUESTWINNER('$<$i DROWNING>' drowning)
-				mpexp '$<$i DROWNING>' 100
+			if !QUESTWINNER($f drowning)
+				mpexp $f 100
 				mpoload QuestPoint
-				give "a quest point" "$<$i DROWNING>"
+				give "a quest point" "$f"
 			endif
 			mpoload 100
-			give 100 "$<$i DROWNING>"
-			mpquestwin '$<$i DROWNING>' drowning
+			give 100 "$f"
+			mpquestwin $f drowning
 			mpendquest drowning
 		else
 			say "Well, I'm safe.  But I'm not sure how.  Ah well."
@@ -40,18 +44,18 @@ QUEST_TIME_PROG diseased 1
 ~
 
 EXIT_PROG 99
-	if !inroom($i Water) and isfollow($i)
-		if var($i DROWNING != '')
-			say "$<$i DROWNING>" You saved me!
+	if (!inlocale($i Water))
+		if var($i DROWNING != '') and ishere($f)
+			say "$f" You saved me!
 			follow self
-			if !QUESTWINNER('$<$i DROWNING>' drowning)
-				mpexp '$<$i DROWNING>' 100
+			if !QUESTWINNER($f drowning)
+				mpexp $f 100
 				mpoload QuestPoint
-				give "a quest point" "$<$i DROWNING>"
+				give "a quest point" "$f"
 			endif
 			mpoload 100
-			give 100 "$<$i DROWNING>"
-			mpquestwin '$<$i DROWNING>' drowning
+			give 100 "$f"
+			mpquestwin $f drowning
 			mpsetvar $i DROWNING ''
 			mpendquest drowning
 		else

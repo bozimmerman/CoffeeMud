@@ -143,7 +143,7 @@ public class Quests implements Cloneable, Quest
 							for(int i=0;i<R2.numInhabitants();i++)
 							{
 								MOB M2=R2.fetchInhabitant(i);
-								if(M2!=null)
+								if((M2!=null)&&(M2.isMonster()))
 								{
 									if(mobType.equalsIgnoreCase("any"))
 										choices.addElement(M2);
@@ -156,7 +156,7 @@ public class Quests implements Cloneable, Quest
 								}
 							}
 						}
-						if(choices.size()>0)
+						if((choices!=null)&&(choices.size()>0))
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(M==null)
 						{
@@ -202,7 +202,7 @@ public class Quests implements Cloneable, Quest
 								}
 							}
 						}
-						if(choices.size()>0)
+						if((choices!=null)&&(choices.size()>0))
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)
 						{
@@ -252,7 +252,7 @@ public class Quests implements Cloneable, Quest
 									choices.addElement(R2);
 							}
 						}
-						if(choices.size()>0)
+						if((choices!=null)&&(choices.size()>0))
 							R=(Room)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(R==null)
 						{
@@ -341,7 +341,7 @@ public class Quests implements Cloneable, Quest
 							for(int i=0;i<R2.numInhabitants();i++)
 							{
 								MOB M2=R2.fetchInhabitant(i);
-								if(M2!=null)
+								if((M2!=null)&&(M2.isMonster()))
 								{
 									String mname=M2.name().toUpperCase();
 									String mdisp=M2.displayText().toUpperCase();
@@ -380,7 +380,7 @@ public class Quests implements Cloneable, Quest
 								}
 							}
 						}
-						if(choices.size()>0)
+						if((choices!=null)&&(choices.size()>0))
 							M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(M==null)
 						{
@@ -459,7 +459,7 @@ public class Quests implements Cloneable, Quest
 								}
 							}
 						}
-						if(choices.size()>0)
+						if((choices!=null)&&(choices.size()>0))
 							I=(Item)choices.elementAt(Dice.roll(1,choices.size(),-1));
 						if(I==null)
 						{
@@ -834,16 +834,20 @@ public class Quests implements Cloneable, Quest
 							Log.errOut("Quest '"+name()+"', cannot give affect, ability name unknown '"+((String)p.elementAt(2))+".");
 							error=true; break;
 						}
-						if(M.fetchAffect(A3.ID())!=null)
+						if(E.fetchAffect(A3.ID())!=null)
 						{
 							A3=E.fetchAffect(A3.ID());
+							A3.makeLongLasting();
 							A3.setMiscText(Util.combine(p,3));
-							A3.makeNonUninvokable();
 						}
 						else 
 						{
 							A3.setMiscText(Util.combine(p,3));
-							E.addNonUninvokableAffect(A3);
+							if(M!=null)
+								A3.startTickDown(M,E,99999);
+							else
+								A3.startTickDown(null,E,99999);
+							A3.makeLongLasting();
 						}
 					}
 					else

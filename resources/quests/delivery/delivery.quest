@@ -10,7 +10,7 @@ set area any
 set mobtype Human
 # load up any mob from the above area.  Will set a room!
 
-give behavior Scriptable LOAD=quests/smurfocide/deliverer.script
+give behavior Scriptable LOAD=quests/delivery/deliverer.script
 # load the above behavior into the last mob (Human)
 
 load item secret note
@@ -28,7 +28,7 @@ set area any
 set mobtype Human
 # load up any other mob from any other area.  Will set a room!
 
-give behavior Scriptable LOAD=quests/smurfocide/deliveree.script
+give behavior Scriptable LOAD=quests/delivery/deliveree.script
 # load the above behavior into the last mob (Human)
 
 set duration 75

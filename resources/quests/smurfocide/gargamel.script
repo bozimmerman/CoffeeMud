@@ -23,6 +23,7 @@ GIVE_PROG 'the body of papa smurf'
 			MPPURGE $o
 		else
 			if var($n SMURFOCIDE >= 19)
+				mpsetvar $i SMURFOCIDE DONE
 				say "$n" Wonderful!  Now I can make my famous smurf stew!
 				MPFORCE Azreal emote licks his lips.
 				mpexp $n 100
@@ -31,7 +32,7 @@ GIVE_PROG 'the body of papa smurf'
 				mpquestwin $n smurfocide
 				mpendquest smurfocide
 			else
-				say "$n" Well done.  This was a nasty one.  Now bring me the rest!
+				say "$n" Well done.  This was a nasty one.  Thats $<$n SMURFOCIDE>. Now bring me the rest!
 				MPSETVAR $n PAPASMURF DONE
 			endif
 		endif
@@ -47,7 +48,9 @@ GIVE_PROG 'the body of a smurf' 'the body of handy smurf' 'the body of grumpy sm
 			say "$n" Sorry, someone beat you!
 			MPPURGE $o
 		else
+			mpsetvar $n SMURFOCIDE ++
 			if var($n SMURFOCIDE >= 19) AND var($n PAPASMURF == DONE)
+				mpsetvar $i SMURFOCIDE DONE
 				say "$n" Wonderful!  Now I can make my famous smurf stew!
 				MPFORCE Azreal emote licks his lips.
 				mpexp $n 100
@@ -56,8 +59,7 @@ GIVE_PROG 'the body of a smurf' 'the body of handy smurf' 'the body of grumpy sm
 				mpquestwin $n smurfocide
 				mpendquest smurfocide
 			else
-				mpsetvar $n SMURFOCIDE ++
-				say "$n" Lovely! Keep them coming!
+				say "$n" Lovely! Thats $<$n SMURFOCIDE>. Keep them coming!
 			endif
 		endif
 	endif

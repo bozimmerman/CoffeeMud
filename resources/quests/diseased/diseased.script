@@ -1,13 +1,15 @@
 ONCE_PROG
 	QUESTCHAT Help, I'm dying of plague!
 	mpsetvar $i DISEASED ''
-	sit
+	sleep
 ~
 
 ALL_GREET_PROG 99
 	if var($i DISEASED == '') AND affected($i Disease_Plague)
 		if ispc($n)
+			wake
 			say "$n" Thank goodness! Please help! I have the plague!
+			sleep
 		endif
 	endif
 ~
@@ -21,14 +23,14 @@ RAND_PROG 90
 	if !affected($i Disease_Plague)
 		mpsetvar $i DISEASED $r
 		say "$<$i DISEASED>" You saved me!
-		if !QUESTWINNER('$<$i DISEASED>' drowning)
+		if !QUESTWINNER('$<$i DISEASED>' diseased)
 			mpexp '$<$i DISEASED>' 100
 			mpoload QuestPoint
 			give "a quest point" "$<$i DISEASED>"
 		endif
 		mpoload 100
 		give 100 "$<$i DISEASED>"
-		mpquestwin '$<$i DISEASED>' drowning
+		mpquestwin '$<$i DISEASED>' diseased
 		mpsetvar $i DISEASED ''
 		mpendquest diseased
 	endif

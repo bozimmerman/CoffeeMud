@@ -18,7 +18,13 @@ public class Emoter extends ActiveTicker
 		return new Emoter();
 	}
 
-	protected Vector emotes=new Vector();
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		emotes=null;
+	}
+	
+	protected Vector emotes=null;
 	protected boolean broadcast=false;
 
 	protected final static int EMOTE_VISUAL=0;
@@ -27,13 +33,13 @@ public class Emoter extends ActiveTicker
 	protected int emoteType=0;
 
 
-	public void setParms(String newParms)
+	private Vector parseEmotes()
 	{
-		parms=newParms;
+		if(emotes!=null) return emotes;
 		broadcast=false;
 		emoteType=EMOTE_VISUAL;
-
 		emotes=new Vector();
+		String newParms=getParms();
 		char c=';';
 		int x=newParms.indexOf(c);
 		if(x<0){ c='/'; x=newParms.indexOf(c);}
@@ -63,7 +69,6 @@ public class Emoter extends ActiveTicker
 					emoteType=EMOTE_SOUND;
 				}
 			}
-			super.setParms(parmText);
 		}
 		while(newParms.length()>0)
 		{
@@ -79,8 +84,9 @@ public class Emoter extends ActiveTicker
 			if(thisEmote.length()>0)
 				emotes.addElement(thisEmote);
 		}
+		return emotes;
 	}
-
+	
 	private void emoteHere(Room room, MOB emoter, String emote)
 	{
 		if(room==null) return;
@@ -112,6 +118,7 @@ public class Emoter extends ActiveTicker
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
+		parseEmotes();
 		if((canAct(ticking,tickID))&&(emotes.size()>0))
 		{
 			String emote=(String)emotes.elementAt(Dice.roll(1,emotes.size(),-1));

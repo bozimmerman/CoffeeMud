@@ -37,6 +37,7 @@ public class SysOpSkills
 		{
 			mob.tell("All resources unloaded.");
 			Resources.clearResources();
+			return;
 		}
 		Vector V=Resources.findResourceKeys(str);
 		if(V.size()==0)

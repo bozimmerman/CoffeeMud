@@ -29,7 +29,8 @@ public class Scriptable extends StdBehavior
 		"EXIT_PROG", //9
 		"DEATH_PROG", //10
 		"HITPRCNT_PROG", //11
-		"MASK_PROG" //12
+		"MASK_PROG", //12
+		"QUEST_TIME_PROG" // 13
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -63,7 +64,12 @@ public class Scriptable extends StdBehavior
 		"QUESTMOB", // 29
 		"QUESTOBJ", // 30
 		"ISQUESTMOBALIVE", // 31
-		"ISINAREA" // 32
+		"NUMMOBSINAREA", // 32
+		"NUMMOBS", // 33
+		"NUMRACESINAREA", // 34
+		"NUMRACES", // 35
+		"ISHERE", // 36
+		"INLOCALE" // 37
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -272,20 +278,33 @@ public class Scriptable extends StdBehavior
 
 	public Environmental getArgumentItem(String str, MOB source, MOB monster, Environmental target, Item primaryItem, Item secondaryItem)
 	{
-		if(str.equalsIgnoreCase("$n"))
-			return source;
-		else
-		if(str.equalsIgnoreCase("$i"))
-			return monster;
-		else
-		if(str.equalsIgnoreCase("$t"))
-			return target;
-		else
-		if(str.equalsIgnoreCase("$o"))
-			return primaryItem;
-		else
-		if(str.equalsIgnoreCase("$p"))
-			return secondaryItem;
+		if(str.length()<2) return null;
+		if(str.charAt(0)=='$')
+		{
+			switch(str.charAt(1))
+			{
+			case 'N':
+			case 'n': return source; 
+			case 'I':
+			case 'i': return monster; 
+			case 'T':
+			case 't': return target; 
+			case 'O':
+			case 'o': return primaryItem; 
+			case 'P':
+			case 'p': return secondaryItem; 
+			case 'F':
+			case 'f': if((monster!=null)&&(monster.amFollowing()!=null))
+						return monster.amFollowing();
+					  else
+						return null;
+			}
+		}
+		if(lastKnownLocation!=null)
+		{
+			str=varify(source,target,monster,primaryItem,secondaryItem,str);
+			return lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Item.WORN_REQ_ANY);
+		}
 		return null;
 	}
 	
@@ -494,7 +513,13 @@ public class Scriptable extends StdBehavior
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
-					returnable=!(((MOB)E).amFollowing()==null)||(((MOB)E).amFollowing().location()!=lastKnownLocation);
+				if(((MOB)E).amFollowing()==null)
+					returnable=false;
+				else
+				if(((MOB)E).amFollowing().location()!=lastKnownLocation)
+					returnable=false;
+				else
+					returnable=true;
 				break;
 			}
 			case 7: // isname
@@ -560,13 +585,167 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
-			case 32: // isinarea
+			case 32: // nummobsinarea
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				int num=0;
 				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
-					if(R.fetchInhabitant(arg1)!=null) return true;
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+							num++;
+					}
+				}
+				int val2=Util.s_int(arg3);
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(num==val2);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(num>=val2);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(num<=val2);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(num>val2);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(num<val2);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(num!=val2);
+				else
+				{
+					Log.errOut("Scriptable","NUMMOBSINAREA Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				break;
+			}
+			case 33: // nummobs
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				int num=0;
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+							num++;
+					}
+				}
+				int val2=Util.s_int(arg3);
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(num==val2);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(num>=val2);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(num<=val2);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(num>val2);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(num<val2);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(num!=val2);
+				else
+				{
+					Log.errOut("Scriptable","NUMMOBS Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				break;
+			}
+			case 34: // numracesinarea
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				int num=0;
+				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.charStats().getMyRace().name().equalsIgnoreCase(arg1)))
+							num++;
+					}
+				}
+				int val2=Util.s_int(arg3);
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(num==val2);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(num>=val2);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(num<=val2);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(num>val2);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(num<val2);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(num!=val2);
+				else
+				{
+					Log.errOut("Scriptable","NUMRACESINAREA Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
+				}
+				break;
+			}
+			case 35: // numraces
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),0)).toUpperCase();
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
+				int num=0;
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M!=null)&&(M.charStats().getMyRace().name().equalsIgnoreCase(arg1)))
+							num++;
+					}
+				}
+				int val2=Util.s_int(arg3);
+				if(arg2.equalsIgnoreCase("=="))
+					returnable=(num==val2);
+				else
+				if(arg2.equalsIgnoreCase(">="))
+					returnable=(num>=val2);
+				else
+				if(arg2.equalsIgnoreCase("<="))
+					returnable=(num<=val2);
+				else
+				if(arg2.equalsIgnoreCase(">"))
+					returnable=(num>val2);
+				else
+				if(arg2.equalsIgnoreCase("<"))
+					returnable=(num<val2);
+				else
+				if(arg2.equalsIgnoreCase("!="))
+					returnable=(num!=val2);
+				else
+				{
+					Log.errOut("Scriptable","NUMRACES Syntax -- "+monster.name()+", "+evaluable);
+					return returnable;
 				}
 				break;
 			}
@@ -625,10 +804,28 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 36: // ishere
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
+				if(E==null) 
+					returnable=false;
+				else
+				if(E instanceof MOB) 
+					returnable=lastKnownLocation.isInhabitant((MOB)E);
+				else
+				if(E instanceof Item) 
+					returnable=(lastKnownLocation.isContent((Item)E)
+								||(monster.isMine(E))
+								||((source!=null)&&(source.isMine(E))));
+				else
+					returnable=false;
+				break;
+			}
 			case 17: // inroom
 			{
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
-				Environmental E=monster;
+				Environmental E=monster;		
 				Room R=getRoom(arg2,lastKnownLocation);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
@@ -639,7 +836,26 @@ public class Scriptable extends StdBehavior
 				if(R==null)
 					returnable=false;
 				else
-					returnable=((MOB)E).location().ID().equalsIgnoreCase(R.ID());
+				if(((MOB)E).location().ID().equalsIgnoreCase(R.ID()))
+					returnable=true;
+				else
+					returnable=false;
+				break;
+			}
+			case 37: // inlocale
+			{
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				Environmental E=monster;		
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				if(arg2.length()==0)
+					returnable=true;
+				else
+				if(CMClass.className(((MOB)E).location()).toUpperCase().indexOf(arg2.toUpperCase())>=0)
+					returnable=true;
+				else
+					returnable=false;
 				break;
 			}
 			case 18: // sex
@@ -1001,7 +1217,7 @@ public class Scriptable extends StdBehavior
 				String arg3=Util.getCleanBit(evaluable.substring(y+1,z),2);
 				String arg4=varify(source,target,monster,primaryItem,secondaryItem,Util.getCleanBit(evaluable.substring(y+1,z),3));
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
+				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","VAR Syntax -- "+monster.name()+", "+evaluable);
 					return returnable;
@@ -1055,6 +1271,26 @@ public class Scriptable extends StdBehavior
 		}
 		return returnable;
 	}
+	
+	private MOB getRandomMOB(MOB monster, MOB randMOB, Room room)
+	{
+		if((room!=null)
+		&&(monster!=null)
+		&&(room.numInhabitants()>1)
+		&&(room.isInhabitant(monster)))
+		{
+			int tries=0;
+			while((++tries)<1000)
+			{
+				if((randMOB!=null)
+				&&(randMOB!=monster)
+				&&((!randMOB.isMonster())||(room.numPCInhabitants()==0)))
+				   break;
+				randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+			}
+		}
+		return randMOB;
+	}
 
 	public String varify(MOB source, Environmental target, MOB monster, Item primaryItem, Item secondaryItem, String varifyable)
 	{
@@ -1091,14 +1327,21 @@ public class Scriptable extends StdBehavior
 				break;
 			case 'r':
 			case 'R':
-				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
-					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+				randMOB=getRandomMOB(monster,randMOB,room);
 				if(randMOB!=null)
 					middle=randMOB.name();
 				break;
 			case 'j':
 				if(monster!=null)
 					middle=monster.charStats().heshe();
+				break;
+			case 'f':
+				if((monster!=null)&&(monster.amFollowing()!=null))
+					middle=monster.amFollowing().name();
+				break;
+			case 'F':
+				if((monster!=null)&&(monster.amFollowing()!=null))
+					middle=monster.amFollowing().charStats().heshe();
 				break;
 			case 'e':
 				if(source!=null)
@@ -1109,8 +1352,7 @@ public class Scriptable extends StdBehavior
 					middle=((MOB)target).charStats().heshe();
 				break;
 			case 'J':
-				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
-					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+				randMOB=getRandomMOB(monster,randMOB,room);
 				if(randMOB!=null)
 					middle=randMOB.charStats().heshe();
 				break;
@@ -1127,8 +1369,7 @@ public class Scriptable extends StdBehavior
 					middle=((MOB)target).charStats().hisher();
 				break;
 			case 'K':
-				while((room!=null)&&(monster!=null)&&(room.numInhabitants()>1)&&(room.isInhabitant(monster))&&((randMOB==null)||(randMOB==monster)))
-					randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
+				randMOB=getRandomMOB(monster,randMOB,room);
 				if(randMOB!=null)
 					middle=randMOB.charStats().hisher();
 				break;
@@ -1260,9 +1501,7 @@ public class Scriptable extends StdBehavior
 					else
 					{
 						if(condition)
-						{
 							V.addElement(s);
-						}
 						if(cmd.equals("IF"))
 							depth++;
 						else
@@ -1713,7 +1952,7 @@ public class Scriptable extends StdBehavior
 				if((affect.targetMinor()==Affect.TYP_ENTER)
 				&&(affect.amITarget(lastKnownLocation))
 				&&(!affect.amISource(monster))
-				&&(canFreelyBehaveNormal(monster)))
+				&&(canActAtAll(monster)))
 				{
 					int prcnt=Util.s_int(Util.getCleanBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
@@ -1925,6 +2164,21 @@ public class Scriptable extends StdBehavior
 					{
 						oncesDone.addElement(script);
 						execute(mob,mob,mob,null,null,script);
+					}
+					break;
+				case 13: // questtimeprog
+					if(!oncesDone.contains(script))
+					{
+						Quest Q=Quests.fetchQuest(Util.getCleanBit(trigger,1));
+						if((Q!=null)&&(Q.running()))
+						{
+							int time=Util.s_int(Util.getCleanBit(trigger,2));
+							if(time>=Q.minsRemaining())
+							{
+								oncesDone.addElement(script);
+								execute(mob,mob,mob,null,null,script);
+							}
+						}
 					}
 					break;
 				}
