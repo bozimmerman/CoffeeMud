@@ -68,9 +68,9 @@ public class Paladin_Defend extends StdAbility
 				MOB mob=(MOB)affected;
 				mob.tell("Your successful defence has allowed you to disengage.");
 				MOB victim=mob.getVictim();
-				mob.makePeace();
-				if(victim.getVictim()==mob)
+				if((victim!=null)&&(victim.getVictim()==mob))
 					victim.makePeace();
+				mob.makePeace();
 				unInvoke();
 			}
 			fullRound=true;

@@ -291,20 +291,25 @@ public class Movement
 		{
 			if(direction.length()==0)
 			{
-				for(int i=0;i<7;i++)
+				Vector directions=new Vector();
+				for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 				{
 					Exit thisExit=mob.location().getExitInDir(i);
-					if(thisExit!=null)
-					{
-						if(thisExit.isOpen())
-						{
-							direction=Directions.getDirectionName(i);
-							break;
-						}
-					}
+					Room thisRoom=mob.location().getRoomInDir(i);
+					if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
+						directions.addElement(new Integer(direction));
+				}
+				// up is last resort
+				if(directions.size()>1)
+					directions.removeElement(new Integer(Directions.UP));
+				if(directions.size()>0)
+				{
+					directionCode=((Integer)directions.elementAt(Dice.roll(1,directions.size(),-1))).intValue();
+					direction=Directions.getDirectionName(directionCode);
 				}
 			}
-			directionCode=Directions.getDirectionCode(direction);
+			else
+				directionCode=Directions.getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
 				mob.tell("Flee where?!");
