@@ -1,6 +1,2 @@
-wizemote command
-tread water for water surfaces with water beneath
-add floating num to resources -- whether the item will float
-mobile parm LEASH=X rooms from start
 
 

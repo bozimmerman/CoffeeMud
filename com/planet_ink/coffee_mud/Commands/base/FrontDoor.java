@@ -282,7 +282,7 @@ public class FrontDoor
 				}
 				Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 
-				mob.setBitmap(0);
+				mob.setBitmap(MOB.ATT_NOTEACH);
 				if(mob.session().confirm("\n\rDo want ANSI colors (Y/n)?","Y"))
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
 

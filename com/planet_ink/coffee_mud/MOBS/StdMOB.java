@@ -54,7 +54,7 @@ public class StdMOB implements MOB
 	protected int Trains=0;
 	protected long AgeHours=0;
 	protected int Money=0;
-	protected int attributesBitmap=0;
+	protected int attributesBitmap=MOB.ATT_NOTEACH;
 	public long getAgeHours(){return AgeHours;}
 	public int getPractices(){return Practices;}
 	public int getExperience(){return Experience;}

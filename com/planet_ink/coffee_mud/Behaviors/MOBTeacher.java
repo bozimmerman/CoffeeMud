@@ -127,6 +127,11 @@ public class MOBTeacher extends CombatAbilities
 		ensureCharClass();
 	}
 
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		if(Util.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH))
+			affectedMOB.setBitmap(Util.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
+	}
 	public void affect(Environmental affecting, Affect affect)
 	{
 		if(myMOB==null) return;
@@ -135,8 +140,6 @@ public class MOBTeacher extends CombatAbilities
 			return;
 		MOB monster=myMOB;
 		MOB mob=affect.source();
-		if(Util.bset(monster.getBitmap(),MOB.ATT_NOTEACH))
-			monster.setBitmap(Util.unsetb(monster.getBitmap(),MOB.ATT_NOTEACH));
 
 		if((!affect.amISource(monster))
 		&&(!mob.isMonster())
