@@ -459,7 +459,7 @@ public class TheFight
 		if((mob.getBitmap()&MOB.ATT_AUTOMELEE)==0)
 		{
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOMELEE);
-			mob.tell("Automelee has been turned off.  You will no longer enter melee combat.");
+			mob.tell("Automelee has been turned off.  You will no longer charge into melee combat from a ranged position.");
 		}
 		else
 		{
