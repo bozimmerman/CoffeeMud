@@ -36,7 +36,7 @@ public class RandomMonsters extends ActiveTicker
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);
-				if((s.startsWith("+")||(s.startsWith("-")))&&(s.length()>1))
+				if((s.startsWith("+")||s.startsWith("-"))&&(s.length()>1))
 				{
 					if(restrictedLocales==null)
 						restrictedLocales=new Vector();
@@ -238,7 +238,11 @@ public class RandomMonsters extends ActiveTicker
 						if(restrictedLocales==null)
 						{
 							int tries=0;
-							while(((room==null)||(room.roomID().length()==0))&&((++tries)<100))
+							while(((room==null)||(room.roomID().length()==0))
+							&&((++tries)<100)
+							&&(Sense.isInFlight(M)
+							  ||(((room.domainType()&Room.DOMAIN_INDOORS_AIR)==0)
+							    &&((room.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))))
 								room=((Area)ticking).getRandomRoom();
 						}
 						else
@@ -247,8 +251,8 @@ public class RandomMonsters extends ActiveTicker
 							for(Enumeration e=((Area)ticking).getMap();e.hasMoreElements();)
 							{
 								Room R=(Room)e.nextElement();
-								if((okRoomForMe(M,R))
-								&&((Sense.isInFlight(M))
+								if(okRoomForMe(M,R)
+								&&(Sense.isInFlight(M)
 								  ||(((R.domainType()&Room.DOMAIN_INDOORS_AIR)==0)
 								    &&((R.domainType()&Room.DOMAIN_OUTDOORS_AIR)==0)))
 								&&(R.roomID().trim().length()>0))

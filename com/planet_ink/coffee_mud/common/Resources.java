@@ -78,13 +78,15 @@ public class Resources
 	
 	public static void removeResource(String ID)
 	{
-		for(int i=0;i<resourceIDs.size();i++)
-			if(((String)resourceIDs.elementAt(i)).equalsIgnoreCase(ID))
-			{
-				resourceIDs.removeElementAt(i);
-				resource.removeElementAt(i);
-				return;
-			}
+		try{
+			for(int i=0;i<resourceIDs.size();i++)
+				if(((String)resourceIDs.elementAt(i)).equalsIgnoreCase(ID))
+				{
+					resourceIDs.removeElementAt(i);
+					resource.removeElementAt(i);
+					return;
+				}
+		}catch(ArrayIndexOutOfBoundsException e){}
 	}
 	
 	public static Vector getFileLineVector(StringBuffer buf)
