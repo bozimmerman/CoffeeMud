@@ -595,6 +595,8 @@ public class Intermud implements Runnable, Persistent, Serializable {
         catch( PersistenceException e ) { }
 		shutdown=false;
     }
+	
+	
 
     /**
      * Adds a channel to the channel list.
