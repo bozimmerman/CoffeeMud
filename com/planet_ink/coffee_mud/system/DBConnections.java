@@ -803,7 +803,6 @@ public class DBConnections
 	public StringBuffer errorStatus()
 	{
 		StringBuffer status=new StringBuffer("");
-		
 		if(lockedUp)
 			status.append("#100 DBCONNECTIONS REPORTING A LOCKED STATE\n");
 		if(disconnected)

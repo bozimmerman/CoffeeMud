@@ -142,6 +142,7 @@ public class DataLoader
 			D=DBConnector.DBFetch();
 			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
 			{
+				DBConnector.DBDone(D);
 				D=DBConnector.DBFetch();
 				Vector keys=new Vector();
 				ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"'");
@@ -151,12 +152,11 @@ public class DataLoader
 					if(section.equalsIgnoreCase(section2))
 						keys.addElement(DBConnections.getRes(R,"CMPKEY"));
 				}
-				DBConnector.DBDone(D);
 				for(int i=0;i<keys.size();i++)
 				{
+					DBConnector.DBDone(D);
 					D=DBConnector.DBFetch();
 					D.update("DELETE FROM CMPDAT WHERE CMPKEY='"+((String)keys.elementAt(i))+"'",0);
-					DBConnector.DBDone(D);
 				}
 			}
 			else

@@ -347,7 +347,7 @@ public class MUD extends Thread implements MudHost
 			((MUD)mudThreads.elementAt(i)).acceptConnections=true;
 		Log.sysOut("MUD","Initialization complete.");
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,true);
-		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"UNKNOWN");
+		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"OK");
 		return true;
 	}
 
