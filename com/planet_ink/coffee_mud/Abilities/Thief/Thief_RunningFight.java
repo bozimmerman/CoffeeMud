@@ -42,11 +42,14 @@ public class Thief_RunningFight extends ThiefSkill
 		if(affect.amISource(mob)
 		&&(affect.targetMinor()==Affect.TYP_LEAVE)
 		&&(mob.isInCombat())
+		&&(mob.getVictim()!=null)
 		&&(affect.target()!=null)
 		&&(affect.target() instanceof Room)
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Exit)
-		&&(profficiencyCheck(0,false)))
+		&&(profficiencyCheck(0,false))
+		&&(Dice.rollPercentage()>mob.getVictim().charStats().getSave(CharStats.SAVE_TRAPS))
+		&&(Dice.rollPercentage()>mob.getVictim().charStats().getSave(CharStats.SAVE_MIND)))
 		{
 			MOB M=mob.getVictim();
 			if((M==null)||(M.getVictim()!=mob))

@@ -25,8 +25,10 @@ public class Thief_DetectTraps extends ThiefSkill
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
+		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
+			unlockThis=mob.location();
 		if(unlockThis==null)
-			unlockThis=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+			unlockThis=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(unlockThis==null) return false;
 
 		int oldProfficiency=profficiency();
@@ -46,7 +48,7 @@ public class Thief_DetectTraps extends ThiefSkill
 				if(exit!=null) opTrap=CMClass.fetchMyTrap(exit);
 				if((theTrap!=null)&&(opTrap!=null))
 				{
-					if((theTrap.sprung())&&(!opTrap.sprung()))
+					if((theTrap.disabled())&&(!opTrap.disabled()))
 						theTrap=opTrap;
 				}
 				else
@@ -58,13 +60,13 @@ public class Thief_DetectTraps extends ThiefSkill
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.sprung())))
+			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
 				setProfficiency(oldProfficiency);
 			if((!success)||(theTrap==null))
 				mob.tell("You don't find any traps on "+unlockThis.name()+".");
 			else
 			{
-				if(theTrap.sprung())
+				if(theTrap.disabled())
 					mob.tell(unlockThis.name()+" is trapped, but the trap looks safely sprung.");
 				else
 					mob.tell(unlockThis.name()+" definitely looks trapped.");

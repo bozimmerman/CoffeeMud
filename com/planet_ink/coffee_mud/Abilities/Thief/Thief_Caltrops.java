@@ -10,26 +10,22 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 {
 	public String ID() { return "Thief_Caltrops"; }
 	public String name(){ return "Caltrops";}
-	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"CALTROPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Caltrops();}
-	private boolean sprung=false;
-
-	public boolean sprung()
-	{
-		return sprung;
-	}
-	public void setSprung(boolean isSprung)
-	{
-		sprung=isSprung;
-		if(sprung==true)
-			unInvoke();
-	}
+	
+	public boolean disabled(){return false;}
+	public void disable(){ unInvoke();}
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
+	public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public String requiresToSet(){return "";}
+	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	{maliciousAffect(mob,E,0,-1); return (Trap)E.fetchAffect(ID());}
 
 	public void spring(MOB mob)
 	{
@@ -48,7 +44,6 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		Room room=(Room)affected;
 		if((msg.amITarget(room)||room.isInhabitant(msg.source()))
 		&&(!msg.amISource(invoker()))
-		&&(!sprung())
 		&&((msg.sourceMinor()==Affect.TYP_ENTER)
 			||(msg.sourceMinor()==Affect.TYP_LEAVE)
 			||(msg.sourceMinor()==Affect.TYP_FLEE)

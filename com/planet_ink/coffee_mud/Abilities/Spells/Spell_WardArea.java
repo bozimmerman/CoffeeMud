@@ -17,17 +17,16 @@ public class Spell_WardArea extends Spell implements Trap
 	public Environmental newInstance(){	return new Spell_WardArea();}
 	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
 	private boolean sprung=false;
-
-	public boolean sprung()
-	{
-		return sprung;
-	}
-	public void setSprung(boolean isSprung)
-	{
-		sprung=isSprung;
-	}
+	
+	public boolean disabled(){return sprung;}
+	public void disable(){unInvoke();}
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
+	public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public String requiresToSet(){return "";}
+	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	{beneficialAffect(mob,E,0);return (Trap)E.fetchAffect(ID());}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

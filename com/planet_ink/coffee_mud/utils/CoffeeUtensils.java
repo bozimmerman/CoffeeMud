@@ -368,6 +368,16 @@ public class CoffeeUtensils
 		return null;
 	}
 
+	public static void wanderAway(MOB M, boolean mindPCs)
+	{
+		Behavior B=CMClass.getBehavior("Mobile");
+		Room R=M.location();
+		if(R==null) return;
+		int tries=0;
+		while((M.location()==R)&&((++tries)<100)&&((!mindPCs)||(M.location().numPCInhabitants()>0)))
+			B.tick(M,Host.MOB_TICK);
+	}
+	
 	public static Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;

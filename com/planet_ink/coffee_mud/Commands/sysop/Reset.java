@@ -164,7 +164,8 @@ public class Reset
 					for(int i=0;i<M.numBehaviors();i++)
 					{
 						Behavior B=M.fetchBehavior(i);
-						if((B.ID().equalsIgnoreCase("Mobile"))&&(B.getParms().trim().length()>0))
+						if((B.ID().equalsIgnoreCase("Mobile"))
+						&&(B.getParms().trim().length()>0))
 						{
 							somethingDone=true;
 							B.setParms("");

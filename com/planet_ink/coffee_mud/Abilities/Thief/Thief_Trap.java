@@ -19,61 +19,97 @@ public class Thief_Trap extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		String whatTounlock=Util.combine(commands,0);
-		Environmental unlockThis=null;
-		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
-		if(dirCode>=0)
-			unlockThis=mob.location().getExitInDir(dirCode);
-		if(unlockThis==null)
-			unlockThis=this.getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_UNWORNONLY);
-		if(unlockThis==null) return false;
+		Trap theTrap=null;
+		Vector traps=new Vector();
+		int qualifyingClassLevel=CMAble.qualifyingClassLevel(mob,this);
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		{
+			Ability A=(Ability)a.nextElement();
+			if((A instanceof Trap)&&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
+				traps.addElement(A);
+		}
+		Environmental trapThis=givenTarget;
+		if(trapThis!=null)
+			theTrap=(Trap)traps.elementAt(Dice.roll(1,traps.size(),-1));
+		else
+		if(Util.combine(commands,0).equalsIgnoreCase("list"))
+		{
+			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Requires\n\r");
+			for(int r=0;r<traps.size();r++)
+			{
+				Trap T=(Trap)traps.elementAt(r);
+				buf.append(Util.padRight(T.name(),20)+" "+T.requiresToSet()+"\n\r");
+			}
+			if(mob.session()!=null) mob.session().rawPrintln(buf.toString());
+			return true;
+		}
+		else
+		{
+			if(commands.size()<2)
+			{
+				mob.tell("Trap what, with what kind of trap? Use trap list for a list.");
+				return false;
+			}
+			String name=(String)commands.lastElement();
+			commands.removeElementAt(commands.size()-1);
+			for(int r=0;r<traps.size();r++)
+			{
+				Trap T=(Trap)traps.elementAt(r);
+				if(CoffeeUtensils.containsString(T.name(),name))
+					theTrap=T;
+			}
+			if(theTrap==null)
+			{
+				mob.tell("'"+name+"' is not a valid trap name.  Try TRAP LIST.");
+				return false;
+			}
+		
+			String whatToTrap=Util.combine(commands,0);
+			int dirCode=Directions.getGoodDirectionCode(whatToTrap);
+			if((dirCode>=0)&&(trapThis==null))
+				trapThis=mob.location().getExitInDir(dirCode);
+			if((trapThis==null)&&(whatToTrap.equalsIgnoreCase("room")||whatToTrap.equalsIgnoreCase("here")))
+				trapThis=mob.location();
+			if(trapThis==null)
+				trapThis=this.getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
+			if(trapThis==null) return false;
+			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
+				return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(+((mob.envStats().level()
-											 -unlockThis.envStats().level())*3),auto);
-		Trap theTrap=CMClass.fetchMyTrap(unlockThis);
-		if(theTrap!=null)
+											 -trapThis.envStats().level())*3),auto);
+		Trap theOldTrap=CMClass.fetchMyTrap(trapThis);
+		if(theOldTrap!=null)
 		{
-			if(theTrap.sprung())
+			if(theOldTrap.disabled())
 				success=false;
 			else
 			{
-				theTrap.spring(mob);
+				theOldTrap.spring(mob);
 				return false;
 			}
 		}
 
-		theTrap=CMClass.getATrap(unlockThis);
-		if(theTrap==null)
-		{
-			mob.tell(auto?"":"You don't know how to lay a trap on "+unlockThis.name()+".");
-			return false;
-		}
-
-		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?unlockThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+unlockThis.name()+"."));
+		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on <T-NAMESELF>."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			int rejuv=((30-mob.envStats().level())*30);
-			theTrap.setReset(rejuv);
-
-			theTrap.setSprung(false);
 			if(success)
 			{
 				mob.tell("You have completed your task.");
-				unlockThis.addAffect(theTrap);
-				ExternalPlay.startTickDown(this,Host.TRAP_DESTRUCTION,mob.envStats().level()*30);
+				theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
 			}
 			else
 			{
 				if(Dice.rollPercentage()>50)
 				{
-					unlockThis.addAffect(theTrap);
-					ExternalPlay.startTickDown(this,Host.TRAP_DESTRUCTION,mob.envStats().level()*30);
+					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob));
 					mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
-					theTrap.spring(mob);
+					T.spring(mob);
 				}
 				else
 				{

@@ -38,26 +38,12 @@ public class Spell_Geas extends Spell
 				mob.tell("You have been released from your geas.");
 			
 			if((mob.isMonster())
-			   &&(!mob.amDead())
-			   &&(mob.location()!=null)
-			   &&(mob.location()!=mob.getStartRoom()))
+			&&(!mob.amDead())
+			&&(mob.location()!=null)
+			&&(mob.location()!=mob.getStartRoom()))
 			{
-				for(int b=0;b<mob.numBehaviors();b++)
-				{
-					Behavior B=mob.fetchBehavior(b);
-					if((B!=null)&&(B.grantsMobility()))
-					{
-						B.tick(mob,Host.MOB_TICK);
-						mob.getStartRoom().bringMobHere(mob,false);
-						break;
-					}
-				}
-				if(mob.location()!=mob.getStartRoom())
-				{
-					Behavior B=CMClass.getBehavior("Mobile");
-					B.tick(mob,Host.MOB_TICK);
-					mob.getStartRoom().bringMobHere(mob,false);
-				}
+				CoffeeUtensils.wanderAway(mob,true);
+				mob.getStartRoom().bringMobHere(mob,false);
 			}
 		}
 	}
@@ -83,17 +69,7 @@ public class Spell_Geas extends Spell
 			if((affected==null)||(!(affected instanceof MOB)))
 				return super.tick(ticking,tickID);
 			MOB mob=(MOB)affected;
-			for(int b=0;b<mob.numBehaviors();b++)
-			{
-				Behavior B=mob.fetchBehavior(b);
-				if((B!=null)&&(B.grantsMobility()))
-				{
-					B.tick(affected,tickID);
-					return super.tick(ticking,tickID);
-				}
-			}
-			Behavior B=CMClass.getBehavior("Mobile");
-			B.tick(affected,tickID);
+			CoffeeUtensils.wanderAway(mob,false);
 		}
 		return super.tick(ticking,tickID);
 	}

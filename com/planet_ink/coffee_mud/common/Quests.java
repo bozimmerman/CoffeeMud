@@ -896,16 +896,7 @@ public class Quests implements Cloneable, Quest
 				if(E instanceof MOB)
 				{
 					MOB M=(MOB)E;
-					if((M.location()!=null)&&(M.location().numPCInhabitants()>0))
-					{
-						Behavior B=CMClass.getBehavior("Mobile");
-						for(int i2=0;i2<100;i2++)
-						{
-							B.tick(M,Host.MOB_TICK);
-							if((M.location()!=null)&&(M.location().numPCInhabitants()==0))
-								break;
-						}
-					}
+					CoffeeUtensils.wanderAway(M,true);
 					if(M.getStartRoom()!=null)
 					{
 						if(M.location()!=null)

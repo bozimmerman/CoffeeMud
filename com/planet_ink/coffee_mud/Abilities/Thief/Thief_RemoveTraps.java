@@ -25,8 +25,10 @@ public class Thief_RemoveTraps extends ThiefSkill
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if(dirCode>=0)
 			unlockThis=mob.location().getExitInDir(dirCode);
+		if((unlockThis==null)&&(whatTounlock.equalsIgnoreCase("room")||whatTounlock.equalsIgnoreCase("here")))
+			unlockThis=mob.location();
 		if(unlockThis==null)
-			unlockThis=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+			unlockThis=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(unlockThis==null) return false;
 		int oldProfficiency=profficiency();
 
@@ -51,14 +53,14 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.sprung())))
+			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
 				setProfficiency(oldProfficiency);
 			if(success)
 			{
 				if(theTrap!=null)
-					theTrap.setSprung(true);
+					theTrap.disable();
 				if(opTrap!=null)
-					opTrap.setSprung(true);
+					opTrap.disable();
 			}
 			if(!auto)
 				mob.tell("You have completed your attempt.");

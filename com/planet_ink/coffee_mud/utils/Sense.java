@@ -354,6 +354,17 @@ public class Sense
 			return isInFlight(((Rider)E).riding());
 		return false;
 	}
+	public static boolean isMobile(Environmental E)
+	{
+		if(E==null) return false;
+		for(int b=0;b<E.numBehaviors();b++)
+		{
+			Behavior B=E.fetchBehavior(b);
+			if((B!=null)&&(B.grantsMobility()))
+				return true;
+		}
+		return false;
+	}
 	public static String wornLocation(long wornCode)
 	{
 		for(int wornNum=0;wornNum<20;wornNum++)

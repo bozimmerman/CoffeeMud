@@ -315,6 +315,9 @@ public class StdRoom
 				// obsolete with the area objects
 				break;
 			case Affect.TYP_CAST_SPELL:
+			case Affect.TYP_DELICATE_HANDS_ACT:
+			case Affect.TYP_OK_ACTION:
+			case Affect.TYP_OK_VISUAL:
 				break;
 			case Affect.TYP_SPEAK:
 				break;

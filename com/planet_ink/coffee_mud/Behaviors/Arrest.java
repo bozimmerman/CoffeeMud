@@ -186,24 +186,7 @@ public class Arrest extends StdBehavior
 		&&(officer.location()!=null)
 		&&(officer.getStartRoom()==officer.location()))
 			return;
-		Behavior B=officer.fetchBehavior("Mobile");
-		if(officer.location().numPCInhabitants()>0)
-		{
-			if(B==null);
-			for(int i=0;i<officer.numBehaviors();i++)
-			{
-				Behavior B2=officer.fetchBehavior(i);
-				if(B2 instanceof Mobile)
-				{	B=B2; break;}
-			}
-			if(B!=null)
-			for(int i=0;i<100;i++)
-			{
-				B.tick(officer,Host.MOB_TICK);
-				if((officer.location()!=null)&&(officer.location().numPCInhabitants()==0))
-					break;
-			}
-		}
+		CoffeeUtensils.wanderAway(officer,true);
 		if(officer.getStartRoom()!=null)
 			officer.getStartRoom().bringMobHere(officer,false);
 	}
@@ -215,9 +198,8 @@ public class Arrest extends StdBehavior
 		{
 			MOB M=R.fetchInhabitant(i);
 			if(M.isMonster()
-			   &&(M.charStats().getStat(CharStats.INTELLIGENCE)>3)
-			   &&(Dice.rollPercentage()<=(M.getAlignment()/10))
-			   )
+			&&(M.charStats().getStat(CharStats.INTELLIGENCE)>3)
+			&&(Dice.rollPercentage()<=(M.getAlignment()/10)))
 				return M;
 		}
 		return null;

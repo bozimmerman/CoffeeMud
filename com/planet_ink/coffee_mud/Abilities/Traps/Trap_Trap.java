@@ -24,20 +24,28 @@ public class Trap_Trap extends StdAbility implements Trap
 		super();
 		if(benefactor==null)
 			benefactor=(MOB)CMClass.getMOB("StdMOB");
-		invoker=benefactor;
 	}
 
-	public boolean sprung()
-	{
-		return sprung;
-	}
-	public void setSprung(boolean isSprung)
-	{
-		sprung=isSprung;
-	}
+	public boolean disabled(){return sprung;}
+	public void disable(){ sprung=true;}
 	public void setReset(int Reset){reset=Reset;}
 	public int getReset(){return reset;}
 
+	// as these are not standard traps, we return this!
+	public boolean maySetTrap(MOB mob, int asLevel){return false;}
+	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public String requiresToSet(){return "";}
+	public Trap setTrap(MOB mob, Environmental E, int classLevel, int qualifyingClassLevel)
+	{
+		if(E==null) return null;
+		int rejuv=((30-mob.envStats().level())*30);
+		Trap T=(Trap)copyOf();
+		T.setReset(rejuv);
+		T.setInvoker(mob);
+		E.addAffect(T);
+		ExternalPlay.startTickDown(T,Host.TRAP_DESTRUCTION,mob.envStats().level()*30);
+		return T;
+	}
 	public void gas(MOB mob)
 	{
 		if(Dice.rollPercentage()<mob.charStats().getSave(CharStats.SAVE_TRAPS))
@@ -53,13 +61,13 @@ public class Trap_Trap extends StdAbility implements Trap
 					if(target==null) break;
 
 					int dmg=Dice.roll(target.envStats().level(),10,1);
-					FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
+					FullMsg msg=new FullMsg(invoker(),target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
 					if(target.location().okAffect(target,msg))
 					{
 						target.location().send(target,msg);
 						if(msg.wasModified())
 							dmg=(int)Math.round(Util.div(dmg,2.0));
-						ExternalPlay.postDamage(mob,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
+						ExternalPlay.postDamage(invoker(),target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!");
 					}
 				}
 			}
@@ -67,13 +75,13 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				MOB target=mob;
 				int dmg=Dice.roll(target.envStats().level(),10,1);
-				FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
+				FullMsg msg=new FullMsg(invoker(),target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_GAS,Affect.MSG_NOISYMOVEMENT,null);
 				if(target.location().okAffect(target,msg))
 				{
 					target.location().send(target,msg);
 					if(msg.wasModified())
 						dmg=(int)Math.round(Util.div(dmg,2.0));
-					ExternalPlay.postDamage(target,target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
+					ExternalPlay.postDamage(invoker(),target,this,dmg,Affect.MASK_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"A sudden blast of gas <DAMAGE> <T-NAME>!");
 				}
 			}
 	}
@@ -87,16 +95,16 @@ public class Trap_Trap extends StdAbility implements Trap
 		{
 			MOB target=mob;
 			int dmg=Dice.roll(target.envStats().level(),5,1);
-			FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
+			FullMsg msg=new FullMsg(invoker(),target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
 			if(target.location().okAffect(target,msg))
 			{
 				target.location().send(target,msg);
 				if(msg.wasModified())
 					dmg=(int)Math.round(Util.div(dmg,2.0));
-				ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker(),target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The needle <DAMAGE> <T-NAME>!");
 
 				Ability P=CMClass.getAbility("Poison");
-				P.invoke(invoker,target,true);
+				P.invoke(invoker(),target,true);
 			}
 		}
 	}
@@ -110,15 +118,15 @@ public class Trap_Trap extends StdAbility implements Trap
 		{
 			MOB target=mob;
 			int dmg=Dice.roll(target.envStats().level(),2,0);
-			FullMsg msg=new FullMsg(invoker,target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
+			FullMsg msg=new FullMsg(invoker(),target,this,Affect.MSG_OK_ACTION,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,Affect.MSG_NOISYMOVEMENT,null);
 			if(target.location().okAffect(target,msg))
 			{
 				target.location().send(target,msg);
 				if(msg.wasModified())
 					dmg=(int)Math.round(Util.div(dmg,2.0));
 				Ability P=CMClass.getAbility("Poison");
-				P.invoke(invoker,target,true);
-				ExternalPlay.postDamage(target,target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
+				P.invoke(invoker(),target,true);
+				ExternalPlay.postDamage(invoker(),target,this,dmg,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The blade <DAMAGE> <T-NAME>!");
 			}
 		}
 	}
@@ -146,12 +154,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				mob.location().showHappens(Affect.MSG_OK_VISUAL,"But nothing happened...");
 				return;
 			}
-			MOB mob2=CMClass.getMOB("StdMOB");
-			mob2.setLocation(CMClass.getLocale("StdRoom"));
-			mob2.baseEnvStats().setLevel(affected.envStats().level());
-			mob2.recoverCharStats();
-			mob2.recoverEnvStats();
-			A.invoke(mob2,V,mob,true);
+			A.invoke(invoker(),V,mob,true);
 		}
 	}
 
@@ -168,15 +171,13 @@ public class Trap_Trap extends StdAbility implements Trap
 		else
 		if(mob.location().show(mob,affected,this,Affect.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap door beneath <S-HIS-HER> feet! <S-NAME> fall(s) in!"))
 		{
-			if(myPit==null)
+			if((myPit==null)||(myPitUp==null))
 			{
 				myPitUp=CMClass.getLocale("ClimbableSurface");
 				myPitUp.setArea(mob.location().getArea());
 				myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
 				myPitUp.setDisplayText("Inside a dark pit");
 				myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
-				myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdClosedDoorway");
-				myPitUp.rawDoors()[Directions.UP]=mob.location();
 				myPitUp.recoverEnvStats();
 
 				myPit=CMClass.getLocale("StdRoom");
@@ -188,8 +189,16 @@ public class Trap_Trap extends StdAbility implements Trap
 				myPit.rawDoors()[Directions.UP]=myPitUp;
 				myPitUp.recoverEnvStats();
 
-				CMMap.addRoom(myPit);
-				CMMap.addRoom(myPitUp);
+			}
+			CMMap.addRoom(myPit);
+			CMMap.addRoom(myPitUp);
+			myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdClosedDoorway");
+			myPitUp.rawDoors()[Directions.UP]=mob.location();
+			if((mob.location().getRoomInDir(Directions.DOWN)==null)
+			&&(mob.location().getExitInDir(Directions.DOWN)==null))
+			{
+				mob.location().rawExits()[Directions.DOWN]=CMClass.getExit("StdClosedDoorway");
+				mob.location().rawDoors()[Directions.DOWN]=myPitUp;
 			}
 			myPit.bringMobHere(mob,false);
 			if(mob.envStats().weight()<5)
@@ -198,12 +207,18 @@ public class Trap_Trap extends StdAbility implements Trap
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 				int damage=Dice.roll(mob.envStats().level(),3,1);
-				ExternalPlay.postDamage(mob,mob,this,damage,Affect.NO_EFFECT,-1,null);
+				ExternalPlay.postDamage(invoker(),mob,this,damage,Affect.NO_EFFECT,-1,null);
 			}
 			ExternalPlay.look(mob,null,true);
 		}
 	}
 
+	public MOB invoker()
+	{
+		if(invoker==null) return benefactor;
+		return super.invoker();
+	}
+	
 	public int classificationCode()
 	{
 		return Ability.TRAP;
@@ -216,8 +231,6 @@ public class Trap_Trap extends StdAbility implements Trap
 		benefactor.baseEnvStats().setLevel(target.envStats().level());
 		benefactor.recoverCharStats();
 		benefactor.recoverEnvStats();
-		if(invoker==null)
-			invoker=benefactor;
 		switch(trapType())
 		{
 		case TRAP_GAS:
@@ -246,6 +259,35 @@ public class Trap_Trap extends StdAbility implements Trap
 			unInvoke();
 	}
 
+	public void unInvoke()
+	{
+		if((trapType()==Trap.TRAP_PIT_BLADE)
+		&&(affected instanceof Exit)
+		&&(myPit!=null)
+		&&(canBeUninvoked())
+		&&(myPitUp!=null))
+		{
+			Room R=myPitUp.getRoomInDir(Directions.UP);
+			if((R!=null)&&(R.getRoomInDir(Directions.DOWN)==myPitUp))
+			{
+				R.rawDoors()[Directions.DOWN]=null;
+				R.rawExits()[Directions.DOWN]=null;
+			}
+			/** 
+			don't do this, cuz someone might still be down there.
+			myPitUp.rawDoors()[Directions.UP]=null;
+			myPitUp.rawExits()[Directions.UP]=null;
+			myPitUp.rawDoors()[Directions.DOWN]=null;
+			myPitUp.rawExits()[Directions.DOWN]=null;
+			myPit.rawDoors()[Directions.UP]=null;
+			myPit.rawExits()[Directions.UP]=null;
+			*/
+			CMMap.delRoom(myPit);
+			CMMap.delRoom(myPitUp);
+		}
+		super.unInvoke();
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
