@@ -8,32 +8,12 @@ import java.util.*;
 
 public class Song_Serenity extends Song
 {
-
-	public Song_Serenity()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Serenity";
-		displayText="(Song of Serenity)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-		mindAttack=true;
-
-		baseEnvStats().setLevel(9);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Serenity();
-	}
+	public String ID() { return "Song_Serenity"; }
+	public String name(){ return "Serenity";}
+	public String displayText(){ return "(Song of Serenity)";}
+	public int quality(){ return MALICIOUS;}
+	protected boolean mindAttack(){return true;}
+	public Environmental newInstance(){	return new Song_Serenity();	}
 
 	public boolean okAffect(Affect msg)
 	{

@@ -8,32 +8,12 @@ import java.util.*;
 
 public class Song_Flight extends Song
 {
-
-	public Song_Flight()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Flight";
-		displayText="(Song of Flight)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		skipStandardSongInvoke=true;
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(19);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Flight();
-	}
+	public String ID() { return "Song_Flight"; }
+	public String name(){ return "Flight";}
+	public String displayText(){ return "(Song of Flight)";}
+	public int quality(){ return INDIFFERENT;}
+	public Environmental newInstance(){	return new Song_Flight();}
+	protected boolean skipStandardSongInvoke(){return true;}
 
 	public boolean tick(int tickID)
 	{
@@ -67,7 +47,7 @@ public class Song_Flight extends Song
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -85,8 +65,8 @@ public class Song_Flight extends Song
 				{
 					MOB follower=(MOB)f.nextElement();
 					// malicious songs must not affect the invoker!
-					affectType=Affect.MSG_CAST_VERBAL_SPELL;
-					if((quality==Ability.MALICIOUS)&&(follower!=mob))
+					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
 					if(auto) affectType=affectType|Affect.ACT_GENERAL;
 

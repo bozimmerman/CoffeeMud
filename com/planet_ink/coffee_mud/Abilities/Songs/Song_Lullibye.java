@@ -8,33 +8,14 @@ import java.util.*;
 
 public class Song_Lullibye extends Song
 {
-	boolean asleep=false;
+	public String ID() { return "Song_Lullibye"; }
+	public String name(){ return "Lullibye";}
+	public String displayText(){ return "(Song of Lullibye)";}
+	public int quality(){ return MALICIOUS;}
+	protected boolean mindAttack(){return true;}
+	public Environmental newInstance(){	return new Song_Lullibye();	}
 	
-	public Song_Lullibye()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lullibye";
-		displayText="(Song of Lullibye)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-		mindAttack=true;
-
-		baseEnvStats().setLevel(22);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Lullibye();
-	}
+	boolean asleep=false;
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

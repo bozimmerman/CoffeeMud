@@ -8,32 +8,14 @@ import java.util.*;
 
 public class Thief_RemoveTraps extends ThiefSkill
 {
-
-	public Thief_RemoveTraps()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Remove Traps";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("DETRAP");
-
-		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(9);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_RemoveTraps();
-	}
+	public String ID() { return "Thief_RemoveTraps"; }
+	public String name(){ return "Remove Traps";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"DETRAP","UNTRAP","REMOVETRAPS"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_RemoveTraps();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -58,7 +40,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 			if(dirCode>=0)
 			{
 				Exit exit=mob.location().getReverseExit(dirCode);
-				opTrap=new Trap_Trap().fetchMyTrap(exit);
+				if(exit!=null)
+					opTrap=new Trap_Trap().fetchMyTrap(exit);
 			}
 		}
 		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");

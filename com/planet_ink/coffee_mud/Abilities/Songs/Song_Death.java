@@ -8,31 +8,12 @@ import java.util.*;
 
 public class Song_Death extends Song
 {
-	public Song_Death()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Death";
-		displayText="(Song of Death)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		mindAttack=true;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(24);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Death();
-	}
+	public String ID() { return "Song_Death"; }
+	public String name(){ return "Death";}
+	public String displayText(){ return "(Song of Death)";}
+	public int quality(){ return MALICIOUS;}
+	public Environmental newInstance(){	return new Song_Death();}
+	protected boolean mindAttack(){return true;}
 
 	public boolean tick(int tickID)
 	{

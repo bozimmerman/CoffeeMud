@@ -8,34 +8,15 @@ import java.util.*;
 
 public class Song_Babble extends Song
 {
+	public String ID() { return "Song_Babble"; }
+	public String name(){ return "Babble";}
+	public String displayText(){ return "(Song of Babble)";}
+	public int quality(){ return MALICIOUS;}
 	private final static String consonants="bcdfghjklmnpqrstvwxz";
 	private final static String vowels="aeiouy";
-	public Song_Babble()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Babble";
-		displayText="(Song of Babble)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		skipStandardSongInvoke=true;
-
-		quality=Ability.INDIFFERENT;
-		mindAttack=true;
-
-		baseEnvStats().setLevel(11);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Babble();
-	}
+	public Environmental newInstance(){	return new Song_Babble();}
+	protected boolean skipStandardSongInvoke(){return true;}
+	protected boolean mindAttack(){return true;}
 	
 	protected int numChars(String words)
 	{
@@ -148,7 +129,7 @@ public class Song_Babble extends Song
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
 				str="<S-NAME> start(s) the Song of "+name()+" over again.";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -156,9 +137,7 @@ public class Song_Babble extends Song
 				Song newOne=(Song)this.copyOf();
 				newOne.referenceSong=newOne;
 
-				quality=Ability.MALICIOUS;
 				Hashtable h=ExternalPlay.properTargets(this,mob,auto);
-				quality=Ability.INDIFFERENT;
 				if(h==null) return false;
 				if(h.get(mob)==null) h.put(mob,mob);
 
@@ -167,7 +146,7 @@ public class Song_Babble extends Song
 					MOB follower=(MOB)f.nextElement();
 
 					// malicious songs must not affect the invoker!
-					affectType=Affect.MSG_CAST_VERBAL_SPELL;
+					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 					if(auto) affectType=affectType|Affect.ACT_GENERAL;
 					
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))

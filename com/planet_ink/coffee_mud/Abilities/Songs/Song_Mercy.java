@@ -8,28 +8,15 @@ import java.util.*;
 
 public class Song_Mercy extends Song
 {
+	public String ID() { return "Song_Mercy"; }
+	public String name(){ return "Mercy";}
+	public String displayText(){ return "(Song of Mercy)";}
+	public int quality(){ return INDIFFERENT;}
+	public Environmental newInstance(){	return new Song_Mercy();}
+	
 	private Room lastRoom=null;
 	private int count=3;
 	
-	public Song_Mercy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mercy";
-		displayText="(Song of Mercy)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(5);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
@@ -70,10 +57,6 @@ public class Song_Mercy extends Song
 		return super.okAffect(affect);
 	}
 	
-	public Environmental newInstance()
-	{
-		return new Song_Mercy();
-	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		count=3;

@@ -7,32 +7,12 @@ import java.util.*;
 
 public class Song_Rage extends Song
 {
-
-	public Song_Rage()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Rage";
-		displayText="(Song of Rage)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-		mindAttack=true;
-
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Rage();
-	}
+	public String ID() { return "Song_Rage"; }
+	public String name(){ return "Rage";}
+	public String displayText(){ return "(Song of Rage)";}
+	public int quality(){ return MALICIOUS;}
+	protected boolean mindAttack(){return true;}
+	public Environmental newInstance(){	return new Song_Rage();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

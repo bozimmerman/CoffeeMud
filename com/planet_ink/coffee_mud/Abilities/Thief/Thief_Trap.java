@@ -8,32 +8,14 @@ import java.util.*;
 
 public class Thief_Trap extends ThiefSkill
 {
-
-	public Thief_Trap()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lay Traps";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("TRAP");
-
-		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(23);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Trap();
-	}
+	public String ID() { return "Thief_Trap"; }
+	public String name(){ return "Lay Traps";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"TRAP"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Trap();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

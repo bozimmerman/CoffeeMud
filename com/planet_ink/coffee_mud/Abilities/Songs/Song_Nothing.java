@@ -7,36 +7,19 @@ import java.util.*;
 
 public class Song_Nothing extends Song
 {
-
+	public String ID() { return "Song_Nothing"; }
+	public String name(){ return "Nothing";}
+	public String displayText(){ return "(Song of Nothing at All)";}
+	public int quality(){ return MALICIOUS;}
+	protected boolean skipStandardSongInvoke(){return true;}
 	public Song_Nothing()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Nothing";
-		displayText="(Song of Nothing at All)";
-		miscText="";
-
-		skipStandardSongInvoke=true;
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
 		setProfficiency(100);
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
 	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Nothing();
-	}
-
-	public void setProfficiency(int newProfficiency)
-	{
-		super.setProfficiency(100);
-	}
+	public Environmental newInstance(){	return new Song_Nothing();}
+	public void setProfficiency(int newProfficiency){	super.setProfficiency(100);}
+	
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

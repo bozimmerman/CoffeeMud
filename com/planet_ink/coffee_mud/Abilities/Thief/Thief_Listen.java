@@ -7,32 +7,14 @@ import java.util.*;
 
 public class Thief_Listen extends ThiefSkill
 {
-
-	public Thief_Listen()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Listen";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("LISTEN");
-
-		canTargetCode=0;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(11);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Listen();
-	}
+	public String ID() { return "Thief_Listen"; }
+	public String name(){ return "Listen";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"LISTEN"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Listen();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

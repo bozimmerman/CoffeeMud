@@ -7,32 +7,14 @@ import java.util.*;
 
 public class Thief_Peek extends ThiefSkill
 {
-
-	public Thief_Peek()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Peek";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("PEEK");
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(2);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Peek();
-	}
+	public String ID() { return "Thief_Peek"; }
+	public String name(){ return "Peeks";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"PEEK"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Peek();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

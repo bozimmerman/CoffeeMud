@@ -7,31 +7,15 @@ import java.util.*;
 
 public class Thief_Search extends ThiefSkill
 {
-	public Thief_Search()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Search";
-		displayText="(Ability to search for all things hidden)";
-		miscText="";
-
-		triggerStrings.addElement("SEARCH");
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(14);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Search();
-	}
+	public String ID() { return "Thief_Search"; }
+	public String name(){ return "Search";}
+	public String displayText(){return "(Searching)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"SEARCH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Search();	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -7,40 +7,14 @@ import java.util.*;
 
 public class Thief_Lore extends ThiefSkill
 {
-	public Thief_Lore()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lore";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="";
-
-		canTargetCode=Ability.CAN_ITEMS;
-		canAffectCode=0;
-		
-		quality=Ability.INDIFFERENT;
-
-		baseEnvStats().setLevel(1);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		triggerStrings.addElement("LORE");
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Lore();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
+	public String ID() { return "Thief_Lore"; }
+	public String name(){ return "Lore";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"LORE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Lore();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

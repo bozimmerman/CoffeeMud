@@ -8,34 +8,14 @@ import java.util.*;
 
 public class Thief_Snatch extends StdAbility
 {
-
-	public Thief_Snatch()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Weapon Snatch";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("SNATCH");
-
-		canTargetCode=0;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(11);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Snatch();
-	}
+	public String ID() { return "Thief_Snatch"; }
+	public String name(){ return "Weapon Snatch";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"SNATCH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Snatch();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -7,49 +7,38 @@ import java.util.*;
 
 public class Song extends StdAbility
 {
-
-	boolean skipStandardSongInvoke=false;
-	boolean mindAttack=false;
-	boolean skipStandardSongTick=false;
+	public String ID() { return "Song"; }
+	public String name(){ return "a Song";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	private static final String[] triggerStrings = {"SING","SI"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SONG;}
+	public int maxRange(){return 2;}
+	
+	protected boolean skipStandardSongInvoke(){return false;}
+	protected boolean mindAttack(){return false;}
+	protected boolean skipStandardSongTick(){return false;}
 
 	public Song referenceSong=null;
 
-	protected int affectType=Affect.MSG_CAST_VERBAL_SPELL;
-
-	public Song()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="a Song";
-		displayText="(in a musical home and hearth)";
-		miscText="";
-		triggerStrings.addElement("SING");
-		triggerStrings.addElement("SI");
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		maxRange=1;
+	protected int affectType(boolean auto){
+		int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+		if(quality()==Ability.MALICIOUS)
+			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
+		if(auto) affectType=affectType|Affect.ACT_GENERAL;
+		return affectType;
 	}
 
-	public int classificationCode()
-	{
-		return Ability.SONG;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song();
-	}
+	public Environmental newInstance(){	return new Song();}
 
 	public boolean tick(int tickID)
 	{
 		if(!super.tick(tickID))
 			return false;
 
-		if(skipStandardSongTick)
+		if(skipStandardSongTick())
 			return true;
 		
 		MOB mob=(MOB)affected;
@@ -83,15 +72,10 @@ public class Song extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		affectType=Affect.MSG_CAST_VERBAL_SPELL;
-		if(quality()==Ability.MALICIOUS)
-			affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
-		if(auto) affectType=affectType|Affect.ACT_GENERAL;
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(skipStandardSongInvoke)
+		if(skipStandardSongInvoke())
 			return true;
 
 		if((!auto)&&(!Sense.canSpeak(mob)))
@@ -108,7 +92,7 @@ public class Song extends StdAbility
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -125,16 +109,16 @@ public class Song extends StdAbility
 					MOB follower=(MOB)f.nextElement();
 
 					// malicious songs must not affect the invoker!
-					affectType=Affect.MSG_CAST_VERBAL_SPELL;
+					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
 					if(auto) affectType=affectType|Affect.ACT_GENERAL;
-					if((quality==Ability.MALICIOUS)&&(follower!=mob))
+					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=affectType|Affect.MASK_MALICIOUS;
 
 					if((Sense.canBeHeardBy(invoker,follower)&&(follower.fetchAffect(this.ID())==null)))
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
-						if((mindAttack)&&(follower!=mob))
+						if((mindAttack())&&(follower!=mob))
 							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 						if((mob.location().okAffect(msg2))&&(mob.location().okAffect(msg3)))
 						{

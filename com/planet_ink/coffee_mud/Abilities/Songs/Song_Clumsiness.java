@@ -8,31 +8,11 @@ import java.util.*;
 
 public class Song_Clumsiness extends Song
 {
-
-	public Song_Clumsiness()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Clumsiness";
-		displayText="(Song of Clumsiness)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(6);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Clumsiness();
-	}
+	public String ID() { return "Song_Clumsiness"; }
+	public String name(){ return "Clumsiness";}
+	public String displayText(){ return "(Song of Clumsiness)";}
+	public int quality(){ return MALICIOUS;}
+	public Environmental newInstance(){	return new Song_Clumsiness();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

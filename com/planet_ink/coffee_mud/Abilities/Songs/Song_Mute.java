@@ -8,31 +8,11 @@ import java.util.*;
 
 public class Song_Mute extends Song
 {
-
-	public Song_Mute()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Mute";
-		displayText="(Song of Mute)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(8);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Mute();
-	}
+	public String ID() { return "Song_Mute"; }
+	public String name(){ return "Mute";}
+	public String displayText(){ return "(Song of Mute)";}
+	public int quality(){ return MALICIOUS;}
+	public Environmental newInstance(){	return new Song_Mute();	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

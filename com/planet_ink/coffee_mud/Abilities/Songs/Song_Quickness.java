@@ -7,30 +7,11 @@ import java.util.*;
 
 public class Song_Quickness extends Song
 {
-
-	public Song_Quickness()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Quickness";
-		displayText="(Song of Quickness)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(17);
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Quickness();
-	}
+	public String ID() { return "Song_Quickness"; }
+	public String name(){ return "Quickness";}
+	public String displayText(){ return "(Song of Quickness)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public Environmental newInstance(){	return new Song_Quickness(); }
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -8,32 +8,12 @@ import java.util.*;
 
 public class Song_Disgust extends Song
 {
-
-	public Song_Disgust()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Disgust";
-		displayText="(Song of Disgust)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-		mindAttack=true;
-
-		baseEnvStats().setLevel(7);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Disgust();
-	}
+	public String ID() { return "Song_Disgust"; }
+	public String name(){ return "Disgust";}
+	public String displayText(){ return "(Song of Disgust)";}
+	public int quality(){ return MALICIOUS;}
+	public Environmental newInstance(){	return new Song_Disgust();}
+	protected boolean mindAttack(){return true;}
 	
 	public boolean tick(int tickID)
 	{

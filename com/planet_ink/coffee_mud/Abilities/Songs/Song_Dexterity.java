@@ -8,31 +8,12 @@ import java.util.*;
 
 public class Song_Dexterity extends Song
 {
+	public String ID() { return "Song_Dexterity"; }
+	public String name(){ return "Dexterity";}
+	public String displayText(){ return "(Song of Dexterity)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
 	private int amount=0;
-
-	public Song_Dexterity()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dexterity";
-		displayText="(Song of Dexterity)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(14);
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Dexterity();
-	}
+	public Environmental newInstance(){	return new Song_Dexterity();}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

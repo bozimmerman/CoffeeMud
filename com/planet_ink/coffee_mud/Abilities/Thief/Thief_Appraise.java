@@ -7,37 +7,14 @@ import java.util.*;
 
 public class Thief_Appraise extends ThiefSkill
 {
-
-	public Thief_Appraise()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Appraise";
-		displayText="";
-		miscText="";
-
-		triggerStrings.addElement("APPRAISE");
-
-		canTargetCode=Ability.CAN_ITEMS;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Appraise();
-	}
-
-	public int classificationCode()
-	{
-		return Ability.THIEF_SKILL;
-	}
+	public String ID() { return "Thief_Appraise"; }
+	public String name(){ return "Appraise";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"APPRAISE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Appraise();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

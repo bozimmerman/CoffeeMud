@@ -8,32 +8,12 @@ import java.util.*;
 
 public class Song_Friendship extends Song
 {
-
-	public Song_Friendship()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Friendship";
-		displayText="(Song of Friendship)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		skipStandardSongInvoke=true;
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(19);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Friendship();
-	}
+	public String ID() { return "Song_Friendship"; }
+	public String name(){ return "Friendship";}
+	public String displayText(){ return "(Song of Friendship)";}
+	public int quality(){ return MALICIOUS;}
+	public Environmental newInstance(){	return new Song_Friendship();}
+	protected boolean skipStandardSongInvoke(){return true;}
 
 	public boolean tick(int tickID)
 	{
@@ -67,7 +47,7 @@ public class Song_Friendship extends Song
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -85,8 +65,8 @@ public class Song_Friendship extends Song
 				{
 					MOB follower=(MOB)f.nextElement();
 					// malicious songs must not affect the invoker!
-					affectType=Affect.MSG_CAST_VERBAL_SPELL;
-					if((quality==Ability.MALICIOUS)&&(follower!=mob))
+					int affectType=Affect.MSG_CAST_VERBAL_SPELL;
+					if((quality()==Ability.MALICIOUS)&&(follower!=mob))
 						affectType=Affect.MSG_CAST_ATTACK_VERBAL_SPELL;
 					if(auto) affectType=affectType|Affect.ACT_GENERAL;
 
@@ -94,11 +74,11 @@ public class Song_Friendship extends Song
 					{
 						FullMsg msg2=new FullMsg(mob,follower,this,affectType,null);
 						FullMsg msg3=msg2;
-						if((mindAttack)&&(follower!=mob))
+						if((mindAttack())&&(follower!=mob))
 							msg2=new FullMsg(mob,follower,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_MIND|(auto?Affect.ACT_GENERAL:0),null);
 						int levelDiff=follower.envStats().level()-mob.envStats().level();
 
-						if((levelDiff>3)&&(mindAttack))
+						if((levelDiff>3)&&(mindAttack()))
 							mob.tell(mob,follower,"<T-NAME> looks too powerful.");
 						else
 						if((mob.location().okAffect(msg2))&&(mob.location().okAffect(msg3)))

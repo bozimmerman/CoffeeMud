@@ -8,31 +8,11 @@ import java.util.*;
 
 public class Song_Health extends Song
 {
-
-	public Song_Health()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Health";
-		displayText="(Song of Health)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.BENEFICIAL_OTHERS;
-
-		baseEnvStats().setLevel(12);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Health();
-	}
+	public String ID() { return "Song_Health"; }
+	public String name(){ return "Health";}
+	public String displayText(){ return "(Song of Health)";}
+	public int quality(){ return BENEFICIAL_OTHERS;}
+	public Environmental newInstance(){	return new Song_Health();}
 
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{

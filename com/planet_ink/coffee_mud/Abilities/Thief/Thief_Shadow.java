@@ -7,34 +7,23 @@ import java.util.*;
 
 public class Thief_Shadow extends ThiefSkill
 {
+	public String ID() { return "Thief_Shadow"; }
+	public String name(){ return "Shadow";}
+	public String displayText()
+	{
+		if(shadowing!=null)
+			return "(shadowing "+shadowing.name()+")";
+		return super.displayText();
+	}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.OK_OTHERS;}
+	private static final String[] triggerStrings = {"SHADOW"};
+	public String[] triggerStrings(){return triggerStrings;}
 	public MOB shadowing=null;
 	private Room lastRoom=null;
 	private Calendar lastTogether=null;
-	public Thief_Shadow()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Shadow";
-		miscText="";
-		displayText="(shadowing)";
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		triggerStrings.addElement("SHADOW");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(2);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Shadow();
-	}
+	public Environmental newInstance(){	return new Thief_Shadow();}
 
 	public boolean stillAShadower()
 	{
@@ -46,14 +35,6 @@ public class Thief_Shadow extends ThiefSkill
 		if(!Sense.aliveAwakeMobile(mob,true)) return false;
 		return true;
 	}
-	
-	public String displayText()
-	{
-		if(shadowing!=null)
-			return "(shadowing "+shadowing.name()+")";
-		return super.displayText();
-	}
-	
 	
 	public boolean stillAShadowee()
 	{

@@ -8,33 +8,14 @@ import java.util.*;
 
 public class Thief_DetectTraps extends ThiefSkill
 {
-
-	public Thief_DetectTraps()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Detect Traps";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("CHECK");
-		quality=Ability.OK_SELF;
-
-		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(6);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_DetectTraps();
-	}
+	public String ID() { return "Thief_DetectTraps"; }
+	public String name(){ return "Detect Traps";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"CHECK"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_DetectTraps();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -58,7 +39,8 @@ public class Thief_DetectTraps extends ThiefSkill
 			if(dirCode>=0)
 			{
 				Exit exit=mob.location().getReverseExit(dirCode);
-				Trap opTrap=new Trap_Trap().fetchMyTrap(exit);
+				Trap opTrap=null;
+				if(exit!=null) opTrap=new Trap_Trap().fetchMyTrap(exit);
 				if((theTrap!=null)&&(opTrap!=null))
 				{
 					if((theTrap.sprung())&&(!opTrap.sprung()))

@@ -7,34 +7,16 @@ import java.util.*;
 
 public class Thief_SilentLoot extends ThiefSkill
 {
+	public String ID() { return "Thief_SilentLoot"; }
+	public String displayText() {return "(Silent AutoLoot)";}
+	public String name(){ return "Silent AutoLoot";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"SILENTLOOT"};
+	public String[] triggerStrings(){return triggerStrings;}
 	private Item item=null;
-	public Thief_SilentLoot()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Silent AutoLoot";
-		displayText="(Silent AutoLoot)";
-		miscText="";
-
-		triggerStrings.addElement("SILENTLOOT");
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_SilentLoot();
-	}
+	public Environmental newInstance(){	return new Thief_SilentLoot();	}
 	
 	public void affect(Affect affect)
 	{

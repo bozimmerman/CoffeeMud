@@ -8,32 +8,15 @@ import java.util.*;
 
 public class Thief_Observation extends ThiefSkill
 {
-
-	public Thief_Observation()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Observe";
-		displayText="(Keen sense of observation)";
-		miscText="";
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		triggerStrings.addElement("OBSERVE");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(10);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Observation();
-	}
+	public String ID() { return "Thief_Observation"; }
+	public String name(){ return "Observe";}
+	public String displayText(){return "(Observing)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"OBSERVE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Observation();	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -8,31 +8,11 @@ import java.util.*;
 
 public class Song_Lethargy extends Song
 {
-
-	public Song_Lethargy()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Lethargy";
-		displayText="(Song of Lethargy)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(18);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Lethargy();
-	}
+	public String ID() { return "Song_Lethargy"; }
+	public String name(){ return "Lethargy";}
+	public String displayText(){ return "(Song of Lethargy)";}
+	public int quality(){ return MALICIOUS;}
+	public Environmental newInstance(){	return new Song_Lethargy();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -7,33 +7,15 @@ import java.util.*;
 
 public class Thief_Distract extends ThiefSkill
 {
-	public Thief_Distract()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Distract";
-		displayText="(Distracted)";
-		miscText="";
-
-		triggerStrings.addElement("DISTRACT");
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		quality=Ability.OK_OTHERS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(13);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Distract();
-	}
+	public String ID() { return "Thief_Distract"; }
+	public String name(){ return "Distract";}
+	public String displayText(){ return "(Distracted)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.OK_OTHERS;}
+	private static final String[] triggerStrings = {"DISTRACT"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Distract();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

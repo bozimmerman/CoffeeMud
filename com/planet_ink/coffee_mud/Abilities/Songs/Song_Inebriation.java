@@ -8,32 +8,12 @@ import java.util.*;
 
 public class Song_Inebriation extends Song
 {
-
-	public Song_Inebriation()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Inebriation";
-		displayText="(Song of Inebriation)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-		mindAttack=true;
-
-		baseEnvStats().setLevel(11);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Inebriation();
-	}
+	public String ID() { return "Song_Inebriation"; }
+	public String name(){ return "Inebriation";}
+	public String displayText(){ return "(Song of Inebriation)";}
+	public int quality(){ return MALICIOUS;}
+	protected boolean mindAttack(){return true;}
+	public Environmental newInstance(){	return new Song_Inebriation();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

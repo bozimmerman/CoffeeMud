@@ -8,32 +8,12 @@ import java.util.*;
 
 public class Song_Silence extends Song
 {
-
-	public Song_Silence()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Silence";
-		displayText="(Song of Silence)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		skipStandardSongTick=true;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Silence();
-	}
+	public String ID() { return "Song_Silence"; }
+	public String name(){ return "Silence";}
+	public String displayText(){ return "(Song of Silence)";}
+	public int quality(){ return MALICIOUS;}
+	protected boolean skipStandardSongTick(){return true;}
+	public Environmental newInstance(){	return new Song_Silence();}
 
 	public boolean tick(int tickID)
 	{

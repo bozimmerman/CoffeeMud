@@ -7,37 +7,17 @@ import java.util.*;
 
 public class Thief_Bind extends ThiefSkill
 {
+	public String ID() { return "Thief_Bind"; }
+	public String name(){ return "Bind";}
+	public String displayText(){ return "(Bound)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"BIND"};
+	public String[] triggerStrings(){return triggerStrings;}
 	public int amountRemaining=0;
 
-	public Thief_Bind()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Bind";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Bound)";
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		triggerStrings.addElement("BIND");
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Bind();
-	}
+	public Environmental newInstance(){	return new Thief_Bind();}
 
 	public boolean okAffect(Affect affect)
 	{

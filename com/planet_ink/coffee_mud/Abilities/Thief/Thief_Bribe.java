@@ -7,32 +7,14 @@ import java.util.*;
 
 public class Thief_Bribe extends ThiefSkill
 {
-
-	public Thief_Bribe()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Bribe";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		triggerStrings.addElement("BRIBE");
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(20);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Bribe();
-	}
+	public String ID() { return "Thief_Bribe"; }
+	public String name(){ return "Bribe";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.OK_OTHERS;}
+	private static final String[] triggerStrings = {"BRIBE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Bribe();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -7,31 +7,15 @@ import java.util.*;
 
 public class Thief_Sap extends ThiefSkill
 {
-	public Thief_Sap()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Sap";
-		displayText="(knocked out)";
-		miscText="";
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		triggerStrings.addElement("SAP");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Sap();
-	}
+	public String ID() { return "Thief_Sap"; }
+	public String name(){ return "Sap";}
+	public String displayText(){ return "(Knocked out)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"SAP"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Sap();}
 
 	public boolean okAffect(Affect affect)
 	{

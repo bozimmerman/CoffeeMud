@@ -8,25 +8,10 @@ import java.util.*;
 
 public class Song_Charm extends Song
 {
-
-	public Song_Charm()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Charm";
-		displayText="(Song of Charm)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(4);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
+	public String ID() { return "Song_Charm"; }
+	public String name(){ return "Charm";}
+	public String displayText(){ return "(Song of Charm)";}
+	public int quality(){ return INDIFFERENT;}
 	public Environmental newInstance()
 	{
 		return new Song_Charm();

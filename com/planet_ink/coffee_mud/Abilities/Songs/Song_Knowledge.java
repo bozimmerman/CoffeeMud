@@ -8,30 +8,11 @@ import java.util.*;
 
 public class Song_Knowledge extends Song
 {
-
-	public Song_Knowledge()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Knowledge";
-		displayText="(Song of Knowledge)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(12);
-		quality=Ability.OK_OTHERS;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Knowledge();
-	}
+	public String ID() { return "Song_Knowledge"; }
+	public String name(){ return "Knowledge";}
+	public String displayText(){ return "(Song of Knowledge)";}
+	public int quality(){ return OK_OTHERS;}
+	public Environmental newInstance(){	return new Song_Knowledge();}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

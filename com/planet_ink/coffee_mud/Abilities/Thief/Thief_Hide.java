@@ -7,32 +7,14 @@ import java.util.*;
 
 public class Thief_Hide extends ThiefSkill
 {
-	public Thief_Hide()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Hide";
-		displayText="(Ability to hide)";
-		miscText="";
-
-		triggerStrings.addElement("HIDE");
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setLevel(3);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Hide();
-	}
+	public String ID() { return "Thief_Hide"; }
+	public String name(){ return "Hide";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"HIDE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Hide();}
 
 	/** this method defines how this thing responds
 	 * to environmental changes.  It may handle any

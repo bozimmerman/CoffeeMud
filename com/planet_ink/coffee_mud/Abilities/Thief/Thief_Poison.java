@@ -7,35 +7,16 @@ import java.util.*;
 
 public class Thief_Poison extends ThiefSkill
 {
+	public String ID() { return "Thief_Poison"; }
+	public String name(){ return "Poison";}
+	public String displayText(){ return "(Poisoned)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"POISON"};
+	public String[] triggerStrings(){return triggerStrings;}
 	int poisonDown=3;
-
-	public Thief_Poison()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Poison";
-		displayText="(Poisoned)";
-		miscText="";
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		triggerStrings.addElement("POISON");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(16);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Poison();
-	}
+	public Environmental newInstance(){	return new Thief_Poison();}
 
 	public boolean tick(int tickID)
 	{

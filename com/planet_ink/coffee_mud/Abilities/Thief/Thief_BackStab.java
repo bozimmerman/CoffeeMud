@@ -7,34 +7,14 @@ import java.util.*;
 
 public class Thief_BackStab extends ThiefSkill
 {
-
-	public Thief_BackStab()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Back Stab";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		canTargetCode=Ability.CAN_MOBS;
-		canAffectCode=0;
-		
-		triggerStrings.addElement("BACKSTAB");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(7);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_BackStab();
-	}
+	public String ID() { return "Thief_BackStab"; }
+	public String name(){ return "Back Stab";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	private static final String[] triggerStrings = {"BACKSTAB"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_BackStab();}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

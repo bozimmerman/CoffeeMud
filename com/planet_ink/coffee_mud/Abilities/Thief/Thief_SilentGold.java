@@ -7,33 +7,15 @@ import java.util.*;
 
 public class Thief_SilentGold extends ThiefSkill
 {
-	public Thief_SilentGold()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Silent AutoGold";
-		displayText="(Silent AutoGold)";
-		miscText="";
-
-		triggerStrings.addElement("SILENTGOLD");
-
-		canTargetCode=0;
-		canAffectCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(1);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_SilentGold();
-	}
+	public String ID() { return "Thief_SilentGold"; }
+	public String displayText() {return "(Silent Autogold)";}
+	public String name(){ return "Silent AutoGold";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"SILENTGOLD"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_SilentGold();}
 	
 	public void affect(Affect affect)
 	{

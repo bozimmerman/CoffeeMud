@@ -7,32 +7,14 @@ import java.util.*;
 
 public class Thief_Surrender extends ThiefSkill
 {
-	public Thief_Surrender()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Surrender";
-		displayText="(Ability to surrender)";
-		miscText="";
-
-		triggerStrings.addElement("SURRENDER");
-
-		canTargetCode=0;
-		canAffectCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		quality=Ability.OK_SELF;
-
-		baseEnvStats().setLevel(3);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Surrender();
-	}
+	public String ID() { return "Thief_Surrender"; }
+	public String name(){ return "Surrender";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.OK_SELF;}
+	private static final String[] triggerStrings = {"SURRENDER"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Surrender();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

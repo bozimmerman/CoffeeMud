@@ -8,31 +8,11 @@ import java.util.*;
 
 public class Song_Distraction extends Song
 {
-
-	public Song_Distraction()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Distraction";
-		displayText="(Song of Distraction)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(13);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Distraction();
-	}
+	public String ID() { return "Song_Distraction"; }
+	public String name(){ return "Distraction";}
+	public String displayText(){ return "(Song of Distraction)";}
+	public int quality(){ return MALICIOUS;}
+	public Environmental newInstance(){	return new Song_Distraction();}
 	
 	public boolean okAffect(Affect affect)
 	{

@@ -8,31 +8,12 @@ import java.util.*;
 
 public class Song_Rebirth extends Song
 {
-
-	public Song_Rebirth()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Rebirth";
-		displayText="(Song of Rebirth)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		skipStandardSongInvoke=true;
-
-		baseEnvStats().setLevel(25);
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Song_Rebirth();
-	}
+	public String ID() { return "Song_Rebirth"; }
+	public String name(){ return "Rebirth";}
+	public String displayText(){ return "(Song of Rebirth)";}
+	public int quality(){ return INDIFFERENT;}
+	protected boolean skipStandardSongInvoke(){return true;}
+	public Environmental newInstance(){	return new Song_Rebirth();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -53,7 +34,7 @@ public class Song_Rebirth extends Song
 			if((!auto)&&(mob.fetchAffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the Song of "+name()+" over again.^?";
 
-			FullMsg msg=new FullMsg(mob,null,this,affectType,str);
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),str);
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

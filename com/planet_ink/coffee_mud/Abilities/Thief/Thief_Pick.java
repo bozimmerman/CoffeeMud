@@ -8,32 +8,14 @@ import java.util.*;
 
 public class Thief_Pick extends ThiefSkill
 {
-
-	public Thief_Pick()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Pick lock";
-		displayText="(in a dark realm of thievery)";
-		miscText="";
-
-		canTargetCode=Ability.CAN_ITEMS|Ability.CAN_EXITS;
-		canAffectCode=0;
-		
-		triggerStrings.addElement("PICK");
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(5);
-
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Thief_Pick();
-	}
+	public String ID() { return "Thief_Pick"; }
+	public String name(){ return "Pick locks";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"PICK"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Thief_Pick();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
