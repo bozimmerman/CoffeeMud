@@ -12,25 +12,15 @@ public class CheckReqParm extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		boolean finalCondition=true;
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
-		{
-			String key=(String)e.nextElement();
-			if(key.startsWith("||"))
-			{ finalCondition=false; break;}
-		}
+		boolean finalCondition=false;
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			String equals=(String)parms.get(key);
 			boolean not=false;
-			boolean or=false;
 			boolean thisCondition=true;
-			if(key.startsWith("||"))
-			{
-				key=key.substring(2);
-				or=true;
-			}
+			if(key.startsWith("||")) key=key.substring(2);
+			
 			if(key.startsWith("!"))
 			{
 				key=key.substring(1);
@@ -63,10 +53,7 @@ public class CheckReqParm extends StdWebMacro
 				else
 					thisCondition=true;
 			}
-			if(or) 
-				finalCondition=finalCondition||thisCondition;
-			else
-				finalCondition=finalCondition&&thisCondition;
+			finalCondition=finalCondition||thisCondition;
 		}
 		if(finalCondition)
 			return "true";

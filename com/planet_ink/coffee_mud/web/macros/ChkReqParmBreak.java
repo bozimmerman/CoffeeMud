@@ -12,34 +12,52 @@ public class ChkReqParmBreak extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
+		boolean finalCondition=false;
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
+			String equals=(String)parms.get(key);
 			boolean not=false;
+			boolean thisCondition=true;
+			if(key.startsWith("||")) key=key.substring(2);
+			
 			if(key.startsWith("!"))
 			{
 				key=key.substring(1);
 				not=true;
 			}
-			String equals=(String)parms.get(key);
 			String check=httpReq.getRequestParameter(key);
-			if(!not)
+			if(not)
 			{
 				if((check==null)&&(equals.length()==0))
-					return " @break@";
-				if(check==null) return "";
-				if(check.equalsIgnoreCase(equals))
-					return " @break@";
+					thisCondition=false;
+				else
+				if(check==null) 
+					thisCondition=true;
+				else
+				if(!check.equalsIgnoreCase(equals))
+					thisCondition=true;
+				else
+					thisCondition=false;
 			}
 			else
 			{
 				if((check==null)&&(equals.length()==0))
-					return "";
-				if(check==null) return " @break@";
+					thisCondition=true;
+				else
+				if(check==null) 
+					thisCondition=false;
+				else
 				if(!check.equalsIgnoreCase(equals))
-					return " @break@";
+					thisCondition=false;
+				else
+					thisCondition=true;
 			}
+			finalCondition=finalCondition||thisCondition;
 		}
-		return "";
+		if(finalCondition)
+			return "";
+		else
+			return "@break@";
 	}
 }

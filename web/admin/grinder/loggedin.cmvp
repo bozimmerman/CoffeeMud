@@ -78,7 +78,7 @@
 <br>
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=_top>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-@if?CheckReqParm?||SYSOP=true&||AUTH_LOADUNLOAD=true&||AUTH_CMDPLAYERS&||AUTH_STAT=true&||AUTH_JOURNALS=true&||AUTH_CMDQUESTS=true&||AUTH_BAN=true@
+@if?CheckReqParm?SYSOP=true&AUTH_LOADUNLOAD=true&AUTH_CMDPLAYERS&AUTH_STAT=true&AUTH_JOURNALS=true&AUTH_CMDQUESTS=true&AUTH_BAN=true@
 <TABLE WIDTH=200 BORDER=1>
 <TR><TD ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Utilities:</B></FONT></TD></TR>
 <TR><TD ALIGN=CENTER>
@@ -86,7 +86,7 @@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Manage Resources</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckReqParm?||AUTH_STAT=true&||AUTH_CMDPLAYERS=true@
+	@if?CheckReqParm?AUTH_STAT=true&AUTH_CMDPLAYERS=true@
 	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Players List</FONT></a>
 	<BR>
 	@endif@
@@ -131,7 +131,7 @@
 	</SCRIPT>
 	</TD></TR>
 	<TR><TD ALIGN=CENTER>
-	@if?CheckReqParm?SYSOP=true@
+	@if?CheckReqParm?SYSOP=true&ALLMODAREAS=true@
 	<TABLE BORDER=0><TR><TD ALIGN=CENTER>
 	<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="Clicked('newarea.cmvp');">
 	</TD><TD ALIGN=CENTER>
@@ -143,7 +143,7 @@
 	</TD>
 	</TR></TABLE>
 	@else@
-	<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
+		<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 	@endif@
 	</TD></TR>
 	<TR><TD ALIGN=CENTER>

@@ -9,11 +9,12 @@ public class GrinderAreas
 	public static String getAreaList(Area pickedA, MOB mob)
 	{
 		StringBuffer AreaList=new StringBuffer("");
+		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"));
+		boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS"));
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if((CMSecurity.isASysOp(mob))
-			||(A.amISubOp(mob.Name())&&(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"))))
+			if(everywhere||(A.amISubOp(mob.Name())&&anywhere))
 				if((pickedA!=null)&&(pickedA==A))
 					AreaList.append("<OPTION SELECTED VALUE=\""+A.Name()+"\">"+A.name());
 				else

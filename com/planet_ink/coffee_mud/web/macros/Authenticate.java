@@ -60,33 +60,25 @@ public class Authenticate extends StdWebMacro
 		&&(mob.Name().trim().length()>0)
 		&&(!bannedName(mob.Name())))
 		{
-			boolean subOp=CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS");
+			boolean subOp=false;
 			boolean sysop=CMSecurity.isASysOp(mob);
 			String AREA=httpReq.getRequestParameter("AREA");
 			Room R=null;
-			boolean areasToModify=CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS");
-			int numFound=0;
 			for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
 					if(A.amISubOp(mob.Name()))
 					{ 
-						if(areasToModify)
-							numFound++;
 						if((R==null)&&(A.getMap().hasMoreElements()))
 							R=(Room)A.getMap().nextElement();
-						if((AREA!=null)&&AREA.equals(A.Name()))
-						{
-							if(areasToModify)
-								subOp=true; 
-						}
-						else
-							subOp=true;
+						subOp=true; 
 						break;
 					}
 			}
-			httpReq.addRequestParameters("ANYMODAREAS",""+(((areasToModify)&&(numFound>0))||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
+			httpReq.addRequestParameters("ANYMODAREAS",""+((subOp&&(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS")))
+														   ||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
+			httpReq.addRequestParameters("ALLMODAREAS",""+(CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
 			httpReq.addRequestParameters("SYSOP",""+sysop);
 			httpReq.addRequestParameters("SUBOP",""+(sysop||subOp));
 			Vector V=CMSecurity.getSecurityCodes(mob,R);
