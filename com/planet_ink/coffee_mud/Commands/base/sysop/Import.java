@@ -2372,6 +2372,7 @@ public class Import
 				return;
 
 			Resources.removeResource("areasList");
+			Resources.removeResource("areasListHTML");
 
 			mob.tell("Loading and Linking rooms...");
 			// begin initial room-read

@@ -12,5 +12,5 @@ public interface WebMacro
 	
 	public boolean isAdminMacro();
 
-	public String runMacro(ProcessHTTPrequest httpReq);
+	public String runMacro(ExternalHTTPRequests httpReq);
 }

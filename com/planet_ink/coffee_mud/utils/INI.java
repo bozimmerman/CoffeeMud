@@ -14,7 +14,24 @@ public class INI extends Properties
 	{
 		try
 		{
-			this.load(new FileInputStream("coffeemud.ini"));
+			this.load(new FileInputStream(filename));
+			loaded=true;
+		}
+		catch(IOException e)
+		{
+			loaded=false;
+		}
+	}
+
+	// jef: constructor allows inheritance from any Properties object
+	//  used by http servers for 'common.ini'
+	public INI(Properties p, String filename)
+	{
+		super(p);
+		
+		try
+		{
+			this.load(new FileInputStream(filename));
 			loaded=true;
 		}
 		catch(IOException e)

@@ -499,6 +499,8 @@ public class RoomLoader
 		if(A==null) A=CMClass.getAreaType("StdArea");
 		if((A==null)||(areaName.length()==0)) return null;
 		Resources.removeResource("areasList");
+		Resources.removeResource("areasListHTML");
+		
 		A=(Area)A.copyOf();
 		A.setName(areaName);
 		CMMap.AREAS.addElement(A);

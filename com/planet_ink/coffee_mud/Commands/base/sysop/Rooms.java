@@ -434,6 +434,8 @@ public class Rooms
 		}
 		clearTheRoom(deadRoom);
 		Resources.removeResource("areasList");
+		Resources.removeResource("areasListHTML");
+		
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid();
 		ExternalPlay.DBDeleteRoom(deadRoom);

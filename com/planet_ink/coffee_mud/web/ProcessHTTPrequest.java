@@ -2,11 +2,9 @@ package com.planet_ink.coffee_mud.web;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.system.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.application.*;
 
 // quick & dirty web server for CoffeeMUD
 // (c) 2002 Jeff Kamenek
@@ -23,7 +21,7 @@ import com.planet_ink.coffee_mud.application.*;
 //  (ie. it only runs once, responding to request)
 //  if it wasn't one the webserver would get bogged down every time
 //  there were multiple simultaenous requests.
-public class ProcessHTTPrequest extends Thread
+public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 {
 	private INI page;
 	private Socket sock;
@@ -190,8 +188,8 @@ public class ProcessHTTPrequest extends Thread
 		
 		try
 		{
-			for (int i=0; i<CMClass.webMacros.size(); ++i)
-				processMacro( (WebMacro)CMClass.webMacros.elementAt(i), s );
+			for (int i=0; i<HTTPserver.webMacros.size(); ++i)
+				processMacro( (WebMacro)HTTPserver.webMacros.elementAt(i), s );
 		}
 		catch (Exception e)
 		{
@@ -437,4 +435,10 @@ public class ProcessHTTPrequest extends Thread
 		}
 		return "[NOT CONNECTED]";
 	}
+	public String ServerVersionString(){return HTTPserver.ServerVersionString;}
+	public String getWebServerPortStr(){return getWebServer().getPortStr();}
+	public String getWebServerPartialName(){ return getWebServer().getPartialName();}
+	public Host getMUD(){return getWebServer().getMUD();}
+	public String WebHelperhtmlPlayerList(){return WebHelper.htmlPlayerList();}
+	public String WebHelperhtmlAreaTbl(){return WebHelper.htmlAreaTbl(getWebServer());}
 }

@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.Commands.base.CommandProcessor;
 import com.planet_ink.coffee_mud.Commands.base.ExternalCommands;
+import com.planet_ink.coffee_mud.web.*;
+
 
 public class MUD extends Thread implements Host
 {
@@ -26,10 +28,15 @@ public class MUD extends Thread implements Host
 	
 	public ServerSocket servsock=null;
 
+	public INI webCommon=null;
+	public HTTPserver webServerThread=null;
+	public HTTPserver adminServerThread=null;
+	public final static String ServerVersionString = "CoffeeMUD-MainServer/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
+	public boolean serverIsRunning = false;
 
 	public MUD()
 	{
-		super("MUD-host");
+		super("MUD-MainServer");
 
 		isOK = false;
 		
@@ -57,6 +64,22 @@ public class MUD extends Thread implements Host
 		return true;
 	}
 
+	private boolean loadWebCommonPropPage()
+	{
+		if (webCommon==null || !webCommon.loaded)
+		{
+			webCommon=new INI("web" + File.separatorChar + "common.ini");
+			if(!webCommon.loaded)
+				return false;
+		}
+		return true;
+	}
+
+	public Properties getCommonPropPage()
+	{
+		return webCommon;
+	}
+
 	public void fatalStartupError(int type)
 	{
 		String str=null;
@@ -74,7 +97,9 @@ public class MUD extends Thread implements Host
 		case 4:
 			str="Fatal exception. Exiting.";
 			break;
-			//...
+		case 5:
+			str="MUD Server did not start. Exiting.";
+			break;
 		default:
 			str="Fatal error loading classes.  Make sure you start up coffeemud from the directory containing the class files.";
 			break;
@@ -86,6 +111,7 @@ public class MUD extends Thread implements Host
 
 	private boolean initHost()
 	{
+
 		if (!isOK)
 		{
 			this.interrupt();
@@ -97,13 +123,45 @@ public class MUD extends Thread implements Host
 			fatalStartupError(1);
 			return false;
 		}
-		
+
 		Log.Initialize(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("DBGMSGS"));
 		System.out.println();
 		Log.sysOut("MUD",getVer());
 		Log.sysOut("MUD","(C) 2000-2002 Bo Zimmerman");
 		Log.sysOut("MUD","www.zimmers.net/home/mud.html");
 		Log.sysOut("MUD","Starting...\n\r");
+		
+		while (!serverIsRunning && isOK)
+		{
+		}
+		if (!isOK)
+		{
+			fatalStartupError(5);
+			return false;
+		}
+		
+		if (page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))
+		{
+			if (loadWebCommonPropPage())
+			{
+				if(HTTPserver.loadWebMacros())
+				{
+					Log.sysOut("MUD","Attempting to start web servers");
+					webServerThread = new HTTPserver(this,"pub");
+					webServerThread.start();
+					adminServerThread = new HTTPserver(this,"admin");
+					adminServerThread.start();
+				}
+				else
+				{
+					Log.errOut("MUD","Unable to start web server - loadWebMacros() failed");
+				}
+			}
+			else
+				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
+		}
+
+
 		
 		DBConnector.DBConfirmDeletions=page.getBoolean("DBCONFIRMDELETIONS");
 		offlineReason=new String("Booting: connecting to database");
@@ -188,7 +246,8 @@ public class MUD extends Thread implements Host
 	{
 		int q_len = 6;
 		Socket sock=null;
-		boolean serverOK = false;
+		serverIsRunning = false;
+
 
 		if (!isOK)	return;
 		if ((page == null) || (!page.loaded))
@@ -197,12 +256,32 @@ public class MUD extends Thread implements Host
 			return;
 		}
 		
+		InetAddress bindAddr = null;
+
+		if (page.getInt("BACKLOG") > 0)
+			q_len = page.getInt("BACKLOG");
+
+		if (page.getStr("BIND") != null && page.getStr("BIND").length() > 0)
+		{
+			try
+			{
+				bindAddr = InetAddress.getByName(page.getStr("BIND"));
+			}
+			catch (UnknownHostException e)
+			{
+				Log.errOut("WEB","ERROR: MUD Server could not bind to address " + page.getStr("BIND"));
+				bindAddr = null;
+			}
+		}
+		
 		try
 		{
-			servsock=new ServerSocket(page.getInt("PORT"), q_len);
+			servsock=new ServerSocket(page.getInt("PORT"), q_len, bindAddr);
 
-			//jef
-			serverOK = true;
+			Log.sysOut("MUD","MUD Server started on port: "+page.getInt("PORT"));
+			if (bindAddr != null)
+				Log.sysOut("MUD","MUD Server bound to: "+bindAddr.toString());
+			serverIsRunning = true;
 
 			while(true)
 			{
@@ -216,7 +295,6 @@ public class MUD extends Thread implements Host
 						introText != null ? introText.toString() : null);
 					S.start();
 					Sessions.addElement(S);
-					// jef: whoops...
 					sock = null;
 				}
 				else
@@ -235,13 +313,10 @@ public class MUD extends Thread implements Host
 		}
 		catch(Throwable t)
 		{
-			if ((servsock == null) && (serverOK))
-			{
-				if((t!=null)&&(t instanceof Exception)&&((t.getMessage()==null)||(t.getMessage().indexOf("closed")<0)))
-					Log.errOut("MUD",((Exception)t));
-			}
-
-			if (!serverOK)
+			if((t!=null)&&(t instanceof Exception))
+				Log.errOut("MUD",((Exception)t).getMessage());
+	
+			if (!serverIsRunning)
 				isOK = false;
 		}
 		
@@ -298,17 +373,17 @@ public class MUD extends Thread implements Host
 			Session session=Sessions.elementAt(s);
 			if(session.mob()!=null)
 			{
-				offlineReason=new String("Shutting down" + (keepItDown? "...Saving "+session.mob().name() : " and restarting...") );
+				offlineReason=new String("Shutting down...Saving "+session.mob().name());
 				MOBloader.DBUpdate(session.mob());
-				offlineReason=new String("Shutting down" + (keepItDown? "...Saving followers of "+session.mob().name() : " and restarting...") );
+				offlineReason=new String("Shutting down...Saving followers of "+session.mob().name());
 				MOBloader.DBUpdateFollowers(session.mob());
-				offlineReason=new String("Shutting down" + (keepItDown? "...Done saving "+session.mob().name() : " and restarting...") );
+				offlineReason=new String("Shutting down...Done saving "+session.mob().name());
 				offlineReason="Done saving mob "+session.mob().name();
 			}
 		}
 		Log.sysOut("MUD","All users saved.");
 		S.println("All users saved.");
-		offlineReason=new String("Shutting down" + (keepItDown? "...Users saved" : " and restarting...") );
+		offlineReason=new String("Shutting down...Users saved");
 
 		while(Sessions.size()>0)
 		{
@@ -317,30 +392,46 @@ public class MUD extends Thread implements Host
 				Sessions.removeElementAt(0);
 			else
 			{
-				offlineReason=new String("Shutting down" + (keepItDown? "...Stopping session "+S2.getTermID() : " and restarting...") );
+				offlineReason=new String("Shutting down...Stopping session "+S2.getTermID());
 				S2.logoff();
-				offlineReason=new String("Shutting down" + (keepItDown? "...Done stopping session "+S2.getTermID() : " and restarting...") );
+				offlineReason=new String("Shutting down...Done stopping session "+S2.getTermID());
 			}
 		}
 		S.println("All users logged off.");
 
-		offlineReason=new String("Shutting down" + (keepItDown? "...shutting down service engine" : " and restarting...") );
+		offlineReason=new String("Shutting down...shutting down service engine");
 		ServiceEngine.shutdownAll();
 		S.println("All threads stopped.");
 
-		offlineReason=new String("Shutting down" + (keepItDown? "...closing db connections" : " and restarting...") );
+		offlineReason=new String("Shutting down...closing db connections");
 		DBConnector.killConnections();
 		Log.sysOut("MUD","All users saved.");
 		S.println("Database connections closed.");
 
-		offlineReason=new String("Shutting down" + (keepItDown? "...unloading classes" : " and restarting...") );
+		offlineReason=new String("Shutting down...unloading classes");
 		CMClass.unload();
-		offlineReason=new String("Shutting down" + (keepItDown? "...unloading map" : " and restarting...") );
+		offlineReason=new String("Shutting down...unloading map");
 		CMMap.unLoad();
 		page=null;
-		offlineReason=new String("Shutting down" + (keepItDown? "...unloading resources" : " and restarting...") );
+		offlineReason=new String("Shutting down...unloading resources");
 		Resources.clearResources();
+		webCommon=null;
+		if(webServerThread!=null)
+		{
+			offlineReason=new String("Shutting down...pub webserver");
+			webServerThread.shutdown(S);
+			webServerThread = null;
+		}
+		if(adminServerThread!=null)
+		{
+			offlineReason=new String("Shutting down...admin webserver");
+			adminServerThread.shutdown(S);
+			adminServerThread = null;
+		}
+		offlineReason=new String("Shutting down...unloading macros");
+		HTTPserver.unloadWebMacros();
 		offlineReason=new String("Shutting down" + (keepItDown? "..." : " and restarting...") );
+
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut("MUD","CoffeeMud shutdown complete.");
 		S.println("CoffeeMud shutdown complete.");
@@ -375,6 +466,45 @@ public class MUD extends Thread implements Host
 	{
 		return "CoffeeMud v"+HOST_VERSION_MAJOR+"."+HOST_VERSION_MINOR;
 	}
+
+	public boolean isGameRunning()
+	{
+		return acceptConnections;
+	}
+	
+	public int getPort()
+	{
+		return page.getInt("PORT");
+	}
+	public String getPortStr()
+	{
+		return page.getStr("PORT");
+	}
+	
+	public String ServerVersionString()
+	{
+		return ServerVersionString;
+	}
+	
+	public String gameStatusStr()
+	{
+		if (acceptConnections)
+			return "OK";
+		else
+			return offlineReason;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	public static void main(String a[]) throws IOException
 	{
@@ -416,4 +546,6 @@ public class MUD extends Thread implements Host
 			Log.errOut("MUD",e);
 		}
 	}
+
+
 }

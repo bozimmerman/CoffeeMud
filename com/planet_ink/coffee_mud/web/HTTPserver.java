@@ -2,11 +2,9 @@ package com.planet_ink.coffee_mud.web;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import com.planet_ink.coffee_mud.system.*;
 import com.planet_ink.coffee_mud.utils.*;
-import com.planet_ink.coffee_mud.Commands.*;
+import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.interfaces.*;
-import com.planet_ink.coffee_mud.application.*;
 
 public class HTTPserver extends Thread
 {
@@ -14,6 +12,7 @@ public class HTTPserver extends Thread
 
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
 	public static final float HOST_VERSION_MINOR=(float)0.0;
+	public static Vector webMacros=null;
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
@@ -23,7 +22,7 @@ public class HTTPserver extends Thread
 	
 	public ServerSocket servsock=null;
 
-	private MUD mud;
+	private Host mud;
 	private String partialName;
 	
 	String serverDir = null;
@@ -34,7 +33,7 @@ public class HTTPserver extends Thread
 	public FileGrabber pageGrabber=new FileGrabber(this);
 	public FileGrabber templateGrabber=new FileGrabber(this);
 	
-	public HTTPserver(MUD a_mud, String a_name)
+	public HTTPserver(Host a_mud, String a_name)
 	{
 		super("HTTP-"+a_name);
 		partialName = a_name;		//name without prefix
@@ -48,7 +47,7 @@ public class HTTPserver extends Thread
 	}	
 
 	public String getPartialName()	{return partialName;}
-	public MUD getMUD()	{return mud;}
+	public Host getMUD()	{return mud;}
 	public String getServerDir() {return serverDir;}
 	public String getServerTemplateDir() {return serverTemplateDir;}
 	
@@ -232,6 +231,7 @@ public class HTTPserver extends Thread
 				
 				// process the request - pass .ini data for mime types
 				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page);
+				W.equals(W); // this prevents an initialized by never used error
 				// nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
 				//  if succeeds - no need to .start() it here
 				sock = null;
@@ -310,6 +310,20 @@ public class HTTPserver extends Thread
 	public String getPortStr()
 	{
 		return page.getStr("PORT");
+	}
+	
+	public static boolean loadWebMacros()
+	{
+		String prefix="com"+File.separatorChar+"planet_ink"+File.separatorChar+"coffee_mud"+File.separatorChar;
+		webMacros=CMClass.loadVectorListToObj(prefix+"web"+File.separatorChar+"macros"+File.separatorChar, "");
+		Log.sysOut("WEB","WebMacros loaded  : "+webMacros.size());
+		if(webMacros.size()==0) return false;
+		return true;
+	}
+
+	public static void unloadWebMacros()
+	{
+		webMacros=new Vector();
 	}
 
 }

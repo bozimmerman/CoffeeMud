@@ -888,8 +888,7 @@ public class TelnetSession extends Thread implements Session
 	{
 		try
 		{
-			String s = new String(sock.getInetAddress().toString());
-			return s;
+			return sock.getInetAddress().getHostAddress();
 		}
 		catch (Exception e)
 		{

@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.interfaces;
+import java.util.Properties;
 
 public interface Host
 {
@@ -22,5 +23,11 @@ public interface Host
 	public final static int MAX_TICK_CLIENTS=32;
 	
 	public String getVer();
+	public boolean isGameRunning();
 	public void shutdown(Session S, boolean keepItDown, String externalCommand);
+	public int getPort();
+	public String getPortStr();
+	public String gameStatusStr();
+	public String ServerVersionString();
+	public Properties getCommonPropPage();
 }

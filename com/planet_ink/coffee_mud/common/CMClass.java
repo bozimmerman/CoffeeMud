@@ -434,5 +434,4 @@ public class CMClass extends ClassLoader
 		else
 			return name;
 	}
-	
 }

@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.web;
+package com.planet_ink.coffee_mud.web.macros;
 import com.planet_ink.coffee_mud.interfaces.*;
 
 abstract public class StdWebMacro implements WebMacro
@@ -12,7 +12,7 @@ abstract public class StdWebMacro implements WebMacro
 	public boolean isAdminMacro()	{return false;}
 
 	
-	public String runMacro(ProcessHTTPrequest httpReq)
+	public String runMacro(ExternalHTTPRequests httpReq)
 	{
 		return "[Unimplemented macro!]";
 	}
