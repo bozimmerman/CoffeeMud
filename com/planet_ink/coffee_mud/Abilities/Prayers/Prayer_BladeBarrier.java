@@ -59,7 +59,7 @@ public class Prayer_BladeBarrier extends Prayer
 				int level=(int)Math.round(Util.div(invoker.envStats().level(),6.0));
 				if(level>5) level=5;
 				int damage=Dice.roll(2,level,0);
-				affect.source().location().show((MOB)affect.target(),affect.source(),Affect.MSG_OK_ACTION,"The blade barrier around <S-NAME> "+ExternalPlay.hitWord(-1,damage)+"s <T-NAME>!");
+				affect.source().location().show((MOB)affect.target(),affect.source(),Affect.MSG_OK_ACTION,"The blade barrier around <S-NAME> "+ExternalPlay.hitWord(-1,damage)+" <T-NAME>!");
 				ExternalPlay.postDamage((MOB)affect.target(),affect.source(),this,damage);
 			}
 
