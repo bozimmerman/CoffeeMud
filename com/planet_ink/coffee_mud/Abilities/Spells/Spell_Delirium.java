@@ -19,6 +19,9 @@ public class Spell_Delirium extends Spell
 
 	private Environmental getRandomOtherName(Environmental likeThisOne)
 	{
+		if((invoker==null)||(invoker.location()==null))
+			return likeThisOne;
+		
 		if(likeThisOne instanceof Room)
 		{
 			int tries=0;

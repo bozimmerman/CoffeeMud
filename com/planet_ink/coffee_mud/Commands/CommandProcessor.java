@@ -25,12 +25,11 @@ public class CommandProcessor
 
 		// first, exacting pass
 
-		Command C=CMClass.findExtraCommand(firstWord,true);
+		Command C=CMClass.findCommandByTrigger(firstWord,true);
 		if((C!=null)&&(!C.execute(mob,commands))) return;
 
 		Integer commandCodeObj=getCommand(firstWord,commands,true);
-		if((commandCodeObj!=null)
-		&&((commandCodeObj.intValue()!=CommandSet.EVOKE)||(mob.hasAbilityEvoker(firstWord))))
+		if(commandCodeObj!=null)
 		{
 			doCommandCode(mob,commands,commandCodeObj.intValue());
 			return;
@@ -46,13 +45,12 @@ public class CommandProcessor
 		// second, inexact pass
 		if(C==null)
 		{
-			C=CMClass.findExtraCommand(firstWord,false);
+			C=CMClass.findCommandByTrigger(firstWord,false);
 			if((C!=null)&&(!C.execute(mob,commands))) return;
 		}
 
 		commandCodeObj=getCommand(firstWord,commands,false);
-		if((commandCodeObj!=null)
-		&&((commandCodeObj.intValue()!=CommandSet.EVOKE)||(mob.hasAbilityEvoker(firstWord))))
+		if(commandCodeObj!=null)
 		{
 			doCommandCode(mob,commands,commandCodeObj.intValue());
 			return;

@@ -23,7 +23,8 @@ public class CMClass extends ClassLoader
 	private static Vector miscMagic=new Vector();
 	private static Vector clanItems=new Vector();
 	private static Vector areaTypes=new Vector();
-	private static Hashtable extraCmds=new Hashtable();
+	private static Vector commands=new Vector();
+	private static Hashtable CommandWords=new Hashtable();
 	private static final String[] names={
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS"
@@ -60,7 +61,7 @@ public class CMClass extends ClassLoader
 	public static Enumeration miscMagic(){return miscMagic.elements();}
 	public static Enumeration clanItems(){return clanItems.elements();}
 	public static Enumeration areaTypes(){return areaTypes.elements();}
-	public static Enumeration extraCmds(){return extraCmds.elements();}
+	public static Enumeration commands(){return commands.elements();}
 	public static Enumeration abilities(){return abilities.elements();}
 	public static Ability randomAbility(){ return (Ability)abilities.elementAt((int)Math.round(Math.floor(Math.random()*new Integer(abilities.size()).doubleValue())));}
 	
@@ -99,27 +100,32 @@ public class CMClass extends ClassLoader
 		return sampleMOB;
 	}
 	
-	public static Command findExtraCommand(String word, boolean exactOnly)
+	public static Command getCommand(String word)
 	{
-		Command C=(Command)extraCmds.get(word.trim().toUpperCase());
+		return (Command)getGlobal(commands,word);
+	}
+
+	public static Command findCommandByTrigger(String word, 
+											   boolean exactOnly)
+	{
+		Command C=(Command)CommandWords.get(word.trim().toUpperCase());
 		if((exactOnly)||(C!=null)) return C;
 		word=word.toUpperCase();
-		for(Enumeration e=extraCmds.keys();e.hasMoreElements();)
+		for(Enumeration e=CommandWords.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			if(key.toUpperCase().startsWith(word))
-				return (Command)extraCmds.get(key);
+				return (Command)CommandWords.get(key);
 		}
 		return null;
 	}
-
 	
 	public static boolean delClass(Object O)
 	{
 		if(races.contains(O)){ races.removeElement(O); return true;}
 		if(charClasses.contains(O)){ charClasses.removeElement(O); return true;}
 		if(MOBs.contains(O)){ MOBs.removeElement(O); return true;}
-		if(abilities.contains(O)){ abilities.removeElement(O); return true;}
+		if(abilities.contains(O)){abilities.removeElement(O); return true;}
 		if(locales.contains(O)){ locales.removeElement(O); return true;}
 		if(exits.contains(O)){ exits.removeElement(O); return true;}
 		if(items.contains(O)){ items.removeElement(O); return true;}
@@ -129,6 +135,14 @@ public class CMClass extends ClassLoader
 		if(miscMagic.contains(O)){ miscMagic.removeElement(O); return true;}
 		if(clanItems.contains(O)){ clanItems.removeElement(O); return true;}
 		if(areaTypes.contains(O)){ areaTypes.removeElement(O); return true;}
+		if(commands.contains(O))
+		{ 
+			for(Enumeration e=CommandWords.keys();e.hasMoreElements();)
+				if(CommandWords.get(e.nextElement())==O)
+					CommandWords.remove(e.nextElement());
+			commands.removeElement(O);
+			return true;
+		}
 		return false;
 	}
 	
@@ -160,7 +174,7 @@ public class CMClass extends ClassLoader
 		case 10: set=armor; break;
 		case 11: set=miscMagic; break;
 		case 12: set=areaTypes; break;
-		case 13: set=extraCmds; break;
+		case 13: set=commands; break;
 		case 14: set=clanItems; break;
 		}
 		if(set==null) return false;
@@ -181,7 +195,7 @@ public class CMClass extends ClassLoader
 		case 10: armor=new Vector(new TreeSet(armor)); break;
 		case 11: miscMagic=new Vector(new TreeSet(miscMagic)); break;
 		case 12: areaTypes=new Vector(new TreeSet(areaTypes)); break;
-		case 13: break;
+		case 13: commands=new Vector(new TreeSet(commands)); break;
 		case 14: clanItems=new Vector(new TreeSet(clanItems)); break;
 		}
 		return true;
@@ -516,18 +530,16 @@ public class CMClass extends ClassLoader
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
 
-		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar+"extra"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
-		if(cmds.size()>1)
+		commands=loadVectorListToObj(prefix+"Commands"+File.separatorChar+"extra"+File.separatorChar,page.getStr("COMMANDS"),"com.planet_ink.coffee_mud.interfaces.Command");
+		Log.sysOut("MUD","Commands loaded   : "+commands.size());
+		if(commands.size()==0) return false;
+		for(int c=0;c<commands.size();c++)
 		{
-			Log.sysOut("MUD","XCommands loaded  : "+cmds.size());
-			for(int c=0;c<cmds.size();c++)
-			{
-				Command C=(Command)cmds.elementAt(c);
-				String[] wordList=C.getAccessWords();
-				if(wordList!=null)
-					for(int w=0;w<wordList.length;w++)
-						extraCmds.put(wordList[w].trim().toUpperCase(),C);
-			}
+			Command C=(Command)commands.elementAt(c);
+			String[] wordList=C.getAccessWords();
+			if(wordList!=null)
+				for(int w=0;w<wordList.length;w++)
+					CommandWords.put(wordList[w].trim().toUpperCase(),C);
 		}
 		
 		// misc startup stuff
@@ -613,6 +625,8 @@ public class CMClass extends ClassLoader
 		miscMagic=new Vector();
 		areaTypes=new Vector();
 		clanItems=new Vector();
+		commands=new Vector();
+		CommandWords=new Hashtable();
 	}
 
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
@@ -824,6 +838,9 @@ public class CMClass extends ClassLoader
 			else
 			if(e instanceof WebMacro)
 				return ((WebMacro)e).ID();
+			else
+			if(e instanceof Command)
+				return className(e);
 			else
 				return className(e);
 		}

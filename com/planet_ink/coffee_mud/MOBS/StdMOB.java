@@ -733,8 +733,11 @@ public class StdMOB implements MOB
 		setFollowing(null);
 		if((!isMonster())&&(soulMate()==null))
 			bringToLife(CMMap.getDeathRoom(this),true);
-		if(Body!=null) Body.startTicker(deathRoom);
-		deathRoom.recoverRoomStats();
+		if(deathRoom!=null)
+		{
+			if(Body!=null) Body.startTicker(deathRoom);
+			deathRoom.recoverRoomStats();
+		}
 		return Body;
 	}
 
@@ -2470,32 +2473,6 @@ public class StdMOB implements MOB
 	public int numAbilities()
 	{
 		return abilities.size()+charStats().getMyRace().racialAbilities(this).size();
-	}
-	public boolean hasAbilityEvoker(String word)
-	{
-		try
-		{
-			for(int a=0;a<abilities.size();a++)
-			{
-				Ability A=(Ability)abilities.elementAt(a);
-				for(int s=0;s<A.triggerStrings().length;s++)
-				{
-					if(A.triggerStrings()[s].startsWith(word))
-						return true;
-				}
-			}
-			for(int a=0;a<charStats().getMyRace().racialAbilities(this).size();a++)
-			{
-				Ability A=(Ability)charStats().getMyRace().racialAbilities(this).elementAt(a);
-				for(int s=0;s<A.triggerStrings().length;s++)
-				{
-					if(A.triggerStrings()[s].startsWith(word))
-						return true;
-				}
-			}
-		}
-		catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		return false;
 	}
 
 	public Ability fetchAbility(int index)

@@ -46,7 +46,10 @@ public class Corpse extends GenContainer implements DeadBody
 		if(tickID==MudHost.TICK_DEADBODY_DECAY)
 		{
 			destroy();
-			roomLocation.recoverRoomStats();
+			if(owner() instanceof Room)
+				roomLocation=(Room)owner();
+			if(roomLocation!=null)
+				roomLocation.recoverRoomStats();
 			return false;
 		}
 		else

@@ -202,7 +202,6 @@ public interface MOB
 
 	/** Manipulation of ability objects, which includes
 	 * spells, traits, skills, etc.*/
-	public boolean hasAbilityEvoker(String word);
 	public void addAbility(Ability to);
 	public void delAbility(Ability to);
 	public int numLearnedAbilities();
