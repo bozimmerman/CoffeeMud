@@ -98,6 +98,12 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(statDiff<0) statDiff=statDiff*-1;
 		int levelDiff=mob.envStats().level()-target.envStats().level();
 		boolean success=profficiencyCheck(mob,(levelDiff*5)-(statDiff*5),auto);
+		if(success&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new Hashtable()).contains(target)))
+		{
+			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
+			success=false;
+		}
+		
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
