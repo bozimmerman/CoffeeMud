@@ -364,7 +364,7 @@ public class Arrest extends StdBehavior
 			Vector V=(Vector)otherCrimes.elementAt(i);
 			for(int v=0;v<V.size();v++)
 			{
-				if(CoffeeUtensils.containsString(affect.targetMessage(),(String)V.elementAt(v)))
+				if(CoffeeUtensils.containsString(affect.othersMessage(),(String)V.elementAt(v)))
 				{
 					String info=(String)otherBits.elementAt(i);
 					fillOutWarrant(affect.source(),

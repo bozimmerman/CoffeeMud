@@ -21,6 +21,7 @@ public class StdMaze extends StdGrid
 
 	protected void buildFinalLinks()
 	{
+		Exit ox=CMClass.getExit("Open");
 		for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
 		{
 			Room dirRoom=rawDoors()[d];
@@ -28,7 +29,7 @@ public class StdMaze extends StdGrid
 			{
 				alts[d]=findCenterRoom(d);
 				if(alts[d]!=null)
-					linkRoom(alts[d],dirRoom,d);
+					linkRoom(alts[d],dirRoom,d,ox,ox);
 			}
 		}
 	}
@@ -78,6 +79,7 @@ public class StdMaze extends StdGrid
 		if(visited.get(subMap[x][y])!=null) return;
 		Room room=subMap[x][y];
 		visited.put(room,room);
+		Exit ox=CMClass.getExit("Open");
 
 		boolean okRoom=true;
 		while(okRoom)
@@ -108,7 +110,7 @@ public class StdMaze extends StdGrid
 							dirCode=d;
 						}
 				}
-				this.linkRoom(room,goRoom,dirCode);
+				linkRoom(room,goRoom,dirCode,ox,ox);
 				mazify(visited,getX(x,dirCode),getY(y,dirCode));
 			}
 		}

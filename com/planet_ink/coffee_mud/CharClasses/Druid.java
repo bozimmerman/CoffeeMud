@@ -115,6 +115,7 @@ public class Druid extends StdCharClass
 			return false;
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
 		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
+		&& !(mob.charStats().getMyRace().ID().equals("Dwarf"))
 		&& !(mob.charStats().getMyRace().ID().equals("HalfElf")))
 			return(false);
 		return true;
