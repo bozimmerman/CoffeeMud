@@ -1,0 +1,147 @@
+package com.planet_ink.coffee_mud.Abilities.Common;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+
+import java.util.*;
+
+/* 
+   Copyright 2000-2004 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+public class Tattooing extends CommonSkill
+{
+	public String ID() { return "Tattooing"; }
+	public String name(){ return "Tattooing";}
+	private static final String[] triggerStrings = {"TATTOO","TATTOOING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	private String writing="";
+	MOB target=null;
+	public Tattooing()
+	{
+		super();
+		displayText="You are tattooing...";
+		verb="tattooing";
+	}
+
+	public void unInvoke()
+	{
+		if(canBeUninvoked())
+		{
+			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping)&&(target!=null))
+			{
+				MOB mob=(MOB)affected;
+				if(writing.length()==0)
+					commonEmote(mob,"<S-NAME> mess(es) up the tattoo on "+target.name()+".");
+				else
+				{
+					commonEmote(mob,"<S-NAME> complete(s) the tattoo on "+target.name()+".");
+				    mob.addTattoo(writing);
+				}
+			}
+		}
+		super.unInvoke();
+	}
+
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((affected!=null)&&(affected instanceof MOB)&&(tickID==MudHost.TICK_MOB))
+		{
+			MOB mob=(MOB)affected;
+			if((target==null)
+			||(mob.location()!=target.location())
+			||(!Sense.canBeSeenBy(target,mob)))
+			{aborted=true; unInvoke(); return false;}
+		}
+		return super.tick(ticking,tickID);
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	{
+		if(commands.size()<3)
+		{
+			commonTell(mob,"You must specify whom you want to tattoo, what body part to tattoo, and what the tattoo looks like.");
+			return false;
+		}
+		String whom=(String)commands.firstElement();
+		commands.removeElementAt(0);
+		String part=(String)commands.lastElement();
+		commands.removeElementAt(0);
+		String message=Util.combine(commands,0);
+		commands.clear();
+		commands.addElement(whom);
+		
+		int partNum=-1;
+		StringBuffer allParts=new StringBuffer("");
+		for(int i=0;i<Item.wornLocation.length;i++)
+		{
+		    if((Item.wornCodes[i]!=Item.FLOATING_NEARBY)
+		    &&(Item.wornCodes[i]!=Item.ABOUT_BODY)
+		    &&(Item.wornCodes[i]!=Item.INVENTORY))
+		    {
+			    if(Item.wornLocation[i].equalsIgnoreCase(Item.wornLocation[i]))
+			        partNum=i;
+			    allParts.append(", "+Util.capitalize(Item.wornLocation[i].toLowerCase()));
+		    }
+		}
+		if(partNum<0)
+		{
+		    commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
+		    return false;
+		}
+		long wornCode=Item.wornCodes[partNum];
+		String wornName=Item.wornLocation[partNum];
+		
+		MOB target=super.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+
+		if(target.getWearPositions(wornCode)<=0)
+		{
+		    commonTell(mob,"That location is not available for tattooing.");
+		    return false;
+		}
+		
+	    int numTattsDone=0;
+		for(int i=0;i<target.numTattoos();i++)
+		{
+		    String tat=mob.fetchTattoo(i);
+		    if(tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
+	            numTattsDone++;
+		}
+		if(numTattsDone>=target.getWearPositions(Item.wornCodes[partNum]))
+		{
+		    commonTell(mob,"That location is already completely decorated.");
+		    return false;
+		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		writing=wornName.toUpperCase()+":A tattoo of "+message;
+		verb="tattooing "+target.name()+" on the "+wornName;
+		displayText="You are "+verb;
+		if(!profficiencyCheck(mob,0,auto)) writing="";
+		int duration=30-mob.envStats().level();
+		if(duration<6) duration=6;
+		FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) tattooing "+message+" on the "+wornName.toLowerCase()+" of "+target.name()+".");
+		if(mob.location().okMessage(mob,msg))
+		{
+			mob.location().send(mob,msg);
+			beneficialAffect(mob,mob,asLevel,duration);
+			Tattooing A=(Tattooing)mob.fetchEffect(ID());
+			if(A!=null) A.target=target;
+		}
+		return true;
+	}
+}
