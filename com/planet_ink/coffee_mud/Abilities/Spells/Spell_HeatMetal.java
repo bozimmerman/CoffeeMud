@@ -15,6 +15,7 @@ public class Spell_HeatMetal extends Spell
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public Environmental newInstance(){	return new Spell_HeatMetal();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_ALTERATION;}
+	public long flags(){return Ability.FLAG_HEATING;}
 
 	private Vector affectedItems=new Vector();
 

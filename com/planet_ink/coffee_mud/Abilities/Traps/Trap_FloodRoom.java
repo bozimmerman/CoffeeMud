@@ -146,14 +146,14 @@ public class Trap_FloodRoom extends StdTrap
 				if(tickDown>13)
 				{
 					R.showHappens(Affect.MSG_OK_VISUAL,"Water is filling up the room!");
-					ExternalPlay.extinguish(invoker(),R,7);
+					SaucerSupport.extinguish(invoker(),R,true);
 					R.recoverEnvStats();
 					R.recoverRoomStats();
 				}
 				else
 				if(tickDown>2)
 				{
-					ExternalPlay.extinguish(invoker(),R,7);
+					SaucerSupport.extinguish(invoker(),R,true);
 					R.recoverEnvStats();
 					R.recoverRoomStats();
 				}

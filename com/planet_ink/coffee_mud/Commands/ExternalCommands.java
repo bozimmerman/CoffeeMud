@@ -26,31 +26,6 @@ public class ExternalCommands implements ExternalCommand
 		return ItemUsage.wear(mob,item,quiet);
 	}
 	
-	public void extinguish(MOB source, Environmental target, int level)
-	{
-		AbilityHelper.extinguish(source,target,level);
-	}
-	
-	public Vector findBastardTheBestWay(Room location, 
-										Vector destRooms,
-										boolean noWater)
-	{
-		return AbilityHelper.findBastardTheBestWay(location,destRooms,noWater);
-	}
-	public String zapperDesc(String text)
-	{
-		return AbilityHelper.zapperDesc(text);
-	}
-	public boolean zapperCheck(String text, MOB mob)
-	{
-		return AbilityHelper.zapperCheck(text,mob);
-	}
-	public int trackNextDirectionFromHere(Vector theTrail, 
-											Room location,
-											boolean noWater)
-	{
-		return AbilityHelper.trackNextDirectionFromHere(theTrail,location,noWater);
-	}
 	public int channelInt(String channelName)
 	{
 		return Channels.getChannelInt(channelName);
@@ -140,20 +115,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		TheFight.postPanic(mob,affect);
 	}
-	public int radiatesFromDir(Room room, Vector rooms)
-	{
-		return AbilityHelper.radiatesFromDir(room,rooms);
-	}
-	public void getRadiantRooms(Room room, Vector rooms, boolean openOnly, int maxDepth)
-	{
-		AbilityHelper.getRadiantRooms(room,rooms,openOnly,maxDepth);
-	}
 	public void sheathIfPossible(MOB mob)
 	{
 		TheFight.sheathIfPossible(mob);
 	}
-	
-	
 	public void postDeath(MOB source, MOB target,Affect addHere)
 	{
 		TheFight.postDeath(source,target,addHere);

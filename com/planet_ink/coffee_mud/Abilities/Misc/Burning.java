@@ -13,6 +13,7 @@ public class Burning extends StdAbility
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Burning();}
+	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 
 	private boolean reversed(){return profficiency()==100;}
 	public boolean tick(Tickable ticking, int tickID)

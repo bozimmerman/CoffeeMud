@@ -136,7 +136,7 @@ public class Thief_Assassinate extends ThiefSkill
 		&&(affect.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
-			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -236,7 +236,7 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 
 		if(rooms.size()>0)
-			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,true);
+			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,true);
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
@@ -259,7 +259,7 @@ public class Thief_Assassinate extends ThiefSkill
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
+				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}
 		else

@@ -14,6 +14,7 @@ public class Chant_SummonFire extends Chant
 	private Room FireLocation=null;
 	private Item littleFire=null;
 	public Environmental newInstance(){	return new Chant_SummonFire();}
+	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 
 	public void unInvoke()
 	{

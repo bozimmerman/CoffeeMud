@@ -70,7 +70,7 @@ public class Chant_LocateAnimals extends Chant
 		&&(affect.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
-			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),false);
+			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
 	public MOB animalHere(Room room)
@@ -124,7 +124,7 @@ public class Chant_LocateAnimals extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);
+			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,false);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
@@ -147,7 +147,7 @@ public class Chant_LocateAnimals extends Chant
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
+				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}
 		}
 		else

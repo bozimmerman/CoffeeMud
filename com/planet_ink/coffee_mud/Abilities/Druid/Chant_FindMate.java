@@ -106,7 +106,7 @@ public class Chant_FindMate extends Chant
 		&&(affect.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
-			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean isSuitableMate(MOB mate, MOB forMe)
@@ -186,7 +186,7 @@ public class Chant_FindMate extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,true);
+			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,true);
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
@@ -206,7 +206,7 @@ public class Chant_FindMate extends Chant
 				{
 					target.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");
 					A.makeLongLasting();
-					A.nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
+					A.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 					target.recoverEnvStats();
 				}
 			}

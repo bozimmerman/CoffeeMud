@@ -142,7 +142,7 @@ public class Skill_Track extends StdAbility
 		if((affect.amISource(mob))
 		&&(affect.amITarget(mob.location()))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
-			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),true);
+			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -208,7 +208,7 @@ public class Skill_Track extends StdAbility
 		}
 		
 		if(rooms.size()>0)
-			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);
+			theTrail=SaucerSupport.findBastardTheBestWay(mob.location(),rooms,false);
 		
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
@@ -231,7 +231,7 @@ public class Skill_Track extends StdAbility
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
 				mob.recoverEnvStats();
-				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),false);
+				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),false);
 			}
 		}
 		else

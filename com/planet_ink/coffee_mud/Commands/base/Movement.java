@@ -1,10 +1,10 @@
 package com.planet_ink.coffee_mud.Commands.base;
-
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import java.io.*;
 import java.util.*;
+
 public class Movement extends Scriptable
 {
 	private Movement(){}
@@ -552,12 +552,12 @@ public class Movement extends Scriptable
 				{
 					Vector V=new Vector();
 					V.addElement(mob.location());
-					ExternalPlay.getRadiantRooms(R,V,true,5);
+					SaucerSupport.getRadiantRooms(R,V,true,5);
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)
 					{
 						Room R2=(Room)V.elementAt(v);
-						int dir2=ExternalPlay.radiatesFromDir(R2,V);
+						int dir2=SaucerSupport.radiatesFromDir(R2,V);
 						if((dir2>=0)&&((R2.domainType()&Room.INDOORS)==Room.INDOORS))
 						{
 							Room R3=R2.getRoomInDir(dir2);

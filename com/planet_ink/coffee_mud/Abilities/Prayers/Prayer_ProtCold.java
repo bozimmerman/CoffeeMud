@@ -14,6 +14,7 @@ public class Prayer_ProtCold extends Prayer
 	public int holyQuality(){ return HOLY_NEUTRAL;}
 	public int quality(){return Ability.BENEFICIAL_SELF;}
 	public Environmental newInstance(){	return new Prayer_ProtCold();}
+	public long flags(){return Ability.FLAG_HEATING;}
 
 	public void unInvoke()
 	{

@@ -4,27 +4,30 @@ Installation.html update
 Archons Guide updates
 
 //****** next version ********************************************************
-SMTP capability
-Arrest idea: banned substances (get, drop, eq, etc), and harder sentence for parole.
-Z-level for the GrinderMap (elevation?) how the heck would THAT work...
-group formations as an alternative way of determining range
-Room descriptions varying by the time of day.
+GenRaces
+GenCharClasses
+racial abilities (abilities tied to the race)
+Some solution for variable eq on mobs
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
-Space ships as Locale types
+SMTP capability
+Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
+Arrest idea: banned substances (get, drop, eq, etc), and harder sentence for parole.
+apply languages to writing as well. Should be simple, right? ha!
+Room descriptions varying by the time of day.
+Weather affecting movement, flooding, slipping, vision.  Behaviors for floods and fires.
+Conquest Area behavior
+
+Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
 Create Docking areas.
 Electronic items which can be activated/deactivated, grant some affect, and use up power
 Prop_TechShield that absorbs enormous damage, but like Prop_SpellReflector -- needs reset time.
-possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
-racial abilities (abilities tied to the race)
-apply languages to writing as well. Should be simple, right? ha!
-Conquest Area behavior
-GenRaces
-GenCharClasses
-Some solution for variable eq on mobs
-Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
+
 ARTISAN:  Master of all the common skills.  Bonus 5 EXTRA RANDOM common skills at 1st level.  GAINS a common skill every level. WIS and CHA. Bard combat. BARDIC SONGS to qualify for.
 Wild Mage: 50% of the time, a spell cast will end up higher level, different spell.
 level and type and wear locations for weaponsmithing and armorsmithing
+possible to have NE SE SW NW directions?  Yes, but StdMap and MUDGrinder would get hit hard...
 LYING DOWN position?
+Z-level for the GrinderMap (elevation?) how the heck would THAT work...
+group formations as an alternative way of determining range

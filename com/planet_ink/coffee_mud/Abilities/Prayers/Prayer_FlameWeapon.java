@@ -15,6 +15,7 @@ public class Prayer_FlameWeapon extends Prayer
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public Environmental newInstance(){	return new Prayer_FlameWeapon();}
+	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 	private boolean notAgain=false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

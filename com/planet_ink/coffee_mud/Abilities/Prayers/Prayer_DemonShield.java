@@ -14,7 +14,7 @@ public class Prayer_Demonshield extends Prayer
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_Demonshield();}
-
+	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_BURNING;}
 
 	public void unInvoke()
 	{

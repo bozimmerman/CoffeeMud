@@ -105,8 +105,8 @@ public class ClanCommands
 				Clan C=Clans.getClan(qual);
 				if(C!=null)
 				{
-					if((AbilityHelper.zapperCheck(C.getAcceptanceSettings(),mob))
-					&&(AbilityHelper.zapperCheck("-<"+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL),mob)))
+					if((SaucerSupport.zapperCheck(C.getAcceptanceSettings(),mob))
+					&&(SaucerSupport.zapperCheck("-<"+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANLEVEL),mob)))
 					{
 						ExternalPlay.DBUpdateClan(mob.Name(), C.ID(), Clan.POS_APPLICANT);
 						Vector msgVector=new Vector();

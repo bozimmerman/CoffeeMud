@@ -14,7 +14,7 @@ public class Prop_HaveZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Ownership restricted as follows: "+ExternalPlay.zapperDesc(miscText);
+		return "Ownership restricted as follows: "+SaucerSupport.zapperDesc(miscText);
 	}
 
 
@@ -39,7 +39,7 @@ public class Prop_HaveZapper extends Property
 		case Affect.TYP_WIELD:
 			break;
 		case Affect.TYP_GET:
-			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,affected,Affect.MSG_OK_ACTION,"<O-NAME> flashes and flys out of <S-HIS-HER> hands!");
 				return false;

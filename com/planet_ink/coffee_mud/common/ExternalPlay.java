@@ -36,15 +36,6 @@ public class ExternalPlay
 	{
 		if(player!=null) player.postAttack(attacker,target,weapon);
 	}
-	public static int radiatesFromDir(Room room, Vector rooms)
-	{
-		if(player!=null) return player.radiatesFromDir(room,rooms);
-		return -1;
-	}
-	public static void getRadiantRooms(Room room, Vector rooms, boolean openOnly, int maxDepth)
-	{
-		if(player!=null) player.getRadiantRooms(room,rooms,openOnly,maxDepth);
-	}
 	public static void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage)
 	{
 		if(player!=null) player.postDamage(attacker,target,weapon,damage,messageCode,damageType,allDisplayMessage);
@@ -121,16 +112,6 @@ public class ExternalPlay
 	{
 		if(player!=null) return player.wear(mob,item,quiet);
 		return false;
-	}
-	public static String zapperDesc(String text)
-	{
-		if(player!=null) return player.zapperDesc(text);
-		return "";
-	}
-	public static boolean zapperCheck(String text, MOB mob)
-	{
-		if(player!=null) return player.zapperCheck(text,mob);
-		return true;
 	}
 	public static void standIfNecessary(MOB mob)
 	{
@@ -227,16 +208,6 @@ public class ExternalPlay
 	{
 		if(player!=null) player.sheathIfPossible(mob);
 	}
-	public static Vector findBastardTheBestWay(Room location, Vector destRooms, boolean noWater)
-	{
-		if(player!=null) return player.findBastardTheBestWay(location,destRooms,noWater);
-		return new Vector();
-	}
-	public static int trackNextDirectionFromHere(Vector theTrail,Room location,boolean noWater)
-	{
-		if(player!=null) return player.trackNextDirectionFromHere(theTrail,location,noWater);
-		return -1;
-	}
 	
 	public static void startTickDown(Tickable E,
 									 int tickID,
@@ -276,10 +247,6 @@ public class ExternalPlay
 	{
 		if(player!=null) return player.get(mob,container,getThis,quiet);
 		return false;
-	}
-	public static void extinguish(MOB source, Environmental target, int level)
-	{
-		if(player!=null) player.extinguish(source,target, level);
 	}
 	
 	public static void DBReadContent(Room thisRoom, Hashtable rooms)

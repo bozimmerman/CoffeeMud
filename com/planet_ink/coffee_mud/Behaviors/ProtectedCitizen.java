@@ -104,7 +104,7 @@ public class ProtectedCitizen extends ActiveTicker
 
 			Room thisRoom=mob.location();
 			Vector V=new Vector();
-			ExternalPlay.getRadiantRooms(thisRoom,V,true,radius);
+			SaucerSupport.getRadiantRooms(thisRoom,V,true,radius);
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=(Room)V.elementAt(v);
@@ -124,7 +124,7 @@ public class ProtectedCitizen extends ActiveTicker
 						ExternalPlay.postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 					else
 					{
-						int dir=ExternalPlay.radiatesFromDir(R,V);
+						int dir=SaucerSupport.radiatesFromDir(R,V);
 						if(dir>=0)
 							ExternalPlay.move(M,dir,false,false);
 					}

@@ -14,7 +14,7 @@ public class Prop_ReqEntry extends Property
 
 	public String accountForYourself()
 	{
-		return "Entry restricted as follows: "+ExternalPlay.zapperDesc(miscText);
+		return "Entry restricted as follows: "+SaucerSupport.zapperDesc(miscText);
 	}
 
 	public boolean passesMuster(MOB mob)
@@ -22,7 +22,7 @@ public class Prop_ReqEntry extends Property
 		if(mob==null) return false;
 		if(Sense.isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
 			return true;
-		return ExternalPlay.zapperCheck(text(),mob);
+		return SaucerSupport.zapperCheck(text(),mob);
 	}
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

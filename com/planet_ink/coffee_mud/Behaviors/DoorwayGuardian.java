@@ -58,7 +58,7 @@ public class DoorwayGuardian extends StdBehavior
 		&&(affect.target()!=null)
 		&&(!BrotherHelper.isBrother(mob,monster))
 		&&(Sense.canSenseMoving(mob,monster))
-		&&(!ExternalPlay.zapperCheck(getParms(),mob)))
+		&&(!SaucerSupport.zapperCheck(getParms(),mob)))
 		{
 			if(affect.target() instanceof Exit)
 			{

@@ -91,7 +91,7 @@ public class GateGuard extends StdBehavior
 			if((M!=null)
 			&&(!M.isMonster())
 			&&(Sense.canBeSeenBy(M,mob))
-			&&(ExternalPlay.zapperCheck(getParms(),M)))
+			&&(SaucerSupport.zapperCheck(getParms(),M)))
 				num++;
 		}
 		return num;
@@ -112,7 +112,7 @@ public class GateGuard extends StdBehavior
 			{
 				int dir=findGate(mob);
 				if((dir>=0)
-				&&(ExternalPlay.zapperCheck(getParms(),msg.source())))
+				&&(SaucerSupport.zapperCheck(getParms(),msg.source())))
 				{
 					Exit e=mob.location().getExitInDir(dir);
 					if(msg.amITarget(e))

@@ -14,7 +14,7 @@ public class Prop_RideZapper extends Property
 
 	public String accountForYourself()
 	{
-		return "Mounting restricted as follows: "+ExternalPlay.zapperDesc(miscText);
+		return "Mounting restricted as follows: "+SaucerSupport.zapperDesc(miscText);
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
@@ -35,7 +35,7 @@ public class Prop_RideZapper extends Property
 		case Affect.TYP_SLEEP:
 		case Affect.TYP_MOUNT:
 		case Affect.TYP_ENTER:
-			if((!ExternalPlay.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
+			if((!SaucerSupport.zapperCheck(text(),mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
 				mob.location().show(mob,null,affected,Affect.MSG_OK_VISUAL,"<O-NAME> zaps <S-NAME>, making <S-HIS-HER> jump up!");
 				return false;

@@ -42,7 +42,6 @@ public interface ExternalCommand
 	public StringBuffer niceLister(MOB mob, Vector items, boolean useName);
 	public int channelInt(String channelName);
 	
-	
 	// misc
 	public void roomAffectFully(Affect msg, Room room, int dirCode);
 	public int getMyDirCode(Exit exit, Room room, int testCode);
@@ -53,13 +52,4 @@ public interface ExternalCommand
 	public void obliterateArea(String areaName);
 	public void obliterateRoom(Room deadRoom);
 	public void destroyUser(MOB deadMOB);
-	
-	// ability helpers
-	public Vector findBastardTheBestWay(Room location, Vector destRooms, boolean noWater);
-	public int trackNextDirectionFromHere(Vector theTrail,Room location,boolean noWater);
-	public boolean zapperCheck(String text, MOB mob);
-	public String zapperDesc(String text);
-	public void extinguish(MOB source, Environmental target, int level);
-	public int radiatesFromDir(Room room, Vector rooms);
-	public void getRadiantRooms(Room room, Vector rooms, boolean openOnly, int maxDepth);
 }

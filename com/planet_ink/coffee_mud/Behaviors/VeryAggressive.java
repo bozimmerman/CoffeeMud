@@ -23,7 +23,7 @@ public class VeryAggressive extends Aggressive
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return ExternalPlay.zapperCheck(getParms(),M);
+		return SaucerSupport.zapperCheck(getParms(),M);
 	}
 
 	public static void tickVeryAggressively(Tickable ticking,
@@ -72,7 +72,7 @@ public class VeryAggressive extends Aggressive
 						MOB inhab=room.fetchInhabitant(i);
 						if((inhab!=null)
 						&&((!inhab.isMonster())||(mobKiller))
-						&&(ExternalPlay.zapperCheck(zapStr,inhab))
+						&&(SaucerSupport.zapperCheck(zapStr,inhab))
 						&&((zapStr.length()==0)
 						   ||((inhab.envStats().level()<(mob.envStats().level()+15))
 							  &&(inhab.envStats().level()>(mob.envStats().level()-15)))))

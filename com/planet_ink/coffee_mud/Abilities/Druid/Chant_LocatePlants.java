@@ -70,7 +70,7 @@ public class Chant_LocatePlants extends Chant
 		&&(affect.amITarget(mob.location()))
 		&&(Sense.canBeSeenBy(mob.location(),mob))
 		&&(affect.targetMinor()==Affect.TYP_EXAMINESOMETHING))
-			nextDirection=ExternalPlay.trackNextDirectionFromHere(theTrail,mob.location(),false);
+			nextDirection=SaucerSupport.trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
 	public String plantsHere(MOB mob, Room R)
@@ -129,7 +129,7 @@ public class Chant_LocatePlants extends Chant
 		}
 		
 		if(rooms.size()>0)
-			theTrail=ExternalPlay.findBastardTheBestWay(target.location(),rooms,false);
+			theTrail=SaucerSupport.findBastardTheBestWay(target.location(),rooms,false);
 		
 		if((success)&&(theTrail!=null))
 		{
@@ -141,7 +141,7 @@ public class Chant_LocatePlants extends Chant
 				if(target.fetchAffect(newOne.ID())==null)
 					target.addAffect(newOne);
 				target.recoverEnvStats();
-				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(newOne.theTrail,target.location(),false);
+				newOne.nextDirection=SaucerSupport.trackNextDirectionFromHere(newOne.theTrail,target.location(),false);
 			}
 		}
 		else

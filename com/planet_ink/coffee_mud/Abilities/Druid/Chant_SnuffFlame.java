@@ -35,7 +35,7 @@ public class Chant_SnuffFlame extends Chant
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				ExternalPlay.extinguish(mob,target,-1);
+				SaucerSupport.extinguish(mob,target,false);
 				target.recoverEnvStats();
 				mob.location().recoverRoomStats();
 			}

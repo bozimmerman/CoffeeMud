@@ -696,7 +696,7 @@ public class ItemData extends StdWebMacro
 			if(reach>basereach)
 				basereach=reach;
 			int damage=((level-1)/((reach/weight)+2) + (weight-baseattack)/5 -reach)*((hands+1)/2);
-			int cost=2*(weight*20+(5*damage+baseattack+reach*10)*damage)/(hands+1) + weight*materialvalue;
+			int cost=2*((weight*materialvalue)+((5*damage)+baseattack+(reach*10))*damage)/(hands+1);
 				
 			if(basematerial==EnvResource.MATERIAL_METAL)
 			{
@@ -892,8 +892,8 @@ public class ItemData extends StdWebMacro
 					if(hands==1) break;
 				}
 			}
-			int cost=(int)Math.round((pts*pts + new Integer(materialvalue).doubleValue()) 
-									 * ( weightpts * pts) / (2));
+			int cost=(int)Math.round(((pts*pts) + new Integer(materialvalue).doubleValue()) 
+									 * ( weightpts / 2));
 			int armor=(int)Math.round(totalpts);
 			switch(material&EnvResource.RESOURCE_MASK)
 			{

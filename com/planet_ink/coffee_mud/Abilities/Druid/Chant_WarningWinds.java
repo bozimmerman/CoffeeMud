@@ -39,7 +39,7 @@ public class Chant_WarningWinds extends Chant
 		{
 			lastRoom=((MOB)affected).location();
 			Vector V=new Vector();
-			ExternalPlay.getRadiantRooms(lastRoom,V,false,2);
+			SaucerSupport.getRadiantRooms(lastRoom,V,false,2);
 			boolean fighting=false;
 			boolean enemy=false;
 			for(int r=0;r<V.size();r++)
@@ -72,7 +72,7 @@ public class Chant_WarningWinds extends Chant
 					}
 					if(enemy||fighting)
 					{
-						int dir=ExternalPlay.radiatesFromDir(R,V);
+						int dir=SaucerSupport.radiatesFromDir(R,V);
 						if(dir>=0)
 						{
 							String far="far ";

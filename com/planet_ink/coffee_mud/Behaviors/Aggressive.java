@@ -18,7 +18,7 @@ public class Aggressive extends StdBehavior
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return ExternalPlay.zapperCheck(getParms(),M);
+		return SaucerSupport.zapperCheck(getParms(),M);
 	}
 
 	public void setParms(String newParms)
@@ -67,7 +67,7 @@ public class Aggressive extends StdBehavior
 			MOB mob=observer.location().fetchInhabitant(i);
 			if((mob!=null)
 			&&(mob!=observer)
-			&&(ExternalPlay.zapperCheck(zapStr,mob)))
+			&&(SaucerSupport.zapperCheck(zapStr,mob)))
 			{
 				if(startFight(observer,mob,mobKiller))
 					return true;

@@ -159,7 +159,7 @@ public class StdDeity extends StdMOB implements Deity
 
 	public String getClericRequirementsDesc()
 	{
-		return "The following may be clerics of "+name()+": "+ExternalPlay.zapperDesc(getClericRequirements());
+		return "The following may be clerics of "+name()+": "+SaucerSupport.zapperDesc(getClericRequirements());
 	}
 	public String getClericTriggerDesc()
 	{
@@ -169,7 +169,7 @@ public class StdDeity extends StdMOB implements Deity
 	}
 	public String getWorshipRequirementsDesc()
 	{
-		return "The following are acceptable worshipers of "+name()+": "+ExternalPlay.zapperDesc(getWorshipRequirements());
+		return "The following are acceptable worshipers of "+name()+": "+SaucerSupport.zapperDesc(getWorshipRequirements());
 	}
 	public String getWorshipTriggerDesc()
 	{
@@ -209,14 +209,14 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
 			{
-				if(!ExternalPlay.zapperCheck(getClericRequirements(),msg.source()))
+				if(!SaucerSupport.zapperCheck(getClericRequirements(),msg.source()))
 				{
 					msg.source().tell("You are unworthy of serving "+name()+".");
 					return false;
 				}
 			}
 			else
-			if(!ExternalPlay.zapperCheck(getWorshipRequirements(),msg.source()))
+			if(!SaucerSupport.zapperCheck(getWorshipRequirements(),msg.source()))
 			{
 				msg.source().tell("You are unworthy of "+name()+".");
 				return false;
@@ -493,7 +493,7 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					if(M.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
 					{
-						if(!ExternalPlay.zapperCheck(getClericRequirements(),M))
+						if(!SaucerSupport.zapperCheck(getClericRequirements(),M))
 						{
 							FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
 							if((M.location()!=null)&&(M.okAffect(M,msg)))
@@ -501,7 +501,7 @@ public class StdDeity extends StdMOB implements Deity
 						}
 					}
 					else
-					if(!ExternalPlay.zapperCheck(getWorshipRequirements(),M))
+					if(!SaucerSupport.zapperCheck(getWorshipRequirements(),M))
 					{
 						FullMsg msg=new FullMsg(M,this,null,Affect.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
 						if((M.location()!=null)&&(M.okAffect(M,msg)))

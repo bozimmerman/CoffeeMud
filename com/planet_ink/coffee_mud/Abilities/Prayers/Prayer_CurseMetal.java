@@ -15,6 +15,7 @@ public class Prayer_CurseMetal extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public int holyQuality(){ return HOLY_EVIL;}
 	public Environmental newInstance(){	return new Prayer_CurseMetal();}
+	public long flags(){return Ability.FLAG_HEATING;}
 
 	private Vector affectedItems=new Vector();
 

@@ -35,7 +35,7 @@ public class Bomb_Water extends StdBomb
 			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.name()+" explodes water all over <T-NAME>!"))
 			{
 				super.spring(target);
-				ExternalPlay.extinguish(invoker(),target,7);
+				SaucerSupport.extinguish(invoker(),target,true);
 			}
 		}
 	}

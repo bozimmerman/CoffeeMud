@@ -35,7 +35,7 @@ public interface Ability  extends Environmental
 		"TRANSMUTATION","ENCHANTMENT/CHARM","CONJURATION"
 	};
 	
-	// flag
+	// affect/target flags
 	public static final int CAN_MOBS=1;
 	public static final int CAN_ITEMS=2;
 	public static final int CAN_AREAS=4;
@@ -67,6 +67,8 @@ public interface Ability  extends Environmental
 	public static final int FLAG_SUMMONING=16;
 	public static final int FLAG_CHARMING=32;
 	public static final int FLAG_TRACKING=64;
+	public static final int FLAG_HEATING=128;
+	public static final int FLAG_BURNING=256;
 	public long flags();
 	// these are flags which deliver slightly more
 	// specific information about this ability.
