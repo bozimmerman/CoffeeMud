@@ -80,6 +80,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 				if(msg.targetMinor()==CMMsg.TYP_GET)
 				{
 					Room R=CoffeeUtensils.roomLocation(this);
+					if(msg.source().getClanID().length()==0)
+					{
+						msg.source().tell("You must belong to a clan to take a clan item.");
+						return false;
+					}
+					else
 					if(R!=null)
 					{
 						for(int i=0;i<R.numInhabitants();i++)
@@ -146,7 +152,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 				for(int i=0;i<msg.source().location().numInhabitants();i++)
 				{
 					MOB M=msg.source().location().fetchInhabitant(i);
-					if((M!=null)&&(!M.isMonster())
+					if((M!=null)
+					&&(!M.isMonster())
 					&&(M.getClanID().equals(clanID())))
 					{ foundOne=true; break;}
 				}
