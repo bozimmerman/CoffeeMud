@@ -45,13 +45,13 @@ public class SpecialistMage extends Mage
 	{
 		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);
 		String opposed=Util.capitalize(Ability.DOMAIN_DESCS[opposed()>>5]);
-		return "Receives 2%/lvl bonus damage from "+chosen+".  Receives double duration on your "+chosen+" magic.";
+		return "At 5th level, receives 2%/lvl bonus damage from "+chosen+".  At 10th level, receives double duration on your "+chosen+" magic.";
 	}
 	public String otherLimitations()
 	{
 		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);
 		String opposed=Util.capitalize(Ability.DOMAIN_DESCS[opposed()>>5]);
-		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
+		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  At 10th level, receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
 	}
 
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
@@ -67,7 +67,9 @@ public class SpecialistMage extends Mage
 		if(affect.amISource(myChar)
 		&&(myChar.isMine(affect.tool())))
 		{
-			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)&&(domain==opposed()))
+			if((affect.sourceMinor()==Affect.TYP_CAST_SPELL)
+			   &&(domain==opposed())
+			   &&(!CMAble.getDefaultGain(ID(),affect.tool().ID())))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.INTELLIGENCE)/2))
 				{
@@ -76,6 +78,7 @@ public class SpecialistMage extends Mage
 				}
 			}
 			if(((affect.targetCode()&Affect.MASK_HURT)>0)
+			&&(myChar.charStats().getClassLevel(this)>=5)
 			&&((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain()))
 			{
 				int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),Util.mul(0.02,myChar.charStats().getClassLevel(this))));
@@ -88,13 +91,14 @@ public class SpecialistMage extends Mage
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Ability))
 		{
-			if((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==domain())
+			if((domain==domain())
+			&&(myChar.charStats().getClassLevel(this)>=5))
 			{
 				int recovery=(int)Math.round(Util.div((affect.targetCode()-Affect.MASK_HURT),1.0+Util.mul(0.02,myChar.charStats().getClassLevel(this))));
 				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
 			}
 			else
-			if((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==opposed())
+			if(domain==opposed())
 			{
 				int recovery=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),1.0+Util.mul(0.02,30-myChar.charStats().getClassLevel(this))));
 				affect.modify(affect.source(),affect.target(),affect.tool(),affect.sourceCode(),affect.sourceMessage(),affect.targetCode()-recovery,affect.targetMessage(),affect.othersCode(),affect.othersMessage());
@@ -108,6 +112,9 @@ public class SpecialistMage extends Mage
 									 Ability skill, 
 									 int duration)
 	{
+		if(myChar==null) return duration;
+		if(myChar.charStats().getClassLevel(this)<10) return duration;
+		   
 		int domain=skill.classificationCode()&Ability.ALL_DOMAINS;
 		if((skill.invoker()==myChar)
 		||(skill.quality()!=Ability.MALICIOUS))

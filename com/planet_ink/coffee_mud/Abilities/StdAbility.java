@@ -86,7 +86,8 @@ public class StdAbility implements Ability, Cloneable
 			if(((MOB)affected).location()==null) return;
 			if(affected.fetchAffect(this.ID())==null) affected.addAffect(this);
 			((MOB)affected).location().recoverRoomStats();
-			((MOB)affected).charStats().getCurrentClass().classDurationModifier(((MOB)affected),this,tickTime);
+			if(invoker()!=affected)
+				((MOB)affected).charStats().getCurrentClass().classDurationModifier(((MOB)affected),this,tickTime);
 		}
 		else
 		{
@@ -364,11 +365,13 @@ public class StdAbility implements Ability, Cloneable
 
 	public void helpProfficiency(MOB mob)
 	{
-		if((Calendar.getInstance().getTime().getTime()-lastProfHelp)<60000)
-			return;
-
 		Ability A=(Ability)mob.fetchAbility(ID());
 		if(A==null) return;
+		
+		if((Calendar.getInstance().getTime().getTime()
+		-((StdAbility)A).lastProfHelp)<60000)
+			return;
+
 		if(A.profficiency()<100)
 		{
 			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
@@ -378,7 +381,7 @@ public class StdAbility implements Ability, Cloneable
 				if((this!=A)&&(profficiency()<100))
 				{
 					setProfficiency(profficiency()+1);
-					lastProfHelp=Calendar.getInstance().getTime().getTime();
+					((StdAbility)A).lastProfHelp=Calendar.getInstance().getTime().getTime();
 				}
 			}
 		}
