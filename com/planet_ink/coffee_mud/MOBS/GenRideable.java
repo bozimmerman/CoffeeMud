@@ -13,6 +13,7 @@ public class GenRideable extends StdRideable
 		Username="a generic horse";
 		setDescription("");
 		setDisplayText("A generic horse stands here.");
+		baseEnvStats().setAbility(11); // his only off-default
 
 		recoverMaxState();
 		resetToMaxState();

@@ -507,7 +507,7 @@ public class BasicSenses
 			break;
 			case 0:
 			{
-				if(Util.bset(mob.getBitmap(),MOB.ATT_ANSI))
+				if(Util.bset(mob.getBitmap(),MOB.ATT_SOUND))
 				{
 					mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_SOUND));
 					mob.tell("MSP Sound/Music disabled.\n\r");

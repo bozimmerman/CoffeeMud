@@ -305,6 +305,12 @@ public class Generic
 
 		if(E instanceof LandTitle)
 			text.append(XMLManager.convertXMLtoTag("LANDID",((LandTitle)E).landRoomID()));
+		
+		if(E instanceof DeadBody)
+		{
+			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.GENDER)));
+			text.append(XMLManager.convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
+		}
 
 		if(E instanceof MOB)
 		{
@@ -1363,6 +1369,16 @@ public class Generic
 			((Weapon)E).setWeaponType(XMLManager.getIntFromPieces(buf,"TYPE"));
 			((Weapon)E).setWeaponClassification(XMLManager.getIntFromPieces(buf,"CLASS"));
 			((Weapon)E).setRanges(XMLManager.getIntFromPieces(buf,"MINR"),XMLManager.getIntFromPieces(buf,"MAXR"));
+		}
+		if(E instanceof DeadBody)
+		{
+			((DeadBody)E).charStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
+			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
+			{
+				Race R=CMClass.getRace(raceID);
+				((DeadBody)E).charStats().setMyRace(R);
+			}
 		}
 		if(E instanceof MOB)
 		{

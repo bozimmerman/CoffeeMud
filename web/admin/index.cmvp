@@ -48,7 +48,6 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	<A href="abilities.cmvp"><FONT COLOR=BLUE>Complete Skills List</FONT></a><BR>
 	<A href="behaviors.cmvp"><FONT COLOR=BLUE>Complete Behaviors List</FONT></a><BR>
 	<A href="affects.cmvp"><FONT COLOR=BLUE>Complete Affects List</FONT></a><BR>
-	<A href="log.cmvp"><FONT COLOR=BLUE>View Server Log</FONT></a><BR>
 	</TD>
 	</TR></TABLE>
 </big>

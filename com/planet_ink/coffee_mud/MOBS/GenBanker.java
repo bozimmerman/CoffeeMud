@@ -16,6 +16,7 @@ public class GenBanker extends StdBanker
 		Username="a generic banker";
 		setDescription("He looks like he wants your money.");
 		setDisplayText("A generic banker stands here.");
+		baseEnvStats().setAbility(11); // his only off-default
 	}
 	public Environmental newInstance()
 	{

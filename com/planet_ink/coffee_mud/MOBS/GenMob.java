@@ -13,6 +13,8 @@ public class GenMob extends StdMOB
 		Username="a generic mob";
 		setDescription("");
 		setDisplayText("A generic mob stands here.");
+		
+		baseEnvStats().setAbility(11); // his only off-default
 
 		recoverMaxState();
 		resetToMaxState();

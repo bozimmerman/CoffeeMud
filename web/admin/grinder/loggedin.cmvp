@@ -52,6 +52,8 @@
 	<A href="javascript:Clicked('journal.cmvp')"><FONT COLOR=WHITE>Journals Browser</FONT></a>
 	<BR>
 	<A href="javascript:Threads()"><FONT COLOR=WHITE>Thread Groups</FONT></a>
+	<BR>
+	<A href="javascript:Clicked('log.cmvp')"><FONT COLOR=WHITE>View Server Log</FONT></a>
 </TD></TR>
 </TABLE>
 <P>

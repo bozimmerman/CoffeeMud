@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Corpse extends StdContainer implements DeadBody
+public class Corpse extends GenContainer implements DeadBody
 {
 	public String ID(){	return "Corpse";}
 	protected Room roomLocation=null;

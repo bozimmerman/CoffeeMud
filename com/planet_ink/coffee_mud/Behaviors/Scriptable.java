@@ -1755,6 +1755,9 @@ public class Scriptable extends StdBehavior
 						m=(Item)m.copyOf();
 						m.recoverEnvStats();
 						monster.addInventory(m);
+						monster.recoverCharStats();
+						monster.recoverEnvStats();
+						monster.recoverMaxState();
 					}
 				}
 				break;
@@ -1820,8 +1823,13 @@ public class Scriptable extends StdBehavior
 						}
 						else
 						if(E instanceof Item)
+						{
+							Environmental oE=((Item)E).owner();
 							((Item)E).destroy();
+							if(oE!=null) oE.recoverEnvStats();
+						}
 					}
+					lastKnownLocation.recoverRoomStats();
 				}
 				break;
 			}

@@ -13,7 +13,7 @@ public class GenDeity extends StdDeity
 		Username="a generic deity";
 		setDescription("He is a run-of-the-mill deity.");
 		setDisplayText("A generic deity stands here.");
-
+		baseEnvStats().setAbility(11); // his only off-default
 		recoverMaxState();
 		resetToMaxState();
 		recoverEnvStats();

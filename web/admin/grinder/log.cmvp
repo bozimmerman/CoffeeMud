@@ -1,14 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
-	<!-- tell spiders to sod off -->
-	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
-	<title>CoffeeMUD ADMIN Server</title>
+	<title>System Log File</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
 </head>
-
-<body>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=GET ACTION="log.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=35% VALIGN=TOP>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked('/grinder/log.cmvp');">
+	</TD>
+	<TD WIDTH=35% VALIGN=TOP>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD>
+	<TD WIDTH=30% VALIGN=TOP><BR></TD>
+	</TR>
+	</TABLE>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0" ALIGN=RIGHT>
 <FONT COLOR=WHITE>@LogViewer@</FONT>
 </BODY>
 </HTML>
+@endif@
+@endif@
