@@ -157,6 +157,8 @@ public class Disease_Lycanthropy extends Disease
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
+		if(mob.amDead()) return true;
+		
 		if(!changed)
 		{
 			if(mob.location()==null) return true;

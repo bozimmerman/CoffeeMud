@@ -34,7 +34,7 @@ public class Disease_Malaria extends Disease
 		MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
-		if((++tickUp)==MudHost.TICKS_PER_MUDDAY)
+		if((!mob.amDead())&&((++tickUp)==MudHost.TICKS_PER_MUDDAY))
 		{
 			tickUp=0;
 			conDown++;
@@ -45,7 +45,7 @@ public class Disease_Malaria extends Disease
 				return false;
 			}
 		}
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());

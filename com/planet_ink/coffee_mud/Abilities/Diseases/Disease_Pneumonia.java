@@ -30,7 +30,7 @@ public class Disease_Pneumonia extends Disease
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;

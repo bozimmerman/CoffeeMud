@@ -35,7 +35,7 @@ public class Disease_Anthrax extends Disease
 		MOB mob=(MOB)affected;
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());

@@ -30,7 +30,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=10;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> rotting away...");

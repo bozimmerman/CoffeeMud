@@ -30,7 +30,7 @@ public class Disease_Asthma extends Disease
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			if(Dice.rollPercentage()==1)

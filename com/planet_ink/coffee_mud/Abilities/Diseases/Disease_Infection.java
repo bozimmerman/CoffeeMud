@@ -39,6 +39,7 @@ public class Disease_Infection extends Disease
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
+		&&(!mob.amDead())
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE))
 		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
 		{
@@ -47,7 +48,7 @@ public class Disease_Infection extends Disease
 			A.invoke(diseaser,mob,true);
 		}
 		else
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());

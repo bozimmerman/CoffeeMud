@@ -45,7 +45,7 @@ public class Disease_Gangrene extends Disease
 							-((mob.curState().getHitPoints()-lastHP)/2));
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());

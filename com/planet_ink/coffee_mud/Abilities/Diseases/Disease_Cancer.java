@@ -31,7 +31,7 @@ public class Disease_Cancer extends Disease
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());

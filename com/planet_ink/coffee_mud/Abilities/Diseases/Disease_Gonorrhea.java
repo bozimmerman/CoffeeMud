@@ -32,6 +32,7 @@ public class Disease_Gonorrhea extends Disease
 		MOB mob=(MOB)affected;
 		if((Dice.rollPercentage()==1)
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
+		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
 		{
 			MOB diseaser=invoker;
@@ -40,7 +41,7 @@ public class Disease_Gonorrhea extends Disease
 			A.invoke(diseaser,mob,true);
 		}
 		else
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());

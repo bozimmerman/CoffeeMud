@@ -55,7 +55,7 @@ public class Disease_Lyme extends Disease
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
-		if(getTickDownRemaining()==1)
+		if((!mob.amDead())&&(getTickDownRemaining()==1))
 		{
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
@@ -75,7 +75,7 @@ public class Disease_Lyme extends Disease
 			if(A!=null) A.makeLongLasting();
 		}
 		else
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			days++;
 			diseaseTick=DISEASE_DELAY();

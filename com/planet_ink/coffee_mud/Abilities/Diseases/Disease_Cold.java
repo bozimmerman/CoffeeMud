@@ -35,6 +35,7 @@ public class Disease_Cold extends Disease
 		if((getTickDownRemaining()==1)
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
 		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION))
+		&&(!mob.amDead())
 		&&(!mob.isMonster()))
 		{
 			mob.delEffect(this);
@@ -42,7 +43,7 @@ public class Disease_Cold extends Disease
 			A.invoke(diseaser,mob,true);
 		}
 		else
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_NOISE,DISEASE_AFFECT());

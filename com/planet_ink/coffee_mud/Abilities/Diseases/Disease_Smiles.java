@@ -31,6 +31,7 @@ public class Disease_Smiles extends Disease
 
 		MOB mob=(MOB)affected;
 		if((getTickDownRemaining()==1)
+		&&(!mob.amDead())
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
 		{
 			MOB diseaser=invoker;
@@ -40,7 +41,7 @@ public class Disease_Smiles extends Disease
 			A.invoke(diseaser,mob,true);
 		}
 		else
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,DISEASE_AFFECT());

@@ -33,6 +33,7 @@ public class Disease_Giggles extends Disease
 		MOB diseaser=invoker;
 		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
+		&&(!mob.amDead())
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_DISEASE)))
 		{
 			mob.delEffect(this);
@@ -40,7 +41,7 @@ public class Disease_Giggles extends Disease
 			A.invoke(diseaser,mob,true);
 		}
 		else
-		if((--diseaseTick)<=0)
+		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
 			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISE,DISEASE_AFFECT());
