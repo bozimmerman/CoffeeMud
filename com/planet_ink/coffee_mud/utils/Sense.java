@@ -152,6 +152,7 @@ public class Sense
 	{
 		return ((mob.fetchAffect("Skill_HandCuff")!=null)
 				||(mob.fetchAffect("Prisoner")!=null)
+				||(mob.fetchAffect("Fighter_Pin")!=null)
 				||(mob.fetchAffect("Thief_Bind")!=null));
 
 	}
