@@ -61,6 +61,13 @@ public class Skill_Imitation extends BardSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		Environmental target=null;
+		if(commands.size()>1)
+		{
+			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.lastElement(),Item.WORN_REQ_ANY);
+			if(target==null) target=mob.fetchInventory(null,(String)commands.lastElement());
+			if(target!=null) commands.removeElementAt(commands.size()-1);
+		}
 		String cmd=(commands.size()>0)?Util.combine(commands,0).toUpperCase():"";
 		StringBuffer str=new StringBuffer("");
 		String found=null;
@@ -77,16 +84,8 @@ public class Skill_Imitation extends BardSkill
 			mob.tell("Spells/Skills you may imitate: "+str.toString()+".");
 			return true;
 		}
-		Environmental target=null;
-		if(commands.size()>1)
-		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,Util.combine(commands,1),Item.WORN_REQ_ANY);
-			if(target==null) target=mob.fetchInventory(null,Util.combine(commands,1));
-		}
 		if(target==null) target=mob.getVictim();
 		if(target==null) target=mob;
-
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
@@ -97,9 +96,7 @@ public class Skill_Imitation extends BardSkill
 		{
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_DELICATE|(auto?CMMsg.MASK_GENERAL:0),(String)immitations.get(found));
 			if(mob.location().okMessage(mob,msg))
-			{
 				mob.location().send(mob,msg);
-			}
 		}
 		else
 			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to imitate "+found+", but fail(s).");

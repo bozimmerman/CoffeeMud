@@ -45,6 +45,37 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	public int whatIsSold(){return whatISell;}
 	public void setWhatIsSold(int newSellCode){whatISell=newSellCode;}
 
+	protected void cloneFix(MOB E)
+	{
+		super.cloneFix(E);
+		if(E instanceof StdShopKeeper)
+		{
+			storeInventory=new Vector();
+			baseInventory=new Vector();
+			duplicateInventory=new Hashtable();
+			
+			StdShopKeeper SK=(StdShopKeeper)E;
+			for(int i=0;i<SK.storeInventory.size();i++)
+			{
+				Environmental I2=(Environmental)SK.storeInventory.elementAt(i);
+				if(I2!=null)
+					storeInventory.addElement(I2.copyOf());
+			}
+			for(int i=0;i<SK.baseInventory.size();i++)
+			{
+				Environmental I2=(Environmental)SK.baseInventory.elementAt(i);
+				if(I2!=null)
+					baseInventory.addElement(I2.copyOf());
+			}
+			for(Enumeration e=SK.duplicateInventory.keys();e.hasMoreElements();)
+			{
+				Environmental I2=(Environmental)e.nextElement();
+				Integer I3=(Integer)SK.duplicateInventory.get(I2);
+				if((I2!=null)&&(I3!=null))
+					duplicateInventory.put(I2.copyOf(),I3);
+			}
+		}
+	}
 	protected boolean inBaseInventory(Environmental thisThang)
 	{
 		for(int x=0;x<baseInventory.size();x++)

@@ -1,12 +1,8 @@
-need a room-reset message for rooms to get so behaviors (conquerable) can respond.
-do tims readable with pages - genbook - auto paging 24 lines - read book shows all with pauses, read 1 book.
-artisan should not gain all at once, and apprentice not qualify commons at once
-
-fix belts, boots/bracers hold daggers, bandolier by code -- too many for hands
-code something to coffeemudify all the beds 
+open a gate from one side that locks on the other does not open both!
 
 GenCharClasses -- zappercheck on quals 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
 mutable body parts, with ability to grant powers
+

@@ -92,7 +92,11 @@ public class Chant_SummonPlants extends Chant
 		newChant.littlePlants=newItem;
 		if((CoffeeUtensils.doesOwnThisProperty(mob,room))
 		||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))))
+		{
+			newChant.setInvoker(mob);
+			newChant.setMiscText(mob.name());
 			newItem.addNonUninvokableEffect(newChant);
+		}
 		else
 			newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);
 		room.recoverEnvStats();

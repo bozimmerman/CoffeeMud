@@ -24,6 +24,7 @@ public class Conquerable extends Arrest
 	private Area myArea=null;
 	private String journalName="";
 	private boolean allowLaw=false;
+	private long waitToReload=0;
 
 	private int checkDown=0;
 	private static final int CHECKFREQ=10;
@@ -254,7 +255,9 @@ public class Conquerable extends Arrest
 
 		// calculate total control points
 		// make sure all intelligent mobs belong to the clan
-		if((totalControlPoints<0)&&(myArea!=null))
+		if((totalControlPoints<0)
+		&&((waitToReload<=0)||(System.currentTimeMillis()>waitToReload))
+		&&(myArea!=null))
 		{
 			HashSet doneMOBs=new HashSet();
 			Vector itemSet=CMClass.DBEngine().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
@@ -694,53 +697,64 @@ public class Conquerable extends Arrest
 				}
 			}
 		}
-		if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+		if(((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
 		&&(myArea!=null)
-		&&((!savedHoldingClan.equals(""))||(!holdingClan.equals("")))
 		&&(!CommonStrings.isDisabled("CONQUEST")))
 		{
-			CMClass.DBEngine().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
-			StringBuffer data=new StringBuffer("");
-			data.append(XMLManager.convertXMLtoTag("CLANID",holdingClan));
-			data.append("<ACITEMS>");
-			synchronized(clanItems)
+			waitToReload=System.currentTimeMillis()+60000;
+			if((totalControlPoints>=0)
+			&&((!savedHoldingClan.equals(""))||(!holdingClan.equals(""))))
 			{
-				for(int i=0;i<clanItems.size();i++)
+				totalControlPoints=-1;
+				CMClass.DBEngine().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+				StringBuffer data=new StringBuffer("");
+				data.append(XMLManager.convertXMLtoTag("CLANID",holdingClan));
+				data.append("<ACITEMS>");
+				synchronized(clanItems)
 				{
-					ClanItem I=(ClanItem)clanItems.elementAt(i);
-					Room R=CoffeeUtensils.roomLocation(I);
-					if((R!=null)
-					&&(R.getArea()==myHost)
-					&&(I instanceof Item)
-					&&(!((Item)I).amDestroyed())
-					&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent((Item)I))))
+					for(int i=0;i<clanItems.size();i++)
 					{
-						data.append("<ACITEM>");
-						if(((Item)I).owner() instanceof Room)
-							data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(R)));
-						else
-						if(((Item)I).owner() instanceof MOB)
+						ClanItem I=(ClanItem)clanItems.elementAt(i);
+						Room R=CoffeeUtensils.roomLocation(I);
+						if((R!=null)
+						&&(R.getArea()==myHost)
+						&&(I instanceof Item)
+						&&(!((Item)I).amDestroyed())
+						&&((I.ciType()!=ClanItem.CI_FLAG)||(R.isContent((Item)I))))
 						{
-							MOB M=(MOB)((Item)I).owner();
-							if((M.getStartRoom()!=null)
-							&&(M.getStartRoom().getArea()==myArea))
+							data.append("<ACITEM>");
+							if(((Item)I).owner() instanceof Room)
+								data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(R)));
+							else
+							if(((Item)I).owner() instanceof MOB)
 							{
-								data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(M.getStartRoom())));
-								data.append(XMLManager.convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
+								MOB M=(MOB)((Item)I).owner();
+								if((M.getStartRoom()!=null)
+								&&(M.getStartRoom().getArea()==myArea))
+								{
+									data.append(XMLManager.convertXMLtoTag("ROOMID",CMMap.getExtendedRoomID(M.getStartRoom())));
+									data.append(XMLManager.convertXMLtoTag("MOB",((MOB)((Item)I).owner()).Name()));
+								}
 							}
+							((Item)I).destroy();
+							data.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(I)));
+							data.append(XMLManager.convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
+							data.append(XMLManager.convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
+							data.append(XMLManager.convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
+							data.append(XMLManager.convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
+							data.append(XMLManager.convertXMLtoTag("ITEXT",CoffeeMaker.parseOutAngleBrackets(I.text())));
+							data.append("</ACITEM>");
 						}
-						data.append(XMLManager.convertXMLtoTag("ICLAS",CMClass.className(I)));
-						data.append(XMLManager.convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
-						data.append(XMLManager.convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
-						data.append(XMLManager.convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
-						data.append(XMLManager.convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
-						data.append(XMLManager.convertXMLtoTag("ITEXT",CoffeeMaker.parseOutAngleBrackets(I.text())));
-						data.append("</ACITEM>");
 					}
+					clanItems.clear();
 				}
+				savedHoldingClan="";
+				holdingClan="";
+				clanControlPoints=new DVector(2);
+				attitudePoints=-1;
+				data.append("</ACITEMS>");
+				CMClass.DBEngine().DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 			}
-			data.append("</ACITEMS>");
-			CMClass.DBEngine().DBCreateData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name(),data.toString());
 		}
 	}
 

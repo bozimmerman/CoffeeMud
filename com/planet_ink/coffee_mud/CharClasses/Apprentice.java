@@ -29,16 +29,77 @@ public class Apprentice extends StdCharClass
 	public Apprentice()
 	{
 		super();
-		maxStatAdj[CharStats.WISDOM]=7;
-		maxStatAdj[CharStats.INTELLIGENCE]=7;
-		if(ID().equals(baseClass())&&(!loaded()))
+		if(!loaded())
 		{
 			setLoaded(true);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",25,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",true);
+			CMAble.addCharAbilityMapping(ID(),1,"ClanCrafting",false);
+			
+			CMAble.addCharAbilityMapping(ID(),1,"SmokeRings",false);
+			
+			CMAble.addCharAbilityMapping(ID(),2,"Butchering",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Chopping",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Digging",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Drilling",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Fishing",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Foraging",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Hunting",false);
+			CMAble.addCharAbilityMapping(ID(),2,"Mining",false);
+			
+			CMAble.addCharAbilityMapping(ID(),3,"FireBuilding",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Searching",false);
+			
+			CMAble.addCharAbilityMapping(ID(),4,"Blacksmithing",false);
+			CMAble.addCharAbilityMapping(ID(),4,"CageBuilding",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Carpentry",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Cooking",false);
+			CMAble.addCharAbilityMapping(ID(),4,"LeatherWorking",false);
+			CMAble.addCharAbilityMapping(ID(),4,"GlassBlowing",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Pottery",false);
+			CMAble.addCharAbilityMapping(ID(),4,"JewelMaking",false);
+			CMAble.addCharAbilityMapping(ID(),4,"ScrimShaw",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Sculpting",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Tailoring",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Weaving",false);
+			
+			CMAble.addCharAbilityMapping(ID(),5,"Dyeing",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Embroidering",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Engraving",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Lacquerring",false);
+			
+			CMAble.addCharAbilityMapping(ID(),6,"Shipwright",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Wainwrighting",false);
+			
+			CMAble.addCharAbilityMapping(ID(),8,"PaperMaking",false);
+			
+			CMAble.addCharAbilityMapping(ID(),10,"Farming",false);
+			
+			CMAble.addCharAbilityMapping(ID(),11,"LockSmith",false);
+			
+			CMAble.addCharAbilityMapping(ID(),12,"Distilling",false);
+			
+			CMAble.addCharAbilityMapping(ID(),13,"Speculate",false);
+			
+			CMAble.addCharAbilityMapping(ID(),14,"Smelting",false);
+			
+			CMAble.addCharAbilityMapping(ID(),15,"Taxidermy",false);
+			
+			CMAble.addCharAbilityMapping(ID(),17,"Armorsmithing",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Fletching",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Weaponsmithing",false);
+			
+			CMAble.addCharAbilityMapping(ID(),20,"Merchant",false);
+			
+			CMAble.addCharAbilityMapping(ID(),22,"Construction",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Masonry",false);
+			
+			CMAble.addCharAbilityMapping(ID(),23,"Painting",false);
+			
+			CMAble.addCharAbilityMapping(ID(),25,"Scrapping",false);
 		}
 	}
 

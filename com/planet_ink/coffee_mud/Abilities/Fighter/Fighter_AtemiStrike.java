@@ -36,6 +36,18 @@ public class Fighter_AtemiStrike extends StdAbility
 		}
 	}
 
+	public boolean anyWeapons(MOB mob)
+	{
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((I!=null)
+			   &&((I.amWearingAt(Item.WIELD))
+			      ||(I.amWearingAt(Item.HELD))))
+				return true;
+		}
+		return false;
+	}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -58,6 +70,11 @@ public class Fighter_AtemiStrike extends StdAbility
 		if((!auto)&&(mob.envStats().level()<(target.envStats().level()-5)))
 		{
 			mob.tell(target.name()+" is too powerful to strike!");
+			return false;
+		}
+		if((!auto)&&(anyWeapons(mob)))
+		{
+			mob.tell("You must be unarmed to perform the strike.");
 			return false;
 		}
 		if(mob.charStats().getBodyPart(Race.BODY_HAND)<=0)

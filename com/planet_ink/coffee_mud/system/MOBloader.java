@@ -328,34 +328,55 @@ public class MOBloader
 			head.append(Util.padRight("Lvl",4)+" ");
 			head.append(Util.padRight("Exp/Lvl",17));
 			head.append("] Character name\n\r");
+			HashSet done=new HashSet();
 			if(R!=null)
 			while(R.next())
 			{
 				String username=DBConnections.getRes(R,"CMUSERID");
-				String cclass=DBConnections.getRes(R,"CMCLAS");
-				int x=cclass.lastIndexOf(";");
-				if((x>0)&&(x<cclass.length()-2))
-					cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
-				String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
-				String lvl=DBConnections.getRes(R,"CMLEVL");
-				x=lvl.indexOf(";");
-				int level=0;
-				while(x>=0)
+				MOB M=CMMap.getPlayer(username);
+				if(M==null)
 				{
-					level+=Util.s_int(lvl.substring(0,x));
-					lvl=lvl.substring(x+1);
+					done.add(username);
+					String cclass=DBConnections.getRes(R,"CMCLAS");
+					int x=cclass.lastIndexOf(";");
+					if((x>0)&&(x<cclass.length()-2))
+						cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
+					String race=((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
+					String lvl=DBConnections.getRes(R,"CMLEVL");
 					x=lvl.indexOf(";");
+					int level=0;
+					while(x>=0)
+					{
+						level+=Util.s_int(lvl.substring(0,x));
+						lvl=lvl.substring(x+1);
+						x=lvl.indexOf(";");
+					}
+					if(lvl.length()>0) level+=Util.s_int(lvl);
+					int exp=Util.s_int(DBConnections.getRes(R,"CMEXPE"));
+					int exlv=Util.s_int(DBConnections.getRes(R,"CMEXLV"));
+					head.append("[");
+					head.append(Util.padRight(race,8)+" ");
+					head.append(Util.padRight(cclass,10)+" ");
+					head.append(Util.padRight(Integer.toString(level),4)+" ");
+					head.append(Util.padRight(exp+"/"+exlv,17));
+					head.append("] "+Util.padRight(username,15));
+					head.append("\n\r");
 				}
-				if(lvl.length()>0) level+=Util.s_int(lvl);
-				int exp=Util.s_int(DBConnections.getRes(R,"CMEXPE"));
-				int exlv=Util.s_int(DBConnections.getRes(R,"CMEXLV"));
-				head.append("[");
-				head.append(Util.padRight(race,8)+" ");
-				head.append(Util.padRight(cclass,10)+" ");
-				head.append(Util.padRight(Integer.toString(level),4)+" ");
-				head.append(Util.padRight(exp+"/"+exlv,17));
-				head.append("] "+Util.padRight(username,15));
-				head.append("\n\r");
+			}
+			for(Enumeration e=CMMap.players();e.hasMoreElements();)
+			{
+				MOB M=(MOB)e.nextElement();
+				if((M.getLeigeID().equals(leigeID))
+				&&(!done.contains(M.Name())))
+				{
+					head.append("[");
+					head.append(Util.padRight(M.charStats().getMyRace().name(),8)+" ");
+					head.append(Util.padRight(M.charStats().getCurrentClass().name(),10)+" ");
+					head.append(Util.padRight(""+M.envStats().level(),4)+" ");
+					head.append(Util.padRight(M.getExperience()+"/"+M.getExpNextLevel(),17));
+					head.append("] "+Util.padRight(M.name(),15));
+					head.append("\n\r");
+				}
 			}
 			mob.tell(head.toString());
 			DBConnector.DBDone(D);

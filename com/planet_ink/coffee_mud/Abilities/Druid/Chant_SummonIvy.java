@@ -49,7 +49,15 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		Chant_SummonIvy newChant=new Chant_SummonIvy();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);
+		if((CoffeeUtensils.doesOwnThisProperty(mob,room))
+		||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),room))))
+		{
+			newChant.setInvoker(mob);
+			newChant.setMiscText(mob.name());
+			newItem.addNonUninvokableEffect(newChant);
+		}
+		else
+			newChant.beneficialAffect(mob,newItem,(newChant.adjustedLevel(mob)*240)+450);
 		room.recoverEnvStats();
 		return newItem;
 	}

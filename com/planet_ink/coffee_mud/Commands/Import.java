@@ -2762,7 +2762,12 @@ public class Import extends StdCommand
 						I=CMClass.getStdItem("GenReadable");
 					 break;
 			case 14: I=CMClass.getStdItem("GenItem"); break;
-			case 15: I=CMClass.getStdItem("GenContainer");
+			case 15: if(EnglishParser.containsString(objectName,"belt")
+					 ||EnglishParser.containsString(objectName,"bandolier")
+					 ||EnglishParser.containsString(objectName,"sheath"))
+						I=CMClass.getStdItem("GenArmor");
+					 else
+						I=CMClass.getStdItem("GenContainer");
 					 ((Container)I).setCapacity(val1);
 					 boolean lid=false;
 					 boolean open=true;
@@ -3001,6 +3006,27 @@ public class Import extends StdCommand
 			if(materialchange)
 			    I.setDescription("");
 
+			if((I instanceof Armor)&&(((Armor)I).containTypes()==Container.CONTAIN_ANYTHING))
+			{
+				if(EnglishParser.containsString(objectName,"belt")
+				||EnglishParser.containsString(objectName,"bandolier")
+				||EnglishParser.containsString(objectName,"sheath"))
+				{
+					((Armor)I).setContainTypes(Container.CONTAIN_ONEHANDWEAPONS);
+					if(((Armor)I).capacity()-I.baseEnvStats().weight()<30)
+						((Armor)I).setCapacity(I.baseEnvStats().weight()+30);
+				}
+				else
+				if(EnglishParser.containsString(objectName,"boot")
+				||EnglishParser.containsString(objectName,"bracer")
+				||EnglishParser.containsString(objectName,"sheath"))
+				{
+					((Armor)I).setContainTypes(Container.CONTAIN_DAGGERS);
+					if(((Armor)I).capacity()-I.baseEnvStats().weight()<10)
+						((Armor)I).setCapacity(I.baseEnvStats().weight()+10);
+				}
+			}
+			
 			if(Util.isSet(extraFlag,0))
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_GLOWING);
 
