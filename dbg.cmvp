@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="admin.css">
+	<title>CoffeeMUD ADMIN Server</title>
+</head>
+
+<body>
+
+<div align="center">
+<IMG SRC="images/pyramid.jpg" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<h3>CoffeeMUD Admin Server</H3>
+@WEBSERVERVERSION@ '@WEBSERVERNAME@' on port @WEBSERVERPORT@<br>
+<br>
+Server status: <b>@MUDSERVERSTATUS@</B><br>
+Players currently online: <b>@NUMPLAYERS@</B><br>
+<br>
+<!--a href="gamestatus.cmvp">Detailed Game Status</a><br><br>
+<a href="areas.cmvp">Installed Map Areas</a><br><br-->
+Error testing links:<br>
+<a href="a.missing.file">a missing file</A><br>
+<a href="test">test default file</A><br>
+<a href="test/">test default file with /</A><br>
+<a href="test2">test missing default file</A><br>
+<a href="test2/">test missing default file with /</A><br>
+<a href="test2/test3">test missing default file one level down</A><br>
+<a href="test2/test3/">test missing default file one level down with /</A><br>
+<br>
+these probably won't work (depends on your browser) - embededded '../' in hrefs which IE will remove.<br>
+<a href="..">test unauthorised access to dir</A><br>
+<a href="../">test unauthorised access to dir with /</A><br>
+<a href="../a.nonexistant.file">test unauthorised access non-existant</A><br>
+<a href="../common.ini">test unauthorised access actual</A><br>
+<br>
+<a href="../pub">test authorised access to dir</A><br>
+<a href="../pub/">test authorised access to dir with /</A><br>
+<br>
+</DIV>
+</body>
+</html>
