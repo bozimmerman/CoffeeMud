@@ -16,14 +16,11 @@ public class Config extends StdCommand
 		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
 		for(int i=0;i<MOB.AUTODESC.length;i++)
 		{
-			if((i!=18)||(Resources.getFileResource("text"+java.io.File.separatorChar+"motd.txt").length()>0))
-			{
-				msg.append(Util.padRight(MOB.AUTODESC[i],15)+": ");
-				boolean set=Util.isSet(mob.getBitmap(),i);
-				if(MOB.AUTOREV[i]) set=!set;
-				msg.append(set?"ON":"OFF");
-				msg.append("\n\r");
-			}
+			msg.append(Util.padRight(MOB.AUTODESC[i],15)+": ");
+			boolean set=Util.isSet(mob.getBitmap(),i);
+			if(MOB.AUTOREV[i]) set=!set;
+			msg.append(set?"ON":"OFF");
+			msg.append("\n\r");
 		}
 		mob.tell(msg.toString());
 		return false;

@@ -218,6 +218,11 @@ public class CommonStrings extends Scriptable
 		if(monthsInYear.trim().length()>0)
 			DefaultTimeClock.globalClock.setMonthsInYear(Util.toStringArray(Util.parseCommas(monthsInYear,true)));
 		
+		DefaultTimeClock.globalClock.setDaysInWeek(Util.toStringArray(Util.parseCommas(page.getStr("DAYSINWEEK"),true)));
+		
+		if(page.containsKey("YEARDESC"))
+			DefaultTimeClock.globalClock.setYearNames(Util.toStringArray(Util.parseCommas(page.getStr("YEARDESC"),true)));
+		
 		if(page.containsKey("DAWNHR")&&page.containsKey("DAYHR")
 			&&page.containsKey("DUSKHR")&&page.containsKey("NIGHTHR"))
 		DefaultTimeClock.globalClock.setDawnToDusk(

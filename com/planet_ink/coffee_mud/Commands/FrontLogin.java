@@ -137,54 +137,15 @@ public class FrontLogin extends StdCommand
 	public void showTheNews(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("");
-		PlayerStats pstats=mob.playerStats();
-		if(pstats==null) return;
-		
-        if((mob.session()!=null)
-		&&(!mob.isMonster())
-		&&(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
-		{
-            String msg = Resources.getFileResource("text"+File.separatorChar+"motd.txt").toString();
-			if(msg.length()>0)
-			{
-				try
-				{
-					if(msg.startsWith("<cmvp>"))
-						msg=new String(CMClass.httpUtils().doVirtualPage(msg.substring(6).getBytes()));
-				}
-				catch(HTTPRedirectException e){}
-                buf.append(msg+"\n\r--------------------------------------\n\r");
-			}
-		}
-		
 		if(mob.session()!=null)
 			mob.session().setTermID(((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0)+((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?2:0));
-		Vector journal=CMClass.DBEngine().DBReadJournal("CoffeeMud News");
-		for(int which=0;which<journal.size();which++)
-		{
-			Vector entry=(Vector)journal.elementAt(which);
-			String from=(String)entry.elementAt(1);
-			long last=Util.s_long((String)entry.elementAt(2));
-			String to=(String)entry.elementAt(3);
-			String subject=(String)entry.elementAt(4);
-			String message=(String)entry.elementAt(5);
-			long compdate=Util.s_long((String)entry.elementAt(6));
-			boolean mineAble=to.equalsIgnoreCase(mob.Name())||from.equalsIgnoreCase(mob.Name());
-			if((compdate>pstats.lastDateTime())
-			&&(to.equals("ALL")||mineAble))
-			{
-				try
-				{
-					if(message.startsWith("<cmvp>"))
-						message=new String(CMClass.httpUtils().doVirtualPage(message.substring(6).getBytes()));
-				}
-				catch(HTTPRedirectException e){}
-				buf.append("\n\r--------------------------------------\n\r");
-				buf.append("\n\rNews: "+IQCalendar.d2String(last)+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
-			}
-		}
-		if((!mob.isMonster())&&(buf.length()>0))
-			mob.session().unfilteredPrintln(buf.toString()+"\n\r--------------------------------------\n\r");
+		if((mob.session()==null)
+		||(mob.isMonster())
+		||(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
+			return;
+		
+		Command C=CMClass.getCommand("MOTD");
+		try{ C.execute(mob,Util.parse("MOTD NEW"));}catch(Exception e){}
 	}
 
 	public boolean execute(MOB mob, Vector commands)

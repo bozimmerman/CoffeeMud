@@ -26,6 +26,8 @@ public class DefaultTimeClock implements TimeClock
 	};
 	private int daysInMonth=30;
 	private int[] dawnToDusk={0,1,12,13};
+	private String[] weekNames={};
+	private String[] yearNames={"year #"};
 	
 	public int getHoursInDay(){return hoursInDay;}
 	public void setHoursInDay(int h){hoursInDay=h;}
@@ -35,6 +37,8 @@ public class DefaultTimeClock implements TimeClock
 	public String[] getMonthNames(){return monthsInYear;}
 	public void setMonthsInYear(String[] months){monthsInYear=months;}
 	public int[] getDawnToDusk(){return dawnToDusk;}
+	public String[] getYearNames(){return yearNames;}
+	public void setYearNames(String[] years){yearNames=years;}
 	public void setDawnToDusk(int dawn, int day, int dusk, int night)
 	{ 
 		dawnToDusk[TIME_DAWN]=dawn;
@@ -42,6 +46,9 @@ public class DefaultTimeClock implements TimeClock
 		dawnToDusk[TIME_DUSK]=dusk;
 		dawnToDusk[TIME_NIGHT]=night;
 	}
+	public String[] getWeekNames(){return weekNames;}
+	public int getDaysInWeek(){return weekNames.length;}
+	public void setDaysInWeek(String[] days){weekNames=days;}
 	
 	public String timeDescription(MOB mob, Room room)
 	{
@@ -50,9 +57,19 @@ public class DefaultTimeClock implements TimeClock
 		if((Sense.canSee(mob))&&(getTODCode()>=0))
 			timeDesc.append(TOD_DESC[getTODCode()]);
 		timeDesc.append("(Hour: "+getTimeOfDay()+"/"+(getHoursInDay()-1)+")");
-		timeDesc.append("\n\rIt is the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
-		timeDesc.append(" day of the "+getMonth()+numAppendage(getMonth()));
-		timeDesc.append(" month.  It is "+(TimeClock.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
+		timeDesc.append("\n\rIt is ");
+		if(getDaysInWeek()>0)
+		{
+			long x=((long)getYear())*((long)getMonthsInYear())*((long)getDaysInMonth());
+			x=x+((long)(getMonth()-1))*((long)getDaysInMonth());
+			x=x+((long)getDayOfMonth());
+			timeDesc.append(getWeekNames()[(int)(x%getDaysInWeek())]+", ");
+		}
+		timeDesc.append("the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
+		timeDesc.append(" day of "+getMonthNames()[getMonth()-1]);
+		if(getYearNames().length>0)
+			timeDesc.append(", "+Util.replaceAll(getYearNames()[getYear()%getYearNames().length],"#",""+getYear()));
+		timeDesc.append(".\n\rIt is "+(TimeClock.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
 		if((Sense.canSee(mob))
 		&&(getTODCode()==TimeClock.TIME_NIGHT)
 		&&(CoffeeUtensils.hasASky(room)))
@@ -235,7 +252,16 @@ public class DefaultTimeClock implements TimeClock
 		{
 			CMClass.DBEngine().DBDeleteData(loadName,"TIMECLOCK");
 			CMClass.DBEngine().DBCreateData(loadName,"TIMECLOCK","TIMECLOCK/"+loadName,
-			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>");
+			"<DAY>"+getDayOfMonth()+"</DAY><MONTH>"+getMonth()+"</MONTH><YEAR>"+getYear()+"</YEAR>"
+			+"<HOURS>"+getHoursInDay()+"</HOURS><DAYS>"+getDaysInMonth()+"</DAYS>"
+			+"<MONTHS>"+Util.toStringList(getMonthNames())+"</MONTHS>"
+			+"<DAWNHR>"+getDawnToDusk()[TIME_DAWN]+"</DAWNHR>"
+			+"<DAYHR>"+getDawnToDusk()[TIME_DAY]+"</DAYHR>"
+			+"<DUSKHR>"+getDawnToDusk()[TIME_DUSK]+"</DUSKHR>"
+			+"<NIGHTHR>"+getDawnToDusk()[TIME_NIGHT]+"</NIGHTHR>"
+			+"<WEEK>"+Util.toStringList(getWeekNames())+"</WEEK>"
+			+"<YEARS>"+Util.toStringList(getYearNames())+"</YEARS>"
+			);
 		}
 	}
 
@@ -259,13 +285,32 @@ public class DefaultTimeClock implements TimeClock
 				setDayOfMonth(XMLManager.getIntFromPieces(V,"DAY"));
 				setMonth(XMLManager.getIntFromPieces(V,"MONTH"));
 				setYear(XMLManager.getIntFromPieces(V,"YEAR"));
-				setHoursInDay(globalClock.getHoursInDay());
-				setDaysInMonth(globalClock.getDaysInMonth());
-				setMonthsInYear(globalClock.getMonthNames());
-				setDawnToDusk(globalClock.getDawnToDusk()[TIME_DAWN],
-							  globalClock.getDawnToDusk()[TIME_DAY],
-							  globalClock.getDawnToDusk()[TIME_DUSK],
-							  globalClock.getDawnToDusk()[TIME_NIGHT]);
+				if((XMLManager.getValFromPieces(V,"HOURS").length()==0)
+				||(XMLManager.getValFromPieces(V,"DAYS").length()==0)
+				||(XMLManager.getValFromPieces(V,"MONTHS").length()==0))
+				{
+					setHoursInDay(globalClock.getHoursInDay());
+					setDaysInMonth(globalClock.getDaysInMonth());
+					setMonthsInYear(globalClock.getMonthNames());
+					setDawnToDusk(globalClock.getDawnToDusk()[TIME_DAWN],
+								  globalClock.getDawnToDusk()[TIME_DAY],
+								  globalClock.getDawnToDusk()[TIME_DUSK],
+								  globalClock.getDawnToDusk()[TIME_NIGHT]);
+					setDaysInWeek(globalClock.getWeekNames());
+					setYearNames(globalClock.getYearNames());
+				}
+				else
+				{
+					setHoursInDay(XMLManager.getIntFromPieces(V,"HOURS"));
+					setDaysInMonth(XMLManager.getIntFromPieces(V,"DAYS"));
+					setMonthsInYear(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"MONTHS"),true)));
+					setDawnToDusk(XMLManager.getIntFromPieces(V,"DAWNHR"),
+								  XMLManager.getIntFromPieces(V,"DAYHR"),
+								  XMLManager.getIntFromPieces(V,"DUSKHR"),
+								  XMLManager.getIntFromPieces(V,"NIGHTHR"));
+					setDaysInWeek(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"WEEK"),true)));
+					setYearNames(Util.toStringArray(Util.parseCommas(XMLManager.getValFromPieces(V,"YEARS"),true)));
+				}
 			}
 			if((System.currentTimeMillis()-lastTicked)>MudHost.TIME_MILIS_PER_MUDHOUR)
 				tickTock(1);

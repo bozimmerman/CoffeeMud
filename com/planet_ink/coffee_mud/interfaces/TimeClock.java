@@ -26,6 +26,11 @@ public interface TimeClock extends Tickable
 	public void setMonthsInYear(String[] months);
 	public int[] getDawnToDusk();
 	public void setDawnToDusk(int dawn, int day, int dusk, int night);
+	public String[] getWeekNames();
+	public int getDaysInWeek();
+	public void setDaysInWeek(String[] days);
+	public String[] getYearNames();
+	public void setYearNames(String[] years);
 	
 	public final static String[] MOON_PHASES={
 		"There is a new moon in the sky.",

@@ -13,6 +13,7 @@ public class Spell_MassDisintegrate extends Spell
 	public int quality(){return MALICIOUS;};
 	public Environmental newInstance(){	return new Spell_MassDisintegrate();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int overrideMana(){return 200;}
 
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -15,30 +15,51 @@ public class MOTD extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-        String msg = Resources.getFileResource("text"+File.separatorChar+"motd.txt").toString();
-		if(msg.length()==0)
-		{
-			mob.tell("This feature is not enabled.");
-			return false;
-		}
-		
 		if((commands!=null)
 		&&(commands.size()>1)
-		&&Util.combine(commands,1).equalsIgnoreCase("AGAIN")
-		&&(msg.length()>0))
+		&&(mob.playerStats()!=null)
+		&&(Util.combine(commands,1).equalsIgnoreCase("AGAIN")
+		   ||Util.combine(commands,1).equalsIgnoreCase("NEW")))
 		{
+			StringBuffer buf=new StringBuffer("");
 			try
 			{
-				if(msg.startsWith("<cmvp>"))
-					msg=new String(CMClass.httpUtils().doVirtualPage(msg.substring(6).getBytes()));
+				String msg = Resources.getFileResource("text"+File.separatorChar+"motd.txt",false).toString();
+				if(msg.length()>0)
+				{
+					if(msg.startsWith("<cmvp>"))
+						msg=new String(CMClass.httpUtils().doVirtualPage(msg.substring(6).getBytes()));
+				    buf.append(msg+"\n\r--------------------------------------\n\r");
+				}
+		
+				Vector journal=CMClass.DBEngine().DBReadJournal("CoffeeMud News");
+				for(int which=0;which<journal.size();which++)
+				{
+					Vector entry=(Vector)journal.elementAt(which);
+					String from=(String)entry.elementAt(1);
+					long last=Util.s_long((String)entry.elementAt(2));
+					String to=(String)entry.elementAt(3);
+					String subject=(String)entry.elementAt(4);
+					String message=(String)entry.elementAt(5);
+					long compdate=Util.s_long((String)entry.elementAt(6));
+					boolean mineAble=to.equalsIgnoreCase(mob.Name())||from.equalsIgnoreCase(mob.Name());
+					if((compdate>mob.playerStats().lastDateTime())
+					&&(to.equals("ALL")||mineAble))
+					{
+						if(message.startsWith("<cmvp>"))
+							message=new String(CMClass.httpUtils().doVirtualPage(message.substring(6).getBytes()));
+						buf.append("\n\rNews: "+IQCalendar.d2String(last)+"\n\r"+"FROM: "+Util.padRight(from,15)+"\n\rTO  : "+Util.padRight(to,15)+"\n\rSUBJ: "+subject+"\n\r"+message);
+						buf.append("\n\r--------------------------------------\n\r");
+					}
+				}
+				if((mob.session()!=null)&&(buf.length()>0))
+					mob.session().unfilteredPrintln("\n\r--------------------------------------\n\r"+buf.toString());
 			}
 			catch(HTTPRedirectException e){}
-			if(mob.session()!=null)
-				mob.session().unfilteredPrintln(msg+"\n\r--------------------------------------\n\r");
 			return false;
 		}
 		
-		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOLOOT))
+		if(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE))
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_DAILYMESSAGE));
 			mob.tell("The daily message has been turned on.");
