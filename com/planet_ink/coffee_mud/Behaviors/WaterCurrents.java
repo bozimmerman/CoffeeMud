@@ -100,8 +100,8 @@ public class WaterCurrents extends ActiveTicker
 				if((below!=null)
 				&&(below.roomID().length()==0)
 				&&(below instanceof GridLocale)
-				&&((below.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
-				   ||(below.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				&&((below.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+				   ||(below.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 				{
 					Vector V=((GridLocale)below).getAllRooms();
 					for(int v=0;v<V.size();v++)
