@@ -41,7 +41,7 @@ public class StdBehavior implements Behavior
 	{
 
 	}
-	public boolean modifyBehavior(MOB mob, Object O)
+	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{ return false; }
 	protected MOB getBehaversMOB(Tickable ticking)
 	{

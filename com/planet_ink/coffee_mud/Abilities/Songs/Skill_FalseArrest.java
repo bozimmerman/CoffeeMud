@@ -17,6 +17,14 @@ public class Skill_FalseArrest extends StdAbility
 	public Environmental newInstance(){	return new Skill_FalseArrest();}
 	protected int overrideMana(){return 50;}
 
+	public Behavior getArrest(Area A)
+	{
+		if(A==null) return null;
+		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()==0) return null;
+		return (Behavior)V.firstElement();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -34,8 +42,7 @@ public class Skill_FalseArrest extends StdAbility
 
 		Behavior B=null;
 		Area A=null;
-		if(mob.location()!=null)
-			B=mob.location().fetchBehavior("Arrest");
+		if(mob.location()!=null) B=getArrest(mob.location().getArea());
 
 		if(B==null)
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
@@ -43,8 +50,8 @@ public class Skill_FalseArrest extends StdAbility
 			A=(Area)e.nextElement();
 			if(Sense.canAccess(mob,A))
 			{
-				B=A.fetchBehavior("Arrest");
-				if((B!=null)&&(B.modifyBehavior(target,null)))
+				B=getArrest(A);
+				if((B!=null)&&(B.modifyBehavior(A,target,null)))
 					break;
 			}
 			B=null;
@@ -73,7 +80,7 @@ public class Skill_FalseArrest extends StdAbility
 			mob.location().send(mob,msg);
 			Vector V=new Vector();
 			V.addElement(mob);
-			if(!B.modifyBehavior(target,V))
+			if(!B.modifyBehavior(A,target,V))
 			{
 				mob.tell("You are not able to arrest "+target.name()+" at this time.");
 				return false;

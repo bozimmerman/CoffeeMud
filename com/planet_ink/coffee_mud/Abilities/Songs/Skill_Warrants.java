@@ -17,15 +17,19 @@ public class Skill_Warrants extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Warrants();}
 
+	public Behavior getArrest(Area A)
+	{
+		if(A==null) return null;
+		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()==0) return null;
+		return (Behavior)V.firstElement();
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		Behavior B=null;
 		if(mob.location()!=null)
-		{
-			B=mob.location().fetchBehavior("Arrest");
-			if(B==null)
-				B=mob.location().getArea().fetchBehavior("Arrest");
-		}
+			B=getArrest(mob.location().getArea());
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -37,7 +41,7 @@ public class Skill_Warrants extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				Vector V=new Vector();
-				if(B!=null) B.modifyBehavior(mob,V);
+				if(B!=null) B.modifyBehavior(mob.location().getArea(),mob,V);
 				if(V.size()==0)
 				{
 					mob.tell("No one is wanted for anything here.");

@@ -20,7 +20,7 @@ public class Thief_SenseLaw extends ThiefSkill
 	protected Room oldroom=null;
 	protected String lastReport="";
 
-	public Vector getLawMen(Room room, Behavior B)
+	public Vector getLawMen(Area hostArea, Room room, Behavior B)
 	{
 		if(room==null) return empty;
 		if(room.numInhabitants()==0) return empty;
@@ -29,12 +29,20 @@ public class Thief_SenseLaw extends ThiefSkill
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			MOB M=(MOB)room.fetchInhabitant(m);
-			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(M,null)))
+			if((M!=null)&&(M.isMonster())&&(B.modifyBehavior(hostArea,M,null)))
 				V.addElement(M);
 		}
 		return V;
 	}
 
+	public Behavior getArrest(Area A)
+	{
+		if(A==null) return null;
+		Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()==0) return null;
+		return (Behavior)V.firstElement();
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))
@@ -42,11 +50,11 @@ public class Thief_SenseLaw extends ThiefSkill
 			MOB mob=(MOB)affected;
 			if((mob.location()!=null)&&(!mob.isMonster()))
 			{
-				Behavior B=mob.location().getArea().fetchBehavior("Arrest");
+				Behavior B=getArrest(mob.location().getArea());
 				if(B==null)
 					return super.tick(ticking,tickID);
 				StringBuffer buf=new StringBuffer("");
-				Vector V=getLawMen(mob.location(),B);
+				Vector V=getLawMen(mob.location().getArea(),mob.location(),B);
 				for(int l=0;l<V.size();l++)
 				{
 					MOB M=(MOB)V.elementAt(l);
@@ -61,7 +69,7 @@ public class Thief_SenseLaw extends ThiefSkill
 					Exit E=mob.location().getExitInDir(d);
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
-						V=getLawMen(R,B);
+						V=getLawMen(mob.location().getArea(),R,B);
 						if((V!=null)&&(V.size()>0))
 							buf.append("There is an officer of the law "+Directions.getInDirectionName(d)+".  ");
 					}

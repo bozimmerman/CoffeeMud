@@ -21,7 +21,7 @@ public interface Behavior extends Cloneable, Tickable, MsgListener, Comparable
 	public void startBehavior(Environmental forMe);
 	
 	// misc method for modifying behaviors that are already ticking
-	public boolean modifyBehavior(MOB mob, Object O);
+	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O);
 	
 	public String getParms();
 	public void setParms(String parameters);
@@ -38,6 +38,7 @@ public interface Behavior extends Cloneable, Tickable, MsgListener, Comparable
 	public static final long FLAG_MOBILITY=1;
 	public static final long FLAG_TROUBLEMAKING=2;
 	public static final long FLAG_POTENTIALLYAGGRESSIVE=3;
+	public static final long FLAG_LEGALBEHAVIOR=4;
 	
 	public long flags();
 	public boolean grantsAggressivenessTo(MOB M);

@@ -10,14 +10,10 @@ import java.util.*;
 public class Arrest extends StdBehavior
 {
 	public String ID(){return "Arrest";}
+	public long flags(){return Behavior.FLAG_LEGALBEHAVIOR;}
 	protected int canImproveCode(){return Behavior.CAN_AREAS;}
-
-	public Behavior newInstance()
-	{
-		return new Arrest();
-	}
-	protected Vector oldWarrants=new Vector();
-	protected Vector warrants=new Vector();
+	public Behavior newInstance(){ return new Arrest();}
+	
 	protected boolean loadAttempt=false;
 
 	protected static final long ONE_REAL_DAY=(long)1000*60*60*24;
@@ -146,6 +142,8 @@ public class Arrest extends StdBehavior
 		public Vector chitChat=new Vector();
 		public Vector chitChat2=new Vector();
 		protected Properties theLaws=null;
+		public Vector oldWarrants=new Vector();
+		public Vector warrants=new Vector();
 		
 		public Laws(){}
 		
@@ -221,17 +219,56 @@ public class Arrest extends StdBehavior
 					bits[i]="";
 			return bits;
 		}
+		
+		public ArrestWarrant getWarrant(MOB mob, int which)
+		{
+			int one=0;
+			for(int i=0;i<warrants.size();i++)
+			{
+				ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+				if(W.criminal==mob)
+				{
+					if(which==one)
+						return W;
+					one++;
+				}
+			}
+			return null;
+		}
+		
+		public ArrestWarrant getOldWarrant(MOB criminal, String crime, boolean pull)
+		{
+			ArrestWarrant W=null;
+			for(int i=0;i<oldWarrants.size();i++)
+			{
+				ArrestWarrant W2=(ArrestWarrant)oldWarrants.elementAt(i);
+				if((W2.criminal==criminal)&&(W2.crime.equals(crime)))
+				{
+					W=W2;
+					if(pull) oldWarrants.removeElement(W2);
+					break;
+				}
+			}
+			return W;
+		}
+
 	}
 
-	public boolean modifyBehavior(MOB mob, Object O)
+	public boolean modifyBehavior(Environmental hostObj, 
+								  MOB mob, 
+								  Object O)
 	{
-		if(mob!=null)
+		if((mob!=null)
+		&&(mob.location()!=null)
+		&&(hostObj!=null)
+		&&(hostObj instanceof Area))
 		{
+			Laws laws=getLaws((Area)hostObj);
 			if((O!=null)&&(O instanceof MOB))
 			{
 				MOB framed=(MOB)O;
 				ArrestWarrant W=null;
-				for(int i=0;(W=getWarrant(mob,i))!=null;i++)
+				for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
 					if(W.criminal==mob)
 						W.criminal=framed;
 				return true;
@@ -240,7 +277,7 @@ public class Arrest extends StdBehavior
 			if((O!=null)&&(O instanceof Vector))
 			{
 				Vector V=(Vector)O;
-				ArrestWarrant W=getWarrant(mob,0);
+				ArrestWarrant W=laws.getWarrant(mob,0);
 				if((V.size()>0)
 				&&((V.firstElement() instanceof MOB))
 				&&(W!=null))
@@ -249,7 +286,7 @@ public class Arrest extends StdBehavior
 					if(W.arrestingOfficer==null)
 					{
 						W.setArrestingOfficer(officer);
-						ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(W.criminal)+"! Sit down on the ground immediately!",false,false);
+						ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(laws,W.criminal)+"! Sit down on the ground immediately!",false,false);
 						W.state=STATE_ARRESTING;
 						return true;
 					}
@@ -257,9 +294,9 @@ public class Arrest extends StdBehavior
 						return false;
 				}
 				else
-				for(int i=0;i<warrants.size();i++)
+				for(int i=0;i<laws.warrants.size();i++)
 				{
-					W=(ArrestWarrant)warrants.elementAt(i);
+					W=(ArrestWarrant)laws.warrants.elementAt(i);
 					if(isStillACrime(W))
 					{
 						Vector V2=new Vector();
@@ -280,10 +317,10 @@ public class Arrest extends StdBehavior
 				&&(mob.location()!=null)
 				&&(isElligibleOfficer(getLaws(mob.location().getArea()),mob,mob.location().getArea())))
 					return true;
-				return (getWarrant(mob,0))!=null;
+				return (laws.getWarrant(mob,0))!=null;
 			}
 		}
-		return super.modifyBehavior(mob,O);
+		return super.modifyBehavior(hostObj,mob,O);
 	}
 	
 	public void setParms(String newParms)
@@ -343,22 +380,6 @@ public class Arrest extends StdBehavior
 		return laws;
 	}
 
-	public ArrestWarrant getWarrant(MOB mob, int which)
-	{
-		int one=0;
-		for(int i=0;i<warrants.size();i++)
-		{
-			ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
-			if(W.criminal==mob)
-			{
-				if(which==one)
-					return W;
-				one++;
-			}
-		}
-		return null;
-	}
-
 	public void unCuff(MOB mob)
 	{
 		Ability A=mob.fetchAffect("Skill_HandCuff");
@@ -366,11 +387,6 @@ public class Arrest extends StdBehavior
 	}
 
 
-	public void setFree(MOB mob)
-	{
-		fileAllWarrants(mob);
-		unCuff(mob);
-	}
 	public void dismissOfficer(MOB officer)
 	{
 		if(officer==null) return;
@@ -484,7 +500,7 @@ public class Arrest extends StdBehavior
 			if((myArea!=null)&&(M.location().getArea()!=myArea)) return false;
 
 			if(isAnyKindOfOfficer(laws,M)
-			&&(!isBusyWithJustice(M))
+			&&(!isBusyWithJustice(laws,M))
 			&&(Sense.aliveAwakeMobile(M,true))
 			&&(!M.isInCombat()))
 				return true;
@@ -580,13 +596,13 @@ public class Arrest extends StdBehavior
 		return true;
 	}
 
-	public int highestCrimeAction(MOB criminal)
+	public int highestCrimeAction(Laws laws, MOB criminal)
 	{
 		int num=0;
 		int highest=-1;
-		for(int w2=0;w2<warrants.size();w2++)
+		for(int w2=0;w2<laws.warrants.size();w2++)
 		{
-			ArrestWarrant W2=(ArrestWarrant)warrants.elementAt(w2);
+			ArrestWarrant W2=(ArrestWarrant)laws.warrants.elementAt(w2);
 			if(W2.criminal==criminal)
 			{
 				num++;
@@ -605,16 +621,16 @@ public class Arrest extends StdBehavior
 
 	public boolean judgeMe(Laws laws, MOB judge, MOB officer, MOB criminal, ArrestWarrant W)
 	{
-		switch(highestCrimeAction(criminal))
+		switch(highestCrimeAction(laws,criminal))
 		{
 		case ACTION_WARN:
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
 			StringBuffer str=new StringBuffer("");
-			str.append(criminal.name()+", you are in trouble for "+restOfCharges(criminal)+".  ");
-			for(int w2=0;w2<warrants.size();w2++)
+			str.append(criminal.name()+", you are in trouble for "+restOfCharges(laws,criminal)+".  ");
+			for(int w2=0;w2<laws.warrants.size();w2++)
 			{
-				ArrestWarrant W2=(ArrestWarrant)warrants.elementAt(w2);
+				ArrestWarrant W2=(ArrestWarrant)laws.warrants.elementAt(w2);
 				if(W2.criminal==criminal)
 				{
 					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".  ");
@@ -633,10 +649,10 @@ public class Arrest extends StdBehavior
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
 			StringBuffer str=new StringBuffer("");
-			str.append(criminal.name()+", you are in trouble for "+restOfCharges(criminal)+".  ");
-			for(int w2=0;w2<warrants.size();w2++)
+			str.append(criminal.name()+", you are in trouble for "+restOfCharges(laws,criminal)+".  ");
+			for(int w2=0;w2<laws.warrants.size();w2++)
 			{
-				ArrestWarrant W2=(ArrestWarrant)warrants.elementAt(w2);
+				ArrestWarrant W2=(ArrestWarrant)laws.warrants.elementAt(w2);
 				if(W2.criminal==criminal)
 				{
 					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".  ");
@@ -789,23 +805,23 @@ public class Arrest extends StdBehavior
 		return jail;
 	}
 
-	public void fileAllWarrants(MOB mob)
+	public void fileAllWarrants(Laws laws, MOB mob)
 	{
 		ArrestWarrant W=null;
 		Vector V=new Vector();
-		for(int i=0;(W=getWarrant(mob,i))!=null;i++)
+		for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
 			if(W.criminal==mob)
 				V.addElement(W);
 		for(int v=0;v<V.size();v++)
 		{
 			W=(ArrestWarrant)V.elementAt(v);
-			warrants.removeElement(W);
+			laws.warrants.removeElement(W);
 			if(W.crime!=null)
 			{
 				boolean found=false;
-				for(int w=0;w<oldWarrants.size();w++)
+				for(int w=0;w<laws.oldWarrants.size();w++)
 				{
-					ArrestWarrant oW=(ArrestWarrant)oldWarrants.elementAt(w);
+					ArrestWarrant oW=(ArrestWarrant)laws.oldWarrants.elementAt(w);
 					if((oW.criminal==mob)
 					&&(oW.crime!=null)
 					&&(oW.crime.equals(W.crime)))
@@ -814,27 +830,11 @@ public class Arrest extends StdBehavior
 				if(!found)
 				{
 					W.offenses++;
-					oldWarrants.addElement(W);
+					laws.oldWarrants.addElement(W);
 				}
 			}
 		}
 
-	}
-
-	public ArrestWarrant getOldWarrant(MOB criminal, String crime, boolean pull)
-	{
-		ArrestWarrant W=null;
-		for(int i=0;i<oldWarrants.size();i++)
-		{
-			ArrestWarrant W2=(ArrestWarrant)oldWarrants.elementAt(i);
-			if((W2.criminal==criminal)&&(W2.crime.equals(crime)))
-			{
-				W=W2;
-				if(pull) oldWarrants.removeElement(W2);
-				break;
-			}
-		}
-		return W;
 	}
 
 	public Room findTheJail(MOB judge, Area myArea, Laws laws)
@@ -956,7 +956,7 @@ public class Arrest extends StdBehavior
 				else
 				if(str.endsWith("RECENTLY")&&(str.length()<10))
 				{
-					ArrestWarrant W=getOldWarrant(mob,crime,false);
+					ArrestWarrant W=laws.getOldWarrant(mob,crime,false);
 					long thisTime=System.currentTimeMillis();
 					if((W!=null)&&((thisTime-W.lastOffense)<600000))
 					{
@@ -977,14 +977,14 @@ public class Arrest extends StdBehavior
 
 		// does a warrant already exist?
 		ArrestWarrant W=null;
-		for(int i=0;(W=getWarrant(mob,i))!=null;i++)
+		for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
 		{
 			if((W.criminal==mob)
 			&&(W.victim==victim)
 			&&(W.crime.equals(crime)))
 				return false;
 		}
-		if(W==null) W=getOldWarrant(mob,crime,true);
+		if(W==null) W=laws.getOldWarrant(mob,crime,true);
 		if(W==null) W=new ArrestWarrant();
 
 		// fill out the warrant!
@@ -1039,7 +1039,7 @@ public class Arrest extends StdBehavior
 		
 		if((isStillACrime(W))
 		&&(Sense.canBeSeenBy(W.criminal,W.witness)))
-			warrants.addElement(W);
+			laws.warrants.addElement(W);
 		return true;
 	}
 
@@ -1068,9 +1068,9 @@ public class Arrest extends StdBehavior
 				else
 					name=affect.sourceMessage().substring(x+16).trim();
 				if(name.length()>0)
-				for(int i=warrants.size()-1;i>=0;i--)
+				for(int i=laws.warrants.size()-1;i>=0;i--)
 				{
-					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+					ArrestWarrant W=(ArrestWarrant)laws.warrants.elementAt(i);
 					if((W.criminal!=null)&&(CoffeeUtensils.containsString(W.criminal.Name(),name)))
 					{
 						Ability A=W.criminal.fetchAffect("Prisoner");
@@ -1079,7 +1079,7 @@ public class Arrest extends StdBehavior
 						{
 							if(W.arrestingOfficer!=null)
 								dismissOfficer(W.arrestingOfficer);
-							warrants.removeElement(W);
+							laws.warrants.removeElement(W);
 						}
 						else
 						{
@@ -1097,14 +1097,14 @@ public class Arrest extends StdBehavior
 		&&(laws.isLaw("MURDER")))
 		{
 			MOB criminal=(MOB)affect.tool();
-			for(int i=warrants.size()-1;i>=0;i--)
+			for(int i=laws.warrants.size()-1;i>=0;i--)
 			{
-				ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+				ArrestWarrant W=(ArrestWarrant)laws.warrants.elementAt(i);
 				if((W.victim!=null)
 				&&(W.criminal!=null)
 				&&(W.victim==affect.source())
 				&&(W.criminal==criminal))
-					warrants.removeElement(W);
+					laws.warrants.removeElement(W);
 			}
 			String[] bits=laws.getLawBits("MURDER");
 			fillOutWarrant(criminal,
@@ -1178,9 +1178,9 @@ public class Arrest extends StdBehavior
 		{
 			boolean justResisting=false;
 			if(isAnyKindOfOfficer(laws,(MOB)affect.target()))
-				for(int i=warrants.size()-1;i>=0;i--)
+				for(int i=laws.warrants.size()-1;i>=0;i--)
 				{
-					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
+					ArrestWarrant W=(ArrestWarrant)laws.warrants.elementAt(i);
 					if((W.criminal==affect.source())
 					&&(W.arrestingOfficer!=null)
 					&&(W.criminal.location()!=null)
@@ -1309,11 +1309,11 @@ public class Arrest extends StdBehavior
 	}
 
 
-	public boolean isBusyWithJustice(MOB M)
+	public boolean isBusyWithJustice(Laws laws, MOB M)
 	{
-		for(int w=0;w<warrants.size();w++)
+		for(int w=0;w<laws.warrants.size();w++)
 		{
-			ArrestWarrant W=(ArrestWarrant)warrants.elementAt(w);
+			ArrestWarrant W=(ArrestWarrant)laws.warrants.elementAt(w);
 			if(W.arrestingOfficer!=null)
 			{
 				if(W.criminal==M) return true;
@@ -1333,18 +1333,18 @@ public class Arrest extends StdBehavior
 		return charge.replaceFirst("<T-NAME>",W.victim.name());
 	}
 
-	public String restOfCharges(MOB mob)
+	public String restOfCharges(Laws laws, MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		for(int w=0;(getWarrant(mob,w)!=null);w++)
+		for(int w=0;(laws.getWarrant(mob,w)!=null);w++)
 		{
-			ArrestWarrant W=getWarrant(mob,w);
+			ArrestWarrant W=laws.getWarrant(mob,w);
 			if(W!=null)
 			{
 				if(w==0)
 					msg.append("for "+fixCharge(W));
 				else
-				if(getWarrant(mob,w+1)==null)
+				if(laws.getWarrant(mob,w+1)==null)
 					msg.append(", and for "+fixCharge(W));
 				else
 					msg.append(", for "+fixCharge(W));
@@ -1413,11 +1413,11 @@ public class Arrest extends StdBehavior
 		Laws laws=getLaws(myArea);
 
 
-		Hashtable handled=new Hashtable();
-		for(int w=warrants.size()-1;w>=0;w--)
+		HashSet handled=new HashSet();
+		for(int w=laws.warrants.size()-1;w>=0;w--)
 		{
 			ArrestWarrant W=null;
-			try{ W=(ArrestWarrant)warrants.elementAt(w);
+			try{ W=(ArrestWarrant)laws.warrants.elementAt(w);
 			} catch(Exception e){ continue;}
 
 			if((!handled.contains(W.criminal))
@@ -1431,11 +1431,11 @@ public class Arrest extends StdBehavior
 						dismissOfficer(W.arrestingOfficer);
 					W.setArrestingOfficer(null);
 					W.offenses++;
-					oldWarrants.addElement(W);
-					warrants.removeElement(W);
+					laws.oldWarrants.addElement(W);
+					laws.warrants.removeElement(W);
 					continue;
 				}
-				handled.put(W.criminal,W.criminal);
+				handled.add(W.criminal);
 				switch(W.state)
 				{
 				case STATE_SEEKING:
@@ -1456,27 +1456,30 @@ public class Arrest extends StdBehavior
 								ExternalPlay.quickSay(officer,W.criminal,"Damn, I can't arrest you.",false,false);
 								if(W.criminal.isASysOp(null))
 								{
-									setFree(W.criminal);
+									fileAllWarrants(laws,W.criminal);
+									unCuff(W.criminal);
 									W.setArrestingOfficer(null);
 								}
 							}
 							else
 							if(W.crime.equalsIgnoreCase("pardoned"))
 							{
-								setFree(W.criminal);
+								fileAllWarrants(laws,W.criminal);
+								unCuff(W.criminal);
 								W.setArrestingOfficer(null);
 							}
 							else
 							if(judgeMe(laws,null,officer,W.criminal,W))
 							{
-								setFree(W.criminal);
+								fileAllWarrants(laws,W.criminal);
+								unCuff(W.criminal);
 								dismissOfficer(officer);
 								W.setArrestingOfficer(null);
 							}
 							else
 							{
 								W.setArrestingOfficer(officer);
-								ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(W.criminal)+"! Sit down on the ground immediately!",false,false);
+								ExternalPlay.quickSay(W.arrestingOfficer,W.criminal,"You are under arrest "+restOfCharges(laws,W.criminal)+"! Sit down on the ground immediately!",false,false);
 								W.state=STATE_ARRESTING;
 							}
 						}
@@ -1508,7 +1511,8 @@ public class Arrest extends StdBehavior
 							else
 							if(W.crime.equalsIgnoreCase("pardoned"))
 							{
-								setFree(W.criminal);
+								fileAllWarrants(laws,W.criminal);
+								unCuff(W.criminal);
 								W.setArrestingOfficer(null);
 							}
 							else
@@ -1553,7 +1557,8 @@ public class Arrest extends StdBehavior
 							}
 							if(W.crime.equalsIgnoreCase("pardoned"))
 							{
-								setFree(W.criminal);
+								fileAllWarrants(laws,W.criminal);
+								unCuff(W.criminal);
 								W.setArrestingOfficer(null);
 							}
 							else
@@ -1666,10 +1671,10 @@ public class Arrest extends StdBehavior
 								String sirmaam="Sir";
 								if(Character.toString((char)judge.charStats().getStat(CharStats.GENDER)).equalsIgnoreCase("F"))
 									sirmaam="Ma'am";
-								ExternalPlay.quickSay(officer,judge,sirmaam+", "+W.criminal.name()+" has been arrested "+restOfCharges(W.criminal)+".",false,false);
-								for(int w2=0;w2<warrants.size();w2++)
+								ExternalPlay.quickSay(officer,judge,sirmaam+", "+W.criminal.name()+" has been arrested "+restOfCharges(laws,W.criminal)+".",false,false);
+								for(int w2=0;w2<laws.warrants.size();w2++)
 								{
-									ArrestWarrant W2=(ArrestWarrant)warrants.elementAt(w2);
+									ArrestWarrant W2=(ArrestWarrant)laws.warrants.elementAt(w2);
 									if(W2.criminal==W.criminal)
 										ExternalPlay.quickSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".",false,false);
 								}
@@ -1715,7 +1720,8 @@ public class Arrest extends StdBehavior
 									W.travelAttemptTime=0;
 									unCuff(W.criminal);
 									dismissOfficer(officer);
-									setFree(W.criminal);
+									fileAllWarrants(laws,W.criminal);
+									unCuff(W.criminal);
 									W.setArrestingOfficer(null);
 								}
 								// else, still stuff to do
@@ -1749,7 +1755,8 @@ public class Arrest extends StdBehavior
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
 							MOB judge=getTheJudgeHere(laws,officer.location());
-							setFree(W.criminal);
+							fileAllWarrants(laws,W.criminal);
+							unCuff(W.criminal);
 							if((judge!=null)
 							&&(Sense.aliveAwakeMobile(judge,true)))
 							{
@@ -1819,7 +1826,8 @@ public class Arrest extends StdBehavior
 								else
 								{
 									W.travelAttemptTime=0;
-									setFree(W.criminal);
+									fileAllWarrants(laws,W.criminal);
+									unCuff(W.criminal);
 									ExternalPlay.quickSay(judge,W.criminal,"But since there IS no jail, I will let you go.",false,false);
 									dismissOfficer(officer);
 									W.setArrestingOfficer(null);
@@ -1859,7 +1867,8 @@ public class Arrest extends StdBehavior
 							&&(Sense.aliveAwakeMobile(judge,true))
 							&&(judge.location()==W.criminal.location()))
 							{
-								setFree(W.criminal);
+								fileAllWarrants(laws,W.criminal);
+								unCuff(W.criminal);
 								dismissOfficer(officer);
 								Ability A=CMClass.getAbility("Prisoner");
 								A.startTickDown(judge,W.criminal,100);
@@ -1913,7 +1922,10 @@ public class Arrest extends StdBehavior
 								W.criminal.recoverCharStats();
 								dismissOfficer(officer);
 								if(W.criminal.fetchAffect("Prisoner")==null)
-									setFree(W.criminal);
+								{
+									fileAllWarrants(laws,W.criminal);
+									unCuff(W.criminal);
+								}
 								else
 									W.state=STATE_RELEASE;
 							}
@@ -1980,7 +1992,8 @@ public class Arrest extends StdBehavior
 								MOB officer=W.arrestingOfficer;
 								if(W.criminal.location()==W.releaseRoom)
 								{
-									setFree(W.criminal);
+									fileAllWarrants(laws,W.criminal);
+									unCuff(W.criminal);
 
 									if(officer!=null)
 									{
@@ -2013,7 +2026,8 @@ public class Arrest extends StdBehavior
 									else
 									{
 										W.travelAttemptTime=0;
-										setFree(W.criminal);
+										fileAllWarrants(laws,W.criminal);
+										unCuff(W.criminal);
 										if(officer!=null)
 											dismissOfficer(officer);
 									}
@@ -2022,7 +2036,8 @@ public class Arrest extends StdBehavior
 							else
 							{
 								W.travelAttemptTime=0;
-								setFree(W.criminal);
+								fileAllWarrants(laws,W.criminal);
+								unCuff(W.criminal);
 								if(W.arrestingOfficer!=null)
 									dismissOfficer(W.arrestingOfficer);
 							}

@@ -1065,7 +1065,7 @@ public class Quests implements Cloneable, Quest
 				{
 					MOB M=(MOB)E;
 					Behavior B=((MOB)E).fetchBehavior("Scriptable");
-					if(B!=null)	B.modifyBehavior(M,"endquest "+name());
+					if(B!=null)	B.modifyBehavior(E,M,"endquest "+name());
 					CoffeeUtensils.wanderAway(M,true,false);
 					if(M.getStartRoom()!=null)
 					{
@@ -1099,7 +1099,7 @@ public class Quests implements Cloneable, Quest
 					Behavior B=E.fetchBehavior(((Behavior)O).ID());
 					if(B==null) continue;
 					if((E instanceof MOB)&&(B.ID().equals("Scriptable")))
-						B.modifyBehavior((MOB)E,"endquest "+name());
+						B.modifyBehavior(E,(MOB)E,"endquest "+name());
 					if((V.size()>2)&&(V.elementAt(2) instanceof String))
 						B.setParms((String)V.elementAt(2));
 					else

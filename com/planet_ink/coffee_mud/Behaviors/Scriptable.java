@@ -22,7 +22,7 @@ public class Scriptable extends StdBehavior
 	private Hashtable lastDayProgsDone=new Hashtable();
 	private Quests myQuest=null;
 	
-	public boolean modifyBehavior(MOB mob, Object O)
+	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{
 		if(O instanceof Quests)
 			myQuest=(Quests)O;
