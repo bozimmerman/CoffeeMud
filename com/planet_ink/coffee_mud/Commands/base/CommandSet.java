@@ -282,10 +282,10 @@ public class CommandSet extends Hashtable
 			put("REM",new Integer(REMOVE));
 		put("REPLY",new Integer(REPLY));
 			put("REP",new Integer(REPLY));
-			put("R",new Integer(REPLY));
 		put("REPORT",new Integer(REPORT));
 		put("RESET",new Integer(RESET));
 		put("REST",new Integer(SIT));
+			put("R",new Integer(SIT));
 		put("RETIRE",new Integer(RETIRE));
 		put("SAY",new Integer(SAY));
 			put("`",new Integer(SAY));

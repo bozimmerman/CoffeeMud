@@ -238,6 +238,7 @@ public class GrinderRooms
 			newRoom.rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("StdOpenDoorway");
 		}
 		ExternalPlay.DBCreateRoom(newRoom,"StdRoom");
+		ExternalPlay.DBUpdateExits(newRoom);
 		CMMap.addRoom(newRoom);
 		return newRoom;
 	}

@@ -879,6 +879,8 @@ public class StdMOB implements MOB
 			}
 			if(Util.bset(srcMajor,Affect.ACT_MOUTH))
 			{
+				if(!Sense.aliveAwakeMobile(this,false))
+					return false;
 				if(Util.bset(srcMajor,Affect.ACT_SOUND))
 				{
 					if((affect.tool()==null)
@@ -904,8 +906,6 @@ public class StdMOB implements MOB
 				}
 				else
 				{
-					if(!Sense.aliveAwakeMobile(this,false))
-						return false;
 					if((!Sense.canBeSeenBy(affect.target(),this))
 					&&(!(isMine(affect.target())&&(affect.target() instanceof Item))))
 					{

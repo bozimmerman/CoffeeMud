@@ -40,13 +40,13 @@ public class Chant_Plague extends Chant
 			MOB mob=(MOB)affected;
 			plagueDown=4;
 			if(invoker==null) invoker=mob;
-			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level(),Affect.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
+			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level()+1,Affect.TYP_DISEASE,-1,"<T-NAME> watch(es) <T-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
 				if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))
 				{
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
-					maliciousAffect(invoker,target,48,-1);
+					maliciousAffect(invoker,target,88,-1);
 				}
 		}
 		return true;
@@ -98,13 +98,13 @@ public class Chant_Plague extends Chant
 				if((!msg.wasModified())&&(!msg2.wasModified()))
 				{
 					invoker=mob;
-					maliciousAffect(mob,target,48,-1);
+					maliciousAffect(mob,target,88,-1);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> look(s) seriously ill!");
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at  <T-NAMESELF>, but nothing happens.");
+			return maliciousFizzle(mob,target,"<S-NAME> chant(s) at <T-NAMESELF>, but nothing happens.");
 
 
 		// return whether it worked

@@ -57,10 +57,12 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*3);
+		if(!Sense.canBeSeenBy(mob,target))
+			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
 		
-		boolean success=profficiencyCheck(-(levelDiff*15),auto);
+		boolean success=profficiencyCheck(-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15)),auto);
 
 		if(!success)
 		{

@@ -64,9 +64,11 @@ public class Thief_Steal extends ThiefSkill
 		Item stolen=target.fetchCarried(null,itemToSteal);
 
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*5);
+		if(!Sense.canBeSeenBy(mob,target))
+			discoverChance+=50;
 		if(discoverChance>95) discoverChance=95;
 		if(discoverChance<5) discoverChance=5;
-		boolean success=profficiencyCheck(-(levelDiff*15),auto);
+		boolean success=profficiencyCheck(-(levelDiff*((!Sense.canBeSeenBy(mob,target))?5:15)),auto);
 
 		if(!success)
 		{

@@ -31,7 +31,17 @@ public class BasicSenses
 				}
 			}
 			if(dirCode<0)
+			{
 				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORN_REQ_ANY);
+				if((thisThang==null)
+				&&(commands.size()>2)
+				&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
+				{
+					commands.removeElementAt(1);
+					String ID2=Util.combine(commands,1);
+					thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORN_REQ_ANY);
+				}
+			}
 			if(thisThang!=null)
 			{
 				String name="at <T-NAMESELF>.";

@@ -91,13 +91,9 @@ public class Skill_Write extends StdAbility
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> write(s) on <T-NAMESELF>.");
-			FullMsg msg2=new FullMsg(mob,target,null,Affect.MSG_WRITE,null,Affect.MSG_WRITE,Util.combine(commands,1),Affect.MSG_WRITE,null);
-			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
-			{
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.",Affect.MSG_WRITE,Util.combine(commands,1),Affect.MSG_WRITE,"<S-NAME> write(s) on <T-NAMESELF>.");
+			if(mob.location().okAffect(msg))
 				mob.location().send(mob,msg);
-				mob.location().send(mob,msg2);
-			}
 		}
 		else
 			mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"<S-NAME> attempt(s) to write on <T-NAMESELF>, but mess(es) up.");

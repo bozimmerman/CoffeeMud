@@ -607,9 +607,12 @@ public class StdItem implements Item
 					mob.tell("You can't get "+name()+".");
 					return false;
 				}
-				if((mob.riding()!=null)&&(mob.riding()==this))
+				if((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 				{
-					mob.tell("You are "+mob.riding().stateString()+" "+name()+"!");
+					if((mob.riding()!=null)&&(mob.riding()==this))
+						mob.tell("You are "+mob.riding().stateString()+" "+name()+"!");
+					else
+						mob.tell("Someone is "+mob.riding().stateString()+" "+name()+"!");
 					return false;
 				}
 				return true;

@@ -49,14 +49,16 @@ public class Thief_Peek extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		boolean success=profficiencyCheck(-(levelDiff*10),auto);
+		boolean success=profficiencyCheck(-(levelDiff*(!Sense.canBeSeenBy(mob,target)?0:10)),auto);
+		int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);
+		if(!Sense.canBeSeenBy(mob,target))
+			discoverChance-=50;
+		if(discoverChance>95) discoverChance=95;
+		if(discoverChance<5) discoverChance=5;
+
 
 		if(!success)
 		{
-			int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);
-			if(discoverChance>95) discoverChance=95;
-			if(discoverChance<5) discoverChance=5;
-
 			if(Dice.rollPercentage()<discoverChance)
 			{
 				FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_OK_VISUAL,auto?"":"Your peek attempt fails; <T-NAME> spots you!",Affect.MSG_OK_VISUAL,auto?"":"<S-NAME> tries to peek at your inventory and fails!",Affect.NO_EFFECT,null);
@@ -71,10 +73,6 @@ public class Thief_Peek extends ThiefSkill
 		}
 		else
 		{
-			int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);
-			if(discoverChance>95) discoverChance=95;
-			if(discoverChance<5) discoverChance=5;
-
 			String str=null;
 			if(Dice.rollPercentage()<discoverChance)
 				str=auto?"":"<S-NAME> peek(s) at your inventory.";

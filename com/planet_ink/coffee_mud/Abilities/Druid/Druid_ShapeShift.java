@@ -182,7 +182,6 @@ public class Druid_ShapeShift extends StdAbility
 					raceName="A "+raceName;
 				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				newRace.confirmGear(mob);
-				mob.makePeace();
 			}
 		}
 		else
