@@ -93,7 +93,15 @@ public class Scriptable extends StdBehavior
 			Vector script=new Vector();
 			while(s.length()>0)
 			{
-				int y=s.indexOf(";");
+				int y=-1;
+				int yy=0;
+				while(yy<s.length())
+					if(s.charAt(yy)==';'){y=yy;break;}
+					else
+					if(s.charAt(yy)=='\n'){y=yy;break;}
+					else
+					if(s.charAt(yy)=='\r'){y=yy;break;}
+					else yy++;
 				String cmd="";
 				if(y<0)
 				{
@@ -148,7 +156,20 @@ public class Scriptable extends StdBehavior
 			if(mob)
 				E=R.fetchInhabitant(thisName);
 			else
+			{
 				E=R.fetchItem(null,thisName);
+				if(E==null)
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					MOB M=R.fetchInhabitant(i);
+					if(M!=null)
+					{
+						E=M.fetchInventory(null,thisName);
+						if((M instanceof ShopKeeper)&&(E==null))
+							E=((ShopKeeper)M).getStock(thisName,null);
+					}
+				}
+			}
 			if(E!=null)
 			{
 				if((imHere!=null)&&(imHere.getArea().name().equals(R.getArea().name())))
@@ -208,6 +229,7 @@ public class Scriptable extends StdBehavior
 					else
 					if(c==')') depth--;
 				}
+				z=evaluable.indexOf(")");
 			}
 			else
 			if(evaluable.startsWith("!"))
@@ -435,7 +457,6 @@ public class Scriptable extends StdBehavior
 					Log.errOut("Scriptable","SEX Syntax -- "+monster.name()+", "+evaluable);
 					break;
 				}
-				
 			}
 			else
 			if(preFab.equals("POSITION"))
@@ -473,7 +494,7 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				if((E==null)||(arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","LEVEL Syntax -- "+monster.name()+", "+evaluable);
 					break;
@@ -607,12 +628,26 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getBit(evaluable.substring(y+1,z),1);
 				String arg3=Util.getBit(evaluable.substring(y+1,z),2);
 				Environmental E=getArgumentItem(arg1,source,monster,target,primaryItem,secondaryItem);
-				if((E==null)||(!(E instanceof MOB))||(arg2.length()==0)||(arg3.length()==0))
+				if((E==null)||(arg2.length()==0)||(arg3.length()==0))
 				{
 					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
 					break;
 				}
-				int val1=((MOB)E).getMoney();
+				int val1=0;
+				if(E instanceof MOB)
+					val1=((MOB)E).getMoney();
+				else
+				if(E instanceof Coins)
+					val1=((Coins)E).numberOfCoins();
+				else
+				if(E instanceof Item)
+					val1=((Item)E).value();
+				else
+				{
+					Log.errOut("Scriptable","GOLDAMT Syntax -- "+monster.name()+", "+evaluable);
+					break;
+				}
+				
 				int val2=Util.s_int(arg3);
 				
 				if(arg2.equalsIgnoreCase("=="))
@@ -647,7 +682,8 @@ public class Scriptable extends StdBehavior
 				Log.errOut("Scriptable","Unknown CMD -- "+monster.name()+", "+evaluable);
 				break;
 			}
-			evaluable=evaluable.substring(z+1).trim();
+			if((z>=0)&&(z<=evaluable.length()))
+				evaluable=evaluable.substring(z+1).trim();
 		}
 		return returnable;
 	}
@@ -760,7 +796,8 @@ public class Scriptable extends StdBehavior
 			else
 			if(cmd.equals("IF"))
 			{
-				boolean condition=eval(source,target,monster,primaryItem,secondaryItem,(cmd.substring(2).trim()));
+				String conditionStr=(s.substring(2).trim());
+				boolean condition=eval(source,target,monster,primaryItem,secondaryItem,conditionStr);
 				Vector V=new Vector();
 				V.addElement("");
 				int depth=0;
@@ -788,7 +825,9 @@ public class Scriptable extends StdBehavior
 					else
 					{
 						if(condition)
+						{
 							V.addElement(s);
+						}
 						if(cmd.equals("IF"))
 							depth++;
 						else
@@ -802,12 +841,28 @@ public class Scriptable extends StdBehavior
 					Log.errOut("Scriptable","IF without ENDIF! for "+monster.name());
 					return;
 				}
-				execute(source,target,monster,primaryItem,secondaryItem,V);
-				si++;
+				if(V.size()>1)
+				{
+					//source.tell("Starting "+conditionStr);
+					//for(int v=0;v<V.size();v++)
+					//	source.tell("Statement "+((String)V.elementAt(v)));
+					execute(source,target,monster,primaryItem,secondaryItem,V);
+					//source.tell("Stopping "+conditionStr);
+				}
 			}
 			else
 			if(cmd.equals("MPASOUND"))
-				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
+			{
+				String echo=varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim());
+				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,echo);
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R2=lastKnownLocation.getRoomInDir(d);
+					Exit E2=lastKnownLocation.getExitInDir(d);
+					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
+						R2.show(monster,null,Affect.MSG_OK_ACTION,echo);
+				}
+			}
 			else
 			if(cmd.equals("MPJUNK"))
 			{
@@ -829,7 +884,7 @@ public class Scriptable extends StdBehavior
 			}
 			else
 			if(cmd.equals("MPECHO"))
-				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(8).trim()));
+				lastKnownLocation.show(monster,null,Affect.MSG_OK_ACTION,varify(source,target,monster,primaryItem,secondaryItem,s.substring(6).trim()));
 			else
 			if((cmd.equals("MPMLOAD"))&&(lastKnownLocation!=null))
 			{
@@ -844,6 +899,9 @@ public class Scriptable extends StdBehavior
 				if(m!=null)
 				{
 					m=(MOB)m.copyOf();
+					m.recoverEnvStats();
+					m.recoverCharStats();
+					m.resetToMaxState();
 					m.bringToLife(lastKnownLocation,true);
 				}
 			}
@@ -854,13 +912,14 @@ public class Scriptable extends StdBehavior
 				Item m=CMClass.getItem(s);
 				if(m==null)
 				{
-					Environmental e=findSomethingCalledThis(s,lastKnownLocation,true);
+					Environmental e=findSomethingCalledThis(s,lastKnownLocation,false);
 					if(e instanceof Item)
 						m=(Item)e;
 				}
 				if(m!=null)
 				{
 					m=(Item)m.copyOf();
+					m.recoverEnvStats();
 					monster.addInventory(m);
 				}
 			}
@@ -1047,12 +1106,10 @@ public class Scriptable extends StdBehavior
 		else
 			return;
 
-		if(!canFreelyBehaveNormal(monster)) return;
 		if(scripts==null)
 			scripts=parseScripts(getParms());
 
 		if(affect.source()==null) return;
-		if(affect.source()==monster) return;
 
 		for(int v=0;v<scripts.size();v++)
 		{
@@ -1062,12 +1119,13 @@ public class Scriptable extends StdBehavior
 			String trigger=((String)script.elementAt(0)).toUpperCase().trim();
 			
 			if((lastKnownLocation!=null)
+			&&(affect.targetMinor()==Affect.TYP_ENTER)
 			&&(affect.amITarget(lastKnownLocation))
-			&&(Sense.canSenseMoving(affect.source(),affecting))
-			&&(affect.targetMinor()==Affect.TYP_ENTER))
+			&&(!affect.amISource(monster))
+			&&(canFreelyBehaveNormal(monster)))
 			{
 				if((trigger.startsWith("GREET_PROG"))
-				&&(Sense.canBeSeenBy(affect.source(),monster)))
+				&&(Sense.canSenseMoving(affect.source(),affecting)))
 				{
 					int prcnt=Util.s_int(Util.getBit(trigger,1));
 					if((Dice.rollPercentage()<prcnt)&&(!affect.source().isMonster()))
@@ -1090,18 +1148,21 @@ public class Scriptable extends StdBehavior
 				MOB src=lastToHurtMe;
 				if((src==null)||(src.location()!=monster.location()))
 				   src=monster;
-				que.addElement(new ScriptableResponse(src,monster,monster,null,null,script,1));
+				execute(src,monster,monster,null,null,script);
 			}
 			
 			if(affect.amITarget(monster)
+			&&(!affect.amISource(monster))
 			&&((affect.targetCode()&Affect.MASK_HURT)>0)
 			&&(affect.source()!=monster))
 				lastToHurtMe=affect.source();
-				
+			
+			if(!affect.amISource(monster))
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_SPEAK:
-				if(trigger.startsWith("SPEECH_PROG"))
+				if((trigger.startsWith("SPEECH_PROG"))
+				&&(canFreelyBehaveNormal(monster)))
 				{
 					String msg=affect.othersMessage().toUpperCase();
 					if(msg.indexOf("\'")>=0)
@@ -1134,21 +1195,24 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			case Affect.TYP_GIVE:
-				if(affect.amITarget(monster))
-				if((trigger.startsWith("GIVE_PROG"))&&(affect.tool() instanceof Item))
+				if((affect.amITarget(monster))
+				&&(canFreelyBehaveNormal(monster))
+				&&(trigger.startsWith("GIVE_PROG"))
+				&&(affect.tool() instanceof Item))
 					que.addElement(new ScriptableResponse(affect.source(),monster,monster,(Item)affect.tool(),null,script,2));
 				break;
 			default:
-				if(trigger.startsWith("MASK_PROG"))
+				if((trigger.startsWith("MASK_PROG"))
+				&&(affect.othersMessage()!=null))
 				{
 					boolean doIt=false;
 					String msg=affect.othersMessage().toUpperCase();
 					msg=" "+msg+" ";
-					trigger=trigger.substring(8).trim();
+					trigger=trigger.substring(9).trim();
 					if(Util.getBit(trigger,0).equalsIgnoreCase("p"))
 					{
 						trigger=trigger.substring(1).trim();
-						if((" "+trigger+" ").indexOf(msg)>=0)
+						if((" "+msg+" ").indexOf(trigger)>=0)
 							doIt=true;
 					}
 					else
@@ -1156,7 +1220,7 @@ public class Scriptable extends StdBehavior
 						int num=Util.numBits(trigger);
 						for(int i=0;i<num;i++)
 						{
-							String t=Util.getBit(trigger,i);
+							String t=Util.getBit(trigger,i).trim();
 							if(msg.indexOf(" "+t+" ")>=0)
 							{
 								doIt=true;
@@ -1174,6 +1238,8 @@ public class Scriptable extends StdBehavior
 						else
 						if(affect.target() instanceof Item)
 							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,(Item)affect.target(),script,2));
+						else
+							que.addElement(new ScriptableResponse(affect.source(),null,monster,Tool,null,script,2));
 					}
 				}
 				break;
@@ -1232,13 +1298,11 @@ public class Scriptable extends StdBehavior
 						execute(mob.getVictim(),mob,mob,null,null,script);
 				}
 			}
-			if((Sense.aliveAwakeMobile(mob,true))&&(que.size()>0))
+			
+			for(int q=que.size()-1;q>=0;q--)
 			{
-				for(int q=que.size()-1;q>=0;q--)
-				{
-					ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
-					if(SB.tickOrGo()) que.removeElement(SB);
-				}
+				ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
+				if(SB.tickOrGo()) que.removeElement(SB);
 			}
 		}
 	}
