@@ -27,6 +27,68 @@ public class AreaData extends StdWebMacro
 					if(s==null)	s=ExternalPlay.getHelpText(A.name());
 					str.append(helpHelp(s));
 				}
+				if(parms.containsKey("CLIMATES"))
+				{
+					int climate=A.climateType();
+					if(httpReq.getRequestParameters().get("CLIMATE")!=null)
+						climate=Util.s_int((String)httpReq.getRequestParameters().get("CLIMATE"));
+					for(int i=1;i<Area.NUM_CLIMATES;i++)
+					{
+						String climstr=Area.CLIMATE_DESCS[i];
+						int mask=Util.pow(2,i-1);
+						str.append("<OPTION VALUE="+mask);
+						if((climate&mask)>0) str.append(" SELECTED");
+						str.append(">"+climstr);
+					}
+				}
+				if(parms.containsKey("NAME"))
+				{
+					String name=(String)httpReq.getRequestParameters().get("NAME");
+					if((name==null)||(name.length()==0))
+						name=A.name();
+					str.append(name);
+				}
+				if(parms.containsKey("CLASSES"))
+				{
+					String className=(String)httpReq.getRequestParameters().get("CLASS");
+					if((className==null)||(className.length()==0))
+						className=CMClass.className(A);
+					for(int a=0;a<CMClass.areaTypes.size();a++)
+					{
+						Area cnam=(Area)CMClass.areaTypes.elementAt(a);
+						str.append("<OPTION VALUE=\""+CMClass.className(cnam)+"\"");
+						if(className.equalsIgnoreCase(CMClass.className(cnam)))
+							str.append(" SELECTED");
+						str.append(">"+CMClass.className(cnam));
+					}
+				}
+				if(parms.containsKey("TESTSTUFF"))
+					str.append(A.text());
+				if(parms.containsKey("SUBOPS"))
+				{
+					String subOps=(String)httpReq.getRequestParameters().get("SUBOPS");
+					if((subOps==null)||(subOps.length()==0))
+						subOps=A.getSubOpList();
+					Vector V=ExternalPlay.userList();
+					for(int v=0;v<V.size();v++)
+					{
+						String cnam=(String)V.elementAt(v);
+						str.append("<OPTION VALUE=\""+cnam+"\"");
+						if(subOps.equals(cnam)
+						   ||(subOps.indexOf(";"+cnam)>=0)
+						   ||(subOps.startsWith(cnam+";")))
+							str.append(" SELECTED");
+						str.append(">"+cnam);
+					}
+				}
+				if(parms.containsKey("DESCRIPTION"))
+				{
+					String desc=(String)httpReq.getRequestParameters().get("DESCRIPTION");
+					if((desc==null)||(desc.length()==0))
+						desc=A.description();
+					str.append(desc);
+				}
+									 
 				if(parms.containsKey("SEASON"))
 					str.append(Area.SEASON_DESCS[A.getSeasonCode()]+", ");
 				if(parms.containsKey("TODCODE"))

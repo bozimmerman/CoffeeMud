@@ -175,6 +175,29 @@ public class MOBloader
 			CMMap.MOBs.put(mob.ID(),mob);
 	}
 
+	public static Vector userList()
+	{
+		DBConnection D=null;
+		Vector V=new Vector();
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHAR");
+			while(R.next())
+			{
+				String username=DBConnections.getRes(R,"CMUSERID");
+				V.addElement(username);
+			}
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		return V;
+	}
+	
 	public static void listUsers(MOB mob)
 	{
 		DBConnection D=null;

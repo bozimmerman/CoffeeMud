@@ -221,6 +221,11 @@ public class ExternalPlay
 	{
 		if(sysPlayer!=null) sysPlayer.DBReadMOB(mob);
 	}
+	public static Vector userList()
+	{
+		if(sysPlayer!=null) return sysPlayer.userList();
+		return new Vector();
+	}
 	public static void listUsers(MOB mob)
 	{
 		if(sysPlayer!=null) sysPlayer.listUsers(mob);

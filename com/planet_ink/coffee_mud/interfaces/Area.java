@@ -42,6 +42,7 @@ public interface Area extends Environmental
 	public final static int CLIMATE_WINDY=4;
 	public final static int CLIMASK_HOT=8;
 	public final static int CLIMASK_DRY=16;
+	public final static String[] CLIMATE_DESCS={"NORMAL","WET","COLD","WINDY","HOT","DRY"};
 	public final static int NUM_CLIMATES=6;
 	public final static int ALL_CLIMATE_MASK=31;
 	

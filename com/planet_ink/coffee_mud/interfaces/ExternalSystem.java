@@ -20,6 +20,7 @@ public interface ExternalSystem
 	public void DBDeleteRoom(Room room);
 	public void DBReadMOB(MOB mob);
 	public void listUsers(MOB mob);
+	public Vector userList();
 	public void DBReadFollowers(MOB mob);
 	public void DBDeleteMOB(MOB mob);
 	public void DBCreateCharacter(MOB mob);

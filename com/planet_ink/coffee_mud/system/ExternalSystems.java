@@ -14,6 +14,11 @@ public class ExternalSystems implements ExternalSystem
 	{
 		MOBloader.vassals(mob,leigeID);
 	}
+	public Vector userList()
+	{
+		return MOBloader.userList();
+	}
+	
 	public boolean deleteTick(Environmental E, int tickID)
 	{
 		return ServiceEngine.deleteTick(E,tickID);
