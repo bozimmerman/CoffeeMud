@@ -131,11 +131,17 @@ public class MUDHelp
 			}
 			name=name.replace('_',' ');
 			Vector helpedPreviously=new Vector();
-System.out.println(tag+"/"+name);
+			String subTag=tag;
+			while(subTag.indexOf("_")!=subTag.lastIndexOf("_"))
+			{
+			    int x=subTag.lastIndexOf("_");
+			    subTag=subTag.substring(0,x)+subTag.substring(x+1);
+			}
+			
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if((A.ID().equalsIgnoreCase(tag)
+				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))
 						&&((type<0)||(type==(A.classificationCode()&Ability.ALL_CODES)))
 					||(A.name().equalsIgnoreCase(name)))
 				&&(!helpedPreviously.contains(A)))
