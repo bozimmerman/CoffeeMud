@@ -608,7 +608,7 @@ public class Scoring
 						   {"Fight Text","F"},
 						   {"Spells","S"},
 						   {"Emotes","F"},
-						   {"Talks","S"},
+						   {"Talks","T"},
 						   {"Room Titles","O"},
 						   {"Room Descriptions","L"},
 						   {"Doors","d"},
