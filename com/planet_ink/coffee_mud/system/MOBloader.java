@@ -350,6 +350,7 @@ public class MOBloader
 						follower.bringToLife(location,true);
 					else
 						follower.bringToLife(location,false);
+					follower.setFollowing(mob);
 					location.showOthers(follower,null,Affect.MSG_OK_ACTION,"<S-NAME> appears!");
 				}
 			}

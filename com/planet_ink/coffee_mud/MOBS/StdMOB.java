@@ -412,7 +412,10 @@ public class StdMOB implements MOB
 					}
 					else
 					if(follower.location()!=null)
+					{
 						follower.killMeDead(false);
+						addFollower(follower);
+					}
 				}
 			}
 		}

@@ -1,4 +1,5 @@
 GAES still isn't done
+CONFIRM FOLLOWER CODE!
 MovingRoom behavior?
 Reimplement SysOpModLocale
 mailto:marqphex@iname.com?subject=Glitch/Broken Code
