@@ -1,6 +1,3 @@
-set classpath_ = %classpath%
-set classpath  = %classpath%;.;c:\prog\jdk130\lib\dt.jar;c:\prog\jdk130\lib\tools.jar
-
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Archon\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Fighter\*.java
@@ -11,7 +8,6 @@ c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Skills\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Songs\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Specializations\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Spells\*.java
-c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Spells\interfaces\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Thief\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Abilities\Traps\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\application\*.java
@@ -27,9 +23,9 @@ c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Items\Weapons\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Items\MiscMagic\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Items\Armor\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Locales\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\web\*.java
+c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\web\macros\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\MOBS\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\Races\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\system\*.java
 c:\jdk1.3\bin\javac com\planet_ink\coffee_mud\utils\*.java
-
-set classpath=%classpath_%
