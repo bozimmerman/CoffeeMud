@@ -15,6 +15,7 @@ public class Naga extends Python
 	protected int lightestWeight(){return 80;}
 	protected int weightVariance(){return 80;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Serpent";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

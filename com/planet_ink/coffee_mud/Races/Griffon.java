@@ -15,6 +15,7 @@ public class Griffon extends GreatBird
 	protected int lightestWeight(){return 160;}
 	protected int weightVariance(){return 80;}
 	protected long forbiddenWornBits(){return Item.HELD|Item.WIELD;}
+	public String racialCatagory(){return "Avian";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)	

@@ -15,6 +15,7 @@ public class WaterElemental extends StdRace
 	protected int lightestWeight(){return 400;}
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Water Elemental";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

@@ -11,6 +11,7 @@ public class Rat extends Rodent
 	protected int heightVariance(){return 6;}
 	protected int lightestWeight(){return 10;}
 	protected int weightVariance(){return 10;}
+	public String racialCatagory(){return "Rodent";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

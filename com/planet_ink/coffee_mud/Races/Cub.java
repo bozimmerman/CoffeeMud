@@ -14,6 +14,7 @@ public class Cub extends Bear
 	protected int heightVariance(){return 6;}
 	protected int lightestWeight(){return 45;}
 	protected int weightVariance(){return 10;}
+	public String racialCatagory(){return "Ursine";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

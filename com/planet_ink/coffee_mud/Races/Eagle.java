@@ -6,6 +6,7 @@ public class Eagle extends GreatBird
 {
 	public String ID(){	return "Eagle"; }
 	public String name(){ return "Eagle"; }
+	public String racialCatagory(){return "Avian";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

@@ -36,6 +36,11 @@ SET JAVACPATH=D:\java\jdk1.4.0\bin\javac
 %JAVACPATH% com\planet_ink\coffee_mud\MOBS\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Races\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\system\*.java
+%JAVACPATH% com\planet_ink\coffee_mud\system\I3\*.java
+%JAVACPATH% com\planet_ink\coffee_mud\system\I3\net\*.java
+%JAVACPATH% com\planet_ink\coffee_mud\system\I3\packets\*.java
+%JAVACPATH% com\planet_ink\coffee_mud\system\I3\persist\*.java
+%JAVACPATH% com\planet_ink\coffee_mud\system\I3\server\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\utils\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\web\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\web\macros\*.java

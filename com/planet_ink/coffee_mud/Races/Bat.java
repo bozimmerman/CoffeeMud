@@ -17,6 +17,7 @@ public class Bat extends StdRace
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_NECK-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
+	public String racialCatagory(){return "Pteropine";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -15,6 +15,7 @@ public class GiantScorpion extends StdRace
 	protected int lightestWeight(){return 87;}
 	protected int weightVariance(){return 97;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public String racialCatagory(){return "Insect";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

@@ -9,6 +9,7 @@ public class Robin extends Bird
 {
 	public String ID(){	return "Robin"; }
 	public String name(){ return "Robin"; }
+	public String racialCatagory(){return "Avian";}
 	
 	protected static Vector resources=new Vector();
 	public Vector myResources()

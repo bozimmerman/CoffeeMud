@@ -15,6 +15,7 @@ public class Insect extends StdRace
 	protected int lightestWeight(){return 1;}
 	protected int weightVariance(){return 0;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public String racialCatagory(){return "Insect";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

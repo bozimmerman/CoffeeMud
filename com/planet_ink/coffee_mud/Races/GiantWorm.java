@@ -15,6 +15,7 @@ public class GiantWorm extends StdRace
 	protected int lightestWeight(){return 180;}
 	protected int weightVariance(){return 20;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE;}
+	public String racialCatagory(){return "Worm";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

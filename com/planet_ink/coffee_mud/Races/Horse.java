@@ -15,6 +15,7 @@ public class Horse extends StdRace
 	protected int lightestWeight(){return 350;}
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_EARS-Item.ON_EYES;}
+	public String racialCatagory(){return "Equine";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

@@ -5,6 +5,7 @@ public class Lion extends GreatCat
 {
 	public String ID(){	return "Lion"; }
 	public String name(){ return "Lion"; }
+	public String racialCatagory(){return "Feline";}
 	
 	protected static Vector resources=new Vector();
 	public Vector myResources()

@@ -15,6 +15,7 @@ public class Manticore extends GreatCat
 	protected int lightestWeight(){return 120;}
 	protected int weightVariance(){return 80;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Feline";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

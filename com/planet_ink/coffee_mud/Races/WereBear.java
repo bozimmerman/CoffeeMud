@@ -15,6 +15,7 @@ public class WereBear extends Bear
 	protected int lightestWeight(){return 80;}
 	protected int weightVariance(){return 80;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Ursine";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

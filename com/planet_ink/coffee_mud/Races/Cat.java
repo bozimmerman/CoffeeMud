@@ -15,6 +15,7 @@ public class Cat extends StdRace
 	protected int lightestWeight(){return 10;}
 	protected int weightVariance(){return 20;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	public String racialCatagory(){return "Feline";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

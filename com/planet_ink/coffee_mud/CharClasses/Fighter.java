@@ -38,6 +38,7 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Kick",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_TwoWeaponFighting",false);
@@ -46,24 +47,25 @@ public class Fighter extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Fighter_Rescue",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Disarm",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",true);
+			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Attack2",true); 
-			CMAble.addCharAbilityMapping(ID(),9,"Fighter_CritStrike",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Fighter_CritStrike",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Fighter_BlindFighting",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",false);
 			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Fighter_WeaponBreak",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Fighter_WeaponBreak",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),13,"Fighter_DuelParry",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Fighter_DualParry",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Skill_Trip",true);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Fighter_Sweep",true);
-			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Roll",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Fighter_Roll",false);
 			CMAble.addCharAbilityMapping(ID(),17,"Fighter_Whomp",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Attack3",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Endurance",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Tumble",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Fighter_Berzerk",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Endurance",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Tumble",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Fighter_Berzerk",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Fighter_CoverDefence",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Fighter_Heroism",true);
 			CMAble.addCharAbilityMapping(ID(),30,"Fighter_CoupDeGrace",true);
 		}

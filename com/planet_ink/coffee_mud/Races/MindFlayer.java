@@ -11,6 +11,7 @@ public class MindFlayer extends Humanoid
 	public String name(){ return "MindFlayer"; }
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
+	public String racialCatagory(){return "Illithid";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

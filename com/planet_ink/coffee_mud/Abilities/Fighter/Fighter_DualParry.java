@@ -5,10 +5,10 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Fighter_DuelParry extends StdAbility
+public class Fighter_DualParry extends StdAbility
 {
-	public String ID() { return "Fighter_DuelParry"; }
-	public String name(){ return "Duel Parry";}
+	public String ID() { return "Fighter_DualParry"; }
+	public String name(){ return "Dual Parry";}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
@@ -18,7 +18,7 @@ public class Fighter_DuelParry extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	
 	boolean lastTime=false;
-	public Environmental newInstance(){	return new Fighter_DuelParry();}
+	public Environmental newInstance(){	return new Fighter_DualParry();}
 
 	public boolean okAffect(Affect affect)
 	{

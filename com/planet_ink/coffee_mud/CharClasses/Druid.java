@@ -36,8 +36,8 @@ public class Druid extends StdCharClass
 			
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_DruidicPass",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_ShapeShift",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Druid_MyPlants",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Chant_PredictWeather",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Chant_SummonPlants",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_SummonWater",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Chant_LocatePlants",true);
@@ -204,6 +204,21 @@ public class Druid extends StdCharClass
 		return true;
 	}
 
+	private boolean isValidBeneficiary(MOB killer, 
+									   MOB killed, 
+									   MOB mob,
+									   Hashtable followers)
+	{
+		if((mob!=null)
+		&&(!mob.amDead())
+		&&((!mob.isMonster())||(mob.charStats().getStat(CharStats.INTELLIGENCE)>1))
+		&&((mob.getVictim()==killed)
+		 ||(followers.get(mob)!=null)
+		 ||(mob==killer)))
+			return true;
+		return false;
+	}
+	
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Quarterstaff");

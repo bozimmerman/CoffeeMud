@@ -16,6 +16,7 @@ public class Human extends StdRace
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
 	protected int trainsAtFirstLevel(){return 2;}
+	public String racialCatagory(){return "Human";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return true;}

@@ -428,35 +428,48 @@ public class StdCharClass implements CharClass
 		if(mob.baseCharStats().getStat(abilityCode)>=getMaxStat(abilityCode)) return false;
 		return true;
 	}
+
+	private boolean isValidBeneficiary(MOB killer, 
+									   MOB killed, 
+									   MOB mob,
+									   Hashtable followers)
+	{
+		if((mob!=null)
+		&&(!mob.amDead())
+		&&((mob.getVictim()==killed)
+		 ||(followers.get(mob)!=null)
+		 ||(mob==killer)))
+			return true;
+		return false;
+	}
+	
 	public Hashtable dispenseExperience(MOB killer, MOB killed)
 	{
 		if((killer==null)||(killed==null)) return new Hashtable();
 		Room deathRoom=killed.location();
-		int expAmount=60;
-		int totalLevels=0;
-		
 		Hashtable beneficiaries=new Hashtable();
 		Hashtable followers=(killer!=null)?killer.getGroupMembers(new Hashtable()):(new Hashtable());
 
+		int totalLevels=0;
+		int expAmount=60;
 		for(int m=0;m<deathRoom.numInhabitants();m++)
 		{
 			MOB mob=deathRoom.fetchInhabitant(m);
-			if((mob!=null)
-			&&(!mob.amDead())
+			if((isValidBeneficiary(killer,killed,mob,followers))
 			&&(beneficiaries.get(mob)==null))
 			{
-				if((mob.getVictim()==killed)
-				||(followers.get(mob)!=null)
-				||(mob==killer))
-				{
-					beneficiaries.put(mob,mob);
-					expAmount+=10;
-					totalLevels+=mob.envStats().level();
-				}
+				beneficiaries.put(mob,mob);
+				totalLevels+=mob.envStats().level();
+				expAmount+=(10*beneficiaries.size());
 			}
 		}
 		if(beneficiaries.size()>0)
 		{
+			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
+			{
+				MOB mob=(MOB)e.nextElement();
+				totalLevels+=mob.envStats().level();
+			}
 			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 			{
 				MOB mob=(MOB)e.nextElement();

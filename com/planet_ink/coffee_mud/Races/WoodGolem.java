@@ -15,6 +15,7 @@ public class WoodGolem extends StdRace
 	protected int lightestWeight(){return 400;}
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Wood Golem";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

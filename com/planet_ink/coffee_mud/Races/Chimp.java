@@ -14,6 +14,7 @@ public class Chimp extends Monkey
 	protected int heightVariance(){return 8;}
 	protected int lightestWeight(){return 80;}
 	protected int weightVariance(){return 50;}
+	public String racialCatagory(){return "Primate";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

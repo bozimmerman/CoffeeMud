@@ -15,6 +15,7 @@ public class Dragon extends StdRace
 	protected int lightestWeight(){return 2000;}
 	protected int weightVariance(){return 500;}
 	protected long forbiddenWornBits(){return Item.WIELD|Item.ON_WAIST|Item.ABOUT_BODY|Item.ON_FEET|Item.ON_HANDS;}
+	public String racialCatagory(){return "Dragon";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

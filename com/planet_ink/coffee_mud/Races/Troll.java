@@ -15,6 +15,7 @@ public class Troll extends StdRace
 	protected int lightestWeight(){return 200;}
 	protected int weightVariance(){return 200;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Troll-kin";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

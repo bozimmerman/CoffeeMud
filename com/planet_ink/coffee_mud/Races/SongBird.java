@@ -15,6 +15,7 @@ public class SongBird extends StdRace
 	protected int lightestWeight(){return 2;}
 	protected int weightVariance(){return 5;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES-Item.ON_HEAD;}
+	public String racialCatagory(){return "Avian";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

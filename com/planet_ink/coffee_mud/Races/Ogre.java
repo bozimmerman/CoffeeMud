@@ -15,6 +15,7 @@ public class Ogre extends Humanoid
 	protected int lightestWeight(){return 290;}
 	protected int weightVariance(){return 90;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Ogre-kin";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

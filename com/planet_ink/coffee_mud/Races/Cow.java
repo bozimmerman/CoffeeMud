@@ -15,6 +15,7 @@ public class Cow extends StdRace
 	protected int lightestWeight(){return 250;}
 	protected int weightVariance(){return 100;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	public String racialCatagory(){return "Bovine";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

@@ -441,7 +441,8 @@ public class MOBloader
 				+thisItem.baseEnvStats().level()+","
 				+thisItem.baseEnvStats().ability()+","
 				+thisItem.baseEnvStats().height()+")";
-				V.addElement(str);
+				if(!V.contains(str))
+					V.addElement(str);
 			}
 		}
 	}

@@ -12,6 +12,7 @@ public interface Race
 	public String healthText(MOB mob);
 	public DeadBody getCorpse(MOB mob, Room room);
 	public Vector myResources();
+	public String racialCatagory();
 	
 	public String arriveStr();
 	public String leaveStr();

@@ -11,6 +11,7 @@ public class Puppy extends Dog
 	protected int lightestWeight(){return 7;}
 	protected int weightVariance(){return 20;}
 	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_HEAD-Item.ON_FEET-Item.ON_NECK-Item.ON_EARS-Item.ON_EYES;}
+	public String racialCatagory(){return "Canine";}
 	
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

@@ -15,6 +15,7 @@ public class Wyvern extends StdRace
 	protected int lightestWeight(){return 1500;}
 	protected int weightVariance(){return 500;}
 	protected long forbiddenWornBits(){return Item.HELD|Item.WIELD|Item.ON_WAIST;}
+	public String racialCatagory(){return "Reptile";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

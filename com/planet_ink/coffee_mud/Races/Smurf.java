@@ -15,6 +15,7 @@ public class Smurf extends StdRace
 	protected int lightestWeight(){return 5;}
 	protected int weightVariance(){return 2;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Smurf-kin";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

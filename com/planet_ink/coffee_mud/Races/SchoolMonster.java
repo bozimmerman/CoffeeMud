@@ -15,6 +15,7 @@ public class SchoolMonster extends StdRace
 	protected int lightestWeight(){return 60;}
 	protected int weightVariance(){return 60;}
 	protected long forbiddenWornBits(){return 0;}
+	public String racialCatagory(){return "Porcine";}
 	
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}

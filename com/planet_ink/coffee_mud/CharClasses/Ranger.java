@@ -36,44 +36,67 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Hammer",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Natural",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Polearm",false);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Ranged",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Ranger_Track",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Ranger_Track",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Ranger_FindWater",true);
-			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",true);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",true);
-			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_TwoWeaponFighting",false);
-			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
-			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",true);
-			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",true);
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
-			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
-			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Cleave",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Sweep",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
-			
-			// qualify for all spells
-			for(int level=1;level<22;level++)
-			{
-				Vector V=CMAble.getLevelListings("Druid",level);
-				for(int v=0;v<V.size();v++)
-				{
-					String chant=(String)V.elementAt(v);
-					if(chant.startsWith("Chant_"))
-						CMAble.addCharAbilityMapping(ID(),level+4,chant,false);
-				}
-			}
+			CMAble.addCharAbilityMapping(ID(),3,"Skill_Parry",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Skill_Bash",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Skill_TwoWeaponFighting",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ReadMagic",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Chant_PredictWeather",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Chant_LocatePlants",false);
+			CMAble.addCharAbilityMapping(ID(),6,"Skill_Revoke",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Skill_Dodge",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Fighter_RapidShot",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_Moonbeam",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Chant_SenseLife",false);
+			CMAble.addCharAbilityMapping(ID(),8,"Ranger_Enemy1",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Skill_Attack2",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_LocateAnimals",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_Farsight",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Ranger_Sneak",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Fighter_Cleave",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Chant_CalmAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_Dirt",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_MountedCombat",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_Hunger",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Fighter_BlindFighting",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_ControlFire",false);
+			CMAble.addCharAbilityMapping(ID(),13,"Ranger_Enemy2",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_AnimalFriendship",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_SummonPeace",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_ResistPoison",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Ranger_Lore",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Skill_Climb",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_WaterBreathing",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Skill_Trip",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_ResistFire",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_Bury",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Ranger_Enemy3",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Fighter_Sweep",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_ResistCold",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_CharmAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_ResistLightning",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);	
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_WaterWalking",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_ResistGas",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_Sunray",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_SummonAnimal",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_SummonInsects",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Ranger_Enemy4",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_AnimalSpy",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonMount",false);
+			CMAble.addCharAbilityMapping(ID(),25,"Chant_NeutralizePoison",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Ranger_AnimalFrenzy",false);
 		}
 	}
 
@@ -111,6 +134,21 @@ public class Ranger extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
+	private boolean isValidBeneficiary(MOB killer, 
+									   MOB killed, 
+									   MOB mob,
+									   Hashtable followers)
+	{
+		if((mob!=null)
+		&&(!mob.amDead())
+		&&((!mob.isMonster())||(mob.charStats().getStat(CharStats.INTELLIGENCE)>1))
+		&&((mob.getVictim()==killed)
+		 ||(followers.get(mob)!=null)
+		 ||(mob==killer)))
+			return true;
+		return false;
+	}
+	
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
