@@ -87,7 +87,7 @@ public class Pregnancy extends StdAbility
 		GR.setStat("MHEIGHT",""+((race1.shortestMale()+race2.shortestMale())/2));
 		GR.setStat("FHEIGHT",""+((race1.shortestFemale()+race2.shortestFemale())/2));
 		GR.setStat("VHEIGHT",""+((race1.heightVariance()+race2.heightVariance())/2));
-		GR.setStat("PLAYER",""+Race.AVAILABLE_NONE);
+		GR.setStat("PLAYER",""+CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME));
 		GR.setStat("LEAVE",nonHuman.leaveStr());
 		GR.setStat("ARRIVE",nonHuman.arriveStr());
 		GR.setStat("HEALTHRACE","Human");

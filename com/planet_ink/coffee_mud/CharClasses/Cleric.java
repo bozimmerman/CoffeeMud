@@ -233,10 +233,7 @@ public class Cleric extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public String statQualifications(){return "Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)

@@ -241,7 +241,7 @@ public class StdArea implements Area
 			if(!((Area)parents.elementAt(i)).okMessage(myHost,msg))
 				return false;
 		
-		if(getTechLevel()==Area.TECH_HIGH)
+		if((getTechLevel()>0)&&(!Util.bset(getTechLevel(),Area.THEME_FANTASY)))
 		{
 			if((Util.bset(msg.sourceCode(),CMMsg.MASK_MAGIC))
 			||(Util.bset(msg.targetCode(),CMMsg.MASK_MAGIC))
@@ -268,7 +268,7 @@ public class StdArea implements Area
 			}
 		}
 		else
-		if(getTechLevel()==Area.TECH_LOW)
+		if((getTechLevel()>0)&&(!Util.bset(getTechLevel(),Area.THEME_TECHNOLOGY)))
 		{
 			if((msg.tool()!=null)
 			&&(msg.tool() instanceof Electronics))

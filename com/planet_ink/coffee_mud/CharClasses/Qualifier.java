@@ -36,10 +36,7 @@ public class Qualifier extends StdCharClass
 			maxStatAdj[i]=7;
 	}
 
-	public boolean playerSelectable()
-	{
-		return false;
-	}
+	public int areaSelectablility(){return 0;}
 
 	public String statQualifications(){return "Must be granted by an Archon.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)

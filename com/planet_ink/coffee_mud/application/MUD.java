@@ -361,7 +361,7 @@ public class MUD extends Thread implements MudHost
 				{
 					String address="unknown";
 					try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
-					Log.sysOut("MUD","Got a connection from "+address);
+					Log.sysOut("MUD","Got a connection from "+address+" on port "+port);
 					// now see if they are banned!
 					Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 					int proceed=0;
@@ -418,7 +418,7 @@ public class MUD extends Thread implements MudHost
 					accessed.addElement(address,new Long(System.currentTimeMillis()));
 					if(proceed!=0)
 					{
-						Log.sysOut("MUD","Blocking a connection from "+address);
+						Log.sysOut("MUD","Blocking a connection from "+address+" on port "+port);
 						PrintWriter out = new PrintWriter(sock.getOutputStream());
 						out.println("\n\rOFFLINE: Blocked\n\r");
 						out.flush();
@@ -444,7 +444,7 @@ public class MUD extends Thread implements MudHost
 				{
 					String address="unknown";
 					try{address=sock.getInetAddress().getHostAddress();}catch(Exception e){}
-					Log.sysOut("MUD","Rejecting a connection from "+address);
+					Log.sysOut("MUD","Rejecting a connection from "+address+" on port "+port);
 					StringBuffer rejectText=Resources.getFileResource("text"+File.separatorChar+"offline.txt");
 					PrintWriter out = new PrintWriter(sock.getOutputStream());
 					out.println("\n\rOFFLINE: " + CommonStrings.getVar(CommonStrings.SYSTEM_MUDSTATUS)+"\n\r");

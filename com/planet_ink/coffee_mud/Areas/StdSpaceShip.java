@@ -118,7 +118,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 	public void setNextWeatherType(int weatherCode){}
 	public void setCurrentWeatherType(int weatherCode){}
-	public int getTechLevel(){return Area.TECH_HIGH;}
+	public int getTechLevel(){return Area.THEME_TECHNOLOGY;}
 	public void setTechLevel(int level){}
 
 	public String image(){return imageName;}

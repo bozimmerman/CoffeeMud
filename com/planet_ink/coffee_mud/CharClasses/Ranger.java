@@ -158,10 +158,7 @@ public class Ranger extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public String statQualifications(){return "Strength 9+, Intelligence 9+";}
 	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.";}

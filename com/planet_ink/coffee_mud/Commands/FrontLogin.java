@@ -26,9 +26,10 @@ public class FrontLogin extends StdCommand
 	public FrontLogin(){}
 	public Hashtable pendingLogins=new Hashtable();
 
-	private static boolean classOkForMe(MOB mob, CharClass thisClass)
+	private static boolean classOkForMe(MOB mob, CharClass thisClass, int theme)
 	{
-		if((thisClass.playerSelectable())
+		if((CommonStrings.isTheme(thisClass.availabilityCode()))
+		   &&(Util.bset(thisClass.availabilityCode(),theme))
 		   &&((CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
 			  ||(CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI"))
 			  ||(thisClass.baseClass().equals(thisClass.ID())
@@ -38,13 +39,13 @@ public class FrontLogin extends StdCommand
 		return false;
 	}
 
-	private static Vector classQualifies(MOB mob)
+	private static Vector classQualifies(MOB mob, int theme)
 	{
 		Vector them=new Vector();
 		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			CharClass C=(CharClass)c.nextElement();
-			if(classOkForMe(mob,C))
+			if(classOkForMe(mob,C,theme))
 				them.addElement(C);
 		}
 		return them;
@@ -340,6 +341,13 @@ public class FrontLogin extends StdCommand
 				mob.setPlayerStats(null);
 			}
 			else
+			if(CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME)==0)
+			{
+				mob.session().print("\n\r'"+Util.capitalize(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
+				mob.setName("");
+				mob.setPlayerStats(null);
+			}
+			else
 			if(mob.session().confirm("\n\r'"+Util.capitalize(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
 			{
 				login=Util.capitalize(login.trim());
@@ -376,10 +384,42 @@ public class FrontLogin extends StdCommand
 				mob.setBitmap(MOB.ATT_AUTOEXITS);
 				if(mob.session().confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_ANSI));
-
-				/*if(mob.session().confirm("\n\rDoes your client support MSP sound codes (y/N)?","N"))
-					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_SOUND));*/
-
+				
+				int themeCode=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MUDTHEME);
+				int theme=Area.THEME_FANTASY;
+				switch(themeCode)
+				{
+					case Area.THEME_FANTASY:
+					case Area.THEME_HEROIC:
+					case Area.THEME_TECHNOLOGY:
+					    theme=themeCode;
+						break;
+					default:
+					    theme=-1;
+				        String choices="";
+				        String selections="";
+						if(Util.bset(themeCode,Area.THEME_FANTASY)){ choices+="F"; selections+="/F";}
+						if(Util.bset(themeCode,Area.THEME_HEROIC)){ choices+="H"; selections+="/H";}
+						if(Util.bset(themeCode,Area.THEME_TECHNOLOGY)){ choices+="T"; selections+="/T";}
+						if(choices.length()==0)
+						{
+						    choices="F"; 
+						    selections="/F";
+						}
+					    while((theme<0)&&(!mob.session().killFlag()))
+					    {
+							mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"themes.txt").toString());
+							mob.session().print("\n\r^!Please select from the following:^N"+selections+"\n\r");
+							String themeStr=mob.session().choose("\n\r: ",choices,"");
+							if(themeStr.toUpperCase().startsWith("F"))
+							    theme=Area.THEME_FANTASY;
+							if(themeStr.toUpperCase().startsWith("H"))
+							    theme=Area.THEME_HEROIC;
+							if(themeStr.toUpperCase().startsWith("T"))
+							    theme=Area.THEME_TECHNOLOGY;
+					    }
+					    break;
+				}
 				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"races.txt").toString());
 
 				StringBuffer listOfRaces=new StringBuffer("[");
@@ -387,7 +427,9 @@ public class FrontLogin extends StdCommand
 				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
-					if(R.availability()==Race.AVAILABLE_ALL)
+					if((CommonStrings.isTheme(R.availabilityCode()))
+					&&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
+					&&(Util.bset(R.availabilityCode(),theme)))
 					{
 						if (!tmpFirst)
 							listOfRaces.append(", ");
@@ -409,14 +451,18 @@ public class FrontLogin extends StdCommand
 					else
 					{
 						newRace=CMClass.getRace(raceStr);
-						if((newRace!=null)&&(newRace.availability()!=Race.AVAILABLE_ALL))
+						if((newRace!=null)&&((!CommonStrings.isTheme(newRace.availabilityCode()))
+												||(!Util.bset(newRace.availabilityCode(),theme))
+						        				||(Util.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
 							newRace=null;
 						if(newRace==null)
 							for(Enumeration r=CMClass.races();r.hasMoreElements();)
 							{
 								Race R=(Race)r.nextElement();
 								if((R.name().equalsIgnoreCase(raceStr))
-								&&(R.availability()==Race.AVAILABLE_ALL))
+								&&(CommonStrings.isTheme(newRace.availabilityCode()))
+								&&(Util.bset(R.availabilityCode(),theme))
+								&&(!Util.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 								{
 									newRace=R;
 									break;
@@ -427,7 +473,9 @@ public class FrontLogin extends StdCommand
 							{
 								Race R=(Race)r.nextElement();
 								if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))
-								&&(R.availability()==Race.AVAILABLE_ALL))
+						        &&(CommonStrings.isTheme(R.availabilityCode()))
+								&&(Util.bset(R.availabilityCode(),theme))
+						        &&(!Util.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 								{
 									newRace=R;
 									break;
@@ -459,7 +507,7 @@ public class FrontLogin extends StdCommand
 				{
 					mob.baseCharStats().getMyRace().reRoll(mob,mob.baseCharStats());
 					mob.recoverCharStats();
-					Vector V=classQualifies(mob);
+					Vector V=classQualifies(mob,theme);
 					if(V.size()>1)
 					{
 						StringBuffer classes=new StringBuffer("");
@@ -495,7 +543,7 @@ public class FrontLogin extends StdCommand
 				mob.session().println(null,null,null,Resources.getFileResource("text"+File.separatorChar+"classes.txt").toString());
 
 				CharClass newClass=null;
-				Vector qualClasses=classQualifies(mob);
+				Vector qualClasses=classQualifies(mob,theme);
 				if(qualClasses.size()==0)
 				{
 					newClass=CMClass.getCharClass("Apprentice");
@@ -535,7 +583,7 @@ public class FrontLogin extends StdCommand
 								break;
 							}
 						}
-						if((newClass!=null)&&(classOkForMe(mob,newClass)))
+						if((newClass!=null)&&(classOkForMe(mob,newClass,theme)))
 						{
 							StringBuffer str=MUDHelp.getHelpText(newClass.ID().toUpperCase(),mob);
 							if(str!=null) mob.tell("\n\r^N"+str.toString()+"\n\r");

@@ -43,7 +43,7 @@ public class Undead extends StdRace
 	
 	protected static Vector resources=new Vector();
 
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharState(MOB affectedMOB, CharState affectableState)
 	{

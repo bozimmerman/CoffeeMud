@@ -43,7 +43,7 @@ public class Gaoler extends StdCharClass
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
-	public boolean playerSelectable(){	return true;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
 	public Gaoler()

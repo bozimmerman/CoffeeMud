@@ -157,11 +157,7 @@ public class Gaian extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
-
+	public int areaSelectablility(){return Area.THEME_FANTASY;}
 
 	protected boolean isValidBeneficiary(MOB killer,
 									   MOB killed,

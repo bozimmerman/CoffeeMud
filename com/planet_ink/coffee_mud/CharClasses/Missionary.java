@@ -123,10 +123,7 @@ public class Missionary extends Cleric
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	private static final int[] allSaves={
 		CharStats.SAVE_ACID,

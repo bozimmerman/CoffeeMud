@@ -186,10 +186,7 @@ public class Druid extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{

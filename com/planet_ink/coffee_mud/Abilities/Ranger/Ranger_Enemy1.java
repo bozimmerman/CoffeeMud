@@ -45,7 +45,7 @@ public class Ranger_Enemy1 extends StdAbility
 			{
 				Race R=(Race)r.nextElement();
 				if((!choices.contains(R.racialCategory()))
-				&&(R.availability()!=Race.AVAILABLE_NONE))
+				&&(Util.bset(R.availabilityCode(),Area.THEME_FANTASY)))
 					choices.addElement(R.racialCategory());
 			}
 			for(int a=0;a<mob.numLearnedAbilities();a++)

@@ -100,9 +100,7 @@ public class Spell_IceSheet extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Ice Sheet has already been cast here!");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"An Ice Sheet is already here!");
 			return false;
 		}
 

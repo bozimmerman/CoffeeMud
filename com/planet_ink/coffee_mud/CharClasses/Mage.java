@@ -314,10 +314,7 @@ public class Mage extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public String statQualifications(){return "Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)

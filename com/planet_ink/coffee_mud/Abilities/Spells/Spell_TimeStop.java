@@ -113,9 +113,7 @@ public class Spell_TimeStop extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Time has already been stopped here!");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"Time has already been stopped here!");
 			return false;
 		}
 

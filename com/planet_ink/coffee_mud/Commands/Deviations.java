@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -238,7 +239,8 @@ public class Deviations extends StdCommand
 												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
 				mobResults.append(Util.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
 				int properMoney = 0;
-				if(M.baseCharStats().getMyRace().availability()==Race.AVAILABLE_ALL)
+				int rcode=M.baseCharStats().getMyRace().availabilityCode();
+				if(((CommonStrings.isTheme(rcode))&&(!Util.bset(rcode,Area.THEME_SKILLONLYMASK))))
 					properMoney=M.envStats().level()*5;
 				else
 					properMoney=M.envStats().level();

@@ -125,6 +125,9 @@ public class Ranger_FindWater extends StdAbility
 					((MOB)affected).tell(str);
 			}
 			else
+			if((msg.target()!=null)
+			&&(waterHere((MOB)affected,msg.target(),null).length()>0)
+			&&(msg.source()!=msg.target()))
 			{
 				FullMsg msg2=new FullMsg(msg.source(),msg.target(),this,CMMsg.MSG_EXAMINESOMETHING,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
 				msg.addTrailerMsg(msg2);

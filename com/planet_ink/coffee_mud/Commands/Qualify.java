@@ -146,7 +146,7 @@ public class Qualify extends BaseAbleLister
 			{
 				CharClass C=(CharClass)c.nextElement();
 				StringBuffer thisLine=new StringBuffer("");
-				if(C.playerSelectable()
+				if(CommonStrings.isTheme(C.availabilityCode())
 				&&(mob.charStats().getCurrentClass()!=C)
 				&&(C.qualifiesForThisClass(mob,true)))
 				{

@@ -61,7 +61,7 @@ public class StdRace implements Race
 	protected boolean uncharmable(){return false;}
 	protected boolean destroyBodyAfterUse(){return false;}
 	
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public boolean fertile(){return true;}
 

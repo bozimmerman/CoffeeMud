@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>CoffeeMud Channel Backlogs</title>
+</head>
+
+<body>
+<CENTER>
+	<h2>CoffeeMud Channel Backlogs</H2>
+	<br>
+	<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
+	<br>
+</CENTER>
+	@if?!Authenticate@ 
+		<FORM NAME=LOGIN METHOD=POST ACTION=/channels.cmvp TARGET=_top>
+		<CENTER>
+		<TABLE WIDTH=200 BORDER=1>
+		<TR><TD WIDTH=200 COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK><B>Player Login</B></FONT></TD></TR>
+		<TR><TD WIDTH=50><FONT COLOR=WHITE>Login:</FONT></TD><TD WIDTH=150><INPUT TYPE=TEXT SIZE=10 NAME=LOGIN></TD></TR>
+		<TR><TD WIDTH=50><FONT COLOR=WHITE>Password:</FONT></TD><TD WIDTH=150><INPUT TYPE=PASSWORD SIZE=15 NAME=PASSWORD></TD></TR>
+		<TR><TD COLSPAN=2 WIDTH=200 ALIGN=CENTER><INPUT TYPE=SUBMIT NAME=LOGIN VALUE=Login></TD></TR>
+		</TABLE>
+		</CENTER>
+		</FORM>
+	@else@
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=25% COLSPAN=4 BGCOLOR=LTGREEN ALIGN=CENTER><H3>Available Channels</H32></TD></TR>
+		@AddRequestParameter?CHANNELBACK=@@RequestParameter?CHANNEL@@ @
+			@ChannelNext?RESET@
+			@loop@
+			@ChannelNext@
+			<TR>
+			<TD WIDTH=25%> @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			<TD WIDTH=25%> @ChannelNext?EMPTYOK@ @if?!CheckReqParm?CHANNEL=@<a href="channels.cmvp?@RequestParametersEncoded@">@RequestParameter?CHANNEL@</a>@endif@<BR></TD>
+			</TR>
+			@back@
+	</TABLE>
+		<P>
+		</CENTER>
+		@AddRequestParameter?CHANNEL=@@RequestParameter?CHANNELBACK@@ @
+		<P>
+		@if?!CheckReqParm?CHANNEL=@
+		<B>Back logs for @RequestParameter?CHANNEL@</B><BR>
+			@ChannelBackLogNext?RESET@
+			@loop@
+			@ChannelBackLogNext@<P>
+			@back@
+		@endif@
+	@endif@
+</body>
+</html>

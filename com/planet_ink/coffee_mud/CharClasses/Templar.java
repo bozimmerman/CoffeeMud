@@ -131,10 +131,7 @@ public class Templar extends Cleric
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

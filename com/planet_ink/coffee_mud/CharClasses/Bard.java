@@ -145,10 +145,7 @@ public class Bard extends StdCharClass
 		super.gainExperience(mob,victim,homage,(int)Math.round(theAmount),quiet);
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{

@@ -27,7 +27,7 @@ public class GenRace extends StdRace
 	public String name(){ return name; }
 	public int practicesAtFirstLevel(){return 0;}
 	public int trainsAtFirstLevel(){return 0;}
-	public int availability=Race.AVAILABLE_NONE;
+	public int availability=0;
 	public int availability(){return availability;}
 	public int[] agingChart=null;
 	public int[] getAgingChart()
@@ -177,7 +177,7 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("BWEIGHT",""+lightestWeight()));
 		str.append(XMLManager.convertXMLtoTag("VWEIGHT",""+weightVariance()));
 		str.append(XMLManager.convertXMLtoTag("WEAR",""+forbiddenWornBits()));
-		str.append(XMLManager.convertXMLtoTag("PLAYER",""+availability));
+		str.append(XMLManager.convertXMLtoTag("AVAIL",""+availability));
 		str.append(XMLManager.convertXMLtoTag("DESTROYBODY",""+destroyBodyAfterUse()));
 		StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
@@ -331,13 +331,19 @@ public class GenRace extends StdRace
 		shortestFemale=XMLManager.getIntFromPieces(raceData,"FHEIGHT");
 		shortestMale=XMLManager.getIntFromPieces(raceData,"MHEIGHT");
 		String playerval=XMLManager.getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
-		if(playerval.startsWith("T")) 
-			availability=Race.AVAILABLE_ALL;
-		else
-		if(playerval.startsWith("F")) 
-			availability=Race.AVAILABLE_NONE;
-		else
-			availability=Util.s_int(playerval);
+		if(playerval.length()>0)
+		{
+			if(playerval.startsWith("T")) 
+				availability=Area.THEME_FANTASY;
+			else
+			if(playerval.startsWith("F")) 
+				availability=0;
+			else
+				availability=Util.s_int(playerval);
+		}
+		String avail=XMLManager.getValFromPieces(raceData,"AVAIL").trim().toUpperCase();
+		if((avail!=null)&&(avail.length()>0)&&(Util.isNumber(avail)))
+		    availability=Util.s_int(avail);
 		destroyBodyAfterUse=XMLManager.getBoolFromPieces(raceData,"DESTROYBODY");
 		leaveStr=XMLManager.getValFromPieces(raceData,"LEAVE");
 		arriveStr=XMLManager.getValFromPieces(raceData,"ARRIVE");

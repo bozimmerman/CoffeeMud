@@ -164,7 +164,7 @@ public class CharGen extends StdCommand
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
 				CharClass C=(CharClass)c.nextElement();
-				if(C.playerSelectable())
+				if(C.availabilityCode()!=0)
 				{
 					numClasses++;
 					MOB mob2=AverageClassMOB(mob,level,C,numTriesMOB);

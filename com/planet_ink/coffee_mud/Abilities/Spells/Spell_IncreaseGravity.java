@@ -147,9 +147,7 @@ public class Spell_IncreaseGravity extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Gravity has already been increased here!");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"Gravity has already been increased here!");
 			return false;
 		}
 

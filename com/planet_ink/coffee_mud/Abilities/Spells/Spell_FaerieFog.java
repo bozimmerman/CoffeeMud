@@ -66,9 +66,7 @@ public class Spell_FaerieFog extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> fizzles a spell.");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"A faerie fog is already here.");
 			return false;
 		}
 

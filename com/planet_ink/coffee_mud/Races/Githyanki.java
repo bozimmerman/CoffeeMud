@@ -25,7 +25,7 @@ public class Githyanki extends Humanoid
 	public String ID(){	return "Githyanki"; }
 	public String name(){ return "Githyanki"; }
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Gith";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.Races;
-
+import com.planet_ink.coffee_mud.interfaces.*;
 /* 
    Copyright 2000-2004 Bo Zimmerman
 
@@ -19,5 +19,5 @@ public class Hobbit extends Halfling
 {
 	public String ID(){	return "Hobbit"; }
 	public String name(){ return "Hobbit"; }
-	public int availability(){return AVAILABLE_MAGICONLY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 }

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -100,7 +101,7 @@ public class Spell_Polymorph extends Spell
 				if(msg.value()<=0)
 				{
 					newRace=null;
-					while((newRace==null)||(newRace.ID().equals("StdRace"))||(newRace.availability()==Race.AVAILABLE_NONE))
+					while((newRace==null)||(newRace.ID().equals("StdRace"))||(!Util.bset(newRace.availabilityCode(),Area.THEME_FANTASY)))
 						newRace=CMClass.randomRace();
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					success=beneficialAffect(mob,target,asLevel,0);

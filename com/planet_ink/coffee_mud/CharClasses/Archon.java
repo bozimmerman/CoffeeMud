@@ -61,10 +61,7 @@ public class Archon extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return false;
-	}
+	public int availabilityCode(){return 0;}
 
 	public String statQualifications(){return "Must be granted by another Archon.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)

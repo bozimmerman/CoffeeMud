@@ -21,7 +21,7 @@ public class Assassin extends Thief
 {
 	public String ID(){return "Assassin";}
 	public String name(){return "Assassin";}
-	public boolean playerSelectable(){	return true;}
+	public int areaSelectablility(){return Area.THEME_FANTASY;}
 	private static boolean abilitiesLoaded2=false;
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};

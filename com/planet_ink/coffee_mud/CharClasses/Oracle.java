@@ -123,10 +123,7 @@ public class Oracle extends Cleric
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public boolean tick(Tickable myChar, int tickID)
 	{

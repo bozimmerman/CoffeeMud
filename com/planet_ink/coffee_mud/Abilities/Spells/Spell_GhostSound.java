@@ -98,9 +98,7 @@ public class Spell_GhostSound extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> scream(s) loudly, then fall(s) silent.^?");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"There are already ghost sounds here.");
 			return false;
 		}
 

@@ -55,9 +55,7 @@ public class Chant_SummonTornado extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"A tornado is already here!");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"A tornado is already here!");
 			return false;
 		}
 

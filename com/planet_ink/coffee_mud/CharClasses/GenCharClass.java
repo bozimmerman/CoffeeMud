@@ -42,7 +42,7 @@ public class GenCharClass extends StdCharClass
 	protected String otherLimitations="";
 	protected String otherBonuses="";
 	protected String qualifications="";
-	protected boolean playerSelectable=false;
+	protected int selectability=0;
 	protected HashSet disallowedWeaponSet=null; // set of Integers for weapon classes
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
 	protected CharStats setStats=null;
@@ -65,7 +65,7 @@ public class GenCharClass extends StdCharClass
 	public int allowedArmorLevel(){return allowedArmorLevel;}
 	public String otherLimitations(){return otherLimitations;}
 	public String otherBonuses(){return otherBonuses;}
-	public boolean playerSelectable(){	return playerSelectable;}
+	public int availabilityCode(){return selectability;}
 	
 	public String weaponLimitations()
 	{
@@ -177,7 +177,7 @@ public class GenCharClass extends StdCharClass
 		str.append(XMLManager.convertXMLtoTag("STRLMT",otherLimitations));
 		str.append(XMLManager.convertXMLtoTag("STRBON",otherBonuses));
 		str.append(XMLManager.convertXMLtoTag("QUAL",qualifications));
-		str.append(XMLManager.convertXMLtoTag("PLAYER",""+playerSelectable));
+		str.append(XMLManager.convertXMLtoTag("PLAYER",""+selectability));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
 			str.append(XMLManager.convertXMLtoTag("ESTATS",CoffeeMaker.getEnvStatsStr(adjEStats)));
@@ -280,7 +280,11 @@ public class GenCharClass extends StdCharClass
 		otherLimitations=XMLManager.getValFromPieces(classData,"STRLMT");
 		otherBonuses=XMLManager.getValFromPieces(classData,"STRBON");
 		qualifications=XMLManager.getValFromPieces(classData,"QUAL");
-		playerSelectable=XMLManager.getBoolFromPieces(classData,"PLAYER");
+		String s=XMLManager.getValFromPieces(classData,"PLAYER");
+		if(Util.isNumber(s))
+		    selectability=Util.s_int(s);
+		else
+			selectability=Util.s_bool(s)?Area.THEME_FANTASY:0;
 		adjEStats=null;
 		String eStats=XMLManager.getValFromPieces(classData,"ESTATS");
 		if(eStats.length()>0){ adjEStats=new DefaultEnvStats(); CoffeeMaker.setEnvStats(adjEStats,eStats);}
@@ -403,7 +407,7 @@ public class GenCharClass extends StdCharClass
 		case 16: return otherLimitations;
 		case 17: return otherBonuses;
 		case 18: return qualifications;
-		case 19: return ""+playerSelectable;
+		case 19: return ""+selectability;
 		case 20: return (adjEStats==null)?"":CoffeeMaker.getEnvStatsStr(adjEStats);
 		case 21: return (adjStats==null)?"":CoffeeMaker.getCharStatsStr(adjStats);
 		case 22: return (setStats==null)?"":CoffeeMaker.getCharStatsStr(setStats);
@@ -456,7 +460,7 @@ public class GenCharClass extends StdCharClass
 		case 16: otherLimitations=val;break;
 		case 17: otherBonuses=val;break;
 		case 18: qualifications=val;break;
-		case 19: playerSelectable=Util.s_bool(val); break;
+		case 19: selectability=Util.s_int(val); break;
 		case 20: adjEStats=null;if(val.length()>0){adjEStats=new DefaultEnvStats(0); CoffeeMaker.setEnvStats(adjEStats,val);}break;
 		case 21: adjStats=null;if(val.length()>0){adjStats=new DefaultCharStats(0); CoffeeMaker.setCharStats(adjStats,val);}break;
 		case 22: setStats=null;if(val.length()>0){setStats=new DefaultCharStats(0); CoffeeMaker.setCharStats(setStats,val);}break;

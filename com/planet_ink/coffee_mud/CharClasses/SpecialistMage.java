@@ -62,7 +62,7 @@ public class SpecialistMage extends Mage
 		}
 	}
 
-	public boolean playerSelectable(){	return false;}
+	public int availabilityCode(){return 0;}
 	public String otherBonuses()
 	{
 		String chosen=Util.capitalize(Ability.DOMAIN_DESCS[domain()>>5]);

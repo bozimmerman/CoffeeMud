@@ -132,10 +132,7 @@ public class Monk extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int areaSelectablility(){return Area.THEME_FANTASY;}
 
 	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)

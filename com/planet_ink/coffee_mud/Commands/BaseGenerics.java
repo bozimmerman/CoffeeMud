@@ -1774,26 +1774,29 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Technology Level: '"+Area.TECH_DESCS[A.getTechLevel()]+"'.");
+		mob.tell(showNumber+". Theme setting: '"+Area.THEME_DESCS[A.getTechLevel()]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		while(!q)
 		{
-			String newType=mob.session().prompt("Enter a new level (?)\n\r:",Area.TECH_DESCS[A.getTechLevel()]);
+			String newType=mob.session().prompt("Enter a new level (?)\n\r:",Area.THEME_DESCS[A.getTechLevel()]);
 			if(newType.equals("?"))
 			{
 				StringBuffer say=new StringBuffer("");
-				for(int i=0;i<Area.TECH_DESCS.length;i++)
-					say.append(Area.TECH_DESCS[i]+", ");
-				mob.tell(say.toString().substring(0,say.length()-2));
+				for(int i=1;i<Area.THEME_DESCS.length;i++)
+					say.append(i+") "+Area.THEME_DESCS[i]+"\n\r");
+				mob.tell(say.toString());
 				q=false;
 			}
 			else
 			{
 				q=true;
 				int newValue=-1;
-				for(int i=0;i<Area.TECH_DESCS.length;i++)
-					if(newType.equalsIgnoreCase(Area.TECH_DESCS[i]))
+				if(Util.s_int(newType)>0)
+				    newValue=Util.s_int(newType);
+				else
+				for(int i=0;i<Area.THEME_DESCS.length;i++)
+					if(Area.THEME_DESCS[i].toUpperCase().startsWith(newType.toUpperCase()))
 						newValue=i;
 				if(newValue>=0)
 					A.setTechLevel(newValue);
@@ -3320,22 +3323,28 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Availability: '"+Race.AVAILABLE_DESC[Util.s_int(E.getStat("PLAYER"))]+"'.");
+		mob.tell(showNumber+". Availability: '"+Area.THEME_DESCS_EXT[Util.s_int(E.getStat("PLAYER"))]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
-		String newName=mob.session().prompt("Enter a new value (ALL/NONE/MAGIC)\n\r:","");
-		if(newName.length()==0)
-			mob.tell("(no change)");
-		else
-		if(newName.equalsIgnoreCase("ALL"))
-			E.setStat("PLAYER",""+Race.AVAILABLE_ALL);
-		else
-		if(newName.equalsIgnoreCase("NONE"))
-			E.setStat("PLAYER",""+Race.AVAILABLE_NONE);
-		else
-		if(newName.equalsIgnoreCase("MAGIC"))
-			E.setStat("PLAYER",""+Race.AVAILABLE_MAGICONLY);
-		else
-			mob.tell("(no change)");
+		String newName="?";
+		while(newName.equals("?"))
+		{
+			newName=mob.session().prompt("Enter a new value (?)\n\r:","");
+			if(newName.length()==0)
+				mob.tell("(no change)");
+			else
+			if((Util.isNumber(newName))&&(Util.s_int(newName)<Area.THEME_DESCS_EXT.length))
+				E.setStat("AVAIL",""+Util.s_int(newName));
+			else
+			if(newName.equalsIgnoreCase("?"))
+			{
+			    StringBuffer str=new StringBuffer("Valid values: \n\r");
+			    for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
+			        str.append(i+") "+Area.THEME_DESCS_EXT[i]+"\n\r");
+			    mob.tell(str.toString());
+			}
+			else
+				mob.tell("(no change)");
+		}
 	}
 	static void genCat(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException

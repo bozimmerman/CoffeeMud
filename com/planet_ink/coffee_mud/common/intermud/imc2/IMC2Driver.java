@@ -593,8 +593,11 @@ public final class IMC2Driver extends Thread {
             imc_addkey(out, key, val);
         }
 
+        } catch (StringIndexOutOfBoundsException x) {
+            Log.errOut("IMC2Driver", "Stringerror: "+keys);
+            Log.errOut("IMC2Driver", x);
         } catch (Exception e) {
-                Log.errOut("IMC2Driver", "interpret2: exception: "+e.toString());
+            Log.errOut("IMC2Driver", e);
         }
 
         out.i.sequence = new Long(seq).longValue();

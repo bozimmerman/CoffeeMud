@@ -155,10 +155,7 @@ public class Beastmaster extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
 	public String statQualifications(){return "Constitution 9+, Dexterity 9+";}

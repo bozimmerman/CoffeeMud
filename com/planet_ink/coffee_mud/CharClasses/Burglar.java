@@ -22,7 +22,7 @@ public class Burglar extends Thief
 {
 	public String ID(){return "Burglar";}
 	public String name(){return "Burglar";}
-	public boolean playerSelectable(){	return true;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 	private static boolean abilitiesLoaded2=false;
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};

@@ -23,7 +23,7 @@ public class Evoker extends SpecialistMage
 	public String name(){return "Evoker";}
 	public int domain(){return Ability.DOMAIN_EVOCATION;}
 	public int opposed(){return Ability.DOMAIN_ALTERATION;}
-	public boolean playerSelectable(){	return true;}
+	public int areaSelectablility(){return Area.THEME_FANTASY;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

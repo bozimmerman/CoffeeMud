@@ -41,7 +41,7 @@ public class WereBat extends Bat
 	public int[] getAgingChart(){return agingChart;}
 	
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

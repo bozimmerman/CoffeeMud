@@ -36,7 +36,7 @@ public class EarthElemental extends StdRace
 	protected boolean destroyBodyAfterUse(){return true;}
 
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

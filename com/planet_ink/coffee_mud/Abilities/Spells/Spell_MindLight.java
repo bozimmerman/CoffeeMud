@@ -83,9 +83,7 @@ public class Spell_MindLight extends Spell
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Mind Light has already been cast here!");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"The Mind Light is already here!");
 			return false;
 		}
 

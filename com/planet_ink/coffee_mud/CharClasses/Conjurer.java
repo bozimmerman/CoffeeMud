@@ -23,7 +23,7 @@ public class Conjurer extends SpecialistMage
 	public String name(){return "Conjurer";}
 	public int domain(){return Ability.DOMAIN_CONJURATION;}
 	public int opposed(){return Ability.DOMAIN_TRANSMUTATION;}
-	public boolean playerSelectable(){	return true;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

@@ -160,10 +160,7 @@ public class SkyWatcher extends StdCharClass
 		}
 	}
 
-	public boolean playerSelectable()
-	{
-		return true;
-	}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

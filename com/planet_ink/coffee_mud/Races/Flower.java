@@ -37,7 +37,7 @@ public class Flower extends Vine
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public int availability(){return Race.AVAILABLE_MAGICONLY;}
+	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

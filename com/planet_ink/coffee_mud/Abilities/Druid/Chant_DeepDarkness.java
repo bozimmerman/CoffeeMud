@@ -87,9 +87,7 @@ public class Chant_DeepDarkness extends Chant
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"Deep Darkness has already been placed here!");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+		    mob.tell(mob,null,null,"Deep Darkness is already been here!");
 			return false;
 		}
 

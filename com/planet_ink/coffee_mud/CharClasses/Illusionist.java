@@ -23,7 +23,7 @@ public class Illusionist extends SpecialistMage
 	public String name(){return "Illusionist";}
 	public int domain(){return Ability.DOMAIN_ILLUSION;}
 	public int opposed(){return Ability.DOMAIN_DIVINATION;}
-	public boolean playerSelectable(){	return true;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};

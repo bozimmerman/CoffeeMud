@@ -23,7 +23,7 @@ public class Arcanist extends Thief
 {
 	public String ID(){return "Arcanist";}
 	public String name(){return "Arcanist";}
-	public boolean playerSelectable(){	return true;}
+	public int availabilityCode(){return Area.THEME_FANTASY;}
 	private static boolean abilitiesLoaded2=false;
 	public boolean loaded(){return abilitiesLoaded2;}
 	public void setLoaded(boolean truefalse){abilitiesLoaded2=truefalse;};
