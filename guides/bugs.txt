@@ -1,1 +1,2 @@
-if I do a SCORE I show I have been on for 25 hours. If I LIST USERS I show as being online for 1,463 hours
+Why the snake had a "null V" (empty XML) is the big Q.
+

@@ -61,7 +61,10 @@ public class SaveThread extends Thread
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
-					Log.errOut("SaveThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
+					boolean isDead=mob.amDead();
+					String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
+					Log.errOut("SaveThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+					if(!ticked)	mob.destroy();
 				}
 			}
 		}

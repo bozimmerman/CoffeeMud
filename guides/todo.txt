@@ -25,6 +25,8 @@ Archons Guide updates
 	How to use Grids/Mazes (goto and so forth)
 	How to create Homes
 	How to create Inns
+	How to create Deities (and sample ones)
+	
 	
 
 //****** next version ********************************************************
