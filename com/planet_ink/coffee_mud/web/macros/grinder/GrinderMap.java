@@ -188,7 +188,7 @@ public class GrinderMap
             }
         }
         if(areaMap.size()>processed.size())
-            Log.errOut("GrinderMap",areaMap.size()-processed.size()+" room(s) could not be placed.  I recommend restarting your server.");
+            Log.errOut("GrinderMap",areaMap.size()-processed.size()+" room(s) were not placed.");
     }
 	
 	public StringBuffer getHTMLTable(ExternalHTTPRequests httpReq)
