@@ -150,7 +150,7 @@ public class MoneyUtils
 		changeBag.setBaseValue(0);
 		changeBag.setLidsNLocks(false,true,false,false);
 		changeBag.setName("a change bag");
-		changeBag.setDisplayText("a small crumbled bag lies here.");
+		changeBag.setDisplayText("a small crumpled bag lies here.");
 		changeBag.setMaterial(EnvResource.RESOURCE_COTTON);
 		changeBag.setContainTypes(Container.CONTAIN_COINS);
 		changeBag.setDescription("");

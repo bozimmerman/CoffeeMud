@@ -1,0 +1,143 @@
+package com.planet_ink.coffee_mud.Abilities.Druid;
+
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Chant_Labyrinth extends Chant
+{
+	public String ID() { return "Chant_Labyrinth"; }
+	public String name(){ return "Labyrinth";}
+	public String displayText(){return "(Labyrinth)";}
+	public int quality(){return Ability.INDIFFERENT;}
+	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return CAN_ROOMS;}
+	public Environmental newInstance(){	return new Chant_Labyrinth();}
+	Room oldRoom=null;
+
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if(affected==null)
+			return;
+		if(!(affected instanceof Room))
+			return;
+		Room room=(Room)affected;
+		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
+		{
+			Vector V=((GridLocale)room).getAllRooms();
+			for(int v=0;v<V.size();v++)
+			{
+				Room R=(Room)V.elementAt(v);
+				while(R.numInhabitants()>0)
+				{
+					MOB M=R.fetchInhabitant(0);
+					if(M!=null)	oldRoom.bringMobHere(M,false);
+				}
+				while(R.numItems()>0)
+				{
+					Item I=R.fetchItem(0);
+					if(I!=null) oldRoom.bringItemHere(I,-1);
+				}
+			}
+			room.clearSky();
+			((GridLocale)room).clearGrid();
+			CMMap.delRoom(room);
+		}
+		super.unInvoke();
+	}
+
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+		{
+			mob.tell("You must be in a cave to create a labyrinth.");
+			return false;
+		}
+		if(mob.location().roomID().length()==0)
+		{
+			mob.tell("You cannot invoke the plant maze here.");
+			return false;
+		}
+
+		// the invoke method for spells receives as
+		// parameters the invoker, and the REMAINING
+		// command line parameters, divided into words,
+		// and added as String objects to a vector.
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
+		boolean success=profficiencyCheck(mob,0,auto);
+
+		if(success)
+		{
+			// it worked, so build a copy of this ability,
+			// and add it to the affects list of the
+			// affected MOB.  Then tell everyone else
+			// what happened.
+
+			FullMsg msg = new FullMsg(mob, null, this, affectType(auto), auto?"":"^S<S-NAME> chant(s) twistedly!^?");
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Something is happening...");
+
+				Room newRoom=CMClass.getLocale("CaveMaze");
+				((GridLocale)newRoom).setXSize(10);
+				((GridLocale)newRoom).setYSize(10);
+				newRoom.setDisplayText("The Labyrinth");
+				newRoom.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
+				StringBuffer desc=new StringBuffer("");
+				desc.append("You are lost in dark twisting caverns.  The darkness covers you like a blanket. Every turn looks the same.");
+				newRoom.setArea(mob.location().getArea());
+				oldRoom=mob.location();
+				newRoom.setDescription(desc.toString());
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				{
+					Room R=mob.location().rawDoors()[d];
+					Exit E=mob.location().rawExits()[d];
+					if((R!=null)&&(R.roomID().length()>0))
+					{
+						newRoom.rawDoors()[d]=R;
+						newRoom.rawExits()[d]=E;
+					}
+				}
+				newRoom.getArea().fillInAreaRoom(newRoom);
+				beneficialAffect(mob,newRoom,0);
+				Vector V=((GridLocale)newRoom).getAllRooms();
+				Vector everyone=new Vector();
+				for(int m=0;m<oldRoom.numInhabitants();m++)
+				{
+					MOB follower=(MOB)oldRoom.fetchInhabitant(m);
+					everyone.addElement(follower);
+				}
+
+				if(V.size()>0)
+				for(int m=0;m<everyone.size();m++)
+				{
+					MOB follower=(MOB)everyone.elementAt(m);
+					if(follower==null) continue;
+					Room newerRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
+					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> appears out of thin air.");
+					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into the labyrinth.");
+					if(oldRoom.okMessage(follower,leaveMsg)&&newerRoom.okMessage(follower,enterMsg))
+					{
+						if(follower.isInCombat())
+							follower.makePeace();
+						oldRoom.send(follower,leaveMsg);
+						newerRoom.bringMobHere(follower,false);
+						newerRoom.send(follower,enterMsg);
+						follower.tell("\n\r\n\r");
+						CommonMsgs.look(follower,true);
+					}
+				}
+			}
+		}
+		else
+			return beneficialWordsFizzle(mob,null,"<S-NAME> chant(s) twistedly, but the magic fades.");
+
+		// return whether it worked
+		return success;
+	}
+}

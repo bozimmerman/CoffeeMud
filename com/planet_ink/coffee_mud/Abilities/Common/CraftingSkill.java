@@ -215,7 +215,7 @@ public class CraftingSkill extends CommonSkill
 		if(firstWood!=null)
 		{
 			data[0][FOUND_AMT]=findNumberOfResource(mob.location(),firstWood.material());
-			data[0][FOUND_CODE]=findNumberOfResource(mob.location(),firstWood.material());
+			data[0][FOUND_CODE]=firstWood.material();
 		}
 		
 		if(req2!=null)
@@ -246,8 +246,6 @@ public class CraftingSkill extends CommonSkill
 					commonTell(mob,"There is no "+req1Desc.toLowerCase()+" here to make anything from!  It might need to put it down first.");
 				return null;
 			}
-			else
-				data[0][FOUND_AMT]=1;
 			if(!bundle) req1Required=fixResourceRequirement(data[0][FOUND_CODE],req1Required);
 		}
 		if(req2Required>0)

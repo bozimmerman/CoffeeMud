@@ -78,16 +78,14 @@ CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
 CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
 //Drifting 	This is a levitate that allows the delver to move along the ceiling of a cave (reverse gravity). Outside, it should make the delver fall up. While drifting, the delver can only move at crawl speeds. This is similar to beholders and grells movement abilities. 
-CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
-//Distant fungal growth
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
 
 CMAble.addCharAbilityMapping(ID(),14,"Chant_StoneWalking",false);
 //Stonewalking 	While in a cave, stone, or mountain -type room, the Delver is intangible and undetectable until he attacks or gets an item. 
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_FungalBloom",false);
-CMAble.addCharAbilityMapping(ID(),15,"Chant_SacredEarth",false);
-//Sacred Earth 	Prevents this room (and all adjacent) from yielding resources. Causes any who attempt such an act to gain a RUST CURSE. 
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_SacredEarth",false);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_BrownMold",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_SenseOres",false);
@@ -96,8 +94,7 @@ CMAble.addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
 //Magnetic Earth  Causes the ground to exude a Magnetic field strong enough to pull metal items to the ground  Held Metal items are automatically dropped  MOBs wearing Metal items on torso body are pinned to the ground.  (intelligent mobs will remove metal)
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_Earthquake",false);
 
-CMAble.addCharAbilityMapping(ID(),18,"Chant_Labrynth",false);
-//Labrynth 	like plantmaze, but underground 
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_Labrynth",false);
 CMAble.addCharAbilityMapping(ID(),18,"Chant_FungusFeet",false);
 //Fungus Feet 	Makes target's feet break out in a very painful fungal growth. This brings the target to his knees (fights from a sitting position.) This disease lasts a considerable amount of time. Causes feet to fall off if not cured in 100/LVL mudhours. Duration should be fairly high, like 1 mudhour per level. 
 
@@ -107,8 +104,7 @@ CMAble.addCharAbilityMapping(ID(),19,"Chant_RustCurse",false);
 CMAble.addCharAbilityMapping(ID(),19,"Chant_TremorSense",false);
 //Tremor sense 	This chant enables the druid to sense any ground movement within 3 squares of his position. 
 
-CMAble.addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
-//Stone friend 	A charm spell that works against STONE/METAL golems, and against EARTH elementals. 
+			CMAble.addCharAbilityMapping(ID(),20,"Chant_StoneFriend",false);
 			CMAble.addCharAbilityMapping(ID(),20,"Scrapping",false);
 
 CMAble.addCharAbilityMapping(ID(),21,"Chant_Worms",false);
@@ -120,8 +116,7 @@ CMAble.addCharAbilityMapping(ID(),22,"Chant_Unbreakable",false);
 CMAble.addCharAbilityMapping(ID(),22,"Chant_NaturesCurse",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_FindOres",false);
-CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
-//Mass Fungal Growth 	. Creates a fungus in a number of rooms equal to the druid's level in the area specified (or maybe just in this area), if there are that many valid rooms. 
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_MassFungalGrowth",false);
 			
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_FindGems",false);
 CMAble.addCharAbilityMapping(ID(),24,"Chant_VolcanicChasm",false);

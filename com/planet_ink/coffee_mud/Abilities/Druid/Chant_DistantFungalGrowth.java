@@ -5,21 +5,21 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chant_DistantIngrowth extends Chant
+public class Chant_DistantFungalGrowth extends Chant
 {
-	public String ID() { return "Chant_DistantIngrowth"; }
-	public String name(){ return "Distant Ingrowth";}
+	public String ID() { return "Chant_DistantFungalGrowth"; }
+	public String name(){ return "Distant Fungal Growth";}
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
-	public Environmental newInstance(){	return new Chant_DistantIngrowth();}
+	public Environmental newInstance(){	return new Chant_DistantFungalGrowth();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 
 		if(commands.size()<1)
 		{
-			mob.tell("Create growth where?");
+			mob.tell("Grow plants where?");
 			return false;
 		}
 
@@ -33,8 +33,7 @@ public class Chant_DistantIngrowth extends Chant
 			&&(Sense.canAccess(mob,R)))
 			{
 				anyRoom=R;
-				if((newRoom.domainType()==Room.DOMAIN_INDOORS_STONE)
-				||(newRoom.domainType()==Room.DOMAIN_INDOORS_WOOD))
+				if(R.domainType()==Room.DOMAIN_INDOORS_CAVE)
 				{
 				    newRoom=R;
 				    break;
@@ -47,10 +46,14 @@ public class Chant_DistantIngrowth extends Chant
 			if(anyRoom==null)
 				mob.tell("You don't know of an place called '"+Util.combine(commands,0)+"'.");
 			else
-			if(anyRoom.domainType()==Room.DOMAIN_INDOORS_CAVE)
-				mob.tell("There IS such a place, but its in a cave where fungus rule, so your magic would fail.");
+			if((anyRoom.domainType()&Room.INDOORS)==0)
+				mob.tell("There IS such a place, but it is outdoors, where your fungus will not grow.");
 			else
-				mob.tell("There IS such a place, but its not in a building, so your magic would fail.");
+			if((anyRoom.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
+			||(anyRoom.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))
+				mob.tell("There IS such a place, but it is on or in the water, so your magic would fail.");
+			else
+				mob.tell("There IS such a place, but it is not in a cave, so your magic would fail.");
 			return false;
 		}
 
@@ -65,16 +68,7 @@ public class Chant_DistantIngrowth extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Item newItem=null;
-				if((newRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-				||(newRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
-					newItem=Chant_SummonSeaweed.buildSeaweed(mob,newRoom);
-				else
-				if((newRoom.domainType()==Room.DOMAIN_INDOORS_STONE)
-				||(newRoom.domainType()==Room.DOMAIN_INDOORS_WOOD))
-					newItem=Chant_SummonHouseplant.buildHouseplant(mob,newRoom);
-				else
-					newItem=Chant_SummonPlants.buildPlant(mob,newRoom);
+				Item newItem=Chant_SummonFungus.buildFungus(mob,newRoom);
 				mob.tell("You feel a new connection with "+newItem.name());
 			}
 		}
