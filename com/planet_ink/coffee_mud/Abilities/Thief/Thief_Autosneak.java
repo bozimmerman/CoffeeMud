@@ -39,6 +39,14 @@ public class Thief_Autosneak extends ThiefSkill
 		if(!super.okMessage(myHost,msg))
 			return false;
 		
+		System.out.println((affected instanceof MOB)
+		+"/"+(!noRepeat)
+		+"/"+(msg.targetMinor()==CMMsg.TYP_LEAVE)
+		+"/"+(msg.source()==affected)
+		+"/"+(msg.target() instanceof Room)
+		+"/"+(msg.tool() instanceof Exit)
+		+"/"+(((MOB)affected).location()!=null));
+		
 		if((affected instanceof MOB)
 		&&(!noRepeat)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE)
@@ -53,6 +61,7 @@ public class Thief_Autosneak extends ThiefSkill
 				if((mob.location().getRoomInDir(d)==msg.target())
 				&&((mob.location().getReverseExit(d)==msg.tool())||(mob.location().getExitInDir(d)==msg.tool())))
 				{ dir=d; break;}
+System.out.println(""+dir);			
 			if(dir>=0)
 			{
 				Ability A=mob.fetchAbility("Thief_Sneak");

@@ -1,7 +1,5 @@
 Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, ?Autosneak
-Test: Improved Swipe, Mug
-Test: Arsonry
-Test: Kamikaze
+Test: Improved Swipe, Mug, Kamikaze
 Default statistics page is not right
 
 Fighters:
