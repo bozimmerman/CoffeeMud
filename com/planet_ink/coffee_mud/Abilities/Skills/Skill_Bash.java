@@ -78,7 +78,7 @@ public class Skill_Bash extends StdAbility
 					w.setName(thisSheild.name());
 					w.setDisplayText(thisSheild.displayText());
 					w.setDescription(thisSheild.description());
-					w.baseEnvStats().setDamage(thisSheild.envStats().level());
+					w.baseEnvStats().setDamage(thisSheild.envStats().level()+10);
 					ExternalPlay.doAttack(mob,target,w);
 				}
 			}

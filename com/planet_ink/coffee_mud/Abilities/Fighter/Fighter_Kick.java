@@ -54,7 +54,6 @@ public class Fighter_Kick extends StdAbility
 			// what happened.
 			invoker=mob;
 			int topDamage=mob.envStats().level()+2;
-			if(topDamage>10) topDamage=10;
 			int damage=Dice.roll(1,topDamage,0);
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE|(auto?Affect.ACT_GENERAL:0),auto?"<T-NAME> get(s) kicked!":"<S-NAME> kick(s) and "+ExternalPlay.hitWord(Weapon.TYPE_BASHING,damage)+" <T-NAMESELF>!");
 			if(mob.location().okAffect(msg))
