@@ -846,7 +846,6 @@ public class StdArea implements Area
 					default:
 						break;
 					}
-					
 					if(Dice.rollPercentage()<rustChance)
 					{
 						int weatherType=weatherType(R);
