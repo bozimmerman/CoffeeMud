@@ -779,6 +779,7 @@ public class MapGrinder extends Thread
         public int damage;
         public Vector behaviors;
         public Vector abilities;
+        public Vector affects;
         public Vector items;
         public Vector wornCodes;
         public int whatISell;
@@ -896,6 +897,31 @@ public class MapGrinder extends Thread
         }
     }
     
+    public static class Behavior implements Cloneable
+    {
+        public String parms="StdBehavior";
+        public String classID="";
+        public Behavior cloneof()
+        {
+            Behavior behavior=new Behavior();
+            behavior.classID=classID;
+            behavior.parms=parms;
+            return behavior;
+        }
+    }
+    public static class Ability implements Cloneable
+    {
+        public String classID="StdAbility";
+        public String misctext="";
+        public Ability cloneof()
+        {
+            Ability ability=new Ability();
+            ability.classID=classID;
+            ability.misctext=misctext;
+            return ability;
+        }
+    }
+    
     public static class Room implements Cloneable
     {
         public String classID="StdRoom";
@@ -907,6 +933,8 @@ public class MapGrinder extends Thread
         public boolean stuffLoaded=false;
         public Vector mobs=new Vector();
         public Vector items=new Vector();
+        public Vector behaviors=new Vector();
+        public Vector affects=new Vector();
         
         public String roomID="NEW";
         public String displayText="New Room Name";
@@ -933,6 +961,18 @@ public class MapGrinder extends Thread
             {
                 Item item=(Item)items.elementAt(i);
                 room.items.addElement(item.cloneof());
+            }
+            room.behaviors=new Vector();
+            for(int b=0;b<behaviors.size();b++)
+            {
+                Behavior behav=(Behavior)behaviors.elementAt(b);
+                room.behaviors.addElement(behav.cloneof());
+            }
+            room.affects=new Vector();
+            for(int a=0;a<affects.size();a++)
+            {
+                Ability affect=(Ability)affects.elementAt(a);
+                room.affects.addElement(affect.cloneof());
             }
             room.roomID=roomID;
             room.displayText=displayText;

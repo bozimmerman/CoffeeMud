@@ -1,0 +1,1 @@
+gain spellname gives two messages, one for the teaching, and one saying you already have it
