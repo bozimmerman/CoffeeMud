@@ -37,7 +37,8 @@ public class Scriptable extends StdBehavior
 		"QUEST_TIME_PROG", // 13
 		"TIME_PROG", // 14
 		"DAY_PROG", // 15
-		"DELAY_PROG" // 16
+		"DELAY_PROG", // 16
+		"FUNCTION_PROG" // 17
 	};
 	private static final String[] funcs={
 		"RAND", //1
@@ -105,7 +106,10 @@ public class Scriptable extends StdBehavior
 		"MPSETVAR", //20
 		"MPENDQUEST",//21
 		"MPQUESTWIN", //22
-		"MPSTARTQUEST" //23
+		"MPSTARTQUEST", //23
+		"MPCALLFUNC", // 24
+		"MPBEACON", // 25
+		"MPALARM" // 26
 	};
 
 	public Behavior newInstance()
@@ -2021,6 +2025,44 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 25: // mpbeacon
+			{
+				String roomName=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
+				if(roomName.length()>0)
+				{
+					s=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBit(s,1).trim());
+					Room newRoom=getRoom(roomName,lastKnownLocation);
+					if(newRoom!=null)
+					{
+						Vector V=new Vector();
+						if(s.equalsIgnoreCase("all"))
+						{
+							if(lastKnownLocation!=null)
+							{
+								for(int x=0;x<lastKnownLocation.numInhabitants();x++)
+								{
+									MOB m=lastKnownLocation.fetchInhabitant(x);
+									if((m!=null)&&(m!=monster)&&(!m.isMonster())&&(!V.contains(m)))
+										V.addElement(m);
+								}
+							}
+						}
+						else
+						{
+							MOB findOne=lastKnownLocation.fetchInhabitant(s);
+							if((findOne!=null)&&(findOne!=monster)&&(!findOne.isMonster()))
+								V.addElement(findOne);
+						}
+						for(int v=0;v<V.size();v++)
+						{
+							MOB follower=(MOB)V.elementAt(v);
+							if(!follower.isMonster())
+								follower.setStartRoom(newRoom);
+						}
+					}
+				}
+				break;
+			}
 			case 18: // mpforce
 			{
 				String m=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(s,1));
@@ -2074,6 +2116,52 @@ public class Scriptable extends StdBehavior
 					Quest Q=Quests.fetchQuest(s);
 					if(Q!=null) Q.declareWinner(whoName);
 				}
+				break;
+			}
+			case 24: // MPCALLFUNC
+			{
+				String named=Util.getCleanBit(s,1);
+				String parms=Util.getPastBit(s,1).trim();
+				boolean found=false;
+				Vector scripts=getScripts();
+				for(int v=0;v<scripts.size();v++)
+				{
+					Vector script2=(Vector)scripts.elementAt(v);
+					if(script.size()<1) continue;
+					String trigger=((String)script2.elementAt(0)).toUpperCase().trim();
+					if(getTriggerCode(trigger)==17)
+					{
+						String fnamed=Util.getCleanBit(trigger,1);
+						if(fnamed.equalsIgnoreCase(named))
+						{
+							found=true;
+							execute(source,target,monster,primaryItem,secondaryItem,script2,parms);
+							break;
+						}
+					}
+				}
+				if(!found)
+					Log.errOut("Scriptable","MPCALLFUNC -- "+monster.Name()+", no function: "+named);
+				break;
+			}
+			case 26: // MPALARM
+			{
+				String time=Util.getCleanBit(s,1);
+				String parms=Util.getPastBit(s,1).trim();
+				if(Util.s_int(time)<=0)
+				{
+					Log.errOut("Scriptable","MPALARM -- "+monster.Name()+", bad time "+time);
+					break;
+				}
+				if(parms.length()==0)
+				{
+					Log.errOut("Scriptable","MPALARM -- "+monster.Name()+", No command!");
+					break;
+				}
+				Vector vscript=new Vector();
+				vscript.addElement("FUNCTION_PROG ALARM_"+time);
+				vscript.addElement(parms);
+				que.addElement(new ScriptableResponse(source,target,monster,primaryItem,secondaryItem,vscript,Util.s_int(time),msg));
 				break;
 			}
 			default:
@@ -2189,7 +2277,7 @@ public class Scriptable extends StdBehavior
 					trigger=trigger.substring(11).trim();
 					if(Util.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
-						trigger=trigger.substring(1).trim().toUpperCase();
+						trigger=trigger.substring(1).trim();
 						if(match(msg,trigger))
 							que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2,msg));
 					}
@@ -2200,7 +2288,10 @@ public class Scriptable extends StdBehavior
 						{
 							String t=Util.getCleanBit(trigger,i);
 							if(msg.indexOf(" "+t+" ")>=0)
+							{
+								que.addElement(new ScriptableResponse(affect.source(),affect.target(),monster,null,null,script,2,t));
 								break;
+							}
 						}
 					}
 				}
@@ -2288,9 +2379,10 @@ public class Scriptable extends StdBehavior
 						int num=Util.numBits(trigger);
 						for(int i=0;i<num;i++)
 						{
-							String t=Util.getCleanBit(trigger,i).toUpperCase().trim();
+							String t=Util.getCleanBit(trigger,i).trim();
 							if(msg.indexOf(" "+t+" ")>=0)
 							{
+								msg=t;
 								doIt=true;
 								break;
 							}
