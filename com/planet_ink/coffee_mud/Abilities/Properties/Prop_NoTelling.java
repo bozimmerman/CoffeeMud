@@ -22,7 +22,7 @@ public class Prop_NoTelling extends Property
 
 
 		if((msg.sourceMinor()==CMMsg.TYP_TELL)
-		&&((!(affected instanceof Room))||(msg.source()==affected)))
+		&&((!(affected instanceof MOB))||(msg.source()==affected)))
 		{
 			if(affected instanceof MOB)
 				msg.source().tell("Your message drifts into oblivion.");

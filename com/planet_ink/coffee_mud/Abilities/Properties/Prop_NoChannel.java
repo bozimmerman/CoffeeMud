@@ -22,9 +22,12 @@ public class Prop_NoChannel extends Property
 
 
 		if(((msg.othersMajor()&CMMsg.MASK_CHANNEL)>0)
-		&&((!(affected instanceof Room))||(msg.source()==affected)))
+		&&((!(affected instanceof MOB))||(msg.source()==affected)))
 		{
-			msg.source().tell("This is a no-channel area.");
+			if(affected instanceof MOB)
+				msg.source().tell("Your message drifts into oblivion.");
+			else
+				msg.source().tell("This is a no-channel area.");
 			return false;
 		}
 		return true;

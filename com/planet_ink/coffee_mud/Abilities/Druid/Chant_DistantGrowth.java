@@ -53,6 +53,7 @@ public class Chant_DistantGrowth extends Chant
 			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 				mob.tell("There IS such a place, but it is an overtrodden street, so your magic would fail.");
+			else
 			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 				mob.tell("There IS such a place, but it is on or in the water, so your magic would fail.");
