@@ -310,6 +310,7 @@ public class StdCharClass implements CharClass, Cloneable
 		StringBuffer theNews=new StringBuffer("");
 
 		mob.recoverCharStats();
+		mob.recoverEnvStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
@@ -359,7 +360,7 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.baseCharStats().setStat(CharStats.DEXTERITY,13);
 		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
 		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
-		mob.baseCharStats().setStat(getAttackAttribute(),16);
+		mob.baseCharStats().setStat(getAttackAttribute(),21);
 		mob.baseCharStats().setCurrentClass(this);
 		mob.baseCharStats().setClassLevel(this,1);
 		mob.baseEnvStats().setArmor(50);

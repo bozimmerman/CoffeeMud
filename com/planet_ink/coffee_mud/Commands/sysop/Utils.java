@@ -73,6 +73,7 @@ public class Utils
 			if(E instanceof MOB)
 			{
 				MOB newMOB=(MOB)E.copyOf();
+				newMOB.setSession(null);
 				newMOB.setStartRoom(room);
 				newMOB.setLocation(room);
 				newMOB.recoverCharStats();

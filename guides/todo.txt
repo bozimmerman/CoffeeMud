@@ -1,6 +1,5 @@
 Bard Subclasses
 Programming.html update
-eos import support
 
 
 //****** next version ********************************************************
