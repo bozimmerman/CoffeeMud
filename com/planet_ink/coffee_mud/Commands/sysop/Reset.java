@@ -45,6 +45,30 @@ public class Reset
 			mob.tell("Done.");
 		}
 		else
+		if(s.equalsIgnoreCase("golems"))
+		{
+			StringBuffer is=new StringBuffer("");
+			StringBuffer isnot=new StringBuffer("");
+			Hashtable names=new Hashtable();
+			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					MOB M=R.fetchInhabitant(i);
+					if(names.contains(M.name())) continue;
+					names.put(M.name(),M.name());
+					if(Sense.isGolem(M))
+						is.append(M.name()+" ");
+					else
+						isnot.append(M.name()+" ");
+				}
+			}
+			mob.tell("IS-"+is.toString());
+			Log.sysOut("GOLEMS","IS-"+is.toString());
+			mob.tell("ISNOT-"+isnot.toString());
+			Log.sysOut("GOLEMS","ISNOT-"+isnot.toString());
+		}
 		if(s.equalsIgnoreCase("areaoramamana"))
 		{
 			// this is just utility code and will change frequently
