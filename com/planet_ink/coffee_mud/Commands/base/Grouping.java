@@ -301,14 +301,7 @@ public class Grouping
 			return;
 		}
 		
-		if(mob.isASysOp(mob.location())
-		||(target.amFollowing()==mob)
-		||(target.getLeigeID().equals(mob.name()))
-		||((target.getClanID().length()>0)
-			&&(target.getClanID().equals(mob.getClanID()))
-			&&((mob.getClanRole()==Clan.POS_LEADER)
-				||(mob.getClanRole()==Clan.POS_BOSS)))
-		||(ExternalPlay.doesOwnThisProperty(mob,target.getStartRoom())))
+		if(target.willFollowOrdersOf(mob))
 		{
 			commands.removeElementAt(0);
 			Integer commandCodeObj=(Integer)(CommandSet.getInstance()).get((String)commands.elementAt(0));
@@ -386,5 +379,142 @@ public class Grouping
 			}
 		}
 		if(!eligible) mob.tell("Noone appears to be eligible to receive any of your gold.");
+	}
+	
+	public static void dress(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("Dress whom in what?");
+			return;
+		}
+		commands.removeElementAt(0);
+		String what=(String)commands.lastElement();
+		commands.removeElement(what);
+		String whom=Util.combine(commands,0);
+		MOB target=mob.location().fetchInhabitant(whom);
+		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		{
+			mob.tell("I don't see "+whom+" here.");
+			return;
+		}
+		if(target.willFollowOrdersOf(mob))
+		{
+			Item item=mob.fetchInventory(what);
+			if((item==null)||(!Sense.canBeSeenBy(item,mob)))
+			{
+				mob.tell("I don't see "+what+" here.");
+				return;
+			}
+			if(!item.amWearingAt(Item.INVENTORY))
+			{
+				mob.tell("You might want to remove that first.");
+				return;
+			}
+			FullMsg msg=new FullMsg(target,item,mob,Affect.MASK_GENERAL|Affect.MSG_DRESS,Affect.MSG_DRESS,Affect.MSG_DRESS,null);
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> put(s) "+item.name()+" on <T-NAMESELF>.");
+			}
+		}
+		else
+			mob.tell(target.name()+" won't let you.");
+	}
+	
+	public static void undress(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("Undress whom? What would you like to remove?");
+			return;
+		}
+		commands.removeElementAt(0);
+		String what=(String)commands.lastElement();
+		commands.removeElement(what);
+		String whom=Util.combine(commands,0);
+		MOB target=mob.location().fetchInhabitant(whom);
+		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		{
+			mob.tell("I don't see "+whom+" here.");
+			return;
+		}
+		if(target.willFollowOrdersOf(mob))
+		{
+			Item item=target.fetchInventory(what);
+			if((item==null)
+			   ||(!Sense.canBeSeenBy(item,mob))
+			   ||(item.amWearingAt(Item.INVENTORY)))
+			{
+				mob.tell(target.name()+" doesn't seem to be equipped with '"+what+"'.");
+				return;
+			}
+			FullMsg msg=new FullMsg(target,item,mob,Affect.MSG_UNDRESS,null);
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				mob.location().show(mob,target,Affect.MSG_QUIETMOVEMENT,"<S-NAME> take(s) "+item.name()+" off <T-NAMESELF>.");
+			}
+				
+		}
+		else
+			mob.tell(target.name()+" won't let you.");
+	}
+	
+	public static void feed(MOB mob, Vector commands)
+	{
+		if(commands.size()<3)
+		{
+			mob.tell("Feed who what?");
+			return;
+		}
+		commands.removeElementAt(0);
+		String what=(String)commands.lastElement();
+		commands.removeElement(what);
+		String whom=Util.combine(commands,0);
+		MOB target=mob.location().fetchInhabitant(whom);
+		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
+		{
+			mob.tell("I don't see "+whom+" here.");
+			return;
+		}
+		if(target.willFollowOrdersOf(mob))
+		{
+			Item item=mob.fetchInventory(what);
+			if((item==null)||(!Sense.canBeSeenBy(item,mob)))
+			{
+				mob.tell("I don't see "+what+" here.");
+				return;
+			}
+			if(!item.amWearingAt(Item.INVENTORY))
+			{
+				mob.tell("You might want to remove that first.");
+				return;
+			}
+			if((!(item instanceof Food))&&(!(item instanceof Drink)))
+			{
+				mob.tell("You might want to try feeding them something edibile or drinkable.");
+				return;
+			}
+			FullMsg msg=new FullMsg(mob,target,item,Affect.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");
+			if(mob.location().okAffect(msg))
+			{
+				mob.location().send(mob,msg);
+				if((ExternalPlay.drop(mob,item,true))
+				   &&(mob.location().isContent(item)))
+				{
+					target.addInventory(item);
+					if(item instanceof Food)
+						msg=new FullMsg(target,item,null,Affect.MSG_EAT,null);
+					else
+						msg=new FullMsg(target,item,null,Affect.MSG_DRINK,null);
+					item.affect(msg);
+					if((target.isMine(item))&&(ExternalPlay.drop(mob,item,true)))
+						mob.addInventory(item);
+				}
+			}
+		}
+		else
+			mob.tell(target.name()+" won't let you.");
 	}
 }

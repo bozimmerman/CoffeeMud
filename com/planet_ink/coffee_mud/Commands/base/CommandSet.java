@@ -173,6 +173,9 @@ public class CommandSet extends Hashtable
 	public static final int CLANRESIGN=160;
 	public static final int GODS=161;
 	public static final int MERGE=162;
+	public static final int FEED=163;
+	public static final int DRESS=164;
+	public static final int UNDRESS=165;
 
 	private CommandSet()
 	{
@@ -240,6 +243,7 @@ public class CommandSet extends Hashtable
 		put("DOWN",new Integer(DOWN));
 			put("D",new Integer(DOWN));
 		put("DRAW",new Integer(DRAW));
+		put("DRESS",new Integer(DRESS));
 		put("DRINK",new Integer(DRINK));
 			put("DR",new Integer(DRINK));
 		put("DROP",new Integer(DROP));
@@ -260,6 +264,7 @@ public class CommandSet extends Hashtable
 		put("EXITS",new Integer(EXITS));
 			put("EX",new Integer(EXITS));
 		put("EXPORT",new Integer(EXPORT));
+		put("FEED",new Integer(FEED));
 		put("FILL",new Integer(FILL));
 		put("FIRE",new Integer(FIRE));
 		put("FLEE",new Integer(FLEE));
@@ -387,6 +392,7 @@ public class CommandSet extends Hashtable
 		put("TRAIN",new Integer(TRAIN));
 			put("TR",new Integer(TRAIN));
 		put("TYPO",new Integer(TYPO));
+		put("UNDRESS",new Integer(UNDRESS));
 		put("UNLOCK",new Integer(UNLOCK));
 		put("UNLINK",new Integer(UNLINK));
 		put("UNLOADHELP",new Integer(UNLOADHELP));

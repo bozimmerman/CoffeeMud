@@ -214,6 +214,9 @@ public class CommandProcessor
 				case CommandSet.DRAW:
 					TheFight.draw(mob,commands,false,false);
 					break;
+				case CommandSet.DRESS:
+					Grouping.dress(mob,commands);
+					break;
 				case CommandSet.DRINK:
 					ItemUsage.drink(mob,commands);
 					break;
@@ -255,6 +258,9 @@ public class CommandProcessor
 						Import.export(mob,commands);
 					else
 						mob.tell("Only the Archons may Export.\n\r");
+					break;
+				case CommandSet.FEED:
+					Grouping.feed(mob,commands);
 					break;
 				case CommandSet.FILL:
 					ItemUsage.fill(mob,commands);
@@ -585,6 +591,9 @@ public class CommandProcessor
 						Help.unloadHelpFile(mob);
 					else
 						mob.tell("Only the Archons may unload the help files...\n\r");
+					break;
+				case CommandSet.UNDRESS:
+					Grouping.undress(mob,commands);
 					break;
 				case CommandSet.UP:
 					Movement.standAndGo(mob,Directions.UP);
