@@ -22,8 +22,5 @@ public class GenShoes extends GenArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_LEATHER;
 	}
-	public Environmental newInstance()
-	{
-		return new GenShoes();
-	}
+
 }

@@ -22,10 +22,7 @@ public class GlowingMageArmor extends StdArmor
 		material=EnvResource.RESOURCE_NOTHING;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GlowingMageArmor();
-	}
+
 
 	public boolean savable(){return false;}
 

@@ -29,11 +29,6 @@ public class LifeFountain extends StdDrink implements MiscMagic
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new LifeFountain();
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))

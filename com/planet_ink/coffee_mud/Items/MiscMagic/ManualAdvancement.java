@@ -24,11 +24,6 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new ManualAdvancement();
-	}
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))

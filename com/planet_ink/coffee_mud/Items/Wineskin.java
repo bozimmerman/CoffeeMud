@@ -25,9 +25,6 @@ public class Wineskin extends StdDrink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Wineskin();
-	}
+
 
 }

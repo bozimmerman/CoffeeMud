@@ -22,10 +22,7 @@ public class Torch extends LightSource
 		this.goesOutInTheRain=true;
 		baseGoldValue=1;
 	}
-	public Environmental newInstance()
-	{
-		return new Torch();
-	}
+
 
 
 }

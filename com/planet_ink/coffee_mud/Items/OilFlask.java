@@ -27,8 +27,5 @@ public class OilFlask extends StdDrink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new OilFlask();
-	}
+
 }

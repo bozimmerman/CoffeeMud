@@ -26,8 +26,5 @@ public class GenWater extends GenDrink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenWater();
-	}
+
 }

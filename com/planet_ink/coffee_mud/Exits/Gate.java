@@ -10,9 +10,4 @@ public class Gate extends StdClosedDoorway
 	public String Name(){return "a gate";}
 	public String doorName(){return "gate";}
 	public String closedText(){return "a closed gate";}
-	public Environmental newInstance()
-	{
-		return new Gate();
-	}
-
 }

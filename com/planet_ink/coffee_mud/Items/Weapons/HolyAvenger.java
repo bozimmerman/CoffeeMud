@@ -27,10 +27,7 @@ public class HolyAvenger extends TwoHandedSword
 		setRawLogicalAnd(true);
 	}
 
-	public Environmental newInstance()
-	{
-		return new HolyAvenger();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

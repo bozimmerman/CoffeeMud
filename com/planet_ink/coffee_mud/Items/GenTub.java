@@ -18,10 +18,7 @@ public class GenTub extends StdTub
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenTub();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

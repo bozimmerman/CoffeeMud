@@ -15,8 +15,5 @@ public class TrappedChest extends LargeChest
 		isLocked=false;
 	}
 
-	public Environmental newInstance()
-	{
-		return new TrappedChest();
-	}
+
 }

@@ -20,10 +20,7 @@ public class GenLawBook extends StdLawBook
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenLawBook();
-	}
+
 	public boolean isGeneric(){return true;}
 	public String text()
 	{

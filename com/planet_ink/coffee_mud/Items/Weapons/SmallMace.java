@@ -24,8 +24,5 @@ public class SmallMace extends StdWeapon
 		weaponClassification=Weapon.CLASS_BLUNT;
 	}
 
-	public Environmental newInstance()
-	{
-		return new SmallMace();
-	}
+
 }

@@ -21,10 +21,7 @@ public class GenTitle extends StdTitle
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenTitle();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -17,11 +17,6 @@ public class ScrollSpell extends StdScroll
 		material=EnvResource.RESOURCE_PAPER;
 	}
 
-	public Environmental newInstance()
-	{
-		return new ScrollSpell();
-	}
-
 	public void setMiscText(String newText)
 	{
 		miscText=newText;

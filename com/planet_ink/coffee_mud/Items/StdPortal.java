@@ -20,10 +20,7 @@ public class StdPortal extends StdContainer implements Rideable
 		capacity=10000;
 		material=EnvResource.RESOURCE_NOTHING;
 	}
-	public Environmental newInstance()
-	{
-		return new StdPortal();
-	}
+
 
 	// common item/mob stuff
 	public int rideBasis(){return Rideable.RIDEABLE_ENTERIN;}

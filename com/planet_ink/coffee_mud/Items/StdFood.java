@@ -22,10 +22,7 @@ public class StdFood extends StdItem implements Food
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdFood();
-	}
+
 
 	public int nourishment()
 	{

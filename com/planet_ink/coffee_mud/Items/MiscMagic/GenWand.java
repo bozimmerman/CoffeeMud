@@ -25,10 +25,7 @@ public class GenWand extends GenItem implements Wand
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenWand();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public boolean useTheWand(Ability A, MOB mob)

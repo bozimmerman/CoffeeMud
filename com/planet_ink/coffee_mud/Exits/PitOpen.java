@@ -13,8 +13,4 @@ public class PitOpen extends StdOpenDoorway
 		Trap t=(Trap)CMClass.getAbility("Trap_EnterPit");
 		if(t!=null) CoffeeUtensils.setTrapped(this,t,true);
 	}
-	public Environmental newInstance()
-	{
-		return new PitOpen();
-	}
 }

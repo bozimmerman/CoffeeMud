@@ -31,10 +31,7 @@ public class StdTitle extends StdItem implements LandTitle
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdTitle();
-	}
+
 
 	public int landPrice()
 	{
@@ -287,7 +284,7 @@ public class StdTitle extends StdItem implements LandTitle
 						((SpaceShip)AREA).dockHere(spacePort);
 						msg.source().tell("Your ship is located at "+spacePort.displayText()+".");
 					}
-					
+
 				}
 				if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
 				&&(msg.source().getClanID().length()>0))

@@ -44,8 +44,5 @@ public class ShieldWeapon extends StdWeapon
 		setShield(shield);
 	}
 
-	public Environmental newInstance()
-	{
-		return new ShieldWeapon();
-	}
+
 }

@@ -25,8 +25,5 @@ public class Javelin extends StdWeapon
 		weaponClassification=Weapon.CLASS_RANGED;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Javelin();
-	}
+
 }

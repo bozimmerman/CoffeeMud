@@ -14,9 +14,6 @@ public class SmallDagger extends Dagger
 		material=EnvResource.RESOURCE_STEEL;
 	}
 
-	public Environmental newInstance()
-	{
-		return new SmallDagger();
-	}
+
 
 }

@@ -21,10 +21,7 @@ public class GenReadable extends GenItem
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenReadable();
-	}
+
 	public boolean isGeneric(){return true;}
 	public void recoverEnvStats(){Sense.setReadable(this,true); super.recoverEnvStats();}
 }

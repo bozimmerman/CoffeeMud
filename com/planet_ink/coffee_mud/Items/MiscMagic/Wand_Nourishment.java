@@ -21,10 +21,7 @@ public class Wand_Nourishment extends StdWand
 		secretWord="SHAZAM";
 	}
 
-	public Environmental newInstance()
-	{
-		return new Wand_Nourishment();
-	}
+
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);

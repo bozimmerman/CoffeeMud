@@ -25,10 +25,7 @@ public class GenScroll extends GenItem implements Scroll
 		material=EnvResource.RESOURCE_PAPER;
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenScroll();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public int numSpells()

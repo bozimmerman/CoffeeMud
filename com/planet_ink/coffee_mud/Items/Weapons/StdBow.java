@@ -31,8 +31,5 @@ public class StdBow extends StdWeapon
 		setRawLogicalAnd(true);
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdBow();
-	}
+
 }

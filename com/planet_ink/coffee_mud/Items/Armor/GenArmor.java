@@ -26,10 +26,7 @@ public class GenArmor extends StdArmor
 		material=EnvResource.RESOURCE_LEATHER;
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenArmor();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

@@ -10,9 +10,4 @@ public class LockedGate extends Gate
 	public String closedText(){return "a closed, locked gate";}
 	public boolean hasALock(){return true;}
 	public boolean defaultsLocked(){return true;}
-	public Environmental newInstance()
-	{
-		return new LockedGate();
-	}
-
 }

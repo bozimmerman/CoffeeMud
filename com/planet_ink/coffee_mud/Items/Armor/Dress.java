@@ -22,9 +22,6 @@ public class Dress extends StdArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_COTTON;
 	}
-	public Environmental newInstance()
-	{
-		return new Dress();
-	}
+
 
 }

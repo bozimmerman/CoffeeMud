@@ -23,8 +23,5 @@ public class Shortsword extends Sword
 		weaponType=TYPE_PIERCING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Shortsword();
-	}
+
 }

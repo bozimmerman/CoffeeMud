@@ -20,11 +20,8 @@ public class GenClanFlag extends StdClanFlag
 		setMaterial(EnvResource.RESOURCE_COTTON);
 		recoverEnvStats();
 	}
-	
-	public Environmental newInstance()
-	{
-		return new GenClanFlag();
-	}
+
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -31,10 +31,7 @@ public class StdTub extends StdRideable implements Drink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdTub();
-	}
+
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}

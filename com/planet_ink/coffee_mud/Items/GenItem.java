@@ -21,10 +21,7 @@ public class GenItem extends StdItem
 		recoverEnvStats();
 		setMaterial(EnvResource.RESOURCE_OAK);
 	}
-	public Environmental newInstance()
-	{
-		return new GenItem();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

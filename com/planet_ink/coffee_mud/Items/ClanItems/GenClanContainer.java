@@ -31,10 +31,7 @@ public class GenClanContainer extends StdClanContainer
 	{
 		readableText=newKeyName;
 	}
-	public Environmental newInstance()
-	{
-		return new GenClanContainer();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

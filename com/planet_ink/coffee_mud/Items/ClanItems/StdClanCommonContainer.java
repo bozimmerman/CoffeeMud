@@ -8,7 +8,6 @@ import java.io.*;
 public class StdClanCommonContainer extends StdClanContainer
 {
 	public String ID(){	return "StdClanCommonContainer";}
-	public Environmental newInstance(){ return new StdClanCommonContainer();}
 	private int workDown=0;
 	public StdClanCommonContainer()
 	{

@@ -24,8 +24,5 @@ public class Whip extends StdWeapon
 		weaponClassification=Weapon.CLASS_FLAILED;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Whip();
-	}
+
 }

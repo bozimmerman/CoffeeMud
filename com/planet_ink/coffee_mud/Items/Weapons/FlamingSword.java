@@ -26,10 +26,7 @@ public class FlamingSword extends Longsword
 		weaponType=TYPE_SLASHING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new FlamingSword();
-	}
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

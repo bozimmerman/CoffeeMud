@@ -19,10 +19,7 @@ public class StdKey extends StdItem implements Key
 		baseGoldValue=0;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StdKey();
-	}
+
 
 	public void setKey(String keyName){miscText=keyName;}
 	public String getKey(){return miscText;}

@@ -19,11 +19,6 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Ring_Protection();
-	}
-
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -22,8 +22,5 @@ public class HideArmor extends StdArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_LEATHER;
 	}
-	public Environmental newInstance()
-	{
-		return new HideArmor();
-	}
+
 }

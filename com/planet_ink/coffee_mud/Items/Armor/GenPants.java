@@ -22,8 +22,5 @@ public class GenPants extends GenArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_COTTON;
 	}
-	public Environmental newInstance()
-	{
-		return new GenPants();
-	}
+
 }

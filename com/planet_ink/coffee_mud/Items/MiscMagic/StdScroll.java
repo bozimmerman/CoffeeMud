@@ -27,10 +27,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdScroll();
-	}
+
 
 	public int numSpells()
 	{

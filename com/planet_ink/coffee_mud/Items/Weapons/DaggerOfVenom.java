@@ -28,10 +28,7 @@ public class DaggerOfVenom extends Dagger
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new DaggerOfVenom();
-	}
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -21,10 +21,7 @@ public class StdCage extends StdContainer
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdCage();
-	}
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

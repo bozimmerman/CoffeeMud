@@ -22,8 +22,5 @@ public class ChainMailVest extends StdArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_STEEL;
 	}
-	public Environmental newInstance()
-	{
-		return new ChainMailVest();
-	}
+
 }

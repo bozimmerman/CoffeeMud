@@ -22,10 +22,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 		secretWord="LEVEL UP";
 	}
 
-	public Environmental newInstance()
-	{
-		return new Wand_Advancement();
-	}
+
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);

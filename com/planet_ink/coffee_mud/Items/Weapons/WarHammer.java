@@ -26,8 +26,5 @@ public class WarHammer extends StdWeapon
 		weaponClassification=Weapon.CLASS_HAMMER;
 	}
 
-	public Environmental newInstance()
-	{
-		return new WarHammer();
-	}
+
 }

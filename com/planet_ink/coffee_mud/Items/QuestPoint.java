@@ -20,10 +20,7 @@ public class QuestPoint extends StdItem
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new QuestPoint();
-	}
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

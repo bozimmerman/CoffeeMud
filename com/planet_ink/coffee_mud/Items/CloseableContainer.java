@@ -14,8 +14,5 @@ public class CloseableContainer extends StdContainer
 		material=EnvResource.RESOURCE_OAK;
 	}
 
-	public Environmental newInstance()
-	{
-		return new CloseableContainer();
-	}
+
 }

@@ -25,8 +25,5 @@ public class DruidicMonument extends StdItem implements MiscMagic
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new DruidicMonument();
-	}
+
 }

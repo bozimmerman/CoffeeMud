@@ -10,8 +10,4 @@ public class StdLockedDoorway extends StdClosedDoorway
 	public boolean hasALock(){return true;}
 	public boolean defaultsLocked(){return true;}
 	public String closedText(){return "a closed, locked door";}
-	public Environmental newInstance()
-	{
-		return new StdLockedDoorway();
-	}
 }

@@ -21,10 +21,7 @@ public class StdInnKey extends StdKey implements InnKey
 		baseGoldValue=10;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StdInnKey();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

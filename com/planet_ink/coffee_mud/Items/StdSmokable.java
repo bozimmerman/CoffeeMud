@@ -38,10 +38,7 @@ public class StdSmokable extends StdContainer implements Light
 	public boolean isLit(){return lit;}
 	public void light(boolean isLit){lit=isLit;}
 
-	public Environmental newInstance()
-	{
-		return new StdSmokable();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

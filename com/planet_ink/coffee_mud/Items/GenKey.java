@@ -18,10 +18,7 @@ public class GenKey extends GenItem implements Key
 		setMaterial(EnvResource.RESOURCE_IRON);
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenKey();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public void setKey(String keyName){readableText=keyName;}

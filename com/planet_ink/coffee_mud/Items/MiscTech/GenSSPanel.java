@@ -24,7 +24,7 @@ public class GenSSPanel extends StdContainer implements ShipComponent
 		setMaterial(EnvResource.RESOURCE_STEEL);
 		recoverEnvStats();
 	}
-	
+
 	public String displayText(){
 		if(isOpen())
 			return name()+" is opened here.";
@@ -65,10 +65,7 @@ public class GenSSPanel extends StdContainer implements ShipComponent
 	{
 		readableText=newKeyName;
 	}
-	public Environmental newInstance()
-	{
-		return new GenSSPanel();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -84,7 +81,7 @@ public class GenSSPanel extends StdContainer implements ShipComponent
 	}
 	public int componentType(){return componentType;}
 	public void setComponentType(int type){componentType=type;}
-	
+
 	private static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","COMPONENTTYPE"};
 	public String getStat(String code)
 	{

@@ -20,10 +20,7 @@ public class GenBow extends StdBow
 		setAmmoRemaining(20);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenBow();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

@@ -17,10 +17,7 @@ public class GenPortal extends StdPortal
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenPortal();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

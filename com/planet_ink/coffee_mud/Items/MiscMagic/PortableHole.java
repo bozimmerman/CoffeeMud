@@ -25,10 +25,4 @@ public class PortableHole extends BagOfHolding implements MiscMagic
 
 
 	}
-
-	public Environmental newInstance()
-	{
-		return new PortableHole();
-	}
-
 }

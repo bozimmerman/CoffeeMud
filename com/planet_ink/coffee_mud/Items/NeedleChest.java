@@ -15,8 +15,5 @@ public class NeedleChest extends LargeChest
 		setMaterial(EnvResource.RESOURCE_OAK);
 	}
 
-	public Environmental newInstance()
-	{
-		return new NeedleChest();
-	}
+
 }

@@ -35,8 +35,5 @@ public class GlovesSpeed extends StdArmor
 		}
 	}
 
-	public Environmental newInstance()
-	{
-		return new GlovesSpeed();
-	}
+
 }

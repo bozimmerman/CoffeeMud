@@ -23,10 +23,7 @@ public class Wand_Fire extends StdWand
 		secretWord="BLAZE, BURN";
 	}
 
-	public Environmental newInstance()
-	{
-		return new Wand_Fire();
-	}
+
 	public void setSpell(Ability theSpell)
 	{
 		super.setSpell(theSpell);

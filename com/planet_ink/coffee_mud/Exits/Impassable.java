@@ -11,11 +11,6 @@ public class Impassable extends GenExit
 		description="It doesn't look like you can go that way.";
 	}
 	public String ID(){	return "Impassable";}
-	public Environmental newInstance()
-	{
-		return new Impassable();
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

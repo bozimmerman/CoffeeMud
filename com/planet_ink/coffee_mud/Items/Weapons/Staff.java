@@ -35,10 +35,7 @@ public class Staff extends StdWeapon implements Wand
 	{
 		return secretWord;
 	}
-	public Environmental newInstance()
-	{
-		return new Staff();
-	}
+
 
 	public boolean useTheWand(Ability A, MOB mob)
 	{

@@ -12,8 +12,4 @@ public class TrappedLockedDoor extends StdLockedDoorway
 		Trap t=(Trap)CMClass.getAbility("Trap_Trap");
 		if(t!=null) CoffeeUtensils.setTrapped(this,t,true);
 	}
-	public Environmental newInstance()
-	{
-		return new TrappedLockedDoor();
-	}
 }

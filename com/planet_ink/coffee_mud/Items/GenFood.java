@@ -23,10 +23,7 @@ public class GenFood extends StdFood
 		setMaterial(EnvResource.RESOURCE_MEAT);
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenFood();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

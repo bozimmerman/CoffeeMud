@@ -10,8 +10,4 @@ public class StdOpenDoorway extends StdExit
 	public String Name(){ return "a walkway";}
 	public String displayText(){ return "";}
 	public String description(){ return "";}
-	public Environmental newInstance()
-	{
-		return new StdOpenDoorway();
-	}
 }

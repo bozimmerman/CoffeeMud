@@ -35,7 +35,16 @@ public class GenWallpaper implements Item
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public boolean isAContainer(){return false;}
 	public Environmental newInstance()
-	{return new GenWallpaper();}
+	{
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new GenWallpaper();
+	}
 	public boolean subjectToWearAndTear(){return false;}
 	public Environmental copyOf()
 	{

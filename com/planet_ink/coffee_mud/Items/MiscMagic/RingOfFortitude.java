@@ -17,8 +17,4 @@ public class RingOfFortitude extends Ring_Protection implements MiscMagic
 		this.recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new RingOfFortitude();
-	}
 }

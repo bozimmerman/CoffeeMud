@@ -9,11 +9,10 @@ import java.util.*;
 public class StdClanContainer extends StdContainer implements ClanItem
 {
 	public String ID(){	return "StdClanContainer";}
-	public Environmental newInstance(){ return new StdClanContainer();}
 	protected String myClan="";
 	protected int ciType=0;
 	public int ciType(){return ciType;}
-	public void setCIType(int type){ ciType=type;}	
+	public void setCIType(int type){ ciType=type;}
 	public StdClanContainer()
 	{
 		super();
@@ -28,10 +27,10 @@ public class StdClanContainer extends StdContainer implements ClanItem
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
-	
+
 	public String clanID(){return myClan;}
 	public void setClanID(String ID){myClan=ID;}
-	
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(StdClanItem.stdExecuteMsg(this,msg))
@@ -43,7 +42,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 			return super.okMessage(myHost,msg);
 		return false;
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!StdClanItem.standardTick(this,tickID))

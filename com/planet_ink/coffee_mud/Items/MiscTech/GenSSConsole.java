@@ -21,10 +21,7 @@ public class GenSSConsole extends StdItem implements Electronics
 		recoverEnvStats();
 		setMaterial(EnvResource.RESOURCE_STEEL);
 	}
-	public Environmental newInstance()
-	{
-		return new GenSSConsole();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -160,10 +160,7 @@ public class StdWand extends StdItem implements Wand
 
 	public String magicWord(){return secretWord;}
 
-	public Environmental newInstance()
-	{
-		return new StdWand();
-	}
+
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
 	public String getStat(String code){
 		switch(getCodeNum(code))

@@ -20,11 +20,8 @@ public class GenClanPamphlet extends StdClanPamphlet
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
-	
-	public Environmental newInstance()
-	{
-		return new GenClanPamphlet();
-	}
+
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -23,7 +23,7 @@ public class Ring_Ornamental extends Ring
 	public final static int GOLD_RING_EMERALD			= 11;
 	public final static int STEEL_RING					= 12;
 	public final static int BRONZE_RING					= 13;
-	
+
 	private int lastLevel=-1;
 
 	public Ring_Ornamental()
@@ -36,10 +36,7 @@ public class Ring_Ornamental extends Ring
 		lastLevel=ringType;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Ring_Ornamental();
-	}
+
 
 	public void recoverEnvStats()
 	{
@@ -50,7 +47,7 @@ public class Ring_Ornamental extends Ring
 		}
 		super.recoverEnvStats();
 	}
-	
+
 	public void setItemDescription(int level)
 	{
 		switch(level)

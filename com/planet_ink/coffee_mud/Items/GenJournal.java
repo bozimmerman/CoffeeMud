@@ -19,10 +19,7 @@ public class GenJournal extends StdJournal
 		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenJournal();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -24,10 +24,7 @@ public class Hat_Intelligence extends StdArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_COTTON;
 	}
-	public Environmental newInstance()
-	{
-		return new Hat_Intelligence();
-	}
+
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);

@@ -12,8 +12,4 @@ public class NeedleDoor extends StdClosedDoorway
 		Trap t=(Trap)CMClass.getAbility("Trap_OpenNeedle");
 		if(t!=null) CoffeeUtensils.setTrapped(this,t,true);
 	}
-	public Environmental newInstance()
-	{
-		return new NeedleDoor();
-	}
 }

@@ -16,11 +16,6 @@ public class Ingredients extends BagOfEndlessness
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Ingredients();
-	}
-
 	protected Item makeResource(String name, int type)
 	{
 		Item I=null;

@@ -35,10 +35,7 @@ public class Gem extends StdItem
 		setItemDescription(this.envStats.level());
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Gem();
-	}
+
 
 	public void setItemDescription(int level)
 	{

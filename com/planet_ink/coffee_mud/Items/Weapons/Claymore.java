@@ -34,10 +34,7 @@ public class Claymore extends Sword
 		weaponType=TYPE_SLASHING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Claymore();
-	}
+
 
 	public void setItemDescription(int level)
 	{

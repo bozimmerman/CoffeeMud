@@ -9,7 +9,6 @@ import java.util.*;
 public class StdClanFlag extends StdItem implements ClanItem
 {
 	public String ID(){	return "StdClanFlag";}
-	public Environmental newInstance(){ return new StdClanFlag();}
 	protected String myClan="";
 	protected int ciType=0;
 	public int ciType(){return ciType;}

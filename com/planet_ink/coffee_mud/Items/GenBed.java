@@ -24,8 +24,5 @@ public class GenBed extends GenRideable
 		setRideBasis(Rideable.RIDEABLE_SLEEP);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenBed();
-	}
+
 }

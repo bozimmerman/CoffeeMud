@@ -20,8 +20,5 @@ public class Ring extends StdItem
 		baseGoldValue=50;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Ring();
-	}
+
 }

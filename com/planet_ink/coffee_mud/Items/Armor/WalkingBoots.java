@@ -22,9 +22,6 @@ public class WalkingBoots extends StdArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_LEATHER;
 	}
-	public Environmental newInstance()
-	{
-		return new WalkingBoots();
-	}
+
 
 }

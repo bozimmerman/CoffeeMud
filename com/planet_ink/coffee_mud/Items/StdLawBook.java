@@ -19,10 +19,7 @@ public class StdLawBook extends StdItem
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdLawBook();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -37,8 +37,12 @@ public class Sword extends StdWeapon
 			case 3:	 return new Scimitar();
 			case 4:	 return new Claymore();
 			case 5:	 return new Shortsword();
-			default: return new Sword();
-
+			default: 
+				try{
+					return (Environmental)this.getClass().newInstance();
+				}
+				catch(Exception e){}
+				return new Sword();
 		}
 
 	}

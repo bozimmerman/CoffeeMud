@@ -79,6 +79,13 @@ public class StdItem implements Item
 	}
 	public Environmental newInstance()
 	{
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
 		return new StdItem();
 	}
 	public boolean subjectToWearAndTear(){return false;}

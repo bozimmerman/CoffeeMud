@@ -23,8 +23,5 @@ public class Chair extends StdRideable
 		setRiderCapacity(1);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Chair();
-	}
+
 }

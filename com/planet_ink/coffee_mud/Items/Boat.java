@@ -18,8 +18,5 @@ public class Boat extends StdRideable
 		rideBasis=Rideable.RIDEABLE_WATER;
 		material=EnvResource.RESOURCE_OAK;
 	}
-	public Environmental newInstance()
-	{
-		return new Boat();
-	}
+
 }

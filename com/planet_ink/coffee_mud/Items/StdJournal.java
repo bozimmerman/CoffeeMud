@@ -20,10 +20,7 @@ public class StdJournal extends StdItem
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdJournal();
-	}
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this))

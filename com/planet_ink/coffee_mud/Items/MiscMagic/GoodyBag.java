@@ -19,11 +19,6 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GoodyBag();
-	}
-
 	private void putInBag(Item I)
 	{
 		I.setContainer(this);

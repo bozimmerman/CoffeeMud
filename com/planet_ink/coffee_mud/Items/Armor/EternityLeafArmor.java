@@ -31,8 +31,5 @@ public class EternityLeafArmor extends StdArmor
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 	}
 
-	public Environmental newInstance()
-	{
-		return new EternityLeafArmor();
-	}
+
 }

@@ -19,9 +19,6 @@ public class SmallSack extends StdContainer
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new SmallSack();
-	}
+
 
 }

@@ -24,10 +24,7 @@ public class Lantern extends LightSource
 		this.goesOutInTheRain=false;
 		baseGoldValue=60;
 	}
-	public Environmental newInstance()
-	{
-		return new Lantern();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

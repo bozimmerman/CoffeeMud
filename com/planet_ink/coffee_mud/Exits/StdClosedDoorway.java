@@ -15,9 +15,4 @@ public class StdClosedDoorway extends StdExit
 	public boolean defaultsLocked(){return false;}
 	public boolean defaultsClosed(){return true;}
 	public String closedText(){return "a closed door";}
-	public Environmental newInstance()
-	{
-		return new StdClosedDoorway();
-	}
-
 }

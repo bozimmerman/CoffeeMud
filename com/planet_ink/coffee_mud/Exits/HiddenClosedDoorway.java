@@ -14,9 +14,4 @@ public class HiddenClosedDoorway extends StdClosedDoorway
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new HiddenClosedDoorway();
-	}
-
 }

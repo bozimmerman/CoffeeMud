@@ -20,9 +20,6 @@ public class LargeChest extends LockableContainer
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new LargeChest();
-	}
+
 
 }

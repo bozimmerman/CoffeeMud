@@ -27,10 +27,7 @@ public class StdContainer extends StdItem implements Container
 		material=EnvResource.RESOURCE_COTTON;
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdContainer();
-	}
+
 
 	public int capacity()
 	{

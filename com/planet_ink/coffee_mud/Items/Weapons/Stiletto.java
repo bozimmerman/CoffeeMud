@@ -23,9 +23,6 @@ public class Stiletto extends Dagger
 		weaponType=TYPE_PIERCING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Stiletto();
-	}
+
 
 }

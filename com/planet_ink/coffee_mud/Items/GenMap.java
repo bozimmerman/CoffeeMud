@@ -21,10 +21,6 @@ public class GenMap extends StdMap
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenMap();
-	}
 	public boolean isGeneric(){return true;}
 
 	public String text()

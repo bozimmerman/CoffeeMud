@@ -22,8 +22,5 @@ public class Helmet extends StdArmor
 		material=EnvResource.RESOURCE_IRON;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Helmet();
-	}
+
 }

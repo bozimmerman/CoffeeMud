@@ -32,10 +32,7 @@ public class StdWeapon extends StdItem implements Weapon
 		setUsesRemaining(100);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StdWeapon();
-	}
+
 
 	public int weaponType(){return weaponType;}
 	public int weaponClassification(){return weaponClassification;}
@@ -86,7 +83,7 @@ public class StdWeapon extends StdItem implements Weapon
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
-		
+
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==this)
 		&&(amWearingAt(Item.WIELD))
@@ -190,23 +187,23 @@ public class StdWeapon extends StdItem implements Weapon
 			if(ammunitionRemaining()<=0)
 			{
 				boolean reLoaded=false;
-				
+
 				if((msg.source().isMine(this))
 				   &&(msg.source().location()!=null)
 				   &&(Sense.aliveAwakeMobile(msg.source(),true)))
 				{
 					boolean recover=false;
-				
+
 					for(int a=0;a<numEffects();a++)
-					{ 
-						Ability A=fetchEffect(a); 
-						if((A!=null)&&A.isBorrowed(this)&&(A.invoker()==null)) 
+					{
+						Ability A=fetchEffect(a);
+						if((A!=null)&&A.isBorrowed(this)&&(A.invoker()==null))
 						{
 							recover=true;
 							delEffect(A);
 						}
 					}
-					
+
 					MOB mob=msg.source();
 					for(int i=0;i<mob.inventorySize();i++)
 					{
@@ -225,8 +222,8 @@ public class StdWeapon extends StdItem implements Weapon
 								setAmmoRemaining(howMuchToTake);
 								I.setUsesRemaining(I.usesRemaining()-howMuchToTake);
 								for(int a=0;a<I.numEffects();a++)
-								{ 
-									Ability A=I.fetchEffect(a); 
+								{
+									Ability A=I.fetchEffect(a);
 									if((A!=null)&&(!A.isBorrowed(this))&&(fetchEffect(A.ID())==null))
 									{
 										A=(Ability)A.copyOf();
@@ -236,7 +233,7 @@ public class StdWeapon extends StdItem implements Weapon
 										recover=true;
 									}
 								}
-								
+
 								if(I.usesRemaining()<=0) I.destroy();
 								reLoaded=true;
 								break;

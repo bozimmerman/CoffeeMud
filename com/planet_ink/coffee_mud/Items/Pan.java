@@ -19,9 +19,6 @@ public class Pan extends StdDrink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Pan();
-	}
+
 
 }

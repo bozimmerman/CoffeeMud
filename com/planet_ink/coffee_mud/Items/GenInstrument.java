@@ -20,10 +20,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 		recoverEnvStats();
 		setMaterial(EnvResource.RESOURCE_OAK);
 	}
-	public Environmental newInstance()
-	{
-		return new GenInstrument();
-	}
+
 	public void recoverEnvStats(){Sense.setReadable(this,false); super.recoverEnvStats();}
 	public int instrumentType(){return Util.s_int(readableText);}
 	public void setInstrumentType(int type){readableText=(""+type);}

@@ -23,8 +23,5 @@ public class GenTable extends GenRideable
 		setRideBasis(Rideable.RIDEABLE_TABLE);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenTable();
-	}
+
 }

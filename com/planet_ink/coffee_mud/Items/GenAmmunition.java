@@ -20,10 +20,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenAmmunition();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -45,7 +42,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 		CoffeeMaker.setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();

@@ -21,8 +21,5 @@ public class Ration extends StdFood
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Ration();
-	}
+
 }

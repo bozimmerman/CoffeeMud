@@ -22,10 +22,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		riderCapacity=2;
 		setMaterial(EnvResource.RESOURCE_OAK);
 	}
-	public Environmental newInstance()
-	{
-		return new GenPiano();
-	}
+
 	public void recoverEnvStats(){Sense.setReadable(this,false); super.recoverEnvStats();}
 	public int instrumentType(){return Util.s_int(readableText);}
 	public void setInstrumentType(int type){readableText=(""+type);}

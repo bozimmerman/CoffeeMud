@@ -23,8 +23,5 @@ public class Rapier extends Sword
 		weaponType=TYPE_PIERCING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Rapier();
-	}
+
 }

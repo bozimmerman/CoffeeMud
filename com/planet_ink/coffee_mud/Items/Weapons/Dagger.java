@@ -24,9 +24,6 @@ public class Dagger extends StdWeapon
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Dagger();
-	}
+
 
 }

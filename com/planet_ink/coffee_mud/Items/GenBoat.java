@@ -20,8 +20,5 @@ public class GenBoat extends GenRideable
 		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenBoat();
-	}
+
 }

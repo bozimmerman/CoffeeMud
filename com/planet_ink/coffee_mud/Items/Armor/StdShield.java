@@ -22,8 +22,5 @@ public class StdShield extends StdArmor implements Armor, Shield
 		material=EnvResource.RESOURCE_STEEL;
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdShield();
-	}
+
 }

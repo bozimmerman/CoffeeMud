@@ -25,8 +25,5 @@ public class GenFountain extends GenWater
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenFountain();
-	}
+
 }

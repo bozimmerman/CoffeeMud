@@ -21,10 +21,7 @@ public class GenRideable extends StdRideable
 		setMaterial(EnvResource.RESOURCE_OAK);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenRideable();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -23,8 +23,5 @@ public class Bed extends GenRideable
 		setRiderCapacity(2);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Bed();
-	}
+
 }

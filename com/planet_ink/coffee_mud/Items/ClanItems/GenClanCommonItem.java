@@ -20,11 +20,8 @@ public class GenClanCommonItem extends StdClanCommonItem
 		setMaterial(EnvResource.RESOURCE_COTTON);
 		recoverEnvStats();
 	}
-	
-	public Environmental newInstance()
-	{
-		return new GenClanCommonItem();
-	}
+
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

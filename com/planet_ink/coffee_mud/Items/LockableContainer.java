@@ -15,8 +15,5 @@ public class LockableContainer extends StdContainer
 		setMaterial(EnvResource.RESOURCE_OAK);
 	}
 
-	public Environmental newInstance()
-	{
-		return new LockableContainer();
-	}
+
 }

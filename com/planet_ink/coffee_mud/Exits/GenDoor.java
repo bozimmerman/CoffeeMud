@@ -7,9 +7,6 @@ import java.util.*;
 public class GenDoor extends GenExit
 {
 	public String ID(){	return "GenDoor";}
-	public String Name(){ return "a door";}
-	public String displayText(){ return "";}
-	public String closedText(){return "a closed door";}
 	public GenDoor()
 	{
 		super();
@@ -24,9 +21,5 @@ public class GenDoor extends GenExit
 		doorName="door";
 		closeName="close";
 		openName="open";
-	}
-	public Environmental newInstance()
-	{
-		return new GenDoor();
 	}
 }

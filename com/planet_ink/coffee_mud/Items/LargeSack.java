@@ -18,9 +18,6 @@ public class LargeSack extends StdContainer
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new LargeSack();
-	}
+
 
 }

@@ -67,8 +67,5 @@ public class StdLasso extends StdWeapon
 			super.executeMsg(myHost,msg);
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdLasso();
-	}
+
 }

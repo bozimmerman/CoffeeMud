@@ -26,8 +26,6 @@ public class StdArmor extends StdContainer implements Armor
 		setUsesRemaining(100);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{	return new StdArmor(); }
 
 	public void setUsesRemaining(int newUses)
 	{
@@ -115,7 +113,7 @@ public class StdArmor extends StdContainer implements Armor
 
 	public final static long strangeDeviations=Item.FLOATING_NEARBY|Item.ON_MOUTH|Item.ON_EYES|Item.ON_EARS|Item.ON_NECK;
 	public final static long deviation20=Item.ON_TORSO|Item.ON_LEGS|Item.ON_WAIST|Item.ON_ARMS|Item.ON_HANDS|Item.ON_FEET;
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -132,8 +130,8 @@ public class StdArmor extends StdContainer implements Armor
 			if((rawProperLocationBitmap()&strangeDeviations)>0)
 			{
 				long wcode=rawProperLocationBitmap();
-			
-				if(Util.bset(wcode,Item.HELD)) 
+
+				if(Util.bset(wcode,Item.HELD))
 					wcode=wcode-Item.HELD;
 				if(wcode==Item.FLOATING_NEARBY) devianceAllowed=-1;
 				else
@@ -447,7 +445,7 @@ public class StdArmor extends StdContainer implements Armor
 
 			if(oldUses!=usesRemaining())
 				recoverEnvStats();
-			
+
 			if((usesRemaining()<10)
 			&&(oldUses!=usesRemaining())
 			&&(owner()!=null)

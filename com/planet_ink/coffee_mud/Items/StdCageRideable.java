@@ -22,10 +22,7 @@ public class StdCageRideable extends StdRideable
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdCageRideable();
-	}
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

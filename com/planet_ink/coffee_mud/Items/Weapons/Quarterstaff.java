@@ -26,8 +26,5 @@ public class Quarterstaff extends StdWeapon
 		weaponClassification=Weapon.CLASS_STAFF;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Quarterstaff();
-	}
+
 }

@@ -25,9 +25,6 @@ public class Cestus extends StdWeapon
 
 	}
 
-	public Environmental newInstance()
-	{
-		return new Cestus();
-	}
+
 
 }

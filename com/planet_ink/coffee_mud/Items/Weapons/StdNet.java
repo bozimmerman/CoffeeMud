@@ -28,10 +28,7 @@ public class StdNet extends StdWeapon
 		weaponClassification=Weapon.CLASS_THROWN;
 		setRawLogicalAnd(true);
 	}
-	public Environmental newInstance()
-	{
-		return new StdNet();
-	}
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

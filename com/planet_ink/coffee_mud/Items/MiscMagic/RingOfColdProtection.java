@@ -15,9 +15,4 @@ public class RingOfColdProtection extends Ring_Protection implements MiscMagic
 		material=EnvResource.RESOURCE_SILVER;
 		this.recoverEnvStats();
 	}
-
-	public Environmental newInstance()
-	{
-		return new RingOfColdProtection();
-	}
 }

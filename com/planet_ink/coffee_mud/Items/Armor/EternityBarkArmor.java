@@ -24,8 +24,5 @@ public class EternityBarkArmor extends StdArmor
 		material=EnvResource.RESOURCE_WOOD;
 	}
 
-	public Environmental newInstance()
-	{
-		return new EternityBarkArmor();
-	}
+
 }

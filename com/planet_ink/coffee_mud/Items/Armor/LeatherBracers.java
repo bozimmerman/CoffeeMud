@@ -22,9 +22,6 @@ public class LeatherBracers extends StdArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_LEATHER;
 	}
-	public Environmental newInstance()
-	{
-		return new LeatherBracers();
-	}
+
 
 }

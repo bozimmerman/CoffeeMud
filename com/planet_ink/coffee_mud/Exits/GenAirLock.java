@@ -29,8 +29,4 @@ public class GenAirLock extends GenExit
 		closeName="close";
 		openName="open";
 	}
-	public Environmental newInstance()
-	{
-		return new GenAirLock();
-	}
 }

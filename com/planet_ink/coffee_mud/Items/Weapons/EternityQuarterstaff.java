@@ -31,10 +31,7 @@ public class EternityQuarterstaff extends Quarterstaff
 
 	}
 
-	public Environmental newInstance()
-	{
-		return new EternityQuarterstaff();
-	}
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

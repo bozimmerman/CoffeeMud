@@ -33,10 +33,7 @@ public class Arquebus extends StdWeapon
 		weaponType=Weapon.TYPE_PIERCING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Arquebus();
-	}
+
 
 //	private boolean isBackfire()
 //	{

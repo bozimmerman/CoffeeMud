@@ -27,10 +27,7 @@ public class StdBoffWeapon extends StdWeapon
 		setUsesRemaining(100);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StdBoffWeapon();
-	}
+
 	public String hitString(int damageAmount)
 	{
 		String word="boff(s)";

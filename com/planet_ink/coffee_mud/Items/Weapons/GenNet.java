@@ -18,10 +18,7 @@ public class GenNet extends StdNet
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenNet();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

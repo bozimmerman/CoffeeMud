@@ -23,9 +23,6 @@ public class Pot extends StdDrink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Pot();
-	}
+
 
 }

@@ -25,8 +25,5 @@ public class EternityLeafShield extends StdShield
 		material=EnvResource.RESOURCE_SEAWEED;
 	}
 
-	public Environmental newInstance()
-	{
-		return new EternityLeafShield();
-	}
+
 }

@@ -18,10 +18,7 @@ public class GenSpear extends StdSpear
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenSpear();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

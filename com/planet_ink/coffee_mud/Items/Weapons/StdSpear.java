@@ -29,8 +29,5 @@ public class StdSpear extends StdWeapon
 		setRawLogicalAnd(false);
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdSpear();
-	}
+
 }

@@ -34,10 +34,7 @@ public class LightSource extends StdItem implements Light
 	public boolean isLit(){return lit;}
 	public void light(boolean isLit){lit=isLit;}
 
-	public Environmental newInstance()
-	{
-		return new LightSource();
-	}
+
 
 	public static int isAnOkAffect(Light myLight, CMMsg msg)
 	{

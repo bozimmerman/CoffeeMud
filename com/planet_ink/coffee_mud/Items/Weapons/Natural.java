@@ -25,10 +25,7 @@ public class Natural extends StdWeapon
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Natural();
-	}
+
 	public String hitString(int damageAmount)
 	{
 		return "<S-NAME> "+CommonStrings.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF>";

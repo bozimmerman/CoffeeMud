@@ -20,10 +20,7 @@ public class BardMap extends GenMap
 		setMaterial(EnvResource.RESOURCE_PAPER);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new BardMap();
-	}
+
 	public void doMapArea()
 	{
 		myMap=null;

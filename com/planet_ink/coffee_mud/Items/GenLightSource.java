@@ -25,10 +25,7 @@ public class GenLightSource extends GenItem implements Light
 		setDuration(200);
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenLightSource();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public void setDuration(int duration){readableText=""+duration;}

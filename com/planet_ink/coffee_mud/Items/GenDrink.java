@@ -26,10 +26,7 @@ public class GenDrink extends StdDrink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenDrink();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

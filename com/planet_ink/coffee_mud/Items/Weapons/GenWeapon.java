@@ -27,10 +27,7 @@ public class GenWeapon extends StdWeapon
 		baseEnvStats().setLevel(5);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenWeapon();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

@@ -13,9 +13,4 @@ public class HiddenWalkway extends Open
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new HiddenWalkway();
-	}
-
 }

@@ -24,10 +24,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdMap();
-	}
+
 
 	protected class MapRoom
 	{

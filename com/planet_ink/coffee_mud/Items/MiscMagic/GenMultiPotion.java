@@ -23,10 +23,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 		baseGoldValue=200;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenMultiPotion();
-	}
+
 
 	public boolean isGeneric(){return true;}
 	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}

@@ -10,11 +10,6 @@ public class GapExit extends StdExit
 	public String Name(){ return "a crevasse";}
 	public String description(){return "Looks like you'll have to jump it.";}
 
-	public Environmental newInstance()
-	{
-		return new GapExit();
-	}
-
 	public int mobWeight(MOB mob)
 	{
 		int weight=mob.baseEnvStats().weight();

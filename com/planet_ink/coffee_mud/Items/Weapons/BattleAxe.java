@@ -26,8 +26,5 @@ public class BattleAxe extends Sword
 		weaponClassification=Weapon.CLASS_AXE;
 	}
 
-	public Environmental newInstance()
-	{
-		return new BattleAxe();
-	}
+
 }

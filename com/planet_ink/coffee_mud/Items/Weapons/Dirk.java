@@ -23,8 +23,5 @@ public class Dirk extends Dagger
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Dirk();
-	}
+
 }

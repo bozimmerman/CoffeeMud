@@ -26,10 +26,7 @@ public class StdPill extends StdFood implements Pill
 		material=EnvResource.RESOURCE_CORN;
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdPill();
-	}
+
 
 	public String secretIdentity()
 	{

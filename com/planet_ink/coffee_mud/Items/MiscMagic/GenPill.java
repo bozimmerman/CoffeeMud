@@ -24,10 +24,7 @@ public class GenPill extends GenFood implements Pill
 		material=EnvResource.RESOURCE_CORN;
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenPill();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public void eatIfAble(MOB mob, Pill me)

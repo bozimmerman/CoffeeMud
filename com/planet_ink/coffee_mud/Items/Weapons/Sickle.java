@@ -24,9 +24,6 @@ public class Sickle extends StdWeapon
 		weaponClassification=Weapon.CLASS_EDGED;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Sickle();
-	}
+
 
 }

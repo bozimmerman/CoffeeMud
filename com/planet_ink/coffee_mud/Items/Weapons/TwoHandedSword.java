@@ -25,8 +25,5 @@ public class TwoHandedSword extends Sword
 		weaponType=TYPE_SLASHING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new TwoHandedSword();
-	}
+
 }

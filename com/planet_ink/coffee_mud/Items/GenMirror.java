@@ -26,10 +26,6 @@ public class GenMirror extends GenItem
 		return "You see yourself in it!";
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenMirror();
-	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Item.INVENTORY)))

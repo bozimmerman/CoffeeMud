@@ -22,8 +22,5 @@ public class FieldPlate extends StdArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_STEEL;
 	}
-	public Environmental newInstance()
-	{
-		return new FieldPlate();
-	}
+
 }

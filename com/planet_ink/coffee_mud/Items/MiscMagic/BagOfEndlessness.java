@@ -23,10 +23,7 @@ public class BagOfEndlessness extends BagOfHolding
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new BagOfEndlessness();
-	}
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

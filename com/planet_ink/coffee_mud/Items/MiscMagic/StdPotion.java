@@ -24,10 +24,7 @@ public class StdPotion extends StdDrink implements Potion
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdPotion();
-	}
+
 
 	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
 	public boolean isDrunk(){return (miscText.toUpperCase().indexOf(";DRUNK")>=0);}

@@ -22,10 +22,7 @@ public class GenSuperPill extends GenPill
 		material=EnvResource.RESOURCE_CORN;
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenSuperPill();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String secretIdentity()

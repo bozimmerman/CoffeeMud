@@ -24,8 +24,5 @@ public class Sabre extends StdWeapon
 		weaponClassification=Weapon.CLASS_SWORD;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Sabre();
-	}
+
 }

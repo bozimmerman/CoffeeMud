@@ -23,8 +23,5 @@ public class GenPipe extends GenCigar
 		capacity=2;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenPipe();
-	}
+
 }

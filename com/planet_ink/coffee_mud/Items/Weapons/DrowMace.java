@@ -26,9 +26,6 @@ public class DrowMace extends Mace
 		weaponType=TYPE_BASHING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new DrowMace();
-	}
+
 
 }

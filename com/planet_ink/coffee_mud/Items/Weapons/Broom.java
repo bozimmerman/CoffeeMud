@@ -15,8 +15,5 @@ public class Broom extends Quarterstaff
 		material=EnvResource.RESOURCE_OAK;
 	}
 
-	public Environmental newInstance()
-	{
-		return new Broom();
-	}
+
 }

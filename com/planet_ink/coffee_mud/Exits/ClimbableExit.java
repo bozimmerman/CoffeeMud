@@ -17,8 +17,4 @@ public class ClimbableExit extends StdExit
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_CLIMBING);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new ClimbableExit();
-	}
 }

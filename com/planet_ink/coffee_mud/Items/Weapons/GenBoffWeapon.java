@@ -27,10 +27,7 @@ public class GenBoffWeapon extends StdBoffWeapon
 		baseEnvStats().setLevel(5);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenBoffWeapon();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

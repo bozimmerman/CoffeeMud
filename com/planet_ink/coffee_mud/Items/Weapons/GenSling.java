@@ -18,10 +18,7 @@ public class GenSling extends StdSling
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenSling();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

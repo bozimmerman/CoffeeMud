@@ -24,9 +24,6 @@ public class Waterskin extends StdDrink
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Waterskin();
-	}
+
 
 }

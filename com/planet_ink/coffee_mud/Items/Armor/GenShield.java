@@ -23,8 +23,5 @@ public class GenShield extends GenArmor implements Shield
 	}
 	public boolean isGeneric(){return true;}
 
-	public Environmental newInstance()
-	{
-		return new GenShield();
-	}
+
 }

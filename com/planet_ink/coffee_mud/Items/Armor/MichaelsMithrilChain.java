@@ -42,8 +42,5 @@ public class MichaelsMithrilChain extends StdArmor
 		return true;
 	}
 
-	public Environmental newInstance()
-	{
-		return new MichaelsMithrilChain();
-	}
+
 }

@@ -32,10 +32,7 @@ public class GenStaff extends GenWeapon implements Wand
 		weaponClassification=Weapon.CLASS_STAFF;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenStaff();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public boolean useTheWand(Ability A, MOB mob)

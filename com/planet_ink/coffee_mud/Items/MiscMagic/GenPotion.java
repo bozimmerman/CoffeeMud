@@ -25,10 +25,7 @@ public class GenPotion extends GenDrink implements Potion
 	}
 
 
-	public Environmental newInstance()
-	{
-		return new GenPotion();
-	}
+
 	public boolean isGeneric(){return true;}
 	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
 

@@ -16,9 +16,6 @@ public class Parchment extends GenReadable
 		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
 
-	public Environmental newInstance()
-	{
-		return new Parchment();
-	}
+
 
 }

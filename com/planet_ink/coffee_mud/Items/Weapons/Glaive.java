@@ -27,9 +27,6 @@ public class Glaive extends StdWeapon
 	}
 
 
-	public Environmental newInstance()
-	{
-		return new Glaive();
-	}
+
 
 }

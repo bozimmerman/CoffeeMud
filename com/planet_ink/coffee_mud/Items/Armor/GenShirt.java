@@ -22,8 +22,5 @@ public class GenShirt extends GenArmor
 		recoverEnvStats();
 		material=EnvResource.RESOURCE_COTTON;
 	}
-	public Environmental newInstance()
-	{
-		return new GenShirt();
-	}
+
 }

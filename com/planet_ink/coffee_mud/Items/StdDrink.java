@@ -28,10 +28,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdDrink();
-	}
+
 
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}

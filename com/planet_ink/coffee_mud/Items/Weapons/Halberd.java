@@ -62,9 +62,6 @@ public class Halberd extends StdWeapon
 		}
 	}
 
-	public Environmental newInstance()
-	{
-		return new Halberd();
-	}
+
 
 }

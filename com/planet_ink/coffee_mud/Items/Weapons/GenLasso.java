@@ -18,10 +18,7 @@ public class GenLasso extends StdLasso
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenLasso();
-	}
+
 	public boolean isGeneric(){return true;}
 
 

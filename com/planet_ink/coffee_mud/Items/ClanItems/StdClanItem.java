@@ -10,7 +10,6 @@ import java.io.*;
 public class StdClanItem extends StdItem implements ClanItem
 {
 	public String ID(){	return "StdClanItem";}
-	public Environmental newInstance(){ return new StdClanItem();}
 	protected String myClan="";
 	protected int ciType=0;
 	public int ciType(){return ciType;}

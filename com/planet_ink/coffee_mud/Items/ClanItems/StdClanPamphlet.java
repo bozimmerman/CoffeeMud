@@ -8,7 +8,6 @@ import java.io.*;
 public class StdClanPamphlet extends StdClanItem
 {
 	public String ID(){	return "StdClanPamphlet";}
-	public Environmental newInstance(){ return new StdClanPamphlet();}
 	private int tradeTime=-1;
 
 	public StdClanPamphlet()

@@ -26,9 +26,6 @@ public class DrowSword extends Longsword
 		weaponType=TYPE_SLASHING;
 	}
 
-	public Environmental newInstance()
-	{
-		return new DrowSword();
-	}
+
 
 }

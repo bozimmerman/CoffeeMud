@@ -25,10 +25,7 @@ public class GenLantern extends GenLightSource
 		setMaterial(EnvResource.RESOURCE_STEEL);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenLantern();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -41,10 +41,7 @@ public class Corpse extends GenContainer implements DeadBody
 		if(newText.length()>0)
 			super.setMiscText(newText);
 	}
-	public Environmental newInstance()
-	{
-		return new Corpse();
-	}
+
 	public void startTicker(Room thisRoom)
 	{
 		roomLocation=thisRoom;
@@ -88,7 +85,7 @@ public class Corpse extends GenContainer implements DeadBody
 		else
 			super.setSecretIdentity(newIdentity);
 	}
-	
+
 	public String mobName(){ return mobName;}
 	public void setMobName(String newName){mobName=newName;}
 	public String mobDescription(){return mobDescription;}
@@ -107,7 +104,7 @@ public class Corpse extends GenContainer implements DeadBody
 	public void setKillingTool(Environmental tool){killingTool=tool;}
 	public boolean destroyAfterLooting(){return destroyAfterLooting;}
 	public void setDestroyAfterLooting(boolean truefalse){destroyAfterLooting=truefalse;}
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -129,9 +126,9 @@ public class Corpse extends GenContainer implements DeadBody
                 return true;
             if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
                 return true;
-            if (mobName().equalsIgnoreCase(msg.source().Name())) 
+            if (mobName().equalsIgnoreCase(msg.source().Name()))
 				return true;
-            else 
+            else
             if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 			{
                 msg.source().tell("You may not loot another players corpse.");
@@ -140,7 +137,7 @@ public class Corpse extends GenContainer implements DeadBody
 			else
             if(CommonStrings.getVar(CommonStrings.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
 			{
-                if(!(Util.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL))) 
+                if(!(Util.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
 				{
                     msg.source().tell("You can not get that.  You are not a player killer.");
                     return false;

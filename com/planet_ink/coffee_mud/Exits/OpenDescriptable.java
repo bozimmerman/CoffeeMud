@@ -10,8 +10,4 @@ public class OpenDescriptable extends StdExit
 	public String Name(){ return "the ground";}
 	public String displayText(){ return miscText;}
 	public String description(){ return miscText;}
-	public Environmental newInstance()
-	{
-		return new OpenDescriptable();
-	}
 }

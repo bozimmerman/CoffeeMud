@@ -66,7 +66,14 @@ public class StdExit implements Exit
 
 	public Environmental newInstance()
 	{
-		return new StdExit();
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdItem();
 	}
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(Exit E)

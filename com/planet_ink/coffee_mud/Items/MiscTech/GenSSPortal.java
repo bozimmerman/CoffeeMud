@@ -19,10 +19,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 		setDescription("");
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenSSPortal();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

@@ -4,9 +4,4 @@ import com.planet_ink.coffee_mud.common.*;
 public class Door extends StdClosedDoorway
 {
 	public String ID(){	return "Door";}
-	public Environmental newInstance()
-	{
-		return new Door();
-	}
-
 }

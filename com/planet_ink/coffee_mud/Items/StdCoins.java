@@ -21,10 +21,7 @@ public class StdCoins extends StdItem implements Coins
 		baseEnvStats.setWeight(0);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StdCoins();
-	}
+
 
 	public String name()
 	{

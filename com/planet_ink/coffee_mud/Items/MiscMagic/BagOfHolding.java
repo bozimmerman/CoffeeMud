@@ -23,11 +23,8 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new BagOfHolding();
-	}
-	
+
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);

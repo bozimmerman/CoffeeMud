@@ -18,9 +18,6 @@ public class Backpack extends CloseableContainer
 		recoverEnvStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Backpack();
-	}
+
 
 }

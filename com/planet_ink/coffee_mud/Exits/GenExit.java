@@ -46,10 +46,6 @@ public class GenExit extends StdExit
 		openDelayTicks=45;
 	}
 
-	public Environmental newInstance()
-	{
-		return new GenExit();
-	}
 	public boolean isGeneric(){return true;}
 	public String text()
 	{

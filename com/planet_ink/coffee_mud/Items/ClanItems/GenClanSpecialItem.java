@@ -20,11 +20,8 @@ public class GenClanSpecialItem extends StdClanSpecialItem
 		setMaterial(EnvResource.RESOURCE_OAK);
 		recoverEnvStats();
 	}
-	
-	public Environmental newInstance()
-	{
-		return new GenClanSpecialItem();
-	}
+
+
 	public boolean isGeneric(){return true;}
 
 	public String text()

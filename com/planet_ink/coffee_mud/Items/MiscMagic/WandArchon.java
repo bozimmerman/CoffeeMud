@@ -21,10 +21,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		secretWord="REFRESH, LEVEL UP, BURN!!";
 	}
 
-	public Environmental newInstance()
-	{
-		return new WandArchon();
-	}
+
 
 	public void setSpell(Ability theSpell)
 	{
