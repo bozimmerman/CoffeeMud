@@ -32,22 +32,30 @@ public class ClanHelper extends StdBehavior
 		if(!(affect.target() instanceof MOB))
 			return;
 		MOB target=(MOB)affect.target();
-
+		
+		if((target==null)||(observer==null)) return;
 		if((source!=observer)
+		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(target!=observer)
 		&&(Sense.canBeSeenBy(source,observer))
 		&&(Sense.canBeSeenBy(target,observer))
-		&&(!BrotherHelper.isBrother(source,observer))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
-		&&((!observer.isGeneric())||(!target.isGeneric())||(observer.name().equals(target.name()))))
+		&&(!BrotherHelper.isBrother(source,observer)))
 		{
-			boolean yep=Aggressive.startFight(observer,source,false);
-			String reason="THAT`S MY FRIEND!! CHARGE!!";
-			if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
-			&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))
-				reason=observer.charStats().getMyRace().ID().toUpperCase()+"s UNITE! CHARGE!";
-			if(yep)	ExternalPlay.quickSay(observer,null,reason,false,false);
+			String oRace=observer.charStats().getMyRace().ID().toUpperCase();
+			if((oRace.equals(target.charStats().getMyRace().ID()))
+			&&((!target.isGeneric())
+			   ||(!observer.isGeneric())
+			   ||(target.name().equalsIgnoreCase(observer.name()))
+			   ||((target.name().toUpperCase().indexOf(oRace)>=0)
+				  &&(observer.name().toUpperCase().indexOf(oRace)>=0))))
+			{
+				boolean yep=Aggressive.startFight(observer,source,false);
+				String reason="THAT`S MY FRIEND!! CHARGE!!";
+				if((observer.charStats().getMyRace().ID().equals(target.charStats().getMyRace().ID()))
+				&&(!observer.charStats().getMyRace().ID().equals(source.charStats().getMyRace().ID())))
+					reason=observer.charStats().getMyRace().ID().toUpperCase()+"s UNITE! CHARGE!";
+				if(yep)	ExternalPlay.quickSay(observer,null,reason,false,false);
+			}
 		}
 	}
 }

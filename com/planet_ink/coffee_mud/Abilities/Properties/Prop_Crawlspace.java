@@ -33,7 +33,7 @@ public class Prop_Crawlspace extends Property
 			case Affect.TYP_LEAVE:
 			case Affect.TYP_FLEE:
 				if(((affect.amITarget(affected))||(affect.tool()==affected))
-				&&(affect.source().envStats().height()<12)
+				&&(affect.source().envStats().height()>12)
 				&&(!Sense.isSitting(affect.source())))
 				{
 					if(affect.source().envStats().height()>120)
@@ -47,7 +47,7 @@ public class Prop_Crawlspace extends Property
 				break;
 			case Affect.TYP_STAND:
 				if((affected instanceof Room)
-				&&(affect.source().envStats().height()<12))
+				&&(affect.source().envStats().height()>12))
 				{
 					affect.source().tell("You cannot stand up here.");
 					return false;

@@ -84,7 +84,7 @@ public class WaterElemental extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-					("a pile of coal",EnvResource.RESOURCE_COAL));
+					("a puddle of water",EnvResource.RESOURCE_FRESHWATER));
 			}
 		}
 		return resources;

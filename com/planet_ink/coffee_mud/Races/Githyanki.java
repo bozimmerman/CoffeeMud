@@ -20,7 +20,7 @@ public class Githyanki extends Humanoid
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+10);
-		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CHARISMA-3));
-		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE+1));
+		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CHARISMA)-3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)+1);
 	}
 }
