@@ -226,31 +226,49 @@ public class GrinderRooms
 		return "";
 	}
 	
-	public static Room createLonelyRoom(Area A, Room linkTo, int dir)
+	public static Room createLonelyRoom(Area A, Room linkTo, int dir, boolean copyThisOne)
 	{
-		Room newRoom=CMClass.getLocale("StdRoom");
+		Room newRoom=null;
+		if((copyThisOne)&&(linkTo!=null))
+		{
+			ExternalPlay.resetRoom(linkTo);
+			newRoom=(Room)linkTo.copyOf();
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			{
+				newRoom.rawDoors()[d]=null;
+				newRoom.rawExits()[d]=null;
+			}
+		}
+		else
+		{
+			newRoom=CMClass.getLocale("StdRoom");
+			newRoom.setDisplayText("Title of "+newRoom.ID());
+			newRoom.setDescription("Description of "+newRoom.ID());
+		}
 		newRoom.setID(ExternalPlay.getOpenRoomID(A.name()));
-		newRoom.setDisplayText("Title of "+newRoom.ID());
-		newRoom.setDescription("Description of "+newRoom.ID());
 		newRoom.setArea(A);
 		if(linkTo!=null)
 		{
 			newRoom.rawDoors()[Directions.getOpDirectionCode(dir)]=linkTo;
 			newRoom.rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("StdOpenDoorway");
 		}
-		ExternalPlay.DBCreateRoom(newRoom,"StdRoom");
+		ExternalPlay.DBCreateRoom(newRoom,CMClass.className(newRoom));
 		ExternalPlay.DBUpdateExits(newRoom);
+		if(newRoom.numInhabitants()>0)
+			ExternalPlay.DBUpdateMOBs(newRoom);
+		if(newRoom.numItems()>0)
+			ExternalPlay.DBUpdateItems(newRoom);
 		CMMap.addRoom(newRoom);
 		newRoom.getArea().fillInAreaRoom(newRoom);
 		return newRoom;
 	}
 	
-	public static String createRoom(Room R, int dir)
+	public static String createRoom(Room R, int dir, boolean copyThisOne)
 	{
 		R.clearSky();
-		Room newRoom=createLonelyRoom(R.getArea(),R,dir);
-		if(R.rawDoors()[dir]!=null)
-			return "Room already there!";
+		if(R instanceof GridLocale)
+			((GridLocale)R).clearGrid();
+		Room newRoom=createLonelyRoom(R.getArea(),R,dir,copyThisOne);
 		R.rawDoors()[dir]=newRoom;
 		if(R.rawExits()[dir]==null)
 			R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");

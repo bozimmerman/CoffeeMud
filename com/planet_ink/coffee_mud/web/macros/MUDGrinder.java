@@ -27,7 +27,7 @@ public class MUDGrinder extends StdWebMacro
 			if(A==null) return "";
 			if(A.getMyMap().size()==0)
 			{
-				GrinderRooms.createLonelyRoom(A,null,0);
+				GrinderRooms.createLonelyRoom(A,null,0,false);
 				A.clearMap();
 			}
 			GrinderMap map=new GrinderMap(A);
@@ -244,7 +244,8 @@ public class MUDGrinder extends StdWebMacro
 			if(R==null) return "@break@";
 			int dir=Directions.getGoodDirectionCode((String)httpReq.getRequestParameters().get("LINK"));
 			if(dir<0) return "@break@";
-			String errMsg=GrinderRooms.createRoom(R,dir);
+			String copyThisOne=(String)httpReq.getRequestParameters().get("COPYROOM");
+			String errMsg=GrinderRooms.createRoom(R,dir,(copyThisOne!=null)&&(copyThisOne.equalsIgnoreCase("ON")));
 			httpReq.getRequestParameters().put("ERRMSG",errMsg);
 			R=R.rawDoors()[dir];
 			if(R!=null)

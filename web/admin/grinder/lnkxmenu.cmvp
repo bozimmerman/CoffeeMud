@@ -41,7 +41,9 @@
 <INPUT TYPE=BUTTON NAME=LINKTOAREA VALUE="Link Areas" ONCLICK="LinkExternally('/grinder/linkarea.cmvp');">
 @endif@
 <INPUT TYPE=BUTTON NAME=NEWROOM VALUE="Create New Room" ONCLICK="Clicked('/grinder/createroom.cmvp');">
-<INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
+<INPUT TYPE=CHECKBOX NAME=COPYROOM><FONT SIZE=-1><B>Copy @RequestParameter?ROOM@</B></FONT>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');"></P>
 </BODY>
 </HTML>
 @endif@

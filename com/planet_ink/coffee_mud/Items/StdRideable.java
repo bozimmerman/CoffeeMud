@@ -20,7 +20,7 @@ public class StdRideable extends StdContainer implements Rideable
 		description="Looks like a boat";
 		baseEnvStats().setWeight(2000);
 		recoverEnvStats();
-		capacity=2000;
+		capacity=3000;
 		material=EnvResource.RESOURCE_OAK;
 		isReadable=false;
 	}

@@ -209,6 +209,10 @@ public class GrinderExits
 	{
 		R.clearSky();
 		R2.clearSky();
+		if(R instanceof GridLocale)
+			((GridLocale)R).clearGrid();
+		if(R2 instanceof GridLocale)
+			((GridLocale)R2).clearGrid();
 		
 		if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
 		if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
@@ -217,7 +221,7 @@ public class GrinderExits
 			R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
 		if(R2.rawExits()[dir2]==null)
 			R2.rawExits()[dir2]=CMClass.getExit("StdOpenDoorway");
-			
+		
 		ExternalPlay.DBUpdateExits(R);
 		ExternalPlay.DBUpdateExits(R2);
 			
