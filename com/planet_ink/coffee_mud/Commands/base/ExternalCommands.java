@@ -100,10 +100,6 @@ public class ExternalCommands implements ExternalCommand
 	{
 		processor.movement.roomAffectFully(msg,room,dirCode);
 	}
-	public boolean doAttack(MOB attacker, MOB target, Weapon weapon)
-	{
-		return processor.theFight.doAttack(attacker,target,weapon);
-	}
 	public StringBuffer getEquipment(MOB seer, MOB mob)
 	{
 		return processor.scoring.getEquipment(seer,mob);

@@ -18,9 +18,9 @@ public class SysOpSkills
 	}
 	private Room findRoom(String roomID)
 	{
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room thisRoom=(Room)CMMap.map.elementAt(m);
+			Room thisRoom=CMMap.getRoom(m);
 			if(thisRoom.ID().equalsIgnoreCase(roomID))
 			   return thisRoom;
 		}
@@ -345,7 +345,7 @@ public class SysOpSkills
 		MOB target=getTarget(mob,commands,true);
 		if((target==null)||((target!=null)&&(!target.isMonster())))
 		{
-			Vector V=mob.isASysOp(null)?CMMap.map:mob.location().getArea().getMyMap();
+			Vector V=mob.isASysOp(null)?CMMap.getRoomVector():mob.location().getArea().getMyMap();
 			for(int m=0;m<V.size();m++)
 			{
 				Room room=(Room)V.elementAt(m);

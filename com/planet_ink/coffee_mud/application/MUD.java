@@ -200,9 +200,9 @@ public class MUD extends Thread implements Host
 
 		Log.sysOut("MUD","Loading map...");
 		offlineReason=new String("Booting: loading rooms (this can take a while).");
-		RoomLoader.DBRead(CMMap.AREAS,CMMap.map);
-		Log.sysOut("MUD","Mapped rooms      : "+CMMap.map.size()+" in "+CMMap.AREAS.size()+" areas");
-		if(CMMap.map.size()==0)
+		RoomLoader.DBRead(CMMap.getAreaVector(),CMMap.getRoomVector());
+		Log.sysOut("MUD","Mapped rooms      : "+CMMap.numRooms()+" in "+CMMap.numAreas()+" areas");
+		if(CMMap.numRooms()==0)
 		{
 			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
 			String id=page.getStr("START");
@@ -216,7 +216,7 @@ public class MUD extends Thread implements Host
 			RoomLoader.DBCreate(room,"CoffeeMud");
 			Item I=CMClass.getMiscMagic("ManualArchon");
 			room.addItem(I);
-			CMMap.map.addElement(room);
+			CMMap.addRoom(room);
 		}
 
 		offlineReason=new String("Booting: readying for connections.");

@@ -80,7 +80,7 @@ public class Rooms
 			thisRoom.setDisplayText(CMClass.className(thisRoom)+"-"+thisRoom.ID());
 			thisRoom.setDescription("");
 			ExternalPlay.DBCreateRoom(thisRoom,Locale);
-			CMMap.map.addElement(thisRoom);
+			CMMap.addRoom(thisRoom);
 		}
 
 		if(thisRoom==null)
@@ -326,16 +326,16 @@ public class Rooms
 						if(areaType.length()==0) areaType="StdArea";
 						A=ExternalPlay.DBCreateArea(restStr,areaType);
 						mob.location().setArea(A);
-						CMMap.map.remove(mob.location());
+						CMMap.delRoom(mob.location());
 						String oldID=mob.location().ID();
 						mob.location().setID(checkID);
 
 						ExternalPlay.DBReCreate(mob.location(),oldID);
 
-						CMMap.map.addElement(mob.location());
-						for(int m=0;m<CMMap.map.size();m++)
+						CMMap.addRoom(mob.location());
+						for(int m=0;m<CMMap.numRooms();m++)
 						{
-							Room thisRoom=(Room)CMMap.map.elementAt(m);
+							Room thisRoom=CMMap.getRoom(m);
 							for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 							{
 								Room thatRoom=thisRoom.rawDoors()[dir];
@@ -404,10 +404,10 @@ public class Rooms
 
 	public void obliterateRoom(MOB mob, Room deadRoom)
 	{
-		CMMap.map.remove(deadRoom);
-		for(int m=0;m<CMMap.map.size();m++)
+		CMMap.delRoom(deadRoom);
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room thisRoom=(Room)CMMap.map.elementAt(m);
+			Room thisRoom=CMMap.getRoom(m);
 			boolean changes=false;
 			for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 			{
@@ -573,9 +573,9 @@ public class Rooms
 		while(foundOne!=null)
 		{
 			foundOne=null;
-			for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
+			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room r=(Room)e.nextElement();
+				Room r=CMMap.getRoom(m);
 				if(r.getArea().name().equalsIgnoreCase(areaName))
 				{
 					foundOne=r;
@@ -588,7 +588,7 @@ public class Rooms
 
 		Area A=CMMap.getArea(areaName);
 		ExternalPlay.DBDeleteArea(A);
-		CMMap.AREAS.removeElement(A);
+		CMMap.delArea(A);
 
 		if(confirmed)
 		{

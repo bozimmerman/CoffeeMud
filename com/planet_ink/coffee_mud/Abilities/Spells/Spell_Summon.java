@@ -51,9 +51,9 @@ public class Spell_Summon extends Spell
 
 		Room oldRoom=null;
 		MOB target=null;
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room room=(Room)CMMap.map.elementAt(m);
+			Room room=CMMap.getRoom(m);
 			target=room.fetchInhabitant(areaName);
 			if(target!=null)
 			{

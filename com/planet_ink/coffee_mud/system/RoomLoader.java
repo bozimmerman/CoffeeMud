@@ -514,7 +514,7 @@ public class RoomLoader
 		
 		A=(Area)A.copyOf();
 		A.setName(areaName);
-		CMMap.AREAS.addElement(A);
+		CMMap.addArea(A);
 		DBConnection D=null;
 		String str=null;
 		try

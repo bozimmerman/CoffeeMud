@@ -19,16 +19,16 @@ public class Utils
 		String name=Util.combine(commands,2);
 		Environmental E=mob.location().fetchFromRoomFavorItems(null,name);
 		if(E==null)
-			for(int m=0;m<CMMap.map.size();m++)
+			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room room=(Room)CMMap.map.elementAt(m);
+				Room room=CMMap.getRoom(m);
 				E=room.fetchFromRoomFavorMOBs(null,name);
 				if(E!=null) break;
 			}
 		if(E==null)
-			for(int r=0;r<CMMap.map.size();r++)
+			for(int r=0;r<CMMap.numRooms();r++)
 			{
-				Room room=(Room)CMMap.map.elementAt(r);
+				Room room=CMMap.getRoom(r);
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB mob2=room.fetchInhabitant(m);

@@ -23,9 +23,9 @@ public class SaveThread extends Thread
 		Calendar itemKillTime=Calendar.getInstance();
 		itemKillTime.add(Calendar.HOUR,-20);
 		
-		for(int mn=0;mn<CMMap.map.size();mn++)
+		for(int mn=0;mn<CMMap.numRooms();mn++)
 		{
-			Room room=(Room)CMMap.map.elementAt(mn);
+			Room room=CMMap.getRoom(mn);
 			for(int m=0;m<room.numInhabitants();m++)
 			{
 				MOB mob=(MOB)room.fetchInhabitant(m);

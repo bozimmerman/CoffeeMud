@@ -12,8 +12,7 @@ public interface ExternalCommand
 	public boolean isHit(MOB attacker, MOB target);
 	public Hashtable properTargets(Ability A, MOB caster);
 	public void die(MOB source, MOB target);
-	public boolean doAttack(MOB attacker, MOB target, Weapon weapon);
-	
+
 	// other actions
 	public boolean wear(MOB mob, Item item);
 	public boolean remove(MOB mob, Item item);

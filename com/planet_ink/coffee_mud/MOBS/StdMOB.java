@@ -387,7 +387,7 @@ public class StdMOB implements MOB
 		if(getStartRoom()==null)
 			setStartRoom((Room)CMMap.getRoom("START"));
 		if(getStartRoom()==null)
-			setStartRoom((Room)CMMap.map.elementAt(0));
+			setStartRoom((Room)CMMap.getRoom(0));
 		setLocation(newLocation);
 		if(location()==null)
 		{
@@ -1295,8 +1295,12 @@ public class StdMOB implements MOB
 						Weapon weapon=affect.source().myNaturalWeapon();
 						if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
 							weapon=(Weapon)affect.tool();
-						boolean isHit=ExternalPlay.doAttack(affect.source(),this,weapon);
-						if(isHit) affect.tagModified(true);
+						if(weapon!=null)
+						{
+							boolean isHit=ExternalPlay.isHit(affect.source(),this);
+							ExternalPlay.strike(affect.source(),this,weapon,isHit);
+							affect.tagModified(true);
+						}
 					}
 				}
 				else

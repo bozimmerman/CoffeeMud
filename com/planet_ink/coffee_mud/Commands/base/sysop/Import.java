@@ -2345,9 +2345,9 @@ public class Import
 		{
 			// confirm area creation/overwrite
 			boolean exists=false;
-			for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
+			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room r=(Room)e.nextElement();
+				Room r=CMMap.getRoom(m);
 				if(r.getArea().name().equalsIgnoreCase(areaName))
 				{
 					exists=true;
@@ -2367,9 +2367,9 @@ public class Import
 					else
 					{
 						reLinkTable=new Vector();
-						for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
+						for(int m=0;m<CMMap.numRooms();m++)
 						{
-							Room r=(Room)e.nextElement();
+							Room r=CMMap.getRoom(m);
 							if(!r.getArea().name().equalsIgnoreCase(areaName))
 								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 								{
@@ -2381,9 +2381,9 @@ public class Import
 						while(true)
 						{
 							Room foundOne=null;
-							for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
+							for(int m=0;m<CMMap.numRooms();m++)
 							{
-								Room r=(Room)e.nextElement();
+								Room r=CMMap.getRoom(m);
 								if(r.getArea().name().equalsIgnoreCase(areaName))
 								{
 									foundOne=r;
@@ -2579,7 +2579,7 @@ public class Import
 					R.addNonUninvokableAffect(restrictor);
 
 				roomV.insertElementAt(R.ID(),0);
-				CMMap.map.addElement(R);
+				CMMap.addRoom(R);
 				newRooms.addElement(R);
 
 				lastRoom=R;
@@ -2731,9 +2731,9 @@ public class Import
 						Exit opExit=null;
 						if((linkRoom==null)&&(linkRoomID>=0))
 						{
-							for(Enumeration e=CMMap.map.elements();e.hasMoreElements();)
+							for(int m=0;m<CMMap.numRooms();m++)
 							{
-								Room R2=(Room)e.nextElement();
+								Room R2=CMMap.getRoom(m);
 								if((R2.ID().endsWith("#"+linkRoomID))&&(R2!=R))
 								{
 									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

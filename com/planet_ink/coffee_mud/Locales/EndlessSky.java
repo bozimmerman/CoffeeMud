@@ -93,7 +93,7 @@ public class EndlessSky extends StdGrid
 
 					if((x>0)&&(subMap[x-1][y]!=null))
 						linkRoom(newRoom,subMap[x-1][y],Directions.WEST);
-					CMMap.map.addElement(newRoom);
+					CMMap.addRoom(newRoom);
 				}
 			}
 		buildFinalLinks();

@@ -74,12 +74,12 @@ public class Generic
 				newRoom.setArea(R.getArea());
 				newRoom.setDisplayText(R.displayText());
 				newRoom.setDescription(R.description());
-				for(int r=0;r<CMMap.map.size();r++)
+				for(int r=0;r<CMMap.numRooms();r++)
 				{
-					Room room=(Room)CMMap.map.elementAt(r);
+					Room room=CMMap.getRoom(r);
 					if(room==R)
 					{
-						CMMap.map.setElementAt(newRoom,r);
+						CMMap.setRoomAt(newRoom,r);
 						room=newRoom;
 					}
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

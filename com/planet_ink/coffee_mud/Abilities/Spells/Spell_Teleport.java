@@ -43,9 +43,9 @@ public class Spell_Teleport extends Spell
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		int numRooms=0;
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room room=(Room)CMMap.map.elementAt(m);
+			Room room=CMMap.getRoom(m);
 			if(room.getArea().name().toUpperCase().startsWith(areaName))
 				numRooms++;
 		}
@@ -61,9 +61,9 @@ public class Spell_Teleport extends Spell
 		while((tries<20)&&(newRoom==null))
 		{
 			int roomNum=Dice.roll(1,numRooms,-1);
-			for(int m=0;m<CMMap.map.size();m++)
+			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room room=(Room)CMMap.map.elementAt(m);
+				Room room=CMMap.getRoom(m);
 				if(room.getArea().name().toUpperCase().startsWith(areaName))
 				{
 					if(roomNum==0)

@@ -225,10 +225,10 @@ public class Lister
 			mob.tell(reallyList(CMClass.MOBs).toString());
 		else
 		if("ROOMS".startsWith(listThis))
-			mob.tell(roomDetails(CMMap.map,mob.location()).toString());
+			mob.tell(roomDetails(CMMap.getRoomVector(),mob.location()).toString());
 		else
 		if("AREA".startsWith(listThis))
-			mob.tell(reallyList(CMMap.map,mob.location()).toString());
+			mob.tell(reallyList(CMMap.getRoomVector(),mob.location()).toString());
 		else
 		if("LOCALES".startsWith(listThis))
 			mob.tell(reallyList(CMClass.locales).toString());

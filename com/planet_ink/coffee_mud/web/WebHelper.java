@@ -54,12 +54,12 @@ public class WebHelper
 // OLD		Hashtable areasHash=new Hashtable();
 			Vector areasVec=new Vector();
 
-			for(int a=0;a<CMMap.AREAS.size();a++)
-				areasVec.addElement(((Area)CMMap.AREAS.elementAt(a)).name());
+			for(int a=0;a<CMMap.numAreas();a++)
+				areasVec.addElement(((Area)CMMap.getArea(a)).name());
 
-/* OLD			for(int m=0;m<CMMap.map.size();m++)
+/* OLD			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room room=(Room)CMMap.map.elementAt(m);
+				Room room=CMMap.getRoom(m);
 				if(areasHash.get(room.getAreaID())==null)
 				{
 					areasHash.put(room.getAreaID(),room.getAreaID());

@@ -14,6 +14,10 @@ public class StdArea implements Area
 	protected int currentWeather=Area.WEATHER_CLEAR;
 	protected int nextWeather=Area.WEATHER_CLEAR;
 
+	protected int month=1;
+	protected int day=1;
+	protected int time=0;
+	
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
 
@@ -76,6 +80,15 @@ public class StdArea implements Area
 	{
 		climateID=newClimateType;
 	}
+	public int getMonth(){return month;}
+	public void setMonth(int m){month=m;}
+	public int getMoonPhase(){return month/4;}
+	
+	public int getDayOfMonth(){return day;}
+	public void setDayOfMonth(int d){day=d;}
+	public int getTimeOfDay(){return time;}
+	public void setTimeOfDay(int t){time=t;}
+	
 	
 	public boolean amISubOp(String username)
 	{
@@ -834,9 +847,9 @@ public class StdArea implements Area
 	public Vector getMyMap()
 	{
 		Vector myMap=new Vector();
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room R=(Room)CMMap.map.elementAt(m);
+			Room R=CMMap.getRoom(m);
 			if(R.getArea()==this)
 				myMap.addElement(R);
 		}

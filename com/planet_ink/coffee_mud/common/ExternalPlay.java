@@ -109,11 +109,6 @@ public class ExternalPlay
 	{
 		if(player!=null) player.roomAffectFully(msg,room,dirCode);
 	}
-	public static boolean doAttack(MOB attacker, MOB target, Weapon weapon)
-	{
-		if(player!=null) return player.doAttack(attacker,target,weapon);
-		return false;
-	}
 	public static StringBuffer getEquipment(MOB seer, MOB mob)
 	{
 		if(player!=null) return player.getEquipment(seer,mob);

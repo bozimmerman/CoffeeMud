@@ -82,9 +82,9 @@ public class Scriptable extends ActiveTicker
 		Room room=CMMap.getRoom(thisName);
 		if(room!=null) return room;
 		Room inAreaRoom=null;
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room r=(Room)CMMap.map.elementAt(m);
+			Room r=(Room)CMMap.getRoom(m);
 			if((CoffeeUtensils.containsString(r.name(),thisName))
 			||(r.ID().endsWith("#"+thisName))
 			||(r.fetchFromRoomFavorMOBs(null,thisName)!=null))
@@ -104,9 +104,9 @@ public class Scriptable extends ActiveTicker
 		if(thisName.length()==0) return null;
 		Environmental thing=null;
 		Environmental areaThing=null;
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room r=(Room)CMMap.map.elementAt(m);
+			Room r=CMMap.getRoom(m);
 			Environmental E=null;
 			if(mob)
 				E=r.fetchInhabitant(thisName);

@@ -8,9 +8,9 @@ public class Reset
 	public String getOpenRoomID(String AreaID)
 	{
 		int highest=0;
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room thisRoom=(Room)CMMap.map.elementAt(m);
+			Room thisRoom=CMMap.getRoom(m);
 			if((thisRoom.getArea().name().equals(AreaID))
 			&&(thisRoom.ID().startsWith(AreaID+"#")))
 			{

@@ -1,3 +1,5 @@
 More than one polymorph can screw a PLAYERS name for GOOD.  Fix it! flesh stone, enlarge
 hide, leave the room, reenter the room, try to hide again
-
+no following monsters
+thedragon needs 3244325 more trains
+lose a level if you lose enough experience

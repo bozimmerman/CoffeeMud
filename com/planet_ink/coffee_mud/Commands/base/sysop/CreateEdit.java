@@ -102,9 +102,9 @@ public class CreateEdit
 			{
 				Room theRoom=null;
 				if(allWord.length()>0)
-				for(int m=0;m<CMMap.map.size();m++)
+				for(int m=0;m<CMMap.numRooms();m++)
 				{
-					Room room=(Room)CMMap.map.elementAt(m);
+					Room room=CMMap.getRoom(m);
 					if(room.ID().equalsIgnoreCase(allWord))
 					{
 						theRoom=room;

@@ -42,9 +42,9 @@ public class Spell_Portal extends Spell
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
 		Room newRoom=null;
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room room=(Room)CMMap.map.elementAt(m);
+			Room room=CMMap.getRoom(m);
 			if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
 			{
 			   newRoom=room;

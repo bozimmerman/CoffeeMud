@@ -133,9 +133,9 @@ public class Exits
 			return;
 		}
 
-		for(int m=0;m<CMMap.map.size();m++)
+		for(int m=0;m<CMMap.numRooms();m++)
 		{
-			Room room=(Room)CMMap.map.elementAt(m);
+			Room room=CMMap.getRoom(m);
 			for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 			{
 				Exit exit=room.rawExits()[e2];

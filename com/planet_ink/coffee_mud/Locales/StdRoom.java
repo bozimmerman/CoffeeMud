@@ -147,7 +147,7 @@ public class StdRoom
 			room.rawExits()[Directions.UP]=o;
 			sky.rawDoors()[Directions.DOWN]=room;
 			sky.rawExits()[Directions.DOWN]=o;
-			CMMap.map.addElement(sky);
+			CMMap.addRoom(sky);
 		}
 	}
 
@@ -169,15 +169,7 @@ public class StdRoom
 					giveASky(this);
 				break;
 			case Affect.TYP_AREAAFFECT:
-				if(affect.source().location()==this)
-				{
-					for(int m=0;m<CMMap.map.size();m++)
-					{
-						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
-						   if(!otherRoom.okAffect(affect)) return false;
-					}
-				}
+				// obsolete with the area objects
 				break;
 			case Affect.TYP_CAST_SPELL:
 				break;
@@ -262,15 +254,7 @@ public class StdRoom
 					mob.tell("You can't see that!");
 				break;
 			case Affect.TYP_AREAAFFECT:
-				if(affect.source().location()==this)
-				{
-					for(int m=0;m<CMMap.map.size();m++)
-					{
-						Room otherRoom=(Room)CMMap.map.elementAt(m);
-						if((otherRoom!=null)&&(otherRoom.getArea()==getArea()))
-						   otherRoom.affect(affect);
-					}
-				}
+				// obsolete with the area objects
 				break;
 			default:
 				break;

@@ -339,9 +339,9 @@ public class BasicSenses
 		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WORLD")))
 		{
 			StringBuffer tellMe=new StringBuffer("");
-			for(int a=0;a<CMMap.AREAS.size();a++)
+			for(int a=0;a<CMMap.numAreas();a++)
 			{
-				Area A=(Area)CMMap.AREAS.elementAt(a);
+				Area A=(Area)CMMap.getArea(a);
 				tellMe.append(Util.padRight(A.name(),20)+": "+A.weatherDescription(room)+"\n\r");
 			}
 			mob.tell(tellMe.toString());

@@ -187,14 +187,6 @@ public class TheFight
 		return (Dice.rollPercentage()<attChance);
 	}
 
-	public boolean doAttack(MOB attacker, MOB target, Weapon weapon)
-	{
-		if(weapon==null) return false;
-		boolean hit=isHit(attacker,target);
-		strike(attacker,target,weapon,hit);
-		return hit;
-	}
-
 	public boolean canDamageEachOther(MOB attacker, MOB target)
 	{
 		if((attacker==null)

@@ -43,9 +43,9 @@ public class XMLIO
 				roomXML.append("<LIST>");
 				if(newList.equalsIgnoreCase("ROOM"))
 				{
-					for(int m=0;m<CMMap.map.size();m++)
+					for(int m=0;m<CMMap.numRooms();m++)
 					{
-						Environmental E=(Environmental)CMMap.map.elementAt(m);
+						Environmental E=(Environmental)CMMap.getRoom(m);
 						if(E.ID().length()>0)
 							roomXML.append(E.ID()+";");
 					}
@@ -53,8 +53,8 @@ public class XMLIO
 				else
 				if(newList.equalsIgnoreCase("AREA"))
 				{
-					for(int a=0;a<CMMap.AREAS.size();a++)
-						roomXML.append(((Area)CMMap.AREAS.elementAt(a)).name()+";");
+					for(int a=0;a<CMMap.numAreas();a++)
+						roomXML.append((CMMap.getArea(a)).name()+";");
 				}
 				else
 				if(newList.equalsIgnoreCase("LOCALE"))
@@ -136,9 +136,9 @@ public class XMLIO
 				}
 				else
 				{
-					for(int m=0;m<CMMap.map.size();m++)
+					for(int m=0;m<CMMap.numRooms();m++)
 					{
-						Room R=(Room)CMMap.map.elementAt(m);
+						Room R=CMMap.getRoom(m);
 						if((R.ID().length()>0)&&(R.getArea().name().equalsIgnoreCase(newList)))
 							roomXML.append(R.ID()+";");
 					}
@@ -250,9 +250,9 @@ public class XMLIO
 		{
 			String possID=Util.combine(commands,0);
 			Room room=null;
-			for(int m=0;m<CMMap.map.size();m++)
+			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room thisRoom=(Room)CMMap.map.elementAt(m);
+				Room thisRoom=CMMap.getRoom(m);
 				if(thisRoom.ID().equalsIgnoreCase(possID))
 				{
 				   room=thisRoom;
@@ -335,9 +335,9 @@ public class XMLIO
 			String roomID=XMLManager.returnXMLValue(Util.combine(commands,0),"ROOMID");
 			if((roomID.length()>0)&&(!roomID.equalsIgnoreCase(room.ID())))
 			{
-				for(int m=0;m<CMMap.map.size();m++)
+				for(int m=0;m<CMMap.numRooms();m++)
 				{
-					Room thisRoom=(Room)CMMap.map.elementAt(m);
+					Room thisRoom=CMMap.getRoom(m);
 					if(thisRoom.ID().equalsIgnoreCase(roomID))
 					{
 					   room=thisRoom;
@@ -456,9 +456,9 @@ public class XMLIO
 		{
 			String possID=Util.combine(commands,0);
 			Room room=null;
-			for(int m=0;m<CMMap.map.size();m++)
+			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room thisRoom=(Room)CMMap.map.elementAt(m);
+				Room thisRoom=CMMap.getRoom(m);
 				if(thisRoom.ID().equalsIgnoreCase(possID))
 				{
 				   room=thisRoom;
@@ -538,7 +538,7 @@ public class XMLIO
 				room.setArea(newArea);
 				newID=room.ID();
 				ExternalPlay.DBCreateRoom(room,newRoomClass);
-				CMMap.map.addElement(room);
+				CMMap.addRoom(room);
 				response=newID;
 				Log.sysOut("ROOMXML",mob.name()+" created room "+room.ID()+".");
 			}
@@ -546,9 +546,9 @@ public class XMLIO
 			{
 				if((!room.ID().equalsIgnoreCase(newID))&&(newID.length()>0))
 				{
-					for(int m=0;m<CMMap.map.size();m++)
+					for(int m=0;m<CMMap.numRooms();m++)
 					{
-						Room thisRoom=(Room)CMMap.map.elementAt(m);
+						Room thisRoom=CMMap.getRoom(m);
 						if(thisRoom.ID().equalsIgnoreCase(newID))
 						{
 						   room=thisRoom;
@@ -640,12 +640,12 @@ public class XMLIO
 			if(room!=mob.location())
 				room.bringMobHere(mob,true);
 			mob.session().rawPrintln("<RESPONSE>"+response+"</RESPONSE>");
-			for(int m=0;m<CMMap.map.size();m++)
+			for(int m=0;m<CMMap.numRooms();m++)
 			{
-				Room R=(Room)CMMap.map.elementAt(m);
-				for(int m1=0;m1<CMMap.map.size();m1++)
-					if((((Room)CMMap.map.elementAt(m1))==R)&&(m1!=m))
-						Log.errOut("ROOMXML",R.ID()+"="+((Room)CMMap.map.elementAt(m1)).ID());
+				Room R=CMMap.getRoom(m);
+				for(int m1=0;m1<CMMap.numRooms();m1++)
+					if(((CMMap.getRoom(m1))==R)&&(m1!=m))
+						Log.errOut("ROOMXML",R.ID()+"="+(CMMap.getRoom(m1)).ID());
 
 			}
 			return;

@@ -243,7 +243,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						this.linkRoom(newRoom,this.subMap[x][y-1],Directions.NORTH);
 					if((x>0)&&(this.subMap[x-1][y]!=null))
 						this.linkRoom(newRoom,this.subMap[x-1][y],Directions.WEST);
-					CMMap.map.addElement(newRoom);
+					CMMap.addRoom(newRoom);
 				}
 			}
 		this.buildFinalLinks();
@@ -268,7 +268,7 @@ public class StdGrid extends StdRoom implements GridLocale
 				for(int y=0;y<this.subMap[x].length;y++)
 				{
 					Room room=this.subMap[x][y];
-					CMMap.map.remove(room);
+					CMMap.delRoom(room);
 				}
 			this.subMap=null;
 		}

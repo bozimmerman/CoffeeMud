@@ -228,8 +228,8 @@ public class Trap_Trap extends StdAbility implements Trap
 			myPit.rawDoors()[Directions.UP]=myPitUp;
 			myPitUp.recoverEnvStats();
 
-			CMMap.map.addElement(myPit);
-			CMMap.map.addElement(myPitUp);
+			CMMap.addRoom(myPit);
+			CMMap.addRoom(myPitUp);
 		}
 		myPit.bringMobHere(mob,false);
 		if(mob.fetchAffect("Spell_FeatherFall")!=null)

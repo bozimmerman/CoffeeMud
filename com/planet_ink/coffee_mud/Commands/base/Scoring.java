@@ -436,8 +436,8 @@ public class Scoring
 		{
 
 			Vector areasVec=new Vector();
-			for(int a=0;a<CMMap.AREAS.size();a++)
-				areasVec.addElement(((Area)CMMap.AREAS.elementAt(a)).name());
+			for(int a=0;a<CMMap.numAreas();a++)
+				areasVec.addElement((CMMap.getArea(a)).name());
 			Collections.sort((List)areasVec);
 			StringBuffer msg=new StringBuffer("^HComplete areas list:^?\n\r");
 			int col=0;

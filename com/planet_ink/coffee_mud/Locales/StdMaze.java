@@ -133,7 +133,7 @@ public class StdMaze extends StdGrid
 				if(newRoom!=null)
 				{
 					subMap[x][y]=newRoom;
-					CMMap.map.addElement(newRoom);
+					CMMap.addRoom(newRoom);
 				}
 			}
 		buildMaze();
