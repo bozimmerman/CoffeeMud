@@ -17,7 +17,7 @@ public class Tick extends Thread
 	
 	private Vector tickers=new Vector();
 	
-	public Enumeration tickers(){return tickers.elements();}
+	public Enumeration tickers(){return ((Vector)tickers.clone()).elements();}
 	public int numTickers(){return tickers.size();}
 	public TockClient fetchTicker(int i){
 		try{

@@ -10,8 +10,6 @@ public interface ExternalHTTPRequests
 	public String getHTTPclientIP();
 	public String getWebServerPartialName();
 	public Host getMUD();
-	public String WebHelperhtmlPlayerList();
-	public String WebHelperhtmlAreaTbl();
 	public boolean isRequestParameter(String key);
 	public String getRequestParameter(String key);
 	public void removeRequestParameter(String key);

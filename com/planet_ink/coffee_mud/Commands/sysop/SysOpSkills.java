@@ -1097,4 +1097,44 @@ public class SysOpSkills
 	    else
 			mob.tell("You can either send a message to everyone on the server or a single user using \n\r    ANNOUNCE [ALL|(USER NAME)] (MESSAGE) \n\rGood aligned players will perceive it as coming from heaven, evil from hell, and neutral from out of nowhere.");
 	}
+	
+	public static void wizemote(MOB mob,Vector commands)
+	{
+		if(commands.size()>2)
+		{
+			String who=(String)commands.elementAt(1);
+			String msg=Util.combine(commands,2);
+			if(who.toUpperCase().equals("ALL"))
+			{
+				for(int s=0;s<Sessions.size();s++)
+				{
+					Session S=Sessions.elementAt(s);
+					if((S.mob()!=null)&&(S.mob().location()!=null)&&(mob.isASysOp(S.mob().location())))
+	  					S.stdPrintln("^w"+msg+"^?");
+				}
+			}
+			else
+			{
+				boolean found=false;
+				for(int s=0;s<Sessions.size();s++)
+				{
+					Session S=Sessions.elementAt(s);
+					if((S.mob()!=null)
+					&&(S.mob().location()!=null)
+					&&(mob.isASysOp(S.mob().location()))
+					&&(CoffeeUtensils.containsString(S.mob().name(),who)
+						||CoffeeUtensils.containsString(S.mob().location().getArea().name(),who)))
+					{
+	  					S.stdPrintln("^w"+msg+"^?");
+						found=true;
+						break;
+					}
+				}
+				if(!found)
+					mob.tell("You can't find anyone or anywhere by that name.");
+			}
+	    }
+	    else
+			mob.tell("You must specify either all, or an area/mob name, and an message.");
+	}
 }

@@ -25,6 +25,7 @@ public class Socials
 		filename="";
 		soc=new Hashtable();
 		Resources.removeResource("SOCIALS LIST");
+		Resources.removeResource("WEB SOCIALS TBL");
 	}
 
 	public static void addSocial(Social S)
@@ -283,6 +284,8 @@ public class Socials
 			writer.write(buf.toString());
 			writer.flush();
 			writer.close();
+			Resources.removeResource("SOCIALS LIST");
+			Resources.removeResource("WEB SOCIALS TBL");
 		}
 		catch(IOException e)
 		{

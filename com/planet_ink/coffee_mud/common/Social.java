@@ -100,6 +100,50 @@ public class Social implements Environmental
 		return true;
 	}
 
+	public Affect makeChannelMsg(MOB mob, 
+								 int channelInt, 
+								 String channelName, 
+								 Vector commands,
+								 boolean makeTarget)
+	{
+		String targetStr="";
+		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
+			targetStr=(String)commands.elementAt(1);
+
+		Environmental Target=null;
+		if((Target==null)&&(targetStr.length()>0))
+		{
+			Target=CMMap.getPlayer(targetStr);
+			if((Target==null)&&(makeTarget))
+			{
+				Target=CMClass.getMOB("StdMOB");
+				Target.setName(targetStr);
+			}
+			if((Target!=null)&&(!Sense.isSeen(Target)))
+			   Target=null;
+		}
+
+		String You_see=You_see();
+		if((You_see!=null)&&(You_see.trim().length()==0)) You_see=null;
+		String Third_party_sees=Third_party_sees();
+		if((Third_party_sees!=null)&&(Third_party_sees.trim().length()==0)) Third_party_sees=null;
+		String Target_sees=Target_sees();
+		if((Target_sees!=null)&&(Target_sees.trim().length()==0)) Target_sees=null;
+		String See_when_no_target=See_when_no_target();
+		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) See_when_no_target=null;
+		FullMsg msg=null;
+		String str=makeTarget?"":"^Q^q["+channelName+"] ";
+		String end=makeTarget?"":"^?^.";
+		if((Target==null)&&(targetable()))
+			msg=new FullMsg(mob,null,this,Affect.MASK_CHANNEL|sourceCode(),str+See_when_no_target+end,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null);
+		else
+		if(Target==null)
+			msg=new FullMsg(mob,null,this,Affect.MASK_CHANNEL|sourceCode(),str+You_see+end,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
+		else
+			msg=new FullMsg(mob,Target,this,Affect.MASK_CHANNEL|sourceCode(),str+You_see+end,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str+Target_sees+end,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str+Third_party_sees+end);
+		return msg;
+	}
+	
 	public String description(){return "";}
 	public void setDescription(String str){}
 	public String displayText(){return "";}

@@ -38,8 +38,12 @@ public class Thief_SilentLoot extends ThiefSkill
 					item.removeFromOwnerContainer();
 					item.setContainer(null);
 					((MOB)affected).location().addItemRefuse(item,Item.REFUSE_MONSTER_EQ);
-					if(((MOB)affected).location().show((MOB)affected,item,Affect.MSG_THIEF_ACT,null))
-						affect.addTrailerMsg(new FullMsg((MOB)affected,item,this,Affect.MSG_GET,"You silently autoloot "+item.name()+" from the corpse of "+affect.source().name(),Affect.MSG_GET,null,Affect.NO_EFFECT,null));
+					FullMsg msg=new FullMsg((MOB)affected,item,this,Affect.MSG_THIEF_ACT,"You silently autoloot "+item.name()+" from the corpse of "+affect.source().name(),Affect.MSG_THIEF_ACT,null,Affect.NO_EFFECT,null);
+					if(((MOB)affected).location().okAffect((MOB)affected,msg))
+					{
+						((MOB)affected).location().send((MOB)affected,msg);
+						ExternalPlay.get((MOB)affected,null,item,true);
+					}
 				}
 			}
 		}

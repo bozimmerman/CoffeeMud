@@ -278,7 +278,7 @@ public class BasicSenses
 
 		if((abilityCode==106)
 		&&(!teacher.charStats().getCurrentClass().baseClass().equals(mob.charStats().getCurrentClass().baseClass()))
-		&&(teacher.charStats().getClassLevel(theClass)>=1))
+		&&(teacher.charStats().getClassLevel(theClass)<1))
 	    {
 			if((!CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("MULTI")))
 				mob.tell("You can only learn that from another "+mob.charStats().getCurrentClass().baseClass()+".");

@@ -17,6 +17,7 @@ public class Import
 		{"dragonscales",""+EnvResource.RESOURCE_SCALES},
 		{"dragonscale",""+EnvResource.RESOURCE_SCALES},
 		{"mithril",""+EnvResource.RESOURCE_MITHRIL},
+		{"animal fur",""+EnvResource.RESOURCE_FUR},
 		{"stone",""+EnvResource.RESOURCE_STONE},
 		{"platinum",""+EnvResource.RESOURCE_PLATINUM},
 		{"soft leather",""+EnvResource.RESOURCE_HIDE},

@@ -625,7 +625,10 @@ public class CommandProcessor
 			Movement.stand(mob);
 			break;
 		case CommandSet.STAT:
-			SysOpSkills.stat(mob,commands);
+			if(mob.isASysOp(mob.location()))
+				SysOpSkills.stat(mob,commands);
+			else
+				mob.tell("Mind your own business!\n\r");
 			break;
 		case CommandSet.SYSMSGS:
 			if(mob.isASysOp(mob.location()))
@@ -744,6 +747,12 @@ public class CommandProcessor
 			break;
 		case CommandSet.WITHDRAW:
 			ShopKeepers.withdraw(mob,commands);
+			break;
+		case CommandSet.WIZEMOTE:
+			if(mob.isASysOp(mob.location()))
+				SysOpSkills.wizemote(mob,commands);
+			else
+				mob.tell("You are not powerful enough to do that.\n\r");
 			break;
 		case CommandSet.WIZINV:
 			if(mob.isASysOp(null))

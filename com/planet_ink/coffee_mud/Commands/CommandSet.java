@@ -201,6 +201,7 @@ public class CommandSet extends Hashtable
 	public static final int AUTONOTIFY=188;
 	public static final int WIZLIST=189;
 	public static final int STAT=190;
+	public static final int WIZEMOTE=191;
 
 	private CommandSet()
 	{
@@ -290,6 +291,7 @@ public class CommandSet extends Hashtable
 		put("EMAIL",new Integer(EMAIL));
 		put("EMOTE",new Integer(EMOTE));
 			put(",",new Integer(EMOTE));
+			put(":",new Integer(EMOTE));
 		put("ENTER",new Integer(ENTER));
 			put("EN",new Integer(ENTER));
 		put("EQUIPMENT",new Integer(EQUIPMENT));
@@ -467,6 +469,7 @@ public class CommandSet extends Hashtable
 		put("WIMPY",new Integer(WIMPY));
 			put("WIMP",new Integer(WIMPY));
 		put("WITHDRAW",new Integer(WITHDRAW));
+		put("WIZEMOTE",new Integer(WIZEMOTE));
 		put("WIZINV",new Integer(WIZINV));
 			put("NOWIZINV",new Integer(WIZINV));
 			put("VISIBLE",new Integer(WIZINV));

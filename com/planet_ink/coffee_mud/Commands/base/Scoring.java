@@ -302,31 +302,41 @@ public class Scoring
 	public static void gods(MOB mob, Vector commands)
 	{
 		String str=Util.combine(commands,1).toUpperCase();
-		StringBuffer msg=new StringBuffer(str);
+		StringBuffer msg=new StringBuffer("");
 		if(str.length()==0)
-			msg.append("\n\r^HThe known deities:^? \n\r");
+			msg.append("\n\r^xThe known deities:^.^? \n\r\n\r");
 		else
-			msg.append("\n\r^HThe known '"+str+"' deities:^? \n\r");
+			msg.append("\n\r^HThe known deities named '"+str+"':^? \n\r");
+		int col=0;
 		for(Enumeration d=CMMap.deities();d.hasMoreElements();)
 		{
 			Deity D=(Deity)d.nextElement();
-			StringBuffer msg2=new StringBuffer("");
-			msg2.append("\n\r^x"+D.name()+"^.^?\n\r");
-			msg2.append(D.description()+"\n\r");
-			msg2.append(D.getWorshipRequirementsDesc()+"\n\r");
-			msg2.append(D.getClericRequirementsDesc()+"\n\r");
-			if(D.numBlessings()>0)
+			if((str.length()>0)&&(CoffeeUtensils.containsString(D.name(),str)))
 			{
-				msg2.append("Blessings: ");
-				for(int b=0;b<D.numBlessings();b++)
-					msg2.append(D.fetchBlessing(b).name()+" ");
-				msg2.append("\n\r");
-				msg2.append(D.getWorshipTriggerDesc()+"\n\r");
-				msg2.append(D.getClericTriggerDesc()+"\n\r");
+				msg.append("\n\r^x"+D.name()+"^.^?\n\r");
+				msg.append(D.description()+"\n\r");
+				msg.append(D.getWorshipRequirementsDesc()+"\n\r");
+				msg.append(D.getClericRequirementsDesc()+"\n\r");
+				if(D.numBlessings()>0)
+				{
+					msg.append("Blessings: ");
+					for(int b=0;b<D.numBlessings();b++)
+						msg.append(D.fetchBlessing(b).name()+" ");
+					msg.append("\n\r");
+					msg.append(D.getWorshipTriggerDesc()+"\n\r");
+					msg.append(D.getClericTriggerDesc()+"\n\r");
+				}
 			}
-			if((str.length()==0)||(msg2.toString().toUpperCase().indexOf(str)>=0))
-				msg.append(msg2);
+			else
+			if(str.length()==0)
+			{
+				col++;
+				if(col>4){ msg.append("\n\r"); col=0;}
+				msg.append(Util.padRight("^H"+D.name()+"^?",18));
+			}
 		}
+		if(str.length()==0)
+			msg.append("\n\r\n\r^xUse DEITIES <NAME> to see important details on each deity!^.^N\n\r");
 		mob.tell(msg.toString());
 	}
 

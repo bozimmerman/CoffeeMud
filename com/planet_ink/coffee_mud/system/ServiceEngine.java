@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.utils.*;
 public class ServiceEngine
 {
 	private static Vector tickGroup=new Vector();
-	public static Enumeration tickGroups(){return tickGroup.elements();}
+	public static Enumeration tickGroups(){return ((Vector)tickGroup.clone()).elements();}
 	public static void delTickGroup(Tick tock)
 	{
 		synchronized(tickGroup)
@@ -27,8 +27,8 @@ public class ServiceEngine
 	public static Tick confirmAndGetTickThread(Tickable E, int tickID)
 	{
 		Tick tock=null;
-
-		for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
+		
+		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
 			Tick almostTock=(Tick)v.nextElement();
 			if((tock==null)&&(almostTock.numTickers()<Host.MAX_TICK_CLIENTS))

@@ -146,7 +146,7 @@ public class IMudInterface implements ImudServices, Serializable
 	}
 
 
-	public String socialFix(String str)
+	public String socialFixIn(String str)
 	{
 
 		str=Util.replaceAll(str,"$N","<S-NAME>");
@@ -205,8 +205,8 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 				else
 				{
-					String msgs=socialFix(fixColors(ck.message));
-					String str="^Q^q("+channelName+") "+msgs+"^?^.";
+					String msgs=socialFixIn(fixColors(ck.message));
+					String str="^Q^q["+channelName+"] "+msgs+"^?^.";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str);
 				}
 

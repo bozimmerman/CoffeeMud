@@ -62,6 +62,8 @@ public class Corpse extends GenContainer implements DeadBody
 	
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
+		if(!super.okAffect(myHost,msg))
+			return false;
 		if((msg.amITarget(this)||(msg.tool()==this))
 		&&(msg.targetMinor()==Affect.TYP_GET)
 		&&((envStats().ability()>10)||(Sense.isABonusItems(this)))

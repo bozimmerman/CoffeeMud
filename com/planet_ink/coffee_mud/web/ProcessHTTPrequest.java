@@ -1121,6 +1121,4 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}
 	public Host getMUD(){return getWebServer().getMUD();}
-	public String WebHelperhtmlPlayerList(){return WebHelper.htmlPlayerList();}
-	public String WebHelperhtmlAreaTbl(){return WebHelper.htmlAreaTbl(getWebServer());}
 }

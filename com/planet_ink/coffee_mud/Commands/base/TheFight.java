@@ -278,9 +278,23 @@ public class TheFight
 		}
 
 		int deadMoney=target.getMoney();
-		if((source!=null)&&(Util.bset(source.getBitmap(),MOB.ATT_AUTOGOLD)))
+		int myAmountOfDeadMoney=0;
+		Vector goldLooters=new Vector();
+		for(Enumeration e=beneficiaries.keys();e.hasMoreElements();)
+		{
+			MOB M=(MOB)e.nextElement();
+			if(((Util.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
+			&&(!goldLooters.contains(M)))
+			&&(M.location()==deathRoom)
+			&&(deathRoom.isInhabitant(M)))
+			   goldLooters.addElement(M);
+		}
+		if((goldLooters.size()>0)&&(deadMoney>0))
+		{
+			myAmountOfDeadMoney=(int)Math.round(Util.div(deadMoney,goldLooters.size()));
 			target.setMoney(0);
-
+		}
+		
 		DeadBody Body=null;
 		if((target.soulMate()==null)&&(!target.isMonster()))
 		{
@@ -341,41 +355,25 @@ public class TheFight
 
 		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
 
-		Vector goldLooters=new Vector();
-		for(Enumeration e=beneficiaries.keys();e.hasMoreElements();)
+		if((deadMoney>0)&&(myAmountOfDeadMoney>0))
+		for(int g=0;g<goldLooters.size();g++)
 		{
-			MOB M=(MOB)e.nextElement();
-			if(((Util.bset(M.getBitmap(),MOB.ATT_AUTOGOLD))
-			&&(!goldLooters.contains(M)))
-			&&(M.location()==deathRoom)
-			&&(deathRoom.isInhabitant(M)))
-			   goldLooters.addElement(M);
+			Item C=CMClass.getItem("StdCoins");
+			C.baseEnvStats().setAbility(myAmountOfDeadMoney);
+			C.setContainer(Body);
+			C.recoverEnvStats();
+			deathRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+			deathRoom.recoverRoomStats();
+			MOB mob=(MOB)goldLooters.elementAt(g);
+			if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+				mob.tell("You'll need to dismount to get gold off the body.");
+			else
+			if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
+				mob.tell("You'll need to disembark to get gold off the body.");
+			else
+			if(Sense.canBeSeenBy(Body,mob))
+				ExternalPlay.get(mob,Body,C,false);
 		}
-		if(deadMoney>0)
-			for(int g=0;g<goldLooters.size();g++)
-			{
-				MOB mob=(MOB)goldLooters.elementAt(g);
-				if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-					mob.tell("You'll need to dismount to get gold off the body.");
-				else
-				if((mob.riding()!=null)&&(mob.riding() instanceof MOB))
-					mob.tell("You'll need to disembark to get gold off the body.");
-				else
-				{
-					int myAmount=(int)Math.round(Util.div(deadMoney,goldLooters.size()));
-					if(myAmount>0)
-					{
-						Item C=CMClass.getItem("StdCoins");
-						C.baseEnvStats().setAbility(myAmount);
-						C.setContainer(Body);
-						C.recoverEnvStats();
-						deathRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
-						deathRoom.recoverRoomStats();
-						if(Sense.canBeSeenBy(Body,mob))
-							ExternalPlay.get(mob,Body,C,false);
-					}
-				}
-			}
 			
 		if((source!=null)
 		&&(source.location()==deathRoom)

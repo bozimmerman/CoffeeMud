@@ -194,7 +194,54 @@ public class IMudClient implements I3Interface
 		ck.channel=channelName; // ck will translate it for us
 		ck.sender_name=mob.Name();
 		ck.sender_visible_name=mob.Name();
-		ck.message=message;
+		if((message.startsWith(":")||message.startsWith(","))&&(message.trim().length()>1))
+		{
+			String msgstr=message.substring(1);
+			Vector V=Util.parse(msgstr);
+			Social S=Socials.FetchSocial(V,true);
+			if(S==null) S=Socials.FetchSocial(V,false);
+			Affect msg=null;
+			if(S!=null)
+			{
+				msg=S.makeChannelMsg(mob,0,channelName,V,true);
+				if((msg.target()!=null)&&(msg.target().name().indexOf("@")>=0))
+				{
+					int x=msg.target().name().indexOf("@");
+					String mudName=msg.target().name().substring(x+1);
+					String tellName=msg.target().name().substring(0,x);
+					if((mudName==null)||(mudName.length()==0))
+					{
+						mob.tell("You must specify a mud name.");
+						return;
+					}
+					if((tellName==null)||(tellName.length()<1))
+					{
+						mob.tell("You must specify someone to emote to.");
+						return;
+					}
+					mudName=Intermud.translateName(mudName);
+					if(!Intermud.isUp(mudName))
+					{
+						mob.tell(mudName+" is not available.");
+						return;
+					}
+					ck.target_mud=mudName;
+					ck.target_name=tellName;
+				}
+				else
+				if(msg.target()!=null)
+					ck.target_name=msg.target().name();
+				if((msg.othersMessage()!=null)&&(msg.othersMessage().length()>0))
+					ck.message=socialFixOut(msg.othersMessage());
+				else
+					ck.message=socialFixOut(msg.sourceMessage());
+			}
+			else
+				ck.message=msgstr;
+			ck.type=Packet.CHAN_EMOTE;
+		}
+		else
+			ck.message=message;
 		try{
 		ck.send();
 		}catch(Exception e){Log.errOut("IMudClient",e);}
@@ -311,4 +358,23 @@ public class IMudClient implements I3Interface
 		if(remote.length()==0) return false;
 		return true;
 	}
+	
+	public String socialFixOut(String str)
+	{
+
+		str=Util.replaceAll(str,"<S-NAME>","$N");
+		str=Util.replaceAll(str,"<S-NAME>","$n");
+		str=Util.replaceAll(str,"<T-NAMESELF>","$T");
+		str=Util.replaceAll(str,"<T-NAMESELF>","$t");
+		str=Util.replaceAll(str,"<S-HIM-HER>","$m");
+		str=Util.replaceAll(str,"<T-HIM-HER>","$M");
+		str=Util.replaceAll(str,"<S-HIS-HER>","$s");
+		str=Util.replaceAll(str,"<T-HIS-HER>","$S");
+		str=Util.replaceAll(str,"<S-HE-SHE>","$e");
+		str=Util.replaceAll(str,"<T-HE-SHE>","$E");
+		str=Util.replaceAll(str,"\'","`");
+		if(str.equals("")) return "$";
+		return str.trim();
+	}
+
 }
