@@ -79,7 +79,9 @@ public class Chant_SummonVine extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell("This magic will not work here.");
 			return false;

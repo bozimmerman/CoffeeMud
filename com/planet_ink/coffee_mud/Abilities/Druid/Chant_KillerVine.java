@@ -47,4 +47,5 @@ public class Chant_KillerVine extends Chant_SummonVine
 		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 		newMOB.setStartRoom(null);
 		return(newMOB);
-	}}
+	}
+}

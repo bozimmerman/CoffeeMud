@@ -12,6 +12,7 @@ public class Chant_Treemorph extends Chant
 	public String displayText(){return "(Treemorph)";}
 	public int quality(){return Ability.MALICIOUS;}
 	Item tree=null;
+	Race treeForm=null;
 	public Environmental newInstance(){	return new Chant_Treemorph();}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -35,6 +36,13 @@ public class Chant_Treemorph extends Chant
 			}
 		}
 		return super.tick(ticking,tickID);
+	}
+
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		super.affectCharStats(affected,affectableStats);
+		if(treeForm!=null)
+			affectableStats.setMyRace(treeForm);
 	}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
@@ -95,8 +103,14 @@ public class Chant_Treemorph extends Chant
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		if(affected instanceof MOB)
+		if((treeForm!=null)&&(affected instanceof MOB))
 		{
+			if(affected.name().indexOf(" ")>0)
+				affectableStats.setReplacementName("a "+treeForm.name()+" called "+affected.name());
+			else
+				affectableStats.setReplacementName(affected.name()+" the "+treeForm.name());
+			treeForm.setHeightWeight(((MOB)affected).baseEnvStats(),'M');
+			
 			//affectableStats.setReplacementName("a tree of "+affected.name());
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
@@ -144,7 +158,7 @@ public class Chant_Treemorph extends Chant
 
 
 		boolean success=profficiencyCheck(-(target.envStats().level()*3),auto);
-
+		treeForm=CMClass.getRace("TreeGolem");
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

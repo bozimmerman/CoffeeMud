@@ -33,12 +33,15 @@ public class Chant_DistantGrowth extends Chant
 			&&(((!Sense.isHidden(R.getArea()))&&(!Sense.isHidden(R)))
 			   ||(mob.isASysOp(R))))
 			{
-			   anyRoom=R;
-			   if((R.domainType()&Room.INDOORS)==0)
-			   {
-				   newRoom=R;
-				   break;
-			   }
+				anyRoom=R;
+				if(((R.domainType()&Room.INDOORS)==0)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+				&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				{
+				    newRoom=R;
+				    break;
+				}
 			}
 		}
 
@@ -47,7 +50,14 @@ public class Chant_DistantGrowth extends Chant
 			if(anyRoom==null)
 				mob.tell("You don't know of an place called '"+Util.combine(commands,0)+"'.");
 			else
-				mob.tell("There IS such a place, but its not outdoors, so your magic would fail.");
+			if(anyRoom.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+				mob.tell("There IS such a place, but it is an overtrodden street, so your magic would fail.");
+			else
+			if((anyRoom.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+			||(anyRoom.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE))
+				mob.tell("There IS such a place, but it is on or in the water, so your magic would fail.");
+			else
+				mob.tell("There IS such a place, but it is not outdoors, so your magic would fail.");
 			return false;
 		}
 

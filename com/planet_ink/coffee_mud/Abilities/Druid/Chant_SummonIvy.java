@@ -39,6 +39,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 			newItem.setDescription("");
 			break;
 		}
+		newItem.baseEnvStats().setWeight(1);
 		newItem.setSecretIdentity(mob.name());
 		newItem.setMiscText(newItem.text());
 		newItem.addNonUninvokableAffect(CMClass.getAbility("Disease_PoisonIvy"));

@@ -29,6 +29,13 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 				littlePlants.delAffect(A);
 				littlePlants.setSecretIdentity("");
 			}
+			if(littlePlants.fetchBehavior("Decay")==null)
+			{
+				Behavior B=CMClass.getBehavior("Decay");
+				B.setParms("min="+Host.TICKS_PER_DAY+" max="+Host.TICKS_PER_DAY+" chance=100");
+				littlePlants.addBehavior(B);
+				B.affect(myHost,affect);
+			}
 			processing=false;
 		}
 	}
@@ -55,7 +62,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 			break;
 		case 4:
 			newItem.setName("a happy sunflower");
-			newItem.setDisplayText("a happy sunflowers is growing here.");
+			newItem.setDisplayText("a happy sunflower is growing here.");
 			newItem.setDescription("Happy flowers have little yellow blooms.");
 			break;
 		case 5:
@@ -64,9 +71,6 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 			newItem.setDescription("");
 			break;
 		}
-		Behavior B=CMClass.getBehavior("Decay");
-		B.setParms("min="+Host.TICKS_PER_DAY+" max="+Host.TICKS_PER_DAY+" chance=100");
-		newItem.addBehavior(B);
 		newItem.setSecretIdentity(mob.name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);

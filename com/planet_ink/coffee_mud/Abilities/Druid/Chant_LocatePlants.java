@@ -81,6 +81,8 @@ public class Chant_LocatePlants extends Chant
 		if((room.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_PLAINS)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_HILLS)
+		||((room.myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+		||((room.myResource()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_SWAMP))
 			msg.append("There seem to be a large number of plants all around you!\n\r");

@@ -41,7 +41,6 @@ public class Chant_PlantMaze extends Chant
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=(Room)V.elementAt(v);
-				Vector everything=new Vector();
 				while(R.numInhabitants()>0)
 				{
 					MOB M=R.fetchInhabitant(0);

@@ -4,6 +4,12 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.Util;
 public class Impassable extends GenExit
 {
+	public Impassable()
+	{
+		super();
+		name="a blocked way";
+		description="It doesn't look like you can go that way.";
+	}
 	public String ID(){	return "Impassable";}
 	public Environmental newInstance()
 	{

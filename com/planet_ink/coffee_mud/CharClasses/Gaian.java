@@ -68,57 +68,57 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_PlantPass",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Chant_KillerVine",true);
 
-CMAble.addCharAbilityMapping(ID(),10,"Druid_PlantForm",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Druid_PlantForm",true);
 			CMAble.addCharAbilityMapping(ID(),10,"Herbalism",false);
-CMAble.addCharAbilityMapping(ID(),10,"Chant_SummonTree",false);
+			CMAble.addCharAbilityMapping(ID(),10,"Chant_SummonTree",false);
 
 			CMAble.addCharAbilityMapping(ID(),11,"Farming",true);
 			CMAble.addCharAbilityMapping(ID(),11,"Chant_PlantBed",true);
-CMAble.addCharAbilityMapping(ID(),11,"Chant_SummonSeed",true);
+			CMAble.addCharAbilityMapping(ID(),11,"Chant_SummonSeed",true);
 
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_Shillelagh",true);
-CMAble.addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
+			CMAble.addCharAbilityMapping(ID(),12,"Chant_PlantWall",true);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantGrowth",true);
-CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_SummonSeaweed",true);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Observation",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_PlantMaze",true);
-CMAble.addCharAbilityMapping(ID(),14,"Chant_Thorns",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_Thorns",true);
 
 			CMAble.addCharAbilityMapping(ID(),15,"PlantLore",false);
-CMAble.addCharAbilityMapping(ID(),15,"Chant_PoisonousVine",true);
-CMAble.addCharAbilityMapping(ID(),15,"Chant_Houseplant",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_PoisonousVine",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_Houseplant",true);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_GrowItem",true);
-CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",true);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Chant_PlantSnare",true);
-CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonFungus",true);
+			CMAble.addCharAbilityMapping(ID(),17,"Chant_SummonFungus",true);
 
-CMAble.addCharAbilityMapping(ID(),18,"Chant_VampireVine",true);
-CMAble.addCharAbilityMapping(ID(),18,"Chant_Chlorophyll",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_VampireVine",true);
+			CMAble.addCharAbilityMapping(ID(),18,"Chant_Chlorophyll",true);
 			
-CMAble.addCharAbilityMapping(ID(),19,"Chant_DistantOvergrowth",true);
-CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_DistantOvergrowth",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Chant_MetalMold",true);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Chant_Grapevine",true);
 			
-CMAble.addCharAbilityMapping(ID(),21,"Chant_Treehouse",true);
-CMAble.addCharAbilityMapping(ID(),21,"Chant_VineMass",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_Treehouse",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Chant_VineMass",true);
 
-CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowForest",false);
-CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowFood",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowForest",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowFood",true);
 
-CMAble.addCharAbilityMapping(ID(),23,"Chant_DistantFungus",true);
-CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_DistantIngrowth",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Chant_FungalBloom",true);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Chant_CharmArea",false);
-CMAble.addCharAbilityMapping(ID(),24,"Chant_BrownMold",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Chant_BrownMold",true);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Chant_SummonSapling",true);
 			
-CMAble.addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
 		}
 	}
 

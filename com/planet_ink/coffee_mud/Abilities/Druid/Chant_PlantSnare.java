@@ -72,6 +72,8 @@ public class Chant_PlantSnare extends Chant
 		Room room=mob.location();
 		if((room.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
+		&&((room.myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_WOODEN)
+		&&((room.myResource()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
 		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))

@@ -21,7 +21,9 @@ public class Chant_SummonFood extends Chant
 			mob.tell("You must be outdoors to try this.");
 			return false;
 		}
-		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell("This magic will not work here.");
 			return false;

@@ -73,6 +73,7 @@ public class Chant_SummonPlants extends Chant
 			newItem.setDescription("Happy flowers with little blue and purple blooms.");
 			break;
 		}
+		newItem.baseEnvStats().setWeight(1);
 		newItem.setSecretIdentity(mob.name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
@@ -91,19 +92,27 @@ public class Chant_SummonPlants extends Chant
 		return buildPlant(mob,room);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	public boolean rightPlace(MOB mob,boolean auto)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
 		{
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-
-		if(mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		
+		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 		{
 			mob.tell("This magic will not work here.");
 			return false;
 		}
+		return true;
+	}
+	
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+	{
+		if(!rightPlace(mob,auto)) return false;
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -47,7 +47,7 @@ public class Thief_Snatch extends StdAbility
 		   ||(!(hisItem instanceof Weapon))
 		   ||((((Weapon)hisItem).weaponClassification()==Weapon.CLASS_NATURAL)))
 		{
-			mob.tell("He is not wielding a weapon!");
+			mob.tell(mob.getVictim().charStats().HeShe()+" is not wielding a weapon!");
 			return false;
 		}
 		else
