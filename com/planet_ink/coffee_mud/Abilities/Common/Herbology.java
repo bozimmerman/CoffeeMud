@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
+import java.io.File;
 import java.util.*;
 
 /* 
@@ -30,13 +32,6 @@ public class Herbology extends CommonSkill
 
 	private Item found=null;
 	private boolean messedUp=false;
-	private static final String[] herbList={"angelica","mustard","anise",
-											"myrrh","cassia","peppermint",
-											"chamomile","poppy","cloves",
-											"rosemary","lemon grass","mint",
-											"sage","damiana","sarsaparilla",
-											"elder","thyme","gentian",
-											"valerian","marjoram","yerba mate"};
 
 	public Herbology()
 	{
@@ -56,7 +51,8 @@ public class Herbology extends CommonSkill
 					commonTell(mob,"You lose your concentration on "+found.name()+".");
 				else
 				{
-					String herb=herbList[Dice.roll(1,herbList.length,-1)].toLowerCase();
+				    Vector herbList=Resources.getFileLineVector(Resources.getFileResource("resources"+File.separatorChar+"skills"+File.separatorChar+"herbology.txt"));
+					String herb=((String)herbList.elementAt(Dice.roll(1,herbList.size(),-1))).trim().toLowerCase();
 					
 					if(found.rawSecretIdentity().length()>0)
 					{	
