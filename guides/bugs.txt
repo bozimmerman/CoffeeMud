@@ -1,3 +1,0 @@
-3  ) MrFlowers  silent fighting stops is NO GOOD.
-10 ) Zac        horses don't lose riders, riders dont lose horses...
-12 ) Zac        ability to save rideable status as a GenProperty.

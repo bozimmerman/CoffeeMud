@@ -8,7 +8,7 @@ import java.io.*;
 
 public class Lister
 {
-
+ 
 	public StringBuffer reallyList(Hashtable these, int ofType)
 	{
 		return reallyList(these,ofType,null);
@@ -289,6 +289,9 @@ public class Lister
 		buf.append("\n\rCoffeeMud System Report:\n\r");
 		long totalTime=Calendar.getInstance().getTimeInMillis()-ExternalPlay.getStartTime().getTimeInMillis();
 		buf.append("The system has been running for "+Util.returnTime(totalTime,0)+".\n\r");
+		long free=Runtime.getRuntime().freeMemory()/1000;
+		long total=Runtime.getRuntime().totalMemory()/1000;
+		buf.append("The system is utilizing "+(total-free)+"kb out of "+total+"kb.\n\r");
 		buf.append(ExternalPlay.systemReport());
 		return buf;
 	}

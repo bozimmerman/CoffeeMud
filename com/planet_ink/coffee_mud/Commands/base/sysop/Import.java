@@ -1382,7 +1382,7 @@ public class Import
 						M.addBehavior(CMClass.getBehavior("Clericness"));
 					else
 					if(special.equals("SPEC_NASTY"))
-						M.addBehavior(CMClass.getBehavior("Fighterness"));
+						M.addBehavior(CMClass.getBehavior("FightFlee"));
 					else
 					if(special.equals("SPEC_CAST_UNDEAD"))
 					{
@@ -1408,7 +1408,7 @@ public class Import
 						M.addBehavior(CMClass.getBehavior("Scavenger"));
 					else
 					if(special.equals("SPEC_BREATH_ANY"))
-						M.addAbility(CMClass.getAbility("Skill_AllBreathing"));
+						M.addAbility(CMClass.getAbility("Dragonbreath"));
 					else
 					if(special.equals("SPEC_BREATH_ACID"))
 					{

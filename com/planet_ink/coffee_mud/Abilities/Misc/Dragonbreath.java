@@ -42,7 +42,7 @@ public class Dragonbreath extends StdAbility
 	public void setMiscText(String newType)
 	{
 		super.setMiscText(newType);
-		if(newType.length()==0) return;
+		if(newType.length()==0) newType=("rlcag").substring(Dice.roll(1,5,-1),1);
 		char c=newType.trim().toLowerCase().charAt(0);
 		switch(c)
 		{

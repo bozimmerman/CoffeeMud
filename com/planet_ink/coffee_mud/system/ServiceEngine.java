@@ -148,9 +148,9 @@ public class ServiceEngine
 		long totalMillis=0;
 		long totalTicks=0;
 		int topGroupNumber=-1;
-		long topGroupMillis=0;
+		long topGroupMillis=-1;
 		long topGroupTicks=0;
-		long topObjectMillis=0;
+		long topObjectMillis=-1;
 		long topObjectTicks=0;
 		int topObjectGroup=0;
 		Environmental topObjectClient=null;
@@ -182,8 +182,11 @@ public class ServiceEngine
 		buf.append("There are "+totalTickers+" ticking objects in "+tickGroup.size()+" threads.\n\r");
 		buf.append("The ticking objects have consumed: "+Util.returnTime(totalMillis,totalTicks)+".\n\r");
 		buf.append("The most active group, #"+topGroupNumber+", has consumed: "+Util.returnTime(topGroupMillis,topGroupTicks)+".\n\r");
-		buf.append("The most active object has been '"+topObjectClient.name()+"', from group #"+topObjectGroup+".\n\r");
-		buf.append("That object has consumed: "+Util.returnTime(topObjectMillis,topObjectTicks)+".\n\r");
+		if(topObjectClient!=null)
+		{
+			buf.append("The most active object has been '"+topObjectClient.name()+"', from group #"+topObjectGroup+".\n\r");
+			buf.append("That object has consumed: "+Util.returnTime(topObjectMillis,topObjectTicks)+".\n\r");
+		}
 		buf.append("\n\r");
 		buf.append("Save Thread report:\n\r");
 		buf.append("The Save Thread has consumed: "+Util.returnTime(SaveThread.milliTotal,SaveThread.tickTotal)+".\n\r");

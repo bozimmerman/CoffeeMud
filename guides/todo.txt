@@ -1,11 +1,11 @@
+ability to save riding status in the database.
+
 random monster property class which reads stats from a resource file
 
 Auto quests, quests, questbox (Behavior)
 
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana 
 on each room mapped.
-
-title command
 
 more spells/ideas at http://www.turf.org/helps/
 

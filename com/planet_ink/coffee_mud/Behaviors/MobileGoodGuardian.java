@@ -17,16 +17,6 @@ public class MobileGoodGuardian extends Mobile
 		return new MobileGoodGuardian();
 	}
 
-	/** this method defines how this thing responds
-	 * to environmental changes.  It may handle any
-	 * and every affect listed in the Affect class
-	 * from the given Environmental source */
-	public boolean okAffect(Environmental oking, Affect affect)
-	{
-		if(!super.okAffect(oking,affect)) return false;
-		return GoodGuardian.GoodGuardianOkAffect(oking,affect);
-	}
-
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -41,7 +31,9 @@ public class MobileGoodGuardian extends Mobile
 				return;
 		
 		Room thisRoom=mob.location();
-		GoodGuardian.keepPeace(mob);
+		MOB victim=GoodGuardian.anyPeaceToMake(mob.location(),mob);
+		GoodGuardian.keepPeace(mob,victim);
+		victim=null;
 		int dirCode=-1;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
@@ -51,14 +43,11 @@ public class MobileGoodGuardian extends Mobile
 			{
 				if(exit.isOpen())
 				{
-					for(int i=0;i<room.numInhabitants();i++)
+					victim=GoodGuardian.anyPeaceToMake(room,mob);
+					if(victim!=null)
 					{
-						MOB inhab=room.fetchInhabitant(i);
-						if((inhab!=null)&&(inhab.isInCombat())&&(inhab.getAlignment()>650))
-						{
-							dirCode=d;
-							break;
-						}
+						dirCode=d;
+						break;
 					}
 				}
 			}
@@ -67,7 +56,7 @@ public class MobileGoodGuardian extends Mobile
 		if(dirCode>=0)
 		{
 			ExternalPlay.move(mob,dirCode,false);
-			GoodGuardian.keepPeace(mob);
+			GoodGuardian.keepPeace(mob,victim);
 		}
 	}
 

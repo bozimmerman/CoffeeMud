@@ -220,7 +220,6 @@ public class Generic
 		{
 			text.append(XMLManager.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
 			text.append(XMLManager.convertXMLtoTag("RIDEC",((Rideable)E).mobCapacity()));
-			text.append(XMLManager.convertXMLtoTag("RIDEN",""+E));
 		}
 
 		if(E instanceof Food)
