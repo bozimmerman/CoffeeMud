@@ -41,8 +41,9 @@ public class Spell_Dismissal extends Spell
 					else
 					{
 						mob.location().show(mob,target,Affect.MSG_OK_ACTION,"<T-NAME> vanish(es) in dismissal!");
-						target.getStartRoom().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> appears!");
+						target.getStartRoom().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> appear(s)!");
 						target.getStartRoom().bringMobHere(target,false);
+						ExternalPlay.look(target,null,true);
 					}
 					mob.location().recoverRoomStats();
 				}
