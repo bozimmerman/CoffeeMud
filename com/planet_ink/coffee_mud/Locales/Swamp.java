@@ -45,6 +45,7 @@ public class Swamp extends StdRoom
 		new Integer(EnvResource.RESOURCE_SCALES),
 		new Integer(EnvResource.RESOURCE_COCOA),
 		new Integer(EnvResource.RESOURCE_COAL),
+		new Integer(EnvResource.RESOURCE_PIPEWEED),
 		new Integer(EnvResource.RESOURCE_SUGAR),
 		new Integer(EnvResource.RESOURCE_CLAY),
 	};

@@ -7,8 +7,8 @@ import java.util.*;
 
 public class Spell_FeignInvisibility extends Spell
 {
-	public String ID() { return "Spell_ImprovedInvisibility"; }
-	public String name(){return "Improved Invisibility";}
+	public String ID() { return "Spell_FeignInvisibility"; }
+	public String name(){return "Feign Invisibility";}
 	public String displayText(){return "(Improved Invisibility spell)";}
 	public int quality(){ return BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}

@@ -123,6 +123,7 @@ public class Spell_DemonGate extends Spell
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
+		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.setName("the great demonbeast");
 		newMOB.setDisplayText("a horrendous demonbeast is stalking around here");
 		newMOB.setDescription("Blood red skin with massive horns, and of course muscles in places you didn`t know existed.");

@@ -36,7 +36,7 @@ public class Prayer_Atonement extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.tell("Good, pure thoughts fill your head.");
+					target.tell("Good, pure thoughts fill your head.");
 					int evilness=Dice.roll(10,adjustedLevel(mob),0);
 					int targetAlignment = target.getAlignment();
 					if(targetAlignment + evilness >= 1000)

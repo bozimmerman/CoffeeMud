@@ -145,6 +145,7 @@ public class Paladin_SummonMount extends StdAbility
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
+		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
 		newMOB.setName("a white horse");
 		newMOB.setDisplayText("a proud white horse stands here");

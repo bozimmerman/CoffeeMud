@@ -46,7 +46,7 @@ public class Spell_WaterCannon extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water towards <S-HIM-HER>>");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water towards <T-HIM-HER>.");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_WATER|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
@@ -66,7 +66,7 @@ public class Spell_WaterCannon extends Spell
 				int percentage = Dice.roll(1, 100, 0);
 				if(percentage < 10)
 				{
-      				FullMsg msg3=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon");
+      				FullMsg msg3=new FullMsg(mob,target,this,affectType(auto),"<T-NAME> is knocked down by the water cannon.");
 					if(mob.location().okAffect(mob,msg3))
 					{
 					   mob.location().send(mob, msg3);                  

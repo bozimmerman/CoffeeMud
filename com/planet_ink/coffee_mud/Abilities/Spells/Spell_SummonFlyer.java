@@ -107,6 +107,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
+		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.setName("a flying warhorse");
 		newMOB.setDisplayText("a warhorse with broad powerful wings stands here");
 		newMOB.setDescription("A ferocious, fleet of foot, flying friend.");

@@ -36,7 +36,7 @@ public class Prayer_MoralBalance extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					mob.tell("Your views on the world suddenly change.");
+					target.tell("Your views on the world suddenly moderate.");
 					int targetAlignment = target.getAlignment();
 					int alignmentShift = targetAlignment - 500;
 					alignmentShift /= 2;

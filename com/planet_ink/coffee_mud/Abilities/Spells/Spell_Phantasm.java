@@ -149,6 +149,7 @@ public class Spell_Phantasm extends Spell
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
+		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));
 		newMOB.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		newMOB.setName("a ferocious "+R.name().toLowerCase());
 		newMOB.setDisplayText("a ferocious "+R.name().toLowerCase()+" is stalking around here");
