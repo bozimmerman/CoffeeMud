@@ -203,11 +203,11 @@ public class DefaultCharState implements Cloneable, CharState
 		&&(!Sense.isClimbing(mob)))
 		{
 			if((hpGain>0)&&(!Sense.isGolem(mob)))
-				mob.curState().adjHitPoints((int)Math.round(hpGain),maxState);
+				adjHitPoints((int)Math.round(hpGain),maxState);
 			if(manaGain>0)
-				mob.curState().adjMana((int)Math.round(manaGain),maxState);
+				adjMana((int)Math.round(manaGain),maxState);
 			if(moveGain>0)
-				mob.curState().adjMovement((int)Math.round(moveGain),maxState);
+				adjMovement((int)Math.round(moveGain),maxState);
 		}
 	}
 

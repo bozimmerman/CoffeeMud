@@ -1,11 +1,56 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<P>&nbsp;</P>
+<html>
+<head>
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Cross Class Skills</title>
+	<Script language=JavaScript>
+	<!--
+		function reload()
+		{
+			document.POOPY.submit();
+		}
+	//-->
+	</SCRIPT>
+</head>
 
+<body>
+<h3>Stat Recovery Rates/4 Ticks</h3><P>
+<FORM NAME=POOPY TARGET=_top METHOD=POST ACTION="recovery.cmvp">
+<SELECT NAME=WHICH ONCHANGE="reload();">
+<OPTION VALUE=HP @if?CheckReqParm?WHICH=HP@SELECTED@endif@>Hit Points
+<OPTION VALUE=MN @if?CheckReqParm?WHICH=MN@SELECTED@endif@>Mana
+<OPTION VALUE=MV @if?CheckReqParm?WHICH=MV@SELECTED@endif@>Movement
+</SELECT>
+<TABLE WIDTH=100%>
+<TR>
+<TD WIDTH=25%>
+<INPUT TYPE=CHECKBOX NAME=SITTING ONCLICK="reload();">Sitting
+</TD>
+<TD WIDTH=25%>
+<INPUT TYPE=CHECKBOX NAME=SLEEPING ONCLICK="reload();">Sleeping
+</TD>
+<TD WIDTH=25%>
+<INPUT TYPE=CHECKBOX NAME=SWIMMING ONCLICK="reload();">Swimming
+</TD>
+<TD WIDTH=25%>
+<INPUT TYPE=CHECKBOX NAME=FLYING ONCLICK="reload();">Flying
+</TD>
+</TR><TR>
+<TD WIDTH=25%>
+<INPUT TYPE=CHECKBOX NAME=RIDING ONCLICK="reload();">Riding something
+</TD>
+<TD WIDTH=25%>
+<INPUT TYPE=CHECKBOX NAME=HUNGRY @if?!CheckReqParm?HUNGRY=@CHECKED@endif@ ONCLICK="reload();">Hungry
+</TD>
+<TD WIDTH=25%>
+<INPUT TYPE=CHECKBOX NAME=THIRSTY @if?!CheckReqParm?THIRSTY=@CHECKED@endif@ ONCLICK="reload();">Thirsty
+</TD>
+<TD WIDTH=25%>
+</TD>
+</TR></TABLE>
+<P>
+<BR>
+	@StatRejuvCharts@
 </BODY>
 </HTML>
