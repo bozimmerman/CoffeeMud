@@ -118,7 +118,7 @@ public class Sculpting extends CommonSkill
 		int completion=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Wood required\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("Item",20)+" Stone required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);

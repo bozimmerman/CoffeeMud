@@ -45,6 +45,9 @@ public class Paladin_SummonMount extends StdAbility
 			{
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
+				||(mob.location()==null)
+				||(invoker==null)
+				||(invoker.location()==null)
 				||(mob.location()!=invoker.location()))
 				&&(invoker.riding()!=affected))
 				{

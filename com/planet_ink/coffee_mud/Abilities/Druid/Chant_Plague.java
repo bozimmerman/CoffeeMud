@@ -17,6 +17,7 @@ public class Chant_Plague extends Chant
 		displayText="(Plague)";
 		quality=Ability.MALICIOUS;
 		baseEnvStats().setLevel(12);
+		miscText="DISEASE";
 
 		canAffectCode=Ability.CAN_MOBS;
 		canTargetCode=Ability.CAN_MOBS;

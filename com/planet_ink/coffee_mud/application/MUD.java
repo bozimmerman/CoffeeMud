@@ -20,7 +20,7 @@ public class MUD extends Thread implements Host
 	public String execExternalCommand=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)3.0;
-	public static final float HOST_VERSION_MINOR=(float)4.6;
+	public static final float HOST_VERSION_MINOR=(float)4.7;
 	
 	private boolean acceptConnections=false;
 	private String offlineReason=new String("UNKNOWN");
@@ -255,6 +255,7 @@ public class MUD extends Thread implements Host
 			Item I=CMClass.getMiscMagic("ManualArchon");
 			room.addItem(I);
 			CMMap.addRoom(room);
+			ExternalPlay.DBUpdateItems(room);
 		}
 
 		offlineReason=new String("Booting: readying for connections.");

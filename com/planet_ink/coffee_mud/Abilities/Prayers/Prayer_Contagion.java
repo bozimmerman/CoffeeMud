@@ -16,6 +16,7 @@ public class Prayer_Contagion extends Prayer
 		quality=Ability.MALICIOUS;
 		baseEnvStats().setLevel(7);
 		holyQuality=Prayer.HOLY_EVIL;
+		miscText="DISEASE";
 
 		canAffectCode=Ability.CAN_MOBS;
 		canTargetCode=Ability.CAN_MOBS;
@@ -89,11 +90,15 @@ public class Prayer_Contagion extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
+		miscText="DISEASE";
+			
 			FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"<T-NAME> become(s) contageous!":"<S-NAME> pray(s) at <T-NAMESELF> for unholy contagion.");
-			if(mob.location().okAffect(msg))
+			FullMsg msg2=new FullMsg(mob,target,this,Affect.TYP_DISEASE|Affect.MASK_MALICIOUS,null);
+			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
 				mob.location().send(mob,msg);
-				if(!msg.wasModified())
+				mob.location().send(mob,msg2);
+				if((!msg.wasModified())&&(!msg2.wasModified()))
 					success=maliciousAffect(mob,target,0,-1);
 			}
 		}

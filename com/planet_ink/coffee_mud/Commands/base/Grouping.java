@@ -174,8 +174,8 @@ public class Grouping
 		boolean canFollow=false;
 		if((target!=null)
 		&&((mob.isASysOp(mob.location()))
-		||(target.amFollowing()==mob)
-		||(target.getLeigeID().equals(mob.name()))))
+			||(target.amFollowing()==mob)
+			||(target.getLeigeID().equals(mob.name()))))
 		   canFollow=true;
 		
 		if((target==null)

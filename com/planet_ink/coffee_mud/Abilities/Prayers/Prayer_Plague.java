@@ -18,6 +18,7 @@ public class Prayer_Plague extends Prayer
 		quality=Ability.MALICIOUS;
 		holyQuality=Prayer.HOLY_EVIL;
 		baseEnvStats().setLevel(12);
+		miscText="DISEASE";
 
 		canAffectCode=Ability.CAN_MOBS;
 		canTargetCode=Ability.CAN_MOBS;

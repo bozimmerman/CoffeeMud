@@ -35,6 +35,81 @@ reference for those who wish to create the spot MOB, Behavior, Item, or Property
 for use on their maps.</FONT></P>
 <P align=left><FONT size=4>With this in mind then, and in no particular order, 
 the several essential object types in CoffeeMud are presented.</FONT></P>
+<P align=left><FONT size=4></FONT>&nbsp;</P>
+<IMG src="images/rainbow.jpg">
+<P align=left><FONT size=5 color=mediumslateblue><STRONG>Text:</STRONG></FONT></P>
+<P align=left><FONT size=4></FONT>Before we get started with objects, needs must
+the topic of text display be covered.  Throughout the system you will see text
+being sent to the user.  Since a mud is a text producing engine, this should be
+no great suprise.  However, within that text you will often see different kinds 
+of codes and tags which affect the output.  For instance, consider the following lines:</P>
+<PRE>	msg=new FullMsg(mob,target,this,affectType,"&lt;S-NAME&gt; incant(s) and reach(es) for &lt;T-NAMESELF&gt;.");
+	
+	mob.location().show(mob,null,Affect.MSG_OK_ACTION,"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");
+</PRE>
+<P align=left><FONT size=4>Focusing only on the text for a moment, you will notice a that tags are
+used to designate a player name, or the name of the target of a spell.  You will also notice that (s)
+and (es) is used to modify the proper form of a verb.  These are key features of the CoffeeMud
+text engine.  Here is a more complete list of available tage:</FONT>&nbsp;</P>
+<TABLE WIDTH="100%" BORDER=1>
+<TR><TD WIDTH="20%">&lt;S-HIS-HER&gt;</TD><TD>Outputs 'Your' if Observer=Source, otherwise 'His'/'Her'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-HIM-HER&gt;</TD><TD>Outputs 'You' if Observer=Source, otherwise 'Him'/'Her'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-NAME&gt;</TD><TD>Outputs 'You' if Observer=Source, otherwise the Name.</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-NAMESELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Source, otherwise the Name</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-HE-SHE&gt;</TD><TD>Outputs 'You' if Observer=Source, otherwise 'He'/'She'</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-IS-ARE&gt;</TD><TD>Outputs 'Are' if Observer=Source, otherwise 'Is'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-HAS-HAVE&gt;</TD><TD>Outputs 'Have' if Observer=Source, otherwise 'Has'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;S-YOUPOSS&gt;</TD><TD>Outputs 'Your' if Observer=Source, otherwise the Name`s</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-HIS-HER&gt;</TD><TD>Outputs 'Your' if Observer=Target, otherwise 'His'/'Her'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-HIM-HER&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise 'Him'/'Her'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-NAME&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise the Name.</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-NAMESELF&gt;</TD><TD>Outputs 'Yourself' if Observer=Target, otherwise the Name</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-HE-SHE&gt;</TD><TD>Outputs 'You' if Observer=Target, otherwise 'He'/'She'</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-IS-ARE&gt;</TD><TD>Outputs 'Are' if Observer=Target, otherwise 'Is'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-HAS-HAVE&gt;</TD><TD>Outputs 'Have' if Observer=Target, otherwise 'Has'.</TD></TR>
+<TR><TD WIDTH="20%">&lt;T-YOUPOSS&gt;</TD><TD>Outputs 'Your' if Observer=Target, otherwise the Name with an '`s'</TD></TR>
+</TABLE>
+<P align=left><FONT size=4>Occasionally, you will find color/font codes embedded in system strings.  For instance:
+</FONT>&nbsp;</P>
+<PRE>
+			msg.append("^BYou are thirsty.^?\n\r");
+</PRE>
+<P align=left><FONT size=4>These codes, defined in the system.TelnetSession class, are as follows:
+</FONT>&nbsp;</P>
+<TABLE WIDTH="50%" BORDER=1>
+<TR><TD WIDTH="10%">^N</TD><TD>Normal</TD></TR>
+<TR><TD WIDTH="10%">^B</TD><TD>Bold</TD></TR>
+<TR><TD WIDTH="10%">^H</TD><TD>Highlight</TD></TR>
+<TR><TD WIDTH="10%">^F</TD><TD>Fight (not in use, yet)</TD></TR>
+<TR><TD WIDTH="10%">^S</TD><TD>Spell (not in use, yet)</TD></TR>
+<TR><TD WIDTH="10%">^E</TD><TD>Emote (not in use, yet)</TD></TR>
+<TR><TD WIDTH="10%">^T</TD><TD>Talk (not in use, yet)</TD></TR>
+<TR><TD WIDTH="10%">^Q</TD><TD>Channel (not in use, yet)</TD></TR>
+<TR><TD WIDTH="10%">^X</TD><TD>Important message 1</TD></TR>
+<TR><TD WIDTH="10%">^Y</TD><TD>Important message 2</TD></TR>
+<TR><TD WIDTH="10%">^Z</TD><TD>Important message 3</TD></TR>
+<TR><TD WIDTH="10%">^R</TD><TD>Room Title</TD></TR>
+<TR><TD WIDTH="10%">^L</TD><TD>Room Description</TD></TR>
+<TR><TD WIDTH="10%">^D</TD><TD>Direction</TD></TR>
+<TR><TD WIDTH="10%">^d</TD><TD>Door</TD></TR>
+<TR><TD WIDTH="10%">^I</TD><TD>Item</TD></TR>
+<TR><TD WIDTH="10%">^M</TD><TD>MOB</TD></TR>
+<TR><TD WIDTH="10%">^h</TD><TD>Prompt Color 1</TD></TR>
+<TR><TD WIDTH="10%">^m</TD><TD>Prompt Color 2</TD></TR>
+<TR><TD WIDTH="10%">^v</TD><TD>Prompt Color 3</TD></TR>
+<TR><TD WIDTH="10%">^w</TD><TD>White</TD></TR>
+<TR><TD WIDTH="10%">^g</TD><TD>Green</TD></TR>
+<TR><TD WIDTH="10%">^b</TD><TD>Brown</TD></TR>
+<TR><TD WIDTH="10%">^r</TD><TD>Red</TD></TR>
+<TR><TD WIDTH="10%">^y</TD><TD>Yellow</TD></TR>
+<TR><TD WIDTH="10%">^c</TD><TD>Cyan</TD></TR>
+<TR><TD WIDTH="10%">^p</TD><TD>Purple</TD></TR>
+</TABLE>
+<P align=left><FONT size=4>As you might have guessed, it is preferred that the system colors (the last
+8 codes) be used sparingly, in favor of the more customizable codes above.
+</FONT>&nbsp;
+  <P></P>
+<P align=left><FONT size=4></FONT>&nbsp;</P>
 <IMG src="images/smurf.jpg">
 <P align=left><FONT size=5 color=mediumslateblue><STRONG>MOBs:</STRONG></FONT></P>
 <P align=left><FONT size=4>MOBs, or "Moveable OBjects", are the creatures and 
@@ -851,6 +926,6 @@ color=blue><FONT>Behaviors</FONT>:</FONT></STRONG></FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P></EM></FONT>
-<P></P>
+<P></P></P></TABLE>
 </BODY>
 </HTML>

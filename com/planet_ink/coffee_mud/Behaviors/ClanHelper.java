@@ -41,13 +41,7 @@ public class ClanHelper extends StdBehavior
 		&&(Sense.canBeSeenBy(target,observer))
 		&&(!BrotherHelper.isBrother(source,observer)))
 		{
-			String oRace=observer.charStats().getMyRace().ID().toUpperCase();
-			if((oRace.equals(target.charStats().getMyRace().ID()))
-			&&((!target.isGeneric())
-			   ||(!observer.isGeneric())
-			   ||(target.name().equalsIgnoreCase(observer.name()))
-			   ||((target.name().toUpperCase().indexOf(oRace)>=0)
-				  &&(observer.name().toUpperCase().indexOf(oRace)>=0))))
+			if(observer.charStats().getMyRace().ID().equalsIgnoreCase(target.charStats().getMyRace().ID()))
 			{
 				boolean yep=Aggressive.startFight(observer,source,false);
 				String reason="THAT`S MY FRIEND!! CHARGE!!";

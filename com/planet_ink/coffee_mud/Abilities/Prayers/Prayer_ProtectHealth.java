@@ -60,11 +60,8 @@ public class Prayer_ProtectHealth extends Prayer
 		{
 			if((affect.tool()!=null)
 			   &&(Dice.rollPercentage()>50)
-			   &&((affect.tool().ID().equals("Prayer_Plague"))
-				||(affect.targetMinor()==Affect.TYP_DISEASE)
-				||(affect.tool().name().toUpperCase().indexOf("DISEASE")>=0)
-				||(affect.tool().name().toUpperCase().indexOf("PLAGUE")>=0)
-				||(affect.tool().name().toUpperCase().indexOf("VIRUS")>=0)))
+			   &&((affect.tool().text().equalsIgnoreCase("DISEASE"))
+				||(affect.targetMinor()==Affect.TYP_DISEASE)))
 			{
 				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"An unhealthy assault against <S-NAME> is magically repelled.");
 				return false;

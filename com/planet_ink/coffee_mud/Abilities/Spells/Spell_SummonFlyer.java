@@ -48,6 +48,9 @@ public class Spell_SummonFlyer extends Spell
 			{
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
+				||(mob.location()==null)
+				||(invoker==null)
+				||(invoker.location()==null)
 				||(mob.location()!=invoker.location()))
 				&&(invoker.riding()!=affected))
 				{
