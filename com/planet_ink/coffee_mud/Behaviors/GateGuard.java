@@ -48,7 +48,7 @@ public class GateGuard extends StdBehavior
 			if(mob.location().getRoomInDir(d)!=null)
 			{
 				Exit e=mob.location().getExitInDir(d);
-				if(e.hasADoor())
+				if((e!=null)&&(e.hasADoor()))
 					return d;
 			}
 		}

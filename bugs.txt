@@ -1,4 +1,6 @@
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
+I can fletch a quiver of 500 arrows. Tells me that I need to put metal down first, even though there`s 500+ mithril and 3000+ adamantite available....
+
 Skills:
 	soap recipe ash lime internal oragans.
 	elven steal.. mithrial 2 vegetation can be used with spell casters
@@ -31,6 +33,9 @@ Misc:
 
 fix healer?
 Flea Powder! Something just to cure fleas.
+The sage in the bazaar has much the same problem and should return the equipment that he never bothers to identify.
+->The blacksmith at the bazaar should actually return the items, and possibly try and mend them.
+The shipyard in the bazaar. Sells ships for 1 gold. The ships are landlocked (thus being worth about 1 gold).
 racial affects
 Install ship battery
 make diff levels of drunk, and disease_hangover

@@ -297,6 +297,10 @@ public class MUDTracker extends Scriptable
 		int opDirection=Directions.getOpDirectionCode(direction);
 		if((nextRoom==null)||(nextExit==null))
 			return false;
+		
+		if((CoffeeUtensils.getLandTitle(nextRoom)!=null)
+		&&(CoffeeUtensils.getLandTitle(nextRoom).landOwner().length()>0))
+			dooropen=false;
 
 		boolean reclose=false;
 		boolean relock=false;

@@ -132,7 +132,7 @@ public class Thief_Swipe extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting))
+				if(((hisStr==null)||mob.isMonster())&&(!alreadyFighting)&&(Dice.rollPercentage()>goldTaken))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();
