@@ -49,7 +49,6 @@ public class Spell_ResistCold extends Spell
 		super.unInvoke();
 
 	}
-
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -67,7 +66,7 @@ public class Spell_ResistCold extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) a warm field of protection around <T-NAMESELF>.");
-		if(mob.location().okAffect(msg))
+		if((success)&&(mob.location().okAffect(msg)))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,0);

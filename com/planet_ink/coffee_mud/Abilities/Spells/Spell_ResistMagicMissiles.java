@@ -81,7 +81,7 @@ public class Spell_ResistMagicMissiles extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) an absorbing barrier of protection around <T-NAMESELF>.");
-		if(mob.location().okAffect(msg))
+		if((success)&&(mob.location().okAffect(msg)))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,0);

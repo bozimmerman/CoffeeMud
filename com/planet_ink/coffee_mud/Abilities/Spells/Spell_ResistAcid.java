@@ -56,7 +56,7 @@ public class Spell_ResistAcid extends Spell
 		affectedStats.setStat(CharStats.SAVE_ACID,affectedStats.getStat(CharStats.SAVE_ACID)+100);
 	}
 
-
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
@@ -68,7 +68,7 @@ public class Spell_ResistAcid extends Spell
 		boolean success=profficiencyCheck(0,auto);
 
 		FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> invoke(s) a oily field of protection around <T-NAMESELF>.");
-		if(mob.location().okAffect(msg))
+		if((success)&&(mob.location().okAffect(msg)))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,0);
