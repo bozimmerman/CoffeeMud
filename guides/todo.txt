@@ -1,4 +1,3 @@
-Add no-cache headers
 ability to save riding status in the database.
 Chain Lightning is wrong.  It is actually FORKED Lightning.  Chain Does max damage to first target, then goes to nearest enemy, and does reduced damage, then bounces to next enemy, and does a little less, etc until it is reduced to 0 damage.
 Should Greater Globe require Globe in order to gain?  YES.
@@ -18,7 +17,6 @@ eggs that hatch
 merchant class with haggle skill to lower prices HAGGLE 300 item
 can sit at tables and have conversation heard only at the table.
 racial abilities (abilities tied to the race)
-Areas having a property called 'Hidden' that makes it not show on the web page or area listing.
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
 skill available all for help?????????????????????
 Leprecy: take more physical damage in combat. 

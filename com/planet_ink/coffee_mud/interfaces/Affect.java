@@ -61,8 +61,7 @@ public interface Affect extends Cloneable
 	public static final int ACT_MOVE=4096;        // large body movements (travel)
 	public static final int ACT_EYES=8192;        // looking and seeing
 	public static final int ACT_MOUTH=16384;      // speaking and eating
-	//public static final int ACT_EARS=32768;       // listening to
-	public static final int ACT_SOUND=65536;      // general body noises 
+	public static final int ACT_SOUND=32768;      // general body noises 
 	
 	
 	// action target affect types
