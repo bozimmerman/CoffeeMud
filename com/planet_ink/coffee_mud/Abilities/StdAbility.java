@@ -426,8 +426,9 @@ public class StdAbility implements Ability, Cloneable
 			{
 				CharClass C=mob.charStats().getMyClass(c);
 				int qualifyingLevel=CMAble.getQualifyingLevel(C.ID(),ID());
-				if(qualifyingLevel>=0)
-					diff+=(mob.charStats().getClassLevel(C.ID())-qualifyingLevel);
+				int classLevel=mob.charStats().getClassLevel(C.ID());
+				if((qualifyingLevel>=0)&&(classLevel>=qualifyingLevel))
+					diff+=(classLevel-qualifyingLevel);
 			}
 			
 			if(diff>0)

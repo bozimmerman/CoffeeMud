@@ -62,7 +62,7 @@ public class Thief_SenseLaw extends ThiefSkill
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
 						V=getLawMen(R,B);
-						for(int l=0;l<V.size();l++)
+						if((V!=null)&&(V.size()>0))
 							buf.append("There is an officer of the law "+Directions.getInDirectionName(d)+".  ");
 					}
 				}
