@@ -511,8 +511,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						FullMsg msg=new FullMsg(mob,product,this,Affect.MSG_GET,null);
 						if(location().okAffect(msg))
 						{
-							location().send(mob,msg);
 							tell(affect.source(),affect.target(),affect.targetMessage());
+							location().send(mob,msg);
 						}
 						else
 							return;

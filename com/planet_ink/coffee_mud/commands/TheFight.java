@@ -374,14 +374,14 @@ public class TheFight
 						deathRoom.addItem(C);
 						deathRoom.recoverRoomStats();
 						if(Sense.canBeSeenBy(Body,mob))
-							new ItemUsage().get(mob,Body,C);
+							new ItemUsage().get(mob,Body,C,false);
 					}
 				}
 			}
 			if((source.getBitmap()&MOB.ATT_AUTOLOOT)>0)
 				for(int i=items.size()-1;i>=0;i--)
 					if(Sense.canBeSeenBy(Body,source))
-						new ItemUsage().get(source,Body,(Item)items.elementAt(i));
+						new ItemUsage().get(source,Body,(Item)items.elementAt(i),false);
 		}
 		else
 		if(target.curState().getHitPoints()<target.getWimpHitPoint())

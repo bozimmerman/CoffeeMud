@@ -120,6 +120,10 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.grouping.showWho(who,shortForm);
 	}
+	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	{
+		return processor.itemUsage.get(mob,container,getThis,quiet);
+	}
 	public boolean login(MOB mob)
 		throws IOException
 	{

@@ -57,6 +57,7 @@ public class GoodGuardian extends StdBehavior
 				&&((observer.envStats().level()>(inhab.envStats().level()+5))
 				&&(observer.getAlignment()>350)))
 				{
+					inhab.getVictim().makePeace();
 					inhab.makePeace();
 					didSomething=true;
 				}

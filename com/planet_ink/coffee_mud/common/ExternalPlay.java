@@ -158,6 +158,11 @@ public class ExternalPlay
 		if(player!=null) return player.login(mob);
 		return false;
 	}
+	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	{
+		if(player!=null) return player.get(mob,container,getThis,quiet);
+		return false;
+	}
 	
 	public static void DBReadContent(Room thisRoom)
 	{

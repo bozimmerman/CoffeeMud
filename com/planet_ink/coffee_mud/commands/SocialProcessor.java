@@ -222,47 +222,47 @@ public class SocialProcessor
 			commands.removeElementAt(commands.size()-1);
 
 		String itemID=Util.combine(commands,0);
+		
+		
 		boolean doneSomething=false;
-		//int addendum=1;
-		String addendumStr="";
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
+		int addendum=1;
+		String addendumStr="";
+		Environmental last=null;
 		do
 		{
-			Environmental thisItem=possibleGold(mob,itemID);
-			if(thisItem!=null)
+			Item giveThis=possibleGold(mob,itemID+addendumStr);
+			if(giveThis!=null)
 				allFlag=false;
 			else
-			if(!involuntarily)
-				thisItem=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemID+addendumStr);
-			else
 			{
-				thisItem=mob.fetchInventory(itemID+addendumStr);
-				if((thisItem!=null)&&(thisItem instanceof Item))
+				giveThis=mob.fetchCarried(null,itemID+addendumStr);
+				if((giveThis!=null)&&(giveThis instanceof Item)&&(mob.isMine(giveThis)))
 				{
-					((Item)thisItem).setLocation(null);
-					((Item)thisItem).remove();
+					((Item)giveThis).setLocation(null);
+					((Item)giveThis).remove();
 				}
 			}
-
-			if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
+			if((giveThis==null)||(!Sense.canBeSeenBy(giveThis,mob)))
 			{
 				if((!doneSomething)&&(Util.s_int(itemID)<=0))
-					mob.tell("I don't see that here.");
+					mob.tell("You aren't carrying that.");
 				return;
 			}
 			else
-			if((doneSomething)&&(!(thisItem instanceof Item)))
-			   return;
+			if(last==giveThis)
+			{
+				addendumStr="."+(++addendum);
+				continue;
+			}
 
-			if(!mob.isMine(thisItem))
-				if(!new ItemUsage().get(mob,null,(Item)thisItem))
-					return;
-			if(!mob.isMine(thisItem))
-				return;
-			FullMsg newMsg=new FullMsg(mob,recipient,thisItem,Affect.MSG_GIVE,"<S-NAME> give(s) "+thisItem.name()+" to <T-NAMESELF>.");
-			if(!mob.location().okAffect(newMsg))
-				return;
-			mob.location().send(mob,newMsg);
+			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,Affect.MSG_GIVE,"<S-NAME> give(s) "+giveThis.name()+" to <T-NAMESELF>.");
+			if(mob.location().okAffect(newMsg))
+				mob.location().send(mob,newMsg);
+			else
+				addendumStr="."+(++addendum);
+
+			last=giveThis;
 			doneSomething=true;
 		}while(allFlag);
 	}

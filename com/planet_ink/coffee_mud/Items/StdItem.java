@@ -492,7 +492,7 @@ public class StdItem implements Item
 			}
 			return true;
 		case Affect.TYP_GET:
-			if(affect.tool()==null)
+			if((affect.tool()==null)||(affect.tool() instanceof MOB))
 			{
 				if(!Sense.canBeSeenBy(this,mob))
 				{

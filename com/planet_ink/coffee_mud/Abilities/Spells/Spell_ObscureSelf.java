@@ -45,13 +45,6 @@ public class Spell_ObscureSelf extends Spell
 
 		MOB mob=(MOB)affected;
 		
-/*
-if(affect.othersMessage()!=null)
-	Log.sysOut("BLAH",affect.amISource(mob)+"/"+affect.amITarget(mob)+"/o="+affect.othersMessage());
-else
-	Log.sysOut("BLAH",affect.amISource(mob)+"/"+affect.amITarget(mob)+"/s="+affect.sourceMessage());
-*/
-
 		String othersMessage=affect.othersMessage();
 		String sourceMessage=affect.sourceMessage();
 		String targetMessage=affect.targetMessage();

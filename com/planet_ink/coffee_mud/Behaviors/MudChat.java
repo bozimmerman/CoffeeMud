@@ -21,6 +21,7 @@ public class MudChat extends StdBehavior
 	// following strings are the proposed responses.
 	//----------------------------------------------
 
+	private MOB lastReactedTo=null;
 	private Vector responseQue=new Vector();
 	private int tickDown=3;
 	private final static int TALK_WAIT_DELAY=30;
@@ -370,6 +371,7 @@ public class MudChat extends StdBehavior
 				  &&(mob.location().numPCInhabitants()==1)))
 			&&(Sense.canBeHeardBy(mob,monster))
 			&&(myChatGroup!=null)
+			&&(lastReactedTo!=affect.source())
 			&&(affect.targetMessage()!=null))
 			{
 				int x=affect.targetMessage().indexOf("'");
@@ -408,6 +410,7 @@ public class MudChat extends StdBehavior
 			&&(Sense.canBeSeenBy(mob,monster))
 			&&(Sense.canBeSeenBy(monster,mob))
 			&&(talkDown<=0)
+			&&(lastReactedTo!=affect.source())
 			&&(myChatGroup!=null))
 			{
 				String msg=null;
@@ -446,7 +449,10 @@ public class MudChat extends StdBehavior
 
 
 			if(myResponses!=null)
+			{
+				lastReactedTo=affect.source();
 				queResponse(myResponses,monster,mob,rest[0]);
+			}
 		}
 	}
 
@@ -484,6 +490,7 @@ public class MudChat extends StdBehavior
 					try
 					{
 						ExternalPlay.doCommand((MOB)ticking,que);
+						lastReactedTo=null;
 						// you've done one, so get out before doing another!
 						break;
 					}

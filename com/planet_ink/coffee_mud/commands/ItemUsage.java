@@ -81,7 +81,7 @@ public class ItemUsage
 			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 	}
 
-	public boolean get(MOB mob, Item container, Item getThis)
+	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{
 		String theWhat=getThis.name();
 		Environmental target=getThis;
@@ -93,7 +93,7 @@ public class ItemUsage
 			theWhat+=" from "+container.name();
 		}
 
-		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,"<S-NAME> get(s) "+theWhat);
+		FullMsg msg=new FullMsg(mob,target,tool,Affect.MSG_GET,quiet?null:"<S-NAME> get(s) "+theWhat);
 		if(!mob.location().okAffect(msg))
 			return false;
 		mob.location().send(mob,msg);
@@ -150,7 +150,7 @@ public class ItemUsage
 				return;
 			}
 
-			if((last==getThis)||(!get(mob,container,(Item)getThis)))
+			if((last==getThis)||(!get(mob,container,(Item)getThis,false)))
 				addendumStr="."+(++addendum);
 			last=getThis;
 			doneSomething=true;
@@ -346,7 +346,7 @@ public class ItemUsage
 			   return;
 
 			if((!mob.isMine(fillThis))&&(!doneSomething))
-				if(!get(mob,null,(Item)fillThis))
+				if(!get(mob,null,(Item)fillThis,false))
 					return;
 
 			if(!mob.isMine(fillThis))
