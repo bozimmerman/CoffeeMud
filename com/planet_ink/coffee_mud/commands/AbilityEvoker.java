@@ -62,19 +62,21 @@ public class AbilityEvoker
 			{
 				Ability thisAbility=mob.fetchAbility(a);
 				if(evokedBy(thisAbility,evokeWord,secondWord.toUpperCase()))
-					if(evokableAbility!=null)
+				{
+					if(thisAbility.name().equalsIgnoreCase(secondWord))
 					{
-						if(!evokableAbility.name().equalsIgnoreCase(secondWord))
-						{
-							evokableAbility=null;
-							foundMoreThanOne=true;
-						}
+						evokableAbility=thisAbility;
 						break;
 					}
 					else
+					if(evokableAbility!=null)
+						foundMoreThanOne=true;
+					else
 						evokableAbility=thisAbility;
+						
+				}
 			}
-			if(evokableAbility!=null)
+			if((evokableAbility!=null)&&(!foundMoreThanOne))
 				commands.removeElementAt(0);
 			else
 			if((foundMoreThanOne)&&(commands.size()>1))
