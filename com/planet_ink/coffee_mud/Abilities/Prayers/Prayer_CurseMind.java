@@ -14,8 +14,7 @@ public class Prayer_CurseMind extends Prayer
 	public int holyQuality(){ return HOLY_EVIL;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_CurseMind();}
-	public int classificationCode(){	return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-
+	
 	boolean notAgain=false;
 
 	public boolean tick(int tickID)

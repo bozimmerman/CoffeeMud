@@ -79,7 +79,7 @@ public class Shaman extends Cleric
 			
 			CMAble.addCharAbilityMapping(ID(),13,"Prayer_Sanctuary",true);
 			
-CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",true);
+			CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",true);
 			
 			CMAble.addCharAbilityMapping(ID(),15,"Prayer_Rockskin",true);
 			
@@ -134,13 +134,13 @@ CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",true);
 		if(mob.baseCharStats().getStat(CharStats.WISDOM)<=8)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Templar.");
+				mob.tell("You need at least a 9 Wisdom to become a Shaman.");
 			return false;
 		}
 		if(mob.baseCharStats().getStat(CharStats.CONSTITUTION)<=9)
 		{
 			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a Templar.");
+				mob.tell("You need at least a 9 Constitution to become a Shaman.");
 			return false;
 		}
 		return super.qualifiesForThisClass(mob,quiet);
@@ -229,7 +229,7 @@ CMAble.addCharAbilityMapping(ID(),14,"Prayer_Fertilize",true);
 
 	public void outfit(MOB mob)
 	{
-		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");
+		Weapon w=(Weapon)CMClass.getWeapon("SmallMace");
 		if(mob.fetchInventory(w.ID())==null)
 		{
 			mob.addInventory(w);
