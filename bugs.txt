@@ -1,3 +1,4 @@
+Affected list display for Trap_SleepGas
 need need need a portal fixer -- the tzbrakas training acad.
 if a character has BLINDSIGHT prayer active and wears a lightsource, the room is still in darkness to other people who are in the room until the BLINDSIGHT player leaves the room and comes back
 not sure if this is a bug, if i am in a group and get set to first/second etc rows, i cannot control animated corpses that i raise (eg You are too far away from a mummy to use Control Undead. ). this is happening without the group leader in the room without fighting. (at this point the only way i can fix it is either nofollowing and controlling, or have the leader come and reset my position...tedious) actually nofollow doesnt change the formation position, i'm still too far away to control made creatures
