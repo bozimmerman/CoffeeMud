@@ -65,6 +65,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	HTTPserver webServer;
 
 	public boolean virtualPage;
+	
+	private Vector theCache=new Vector();
 
 
 
@@ -95,6 +97,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		String lookFor = new String (mimePrefix + a_extension);
 		return page.getStr(lookFor.toUpperCase());
 	}
+	
+	public Vector cache(){return theCache;}
 
 	private boolean process(String inLine) throws Exception
 	{

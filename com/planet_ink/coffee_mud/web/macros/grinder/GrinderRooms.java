@@ -227,17 +227,17 @@ public class GrinderRooms
 			return "No Item Data!";
 		
 		
-		for(int i=0;i<R.numItems();i++)
-		{
-			Item I=R.fetchItem(i);
-			if((I.container()!=null)&&(!R.isContent(I.container())))
-				I.setContainer(null);
-		}
 		for(int i=0;i<allitems.size();i++)
 		{
 			Item I=(Item)allitems.elementAt(i);
 			if(!R.isContent(I))
 				I.destroyThis();
+		}
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.fetchItem(i);
+			if((I.container()!=null)&&(!R.isContent(I.container())))
+				I.setContainer(null);
 		}
 		for(int m=0;m<allmobs.size();m++)
 		{
@@ -264,6 +264,7 @@ public class GrinderRooms
 		ExternalPlay.DBUpdateRoom(R);
 		ExternalPlay.DBUpdateMOBs(R);
 		ExternalPlay.DBUpdateItems(R);
+		R.startItemRejuv();
 		return "";
 	}
 	

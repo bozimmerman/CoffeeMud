@@ -58,8 +58,9 @@ public class ExitData extends StdWebMacro
 							 &&(((String)httpReq.getRequestParameters().get("CLASSCHANGED")).equals("true")));
 		// important generic<->non generic swap!
 		String newClassID=(String)httpReq.getRequestParameters().get("CLASSES");
+		boolean firstTime=true;
 		Exit E2=null;
-		if(newClassID!=null) E2=CMClass.getExit(newClassID);
+		if(newClassID!=null){ E2=CMClass.getExit(newClassID); firstTime=false;}
 		if((E2!=null)&&(E.isGeneric()!=E2.isGeneric()))
 			E=E2;
 		
@@ -78,16 +79,15 @@ public class ExitData extends StdWebMacro
 			{
 				String old=(String)httpReq.getRequestParameters().get(okparms[o]);
 				String oldold=old;
+				if(old==null) old="";
 				switch(o)
 				{
 				case 0: // name
-					if((old==null)||(old.length()==0))
-						old=E.name();
+					if(firstTime) old=E.name();
 					str.append(old);
 					break;
 				case 1: // classes
-					if((old==null)||(old.length()==0))
-						old=CMClass.className(E); 
+					if(firstTime) old=CMClass.className(E); 
 					for(int r=0;r<CMClass.exits.size();r++)
 					{
 						Exit cnam=(Exit)CMClass.exits.elementAt(r);
@@ -98,22 +98,19 @@ public class ExitData extends StdWebMacro
 					}
 					break;
 				case 2: // displaytext
-					if((old==null)||(old.length()==0))
-						old=E.displayText(); 
+					if(firstTime) old=E.displayText(); 
 					str.append(old);
 					break;
 				case 3: // description
-					if((old==null)||(old.length()==0))
-						old=E.description(); 
+					if(firstTime) old=E.description(); 
 					str.append(old);
 					break;
 				case 4: // level
-					if((old==null)||(old.length()==0))
-						old=""+E.baseEnvStats().level(); 
+					if(firstTime) old=""+E.baseEnvStats().level(); 
 					str.append(old);
 					break;
 				case 5: // levelrestricted;
-					if(old==null)
+					if(firstTime) 
 						old=E.levelRestricted()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -121,7 +118,7 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 6: // istrapped
-					if(old==null)
+					if(firstTime) 
 						old=E.isTrapped()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -129,7 +126,7 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 7: // hasadoor
-					if(old==null)
+					if(firstTime) 
 						old=E.hasADoor()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -137,12 +134,11 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 8: // closedtext
-					if((old==null)||(old.length()==0))
-						old=E.closedText(); 
+					if(firstTime) old=E.closedText(); 
 					str.append(old);
 					break;
 				case 9: // defaultsclosed
-					if(old==null)
+					if(firstTime) 
 						old=E.defaultsClosed()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -150,17 +146,15 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 10: // openword
-					if((old==null)||(old.length()==0))
-						old=E.openWord(); 
+					if(firstTime) old=E.openWord(); 
 					str.append(old);
 					break;
 				case 11: // closeword
-					if((old==null)||(old.length()==0))
-						old=E.closeWord(); 
+					if(firstTime) old=E.closeWord(); 
 					str.append(old);
 					break;
 				case 12: // hasalock
-					if(old==null)
+					if(firstTime) 
 						old=E.hasALock()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -168,7 +162,7 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 13: // defaultslocked
-					if(old==null)
+					if(firstTime) 
 						old=E.defaultsLocked()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -176,12 +170,11 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 14: // keyname
-					if((old==null)||(old.length()==0))
-						old=E.keyName(); 
+					if(firstTime) old=E.keyName(); 
 					str.append(old);
 					break;
 				case 15: // isreadable
-					if(old==null)
+					if(firstTime) 
 						old=E.isReadable()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -189,21 +182,18 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 16: // readable text
-					if((old==null)||(old.length()==0))
-						old=E.readableText(); 
+					if(firstTime) old=E.readableText(); 
 					str.append(old);
 					break;
 				case 17: // isclassrestricuted
-					if(old==null)
-						old=E.classRestricted()?"checked":""; 
+					if(firstTime) old=E.classRestricted()?"checked":""; 
 					else 
 					if(old.equals("on")) 
 						old="checked";
 					str.append(old);
 					break;
 				case 18: // restrictedclasses
-					if((old==null)||(old.length()==0))
-						old=E.classRestrictedName(); 
+					if(firstTime) old=E.classRestrictedName(); 
 					str.append("<SELECT NAME=RESTRICTEDCLASSES>");
 					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
@@ -217,7 +207,7 @@ public class ExitData extends StdWebMacro
 					str.append(old);
 					break;
 				case 19: // isalignmentrestricuted
-					if(old==null)
+					if(firstTime) 
 						old=E.alignmentRestricted()?"checked":""; 
 					else 
 					if(old.equals("on")) 
@@ -251,8 +241,7 @@ public class ExitData extends StdWebMacro
 					str.append("</SELECT>");
 					break;
 				case 21: // misc text
-					if(old==null)
-						old=E.text(); 
+					if(firstTime) old=E.text(); 
 					str.append(old);
 					break;
 				case 22: // is generic

@@ -31,6 +31,7 @@ public interface Item extends Environmental
 	public boolean savable();
 	
 	public int value();
+	public int baseGoldValue();
 	public void setBaseValue(int newValue);
 	
 	public int capacity();

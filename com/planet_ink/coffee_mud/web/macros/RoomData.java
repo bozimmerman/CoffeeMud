@@ -175,8 +175,21 @@ public class RoomData extends StdWebMacro
 		String last=(String)httpReq.getRequestParameters().get("ROOM");
 		if(last==null) return " @break@";
 		if(last.length()==0) return "";
-		Room R=CMMap.getRoom(last);
-		ExternalPlay.resetRoom(R);
+		Room R=null;
+		for(int i=0;i<httpReq.cache().size();i++)
+		{
+			Object O=httpReq.cache().elementAt(i);
+			if((O instanceof Room)&&(((Room)O).ID().equals(last)))
+				R=(Room)O;
+		}
+		if(R==null)
+		{
+			R=CMMap.getRoom(last);
+			if(R==null)
+				return "No Room?!";
+			ExternalPlay.resetRoom(R);
+			httpReq.cache().addElement(R);
+		}
 		
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("NAME"))
@@ -190,7 +203,7 @@ public class RoomData extends StdWebMacro
 							 &&(((String)httpReq.getRequestParameters().get("CLASSCHANGED")).equals("true")));
 		if(parms.containsKey("CLASSES"))
 		{
-			String className=(String)httpReq.getRequestParameters().get("CLASS");
+			String className=(String)httpReq.getRequestParameters().get("CLASSES");
 			if((className==null)||(className.length()==0))
 				className=CMClass.className(R);
 			for(int r=0;r<CMClass.locales.size();r++)

@@ -445,6 +445,7 @@ public class RoomLoader
 		{
 			D=DBConnector.DBFetch();
 			String str="UPDATE CMROOM SET "
+					+"CMLOID='"+CMClass.className(room)+"',"
 					+"CMAREA='"+room.getArea().name()+"',"
 					+"CMDESC1='"+room.displayText()+" ',"
 					+"CMDESC2='"+room.description()+" ',"

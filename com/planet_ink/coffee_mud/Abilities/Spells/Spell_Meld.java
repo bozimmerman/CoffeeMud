@@ -228,7 +228,7 @@ public class Spell_Meld extends Spell
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
-					gc.setBaseValue(itemOne.value()+itemTwo.value());
+					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
 					gc.baseEnvStats().setArmor(itemOne.baseEnvStats().armor()+itemTwo.baseEnvStats().armor());
 					gc.setMaterial(material);
@@ -251,7 +251,7 @@ public class Spell_Meld extends Spell
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
-					gc.setBaseValue(itemOne.value()+itemTwo.value());
+					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
 					gc.baseEnvStats().setAttackAdjustment(itemOne.baseEnvStats().attackAdjustment()+itemTwo.baseEnvStats().attackAdjustment());
 					gc.baseEnvStats().setDamage(itemOne.baseEnvStats().damage()+itemTwo.baseEnvStats().damage());
@@ -281,7 +281,7 @@ public class Spell_Meld extends Spell
 					gc.setDisplayText(newName+" sits here.");
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
 					gc.setGettable(itemOne.isGettable()&&itemTwo.isGettable());
-					gc.setBaseValue(itemOne.value()+itemTwo.value());
+					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
 					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
 					gc.setCapacity(((Container)itemOne).capacity()+((Container)itemTwo).capacity());
 					gc.setLidsNLocks((((Container)itemOne).hasALid()||((Container)itemTwo).hasALid()),true,isLocked,false);

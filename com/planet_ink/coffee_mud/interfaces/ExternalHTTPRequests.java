@@ -17,4 +17,5 @@ public interface ExternalHTTPRequests
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);
+	public Vector cache();
 }

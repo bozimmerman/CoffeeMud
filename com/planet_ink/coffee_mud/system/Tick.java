@@ -46,10 +46,11 @@ public class Tick extends Thread
 			{
 				boolean ok=C.clientObject.tick(C.tickID);
 				if(!ok)
-				{
-					tickers.removeElement(C);
-					return true;
-				}
+					synchronized(tickers)
+					{
+						tickers.removeElement(C);
+						return true;
+					}
 			}
 			catch(Exception t)
 			{

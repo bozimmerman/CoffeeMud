@@ -42,14 +42,14 @@ public class GrinderExits
 		
 		// important generic<->non generic swap!
 		String newClassID=(String)httpReq.getRequestParameters().get("CLASSES");
-		if(newClassID!=null)
+		if((newClassID!=null)&&(!CMClass.className(E).equals(newClassID)))
 		{
 			E=CMClass.getExit(newClassID);
 			R.rawExits()[dir]=E;
 		}
 		
 		StringBuffer str=new StringBuffer("");
-		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+		String[] okparms={"NAME"," CLASSES","DISPLAYTEXT","DESCRIPTION",
 						  "LEVEL","LEVELRESTRICTED","ISTRAPPED","HASADOOR",
 						  "CLOSEDTEXT","DEFAULTSCLOSED","OPENWORD","CLOSEWORD",
 						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
@@ -64,10 +64,9 @@ public class GrinderExits
 				generic=false;
 				parm=parm.substring(1);
 			}
-			String old=(String)httpReq.getRequestParameters().get(okparms[o]);
+			String old=(String)httpReq.getRequestParameters().get(parm);
 			if(old==null) old="";
-			
-			if(E.isGeneric()==generic)
+			if(E.isGeneric()||(!generic))
 			switch(o)
 			{
 			case 0: // name
@@ -152,17 +151,21 @@ public class GrinderExits
 					E.setAlignmentRestrictedMask(mask.trim());
 				break;
 			case 21: // misctext
-				E.setMiscText(old); 
+				if(!E.isGeneric())
+					E.setMiscText(old); 
 				break;
 			case 22: // is generic
 				break;
 			}
 		}
 		
-		String error=GrinderExits.dispositions(E,httpReq,parms);
-		if(error.length()>0) return error;
-		error=GrinderAreas.doAffectsNBehavs(E,httpReq,parms);
-		if(error.length()>0) return error;
+		if(E.isGeneric())
+		{
+			String error=GrinderExits.dispositions(E,httpReq,parms);
+			if(error.length()>0) return error;
+			error=GrinderAreas.doAffectsNBehavs(E,httpReq,parms);
+			if(error.length()>0) return error;
+		}
 		
 		//adjustments
 		if(E.hasADoor())

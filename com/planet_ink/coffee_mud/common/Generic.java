@@ -207,7 +207,7 @@ public class Generic
 			Item item=(Item)E;
 			text.append(
 			 XMLManager.convertXMLtoTag("IDENT",item.rawSecretIdentity())
-			+XMLManager.convertXMLtoTag("VALUE",item.value())
+			+XMLManager.convertXMLtoTag("VALUE",item.baseGoldValue())
 			//+XMLManager.convertXMLtoTag("USES",item.usesRemaining()) // handled 'from top' & in db
 			+XMLManager.convertXMLtoTag("MTRAL",item.material())
 			+XMLManager.convertXMLtoTag("READ",item.readableText())

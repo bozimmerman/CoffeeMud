@@ -52,7 +52,10 @@ public class ServiceEngine
 
 		TockClient client=new TockClient(E,numTicks,tickID);
 		if(client!=null)
-			tock.tickers.addElement(client);
+			synchronized(tock.tickers)
+			{
+				tock.tickers.addElement(client);
+			}
 	}
 
 	public static boolean deleteTick(Environmental E, int tickID)
@@ -60,15 +63,18 @@ public class ServiceEngine
 		for(int v=0;v<tickGroup.size();v++)
 		{
 			Tick almostTock=(Tick)tickGroup.elementAt(v);
-			for(int t=almostTock.tickers.size()-1;t>=0;t--)
+			synchronized (almostTock.tickers)
 			{
-				TockClient C=(TockClient)almostTock.tickers.elementAt(t);
-				Environmental E2=C.clientObject;
-				if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
+				for(int t=almostTock.tickers.size()-1;t>=0;t--)
 				{
-					almostTock.tickers.removeElement(C);
-					if(tickID>=0)
-						return true;
+					TockClient C=(TockClient)almostTock.tickers.elementAt(t);
+					Environmental E2=C.clientObject;
+					if((E==E2)&&((tickID==C.tickID)||(tickID<0)))
+					{
+						almostTock.tickers.removeElement(C);
+						if(tickID>=0)
+							return true;
+					}
 				}
 			}
 		}
@@ -195,43 +201,38 @@ public class ServiceEngine
 		Log.errOut("ServiceEngine","Shutdown complete.");
 	}
 	
-	public static void clearDebri(Room room, int taskCode)
+	public synchronized static void clearDebri(Room room, int taskCode)
 	{
 		for(int v=0;v<tickGroup.size();v++)
 		{
 			Tick tock=(Tick)tickGroup.elementAt(v);
-			int o=0;
-			while(o<tock.tickers.size())
+			synchronized(tock.tickers)
 			{
-				TockClient C=(TockClient)tock.tickers.elementAt(o);
-				if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
+				for(int o=tock.tickers.size()-1;o>=0;o--)
 				{
-					ItemTicker I=(ItemTicker)C.clientObject;
-					if(I.properLocation()==room)
+					TockClient C=(TockClient)tock.tickers.elementAt(o);
+					if((C.clientObject instanceof ItemTicker)&&(taskCode<2))
 					{
-						tock.tickers.removeElementAt(o);
-						I.setProperLocation(null);
+						ItemTicker I=(ItemTicker)C.clientObject;
+						if(I.properLocation()==room)
+						{
+							tock.tickers.removeElement(C);
+							I.setProperLocation(null);
+						}
 					}
 					else
-						o++;
-
-				}
-				else
-				if((C.clientObject instanceof MOB)&&((taskCode==0)||(taskCode==2)))
-				{
-					MOB mob=(MOB)C.clientObject;
-					if((mob.getStartRoom()==room)
-					&&(mob.isMonster())
-					&&(!room.isInhabitant(mob)))
+					if((C.clientObject instanceof MOB)&&((taskCode==0)||(taskCode==2)))
 					{
-						mob.destroy();
-						tock.tickers.removeElementAt(o);
+						MOB mob=(MOB)C.clientObject;
+						if((mob.getStartRoom()==room)
+						&&(mob.isMonster())
+						&&(!room.isInhabitant(mob)))
+						{
+							mob.destroy();
+							tock.tickers.removeElement(C);
+						}
 					}
-					else
-						o++;
 				}
-				else
-					o++;
 			}
 		}
 	}

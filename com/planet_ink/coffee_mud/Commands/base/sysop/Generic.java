@@ -853,7 +853,7 @@ public class Generic
 	void genValue(MOB mob, Item E)
 		throws IOException
 	{
-		mob.tell("\n\rAdjusted Value: '"+E.value()+"'.");
+		mob.tell("\n\rBase Value: '"+E.baseGoldValue()+"'.");
 		int newValue=Util.s_int(mob.session().prompt("Enter a new value\n\r:",""));
 		if(newValue>0)
 			E.setBaseValue(newValue);
