@@ -770,18 +770,23 @@ public class Arrest extends StdBehavior
 			int x=affect.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
 			if(x>0)
 			{
-				int y=affect.sourceMessage().lastIndexOf("'",x);
+				int y=affect.sourceMessage().lastIndexOf("'");
+				if(y<x)	y=affect.sourceMessage().lastIndexOf("`");
 				String name=null;
 				if(y>x)
-					name=affect.sourceMessage().substring(x+16,y);
+					name=affect.sourceMessage().substring(x+16,y).trim();
 				else
-					name=affect.sourceMessage().substring(x+16);
+					name=affect.sourceMessage().substring(x+16).trim();
 				if(name.length()>0)
 				for(int i=warrants.size()-1;i>=0;i--)
 				{
 					ArrestWarrant W=(ArrestWarrant)warrants.elementAt(i);
 					if((W.criminal!=null)&&(CoffeeUtensils.containsString(W.criminal.Name(),name)))
+					{
+						if(W.arrestingOfficer!=null)
+							dismissOfficer(W.arrestingOfficer);
 						warrants.removeElement(W);
+					}
 				}
 			}
 		}

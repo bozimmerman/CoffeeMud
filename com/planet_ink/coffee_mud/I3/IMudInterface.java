@@ -217,6 +217,7 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(!ses.mob().amDead())
 					&&(ses.mob().location()!=null)
 					&&(ses.mob().envStats().level()>=lvl)
+					&&((lvl>=0)||(ses.mob().isASysOp(ses.mob().location())))
 					&&(ses.mob().okAffect(ses.mob(),msg)))
 						ses.mob().affect(ses.mob(),msg);
 				}
@@ -327,6 +328,7 @@ public class IMudInterface implements ImudServices, Serializable
 					if((!ses.killFlag())&&(ses.mob()!=null)
 					&&(!ses.mob().amDead())
 					&&(ses.mob().envStats().level()>=channelLvl)
+					&&((channelLvl>=0)||(ses.mob().isASysOp(ses.mob().location())))
 					&&(ses.mob().location()!=null)
 					&&(ses.mob().playerStats()!=null)
 					&&(!Util.isSet(ses.mob().playerStats().getChannelMask(),channelInt)))

@@ -599,7 +599,7 @@ public class StdRoom
 	}
 	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	private void look(MOB mob, boolean careAboutBrief)
+	protected void look(MOB mob, boolean careAboutBrief)
 	{
 		StringBuffer Say=new StringBuffer("");
 		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))

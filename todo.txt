@@ -1,10 +1,9 @@
 Programming.html update
-	Include building information
-	Create external class-creation info
-	Updates misc. methods. Locales, 
-	Updates misc. methods. Mobs, 
-	Updates misc. methods. Items
 	Do Abilities/Spells/etc.
+	need special section for languages
+	need special section for poisons
+	need special section for diseases
+	need special section for traps
 	
 //****** next version ********************************************************
 GenRaces
@@ -17,6 +16,8 @@ Mortgages (bankers lend large amounts of money at interest, start taking away pr
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 putting a change bag into a changebag should combine your notes.
 SMTP capability
+ability/skill to drain mana from dead bodies
+Arrest allowing players to bring bountys to the judge.
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
 Arrest idea: banned substances (get, drop, eq, etc), and harder sentence for parole.
 apply languages to writing as well. Should be simple, right? ha!

@@ -9,7 +9,7 @@ public class Chant_NeutralizePoison extends Chant
 {
 	public String ID() { return "Chant_NeutralizePoison"; }
 	public String name(){ return "Neutralize Poison";}
-	public int quality(){return Ability.OK_OTHERS;}
+	public int quality(){return Ability.BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public Environmental newInstance(){	return new Chant_NeutralizePoison();}

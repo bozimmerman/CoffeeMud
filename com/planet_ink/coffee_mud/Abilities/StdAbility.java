@@ -191,7 +191,7 @@ public class StdAbility implements Ability, Cloneable
 				if(targetName.trim().length()==0)
 					mob.tell("You don't see them here.");
 				else
-					mob.tell("You don't see '"+targetName+"' here.");
+					mob.tell("You don't see anyone called '"+targetName+"' here.");
 			}
 			return null;
 		}
@@ -294,7 +294,7 @@ public class StdAbility implements Ability, Cloneable
 				if(targetName.trim().length()==0)
 					mob.tell("You don't see that here.");
 				else
-					mob.tell("You don't see '"+targetName+"' here.");
+					mob.tell("You don't see anything called '"+targetName+"' here.");
 			}
 			else
 				mob.tell("You can't do that to '"+targetName+"'.");

@@ -5,6 +5,7 @@
 
 "Chat by Chris Busch
 "copyright 1993 all rights reserved
+"Includes and Socials by Jeremy Vyska
 #cbusch@d.umn.edu
 #Please do not remove the above copyright.
 
@@ -91,6 +92,246 @@
 9Christopher Busch '$A' '$V' (was compiled at $C)
 ###Changing the above would be in voilation of C Busch's copyright.
 
+## CoffeeMud socials
+
+[looks accusingly]
+9!innocent $t
+3what?!?
+
+[peers into your eyes]
+5!smirk $t
+4huh? what?
+
+[apologizes to you]
+8!comfort $t
+4!head $t
+
+[gives you a round of applause]
+8!bow $t
+4!glare $t
+1!hush $t
+
+[blows a kiss at you]
+8!glare $t
+3!slap $t
+1!bkiss $t
+
+[bleeds on you|spews vomit and pukes all over your]
+8!grimace
+3damnit! I just cleaned that shirt!
+2!slap $t
+
+[bonks you on the head]
+7hey! Be nice
+4!sigh
+
+[bounces onto your lap]
+8:stands up abruptly and pushes <T-NAME> off.
+3ugh! Get off of me!
+
+[bows before you]
+9!nod $t
+9!bow $t
+3!eyebrow $t
+
+[cackles gleefully at you]
+9:backs away slowly, nodding and smiling.
+4!eyebrow $t
+
+[claps at your performance]
+9!bow $t
+2!hush $t
+
+[coughs on ostentatiously on you]
+9!glare $t
+
+[informs you that your attempts need some MAJOR adjustments]
+9hey - knock it off
+
+[cries on your shoulder]
+9!comfort $t
+1!hush $t
+
+[cuddles you]
+8get off me!
+1!cuddle $t
+
+[curtseys gracefully for you]
+7!bow $t
+2!nod $t
+
+[looks at you lustily and drools|eyes you up and down, leering|whispers to you sweet words of love|lusts after your delectable|looks at you and pants lustily|rubs up against you and purrs|is exposing|has just revealed]
+9don't get any ideas!
+8knock it off
+2I'll hurt you
+1!kill $t
+
+[bends over and gives you]
+9cover that butt before I put a foot to it
+4don't do that
+1!kill $t
+
+[takes you in his arms|takes you in her arms|holds you in his|holds you in him|holds you in her]
+9:shoves <T-NAME> away
+1!slap $t
+
+[raises a hand in farewell to you|waves goodbye to you]
+9safe journeys
+8farewell
+4!wave $t
+
+[farts in your direction]
+7!grimace $t
+3!wrist $t
+
+[flexes his muscles in|flexes her muscles in|grabs you, throws you in a head lock and NOOGIES]
+8!snicker
+7uh-huh... weakling
+
+[flirts with you|kisses your hand|pecks you on the cheek|gets down on one knee and romantically proposes to you|hands you a beautiful|snuggles up to you|whistles at the sight of you|wiggles his bottom toward|wiggles her bottom toward|winks suggestively]
+9flattered, uninterested
+2!wink $t
+
+[flutters his eyelashes at you|flutters her eyelashes at you]
+9!head $t
+2!eyebrow $t
+
+[fondly fondles you|gives you a long and passionate kiss|gooses you|gropes you|licks your jawline|starts steaming up the windows with you|makes passionate love to you|nibbles on your ear|softly nuzzles your neck|pinches your bottom|spanks you playfully|squeezes you fondly|wiggies all over you|flicks his whip across|flicks her whip across|and ties you securely to a|his tongue over|her tongue over||has started to strip you]
+9!slap $t
+3hey - don't you dare touch me like that again!
+1!kill $t
+
+[frowns at what you|gacks, and looks your|gasps as he realizes what you|gasps as she realizes what you|glares icily at you|points at you|smirks at you]
+9what?
+5!roll $t
+3!sigh
+
+[raises a hand in greeting to you|nods at you|gallantly tips his hat|gallantly tips her hat]
+8hello
+7!greet $t
+7!nod $t
+6!bow $t
+
+[grins evilly at you|silently toasts you]
+9!eyebrow $t
+4!grin $t
+2!frown
+
+[grovels in the dirt before you|kisses the dirt at your feet|serenades you|falls to the ground and worships you]
+9please stop that
+8!hush $t
+
+[growls at you|howls soulfully at you|snarls at you|threatens you...oooooooh|barks loudly at|swears at|ducks down low, charges forward|head into your stomach|doubles over in pain|suddenly knees you|rips out|With a resounding WHAP|to the floor, pinning]
+9knock it off
+6them's fightin words
+4!growl $t
+2!snarl $t
+1!kill $t
+
+[hugs you]
+9um, glad to see you too?
+5!eyebrow $t
+4!smile $t
+1!blush
+
+[judges your actions|laughs at you]
+9oh, shut up
+5you wanna black eye?
+3let's see you do better
+
+[kisses you]
+9!slap $t
+5ecto gamut!
+3hey - don't you dare touch me like that again!
+1!kill $t
+
+[you try to take a step, and you hit the world]
+9!glare
+
+[gently massages your shoulders|gives you a rubdown]
+9thanks
+7keep it on the shoulders
+2don't try any funny business
+
+[looks at you and mutters something nasty]
+9hey! If you got a problem with me, say it to my face, pal!
+7what did you say?!
+6!glare $t
+2:pretends to ignore <T-NAME>.
+
+[pats you on your head|ruffles your hair playfully]
+9:grabs <T-YOUPOSS> hand and thrusts it away
+7do I look like a dog to you, buddy?
+3don't patronize me
+
+[tossed a pie in your face]
+9:sighs and wipes the pie away.
+5!glare
+
+[pokes you in the ribs|punches you playfully|You are splattered with saliva|slobbers disgustingly on you|conjures a snowball from the thin air and throws it at you|tickles you-hee|slaps your wrist sharply|raises your shirt and blows into your tummy|grabs for your|flicks a bird]
+9don't do that
+8I'll tell you this nicely - knock it off
+3!kill $t
+
+[tells you a rather boring]
+9!yawn
+
+[screams at you|snickers at you|whines pathetically|begs you for]
+7what?!
+7!hush $t
+6!glare $t
+2:pretends to ignore <T-NAME>.
+
+[shivers at the suicidal thought of fighting you]
+9!grin $t
+2!flex $t
+
+[smiles at you]
+9!smile $t
+
+[sneezes]
+9Gods bless you
+
+[spits on you]
+8hey!!
+7!slap $t
+3!kill $t
+
+[staggers blindly into you]
+9:shoves <T-NAME> away.
+9get off me!
+
+[stares dreamily at you|hugs you supportively|tongue out at you]
+9please stop that
+6!eyebrow $t
+
+[is starving before your eyes]
+9!sigh
+3!give ration $t
+
+[you're it!]
+9!eyebrow $t
+3!tag $t
+
+[offers to tank for you]
+9no, thank you. I do not want to fight
+3!shake
+
+[thanks you heartily]
+9you're welcome?
+3!shrug
+
+[lovingly tweaks your cheek|twiddles your ears]
+8knock that off at once!
+4!slap $t
+
+[yodels to you...]
+9DON'T DO THAT
+4!snarl $t
+4!slap $t
+1!kill $t
+
+# says
 
 (please murder)
 9That would be bad to kill $r
