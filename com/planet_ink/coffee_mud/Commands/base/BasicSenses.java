@@ -171,10 +171,13 @@ public class BasicSenses
 		commands.removeElementAt(0);
 
 
-		if((abilityCode==104)&&(mob.getPractices()<7))
+		if(abilityCode==104)
 		{
-			mob.tell("You don't seem to have enough practices to do that.");
-			return;
+			if(mob.getPractices()<7)
+			{
+				mob.tell("You don't seem to have enough practices to do that.");
+				return;
+			}
 		}
 		else
 		if(mob.getTrains()==0)
