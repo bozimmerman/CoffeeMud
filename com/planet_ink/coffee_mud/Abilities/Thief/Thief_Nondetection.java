@@ -17,6 +17,23 @@ public class Thief_Nondetection extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public boolean active=false;
+	
+	
+	public boolean okAffect(Environmental myHost, Affect msg)
+	{
+		if((affected!=null)&&(affected instanceof MOB))
+		{
+			if((msg.amISource((MOB)affected))
+			&&((msg.sourceMinor()==Affect.TYP_ENTER)
+			   ||(msg.sourceMinor()==Affect.TYP_LEAVE)
+			   ||(msg.sourceMinor()==Affect.TYP_RECALL)))
+			{
+				active=false;
+				affected.recoverEnvStats();
+			}
+		}
+		return super.okAffect(myHost,msg);
+	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

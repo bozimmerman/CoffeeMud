@@ -176,12 +176,16 @@ CMAble.addCharAbilityMapping(ID(),21,"Thief_Caltrops",true);
 		MOB myChar=(MOB)myHost;
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
 		{
-			if(((affect.sourceMajor()&Affect.MASK_DELICATE)>0)
+			boolean spellLike=((affect.tool()!=null)&&(myChar.fetchAbility(affect.tool().ID())!=null))&&(myChar.isMine(affect.tool()));
+			if((spellLike||((affect.sourceMajor()&Affect.MASK_DELICATE)>0))
 			&&(!armorCheck(myChar)))
 			{
 				if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) in <S-HIS-HER> maneuver!");
+					String name="in <S-HIS-HER> maneuver";
+					if(spellLike)
+						name=affect.tool().name().toLowerCase();
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
 					return false;
 				}
 			}

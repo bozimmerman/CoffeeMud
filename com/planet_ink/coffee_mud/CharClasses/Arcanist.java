@@ -97,7 +97,7 @@ public class Arcanist extends Thief
 		
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_StoreSpell",true);
 			
-CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantItem",true);
+			CMAble.addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
 		}
 	}
 	
@@ -181,7 +181,7 @@ CMAble.addCharAbilityMapping(ID(),30,"Spell_EnchantItem",true);
 			else
 			if(msg.tool().ID().equals("Spell_Scribe")
 			||msg.tool().ID().equals("Spell_EnchantWand")
-			||msg.tool().ID().equals("Spell_EnchantItem")
+			||msg.tool().ID().equals("Spell_MagicItem")
 			||msg.tool().ID().equals("Spell_SpellStoring")
 			||msg.tool().ID().equals("Spell_WardArea"))
 			{
