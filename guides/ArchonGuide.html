@@ -7,7 +7,7 @@
 <P style="TEXT-ALIGN: center" align=center><STRONG><SPAN 
 style="FONT-SIZE: 18pt">The Novice Archon's Guide</SPAN></STRONG><B><SPAN 
 style="FONT-SIZE: 18pt"><BR><STRONG>to World Construction and Destruction 
-v3.0</STRONG></SPAN></B></P>
+v4.0</STRONG></SPAN></B></P>
 <P style="TEXT-ALIGN: center" align=center><STRONG>By Archon Grothus Gallslanger 
 of the&nbsp;Free City of Maltan</STRONG></P>
 <P style="TEXT-ALIGN: center" align=center>&nbsp;</P>
@@ -747,7 +747,8 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
     <TD>whether there are any readable markings on the 
       item</TD></TR>
   <TR>
-    <TD><EM>Assigned Readable Text</EM></TD>
+    <TD><EM>Assigned Readable 
+      Text</EM></TD>
     <TD>if this item is marked, what those markings 
     say.</TD></TR>
   <TR>
@@ -820,29 +821,33 @@ all of the fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P>
       a GenLantern, the object may be refilled with oil to continue.&nbsp; For a 
       GenLightSource, the object will vanish.</TD></TR></TABLE></P>
 <P>The "GenJournal"</STRONG><BR><BR></P>
-<P>Whenever a GenJournal is created, much like the 
-GenItem above, you are presented with a list of properties to fill in.&nbsp; 
-Pressing enter will leave the property unchanged.&nbsp; The properties include 
-all of the fields listed above under GenItem, plus&nbsp;one&nbsp;that works a
-little bit differently than described above:</P>
+<P>Whenever a GenJournal is created, much like the GenItem 
+above, you are presented with a list of properties to fill in.&nbsp; Pressing 
+enter will leave the property unchanged.&nbsp; The properties include all of the 
+fields listed above under GenItem, plus&nbsp;one&nbsp;that works a little bit 
+differently than described above:</P>
 <P><STRONG>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
   <TR>
     <TD width="25%"><STRONG 
       >Property</STRONG></TD>
     <TD width="75%"><STRONG 
       >Description</STRONG></TD></TR>
   <TR>
-    <TD><EM>Assigned Readable Text</EM></TD>
-    <TD>A Journal is always readable, so this field is really redundant to the
-    journal.  Therefore, it is now used as field where you may set requirements
-    for reading from and writing to the journal.  If no requirements are mentioned,
-    anyone may read the journal.  A reading requirement is specified by putting
-    READ= followed by some requirements.  A writing requirement is specified by 
-    putting WRITE= followed by some requirements.  The requirments for each of
-    these setting are as follows:
+    <TD><EM>Assigned Readable 
+      Text</EM></TD>
+    <TD>A Journal is always readable, so this field is 
+      really redundant to the journal. Therefore, it is now used as a field 
+      where you may set requirements for reading from and writing to the 
+      journal. If no requirements are mentioned, anyone may read the journal. A 
+      reading requirement is specified by putting READ= followed by some 
+      requirements. A writing requirement is specified by putting WRITE= 
+      followed by some requirements. The requirments for each of these setting 
+      are as follows: 
       <UL>
         <LI>-sysop (archons and area subops may never read) 
+
         <LI>-class (disallow all classes) 
         <LI>-baseclass (disallow all base classes) 
         <LI>+thief +bard +ranger etc.. (create exceptions 
@@ -868,9 +873,10 @@ little bit differently than described above:</P>
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
         <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
-        (disallow only listed levels, put your level for 10) </LI></UL>
-</TD></TR></TABLE></P>
-<BR>The "GenWeapon"</STRONG></P>
+        (disallow only listed levels, put your level for 10) 
+  </LI></UL></TD></TR></TABLE></P><BR>The 
+"GenWeapon"</STRONG>
+<P></P>
 <P>Whenever a GenWeapon is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include all of the 
@@ -1652,57 +1658,63 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       typically granted to Clerics of the deity.</TD></TR>
   <TR>
     <TD><EM>Cleric Ritual</EM></TD>
-    <TD>For a cleric to receive the blessings of the deity, the cleric 
-    must perform a particular ritual consisting of one or more actions.
-    This field will list the tasks in the ritual which must be performed.
-    Each task is seperated by a "|" to mean that either of the tasks on
-    either side of the "|" is sufficient, or a "&" to mean that both of 
-    the tasks on either side of the "&" is required.  The tasks themselves
-    must be of one of the following forms:<BR>
-    <UL>
-	<LI>SAY [TEXT] - the text specified must be said by the player.  
-	For example: SAY "Allah is Great"
-	<LI>TIME [HOUR] - the other tasks must be performed at the 
-	specified hour.  For example: TIME 3
-	<LI>PUTTHING [THING NAME] [CONTAINER NAME] - an item of the type must 
-	be placed in the specified container.  For example: PUTTHING dagger pit
-	<LI>BURNTHING [THING NAME] - an item of the type given must be 
-	burnt or set afire.  This is typically done with the FIREBUILDING skill.
-	For example: BURNTHING the ceremonial log
-	<LI>EAT [FOOD NAME] - the specified item must be eaten.  For example: EAT holy pie.
-	<LI>DRINK [DRINK NAME] - the specified drink must be consumed.  For example: DRINK holy fountain
-	<LI>INROOM - the player must be in the specified room number.  For example: INROOM NewArea#123
-	<LI>RIDING - the player must be on the specified mount.  For example: RIDING holy altar
-	<LI>CAST - the player must cast the specied spell.  For example: CAST Prayer_Bless
-	<LI>EMOTE - the player must emote the following thing.  For example: EMOTE kneels before the throan
-	<LI>PUTVALUE  [MINIMUM VALUE] [CONTAINER NAME] - an item worth at least
-	the specified amount must be placed in the specified container.  
-	For example: PUTVALUE coins pit
-	<LI>PUTMATERIAL [MATERIAL TYPE] [CONTAINER NAME] - an item made of the
-	specified material must be placed in the specified container.  For instance:
-	PUTMATERIAL cotton pit
-	<LI>BURNMATERIAL [MATERIAL TYPE] - an item made of the
-	specified material must be burnt, such as using the FIREBUILDING skill.  
-	For instance: BURNMATERIAL balsa
-	<LI>BURNMATERIAL [MINIMUM VALUE] - an item worth at least the specified
-	amount must be burnt, such as using the FIREBUILDING skill.  
-	For instance: BURNVALUE "wooden statue"
-	<LI>SITTING 0 - the player must be sitting (the 0 is required!)
-	<LI>STANDING 0 - the player must be standing (the 0 is required!)
-	<LI>SLEEPING 0 - the player must be sleeping (the 0 is required!)
-    </UL>
-    </TD></TR>
+    <TD>For a cleric to receive the blessings of the 
+      deity, the cleric must perform a particular ritual consisting of one or 
+      more actions. This field will list the tasks in the ritual which must be 
+      performed. Each task is seperated by a "|" to mean that either of the 
+      tasks on either side of the "|" is sufficient, or a "&amp;" to mean that 
+      both of the tasks on either side of the "&amp;" is required. The tasks 
+      themselves must be of one of the following forms:<BR>
+      <UL>
+        <LI>SAY [TEXT] - the text specified must be said by 
+        the player. For example: SAY "Allah is Great" 
+        <LI>TIME [HOUR] - the other tasks must be performed 
+        at the specified hour. For example: TIME 3 
+        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an 
+        item of the type must be placed in the specified container. For example: 
+        PUTTHING dagger pit 
+        <LI>BURNTHING [THING NAME] - an item of the type 
+        given must be burnt or set afire. This is typically done with the 
+        FIREBUILDING skill. For example: BURNTHING the ceremonial log 
+        <LI>EAT [FOOD NAME] - the specified item must be 
+        eaten. For example: EAT holy pie. 
+        <LI>DRINK [DRINK NAME] - the specified drink must 
+        be consumed. For example: DRINK holy fountain 
+        <LI>INROOM - the player must be in the specified 
+        room number. For example: INROOM NewArea#123 
+        <LI>RIDING - the player must be on the specified 
+        mount. For example: RIDING holy altar 
+        <LI>CAST - the player must cast the specied spell. 
+        For example: CAST Prayer_Bless 
+        <LI>EMOTE - the player must emote the following 
+        thing. For example: EMOTE kneels before the throan 
+        <LI>PUTVALUE [MINIMUM VALUE] [CONTAINER NAME] - an 
+        item worth at least the specified amount must be placed in the specified 
+        container. For example: PUTVALUE coins pit 
+        <LI>PUTMATERIAL [MATERIAL TYPE] [CONTAINER NAME] - 
+        an item made of the specified material must be placed in the specified 
+        container. For instance: PUTMATERIAL cotton pit 
+        <LI>BURNMATERIAL [MATERIAL TYPE] - an item made of 
+        the specified material must be burnt, such as using the FIREBUILDING 
+        skill. For instance: BURNMATERIAL balsa 
+        <LI>BURNMATERIAL [MINIMUM VALUE] - an item worth at 
+        least the specified amount must be burnt, such as using the FIREBUILDING 
+        skill. For instance: BURNVALUE "wooden statue" 
+        <LI>SITTING 0 - the player must be sitting (the 0 
+        is required!) 
+        <LI>STANDING 0 - the player must be standing (the 0 
+        is required!) 
+        <LI>SLEEPING 0 - the player must be sleeping (the 0 
+        is required!) </LI></UL></TD></TR>
   <TR>
-    <TD><EM>Worshipper Ritual</EM></TD>
-    <TD>For a worshipper to receive one of the blessings of the deity, the 
-    player must perform a particular ritual consisting of one or more actions.
-    This field will list the tasks in the ritual which must be performed,
-    and uses the exact same format as the Cleric Ritual field above.
-    </TD></TR>
-
-</TABLE></STRONG><P>
-
-<STRONG><BR></P><BR>Modifying MOBs</STRONG>
+    <TD><EM>Worshipper 
+Ritual</EM></TD>
+    <TD>For a worshipper to receive one of the blessings 
+      of the deity, the player must perform a particular ritual consisting of 
+      one or more actions. This field will list the tasks in the ritual which 
+      must be performed, and uses the exact same format as the Cleric Ritual 
+      field above. </TD></TR></TABLE></STRONG>
+<P><STRONG><BR></P><BR>Modifying MOBs</STRONG> 
 <P></P>
 <P>There are properties of&nbsp;mobs that can be modified 
 by the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
@@ -1811,10 +1823,10 @@ LockableContainer, etc</P>
 <P class=MsoNormal>StdJournal</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>misc text - The reading and writing requirements for the 
-  journal.  The proper format is READ=REQUIREMENTS WRITE=REQUIREMENTS.  The 
-  REQUIREMENTS are as described above under the Assigned Readable Text field in the 
-  GenJournal entry.</DIV></LI></UL>
+  <DIV class=MsoNormal>misc text - The reading and writing 
+  requirements for the journal. The proper format is READ=REQUIREMENTS 
+  WRITE=REQUIREMENTS. The REQUIREMENTS are as described above under the Assigned 
+  Readable Text field in the GenJournal entry.</DIV></LI></UL>
 <P class=MsoNormal>StdKey</P>
 <UL>
   <LI>
