@@ -240,7 +240,7 @@ public class SocialProcessor
 			else
 			{
 				giveThis=mob.fetchCarried(null,itemID+addendumStr);
-				if((giveThis!=null)&&(giveThis instanceof Item)&&(mob.isMine(giveThis)))
+				if((giveThis!=null)&&(mob.isMine(giveThis)))
 				{
 					((Item)giveThis).setLocation(null);
 					((Item)giveThis).remove();

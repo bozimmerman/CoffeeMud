@@ -91,7 +91,7 @@ public class Skill_Swim extends StdAbility
 			return false;
 		if(student.location()==null)
 			return false;
-		Skill_Swim myAbility=student.fetchAbility(ID());
+		Ability myAbility=student.fetchAbility(ID());
 		if(myAbility.profficiency()<20)
 			return true;
 		if((student.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)

@@ -255,9 +255,9 @@ public class Movement
 		dirCode=getMyDirCode(thisExit,room,dirCode);
 		if(dirCode<0) return true;
 		Exit pair=room.getPairedExit(dirCode);
-		FullMsg altMsg=new FullMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 		if(pair!=null)
 		{
+			//FullMsg altMsg=new FullMsg(msg.source(),pair,msg.tool(),msg.sourceCode(),null,msg.targetCode(),null,msg.othersCode(),null);
 			//if(!pair.okAffect(altMsg))
 			//	return false;
 		}
