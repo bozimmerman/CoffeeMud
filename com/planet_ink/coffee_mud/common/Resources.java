@@ -220,7 +220,7 @@ public class Resources
 				if(line!=null)
 				{
 					buf.append(line);
-					buf.append("\n");
+					buf.append("\n\r");
 				}
 			}
 			F.close();
