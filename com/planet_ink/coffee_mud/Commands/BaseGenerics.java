@@ -4755,7 +4755,7 @@ public class BaseGenerics extends StdCommand
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me,++showNumber,showFlag);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseCharStats().getCurrentClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+				me.baseCharStats().getCurrentClass().fillOutMOB(me,me.baseEnvStats().level());
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
 			genGender(mob,me,++showNumber,showFlag);
@@ -4914,7 +4914,7 @@ public class BaseGenerics extends StdCommand
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me,++showNumber,showFlag);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				mme.baseCharStats().getCurrentClass().buildMOB(mme,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
+				mme.baseCharStats().getCurrentClass().fillOutMOB(mme,me.baseEnvStats().level());
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,mme,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);

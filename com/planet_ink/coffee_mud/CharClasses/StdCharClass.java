@@ -532,82 +532,20 @@ public class StdCharClass implements CharClass, Cloneable
 		return theNews;
 	}
 
-	public MOB buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender)
+	public MOB fillOutMOB(MOB mob, int level)
 	{
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
 		if(!mob.isMonster()) return mob;
 
-		mob.setAlignment(alignment);
-		mob.baseCharStats().setStat(CharStats.GENDER,(int)gender);
-		mob.baseCharStats().setStat(CharStats.STRENGTH,10);
-		mob.baseCharStats().setStat(CharStats.WISDOM,10);
-		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,10);
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,13);
-		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
-		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
-		mob.baseCharStats().setStat(getAttackAttribute(),13);
-		mob.baseCharStats().setCurrentClass(this);
-		mob.baseCharStats().setClassLevel(this,1);
-		mob.baseEnvStats().setArmor(50);
-		mob.baseEnvStats().setLevel(1);
-		mob.baseEnvStats().setSensesMask(0);
-		mob.baseEnvStats().setWeight(weight);
-		mob.baseEnvStats().setDamage(10);
-		mob.setWimpHitPoint(wimp);
-		mob.setMoney(10);
-		mob.baseState().setHitPoints(20);
-		mob.baseState().setMovement(100);
-		mob.baseState().setMana(100);
-		mob.recoverCharStats();
-		mob.recoverEnvStats();
-		mob.recoverMaxState();
-		mob.resetToMaxState();
-		mob.baseCharStats().getCurrentClass().startCharacter(mob,true,false);
-
-		for(int lvl=1;lvl<level;lvl++)
-		{
-			mob.setMoney(mob.getMoney()+10);
-			switch(lvl % 6)
-			{
-			case 0:
-				mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+1);
-				break;
-			case 1:
-				mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+1);
-				break;
-			case 2:
-				mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+1);
-				break;
-			case 3:
-				mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+1);
-				break;
-			case 4:
-				mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+1);
-				break;
-			case 5:
-				mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+1);
-				break;
-			}
-			int oldattack=mob.baseEnvStats().attackAdjustment();
-			mob.recoverEnvStats();
-			mob.recoverCharStats();
-			mob.recoverMaxState();
-			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
-				mob.charStats().getCurrentClass().level(mob);
-			else
-				MUDFight.postExperience(mob,null,null,mob.getExpNeededLevel()+1,true);
-			int newAttack=mob.baseEnvStats().attackAdjustment()-oldattack;
-			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-newAttack);
-			mob.recoverEnvStats();
-			mob.recoverCharStats();
-			mob.recoverMaxState();
-		}
-		while(mob.inventorySize()>0)
-		{
-			Item I=mob.fetchInventory(0);
-			if(I!=null) mob.delInventory(I);
-		}
-		mob.resetToMaxState();
+		long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(level*MudHost.TICKS_PER_RLMIN/2);
+		if(rejuv>(MudHost.TICKS_PER_RLMIN*20)) rejuv=(MudHost.TICKS_PER_RLMIN*20);
+		mob.baseEnvStats().setLevel(level);
+		mob.baseEnvStats().setRejuv((int)rejuv);
+		mob.baseEnvStats().setSpeed(getLevelSpeed(mob));
+		mob.baseEnvStats().setArmor(getLevelArmor(mob));
+		mob.baseEnvStats().setDamage(getLevelDamage(mob));
+		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
+		mob.setMoney((level*2)+10);
 		return mob;
 	}
 

@@ -24,7 +24,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);
 
-	public MOB buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender);
+	public MOB fillOutMOB(MOB mob, int level);
 
 	public int getLevelMana(MOB mob);
 	public double getLevelSpeed(MOB mob);

@@ -454,16 +454,7 @@ public class MobData extends StdWebMacro
 
 		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
 		{
-			int level=M.baseEnvStats().level();
-			if(httpReq.isRequestParameter("LEVEL")) level=Util.s_int(httpReq.getRequestParameter("LEVEL"));
-			long rejuv=MudHost.TICKS_PER_RLMIN+MudHost.TICKS_PER_RLMIN+(level*MudHost.TICKS_PER_RLMIN/2);
-			if(rejuv>(MudHost.TICKS_PER_RLMIN*20)) rejuv=(MudHost.TICKS_PER_RLMIN*20);
-			M.baseEnvStats().setRejuv((int)rejuv);
-			M.baseEnvStats().setSpeed(M.baseCharStats().getCurrentClass().getLevelSpeed(M));
-			M.baseEnvStats().setArmor(M.baseCharStats().getCurrentClass().getLevelArmor(M));
-			M.baseEnvStats().setDamage(M.baseCharStats().getCurrentClass().getLevelDamage(M));
-			M.baseEnvStats().setAttackAdjustment(M.baseCharStats().getCurrentClass().getLevelAttack(M));
-			M.setMoney((level*2)+10);
+			M.baseCharStats().getCurrentClass().fillOutMOB(M,Util.s_int(firstTime?"0":httpReq.getRequestParameter("LEVEL")));
 			httpReq.addRequestParameters("REJUV",""+M.baseEnvStats().rejuv());
 			httpReq.addRequestParameters("ARMOR",""+M.baseEnvStats().armor());
 			httpReq.addRequestParameters("DAMAGE",""+M.baseEnvStats().damage());

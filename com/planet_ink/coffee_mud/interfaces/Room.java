@@ -68,6 +68,32 @@ public interface Room extends Environmental
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
 
+	public final static String[][] variationCodes={
+		{"SUMMER","S"+TimeClock.SEASON_SUMMER},
+		{"SPRING","S"+TimeClock.SEASON_SPRING},
+		{"WINTER","S"+TimeClock.SEASON_WINTER},
+		{"FALL","S"+TimeClock.SEASON_FALL},
+		{"DAY","C"+TimeClock.TIME_DAY},
+		{"DAYTIME","C"+TimeClock.TIME_DAY},
+		{"NIGHT","C"+TimeClock.TIME_NIGHT},
+		{"NIGHTTIME","C"+TimeClock.TIME_NIGHT},
+		{"DAWN","C"+TimeClock.TIME_DAWN},
+		{"DUSK","C"+TimeClock.TIME_DUSK},
+		{"RAIN","W"+Climate.WEATHER_RAIN},
+		{"SLEET","W"+Climate.WEATHER_SLEET},
+		{"SNOW","W"+Climate.WEATHER_SNOW},
+		{"CLEAR","W"+Climate.WEATHER_CLEAR},
+		{"HEATWAVE","W"+Climate.WEATHER_HEAT_WAVE},
+		{"THUNDERSTORM","W"+Climate.WEATHER_THUNDERSTORM},
+		{"BLIZZARD","W"+Climate.WEATHER_BLIZZARD},
+		{"WINDY","W"+Climate.WEATHER_WINDY},
+		{"DROUGHT","W"+Climate.WEATHER_DROUGHT},
+		{"DUSTSTORM","W"+Climate.WEATHER_DUSTSTORM},
+		{"COLD","W"+Climate.WEATHER_WINTER_COLD},
+		{"HAIL","W"+Climate.WEATHER_HAIL},
+		{"CLOUDY","W"+Climate.WEATHER_CLOUDY}
+	};
+
 	public void startItemRejuv();
 	public void recoverRoomStats();
 

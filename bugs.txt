@@ -1,5 +1,3 @@
-deviations report uses a diff baseline than rescore in the grinder does.
-Prop_ClosedNightDay gets seasonal stuff
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
 

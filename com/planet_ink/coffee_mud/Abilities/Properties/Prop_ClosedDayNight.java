@@ -20,6 +20,7 @@ public class Prop_ClosedDayNight extends Property
 	private int closeTime=-1;
 	private String Home=null;
 	private String shopMsg=null;
+	private Room exitRoom=null;
 
 	public String accountForYourself()
 	{ return "";	}
@@ -72,22 +73,32 @@ public class Prop_ClosedDayNight extends Property
 		}
 	}
 
-	private boolean closed()
+	public void executeMsg(Environmental E, CMMsg msg)
+	{
+		super.executeMsg(E,msg);
+		if(exitRoom!=null) return;
+		if(msg.source().location()!=null)
+			exitRoom=msg.source().location();
+	}
+	
+	private boolean closed(Environmental E)
 	{
 		boolean closed=false;
+		Room R=CoffeeUtensils.roomLocation(E);
+		if(R==null) R=((exitRoom==null)?CMMap.getFirstRoom():exitRoom);
 		if((openTime<0)&&(closeTime<0))
 		{
-			closed=(CMMap.getFirstArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT);
+			closed=(R.getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT);
 			if(dayFlag) closed=!closed;
 		}
 		else
 		{
 			if(openTime<closeTime)
-				closed=(CMMap.getFirstArea().getTimeObj().getTimeOfDay()<openTime)
-					||(CMMap.getFirstArea().getTimeObj().getTimeOfDay()>closeTime);
+				closed=(R.getArea().getTimeObj().getTimeOfDay()<openTime)
+					||(R.getArea().getTimeObj().getTimeOfDay()>closeTime);
 			else
-				closed=(CMMap.getFirstArea().getTimeObj().getTimeOfDay()>closeTime)
-					&&(CMMap.getFirstArea().getTimeObj().getTimeOfDay()<openTime);
+				closed=(R.getArea().getTimeObj().getTimeOfDay()>closeTime)
+					&&(R.getArea().getTimeObj().getTimeOfDay()<openTime);
 		}
 		return closed;
 	}
@@ -99,7 +110,7 @@ public class Prop_ClosedDayNight extends Property
 
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(closed())
+		&&(closed(affected))
 		&&(Home!=null)
 		&&(!Sense.isSleeping(affected))
 		&&((msg.targetMinor()==CMMsg.TYP_BUY)
@@ -159,10 +170,10 @@ public class Prop_ClosedDayNight extends Property
 		if((affected!=null)
 		&&(affected instanceof MOB)
 		&&(!((MOB)affected).amDead())
-		&&((lastClosed<0)||(closed()!=(lastClosed==1))))
+		&&((lastClosed<0)||(closed(affected)!=(lastClosed==1))))
 		{
 			MOB mob=(MOB)affected;
-			if(closed())
+			if(closed(affected))
 			{
 				CommonMsgs.stand(mob,true);
 				if(!Sense.aliveAwakeMobile(mob,true)||(mob.isInCombat()))
@@ -290,7 +301,7 @@ public class Prop_ClosedDayNight extends Property
 		if((affected instanceof MOB)
 		||(affected instanceof Item))
 		{
-			if((closed())
+			if((closed(affected))
 			&&(Home==null)
 			&&(!sleepFlag)
 			&&(!sitFlag)
@@ -304,12 +315,12 @@ public class Prop_ClosedDayNight extends Property
 			}
 		}
 		else
-		if((affected instanceof Room)&&(closed()))
+		if((affected instanceof Room)&&(closed(affected)))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_DARK);
 		else
 		if(affected instanceof Exit)
 		{
-			if(closed())
+			if(closed(affected))
 			{
 				if(!doneToday)
 				{

@@ -34,6 +34,8 @@ public class Digging extends CommonSkill
 					commonTell(mob,"You have found some "+foundShortName+"!");
 					displayText="You are digging out "+foundShortName;
 					verb="digging out "+foundShortName;
+					if((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PRECIOUS)
+						tickDown=tickDown*3;
 				}
 				else
 				{
@@ -96,6 +98,7 @@ public class Digging extends CommonSkill
 			if(found!=null)
 				foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		}
+		
 		int duration=60-mob.envStats().level();
 		if(duration<25) duration=25;
 		FullMsg msg=new FullMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) digging.");
