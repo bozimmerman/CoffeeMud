@@ -55,7 +55,7 @@ public class Chant_PlantWall extends Chant
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
 			&&(msg.tool().maxRange()>0))
 			{
-				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^?");
+				mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> fire(s) at the plant wall with "+msg.tool().name()+".^</FIGHT^>^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{
@@ -86,7 +86,7 @@ public class Chant_PlantWall extends Chant
 			&&(msg.tool() instanceof Ability)
 			&&(msg.tool().maxRange()>0))
 			{
-				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^FThe plant wall absorbs <O-NAME> from <S-NAME>.^?");
+				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"^F^<FIGHT^>The plant wall absorbs <O-NAME> from <S-NAME>.^</FIGHT^>^?");
 				return false;
 			}
 		}

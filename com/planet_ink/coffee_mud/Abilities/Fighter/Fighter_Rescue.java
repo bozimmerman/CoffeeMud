@@ -72,7 +72,7 @@ public class Fighter_Rescue extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str="<S-NAME> rescue(s) <T-NAMESELF>!";
+			str="^F^<FIGHT^><S-NAME> rescue(s) <T-NAMESELF>!^</FIGHT^>^?";
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
 			{

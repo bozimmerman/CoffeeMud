@@ -53,20 +53,27 @@ public class BaseItemParser extends StdCommand
 		if(commands.size()==1)
 			return V;
 
-		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
+		int fromDex=-1;
+		int containerDex=commands.size()-1;
+		for(int i=commands.size()-2;i>=1;i--)
+		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+		    { fromDex=i; containerDex=i+1;  break;}
+		String possibleContainerID=Util.combine(commands,containerDex);
+		    
 		boolean allFlag=false;
 		String preWord="";
 		if(possibleContainerID.equalsIgnoreCase("all"))
 			allFlag=true;
 		else
-		if(commands.size()>2)
-			preWord=(String)commands.elementAt(commands.size()-2);
+		if(containerDex>1)
+			preWord=(String)commands.elementAt(containerDex-1);
 
 		int maxContained=Integer.MAX_VALUE;
 		if(Util.s_int(preWord)>0)
 		{
 			maxContained=Util.s_int(preWord);
-			commands.setElementAt("all",commands.size()-2);
+			commands.setElementAt("all",containerDex-1);
+			containerDex--;
 			preWord="all";
 		}
 
@@ -90,12 +97,10 @@ public class BaseItemParser extends StdCommand
 				V.addElement(thisThang);
 				if(V.size()==1)
 				{
-					commands.removeElementAt(commands.size()-1);
-					if(allFlag&&(preWord.equalsIgnoreCase("all")))
-						commands.removeElementAt(commands.size()-1);
-					else
-					if((!allFlag)&&(preWord.equalsIgnoreCase("from")))
-						commands.removeElementAt(commands.size()-1);
+				    while((!allFlag)&&(fromDex>=0)&&(commands.size()>fromDex))
+						commands.removeElementAt(fromDex);
+				    while(commands.size()>containerDex)
+						commands.removeElementAt(containerDex);
 					preWord="";
 				}
 			}
@@ -123,13 +128,23 @@ public class BaseItemParser extends StdCommand
 		if(commands.size()==1)
 			return null;
 
-		String possibleContainerID=(String)commands.elementAt(commands.size()-1);
+		int fromDex=-1;
+		int containerDex=commands.size()-1;
+		for(int i=commands.size()-2;i>=1;i--)
+		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+		    { fromDex=i; containerDex=i+1;  break;}
+		String possibleContainerID=Util.combine(commands,containerDex);
+		
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang) instanceof Container)
 		&&((!withStuff)||(((Container)thisThang).getContents().size()>0)))
 		{
+		    while((fromDex>=0)&&(commands.size()>fromDex))
+				commands.removeElementAt(fromDex);
+		    while(commands.size()>containerDex)
+				commands.removeElementAt(containerDex);
 			commands.removeElementAt(commands.size()-1);
 			return (Item)thisThang;
 		}

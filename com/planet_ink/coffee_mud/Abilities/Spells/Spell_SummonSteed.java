@@ -110,7 +110,7 @@ public class Spell_SummonSteed extends Spell
                 }
                 else
                 {
-                    squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,"^F<S-NAME> bares its teeth at <T-NAME> and begins to attack!^?");
+                    squabble.location().showOthers(squabble,target,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> bares its teeth at <T-NAME> and begins to attack!^</FIGHT^>^?");
                     target.setVictim(squabble);
                 }
 			}

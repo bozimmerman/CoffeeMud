@@ -403,7 +403,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.niceLister(mob,newItems,true));
+							buf.append(CMLister.niceLister(mob,newItems,true,"CMItem"," '"+name()+"'"));
 						}
 						else
 						if(owner instanceof Room)
@@ -416,7 +416,7 @@ public class StdContainer extends StdItem implements Container
 								if((item!=null)&&(item.container()==this))
 									newItems.addElement(item);
 							}
-							buf.append(CMLister.niceLister(mob,newItems,true));
+							buf.append(CMLister.niceLister(mob,newItems,true,"CRItem"," '"+name()+"'"));
 						}
 					}
 					else

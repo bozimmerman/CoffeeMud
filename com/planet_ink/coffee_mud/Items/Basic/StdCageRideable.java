@@ -73,7 +73,7 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.niceLister(mob,newItems,true));
+					buf.append(CMLister.niceLister(mob,newItems,true,"CMItem"," '"+name()+"'"));
 				}
 				else
 				if(owner instanceof Room)
@@ -86,7 +86,7 @@ public class StdCageRideable extends StdRideable
 						if((item!=null)&&(item.container()==this))
 							newItems.addElement(item);
 					}
-					buf.append(CMLister.niceLister(mob,newItems,true));
+					buf.append(CMLister.niceLister(mob,newItems,true,"CRItem"," '"+name()+"'"));
 				}
 				mob.tell(buf.toString());
 			}

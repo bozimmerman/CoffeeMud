@@ -46,7 +46,7 @@ public class Skill_Explosive extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"<T-NAME> is **BLASTED**!":"^F<S-NAME> ** BLAST(S) ** <T-NAMESELF>!^?";
+			str=auto?"<T-NAME> is **BLASTED**!":"^F^<FIGHT^><S-NAME> ** BLAST(S) ** <T-NAMESELF>!^</FIGHT^>^?";
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -164,7 +164,7 @@ public class Dragonbreath extends StdAbility
 					damage += Dice.roll(maxDie,6,1);
 					if(msg.value()>0)
 						damage = (int)Math.round(Util.div(damage,2.0));
-					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^FThe "+stuffWord+" <DAMAGE> <T-NAME>!^?");
+					MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MASK_SOUND|strikeType,WeaponType,"^F^<FIGHT^>The "+stuffWord+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				}
 			}
 		}

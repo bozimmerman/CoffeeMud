@@ -761,10 +761,10 @@ public class StdRoom
 		}
 		if(Sense.canBeSeenBy(this,mob))
 		{
-			Say.append("^O" + roomTitle()+Sense.colorCodes(this,mob)+"^L\n\r");
+			Say.append("^O^<RName^>" + roomTitle()+"^</RName^>"+Sense.colorCodes(this,mob)+"^L\n\r");
 			if((!careAboutBrief)||(!Util.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
 			{
-				Say.append("^L" + roomDescription());
+				Say.append("^L^<RDesc^>" + roomDescription()+"^</RDesc^>");
 				if((Util.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
 				&&((domainType()&Room.INDOORS)==0))
 					Say.append("\n\r\n\r"+getArea().getClimateObj().weatherDescription(this));
@@ -779,7 +779,7 @@ public class StdRoom
 			if((item!=null)&&(item.container()==null))
 				viewItems.addElement(item);
 		}
-		Say.append(CMLister.niceLister(mob,viewItems,false));
+		Say.append(CMLister.niceLister(mob,viewItems,false,"RItem",""));
 
 		for(int i=0;i<numInhabitants();i++)
 		{
@@ -793,12 +793,12 @@ public class StdRoom
 					if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 						Say.append("^H("+CMClass.className(mob2)+")^N ");
 
-					Say.append("^M");
+					Say.append("^M^<RMob '"+mob2.name()+"'^>");
 					if(mob2.displayText(mob).length()>0)
 						Say.append(mob2.displayText(mob));
 					else
 						Say.append(mob2.name());
-					Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
+					Say.append("^</RMob^>"+Sense.colorCodes(mob2,mob)+"^N\n\r");
 				}
 			}
 		}
@@ -967,7 +967,7 @@ public class StdRoom
 			if((room!=null)&&(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 				Say.append(room.roomID()+" via NULL");
 			if(Say.length()>0)
-				mob.tell("^D" + Util.padRight(Dir,5)+":^.^N ^d"+Say+"^.^N");
+				mob.tell("^D^<EX^>" + Util.padRight(Dir,5)+"^</EX^>:^.^N ^d"+Say+"^.^N");
 		}
 	}
 	public void listShortExits(MOB mob)

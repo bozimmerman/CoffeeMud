@@ -33,7 +33,7 @@ public class Poison_BeeSting extends Poison
 	protected String POISON_DONE(){return "The stinging poison runs its course.";}
 	protected String POISON_START(){return "^G<S-NAME> turn(s) green.^?";}
 	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) from the poisonous itch.";}
-	protected String POISON_CAST(){return "^F<S-NAME> sting(s) <T-NAMESELF>!^?";}
+	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to sting <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?2:0;}
 

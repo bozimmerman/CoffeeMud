@@ -210,7 +210,7 @@ public class Fighter_CalledStrike extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if((success)&&(gone.length()>0))
 		{
-			if(mob.location().show(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F<S-NAME> call(s) '"+gone+"'!^?"))
+			if(mob.location().show(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> call(s) '"+gone+"'!^</FIGHT^>^?"))
 			{
 				invoker=mob;
 				beneficialAffect(mob,mob,asLevel,2);

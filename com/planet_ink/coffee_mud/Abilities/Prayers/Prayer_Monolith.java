@@ -61,7 +61,7 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					Room room=mob.location();
-					room.show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of ice with "+w.name()+".^?");
+					room.show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of ice with "+w.name()+".^</FIGHT^>^?");
 					amountRemaining-=mob.envStats().damage();
 					if(amountRemaining<0)
 					{
@@ -121,7 +121,7 @@ public class Prayer_Monolith extends Prayer
 					Item w=mob.fetchWieldedItem();
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
-					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of stone with <O-NAME>.^?"))
+					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?"))
 					{
 						amountRemaining-=mob.envStats().damage();
 						if(amountRemaining<0)

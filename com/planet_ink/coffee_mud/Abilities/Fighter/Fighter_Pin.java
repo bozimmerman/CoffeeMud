@@ -151,7 +151,7 @@ public class Fighter_Pin extends StdAbility
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> get(s) pinned!":"^F<S-NAME> pin(s) <T-NAMESELF> to the floor!^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> get(s) pinned!":"^F^<FIGHT^><S-NAME> pin(s) <T-NAMESELF> to the floor!^</FIGHT^>^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

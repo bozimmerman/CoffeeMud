@@ -75,7 +75,7 @@ public class Disease_Lepresy extends Disease
 						  msg.target(),
 						  msg.tool(),
 						  msg.sourceCode(),msg.sourceMessage(),
-						  msg.targetCode(),"^F"+((Weapon)msg.tool()).hitString(1)+"^?",
+						  msg.targetCode(),"^F^<FIGHT^>"+((Weapon)msg.tool()).hitString(1)+"^</FIGHT^>^?",
 						  msg.othersCode(),msg.othersMessage());
 		}
 		return super.okMessage(myHost,msg);

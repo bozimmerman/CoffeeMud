@@ -67,7 +67,7 @@ public class Kill extends StdCommand
 		
 		if(reallyKill)
 		{
-			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F<S-NAME> touch(es) <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,null,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> touch(es) <T-NAMESELF>.^</FIGHT^>^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -83,7 +83,7 @@ public class Kill extends StdCommand
 			if(((oldVictim!=null)&&(oldVictim==target)
 			&&(CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMBATSYSTEM)==MUDFight.COMBAT_DEFAULT)))
 			{
-				mob.tell("^FYou are already fighting "+mob.getVictim().name()+".^?");
+				mob.tell("^F^<FIGHT^>You are already fighting "+mob.getVictim().name()+".^</FIGHT^>^?");
 				return false;
 			}
 			
@@ -100,7 +100,7 @@ public class Kill extends StdCommand
 					if(range>=0)
 						mob.setAtRange(range);
 				}
-				mob.tell("^FYou are now targeting "+target.name()+".^?");
+				mob.tell("^F^<FIGHT^>You are now targeting "+target.name()+".^</FIGHT^>^?");
 				mob.setVictim(target);
 				return false;
 			}

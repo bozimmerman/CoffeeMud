@@ -33,7 +33,7 @@ public class Poison_Peppersauce extends Poison
 	protected String POISON_DONE(){return "Your eyes clear up.";}
 	protected String POISON_START(){return "^G<S-NAME> go(es) blind!^?";}
 	protected String POISON_AFFECT(){return "";}
-	protected String POISON_CAST(){return "^F<S-NAME> poison(s) <T-NAMESELF>!^?";}
+	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
 

@@ -245,8 +245,8 @@ public class Prop_ClanEquipment extends Property
 						int flameDamage = Dice.roll(1, 6, 0);
 						flameDamage *= PowerLevel;
 						MUDFight.postDamage(mob,target,null,flameDamage, CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect, WeaponType,
-												   "^FThe magic of " +clanName+" <DAMAGE>"+
-						                           " <T-NAME>!^?");
+												   "^F^<FIGHT^>The magic of " +clanName+" <DAMAGE>"+
+						                           " <T-NAME>!^</FIGHT^>^?");
 						wandUse.helpProfficiency(mob);
 						return;
 					}
@@ -329,9 +329,9 @@ public class Prop_ClanEquipment extends Property
 			double flameDamage = new Integer(Dice.roll(1, 6, 0)).doubleValue();
 			for(int i=0;i<PowerLevel;i++)
 				flameDamage=flameDamage*1.5;
-			String str="^FThe magic of " +
+			String str="^F^<FIGHT^>The magic of " +
 			             clanName +
-			            " <DAMAGE> <T-NAME>!^?";
+			            " <DAMAGE> <T-NAME>!^</FIGHT^>^?";
 			MUDFight.postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
 								CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL|TypeOfEffect,
 								WeaponType,
@@ -352,7 +352,7 @@ public class Prop_ClanEquipment extends Property
 			      32 + msg.source().charStats().getStat(CharStats.DEXTERITY))
 			    && (msg.source().rangeToTarget() == 0)
 			    &&
-			    ( (lastMessage == null) || (!lastMessage.startsWith("^FThe magic around")))
+			    ( (lastMessage == null) || (lastMessage.indexOf("The magic around")<0))
 			    && ( (Util.bset(msg.targetMajor(), CMMsg.MASK_HANDS))
 			        || (Util.bset(msg.targetMajor(), CMMsg.MASK_MOVE))))
 			{
@@ -368,9 +368,9 @@ public class Prop_ClanEquipment extends Property
 					    MUDFight.postDamage(mob, source, this, damage,
 					                            CMMsg.MASK_MALICIOUS|CMMsg.MASK_GENERAL| TypeOfEffect
 												, WeaponType,
-					                            "^FThe magic of " +
+					                            "^F^<FIGHT^>The magic of " +
 					                            clanName +
-					                            " around <S-NAME> <DAMAGE> <T-NAME>!^?");
+					                            " around <S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 					}
 				}
 			}

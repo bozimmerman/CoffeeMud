@@ -3,16 +3,18 @@
 <!ELEMENT RDesc FLAG='RoomDesc'>
 <!ELEMENT RExits '<FONT COLOR=Blue>' FLAG='RoomExit'>
 <!-- The next element is used to define a room exit link that sends the exit direction to the MUD if the user clicks on it -->
-<!ELEMENT Ex '<SEND>'>
-<!ELEMENT Chat '<FONT COLOR=Gray>' OPEN>
-<!ELEMENT Gossip '<FONT COLOR=Cyan>' OPEN>
-<!-- in addition to standard HTML Color specifications, you can use color attribute names such as blink -->
-<!ELEMENT ImmChan '<FONT COLOR=Red,Blink>'>
-<!ELEMENT Auction '<FONT COLOR=Purple>' OPEN>
-<!ELEMENT Group '<FONT COLOR=Blue>' OPEN>
+<!ELEMENT EX '<SEND>'>
+<!ELEMENT CRItem '<SEND HREF="GET &name; from &container;" hint="Right-mouse client to get from object|GET &name; from &container;">' ATT='name container'>
+<!ELEMENT CMItem '<SEND HREF="GET &name; from &container;" hint="Right-mouse client to get from object|GET &name; from &container;">' ATT='name container'>
+<!ELEMENT RItem '<SEND HREF="GET &name;|LOOK &name;|DRINK &name;" hint="Right-mouse client to use this object|GET &name;|LOOK &name;|DRINK &name;">' ATT='name'>
+<!ELEMENT MItem '<SEND HREF="WEAR &name;|DROP &name;|LOOK &name;|DRINK &name;|EAT &name;|HOLD &name;" hint="Right-mouse client to use this object|WEAR &name;|DROP &name;|LOOK &name;|DRINK &name;|EAT &name;|HOLD &name;">' ATT='name'>
+<!ELEMENT EItem '<SEND HREF="REMOVE &name;|LOOK &name;" hint="Right-mouse client to use this object|REMOVE &name;|LOOK &name;">' ATT='name'>
+<!ELEMENT RMob '<SEND HREF="CONSIDER &name;|LOOK &name;|KILL &name;" hint="Right-mouse client to affect this creature|CONSIDER &name;|LOOK &name;|KILL &name;">' ATT='name'>
 <!-- the next elements deal with the MUD prompt -->
 <!ELEMENT Prompt FLAG="Prompt">
 <!ELEMENT Hp FLAG="Set hp">
 <!ELEMENT MaxHp FLAG="Set maxhp">
 <!ELEMENT Mana FLAG="Set mana">
 <!ELEMENT MaxMana FLAG="Set maxmana">
+<!ELEMENT Move FLAG="Set mana">
+<!ELEMENT MaxMove FLAG="Set maxmana">

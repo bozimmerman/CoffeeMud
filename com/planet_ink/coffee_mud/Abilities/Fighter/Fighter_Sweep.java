@@ -89,7 +89,7 @@ public class Fighter_Sweep extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F<S-NAME> sweep(s)!^?"))
+			if(mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"^F^<FIGHT^><S-NAME> sweep(s)!^</FIGHT^>^?"))
 			{
 				invoker=mob;
 				mob.addEffect(this);

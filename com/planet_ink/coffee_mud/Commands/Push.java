@@ -66,7 +66,7 @@ public class Push extends Go
 			return false;
 		}
 		int malmask=(openThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
-		FullMsg msg=new FullMsg(mob,openThis,E,CMMsg.MSG_PUSH|malmask,"^F<S-NAME> push(es) <T-NAME>"+dir+"^?.");
+		FullMsg msg=new FullMsg(mob,openThis,E,CMMsg.MSG_PUSH|malmask,"<S-NAME> push(es) <T-NAME>"+dir+".");
 		if(mob.location().okMessage(mob,msg))
 		{
 		    mob.location().send(mob,msg);

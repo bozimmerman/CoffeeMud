@@ -325,6 +325,11 @@ public class CommonStrings extends Scriptable
 			clookup['Q']="\033[0;36;44m";
 			clookup['q']="^c";
 			
+			// MXP - tag codes.
+			clookup['<']="<";
+			clookup['"']="\"";
+			clookup['>']=">";
+			clookup['&']="&";
 			
 			// X Y Z - important messages
 			clookup['x']="\033[1;36;44m";

@@ -33,7 +33,7 @@ public class Poison_Bloodboil extends Poison
 	protected String POISON_DONE(){return "Your blood stops burning.";}
 	protected String POISON_START(){return "^R<S-NAME> turn(s) red.^?";}
 	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) as <S-HIS-HER> blood burns.";}
-	protected String POISON_CAST(){return "^F<S-NAME> sting(s) <T-NAMESELF>!^?";}
+	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to sting <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(1,2,0):0;}
 

@@ -54,7 +54,7 @@ public class Spell_WallOfIce extends Spell
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
 				Room room=mob.location();
-				if(room.show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of ice with <O-NAME>.^?"))
+				if(room.show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the wall of ice with <O-NAME>.^</FIGHT^>^?"))
 				{
 					amountRemaining-=mob.envStats().damage();
 					if(amountRemaining<0)

@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
+import java.io.File;
 import java.util.*;
 
 /* 
@@ -30,17 +32,19 @@ public class MXP extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			if(!Util.bset(mob.getBitmap(),MOB.ATT_MXP))
+			if((!Util.bset(mob.getBitmap(),MOB.ATT_MXP))||(!Util.bset(mob.session().getTermID(),Session.TERM_MXP)))
 			{
-			    mob.session().rawPrint("\033[5z \033[1z<VERSION>\n\r");
-			    String s=mob.session().prompt("",1000).trim().toUpperCase();
-			    if((s.indexOf("<VERSION ")>=0)&&(s.indexOf("MXP=")>=0))
+			    if(mob.session().supports(Session.TERM_MXP))
 			    {
 					mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_MXP));
+					mob.session().setTermID(mob.session().getTermID()|Session.TERM_MXP);
+					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
+			        if(mxpText!=null)
+			            mob.session().rawPrintln("\033[6z\n\r"+mxpText.toString()+"\n\r");
 					mob.tell("MXP codes enabled.\n\r");
 			    }
 			    else
-			        mob.tell("Your client does not appear to support MXP. Sorry.");
+			        mob.tell("Your client does not appear to support MXP.");
 			}
 			else
 			{

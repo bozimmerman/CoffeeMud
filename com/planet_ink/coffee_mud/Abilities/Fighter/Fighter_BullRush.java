@@ -68,7 +68,7 @@ public class Fighter_BullRush extends StdAbility
 
 		boolean success=profficiencyCheck(mob,-(levelDiff*5),auto);
 
-		str="<S-NAME> bullrush(es) <T-NAME> "+direction+".";
+		str="^F^<FIGHT^><S-NAME> bullrush(es) <T-NAME> "+direction+".^</FIGHT^>^?";
 		FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MASK_MOVE|CMMsg.MASK_SOUND|CMMsg.MASK_HANDS|CMMsg.TYP_JUSTICE,str);
 		if(mob.location().okMessage(mob,msg))
 		{

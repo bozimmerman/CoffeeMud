@@ -156,12 +156,21 @@ public class FrontLogin extends StdCommand
 	{
 		if(mob.session()!=null)	
 		{
-		    boolean keepMXPOn=Util.bset(mob.session().getTermID(),Session.TERM_MXP);
 		    mob.session().initTermID(mob.getBitmap());
-		    if((Util.bset(mob.getBitmap(),MOB.ATT_MXP))&&(!keepMXPOn))
+		    if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
 		    {
-		        mob.tell("MXP codes have been disabled for this session.");
-		        mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
+		        if(mob.session().supports(Session.TERM_MXP))
+		        {
+		            mob.session().setTermID(mob.session().getTermID()|Session.TERM_MXP);
+					StringBuffer mxpText=Resources.getFileResource("text"+File.separatorChar+"mxp.txt");
+			        if(mxpText!=null)
+			            mob.session().rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
+		        }
+		        else
+		        {
+			        mob.tell("MXP codes have been disabled for this session.");
+			        mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
+		        }
 		    }
 		}
 		if((mob.session()==null)

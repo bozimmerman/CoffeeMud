@@ -513,7 +513,7 @@ public class Amputation extends StdAbility
 			if(gone==null)
 				gone=(String)VN.elementAt(Dice.roll(1,VN.size(),-1));
 
-			String str=auto?"":"^F<S-NAME> amputate <T-NAMESELF>'s "+gone+"!^?";
+			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate <T-NAMESELF>'s "+gone+"!^</FIGHT^>^?";
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_GENERAL:0),str);
 			if(target.location().okMessage(target,msg))
 			{

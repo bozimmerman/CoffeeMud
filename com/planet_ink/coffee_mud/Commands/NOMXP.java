@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -32,6 +33,7 @@ public class NOMXP extends StdCommand
 		{
 			if(Util.bset(mob.getBitmap(),MOB.ATT_MXP))
 				mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_MXP));
+			mob.session().setTermID(Util.unsetb(mob.session().getTermID(),Session.TERM_MXP));
 			mob.tell("MXP codes are disabled.\033[3z \033[7z\n\r");
 		}
 		return false;

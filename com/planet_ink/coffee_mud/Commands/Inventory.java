@@ -65,7 +65,7 @@ public class Inventory extends StdCommand
 			}
 		}
 		if(viewItems.size()>0)
-			msg.append(CMLister.niceLister(seer,viewItems,true));
+			msg.append(CMLister.niceLister(seer,viewItems,true,"MItem",""));
 		
 		if((viewItems.size()==0)&&((mob.getMoney()==0)||(!Sense.canBeSeenBy(mob.location(),seer))))
 		{

@@ -77,7 +77,7 @@ public class Fighter_Spring extends StdAbility
 				MUDFight.postAttack(mob,target,mob.fetchWieldedItem());
 				if(mob.getVictim()==target)
 				{
-					msg=new FullMsg(mob,target,this,CMMsg.MSG_RETREAT,"<S-NAME> spring(s) back!");
+					msg=new FullMsg(mob,target,this,CMMsg.MSG_RETREAT,"^F^<FIGHT^><S-NAME> spring(s) back!^</FIGHT^>^?");
 					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);

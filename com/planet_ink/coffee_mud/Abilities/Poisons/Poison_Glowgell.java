@@ -32,7 +32,7 @@ public class Poison_Glowgell extends Poison
 	protected String POISON_DONE(){return "";}
 	protected String POISON_START(){return "^G<S-NAME> start(s) glowing!^?";}
 	protected String POISON_AFFECT(){return "";}
-	protected String POISON_CAST(){return "^F<S-NAME> attempt(s) to smear something on <T-NAMESELF>!^?";}
+	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to smear something on <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to smear something on <T-NAMESELF>, but fail(s).";}
 
 	protected boolean catchIt(MOB mob, Environmental target)

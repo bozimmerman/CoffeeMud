@@ -67,7 +67,7 @@ public class Spell_DemonGate extends Spell
 		if((canBeUninvoked())&&(mob!=null))
 		{
             if(mob.amFollowing()!=null)
-                mob.location().showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,"^F<S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.");
+                mob.location().showOthers(mob,mob.amFollowing(),CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> uses the fight to wrest itself from out of <T-YOUPOSS> control!^?%0DTo <T-YOUPOSS> great relief, it disappears back into its home plane.^</FIGHT^>^?");
             else
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> disappears back into it's home plane.");
 			if(mob.amDead()) mob.setLocation(null);
@@ -102,7 +102,7 @@ public class Spell_DemonGate extends Spell
 				MOB myMonster = determineMonster(mob, mob.envStats().level());
 				if(Dice.rollPercentage()<10)
                 { 
-					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F<S-NAME> wrests itself from out of <T-YOUPOSS> control!^?");
+					myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
                     myMonster.setVictim(mob);
                 }
 				else

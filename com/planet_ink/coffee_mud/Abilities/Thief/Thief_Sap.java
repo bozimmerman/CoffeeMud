@@ -138,7 +138,7 @@ public class Thief_Sap extends ThiefSkill
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F<S-NAME> sneak(s) up behind <T-NAMESELF> and knock(s) <T-HIM-HER> out!^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_THIEF_ACT|CMMsg.MASK_SOUND|CMMsg.MSK_MALICIOUS_MOVE|(auto?CMMsg.MASK_GENERAL:0),auto?"<T-NAME> hit(s) the floor!":"^F^<FIGHT^><S-NAME> sneak(s) up behind <T-NAMESELF> and knock(s) <T-HIM-HER> out!^</FIGHT^>^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);

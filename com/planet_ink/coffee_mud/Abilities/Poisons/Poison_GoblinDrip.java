@@ -33,7 +33,7 @@ public class Poison_GoblinDrip extends Poison
 	protected String POISON_DONE(){return "The poison runs its course.";}
 	protected String POISON_START(){return "^G<S-NAME> seem(s) weakened!^?";}
 	protected String POISON_AFFECT(){return "^G<S-NAME> shiver(s) in weakness.";}
-	protected String POISON_CAST(){return "^F<S-NAME> poison(s) <T-NAMESELF>!^?";}
+	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(1,3,1):0;}
 

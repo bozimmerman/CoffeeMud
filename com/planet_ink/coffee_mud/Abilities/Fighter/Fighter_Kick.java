@@ -72,7 +72,7 @@ public class Fighter_Kick extends StdAbility
 				mob.location().send(mob,msg);
 				if(msg.value()>0)
 					damage = (int)Math.round(Util.div(damage,2.0));
-				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F<S-NAME> <DAMAGE> <T-NAME> with a ferocious KICK!^?"+CommonStrings.msp("bashed1.wav",30));
+				MUDFight.postDamage(mob,target,this,damage,CMMsg.MASK_GENERAL|CMMsg.MSG_NOISYMOVEMENT,Weapon.TYPE_BASHING,"^F^<FIGHT^><S-NAME> <DAMAGE> <T-NAME> with a ferocious KICK!^</FIGHT^>^?"+CommonStrings.msp("bashed1.wav",30));
 			}
 		}
 		else

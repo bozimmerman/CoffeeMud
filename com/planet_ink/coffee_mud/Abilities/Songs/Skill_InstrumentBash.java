@@ -54,7 +54,7 @@ public class Skill_InstrumentBash extends BardSkill
 		String str=null;
 		if(success)
 		{
-			str=auto?"<T-NAME> is bashed!":"^F<S-NAME> bash(es) <T-NAMESELF> with "+instrument.name()+"!^?";
+			str=auto?"<T-NAME> is bashed!":"^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with "+instrument.name()+"!^</FIGHT^>^?";
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{

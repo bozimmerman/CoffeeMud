@@ -34,7 +34,7 @@ public class Poison_Ghoultouch extends Poison
 	protected String POISON_DONE(){return "Your muscles relax again.";}
 	protected String POISON_START(){return "^G<S-NAME> become(s) stiff and immobile!^?";}
 	protected String POISON_AFFECT(){return "";}
-	protected String POISON_CAST(){return "^F<S-NAME> poison(s) <T-NAMESELF>!^?";}
+	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
 

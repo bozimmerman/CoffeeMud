@@ -34,7 +34,7 @@ public class Poison_Alcohol extends Poison
 	protected String POISON_DONE(){return "You feel sober again.";}
 	protected String POISON_START(){return "^G<S-NAME> burp(s)!^?";}
 	protected String POISON_AFFECT(){return "";}
-	protected String POISON_CAST(){return "^F<S-NAME> inebriate(s) <T-NAMESELF>!^?";}
+	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> inebriate(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
 	protected boolean disableHappiness=false;

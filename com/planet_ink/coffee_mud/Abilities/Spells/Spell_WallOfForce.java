@@ -66,7 +66,7 @@ public class Spell_WallOfForce extends Spell
 			&&((mob==invoker)||(mob.rangeToTarget()==1)))
 			{
 				if(mob!=invoker)
-					mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F<S-NAME> attempt(s) to penetrate the wall of force and fail(s).^?");
+					mob.location().show(mob,null,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> attempt(s) to penetrate the wall of force and fail(s).^</FIGHT^>^?");
 				return false;
 			}
 		}

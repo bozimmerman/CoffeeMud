@@ -57,7 +57,7 @@ public class Equipment extends StdCommand
 					{
 						String name=thisItem.name();
 						if(name.length()>53) name=name.substring(0,50)+"...";
-						msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
+						msg.append(header+"^<EItem '"+Util.removeColors(thisItem.name())+"'^>"+name+"^</EItem^>"+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 					}
 					else
 					if(seer==mob)

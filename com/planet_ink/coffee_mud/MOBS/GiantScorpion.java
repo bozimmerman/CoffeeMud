@@ -89,7 +89,7 @@ public class GiantScorpion extends StdMOB
 			if (roll<20)
 			{
                 // Sting was successful
- 				FullMsg msg=new FullMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F<S-NAME> sting(s) <T-NAMESELF>!^?");
+ 				FullMsg msg=new FullMsg(this, target, null, CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_POISON, "^F^<FIGHT^><S-NAME> sting(s) <T-NAMESELF>!^</FIGHT^>^?");
 				if(location().okMessage(target,msg))
 				{
 					this.location().send(target,msg);
