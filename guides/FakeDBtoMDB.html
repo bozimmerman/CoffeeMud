@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>FakeDB to MDB Conversion Tutorial</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<h1>FakeDB to MDB Conversion Tutorial</h1>
+<p><i>Note - this tutorial assmues you are using Microsoft Access 97 or greater 
+  to work with the MDB file. </i></p>
+<h3>Step 1. Get the clean MDB.</h3>
+<p>For convenience, I've uploaded an MDB that has all the data structure in place 
+  and I'll try to keep it current for y'all. (Using that file rather than using 
+  the SQL statements to create the tables Bo provides resolves of some Access 
+  specific problems. Access sets all text fields to not allow zero length strings 
+  (which crashes the mud) and sets many fields too short (which crashes the mud).)</p>
+<p>The location of which you extract the MDB to is unimportant, really, but I 
+  recommend tossing it in the <font face="Courier New, Courier, mono">coffeemud\data</font> 
+  directory for sensibility's sake.</p>
+<h3>Step 2. Get the FakeDB to CSV converter.</h3>
+<p>It's a simple java app that converts the FakeDB data files into CSV (comma 
+  seperated values - i.e. text) files for each table. This program should only 
+  be needed once, but since it reads from the fakedb.schema files, even if the 
+  data structure is drastically different in a couple versions, it should still 
+  be OK.</p>
+<h3>Step 3. Shut down the mud</h3>
+<p>If you're running it, conversion won't work right.</p>
+<h3>Step 4. Convert the FakeDB files.</h3>
+<p>If you unzipped the converter already, great - if not, do that now. Jump to 
+  DOS and run '<font face="Courier New, Courier, mono">convert.bat (path to data 
+  files)</font>'. (Ex: <font face="Courier New, Courier, mono">convert C:\CoffeeMUD\data</font>) 
+  (*nix users, all it does is call &quot;<font face="Courier New, Courier, mono">java 
+  Converter.Converter</font>&quot; with the path to the data as the argument) 
+  This will create about a dozen CSV files.</p>
+<h3>Step 5. Import the CSV files.</h3>
+<p>Now open up the MDB. You will repeat the following for each CSV file in that 
+  directory:</p>
+<ul>
+  <li>Go to <font face="Courier New, Courier, mono">File -&gt; Get External Data 
+    -&gt; Import</font></li>
+  <li>Browse to the CSV files</li>
+  <li>Ensure the &quot;Files of Type&quot; is &quot;<font face="Courier New, Courier, mono">Text 
+    Files (*.txt;*.csv;*.tab;*.asc)</font>&quot;</li>
+  <li>Select the CSV file</li>
+  <li>You will now be at the &quot;<font face="Courier New, Courier, mono">Import 
+    Text Wizard</font>&quot;. Ensure Delimited is selected and Click <font face="Courier New, Courier, mono">Next</font></li>
+  <li>Ensure Comma is selected, &quot; is selected for the text qualified and 
+    check &quot;<font face="Courier New, Courier, mono">First Row Contains Field 
+    Names</font>&quot;. Click <font face="Courier New, Courier, mono">Next</font></li>
+  <li>Select &quot;In an existing table&quot; and ensure the correct table (should 
+    be the same name as the CSV file) is selected. Click <font face="Courier New, Courier, mono">Next</font></li>
+  <li>Click <font face="Courier New, Courier, mono">Finish</font>.</li>
+</ul>
+<p>As a heads-up, for whatever reason, I found I had to open <font face="Courier New, Courier, mono">CMCHAR</font> 
+  and <font face="Courier New, Courier, mono">CMJRNL</font> in Excel and save 
+  them as XLS files, then import those. Be aware. (The steps are fairly similar 
+  for importing an XLS file).</p>
+<p>Note: Some problems may occur if you have any double quotes in names or descriptions... 
+  If that happens, I suggest you go through the CSV file and replace any double 
+  quotes that are part of text be replaced with single-quotes. You can go back 
+  an change them after the import back to double if you really really want.</p>
+<h3>Step 6. Configure ODBC</h3>
+<p>The method of getting to the ODBC manager various a lot by operating system 
+  version, but you need to get there. Here are the two most common ways:</p>
+<p>Windows 95/98:</p>
+<ul>
+  <li>Go to Control Panel</li>
+  <li>Double-click the <font face="Courier New, Courier, mono">ODBC Data Sources 
+    (32-bit)</font> icon.</li>
+</ul>
+<p>Windows 2000/XP (administrative rights are needed for this process)</p>
+<ul>
+  <li>Go to Control Panel (under XP, switch to Classic View)</li>
+  <li>Double-click the <font face="Courier New, Courier, mono">Administrative 
+    Tools</font> option. Then select the <font face="Courier New, Courier, mono">Data 
+    Sources (ODBC)</font> icon. </li>
+</ul>
+<p>Now, click on the <font face="Courier New, Courier, mono">System DSN</font> 
+  tab. Click the <font face="Courier New, Courier, mono">Add</font> button. This 
+  will present you with a list of drivers. Select &quot;<font face="Courier New, Courier, mono">Microsoft 
+  Access Driver (*.mdb)</font>&quot;</p>
+<p>Here you should probably name the data source something sensical, like <font face="Courier New, Courier, mono">CoffeeMUDData</font> 
+  or the like. Under <font face="Courier New, Courier, mono">Database</font>, 
+  click <font face="Courier New, Courier, mono">Select</font>. Locate and select 
+  your <font face="Courier New, Courier, mono">CoffeeMUD.mdb</font> file. Click 
+  OK and then OK to get all the way back out of things.</p>
+<h3>Step 7. Configure CoffeeMUD</h3>
+<p>Open coffeemud.ini. Go to where it says &quot;ODBC Database fields&quot;. That 
+  section should instead look like this:</p>
+<p><font face="Courier New, Courier, mono">#------------------------<br>
+  # ODBC Database fields<br>
+  #------------------------<br>
+  # DBCLASS is the name of the ODBC Driver, typically sun.jdbc.odbc.JdbcOdbcDriver<br>
+  # DBSERVICE is the name of the ODBC Service as defined by your local operating 
+  system<br>
+  # DBUSER is a user name required to log into the ODBC service<br>
+  # DBPASS is the password for the above user name<br>
+  # DBCONNECTIONS is the number of independent connections to make to the database<br>
+  DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<br>
+  DBSERVICE=jdbc:odbc:<i>CoffeeMUDData</i><br>
+  DBUSER=<br>
+  DBPASS=<br>
+  DBCONNECTIONS=2</font></p>
+<p>Where it says &quot;<font face="Courier New, Courier, mono">jdbc:odbc:CoffeeMUDData</font>&quot;, 
+  make sure the part after &quot;<font face="Courier New, Courier, mono">jdbc:odbc:</font>&quot; 
+  matches the DNS name you made earlier.</p>
+<h3>Step 8. Launch CoffeeMUD</h3>
+<p>Launch CoffeeMUD. You should see everything come up as normal, if not faster. 
+  I noticed a load-time drop getting off of flat files.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>
