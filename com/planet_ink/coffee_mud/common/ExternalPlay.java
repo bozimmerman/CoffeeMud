@@ -1,11 +1,13 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.exceptions.*;
 import java.util.*;
 import java.io.IOException;
 public class ExternalPlay
 {
 	private static ExternalCommand player=null;
 	private static ExternalSystem sysPlayer=null;
+	private static ExternalHTTPRequests webPlayer=null;
 	private static final long startTime=System.currentTimeMillis();
 	private static boolean systemStarted=false;
 	private static I3Interface i3interface=null;
@@ -13,10 +15,14 @@ public class ExternalPlay
 	private static String nameOfMud="Unnamed CoffeeMud";
 	public static String mudName(){return nameOfMud;}
 
-	public static void setPlayer(ExternalCommand newPlayer, ExternalSystem otherNewPlayer, I3Interface i3)
+	public static void setPlayer(ExternalCommand newPlayer, 
+								 ExternalSystem otherNewPlayer, 
+								 ExternalHTTPRequests newWebPlayer,
+								 I3Interface i3)
 	{
 		player=newPlayer;
 		sysPlayer=otherNewPlayer;
+		webPlayer=newWebPlayer;
 		i3interface=i3;
 	}
 
@@ -24,6 +30,14 @@ public class ExternalPlay
 	{
 		return startTime;
 	}
+	public static byte[] doVirtualPage(byte[] page)
+	{
+		try{
+			if(webPlayer!=null) return webPlayer.doVirtualPage(page);
+		}catch(HTTPRedirectException he){}
+		return page;
+	}
+	
 	public static I3Interface i3(){return i3interface;}
 	public static int channelInt(String channelName)
 	{

@@ -77,8 +77,27 @@ public class CMClass extends ClassLoader
 			thisItem=(Item)getEnv(clanItems,calledThis);
 		return thisItem;
 	}
-	public static Item sampleItem(){if(items.size()>0) return (Item)items.firstElement();	return null;}
-	public static MOB sampleMOB(){if(MOBs.size()>0) return (MOB)MOBs.firstElement();	return null;}
+	
+	private static Item sampleItem=null;
+	public static Item sampleItem(){
+		if((sampleItem==null)&&(items.size()>0))
+			sampleItem= (Item)items.firstElement();	
+		return sampleItem;
+	}
+	
+	private static MOB sampleMOB=null;
+	public static MOB sampleMOB()
+	{
+		if((sampleMOB==null)&&(MOBs.size()>0))
+		{
+			sampleMOB=(MOB)MOBs.firstElement();	
+			sampleMOB.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
+			sampleMOB.envStats().setDisposition(EnvStats.IS_NOT_SEEN);
+		}
+		if(sampleMOB.location()==null)
+			sampleMOB.setLocation(CMMap.getRandomRoom());
+		return sampleMOB;
+	}
 	
 	public static Command findExtraCommand(String word, boolean exactOnly)
 	{

@@ -75,6 +75,7 @@ public interface Law
 	public final static int MOD_SETNEWLAW=9;
 	public final static int MOD_RULINGCLAN=10;
 	public final static int MOD_WARINFO=11;
+	public final static int MOD_CONTROLPOINTS=12;
 	
 	
 	public static final String defaultLaw=

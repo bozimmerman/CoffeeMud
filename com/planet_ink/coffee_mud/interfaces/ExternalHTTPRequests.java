@@ -1,8 +1,11 @@
 package com.planet_ink.coffee_mud.interfaces;
 import java.util.*;
+import com.planet_ink.coffee_mud.exceptions.*;
 import java.net.InetAddress;
 public interface ExternalHTTPRequests
 {
+	public byte [] doVirtualPage(byte [] data) 
+		throws HTTPRedirectException;
 	public String ServerVersionString();
 	public String getWebServerPortStr();
 	public String getHTTPstatus();

@@ -65,7 +65,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	
 	private Hashtable objects=null;
 
-	public ProcessHTTPrequest(Socket a_sock, HTTPserver a_webServer, INI a_page, boolean a_isAdminServer)
+	public ProcessHTTPrequest(Socket a_sock, 
+							  HTTPserver a_webServer, 
+							  INI a_page, 
+							  boolean a_isAdminServer)
 	{
 		// thread name contains both an instance counter and the client's IP address
 		//  (too long)
@@ -531,7 +534,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	// OK - this parser is getting a bit ugly now;
 	//  I'm probably gonna replace it soon
-	private byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
+	public byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
 	{
 		if((webServer.webMacros==null)
 		   ||(webServer.webMacros.size()==0))

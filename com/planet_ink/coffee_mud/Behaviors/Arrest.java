@@ -494,7 +494,13 @@ public class Arrest extends StdBehavior
 				}
 				break;
 			case Law.MOD_RULINGCLAN:
+				if(V!=null){V.clear();V.addElement("");}
+				return false;
 			case Law.MOD_WARINFO:
+				if(V!=null){V.clear();V.addElement("");}
+				return false;
+			case Law.MOD_CONTROLPOINTS:
+				if(V!=null){V.clear();V.addElement(new Integer(0));}
 				return false;
 			}
 		}

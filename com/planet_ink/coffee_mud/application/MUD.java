@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.web.*;
 public class MUD extends Thread implements Host
 {
 	public static final float HOST_VERSION_MAJOR=(float)4.1;
-	public static final long  HOST_VERSION_MINOR=3;
+	public static final long  HOST_VERSION_MINOR=4;
 
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
@@ -270,7 +270,10 @@ public class MUD extends Thread implements Host
 				Log.errOut("MUD","Unable to start web server - loadWebCommonPropPage() failed");
 		}
 
-		ExternalPlay.setPlayer(ExternalCommands.getInstance(), new ExternalSystems(), new IMudClient());
+		ExternalPlay.setPlayer(ExternalCommands.getInstance(), 
+							   new ExternalSystems(), 
+							   new ProcessHTTPrequest(null,(adminServerThread!=null)?adminServerThread:(webServerThread!=null)?webServerThread:null,null,true),
+							   new IMudClient());
 
 
 		offlineReason="Booting: loading base classes";

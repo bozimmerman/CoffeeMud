@@ -1,5 +1,0 @@
-add MOTY to MOTD and document in Archons guide
-add macros to journal for clan scores, champion players, etc..
-Matching rings These two rings have keyed identities. One ring is the master, one is the subordinate. The MOB wearing the subordinate ring will always try to move towards the MASTER ring.
-look into genwater and emptyability
-prayer Feed the Dead--cast on an undead MOB, with a secondary target of a body, the undead will gain XP equal to 10*lvl of the body they consume, if body is of higher level than the undead. This way, a necromancer can make his undead more powerful (even his lowly skeletons) Should be around 10th level.

@@ -40,6 +40,11 @@ public interface Clan extends Cloneable, Tickable
 	public static final int CLANSTATUS_ACTIVE=0;
 	public static final int CLANSTATUS_PENDING=1;
 	public static final int CLANSTATUS_FADING=2;
+	public static final String[] CLANSTATUS_DESC={
+		"ACTIVE",
+		"PENDING",
+		"FADING"
+		};
 	
 	public static final int REL_NEUTRAL=0;
 	public static final int REL_WAR=1;
@@ -173,6 +178,7 @@ public interface Clan extends Cloneable, Tickable
 	public long getExp();
 	public void setExp(long exp);
 	public void adjExp(int howMuch);
+	public long calculateMapPoints();
 	
 	public void setTaxes(double rate);
 	public double getTaxes();

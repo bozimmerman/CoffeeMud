@@ -199,9 +199,9 @@ be abbreviated to MacParm, while Request Parameters will be abbreviated to ReqPa
 <TR><TD>AddFile</TD><TD>The parameters for this macro are a list of file 
       names.&nbsp; Inserts the contents of the files&nbsp; into the current 
       document.</TD></TR>
-<TR><TD>AddRequestParameter</TD><TD>      The parameters for 
-      this macro are one or more ReqParm 
-      namesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually 
+<TR><TD>AddRequestParameter</TD><TD>       The parameters 
+      for this macro are one or more 
+      ReqParmnamesandvalues.&nbsp;Forexample@AddRequestParameter?PARM1=VALUE&amp;PARM2=VALUE@.&nbsp; This is usually 
       used to provide literal data for other macros which may require certain 
       Request parameter data.</TD></TR>
 <TR><TD>AreaData</TD><TD>Requires ReqParm AREA be set to a valid area 
@@ -278,6 +278,19 @@ loops.</TD></TR>
       @ChkReqParmBreak?PARM=VALUE@ would return " @break@" if PARM is 
       equal to VALUE, and "" otherwise. See the @loop@ macro for 
       more information on how this might be useful.</TD></TR>
+<TR><TD>ClanData</TD><TD>Requires ReqParm CLAN be set to a valid&nbsp;clan id.&nbsp; 
+      Returns information about that race depending on MacParms found.&nbsp; 
+      Valid MacParms include: PREMISE, RECALL, DONATION, TAX, EXP,
+      STATUS, ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS (also requires ReqParm CLANID),
+      MEMBERSTART (sets ReqParm CLANMEMBER; like ClanNext?RESET, but for 
+      clan members list), MEMBERNEXT (goes with MEMBERSTART), MEMBERNAME, 
+      MEMBERPOS (these last two require MEMBERSTART/MEMBERNEXT use)</TD></TR>
+<TR><TD>ClanID</TD><TD>Requires ReqParm CLAN be set to a valid&nbsp;clan 
+      id.&nbsp; Returns the id.</TD></TR>
+<TR><TD>ClanNext</TD><TD>Sets the ReqParm CLAN to the next&nbsp;clan 
+      found.&nbsp; Returns @break@ when the list has been completed, or "" if 
+      MacParm "EMPTYOK" found.&nbsp;&nbsp; Accepts MacParm of RESET to restart 
+      listing.&nbsp;</TD></TR>
 <TR><TD>ClassRaceNext</TD><TD>Requires ReqParm CLASS be set to a 
       valid&nbsp;character class&nbsp;id.&nbsp;Sets the ReqParm RACE to the 
       next&nbsp;race qualified for the given class.&nbsp; Returns @break@ when 

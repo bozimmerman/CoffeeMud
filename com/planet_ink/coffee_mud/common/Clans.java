@@ -68,6 +68,36 @@ public class Clans implements Clan, Tickable
 		voteList.removeElement(CV);
 	}
 
+	public long calculateMapPoints()
+	{
+		long points=0;
+		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
+		{
+			Area A=(Area)e.nextElement();
+			Vector V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+			if((V!=null)&&(V.size()>0))
+			{
+				Behavior B=(Behavior)V.firstElement();
+				V.clear();
+				V.addElement(new Integer(Law.MOD_RULINGCLAN));
+				boolean response=B.modifyBehavior(A,CMClass.sampleMOB(),V);
+				if(response
+				&&(V.size()==1)
+				&&(V.firstElement() instanceof String)
+				&&(((String)V.firstElement()).equals(ID())))
+				{
+					V.clear();
+					V.addElement(new Integer(Law.MOD_CONTROLPOINTS));
+					if((B.modifyBehavior(A,CMClass.sampleMOB(),V))
+					&&(V.size()==1)
+					&&(V.firstElement() instanceof Integer))
+						points+=((Integer)V.firstElement()).longValue();
+				}
+			}
+		}
+		return points;
+	}
+	
 	public Enumeration votes()
 	{
 		if(voteList==null)

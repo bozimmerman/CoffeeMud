@@ -1232,6 +1232,17 @@ News".&nbsp; If a Journal is given that name (without the quotes, and yes --
 watch your spelling and case), then all messages posted to it will be echoed to 
 all players whenever they log on next.&nbsp; For this reason, you will want to 
 keep journals with than name close to your vest.</P>
+<P>Archons can also create special "persistant" journal 
+entries, whether they be in custom journals or in CoffeeMud News.&nbsp; These 
+entries remain "new" longer than normal ones.&nbsp; These are created by 
+starting off an entry subject with the letters MOTD (for message of the day), 
+MOTM, or MOTY.&nbsp; If a subject starts with those letters, in uppercase, the 
+entry will persist as new for a day, month, or year respectively.</P>
+<P>Archons can also make use of the Web Macros system inside the body or message 
+part of a journal entry.&nbsp; To do so, the message must start with the 
+characters &lt;cmvp&gt;.&nbsp; If those six characters start the message, then 
+the message may contain web macros.&nbsp; See the WebServer Guide for more 
+information on this feature.</P>
 <P>Whenever a GenJournal is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include all of the 
@@ -1906,9 +1917,9 @@ place, and provides Conquerable behavior information. The GenClanPamphlet makes
 the holder a dissident and&nbsp;multiplies in rival clan areas, and the 
 GenClanSpecialItem performs miscellaneous tasks when found in a conquered 
 area.</P>
-<P>Clan items all have a Clan Item type, which must usually be matched with the 
-proper GenClan class type from the list above in order to work 
-effectively.&nbsp; Here is a proper mapping:</P>
+<P>Clan items all have a Clan Item type, which must usually 
+be matched with the proper GenClan class type from the list above in order to 
+work effectively.&nbsp; Here is a proper mapping:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1918,24 +1929,19 @@ effectively.&nbsp; Here is a proper mapping:</P>
     <TD width="75%"><STRONG>Clan 
       Item Types</STRONG></TD></TR>
   <TR>
-    <TD><STRONG>GenClanItem, 
-      GenClanContainer</STRONG></TD>
+    <TD>GenClanItem, GenClanContainer</TD>
     <TD>"BANNER", "GAVEL"</TD></TR>
   <TR>
-    <TD><STRONG>GenClanCommonItem, 
-      GenClanCommonContainer</STRONG></TD>
+    <TD>GenClanCommonItem, GenClanCommonContainer</TD>
     <TD>"GATHERITEM", "CRAFTITEM"</TD></TR>
   <TR>
-    <TD><STRONG 
-    >GenClanFlag</STRONG></TD>
+    <TD>GenClanFlag</TD>
     <TD>"FLAG"</TD></TR>
   <TR>
-    <TD><STRONG 
-      >GenClanPamphlet</STRONG></TD>
+    <TD>GenClanPamphlet</TD>
     <TD>"PROPAGANDA"</TD></TR>
   <TR>
-    <TD><STRONG 
-      >GenClanSpecialItem</STRONG></TD>
+    <TD>GenClanSpecialItem</TD>
     <TD>"SPECIALSCALES", "SPECIALSCAVENGER", 
       "SPECIALOTHER", "SPECIALTAXER"</TD></TR></TABLE><BR>Whenever a GenClanItem is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
@@ -3166,7 +3172,7 @@ Wand_Nourishment</P>
   effects.</DIV>
   <LI>
   <DIV class=MsoNormal>ability - For levels 12 and higher, 
-  the amount of 10 point armor protection aff</DIV></LI></UL>orded.
+  the amount of 10 point armor protection aff</DIV></LI></UL>orded. 
 <DIV></DIV>
 <P class=MsoNormal>StdTitle</P>
 <UL>

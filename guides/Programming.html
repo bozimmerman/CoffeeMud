@@ -912,8 +912,9 @@ however, it is destroyed the same way. With a simple call to the destroy()
 method on the item. Here is an example of destroying all the items in a room. 
 </FONT></P>
 <P><FONT size=4></FONT></P><PRE>	
-Room room=
- CMMap.getRoom("Midgaard#3504");for(inti=room.numItems()-1;i&gt;=0;i--)
+Room room=	
+ CMMap.getRoom("Midgaard#3504");<
+ BR>for(inti=room.numItems()-1;i&gt;=0;i--)
 {
 	Item item=room.fetchItem(i);
 	item.destroy();
@@ -1083,15 +1084,15 @@ masks can be quite confusing.&nbsp; It is best to examine the several MSG_
 equates in the CMMsg interface to see how they are properly or improperly 
 used.&nbsp; Remember a MSG_ equate is a completely constructed Code, complete 
 with the appropriate Major and Minor aspects.</FONT></P>
-<P align=left><FONT size=4>The Minor 
-Code&nbsp;represents the more specific activity being performed, and is a simple 
-integer ranging from&nbsp;0 (NO EFFECT) to 1023.&nbsp; The exception to this 
-is&nbsp;any message with the MASK_HURT bits set.&nbsp; In that case, the 16 bits 
-from 0-1023 represent the amount of damage being taken.&nbsp;&nbsp;Another 
-exception is the CHANNEL&nbsp;Mask, where the&nbsp;lower bits represent the 
-CHANNEL number being chatted on.&nbsp; In all other cases, however, the Minor 
-Code is a unique&nbsp;integer representing the specific task being 
-performed.&nbsp; The officially recognized Minor codes are exhaustively listed 
+<P align=left><FONT size=4>  
+           
+           
+             
+         
+         
+  The Minor Code&nbsp;represents the more specific activity being performed, and 
+is a simple integer ranging from&nbsp;0 (NO EFFECT) to 
+1023.&nbsp; The officially recognized Minor codes are exhaustively listed 
 in the CMMsg interface, and all begin with the prefix TYP_.&nbsp; These types 
 cover every sort of major event which occurs in the CoffeeMud engine, including 
 getting items, casting spells, entering or leaving rooms, etc, etc..</FONT></P><pre>	
@@ -1104,6 +1105,14 @@ painless.&nbsp; The above is an example where only a single Code and a single
 message text are provided.&nbsp; In constructors where only one Code or message 
 text field are provided, it is assumed that the code and message texts will be 
 the same for source, target (if any) and others.</FONT></P>
+<P align=left><FONT size=4>FullMsg&nbsp;objects also have value() and 
+setValue(int) methods for modifying an integer not found in the 
+constructor.&nbsp;&nbsp; This number is used for several different purposes in 
+message construction, from the amount of damage in a TYP_DAMAGE message, to the 
+amount of experience in a TYP_EXPCHANGE message.&nbsp; This number is also used 
+to determine whether or not a standard saving throw was made.&nbsp; Value 
+defaults to 0, but, after running through a message which contains a savable 
+event, the value will be &gt;0 if the save was made.</FONT></P>
 <P align=left><FONT color=red size=4>Message Previewing</FONT></P>
 <P align=left><FONT color=black><FONT 
 size=4>Once a Message has been constructed, it is time to 
@@ -1161,17 +1170,11 @@ source, target, and all other fields to be updated.&nbsp;</FONT></P>
 <P align=left><FONT size=4>Message 
 flagging is somewhat less rare.&nbsp; Messages may be flagged when a combat 
 strike is successful, or when a saving throw is made against a spell Effect, or 
-for any other reason the Message constructing code may wish.&nbsp; A Message 
-defaults to unflagged, but is flagged when the method "tagModified(true);" is 
-called on the CMMsg (FullMsg) object.&nbsp; Flagging has no other affect other 
-than to let the code which constructed the Messsage know that something 
+for any other reason the Message constructing code may wish.&nbsp; Flagging is 
+done using the aforementioned setValue(int) method.&nbsp; In most cases, by changing&nbsp;the 
+value to something other than the default of 0.&nbsp;&nbsp; Flagging using the 
+setValue(int) method lets the code which constructed the Messsage know that something 
 significant with relation to the Message has occurred.&nbsp; </FONT></P>
-<P align=left><FONT size=4>To prevent 
-confusion, a couple of important points need to be made about Flagging and 
-Message modification.&nbsp; The first is that modifying a Message with the 
-"modify" method does NOT flag the Message.&nbsp; The second is that calling the 
-"tagModified" method flags the Message, but does not modify it in any way other 
-than to flag it.</FONT></P>
 <P align=left><FONT color=#ff0000 size=4>Message Execution</FONT></P>
 <P align=left><FONT color=black size=4>Once the "okMessage" method on a Room object has returned 
 true, and any code which may need to check or handle modifications to the 
@@ -1374,11 +1377,11 @@ are as follows:</FONT></P>
 object being occupied, something being Ridden, the MOBs Character Class object, 
 the MOBs Race object, the Items in the MOBs inventory, and finally the Ability 
 objects which are affecting the MOB (spell effects).</FONT></P>
-<P align=left><FONT size=4>Items, 
-Exits, Areas&nbsp;- Ability objects which are affecting&nbsp;it (spell 
+<P align=left><FONT size=4>Items, Exits, 
+Areas&nbsp;- Ability objects which are affecting&nbsp;it (spell 
 effects).</FONT></P>
-<P align=left><FONT size=4>Rooms - 
-Area object which this room is a part of, Ability objects which are affecting it 
+<P align=left><FONT size=4>Rooms - Area 
+object which this room is a part of, Ability objects which are affecting it 
 (spell effects), Items in the Room, and MOBs in the Room.</FONT></P>
 <P align=left><FONT size=4>Here is an 
 example:</FONT></P>
@@ -1393,30 +1396,29 @@ hit in combat.&nbsp; Also, when Gunker picked up the Plate armor, the weight of
 the armor was added to Gunker's overall carried weight by increasing the weight 
 value in&nbsp;Gunker</FONT><FONT size=4>'s&nbsp;current 
 EnvStats object.</FONT></P>
-<P align=left><FONT size=4>I know, 
-this is probably still confusing.&nbsp;</FONT></P>
-<P align=left><FONT size=4>Confusing 
-or not, however, we still have to consider two other state objects, both of 
-which are only available from the MOB object.&nbsp; One of which is the 
-CharStats object, and the other of which is the CharState object.</FONT></P>
-<P align=left><FONT size=4>The 
-CharStats object is most closely analogous to the EnvStats object.&nbsp; For 
-instance, it has "baseCharStats" and "charStats" method calls from a MOB object, 
-as well as a "recoverCharStats" method call.&nbsp; All of these work similarly 
-to the ones described above for EnvStats.&nbsp; The fields on a CharStats object 
-are somewhat more straight forward however.&nbsp; Most of the fields of a 
-CharStats object are referenced using the "getStat" and "setStat" methods on a 
-CharStats object.&nbsp; Both of these methods require a parameter which 
-corresponds to the specific stat being set or read.&nbsp; These stat parameters 
-are defined as equates within the CharStat interface, and 
-include:&nbsp;</FONT><FONT size=3>STRENGTH, INTELLIGENCE, 
-DEXTERITY, CONSTITUTION, CHARISMA, WISDOM, GENDER, SAVE_PARALYSIS, SAVE_FIRE, 
-SAVE_COLD, SAVE_WATER, SAVE_GAS, SAVE_MIND, SAVE_GENERAL, SAVE_JUSTICE,&nbsp; 
-SAVE_ACID, SAVE_ELECTRIC, SAVE_TRAPS, SAVE_POISON, SAVE_UNDEAD, SAVE_MAGIC, and 
-&nbsp;SAVE_DISEASE. </FONT><FONT size=4>In addition to 
-these equates defined and read&nbsp;through the "getStat" and "setStat" methods, 
-there is also the Race object available through "getMyRace" and "setMyRace" 
-methods, as well as the Class levels entries.</FONT></P>
+<P align=left><FONT size=4>I know, this 
+is probably still confusing.&nbsp;</FONT></P>
+<P align=left><FONT size=4>Confusing or 
+not, however, we still have to consider two other state objects, both of which 
+are only available from the MOB object.&nbsp; One of which is the CharStats 
+object, and the other of which is the CharState object.</FONT></P>
+<P align=left><FONT size=4>The CharStats 
+object is most closely analogous to the EnvStats object.&nbsp; For instance, it 
+has "baseCharStats" and "charStats" method calls from a MOB object, as well as a 
+"recoverCharStats" method call.&nbsp; All of these work similarly to the ones 
+described above for EnvStats.&nbsp; The fields on a CharStats object are 
+somewhat more straight forward however.&nbsp; Most of the fields of a CharStats 
+object are referenced using the "getStat" and "setStat" methods on a CharStats 
+object.&nbsp; Both of these methods require a parameter which corresponds to the 
+specific stat being set or read.&nbsp; These stat parameters are defined as 
+equates within the CharStat interface, and include:&nbsp;</FONT><FONT size=3>STRENGTH, INTELLIGENCE, DEXTERITY, CONSTITUTION, CHARISMA, 
+WISDOM, GENDER, SAVE_PARALYSIS, SAVE_FIRE, SAVE_COLD, SAVE_WATER, SAVE_GAS, 
+SAVE_MIND, SAVE_GENERAL, SAVE_JUSTICE,&nbsp; SAVE_ACID, SAVE_ELECTRIC, 
+SAVE_TRAPS, SAVE_POISON, SAVE_UNDEAD, SAVE_MAGIC, and &nbsp;SAVE_DISEASE. 
+</FONT><FONT size=4>In addition to these equates defined and 
+read&nbsp;through the "getStat" and "setStat" methods, there is also the Race 
+object available through "getMyRace" and "setMyRace" methods, as well as the 
+Class levels entries.</FONT></P>
 <P align=left><FONT size=4>Like the 
 EnvStats above, those objects listed as able to modify the EnvStats current 
 state object are the same objects which are able to modify the CharStats current 
@@ -1461,15 +1463,15 @@ basis.&nbsp;The tasks to be performed are always located within an method called
 "</FONT><FONT size=3>public boolean tick(Tickable ticking, 
 int tickID)</FONT><FONT size=4>".&nbsp; All Environmental 
 objects&nbsp;define this method, and Behavior as well.</FONT> .</FONT></P>
-<P align=left><FONT size=4>These 
-methods are called on a regular, timed basis whenever the object instance in 
-question has been properly set up to do so, and at the frequency defined.&nbsp; 
-The "tickID" parameter describes what sort of regular timed event is 
+<P align=left><FONT size=4>These methods 
+are called on a regular, timed basis whenever the object instance in question 
+has been properly set up to do so, and at the frequency defined.&nbsp; The 
+"tickID" parameter describes what sort of regular timed event is 
 occurring.&nbsp; These events are defined as equates in the Host interface, and 
 include IDs such as MOB_TICK, AREA_TICK, EXIT_REOPEN and 
 others.&nbsp;</FONT></P>
-<P align=left><FONT size=4>Before we 
-get into the methods by which an object instance are properly set up for regular 
+<P align=left><FONT size=4>Before we get 
+into the methods by which an object instance are properly set up for regular 
 calls to its "tick" method, it may be worthwhile to discuss which regular ticks 
 are setup by the system by default.&nbsp; These tick events cover the most 
 commonly used objects under the most common circumstances, and so may be just 
@@ -1481,12 +1483,11 @@ call the "tick" methods on their own Behaviors, and Ability objects affecting
 them.&nbsp; If any of the individual objects returns "false" from it's own tick 
 method, then the object will cease to receive any further tick method 
 calls.</FONT></P>
-<P align=left><FONT size=4>Exits, 
-Items, Rooms - Whenever a Behavior is added to any of these objects, they will 
-begin to have their tick methods called once per Host.TICK_TIME (4 seconds), 
-with the tickID defined by Host.ITEM_BEHAVIOR_TICK, EXIT_BEHAVIOR_TICK, or 
-ROOM_BEHAVIOR TICK.&nbsp; Deletion of the last behavior will stop this tick 
-event.</FONT></P>
+<P align=left><FONT size=4>Exits, Items, 
+Rooms - Whenever a Behavior is added to any of these objects, they will begin to 
+have their tick methods called once per Host.TICK_TIME (4 seconds), with the 
+tickID defined by Host.ITEM_BEHAVIOR_TICK, EXIT_BEHAVIOR_TICK, or ROOM_BEHAVIOR 
+TICK.&nbsp; Deletion of the last behavior will stop this tick event.</FONT></P>
 <P align=left><FONT size=4>Areas - All 
 Area objects have their tick methods called once per Host.TICK_TIME, with the 
 tickID defined by Host.AREA_TICK.</FONT></P>
@@ -1501,8 +1502,8 @@ effects.</FONT></P>
 MOBs have regular tick calls which they use to perform their own periodic tasks, 
 as well as to allow their Behavior and spell effects to perform tasks.&nbsp; The 
 other objects have circumstantial ticks in certain instances.</FONT></P>
-<P align=left><FONT size=4>Now, to add 
-a new periodic call to the "tick" method on an Environmental object, one needs 
+<P align=left><FONT size=4>Now, to add a 
+new periodic call to the "tick" method on an Environmental object, one needs 
 only to make a method call like this:</FONT></P><pre>	
 	ExternalPlay.startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);
 </PRE>
@@ -1526,12 +1527,11 @@ using the following:</FONT></P><pre>
 <P align=left>&nbsp;</P>
 <P align=left><FONT size=5><STRONG><IMG src="images/clown.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT size=5><STRONG><FONT color=blue>Behaviors:</FONT></STRONG></FONT></P>
-<P align=left><FONT size=4>A Behavior 
-is defined as a property of an item, mob, exit, or room which takes proactive 
-(as opposed to REactive) steps on behalf of its host.&nbsp; Examples of 
-Behaviors include aggressiveness, mobility, auto-emoting, and scripting.&nbsp; 
-Let's take a look at a sample Behavior and see how they are put 
-together:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
+<P align=left><FONT size=4>A Behavior is 
+defined as a property of an item, mob, exit, or room which takes proactive (as 
+opposed to REactive) steps on behalf of its host.&nbsp; Examples of Behaviors 
+include aggressiveness, mobility, auto-emoting, and scripting.&nbsp; Let's take 
+a look at a sample Behavior and see how they are put together:</FONT></P><PRE>import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
@@ -1554,22 +1554,21 @@ define a newInstance() method to return a coy of the behavior.</FONT></P><PRE>	p
 	public long flags(){return 0;}
 	public boolean grantsAggressivenessTo(MOB M){return false;}
 </PRE>
-<P align=left><FONT size=4>Next are 
-some important flags that tell the CoffeeMud system some important things about 
-your behavior.&nbsp; The first method (<FONT size=3><FONT 
-size=4>canImproveCode)</FONT> </FONT>tells the behavior 
-whether it is properly used on Mobs, or Items, Rooms, Exits, or all of 
-these.&nbsp; In this case, our behavior only affects mobs.&nbsp; The next method 
-(flags) tells the system certain things about the behavior by returning values 
-such as Behavior.FLAG_MOBILITY, or Behavior.FLAG_TROUBLEMAKING.&nbsp; The last 
-method (grantsAggressivenessTo) says whether or not this method would necessary 
-cause the host mob to attack the mob (M) in the parameter.</FONT></P><PRE>	public void startBehavior(Environmental forMe) 
+<P align=left><FONT size=4>Next are some 
+important flags that tell the CoffeeMud system some important things about your 
+behavior.&nbsp; The first method (<FONT size=3><FONT size=4>canImproveCode)</FONT> </FONT>tells the behavior whether it 
+is properly used on Mobs, or Items, Rooms, Exits, or all of these.&nbsp; In this 
+case, our behavior only affects mobs.&nbsp; The next method (flags) tells the 
+system certain things about the behavior by returning values such as 
+Behavior.FLAG_MOBILITY, or Behavior.FLAG_TROUBLEMAKING.&nbsp; The last method 
+(grantsAggressivenessTo) says whether or not this method would necessary cause 
+the host mob to attack the mob (M) in the parameter.</FONT></P><PRE>	public void startBehavior(Environmental forMe) 
 	{}
 	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
 	{ return false; }
 </PRE>
-<P align=left><FONT size=4>The next 
-two methods, seldom used, are still quite important.&nbsp; The first method 
+<P align=left><FONT size=4>The next two 
+methods, seldom used, are still quite important.&nbsp; The first method 
 (startBehavior) receives as its parameter the brand new host of this 
 behavior.&nbsp; If the behavior instance needs to do any variable or other 
 preparation to either the behaving object host (forMe) or itself, it should do 
@@ -1595,9 +1594,9 @@ a Behavior.</FONT></P><PRE>	public boolean tick(Tickable ticking, int tickID)
 		if((mob==null)||(room==null)||(tickID!=Host.MOB_TICK))
 			return super.tick(ticking,tickID);
 </PRE>
-<P align=left><FONT size=4>Now we get 
-to the Nitty Gritty of the Behaviors work.&nbsp; A behavior gets all or almost 
-all of its work done in a tick method.&nbsp; If you have not read the Digression 
+<P align=left><FONT size=4>Now we get to 
+the Nitty Gritty of the Behaviors work.&nbsp; A behavior gets all or almost all 
+of its work done in a tick method.&nbsp; If you have not read the Digression 
 above about the tick method, you should definitely do so!&nbsp; In this example, 
 we call two internal StdBehavior methods to get some important starting 
 information about the behaving object host of the behavior.&nbsp; In this 
@@ -1605,9 +1604,9 @@ example, our&nbsp;behaving object&nbsp;host&nbsp;will be a mob.&nbsp; However,
 these methods may still intelligently return Item owners, or Exit rooms if the 
 host is other than a mob.&nbsp; The ticking parameter will always be the 
 behaving object host.</FONT></P>
-<P align=left><FONT size=4>The next 
-line checks to see if our host mob exists, and is in a room.&nbsp; We also check 
-to see if the tickID is the valid mob ticking id.&nbsp; If our host had been an 
+<P align=left><FONT size=4>The next line 
+checks to see if our host mob exists, and is in a room.&nbsp; We also check to 
+see if the tickID is the valid mob ticking id.&nbsp; If our host had been an 
 Item, Exit, or Room, this tickID would no longer be Host.MOB_TICK, but would 
 be&nbsp; Host.ITEM_BEHAVIOR_TICK, &nbsp;Host.ROOM_BEHAVIOR_TICK, or 
 Host.EXIT_BEHAVIOR_TICK.&nbsp; Since our host, in this case, is a Mob, we check 
@@ -1616,8 +1615,8 @@ for MOB_TICK.</FONT></P><PRE>		if((!canActAtAll(mob))
 			return super.tick(ticking,tickID);
 			
 </PRE>
-<P align=left><FONT size=4>Our next 
-step is to call a couple more internal StdBehavior methods.&nbsp; The first 
+<P align=left><FONT size=4>Our next step 
+is to call a couple more internal StdBehavior methods.&nbsp; The first 
 (canActAtAll) returns true if the mob is alive, awake, and mobile.&nbsp; The 
 second method (canFreelyBehaveNormal) returns true if the mob is not currently 
 in combat, not charmed or following anyone, and is not severely injured.&nbsp; 
@@ -1638,9 +1637,9 @@ food.</FONT></P><PRE>		if(eatible!=null)
 			return true;
 		}
 </PRE>
-<P align=left><FONT size=4>If some 
-food was found, the mob will eat it.&nbsp; Now, practically speaking, the mob 
-will quickly devour and use up any and all food which it may have had to begin 
+<P align=left><FONT size=4>If some food 
+was found, the mob will eat it.&nbsp; Now, practically speaking, the mob will 
+quickly devour and use up any and all food which it may have had to begin 
 with.&nbsp; What we decide to do when the mob does NOT have food, therefore, is 
 just as important.</FONT></P><PRE>		int randMob=Dice.roll(1,room.numInhabitants(),-1);
 		MOB mobToHitUp=room.fetchInhabitant(randMob);
@@ -1649,8 +1648,8 @@ just as important.</FONT></P><PRE>		int randMob=Dice.roll(1,room.numInhabitants(
 		||(Dice.rollPercentage()&gt;75))
 			return true;
 </PRE>
-<P align=left><FONT size=4>Since our 
-mob is hungry, and another mob is the most likely source of food, we will pick a 
+<P align=left><FONT size=4>Since our mob 
+is hungry, and another mob is the most likely source of food, we will pick a 
 random inhabitant of the room, which is not ourselves, 25% of the time. 
 Otherwise, we just return true, and try again on the next tick.</FONT></P><PRE>		
 		int randItem=Dice.roll(1,mobToHitUp.inventorySize(),-1);
@@ -1660,9 +1659,9 @@ Otherwise, we just return true, and try again on the next tick.</FONT></P><PRE>
 		
 		if(eatible==null) return true;
 </PRE>
-<P align=left><FONT size=4>Next we 
-will pick a random piece of inventory from that mob, and see if it is 
-food.&nbsp; If not, we return true and try again on the next tick.</FONT></P><PRE>		ExternalPlay.quickSay(mob,mobToHitUp,
+<P align=left><FONT size=4>Next we will 
+pick a random piece of inventory from that mob, and see if it is food.&nbsp; If 
+not, we return true and try again on the next tick.</FONT></P><PRE>		ExternalPlay.quickSay(mob,mobToHitUp,
 				  "May I have some of your "+eatible.name()+"?",
 				  false,false);
 				  
@@ -1735,16 +1734,15 @@ other. If your CoffeeMud system is using the multi-class or single classing
 system, this method is irrelevant.</FONT></P><pre>public int getMinHitPointsLevel(){return 1;}
 public int getMaxHitPointsLevel(){return 10;}
 </PRE>
-<P align=left><FONT size=4>Next come 
-the hit point ranges.&nbsp;&nbsp;When a player with this class gains a 
-level,&nbsp;a random roll between the min and max hit point values will 
-determine the bonus hit points, and any Constitution bonuses will be added 
-thereafter.</FONT></P><pre>public int getPracsFirstLevel(){return 3;}
+<P align=left><FONT size=4>Next come the 
+hit point ranges.&nbsp;&nbsp;When a player with this class gains a level,&nbsp;a 
+random roll between the min and max hit point values will determine the bonus 
+hit points, and any Constitution bonuses will be added thereafter.</FONT></P><pre>public int getPracsFirstLevel(){return 3;}
 public int getTrainsFirstLevel(){return 1;}
 public int getBonusPracLevel(){return 0;}
 </PRE>
-<P align=left><FONT size=4>The next 
-two methods define the starting Training and Practice points for this Character 
+<P align=left><FONT size=4>The next two 
+methods define the starting Training and Practice points for this Character 
 Class. The BonusPracLevel method tells us how many bonus practices (above the 
 number determined the WISDOM/4 formula) which the player will receive every 
 level.</FONT></P><pre>public int getAttackAttribute(){return CharStats.STRENGTH;}
@@ -1773,12 +1771,12 @@ receives when they gain a level. The formula is determined by dividing the
 player's strength score by 9, and multiplying the result by this value. 
 </FONT></P><pre>public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 </PRE>
-<P align=left><FONT size=4>The 
-CharClass interface defines a method called "armorCheck" which returns true if 
-the player is in compliance with armor requirements. This method does its work 
-by checking the allowedArmorLevel method. This method returns an equate defined 
-in the CharClass interface which may specify ANY armor, CLOTH level, armor, 
-LEATHER (or worse) armor, or NON-METAL armor. </FONT></P><pre>private static boolean abilitiesLoaded=false;
+<P align=left><FONT size=4>The CharClass 
+interface defines a method called "armorCheck" which returns true if the player 
+is in compliance with armor requirements. This method does its work by checking 
+the allowedArmorLevel method. This method returns an equate defined in the 
+CharClass interface which may specify ANY armor, CLOTH level, armor, LEATHER (or 
+worse) armor, or NON-METAL armor. </FONT></P><pre>private static boolean abilitiesLoaded=false;
 public boolean loaded(){return abilitiesLoaded;}
 public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
 	
@@ -1956,8 +1954,8 @@ import com.planet_ink.coffee_mud.common.*;
 public class Grumbler extends StdRace
 {
 </PRE>
-<P align=left><FONT size=4>Our 
-Grumbler race will define all of the basic elements of a filled-out 
+<P align=left><FONT size=4>Our Grumbler 
+race will define all of the basic elements of a filled-out 
 race.&nbsp;</FONT></P><pre>public String ID(){	return "Grumbler"; }
 public String name(){ return "Grumbler"; }
 public String racialCategory(){return "Grumbler";}
@@ -1996,9 +1994,9 @@ or feet,&nbsp;or about the body.&nbsp; Anywhere else is fine.&nbsp; Return 0 if
 you do not wish any restrictions on wearing.</FONT></P><pre>	private static final int[] parts={0,2,2,1,1,0,0,1,4,4,1,0,1,1,1,2};
 	public int[] bodyMask(){return parts;}
 </PRE>
-<P align=left><FONT size=4>The 
-bodyMask method defines and returns an array of integers which defines the types 
-and number of particular body parts normally retained by the race.&nbsp; Each 
+<P align=left><FONT size=4>The bodyMask 
+method defines and returns an array of integers which defines the types and 
+number of particular body parts normally retained by the race.&nbsp; Each 
 position in the array is defined by the equates BODY_ in the Race 
 interface.&nbsp; These equates are (starting from 0): <FONT size=3>BODY_ANTENEA, BODY_EYE, BODY_EAR, BODY_HEAD, BODY_NECK, 
 BODY_ARM, BODY_HAND, BODY_TORSO, BODY_LEG, BODY_FOOT, BODY_NOSE, BODY_GILL, 
@@ -2006,9 +2004,7 @@ BODY_MOUTH, BODY_WAIST, BODY_TAIL, BODY_WING</FONT>. Remember that these can be
 found in the Race interface for you to reference.&nbsp; In the above example, we 
 find no antenea, 2 eyes, 2 ears, a head, neck, no arms or hands, a torso, 4 
 legs, 4 feet, anose, but&nbsp;no gill, and then a mouth, waist, tail, and 2 
-wings.</FONT></P>
-<PRE>
-	private String[] racialAbilityNames={"Skill_Trip","Fighter_Whomp"};
+wings.</FONT></P><PRE>	private String[] racialAbilityNames={"Skill_Trip","Fighter_Whomp"};
 	private int[] racialAbilityLevels={1,3};
 	private int[] racialAbilityProfficiencies={75,50};
 	private boolean[] racialAbilityQuals={false,false};
@@ -2036,23 +2032,22 @@ obtained the necessary player level, will have access to the use of the skill as
 if they had learned it, and at the profficiency designated.&nbsp; Racial 
 Abilities are available to any mob or player of this race, even those affected 
 by Shape Shift, Polymorph, or similar skills.</FONT></P>
-<P align=left><FONT size=4>The first four methods define these skills.&nbsp; 
-The data in all four variables are ordered with relative to each other.&nbsp; The 
-racialAbilityNames is a list of the Ability class ID.&nbsp; The 
-racialAbilityLevels is the level at which the skill is qualified for or 
-gained.&nbsp; The racialAbilityProfficiencies is the profficiency of skills 
-automatically gained.&nbsp; The racialAbilityQuals tells whether or not the 
-skill is automatically gained (false) or is only qualified for 
-(true).</FONT></P>
-<P align=left><FONT size=4>The method above (racialAbilities) will return a 
-Vector of Ability objects, with profficiency already set, appropriate to the mob 
-passed in.&nbsp; This vector should consist only of automatically gained 
-abilities appropriate to the level of the mob.&nbsp; If the four variables are 
-set properly, the programmer will not need to override the method from StdRace 
-unless there other gender-based or other special qualifications for skills not 
-defined by those four variables.</FONT></P>
-<PRE>
-	private String[] culturalAbilityNames={"Dwarven","Mining"};
+<P align=left><FONT size=4>The first 
+four methods define these skills.&nbsp; The data in all four variables are 
+ordered with relative to each other.&nbsp; The racialAbilityNames is a list of 
+the Ability class ID.&nbsp; The racialAbilityLevels is the level at which the 
+skill is qualified for or gained.&nbsp; The racialAbilityProfficiencies is the 
+profficiency of skills automatically gained.&nbsp; The racialAbilityQuals tells 
+whether or not the skill is automatically gained (false) or is only qualified 
+for (true).</FONT></P>
+<P align=left><FONT size=4>The method 
+above (racialAbilities) will return a Vector of Ability objects, with 
+profficiency already set, appropriate to the mob passed in.&nbsp; This vector 
+should consist only of automatically gained abilities appropriate to the level 
+of the mob.&nbsp; If the four variables are set properly, the programmer will 
+not need to override the method from StdRace unless there other gender-based or 
+other special qualifications for skills not defined by those four 
+variables.</FONT></P><PRE>	private String[] culturalAbilityNames={"Dwarven","Mining"};
 	private int[] culturalAbilityProfficiencies={100,50};
 	
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
@@ -2145,8 +2140,8 @@ public String healthText(MOB mob)
 		return "^c" + mob.name() + "^c is in perfect health^N";
 }
 </PRE>
-<P align=left><FONT size=4>Although 
-the programmer is welcome to skip the above method and use the defaults from the 
+<P align=left><FONT size=4>Although the 
+programmer is welcome to skip the above method and use the defaults from the 
 StdRace class, this allows you to set special health messages for creatures of 
 this type.</FONT></P><pre>public Vector myResources()
 {
@@ -2188,13 +2183,14 @@ this type.</FONT></P><pre>public Vector myResources()
 the above method allows you to determine what sorts of materials are gotten from 
 this creature whenever the dead corpse is Butchered.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P>
-<P align=left><STRONG><IMG src="images/chomper.jpg" > </STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
+<P align=left><STRONG><IMG src="images/chomper.jpg" > 
+</STRONG></FONT><FONT size=3>&nbsp;</FONT></P>
 <P align=left><FONT color=navy size=5><STRONG>Exits:</STRONG></FONT></P>
-<P align=left><FONT size=4>Exits are 
-the connecting points between two rooms, and tend to be rather simple.&nbsp; If 
-two rooms, A &amp; B,&nbsp;are connected to each other, there are always two 
-exits associated with that connection.&nbsp; One from room A to room B, and the 
-other from room B to room A.&nbsp; </FONT></P>
+<P align=left><FONT size=4>Exits are the 
+connecting points between two rooms, and tend to be rather simple.&nbsp; If two 
+rooms, A &amp; B,&nbsp;are connected to each other, there are always two exits 
+associated with that connection.&nbsp; One from room A to room B, and the other 
+from room B to room A.&nbsp; </FONT></P>
 <P align=left><FONT size=4>Here is an 
 example exit:</FONT></P><PRE>package com.planet_ink.coffee_mud.Exits;
 import com.planet_ink.coffee_mud.interfaces.*;
@@ -2297,25 +2293,25 @@ this room.&nbsp; For Grids, we see the Locale ID of the child-rooms inside the
 grid.&nbsp; We also see the standard room settings for the domain type (the type 
 of locale it is) and the domain conditions (the quality of the weather, or the 
 air, wetness, dryness, etc).&nbsp; </FONT></P>
-<P align=left><FONT size=4>The 
-Resource choices for this room are borrowed from the Road itself, though this 
-will never be used.&nbsp; Players will never actually be inside the Grid room 
-itself, but will always occupy one of the child rooms, each of which will take 
-direction from the parent Grid.&nbsp; If you wish to define resources, however, 
-be aware that the resourceChoices vector returned may not be null, and must only 
-contain Integer objects representing the Resource (see the EnvResource 
-interface) available there.&nbsp; Use the RESOURCE_* static integer values from 
-EnvResource interface.</FONT></P>
+<P align=left><FONT size=4>The Resource 
+choices for this room are borrowed from the Road itself, though this will never 
+be used.&nbsp; Players will never actually be inside the Grid room itself, but 
+will always occupy one of the child rooms, each of which will take direction 
+from the parent Grid.&nbsp; If you wish to define resources, however, be aware 
+that the resourceChoices vector returned may not be null, and must only contain 
+Integer objects representing the Resource (see the EnvResource interface) 
+available there.&nbsp; Use the RESOURCE_* static integer values from EnvResource 
+interface.</FONT></P>
 <P align=left><FONT size=4>For those 
 coding custom Locales, there are other methods which may be overridden through 
 polymorphism to produce a look and feel more consumate with the coders 
 wishes.&nbsp; Here are a few such methods:</FONT><FONT size=4></P>
 <P><PRE>	protected void look(MOB mob, boolean careAboutBrief) <BR>	public void listExits(MOB mob) </PRE>
 <P></P>
-<P align=left><FONT size=4>These 
-methods result in a display of the room and exits respectively for the mob 
-passed in.&nbsp; The careAboutBrief boolean for the look method tells whether or 
-not the BRIEF flag on a player&nbsp;should be&nbsp;overridden.&nbsp; Here are 
+<P align=left><FONT size=4>These methods 
+result in a display of the room and exits respectively for the mob passed 
+in.&nbsp; The careAboutBrief boolean for the look method tells whether or not 
+the BRIEF flag on a player&nbsp;should be&nbsp;overridden.&nbsp; Here are 
 another set of useful methods:</FONT><FONT size=4></P>
 <P><PRE>	public String roomTitle() <BR>	public String roomDescription() </PRE>
 <P></P>
@@ -2326,9 +2322,9 @@ and description&nbsp;into a proper displayable format.&nbsp; They draw on the
 values of the room object&nbsp;displayText() and description() methods 
 respectively, then parse that data&nbsp;for any&nbsp;special display codes, 
 though often that data is simply&nbsp;passed through.&nbsp;</FONT></P></FONT>
-<P align=left>The executeMsg, and okMessage methods on rooms are 
-also available, as they are in all Environmental objects, for customized message 
-handling&nbsp;as described in the digressions above.</P>
+<P align=left>The executeMsg, and okMessage methods on rooms 
+are also available, as they are in all Environmental objects, for customized 
+message handling&nbsp;as described in the digressions above.</P>
 <P align=left>&nbsp;</P></FONT>
 <P align=left></P>
 <P align=left></P>
@@ -2386,20 +2382,21 @@ the ID() is the same as the name of the class.&nbsp; This is no accident -- this
 is required!&nbsp; The name, display text, description, and others are all 
 handled by the builder, or Properties or behaviors, and aren't pertinant to this 
 discussion of Areas.</FONT></P>
-<P align=left><FONT size=4>The 
-weather, however, is a direct function of each area.&nbsp; Each area knows its 
-current weather code (see the AREA interface) as well as the next weather change 
-"in the que".&nbsp; These can be read and set by the methods below.&nbsp; Each 
-area also knows it climatic "tendencies", and this also can be set and read from 
-the area.&nbsp; Lastly, a method exists to force the area to cycle through its 
+<P align=left><FONT size=4>The weather, 
+however, is a direct function of each area.&nbsp; Each area knows its current 
+weather code (see the AREA interface) as well as the next weather change "in the 
+que".&nbsp; These can be read and set by the methods below.&nbsp; Each area also 
+knows it climatic "tendencies", and this also can be set and read from the 
+area.&nbsp; Lastly, a method exists to force the area to cycle through its 
 weather, which will force the "next" weather code to become current, and 
 establish a new "next" weather code.</FONT></P>
 <P><PRE>	public int getTechLevel();
 	public void setTechLevel(int level);
 </PRE>
 <P></P>
-<P align=left><FONT size=4>These will return the technical level allowed in the area, 
-whether it be magic, technology, or both.</FONT></P>
+<P align=left><FONT size=4>These will 
+return the technical level allowed in the area, whether it be magic, technology, 
+or both.</FONT></P>
 <P><PRE>	public String getArchivePath();
 	public void setArchivePath(String pathFile);
 </PRE>
@@ -2411,8 +2408,8 @@ the builder.</FONT></P>
 	public int adjustMovement(int base, MOB mob, Room room);
 </PRE>
 <P></P>
-<P align=left><FONT size=4>Each area 
-can use weather or any other factors to adjust the water consumption or movement 
+<P align=left><FONT size=4>Each area can 
+use weather or any other factors to adjust the water consumption or movement 
 consumption numbers use by mobs walking around and fighting.&nbsp; These methods 
 are where this is done, based on the "base" levels provided by the 
 Locale.</FONT></P>
@@ -2432,8 +2429,8 @@ Locale.</FONT></P>
 	public void tickTock(int howManyHours);
 </PRE>
 <P></P>
-<P align=left><FONT size=4>Although 
-the time is properly a global notion, being the same regardless of area, these 
+<P align=left><FONT size=4>Although the 
+time is properly a global notion, being the same regardless of area, these 
 methods were placed inside the Area object just in case you wanted some areas to 
 be on a totally different time-zone.&nbsp; Although the StdArea has lots of help 
 from the system, a coder overriding these methods would have to handle all their 
@@ -2443,23 +2440,23 @@ own updates, and is provided a ticktock method to assist with this.</FONT></P>
 	public boolean canSeeTheSun(Room room);
 </PRE>
 <P></P>
-<P align=left><FONT size=4>The phase 
-of the moon, and whether or not a player can see the sun or the moon from inside 
-a given room can be established by an area.</FONT></P>
+<P align=left><FONT size=4>The phase of 
+the moon, and whether or not a player can see the sun or the moon from inside a 
+given room can be established by an area.</FONT></P>
 <P><PRE>	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
 </PRE>
 <P></P>
-<P align=left><FONT size=4>These 
-methods define whether Mobile mobs will move around.&nbsp; By toggling mobility 
-off, no mob or player&nbsp;in the whole area will move from room to room for any 
-reason, allowing a good base state for builders to work from.</FONT></P>
+<P align=left><FONT size=4>These methods 
+define whether Mobile mobs will move around.&nbsp; By toggling mobility off, no 
+mob or player&nbsp;in the whole area will move from room to room for any reason, 
+allowing a good base state for builders to work from.</FONT></P>
 <P><PRE>	public StringBuffer getAreaStats();
 </PRE>
 <P></P>
-<P align=left><FONT size=4>If the 
-data, appearance, or format of the HELP provided for areas needs to be changed, 
-the getAreaStats() method is where to generate a new one.</FONT></P>
+<P align=left><FONT size=4>If the data, 
+appearance, or format of the HELP provided for areas needs to be changed, the 
+getAreaStats() method is where to generate a new one.</FONT></P>
 <P><PRE>	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);<BR>
 	public Enumeration getMap();
@@ -2468,9 +2465,9 @@ the getAreaStats() method is where to generate a new one.</FONT></P>
 	public void clearMap();
 </PRE>
 <P></P>
-<P align=left><FONT size=4>The first 
-two methods are called in order to perform finalizing clean-up or resetting of 
-room structures.&nbsp; The remaining methods provide access to the set of rooms 
+<P align=left><FONT size=4>The first two 
+methods are called in order to perform finalizing clean-up or resetting of room 
+structures.&nbsp; The remaining methods provide access to the set of rooms 
 inside this area.</FONT></P>
 <P><PRE>	public void addSubOp(String username);
 	public void delSubOp(String username);
@@ -2533,18 +2530,18 @@ class must extend the Property class implemented in the aforementioned
 package.&nbsp; This Property class already implements the Ability interface, and 
 already has dummy methods for most of the Ability interface methods which are 
 unnecessary or are unused in a Property.</FONT></P>
-<P><FONT size=4>Each property must 
-also have custom "ID()", "name()" and "newInstance" methods as shown 
-below.&nbsp; Notice that the ID() is the same as the name of the class.&nbsp; 
-This is no accident -- this is required!</FONT></P><PRE>public class Prop_AstralSpirit extends Property
+<P><FONT size=4>Each property must also 
+have custom "ID()", "name()" and "newInstance" methods as shown below.&nbsp; 
+Notice that the ID() is the same as the name of the class.&nbsp; This is no 
+accident -- this is required!</FONT></P><PRE>public class Prop_AstralSpirit extends Property
 {
    public String ID() { return "Prop_AstralSpirit"; }
    public String name(){ return "Astral Spirit";}
    public Environmental newInstance(){   return new Prop_AstralSpirit();}
 </PRE>
 <P></P>
-<P align=left><FONT size=4>Above we 
-see the aforementioned methods defined.&nbsp; The Property does not differ from 
+<P align=left><FONT size=4>Above we see 
+the aforementioned methods defined.&nbsp; The Property does not differ from 
 other Abilities, or indeed other Environmental objects in this respect.&nbsp; A 
 unique ID(), name() and a newInstance() method must be defined for each new 
 class.</FONT></P><PRE>   protected int canAffectCode(){return Ability.CAN_MOBS;}
@@ -2553,8 +2550,8 @@ class.</FONT></P><PRE>   protected int canAffectCode(){return Ability.CAN_MOBS;}
 
 </PRE>
 <P></P>
-<P align=left><FONT size=4>Here are 
-two important support methods you will also find in Skills and the other more 
+<P align=left><FONT size=4>Here are two 
+important support methods you will also find in Skills and the other more 
 standard Abilities.&nbsp; The first method tells what type of objects (Areas, 
 MOBs, Items, Rooms, or Exits) can be affected by this property.&nbsp; In this 
 case, this property only affects MOBS.&nbsp; A value like </FONT><FONT size=3>Ability.CAN_MOBS|Ability.CAN_ITEMS </FONT><FONT size=4>would denote one that affects MOBs or Items.</FONT></P>
@@ -2606,15 +2603,15 @@ secretIdentity defined for the item.</FONT></P><PRE><P align=left><FONT size=4><
 
 </PRE>
 <P></P>
-<P align=left><FONT size=4>As 
-discussed in the digressions above, here is an example of an okMessage 
-method.&nbsp; In this case, we intercept attack and other vocal or hand movement 
-messages where the source of the action is the mob whose property this is.&nbsp; 
-We then return false, effectively cancelling those messages, after telling the 
-poor bloke why we are doing it.&nbsp; The rest of the method prevents any 
-messages from targeting the mob with this property.&nbsp; This saves him from 
-being attacked by aggressives, or arrested by cityguards -- since technically he 
-isn't even there.</FONT></P><PRE>   public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+<P align=left><FONT size=4>As discussed 
+in the digressions above, here is an example of an okMessage method.&nbsp; In 
+this case, we intercept attack and other vocal or hand movement messages where 
+the source of the action is the mob whose property this is.&nbsp; We then return 
+false, effectively cancelling those messages, after telling the poor bloke why 
+we are doing it.&nbsp; The rest of the method prevents any messages from 
+targeting the mob with this property.&nbsp; This saves him from being attacked 
+by aggressives, or arrested by cityguards -- since technically he isn't even 
+there.</FONT></P><PRE>   public void affectEnvStats(Environmental affected, EnvStats affectableStats)
    {
       super.affectEnvStats(affected,affectableStats);
       // when this spell is on a MOBs Affected list,
@@ -2630,27 +2627,27 @@ isn't even there.</FONT></P><PRE>   public void affectEnvStats(Environmental aff
    }
 }
 </PRE>
-<P><FONT size=4>Last but not least, 
-here is another example from the digressions, an affectEnvStats method.&nbsp; 
-This method will always have the host mob passed in the "affected" parameter, 
-and a copy of his current EnvStats objects in the affectableStats 
-parameter.&nbsp; This method then sets the mob as being both invisible, and 
-totally unseen.&nbsp; It makes him unviewable to infrared, and prevents him from 
-speaking.&nbsp; The two methods above then combine to produce our desired 
-results, an Astral Spirit.</FONT></P>
+<P><FONT size=4>Last but not least, here 
+is another example from the digressions, an affectEnvStats method.&nbsp; This 
+method will always have the host mob passed in the "affected" parameter, and a 
+copy of his current EnvStats objects in the affectableStats parameter.&nbsp; 
+This method then sets the mob as being both invisible, and totally unseen.&nbsp; 
+It makes him unviewable to infrared, and prevents him from speaking.&nbsp; The 
+two methods above then combine to produce our desired results, an Astral 
+Spirit.</FONT></P>
 <P><FONT size=4></FONT>&nbsp;</P></FONT>
 <P align=left><STRONG>&nbsp;</STRONG></FONT><FONT size=3>&nbsp;<IMG src="images/monk.jpg" ></FONT></P>
 <P align=left><FONT style="BACKGROUND-COLOR: #000000" 
 color=aqua size=5><STRONG>Introduction 
 to Skill Abilities:</STRONG></FONT></P>
-<P align=left><FONT size=4>Abilities 
-are easily the most complicated and varied of all the objects in 
-CoffeeMud.&nbsp; They encompass everything from invoked skills and spell, like 
-TRIP or MAGIC MISSILE, to natural abilities, like NONDETECTION.&nbsp; A Skill 
-Ability then is an object which implements the Ability interface fully, unlike 
-the Property above, which implements only certain parts.&nbsp; </FONT></P>
-<P align=left><FONT size=4>An Ability 
-is known in the mud as any of the following: A Spell, Song, Dance, Skill, Common 
+<P align=left><FONT size=4>Abilities are 
+easily the most complicated and varied of all the objects in CoffeeMud.&nbsp; 
+They encompass everything from invoked skills and spell, like TRIP or MAGIC 
+MISSILE, to natural abilities, like NONDETECTION.&nbsp; A Skill Ability then is 
+an object which implements the Ability interface fully, unlike the Property 
+above, which implements only certain parts.&nbsp; </FONT></P>
+<P align=left><FONT size=4>An Ability is 
+known in the mud as any of the following: A Spell, Song, Dance, Skill, Common 
 Skill, Thief Skill, Poison, Disease, Prayer, Chant, or Trap.&nbsp; They all 
 implement the Ability interface, which in turn extends the Environmental 
 interface discussed throughout the rest of this document.&nbsp; Abilities make 
@@ -2662,8 +2659,8 @@ will all tend to extend the basic StdAbility class found in the Abilities
 package, and sometimes they will further extend a class more specific to their 
 type, such as Spell, Song, Prayer, Chant, or some other basic types found in the 
 standard CoffeeMud distribution packages.&nbsp; </FONT></P>
-<P align=left><FONT size=4>Abilities 
-are added to mob objects using the addAbility method on MOBs.&nbsp; From there, 
+<P align=left><FONT size=4>Abilities are 
+added to mob objects using the addAbility method on MOBs.&nbsp; From there, 
 through casting or by autoInvocation (discussed below), they may end up in the 
 effects list of a mob, item, room, area, or exit via the addEffect method.&nbsp; 
 </FONT></P>
@@ -2695,11 +2692,11 @@ accident -- this is required!</FONT></P><PRE>public class Skill_Trip extends Std
    public Environmental newInstance(){   return new Skill_Trip();}
 </PRE>
 <P></P>
-<P align=left><FONT size=4>Above we 
-see the aforementioned methods defined.&nbsp; This skill&nbsp;does not differ 
-from other Abilities, or indeed other Environmental objects in this 
-respect.&nbsp; A unique ID(), name() and a newInstance() method must be defined 
-for each new class.</FONT></P><PRE>   public String displayText(){ return "(Tripped)";}
+<P align=left><FONT size=4>Above we see 
+the aforementioned methods defined.&nbsp; This skill&nbsp;does not differ from 
+other Abilities, or indeed other Environmental objects in this respect.&nbsp; A 
+unique ID(), name() and a newInstance() method must be defined for each new 
+class.</FONT></P><PRE>   public String displayText(){ return "(Tripped)";}
 </PRE>
 <P></P>
 <P align=left><FONT size=4>The display 
@@ -2807,7 +2804,7 @@ which may be used alone or together in any combination, include:</FONT></P>
   <TR>
     <TD>FLAG_MOVING</TD>
     <TD>Changes the position of the target or affected 
-      one.</TD></TR>
+    one.</TD></TR>
   <TR>
     <TD>FLAG_TRANSPORTING</TD>
     <TD>Changes the room of the target, requires that the 
@@ -2871,9 +2868,9 @@ position.</FONT></P><PRE>   public boolean okMessage(Environmental myHost, CMMsg
 </PRE>
 <P></P>
 <P align=left><FONT size=4>This is an 
-example of the okMessage method described in the digressions.&nbsp; In this case, 
-it intercepts messages where the affected mob is trying to stand and cancels the 
-message, without comment, by returning false.</FONT></P><PRE>   public void unInvoke()
+example of the okMessage method described in the digressions.&nbsp; In this 
+case, it intercepts messages where the affected mob is trying to stand and 
+cancels the message, without comment, by returning false.</FONT></P><PRE>   public void unInvoke()
    {
       if((affected==null)||(!(affected instanceof MOB)))
          return;
@@ -2898,30 +2895,29 @@ message, without comment, by returning false.</FONT></P><PRE>   public void unIn
    }
 </PRE>
 <P></P>
-<P align=left><FONT size=4>All 
-standard abilities include an unInvoke() method, which is called when the Effect 
-caused by the ability is dispelled, or the duration of the ability 
-expires.&nbsp; The super.unInvoke() method, which is located in StdAbility.java, 
-actually does the work of removing the Effect from the affected object (stored 
-in the variable affected), and then setting affected to null.&nbsp; In this 
-particular unInvoke() method, we also see the code trying to force the mob back 
-to his feet.</FONT></P><PRE>   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
+<P align=left><FONT size=4>All standard 
+abilities include an unInvoke() method, which is called when the Effect caused 
+by the ability is dispelled, or the duration of the ability expires.&nbsp; The 
+super.unInvoke() method, which is located in StdAbility.java, actually does the 
+work of removing the Effect from the affected object (stored in the variable 
+affected), and then setting affected to null.&nbsp; In this particular 
+unInvoke() method, we also see the code trying to force the mob back to his 
+feet.</FONT></P><PRE>   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
    {
 </PRE>
 <P></P>
-<P align=left><FONT size=4>If an 
-ability is not autoinvoked, it will always have a functional invoke 
-method.&nbsp; This invoke method includes the following parameters: the mob 
-invoking the ability and&nbsp;a vector of command parameter strings (which does 
-not include any trigger words).&nbsp; The givenTarget parameter, which is null 
-on normal ability invokations, will have the value of a target to the skill if 
-one is available.&nbsp; Calls to the invoke method where the givenTarget is not 
-null are typically from potions, wands, traps, or other automatic 
-invocations.&nbsp; Which brings us to the last parameter, auto.&nbsp; Auto is 
-false on normal invocations of the skill, and true whenever the skill should 
-always invoke no matter what.&nbsp; Setting auto to true not only changes the 
-output string for the skill, but overrides profficiency checks as 
-well.</FONT></P><PRE>      MOB target=this.getTarget(mob,commands,givenTarget);
+<P align=left><FONT size=4>If an ability 
+is not autoinvoked, it will always have a functional invoke method.&nbsp; This 
+invoke method includes the following parameters: the mob invoking the ability 
+and&nbsp;a vector of command parameter strings (which does not include any 
+trigger words).&nbsp; The givenTarget parameter, which is null on normal ability 
+invokations, will have the value of a target to the skill if one is 
+available.&nbsp; Calls to the invoke method where the givenTarget is not null 
+are typically from potions, wands, traps, or other automatic invocations.&nbsp; 
+Which brings us to the last parameter, auto.&nbsp; Auto is false on normal 
+invocations of the skill, and true whenever the skill should always invoke no 
+matter what.&nbsp; Setting auto to true not only changes the output string for 
+the skill, but overrides profficiency checks as well.</FONT></P><PRE>      MOB target=this.getTarget(mob,commands,givenTarget);
       if(target==null) return false;
 </PRE>
 <P></P>
@@ -2973,10 +2969,10 @@ able to be tripped.</FONT></P><PRE>      if(!super.invoke(mob,commands,givenTarg
          return false;
 </PRE>
 <P></P>
-<P align=left><FONT size=4>The 
-invoke() method back up in StdAbility is called now.&nbsp; This method will 
-check mana requirements, and subtract mana if necessary.&nbsp; It should be 
-called AFTER all other preliminary checks have been made.</FONT></P><PRE>      int levelDiff=target.envStats().level()-mob.envStats().level();
+<P align=left><FONT size=4>The invoke() 
+method back up in StdAbility is called now.&nbsp; This method will check mana 
+requirements, and subtract mana if necessary.&nbsp; It should be called AFTER 
+all other preliminary checks have been made.</FONT></P><PRE>      int levelDiff=target.envStats().level()-mob.envStats().level();
       if(levelDiff&gt;0)
          levelDiff=levelDiff*5;
       else
@@ -3000,7 +2996,7 @@ into the variable success.</FONT></P><PRE>      success=success&amp;&amp;(target
          if(mob.location().okMessage(mob,msg))
          {
             mob.location().send(mob,msg);
-            int durationTicks=mas.wasModified()?1:2;
+            int durationTicks=(msg.value()>0)?1:2;
             maliciousAffect(mob,target,durationTicks,-1);
             target.tell("You hit the floor!");
          }
@@ -3024,7 +3020,7 @@ movement flags set.&nbsp; If this message gets sent,&nbsp;a call to
 maliciousAffect is made. The first parameter is the invoker, and the second 
 parameter is the one its being invoked upon.&nbsp; The third parameter is the 
 duration of the Effect in ticks, which you can see is dependent in this case 
-upon whether the message came back modified (meaning the saving throw was 
+upon whether the message came back with a value()>0 (meaning the saving throw was 
 made).&nbsp; If the third parameter is 0, then the default duration formula will 
 be used.&nbsp; All other positive values, such as in this case, denote a number 
 of ticks of duration.&nbsp; The last parameter, normally -1, asks 
@@ -3032,11 +3028,11 @@ maliciousAffect to give the target one more saving throw, against any of the
 valid saving throw type messages, such as TYP_FIRE, TYP_ACID, TYP_GAS, 
 etc.&nbsp; The value of -1 means not to make any further saving throw attempts 
 before affecting the target.</FONT></P>
-<P align=left><FONT size=4>If this 
-skill had not been malicious, we could have made a call to the beneficialAffect 
-method instead.&nbsp; That method has the same parameters as maliciousAffect, 
-though it lacks the final parameter for a further saving throw, since beneficial 
-affects require no saving throw.</FONT></P>
+<P align=left><FONT size=4>If this skill 
+had not been malicious, we could have made a call to the beneficialAffect method 
+instead.&nbsp; That method has the same parameters as maliciousAffect, though it 
+lacks the final parameter for a further saving throw, since beneficial affects 
+require no saving throw.</FONT></P>
 <P align=left><FONT size=4>Now, if the 
 success variable had been false, then we made a call to the maliciousFizzle 
 method.&nbsp; In addition to a display in the room, this method will make sure 
@@ -3142,10 +3138,10 @@ domains include: </FONT></P>
    }
 }
 </PRE></FONT>
-<P align=left><FONT size=4>The 
-Invoke() method above follows the one in Skill_Abilities very closely.&nbsp; You 
-will see that no adjustment is made to the profficiency check, and that, since 
-this is not a MALICIOUS ability, calls are made to beneficialAffect and 
+<P align=left><FONT size=4>The Invoke() 
+method above follows the one in Skill_Abilities very closely.&nbsp; You will see 
+that no adjustment is made to the profficiency check, and that, since this is 
+not a MALICIOUS ability, calls are made to beneficialAffect and 
 beneficialWordsFizzle instead of maliciousAffect and maliciousFizzle.&nbsp; The 
 main difference to notice here, however, is the line constructing the evoking 
 message.&nbsp; You will notice that where the message code should be specified, 
@@ -3299,8 +3295,8 @@ is set.</FONT></FONT></P></FONT></FONT>
 <P align=left></FONT><IMG src="images/elvis.jpg" > </P>
 <P></P>
 <P align=left><FONT color=lime size=5><STRONG>Songs:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code 
-a Song.</FONT></P>
+<P align=left><FONT size=4>How to code a 
+Song.</FONT></P>
 <P align=left></P>
 <P align=left></P>
 <P align=left></P>
@@ -3316,8 +3312,8 @@ a Song.</FONT></P>
 <P></P>
 <P align=left><FONT color=maroon size=5><STRONG>Common 
 Skills:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code 
-a Common Skill.</FONT></P>
+<P align=left><FONT size=4>How to code a 
+Common Skill.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P>
 <P align=left></P>
 <P align=left></P>
@@ -3330,20 +3326,20 @@ a Common Skill.</FONT></P>
 <P></P>
 <P><IMG src="images/prayer.jpg" ></P>
 <P align=left><FONT color=maroon size=5><STRONG>Poisons:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code 
-a Poison.</FONT></P><FONT size=4>
+<P align=left><FONT size=4>How to code a 
+Poison.</FONT></P><FONT size=4>
 <P><IMG src="images/disease.jpg" ></P>
 <P align=left><FONT color=maroon size=5><STRONG>Diseases:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code 
-a Disease.</FONT></P><FONT size=4>
+<P align=left><FONT size=4>How to code a 
+Disease.</FONT></P><FONT size=4>
 <P><IMG src="images/traps.jpg" ></P>
 <P align=left><FONT color=maroon size=5><STRONG>Traps:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code 
-a Trap.</FONT></P><FONT size=4>
+<P align=left><FONT size=4>How to code a 
+Trap.</FONT></P><FONT size=4>
 <P><IMG src="images/language.jpg" ></P>
 <P align=left><FONT color=maroon size=5><STRONG>Languages:</STRONG></FONT></P>
-<P align=left><FONT size=4>How to code 
-a Language.</FONT></P>
+<P align=left><FONT size=4>How to code a 
+Language.</FONT></P>
 <P align=left><FONT size=4></FONT>&nbsp;</P></FONT></FONT></FONT>
 <P align=left><FONT size=4></FONT>&nbsp;</P></TABLE>
 </BODY>

@@ -173,6 +173,12 @@ public class StdClanItem extends StdItem implements ClanItem
 					msg.source().tell(targetMOB.name()+" already has "+alreadyHasOne.name()+", and cannot have another Clan Item.");
 					return false;
 				}
+				if((((ClanItem)myHost).ciType()==ClanItem.CI_BANNER)
+				&&(!Sense.isMobile(targetMOB)))
+				{
+					msg.source().tell("This item should only be given to those who roam the area.");
+					return false;
+				}
 			}
 		}
 		else

@@ -67,6 +67,16 @@ public class Conquerable extends Arrest
 					V.addElement(holdingClan);
 				}
 				return true;
+			case Law.MOD_CONTROLPOINTS:
+				if(V!=null)
+				{
+					V.clear();
+					if(totalControlPoints>=0)
+						V.addElement(new Integer(totalControlPoints));
+					else
+						V.addElement(new Integer(0));
+				}
+				return true;
 			case Law.MOD_WARINFO:
 				if(V!=null)
 				{
