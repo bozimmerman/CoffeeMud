@@ -90,6 +90,11 @@ public class Spell_SummoningWard extends Spell
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
+		{
+			mob.tell("This place is already under a summoning ward.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -32,7 +32,7 @@ public class Spell_StinkingCloud extends Spell
 			if((!vic.amDead())&&(vic.location()!=null)&&(Sense.canSmell(vic)))
 			{
 				if((vic.curState().getHunger()<=0))
-					MUDFight.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> dry heave(s) in the stinking cloud.");
+					MUDFight.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) in the stinking cloud.");
 				else
 				{
 					MUDFight.postDamage(invoker,vic,this,vic.envStats().level(),CMMsg.TYP_GAS,-1,"<T-NAME> heave(s) all over the place!");

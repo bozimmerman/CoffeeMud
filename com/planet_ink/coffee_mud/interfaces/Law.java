@@ -76,8 +76,9 @@ public interface Law
 	public final static int MOD_RULINGCLAN=10;
 	public final static int MOD_WARINFO=11;
 	public final static int MOD_CONTROLPOINTS=12;
-	public final static int MOD_FORGIVENAME=13;
-	
+	public final static int MOD_GETWARRANTSOF=13;
+	public final static int MOD_ADDWARRANT=14;
+	public final static int MOD_DELWARRANT=15;
 	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+

@@ -89,6 +89,11 @@ public class Spell_CharmWard extends Spell
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell("This place is already charmed.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -1,3 +1,4 @@
+FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASSTYPE,MISCTYPE,CAPACITY,ARMORDMG,CONTAINMASK,SPELL
 % Bundle	1	1	25	0	GenResource	BUNDLE
 % Cap 	1	10	5	150	GenArmor	HEAD	0	2	0
 % Coif	1	10	5	150	GenArmor	HEAD	0	2	0
@@ -28,6 +29,7 @@
 % Cestus	1	20	4	100	GenArmor	HANDS	0	1	0
 % Sheath Belt	1	30	5	100	GenArmor	WAIST	100	1	32
 % Belt	1	30	5	100	GenArmor	WAIST	100	1	12
+% Backpack	1	30	10	10	GenArmor	BACK	100	0	0	
 % Girdle	1	40	15	150	GenArmor	WAIST	100	2	12
 % Pants	1	20	15	150	GenArmor	LEGS	5	6	2
 % Leggings	1	20	15	150	GenArmor	LEGS	0	6	0

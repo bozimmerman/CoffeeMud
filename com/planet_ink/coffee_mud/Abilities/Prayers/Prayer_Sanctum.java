@@ -81,6 +81,11 @@ public class Prayer_Sanctum extends Prayer
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell("This place is already a sanctum.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -503,12 +503,13 @@ public class Arrest extends StdBehavior
 			case Law.MOD_CONTROLPOINTS:
 				if(V!=null){V.clear();V.addElement(new Integer(0));}
 				return false;
-			case Law.MOD_FORGIVENAME:
+			case Law.MOD_GETWARRANTSOF:
 				if(laws!=null)
 				{
 					boolean didSomething=false;
 					if((V!=null)&&(V.elementAt(1) instanceof String))
 					{
+						V.clear();
 						for(int i=0;i<laws.warrants().size();i++)
 						{
 							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
@@ -516,10 +517,49 @@ public class Arrest extends StdBehavior
 							{
 								didSomething=true;
 								W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+(long)10);
+								V.addElement(W);
+							}
+						}
+					}
+					else
+					{
+						V.clear();
+						for(int i=0;i<laws.warrants().size();i++)
+						{
+							LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+							if((isStillACrime(W))&&(W.criminal()==mob))
+							{
+								didSomething=true;
+								V.addElement(W);
 							}
 						}
 					}
 					return didSomething;
+				}
+				return false;
+			case Law.MOD_ADDWARRANT:
+				if((laws!=null)&&(V!=null)&&(V.elementAt(1) instanceof LegalWarrant))
+				{
+					laws.warrants().addElement(V.elementAt(1));
+					return true;
+				}
+				else
+				if((laws!=null)&&(V!=null)&&(V.size()>5))
+				{
+					MOB deity=(MOB)V.elementAt(1);
+					String crimeLocs=(String)V.elementAt(2);
+					String crimeFlags=(String)V.elementAt(3);
+					String crime=(String)V.elementAt(4);
+					String sentence=(String)V.elementAt(5);
+					String warnMsg=(String)V.elementAt(6);
+					return fillOutWarrant(mob,laws,(Area)hostObj,deity,crimeLocs,crimeFlags,crime,sentence,warnMsg);
+				}
+				return false;
+			case Law.MOD_DELWARRANT:
+				if((laws!=null)&&(V!=null)&&(V.elementAt(1) instanceof LegalWarrant))
+				{
+					laws.warrants().removeElement(V.elementAt(1));
+					return true;
 				}
 				return false;
 			}

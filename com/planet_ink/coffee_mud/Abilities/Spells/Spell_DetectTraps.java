@@ -136,7 +136,7 @@ public class Spell_DetectTraps extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) liquid sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) trap sensitivities!":"^S<S-NAME> incant(s) softly, and gain(s) sensitivity to traps!^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -144,7 +144,7 @@ public class Spell_DetectTraps extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) and open(s) <S-HIS-HER> liquified eyes, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> incant(s) and open(s) <S-HIS-HER> eyes, but the spell fizzles.");
 
 		return success;
 	}

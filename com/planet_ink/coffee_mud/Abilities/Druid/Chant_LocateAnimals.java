@@ -16,6 +16,7 @@ public class Chant_LocateAnimals extends Chant
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
+	public long flags(){return Ability.FLAG_TRACKING;}
 	public Environmental newInstance(){	return new Chant_LocateAnimals();}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -92,6 +93,8 @@ public class Chant_LocateAnimals extends Chant
 			mob.tell("You are already trying to locate animals.");
 			return false;
 		}
+		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 
 		theTrail=null;
 		nextDirection=-2;

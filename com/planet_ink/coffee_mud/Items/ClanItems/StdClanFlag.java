@@ -32,6 +32,34 @@ public class StdClanFlag extends StdItem implements ClanItem
 	public String clanID(){return myClan;}
 	public void setClanID(String ID){myClan=ID;}
 	
+	public String getClanInfoAt(Room R, MOB mob, int code)
+	{
+		if(R==null)
+		{
+			if(mob==null) return "";
+			R=mob.location();
+		}
+		Area A=null;
+		Behavior B=null;
+		Vector V=null;
+		if(R!=null)	A=R.getArea();
+		if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
+		if(B!=null)
+		{
+			V.clear();
+			V.addElement(new Integer(code));
+			String rulingClan="";
+			if((B.modifyBehavior(A,mob,V))
+			&&(V.size()>0)
+			&&(V.firstElement() instanceof String))
+				return ((String)V.firstElement());
+		}
+		return "";
+	}
+	
+	
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(StdClanItem.stdExecuteMsg(this,msg))
@@ -46,24 +74,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 				else
 				if(msg.targetMinor()==CMMsg.TYP_EXAMINESOMETHING)
 				{
-					Room R=msg.source().location();
-					Area A=null;
-					Behavior B=null;
-					Vector V=null;
-					if(R!=null)	A=R.getArea();
-					if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-					if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
-					if(B!=null)
-					{
-						V.clear();
-						V.addElement(new Integer(Law.MOD_WARINFO));
-						if((B.modifyBehavior(A,msg.source(),V))
-						&&(V.size()>0)
-						&&(V.firstElement() instanceof String))
-							msg.source().tell((String)V.firstElement());
-						else
-							msg.source().tell("This area is under the control of the Archons.");
-					}
+					String s=getClanInfoAt(null,msg.source(),Law.MOD_WARINFO);
+					if(s.length()>0)
+						msg.source().tell(s);
 					else
 						msg.source().tell("This area is under the control of the Archons.");
 					return;
@@ -101,6 +114,12 @@ public class StdClanFlag extends StdItem implements ClanItem
 								R.show(M,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> guard(s) "+name()+" closely.");
 								return false;
 							}
+						}
+						String rulingClan=getClanInfoAt(R,msg.source(),Law.MOD_RULINGCLAN);
+						if(!rulingClan.equals(msg.source().getClanID()))
+						{
+							msg.source().tell("You must conquer this area to take the clan flag.");
+							return false;
 						}
 					}
 				}
@@ -168,53 +187,31 @@ public class StdClanFlag extends StdItem implements ClanItem
 			&&(msg.amITarget(this))
 			&&(msg.targetMinor()==CMMsg.TYP_DROP))
 			{
-				Room R=msg.source().location();
-				Area A=null;
-				Behavior B=null;
-				Vector V=null;
-				if(R!=null)	A=R.getArea();
-				if(A!=null) V=Sense.flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-				if((V!=null)&&(V.size()>0)) B=(Behavior)V.firstElement();
-				if(B!=null)
+				String rulingClan=getClanInfoAt(null,msg.source(),Law.MOD_RULINGCLAN);
+				if(rulingClan.length()==0)
+					msg.source().tell("This area is presently neutral.");
+				else
 				{
-					V.clear();
-					V.addElement(new Integer(Law.MOD_RULINGCLAN));
-					String rulingClan="";
-					if((B.modifyBehavior(A,msg.source(),V))
-					&&(V.size()>0)
-					&&(V.firstElement() instanceof String))
+					msg.source().tell("This area is presently controlled by "+rulingClan+".");
+					if(!rulingClan.equals(clanID()))
 					{
-						rulingClan=(String)V.firstElement();
-						if(rulingClan.length()==0)
-							msg.source().tell("This area is presently neutral.");
+						int relation=Clan.REL_WAR;
+						Clan C=Clans.getClan(clanID());
+						if(C!=null) 
+							relation=C.getClanRelations(rulingClan);
 						else
 						{
-							msg.source().tell("This area is presently controlled by "+rulingClan+".");
-							if(!rulingClan.equals(clanID()))
-							{
-								int relation=Clan.REL_WAR;
-								Clan C=Clans.getClan(clanID());
-								if(C!=null) 
-									relation=C.getClanRelations(rulingClan);
-								else
-								{
-									C=Clans.getClan(rulingClan);
-									if(C!=null)
-										relation=C.getClanRelations(clanID());
-								}
-								if(relation!=Clan.REL_WAR)
-								{
-									msg.source().tell("You must be at war with this clan to put down your flag on their area.");
-									return false;
-								}
-							}
+							C=Clans.getClan(rulingClan);
+							if(C!=null)
+								relation=C.getClanRelations(clanID());
+						}
+						if(relation!=Clan.REL_WAR)
+						{
+							msg.source().tell("You must be at war with this clan to put down your flag on their area.");
+							return false;
 						}
 					}
-					else
-						msg.source().tell("This area is under the control of the Archons.");
 				}
-				else
-					msg.source().tell("This area is under the control of the Archons.");
 			}
 			return super.okMessage(myHost,msg);
 		}

@@ -1535,7 +1535,9 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if(!mayIFight(mob))
+				if((!mayIFight(mob))
+				&&((!(msg.tool() instanceof Ability))
+				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)!=Ability.DISEASE))
 				{
 					mob.tell("You are not allowed to attack "+name()+".");
 					mob.setVictim(null);
@@ -1547,7 +1549,9 @@ public class StdMOB implements MOB
 				&&(soulMate()==null)
 				&&(mob.soulMate()==null)
 				&&(!isASysOp(location()))&&(!mob.isASysOp(mob.location()))
-				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff()))
+				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff())
+				&&((!(msg.tool() instanceof Ability))
+				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_CODES)!=Ability.DISEASE))
 				{
 					mob.tell("That is not EVEN a fair fight.");
 					mob.setVictim(null);

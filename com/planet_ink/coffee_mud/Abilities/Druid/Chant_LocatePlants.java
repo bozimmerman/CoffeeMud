@@ -12,6 +12,7 @@ public class Chant_LocatePlants extends Chant
 	public String ID() { return "Chant_LocatePlants"; }
 	public String name(){ return "Locate Plants";}
 	public String displayText(){return "(Locating Plants)";}
+	public long flags(){return Ability.FLAG_TRACKING;}
 
 	private Vector theTrail=null;
 	public int nextDirection=-2;
@@ -99,6 +100,8 @@ public class Chant_LocatePlants extends Chant
 			target.tell("You are already trying to find plant life.");
 			return false;
 		}
+		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -10,6 +10,8 @@ public class Prayer_UndeniableFaith extends Prayer
 	public String ID() { return "Prayer_UndeniableFaith"; }
 	public String name(){ return "Undeniable Faith";}
 	public int quality(){ return OK_OTHERS;}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_CHARMING;}
 	public Environmental newInstance(){	return new Prayer_UndeniableFaith();}
 	protected int overrideMana(){return 100;}
@@ -109,15 +111,23 @@ public class Prayer_UndeniableFaith extends Prayer
 			// what happened.
 			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> "+prayWord(mob)+" for <T-NAMESELF> to BELIEVE!^?");
 			FullMsg msg2=new FullMsg(target,D,this,CMMsg.MSG_SERVE,"<S-NAME> BELIEVES!!!");
-			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
+			FullMsg msg3=new FullMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_GENERAL:0),null);
+			if((mob.location().okMessage(mob,msg))
+			&&(mob.location().okMessage(mob,msg3))
+			&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				target.setWorshipCharID(godName);
-				if(mob!=target)
-					MUDFight.postExperience(mob,target,null,25,false);
-				godName=mob.getWorshipCharID();
-				beneficialAffect(mob,target,(int)MudHost.TICKS_PER_MUDDAY);
+				mob.location().send(mob,msg3);
+				if((msg.value()<=0)&&(msg3.value()<=0))
+				{
+					mob.location().send(mob,msg2);
+					target.setWorshipCharID(godName);
+					if(mob!=target)
+						MUDFight.postExperience(mob,target,null,25,false);
+					godName=mob.getWorshipCharID();
+					beneficialAffect(mob,target,(int)MudHost.TICKS_PER_MUDDAY);
+				}
 			}
 		}
 		else

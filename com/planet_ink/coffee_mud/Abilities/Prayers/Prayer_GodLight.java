@@ -49,6 +49,11 @@ public class Prayer_GodLight extends Prayer
 		if(target==null)
 			target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_UNWORNONLY);
 		if(target==null) return false;
+		if((target instanceof Room)&&(target.fetchEffect(ID())!=null))
+		{
+			mob.tell("This place already has the god light.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

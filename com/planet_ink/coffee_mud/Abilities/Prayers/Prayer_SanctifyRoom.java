@@ -10,8 +10,9 @@ public class Prayer_SanctifyRoom extends Prayer
 	public String ID() { return "Prayer_SanctifyRoom"; }
 	public String name(){return "Sanctify Room";}
 	public String displayText(){return "(Sanctify Room)";}
-	public int quality(){ return OK_OTHERS;}
+	public int quality(){ return INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
+	protected int canTargetCode(){return CAN_ROOMS;}
 	public Environmental newInstance(){	return new Prayer_SanctifyRoom();}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
@@ -36,6 +37,11 @@ public class Prayer_SanctifyRoom extends Prayer
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell("This place is already a sanctified place.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

@@ -57,7 +57,7 @@ public class Chant_HealingMoon extends Chant
 
 		if(target.fetchEffect(ID())!=null)
 		{
-			mob.tell("This place is already under the love moon.");
+			mob.tell("This place is already under the healing moon.");
 			return false;
 		}
 

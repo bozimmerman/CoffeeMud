@@ -11,7 +11,7 @@ public interface Quest extends Tickable
 	public int duration();
 	public void setDuration(int newTicks);
 	
-	// the rest of the script.  This may be semicolon-seperated instructions, 
+	// the rest of the script.  This may be semicolon-separated instructions, 
 	// or a LOAD command followed by the quest script path.
 	public void setScript(String parm);
 	public String script();

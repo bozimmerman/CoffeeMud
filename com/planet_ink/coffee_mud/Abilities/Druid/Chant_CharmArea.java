@@ -54,7 +54,11 @@ public class Chant_CharmArea extends Chant
 	{
 		Room target=mob.location();
 		if(target==null) return false;
-
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell("This place is already charmed.");
+			return false;
+		}
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell("You must be outdoors for this chant to work.");

@@ -36,7 +36,7 @@ public class Quests implements Cloneable, Quest
 	public int duration(){return duration;}
 	public void setDuration(int newTicks){duration=newTicks;}
 
-	// the rest of the script.  This may be semicolon-seperated instructions,
+	// the rest of the script.  This may be semicolon-separated instructions,
 	// or a LOAD command followed by the quest script path.
 	public void setScript(String parm){
 		parms=parm;
