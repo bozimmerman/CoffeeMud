@@ -71,24 +71,28 @@ public class Chant_SummonElemental extends Chant
 			newMOB.setDisplayText("a fire elemental is flaming nearby.");
 			newMOB.setDescription("A large beast, wreathed in flame, with sparkling eyes and a hot temper.");
 			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+			newMOB.setAlignment(0);
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
 			break;
 		case 2:
 			newMOB.setName("an ice elemental");
 			newMOB.setDisplayText("an ice elemental is chilling out here.");
 			newMOB.setDescription("A large beast, made of ice, with crytaline eyes and a cold disposition.");
+			newMOB.setAlignment(1000);
 			newMOB.addAbility(CMClass.getAbility("Frostbreath"));
 			break;
 		case 3:
 			newMOB.setName("an earth elemental");
 			newMOB.setDisplayText("an earth elemental looks right at home.");
 			newMOB.setDescription("A large beast, made of rock and dirt, with a hard stare.");
+			newMOB.setAlignment(500);
 			newMOB.addAbility(CMClass.getAbility("Gasbreath"));
 			break;
 		case 4:
 			newMOB.setName("an air elemental");
 			newMOB.setDisplayText("an air elemental blows right by.");
 			newMOB.setDescription("A large beast, made of swirling clouds and air.");
+			newMOB.setAlignment(1000);
 			newMOB.addAbility(CMClass.getAbility("Lighteningbreath"));
 			break;
 		}
