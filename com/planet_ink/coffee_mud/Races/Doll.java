@@ -18,9 +18,9 @@ public class Doll extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(5);
-		affectableStats.setDexterity(5);
-		affectableStats.setIntelligence(13);
+		affectableStats.setStat(CharStats.STRENGTH,5);
+		affectableStats.setStat(CharStats.DEXTERITY,5);
+		affectableStats.setStat(CharStats.INTELLIGENCE,13);
 	}
 	public void setWeight(MOB mob)
 	{

@@ -41,11 +41,10 @@ public class Spell_Feeblemind extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setIntelligence(1);
-		affectableStats.setWisdom(1);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)-25);
 	}
-
-
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell

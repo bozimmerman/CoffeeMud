@@ -154,7 +154,7 @@ public class StdCharClass implements CharClass
 		theNews.append("^HYou are now a level "+mob.baseEnvStats().level()+" "+mob.charStats().getMyClass().name()+".^N\n\r");
 
 		int newHitPointGain=minHitPointsPerLevel+(int)Math.floor(Math.random()*(maxHitPointsPerLevel-minHitPointsPerLevel))+minHitPointsPerLevel;
-		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getConstitution(),2.0))-4;
+		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;
 		if(newHitPointGain<=0) newHitPointGain=1;
 		newHitPointGain=newHitPointGain*adjuster;
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
@@ -162,19 +162,19 @@ public class StdCharClass implements CharClass
 		theNews.append("^BYou have gained ^H"+newHitPointGain+"^B hit " + 
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		int mvGain=(int)Math.round(Util.div(mob.charStats().getStrength(),9.0)*12);
+		int mvGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.STRENGTH),9.0)*12);
 		mvGain=mvGain*adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
 		theNews.append(mvGain+"^B move " + (mvGain!=1?"points":"point") + ", ^H");
 
-		int attGain=(int)Math.round(Util.div(mob.charStats().getCurStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
+		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
 		theNews.append(attGain+"^B attack " + (attGain!=1?"points":"point") + ", ^H");
 
-		int manaGain=(int)Math.round(Util.div(mob.charStats().getIntelligence(),18.0)*manaMultiplier);
+		int manaGain=(int)Math.round(Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0)*manaMultiplier);
 		manaGain=manaGain*adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^B " + (manaGain!=1?"points":"point") + " of mana,");
@@ -190,13 +190,13 @@ public class StdCharClass implements CharClass
 
 		mob.setAlignment(500);
 		mob.baseEnvStats().setLevel(1);
-		mob.baseCharStats().setGender(gender);
-		mob.baseCharStats().setStrength(1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setWisdom(1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setIntelligence((int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setDexterity(1+(int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setConstitution((int)Math.round(CharStats.AVG_VALUE));
-		mob.baseCharStats().setCharisma((int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.GENDER,(int)gender);
+		mob.baseCharStats().setStat(CharStats.STRENGTH,1+(int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.WISDOM,1+(int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,(int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.DEXTERITY,1+(int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.CONSTITUTION,(int)Math.round(CharStats.AVG_VALUE));
+		mob.baseCharStats().setStat(CharStats.CHARISMA,(int)Math.round(CharStats.AVG_VALUE));
 		mob.baseCharStats().setMyClass(this);
 		mob.baseEnvStats().setArmor(50);
 		mob.baseEnvStats().setLevel(1);
@@ -220,22 +220,22 @@ public class StdCharClass implements CharClass
 			switch(lvl % 6)
 			{
 			case 0:
-				mob.baseCharStats().setStrength(mob.baseCharStats().getStrength()+1);
+				mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+1);
 				break;
 			case 1:
-				mob.baseCharStats().setDexterity(mob.baseCharStats().getDexterity()+1);
+				mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+1);
 				break;
 			case 2:
-				mob.baseCharStats().setIntelligence(mob.baseCharStats().getIntelligence()+1);
+				mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+1);
 				break;
 			case 3:
-				mob.baseCharStats().setConstitution(mob.baseCharStats().getConstitution()+1);
+				mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+1);
 				break;
 			case 4:
-				mob.baseCharStats().setCharisma(mob.baseCharStats().getCharisma()+1);
+				mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+1);
 				break;
 			case 5:
-				mob.baseCharStats().setWisdom(mob.baseCharStats().getWisdom()+1);
+				mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+1);
 				break;
 			}
 			int oldattack=mob.baseEnvStats().attackAdjustment();
@@ -262,7 +262,7 @@ public class StdCharClass implements CharClass
 		StringBuffer theNews=new StringBuffer("^XYou have L E V E L E D ! ! ! ! ! ^N\n\r\n\r");
 		theNews.append(levelAdjuster(mob,1));
 
-		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getWisdom(),4.0))+bonusPracLevel;
+		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+bonusPracLevel;
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 		theNews.append("^H" + practiceGain+"^B practice " +
@@ -297,12 +297,12 @@ public class StdCharClass implements CharClass
 	}
 	public int getLevelMana(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getIntelligence(),18.0)*manaMultiplier)));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),18.0)*manaMultiplier)));
 	}
 
 	public int getLevelAttack(MOB mob)
 	{
-		int attGain=(int)Math.round(Util.div(mob.charStats().getCurStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
+		int attGain=(int)Math.round(Util.div(mob.charStats().getStat(this.attackAttribute),6.0))+this.bonusAttackLevel;
 		return ((mob.baseEnvStats().level()-1)*attGain);
 	}
 
@@ -318,13 +318,13 @@ public class StdCharClass implements CharClass
 
 	public int getLevelMove(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStrength(),9.0)*12)));
+		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*12)));
 	}
 
 	public boolean canAdvance(MOB mob, int abilityCode)
 	{
 		if((abilityCode<0)||(abilityCode>5)) return false;
-		if(mob.baseCharStats().getCurStat(abilityCode)>=getMaxStat(abilityCode)) return false;
+		if(mob.baseCharStats().getStat(abilityCode)>=getMaxStat(abilityCode)) return false;
 		return true;
 	}
 

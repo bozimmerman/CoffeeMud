@@ -40,7 +40,7 @@ public class Skill_Dirt extends StdAbility
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
 	}
 
 	public int classificationCode()
@@ -92,7 +92,7 @@ public class Skill_Dirt extends StdAbility
 			mob.tell("There's no dirt here to kick!");
 			return false;
 		}
-		boolean success=profficiencyCheck(-(target.charStats().getDexterity()*3),auto);
+		boolean success=profficiencyCheck(-(target.charStats().getStat(CharStats.DEXTERITY)*3),auto);
 
 		if(success)
 		{

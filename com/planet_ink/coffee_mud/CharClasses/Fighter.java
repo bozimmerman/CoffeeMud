@@ -67,7 +67,7 @@ public class Fighter extends StdCharClass
 
 	public boolean qualifiesForThisClass(MOB mob)
 	{
-		if(mob.baseCharStats().getStrength()>8)
+		if(mob.baseCharStats().getStat(CharStats.STRENGTH)>8)
 			return true;
 		return false;
 	}

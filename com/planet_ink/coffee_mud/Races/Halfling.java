@@ -18,9 +18,9 @@ public class Halfling extends StdRace
 	public void newCharacter(MOB mob)
 	{
 		super.newCharacter(mob);
-		mob.baseCharStats().setDexterity(mob.baseCharStats().getDexterity()+1);
-		mob.baseCharStats().setStrength(mob.baseCharStats().getStrength()-1);
-		mob.baseEnvStats().setSensesMask(Sense.CAN_SEE_INFRARED);
+		mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+1);
+		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)-1);
+		mob.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_INFRARED);
 		Ability A=CMClass.getAbility("Elvish");
 		if(A!=null)
 		{
@@ -36,18 +36,18 @@ public class Halfling extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INFRARED);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setDexterity(affectableStats.getDexterity()+1);
-		affectableStats.setStrength(affectableStats.getStrength()-1);
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+1);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-1);
 	}
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
+		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
 
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		if (gender == 'M')

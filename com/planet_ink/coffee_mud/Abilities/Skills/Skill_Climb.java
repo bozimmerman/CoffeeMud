@@ -34,7 +34,7 @@ public class Skill_Climb extends StdAbility
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_CLIMBING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

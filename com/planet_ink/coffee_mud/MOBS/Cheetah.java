@@ -23,9 +23,9 @@ public class Cheetah extends StdMOB
 		baseEnvStats.setWeight(150 + Math.abs(randomizer.nextInt() % 55));
 
 
-		baseCharStats().setIntelligence(1);
-		baseCharStats().setStrength(12);
-		baseCharStats().setDexterity(18);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STRENGTH,12);
+		baseCharStats().setStat(CharStats.DEXTERITY,18);
 		baseCharStats().setMyRace(CMClass.getRace("GreatCat"));
 
 		baseEnvStats().setDamage(8);

@@ -74,7 +74,7 @@ public class StdItem implements Item
 				A.affectEnvStats(this,envStats);
 		}
 		if(envStats().ability()>0)
-			envStats().setDisposition(envStats().disposition()|Sense.IS_BONUS);
+			envStats().setDisposition(envStats().disposition()|EnvStats.IS_BONUS);
 	}
 
 	public void setBaseEnvStats(EnvStats newBaseEnvStats)
@@ -333,9 +333,9 @@ public class StdItem implements Item
 		if(Sense.isLight(this))
 		{
 			if((!(affected instanceof Room))&&(rawWornCode()!=Item.INVENTORY))
-				affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_LIGHT);
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHT);
 			if(Sense.isInDark(affected))
-				affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_DARK);
+				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 		}
 		if(!this.amWearingAt(Item.FLOATING_NEARBY))
 			affectableStats.setWeight(affectableStats.weight()+envStats().weight());
@@ -756,7 +756,7 @@ public class StdItem implements Item
 			{
 				setLocation(null);
 				if(Sense.isHidden(this))
-					baseEnvStats().setDisposition(baseEnvStats().disposition()&((int)Sense.ALLMASK-Sense.IS_HIDDEN));
+					baseEnvStats().setDisposition(baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 				if(mob.location().isContent(this))
 					mob.location().delItem(this);
 				if(!mob.isMine(this))

@@ -21,7 +21,7 @@ public class EternityQuarterstaff extends Quarterstaff
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(12);
 		baseGoldValue+=5000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		wornLogicalAnd=true;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		weaponType=TYPE_BASHING;

@@ -18,14 +18,14 @@ public class Hobgoblin extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INFRARED);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(6);
-		affectableStats.setDexterity(10);
-		affectableStats.setIntelligence(8);
+		affectableStats.setStat(CharStats.STRENGTH,6);
+		affectableStats.setStat(CharStats.DEXTERITY,10);
+		affectableStats.setStat(CharStats.INTELLIGENCE,8);
 	}
 	public void setWeight(MOB mob)
 	{

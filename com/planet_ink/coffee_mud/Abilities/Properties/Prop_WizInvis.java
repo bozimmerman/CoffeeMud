@@ -36,22 +36,22 @@ public class Prop_WizInvis extends Property
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_INVISIBLE);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SEEN);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_HIDDEN);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SNEAKING);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_FLYING);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_CLIMBING);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SWIMMING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SEEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 		if(!Sense.canBreathe(affected))
-			affectableStats.setSensesMask(affectableStats.sensesMask()-Sense.CAN_BREATHE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
 		if(Sense.isSleeping(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_SLEEPING);
+			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SLEEPING);
 		if(Sense.isSitting(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_SITTING);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_HIDDEN);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_DARK);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INVISIBLE);
+			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SITTING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

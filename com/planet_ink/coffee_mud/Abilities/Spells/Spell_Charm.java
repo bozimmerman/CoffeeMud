@@ -135,7 +135,7 @@ public class Spell_Charm extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=profficiencyCheck(-25-((target.charStats().getIntelligence()*2)+(levelDiff*15)),auto);
+		boolean success=profficiencyCheck(-25-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)+(levelDiff*15)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

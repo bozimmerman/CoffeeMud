@@ -34,13 +34,13 @@ public class Drowness extends StdBehavior
 		if(!(forMe instanceof MOB)) return;
 		MOB mob=(MOB)forMe;
 
-		mob.baseCharStats().setStrength(12 + Dice.roll(1,6,0));
-		mob.baseCharStats().setIntelligence(14 + Dice.roll(1,6,0));
-		mob.baseCharStats().setWisdom(13 + Dice.roll(1,6,0));
-		mob.baseCharStats().setDexterity(15 + Dice.roll(1,6,0));
-		mob.baseCharStats().setConstitution(12 + Dice.roll(1,6,0));
-		mob.baseCharStats().setCharisma(13 + Dice.roll(1,6,0));
-		if(mob.baseCharStats().getGender()=='M')
+		mob.baseCharStats().setStat(CharStats.STRENGTH,12 + Dice.roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,14 + Dice.roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.WISDOM,13 + Dice.roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.DEXTERITY,15 + Dice.roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.CONSTITUTION,12 + Dice.roll(1,6,0));
+		mob.baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
+		if(mob.baseCharStats().getStat(CharStats.GENDER)=='M')
 		{
 			mob.baseCharStats().setMyClass(CMClass.getCharClass("Fighter"));
 			addMaleNaturalAbilities(mob);
@@ -280,7 +280,7 @@ public class Drowness extends StdBehavior
     public boolean checkStatus(MOB mob)
     {
         if(Sense.isSitting(mob))
-            mob.envStats().setDisposition(mob.envStats().disposition() - Sense.IS_SITTING);
+            mob.envStats().setDisposition(mob.envStats().disposition() - EnvStats.IS_SITTING);
         mob.location().show(mob, null, Affect.MSG_QUIETMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
 
         return true;
@@ -330,7 +330,7 @@ public class Drowness extends StdBehavior
 			MOB mob=(MOB)ticking;
 			if((!mob.amDead())&&(tickID==Host.MOB_TICK))
 			{
-				if(mob.baseCharStats().getGender()=='F')
+				if(mob.baseCharStats().getStat(CharStats.GENDER)=='F')
 				{
 					if (mob.isInCombat())
 					{

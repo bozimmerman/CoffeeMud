@@ -51,7 +51,7 @@ public class Song_Inebriation extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setDexterity((int)Math.round(affectableStats.getDexterity()-3));
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
 	}
 
 	public boolean tick(int tickID)

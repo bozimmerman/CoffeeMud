@@ -37,6 +37,6 @@ public class Song_Flying extends Song
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_FLYING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 }

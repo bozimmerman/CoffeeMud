@@ -22,16 +22,16 @@ public class GiantBat extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 100));
 
 
-		baseCharStats().setIntelligence(7);
-		baseCharStats().setStrength(16);
-		baseCharStats().setDexterity(17);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,7);
+		baseCharStats().setStat(CharStats.STRENGTH,16);
+		baseCharStats().setStat(CharStats.DEXTERITY,17);
 
 		baseEnvStats().setDamage(8);
 		baseEnvStats().setSpeed(1.0);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(4);
 		baseEnvStats().setArmor(80);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_FLYING);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 8)*baseEnvStats().level()) + 4);
 

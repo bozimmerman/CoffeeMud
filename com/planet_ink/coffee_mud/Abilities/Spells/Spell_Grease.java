@@ -44,7 +44,7 @@ public class Spell_Grease extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setDexterity(affectableStats.getDexterity()-4);
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)-4);
 	}
 
 	public boolean okAffect(Affect affect)
@@ -67,20 +67,20 @@ public class Spell_Grease extends Spell
 			case Affect.TYP_FLEE:
 				if(invoker()!=null)
 				{
-					if(Dice.rollPercentage()>(mob.charStats().getDexterity()*4))
+					if(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
 					{
                         int greaseEffect = (int) Math.round(Math.random()*3);
                         switch(greaseEffect)
                         {
                             case SIT:
 						        msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
-						        mob.envStats().setDisposition(mob.envStats().disposition() | Sense.IS_SITTING);
+						        mob.envStats().setDisposition(mob.envStats().disposition() | EnvStats.IS_SITTING);
 								if(mob.location().okAffect(msg))
 							        mob.location().send(mob,msg);
 						        return false;
                             case FUMBLE_WEAPON:
                                 weapon = (Item) mob.fetchWieldedItem();
-								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*5))
+								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*5))
 								&&((weapon.rawProperLocationBitmap()==Item.WIELD)||(weapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
                                 {
 									msg=new FullMsg(mob,weapon,null,Affect.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
@@ -99,9 +99,9 @@ public class Spell_Grease extends Spell
 						            msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) in the grease and fall(s) down.");
 								if(mob.location().okAffect(msg))
 								{
-									mob.envStats().setDisposition(mob.envStats().disposition() | Sense.IS_SITTING);
+									mob.envStats().setDisposition(mob.envStats().disposition() | EnvStats.IS_SITTING);
 									mob.location().send(mob,msg);
-									if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*4))
+									if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getStat(CharStats.DEXTERITY)*4))
 									&&((weapon.rawProperLocationBitmap()==Item.WIELD)||(weapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 									{
 										msg=new FullMsg(mob,weapon,null,Affect.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
@@ -117,7 +117,7 @@ public class Spell_Grease extends Spell
 						        msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease!");
 								if(mob.location().okAffect(msg))
 								{
-									mob.envStats().setDisposition(mob.envStats().disposition() | Sense.IS_SITTING);
+									mob.envStats().setDisposition(mob.envStats().disposition() | EnvStats.IS_SITTING);
 									mob.location().send(mob,msg);
 								}
 						        return false;

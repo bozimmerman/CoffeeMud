@@ -25,14 +25,14 @@ public class MOBloader
 				String password=DBConnections.getRes(R,"CMPASS");
 				String classID=DBConnections.getRes(R,"CMCLAS");
 				stats.setMyClass((CharClass)CMClass.getCharClass(classID));
-				stats.setStrength(Util.s_int(DBConnections.getRes(R,"CMSTRE")));
+				stats.setStat(CharStats.STRENGTH,Util.s_int(DBConnections.getRes(R,"CMSTRE")));
 				stats.setMyRace((Race)CMClass.getRace(DBConnections.getRes(R,"CMRACE")));
-				stats.setDexterity(Util.s_int(DBConnections.getRes(R,"CMDEXT")));
-				stats.setConstitution(Util.s_int(DBConnections.getRes(R,"CMCONS")));
-				stats.setGender(DBConnections.getRes(R,"CMGEND").charAt(0));
-				stats.setWisdom(Util.s_int(DBConnections.getRes(R,"CMWISD")));
-				stats.setIntelligence(Util.s_int(DBConnections.getRes(R,"CMINTE")));
-				stats.setCharisma(Util.s_int(DBConnections.getRes(R,"CMCHAR")));
+				stats.setStat(CharStats.DEXTERITY,Util.s_int(DBConnections.getRes(R,"CMDEXT")));
+				stats.setStat(CharStats.CONSTITUTION,Util.s_int(DBConnections.getRes(R,"CMCONS")));
+				stats.setStat(CharStats.GENDER,DBConnections.getRes(R,"CMGEND").charAt(0));
+				stats.setStat(CharStats.WISDOM,Util.s_int(DBConnections.getRes(R,"CMWISD")));
+				stats.setStat(CharStats.INTELLIGENCE,Util.s_int(DBConnections.getRes(R,"CMINTE")));
+				stats.setStat(CharStats.CHARISMA,Util.s_int(DBConnections.getRes(R,"CMCHAR")));
 				state.setHitPoints(Util.s_int(DBConnections.getRes(R,"CMHITP")));
 				mob.baseEnvStats().setLevel(Util.s_int(DBConnections.getRes(R,"CMLEVL")));
 				state.setMana(Util.s_int(DBConnections.getRes(R,"CMMANA")));
@@ -246,14 +246,14 @@ public class MOBloader
 			str="UPDATE CMCHAR SET"
 			+"  CMPASS='"+mob.password()+"'"
 			+", CMCLAS='"+CoffeeUtensils.id(mob.baseCharStats().getMyClass())+"'"
-			+", CMSTRE="+mob.baseCharStats().getStrength()
+			+", CMSTRE="+mob.baseCharStats().getStat(CharStats.STRENGTH)
 			+", CMRACE='"+CoffeeUtensils.id(mob.baseCharStats().getMyRace())+"'"
-			+", CMDEXT="+mob.baseCharStats().getDexterity()
-			+", CMCONS="+mob.baseCharStats().getConstitution()
-			+", CMGEND='"+mob.baseCharStats().getGender()+"'"
-			+", CMWISD="+mob.baseCharStats().getWisdom()
-			+", CMINTE="+mob.baseCharStats().getIntelligence()
-			+", CMCHAR="+mob.baseCharStats().getCharisma()
+			+", CMDEXT="+mob.baseCharStats().getStat(CharStats.DEXTERITY)
+			+", CMCONS="+mob.baseCharStats().getStat(CharStats.CONSTITUTION)
+			+", CMGEND='"+mob.baseCharStats().getStat(CharStats.GENDER)+"'"
+			+", CMWISD="+mob.baseCharStats().getStat(CharStats.WISDOM)
+			+", CMINTE="+mob.baseCharStats().getStat(CharStats.INTELLIGENCE)
+			+", CMCHAR="+mob.baseCharStats().getStat(CharStats.CHARISMA)
 			+", CMHITP="+mob.baseState().getHitPoints()
 			+", CMLEVL="+mob.baseEnvStats().level()
 			+", CMMANA="+mob.baseState().getMana()
@@ -538,7 +538,7 @@ public class MOBloader
 			+"','"+mob.password()
 			+"','"+CoffeeUtensils.id(mob.baseCharStats().getMyClass())
 			+"','"+CoffeeUtensils.id(mob.baseCharStats().getMyRace())
-			+"','"+mob.baseCharStats().getGender()+"');";
+			+"','"+mob.baseCharStats().getStat(CharStats.GENDER)+"');";
 			D.update(str);
 			DBConnector.DBDone(D);
 			DBUpdate(mob);

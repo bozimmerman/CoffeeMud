@@ -33,8 +33,8 @@ public class Undead_ColdTouch extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setStrength(3);
-		affectableStats.setConstitution(3);
+		affectableStats.setStat(CharStats.STRENGTH,3);
+		affectableStats.setStat(CharStats.CONSTITUTION,3);
 	}
 
 	public void unInvoke()

@@ -18,14 +18,14 @@ public class Kobold extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INFRARED);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(6);
-		affectableStats.setDexterity(13);
-		affectableStats.setIntelligence(10);
+		affectableStats.setStat(CharStats.STRENGTH,6);
+		affectableStats.setStat(CharStats.DEXTERITY,13);
+		affectableStats.setStat(CharStats.INTELLIGENCE,10);
 	}
 	public String arriveStr()
 	{

@@ -20,7 +20,7 @@ public class ClimbableExit extends StdExit
 		isLocked=false;
 		doorDefaultsClosed=false;
 		doorDefaultsLocked=false;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_CLIMBING);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_CLIMBING);
 		recoverEnvStats();
 		openDelayTicks=1;
 	}

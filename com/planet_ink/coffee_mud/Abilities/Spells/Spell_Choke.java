@@ -40,7 +40,7 @@ public class Spell_Choke extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_BREATHE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_BREATHE);
 		affectableStats.setSpeed(Util.div(affectableStats.speed(),2.0));
 	}
 

@@ -63,7 +63,7 @@ public class Fighter_Whomp extends StdAbility
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SLEEPING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
 
 	public void unInvoke()
@@ -92,7 +92,7 @@ public class Fighter_Whomp extends StdAbility
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((!auto)&&(mob.charStats().getStrength()<18))
+		if((!auto)&&(mob.charStats().getStat(CharStats.STRENGTH)<18))
 		{
 			mob.tell("You need at least an 18 strength to do that.");
 			return false;
@@ -117,7 +117,7 @@ public class Fighter_Whomp extends StdAbility
 		else 
 			levelDiff=0;
 		// now see if it worked
-		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStrength()-mob.charStats().getStrength()))),auto)&&(auto||((target!=null)&&(ExternalPlay.isHit(mob,target))));
+		boolean success=profficiencyCheck((-levelDiff)+(-((target.charStats().getStat(CharStats.STRENGTH)-mob.charStats().getStat(CharStats.STRENGTH)))),auto)&&(auto||((target!=null)&&(ExternalPlay.isHit(mob,target))));
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

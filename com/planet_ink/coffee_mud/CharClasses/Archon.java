@@ -78,7 +78,7 @@ public class Archon extends StdCharClass
 		mob.tell("^HYou leveled... not that it matters.^N");
 		levelAdjuster(mob,1);
 
-		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getWisdom(),4.0))+bonusPracLevel;
+		int practiceGain=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.WISDOM),4.0))+bonusPracLevel;
 		if(practiceGain<=0)practiceGain=1;
 		mob.setPractices(mob.getPractices()+practiceGain);
 

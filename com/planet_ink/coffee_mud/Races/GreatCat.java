@@ -18,9 +18,9 @@ public class GreatCat extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(16);
-		affectableStats.setDexterity(16);
-		affectableStats.setIntelligence(6);
+		affectableStats.setStat(CharStats.STRENGTH,16);
+		affectableStats.setStat(CharStats.DEXTERITY,16);
+		affectableStats.setStat(CharStats.INTELLIGENCE,6);
 	}
 	public String arriveStr()
 	{
@@ -33,7 +33,7 @@ public class GreatCat extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 	}
 	public void setWeight(MOB mob)
 	{

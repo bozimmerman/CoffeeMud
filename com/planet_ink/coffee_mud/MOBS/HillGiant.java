@@ -18,9 +18,9 @@ public class HillGiant extends StdMOB
 		baseEnvStats.setWeight(3500 + Dice.roll(1, 1000, 0));
 
 
-		baseCharStats().setIntelligence(6 + Dice.roll(1, 2, 0));
-		baseCharStats().setStrength(20);
-		baseCharStats().setDexterity(13);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,6 + Dice.roll(1, 2, 0));
+		baseCharStats().setStat(CharStats.STRENGTH,20);
+		baseCharStats().setStat(CharStats.DEXTERITY,13);
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 
 		baseEnvStats().setDamage(19);

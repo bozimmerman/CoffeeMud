@@ -18,15 +18,15 @@ public class Dragon extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INFRARED);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_FLYING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(25);
-		affectableStats.setDexterity(25);
-		affectableStats.setIntelligence(25);
+		affectableStats.setStat(CharStats.STRENGTH,25);
+		affectableStats.setStat(CharStats.DEXTERITY,25);
+		affectableStats.setStat(CharStats.INTELLIGENCE,25);
 	}
 	public void setWeight(MOB mob)
 	{

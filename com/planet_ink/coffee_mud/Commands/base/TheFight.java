@@ -154,7 +154,7 @@ public class TheFight
 	public long adjustedAttackBonus(MOB mob)
 	{
 		return	mob.envStats().attackAdjustment()
-				+(Math.round((new Integer(mob.charStats().getStrength()).doubleValue()-9.0)*3.0))
+				+(Math.round((new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue()-9.0)*3.0))
 				-((mob.curState().getHunger()<1)?10:0)
 				-((mob.curState().getThirst()<1)?10:0);
 	}
@@ -162,7 +162,7 @@ public class TheFight
 	public long adjustedArmor(MOB mob)
 	{
 		return  mob.envStats().armor()
-				-(Math.round((new Integer(mob.charStats().getDexterity()).doubleValue()-9.0)*3.0))
+				-(Math.round((new Integer(mob.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))
 				+((mob.curState().getHunger()<1)?10:0)
 				+((mob.curState().getThirst()<1)?10:0)
 				+((Sense.isSitting(mob))?15:0)
@@ -824,7 +824,7 @@ public class TheFight
 			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
 				damageAmount = new Integer(Dice.roll(1, weapon.envStats().damage(),1)).doubleValue();
 			else
-				damageAmount = new Integer(Dice.roll(1, source.envStats().damage(), (source.charStats().getStrength() / 3)-2)).doubleValue();
+				damageAmount = new Integer(Dice.roll(1, source.envStats().damage(), (source.charStats().getStat(CharStats.STRENGTH) / 3)-2)).doubleValue();
 			
             // modify damage if target can not be seen
             if(!Sense.canBeSeenBy(target,source))

@@ -21,7 +21,7 @@ public class DaggerOfVenom extends Dagger
 		baseGoldValue=1500;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(4);
-        baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+        baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		weaponType=Weapon.TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_DAGGER;
 		recoverEnvStats();

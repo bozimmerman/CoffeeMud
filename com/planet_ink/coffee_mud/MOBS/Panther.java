@@ -23,9 +23,9 @@ public class Panther extends StdMOB
 		baseEnvStats.setWeight(200 + Math.abs(randomizer.nextInt() % 55));
 
 
-		baseCharStats().setIntelligence(1 + Math.abs(randomizer.nextInt() % 4));
-		baseCharStats().setStrength(12);
-		baseCharStats().setDexterity(17);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1 + Math.abs(randomizer.nextInt() % 4));
+		baseCharStats().setStat(CharStats.STRENGTH,12);
+		baseCharStats().setStat(CharStats.DEXTERITY,17);
 		baseCharStats().setMyRace(CMClass.getRace("GreatCat"));
 
 		baseEnvStats().setDamage(8);

@@ -23,8 +23,8 @@ public class Troll extends StdMOB
 		baseEnvStats.setWeight(350);
 		setWimpHitPoint(0);
 
-		baseCharStats().setIntelligence(8 + Math.abs(randomizer.nextInt()) % 3);
-		baseCharStats().setCharisma(2);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,8 + Math.abs(randomizer.nextInt()) % 3);
+		baseCharStats().setStat(CharStats.CHARISMA,2);
 		baseCharStats().setMyRace(CMClass.getRace("Troll"));
 
 		baseEnvStats().setAbility(0);
@@ -33,7 +33,7 @@ public class Troll extends StdMOB
 		baseEnvStats().setDamage(baseEnvStats().damage()+5);
 		baseEnvStats().setArmor(30);
 		baseEnvStats().setSpeed(3.0);
-		baseEnvStats().setSensesMask(Sense.CAN_SEE_DARK | Sense.CAN_SEE_INFRARED);
+		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
 
 		int hitPoints = 0;
 		for(int i = 0; i < 7; i++)

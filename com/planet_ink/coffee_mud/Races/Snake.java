@@ -16,9 +16,9 @@ public class Snake extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(6);
-		affectableStats.setDexterity(16);
-		affectableStats.setIntelligence(3);
+		affectableStats.setStat(CharStats.STRENGTH,6);
+		affectableStats.setStat(CharStats.DEXTERITY,16);
+		affectableStats.setStat(CharStats.INTELLIGENCE,3);
 	}
 	public String arriveStr()
 	{

@@ -47,6 +47,6 @@ public class Song_Clumsiness extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 
-		affectableStats.setDexterity((int)Math.round(Util.div(affectableStats.getDexterity(),2.0)));
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(Util.div(affectableStats.getStat(CharStats.DEXTERITY),2.0)));
 	}
 }

@@ -18,9 +18,9 @@ public class Lizard extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(3);
-		affectableStats.setDexterity(3);
-		affectableStats.setIntelligence(3);
+		affectableStats.setStat(CharStats.STRENGTH,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setStat(CharStats.DEXTERITY,3);
 	}
 	public String arriveStr()
 	{

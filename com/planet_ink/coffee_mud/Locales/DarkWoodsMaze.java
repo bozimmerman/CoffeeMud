@@ -11,7 +11,7 @@ public class DarkWoodsMaze extends Maze
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_DARK);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_WOODS;
 		domainCondition=Room.CONDITION_NORMAL;

@@ -41,7 +41,7 @@ public class Song_Lullibye extends Song
 		if(invoker==null) return;
 		if(affected==invoker) return;
 		if(asleep)
-			affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SLEEPING);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
 	
 
@@ -63,13 +63,13 @@ public class Song_Lullibye extends Song
 			if(oldasleep)
 			{	
 				if(Sense.isSleeping(mob))
-					mob.envStats().setDisposition(mob.envStats().disposition()-Sense.IS_SLEEPING);
+					mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SLEEPING);
 				mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> wake(s) up.");
 			}
 			else
 			{
 				mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> fall(s) asleep.");
-				mob.envStats().setDisposition(mob.envStats().disposition()|Sense.IS_SLEEPING);
+				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SLEEPING);
 			}
 		}
 		

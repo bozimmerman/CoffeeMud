@@ -46,40 +46,21 @@ public class Skill_Resistance extends StdAbility
 		return Ability.SKILL;
 	}
 
-	public boolean okAffect(Affect affect)
+	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
-
-		MOB mob=(MOB)affected;
-
-		if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
-		{
-			if(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-				switch(affect.targetMinor())
-				{
-				case Affect.TYP_GAS:
-				case Affect.TYP_FIRE:
-				case Affect.TYP_ELECTRIC:
-				case Affect.TYP_MIND:
-				case Affect.TYP_PARALYZE:
-				case Affect.TYP_CAST_SPELL:
-				case Affect.TYP_JUSTICE:
-				case Affect.TYP_COLD:
-				case Affect.TYP_ACID:
-				case Affect.TYP_POISON:
-				case Affect.TYP_WATER:
-				case Affect.TYP_UNDEAD:
-					if(profficiencyCheck(0,false))
-					{
-						ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
-						if(affect.wasModified())
-							helpProfficiency(mob);
-					}
-				default:
-					break;
-				}
-		}
-		return true;
+		super.affectCharStats(affected,affectableStats);
+		if(invoker==null) return;
+		affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_COLD,affectableStats.getStat(CharStats.SAVE_COLD)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_MIND)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_PARALYSIS)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_WATER,affectableStats.getStat(CharStats.SAVE_WATER)+profficiency());
+		affectableStats.setStat(CharStats.SAVE_UNDEAD,affectableStats.getStat(CharStats.SAVE_UNDEAD)+profficiency());
 	}
 }

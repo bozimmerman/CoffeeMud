@@ -39,9 +39,9 @@ public class Song_Strength extends Song
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		if(affected==invoker)
-			affectableStats.setStrength((int)Math.round(affectableStats.getStrength()-amount));
+			affectableStats.setStat(CharStats.STRENGTH,(int)Math.round(affectableStats.getStat(CharStats.STRENGTH)-amount));
 		else
-			affectableStats.setStrength((int)Math.round(affectableStats.getStrength()+amount));
+			affectableStats.setStat(CharStats.STRENGTH,(int)Math.round(affectableStats.getStat(CharStats.STRENGTH)+amount));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -54,7 +54,7 @@ public class Song_Strength extends Song
 			return false;
 		}
 
-		if(amount>=mob.charStats().getStrength())
+		if(amount>=mob.charStats().getStat(CharStats.STRENGTH))
 		{
 			mob.tell(mob,null,"You can't sing away that much strength.");
 			return false;

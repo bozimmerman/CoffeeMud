@@ -19,7 +19,7 @@ public class Hat_Intelligence extends StdArmor
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=6000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 		material=Armor.CLOTH;
 	}
@@ -30,7 +30,7 @@ public class Hat_Intelligence extends StdArmor
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setIntelligence(affectableStats.getIntelligence() + 4);
+		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE) + 4);
 	}
 
 }

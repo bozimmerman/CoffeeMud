@@ -46,8 +46,8 @@ public class MOBTeacher extends CombatAbilities
 			monster.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
 		if(getParms().toUpperCase().indexOf("BAR")>=0)
 			monster.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
-		monster.baseCharStats().setIntelligence(18);
-		monster.baseCharStats().setWisdom(18);
+		monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
+		monster.baseCharStats().setStat(CharStats.WISDOM,18);
 		monster.recoverCharStats();
 		while(monster.numAbilities()>0)
 		{
@@ -140,12 +140,12 @@ public class MOBTeacher extends CombatAbilities
 					monster.baseCharStats().setMyClass(CMClass.getCharClass("Paladin"));
 				if(getParms().toUpperCase().indexOf("BAR")>=0)
 					monster.baseCharStats().setMyClass(CMClass.getCharClass("Bard"));
-				monster.baseCharStats().setIntelligence(18);
-				monster.baseCharStats().setWisdom(18);
+				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
+				monster.baseCharStats().setStat(CharStats.WISDOM,18);
 				if(giveABonus)
 				{
-					monster.baseCharStats().setIntelligence(25);
-					monster.baseCharStats().setWisdom(25);
+					monster.baseCharStats().setStat(CharStats.INTELLIGENCE,25);
+					monster.baseCharStats().setStat(CharStats.WISDOM,25);
 					monster.recoverCharStats();
 				}
 
@@ -174,8 +174,8 @@ public class MOBTeacher extends CombatAbilities
 				myAbility.teach(monster,mob);
 				monster.location().send(monster,msg);
 				monster.baseCharStats().setMyClass(CMClass.getCharClass("StdCharClass"));
-				monster.baseCharStats().setIntelligence(18);
-				monster.baseCharStats().setWisdom(18);
+				monster.baseCharStats().setStat(CharStats.INTELLIGENCE,18);
+				monster.baseCharStats().setStat(CharStats.WISDOM,18);
 				monster.recoverCharStats();
 			}
 		}

@@ -40,7 +40,7 @@ public class Spell_Clog extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_TASTE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_TASTE);
 	}
 
 

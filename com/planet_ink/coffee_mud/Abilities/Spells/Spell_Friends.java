@@ -40,7 +40,7 @@ public class Spell_Friends extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setCharisma(affectableStats.getCharisma() + 6);
+		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA) + 6);
 	}
 
 

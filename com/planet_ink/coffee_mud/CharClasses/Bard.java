@@ -77,9 +77,9 @@ public class Bard extends StdCharClass
 
 	public boolean qualifiesForThisClass(MOB mob)
 	{
-		if(mob.baseCharStats().getCharisma() <= 8)
+		if(mob.baseCharStats().getStat(CharStats.CHARISMA) <= 8)
 			return false;
-		if(mob.baseCharStats().getDexterity() <= 8)
+		if(mob.baseCharStats().getStat(CharStats.DEXTERITY) <= 8)
 			return false;
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
 		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))

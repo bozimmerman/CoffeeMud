@@ -41,9 +41,9 @@ public class Spell_ChangeSex extends Spell
 	{
 		super.affectCharStats(affected,affectableStats);
 		char gender='M';
-		if(affectableStats.getGender()!='F')
+		if(affectableStats.getStat(CharStats.GENDER)!='F')
 			gender='F';
-		affectableStats.setGender(gender);
+		affectableStats.setStat(CharStats.GENDER,(int)gender);
 	}
 
 
@@ -95,7 +95,7 @@ public class Spell_ChangeSex extends Spell
 					success=beneficialAffect(mob,target,0);
 					target.recoverCharStats();
 					target.recoverEnvStats();
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) "+((target.charStats().getGender()=='M')?"male":"female")+"!");
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) "+((target.charStats().getStat(CharStats.GENDER)=='M')?"male":"female")+"!");
 				}
 			}
 		}

@@ -20,16 +20,16 @@ public class InvisibleStalker extends StdMOB
 		baseEnvStats.setWeight(10 + Math.abs(randomizer.nextInt() % 10));
 
 
-		baseCharStats().setIntelligence(12 + Math.abs(randomizer.nextInt() % 3));
-		baseCharStats().setStrength(20);
-		baseCharStats().setDexterity(13);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,12 + Math.abs(randomizer.nextInt() % 3));
+		baseCharStats().setStat(CharStats.STRENGTH,20);
+		baseCharStats().setStat(CharStats.DEXTERITY,13);
 
 		baseEnvStats().setDamage(16);
 		baseEnvStats().setSpeed(1.0);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(4);
 		baseEnvStats().setArmor(0);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_INVISIBLE);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 12)*baseEnvStats().level()) + 4);
 

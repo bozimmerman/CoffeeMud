@@ -52,7 +52,7 @@ public class Spell_CombatPrecognition extends Spell
 			if(affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 			{
 				FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> avoid(s) the attack by <T-NAME>!");
-				if((profficiencyCheck(mob.charStats().getDexterity()-60,false))
+				if((profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-60,false))
 				&&(!lastTime)
 				&&(affect.source().getVictim()==mob)
 				&&(affect.source().rangeToTarget()==0)
@@ -69,7 +69,7 @@ public class Spell_CombatPrecognition extends Spell
 			else
 			if((!affect.wasModified())
 			   &&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-			   &&(profficiencyCheck(mob.charStats().getDexterity()-50,false)))
+			   &&(profficiencyCheck(mob.charStats().getStat(CharStats.DEXTERITY)-50,false)))
 			{
 				String tool=null;
 				if((affect.tool()!=null)&&(affect.tool() instanceof Ability))

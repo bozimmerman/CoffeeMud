@@ -36,8 +36,8 @@ public class Song_Seeing extends Song
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_HIDDEN);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_SNEAKERS);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INFRARED);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 }

@@ -33,7 +33,7 @@ public class Thief_Search extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_HIDDEN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -57,8 +57,8 @@ public class Thief_Search extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,0);
-			mob.envStats().setSensesMask(mob.envStats().sensesMask()|Sense.CAN_SEE_HIDDEN);
-			mob.envStats().setSensesMask(mob.envStats().sensesMask()|Sense.CAN_SEE_SNEAKERS);
+			mob.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+			mob.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
 			ExternalPlay.look(mob,null,false);
 			mob.recoverEnvStats();
 		}

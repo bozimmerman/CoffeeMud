@@ -40,9 +40,9 @@ public class Spell_Light extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(!(affected instanceof Room))
-			affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_LIGHT);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHT);
 		if(Sense.isInDark(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 	}
 	public void unInvoke()
 	{

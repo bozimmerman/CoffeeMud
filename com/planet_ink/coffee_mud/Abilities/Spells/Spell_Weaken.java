@@ -42,7 +42,7 @@ public class Spell_Weaken extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStrength((int)Math.round(Util.div(affectableStats.getStrength(),2.0)));
+		affectableStats.setStat(CharStats.STRENGTH,(int)Math.round(Util.div(affectableStats.getStat(CharStats.STRENGTH),2.0)));
 	}
 
 

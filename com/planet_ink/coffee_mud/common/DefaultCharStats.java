@@ -5,30 +5,17 @@ public class DefaultCharStats implements Cloneable, CharStats
 {
 
 	// competency characteristics
-	protected int Strength=10;
-	protected int Dexterity=10;
-	protected int Constitution=10;
-	protected int Wisdom=10;
-	protected int Intelligence=10;
-	protected int Charisma=10;
-	public int getStrength(){ return Strength;}
-	public int getDexterity(){ return Dexterity;}
-	public int getConstitution(){ return Constitution;}
-	public int getWisdom(){ return Wisdom;}
-	public int getIntelligence(){ return Intelligence;}
-	public int getCharisma(){ return Charisma;}
-	public void setStrength(int newVal){Strength=newVal;}
-	public void setDexterity(int newVal){Dexterity=newVal;}
-	public void setConstitution(int newVal){Constitution=newVal;}
-	public void setWisdom(int newVal){Wisdom=newVal;}
-	public void setIntelligence(int newVal){Intelligence=newVal;}
-	public void setCharisma(int newVal){Charisma=newVal;}
+	protected int[] stats=new int[20];
+	public DefaultCharStats()
+	{
+		for(int i=0;i<6;i++)
+			stats[i]=10;
+		stats[GENDER]=(int)'M';
+	}
 
 	// physical and static properties
-	protected char Gender='M';
 	protected CharClass MyClass=null;
 	protected Race MyRace=null;
-	public char getGender(){return Gender;}
 	public CharClass getMyClass()
 	{
 		if(MyClass==null)
@@ -41,9 +28,41 @@ public class DefaultCharStats implements Cloneable, CharStats
 			MyRace=CMClass.getRace("StdRace");
 		return MyRace;
 	}
-	public void setGender(char newGender){Gender=newGender;}
 	public void setMyClass(CharClass newVal){MyClass=newVal;}
 	public void setMyRace(Race newVal){MyRace=newVal;}
+	public int getSave(int which)
+	{
+		switch(which)
+		{
+		case SAVE_PARALYSIS:
+			return getStat(SAVE_PARALYSIS)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
+		case SAVE_FIRE:
+			return getStat(SAVE_FIRE)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+		case SAVE_COLD:
+			return getStat(SAVE_COLD)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+		case SAVE_WATER:
+			return getStat(SAVE_WATER)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+		case SAVE_GAS:
+			return getStat(SAVE_GAS)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(STRENGTH),2.0));
+		case SAVE_MIND:
+			return getStat(SAVE_MIND)+(int)Math.round(Util.div(getStat(WISDOM)+getStat(INTELLIGENCE)+getStat(CHARISMA),3.0));
+		case SAVE_GENERAL:
+			return getStat(SAVE_GENERAL)+getStat(CONSTITUTION);
+		case SAVE_JUSTICE:
+			return getStat(SAVE_JUSTICE)+getStat(CHARISMA);
+		case SAVE_ACID:
+			return getStat(SAVE_ACID)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+		case SAVE_ELECTRIC:
+			return getStat(SAVE_ELECTRIC)+(int)Math.round(Util.div(getStat(CONSTITUTION)+getStat(DEXTERITY),2.0));
+		case SAVE_POISON:
+			return getStat(SAVE_POISON)+getStat(CONSTITUTION);
+		case SAVE_UNDEAD:
+			return getStat(SAVE_UNDEAD)+getStat(WISDOM);
+		case SAVE_MAGIC:
+			return getStat(SAVE_MAGIC)+getStat(INTELLIGENCE);
+		}
+		return 0;
+	}
 
 	// create a new one of these
 	public CharStats cloneCharStats()
@@ -62,22 +81,22 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public String himher()
 	{
-		return (getGender()=='M')?"him":"her";
+		return (getStat(GENDER)==(int)'M')?"him":"her";
 	}
 
 	public String hisher()
 	{
-		return (getGender()=='M')?"his":"her";
+		return (getStat(GENDER)==(int)'M')?"his":"her";
 	}
 
 	public String heshe()
 	{
-		return (getGender()=='M')?"he":"she";
+		return (getStat(GENDER)==(int)'M')?"he":"she";
 	}
 
 	public String HeShe()
 	{
-		return (getGender()=='M')?"He":"She";
+		return (getStat(GENDER)==(int)'M')?"He":"She";
 	}
 
 	public void reRoll()
@@ -85,67 +104,49 @@ public class DefaultCharStats implements Cloneable, CharStats
 		double avg=0.0;
 		while((Math.floor(avg)!=AVG_VALUE)||(avg==0.0))
 		{
-			Strength=3+(int)Math.floor(Math.random()*16.0);
-			Intelligence=3+(int)Math.floor(Math.random()*16.0);
-			Dexterity=3+(int)Math.floor(Math.random()*16.0);
-			Wisdom=3+(int)Math.floor(Math.random()*16.0);
-			Constitution=3+(int)Math.floor(Math.random()*16.0);
-			Charisma=3+(int)Math.floor(Math.random()*16.0);
-			avg=Util.div((Strength+Intelligence+Dexterity+Wisdom+Constitution+Charisma),6.0);
+			setStat(STRENGTH,3+(int)Math.floor(Math.random()*16.0));
+			setStat(INTELLIGENCE,3+(int)Math.floor(Math.random()*16.0));
+			setStat(DEXTERITY,3+(int)Math.floor(Math.random()*16.0));
+			setStat(WISDOM,3+(int)Math.floor(Math.random()*16.0));
+			setStat(CONSTITUTION,3+(int)Math.floor(Math.random()*16.0));
+			setStat(CHARISMA,3+(int)Math.floor(Math.random()*16.0));
+			avg=Util.div((getStat(STRENGTH)+getStat(INTELLIGENCE)+getStat(DEXTERITY)+getStat(WISDOM)+getStat(CONSTITUTION)+getStat(CHARISMA)),6.0);
 		}
 	}
 	public StringBuffer getStats(int maxStat[])
 	{
-		StringBuffer stats=new StringBuffer("");
-		stats.append(Util.padRight("Strength",15)+": "+Util.padRight(Integer.toString(Strength),2)+"/"+maxStat[this.STRENGTH]+"\n\r");
-		stats.append(Util.padRight("Intelligence",15)+": "+Util.padRight(Integer.toString(Intelligence),2)+"/"+maxStat[this.INTELLIGENCE]+"\n\r");
-		stats.append(Util.padRight("Dexterity",15)+": "+Util.padRight(Integer.toString(Dexterity),2)+"/"+maxStat[this.DEXTERITY]+"\n\r");
-		stats.append(Util.padRight("Wisdom",15)+": "+Util.padRight(Integer.toString(Wisdom),2)+"/"+maxStat[this.WISDOM]+"\n\r");
-		stats.append(Util.padRight("Constitution",15)+": "+Util.padRight(Integer.toString(Constitution),2)+"/"+maxStat[this.CONSTITUTION]+"\n\r");
-		stats.append(Util.padRight("Charisma",15)+": "+Util.padRight(Integer.toString(Charisma),2)+"/"+maxStat[this.CHARISMA]+"\n\r");
-		return stats;
+		StringBuffer statstr=new StringBuffer("");
+		statstr.append(Util.padRight("Strength",15)+": "+Util.padRight(Integer.toString(getStat(STRENGTH)),2)+"/"+maxStat[STRENGTH]+"\n\r");
+		statstr.append(Util.padRight("Intelligence",15)+": "+Util.padRight(Integer.toString(getStat(INTELLIGENCE)),2)+"/"+maxStat[INTELLIGENCE]+"\n\r");
+		statstr.append(Util.padRight("Dexterity",15)+": "+Util.padRight(Integer.toString(getStat(DEXTERITY)),2)+"/"+maxStat[DEXTERITY]+"\n\r");
+		statstr.append(Util.padRight("Wisdom",15)+": "+Util.padRight(Integer.toString(getStat(WISDOM)),2)+"/"+maxStat[WISDOM]+"\n\r");
+		statstr.append(Util.padRight("Constitution",15)+": "+Util.padRight(Integer.toString(getStat(CONSTITUTION)),2)+"/"+maxStat[CONSTITUTION]+"\n\r");
+		statstr.append(Util.padRight("Charisma",15)+": "+Util.padRight(Integer.toString(getStat(CHARISMA)),2)+"/"+maxStat[CHARISMA]+"\n\r");
+		return statstr;
 	}
 
 
-	public int getCurStat(int abilityCode)
+	public int getStat(int abilityCode)
 	{
-		int curStat=-1;
-		switch(abilityCode)
-		{
-		case STRENGTH:
-			curStat=getStrength();
-			break;
-		case INTELLIGENCE:
-			curStat=getIntelligence();
-			break;
-		case DEXTERITY:
-			curStat=getDexterity();
-			break;
-		case CONSTITUTION:
-			curStat=getConstitution();
-			break;
-		case CHARISMA:
-			curStat=getCharisma();
-			break;
-		case WISDOM:
-			curStat=getWisdom();
-			break;
-		}
-		return curStat;
-
+		return stats[abilityCode];
 	}
 
-	public int getCurStat(String abilityName)
+	public void setStat(int abilityCode, int value)
 	{
-		for(int i=0;i<=5;i++)
+		stats[abilityCode]=value;
+	}
+
+	public int getStat(String abilityName)
+	{
+		for(int i=0;i<20;i++)
 			if(TRAITS[i].startsWith(abilityName))
-				return getCurStat(i);
+				return getStat(i);
 		return -1;
 	}
 
-	public int getAbilityCode(String abilityName)
+	public int getCode(String abilityName)
 	{
-		for(int i=0;i<=5;i++)
+		for(int i=0;i<20;i++)
 			if(TRAITS[i].startsWith(abilityName))
 				return i;
 		return -1;

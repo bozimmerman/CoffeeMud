@@ -75,11 +75,11 @@ public class Dragon extends StdMOB
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
 		{
-			baseCharStats().setGender('F');
+			baseCharStats().setStat(CharStats.GENDER,(int)'F');
 		}
 		else
 		{
-			baseCharStats().setGender('M');
+			baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		}
 
 		// ===== set the basics
@@ -131,12 +131,12 @@ public class Dragon extends StdMOB
 		baseEnvStats().setSpeed(2.0);
 
 		// ===== Dragons get tougher with age
-		baseCharStats().setStrength(13 + (DragonAge*2));
-		baseCharStats().setIntelligence(13 + (DragonAge*2));
-		baseCharStats().setWisdom(13 + (DragonAge*2));
-		baseCharStats().setDexterity(13 + (DragonAge*2));
-		baseCharStats().setConstitution(13 + (DragonAge*2));
-		baseCharStats().setCharisma(13 + (DragonAge*2));
+		baseCharStats().setStat(CharStats.STRENGTH,13 + (DragonAge*2));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,13 + (DragonAge*2));
+		baseCharStats().setStat(CharStats.WISDOM,13 + (DragonAge*2));
+		baseCharStats().setStat(CharStats.DEXTERITY,13 + (DragonAge*2));
+		baseCharStats().setStat(CharStats.CONSTITUTION,13 + (DragonAge*2));
+		baseCharStats().setStat(CharStats.CHARISMA,13 + (DragonAge*2));
 		baseCharStats().setMyRace(CMClass.getRace("Dragon"));
 
 		// ===== if the dragon is an adult or larger add the swallow whole

@@ -41,7 +41,7 @@ public class Prayer_Plague extends Prayer
 			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());
 			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 			if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
-				if(Dice.rollPercentage()>(target.charStats().getConstitution()*4))
+				if(Dice.rollPercentage()>(target.charStats().getStat(CharStats.CONSTITUTION)*4))
 					maliciousAffect(invoker,target,48,-1);
 		}
 		return super.tick(tickID);
@@ -51,8 +51,8 @@ public class Prayer_Plague extends Prayer
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setConstitution(3);
-		affectableStats.setDexterity(3);
+		affectableStats.setStat(CharStats.CONSTITUTION,3);
+		affectableStats.setStat(CharStats.DEXTERITY,3);
 	}
 
 	public void unInvoke()

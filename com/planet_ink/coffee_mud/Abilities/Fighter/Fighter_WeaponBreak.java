@@ -64,7 +64,7 @@ public class Fighter_WeaponBreak extends StdAbility
 		else 
 			levelDiff=0;
 		Item hisWeapon=mob.getVictim().fetchWieldedItem();
-		boolean success=profficiencyCheck((-levelDiff)+(-(mob.getVictim().charStats().getDexterity()*2)),auto)&&(auto||ExternalPlay.isHit(mob,mob.getVictim()));
+		boolean success=profficiencyCheck((-levelDiff)+(-(mob.getVictim().charStats().getStat(CharStats.DEXTERITY)*2)),auto)&&(auto||ExternalPlay.isHit(mob,mob.getVictim()));
 		if((success)
 		   &&(hisWeapon!=null)
 		   &&(hisWeapon.envStats().ability()==0)

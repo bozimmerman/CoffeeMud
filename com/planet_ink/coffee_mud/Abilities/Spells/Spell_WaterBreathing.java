@@ -54,8 +54,8 @@ public class Spell_WaterBreathing extends Spell
 			return;
 		MOB mob=(MOB)affected;
 		if((mob.location()!=null)&&(mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
-			if((mob.envStats().sensesMask()&Sense.CAN_BREATHE)==Sense.CAN_BREATHE)
-				affectableStats.setSensesMask(affectableStats.sensesMask()-Sense.CAN_BREATHE);
+			if((mob.envStats().sensesMask()&EnvStats.CAN_BREATHE)==EnvStats.CAN_BREATHE)
+				affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_BREATHE);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

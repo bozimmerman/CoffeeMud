@@ -22,9 +22,9 @@ public class WildEagle extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 15));
 
 
-		baseCharStats().setIntelligence(4);
-		baseCharStats().setStrength(11);
-		baseCharStats().setDexterity(17);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,4);
+		baseCharStats().setStat(CharStats.STRENGTH,11);
+		baseCharStats().setStat(CharStats.DEXTERITY,17);
 		baseCharStats().setMyRace(CMClass.getRace("GreatBird"));
 
 		baseEnvStats().setDamage(2);
@@ -32,7 +32,7 @@ public class WildEagle extends StdMOB
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(60);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_FLYING);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 4)*baseEnvStats().level()) + 4);
 

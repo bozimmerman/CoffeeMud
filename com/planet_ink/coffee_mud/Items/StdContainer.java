@@ -370,7 +370,7 @@ public class StdContainer extends StdItem implements Container
 		// caller is responsible for recovering any env
 		// stat changes!
 		if(Sense.isHidden(thisContainer))
-			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)Sense.ALLMASK-Sense.IS_HIDDEN));
+			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 		mob.location().delItem(thisContainer);
 		thisContainer.remove();
 		if(!mob.isMine(thisContainer))
@@ -412,7 +412,7 @@ public class StdContainer extends StdItem implements Container
 		// stat changes!
 
 		if(Sense.isHidden(thisContainer))
-			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)Sense.ALLMASK-Sense.IS_HIDDEN));
+			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 		mob.delInventory(thisContainer);
 		thisContainer.remove();
 		mob.location().addItem(thisContainer);

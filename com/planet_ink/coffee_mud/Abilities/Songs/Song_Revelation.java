@@ -35,7 +35,7 @@ public class Song_Revelation extends Song
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_DARK);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INVISIBLE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
 	}
 }

@@ -150,7 +150,7 @@ public class StdRace implements Race
 		if(mob.baseEnvStats().weight()>5) return;
 
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
+		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
 
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		if (gender == 'M')

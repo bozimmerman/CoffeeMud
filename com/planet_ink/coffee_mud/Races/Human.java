@@ -27,7 +27,7 @@ public class Human extends StdRace
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
+		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
 
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		if (gender == 'M')

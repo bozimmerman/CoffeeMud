@@ -22,9 +22,9 @@ public class LargeBat extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 10));
 
 
-		baseCharStats().setIntelligence(1);
-		baseCharStats().setStrength(12);
-		baseCharStats().setDexterity(17);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STRENGTH,12);
+		baseCharStats().setStat(CharStats.DEXTERITY,17);
 		baseCharStats().setMyRace(CMClass.getRace("Bat"));
 
 		baseEnvStats().setDamage(5);
@@ -32,7 +32,7 @@ public class LargeBat extends StdMOB
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(80);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_FLYING);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 4)*baseEnvStats().level()) + 1);
 

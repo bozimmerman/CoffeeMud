@@ -31,7 +31,7 @@ public class Prayer_SenseMagic extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_BONUS);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_BONUS);
 	}
 
 	public void unInvoke()

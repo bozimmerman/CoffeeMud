@@ -30,7 +30,7 @@ public class Paralysis extends StdAbility
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
 	}
 
 	public void unInvoke()

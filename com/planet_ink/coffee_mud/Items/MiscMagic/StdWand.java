@@ -20,7 +20,7 @@ public class StdWand extends StdItem implements Wand
 		description="Looks like an broken piece of a tree.";
 		secretIdentity="";
 		baseGoldValue=200;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 	}
 
@@ -131,6 +131,7 @@ public class StdWand extends StdItem implements Wand
 		
 		switch(affect.targetMinor())
 		{
+		case Affect.TYP_WAND_USE:
 			if(affect.amITarget(this))
 				waveIfAble(mob,affect.tool(),affect.targetMessage(),this);
 			break;

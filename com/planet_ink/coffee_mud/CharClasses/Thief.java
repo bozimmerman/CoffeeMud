@@ -66,7 +66,7 @@ public class Thief extends StdCharClass
 
 	public boolean qualifiesForThisClass(MOB mob)
 	{
-		if(mob.baseCharStats().getDexterity()>8)
+		if(mob.baseCharStats().getStat(CharStats.DEXTERITY)>8)
 			return true;
 		return false;
 	}
@@ -111,7 +111,7 @@ public class Thief extends StdCharClass
 					 ||(I.amWearingAt(Item.ON_WAIST))
 					 ||(I.amWearingAt(Item.ON_HEAD)))
 						if((I instanceof Armor)&&(((Armor)I).material()!=Armor.CLOTH)&&(((Armor)I).material()!=Armor.LEATHER))
-							if(Dice.rollPercentage()>(myChar.charStats().getDexterity()*4))
+							if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*4))
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) in <S-HIS-HER> maneuver!");
 								return false;
@@ -131,7 +131,7 @@ public class Thief extends StdCharClass
 					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_DAGGER))
 					   )
-						if(Dice.rollPercentage()>(myChar.charStats().getDexterity()*4))
+						if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*4))
 						{
 							myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+I.name()+".");
 							return false;
@@ -148,7 +148,7 @@ public class Thief extends StdCharClass
 			return;
 		super.unLevel(mob);
 
-		int attArmor=((int)Math.round(Util.div(mob.charStats().getDexterity(),9.0)))+1;
+		int attArmor=((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1;
 		attArmor=attArmor*-1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
@@ -161,7 +161,7 @@ public class Thief extends StdCharClass
 	public void level(MOB mob)
 	{
 		super.level(mob);
-		int attArmor=((int)Math.round(Util.div(mob.charStats().getDexterity(),9.0)))+1;
+		int attArmor=((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
 		mob.tell("^BYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");

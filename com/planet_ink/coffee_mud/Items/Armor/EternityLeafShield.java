@@ -19,7 +19,7 @@ public class EternityLeafShield extends StdShield
 		baseEnvStats().setArmor(30);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setWeight(15);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 		material=Armor.LEATHER;
 	}

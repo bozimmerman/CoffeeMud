@@ -50,26 +50,12 @@ public class Spell_ResistGas extends Spell
 
 	}
 
-
-	public void affect(Affect affect)
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-
-		MOB mob=(MOB)affected;
-
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_GAS)
-		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
-		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The filtering field around <S-NAME> absorbs the gas."));
-			affect.tagModified(true);
-		}
+		super.affectCharStats(affectedMOB,affectableStats);
+		affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+100);
 	}
-
-
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

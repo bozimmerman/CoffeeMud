@@ -420,10 +420,10 @@ public class StdRoom
 		if(envStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition();
-		if((disposition&Sense.IS_DARK)==Sense.IS_DARK)
-			disposition=disposition-Sense.IS_DARK;
-		if((disposition&Sense.IS_LIGHT)==Sense.IS_LIGHT)
-			disposition=disposition-Sense.IS_LIGHT;
+		if((disposition&EnvStats.IS_DARK)==EnvStats.IS_DARK)
+			disposition=disposition-EnvStats.IS_DARK;
+		if((disposition&EnvStats.IS_LIGHT)==EnvStats.IS_LIGHT)
+			disposition=disposition-EnvStats.IS_LIGHT;
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 	}

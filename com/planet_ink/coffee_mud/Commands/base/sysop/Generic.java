@@ -454,7 +454,7 @@ public class Generic
 		if((current&mask)==0)
 			E.baseEnvStats().setDisposition(current|mask);
 		else
-			E.baseEnvStats().setDisposition(current&((int)(Sense.ALLMASK-mask)));
+			E.baseEnvStats().setDisposition(current&((int)(EnvStats.ALLMASK-mask)));
 	}
 
 	void genDisposition(MOB mob, Environmental E)
@@ -463,40 +463,40 @@ public class Generic
 		String c="Q";
 		while(!c.equals("\n"))
 		{
-			mob.session().println("\n\r1) Is Invisible   : "+((E.baseEnvStats().disposition()&Sense.IS_INVISIBLE)!=0));
-			mob.session().println("2) Is Hidden      : "+((E.baseEnvStats().disposition()&Sense.IS_HIDDEN)!=0));
-			mob.session().println("3) Is Unseeable   : "+((E.baseEnvStats().disposition()&Sense.IS_SEEN)!=0));
-			mob.session().println("4) Is Magical     : "+((E.baseEnvStats().disposition()&Sense.IS_BONUS)!=0));
-			mob.session().println("5) Is Glowing     : "+((E.baseEnvStats().disposition()&Sense.IS_LIGHT)!=0));
+			mob.session().println("\n\r1) Is Invisible   : "+((E.baseEnvStats().disposition()&EnvStats.IS_INVISIBLE)!=0));
+			mob.session().println("2) Is Hidden      : "+((E.baseEnvStats().disposition()&EnvStats.IS_HIDDEN)!=0));
+			mob.session().println("3) Is Unseeable   : "+((E.baseEnvStats().disposition()&EnvStats.IS_SEEN)!=0));
+			mob.session().println("4) Is Magical     : "+((E.baseEnvStats().disposition()&EnvStats.IS_BONUS)!=0));
+			mob.session().println("5) Is Glowing     : "+((E.baseEnvStats().disposition()&EnvStats.IS_LIGHT)!=0));
 			if(E instanceof MOB)
 			{
-			mob.session().println("6) Is Flying      : "+((E.baseEnvStats().disposition()&Sense.IS_FLYING)!=0));
-			mob.session().println("7) Is Climbing    : "+((E.baseEnvStats().disposition()&Sense.IS_CLIMBING)!=0));
-			mob.session().println("8) Is Sneaking    : "+((E.baseEnvStats().disposition()&Sense.IS_SNEAKING)!=0));
+			mob.session().println("6) Is Flying      : "+((E.baseEnvStats().disposition()&EnvStats.IS_FLYING)!=0));
+			mob.session().println("7) Is Climbing    : "+((E.baseEnvStats().disposition()&EnvStats.IS_CLIMBING)!=0));
+			mob.session().println("8) Is Sneaking    : "+((E.baseEnvStats().disposition()&EnvStats.IS_SNEAKING)!=0));
 			}
 			else
 			{
 				if(E instanceof Exit)
 				{
-				mob.session().println("6) Requires Flight: "+((E.baseEnvStats().disposition()&Sense.IS_FLYING)!=0));
-				mob.session().println("7) Requires Climb : "+((E.baseEnvStats().disposition()&Sense.IS_CLIMBING)!=0));
+				mob.session().println("6) Requires Flight: "+((E.baseEnvStats().disposition()&EnvStats.IS_FLYING)!=0));
+				mob.session().println("7) Requires Climb : "+((E.baseEnvStats().disposition()&EnvStats.IS_CLIMBING)!=0));
 				}
-				mob.session().println("E) Is Evil        : "+((E.baseEnvStats().disposition()&Sense.IS_EVIL)!=0));
-				mob.session().println("G) Is Good        : "+((E.baseEnvStats().disposition()&Sense.IS_GOOD)!=0));
+				mob.session().println("E) Is Evil        : "+((E.baseEnvStats().disposition()&EnvStats.IS_EVIL)!=0));
+				mob.session().println("G) Is Good        : "+((E.baseEnvStats().disposition()&EnvStats.IS_GOOD)!=0));
 			}
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","12345678GE\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{
-			case '1': toggleDispositionMask(E,Sense.IS_INVISIBLE); break;
-			case '2': toggleDispositionMask(E,Sense.IS_HIDDEN); break;
-			case '3': toggleDispositionMask(E,Sense.IS_SEEN); break;
-			case '4': toggleDispositionMask(E,Sense.IS_BONUS); break;
-			case '5': toggleDispositionMask(E,Sense.IS_LIGHT); break;
-			case '6': toggleDispositionMask(E,Sense.IS_FLYING); break;
-			case '7': toggleDispositionMask(E,Sense.IS_CLIMBING); break;
-			case '8': toggleDispositionMask(E,Sense.IS_SNEAKING); break;
-			case 'G': toggleDispositionMask(E,Sense.IS_GOOD); break;
-			case 'E': toggleDispositionMask(E,Sense.IS_EVIL); break;
+			case '1': toggleDispositionMask(E,EnvStats.IS_INVISIBLE); break;
+			case '2': toggleDispositionMask(E,EnvStats.IS_HIDDEN); break;
+			case '3': toggleDispositionMask(E,EnvStats.IS_SEEN); break;
+			case '4': toggleDispositionMask(E,EnvStats.IS_BONUS); break;
+			case '5': toggleDispositionMask(E,EnvStats.IS_LIGHT); break;
+			case '6': toggleDispositionMask(E,EnvStats.IS_FLYING); break;
+			case '7': toggleDispositionMask(E,EnvStats.IS_CLIMBING); break;
+			case '8': toggleDispositionMask(E,EnvStats.IS_SNEAKING); break;
+			case 'G': toggleDispositionMask(E,EnvStats.IS_GOOD); break;
+			case 'E': toggleDispositionMask(E,EnvStats.IS_EVIL); break;
 			}
 		}
 	}
@@ -524,7 +524,7 @@ public class Generic
 		if((current&mask)==0)
 			E.baseEnvStats().setSensesMask(current|mask);
 		else
-			E.baseEnvStats().setSensesMask(current&((int)(Sense.ALLMASK-mask)));
+			E.baseEnvStats().setSensesMask(current&((int)(EnvStats.ALLMASK-mask)));
 	}
 	void toggleClimateMask(Area A, int mask)
 	{
@@ -532,7 +532,7 @@ public class Generic
 		if((current&mask)==0)
 			A.setClimateType(current|mask);
 		else
-			A.setClimateType(current&((int)(Sense.ALLMASK-mask)));
+			A.setClimateType(current&((int)(EnvStats.ALLMASK-mask)));
 	}
 
 
@@ -567,31 +567,31 @@ public class Generic
 		String c="Q";
 		while(!c.equals("\n"))
 		{
-			mob.session().println("\n\r1) Can see in the dark: "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_DARK)!=0));
-			mob.session().println("2) Can see hidden     : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_HIDDEN)!=0));
-			mob.session().println("3) Can see invisible  : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_INVISIBLE)!=0));
-			mob.session().println("4) Can see sneakers   : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_SNEAKERS)!=0));
-			mob.session().println("5) Has infravision    : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_INFRARED)!=0));
-			mob.session().println("6) Can see goodness   : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_GOOD)!=0));
-			mob.session().println("7) Can see evilness   : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_EVIL)!=0));
-			mob.session().println("8) Can see magicness  : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE_BONUS)!=0));
-			mob.session().println("9) Is Mute            : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SPEAK)!=0));
-			mob.session().println("A) Is Deaf            : "+((E.baseEnvStats().sensesMask()&Sense.CAN_HEAR)!=0));
-			mob.session().println("B) Is Blind           : "+((E.baseEnvStats().sensesMask()&Sense.CAN_SEE)!=0));
+			mob.session().println("\n\r1) Can see in the dark: "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_DARK)!=0));
+			mob.session().println("2) Can see hidden     : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)!=0));
+			mob.session().println("3) Can see invisible  : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_INVISIBLE)!=0));
+			mob.session().println("4) Can see sneakers   : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_SNEAKERS)!=0));
+			mob.session().println("5) Has infravision    : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_INFRARED)!=0));
+			mob.session().println("6) Can see goodness   : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_GOOD)!=0));
+			mob.session().println("7) Can see evilness   : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_EVIL)!=0));
+			mob.session().println("8) Can see magicness  : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE_BONUS)!=0));
+			mob.session().println("9) Is Mute            : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SPEAK)!=0));
+			mob.session().println("A) Is Deaf            : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_HEAR)!=0));
+			mob.session().println("B) Is Blind           : "+((E.baseEnvStats().sensesMask()&EnvStats.CAN_SEE)!=0));
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","123456789AB\n","\n").toUpperCase();
 			switch(c.charAt(0))
 			{
-			case '1': toggleSensesMask(E,Sense.CAN_SEE_DARK); break;
-			case '2': toggleSensesMask(E,Sense.CAN_SEE_HIDDEN); break;
-			case '3': toggleSensesMask(E,Sense.CAN_SEE_INVISIBLE); break;
-			case '4': toggleSensesMask(E,Sense.CAN_SEE_SNEAKERS); break;
-			case '5': toggleSensesMask(E,Sense.CAN_SEE_INFRARED); break;
-			case '6': toggleSensesMask(E,Sense.CAN_SEE_GOOD); break;
-			case '7': toggleSensesMask(E,Sense.CAN_SEE_EVIL); break;
-			case '8': toggleSensesMask(E,Sense.CAN_SEE_BONUS); break;
-			case '9': toggleSensesMask(E,Sense.CAN_SPEAK); break;
-			case 'A': toggleSensesMask(E,Sense.CAN_HEAR); break;
-			case 'B': toggleSensesMask(E,Sense.CAN_SEE); break;
+			case '1': toggleSensesMask(E,EnvStats.CAN_SEE_DARK); break;
+			case '2': toggleSensesMask(E,EnvStats.CAN_SEE_HIDDEN); break;
+			case '3': toggleSensesMask(E,EnvStats.CAN_SEE_INVISIBLE); break;
+			case '4': toggleSensesMask(E,EnvStats.CAN_SEE_SNEAKERS); break;
+			case '5': toggleSensesMask(E,EnvStats.CAN_SEE_INFRARED); break;
+			case '6': toggleSensesMask(E,EnvStats.CAN_SEE_GOOD); break;
+			case '7': toggleSensesMask(E,EnvStats.CAN_SEE_EVIL); break;
+			case '8': toggleSensesMask(E,EnvStats.CAN_SEE_BONUS); break;
+			case '9': toggleSensesMask(E,EnvStats.CAN_SPEAK); break;
+			case 'A': toggleSensesMask(E,EnvStats.CAN_HEAR); break;
+			case 'B': toggleSensesMask(E,EnvStats.CAN_SEE); break;
 			}
 		}
 	}
@@ -1038,7 +1038,7 @@ public class Generic
 	void genGender(MOB mob, MOB E)
 		throws IOException
 	{
-		mob.tell("\n\rGender: '"+Character.toUpperCase((char)E.baseCharStats().getGender())+"'.");
+		mob.tell("\n\rGender: '"+Character.toUpperCase((char)E.baseCharStats().getStat(CharStats.GENDER))+"'.");
 		String newType=mob.session().choose("Enter a new gender (M/F)\n\r:","MF","");
 		int newValue=-1;
 		if(newType.length()>0)
@@ -1047,10 +1047,10 @@ public class Generic
 			switch(newValue)
 			{
 			case 0:
-				E.baseCharStats().setGender('M');
+				E.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 				break;
 			case 1:
-				E.baseCharStats().setGender('F');
+				E.baseCharStats().setStat(CharStats.GENDER,(int)'F');
 				break;
 			}
 		else
@@ -1852,7 +1852,7 @@ public class Generic
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),mob.baseCharStats().getGender());
+				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 			genRejuv(mob,me);
 			genRace(mob,me);
 			genGender(mob,me);
@@ -1901,7 +1901,7 @@ public class Generic
 			int oldLevel=me.baseEnvStats().level();
 			genLevel(mob,me);
 			if((oldLevel==0)&&(me.baseEnvStats().level()>0))
-				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),mob.baseCharStats().getGender());
+				me.baseCharStats().getMyClass().buildMOB(me,me.baseEnvStats().level(),mob.getAlignment(),mob.baseEnvStats().weight(),mob.getWimpHitPoint(),(char)mob.baseCharStats().getStat(CharStats.GENDER));
 			genRejuv(mob,me);
 			genRace(mob,me);
 			genGender(mob,me);

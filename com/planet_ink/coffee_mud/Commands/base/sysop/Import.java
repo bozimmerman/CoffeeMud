@@ -888,7 +888,7 @@ public class Import
 			if(Util.isSet(actFlag,2))
 				M.addBehavior(CMClass.getBehavior("Scavenger"));
 			if(Util.isSet(actFlag,4))
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_INVISIBLE);
+				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 			if(Util.isSet(actFlag,5)&&Util.isSet(actFlag,1))
 				M.addBehavior(CMClass.getBehavior("Aggressive"));
 			M.setWimpHitPoint(0);
@@ -922,19 +922,19 @@ public class Import
 				M.addBehavior(CMClass.getBehavior("MOBTeacher"));
 
 			if(Util.isSet(affFlag,0))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE);
 			if(Util.isSet(affFlag,1))
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_INVISIBLE);
+				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 			if(Util.isSet(affFlag,2))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_EVIL);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_EVIL);
 			if(Util.isSet(affFlag,3))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_INVISIBLE);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
 			if(Util.isSet(affFlag,4))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_BONUS);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_BONUS);
 			if(Util.isSet(affFlag,5))
 			{
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_HIDDEN);
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_SNEAKERS);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
 			}
 			if(Util.isSet(affFlag,6))
 			{
@@ -951,7 +951,7 @@ public class Import
 			if(Util.isSet(affFlag,8))
 				M.addNonUninvokableAffect(CMClass.getAbility("Spell_FaerieFire"));
 			if(Util.isSet(affFlag,9))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_INFRARED);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_INFRARED);
 			if(Util.isSet(affFlag,10))
 				M.addNonUninvokableAffect(CMClass.getAbility("Prayer_Curse"));
 			if(Util.isSet(affFlag,11))
@@ -981,7 +981,7 @@ public class Import
 			}
 
 			if(Util.isSet(affFlag,16))
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_HIDDEN);
+				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
 
 			if(Util.isSet(affFlag,17))
 				M.addNonUninvokableAffect(CMClass.getAbility("Spell_Sleep"));
@@ -1005,7 +1005,7 @@ public class Import
 				M.addNonUninvokableAffect(CMClass.getAbility("Prop_SafePet"));
 
 			if(Util.isSet(affFlag,25))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_DARK);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 
 			if(Util.isSet(affFlag,26))
 				M.addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
@@ -1014,7 +1014,7 @@ public class Import
 				M.addNonUninvokableAffect(CMClass.getAbility("Regeneration"));
 
 			if(Util.isSet(affFlag,28))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|Sense.CAN_SEE_GOOD);
+				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_GOOD);
 
 			if(Util.isSet(affFlag,29))
 				M.addNonUninvokableAffect(CMClass.getAbility("Spell_Slow"));
@@ -1093,21 +1093,21 @@ public class Import
 			case 2:
 			case 3:
 			case 4:
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_SLEEPING);
+				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_SLEEPING);
 				break;
 			case 5:
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_SITTING);
+				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_SITTING);
 				break;
 			case 6:
-				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|Sense.IS_SITTING);
+				M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|EnvStats.IS_SITTING);
 				break;
 			}
 
-			M.baseCharStats().setGender('M');
+			M.baseCharStats().setStat(CharStats.GENDER,(int)'M');
 			switch(sexCode)
 			{
-			case 2: M.baseCharStats().setGender('F'); break;
-			case 3: M.baseCharStats().setGender('N'); break;
+			case 2: M.baseCharStats().setStat(CharStats.GENDER,(int)'F'); break;
+			case 3: M.baseCharStats().setStat(CharStats.GENDER,(int)'N'); break;
 			}
 
 			if(circleFormat)
@@ -1348,8 +1348,8 @@ public class Import
 					else
 					if(special.equals("SPEC_CAST_UNDEAD"))
 					{
-						if((M.baseEnvStats().disposition()&Sense.IS_INFRARED)==Sense.IS_INFRARED)
-							M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()-Sense.IS_INFRARED);
+						if((M.baseEnvStats().disposition()&EnvStats.IS_INFRARED)==EnvStats.IS_INFRARED)
+							M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()-EnvStats.IS_INFRARED);
 						M.addBehavior(CMClass.getBehavior("CombatAbilities"));
 						M.addAbility(CMClass.getAbility("Undead_ColdTouch"));
 						M.addAbility(CMClass.getAbility("Undead_LifeDrain"));
@@ -1885,20 +1885,20 @@ public class Import
 			    I.setDescription("");
 
 			if(Util.isSet(extraFlag,0))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|Sense.IS_LIGHT);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHT);
 
 			//if((extraFlag&2)==2) coffeemud has no hummers
 			if(Util.isSet(extraFlag,2))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|Sense.IS_DARK);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_DARK);
 
 			if(Util.isSet(extraFlag,4))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|Sense.IS_EVIL);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_EVIL);
 
 			if(Util.isSet(extraFlag,5))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|Sense.IS_INVISIBLE);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 
 			if(Util.isSet(extraFlag,6))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|Sense.IS_BONUS);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 
 			if(Util.isSet(extraFlag,7))
 				I.setDroppable(false);
@@ -1931,10 +1931,10 @@ public class Import
 			//if(extraFlag&16384)==16384) coffeemud doesn't support rotting cargo
 
 			if(Util.isSet(extraFlag,16))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|Sense.IS_INVISIBLE);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
 
 			if(Util.isSet(extraFlag,17))
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|Sense.IS_GOOD);
+				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_GOOD);
 
 			if(Util.isSet(extraFlag,18))
 				if(I.material()==Item.METAL)
@@ -2082,17 +2082,17 @@ public class Import
 							int sense=0;
 							int codeBits=getBitMask(codesLine,3);
 							if(Util.isSet(codeBits,0))
-								sense=sense|Sense.CAN_SEE;
+								sense=sense|EnvStats.CAN_SEE;
 							if(Util.isSet(codeBits,1))
-								dis=dis|Sense.IS_INVISIBLE;
+								dis=dis|EnvStats.IS_INVISIBLE;
 							if(Util.isSet(codeBits,2))
-								sense=sense|Sense.CAN_SEE_EVIL;
+								sense=sense|EnvStats.CAN_SEE_EVIL;
 							if(Util.isSet(codeBits,3))
-								sense=sense|Sense.CAN_SEE_INVISIBLE;
+								sense=sense|EnvStats.CAN_SEE_INVISIBLE;
 							if(Util.isSet(codeBits,4))
-								sense=sense|Sense.CAN_SEE_BONUS;
+								sense=sense|EnvStats.CAN_SEE_BONUS;
 							if(Util.isSet(codeBits,5))
-								sense=sense|Sense.CAN_SEE_HIDDEN|Sense.CAN_SEE_SNEAKERS;
+								sense=sense|EnvStats.CAN_SEE_HIDDEN|EnvStats.CAN_SEE_SNEAKERS;
 							if(Util.isSet(codeBits,6))
 								caster.setMiscText(caster.text()+("Prayer_Sanctuary")+";");
 							if(Util.isSet(codeBits,7))
@@ -2100,7 +2100,7 @@ public class Import
 							if(Util.isSet(codeBits,8))
 								caster.setMiscText(caster.text()+("Spell_FaerieFire")+";");
 							if(Util.isSet(codeBits,9))
-								sense=sense|Sense.CAN_SEE_INFRARED;
+								sense=sense|EnvStats.CAN_SEE_INFRARED;
 							if(Util.isSet(codeBits,10))
 								caster.setMiscText(caster.text()+("Prayer_Curse")+";");
 							//if(Util.isSet(codeBits,11)) // what the heck is master weapon?
@@ -2112,20 +2112,20 @@ public class Import
 							if(Util.isSet(codeBits,14))
 								caster.setMiscText(caster.text()+("Prayer_ProtGood")+";");
 							if(Util.isSet(codeBits,15))
-								dis=dis|Sense.IS_SNEAKING;
+								dis=dis|EnvStats.IS_SNEAKING;
 							if(Util.isSet(codeBits,16))
-								dis=dis|Sense.IS_HIDDEN;
+								dis=dis|EnvStats.IS_HIDDEN;
 							if(Util.isSet(codeBits,17))
 							{
-								dis=dis|Sense.IS_SLEEPING;
+								dis=dis|EnvStats.IS_SLEEPING;
 								caster.setMiscText(caster.text()+("Spell_Sleep")+";");
 							}
 							//if(Util.isSet(codeBits,18)) item cannot charm you
 							//	caster.setMiscText(caster.text()+(new Poison().ID())+";");
 							if(Util.isSet(codeBits,19))
-								dis=dis|Sense.IS_FLYING;
+								dis=dis|EnvStats.IS_FLYING;
 							//if(Util.isSet(codeBits,20)) no pass door irrelevancy, yet
-							//	dis=dis|Sense.IS_FLYING;
+							//	dis=dis|EnvStats.IS_FLYING;
 							if(Util.isSet(codeBits,21))
 								caster.setMiscText(caster.text()+("Spell_Haste")+";");
 							if(Util.isSet(codeBits,22))
@@ -2135,13 +2135,13 @@ public class Import
 							if(Util.isSet(codeBits,24))
 								caster.setMiscText(caster.text()+("Prop_SafePet")+";");
 							if(Util.isSet(codeBits,25))
-								sense=sense|Sense.CAN_SEE_DARK;
+								sense=sense|EnvStats.CAN_SEE_DARK;
 							if(Util.isSet(codeBits,26))
 								caster.setMiscText(caster.text()+("Fighter_Berzerk")+";");
 							if(Util.isSet(codeBits,27))
 								caster.setMiscText(caster.text()+("Regeneration")+";");
 							if(Util.isSet(codeBits,28))
-								sense=sense|Sense.CAN_SEE_GOOD;
+								sense=sense|EnvStats.CAN_SEE_GOOD;
 							if(Util.isSet(codeBits,29))
 								caster.setMiscText(caster.text()+("Spell_Slow")+";");
 							if(sense>0)
@@ -2675,7 +2675,7 @@ public class Import
 						if(name.equalsIgnoreCase("SECRET"))
 						{
 							name="secret door";
-							E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|Sense.IS_HIDDEN);
+							E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
 							E.recoverEnvStats();
 						}
 

@@ -52,7 +52,7 @@ public class Spell_Infravision extends Spell
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(successfulObservation)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INFRARED);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

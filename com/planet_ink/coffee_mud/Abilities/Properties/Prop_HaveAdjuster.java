@@ -124,17 +124,17 @@ public class Prop_HaveAdjuster extends Property
 		baseEnvStats.setSpeed(getVal(newText,"spe"));
 		baseEnvStats.setWeight(getVal(newText,"wei"));
 
-		adjCharStats.setCharisma(getVal(newText,"cha"));
-		adjCharStats.setConstitution(getVal(newText,"con"));
-		adjCharStats.setDexterity(getVal(newText,"dex"));
+		adjCharStats.setStat(CharStats.CHARISMA,getVal(newText,"cha"));
+		adjCharStats.setStat(CharStats.CONSTITUTION,getVal(newText,"con"));
+		adjCharStats.setStat(CharStats.DEXTERITY,getVal(newText,"dex"));
 		String val=getStr(newText,"gen").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
-			adjCharStats.setGender(val.charAt(0));
+			adjCharStats.setStat(CharStats.GENDER,(int)val.charAt(0));
 			gotSex=true;
 		}
 
-		adjCharStats.setIntelligence(getVal(newText,"int"));
+		adjCharStats.setStat(CharStats.INTELLIGENCE,getVal(newText,"int"));
 		val=getStr(newText,"cla").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
 		{
@@ -147,8 +147,8 @@ public class Prop_HaveAdjuster extends Property
 			gotRace=true;
 			adjCharStats.setMyRace(CMClass.getRace(val));
 		}
-		adjCharStats.setStrength(getVal(newText,"str"));
-		adjCharStats.setWisdom(getVal(newText,"wis"));
+		adjCharStats.setStat(CharStats.STRENGTH,getVal(newText,"str"));
+		adjCharStats.setStat(CharStats.WISDOM,getVal(newText,"wis"));
 
 		adjCharState.setHitPoints(getVal(newText,"hit"));
 		adjCharState.setHunger(getVal(newText,"hun"));
@@ -271,18 +271,18 @@ public class Prop_HaveAdjuster extends Property
 									boolean gotSex,
 									CharStats adjCharStats)
 	{
-		affectedStats.setCharisma(affectedStats.getCharisma()+adjCharStats.getCharisma());
-		affectedStats.setConstitution(affectedStats.getConstitution()+adjCharStats.getConstitution());
-		affectedStats.setDexterity(affectedStats.getDexterity()+adjCharStats.getDexterity());
+		affectedStats.setStat(CharStats.CHARISMA,affectedStats.getStat(CharStats.CHARISMA)+adjCharStats.getStat(CharStats.CHARISMA));
+		affectedStats.setStat(CharStats.CONSTITUTION,affectedStats.getStat(CharStats.CONSTITUTION)+adjCharStats.getStat(CharStats.CONSTITUTION));
+		affectedStats.setStat(CharStats.DEXTERITY,affectedStats.getStat(CharStats.DEXTERITY)+adjCharStats.getStat(CharStats.DEXTERITY));
 		if(gotSex)
-			affectedStats.setGender(adjCharStats.getGender());
-		affectedStats.setIntelligence(affectedStats.getIntelligence()+adjCharStats.getIntelligence());
+			affectedStats.setStat(CharStats.GENDER,(int)adjCharStats.getStat(CharStats.GENDER));
+		affectedStats.setStat(CharStats.INTELLIGENCE,affectedStats.getStat(CharStats.INTELLIGENCE)+adjCharStats.getStat(CharStats.INTELLIGENCE));
 		if(gotClass)
 			affectedStats.setMyClass(adjCharStats.getMyClass());
 		if(gotRace)
 			affectedStats.setMyRace(adjCharStats.getMyRace());
-		affectedStats.setStrength(affectedStats.getStrength()+adjCharStats.getStrength());
-		affectedStats.setWisdom(affectedStats.getWisdom()+adjCharStats.getWisdom());
+		affectedStats.setStat(CharStats.STRENGTH,affectedStats.getStat(CharStats.STRENGTH)+adjCharStats.getStat(CharStats.STRENGTH));
+		affectedStats.setStat(CharStats.WISDOM,affectedStats.getStat(CharStats.WISDOM)+adjCharStats.getStat(CharStats.WISDOM));
 	}
 
 	public static void adjCharState(CharState affectedState,

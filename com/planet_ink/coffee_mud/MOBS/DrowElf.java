@@ -40,19 +40,19 @@ public class DrowElf extends StdMOB
 		setWimpHitPoint(5);
 
 		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setSensesMask(Sense.CAN_SEE_DARK | Sense.CAN_SEE_INFRARED);
+		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
 
 		if(gender == MALE)
-			baseCharStats().setGender('M');
+			baseCharStats().setStat(CharStats.GENDER,(int)'M');
 		else
-			baseCharStats().setGender('F');
+			baseCharStats().setStat(CharStats.GENDER,(int)'F');
 
-		baseCharStats().setStrength(12 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setIntelligence(14 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setWisdom(13 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setDexterity(15 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setConstitution(12 + Math.abs(randomizer.nextInt() % 6));
-		baseCharStats().setCharisma(13 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,14 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.WISDOM,13 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.DEXTERITY,15 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.CONSTITUTION,12 + Math.abs(randomizer.nextInt() % 6));
+		baseCharStats().setStat(CharStats.CHARISMA,13 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setMyRace(CMClass.getRace("Elf"));
 
 

@@ -57,12 +57,12 @@ public class Thief_Poison extends ThiefSkill
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setConstitution(affectableStats.getConstitution()-8);
-		affectableStats.setStrength(affectableStats.getStrength()-8);
-		if(affectableStats.getConstitution()<=0)
-			affectableStats.setConstitution(1);
-		if(affectableStats.getStrength()<=0)
-			affectableStats.setStrength(1);
+		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-8);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-8);
+		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STRENGTH,1);
 	}
 
 	public void unInvoke()

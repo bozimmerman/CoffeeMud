@@ -243,7 +243,7 @@ public class Generic
 		{
 			text.append(XMLManager.convertXMLtoTag("ALIG",((MOB)E).getAlignment()));
 			text.append(XMLManager.convertXMLtoTag("MONEY",((MOB)E).getMoney()));
-			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getGender()));
+			text.append(XMLManager.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.GENDER)));
 			text.append(XMLManager.convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
 
 			StringBuffer itemstr=new StringBuffer("");
@@ -816,7 +816,7 @@ public class Generic
 			MOB mob=(MOB)E;
 			mob.setAlignment(XMLManager.getIntFromPieces(buf,"ALIG"));
 			mob.setMoney(XMLManager.getIntFromPieces(buf,"MONEY"));
-			mob.baseCharStats().setGender((char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
+			mob.baseCharStats().setStat(CharStats.GENDER,(int)(char)XMLManager.getValFromPieces(buf,"GENDER").charAt(0));
 			
 			String raceID=XMLManager.getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))

@@ -66,7 +66,7 @@ public class Spell_Sleep extends Spell
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SLEEPING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
 
 
@@ -114,7 +114,7 @@ public class Spell_Sleep extends Spell
 			return false;
 
 
-		boolean success=profficiencyCheck(-((target.charStats().getIntelligence()*2)),auto);
+		boolean success=profficiencyCheck(-((target.charStats().getStat(CharStats.INTELLIGENCE)*2)),auto);
 
 		if(success)
 		{

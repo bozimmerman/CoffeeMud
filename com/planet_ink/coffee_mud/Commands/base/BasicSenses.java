@@ -144,7 +144,7 @@ public class BasicSenses
 		commands.removeElementAt(0);
 
 		String abilityName=((String)commands.elementAt(0)).toUpperCase();
-		int abilityCode=mob.charStats().getAbilityCode(abilityName);
+		int abilityCode=mob.charStats().getCode(abilityName);
 
 		if(abilityCode<0)
 		{
@@ -216,14 +216,14 @@ public class BasicSenses
 		int curStat=-1;
 		if(abilityCode<100)
 		{
-			curStat=mob.baseCharStats().getCurStat(abilityCode);
+			curStat=mob.baseCharStats().getStat(abilityCode);
 			if(!mob.baseCharStats().getMyClass().canAdvance(mob,abilityCode))
 			{
 				mob.tell("You cannot train that any further.");
 				return;
 			}
 
-			int teachStat=mob.baseCharStats().getCurStat(abilityCode);
+			int teachStat=mob.baseCharStats().getStat(abilityCode);
 			if(curStat>teachStat)
 			{
 				mob.tell("You can only train with someone whose score is higher than yours.");
@@ -239,37 +239,37 @@ public class BasicSenses
 		{
 		case 0:
 			mob.tell("You feel stronger!");
-			mob.baseCharStats().setStrength(curStat+1);
+			mob.baseCharStats().setStat(CharStats.STRENGTH,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 1:
 			mob.tell("You feel smarter!");
-			mob.baseCharStats().setIntelligence(curStat+1);
+			mob.baseCharStats().setStat(CharStats.INTELLIGENCE,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 2:
 			mob.tell("You feel more dextrous!");
-			mob.baseCharStats().setDexterity(curStat+1);
+			mob.baseCharStats().setStat(CharStats.DEXTERITY,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 3:
 			mob.tell("You feel healthier!");
-			mob.baseCharStats().setConstitution(curStat+1);
+			mob.baseCharStats().setStat(CharStats.CONSTITUTION,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 4:
 			mob.tell("You feel more charismatic!");
-			mob.baseCharStats().setCharisma(curStat+1);
+			mob.baseCharStats().setStat(CharStats.CHARISMA,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-1);
 			break;
 		case 5:
 			mob.tell("You feel wiser!");
-			mob.baseCharStats().setWisdom(curStat+1);
+			mob.baseCharStats().setStat(CharStats.WISDOM,curStat+1);
 			mob.recoverCharStats();
 			mob.setTrains(mob.getTrains()-1);
 			break;

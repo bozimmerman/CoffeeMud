@@ -50,7 +50,7 @@ public class Fighter_CritStrike extends StdAbility
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon)
-		&&(profficiencyCheck(-90+mob.charStats().getStrength(),false)))
+		&&(profficiencyCheck(-90+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
 			int bonus=(int)Math.round(Util.mul((affect.targetCode()-Affect.MASK_HURT),pctRecovery));

@@ -395,7 +395,7 @@ public class StdAbility implements Ability, Cloneable
 		if(A==null) return;
 		if(A.profficiency()<100)
 		{
-			if(Math.round((Util.div(mob.charStats().getIntelligence(),18.0))*100.0*Math.random())>50)
+			if(Math.round((Util.div(mob.charStats().getStat(CharStats.INTELLIGENCE),18.0))*100.0*Math.random())>50)
 			{
 				// very important, since these can be autoinvoked affects (copies)!
 				A.setProfficiency(A.profficiency()+1);
@@ -618,7 +618,7 @@ public class StdAbility implements Ability, Cloneable
 			student.tell("You are not high enough level to learn '"+name()+"'.");
 			return false;
 		}
-		if(qLevel>student.charStats().getIntelligence()+7)
+		if(qLevel>student.charStats().getStat(CharStats.INTELLIGENCE)+7)
 		{
 			teacher.tell(student.name()+" is too stupid to learn '"+name()+"'.");
 			student.tell("You are not of high enough intelligence to learn '"+name()+"'.");
@@ -720,7 +720,7 @@ public class StdAbility implements Ability, Cloneable
 			student.setPractices(student.getPractices()-practicesRequired);
 			student.setTrains(student.getTrains()-trainsRequired);
 			Ability newAbility=(Ability)newInstance();
-			newAbility.setProfficiency((int)Math.round(Util.mul(profficiency(),((Util.div(teacher.charStats().getWisdom()+student.charStats().getIntelligence(),100.0))))));
+			newAbility.setProfficiency((int)Math.round(Util.mul(profficiency(),((Util.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),100.0))))));
 			if(newAbility.profficiency()>75)
 				newAbility.setProfficiency(75);
 			int qLevel=qualifyingLevel(student);
@@ -742,7 +742,7 @@ public class StdAbility implements Ability, Cloneable
 			if(yourAbility.profficiency()<75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice);
-				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(Util.div(teacher.charStats().getWisdom()+student.charStats().getIntelligence(),36.0))));
+				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(Util.div(teacher.charStats().getStat(CharStats.WISDOM)+student.charStats().getStat(CharStats.INTELLIGENCE),36.0))));
 				if(yourAbility.profficiency()>75)
 					yourAbility.setProfficiency(75);
 			}

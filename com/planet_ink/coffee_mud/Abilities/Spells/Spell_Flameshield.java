@@ -61,7 +61,7 @@ public class Spell_Flameshield extends Spell
 			   &&(affect.source().rangeToTarget()==0)
 			   &&(affect.targetMessage().length()>0))
 			{
-				if((Dice.rollPercentage()>(source.charStats().getDexterity()*3)))
+				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3)))
 				{
 					FullMsg msg=new FullMsg(source,mob,this,affectType,null);
 					if(source.location().okAffect(msg))

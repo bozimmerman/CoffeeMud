@@ -18,9 +18,9 @@ public class Giant extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(18);
-		affectableStats.setDexterity(7);
-		affectableStats.setIntelligence(7);
+		affectableStats.setStat(CharStats.STRENGTH,18);
+		affectableStats.setStat(CharStats.DEXTERITY,7);
+		affectableStats.setStat(CharStats.INTELLIGENCE,7);
 	}
 	public String arriveStr()
 	{

@@ -17,9 +17,9 @@ public class Bear extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(15);
-		affectableStats.setDexterity(10);
-		affectableStats.setIntelligence(4);
+		affectableStats.setStat(CharStats.STRENGTH,15);
+		affectableStats.setStat(CharStats.DEXTERITY,10);
+		affectableStats.setStat(CharStats.INTELLIGENCE,4);
 	}
 	public void setWeight(MOB mob)
 	{

@@ -18,9 +18,9 @@ public class Cat extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(6);
-		affectableStats.setDexterity(16);
-		affectableStats.setIntelligence(3);
+		affectableStats.setStat(CharStats.STRENGTH,6);
+		affectableStats.setStat(CharStats.DEXTERITY,16);
+		affectableStats.setStat(CharStats.INTELLIGENCE,3);
 	}
 	public String arriveStr()
 	{
@@ -33,7 +33,7 @@ public class Cat extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 	}
 	public void setWeight(MOB mob)
 	{

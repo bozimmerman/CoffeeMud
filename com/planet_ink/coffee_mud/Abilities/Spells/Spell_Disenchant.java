@@ -57,8 +57,8 @@ public class Spell_Disenchant extends Spell
 					if(target.baseEnvStats().level()<=0)
 						target.baseEnvStats().setLevel(1);
 					target.baseEnvStats().setAbility(0);
-					if((target.baseEnvStats().disposition()&Sense.IS_BONUS)==Sense.IS_BONUS)
-						target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()-Sense.IS_BONUS);
+					if((target.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
+						target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()-EnvStats.IS_BONUS);
 					target.recoverEnvStats();
 				}
 			}

@@ -17,14 +17,14 @@ public class SongBird extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_FLYING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(3);
-		affectableStats.setDexterity(3);
-		affectableStats.setIntelligence(3);
+		affectableStats.setStat(CharStats.STRENGTH,3);
+		affectableStats.setStat(CharStats.DEXTERITY,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,3);
 	}
 	public void setWeight(MOB mob)
 	{

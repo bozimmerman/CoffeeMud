@@ -28,7 +28,7 @@ public class Undead extends StdMOB
 		baseEnvStats().setArmor(80);
 		baseEnvStats().setSpeed(1.0);
 		baseEnvStats().setDisposition(0); // disable infrared stuff
-		baseEnvStats().setSensesMask(Sense.CAN_SEE_DARK);
+		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
 
 		int hitPoints = 0;
 		hitPoints += Math.abs(randomizer.nextInt()) % 18 + 1;

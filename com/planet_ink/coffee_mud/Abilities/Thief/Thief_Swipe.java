@@ -57,7 +57,7 @@ public class Thief_Swipe extends ThiefSkill
 
 		if(!success)
 		{
-			int discoverChance=target.charStats().getWisdom()+(levelDiff*3);
+			int discoverChance=target.charStats().getStat(CharStats.WISDOM)+(levelDiff*3);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 			if(Dice.rollPercentage()<discoverChance)
@@ -71,7 +71,7 @@ public class Thief_Swipe extends ThiefSkill
 		}
 		else
 		{
-			int discoverChance=target.charStats().getWisdom()+(levelDiff*3);
+			int discoverChance=target.charStats().getStat(CharStats.WISDOM)+(levelDiff*3);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 

@@ -18,7 +18,7 @@ public class EternityLeafArmor extends StdArmor
 		baseEnvStats().setArmor(50);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setWeight(15);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 		material=Armor.CLOTH;
 	}
@@ -27,7 +27,7 @@ public class EternityLeafArmor extends StdArmor
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if((!this.amWearingAt(Item.INVENTORY))&&(!this.amWearingAt(Item.HELD)))
-			affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 	}
 
 	public Environmental newInstance()

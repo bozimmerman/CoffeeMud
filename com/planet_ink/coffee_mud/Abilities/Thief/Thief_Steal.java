@@ -64,7 +64,7 @@ public class Thief_Steal extends ThiefSkill
 
 		if(!success)
 		{
-			int discoverChance=target.charStats().getWisdom()+(levelDiff*5);
+			int discoverChance=target.charStats().getStat(CharStats.WISDOM)+(levelDiff*5);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 			if(Dice.rollPercentage()<discoverChance)
@@ -78,7 +78,7 @@ public class Thief_Steal extends ThiefSkill
 		}
 		else
 		{
-			int discoverChance=target.charStats().getWisdom()+(levelDiff*5);
+			int discoverChance=target.charStats().getStat(CharStats.WISDOM)+(levelDiff*5);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 

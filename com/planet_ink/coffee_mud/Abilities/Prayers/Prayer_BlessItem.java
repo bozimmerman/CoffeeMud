@@ -30,8 +30,8 @@ public class Prayer_BlessItem extends Prayer
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_GOOD);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_BONUS);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOOD);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;

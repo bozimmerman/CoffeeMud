@@ -43,45 +43,11 @@ public class Song_Protection extends Song
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setDexterity((int)Math.round(affectableStats.getDexterity()-3));
-	}
-
-	public boolean okAffect(Affect affect)
-	{
-		if(!super.okAffect(affect))
-			return false;
-
-		if(!Util.bset(affect.targetMajor(),Affect.MASK_MALICIOUS))
-			return true;
-		switch(affect.targetMinor())
-		{
-		case Affect.TYP_ACID:
-		case Affect.TYP_COLD:
-		case Affect.TYP_ELECTRIC:
-		case Affect.TYP_FIRE:
-		case Affect.TYP_GAS:
-		case Affect.TYP_WATER:
-			break;
-		default:
-			return true;
-		}
-
-		if(affect.target()==null)
-			return true;
-		if(!(affect.target() instanceof MOB))
-			return true;
-
-		if(invoker==null) return true;
-
-		if(((MOB)affect.target()).fetchAffect(this.ID())==null)
-			return true;
-
-		if(Dice.rollPercentage()<(invoker.charStats().getCharisma()*4))
-		{
-			affect.source().location().show(affect.source(),affect.target(),Affect.MSG_OK_ACTION,affect.othersMessage()+"\nThe musical aura around <T-NAME> protects <T-HIM-HER>.");
-			return false;
-		}
-
-		return true;
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(Util.div(affectableStats.getStat(CharStats.DEXTERITY),3.0)));
+		affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));
+		affectableStats.setStat(CharStats.SAVE_COLD,affectableStats.getStat(CharStats.SAVE_COLD)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));
+		affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));
+		affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));
+		affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+(invoker.charStats().getStat(CharStats.CHARISMA)*4));
 	}
 }

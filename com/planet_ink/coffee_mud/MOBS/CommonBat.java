@@ -22,16 +22,16 @@ public class CommonBat extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 2));
 
 
-		baseCharStats().setIntelligence(1);
-		baseCharStats().setStrength(12);
-		baseCharStats().setDexterity(17);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,1);
+		baseCharStats().setStat(CharStats.STRENGTH,12);
+		baseCharStats().setStat(CharStats.DEXTERITY,17);
 
 		baseEnvStats().setDamage(1);
 		baseEnvStats().setSpeed(1.0);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(80);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_FLYING);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 		baseCharStats().setMyRace(CMClass.getRace("Bat"));
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 2)*baseEnvStats().level()) + 1);

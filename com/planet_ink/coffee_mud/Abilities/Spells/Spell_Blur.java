@@ -48,7 +48,7 @@ public class Spell_Blur extends Spell
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL))
 		{
-			int pctDodge=invoker.charStats().getIntelligence();
+			int pctDodge=invoker.charStats().getStat(CharStats.INTELLIGENCE);
 			if(Dice.rollPercentage()<(pctDodge*2))
 			{
 				FullMsg msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_VISUAL,"<T-NAME> can't seem to focus on <S-NAME>.");

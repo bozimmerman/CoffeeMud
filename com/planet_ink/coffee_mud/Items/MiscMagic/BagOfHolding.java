@@ -19,7 +19,7 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 		capacity=100 * baseEnvStats().level();
 
 		baseGoldValue=10000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 
 

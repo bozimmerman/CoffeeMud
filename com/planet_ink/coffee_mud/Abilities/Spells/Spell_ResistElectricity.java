@@ -50,25 +50,11 @@ public class Spell_ResistElectricity extends Spell
 
 	}
 
-
-	public void affect(Affect affect)
+	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-
-		MOB mob=(MOB)affected;
-
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_ELECTRIC)
-		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
-		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The organic field around <S-NAME> absorbs the electric shock."));
-			affect.tagModified(true);
-		}
+		super.affectCharStats(affectedMOB,affectedStats);
+		affectedStats.setStat(CharStats.SAVE_ELECTRIC,affectedStats.getStat(CharStats.SAVE_ELECTRIC)+100);
 	}
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -39,7 +39,7 @@ public class Skill_Write extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.charStats().getIntelligence()<8)
+		if(mob.charStats().getStat(CharStats.INTELLIGENCE)<8)
 		{
 			mob.tell("You are too stupid to actually write anything.");
 			return false;

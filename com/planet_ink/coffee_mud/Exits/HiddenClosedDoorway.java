@@ -22,7 +22,7 @@ public class HiddenClosedDoorway extends StdExit
 		doorDefaultsClosed=true;
 		doorDefaultsLocked=false;
 		openDelayTicks=45;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_HIDDEN);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

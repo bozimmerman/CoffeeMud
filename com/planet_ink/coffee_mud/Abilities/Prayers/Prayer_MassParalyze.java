@@ -31,7 +31,7 @@ public class Prayer_MassParalyze extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_MOVE);
 	}
 
 	public void unInvoke()

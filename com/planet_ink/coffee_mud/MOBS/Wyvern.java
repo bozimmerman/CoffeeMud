@@ -23,9 +23,9 @@ public class Wyvern extends StdMOB
 		baseEnvStats().setWeight(2000 + Math.abs(randomizer.nextInt() % 550));
 
 
-		baseCharStats().setIntelligence(5 + Math.abs(randomizer.nextInt() % 3));
-		baseCharStats().setStrength(18);
-		baseCharStats().setDexterity(13);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
+		baseCharStats().setStat(CharStats.STRENGTH,18);
+		baseCharStats().setStat(CharStats.DEXTERITY,13);
 		baseCharStats().setMyRace(CMClass.getRace("Wyvern"));
 
 		baseEnvStats().setDamage(16);
@@ -33,7 +33,7 @@ public class Wyvern extends StdMOB
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(7);
 		baseEnvStats().setArmor(30);
-        baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_FLYING);
+        baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 18)*baseEnvStats().level()) + 9);
 

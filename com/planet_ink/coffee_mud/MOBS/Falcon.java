@@ -22,16 +22,16 @@ public class Falcon extends StdMOB
 		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
 
 
-		baseCharStats().setIntelligence(4);
-		baseCharStats().setStrength(10);
-		baseCharStats().setDexterity(17);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,4);
+		baseCharStats().setStat(CharStats.STRENGTH,10);
+		baseCharStats().setStat(CharStats.DEXTERITY,17);
 
 		baseEnvStats().setDamage(1);
 		baseEnvStats().setSpeed(3.0);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(2);
 		baseEnvStats().setArmor(50);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_FLYING);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 
 		baseState.setHitPoints((Math.abs(randomizer.nextInt() % 4)*baseEnvStats().level()) + 1);
 

@@ -20,7 +20,7 @@ public class FlyingExit extends StdExit
 		isLocked=false;
 		doorDefaultsClosed=false;
 		doorDefaultsLocked=false;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_FLYING);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
 		recoverEnvStats();
 		openDelayTicks=1;
 	}

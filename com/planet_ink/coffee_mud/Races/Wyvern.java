@@ -16,9 +16,9 @@ public class Wyvern extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(18);
-		affectableStats.setDexterity(13);
-		affectableStats.setIntelligence(8);
+		affectableStats.setStat(CharStats.STRENGTH,18);
+		affectableStats.setStat(CharStats.DEXTERITY,13);
+		affectableStats.setStat(CharStats.INTELLIGENCE,8);
 	}
 	public void setWeight(MOB mob)
 	{

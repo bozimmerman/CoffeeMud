@@ -83,7 +83,7 @@ public class Paladin extends StdCharClass
 		if(affect.amISource(myChar))
 		if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
 			if(myChar.getAlignment() < 650)
-				if(Dice.rollPercentage()>myChar.charStats().getWisdom()*4)
+				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*4)
 				{
 					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> angry god absorb <S-HIS-HER> magical energy!");
 					return false;
@@ -93,10 +93,10 @@ public class Paladin extends StdCharClass
 
 	public boolean qualifiesForThisClass(MOB mob)
 	{
-		if(mob.baseCharStats().getStrength() <= 8)
+		if(mob.baseCharStats().getStat(CharStats.STRENGTH) <= 8)
 			return false;
 
-		if(mob.baseCharStats().getWisdom() <= 8)
+		if(mob.baseCharStats().getStat(CharStats.WISDOM) <= 8)
 			return false;
 
 		if(!(mob.charStats().getMyRace().ID().equals("Human")))

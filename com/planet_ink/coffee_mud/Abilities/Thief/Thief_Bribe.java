@@ -67,7 +67,7 @@ public class Thief_Bribe extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int amountRequired=target.getMoney()+(int)(Math.round(100.0*(Util.div(25.0,mob.charStats().getCharisma())))*target.envStats().level());
+		int amountRequired=target.getMoney()+(int)(Math.round(100.0*(Util.div(25.0,mob.charStats().getStat(CharStats.CHARISMA))))*target.envStats().level());
 
 		boolean success=profficiencyCheck(0,auto);
 

@@ -183,7 +183,7 @@ public class Mage extends StdCharClass
 
 	public boolean qualifiesForThisClass(MOB mob)
 	{
-		if(mob.baseCharStats().getIntelligence()<=8)
+		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
 			return false;
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))
 		&& !(mob.charStats().getMyRace().ID().equals("Elf"))
@@ -299,7 +299,7 @@ public class Mage extends StdCharClass
 					 ||(I.amWearingAt(Item.ON_WAIST))
 					 ||(I.amWearingAt(Item.ON_HEAD)))
 						if((I instanceof Armor)&&(((Armor)I).material()!=Armor.CLOTH))
-							if(Dice.rollPercentage()>myChar.charStats().getIntelligence()*4)
+							if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*4)
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");
 								return false;
@@ -317,7 +317,7 @@ public class Mage extends StdCharClass
 					||(classification==Weapon.CLASS_DAGGER)
 					||(classification==Weapon.CLASS_STAFF))
 					   )
-						if(Dice.rollPercentage()>myChar.charStats().getIntelligence()*4)
+						if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*4)
 						{
 							myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+I.name()+".");
 							return false;

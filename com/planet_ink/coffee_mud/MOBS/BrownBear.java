@@ -23,9 +23,9 @@ public class BrownBear extends StdMOB
 		baseEnvStats.setWeight(450 + Math.abs(randomizer.nextInt() % 55));
 
 
-		baseCharStats().setIntelligence(4);
-		baseCharStats().setStrength(18);
-		baseCharStats().setDexterity(16);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,4);
+		baseCharStats().setStat(CharStats.STRENGTH,18);
+		baseCharStats().setStat(CharStats.DEXTERITY,16);
 		baseCharStats().setMyRace(CMClass.getRace("Bear"));
 
 		baseEnvStats().setDamage(8);

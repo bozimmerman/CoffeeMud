@@ -61,7 +61,7 @@ public class Spell_Web extends Spell
 			||(Util.bset(affect.sourceMajor(),Affect.ACT_MOVE))))
 			{
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web.");
-				amountRemaining-=mob.charStats().getStrength();
+				amountRemaining-=mob.charStats().getStat(CharStats.STRENGTH);
 				if(amountRemaining<0)
 					unInvoke();
 				else

@@ -118,21 +118,21 @@ public class GenSuperPill extends GenPill
 		mob.baseEnvStats().setSpeed(mob.baseEnvStats().speed()+getVal(readableText,"spe"));
 		mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+getVal(readableText,"wei"));
 
-		mob.baseCharStats().setCharisma(mob.baseCharStats().getCharisma()+getVal(readableText,"cha"));
-		mob.baseCharStats().setConstitution(mob.baseCharStats().getConstitution()+getVal(readableText,"con"));
-		mob.baseCharStats().setDexterity(mob.baseCharStats().getDexterity()+getVal(readableText,"dex"));
+		mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+getVal(readableText,"cha"));
+		mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+getVal(readableText,"con"));
+		mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+getVal(readableText,"dex"));
 		String val=getStr(readableText,"gen").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
-			mob.baseCharStats().setGender(val.charAt(0));
-		mob.baseCharStats().setIntelligence(mob.baseCharStats().getIntelligence()+getVal(readableText,"int"));
+			mob.baseCharStats().setStat(CharStats.GENDER,(int)val.charAt(0));
+		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+getVal(readableText,"int"));
 		val=getStr(readableText,"cla").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
 			mob.baseCharStats().setMyClass(CMClass.getCharClass(val));
 		val=getStr(readableText,"rac").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
-		mob.baseCharStats().setStrength(mob.baseCharStats().getStrength()+getVal(readableText,"str"));
-		mob.baseCharStats().setWisdom(mob.baseCharStats().getWisdom()+getVal(readableText,"wis"));
+		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+getVal(readableText,"str"));
+		mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+getVal(readableText,"wis"));
 
 		mob.baseState().setHitPoints(mob.curState().getHitPoints()+getVal(readableText,"hit"));
 		mob.curState().setHunger(mob.curState().getHunger()+getVal(readableText,"hun"));

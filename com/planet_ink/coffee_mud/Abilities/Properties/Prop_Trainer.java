@@ -24,12 +24,12 @@ public class Prop_Trainer extends Property
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		affectableStats.setStrength(25);
-		affectableStats.setWisdom(25);
-		affectableStats.setIntelligence(25);
-		affectableStats.setCharisma(25);
-		affectableStats.setConstitution(25);
-		affectableStats.setDexterity(25);
+		affectableStats.setStat(CharStats.STRENGTH,25);
+		affectableStats.setStat(CharStats.WISDOM,25);
+		affectableStats.setStat(CharStats.INTELLIGENCE,25);
+		affectableStats.setStat(CharStats.CHARISMA,25);
+		affectableStats.setStat(CharStats.CONSTITUTION,25);
+		affectableStats.setStat(CharStats.DEXTERITY,25);
 	}
 
 

@@ -29,7 +29,7 @@ public class Prayer_Curse extends Prayer
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_EVIL);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_EVIL);
 		if(affected instanceof MOB)
 			affectableStats.setArmor(affectableStats.armor()+10);
 		else

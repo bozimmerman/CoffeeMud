@@ -25,8 +25,8 @@ public class Orc extends StdMOB
 			addInventory(d);
 		}
 
-		baseCharStats().setIntelligence(6);
-		baseCharStats().setCharisma(2);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,6);
+		baseCharStats().setStat(CharStats.CHARISMA,2);
 		baseCharStats().setMyRace(CMClass.getRace("Orc"));
 
 		baseEnvStats().setAbility(0);

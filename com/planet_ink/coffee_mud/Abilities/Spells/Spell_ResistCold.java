@@ -50,25 +50,11 @@ public class Spell_ResistCold extends Spell
 
 	}
 
-
-	public void affect(Affect affect)
+	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-
-		MOB mob=(MOB)affected;
-
-		if((affect.amITarget(mob))
-		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
-		&&(affect.targetMinor()==Affect.TYP_COLD)
-		&&(!mob.amDead())
-		&&(profficiencyCheck(0,false)))
-		{
-			affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The warm field around <S-NAME> absorbs the cold blast."));
-			affect.tagModified(true);
-		}
+		super.affectCharStats(affectedMOB,affectedStats);
+		affectedStats.setStat(CharStats.SAVE_COLD,affectedStats.getStat(CharStats.SAVE_COLD)+100);
 	}
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

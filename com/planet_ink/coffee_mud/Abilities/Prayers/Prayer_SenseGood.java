@@ -29,7 +29,7 @@ public class Prayer_SenseGood extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_GOOD);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_GOOD);
 	}
 
 	public void unInvoke()

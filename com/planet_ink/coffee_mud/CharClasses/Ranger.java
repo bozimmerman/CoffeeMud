@@ -79,10 +79,10 @@ public class Ranger extends StdCharClass
 
 	public boolean qualifiesForThisClass(MOB mob)
 	{
-		if(mob.baseCharStats().getStrength()<=8)
+		if(mob.baseCharStats().getStat(CharStats.STRENGTH)<=8)
 			return false;
 
-		if(mob.baseCharStats().getIntelligence()<=8)
+		if(mob.baseCharStats().getStat(CharStats.INTELLIGENCE)<=8)
 			return false;
 
 		if(!(mob.charStats().getMyRace().ID().equals("Human"))

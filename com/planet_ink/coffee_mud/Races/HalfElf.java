@@ -18,7 +18,7 @@ public class HalfElf extends StdRace
 	public void newCharacter(MOB mob)
 	{
 		super.newCharacter(mob);
-		mob.baseEnvStats().setSensesMask(Sense.CAN_SEE_INFRARED);
+		mob.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_INFRARED);
 		Ability A=CMClass.getAbility("Elvish");
 		if(A!=null)
 		{
@@ -34,12 +34,12 @@ public class HalfElf extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_INFRARED);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
+		char gender = (char)mob.baseCharStats().getStat(CharStats.GENDER);
 
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		if (gender == 'M')

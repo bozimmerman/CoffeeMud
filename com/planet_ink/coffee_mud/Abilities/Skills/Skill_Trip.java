@@ -38,7 +38,7 @@ public class Skill_Trip extends StdAbility
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_SITTING);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
 	}
 
 	public int classificationCode()
@@ -108,7 +108,7 @@ public class Skill_Trip extends StdAbility
 			levelDiff=levelDiff*5;
 		else 
 			levelDiff=0;
-		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getDexterity()).doubleValue()-9.0)*3.0))));
+		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.DEXTERITY)).doubleValue()-9.0)*3.0))));
 		boolean success=profficiencyCheck(adjustment,auto);
 		if(success)
 		{

@@ -134,7 +134,7 @@ public class StdMOB implements MOB
 	}
 	public StdMOB()
 	{
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_INFRARED);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_INFRARED);
 	}
 	private void cloneFix(MOB E)
 	{
@@ -256,7 +256,7 @@ public class StdMOB implements MOB
 
 	public int maxCarry()
 	{
-		return (baseEnvStats().weight()+50+(charStats().getStrength()*30));
+		return (baseEnvStats().weight()+50+(charStats().getStat(CharStats.STRENGTH)*30));
 	}
 
 	public CharStats baseCharStats(){return baseCharStats;}
@@ -293,8 +293,8 @@ public class StdMOB implements MOB
 		if((Sense.isLight(this))&&(affected instanceof Room))
 		{
 			if(Sense.isInDark(affected))
-				affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_DARK);
-			affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_LIGHT);
+				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHT);
 		}
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
@@ -703,7 +703,7 @@ public class StdMOB implements MOB
 
 			if(affect.sourceMinor()==Affect.TYP_CAST_SPELL)
 			{
-				if(charStats().getIntelligence()<5)
+				if(charStats().getStat(CharStats.INTELLIGENCE)<5)
 				{
 					tell("You aren't smart enough to do magic.");
 					return false;
@@ -809,7 +809,7 @@ public class StdMOB implements MOB
 							tell("You can't make sounds!");
 							return false;
 						}
-						if(charStats().getIntelligence()<2)
+						if(charStats().getStat(CharStats.INTELLIGENCE)<2)
 						{
 							tell("You aren't smart enough to speak.");
 							return false;
@@ -1043,7 +1043,7 @@ public class StdMOB implements MOB
 				}
 				break;
 			case Affect.TYP_FOLLOW:
-				if(numFollowers()>((int)Math.round(Util.div(charStats().getCharisma(),3.0))+1))
+				if(numFollowers()>((int)Math.round(Util.div(charStats().getStat(CharStats.CHARISMA),3.0))+1))
 				{
 					mob.tell(name()+" can't accept any more followers.");
 					return false;
@@ -1125,8 +1125,8 @@ public class StdMOB implements MOB
 			case Affect.TYP_SIT:
 				{
 				int oldDisposition=mob.baseEnvStats().disposition();
-				oldDisposition=oldDisposition&(Integer.MAX_VALUE-Sense.IS_SLEEPING-Sense.IS_SNEAKING-Sense.IS_SITTING);
-				mob.baseEnvStats().setDisposition(oldDisposition|Sense.IS_SITTING);
+				oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
+				mob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
@@ -1136,8 +1136,8 @@ public class StdMOB implements MOB
 			case Affect.TYP_SLEEP:
 				{
 				int oldDisposition=mob.baseEnvStats().disposition();
-				oldDisposition=oldDisposition&(Integer.MAX_VALUE-Sense.IS_SLEEPING-Sense.IS_SNEAKING-Sense.IS_SITTING);
-				mob.baseEnvStats().setDisposition(oldDisposition|Sense.IS_SLEEPING);
+				oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
+				mob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SLEEPING);
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
@@ -1147,7 +1147,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_STAND:
 				{
 				int oldDisposition=mob.baseEnvStats().disposition();
-				oldDisposition=oldDisposition&(Integer.MAX_VALUE-Sense.IS_SLEEPING-Sense.IS_SNEAKING-Sense.IS_SITTING);
+				oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
 				mob.baseEnvStats().setDisposition(oldDisposition);
 				mob.recoverEnvStats();
 				mob.recoverCharStats();
@@ -1214,39 +1214,11 @@ public class StdMOB implements MOB
 				}
 				else
 				{
-					int chanceToFail=((this.envStats().level()-mob.envStats().level())*5);
-					switch(affect.targetMinor())
-					{
-					case Affect.TYP_CAST_SPELL:
-						chanceToFail+=charStats().getIntelligence();
-						break;
-					case Affect.TYP_UNDEAD:
-						chanceToFail+=(charStats().getWisdom()+(getAlignment()/200));
-						break;
-					case Affect.TYP_MIND:
-						chanceToFail+=(charStats().getWisdom()+charStats().getIntelligence()+charStats().getCharisma());
-						break;
-					case Affect.TYP_PARALYZE:
-						chanceToFail+=(charStats().getConstitution()+charStats().getStrength());
-						break;
-					case Affect.TYP_POISON:
-						chanceToFail+=(charStats().getConstitution()*2);
-						break;
-					case Affect.TYP_GAS:
-						if(!Sense.canSmell(this))
-							chanceToFail+=100;
-						else
-							chanceToFail+=(int)Math.round(Util.div((charStats().getConstitution()+charStats().getDexterity()),2.0));
-						break;
-					case Affect.TYP_COLD:
-					case Affect.TYP_ELECTRIC:
-					case Affect.TYP_FIRE:
-					case Affect.TYP_WATER:
-						chanceToFail+=(int)Math.round(Util.div((charStats().getConstitution()+charStats().getDexterity()),2.0));
-						break;
-					}
-
-					if((chanceToFail>0)&&(!affect.wasModified()))
+					int chanceToFail=Integer.MIN_VALUE;
+					for(int c=0;c<CharStats.affectTypeMap.length;c++)
+						if(affect.targetMinor()==CharStats.affectTypeMap[c])
+						{	chanceToFail=charStats().getSave(CharStats.affectTypeMap[c]); break;}
+					if((chanceToFail>Integer.MIN_VALUE)&&(!affect.wasModified()))
 					{
 						if(chanceToFail<5)
 							chanceToFail=5;

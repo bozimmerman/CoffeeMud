@@ -22,8 +22,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
 
-		baseCharStats().setIntelligence(16);
-		baseCharStats().setCharisma(25);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,16);
+		baseCharStats().setStat(CharStats.CHARISMA,25);
 
 		baseEnvStats().setArmor(0);
 
@@ -584,10 +584,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		double quarterPrice=Math.round(Util.div(val,4.0));
 		
 		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30
-		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getCharisma(),30.0)));
+		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
 		
 		// the price is 200% at 0 charisma, and 100% at 30
-		int sellPrice=(int)Math.round(val+val-Util.mul(val,Util.div(mob.charStats().getCharisma(),30.0)));
+		int sellPrice=(int)Math.round(val+val-Util.mul(val,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
 		
 		if(buyPrice>sellPrice)buyPrice=sellPrice;
 

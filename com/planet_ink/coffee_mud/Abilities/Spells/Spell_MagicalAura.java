@@ -40,7 +40,7 @@ public class Spell_MagicalAura extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_BONUS);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
 	}
 
 	public void unInvoke()

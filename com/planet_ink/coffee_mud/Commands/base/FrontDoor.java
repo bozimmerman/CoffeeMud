@@ -206,7 +206,7 @@ public class FrontDoor
 				while(Gender.length()==0)
 					Gender=mob.session().choose("\n\r^BWhat is your gender (M/F)?^N","MF","");
 
-				mob.baseCharStats().setGender(Gender.toUpperCase().charAt(0));
+				mob.baseCharStats().setStat(CharStats.GENDER,(int)Gender.toUpperCase().charAt(0));
 
 				mob.session().println(null,null,"\n\r\n\r"+Resources.getFileResource("stats.txt").toString());
 

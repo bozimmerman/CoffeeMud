@@ -18,15 +18,15 @@ public class Bat extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE_DARK);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_FLYING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(3);
-		affectableStats.setDexterity(13);
-		affectableStats.setIntelligence(3);
+		affectableStats.setStat(CharStats.STRENGTH,3);
+		affectableStats.setStat(CharStats.DEXTERITY,13);
+		affectableStats.setStat(CharStats.INTELLIGENCE,3);
 	}
 	public void setWeight(MOB mob)
 	{

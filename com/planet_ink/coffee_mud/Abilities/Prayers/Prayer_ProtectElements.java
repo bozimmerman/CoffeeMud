@@ -39,30 +39,16 @@ public class Prayer_ProtectElements extends Prayer
 		mob.tell("Your elemental protection fades.");
 	}
 
-	public boolean okAffect(Affect affect)
+	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		if(!super.okAffect(affect))
-			return false;
-		if(invoker==null) return true;
-		if(affected==null) return true;
-		if(!(affected instanceof MOB)) return true;
-
-		if(affect.target()==invoker)
-		{
-			if((affect.targetMinor()==Affect.TYP_WATER)
-			||(affect.targetMinor()==Affect.TYP_COLD)
-			||(affect.targetMinor()==Affect.TYP_FIRE)
-			||(affect.targetMinor()==Affect.TYP_GAS))
-			{
-				affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protects <S-HIS-HER> body from elemental assaults.");
-				return false;
-			}
-
-		}
-		return true;
+		super.affectCharStats(affected,affectableStats);
+		if(invoker==null) return;
+		affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+50);
+		affectableStats.setStat(CharStats.SAVE_COLD,affectableStats.getStat(CharStats.SAVE_COLD)+50);
+		affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)+50);
+		affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)+50);
+		affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_GAS)+50);
 	}
-
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob;

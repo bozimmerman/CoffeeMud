@@ -53,12 +53,12 @@ public class Poison extends StdAbility
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(affected==null) return;
-		affectableStats.setConstitution(affectableStats.getConstitution()-5);
-		affectableStats.setStrength(affectableStats.getStrength()-5);
-		if(affectableStats.getConstitution()<=0)
-			affectableStats.setConstitution(1);
-		if(affectableStats.getStrength()<=0)
-			affectableStats.setStrength(1);
+		affectableStats.setStat(CharStats.CONSTITUTION,affectableStats.getStat(CharStats.CONSTITUTION)-5);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)-5);
+		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
+			affectableStats.setStat(CharStats.CONSTITUTION,1);
+		if(affectableStats.getStat(CharStats.STRENGTH)<=0)
+			affectableStats.setStat(CharStats.STRENGTH,1);
 	}
 
 	public void unInvoke()

@@ -17,14 +17,14 @@ public class GreatBird extends StdRace
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_FLYING);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(8);
-		affectableStats.setDexterity(10);
-		affectableStats.setIntelligence(4);
+		affectableStats.setStat(CharStats.STRENGTH,8);
+		affectableStats.setStat(CharStats.DEXTERITY,10);
+		affectableStats.setStat(CharStats.INTELLIGENCE,4);
 	}
 	public void setWeight(MOB mob)
 	{

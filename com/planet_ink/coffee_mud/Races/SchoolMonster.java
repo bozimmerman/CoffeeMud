@@ -18,9 +18,9 @@ public class SchoolMonster extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStrength(1);
-		affectableStats.setDexterity(1);
-		affectableStats.setIntelligence(3);
+		affectableStats.setStat(CharStats.STRENGTH,1);
+		affectableStats.setStat(CharStats.DEXTERITY,1);
+		affectableStats.setStat(CharStats.INTELLIGENCE,3);
 	}
 	public void setWeight(MOB mob)
 	{

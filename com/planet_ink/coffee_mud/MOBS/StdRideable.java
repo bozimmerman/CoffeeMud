@@ -57,10 +57,10 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		super.recoverEnvStats();
 		if(rideBasis==Rideable.RIDEABLE_AIR)
-			envStats().setDisposition(envStats().disposition()|Sense.IS_FLYING);
+			envStats().setDisposition(envStats().disposition()|EnvStats.IS_FLYING);
 		else
 		if(rideBasis==Rideable.RIDEABLE_WATER)
-			envStats().setDisposition(envStats().disposition()|Sense.IS_SWIMMING);
+			envStats().setDisposition(envStats().disposition()|EnvStats.IS_SWIMMING);
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

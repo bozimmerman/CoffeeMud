@@ -19,7 +19,7 @@ public class MichaelsMithrilChain extends StdArmor
 		baseEnvStats().setArmor(50);
 		baseEnvStats().setWeight(40);
 		baseEnvStats().setAbility(75);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 		material=Armor.MITHRIL;
 	}

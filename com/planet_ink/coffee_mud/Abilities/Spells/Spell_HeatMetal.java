@@ -79,7 +79,7 @@ public class Spell_HeatMetal extends Spell
 				int damage=Dice.roll(1,6,1);
 				mob.location().show(mob,null,Affect.MSG_OK_ACTION,item.name()+" "+ExternalPlay.standardHitWord(Weapon.TYPE_BURNING,damage)+" <S-NAME>!");
 				ExternalPlay.postDamage(invoker,mob,this,damage);
-				if(Dice.rollPercentage()<mob.charStats().getStrength())
+				if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
 				{
 					ExternalPlay.drop(mob,item);
 					if(!mob.isMine(item))
@@ -91,7 +91,6 @@ public class Spell_HeatMetal extends Spell
 				}
 			}
 		}
-
 		return true;
 	}
 

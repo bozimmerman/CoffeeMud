@@ -31,7 +31,7 @@ public class Prayer_Blindness extends Prayer
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		
-		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE);
 	}
 
 	public void unInvoke()
@@ -57,7 +57,7 @@ public class Prayer_Blindness extends Prayer
 
 
 
-		boolean success=profficiencyCheck(-((target.charStats().getWisdom()*2)),auto);
+		boolean success=profficiencyCheck(-((target.charStats().getStat(CharStats.WISDOM)*2)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -50,7 +50,7 @@ public class Thief_Peek extends ThiefSkill
 
 		if(!success)
 		{
-			int discoverChance=(int)Math.round(Util.div(target.charStats().getWisdom(),30.0))+(levelDiff*5);
+			int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 
@@ -68,7 +68,7 @@ public class Thief_Peek extends ThiefSkill
 		}
 		else
 		{
-			int discoverChance=(int)Math.round(Util.div(target.charStats().getWisdom(),30.0))+(levelDiff*5);
+			int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);
 			if(discoverChance>95) discoverChance=95;
 			if(discoverChance<5) discoverChance=5;
 

@@ -51,7 +51,7 @@ public class Spell_Darkness extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition() |  Sense.IS_DARK);
+		affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
 	}
 
 

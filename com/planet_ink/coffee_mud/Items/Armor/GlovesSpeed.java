@@ -19,7 +19,7 @@ public class GlovesSpeed extends StdArmor
 		baseEnvStats().setArmor(15);
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setWeight(1);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 
 	}

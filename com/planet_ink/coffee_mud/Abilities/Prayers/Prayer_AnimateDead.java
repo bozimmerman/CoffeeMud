@@ -86,8 +86,8 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");
 				newMOB.baseEnvStats().setLevel(body.envStats().level());
-				newMOB.baseCharStats().setStrength(25);
-				newMOB.baseCharStats().setDexterity(3);
+				newMOB.baseCharStats().setStat(CharStats.STRENGTH,25);
+				newMOB.baseCharStats().setStat(CharStats.DEXTERITY,3);
 				newMOB.baseEnvStats().setAttackAdjustment(50);
 				newMOB.baseEnvStats().setDamage(30);
 				newMOB.setAlignment(0);

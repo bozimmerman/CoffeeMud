@@ -25,6 +25,6 @@ public class Prop_RoomDark extends Property
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_DARK);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_DARK);
 	}
 }

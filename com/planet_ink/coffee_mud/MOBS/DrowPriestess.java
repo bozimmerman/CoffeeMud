@@ -35,19 +35,19 @@ public class DrowPriestess extends DrowElf
 		baseState.setHitPoints(Dice.roll(baseEnvStats().level(), 8, 2));
 		setMoney(Dice.roll(4,10,0) * 25);
 		baseEnvStats.setWeight(70 + Dice.roll(3,6,2));
-		baseCharStats.setGender('F');
+		baseCharStats.setStat(CharStats.GENDER,(int)'F');
 
 		setWimpHitPoint(1);
 
-		baseEnvStats().setSensesMask(Sense.CAN_SEE_DARK | Sense.CAN_SEE_INFRARED);
+		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
 		baseEnvStats().setSpeed(1.0);
 
-		baseCharStats().setStrength(12 + Dice.roll(1,6,0));
-		baseCharStats().setIntelligence(14 + Dice.roll(1,6,0));
-		baseCharStats().setWisdom(13 + Dice.roll(1,6,0));
-		baseCharStats().setDexterity(15 + Dice.roll(1,6,0));
-		baseCharStats().setConstitution(12 + Dice.roll(1,6,0));
-		baseCharStats().setCharisma(13 + Dice.roll(1,6,0));
+		baseCharStats().setStat(CharStats.STRENGTH,12 + Dice.roll(1,6,0));
+		baseCharStats().setStat(CharStats.INTELLIGENCE,14 + Dice.roll(1,6,0));
+		baseCharStats().setStat(CharStats.WISDOM,13 + Dice.roll(1,6,0));
+		baseCharStats().setStat(CharStats.DEXTERITY,15 + Dice.roll(1,6,0));
+		baseCharStats().setStat(CharStats.CONSTITUTION,12 + Dice.roll(1,6,0));
+		baseCharStats().setStat(CharStats.CHARISMA,13 + Dice.roll(1,6,0));
 		baseCharStats().setMyClass(CMClass.getCharClass("Cleric"));
         baseCharStats().setMyRace(CMClass.getRace("Elf"));
 

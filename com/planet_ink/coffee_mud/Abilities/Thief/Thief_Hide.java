@@ -57,9 +57,9 @@ public class Thief_Hide extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|Sense.IS_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 		if(Sense.isSneaking(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-Sense.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SNEAKING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -26,9 +26,9 @@ public class Bugbear extends StdMOB
 			addInventory(h);
 		}
 
-		baseCharStats().setIntelligence(6);
-		baseCharStats().setCharisma(2);
-		baseCharStats().setStrength(22);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,6);
+		baseCharStats().setStat(CharStats.CHARISMA,2);
+		baseCharStats().setStat(CharStats.STRENGTH,22);
 
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(3);

@@ -116,7 +116,7 @@ public class Scoring
 		StringBuffer msg=new StringBuffer("");
 
 		msg.append("You are ^H"+mob.name()+"^? the level ^B"+mob.envStats().level()+" "+mob.charStats().getMyClass().name()+"^?.\n\r");
-		msg.append("You are a ^B"+((mob.charStats().getGender()=='M')?"male":"female")+" "+mob.charStats().getMyRace().name() + "^?");
+		msg.append("You are a ^B"+((mob.charStats().getStat(CharStats.GENDER)=='M')?"male":"female")+" "+mob.charStats().getMyRace().name() + "^?");
 		if(mob.getWorshipCharID().length()>0)
 			msg.append(" who worships ^H"+mob.getWorshipCharID()+"^?");
 		msg.append(".\n\r");

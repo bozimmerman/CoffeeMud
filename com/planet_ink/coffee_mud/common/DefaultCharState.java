@@ -107,9 +107,9 @@ public class DefaultCharState implements Cloneable, CharState
 
 		botherCycle=0;
 
-		double con=new Integer(mob.charStats().getConstitution()).doubleValue();
-		double man=new Integer((mob.charStats().getIntelligence()+mob.charStats().getWisdom())).doubleValue();
-		double str=new Integer(mob.charStats().getStrength()).doubleValue();
+		double con=new Integer(mob.charStats().getStat(CharStats.CONSTITUTION)).doubleValue();
+		double man=new Integer((mob.charStats().getStat(CharStats.INTELLIGENCE)+mob.charStats().getStat(CharStats.WISDOM))).doubleValue();
+		double str=new Integer(mob.charStats().getStat(CharStats.STRENGTH)).doubleValue();
 		int lvl=mob.envStats().level();
 		int lvlby2=(int)Math.round(Util.div(lvl,2.0));
 

@@ -35,6 +35,6 @@ public class Song_Charm extends Song
 	{
 		super.affectCharStats(affectedMob,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setCharisma(affectableStats.getCharisma()+4);
+		affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+4);
 	}
 }

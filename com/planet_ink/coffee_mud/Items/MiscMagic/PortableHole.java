@@ -18,7 +18,7 @@ public class PortableHole extends BagOfHolding implements MiscMagic
 		capacity=200 * baseEnvStats().level();
 
 		baseGoldValue=15000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|Sense.IS_BONUS);
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 
 

@@ -43,7 +43,7 @@ public class Inebriation extends StdAbility
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setDexterity((int)Math.round(affectableStats.getDexterity()-3));
+		affectableStats.setStat(CharStats.DEXTERITY,(int)Math.round(affectableStats.getStat(CharStats.DEXTERITY)-3));
 	}
 
 	public boolean tick(int tickID)

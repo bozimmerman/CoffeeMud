@@ -21,12 +21,12 @@ public class Teacher extends StdMOB
 		addBehavior(CMClass.getBehavior("MudChat"));
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
 
-		baseCharStats().setIntelligence(25);
-		baseCharStats().setWisdom(25);
-		baseCharStats().setCharisma(25);
-		baseCharStats().setDexterity(25);
-		baseCharStats().setStrength(25);
-		baseCharStats().setConstitution(25);
+		baseCharStats().setStat(CharStats.INTELLIGENCE,25);
+		baseCharStats().setStat(CharStats.WISDOM,25);
+		baseCharStats().setStat(CharStats.CHARISMA,25);
+		baseCharStats().setStat(CharStats.DEXTERITY,25);
+		baseCharStats().setStat(CharStats.STRENGTH,25);
+		baseCharStats().setStat(CharStats.CONSTITUTION,25);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 
 		baseEnvStats().setAbility(10);
