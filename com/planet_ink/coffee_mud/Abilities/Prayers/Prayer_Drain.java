@@ -67,7 +67,7 @@ public class Prayer_Drain extends Prayer
 					int maxDie =  (int)Math.round(Util.div(adjustedLevel(mob),4.0));
 					if (maxDie > 5)
 						maxDie = 5;
-					damage += Dice.roll(maxDie,5,1);
+					damage += Dice.roll(maxDie,6,1);
 
 					ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_UNDEAD,Weapon.TYPE_BURSTING,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp <DAMAGE> <T-NAME>.");
 				}
