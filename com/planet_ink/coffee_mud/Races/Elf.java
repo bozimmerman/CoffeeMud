@@ -18,6 +18,15 @@ public class Elf extends StdRace
 	public void newCharacter(MOB mob)
 	{
 		super.newCharacter(mob);
+		Ability A=CMClass.getAbility("Elvish");
+		if(A!=null)
+		{
+			A=(Ability)A.newInstance();
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+			if(mob.isMonster())
+				A.invoke(mob,mob,true);
+		}
 		if(!mob.isMonster())
 			outfit(mob);
 	}

@@ -283,6 +283,9 @@ public class CMClass extends ClassLoader
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"");
 		Log.sysOut("MUD","            Traps : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"");
+		Log.sysOut("MUD","        Languages : "+tempV.size());
+		if(tempV.size()==0)  return false; addV(tempV,abilities);
 
 		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"));
 		Log.sysOut("MUD","Items loaded      : "+items.size());

@@ -21,7 +21,15 @@ public class Halfling extends StdRace
 		mob.baseCharStats().setDexterity(mob.baseCharStats().getDexterity()+1);
 		mob.baseCharStats().setStrength(mob.baseCharStats().getStrength()-1);
 		mob.baseEnvStats().setSensesMask(Sense.CAN_SEE_INFRARED);
-
+		Ability A=CMClass.getAbility("Elvish");
+		if(A!=null)
+		{
+			A=(Ability)A.newInstance();
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+			if(mob.isMonster())
+				A.invoke(mob,mob,true);
+		}
 		if(!mob.isMonster())
 			outfit(mob);
 	}

@@ -2,6 +2,8 @@ Have the tick confirm someones victim -- fighting the wolf for all of zaras pets
 ! Mirror Image still doing it -- from the start!
 ! The elder druid attempts to horribly curse his, but nothing happens. HIS WHAT!!?
 ! Handle multiple items in a room! (#) them!
+! Make the train/practice requirement optional per ability
+! Add "All" as a qualifying class
 
 
 

@@ -123,6 +123,7 @@ public class CommandSet extends Hashtable
 	public static final int WEATHER=111;
 	public static final int AUTOMELEE=112;
 	public static final int EXPORT=113;
+	public static final int LANGUAGES=114;
 
 	public CommandSet()
 	{
@@ -195,6 +196,8 @@ public class CommandSet extends Hashtable
 			put("I",new Integer(INVENTORY));
 		put("KILL",new Integer(KILL));
 			put("K",new Integer(KILL));
+		put("LANGUAGES",new Integer(LANGUAGES));
+			put("LANGS",new Integer(LANGUAGES));
 		put("LIST",new Integer(LIST));
 			put("LI",new Integer(LIST));
 		put("LINK",new Integer(LINK));

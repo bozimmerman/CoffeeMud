@@ -235,6 +235,9 @@ public class CommandProcessor
 				case CommandSet.KILL:
 					theFight.kill(mob,commands);
 					break;
+				case CommandSet.LANGUAGES:
+					scoring.languages(mob);
+					break;
 				case CommandSet.LIST:
 					socialProcessor.list(mob,commands);
 					break;

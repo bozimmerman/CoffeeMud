@@ -34,6 +34,19 @@ public class Goblin extends StdRace
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(70+weightModifier);
 	}
+	public void newCharacter(MOB mob)
+	{
+		super.newCharacter(mob);
+		Ability A=CMClass.getAbility("Orcish");
+		if(A!=null)
+		{
+			A=(Ability)A.newInstance();
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+			if(mob.isMonster())
+				A.invoke(mob,mob,true);
+		}
+	}
 	public Weapon myNaturalWeapon()
 	{
 		if(naturalWeapon==null)

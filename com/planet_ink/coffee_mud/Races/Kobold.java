@@ -35,6 +35,19 @@ public class Kobold extends StdRace
 	{
 		return "creeps";
 	}
+	public void newCharacter(MOB mob)
+	{
+		super.newCharacter(mob);
+		Ability A=CMClass.getAbility("Draconic");
+		if(A!=null)
+		{
+			A=(Ability)A.newInstance();
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+			if(mob.isMonster())
+				A.invoke(mob,mob,true);
+		}
+	}
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());

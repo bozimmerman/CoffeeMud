@@ -36,6 +36,19 @@ public class Wyvern extends StdRace
 		}
 		return naturalWeapon;
 	}
+	public void newCharacter(MOB mob)
+	{
+		super.newCharacter(mob);
+		Ability A=CMClass.getAbility("Draconic");
+		if(A!=null)
+		{
+			A=(Ability)A.newInstance();
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+			if(mob.isMonster())
+				A.invoke(mob,mob,true);
+		}
+	}
 	public String healthText(MOB mob)
 	{
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));

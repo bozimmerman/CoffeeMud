@@ -29,6 +29,9 @@ public class StdAbility implements Ability, Cloneable
 	protected boolean isAutoinvoked=false;
 	protected boolean unInvoked=false;
 	protected boolean putInCommandlist=true;
+	protected int trainsRequired=1;
+	protected int practicesRequired=1;
+	protected int practicesToPractice=1;
 
 	protected int quality=Ability.INDIFFERENT;
 	
@@ -593,16 +596,16 @@ public class StdAbility implements Ability, Cloneable
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{
-		if(student.getPractices()<=0)
+		if(student.getPractices()<practicesRequired)
 		{
 			teacher.tell(student.name()+" does not have enough practices to learn '"+name()+"'.");
-			student.tell("You do not have any practices.");
+			student.tell("You do not have enough practices.");
 			return false;
 		}
-		if(student.getTrains()<=0)
+		if(student.getTrains()<trainsRequired)
 		{
 			teacher.tell(student.name()+" does not have enough training points to learn '"+name()+"'.");
-			student.tell("You do not have any training points.");
+			student.tell("You do not have enough training points.");
 			return false;
 		}
 		int qLevel=qualifyingLevel(student);
@@ -654,10 +657,10 @@ public class StdAbility implements Ability, Cloneable
 
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
-		if(student.getPractices()==0)
+		if(student.getPractices()<practicesToPractice)
 		{
 			teacher.tell(student.name()+" does not have enough practices to practice '"+name()+"'.");
-			student.tell("You do not have any practices.");
+			student.tell("You do not have enough practices.");
 			return false;
 		}
 
@@ -711,14 +714,14 @@ public class StdAbility implements Ability, Cloneable
 
 	public void teach(MOB teacher, MOB student)
 	{
-		if(student.getPractices()==0)
+		if(student.getPractices()<practicesRequired)
 			return;
-		if(student.getTrains()==0)
+		if(student.getTrains()<trainsRequired)
 			return;
 		if(student.fetchAbility(ID())==null)
 		{
-			student.setPractices(student.getPractices()-1);
-			student.setTrains(student.getTrains()-1);
+			student.setPractices(student.getPractices()-practicesRequired);
+			student.setTrains(student.getTrains()-trainsRequired);
 			Ability newAbility=(Ability)newInstance();
 			newAbility.setProfficiency((int)Math.round(Util.mul(profficiency(),((Util.div(teacher.charStats().getWisdom()+student.charStats().getIntelligence(),100.0))))));
 			if(newAbility.profficiency()>75)
@@ -733,7 +736,7 @@ public class StdAbility implements Ability, Cloneable
 
 	public void practice(MOB teacher, MOB student)
 	{
-		if(student.getPractices()==0)
+		if(student.getPractices()<practicesToPractice)
 			return;
 
 		Ability yourAbility=student.fetchAbility(ID());
@@ -741,7 +744,7 @@ public class StdAbility implements Ability, Cloneable
 		{
 			if(yourAbility.profficiency()<75)
 			{
-				student.setPractices(student.getPractices()-1);
+				student.setPractices(student.getPractices()-practicesToPractice);
 				yourAbility.setProfficiency(yourAbility.profficiency()+(int)Math.round(25.0*(Util.div(teacher.charStats().getWisdom()+student.charStats().getIntelligence(),36.0))));
 				if(yourAbility.profficiency()>75)
 					yourAbility.setProfficiency(75);

@@ -21,6 +21,7 @@ public class Language extends StdAbility
 		triggerStrings.addElement("SPEAK");
 		canBeUninvoked=false;
 		isAutoinvoked=true;
+		trainsRequired=0;
 	}
 
 	public int classificationCode()
@@ -82,9 +83,9 @@ public class Language extends StdAbility
 	}
 	protected String subStitute(String affmsg, String msg)
 	{
-		if(msg==null) return null;
-		int start=msg.indexOf("'");
-		int end=msg.lastIndexOf("'");
+		if(affmsg==null) return null;
+		int start=affmsg.indexOf("'");
+		int end=affmsg.lastIndexOf("'");
 		if((start>0)&&(end>start))
 			return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
 		return affmsg;
@@ -103,6 +104,7 @@ public class Language extends StdAbility
 	
 	protected String messChars(String words, int numToMess)
 	{
+		numToMess=numToMess/2;
 		if(numToMess==0) return words;
 		StringBuffer w=new StringBuffer(words);
 		while(numToMess>0)
@@ -141,37 +143,51 @@ public class Language extends StdAbility
 				if(numToMess>0)
 					smsg=messChars(smsg,numToMess);
 				StringBuffer newStr=new StringBuffer("");
-				while(msg.length()>0)
+				int start=0;
+				int end=0;
+				int state=-1;
+				while(start<=msg.length())
 				{
-					int x=msg.indexOf(" ");
-					if(x<0)
+					char c='\0';
+					if(end>=msg.length())
+						c=' ';
+					else
+						c=msg.charAt(end);
+					switch(state)
 					{
-						newStr.append(msg);
+					case -1:
+						if(Character.isLetter(c))
+						{ state=0; end++;}
+						else
+						{ newStr.append(c); end++;start=end;}
+						break;
+					case 0:
+						if(Character.isLetter(c))
+						{ end++;}
+						else
+						if(Character.isDigit(c))
+						{ newStr.append(msg.substring(start,end+1)); end++; start=end; state=1; }
+						else
+						{ newStr.append(translate(msg.substring(start,end))+c); end++; start=end; state=-1; }
+						break;
+					case 1:
+						if(Character.isLetterOrDigit(c))
+						{ newStr.append(c); end++; start=end;}
+						else
+						{ newStr.append(c); end++; start=end; state=-1; }
 						break;
 					}
-					String word=msg.substring(0,x);
-					boolean nonChar=false;
-					for(int i=0;i<word.length();i++)
-						if((word.charAt(i)!=' ')&&(!Character.isLetter(word.charAt(i))))
-						{
-							nonChar=true;
-							break;
-						}
-					if(nonChar)
-						newStr.append(word+" ");
-					else
-						newStr.append(translate(word)+" ");
-					msg=msg.substring(x+1);
 				}
+				msg=newStr.toString().trim();
 				affect.modify(affect.source(),
 							  affect.target(),
 							  this,
 							  affect.sourceCode(),
-							  smsg,
+							  subStitute(affect.sourceMessage(),smsg),
 							  affect.targetCode(),
-							  subStitute(affect.targetMessage(),newStr.toString()),
+							  subStitute(affect.targetMessage(),msg),
 							  affect.othersCode(),
-							  subStitute(affect.othersMessage(),newStr.toString()));
+							  subStitute(affect.othersMessage(),msg));
 				helpProfficiency((MOB)affected);
 			}
 		}
@@ -179,13 +195,16 @@ public class Language extends StdAbility
 	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		Ability A=mob.fetchAffect(ID());
-		if(A instanceof Language)
+		for(int a=0;a<mob.numAffects();a++)
 		{
-			if(A==this)
-				((Language)A).setBeingSpoken(true);
-			else
-				((Language)A).setBeingSpoken(false);
+			Ability A=mob.fetchAffect(a);
+			if((A!=null)&&(A instanceof Language))
+			{
+				if(A.ID().equals(ID()))
+					((Language)A).setBeingSpoken(true);
+				else
+					((Language)A).setBeingSpoken(false);
+			}
 		}
 		isAnAutoEffect=false;
 		mob.tell("You are now speaking "+name()+".");
@@ -206,11 +225,16 @@ public class Language extends StdAbility
 		{
 			String msg=this.getMsgFromAffect(affect.sourceMessage());
 			if(msg!=null)
-			if(affect.amITarget(null)&&(affect.targetMessage()!=null))
-				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)));
-			else
-			if(!affect.amITarget(null)&&(affect.othersMessage()!=null))
-				affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.othersCode(),Affect.NO_EFFECT,this.subStitute(affect.othersMessage(),msg)));
+			{
+				int numToMess=(int)Math.round(Util.mul(numChars(msg),100-profficiency()));
+				if(numToMess>0)
+					msg=messChars(msg,numToMess);
+				if(affect.amITarget(null)&&(affect.targetMessage()!=null))
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.targetCode(),Affect.NO_EFFECT,this.subStitute(affect.targetMessage(),msg)+"(translated from "+ID()+")"));
+				else
+				if(!affect.amITarget(null)&&(affect.othersMessage()!=null))
+					affect.addTrailerMsg(new FullMsg(affect.source(),(MOB)affected,null,Affect.NO_EFFECT,affect.othersCode(),Affect.NO_EFFECT,this.subStitute(affect.othersMessage(),msg)+"(translated from "+ID()+")"));
+			}
 		}
 	}
 	

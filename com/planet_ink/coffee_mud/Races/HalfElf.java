@@ -19,7 +19,15 @@ public class HalfElf extends StdRace
 	{
 		super.newCharacter(mob);
 		mob.baseEnvStats().setSensesMask(Sense.CAN_SEE_INFRARED);
-
+		Ability A=CMClass.getAbility("Elvish");
+		if(A!=null)
+		{
+			A=(Ability)A.newInstance();
+			mob.addAbility(A);
+			A.autoInvocation(mob);
+			if(mob.isMonster())
+				A.invoke(mob,mob,true);
+		}
 		if(!mob.isMonster())
 			outfit(mob);
 	}
