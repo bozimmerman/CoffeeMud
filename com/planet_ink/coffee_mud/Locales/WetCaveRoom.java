@@ -17,4 +17,9 @@ public class WetCaveRoom extends CaveRoom
 	{
 		return new WetCaveRoom();
 	}
+	public int getMaxRange()
+	{
+		if(maxRange>=0) return maxRange;
+		return 5;
+	}
 }

@@ -21,4 +21,9 @@ public class CaveRoom extends StdRoom
 	{
 		return new CaveRoom();
 	}
+	public int getMaxRange()
+	{
+		if(maxRange>=0) return maxRange;
+		return 5;
+	}
 }

@@ -32,4 +32,7 @@ public interface Weapon extends Item
 	public String classifictionDescription();
 	public String hitString(int damageAmount);
 	public String missString();
+	public int minRange();
+	public int maxRange();
+	public void setRanges(int min, int max);
 }

@@ -25,6 +25,7 @@ public class StdRoom
 	protected Vector inhabitants=new Vector();
 	protected int domainType=Room.DOMAIN_OUTDOORS_CITY;
 	protected int domainCondition=Room.CONDITION_NORMAL;
+	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
 
 	protected boolean skyedYet=false;
 
@@ -810,6 +811,16 @@ public class StdRoom
 			return 1;
 		else
 			return 3;
+	}
+	public int getMaxRange()
+	{
+		if(maxRange>=0)
+			return maxRange;
+		else
+		if((domainType&Room.INDOORS)>0)
+			return 1;
+		else
+			return 10;
 	}
 
 	public void addAffect(Ability to)

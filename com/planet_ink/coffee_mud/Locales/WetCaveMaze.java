@@ -21,4 +21,9 @@ public class WetCaveMaze extends Maze
 	{
 		return new WetCaveMaze();
 	}
+	public int getMaxRange()
+	{
+		if(maxRange>=0) return maxRange;
+		return 5;
+	}
 }

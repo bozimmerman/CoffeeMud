@@ -18,6 +18,7 @@ public interface Room extends Environmental
 	public Exit getPairedExit(int direction);
 	
 	public int pointsPerMove();
+	public int getMaxRange();
 	public void look(MOB mob);
 	public void listExits(MOB mob);
 	public void bringMobHere(MOB mob, boolean andFollowers);

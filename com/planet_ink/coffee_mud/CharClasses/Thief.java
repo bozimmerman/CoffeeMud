@@ -30,6 +30,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Peek",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",true);
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);

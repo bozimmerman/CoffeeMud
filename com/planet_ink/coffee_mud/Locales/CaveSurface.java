@@ -20,4 +20,9 @@ public class CaveSurface extends ClimbableSurface
 	{
 		return new CaveSurface();
 	}
+	public int getMaxRange()
+	{
+		if(maxRange>=0) return maxRange;
+		return 5;
+	}
 }

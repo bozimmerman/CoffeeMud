@@ -21,4 +21,9 @@ public class CaveMaze extends Maze
 	{
 		return new CaveMaze();
 	}
+	public int getMaxRange()
+	{
+		if(maxRange>=0) return maxRange;
+		return 5;
+	}
 }

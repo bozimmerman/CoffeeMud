@@ -1634,15 +1634,22 @@ public class Import
 					 {
 						 I=CMClass.getMiscMagic("GenMultiPotion");
 						 ((Potion)I).setSpellList("Inebriation"+";");
+						((Drink)I).setLiquidHeld(val1);
+						((Drink)I).setLiquidRemaining(val2);
 					 }
 					 else
 					 if((val4>0)||(str3.indexOf("POISON")>=0))
 					 {
 						 I=CMClass.getMiscMagic("GenMultiPotion");
 						 ((Potion)I).setSpellList("Poison"+";");
+						((Drink)I).setLiquidHeld(val1);
+						((Drink)I).setLiquidRemaining(val2);
 					 }
-					 ((Drink)I).setLiquidHeld(val1);
-					 ((Drink)I).setLiquidRemaining(val2);
+					 else
+					 {
+						((Drink)I).setLiquidHeld(val1*10);
+						((Drink)I).setLiquidRemaining(val2*10);
+					 }
 					 break;
 			case 18: I=CMClass.getStdItem("GenKey");
 					 ((Key)I).setKey(areaName+objectID);

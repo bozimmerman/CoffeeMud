@@ -115,6 +115,7 @@ public class StdMOB implements MOB
 	protected MOB amFollowing=null;
 	protected MOB soulMate=null;
 	private double speeder=0.0;
+	protected int rangeToTarget=0;
 
 	public String ID()
 	{

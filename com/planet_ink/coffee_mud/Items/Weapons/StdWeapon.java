@@ -9,6 +9,8 @@ public class StdWeapon extends StdItem implements Weapon
 	protected int weaponType=TYPE_NATURAL;
 	protected int weaponClassification=CLASS_NATURAL;
 	protected boolean useExtendedMissString=false;
+	protected int minRange=0;
+	protected int maxRange=0;
 
 	public StdWeapon()
 	{
@@ -117,4 +119,7 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		return "<S-NAME> "+ExternalPlay.standardHitWord(weaponType,damageAmount)+" <T-NAMESELF> with "+name();
 	}
+	public int minRange(){return minRange;}
+	public int maxRange(){return maxRange;}
+	public void setRanges(int min, int max){minRange=min;maxRange=max;}
 }

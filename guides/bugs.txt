@@ -1,4 +1,3 @@
 Have the tick confirm someones victim -- fighting the wolf for all of zaras pets is bad. (related to bug above) when they fight someone else, it says they are fighting him as their description, but then they revert to the peaceful description of fighting the wolf
-sort journal entries by time/date
 ! torches should go out in the rain
 ! check amDead before issueing more attacks for a MOB?
