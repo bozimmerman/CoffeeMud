@@ -37,6 +37,7 @@ public class Skill_Warrants extends BardSkill
 	{
 		Behavior B=null;
 		if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

@@ -28,7 +28,7 @@ public class Skill_FalseArrest extends BardSkill
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int quality(){return Ability.INDIFFERENT;}
-	private static final String[] triggerStrings = {"ARREST"};
+	private static final String[] triggerStrings = {"FALSEARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int overrideMana(){return 50;}
 

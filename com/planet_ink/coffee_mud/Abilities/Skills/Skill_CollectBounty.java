@@ -32,74 +32,21 @@ public class Skill_CollectBounty extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public int usageType(){return USAGE_MANA;}
-	public Room dontleaveR=null;
-	public int payOff=0;
-	public Vector thewarrants=null;
 	
-
-	public boolean tick(Tickable ticking, int tickID)
+	public Vector getWarrantsOf(MOB target, Room R)
 	{
-	    if(!super.tick(ticking,tickID)) return false;
-	    if((affected instanceof MOB)&&(dontleaveR!=null)&&(thewarrants!=null))
-	    {
-	        MOB mob=(MOB)affected;
-	        if(!dontleaveR.isInhabitant(mob))
-	            unInvoke();
-	        else
-	        {
-	            
-	        }
-	    }
-	    else
-	    if(canBeUninvoked()) 
-	        unInvoke();
-	    return true;
+	    return getWarrantsOf(target,CoffeeUtensils.getLegalObject(R));
 	}
-	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public Vector getWarrantsOf(MOB target, Area legalA)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
-
-		if(mob.fetchEffect(ID())!=null)
-		{
-		    mob.tell("You are already collecting a bounty.  Be patient.");
-		    return false;
-		}
-		
 		Behavior B=null;
-		Room R=mob.location();
-		if(R!=null) B=CoffeeUtensils.getLegalBehavior(R);
-		
-		MOB judge=null;
-		if(R!=null)
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-		    MOB M=R.fetchInhabitant(i);
-		    if((M!=null)&&(M!=mob)&&(M!=target))
-		    {
-		        Vector V=new Vector();
-		        V.addElement(new Integer(Law.MOD_ISJUDGE));
-		        if(B.modifyBehavior(CoffeeUtensils.getLegalObject(R),M,V))
-		        {
-		            judge=M; break;
-		        }
-		    }
-		}
-			
-		if(judge==null)
-		{
-		    mob.tell("You must present "+target.name()+" to the judge.");
-		    return false;
-		}
-			
+		if(legalA!=null) B=CoffeeUtensils.getLegalBehavior(legalA);
 		Vector warrants=new Vector();
-		Area legalA=CoffeeUtensils.getLegalObject(R);
 		if(B!=null)
 		{
 			warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
 			warrants.addElement(target.Name());
-			if(!B.modifyBehavior(legalA,mob,warrants))
+			if(!B.modifyBehavior(legalA,target,warrants))
 				warrants.clear();
 			else
 			for(int i=warrants.size()-1;i>=0;i--)
@@ -109,6 +56,91 @@ public class Skill_CollectBounty extends StdAbility
 			        warrants.removeElementAt(i);
 			}
 		}
+		return warrants;
+	}
+	
+	public MOB findElligibleOfficer(Area myArea, Area legalA)
+	{
+		Behavior B=null;
+		if(legalA!=null) B=CoffeeUtensils.getLegalBehavior(legalA);
+		if((B!=null)&&(myArea!=null))
+		{
+		    for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
+		    {
+		        Room R=(Room)e.nextElement();
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+				    MOB M=R.fetchInhabitant(i);
+				    if(M!=null)
+				    {
+				        Vector V=new Vector();
+				        V.addElement(new Integer(Law.MOD_ISELLIGOFFICER));
+				        if(B.modifyBehavior(legalA,M,V))
+				            return M;
+				    }
+				}
+		    }
+		    if(legalA!=myArea)
+		    for(Enumeration e=legalA.getMetroMap();e.hasMoreElements();)
+		    {
+		        Room R=(Room)e.nextElement();
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+				    MOB M=R.fetchInhabitant(i);
+				    if(M!=null)
+				    {
+				        Vector V=new Vector();
+				        V.addElement(new Integer(Law.MOD_ISELLIGOFFICER));
+				        if(B.modifyBehavior(legalA,M,V))
+				            return M;
+				    }
+				}
+		    }
+		}
+		return null;
+	}
+	
+	public MOB getJudgeIfHere(MOB mob, MOB target, Room R)
+	{
+		Behavior B=null;
+		if(R!=null) B=CoffeeUtensils.getLegalBehavior(R);
+		Area legalA=CoffeeUtensils.getLegalObject(R);
+		if((B!=null)&&(R!=null))
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+			    MOB M=R.fetchInhabitant(i);
+			    if((M!=null)&&(M!=mob)&&(M!=target))
+			    {
+			        Vector V=new Vector();
+			        V.addElement(new Integer(Law.MOD_ISJUDGE));
+			        if(B.modifyBehavior(legalA,M,V))
+			            return M;
+			    }
+			}
+		return null;
+	}
+	
+	
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	{
+		MOB target=this.getTarget(mob,commands,givenTarget);
+		if(target==null) return false;
+		Room R=mob.location();
+		if(mob.fetchEffect(ID())!=null)
+		{
+		    mob.tell("You are already collecting a bounty.  Be patient.");
+		    return false;
+		}
+		
+		MOB judge=getJudgeIfHere(mob,target,R);
+			
+		if(judge==null)
+		{
+		    mob.tell("You must present "+target.name()+" to the judge.");
+		    return false;
+		}
+			
+		Vector warrants=getWarrantsOf(target,R);
 		if(warrants.size()==0)
 		{
 		    mob.tell(target.name()+" is not wanted for anything here.");
@@ -120,26 +152,32 @@ public class Skill_CollectBounty extends StdAbility
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		if(success)
+		Area legalA=CoffeeUtensils.getLegalObject(R);
+		if((success)&&(legalA!=null))
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOUTH|CMMsg.MASK_SOUND|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),"<S-NAME> turn(s) <T-NAMESELF> in to "+judge.name()+" for the bounty.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				MOB officer=findElligibleOfficer(mob.location().getArea(),legalA);
+				if((officer!=null)&&(!mob.location().isInhabitant(officer)))
+				    MUDTracker.wanderFromTo(officer,mob.location(),true);
+				if((officer==null)||(!mob.location().isInhabitant(officer)))
+				{
+				    CommonMsgs.say(judge,mob,"I'm sorry, there are no free officers to take care of this one right now.",false,false);
+				    return false;
+				}
 				int gold=0;
+			    LegalWarrant W=(LegalWarrant)warrants.firstElement();
+		        W.setArrestingOfficer(legalA,officer);
+		        W.setState(Law.STATE_REPORTING);
 				for(int i=0;i<warrants.size();i++)
 				{
-				    LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
-				    if(!W.crime().equalsIgnoreCase("pardoned"))
-				    {
-				        W.setArrestingOfficer(legalA,mob);
-				        W.setState(Law.STATE_REPORTING);
-				        gold+=(W.actionCode()*5);
-				    }
+				    W=(LegalWarrant)warrants.elementAt(i);
+			        gold+=(W.actionCode()*5);
 				}
-				super.beneficialAffect(mob,mob,asLevel,0);
-				Skill_CollectBounty A=(Skill_CollectBounty)mob.fetchEffect(ID());
-				if(A!=null){ A.dontleaveR=R; A.payOff=gold; A.thewarrants=warrants;}
+				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+gold+" gold on "+target.Name()+".");
+				MoneyUtils.giveMoney(judge,mob,gold);
 			}
 		}
 		else

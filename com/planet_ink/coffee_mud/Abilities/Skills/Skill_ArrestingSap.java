@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -112,6 +113,11 @@ public class Skill_ArrestingSap extends StdAbility
 				mob.tell(target.name()+" is way to big to knock out!");
 				return false;
 			}
+		}
+		if(Skill_Arrest.getWarrantsOf(target, CoffeeUtensils.getLegalObject(mob.location().getArea())).size()==0)
+		{
+		    mob.tell(target.name()+" has no warrants out here.");
+		    return false;
 		}
 		int levelDiff=target.envStats().level()-adjustedLevel(mob,asLevel);
 		if(levelDiff>0)

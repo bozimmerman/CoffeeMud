@@ -84,12 +84,12 @@ public class Spell_Grow extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
-				oldWeight=mob.baseEnvStats().weight();
-				double aff=1.0 + Util.mul(0.1,(mob.envStats().level()));
+				oldWeight=target.baseEnvStats().weight();
+				double aff=1.0 + Util.mul(0.1,(target.envStats().level()));
 				aff=aff*aff;
-				mob.baseEnvStats().setWeight((int)Math.round(Util.mul(mob.baseEnvStats().weight(),aff)));
+				target.baseEnvStats().setWeight((int)Math.round(Util.mul(target.baseEnvStats().weight(),aff)));
 				beneficialAffect(mob,target,asLevel,0);
-				mob.confirmWearability();
+				target.confirmWearability();
 			}
 
 		}

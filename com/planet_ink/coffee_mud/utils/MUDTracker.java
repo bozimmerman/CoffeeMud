@@ -420,6 +420,7 @@ public class MUDTracker extends Scriptable
 
 	public static void wanderAway(MOB M, boolean mindPCs, boolean andGoHome)
 	{
+	    if(M==null) return;
 		Room R=M.location();
 		if(R==null) return;
 		int tries=0;
@@ -427,6 +428,44 @@ public class MUDTracker extends Scriptable
 			beMobile(M,true,true,false,false,null);
 		if((M.getStartRoom()!=null)&&(andGoHome))
 			M.getStartRoom().bringMobHere(M,true);
+	}
+
+	public static void wanderFromTo(MOB M, Room toHere, boolean mindPCs)
+	{
+	    if(M==null) return;
+	    if((M.location()!=null)&&(M.location().isInhabitant(M)))
+		    wanderAway(M,mindPCs,false);
+	    wanderIn(M,toHere);
+	}
+	
+	public static void wanderIn(MOB M, Room toHere)
+	{
+	    if(toHere==null) return;
+	    if(M==null) return;
+		int tries=0;
+		int dir=-1;
+		while((dir<0)&&((++tries)<100))
+		{
+		    dir=Dice.roll(1,Directions.NUM_DIRECTIONS,-1);
+		    Room R=toHere.getRoomInDir(dir);
+		    if(R!=null)
+		    {
+		        if(((R.domainType()==Room.DOMAIN_INDOORS_AIR)&&(!Sense.isFlying(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_AIR)&&(!Sense.isFlying(M)))
+		        ||((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)&&(!Sense.isSwimming(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)&&(!Sense.isSwimming(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!Sense.isSwimming(M)))
+		        ||((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(!Sense.isSwimming(M))))
+		            dir=-1;
+		    }
+		    else
+		        dir=-1;
+		}
+		if(dir<0)
+			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wanders in.");
+		else
+			toHere.show(M,null,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wanders in from "+Directions.getDirectionName(dir)+".");
+		toHere.bringMobHere(M,true);
 	}
 
 	public static boolean move(MOB mob,

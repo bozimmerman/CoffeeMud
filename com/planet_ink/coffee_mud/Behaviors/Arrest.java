@@ -859,6 +859,15 @@ public class Arrest extends StdBehavior
 					}
 				}
 			    return false;
+			case Law.MOD_ISJAILROOM:
+				if((laws!=null)
+		        &&(V!=null)
+		        &&(V.size()>2)
+		        &&(hostObj instanceof Area)
+		        &&(V.elementAt(1) instanceof Room))
+				    return getRooms((Area)hostObj,laws.jailRooms()).contains(V.elementAt(1));
+				else
+				    return false;
 			case Law.MOD_CRIMEACCUSE:
 				if((laws!=null)
 		        &&(V!=null)
@@ -1375,6 +1384,39 @@ public class Arrest extends StdBehavior
 		return false;
 	}
 
+	public Vector getRooms(Area A, Vector V)
+	{
+	    Vector finalV=new Vector();
+		Room jail=null;
+		if(V.size()==0) return finalV;
+		for(int v=0;v<V.size();v++)
+		{
+			String which=(String)V.elementAt(v);
+			jail=CMMap.getRoom(which);
+			if((jail!=null)
+			&&(!finalV.contains(jail)))
+			{
+			    finalV.addElement(jail);
+			    continue;
+			}
+			else
+			for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if((!finalV.contains(R))
+				&&(EnglishParser.containsString(R.displayText(),which)))
+				{ finalV.addElement(R); break; }
+			}
+			for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				if((!finalV.contains(R))
+				&&(EnglishParser.containsString(R.description(),which)))
+				{ finalV.addElement(R); break; }
+			}
+		}
+		return finalV;
+	}
 	public Room getRoom(Area A, Vector V)
 	{
 		Room jail=null;
@@ -2407,6 +2449,7 @@ public class Arrest extends StdBehavior
 								if(!A.invoke(officer,W.criminal(),(curPoints<=25),0))
 								{
 									A=CMClass.getAbility("Skill_Trip");
+									A.setProfficiency(100);
 									A.setAbilityCode(30);
 									if(!A.invoke(officer,W.criminal(),(curPoints<=50),0))
 										MUDFight.postAttack(officer,W.criminal(),officer.fetchWieldedItem());

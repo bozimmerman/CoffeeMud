@@ -19,7 +19,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdPlanet extends StdArea implements SpaceObject
+public class StdPlanet extends StdTimeZone implements SpaceObject
 {
 	public String ID(){	return "StdPlanet";}
 	public Environmental copyOf()

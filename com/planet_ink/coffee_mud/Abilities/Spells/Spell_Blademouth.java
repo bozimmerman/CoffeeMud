@@ -49,7 +49,7 @@ public class Spell_Blademouth extends Spell
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(target.charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]>=0)
+		if(target.charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]<=0)
 		{
 			if(!auto)
 				mob.tell("There is no mouth on "+target.name()+" to fill with blades!");

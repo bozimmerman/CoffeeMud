@@ -31,9 +31,6 @@ public class Skill_Arrest extends StdAbility
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"ARREST"};
 	public String[] triggerStrings(){return triggerStrings;}
-	private int enhancement=0;
-	public int abilityCode(){return enhancement;}
-	public void setAbilityCode(int newCode){enhancement=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public static Vector getWarrantsOf(MOB target, Area legalA)
@@ -84,6 +81,12 @@ public class Skill_Arrest extends StdAbility
 		    return false;
 		}
 
+		if(Skill_Arrest.getWarrantsOf(target, CoffeeUtensils.getLegalObject(mob.location().getArea())).size()==0)
+		{
+		    mob.tell(target.name()+" has no warrants out here.");
+		    return false;
+		}
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

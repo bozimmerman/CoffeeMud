@@ -165,7 +165,25 @@ public class Torturesmithing extends CraftingSkill
 		int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));
 		if(amount>woodRequired) woodRequired=amount;
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
-		int[] pm={EnvResource.MATERIAL_METAL,EnvResource.MATERIAL_MITHRIL};
+		int[] pm=null;
+		if(misctype.equalsIgnoreCase("wood"))
+		{
+		    pm=new int[1];
+			pm[0]=EnvResource.MATERIAL_WOODEN;
+		}
+		else
+		if(misctype.equalsIgnoreCase("metal"))
+		{
+		    pm=new int[2];
+			pm[0]=EnvResource.MATERIAL_METAL;
+			pm[1]=EnvResource.MATERIAL_MITHRIL;
+		}
+		else
+		if(misctype.equalsIgnoreCase("cloth"))
+		{
+		    pm=new int[1];
+			pm[0]=EnvResource.MATERIAL_CLOTH;
+		}
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"wood",pm,
 											0,null,null,

@@ -175,7 +175,7 @@ public class Skill_Enslave extends StdAbility
 		{
 			Room room=mob.location();
 			if((room!=lastRoom)
-			&&(CoffeeUtensils.doesOwnThisProperty(myMaster,room))
+			&&(CoffeeUtensils.doesHavePriviledgesHere(myMaster,room))
 			&&(room.isInhabitant(mob)))
 			{
 				lastRoom=room;

@@ -30,7 +30,8 @@ public class Time extends StdCommand
 	
 	private String numAppendage(int num)
 	{
-		switch(num)
+	    String strn=""+num;
+		switch(Util.s_int(""+(strn).charAt(strn.length()-1)))
 		{
 		case 1: return "st";
 		case 2: return "nd";

@@ -99,6 +99,7 @@ public interface Law
 	public final static int MOD_DELWARRANT=15;
 	public final static int MOD_CRIMEACCUSE=16;
 	public final static int MOD_CRIMEAQUIT=17;
+	public final static int MOD_ISJAILROOM=18;
 	
 	public static final String defaultLaw=
 		"OFFICERS=@\n"+

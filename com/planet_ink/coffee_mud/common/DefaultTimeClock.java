@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.common;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -112,7 +113,8 @@ public class DefaultTimeClock implements TimeClock
 
 	private String numAppendage(int num)
 	{
-		switch(num)
+	    String strn=""+num;
+		switch(Util.s_int(""+(strn).charAt(strn.length()-1)))
 		{
 		case 1: return "st";
 		case 2: return "nd";

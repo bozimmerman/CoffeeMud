@@ -392,6 +392,11 @@ public class StdRideable extends StdContainer implements Rideable
 				msg.source().setRiding(this);
 				return false;
 			}
+			if((riding()==msg.target())&&(msg.tool() instanceof Item))
+			{
+				msg.source().tell(null,msg.source(),null,"<T-NAME> <T-IS-ARE> already "+stateString(msg.source())+" "+name()+"!");
+				return false;
+			}
 		    if(msg.amITarget(this))
 		    {
 		        Rider whoWantsToRide=(msg.tool() instanceof Rider)?(Rider)msg.tool():msg.source();

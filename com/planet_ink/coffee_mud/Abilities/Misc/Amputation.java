@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -404,7 +405,52 @@ public class Amputation extends StdAbility
 		}
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-
+		if(!auto)
+		{
+			Behavior B=null;
+			if(mob.location()!=null) B=CoffeeUtensils.getLegalBehavior(mob.location());
+			Vector warrants=new Vector();
+			if(B!=null)
+			{
+				warrants.addElement(new Integer(Law.MOD_GETWARRANTSOF));
+				warrants.addElement(target.Name());
+				if(!B.modifyBehavior(CoffeeUtensils.getLegalObject(mob.location()),target,warrants))
+					warrants.clear();
+			}
+			if(warrants.size()==0)
+			{
+			    mob.tell("You are not allowed to amputate from "+target.Name()+" at this time.");
+			    return false;
+			}
+			Item w=mob.fetchWieldedItem();
+			Weapon ww=null;
+			if((w==null)||(!(w instanceof Weapon)))
+			{
+				mob.tell("You cannot amputate without a weapon!");
+				return false;
+			}
+			ww=(Weapon)w;
+			if((ww.weaponType()!=Weapon.TYPE_PIERCING)&&(ww.weaponType()!=Weapon.TYPE_SLASHING))
+			{
+				mob.tell("You cannot amputate with a "+ww.name()+"!");
+				return false;
+			}
+			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+			{
+				mob.tell("You are too far away to try that!");
+				return false;
+			}
+			if(!Sense.isBoundOrHeld(target))
+			{
+				mob.tell(target.charStats().HeShe()+" is not bound and would resist.");
+				return false;
+			}
+			if(!Sense.isSleeping(target))
+			{
+			    mob.tell(target.name()+" needs to be lying down first.");
+			    return false;
+			}
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=profficiencyCheck(mob,0,auto);

@@ -59,9 +59,12 @@ public class Spell_MassDisintegrate extends Spell
 		}
 		if(h.size()>0)
 			avgLevel=avgLevel/h.size();
-
+		
+		int levelDiff=avgLevel-mob.envStats().level();
+		if(levelDiff<0) levelDiff=0;
+		
 		boolean success=false;
-		success=profficiencyCheck(mob,-(avgLevel*2),auto);
+		success=profficiencyCheck(mob,-(avgLevel*25),auto);
 
 		if(success)
 		{
@@ -69,16 +72,19 @@ public class Spell_MassDisintegrate extends Spell
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
-				FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
-				if(mob.location().okMessage(mob,msg))
+				if((target.envStats().level()/avgLevel)<2)
 				{
-					mob.location().send(mob,msg);
-					if(msg.value()<=0)
+					FullMsg msg=new FullMsg(mob,target,this,affectType(auto),null);
+					if(mob.location().okMessage(mob,msg))
 					{
-						if(target.curState().getHitPoints()>0)
-							MUDFight.postDamage(mob,target,this,target.curState().getHitPoints()*10,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CommonStrings.msp("spelldam2.wav",40));
-						if(!target.amDead())
-							return false;
+						mob.location().send(mob,msg);
+						if(msg.value()<=0)
+						{
+							if(target.curState().getHitPoints()>0)
+								MUDFight.postDamage(mob,target,this,target.curState().getHitPoints()*10,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CommonStrings.msp("spelldam2.wav",40));
+							if(!target.amDead())
+								return false;
+						}
 					}
 				}
 			}

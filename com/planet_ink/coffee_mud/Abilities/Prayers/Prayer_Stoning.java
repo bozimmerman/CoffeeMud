@@ -42,21 +42,6 @@ public class Prayer_Stoning extends Prayer
 	    Room R=mob.location();
 		if(R!=null)
 		{
-		    while(cits.size()<10)
-			{
-		        MOB M=CMClass.getMOB("AngryCitizen");
-		        if(M==null)
-		        {
-		            unInvoke();
-		            break;
-		        }
-		        else
-		        {
-		            cits.addElement(M);
-		            M.bringToLife(R,true);
-		            R.show(M,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> arrive(s) for the stoning.");
-		        }
-			}
 			for(int i=0;i<cits.size();i++)
 			{
 			    MOB M=(MOB)cits.elementAt(i);
@@ -83,6 +68,22 @@ public class Prayer_Stoning extends Prayer
 			        else
 			            R.show(M,mob,null,CMMsg.TYP_SPEAK,"<S-NAME> shout(s) obscenities at <T-NAMESELF>.");
 			    }
+			}
+		    while(cits.size()<10)
+			{
+		        MOB M=CMClass.getMOB("AngryCitizen");
+		        if(M==null)
+		        {
+		            unInvoke();
+		            break;
+		        }
+		        else
+		        {
+		            Room R2=CMClass.getLocale("StdRoom");
+		            cits.addElement(M);
+		            M.bringToLife(R2,true);
+		            MUDTracker.wanderIn(M,R);
+		        }
 			}
 		}
 		return true;

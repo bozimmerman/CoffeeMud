@@ -177,6 +177,11 @@ public class Skill_HandCuff extends StdAbility
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
+		if(Skill_Arrest.getWarrantsOf(target, CoffeeUtensils.getLegalObject(mob.location().getArea())).size()==0)
+		{
+		    mob.tell(target.name()+" has no warrants out here.");
+		    return false;
+		}
 		if((!Sense.isSleeping(target))&&(!Sense.isSitting(target))&&(!auto))
 		{
 			mob.tell(target.name()+" doesn't look willing to cooperate.");
