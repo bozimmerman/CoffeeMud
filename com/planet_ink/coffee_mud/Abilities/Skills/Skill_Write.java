@@ -42,7 +42,7 @@ public class Skill_Write extends StdAbility
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.charStats().getStat(CharStats.INTELLIGENCE)<8)
+		if(mob.charStats().getStat(CharStats.INTELLIGENCE)<5)
 		{
 			mob.tell("You are too stupid to actually write anything.");
 			return false;
@@ -53,6 +53,15 @@ public class Skill_Write extends StdAbility
 			return false;
 		}
 		Item target=mob.fetchCarried(null,(String)commands.elementAt(0));
+		if(target==null)
+		{
+			target=mob.location().fetchItem(null,(String)commands.elementAt(0));
+			if((target!=null)&&(target.isGettable()))
+			{
+				mob.tell("You don't have that.");
+				return false;
+			}
+		}
 		if((target==null)||((target!=null)&&(!Sense.canBeSeenBy(target,mob))))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

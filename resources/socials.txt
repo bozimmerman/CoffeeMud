@@ -107,3 +107,6 @@ ss	GIGGLE	You giggle.	<S-NAME> giggles.
 ss	SNICKER SELF	You snicker to yourself.	<S-NAME> snickers to <T-HIM-HER>self.		
 ss	SNICKER <T-NAME>	You snicker at <T-HIM-HER>.	<S-NAME> snickers at <T-NAME>.	<S-NAME> snickers at you.	
 ss	SNICKER	You snicker.	<S-NAME> snickers.		
+mo	GAIN	Try `help gain` or `say gain <skill>`.				
+mo	CONFIG	Try `autoexits`, `autogold`, `autoloot`, or `ansi on/off`					
+

@@ -29,6 +29,7 @@
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Mana</B></TD><TD>@CharClassData?mana@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Movement</B></TD><TD>@CharClassData?movement@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Attack Skill</B></TD><TD>@CharClassData?attack@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Damage Bonus</B></TD><TD>@CharClassData?damage@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Other Bonuses</B></TD><TD>@CharClassData?bonuses@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Weapons</B></TD><TD>@CharClassData?weapons@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Armor</B></TD><TD>@CharClassData?armor@</TD></TR>

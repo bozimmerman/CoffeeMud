@@ -1,7 +1,14 @@
 random monster property class which reads stats from a resource file
 
+Auto quests, quests, questbox (Behavior)
+
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana 
 on each room mapped.
+
+title command
+
+more spells/ideas at http://www.turf.org/helps/
+
 
 Deadly weak-bridge exit.  If too much weight, you fall and die.
 
@@ -71,3 +78,48 @@ cackle bwahn burp bsplit bslap breakdown
 bow bounce bonk boggle blush blink 
 bleed bleat bkiss bite bitch beg 
 beer beckon bark bang agree afk 
+
+'Prompt <%*>' where the %* are the various variables you may set yourself.
+
+        %h :  Display your current hits
+        %H :  Display your maximum hits
+        %m :  Display your current mana
+        %M :  Display your maximum mana
+        %v :  Display your current moves
+        %V :  Display your maximum moves
+        %x :  Display your current experience
+        %g :  Display your gold held
+        %a :  Display your alignment in numbers (above level 10)
+	%A :  Display your alignment as text
+	%i :  Display the number of items you are carrying
+	%I :  Display the number of items you can carry
+        %r :  Display the room name you are in
+        %R :  Display the vnum you are in (IMMORTAL ONLY)
+        %z :  Display the area name you are in (IMMORTAL ONLY)
+        %T :  Display name of person under attack
+        %t :  Display state of person under attack
+        %E :  Display name of person you are fighting
+	%e :  Display state of person you are fighting
+	%B :  Go to a new line
+
+"config" options
+
+    AutoExit - You automatically see exits.
+    AutoLoot - You automatically loot corpses.
+    AutoSac  - You automatically sacrifice corpses.
+    AutoVis  - You may go visible through communication commands.
+    Blank    - You have a blank line before your prompt.
+    Brief    - You see brief descriptions only.
+    Client   - You are connecting to Turf via a client.
+    Colour   - You see colour.
+    Combine  - You see object lists in combined format.
+    HiTells  - You get highlighting on tells to you.
+    Mccp     - You use Mud Client Compression Protocol.
+    NoRecall - You will not recall if link-dead during combat.
+    Prompt   - You have a prompt.
+    Quiet    - You block tells and channel communication.
+    Shop     - You run a player store.
+    Snoop    - You may be snooped by the supremes or higher
+    Summon   - You can be summoned people outside your clan and group.
+    TelnetGA - You receive a telnet GA sequence.
+    Visit    - Your home can be visited by other players.
