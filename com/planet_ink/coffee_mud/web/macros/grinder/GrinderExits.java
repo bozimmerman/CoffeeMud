@@ -174,7 +174,23 @@ public class GrinderExits
 				E.setClassRestricted(false);
 		}
 				
-		ExternalPlay.DBUpdateExits(R);					 
+		ExternalPlay.DBUpdateExits(R);
+		String makeSame=(String)httpReq.getRequestParameters().get("MAKESAME");
+		if((makeSame!=null)&&(makeSame.equalsIgnoreCase("on")))
+		{
+			Room R2=R.rawDoors()[dir];
+			Exit E2=null;
+			if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(dir)]==R))
+				E2=R2.rawExits()[Directions.getOpDirectionCode(dir)];
+			if(E2!=null)
+			{
+				Exit oldE2=E2;
+				E2=(Exit)E.copyOf();
+				E2.setDisplayText(oldE2.displayText());
+				R2.rawExits()[Directions.getOpDirectionCode(dir)]=E2;
+				ExternalPlay.DBUpdateExits(R2);
+			}
+		}
 		return "";
 	}
 	public static String delExit(Room R, int dir)
@@ -189,6 +205,9 @@ public class GrinderExits
 	
 	public static String linkRooms(Room R, Room R2, int dir, int dir2)
 	{
+		R.clearSky();
+		R2.clearSky();
+		
 		if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
 		if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
 			

@@ -204,6 +204,12 @@
 	</CENTER>
 	</TD>
 </TR>
+<TR>
+    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
+	<INPUT TYPE=CHECKBOX NAME=MAKESAME>Duplicate in Opposite exit.
+	</CENTER>
+	</TD>
+</TR>
 </TABLE>
 </FORM>
 </CENTER>

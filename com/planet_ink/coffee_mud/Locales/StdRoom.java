@@ -182,25 +182,42 @@ public class StdRoom
 		myArea=newArea;
 	}
 
-	protected void giveASky(Room room)
+	protected void giveASky()
 	{
 		skyedYet=true;
-		if((room.rawDoors()[Directions.UP]==null)
-		&&((room.domainType()&Room.INDOORS)==0)
-		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
-		&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR))
+		if((rawDoors()[Directions.UP]==null)
+		&&((domainType()&Room.INDOORS)==0)
+		&&(domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
+		&&(domainType()!=Room.DOMAIN_OUTDOORS_AIR))
 		{
 			Exit o=(Exit)CMClass.getExit("StdOpenDoorway");
 			EndlessSky sky=new EndlessSky();
-			sky.setArea(room.getArea());
+			sky.setArea(getArea());
 			sky.setID("");
-			room.rawDoors()[Directions.UP]=sky;
-			room.rawExits()[Directions.UP]=o;
-			sky.rawDoors()[Directions.DOWN]=room;
+			rawDoors()[Directions.UP]=sky;
+			rawExits()[Directions.UP]=o;
+			sky.rawDoors()[Directions.DOWN]=this;
 			sky.rawExits()[Directions.DOWN]=o;
 			CMMap.addRoom(sky);
 		}
 	}
+	
+	public void clearSky()
+	{
+		if(!skyedYet) return;
+		Room room=rawDoors()[Directions.UP];
+		if(room==null) return;
+		if((room.ID().length()==0)&&(room instanceof EndlessSky))
+		{
+			rawDoors()[Directions.UP]=null;
+			rawExits()[Directions.UP]=null;
+			room.rawDoors()[Directions.DOWN]=null;
+			room.rawExits()[Directions.DOWN]=null;
+			CMMap.delRoom(room);
+			skyedYet=false;
+		}
+	}
+	
 	public Vector resourceChoices(){return null;}
 	public int myResource()
 	{
@@ -266,7 +283,7 @@ public class StdRoom
 				if((!Sense.canMove(this))||(!getMobility()))
 					return false;
 				if((!skyedYet)&&(!mob.isMonster()))
-					giveASky(this);
+					giveASky();
 				break;
 			case Affect.TYP_AREAAFFECT:
 				// obsolete with the area objects
@@ -814,6 +831,7 @@ public class StdRoom
 			delItem(fetchItem(0));
 		if(this instanceof GridLocale)
 			((GridLocale)this).clearGrid();
+		clearSky();
 		ExternalPlay.deleteTick(this,-1);
 	}
 	

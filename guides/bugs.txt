@@ -1,0 +1,2 @@
+improved polymorph affects your weight, but not how much youcan carry.
+so if you cast improved polymorph beele dragon, he would be over encumbered, because he would weigh 2000lbs, but still only be able to carry 400 lbs.

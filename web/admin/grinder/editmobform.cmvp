@@ -57,6 +57,12 @@
 			document.AREAEDIT.CHANGEDCLASS.value="true";
 			ReShow();
 		}
+		function ChangedLevel()
+		{
+			document.AREAEDIT.CHANGEDLEVEL.value="true";
+			ReShow();
+		}
+		
 		function ReShow()
 		{
 			document.AREAEDIT.action='/grinder/editmobform.cmvp';
@@ -75,6 +81,7 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RoomID@">
 <INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
+<INPUT TYPE=HIDDEN NAME=CHANGEDLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
@@ -110,7 +117,8 @@
 @endif@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Level:</B></FONT></TD>
-    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT ONCHANGE="ChangedClass();" NAME=LEVEL SIZE=5 VALUE="@MobData?LEVEL@">
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=LEVEL SIZE=5 VALUE="@MobData?LEVEL@">
+    <INPUT TYPE=BUTTON ONCLICK="ChangedLevel();" NAME=BUTTCHANGEDLEVEL VALUE="ReScore">
     </TD>
 </TR>
 <TR>

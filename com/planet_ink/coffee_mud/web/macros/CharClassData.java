@@ -50,7 +50,7 @@ public class CharClassData extends StdWebMacro
 				if(parms.containsKey("DAMAGE"))
 					str.append("An extra point of damage per "+C.getLevelsPerBonusDamage()+" level(s), ");
 				if(parms.containsKey("HITPOINTS"))
-					str.append("20 plus ((Constitution/2)-4)+Random("+C.getMinHitPointsLevel()+" to "+C.getMaxHitPointsLevel()+") per level after first, ");
+					str.append("20 at first, plus (((Constitution/2)-4)+Random("+C.getMinHitPointsLevel()+" to "+C.getMaxHitPointsLevel()+")) per level thereafter, ");
 				if(parms.containsKey("MANA"))
 					str.append("100 plus ((Intelligence/18)*"+C.getBonusManaLevel()+") per level after first, ");
 				if(parms.containsKey("MOVEMENT"))

@@ -79,22 +79,42 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public String himher()
 	{
-		return (getStat(GENDER)==(int)'M')?"him":"her";
+		switch(getStat(GENDER))
+		{
+		case 'M': return "him";
+		case 'F': return "him";
+		default: return "it";
+		}
 	}
 
 	public String hisher()
 	{
-		return (getStat(GENDER)==(int)'M')?"his":"her";
+		switch(getStat(GENDER))
+		{
+		case 'M': return "his";
+		case 'F': return "her";
+		default: return "its";
+		}
 	}
 
 	public String heshe()
 	{
-		return (getStat(GENDER)==(int)'M')?"he":"she";
+		switch(getStat(GENDER))
+		{
+		case 'M': return "he";
+		case 'F': return "she";
+		default: return "it";
+		}
 	}
 
 	public String HeShe()
 	{
-		return (getStat(GENDER)==(int)'M')?"He":"She";
+		switch(getStat(GENDER))
+		{
+		case 'M': return "He";
+		case 'F': return "She";
+		default: return "It";
+		}
 	}
 
 	public void reRoll()

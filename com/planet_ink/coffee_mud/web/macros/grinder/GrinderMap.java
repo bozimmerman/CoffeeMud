@@ -186,7 +186,21 @@ public class GrinderMap
                 GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
                 if(!processed.containsKey(room.roomID))
                 {
-                    placeRoom(room,0,0,processed,areaMap,true);
+                    placeRoom(room,0,0,processed,areaMap,true,false);
+                    doneSomething=true;
+                }
+            }
+        }
+		doneSomething=true;
+        while((areaMap.size()>processed.size())&&(doneSomething))
+        {
+            doneSomething=false;
+            for(int i=0;i<areaMap.size();i++)
+            {
+                GrinderRoom room=(GrinderRoom)areaMap.elementAt(i);
+                if(!processed.containsKey(room.roomID))
+                {
+                    placeRoom(room,0,0,processed,areaMap,true,true);
                     doneSomething=true;
                 }
             }
@@ -374,7 +388,8 @@ public class GrinderMap
                                 int favoredY, 
                                 Hashtable processed, 
                                 Vector allRooms, 
-                                boolean doNotDefer)
+                                boolean doNotDefer,
+								boolean passTwo)
     {
         if(room==null) return;
         
@@ -417,7 +432,8 @@ public class GrinderMap
             String roomID=null;
             if(room.doors[d]!=null)
                 roomID=((GrinderDir)room.doors[d]).room;
-                
+			
+            if(passTwo||((d!=Directions.UP)&&(d!=Directions.DOWN)))
             if((roomID!=null)&&(roomID.length()>0)&&(processed.get(roomID)==null))
             {
                 GrinderRoom nextRoom=getRoom(allRooms,roomID);
@@ -463,7 +479,7 @@ public class GrinderMap
                             break;
                     }
                     room.doors[d].positionedAlready=true;
-                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,allRooms,false);
+                    placeRoom(nextRoom,newFavoredX,newFavoredY,processed,allRooms,false,passTwo);
                 }
             }
         }

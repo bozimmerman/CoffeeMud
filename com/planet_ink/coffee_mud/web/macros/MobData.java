@@ -294,12 +294,28 @@ public class MobData extends StdWebMacro
 			return "No MOB!!";
 		
 		boolean changedClass=((reqs.get("CHANGEDCLASS")!=null)&&((String)reqs.get("CHANGEDCLASS")).equals("true"))&&(mobCode.equals("NEW"));
+		boolean changedLevel=((reqs.get("CHANGEDLEVEL")!=null)&&((String)reqs.get("CHANGEDLEVEL")).equals("true"));
 		boolean firstTime=(reqs.get("ACTION")==null)
 				||(!((String)reqs.get("ACTION")).equals("MODIFYMOB"))
 				||(changedClass);
 		
-		if((changedClass)&&(M.isGeneric()))
-			M.baseCharStats().getMyClass().buildMOB(M,Util.s_int((String)reqs.get("LEVEL")),M.getAlignment(),M.baseEnvStats().weight(),M.getWimpHitPoint(),(char)M.baseCharStats().getStat(CharStats.GENDER));
+		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
+		{
+			int level=M.baseEnvStats().level();
+			if(reqs.get("LEVEL")!=null) level=Util.s_int((String)reqs.get("LEVEL"));
+			MOB M2=(MOB)M.copyOf();
+			M2.baseCharStats().getMyClass().buildMOB(M2,level,500,150,5,'M');
+			M.baseEnvStats().setRejuv((int)Math.round(Util.div(60000,Host.TICK_TIME)*2.0)*level);
+			M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
+			M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
+			M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
+			M.setMoney(M2.getMoney());
+			reqs.put("REJUV",""+M.baseEnvStats().rejuv());
+			reqs.put("ARMOR",""+M.baseEnvStats().armor());
+			reqs.put("DAMAGE",""+M.baseEnvStats().damage());
+			reqs.put("ATTACK",""+M.baseEnvStats().attackAdjustment());
+			reqs.put("MONEY",""+M.getMoney());
+		}
 		
 		StringBuffer str=new StringBuffer("");
 		String[] okparms={"NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
@@ -373,6 +389,19 @@ public class MobData extends StdWebMacro
 					if(R2.ID().equals(old))
 						str.append(" SELECTED");
 					str.append(">"+R2.name());
+				}
+				if((changedClass)||(changedLevel))
+				{
+					Race R3=CMClass.getRace(old);
+					char G=(char)M.baseCharStats().getStat(CharStats.GENDER);
+					if((reqs.get("GENDER")!=null)&&(((String)reqs.get("GENDER")).length()>0))
+						G=((String)reqs.get("GENDER")).charAt(0);
+					if(R3!=null)
+					{
+						R3.setHeightWeight(M.baseEnvStats(),G);
+						reqs.put("WEIGHT",""+M.baseEnvStats().weight());
+						reqs.put("HEIGHT",""+M.baseEnvStats().height());
+					}
 				}
 				break;
 			case 9: // gender

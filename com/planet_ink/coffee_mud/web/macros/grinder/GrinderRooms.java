@@ -210,6 +210,8 @@ public class GrinderRooms
 			}
 			R.getArea().clearMap();
 		}
+		if(R instanceof GridLocale)
+			((GridLocale)R).buildGrid();
 		ExternalPlay.DBUpdateRoom(R);
 		ExternalPlay.DBUpdateMOBs(R);
 		ExternalPlay.DBUpdateItems(R);
@@ -245,6 +247,7 @@ public class GrinderRooms
 	
 	public static String createRoom(Room R, int dir)
 	{
+		R.clearSky();
 		Room newRoom=createLonelyRoom(R.getArea(),R,dir);
 		if(R.rawDoors()[dir]!=null)
 			return "Room already there!";

@@ -45,6 +45,7 @@ public interface Room extends Environmental
 	public void recoverRoomStats();
 	
 	public void destroyRoom();
+	public void clearSky();
 	
 	public Area getArea();
 	public void setArea(Area newArea);

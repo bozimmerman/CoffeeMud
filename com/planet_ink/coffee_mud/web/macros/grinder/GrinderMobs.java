@@ -81,6 +81,7 @@ public class GrinderMobs
 		MOB oldM=M;
 		if((newClassID!=null)&&(!newClassID.equals(CMClass.className(M))))
 			M=CMClass.getMOB(newClassID);
+		M.setStartRoom(R);
 		
 		Vector allitems=new Vector();
 		while(oldM.inventorySize()>0)
@@ -299,7 +300,6 @@ public class GrinderMobs
 					I.setContainer(null);
 			}
 		}
-		
 		
 		M.recoverEnvStats();
 		M.recoverCharStats();

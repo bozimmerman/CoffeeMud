@@ -35,9 +35,9 @@ public class CMClass extends ClassLoader
 			thisItem=(Item)getEnv(miscMagic,calledThis);
 		if(thisItem!=null)
 			thisItem=(Item)thisItem.newInstance();
-		else
-		if((items.size()>0)&&(armor.size()>0)&&(weapons.size()>0)&&(miscMagic.size()>0))
-			Log.sysOut("CMClass","Unknown Item '"+calledThis+"'.");
+		//else
+		//if((items.size()>0)&&(armor.size()>0)&&(weapons.size()>0)&&(miscMagic.size()>0))
+		//	Log.sysOut("CMClass","Unknown Item '"+calledThis+"'.");
 		return thisItem;
 	}
 	
