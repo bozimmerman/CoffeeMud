@@ -357,9 +357,9 @@ public class GrinderItems extends Dialog {
 		SymKey lSymKey=new SymKey();
 		okButton.addKeyListener(lSymKey);
 		CancelButton.addKeyListener(lSymKey);
-		SymKey aSymKey = new SymKey();
-		SymText lSymText = new SymText();
 		SymPropertyChange lSymPropertyChange = new SymPropertyChange();
+		//SymKey aSymKey = new SymKey();
+		//SymText lSymText = new SymText();
 		//}}
 
 	}
@@ -723,7 +723,7 @@ public class GrinderItems extends Dialog {
 	{
 		public void keyTyped(java.awt.event.KeyEvent event)
 		{
-			Object object = event.getSource();
+			//Object object = event.getSource();
 			
 		}
 

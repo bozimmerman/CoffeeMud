@@ -106,7 +106,6 @@ public class GoodGuardian extends StdBehavior
 		if(tickID!=Host.MOB_TICK) return;
 		if(!canFreelyBehaveNormal(ticking)) return;
 		MOB mob=(MOB)ticking;
-		Room thisRoom=mob.location();
 		keepPeace(mob);
 	}
 }

@@ -87,8 +87,8 @@ public class Prop_HaveZapper extends Property
 
 	public String accountForYourself()
 	{
-		String allowed="";
-		String disallowed="";
+		//String allowed="";
+		//String disallowed="";
 
 		for(int c=0;c<CMClass.charClasses.size();c++)
 		{

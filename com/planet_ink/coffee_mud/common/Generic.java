@@ -675,7 +675,6 @@ public class Generic
 		}
 		else
 		{
-			int x=0;
 			for(int i=0;i<V.size();i++)
 			{
 				XMLManager.XMLpiece ablk=(XMLManager.XMLpiece)V.elementAt(i);

@@ -47,13 +47,13 @@ public class StdRace implements Race
 			if(!mob.amWearingSomethingHere(Item.ON_TORSO))
 				s1.wearAt(Item.ON_TORSO);
 		}
-		if((s2!=null)&&(mob.fetchInventory(p1.ID())==null))
+		if((p1!=null)&&(mob.fetchInventory(p1.ID())==null))
 		{
 			mob.addInventory(p1);
 			if(!mob.amWearingSomethingHere(Item.ON_LEGS))
 				p1.wearAt(Item.ON_LEGS);
 		}
-		if((p1!=null)&&(mob.fetchInventory(s2.ID())==null))
+		if((s2!=null)&&(mob.fetchInventory(s2.ID())==null))
 		{
 			mob.addInventory(s2);
 			if(!mob.amWearingSomethingHere(Item.ON_FEET))

@@ -33,8 +33,6 @@ public class Centipede extends StdRace
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
-
 		int weightModifier = Math.abs(randomizer.nextInt() % 1);
 		mob.baseEnvStats().setWeight(weightModifier);
 	}

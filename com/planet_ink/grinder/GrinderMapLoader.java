@@ -45,7 +45,7 @@ public class GrinderMapLoader extends Dialog {
 		//{{REGISTER_LISTENERS
 		SymWindow aSymWindow = new SymWindow();
 		this.addWindowListener(aSymWindow);
-		SymAction lSymAction = new SymAction();
+		//SymAction lSymAction = new SymAction();
 		//}}
 		
 		

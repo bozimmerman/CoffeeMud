@@ -31,7 +31,7 @@ public class GrinderDelay extends Thread
         switch(taskID)
         {
             case 1:
-            	Vector V=MapGrinder.getMap(myParent);
+            	//Vector V=MapGrinder.getMap(myParent);
             	break;
             default:
                 break;

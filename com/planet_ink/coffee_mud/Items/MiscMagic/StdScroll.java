@@ -141,7 +141,6 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if((thisOne!=null)&&(me.useTheScroll(thisOne,mob)))
 						{
 							thisOne=(Ability)thisOne.copyOf();
-							Environmental E=null;
 							thisOne.invoke(mob,params,null,true);
 							me.setUsesRemaining(me.usesRemaining()-1);
 						}

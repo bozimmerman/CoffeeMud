@@ -19,8 +19,6 @@ public class DrowWizard extends DrowElf
 
         magicResistance = 50 + baseEnvStats().level() * 2;
 
-		String sex = "male";
-
 		// ===== set the basics
 		Username="a Drow male";
 		setDescription("a Drow wizard");
@@ -145,7 +143,6 @@ public class DrowWizard extends DrowElf
 	public boolean okAffect(Affect affect)
 	{
 		boolean retval = super.okAffect(affect);
-		MOB SourceMOB = affect.source();
 
 		if((affect.amITarget(this))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
@@ -157,7 +154,7 @@ public class DrowWizard extends DrowElf
 	            return false;
             }
         }
-        return true;
+        return retval;
     }
 
 	public boolean tick(int tickID)
@@ -193,7 +190,7 @@ public class DrowWizard extends DrowElf
         }
         else
             prayer = CMClass.getAbility("Prayer_CureSerious");
-        Vector commands = new Vector();
+//        Vector commands = new Vector();
 //        commands.addElement();
         return prayer.invoke(this,null,false);
     }

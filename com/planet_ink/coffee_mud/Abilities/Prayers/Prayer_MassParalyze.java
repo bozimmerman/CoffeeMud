@@ -32,7 +32,6 @@ public class Prayer_MassParalyze extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_MOVE);
 	}

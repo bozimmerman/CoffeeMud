@@ -106,7 +106,6 @@ public class Prop_WearAdjuster extends Property
 	{
 		ensureStarted();
 		if((affectedMOB!=null)
-		   &&(affectedMOB instanceof MOB)
 		   &&(lastMOB==affectedMOB))
 			Prop_HaveAdjuster.adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -115,7 +114,6 @@ public class Prop_WearAdjuster extends Property
 	{
 		ensureStarted();
 		if((affectedMOB!=null)
-		   &&(affectedMOB instanceof MOB)
 		   &&(lastMOB==affectedMOB))
 			Prop_HaveAdjuster.adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);

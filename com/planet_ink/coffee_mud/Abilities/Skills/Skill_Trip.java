@@ -97,7 +97,6 @@ public class Skill_Trip extends StdAbility
 			return false;
 
 		boolean success=profficiencyCheck(-(50+((int)Math.round((new Integer(target.charStats().getDexterity()).doubleValue()-9.0)*3.0))),auto);
-		String str=null;
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,auto?"<T-NAME> trip(s)!":"<S-NAME> trip(s) <T-NAMESELF>!");

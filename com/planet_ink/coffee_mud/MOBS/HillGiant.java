@@ -10,8 +10,6 @@ public class HillGiant extends StdMOB
 	public HillGiant()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a Hill Giant";
 		setDescription("A tall humanoid standing about 16 feet tall and very smelly.");
 		setDisplayText("A Hill Giant glares at you.");

@@ -404,7 +404,6 @@ public class Dragon extends StdMOB
 	public boolean okAffect(Affect affect)
 	{
 		boolean retval = super.okAffect(affect);
-		MOB SourceMOB = affect.source();
 
 		if((affect.amITarget(this))&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
 		{

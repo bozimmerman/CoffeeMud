@@ -245,7 +245,7 @@ public class TheGrinder extends Thread
             fullClass+=" "+((MapGrinder.MOB)me).level;
                 
         StringBuffer buf=TheGrinder.safelyExpect(null,"INFOXML <ID>"+fullClass+"</ID>","</OBJECT>");
-        String myBuf=buf.toString();
+        //String myBuf=buf.toString();
         String myBlock=XMLManager.returnXMLBlock(buf.toString(),"OBJECT");
         while(myBlock.length()>10)
         {

@@ -116,6 +116,17 @@ public class BasicSenses
 			mob.location().send(mob,msg);
 	}
 
+	public void mundaneTake(MOB mob, Vector commands)
+	{
+		if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("off"))
+		{
+			commands.removeElementAt(commands.size()-1);
+			new ItemUsage().remove(mob,commands);
+		}
+		else
+			new ItemUsage().get(mob,commands);
+	}
+	
 	public void train(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
@@ -169,7 +180,7 @@ public class BasicSenses
 			return;
 		}
 
-		int curStat=mob.charStats().getCurStat(abilityCode);
+		int curStat=mob.baseCharStats().getCurStat(abilityCode);
 
 		if(!mob.charStats().getMyClass().canAdvance(mob,abilityCode))
 		{

@@ -105,8 +105,14 @@ public class StdDrink extends StdContainer implements Drink
 			{
 			case Affect.TYP_DRINK:
 				amountOfLiquidRemaining-=10;
-				if(mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState()))
+				boolean thirsty=mob.curState().getThirst()==0;
+				boolean full=!mob.curState().adjThirst(amountOfThirstQuenched,mob.maxState());
+				if(thirsty)
 					mob.tell("You are no longer thirsty.");
+				else
+				if(full)
+					mob.tell("You have drunk all you can.");
+				else
 				break;
 			case Affect.TYP_FILL:
 				if((affect.tool()!=null)&&(affect.tool() instanceof Drink))

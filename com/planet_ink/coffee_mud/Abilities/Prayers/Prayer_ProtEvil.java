@@ -33,7 +33,7 @@ public class Prayer_ProtEvil extends Prayer
 		if((affected==null)||(!(affected instanceof MOB)))
 			return false;
 
-		if((invoker==null)||(!(invoker instanceof MOB)))
+		if(invoker==null)
 			return false;
 
 		MOB mob=(MOB)affected;

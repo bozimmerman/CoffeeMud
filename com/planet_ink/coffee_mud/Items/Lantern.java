@@ -74,7 +74,6 @@ public class Lantern extends LightSource
 	{
 		if(affect.amITarget(this))
 		{
-			MOB mob=affect.source();
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_FILL:

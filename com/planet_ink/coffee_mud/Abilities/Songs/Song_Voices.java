@@ -84,7 +84,6 @@ public class Song_Voices extends Song
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				Ability newOne=(Ability)this.copyOf();
 
 				Hashtable h=ExternalPlay.properTargets(this,mob);
 				if(h==null) return false;

@@ -141,7 +141,7 @@ public class Falling extends StdAbility
 
 		if(affect.amISource((MOB)affected))
 		{
-			if(Sense.isFlying(affect.source()))
+			if(Sense.isFlying(mob))
 			{
 				unInvoke();
 				return true;

@@ -29,7 +29,6 @@ public class Paralysis extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_MOVE);
 	}

@@ -29,7 +29,6 @@ public class GreatBird extends StdRace
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
 
 		int weightModifier = Math.abs(randomizer.nextInt() % 3);
 		mob.baseEnvStats().setWeight(2+weightModifier);

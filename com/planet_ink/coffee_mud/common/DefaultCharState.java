@@ -41,9 +41,9 @@ public class DefaultCharState implements Cloneable, CharState
 			Hunger=0;
 			return false;
 		}
-		if(Hunger>max.getHunger())
+		if(Hunger>1000)
 		{
-			Hunger=max.getHunger();
+			Hunger=1000;
 			return false;
 		}
 		return true;
@@ -58,9 +58,9 @@ public class DefaultCharState implements Cloneable, CharState
 			Thirst=0;
 			return false;
 		}
-		if(Thirst>max.getThirst())
+		if(Thirst>500)
 		{
-			Thirst=max.getThirst();
+			Thirst=500;
 			return false;
 		}
 		return true;
@@ -156,7 +156,8 @@ public class DefaultCharState implements Cloneable, CharState
 			if(moving)
 				adjMovement(-mob.location().pointsPerMove(),maxState);
 
-			boolean annoy=adjThirst(-1,maxState)||adjHunger(-1,maxState);
+			boolean annoy=adjThirst(-1,maxState);
+			annoy=annoy||adjHunger(-1,maxState);
 			if(annoy)
 			{
 				if((--annoyanceTicker)<=0)

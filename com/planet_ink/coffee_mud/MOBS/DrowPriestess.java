@@ -18,8 +18,6 @@ public class DrowPriestess extends DrowElf
 
         magicResistance = 50 + baseEnvStats().level() * 2;
 
-		String sex = "female";
-
 		// ===== set the basics
 		Username="a Drow priestess";
 		setDescription("a Drow priestess");
@@ -145,7 +143,6 @@ public class DrowPriestess extends DrowElf
 	public boolean okAffect(Affect affect)
 	{
 		boolean retval = super.okAffect(affect);
-		MOB SourceMOB = affect.source();
 
 		if((affect.amITarget(this))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
@@ -157,7 +154,7 @@ public class DrowPriestess extends DrowElf
 	            return false;
             }
         }
-        return true;
+        return retval;
     }
 
 	public boolean tick(int tickID)
@@ -199,7 +196,7 @@ public class DrowPriestess extends DrowElf
         }
 
         boolean prayerSuccess = prayer.invoke(this,null,false);
-        return true;
+        return prayerSuccess;
 
     }
 

@@ -760,7 +760,6 @@ public class Scriptable extends ActiveTicker
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			MOB mob=(MOB)ticking;
-			Room thisRoom=mob.location();
 			if(scripts==null)
 				scripts=parseScripts(getParms());
 

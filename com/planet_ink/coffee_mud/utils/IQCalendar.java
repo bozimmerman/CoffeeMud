@@ -128,7 +128,6 @@ public class IQCalendar extends GregorianCalendar
 		if((TheDate.indexOf(".")==19)
 		||((TheDate.indexOf("-")==4)&&(TheDate.indexOf(":")==13)))
 		{
-			String TheOldDate=TheDate;
 			int HH=Util.s_int(TheDate.substring(11,13));
 			int MM=Util.s_int(TheDate.substring(14,16));
 			TheDate=TheDate.substring(5,7)+"/"+TheDate.substring(8,10)+"/"+TheDate.substring(0,4);
@@ -411,7 +410,6 @@ public class IQCalendar extends GregorianCalendar
 	{
 		int IntMin = this.get(IQCalendar.MINUTE);
 		int remainder = IntMin % 5;
-		int NewMin=0;
 		if (remainder != 0)
 		{
 			if (remainder >= 3)

@@ -31,7 +31,6 @@ public class XMLIO
 	public void infoxml(MOB mob, Vector commands)
 	{
 
-		Room room=mob.location();
 		if(commands.size()<1) return;
 
 		StringBuffer roomXML=new StringBuffer("");
@@ -574,7 +573,6 @@ public class XMLIO
 				String newDoor=null;
 				String newClass=null;
 				String newText=null;
-				boolean exitSame=true;
 				Room door=room.doors()[d];
 				Exit exit=room.exits()[d];
 				Exit opExit=null;

@@ -96,7 +96,6 @@ public class Skill_Dirt extends StdAbility
 		}
 		boolean success=profficiencyCheck(-(target.charStats().getDexterity()*3),auto);
 
-		String str=null;
 		if(success)
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,auto?"Dirt flys at <T-NAME>!":"<S-NAME> kick(s) dirt at <T-NAMESELF>.");

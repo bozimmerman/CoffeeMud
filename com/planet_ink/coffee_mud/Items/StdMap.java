@@ -122,7 +122,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 	    for(int x=0;x<grid.length;x++)
 			for(int y=0;y<grid[0].length;y++)
 			{
-				int numNonStragglers=0;
 			    MapRoom room=(MapRoom)grid[x][y];
 				if(room!=null)
 				{
@@ -286,7 +285,6 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		{
 			return ' ';
 		}
-		int myDir=-1;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			if(room.r.doors()[d]==nextRoom.r)

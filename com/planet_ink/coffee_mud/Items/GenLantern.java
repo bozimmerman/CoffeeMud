@@ -76,7 +76,6 @@ public class GenLantern extends GenLightSource
 	{
 		if(affect.amITarget(this))
 		{
-			MOB mob=affect.source();
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_FILL:

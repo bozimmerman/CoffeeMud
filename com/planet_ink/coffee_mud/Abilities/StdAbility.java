@@ -167,7 +167,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		String targetName=Util.combine(commands,0);
 		Environmental target=null;
-		if((givenTarget!=null)&&(givenTarget instanceof Environmental))
+		if(givenTarget!=null)
 			target=givenTarget;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(quality==Ability.MALICIOUS)&&(mob.getVictim()!=null))

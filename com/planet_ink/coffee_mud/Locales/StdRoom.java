@@ -472,7 +472,6 @@ public class StdRoom
 	{
 		if(direction>=Directions.NUM_DIRECTIONS)
 			return null;
-		Exit myExit=exits()[direction];
 		Room opRoom=doors()[direction];
 		if(opRoom!=null)
 			return opRoom.exits()[Directions.getOpDirectionCode(direction)];

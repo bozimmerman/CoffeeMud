@@ -18,7 +18,6 @@ public class Reset
 	}
 	public void room(MOB mob)
 	{
-		Room room=mob.location();
 		new Rooms().clearTheRoom(mob.location());
 		ExternalPlay.DBReadContent(mob.location());
 		mob.tell("Done.");

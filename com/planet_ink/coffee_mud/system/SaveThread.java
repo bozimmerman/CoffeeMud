@@ -70,7 +70,6 @@ public class SaveThread extends Thread
 				lastDateTime=Calendar.getInstance();
 				int processed=0;
 				Thread.sleep(10*60000);
-				Vector V=null;
 				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
 				{
 					MOB mob=(MOB)e.nextElement();

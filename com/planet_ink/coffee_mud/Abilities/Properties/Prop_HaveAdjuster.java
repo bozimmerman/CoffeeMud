@@ -86,7 +86,6 @@ public class Prop_HaveAdjuster extends Property
 					x++;
 				if(x<text.length())
 				{
-					char pm=text.charAt(x);
 					while((x<text.length())&&(!Character.isLetter(text.charAt(x))))
 						x++;
 					if(x<text.length())
@@ -297,7 +296,6 @@ public class Prop_HaveAdjuster extends Property
 	{
 		ensureStarted();
 		if((affectedMOB!=null)
-		   &&(affectedMOB instanceof MOB)
 		   &&(lastMOB==affectedMOB))
 			adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -306,7 +304,6 @@ public class Prop_HaveAdjuster extends Property
 	{
 		ensureStarted();
 		if((affectedMOB!=null)
-		   &&(affectedMOB instanceof MOB)
 		   &&(lastMOB==affectedMOB))
 			adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);

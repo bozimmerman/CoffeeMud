@@ -715,7 +715,6 @@ public class TheFight
 			
 			int damageInt=(int)Math.round(damageAmount);
 
-			String youSee=null;
 			FullMsg msg=new FullMsg(source,
 									target,
 									weapon,

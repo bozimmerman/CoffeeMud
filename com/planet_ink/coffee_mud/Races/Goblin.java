@@ -30,7 +30,6 @@ public class Goblin extends StdRace
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
 
 		int weightModifier = Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + Math.abs(randomizer.nextInt() % 10) + 4;
 		mob.baseEnvStats().setWeight(70+weightModifier);

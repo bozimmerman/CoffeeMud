@@ -72,7 +72,6 @@ public class CombatAbilities extends StdBehavior
 
 		int tries=0;
 		Ability tryThisOne=null;
-		Room thisRoom=mob.location();
 
 		while((tryThisOne==null)&&(tries<100)&&(mob.numAbilities()>0))
 		{

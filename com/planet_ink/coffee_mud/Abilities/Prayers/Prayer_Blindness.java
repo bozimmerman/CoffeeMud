@@ -32,8 +32,7 @@ public class Prayer_Blindness extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
-
+		
 		affectableStats.setSensesMask(affectableStats.sensesMask()|Sense.CAN_SEE);
 	}
 

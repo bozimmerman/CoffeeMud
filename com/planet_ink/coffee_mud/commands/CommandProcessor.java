@@ -96,7 +96,7 @@ public class CommandProcessor
 					if(mob.isASysOp())
 						createEdit.create(mob,commands);
 					else
-						mob.tell("You are not powerful enough.\n\r");
+						mob.tell("Only the Archons may create.\n\r");
 					break;
 				case CommandSet.CREDITS:
 					credits(mob);
@@ -108,7 +108,7 @@ public class CommandProcessor
 					if(mob.isASysOp())
 						createEdit.destroy(mob,commands);
 					else
-						mob.tell("You are not powerful enough.\n\r");
+						mob.tell("Only the Archons may destroy things this way.  Did you mean kill?\n\r");
 					break;
 				case CommandSet.DOWN:
 					movement.move(mob,Directions.DOWN,false);
@@ -174,7 +174,7 @@ public class CommandProcessor
 					if(mob.isASysOp())
 						importer.areimport(mob,commands);
 					else
-						mob.tell("You are not powerful enough.\n\r");
+						mob.tell("Only the Archons may Import.\n\r");
 					break;
 				case CommandSet.INVENTORY:
 					scoring.inventory(mob);
@@ -189,7 +189,7 @@ public class CommandProcessor
 					if(mob.isASysOp())
 						createEdit.link(mob,commands);
 					else
-						mob.tell("You are not powerful enough.\n\r");
+						mob.tell("Only the Archons may link rooms.\n\r");
 					break;
 				case CommandSet.LOCK:
 					movement.lock(mob,Util.combine(commands,1));
@@ -201,7 +201,7 @@ public class CommandProcessor
 					if(mob.isASysOp())
 						createEdit.edit(mob,commands);
 					else
-						mob.tell("You are not powerful enough.\n\r");
+						mob.tell("Only the Archons may modify things.\n\r");
 					break;
 				case CommandSet.NOFOLLOW:
 					grouping.nofollow(mob,true);
@@ -279,7 +279,7 @@ public class CommandProcessor
 					if(mob.isASysOp())
 						createEdit.save(mob,commands);
 					else
-						mob.tell("You are not powerful enough.\n\r");
+						mob.tell("Your game is automatically being saved while you play.\n\r");
 					break;
 				case CommandSet.SAY:
 					socialProcessor.cmdSay(mob,commands);
@@ -331,7 +331,7 @@ public class CommandProcessor
 					if(mob.isASysOp())
 						sysopItemUsage.take(mob,commands);
 					else
-						mob.tell("You are not powerful enough.\n\r");
+						basicSenses.mundaneTake(mob,commands);
 					break;
 				case CommandSet.TELL:
 					socialProcessor.tell(mob,commands);

@@ -309,7 +309,6 @@ public class Drowness extends StdBehavior
 
 		boolean retval = super.okAffect(oking, affect);
 		MOB mob=(MOB)oking;
-		MOB SourceMOB = affect.source();
 		if((affect.amITarget(mob))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
 		&&(affect.targetMinor()==Affect.TYP_CAST_SPELL))
@@ -390,7 +389,7 @@ public class Drowness extends StdBehavior
         }
 
         boolean prayerSuccess = prayer.invoke(mob,null,false);
-        return true;
+        return prayerSuccess;
 
     }
 

@@ -76,7 +76,6 @@ public class GenSuperPill extends GenPill
 					x++;
 				if(x<text.length())
 				{
-					char pm=text.charAt(x);
 					while((x<text.length())&&(!Character.isLetter(text.charAt(x))))
 						x++;
 					if(x<text.length())

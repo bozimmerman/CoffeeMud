@@ -785,7 +785,7 @@ public class GrinderMOBs extends Dialog {
 
 		public void keyTyped(java.awt.event.KeyEvent event)
 		{
-			Object object = event.getSource();
+			//Object object = event.getSource();
 			
 		}
 

@@ -199,7 +199,7 @@ public class ItemUsage
 				return;
 			}
 
-			if((doneSomething)&&(!(dropThis instanceof Item)))
+			if(doneSomething)
 			   return;
 
 			if((last==dropThis)||(!drop(mob,dropThis)))
@@ -216,6 +216,13 @@ public class ItemUsage
 			mob.tell("Put what where?");
 			return;
 		}
+		
+		if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("on"))
+		{
+			commands.removeElementAt(commands.size()-1);
+			this.wear(mob,commands);
+		}
+		
 		commands.removeElementAt(0);
 		if(commands.size()<2)
 		{
@@ -441,7 +448,7 @@ public class ItemUsage
 			if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
 			{
 				if(!doneSomething)
-					mob.tell("You don't seem to have that.");
+					mob.tell("You don't seem to be carrying that.");
 				return;
 			}
 			if(!thisItem.amWearingAt(Item.INVENTORY))
@@ -489,7 +496,7 @@ public class ItemUsage
 		Item thisItem=mob.fetchCarried(null,Util.combine(commands,0));
 		if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
 		{
-			mob.tell("You don't seem to have that.");
+			mob.tell("You don't seem to be carrying that.");
 			return;
 		}
 		if(!alreadyWornMsg(mob,thisItem))
@@ -509,7 +516,7 @@ public class ItemUsage
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,Util.combine(commands,0));
 		if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 		{
-			mob.tell("You don't seem to have that.");
+			mob.tell("You don't see that here.");
 			return;
 		}
 		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_DRINK,"<S-NAME> take(s) a drink from <T-NAMESELF>.");
@@ -529,7 +536,7 @@ public class ItemUsage
 		Item thisItem=mob.fetchInventory(Util.combine(commands,0));
 		if((thisItem==null)||((thisItem!=null)&&(!Sense.canBeSeenBy(thisItem,mob))))
 		{
-			mob.tell("You don't seem to have that.");
+			mob.tell("You don't seem to be carrying that.");
 			return;
 		}
 		FullMsg newMsg=new FullMsg(mob,thisItem,null,Affect.MSG_EAT,"<S-NAME> eat(s) <T-NAMESELF>.");
@@ -548,7 +555,7 @@ public class ItemUsage
 			Item thisItem=(Item)thisThang;
 			if((thisItem.isGettable())&&(!mob.isMine(thisItem)))
 			{
-				mob.tell("You don't seem to have that.");
+				mob.tell("You don't seem to be carrying that.");
 				return;
 			}
 		}
@@ -630,7 +637,6 @@ public class ItemUsage
 	public void push(MOB mob, String whatToOpen, CommandSet commandSet)
 	{
 
-		Integer cmd=(Integer)commandSet.get(whatToOpen.toUpperCase());
 		Environmental openThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatToOpen);
 		if(dirCode>=0)

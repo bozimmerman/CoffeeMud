@@ -67,7 +67,7 @@ public class Spell_HeatMetal extends Spell
 		if(tickID!=Host.MOB_TICK) return true;
 		if((affected==null)||(!(affected instanceof MOB)))
 			return true;
-		if((invoker==null)||(!(invoker instanceof MOB)))
+		if(invoker==null)
 			return true;
 
 		MOB mob=(MOB)affected;
@@ -108,7 +108,6 @@ public class Spell_HeatMetal extends Spell
 
 		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
 			for(int i=0;i<affectedItems.size();i++)
 			{
 				Item I=(Item)affectedItems.elementAt(i);

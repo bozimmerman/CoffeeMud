@@ -38,7 +38,7 @@ public class Spell_FloatingDisc extends Spell
 		// undo the affects of this spell
 		if((affected==null)||(!(affected instanceof Item)))
 			return;
-		if((invoker==null)||(!(invoker instanceof MOB)))
+		if(invoker==null)
 			return;
 
 		MOB mob=(MOB)invoker;

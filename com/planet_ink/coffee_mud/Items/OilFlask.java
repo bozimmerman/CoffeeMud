@@ -78,7 +78,6 @@ public class OilFlask extends StdContainer
 	{
 		if(affect.amITarget(this))
 		{
-			MOB mob=affect.source();
 			switch(affect.targetMinor())
 			{
 			case Affect.TYP_FILL:

@@ -381,7 +381,7 @@ public class TelnetSession extends Thread implements Session
 				case '<':
 					if(!wrapOnly)
 					{
-						int endDex=loop;
+						//int endDex=loop;
 						StringBuffer cmd=new StringBuffer("");
 						int ldex=loop+1;
 						for(;(ldex<loop+11)&&(ldex<buf.length());ldex++)
@@ -631,7 +631,6 @@ public class TelnetSession extends Thread implements Session
 	{
 		try
 		{
-			boolean done=false;
 			long tries=5;
 			while((!killFlag)&&((--tries)>0))
 			{

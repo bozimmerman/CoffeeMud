@@ -560,7 +560,6 @@ public class Import
 		int x=Util.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
-		boolean minus=false;
 		i=str.indexOf("+");
 		if(i<0)
 			i=str.indexOf("-");
@@ -797,7 +796,7 @@ public class Import
 					int i1=Util.s_int(Util.getBit(s,1));
 					int i2=Util.s_int(Util.getBit(s,2));
 					int i3=Util.s_int(Util.getBit(s,3));
-					int i4=Util.s_int(Util.getBit(s,4));
+					//int i4=Util.s_int(Util.getBit(s,4));
 					int whatIsell=ShopKeeper.ONLYBASEINVENTORY;
 					if((i1>4)&&(i1<8)&&(i2>4)&&(i2<8)&&(i3>4)&&(i3<8))
 						whatIsell=ShopKeeper.WEAPONS;
@@ -2159,7 +2158,6 @@ public class Import
 		}
 
 		Vector V=Resources.getFileLineVector(buf);
-		boolean otherFormat=false;
 
 		// sort the data into general blocks, and identify area
 		mob.tell("Sorting data...");

@@ -79,7 +79,6 @@ public class Lister
 		for(int i=0;i<these.size();i++)
 		{
 			Object thisThang=these.elementAt(i);
-			String thisOne=CoffeeUtensils.id(thisThang);
 			boolean ok=true;
 			if(ofType>=0)
 			{
@@ -112,7 +111,6 @@ public class Lister
 		StringBuffer lines=new StringBuffer("");
 		if(these.size()==0) return lines;
 		if(likeRoom==null) return lines;
-		int column=0;
 		for(int m=0;m<these.size();m++)
 		{
 			Room thisThang=(Room)these.elementAt(m);

@@ -62,9 +62,7 @@ public class Skill_Write extends StdAbility
 			return false;
 		}
 
-		Item item=null;
-		if(target instanceof Item)
-			item=(Item)target;
+		Item item=target;
 		if((item==null)||((item!=null)&&(!item.isReadable())))
 		{
 			mob.tell("You can't write on that.");

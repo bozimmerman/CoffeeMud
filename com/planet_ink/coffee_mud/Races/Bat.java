@@ -31,8 +31,6 @@ public class Bat extends StdRace
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());
-		char gender = mob.baseCharStats().getGender();
-
 		int weightModifier = Math.abs(randomizer.nextInt() % 5);
 		mob.baseEnvStats().setWeight(10+weightModifier);
 	}

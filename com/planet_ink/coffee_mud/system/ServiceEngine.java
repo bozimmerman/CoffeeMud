@@ -50,7 +50,6 @@ public class ServiceEngine
 		Tick tock=confirmAndGetTickThread(E,tickID);
 		if(tock==null) return;
 
-		boolean ok=true;
 		TockClient client=new TockClient(E,numTicks,tickID);
 		if(client!=null)
 			tock.tickers.addElement(client);

@@ -216,10 +216,12 @@ public class SocialProcessor
 			return;
 		}
 		commands.removeElementAt(commands.size()-1);
+		if((commands.size()>0)&&(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("to")))
+			commands.removeElementAt(commands.size()-1);
 
 		String itemID=Util.combine(commands,0);
 		boolean doneSomething=false;
-		int addendum=1;
+		//int addendum=1;
 		String addendumStr="";
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		do
@@ -292,7 +294,7 @@ public class SocialProcessor
 			}
 			commands.removeElementAt(0);
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper))
+			if(shopkeeper!=null)
 			{
 				shopkeeper=(ShopKeeper)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
@@ -349,7 +351,7 @@ public class SocialProcessor
 			}
 			commands.removeElementAt(0);
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper))
+			if(shopkeeper!=null)
 			{
 				shopkeeper=(ShopKeeper)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
@@ -405,7 +407,7 @@ public class SocialProcessor
 			}
 			commands.removeElementAt(0);
 			MOB possibleShopkeeper=mob.location().fetchInhabitant((String)commands.elementAt(commands.size()-1));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper))
+			if(shopkeeper!=null)
 			{
 				shopkeeper=(ShopKeeper)possibleShopkeeper;
 				commands.removeElementAt(commands.size()-1);
@@ -460,7 +462,7 @@ public class SocialProcessor
 			}
 			commands.removeElementAt(0);
 			MOB possibleShopkeeper=mob.location().fetchInhabitant(Util.combine(commands,0));
-			if((shopkeeper!=null)&&(shopkeeper instanceof ShopKeeper))
+			if(shopkeeper!=null)
 				shopkeeper=(ShopKeeper)possibleShopkeeper;
 			else
 			{

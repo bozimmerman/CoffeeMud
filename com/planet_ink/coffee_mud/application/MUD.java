@@ -150,8 +150,8 @@ public class MUD extends Thread implements Host
 					break;
 				if(external!=null)
 				{
-					Runtime r=Runtime.getRuntime();
-					Process p=r.exec(external);
+					//Runtime r=Runtime.getRuntime();
+					//Process p=r.exec(external);
 					Log.sysOut("Attempted to execute '"+external+"'.");
 					break;
 				}
@@ -203,7 +203,7 @@ public class MUD extends Thread implements Host
 
 		CMClass.unload();
 		CMMap.unLoad();
-		INI page=null;
+		page=null;
 		CMClass.unload();
 		Resources.clearResources();
 		try{Thread.sleep(500);}catch(Exception i){}
