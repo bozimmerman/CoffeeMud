@@ -1,9 +1,9 @@
-update security in the archons guide, its outdated -- also 4 more archon cmds to add
 I have the DAYSCLANDEATH set to 0 in the INI which should disable that. Also, minclanmembers is set to 2.  I just received the message [CLANTALK] 'Clan Clan of the Test is in danger of being deleted if  more members do not log on within 24 hours.' One of the other clanmembers logged out less than an hour ago. 
+do SAYTO
 preload shows spells being invoked on people
 document real estate and space ship selling, document genairlock?
-Add Commands to the programmer's guide
 The programmer's guide still shows the playerSelectable method btw.
+Add Commands to the programmer's guide
 Christening Prayer, Chant Bestow Name, pregnancy change, domesticate name change
 Add Prop_HaveDmgAbsorb
 Finish Scripting doc

@@ -201,14 +201,25 @@ content to leave the INI file alone.&nbsp; You will eventually, however, probabl
 to at least modify the "START" setting.&nbsp; Any changes to the 
 coffeemud.ini file will require that CoffeeMud be restarted before the changes will 
 take effect. </P>
-<P align=left><EM>SYSMSGS, ERRMSGS, DBGMSGS<BR></EM>These entries refer to 
-logged system messages, logged error messages, and logged debug messages 
-respectively.&nbsp; When logging is directed to a file, that file is called 
-"mud.log".&nbsp; The possible values for each of these settings is either "ON", 
-which will direct the indicated messages to the screen only, "OFF" to disable 
-the messages entirely, "FILE" to direct the messages to the "mud.log" file only, 
-or "BOTH" for both screen and file output.&nbsp; By default, SYSMSGS and ERRMSGS 
-are set to "BOTH", while DBGMSGS is set to "OFF".</P>
+<P align=left>      Below are some of the more important 
+configuration settings to be aware of in your ini file.&nbsp; There are actually 
+many many more, but they just aren't discussed here.&nbsp; The best way to 
+modify those "other" settings is through the Control Panel in the <A 
+href="MUDGrinder.html">MUDGrinder</A>       
+            
+               
+           
+            
+&nbsp;web site.&nbsp; </P>
+<P align=left><EM>SYSMSGS, ERRMSGS, DBGMSGS<BR></EM>These entries refer to logged system 
+messages, logged error messages, and logged debug messages respectively.&nbsp; 
+When logging is directed to a file, that file is called "mud.log".&nbsp; The 
+possible values for each of these      settings 
+is either "ON", which will direct the indicated messages to the screen 
+only, "OFF" to disable the messages entirely, "FILE" to direct the messages to the "mud.log" 
+file only, or "BOTH" for both screen and file output.&nbsp; By 
+default, SYSMSGS and ERRMSGS are set to "BOTH", while DBGMSGS is set 
+to "OFF". </P>
 <P align=left><EM>PORT<BR></EM>This is the TCP/IP port number which the main 
 CoffeeMud server will listen on.&nbsp; By default the setting is 5555.&nbsp; If 
 you would like to change this number to some other port, you may do so!&nbsp; 
@@ -293,12 +304,12 @@ fakedb, and thus blank by default.</P>
 <P align=left><EM>DBCONNECTIONS<BR></EM>This &nbsp;is the number of independent connections to 
 make to the database through your JDBC/ODBC driver.&nbsp; 1 or 2 is 
 plenty.&nbsp; CoffeeMud is not&nbsp;especially database intensive.
-<P align=left><EM>* In Addition to the 
-above, you will find other numerous flags and settings which allow you to better 
-customize your CoffeeMud.&nbsp; Make sure you look through your coffeemud.ini 
-file for more information on these. If you wish to customize some of 
-the CoffeeMud game settings, it is highly recommended that you read through 
-the INI file as if it were just another Installation Guide.</EM>&nbsp;&nbsp;      
+<P align=left><EM>     
+              
+          
+* In Addition to the above, you will find other numerous flags and 
+settings which allow you to better customize your CoffeeMud.&nbsp; Make sure you&nbsp;check 
+out the Control Panel feature in the MUDGrinder to modify them.&nbsp;</EM>&nbsp;&nbsp;      
              
       
 <P>
@@ -330,14 +341,14 @@ the guides directory.</P>
 <IMG src="images/dir-web.jpg">
 <P>The <STRONG>web</STRONG>  directory is where you'll find several important files
 related to the configuration of the two default web servers: admin, and public (pub):</P>
-<TABLE WIDTH=100% BORDER=1>
-<TR><TD VALIGN=TOP><I>admin.ini</I></TD><TD VALIGN=TOP> The configuration file for the admin web server.  This is the
+<TABLE WIDTH="100%" BORDER=1>
+<TR><TD VALIGN=top><I>admin.ini</I></TD><TD VALIGN=top> The configuration file for the admin web server.  This is the
 server which, by default, governs the MUDGrinder and other server administrative
 pages and utilities.</TD></TR>
-<TR><TD VALIGN=TOP><I>common.ini</I></TD><TD VALIGN=TOP> The configuration file for certain settings common to both 
+<TR><TD VALIGN=top><I>common.ini</I></TD><TD VALIGN=top> The configuration file for certain settings common to both 
 the admin and public web servers.</TD></TR>
-<TR><TD VALIGN=TOP><I>pub.ini</I></TD><TD VALIGN=TOP> The configuration file for the public web server.</TD></TR>
-<TR><TD VALIGN=TOP><I>email.ini</I></TD><TD VALIGN=TOP> The configuration file for the smtp server.</TD></TR>
+<TR><TD VALIGN=top><I>pub.ini</I></TD><TD VALIGN=top> The configuration file for the public web server.</TD></TR>
+<TR><TD VALIGN=top><I>email.ini</I></TD><TD VALIGN=top> The configuration file for the smtp server.</TD></TR>
 </TABLE>
 <P>The <STRONG>admin</STRONG> directory is where the pages made available by the admin
 web server are found, by default.  This directory also contains the <STRONG>admin/images</STRONG>
@@ -356,12 +367,12 @@ the pub web server is found.</P>
 for tinkering with the configuration of several aspects of your system.  Some of these files
 are in the resources directory itself, and some are in its subdirectories.  The important
 files found in the resources directory are:</P>
-<TABLE WIDTH=100% BORDER=1>
-<TR><TD VALIGN=TOP><I>chat.dat</I></TD><TD VALIGN=TOP> The configuration file for the MudChat behavior.</TD></TR>
-<TR><TD VALIGN=TOP><I>laws.ini</I></TD><TD VALIGN=TOP> The default configuration file for the Arrest behavior.</TD></TR>
-<TR><TD VALIGN=TOP><I>lawtoc.ini</I></TD><TD VALIGN=TOP> The default pages file for the GenLawBook item.</TD></TR>
-<TR><TD VALIGN=TOP><I>movingroom.xml</I></TD><TD VALIGN=TOP> A sample configuration file for the MovingRoom behavior.</TD></TR>
-<TR><TD VALIGN=TOP><I>socials.txt</I></TD><TD VALIGN=TOP> The text file holding all of the socials.</TD></TR>
+<TABLE WIDTH="100%" BORDER=1>
+<TR><TD VALIGN=top><I>chat.dat</I></TD><TD VALIGN=top> The configuration file for the MudChat behavior.</TD></TR>
+<TR><TD VALIGN=top><I>laws.ini</I></TD><TD VALIGN=top> The default configuration file for the Arrest behavior.</TD></TR>
+<TR><TD VALIGN=top><I>lawtoc.ini</I></TD><TD VALIGN=top> The default pages file for the GenLawBook item.</TD></TR>
+<TR><TD VALIGN=top><I>movingroom.xml</I></TD><TD VALIGN=top> A sample configuration file for the MovingRoom behavior.</TD></TR>
+<TR><TD VALIGN=top><I>socials.txt</I></TD><TD VALIGN=top> The text file holding all of the socials.</TD></TR>
 </TABLE>
 <P>The <STRONG>resources/data</STRONG> directory is where you'll find sample files for
 a variety of things.  At the moment, it only contains a cmare files with some example
@@ -386,17 +397,25 @@ the Common skills in CoffeeMud.  Each text file contains recipe for a single ski
 is formatted in tab-delimited format, with rows seperated by carriage returns.</P>
 <P>The <STRONG>resources/text</STRONG> directory contains several text files displayed at
 different points in the CoffeeMud engine.  A summary is as follows:</P>
-<TABLE WIDTH=100% BORDER=1>
-<TR><TD VALIGN=TOP><I>alignment.txt</I></TD><TD VALIGN=TOP> A text file describing alignment to new players.</TD></TR>
-<TR><TD VALIGN=TOP><I>classes.txt</I></TD><TD VALIGN=TOP>A text file describing class selections for new players.</TD></TR>
-<TR><TD VALIGN=TOP><I>credits.txt</I></TD><TD VALIGN=TOP>The text file shown to users who use the CREDITS command.</TD></TR>
-<TR><TD VALIGN=TOP><I>intro.txt</I></TD><TD VALIGN=TOP>The text file displayed to users when they connect to your mud.</TD></TR>
-<TR><TD VALIGN=TOP><I>newchar.txt</I></TD><TD VALIGN=TOP>A text file introducing your mud to new players.</TD></TR>
-<TR><TD VALIGN=TOP><I>offline.txt</I></TD><TD VALIGN=TOP>A text file shown to players while your mud is booting.</TD></TR>
-<TR><TD VALIGN=TOP><I>races.txt</I></TD><TD VALIGN=TOP>A text file describing race selections to new players.</TD></TR>
-<TR><TD VALIGN=TOP><I>stats.txt</I></TD><TD VALIGN=TOP>A text file describing the basic stats to new players</TD></TR>
-<TR><TD VALIGN=TOP><I>motd.txt</I></TD><TD VALIGN=TOP>A text file shown to users when they log on.  The existence of this file activates 
-MOTD command, as well as the MOTD entry in the CONFIG command.
+<TABLE WIDTH="100%" BORDER=1>
+<TR><TD VALIGN=top><I>alignment.txt</I></TD><TD VALIGN=top> A text file describing alignment to new players.</TD></TR>
+<TR><TD VALIGN=top><I>classes.txt</I></TD><TD VALIGN=top>A text file describing class selections for new players.</TD></TR>
+<TR><TD VALIGN=top><I>credits.txt</I></TD><TD VALIGN=top>The text file shown to users who use the CREDITS command.</TD></TR>
+<TR><TD VALIGN=top><I>intro.txt</I></TD><TD VALIGN=top>The text file displayed to users when they connect to your mud.</TD></TR>
+<TR><TD VALIGN=top><I>newchar.txt</I></TD><TD VALIGN=top>A text file introducing your mud to new players.</TD></TR>
+<TR><TD VALIGN=top><I>offline.txt</I></TD><TD VALIGN=top>A text file shown to players while your mud is booting.</TD></TR>
+<TR><TD VALIGN=top><I>races.txt</I></TD><TD VALIGN=top>A text file describing race selections to new players.</TD></TR>
+<TR><TD VALIGN=top><I>stats.txt</I></TD><TD VALIGN=top>A text file describing the basic stats to new players</TD></TR>
+<TR><TD VALIGN=top><I>motd.txt</I></TD><TD VALIGN=top>A text file shown to users when they 
+      log on. The existence of this file activates MOTD command, as well as the 
+      MOTD entry in the CONFIG command.&nbsp; Of course, since CoffeeMud News 
+      journals are also displayed at boot time, and their subjects may be 
+      prefixed with MOTD, MOTM, or MOTY to make their redisplay perpetual, there 
+      really is no good reason to use this feature as an Message Of The Day per 
+      se.&nbsp; Instead, this file is best used for fancy introductions to your 
+      mud, or congratulations for having figured out how to log in 
+  perhaps.</TR>                 
+           
 </TABLE>
 <P>
 <IMG src="images/db.jpg">

@@ -165,6 +165,15 @@ public class ProcessSMTPrequest extends Thread
 							if((finalData.length()>0)
 							&&(subject!=null))
 							{
+								if(subject.startsWith("MOTD")
+								||subject.startsWith("MOTM")
+								||subject.startsWith("MOTY"))
+								{
+									MOB M=CMMap.getLoadPlayer(from);
+									if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
+										subject=subject.substring(4);
+								}
+								
 								for(int i=0;i<to.size();i++)
 								{
 									String journal=server.getAnEmailJournal((String)to.elementAt(i));
@@ -198,6 +207,7 @@ public class ProcessSMTPrequest extends Thread
 												}
 											}
 										}
+										   
 										CMClass.DBEngine().DBWriteJournal(journal,
 																		  from,
 																		  "ALL",
