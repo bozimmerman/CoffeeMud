@@ -1448,11 +1448,11 @@ public class StdMOB implements MOB
 	{
 		if(fetchWieldedItem()!=null)
 			return;
-
+		
 		for(int i=0;i<inventory.size();i++)
 		{
 			Item thisItem=(Item)inventory.elementAt(i);
-			if(thisItem.canBeWornAt(Item.WIELD))
+			if((thisItem.canBeWornAt(Item.WIELD))&&(thisItem.canWear(this)))
 			{
 				thisItem.wearAt(Item.WIELD);
 				return;
