@@ -40,12 +40,11 @@ public class MudChat extends StdBehavior
 		return new MudChat();
 	}
 
-	public synchronized void initChat()
+	public static synchronized void initChat()
 	{
 		if(resourceLoaded) return;
-
-		StringBuffer rsc=Resources.getFileResource("chat.dat");
 		resourceLoaded=true;
+		StringBuffer rsc=Resources.getFileResource("chat.dat");
 		Vector V=new Vector();
 		V.addElement("");
 		chatGroups.addElement(V);
@@ -98,7 +97,7 @@ public class MudChat extends StdBehavior
 		}
 	}
 
-	public String nextLine(StringBuffer tsc)
+	public static String nextLine(StringBuffer tsc)
 	{
 		String ret=null;
 		if((tsc!=null)&&(tsc.length()>0))
@@ -120,7 +119,7 @@ public class MudChat extends StdBehavior
 	}
 
 
-	private Vector matchChatGroup(String myName)
+	private static Vector matchChatGroup(String myName)
 	{
 		for(int i=1;i<chatGroups.size();i++)
 		{

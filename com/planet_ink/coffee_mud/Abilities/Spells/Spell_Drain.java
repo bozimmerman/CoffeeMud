@@ -64,17 +64,17 @@ public class Spell_Drain extends Spell
 			FullMsg msg2=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> reach(es) at <T-NAMESELF>!");
 			if((mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 			{
-				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
+				mob.location().send(mob,msg);
 				if((!msg.wasModified())&&(!msg2.wasModified()))
 				{
 					int damage = 0;
-					int maxDie =  (int)Math.round(Util.div(mob.envStats().level(),2.0));
-					if (maxDie > 10)
-						maxDie = 10;
+					int maxDie =  (int)Math.round(Util.div(mob.envStats().level(),4.0));
+					if (maxDie > 5)
+						maxDie = 5;
 					damage += Dice.roll(maxDie,5,1);
 
-					mob.location().show(mob,target,Affect.MSG_OK_ACTION,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp "+ExternalPlay.hitWord(-1,damage)+"s <T-NAME>.");
+					mob.location().show(mob,target,Affect.MSG_OK_ACTION,auto?"<T-NAME> shudder(s) in a draining magical wake.":"The draining grasp "+ExternalPlay.hitWord(-1,damage)+" <T-NAME>.");
 					ExternalPlay.postDamage(mob,target,this,damage);
 					mob.curState().adjHitPoints(damage,mob.maxState());
 				}

@@ -80,9 +80,9 @@ public class Spell_Dragonfire extends Spell
 
 						int damage = 0;
 						int maxDie =  mob.envStats().level();
-						if (maxDie > 10)
-							maxDie = 10;
-						damage += Dice.roll(maxDie,10,1);
+						if (maxDie > 30)
+							maxDie = 30;
+						damage += Dice.roll(maxDie,3,1);
 						if(msg2.wasModified())
 							damage = (int)Math.round(Util.div(damage,2.0));
 

@@ -60,7 +60,7 @@ public class Spell_ReadMagic extends Spell
 		{
 			Ability thisNewOne=(Ability)this.copyOf();
 			mob.addAffect(thisNewOne);
-			ExternalPlay.read(mob,target);
+			ExternalPlay.read(mob,target,"");
 			mob.delAffect(thisNewOne);
 		}
 		else

@@ -551,7 +551,7 @@ public class ItemUsage
 		if(mob.location().okAffect(newMsg))
 			mob.location().send(mob,newMsg);
 	}
-	public void read(MOB mob, Environmental thisThang)
+	public void read(MOB mob, Environmental thisThang, String theRest)
 	{
 		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 		{
@@ -567,8 +567,10 @@ public class ItemUsage
 				return;
 			}
 		}
-
-		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_READSOMETHING,"<S-NAME> read(s) <T-NAMESELF>.");
+		String soMsg="<S-NAME> read(s) <T-NAMESELF>.";
+		String tMsg=theRest;
+		if((tMsg.trim().length()==0)||(thisThang instanceof MOB)) tMsg=soMsg;
+		FullMsg newMsg=new FullMsg(mob,thisThang,null,Affect.MSG_READSOMETHING,soMsg,Affect.MSG_READSOMETHING,tMsg,Affect.MSG_READSOMETHING,soMsg);
 		if(mob.location().okAffect(newMsg))
 			mob.location().send(mob,newMsg);
 		
@@ -592,7 +594,7 @@ public class ItemUsage
 			commands.removeElementAt(commands.size()-1);
 			theRest=Util.combine(commands,0);
 		}
-		read(mob,thisThang);
+		read(mob,thisThang, theRest);
 	}
 
 	public boolean remove(MOB mob, Item item)

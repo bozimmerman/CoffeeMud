@@ -22,7 +22,7 @@ public interface ExternalCommand
 	public void doCommand(MOB mob, Vector commands)
 		throws Exception;
 	public boolean drop(MOB mob, Environmental dropThis);
-	public void read(MOB mob, Environmental thisThang);
+	public void read(MOB mob, Environmental thisThang, String theRest);
 	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
 	
 	// messages

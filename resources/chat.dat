@@ -2467,6 +2467,8 @@
 #matches anything and then says nothing
 ()
 9
+
+
 ############################################################
 >cat kitten lion
 
@@ -2509,6 +2511,8 @@
 ()
 8
 2:rots a bit.
+
+
 ############################################################
 >doll toy
 
@@ -2519,9 +2523,21 @@
 (bye)
 7: stares evilly at you
 4I hate you.
+
 #matches anything and then says nothing
 
 @default
+
+############################################################
+>bird sparrow
+
+(sparrow|hi|hello)
+8:flutters in the breeze.
+4:
+
+#matches anything and then says nothing
+()
+9
 
 ############################################################
 >papa_smurf smurf 
@@ -2536,6 +2552,8 @@
 1"Where are my berries.
 
 @default
+
+
 ############################################################
 >monster
 
@@ -2550,6 +2568,8 @@
 ()
 9: 
 1: snarls and paces angrily.
+
+
 ############################################################
 >rabbit bunny
 

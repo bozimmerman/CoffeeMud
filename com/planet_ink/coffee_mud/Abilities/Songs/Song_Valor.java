@@ -38,6 +38,6 @@ public class Song_Valor extends Song
 		super.affectEnvStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((int)Math.round(Util.div(invoker.envStats().level(),3.0))*5));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+5+((int)Math.round(Util.div(invoker.envStats().level(),10.0))*5));
 	}
 }

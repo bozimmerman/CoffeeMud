@@ -104,9 +104,9 @@ public class ExternalCommands implements ExternalCommand
 	{
 		return processor.itemUsage.drop(mob,dropThis);
 	}
-	public void read(MOB mob, Environmental thisThang)
+	public void read(MOB mob, Environmental thisThang, String theRest)
 	{
-		processor.itemUsage.read(mob,thisThang);
+		processor.itemUsage.read(mob,thisThang,theRest);
 	}
 	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{

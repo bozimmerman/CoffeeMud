@@ -118,9 +118,9 @@ public class ExternalPlay
 		if(player!=null) return player.drop(mob,dropThis);
 		return false;
 	}
-	public static void read(MOB mob, Environmental thisThang)
+	public static void read(MOB mob, Environmental thisThang, String theRest)
 	{
-		if(player!=null) player.read(mob,thisThang);
+		if(player!=null) player.read(mob,thisThang, theRest);
 	}
 	public static void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{
