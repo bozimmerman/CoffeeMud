@@ -323,8 +323,6 @@ public class Sense
 				return true;
 			if(canSeeInDark(seer))
 				return true;
-			if((isGolem(seen))&&(canSeeInfrared(seer)))
-			   return true;
 			return false;
 		}
 		return true;
@@ -629,6 +627,32 @@ public class Sense
 			}
 		}
 		return 0;
+	}
+	
+	public static boolean isInTheGame(Environmental E)
+	{
+		if(E instanceof Room)
+			return CMMap.getRoom(CMMap.getExtendedRoomID((Room)E))==E;
+		else
+		if(E instanceof MOB)
+			return (((MOB)E).location()!=null)&&((MOB)E).amActive();
+		else
+		if(E instanceof Item)
+		{
+			if(((Item)E).owner() instanceof MOB)
+				return isInTheGame((MOB)((Item)E).owner());
+			else
+			if(((Item)E).owner() instanceof Room)
+				return !((Item)E).amDestroyed();
+			else
+				return false;
+		}
+		else
+		if(E instanceof Area)
+			return CMMap.getArea(E.Name())==E;
+		else
+			return true;
+		
 	}
 	
 	public static String wornLocation(long wornCode)

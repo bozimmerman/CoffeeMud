@@ -43,6 +43,19 @@ public class StdRideable extends StdMOB implements Rideable
 		}
 		return super.killMeDead(createBody);
 	}
+	public void destroy()
+	{
+		while(riders.size()>0)
+		{
+			Rider mob=fetchRider(0);
+			if(mob!=null)
+			{
+				mob.setRiding(null);
+				delRider(mob);
+			}
+		}
+		super.destroy();
+	}
 
 	// common item/mob stuff
 	public int rideBasis(){return rideBasis;}

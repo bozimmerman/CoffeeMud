@@ -79,7 +79,7 @@ public class Spell_Gate extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MOVE|affectType(auto),"^S<S-NAME> invoke(s) a teleportation spell.^?");
 			if((mob.location().okMessage(mob,msg))&&(newRoom.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);

@@ -39,7 +39,8 @@ public class Fighter_Heroism extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_JUSTICE,
-								(affectableStats.getStat(CharStats.CHARISMA)/4)
+								affectableStats.getStat(CharStats.SAVE_JUSTICE)
+								+(affectableStats.getStat(CharStats.CHARISMA)/4)
 								+(affectableStats.getStat(CharStats.STRENGTH)/4)
 								+(adjustedLevel(affected)/2));
 	}

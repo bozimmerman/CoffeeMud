@@ -121,17 +121,17 @@ public class TelnetSession extends Thread implements Session
 	public boolean killFlag(){return killFlag;}
 	public void setKillFlag(boolean truefalse){killFlag=truefalse;}
 	public Vector previousCMD(){return previousCmd;}
-	public void startSnooping(Session S)
+	public void startBeingSnoopedBy(Session S)
 	{
 		if(!snoops.contains(S))
 			snoops.addElement(S);
 	}
-	public void stopSnooping(Session S)
+	public void stopBeingSnoopedBy(Session S)
 	{
 		while(snoops.contains(S))
 			snoops.removeElement(S);
 	}
-	public boolean amSnooping(Session S)
+	public boolean amBeingSnoopedBy(Session S)
 	{
 		if(S==null) return snoops.size()==0;
 		return(snoops.contains(S));

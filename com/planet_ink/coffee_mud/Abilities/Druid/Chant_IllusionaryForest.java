@@ -127,7 +127,7 @@ public class Chant_IllusionaryForest extends Chant
 				if((CoffeeUtensils.doesOwnThisProperty(mob,mob.location()))
 				||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),mob.location()))))
 				{
-					mob.location().addNonUninvokableEffect(this);
+					mob.location().addNonUninvokableEffect((Ability)copyOf());
 					CMClass.DBEngine().DBUpdateRoom(mob.location());
 				}
 				else

@@ -37,7 +37,7 @@ public class Spell_DetectScrying extends Spell
 				for(int s1=0;s1<Sessions.size();s1++)
 				{
 					Session S1=Sessions.elementAt(s1);
-					if(target.session().amSnooping(S1))
+					if(target.session().amBeingSnoopedBy(S1))
 						str.append(S1.mob().name()+" is snooping on <T-NAME>.  ");
 				}
 				Ability A=target.fetchEffect("Spell_Scry");

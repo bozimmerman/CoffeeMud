@@ -11,11 +11,11 @@ public class Snoop extends StdCommand
 	private String[] access={"SNOOP"};
 	public String[] getAccessWords(){return access;}
 	
-	private Vector snoopedOnBy(Session S)
+	private Vector snoopingOn(Session S)
 	{
 		Vector V=new Vector();
 		for(int s=0;s<Sessions.size();s++)
-			if(Sessions.elementAt(s).amSnooping(S))
+			if(Sessions.elementAt(s).amBeingSnoopedBy(S))
 				V.addElement(Sessions.elementAt(s));
 		return V;
 	}
@@ -35,14 +35,14 @@ public class Snoop extends StdCommand
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=Sessions.elementAt(s);
-			if(S.amSnooping(mob.session()))
+			if(S.amBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
 					mob.tell("You stop snooping on "+S.mob().name()+".");
 				else
 					mob.tell("You stop snooping on someone.");
 				doneSomething=true;
-				S.stopSnooping(mob.session());
+				S.stopBeingSnoopedBy(mob.session());
 			}
 		}
 		if(commands.size()==0)
@@ -73,15 +73,15 @@ public class Snoop extends StdCommand
 		else
 		{
 			Vector snoop=new Vector();
-			snoop.addElement(mob.session());
+			snoop.addElement(SnoopOn);
 			for(int v=0;v<snoop.size();v++)
 			{
-				if(snoop.elementAt(v)==SnoopOn)
+				if(snoop.elementAt(v)==mob.session())
 				{
 					mob.tell("This would create a snoop loop!");
 					return false;
 				}
-				Vector V=snoopedOnBy((Session)snoop.elementAt(v));
+				Vector V=snoopingOn((Session)snoop.elementAt(v));
 				for(int v2=0;v2<V.size();v2++)
 				{
 					Session S2=(Session)V.elementAt(v2);
@@ -90,7 +90,7 @@ public class Snoop extends StdCommand
 				}
 			}
 			mob.tell("You start snooping on "+SnoopOn.mob().name()+".");
-			SnoopOn.startSnooping(mob.session());
+			SnoopOn.startBeingSnoopedBy(mob.session());
 		}
 		return false;
 	}

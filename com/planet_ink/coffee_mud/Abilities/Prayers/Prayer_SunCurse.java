@@ -35,7 +35,7 @@ public class Prayer_SunCurse extends Prayer
 		MOB mob=(MOB)affected;
 		if((mob.location()!=null)
 		&&(mob.location().getArea().getClimateObj().canSeeTheSun(mob.location()))
-		&&(mob.location().isInhabitant(mob)))
+		&&(Sense.isInTheGame(mob)))
 		{
 			mob.tell("\n\r\n\r\n\r\n\r**THE SUN IS BEATING ONTO YOUR SKIN**\n\r\n\r");
 			Ability A=CMClass.getAbility("Spell_FleshStone");

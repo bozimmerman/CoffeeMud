@@ -129,6 +129,7 @@ public class StdBehavior implements Behavior
 		MOB monster=(MOB)affecting;
 		if(!canActAtAll(monster))
 			return false;
+		if(!Sense.isInTheGame(monster)) return false;
 		if(monster.isInCombat()) return false;
 		if(monster.amFollowing()!=null)  return false;
 		if(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0)))

@@ -263,10 +263,14 @@ public class Sounder extends StdBehavior
 		if(ticking instanceof MOB)
 		{
 			emoter=(MOB)ticking;
+			if(!canFreelyBehaveNormal(ticking))
+				return;
 			emoteHere(((MOB)ticking).location(),emoter,emote);
 		}
 		else
 		{
+			if((ticking instanceof Item)&&(!Sense.isInTheGame((Item)ticking)))
+				return;
 			Room R=getBehaversRoom(ticking);
 			if(R!=null)
 			{

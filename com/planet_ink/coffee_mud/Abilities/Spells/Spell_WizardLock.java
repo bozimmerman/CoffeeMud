@@ -36,7 +36,7 @@ public class Spell_WizardLock extends Spell
 			mob.tell(affected.name()+" appears to be magically locked.");
 			return false;
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
-			mob.tell(affected.name()+" appears to be magically locked.");
+			mob.tell(affected.name()+" appears to be magically protected.");
 			return false;
 		default:
 			break;
@@ -126,7 +126,6 @@ public class Spell_WizardLock extends Spell
 				mob.location().send(mob,msg);
 				if(target instanceof Exit)
 				{
-					beneficialAffect(mob,target,0);
 					Exit exit=(Exit)target;
 					exit.setDoorsNLocks(exit.hasADoor(),false,exit.defaultsClosed(),
 										exit.hasALock(),true,exit.defaultsLocked());
@@ -139,7 +138,12 @@ public class Spell_WizardLock extends Spell
 					||((mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R)))
 					||((R2!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob,R2)))
 					||((R2!=null)&&(mob.amFollowing()!=null)&&(CoffeeUtensils.doesOwnThisProperty(mob.amFollowing(),R2))))
+					{
+						target.addNonUninvokableEffect((Ability)copyOf());
 						CMClass.DBEngine().DBUpdateExits(R);
+					}
+					else
+						beneficialAffect(mob,target,0);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
 				}
 				else

@@ -190,13 +190,16 @@ public class Emoter extends ActiveTicker
 			}
 			else
 			{
+				if((ticking instanceof Item)&&(!Sense.isInTheGame((Item)ticking)))
+					return true;
+				
 				emoter=CMClass.getMOB("StdMOB");
 				MOB mob=getBehaversMOB(ticking);
 				String name=ticking.name();
 				if(ticking instanceof Environmental)
 					name=((Environmental)ticking).name();
 				if(mob!=null)
-					emoter.setName(name+" belonging to "+mob.name());
+					emoter.setName(name+" carried by "+mob.name());
 				else
 					emoter.setName(name);
 			}

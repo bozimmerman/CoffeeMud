@@ -24,8 +24,7 @@ public class Chant_AnimalSpy extends Chant
 		{
 			if(spy.amDead()
 			   ||(spy.amFollowing()!=invoker)
-			   ||(spy.location()==null)
-			   ||(!spy.location().isInhabitant(spy)))
+			   ||(!Sense.isInTheGame(spy)))
 				unInvoke();
 		}
 		return true;

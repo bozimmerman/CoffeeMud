@@ -407,6 +407,10 @@ public class StdMOB implements MOB
 	{
 		return amDead||pleaseDestroy;
 	}
+	public boolean amActive()
+	{
+		return pleaseDestroy;
+	}
 
 
 	public void destroy()
@@ -424,6 +428,7 @@ public class StdMOB implements MOB
 			I.destroy();
 			delInventory(I);
 		}
+		riding=null;
 	}
 
 	public void removeFromGame()
@@ -582,8 +587,8 @@ public class StdMOB implements MOB
 	{
 		if((!mayIFight(mob))
 		||(location()!=mob.location())
-		||(!location().isInhabitant(this))
-		||(!mob.location().isInhabitant(mob)))
+		||(!Sense.isInTheGame(this))
+		||(!Sense.isInTheGame(mob)))
 		   return false;
 		return true;
 	}

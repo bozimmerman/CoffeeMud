@@ -574,6 +574,8 @@ public class Cooking extends CommonSkill
 					else
 					if(I instanceof Food)
 						food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment()));
+					else
+						food.setNourishment(food.nourishment()+10);
 				}
 				if(timesTwo) food.setNourishment(food.nourishment()*2);
 			}

@@ -1,19 +1,8 @@
 ?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
 ?Test: Far Shot, Body Shield, PK-ALWAYS-X
 ?Heh... Don't know if we can have anything catch for the error, since it's so severe (i.e. MUD dies), but is it possible to check for snooping loops?
-cheese gives no nourishment
-add level to wish help
 Could you set it to auto-detect based on the inventory of the shop whether the items will fit in one column or two?  With some shops, the item names are long enough that two columns are poor fits.
-revoke doesn't respect directions for exits
-Kylandaria Guard rings from Elvenhame are unequippable
-Kylandaria When I am wanted and use Obscure self, they arrest me anyway(or try to). According to the help, they shouldn't notice me.
-Kylandaria Infravision the spell does not work for me
-uninvoke of summon flyer doesn't dismount folks!
 put a conquered mob on a home property, quit, log back on, see if this error occurs.
-INFRAVISION does not enable a human to see a non-sneaking, non-invisible gnome in the same dark room as the human.
-I can cast gate while resting, might be a bad idea
-If you quit in a room that has had its title and description changed since you logged out, it will show you the room you quit in and they will not really exist in the game (as I tried gating to this person as well).
-Kylandaria Wizard lock isn't permanent when cast on a door while following the owner. (Unless something went wrong like a crash or the reboot losing things, it should have.)
 
 Delver:
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  

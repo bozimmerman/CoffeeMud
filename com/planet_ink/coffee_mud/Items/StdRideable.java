@@ -30,7 +30,14 @@ public class StdRideable extends StdContainer implements Rideable
 	public void destroy()
 	{
 		while(riders.size()>0)
-			fetchRider(0).setRiding(null);
+		{
+			Rider mob=fetchRider(0);
+			if(mob!=null)
+			{
+				mob.setRiding(null);
+				delRider(mob);
+			}
+		}
 		super.destroy();
 	}
 

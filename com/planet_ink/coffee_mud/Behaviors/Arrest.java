@@ -808,6 +808,19 @@ public class Arrest extends StdBehavior
 		return null;
 	}
 
+	public boolean canFocusOn(MOB officer, MOB criminal)
+	{
+		FullMsg msg=new FullMsg(officer,criminal,CMMsg.MSG_EXAMINESOMETHING,"<S-NAME> look(s) closely at <T-NAME>.");
+		if((officer!=null)&&(officer.location()!=null)&&(criminal.location()==officer.location()))
+		{
+			if(!officer.location().okMessage(officer,msg))
+				return false;
+			if(msg.sourceMessage().indexOf("<T-NAME>")<0)
+				return false;
+		}
+		return true;
+	}
+	
 	public boolean isStillACrime(LegalWarrant W)
 	{
 		// will witness talk, or victim press charges?
@@ -1745,8 +1758,9 @@ public class Arrest extends StdBehavior
 					W.setTravelAttemptTime(0);
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
-					&&(Sense.canBeSeenBy(W.criminal(),officer)))
+					&&(Sense.isInTheGame(W.criminal()))
+					&&(Sense.canBeSeenBy(W.criminal(),officer))
+					&&(canFocusOn(officer,W.criminal())))
 					{
 						if(W.criminal().isASysOp(W.criminal().location()))
 						{
@@ -1795,7 +1809,7 @@ public class Arrest extends StdBehavior
 					W.setTravelAttemptTime(0);
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
@@ -1847,7 +1861,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
@@ -1939,7 +1953,7 @@ public class Arrest extends StdBehavior
 
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
 					&&(Sense.aliveAwakeMobile(officer,true)))
@@ -1984,7 +1998,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.aliveAwakeMobile(officer,true)))
 					{
@@ -2043,7 +2057,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.aliveAwakeMobile(officer,true)))
 					{
@@ -2100,7 +2114,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
@@ -2147,7 +2161,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
 					&&(Sense.canBeSeenBy(W.criminal(),officer)))
@@ -2209,11 +2223,12 @@ public class Arrest extends StdBehavior
 				{
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&(W.criminal().location().isInhabitant(officer))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(!W.crime().equalsIgnoreCase("pardoned"))
-					&&(Sense.canBeSeenBy(W.criminal(),officer)))
+					&&(Sense.canBeSeenBy(W.criminal(),officer))
+					&&(canFocusOn(officer,W.criminal())))
 					{
 						MOB judge=getTheJudgeHere(laws,officer.location());
 						if((judge!=null)
@@ -2259,7 +2274,7 @@ public class Arrest extends StdBehavior
 					MOB officer=W.arrestingOfficer();
 					if((officer!=null)
 					&&(W.criminal().location().isInhabitant(officer))
-					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.isInTheGame(W.criminal()))
 					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
 					&&(Sense.aliveAwakeMobile(officer,true))
 					&&(W.jail()!=null))
@@ -2331,7 +2346,7 @@ public class Arrest extends StdBehavior
 							MOB officer=W.arrestingOfficer();
 							if((officer==null)
 							||(!Sense.aliveAwakeMobile(officer,true))
-							||(!W.criminal().location().isInhabitant(W.criminal()))
+							||(!Sense.isInTheGame(W.criminal()))
 							||(!W.criminal().location().isInhabitant(officer)))
 							{
 								W.setArrestingOfficer(getAnyElligibleOfficer(laws,W.jail().getArea(),W.criminal(),W.victim()));
@@ -2339,7 +2354,14 @@ public class Arrest extends StdBehavior
 								if(W.arrestingOfficer()==null) break;
 								officer=W.arrestingOfficer();
 								W.jail().bringMobHere(officer,false);
-								W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
+								if(!canFocusOn(officer,W.criminal()))
+								{
+									W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>, but can't find <T-HIM-HER>.");
+									dismissOfficer(officer);
+									W.setArrestingOfficer(null);
+								}
+								else
+									W.jail().show(officer,W.criminal(),CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
 								Ability A=CMClass.getAbility("Skill_HandCuff");
 								if((A!=null)&&(!Sense.isBoundOrHeld(W.criminal())))
 									A.invoke(officer,W.criminal(),true);

@@ -28,9 +28,8 @@ public class Chant_PlantChoke extends Chant
 		&&(!I.amWearingAt(Item.INVENTORY)))
 		{
 			MOB mob=(MOB)I.owner();
-			if((mob.location()!=null)
-			&&(!mob.amDead())
-			&&(mob.location().isInhabitant(mob)))
+			if((!mob.amDead())
+			&&(Sense.isInTheGame(mob)))
 			{
 				mob.tell(I.name()+" loosens its grip on your neck and falls off.");
 				I.setRawWornCode(0);
@@ -48,10 +47,9 @@ public class Chant_PlantChoke extends Chant
 		&&(I.amWearingAt(Item.ON_NECK)))
 		{
 			MOB mob=(MOB)I.owner();
-			if((mob.location()!=null)
-			&&(!mob.amDead())
+			if((!mob.amDead())
 			&&(mob.isMonster())
-			&&(mob.location().isInhabitant(mob)))
+			&&(Sense.isInTheGame(mob)))
 				CommonMsgs.remove(mob,I,false);
 		}
 		return super.tick(ticking,tickID);

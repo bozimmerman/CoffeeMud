@@ -231,6 +231,9 @@ public class GrinderRooms
 				MOB M=(MOB)e.nextElement();
 				if(M.getStartRoom()==oldR)
 					M.setStartRoom(R);
+				else
+				if(M.location()==oldR)
+					M.setLocation(R);
 			}
 			R.getArea().clearMap();
 		}

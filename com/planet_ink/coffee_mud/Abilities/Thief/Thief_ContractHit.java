@@ -93,7 +93,7 @@ public class Thief_ContractHit extends ThiefSkill
 					MOB M=(MOB)hitmen.elementAt(i);
 					if((!M.amDead())
 					   &&(M.location()!=null)
-					   &&(M.location().isInhabitant(M))
+					   &&(Sense.isInTheGame(M))
 					   &&(Sense.aliveAwakeMobile(M,true)))
 					{
 						anyLeft=true;

@@ -90,7 +90,7 @@ public class Prop_Auction extends Property
 							MoneyUtils.giveMoney(M,M,bid);
 							if((auctioning instanceof Item)
 							   &&(highBidder.location()!=null)
-							   &&(highBidder.location().isInhabitant(highBidder)))
+							   &&(Sense.isInTheGame(highBidder)))
 							{
 								((Item)auctioning).unWear();
 								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);

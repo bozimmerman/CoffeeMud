@@ -209,6 +209,9 @@ public class Masonry extends CommonSkill
 								MOB M=(MOB)e.nextElement();
 								if(M.getStartRoom()==room)
 									M.setStartRoom(R);
+								else
+								if(M.location()==room)
+									M.setLocation(R);
 							}
 							if(doingCode==BUILD_POOL)
 							{
