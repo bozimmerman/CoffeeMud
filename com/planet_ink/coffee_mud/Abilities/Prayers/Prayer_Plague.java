@@ -41,36 +41,14 @@ public class Prayer_Plague extends Prayer
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> body erupt with a fresh batch of painful oozing sores!");
 			if(invoker==null) invoker=mob;
 			ExternalPlay.postDamage(invoker,mob,this,mob.envStats().level());
+			MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+			if((target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
+				if(Dice.rollPercentage()>(target.charStats().getConstitution()*4))
+					maliciousAffect(invoker,target,48,-1);
 		}
 		return super.tick(tickID);
 	}
 
-	public void affect(Affect affect)
-	{
-		super.affect(affect);
-		if((affected==null)||(invoker==null)||(!(affected instanceof MOB))||(!(invoker instanceof MOB)))
-			return;
-		MOB mob=(MOB)affected;
-		if(affect.amITarget(mob)&&(!affect.amISource(mob))&&(invoker!=affect.source())
-		   &&((Util.bset(affect.sourceCode(),Affect.ACT_MOVE))
-		   ||(Util.bset(affect.sourceCode(),Affect.ACT_MOUTH)
-		   ||(Util.bset(affect.sourceCode(),Affect.ACT_HANDS)))))
-		{
-			if(Dice.rollPercentage()>(affect.source().charStats().getConstitution()*4))
-				maliciousAffect(invoker,affect.source(),48,-1);
-		}
-		else
-		if(affect.amISource(mob)&&(affect.target()!=null)&&(affect.target() instanceof MOB)&&(!affect.amITarget(mob))&&(invoker!=affect.target())
-		   &&((Util.bset(affect.sourceCode(),Affect.ACT_MOVE))
-		   ||(Util.bset(affect.sourceCode(),Affect.ACT_MOUTH)
-		   ||(Util.bset(affect.sourceCode(),Affect.ACT_HANDS)))))
-		{
-			MOB target=(MOB)affect.target();
-			if(Dice.rollPercentage()>(target.charStats().getConstitution()*4))
-				maliciousAffect(invoker,target,48,-1);
-		}
-	}
-	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
