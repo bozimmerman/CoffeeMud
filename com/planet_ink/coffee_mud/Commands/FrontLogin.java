@@ -591,7 +591,8 @@ public class FrontLogin extends StdCommand
 			}
 			return false;
 		}
-		mob.session().println("\n\r");
+		if((mob!=null)&&(mob.session()!=null))
+			mob.session().println("\n\r");
 		return true;
 	}
 	public int ticksToExecute(){return 0;}

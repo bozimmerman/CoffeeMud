@@ -582,8 +582,8 @@ public class Masonry extends CraftingSkill
 			 							0,null,null,
 			 							false,
 			 							0);
-			woodRequired=idata[0][FOUND_AMT];
 			if(data==null) return false;
+			woodRequired=idata[0][FOUND_AMT];
 		}
 		else
 		{
@@ -593,8 +593,8 @@ public class Masonry extends CraftingSkill
 										0,null,null,
 										false,
 										0);
-			woodRequired=idata[0][FOUND_AMT];
 			if(data==null) return false;
+			woodRequired=idata[0][FOUND_AMT];
 		}
 
 		boolean canBuild=(CoffeeUtensils.doesOwnThisProperty(mob,mob.location())

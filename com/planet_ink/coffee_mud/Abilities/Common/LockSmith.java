@@ -90,7 +90,8 @@ public class LockSmith extends CraftingSkill
 							((Exit)workingOn).baseEnvStats().setLevel(mob.envStats().level());
 							((Exit)workingOn).recoverEnvStats();
 							((Exit)workingOn).setDoorsNLocks(true,false,true,true,true,true);
-							((Exit)workingOn).setKeyName(((Key)building).getKey());
+							if(building instanceof Key)
+								((Exit)workingOn).setKeyName(((Key)building).getKey());
 							CMClass.DBEngine().DBUpdateExits(mob.location());
 							if((exit2!=null)
 							   &&(!boltlock)
@@ -100,7 +101,8 @@ public class LockSmith extends CraftingSkill
 							{
 								((Exit)exit2).baseEnvStats().setLevel(mob.envStats().level());
 								((Exit)exit2).setDoorsNLocks(true,false,true,true,true,true);
-								((Exit)exit2).setKeyName(((Key)building).getKey());
+								if(building instanceof Key)
+									((Exit)exit2).setKeyName(((Key)building).getKey());
 								CMClass.DBEngine().DBUpdateExits(room2);
 							}
 						}

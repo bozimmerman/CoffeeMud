@@ -236,6 +236,7 @@ public class ClanCrafting extends CraftingSkill
 			return false;
 		}
 		int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,autoGenerate);
+		if(data==null) return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
 		String reqskill=(String)foundRecipe.elementAt(this.RCP_REQUIREDSKILL);
