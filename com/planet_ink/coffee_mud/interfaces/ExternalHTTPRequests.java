@@ -16,6 +16,7 @@ public interface ExternalHTTPRequests
 	public String getRequestParameter(String key);
 	public void removeRequestParameter(String key);
 	public void addRequestParameters(String key, String value);
+	public Hashtable getVirtualDirectories();
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);

@@ -133,7 +133,6 @@ public class HTTPserver extends Thread
 			return false;
 		}
 
-
 		addVirtualDirectories();
 
 		
@@ -146,7 +145,8 @@ public class HTTPserver extends Thread
 		return true;
 	}
 
-
+	public Hashtable getVirtualDirectories(){return pageGrabber.getVirtualDirectories();}
+	
 	private void addVirtualDirectories()
 	{
 		for (Enumeration e = page.keys() ; e.hasMoreElements() ;)

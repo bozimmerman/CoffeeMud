@@ -84,6 +84,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			this.start();
 	}
 
+	public Hashtable getVirtualDirectories(){return webServer.getVirtualDirectories();}
 	public HTTPserver getWebServer()	{return webServer;}
 	public String getHTTPstatus()	{return status;}
 	public String getHTTPstatusInfo()	{return statusExtra==null?"":statusExtra;}

@@ -54,12 +54,11 @@ public class FileGrabber
 		}
 		return fn;
 	}
-/*
-	public boolean doesFileExist()
-	{
 	
+	public Hashtable getVirtualDirectories()
+	{
+		return virtualDirectories;
 	}
-*/
 	//assumes pathName has been fixed!
 	// actPath may be relative to coffeemud root; the canonical
 	// form is stored
@@ -132,19 +131,12 @@ public class FileGrabber
 				String searchPath = fn;
 				if (!searchPath.endsWith("/"))
 					searchPath += '/';
-			
-//Log.errOut(webServer.getName(), "dbgI - " + searchPath);
 				while (searchPath.length() > 1 && !virtualDirectories.containsKey(searchPath))
 				{
-//					searchPath = searchPath.substring(0,searchPath.lastIndexOf('/')+1);
-
-
 					fn2 = searchPath.substring(searchPath.lastIndexOf('/',searchPath.lastIndexOf('/')-1)) + fn2;
-//Log.errOut(webServer.getName(), "dbgFN2 - " + fn2);
 
 					searchPath = searchPath.substring(0,searchPath.lastIndexOf('/',
 						searchPath.lastIndexOf('/')-1)+1);
-//Log.errOut(webServer.getName(), "dbgL - " + searchPath);
 				}
 				baseDir = (String)virtualDirectories.get(searchPath);
 				if (baseDir == null)
@@ -152,7 +144,6 @@ public class FileGrabber
 					Log.errOut(webServer.getName(), "No path? '" + fn +"'");
 					throw new IOException("No path.");
 				}
-//Log.errOut(webServer.getName(), baseDir);
 			}
 			catch (Exception e)
 			{

@@ -14,10 +14,26 @@ public class FileInfo extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PATH");
-		if(last==null) last=""+File.separatorChar;
+		String path=httpReq.getRequestParameter("PATH");
+		if(path==null) path="";
 		String file=httpReq.getRequestParameter("FILE");
 		if(file==null) file="";
+		if(path.indexOf("..")>=0)
+			return "[path security error]";
+		if(file.indexOf("..")>=0)
+			return "[file security error]";
+		if(file.indexOf(File.separatorChar)>=0)
+			return "[file security error]";
+		if(file.indexOf("/")>=0)
+			return "[file security error]";
+		if(!path.endsWith("/"))
+		{
+			path+="/";
+			httpReq.addRequestParameters("PATH",path);
+		}
+		String last=FileNext.fixFileName(httpReq,path);
+		if(last.length()==0)
+			return "[path security error]";
 		last+=file;
 		if(last.length()>0)
 		{

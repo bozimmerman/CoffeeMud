@@ -64,8 +64,8 @@
 	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Name</FONT></B></TD>
 	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Status</FONT></B></TD>
 	<TD WIDTH=30%>
-(<A HREF="javascript:Browse('resources/progs/');"><FONT COLOR=WHITE><B>Browse Scripts</B></FONT></a>)
-&nbsp;(<A HREF="javascript:Browse('resources/quests/');"><FONT COLOR=WHITE><B>Browse Quests</B></FONT></a>)
+(<A HREF="javascript:Browse('scripts/');"><FONT COLOR=WHITE><B>Browse Scripts</B></FONT></a>)
+&nbsp;(<A HREF="javascript:Browse('quests/');"><FONT COLOR=WHITE><B>Browse Quests</B></FONT></a>)
 	</TD>
 	</TR>
 	@QuestNext?RESET@
