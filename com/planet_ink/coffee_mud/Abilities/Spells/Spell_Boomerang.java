@@ -42,15 +42,20 @@ public class Spell_Boomerang extends Spell
 		{
 			Item I=(Item)affected;
 			if((owner==null)&&(I.owner()!=null)
-			   &&(owner instanceof MOB)
-			   &&(I.owner().Name().equals(text())))
+			&&(I.owner() instanceof MOB)
+			&&(I.owner().Name().equals(text())))
 				   owner=(MOB)I.owner();
 			if((owner!=null)&&(I.owner()!=owner))
 			{
-				owner.tell(I.name()+" boomerangs back into your inventory!");
-				owner.giveItem(I);
-				I.unWear();
-				I.setContainer(null);
+				if((msg.sourceMinor()==Affect.TYP_DROP)||(msg.target()==affected))
+					msg.addTrailerMsg(new FullMsg(owner,null,Affect.NO_EFFECT,null));
+				else
+				{
+					owner.tell(I.name()+" boomerangs back into your inventory!");
+					I.unWear();
+					I.setContainer(null);
+					owner.giveItem(I);
+				}
 			}
 		}
 	}

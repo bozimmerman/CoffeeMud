@@ -34,7 +34,8 @@ public class Channels
 		for(int x=0;x<channelNames.size();x++)
 		{
 			int minLevel=((Integer)channelLevels.elementAt(x)).intValue();
-			if(mob.envStats().level()>=minLevel)
+			if((mob.envStats().level()>=minLevel)
+			&&((minLevel>=0)||(mob.isASysOp(mob.location()))))
 			{
 				if((++col)>3)
 				{
@@ -108,15 +109,7 @@ public class Channels
 				return c;
 		return -1;
 	}
-
-	public static int getChannelLvl(String channelName)
-	{
-		for(int c=0;c<channelNames.size();c++)
-			if(((String)channelNames.elementAt(c)).startsWith(channelName))
-				return ((Integer)channelLevels.elementAt(c)).intValue();
-		return -1;
-	}
-
+	
 	public static int getChannelNum(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
@@ -233,6 +226,13 @@ public class Channels
 		//cmdSet.put(new String("AUCTION"),new Integer(CommandSet.CHANNEL));
 		cmdSet.put("NO"+(new String("AUCTION")),new Integer(CommandSet.NOCHANNEL));
 		numChannelsLoaded++;
+		
+		channelNames.addElement(new String("WIZINFO"));
+		channelLevels.addElement(new Integer(-1));
+		ichannelList.addElement("");
+		cmdSet.put(new String("WIZINFO"),new Integer(CommandSet.CHANNEL));
+		cmdSet.put("NO"+(new String("WIZINFO")),new Integer(CommandSet.NOCHANNEL));
+		numChannelsLoaded++;
 		return numChannelsLoaded;
 	}
 
@@ -245,7 +245,6 @@ public class Channels
 	{
 		PlayerStats pstats=mob.playerStats();
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
-		FullMsg msg=null;
 		commands.removeElementAt(0);
 		int channelInt=getChannelInt(channelName);
 		int channelNum=getChannelNum(channelName);
@@ -275,22 +274,55 @@ public class Channels
 			mob.tell("This channel is not yet available to you.");
 			return;
 		}
+		if((lvl<0)&&(!mob.isASysOp(mob.location())))
+		{
+			mob.tell("This channel is not available to you.");
+			return;
+		}
+			
 		if((mob.getClanID().equalsIgnoreCase(""))&&(channelName.equalsIgnoreCase("CLANTALK")))
 		{
 		  mob.tell("You can't talk to your clan - you don't have one.");
 		  return;
 		}
+		reallyChannel(mob,channelName,Util.combine(commands,0),systemMsg);
+	}
+	
+	public static MOB talker=null;
+	public static void reallyChannel(String channelName, 
+									 String message,
+									 boolean systemMsg)
+	{
+		if(talker==null)
+		{
+			talker=CMClass.getMOB("StdMOB");
+			if(talker==null) return;
+			talker.setName("^?");
+			talker.setLocation(CMMap.getRandomRoom());
+		}
+		reallyChannel(talker,channelName,message,systemMsg);
+	}
+		
+	public static void reallyChannel(MOB mob,
+									 String channelName, 
+									 String message,
+									 boolean systemMsg)
+	{
+		int channelInt=getChannelInt(channelName);
+		int channelNum=getChannelNum(channelName);
+		int lvl=((Integer)channelLevels.elementAt(channelInt)).intValue();
+		FullMsg msg=null;
 		if(systemMsg)
 		{
-		  String str="["+channelName+"] '"+Util.combine(commands,0)+"'^?^.";
+		  String str="["+channelName+"] '"+message+"'^?^.";
 		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^Q"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
 		else
 		{
-		  String str=" "+channelName+"(S) '"+Util.combine(commands,0)+"'^?^.";
+		  String str=" "+channelName+"(S) '"+message+"'^?^.";
 		  msg=new FullMsg(mob,null,null,Affect.MASK_CHANNEL|Affect.MASK_GENERAL|Affect.MSG_SPEAK,"^QYou"+str,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),"^Q"+mob.name()+str);
 		}
-		if(mob.location().okAffect(mob,msg))
+		if((mob==talker)||(mob.location().okAffect(mob,msg)))
 		{
 			for(int s=0;s<Sessions.size();s++)
 			{
@@ -304,6 +336,7 @@ public class Channels
 				&&(!M.amDead())
 				&&(M.location()!=null)
 				&&(M.envStats().level()>=lvl)
+				&&((lvl>=0)||(M.isASysOp(M.location())))
 				&&((M.playerStats()==null)
 					||(!M.playerStats().getIgnored().containsKey(mob.Name())))
 				&&(M.okAffect(M,msg)))
@@ -323,7 +356,7 @@ public class Channels
 			}
 		}
 		if((ExternalPlay.i3().i3online())&&(ExternalPlay.i3().isI3channel(getChannelName(channelName))))
-			ExternalPlay.i3().i3channel(mob,getChannelName(channelName),Util.combine(commands,0));
+			ExternalPlay.i3().i3channel(mob,getChannelName(channelName),message);
 	}
 	public static void nochannel(MOB mob, Vector commands)
 	{
@@ -343,6 +376,11 @@ public class Channels
 		if(lvl>mob.envStats().level())
 		{
 			mob.tell("This channel is not yet available to you.");
+			return;
+		}
+		if((lvl<0)&&(!mob.isASysOp(mob.location())))
+		{
+			mob.tell("This channel is not available to you.");
 			return;
 		}
 		if(!Util.isSet(pstats.getChannelMask(),channelNum))

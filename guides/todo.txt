@@ -1,5 +1,4 @@
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
-wizinfo channel
 
 Programming.html update
 	Updates to Locales, Mobs, Items for misc. methods.

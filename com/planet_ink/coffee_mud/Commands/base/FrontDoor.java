@@ -212,6 +212,7 @@ public class FrontDoor
 					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
 						S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
 				}
+				ExternalPlay.channel("WIZINFO",mob.Name()+" has logged on.",true);
 			}
 			else
 			{
@@ -494,6 +495,7 @@ public class FrontDoor
 					&&((S.mob().playerStats().getFriends().containsKey(mob.Name())||S.mob().playerStats().getFriends().containsKey("All"))))
 						S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
 				}
+				ExternalPlay.channel("WIZINFO",mob.Name()+" has just been created.",true);
 				return true;
 			}
 			return false;

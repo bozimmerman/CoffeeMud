@@ -127,6 +127,11 @@ public class ExternalCommands implements ExternalCommand
 	{
 		TheFight.justDie(source,target);
 	}
+	public void channel(MOB mob, String channelName, String message, boolean systemMsg)
+	{ Channels.reallyChannel(mob,channelName,message,systemMsg);}
+	public void channel(String channelName, String message, boolean systemMsg)
+	{ Channels.reallyChannel(channelName,message,systemMsg);}
+	
 	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		return TheFight.properTargets(A,caster,beRuthless);
