@@ -41,7 +41,7 @@ say "$n" MAN! I LOVE to wiggie!
 wiggy $n
 ~
 
-GIVE_PROG 
+GIVE_PROG all
 IF GOLDAMT($o < 100)
 	say "$n" You can do better than THAT.
 	drop $o
