@@ -778,7 +778,7 @@ public class Arrest extends StdBehavior
 		boolean arrestMobs=false;
 		if(getLaws().get("ARRESTMOBS")!=null)
 			arrestMobs=((String)getLaws().get("ARRESTMOBS")).equalsIgnoreCase("true");
-		
+
 		if((affect.source().isMonster())&&(!arrestMobs)) 
 			return;
 		
@@ -1167,6 +1167,13 @@ public class Arrest extends StdBehavior
 							}
 							else
 							{
+								if((W.criminal.isMonster())
+								&&(!Sense.isEvil(W.criminal))
+								&&(!Sense.isSitting(W.criminal)))
+								{
+									W.criminal.makePeace();
+									try{ExternalPlay.doCommand(W.criminal,Util.parse("SIT"));}catch(Exception e){}
+								}
 								if(Sense.isSitting(W.criminal)||Sense.isSleeping(W.criminal))
 									ExternalPlay.quickSay(officer,W.criminal,(String)laws.get("NORESISTMSG"),false,false);
 								else
@@ -1189,6 +1196,13 @@ public class Arrest extends StdBehavior
 						&&(Sense.aliveAwakeMobile(officer,true))
 						&&(Sense.canBeSeenBy(W.criminal,officer)))
 						{
+							if((W.criminal.isMonster())
+							&&(!Sense.isEvil(W.criminal))
+							&&(!Sense.isSitting(W.criminal)))
+							{
+								W.criminal.makePeace();
+								try{ExternalPlay.doCommand(W.criminal,Util.parse("SIT"));}catch(Exception e){}
+							}
 							if(!Sense.isSitting(W.criminal)&&(!Sense.isSleeping(W.criminal)))
 							{
 								if(!W.arrestingOfficer.isInCombat())
@@ -1560,7 +1574,10 @@ public class Arrest extends StdBehavior
 									Ability A=CMClass.getAbility("Skill_HandCuff");
 									if(A!=null)	A.invoke(officer,W.criminal,true);
 								}
-								W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("RELEASEROOM"));
+								if((W.criminal.isMonster())&&(W.criminal.getStartRoom()!=null))
+									W.releaseRoom=W.criminal.getStartRoom();
+								else
+									W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("RELEASEROOM"));
 								if(W.releaseRoom==null) W.releaseRoom=getRoom(W.criminal.location().getArea(),(String)laws.get("JUDGE"));
 								W.criminal.makePeace();
 								makePeace(officer.location());
