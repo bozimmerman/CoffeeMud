@@ -37,10 +37,10 @@ public class Scoring
 	{
 		StringBuffer msg=getInventory(mob,mob);
 		if(msg.length()==0)
-			mob.tell("You are carrying:\n\r^BNothing!^?\n\r");
+			mob.tell("^HYou are carrying:\n\r^BNothing!^?\n\r");
 		else
 		if(!mob.isMonster())
-			mob.session().rawPrintln("You are carrying:\n\r"+msg.toString());
+			mob.session().unfilteredPrintln("^HYou are carrying:^?\n\r"+msg.toString());
 	}
 
 	public void score(MOB mob)
