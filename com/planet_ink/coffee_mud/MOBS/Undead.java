@@ -39,8 +39,5 @@ public class Undead extends StdMOB
 		recoverCharStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Undead();
-	}
+
 }

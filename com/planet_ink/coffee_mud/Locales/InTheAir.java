@@ -18,10 +18,7 @@ public class InTheAir extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_AIR;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new InTheAir();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -16,10 +16,7 @@ public class Road extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new Road();
-	}
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_STONE),
 		new Integer(EnvResource.RESOURCE_FEATHERS),

@@ -37,8 +37,5 @@ public class LizardMan extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new LizardMan();
-	}
+
 }

@@ -16,10 +16,7 @@ public class WaterSurface extends StdRoom implements Drink
 		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
 		domainCondition=Room.CONDITION_WET;
 	}
-	public Environmental newInstance()
-	{
-		return new WaterSurface();
-	}
+
 
 	public void giveASky(int depth)
 	{

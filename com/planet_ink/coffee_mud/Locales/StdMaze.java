@@ -12,10 +12,7 @@ public class StdMaze extends StdGrid
 	{
 		super();
 	}
-	public Environmental newInstance()
-	{
-		return new StdMaze();
-	}
+
 
 	protected void buildFinalLinks()
 	{
@@ -74,7 +71,7 @@ public class StdMaze extends StdGrid
 
 	protected void mazify(Hashtable visited, int x, int y)
 	{
-		
+
 		if(visited.get(subMap[x][y])!=null) return;
 		Room room=subMap[x][y];
 		visited.put(room,room);

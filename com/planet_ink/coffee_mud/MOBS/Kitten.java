@@ -40,8 +40,5 @@ public class Kitten extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Kitten();
-	}
+
 }

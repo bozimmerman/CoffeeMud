@@ -18,8 +18,5 @@ public class SewerRoom extends StdRoom
 		domainType=Room.DOMAIN_INDOORS_CAVE;
 		domainCondition=Room.CONDITION_WET;
 	}
-	public Environmental newInstance()
-	{
-		return new SewerRoom();
-	}
+
 }

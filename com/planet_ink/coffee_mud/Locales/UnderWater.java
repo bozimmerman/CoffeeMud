@@ -23,10 +23,7 @@ public class UnderWater extends StdRoom implements Drink
 		baseThirst=0;
 	}
 
-	public Environmental newInstance()
-	{
-		return new UnderWater();
-	}
+
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -14,8 +14,5 @@ public class Buck extends Deer
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A buck looks up as you happen along.");
 	}
-	public Environmental newInstance()
-	{
-		return new Buck();
-	}
+
 }

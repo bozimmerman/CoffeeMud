@@ -13,9 +13,6 @@ public class FrozenMountains extends Mountains
 		recoverEnvStats();
 		domainCondition=Room.CONDITION_COLD;
 	}
-	public Environmental newInstance()
-	{
-		return new FrozenMountains();
-	}
+
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

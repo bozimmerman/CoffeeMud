@@ -20,10 +20,7 @@ public class GenRideable extends StdRideable
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenRideable();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -54,7 +51,7 @@ public class GenRideable extends StdRideable
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
 			CoffeeMaker.setGenMobStat(this,code,val);
 		else

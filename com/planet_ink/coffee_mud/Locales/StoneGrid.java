@@ -15,9 +15,6 @@ public class StoneGrid extends StdGrid
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StoneGrid();
-	}
+
 	public String getChildLocaleID(){return "StoneRoom";}
 }

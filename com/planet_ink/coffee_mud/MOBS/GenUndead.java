@@ -33,9 +33,6 @@ public class GenUndead extends GenMob
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenUndead();
-	}
+
 	public boolean isGeneric(){return true;}
 }

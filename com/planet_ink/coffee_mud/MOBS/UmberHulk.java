@@ -43,10 +43,7 @@ public class UmberHulk extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new UmberHulk();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

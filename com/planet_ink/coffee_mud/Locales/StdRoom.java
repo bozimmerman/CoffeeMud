@@ -39,6 +39,17 @@ public class StdRoom
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 	}
+	public Environmental newInstance()
+	{
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdRoom();
+	}
 
 	public String roomID()
 	{
@@ -51,10 +62,7 @@ public class StdRoom
 		if(envStats().newName()!=null) return envStats().newName();
 		return name;
 	}
-	public Environmental newInstance()
-	{
-		return new StdRoom();
-	}
+
 	public boolean isGeneric(){return false;}
 	private void cloneFix(Room E)
 	{

@@ -33,8 +33,5 @@ public class Rat extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Rat();
-	}
+
 }

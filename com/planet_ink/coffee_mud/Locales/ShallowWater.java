@@ -17,10 +17,7 @@ public class ShallowWater extends StdRoom implements Drink
 		domainCondition=Room.CONDITION_WET;
 		baseThirst=0;
 	}
-	public Environmental newInstance()
-	{
-		return new ShallowWater();
-	}
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))

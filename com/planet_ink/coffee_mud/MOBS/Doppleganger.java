@@ -50,10 +50,7 @@ public class Doppleganger extends StdMOB
 		recoverCharStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new Doppleganger();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

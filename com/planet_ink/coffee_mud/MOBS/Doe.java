@@ -14,8 +14,5 @@ public class Doe extends Deer
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A doe looks up as you happen along.");
 	}
-	public Environmental newInstance()
-	{
-		return new Buck();
-	}
+
 }

@@ -15,9 +15,6 @@ public class StoneMaze extends StdMaze
 		baseEnvStats.setWeight(1);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StoneMaze();
-	}
+
 	public String getChildLocaleID(){return "StoneRoom";}
 }

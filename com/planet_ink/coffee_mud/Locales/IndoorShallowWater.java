@@ -16,9 +16,6 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 		domainCondition=Room.CONDITION_WET;
 		baseThirst=0;
 	}
-	public Environmental newInstance()
-	{
-		return new IndoorShallowWater();
-	}
+
 	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }

@@ -16,10 +16,7 @@ public class EndlessOcean extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_WATERSURFACE;
 		domainCondition=Room.CONDITION_WET;
 	}
-	public Environmental newInstance()
-	{
-		return new EndlessOcean();
-	}
+
 	public String getChildLocaleID(){return "SaltWaterSurface";}
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 }

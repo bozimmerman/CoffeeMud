@@ -9,10 +9,7 @@ public class UnderSaltWater extends UnderWater
 		super();
 	}
 
-	public Environmental newInstance()
-	{
-		return new UnderSaltWater();
-	}
+
 	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_SEAWEED),

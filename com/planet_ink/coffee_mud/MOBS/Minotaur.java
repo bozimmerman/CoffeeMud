@@ -49,8 +49,5 @@ public class Minotaur extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Minotaur();
-	}
+
 }

@@ -15,9 +15,6 @@ public class WoodRoomGrid extends StdGrid
 		domainType=Room.DOMAIN_INDOORS_WOOD;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new WoodRoomGrid();
-	}
+
 	public String getChildLocaleID(){return "WoodRoom";}
 }

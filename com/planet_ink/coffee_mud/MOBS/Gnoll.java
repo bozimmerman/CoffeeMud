@@ -47,8 +47,5 @@ public class Gnoll extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Gnoll();
-	}
+
 }

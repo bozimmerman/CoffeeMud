@@ -42,8 +42,5 @@ public class WildEagle extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new WildEagle();
-	}
+
 }

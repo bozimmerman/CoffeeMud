@@ -29,8 +29,5 @@ public class Zombie extends Undead
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Zombie();
-	}
+
 }

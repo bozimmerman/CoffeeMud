@@ -16,10 +16,7 @@ public class Hills extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_HILLS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new Hills();
-	}
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_GRAPES),
 		new Integer(EnvResource.RESOURCE_BERRIES),

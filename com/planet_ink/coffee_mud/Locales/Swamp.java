@@ -17,10 +17,7 @@ public class Swamp extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_SWAMP;
 		domainCondition=Room.CONDITION_WET;
 	}
-	public Environmental newInstance()
-	{
-		return new Swamp();
-	}
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))

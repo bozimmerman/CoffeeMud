@@ -21,10 +21,7 @@ public class StdRideable extends StdMOB implements Rideable
 		baseEnvStats().setWeight(700);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StdRideable();
-	}
+
 	protected void cloneFix(MOB E)
 	{
 		super.cloneFix(E);

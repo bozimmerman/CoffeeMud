@@ -219,9 +219,6 @@ public class DrowWizard extends DrowElf
 	}
 
 
-	public Environmental newInstance()
-	{
-		return new DrowWizard();
-	}
+
 
 }

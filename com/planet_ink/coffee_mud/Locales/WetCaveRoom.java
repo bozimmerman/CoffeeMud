@@ -13,10 +13,7 @@ public class WetCaveRoom extends CaveRoom
 		domainCondition=Room.CONDITION_WET;
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new WetCaveRoom();
-	}
+
 	public int getMaxRange()
 	{
 		if(maxRange>=0) return maxRange;

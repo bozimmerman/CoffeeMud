@@ -19,10 +19,7 @@ public class GenDeity extends StdDeity
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GenDeity();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -55,7 +52,7 @@ public class GenDeity extends StdDeity
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
 			CoffeeMaker.setGenMobStat(this,code,val);
 		else

@@ -50,10 +50,7 @@ public class MagicShelter extends StdRoom
 		}
 	}
 
-	public Environmental newInstance()
-	{
-		return new MagicShelter();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -44,10 +44,7 @@ public class GiantScorpion extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GiantScorpion();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

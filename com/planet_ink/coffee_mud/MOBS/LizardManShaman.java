@@ -103,8 +103,5 @@ public class LizardManShaman extends LizardMan
 	        return false;
     }
 
-	public Environmental newInstance()
-	{
-		return new LizardManShaman();
-	}
+
 }

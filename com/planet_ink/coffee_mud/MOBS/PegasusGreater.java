@@ -43,8 +43,5 @@ public class PegasusGreater extends StdRideable
         recoverEnvStats();
         recoverCharStats();
     }
-    public Environmental newInstance()
-    {
-      return new PegasusGreater();
-    }
+
 }

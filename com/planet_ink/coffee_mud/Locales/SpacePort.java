@@ -16,8 +16,5 @@ public class SpacePort extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_SPACEPORT;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new SpacePort();
-	}
+
 }

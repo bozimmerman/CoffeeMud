@@ -16,10 +16,7 @@ public class DesertMaze extends StdMaze
 		domainCondition=Room.CONDITION_HOT;
 		baseThirst=4;
 	}
-	public Environmental newInstance()
-	{
-		return new DesertMaze();
-	}
+
 	public String getChildLocaleID(){return "Desert";}
 	public Vector resourceChoices(){return Desert.roomResources;}
 }

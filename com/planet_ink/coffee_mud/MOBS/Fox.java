@@ -37,8 +37,5 @@ public class Fox extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Fox();
-	}
+
 }

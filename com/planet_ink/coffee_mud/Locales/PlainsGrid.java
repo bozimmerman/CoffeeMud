@@ -15,10 +15,7 @@ public class PlainsGrid extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new PlainsGrid();
-	}
+
 	public String getChildLocaleID(){return "Plains";}
 	public Vector resourceChoices(){return Plains.roomResources;}
 }

@@ -38,8 +38,5 @@ public class Skeleton extends Undead
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Skeleton();
-	}
+
 }

@@ -16,10 +16,7 @@ public class JungleGrid extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_JUNGLE;
 		domainCondition=Room.CONDITION_HOT;
 	}
-	public Environmental newInstance()
-	{
-		return new JungleGrid();
-	}
+
 	public String getChildLocaleID(){return "Jungle";}
 	public Vector resourceChoices(){return Jungle.roomResources;}
 }

@@ -20,10 +20,7 @@ public class UnderWaterMaze extends StdMaze
 		baseThirst=0;
 	}
 
-	public Environmental newInstance()
-	{
-		return new UnderWaterMaze();
-	}
+
 	public String getChildLocaleID(){return "UnderWater";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

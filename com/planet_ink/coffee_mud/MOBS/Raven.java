@@ -37,8 +37,5 @@ public class Raven extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Raven();
-	}
+
 }

@@ -17,10 +17,7 @@ public class GenShopkeeper extends StdShopKeeper
 		setDisplayText("A generic shopkeeper stands here.");
 		baseEnvStats().setAbility(11); // his only off-default
 	}
-	public Environmental newInstance()
-	{
-		return new GenShopkeeper();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String prejudiceFactors(){return PrejudiceFactors;}
@@ -53,7 +50,7 @@ public class GenShopkeeper extends StdShopKeeper
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
 			CoffeeMaker.setGenMobStat(this,code,val);
 		else

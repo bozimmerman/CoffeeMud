@@ -27,10 +27,7 @@ public class Goblin extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Goblin();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

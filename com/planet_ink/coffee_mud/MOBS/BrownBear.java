@@ -42,8 +42,5 @@ public class BrownBear extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new BrownBear();
-	}
+
 }

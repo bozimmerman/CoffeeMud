@@ -14,8 +14,5 @@ public class LargeStoneRoom extends StoneRoom
 		recoverEnvStats();
 		maxRange=5;
 	}
-	public Environmental newInstance()
-	{
-		return new LargeStoneRoom();
-	} 
+
 }

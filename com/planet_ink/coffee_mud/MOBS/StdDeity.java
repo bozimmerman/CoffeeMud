@@ -44,10 +44,7 @@ public class StdDeity extends StdMOB implements Deity
 		baseEnvStats().setDamage(1000);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StdDeity();
-	}
+
 
 	public String getClericRequirements(){return clericReqs;}
 	public void setClericRequirements(String reqs){clericReqs=reqs;}

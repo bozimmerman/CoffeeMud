@@ -20,10 +20,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		super();
 		myID=getClass().getName().substring(getClass().getName().lastIndexOf('.')+1);
 	}
-	public Environmental newInstance()
-	{
-		return new StdGrid();
-	}
+
 	public String getChildLocaleID(){return "StdRoom";}
 
 	public int xSize(){return xsize;}

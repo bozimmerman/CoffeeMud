@@ -33,8 +33,5 @@ public class GardenSnake extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new GardenSnake();
-	}
+
 }

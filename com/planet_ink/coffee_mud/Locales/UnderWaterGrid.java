@@ -29,10 +29,7 @@ public class UnderWaterGrid extends StdGrid
 		}
 	}
 
-	public Environmental newInstance()
-	{
-		return new UnderWaterGrid();
-	}
+
 	public String getChildLocaleID(){return "UnderWater";}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -41,7 +38,7 @@ public class UnderWaterGrid extends StdGrid
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
 	}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
-	
+
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");

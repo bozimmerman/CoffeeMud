@@ -13,9 +13,6 @@ public class FrozenPlains extends Plains
 		recoverEnvStats();
 		domainCondition=Room.CONDITION_COLD;
 	}
-	public Environmental newInstance()
-	{
-		return new FrozenPlains();
-	}
+
 	public Vector resourceChoices(){return Plains.roomResources;}
 }

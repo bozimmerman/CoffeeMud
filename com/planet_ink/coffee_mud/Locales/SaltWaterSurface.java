@@ -11,10 +11,7 @@ public class SaltWaterSurface extends WaterSurface
 		super();
 	}
 
-	public Environmental newInstance()
-	{
-		return new SaltWaterSurface();
-	}
+
 	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 

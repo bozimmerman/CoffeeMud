@@ -27,10 +27,7 @@ public class EndlessSky extends StdGrid
 			ysize=3;
 		}
 	}
-	public Environmental newInstance()
-	{
-		return new EndlessSky();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

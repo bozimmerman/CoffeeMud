@@ -73,8 +73,5 @@ public class Assassin extends GenMob
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Assassin();
-	}
+
 }

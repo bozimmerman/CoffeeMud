@@ -41,8 +41,5 @@ public class Tiger extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Tiger();
-	}
+
 }

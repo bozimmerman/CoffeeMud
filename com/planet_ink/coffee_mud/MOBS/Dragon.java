@@ -72,7 +72,7 @@ public class Dragon extends StdMOB
 
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 			return;
-		
+
 		// ===== is it a male or female
 		short gend = (short)Math.round(Math.random());
 		if (gend == 0)
@@ -174,12 +174,6 @@ public class Dragon extends StdMOB
 		if (iRoll<=97) return VERYOLD;
 		if (iRoll<=100) return ANCIENT;
 		else return SUBADULT;
-	}
-
-	public Environmental newInstance()
-	{
-		// ===== Hatch one!
-		return new Dragon();
 	}
 
 	protected StringBuffer getAgeDescription(int draconianAge)

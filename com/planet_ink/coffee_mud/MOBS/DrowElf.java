@@ -99,9 +99,6 @@ public class DrowElf extends StdMOB
 		return true;
 	}
 
-	public Environmental newInstance()
-	{
-		return new DrowElf();
-	}
+
 
 }

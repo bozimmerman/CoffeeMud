@@ -16,8 +16,5 @@ public class CityStreet extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_CITY;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new CityStreet();
-	}
+
 }

@@ -16,10 +16,7 @@ public class CaveMaze extends StdMaze
 		domainType=Room.DOMAIN_INDOORS_CAVE;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new CaveMaze();
-	}
+
 	public int getMaxRange()
 	{
 		if(maxRange>=0) return maxRange;

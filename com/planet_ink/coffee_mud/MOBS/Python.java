@@ -33,8 +33,5 @@ public class Python extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Python();
-	}
+
 }

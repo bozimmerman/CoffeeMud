@@ -37,14 +37,11 @@ public class Bee extends StdMOB
 			A.setProfficiency(100);
 			addAbility(A);
 		}
-			
+
 		recoverMaxState();
 		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Bee();
-	}
+
 }

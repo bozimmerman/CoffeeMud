@@ -32,10 +32,7 @@ public class Cow extends StdMOB implements Drink
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Cow();
-	}
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))

@@ -38,8 +38,5 @@ public class Ogre extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Ogre();
-	}
+
 }

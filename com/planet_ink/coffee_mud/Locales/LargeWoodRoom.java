@@ -14,8 +14,5 @@ public class LargeWoodRoom extends WoodRoom
 		recoverEnvStats();
 		maxRange=5;
 	}
-	public Environmental newInstance()
-	{
-		return new LargeWoodRoom();
-	} 
+
 }

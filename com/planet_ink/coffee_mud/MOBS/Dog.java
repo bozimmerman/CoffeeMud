@@ -40,8 +40,5 @@ public class Dog extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Dog();
-	}
+
 }

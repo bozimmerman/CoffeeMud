@@ -33,8 +33,5 @@ public class Lizard extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Lizard();
-	}
+
 }

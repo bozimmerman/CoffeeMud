@@ -39,8 +39,5 @@ public class HeavenlyServent extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new HeavenlyServent();
-	}
+
 }

@@ -15,8 +15,5 @@ public class HotRoom extends StdRoom
 		domainType=Room.DOMAIN_INDOORS_STONE;
 		domainCondition=Room.CONDITION_HOT;
 	}
-	public Environmental newInstance()
-	{
-		return new HotRoom();
-	}
+
 }

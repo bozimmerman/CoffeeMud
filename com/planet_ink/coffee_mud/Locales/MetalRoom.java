@@ -16,8 +16,5 @@ public class MetalRoom extends StdRoom
 		domainType=Room.DOMAIN_INDOORS_METAL;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new MetalRoom();
-	}
+
 }

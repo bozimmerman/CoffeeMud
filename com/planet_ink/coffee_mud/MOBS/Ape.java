@@ -33,8 +33,5 @@ public class Ape extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Ape();
-	}
+
 }

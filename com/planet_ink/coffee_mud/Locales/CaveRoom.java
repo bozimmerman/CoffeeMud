@@ -19,10 +19,7 @@ public class CaveRoom extends StdRoom
 
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new CaveRoom();
-	}
+
 	public int getMaxRange()
 	{
 		if(maxRange>=0) return maxRange;

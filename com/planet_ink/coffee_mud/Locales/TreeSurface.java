@@ -16,8 +16,5 @@ public class TreeSurface extends ClimbableSurface
 		domainType=Room.DOMAIN_OUTDOORS_WOODS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new TreeSurface();
-	}
+
 }

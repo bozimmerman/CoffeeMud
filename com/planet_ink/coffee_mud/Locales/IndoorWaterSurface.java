@@ -17,10 +17,7 @@ public class IndoorWaterSurface extends StdRoom implements Drink
 		domainType=Room.DOMAIN_INDOORS_WATERSURFACE;
 		domainCondition=Room.CONDITION_WET;
 	}
-	public Environmental newInstance()
-	{
-		return new IndoorWaterSurface();
-	}
+
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -37,10 +37,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		recoverCharStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdBanker();
-	}
+
 
 	public int whatIsSold(){return whatISell;}
 	public void setWhatIsSold(int newSellCode){

@@ -44,10 +44,7 @@ public class Troll extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Troll();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

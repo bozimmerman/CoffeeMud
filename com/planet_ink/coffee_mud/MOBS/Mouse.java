@@ -33,8 +33,5 @@ public class Mouse extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Mouse();
-	}
+
 }

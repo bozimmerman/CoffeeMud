@@ -17,10 +17,7 @@ public class Shore extends StdRoom
 		domainCondition=Room.CONDITION_HOT;
 		baseThirst=1;
 	}
-	public Environmental newInstance()
-	{
-		return new Shore();
-	}
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_FISH),
 		new Integer(EnvResource.RESOURCE_SAND)

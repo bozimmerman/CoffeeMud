@@ -15,10 +15,7 @@ public class MountainsMaze extends StdMaze
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new MountainsMaze();
-	}
+
 	public String getChildLocaleID(){return "Mountains";}
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

@@ -16,10 +16,7 @@ public class HillsGrid extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_HILLS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new HillsGrid();
-	}
+
 	public String getChildLocaleID(){return "Hills";}
 	public Vector resourceChoices(){return Hills.roomResources;}
 }

@@ -15,8 +15,5 @@ public class WoodRoom extends StdRoom
 		domainType=Room.DOMAIN_INDOORS_WOOD;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new WoodRoom();
-	} 
+
 }

@@ -17,10 +17,7 @@ public class CaveSurface extends ClimbableSurface
 		domainType=Room.DOMAIN_INDOORS_CAVE;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new CaveSurface();
-	}
+
 	public int getMaxRange()
 	{
 		if(maxRange>=0) return maxRange;

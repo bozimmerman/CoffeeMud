@@ -7,13 +7,8 @@ public class GoldDragon extends Dragon
 	public String ID(){return "GoldDragon";}
 	public GoldDragon()
 	{
-		// ===== call the super class constructor 
+		// ===== call the super class constructor
 		super(GOLD);
 	}
-	
-	public Environmental newInstance()
-	{
-		// ===== Hatch one!
-		return new GoldDragon();
-	}
+
 }

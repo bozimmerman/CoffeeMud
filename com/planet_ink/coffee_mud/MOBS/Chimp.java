@@ -34,8 +34,5 @@ public class Chimp extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Chimp();
-	}
+
 }

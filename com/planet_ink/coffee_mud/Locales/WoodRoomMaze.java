@@ -15,9 +15,6 @@ public class WoodRoomMaze extends StdMaze
 		domainType=Room.DOMAIN_INDOORS_WOOD;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new WoodRoomMaze();
-	}
+
 	public String getChildLocaleID(){return "WoodRoom";}
 }

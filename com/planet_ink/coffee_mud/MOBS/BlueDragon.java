@@ -10,10 +10,5 @@ public class BlueDragon extends Dragon
 		// ===== call the super class constructor
 		super(BLUE);
 	}
-	
-	public Environmental newInstance()
-	{
-		// ===== Hatch one!
-		return new BlueDragon();
-	}
+
 }

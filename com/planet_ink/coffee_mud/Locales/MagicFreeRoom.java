@@ -16,9 +16,6 @@ public class MagicFreeRoom extends StdRoom
 		domainCondition=Room.CONDITION_NORMAL;
 		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
 	}
-	public Environmental newInstance()
-	{
-		return new MagicFreeRoom();
-	}
+
 
 }

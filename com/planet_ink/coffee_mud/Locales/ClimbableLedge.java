@@ -30,8 +30,5 @@ public class ClimbableLedge extends ClimbableSurface
 		}
 		return super.okMessage(myHost,msg);
 	}
-	public Environmental newInstance()
-	{
-		return new ClimbableLedge();
-	}
+
 }

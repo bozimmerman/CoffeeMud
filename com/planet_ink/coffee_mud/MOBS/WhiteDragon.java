@@ -7,13 +7,7 @@ public class WhiteDragon extends Dragon
 	public String ID(){return "WhiteDragon";}
 	public WhiteDragon()
 	{
-		// ===== call the super class constructor 
+		// ===== call the super class constructor
 		super(WHITE);
-	}
-	
-	public Environmental newInstance()
-	{
-		// ===== Hatch one!
-		return new WhiteDragon();
 	}
 }

@@ -16,10 +16,7 @@ public class SwampGrid extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_SWAMP;
 		domainCondition=Room.CONDITION_WET;
 	}
-	public Environmental newInstance()
-	{
-		return new SwampGrid();
-	}
+
 	public String getChildLocaleID(){return "Swamp";}
 	public Vector resourceChoices(){return Swamp.roomResources;}
 }

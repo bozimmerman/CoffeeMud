@@ -14,8 +14,5 @@ public class LargeCaveRoom extends CaveRoom
 		recoverEnvStats();
 		maxRange=5;
 	}
-	public Environmental newInstance()
-	{
-		return new LargeCaveRoom();
-	} 
+
 }

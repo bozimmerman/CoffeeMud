@@ -17,10 +17,7 @@ public class ClimbableSurface extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_ROCKS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new ClimbableSurface();
-	}
+
 
 	public void mountLadder(MOB mob, Rideable ladder)
 	{

@@ -7,13 +7,7 @@ public class CopperDragon extends Dragon
 	public String ID(){return "CopperDragon";}
 	public CopperDragon()
 	{
-		// ===== call the super class constructor 
+		// ===== call the super class constructor
 		super(COPPER);
-	}
-	
-	public Environmental newInstance()
-	{
-		// ===== Hatch one!
-		return new CopperDragon();
 	}
 }

@@ -16,8 +16,5 @@ public class StoneRoom extends StdRoom
 		baseEnvStats.setWeight(4);
 		recoverEnvStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StoneRoom();
-	}
+
 }

@@ -16,10 +16,7 @@ public class RoadGrid extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new RoadGrid();
-	}
+
 	public String getChildLocaleID(){return "Road";}
 	public Vector resourceChoices(){return Road.roomResources;}
 }

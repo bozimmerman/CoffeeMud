@@ -17,10 +17,7 @@ public class Desert extends StdRoom
 		domainCondition=Room.CONDITION_HOT;
 		baseThirst=4;
 	}
-	public Environmental newInstance()
-	{
-		return new Desert();
-	}
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_CACTUS),
 		new Integer(EnvResource.RESOURCE_SAND),

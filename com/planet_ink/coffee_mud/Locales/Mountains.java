@@ -16,10 +16,7 @@ public class Mountains extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new Mountains();
-	}
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_STONE),
 		new Integer(EnvResource.RESOURCE_IRON),

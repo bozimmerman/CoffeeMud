@@ -42,8 +42,5 @@ public class Cheetah extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Cheetah();
-	}
+
 }

@@ -16,10 +16,7 @@ public class MountainsGrid extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new MountainsGrid();
-	}
+
 	public String getChildLocaleID(){return "Mountains";}
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

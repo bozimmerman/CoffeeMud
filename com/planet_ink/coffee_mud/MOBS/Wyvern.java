@@ -46,10 +46,7 @@ public class Wyvern extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Wyvern();
-	}
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

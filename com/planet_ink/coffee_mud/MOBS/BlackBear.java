@@ -42,8 +42,5 @@ public class BlackBear extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new BlackBear();
-	}
+
 }

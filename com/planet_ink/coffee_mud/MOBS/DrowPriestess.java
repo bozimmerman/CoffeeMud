@@ -223,9 +223,6 @@ public class DrowPriestess extends DrowElf
 	}
 
 
-	public Environmental newInstance()
-	{
-		return new DrowPriestess();
-	}
+
 
 }

@@ -22,8 +22,5 @@ public class OverTheLedge extends InTheAir
 			return true;
 		return super.okMessage(myHost,msg);
 	}
-	public Environmental newInstance()
-	{
-		return new OverTheLedge();
-	}
+
 }

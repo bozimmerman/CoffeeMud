@@ -42,8 +42,5 @@ public class Falcon extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Falcon();
-	}
+
 }

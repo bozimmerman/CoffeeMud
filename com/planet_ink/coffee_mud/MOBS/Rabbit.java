@@ -37,8 +37,5 @@ public class Rabbit extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Rabbit();
-	}
+
 }

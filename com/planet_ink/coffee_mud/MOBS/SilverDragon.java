@@ -7,13 +7,8 @@ public class SilverDragon extends Dragon
 	public String ID(){return "SilverDragon";}
 	public SilverDragon()
 	{
-		// ===== call the super class constructor 
+		// ===== call the super class constructor
 		super(SILVER);
 	}
-	
-	public Environmental newInstance()
-	{
-		// ===== Hatch one!
-		return new SilverDragon();
-	}
+
 }

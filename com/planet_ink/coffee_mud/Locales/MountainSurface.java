@@ -15,9 +15,6 @@ public class MountainSurface extends ClimbableSurface
 		domainType=Room.DOMAIN_OUTDOORS_MOUNTAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new MountainSurface();
-	}
+
 	public Vector resourceChoices(){return Mountains.roomResources;}
 }

@@ -9,7 +9,7 @@ public class GenBanker extends StdBanker
 	public String ID(){return "GenBanker";}
 	private String PrejudiceFactors="";
 	private String bankChain="GenBank";
-	
+
 	public GenBanker()
 	{
 		super();
@@ -18,10 +18,7 @@ public class GenBanker extends StdBanker
 		setDisplayText("A generic banker stands here.");
 		baseEnvStats().setAbility(11); // his only off-default
 	}
-	public Environmental newInstance()
-	{
-		return new GenBanker();
-	}
+
 	public boolean isGeneric(){return true;}
 
 	public String text()
@@ -37,7 +34,7 @@ public class GenBanker extends StdBanker
 	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
 	public String bankChain(){return bankChain;}
 	public void setBankChain(String name){bankChain=name;}
-	
+
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
@@ -60,7 +57,7 @@ public class GenBanker extends StdBanker
 		return "";
 	}
 	public void setStat(String code, String val)
-	{ 
+	{
 		if(CoffeeMaker.getGenMobCodeNum(code)>=0)
 			CoffeeMaker.setGenMobStat(this,code,val);
 		else

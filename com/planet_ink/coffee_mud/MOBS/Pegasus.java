@@ -7,7 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 public class Pegasus extends StdRideable
 {
     Random randomizer = null;
-   
+
     public Pegasus()
     {
         super();
@@ -43,15 +43,6 @@ public class Pegasus extends StdRideable
         resetToMaxState();
         recoverEnvStats();
         recoverCharStats();
-    }    
-    
-    
-    public Environmental newInstance()
-    {
-        int percentage = Math.abs(randomizer.nextInt() % 100);
-        if(percentage < 5)
-            return new PegasusGreater();
-        else
-            return new Pegasus();
     }
+
 }

@@ -17,10 +17,7 @@ public class Jungle extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_JUNGLE;
 		domainCondition=Room.CONDITION_HOT;
 	}
-	public Environmental newInstance()
-	{
-		return new Jungle();
-	}
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
@@ -39,7 +36,7 @@ public class Jungle extends StdRoom
 		}
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_PLUMS),
 		new Integer(EnvResource.RESOURCE_PINEAPPLES),

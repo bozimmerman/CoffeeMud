@@ -17,10 +17,7 @@ public class Woods extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_WOODS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new Woods();
-	}
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

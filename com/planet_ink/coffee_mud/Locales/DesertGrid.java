@@ -16,10 +16,7 @@ public class DesertGrid extends StdGrid
 		domainType=Room.DOMAIN_OUTDOORS_DESERT;
 		domainCondition=Room.CONDITION_HOT;
 	}
-	public Environmental newInstance()
-	{
-		return new DesertGrid();
-	}
+
 	public String getChildLocaleID(){return "Desert";}
 	public Vector resourceChoices(){return Desert.roomResources;}
 }

@@ -33,8 +33,5 @@ public class Pig extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new Pig();
-	}
+
 }

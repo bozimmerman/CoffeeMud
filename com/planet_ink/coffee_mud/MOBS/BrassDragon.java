@@ -7,13 +7,8 @@ public class BrassDragon extends Dragon
 	public String ID(){return "BrassDragon";}
 	public BrassDragon()
 	{
-		// ===== call the super class constructor 
+		// ===== call the super class constructor
 		super(BRASS);
 	}
-	
-	public Environmental newInstance()
-	{
-		// ===== Hatch one!
-		return new BrassDragon();
-	}
+
 }

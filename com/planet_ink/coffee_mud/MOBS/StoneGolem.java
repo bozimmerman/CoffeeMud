@@ -33,8 +33,5 @@ public class StoneGolem extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new StoneGolem();
-	}
+
 }

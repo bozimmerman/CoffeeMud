@@ -22,10 +22,7 @@ public class UnderSaltWaterGrid extends UnderWaterGrid
 		baseThirst=0;
 	}
 
-	public Environmental newInstance()
-	{
-		return new UnderSaltWaterGrid();
-	}
+
 	public String getChildLocaleID(){return "UnderSaltWater";}
 
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}

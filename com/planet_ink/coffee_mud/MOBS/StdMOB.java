@@ -46,10 +46,10 @@ public class StdMOB implements MOB
 
 	/* instatiated behaviors on this creature */
 	protected Vector behaviors=new Vector();
-	
+
 	/* list of tattoos*/
 	protected Vector tattoos=new Vector();
-	
+
 	/* list of educations*/
 	protected Vector educations=new Vector();
 
@@ -139,6 +139,18 @@ public class StdMOB implements MOB
 		return bob;
 	}
 
+	public Environmental newInstance()
+	{
+		try{
+			return (Environmental)this.getClass().newInstance();
+		}
+		catch(Exception e)
+		{
+			Log.errOut(ID(),e);
+		}
+		return new StdMOB();
+	}
+	
 	// location!
 	protected Room StartRoom=null;
 	public Room getStartRoom(){return StartRoom;}
@@ -163,10 +175,7 @@ public class StdMOB implements MOB
 		if(envStats().newName()!=null) return envStats().newName();
 		return Username;
 	}
-	public Environmental newInstance()
-	{
-		return new StdMOB();
-	}
+
 	public StdMOB(){}
 
 	protected void cloneFix(MOB E)
@@ -520,7 +529,7 @@ public class StdMOB implements MOB
 		CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_MOB,1);
 		if(tickStatus==Tickable.STATUS_NOT)
 			tick(this,MudHost.TICK_MOB); // slap on the butt
-		
+
 		for(int a=0;a<numLearnedAbilities();a++)
 		{
 			Ability A=fetchAbility(a);
@@ -2186,12 +2195,12 @@ public class StdMOB implements MOB
 	}
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
-	
+
 	protected int processVariableEquipment()
 	{
 		int newLastTickedDateTime=0;
 		for(int i=0;i<location().numInhabitants();i++)
-		{ 
+		{
 			MOB M=(MOB)location().fetchInhabitant(i);
 			if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,location(),"CMDMOBS")))
 			{ newLastTickedDateTime=-1; break;}
@@ -2248,8 +2257,8 @@ public class StdMOB implements MOB
 					{
 						Item I=(Item)V.elementAt(r);
 						if(chosenChance<=(totalChance+I.baseEnvStats().rejuv()))
-						{ 
-							chosenI=I; 
+						{
+							chosenI=I;
 							break;
 						}
 						else
@@ -2324,7 +2333,7 @@ public class StdMOB implements MOB
 					else
 						lastTickedDateTime++;
 				}
-				
+
 				tickStatus=Tickable.STATUS_ALIVE;
 				curState().recoverTick(this,maxState);
 				curState().expendEnergy(this,maxState,false);
@@ -2546,7 +2555,7 @@ public class StdMOB implements MOB
 			charStats().getMyRace().tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_END;
 		}
-		
+
 		if(lastTickedDateTime>=0) lastTickedDateTime=System.currentTimeMillis();
 		tickStatus=Tickable.STATUS_NOT;
 		return !pleaseDestroy;
@@ -2898,17 +2907,17 @@ public class StdMOB implements MOB
 		}
 		return null;
 	}
-	
-	
+
+
 	/** Manipulation of the education list */
 	public void addEducation(String of)
-	{ 
+	{
 		if(educations==null) educations=new Vector();
 		if(fetchEducation(of)==null) educations.addElement(of);
 	}
 	public void delEducation(String of)
-	{ 
-		of=fetchEducation(of); 
+	{
+		of=fetchEducation(of);
 		if(of!=null) educations.removeElement(of);
 	}
 	public int numEducations(){return (educations==null)?0:educations.size();}
@@ -2920,17 +2929,17 @@ public class StdMOB implements MOB
 		}catch(Exception e){}
 		return null;
 	}
-	
+
 	/** Manipulation of the tatoo list */
 	public void addTattoo(String of)
-	{ 
+	{
 		if(tattoos==null) tattoos=new Vector();
-		if((fetchTattoo(of)==null)&&(of!=null)) 
+		if((fetchTattoo(of)==null)&&(of!=null))
 			tattoos.addElement(of.toUpperCase().trim());
 	}
 	public void delTattoo(String of)
-	{ 
-		of=fetchTattoo(of); 
+	{
+		of=fetchTattoo(of);
 		if(of!=null) tattoos.removeElement(of);
 	}
 	public int numTattoos(){return (tattoos==null)?0:tattoos.size();}
@@ -2942,7 +2951,7 @@ public class StdMOB implements MOB
 		}catch(Exception e){}
 		return null;
 	}
-	
+
 	public int freeWearPositions(long wornCode)
 	{
 		int x=getWearPositions(wornCode);

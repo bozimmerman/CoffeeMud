@@ -41,10 +41,7 @@ public class FireGiant extends StdMOB
 		recoverEnvStats();
 		recoverCharStats();
 	}
-	public Environmental newInstance()
-	{
-		return new FireGiant();
-	}
+
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();

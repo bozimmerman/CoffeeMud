@@ -12,7 +12,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Hashtable duplicateInventory=new Hashtable();
 	protected int maximumDuplicatesBought=5;
 	protected Hashtable prices=new Hashtable();
-	
+
 	private final static Hashtable titleSets=new Hashtable();
 
 	public StdShopKeeper()
@@ -39,10 +39,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		recoverCharStats();
 	}
 
-	public Environmental newInstance()
-	{
-		return new StdShopKeeper();
-	}
+
 
 	public int whatIsSold(){return whatISell;}
 	public void setWhatIsSold(int newSellCode){whatISell=newSellCode;}
@@ -284,7 +281,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		}
 		return newLastTickedDateTime;
 	}
-	
+
 
 	public void delStoreInventory(Environmental thisThang)
 	{
@@ -482,7 +479,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return item;
 	}
 
-	
+
 	public Environmental removeStock(String name, MOB mob)
 	{
 		Environmental item=getStock(name,mob);
@@ -1141,7 +1138,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if((A!=null)&&(R.roomID().length()>0))
 						titles.put(R,A);
 				}
-			
+
 			for(Enumeration r=titles.keys();r.hasMoreElements();)
 			{
 				Environmental R=(Environmental)r.nextElement();

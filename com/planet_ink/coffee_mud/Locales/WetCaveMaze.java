@@ -17,10 +17,7 @@ public class WetCaveMaze extends StdMaze
 
 		domainCondition=Room.CONDITION_WET;
 	}
-	public Environmental newInstance()
-	{
-		return new WetCaveMaze();
-	}
+
 	public String getChildLocaleID(){return "WetCaveRoom";}
 	public int getMaxRange()
 	{

@@ -16,10 +16,7 @@ public class Plains extends StdRoom
 		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
 		domainCondition=Room.CONDITION_NORMAL;
 	}
-	public Environmental newInstance()
-	{
-		return new Plains();
-	}
+
 	public static final Integer[] resourceList={
 		new Integer(EnvResource.RESOURCE_WHEAT),
 		new Integer(EnvResource.RESOURCE_HOPS),
