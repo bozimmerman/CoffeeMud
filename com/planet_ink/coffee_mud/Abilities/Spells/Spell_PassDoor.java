@@ -18,7 +18,8 @@ public class Spell_PassDoor extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
 		super.affectEnvStats(affected,affectedStats);
-		affectedStats.setDisposition(affectedStats.disposition()|EnvStats.IS_NOT_SEEN);
+		if(canBeUninvoked())
+			affectedStats.setDisposition(affectedStats.disposition()|EnvStats.IS_NOT_SEEN);
 		affectedStats.setHeight(-1);
 	}
 

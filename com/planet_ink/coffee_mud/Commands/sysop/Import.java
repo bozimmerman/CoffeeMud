@@ -46,7 +46,29 @@ public class Import
 		}
 		return Util.safetyFilter(areaName);
 	}
-
+	private static final String[][] colors={
+		{"ash","^c"},
+		{"black","^W"},
+		{"blood","^R"},
+		{"blue","^B"},
+		{"brown","^Y"},
+		{"cyan","^c"},
+		{"green","^g"},
+		{"grey","^W"},
+		{"pea","^G"},
+		{"purple","^P"},
+		{"red","^r"},
+		{"smurf","^b"},
+		{"teal","^C"},
+		{"violet","^p"},
+		{"white","^w"},
+		{"yellow","^y"},
+		{"misc","^N"},
+		{"roomname","^O"},
+		{"roomdesc","^L"},
+		{"monster","^M"}
+	};
+	
 	private static String removeAtAts(String str)
 	{
 		int x=str.indexOf("@@");
@@ -152,7 +174,13 @@ public class Import
 		s=s.trim();
 		if(s.endsWith("~"))
 			s=s.substring(0,s.length()-1).trim();
-		s=Util.replaceAll(s,"^","^^");
+		
+		if(s.indexOf("^")>=0)	s=Util.replaceAll(s,"^","^^");
+		
+		if(s.indexOf(""+((char)27))>=0)
+		for(int s1=0;s1<colors.length;s1++)
+			s=Util.replaceAll(s,((char)27)+colors[s1][0]+((char)27),colors[s1][1]);
+		
 		return s;
 	}
 
@@ -601,10 +629,7 @@ public class Import
 			if(useThisOne!=null)
 			{
 				if(okString)
-				{
-					String s2=Util.safetyFilter(removeAtAts((String)buf.elementAt(0)));
-					useThisOne.addElement(s2);
-				}
+					useThisOne.addElement(Util.safetyFilter(removeAtAts((String)buf.elementAt(0))));
 				buf.removeElementAt(0);
 			}
 			else
@@ -803,7 +828,7 @@ public class Import
 		}
 		return (roll*dice)+plus;
 	}
-	
+
 	private static MOB getMOB(String OfThisID,
 					  Room putInRoom,
 					  MOB mob,
@@ -972,26 +997,37 @@ public class Import
 			M.setWimpHitPoint(0);
 			if(Util.isSet(actFlag,7)) // this needs to be adjusted further down!
 				M.setWimpHitPoint(2);
-			if(Util.isSet(actFlag,8))
-				M.addNonUninvokableAffect(CMClass.getAbility("Prop_SafePet"));
+			//if(Util.isSet(actFlag,8)) // not really supported properly
+			//	M.addNonUninvokableAffect(CMClass.getAbility("Prop_SafePet"));
 
 			if(Util.isSet(actFlag,9))
 				M.addNonUninvokableAffect(CMClass.getAbility("Prop_StatTrainer"));
 			if(Util.isSet(actFlag,10))
 				M.addBehavior(CMClass.getBehavior("MOBTeacher"));
 
+			if(Util.isSet(actFlag,11))
+				M.addBehavior(CMClass.getBehavior("Fighterness"));
 			if(Util.isSet(actFlag,12))
 				M.addBehavior(CMClass.getBehavior("Mageness"));
 			if(Util.isSet(actFlag,13))
 				M.addBehavior(CMClass.getBehavior("Mageness"));
-			if(Util.isSet(actFlag,17))
-				M.addBehavior(CMClass.getBehavior("Mageness"));
+			
+			if(Util.isSet(actFlag,14))
+			{
+				R=M.baseCharStats().getMyRace();
+				if(R.ID().equals("Human")||R.ID().equals("StdRace"))
+				{
+					R=CMClass.getRace("Undead");
+					M.baseCharStats().setMyRace(R);
+				}
+			}
+			
 			if(Util.isSet(actFlag,16))
 				M.addBehavior(CMClass.getBehavior("Clericness"));
+			if(Util.isSet(actFlag,17))
+				M.addBehavior(CMClass.getBehavior("Mageness"));
 			if(Util.isSet(actFlag,18))
 				M.addBehavior(CMClass.getBehavior("Thiefness"));
-			if(Util.isSet(actFlag,11))
-				M.addBehavior(CMClass.getBehavior("Fighterness"));
 			if(Util.isSet(actFlag,19))
 				M.addBehavior(CMClass.getBehavior("Fighterness"));
 			if(Util.isSet(actFlag,26))
@@ -1089,13 +1125,16 @@ public class Import
 				M.addNonUninvokableAffect(CMClass.getAbility("Fighter_Berzerk"));
 
 			if(Util.isSet(affFlag,27))
+				M.addAbility(CMClass.getAbility("Skill_Swim"));
+			
+			if(Util.isSet(affFlag,28))
 				M.addNonUninvokableAffect(CMClass.getAbility("Regeneration"));
 
-			if(Util.isSet(affFlag,28))
-				M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_GOOD);
-
 			if(Util.isSet(affFlag,29))
+			{
+				M.addNonUninvokableAffect(CMClass.getAbility("Regeneration"));
 				M.addNonUninvokableAffect(CMClass.getAbility("Spell_Slow"));
+			}
 
 			// start ROM type
 			int positionCode=8;
@@ -1477,6 +1516,15 @@ public class Import
 					else
 					if(special.equals("SPEC_NASTY"))
 						M.addBehavior(CMClass.getBehavior("FightFlee"));
+					else
+					if(special.equals("SPEC_DARK_MAGIC"))
+					{
+						M.addNonUninvokableAffect(CMClass.getAbility("Spell_SpellTurning"));
+						M.addAbility(CMClass.getAbility("Prayer_Heal"));
+					}
+					else
+					if(special.equals("SPEC_SMART"))
+						M.addBehavior(CMClass.getBehavior("Scavenger"));
 					else
 					if(special.equals("SPEC_CAST_UNDEAD"))
 					{
@@ -2342,7 +2390,7 @@ public class Import
 							if(Util.isSet(codeBits,5))
 								sense=sense|EnvStats.CAN_SEE_HIDDEN|EnvStats.CAN_SEE_SNEAKERS;
 							if(Util.isSet(codeBits,6))
-								caster.setMiscText(caster.text()+("Prayer_Sanctuary")+";");
+								caster.setMiscText(caster.text()+("Spell_IronGrip")+";");
 							if(Util.isSet(codeBits,7))
 								caster.setMiscText(caster.text()+("Prayer_Sanctuary")+";");
 							if(Util.isSet(codeBits,8))
@@ -2362,7 +2410,7 @@ public class Import
 							if(Util.isSet(codeBits,15))
 								dis=dis|EnvStats.IS_SNEAKING;
 							if(Util.isSet(codeBits,16))
-								dis=dis|EnvStats.IS_HIDDEN;
+								caster.setMiscText(caster.text()+("Skill_Hide")+";");
 							if(Util.isSet(codeBits,17))
 							{
 								dis=dis|EnvStats.IS_SLEEPING;
@@ -4092,6 +4140,12 @@ public class Import
 			E.setStat(stat,value);
 	}
 
+	public static void mergedebugtell(MOB mob, String msg)
+	{
+		if(mob!=null) mob.tell(msg);
+		Log.sysOut("MERGE",msg);
+	}
+	
 	public static void merge(MOB mob, Vector commands)
 	{
 		boolean noisy=false;
@@ -4367,11 +4421,11 @@ public class Import
 		// now do the merge...
 		if(mob.session()!=null)
 			mob.session().rawPrint("Merging and saving...");
-		if(noisy) mob.tell("Rooms to do: "+placesToDo.size());
-		if(noisy) mob.tell("Things loaded: "+things.size());
-		if(noisy) mob.tell("On fields="+Util.toStringList(onfields));
-		if(noisy) mob.tell("Ignore fields="+Util.toStringList(ignore));
-		if(noisy) mob.tell("Change fields="+Util.toStringList(changes));
+		if(noisy) mergedebugtell(mob,"Rooms to do: "+placesToDo.size());
+		if(noisy) mergedebugtell(mob,"Things loaded: "+things.size());
+		if(noisy) mergedebugtell(mob,"On fields="+Util.toStringList(onfields));
+		if(noisy) mergedebugtell(mob,"Ignore fields="+Util.toStringList(ignore));
+		if(noisy) mergedebugtell(mob,"Change fields="+Util.toStringList(changes));
 		Log.sysOut("Import",mob.Name()+" merge '"+filename+"'.");
 		for(int r=0;r<placesToDo.size();r++)
 		{
@@ -4461,12 +4515,12 @@ public class Import
 		for(int v=0;v<changes.size();v++)
 			if(efields.contains(changes.elementAt(v)))
 				efields.removeElement(changes.elementAt(v));
-		if(noisy) mob.tell("AllMy-"+Util.toStringList(allMyFields));
-		if(noisy) mob.tell("efields-"+Util.toStringList(efields));
+		if(noisy) mergedebugtell(mob,"AllMy-"+Util.toStringList(allMyFields));
+		if(noisy) mergedebugtell(mob,"efields-"+Util.toStringList(efields));
 		for(int t=0;t<things.size();t++)
 		{
 			Environmental E2=(Environmental)things.elementAt(t);
-			if(noisy) mob.tell(E.name()+"/"+E2.name()+"/"+CMClass.className(E)+"/"+CMClass.className(E2));
+			if(noisy) mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.className(E)+"/"+CMClass.className(E2));
 			if(CMClass.className(E).equals(CMClass.className(E2)))
 			{
 				Vector fieldsToCheck=null;
@@ -4481,12 +4535,12 @@ public class Import
 					fieldsToCheck=(Vector)efields.clone();
 
 				boolean checkedOut=fieldsToCheck.size()>0;
-				if(noisy) mob.tell("fieldsToCheck-"+Util.toStringList(fieldsToCheck));
+				if(noisy) mergedebugtell(mob,"fieldsToCheck-"+Util.toStringList(fieldsToCheck));
 				if(checkedOut)
 				for(int i=0;i<fieldsToCheck.size();i++)
 				{
 					String field=(String)fieldsToCheck.elementAt(i);
-					if(noisy) mob.tell(field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
+					if(noisy) mergedebugtell(mob,field+"/"+getStat(E,field)+"/"+getStat(E2,field)+"/"+getStat(E,field).equals(getStat(E2,field)));
 					if(!getStat(E,field).equals(getStat(E2,field)))
 					{ checkedOut=false; break;}
 				}
@@ -4502,11 +4556,11 @@ public class Import
 							if(allMyFields.contains(changes.elementAt(v)))
 								fieldsToChange.addElement(changes.elementAt(v));
 					}
-					if(noisy) mob.tell("fieldsToChange-"+Util.toStringList(fieldsToChange));
+					if(noisy) mergedebugtell(mob,"fieldsToChange-"+Util.toStringList(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
 						String field=(String)fieldsToChange.elementAt(i);
-						if(noisy) mob.tell(E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
+						if(noisy) mergedebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
 							setStat(E,field,getStat(E2,field));

@@ -45,6 +45,63 @@ public class Reset
 			mob.tell("Done.");
 		}
 		else
+		if(s.equalsIgnoreCase("mobstats"))
+		{
+			s="room";
+			if(commands.size()>1) s=(String)commands.elementAt(1);
+			Vector rooms=new Vector();
+			if(s.toUpperCase().startsWith("ROOM"))
+				rooms.addElement(mob.location());
+			else
+			if(s.toUpperCase().startsWith("AREA"))
+				for(Enumeration e=mob.location().getArea().getMap();e.hasMoreElements();)
+					rooms.addElement(((Room)e.nextElement()));
+			else
+			if(s.toUpperCase().startsWith("WORLD"))
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
+					rooms.addElement(((Room)e.nextElement()));
+			else
+			{
+				mob.tell("Try ROOM, AREA, or WORLD.");
+				return ;
+			}
+			
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			{
+				Room R=(Room)r.nextElement();
+				R.getArea().toggleMobility(false);
+				resetRoom(R);
+				boolean somethingDone=false;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					MOB M=R.fetchInhabitant(m);
+					if((M.isEligibleMonster())
+					&&(M.getStartRoom()==R))
+					{
+						MOB M2=
+						M.baseCharStats().getCurrentClass().buildMOB(null,
+																	M.baseEnvStats().level(),
+																	M.getAlignment(),
+																	M.baseEnvStats().weight(),
+																	M.getWimpHitPoint(),
+																	(char)M.baseCharStats().getStat(CharStats.GENDER));
+						M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
+						M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
+						M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
+						M.recoverEnvStats();
+						somethingDone=true;
+					}
+				}
+				if(somethingDone)
+				{
+					mob.tell("Room "+R.roomID()+" done.");
+					ExternalPlay.DBUpdateMOBs(R);
+				}
+				R.getArea().toggleMobility(true);
+			}
+			
+		}
+		else
 		if(s.toLowerCase().startsWith("golems"))
 		{
 			if(s.toLowerCase().endsWith("change"))

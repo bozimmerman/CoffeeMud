@@ -47,6 +47,16 @@ ability to have random formulaic weapons, armor.
 PUSH should allow you to move something heavy in a direction, IE PUSH RAFT SOUTH
 Allergies - nuff said
 
+masonry tunnel (at about 20 levels above the normal masonry skill) connect 2 rooms in the same area that you own.
+Barbarian skills (SWAMP/FOREST/PLAINS/MOUNTAINS/HILLS/DESERT) TACTICS, gives bonuses to combat in those terrains. Also allows a Barbarian to HIDE in that type of terrain if he remains in a room of that type for more than 2 minutes....
+resource override parameter allows for resources to APPEAR as different names. For example ResourceOverride(berries smurfberries)
+have a setting for no prompt, which also takes out the blank line after the prompt.
+Commonskill Furnishing used to add descriptions to furnitures/doors. Only adds, doesn't subtract or replace. Kinda like engraving, except for furniture type items. 
+blacksmith TRASHCAN. A container that has the property of trashcollection, even in a privately owned property. Anything placed in the trashcan will be destroyed in 30 minutes.
+sculpt tub, jacuzzi, roman tub. Blacksmith tub. These are furnitures that hold water and people. 
+
+
+
 Space ships/sailing ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.

@@ -1747,7 +1747,7 @@ public class Generic
 									 "DAMAGE","ATTACK","SPEED","AFFBEHAV",
 									 "ABLES","INVENTORY"};
 	public static String getGenMobStat(MOB M, String code){
-		switch(getGenItemCodeNum(code))
+		switch(getGenMobCodeNum(code))
 		{
 		case 0: return CMClass.className(M);
 		case 1: return M.baseCharStats().getMyRace().ID();
@@ -1791,7 +1791,7 @@ public class Generic
 	}
 	public static void setGenMobStat(MOB M, String code, String val)
 	{
-		switch(getGenItemCodeNum(code))
+		switch(getGenMobCodeNum(code))
 		{
 		case 0: break;
 		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break;

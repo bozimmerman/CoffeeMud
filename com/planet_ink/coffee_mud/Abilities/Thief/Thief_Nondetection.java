@@ -53,7 +53,7 @@ public class Thief_Nondetection extends ThiefSkill
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(Sense.isHidden(affected)&&active)
+		if(Sense.isHidden(affected)&&active&&((affected.baseEnvStats().disposition()&EnvStats.IS_HIDDEN)==0))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
 	}
 	

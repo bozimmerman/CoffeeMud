@@ -25,7 +25,7 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public boolean armorCheck(MOB mob);
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);
 
-	public void buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender);
+	public MOB buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender);
 
 	public boolean canAdvance(MOB mob, int abilityCode);
 	public int getMaxStat(int abilityCode);

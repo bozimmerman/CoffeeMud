@@ -38,6 +38,25 @@ public class Spell_Charm extends Spell
 			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
 			return false;
 		}
+		else
+		if((affect.amISource(mob))
+		&&(!mob.isMonster())
+		&&(affect.target() instanceof Room)
+		&&(affect.targetMinor()==affect.TYP_LEAVE)
+		&&(mob.amFollowing()!=null)
+		&&(((Room)affect.target()).isInhabitant(mob.amFollowing())))
+		{
+			mob.tell("You don't want to leave your friend.");
+			return false;
+		}
+		else
+		if((affect.amISource(mob))
+		&&(mob.amFollowing()!=null)
+		&&(affect.sourceMinor()==Affect.TYP_NOFOLLOW))
+		{
+			mob.tell("You like "+mob.amFollowing().name()+" too much.");
+			return false;
+		}
 
 		return super.okAffect(myHost,affect);
 	}

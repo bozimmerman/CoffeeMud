@@ -224,6 +224,8 @@ public class StdCharClass implements CharClass, Cloneable
 			if(levelLimit>0)
 			{
 				double levelFactor=Util.div(levelDiff,levelLimit);
+				if(levelFactor>new Integer(levelLimit).doubleValue())
+					levelFactor=new Integer(levelLimit).doubleValue();
 				theAmount=theAmount+Util.mul(levelFactor,amount);
 			}
 
@@ -358,11 +360,12 @@ public class StdCharClass implements CharClass, Cloneable
 		return theNews;
 	}
 
-	public void buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender)
+	public MOB buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender)
 	{
-		if(!mob.isMonster()) return;
+		if(mob==null) mob=CMClass.getMOB("StdMOB");
+		if(!mob.isMonster()) return mob;
 
-		mob.setAlignment(500);
+		mob.setAlignment(alignment);
 		mob.baseCharStats().setStat(CharStats.GENDER,(int)gender);
 		mob.baseCharStats().setStat(CharStats.STRENGTH,10);
 		mob.baseCharStats().setStat(CharStats.WISDOM,10);
@@ -370,7 +373,7 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.baseCharStats().setStat(CharStats.DEXTERITY,13);
 		mob.baseCharStats().setStat(CharStats.CONSTITUTION,10);
 		mob.baseCharStats().setStat(CharStats.CHARISMA,10);
-		mob.baseCharStats().setStat(getAttackAttribute(),21);
+		mob.baseCharStats().setStat(getAttackAttribute(),13);
 		mob.baseCharStats().setCurrentClass(this);
 		mob.baseCharStats().setClassLevel(this,1);
 		mob.baseEnvStats().setArmor(50);
@@ -430,6 +433,7 @@ public class StdCharClass implements CharClass, Cloneable
 			if(I!=null) mob.delInventory(I);
 		}
 		mob.resetToMaxState();
+		return mob;
 	}
 
 	public void loseExperience(MOB mob, int amount)

@@ -15,6 +15,51 @@ public class Song_Friendship extends Song
 	protected boolean skipStandardSongInvoke(){return true;}
 	public long flags(){return Ability.FLAG_CHARMING;}
 
+	public boolean okAffect(Environmental myHost, Affect affect)
+	{
+		if((affected==null)||(!(affected instanceof MOB))||(affected==invoker))
+			return true;
+
+		MOB mob=(MOB)affected;
+
+		// when this spell is on a MOBs Affected list,
+		// it should consistantly prevent the mob
+		// from trying to do ANYTHING except sleep
+		if((affect.amITarget(mob))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		&&(affect.amISource(mob.amFollowing())))
+			unInvoke();
+		else
+		if((affect.amISource(mob))
+		&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS))
+		&&(affect.amITarget(mob.amFollowing())))
+		{
+			mob.tell("You like "+mob.amFollowing().charStats().himher()+" too much.");
+			return false;
+		}
+		else
+		if((affect.amISource(mob))
+		&&(!mob.isMonster())
+		&&(affect.target() instanceof Room)
+		&&(affect.targetMinor()==affect.TYP_LEAVE)
+		&&(mob.amFollowing()!=null)
+		&&(((Room)affect.target()).isInhabitant(mob.amFollowing())))
+		{
+			mob.tell("You don't want to leave your friend.");
+			return false;
+		}
+		else
+		if((affect.amISource(mob))
+		&&(mob.amFollowing()!=null)
+		&&(affect.sourceMinor()==Affect.TYP_NOFOLLOW))
+		{
+			mob.tell("You like "+mob.amFollowing().name()+" too much.");
+			return false;
+		}
+
+		return super.okAffect(myHost,affect);
+	}
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

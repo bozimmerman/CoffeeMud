@@ -33,9 +33,9 @@ public class Dragon extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,25);
-		affectableStats.setStat(CharStats.DEXTERITY,25);
-		affectableStats.setStat(CharStats.INTELLIGENCE,25);
+		affectableStats.setStat(CharStats.STRENGTH,affectableStats.getStat(CharStats.STRENGTH)+15);
+		affectableStats.setStat(CharStats.DEXTERITY,affectableStats.getStat(CharStats.DEXTERITY)+15);
+		affectableStats.setStat(CharStats.INTELLIGENCE,affectableStats.getStat(CharStats.INTELLIGENCE)+15);
 	}
 	public void startRacing(MOB mob, boolean verifyOnly)
 	{

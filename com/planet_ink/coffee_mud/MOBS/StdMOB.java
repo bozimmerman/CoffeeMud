@@ -521,6 +521,8 @@ public class StdMOB implements MOB
 				return fol.mayIFight(mob);
 			return true;
 		}
+		if((mob.soulMate()!=null)||(soulMate()!=null))
+			return true;
 		if(mob==this) return true;
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
 			return true;
@@ -1298,8 +1300,8 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if((!isMonster())
-				&&(!mob.isMonster())
+				if((!isMonster())&&(!mob.isMonster())
+				&&(soulMate()==null)&&(mob.soulMate()==null)
 				&&(mob.envStats().level()>envStats().level()+CommonStrings.getPKillLevelDiff()))
 				{
 					mob.tell("That is not EVEN a fair fight.");
