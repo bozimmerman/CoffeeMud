@@ -9,8 +9,8 @@ import java.util.*;
 public class Spell_PredictWeather extends Spell
 {
 	public String ID() { return "Spell_PredictWeather"; }
-	public String name(){return "Predict Weather";}
-	public String displayText(){return "(Predict Weather)";}
+	public String name(){return "Forecast Weather";}
+	public String displayText(){return "(Forecast Weather)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Spell_PredictWeather();}
