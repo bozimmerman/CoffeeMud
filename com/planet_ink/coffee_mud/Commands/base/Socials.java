@@ -265,7 +265,7 @@ public class Socials
 				buf.append(I.You_see()+"\t");
 				buf.append(I.Third_party_sees()+"\t");
 				buf.append(I.Target_sees() +"\t");
-				buf.append(I.See_when_no_target() +"\r\n");
+				buf.append(I.See_when_no_target() +"\n\r");
 			}
 			writer.write(buf.toString());
 			writer.flush();

@@ -569,15 +569,16 @@ public class TelnetSession extends Thread implements Session
 						lastSp=loop;
 					}
 					break;
-				case '\n':
+				case (char)13:
 					{
-						if((loop<buf.length()-1)&&(buf.charAt(loop+1)!='\r'))
-							buf.insert(loop+1,'\r');
+						if(((loop<buf.length()-1)&&(((int)buf.charAt(loop+1))!=10))
+						&&((loop>0)&&(((int)buf.charAt(loop-1))!=10)))
+							buf.insert(loop+1,(char)10);
 						len=loop+78;
 						lastSpace=loop;
 					}
 					break;
-				case '\r':
+				case (char)10:
 					{
 						len=loop+78;
 						lastSpace=loop;
@@ -605,8 +606,8 @@ public class TelnetSession extends Thread implements Session
 						{
 							buf.setCharAt(loop,(char)((dig1*16)+dig2));
 							buf.deleteCharAt(loop+1);
-							if(buf.charAt(loop)==13)
-								buf.setCharAt(loop+1,'\r');
+							if(((int)buf.charAt(loop))==13)
+								buf.setCharAt(loop+1,(char)10);
 							else
 								buf.deleteCharAt(loop+1);
 						}
@@ -657,9 +658,9 @@ public class TelnetSession extends Thread implements Session
 						case 'n':
 						case 'r':
 							{
-							buf.setCharAt(loop,'\n');
-							if((loop>=buf.length()-2)||((loop<buf.length()-2)&&(buf.charAt(loop+2)!='\r')))
-								buf.setCharAt(loop+1,'\r');
+							buf.setCharAt(loop,(char)13);
+							if((loop>=buf.length()-2)||((loop<buf.length()-2)&&(((int)buf.charAt(loop+2))!=10)))
+								buf.setCharAt(loop+1,(char)10);
 							else
 							if(loop<buf.length()-2)
 								buf.deleteCharAt(loop+1);
@@ -896,18 +897,18 @@ public class TelnetSession extends Thread implements Session
 			if((len<buf.length())
 			   &&(loop!=lastSp)
 			   &&(lastSp>=0)
-			   &&(buf.charAt(loop)!='\n')
-			   &&(buf.charAt(loop)!='\r'))
+			   &&(((int)buf.charAt(loop))!=13)
+			   &&(((int)buf.charAt(loop))!=10))
 			{
 				if(buf.charAt(lastSp+1)==' ')
 				{
-					buf.setCharAt(lastSp,'\r');
-					buf.setCharAt(lastSp+1,'\n');
+					buf.setCharAt(lastSp,(char)13);
+					buf.setCharAt(lastSp+1,(char)10);
 				}
 				else
 				{
-					buf.setCharAt(lastSp,'\n');
-					buf.insert(lastSp,'\r');
+					buf.setCharAt(lastSp,(char)13);
+					buf.insert(lastSp,(char)10);
 				}
 				loop=lastSp+2;
 			}
@@ -916,7 +917,35 @@ public class TelnetSession extends Thread implements Session
 
 		buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
 		if ((currentColor != ((int)'N'))&&(termID>0)) buf.append(makeEscape((int)'N'));
-		
+		/* fabulous debug code
+		for(int i=0;i<buf.length();i+=25)
+		{
+			for(int x=0;x<25;x++)
+			{
+				if((i+x)<buf.length())
+				{
+					char c=buf.charAt(i+x);
+					if((c!='\r')&&(c!='\n'))
+						System.out.print(c);
+					else
+						System.out.print("?");
+				}
+			}
+			System.out.print(" ");
+			for(int x=0;x<25;x++)
+			{
+				if((i+x)<buf.length())
+				{
+					int c=(int)buf.charAt(i+x);
+					int a=c/16;
+					int b=c%16;
+					System.out.print(("0123456789ABCDEF").charAt(a));
+					System.out.print(("0123456789ABCDEF").charAt(b));
+				}
+			}
+			System.out.println(" ");
+		}
+		//*/
 		return buf.toString();
 	}
 

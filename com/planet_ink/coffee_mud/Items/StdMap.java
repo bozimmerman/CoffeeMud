@@ -232,7 +232,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 						line6+="---"+dirChar(Directions.SOUTH,grid,x,y)+"----";
 					}
 				}
-				map.append(line1+"\r\n"+line2+"\r\n"+line3+"\r\n"+line4+"\r\n"+line5+"\r\n"+line6+"\r\n");
+				map.append(line1+"\n\r"+line2+"\n\r"+line3+"\n\r"+line4+"\n\r"+line5+"\n\r"+line6+"\n\r");
 			}
 		}
 		return map;
