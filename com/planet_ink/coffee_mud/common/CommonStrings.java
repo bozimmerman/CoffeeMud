@@ -37,7 +37,8 @@ public class CommonStrings extends Scriptable
 	public static final int SYSTEM_CORPSEGUARD=26;
 	public static final int SYSTEM_INIPATH=27;
 	public static final int SYSTEM_MUDBINDADDRESS=28;
-	public static final int NUM_SYSTEM=29;
+	public static final int SYSTEM_MUDDOMAIN=29;
+	public static final int NUM_SYSTEM=30;
 
 	public static final int SYSTEMI_EXPRATE=0;
 	public static final int SYSTEMI_SKYSIZE=1;
@@ -173,6 +174,7 @@ public class CommonStrings extends Scriptable
 		setVar(SYSTEM_CLANVOTER,page.getStr("CLANVOTER"));
 		setVar(SYSTEM_AUTOPURGE,page.getStr("AUTOPURGE"));
         setVar(SYSTEM_CORPSEGUARD,page.getStr("CORPSEGUARD"));
+		setVar(SYSTEM_MUDDOMAIN,page.getStr("DOMAIN"));
 		if(page.getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
 			setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
 		else

@@ -10,6 +10,7 @@ package com.planet_ink.coffee_mud.i3.net;
 import com.planet_ink.coffee_mud.i3.server.ServerUser;
 import com.planet_ink.coffee_mud.i3.server.Server;
 import com.planet_ink.coffee_mud.utils.Log;
+import com.planet_ink.coffee_mud.common.CommonStrings;
 
 import java.io.DataInputStream;
 import java.io.PrintStream;
@@ -281,7 +282,10 @@ public abstract class Interactive implements ServerUser {
      * @return the host name for this user's current site
      */
     public final String getAddressName() {
-        return socket.getInetAddress().getHostName();
+		if(CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).length()>0)
+			return CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
+		else
+			return socket.getInetAddress().getHostName();
     }
 
     /**

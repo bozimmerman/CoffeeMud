@@ -67,7 +67,7 @@ public class SMTPserver extends Thread implements Tickable
 			return false;
 		}
 
-		if (page.getStr("DOMAIN").trim().length()==0)
+		if (CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase().length()==0)
 		{
 			Log.errOut(getName(),"ERROR: required parameter missing: DOMAIN");
 			return false;
@@ -78,7 +78,7 @@ public class SMTPserver extends Thread implements Tickable
 			return false;
 		}
 		
-		domain=page.getStr("DOMAIN");
+		domain=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
 		mailbox=page.getStr("MAILBOX");
 		if(mailbox==null) mailbox="";
 		else mailbox=mailbox.trim();

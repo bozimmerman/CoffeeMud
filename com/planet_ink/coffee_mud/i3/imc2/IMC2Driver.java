@@ -482,9 +482,10 @@ public final class IMC2Driver extends Thread {
     }
     final public String do_imcinfo()
     {
+		String host=CommonStrings.getVar(CommonStrings.SYSTEM_MUDDOMAIN).toLowerCase();
         return "IMC Statistics:\\n\\r\\n"+
 			"Site Name           :"+imc_siteinfo.name+"\\n\\r"+
-			"Site Host           :"+sa.getLocalAddress()+"\\n\\r"+
+			"Site Host           :"+((host.length()>0)?host:sa.getLocalAddress().getHostName())+"\\n\\r"+
 			"Site Port           :"+imc_siteinfo.port+"\\n\\r"+
 			((imc_siteinfo.www.length()>0)?"Web Address         :"+imc_siteinfo.www+"\\n\\r":"")+
 			((imc_siteinfo.www.length()>0)?"Email               :"+imc_siteinfo.email+"\\n\\r":"")+

@@ -16,7 +16,7 @@ public class I3Cmd extends StdCommand
 		if(CMSecurity.isAllowed(mob,mob.location(),"I3"))
 			mob.tell("Try I3 LIST, I3 CHANNELS, I3 ADD [CHANNEL], I3 DELETE [CHANNEL], I3 LISTEN [CHANNEL], or I3 INFO [MUD].");
 		else
-			mob.tell("Try I3 LIST or I3 INFO [MUD-NAME].");
+			mob.tell("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME].");
 	}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -74,6 +74,16 @@ public class I3Cmd extends StdCommand
 				return false;
 			}
 			CMClass.I3Interface().i3channelListen(mob,Util.combine(commands,1));
+		}
+		else
+		if(str.equalsIgnoreCase("locate"))
+		{
+			if(commands.size()<2)
+			{
+				mob.tell("You did not specify a name!");
+				return false;
+			}
+			CMClass.I3Interface().i3locate(mob,Util.combine(commands,1));
 		}
 		else
 		if(str.equalsIgnoreCase("silence"))

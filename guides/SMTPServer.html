@@ -82,13 +82,6 @@ options are: </P>
   <LI><B>BIND</B>=addr : <I> (e.g.127.0.0.1)</I> Causes the server to be bound to a 
   specific address; this is useful on multi-homed machines or if you wish to 
   prevent public access to the pages. Identical to MUD server usage. 
-  <LI><STRONG>DOMAIN</STRONG>=email domain&nbsp;: <B>[REQUIRED]</B>&nbsp;This is your servers domain for the 
-  purposes of interpreting local email addresses.&nbsp; It should be identical 
-  to your servers domain.&nbsp; For instance, if your server is 
-  myserver.myhost.com, then so should this value.&nbsp; Email&nbsp;addressed to 
-  your mud would then be <A 
-  href="mailto:playername@myserver.myhost.com">playername@myserver.myhost.com</A>.&nbsp; 
-  This domain must match the incoming mail addresses to be accepted. 
   <LI><STRONG>FORWARD</STRONG>=trueorfalse <EM>(e.g. 
   TRUE)</EM> Should be set to true or false.&nbsp; 
   If TRUE, mail will be forwarded to players and mailing lists as the mail 
@@ -145,29 +138,37 @@ options are: </P>
   included.<BR><BR>&nbsp;Parameters may also include Zapper masks to control 
   subscription&nbsp;and/or posting criteria. Use AHELP Prop_HaveZapper to list 
   the&nbsp;valid Zapper mask parameters. 
-  <LI><STRONG>JOURNALDAYS</STRONG>=          
-           xx (e.g. 90) This is the 
-  number of maximum number of days a message will remain in an smtp server managed 
-  JOURNAL before being deleted. </LI>
-  <LI><STRONG>SUBSCRIBEDTITLE</STRONG>=xx <EM>(e.g. You are now subscribed)</EM> This is the 
-  title of the response your SMTP server will automatically send to users who subscribe to 
-  a journal by sending an email to the journal with "subscribe" as the title.</LI>
-  <LI><STRONG>SUBSCRIBEDMSG</STRONG>=xx <EM>(e.g. You are now subscribed to &lt;NAME&gt;)</EM> This is the 
-  body of the response your SMTP server will automatically send to users who subscribe to 
-  a journal by sending an email to the journal with "subscribe" as the title.  You may use
-  the code &lt;NAME&gt; as a placeholder for your journals name.</LI>
-  <LI><STRONG>UNSUBSCRIBEDTITLE</STRONG>=xx <EM>(e.g. You are now unsubscribed)</EM> This is the 
-  title of the response your SMTP server will automatically send to users who unsubscribe to 
-  a journal by sending an email to the journal with "unsubscribe" as the title.</LI>
+  <LI><STRONG>JOURNALDAYS</STRONG>= xx 
+  (e.g. 90) This is the number of maximum number of days a message will remain 
+  in an smtp server managed JOURNAL before being deleted. 
+  <LI><STRONG>SUBSCRIBEDTITLE</STRONG>=xx <EM>(e.g. You are now subscribed)</EM> This is the title of 
+  the response your SMTP server will automatically send to users who subscribe 
+  to a journal by sending an email to the journal with "subscribe" as the title. 
+
+  <LI><STRONG>SUBSCRIBEDMSG</STRONG>=xx <EM>(e.g. You are now subscribed to &lt;NAME&gt;)</EM> This is the body of the response 
+  your SMTP server will automatically send to users who subscribe to a journal 
+  by sending an email to the journal with "subscribe" as the title. You may use 
+  the code &lt;NAME&gt; as a placeholder for your journals name. 
+  <LI><STRONG>UNSUBSCRIBEDTITLE</STRONG>=xx <EM>(e.g. You are now unsubscribed)</EM> This is the title of 
+  the response your SMTP server will automatically send to users who unsubscribe 
+  to a journal by sending an email to the journal with "unsubscribe" as the 
+  title. 
   <LI><STRONG>UNSUBSCRIBEDMSG</STRONG>=xx <EM>(e.g. You are now unsubscribed from &lt;NAME&gt;)</EM> This is the 
   body of the response your SMTP server will automatically send to users who unsubscribe to 
   a journal by sending an email to the journal with "unsubscribe" as the title.  You may use
   the code &lt;NAME&gt; as a placeholder for your journals name.</LI>
   </UL> 
   <P>          
-                 
-                 
-      </P>
+  Not listed here, but even more important is the 
+<STRONG>DOMAIN</STRONG>          
+            entry in your coffeemud.ini file.  
+  This is your servers domain for the purposes of interpreting local email addresses.&nbsp; 
+  It should be identical to your servers domain.&nbsp; For instance, if your server is 
+  myserver.myhost.com, then so should this value.&nbsp; Email&nbsp;addressed to 
+  your mud would then be <A 
+  href="mailto:playername@myserver.myhost.com">playername@myserver.myhost.com</A>.&nbsp; 
+  This domain must match the incoming mail addresses to be accepted. 
+  </P>
 
 </BODY>
 </HTML>

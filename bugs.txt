@@ -1,6 +1,5 @@
 In the Archon's Guide, small arrangement of links to various parts of the webpage 
-imc2 info host is warped
-Flea Powder! Something just to cure fleas.
+do i3 locate
 Skills:
 	when you look at someone you should see missing body parts.
 	Add a tail to the summoning spell. You are summoned by so and so.
@@ -39,6 +38,7 @@ Misc:
   2. Add an option for Weather  
   3. Add an option for Tank HP/MaxHP, Mana/MaxMana, Move/MaxMove  
 
+Flea Powder! Something just to cure fleas.
 racial affects
 Install ship battery
 make diff levels of drunk, and disease_hangover
