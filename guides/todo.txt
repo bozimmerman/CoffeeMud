@@ -1,5 +1,6 @@
 racial abilities (abilities tied to the race)
-Perhaps a little modification to have the mob act as a better assassin, and the ability to put numbers in front of the direction with doing a GO command.
+Perhaps a little modification to have the mob act as a better assassin, 
+The ability to put numbers in front of the direction with doing a GO command for an ORDER.
 gen-wizard player editor
 possible to have NE SE SW NW directions?
 Behavior & Skill libido - Property Pregnancy (with eggs for some), Property Aging 

@@ -498,7 +498,12 @@ public class StdMOB implements MOB
 		if(amDead()) return false;
 		if(curState().getHitPoints()<=0) return false;
 		if(mob.isMonster()) return true;
-		if(isMonster()) return true;
+		if(isMonster()){
+			MOB fol=amFollowing();
+			if((fol!=null)&&(!fol.isMonster()))
+				return fol.mayIFight(mob);
+			return true;
+		}
 		if(mob==this) return true;
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS"))
 			return true;

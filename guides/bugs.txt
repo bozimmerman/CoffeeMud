@@ -1,2 +1,1 @@
 \n is still a problem?!
-TEST: prop_reflecting to reflect spell damage back to the caster, put on shield items

@@ -16,6 +16,7 @@ public class Prop_WeakBridge extends Property
 	protected int max=400;
 	protected int chance=75;
 	protected int ticksDown=100;
+	protected Vector mobsToKill=new Vector();
 	
 	public String accountForYourself()
 	{ return "Weak and Rickity";	}
@@ -31,7 +32,7 @@ public class Prop_WeakBridge extends Property
 	public boolean okAffect(Affect msg)
 	{
 		if((msg.targetMinor()==Affect.TYP_ENTER)
-		||((msg.targetMinor()==Affect.TYP_LEAVE)&&(affected instanceof Exit)))
+		&&((msg.amITarget(affected))||(msg.tool()==affected)))
 		{
 			MOB mob=msg.source();
 			if(Sense.isInFlight(mob)) return true;
@@ -43,39 +44,51 @@ public class Prop_WeakBridge extends Property
 		}
 		return true;
 	}
+	
+	public int weight(MOB mob)
+	{
+		int weight=0;
+		if(affected instanceof Room)
+		{
+			Room room=(Room)affected;
+			for(int i=0;i<room.numInhabitants();i++)
+			{
+				MOB M=(MOB)room.fetchInhabitant(i);
+				if((M!=null)&&(M!=mob)&&(!Sense.isInFlight(M)))
+					weight+=M.envStats().weight();
+			}
+		}
+		return weight+mob.envStats().weight();
+	}
+					  
+	
 	public void affect(Affect msg)
 	{
-		if(((msg.targetMinor()==Affect.TYP_ENTER)||(msg.targetMinor()==Affect.TYP_LEAVE))
+		if((msg.targetMinor()==Affect.TYP_ENTER)
+		&&((msg.amITarget(affected))||(msg.tool()==affected))
 		&&(!Sense.isFalling(msg.source())))
 		{
 			MOB mob=msg.source();
 			if(Sense.isInFlight(mob)) return;
 			if(bridgeIsUp)
 			{
-				if((mob.envStats().weight()>max)
+				if((weight(mob)>max)
 				&&(Dice.rollPercentage()<chance))
 				{
-					bridgeIsUp=false;
-					ExternalPlay.startTickDown(this,Host.SPELL_AFFECT,ticksDown);
-					affected.recoverEnvStats();
-					msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_VISUAL,"The bridge breaks under <S-YOUPOSS> weight!"));
-					if((affected instanceof Room)
-					&&((((Room)affected).domainType()==Room.DOMAIN_INDOORS_AIR)
-					   ||(((Room)affected).domainType()==Room.DOMAIN_OUTDOORS_AIR))
-					&&(((Room)affected).getRoomInDir(Directions.DOWN)!=null)
-					&&(((Room)affected).getExitInDir(Directions.DOWN)!=null)
-					&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
-						((Room)affected).recoverRoomStats();
-					else
-					if(affected instanceof Exit)
-						msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_DEATH,"<S-NAME> fall(s) to <S-HIS-HER> death!!"));
-					else
-					if(affected instanceof Room)
-					for(int i=0;i<((Room)affected).numInhabitants();i++)
+					synchronized(mobsToKill)
 					{
-						MOB M=((Room)affected).fetchInhabitant(i);
-						if((M!=null)&&(!Sense.isInFlight(M)))
-							msg.addTrailerMsg(new FullMsg(M,null,Affect.MSG_DEATH,"<S-NAME> fall(s) to <S-HIS-HER> death!!"));
+						if(!mobsToKill.contains(mob))
+						{
+							mobsToKill.addElement(mob);
+							if(!Sense.isFalling(mob))
+							{
+								Ability falling=CMClass.getAbility("Falling");
+								falling.setProfficiency(0);
+								falling.setAffectedOne(msg.target());
+								falling.invoke(null,null,mob,true);
+							}
+							ExternalPlay.startTickDown(this,Host.SPELL_AFFECT,1);
+						}
 					}
 				}
 			}
@@ -94,8 +107,69 @@ public class Prop_WeakBridge extends Property
 	{
 		if(tickID==Host.SPELL_AFFECT)
 		{
-			bridgeIsUp=true;
-			ExternalPlay.deleteTick(this,Host.SPELL_AFFECT);
+			if(bridgeIsUp)
+			{
+				synchronized(mobsToKill)
+				{
+					bridgeIsUp=false;
+					Vector V=((Vector)mobsToKill.clone());
+					mobsToKill.clear();
+					if(affected instanceof Room)
+					{
+						Room room=(Room)affected;
+						for(int i=0;i<room.numInhabitants();i++)
+						{
+							MOB M=room.fetchInhabitant(i);
+							if((M!=null)
+							&&(!Sense.isInFlight(M))
+							&&(!V.contains(M)))
+								V.addElement(M);
+						}
+					}
+					for(int i=0;i<V.size();i++)
+					{
+						MOB mob=(MOB)V.elementAt(i);
+						if((mob.location()!=null)
+						&&(!Sense.isInFlight(mob)))
+						{
+							if((affected instanceof Room)
+							&&((((Room)affected).domainType()==Room.DOMAIN_INDOORS_AIR)
+							   ||(((Room)affected).domainType()==Room.DOMAIN_OUTDOORS_AIR))
+							&&(((Room)affected).getRoomInDir(Directions.DOWN)!=null)
+							&&(((Room)affected).getExitInDir(Directions.DOWN)!=null)
+							&&(((Room)affected).getExitInDir(Directions.DOWN).isOpen()))
+							{
+								mob.tell("The bridge breaks under your weight!");
+								if((!Sense.isFalling(mob))
+								&&(mob.location()==affected))
+								{
+									Ability falling=CMClass.getAbility("Falling");
+									falling.setProfficiency(0);
+									falling.setAffectedOne(affected);
+									falling.invoke(null,null,mob,true);
+								}
+							}
+							else
+							{
+								mob.location().showSource(mob,null,Affect.MSG_OK_VISUAL,"The bridge breaks under your weight!");
+								mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> fall(s) to <S-HIS-HER> death!!");
+								mob.location().show(mob,null,Affect.MSG_DEATH,null);
+							}
+						}
+					}
+					if(affected instanceof Room)
+						((Room)affected).recoverEnvStats();
+					ExternalPlay.deleteTick(this,Host.SPELL_AFFECT);
+					ExternalPlay.startTickDown(this,Host.SPELL_AFFECT,ticksDown);
+				}
+			}
+			else
+			{
+				bridgeIsUp=true;
+				ExternalPlay.deleteTick(this,Host.SPELL_AFFECT);
+				if(affected instanceof Room)
+					((Room)affected).recoverEnvStats();
+			}
 		}
 		return true;
 	}

@@ -33,10 +33,13 @@ public class InTheAir extends StdRoom
 		if(((E instanceof MOB)&&(!Sense.isInFlight(E)))
 		||((E instanceof Item)&&(!Sense.isFlying(((Item)E).ultimateContainer()))))
 		{
-			Ability falling=CMClass.getAbility("Falling");
-			falling.setProfficiency(avg);
-			falling.setAffectedOne(room);
-			falling.invoke(null,null,E,true);
+			if(!Sense.isFalling(E))
+			{
+				Ability falling=CMClass.getAbility("Falling");
+				falling.setProfficiency(avg);
+				falling.setAffectedOne(room);
+				falling.invoke(null,null,E,true);
+			}
 		}
 	}
 	
