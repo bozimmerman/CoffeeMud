@@ -835,7 +835,7 @@ public class Scoring
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if((!Sense.isHidden(A))||(mob.isASysOp(null)))
+			if(Sense.canAccess(mob,A))
 				areasVec.addElement(A.name());
 		}
 		Collections.sort((List)areasVec);

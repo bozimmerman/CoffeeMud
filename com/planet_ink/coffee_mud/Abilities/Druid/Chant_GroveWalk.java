@@ -29,18 +29,19 @@ public class Chant_GroveWalk extends Chant
 		for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
-			for(int i=0;i<R.numItems();i++)
-			{
-				Item I=R.fetchItem(i);
-				if((I!=null)&&(I.ID().equals("DruidicMonument")))
+			if(Sense.canAccess(mob,R))
+				for(int i=0;i<R.numItems();i++)
 				{
-					if(R==mob.location())
-						hereok=true;
-					if(CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
-					   newRoom=R;
-					break;
+					Item I=R.fetchItem(i);
+					if((I!=null)&&(I.ID().equals("DruidicMonument")))
+					{
+						if(R==mob.location())
+							hereok=true;
+						if(CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
+						   newRoom=R;
+						break;
+					}
 				}
-			}
 			if((newRoom!=null)&&(hereok)) break;
 		}
 		if(!hereok)

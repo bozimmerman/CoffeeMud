@@ -41,9 +41,12 @@ public class Skill_FalseArrest extends StdAbility
 		for(Enumeration e=CMMap.areas();e.hasMoreElements();)
 		{
 			A=(Area)e.nextElement();
-			B=A.fetchBehavior("Arrest");
-			if((B!=null)&&(B.modifyBehavior(target,null)))
-				break;
+			if(Sense.canAccess(mob,A))
+			{
+				B=A.fetchBehavior("Arrest");
+				if((B!=null)&&(B.modifyBehavior(target,null)))
+					break;
+			}
 			B=null;
 			A=null;
 		}

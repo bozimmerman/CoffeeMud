@@ -119,8 +119,9 @@ public class Chant_LocateAnimals extends Chant
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(animalHere(R)!=null)
-				rooms.addElement(R);
+			if(Sense.canAccess(mob,R))
+				if(animalHere(R)!=null)
+					rooms.addElement(R);
 		}
 
 		if(rooms.size()>0)

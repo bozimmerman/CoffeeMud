@@ -115,16 +115,17 @@ public class CoffeeUtensils
 	public static boolean containsString(String toSrchStr, String srchStr)
 	{
 		if(srchStr.equalsIgnoreCase("all")) return true;
-		if(srchStr.endsWith("$")&&(toSrchStr.toUpperCase().endsWith(srchStr.toUpperCase().substring(0,srchStr.length()-1))))
+		if(srchStr.endsWith("$")
+		&&(Util.removeColors(toSrchStr.toUpperCase()).endsWith(srchStr.toUpperCase().substring(0,srchStr.length()-1))))
 		   return true;
-		int x=toSrchStr.toUpperCase().indexOf(srchStr.toUpperCase());
+		int x=Util.removeColors(toSrchStr.toUpperCase()).indexOf(srchStr.toUpperCase());
 		if(x<0) return false;
 
 		if(x==0)
 			return true;
 		else
 		{
-			if(Character.isLetter(toSrchStr.charAt(x-1)))
+			if(Character.isLetter(Util.removeColors(toSrchStr.toUpperCase()).charAt(x-1)))
 			   return false;
 			return true;
 		}

@@ -131,12 +131,16 @@ public class Spell_Wish extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
-				E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORN_REQ_UNWORNONLY);
-				foundThang=maybeAdd(E,thangsFound,foundThang);
+				if(Sense.canAccess(mob,room))
+				{
+					E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORN_REQ_UNWORNONLY);
+					foundThang=maybeAdd(E,thangsFound,foundThang);
+				}
 			}
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
+				if(Sense.canAccess(mob,room))
 				for(int m=0;m<room.numInhabitants();m++)
 				{
 					MOB mob2=room.fetchInhabitant(m);
@@ -368,6 +372,7 @@ public class Spell_Wish extends Spell
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
+					if(Sense.canAccess(mob,room))
 					if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),locationWish.trim()))
 					{
 					   newRoom=room;

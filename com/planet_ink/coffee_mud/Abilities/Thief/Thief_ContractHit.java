@@ -152,9 +152,12 @@ public class Thief_ContractHit extends ThiefSkill
 		for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
-			MOB M=R.fetchInhabitant(Util.combine(commands,0));
-			if(M!=null)
-				V.addElement(M);
+			if(Sense.canAccess(mob,R))
+			{
+				MOB M=R.fetchInhabitant(Util.combine(commands,0));
+				if(M!=null)
+					V.addElement(M);
+			}
 		}
 		MOB target=null;
 		if(V.size()>0)

@@ -124,8 +124,9 @@ public class Chant_LocatePlants extends Chant
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(plantsHere(target,R).length()>0)
-				rooms.addElement(R);
+			if(Sense.canAccess(mob,R))
+				if(plantsHere(target,R).length()>0)
+					rooms.addElement(R);
 		}
 		
 		if(rooms.size()>0)

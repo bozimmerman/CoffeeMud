@@ -53,11 +53,12 @@ public class Prayer_Gateway extends Prayer
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
-			{
-			   newRoom=R;
-			   break;
-			}
+			if(Sense.canAccess(mob,R))
+				if(CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
+				{
+				   newRoom=R;
+				   break;
+				}
 		}
 
 		if(newRoom==null)

@@ -15,7 +15,7 @@ public class Spell_Cogniportive extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
-	public String establishHome(Item me)
+	public String establishHome(MOB mob, Item me)
 	{
 		if(me instanceof LandTitle)
 			return ((LandTitle)me).landRoomID();
@@ -25,7 +25,7 @@ public class Spell_Cogniportive extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R!=null)
+				if(Sense.canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
@@ -43,7 +43,7 @@ public class Spell_Cogniportive extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R!=null)
+				if(Sense.canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
@@ -61,7 +61,7 @@ public class Spell_Cogniportive extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R!=null)
+				if(Sense.canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
@@ -79,7 +79,7 @@ public class Spell_Cogniportive extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R.fetchItem(null,me.Name())!=null))
+				if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
 				   return CMMap.getExtendedRoomID(R);
 			}
 		}
@@ -96,7 +96,7 @@ public class Spell_Cogniportive extends Spell
 		   &&(me!=null))
 		{
 			if(text().length()==0)
-				setMiscText(establishHome(me));
+				setMiscText(establishHome(mob,me));
 			Environmental target=null;
 			if((mob.location()!=null))
 				target=afftarget;
@@ -202,7 +202,7 @@ public class Spell_Cogniportive extends Spell
 				beneficialAffect(mob,target,1000);
 				A=target.fetchAffect(ID());
 				if(A!=null)
-					A.setMiscText(((Spell_Cogniportive)A).establishHome(target));
+					A.setMiscText(((Spell_Cogniportive)A).establishHome(mob,target));
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();

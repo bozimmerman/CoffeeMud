@@ -209,7 +209,7 @@ public class Thief_Assassinate extends ThiefSkill
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R.isInhabitant(tracking)))
+				if((Sense.canAccess(mob,R))&&(R.isInhabitant(tracking)))
 				{
 					rooms.addElement(R);
 					break;
@@ -230,7 +230,7 @@ public class Thief_Assassinate extends ThiefSkill
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R.fetchInhabitant(mobName)!=null))
+				if((Sense.canAccess(mob,R))&&(R.fetchInhabitant(mobName)!=null))
 					rooms.addElement(R);
 			}
 		}

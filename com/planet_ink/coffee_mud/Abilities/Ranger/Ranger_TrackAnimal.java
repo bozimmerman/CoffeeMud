@@ -156,8 +156,9 @@ public class Ranger_TrackAnimal extends StdAbility
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(animalHere(R)!=null)
-				rooms.addElement(R);
+			if(Sense.canAccess(mob,R))
+				if(animalHere(R)!=null)
+					rooms.addElement(R);
 		}
 
 		if(rooms.size()>0)

@@ -45,6 +45,9 @@ public class Spell_LocateObject extends Spell
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
+					
+					if(!Sense.canAccess(mob,room)) continue;
+					
 					Environmental item=room.fetchItem(null,what);
 					if((item!=null)&&(Sense.canSee(item)))
 					{

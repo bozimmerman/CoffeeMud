@@ -16,7 +16,7 @@ public class Spell_KnowOrigin extends Spell
 	public Environmental newInstance(){	return new Spell_KnowOrigin();}
 	public int classificationCode(){ return Ability.SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public Room origin(Environmental meThang)
+	public Room origin(MOB mob, Environmental meThang)
 	{
 		if(meThang instanceof LandTitle)
 			return CMMap.getRoom(((LandTitle)meThang).landRoomID());
@@ -31,7 +31,7 @@ public class Spell_KnowOrigin extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R!=null)
+				if(Sense.canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
@@ -49,7 +49,7 @@ public class Spell_KnowOrigin extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if(R!=null)
+				if(Sense.canAccess(mob,R))
 				{
 					for(int s=0;s<R.numInhabitants();s++)
 					{
@@ -85,7 +85,7 @@ public class Spell_KnowOrigin extends Spell
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R.fetchItem(null,me.Name())!=null))
+				if((Sense.canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
 				   return R;
 			}
 		}
@@ -100,7 +100,7 @@ public class Spell_KnowOrigin extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		Room R=origin(target);
+		Room R=origin(mob,target);
 		boolean success=profficiencyCheck(0,auto);
 		if((success)&&(R!=null))
 		{

@@ -35,8 +35,7 @@ public class Spell_Summon extends Spell
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room room=(Room)r.nextElement();
-			if(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
-			   ||(mob.isASysOp(room)))
+			if(Sense.canAccess(mob,room))
 			{
 				target=room.fetchInhabitant(areaName);
 				if(target!=null)

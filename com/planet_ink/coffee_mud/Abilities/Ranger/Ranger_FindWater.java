@@ -249,8 +249,9 @@ public class Ranger_FindWater extends StdAbility
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(waterHere(mob,R,null).length()>0)
-				rooms.addElement(R);
+			if(Sense.canAccess(mob,R))
+				if(waterHere(mob,R,null).length()>0)
+					rooms.addElement(R);
 		}
 
 		if(rooms.size()>0)

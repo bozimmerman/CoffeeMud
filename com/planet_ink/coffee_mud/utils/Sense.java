@@ -409,6 +409,22 @@ public class Sense
 		}
 		return false;
 	}
+	
+	public static boolean canAccess(MOB mob, Area A)
+	{
+		if(A==null) return false;
+		if((!isHidden(A))||(mob.isASysOp(null))||(A.amISubOp(mob.Name())))
+			return true;
+		return false;
+	}
+	public static boolean canAccess(MOB mob, Room R)
+	{
+		if(R==null) return false;
+		if((!isHidden(R))||(mob.isASysOp(R)))
+			return true;
+		return false;
+	}
+	
 	public static String wornLocation(long wornCode)
 	{
 		for(int wornNum=0;wornNum<20;wornNum++)

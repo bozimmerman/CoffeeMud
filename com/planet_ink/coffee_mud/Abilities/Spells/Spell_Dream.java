@@ -33,6 +33,7 @@ public class Spell_Dream extends Spell
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
+					if(Sense.canAccess(mob,R))
 					for(int i=0;i<R.numInhabitants();i++)
 					{
 						MOB inhab=R.fetchInhabitant(i);

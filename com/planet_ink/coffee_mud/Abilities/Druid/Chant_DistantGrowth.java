@@ -30,8 +30,7 @@ public class Chant_DistantGrowth extends Chant
 		{
 			Room R=(Room)r.nextElement();
 			if((CoffeeUtensils.containsString(R.displayText().toUpperCase(),areaName))
-			&&(((!Sense.isHidden(R.getArea()))&&(!Sense.isHidden(R)))
-			   ||(mob.isASysOp(R))))
+			&&(Sense.canAccess(mob,R)))
 			{
 				anyRoom=R;
 				if(((R.domainType()&Room.INDOORS)==0)

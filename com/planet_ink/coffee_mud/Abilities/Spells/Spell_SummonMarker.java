@@ -27,7 +27,7 @@ public class Spell_SummonMarker extends Spell
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if(R!=null)
+			if(Sense.canAccess(mob,R))
 			for(int a=0;a<R.numAffects();a++)
 			{
 				Ability A=R.fetchAffect(a);

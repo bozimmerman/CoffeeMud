@@ -1325,10 +1325,10 @@ public class Arrest extends StdBehavior
 						&&(W.criminal.location().isInhabitant(W.criminal))
 						&&(Sense.aliveAwakeMobile(officer,true)))
 						{
-							if(W.criminal.curState().getMovement()<20)
-								W.criminal.curState().setMovement(20);
-							if(officer.curState().getMovement()<20)
-								officer.curState().setMovement(20);
+							if(W.criminal.curState().getMovement()<50)
+								W.criminal.curState().setMovement(50);
+							if(officer.curState().getMovement()<50)
+								officer.curState().setMovement(50);
 							makePeace(officer.location());
 							if(officer.isMonster())
 								ExternalPlay.look(officer,null,true);
@@ -1586,10 +1586,10 @@ public class Arrest extends StdBehavior
 						&&(Sense.aliveAwakeMobile(officer,true))
 						&&(W.jail!=null))
 						{
-							if(W.criminal.curState().getMovement()<20)
-								W.criminal.curState().setMovement(20);
-							if(officer.curState().getMovement()<20)
-								officer.curState().setMovement(20);
+							if(W.criminal.curState().getMovement()<50)
+								W.criminal.curState().setMovement(50);
+							if(officer.curState().getMovement()<50)
+								officer.curState().setMovement(50);
 							makePeace(officer.location());
 							ExternalPlay.look(officer,null,true);
 							if(W.jail==W.criminal.location())

@@ -213,7 +213,7 @@ public class Skill_Track extends StdAbility
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			if((R!=null)&&(R.fetchInhabitant(mobName)!=null))
+			if(R.fetchInhabitant(mobName)!=null)
 				rooms.addElement(R);
 		}
 		

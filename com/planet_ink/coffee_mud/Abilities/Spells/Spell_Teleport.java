@@ -28,8 +28,7 @@ public class Spell_Teleport extends Spell
 		{
 			Room room=(Room)r.nextElement();
 			if((room.getArea().name().toUpperCase().startsWith(areaName))
-			&&(((!Sense.isHidden(room.getArea()))&&(!Sense.isHidden(room)))
-			   ||(mob.isASysOp(room))))
+			&&(Sense.canAccess(mob,room)))
 				candidates.addElement(room);
 		}
 

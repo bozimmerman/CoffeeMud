@@ -25,7 +25,8 @@ public class Spell_DistantVision extends Spell
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room room=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName))
+			if((Sense.canAccess(mob,room))
+			&&(CoffeeUtensils.containsString(room.displayText().toUpperCase(),areaName)))
 			{
 				thisRoom=room;
 				break;
