@@ -72,11 +72,13 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DetectGold",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_Spook",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_Mend",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Spell_WeaknessGas",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_DispelMagic",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_MageArmor",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_ResistAcid",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Spell_FaerieFire",false);
 			// level 6
+			CMAble.addCharAbilityMapping(ID(),6,"Spell_WeaknessAcid",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Augury",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Charm",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_Meld",false);
@@ -85,6 +87,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_GraceOfTheCat",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_ShockingGrasp",false);
 			// level 7
+			CMAble.addCharAbilityMapping(ID(),7,"Spell_WeaknessCold",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_Darkness",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_Invisibility",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_DetectHidden",false);
@@ -92,6 +95,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_Fireball",false);
 			CMAble.addCharAbilityMapping(ID(),7,"Spell_SummonMonster",false);
 			// level 8
+			CMAble.addCharAbilityMapping(ID(),8,"Spell_WeaknessElectricity",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_FaerieFog",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Lightning",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_Shatter",false);
@@ -99,6 +103,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_ResistElectricity",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Spell_IdentifyObject",false);
 			// level 9
+			CMAble.addCharAbilityMapping(ID(),9,"Spell_WeaknessFire",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_Blindness",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_ComprehendLangs",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Spell_MagicMouth",false);
