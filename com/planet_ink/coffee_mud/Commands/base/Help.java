@@ -439,7 +439,10 @@ public class Help
 		else
 			thisTag=getHelpText(helpStr,getHelpFile());
 		if(thisTag==null)
+		{
 			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			Log.errOut("Help",mob.Name()+" wanted help on "+helpStr);
+		}
 		else
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(thisTag.toString());
@@ -504,7 +507,10 @@ public class Help
 		else
 			thisTag=getHelpText(helpStr,getArcHelpFile());
 		if(thisTag==null)
+		{
 			mob.tell("No archon help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			Log.errOut("Help",mob.Name()+" wanted archon help on "+helpStr);
+		}
 		else
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(thisTag.toString());
