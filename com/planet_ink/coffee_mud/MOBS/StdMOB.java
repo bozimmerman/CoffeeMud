@@ -1800,7 +1800,10 @@ public class StdMOB implements MOB
 		if((msg.sourceCode()!=CMMsg.NO_EFFECT)&&(msg.amISource(this)))
 		{
 			if(Util.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
-				if((msg.target() instanceof MOB)&&(getVictim()!=msg.target()))
+				if((msg.target() instanceof MOB)
+				&&(getVictim()!=msg.target())
+				&&((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+					||(!(msg.tool() instanceof DiseaseAffect))))
 				{
 					establishRange(this,(MOB)msg.target(),msg.tool());
 					setVictim((MOB)msg.target());
@@ -1967,7 +1970,10 @@ public class StdMOB implements MOB
 				if((Util.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
 				&&(!amDead))
 				{
-					if((!isInCombat())&&(location().isInhabitant((MOB)msg.source())))
+					if((!isInCombat())
+					&&(location().isInhabitant((MOB)msg.source()))
+					&&((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+						||(!(msg.tool() instanceof DiseaseAffect))))
 					{
 						establishRange(this,msg.source(),msg.tool());
 						setVictim(msg.source());
@@ -2076,7 +2082,10 @@ public class StdMOB implements MOB
 			int othersMajor=msg.othersMajor();
 			int othersMinor=msg.othersMinor();
 
-			if(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)&&(msg.target() instanceof MOB))
+			if(Util.bset(msg.othersCode(),CMMsg.MASK_MALICIOUS)
+			&&(msg.target() instanceof MOB)
+			&&((!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+				||(!(msg.tool() instanceof DiseaseAffect))))
 				fightingFollowers((MOB)msg.target(),msg.source());
 
 			if((othersMinor==CMMsg.TYP_ENTER) // exceptions to movement

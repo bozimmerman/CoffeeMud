@@ -199,7 +199,12 @@ public class Emoter extends ActiveTicker
 				if(ticking instanceof Environmental)
 					name=((Environmental)ticking).name();
 				if(mob!=null)
-					emoter.setName(name+" carried by "+mob.name());
+				{
+					if(!Sense.isInTheGame(mob))
+						emoter.setName(name+" carried by "+mob.name());
+					else
+						emoter=null;
+				}
 				else
 					emoter.setName(name);
 			}

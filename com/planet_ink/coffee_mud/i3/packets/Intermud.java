@@ -272,10 +272,8 @@ public class Intermud implements Runnable, Persistent, Serializable {
             I3Exception e;
 
             e = new I3Exception(msg);
-			if((e.getMessage()!=null)
-			&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
-			&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
-				Log.errOut("Intermud",e.getMessage());
+			if(e.getMessage()!=null)
+				Log.errOut("InterMud","276-"+e.getMessage());
         }
         else {
         }
@@ -300,19 +298,25 @@ public class Intermud implements Runnable, Persistent, Serializable {
                 }
                 else {
                     Vector v = (Vector)info;
-
-                    mud.state = ((Integer)v.elementAt(0)).intValue();
-                    mud.address = (String)v.elementAt(1);
-                    mud.player_port = ((Integer)v.elementAt(2)).intValue();
-                    mud.tcp_port = ((Integer)v.elementAt(3)).intValue();
-                    mud.udp_port = ((Integer)v.elementAt(4)).intValue();
-                    mud.mudlib = (String)v.elementAt(5);
-                    mud.base_mudlib = (String)v.elementAt(6);
-                    mud.driver = (String)v.elementAt(7);
-                    mud.mud_type = (String)v.elementAt(8);
-                    mud.status = (String)v.elementAt(9);
-                    mud.admin_email = (String)v.elementAt(10);
-                    addMud(mud);
+					int total=0;
+					for(int vi=0;vi<v.size();vi++)
+						if(v.elementAt(vi) instanceof String)
+							total+=((String)v.elementAt(vi)).length();
+					if(total<1024)
+					{
+						mud.state = ((Integer)v.elementAt(0)).intValue();
+						mud.address = (String)v.elementAt(1);
+						mud.player_port = ((Integer)v.elementAt(2)).intValue();
+						mud.tcp_port = ((Integer)v.elementAt(3)).intValue();
+						mud.udp_port = ((Integer)v.elementAt(4)).intValue();
+						mud.mudlib = (String)v.elementAt(5);
+						mud.base_mudlib = (String)v.elementAt(6);
+						mud.driver = (String)v.elementAt(7);
+						mud.mud_type = (String)v.elementAt(8);
+						mud.status = (String)v.elementAt(9);
+						mud.admin_email = (String)v.elementAt(10);
+						addMud(mud);
+					}
                 }
             }
         }
@@ -361,6 +365,14 @@ public class Intermud implements Runnable, Persistent, Serializable {
 
                 try {
                     int len = input.readInt();
+					if(len>65536)
+					{
+						int skipped=0;
+						while(skipped<len)
+							skipped+=input.skipBytes(len);
+						Log.errOut("Got illegal packet: "+skipped+"/"+len+" bytes.");
+						continue;
+					}
                     byte[] tmp = new byte[len];
 
                     input.readFully(tmp);
@@ -380,20 +392,16 @@ public class Intermud implements Runnable, Persistent, Serializable {
 						}
 					}
                     connect();
-					if((e.getMessage()!=null)
-					&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
-					&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
-						Log.errOut("InterMud",e.getMessage());
+					if(e.getMessage()!=null)
+						Log.errOut("InterMud","384-"+e.getMessage());
                     return;
                 }
                 try {
                     data = (Vector)LPCData.getLPCData(str);
                 }
                 catch( I3Exception e ) {
-					if((e.getMessage()!=null)
-					&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
-					&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
-						Log.errOut("InterMud",e.getMessage());
+					if(e.getMessage()!=null)
+						Log.errOut("InterMud","389-"+e.getMessage());
                     continue;
                 }
             }
@@ -558,10 +566,8 @@ public class Intermud implements Runnable, Persistent, Serializable {
             output.writeBytes(str);
         }
         catch( java.io.IOException e ) {
-			if((e.getMessage()!=null)
-			&&(e.getMessage().toLowerCase().indexOf("reset by peer")<0)
-			&&(e.getMessage().toLowerCase().indexOf("connection reset")<0))
-				Log.errOut("Intermud",e.getMessage());
+			if(e.getMessage()!=null)
+				Log.errOut("InterMud","557-"+e.getMessage());
         }
     }
 

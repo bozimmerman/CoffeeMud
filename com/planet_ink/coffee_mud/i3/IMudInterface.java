@@ -277,7 +277,9 @@ public class IMudInterface implements ImudServices, Serializable
 					{
 						Vector V2=(Vector)V.elementAt(v);
 						String nom = fixColors((String)V2.elementAt(0));
-						int idle = ((Integer)V2.elementAt(1)).intValue();
+						int idle=0;
+						if(V2.elementAt(1) instanceof Integer)
+							idle = ((Integer)V2.elementAt(1)).intValue();
 						String xtra = fixColors((String)V2.elementAt(2));
 						buf.append("["+Util.padRight(nom,20)+"] "+xtra+" ("+idle+")\n\r");
 					}
