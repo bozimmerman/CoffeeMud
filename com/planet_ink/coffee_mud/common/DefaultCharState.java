@@ -180,7 +180,7 @@ public class DefaultCharState implements Cloneable, CharState
 					move=move+1;
 				if(mob.envStats().weight()>mob.maxCarry())
 					move+=(int)Math.round(Util.mul(move,10.0*Util.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
-				adjMovement(-mob.location().pointsPerMove(mob),maxState);
+				adjMovement(move,maxState);
 			}
 			if(!Sense.isSleeping(mob))
 			{
