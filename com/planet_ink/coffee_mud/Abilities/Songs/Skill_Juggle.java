@@ -189,6 +189,9 @@ public class Skill_Juggle extends StdAbility
 					M.location().bringItemHere(I);
 			}
 		}
+		M.recoverEnvStats();
+		M.recoverCharStats();
+		M.recoverMaxState();
 		M.location().recoverRoomStats();
 	}
 	
