@@ -9,20 +9,18 @@
 ! Languages!  Affects says and replies if you don't know a language spoken by the speaker.
 ! Make mountable MOBS, and mountable Items. Mounted animals will take half of all combat damage, will add to attack ability, and increase movement and will act as a container for the purposes of cargo.  Mounted Items will not appear in inventory, and be restrained to a terrain type (air, water, etc).  More than one person can mount an item (a boat).  
 ! Armor damage/repair, especially cloth from fire, and metal armor from bludgeoning/leather armor from slashing.  
-
-banks! (Actually, you can diposit anything, and withdraw it).
-
-0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).
-
-Two-handed fighting
-
-Convert some properties to work with the new areas. Prop_NOMOB, etc..
-
-exp from sac/des also based on level of the body.  Set body levels based on char level.
+! banks! (Well, the moneychanger behavior is good enough).
+! exp from sac/des also based on level of the body.  Set body levels based on char level.
 
 Serve and Rebuke commands.  Any character may take on a leige, but Clerics may only take worshipper
 of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
 vassels, providing incentive to assist the vassel.
+
+Convert some properties to work with the new areas. Prop_NOMOB, etc..
+
+0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).
+
+Two-handed fighting
 
 target commmand to switch among targets fighting you
 
@@ -35,7 +33,7 @@ A Multi-Room Gate would work the same way.  An Entry, Exit, and TwoWay type woul
 Entry type would accept "ENTER" commands from MOBs, and drag all followers along, of course.  The 
 Following thing would be automatic, if an Exit and Direction extensions are used.
 
-Add last- call to list users?
+Add last-call date/time string to the "list users" command
 
 be able to drink or fill waterskin from freshwater locales
 
@@ -83,7 +81,7 @@ Knights Order: special sword as part of outfit?
 Prancers: Dancing bards who get special ability
 Illusionist: Illusion spells at 100%, get all of them
 Alchemist: brew spells into potions, missile potions, transmute stuff to gold, cloth to metal, etc..
-
+Wizard: must memorize spells from book.  Profficiency check at memorize time (unerring in casting).  No memorizing duplicates.  Mana is consumed at memorize time.
 
 Modify MUDGrinder,ROOMXML,CONTENTXML to support new Gen standard.  Please just create new MUDGrinder 
 derivatives of the standard Interfaces.

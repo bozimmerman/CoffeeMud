@@ -1874,6 +1874,13 @@ public class Import
 			else
 				materialchange=false;
 
+			// correction for certain rings
+			if((I.material()==Item.CLOTH)&&(I.canBeWornAt(Armor.ON_LEFT_FINGER)))
+			{
+				I.setMaterial(Item.METAL);
+				materialchange=true;
+			}
+			
 			if(materialchange)
 			    I.setDescription("");
 
@@ -2379,6 +2386,7 @@ public class Import
 			// build first room structures, leaving rest for later.
 			Room lastRoom=null;
 			Hashtable petShops=new Hashtable();
+			Hashtable banks=new Hashtable();
 			for(int r=0;r<roomData.size();r++)
 			{
 				Vector roomV=null;
@@ -2468,8 +2476,8 @@ public class Import
 				if(Util.isSet(codeBits,21)) // underwater room
 					R=changeRoomClass(R,"UnderWater");
 
-				if(Util.isSet(codeBits,1)) //BANKS ARE IRRELEVANT RIGHT NOW!
-					returnAnError(mob,R.ID()+" is a Bank, but CoffeeMud doesn't care.");
+				if(Util.isSet(codeBits,1)) //BANKS are taken care of in MOB import
+					banks.put(R,R);
 
 				if(Util.isSet(codeBits,0)) // dark room
 					R.addNonUninvokableAffect(CMClass.getAbility("Prop_RoomDark"));
@@ -2767,6 +2775,8 @@ public class Import
 							returnAnError(mob,"Reset error (no mob) on line: "+s);
 						else
 						{
+							if(banks.contains(R))
+								M.addBehavior(CMClass.getBehavior("MoneyChanger"));
 							M.recoverCharStats();
 							M.recoverEnvStats();
 							M.recoverMaxState();
@@ -3004,6 +3014,11 @@ public class Import
 							E.setDoorsNLocks(HasDoor,Open,DefaultsClosed,HasLock,Locked,DefaultsLocked);
 						}
 					}
+				}
+				else
+				if(s.startsWith("R "))
+				{
+					// have no idea what this is, but its not important.
 				}
 				else
 				if(s.length()>0)
