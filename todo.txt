@@ -63,12 +63,12 @@ Conquest
 WeatherPricing	
 	Watches the weather... in foul or cold weather, items of certain material 
 	types would cost more
-Additions/Updates
-	Arrest -- banned substances (get, drop, eq, etc)
-	Arrest allowing players to bring bountys to the judge.
 TaxCollector 
 	Designated mob wanders an area and charges taxesbased on the last time 
 	that you have paid taxes.
+Additions/Updates
+	Arrest -- banned substances (get, drop, eq, etc)
+	Arrest allowing players to bring bountys to the judge.
 
 
 Common Skills:
@@ -428,9 +428,6 @@ Hydra
 	Heads can attack different targets...Not just a tank target.
 Rust Monster
 	Attacks turn metal items to rust.
-
-Misc/Architecture:
-==================
 
 Group Magic:
 ============

@@ -849,7 +849,8 @@ public class StdArea implements Area
 					
 					if(Dice.rollPercentage()<rustChance)
 					{
-						String weatherDesc=Area.WEATHER_DESCS[weatherType(null)].toLowerCase();
+						int weatherType=weatherType(R);
+						String weatherDesc=Area.WEATHER_DESCS[weatherType].toLowerCase();
 						Vector rustThese=new Vector();
 						for(int i=0;i<M.inventorySize();i++)
 						{
@@ -868,7 +869,10 @@ public class StdArea implements Area
 						for(int i=0;i<rustThese.size();i++)
 						{
 							Item I=(Item)rustThese.elementAt(i);
-							M.tell("Your "+I.name()+" rusts in the "+weatherDesc+".");
+							if(weatherType!=0)
+								M.tell("Your "+I.name()+" rusts in the "+weatherDesc+".");
+							else
+								M.tell("Your "+I.name()+" rusts in the water.");
 							I.setUsesRemaining(I.usesRemaining()-1);
 							if(I.usesRemaining()<=0)
 							{

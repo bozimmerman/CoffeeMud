@@ -22,7 +22,7 @@ public class Prayer_MoralBalance extends Prayer
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
-		FullMsg msg2=new FullMsg(target,mob,this,affectType(auto)|Affect.MASK_MALICIOUS,"<S-NAME> does not seem to like <T-NAME> messing with <S-HIS-HER> head.");
+		FullMsg msg2=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,"<T-NAME> does not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
 		if(success)
 		{
@@ -30,7 +30,7 @@ public class Prayer_MoralBalance extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto)|Affect.MASK_MALICIOUS,(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> feel(s) completely different about the world.":"^S<S-NAME> "+prayWord(mob)+" to bring balance to <T-NAMESELF>!^?"));
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

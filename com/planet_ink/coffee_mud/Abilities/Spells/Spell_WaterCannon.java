@@ -46,7 +46,7 @@ public class Spell_WaterCannon extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water towards <T-HIM-HER>.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>.");
 			FullMsg msg2=new FullMsg(mob,target,this,Affect.MSK_CAST_MALICIOUS_VERBAL|Affect.TYP_WATER|(auto?Affect.MASK_GENERAL:0),null);
 			if((mob.location().okAffect(mob,msg))&&(mob.location().okAffect(mob,msg2)))
 			{
