@@ -59,4 +59,5 @@ public interface DatabaseEngine
 	public void DBDeleteStat(long startTime);
 	public void DBCreateStat(long startTime,long endTime,String data);
 	public void DBUpdateStat(long startTime, String data);
+	public Vector DBReadStats(long startTime);
 }

@@ -88,7 +88,7 @@ public class StdMOB implements MOB
 			mySession.setTermID(((Util.bset(attributesBitmap,MOB.ATT_ANSI))?1:0)+((Util.bset(attributesBitmap,MOB.ATT_SOUND))?2:0));
 	}
 
-	protected int minuteCounter=0;
+	protected int tickCounter=0;
 	private long lastMoveTime=0;
 	private int movesSinceTick=0;
 	private int manaConsumeCounter=Dice.roll(1,10,0);
@@ -2263,26 +2263,28 @@ public class StdMOB implements MOB
 
 				if((riding()!=null)&&(CoffeeUtensils.roomLocation(riding())!=location()))
 					setRiding(null);
-				if((!isMonster())&&(((++minuteCounter)*MudHost.TICK_TIME)>60000))
+				if((!isMonster())&&(soulMate()==null))
 				{
-					minuteCounter=0;
-					if(soulMate()==null)
-						CoffeeTables.bump(this,CoffeeTables.STAT_HOURSONLINE);
-					setAgeHours(AgeHours+1);
-					if((AgeHours>60000)&&(!isASysOp(location())))
+					CoffeeTables.bump(this,CoffeeTables.STAT_TICKSONLINE);
+					if(((++tickCounter)*MudHost.TICK_TIME)>60000)
 					{
-						if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
+						tickCounter=0;
+						setAgeHours(AgeHours+1);
+						if((AgeHours>60000)&&(!isASysOp(location())))
 						{
-							Ability A=CMClass.getAbility("Disease_Cancer");
-							if((A!=null)&&(fetchEffect(A.ID())==null))
-								A.invoke(this,this,true);
-						}
-						else
-						if(((AgeHours%1200)==0)&&(Dice.rollPercentage()<25))
-						{
-							Ability A=CMClass.getAbility("Disease_Arthritis");
-							if((A!=null)&&(fetchEffect(A.ID())==null))
-								A.invoke(this,this,true);
+							if(((AgeHours%120)==0)&&(Dice.rollPercentage()==1))
+							{
+								Ability A=CMClass.getAbility("Disease_Cancer");
+								if((A!=null)&&(fetchEffect(A.ID())==null))
+									A.invoke(this,this,true);
+							}
+							else
+							if(((AgeHours%1200)==0)&&(Dice.rollPercentage()<25))
+							{
+								Ability A=CMClass.getAbility("Disease_Arthritis");
+								if((A!=null)&&(fetchEffect(A.ID())==null))
+									A.invoke(this,this,true);
+							}
 						}
 					}
 				}

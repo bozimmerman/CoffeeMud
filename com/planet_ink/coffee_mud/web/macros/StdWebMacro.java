@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.web.macros;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.CMClass;
+import com.planet_ink.coffee_mud.utils.DVector;
 import com.planet_ink.coffee_mud.exceptions.*;
 import java.util.*;
 
@@ -59,6 +60,37 @@ public class StdWebMacro implements WebMacro
 			return new StringBuffer("");
 	}
 	
+	protected DVector parseOrderedParms(String parm)
+	{
+		DVector requestParms=new DVector(2);
+		if((parm!=null)&&(parm.length()>0))
+		{
+			while(parm.length()>0)
+			{
+				int x=parm.indexOf("&");
+				String req=null;
+				if(x>=0)
+				{
+					req=parm.substring(0,x);
+					parm=parm.substring(x+1);
+				}
+				else
+				{
+					req=parm;
+					parm="";
+				}
+				if(req!=null)
+				{
+					x=req.indexOf("=");
+					if(x>=0)
+						requestParms.addElement(req.substring(0,x).trim().toUpperCase(),req.substring(x+1).trim());
+					else
+						requestParms.addElement(req.trim().toUpperCase(),req.trim());
+				}
+			}
+		}
+		return requestParms;
+	}
 	protected Hashtable parseParms(String parm)
 	{
 		Hashtable requestParms=new Hashtable();

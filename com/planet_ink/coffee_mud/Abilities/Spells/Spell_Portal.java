@@ -56,12 +56,24 @@ public class Spell_Portal extends Spell
 			return false;
 		}
 		String areaName=Util.combine(commands,0).trim().toUpperCase();
+		int tries=0;
+		while(((++tries)<10000))
+		{
+			Room room=CMMap.getRandomRoom();
+			if((Sense.canAccess(mob,room))
+			&&(EnglishParser.containsString(room.displayText(),areaName)))
+			{
+			   newRoom=room;
+			   break;
+			}
+		}
+		if(newRoom==null)
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room room=(Room)r.nextElement();
 
-			if(Sense.canAccess(mob,room))
-			if(EnglishParser.containsString(room.displayText(),areaName))
+			if((Sense.canAccess(mob,room))
+			&&(EnglishParser.containsString(room.displayText(),areaName)))
 			{
 			   newRoom=room;
 			   break;

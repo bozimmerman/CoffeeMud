@@ -48,6 +48,84 @@ public class Stat extends BaseAbleLister
 		return target;
 	}
 
+	public boolean showTableStats(MOB mob, int days, int scale, String rest)
+	{
+		IQCalendar ENDQ=new IQCalendar(System.currentTimeMillis()-(days*(24*60*60*1000)));
+		ENDQ.set(Calendar.HOUR_OF_DAY,0);
+		ENDQ.set(Calendar.MINUTE,0);
+		ENDQ.set(Calendar.SECOND,0);
+		ENDQ.set(Calendar.MILLISECOND,0);
+		CoffeeTables.update();
+		Vector V=CMClass.DBEngine().DBReadStats(ENDQ.getTimeInMillis()-1);
+		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
+		StringBuffer table=new StringBuffer("");
+		table.append("^xStatistics since "+ENDQ.d2String()+":^.^N\n");
+		table.append(Util.padRight("Date",25)
+					 +Util.padRight("CONs",5)
+					 +Util.padRight("HIGH",5)
+					 +Util.padRight("ONLN",5)
+					 +Util.padRight("HRs.",5)
+					 +Util.padRight("NEWB",5)
+					 +Util.padRight("DTHs",5)
+					 +Util.padRight("PKDs",5)
+					 +Util.padRight("CLAS",5)
+					 +Util.padRight("PURG",5)
+					 +Util.padRight("MARR",5)+"\n\r");
+		table.append(Util.repeat("-",75)+"\n\r");
+		IQCalendar C=new IQCalendar(System.currentTimeMillis());
+		C.set(C.HOUR_OF_DAY,23);
+		C.set(C.MINUTE,59);
+		C.set(C.SECOND,59);
+		C.set(C.MILLISECOND,999);
+		long curTime=C.getTimeInMillis();
+		String code="*";
+		if(rest.length()>0) code=""+rest.toUpperCase().charAt(0);
+		long lastCur=0;
+		while(V.size()>0)
+		{
+			lastCur=curTime;
+			curTime=curTime-(scale*(24*60*60*1000));
+			Vector set=new Vector();
+			for(int v=V.size()-1;v>=0;v--)
+			{
+				CoffeeTables T=(CoffeeTables)V.elementAt(v);
+				if(T.startTime()>=curTime)
+				{
+					set.addElement(T);
+					V.removeElementAt(v);
+				}
+			}
+			long[] totals=new long[CoffeeTables.STAT_TOTAL];
+			long highestOnline=0;
+			long numberOnlineTotal=0;
+			long numberOnlineCounter=0;
+			for(int s=0;s<set.size();s++)
+			{
+				CoffeeTables T=(CoffeeTables)set.elementAt(s);
+				T.totalUp(code,totals);
+				if(T.highestOnline()>highestOnline) highestOnline=T.highestOnline();
+				numberOnlineTotal+=T.numberOnlineTotal();
+				numberOnlineCounter+=T.numberOnlineCounter();
+			}
+			totals[CoffeeTables.STAT_TICKSONLINE]=(totals[CoffeeTables.STAT_TICKSONLINE]*MudHost.TICK_TIME)/((long)(1000*60*60));
+			double avgOnline=(numberOnlineCounter>0)?Util.div(numberOnlineTotal,numberOnlineCounter):0.0;
+			avgOnline=Util.div(Math.round(avgOnline*10.0),10.0);
+			table.append(Util.padRight(new IQCalendar(curTime+1).d2DString()+" - "+new IQCalendar(lastCur-1).d2DString(),25)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_LOGINS],5)
+						 +Util.centerPreserve(""+highestOnline,5)
+						 +Util.centerPreserve(""+avgOnline,5)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_TICKSONLINE],5)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_NEWPLAYERS],5)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_DEATHS],5)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_PKDEATHS],5)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_CLASSCHANGE],5)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_PURGES],5)
+						 +Util.centerPreserve(""+totals[CoffeeTables.STAT_MARRIAGES],5)+"\n\r");
+			if(scale==0) break;
+		}
+		mob.tell(table.toString());
+		return false;
+	}
 
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
@@ -58,6 +136,40 @@ public class Stat extends BaseAbleLister
 			return false;
 		}
 		commands.removeElementAt(0);
+		if(commands.size()==0) commands.addElement("TODAY");
+		String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
+		String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
+		if(s1.equalsIgnoreCase("TODAY"))
+			return showTableStats(mob,0,1,Util.combine(commands,1));
+		else
+		if(commands.size()>1)
+		{
+			String rest=(commands.size()>2)?Util.combine(commands,2):"";
+			if(s2.equals("DAY")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)),1,rest);
+			else
+			if(s2.equals("DAYS")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)),1,rest);
+			else
+			if(s2.equals("WEEK")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)*7),7,rest);
+			else
+			if(s2.equals("WEEKS")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)*7),7,rest);
+			else
+			if(s2.equals("MONTH")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)*30),30,rest);
+			else
+			if(s2.equals("MONTHS")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)*30),30,rest);
+			else
+			if(s2.equals("YEAR")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)*365),365,rest);
+			else
+			if(s2.equals("YEARS")&&(Util.isNumber(s1)))
+				return showTableStats(mob,(Util.s_int(s1)*365),365,rest);
+		}
+		
 		int ableTypes=-1;
 		if(commands.size()>1)
 		{

@@ -191,7 +191,7 @@ public class StdAbility implements Ability, Cloneable
 			targetName=target.name();
 
 		if((target==null)
-		||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
+		||((givenTarget==null)&&(!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
 			if(!quiet)
 			{
@@ -205,7 +205,7 @@ public class StdAbility implements Ability, Cloneable
 
 		if((target.fetchEffect(this.ID())!=null)&&(!isAutoInvoked()))
 		{
-			if(!quiet)
+			if((givenTarget==null)&&(!quiet))
 			{
 				if(target==mob)
 					mob.tell("You are already affected by "+name()+".");
@@ -242,7 +242,7 @@ public class StdAbility implements Ability, Cloneable
 				target=mob.location();
 		}
 		if(target!=null) targetName=target.name();
-		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
+		if((target==null)||((givenTarget==null)&&(!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
 				mob.tell("You don't see that here.");
@@ -254,10 +254,13 @@ public class StdAbility implements Ability, Cloneable
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			if(target==mob)
-				mob.tell("You are already affected by "+name()+".");
-			else
-				mob.tell(mob,target,null,"<T-NAME> is already affected by "+name()+".");
+			if(givenTarget==null)
+			{
+				if(target==mob)
+					mob.tell("You are already affected by "+name()+".");
+				else
+					mob.tell(mob,target,null,"<T-NAME> is already affected by "+name()+".");
+			}
 			return null;
 		}
 		return target;
@@ -301,7 +304,7 @@ public class StdAbility implements Ability, Cloneable
 				target=mob.fetchCarried(container,targetName);
 		}
 		if(target!=null) targetName=target.name();
-		if((target==null)||((target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))
+		if((target==null)||((givenTarget==null)&&(target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))
 		{
 			if(targetName.length()==0)
 				mob.tell("You need to be more specific.");

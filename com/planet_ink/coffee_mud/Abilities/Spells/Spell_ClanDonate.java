@@ -35,6 +35,11 @@ public class Spell_ClanDonate extends Spell
 			mob.tell("Your clan does not have a donation home.");
 			return false;
 		}
+		if(!Sense.canAccess(mob,clanDonateRoom))
+		{
+			mob.tell("This magic can not be used to donate from here.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

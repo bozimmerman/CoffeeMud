@@ -33,6 +33,11 @@ public class Spell_ClanHome extends Spell
 			mob.tell("Your clan does not have a clan home.");
 			return false;
 		}
+		if(!Sense.canAccess(mob,clanHomeRoom))
+		{
+			mob.tell("You can't use this magic to get there from here.");
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;

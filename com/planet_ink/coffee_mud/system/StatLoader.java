@@ -10,13 +10,14 @@ public class StatLoader
 {
 	public static CoffeeTables DBRead(long startTime)
 	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+			Log.debugOut("StatLoader","Reading content of Stat  "+new IQCalendar(startTime).d2String());
 		DBConnection D=null;
 		CoffeeTables T=null;
-		Vector rows=new Vector();
 		try
 		{
 			D=DBConnector.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT='"+startTime+"'");
+			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT="+startTime);
 			T=new CoffeeTables();
 			if(R.next())
 			{
@@ -33,11 +34,44 @@ public class StatLoader
 		// log comment 
 		return T;
 	}
-	public static void DBDelete(long startTime)
+	
+	public static Vector DBReadAfter(long startTime)
 	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+			Log.debugOut("StatLoader","Reading content of Stats since "+new IQCalendar(startTime).d2String());
+		DBConnection D=null;
+		CoffeeTables T=null;
+		Vector rows=new Vector();
 		try
 		{
-			DBConnector.update("DELETE FROM CMSTAT WHERE CMSTRT='"+startTime+"'");
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMSTAT WHERE CMSTRT > "+startTime);
+			T=new CoffeeTables();
+			while(R.next())
+			{
+				long strTime=DBConnections.getLongRes(R,"CMSTRT");
+				long endTime=DBConnections.getLongRes(R,"CMENDT");
+				String data=DBConnections.getRes(R,"CMDATA");
+				T.populate(strTime,endTime,data);
+				rows.addElement(T);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		if(D!=null) DBConnector.DBDone(D);
+		// log comment 
+		return rows;
+	}
+	
+	public static void DBDelete(long startTime)
+	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+			Log.debugOut("StatLoader","Deleting Stat  "+new IQCalendar(startTime).d2String());
+		try
+		{
+			DBConnector.update("DELETE FROM CMSTAT WHERE CMSTRT="+startTime);
 		}
 		catch(Exception sqle)
 		{
@@ -46,9 +80,11 @@ public class StatLoader
 	}
 	public static void DBUpdate(long startTime, String data)
 	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+			Log.debugOut("StatLoader","Updating Stat  "+new IQCalendar(startTime).d2String());
 		try
 		{
-			DBConnector.update("UPDATE CMSTAT SET CMDATA='"+data+"' WHERE CMSTRT='"+startTime+"'");
+			DBConnector.update("UPDATE CMSTAT SET CMDATA='"+data+"' WHERE CMSTRT="+startTime);
 		}
 		catch(Exception sqle)
 		{
@@ -57,12 +93,16 @@ public class StatLoader
 	}
 	public static void DBCreate(long startTime, long endTime, String data)
 	{
+		if(Log.debugChannelOn()&&(CommonStrings.isDebugging("CMSTAT")))
+			Log.debugOut("StatLoader","Creating Stat  "+new IQCalendar(startTime).d2String());
 		DBConnector.update(
 		 "INSERT INTO CMSTAT ("
 		 +"CMSTRT, "
+		 +"CMENDT, "
 		 +"CMDATA "
 		 +") values ("
-		 +"'"+startTime+"',"
+		 +""+startTime+","
+		 +""+endTime+","
 		 +"'"+data+"'"
 		 +")");
 	}

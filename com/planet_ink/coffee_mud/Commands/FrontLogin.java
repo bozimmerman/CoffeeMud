@@ -236,12 +236,12 @@ public class FrontLogin extends StdCommand
 				{
 					oldMOB.session().setMob((MOB)CMMap.getPlayer(oldMOB.Name()));
 					mob=oldMOB.session().mob();
-					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 					mob.setSession(oldMOB.session());
 					if(mob!=oldMOB)
 						oldMOB.setSession(null);
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),false);
+					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					for(int f=0;f<mob.numFollowers();f++)
 					{
@@ -261,9 +261,9 @@ public class FrontLogin extends StdCommand
 				else
 				{
 					CMClass.DBEngine().DBReadMOB(mob);
-					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 					showTheNews(mob);
 					mob.bringToLife(mob.location(),true);
+					CoffeeTables.bump(mob,CoffeeTables.STAT_LOGINS);
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 					CMClass.DBEngine().DBReadFollowers(mob,true);
 				}

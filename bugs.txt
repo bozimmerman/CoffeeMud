@@ -1,30 +1,5 @@
-Test: ?Plant Choke, ?Plant Constriction, ?Plant Trap
-Oracle still broke on level
-
-Desired stats=
-# of players
-Highest # of players logged on
-# of deaths
-# PK deaths
-# of players per level
-Might also be cool if the stats could be popped into a table with timestamps, then you could track those stats over time....
-# of players per race/class/gender/faith/clan
-Boot-time (remember that count-down request for off-line messages?)
-Avg time spent in groups
-Avg time spent in an area (presumably would flag an area with prop/behavior to turn on that tracking)
-Num of players: #####
-	New Within 7 Days ##
-	New Within 30 Days ##
-	New Within 90 Days ##
-Active players per day/week/month
-Average hours played (total)
-Average time played (session)
-Age of characters? 
-Sex, Marital Status (thinking of the new additions here) Divorces?
-# of clans, # areas under control, longest area to be controled by a
-clan, # of clans at war.  
-
 Thieves
+Palm - silent get for thieves
 Alertness  gives one random description from an item in the room upon entry into that  For example: A thief walks into a room. He gets the room description.  His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin.  It randomly selects one of those items (the coin) and issues a LOOK COIN command.  
 Autosneak  Nuff Said  
 Improved stealing/swiping  Burglar to be able to steal from signifigantly higher MOBs  
@@ -54,7 +29,7 @@ AutoBashing  grants an extra BASH attack every round. Mana and Movement for each
 Mounted Charge  as the name implies. Barbarian Charge skill applied to mounted  warriors. Paladin skill.  
 Tactics  for fighters, gives allies bonus to hit.  
 Farshot  Allows the player to shoot at one range increment more than normal maximum range for the ranged weapon.  
-Counter Attack  Allows an extra attack after a successful Parry.  
+Counter Attack  Allows an extra attack aftuer a successfl Parry.  
 
 Delver
 1Magnetic Field  If the target of this spell is wearing metallic armor, he/she is held motionless  
@@ -96,11 +71,10 @@ Delver
 7Earthpocket  Creates a cart for the delver that can stonewalk with him. It is kinda like a floating disk spell, with the items locked inside a pocket of earth that only the delver can get to. I would love for it to be a cart type item, though. (to make it different.)  
 
 time to re-balance the classes
-coffeemud oracle support
 ca geas melancholy kill cityguard
 ability to wish for body parts, ability to wish for lower level items (making level lower)
 mutable body parts, with ability to grant powers
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
-Blood should act as a cure light wounds to a vampire. that is...if a blood resource is drunk by a vampire, he should regain some hit points.
+

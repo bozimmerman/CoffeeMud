@@ -1,11 +1,308 @@
-<HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SYSOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+	<title>Control Panel</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.CONTROL.action=action;
+			document.CONTROL.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"><br>
+<FORM NAME=CONTROL TARGET=_top METHOD=POST ACTION="stats.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=15 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Control Panel</H2></FONT></TD></TR>
+	<TR>
+		<TD WIDTH=60% COLSPAN=8 ALIGN=CENTER>
+		<SELECT NAME=DAYS>
+		<OPTION VALUE=1>1
+		<OPTION VALUE=2>2
+		<OPTION VALUE=3>3
+		<OPTION VALUE=4>4
+		<OPTION VALUE=5>5
+		<OPTION VALUE=6>6
+		<OPTION VALUE=7>7
+		<OPTION VALUE=8>8
+		<OPTION VALUE=9>9
+		<OPTION VALUE=10>10
+		<OPTION VALUE=11>11
+		<OPTION VALUE=12>12
+		<OPTION VALUE=13>13
+		<OPTION VALUE=14>14
+		<OPTION VALUE=15>15
+		<OPTION VALUE=16>16
+		<OPTION VALUE=17>17
+		<OPTION VALUE=18>18
+		<OPTION VALUE=19>19
+		<OPTION VALUE=20>20
+		<OPTION VALUE=21>21
+		<OPTION VALUE=22>22
+		<OPTION VALUE=23>23
+		<OPTION VALUE=24>24
+		<OPTION VALUE=25>25
+		<OPTION VALUE=26>26
+		<OPTION VALUE=27>27
+		<OPTION VALUE=28>28
+		<OPTION VALUE=29>29
+		<OPTION VALUE=30>30
+		<OPTION VALUE=31>31
+		<OPTION VALUE=32>32
+		<OPTION VALUE=33>33
+		<OPTION VALUE=34>34
+		<OPTION VALUE=35>35
+		<OPTION VALUE=36>36
+		<OPTION VALUE=37>37
+		<OPTION VALUE=38>38
+		<OPTION VALUE=39>39
+		<OPTION VALUE=40>40
+		<OPTION VALUE=41>41
+		<OPTION VALUE=42>42
+		<OPTION VALUE=43>43
+		<OPTION VALUE=44>44
+		<OPTION VALUE=45>45
+		<OPTION VALUE=46>46
+		<OPTION VALUE=47>47
+		<OPTION VALUE=48>48
+		<OPTION VALUE=49>49
+		<OPTION VALUE=50>40
+		<OPTION VALUE=51>51
+		<OPTION VALUE=52>52
+		<OPTION VALUE=53>53
+		<OPTION VALUE=54>54
+		<OPTION VALUE=55>55
+		<OPTION VALUE=56>56
+		<OPTION VALUE=57>57
+		<OPTION VALUE=58>58
+		<OPTION VALUE=59>59
+		<OPTION VALUE=60>60
+		<OPTION VALUE=61>61
+		<OPTION VALUE=62>62
+		<OPTION VALUE=63>63
+		<OPTION VALUE=64>64
+		<OPTION VALUE=65>65
+		<OPTION VALUE=66>66
+		<OPTION VALUE=67>67
+		<OPTION VALUE=68>68
+		<OPTION VALUE=69>69
+		<OPTION VALUE=70>70
+		<OPTION VALUE=71>71
+		<OPTION VALUE=72>72
+		<OPTION VALUE=73>73
+		<OPTION VALUE=74>74
+		<OPTION VALUE=75>75
+		<OPTION VALUE=76>76
+		<OPTION VALUE=77>77
+		<OPTION VALUE=78>78
+		<OPTION VALUE=79>79
+		<OPTION VALUE=80>80
+		<OPTION VALUE=81>81
+		<OPTION VALUE=82>82
+		<OPTION VALUE=83>83
+		<OPTION VALUE=84>84
+		<OPTION VALUE=85>85
+		<OPTION VALUE=86>86
+		<OPTION VALUE=87>87
+		<OPTION VALUE=88>88
+		<OPTION VALUE=89>89
+		<OPTION VALUE=90>90
+		<OPTION VALUE=91>91
+		<OPTION VALUE=92>92
+		<OPTION VALUE=93>93
+		<OPTION VALUE=94>94
+		<OPTION VALUE=95>95
+		<OPTION VALUE=96>96
+		<OPTION VALUE=97>97
+		<OPTION VALUE=98>98
+		<OPTION VALUE=99>99
+		</SELECT>
+		<SELECT NAME=SCALE>
+		<OPTION VALUE=1 SELECTED>Days
+		<OPTION VALUE=7>Weeks
+		<OPTION VALUE=30>Months
+		<OPTION VALUE=365>Years
+		</SELECT>
+		</TD>
+		<TD WIDTH=40% COLSPAN=7 ALIGN=CENTER>
+		<SELECT NAME=CODE>
+		<OPTION VALUE="*">Report on All Players
+		@BaseCharClassNext?RESET@
+		@loop@
+		@BaseCharClassNext@
+		<OPTION VALUE="B@BaseCharClassName@">Report on @BaseCharClassName@ Type players
+		@back@
+		@BaseCharClassNext?RESET@
+		@CharClassNext?RESET@
+		@loop@
+		@CharClassNext@
+		<OPTION VALUE="C@CharClassID@">Report on @CharClassName@ players
+		@back@
+		@CharClassNext?RESET@
+		@RaceNext?RESET@
+		@loop@
+		@RaceNext@
+		<OPTION VALUE="R@RaceID@">Report on @RaceName@ players
+		@back@
+		@RaceNext?RESET@
+		<OPTION VALUE="GM">Report on Male players
+		<OPTION VALUE="GF">Report on Female players
+		<OPTION VALUE="GN">Report on Neuter players
+		<OPTION VALUE="L1">Report on players of level 1
+		<OPTION VALUE="L2">Report on players of level 2
+		<OPTION VALUE="L3">Report on players of level 3
+		<OPTION VALUE="L4">Report on players of level 4
+		<OPTION VALUE="L5">Report on players of level 5
+		<OPTION VALUE="L6">Report on players of level 6
+		<OPTION VALUE="L7">Report on players of level 7
+		<OPTION VALUE="L8">Report on players of level 8
+		<OPTION VALUE="L9">Report on players of level 9
+		<OPTION VALUE="L10">Report on players of level 10
+		<OPTION VALUE="L11">Report on players of level 11
+		<OPTION VALUE="L12">Report on players of level 12
+		<OPTION VALUE="L13">Report on players of level 13
+		<OPTION VALUE="L14">Report on players of level 14
+		<OPTION VALUE="L15">Report on players of level 15
+		<OPTION VALUE="L16">Report on players of level 16
+		<OPTION VALUE="L17">Report on players of level 17
+		<OPTION VALUE="L18">Report on players of level 18
+		<OPTION VALUE="L19">Report on players of level 19
+		<OPTION VALUE="L20">Report on players of level 20
+		<OPTION VALUE="L21">Report on players of level 21
+		<OPTION VALUE="L22">Report on players of level 22
+		<OPTION VALUE="L23">Report on players of level 23
+		<OPTION VALUE="L24">Report on players of level 24
+		<OPTION VALUE="L25">Report on players of level 25
+		<OPTION VALUE="L26">Report on players of level 26
+		<OPTION VALUE="L27">Report on players of level 27
+		<OPTION VALUE="L28">Report on players of level 28
+		<OPTION VALUE="L29">Report on players of level 29
+		<OPTION VALUE="L30">Report on players of level 30
+		<OPTION VALUE="L31">Report on players of level 31
+		<OPTION VALUE="L32">Report on players of level 32
+		<OPTION VALUE="L33">Report on players of level 33
+		<OPTION VALUE="L34">Report on players of level 34
+		<OPTION VALUE="L35">Report on players of level 35
+		<OPTION VALUE="L36">Report on players of level 36
+		<OPTION VALUE="L37">Report on players of level 37
+		<OPTION VALUE="L38">Report on players of level 38
+		<OPTION VALUE="L39">Report on players of level 39
+		<OPTION VALUE="L40">Report on players of level 40
+		<OPTION VALUE="L41">Report on players of level 41
+		<OPTION VALUE="L42">Report on players of level 42
+		<OPTION VALUE="L43">Report on players of level 43
+		<OPTION VALUE="L44">Report on players of level 44
+		<OPTION VALUE="L45">Report on players of level 45
+		<OPTION VALUE="L46">Report on players of level 46
+		<OPTION VALUE="L47">Report on players of level 47
+		<OPTION VALUE="L48">Report on players of level 48
+		<OPTION VALUE="L49">Report on players of level 49
+		<OPTION VALUE="L50">Report on players of level 40
+		<OPTION VALUE="L51">Report on players of level 51
+		<OPTION VALUE="L52">Report on players of level 52
+		<OPTION VALUE="L53">Report on players of level 53
+		<OPTION VALUE="L54">Report on players of level 54
+		<OPTION VALUE="L55">Report on players of level 55
+		<OPTION VALUE="L56">Report on players of level 56
+		<OPTION VALUE="L57">Report on players of level 57
+		<OPTION VALUE="L58">Report on players of level 58
+		<OPTION VALUE="L59">Report on players of level 59
+		<OPTION VALUE="L60">Report on players of level 60
+		<OPTION VALUE="L61">Report on players of level 61
+		<OPTION VALUE="L62">Report on players of level 62
+		<OPTION VALUE="L63">Report on players of level 63
+		<OPTION VALUE="L64">Report on players of level 64
+		<OPTION VALUE="L65">Report on players of level 65
+		<OPTION VALUE="L66">Report on players of level 66
+		<OPTION VALUE="L67">Report on players of level 67
+		<OPTION VALUE="L68">Report on players of level 68
+		<OPTION VALUE="L69">Report on players of level 69
+		<OPTION VALUE="L70">Report on players of level 70
+		<OPTION VALUE="L71">Report on players of level 71
+		<OPTION VALUE="L72">Report on players of level 72
+		<OPTION VALUE="L73">Report on players of level 73
+		<OPTION VALUE="L74">Report on players of level 74
+		<OPTION VALUE="L75">Report on players of level 75
+		<OPTION VALUE="L76">Report on players of level 76
+		<OPTION VALUE="L77">Report on players of level 77
+		<OPTION VALUE="L78">Report on players of level 78
+		<OPTION VALUE="L79">Report on players of level 79
+		<OPTION VALUE="L80">Report on players of level 80
+		<OPTION VALUE="L81">Report on players of level 81
+		<OPTION VALUE="L82">Report on players of level 82
+		<OPTION VALUE="L83">Report on players of level 83
+		<OPTION VALUE="L84">Report on players of level 84
+		<OPTION VALUE="L85">Report on players of level 85
+		<OPTION VALUE="L86">Report on players of level 86
+		<OPTION VALUE="L87">Report on players of level 87
+		<OPTION VALUE="L88">Report on players of level 88
+		<OPTION VALUE="L89">Report on players of level 89
+		<OPTION VALUE="L90">Report on players of level 90
+		<OPTION VALUE="L91">Report on players of level 91
+		<OPTION VALUE="L92">Report on players of level 92
+		<OPTION VALUE="L93">Report on players of level 93
+		<OPTION VALUE="L94">Report on players of level 94
+		<OPTION VALUE="L95">Report on players of level 95
+		<OPTION VALUE="L96">Report on players of level 96
+		<OPTION VALUE="L97">Report on players of level 97
+		<OPTION VALUE="L98">Report on players of level 98
+		<OPTION VALUE="L99">Report on players of level 99
+		<OPTION VALUE="L100">Report on players of level 100
+		<OPTION VALUE="L101">Report on players of level 101
+		</SELECT>
+		<SCRIPT LANGUAGE=JavaScript>
+		<!--
+			function SelCombo(ME,val)
+			{
+				for(var x=0;x<ME.options.length;x++)
+					if(ME.options[x].value==val)
+					{ ME.selectedIndex=x; return;}
+			}	
+			SelCombo(document.CONTROL.DAYS,'@RequestParameter?DAYS@');
+			SelCombo(document.CONTROL.SCALE,'@RequestParameter?SCALE@');
+			SelCombo(document.CONTROL.CODE,'@RequestParameter?CODE@');
+		//-->
+		</SCRIPT>
+		</TD>
+	</TR>
+	<TR><TD WIDTH=100% COLSPAN=15><BR></TD></TR>
+	<TR>
+		<TD WIDTH=20%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Newbies</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Logins</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Tot.Hrs.</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Avg.Hrs.</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Avg. On</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Most On</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Deaths</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>PKDeaths</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Levels</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Class Chgs.</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Purges</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Marriages</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Births</B></FONT></TD>
+		<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1><B>Divorces</B></FONT></TD>
+	</TR>
+	@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+	</TABLE>
+	<CENTER>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR><TD WIDTH=50%>
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Clicked('/grinder/stats.cmvp');">
+	</TR>
+	<TR><TD WIDTH=50%>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="MUDGrinder Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
+	</TD></TR></TABLE>
+	</CENTER>
 </BODY>
 </HTML>
+@endif@
+@endif@

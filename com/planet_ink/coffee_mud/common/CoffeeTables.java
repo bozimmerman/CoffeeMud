@@ -6,7 +6,7 @@ import java.util.*;
 public class CoffeeTables
 {
 	public static final int STAT_LOGINS=0;
-	public static final int STAT_HOURSONLINE=1;
+	public static final int STAT_TICKSONLINE=1;
 	public static final int STAT_NEWPLAYERS=2;
 	public static final int STAT_LEVELSGAINED=3;
 	public static final int STAT_DEATHS=4;
@@ -30,6 +30,9 @@ public class CoffeeTables
 	public long startTime(){return startTime;}
 	public long endTime(){return endTime;}
 	private Hashtable stats=new Hashtable();
+	public long highestOnline(){return highestOnline;}
+	public long numberOnlineTotal(){return numberOnlineTotal;}
+	public long numberOnlineCounter(){return numberOnlineCounter;}
 	public String data()
 	{
 		StringBuffer data=new StringBuffer("");
@@ -50,17 +53,43 @@ public class CoffeeTables
 	public void bumpVal(String s, int type)
 	{
 		long[] stat=null;
-		if(stats.containsKey(s))
-			stat=(long[])stats.get(s);
-		else
+		synchronized(stats)
 		{
-			stat=new long[STAT_TOTAL];
-			stats.put(s,stat);
+			if(stats.containsKey(s))
+				stat=(long[])stats.get(s);
+			else
+			{
+				stat=new long[STAT_TOTAL];
+				stats.put(s,stat);
+			}
 		}
 		stat[type]++;
 	}
+	
+	public void totalUp(String code, long[] tot)
+	{
+		code=tagFix(code);
+		for(Enumeration e=stats.keys();e.hasMoreElements();)
+		{
+			String s=(String)e.nextElement();
+			if(s.startsWith(code)
+			||(s.startsWith("C")&&code.startsWith("*")))
+			{
+				long[] theseStats=(long[])stats.get(s);
+				for(int t=0;t<theseStats.length;t++)
+					tot[t]+=theseStats[t];
+			}
+		}
+	}
+
+	private String tagFix(String s)
+	{
+		return s.trim().replaceAll(" ","_").toUpperCase();
+	}
+	
 	public void bumpVal(MOB mob, int type)
 	{
+		if(mob.isMonster()) return;
 		if(type==STAT_SPECIAL_NUMONLINE)
 		{
 			int ct=0;
@@ -80,57 +109,72 @@ public class CoffeeTables
 		}
 										   
 		// classes, races, levels, genders, faiths, clanned, grouped
-		bumpVal("B"+mob.baseCharStats().getCurrentClass().baseClass(),type);
-		bumpVal("C"+mob.baseCharStats().getCurrentClass().ID(),type);
-		bumpVal("R"+mob.baseCharStats().getMyRace().ID(),type);
+		bumpVal("B"+tagFix(mob.baseCharStats().getCurrentClass().baseClass()),type);
+		bumpVal("C"+tagFix(mob.baseCharStats().getCurrentClass().ID()),type);
+		bumpVal("R"+tagFix(mob.baseCharStats().getMyRace().ID()),type);
 		bumpVal("L"+mob.baseEnvStats().level(),type);
-		bumpVal("G"+mob.baseCharStats().getStat(CharStats.GENDER),type);
-		bumpVal("F"+mob.getWorshipCharID(),type);
-		bumpVal("Q"+mob.getClanID(),type);
+		bumpVal("G"+((char)mob.baseCharStats().getStat(CharStats.GENDER)),type);
+		bumpVal("F"+tagFix(mob.getWorshipCharID()),type);
+		bumpVal("Q"+tagFix(mob.getClanID()),type);
 		HashSet H=mob.getGroupMembers(new HashSet());
-		bumpVal("G"+H.size(),type);
+		bumpVal("J"+H.size(),type);
 		int pct=0;
 		for(Iterator e=H.iterator();e.hasNext();)
 			if(!((MOB)e.next()).isMonster()) pct++;
+		if(pct==0)pct=1;
 		bumpVal("P"+pct,type);
 	}
 	
 	public void populate(long start, long end, String data)
 	{
-		startTime=start;
-		endTime=end;
-		Vector all=XMLManager.parseAllXML(data);
-		if((all==null)||(all.size()==0)) return;
-		highestOnline=XMLManager.getIntFromPieces(all,"HIGH");
-		numberOnlineTotal=XMLManager.getIntFromPieces(all,"NUMONLINE");
-		numberOnlineCounter=XMLManager.getIntFromPieces(all,"NUMCOUNT");
-		XMLManager.XMLpiece X=(XMLManager.XMLpiece)XMLManager.getPieceFromPieces(all,"STATS");
-		if((X==null)||(X.contents==null)||(X.contents.size()==0)||(!X.tag.equals("STATS")))
-			return;
-		stats.clear();
-		for(int s=0;s<X.contents.size();s++)
+		synchronized(stats)
 		{
-			XMLManager.XMLpiece S=(XMLManager.XMLpiece)X.contents.elementAt(s);
-			long[] l=Util.toLongArray(Util.parseCommas(S.value,true));
-			if(l.length<STAT_TOTAL)
+			startTime=start;
+			endTime=end;
+			Vector all=XMLManager.parseAllXML(data);
+			if((all==null)||(all.size()==0)) return;
+			highestOnline=XMLManager.getIntFromPieces(all,"HIGH");
+			numberOnlineTotal=XMLManager.getIntFromPieces(all,"NUMONLINE");
+			numberOnlineCounter=XMLManager.getIntFromPieces(all,"NUMCOUNT");
+			XMLManager.XMLpiece X=(XMLManager.XMLpiece)XMLManager.getPieceFromPieces(all,"STATS");
+			if((X==null)||(X.contents==null)||(X.contents.size()==0)||(!X.tag.equals("STATS")))
+				return;
+			stats.clear();
+			for(int s=0;s<X.contents.size();s++)
 			{
-				long[] l2=new long[STAT_TOTAL];
-				for(int i=0;i<l.length;i++)
-					l2[i]=l[i];
-				l=l2;
+				XMLManager.XMLpiece S=(XMLManager.XMLpiece)X.contents.elementAt(s);
+				long[] l=Util.toLongArray(Util.parseCommas(S.value,true));
+				if(l.length<STAT_TOTAL)
+				{
+					long[] l2=new long[STAT_TOTAL];
+					for(int i=0;i<l.length;i++)
+						l2[i]=l[i];
+					l=l2;
+				}
+				long[] l2=(long[])stats.get(S.tag);
+				if(l2!=null)
+				{
+					for(int i=0;i<l2.length;i++)
+						l[i]+=l2[i];
+					stats.remove(S.tag);
+				}
+				stats.put(S.tag,l);
 			}
-			stats.put(S.tag,l);
 		}
 	}
 	
 	public static void update()
 	{
+		if(CommonStrings.isDisabled("STATS"))
+			return;
 		if(todays!=null)
 			CMClass.DBEngine().DBUpdateStat(todays.startTime(),todays.data());
 	}
 	public static void bump(MOB mob, int type)
 	{
 		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
+			return;
+		if(CommonStrings.isDisabled("STATS"))
 			return;
 		if(todays==null)
 		{
@@ -169,8 +213,8 @@ public class CoffeeTables
 			todays=new CoffeeTables();
 			todays.startTime=S.getTimeInMillis();
 			todays.endTime=E.getTimeInMillis();
-			CMClass.DBEngine().DBCreateStat(todays.startTime,todays.endTime,todays.data());
+			CMClass.DBEngine().DBCreateStat(todays.startTime(),todays.endTime(),todays.data());
 		}
-		todays.bump(mob,type);
+		todays.bumpVal(mob,type);
 	}
 }

@@ -173,6 +173,8 @@ public class DBInterface implements DatabaseEngine
 	{ StatLoader.DBCreate(startTime,endTime,data);}
 	public void DBUpdateStat(long startTime, String data)
 	{ StatLoader.DBUpdate(startTime,data);}
+	public Vector DBReadStats(long startTime)
+	{ return StatLoader.DBReadAfter(startTime);}
 	
 	public String errorStatus(){return DBConnector.errorStatus().toString();}
 	public void resetconnections(){DBConnector.reconnect();}

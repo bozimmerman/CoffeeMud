@@ -19,7 +19,7 @@ public class Util
 		StringBuffer str=new StringBuffer("");
 		for(int i=0;i<times;i++)
 			str.append(str1);
-		return str1.toString();
+		return str.toString();
 	}
 	
 	public static String startWithAorAn(String str)

@@ -142,6 +142,25 @@ public class Oracle extends Cleric
 	public String otherLimitations(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 	public String weaponLimitations(){return "May use Blunt, Flailed weapons, Hammers, and Natural (unarmed) weapons only.";}
 
+	private int numNonQualified(MOB mob)
+	{
+		int numNonQualified=0;
+		for(int a=0;a<mob.numLearnedAbilities();a++)
+		{
+			Ability A=mob.fetchAbility(a);
+			if(CMAble.getQualifyingLevel(ID(),true,A.ID())<0)
+				numNonQualified++;
+		}
+		return numNonQualified;
+	}
+	
+	private int maxNonQualified(MOB mob)
+	{
+		int level=mob.charStats().getClassLevel(this)-30;
+		level++;
+		return level;
+	}
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -149,25 +168,17 @@ public class Oracle extends Cleric
 		// if he already has one, don't give another!
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))
 		{
-			int numNonQualified=0;
-			for(int a=0;a<mob.numLearnedAbilities();a++)
-			{
-				Ability A=mob.fetchAbility(a);
-				if(CMAble.getQualifyingLevel(ID(),true,A.ID())<0)
-					numNonQualified++;
-			}
-			int level=mob.charStats().getClassLevel(this)-30;
-			level++;
-			if(numNonQualified>=level) return;
+			if(numNonQualified(mob)>=maxNonQualified(mob)) return;
+			
 			Ability newOne=null;
 			int tries=0;
-			while((newOne==null)&&((++tries)<1000))
+			while((newOne==null)&&((++tries)<100))
 			{
 				CharClass C=CMClass.randomCharClass();
 				if((C!=null)&&(C!=this)&&(mob.charStats().getClassLevel(C)<0))
 				{
 					int tries2=0;
-					while((newOne==null)&&((++tries2)<1000))
+					while((newOne==null)&&((++tries2)<10000))
 					{
 						Ability A=CMClass.randomAbility();
 						int lql=CMAble.lowestQualifyingLevel(A.ID());
@@ -320,6 +331,9 @@ public class Oracle extends Cleric
 				String type=Ability.TYPE_DESCS[(able.classificationCode()&Ability.ALL_CODES)].toLowerCase();
 				mob.tell("^NYou have learned the secret to the "+type+" ^H"+able.name()+"^?.^N");
 			}
+			else
+			if(numNonQualified(mob)>=maxNonQualified(mob))
+				mob.tell("^NYou have learned no new secrets this level, as you already know ^H"+numNonQualified(mob)+"/"+maxNonQualified(mob)+"^? secret skills.^N");
 		}
 	}
 }
