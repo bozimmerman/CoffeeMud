@@ -47,7 +47,7 @@ public class Sculpting extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	private static synchronized Vector loadRecipes()
+	protected static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("SCULPTING RECIPES");
 		if(V==null)
@@ -115,6 +115,7 @@ public class Sculpting extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		randomRecipeFix(mob,loadRecipes(),commands);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Sculpt what? Enter \"sculpt list\" for a list, \"sculpt scan\", or \"sculpt mend <item>\".");
@@ -173,15 +174,15 @@ public class Sculpting extends CommonSkill
 			messedUp=false;
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
-			for(int r=0;r<recipes.size();r++)
+			Vector matches=matchingRecipeNames(recipes,recipeName);
+			for(int r=0;r<matches.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=(String)V.elementAt(RCP_FINALNAME);
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if((level<=mob.envStats().level())
-					&&(replacePercent(item,"").equalsIgnoreCase(recipeName)))
+					if(level<=mob.envStats().level())
 					{
 						foundRecipe=V;
 						break;

@@ -59,7 +59,7 @@ public class Weaponsmithing extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	private static synchronized Vector loadRecipes()
+	protected static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("WEAPONSMITHING RECIPES");
 		if(V==null)
@@ -125,6 +125,9 @@ public class Weaponsmithing extends CommonSkill
 	}
 	private boolean canDo(String weaponClass, MOB mob)
 	{
+		if((mob.isMonster())&&(!Sense.isAnimalIntelligence(mob)))
+			return true;
+		
 		String specialization="";
 		switch(specClass(weaponClass))
 		{
@@ -189,6 +192,7 @@ public class Weaponsmithing extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		randomRecipeFix(mob,loadRecipes(),commands);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"weaponsmith list\" for a list, \"weaponsmith scan\", or \"weaponsmith mend <item>\".");
@@ -256,16 +260,16 @@ public class Weaponsmithing extends CommonSkill
 			messedUp=false;
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
-			for(int r=0;r<recipes.size();r++)
+			Vector matches=matchingRecipeNames(recipes,recipeName);
+			for(int r=0;r<matches.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=(String)V.elementAt(RCP_FINALNAME);
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					if((level<=mob.envStats().level())
-					&&(canDo((String)V.elementAt(this.RCP_WEAPONCLASS),mob))
-					&&(replacePercent(item,"").equalsIgnoreCase(recipeName)))
+					&&(canDo((String)V.elementAt(this.RCP_WEAPONCLASS),mob)))
 					{
 						foundRecipe=V;
 						break;

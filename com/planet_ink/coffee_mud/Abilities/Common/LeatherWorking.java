@@ -39,7 +39,7 @@ public class LeatherWorking extends CommonSkill
 	}
 	public Environmental newInstance(){	return new LeatherWorking();}
 
-	private static synchronized Vector loadRecipes()
+	protected static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("LEATHERWORK RECIPES");
 		if(V==null)
@@ -108,6 +108,7 @@ public class LeatherWorking extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		randomRecipeFix(mob,loadRecipes(),commands);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what? Enter \"leatherwork list\" for a list, \"leatherwork refit <item>\" to resize, \"leatherwork scan\", or \"leatherwork mend <item>\".");
@@ -234,23 +235,25 @@ public class LeatherWorking extends CommonSkill
 			messedUp=false;
 			String recipeName=Util.combine(commands,0);
 			Vector foundRecipe=null;
-			for(int r=0;r<recipes.size();r++)
+			Vector matches=matchingRecipeNames(recipes,recipeName);
+			for(int r=0;r<matches.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector V=(Vector)matches.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=(String)V.elementAt(RCP_FINALNAME);
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
-					if((level<=mob.envStats().level())
-					&&(replacePercent(item,"").equalsIgnoreCase(recipeName)))
+					if(((level+11)<=(mob.envStats().level()))
+					&&(recipeName.toUpperCase().indexOf("STUDDED ")>=0))
 					{
-						multiplier=1;
+						multiplier=3;
+						prefix="studded ";
 						foundRecipe=V;
 						break;
 					}
 					else
 					if(((level+5)<=(mob.envStats().level()))
-					&&(("hard "+replacePercent(item,"")).equalsIgnoreCase(recipeName)))
+					&&(recipeName.toUpperCase().indexOf("HARD")>=0))
 					{
 						multiplier=2;
 						prefix="hard ";
@@ -258,11 +261,9 @@ public class LeatherWorking extends CommonSkill
 						break;
 					}
 					else
-					if(((level+11)<=(mob.envStats().level()))
-					&&(("studded "+replacePercent(item,"")).equalsIgnoreCase(recipeName)))
+					if(level<=(mob.envStats().level()))
 					{
-						multiplier=3;
-						prefix="studded ";
+						multiplier=1;
 						foundRecipe=V;
 						break;
 					}

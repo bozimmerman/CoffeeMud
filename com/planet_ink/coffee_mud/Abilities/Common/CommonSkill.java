@@ -300,6 +300,60 @@ public class CommonSkill extends StdAbility
 		return buildCostArray(mob,consumed);
 	}
 
+	protected void randomRecipeFix(MOB mob, Vector recipes, Vector commands)
+	{
+		if((mob.isMonster()
+		&&(!Sense.isAnimalIntelligence(mob)))
+		&&(commands.size()==0)
+		&&((recipes!=null)&&(recipes.size()>0)))
+		{
+			Vector randomRecipe=(Vector)recipes.elementAt(Dice.roll(1,recipes.size(),-1));
+			commands.addElement((String)randomRecipe.firstElement());
+		}
+	}
+	
+	protected Vector matchingRecipeNames(Vector recipes, String recipeName)
+	{
+		Vector matches=new Vector();
+		if(recipeName.length()==0) return matches;
+		for(int r=0;r<recipes.size();r++)
+		{
+			Vector V=(Vector)recipes.elementAt(r);
+			if(V.size()>0)
+			{
+				String item=(String)V.elementAt(0);
+				if(replacePercent(item,"").equalsIgnoreCase(recipeName))
+					matches.addElement(V);
+			}
+		}
+		if(matches.size()>0) return matches;
+		for(int r=0;r<recipes.size();r++)
+		{
+			Vector V=(Vector)recipes.elementAt(r);
+			if(V.size()>0)
+			{
+				String item=(String)V.elementAt(0);
+				if((replacePercent(item,"").toUpperCase().indexOf(recipeName.toUpperCase())>=0)
+				||(recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+					matches.addElement(V);
+			}
+		}
+		if(matches.size()>0) return matches;
+		String lastWord=(String)Util.parse(recipeName).lastElement();
+		for(int r=0;r<recipes.size();r++)
+		{
+			Vector V=(Vector)recipes.elementAt(r);
+			if(V.size()>0)
+			{
+				String item=(String)V.elementAt(0);
+				if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
+				||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+					matches.addElement(V);
+			}
+		}
+		return matches;
+	}
+	
 	protected int findNumberOfResource(Room room, int resource)
 	{
 		int foundWood=0;

@@ -17,7 +17,7 @@ public class CageBuilding extends Wainwrighting
 	}
 	public Environmental newInstance(){return new CageBuilding();}
 	
-	protected synchronized Vector loadRecipes()
+	protected synchronized static Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("CAGEBUILD RECIPES");
 		if(V==null)

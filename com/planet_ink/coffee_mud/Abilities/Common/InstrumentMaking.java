@@ -47,7 +47,7 @@ public class InstrumentMaking extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	private static synchronized Vector loadRecipes()
+	protected static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("INSTRUMENT RECIPES");
 		if(V==null)
@@ -83,6 +83,7 @@ public class InstrumentMaking extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		randomRecipeFix(mob,loadRecipes(),commands);
 		if(commands.size()==0)
 		{
 			commonTell(mob,"Make what Instrument? Enter \"instrumentmake list\" for a list.");
@@ -117,16 +118,16 @@ public class InstrumentMaking extends CommonSkill
 		building=null;
 		String recipeName=Util.combine(commands,0);
 		Vector foundRecipe=null;
-		for(int r=0;r<recipes.size();r++)
+		Vector matches=matchingRecipeNames(recipes,recipeName);
+		for(int r=0;r<matches.size();r++)
 		{
-			Vector V=(Vector)recipes.elementAt(r);
+			Vector V=(Vector)matches.elementAt(r);
 			if(V.size()>0)
 			{
 				String item=(String)V.elementAt(RCP_FINALNAME);
 				String race=((String)V.elementAt(RCP_RACES)).trim();
 				int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 				if((level<=mob.envStats().level())
-				&&(replacePercent(item,"").equalsIgnoreCase(recipeName))
 				&&((race.length()==0)||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;

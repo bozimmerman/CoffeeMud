@@ -49,7 +49,7 @@ public class Herbalism extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	private static synchronized Vector loadRecipes()
+	protected static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("HERBALISM RECIPES");
 		if(V==null)
@@ -88,6 +88,7 @@ public class Herbalism extends CommonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
+		randomRecipeFix(mob,loadRecipes(),commands);
 		if(commands.size()<1)
 		{
 			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list.");
