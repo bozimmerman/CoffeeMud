@@ -26,8 +26,8 @@ public class Paladin extends StdCharClass
 	public Paladin()
 	{
 		super();
-		maxStat[CharStats.STRENGTH]=22;
-		maxStat[CharStats.WISDOM]=22;
+		maxStatAdj[CharStats.STRENGTH]=4;
+		maxStatAdj[CharStats.WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

@@ -24,8 +24,8 @@ public class Charlatan extends StdCharClass
 	public Charlatan()
 	{
 		super();
-		maxStat[CharStats.CHARISMA]=22;
-		maxStat[CharStats.WISDOM]=22;
+		maxStatAdj[CharStats.CHARISMA]=4;
+		maxStatAdj[CharStats.WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

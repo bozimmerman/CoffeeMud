@@ -25,8 +25,8 @@ public class SkyWatcher extends StdCharClass
 	public SkyWatcher()
 	{
 		super();
-		maxStat[CharStats.CONSTITUTION]=22;
-		maxStat[CharStats.INTELLIGENCE]=22;
+		maxStatAdj[CharStats.CONSTITUTION]=4;
+		maxStatAdj[CharStats.INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

@@ -25,7 +25,7 @@ public class Druid extends StdCharClass
 	public Druid()
 	{
 		super();
-		maxStat[CharStats.CONSTITUTION]=25;
+		maxStatAdj[CharStats.CONSTITUTION]=7;
 		if(!loaded())
 		{
 			setLoaded(true);

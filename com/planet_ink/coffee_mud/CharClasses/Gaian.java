@@ -25,8 +25,8 @@ public class Gaian extends StdCharClass
 	public Gaian()
 	{
 		super();
-		maxStat[CharStats.CONSTITUTION]=22;
-		maxStat[CharStats.WISDOM]=22;
+		maxStatAdj[CharStats.CONSTITUTION]=4;
+		maxStatAdj[CharStats.WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

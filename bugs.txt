@@ -1,7 +1,5 @@
-- test autopurge!!!
+look at smoke rings sk
 debug auction once and for all
-use zappermask for channels
-bodymask -- expose it!
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 Jewelmaking
 	allow you to add jewels to any item

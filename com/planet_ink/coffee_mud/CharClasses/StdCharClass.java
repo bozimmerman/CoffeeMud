@@ -20,7 +20,7 @@ public class StdCharClass implements CharClass, Cloneable
 	public int getTrainsFirstLevel(){return 3;}
 	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getMovementMultiplier(){return 5;}
-	protected int maxStat[]={18,18,18,18,18,18};
+	protected int maxStatAdj[]={0,0,0,0,0,0};
 	private static long wearMask=Item.ON_TORSO|Item.ON_LEGS|Item.ON_ARMS|Item.ON_WAIST|Item.ON_HEAD;
 
 	public boolean playerSelectable()
@@ -176,9 +176,9 @@ public class StdCharClass implements CharClass, Cloneable
 		}
 	}
 
-	public int[] maxStat()
+	public int[] maxStatAdjustments()
 	{
-		return maxStat;
+		return maxStatAdj;
 	}
 
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
@@ -213,7 +213,8 @@ public class StdCharClass implements CharClass, Cloneable
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
-
+		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+			affectableStats.setStat(CharStats.MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.MAX_STRENGTH_ADJ+i)+maxStatAdj[i]);
 	}
 
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
@@ -522,11 +523,6 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.recoverMaxState();
 	}
 
-	public int getMaxStat(int abilityCode)
-	{
-		if((abilityCode<0)||(abilityCode>5)) return -1;
-		return maxStat[abilityCode];
-	}
 	public int getLevelMana(MOB mob)
 	{
 		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(Util.div(mob.baseCharStats().getStat(CharStats.INTELLIGENCE),18.0)*getBonusManaLevel())));
@@ -561,13 +557,6 @@ public class StdCharClass implements CharClass, Cloneable
 		for(int i=1;i<mob.baseEnvStats().level();i++)
 			move+=((int)Math.round(lvlMul*Util.div(mob.baseCharStats().getStat(CharStats.STRENGTH),9.0)*getMovementMultiplier()));
 		return move;
-	}
-
-	public boolean canAdvance(MOB mob, int abilityCode)
-	{
-		if((abilityCode<0)||(abilityCode>5)) return false;
-		if(mob.baseCharStats().getStat(abilityCode)>=getMaxStat(abilityCode)) return false;
-		return true;
 	}
 
 	protected boolean isValidBeneficiary(MOB killer,

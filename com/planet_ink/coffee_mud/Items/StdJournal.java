@@ -202,7 +202,7 @@ public class StdJournal extends StdItem
 				if(subject.startsWith("MOTD"))
 				{
 					subject=subject.substring(4);
-					date=""+(Util.s_long(date)+(1000*60*60*24));
+					date=""+(Util.s_long(date)+((long)(1000*60*60*24)));
 				}
 				if(to.equals("ALL")||to.equalsIgnoreCase(username)||from.equalsIgnoreCase(username))
 				{

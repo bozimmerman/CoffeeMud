@@ -24,7 +24,7 @@ public class Bard extends StdCharClass
 	public Bard()
 	{
 		super();
-		maxStat[CharStats.CHARISMA]=25;
+		maxStatAdj[CharStats.CHARISMA]=7;
 		if(!loaded())
 		{
 			setLoaded(true);

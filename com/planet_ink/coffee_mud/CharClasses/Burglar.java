@@ -14,8 +14,8 @@ public class Burglar extends Thief
 	public Burglar()
 	{
 		super();
-		maxStat[CharStats.DEXTERITY]=22;
-		maxStat[CharStats.CHARISMA]=22;
+		maxStatAdj[CharStats.DEXTERITY]=4;
+		maxStatAdj[CharStats.CHARISMA]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

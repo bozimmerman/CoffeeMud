@@ -1861,7 +1861,7 @@ public class StdMOB implements MOB
 					else
 					{
 						tickStatus=Tickable.STATUS_END;
-						destroy();
+						if(soulMate()==null) destroy();
 						tickStatus=Tickable.STATUS_NOT;
 						lastTickedDateTime=System.currentTimeMillis();
 						return false;

@@ -24,8 +24,8 @@ public class Prancer extends StdCharClass
 	public Prancer()
 	{
 		super();
-		maxStat[CharStats.CHARISMA]=22;
-		maxStat[CharStats.STRENGTH]=22;
+		maxStatAdj[CharStats.CHARISMA]=4;
+		maxStatAdj[CharStats.STRENGTH]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

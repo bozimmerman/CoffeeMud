@@ -25,8 +25,8 @@ public class Healer extends Cleric
 
 	public Healer()
 	{
-		maxStat[CharStats.WISDOM]=22;
-		maxStat[CharStats.CHARISMA]=22;
+		maxStatAdj[CharStats.WISDOM]=4;
+		maxStatAdj[CharStats.CHARISMA]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

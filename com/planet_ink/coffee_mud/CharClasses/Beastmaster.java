@@ -25,8 +25,8 @@ public class Beastmaster extends StdCharClass
 	public Beastmaster()
 	{
 		super();
-		maxStat[CharStats.CONSTITUTION]=22;
-		maxStat[CharStats.STRENGTH]=22;
+		maxStatAdj[CharStats.CONSTITUTION]=4;
+		maxStatAdj[CharStats.STRENGTH]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

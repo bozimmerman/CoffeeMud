@@ -31,7 +31,7 @@ public class Thief extends StdCharClass
 	public Thief()
 	{
 		super();
-		maxStat[CharStats.DEXTERITY]=25;
+		maxStatAdj[CharStats.DEXTERITY]=7;
 		if(ID().equals(baseClass())&&(!loaded()))
 		{
 			setLoaded(true);

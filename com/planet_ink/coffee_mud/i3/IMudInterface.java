@@ -14,9 +14,9 @@ public class IMudInterface implements ImudServices, Serializable
 	public String name="CoffeeMud";
 	public String i3state="Open to the public";
 	public int port=5555;
-	public String[][] channels={{"diku_chat","CHAT","0"},
-								{"diku_immortals","GOSSIP","32"},
-								{"diku_code","GREET","0"}};
+	public String[][] channels={{"diku_chat","CHAT",""},
+								{"diku_immortals","GOSSIP",""},
+								{"diku_code","GREET",""}};
 
 	private final static int I3MAX_ANSI=49;
 
@@ -197,7 +197,7 @@ public class IMudInterface implements ImudServices, Serializable
 					return;
 				int channelInt=ExternalPlay.channelInt(channelName);
 				if(channelInt<0) return;
-				int lvl=getLocalLevel(channelName);
+				String mask=getLocalMask(channelName);
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
 					String str="^Q^q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
@@ -213,11 +213,11 @@ public class IMudInterface implements ImudServices, Serializable
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session ses=(Session)Sessions.elementAt(s);
-					if((!ses.killFlag())&&(ses.mob()!=null)
-					&&(!ses.mob().amDead())
-					&&(ses.mob().location()!=null)
-					&&(ses.mob().envStats().level()>=lvl)
-					&&((lvl>=0)||(ses.mob().isASysOp(ses.mob().location())))
+					MOB M=ses.mob();
+					if((!ses.killFlag())&&(M!=null)
+					&&(!M.amDead())
+					&&(M!=null)
+					&&(SaucerSupport.zapperCheck(mask,M))
 					&&(ses.mob().okAffect(ses.mob(),msg)))
 						ses.mob().affect(ses.mob(),msg);
 				}
@@ -320,18 +320,18 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_mud=wk.sender_mud;
 				wkr.channel=wk.channel;
 				int channelInt=ExternalPlay.channelInt(wk.channel);
-				int channelLvl=Util.s_int(getChannelLevel(wk.channel));
+				String mask=getChannelMask(wk.channel);
 				Vector whoV=new Vector();
 				for(int s=0;s<Sessions.size();s++)
 				{
 					Session ses=(Session)Sessions.elementAt(s);
-					if((!ses.killFlag())&&(ses.mob()!=null)
-					&&(!ses.mob().amDead())
-					&&(ses.mob().envStats().level()>=channelLvl)
-					&&((channelLvl>=0)||(ses.mob().isASysOp(ses.mob().location())))
-					&&(ses.mob().location()!=null)
-					&&(ses.mob().playerStats()!=null)
-					&&(!Util.isSet(ses.mob().playerStats().getChannelMask(),channelInt)))
+					MOB M=ses.mob();
+					if((!ses.killFlag())&&(M!=null)
+					&&(!M.amDead())
+					&&(M.location()!=null)
+					&&(M.playerStats()!=null)
+					&&(SaucerSupport.zapperCheck(mask,M))
+					&&(!Util.isSet(M.playerStats().getChannelMask(),channelInt)))
 						whoV.addElement(ses.mob().name());
 				}
 				wkr.who=whoV;
@@ -432,11 +432,11 @@ public class IMudInterface implements ImudServices, Serializable
      * @return the local channel name for a remote channel
      * @see #getRemoteChannel
      */
-    public int getLocalLevel(String str){
+    public String getLocalMask(String str){
 		for(int i=0;i<channels.length;i++)
 			if(channels[i][1].equalsIgnoreCase(str))
-				return Util.s_int(channels[i][2]);
-		return 0;
+				return channels[i][2];
+		return "";
 	}
 
     /**
@@ -475,17 +475,18 @@ public class IMudInterface implements ImudServices, Serializable
      * required.
      * Example:
      * <PRE>
-     * if( str.equals("intercre") ) return "1";
+     * if( str.equals("intercre") ) return "";
      * </PRE>
      * @param str the local name of the desired channel
      * @return the remote name of the specified local channel
      */
-	public String getChannelLevel(String str){
+	public String getChannelMask(String str){
 		for(int i=0;i<channels.length;i++)
 			if(channels[i][1].equalsIgnoreCase(str))
 				return channels[i][2];
-		return "0";
+		return "";
 	}
+	
     /**
      * Given a local channel name, returns the remote
      * channel name.

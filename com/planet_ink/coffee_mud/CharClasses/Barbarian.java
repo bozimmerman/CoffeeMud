@@ -28,8 +28,8 @@ public class Barbarian extends StdCharClass
 	public Barbarian()
 	{
 		super();
-		maxStat[CharStats.STRENGTH]=22;
-		maxStat[CharStats.CONSTITUTION]=22;
+		maxStatAdj[CharStats.STRENGTH]=4;
+		maxStatAdj[CharStats.CONSTITUTION]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

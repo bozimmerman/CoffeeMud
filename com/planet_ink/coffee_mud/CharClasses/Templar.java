@@ -23,8 +23,8 @@ public class Templar extends Cleric
 
 	public Templar()
 	{
-		maxStat[CharStats.STRENGTH]=22;
-		maxStat[CharStats.WISDOM]=22;
+		maxStatAdj[CharStats.STRENGTH]=4;
+		maxStatAdj[CharStats.WISDOM]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

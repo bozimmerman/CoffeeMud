@@ -24,8 +24,8 @@ public class Minstrel extends StdCharClass
 	public Minstrel()
 	{
 		super();
-		maxStat[CharStats.CHARISMA]=22;
-		maxStat[CharStats.INTELLIGENCE]=22;
+		maxStatAdj[CharStats.CHARISMA]=4;
+		maxStatAdj[CharStats.INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

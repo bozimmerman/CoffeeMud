@@ -25,7 +25,7 @@ public class Arrest extends StdBehavior
 	private Vector chitChat2=new Vector();
 	private boolean loadAttempt=false;
 
-	private static final long ONE_REAL_DAY=1000*60*60*24;
+	private static final long ONE_REAL_DAY=(long)1000*60*60*24;
 	private static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
 	
 	private static final int ACTION_WARN=0;

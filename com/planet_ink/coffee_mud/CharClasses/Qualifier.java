@@ -17,8 +17,8 @@ public class Qualifier extends StdCharClass
 	public Qualifier()
 	{
 		super();
-		for(int i=0;i<=5;i++)
-			maxStat[i]=25;
+		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+			maxStatAdj[i]=7;
 	}
 
 	public boolean playerSelectable()

@@ -30,7 +30,7 @@ public class Cleric extends StdCharClass
 		super();
 		if(disableClericSpellGrant()) return;
 
-		maxStat[CharStats.WISDOM]=25;
+		maxStatAdj[CharStats.WISDOM]=7;
 		if(!loaded())
 		{
 			setLoaded(true);

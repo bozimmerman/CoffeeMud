@@ -21,8 +21,8 @@ public class Missionary extends Cleric
 
 	public Missionary()
 	{
-		maxStat[CharStats.WISDOM]=22;
-		maxStat[CharStats.DEXTERITY]=22;
+		maxStatAdj[CharStats.WISDOM]=4;
+		maxStatAdj[CharStats.DEXTERITY]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

@@ -627,13 +627,13 @@ public class Spell_Wish extends Spell
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					mob.baseCharStats().getCurrentClass().unLevel(mob);
 					StringBuffer str=new StringBuffer("");
-					for(int trait=0;trait<6;trait++)
+					for(int trait=0;trait<CharStats.NUM_BASE_STATS;trait++)
 					{
-						int oldVal=mob.baseCharStats().getStat(trait);
-						int amountToLose=oldC.getMaxStat(trait)-18;
-						if(amountToLose>oldVal)
+						int newVal=C.maxStatAdjustments()[trait];
+						int amountToLose=oldC.maxStatAdjustments()[trait]-newVal;
+						if((amountToLose>0)&&(mob.baseCharStats().getStat(trait)>amountToLose))
 						{
-							mob.baseCharStats().setStat(trait,oldVal-amountToLose);
+							mob.baseCharStats().setStat(trait,mob.baseCharStats().getStat(trait)-amountToLose);
 							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.TRAITS[trait].toLowerCase()+".");
 						}
 					}

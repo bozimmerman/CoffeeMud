@@ -40,9 +40,6 @@ public class Prop_HaveAdjuster extends Property
 		adjEnvStats.setWeight(getVal(newText,"wei"));
 		adjEnvStats.setHeight(getVal(newText,"hei"));
 
-		adjCharStats.setStat(CharStats.CHARISMA,getVal(newText,"cha"));
-		adjCharStats.setStat(CharStats.CONSTITUTION,getVal(newText,"con"));
-		adjCharStats.setStat(CharStats.DEXTERITY,getVal(newText,"dex"));
 		String val=getStr(newText,"gen").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 		{
@@ -50,7 +47,6 @@ public class Prop_HaveAdjuster extends Property
 			gotSex=true;
 		}
 
-		adjCharStats.setStat(CharStats.INTELLIGENCE,getVal(newText,"int"));
 		val=getStr(newText,"cla").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
 		{
@@ -65,6 +61,16 @@ public class Prop_HaveAdjuster extends Property
 		}
 		adjCharStats.setStat(CharStats.STRENGTH,getVal(newText,"str"));
 		adjCharStats.setStat(CharStats.WISDOM,getVal(newText,"wis"));
+		adjCharStats.setStat(CharStats.CHARISMA,getVal(newText,"cha"));
+		adjCharStats.setStat(CharStats.CONSTITUTION,getVal(newText,"con"));
+		adjCharStats.setStat(CharStats.DEXTERITY,getVal(newText,"dex"));
+		adjCharStats.setStat(CharStats.INTELLIGENCE,getVal(newText,"int"));
+		adjCharStats.setStat(CharStats.MAX_STRENGTH_ADJ,getVal(newText,"maxstr"));
+		adjCharStats.setStat(CharStats.MAX_WISDOM_ADJ,getVal(newText,"maxwis"));
+		adjCharStats.setStat(CharStats.MAX_CHARISMA_ADJ,getVal(newText,"maxcha"));
+		adjCharStats.setStat(CharStats.MAX_CONSTITUTION_ADJ,getVal(newText,"maxcon"));
+		adjCharStats.setStat(CharStats.MAX_DEXTERITY_ADJ,getVal(newText,"maxdex"));
+		adjCharStats.setStat(CharStats.MAX_INTELLIGENCE_ADJ,getVal(newText,"maxint"));
 
 		adjCharState.setHitPoints(getVal(newText,"hit"));
 		adjCharState.setHunger(getVal(newText,"hun"));

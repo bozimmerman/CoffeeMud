@@ -124,13 +124,9 @@ public class GenSuperPill extends GenPill
 		mob.baseEnvStats().setHeight(mob.baseEnvStats().height()+getVal(readableText,"hei"));
 		if(getVal(readableText,"hei")!=0) redress=true;
 
-		mob.baseCharStats().setStat(CharStats.CHARISMA,mob.baseCharStats().getStat(CharStats.CHARISMA)+getVal(readableText,"cha"));
-		mob.baseCharStats().setStat(CharStats.CONSTITUTION,mob.baseCharStats().getStat(CharStats.CONSTITUTION)+getVal(readableText,"con"));
-		mob.baseCharStats().setStat(CharStats.DEXTERITY,mob.baseCharStats().getStat(CharStats.DEXTERITY)+getVal(readableText,"dex"));
 		String val=getStr(readableText,"gen").toUpperCase();
 		if((val.length()>0)&&((val.charAt(0)=='M')||(val.charAt(0)=='F')||(val.charAt(0)=='N')))
 			mob.baseCharStats().setStat(CharStats.GENDER,(int)val.charAt(0));
-		mob.baseCharStats().setStat(CharStats.INTELLIGENCE,mob.baseCharStats().getStat(CharStats.INTELLIGENCE)+getVal(readableText,"int"));
 		val=getStr(readableText,"cla").toUpperCase();
 		if((val.length()>0)&&(CMClass.getCharClass(val)!=null))
 			mob.baseCharStats().setCurrentClass(CMClass.getCharClass(val));
@@ -143,8 +139,12 @@ public class GenSuperPill extends GenPill
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
 		}
-		mob.baseCharStats().setStat(CharStats.STRENGTH,mob.baseCharStats().getStat(CharStats.STRENGTH)+getVal(readableText,"str"));
-		mob.baseCharStats().setStat(CharStats.WISDOM,mob.baseCharStats().getStat(CharStats.WISDOM)+getVal(readableText,"wis"));
+		mob.baseCharStats().setStat(CharStats.MAX_STRENGTH_ADJ,mob.baseCharStats().getStat(CharStats.MAX_STRENGTH_ADJ)+getVal(readableText,"maxstr"));
+		mob.baseCharStats().setStat(CharStats.MAX_WISDOM_ADJ,mob.baseCharStats().getStat(CharStats.MAX_WISDOM_ADJ)+getVal(readableText,"maxwis"));
+		mob.baseCharStats().setStat(CharStats.MAX_CHARISMA_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CHARISMA_ADJ)+getVal(readableText,"maxcha"));
+		mob.baseCharStats().setStat(CharStats.MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.MAX_CONSTITUTION_ADJ)+getVal(readableText,"maxcon"));
+		mob.baseCharStats().setStat(CharStats.MAX_DEXTERITY_ADJ,mob.baseCharStats().getStat(CharStats.MAX_DEXTERITY_ADJ)+getVal(readableText,"maxdex"));
+		mob.baseCharStats().setStat(CharStats.MAX_INTELLIGENCE_ADJ,mob.baseCharStats().getStat(CharStats.MAX_INTELLIGENCE_ADJ)+getVal(readableText,"maxint"));
 
 		mob.baseState().setHitPoints(mob.curState().getHitPoints()+getVal(readableText,"hit"));
 		mob.curState().setHunger(mob.curState().getHunger()+getVal(readableText,"hun"));

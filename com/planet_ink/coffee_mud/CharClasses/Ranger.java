@@ -26,8 +26,8 @@ public class Ranger extends StdCharClass
 	public Ranger()
 	{
 		super();
-		maxStat[CharStats.STRENGTH]=22;
-		maxStat[CharStats.INTELLIGENCE]=22;
+		maxStatAdj[CharStats.STRENGTH]=4;
+		maxStatAdj[CharStats.INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

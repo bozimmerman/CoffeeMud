@@ -21,8 +21,8 @@ public class Oracle extends Cleric
 
 	public Oracle()
 	{
-		maxStat[CharStats.WISDOM]=22;
-		maxStat[CharStats.INTELLIGENCE]=22;
+		maxStatAdj[CharStats.WISDOM]=4;
+		maxStatAdj[CharStats.INTELLIGENCE]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

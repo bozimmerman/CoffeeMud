@@ -29,7 +29,14 @@ public interface CharStats extends Cloneable
 	public static final int SAVE_DISEASE=20;
 	public static final int SAVE_TRAPS=21;
 	
-	public final static int NUM_STATS=22;
+	public static final int MAX_STRENGTH_ADJ=22;
+	public static final int MAX_INTELLIGENCE_ADJ=23;
+	public static final int MAX_DEXTERITY_ADJ=24;
+	public static final int MAX_CONSTITUTION_ADJ=25;
+	public static final int MAX_CHARISMA_ADJ=26;
+	public static final int MAX_WISDOM_ADJ=27;
+	
+	public final static int NUM_STATS=28;
 	
 	public static final String[] TRAITS=
 	{
@@ -54,7 +61,13 @@ public interface CharStats extends Cloneable
 		"SAVE VS UNDEAD",
 		"SAVE VS MAGIC",
 		"SAVE VS DISEASE",
-		"SAVE VS TRAPS"
+		"SAVE VS TRAPS",
+		"MAX STRENGTH ADJ.",
+		"MAX INTELLIGENCE ADJ.",
+		"MAX DEXTERITY ADJ.",
+		"MAX CONSTITUTION ADJ.",
+		"MAX CHARISMA ADJ.",
+		"MAX WISDOM ADJ.",
 	};
 	
 	public static final String[] TRAITABBR1=
@@ -80,7 +93,13 @@ public interface CharStats extends Cloneable
 		"vU",
 		"vM",
 		"vD",
-		"vT"
+		"vT",
+		"mS",
+		"mI",
+		"mD",
+		"mC",
+		"mCH",
+		"mW"
 	};
 	public String getSavesStr();
 	public void setSaves(String str);
@@ -92,7 +111,7 @@ public interface CharStats extends Cloneable
 	public int getStat(String abilityName);
 	public void setStat(int statNum, int value);
 	public int getCode(String abilityName);
-	public StringBuffer getStats(int maxStat[]);
+	public StringBuffer getStats();
 	public int getSave(int which);
 	
 	// physical and static properties
@@ -139,7 +158,15 @@ public interface CharStats extends Cloneable
 										Affect.TYP_UNDEAD,
 									    Affect.TYP_CAST_SPELL,
 										Affect.TYP_DISEASE,
-										-1};
+										-1, // traps
+										-1, // max str
+										-1, // max int
+										-1, // max 
+										-1, // max dex
+										-1, // max con
+										-1,	// max cha
+									    -1, // max wis
+									   };
 	
 	// create a new one of these
 	public CharStats cloneCharStats();

@@ -14,8 +14,8 @@ public class Trapper extends Thief
 	public Trapper()
 	{
 		super();
-		maxStat[CharStats.DEXTERITY]=22;
-		maxStat[CharStats.CONSTITUTION]=22;
+		maxStatAdj[CharStats.DEXTERITY]=4;
+		maxStatAdj[CharStats.CONSTITUTION]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

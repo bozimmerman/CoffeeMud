@@ -24,8 +24,8 @@ public class Jester extends StdCharClass
 	public Jester()
 	{
 		super();
-		maxStat[CharStats.CHARISMA]=22;
-		maxStat[CharStats.DEXTERITY]=22;
+		maxStatAdj[CharStats.CHARISMA]=4;
+		maxStatAdj[CharStats.DEXTERITY]=4;
 		if(!loaded())
 		{
 			setLoaded(true);

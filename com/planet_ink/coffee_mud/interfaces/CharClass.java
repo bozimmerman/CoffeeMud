@@ -29,8 +29,6 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 
 	public MOB buildMOB(MOB mob, int level, int alignment, int weight, int wimp, char gender);
 
-	public boolean canAdvance(MOB mob, int abilityCode);
-	public int getMaxStat(int abilityCode);
 	public int getLevelMana(MOB mob);
 	public double getLevelSpeed(MOB mob);
 	public int getLevelMove(MOB mob);
@@ -52,5 +50,5 @@ public interface CharClass extends Cloneable, Tickable, StatsAffecting, MsgListe
 	public String otherLimitations();
 	public String otherBonuses();
 	public String statQualifications();
-	public int[] maxStat();
+	public int[] maxStatAdjustments();
 }

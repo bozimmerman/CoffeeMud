@@ -28,8 +28,8 @@ public class Artisan extends StdCharClass
 	public Artisan()
 	{
 		super();
-		maxStat[CharStats.WISDOM]=25;
-		maxStat[CharStats.INTELLIGENCE]=25;
+		maxStatAdj[CharStats.WISDOM]=7;
+		maxStatAdj[CharStats.INTELLIGENCE]=7;
 		if(ID().equals(baseClass())&&(!loaded()))
 		{
 			setLoaded(true);

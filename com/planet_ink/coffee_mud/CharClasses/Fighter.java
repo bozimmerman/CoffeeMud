@@ -26,7 +26,7 @@ public class Fighter extends StdCharClass
 	public Fighter()
 	{
 		super();
-		maxStat[CharStats.STRENGTH]=25;
+		maxStatAdj[CharStats.STRENGTH]=7;
 		if(!loaded())
 		{
 			setLoaded(true);

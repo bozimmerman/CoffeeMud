@@ -26,7 +26,7 @@ public class Mage extends StdCharClass
 	public Mage()
 	{
 		super();
-		maxStat[CharStats.INTELLIGENCE]=25;
+		maxStatAdj[CharStats.INTELLIGENCE]=7;
 		if(!loaded())
 		{
 			setLoaded(true);
