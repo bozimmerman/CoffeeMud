@@ -1,24 +1,28 @@
-package com.planet_ink.coffee_mud.Abilities.Spells;
+package com.planet_ink.coffee_mud.Abilities.Songs;
 
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import java.util.*;
 
-public class Spell_Scribe extends Spell
+public class Skill_SongWrite extends StdAbility
 {
-	public String ID() { return "Spell_Scribe"; }
-	public String name(){return "Scribe";}
+	public String ID() { return "Skill_SongWrite"; }
+	public String name(){ return "Song Write";}
+	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_Scribe();}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_EVOCATION;}
+	public int quality(){return Ability.INDIFFERENT;}
+	private static final String[] triggerStrings = {"SONGWRITE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Skill_SongWrite();}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-
 		if(commands.size()<2)
 		{
-			mob.tell("Scribe which spell onto what?");
+			mob.tell("Write which song onto what?");
 			return false;
 		}
 		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORN_REQ_UNWORNONLY);
@@ -29,7 +33,7 @@ public class Spell_Scribe extends Spell
 		}
 		if(!(target instanceof Scroll))
 		{
-			mob.tell("You can't scribe onto that.");
+			mob.tell("You can't write music on that.");
 			return false;
 		}
 		if((mob.curState().getMana()<mob.maxState().getMana())&&(!auto))
@@ -42,33 +46,33 @@ public class Spell_Scribe extends Spell
 		Scroll scroll=(Scroll)target;
 
 		String spellName=Util.combine(commands,0).trim();
-		Spell scrollThis=null;
+		Song scrollThis=null;
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
-			&&(A instanceof Spell)
+			&&(A instanceof Song)
 			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
-				scrollThis=(Spell)A;
+				scrollThis=(Song)A;
 		}
 		if(scrollThis==null)
 		{
-			mob.tell("You don't know how to scribe '"+spellName+"'.");
+			mob.tell("You don't know how to write '"+spellName+"'.");
 			return false;
 		}
 		int numSpells=(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this));
 		if(numSpells<0) numSpells=0;
 		if(scroll.numSpells()>numSpells)
 		{
-			mob.tell("You aren't powerful enough to scribe any more spells onto "+scroll.name()+".");
+			mob.tell("You aren't powerful enough to write any more magic onto "+scroll.name()+".");
 			return false;
 		}
 
 		for(int i=0;i<scroll.getSpells().size();i++)
 			if(((Ability)scroll.getSpells().elementAt(i)).ID().equals(scrollThis.ID()))
 			{
-				mob.tell("That spell is already scribed onto "+scroll.name()+".");
+				mob.tell("That spell is already written on "+scroll.name()+".");
 				return false;
 			}
 
@@ -78,7 +82,7 @@ public class Spell_Scribe extends Spell
 
 		if(!auto)mob.curState().setMana(0);
 
-		int experienceToLose=10*CMAble.lowestQualifyingLevel(scrollThis.ID());
+		int experienceToLose=20*CMAble.lowestQualifyingLevel(scrollThis.ID());
 		mob.charStats().getCurrentClass().loseExperience(mob,experienceToLose);
 		mob.tell("You lose "+experienceToLose+" experience points for the effort.");
 
@@ -87,7 +91,7 @@ public class Spell_Scribe extends Spell
 		if(success)
 		{
 			setMiscText(scrollThis.ID());
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),"^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting softly.^?");
+			FullMsg msg=new FullMsg(mob,target,this,(auto?Affect.MASK_GENERAL:0)|Affect.MSG_DELICATE_HANDS_ACT,"^S<S-NAME> write(s) music onto <T-NAMESELF>, singing softly.^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -102,7 +106,7 @@ public class Spell_Scribe extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting softly, and looking very frustrated.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to write music on <T-NAMESELF>, singing softly, and looking very frustrated.");
 
 
 		// return whether it worked
