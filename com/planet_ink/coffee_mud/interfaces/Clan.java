@@ -63,10 +63,10 @@ public interface Clan extends Cloneable, Tickable
 	public static final int GVT_REPUBLIC=2;
 	public static final int GVT_DEMOCRACY=3;
 	public static final String[] GVT_DESCS={
-		"DICTATORSHIP",
-		"OLIGARCHY",
-		"REPUBLIC",
-		"DEMOCRACY"
+		"CLAN",
+		"GUILD",
+		"UNION",
+		"FELLOWSHIP"
 	};
 	public static final int[] topRanks={
 		POS_BOSS,
@@ -78,8 +78,8 @@ public interface Clan extends Cloneable, Tickable
 	
 	public static final String[][] ROL_DESCS={
 		{"APPLICANT","MEMBER","STAFF","TREASURER","LEADER","BOSS"},
-		{"APPLICANT","SOLDIER","CAPTAIN","TREASURER","GENERAL","OLIGARCH"},
-		{"APPLICANT","CITIZEN","SOLDIER","TREASURER","SECRETARY","SENATOR"},
+		{"APPLICANT","MEMBER","CHIEF","TREASURER","SECRETARY","GUILDMASTER"},
+		{"APPLICANT","CITIZEN","SHERIFF","TREASURER","SECRETARY","SENATOR"},
 		{"APPLICANT","CITIZEN","SOLDIER","TREASURER","MANAGER","FIRST CITIZEN"}
 	};
 	public static final int maxint=Integer.MAX_VALUE;
@@ -171,9 +171,11 @@ public interface Clan extends Cloneable, Tickable
 		
 	public int getTopRank();
 
-	public void update();
-	
 	/** return a new instance of the object*/
 	public Clan newInstance();
 	public Clan copyOf();
+	
+	public void update();
+	public void destroyClan();
+	public void create();
 }

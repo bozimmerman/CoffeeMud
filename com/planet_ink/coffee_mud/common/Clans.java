@@ -251,9 +251,15 @@ public class Clans implements Clan, Tickable
 		}
 		if(plural)
 		{
-			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character((new String("f")).charAt(0))))
+			if(roleName.toString().equalsIgnoreCase("Staff"))
 			{
 				// do nothing
+			}
+			else
+			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character((new String("y")).charAt(0))))
+			{
+				roleName.setCharAt(roleName.length()-1,'i');
+				roleName.append("es");
 			}
 			else
 			if(new Character(roleName.charAt(roleName.length()-1)).equals(new Character((new String("s")).charAt(0))))
@@ -268,25 +274,20 @@ public class Clans implements Clan, Tickable
 		return roleName.toString();
 	}
 
-	public static boolean checkDates(Clan C)
+	public void create()
 	{
-		return false;
+		ExternalPlay.DBCreateClan(this);
+		addClan(this);
 	}
 
-	public static void createClan(Clan C)
+	public void update()
 	{
-		ExternalPlay.DBCreateClan(C);
-		addClan(C);
+		ExternalPlay.DBUpdateClan(this);
 	}
 
-	public static void updateClan(Clan C)
+	public void destroyClan()
 	{
-		ExternalPlay.DBUpdateClan(C);
-	}
-
-	public static void destroyClan(Clan C)
-	{
-		DVector members=C.getMemberList();
+		DVector members=getMemberList();
 		for(int m=0;m<members.size();m++)
 		{
 			String member=(String)members.elementAt(m,1);
@@ -298,8 +299,8 @@ public class Clans implements Clan, Tickable
 				ExternalPlay.DBUpdateClanMembership(M.Name(), "", 0);
 			}
 		}
-		ExternalPlay.DBDeleteClan(C);
-		removeClan(C);
+		ExternalPlay.DBDeleteClan(this);
+		removeClan(this);
 	}
 
 	public static Enumeration clans()
@@ -328,7 +329,7 @@ public class Clans implements Clan, Tickable
 		          +"-----------------------------------------------------------------\n\r"
 		          +getPremise()+"\n\r"
 		          +"-----------------------------------------------------------------\n\r"
-				  +"Government      : "+Util.capitalize(Clan.GVT_DESCS[getGovernment()])+"\n\r"
+				  +"Type            : "+Util.capitalize(Clan.GVT_DESCS[getGovernment()])+"\n\r"
 				  +"Qualifications  : "+((getAcceptanceSettings().length()==0)?"Anyone may apply":SaucerSupport.zapperDesc(getAcceptanceSettings()))+"\n\r"
 		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_BOSS,true,true),16)+": "+crewList(Clan.POS_BOSS)+"\n\r"
 		          +Util.padRight(Clans.getRoleName(getGovernment(),Clan.POS_LEADER,true,true),16)+": "+crewList(Clan.POS_LEADER)+"\n\r"
@@ -338,7 +339,7 @@ public class Clans implements Clan, Tickable
 		if(all.size()>1)
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
-			msg.append(Util.padRight("Clan Relations",40)+": \n\r");
+			msg.append(Util.padRight("Interclan Relations",40)+": \n\r");
 			for(Enumeration e=all.elements();e.hasMoreElements();)
 			{
 				Clan C=(Clan)e.nextElement();
@@ -387,7 +388,8 @@ public class Clans implements Clan, Tickable
 		switch(clanType)
 		{
 		case Clan.TYPE_CLAN:
-			return "Clan";
+			if((getGovernment()>=0)&&(getGovernment()<Clan.GVT_DESCS.length))
+				return Util.capitalize(Clan.GVT_DESCS[getGovernment()].toLowerCase());
 		}
 		return "Clan";
 	}
@@ -582,11 +584,7 @@ public class Clans implements Clan, Tickable
 	public int getType() {return clanType;}
 
 	public String getPremise() {return clanPremise;}
-	public void setPremise(String newPremise)
-	{
-		clanPremise = newPremise;
-		update();
-	}
+	public void setPremise(String newPremise){ clanPremise = newPremise;}
 
 	public String getAcceptanceSettings() { return AcceptanceSettings; }
 	public void setAcceptanceSettings(String newSettings) { AcceptanceSettings=newSettings; }
@@ -681,10 +679,6 @@ public class Clans implements Clan, Tickable
 		return POS_BOSS;
 	}
 
-	public void update()
-	{
-		Clans.updateClan(this);
-	}
 	/** return a new instance of the object*/
 	public Clan newInstance(){return new Clans();}
 	public Clan copyOf()
@@ -713,7 +707,6 @@ public class Clans implements Clan, Tickable
 		if(tickID!=Host.CLAN_TICK)
 			return true;
 		try{
-			Clan C=this;
 			DVector members=getMemberList();
 			Vector bosses=new Vector();
 			int activeMembers=0;
@@ -729,10 +722,10 @@ public class Clans implements Clan, Tickable
 			
 			if(activeMembers<CommonStrings.getIntVar(CommonStrings.SYSTEMI_MINCLANMEMBERS))
 			{
-				if(C.getStatus()==Clan.CLANSTATUS_FADING)
+				if(getStatus()==Clan.CLANSTATUS_FADING)
 				{
-					Log.sysOut("Clans","Clan '"+C.getName()+" deleted with only "+activeMembers+" having logged on lately.");
-					destroyClan(C);
+					Log.sysOut("Clans","Clan '"+getName()+" deleted with only "+activeMembers+" having logged on lately.");
+					destroyClan();
 					StringBuffer buf=new StringBuffer("");
 					for(int j=0;j<members.size();j++)
 					{
@@ -740,27 +733,30 @@ public class Clans implements Clan, Tickable
 						long lastLogin=((Long)members.elementAt(j,3)).longValue();
 						buf.append(s+" on "+new IQCalendar(lastLogin).d2String()+"  ");
 					}
-					Log.sysOut("Clans","Clan '"+C.getName()+" had the following membership: "+buf.toString());
+					Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
 					return true;
 				}
 				else
 				{
-					C.setStatus(Clan.CLANSTATUS_FADING);
-					Log.sysOut("Clans","Clan '"+C.getName()+" fading with only "+activeMembers+" having logged on lately.");
-					clanAnnounce("Clan "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
+					setStatus(Clan.CLANSTATUS_FADING);
+					Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
+					clanAnnounce(""+typeName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
+					update();
 				}
 			}
 			else
-				switch(C.getStatus())
+				switch(getStatus())
 				{
 				case Clan.CLANSTATUS_FADING:
-					C.setStatus(Clan.CLANSTATUS_ACTIVE);
-					clanAnnounce("Clan "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
+					setStatus(Clan.CLANSTATUS_ACTIVE);
+					clanAnnounce(""+typeName()+" "+name()+" is no longer in danger of being deleted.  Be aware that there is required activity level.");
+					update();
 					break;
 				case Clan.CLANSTATUS_PENDING:
-					C.setStatus(Clan.CLANSTATUS_ACTIVE);
-					Log.sysOut("Clans","Clan '"+C.getName()+" now active with "+activeMembers+".");
-					clanAnnounce("Clan "+name()+" now has sufficient members.  The Clan is now fully approved.");
+					setStatus(Clan.CLANSTATUS_ACTIVE);
+					Log.sysOut("Clans",""+typeName()+" '"+getName()+" now active with "+activeMembers+".");
+					clanAnnounce(""+typeName()+" "+name()+" now has sufficient members.  The "+typeName()+" is now fully approved.");
+					update();
 					break;
 				default:
 					break;
@@ -865,9 +861,9 @@ public class Clans implements Clan, Tickable
 					}
 				}
 				for(int v=0;v<votesToRemove.size();v++)
-					C.delVote(votesToRemove.elementAt(v));
+					delVote(votesToRemove.elementAt(v));
 				if(updateVotes)
-					C.updateVotes();
+					updateVotes();
 			}
 			
 		}
