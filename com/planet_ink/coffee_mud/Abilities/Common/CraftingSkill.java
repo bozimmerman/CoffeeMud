@@ -469,7 +469,7 @@ public class CraftingSkill extends CommonSkill
 		if(room==null) return 0;
 		if(autoGeneration>0) return 0;
 
-		if(howMuch>0)
+		if((howMuch>0)||(otherMaterial>0))
 		for(int i=room.numItems()-1;i>=0;i--)
 		{
 			Item I=room.fetchItem(i);
