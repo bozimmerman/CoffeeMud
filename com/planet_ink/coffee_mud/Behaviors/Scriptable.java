@@ -705,8 +705,7 @@ public class Scriptable extends StdBehavior
 		}
 		if(lastKnownLocation!=null)
 		{
-		    if(scripted instanceof MOB)
-				str=varify(source,target,monster,primaryItem,secondaryItem,msg,str);
+			str=varify(source,target,monster,primaryItem,secondaryItem,msg,str);
 			return lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Item.WORN_REQ_ANY);
 		}
 		return null;
