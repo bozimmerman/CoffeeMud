@@ -1,6 +1,5 @@
 Bard Subclasses
 Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
-News (Journal) reading macro
 macro help files
 
 //****** next version ********************************************************
