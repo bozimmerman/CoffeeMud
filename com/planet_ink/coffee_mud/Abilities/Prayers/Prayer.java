@@ -119,7 +119,7 @@ public class Prayer extends StdAbility
 			return false;
 		if((!auto)
 		&&(!mob.isMonster())
-		&&(!CMAble.qualifiesByLevel(mob,this))
+		&&(!disregardsArmorCheck(mob))
 		&&(mob.isMine(this))
 		&&(!appropriateToMyAlignment(mob.getAlignment())))
 		{

@@ -17,7 +17,7 @@ public class Thief_KillLog extends ThiefSkill
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Thief_KillLog();}
 	private static final String[] triggerStrings = {"KILLLOG"};
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
 	Hashtable theList=new Hashtable();
 	public MOB mark=null;

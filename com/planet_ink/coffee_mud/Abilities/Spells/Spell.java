@@ -16,7 +16,6 @@ public class Spell extends StdAbility
 	private static final String[] triggerStrings = {"CAST","CA","C"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SPELL;}
-	protected boolean exemptFromArmorReq(){return false;}
 
 	protected int affectType(boolean auto){
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
@@ -70,8 +69,7 @@ public class Spell extends StdAbility
 
 		if((!auto)
 		&&(!mob.isMonster())
-		&&(!exemptFromArmorReq())
-		&&(!CMAble.qualifiesByLevel(mob,this))
+		&&(!disregardsArmorCheck(mob))
 		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_CLOTH))
 		&&(mob.isMine(this))
 		&&(mob.location()!=null)

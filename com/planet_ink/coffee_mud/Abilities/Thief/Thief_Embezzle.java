@@ -16,7 +16,7 @@ public class Thief_Embezzle extends ThiefSkill
 	private static final String[] triggerStrings = {"EMBEZZLE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Embezzle();}
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Vector mobs=new Vector();
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

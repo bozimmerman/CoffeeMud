@@ -15,7 +15,7 @@ public class Thief_Appraise extends ThiefSkill
 	private static final String[] triggerStrings = {"APPRAISE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Appraise();}
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public int code=0;
 
 	public int abilityCode(){return code;}

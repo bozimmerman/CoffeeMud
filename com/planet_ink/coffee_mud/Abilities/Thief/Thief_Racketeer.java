@@ -15,7 +15,7 @@ public class Thief_Racketeer extends ThiefSkill
 	public int quality(){return Ability.MALICIOUS;}
 	private static final String[] triggerStrings = {"RACKETEER"};
 	public String[] triggerStrings(){return triggerStrings;}
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public Environmental newInstance(){	return new Thief_Racketeer();}
 	public Vector mobs=new Vector();
 

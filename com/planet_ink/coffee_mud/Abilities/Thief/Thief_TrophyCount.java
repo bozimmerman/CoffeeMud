@@ -17,7 +17,7 @@ public class Thief_TrophyCount extends ThiefSkill
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Thief_TrophyCount();}
 	private static final String[] triggerStrings = {"TROPHYCOUNT"};
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	public String[] triggerStrings(){return triggerStrings;}
 	Hashtable theList=new Hashtable();
 

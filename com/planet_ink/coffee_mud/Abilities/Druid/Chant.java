@@ -52,7 +52,7 @@ public class Chant extends StdAbility
 
 		if((!auto)
 		&&(!mob.isMonster())
-		&&(!CMAble.qualifiesByLevel(mob,this))
+		&&(!disregardsArmorCheck(mob))
 		&&(mob.isMine(this))
 		&&(Dice.rollPercentage()<50))
 		{

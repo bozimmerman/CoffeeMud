@@ -95,7 +95,7 @@ public class Song extends StdAbility
 
 		if((!auto)
 		&&(!mob.isMonster())
-		&&(!CMAble.qualifiesByLevel(mob,this))
+		&&(!disregardsArmorCheck(mob))
 		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
 		&&(mob.isMine(this))
 		&&(mob.location()!=null)

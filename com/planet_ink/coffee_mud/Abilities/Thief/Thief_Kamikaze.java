@@ -15,7 +15,7 @@ public class Thief_Kamikaze extends ThiefSkill
 	private static final String[] triggerStrings = {"KAMIKAZE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Kamikaze();}
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

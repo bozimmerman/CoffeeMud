@@ -114,6 +114,12 @@ public class StdAbility implements Ability, Cloneable
 		tickDown=tickTime;
 	}
 
+	protected boolean disregardsArmorCheck(MOB mob)
+	{
+		return (CMAble.getQualifyingLevel(mob.charStats().getCurrentClass().ID(),true,ID())>0);
+	}
+	
+	
 	public int adjustedLevel(MOB caster)
 	{
 		if(caster==null) return 1;

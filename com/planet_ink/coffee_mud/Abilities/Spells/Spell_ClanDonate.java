@@ -13,7 +13,7 @@ public class Spell_ClanDonate extends Spell
 	public Environmental newInstance(){return new Spell_ClanDonate();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 	protected int overrideMana(){return 5;}
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

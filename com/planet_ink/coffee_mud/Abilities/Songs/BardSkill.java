@@ -12,8 +12,6 @@ public class BardSkill extends StdAbility
 	public int quality(){return Ability.INDIFFERENT;}
 	public int classificationCode(){	return Ability.SKILL;}
 	public Environmental newInstance(){	return new BardSkill();}
-	protected boolean exemptFromArmorReq(){return false;}
-
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -22,8 +20,7 @@ public class BardSkill extends StdAbility
 
 		if((!auto)
 		&&(!mob.isMonster())
-		&&(!exemptFromArmorReq())
-		&&(!CMAble.qualifiesByLevel(mob,this))
+		&&(!disregardsArmorCheck(mob))
 		&&(!CoffeeUtensils.armorCheck(mob,CharClass.ARMOR_LEATHER))
 		&&(mob.isMine(this))
 		&&(mob.location()!=null)

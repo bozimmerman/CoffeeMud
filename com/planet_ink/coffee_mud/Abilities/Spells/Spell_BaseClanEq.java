@@ -23,7 +23,7 @@ public class Spell_BaseClanEq extends Spell
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	protected String type="";
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

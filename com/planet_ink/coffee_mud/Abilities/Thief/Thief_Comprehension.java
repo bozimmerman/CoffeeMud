@@ -15,7 +15,7 @@ public class Thief_Comprehension extends ThiefSkill
 	private static final String[] triggerStrings = {"COMPREHEND","COMPREHENSION"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Comprehension();}
-	protected boolean exemptFromArmorReq(){return true;}
+	protected boolean disregardsArmorCheck(MOB mob){return true;}
 	private Vector queue=new Vector();
 
 	
