@@ -24,33 +24,78 @@ public class Spell_BigMouth extends Spell
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
 		&&(msg.target()!=null)
-		&&(Stomach()!=null)
-		&&(msg.target() instanceof MOB))
+		&&(Stomach()!=null))
 		{
-			MOB target=(MOB)msg.target();
-			if(target.envStats().weight()<(mob.envStats().weight()/3))
+			if(msg.target().envStats().weight()<(mob.envStats().weight()/3))
 			{
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMAble.qualifyingClassLevel(mob,this)-CMAble.qualifyingLevel(mob,this))))
 				{
 					mob.tell("Your stomach is too full.");
 					return false;
 				}
-				boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(target)+target.adjustedArmor()));
-				if(!isHit)
-					mob.tell("You fail to eat "+target.name());
+				if(msg.target() instanceof MOB)
+				{
+					MOB target=(MOB)msg.target();
+					boolean isHit=(Dice.normalizeAndRollLess(msg.source().adjustedAttackBonus(target)+target.adjustedArmor()));
+					if(!isHit)
+					{
+						mob.tell("You fail to eat "+target.name());
+						return false;
+					}
+				}
 				else
-					msg.modify(msg.source(),msg.target(),msg.tool(),
-							  msg.sourceCode()|CMMsg.MASK_GENERAL,msg.sourceMessage(),
-							  CMMsg.MSG_NOISYMOVEMENT,msg.targetMessage(),
-							  msg.othersCode()|CMMsg.MASK_GENERAL,msg.othersMessage());
+				if(msg.target() instanceof Food)
+					return super.okMessage(myHost,msg);
+				else
+				if(!(msg.target() instanceof Item))
+					return super.okMessage(myHost,msg);
+						
+				msg.modify(msg.source(),msg.target(),msg.tool(),
+						  msg.sourceCode()|CMMsg.MASK_GENERAL,msg.sourceMessage(),
+						  CMMsg.MSG_NOISYMOVEMENT,msg.targetMessage(),
+						  msg.othersCode()|CMMsg.MASK_GENERAL,msg.othersMessage());
 			}
 			else
 			{
-				mob.tell(target.name()+" is too large to eat, even with the big mouth!");
+				mob.tell(msg.target().name()+" is just too large for you to eat!");
 				return false;
 			}
 		}
 		return super.okMessage(myHost,msg);
+	}
+
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if((affected==null)||(!(affected instanceof MOB)))
+		{
+			super.executeMsg(myHost,msg);
+			return;
+		}
+
+		MOB mob=(MOB)affected;
+
+		if((msg.amISource(mob))
+		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
+		&&(msg.target()!=null)
+		&&(Stomach()!=null)
+		&&(msg.target().envStats().weight()<(mob.envStats().weight()/2)))
+		{
+			if(msg.target() instanceof MOB)
+			{
+				MOB TastyMorsel=(MOB)msg.target();
+				Stomach().bringMobHere(TastyMorsel,false);
+				FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,Stomach().description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
+				Stomach().send(TastyMorsel,enterMsg);
+			}
+			if((msg.target() instanceof Item)
+			&&(!(msg.target() instanceof Food)))
+				Stomach().bringItemHere((Item)msg.target(),Item.REFUSE_MONSTER_EQ);
+		}
+		if((msg.amISource(mob))
+		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))
+			kill();
+
+		super.executeMsg(myHost,msg);
 	}
 
 	private Room myStomach = null;
@@ -143,35 +188,6 @@ public class Spell_BigMouth extends Spell
 		&&(((Room)affected).numInhabitants()==0))
 			unInvoke();
 		return true;
-	}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		if((affected==null)||(!(affected instanceof MOB)))
-		{
-			super.executeMsg(myHost,msg);
-			return;
-		}
-
-		MOB mob=(MOB)affected;
-
-		if((msg.amISource(mob))
-		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
-		&&(msg.target()!=null)
-		&&(msg.target() instanceof MOB)
-		&&(Stomach()!=null)
-		&&(msg.target().envStats().weight()<(mob.envStats().weight()/2)))
-		{
-			MOB TastyMorsel=(MOB)msg.target();
-			Stomach().bringMobHere(TastyMorsel,false);
-			FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach(),null,CMMsg.MSG_ENTER,Stomach().description(),CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
-			Stomach().send(TastyMorsel,enterMsg);
-		}
-		if((msg.amISource(mob))
-		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))
-			kill();
-
-		super.executeMsg(myHost,msg);
 	}
 
 	public void unInvoke()

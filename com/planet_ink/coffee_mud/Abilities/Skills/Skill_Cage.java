@@ -50,34 +50,37 @@ public class Skill_Cage extends StdAbility
 
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
+		if((!auto)&&(!mob.isASysOp(mob.location())))
+		{
+			boolean ok=false;
+			if((target.isMonster())
+			&&(Sense.isAnimalIntelligence(target)))
+			{
+				if(Sense.isSleeping(target)
+				||(!Sense.canMove(target))
+				||((target.amFollowing()==mob))
+				||(Sense.isBoundOrHeld(target)))
+					ok=true;
+			}
+			if(!ok)
+			{
+				mob.tell(target.name()+" won't seem to let you.");
+				return false;
+			}
 
-		boolean ok=false;
-		if((target.isMonster())
-		&&(Sense.isAnimalIntelligence(target)))
-		{
-			if(Sense.isSleeping(target)
-			||(!Sense.canMove(target))
-			||((target.amFollowing()==mob))
-			||(Sense.isBoundOrHeld(target)))
-				ok=true;
-		}
-		if(!ok)
-		{
-			mob.tell(target.name()+" won't seem to let you.");
-			return false;
-		}
+			if(cage==null)
+			{
+				mob.tell("Cage "+target.name()+" where?");
+				return false;
+			}
 
-		if(cage==null)
-		{
-			mob.tell("Cage "+target.name()+" where?");
-			return false;
+			if(mob.isInCombat())
+			{
+				mob.tell("Not while you are fighting!");
+				return false;
+			}
 		}
-
-		if(mob.isInCombat())
-		{
-			mob.tell("Not while you are fighting!");
-			return false;
-		}
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -94,7 +97,7 @@ public class Skill_Cage extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(cage.owner()!=null)
+				if((cage!=null)&&(cage.owner()!=null))
 				{
 					if(cage.owner() instanceof MOB)
 						((MOB)cage.owner()).addInventory((Item)caged);
@@ -102,6 +105,8 @@ public class Skill_Cage extends StdAbility
 					if(cage.owner() instanceof Room)
 						((Room)cage.owner()).addItem((Item)caged);
 				}
+				else
+					mob.addInventory((Item)caged);
 				FullMsg putMsg=new FullMsg(mob,cage,(Item)caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
 				if(mob.location().okMessage(mob,putMsg))
 				{
