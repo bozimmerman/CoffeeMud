@@ -98,7 +98,8 @@ public class Fighter_Cleave extends StdAbility
 					&&(vic.getVictim()==mob)
 					&&(vic!=mob)
 					&&(vic!=victim)
-					&&(!vic.amDead()))
+					&&(!vic.amDead())
+					&&(vic.rangeToTarget()==0))
 					{
 						nextTarget=vic;
 						break;
