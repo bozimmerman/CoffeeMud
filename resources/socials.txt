@@ -1,15 +1,15 @@
 ww	THANK <T-NAME>	You thank <T-NAME> heartily.	<S-NAME> thanks <T-NAME> heartily.	<S-NAME> thanks you heartily.	
-ms	CLAP SELF	You clap at your own performance.	<S-NAME> claps at his own performance.		
-ms	CLAP <T-NAME>	You clap at his performance.	<S-NAME> claps at <T-NAME>'s performance.	<S-NAME> claps at your performance.	
+ms	CLAP SELF	You clap at your own performance.	<S-NAME> claps at <S-HIS-HER> own performance.		
+ms	CLAP <T-NAME>	You clap at <S-HIS-HER> performance.	<S-NAME> claps at <T-NAME>'s performance.	<S-NAME> claps at your performance.	
 mo	BLUSH <T-NAME>	You get flustered upon seeing <T-HIM-HER>.	<S-NAME> blushes as he sees <T-NAME> here.	<S-NAME> blushes as he sees you here.  Such an effect on people!	
 mo	EYEBROW <T-NAME>	You raise your eyebrow at <T-NAME>.	<S-NAME> raises an eyebrow at <T-NAME>'s weird actions.	<S-NAME> raises an eyebrow at you.	
 mo	GRIN	You grin evilly.	<S-NAME> grins evilly.		
 mo	BLUSH	You ^rblush^?.	<S-NAME> ^rblushes^?.		
 ss	FART	Stinky!			
 ov	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAME>.	<S-NAME> bows before you.	
-ww	APOLOGIZE <T-NAME>	You might as well apologize because he sure as hell won't.	<S-NAME> apologizes to <T-NAME> with a very sincere look on his face.	<S-NAME> apologizes to you and begs for forgiveness.	
-mo	ROLL <T-NAME>	You look at <T-NAME> and roll your eyes disgustedly.	<S-NAME> rolls his eyes disgustedly at <T-NAME>.	<S-NAME> rolls his eyes disgustedly at you.	
-ot	FRENCH <T-NAME>		<S-NAME> takes <T-NAME> into his arms and gives <T-HIM-HER> a slow, passionate kiss that seems to last forever...	<S-NAME> takes you into his arms and gives <T-HIM-HER> a slow, passionate kiss that seems to last forever...	
+ww	APOLOGIZE <T-NAME>	You might as well apologize because he sure as hell won't.	<S-NAME> apologizes to <T-NAME> with a very sincere look on <S-HIS-HER> face.	<S-NAME> apologizes to you and begs for forgiveness.	
+mo	ROLL <T-NAME>	You look at <T-NAME> and roll your eyes disgustedly.	<S-NAME> rolls <S-HIS-HER> eyes disgustedly at <T-NAME>.	<S-NAME> rolls <S-HIS-HER> eyes disgustedly at you.	
+ot	FRENCH <T-NAME>		<S-NAME> takes <T-NAME> into <S-HIS-HER> arms and gives <T-HIM-HER> a slow, passionate kiss that seems to last forever...	<S-NAME> takes you into <S-HIS-HER> arms and gives <T-HIM-HER> a slow, passionate kiss that seems to last forever...	
 mo	SHRUG SELF	You shrug to yourself.	<S-NAME> shrugs to <S-HIM-HER>self.		
 ss	GASP <T-NAME>	You gasp as you realize what he did.	<S-NAME> gasps as he realizes what <T-NAME> did.	<S-NAME> gasps as he realizes what you did.	
 ss	CRY	Waaaaah..	<S-NAME> bursts into tears.		
@@ -32,7 +32,7 @@ ot	FONDLE
 ms	BURP	Burp.	<S-NAME> burps.	<S-NAME> burps in your general direction.	
 ww	APOLOGIZE	You apologize until you are blue in the face.	<S-NAME> apologizes profusely.		
 mo	BEAM <T-NAME>	You dazzle <T-NAME> with your smile.	<S-NAME> must like <T-NAME> a great deal to beam at <T-HIM-HER> so broadly!	<S-NAME> must like you a great deal to beam at you so broadly!	You look pretty silly beaming at imaginary friends...
-ss	CHUCKLE SELF	You chuckle at your own joke, since no one else would.	<S-NAME> chuckles at his own joke, since none of you would.		
+ss	CHUCKLE SELF	You chuckle at your own joke, since no one else would.	<S-NAME> chuckles at <S-HIS-HER> own joke, since none of you would.		
 ss	SNORT <T-NAME>	You snort derisively at <T-NAME>.	<S-NAME> snorts derisively at <T-NAME>.	<S-NAME> snorts at you.	
 mo	NOD	You nod.	<S-NAME> nods.		
 mo	SMIRK	You smirk.	<S-NAME> smirks.		
@@ -42,23 +42,23 @@ ss	COUGH <T-NAME>	You cough ostentatiously on <T-NAME>.	<S-NAME> coughs ostentat
 ms	CLAP	You clap your hands together.	<S-NAME> claps.		
 ot	HANDSHAKE <T-NAME>	You shake <T-NAME>'s hand.	<S-NAME> shakes <T-NAME>'s hand.	<S-NAME> shakes your hand.	
 ot	HANDSHAKE	You grin brightly, and shake hands with everyone in the room.		<S-NAME> grins smarmily, and shakes hands with you.	
-mo	PEER SELF	You get a little cross-eyed with your attempts to stare yourself down.	<S-NAME> peers at <S-HIM-HER>self--crossing his eyes in the process.		
-mo	SMIRK SELF	You smirk at yourself.  Okay.....	<S-NAME> smirks at his own 'wisdom'.		
+mo	PEER SELF	You get a little cross-eyed with your attempts to stare yourself down.	<S-NAME> peers at <S-HIM-HER>self--crossing <S-HIS-HER> eyes in the process.		
+mo	SMIRK SELF	You smirk at yourself.  Okay.....	<S-NAME> smirks at <S-HIS-HER> own 'wisdom'.		
 mo	EYEBROW	You raise an eyebrow at the notion.	<S-NAME> raises an eyebrow.		
 mt	HUG <T-NAME>	You hug <T-HIM-HER>.	<S-NAME> hugs <T-NAME>.	<S-NAME> hugs you.	
 ot	ZERBERT <T-NAME>	Ppptttthhhh!!	<S-NAME> raises <T-NAME>s shirt and blows some tummy!	<S-NAME> raises your shirt and blows into your tummy!	
 mo	SHRUG	You shrug helplessly.	<S-NAME> shrugs helplessly.		
 mo	SMILE SELF	You smile at yourself.	<S-NAME> smiles at <S-HIM-HER>self.		
-ov	BOW SELF	You kiss your toes.	<S-NAME> folds up like a jacknife and kisses his own toes.		
+ov	BOW SELF	You kiss your toes.	<S-NAME> folds up like a jacknife and kisses <S-HIS-HER> own toes.		
 ss	GASP SELF	You look at yourself and gasp!	<S-NAME> takes one look at <S-HIM-HER>self and gasps in astonishment!		
 ov	DANCE <T-NAME>	You lead <T-HIM-HER> to the dancefloor.	<S-NAME> sends <T-NAME> across the dancefloor.	<S-NAME> sends you across the dancefloor.	
-ss	CRY <T-NAME>	You cry on his shoulder.	<S-NAME> cries on <T-NAME>'s shoulder.	<S-NAME> cries on your shoulder.	
+ss	CRY <T-NAME>	You cry on <T-HIS-HER> shoulder.	<S-NAME> cries on <T-NAME>'s shoulder.	<S-NAME> cries on your shoulder.	
 ww	THANK SELF	You thank yourself since nobody else wants to!	<S-NAME> thanks <S-HIM-HER>self since you won't.		
 mo	BEAM	You beam delightedly at nothing in particular.	<S-NAME> beams broadly at nothing in particular.		
 mt	FRENCH				
 ov	BOW	You bow deeply.	<S-NAME> bows deeply.		
 ov	SHAKE SELF	You shake yourself.	<S-NAME> shakes <S-HIM-HER>self.		
-ov	SHAKE	You shake your head.	<S-NAME> shakes his head.		
+ov	SHAKE	You shake your head.	<S-NAME> shakes <S-HIS-HER> head.		
 mo	GREET <T-NAME>	You raise a hand in greeting to <T-NAME>.	<S-NAME> raises a hand in greeting to <T-NAME>.	<S-NAME> raises a hand in greeting to you.	
 ot	TICKLE SELF	You tickle yourself, how funny!		<S-NAME> tickles <S-HIM-HER>self.	
 ms	ROFL <T-NAME>	You fall to the floor laughing at <T-NAME>'s remark.	<S-NAME> rolls on the floor laughing at <T-NAME>'s antics!	<S-NAME> rolls on the floor laughing at your antics!	
@@ -75,23 +75,23 @@ ss	LAUGH	You laugh.	<S-NAME> laughs.
 mo	BEAM SELF	Well aren't you special?	<S-NAME> beams at <S-HIM-HER>self, obviously pleased.		
 mo	SMIRK <T-NAME>	You smirk at <T-NAME>.	<S-NAME> smirks at <T-NAME>.	<S-NAME> smirks at you.	
 mo	PONDER	You ponder the question.	<S-NAME> sits down and thinks deeply.		
-ws	MUTTER <T-NAME>	You mutter something to <T-NAME>.	<S-NAME> looks at <T-NAME> and mutters something nasty under his breath.	<S-NAME> looks at you and mutters something nasty under his breath.	
+ws	MUTTER <T-NAME>	You mutter something to <T-NAME>.	<S-NAME> looks at <T-NAME> and mutters something nasty under <S-HIS-HER> breath.	<S-NAME> looks at you and mutters something nasty under <S-HIS-HER> breath.	
 ss	SIGH SELF	You sigh at yourself.  You MUST be lonely.	<S-NAME> sighs at <S-HIM-HER>self.		
-mo	SHAKE <T-NAME>	You shake your head at <T-HIM-HER>.	<S-NAME> shakes his head at <T-NAME>.	<S-NAME> shakes his head at you.	
+mo	SHAKE <T-NAME>	You shake your head at <T-HIM-HER>.	<S-NAME> shakes <S-HIS-HER> head at <T-NAME>.	<S-NAME> shakes <S-HIS-HER> head at you.	
 ss	COUGH	You cough loudly.	<S-NAME> coughs loudly.		
-mo	SHRUG <T-NAME>	You shrug in response to his question.	<S-NAME> shrugs in response to <T-NAME>'s question.	<S-NAME> shrugs in response to your question.	
-mo	BLUSH SELF	You blush at your own folly.	<S-NAME> blushes as he notices his mistake.		
+mo	SHRUG <T-NAME>	You shrug in response to <T-HIS-HER> question.	<S-NAME> shrugs in response to <T-NAME>'s question.	<S-NAME> shrugs in response to your question.	
+mo	BLUSH SELF	You blush at your own folly.	<S-NAME> blushes as he notices <S-HIS-HER> mistake.		
 ws	MUTTER	You mutter quietly to yourself.	<S-NAME> mutters something quietly to <S-HIM-HER>self.		
 ss	SNEEZE	ACHOOOOOO!	<S-NAME> sneezes.	<S-NAME> sneezes.	
 ms	ROFL	You roll on the floor, laughing hysterically.	<S-NAME> falls to the ground and rolls around laughing hysterically.	<S-NAME> falls to the ground and rolls around laughing hysterically.	
 mo	WAVE	You wave happily.	<S-NAME> waves happily.		
-mo	GRIN SELF	You grin at yourself.  You must be getting very bad thoughts.	<S-NAME> grins at <S-HIM-HER>self. You must wonder what's in his mind.		
+mo	GRIN SELF	You grin at yourself.  You must be getting very bad thoughts.	<S-NAME> grins at <S-HIM-HER>self. You must wonder what's in <S-HIS-HER> mind.		
 mo	NOD <T-NAME>	You nod at <T-NAME>.	<S-NAME> nods at <T-NAME>.	<S-NAME> nods at you.	
 ss	GASP	You gasp in astonishment.	<S-NAME> gasps in astonishment.		
-mo	ROLL	You roll your eyes disgustedly.	<S-NAME> rolls his eyes disgustedly.		
+mo	ROLL	You roll your eyes disgustedly.	<S-NAME> rolls <S-HIS-HER> eyes disgustedly.		
 ss	CACKLE <T-NAME>	You cackle gleefully at <T-NAME>.	<S-NAME> cackles gleefully at <T-NAME>.	<S-NAME> cackles gleefully at you.  Better keep your distance from <S-HIM-HER>.	
 mo	GREET	You raise a hand in greeting.	<S-NAME> raises a hand in greeting.		
-ss	CACKLE	You cackle gleefully.	<S-NAME> throws back his head and cackles with insane glee!		
+ss	CACKLE	You cackle gleefully.	<S-NAME> throws back <S-HIS-HER> head and cackles with insane glee!		
 ov	WIGGY <T-NAME>	You wiggy <T-NAME>.	<S-NAME> wiggies <T-NAME>.	<S-NAME> wiggies all over you!	<S-NAME> wiggies with <S-HIM-HER>self.
 ss	SIGH	You sigh.	<S-NAME> sighs.		
 ss	SIGH <T-NAME>	You sigh as you think of <T-HIM-HER>.	<S-NAME> sighs at the sight of <T-NAME>.	<S-NAME> sighs as he thinks of you.  Touching, huh?	
