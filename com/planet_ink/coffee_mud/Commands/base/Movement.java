@@ -384,12 +384,16 @@ public class Movement extends Scriptable
 
 	public static void flee(MOB mob, String direction)
 	{
-		if((mob.location()==null)||(!mob.isInCombat()))
+		if(mob==null) return;
+		Room R=mob.location();
+		if((R==null)||(!mob.isInCombat()))
 		{
 			mob.tell(getScr("Movement","fleeerr1"));
 			return;
 		}
 
+		if(direction==null) direction="";
+		
 		int directionCode=-1;
 		if(!direction.equals("NOWHERE"))
 		{
@@ -398,8 +402,8 @@ public class Movement extends Scriptable
 				Vector directions=new Vector();
 				for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 				{
-					Exit thisExit=mob.location().getExitInDir(i);
-					Room thisRoom=mob.location().getRoomInDir(i);
+					Exit thisExit=R.getExitInDir(i);
+					Room thisRoom=R.getRoomInDir(i);
 					if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
 						directions.addElement(new Integer(i));
 				}
@@ -423,7 +427,9 @@ public class Movement extends Scriptable
 		int lostExperience=10;
 		if(mob.getVictim()!=null)
 		{
+			MOB victim=mob.getVictim();
 			String whatToDo=CommonStrings.getVar(CommonStrings.SYSTEM_PLAYERFLEE);
+			if(whatToDo==null) return;
 			if(whatToDo.startsWith("UNL"))
 			{
 				Vector V=Util.parse(whatToDo);
@@ -449,7 +455,7 @@ public class Movement extends Scriptable
 				lostExperience=Util.s_int(whatToDo);
 			else
 			{
-				lostExperience=10+((mob.envStats().level()-mob.getVictim().envStats().level()))*5;
+				lostExperience=10+((mob.envStats().level()-victim.envStats().level()))*5;
 				if(lostExperience<10) lostExperience=10;
 			}
 		}

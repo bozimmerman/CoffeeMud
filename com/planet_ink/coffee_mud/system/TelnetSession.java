@@ -18,6 +18,7 @@ public class TelnetSession extends Thread implements Session
 	private MOB mob;
 	private boolean killFlag=false;
 	private boolean needPrompt=false;
+	private boolean afkFlag=false;
 	private StringBuffer input=new StringBuffer("");
 	private boolean waiting=false;
 	private static final int SOTIMEOUT=300;
@@ -175,6 +176,17 @@ public class TelnetSession extends Thread implements Session
 			commands.insertElementAt(new Integer(tickDown),0);
 			cmdQ.addElement(commands);
 		}
+	}
+
+	public boolean afkFlag(){return afkFlag;}
+	public void setAfkFlag(boolean truefalse)
+	{
+		if(afkFlag==truefalse) return;
+		afkFlag=truefalse;
+		if(afkFlag)
+			println("You are now listed as AFK.");
+		else
+			println("You are no longer AFK.");
 	}
 
 	private void errorOut(Exception t)
@@ -1367,8 +1379,14 @@ public class TelnetSession extends Thread implements Session
 						waiting=true;
 						String input=readlineContinue();
 						if(input!=null)
+						{
+							setAfkFlag(false);
 							enque(0,Util.parse(input));
+						}
 						if(mob==null) break;
+						
+						if((!afkFlag())&&(getIdleMillis()>=600000))
+							setAfkFlag(true);
 
 						if((((MOB)mob).lastTickedDateTime()>lastStop)
 						||(!mob.isInCombat()))

@@ -79,6 +79,9 @@ public class CommandProcessor
 		case CommandSet.AFFECT:
 			Scoring.affected(mob);
 			break;
+		case CommandSet.AFK:
+			BasicSenses.afk(mob);
+			break;
 		case CommandSet.ANNOUNCE:
 			if(mob.isASysOp(mob.location()))
 				SysOpSkills.announce(mob,commands);
@@ -471,6 +474,9 @@ public class CommandProcessor
 			break;
 		case CommandSet.NOSOUND:
 			BasicSenses.sound(mob,0);
+			break;
+		case CommandSet.NOTEACH:
+			BasicSenses.noteach(mob);
 			break;
 		case CommandSet.OPEN:
 			Movement.open(mob,Util.combine(commands,1));

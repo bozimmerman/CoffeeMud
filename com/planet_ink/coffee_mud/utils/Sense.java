@@ -154,6 +154,7 @@ public class Sense
 			if((A!=null)&&(Util.bset(A.flags(),Ability.FLAG_BINDING)))
 			   return true;
 		}
+		return false;
 	}
 	public static boolean isOnFire(Environmental seen)
 	{

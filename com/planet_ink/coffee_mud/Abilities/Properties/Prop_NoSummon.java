@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 public class Prop_NoSummon extends Property
 {

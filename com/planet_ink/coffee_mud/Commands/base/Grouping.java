@@ -132,7 +132,10 @@ public class Grouping
 		if(x>=0) levelStr=levelStr.substring(x).trim();
 		msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
 		msg.append(Util.padRight(levelStr,7));
-		msg.append("] "+Util.padRight(who.name(),15));
+		String name=who.name();
+		if((who.session()!=null)&&(who.session().afkFlag()))
+			name=name+("(idle: "+(who.session().getIdleMillis()/1000)+"s)");
+		msg.append("] "+Util.padRight(name,15));
 		msg.append("\n\r");
 		return msg;
 	}

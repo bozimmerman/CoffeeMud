@@ -48,7 +48,7 @@ public class Skill_TwoWeaponFighting extends StdAbility
 		{
 			MOB mob=(MOB)affected;
 			
-			if(affectableStats.speed()>=2.0) 
+			if((affectableStats.speed()>=2.0)&&(lastWeapon!=null))
 				affectableStats.setSpeed(affectableStats.speed()-1.0);
 			if(middleOfTheFight)
 			{

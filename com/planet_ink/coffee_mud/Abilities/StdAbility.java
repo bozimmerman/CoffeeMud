@@ -593,6 +593,12 @@ public class StdAbility implements Ability, Cloneable
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student)
 	{
+		if(Util.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		{
+			teacher.tell("You are refusing to teach right now.");
+			student.tell(teacher.name()+" is refusing to teach right now.");
+			return false;
+		}
 		Ability yourAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
@@ -677,6 +683,12 @@ public class StdAbility implements Ability, Cloneable
 			student.tell("You do not have enough training sessions.");
 			return false;
 		}
+		if(Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		{
+			teacher.tell(student.name()+" is refusing training at this time.");
+			student.tell("You are refusing training at this time.");
+			return false;
+		}
 		int qLevel=CMAble.qualifyingLevel(student,this);
 		if(qLevel<0)
 		{
@@ -733,6 +745,19 @@ public class StdAbility implements Ability, Cloneable
 			return false;
 		}
 
+		if(Util.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		{
+			teacher.tell("You are refusing to teach right now.");
+			student.tell(teacher.name()+" is refusing to teach right now.");
+			return false;
+		}
+		if(Util.bset(student.getBitmap(),MOB.ATT_NOTEACH))
+		{
+			teacher.tell(student.name()+" is refusing training at this time.");
+			student.tell("You are refusing training at this time.");
+			return false;
+		}
+		
 		Ability yourAbility=student.fetchAbility(ID());
 		Ability teacherAbility=teacher.fetchAbility(ID());
 		if(yourAbility==null)

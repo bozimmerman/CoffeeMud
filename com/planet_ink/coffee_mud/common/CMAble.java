@@ -10,6 +10,7 @@ public class CMAble
 	public boolean autoGain=false;
 	public int defaultProfficiency=0;
 	public String defaultParm="";
+	public boolean isSecret=false;
 								
 	private static Hashtable classAbleMap=new Hashtable();
 	private static Hashtable lowestQualifyingLevelMap=new Hashtable();
@@ -19,15 +20,25 @@ public class CMAble
 											 String ability, 
 											 boolean autoGain)
 	{
-		addCharAbilityMapping(charClass,qualLevel,ability,0,"",autoGain);
+		addCharAbilityMapping(charClass,qualLevel,ability,0,"",autoGain,false);
 	}
+	public static void addCharAbilityMapping(String charClass, 
+											 int qualLevel,
+											 String ability, 
+											 int defaultProfficiency,
+											 String defParm,
+											 boolean autoGain)
+	{
+		addCharAbilityMapping(charClass,qualLevel,ability,0,defParm,autoGain,false);
+	}
+	
 	public static void addCharAbilityMapping(String charClass, 
 											 int qualLevel,
 											 String ability, 
 											 int defaultProfficiency,
 											 boolean autoGain)
 	{
-		addCharAbilityMapping(charClass,qualLevel,ability,0,"",autoGain);
+		addCharAbilityMapping(charClass,qualLevel,ability,0,"",autoGain,false);
 	}
 	
 	public static void delCharAbilityMapping(String charClass,
@@ -53,7 +64,8 @@ public class CMAble
 											 String ability, 
 											 int defaultProfficiency,
 											 String defaultParam,
-											 boolean autoGain)
+											 boolean autoGain,
+											 boolean secret)
 	{
 		delCharAbilityMapping(charClass,ability);
 		Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
@@ -61,6 +73,7 @@ public class CMAble
 		able.abilityName=ability;
 		able.qualLevel=qualLevel;
 		able.autoGain=autoGain;
+		able.isSecret=secret;
 		able.defaultParm=defaultParam;
 		ableMap.put(ability,able);
 		int arc_level=getQualifyingLevel("Archon",ability);
@@ -205,6 +218,64 @@ public class CMAble
 			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
 			if(ableMap.containsKey(ability))
 				return ((CMAble)ableMap.get(ability)).autoGain;
+		}
+		return false;
+	}
+	
+	public static boolean getSecretSkill(String charClass, 
+										 String ability)
+	{
+		if(classAbleMap.containsKey(charClass))
+		{
+			Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+			if(ableMap.containsKey(ability))
+				return ((CMAble)ableMap.get(ability)).isSecret;
+		}
+		if(classAbleMap.containsKey("All"))
+		{
+			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			if(ableMap.containsKey(ability))
+				return ((CMAble)ableMap.get(ability)).isSecret;
+		}
+		return false;
+	}
+	
+	public static boolean getAllSecretSkill(String ability)
+	{
+		if(classAbleMap.containsKey("All"))
+		{
+			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			if(ableMap.containsKey(ability))
+				return ((CMAble)ableMap.get(ability)).isSecret;
+		}
+		return false;
+	}
+	
+	public static boolean getSecretSkill(MOB mob,
+										 String ability)
+	{
+		if(classAbleMap.containsKey("All"))
+		{
+			Hashtable ableMap=(Hashtable)classAbleMap.get("All");
+			if(ableMap.containsKey(ability))
+			{
+				CMAble AB=(CMAble)ableMap.get(ability);
+				if(AB.isSecret) return true;
+			}
+		}
+		for(int c=0;c<mob.charStats().numClasses();c++)
+		{
+			CharClass C=mob.charStats().getMyClass(c);
+			String charClass=mob.charStats().getMyClass(c).ID();
+			if(classAbleMap.containsKey(charClass))
+			{
+				Hashtable ableMap=(Hashtable)classAbleMap.get(charClass);
+				if(ableMap.containsKey(ability))
+				{
+					CMAble AB=(CMAble)ableMap.get(ability);
+					if(!AB.isSecret) return false;
+				}
+			}
 		}
 		return false;
 	}

@@ -297,12 +297,16 @@ public class SocialProcessor
 			return;
 		}
 		if((mob.replyTo().Name().indexOf("@")<0)
+		&&(!mob.replyTo().isMonster())
 		&&(CMMap.getPlayer(mob.replyTo().Name())==null))
 		{
 			mob.tell(mob.replyTo().Name()+" is no longer logged in.");
 			return;
 		}
 		quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
+		if((mob.replyTo().session()!=null)
+		&&(mob.replyTo().session().afkFlag()))
+			mob.tell(mob.replyTo().name()+" is AFK at the moment.");
 	}
 
 	public static void tell(MOB mob, Vector commands)
@@ -355,6 +359,9 @@ public class SocialProcessor
 			}
 		}
 		quickSay(mob,target,combinedCommands,true,true);
+		if((target.session()!=null)
+		&&(target.session().afkFlag()))
+			mob.tell(target.name()+" is AFK at the moment.");
 	}
 
 	public static void give(MOB mob, Vector commands, boolean involuntarily)

@@ -194,11 +194,14 @@ public class CommandSet extends Hashtable
 	public static final int AUTOIMPROVEMENT=181;
 	public static final int KNOCK=182;
 	public static final int TRANSFER=183;
+	public static final int NOTEACH=184;
+	public static final int AFK=185;
 
 	private CommandSet()
 	{
 		put("AFFECT",new Integer(AFFECT));
 			put("AFF",new Integer(AFFECT));
+		put("AFK",new Integer(AFK));
 		put("ANNOUNCE",new Integer(ANNOUNCE));
 		put("ANSI",new Integer(ANSI));
 			put("COLOR",new Integer(ANSI));
@@ -354,6 +357,7 @@ public class CommandSet extends Hashtable
 			put("NOCOLOUR",new Integer(NOCOLOR));
 		put("NOFOLLOW",new Integer(NOFOLLOW));
 			put("NOFOL",new Integer(NOFOLLOW));
+		put("NOTEACH",new Integer(NOTEACH));
 		put("OPEN",new Integer(OPEN));
 			put("OP",new Integer(OPEN));
 			put("O",new Integer(OPEN));

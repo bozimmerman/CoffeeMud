@@ -259,6 +259,16 @@ public class BasicSenses
 			mob.tell("You cannot train with yourself!");
 			return;
 		}
+		if(Util.bset(teacher.getBitmap(),MOB.ATT_NOTEACH))
+		{
+			mob.tell(teacher.name()+" is refusing to teach right now.");
+			return;
+		}
+		if(Util.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
+		{
+			mob.tell("You are refusing training at this time.");
+			return;
+		}
 
 		if((abilityCode==106)
 		&&(!teacher.charStats().getCurrentClass().baseClass().equals(mob.charStats().getCurrentClass().baseClass())))
@@ -391,6 +401,29 @@ public class BasicSenses
 			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_AUTOEXITS));
 			mob.tell("Autoexits has been turned on.");
 		}
+	}
+
+	public static void noteach(MOB mob)
+	{
+		if(Util.bset(mob.getBitmap(),MOB.ATT_NOTEACH))
+		{
+			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_NOTEACH));
+			mob.tell("You are no longer teaching, training, or learning.");
+		}
+		else
+		{
+			mob.setBitmap(Util.setb(mob.getBitmap(),MOB.ATT_NOTEACH));
+			mob.tell("You may now teach, train, or learn.");
+		}
+	}
+
+	public static void afk(MOB mob)
+	{
+		if(mob.session()==null) return;
+		if(mob.session().afkFlag())
+			mob.session().setAfkFlag(false);
+		else
+			mob.session().setAfkFlag(true);
 	}
 
 	public static void brief(MOB mob)

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.utils.*;
 
 public class Prop_NoTeleportOut extends Property
 {
@@ -7,8 +8,6 @@ public class Prop_NoTeleportOut extends Property
 	public String name(){ return "Teleport OUT OF Spell Neutralizing";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 	public Environmental newInstance(){	return new Prop_NoTeleportOut();}
-
-	public String text(){ return Prop_NoTeleport.spellList; }
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

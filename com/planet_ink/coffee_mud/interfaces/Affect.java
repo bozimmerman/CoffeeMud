@@ -139,6 +139,8 @@ public interface Affect extends Cloneable
 	public static final int TYP_TELL=75;
 	public static final int TYP_SITMOVE=76;
 	public static final int TYP_KNOCK=77;
+	public static final int TYP_PRACTICE=78;
+	public static final int TYP_TEACH=79;
 	
 	public static final int TYP_CHANNEL=100; //(100-131 are channels)
 
@@ -223,5 +225,7 @@ public interface Affect extends Cloneable
 	public static final int MSG_TELL=MASK_GENERAL|TYP_TELL;
 	public static final int MSG_SITMOVE=MASK_MOVE|TYP_SITMOVE;
 	public static final int MSG_KNOCK=MASK_HANDS|MASK_SOUND|TYP_KNOCK;
+	public static final int MSG_PRACTICE=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_PRACTICE;
+	public static final int MSG_TEACH=MASK_HANDS|MASK_SOUND|MASK_MOUTH|MASK_MOVE|TYP_TEACH;
 }
 

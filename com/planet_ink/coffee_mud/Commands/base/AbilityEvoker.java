@@ -207,10 +207,20 @@ public class AbilityEvoker extends Scriptable
 			mob.tell(getScr("AbilityEvoker","teacherr4",student.name()));
 			return;
 		}
+		if(!student.isMonster())
+		{
+			try{
+			if(!student.session().confirm(getScr("AbilityEvoker","teachok",mob.name(),myAbility.name()),"Y"))
+			{
+				mob.tell(getScr("AbilityEvoker","teacherr5",student.name()));
+				return;
+			}
+			}catch(Exception e){return;}
+		}
 		FullMsg msg=new FullMsg(mob,student,null,Affect.MSG_SPEAK,null);
 		if(!mob.location().okAffect(mob,msg))
 			return;
-		msg=new FullMsg(mob,student,null,Affect.MSG_NOISYMOVEMENT,getScr("AbilityEvoker","teaches",myAbility.name()));
+		msg=new FullMsg(mob,student,null,Affect.MSG_TEACH,getScr("AbilityEvoker","teaches",myAbility.name()));
 		if(!mob.location().okAffect(mob,msg))
 			return;
 		myAbility.teach(mob,student);

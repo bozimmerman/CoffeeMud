@@ -65,6 +65,9 @@ public interface Session
 	public boolean killFlag();
 	public void setKillFlag(boolean truefalse);
 	
+	public boolean afkFlag();
+	public void setAfkFlag(boolean truefalse);
+	
 	public String blockingIn()
 		throws IOException;
 	public String readlineContinue()

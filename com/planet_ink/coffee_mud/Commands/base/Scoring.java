@@ -568,6 +568,7 @@ public class Scoring
 			Ability A=(Ability)a.nextElement();
 			int level=CMAble.qualifyingLevel(able,A);
 			if((CMAble.qualifiesByLevel(able,A))
+			&&(!CMAble.getSecretSkill(able,A.ID()))
 			&&(level>highestLevel)
 			&&(level<(CMAble.qualifyingClassLevel(able,A)+1))
 			&&(able.fetchAbility(A.ID())==null)
@@ -583,6 +584,7 @@ public class Scoring
 				Ability A=(Ability)a.nextElement();
 				if((CMAble.qualifiesByLevel(able,A))
 				   &&(CMAble.qualifyingLevel(able,A)==l)
+				   &&(!CMAble.getSecretSkill(able,A.ID()))
 				   &&(able.fetchAbility(A.ID())==null)
 				   &&(ofTypes.contains(new Integer(A.classificationCode()&mask))))
 				{

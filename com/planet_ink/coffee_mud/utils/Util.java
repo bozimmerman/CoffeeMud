@@ -538,11 +538,39 @@ public class Util
 	{
 		return ((num&bitmask)==bitmask);
 	}
+	public static boolean bset(long num, long bitmask)
+	{
+		return ((num&bitmask)==bitmask);
+	}
+	public static boolean bset(long num, int bitmask)
+	{
+		return ((num&bitmask)==bitmask);
+	}
 	public static int setb(int num, int bitmask)
 	{
 		return num|bitmask;
 	}
+	public static long setb(long num, int bitmask)
+	{
+		return num|bitmask;
+	}
+	public static long setb(long num, long bitmask)
+	{
+		return num|bitmask;
+	}
 	public static int unsetb(int num, int bitmask)
+	{
+		if(bset(num,bitmask))
+			num-=bitmask;
+		return num;
+	}
+	public static long unsetb(long num, long bitmask)
+	{
+		if(bset(num,bitmask))
+			num-=bitmask;
+		return num;
+	}
+	public static long unsetb(long num, int bitmask)
 	{
 		if(bset(num,bitmask))
 			num-=bitmask;

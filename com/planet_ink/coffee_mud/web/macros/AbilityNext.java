@@ -39,6 +39,9 @@ public class AbilityNext extends StdWebMacro
 				if(level<0)
 					okToShow=false;
 				else
+				if(CMAble.getSecretSkill(className,A.ID()))
+					okToShow=false;
+				else
 				{
 					String levelName=httpReq.getRequestParameter("LEVEL");
 					if((levelName!=null)&&(levelName.length()>0)&&(Util.s_int(levelName)!=level))
@@ -49,6 +52,9 @@ public class AbilityNext extends StdWebMacro
 			{
 				int level=CMAble.getQualifyingLevel("Archon",A.ID());
 				if(level<0)
+					okToShow=false;
+				else
+				if(CMAble.getAllSecretSkill(A.ID()))
 					okToShow=false;
 				else
 				{

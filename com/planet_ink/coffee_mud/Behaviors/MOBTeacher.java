@@ -37,6 +37,7 @@ public class MOBTeacher extends CombatAbilities
 	private void classAbles(MOB mob, Hashtable myAbles)
 	{
 		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
+		String className=mob.charStats().getCurrentClass().ID();
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -44,7 +45,7 @@ public class MOBTeacher extends CombatAbilities
 			if(A2==null)
 			{
 				if(((stdCharClass&&(CMAble.lowestQualifyingLevel(A.ID())>=0)))
-				   ||CMAble.qualifiesByLevel(mob,A))
+				   ||(CMAble.qualifiesByLevel(mob,A)&&(!CMAble.getSecretSkill(className,A.ID()))))
 				{
 					A=(Ability)A.copyOf();
 					A.setBorrowed(myMOB,true);

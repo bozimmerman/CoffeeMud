@@ -13,7 +13,6 @@ public class Prayer_DemonicConsumption extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public int holyQuality(){ return HOLY_EVIL;}
 	public Environmental newInstance(){	return new Prayer_DemonicConsumption();}
-	
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
