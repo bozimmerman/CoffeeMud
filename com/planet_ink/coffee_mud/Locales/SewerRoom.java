@@ -22,9 +22,4 @@ public class SewerRoom extends StdRoom
 	{
 		return new SewerRoom();
 	}
-	public int getMaxRange()
-	{
-		if(maxRange>=0) return maxRange;
-		return 5;
-	}
 }

@@ -1,2 +1,3 @@
-directed social hug didn't work?!
-elf is still constantly trying to stand up
+set range at 0 after combat -- how did he leave combat?
+pipes should not prevent speaking
+

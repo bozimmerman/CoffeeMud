@@ -22,11 +22,6 @@ public class SewerMaze extends StdMaze
 	{
 		return new SewerMaze();
 	}
-	public int getMaxRange()
-	{
-		if(maxRange>=0) return maxRange;
-		return 5;
-	}
 	public String getChildLocaleID(){return "SewerRoom";}
 	public Vector resourceChoices(){return new Vector();}
 }

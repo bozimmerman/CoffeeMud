@@ -43,7 +43,7 @@ RAND_PROG 90
 	endif
 ~
 
-QUEST_TIME_PROG diseased 1
+QUEST_TIME_PROG drowning 1
 	QUESTCHAT Never mind about the help.  I drowned.  Thanks.
 	mpquestend drowning
 ~

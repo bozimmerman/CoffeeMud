@@ -1,4 +1,3 @@
-
 Misc/Architecture:
 =================
 smokable stuff, mouth position pipes, smokable resources, etc. CARPENTRY add Smokepipe.
@@ -74,6 +73,8 @@ Additions/Updates
 
 Common Skills:
 ==============
+Tame
+	Skill to give animals names in their descript.
 Acupuncture
 	Relaxes a player and allows him to go longer before becoming fatigued
 	Might even help speed the recovery time from some illnesses like cold and flu.
@@ -130,6 +131,12 @@ Master Armorsmith
 	depending on race, allows you to make a few spiffy items. For 
 	example, Master Armorsmith would allow a Dwarf to make 
 	DwarvenFieldPlate, with added bonus to STR and protection
+Knowledge <common skill>
+	Ability to peruse the recipe file.
+Smoking
+	Ability to make smoke rings.
+Sexual Techniques
+	Gives mana bonuses following sex with someone who has this skill.
 Additions/Updates
 	locksmith BOLTLOCK a lock that can only be unlocked from one direction. 
 		Should be pickable from the other direction, just not unlocked with a key.
@@ -254,6 +261,8 @@ Additions/Updates
 	Pick should LOCK unlocked (but lockable) doors.
 Squatting
 	Makes an area/room your own for a little while
+
+
 
 Spells:
 =======
@@ -392,6 +401,7 @@ Mystic Light
 	autolighting for personal property
 	
 	
+
 Prayers/Chants:
 =======
 Mass Blindness
@@ -405,12 +415,15 @@ Summon Corpse
 	brings a corpse to you. The target corpse can be that of any 
 	MOB or any player in your group.
 
+
+
 Songs:
 ======
 Cadence
 	All group members get same movement rate regardless of encumbrance, etc.
 Mana Pool
 	All party members divide the cost of any mana consumption.
+
 
 
 Character Classes:
@@ -425,6 +438,7 @@ Bounty Hunter
 	Bring bounties to Judge (Hassan) for reward of xp/gold.
 Wild Mage
 	50% of the time, a spell cast will end up higher level, different spell.
+
 
 
 Diseases:
@@ -457,6 +471,8 @@ Alcoholism
 	suffecient....I hope.
 Allergies 
 	Nuff said
+
+
 	
 Mobs:
 =====
@@ -467,6 +483,8 @@ Hydra
 Rust Monster
 	Attacks turn metal items to rust.
 
+
+
 Group Magic:
 ============
 The idea here is for a collection of spells that have some very miraculous effects.  There can be any number of 
@@ -476,6 +494,8 @@ specific day of the year, phase of the moon, time of day, combination of any of 
 leads the spell and after several rounds, the effect takes place.  These are spells that only a true caster
 can learn and lead.  Mages would lead Mystic Rites, Clerics lead rituals, and druids would lead a chorus in
 order to achieve the effect they are going after.  
+
+
 
 Items:
 ======
@@ -494,6 +514,8 @@ Joined/linked items
 Items of Slaying  
 	One time use items, instantly slays a race the item was targeted for
 	Crumbles to dust on attack, Whether strike was successful or not
+
+
 
 High Tech:
 ==========

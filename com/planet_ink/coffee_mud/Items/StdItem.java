@@ -325,7 +325,8 @@ public class StdItem implements Item
 			}
 			if((amWearingAt(Item.ON_MOUTH))&&(affected instanceof MOB))
 			{
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
+				if(!(this instanceof Light))
+					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
 			}
 			if((!amWearingAt(Item.FLOATING_NEARBY))

@@ -850,6 +850,8 @@ public class Scoring
 	
 	private static void whereAdd(DVector V, String area, int i)
 	{
+		if(V.contains(area)) return;
+		
 		if(V.size()==0)
 			V.addElement(area,new Integer(i));
 		else
@@ -922,7 +924,7 @@ public class Scoring
 			}
 		}
 		msg.append("\n\r^HThe best areas for you to try appear to be: ^?\n\r");
-		for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-6)));i--)
+		for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-10)));i--)
 			msg.append(((String)scores.elementAt(i,1))+"\n\r");
 		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
 		if(!mob.isMonster())

@@ -507,6 +507,7 @@ public class StdContainer extends StdItem implements Container
 					&&(((Armor)E).canBeWornAt(Item.ABOUT_BODY)
 					   ||((Armor)E).canBeWornAt(Item.ON_ARMS)
 					   ||((Armor)E).canBeWornAt(Item.ON_LEGS)
+					   ||((Armor)E).canBeWornAt(Item.ON_HEAD)
 					   ||((Armor)E).canBeWornAt(Item.ON_TORSO)
 					   ||((Armor)E).canBeWornAt(Item.ON_WAIST)))
 						return true;
@@ -525,6 +526,14 @@ public class StdContainer extends StdItem implements Container
 				case CONTAIN_BODIES:
 					if(E instanceof DeadBody)
 						return true;
+					break;
+				case CONTAIN_SMOKEABLES:
+					if(E instanceof Item)
+					{
+						if((((Item)E).material()==EnvResource.RESOURCE_PIPEWEED)
+						||(((Item)E).material()==EnvResource.RESOURCE_HERBS))
+							return true;
+					}
 					break;
 				case CONTAIN_CAGED:
 					if(E instanceof CagedAnimal)
