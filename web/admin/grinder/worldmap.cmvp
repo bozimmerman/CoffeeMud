@@ -46,6 +46,7 @@ function showDiv(pass) {
     } 
   } 
 } 
+function preloadImages() {}
 
 function setVariables() {
   if (navigator.appName == "Netscape") {
@@ -67,18 +68,22 @@ function setVariables() {
 }
 
 function checkLocation() {
-  object="layersMenu";
-  yy=eval(y);
-  xx=eval(x);
-  eval(dS+object+sD+v+yy);
-  eval(dS+object+sD+w+xx);
-  setTimeout("checkLocation()",10);
+	object="layersMenu";
+	yy=eval(y);
+	xx=eval(x);
+	eval(dS+object+sD+v+yy);
+	eval(dS+object+sD+w+xx);
+	setTimeout("checkLocation()",10);
 }
 	//-->
 	</SCRIPT>
 </head>
 
-<BODY OnLoad="preloadImages();setVariables();checkLocation()">
+@if?CheckReqParm?MAPSTYLE=@
+	<BODY>
+@else@
+	<BODY OnLoad="preloadImages();setVariables();checkLocation()">
+@endif@
 
 <FORM NAME=SELECTAREA METHOD=POST ACTION="" TARGET=MENU>
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">

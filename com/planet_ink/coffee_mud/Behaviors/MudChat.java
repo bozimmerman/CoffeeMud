@@ -47,13 +47,17 @@ public class MudChat extends StdBehavior
 	// on tick or more.
 	private final static int RESPONSE_DELAY=2;
 
-	private static synchronized Vector getChatGroups()
+	private static synchronized Vector getChatGroups(String parms)
 	{
-		Vector rsc=(Vector)Resources.getResource("MUDCHAT GROUPS");
+		Vector rsc=null;
+		String filename="chat.dat";
+		int x=parms.indexOf("=");
+		if(x>0)	filename=parms.substring(0,x);
+		rsc=(Vector)Resources.getResource("MUDCHAT GROUPS-"+filename);
 		if(rsc==null)
 		{
-			rsc=loadChatData("chat.dat",new Vector());
-			Resources.submitResource("MUDCHAT GROUPS",rsc);
+			rsc=loadChatData(filename,new Vector());
+			Resources.submitResource("MUDCHAT GROUPS-"+filename,rsc);
 		}
 		return rsc;
 	}
@@ -191,8 +195,15 @@ public class MudChat extends StdBehavior
 		if(V!=null) return V;
 		V=matchChatGroup(CMClass.className(forMe),chatGroups);
 		if(V!=null) return V;
-		if(this.getParms().length()>0)
-			V=matchChatGroup(this.getParms(),chatGroups);
+		if(getParms().length()>0)
+		{
+			int x=getParms().indexOf("=");
+			if(x<0)
+				V=matchChatGroup(getParms(),chatGroups);
+			else
+			if(getParms().substring(x+1).trim().length()>0)
+				V=matchChatGroup(getParms().substring(x+1),chatGroups);
+		}
 		if(V!=null) return V;
 		return (Vector)chatGroups.elementAt(0);
 	}
@@ -369,7 +380,7 @@ public class MudChat extends StdBehavior
 		&&(!monster.isInCombat()))
 		{
 			Vector myResponses=null;
-			myChatGroup=getMyChatGroup(monster,getChatGroups());
+			myChatGroup=getMyChatGroup(monster,getChatGroups(getParms()));
 			String rest[]=new String[1];
 
 			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
@@ -485,7 +496,7 @@ public class MudChat extends StdBehavior
 				--tickDown;
 				if(tickDown<0)
 				{
-					myChatGroup=getMyChatGroup((MOB)ticking,getChatGroups());
+					myChatGroup=getMyChatGroup((MOB)ticking,getChatGroups(getParms()));
 				}
 			}
 			for(int t=responseQue.size()-1;t>=0;t--)
