@@ -677,6 +677,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(mob.getMoney()>=amount)
 		{
 			mob.setMoney(mob.getMoney()-amount);
+			mob.recoverEnvStats();
 			return;
 		}
 		Vector coinsRequired=new Vector();
@@ -706,6 +707,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if((amount>0)&&(mob.getMoney()>=amount))
 		{
 			mob.setMoney(mob.getMoney()-amount);
+			mob.recoverEnvStats();
 			return;
 		}
 		if(amount<0)

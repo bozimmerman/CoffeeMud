@@ -288,6 +288,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							setMoney(getMoney()-((Coins)affect.tool()).numberOfCoins());
 							if(getMoney()<0) setMoney(0);
+							recoverEnvStats();
 						}
 					    ExternalPlay.quickSay(this,mob,"Ok, your new balance is "+getBalance(affect.source())+" gold coins.",true,false);
 					}

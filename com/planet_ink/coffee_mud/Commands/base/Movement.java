@@ -12,13 +12,47 @@ public class Movement extends Scriptable
 	public static void go(MOB mob, Vector commands)
 	{
 		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
+		String doing=(String)commands.elementAt(0);
 		if(direction>=0)
 			move(mob,direction,false,false,false);
 		else
 		{
-			String doing=(String)commands.elementAt(0);
-			mob.tell(Character.toUpperCase(doing.charAt(0))+doing.substring(1)+" "+getScr("Movement","goerr"));
-			return;
+			boolean doneAnything=false;
+			if(commands.size()>2)
+				for(int v=1;v<commands.size();v++)
+				{
+					int num=1;
+					String s=(String)commands.elementAt(v);
+					if(Util.s_int(s)>0)
+					{
+						num=Util.s_int(s);
+						v++;
+						s=(String)commands.elementAt(v);
+					}
+					direction=Directions.getGoodDirectionCode(s);
+					if(direction>=0)
+					{
+						doneAnything=true;
+						for(int i=0;i<num;i++)
+						{
+							if(mob.isMonster())
+							{
+								if(!move(mob,direction,false,false,false)) 
+									return;
+							}
+							else
+							{
+								Vector V=new Vector();
+								V.addElement(Directions.getDirectionName(direction));
+								mob.session().enque(0,V);
+							}
+						}
+					}
+					else
+						break;
+				}
+			if(!doneAnything)
+				mob.tell(Util.capitalize(doing)+" "+getScr("Movement","goerr"));
 		}
 	}
 

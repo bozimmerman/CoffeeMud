@@ -462,7 +462,7 @@ public class CommonStrings extends Scriptable
 	"extremely deadly",		//11
 	"a dealer of death",	//12	
 	"a master of death",	//13
-	"you are death incarnate!"//14
+	"death incarnate!"		//14
 	};
 	public final static String[] missStrs1={
 		"<S-NAME> fire(s) at <T-NAMESELF> with <TOOLNAME> and miss(es).", // 0

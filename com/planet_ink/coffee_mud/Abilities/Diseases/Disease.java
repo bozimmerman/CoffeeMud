@@ -22,12 +22,13 @@ public class Disease extends StdAbility
 	protected String DISEASE_DONE(){return "Your disease has run its coarse.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
+	protected boolean DISEASE_STD(){return false;}
+	protected boolean DISEASE_TOUCHSPREAD(){return false;}
 
 	protected int diseaseTick=DISEASE_DELAY();
 
-	protected boolean catchIt(MOB mob)
+	protected boolean catchIt(MOB mob, MOB target)
 	{
-		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
 		if((target!=null)&&(target!=invoker)&&(target!=mob)&&(target.fetchAffect(ID())==null))
 			if(Dice.rollPercentage()>target.charStats().getStat(CharStats.SAVE_DISEASE))
 			{
@@ -36,6 +37,11 @@ public class Disease extends StdAbility
 				return true;
 			}
 		return false;
+	}
+	protected boolean catchIt(MOB mob)
+	{
+		MOB target=mob.location().fetchInhabitant(Dice.roll(1,mob.location().numInhabitants(),-1));
+		return catchIt(mob,target);
 	}
 
 	public String text(){return "DISEASE";}
@@ -49,6 +55,34 @@ public class Disease extends StdAbility
 		super.unInvoke();
 		if(canBeUninvoked())
 			mob.tell(mob,null,DISEASE_DONE());
+	}
+
+	public void affect(Affect affect)
+	{
+		if((affected==null)||(!(affected instanceof MOB)))
+			return;
+
+		MOB mob=(MOB)affected;
+
+		// when this spell is on a MOBs Affected list,
+		// it should consistantly prevent the mob
+		// from trying to do ANYTHING except sleep
+		if((affect.amISource(mob))
+		&&(DISEASE_TOUCHSPREAD())
+		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&(affect.tool()!=null)
+		&&(affect.tool() instanceof Weapon)
+		&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
+		&&(affect.source().fetchWieldedItem()==null)
+		&&(affect.target()!=null)
+		&&(affect.target() instanceof MOB)
+		&&(affect.target()!=affect.source())
+		&&(Dice.rollPercentage()>(((MOB)affect.target()).charStats().getStat(CharStats.SAVE_DISEASE)+75)))
+		{
+			Ability A=(Ability)this.copyOf();
+			A.invoke(mob,affect.target(),true);
+		}
+		super.affect(affect);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

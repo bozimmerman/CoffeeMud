@@ -38,7 +38,7 @@ public class Directions
 			case DOWN:
 				return "Down";
 			case GATE:
-				return "Here";
+				return "There";
 		}
 		return "";
 	}
@@ -102,6 +102,9 @@ public class Directions
 		else
 		if(("THERE").startsWith(theDir.toUpperCase()))
 		   return GATE;
+		else
+		if(("PORTAL").startsWith(theDir.toUpperCase()))
+		   return GATE;
 		
 		return code;
 	}
@@ -153,7 +156,7 @@ public class Directions
 		case DOWN:
 			return "below";
 		case GATE:
-			return "here";
+			return "there";
 		}
 		return "";
 	}

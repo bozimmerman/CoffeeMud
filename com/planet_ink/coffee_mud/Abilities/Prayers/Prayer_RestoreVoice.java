@@ -28,7 +28,7 @@ public class Prayer_RestoreVoice extends Prayer
 				if((!Sense.canSpeak(newMOB))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1))))
+					  &&(A.invoker().envStats().level()<=caster.envStats().level()+10))))
 						offenders.addElement(A);
 			}
 		}

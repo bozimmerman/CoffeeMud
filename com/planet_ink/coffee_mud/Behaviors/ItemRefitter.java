@@ -77,6 +77,7 @@ public class ItemRefitter extends StdBehavior
 		{
 			int cost=cost((Item)affect.tool());
 			source.setMoney(source.getMoney()-cost);
+			source.recoverEnvStats();
 			((Item)affect.tool()).baseEnvStats().setHeight(0);
 			((Item)affect.tool()).recoverEnvStats();
 			

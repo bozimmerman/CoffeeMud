@@ -84,6 +84,7 @@ public class StdMOB implements MOB
 	}
 
 	protected int minuteCounter=0;
+	private int movesSinceTick=0;
 
 	// the core state values
 	public CharState curState=new DefaultCharState();
@@ -1025,6 +1026,9 @@ public class StdMOB implements MOB
 
 			switch(affect.sourceMinor())
 			{
+			case Affect.TYP_ENTER:
+				movesSinceTick++;
+				break;
 			case Affect.TYP_JUSTICE:
 				if((affect.target()!=null)
 				&&(isInCombat())
@@ -1685,6 +1689,8 @@ public class StdMOB implements MOB
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 	
+	public int movesSinceLastTick(){return movesSinceTick;}
+	
 	public boolean tick(int tickID)
 	{
 		if(pleaseDestroy)
@@ -1692,6 +1698,7 @@ public class StdMOB implements MOB
 
 		if(tickID==Host.MOB_TICK)
 		{
+			movesSinceTick=0;
 			if(amDead)
 			{
 				if(isMonster())

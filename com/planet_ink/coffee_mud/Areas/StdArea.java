@@ -220,7 +220,7 @@ public class StdArea implements Area
 		}
 		month=m;
 	}
-	public int getMoonPhase(){return (int)Math.round(Util.mul(Util.div(getDayOfMonth(),Area.DAYS_IN_MONTH),8));}
+	public int getMoonPhase(){return (int)Math.round(Math.floor(Util.mul(Util.div(getDayOfMonth(),Area.DAYS_IN_MONTH),8.0)));}
 	
 	public int getDayOfMonth(){return day;}
 	public void setDayOfMonth(int d){day=d;}

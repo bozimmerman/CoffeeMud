@@ -83,6 +83,7 @@ public class ItemMender extends StdBehavior
 		{
 			int cost=cost((Item)affect.tool());
 			source.setMoney(source.getMoney()-cost);
+			source.recoverEnvStats();
 			((Item)affect.tool()).setUsesRemaining(100);
 			FullMsg newMsg=new FullMsg(observer,source,affect.tool(),Affect.MSG_GIVE,"<S-NAME> give(s) "+affect.tool().name()+" and "+cost+" coins to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);

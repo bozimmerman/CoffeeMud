@@ -53,7 +53,7 @@ public class Spell_FutureDeath extends Spell
 				if((!msg.wasModified())&&(!msg2.wasModified()))
 				{
 					str=null;
-					switch(Dice.roll(1,10,-1))
+					switch(Dice.roll(1,10,0))
 					{
 					case 1:
 						str="<S-NAME> grab(s) at <S-HIS-HER> throat and choke(s) to death!";
@@ -68,7 +68,7 @@ public class Spell_FutureDeath extends Spell
 						str="<S-NAME> gasp(s) for breathe, as if underwater, and drown(s).";
 						break;
 					case 5:
-						str="<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> dies.";
+						str="<S-NAME> kneel(s) and lower(s) <S-HIS-HER> head, as if on the block.  In one last whimper, <S-HE-SHE> die(s).";
 						break;
 					case 6:
 						str="<S-NAME> jerk(s) as if being struck by a thousand arrows, and die(s).";

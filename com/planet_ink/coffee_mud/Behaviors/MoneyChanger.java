@@ -66,6 +66,7 @@ public class MoneyChanger extends StdBehavior
 			if(value>20) numberToTake=value/20;
 			value-=numberToTake;
 			observer.setMoney(observer.getMoney()-value);
+			observer.recoverEnvStats();
 			if(value>0)
 			{
 				Banker B=(Banker)CMClass.getMOB("StdBanker");

@@ -142,19 +142,21 @@ public class Monk extends StdCharClass
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((affected instanceof MOB)&&(!Sense.isSleeping(affected))&&(Sense.isSitting(affected)))
+		if(affected instanceof MOB)
 		{
-			MOB mob=(MOB)affected;
-			int attArmor=(((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
-			affectableStats.setArmor(affectableStats.armor()-attArmor);
-		}
-		else
-		if((affected instanceof MOB)&&(!anyWeapons((MOB)affected)))
-		{
-			affectableStats.setSpeed(affectableStats.speed()+1.0);
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((MOB)affected).charStats().getClassLevel(this));
-			if(affected.fetchAffect("Falling")!=null)
-				affectableStats.setWeight(0);
+			if((!Sense.isSleeping(affected))&&(!Sense.isSitting(affected)))
+			{
+				MOB mob=(MOB)affected;
+				int attArmor=(((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1)*(mob.charStats().getClassLevel(this)-1);
+				affectableStats.setArmor(affectableStats.armor()-attArmor);
+			}
+			if(!anyWeapons((MOB)affected))
+			{
+				affectableStats.setSpeed(affectableStats.speed()+1.0);
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((MOB)affected).charStats().getClassLevel(this));
+				if(affected.fetchAffect("Falling")!=null)
+					affectableStats.setWeight(0);
+			}
 		}
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

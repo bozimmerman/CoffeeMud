@@ -821,6 +821,13 @@ public class TheFight
 		}
 	}
 
+	private static String pickMsg(String msg, String oldHit, String newHit)
+	{
+		if(msg==null) return null;
+		if(msg.equals(oldHit)) return newHit;
+		return oldHit;
+	}
+	
 	public static void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
 		if(source==null) return;
@@ -830,11 +837,12 @@ public class TheFight
 		if(success)
 		{
             // calculate Base Damage (with Strength bonus)
+			String oldHitString="^F"+weapon.hitString(damageInt)+"^?";
 			FullMsg msg=new FullMsg(source,
 									target,
 									weapon,
 									Affect.MASK_HURT+damageInt,
-									"^F"+weapon.hitString(damageInt)+"^?");
+									oldHitString);
 			msg.tagModified(true);
 			// why was there no okaffect here?
 			Room room=source.location();
@@ -849,11 +857,11 @@ public class TheFight
 							   msg.target(),
 							   msg.tool(),
 							   msg.sourceCode(),
-							   newMsg,
+							   pickMsg(msg.sourceMessage(),oldHitString,newMsg),
 							   Affect.MASK_HURT+damageInt,
-							   newMsg,
+							   pickMsg(msg.targetMessage(),oldHitString,newMsg),
 							   msg.othersCode(),
-							   newMsg);
+							   pickMsg(msg.othersMessage(),oldHitString,newMsg));
 				}
 				if((source.mayIFight(target))
 				&&(source.location()==room)

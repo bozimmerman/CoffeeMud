@@ -126,6 +126,7 @@ public interface MOB
 	public void setWimpHitPoint(int newVal);
 	public void setQuestPoint(int newVal);
 	public long lastTickedDateTime();
+	public int movesSinceLastTick();
 	
 	// location!
 	public Room getStartRoom();

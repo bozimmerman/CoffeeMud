@@ -22,6 +22,8 @@ public class Disease_Flu extends Disease
 	protected String DISEASE_DONE(){return "Your flu clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a flu.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> sneeze(s). AAAAAAAAAAAAAACHOOO!!!!";}
+	protected boolean DISEASE_STD(){return false;}
+	protected boolean DISEASE_TOUCHSPREAD(){return false;}
 	
 	public boolean tick(int tickID)
 	{

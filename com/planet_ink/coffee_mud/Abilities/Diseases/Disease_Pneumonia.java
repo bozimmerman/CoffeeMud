@@ -22,6 +22,8 @@ public class Disease_Pneumonia extends Disease
 	protected String DISEASE_DONE(){return "Your pneumonia clears up.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with pneumonia.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> shake(s) feverishly.";}
+	protected boolean DISEASE_STD(){return false;}
+	protected boolean DISEASE_TOUCHSPREAD(){return false;}
 	
 	public boolean tick(int tickID)
 	{
