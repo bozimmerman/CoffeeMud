@@ -34,10 +34,10 @@
 	@endif@
 	<B>Enter Room ID of External room:</B><BR>
 	<INPUT TYPE=TEXT NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
-	<INPUT TYPE=SUBMIT VALUE="Link" ONCLICK="Clicked('/grinder/linkedarea.cmvp');">
+	<INPUT TYPE=SUBMIT NAME=SUBMITLINK VALUE="Link" ONCLICK="Clicked('/grinder/linkedarea.cmvp');">
 	</TD>
 	<TD WIDTH=40% ALIGN=RIGHT>
-	<INPUT TYPE=BUTTON VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
+	<INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
 	</TD>
 </TR>
 </TABLE>

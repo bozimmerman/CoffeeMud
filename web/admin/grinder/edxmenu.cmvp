@@ -30,9 +30,9 @@
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
 <B>@RequestParameter?LINK@ Exit From @RequestParameter?ROOM@ (@RoomName@) to @RequestParameter?LINKSTO@</B>
 <BR>
-<INPUT TYPE=BUTTON VALUE="Edit Exit" ONCLICK="Clicked('editexit.cmvp');">
-<INPUT TYPE=BUTTON VALUE="Delete Exit" ONCLICK="Clicked('delexit.cmvp');">
-<INPUT TYPE=BUTTON VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
+<INPUT TYPE=BUTTON NAME=EDITEXIT VALUE="Edit Exit" ONCLICK="Clicked('editexit.cmvp');">
+<INPUT TYPE=BUTTON NAME=DELEXIT VALUE="Delete Exit" ONCLICK="Clicked('delexit.cmvp');">
+<INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
 </BODY>
 </HTML>
 @endif@

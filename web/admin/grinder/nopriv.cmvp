@@ -18,7 +18,7 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <B><FONT COLOR=RED>Your account access does not allow you to use 
 the MUDGrinder system.</FONT><P>
-<INPUT TYPE=SUBMIT VALUE="Continue">
+<INPUT TYPE=SUBMIT NAME=CONTINUE VALUE="Continue">
 </FORM>
 </body>
 </HTML>

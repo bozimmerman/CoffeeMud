@@ -28,11 +28,11 @@
 	<TD WIDTH=50% ALIGN=LEFT>
 	&nbsp;&nbsp;&nbsp;&nbsp;
 	<INPUT TYPE=TEXT NAME=QUICKFIND VALUE="">
-	<INPUT TYPE=SUBMIT VALUE="Quick Find" ONCLICK="Clicked('/grinder/quickfind.cmvp');">
+	<INPUT TYPE=SUBMIT NAME=FINDIT VALUE="Quick Find" ONCLICK="Clicked('/grinder/quickfind.cmvp');">
 	</TD>
 	<TD WIDTH=40% ALIGN=RIGHT>
-		<INPUT TYPE=BUTTON VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
-		<INPUT TYPE=BUTTON VALUE="Log Out" ONCLICK="Clicked('/index.cmvp');">
+		<INPUT TYPE=BUTTON NAME=EDITAREA VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
+		<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Log Out" ONCLICK="Clicked('/index.cmvp');">
 	</TD>
 </TR>
 </TABLE>

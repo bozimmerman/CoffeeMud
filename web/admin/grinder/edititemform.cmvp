@@ -177,7 +177,7 @@
 	</TR>
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Flags:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2>
+	    <TD WIDTH=450 COLSPAN=2><FONT COLOR=WHITE>
 			@if?ItemData?ISWEAPON@
 			<INPUT TYPE=CHECKBOX NAME=ISTWOHANDED @ItemData?ISTWOHANDED@>Is Two-Handed<BR>
 			@endif@
@@ -192,6 +192,7 @@
 			<INPUT TYPE=CHECKBOX NAME=ISEVIL @ItemData?ISEVIL@>Is Evil<BR>
 			<INPUT TYPE=CHECKBOX NAME=ISGOOD @ItemData?ISGOOD@>Is Good<BR>
 			<INPUT TYPE=CHECKBOX NAME=ISTRAPPED @ItemData?ISTRAPPED@>Is Trapped<BR>
+			</FONT>
 	    </TD>
 	</TR>
 	<TR>
@@ -226,10 +227,11 @@
 	    <SELECT NAME=WORNDATA MULTIPLE>
 	    @ItemData?WORNDATA@
 	    </SELECT>
-	    <BR>
+	    <BR><FONT COLOR=WHITE>
 	    <INPUT TYPE=RADIO NAME=ISTWOHANDED value="on" @ItemData?ISTWOHANDED@>Is worn on All above Locations.
 	    <BR>
 	    <INPUT TYPE=RADIO NAME=ISTWOHANDED value="" @ItemData?ISUNTWOHANDED@>Is worn on ANY of the above Locations.
+	    </FONT>
 	    </TD>
 	</TR>
 	<TR>
@@ -346,9 +348,10 @@
 	</TR>
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ranges:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2>
+	    <TD WIDTH=450 COLSPAN=2><FONT COLOR=WHITE>
 	    Min: <INPUT TYPE=TEXT NAME=MINRANGE SIZE=3 VALUE="@ItemData?MINRANGE@">&nbsp;&nbsp;
 	    Max: <INPUT TYPE=TEXT NAME=MAXRANGE SIZE=3 VALUE="@ItemData?MAXRANGE@">
+	    </FONT>
 	    </TD>
 	</TR>
 	@if?ItemData?ISWAND@
@@ -368,9 +371,10 @@
 	@else@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Ammunition (''=not required):</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2>
+	    <TD WIDTH=450 COLSPAN=2><FONT COLOR=WHITE>
 	    Type: <INPUT TYPE=TEXT NAME=AMMOTYPE SIZE=7 VALUE="@ItemData?AMMOTYPE@">&nbsp;&nbsp;
 	    Max: <INPUT TYPE=TEXT NAME=AMMOCAP SIZE=3 VALUE="@ItemData?AMMOCAP@">
+	    </FONT>
 	    </TD>
 	</TR>
 	@if?CheckReqParm?AMMOTYPE=@
@@ -520,7 +524,7 @@
 @endif@
 <TR>
     <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
-	<INPUT TYPE=SUBMIT VALUE="Finished">
+	<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
 	</CENTER>
 	</TD>
 </TR>

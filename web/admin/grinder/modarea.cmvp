@@ -3,7 +3,7 @@
 @if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <HTML>
 <FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
-	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/map.cmvp?@RequestParametersEncoded@ #@RequestParameterEncoded?ROOM@" NAME=MAP>
+	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/map.cmvp?@RequestParametersEncoded@ @if?!CheckReqParm?ROOM=@#@RequestParameterEncoded?ROOM@ @endif@" NAME=MAP>
 	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/menu1.cmvp?@RequestParametersEncoded@" NAME=MENU>
 </FRAMESET>
 </HTML>

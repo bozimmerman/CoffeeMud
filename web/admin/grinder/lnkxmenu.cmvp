@@ -36,12 +36,12 @@
 <B>Unused @RequestParameter?LINK@ Exit From @RequestParameter?ROOM@ (@RoomName@)</B>
 <BR>
 @if?!CheckReqParm?OLDLINK=@
-<INPUT TYPE=BUTTON VALUE="Link to @RequestParameter?OLDROOM@ (@RequestParameter?OLDLINK@)" ONCLICK="Clicked('/grinder/linkexit.cmvp');">
+<INPUT TYPE=BUTTON NAME=LINKTOOLDLINK VALUE="Link to @RequestParameter?OLDROOM@ (@RequestParameter?OLDLINK@)" ONCLICK="Clicked('/grinder/linkexit.cmvp');">
 @else@
-<INPUT TYPE=BUTTON VALUE="Link Areas" ONCLICK="LinkExternally('/grinder/linkarea.cmvp');">
+<INPUT TYPE=BUTTON NAME=LINKTOAREA VALUE="Link Areas" ONCLICK="LinkExternally('/grinder/linkarea.cmvp');">
 @endif@
-<INPUT TYPE=BUTTON VALUE="Create New Room" ONCLICK="Clicked('/grinder/createroom.cmvp');">
-<INPUT TYPE=BUTTON VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
+<INPUT TYPE=BUTTON NAME=NEWROOM VALUE="Create New Room" ONCLICK="Clicked('/grinder/createroom.cmvp');">
+<INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
 </BODY>
 </HTML>
 @endif@
