@@ -30,7 +30,7 @@ public class MudChat extends StdBehavior
 	private MOB lastReactedTo=null;
 	private Vector responseQue=new Vector();
 	private int tickDown=3;
-	private final static int TALK_WAIT_DELAY=30;
+	private final static int TALK_WAIT_DELAY=15;
 	private int talkDown=0;
 	// responseQue is a qued set of commands to
 	// run through the standard command processor,
@@ -41,12 +41,19 @@ public class MudChat extends StdBehavior
 	{
 		if(resourceLoaded) return;
 		resourceLoaded=true;
-		StringBuffer rsc=Resources.getFileResource("chat.dat");
-		Vector V=new Vector();
-		V.addElement("");
-		chatGroups.addElement(V);
+		loadChatData("chat.dat");
+	}
+
+  private static synchronized void loadChatData(String resourceName)
+  {
+		Log.sysOut("MudChat","Load resource file :"+resourceName);
+		StringBuffer rsc=Resources.getFileResource(resourceName);
+		Vector currentChatGroup=new Vector();
+		Vector otherChatGroup;
+		currentChatGroup.addElement("");
+		chatGroups.addElement(currentChatGroup);
 		String str=nextLine(rsc);
-		Vector C=null;
+		Vector currentChatPattern=null;
 		while(str!=null)
 		{
 			if(str.length()>0)
@@ -58,23 +65,30 @@ public class MudChat extends StdBehavior
 			case '(':
 			case '[':
 			case '{':
-				C=new Vector();
-				C.addElement(str);
-				if(V!=null)
-					V.addElement(C);
+				currentChatPattern=new Vector();
+				currentChatPattern.addElement(str);
+				if(currentChatGroup!=null)
+					currentChatGroup.addElement(currentChatPattern);
 				break;
 			case '>':
-				V=new Vector();
-				V.addElement(str.substring(1).trim());
-				chatGroups.addElement(V);
-				C=null;
+				currentChatGroup=new Vector();
+				currentChatGroup.addElement(str.substring(1).trim());
+				chatGroups.addElement(currentChatGroup);
+				currentChatPattern=null;
 				break;
 			case '@':
-				Vector V1=matchChatGroup(str.substring(1).trim());
-				if(V1==null)
-					V1=(Vector)chatGroups.elementAt(0);
-				for(int v1=1;v1<V1.size();v1++)
-					V.addElement(V1.elementAt(v1));
+				otherChatGroup=matchChatGroup(str.substring(1).trim());
+				if(otherChatGroup==null)
+					otherChatGroup=(Vector)chatGroups.elementAt(0);
+				for(int v1=1;v1<otherChatGroup.size();v1++)
+					currentChatGroup.addElement(otherChatGroup.elementAt(v1));
+				break;
+			case '%':
+				otherChatGroup=includeChatData(str.substring(1).trim());
+				for(int v1=1;v1<otherChatGroup.size();v1++)
+					currentChatGroup.addElement(otherChatGroup.elementAt(v1));
+for(int i=1;i<currentChatGroup.size();i++)
+	System.out.println(i+")"+(String)((Vector)currentChatGroup.elementAt(i)).firstElement());
 				break;
 			case '0':
 			case '1':
@@ -86,12 +100,52 @@ public class MudChat extends StdBehavior
 			case '7':
 			case '8':
 			case '9':
-				if(C!=null)
-					C.addElement(str);
+				if(currentChatPattern!=null)
+					currentChatPattern.addElement(str);
 				break;
 			}
 			str=nextLine(rsc);
 		}
+	}
+
+	private static Vector includeChatData(String resourceName)
+	{
+		StringBuffer rsc=Resources.getFileResource(resourceName);
+		Vector currentChatGroup=new Vector();
+		String str=nextLine(rsc);
+		Vector currentChatPattern=null;
+		while(str!=null)
+		{
+			if(str.length()>0)
+			switch(str.charAt(0))
+			{
+			case '"':
+				Log.sysOut("MudChat",str.substring(1));
+				break;
+			case '(':
+			case '[':
+			case '{':
+				currentChatPattern=new Vector();
+				currentChatPattern.addElement(str);
+				currentChatGroup.addElement(currentChatPattern);
+				break;
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				if(currentChatPattern!=null)
+					currentChatPattern.addElement(str);
+				break;
+			}
+			str=nextLine(rsc);
+		}
+		return currentChatGroup;
 	}
 
 	public static String nextLine(StringBuffer tsc)
