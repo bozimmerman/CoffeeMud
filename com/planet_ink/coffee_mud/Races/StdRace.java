@@ -337,24 +337,29 @@ public class StdRace implements Race
 	public void reRoll(MOB mob, CharStats C)
 	{
 		int avg=0;
-		int tries=0;
 		int max=CommonStrings.getIntVar(CommonStrings.SYSTEMI_MAXSTAT);
-		while(((avg!=max)||(avg==0)||(max<(4*6)))&&((++tries)<10000))
+		if(max<(4*6)) max=4*6;
+		max--;
+		while(avg!=max)
 		{
-			C.setStat(C.STRENGTH,3+(int)Math.floor(Math.random()*16.0));
-			C.setStat(C.INTELLIGENCE,3+(int)Math.floor(Math.random()*16.0));
-			C.setStat(C.DEXTERITY,3+(int)Math.floor(Math.random()*16.0));
-			C.setStat(C.WISDOM,3+(int)Math.floor(Math.random()*16.0));
-			C.setStat(C.CONSTITUTION,3+(int)Math.floor(Math.random()*16.0));
-			C.setStat(C.CHARISMA,3+(int)Math.floor(Math.random()*16.0));
-			avg=(C.getStat(C.STRENGTH)
-				 +C.getStat(C.INTELLIGENCE)
-				 +C.getStat(C.DEXTERITY)
-				 +C.getStat(C.WISDOM)
-				 +C.getStat(C.CONSTITUTION)
-				 +C.getStat(C.CHARISMA));
+			int tries=0;
+			max++;
+			while((avg!=max)&&((++tries)<1000))
+			{
+				C.setStat(C.STRENGTH,3+(int)Math.floor(Math.random()*16.0));
+				C.setStat(C.INTELLIGENCE,3+(int)Math.floor(Math.random()*16.0));
+				C.setStat(C.DEXTERITY,3+(int)Math.floor(Math.random()*16.0));
+				C.setStat(C.WISDOM,3+(int)Math.floor(Math.random()*16.0));
+				C.setStat(C.CONSTITUTION,3+(int)Math.floor(Math.random()*16.0));
+				C.setStat(C.CHARISMA,3+(int)Math.floor(Math.random()*16.0));
+				avg=(C.getStat(C.STRENGTH)
+					 +C.getStat(C.INTELLIGENCE)
+					 +C.getStat(C.DEXTERITY)
+					 +C.getStat(C.WISDOM)
+					 +C.getStat(C.CONSTITUTION)
+					 +C.getStat(C.CHARISMA));
+			}
 		}
-
 	}
 
 	public DeadBody getCorpse(MOB mob, Room room)

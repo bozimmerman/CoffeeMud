@@ -463,7 +463,8 @@ public class RoomLoader
 			{
 				Exit thisExit=room.rawExits()[e];
 				Room thisRoom=room.rawDoors()[e];
-				if(((thisRoom==null)&&(thisExit!=null))||(thisRoom!=null)&&(thisRoom.roomID().length()>0))
+				if(((thisRoom!=null)||(thisExit!=null))
+				   &&((thisRoom==null)||(thisRoom.roomID().length()>0)))
 				{
 					D=DBConnector.DBFetch();
 					str="INSERT INTO CMROEX ("
@@ -475,9 +476,9 @@ public class RoomLoader
 					+") values ("
 					+"'"+room.roomID()+"',"
 					+e+","
-					+"'"+thisExit.ID()+"',"
+					+"'"+((thisExit==null)?" ":thisExit.ID())+"',"
 					+"'"+((thisExit==null)?" ":thisExit.text())+" ',"
-					+"'"+thisRoom.roomID()+"')";
+					+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')";
 					D.update(str);
 					DBConnector.DBDone(D);
 				}
