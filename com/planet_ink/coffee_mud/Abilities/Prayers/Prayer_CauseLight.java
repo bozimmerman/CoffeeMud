@@ -49,7 +49,7 @@ public class Prayer_CauseLight extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					int harming=Dice.roll(mob.envStats().level(),2,3);
+					int harming=Dice.roll(1,mob.envStats().level(),3);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The spell "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,harming);
 				}
