@@ -187,6 +187,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
+		newMOB.setMoney(0);
 		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
 		newMOB.setStartRoom(null);
 		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) looking around!");

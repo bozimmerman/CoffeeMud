@@ -79,6 +79,7 @@ public class Chant_HowlersMoon extends Chant
 				Room newRoom=room.getRoomInDir(fromDir);
 				int opDir=Directions.getOpDirectionCode(fromDir);
 				target.bringToLife(newRoom,true);
+				target.setMoney(0);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);

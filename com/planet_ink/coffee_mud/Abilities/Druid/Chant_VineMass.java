@@ -50,6 +50,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
 			newMOB.bringToLife(caster.location(),true);
+			newMOB.setMoney(0);
 			if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 			newMOB.setVictim(victim);
 			newMOB.setStartRoom(null);

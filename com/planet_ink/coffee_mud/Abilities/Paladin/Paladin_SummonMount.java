@@ -110,6 +110,7 @@ public class Paladin_SummonMount extends StdAbility
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, adjustedLevel(mob));
 				target.bringToLife(newRoom,true);
+				target.setMoney(0);
 				target.location().showOthers(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				newRoom.recoverRoomStats();
 				target.setStartRoom(null);

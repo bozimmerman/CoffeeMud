@@ -95,6 +95,7 @@ public class Prayer_AnimateMummy extends Prayer
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.text();
 				newMOB.bringToLife(mob.location(),true);
+				newMOB.setMoney(0);
 				newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 				int it=0;
 				while(it<newMOB.location().numItems())

@@ -98,6 +98,7 @@ public class Spell_SummonEnemy extends Spell
 		monster.resetToMaxState();
 		monster.text();
 		monster.bringToLife(caster.location(),true);
+		monster.setMoney(0);
 		monster.location().showOthers(monster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		monster.setStartRoom(null);

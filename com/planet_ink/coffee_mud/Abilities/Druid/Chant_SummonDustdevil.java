@@ -201,6 +201,7 @@ public class Chant_SummonDustdevil extends Chant
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
+		newMOB.setMoney(0);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appear(s)!");
 		newMOB.setStartRoom(null);
 		return(newMOB);

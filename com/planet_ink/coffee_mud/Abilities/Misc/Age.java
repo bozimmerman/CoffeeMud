@@ -77,6 +77,7 @@ public class Age extends StdAbility
 					if(A!=null) A.setMiscText(text());
 					babe.text();
 					babe.bringToLife(R,true);
+					babe.setMoney(0);
 					babe.setFollowing(following);
 					R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 					((Item)affected).destroy();

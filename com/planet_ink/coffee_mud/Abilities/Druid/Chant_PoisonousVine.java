@@ -61,6 +61,7 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
+		newMOB.setMoney(0);
 		//if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 		newMOB.setStartRoom(null);

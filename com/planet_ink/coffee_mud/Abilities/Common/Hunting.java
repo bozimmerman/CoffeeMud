@@ -98,6 +98,7 @@ public class Hunting extends CommonSkill
 					displayText="You are hunting for "+found.name();
 					verb="hunting for "+found.name();
 					found.bringToLife(nearByRoom(),true);
+					found.setMoney(0);
 				}
 				else
 				{

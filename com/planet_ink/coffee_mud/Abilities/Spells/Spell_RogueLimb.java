@@ -127,6 +127,7 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb.recoverEnvStats();
 					rogueLimb.resetToMaxState();
 					rogueLimb.bringToLife(mob.location(),true);
+					rogueLimb.setMoney(0);
 					rogueLimb.setVictim(target);
 					maliciousAffect(mob,target,0,-1);
 					rogueLimb.setVictim(target);

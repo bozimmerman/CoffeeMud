@@ -163,6 +163,7 @@ public class Spell_SummonSteed extends Spell
 		newMOB.resetToMaxState();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
+		newMOB.setMoney(0);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
 		newMOB.setStartRoom(null);
