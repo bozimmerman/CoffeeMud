@@ -522,11 +522,12 @@ of the ODBC Service as defined by your local operating system<BR># DBUSER is a
 user name required to log into the ODBC service<BR># DBPASS is the password for 
 the above user name<BR># DBCONNECTIONS is the number of independent connections 
 to make to the 
-database<BR>DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<BR>DBSERVICE=jdbc:odbc:<I>CoffeeMudData</I><BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=2</FONT></P>
+database<BR>DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<BR>DBSERVICE=jdbc:odbc:<I>CoffeeMudData</I><BR>DBUSER=<BR>DBPASS=<BR>DBCONNECTIONS=1</FONT></P>
 <P>Where it says "<FONT 
 face="Courier New, Courier, mono">jdbc:odbc:CoffeeMudData</FONT>", make sure the 
-part after "<FONT face="Courier New, Courier, mono">jdbc:odbc:</FONT>" matches 
-the DNS name you made earlier.&nbsp; Reboot CoffeeMud, and you are done!</P>
+part after "<FONT face="Courier New, Courier, mono">jdbc:odbc:</FONT>" 
+matches the DNS name you made earlier.&nbsp; Make sure your DBCONNECTIONS is 
+never set above 1&nbsp;when using Microsoft&nbsp;Access.&nbsp; Now, reboot CoffeeMud, and you are done!</P>
 <P align=left><EM>Installing and using MySQL with CoffeeMud on a Windows 
 machine</EM></P>
 <P align=left><STRONG>1. </STRONG>  Go to <A class=moz-txt-link-abbreviated 
