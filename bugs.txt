@@ -1,1 +1,3 @@
 restart doesn't work with fakedb 
+song of knowledge doesn't affect all group members all the time.
+
