@@ -8,8 +8,16 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
 	<title>CoffeeMUD MUDGrinder</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.SELECTAREA.action='/grinder/'+action;
+			document.SELECTAREA.submit();
+		}
+	//-->
+	</script>
 </head>
-
 <body>
 
 <CENTER>
@@ -28,11 +36,11 @@
 <TR><TD ALIGN=CENTER>
 @if?CheckReqParm?SYSOP=true@
 <TABLE BORDER=0><TR><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="document.SELECTAREA.action='/grinder/newarea.cmvp'; document.SELECTAREA.submit();">
+<INPUT TYPE=BUTTON NAME=NEWAREA VALUE="Create" ONCLICK="Clicked('newarea.cmvp');">
 </TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="document.SELECTAREA.action='/grinder/modarea.cmvp'; document.SELECTAREA.submit();">
+<INPUT TYPE=BUTTON NAME=MODAREA VALUE="Modify" ONCLICK="Clicked('modarea.cmvp');">
 </TD><TD ALIGN=CENTER>
-<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="document.SELECTAREA.action='/grinder/areagone.cmvp'; document.SELECTAREA.submit();">
+<INPUT TYPE=BUTTON NAME=DELAREA VALUE="Delete" ONCLICK="Clicked('areagone.cmvp');">
 </TD>
 </TR></TABLE>
 @else@

@@ -246,9 +246,9 @@ public class GrinderMap
 							buf.append("<TD WIDTH=24>"+getDoorLabelGif(Directions.WEST,GR,httpReq)+"</TD>");
 							buf.append("<TD WIDTH=90 COLSPAN=3 ROWSPAN=3 BGCOLOR=#CCCCFF VALIGN=TOP>");
 							String roomID=GR.roomID;
-							if(roomID.indexOf("#")>0)
+							if(roomID.startsWith(area.name()+"#"))
 							    roomID=roomID.substring(roomID.indexOf("#"));
-							buf.append("<a target=MENU href=\"/grinder/rmmenu.cmvp?ROOM="+URLEncoder.encode(GR.roomID)+"&"+httpReq.getRequestEncodedParameters()+"\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");
+							buf.append("<a href=\"javascript:Clicked('rmmenu.cmvp','','"+URLEncoder.encode(GR.roomID)+"');\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");
 							buf.append("<FONT SIZE=-2>("+CMClass.className(GR.room)+")<BR>");
 							String displayText=GR.room.displayText();
 							if(displayText.length()>20)	displayText=displayText.substring(0,20)+"...";
@@ -334,9 +334,8 @@ public class GrinderMap
 	    GrinderDir dir=(GrinderDir)room.doors[d];
 	    String dirLetter=""+Directions.getDirectionName(d).toUpperCase().charAt(0);
 		GrinderRoom roomPointer=null;
-		String parms="?ROOM="+URLEncoder.encode(room.roomID)+"&DIR="+d+"&"+httpReq.getRequestEncodedParameters();
 	    if((dir==null)||((dir!=null)&&(dir.room.length()==0)))
-			return "<a target=MENU href=\"/grinder/lnkxmenu.cmvp"+parms+"\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
+			return "<a href=\"javascript:Clicked('lnkxmenu.cmvp','"+Directions.getDirectionName(d)+"','"+URLEncoder.encode(room.roomID)+"');\"><IMG BORDER=0 SRC=\"images/E"+dirLetter+".gif\"></a>";
 	    else
 	    if((d==Directions.UP)||(d==Directions.DOWN))
 	    {
@@ -351,12 +350,12 @@ public class GrinderMap
 		String theRest=".gif\" BORDER=0 ALT=\""+Directions.getDirectionName(d)+" to "+dir.room+"\"></a>";
     	Exit exit=dir.exit;
     	if(exit==null)
-			return "<a target=MENU href=\"/grinder/edxmenu.cmvp"+parms+"\"><IMG SRC=\"images/U"+dirLetter+theRest;
+			return "<a href=\"javascript:Clicked('edxmenu.cmvp','"+Directions.getDirectionName(d)+"','"+URLEncoder.encode(room.roomID)+"');\"><IMG SRC=\"images/U"+dirLetter+theRest;
     	else
     	if(exit.hasADoor())
-			return "<a target=MENU href=\"/grinder/edxmenu.cmvp"+parms+"\"><IMG SRC=\"images/D"+dirLetter+theRest;
+			return "<a href=\"javascript:Clicked('edxmenu.cmvp','"+Directions.getDirectionName(d)+"','"+URLEncoder.encode(room.roomID)+"');\"><IMG SRC=\"images/D"+dirLetter+theRest;
     	else
-			return "<a target=MENU href=\"/grinder/edxmenu.cmvp"+parms+"\"><IMG SRC=\"images/O"+dirLetter+theRest;
+			return "<a href=\"javascript:Clicked('edxmenu.cmvp','"+Directions.getDirectionName(d)+"','"+URLEncoder.encode(room.roomID)+"');\"><IMG SRC=\"images/O"+dirLetter+theRest;
     }
 
 	public void placeRoom(GrinderRoom room, 

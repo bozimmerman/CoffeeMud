@@ -6,10 +6,30 @@
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<title>CoffeeMUD MUDGrinder</title>
+	<SCRIPT LANGUAGE="JavaScript">
+	<!--
+		function Clicked(action,link,room)
+		{
+			document.SELECTAREA.OLDROOM.value=document.SELECTAREA.ROOM.value;
+			document.SELECTAREA.OLDLINK.value=document.SELECTAREA.LINK.value;
+			document.SELECTAREA.ROOM.value=room;
+			document.SELECTAREA.LINK.value=link;
+			document.SELECTAREA.action='/grinder/'+action;
+			document.SELECTAREA.submit();
+		}
+	//-->
+	</SCRIPT>
 </head>
 <BODY>
-
+<FORM NAME=SELECTAREA METHOD=GET ACTION="" TARGET=MENU>
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="">
+<INPUT TYPE=HIDDEN NAME=LINK VALUE="">
+<INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="">
+<INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="">
 @MUDGrinder?AREAMAP@
+</FORM>
 </BODY>
 </HTML>
 @endif@
