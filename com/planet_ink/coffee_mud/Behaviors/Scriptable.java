@@ -159,6 +159,7 @@ public class Scriptable extends StdBehavior
 		"ISABLE", // 58
 		"ISOPEN", // 59
 		"ISLOCKED", // 60
+		"STRIN", // 61 
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -269,7 +270,7 @@ public class Scriptable extends StdBehavior
 		if(depth>10) return "";  // no including off to infinity
 		while(parse.length()>0)
 		{
-			int y=parse.indexOf("LOAD=");
+			int y=parse.toUpperCase().indexOf("LOAD=");
 			if(y>=0)
 			{
 				results.append(parse.substring(0,y).trim()+"\n");
@@ -564,7 +565,7 @@ public class Scriptable extends StdBehavior
 		return items;
 	}
 
-	private Environmental findSomethingCalledThis(String thisName, Room imHere, boolean mob)
+	private Environmental findSomethingCalledThis(String thisName, Room imHere, Vector OBJS, boolean mob)
 	{
 		if(thisName.length()==0) return null;
 		Environmental thing=null;
@@ -580,6 +581,9 @@ public class Scriptable extends StdBehavior
 				if(V!=null)
 				{
 					String name=Util.getPastBit(thisName,1);
+					if(name.equalsIgnoreCase("ALL"))
+						OBJS=V;
+					else
 					if(name.equalsIgnoreCase("ANY"))
 					{
 						if(V.size()>0)
@@ -595,6 +599,7 @@ public class Scriptable extends StdBehavior
 			}
 			catch(Exception e){}
 		}
+		else
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -624,8 +629,14 @@ public class Scriptable extends StdBehavior
 					thing=E;
 			}
 		}
-		if(areaThing!=null) return areaThing;
-		return thing;
+		if(areaThing!=null)
+			OBJS.addElement(areaThing);
+		else
+		if(thing!=null)
+			OBJS.addElement(thing);
+		if(OBJS.size()>0)
+			return (Environmental)OBJS.firstElement();
+		return null;
 	}
 
 	public Environmental getArgumentItem(String str, MOB source, MOB monster, Environmental target, Item primaryItem, Item secondaryItem, String msg)
@@ -1037,6 +1048,14 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 					returnable=simpleEvalStr(scripted,E.Name(),arg3,arg2,"NAME");
+				break;
+			}
+			case 61: // strin
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+				Vector V=Util.parse(arg1.toUpperCase());
+				returnable=V.contains(arg2.toUpperCase());
 				break;
 			}
 			case 14: // affected
@@ -2022,7 +2041,7 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			default:
-				scriptableError(scripted,"Unknown","?",evaluable);
+				scriptableError(scripted,"Unknown Eval",preFab,evaluable);
 				return returnable;
 			}
 			if((z>=0)&&(z<=evaluable.length()))
@@ -2245,6 +2264,14 @@ public class Scriptable extends StdBehavior
 					if(E!=null)
 						results.append(E.keyName());
 				}
+				break;
+			}
+			case 61: // strin
+			{
+				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getCleanBit(evaluable.substring(y+1,z),0));
+				String arg2=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),0));
+				Vector V=Util.parse(arg1.toUpperCase());
+				results.append(V.indexOf(arg2.toUpperCase()));
 				break;
 			}
 			case 55: // ispkill
@@ -2838,7 +2865,7 @@ public class Scriptable extends StdBehavior
 				break;
 			}
 			default:
-				scriptableError(scripted,"Unknown","?",evaluable);
+				scriptableError(scripted,"Unknown Val",preFab,evaluable);
 				return results.toString();
 			}
 			if((z>=0)&&(z<=evaluable.length()))
@@ -3172,8 +3199,8 @@ public class Scriptable extends StdBehavior
 		DVector V=getScriptVarSet(name,key);
 		for(int v=0;v<V.size();v++)
 		{
-			name=(String)V.elementAt(0,1);
-			key=(String)V.elementAt(0,2);
+			name=(String)V.elementAt(v,1);
+			key=(String)V.elementAt(v,2);
 			Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+name);
 			if(H==null)
 			{
@@ -3529,22 +3556,23 @@ public class Scriptable extends StdBehavior
 			case 5: // mpmload
 			{
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
+				Vector Ms=new Vector();
 				MOB m=CMClass.getMOB(s);
+				if(m!=null) Ms.addElement(m);
 				if(lastKnownLocation!=null)
 				{
-					if(m==null)
+					if(Ms.size()==0)
+						findSomethingCalledThis(s,lastKnownLocation,Ms,true);
+					for(int i=0;i<Ms.size();i++)
 					{
-						Environmental e=findSomethingCalledThis(s,lastKnownLocation,true);
-						if(e instanceof MOB)
-							m=(MOB)e;
-					}
-					if(m!=null)
-					{
-						m=(MOB)m.copyOf();
-						m.recoverEnvStats();
-						m.recoverCharStats();
-						m.resetToMaxState();
-						m.bringToLife(lastKnownLocation,true);
+						if(Ms.elementAt(i) instanceof MOB)
+						{
+							m=(MOB)((MOB)Ms.elementAt(i)).copyOf();
+							m.recoverEnvStats();
+							m.recoverCharStats();
+							m.resetToMaxState();
+							m.bringToLife(lastKnownLocation,true);
+						}
 					}
 				}
 				break;
@@ -3559,22 +3587,28 @@ public class Scriptable extends StdBehavior
 					else
 					if(lastKnownLocation!=null)
 					{
+						Vector Is=new Vector();
 						Item m=CMClass.getItem(s);
-						if(m==null)
+						if(m!=null) 
+							Is.addElement(m);
+						else
+							findSomethingCalledThis(s,lastKnownLocation,Is,false);
+						for(int i=0;i<Is.size();i++)
 						{
-							Environmental e=findSomethingCalledThis(s,lastKnownLocation,false);
-							if(e instanceof Item)
-								m=(Item)e;
+							if(Is.elementAt(i) instanceof Item)
+							{
+								m=(Item)Is.elementAt(i);
+								if((m!=null)&&(!(m instanceof ArchonOnly)))
+								{
+									m=(Item)m.copyOf();
+									m.recoverEnvStats();
+									monster.addInventory(m);
+								}
+							}
 						}
-						if((m!=null)&&(!(m instanceof ArchonOnly)))
-						{
-							m=(Item)m.copyOf();
-							m.recoverEnvStats();
-							monster.addInventory(m);
-							monster.recoverCharStats();
-							monster.recoverEnvStats();
-							monster.recoverMaxState();
-						}
+						monster.recoverCharStats();
+						monster.recoverEnvStats();
+						monster.recoverMaxState();
 					}
 					break;
 				}
@@ -3584,29 +3618,35 @@ public class Scriptable extends StdBehavior
 				s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(11).trim());
 				if(lastKnownLocation!=null)
 				{
-					Item I=null;
+					Vector Is=new Vector();
 					if(Util.s_int(s)>0)
 					{
-						I=CMClass.getItem("StdCoins");
+						Item I=CMClass.getItem("StdCoins");
 						((Coins)I).setNumberOfCoins(Util.s_int(s));
+						Is.addElement(I);
 					}
 					else
 					{
-						I=CMClass.getItem(s);
-						if(I==null)
+						Item I=CMClass.getItem(s);
+						if(I!=null) 
+							Is.addElement(I);
+						else
+							findSomethingCalledThis(s,lastKnownLocation,Is,false);
+					}
+					for(int i=0;i<Is.size();i++)
+					{
+						if(Is.elementAt(i) instanceof Item)
 						{
-							Environmental e=findSomethingCalledThis(s,lastKnownLocation,false);
-							if(e instanceof Item)
-								I=(Item)e;
+							Item I=(Item)Is.elementAt(i);
+							if((I!=null)&&(!(I instanceof ArchonOnly)))
+							{
+								I=(Item)I.copyOf();
+								I.recoverEnvStats();
+								lastKnownLocation.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+							}
 						}
 					}
-					if((I!=null)&&(!(I instanceof ArchonOnly)))
-					{
-						I=(Item)I.copyOf();
-						I.recoverEnvStats();
-						lastKnownLocation.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
-						lastKnownLocation.recoverRoomStats();
-					}
+					lastKnownLocation.recoverRoomStats();
 				}
 				break;
 			}
@@ -4238,7 +4278,14 @@ public class Scriptable extends StdBehavior
 						if(fnamed.equalsIgnoreCase(named))
 						{
 							found=true;
-							execute(scripted,source,target,monster,primaryItem,secondaryItem,script2,parms);
+							execute(scripted,
+									source,
+									target,
+									monster,
+									primaryItem,
+									secondaryItem,
+									script2,
+									varify(source,target,monster,primaryItem,secondaryItem,msg,parms));
 							break;
 						}
 					}

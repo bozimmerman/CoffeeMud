@@ -27,7 +27,7 @@ public class GenRace extends StdRace
 	public String name(){ return name; }
 	public int practicesAtFirstLevel(){return 0;}
 	public int trainsAtFirstLevel(){return 0;}
-	public int availability=Race.AVAILABLE_MAGICONLY;
+	public int availability=Race.AVAILABLE_NONE;
 	public int availability(){return availability;}
 
 	public int shortestMale=24;

@@ -1,3 +1,6 @@
+scriptable: damage_prog
+scriptable: document strin command in scriptable
+resetting a room does not make scriptable work!
 zapper check for deities
 item generation behavior?
 we'd need a slavetrading skill, and the ability to have the mob items "grow up" in the shopkeepers care, and we'd need some way to transfer ownership (make them serve, etc) when you buy them.

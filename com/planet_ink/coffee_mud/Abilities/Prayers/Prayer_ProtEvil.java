@@ -43,7 +43,7 @@ public class Prayer_ProtEvil extends Prayer
 		if(mob.getAlignment()<350)
 		{
 			int damage=(int)Math.round(Util.div(mob.envStats().level(),3.0));
-			MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^S<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!^?");
+			MUDFight.postDamage(invoker,mob,this,damage,CMMsg.MASK_GENERAL|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
 		}
 		return super.tick(ticking,tickID);
 	}
