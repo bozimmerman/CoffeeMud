@@ -69,7 +69,6 @@ public class Moving extends ActiveTicker
 	private static synchronized String loadInfo()
 	{
 		StringBuffer str=new StringBuffer("");//Resources.getFile("resources"+File.separatorChar+"Moving.xml");
-		Vector V = new Vector();
 		try
 		{
 			FileReader F=new FileReader("resources"+File.separatorChar+"Moving.xml");
@@ -217,7 +216,6 @@ public class Moving extends ActiveTicker
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
 		{
-			MOB mob=this.getBehaversMOB(ticking);
 			Room aRoom=this.getBehaversRoom(ticking);
 			if (currentStop==0) {
                         	isReversed=false;

@@ -180,9 +180,6 @@ public class RoomLoader
 		if(thisRoom==null)
 			return;
 
-		Hashtable itemTimes=new Hashtable();
-		Hashtable mobTimes=new Hashtable();
-		
 		DBConnection D=null;
 		// now grab the items
 		try

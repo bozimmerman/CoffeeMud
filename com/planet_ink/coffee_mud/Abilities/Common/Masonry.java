@@ -392,7 +392,6 @@ public class Masonry extends CommonSkill
 				I.destroyThis();
 		}
 		
-		String workingOnName="";
 		switch(doingCode)
 		{
 		case BUILD_ROOF:

@@ -114,7 +114,6 @@ public class LockSmith extends CommonSkill
 			commonTell(mob,"Locksmith what or where? Enter the name of a container or door direction.");
 			return false;
 		}
-		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int completion=8;
 		building=null;

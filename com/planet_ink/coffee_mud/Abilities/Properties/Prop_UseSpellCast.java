@@ -76,8 +76,7 @@ public class Prop_UseSpellCast extends Property
 				break;
 			case Affect.TYP_WIELD:
 			case Affect.TYP_HOLD:
-				if((myItem instanceof Item)
-				  &&(!(myItem instanceof Drink))
+				if((!(myItem instanceof Drink))
 				  &&(!(myItem instanceof Armor))
 				  &&(!(myItem instanceof Container))
 				  &&(affect.amITarget(myItem)))

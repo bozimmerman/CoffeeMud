@@ -489,7 +489,6 @@ public class TheFight
 			String thingToPut=Util.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
-			Vector V=new Vector();
 			boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 			if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 			if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}

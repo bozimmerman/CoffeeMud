@@ -57,7 +57,7 @@ public class Digging extends CommonSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted)&&(found instanceof Item))
+				if((found!=null)&&(!aborted))
 				{
 					int amount=1;
 					if(Dice.rollPercentage()>90)

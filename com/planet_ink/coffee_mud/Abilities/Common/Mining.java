@@ -56,7 +56,7 @@ public class Mining extends CommonSkill
 			if((affected!=null)&&(affected instanceof MOB))
 			{
 				MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted)&&(found instanceof Item))
+				if((found!=null)&&(!aborted))
 				{
 					int amount=Dice.roll(1,10,0);
 					if((found.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_ROCK)
