@@ -68,6 +68,8 @@ trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!  Sweep 
 
 iron grip spell to thwart disarm
 
+connect adjacent endless skys
+
 Buy command for standard mobs, to facilitate trades.
 
 Guilds will have the ability to take on a character and make him or her the class sponsored by the 

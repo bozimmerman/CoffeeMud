@@ -81,7 +81,8 @@ public interface CharStats extends Cloneable
 		"SAVE VS ACID",
 		"SAVE VS ELECTRICITY",
 		"SAVE VS POISON",
-		"SAVE VS UNDEAD"
+		"SAVE VS UNDEAD",
+		"SAVE VS MAGIC"
 	};
 	
 	// create a new one of these
