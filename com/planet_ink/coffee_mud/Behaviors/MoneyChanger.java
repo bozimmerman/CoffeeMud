@@ -73,14 +73,135 @@ public class MoneyChanger extends StdBehavior
 				changeBag.setDescription("This bag is provided courtesy of CoffeeMud Savings and Loan.");
 				observer.addInventory(changeBag);
 				int totalWeight=0;
+				while(value>=100000)
+				{
+					value-=10000000;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(10000000);
+					msliver.setName("an Archons note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 10,000,000 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=1000000)
+				{
+					value-=1000000;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(1000000);
+					msliver.setName("a Legends note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 1,000,000 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=100000)
+				{
+					value-=100000;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(100000);
+					msliver.setName("a Heros note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 100,000 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=10000)
+				{
+					value-=10000;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(10000);
+					msliver.setName("a whole note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 10,000 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=5000)
+				{
+					value-=5000;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(5000);
+					msliver.setName("a half note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 5,000 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=1000)
+				{
+					value-=1000;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(1000);
+					msliver.setName("a adamantium note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 1000 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=500)
+				{
+					value-=500;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(500);
+					msliver.setName("a mithril note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 500 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
 				while(value>=100)
 				{
 					value-=100;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.CLOTH);
-					msliver.setName("a mithril note");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(100);
+					msliver.setName("a platinum note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
 					msliver.setDescription("This note convertable to 100 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=50)
+				{
+					value-=50;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(50);
+					msliver.setName("a golden note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 50 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
 					msliver.setLocation(changeBag);
@@ -91,13 +212,31 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=10;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.CLOTH);
-					msliver.setName("a platinum note");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(10);
+					msliver.setName("a gleaming silver note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
 					msliver.setDescription("This note convertable to 10 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
 					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
+				}
+				while(value>=5)
+				{
+					value-=5;
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.PAPER);
+					msliver.setNumberOfCoins(5);
+					msliver.setName("a fiver note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 10 gold coins.");
+					totalWeight++;
+					observer.addInventory(msliver);
+					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
 				}
 				if(value>0)
 				{

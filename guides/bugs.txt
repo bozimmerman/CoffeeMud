@@ -1,2 +1,3 @@
 Range bug, This is a bug, because thief shouldn't be able to stab the MOB if the mob is at a range, OR the mob shouldn't have to advance at thief if thief isn't at range....
-
+More than one polymorph can screw a PLAYERS name for GOOD.  Fix it!
+mithril notes are no longer worth anything
