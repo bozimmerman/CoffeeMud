@@ -329,10 +329,15 @@ public class StdRoom
 			}
 		}
 
+		if(isInhabitant(affect.source()))
+			if(!affect.source().okAffect(affect))
+				return false;
 		for(int i=0;i<numInhabitants();i++)
 		{
 			MOB inhab=fetchInhabitant(i);
-			if((inhab!=null)&&(!inhab.okAffect(affect)))
+			if((inhab!=null)
+			&&(inhab!=affect.source())
+			&&(!inhab.okAffect(affect)))
 				return false;
 		}
 		for(int i=0;i<numItems();i++)

@@ -91,7 +91,5 @@ public class Spell_SummonMonster extends Spell
 		newMOB.bringToLife(caster.location(),true);
 		newMOB.setStartRoom(null);
 		return(newMOB);
-
-
 	}
 }

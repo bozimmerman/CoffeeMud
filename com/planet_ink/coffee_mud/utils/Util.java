@@ -8,7 +8,7 @@ public class Util
 	
 	public static String capitalize(String name)
 	{
-		return Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase().trim();
+		return (Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase()).trim();
 	}
 	
 	/**

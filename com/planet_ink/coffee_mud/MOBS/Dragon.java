@@ -390,14 +390,14 @@ public class Dragon extends StdMOB
 											   TastyMorsel,
 											   null,
 											   Affect.MSG_EAT,
-											   Affect.MSK_MALICIOUS_MOVE|Affect.TYP_JUSTICE,
+											   Affect.MASK_GENERAL|Affect.TYP_JUSTICE,
 											   Affect.MSG_NOISYMOVEMENT,
 											   "<S-NAME> swallow(es) <T-NAMESELF> WHOLE!");
 					if(this.location().okAffect(EatMsg))
 					{
 						this.location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);
-						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> Slides down the gullet into the stomach!");
+						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -457,6 +457,7 @@ public class Dragon extends StdMOB
 										   "<S-NAME> digest(s) <T-NAMESELF>!!");
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2)));
+				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
 				ExternalPlay.postDamage(this,TastyMorsel,this,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}

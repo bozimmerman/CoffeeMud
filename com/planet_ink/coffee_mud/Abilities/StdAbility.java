@@ -89,7 +89,7 @@ public class StdAbility implements Ability, Cloneable
 			if(affected.fetchAffect(this.ID())==null) affected.addAffect(this);
 			((MOB)affected).location().recoverRoomStats();
 			if(invoker()!=affected)
-				((MOB)affected).charStats().getCurrentClass().classDurationModifier(((MOB)affected),this,tickTime);
+				tickTime=((MOB)affected).charStats().getCurrentClass().classDurationModifier(((MOB)affected),this,tickTime);
 		}
 		else
 		{

@@ -18,7 +18,7 @@ public class Spell_MageClaws extends Spell
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return super.okAffect(affect);
 
 		MOB mob=(MOB)affected;
 
@@ -35,7 +35,7 @@ public class Spell_MageClaws extends Spell
 			w.recoverEnvStats();
 			affect.modify(affect.source(),affect.target(),w,affect.sourceCode(),affect.sourceMessage(),affect.targetCode(),affect.targetMessage(),affect.othersCode(),affect.othersMessage());
 		}
-		return true;
+		return super.okAffect(affect);
 	}
 
 	public void unInvoke()
@@ -54,7 +54,7 @@ public class Spell_MageClaws extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=mob;
 		if(target==null) return false;
 
 		// the invoke method for spells receives as

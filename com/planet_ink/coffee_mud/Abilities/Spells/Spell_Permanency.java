@@ -12,30 +12,8 @@ public class Spell_Permanency extends Spell
 	public String name(){return "Permanency";}
 	protected int canAffectCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
-	public StdAbility permanentAbility=null;
-	public int oldTicksRemaining=0;
 	public Environmental newInstance(){	return new Spell_Permanency();}
 	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
-
-	public String displayText()
-	{
-		if(permanentAbility!=null)
-			return "(Permanency of "+permanentAbility.name()+")";
-		else
-			return "(Permanency of nothing!)";
-	}
-
-	public void unInvoke()
-	{
-		if(canBeUninvoked())
-		{
-			if(permanentAbility!=null)
-				permanentAbility.setTickDownRemaining(oldTicksRemaining);
-			permanentAbility=null;
-		}
-		super.unInvoke();
-
-	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -50,16 +28,9 @@ public class Spell_Permanency extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.charStats().getCurrentClass().loseExperience(mob,50);
 		mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);
-		if(target.fetchAffect(ID())!=null)
-		{
-			mob.tell("Permanency has already been cast on "+target.name()+".");
-			return false;
-		}
-
 
 		if(success)
 		{
@@ -75,9 +46,7 @@ public class Spell_Permanency extends Spell
 					 &&(!A.isAutoInvoked())
 					 &&(A.canBeUninvoked())
 					 &&(A instanceof StdAbility)
-					 &&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY)
-					 &&(((StdAbility)A).getTickDownRemaining()>0)
-					 &&(((StdAbility)A).getTickDownRemaining()<10000))
+					 &&((A.classificationCode()&Ability.ALL_CODES)!=Ability.PROPERTY))
 					{
 						theOne=(StdAbility)A;
 						break;
@@ -90,14 +59,10 @@ public class Spell_Permanency extends Spell
 				}
 				else
 				{
-					oldTicksRemaining=theOne.getTickDownRemaining();
-					permanentAbility=theOne;
-					beneficialAffect(mob,target,Integer.MAX_VALUE);
-					if(target.fetchAffect(ID())!=null)
-					{
-						permanentAbility.makeLongLasting();
-						permanentAbility.makeNonUninvokable();
-					}
+					int exp=10*CMAble.lowestQualifyingLevel(theOne.ID());
+					mob.tell("You lose "+exp+" experience points.");
+					mob.charStats().getCurrentClass().loseExperience(mob,exp);
+					theOne.makeNonUninvokable();
 					mob.location().show(mob,target,Affect.MSG_OK_VISUAL,"The quality of "+theOne.name()+" inside <T-NAME> glows!");
 				}
 			}

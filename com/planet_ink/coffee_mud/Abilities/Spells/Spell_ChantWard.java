@@ -32,7 +32,7 @@ public class Spell_ChantWard extends Spell
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return super.okAffect(affect);
 
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))
@@ -48,7 +48,7 @@ public class Spell_ChantWard extends Spell
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> wards off "+affect.tool().name()+"!");
 			return false;
 		}
-		return true;
+		return super.okAffect(affect);
 	}
 
 

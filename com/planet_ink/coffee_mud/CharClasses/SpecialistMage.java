@@ -128,13 +128,23 @@ public class SpecialistMage extends Mage
 			if(domain==domain())
 			{
 				if(!lessTen)
-					return duration*2;
+				{
+					if(duration>=(Integer.MAX_VALUE/2)) 
+						return duration;
+					else
+						return duration*2;
+				}
 			}
 		}
 		else
 		{
 			if(domain==opposed())
-				return duration*2;
+			{
+				if(duration>=(Integer.MAX_VALUE/2)) 
+					return duration;
+				else
+					return duration*2;
+			}
 			else
 			if(domain==domain())
 			{

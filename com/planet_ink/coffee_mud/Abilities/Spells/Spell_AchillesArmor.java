@@ -34,7 +34,7 @@ public class Spell_AchillesArmor extends Spell
 	public boolean okAffect(Affect affect)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
-			return true;
+			return super.okAffect(affect);
 
 		MOB mob=(MOB)affected;
 		if((affect.amITarget(mob))
@@ -77,7 +77,8 @@ public class Spell_AchillesArmor extends Spell
 				weaponType=Weapon.TYPE_BURSTING;
 				break;
 			}
-			if(weaponType<0) return true;
+			if(weaponType<0)
+				return super.okAffect(affect);
 			
 			if(weaponType!=vulnerability)
 			{
@@ -95,7 +96,7 @@ public class Spell_AchillesArmor extends Spell
 			else
 				ExternalPlay.postDeath(affect.source(),mob,affect);
 		}
-		return true;
+		return super.okAffect(affect);
 	}
 
 

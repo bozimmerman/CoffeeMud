@@ -125,7 +125,7 @@ public class MOBEater extends ActiveTicker
 					{
 						mob.location().send(TastyMorsel,EatMsg);
 						Stomach.bringMobHere(TastyMorsel,false);
-						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> Slides down the gullet into the stomach!");
+						FullMsg enterMsg=new FullMsg(TastyMorsel,Stomach,null,Affect.MSG_ENTER,Stomach.description(),Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> slide(s) down the gullet into the stomach!");
 						Stomach.send(TastyMorsel,enterMsg);
 					}
 				}
@@ -148,11 +148,12 @@ public class MOBEater extends ActiveTicker
 				FullMsg DigestMsg=new FullMsg(mob,
 										   TastyMorsel,
 										   null,
-										   Affect.MSK_MALICIOUS_MOVE|Affect.TYP_ACID,
+										   Affect.MASK_GENERAL|Affect.TYP_ACID,
 										   "<S-NAME> Digests <T-NAMESELF>!!");
 				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(Util.div(TastyMorsel.curState().getHitPoints(),2));
+				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
 				ExternalPlay.postDamage(mob,TastyMorsel,null,damage,Affect.MASK_GENERAL|Affect.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}
