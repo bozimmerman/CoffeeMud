@@ -22,7 +22,7 @@ SMTP capability
 ability/skill to drain mana from dead bodies
 Arrest allowing players to bring bountys to the judge.
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.
-Arrest idea: banned substances (get, drop, eq, etc), and harder sentence for parole.
+Arrest idea: banned substances (get, drop, eq, etc)
 apply languages to writing as well. Should be simple, right? ha!
 Room descriptions varying by the time of day.
 Weather affecting movement, flooding, slipping, vision.  Behaviors for floods and fires.

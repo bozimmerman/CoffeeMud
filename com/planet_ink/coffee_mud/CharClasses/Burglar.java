@@ -21,8 +21,8 @@ public class Burglar extends Thief
 			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
+			CMAble.addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",false);
 			CMAble.addCharAbilityMapping(ID(),1,"ThievesCant",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);

@@ -410,6 +410,28 @@ public class Help
 		if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("BEHAVIOR_"+helpStr); if(thisTag!=null) helpStr="BEHAVIOR_"+helpStr;}
 
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+		{
+			String key=((String)e.nextElement()).toUpperCase();
+			if(key.startsWith(helpStr))
+			{
+				thisTag=rHelpFile.getProperty(key);
+				helpStr=key;
+				break;
+			}
+		}
+		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
+		{
+			String key=((String)e.nextElement()).toUpperCase();
+			if(key.indexOf(helpStr)>=0)
+			{
+				thisTag=rHelpFile.getProperty(key);
+				helpStr=key;
+				break;
+			}
+		}
 		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
 		{
 			String thisOtherTag=rHelpFile.getProperty(thisTag);
@@ -438,6 +460,8 @@ public class Help
 			thisTag=Resources.getFileResource("help"+File.separatorChar+"help.txt");
 		else
 			thisTag=getHelpText(helpStr,getHelpFile());
+		if((thisTag==null)&&(mob.isASysOp(mob.location())))
+			thisTag=getHelpText(helpStr,getArcHelpFile());
 		if(thisTag==null)
 		{
 			mob.tell("No help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
