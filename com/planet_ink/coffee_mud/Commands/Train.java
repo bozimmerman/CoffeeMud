@@ -50,16 +50,11 @@ public class Train extends StdCommand
 			if(curStat<18)
 				trainsRequired=1;
 			else
-			if(curStat<20)
+			if(curStat<22)
 				trainsRequired=2;
 			else
-			if(curStat<22)
+			if(curStat<25)
 				trainsRequired=3;
-			else
-			if(curStat<24)
-				trainsRequired=4;
-			else
-				trainsRequired=5;
 			
 			if(curStat>=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 						 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+abilityCode)))

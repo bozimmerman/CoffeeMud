@@ -614,13 +614,17 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 		{
 			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.profficiency())
 			{
-				// very important, since these can be autoinvoked affects (copies)!
-				A.setProfficiency(A.profficiency()+1);
-				if((this!=A)&&(profficiency()<100))
-					setProfficiency(profficiency()+1);
-				if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
-					mob.tell("You become better at "+A.name()+".");
-				((StdAbility)A).lastProfHelp=System.currentTimeMillis();
+			    int qualLevel=CMAble.qualifyingLevel(mob,A);
+			    if((qualLevel<0)||(qualLevel>30)||(Dice.rollPercentage()<(int)Math.round(100.0*Util.div(31-qualLevel,30+qualLevel))))
+			    {
+					// very important, since these can be autoinvoked affects (copies)!
+					A.setProfficiency(A.profficiency()+1);
+					if((this!=A)&&(profficiency()<100))
+						setProfficiency(profficiency()+1);
+					if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
+						mob.tell("You become better at "+A.name()+".");
+					((StdAbility)A).lastProfHelp=System.currentTimeMillis();
+			    }
 			}
 		}
 		else

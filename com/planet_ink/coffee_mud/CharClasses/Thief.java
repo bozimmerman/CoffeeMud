@@ -227,6 +227,9 @@ public class Thief extends StdCharClass
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
+		if(dexStat>=25)attArmor+=2;
+		else
+		if(dexStat>=22)attArmor+=1;
 		attArmor=attArmor*-1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
@@ -250,7 +253,12 @@ public class Thief extends StdCharClass
 		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
+		
 		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
+		if(dexStat>=25)attArmor+=2;
+		else
+		if(dexStat>=22)attArmor+=1;
+		
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
 		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");

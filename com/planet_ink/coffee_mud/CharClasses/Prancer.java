@@ -222,7 +222,14 @@ public class Prancer extends StdCharClass
 			return;
 		super.unLevel(mob);
 
-		int attArmor=((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1;
+		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+		if(dexStat>maxDexStat) dexStat=maxDexStat;
+		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
+		if(dexStat>=25)attArmor+=2;
+		else
+		if(dexStat>=22)attArmor+=1;
 		attArmor=attArmor*-1;
 		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
 		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
@@ -237,7 +244,18 @@ public class Prancer extends StdCharClass
 	public void level(MOB mob)
 	{
 		super.level(mob);
-		int attArmor=((int)Math.round(Util.div(mob.charStats().getStat(CharStats.DEXTERITY),9.0)))+1;
+		int dexStat=mob.charStats().getStat(CharStats.DEXTERITY);
+		int maxDexStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.DEXTERITY));
+		if(dexStat>maxDexStat) dexStat=maxDexStat;
+		
+		int attArmor=((int)Math.round(Util.div(dexStat,9.0)))+1;
+		if(dexStat>=25)attArmor+=2;
+		else
+		if(dexStat>=22)attArmor+=1;
+		
+		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
+		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
 		mob.tell("^NYour grace grants you a defensive bonus of ^H"+attArmor+"^?.^N");
 	}
 }

@@ -515,24 +515,32 @@ public class StdCharClass implements CharClass, Cloneable
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
 		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
-
-
 		int attStat=mob.charStats().getStat(getAttackAttribute());
 		int maxAttStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
 		if(attStat>=maxAttStat) attStat=maxAttStat;
 		int attGain=(int)Math.round(Util.div(attStat,6.0))+getBonusAttackLevel();
+		if(mvStat>=25)attGain+=2;
+		else
+		if(mvStat>=22)attGain+=1;
 		attGain=attGain*adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
 		theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
+		int man2Stat=mob.charStats().getStat(getAttackAttribute());
+		int maxMan2Stat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+getAttackAttribute()));
+		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
+		
 		int manStat=mob.charStats().getStat(CharStats.INTELLIGENCE);
 		int maxManStat=(CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.MAX_STRENGTH_ADJ+CharStats.INTELLIGENCE));
 		if(manStat>maxManStat) manStat=maxManStat;
 		int manaGain=(int)Math.floor(Util.div(manStat,getManaDivisor())+Dice.roll(getManaDice(),getManaDie(),0));
+		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
 		manaGain=manaGain*adjuster;
+		
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
 
