@@ -39,7 +39,6 @@ public class Fighter_MonkeyPunch extends StdAbility
 				naturalWeapon.setName("a monkey punch");
 				naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 				naturalWeapon.recoverEnvStats();
-				helpProfficiency(mob);
 				MUDFight.postAttack(mob,mob.getVictim(),naturalWeapon);
 			}
 		}

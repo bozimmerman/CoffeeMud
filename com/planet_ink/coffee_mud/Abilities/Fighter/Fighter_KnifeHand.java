@@ -39,7 +39,6 @@ public class Fighter_KnifeHand extends StdAbility
 				naturalWeapon.setName("a knife hand");
 				naturalWeapon.setWeaponType(Weapon.TYPE_PIERCING);
 				naturalWeapon.recoverEnvStats();
-				helpProfficiency(mob);
 				MUDFight.postAttack(mob,mob.getVictim(),naturalWeapon);
 			}
 		}

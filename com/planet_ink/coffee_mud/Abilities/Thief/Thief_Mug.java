@@ -21,27 +21,6 @@ public class Thief_Mug extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 	
-	private DVector lastOnes=new DVector(2);
-	private int timesPicked(MOB target)
-	{
-		int times=0;
-		for(int x=0;x<lastOnes.size();x++)
-		{
-			MOB M=(MOB)lastOnes.elementAt(x,1);
-			Integer I=(Integer)lastOnes.elementAt(x,2);
-			if(M==target)
-			{
-				times=I.intValue();
-				lastOnes.removeElement(M);
-				break;
-			}
-		}
-		if(lastOnes.size()>=50)
-			lastOnes.removeElementAt(0);
-		lastOnes.addElement(target,new Integer(times+1));
-		return times+1;
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		MOB target=mob.getVictim();
@@ -74,7 +53,7 @@ public class Thief_Mug extends ThiefSkill
 			int code=(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if((stolen!=null)&&(stolen.amWearingAt(Item.INVENTORY)))
-					str="<S-NAME> steal(s) "+stolen.name()+" from <T-NAMESELF>.";
+					str="<S-NAME> mug(s) <T-NAMESELF>, stealing "+stolen.name()+" from <T-HIM-HER>.";
 				else
 				{
 					code=CMMsg.MSG_QUIETMOVEMENT;

@@ -147,10 +147,10 @@ public class MUDFight
 		}
 	}
 
-	public static void postAttack(MOB attacker, MOB target, Item weapon)
+	public static boolean postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target)))
-			return;
+			return false;
 
 		if((weapon==null)
 		&&(Util.bset(attacker.getBitmap(),MOB.ATT_AUTODRAW)))
@@ -160,7 +160,11 @@ public class MUDFight
 		}
 		FullMsg msg=new FullMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
 		if(target.location().okMessage(attacker,msg))
+		{
 			target.location().send(attacker,msg);
+			return msg.value()>0;
+		}
+		return false;
 	}
 
 	public static boolean postHealing(MOB healer,

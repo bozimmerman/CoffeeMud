@@ -1,10 +1,8 @@
 Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, ?Autosneak
-Test: Improved Swipe, Mug, Kamikaze
+Test: Improved Swipe, Mug, Kamikaze, Side Kick, Back Hand, Shield Block
 Default statistics page is not right
 
 Fighters:
-Side Kick  Allows the monk an extra attack each round  The extra attack is dealt to a mob that the monk is not currently targetting  
-Back hand  Allows the monk an extra attack each round  The extra attack is dealt to a mob that the monk is not currently targetting  Side kick is prerequisite.  
 Smoke Signals  Requires a fire. Puffs of smoke produce a message for all in the area who can  read smoke signals (has smoke signal skill). To all others it says you see  puffs of smoke in the air. Totally a role-playing skill. Can't think of  
 Scalp Barbarian(5), Templar(10), Assassin (10), or Thief(20)  
 Fragmentation   A critical shot enhancement for barbarians that only works with thrown weapons,  does an EXTRA 3 times damage, but destroys the thrown weapon in the process.  

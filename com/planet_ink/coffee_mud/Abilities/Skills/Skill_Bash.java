@@ -8,7 +8,7 @@ import java.util.*;
 public class Skill_Bash extends StdAbility
 {
 	public String ID() { return "Skill_Bash"; }
-	public String name(){ return "Bash";}
+	public String name(){ return "Shield Bash";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
@@ -51,7 +51,7 @@ public class Skill_Bash extends StdAbility
 		String str=null;
 		if(success)
 		{
-			str=auto?"<T-NAME> is bashed!":"^F<S-NAME> bash(es) <T-NAMESELF>!^?";
+			str=auto?"<T-NAME> is bashed!":"^F<S-NAME> bash(es) <T-NAMESELF> with "+thisSheild.name()+"!^?";
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),str);
 			if(mob.location().okMessage(mob,msg))
 			{
@@ -63,12 +63,18 @@ public class Skill_Bash extends StdAbility
 					w.setDisplayText(thisSheild.displayText());
 					w.setDescription(thisSheild.description());
 					w.baseEnvStats().setDamage(thisSheild.envStats().level()+5);
-					MUDFight.postAttack(mob,target,w);
+					if((MUDFight.postAttack(mob,target,w))
+					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0)
+					&&(target.envStats().weight()<(mob.envStats().weight()*2)))
+					{
+						target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_SITTING);
+						target.recoverEnvStats();
+					}
 				}
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to bash <T-NAMESELF>, but end(s) up looking silly.");
+			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to shield bash <T-NAMESELF>, but end(s) up looking silly.");
 
 		return success;
 	}

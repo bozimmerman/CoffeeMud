@@ -87,7 +87,7 @@ public class MOBloader
 		}
 		catch(Exception sqle)
 		{
-			Log.errOut("MOB/"+username,sqle);
+			Log.errOut("MOB",sqle);
 		}
 		if(D!=null) DBConnector.DBDone(D);
 		return found;

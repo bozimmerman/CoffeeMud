@@ -1,5 +1,77 @@
 package com.planet_ink.coffee_mud.Abilities.Fighter;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
 
-public class Fighter_BackHand
+public class Fighter_BackHand extends StdAbility
 {
+	public String ID() { return "Fighter_BackHand"; }
+	public String name(){ return "Back Hand";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.MALICIOUS;}
+	public int classificationCode(){return Ability.SKILL;}
+	public boolean isAutoInvoked(){return true;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Fighter_BackHand();}
+
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		if((tickID==MudHost.TICK_MOB)
+		   &&(affected!=null)
+		   &&(affected instanceof MOB))
+		{
+			MOB mob=(MOB)affected;
+			if((mob.isInCombat())
+			&&(Sense.aliveAwakeMobile(mob,true))
+			&&(mob.rangeToTarget()==0)
+			&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
+			&&(mob.location()!=null)
+			&&(!anyWeapons(mob)))
+			{
+				if(Dice.rollPercentage()>95)
+					helpProfficiency(mob);
+				MOB elligibleTarget=null;
+				for(int m=0;m<mob.location().numInhabitants();m++)
+				{
+					MOB M=mob.location().fetchInhabitant(m);
+					if((M!=null)
+					&&(M.getVictim()==mob)
+					&&(mob.getVictim()!=M)
+					&&(M.rangeToTarget()==0))
+					{
+						elligibleTarget=M;
+						break;
+					}
+				}
+				if(elligibleTarget!=null)
+				{
+					Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
+					naturalWeapon.setName("a back hand");
+					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+					naturalWeapon.recoverEnvStats();
+					MUDFight.postAttack(mob,elligibleTarget,naturalWeapon);
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean anyWeapons(MOB mob)
+	{
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item I=mob.fetchInventory(i);
+			if((I!=null)
+			   &&((I.amWearingAt(Item.WIELD))
+			      ||(I.amWearingAt(Item.HELD))))
+				return true;
+		}
+		return false;
+	}
 }

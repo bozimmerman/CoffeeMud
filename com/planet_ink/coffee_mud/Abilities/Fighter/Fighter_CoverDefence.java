@@ -34,12 +34,12 @@ public class Fighter_CoverDefence extends StdAbility
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Weapon)
 		   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)
-			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)))
+			  ||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
+		   &&(profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
+		   &&(msg.source().getVictim()==mob))
 		{
 			FullMsg msg2=new FullMsg(msg.source(),mob,null,CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> take(s) cover from <S-YOUPOSS> attack!");
-			if((profficiencyCheck(null,mob.charStats().getStat(CharStats.DEXTERITY)-90,false))
-			&&(msg.source().getVictim()==mob)
-			&&(mob.location().okMessage(mob,msg2)))
+			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);
 				helpProfficiency(mob);

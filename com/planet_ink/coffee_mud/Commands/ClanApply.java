@@ -31,6 +31,7 @@ public class ClanApply extends BaseClanner
 						mob.setClanID(C.ID());
 						mob.setClanRole(Clan.POS_APPLICANT);
 						clanAnnounce(mob,"New Applicant: "+mob.Name());
+						mob.tell("You have successfully applied for membership in clan "+C.ID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
 					}
 					else
 					{
