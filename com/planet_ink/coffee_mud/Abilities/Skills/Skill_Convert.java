@@ -21,19 +21,19 @@ public class Skill_Convert extends StdAbility
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("You must specify either a diety to convert yourself to, or a player to convert to your religeon.");
+			mob.tell("You must specify either a deity to convert yourself to, or a player to convert to your religeon.");
 			return false;
 		}
 		
 		MOB target=mob;
-		Diety D=CMMap.getDiety(Util.combine(commands,0));
+		Deity D=CMMap.getDeity(Util.combine(commands,0));
 		if(D==null)
 		{
-			D=mob.getMyDiety();
+			D=mob.getMyDeity();
 			target=getTarget(mob,commands,givenTarget);
 			if(target==null)
 			{
-				mob.tell("You've also never heard of a diety called '"+Util.combine(commands,0)+"'.");
+				mob.tell("You've also never heard of a deity called '"+Util.combine(commands,0)+"'.");
 				return false;
 			}
 			if(D==null)
@@ -57,12 +57,12 @@ public class Skill_Convert extends StdAbility
 		{
 			if(target!=mob)
 			{
-				if(target.getMyDiety()!=null)
+				if(target.getMyDeity()!=null)
 				{
-					mob.tell(target.name()+" is worshiping "+target.getMyDiety().name()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDiety().charStats().himher()+" first.");
+					mob.tell(target.name()+" is worshiping "+target.getMyDeity().name()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDeity().charStats().himher()+" first.");
 					return false;
 				}
-				if(target.getMyDiety()==D)
+				if(target.getMyDeity()==D)
 				{
 					mob.tell(target.name()+" already worships "+D.name()+".");
 					return false;

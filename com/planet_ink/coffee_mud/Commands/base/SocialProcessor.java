@@ -462,7 +462,7 @@ public class SocialProcessor
 		if(target==null)
 		{
 			if(mob.getWorshipCharID().length()>0)
-				target=(MOB)CMMap.getDiety(Util.combine(commands,1));
+				target=(MOB)CMMap.getDeity(Util.combine(commands,1));
 			if((target==null)
 			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getLeigeID()))
 			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getWorshipCharID())))

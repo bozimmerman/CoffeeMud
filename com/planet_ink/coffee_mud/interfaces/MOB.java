@@ -112,7 +112,7 @@ public interface MOB
 	// misc characteristics
 	public String getWorshipCharID();
 	public String getLeigeID();
-	public Diety getMyDiety();
+	public Deity getMyDeity();
 	public String getClanID();
 	public void setClanID(String clan);
 	public int getClanRole();

@@ -45,8 +45,8 @@ public class Prayer_Avatar extends Prayer
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			if(mob.getMyDiety()!=null)
-				affectedStats.setReplacementName(mob.name()+" the Avatar of "+mob.getMyDiety().name());
+			if(mob.getMyDeity()!=null)
+				affectedStats.setReplacementName(mob.name()+" the Avatar of "+mob.getMyDeity().name());
 			else
 				affectedStats.setReplacementName(mob.name()+" the Avatar");
 			int levels=mob.charStats().getClassLevel("Avatar");

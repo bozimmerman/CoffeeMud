@@ -56,9 +56,9 @@ public class FrontDoor
 			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
 				return false;
 		}
-		for(int m=0;m<CMMap.numDieties();m++)
+		for(int m=0;m<CMMap.numDeities();m++)
 		{
-			MOB tm=(MOB)CMMap.getDiety(m);
+			MOB tm=(MOB)CMMap.getDeity(m);
 			if((CoffeeUtensils.containsString(tm.ID(),login))
 			||(CoffeeUtensils.containsString(tm.name(),login)))
 				return false;

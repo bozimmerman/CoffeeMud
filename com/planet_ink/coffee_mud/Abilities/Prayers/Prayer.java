@@ -33,16 +33,16 @@ public class Prayer extends StdAbility
 
 	protected String prayWord(MOB mob)
 	{
-		if(mob.getMyDiety()!=null)
-			return "pray(s) to "+mob.getMyDiety().name();
+		if(mob.getMyDeity()!=null)
+			return "pray(s) to "+mob.getMyDeity().name();
 		else
 			return "pray(s)";
 	}
 	
 	protected String prayForWord(MOB mob)
 	{
-		if(mob.getMyDiety()!=null)
-			return "pray(s) for "+mob.getMyDiety().name();
+		if(mob.getMyDeity()!=null)
+			return "pray(s) for "+mob.getMyDeity().name();
 		else
 			return "pray(s)";
 	}

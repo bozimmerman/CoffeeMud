@@ -98,7 +98,7 @@ public class StdMOB implements MOB
 	protected String LeigeID="";
 	protected int WimpHitPoint=0;
 	protected int QuestPoint=0;
-	protected int DietyIndex=-1;
+	protected int DeityIndex=-1;
 	public String getLeigeID(){return LeigeID;}
 	public String getWorshipCharID(){return WorshipCharID;}
 	public int getAlignment(){return Alignment;}
@@ -114,21 +114,21 @@ public class StdMOB implements MOB
 	public void setWorshipCharID(String newVal){ WorshipCharID=newVal;}
 	public void setWimpHitPoint(int newVal){ WimpHitPoint=newVal;}
 	public void setQuestPoint(int newVal){ QuestPoint=newVal;}
-	public Diety getMyDiety()
+	public Deity getMyDeity()
 	{
 		if(getWorshipCharID().length()==0) return null;
-		Diety bob=CMMap.getDiety(getWorshipCharID(),DietyIndex);
-		if((bob==null)||(DietyIndex<0))
-			DietyIndex=CMMap.getDietyIndex(getWorshipCharID());
+		Deity bob=CMMap.getDeity(getWorshipCharID(),DeityIndex);
+		if((bob==null)||(DeityIndex<0))
+			DeityIndex=CMMap.getDeityIndex(getWorshipCharID());
 		else
 		if(bob==this)
 		{
-			DietyIndex=-1;
+			DeityIndex=-1;
 			return null;
 		}
 		else
 			return bob;
-		return CMMap.getDiety(getWorshipCharID(),DietyIndex);
+		return CMMap.getDeity(getWorshipCharID(),DeityIndex);
 	}
 
 	// location!
@@ -252,7 +252,7 @@ public class StdMOB implements MOB
 			location().affectEnvStats(this,envStats);
 		envStats().setWeight(envStats().weight()+(int)Math.round(Util.div(getMoney(),100.0)));
 		if(riding()!=null) riding().affectEnvStats(this,envStats);
-		if(getMyDiety()!=null) getMyDiety().affectEnvStats(this,envStats);
+		if(getMyDeity()!=null) getMyDeity().affectEnvStats(this,envStats);
 		if(charStats!=null)
 		{
 			charStats().getCurrentClass().affectEnvStats(this,envStats);
@@ -309,7 +309,7 @@ public class StdMOB implements MOB
 		charStats=baseCharStats().cloneCharStats();
 			
 		if(riding()!=null) riding().affectCharStats(this,charStats);
-		if(getMyDiety()!=null) getMyDiety().affectCharStats(this,charStats);
+		if(getMyDeity()!=null) getMyDeity().affectCharStats(this,charStats);
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability affect=fetchAffect(a);
@@ -853,7 +853,7 @@ public class StdMOB implements MOB
 	
 	public boolean okAffect(Affect affect)
 	{
-		if((getMyDiety()!=null)&&(!getMyDiety().okAffect(affect)))
+		if((getMyDeity()!=null)&&(!getMyDeity().okAffect(affect)))
 			return false;
 		
 		if(charStats!=null)
@@ -1059,7 +1059,7 @@ public class StdMOB implements MOB
 				}
 				break;
 			case Affect.TYP_REBUKE:
-				if((affect.target()==null)||(!(affect.target() instanceof Diety)))
+				if((affect.target()==null)||(!(affect.target() instanceof Deity)))
 				{
 					if(affect.target()!=null)
 					{
@@ -1098,7 +1098,7 @@ public class StdMOB implements MOB
 					tell("You can't serve yourself!");
 					return false;
 				}
-				if(affect.target() instanceof Diety)
+				if(affect.target() instanceof Deity)
 					break;
 				if(!Sense.canBeHeardBy(this,affect.target()))
 				{
@@ -1349,8 +1349,8 @@ public class StdMOB implements MOB
 
 	public void affect(Affect affect)
 	{
-		if(getMyDiety()!=null)
-		   getMyDiety().affect(affect);
+		if(getMyDeity()!=null)
+		   getMyDeity().affect(affect);
 		
 		if(charStats!=null)
 		{
@@ -1398,7 +1398,7 @@ public class StdMOB implements MOB
 				tell(this,affect.target(),affect.sourceMessage());
 				break;
 			case Affect.TYP_SERVE:
-				if((affect.target()!=null)&&(!(affect.target() instanceof Diety)))
+				if((affect.target()!=null)&&(!(affect.target() instanceof Deity)))
 					setLeigeID(affect.target().name());
 				tell(this,affect.target(),affect.sourceMessage());
 				break;

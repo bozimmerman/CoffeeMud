@@ -305,17 +305,17 @@ public class Generic
 				text.append(XMLManager.convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
 				text.append(XMLManager.convertXMLtoTag("ITEMINT",""+((Banker)E).getCoinInterest()));
 			}
-			if(E instanceof Diety)
+			if(E instanceof Deity)
 			{
-				text.append(XMLManager.convertXMLtoTag("CLEREQ",((Diety)E).getClericRequirements()));
-				text.append(XMLManager.convertXMLtoTag("WORREQ",((Diety)E).getWorshipRequirements()));
-				text.append(XMLManager.convertXMLtoTag("CLERIT",((Diety)E).getClericRitual()));
-				text.append(XMLManager.convertXMLtoTag("WORRIT",((Diety)E).getWorshipRitual()));
+				text.append(XMLManager.convertXMLtoTag("CLEREQ",((Deity)E).getClericRequirements()));
+				text.append(XMLManager.convertXMLtoTag("WORREQ",((Deity)E).getWorshipRequirements()));
+				text.append(XMLManager.convertXMLtoTag("CLERIT",((Deity)E).getClericRitual()));
+				text.append(XMLManager.convertXMLtoTag("WORRIT",((Deity)E).getWorshipRitual()));
 
 				itemstr=new StringBuffer("");
-				for(int b=0;b<((Diety)E).numBlessings();b++)
+				for(int b=0;b<((Deity)E).numBlessings();b++)
 				{
-					Ability A=((Diety)E).fetchBlessing(b);
+					Ability A=((Deity)E).fetchBlessing(b);
 					if(A==null) continue;
 					itemstr.append("<BLESS>");
 					itemstr.append(XMLManager.convertXMLtoTag("BLCLASS",CMClass.className(A)));
@@ -1107,9 +1107,9 @@ public class Generic
 				for(int b=0;b<V.size();b++)
 					((ShopKeeper)E).delStoreInventory(((Environmental)V.elementAt(b)));
 			}
-			if(E instanceof Diety)
-				while(((Diety)E).numBlessings()>0)
-					((Diety)E).delBlessing(((Diety)E).fetchBlessing(0));
+			if(E instanceof Deity)
+				while(((Deity)E).numBlessings()>0)
+					((Deity)E).delBlessing(((Deity)E).fetchBlessing(0));
 		}
 		while(E.numAffects()>0)
 		{
@@ -1291,9 +1291,9 @@ public class Generic
 				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"ITEMINT"));
 			}
 			
-			if(E instanceof Diety)
+			if(E instanceof Deity)
 			{
-				Diety godmob=(Diety)E;
+				Deity godmob=(Deity)E;
 				godmob.setClericRequirements(XMLManager.getValFromPieces(buf,"CLEREQ"));
 				godmob.setWorshipRequirements(XMLManager.getValFromPieces(buf,"WORREQ"));
 				godmob.setClericRitual(XMLManager.getValFromPieces(buf,"CLERIT"));

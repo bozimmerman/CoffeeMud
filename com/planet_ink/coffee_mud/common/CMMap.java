@@ -9,7 +9,7 @@ public class CMMap
 	protected static Vector map=new Vector();
 	
 	public static Hashtable MOBs=new Hashtable();
-	public static Vector Dieties=new Vector();
+	public static Vector Deities=new Vector();
 
 	private static Hashtable startRooms=new Hashtable();
 	private static Hashtable deathRooms=new Hashtable();
@@ -46,27 +46,27 @@ public class CMMap
 	public static Room getRoom(int x){try{return (Room)map.elementAt(x);}catch(Exception e){};return null;}
 	public static Vector getRoomVector(){return map;}
 	
-	public static int numDieties(){return Dieties.size();}
-	public static void addDiety(Diety newOne){if(!Dieties.contains(newOne))Dieties.addElement(newOne);}
-	public static void delDiety(Diety oneToDel){try{Dieties.removeElement(oneToDel);}catch(Exception e){}}
-	public static Diety getDiety(int x){try{return (Diety)Dieties.elementAt(x);}catch(Exception e){};return null;}
-	public static int getDietyIndex(String named)
+	public static int numDeities(){return Deities.size();}
+	public static void addDeity(Deity newOne){if(!Deities.contains(newOne))Deities.addElement(newOne);}
+	public static void delDeity(Deity oneToDel){try{Deities.removeElement(oneToDel);}catch(Exception e){}}
+	public static Deity getDeity(int x){try{return (Deity)Deities.elementAt(x);}catch(Exception e){};return null;}
+	public static int getDeityIndex(String named)
 	{
-		Diety bob=getDiety(named);
+		Deity bob=getDeity(named);
 		if(bob==null) return -1;
-		return Dieties.indexOf(bob);
+		return Deities.indexOf(bob);
 	}
-	public static Diety getDiety(String named, int index)
+	public static Deity getDeity(String named, int index)
 	{
-		Diety bob=getDiety(index);
+		Deity bob=getDeity(index);
 		if((bob!=null)&&(bob.name().equals(named)))
 			return bob;
 		return null;
 	}
-	public static Diety getDiety(String named)
+	public static Deity getDeity(String named)
 	{
-		Diety bob=(Diety)CoffeeUtensils.fetchEnvironmental(Dieties,named,true);
-		if(bob==null) bob=(Diety)CoffeeUtensils.fetchEnvironmental(Dieties,named,false);
+		Deity bob=(Deity)CoffeeUtensils.fetchEnvironmental(Deities,named,true);
+		if(bob==null) bob=(Deity)CoffeeUtensils.fetchEnvironmental(Deities,named,false);
 		return bob;
 	}
 	
@@ -180,7 +180,7 @@ public class CMMap
 		map=new Vector();
 		AREAS=new Vector();
 		MOBs=new Hashtable();
-		Dieties=new Vector();
+		Deities=new Vector();
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
 	}

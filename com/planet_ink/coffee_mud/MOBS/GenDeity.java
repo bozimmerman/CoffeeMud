@@ -4,14 +4,14 @@ import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-public class GenDiety extends StdDiety
+public class GenDeity extends StdDeity
 {
-	public GenDiety()
+	public GenDeity()
 	{
 		super();
-		Username="a generic diety";
-		setDescription("He is a run-of-the-mill diety.");
-		setDisplayText("A generic diety stands here.");
+		Username="a generic deity";
+		setDescription("He is a run-of-the-mill deity.");
+		setDisplayText("A generic deity stands here.");
 
 		recoverMaxState();
 		resetToMaxState();
@@ -20,7 +20,7 @@ public class GenDiety extends StdDiety
 	}
 	public Environmental newInstance()
 	{
-		return new GenDiety();
+		return new GenDeity();
 	}
 	public boolean isGeneric(){return true;}
 

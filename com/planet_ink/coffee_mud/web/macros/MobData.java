@@ -100,7 +100,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 	
-	public static StringBuffer blessings(Diety E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
@@ -396,7 +396,7 @@ public class MobData extends StdWebMacro
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-						  "ISDIETY","CLEREQ","CLERIT","WORREQ","WORRIT"};
+						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -610,27 +610,27 @@ public class MobData extends StdWebMacro
 					old=((ShopKeeper)M).prejudiceFactors();
 				str.append(old);
 				break;
-			case 29: // is diety
-				if(M instanceof Diety) return "true";
+			case 29: // is deity
+				if(M instanceof Deity) return "true";
 				else return "false";
 			case 30: // cleric requirements
-				if((firstTime)&&(M instanceof Diety))
-					old=((Diety)M).getClericRequirements();
+				if((firstTime)&&(M instanceof Deity))
+					old=((Deity)M).getClericRequirements();
 				str.append(old);
 				break;
 			case 31: // cleric ritual
-				if((firstTime)&&(M instanceof Diety))
-					old=((Diety)M).getClericRitual();
+				if((firstTime)&&(M instanceof Deity))
+					old=((Deity)M).getClericRitual();
 				str.append(old);
 				break;
 			case 32: // worship requirements
-				if((firstTime)&&(M instanceof Diety))
-					old=((Diety)M).getWorshipRequirements();
+				if((firstTime)&&(M instanceof Deity))
+					old=((Deity)M).getWorshipRequirements();
 				str.append(old);
 				break;
 			case 33: // worship ritual
-				if((firstTime)&&(M instanceof Diety))
-					old=((Diety)M).getWorshipRitual();
+				if((firstTime)&&(M instanceof Deity))
+					old=((Deity)M).getWorshipRitual();
 				str.append(old);
 				break;
 			}
@@ -642,8 +642,8 @@ public class MobData extends StdWebMacro
 		str.append(MobData.senses(M,firstTime,httpReq,parms));
 		str.append(AreaData.affectsNBehaves(M,httpReq,parms));
 		str.append(MobData.abilities(M,httpReq,parms));
-		if(M instanceof Diety)
-			str.append(MobData.blessings((Diety)M,httpReq,parms));
+		if(M instanceof Deity)
+			str.append(MobData.blessings((Deity)M,httpReq,parms));
 		if(M instanceof ShopKeeper)
 			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms));
 		

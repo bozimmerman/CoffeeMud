@@ -292,10 +292,10 @@ public class Scoring
 
 	public static void gods(MOB mob)
 	{
-		StringBuffer msg=new StringBuffer("\n\r^HThe known dieties:^? \n\r");
-		for(int d=0;d<CMMap.numDieties();d++)
+		StringBuffer msg=new StringBuffer("\n\r^HThe known deities:^? \n\r");
+		for(int d=0;d<CMMap.numDeities();d++)
 		{
-			Diety D=CMMap.getDiety(d);
+			Deity D=CMMap.getDeity(d);
 			msg.append("\n\r^x"+D.name()+"^.^?\n\r");
 			msg.append(D.description()+"\n\r");
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");

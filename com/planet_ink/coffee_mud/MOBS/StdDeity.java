@@ -3,7 +3,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
-public class StdDiety extends StdMOB implements Diety
+public class StdDeity extends StdMOB implements Deity
 {
 	protected int xpwrath=100;
 	protected String clericReqs="";
@@ -17,12 +17,12 @@ public class StdDiety extends StdMOB implements Diety
 	protected Hashtable trigTimes=new Hashtable();
 	protected int checkDown=0;
 	
-	public StdDiety()
+	public StdDeity()
 	{
 		super();
-		Username="a Mighty Diety";
+		Username="a Mighty Deity";
 		setDescription("He is Mighty.");
-		setDisplayText("A Mighty Diety stands here!");
+		setDisplayText("A Mighty Deity stands here!");
 		baseEnvStats().setWeight(700);
 		baseEnvStats().setAbility(200);
 		baseEnvStats().setArmor(0);
@@ -32,7 +32,7 @@ public class StdDiety extends StdMOB implements Diety
 	}
 	public Environmental newInstance()
 	{
-		return new StdDiety();
+		return new StdDeity();
 	}
 	
 	public String getClericRequirements(){return clericReqs;}
@@ -61,7 +61,7 @@ public class StdDiety extends StdMOB implements Diety
 		StringBuffer buf=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
-			DietyTrigger DT=(DietyTrigger)V.elementAt(v);
+			DeityTrigger DT=(DeityTrigger)V.elementAt(v);
 			if(v>0) buf.append(", "+((DT.previousConnect==CONNECT_AND)?"and ":"or "));
 			switch(DT.triggerCode)
 			{
@@ -179,12 +179,12 @@ public class StdDiety extends StdMOB implements Diety
 	public void destroy()
 	{
 		super.destroy();
-		CMMap.delDiety(this);
+		CMMap.delDeity(this);
 	}
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		super.bringToLife(newLocation,resetStats);
-		CMMap.addDiety(this);
+		CMMap.addDeity(this);
 	}
 	
 	public boolean okAffect(Affect msg)
@@ -195,14 +195,14 @@ public class StdDiety extends StdMOB implements Diety
 		switch(msg.targetMinor())
 		{
 		case Affect.TYP_SERVE:
-			if(msg.source().getMyDiety()==this)
+			if(msg.source().getMyDeity()==this)
 			{
 				msg.source().tell("You already worship "+name()+".");
 				return false;
 			}
-			if(msg.source().getMyDiety()!=null)
+			if(msg.source().getMyDeity()!=null)
 			{
-				msg.source().tell("You already worship "+msg.source().getMyDiety().name()+".");
+				msg.source().tell("You already worship "+msg.source().getMyDeity().name()+".");
 				return false;
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
@@ -315,7 +315,7 @@ public class StdDiety extends StdMOB implements Diety
 			for(int v=0;v<V.size();v++)
 			{
 				boolean yup=false;
-				DietyTrigger DT=(DietyTrigger)V.elementAt(v);
+				DeityTrigger DT=(DeityTrigger)V.elementAt(v);
 				if((msg.sourceMinor()==TRIG_WATCH[DT.triggerCode])
 				||(TRIG_WATCH[DT.triggerCode]==-999))
 				{
@@ -434,7 +434,7 @@ public class StdDiety extends StdMOB implements Diety
 					boolean rollingTruth=checks[0];
 					for(int v=1;v<V.size();v++)
 					{
-						DietyTrigger DT=(DietyTrigger)V.elementAt(v);
+						DeityTrigger DT=(DeityTrigger)V.elementAt(v);
 						if(DT.previousConnect==CONNECT_AND)
 							rollingTruth=rollingTruth&&checks[v];
 						else
@@ -563,7 +563,7 @@ public class StdDiety extends StdMOB implements Diety
 				if(V.size()>1)
 				{
 					String cmd=(String)V.firstElement();
-					DietyTrigger DT=new DietyTrigger();
+					DeityTrigger DT=new DeityTrigger();
 					DT.previousConnect=previousConnector;
 					if(cmd.equals("SAY"))
 					{
@@ -582,7 +582,7 @@ public class StdDiety extends StdMOB implements Diety
 						DT.triggerCode=TRIGGER_PUTTHING;
 						if(V.size()<3)
 						{ 
-							Log.errOut("StdDiety",name()+"- Illegal trigger: "+trig); 
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
 							break;
 						}
 						DT.parm1=Util.combine(V,1,V.size()-2);
@@ -600,7 +600,7 @@ public class StdDiety extends StdMOB implements Diety
 						DT.triggerCode=TRIGGER_PUTVALUE;
 						if(V.size()<3)
 						{ 
-							Log.errOut("StdDiety",name()+"- Illegal trigger: "+trig); 
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
 							break;
 						}
 						DT.parm1=""+Util.s_int((String)V.elementAt(1));
@@ -612,7 +612,7 @@ public class StdDiety extends StdMOB implements Diety
 						DT.triggerCode=TRIGGER_BURNVALUE;
 						if(V.size()<3)
 						{ 
-							Log.errOut("StdDiety",name()+"- Illegal trigger: "+trig); 
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
 							break;
 						}
 						DT.parm1=""+Util.s_int((String)Util.combine(V,1));
@@ -642,7 +642,7 @@ public class StdDiety extends StdMOB implements Diety
 						}
 						if(!found)
 						{ 
-							Log.errOut("StdDiety",name()+"- Unknown material: "+trig); 
+							Log.errOut("StdDeity",name()+"- Unknown material: "+trig); 
 							break;
 						}
 					}
@@ -652,7 +652,7 @@ public class StdDiety extends StdMOB implements Diety
 						DT.triggerCode=TRIGGER_PUTMATERIAL;
 						if(V.size()<3)
 						{ 
-							Log.errOut("StdDiety",name()+"- Illegal trigger: "+trig); 
+							Log.errOut("StdDeity",name()+"- Illegal trigger: "+trig); 
 							break;
 						}
 						DT.parm1=(String)V.elementAt(1);
@@ -677,7 +677,7 @@ public class StdDiety extends StdMOB implements Diety
 						}
 						if(!found)
 						{ 
-							Log.errOut("StdDiety",name()+"- Unknown material: "+trig); 
+							Log.errOut("StdDeity",name()+"- Unknown material: "+trig); 
 							break;
 						}
 					}
@@ -712,7 +712,7 @@ public class StdDiety extends StdMOB implements Diety
 						DT.parm1=Util.combine(V,1);
 						if(CMClass.findAbility(DT.parm1)==null)
 						{ 
-							Log.errOut("StdDiety",name()+"- Illegal SPELL in: "+trig); 
+							Log.errOut("StdDeity",name()+"- Illegal SPELL in: "+trig); 
 							break;
 						}
 					}
@@ -739,14 +739,14 @@ public class StdDiety extends StdMOB implements Diety
 					}
 					else
 					{ 
-						Log.errOut("StdDiety",name()+"- Illegal trigger: '"+cmd+"','"+trig+"'"); 
+						Log.errOut("StdDeity",name()+"- Illegal trigger: '"+cmd+"','"+trig+"'"); 
 						break;
 					}
 					putHere.addElement(DT);
 				}
 				else
 				{
-					Log.errOut("StdDiety",name()+"- Illegal trigger (need more parameters): "+trig);
+					Log.errOut("StdDeity",name()+"- Illegal trigger (need more parameters): "+trig);
 					break;
 				}
 			}
@@ -797,7 +797,7 @@ public class StdDiety extends StdMOB implements Diety
 	private static final int CONNECT_AND=0;
 	private static final int CONNECT_OR=1;
 	
-	private class DietyTrigger
+	private class DeityTrigger
 	{
 		public int triggerCode=TRIGGER_SAY;
 		public int previousConnect=CONNECT_AND;

@@ -59,7 +59,7 @@ public class GrinderMobs
 		return "";
 	}
 	
-	public static String blessings(Diety E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numBlessings()>0)
 		{
@@ -135,7 +135,7 @@ public class GrinderMobs
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
 						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
-						  "ISDIETY","CLEREQ","CLERIT","WORREQ","WORRIT","BLESSINGS"};
+						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT","BLESSINGS"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -243,23 +243,23 @@ public class GrinderMobs
 				if(M instanceof ShopKeeper)
 					((ShopKeeper)M).setPrejudiceFactors(old);
 				break;
-			case 29: // is diety
+			case 29: // is deity
 				break;
 			case 30: // cleric requirements
-				if(M instanceof Diety)
-					((Diety)M).setClericRequirements(old);
+				if(M instanceof Deity)
+					((Deity)M).setClericRequirements(old);
 				break;
 			case 31: // cleric ritual
-				if(M instanceof Diety)
-					((Diety)M).setClericRitual(old);
+				if(M instanceof Deity)
+					((Deity)M).setClericRitual(old);
 				break;
 			case 32: // worshipper requirements
-				if(M instanceof Diety)
-					((Diety)M).setWorshipRequirements(old);
+				if(M instanceof Deity)
+					((Deity)M).setWorshipRequirements(old);
 				break;
 			case 33: // worshipper ritual
-				if(M instanceof Diety)
-					((Diety)M).setWorshipRitual(old);
+				if(M instanceof Deity)
+					((Deity)M).setWorshipRitual(old);
 				break;
 			}
 		}
@@ -274,9 +274,9 @@ public class GrinderMobs
 			if(error.length()>0) return error;
 			error=GrinderMobs.abilities(M,httpReq,parms);
 			if(error.length()>0) return error;
-			if(M instanceof Diety)
+			if(M instanceof Deity)
 			{
-				error=GrinderMobs.blessings((Diety)M,httpReq,parms);
+				error=GrinderMobs.blessings((Deity)M,httpReq,parms);
 				if(error.length()>0) return error;
 			}
 			

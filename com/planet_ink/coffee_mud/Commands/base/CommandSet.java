@@ -231,7 +231,7 @@ public class CommandSet extends Hashtable
 		put("DEPOSIT",new Integer(DEPOSIT));
 		put("DESTROY",new Integer(DESTROY));
 		put("DESCRIPTION",new Integer(DESCRIPTION));
-		put("DIETIES",new Integer(GODS));
+		put("DEITIES",new Integer(GODS));
 			put("GODS",new Integer(GODS));
 		put("DISMOUNT",new Integer(DISMOUNT));
 			put("DISEMBARK",new Integer(DISMOUNT));
