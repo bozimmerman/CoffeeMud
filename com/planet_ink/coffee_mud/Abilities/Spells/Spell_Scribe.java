@@ -102,7 +102,7 @@ public class Spell_Scribe extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, chanting softly.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting softly.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -117,7 +117,7 @@ public class Spell_Scribe extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, chanting softly, and looking very frustrated.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, encanting softly, and looking very frustrated.");
 
 
 		// return whether it worked

@@ -83,7 +83,7 @@ public class Spell_Shelter extends Spell
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> arms, chanting, and suddenly vanish(es)!");
+		FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> arms, speak(s), and suddenly vanish(es)!");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
@@ -121,7 +121,7 @@ public class Spell_Shelter extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and chant(s), but nothing happens.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> wave(s) <S-HIS-HER> arms and and speak(s), but nothing happens.");
 
 		return success;
 	}

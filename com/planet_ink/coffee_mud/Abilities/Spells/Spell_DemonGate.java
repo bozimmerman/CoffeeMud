@@ -86,7 +86,7 @@ public class Spell_DemonGate extends Spell
 		if(success)
 		{
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> open(s) the gates of the abyss, chanting angrilly.");
+			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> open(s) the gates of the abyss, encanting angrilly.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

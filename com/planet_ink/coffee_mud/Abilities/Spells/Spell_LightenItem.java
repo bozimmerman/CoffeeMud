@@ -86,7 +86,7 @@ public class Spell_LightenItem extends Spell
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, chanting.");
+			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"":"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting.");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -99,7 +99,7 @@ public class Spell_LightenItem extends Spell
 
 		}
 		else
-			beneficialWordsFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, chanting, but nothing happens.");
+			beneficialWordsFizzle(mob,target,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, encanting, but nothing happens.");
 
 
 		// return whether it worked

@@ -33,18 +33,11 @@ public class Chant_Farsight extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		if(commands.size()<1)
-		{
-			mob.tell("Which direction should I 'look'?");
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
@@ -60,6 +53,32 @@ public class Chant_Farsight extends Chant
 			{
 				mob.location().send(mob,msg);
 				Room thatRoom=mob.location();
+				if(commands.size()==0)
+				{
+					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					{
+						Exit exit=thatRoom.getExitInDir(d);
+						Room room=thatRoom.getRoomInDir(d);
+
+						if((exit!=null)&&(room!=null)&&(Sense.canBeSeenBy(exit,mob)&&(exit.isOpen())))
+						{
+							mob.tell("^D" + Util.padRight(Directions.getDirectionName(d),5)+":^N ^d"+exit.viewableText(mob, room)+"^N");
+							exit=room.getExitInDir(d);
+							room=room.getRoomInDir(d);
+							if((exit!=null)&&(room!=null)&&(Sense.canBeSeenBy(exit,mob)&&(exit.isOpen())))
+							{
+								mob.tell(Util.padRight("",5)+":^N ^d"+exit.viewableText(mob, room)+"^N");
+								exit=room.getExitInDir(d);
+								room=room.getRoomInDir(d);
+								if((exit!=null)&&(room!=null)&&(Sense.canBeSeenBy(exit,mob)&&(exit.isOpen())))
+								{
+									mob.tell(Util.padRight("",5)+":^N ^d"+exit.viewableText(mob, room)+"^N");
+								}
+							}
+						}
+					}
+				}
+				else
 				while(commands.size()>0)
 				{
 					String whatToOpen=(String)commands.elementAt(0);
@@ -85,14 +104,11 @@ public class Chant_Farsight extends Chant
 						{
 							commands.removeElementAt(0);
 							thatRoom=room;
+							mob.tell("\n\r");
+							FullMsg msg2=new FullMsg(mob,thatRoom,Affect.MSG_EXAMINESOMETHING,null);
+							thatRoom.affect(msg2);
 						}
 					}
-				}
-				if(success)
-				{
-					mob.tell("\n\r");
-					FullMsg msg2=new FullMsg(mob,thatRoom,Affect.MSG_EXAMINESOMETHING,null);
-					thatRoom.affect(msg2);
 				}
 			}
 		}
