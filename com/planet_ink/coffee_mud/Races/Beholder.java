@@ -31,7 +31,7 @@ public class Beholder extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.INTELLIGENCE,25);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,25);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,75);
 		affectableStats.setStat(CharStats.SAVE_MIND,100);
 	}

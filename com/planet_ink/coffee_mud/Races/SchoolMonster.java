@@ -27,9 +27,9 @@ public class SchoolMonster extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,1);
-		affectableStats.setStat(CharStats.DEXTERITY,1);
-		affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setPermaStat(CharStats.STRENGTH,1);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,1);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,3);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -31,9 +31,9 @@ public class Troll extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,16);
-		affectableStats.setStat(CharStats.DEXTERITY,12);
-		affectableStats.setStat(CharStats.INTELLIGENCE,8);
+		affectableStats.setPermaStat(CharStats.STRENGTH,16);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,12);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,8);
 	}
 	public String arriveStr()
 	{

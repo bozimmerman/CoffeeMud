@@ -30,7 +30,7 @@ public class LizardMan extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.INTELLIGENCE,6);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,6);
 	}
 	public String arriveStr()
 	{

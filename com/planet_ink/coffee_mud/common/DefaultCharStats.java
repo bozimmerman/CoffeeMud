@@ -467,6 +467,15 @@ public class DefaultCharStats implements Cloneable, CharStats
 		return stats[abilityCode];
 	}
 
+	public void setPermaStat(int abilityCode, int value)
+	{
+		setStat(abilityCode,value);
+		if(abilityCode<CharStats.NUM_BASE_STATS)
+		{
+			setStat(CharStats.MAX_STRENGTH_ADJ+abilityCode,
+					-CommonStrings.getIntVar(CommonStrings.SYSTEMI_BASEMAXSTAT)-value);
+		}
+	}
 	public void setStat(int abilityCode, int value)
 	{
 		stats[abilityCode]=value;

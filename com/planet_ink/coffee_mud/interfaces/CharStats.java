@@ -111,6 +111,7 @@ public interface CharStats extends Cloneable
 	public int getStat(int statNum);
 	public int getStat(String abilityName);
 	public void setStat(int statNum, int value);
+	public void setPermaStat(int statNum, int value);
 	public int getCode(String abilityName);
 	public StringBuffer getStats();
 	public int getSave(int which);

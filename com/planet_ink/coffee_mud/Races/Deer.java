@@ -27,9 +27,9 @@ public class Deer extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,3);
-		affectableStats.setStat(CharStats.DEXTERITY,18);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STRENGTH,3);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,18);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

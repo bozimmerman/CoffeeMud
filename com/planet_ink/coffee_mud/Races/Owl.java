@@ -39,10 +39,10 @@ public class Owl extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,3);
-		affectableStats.setStat(CharStats.DEXTERITY,12);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setStat(CharStats.WISDOM,18);
+		affectableStats.setPermaStat(CharStats.STRENGTH,3);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,12);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.WISDOM,18);
 	}
 	public String arriveStr()
 	{

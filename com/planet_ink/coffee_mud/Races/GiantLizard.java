@@ -27,9 +27,9 @@ public class GiantLizard extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,35);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setStat(CharStats.DEXTERITY,3);
+		affectableStats.setPermaStat(CharStats.STRENGTH,35);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,3);
 	}
 	public String arriveStr()
 	{

@@ -27,9 +27,9 @@ public class Sheep extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,5);
-		affectableStats.setStat(CharStats.DEXTERITY,1);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STRENGTH,5);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,1);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -33,8 +33,8 @@ public class GreatFish extends GiantFish
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setStat(CharStats.DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
 	}
 	public String arriveStr()
 	{

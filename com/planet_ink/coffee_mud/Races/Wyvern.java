@@ -36,9 +36,9 @@ public class Wyvern extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,18);
-		affectableStats.setStat(CharStats.DEXTERITY,13);
-		affectableStats.setStat(CharStats.INTELLIGENCE,10);
+		affectableStats.setPermaStat(CharStats.STRENGTH,18);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,10);
 	}
 	public Weapon myNaturalWeapon()
 	{

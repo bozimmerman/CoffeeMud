@@ -34,7 +34,7 @@ public class Bull extends Buffalo
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,19);
+		affectableStats.setPermaStat(CharStats.STRENGTH,19);
 	}
 	public Vector myResources()
 	{

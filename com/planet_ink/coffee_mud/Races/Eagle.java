@@ -16,8 +16,8 @@ public class Eagle extends GreatBird
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,10);
-		affectableStats.setStat(CharStats.DEXTERITY,11);
+		affectableStats.setPermaStat(CharStats.STRENGTH,10);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,11);
 	}
 	public Vector myResources()
 	{

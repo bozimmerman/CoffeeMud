@@ -25,9 +25,9 @@ public class Ape extends Monkey
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,16);
-		affectableStats.setStat(CharStats.DEXTERITY,15);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STRENGTH,16);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,15);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
 	}
 	public Vector myResources()
 	{

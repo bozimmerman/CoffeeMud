@@ -121,7 +121,7 @@ public class GenRace extends StdRace
 		if(setStats!=null)
 			for(int i=0;i<CharStats.NUM_STATS;i++)
 				if(setStats.getStat(i)!=0)
-					affectableStats.setStat(i,setStats.getStat(i));
+					affectableStats.setPermaStat(i,setStats.getStat(i));
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{

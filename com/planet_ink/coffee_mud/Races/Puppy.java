@@ -21,9 +21,9 @@ public class Puppy extends Dog
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,6);
-		affectableStats.setStat(CharStats.DEXTERITY,11);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STRENGTH,6);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,11);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{

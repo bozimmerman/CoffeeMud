@@ -20,7 +20,7 @@ public class Cobra extends Snake
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.DEXTERITY,18);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,18);
 	}
 	public Vector myResources()
 	{

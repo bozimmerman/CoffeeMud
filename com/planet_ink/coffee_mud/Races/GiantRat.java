@@ -27,7 +27,7 @@ public class GiantRat extends Rat
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,6);
+		affectableStats.setPermaStat(CharStats.STRENGTH,6);
 	}
 	public Vector myResources()
 	{

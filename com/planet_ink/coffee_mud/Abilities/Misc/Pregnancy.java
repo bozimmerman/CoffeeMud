@@ -169,14 +169,14 @@ public class Pregnancy extends StdAbility
 		{
 			GR.setStat("GETRABLE"+i,(String)data1.elementAt(i));
 			GR.setStat("GETRABLELVL"+i,""+CMAble.getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
-			GR.setStat("GETRABLEQUAL"+i,""+CMAble.getDefaultGain(race1.ID(),false,(String)data1.elementAt(i)));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMAble.getDefaultGain(race1.ID(),false,(String)data1.elementAt(i))));
 			GR.setStat("GETRABLEPROF"+i,""+CMAble.getDefaultProfficiency(race1.ID(),false,(String)data1.elementAt(i)));
 		}
 		for(int i=0;i<data2.size();i++)
 		{
 			GR.setStat("GETRABLE"+(i+data1.size()),(String)data2.elementAt(i));
 			GR.setStat("GETRABLELVL"+(i+data1.size()),""+CMAble.getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
-			GR.setStat("GETRABLEQUAL"+(i+data1.size()),""+CMAble.getDefaultGain(race2.ID(),false,(String)data2.elementAt(i)));
+			GR.setStat("GETRABLEQUAL"+(i+data1.size()),""+(!CMAble.getDefaultGain(race2.ID(),false,(String)data2.elementAt(i))));
 			GR.setStat("GETRABLEPROF"+(i+data1.size()),""+CMAble.getDefaultProfficiency(race2.ID(),false,(String)data2.elementAt(i)));
 		}
 

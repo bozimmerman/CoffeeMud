@@ -30,8 +30,8 @@ public class GiantWolf extends Wolf
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,13);
-		affectableStats.setStat(CharStats.DEXTERITY,13);
+		affectableStats.setPermaStat(CharStats.STRENGTH,13);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,13);
 	}
 	public Vector myResources()
 	{

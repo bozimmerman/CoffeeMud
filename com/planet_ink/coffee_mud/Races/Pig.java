@@ -27,9 +27,9 @@ public class Pig extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,10);
-		affectableStats.setStat(CharStats.DEXTERITY,4);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STRENGTH,10);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,4);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
 	}
 	public Weapon myNaturalWeapon()
 	{

@@ -26,9 +26,9 @@ public class Turtle extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,6);
-		affectableStats.setStat(CharStats.DEXTERITY,2);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+		affectableStats.setPermaStat(CharStats.STRENGTH,6);
+		affectableStats.setPermaStat(CharStats.DEXTERITY,2);
+		affectableStats.setPermaStat(CharStats.INTELLIGENCE,1);
 	}
 	public String arriveStr()
 	{
