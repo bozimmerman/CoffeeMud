@@ -347,7 +347,7 @@ public class Amputation extends StdAbility
 						Ability A2=target.fetchAbility(A.ID());
 						if(A2!=null) A2.setMiscText(A.text());
 					}
-					mob.confirmWearability();
+					target.confirmWearability();
 				}
 			}
 			else

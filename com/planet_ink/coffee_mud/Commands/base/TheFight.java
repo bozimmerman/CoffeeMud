@@ -619,9 +619,10 @@ public class TheFight
 	
 	public static void sheath(MOB mob, Vector commands, boolean noerrors, boolean quiet)
 	{
-		commands.removeElementAt(0);
 		Item item1=null;
 		Item item2=null;
+		if(commands.size()>0)
+			commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
 			for(int i=0;i<mob.inventorySize();i++)
@@ -634,7 +635,7 @@ public class TheFight
 					if(I.amWearingAt(Item.WIELD))
 						item1=I;
 					else
-					if(I.amWearingAt(Item.WIELD))
+					if(I.amWearingAt(Item.HELD))
 						item2=I;
 				}
 			}

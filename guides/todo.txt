@@ -1,6 +1,5 @@
 Bard Subclasses
 Programming.html update
-For areas, 'LinkedWeather'.. some areas are 'within' others.. they should have the same weather.. Could specify "OPTION=SAME;AreaName" But, you could have fun with it and make some 'cascade' type option... when one weather ends in one area, the linked one gets updated with the old weather type... makes for roving storms...  give a CHANCE option as well so that storms could die out, but the SAME option would just be 100.
 
 //****** next version ********************************************************
 Arrest idea: banned substances (get, drop, eq, etc), and resisting arrest, and harder sentence for parole.
