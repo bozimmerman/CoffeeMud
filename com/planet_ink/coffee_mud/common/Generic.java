@@ -1033,7 +1033,7 @@ public class Generic
 		{
 			try
 			{
-				nums[x]=Double.parseDouble(props.substring(0,y));
+				nums[x]=Double.valueOf(props.substring(0,y)).doubleValue();
 			}
 			catch(Exception e)
 			{
