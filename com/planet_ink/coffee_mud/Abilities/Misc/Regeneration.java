@@ -12,30 +12,18 @@ public class Regeneration extends StdAbility
 	private static final int maxTickDown=3;
 	private int regenTick=maxTickDown;
 
-	public Regeneration()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Regeneration";
-		displayText="(Regeneration)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=false;
-		isAutoinvoked=false;
-		quality=Ability.BENEFICIAL_SELF;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Regeneration();
-	}
+	public String ID() { return "Regeneration"; }
+	public String name(){ return "Regeneration";}
+	public String displayText(){ return "(Regeneration)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.BENEFICIAL_SELF;}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"REGENERATE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public boolean canBeUninvoked(){return false;}
+	public Environmental newInstance(){	return new Regeneration();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean tick(int tickID)
 	{

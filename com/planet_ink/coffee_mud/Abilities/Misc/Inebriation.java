@@ -9,32 +9,13 @@ import java.util.*;
 
 public class Inebriation extends StdAbility
 {
-
-	public Inebriation()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Inebriation";
-		displayText="(Inebriated)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setAbility(0);
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Inebriation();
-	}
+	public String ID() { return "Inebriation"; }
+	public String name(){ return "Inebriation";}
+	public String displayText(){ return "(Inebriated)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.MALICIOUS;}
+	public Environmental newInstance(){	return new Inebriation();}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

@@ -15,30 +15,23 @@ public class Dragonbreath extends StdAbility
 	private int WeaponType=Weapon.TYPE_BURNING;
 	private int strikeType=Affect.TYP_FIRE;
 
+	public String ID() { return "Dragonbreath"; }
+	public String name(){ return "Dragonbreath";}
+	public int quality(){return Ability.MALICIOUS;}
+	public int maxRange(){return 10;}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return Ability.CAN_MOBS;}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"DRAGONBREATH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Dragonbreath();}
+	public int classificationCode(){return Ability.SKILL;}
+
 	public Dragonbreath()
 	{
 		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Dragonbreath";
-
-		// what the affected mob sees when they
-		// bring up their affected list.
-		displayText="(Dragonbreath)";
-
-		quality=Ability.MALICIOUS;
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		minRange=0;
-		maxRange=10;
-
-		uses=Integer.MAX_VALUE;
-		recoverEnvStats();
+		setMiscText("");
 	}
-
 	public void setMiscText(String newType)
 	{
 		super.setMiscText(newType);
@@ -87,11 +80,6 @@ public class Dragonbreath extends StdAbility
 				break;
 
 		}
-	}
-
-	public Environmental newInstance()
-	{
-		return new Dragonbreath();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

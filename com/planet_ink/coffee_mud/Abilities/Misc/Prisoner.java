@@ -8,27 +8,13 @@ import java.util.*;
 
 public class Prisoner extends StdAbility
 {
+	public String ID() { return "Prisoner"; }
+	public String name(){ return "Prisoner";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
 	private Room jail=null;
-	public Prisoner()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Prisoner";
-		displayText="";
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(10);
-		canBeUninvoked=true;
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Prisoner();
-	}
+	public Environmental newInstance(){	return new Prisoner();}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

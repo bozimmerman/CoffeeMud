@@ -2,17 +2,9 @@ package com.planet_ink.coffee_mud.Abilities.Misc;
 import com.planet_ink.coffee_mud.interfaces.Environmental;
 public class Firebreath extends Dragonbreath
 {
-	public Firebreath()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Firebreath";
-		setMiscText("fire");
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Firebreath();
-	}
+	public String ID() { return "Firebreath"; }
+	public String name(){ return "Firebreath";}
+	public String text(){return "fire";}
+	public void setMiscText(String newText){super.setMiscText(text());}
+	public Environmental newInstance(){	return new Firebreath();}
 }

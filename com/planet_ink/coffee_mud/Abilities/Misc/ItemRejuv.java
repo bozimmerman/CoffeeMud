@@ -7,32 +7,16 @@ import java.util.*;
 
 public class ItemRejuv extends StdAbility implements ItemTicker
 {
+	public String ID() { return "ItemRejuv"; }
+	public String name(){ return "ItemRejuv";}
+	public String displayText(){ return "(ItemRejuv)";}
+	protected int canAffectCode(){return CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	public int quality(){return Ability.MALICIOUS;}
 	private Room myProperLocation=null;
 	private Vector contents=new Vector();
 	private Vector ccontents=new Vector();
-
-	public ItemRejuv()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="ItemRejuv";
-		displayText="(ItemRejuv)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(999);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new ItemRejuv();
-	}
+	public Environmental newInstance(){	return new ItemRejuv();	}
 
 	public void loadContent(ItemTicker ticker,
 							Item item,

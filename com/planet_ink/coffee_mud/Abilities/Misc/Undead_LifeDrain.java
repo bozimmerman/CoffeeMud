@@ -7,33 +7,17 @@ import java.util.*;
 
 public class Undead_LifeDrain extends StdAbility
 {
-	public Undead_LifeDrain()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Drain Life";
-		displayText="(in the unholy dominion of the undead)";
-		miscText="";
-		triggerStrings.addElement("DRAIN");
-
-		canAffectCode=0;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		quality=Ability.MALICIOUS;
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-	}
-
-	public int classificationCode()
-	{
-		return Ability.SKILL;
-	}
-
-	public Environmental newInstance()
-	{
-		return new Undead_LifeDrain();
-	}
+	public String ID() { return "Undead_LifeDrain"; }
+	public String name(){ return "Drain Life";}
+	public String displayText(){ return "";}
+	protected int canAffectCode(){return 0;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"DRAINLIFE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
+	public Environmental newInstance(){	return new Undead_LifeDrain();	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

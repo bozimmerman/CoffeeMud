@@ -8,30 +8,17 @@ import java.util.*;
 public class Poison extends StdAbility
 {
 	int poisonTick=3;
-
-	public Poison()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Poison";
-		displayText="(Poisoned)";
-		miscText="";
-
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-
-		quality=Ability.MALICIOUS;
-
-		baseEnvStats().setLevel(10);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Poison();
-	}
+	public String ID() { return "Poison"; }
+	public String name(){ return "Poison";}
+	public String displayText(){ return "(Poisoned)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"POISONSTING"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Poison();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public boolean tick(int tickID)
 	{

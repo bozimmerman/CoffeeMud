@@ -8,29 +8,17 @@ import java.util.*;
 public class Undead_ColdTouch extends StdAbility
 {
 	int coldDown=3;
-
-	public Undead_ColdTouch()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Cold Touch";
-		displayText="(Cold and Weakened)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		quality=Ability.MALICIOUS;
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Undead_ColdTouch();
-	}
+	public String ID() { return "Undead_ColdTouch"; }
+	public String name(){ return "Cold Touch";}
+	public String displayText(){ return "(Cold and Weakened)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"COLDTOUCH"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public Environmental newInstance(){	return new Undead_ColdTouch();}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

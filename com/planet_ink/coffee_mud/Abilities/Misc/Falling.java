@@ -7,31 +7,15 @@ import java.util.*;
 
 public class Falling extends StdAbility
 {
+	public String ID() { return "Falling"; }
+	public String name(){ return "Falling";}
+	public String displayText(){ return "(Falling)";}
+	protected int canAffectCode(){return CAN_ITEMS|Ability.CAN_MOBS;}
+	protected int canTargetCode(){return 0;}
 	boolean temporarilyDisable=false;
 	public Room room=null;
 	int damageToTake=0;
-	public Falling()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Falling";
-		displayText="(Falling)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_ITEMS|Ability.CAN_MOBS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Falling();
-	}
+	public Environmental newInstance(){	return new Falling();}
 	
 	private boolean reversed(){return profficiency()==100;}
 	public boolean tick(int tickID)

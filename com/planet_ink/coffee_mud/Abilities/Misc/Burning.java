@@ -7,28 +7,12 @@ import java.util.*;
 
 public class Burning extends StdAbility
 {
-	public Burning()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Burning";
-		displayText="(Burning)";
-		miscText="";
-
-		canAffectCode=Ability.CAN_ITEMS;
-		canTargetCode=0;
-		
-		canBeUninvoked=true;
-		isAutoinvoked=false;
-
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Burning();
-	}
+	public String ID() { return "Burning"; }
+	public String name(){ return "Burning";}
+	public String displayText(){ return "(Burning)";}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+	protected int canTargetCode(){return 0;}
+	public Environmental newInstance(){	return new Burning();}
 	
 	private boolean reversed(){return profficiency()==100;}
 	public boolean tick(int tickID)

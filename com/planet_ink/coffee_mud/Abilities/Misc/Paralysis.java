@@ -7,25 +7,17 @@ import java.util.*;
 
 public class Paralysis extends StdAbility
 {
-	public Paralysis()
-	{
-		super();
-		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Paralyze";
-		displayText="(Paralyzed)";
-		quality=Ability.MALICIOUS;
-		baseEnvStats().setLevel(10);
-
-		canAffectCode=Ability.CAN_MOBS;
-		canTargetCode=Ability.CAN_MOBS;
-		
-		recoverEnvStats();
-	}
-
-	public Environmental newInstance()
-	{
-		return new Paralysis();
-	}
+	public String ID() { return "Paralyze"; }
+	public String name(){ return "Paralyze";}
+	public String displayText(){ return "(Paralyzed)";}
+	protected int canAffectCode(){return CAN_MOBS;}
+	protected int canTargetCode(){return CAN_MOBS;}
+	public int quality(){return Ability.MALICIOUS;}
+	public Environmental newInstance(){	return new Paralysis();}
+	public boolean putInCommandlist(){return false;}
+	private static final String[] triggerStrings = {"PARALYZE"};
+	public String[] triggerStrings(){return triggerStrings;}
+	public int classificationCode(){return Ability.SKILL;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
