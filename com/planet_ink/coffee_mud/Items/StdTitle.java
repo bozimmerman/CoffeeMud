@@ -206,6 +206,10 @@ public class StdTitle extends StdItem implements LandTitle
 				&&(msg.source().getClanID().length()>0))
 					A.setLandOwner(msg.source().getClanID());
 				else
+				if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CSHIPSELLER)
+				&&(msg.source().getClanID().length()>0))
+					A.setLandOwner(msg.source().getClanID());
+				else
 					A.setLandOwner(msg.source().Name());
 				updateTitle();
 				updateLot();

@@ -222,6 +222,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return "Metal ores";
 		case DEAL_STONEYARDER:
 			return "Stone and rock";
+		case DEAL_SHIPSELLER:
+			return "Ships";
+		case DEAL_CSHIPSELLER:
+			return "Clan Ships";
 		default:
 			return "... I have no idea WHAT I sell";
 		}
@@ -368,6 +372,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return (thisThang instanceof Potion);
 		case DEAL_LANDSELLER:
 		case DEAL_CLANDSELLER:
+		case DEAL_SHIPSELLER:
+		case DEAL_CSHIPSELLER:
 			return (thisThang instanceof LandTitle);
 		case DEAL_ANYTECHNOLOGY:
 			return (thisThang instanceof Electronics);
@@ -410,7 +416,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			item=EnglishParser.fetchEnvironmental(storeInventory,name,false);
 		if((item==null)
 		   &&(mob!=null)
-		   &&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER)))
+		   &&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER)
+			  ||(whatISell==DEAL_SHIPSELLER)||(whatISell==DEAL_CSHIPSELLER)))
 		{
 			item=EnglishParser.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
@@ -464,8 +471,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(item==null)
 			item=EnglishParser.fetchEnvironmental(storeInventory,name,false);
 		if((item==null)
-		   &&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER))
-		   &&(mob!=null))
+		&&((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER)
+		   ||(whatISell==DEAL_SHIPSELLER)||(whatISell==DEAL_CSHIPSELLER))
+		&&(mob!=null))
 		{
 			item=EnglishParser.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
 			if(item==null)
@@ -590,7 +598,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						}
 					}
 					if((msg.tool() instanceof LandTitle)
-					&&(whatISell==ShopKeeper.DEAL_CLANDSELLER))
+					&&((whatISell==DEAL_CLANDSELLER)||(whatISell==DEAL_CSHIPSELLER)))
 					{
 						if(mob.getClanID().length()==0)
 						{
@@ -1087,25 +1095,39 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected Vector addRealEstate(Vector V,MOB mob)
 	{
 		if(((whatISell==DEAL_LANDSELLER)
+			||(whatISell==DEAL_SHIPSELLER)
+			||((whatISell==DEAL_CSHIPSELLER)&&(mob.getClanID().length()>0))
 			||((whatISell==DEAL_CLANDSELLER)&&(mob.getClanID().length()>0)))
 		&&(getStartRoom()!=null)
 		&&(getStartRoom().getArea()!=null))
 		{
 			String name=mob.Name();
-			if(whatISell==DEAL_CLANDSELLER)
+			if((whatISell==DEAL_CLANDSELLER)||(whatISell==DEAL_CSHIPSELLER))
 				name=mob.getClanID();
 			HashSet roomsHandling=new HashSet();
 			Hashtable titles=new Hashtable();
-			for(Enumeration r=getStartRoom().getArea().getMap();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				LandTitle A=CoffeeUtensils.getLandTitle(R);
-				if((A!=null)&&(R.roomID().length()>0))
-					titles.put(R,A);
-			}
+			if((whatISell==DEAL_CSHIPSELLER)||(whatISell==DEAL_SHIPSELLER))
+				for(Enumeration r=CMMap.areas();r.hasMoreElements();)
+				{
+					Area A=(Area)r.nextElement();
+					if((A instanceof SpaceObject)&&(A.ID().toUpperCase().indexOf("SHIP")>=0))
+					{
+						LandTitle LT=CoffeeUtensils.getLandTitle(A);
+						if(LT!=null) titles.put(A,LT);
+					}
+				}
+			else
+				for(Enumeration r=getStartRoom().getArea().getMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					LandTitle A=CoffeeUtensils.getLandTitle(R);
+					if((A!=null)&&(R.roomID().length()>0))
+						titles.put(R,A);
+				}
+			
 			for(Enumeration r=titles.keys();r.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
+				Environmental R=(Environmental)r.nextElement();
 				LandTitle A=(LandTitle)titles.get(R);
 				if(!roomsHandling.contains(R))
 				{
@@ -1116,7 +1138,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if(I==null)
 					{
 						I=CMClass.getItem("GenTitle");
-						((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID(R));
+						if(R instanceof Room)
+							((LandTitle)I).setLandPropertyID(CMMap.getExtendedRoomID((Room)R));
+						else
+							((LandTitle)I).setLandPropertyID(R.Name());
 						if((((LandTitle)I).landOwner().length()>0)
 						&&(!I.Name().endsWith(" (Copy)")))
 							I.setName(I.Name()+" (Copy)");
@@ -1131,24 +1156,25 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					{
 						boolean skipThisOne=false;
-						for(int d=0;d<4;d++)
-						{
-							Room R2=R.getRoomInDir(d);
-							LandTitle L2=null;
-							if(R2!=null)
+						if(R instanceof Room)
+							for(int d=0;d<4;d++)
 							{
-								L2=(LandTitle)titles.get(R2);
-								if(L2==null)
+								Room R2=((Room)R).getRoomInDir(d);
+								LandTitle L2=null;
+								if(R2!=null)
+								{
+									L2=(LandTitle)titles.get(R2);
+									if(L2==null)
+									{ skipThisOne=false; break;}
+								}
+								else
+									continue;
+								if((L2.landOwner().equals(name))
+								||(L2.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 								{ skipThisOne=false; break;}
+								if(L2.landOwner().length()>0)
+									skipThisOne=true;
 							}
-							else
-								continue;
-							if((L2.landOwner().equals(name))
-							||(L2.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
-							{ skipThisOne=false; break;}
-							if(L2.landOwner().length()>0)
-								skipThisOne=true;
-						}
 						if(skipThisOne) continue;
 					}
 					if((A.landOwner().length()==0)
@@ -1172,7 +1198,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		inventory=addRealEstate(inventory,mob);
 		if(inventory.size()==0) return msg;
 
-		int totalCols=((whatISell==DEAL_LANDSELLER)||(whatISell==DEAL_CLANDSELLER))?1:2;
+		int totalCols=((whatISell==DEAL_LANDSELLER)
+					   ||(whatISell==DEAL_CLANDSELLER)
+					   ||(whatISell==DEAL_SHIPSELLER)
+					   ||(whatISell==DEAL_CSHIPSELLER))?1:2;
 		int totalWidth=60/totalCols;
 		int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
 		for(int i=0;i<inventory.size();i++)
