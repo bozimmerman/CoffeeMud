@@ -27,7 +27,7 @@ public class Fighter_Behead extends StdAbility
 	public String ID() { return "Fighter_Behead"; }
 	public String name(){ return "Behead";}
 	private static final String[] triggerStrings = {"BEHEAD"};
-	public int quality(){return Ability.OK_OTHERS;}
+	public int quality(){return Ability.MALICIOUS;}
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
@@ -101,7 +101,7 @@ public class Fighter_Behead extends StdAbility
 		boolean success=profficiencyCheck(mob,0,auto)&&(hit);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_GENERAL:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
