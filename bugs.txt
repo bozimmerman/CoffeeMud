@@ -6,3 +6,5 @@ Some solution for variable eq on mobs -- use rejuv!
 	But how to edit?! mobs with this kind of eq sort it out when 
 	entering a room with player or entered by player.
 	But how/when to set the "examine me later" flag?
+help on areas needs to check for exact matches first, then near matches
+perhaps we can put something in so that the quests ask each other which mobs they are usin

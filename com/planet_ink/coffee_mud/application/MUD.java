@@ -537,8 +537,23 @@ public class MUD extends Thread implements MudHost
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		CommonStrings.setBoolVar(CommonStrings.SYSTEMB_MUDSTARTED,false);
+		if(S!=null)S.print("Closing MUD listeners to new connections...");
+		for(int i=0;i<mudThreads.size();i++)
+			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
+		Log.sysOut("MUD","New Connections are now closed");
+		if(S!=null)S.println("Done.");
+		
+		if(saveThread!=null)
+		{
+			if(S!=null)S.print("Saving players...");
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
+			saveThread.savePlayers();
+			if(S!=null)S.println("done");
+			Log.sysOut("MUD","All users saved.");
+		}
+		
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
-		Log.sysOut("MUD","Started shutdown, notifying all objects...");
+		Log.sysOut("MUD","Notifying all objects...");
 		if(S!=null)S.print("Notifying all objects of shutdown...");
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Notifying Objects");
 		MOB mob=null;
@@ -552,21 +567,9 @@ public class MUD extends Thread implements MudHost
 		}
 		if(S!=null)S.println("done");
 		if((saveThread==null)||(utiliThread==null)) return;
-		if(S!=null)S.println("Closing MUD listeners to new connections...");
-		for(int i=0;i<mudThreads.size();i++)
-			((MUD)mudThreads.elementAt(i)).acceptConnections=false;
-		Log.sysOut("MUD","New Connections are now closed");
-		if(S!=null)S.println("Host will now reject new connections.");
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Quests");
 		Quests.shutdown();
-
-		if(S!=null)S.print("Saving players...");
-		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
-		saveThread.savePlayers();
-		if(S!=null)S.println("done");
-		Log.sysOut("MUD","All users saved.");
-
 
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Save Thread");
 		saveThread.shutdown();
