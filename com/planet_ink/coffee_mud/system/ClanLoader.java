@@ -69,8 +69,8 @@ public class ClanLoader
 				+"CMACPT='"+C.getAcceptanceSettings()+"',"
 				+"CMPOLI='"+C.getPolitics()+"',"
 				+"CMRCLL='"+C.getRecall()+"',"
-				+"CMDNAT='"+C.getDonation()+"'"
-				+"CMSTAT='"+C.getStatus()+"'"
+				+"CMDNAT='"+C.getDonation()+"',"
+				+"CMSTAT="+C.getStatus()
 				+" WHERE CMCLID='"+C.ID()+"'";
 			D.update(str);
 			DBConnector.DBDone(D);
@@ -109,7 +109,7 @@ public class ClanLoader
 			+"'"+C.getPolitics()+"',"
 			+"'"+C.getRecall()+"',"
 			+"'"+C.getDonation()+"',"
-			+"'"+C.getStatus()+"')";
+			+""+C.getStatus()+")";
 			D.update(str);
 			DBConnector.DBDone(D);
 		}

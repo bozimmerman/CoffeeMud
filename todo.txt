@@ -7,9 +7,13 @@ Programming.html update
 //****** next version ********************************************************
 GenRaces
 racial abilities (abilities tied to the race)
-ability to make windows in Construction, Masonry
 like, I'd like some race specific questions to have during the character creation process
 Some solution for variable eq on mobs
+Construct (Secret Door) available to thief and thief subclasses only.
+constuct addition--peephole. a window on a door (sortof)
+ability to make windows in Construction, Masonry
+locksmith BOLTLOCK a lock that can only be unlocked from one direction. Should be pickable from the other direction, just not unlocked with a key.
+mason POOL will convert the room into a Water room, with 1 level of underwater added for free
 Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
 Mortgages (bankers lend large amounts of money at interest, start taking away property if you don't pay up)
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.

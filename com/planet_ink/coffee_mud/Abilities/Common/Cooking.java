@@ -339,7 +339,7 @@ public class Cooking extends CommonSkill
 		Vector allRecipes=loadRecipes();
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{
-			StringBuffer buf=new StringBuffer(Util.padRight("Recipe",16)+" ingrediants required\n\r");
+			StringBuffer buf=new StringBuffer(Util.padRight("Recipe",16)+" ingredients required\n\r");
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				Vector Vr=(Vector)allRecipes.elementAt(r);

@@ -580,8 +580,7 @@ public class ClanCommands
 	{
 		StringBuffer msg=new StringBuffer("");
 		if((mob.getClanID()==null)
-		||(mob.getClanID().equalsIgnoreCase(""))
-		||(Clans.getClan(mob.getClanID())==null))
+		||(mob.getClanID().equalsIgnoreCase("")))
 		{
 			msg.append("You aren't even a member of a clan.");
 		}
@@ -594,7 +593,8 @@ public class ClanCommands
 				String check=mob.session().prompt("Are you absolutely SURE (y/N)?","N");
 				if(check.equalsIgnoreCase("Y"))
 				{
-					clanAnnounce(mob,new String("Member resigned from "+C.name()+": "+mob.Name()));
+					if(C!=null)
+						clanAnnounce(mob,new String("Member resigned from "+C.name()+": "+mob.Name()));
 					ExternalPlay.DBUpdateClanMembership(mob.Name(), "", 0);
 					mob.setClanID("");
 					mob.setClanRole(0);

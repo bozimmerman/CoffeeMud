@@ -1,1 +1,2 @@
-unfound help logging
+instead of the affect (Speaking whatever), could you highlight the language you are speaking in the LANGS report?
+uncast wish logging

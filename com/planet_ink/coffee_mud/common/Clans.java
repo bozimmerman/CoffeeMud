@@ -213,23 +213,19 @@ public class Clans implements Clan, Tickable
 		          +Util.padRight(Clans.getRoleName(Clan.POS_LEADER,true,true),16)+": "+crewList(C,Clan.POS_LEADER)+"\n\r"
 		          +Util.padRight(Clans.getRoleName(Clan.POS_TREASURER,true,true),16)+": "+crewList(C,Clan.POS_TREASURER)+"\n\r"
 		          +"Total Members   : "+C.getSize()+"\n\r");
-		if(mob.getClanID().equalsIgnoreCase(C.ID()))
+		if((mob.getClanID().equalsIgnoreCase(C.ID()))
+		||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
 		{
 			msg.append("-----------------------------------------------------------------\n\r"
-			          +Util.padRight(Clans.getRoleName(Clan.POS_MEMBER,true,true),16)+": "+crewList(C,Clan.POS_MEMBER)+"\n\r");
-			if((mob.getClanRole()==Clan.POS_BOSS)||(mob.getClanRole()==Clan.POS_LEADER))
+			          +Util.padRight(Clans.getRoleName(Clan.POS_MEMBER,true,true),16)
+					  +": "+crewList(C,Clan.POS_MEMBER)+"\n\r");
+			if((mob.getClanRole()==Clan.POS_BOSS)
+			||(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+			||(mob.getClanRole()==Clan.POS_LEADER))
 			{
 				msg.append("-----------------------------------------------------------------\n\r"
 				        +Util.padRight(Clans.getRoleName(Clan.POS_APPLICANT,true,true),16)+": "+crewList(C,Clan.POS_APPLICANT)+"\n\r");
 			}
-		}
-
-		if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-		{
-			msg.append("-----------------------------------------------------------------\n\r"
-			          +Util.padRight(Clans.getRoleName(Clan.POS_MEMBER,true,true),16)+": "+crewList(C,Clan.POS_MEMBER)+"\n\r");
-			msg.append("-----------------------------------------------------------------\n\r"
-			          +Util.padRight(Clans.getRoleName(Clan.POS_APPLICANT,true,true),16)+": "+crewList(C,Clan.POS_APPLICANT)+"\n\r");
 		}
 		return msg.toString();
 	}
