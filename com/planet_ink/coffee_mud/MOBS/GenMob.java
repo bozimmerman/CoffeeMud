@@ -44,4 +44,17 @@ public class GenMob extends StdMOB
 		resetToMaxState();
 		if(getWimpHitPoint()>0) setWimpHitPoint((int)Math.round(Util.mul(curState().getHitPoints(),.10)));
 	}
+	public String getStat(String code)
+	{ return Generic.getGenMobStat(this,code);}
+	public void setStat(String code, String val)
+	{ Generic.setGenMobStat(this,code,val);}
+	public String[] getStatCodes(){return Generic.GENMOBCODES;}
+	public boolean sameAs(Environmental E)
+	{
+		if(!(E instanceof GenMob)) return false;
+		for(int i=0;i<getStatCodes().length;i++)
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+				return false;
+		return true;
+	}
 }
