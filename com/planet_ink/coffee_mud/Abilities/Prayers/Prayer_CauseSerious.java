@@ -48,7 +48,7 @@ public class Prayer_CauseSerious extends Prayer
 				mob.location().send(mob,msg);
 				if(!msg.wasModified())
 				{
-					int harming=Dice.roll(mob.envStats().level(),3,(mob.envStats().level()));
+					int harming=Dice.roll(mob.envStats().level(),3,6);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"The spell "+ExternalPlay.hitWord(-1,harming)+" <S-NAME>!");
 					ExternalPlay.postDamage(mob,target,this,harming);
 				}

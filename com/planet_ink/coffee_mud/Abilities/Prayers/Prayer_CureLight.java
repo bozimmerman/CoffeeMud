@@ -46,7 +46,7 @@ public class Prayer_CureLight extends Prayer
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				int healing=Dice.roll(mob.envStats().level(),3,(mob.envStats().level()));
+				int healing=Dice.roll(mob.envStats().level(),3,4);
 				target.curState().adjHitPoints(healing,target.maxState());
 				target.tell("You feel a little better!");
 			}
