@@ -1,4 +1,4 @@
-Undead Perhaps have the affect prevent them from following anyone but their creator.
+protected list in arrest is broke
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 allow duplicates of the quest to be run
 add an optional property limit to the list

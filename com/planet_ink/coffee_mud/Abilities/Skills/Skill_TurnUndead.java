@@ -13,7 +13,7 @@ public class Skill_TurnUndead extends StdAbility
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.MALICIOUS;}
-	private static final String[] triggerStrings = {"TURN","CONTROL"};
+	private static final String[] triggerStrings = {"TURN"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_TurnUndead();}
