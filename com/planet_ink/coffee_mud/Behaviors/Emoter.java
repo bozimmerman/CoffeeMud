@@ -57,6 +57,18 @@ public class Emoter extends ActiveTicker
 					broadcast=true;
 				}
 				else
+				if(str.equals("NOBROADCAST"))
+				{
+					V.removeElementAt(v);
+					broadcast=false;
+				}
+				else
+				if(str.equals("VISUAL")||(str.equals("SIGHT")))
+				{
+					V.removeElementAt(v);
+					emoteType=EMOTE_VISUAL;
+				}
+				else
 				if(str.equals("AROMA")||(str.equals("SMELL")))
 				{
 					V.removeElementAt(v);
@@ -72,6 +84,7 @@ public class Emoter extends ActiveTicker
 		}
 		while(newParms.length()>0)
 		{
+			Vector thisEmoteV=new Vector();
 			String thisEmote=newParms;
 			x=newParms.indexOf(";");
 			if(x>0)
@@ -82,24 +95,37 @@ public class Emoter extends ActiveTicker
 			else
 				newParms="";
 			if(thisEmote.length()>0)
-				emotes.addElement(thisEmote);
+			{
+				thisEmoteV.addElement(new Integer(emoteType));
+				thisEmoteV.addElement(new Boolean(broadcast));
+				thisEmoteV.addElement(thisEmote);
+				emotes.addElement(thisEmoteV);
+			}
 		}
 		return emotes;
 	}
 	
-	private void emoteHere(Room room, MOB emoter, String emote)
+	private void emoteHere(Room room, MOB emoter, Vector emote, boolean Wrapper)
 	{
 		if(room==null) return;
+		FullMsg msg;
 		Room oldLoc=emoter.location();
 		if(emoter.location()!=room) emoter.setLocation(room);
-		FullMsg msg=new FullMsg(emoter,null,Affect.MSG_EMOTE,emote);
+		if(Wrapper)
+		{
+			msg=new FullMsg(emoter,null,Affect.MSG_EMOTE,"^E<S-NAME> "+(String)emote.elementAt(2)+"^?");
+		}
+		else
+		{
+			msg=new FullMsg(emoter,null,Affect.MSG_EMOTE,(String)emote.elementAt(2));
+		}
 
 		if(room.okAffect(emoter,msg))
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB M=room.fetchInhabitant(i);
 			if((M!=null)&&(!M.isMonster()))
-			switch(emoteType)
+			switch(((Integer)emote.elementAt(0)).intValue())
 			{
 			case EMOTE_VISUAL:
 				if(Sense.canBeSeenBy(emoter,M))	M.affect(M,msg);
@@ -121,7 +147,7 @@ public class Emoter extends ActiveTicker
 		parseEmotes();
 		if((canAct(ticking,tickID))&&(emotes.size()>0))
 		{
-			String emote=(String)emotes.elementAt(Dice.roll(1,emotes.size(),-1));
+			Vector emote=(Vector)emotes.elementAt(Dice.roll(1,emotes.size(),-1));
 			MOB emoter=null;
 			if(ticking instanceof Area)
 			{
@@ -129,7 +155,7 @@ public class Emoter extends ActiveTicker
 				for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					emoteHere(R,emoter,emote);
+					emoteHere(R,emoter,emote,false);
 				}
 				return true;
 			}
@@ -153,9 +179,9 @@ public class Emoter extends ActiveTicker
 				else
 					emoter.setName(ticking.name());
 			}
-			emoteHere(room,emoter,"^E<S-NAME> "+emote+"^?");
+			emoteHere(room,emoter,emote,true);
 
-			if(broadcast)
+			if(((Boolean)emote.elementAt(1)).booleanValue())
 			{
 				if(ticking instanceof MOB)
 					emoter=CMClass.getMOB("StdMOB");
@@ -166,7 +192,7 @@ public class Emoter extends ActiveTicker
 					if((R!=null)&&(E!=null)&&(E.isOpen()))
 					{
 						emoter.setName("something "+Directions.getInDirectionName(Directions.getOpDirectionCode(d)));
-						emoteHere(R,emoter,"^E<S-NAME> "+emote+"^?");
+						emoteHere(R,emoter,emote,true);
 					}
 				}
 			}

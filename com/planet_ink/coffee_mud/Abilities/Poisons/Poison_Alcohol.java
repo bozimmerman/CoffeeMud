@@ -10,13 +10,14 @@ public class Poison_Alcohol extends Poison
 	public String ID() { return "Poison_Alcohol"; }
 	public String name(){ return "Alcohol";}
 	private static final String[] triggerStrings = {"POISONALCOHOL"};
+	public String displayText(){ return "(Drunk)";}
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Alcohol();}
 	
-	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 35;}
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "You feel sober again.";}
-	protected String POISON_START(){return null;}
+	protected String POISON_START(){return "^G<S-NAME> burp(s)!^?";}
 	protected String POISON_AFFECT(){return "";}
 	protected String POISON_CAST(){return "^F<S-NAME> inebriate(s) <T-NAMESELF>!^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to inebriate <T-NAMESELF>, but fail(s).";}

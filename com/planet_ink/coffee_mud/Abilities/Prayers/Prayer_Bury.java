@@ -42,7 +42,13 @@ public class Prayer_Bury extends Prayer
 				mob.location().send(mob,msg);
 				target.destroyThis();
 				if((mob.getAlignment()>=350)&&(mob.getAlignment()<=650))
-					mob.charStats().getCurrentClass().gainExperience(mob,null,null,5);
+				{
+					double exp=5.0;
+					int levelLimit=CommonStrings.getIntVar(CommonStrings.SYSTEMI_EXPRATE);
+					int levelDiff=mob.envStats().level()-target.envStats().level();
+					if(levelDiff<(-levelLimit) ) exp=0.0;
+					mob.charStats().getCurrentClass().gainExperience(mob,null,null,(int)Math.round(exp));
+				}
 				mob.location().recoverRoomStats();
 			}
 		}

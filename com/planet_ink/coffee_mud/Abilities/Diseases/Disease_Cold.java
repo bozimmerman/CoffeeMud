@@ -26,27 +26,29 @@ public class Disease_Cold extends Disease
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
+		MOB diseaser=invoker;
+		if(diseaser==null) diseaser=mob;
 		if((getTickDownRemaining()==1)
 		&&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_COLD))
 		&&(Dice.rollPercentage()<25-mob.charStats().getStat(CharStats.CONSTITUTION)))
 		{
 			mob.delAffect(this);
 			Ability A=CMClass.getAbility("Disease_Pneumonia");
-			A.invoke(invoker,mob,true);
+			A.invoke(diseaser,mob,true);
 		}
 		else
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());
-			if(mob.curState().getHitPoints()>((2*invoker.envStats().level())+1))
+			if(mob.curState().getHitPoints()>((2*diseaser.envStats().level())+1))
 			{
-				int damage=Dice.roll(2,invoker.envStats().level(),1);
-				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+				int damage=Dice.roll(2,diseaser.envStats().level(),1);
+				ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
 			}
 			catchIt(mob);
 			return true;

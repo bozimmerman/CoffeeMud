@@ -28,7 +28,7 @@ public class Disease_Tinnitus extends Disease
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;

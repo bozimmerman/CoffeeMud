@@ -27,7 +27,7 @@ public class Disease_Cancer extends Disease
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
@@ -50,7 +50,9 @@ public class Disease_Cancer extends Disease
 		if(affectableStats.getStat(CharStats.CONSTITUTION)<=0)
 		{
 			conDown=-1;
-			ExternalPlay.postDeath(invoker(),affected,null);
+			MOB diseaser=invoker;
+			if(diseaser==null) diseaser=affected;
+			ExternalPlay.postDeath(diseaser,affected,null);
 		}
 	}
 

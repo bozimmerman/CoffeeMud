@@ -13,7 +13,7 @@ public class Poison_Slumberall extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Slumberall();}
 	
-	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "You don't feel so drowsy anymore.";}
 	protected String POISON_START(){return null;}

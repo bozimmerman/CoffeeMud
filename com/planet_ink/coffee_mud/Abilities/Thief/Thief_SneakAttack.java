@@ -32,7 +32,10 @@ public class Thief_SneakAttack extends ThiefSkill
 	{
 		if(!super.okAffect(myHost,msg)) return false;
 		if((affected==null)||((!(affected instanceof MOB)))) return true;
-		if(activated&&msg.amISource((MOB)affected)&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
+		if(activated
+		   &&(!oncePerRound)
+		   &&msg.amISource((MOB)affected)
+		   &&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
 		{
 			oncePerRound=true;
 			helpProfficiency((MOB)affected);

@@ -27,7 +27,7 @@ public class Disease_Infection extends Disease
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
@@ -36,12 +36,14 @@ public class Disease_Infection extends Disease
 		if(lastHP<mob.curState().getHitPoints())
 			mob.curState().setHitPoints(mob.curState().getHitPoints()
 							-((mob.curState().getHitPoints()-lastHP)/2));
+		MOB diseaser=invoker;
+		if(diseaser==null) diseaser=mob;
 		if((--diseaseTick)<=0)
 		{
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int damage=1;
-			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+			ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
 			return true;
 		}
 		lastHP=mob.curState().getHitPoints();

@@ -13,7 +13,7 @@ public class Poison_GoblinDrip extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_GoblinDrip();}
 	
-	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 5;}
 	protected String POISON_DONE(){return "The poison runs its course.";}
 	protected String POISON_START(){return "^G<S-NAME> seem(s) weakened!^?";}

@@ -26,17 +26,19 @@ public class Disease_Plague extends Disease
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)
 		{
+			MOB diseaser=invoker;
+			if(diseaser==null) diseaser=mob;
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,DISEASE_AFFECT());
 			int dmg=mob.envStats().level()/2;
 			if(dmg<1) dmg=1;
-			ExternalPlay.postDamage(invoker,mob,this,dmg,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+			ExternalPlay.postDamage(diseaser,mob,this,dmg,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
 			catchIt(mob);
 			return true;
 		}

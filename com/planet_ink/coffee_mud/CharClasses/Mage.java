@@ -79,6 +79,7 @@ public class Mage extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_AcidArrow",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_Hunger",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_DetectWater",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Spell_DetectPoison",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_ResistAcid",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_MageArmor",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Spell_BurningHands",false);

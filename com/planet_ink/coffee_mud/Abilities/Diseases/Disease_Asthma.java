@@ -26,7 +26,7 @@ public class Disease_Asthma extends Disease
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
@@ -36,7 +36,9 @@ public class Disease_Asthma extends Disease
 			if(Dice.rollPercentage()==1)
 			{
 				int damage=mob.curState().getHitPoints()/2;
-				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
+				MOB diseaser=invoker;
+				if(diseaser==null) diseaser=mob;
+				ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,"<S-NAME> <S-HAS-HAVE> an asthma attack! It <DAMAGE> <S-NAME>!");
 			}
 			else
 				mob.location().show(mob,null,Affect.MSG_NOISE,DISEASE_AFFECT());

@@ -30,7 +30,7 @@ public class Poison_Firebreather extends Poison_Liquor
 				if(room.numInhabitants()==1)
 					room.show(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> belch(es) fire!");
 				else
-				if(mob.location().show(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> belch(es) fire!"))
+				if(room.show(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> belch(es) fire!"))
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB target=room.fetchInhabitant(i);
@@ -40,7 +40,7 @@ public class Poison_Firebreather extends Poison_Liquor
 					// affected MOB.  Then tell everyone else
 					// what happened.
 					FullMsg msg=new FullMsg(mob,target,this,Affect.MSK_MALICIOUS_MOVE|Affect.TYP_FIRE,null);
-					if((mob.mayPhysicallyAttack(target))&&(room.okAffect(mob,msg)))
+					if((mob!=target)&&(mob.mayPhysicallyAttack(target))&&(room.okAffect(mob,msg)))
 					{
 						room.send(mob,msg);
 						invoker=mob;

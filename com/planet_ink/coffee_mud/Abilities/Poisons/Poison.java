@@ -26,30 +26,19 @@ public class Poison extends StdAbility
 	protected String POISON_CAST(){return "^F<S-NAME> attempt(s) to poison <T-NAMESELF>!^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(invoker().envStats().level(),3,1):0;}
-	protected MOB theMOB=null;
 	private boolean processing=false;
 	
 	protected int poisonTick=3;
-	
-	protected boolean catchIt(Item item, Environmental target)
-	{
-		if(invoker!=null) return catchIt(invoker,target);
-		if(theMOB==null)
-			theMOB=CMClass.getMOB("StdMOB");
-		theMOB.baseEnvStats().setLevel(item.envStats().level());
-		theMOB.recoverEnvStats();
-		theMOB.setName(item.name());
-		return catchIt(theMOB,target);
-	}
 	
 	protected boolean catchIt(MOB mob, Environmental target)
 	{
 		MOB poisoner=invoker;
 		if(poisoner==null) poisoner=mob;
-		if((target!=null)&&(target instanceof MOB)&&(target!=poisoner)&&(target!=mob)&&(target.fetchAffect(ID())==null))
+		if((poisoner==null)&&(target instanceof MOB)) poisoner=(MOB)target;
+		if((target!=null)&&(target instanceof MOB)&&(target.fetchAffect(ID())==null))
 		{
 			MOB targetMOB=(MOB)target;
-			if(targetMOB.location().show(targetMOB,null,Affect.MASK_MALICIOUS|Affect.TYP_POISON,POISON_START()))
+			if(targetMOB.location().show(targetMOB,null,Affect.MASK_GENERAL|Affect.MASK_MALICIOUS|Affect.TYP_POISON,POISON_START()))
 			{
 				maliciousAffect(poisoner,target,POISON_TICKS(),-1);
 				return true;
@@ -124,11 +113,11 @@ public class Poison extends StdAbility
 					{
 					case Affect.TYP_DRINK:
 						if(myItem instanceof Drink)
-							catchIt(myItem,affect.source());
+							catchIt(affect.source(),affect.source());
 						break;
 					case Affect.TYP_EAT:
 						if(myItem instanceof Food)
-							catchIt(myItem,affect.source());
+							catchIt(affect.source(),affect.source());
 						break;
 					}
 				else
@@ -142,7 +131,7 @@ public class Poison extends StdAbility
 						&&(affect.target() instanceof MOB))
 						{
 							tickDown--;
-							catchIt(myItem,affect.target());
+							catchIt((MOB)affect.target(),affect.target());
 						}
 						break;
 					}
@@ -169,7 +158,7 @@ public class Poison extends StdAbility
 			    target.location().send(target,msg);
 				if(!msg.wasModified())
 				{
-					mob.location().show(target,null,Affect.MSG_OK_VISUAL,POISON_START());
+					target.location().show(target,null,Affect.MSG_OK_VISUAL,POISON_START());
 				    success=maliciousAffect(mob,target,POISON_TICKS(),-1);
 				}
 			}

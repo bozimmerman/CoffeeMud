@@ -13,7 +13,7 @@ public class Poison_Mindsap extends Poison
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison_Mindsap();}
 	
-	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
+	protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 1;}
 	protected String POISON_DONE(){return "Your thoughts clear up.";}
 	protected String POISON_START(){return "^G<S-NAME> seem(s) confused!^?";}

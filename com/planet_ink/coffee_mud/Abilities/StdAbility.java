@@ -478,6 +478,7 @@ public class StdAbility implements Ability, Cloneable
 		{
 			invoker=mob;
 			Ability newOne=(Ability)this.copyOf();
+			((StdAbility)newOne).canBeUninvoked=true;
 			if(tickAdjustmentFromStandard<=0)
 			{
 				tickAdjustmentFromStandard=(adjustedLevel(mob)*4)+25;
@@ -540,6 +541,7 @@ public class StdAbility implements Ability, Cloneable
 		{
 			invoker=mob;
 			Ability newOne=(Ability)this.copyOf();
+			((StdAbility)newOne).canBeUninvoked=true;
 
 			if(tickAdjustmentFromStandard<=0)
 				tickAdjustmentFromStandard=(adjustedLevel(mob)*7)+60;
@@ -559,6 +561,7 @@ public class StdAbility implements Ability, Cloneable
 				if(thisAbility!=null)
 					return false;
 				Ability thatAbility=(Ability)this.copyOf();
+				((StdAbility)thatAbility).canBeUninvoked=true;
 				mob.addAffect(thatAbility);
 				return true;
 			}

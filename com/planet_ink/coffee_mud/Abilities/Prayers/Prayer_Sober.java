@@ -22,13 +22,14 @@ public class Prayer_Sober extends Prayer
 			Ability A=fromMe.fetchAffect(a);
 			if(A!=null)
 			{
-				if(((A.ID().toUpperCase().indexOf("INEBRIA")>=0)
-				||(A.ID().toUpperCase().indexOf("DRUNKEN")>=0)
-				||(A.name().toUpperCase().indexOf("INEBRIA")>=0)
-				||(A.name().toUpperCase().indexOf("DRUNKEN")>=0))
+				if((A.classificationCode()==Ability.POISON)
+				&&((A.ID().toUpperCase().indexOf("INEBRIA")>=0)
+				   ||(A.ID().toUpperCase().indexOf("ALCOHOL")>=0)
+				   ||(A.ID().toUpperCase().indexOf("LIQUOR")>=0)
+				   ||(A.ID().toUpperCase().indexOf("FIREBREATHER")>=0))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1))))
+					  &&(A.invoker().envStats().level()<=caster.envStats().level()+20))))
 						offenders.addElement(A);
 			}
 		}
@@ -37,7 +38,7 @@ public class Prayer_Sober extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORN_REQ_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -20,7 +20,7 @@ public class Poison_XXX extends Poison
 	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) in horrible pain as the poison courses through <S-HIS-HER> blood.";}
 	protected String POISON_CAST(){return "^F<S-NAME> bite(s) <T-NAMESELF>!^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to bite <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(1,199,1):0;}
+	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(1,99,1):0;}
 	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

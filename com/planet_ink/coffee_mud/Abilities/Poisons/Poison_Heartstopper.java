@@ -20,7 +20,7 @@ public class Poison_Heartstopper extends Poison
 	protected String POISON_AFFECT(){return "^G<S-NAME> gag(s) and cringe(s) in pain.";}
 	protected String POISON_CAST(){return "^F<S-NAME> poison(s) <T-NAMESELF>!^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(1,39,1):0;}
+	protected int POISON_DAMAGE(){return (invoker!=null)?Dice.roll(1,19,1):0;}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

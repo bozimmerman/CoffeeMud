@@ -26,16 +26,18 @@ public class Disease_Pneumonia extends Disease
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))	return false;
-		if((affected==null)||(invoker==null)) return false;
+		if(affected==null) return false;
 		if(!(affected instanceof MOB)) return true;
 
 		MOB mob=(MOB)affected;
 		if((--diseaseTick)<=0)
 		{
+			MOB diseaser=invoker;
+			if(diseaser==null) diseaser=mob;
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,DISEASE_AFFECT());
-			int damage=Dice.roll(4,invoker.envStats().level()+1,1);
-			ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
+			int damage=Dice.roll(4,diseaser.envStats().level()+1,1);
+			ExternalPlay.postDamage(diseaser,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_DISEASE,-1,null);
 			Disease_Cold A=(Disease_Cold)CMClass.getAbility("Disease_Cold");
 			A.catchIt(mob);
 			return true;

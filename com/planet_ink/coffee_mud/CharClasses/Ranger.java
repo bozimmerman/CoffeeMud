@@ -44,6 +44,7 @@ public class Ranger extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Ranger_Track",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Apothecary",0,"ANTIDOTES",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Ranger_FindWater",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Fighter_Rescue",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Ranger_TrackAnimal",true);

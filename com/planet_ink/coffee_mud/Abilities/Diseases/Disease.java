@@ -22,7 +22,6 @@ public class Disease extends StdAbility implements DiseaseAffect
 	protected String DISEASE_DONE(){return "Your disease has run its coarse.";}
 	protected String DISEASE_START(){return "^G<S-NAME> come(s) down with a disease.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> ache(s) and groan(s).";}
-	protected MOB theMOB=null;
 	
 	public int abilityCode(){return 0;}
 	private boolean processing=false;
@@ -30,21 +29,13 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	protected int diseaseTick=DISEASE_DELAY();
 
-	protected boolean catchIt(Item item, Environmental target)
-	{
-		if(invoker!=null) return catchIt(invoker,target);
-		if(theMOB==null)
-			theMOB=CMClass.getMOB("StdMOB");
-		theMOB.baseEnvStats().setLevel(item.envStats().level());
-		theMOB.recoverEnvStats();
-		theMOB.setName(item.name());
-		return catchIt(theMOB,target);
-	}
 	protected boolean catchIt(MOB mob, Environmental target)
 	{
 		MOB diseased=invoker;
+		if(invoker==target) return true;
 		if(diseased==null) diseased=mob;
-		if((target!=null)&&(target!=diseased)&&(target!=mob)&&(target.fetchAffect(ID())==null))
+		if((diseased==null)&&(target instanceof MOB)) diseased=(MOB)target;
+		if((target!=null)&&(diseased!=null)&&(target.fetchAffect(ID())==null))
 		{
 			if(target instanceof MOB)
 			{
@@ -72,13 +63,18 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	public void unInvoke()
 	{
-		if((affected==null)||(!(affected instanceof MOB)))
+		if(affected==null)
 			return;
-		MOB mob=(MOB)affected;
+		if(affected instanceof MOB)
+		{
+			MOB mob=(MOB)affected;
 
-		super.unInvoke();
-		if(canBeUninvoked())
-			mob.tell(mob,null,this,DISEASE_DONE());
+			super.unInvoke();
+			if(canBeUninvoked())
+				mob.tell(mob,null,this,DISEASE_DONE());
+		}
+		else
+			super.unInvoke();
 	}
 
 	public void affect(Environmental myHost, Affect affect)
@@ -131,7 +127,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 					{
 						if((myItem instanceof Drink)
 						&&(affect.amITarget(myItem)))
-							catchIt(myItem,affect.source());
+							catchIt(affect.source(),affect.source());
 					}
 					break;
 				case Affect.TYP_EAT:
@@ -141,7 +137,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 						
 						if((myItem instanceof Food)
 						&&(affect.amITarget(myItem)))
-							catchIt(myItem,affect.source());
+							catchIt(affect.source(),affect.source());
 					}
 					break;
 				case Affect.TYP_GET:
@@ -150,7 +146,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 						if((!(myItem instanceof Drink))
 						  &&(!(myItem instanceof Food))
 						  &&(affect.amITarget(myItem)))
-							catchIt(myItem,affect.source());
+							catchIt(affect.source(),affect.source());
 					}
 					break;
 				}
