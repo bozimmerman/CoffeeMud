@@ -7,10 +7,9 @@ import java.util.*;
 
 public class Prop_FightSpellCast extends Property
 {
-	private Item myItem=null;
 	private boolean processing=false;
 	public String ID() { return "Prop_FightSpellCast"; }
-	public String name(){ return "Casting spells when properly used";}
+	public String name(){ return "Casting spells when properly used during combat";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	public Environmental newInstance(){	Prop_FightSpellCast BOB=new Prop_FightSpellCast();	BOB.setMiscText(text()); return BOB;}
 
@@ -53,8 +52,10 @@ public class Prop_FightSpellCast extends Property
 		if(processing) return;
 		processing=true;
 
-		if((myItem==null)&&(affected instanceof Item))
-			myItem=(Item)affected;
+		if(affected==null) return;
+		
+		Item myItem=(Item)affected;
+		
 		if((myItem!=null)
 		&&(!myItem.amWearingAt(Item.INVENTORY))
 		&&(myItem.owner()!=null)

@@ -447,6 +447,24 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return super.okAffect(affect);
 	}
 
+	public String findInnRoom(InnKey key, String addThis, Room R)
+	{
+		if(R==null) return null;
+		String keyNum=key.getKey();
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		{
+			if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
+			{
+				if(addThis.length()>0)
+					return addThis+" and to the "+(Directions.getDirectionName(d).toLowerCase());
+				else
+					return "to the "+(Directions.getDirectionName(d).toLowerCase());
+			}
+		}
+		return null;
+	}
+	
+	
 	public void affect(Affect affect)
 	{
 		super.affect(affect);
@@ -478,7 +496,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(item instanceof Container)
 							V=((Container)item).getContents();
 						else
+						{
 							V=new Vector();
+							V.addElement(item);
+						}
 						for(int v=0;v<V.size();v++)
 						{
 							Item item2=(Item)V.elementAt(v);
@@ -553,6 +574,14 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						{
 							tell(affect.source(),affect.target(),affect.targetMessage());
 							location().send(mob,msg);
+							if((affect.tool() instanceof InnKey)&&(location()!=null))
+							{
+								InnKey item =(InnKey)affect.tool();
+								String buf=findInnRoom(item, "", location());
+								if(buf==null) buf=findInnRoom(item, "upstairs", location().getRoomInDir(Directions.UP));
+								if(buf==null) buf=findInnRoom(item, "downstairs", location().getRoomInDir(Directions.DOWN));
+								if(buf!=null) ExternalPlay.quickSay(this,mob,"Your room is "+buf+".",false,false);
+							}
 						}
 						else
 							return;
@@ -593,7 +622,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					StringBuffer str=listInventory(mob);
 					if(str.length()==0)
-						ExternalPlay.quickSay(this,mob,"I have nothing for sale.",false,false);
+					{
+						if(whatISell!=ShopKeeper.BANKER)
+							ExternalPlay.quickSay(this,mob,"I have nothing for sale.",false,false);
+					}
 					else
 						ExternalPlay.quickSay(this,mob,"\n\r"+str+"^T",true,false);
 				}

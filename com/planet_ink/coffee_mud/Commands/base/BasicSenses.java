@@ -133,7 +133,7 @@ public class BasicSenses
 			return;
 		}
 		String emote="^E<S-NAME> "+Util.combine(commands,1)+"^?";
-		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_NOISYMOVEMENT,emote);
+		FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_EMOTE,emote);
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}

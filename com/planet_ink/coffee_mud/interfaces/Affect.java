@@ -148,6 +148,7 @@ public interface Affect extends Cloneable
 	public static final int TYP_DEATH=63;
 	public static final int TYP_DEPOSIT=64;
 	public static final int TYP_WITHDRAW=65;
+	public static final int TYP_EMOTE=66;
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;
@@ -207,6 +208,7 @@ public interface Affect extends Cloneable
 	public static final int MSG_OK_VISUAL=ACT_GENERAL|TYP_OK_VISUAL;
 	public static final int MSG_DRINK=ACT_HANDS|ACT_MOUTH|TYP_DRINK;
 	public static final int MSG_HANDS=ACT_HANDS|TYP_HANDS;
+	public static final int MSG_EMOTE=ACT_SOUND|ACT_HANDS|TYP_EMOTE;
 	public static final int MSG_FOLLOW=ACT_GENERAL|TYP_FOLLOW;
 	public static final int MSG_NOFOLLOW=ACT_GENERAL|TYP_NOFOLLOW;
 	public static final int MSG_WRITE=ACT_HANDS|TYP_WRITE;

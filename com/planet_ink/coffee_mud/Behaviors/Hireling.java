@@ -133,8 +133,8 @@ public class Hireling extends StdBehavior
 			int given=((Coins)affect.tool()).numberOfCoins();
 			if(partials.get(affect.source().name())!=null)
 			{
-				partials.remove(affect.source().name());
 				given+=((Integer)partials.get(affect.source().name())).intValue();
+				partials.remove(affect.source().name());
 			}
 			if(given<price())
 			{
