@@ -157,7 +157,7 @@ public class CoffeeFilter
 						int y=buf.indexOf(")",loop+7);
 						if((x>=0)&&(y>=x))
 						{
-							if(((S.getTermID()&2)==2)
+							if(((S.getTermID()&Session.TERM_MSP)==Session.TERM_MSP)
 							&&((source==null)
 							   ||(source==mob)
 							   ||(Sense.canBeHeardBy(source,mob))))
@@ -525,7 +525,7 @@ public class CoffeeFilter
 
 		if((firstAlpha>=0)&&(firstAlpha<buf.length()))
 			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
-		if ((S!=null)&&(S.currentColor() != ('N'))&&((S.getTermID()&1)==1))
+		if ((S!=null)&&(S.currentColor() != ('N'))&&((S.getTermID()&Session.TERM_ANSI)==Session.TERM_ANSI))
 			buf.append(S.makeEscape('N'));
 
 		/* fabulous debug code

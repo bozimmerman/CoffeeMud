@@ -66,7 +66,7 @@ public class TelnetSession extends Thread implements Session
 	public long tickTotal=0;
 	public long lastKeystroke=0;
 
-	private int termID = 0;	//1 = ANSI, 2 = SOUND/MUSIC
+	private int termID = 0;	//1 = ANSI, 2 = SOUND/MUSIC, 4=MSX, 8=XML, 16=MCP 
 	public int currentColor='N';
 	public int lastColor=-1;
 	private static int sessionCounter=0;

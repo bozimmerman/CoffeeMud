@@ -155,7 +155,9 @@ public class FrontLogin extends StdCommand
 	public void showTheNews(MOB mob)
 	{
 		if(mob.session()!=null)
-			mob.session().setTermID(((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?1:0)+((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?2:0));
+			mob.session().setTermID(
+			        ((Util.bset(mob.getBitmap(),MOB.ATT_ANSI))?Session.TERM_ANSI:0)
+			        +((Util.bset(mob.getBitmap(),MOB.ATT_SOUND))?Session.TERM_MSP:0));
 		if((mob.session()==null)
 		||(mob.isMonster())
 		||(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))

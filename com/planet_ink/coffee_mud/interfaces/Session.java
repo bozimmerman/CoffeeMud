@@ -113,6 +113,12 @@ public interface Session
 	public long getTotalTicks();
 	public long getIdleMillis();
 	
+	public static final int TERM_ANSI=1;
+	public static final int TERM_MSP=2;
+	public static final int TERM_MSX=4;
+	public static final int TERM_XML=8;
+	public static final int TERM_MCP=16;
+	
 	public static final int STATUS_OK=0;
 	public static final int STATUS_LOGIN=1;
 	public static final int STATUS_LOGIN1=2;

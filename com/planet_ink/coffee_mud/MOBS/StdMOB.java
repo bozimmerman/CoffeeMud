@@ -107,7 +107,9 @@ public class StdMOB implements MOB
 	{
 		attributesBitmap=newVal;
 		if(mySession!=null)
-			mySession.setTermID(((Util.bset(attributesBitmap,MOB.ATT_ANSI))?1:0)+((Util.bset(attributesBitmap,MOB.ATT_SOUND))?2:0));
+			mySession.setTermID(
+			        ((Util.bset(attributesBitmap,MOB.ATT_ANSI))?Session.TERM_ANSI:0)
+			        +((Util.bset(attributesBitmap,MOB.ATT_SOUND))?Session.TERM_MSP:0));
 	}
 
 	protected int tickCounter=0;
