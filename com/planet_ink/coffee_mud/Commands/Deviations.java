@@ -199,7 +199,7 @@ public class Deviations extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		deviations(mob,Util.combine(commands,1));
+		mob.tell(deviations(mob,Util.combine(commands,1)).toString());
 		return false;
 	}
 	
