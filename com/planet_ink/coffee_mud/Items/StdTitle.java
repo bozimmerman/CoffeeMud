@@ -289,7 +289,7 @@ public class StdTitle extends StdItem implements LandTitle
 					{
 						Room spacePort=msg.source().location();
 						Vector choices=new Vector();
-						for(Enumeration e=spacePort.getArea().getMap();e.hasMoreElements();)
+						for(Enumeration e=spacePort.getArea().getProperMap();e.hasMoreElements();)
 						{
 							Room R=(Room)e.nextElement();
 							if(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)

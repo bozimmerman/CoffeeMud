@@ -34,7 +34,8 @@ public class Prop_NoTeleportOut extends Property
 		&&(msg.source().location()!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_ENTER))
 		{
-			boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
+			boolean shere=(msg.source().location()==affected)
+				||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea())));
 			boolean summon=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
 			boolean teleport=Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);
 			if(((shere)&&(!summon)&&(teleport))

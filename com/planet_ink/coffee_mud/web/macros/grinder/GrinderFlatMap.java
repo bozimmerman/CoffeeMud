@@ -40,7 +40,7 @@ public class GrinderFlatMap
 		area=A;
 		areaMap=new Vector();
 		hashRooms=new Hashtable();
-		for(Enumeration r=A.getMap();r.hasMoreElements();)
+		for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(R.roomID().length()>0)

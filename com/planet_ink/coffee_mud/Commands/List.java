@@ -124,8 +124,8 @@ public class List extends StdCommand
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			buf.append(A.name()+"\t"+A.numberOfIDedRooms()+" rooms\t");
-			if(!A.getMap().hasMoreElements())
+			buf.append(A.name()+"\t"+A.numberOfProperIDedRooms()+" rooms\t");
+			if(!A.getProperMap().hasMoreElements())
 			{
 				buf.append("\n\r");
 				continue;
@@ -134,7 +134,7 @@ public class List extends StdCommand
 			int numMobs=0;
 			int totalAlignment=0;
 			int totalLevels=0;
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
@@ -208,7 +208,7 @@ public class List extends StdCommand
 			StringBuffer ext=new StringBuffer("links ");
 			Vector myVec=null;
 			Vector clearVec=null;
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)

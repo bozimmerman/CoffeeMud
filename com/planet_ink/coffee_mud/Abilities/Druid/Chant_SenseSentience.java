@@ -46,7 +46,7 @@ public class Chant_SenseSentience extends Chant
 				StringBuffer lines=new StringBuffer("^x");
 				lines.append(Util.padRight("Name",17)+"| ");
 				lines.append(Util.padRight("Location",17)+"^.^N\n\r");
-				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((((R.domainType()&Room.INDOORS)==0)

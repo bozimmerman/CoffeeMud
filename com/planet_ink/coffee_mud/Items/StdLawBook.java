@@ -79,8 +79,8 @@ public class StdLawBook extends StdItem
 					which=Util.s_int(msg.targetMessage());
 
 				boolean allowedToModify=(CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW"));
-				if(A.getMap().hasMoreElements())
-					allowedToModify=(CMSecurity.isAllowed(mob,((Room)A.getMap().nextElement()),"ABOVELAW"));
+				if(A.getMetroMap().hasMoreElements())
+					allowedToModify=(CMSecurity.isAllowed(mob,((Room)A.getMetroMap().nextElement()),"ABOVELAW"));
 				Vector V=new Vector();
 				V.addElement(new Integer(Law.MOD_RULINGCLAN));
 				if((!allowedToModify)
@@ -766,7 +766,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(mob.location().getArea()!=A)
+				if(A.inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a release room, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new release room (y/N)? ","N"))
@@ -854,7 +854,7 @@ public class StdLawBook extends StdItem
 			boolean changed=false;
 			if(s.equalsIgnoreCase("A"))
 			{
-				if(mob.location().getArea()!=A)
+				if(!A.inMetroArea(mob.location().getArea()))
 					mob.tell("You can not add this room as a jail, as it is not in the area.");
 				else
 				if(mob.session().confirm("Add this room as a new jail room (y/N)? ","N"))
@@ -992,7 +992,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
 		String duhJudge="No Judge Found!\n\r";
 		StringBuffer duhOfficers=new StringBuffer("");
-		for(Enumeration e=A.getMap();e.hasMoreElements();)
+		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)

@@ -86,7 +86,7 @@ public class InstantDeath extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					killEveryoneHere(null,R);

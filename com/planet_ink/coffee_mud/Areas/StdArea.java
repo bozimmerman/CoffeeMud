@@ -28,7 +28,8 @@ public class StdArea implements Area
 	protected String archPath="";
 	protected int techLevel=0;
 	protected int climateID=Area.CLIMASK_NORMAL;
-	protected Vector myRooms=null;
+	protected Vector properRooms=null;
+	protected Vector metroRooms=null;
 	protected boolean mobility=true;
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Boolean roomSemaphore=new Boolean(true);
@@ -458,10 +459,19 @@ public class StdArea implements Area
 		}
 		return null;
 	}
+	public boolean inMetroArea(Area A)
+	{
+		if(A==this) return true;
+		if(getNumChildren()==0) return false;
+		for(int i=0;i<getNumChildren();i++)
+			if(getChild(i).inMetroArea(A))
+				return true;
+		return false;
+	}
 
 	public void fillInAreaRooms()
 	{
-		for(Enumeration r=getMap();r.hasMoreElements();)
+		for(Enumeration r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
@@ -471,14 +481,14 @@ public class StdArea implements Area
 					((GridLocale)R).buildGrid();
 			}
 		}
-		clearMap();
-		for(Enumeration r=getMap();r.hasMoreElements();)
+		clearMaps();
+		for(Enumeration r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
 			R.giveASky(0);
 		}
-		clearMap();
+		clearMaps();
 	}
 
 	public void fillInAreaRoom(Room R)
@@ -534,7 +544,7 @@ public class StdArea implements Area
 		s.append(description()+"\n\r");
 		if(author.length()>0)
 			s.append("Author         : "+author+"\n\r");
-		s.append("Number of rooms: "+numberOfIDedRooms()+"\n\r");
+		s.append("Number of rooms: "+numberOfProperIDedRooms()+"\n\r");
 
 		Vector levelRanges=new Vector();
 		Vector alignRanges=new Vector();
@@ -548,7 +558,7 @@ public class StdArea implements Area
 		statData[Area.AREASTAT_TOTLEVEL]=0;
 		statData[Area.AREASTAT_INTLEVEL]=0;
 		long totalAlignments=0;
-		for(Enumeration r=getMap();r.hasMoreElements();)
+		for(Enumeration r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
@@ -631,29 +641,41 @@ public class StdArea implements Area
 		return null;
 	}
 
-	public void clearMap()
+	public void clearMaps()
 	{
 		synchronized(roomSemaphore)
 		{
-			myRooms=null;
+			properRooms=null;
+			metroRooms=null;
 		}
 	}
 
-	public int mapSize()
+	public int properSize()
 	{
 		synchronized(roomSemaphore)
 		{
-			if(myRooms!=null)
-				return myRooms.size();
+			if(properRooms!=null)
+				return properRooms.size();
 			else
-				makeMap();
-			return myRooms.size();
+				makeProperMap();
+			return properRooms.size();
 		}
 	}
-	public int numberOfIDedRooms()
+	public int metroSize()
+	{
+		synchronized(roomSemaphore)
+		{
+			if(metroRooms!=null)
+				return metroRooms.size();
+			else
+				makeMetroMap();
+			return metroRooms.size();
+		}
+	}
+	public int numberOfProperIDedRooms()
 	{
 		int num=0;
-		for(Enumeration e=getMap();e.hasMoreElements();)
+		for(Enumeration e=getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			if(R.roomID().length()>0)
@@ -664,29 +686,48 @@ public class StdArea implements Area
 		}
 		return num;
 	}
-	public Room getRandomRoom()
+	public Room getRandomProperRoom()
 	{
 		synchronized(roomSemaphore)
 		{
-			if(myRooms==null) makeMap();
-			if(mapSize()==0) return null;
-			return (Room)myRooms.elementAt(Dice.roll(1,mapSize(),-1));
+			if(properRooms==null) makeProperMap();
+			if(properSize()==0) return null;
+			return (Room)properRooms.elementAt(Dice.roll(1,properRooms.size(),-1));
 		}
 	}
-	public Enumeration getMap()
+	public Room getRandomMetroRoom()
 	{
 		synchronized(roomSemaphore)
 		{
-			if(myRooms!=null) return myRooms.elements();
-			makeMap();
-			return myRooms.elements();
+			if(metroRooms==null) makeMetroMap();
+			if(metroSize()==0) return null;
+			return (Room)metroRooms.elementAt(Dice.roll(1,metroRooms.size(),-1));
 		}
 	}
-	private void makeMap()
+	
+	public Enumeration getProperMap()
 	{
 		synchronized(roomSemaphore)
 		{
-			if(myRooms!=null) return;
+			if(properRooms!=null) return properRooms.elements();
+			makeProperMap();
+			return properRooms.elements();
+		}
+	}
+	public Enumeration getMetroMap()
+	{
+		synchronized(roomSemaphore)
+		{
+			if(metroRooms!=null) return metroRooms.elements();
+			makeMetroMap();
+			return metroRooms.elements();
+		}
+	}
+	private void makeProperMap()
+	{
+		synchronized(roomSemaphore)
+		{
+			if(properRooms!=null) return;
 			Vector myMap=new Vector();
 			for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 			{
@@ -694,7 +735,31 @@ public class StdArea implements Area
 				if(R.getArea()==this)
 					myMap.addElement(R);
 			}
-			myRooms=myMap;
+			properRooms=myMap;
+		}
+	}
+
+	private void makeMetroMap()
+	{
+		synchronized(roomSemaphore)
+		{
+			if(metroRooms!=null) return;
+			if(properRooms==null) 
+				makeProperMap();
+			if(getNumChildren()<=0)
+			{
+				metroRooms=properRooms;
+				return;
+			}
+			Vector myMap=(Vector)properRooms.clone();
+			for(int i=0;i<getNumChildren();i++)
+			{
+				Area A=getChild(i);
+				if(A!=null)
+				for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+					myMap.addElement(e.nextElement());
+			}
+			metroRooms=myMap;
 		}
 	}
 

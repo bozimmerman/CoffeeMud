@@ -48,11 +48,15 @@ public interface Area extends Environmental
 
 	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);
-	public Enumeration getMap();
-	public int mapSize();
-	public int numberOfIDedRooms();
-	public Room getRandomRoom();
-	public void clearMap();
+	public Enumeration getMetroMap();
+	public Enumeration getProperMap();
+	public int metroSize();
+	public int properSize();
+	public boolean inMetroArea(Area A);
+	public int numberOfProperIDedRooms();
+	public Room getRandomMetroRoom();
+	public Room getRandomProperRoom();
+	public void clearMaps();
 	
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();

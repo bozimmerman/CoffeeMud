@@ -261,7 +261,7 @@ public class Modify extends BaseGenerics
 			else
 			{
 				mob.location().setArea(A);
-				if(!A.getMap().hasMoreElements())
+				if(!A.getProperMap().hasMoreElements())
 					reid=true;
 				else
 					CMClass.DBEngine().DBUpdateRoom(mob.location());
@@ -371,7 +371,7 @@ public class Modify extends BaseGenerics
 
 		String oldName=myArea.Name();
 		Vector allMyDamnRooms=new Vector();
-		for(Enumeration e=myArea.getMap();e.hasMoreElements();)
+		for(Enumeration e=myArea.getProperMap();e.hasMoreElements();)
 			allMyDamnRooms.addElement(e.nextElement());
 
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
@@ -508,7 +508,7 @@ public class Modify extends BaseGenerics
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
-				for(Enumeration r=myArea.getMap();r.hasMoreElements();)
+				for(Enumeration r=myArea.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((R.roomID().startsWith(oldName+"#"))
@@ -521,7 +521,7 @@ public class Modify extends BaseGenerics
 					else
 						CMClass.DBEngine().DBUpdateRoom(R);
 				}
-				myArea.clearMap();
+				myArea.clearMaps();
 				for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();

@@ -40,7 +40,7 @@ public class Trap_Noise extends StdTrap
 			{
 				super.spring(target);
 				Area A=target.location().getArea();
-				for(Enumeration e=A.getMap();e.hasMoreElements();)
+				for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					if(R!=target.location())

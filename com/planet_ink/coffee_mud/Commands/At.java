@@ -90,11 +90,11 @@ public class At extends StdCommand
 					{
 						Area A=(Area)a.nextElement();
 						if((EnglishParser.containsString(A.name(),cmd.toString()))
-						&&(A.mapSize()>0))
+						&&(A.properSize()>0))
 						{
 							int tries=0;
 							while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
-								room=(Room)A.getRandomRoom();
+								room=(Room)A.getRandomProperRoom();
 							break;
 						}
 					}

@@ -399,9 +399,14 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	public void fillInAreaRooms()
 	{
-		clearMap();
+		clearMaps();
 	}
 
+	public boolean inMetroArea(Area A)
+	{
+		if(A==this) return true;
+		return false;
+	}
 	public void fillInAreaRoom(Room R){}
 	public void dockHere(Room R)
 	{
@@ -411,7 +416,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		int airLockDir=-1;
 		Room backupRoom=null;
 		int backupDir=-1;
-		for(Enumeration e=getMap();e.hasMoreElements();)
+		for(Enumeration e=getProperMap();e.hasMoreElements();)
 		{
 			Room R2=(Room)e.nextElement();
 			if(R2!=null)
@@ -469,7 +474,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(I.Name().equals(Name()))
 				I.destroy();
 		}
-		for(Enumeration e=getMap();e.hasMoreElements();)
+		for(Enumeration e=getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			if(R!=null)
@@ -539,23 +544,24 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		return null;
 	}
 
-	public void clearMap(){}
+	public void clearMaps(){}
 
-	public int mapSize()
+	public int metroSize(){return properSize();}
+	public int properSize()
 	{
 		synchronized(roomSemaphore)
 		{
 			if(myRooms!=null)
 				return myRooms.size();
 			else
-				makeMap();
+				makeProperMap();
 			return myRooms.size();
 		}
 	}
-	public int numberOfIDedRooms()
+	public int numberOfProperIDedRooms()
 	{
 		int num=0;
-		for(Enumeration e=getMap();e.hasMoreElements();)
+		for(Enumeration e=getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			if(R.roomID().length()>0)
@@ -566,25 +572,27 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 		return num;
 	}
-	public Room getRandomRoom()
+	public Room getRandomMetroRoom(){return getRandomProperRoom();}
+	public Room getRandomProperRoom()
 	{
 		synchronized(roomSemaphore)
 		{
-			if(myRooms==null) makeMap();
-			if(mapSize()==0) return null;
-			return (Room)myRooms.elementAt(Dice.roll(1,mapSize(),-1));
+			if(myRooms==null) makeProperMap();
+			if(properSize()==0) return null;
+			return (Room)myRooms.elementAt(Dice.roll(1,properSize(),-1));
 		}
 	}
-	public Enumeration getMap()
+	public Enumeration getMetroMap(){return getProperMap();}
+	public Enumeration getProperMap()
 	{
 		synchronized(roomSemaphore)
 		{
 			if(myRooms!=null) return myRooms.elements();
-			makeMap();
+			makeProperMap();
 			return myRooms.elements();
 		}
 	}
-	private void makeMap()
+	private void makeProperMap()
 	{
 		synchronized(roomSemaphore)
 		{

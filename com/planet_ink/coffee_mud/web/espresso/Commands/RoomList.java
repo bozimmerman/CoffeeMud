@@ -38,7 +38,7 @@ public class RoomList extends StdEspressoCommand {
       Vector rooms=new Vector();
       // param element 1 should be the area name
       Area A=CMMap.getArea((String)param.elementAt(1));
-      for (Enumeration r = A.getMap(); r.hasMoreElements(); )
+      for (Enumeration r = A.getProperMap(); r.hasMoreElements(); )
       {
         Room R = (Room) r.nextElement();
         if (R.roomID().length() > 0)

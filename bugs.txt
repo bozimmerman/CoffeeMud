@@ -1,8 +1,6 @@
 In the mudgrinder, if you add the behavior EMOTER to a room (and give it valid parameters), then when you click FINISHED on the room, it will run the editroomdone.cmvp command, and result in just a white screen, without returning you to the area map (and without giving you any buttons to go anywhere).  Try on Gilligan's Island#32109 (I think).
-Second bug. I believe Axlen had this one before.. Plinia (daughter) become a follower mob. But there's two of her. What's up with this? Anyway.. following that. I managed to get one of her arrested. The cityguard took'er into Hero territory at the top of the rainbow bridge. Not good. probably a bug with property saving mobs then
 ?decaying tattoo
-retest database, a good one would be going around saving rooms and users, importing an area
-Adding auto-subMapping to parent areas -- seem to recall you saying that the operations one a single area and not children were infrequent and that you were going to call a diff function in those instances.  But, I have no evidence of such, I’ll admit.
+?Adding auto-subMapping to parent areas -- seem to recall you saying that the operations one a single area and not children were infrequent and that you were going to call a diff function in those instances.  But, I have no evidence of such, I’ll admit.
 map command.  its moronic, but there you go.
 add damage for every hit -- like amputation, but healing removes the detriments.  See the Yahoo Group for details.  You'll probably have to write your own spec on this one.
 overview grid type thingy -- thin grid

@@ -33,7 +33,7 @@ public class CMMap
 	private static void theWorldChanged()
 	{
 		for (Enumeration a=areas(); a.hasMoreElements();)
-			((Area)a.nextElement()).clearMap();
+			((Area)a.nextElement()).clearMaps();
 	}
 	// areas
 	public static int numAreas() { return areasList.size(); }
@@ -462,7 +462,7 @@ public class CMMap
 					CMClass.DBEngine().DBUpdateRoom(R);
 			}
 		}
-		A.clearMap();
+		A.clearMaps();
 		if(oldName!=null)
 		{
 			for(int r=0;r<onesToRenumber.size();r++)

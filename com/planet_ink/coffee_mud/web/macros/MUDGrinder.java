@@ -40,10 +40,10 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
-			if(A.mapSize()==0)
+			if(A.properSize()==0)
 			{
 				GrinderRooms.createLonelyRoom(A,null,0,false);
-				A.clearMap();
+				A.clearMaps();
 			}
 			GrinderFlatMap map=null;
 			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
@@ -62,10 +62,10 @@ public class MUDGrinder extends StdWebMacro
 			if (AREA.length() == 0) return "";
 			Area A = CMMap.getArea(AREA);
 			if (A == null)  return "";
-			if (A.mapSize() == 0) 
+			if (A.properSize() == 0) 
 			{
 				GrinderRooms.createLonelyRoom(A, null, 0, false);
-				A.clearMap();
+				A.clearMaps();
 			}
 			GrinderFlatMap map=null;
 			if((httpReq.getRequestParameter("MAPSTYLE")!=null)
@@ -176,7 +176,7 @@ public class MUDGrinder extends StdWebMacro
 			if(AREA.length()==0) return "";
 			Area A=CMMap.getArea(AREA);
 			if(A==null) return "";
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().toUpperCase().endsWith(find.toUpperCase()))
@@ -185,7 +185,7 @@ public class MUDGrinder extends StdWebMacro
 					return "";
 				}
 			}
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0)
@@ -194,7 +194,7 @@ public class MUDGrinder extends StdWebMacro
 					return "";
 				}
 			}
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.description().toUpperCase().indexOf(find.toUpperCase())>=0)

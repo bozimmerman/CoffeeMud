@@ -17,7 +17,7 @@ package com.planet_ink.coffee_mud.interfaces;
 */
 public interface LegalWarrant
 {
-	public void setArrestingOfficer(MOB mob);
+	public void setArrestingOfficer(Area legalArea, MOB mob);
 	public MOB criminal();
 	public MOB victim();
 	public MOB witness();

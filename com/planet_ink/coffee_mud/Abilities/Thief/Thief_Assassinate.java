@@ -229,7 +229,7 @@ public class Thief_Assassinate extends ThiefSkill
 		else
 		if(mobName.length()>0)
 		{
-			for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+			for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.fetchInhabitant(mobName)!=null)

@@ -57,7 +57,7 @@ public class Prayer_MassCureDisease extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(Enumeration e=mob.location().getArea().getMap();e.hasMoreElements();)
+				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)

@@ -52,7 +52,7 @@ public class Map extends StdEspressoCommand {
       if(A==null) return null;
       // for now, skip hidden areas.  Areas are often hidden if they aren't linked
       // to the world (ie under construction or Archon only)
-      for (Enumeration r = A.getMap(); r.hasMoreElements(); ) {
+      for (Enumeration r = A.getProperMap(); r.hasMoreElements(); ) {
         Room R = (Room) r.nextElement();
         if (R.roomID().length() > 0) {
           DrawingRoom GR = makeRoom(R);

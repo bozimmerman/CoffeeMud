@@ -153,7 +153,7 @@ public class Prop_ClosedDayNight extends Property
 		{
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
-				for(Enumeration e=mob.location().getArea().getMap();e.hasMoreElements();)
+				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R2=(Room)e.nextElement();
 					if((R2.roomID().indexOf(Home)>=0)

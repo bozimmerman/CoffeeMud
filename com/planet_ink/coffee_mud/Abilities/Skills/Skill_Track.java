@@ -207,7 +207,7 @@ public class Skill_Track extends StdAbility
 
 		Vector rooms=new Vector();
 		if(givenTarget instanceof Area)
-			rooms.addElement(((Area)givenTarget).getRandomRoom());
+			rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
 		else
 		if(givenTarget instanceof Room)
 			rooms.addElement(givenTarget);
@@ -222,7 +222,7 @@ public class Skill_Track extends StdAbility
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=thisRoom.getArea().getMap();r.hasMoreElements();)
+		for(Enumeration r=thisRoom.getArea().getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(R.fetchInhabitant(mobName)!=null)

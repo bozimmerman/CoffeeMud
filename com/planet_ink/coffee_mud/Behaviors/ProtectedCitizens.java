@@ -248,7 +248,7 @@ public class ProtectedCitizens extends ActiveTicker
 					assistMOB(((Room)ticking).fetchInhabitant(i));
 			else
 			if(ticking instanceof Area)
-				for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					for(int i=0;i<R.numInhabitants();i++)

@@ -85,8 +85,8 @@ public class Authenticate extends StdWebMacro
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
 					if(A.amISubOp(mob.Name()))
 					{ 
-						if((R==null)&&(A.getMap().hasMoreElements()))
-							R=(Room)A.getMap().nextElement();
+						if((R==null)&&(A.getProperMap().hasMoreElements()))
+							R=(Room)A.getProperMap().nextElement();
 						subOp=true; 
 						break;
 					}

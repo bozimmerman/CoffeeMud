@@ -34,7 +34,7 @@ public class Prop_NoCharm extends Property
 		&&(msg.source()!=null)
 		&&(msg.source().location()!=null)
 		&&((msg.source().location()==affected)
-		   ||(msg.source().location().getArea()==affected))
+		   ||((affected instanceof Area)&&(((Area)affected).inMetroArea(msg.source().location().getArea()))))
 		&&(Util.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
 		{
 			msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,"Magic energy fizzles and is absorbed into the air.");

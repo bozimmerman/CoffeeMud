@@ -128,7 +128,7 @@ public class Prayer_HuntEvil extends Prayer
 		Vector rooms=new Vector();
 		for(int i=0;i<1000;i++)
 		{
-			Room R=mob.location().getArea().getRandomRoom();
+			Room R=mob.location().getArea().getRandomProperRoom();
 			if((gameHere(R)!=null)&&(!rooms.contains(R)))
 			{
 				rooms.addElement(R);
@@ -137,7 +137,7 @@ public class Prayer_HuntEvil extends Prayer
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+		for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(gameHere(R)!=null)

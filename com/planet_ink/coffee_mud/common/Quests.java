@@ -243,7 +243,7 @@ public class Quests implements Cloneable, Quest
 							if(MG==null)
 							{
 								Enumeration e=CMMap.rooms();
-								if(A!=null) e=A.getMap();
+								if(A!=null) e=A.getMetroMap();
 								for(;e.hasMoreElements();)
 								{
 									Room R2=(Room)e.nextElement();
@@ -344,7 +344,7 @@ public class Quests implements Cloneable, Quest
 						}
 						if(mobName.length()==0) mobName="ANY";
 						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMap();
+						if(A!=null) e=A.getMetroMap();
 						for(;e.hasMoreElements();)
 						{
 							Room R2=(Room)e.nextElement();
@@ -380,7 +380,7 @@ public class Quests implements Cloneable, Quest
 							String itemType=(String)itemTypes.elementAt(t);
 							if(itemType.startsWith("-")) continue;
 							Enumeration e=CMMap.rooms();
-							if(A!=null) e=A.getMap();
+							if(A!=null) e=A.getMetroMap();
 							for(;e.hasMoreElements();)
 							{
 								Room R2=(Room)e.nextElement();
@@ -442,7 +442,7 @@ public class Quests implements Cloneable, Quest
 						String localeName=Util.combine(p,2).toUpperCase();
 						Vector choices=new Vector();
 						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMap();
+						if(A!=null) e=A.getMetroMap();
 						for(;e.hasMoreElements();)
 						{
 							Room R2=(Room)e.nextElement();
@@ -487,7 +487,7 @@ public class Quests implements Cloneable, Quest
 						Vector choices2=new Vector();
 						Vector choices3=new Vector();
 						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMap();
+						if(A!=null) e=A.getMetroMap();
 						for(;e.hasMoreElements();)
 						{
 							Room R2=(Room)e.nextElement();
@@ -571,7 +571,7 @@ public class Quests implements Cloneable, Quest
 						else
 						{
 							Enumeration e=CMMap.rooms();
-							if(A!=null) e=A.getMap();
+							if(A!=null) e=A.getMetroMap();
 							for(;e.hasMoreElements();)
 							{
 								Room R2=(Room)e.nextElement();
@@ -621,7 +621,7 @@ public class Quests implements Cloneable, Quest
 						Vector choices3=new Vector();
 						String itemName=Util.combine(p,2).toUpperCase();
 						Enumeration e=CMMap.rooms();
-						if(A!=null) e=A.getMap();
+						if(A!=null) e=A.getMetroMap();
 						for(;e.hasMoreElements();)
 						{
 							Room R2=(Room)e.nextElement();
@@ -813,7 +813,7 @@ public class Quests implements Cloneable, Quest
 						if(R==null)
 						{
 							if(A!=null)
-								R=A.getRandomRoom();
+								R=A.getRandomMetroRoom();
 							else
 								R=CMMap.getRandomRoom();
 						}
@@ -868,7 +868,7 @@ public class Quests implements Cloneable, Quest
 						if(R==null)
 						{
 							if(A!=null)
-								R=A.getRandomRoom();
+								R=A.getRandomMetroRoom();
 							else
 								R=CMMap.getRandomRoom();
 						}

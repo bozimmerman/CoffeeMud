@@ -242,7 +242,7 @@ public class Masonry extends CraftingSkill
 								CMClass.DBEngine().DBUpdateExits(R2);
 							}
 
-							R.getArea().clearMap();
+							R.getArea().clearMaps();
 							R.getArea().fillInAreaRoom(R);
 							CMClass.DBEngine().DBUpdateRoom(R);
 							CMClass.DBEngine().DBUpdateExits(R);
@@ -438,7 +438,7 @@ public class Masonry extends CraftingSkill
 												((GridLocale)R3).buildGrid();
 										}
 								}
-								R.getArea().clearMap();
+								R.getArea().clearMaps();
 								R.getArea().fillInAreaRoom(R);
 								CMClass.DBEngine().DBUpdateRoom(R);
 								CMClass.DBEngine().DBUpdateExits(R);
@@ -585,7 +585,7 @@ public class Masonry extends CraftingSkill
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-			for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+			for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.displayText().equalsIgnoreCase(title))

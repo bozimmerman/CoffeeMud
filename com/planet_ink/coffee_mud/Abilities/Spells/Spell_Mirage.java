@@ -53,7 +53,7 @@ public class Spell_Mirage extends Spell
 			{
 				if(!(affected instanceof Room))
 					return null;
-				newRoom=((Room)affected).getArea().getRandomRoom();
+				newRoom=((Room)affected).getArea().getRandomProperRoom();
 			}
 		}
 		return newRoom;
@@ -83,7 +83,7 @@ public class Spell_Mirage extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.location().getArea().mapSize()<2)
+		if(mob.location().getArea().properSize()<2)
 		{
 			mob.tell("This area is too small to cast this spell.");
 			return false;
@@ -115,7 +115,7 @@ public class Spell_Mirage extends Spell
 				{
 					Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
-					newRoom=((Room)affected).getArea().getRandomRoom();
+					newRoom=((Room)affected).getArea().getRandomProperRoom();
 					if((newRoom!=null)&&(newRoom.roomID().length()>0)&&(!(newRoom instanceof GridLocale)))
 					{
 						A.setMiscText(CMMap.getExtendedRoomID(newRoom));

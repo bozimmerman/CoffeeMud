@@ -211,7 +211,7 @@ public class Construction extends CraftingSkill
 								if(M.location()==room)
 									M.setLocation(R);
 							}
-							R.getArea().clearMap();
+							R.getArea().clearMaps();
 							R.getArea().fillInAreaRoom(R);
 							CMClass.DBEngine().DBUpdateRoom(R);
 							CMClass.DBEngine().DBUpdateExits(R);
@@ -396,7 +396,7 @@ public class Construction extends CraftingSkill
 												((GridLocale)R2).buildGrid();
 										}
 								}
-								R.getArea().clearMap();
+								R.getArea().clearMaps();
 								R.getArea().fillInAreaRoom(R);
 								CMClass.DBEngine().DBUpdateRoom(R);
 								CMClass.DBEngine().DBUpdateExits(R);
@@ -542,7 +542,7 @@ public class Construction extends CraftingSkill
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-			for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+			for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.displayText().equalsIgnoreCase(title))

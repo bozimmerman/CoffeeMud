@@ -1165,7 +1165,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 			}
 			else
-				for(Enumeration r=getStartRoom().getArea().getMap();r.hasMoreElements();)
+				for(Enumeration r=getStartRoom().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					LandTitle A=CoffeeUtensils.getLandTitle(R);

@@ -230,9 +230,9 @@ public class RandomTraps extends ActiveTicker
 				if(ticking instanceof Room)
 					makeRoomElligible((Room)ticking,elligible);
 				else
-				if((ticking instanceof Area)&&(((Area)ticking).mapSize()>0))
+				if((ticking instanceof Area)&&(((Area)ticking).metroSize()>0))
 				{
-					for(Enumeration m=((Area)ticking).getMap();m.hasMoreElements();)
+					for(Enumeration m=((Area)ticking).getMetroMap();m.hasMoreElements();)
 						makeRoomElligible((Room)m.nextElement(),elligible);
 				}
 				else
@@ -332,7 +332,7 @@ public class RandomTraps extends ActiveTicker
 					String rname=(R!=null)?CMMap.getExtendedRoomID(R):"";
 					if((E instanceof Exit)&&(ticking instanceof Area))
 					{
-						for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
+						for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 						{
 							Room R2=(Room)r.nextElement();
 							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)

@@ -184,7 +184,7 @@ public class Reset extends StdCommand
 	{
 		boolean mobile=area.getMobility();
 		area.toggleMobility(false);
-		for(Enumeration r=area.getMap();r.hasMoreElements();)
+		for(Enumeration r=area.getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			CoffeeUtensils.resetRoom(R);
@@ -219,7 +219,7 @@ public class Reset extends StdCommand
 		{
 			Area A=mob.location().getArea();
 			boolean somethingDone=false;
-			for(Enumeration e=A.getMap();e.hasMoreElements();)
+			for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 				if((R.roomID().length()>0)
@@ -290,7 +290,7 @@ public class Reset extends StdCommand
 				rooms.addElement(mob.location());
 			else
 			if(s.toUpperCase().startsWith("AREA"))
-				for(Enumeration e=mob.location().getArea().getMap();e.hasMoreElements();)
+				for(Enumeration e=mob.location().getArea().getProperMap();e.hasMoreElements();)
 					rooms.addElement(((Room)e.nextElement()));
 			else
 			if(s.toUpperCase().startsWith("WORLD"))
@@ -369,7 +369,7 @@ public class Reset extends StdCommand
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
@@ -408,7 +408,7 @@ public class Reset extends StdCommand
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
@@ -443,7 +443,7 @@ public class Reset extends StdCommand
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
@@ -504,7 +504,7 @@ public class Reset extends StdCommand
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
@@ -573,7 +573,7 @@ public class Reset extends StdCommand
 			{
 				Area A=(Area)a.nextElement();
 				A.toggleMobility(false);
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
@@ -606,7 +606,7 @@ public class Reset extends StdCommand
 			Hashtable rememberI=new Hashtable();
 			Hashtable rememberM=new Hashtable();
 			try{
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				CoffeeUtensils.resetRoom(R);

@@ -2648,18 +2648,26 @@ allowing a good base state for builders to work from.</FONT></P>
 <P align=left><FONT size=4>If the data, 
 appearance, or format of the HELP provided for areas needs to be changed, the 
 getAreaStats() method is where to generate a new one.</FONT></P>
+<P><PRE>public Enumeration getMetroMap();
+	public int metroSize();
+	public Room getRandomMetroRoom();
+</PRE>
+<P></P>
+<P align=left><FONT size=4>These methods provide access to all of the rooms
+in the given area, plus all of the rooms in any child areas, plus any rooms
+in their children areas and so forth.</FONT></P>
 <P><PRE>	public void fillInAreaRooms();
 	public void fillInAreaRoom(Room R);<BR>
-	public Enumeration getMap();
-	public int mapSize();
-	public Room getRandomRoom();
-	public void clearMap();
+	public Enumeration getProperMap();
+	public int properSize();
+	public Room getRandomProperRoom();
+	public void clearMaps();
 </PRE>
 <P></P>
 <P align=left><FONT size=4>The first two 
 methods are called in order to perform finalizing clean-up or resetting of room 
 structures.&nbsp; The remaining methods provide access to the set of rooms 
-inside this area.</FONT></P>
+which are directly a part of this area.</FONT></P>
 <P><PRE>	public void addSubOp(String username);
 	public void delSubOp(String username);
 	public boolean amISubOp(String username);

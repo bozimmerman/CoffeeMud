@@ -331,7 +331,7 @@ public class DefaultClimate implements Climate
 
 			if(say!=null)
 			{
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CoffeeUtensils.hasASky(R))
@@ -364,7 +364,7 @@ public class DefaultClimate implements Climate
 				case Climate.WEATHER_HAIL:
 				case Climate.WEATHER_THUNDERSTORM:
 				case Climate.WEATHER_RAIN:
-					for(Enumeration r=A.getMap();r.hasMoreElements();)
+					for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(CoffeeUtensils.hasASky(R))

@@ -307,7 +307,7 @@ public class Sounder extends StdBehavior
 			emoter=CMClass.getMOB("StdMOB");
 			emoter.setName(ticking.name());
 			emoter.charStats().setStat(CharStats.GENDER,(int)'N');
-			for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
+			for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				emoteHere(R,emoter,emote);

@@ -81,7 +81,7 @@ public class Where extends StdCommand
 				Enumeration r=CMMap.rooms();
 				if(who.toUpperCase().startsWith("AREA "))
 				{
-					r=mob.location().getArea().getMap();
+					r=mob.location().getArea().getProperMap();
 					who=who.substring(5).trim();
 				}
 				boolean mobOnly=false;

@@ -34,7 +34,7 @@ public class Prayer_Weather extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int size=mob.location().getArea().numberOfIDedRooms();
+		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size-(mob.envStats().level()*20);
 		if(size<0) size=0;
 		boolean success=profficiencyCheck(mob,-size,auto);

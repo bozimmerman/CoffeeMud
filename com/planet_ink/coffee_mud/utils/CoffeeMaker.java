@@ -855,12 +855,12 @@ public class CoffeeMaker
 		buf.append(XMLManager.convertXMLtoTag("ADATA",area.text()));
 		if(andRooms)
 		{
-			if(area.mapSize()==0)
+			if(area.properSize()==0)
 				buf.append("<AROOMS />");
 			else
 			{
 				buf.append("<AROOMS>");
-				for(Enumeration r=area.getMap();r.hasMoreElements();)
+				for(Enumeration r=area.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(S!=null) S.rawPrint(".");
@@ -3005,7 +3005,7 @@ public class CoffeeMaker
 		newArea.setName(newName);
 		CMClass.DBEngine().DBCreateArea(newName,newArea.ID());
 		Hashtable altIDs=new Hashtable();
-		for(Enumeration e=A.getMap();e.hasMoreElements();)
+		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			Room newRoom=(Room)room.copyOf();
@@ -3024,7 +3024,7 @@ public class CoffeeMaker
 				CMClass.DBEngine().DBUpdateItems(newRoom);
 			CMMap.addRoom(newRoom);
 		}
-		for(Enumeration e=A.getMap();e.hasMoreElements();)
+		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			String altID=(String)altIDs.get(room.roomID());

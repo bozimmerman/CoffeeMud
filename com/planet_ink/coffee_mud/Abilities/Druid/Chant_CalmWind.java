@@ -59,7 +59,7 @@ public class Chant_CalmWind extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int size=mob.location().getArea().numberOfIDedRooms();
+		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/mob.envStats().level();
 		if(size<0) size=0;
 		boolean success=profficiencyCheck(mob,-size,auto);

@@ -250,7 +250,7 @@ public class GrinderRooms
 				if(M.location()==oldR)
 					M.setLocation(R);
 			}
-			R.getArea().clearMap();
+			R.getArea().clearMaps();
 		}
 		R.getArea().fillInAreaRoom(R);
 		CMClass.DBEngine().DBUpdateRoom(R);

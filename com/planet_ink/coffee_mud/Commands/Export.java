@@ -239,7 +239,7 @@ public class Export extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading area mobs '"+mob.location().getArea().Name()+"'...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");
@@ -299,7 +299,7 @@ public class Export extends StdCommand
 				if(mob.session()!=null)
 					mob.session().rawPrint("Reading area "+subType.toLowerCase()+" '"+mob.location().getArea().Name()+"'...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(mob.session()!=null) mob.session().rawPrint(".");

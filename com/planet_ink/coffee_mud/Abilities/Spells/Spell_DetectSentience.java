@@ -46,7 +46,7 @@ public class Spell_DetectSentience extends Spell
 				StringBuffer lines=new StringBuffer("^x");
 				lines.append(Util.padRight("Name",17)+"| ");
 				lines.append(Util.padRight("Location",17)+"^.^N\n\r");
-				for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)

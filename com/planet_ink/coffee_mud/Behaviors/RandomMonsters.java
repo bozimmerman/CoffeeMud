@@ -257,7 +257,7 @@ public class RandomMonsters extends ActiveTicker
 						Resources.removeResource("HELP_"+((Room)ticking).getArea().name().toUpperCase());
 					}
 					else
-					if((ticking instanceof Area)&&(((Area)ticking).mapSize()>0))
+					if((ticking instanceof Area)&&(((Area)ticking).metroSize()>0))
 					{
 						Resources.removeResource("HELP_"+ticking.name().toUpperCase());
 						Room room=null;
@@ -266,12 +266,12 @@ public class RandomMonsters extends ActiveTicker
 							int tries=0;
 							while(((room==null)||(room.roomID().length()==0)||(!canFlyHere(M,room)))
 							&&((++tries)<100))
-								room=((Area)ticking).getRandomRoom();
+								room=((Area)ticking).getRandomMetroRoom();
 						}
 						else
 						{
 							Vector map=new Vector();
-							for(Enumeration e=((Area)ticking).getMap();e.hasMoreElements();)
+							for(Enumeration e=((Area)ticking).getMetroMap();e.hasMoreElements();)
 							{
 								Room R=(Room)e.nextElement();
 								if(okRoomForMe(M,R)

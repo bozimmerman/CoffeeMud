@@ -187,7 +187,7 @@ public class Emoter extends ActiveTicker
 			if(ticking instanceof Area)
 			{
 				emoter=CMClass.getMOB("StdMOB");
-				for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					emoteHere(R,emoter,emote,false);

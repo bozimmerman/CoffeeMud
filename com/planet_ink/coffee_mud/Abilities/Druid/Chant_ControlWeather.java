@@ -54,7 +54,7 @@ public class Chant_ControlWeather extends Chant
 			return false;
 
 		Ability A=mob.location().getArea().fetchEffect(ID());
-		int size=mob.location().getArea().numberOfIDedRooms();
+		int size=mob.location().getArea().numberOfProperIDedRooms();
 		size=size/mob.envStats().level();
 		if(size<0) size=0;
 		if(A!=null) size=size-((A.invoker().envStats().level()-mob.envStats().level())*10);

@@ -372,8 +372,8 @@ public class Merge extends StdCommand
 		for(Enumeration a=CMMap.areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if(A.getMap().hasMoreElements()
-			&&CMSecurity.isAllowed(mob,((Room)A.getMap().nextElement()),"MERGE"))
+			if(A.getProperMap().hasMoreElements()
+			&&CMSecurity.isAllowed(mob,((Room)A.getProperMap().nextElement()),"MERGE"))
 				placesToDo.addElement(A);
 		}
 		if(placesToDo.size()==0)
@@ -387,7 +387,7 @@ public class Merge extends StdCommand
 			{
 				Area A=(Area)placesToDo.elementAt(i);
 				placesToDo.removeElement(A);
-				for(Enumeration r=A.getMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,"MERGE"))

@@ -126,7 +126,7 @@ public class Chant_LocateAnimals extends Chant
 		boolean success=profficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+		for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(animalHere(R)!=null)

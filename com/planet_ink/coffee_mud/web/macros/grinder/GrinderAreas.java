@@ -108,7 +108,7 @@ public class GrinderAreas
 		if(!className.equalsIgnoreCase(CMClass.className(A)))
 		{
 			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			Area oldA=A;
 			A=CMClass.getAreaType(className);
@@ -130,7 +130,7 @@ public class GrinderAreas
 			if(CMMap.getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
 			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getMap();r.hasMoreElements();)
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMMap.delArea(A);
 			oldName=A.Name();

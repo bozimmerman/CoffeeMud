@@ -117,7 +117,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 			A=(Area)affected;
 		else
 			A=CMMap.getArea(landPropertyID());
-		for(Enumeration e=A.getMap();e.hasMoreElements();)
+		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 			V.addElement(e.nextElement());
 		return V;
 	}

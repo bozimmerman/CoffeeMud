@@ -44,7 +44,7 @@ public class Prayer_HolyDay extends Prayer
 
 		if(canBeUninvoked())
 		{
-			for(Enumeration e=A.getMap();e.hasMoreElements();)
+			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"The holy day has ended.");
@@ -121,7 +121,7 @@ public class Prayer_HolyDay extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				for(Enumeration e=target.getMap();e.hasMoreElements();)
+				for(Enumeration e=target.getMetroMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					godName=mob.getWorshipCharID();

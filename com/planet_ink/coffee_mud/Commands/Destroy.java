@@ -314,7 +314,7 @@ public class Destroy extends BaseItemParser
 			return;
 		}
 		Area A=CMMap.getArea(areaName);
-		Room R=A.getRandomRoom();
+		Room R=A.getRandomProperRoom();
 		if((R!=null)&&(!CMSecurity.isAllowed(mob,R,"CMDAREAS")))
 		{
 			errorOut(mob);

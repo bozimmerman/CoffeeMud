@@ -39,7 +39,7 @@ public class GrinderMap extends GrinderFlatMap
 			// for now, skip hidden areas.  Areas are often hidden if they aren't linked
 			// to the world (ie under construction or Archon only)
 			if (Sense.isHidden(A)) continue;
-			for (Enumeration r = A.getMap(); r.hasMoreElements(); ) 
+			for (Enumeration r = A.getProperMap(); r.hasMoreElements(); ) 
 			{
 				Room R = (Room) r.nextElement();
 				if (R.roomID().length() > 0) 

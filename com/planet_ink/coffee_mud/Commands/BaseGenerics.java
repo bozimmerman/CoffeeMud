@@ -254,7 +254,7 @@ public class BaseGenerics extends StdCommand
 			if(M.location()==oldR)
 				M.setLocation(R);
 		}
-		R.getArea().clearMap();
+		R.getArea().clearMaps();
 		R.getArea().fillInAreaRoom(R);
 		CMClass.DBEngine().DBUpdateRoom(R);
 		CMClass.DBEngine().DBUpdateMOBs(R);

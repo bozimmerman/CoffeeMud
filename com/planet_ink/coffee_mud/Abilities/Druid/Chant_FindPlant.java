@@ -189,7 +189,7 @@ public class Chant_FindPlant extends Chant
 		Vector rooms=new Vector();
 		for(int i=0;i<1000;i++)
 		{
-			Room R=mob.location().getArea().getRandomRoom();
+			Room R=mob.location().getArea().getRandomProperRoom();
 			if((itsHere(target,R).length()>0)&&(!rooms.contains(R)))
 			{
 				rooms.addElement(R);
@@ -198,7 +198,7 @@ public class Chant_FindPlant extends Chant
 		}
 
 		if(rooms.size()<=0)
-		for(Enumeration r=mob.location().getArea().getMap();r.hasMoreElements();)
+		for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(itsHere(target,R).length()>0)

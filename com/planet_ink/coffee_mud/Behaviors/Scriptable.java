@@ -1101,7 +1101,7 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
-				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
@@ -1139,7 +1139,7 @@ public class Scriptable extends StdBehavior
 				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1));
 				int num=0;
-				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
@@ -2320,7 +2320,7 @@ public class Scriptable extends StdBehavior
 			{
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
 				int num=0;
-				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
@@ -2354,7 +2354,7 @@ public class Scriptable extends StdBehavior
 			{
 				int num=0;
 				String arg1=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.cleanBit(evaluable.substring(y+1,z)));
-				for(Enumeration e=lastKnownLocation.getArea().getMap();e.hasMoreElements();)
+				for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
@@ -3924,7 +3924,7 @@ public class Scriptable extends StdBehavior
 								A=lastKnownLocation.getArea();
 							}
 							if((findOne==null)&&(A!=null))
-								for(Enumeration r=A.getMap();r.hasMoreElements();)
+								for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 								{
 									Room R=(Room)r.nextElement();
 									findOne=R.fetchInhabitant(s);

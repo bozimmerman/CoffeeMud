@@ -35,7 +35,7 @@ public class ResetWhole extends StdBehavior
 		if(!msg.source().isMonster())
 		{
 			if((E instanceof Area)
-			&&(msg.source().location().getArea()==E))
+			&&(((Area)E).inMetroArea(msg.source().location().getArea())))
 				lastAccess=System.currentTimeMillis();
 			else
 			if((E instanceof Room)
@@ -60,7 +60,7 @@ public class ResetWhole extends StdBehavior
 		{
 			if(ticking instanceof Area)
 			{
-				for(Enumeration r=((Area)ticking).getMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					for(int b=0;b<R.numBehaviors();b++)
