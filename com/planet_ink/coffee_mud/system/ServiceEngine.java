@@ -383,6 +383,12 @@ public class ServiceEngine
 		if(which.toLowerCase().startsWith("tickerid"))
 			return ""+C.tickID;
 		else
+		if(which.toLowerCase().startsWith("tickerstatus"))
+			return ((C.clientObject==null)?"":(""+C.clientObject.getTickStatus()));
+		else
+		if(which.toLowerCase().startsWith("tickercodeword"))
+			return C.tickCodeWord();
+		else
 		if(which.toLowerCase().startsWith("tickertickdown"))
 			return ""+C.tickDown;
 		else

@@ -48,64 +48,6 @@ public class SaveThread extends Thread
 		}
 	}
 
-	public String tickCodeWord(Tickable obj)
-	{
-		long code=obj.getTickStatus();
-		if(obj instanceof Environmental)
-		{
-			if(Util.bset(code,Tickable.STATUS_BEHAVIOR))
-			{
-				long b=(code-Tickable.STATUS_BEHAVIOR);
-				String codeWord="Behavior #"+b;
-				if((b>=0)&&(b<((Environmental)obj).numBehaviors()))
-					codeWord+=" ("+(((Environmental)obj).fetchBehavior((int)b)).name();
-				return codeWord;
-			}
-			else
-			if(Util.bset(code,Tickable.STATUS_AFFECT))
-			{
-				long b=(code-Tickable.STATUS_AFFECT);
-				String codeWord="Affect #"+b;
-				if((b>=0)&&(b<((Environmental)obj).numAffects()))
-					codeWord+=" ("+(((Environmental)obj).fetchAffect((int)b)).name();
-				return codeWord;
-			}
-		}
-		String codeWord=null;
-		if(Util.bset(code,Tickable.STATUS_BEHAVIOR))
-		   codeWord="Behavior?!";
-		else
-		if(Util.bset(code,Tickable.STATUS_AFFECT))
-		   codeWord="Affect?!";
-		else
-		switch((int)code)
-		{
-		case (int)Tickable.STATUS_ALIVE:
-			codeWord="Alive"; break;
-		case (int)Tickable.STATUS_CLASS:
-			codeWord="Class"; break;
-		case (int)Tickable.STATUS_DEAD:
-			codeWord="Dead"; break;
-		case (int)Tickable.STATUS_END:
-			codeWord="End"; break;
-		case (int)Tickable.STATUS_FIGHT:
-			codeWord="Fighting"; break;
-		case (int)Tickable.STATUS_NOT:
-			codeWord="!"; break;
-		case (int)Tickable.STATUS_OTHER:
-			codeWord="Other"; break;
-		case (int)Tickable.STATUS_RACE:
-			codeWord="Race"; break;
-		case (int)Tickable.STATUS_START:
-			codeWord="Start"; break;
-		case (int)Tickable.STATUS_WEATHER:
-			codeWord="Weather"; break;
-		default:
-			codeWord="?"; break;
-		}
-		return codeWord;
-	}
-	
 	public void checkHealth()
 	{
 		long lastDateTime=System.currentTimeMillis();
@@ -141,7 +83,7 @@ public class SaveThread extends Thread
 						StringBuffer str=null;
 						Tickable obj=client.clientObject;
 						long code=client.clientObject.getTickStatus();
-						String codeWord=tickCodeWord(obj);
+						String codeWord=client.tickCodeWord();
 						if(obj instanceof Environmental)
 							str=new StringBuffer("Dead tick group! Last serviced: "+obj.name()+" ("+((Environmental)obj).ID()+"), Status="+code+" ("+codeWord+"), tickID "+client.tickID);
 						else
