@@ -479,7 +479,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					if((affect.targetMinor()!=Affect.TYP_VIEW)
 					&&(yourValue(mob,affect.tool(),true)>com.planet_ink.coffee_mud.utils.Money.totalMoney(mob)))
 					{
-						ExternalPlay.quickSay(this,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
+						ExternalPlay.quickSay(this,mob,"You can't afford to buy "+affect.tool().displayName()+".",false,false);
 						return false;
 					}
 					if(affect.tool() instanceof Item)
@@ -617,7 +617,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case Affect.TYP_VALUE:
 				super.affect(myHost,affect);
-				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".",true,false);
+				ExternalPlay.quickSay(this,mob,"I'll give you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().displayName()+".",true,false);
 				break;
 			case Affect.TYP_SELL:
 				super.affect(myHost,affect);
@@ -625,7 +625,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
 					mob.recoverEnvStats();
-					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
+					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().displayName()+".");
 					if(affect.tool() instanceof Item)
 					{
 						Item item=(Item)affect.tool();
@@ -675,7 +675,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			case Affect.TYP_VIEW:
 				super.affect(myHost,affect);
 				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
-					ExternalPlay.quickSay(this,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
+					ExternalPlay.quickSay(this,affect.source(),"Interested in "+affect.tool().displayName()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
 				break;
 			case Affect.TYP_BUY:
 				super.affect(myHost,affect);
@@ -734,7 +734,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							Vector V=new Vector();
 							if(A.canTarget(mob))
 							{
-								V.addElement(mob.name()+"$");
+								V.addElement(mob.displayName()+"$");
 								A.invoke(this,V,mob,true);
 							}
 							else
@@ -743,7 +743,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 								Item I=mob.fetchWieldedItem();
 								if(I==null) I=mob.fetchWornItem(Item.HELD);
 								if(I==null) return;
-								V.addElement(I.name()+"$");
+								V.addElement(I.displayName()+"$");
 								addInventory(I);
 								A.invoke(this,V,I,true);
 								delInventory(I);

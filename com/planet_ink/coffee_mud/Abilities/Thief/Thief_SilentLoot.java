@@ -30,7 +30,7 @@ public class Thief_SilentLoot extends ThiefSkill
 				item=affect.source().fetchCarried(null,"all");
 				if(item==null) item=affect.source().fetchWornItem("all");
 				if(item!=null)
-					affect.addTrailerMsg(new FullMsg((MOB)affected,affect.source(),this,Affect.MSG_THIEF_ACT|Affect.MASK_MALICIOUS,"You silently autoloot "+item.name()+" from the corpse of "+affect.source().name(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
+					affect.addTrailerMsg(new FullMsg((MOB)affected,affect.source(),this,Affect.MSG_THIEF_ACT|Affect.MASK_MALICIOUS,"You silently autoloot "+item.displayName()+" from the corpse of "+affect.source().displayName(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
 			}
 			else
 			if((affect.sourceMinor()==Affect.TYP_DELICATE_HANDS_ACT)

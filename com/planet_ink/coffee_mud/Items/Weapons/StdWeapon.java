@@ -45,10 +45,10 @@ public class StdWeapon extends StdItem implements Weapon
 	{
 		String id=super.secretIdentity();
 		if(envStats().ability()>0)
-			id=name()+" +"+envStats().ability()+((id.length()>0)?"\n":"")+id;
+			id=displayName()+" +"+envStats().ability()+((id.length()>0)?"\n":"")+id;
 		else
 		if(envStats().ability()<0)
-			id=name()+" "+envStats().ability()+((id.length()>0)?"\n":"")+id;
+			id=displayName()+" "+envStats().ability()+((id.length()>0)?"\n":"")+id;
 		return id+"\n\rAttack: "+envStats().attackAdjustment()+", Damage: "+envStats().damage();
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -154,7 +154,7 @@ public class StdWeapon extends StdItem implements Weapon
 				{
 					MOB owner=(MOB)owner();
 					setUsesRemaining(100);
-					affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being wielded by <S-NAME> is destroyed!"));
+					affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,displayName()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,displayName()+" being wielded by <S-NAME> is destroyed!"));
 					remove();
 					destroyThis();
 					owner.recoverEnvStats();
@@ -196,7 +196,7 @@ public class StdWeapon extends StdItem implements Weapon
 						   ||(I.container()!=null)
 						   ||(!I.rawSecretIdentity().equalsIgnoreCase(ammunitionType()))))
 						{
-							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.name()+".");
+							mob.location().show(mob,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) "+ammunitionType()+" from "+I.displayName()+".");
 							int howMuchToTake=ammunitionCapacity();
 							if(I.usesRemaining()<howMuchToTake)
 								howMuchToTake=I.usesRemaining();
@@ -235,7 +235,7 @@ public class StdWeapon extends StdItem implements Weapon
 			return "";
 		else
 		if(usesRemaining()>=95)
-			return name()+" looks slightly used ("+usesRemaining()+"%)";
+			return displayName()+" looks slightly used ("+usesRemaining()+"%)";
 		else
 		if(usesRemaining()>=85)
 		{
@@ -246,9 +246,9 @@ public class StdWeapon extends StdItem implements Weapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return name()+" is somewhat dull ("+usesRemaining()+"%)";
+				return displayName()+" is somewhat dull ("+usesRemaining()+"%)";
 			default: 
-				 return name()+" is somewhat worn ("+usesRemaining()+"%)";
+				 return displayName()+" is somewhat worn ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -261,9 +261,9 @@ public class StdWeapon extends StdItem implements Weapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return name()+" is dull ("+usesRemaining()+"%)";
+				return displayName()+" is dull ("+usesRemaining()+"%)";
 			default: 
-				 return name()+" is worn ("+usesRemaining()+"%)";
+				 return displayName()+" is worn ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -276,24 +276,24 @@ public class StdWeapon extends StdItem implements Weapon
 			case Weapon.CLASS_EDGED:
 			case Weapon.CLASS_POLEARM:
 			case Weapon.CLASS_SWORD:
-				return name()+" has some notches and chinks ("+usesRemaining()+"%)";
+				return displayName()+" has some notches and chinks ("+usesRemaining()+"%)";
 			default: 
-				return name()+" is damaged ("+usesRemaining()+"%)";
+				return displayName()+" is damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		if(usesRemaining()>25)
-			return name()+" is heavily damaged ("+usesRemaining()+"%)";
+			return displayName()+" is heavily damaged ("+usesRemaining()+"%)";
 		else
-			return name()+" is so damaged, it is practically harmless ("+usesRemaining()+"%)";
+			return displayName()+" is so damaged, it is practically harmless ("+usesRemaining()+"%)";
 	}
 	public String missString()
 	{
-		return CommonStrings.standardMissString(weaponType,weaponClassification,name(),useExtendedMissString);
+		return CommonStrings.standardMissString(weaponType,weaponClassification,displayName(),useExtendedMissString);
 	}
 	public String hitString(int damageAmount)
 	{
-		return CommonStrings.standardHitString(weaponType,weaponClassification,damageAmount,name());
+		return CommonStrings.standardHitString(weaponType,weaponClassification,damageAmount,displayName());
 	}
 	public int minRange(){return minRange;}
 	public int maxRange(){return maxRange;}

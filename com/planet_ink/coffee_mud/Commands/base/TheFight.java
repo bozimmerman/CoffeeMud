@@ -51,18 +51,18 @@ public class TheFight
 		if(mob.isInCombat())
 		{
 			if((mob.getVictim()!=null)&&(mob.getVictim()==target))
-				mob.tell("^FYou are already fighting "+mob.getVictim().name()+".^?");
+				mob.tell("^FYou are already fighting "+mob.getVictim().displayName()+".^?");
 			else
 			if(mob.location().okAffect(mob,new FullMsg(mob,target,Affect.MSG_WEAPONATTACK,null)))
 			{
-				mob.tell("^FYou are now targeting "+target.name()+".^?");
+				mob.tell("^FYou are now targeting "+target.displayName()+".^?");
 				mob.setVictim(target);
 			}
 			return;
 		}
 		else
 		if((!mob.mayPhysicallyAttack(target)))
-			mob.tell("You are not allowed to attack "+target.name()+".");
+			mob.tell("You are not allowed to attack "+target.displayName()+".");
 		else
 			postAttack(mob,target,mob.fetchWieldedItem());
 
@@ -478,7 +478,7 @@ public class TheFight
 	public static void throwit(MOB mob, Vector commands)
 	{
 		if((commands.size()==2)&&(mob.isInCombat()))
-			commands.addElement(mob.getVictim().name()+"$");
+			commands.addElement(mob.getVictim().displayName()+"$");
 		if(commands.size()<3)
 		{
 			mob.tell("Throw what, where or at whom?");
@@ -497,7 +497,7 @@ public class TheFight
 		}
 		if((!item.amWearingAt(Item.HELD))&&(!item.amWearingAt(Item.WIELD)))
 		{
-			mob.tell("You aren't holding or wielding "+item.name()+"!");
+			mob.tell("You aren't holding or wielding "+item.displayName()+"!");
 			return;
 		}
 
@@ -523,13 +523,13 @@ public class TheFight
 			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
 			{
-				mob.tell("That's too far to throw "+item.name()+".");
+				mob.tell("That's too far to throw "+item.displayName()+".");
 				return;
 			}
 		}
 		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!Sense.canBeSeenBy(target,mob)))))
 		{
-			mob.tell("You can't target "+item.name()+" at '"+str+"'!");
+			mob.tell("You can't target "+item.displayName()+" at '"+str+"'!");
 			return;
 		}
 		if(!(target instanceof Room))
@@ -546,7 +546,7 @@ public class TheFight
 				ExternalPlay.postAttack(mob,(MOB)target,item);
 			else
 			{
-				FullMsg msg=new FullMsg(mob,item,mob.location(),Affect.MASK_MALICIOUS|Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> at "+target.name()+".");
+				FullMsg msg=new FullMsg(mob,item,mob.location(),Affect.MASK_MALICIOUS|Affect.MSG_THROW,"<S-NAME> throw(s) <T-NAME> at "+target.displayName()+".");
 				if(mob.location().okAffect(mob,msg))
 					mob.location().send(mob,msg);
 			}
@@ -740,7 +740,7 @@ public class TheFight
 		if(commands.size()==0)
 		{
 			if(sheaths.size()>0)
-				containerName=((Item)sheaths.elementAt(0)).name();
+				containerName=((Item)sheaths.elementAt(0)).displayName();
 			else
 				containerName="a weapon";
 			for(int i=0;i<mob.inventorySize();i++)
@@ -751,7 +751,7 @@ public class TheFight
 				   &&(sheaths.contains(I.container())))
 				{
 					containers.addElement(I.container());
-					whatToGet=I.name();
+					whatToGet=I.displayName();
 					break;
 				}
 			}
@@ -761,7 +761,7 @@ public class TheFight
 					Item I=mob.fetchInventory(i);
 					if(I instanceof Weapon)
 					{
-						whatToGet=I.name();
+						whatToGet=I.displayName();
 						break;
 					}
 				}
@@ -824,9 +824,9 @@ public class TheFight
 			{
 				Item container=(Item)containers.elementAt(0);
 				if(((Container)container).isOpen())
-					mob.tell("You don't see that in "+container.name()+".");
+					mob.tell("You don't see that in "+container.displayName()+".");
 				else
-					mob.tell(container.name()+" is closed.");
+					mob.tell(container.displayName()+" is closed.");
 			}
 			else
 				mob.tell("You don't see "+containerName+" here.");

@@ -320,7 +320,7 @@ public class AbilityHelper
 		if(text.trim().length()==0) return true;
 		getZapCodes();
 		
-		String mobClass=mob.charStats().getCurrentClass().name().toUpperCase().substring(0,3);
+		String mobClass=mob.charStats().displayClassName().toUpperCase().substring(0,3);
 		String mobBaseClass=mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3);
 		String mobRace=mob.charStats().getMyRace().racialCategory().toUpperCase();
 		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);

@@ -60,7 +60,7 @@ public class Spell_FloatingDisc extends Spell
 		if(target==null) return false;
 		if(!(target instanceof Item))
 		{
-			mob.tell("You cannot float "+target.name()+"!");
+			mob.tell("You cannot float "+target.displayName()+"!");
 			return false;
 		}
 

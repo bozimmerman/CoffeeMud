@@ -140,8 +140,8 @@ public class CommonSkill extends StdAbility
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
 		{
 			if(str.startsWith("You")) str="I"+str.substring(3);
-			if(target!=null) str=Util.replaceAll(str,"<T-NAME>",target.name());
-			if(tool!=null)  str=Util.replaceAll(str,"<O-NAME>",tool.name());
+			if(target!=null) str=Util.replaceAll(str,"<T-NAME>",target.displayName());
+			if(tool!=null)  str=Util.replaceAll(str,"<O-NAME>",tool.displayName());
 			ExternalPlay.quickSay(mob,null,str,false,false);
 		}
 		else

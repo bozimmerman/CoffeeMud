@@ -62,7 +62,7 @@ public class Fighter_WeaponBreak extends StdAbility
 		&&((hisWeapon.rawProperLocationBitmap()==Item.WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Item.WIELD+Item.HELD)))
 		{
-			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
+			String str=auto?hisWeapon.displayName()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.displayName()+"!";
 			hisWeapon.remove();
 			FullMsg msg=new FullMsg(mob,mob.getVictim(),this,Affect.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okAffect(mob,msg))
@@ -73,7 +73,7 @@ public class Fighter_WeaponBreak extends StdAbility
 			}
 		}
 		else
-			return maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!");
+			return maliciousFizzle(mob,mob.getVictim(),"<S-NAME> attempt(s) to destroy "+hisWeapon.displayName()+" and fail(s)!");
 		return success;
 	}
 

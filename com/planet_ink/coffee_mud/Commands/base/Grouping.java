@@ -109,16 +109,13 @@ public class Grouping
 
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		msg.append(Util.padRight(who.charStats().getMyRace().name(),7)+" ");
-		int classLevel=who.charStats().getClassLevel(who.charStats().getCurrentClass());
-		String levelStr=null;
-		if(classLevel>=who.envStats().level())
-			levelStr=""+who.envStats().level();
-		else
-			levelStr=classLevel+"/"+who.envStats().level();
-		msg.append(Util.padRight(who.charStats().getCurrentClass().name(),7)+" ");
+		msg.append(Util.padRight(who.charStats().raceName(),7)+" ");
+		String levelStr=who.charStats().displayClassLevel(who,true).trim();
+		int x=levelStr.lastIndexOf(" ");
+		if(x>=0) levelStr=levelStr.substring(x).trim();
+		msg.append(Util.padRight(who.charStats().displayClassName(),7)+" ");
 		msg.append(Util.padRight(levelStr,5));
-		msg.append("] "+Util.padRight(who.name(),13)+" ");
+		msg.append("] "+Util.padRight(who.displayName(),13)+" ");
 		msg.append(Util.padRightPreserve("hp("+Util.padRightPreserve(""+who.curState().getHitPoints(),3)+"/"+Util.padRightPreserve(""+who.maxState().getHitPoints(),3)+")",12));
 		msg.append(Util.padRightPreserve("mn("+Util.padRightPreserve(""+who.curState().getMana(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMana(),3)+")",12));
 		msg.append(Util.padRightPreserve("mv("+Util.padRightPreserve(""+who.curState().getMovement(),3)+"/"+Util.padRightPreserve(""+who.maxState().getMovement(),3)+")",12));
@@ -129,16 +126,13 @@ public class Grouping
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
-		msg.append(Util.padRight(who.charStats().getMyRace().name(),8)+" ");
-		int classLevel=who.charStats().getClassLevel(who.charStats().getCurrentClass());
-		String levelStr=null;
-		if(classLevel>=who.envStats().level())
-			levelStr=""+who.envStats().level();
-		else
-			levelStr=classLevel+"/"+who.envStats().level();
-		msg.append(Util.padRight(who.charStats().getCurrentClass().name(),12)+" ");
+		msg.append(Util.padRight(who.charStats().raceName(),8)+" ");
+		String levelStr=who.charStats().displayClassLevel(who,true).trim();
+		int x=levelStr.lastIndexOf(" ");
+		if(x>=0) levelStr=levelStr.substring(x).trim();
+		msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
 		msg.append(Util.padRight(levelStr,7));
-		msg.append("] "+Util.padRight(who.name(),15));
+		msg.append("] "+Util.padRight(who.displayName(),15));
 		msg.append("\n\r");
 		return msg;
 	}
@@ -146,7 +140,7 @@ public class Grouping
 
 	public static void group(MOB mob)
 	{
-		mob.tell(mob.name()+"'s group:\n\r");
+		mob.tell(mob.displayName()+"'s group:\n\r");
 		Hashtable group=mob.getGroupMembers(new Hashtable());
 		StringBuffer msg=new StringBuffer("");
 		for(Enumeration e=group.elements();e.hasMoreElements();)
@@ -233,7 +227,7 @@ public class Grouping
 			if(mob.getGroupMembers(new Hashtable()).contains(tofollow))
 			{
 				if(!quiet)
-					mob.tell("You are already a member of "+tofollow.name()+"'s group!");
+					mob.tell("You are already a member of "+tofollow.displayName()+"'s group!");
 				return;
 			}
 			nofollow(mob,false,false);
@@ -267,12 +261,12 @@ public class Grouping
 		}
 		if((target.isMonster())&&(!mob.isMonster()))
 		{
-			mob.tell("You cannot follow '"+target.name()+"'.");
+			mob.tell("You cannot follow '"+target.displayName()+"'.");
 			return;
 		}
 		if(Util.bset(target.getBitmap(),MOB.ATT_NOFOLLOW))
 		{
-			mob.tell(target.name()+" is not accepting followers.");
+			mob.tell(target.displayName()+" is not accepting followers.");
 			return;
 		}
 		processFollow(mob,target,false);
@@ -436,7 +430,7 @@ public class Grouping
 			}
 			if(target.isInCombat())
 			{
-				mob.tell("Not while "+target.name()+" is in combat!");
+				mob.tell("Not while "+target.displayName()+" is in combat!");
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
@@ -455,15 +449,15 @@ public class Grouping
 							mob.location().show(mob,target,item,Affect.MSG_QUIETMOVEMENT,"<S-NAME> put(s) <O-NAME> on <T-NAMESELF>.");
 						}
 						else
-							mob.tell("You cannot seem to get "+item.name()+" on "+target.name()+".");
+							mob.tell("You cannot seem to get "+item.displayName()+" on "+target.displayName()+".");
 					}
 					else
-						mob.tell("You cannot seem to get "+item.name()+" to "+target.name()+".");
+						mob.tell("You cannot seem to get "+item.displayName()+" to "+target.displayName()+".");
 				}
 			}
 		}
 		else
-			mob.tell(target.name()+" won't let you.");
+			mob.tell(target.displayName()+" won't let you.");
 	}
 
 	public static void undress(MOB mob, Vector commands)
@@ -495,12 +489,12 @@ public class Grouping
 			   ||(!Sense.canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Item.INVENTORY)))
 			{
-				mob.tell(target.name()+" doesn't seem to be equipped with '"+what+"'.");
+				mob.tell(target.displayName()+" doesn't seem to be equipped with '"+what+"'.");
 				return;
 			}
 			if(target.isInCombat())
 			{
-				mob.tell("Not while "+target.name()+" is in combat!");
+				mob.tell("Not while "+target.displayName()+" is in combat!");
 				return;
 			}
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,null);
@@ -518,14 +512,14 @@ public class Grouping
 							mob.location().show(mob,target,item,Affect.MSG_QUIETMOVEMENT,"<S-NAME> take(s) <O-NAME> off <T-NAMESELF>.");
 					}
 					else
-						mob.tell("You cannot seem to get "+item.name()+" off "+target.name()+".");
+						mob.tell("You cannot seem to get "+item.displayName()+" off "+target.displayName()+".");
 				}
 				else
-					mob.tell("You cannot seem to get "+item.name()+" off of "+target.name()+".");
+					mob.tell("You cannot seem to get "+item.displayName()+" off of "+target.displayName()+".");
 			}
 		}
 		else
-			mob.tell(target.name()+" won't let you.");
+			mob.tell(target.displayName()+" won't let you.");
 	}
 
 	public static void feed(MOB mob, Vector commands)
@@ -570,10 +564,10 @@ public class Grouping
 			}
 			if(target.isInCombat())
 			{
-				mob.tell("Not while "+target.name()+" is in combat!");
+				mob.tell("Not while "+target.displayName()+" is in combat!");
 				return;
 			}
-			FullMsg msg=new FullMsg(mob,target,item,Affect.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.name()+" to <T-NAMESELF>.");
+			FullMsg msg=new FullMsg(mob,target,item,Affect.MSG_NOISYMOVEMENT,"<S-NAME> feed(s) "+item.displayName()+" to <T-NAMESELF>.");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -604,6 +598,6 @@ public class Grouping
 			}
 		}
 		else
-			mob.tell(target.name()+" won't let you.");
+			mob.tell(target.displayName()+" won't let you.");
 	}
 }

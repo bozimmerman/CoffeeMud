@@ -44,11 +44,11 @@ public class Spell_StoreSpell extends Spell
 					A=CMClass.getAbility(text().substring(0,x));
 				}
 				if(A==null)
-					mob.tell("Something seems wrong with "+me.name()+".");
+					mob.tell("Something seems wrong with "+me.displayName()+".");
 				else
 				if(charges<=0)
 				{
-					mob.tell(me.name()+" seems spent.");
+					mob.tell(me.displayName()+" seems spent.");
 					me.delAffect(this);
 				}
 				else
@@ -59,7 +59,7 @@ public class Spell_StoreSpell extends Spell
 					if(target!=null)
 						V.addElement(target.name());
 					V.addElement(message);
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.name()+" glows brightly.");
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.displayName()+" glows brightly.");
 					A.invoke(mob, V, target, true);
 				}
 			}
@@ -101,7 +101,7 @@ public class Spell_StoreSpell extends Spell
 		}
 		if(!(target instanceof Item))
 		{
-			mob.tell("You can't enchant '"+target.name()+"'.");
+			mob.tell("You can't enchant '"+target.displayName()+"'.");
 			return false;
 		}
 		
@@ -129,7 +129,7 @@ public class Spell_StoreSpell extends Spell
 		Ability A=item.fetchAffect(ID());
 		if((A!=null)&&(A.text().length()>0)&&(!A.text().startsWith(wandThis.ID()+"/")))
 		{
-			mob.tell("'"+item.name()+"' already has a different spell stored in it.");
+			mob.tell("'"+item.displayName()+"' already has a different spell stored in it.");
 			return false;
 		}
 		else

@@ -31,12 +31,12 @@ public class Spell_KnowValue extends Spell
 				mob.location().send(mob,msg);
 				String str=null;
 				if(target.value()<=0)
-					str=target.name()+" isn't worth anything.";
+					str=target.displayName()+" isn't worth anything.";
 				else
 				if(target.value()==0)
-					str=target.name()+" is worth one puny gold piece";
+					str=target.displayName()+" is worth one puny gold piece";
 				else
-					str=target.name()+" is worth "+target.value()+" gold pieces";
+					str=target.displayName()+" is worth "+target.value()+" gold pieces";
 				if(mob.isMonster())
 					ExternalPlay.quickSay(mob,null,str,false,false);
 				else

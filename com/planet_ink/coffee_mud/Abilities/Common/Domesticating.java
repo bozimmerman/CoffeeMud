@@ -48,16 +48,16 @@ public class Domesticating extends CommonSkill
 				if((taming!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"You've failed to domesticate "+taming.name()+"!");
+						commonTell(mob,"You've failed to domesticate "+taming.displayName()+"!");
 					else
 					{
 						if(taming.amFollowing()==mob)
-							commonTell(mob,taming.name()+" is already domesticated.");
+							commonTell(mob,taming.displayName()+" is already domesticated.");
 						else
 						{
 							ExternalPlay.follow(taming,mob,true);
 							if(taming.amFollowing()!=mob) taming.setFollowing(mob);
-							mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to domesticate "+taming.name()+".");
+							mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to domesticate "+taming.displayName()+".");
 						}
 					}
 				}
@@ -79,23 +79,23 @@ public class Domesticating extends CommonSkill
 		}
 		if(!M.isMonster())
 		{
-			commonTell(mob,"You can't domesticate "+M.name()+".");
+			commonTell(mob,"You can't domesticate "+M.displayName()+".");
 			return false;
 		}
 		if(!Sense.isAnimalIntelligence(M))
 		{
-			commonTell(mob,"You don't know how to domesticate "+M.name()+".");
+			commonTell(mob,"You don't know how to domesticate "+M.displayName()+".");
 			return false;
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 		taming=M;
-		verb="domesticating "+M.name();
+		verb="domesticating "+M.displayName();
 		messedUp=!profficiencyCheck(-taming.envStats().level(),auto);
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) domesticating "+M.name()+".");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) domesticating "+M.displayName()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

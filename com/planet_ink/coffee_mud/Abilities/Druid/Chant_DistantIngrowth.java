@@ -77,7 +77,7 @@ public class Chant_DistantIngrowth extends Chant
 					newItem=Chant_SummonHouseplant.buildHouseplant(mob,newRoom);
 				else
 					newItem=Chant_SummonPlants.buildPlant(mob,newRoom);
-				mob.tell("You feel a new connection with "+newItem.name());
+				mob.tell("You feel a new connection with "+newItem.displayName());
 			}
 		}
 		else

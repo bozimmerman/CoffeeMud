@@ -87,7 +87,7 @@ public class Druid_MyPlants extends StdAbility
 						while(I!=null)
 						{
 							yourPlants.append(Util.padRight(""+(++plantNum),3)+" ");
-							yourPlants.append(Util.padRight(I.name(),20)+" ");
+							yourPlants.append(Util.padRight(I.displayName(),20)+" ");
 							yourPlants.append(Util.padRight(R.displayText(),40));
 							yourPlants.append("\n\r");
 							I=myPlant(R,mob,++i);

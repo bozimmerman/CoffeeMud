@@ -38,8 +38,8 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 				String say="Penis wrinkle!";
 				switch(Dice.roll(1,30,0))
 				{
-				case 1: say="You are a very bad "+target.charStats().getCurrentClass().name()+"!"; break;
-				case 2: say="I think all "+target.charStats().getMyRace().name()+"s are stupid!"; break;
+				case 1: say="You are a very bad "+target.charStats().displayClassName()+"!"; break;
+				case 2: say="I think all "+target.charStats().raceName()+"s are stupid!"; break;
 				case 3: say="Damn flark!"; break;
 				case 4: say="Squeegee!"; break;
 				case 5: say="Ding dong!"; break;

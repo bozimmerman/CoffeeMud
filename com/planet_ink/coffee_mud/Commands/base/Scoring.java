@@ -79,7 +79,7 @@ public class Scoring
 			deadMOB.session().setKillFlag(true);
 			deadMOB.session().setMob(null);
 		}
-		Log.sysOut("Scoring",deadMOB.name()+" has retired!");
+		Log.sysOut("Scoring",deadMOB.displayName()+" has retired!");
 	}
 
 	public static void retire(MOB mob)
@@ -121,7 +121,7 @@ public class Scoring
 		while(items.size()>0)
 		{
 			Item item=(Item)items.elementAt(0);
-			String str=(useName||(item.displayText().length()==0))?item.name():item.displayText();
+			String str=(useName||(item.displayText().length()==0))?item.displayName():item.displayText();
 			int reps=0;
 			items.removeElement(item);
 			int here=0;
@@ -132,7 +132,7 @@ public class Scoring
 					break;
 				else
 				{
-					String str2=(useName||(item2.displayText().length()==0))?item2.name():item2.displayText();
+					String str2=(useName||(item2.displayText().length()==0))?item2.displayName():item2.displayText();
 					if(str2.length()==0)
 						items.removeElement(item2);
 					else
@@ -161,26 +161,13 @@ public class Scoring
 				if(Util.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 					say.append("^H("+CMClass.className(item)+")^N ");
 				say.append("^I");
-				if(item.envStats().replacementName()!=null)
-				{
-					if(useName)
-						say.append(item.envStats().replacementName());
-					else
-					if(item.displayText().length()>0)
-						say.append(item.envStats().replacementName()+" is here");
-					else
-						say.append(item.envStats().replacementName());
-				}
+				if(useName)
+					say.append(item.displayName());
 				else
-				{
-					if(useName)
-						say.append(item.name());
-					else
-					if(item.displayText().length()>0)
-						say.append(item.displayText());
-					else
-						say.append(item.name());
-				}
+				if(item.displayText().length()>0)
+					say.append(item.displayText());
+				else
+					say.append(item.displayName());
 				say.append(" "+Sense.colorCodes(item,mob)+"^N\n\r");
 			}
 		}
@@ -226,7 +213,12 @@ public class Scoring
 			}
 			msg.append(classList.toString()+".\n\r");
 		}
-		msg.append("You are a ^!"+mob.charStats().genderName()+" "+mob.charStats().getMyRace().name() + "^?");
+
+		String genderName="neuter";
+		if(mob.charStats().getStat(CharStats.GENDER)=='M') genderName="male";
+		else
+		if(mob.charStats().getStat(CharStats.GENDER)=='F') genderName="female";
+		msg.append("You are a ^!"+genderName+" "+mob.charStats().getMyRace().name() + "^?");
 		if(mob.getLeigeID().length()>0)
 			msg.append(" who serves ^H"+mob.getLeigeID()+"^?");
 		if(mob.getWorshipCharID().length()>0)
@@ -302,7 +294,7 @@ public class Scoring
 		for(Enumeration d=CMMap.deities();d.hasMoreElements();)
 		{
 			Deity D=(Deity)d.nextElement();
-			msg.append("\n\r^x"+D.name()+"^.^?\n\r");
+			msg.append("\n\r^x"+D.displayName()+"^.^?\n\r");
 			msg.append(D.description()+"\n\r");
 			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
 			msg.append(D.getClericRequirementsDesc()+"\n\r");
@@ -310,7 +302,7 @@ public class Scoring
 			{
 				msg.append("Blessings: ");
 				for(int b=0;b<D.numBlessings();b++)
-					msg.append(D.fetchBlessing(b).name()+" ");
+					msg.append(D.fetchBlessing(b).displayName()+" ");
 				msg.append("\n\r");
 				msg.append(D.getWorshipTriggerDesc()+"\n\r");
 				msg.append(D.getClericTriggerDesc()+"\n\r");
@@ -637,7 +629,7 @@ public class Scoring
 				{
 					if(Sense.canBeSeenBy(thisItem,seer))
 					{
-						String name=thisItem.name();
+						String name=thisItem.displayName();
 						if(name.length()>53) name=name.substring(0,50)+"...";
 						msg.append(header+name+Sense.colorCodes(thisItem,seer)+"^?\n\r");
 					}

@@ -60,7 +60,7 @@ public class Spell_MagicItem extends Spell
 		
 		if((wand.numAffects()>0)||(!wand.isGeneric()))
 		{
-			mob.tell("You can't enchant '"+wand.name()+"'.");
+			mob.tell("You can't enchant '"+wand.displayName()+"'.");
 			return false;
 		}
 

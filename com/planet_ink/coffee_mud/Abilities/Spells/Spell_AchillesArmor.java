@@ -87,9 +87,9 @@ public class Spell_AchillesArmor extends Spell
 					name="the attack";
 				else
 				if(affect.tool() instanceof Weapon)
-					name=affect.tool().name();
+					name=affect.tool().displayName();
 				else
-					name="the "+affect.tool().name();
+					name="the "+affect.tool().displayName();
 				mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The armor around <S-NAME> blocks "+name+" attack from <T-NAME>!");
 				return false;
 			}

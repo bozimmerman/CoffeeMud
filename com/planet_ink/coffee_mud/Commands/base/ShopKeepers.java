@@ -176,7 +176,7 @@ public class ShopKeepers
 		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
 		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			mob.tell(shopkeeper.displayName()+" is not a shopkeeper!");
 			return;
 		}
 		do
@@ -212,7 +212,7 @@ public class ShopKeepers
 		if(thisName.toUpperCase().endsWith(".ALL")){ allFlag=true; thisName="ALL "+thisName.substring(0,thisName.length()-4);}
 		if(CoffeeUtensils.getShopKeeper(shopkeeper)==null)
 		{
-			mob.tell(shopkeeper.name()+" is not a shopkeeper!");
+			mob.tell(shopkeeper.displayName()+" is not a shopkeeper!");
 			return;
 		}
 		
@@ -241,7 +241,7 @@ public class ShopKeepers
 		if(shopkeeper==null) return;
 		if(!(shopkeeper instanceof Banker))
 		{
-			mob.tell("You can not deposit anything with "+shopkeeper.name()+".");
+			mob.tell("You can not deposit anything with "+shopkeeper.displayName()+".");
 			return;
 		}
 		if(commands.size()==0)
@@ -274,7 +274,7 @@ public class ShopKeepers
 		if(shopkeeper==null) return;
 		if(!(shopkeeper instanceof Banker))
 		{
-			mob.tell("You can not withdraw anything from "+shopkeeper.name()+".");
+			mob.tell("You can not withdraw anything from "+shopkeeper.displayName()+".");
 			return;
 		}
 		if(commands.size()==0)
@@ -330,7 +330,7 @@ public class ShopKeepers
 				}
 			}
 		}
-		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".");
+		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.displayName()+".");
 		if(!mob.location().okAffect(mob,newMsg))
 			return;
 		mob.location().send(mob,newMsg);

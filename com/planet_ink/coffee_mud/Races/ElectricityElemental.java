@@ -46,36 +46,36 @@ public class ElectricityElemental extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is near destruction!^N";
+			return "^r" + mob.displayName() + "^r is near destruction!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is flickering alot and massively damaged.^N";
+			return "^r" + mob.displayName() + "^r is flickering alot and massively damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is flickering alot and extremely damaged.^N";
+			return "^r" + mob.displayName() + "^r is flickering alot and extremely damaged.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y is flickering alot and very damaged.^N";
+			return "^y" + mob.displayName() + "^y is flickering alot and very damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y is flickering and damaged.^N";
+			return "^y" + mob.displayName() + "^y is flickering and damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p is flickering and slightly damaged.^N";
+			return "^p" + mob.displayName() + "^p is flickering and slightly damaged.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is showing large flickers.^N";
+			return "^p" + mob.displayName() + "^p is showing large flickers.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g is showing some flickers.^N";
+			return "^g" + mob.displayName() + "^g is showing some flickers.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is showing small flickers.^N";
+			return "^g" + mob.displayName() + "^g is showing small flickers.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName() + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition.^N";
+			return "^c" + mob.displayName() + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

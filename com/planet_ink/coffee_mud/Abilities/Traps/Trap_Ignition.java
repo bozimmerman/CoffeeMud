@@ -61,7 +61,7 @@ public class Trap_Ignition extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap! "+Util.capitalize(affected.name())+" ignites!"))
+			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap! "+Util.capitalize(affected.displayName())+" ignites!"))
 			{
 				super.spring(target);
 				Ability B=CMClass.getAbility("Burning");

@@ -50,7 +50,7 @@ public class LightSource extends StdItem implements Light
 		case Affect.TYP_HOLD:
 			if(myLight.getDuration()==0)
 			{
-				mob.tell(myLight.name()+" looks used up.");
+				mob.tell(myLight.displayName()+" looks used up.");
 				return 0;
 			}
 			Room room=mob.location();
@@ -61,7 +61,7 @@ public class LightSource extends StdItem implements Light
 				   &&(myLight.getDuration()>0)
 				   &&(mob.isMine(myLight)))
 				{
-					mob.tell("It's too wet to light "+myLight.name()+" here.");
+					mob.tell("It's too wet to light "+myLight.displayName()+" here.");
 					return 0;
 				}
 			}
@@ -69,7 +69,7 @@ public class LightSource extends StdItem implements Light
 		case Affect.TYP_EXTINGUISH:
 			if((myLight.getDuration()==0)||(!myLight.isLit()))
 			{
-				mob.tell(myLight.name()+" is not lit!");
+				mob.tell(myLight.displayName()+" is not lit!");
 				return 0;
 			}
 			return -1;
@@ -118,7 +118,7 @@ public class LightSource extends StdItem implements Light
 				if(myLight.owner() instanceof Room)
 				{
 					if(((Room)myLight.owner()).numInhabitants()>0)
-						((Room)myLight.owner()).showHappens(Affect.MSG_OK_VISUAL,myLight.name()+" flickers and burns out.");
+						((Room)myLight.owner()).showHappens(Affect.MSG_OK_VISUAL,myLight.displayName()+" flickers and burns out.");
 					if(myLight.destroyedWhenBurnedOut())
 						myLight.destroyThis();
 					((Room)myLight.owner()).recoverRoomStats();
@@ -183,9 +183,9 @@ public class LightSource extends StdItem implements Light
 			   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 			{
 				if(LightSource.inTheWater(room))
-					mob.tell("The water makes "+myLight.name()+" go out.");
+					mob.tell("The water makes "+myLight.displayName()+" go out.");
 				else
-					mob.tell("The rain makes "+myLight.name()+" go out.");
+					mob.tell("The rain makes "+myLight.displayName()+" go out.");
 				myLight.tick(myLight,Host.LIGHT_FLICKERS);
 			}
 		}
@@ -206,9 +206,9 @@ public class LightSource extends StdItem implements Light
 				if(myLight.getDuration()>0)
 				{
 					if(!myLight.isLit())
-						affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> light(s) up "+myLight.name()+"."));
+						affect.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> light(s) up "+myLight.displayName()+"."));
 					else
-						mob.tell(myLight.name()+" is already lit.");
+						mob.tell(myLight.displayName()+" is already lit.");
 					myLight.light(true);
 					ExternalPlay.startTickDown(myLight,Host.LIGHT_FLICKERS,myLight.getDuration());
 					myLight.recoverEnvStats();

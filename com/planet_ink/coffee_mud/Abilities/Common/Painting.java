@@ -54,7 +54,7 @@ public class Painting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"<S-NAME> completely mess(es) up painting "+building.name()+".");
+						commonTell(mob,"<S-NAME> completely mess(es) up painting "+building.displayName()+".");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -109,7 +109,7 @@ public class Painting extends CommonSkill
 					&&(!I.isGettable())
 					&&((" "+I.name().toUpperCase()+" ").indexOf(vstr)>=0))
 					{
-						if(S.confirm("'"+I.name()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))
+						if(S.confirm("'"+I.displayName()+"' already shares one of these key words ('"+vstr.trim().toLowerCase()+"').  Would you like to destroy it (y/N)? ","N"))
 						{
 							I.destroyThis();
 							return true;
@@ -163,9 +163,9 @@ public class Painting extends CommonSkill
 			building.baseEnvStats().setLevel(I.baseEnvStats().level());
 			I.destroyThis();
 		}
-		String startStr="<S-NAME> start(s) painting "+building.name()+".";
-		displayText="You are painting "+building.name();
-		verb="painting "+building.name();
+		String startStr="<S-NAME> start(s) painting "+building.displayName()+".";
+		displayText="You are painting "+building.displayName();
+		verb="painting "+building.displayName();
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

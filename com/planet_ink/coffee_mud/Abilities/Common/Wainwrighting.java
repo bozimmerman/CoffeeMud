@@ -73,7 +73,7 @@ public class Wainwrighting extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.name()+".");
+						commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.displayName()+".");
 					else
 					{
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
@@ -184,9 +184,9 @@ public class Wainwrighting extends CommonSkill
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 		itemName=Util.startWithAorAn(itemName);
 		building.setName(itemName);
-		startStr="<S-NAME> start(s) carving "+building.name()+".";
-		displayText="You are carving "+building.name();
-		verb="carving "+building.name();
+		startStr="<S-NAME> start(s) carving "+building.displayName()+".";
+		displayText="You are carving "+building.displayName();
+		verb="carving "+building.displayName();
 		building.setDisplayText(itemName+" is here");
 		building.setDescription(itemName+". ");
 		building.baseEnvStats().setWeight(woodRequired);
@@ -223,7 +223,7 @@ public class Wainwrighting extends CommonSkill
 				((Key)key).setKey(((Container)building).keyName());
 				key.setName("a key");
 				key.setDisplayText("a small key sits here");
-				key.setDescription("looks like a key to "+building.name());
+				key.setDescription("looks like a key to "+building.displayName());
 				key.recoverEnvStats();
 				key.text();
 			}

@@ -36,6 +36,11 @@ public class StdExit implements Exit
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
+	public String displayName()
+	{ 
+		if(envStats().newName()!=null) return envStats().newName();
+		return name();
+	}
 	public EnvStats envStats()
 	{
 		return envStats;
@@ -419,7 +424,7 @@ public class StdExit implements Exit
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
-					mob.tell("There is nothing written on "+name()+".");
+					mob.tell("There is nothing written on "+displayName()+".");
 			}
 			else
 				mob.tell("You can't see that!");

@@ -167,7 +167,7 @@ public class Thief_Assassinate extends ThiefSkill
 		else
 		{
 			if(givenTarget!=null)
-				mobName=givenTarget.name();
+				mobName=givenTarget.displayName();
 			else
 				mobName=Util.combine(commands,0);
 			if(mobName.length()==0)
@@ -240,7 +240,7 @@ public class Thief_Assassinate extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(tracking "+tracking.name()+")";
+				displayText="(tracking "+tracking.displayName()+")";
 				Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);
@@ -249,7 +249,7 @@ public class Thief_Assassinate extends ThiefSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track "+tracking.name()+" for assassination, but fail(s).");
+			return beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to track "+tracking.displayName()+" for assassination, but fail(s).");
 
 
 		// return whether it worked

@@ -81,9 +81,9 @@ public class Weaponsmithing extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.displayName()+".");
 						else
-							commonEmote(mob,"<S-NAME> completely mess(es) up smithing "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up smithing "+building.displayName()+".");
 					}
 					else
 					{
@@ -154,13 +154,13 @@ public class Weaponsmithing extends CommonSkill
 		&&(student.fetchAbility("Specialization_Sword")==null)
 		&&(student.fetchAbility("Specialization_Ranged")==null))
 		{
-			teacher.tell(student.name()+" has not yet specialized in any weapons.");
+			teacher.tell(student.displayName()+" has not yet specialized in any weapons.");
 			student.tell("You need to specialize in a weapon type to learn "+name()+".");
 			return false;
 		}
 		if(student.fetchAbility("Blacksmithing")==null)
 		{
-			teacher.tell(student.name()+" has not yet learned blacksmithing.");
+			teacher.tell(student.displayName()+" has not yet learned blacksmithing.");
 			student.tell("You need to learn blacksmithing before you can learn "+name()+".");
 			return false;
 		}
@@ -224,20 +224,20 @@ public class Weaponsmithing extends CommonSkill
 			}
 			if(!building.subjectToWearAndTear())
 			{
-				commonTell(mob,"You can't mend "+building.name()+".");
+				commonTell(mob,"You can't mend "+building.displayName()+".");
 				return false;
 			}
 			if(((Item)building).usesRemaining()>=100)
 			{
-				commonTell(mob,building.name()+" is in good condition already.");
+				commonTell(mob,building.displayName()+" is in good condition already.");
 				return false;
 			}
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+building.displayName()+".";
+			displayText="You are mending "+building.displayName();
+			verb="mending "+building.displayName();
 		}
 		else
 		{
@@ -340,9 +340,9 @@ public class Weaponsmithing extends CommonSkill
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) smithing "+building.name()+".";
-			displayText="You are smithing "+building.name();
-			verb="smithing "+building.name();
+			startStr="<S-NAME> start(s) smithing "+building.displayName()+".";
+			displayText="You are smithing "+building.displayName();
+			verb="smithing "+building.displayName();
 			int hardness=EnvResource.RESOURCE_DATA[firstWood.material()&EnvResource.RESOURCE_MASK][3]-6;
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");

@@ -52,7 +52,7 @@ public class Prayer_ProtEvil extends Prayer
 				Prayer bob=(Prayer)affect.tool();
 				if(bob.holyQuality()==Prayer.HOLY_EVIL)
 				{
-					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().name()+".");
+					affect.source().location().show(invoker,null,Affect.MSG_OK_VISUAL,"The holy field around <S-NAME> protect(s) <S-HIM-HER> from the evil magic attack of "+affect.source().displayName()+".");
 					return false;
 				}
 			}

@@ -106,9 +106,9 @@ public class Chant_Treemorph extends Chant
 		if((treeForm!=null)&&(affected instanceof MOB))
 		{
 			if(affected.name().indexOf(" ")>0)
-				affectableStats.setReplacementName("a "+treeForm.name()+" called "+affected.name());
+				affectableStats.setName("a "+treeForm.name()+" called "+affected.name());
 			else
-				affectableStats.setReplacementName(affected.name()+" the "+treeForm.name());
+				affectableStats.setName(affected.name()+" the "+treeForm.name());
 			treeForm.setHeightWeight(((MOB)affected).baseEnvStats(),'M');
 			
 			//affectableStats.setReplacementName("a tree of "+affected.name());
@@ -185,8 +185,8 @@ public class Chant_Treemorph extends Chant
 					ExternalPlay.standIfNecessary(target);
 					tree=CMClass.getItem("GenItem");
 					tree.setName("a oak tree");
-					tree.setDisplayText("an oak tree that reminds you of "+target.name()+" is growing here.");
-					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.name()+".");
+					tree.setDisplayText("an oak tree that reminds you of "+target.displayName()+" is growing here.");
+					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.displayName()+".");
 					tree.setMaterial(EnvResource.RESOURCE_OAK);
 					tree.baseEnvStats().setWeight(5000);
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");

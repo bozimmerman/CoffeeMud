@@ -66,9 +66,9 @@ public class Druid_ShapeShift extends StdAbility
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
 			if(("AEIOU").indexOf(Character.toUpperCase(raceName.charAt(0)))>=0)
-				affectableStats.setReplacementName("an "+raceName.toLowerCase());
+				affectableStats.setName("an "+raceName.toLowerCase());
 			else
-				affectableStats.setReplacementName("a "+raceName.toLowerCase());
+				affectableStats.setName("a "+raceName.toLowerCase());
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.GENDER));
 		}
 	}
@@ -88,7 +88,7 @@ public class Druid_ShapeShift extends StdAbility
 		MOB mob=(MOB)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob.location()!=null))
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().getMyRace().name().toLowerCase()+" form.");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> revert(s) to "+mob.charStats().raceName().toLowerCase()+" form.");
 	}
 
 	public void setRaceName(MOB mob)

@@ -58,27 +58,27 @@ public class Toadstool extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is almost squashed!^N";
+			return "^r" + mob.displayName() + "^r is almost squashed!^N";
 		else
 		if(pct<.25)
-			return "^y" + mob.name() + "^y is severely gashed and bruised.^N";
+			return "^y" + mob.displayName() + "^y is severely gashed and bruised.^N";
 		else
 		if(pct<.40)
-			return "^p" + mob.name() + "^p has lots of gashes and bruises.^N";
+			return "^p" + mob.displayName() + "^p has lots of gashes and bruises.^N";
 		else
 		if(pct<.55)
-			return "^p" + mob.name() + "^p has some serious bruises.^N";
+			return "^p" + mob.displayName() + "^p has some serious bruises.^N";
 		else
 		if(pct<.70)
-			return "^g" + mob.name() + "^g has some bruises.^N";
+			return "^g" + mob.displayName() + "^g has some bruises.^N";
 		else
 		if(pct<.85)
-			return "^g" + mob.name() + "^g has a few small bruises.^N";
+			return "^g" + mob.displayName() + "^g has a few small bruises.^N";
 		else
 		if(pct<.95)
-			return "^g" + mob.name() + "^g is barely bruised.^N";
+			return "^g" + mob.displayName() + "^g is barely bruised.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition^N";
+			return "^c" + mob.displayName() + "^c is in perfect condition^N";
 	}
 	public Vector myResources()
 	{

@@ -150,7 +150,7 @@ public class Exits
 			}
 		}
 		mob.location().getArea().fillInAreaRoom(mob.location());
-		mob.location().show(mob,null,Affect.MSG_OK_ACTION,thisExit.name()+" shake(s) under the transforming power.");
+		mob.location().show(mob,null,Affect.MSG_OK_ACTION,thisExit.displayName()+" shake(s) under the transforming power.");
 		Log.sysOut("Exits",mob.location().ID()+" exits changed by "+mob.ID()+".");
 	}
 

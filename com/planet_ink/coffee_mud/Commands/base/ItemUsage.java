@@ -140,7 +140,7 @@ public class ItemUsage
 			if(toThis==null) toThis=possible;
 			if((toThis==null)||((toThis!=null)&&(!Sense.canBeSeenBy(toThis,mob))))
 			{
-				mob.tell("Compare a "+compareThis.name()+" to what?");
+				mob.tell("Compare a "+compareThis.displayName()+" to what?");
 				return;
 			}
 		}
@@ -159,32 +159,32 @@ public class ItemUsage
 			cDmg+=(int)Math.round(Util.div(compareThis.baseEnvStats().attackAdjustment()-toThis.baseEnvStats().attackAdjustment(),100.0)*cDmg);
 
 			if(cDmg==tDmg)
-				mob.tell(compareThis.name()+" and "+toThis.name()+" look about the same.");
+				mob.tell(compareThis.displayName()+" and "+toThis.displayName()+" look about the same.");
 			else
 			if(cDmg>tDmg)
-				mob.tell(compareThis.name()+" looks better than "+toThis.name()+".");
+				mob.tell(compareThis.displayName()+" looks better than "+toThis.displayName()+".");
 			else
-				mob.tell(compareThis.name()+" looks worse than "+toThis.name()+".");
+				mob.tell(compareThis.displayName()+" looks worse than "+toThis.displayName()+".");
 		}
 		else
 		if((compareThis instanceof Armor)&&(toThis instanceof Armor))
 		{
 			if(!compareThis.compareProperLocations(toThis))
 			{
-				mob.tell(compareThis.name()+" is not worn the same way as "+toThis.name()+", and can't be compared to it.");
+				mob.tell(compareThis.displayName()+" is not worn the same way as "+toThis.displayName()+", and can't be compared to it.");
 				return;
 			}
 			if(compareThis.baseEnvStats().armor()==toThis.baseEnvStats().armor())
-				mob.tell(compareThis.name()+" and "+toThis.name()+" look about the same.");
+				mob.tell(compareThis.displayName()+" and "+toThis.displayName()+" look about the same.");
 			else
 			if(compareThis.baseEnvStats().armor()>toThis.baseEnvStats().armor())
-				mob.tell(compareThis.name()+" look better than "+toThis.name()+".");
+				mob.tell(compareThis.displayName()+" look better than "+toThis.displayName()+".");
 			else
-				mob.tell(compareThis.name()+" look worse than "+toThis.name()+".");
+				mob.tell(compareThis.displayName()+" look worse than "+toThis.displayName()+".");
 
 		}
 		else
-			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
+			mob.tell("You can't compare "+compareThis.displayName()+" and "+toThis.displayName()+".");
 	}
 	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{ return get(mob,container,getThis,quiet,"get");}
@@ -309,9 +309,9 @@ public class ItemUsage
 			{
 				Item container=(Item)containers.elementAt(0);
 				if(((Container)container).isOpen())
-					mob.tell("You don't see that in "+container.name()+".");
+					mob.tell("You don't see that in "+container.displayName()+".");
 				else
-					mob.tell(container.name()+" is closed.");
+					mob.tell(container.displayName()+" is closed.");
 			}
 			else
 				mob.tell("You don't see '"+containerName+"' here.");

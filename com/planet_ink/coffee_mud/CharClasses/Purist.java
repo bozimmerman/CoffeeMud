@@ -175,7 +175,7 @@ public class Purist extends Cleric
 				int basis=0;
 				if(hq==0)
 				{
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+					myChar.tell("The evil nature of "+A.displayName()+" disrupts your prayer.");
 					return false;
 				}
 				else
@@ -195,16 +195,16 @@ public class Purist extends Cleric
 					return true;
 
 				if(hq==0)
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+					myChar.tell("The evil nature of "+A.displayName()+" disrupts your prayer.");
 				else
 				if(hq==1000)
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+					myChar.tell("The goodness of "+A.displayName()+" disrupts your prayer.");
 				else
 				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
+					myChar.tell("The anti-good nature of "+A.displayName()+" disrupts your thought.");
 				else
 				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
+					myChar.tell("The anti-evil nature of "+A.displayName()+" disrupts your thought.");
 				return false;
 			}
 			else
@@ -221,7 +221,7 @@ public class Purist extends Cleric
 				if(myChar.fetchWieldedItem()==null) return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
 					return false;
 				}
 			}

@@ -38,10 +38,10 @@ public class Disease_Lycanthropy extends Disease
 		if(!(affected instanceof MOB)) return;
 		if(lycanRace()!=null)
 		{
-			if(affected.name().indexOf(" ")>0)
-				affectableStats.setReplacementName("a "+lycanRace().name()+" called "+affected.name());
+			if(affected.displayName().indexOf(" ")>0)
+				affectableStats.setName("a "+lycanRace().name()+" called "+affected.displayName());
 			else
-				affectableStats.setReplacementName(affected.name()+" the "+lycanRace().name());
+				affectableStats.setName(affected.displayName()+" the "+lycanRace().name());
 			lycanRace().setHeightWeight(affectableStats,'M');
 		}
 	}

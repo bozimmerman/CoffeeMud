@@ -368,17 +368,17 @@ public class CommonStrings extends Scriptable
 	{
 		switch((int)Math.round(Math.floor((Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10)))
 		{
-		case 0:	return "^r" + mob.name() + "^r is hovering on deaths door!^N";
-		case 1:	return "^r" + mob.name() + "^r is covered in blood.^N";
-		case 2:	return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N";
-		case 3:	return "^y" + mob.name() + "^y has numerous bloody wounds and gashes.^N";
-		case 4:	return "^y" + mob.name() + "^y has some bloody wounds and gashes.^N";
-		case 5:	return "^p" + mob.name() + "^p has a few bloody wounds.^N";
-		case 6:	return "^p" + mob.name() + "^p is cut and bruised.^N";
-		case 7:	return "^g" + mob.name() + "^g has some minor cuts and bruises.^N";
-		case 8:	return "^g" + mob.name() + "^g has a few bruises and scratches.^N";
-		case 9:	return "^g" + mob.name() + "^g has a few small bruises.^N";
-		default: return "^c" + mob.name() + "^c is in perfect health^N";
+		case 0:	return "^r" + mob.displayName() + "^r is hovering on deaths door!^N";
+		case 1:	return "^r" + mob.displayName() + "^r is covered in blood.^N";
+		case 2:	return "^r" + mob.displayName() + "^r is bleeding badly from lots of wounds.^N";
+		case 3:	return "^y" + mob.displayName() + "^y has numerous bloody wounds and gashes.^N";
+		case 4:	return "^y" + mob.displayName() + "^y has some bloody wounds and gashes.^N";
+		case 5:	return "^p" + mob.displayName() + "^p has a few bloody wounds.^N";
+		case 6:	return "^p" + mob.displayName() + "^p is cut and bruised.^N";
+		case 7:	return "^g" + mob.displayName() + "^g has some minor cuts and bruises.^N";
+		case 8:	return "^g" + mob.displayName() + "^g has a few bruises and scratches.^N";
+		case 9:	return "^g" + mob.displayName() + "^g has a few small bruises.^N";
+		default: return "^c" + mob.displayName() + "^c is in perfect health^N";
 		}
 	}
 

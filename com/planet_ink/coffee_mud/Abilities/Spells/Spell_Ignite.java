@@ -33,7 +33,7 @@ public class Spell_Ignite extends Spell
 		default:
 			return;
 		}
-		mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" ignites!");
+		mob.location().showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" ignites!");
 		Ability B=CMClass.getAbility("Burning");
 		B.setProfficiency(durationOfBurn);
 		B.invoke(mob,I,true);
@@ -46,7 +46,7 @@ public class Spell_Ignite extends Spell
 		if((!(target instanceof MOB))
 		&&(!(target instanceof Item)))
 		{
-			mob.tell("You can't ignite '"+target.name()+"'!");
+			mob.tell("You can't ignite '"+target.displayName()+"'!");
 			return false;
 		}
 			

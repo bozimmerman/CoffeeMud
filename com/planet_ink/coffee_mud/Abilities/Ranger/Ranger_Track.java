@@ -164,7 +164,7 @@ public class Ranger_Track extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(tracking "+target.name()+")";
+				displayText="(tracking "+target.displayName()+")";
 				Ranger_Track newOne=(Ranger_Track)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);

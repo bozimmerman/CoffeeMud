@@ -23,10 +23,10 @@ public class Spell_Polymorph extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			if(affected.name().indexOf(" ")>0)
-				affectableStats.setReplacementName("a "+newRace.name()+" called "+affected.name());
+			if(affected.displayName().indexOf(" ")>0)
+				affectableStats.setName("a "+newRace.name()+" called "+affected.displayName());
 			else
-				affectableStats.setReplacementName(affected.name()+" the "+newRace.name());
+				affectableStats.setName(affected.displayName()+" the "+newRace.name());
 			newRace.setHeightWeight(((MOB)affected).baseEnvStats(),'M');
 		}
 	}

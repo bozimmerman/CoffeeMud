@@ -67,7 +67,7 @@ public class FrontDoor
 		{
 			MOB M=(MOB)m.nextElement();
 			if((CoffeeUtensils.containsString(M.ID(),login))
-			||(CoffeeUtensils.containsString(M.name(),login)))
+			||(CoffeeUtensils.containsString(M.displayName(),login)))
 				return false;
 		}
 		for(Enumeration e=CMMap.players();e.hasMoreElements();)

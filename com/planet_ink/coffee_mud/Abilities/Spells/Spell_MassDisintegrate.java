@@ -78,7 +78,7 @@ public class Spell_MassDisintegrate extends Spell
 			for(int i=0;i<V.size();i++)
 			{
 				Item I=(Item)V.elementAt(i);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" disintegrates!");
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" disintegrates!");
 				I.destroyThis();
 			}
 		}

@@ -109,29 +109,26 @@ public class WebHelper
 			MOB m = session.mob();
 			if((m!=null)&&(!Sense.isSeen(m))) continue;
 			
-			if ( (m!=null) && (m.name() != null) 
-				&& (m.name().length() > 0) )
+			if ( (m!=null) && (m.displayName() != null) 
+				&& (m.displayName().length() > 0) )
 			{
 				// jef: nb - only shows full sysops, not subops
 				if ( m.isASysOp(null) )
 					s.append("Archon");
 				s.append("\">");
-				s.append(m.name());
+				s.append(m.displayName());
 				s.append(" ");
-				if (m.charStats().getMyRace()!= null && m.charStats().getMyRace().name()!=null 
-					&& m.charStats().getMyRace().name().length() > 0
-					&& !m.charStats().getMyRace().name().equals("MOB"))
+				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null 
+					&& m.charStats().raceName().length() > 0
+					&& !m.charStats().raceName().equals("MOB"))
 				{
 					s.append("(");
-					s.append(m.charStats().getMyRace().name());
+					s.append(m.charStats().raceName());
 					s.append(" ");
-					if ( m.charStats().getCurrentClass().name().length() > 0
-						&& !m.charStats().getCurrentClass().name().equals("MOB"))
+					if ( m.charStats().displayClassName().length() > 0
+						&& !m.charStats().displayClassName().equals("MOB"))
 					{
-						s.append(m.charStats().getCurrentClass().name());
-						
-						s.append(", level ");
-						s.append(m.envStats().level());
+						s.append(m.charStats().displayClassLevel(m,true));
 					}
 					else
 						s.append("[new player]");

@@ -20,9 +20,9 @@ public class Trap_Gluey extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> clean(s) off "+affected.name()+"!");
+				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> clean(s) off "+affected.displayName()+"!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) something about "+affected.name()+" .. it's kinda sticky."))
+			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) something about "+affected.displayName()+" .. it's kinda sticky."))
 			{
 				super.spring(target);
 				if(affected instanceof Item)

@@ -26,7 +26,7 @@ public class Thief_Forgery extends ThiefSkill
 		Item target=mob.fetchInventory((String)commands.lastElement());
 		if((target==null)||(!Sense.canBeSeenBy(target,mob)))
 		{
-			mob.tell("You don't see '"+target.name()+"' here.");
+			mob.tell("You don't see '"+target.displayName()+"' here.");
 			return false;
 		}
 		commands.removeElement(commands.lastElement());
@@ -42,7 +42,7 @@ public class Thief_Forgery extends ThiefSkill
 		String forgeWhat=Util.combine(commands,0);
 		if(forgeWhat.length()==0)
 		{
-			mob.tell("Forge what onto '"+target.name()+"'?  Try a spell name, a room ID, or a bank note name.");
+			mob.tell("Forge what onto '"+target.displayName()+"'?  Try a spell name, a room ID, or a bank note name.");
 			return false;
 		}
 		
@@ -65,7 +65,7 @@ public class Thief_Forgery extends ThiefSkill
 			Ability A=CMClass.findAbility(forgeWhat);
 			if((A!=null)&&((A.classificationCode()&Ability.ALL_CODES)!=Ability.SPELL))
 			{
-				mob.tell("You can't forge '"+A.name()+"'.");
+				mob.tell("You can't forge '"+A.displayName()+"'.");
 				return false;
 			}
 			else

@@ -22,7 +22,7 @@ public class Spell_Clairevoyance extends Spell
 
 		if(canBeUninvoked())
 		if(invoker!=null)
-			invoker.tell("Your visions of '"+mob.name()+"' fade.");
+			invoker.tell("Your visions of '"+mob.displayName()+"' fade.");
 		super.unInvoke();
 
 	}

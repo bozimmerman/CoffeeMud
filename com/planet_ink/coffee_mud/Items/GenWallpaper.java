@@ -21,6 +21,11 @@ public class GenWallpaper implements Item
 	public void setRiding(Rideable one){};
 
 	public String name(){ return name;}
+	public String displayName()
+	{
+		if(envStats().newName()!=null) return envStats().newName();
+		return name();
+	}
 	public void setName(String newName){name=newName;}
 	public EnvStats envStats()
 	{return envStats;}
@@ -185,7 +190,7 @@ public class GenWallpaper implements Item
 			if(Sense.canBeSeenBy(this,mob))
 			{
 				if(description().length()==0)
-					mob.tell("You don't see anything special about "+this.name());
+					mob.tell("You don't see anything special about "+this.displayName());
 				else
 					mob.tell(description());
 			}

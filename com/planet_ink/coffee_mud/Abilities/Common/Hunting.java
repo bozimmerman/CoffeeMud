@@ -95,8 +95,8 @@ public class Hunting extends CommonSkill
 				{
 					commonTell(mob,"You have found some "+foundShortName+" tracks!");
 					commonTell(mob,"You need to find the "+foundShortName+" nearby before the trail goes cold!");
-					displayText="You are hunting for "+found.name();
-					verb="hunting for "+found.name();
+					displayText="You are hunting for "+found.displayName();
+					verb="hunting for "+found.displayName();
 					found.bringToLife(nearByRoom(),true);
 				}
 				else

@@ -38,13 +38,13 @@ public class Skill_Convert extends StdAbility
 			}
 			if(D==null)
 			{
-				mob.tell("A faithless one cannot convert "+target.name()+".");
+				mob.tell("A faithless one cannot convert "+target.displayName()+".");
 				return false;
 			}
 		}
 		if(target.isMonster())
 		{
-			mob.tell("You can't convert "+target.name()+".");
+			mob.tell("You can't convert "+target.displayName()+".");
 			return false;
 		}
 
@@ -59,19 +59,19 @@ public class Skill_Convert extends StdAbility
 			{
 				if(target.getMyDeity()!=null)
 				{
-					mob.tell(target.name()+" is worshiping "+target.getMyDeity().name()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDeity().charStats().himher()+" first.");
+					mob.tell(target.displayName()+" is worshiping "+target.getMyDeity().displayName()+".  "+target.charStats().HeShe()+" must REBUKE "+target.getMyDeity().charStats().himher()+" first.");
 					return false;
 				}
 				if(target.getMyDeity()==D)
 				{
-					mob.tell(target.name()+" already worships "+D.name()+".");
+					mob.tell(target.displayName()+" already worships "+D.displayName()+".");
 					return false;
 				}
 				try
 				{
-					if(!target.session().confirm(mob.name()+" is trying to convert you to the worship of "+D.name()+".  Is this what you want (N/y)?","N"))
+					if(!target.session().confirm(mob.displayName()+" is trying to convert you to the worship of "+D.displayName()+".  Is this what you want (N/y)?","N"))
 					{
-						mob.location().show(mob,target,Affect.MSG_SPEAK,"<S-YOUPOSS> attempt to convert <T-NAME> to the worship of "+D.name()+" is rejected.");
+						mob.location().show(mob,target,Affect.MSG_SPEAK,"<S-YOUPOSS> attempt to convert <T-NAME> to the worship of "+D.displayName()+" is rejected.");
 						return false;
 					}
 				}
@@ -82,7 +82,7 @@ public class Skill_Convert extends StdAbility
 			}
 			Room dRoom=D.location();
 			if(dRoom==mob.location()) dRoom=null;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.displayName()+".");
 			FullMsg msg2=new FullMsg(target,D,this,Affect.MSG_SERVE,null);
 			if((mob.location().okAffect(mob,msg))
 			   &&(mob.location().okAffect(mob,msg2))

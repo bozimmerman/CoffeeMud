@@ -135,7 +135,7 @@ public class Chant_BrownMold extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		//if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
-		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
+		newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.displayName()+"!");
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}

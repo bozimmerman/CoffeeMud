@@ -187,7 +187,7 @@ public class Chant_GrowItem extends Chant
 						((Key)key).setKey(((Container)building).keyName());
 						key.setName("a wooden key");
 						key.setDisplayText("a small wooden key sits here");
-						key.setDescription("looks like a key to "+building.name());
+						key.setDescription("looks like a key to "+building.displayName());
 						key.recoverEnvStats();
 						key.text();
 					}
@@ -274,7 +274,7 @@ public class Chant_GrowItem extends Chant
 				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
 				if(key!=null)
 					mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,building.displayName()+" grows out of a tree and drops.");
 				mob.location().recoverEnvStats();
 			}
 		}

@@ -116,7 +116,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 
 		boolean success=profficiencyCheck(0,auto);
 		
-		FullMsg msg=new FullMsg(mob,alarmThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?alarmThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.name()+"."));
+		FullMsg msg=new FullMsg(mob,alarmThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_THIEF_ACT,Affect.MSG_OK_ACTION,(auto?alarmThis.displayName()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap on "+alarmThis.displayName()+"."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			invoker=mob;

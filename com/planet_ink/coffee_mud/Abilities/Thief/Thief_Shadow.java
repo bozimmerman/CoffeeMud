@@ -12,7 +12,7 @@ public class Thief_Shadow extends ThiefSkill
 	public String displayText()
 	{
 		if(shadowing!=null)
-			return "(shadowing "+shadowing.name()+")";
+			return "(shadowing "+shadowing.displayName()+")";
 		return super.displayText();
 	}
 	protected int canAffectCode(){return CAN_MOBS;}
@@ -131,7 +131,7 @@ public class Thief_Shadow extends ThiefSkill
 			{
 				invoker.delAffect(this);
 				setAffectedOne(shadowing);
-				((MOB)invoker).tell("You are no longer shadowing "+shadowing.name()+".");
+				((MOB)invoker).tell("You are no longer shadowing "+shadowing.displayName()+".");
 			}
 			shadowing=null;
 		}
@@ -181,7 +181,7 @@ public class Thief_Shadow extends ThiefSkill
 		}
 		if(Sense.canBeSeenBy(mob,target))
 		{
-			mob.tell(target.name()+" is watching you too closely.");
+			mob.tell(target.displayName()+" is watching you too closely.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -21,7 +21,7 @@ public class Trap_Boomerang extends StdTrap
 		{
 			boolean ok=((invoker()!=null)&&(invoker().location()!=null));
 			if((!ok)||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
-				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.name()+"!");
+				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> foil(s) a trap on "+affected.displayName()+"!");
 			else
 			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off a trap!"))
 			{

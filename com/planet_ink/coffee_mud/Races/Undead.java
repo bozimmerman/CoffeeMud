@@ -43,36 +43,36 @@ public class Undead extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is near destruction!^N";
+			return "^r" + mob.displayName() + "^r is near destruction!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is massively broken and damaged.^N";
+			return "^r" + mob.displayName() + "^r is massively broken and damaged.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is very damaged.^N";
+			return "^r" + mob.displayName() + "^r is very damaged.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y is somewhat damaged.^N";
+			return "^y" + mob.displayName() + "^y is somewhat damaged.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y has grown weak and slightly damaged.^N";
+			return "^y" + mob.displayName() + "^y has grown weak and slightly damaged.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has lost stability and is very weak.^N";
+			return "^p" + mob.displayName() + "^p has lost stability and is very weak.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is unstable and slightly weak.^N";
+			return "^p" + mob.displayName() + "^p is unstable and slightly weak.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g is unbalanced and unstable.^N";
+			return "^g" + mob.displayName() + "^g is unbalanced and unstable.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is in an somewhat unbalanced.^N";
+			return "^g" + mob.displayName() + "^g is in an somewhat unbalanced.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName() + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition.^N";
+			return "^c" + mob.displayName() + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

@@ -43,6 +43,8 @@ public class Charlatan extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Song_Charm",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_Disguise",true);
+			CMAble.addCharAbilityMapping(ID(),5,"Skill_Warrants",true);
 			CMAble.addCharAbilityMapping(ID(),6,"Spell_ReadMagic",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Songcraft",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_Distract",false);
@@ -137,7 +139,7 @@ public class Charlatan extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
 						return false;
 					}
 					break;
@@ -153,7 +155,7 @@ public class Charlatan extends StdCharClass
 			   &&((((Ability)affect.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
 			   &&(Dice.roll(1,100,0)<(myChar.charStats().getClassLevel(this)*4)))
 			{
-				myChar.location().show(affect.source(),myChar,Affect.MSG_OK_ACTION,"<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle "+affect.tool().name()+".");
+				myChar.location().show(affect.source(),myChar,Affect.MSG_OK_ACTION,"<T-NAME> fool(s) <S-NAMESELF>, causing <S-HIM-HER> to fizzle "+affect.tool().displayName()+".");
 				return false;
 			}
 		}

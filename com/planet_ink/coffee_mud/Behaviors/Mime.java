@@ -48,11 +48,11 @@ public class Mime extends ActiveTicker
 		//String src=msg.sourceMessage();
 		String trg=msg.targetMessage();
 		String oth=msg.othersMessage();
-		//if(src!=null) src=Util.replaceAll(src,"<S-NAME>",ticking.name());
-		//if(src!=null) src=Util.replaceAll(src,"You ",ticking.name()+" ");
-		//if(src!=null) src=Util.replaceAll(src,"Your ",ticking.name()+"`s ");
-		if(trg!=null) trg=Util.replaceAll(trg,"<S-NAME>",ticking.name());
-		if(oth!=null) oth=Util.replaceAll(oth,"<S-NAME>",ticking.name());
+		//if(src!=null) src=Util.replaceAll(src,"<S-NAME>",ticking.displayName());
+		//if(src!=null) src=Util.replaceAll(src,"You ",ticking.displayName()+" ");
+		//if(src!=null) src=Util.replaceAll(src,"Your ",ticking.displayName()+"`s ");
+		if(trg!=null) trg=Util.replaceAll(trg,"<S-NAME>",ticking.displayName());
+		if(oth!=null) oth=Util.replaceAll(oth,"<S-NAME>",ticking.displayName());
 		//if(src!=null) src=Util.replaceAll(src,"<S-HIM-HERSELF>","itself");
 		if(trg!=null) trg=Util.replaceAll(trg,"<S-HIM-HERSELF>","itself");
 		if(oth!=null) oth=Util.replaceAll(oth,"<S-HIM-HERSELF>","itself");

@@ -35,7 +35,7 @@ public class Thief_Snipe extends ThiefSkill
 		}
 		if(Sense.canBeSeenBy(mob,target))
 		{
-			mob.tell(target.name()+" is watching you too closely.");
+			mob.tell(target.displayName()+" is watching you too closely.");
 			return false;
 		}
 		Item w=mob.fetchWieldedItem();

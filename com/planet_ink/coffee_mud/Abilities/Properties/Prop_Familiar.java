@@ -150,7 +150,7 @@ public class Prop_Familiar extends Property
 			MOB target=(MOB)affect.target();
 			if((!target.isInCombat())&&(affect.source().getVictim()!=target))
 			{
-				affect.source().tell("You are too much in awe of "+target.name());
+				affect.source().tell("You are too much in awe of "+target.displayName());
 				if(familiarWith.getVictim()==affect.source())
 					familiarWith.makePeace();
 				if(familiarTo.getVictim()==affect.source())

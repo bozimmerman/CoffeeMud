@@ -21,7 +21,7 @@ public class Spell_Scry extends Spell
 		MOB mob=(MOB)affected;
 		if(canBeUninvoked())
 			if(invoker!=null)
-				invoker.tell("Your knowledge of '"+mob.name()+"' fades.");
+				invoker.tell("Your knowledge of '"+mob.displayName()+"' fades.");
 		super.unInvoke();
 
 	}

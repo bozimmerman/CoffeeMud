@@ -129,7 +129,7 @@ public class Skill_HandCuff extends StdAbility
 
 		if((!Sense.isSleeping(target))&&(!Sense.isSitting(target))&&(!auto))
 		{
-			mob.tell(target.name()+" doesn't look willing to cooperate.");
+			mob.tell(target.displayName()+" doesn't look willing to cooperate.");
 			return false;
 		}
 		if(mob.isInCombat()&&(!auto))

@@ -145,11 +145,11 @@ public class Trap_Trap extends StdAbility implements Trap
 			String spell=text();
 			int x=spell.indexOf(";");
 			Vector V=new Vector();
-			V.addElement(mob.name());
+			V.addElement(mob.displayName());
 			if(x>0)
 			{
 				V=Util.parse(spell.substring(x+1));
-				V.insertElementAt(mob.name(),0);
+				V.insertElementAt(mob.displayName(),0);
 				spell=spell.substring(0,x);
 			}
 			Ability A=CMClass.findAbility(spell);

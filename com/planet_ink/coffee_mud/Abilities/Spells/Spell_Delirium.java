@@ -98,7 +98,7 @@ public class Spell_Delirium extends Spell
 				return "something";
 		}
 		else
-			return E.name();
+			return E.displayName();
 	}
 
 	private String process(MOB mob, String str, Environmental obj)
@@ -121,21 +121,21 @@ public class Spell_Delirium extends Spell
 		if(x>=0)
 			str=str.substring(0,x)+getRand(obj)+str.substring(x+("<T-NAMESELF>").length());
 		str=" "+str+" ";
-		x=str.toUpperCase().indexOf(" "+obj.name().toUpperCase()+" ");
+		x=str.toUpperCase().indexOf(" "+obj.displayName().toUpperCase()+" ");
 		if(x>=0)
-			str=str.substring(0,x)+" "+getRand(obj)+" "+str.substring(x+(" "+obj.name()+" ").length());
+			str=str.substring(0,x)+" "+getRand(obj)+" "+str.substring(x+(" "+obj.displayName()+" ").length());
 		x=str.toUpperCase().indexOf(" YOU ");
 		if(x>=0)
 			str=str.substring(0,x)+" "+getRand(mob)+" "+str.substring(x+(" YOU ").length());
-		x=str.toUpperCase().indexOf(" "+mob.name().toUpperCase()+" ");
+		x=str.toUpperCase().indexOf(" "+mob.displayName().toUpperCase()+" ");
 		if(x>=0)
-			str=str.substring(0,x)+" "+getRand(mob)+" "+str.substring(x+(" "+mob.name().toUpperCase()+" ").length());
+			str=str.substring(0,x)+" "+getRand(mob)+" "+str.substring(x+(" "+mob.displayName().toUpperCase()+" ").length());
 		MOB victim=mob.getVictim();
 		if(victim!=null)
 		{
-			x=str.toUpperCase().indexOf(" "+victim.name().toUpperCase()+" ");
+			x=str.toUpperCase().indexOf(" "+victim.displayName().toUpperCase()+" ");
 			if(x>=0)
-				str=str.substring(0,x)+" "+getRand(victim)+" "+str.substring(x+(" "+victim.name().toUpperCase()+" ").length());
+				str=str.substring(0,x)+" "+getRand(victim)+" "+str.substring(x+(" "+victim.displayName().toUpperCase()+" ").length());
 		}
 		return str.trim();
 	}

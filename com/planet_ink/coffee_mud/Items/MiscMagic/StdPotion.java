@@ -133,7 +133,7 @@ public class StdPotion extends StdDrink implements Potion
 				if((affect.sourceMessage()==null)&&(affect.othersMessage()==null))
 				{
 					drinkIfAble(mob,this);
-					mob.tell(name()+" vanishes!");
+					mob.tell(displayName()+" vanishes!");
 					destroyThis();
 				}
 				else

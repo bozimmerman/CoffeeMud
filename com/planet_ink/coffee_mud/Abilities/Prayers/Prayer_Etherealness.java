@@ -62,7 +62,7 @@ public class Prayer_Etherealness extends Prayer
 			MOB mob=msg.source();
 			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
 			{
-				mob.tell(msg.target().name()+" is too heavy.");
+				mob.tell(msg.target().displayName()+" is too heavy.");
 				return false;
 			}
 		}

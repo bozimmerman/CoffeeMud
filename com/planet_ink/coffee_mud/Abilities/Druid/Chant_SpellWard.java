@@ -44,7 +44,7 @@ public class Chant_SpellWard extends Chant
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The ward around <S-NAME> inhibits "+affect.tool().name()+"!");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The ward around <S-NAME> inhibits "+affect.tool().displayName()+"!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

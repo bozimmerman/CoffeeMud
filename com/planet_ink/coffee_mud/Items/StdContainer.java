@@ -88,13 +88,13 @@ public class StdContainer extends StdItem implements Container
 					{
 						if(!canContain(newitem))
 						{
-							mob.tell("You can't put "+newitem.name()+" in "+name()+".");
+							mob.tell("You can't put "+newitem.displayName()+" in "+name()+".");
 							return false;
 						}
 						else
 						if(newitem.envStats().weight()>capacity)
 						{
-							mob.tell(newitem.name()+" won't fit in "+name()+".");
+							mob.tell(newitem.displayName()+" won't fit in "+name()+".");
 							return false;
 						}
 						else
@@ -132,13 +132,13 @@ public class StdContainer extends StdItem implements Container
 						else
 						if(mob.envStats().level()<newitem.envStats().level()-10)
 						{
-							mob.tell(newitem.name()+" is too powerful to endure possessing it.");
+							mob.tell(newitem.displayName()+" is too powerful to endure possessing it.");
 							return false;
 						}
 						else
 						if((recursiveWeight(newitem)>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 						{
-							mob.tell(newitem.name()+" is too heavy.");
+							mob.tell(newitem.displayName()+" is too heavy.");
 							return false;
 						}
 						else

@@ -20,7 +20,7 @@ public class Spell_AlterSubstance extends Spell
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(newName.length()>0)
-			affectableStats.setReplacementName(newName);
+			affectableStats.setName(newName);
 	}
 
 	public void unInvoke()
@@ -30,10 +30,10 @@ public class Spell_AlterSubstance extends Spell
 			Item I=(Item)affected;
 			I.setMaterial(oldMaterial);
 			if(I.owner() instanceof Room)
-				((Room)I.owner()).showHappens(Affect.MSG_OK_VISUAL,I.name()+" reverts to its natural form.");
+				((Room)I.owner()).showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" reverts to its natural form.");
 			else
 			if(I.owner() instanceof MOB)
-				((MOB)I.owner()).tell(I.name()+" reverts to its natural form.");
+				((MOB)I.owner()).tell(I.displayName()+" reverts to its natural form.");
 		}
 		super.unInvoke();
 	}

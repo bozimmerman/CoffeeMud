@@ -26,7 +26,7 @@ public class Chant_FungalBloom extends Chant
 		if(target==null) return false;
 		if(target.material()!=EnvResource.RESOURCE_MUSHROOMS)
 		{
-			mob.tell(target.name()+" is not a fungus!");
+			mob.tell(target.displayName()+" is not a fungus!");
 			return false;
 		}
 		
@@ -42,7 +42,7 @@ public class Chant_FungalBloom extends Chant
 			{
 				mob.location().send(mob,msg);
 				target.setDescription("It seems to be getting puffier and puffier!");
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" seems to be puffing up!");
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.displayName()+" seems to be puffing up!");
 				Ability A=CMClass.getAbility("Bomb_Poison");
 				A.setMiscText("Poison_Bloodboil");
 				A.setInvoker(mob);

@@ -55,7 +55,7 @@ public class Thief_FrameMark extends ThiefSkill
 		}
 		if(mob.getMoney()<(target.envStats().level()*1000))
 		{
-			mob.tell("You'll need at least "+(target.envStats().level()*1000)+" gold on hand to frame "+target.name()+".");
+			mob.tell("You'll need at least "+(target.envStats().level()*1000)+" gold on hand to frame "+target.displayName()+".");
 			return false;
 		}
 		

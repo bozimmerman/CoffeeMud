@@ -29,7 +29,7 @@ public class Thief_Robbery extends ThiefSkill
 			   ||(msg.targetMinor()==Affect.TYP_VALUE)
 			   ||(msg.targetMinor()==Affect.TYP_VIEW))
 			{
-				msg.source().tell(affected.name()+" looks unwilling to do business with you.");
+				msg.source().tell(affected.displayName()+" looks unwilling to do business with you.");
 				return false;
 			}
 		}
@@ -117,7 +117,7 @@ public class Thief_Robbery extends ThiefSkill
 			int code=Affect.MSG_THIEF_ACT;
 			if(!auto)
 				if(stolen!=null)
-					str="<S-NAME> rob(s) "+stolen.name()+" from <T-NAMESELF>.";
+					str="<S-NAME> rob(s) "+stolen.displayName()+" from <T-NAMESELF>.";
 				else
 				{
 					str="<S-NAME> attempt(s) to rob <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";

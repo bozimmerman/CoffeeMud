@@ -369,7 +369,7 @@ public class Cooking extends CommonSkill
 		}
 		if(!(target instanceof Container))
 		{
-			commonTell(mob,"There's nothing in "+target.name()+" to "+cookWordShort()+"!");
+			commonTell(mob,"There's nothing in "+target.displayName()+" to "+cookWordShort()+"!");
 			return false;
 		}
 		switch(target.material()&EnvResource.MATERIAL_MASK)
@@ -381,7 +381,7 @@ public class Cooking extends CommonSkill
 		case EnvResource.MATERIAL_PRECIOUS:
 			break;
 		default:
-			commonTell(mob,target.name()+" is not suitable to "+cookWordShort()+" in.");
+			commonTell(mob,target.displayName()+" is not suitable to "+cookWordShort()+" in.");
 			return false;
 		}
 

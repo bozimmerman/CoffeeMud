@@ -58,11 +58,11 @@ public class AnimalTaming extends CommonSkill
 					if((taming!=null)&&(taming instanceof CagedAnimal))
 						animal=((CagedAnimal)taming).unCageMe();
 					if((messedUp)||(animal==null))
-						commonTell(mob,"You've failed to tame "+taming.name()+"!");
+						commonTell(mob,"You've failed to tame "+taming.displayName()+"!");
 					else
 					{
 						if(animal.numBehaviors()==0)
-							commonTell(mob,taming.name()+" is already tame.");
+							commonTell(mob,taming.displayName()+" is already tame.");
 						else
 						{
 							int amount=1;
@@ -73,7 +73,7 @@ public class AnimalTaming extends CommonSkill
 							if(amount>1)
 								s="of "+amount+" of ";
 							s+="of "+animal.charStats().himher()+" behaviors";
-							mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to tame "+animal.name()+" "+s+".");
+							mob.location().show(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to tame "+animal.displayName()+" "+s+".");
 							for(int i=0;i<amount;i++)
 							{
 								if(animal.numBehaviors()==0) break;
@@ -115,12 +115,12 @@ public class AnimalTaming extends CommonSkill
 			if((!M.isMonster())
 			   ||(!Sense.isAnimalIntelligence(M)))
 			{
-				commonTell(mob,"You can't tame "+M.name()+".");
+				commonTell(mob,"You can't tame "+M.displayName()+".");
 				return false;
 			}
 			if((Sense.canMove(M))&&(!Sense.isBound(M)))
 			{
-				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
+				commonTell(mob,M.displayName()+" doesn't seem willing to cooperate.");
 				return false;
 			}
 			taming=M;
@@ -156,7 +156,7 @@ public class AnimalTaming extends CommonSkill
 			taming=mob.location().fetchItem(cage,Util.combine(commands,0));
 			if((taming==null)||(!Sense.canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+Util.combine(commands,0)+"'.");
+				commonTell(mob,"You don't see any creatures in "+cage.displayName()+" called '"+Util.combine(commands,0)+"'.");
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();
@@ -167,8 +167,8 @@ public class AnimalTaming extends CommonSkill
 		messedUp=!profficiencyCheck(-taming.envStats().level(),auto);
 		int duration=35+taming.envStats().level()-mob.envStats().level();
 		if(duration<10) duration=10;
-		verb="taming "+M.name();
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.name()+".");
+		verb="taming "+M.displayName();
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.displayName()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

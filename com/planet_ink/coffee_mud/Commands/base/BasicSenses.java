@@ -27,7 +27,7 @@ public class BasicSenses
 				return;
 			}
 			if(ID.equalsIgnoreCase("SELF"))
-				ID=mob.name();
+				ID=mob.displayName();
 			Environmental thisThang=null;
 			int dirCode=Directions.getGoodDirectionCode(ID);
 			if(dirCode>=0)

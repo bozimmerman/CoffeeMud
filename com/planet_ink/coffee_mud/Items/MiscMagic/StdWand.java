@@ -86,7 +86,7 @@ public class StdWand extends StdItem implements Wand
 		String id=super.secretIdentity();
 		Ability A=getSpell();
 		if(A!=null)
-			id="'A wand of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
+			id="'A wand of "+A.displayName()+"' Charges: "+usesRemaining()+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
@@ -110,15 +110,15 @@ public class StdWand extends StdItem implements Wand
 				message=message.trim();
 				Ability wandUse=mob.fetchAbility("Skill_WandUse");
 				if((wandUse==null)||(!wandUse.profficiencyCheck(0,false)))
-					mob.tell(me.name()+" glows faintly for a moment, then fades.");
+					mob.tell(me.displayName()+" glows faintly for a moment, then fades.");
 				else
 				{
 					Ability A=me.getSpell();
 					if(A==null)
-						mob.tell("Something seems wrong with "+me.name()+".");
+						mob.tell("Something seems wrong with "+me.displayName()+".");
 					else
 					if(me.usesRemaining()<=0)
-						mob.tell(me.name()+" seems spent.");
+						mob.tell(me.displayName()+" seems spent.");
 					else
 					{
 						A=(Ability)A.newInstance();
@@ -126,9 +126,9 @@ public class StdWand extends StdItem implements Wand
 						{
 							Vector V=new Vector();
 							if(target!=null)
-								V.addElement(target.name());
+								V.addElement(target.displayName());
 							V.addElement(message);
-							mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.name()+" glows brightly.");
+							mob.location().show(mob,null,Affect.MSG_OK_VISUAL,me.displayName()+" glows brightly.");
 							me.setUsesRemaining(me.usesRemaining()-1);
 							A.invoke(mob, V, target, true);
 							wandUse.helpProfficiency(mob);

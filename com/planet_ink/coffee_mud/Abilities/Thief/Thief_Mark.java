@@ -22,7 +22,7 @@ public class Thief_Mark extends ThiefSkill
 	
 	public String displayText(){
 		if(mark!=null)
-			return "(Marked: "+mark.name()+", "+ticks+" ticks)";
+			return "(Marked: "+mark.displayName()+", "+ticks+" ticks)";
 		else
 			return "";
 	}

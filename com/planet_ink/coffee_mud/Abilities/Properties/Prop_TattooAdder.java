@@ -74,7 +74,7 @@ public class Prop_TattooAdder extends Property
 			{
 				if(tattooMinus)
 				{
-					affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.name()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
+					affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.displayName()+" takes away the "+tattooName+" tattoo from <S-NAME>.");
 					A.setMiscText(A.text().substring(0,x+1)+A.text().substring(x+2+tattooName.length()));
 				}
 				else
@@ -82,7 +82,7 @@ public class Prop_TattooAdder extends Property
 			}
 			else
 			{
-				affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.name()+" gives <S-NAME> the "+tattooName+" tattoo.");
+				affect.source().location().showHappens(Affect.MSG_OK_ACTION,affected.displayName()+" gives <S-NAME> the "+tattooName+" tattoo.");
 				if(A.text().length()==0)
 					A.setMiscText(";");
 				A.setMiscText(A.text()+tattooName.toUpperCase()+";");

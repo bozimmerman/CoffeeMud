@@ -75,12 +75,12 @@ public class Carpentry extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.displayName()+".");
 						else
 						if(refitting)
-							commonEmote(mob,"<S-NAME> completely mess(es) up refitting "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up refitting "+building.displayName()+".");
 						else
-							commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up carving "+building.displayName()+".");
 					}
 					else
 					{
@@ -156,20 +156,20 @@ public class Carpentry extends CommonSkill
 			}
 			if(!building.subjectToWearAndTear())
 			{
-				commonTell(mob,"You can't mend "+building.name()+".");
+				commonTell(mob,"You can't mend "+building.displayName()+".");
 				return false;
 			}
 			if(((Item)building).usesRemaining()>=100)
 			{
-				commonTell(mob,building.name()+" is in good condition already.");
+				commonTell(mob,building.displayName()+" is in good condition already.");
 				return false;
 			}
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+building.displayName()+".";
+			displayText="You are mending "+building.displayName();
+			verb="mending "+building.displayName();
 		}
 		else
 		if(str.equalsIgnoreCase("refit"))
@@ -193,15 +193,15 @@ public class Carpentry extends CommonSkill
 			}
 			if(((Item)building).envStats().height()==0)
 			{
-				commonTell(mob,building.name()+" is already the right size.");
+				commonTell(mob,building.displayName()+" is already the right size.");
 				return false;
 			}
 			refitting=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) refitting "+building.name()+".";
-			displayText="You are refitting "+building.name();
-			verb="refitting "+building.name();
+			startStr="<S-NAME> start(s) refitting "+building.displayName()+".";
+			displayText="You are refitting "+building.displayName();
+			verb="refitting "+building.displayName();
 		}
 		else
 		{
@@ -270,9 +270,9 @@ public class Carpentry extends CommonSkill
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) carving "+building.name()+".";
-			displayText="You are carving "+building.name();
-			verb="carving "+building.name();
+			startStr="<S-NAME> start(s) carving "+building.displayName()+".";
+			displayText="You are carving "+building.displayName();
+			verb="carving "+building.displayName();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
@@ -303,7 +303,7 @@ public class Carpentry extends CommonSkill
 					((Key)key).setKey(((Container)building).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
-					key.setDescription("looks like a key to "+building.name());
+					key.setDescription("looks like a key to "+building.displayName());
 					key.recoverEnvStats();
 					key.text();
 				}

@@ -33,7 +33,7 @@ public class GoodExecutioner  extends StdBehavior
 			if(source.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Thief"))
 				reason="A THIEF";
 			boolean yep=Aggressive.startFight(observer,source,true);
-			if(yep)	ExternalPlay.quickSay(observer,null,source.name().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
+			if(yep)	ExternalPlay.quickSay(observer,null,source.displayName().toUpperCase()+" IS "+reason+", AND MUST BE DESTROYED!",false,false);
 		}
 	}
 }

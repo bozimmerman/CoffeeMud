@@ -153,8 +153,8 @@ public class Chant_PlantMaze extends Chant
 					MOB follower=(MOB)everyone.elementAt(m);
 					if(follower==null) continue;
 					Room newerRoom=(Room)V.elementAt(Dice.roll(1,V.size(),-1));
-					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of "+thePlants.name()+".");
-					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.name()+".");
+					FullMsg enterMsg=new FullMsg(follower,newerRoom,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> appears out of "+thePlants.displayName()+".");
+					FullMsg leaveMsg=new FullMsg(follower,oldRoom,this,affectType(auto),"<S-NAME> disappear(s) into "+thePlants.displayName()+".");
 					if(oldRoom.okAffect(follower,leaveMsg)&&newerRoom.okAffect(follower,enterMsg))
 					{
 						if(follower.isInCombat())

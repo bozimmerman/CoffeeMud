@@ -38,7 +38,7 @@ public class Skill_IdentifyPoison extends StdAbility
 		if(student==null) return true;
 		if(student.fetchAbility("Apothecary")==null)
 		{
-			teacher.tell(student.name()+" has not yet learned to be an apothecary.");
+			teacher.tell(student.displayName()+" has not yet learned to be an apothecary.");
 			student.tell("You need to learn apothecary before you can learn "+name()+".");
 			return false;
 		}
@@ -68,7 +68,7 @@ public class Skill_IdentifyPoison extends StdAbility
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer buf=new StringBuffer(target.name()+" contains: ");
+				StringBuffer buf=new StringBuffer(target.displayName()+" contains: ");
 				if(offensiveAffects.size()==0)
 					buf.append("weak impurities, ");
 				else

@@ -140,7 +140,7 @@ public class SysOpSkills
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=Sessions.elementAt(s);
-			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().name(),whom)))
+			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().displayName(),whom)))
 			{
 				if(S==mob.session())
 				{
@@ -265,7 +265,7 @@ public class SysOpSkills
 			for(int s=0;s<Sessions.size();s++)
 			{
 				Session S=Sessions.elementAt(s);
-				if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().name(),name)))
+				if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().displayName(),name)))
 				{ M=S.mob(); break;}
 			}
 			if(M==null)
@@ -275,11 +275,11 @@ public class SysOpSkills
 			}
 			if(M.getStartRoom()==M.location())
 			{
-				mob.tell(M.name()+" is already at their beacon.");
+				mob.tell(M.displayName()+" is already at their beacon.");
 				return;
 			}
 			M.setStartRoom(M.location());
-			mob.tell("You have modified "+M.name()+"'s beacon.");
+			mob.tell("You have modified "+M.displayName()+"'s beacon.");
 		}
 	}
 	
@@ -416,7 +416,7 @@ public class SysOpSkills
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=Sessions.elementAt(s);
-			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().name(),whom)))
+			if((S.mob()!=null)&&(CoffeeUtensils.containsString(S.mob().displayName(),whom)))
 			{
 				if(S==mob.session())
 				{
@@ -582,7 +582,7 @@ public class SysOpSkills
 					Session thisSession=(Session)Sessions.elementAt(s);
 					if((thisSession.mob()!=null) && (!thisSession.killFlag())
 					&&(thisSession.mob().location()!=null)
-					&&(thisSession.mob().name().equalsIgnoreCase(cmd.toString())))
+					&&(thisSession.mob().displayName().equalsIgnoreCase(cmd.toString())))
 					{
 						room = thisSession.mob().location();
 						break;
@@ -594,7 +594,7 @@ public class SysOpSkills
 						Session thisSession=(Session)Sessions.elementAt(s);
 						if((thisSession.mob()!=null)&&(!thisSession.killFlag())
 						&&(thisSession.mob().location()!=null)
-						&&(CoffeeUtensils.containsString(thisSession.mob().name(),cmd.toString())))
+						&&(CoffeeUtensils.containsString(thisSession.mob().displayName(),cmd.toString())))
 						{
 							room = thisSession.mob().location();
 							break;
@@ -724,7 +724,7 @@ public class SysOpSkills
 		}
 
 		if(target!=null)
-			targetName=target.name();
+			targetName=target.displayName();
 
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
@@ -887,7 +887,7 @@ public class SysOpSkills
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(mob.isASysOp(S.mob().location()))
-					&&(CoffeeUtensils.containsString(S.mob().name(),(String)commands.elementAt(1))))
+					&&(CoffeeUtensils.containsString(S.mob().displayName(),(String)commands.elementAt(1))))
 					{
 						sendAnnounce(Util.combine(commands,2),S);
 						found=true;

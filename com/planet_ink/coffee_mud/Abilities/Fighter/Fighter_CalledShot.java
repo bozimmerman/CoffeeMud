@@ -35,7 +35,7 @@ public class Fighter_CalledShot extends Fighter_CalledStrike
 		Weapon wp=(Weapon)w;
 		if((wp.weaponClassification()!=Weapon.CLASS_RANGED)&&(wp.weaponClassification()!=Weapon.CLASS_THROWN))
 		{
-			mob.tell("You cannot shoot with "+wp.name()+"!");
+			mob.tell("You cannot shoot with "+wp.displayName()+"!");
 			return false;
 		}
 		return true;

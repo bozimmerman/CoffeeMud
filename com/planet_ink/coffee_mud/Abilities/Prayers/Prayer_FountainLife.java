@@ -67,7 +67,7 @@ public class Prayer_FountainLife extends Prayer
 				}
 
 				mob.location().addItem(newItem);
-				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
+				mob.location().showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" starts flowing here.");
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,0);

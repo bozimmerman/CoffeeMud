@@ -75,36 +75,36 @@ public class Halfling extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r has very little life left.^N";
+			return "^r" + mob.displayName() + "^r has very little life left.^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is covered in small streams of blood.^N";
+			return "^r" + mob.displayName() + "^r is covered in small streams of blood.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is bleeding badly from lots of small wounds.^N";
+			return "^r" + mob.displayName() + "^r is bleeding badly from lots of small wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y has numerous bloody wounds and small gashes.^N";
+			return "^y" + mob.displayName() + "^y has numerous bloody wounds and small gashes.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y has some bloody wounds and small gashes.^N";
+			return "^y" + mob.displayName() + "^y has some bloody wounds and small gashes.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has a few small bloody wounds.^N";
+			return "^p" + mob.displayName() + "^p has a few small bloody wounds.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is cut and bruised in small places.^N";
+			return "^p" + mob.displayName() + "^p is cut and bruised in small places.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g has some small cuts and bruises.^N";
+			return "^g" + mob.displayName() + "^g has some small cuts and bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g has a few bruises and small scratches.^N";
+			return "^g" + mob.displayName() + "^g has a few bruises and small scratches.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g has a few small bruises.^N";
+			return "^g" + mob.displayName() + "^g has a few small bruises.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
+			return "^c" + mob.displayName() + "^c is in perfect health^N";
 	}
 	public Vector myResources()
 	{

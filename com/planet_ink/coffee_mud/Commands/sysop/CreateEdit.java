@@ -382,7 +382,7 @@ public class CreateEdit
 				else
 					Generic.genMiscSet(mob,thang);
 				thang.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.displayName()+" shake(s) under the transforming power.");
 				Log.sysOut("CreateEdit",mob.ID()+" modified item "+thang.ID()+".");
 			}
 			else
@@ -414,7 +414,7 @@ public class CreateEdit
 				else
 					Generic.genMiscSet(mob,thang);
 				thang.recoverEnvStats();
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
+				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.displayName()+" shake(s) under the transforming power.");
 				Log.sysOut("CreateEdit",mob.ID()+" modified mob "+thang.ID()+".");
 			}
 			else
@@ -440,7 +440,7 @@ public class CreateEdit
 							}
 						}
 					}
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,thang.displayName()+" shake(s) under the transforming power.");
 					Log.sysOut("CreateEdit",mob.ID()+" modified exit "+thang.ID()+".");
 				}
 				else

@@ -21,10 +21,10 @@ public class Chant_Goodberry extends Chant
 		&&(!(newTarget instanceof Pill))
 		&&(((Food)newTarget).material()==EnvResource.RESOURCE_BERRIES)
 		&&(newTarget.container()==originaltarget.container())
-		&&(newTarget.name().equals(originaltarget.name())))
+		&&(newTarget.displayName().equals(originaltarget.displayName())))
 		{
 			Pill newItem=(Pill)CMClass.getItem("GenPill");
-			newItem.setName(newTarget.name());
+			newItem.setName(newTarget.displayName());
 			newItem.setDisplayText(newTarget.displayText());
 			newItem.setDescription(newTarget.description());
 			newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
@@ -61,7 +61,7 @@ public class Chant_Goodberry extends Chant
 
 		if((!(target instanceof Food))||(((Food)target).material()!=EnvResource.RESOURCE_BERRIES))
 		{
-			mob.tell(target.name()+" is not berries.");
+			mob.tell(target.displayName()+" is not berries.");
 			return false;
 		}
 		

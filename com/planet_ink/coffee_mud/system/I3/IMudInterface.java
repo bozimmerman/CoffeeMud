@@ -200,7 +200,7 @@ public class IMudInterface implements ImudServices, Serializable
 				int lvl=getLocalLevel(channelName);
 				if(ck.type==Packet.CHAN_MESSAGE)
 				{
-					String str="^Q"+mob.name()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
+					String str="^Q"+mob.displayName()+" "+channelName+"(S) '"+fixColors(ck.message)+"'^?^.";
 					msg=new FullMsg(mob,null,null,Affect.NO_EFFECT,null,Affect.NO_EFFECT,null,Affect.MASK_CHANNEL|(Affect.TYP_CHANNEL+channelInt),str);
 				}
 				else
@@ -357,15 +357,9 @@ public class IMudInterface implements ImudServices, Serializable
 					&&(Sense.isSeen(smob)))
 					{
 						Vector whoV2=new Vector();
-						whoV2.addElement(smob.name());
+						whoV2.addElement(smob.displayName());
 						whoV2.addElement(new Integer((int)(ses.getIdleMillis()/1000)));
-						int classLevel=smob.charStats().getClassLevel(smob.charStats().getCurrentClass());
-						String levelStr=smob.charStats().getCurrentClass().name()+" ";
-						if(classLevel>=smob.envStats().level())
-							levelStr+=smob.envStats().level();
-						else
-							levelStr+=classLevel+"/"+smob.envStats().level();
-						whoV2.addElement(levelStr);
+						whoV2.addElement(smob.charStats().displayClassLevel(smob,true));
 						whoV.addElement(whoV2);
 					}
 				}

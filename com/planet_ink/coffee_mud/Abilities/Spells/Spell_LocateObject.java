@@ -48,7 +48,7 @@ public class Spell_LocateObject extends Spell
 					Environmental item=room.fetchItem(null,what);
 					if((item!=null)&&(Sense.canSee(item)))
 					{
-						String str=item.name()+" is in a place called '"+room.displayText()+"'.";
+						String str=item.displayName()+" is in a place called '"+room.displayText()+"'.";
 						if(mob.isASysOp(null))
 							mob.tell(str);
 						else
@@ -67,7 +67,7 @@ public class Spell_LocateObject extends Spell
 							if((levelFind==0)
 							 ||(item.envStats().level()<=levelFind))
 							{
-								String str=item.name()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.displayText()+"'.";
+								String str=item.displayName()+((levelFind==0)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.displayName()+" in a place called '"+room.displayText()+"'.";
 								if(mob.isASysOp(null))
 									mob.tell(str);
 								else

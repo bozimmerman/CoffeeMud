@@ -89,7 +89,7 @@ public class Prop_WizInvis extends Property
 	{
 		if((Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)&&(affect.amITarget(affected))&&(affected!=null)&&(!disabled)))
 		{
-			affect.source().tell("Ah, leave "+affected.name()+" alone.");
+			affect.source().tell("Ah, leave "+affected.displayName()+" alone.");
 			if(affected instanceof MOB)
 				((MOB)affected).makePeace();
 			return false;

@@ -67,7 +67,7 @@ public class PaperMaking extends CommonSkill
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
-						commonTell(mob,"<S-NAME> completely mess(es) up making "+building.name()+".");
+						commonTell(mob,"<S-NAME> completely mess(es) up making "+building.displayName()+".");
 					else
 						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
 				}
@@ -188,9 +188,9 @@ public class PaperMaking extends CommonSkill
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) making "+building.name()+".";
-			displayText="You are making "+building.name();
-			verb="making "+building.name();
+			startStr="<S-NAME> start(s) making "+building.displayName()+".";
+			displayText="You are making "+building.displayName();
+			verb="making "+building.displayName();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);

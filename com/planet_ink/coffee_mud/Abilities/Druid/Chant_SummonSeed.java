@@ -70,7 +70,7 @@ public class Chant_SummonSeed extends Chant
 					if(name.endsWith("ies")) name=name.substring(0,name.length()-3)+"y";
 					if(name.endsWith("s")) name=name.substring(0,name.length()-1);
 					newItem.setName(Util.startWithAorAn(name+" seed"));
-					newItem.setDisplayText(newItem.name()+" is here.");
+					newItem.setDisplayText(newItem.displayName()+" is here.");
 					newItem.setDescription("");
 					newItem.setMaterial(material);
 					newItem.baseEnvStats().setWeight(0);

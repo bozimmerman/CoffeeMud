@@ -19,7 +19,7 @@ public class Prop_ReqRaces extends Property
 			return true;
 
 		int x=text().toUpperCase().indexOf("ALL");
-		int y=text().toUpperCase().indexOf(mob.charStats().getMyRace().name().toUpperCase());
+		int y=text().toUpperCase().indexOf(mob.charStats().raceName().toUpperCase());
 		if(((x>0)
 			&&(text().charAt(x-1)=='-')
 			&&((y<=0)

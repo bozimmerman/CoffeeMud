@@ -44,7 +44,7 @@ public class Fighter_Rescue extends StdAbility
 
 		if(monster.getVictim()==mob)
 		{
-			mob.tell("You are already taking the blows from "+monster.name()+".");
+			mob.tell("You are already taking the blows from "+monster.displayName()+".");
 			return false;
 		}
 

@@ -35,14 +35,14 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		if(!(target instanceof Banker))
 		{
-			mob.tell("You can't embezzle from "+target.name()+"'s accounts.");
+			mob.tell("You can't embezzle from "+target.displayName()+"'s accounts.");
 			return false;
 		}
 		Banker bank=(Banker)target;
 		Ability A=target.fetchAffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.name()+" is watching "+target.charStats().hisher()+" books too closely.");
+			mob.tell(target.displayName()+" is watching "+target.charStats().hisher()+" books too closely.");
 			return false;
 		}
 		int levelDiff=target.envStats().level()-mob.envStats().level();
@@ -57,7 +57,7 @@ public class Thief_Embezzle extends ThiefSkill
 		Item myCoins=bank.findDepositInventory(mob.name(),"1");
 		if((myCoins==null)||(!(myCoins instanceof Coins)))
 		{
-			mob.tell("You don't have your own account with "+target.name()+".");
+			mob.tell("You don't have your own account with "+target.displayName()+".");
 			return false;
 		}
 		Vector accounts=bank.getAccountNames();
@@ -72,7 +72,7 @@ public class Thief_Embezzle extends ThiefSkill
 		}
 		if(choices.size()==0)
 		{
-			mob.tell(target.name()+" doesn't seem to maintain any accounts worth embezzling from.");
+			mob.tell(target.displayName()+" doesn't seem to maintain any accounts worth embezzling from.");
 			return false;
 		}
 		victim=(String)choices.elementAt(Dice.roll(1,choices.size(),-1));

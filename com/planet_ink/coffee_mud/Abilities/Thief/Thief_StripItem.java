@@ -44,12 +44,12 @@ public class Thief_StripItem extends ThiefSkill
 		Item stolen=target.fetchWornItem(itemToSteal);
 		if((stolen==null)||(!Sense.canBeSeenBy(stolen,mob)))
 		{
-			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");
+			mob.tell(target.displayName()+" doesn't seem to be wearing '"+itemToSteal+"'.");
 			return false;
 		}
 		if(stolen.amWearingAt(Item.WIELD))
 		{
-			mob.tell(target.name()+" is wielding "+stolen.name()+"! Try disarm!");
+			mob.tell(target.displayName()+" is wielding "+stolen.displayName()+"! Try disarm!");
 			return false;
 		}
 
@@ -61,14 +61,14 @@ public class Thief_StripItem extends ThiefSkill
 
 		if(!success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to strip "+stolen.name()+" off <T-NAME>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.name()+" off <T-NAME> and fails!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_NOISYMOVEMENT,auto?"":"You fumble the attempt to strip "+stolen.displayName()+" off <T-NAME>; <T-NAME> spots you!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.displayName()+" off you and fails!",Affect.MSG_NOISYMOVEMENT,auto?"":"<S-NAME> tries to strip "+stolen.displayName()+" off <T-NAME> and fails!");
 			if(mob.location().okAffect(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
 		{
 			String str=null;
-			if(!auto) str="<S-NAME> strip(s) "+stolen.name()+" off <T-NAMESELF>.";
+			if(!auto) str="<S-NAME> strip(s) "+stolen.displayName()+" off <T-NAMESELF>.";
 
 			boolean alreadyFighting=(mob.getVictim()==target)||(target.getVictim()==mob);
 			String hisStr=str;

@@ -94,11 +94,11 @@ public class Arrest extends StdBehavior
 					if(isStillACrime(W))
 					{
 						Vector V2=new Vector();
-						V2.addElement(W.criminal.name());
+						V2.addElement(W.criminal.displayName());
 						if(W.victim==null) V2.addElement("");
-						else V2.addElement(W.victim.name());
+						else V2.addElement(W.victim.displayName());
 						if(W.witness==null) V2.addElement("");
-						else V2.addElement(W.witness.name());
+						else V2.addElement(W.witness.displayName());
 						V2.addElement(fixCharge(W));
 						V.addElement(V2);
 					}
@@ -303,13 +303,13 @@ public class Arrest extends StdBehavior
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
 			StringBuffer str=new StringBuffer("");
-			str.append(criminal.name()+", you are in trouble for "+restOfCharges(criminal)+".  ");
+			str.append(criminal.displayName()+", you are in trouble for "+restOfCharges(criminal)+".  ");
 			for(int w2=0;w2<warrants.size();w2++)
 			{
 				ArrestWarrant W2=(ArrestWarrant)warrants.elementAt(w2);
 				if(W2.criminal==criminal)
 				{
-					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".  ");
+					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.displayName()+".  ");
 					if((W2.warnMsg!=null)&&(W2.warnMsg.length()>0))
 						str.append(W2.warnMsg+"  ");
 					if((W2.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
@@ -325,13 +325,13 @@ public class Arrest extends StdBehavior
 			{
 			if((judge==null)&&(officer!=null)) judge=officer;
 			StringBuffer str=new StringBuffer("");
-			str.append(criminal.name()+", you are in trouble for "+restOfCharges(criminal)+".  ");
+			str.append(criminal.displayName()+", you are in trouble for "+restOfCharges(criminal)+".  ");
 			for(int w2=0;w2<warrants.size();w2++)
 			{
 				ArrestWarrant W2=(ArrestWarrant)warrants.elementAt(w2);
 				if(W2.criminal==criminal)
 				{
-					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".  ");
+					str.append("The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.displayName()+".  ");
 					if((W2.warnMsg!=null)&&(W2.warnMsg.length()>0))
 						str.append(W2.warnMsg+"  ");
 					if((W2.offenses>0)&&(laws.get("PREVOFFMSG")!=null)&&(((String)laws.get("PREVOFFMSG")).length()>0))
@@ -979,7 +979,7 @@ public class Arrest extends StdBehavior
 		String charge=W.crime;
 		if(W.victim==null) return charge;
 		if(charge.indexOf("<T-NAME>")<0) return charge;
-		return charge.replaceFirst("<T-NAME>",W.victim.name());
+		return charge.replaceFirst("<T-NAME>",W.victim.displayName());
 	}
 	
 	public String restOfCharges(MOB mob)
@@ -1234,12 +1234,12 @@ public class Arrest extends StdBehavior
 								String sirmaam="Sir";
 								if(Character.toString((char)judge.charStats().getStat(CharStats.GENDER)).equalsIgnoreCase("F"))
 									sirmaam="Ma'am";
-								ExternalPlay.quickSay(officer,judge,sirmaam+", "+W.criminal.name()+" has been arrested "+restOfCharges(W.criminal)+".",false,false);
+								ExternalPlay.quickSay(officer,judge,sirmaam+", "+W.criminal.displayName()+" has been arrested "+restOfCharges(W.criminal)+".",false,false);
 								for(int w2=0;w2<warrants.size();w2++)
 								{
 									ArrestWarrant W2=(ArrestWarrant)warrants.elementAt(w2);
 									if(W2.criminal==W.criminal)
-										ExternalPlay.quickSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.name()+".",false,false);
+										ExternalPlay.quickSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness.displayName()+".",false,false);
 								}
 								W.state=STATE_WAITING;
 							}

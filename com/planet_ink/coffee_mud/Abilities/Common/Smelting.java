@@ -76,7 +76,7 @@ public class Smelting extends CommonSkill
 				{
 					amountMaking=amountMaking*(abilityCode());
 					if(messedUp)
-						commonEmote(mob,"<S-NAME> ruin(s) "+building.name()+"!");
+						commonEmote(mob,"<S-NAME> ruin(s) "+building.displayName()+"!");
 					else
 					for(int i=0;i<amountMaking;i++)
 					{

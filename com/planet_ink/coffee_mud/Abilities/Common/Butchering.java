@@ -86,13 +86,13 @@ public class Butchering extends CommonSkill
 		   ||(((DeadBody)I).charStats()==null)
 		   ||(((DeadBody)I).charStats().getMyRace()==null))
 		{
-			commonTell(mob,"You can't butcher "+I.name()+".");
+			commonTell(mob,"You can't butcher "+I.displayName()+".");
 			return false;
 		}
 		Vector resources=((DeadBody)I).charStats().getMyRace().myResources();
 		if((resources==null)||(resources.size()==0))
 		{
-			commonTell(mob,"There doesn't appear to be any good parts on "+I.name()+".");
+			commonTell(mob,"There doesn't appear to be any good parts on "+I.displayName()+".");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
@@ -103,7 +103,7 @@ public class Butchering extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			body=(DeadBody)I;
-			verb="skinning and butchering "+I.name();
+			verb="skinning and butchering "+I.displayName();
 			int duration=(I.envStats().weight()/10);
 			if(duration<5) duration=5;
 			beneficialAffect(mob,mob,duration);

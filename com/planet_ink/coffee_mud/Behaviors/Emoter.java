@@ -171,10 +171,13 @@ public class Emoter extends ActiveTicker
 			{
 				emoter=CMClass.getMOB("StdMOB");
 				MOB mob=getBehaversMOB(ticking);
+				String name=ticking.name();
+				if(ticking instanceof Environmental)
+					name=((Environmental)ticking).displayName();
 				if(mob!=null)
-					emoter.setName(ticking.name()+" belonging to "+mob.name());
+					emoter.setName(name+" belonging to "+mob.displayName());
 				else
-					emoter.setName(ticking.name());
+					emoter.setName(name);
 			}
 			emoteHere(room,emoter,emote,true);
 

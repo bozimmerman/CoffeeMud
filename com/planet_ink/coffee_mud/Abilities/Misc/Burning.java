@@ -101,7 +101,7 @@ public class Burning extends StdAbility
 	{
 		if(Dice.rollPercentage()>(mob.charStats().getSave(CharStats.SAVE_FIRE)-50))
 		{
-			mob.tell("Ouch!!, "+affected.name()+" is on fire!");
+			mob.tell("Ouch!!, "+affected.displayName()+" is on fire!");
 			ExternalPlay.postDamage(invoker,mob,this,Dice.roll(1,5,5),Affect.NO_EFFECT,Weapon.TYPE_BURNING,null);
 			return false;
 		}
@@ -136,7 +136,7 @@ public class Burning extends StdAbility
 			if((C instanceof Drink)
 			   &&(((Drink)C).containsDrink()))
 			{
-				affect.addTrailerMsg(new FullMsg(invoker,null,Affect.MSG_OK_VISUAL,I.name()+" is extinguished."));
+				affect.addTrailerMsg(new FullMsg(invoker,null,Affect.MSG_OK_VISUAL,I.displayName()+" is extinguished."));
 				I.delAffect(this);
 			}
 		}

@@ -43,36 +43,36 @@ public class Doll extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is nearly disassembled!^N";
+			return "^r" + mob.displayName() + "^r is nearly disassembled!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is covered in tears and cracks.^N";
+			return "^r" + mob.displayName() + "^r is covered in tears and cracks.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is broken badly with lots of tears.^N";
+			return "^r" + mob.displayName() + "^r is broken badly with lots of tears.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y has numerous tears and gashes.^N";
+			return "^y" + mob.displayName() + "^y has numerous tears and gashes.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y has some tears and gashes.^N";
+			return "^y" + mob.displayName() + "^y has some tears and gashes.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has a few cracks.^N";
+			return "^p" + mob.displayName() + "^p has a few cracks.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is scratched heavily.^N";
+			return "^p" + mob.displayName() + "^p is scratched heavily.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g has some minor scratches.^N";
+			return "^g" + mob.displayName() + "^g has some minor scratches.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is a bit disheveled.^N";
+			return "^g" + mob.displayName() + "^g is a bit disheveled.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName() + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition^N";
+			return "^c" + mob.displayName() + "^c is in perfect condition^N";
 	}
 	public Vector myResources()
 	{

@@ -185,7 +185,7 @@ public class StdRideable extends StdMOB implements Rideable
 			{
 				if(amRiding((Rider)affect.tool()))
 				{
-					affect.source().tell(affect.tool().name()+" is "+stateString((Rider)affect.tool())+" "+name()+"!");
+					affect.source().tell(affect.tool().displayName()+" is "+stateString((Rider)affect.tool())+" "+name()+"!");
 					((Rider)affect.tool()).setRiding(this);
 					return false;
 				}
@@ -193,13 +193,13 @@ public class StdRideable extends StdMOB implements Rideable
 				&&(affect.amITarget(this))
 				&&(((Rideable)affect.tool()).rideBasis()!=Rideable.RIDEABLE_WAGON))
 				{
-					affect.source().tell(affect.tool().name()+" can not be mounted onto "+name()+"!");
+					affect.source().tell(affect.tool().displayName()+" can not be mounted onto "+name()+"!");
 					return false;
 				}
 				if((baseEnvStats().weight()*5<affect.tool().baseEnvStats().weight())
 				&&(affect.amITarget(this)))
 				{
-					affect.source().tell(name()+" is too small to pull "+affect.tool().name()+".");
+					affect.source().tell(name()+" is too small to pull "+affect.tool().displayName()+".");
 					return false;
 				}
 			}
@@ -326,7 +326,7 @@ public class StdRideable extends StdMOB implements Rideable
 			   
 			{
 				MOB targ=(MOB)affect.target();
-				tell("You can't attack "+targ.name()+" right now.");
+				tell("You can't attack "+targ.displayName()+" right now.");
 				if(getVictim()==targ) setVictim(null);
 				if(targ.getVictim()==this) targ.setVictim(null);
 				return false;

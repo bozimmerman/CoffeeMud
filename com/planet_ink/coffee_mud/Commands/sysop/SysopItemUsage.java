@@ -35,7 +35,7 @@ public class SysopItemUsage
 		Item I=victim.fetchInventory(itemName);
 		if((I==null)||((I!=null)&&(!Sense.canBeSeenBy(I,mob))))
 		{
-			mob.tell(victim.name()+" doesn't seem to have a '"+itemName+"'.");
+			mob.tell(victim.displayName()+" doesn't seem to have a '"+itemName+"'.");
 			return;
 		}
 		I.remove();

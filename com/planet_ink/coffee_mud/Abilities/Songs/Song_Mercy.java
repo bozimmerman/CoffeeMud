@@ -44,7 +44,7 @@ public class Song_Mercy extends Song
 			MOB target=(MOB)affect.target();
 			if((!target.isInCombat())&&(affect.source().getVictim()!=target))
 			{
-				affect.source().tell("You feel like showing "+target.name()+" mercy right now.");
+				affect.source().tell("You feel like showing "+target.displayName()+" mercy right now.");
 				if(target.getVictim()==affect.source())
 				{
 					target.makePeace();

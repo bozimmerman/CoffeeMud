@@ -107,7 +107,7 @@ public class Fighter_Pin extends StdAbility
 
 		if((!auto)&&(mob.envStats().weight()<(target.envStats().weight()-100)))
 		{
-			mob.tell(target.name()+" is way to big to pin!");
+			mob.tell(target.displayName()+" is way to big to pin!");
 			return false;
 		}
 

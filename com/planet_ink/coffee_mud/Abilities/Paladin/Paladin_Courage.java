@@ -43,8 +43,8 @@ public class Paladin_Courage extends Paladin
 				||(str1.indexOf("FEAR")>=0))
 				{
 					MOB mob=(MOB)affect.target();
-					mob.location().showSource(mob,null,Affect.MSG_OK_VISUAL,"Your courage protects you from the "+affect.tool().name()+" attack.");
-					mob.location().showOthers(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME>'s courage protects <S-HIM-HER> from the "+affect.tool().name()+" attack.");
+					mob.location().showSource(mob,null,Affect.MSG_OK_VISUAL,"Your courage protects you from the "+affect.tool().displayName()+" attack.");
+					mob.location().showOthers(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME>'s courage protects <S-HIM-HER> from the "+affect.tool().displayName()+" attack.");
 					return false;
 				}
 			}

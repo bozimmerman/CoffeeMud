@@ -88,7 +88,7 @@ public class Spell_Disenchant extends Spell
 					target.recoverEnvStats();
 				}
 				else
-					mob.tell(target.name()+" doesn't seem to be enchanted.");
+					mob.tell(target.displayName()+" doesn't seem to be enchanted.");
 			}
 
 		}

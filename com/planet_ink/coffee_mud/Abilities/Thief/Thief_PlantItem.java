@@ -60,7 +60,7 @@ public class Thief_PlantItem extends ThiefSkill
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to plant "+item.name()+" on <T-NAMESELF>, but fail(s).");
+			beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to plant "+item.displayName()+" on <T-NAMESELF>, but fail(s).");
 		return success;
 	}
 }

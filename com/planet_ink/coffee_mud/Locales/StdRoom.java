@@ -50,6 +50,11 @@ public class StdRoom
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
+	public String displayName()
+	{ 
+		if(envStats().newName()!=null) return envStats().newName();
+		return name();
+	}
 	public Environmental newInstance()
 	{
 		return new StdRoom();
@@ -632,7 +637,7 @@ public class StdRoom
 				if(mob2.displayText(mob).length()>0)
 					Say.append(mob2.displayText(mob));
 				else
-					Say.append(mob2.name());
+					Say.append(mob2.displayName());
 				Say.append(Sense.colorCodes(mob2,mob)+"^N\n\r");
 			}
 		}

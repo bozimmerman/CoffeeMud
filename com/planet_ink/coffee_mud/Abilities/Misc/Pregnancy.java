@@ -94,7 +94,7 @@ public class Pregnancy extends StdAbility
 							}
 							desc+=".";
 					
-							mob.location().show(mob,null,Affect.MSG_NOISE,"***** "+mob.name().toUpperCase()+" GIVE(S) BIRTH ******");
+							mob.location().show(mob,null,Affect.MSG_NOISE,"***** "+mob.displayName().toUpperCase()+" GIVE(S) BIRTH ******");
 							Ability A=mob.fetchAffect(ID());
 							Ability A2=mob.fetchAbility(ID());
 							if(A!=null) mob.delAffect(A);

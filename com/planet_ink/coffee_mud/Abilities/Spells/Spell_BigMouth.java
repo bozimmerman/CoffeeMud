@@ -32,7 +32,7 @@ public class Spell_BigMouth extends Spell
 			{
 				boolean isHit=(CoffeeUtensils.normalizeAndRollLess(affect.source().adjustedAttackBonus()+target.adjustedArmor()));
 				if(!isHit)
-					mob.tell("You fail to eat "+target.name());
+					mob.tell("You fail to eat "+target.displayName());
 				else
 					affect.modify(affect.source(),affect.target(),affect.tool(),
 							  affect.sourceCode()|Affect.MASK_GENERAL,affect.sourceMessage(),
@@ -41,7 +41,7 @@ public class Spell_BigMouth extends Spell
 			}
 			else
 			{
-				mob.tell(target.name()+" is too large to eat, even with the big mouth!");
+				mob.tell(target.displayName()+" is too large to eat, even with the big mouth!");
 				return false;
 			}
 		}
@@ -194,8 +194,8 @@ public class Spell_BigMouth extends Spell
 			lastKnownLocation=mob.location();
 			if(lastKnownLocation!=null)
 				Stomach.setArea(lastKnownLocation.getArea());
-			Stomach.setName("The Stomach of "+mob.name());
-			Stomach.setDescription("You are in the stomach of "+mob.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			Stomach.setName("The Stomach of "+mob.displayName());
+			Stomach.setDescription("You are in the stomach of "+mob.displayName()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
 		}
 
 		// the invoke method for spells receives as

@@ -51,6 +51,13 @@ public interface CharStats extends Cloneable
 	public void setClassLevel(CharClass aClass, int level);
 	public Race getMyRace();
 	public void setMyRace(Race newVal);
+	public String raceName();
+	public void setRaceName(String newRaceName);
+	
+	public void setDisplayClassName(String newname);
+	public void setDisplayClassLevel(String newlevel);
+	public String displayClassName();
+	public String displayClassLevel(MOB mob, boolean shortForm);
 	
 	public static int[] affectTypeMap={-1, // strength
 									   -1, // intelligence
@@ -103,6 +110,7 @@ public interface CharStats extends Cloneable
 	// create a new one of these
 	public CharStats cloneCharStats();
 	
+	public void setGenderName(String gname);
 	public String genderName();
 	public String himher();
 	public String hisher();

@@ -44,6 +44,11 @@ public class StdItem implements Item
 	public boolean isGeneric(){return false;}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
+	public String displayName()
+	{ 
+		if(envStats().newName()!=null) return envStats().newName();
+		return name();
+	}
 	public EnvStats envStats()
 	{
 		return envStats;
@@ -463,15 +468,15 @@ public class StdItem implements Item
 		if(!thisItem.amWearingAt(Item.INVENTORY))
 		{
 			if(thisItem.amWearingAt(Item.WIELD))
-				mob.tell(thisItem.name()+" is already being wielded.");
+				mob.tell(thisItem.displayName()+" is already being wielded.");
 			else
 			if(thisItem.amWearingAt(Item.HELD))
-				mob.tell(thisItem.name()+" is already being held.");
+				mob.tell(thisItem.displayName()+" is already being held.");
 			else
 			if(thisItem.amWearingAt(Item.FLOATING_NEARBY))
-				mob.tell(thisItem.name()+" is floating nearby.");
+				mob.tell(thisItem.displayName()+" is floating nearby.");
 			else
-				mob.tell(thisItem.name()+"is already being worn.");
+				mob.tell(thisItem.displayName()+"is already being worn.");
 			return false;
 		}
 		return true;
@@ -526,7 +531,7 @@ public class StdItem implements Item
 				return false;
 			if(!canBeWornAt(Item.HELD))
 			{
-				StringBuffer msg=new StringBuffer("You can't hold "+name()+".");
+				StringBuffer msg=new StringBuffer("You can't hold "+displayName()+".");
 				if(canBeWornAt(Item.WIELD))
 					msg.append("Try WIELDing it.");
 				else
@@ -562,7 +567,7 @@ public class StdItem implements Item
 		case Affect.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
-				mob.tell("You can't wear "+name()+".");
+				mob.tell("You can't wear "+displayName()+".");
 				return false;
 			}
 			if(!alreadyWornMsg(affect.source(),this))
@@ -581,7 +586,7 @@ public class StdItem implements Item
 					if((!ExternalPlay.remove(mob,alreadyWearing,false))
 					||(!canWear(mob)))
 					{
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.displayName()+" on your "+Sense.wornLocation(cantWearAt)+".");
 						return false;
 					}
 				}
@@ -589,12 +594,12 @@ public class StdItem implements Item
 				if(alreadyWearing!=null)
 				{
 					if(cantWearAt==Item.HELD)
-						mob.tell("You are already holding "+alreadyWearing.name()+".");
+						mob.tell("You are already holding "+alreadyWearing.displayName()+".");
 					else
 					if(cantWearAt==Item.WIELD)
-						mob.tell("You are already wielding "+alreadyWearing.name()+".");
+						mob.tell("You are already wielding "+alreadyWearing.displayName()+".");
 					else
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+Sense.wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.displayName()+" on your "+Sense.wornLocation(cantWearAt)+".");
 					return false;
 				}
 			}
@@ -602,7 +607,7 @@ public class StdItem implements Item
 		case Affect.TYP_WIELD:
 			if(!canBeWornAt(Item.WIELD))
 			{
-				mob.tell("You can't wield "+name()+" as a weapon.");
+				mob.tell("You can't wield "+displayName()+" as a weapon.");
 				return false;
 			}
 			if(!alreadyWornMsg(affect.source(),this))
@@ -619,7 +624,7 @@ public class StdItem implements Item
 				{
 					if(!ExternalPlay.remove(mob,alreadyWearing,false))
 					{
-						mob.tell("You are already wielding "+alreadyWearing.name()+".");
+						mob.tell("You are already wielding "+alreadyWearing.displayName()+".");
 						return false;
 					}
 				}
@@ -631,7 +636,7 @@ public class StdItem implements Item
 			}
 			if(!canWear(mob))
 			{
-				mob.tell("You can't wield "+name()+", your hands are full.");
+				mob.tell("You can't wield "+displayName()+", your hands are full.");
 				return false;
 			}
 			return true;
@@ -647,35 +652,35 @@ public class StdItem implements Item
 				}
 				if(mob.envStats().level()<envStats().level()-10)
 				{
-					mob.tell(name()+" is too powerful to endure possessing it.");
+					mob.tell(displayName()+" is too powerful to endure possessing it.");
 					return false;
 				}
 				if((envStats().weight()>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
 				{
-					mob.tell(name()+" is too heavy.");
+					mob.tell(displayName()+" is too heavy.");
 					return false;
 				}
 				if((!amWearingAt(Item.INVENTORY))&&(!isRemovable))
 				{
 					if(amWearingAt(Item.WIELD)||amWearingAt(Item.HELD))
 					{
-						mob.tell("You can't seem to let go of "+name()+".");
+						mob.tell("You can't seem to let go of "+displayName()+".");
 						return false;
 					}
-					mob.tell("You can't seem to remove "+name()+".");
+					mob.tell("You can't seem to remove "+displayName()+".");
 					return false;
 				}
 				if(!isGettable)
 				{
-					mob.tell("You can't get "+name()+".");
+					mob.tell("You can't get "+displayName()+".");
 					return false;
 				}
 				if((this instanceof Rideable)&&(((Rideable)this).numRiders()>0))
 				{
 					if((mob.riding()!=null)&&(mob.riding()==this))
-						mob.tell("You are "+((Rideable)this).stateString(mob)+" "+name()+"!");
+						mob.tell("You are "+((Rideable)this).stateString(mob)+" "+displayName()+"!");
 					else
-						mob.tell("Someone is "+((Rideable)this).stateString(mob)+" "+name()+"!");
+						mob.tell("Someone is "+((Rideable)this).stateString(mob)+" "+displayName()+"!");
 					return false;
 				}
 				return true;
@@ -702,19 +707,19 @@ public class StdItem implements Item
 			}
 			if(!isDroppable)
 			{
-				mob.tell("You can't seem to let go of "+name()+".");
+				mob.tell("You can't seem to let go of "+displayName()+".");
 				return false;
 			}
 			return true;
 		case Affect.TYP_THROW:
 			if(envStats().weight()>(mob.maxCarry()/5))
 			{
-				mob.tell(name()+" is too heavy to throw.");
+				mob.tell(displayName()+" is too heavy to throw.");
 				return false;
 			}
 			if(!isDroppable)
 			{
-				mob.tell("You can't seem to let go of "+name()+".");
+				mob.tell("You can't seem to let go of "+displayName()+".");
 				return false;
 			}
 			return true;
@@ -756,17 +761,17 @@ public class StdItem implements Item
 			{
 				if(affect.targetMessage().trim().length()==0)
 				{
-					mob.tell("Write what on "+name()+"?");
+					mob.tell("Write what on "+displayName()+"?");
 					return false;
 				}
 				return true;
 			}
-			mob.tell("You can't write on "+name()+".");
+			mob.tell("You can't write on "+displayName()+".");
 			return false;
 		default:
 			break;
 		}
-		mob.tell("You can't do that to "+name()+".");
+		mob.tell("You can't do that to "+displayName()+".");
 		return false;
 	}
 
@@ -801,7 +806,7 @@ public class StdItem implements Item
 						mob.tell(ID()+"\n\rRejuv :"+baseEnvStats().rejuv()+"\n\rUses  :"+usesRemaining()+"\n\rHeight:"+baseEnvStats().height()+"\n\rAbilty:"+baseEnvStats().ability()+"\n\rLevel :"+baseEnvStats().level()+"\n\rTime  : "+dispossessionTimeLeftString()+"\n\r"+description()+"\n\r"+"\n\rMisc  :'"+text());
 					else
 					if(description().length()==0)
-						mob.tell("You don't see anything special about "+this.name());
+						mob.tell("You don't see anything special about "+this.displayName());
 					else
 						mob.tell(description());
 				}
@@ -815,7 +820,7 @@ public class StdItem implements Item
 				if((isReadable)&&(readableText()!=null)&&(readableText().length()>0))
 					mob.tell("It says '"+readableText()+"'.");
 				else
-					mob.tell("There is nothing written on "+name()+".");
+					mob.tell("There is nothing written on "+displayName()+".");
 			}
 			else
 				mob.tell("You can't see that!");

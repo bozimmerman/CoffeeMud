@@ -56,7 +56,7 @@ public class Thief_Distract extends ThiefSkill
 			if(!mob.amDead())
 			{
 				if((invoker!=null)&&(invoker.location()==mob.location())&&(!invoker.amDead()))
-					invoker.tell("You are no longer distracting "+mob.name()+".");
+					invoker.tell("You are no longer distracting "+mob.displayName()+".");
 				mob.tell("You are no longer distracted.");
 			}
 		}
@@ -70,7 +70,7 @@ public class Thief_Distract extends ThiefSkill
 
 		if((Sense.isSitting(target)||Sense.isSleeping(target)))
 		{
-			mob.tell(target.name()+" is on the floor!");
+			mob.tell(target.displayName()+" is on the floor!");
 			return false;
 		}
 
@@ -81,7 +81,7 @@ public class Thief_Distract extends ThiefSkill
 		}
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
-			mob.tell("You are too far away to distract "+mob.getVictim().name()+"!");
+			mob.tell("You are too far away to distract "+mob.getVictim().displayName()+"!");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -46,36 +46,36 @@ public class FireElemental extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is almost put out!^N";
+			return "^r" + mob.displayName() + "^r is almost put out!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is flickering alot and is almost smoked out.^N";
+			return "^r" + mob.displayName() + "^r is flickering alot and is almost smoked out.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is flickering alot and smoking massively.^N";
+			return "^r" + mob.displayName() + "^r is flickering alot and smoking massively.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y is flickering alot and smoking a lot.^N";
+			return "^y" + mob.displayName() + "^y is flickering alot and smoking a lot.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y is flickering and smoking.^N";
+			return "^y" + mob.displayName() + "^y is flickering and smoking.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p is flickering and smoking somewhat.^N";
+			return "^p" + mob.displayName() + "^p is flickering and smoking somewhat.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is showing large flickers.^N";
+			return "^p" + mob.displayName() + "^p is showing large flickers.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g is showing some flickers.^N";
+			return "^g" + mob.displayName() + "^g is showing some flickers.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is showing small flickers.^N";
+			return "^g" + mob.displayName() + "^g is showing small flickers.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is no longer in perfect condition.^N";
+			return "^g" + mob.displayName() + "^g is no longer in perfect condition.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect condition.^N";
+			return "^c" + mob.displayName() + "^c is in perfect condition.^N";
 	}
 	public Vector myResources()
 	{

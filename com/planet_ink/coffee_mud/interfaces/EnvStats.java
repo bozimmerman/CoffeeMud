@@ -53,7 +53,7 @@ public interface EnvStats extends Cloneable
 	public int damage(); // weapon items, mobs
 	public double speed(); // mobs
 	public int attackAdjustment(); // weapon items, mobs
-	public String replacementName(); // items, mobs
+	public String newName(); // items, mobs
 	
 	public void setRejuv(int newRejuv);
 	public void setLevel(int newLevel);
@@ -65,7 +65,7 @@ public interface EnvStats extends Cloneable
 	public void setAbility(int newAdjustment);
 	public void setDisposition(int newDisposition);
 	public void setSensesMask(int newMask);
-	public void setReplacementName(String newName);
+	public void setName(String newName);
 	public void setHeight(int newHeight);
 	
 	public String[] getCodes();

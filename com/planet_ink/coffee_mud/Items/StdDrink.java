@@ -103,7 +103,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 							Drink thePuddle=(Drink)affect.tool();
 							if(!thePuddle.containsDrink())
 							{
-								mob.tell(thePuddle.name()+" is empty.");
+								mob.tell(thePuddle.displayName()+" is empty.");
 								return false;
 							}
 							if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))

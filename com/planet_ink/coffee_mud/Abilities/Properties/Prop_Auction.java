@@ -61,24 +61,24 @@ public class Prop_Auction extends Property
 			switch(state)
 			{
 			case STATE_RUNOUT:
-				V.addElement("The auction for "+auctioning.name()+" is almost done. The current bid is "+bid+".");
+				V.addElement("The auction for "+auctioning.displayName()+" is almost done. The current bid is "+bid+".");
 				break;
 			case STATE_ONCE:
-				V.addElement(bid+" gold for "+auctioning.name()+" going ONCE!");
+				V.addElement(bid+" gold for "+auctioning.displayName()+" going ONCE!");
 				break;
 			case STATE_TWICE:
-				V.addElement(bid+" gold for "+auctioning.name()+" going TWICE!");
+				V.addElement(bid+" gold for "+auctioning.displayName()+" going TWICE!");
 				break;
 			case STATE_CLOSED:
 				{
 					if((highBidder!=null)&&(highBidder!=invoker()))
 					{
-						V.addElement(auctioning.name()+" SOLD to "+highBidder.name()+" for "+bid+" gold.");
+						V.addElement(auctioning.displayName()+" SOLD to "+highBidder.displayName()+" for "+bid+" gold.");
 						try{ExternalPlay.doCommand(M,V);}catch(Exception e){}
 						if(Money.totalMoney(highBidder)<bid)
 						{
-							highBidder.tell("You can no longer cover your bid.  Please contact "+M.name()+" about this matter immediately.");
-							M.tell(highBidder.name()+" can not cover the bid any longer! Please contact "+highBidder.charStats().himher()+" immediately.");
+							highBidder.tell("You can no longer cover your bid.  Please contact "+M.displayName()+" about this matter immediately.");
+							M.tell(highBidder.displayName()+" can not cover the bid any longer! Please contact "+highBidder.charStats().himher()+" immediately.");
 						}
 						else
 						{
@@ -94,8 +94,8 @@ public class Prop_Auction extends Property
 							}
 							else
 							{
-								M.tell(bid+" gold has been transferred to you as payment from "+highBidder.name()+".  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+".");
-								highBidder.tell(bid+" gold has been transferred to "+M.name()+".  Please contact "+M.name()+" about receipt of "+auctioning.name()+".");
+								M.tell(bid+" gold has been transferred to you as payment from "+highBidder.displayName()+".  Please contact "+highBidder.displayName()+" about receipt of "+auctioning.displayName()+".");
+								highBidder.tell(bid+" gold has been transferred to "+M.displayName()+".  Please contact "+M.displayName()+" about receipt of "+auctioning.displayName()+".");
 							}
 						}
 					}
@@ -125,7 +125,7 @@ public class Prop_Auction extends Property
 			auctionStart=System.currentTimeMillis();
 			setAbilityCode(STATE_START);
 			ExternalPlay.startTickDown(this,Host.QUEST_TICK,1);
-			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bid+".");
+			V.addElement("New lot: "+auctioning.displayName()+".  The opening bid is "+bid+".");
 		}
 		else
 		{
@@ -143,7 +143,7 @@ public class Prop_Auction extends Property
 			if(b>highBid)
 			{
 				if((highBidder!=null)&&(highBidder!=mob))
-					highBidder.tell("You have been outbid for "+auctioning.name()+".");
+					highBidder.tell("You have been outbid for "+auctioning.displayName()+".");
 				
 				highBidder=mob;
 				if(highBid<0) highBid=0;
@@ -158,7 +158,7 @@ public class Prop_Auction extends Property
 			}
 			else
 				bid=b;
-			V.addElement("A new bid has been entered for "+auctioning.name()+". The current bid is "+bid+".");
+			V.addElement("A new bid has been entered for "+auctioning.displayName()+". The current bid is "+bid+".");
 		}
 		try{ExternalPlay.doCommand(invoker(),V);}catch(Exception e){}
 		return true;

@@ -21,7 +21,7 @@ public class Spell_Claireaudience extends Spell
 
 		if(canBeUninvoked())
 		if(invoker!=null)
-			invoker.tell("The sounds of '"+mob.name()+"' fade.");
+			invoker.tell("The sounds of '"+mob.displayName()+"' fade.");
 		super.unInvoke();
 
 	}

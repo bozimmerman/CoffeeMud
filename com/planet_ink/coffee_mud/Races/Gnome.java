@@ -82,36 +82,36 @@ public class Gnome extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is curiously close to death.^N";
+			return "^r" + mob.displayName() + "^r is curiously close to death.^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is covered in excessive bloody wounds.^N";
+			return "^r" + mob.displayName() + "^r is covered in excessive bloody wounds.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is bleeding badly from a plethora of small wounds.^N";
+			return "^r" + mob.displayName() + "^r is bleeding badly from a plethora of small wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y has numerous bloody wounds and unexpected gashes.^N";
+			return "^y" + mob.displayName() + "^y has numerous bloody wounds and unexpected gashes.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y has some alarming wounds and small gashes.^N";
+			return "^y" + mob.displayName() + "^y has some alarming wounds and small gashes.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has some small unwanted bloody wounds.^N";
+			return "^p" + mob.displayName() + "^p has some small unwanted bloody wounds.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is cut and bruised in strange places.^N";
+			return "^p" + mob.displayName() + "^p is cut and bruised in strange places.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g has some small cuts and bruises.^N";
+			return "^g" + mob.displayName() + "^g has some small cuts and bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g has a few bruises and interesting scratches.^N";
+			return "^g" + mob.displayName() + "^g has a few bruises and interesting scratches.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g has a few small curious bruises.^N";
+			return "^g" + mob.displayName() + "^g has a few small curious bruises.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
+			return "^c" + mob.displayName() + "^c is in perfect health^N";
 	}
 	public Vector myResources()
 	{

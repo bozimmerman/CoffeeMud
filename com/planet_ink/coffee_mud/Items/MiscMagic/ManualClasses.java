@@ -64,7 +64,7 @@ public class ManualClasses extends StdItem implements MiscMagic
 							{
 								mob.charStats().setCurrentClass(thisC);
 								mob.tell("You are now a "+thisC.name()+".");
-								mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,mob.name()+" undergoes a traumatic change.");
+								mob.location().showOthers(mob,null,Affect.MSG_OK_ACTION,mob.displayName()+" undergoes a traumatic change.");
 							}
 						}
 					}

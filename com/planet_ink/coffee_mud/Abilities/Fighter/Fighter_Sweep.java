@@ -58,7 +58,7 @@ public class Fighter_Sweep extends StdAbility
 		Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
-			mob.tell("You cannot sweep with "+wp.name()+"!");
+			mob.tell("You cannot sweep with "+wp.displayName()+"!");
 			return false;
 		}
 

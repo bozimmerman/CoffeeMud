@@ -60,7 +60,7 @@ public class Spell_EnchantWand extends Spell
 
 		if(wand.getSpell()!=null)
 		{
-			mob.tell("A spell has already been enchanted into '"+wand.name()+"'.");
+			mob.tell("A spell has already been enchanted into '"+wand.displayName()+"'.");
 			return false;
 		}
 		// lose all the mana!

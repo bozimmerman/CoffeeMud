@@ -52,7 +52,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" sprout(s) up here.");
 		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

@@ -47,12 +47,12 @@ public class AnimalTrading extends CommonSkill
 			}
 			if((!M.isMonster())||(!Sense.isAnimalIntelligence(M)))
 			{
-				commonTell(mob,"You can't sell "+M.name()+".");
+				commonTell(mob,"You can't sell "+M.displayName()+".");
 				return false;
 			}
 			if((Sense.canMove(M))&&(!Sense.isBound(M)))
 			{
-				commonTell(mob,M.name()+" doesn't seem willing to cooperate.");
+				commonTell(mob,M.displayName()+" doesn't seem willing to cooperate.");
 				return false;
 			}
 			taming=M;
@@ -99,7 +99,7 @@ public class AnimalTrading extends CommonSkill
 			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,Util.combine(commands,0),Item.WORN_REQ_ANY);
 			if((taming==null)||(!Sense.canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
-				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+Util.combine(commands,0)+"'.");
+				commonTell(mob,"You don't see any creatures in "+cage.displayName()+" called '"+Util.combine(commands,0)+"'.");
 				return false;
 			}
 			M=((CagedAnimal)taming).unCageMe();

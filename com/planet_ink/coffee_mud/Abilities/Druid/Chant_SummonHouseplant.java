@@ -98,7 +98,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		room.addItem(newItem);
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" appears here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" appears here.");
 		Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

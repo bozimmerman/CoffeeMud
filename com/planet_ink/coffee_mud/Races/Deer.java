@@ -46,36 +46,36 @@ public class Deer extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is hovering on deaths door!^N";
+			return "^r" + mob.displayName() + "^r is hovering on deaths door!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is covered in blood and matted hair.^N";
+			return "^r" + mob.displayName() + "^r is covered in blood and matted hair.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N";
+			return "^r" + mob.displayName() + "^r is bleeding badly from lots of wounds.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y has large patches of bloody matted fur.^N";
+			return "^y" + mob.displayName() + "^y has large patches of bloody matted fur.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y has some bloody matted fur.^N";
+			return "^y" + mob.displayName() + "^y has some bloody matted fur.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has a lot of cuts and gashes.^N";
+			return "^p" + mob.displayName() + "^p has a lot of cuts and gashes.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p has a few cut patches.^N";
+			return "^p" + mob.displayName() + "^p has a few cut patches.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g has a cut patch of fur.^N";
+			return "^g" + mob.displayName() + "^g has a cut patch of fur.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g has some disheveled fur.^N";
+			return "^g" + mob.displayName() + "^g has some disheveled fur.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g has some misplaced hairs.^N";
+			return "^g" + mob.displayName() + "^g has some misplaced hairs.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
+			return "^c" + mob.displayName() + "^c is in perfect health^N";
 	}
 	public Vector myResources()
 	{

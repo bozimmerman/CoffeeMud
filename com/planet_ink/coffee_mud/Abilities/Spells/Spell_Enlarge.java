@@ -19,7 +19,7 @@ public class Spell_Enlarge extends Spell
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setWeight(affectableStats.weight()+9999);
 		affectableStats.setHeight(affectableStats.height()+9999);
-		affectableStats.setReplacementName(affected.name()+addOnString);
+		affectableStats.setName(affected.name()+addOnString);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
@@ -34,7 +34,7 @@ public class Spell_Enlarge extends Spell
 		}
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already HUGE!");
+			mob.tell(target.displayName()+" is already HUGE!");
 			return false;
 		}
 

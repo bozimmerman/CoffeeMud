@@ -343,7 +343,7 @@ public class Quests implements Cloneable, Quest
 								MOB M2=R2.fetchInhabitant(i);
 								if((M2!=null)&&(M2.isMonster()))
 								{
-									String mname=M2.name().toUpperCase();
+									String mname=M2.displayName().toUpperCase();
 									String mdisp=M2.displayText().toUpperCase();
 									String mdesc=M2.description().toUpperCase();
 									if(mobName.equalsIgnoreCase("any"))
@@ -596,7 +596,7 @@ public class Quests implements Cloneable, Quest
 						{
 							MOB M2=(MOB)loadedMobs.elementAt(i);
 							if((mobName.equalsIgnoreCase("any"))
-							||(CoffeeUtensils.containsString(M2.name(),mobName))
+							||(CoffeeUtensils.containsString(M2.displayName(),mobName))
 							||(CoffeeUtensils.containsString(M2.displayText(),mobName))
 							||(CoffeeUtensils.containsString(M2.description(),mobName)))
 								choices.addElement(M2);
@@ -718,7 +718,7 @@ public class Quests implements Cloneable, Quest
 							{
 								MOB M2=(MOB)E2;
 								if((mobName.equalsIgnoreCase("any"))
-								||(CoffeeUtensils.containsString(M2.name(),mobName))
+								||(CoffeeUtensils.containsString(M2.displayName(),mobName))
 								||(CoffeeUtensils.containsString(M2.displayText(),mobName))
 								||(CoffeeUtensils.containsString(M2.description(),mobName)))
 									choices.addElement(M2);

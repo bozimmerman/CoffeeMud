@@ -50,7 +50,7 @@ public class ItemMender extends StdBehavior
 			else
 			if(tool.usesRemaining()==100)
 			{
-				ExternalPlay.quickSay(observer,source,tool.name()+" doesn't require repair.",true,false);
+				ExternalPlay.quickSay(observer,source,tool.displayName()+" doesn't require repair.",true,false);
 				return false;
 			}
 			if(source.getMoney()<cost(tool))

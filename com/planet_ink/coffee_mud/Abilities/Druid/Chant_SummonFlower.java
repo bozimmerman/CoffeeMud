@@ -75,7 +75,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" sprout(s) up here.");
 		Chant_SummonFlower newChant=new Chant_SummonFlower();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

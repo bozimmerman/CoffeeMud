@@ -40,7 +40,7 @@ public class Prayer_Bless extends Prayer
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell("The blessing on "+((Item)affected).name()+" fades.");
+				((MOB)((Item)affected).owner()).tell("The blessing on "+((Item)affected).displayName()+" fades.");
 			super.unInvoke();
 			return;
 		}

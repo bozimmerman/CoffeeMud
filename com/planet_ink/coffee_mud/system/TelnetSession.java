@@ -733,7 +733,7 @@ public class TelnetSession extends Thread implements Session
 									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
-										replacement=regarding.name();
+										replacement=regarding.displayName();
 								}
 								break;
 							case NAMESELF:
@@ -753,7 +753,7 @@ public class TelnetSession extends Thread implements Session
 									if(source==target)
 										replacement=((regarding instanceof MOB)?(((MOB)regarding).charStats().himher()+"self"):"itself");
 									else
-										replacement=regarding.name();
+										replacement=regarding.displayName();
 								}
 								break;
 							case YOUPOSS:
@@ -767,7 +767,7 @@ public class TelnetSession extends Thread implements Session
 									if((!Sense.canSee(mob))||(!Sense.canBeSeenBy(regarding,mob)))
 										replacement=((regarding instanceof MOB)?"someone's":"something's");
 									else
-										replacement=regarding.name()+"'s";
+										replacement=regarding.displayName()+"'s";
 								}
 								break;
 							case HISHER:
@@ -1227,7 +1227,7 @@ public class TelnetSession extends Thread implements Session
 							  c++; break; }
 				case 'e': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))
-								  buf.append(victim.name());
+								  buf.append(victim.displayName());
 							  c++; break; }
 				case 'E': {	  MOB victim=mob().getVictim();
 							  if((mob().isInCombat())&&(victim!=null))

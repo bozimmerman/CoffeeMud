@@ -124,7 +124,7 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			if((M!=null)&&(M.location()!=null))
 			{
-				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
+				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.displayName()+".");
 				M.tell("'It is done.'");
 			}
 		}
@@ -171,7 +171,7 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 		if(!mob.mayIFight(target))
 		{
-			mob.tell("You are not allowed to put out a hit on "+target.name()+".");
+			mob.tell("You are not allowed to put out a hit on "+target.displayName()+".");
 			return false;
 		}
 		
@@ -180,7 +180,7 @@ public class Thief_ContractHit extends ThiefSkill
 		int goldRequired=100*level;
 		if(mob.getMoney()<goldRequired)
 		{
-			mob.tell("You'll need at least "+goldRequired+" gold to put a hit out on "+target.name()+".");
+			mob.tell("You'll need at least "+goldRequired+" gold to put a hit out on "+target.displayName()+".");
 			return false;
 		}
 		

@@ -204,7 +204,7 @@ public class AbilityEvoker extends Scriptable
 			return;
 		if(student.fetchAbility(myAbility.ID())!=null)
 		{
-			mob.tell(getScr("AbilityEvoker","teacherr4",student.name()));
+			mob.tell(getScr("AbilityEvoker","teacherr4",student.displayName()));
 			return;
 		}
 		FullMsg msg=new FullMsg(mob,student,null,Affect.MSG_SPEAK,null);
@@ -262,7 +262,7 @@ public class AbilityEvoker extends Scriptable
 		Ability teacherAbility=mob.fetchAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			mob.tell(getScr("AbilityEvoker","pracerr4",teacher.name(),abilityName));
+			mob.tell(getScr("AbilityEvoker","pracerr4",teacher.displayName(),abilityName));
 			return;
 		}
 

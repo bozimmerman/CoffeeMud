@@ -33,7 +33,7 @@ public class Thief_Bribe extends ThiefSkill
 
 		if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.INTELLIGENCE)<3))
 		{
-			mob.tell("You can't bribe "+target.name()+".");
+			mob.tell("You can't bribe "+target.displayName()+".");
 			return false;
 		}
 

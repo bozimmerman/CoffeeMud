@@ -359,7 +359,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					if((affect.targetMinor()!=Affect.TYP_VIEW)
 					&&(yourValue(mob,affect.tool(),true)>Money.totalMoney(mob)))
 					{
-						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+affect.tool().name()+".",false,false);
+						ExternalPlay.quickSay(M,mob,"You can't afford to buy "+affect.tool().displayName()+".",false,false);
 						return false;
 					}
 					if(affect.tool() instanceof Item)
@@ -412,7 +412,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case Affect.TYP_VIEW:
 				super.affect(myHost,affect);
 				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
-					ExternalPlay.quickSay(M,affect.source(),"Interested in "+affect.tool().name()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
+					ExternalPlay.quickSay(M,affect.source(),"Interested in "+affect.tool().displayName()+"? Here is some information for you:\n\rLevel "+affect.tool().envStats().level()+"\n\rDescription: "+affect.tool().description(),true,false);
 				break;
 			case Affect.TYP_BUY:
 				super.affect(myHost,affect);
@@ -506,7 +506,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				String col=null;
 				int val=yourValue(mob,E,true);
-				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.displayName(),totalWidth-csize);
 				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");

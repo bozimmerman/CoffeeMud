@@ -162,7 +162,7 @@ public class Thief extends StdCharClass
 			   &&(affect.tool().ID().equals("Thief_Steal")
 				  ||affect.tool().ID().equals("Thief_Robbery")
 				  ||affect.tool().ID().equals("Thief_Swipe")))
-				gainExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10);
+				gainExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().displayName(),10);
 		}
 		super.affect(myHost,affect);
 	}
@@ -187,7 +187,7 @@ public class Thief extends StdCharClass
 				{
 					String name="in <S-HIS-HER> maneuver";
 					if(spellLike)
-						name=affect.tool().name().toLowerCase();
+						name=affect.tool().displayName().toLowerCase();
 					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> armor make(s) <S-HIM-HER> fumble(s) "+name+"!");
 					return false;
 				}
@@ -201,7 +201,7 @@ public class Thief extends StdCharClass
 				if(!isAllowedWeapon(classification))
 					if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
 						return false;
 					}
 			}

@@ -25,7 +25,7 @@ public class Thief_SilentGold extends ThiefSkill
 			if((affect.sourceMinor()==Affect.TYP_DEATH)
 			&&(affect.source()!=affected)
 			&&((affect.source().getMoney()/10)>0))
-				affect.addTrailerMsg(new FullMsg((MOB)affected,affect.source(),this,Affect.MSG_THIEF_ACT|Affect.MASK_MALICIOUS,"You silently autoloot "+(affect.source().getMoney()/10)+" gold from the corpse of "+affect.source().name(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
+				affect.addTrailerMsg(new FullMsg((MOB)affected,affect.source(),this,Affect.MSG_THIEF_ACT|Affect.MASK_MALICIOUS,"You silently autoloot "+(affect.source().getMoney()/10)+" gold from the corpse of "+affect.source().displayName(),Affect.NO_EFFECT,null,Affect.NO_EFFECT,null));
 			else
 			if((affect.sourceMinor()==Affect.TYP_DELICATE_HANDS_ACT)
 			&&(affect.tool()==this)

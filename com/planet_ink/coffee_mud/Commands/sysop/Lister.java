@@ -293,10 +293,10 @@ public class Lister
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					MOB M=R.fetchInhabitant(m);
-					if((CoffeeUtensils.containsString(M.name(),who))
+					if((CoffeeUtensils.containsString(M.displayName(),who))
 					||(CoffeeUtensils.containsString(M.displayText(),who)))
 					{
-						lines.append("^!"+Util.padRight(M.name(),17)+"^?| ");
+						lines.append("^!"+Util.padRight(M.displayName(),17)+"^?| ");
 						lines.append(R.displayText());
 						lines.append(" ("+R.ID()+")");
 						lines.append("\n\r");

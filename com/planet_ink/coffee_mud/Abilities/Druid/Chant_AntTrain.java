@@ -62,7 +62,7 @@ public class Chant_AntTrain extends Chant
 		if(target==null) return false;
 		if(!(target instanceof Item))
 		{
-			mob.tell("The ants can't carry "+target.name()+"!");
+			mob.tell("The ants can't carry "+target.displayName()+"!");
 			return false;
 		}
 

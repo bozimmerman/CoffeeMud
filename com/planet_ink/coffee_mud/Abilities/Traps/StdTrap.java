@@ -161,29 +161,29 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		if(E.fetchAffect(ID())!=null)
 		{
-			mob.tell("This trap is already set on "+E.name()+".");
+			mob.tell("This trap is already set on "+E.displayName()+".");
 			return false;
 		}
 		if(!canAffect(E))
 		{
-			mob.tell("You can't set '"+name()+"' on "+E.name()+".");
+			mob.tell("You can't set '"+name()+"' on "+E.displayName()+".");
 			return false;
 		}
 		if((canAffectCode()&Ability.CAN_EXITS)==Ability.CAN_EXITS)
 		{
 			if((E instanceof Item)&&(!(E instanceof Container)))
 			{
-				mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+				mob.tell(E.displayName()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 			if(((E instanceof Exit)&&(!(((Exit)E).hasADoor()))))
 			{
-				mob.tell(E.name()+" has no door, so '"+name()+"' cannot be set on it.");
+				mob.tell(E.displayName()+" has no door, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 			if(((E instanceof Container)&&(!(((Container)E).hasALid()))))
 			{
-				mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+				mob.tell(E.displayName()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 		}

@@ -383,7 +383,7 @@ public class Mage extends StdCharClass
 				default:
 					if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
 					{
-						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+						myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
 						return false;
 					}
 				}

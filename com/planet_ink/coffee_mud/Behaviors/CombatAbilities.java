@@ -94,7 +94,7 @@ public class CombatAbilities extends StdBehavior
 
 			tryThisOne.setProfficiency(Dice.roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
-			V.addElement(victim.name());
+			V.addElement(victim.displayName());
 			tryThisOne.invoke(mob,V,victim,false);
 		}
 		else
@@ -118,7 +118,7 @@ public class CombatAbilities extends StdBehavior
 			{
 				Vector V=new Vector();
 				V.addElement("hold");
-				V.addElement(backupWand.name());
+				V.addElement(backupWand.displayName());
 				try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
 			}
 			else
@@ -134,7 +134,7 @@ public class CombatAbilities extends StdBehavior
 						victim=mob;
 					Vector V=new Vector();
 					V.addElement("say");
-					V.addElement(victim.name());
+					V.addElement(victim.displayName());
 					V.addElement(((Wand)myWand).magicWord());
 					try{ExternalPlay.doCommand(mob,V);}catch(Exception e){Log.errOut("CombatAbilities",e);}
 				}

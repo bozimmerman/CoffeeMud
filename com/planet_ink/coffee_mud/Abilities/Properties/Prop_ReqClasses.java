@@ -19,7 +19,7 @@ public class Prop_ReqClasses extends Property
 			return true;
 
 		int x=text().toUpperCase().indexOf("ALL");
-		int y=text().toUpperCase().indexOf(mob.charStats().getCurrentClass().name().toUpperCase());
+		int y=text().toUpperCase().indexOf(mob.charStats().displayClassName().toUpperCase());
 		if(y<0) y=text().toUpperCase().indexOf(mob.charStats().getCurrentClass().baseClass().toUpperCase());
 		if(((x>0)
 			&&(text().charAt(x-1)=='-')

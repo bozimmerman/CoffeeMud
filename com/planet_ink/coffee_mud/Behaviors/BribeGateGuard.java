@@ -88,7 +88,7 @@ public class BribeGateGuard extends StdBehavior
     // return the balance in int form
 		Vector V=ExternalPlay.DBReadJournal(gates());
 		Vector mine=new Vector();
-    int balance=0;
+	    int balance=0;
 		for(int v=0;v<V.size();v++)
 		{
 			Vector V2=(Vector)V.elementAt(v);
@@ -278,7 +278,7 @@ public class BribeGateGuard extends StdBehavior
           Exit exit=(Exit)affect.tool();
           int dir=findGate(observer);
           Exit e=observer.location().getExitInDir(dir);
-          if(exit.name()==e.name()) // the player is walking through the gate.  NOW we charge their balance
+          if(exit.name().equals(e.name())) // the player is walking through the gate.  NOW we charge their balance
           {
             charge(price(),source);
           }

@@ -148,7 +148,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		
 		boolean success=profficiencyCheck(0,auto);
 		
-		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
+		FullMsg msg=new FullMsg(mob,trapThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_THIEF_ACT,Affect.MASK_GENERAL|Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,(auto?trapThis.displayName()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

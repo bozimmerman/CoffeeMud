@@ -62,25 +62,25 @@ public class Chant_LoveMoon extends Chant
 					MOB M=(MOB)choices.elementAt(Dice.roll(1,choices.size(),-1));
 					try{
 					if(Dice.rollPercentage()==1)
-						ExternalPlay.doCommand(mob,Util.parse("MATE "+M.name()));
+						ExternalPlay.doCommand(mob,Util.parse("MATE "+M.displayName()));
 					else
 					if(Dice.rollPercentage()>10)
 						switch(Dice.roll(1,5,0))
 						{
 						case 1:
-							mob.tell("You feel strange urgings towards "+M.name()+".");
+							mob.tell("You feel strange urgings towards "+M.displayName()+".");
 							break;
 						case 2:
-							mob.tell("You have strong happy feelings towards "+M.name()+".");
+							mob.tell("You have strong happy feelings towards "+M.displayName()+".");
 							break;
 						case 3:
-							mob.tell("You feel very appreciative of "+M.name()+".");
+							mob.tell("You feel very appreciative of "+M.displayName()+".");
 							break;
 						case 4:
-							mob.tell("You feel very close to "+M.name()+".");
+							mob.tell("You feel very close to "+M.displayName()+".");
 							break;
 						case 5:
-							mob.tell("You feel lovingly towards "+M.name()+".");
+							mob.tell("You feel lovingly towards "+M.displayName()+".");
 							break;
 						}
 					}catch(Exception e){}

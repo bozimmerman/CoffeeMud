@@ -241,7 +241,7 @@ public class StdCharClass implements CharClass, Cloneable
 				if(sireShare<=0) sireShare=1;
 				amount-=sireShare;
 				if(sire.charStats()!=null)
-					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.name(),sireShare);
+					sire.charStats().getCurrentClass().gainExperience(sire,null," from "+mob.displayName(),sireShare);
 			}
 		}
 
@@ -309,12 +309,7 @@ public class StdCharClass implements CharClass, Cloneable
 
 		StringBuffer theNews=new StringBuffer("");
 
-		String levelStr=null;
-		if(classLevel>=mob.baseEnvStats().level())
-			levelStr="level "+mob.baseEnvStats().level()+" "+mob.baseCharStats().getCurrentClass().name();
-		else
-			levelStr=mob.baseCharStats().getCurrentClass().name()+" "+classLevel+"/"+mob.baseEnvStats().level();
-		theNews.append("^HYou are now a "+levelStr+".^N\n\r");
+		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
 		int newHitPointGain=getMinHitPointsLevel()+(int)Math.floor(Math.random()*(getMaxHitPointsLevel()-getMinHitPointsLevel()));
 		newHitPointGain+=(int)Math.floor(Util.div(mob.charStats().getStat(CharStats.CONSTITUTION),2.0))-4;

@@ -58,7 +58,7 @@ public class Fletching extends CommonSkill
 		if(student==null) return true;
 		if(student.fetchAbility("Specialization_Ranged")==null)
 		{
-			teacher.tell(student.name()+" has not yet specialized in ranged weapons.");
+			teacher.tell(student.displayName()+" has not yet specialized in ranged weapons.");
 			student.tell("You need to specialize in ranged weapons to learn "+name()+".");
 			return false;
 		}
@@ -77,9 +77,9 @@ public class Fletching extends CommonSkill
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up mending "+building.displayName()+".");
 						else
-							commonEmote(mob,"<S-NAME> completely mess(es) up making "+building.name()+".");
+							commonEmote(mob,"<S-NAME> completely mess(es) up making "+building.displayName()+".");
 					}
 					else
 					{
@@ -152,15 +152,15 @@ public class Fletching extends CommonSkill
 			}
 			if(!building.subjectToWearAndTear())
 			{
-				commonTell(mob,"You can't mend "+building.name()+".");
+				commonTell(mob,"You can't mend "+building.displayName()+".");
 				return false;
 			}
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;
-			startStr="<S-NAME> start(s) mending "+building.name()+".";
-			displayText="You are mending "+building.name();
-			verb="mending "+building.name();
+			startStr="<S-NAME> start(s) mending "+building.displayName()+".";
+			displayText="You are mending "+building.displayName();
+			verb="mending "+building.displayName();
 		}
 		else
 		{
@@ -251,9 +251,9 @@ public class Fletching extends CommonSkill
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),EnvResource.RESOURCE_DESCS[(firstWood.material()&EnvResource.RESOURCE_MASK)]).toLowerCase();
 			itemName=Util.startWithAorAn(itemName);
 			building.setName(itemName);
-			startStr="<S-NAME> start(s) making "+building.name()+".";
-			displayText="You are making "+building.name();
-			verb="making "+building.name();
+			startStr="<S-NAME> start(s) making "+building.displayName()+".";
+			displayText="You are making "+building.displayName();
+			verb="making "+building.displayName();
 			building.setDisplayText(itemName+" is here");
 			building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);

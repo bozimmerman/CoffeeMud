@@ -134,7 +134,7 @@ public class Chant_SummonTornado extends Chant
 							}
 							if(I.usesRemaining()<=0)
 							{
-								mob.location().showHappens(Affect.MSG_OK_VISUAL,I.name()+" is destroyed!");
+								mob.location().showHappens(Affect.MSG_OK_VISUAL,I.displayName()+" is destroyed!");
 								I.destroyThis();
 							}
 						}

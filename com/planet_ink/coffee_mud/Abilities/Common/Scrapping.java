@@ -100,7 +100,7 @@ public class Scrapping extends CommonSkill
 		}
 		if(!okMaterial)
 		{
-			commonTell(mob,"You don't know how to scrap "+I.name()+".");
+			commonTell(mob,"You don't know how to scrap "+I.displayName()+".");
 			return false;
 		}
 		Vector V=new Vector();
@@ -119,7 +119,7 @@ public class Scrapping extends CommonSkill
 			Item I2=mob.location().fetchItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
-				commonTell(mob,"You need to remove the contents of "+I2.name()+" first.");
+				commonTell(mob,"You need to remove the contents of "+I2.displayName()+" first.");
 				return false;
 			}
 		}
@@ -163,7 +163,7 @@ public class Scrapping extends CommonSkill
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
 		int duration=35+V.size()-mob.envStats().level();
 		if(duration<10) duration=10;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.displayName()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

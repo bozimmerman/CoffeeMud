@@ -46,7 +46,7 @@ public class Spell_Duplicate extends Spell
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
+				mob.location().show(mob,target,Affect.MSG_OK_VISUAL,target.displayName()+" blurs and divides into two!");
 				Item newTarget=(Item)target.copyOf();
 				newTarget.recoverEnvStats();
 				if(target.owner() instanceof MOB)

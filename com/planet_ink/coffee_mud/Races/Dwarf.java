@@ -84,36 +84,36 @@ public class Dwarf extends StdRace
 		double pct=(Util.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 
 		if(pct<.10)
-			return "^r" + mob.name() + "^r is nearly dead!^N";
+			return "^r" + mob.displayName() + "^r is nearly dead!^N";
 		else
 		if(pct<.20)
-			return "^r" + mob.name() + "^r is covered in blood.^N";
+			return "^r" + mob.displayName() + "^r is covered in blood.^N";
 		else
 		if(pct<.30)
-			return "^r" + mob.name() + "^r is bleeding from cuts and gashes.^N";
+			return "^r" + mob.displayName() + "^r is bleeding from cuts and gashes.^N";
 		else
 		if(pct<.40)
-			return "^y" + mob.name() + "^y has numerous wounds.^N";
+			return "^y" + mob.displayName() + "^y has numerous wounds.^N";
 		else
 		if(pct<.50)
-			return "^y" + mob.name() + "^y has some wounds.^N";
+			return "^y" + mob.displayName() + "^y has some wounds.^N";
 		else
 		if(pct<.60)
-			return "^p" + mob.name() + "^p has a few cuts.^N";
+			return "^p" + mob.displayName() + "^p has a few cuts.^N";
 		else
 		if(pct<.70)
-			return "^p" + mob.name() + "^p is cut.^N";
+			return "^p" + mob.displayName() + "^p is cut.^N";
 		else
 		if(pct<.80)
-			return "^g" + mob.name() + "^g has some bruises.^N";
+			return "^g" + mob.displayName() + "^g has some bruises.^N";
 		else
 		if(pct<.90)
-			return "^g" + mob.name() + "^g is very winded.^N";
+			return "^g" + mob.displayName() + "^g is very winded.^N";
 		else
 		if(pct<.99)
-			return "^g" + mob.name() + "^g is slightly winded.^N";
+			return "^g" + mob.displayName() + "^g is slightly winded.^N";
 		else
-			return "^c" + mob.name() + "^c is in perfect health^N";
+			return "^c" + mob.displayName() + "^c is in perfect health^N";
 	}
 	public Vector myResources()
 	{

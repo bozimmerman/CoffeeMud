@@ -27,7 +27,7 @@ public class Spell_HeatMetal extends Spell
 
 		if(Util.bset(msg.targetMajor(),Affect.MASK_HANDS))
 		{
-			msg.source().tell(affected.name()+" is too hot!");
+			msg.source().tell(affected.displayName()+" is too hot!");
 			return false;
 		}
 		return true;
@@ -60,7 +60,7 @@ public class Spell_HeatMetal extends Spell
 			   &&(!mob.amDead()))
 			{
 				int damage=Dice.roll(1,6,1);
-				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURSTING,item.name()+" <DAMAGE> <T-NAME>!");
+				ExternalPlay.postDamage(invoker,mob,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURSTING,item.displayName()+" <DAMAGE> <T-NAME>!");
 				if(Dice.rollPercentage()<mob.charStats().getStat(CharStats.STRENGTH))
 				{
 					ExternalPlay.drop(mob,item,false);

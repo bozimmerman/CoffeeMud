@@ -32,7 +32,7 @@ public class Spell_FakeArmor extends Spell
 		&&(affect.target() instanceof MOB))
 		{
 			notAgainThisRound=true;
-			affect.addTrailerMsg(new FullMsg((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,affected.name()+" absorbs some of the damage done to <S-NAME>."));
+			affect.addTrailerMsg(new FullMsg((MOB)affect.target(),null,Affect.MSG_OK_VISUAL,affected.displayName()+" absorbs some of the damage done to <S-NAME>."));
 			((Item)affected).remove();
 			((Item)affected).destroyThis();
 		}
@@ -121,7 +121,7 @@ public class Spell_FakeArmor extends Spell
 					armor.setRawProperLocationBitmap(Item.ON_FEET);
 					break;
 				}
-				armor.setDisplayText(armor.name()+" sits here");
+				armor.setDisplayText(armor.displayName()+" sits here");
 				armor.setDescription("looks like your size!");
 				armor.baseEnvStats().setWeight(0);
 				armor.recoverEnvStats();

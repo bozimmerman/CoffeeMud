@@ -45,13 +45,13 @@ public class StdArmor extends StdContainer implements Armor
 		{
 			switch(material()&EnvResource.MATERIAL_MASK)
 			{
-			case EnvResource.MATERIAL_CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_CLOTH: return displayName()+" has a small tear ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_GLASS: return displayName()+" has a few hairline cracks ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_LEATHER: return displayName()+" is a bit scuffed ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" has some small dents ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" has a few smell splinters ("+usesRemaining()+"%)";
-			default: return name()+" is slightly damaged ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_MITHRIL: return displayName()+" has some small dents ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return displayName()+" has a few smell splinters ("+usesRemaining()+"%)";
+			default: return displayName()+" is slightly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -60,16 +60,16 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&EnvResource.MATERIAL_MASK)
 			{
 			case EnvResource.MATERIAL_CLOTH: 
-			case EnvResource.MATERIAL_PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_PAPER: return displayName()+" has a a few tears and rips ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_GLASS: return displayName()+" is cracked ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_FLESH:
-			case EnvResource.MATERIAL_LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_LEATHER: return displayName()+" is torn ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" is dented ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" is splintered ("+usesRemaining()+"%)";
-			default: return name()+" is damaged ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_MITHRIL: return displayName()+" is dented ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return displayName()+" is splintered ("+usesRemaining()+"%)";
+			default: return displayName()+" is damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -78,16 +78,16 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&EnvResource.MATERIAL_MASK)
 			{
 			case EnvResource.MATERIAL_PAPER: 
-			case EnvResource.MATERIAL_CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_CLOTH: return displayName()+" has numerous tears and rips ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_GLASS: return displayName()+" has numerous streaking cracks ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_FLESH:
-			case EnvResource.MATERIAL_LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_LEATHER: return displayName()+" is badly torn up ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
-			default: return name()+" is badly damaged ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_MITHRIL: return displayName()+" is badly dented and cracked ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return displayName()+" is badly cracked and splintered ("+usesRemaining()+"%)";
+			default: return displayName()+" is badly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
@@ -95,16 +95,16 @@ public class StdArmor extends StdContainer implements Armor
 			switch(material()&EnvResource.MATERIAL_MASK)
 			{
 			case EnvResource.MATERIAL_PAPER: 
-			case EnvResource.MATERIAL_CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_CLOTH: return displayName()+" is a shredded mess ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_ROCK:
 			case EnvResource.MATERIAL_PRECIOUS:
-			case EnvResource.MATERIAL_GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_GLASS: return displayName()+" is practically shardes ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_FLESH:
-			case EnvResource.MATERIAL_LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_LEATHER: return displayName()+" is badly shredded and ripped ("+usesRemaining()+"%)";
 			case EnvResource.MATERIAL_METAL:
-			case EnvResource.MATERIAL_MITHRIL: return name()+" is a crumpled mess ("+usesRemaining()+"%)";
-			case EnvResource.MATERIAL_WOODEN: return name()+" is nothing but splinters ("+usesRemaining()+"%)";
-			default: return name()+" is horribly damaged ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_MITHRIL: return displayName()+" is a crumpled mess ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return displayName()+" is nothing but splinters ("+usesRemaining()+"%)";
+			default: return displayName()+" is horribly damaged ("+usesRemaining()+"%)";
 			}
 		}
 	}
@@ -128,12 +128,12 @@ public class StdArmor extends StdContainer implements Armor
 				devianceAllowed=20;
 			if(affect.source().envStats().height()<(envStats().height()-devianceAllowed))
 			{
-				affect.source().tell(name()+" doesn't fit you -- it's too big.");
+				affect.source().tell(displayName()+" doesn't fit you -- it's too big.");
 				return false;
 			}
 			if(affect.source().envStats().height()>(envStats().height()+devianceAllowed))
 			{
-				affect.source().tell(name()+" doesn't fit you -- it's too small.");
+				affect.source().tell(displayName()+" doesn't fit you -- it's too small.");
 				return false;
 			}
 		}
@@ -396,7 +396,7 @@ public class StdArmor extends StdContainer implements Armor
 			{
 				MOB owner=(MOB)owner();
 				setUsesRemaining(100);
-				affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,name()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,name()+" being worn by <S-NAME> is destroyed!"));
+				affect.addTrailerMsg(new FullMsg(((MOB)owner()),null,null,Affect.MSG_OK_VISUAL,displayName()+" is destroyed!!",Affect.NO_EFFECT,null,Affect.MSG_OK_VISUAL,displayName()+" being worn by <S-NAME> is destroyed!"));
 				remove();
 				destroyThis();
 				owner.recoverEnvStats();
@@ -477,10 +477,10 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		String id=super.secretIdentity();
 		if(envStats().ability()>0)
-			id=name()+" +"+envStats().ability()+((id.length()>0)?"\n\r":"")+id;
+			id=displayName()+" +"+envStats().ability()+((id.length()>0)?"\n\r":"")+id;
 		else
 		if(envStats().ability()<0)
-			id=name()+" "+envStats().ability()+((id.length()>0)?"\n\r":"")+id;
+			id=displayName()+" "+envStats().ability()+((id.length()>0)?"\n\r":"")+id;
 		return id+"\n\rProtection: "+envStats().armor();
 	}
 }

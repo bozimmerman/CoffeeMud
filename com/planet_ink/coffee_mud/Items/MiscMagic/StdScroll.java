@@ -92,12 +92,12 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				add.append("A "+thang+" of ");
 			Ability A=(Ability)V.elementAt(v);
 			if(V.size()==1)
-				add.append(A.name());
+				add.append(A.displayName());
 			else
 			if(v==(V.size()-1))
-				add.append("and "+A.name());
+				add.append("and "+A.displayName());
 			else
-				add.append(A.name()+", ");
+				add.append(A.displayName()+", ");
 		}
 		if(add.length()>0)
 		{
@@ -113,7 +113,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			boolean readingMagic=(mob.fetchAffect("Spell_ReadMagic")!=null);
 			if(readingMagic)
 			{
-				mob.tell(name()+" glows softly.");
+				mob.tell(displayName()+" glows softly.");
 				me.setReadableScroll(true);
 			}
 			if(me.isReadableScroll())
@@ -168,7 +168,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							for(int u=0;u<me.getSpells().size();u++)
 							{
 								Ability A=(Ability)me.getSpells().elementAt(u);
-								theNews.append("Level "+Util.padRight(""+CMAble.lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
+								theNews.append("Level "+Util.padRight(""+CMAble.lowestQualifyingLevel(A.ID()),2)+": "+A.displayName()+"\n\r");
 							}
 							mob.tell(theNews.toString());
 						}

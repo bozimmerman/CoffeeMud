@@ -94,7 +94,7 @@ public class Spell_Geas extends Spell
 		if(target==null) return false;
 		if(target.charStats().getStat(CharStats.INTELLIGENCE)<5)
 		{
-			mob.tell(target.name()+" is too stupid to understand the instructions!");
+			mob.tell(target.displayName()+" is too stupid to understand the instructions!");
 			return false;
 		}
 		// kill x, bring x, find x, get x, social x, eat x, drink x, buy x,

@@ -223,14 +223,14 @@ public class MudChat extends StdBehavior
 				finalCommand="say \""+finalCommand.substring(1).trim()+"\"";
 			else
 			if(target!=null)
-				finalCommand="say \""+target.name()+"\" "+finalCommand.trim();
+				finalCommand="say \""+target.displayName()+"\" "+finalCommand.trim();
 
 			if(finalCommand.indexOf("$r")>=0)
 				finalCommand=Util.replaceAll(finalCommand,"$r",rest);
 			if((target!=null)&&(finalCommand.indexOf("$t")>=0))
-				finalCommand=Util.replaceAll(finalCommand,"$t",target.name());
+				finalCommand=Util.replaceAll(finalCommand,"$t",target.displayName());
 			if((source!=null)&&(finalCommand.indexOf("$n")>=0))
-				finalCommand=Util.replaceAll(finalCommand,"$n",source.name());
+				finalCommand=Util.replaceAll(finalCommand,"$n",source.displayName());
 			if(finalCommand.indexOf("$$")>=0)
 				finalCommand=Util.replaceAll(finalCommand,"$$","$");
 	

@@ -61,7 +61,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 				}
 			}
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,auto?unlockThis.name()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.name()+".");
+		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_ACTION,auto?unlockThis.displayName()+" begins to glow.":"<S-NAME> attempt(s) to safely deactivate a trap on "+unlockThis.displayName()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

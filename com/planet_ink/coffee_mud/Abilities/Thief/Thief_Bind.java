@@ -70,7 +70,7 @@ public class Thief_Bind extends ThiefSkill
 
 		if(!Sense.isSleeping(target))
 		{
-			mob.tell(target.name()+" doesn't look willing to cooperate.");
+			mob.tell(target.displayName()+" doesn't look willing to cooperate.");
 			return false;
 		}
 		if(mob.isInCombat())

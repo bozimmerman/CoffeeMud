@@ -68,23 +68,23 @@ public class Thief_DetectTraps extends ThiefSkill
 				}
 			}
 		}
-		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.name()+" over very carefully.");
+		FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_ACTION:Affect.MSG_DELICATE_HANDS_ACT,auto?"":"<S-NAME> look(s) "+unlockThis.displayName()+" over very carefully.");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if((unlockThis==lastChecked)&&((theTrap==null)||(theTrap.disabled())))
 				setProfficiency(oldProfficiency);
 			if((!success)||(theTrap==null))
-				mob.tell("You don't find any traps on "+unlockThis.name()+".");
+				mob.tell("You don't find any traps on "+unlockThis.displayName()+".");
 			else
 			{
 				if(theTrap.disabled())
-					mob.tell(unlockThis.name()+" is trapped, but the trap looks disabled for the moment.");
+					mob.tell(unlockThis.displayName()+" is trapped, but the trap looks disabled for the moment.");
 				else
 				if(theTrap.sprung())
-					mob.tell(unlockThis.name()+" is trapped, and the trap looks sprung.");
+					mob.tell(unlockThis.displayName()+" is trapped, and the trap looks sprung.");
 				else
-					mob.tell(unlockThis.name()+" definitely looks trapped.");
+					mob.tell(unlockThis.displayName()+" definitely looks trapped.");
 			}
 			lastChecked=unlockThis;
 		}

@@ -203,7 +203,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(msg.source().getMyDeity()!=null)
 			{
-				msg.source().tell("You already worship "+msg.source().getMyDeity().name()+".");
+				msg.source().tell("You already worship "+msg.source().getMyDeity().displayName()+".");
 				return false;
 			}
 			if(msg.source().charStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
@@ -363,15 +363,15 @@ public class StdDeity extends StdMOB implements Deity
 						&&(msg.target() instanceof Container)
 						&&(msg.tool()!=null)
 						&&(msg.tool() instanceof Item)
-						&&(CoffeeUtensils.containsString(msg.tool().name(),DT.parm1))
-						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm2)))
+						&&(CoffeeUtensils.containsString(msg.tool().displayName(),DT.parm1))
+						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm2)))
 							yup=true;
 						break;
 					case TRIGGER_BURNTHING:
 					case TRIGGER_DRINK:
 					case TRIGGER_EAT:
 						if((msg.target()!=null)
-						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm1)))
+						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm1)))
 						   yup=true;
 						break;
 					case TRIGGER_INROOM:
@@ -381,13 +381,13 @@ public class StdDeity extends StdMOB implements Deity
 						break;
 					case TRIGGER_RIDING:
 						if((msg.source().riding()!=null)
-						&&(CoffeeUtensils.containsString(msg.source().riding().name(),DT.parm1)))
+						&&(CoffeeUtensils.containsString(msg.source().riding().displayName(),DT.parm1)))
 						   yup=true;
 						break;
 					case TRIGGER_CAST:
 						if((msg.tool()!=null)
 						&&((msg.tool().ID().equalsIgnoreCase(DT.parm1))
-						||(CoffeeUtensils.containsString(msg.tool().name(),DT.parm1))))
+						||(CoffeeUtensils.containsString(msg.tool().displayName(),DT.parm1))))
 							yup=true;
 						break;
 					case TRIGGER_EMOTE:
@@ -400,7 +400,7 @@ public class StdDeity extends StdMOB implements Deity
 						&&(((Item)msg.tool()).baseGoldValue()>=Util.s_int(DT.parm1))
 						&&(msg.target()!=null)
 						&&(msg.target() instanceof Container)
-						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm2)))
+						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm2)))
 							yup=true;
 						break;
 					case TRIGGER_PUTMATERIAL:
@@ -410,7 +410,7 @@ public class StdDeity extends StdMOB implements Deity
 							||((((Item)msg.tool()).material()&EnvResource.MATERIAL_MASK)==Util.s_int(DT.parm1)))
 						&&(msg.target()!=null)
 						&&(msg.target() instanceof Container)
-						&&(CoffeeUtensils.containsString(msg.target().name(),DT.parm2)))
+						&&(CoffeeUtensils.containsString(msg.target().displayName(),DT.parm2)))
 							yup=true;
 						break;
 					case TRIGGER_BURNMATERIAL:

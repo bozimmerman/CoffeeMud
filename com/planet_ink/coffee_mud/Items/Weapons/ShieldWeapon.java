@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.Items.Weapons;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-public class ShieldWeapon extends com.planet_ink.coffee_mud.Items.Weapons.StdWeapon
+public class ShieldWeapon extends StdWeapon
 {
 	public String ID(){	return "ShieldWeapon";}
 	public ShieldWeapon()

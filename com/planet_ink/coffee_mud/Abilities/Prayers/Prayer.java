@@ -34,7 +34,7 @@ public class Prayer extends StdAbility
 	protected String prayWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return "pray(s) to "+mob.getMyDeity().name();
+			return "pray(s) to "+mob.getMyDeity().displayName();
 		else
 			return "pray(s)";
 	}
@@ -42,7 +42,7 @@ public class Prayer extends StdAbility
 	protected String prayForWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return "pray(s) for "+mob.getMyDeity().name();
+			return "pray(s) for "+mob.getMyDeity().displayName();
 		else
 			return "pray(s)";
 	}
@@ -56,7 +56,7 @@ public class Prayer extends StdAbility
 	protected String hisHerDiety(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return mob.getMyDeity().name();
+			return mob.getMyDeity().displayName();
 		return "<S-HIS-HER> god";
 	}
 	protected String ofDiety(MOB mob)
@@ -68,7 +68,7 @@ public class Prayer extends StdAbility
 	protected String prayingWord(MOB mob)
 	{
 		if(mob.getMyDeity()!=null)
-			return "praying to "+mob.getMyDeity().name();
+			return "praying to "+mob.getMyDeity().displayName();
 		else
 			return "praying";
 	}

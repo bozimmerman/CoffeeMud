@@ -101,7 +101,7 @@ public class Spell_Cogniportive extends Spell
 				target=afftarget;
 			Room home=CMMap.getRoom(text());
 			if(home==null)
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.displayName()+".");
 			else
 			{
 				Hashtable h=ExternalPlay.properTargets(this,mob,false);
@@ -182,7 +182,7 @@ public class Spell_Cogniportive extends Spell
 		Ability A=target.fetchAffect(ID());
 		if(A!=null)
 		{
-			mob.tell(target.name()+" is already cogniportive!");
+			mob.tell(target.displayName()+" is already cogniportive!");
 			return false;
 		}
 

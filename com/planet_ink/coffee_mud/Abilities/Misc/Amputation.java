@@ -181,10 +181,10 @@ public class Amputation extends StdAbility
 					switch(affect.targetMinor())
 					{
 						case Affect.TYP_HOLD:
-							myChar.tell("Your lack of limbs prevents you from holding "+affect.target().name()+".");
+							myChar.tell("Your lack of limbs prevents you from holding "+affect.target().displayName()+".");
 							break;
 						case Affect.TYP_WIELD:
-							myChar.tell("Your lack of limbs prevents you from wielding "+affect.target().name()+".");
+							myChar.tell("Your lack of limbs prevents you from wielding "+affect.target().displayName()+".");
 							break;
 					}
 					return false;
@@ -195,7 +195,7 @@ public class Amputation extends StdAbility
 				&&(affect.target() instanceof Item)
 				&&(!canWear(missingLimbList,(Item)affect.target())))
 				{
-					myChar.tell("Your lack of limbs prevents you from putting on "+affect.target().name()+".");
+					myChar.tell("Your lack of limbs prevents you from putting on "+affect.target().displayName()+".");
 					return false;
 				}
 				break;
@@ -264,7 +264,7 @@ public class Amputation extends StdAbility
 		}
 
 		if(target!=null)
-			targetName=target.name();
+			targetName=target.displayName();
 
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
@@ -308,7 +308,7 @@ public class Amputation extends StdAbility
 			if(V.size()==0)
 			{
 				if(!auto)
-					mob.tell("There is nothing left on "+target.name()+" to amputate!");
+					mob.tell("There is nothing left on "+target.displayName()+" to amputate!");
 				return false;
 			}
 			bit=((Integer)V.elementAt(Dice.roll(1,V.size(),-1))).longValue();
@@ -330,7 +330,7 @@ public class Amputation extends StdAbility
 						Item limb=CMClass.getItem("GenItem");
 						limb.setName("a "+gone);
 						limb.setDisplayText("a bloody "+gone+" is sitting here.");
-						limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
+						limb.setSecretIdentity(target.displayName()+"`s bloody "+gone+".");
 						limb.baseEnvStats().setLevel(1);
 						limb.baseEnvStats().setWeight(5);
 						limb.recoverEnvStats();

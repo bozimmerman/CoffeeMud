@@ -48,7 +48,7 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) w=mob.myNaturalWeapon();
 					if(w==null) return false;
 					Room room=mob.location();
-					room.show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of ice with "+w.name()+".^?");
+					room.show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the monolith of ice with "+w.displayName()+".^?");
 					amountRemaining-=mob.envStats().damage();
 					if(amountRemaining<0)
 					{
@@ -83,7 +83,7 @@ public class Prayer_Monolith extends Prayer
 			&&(!((Weapon)affect.tool()).amWearingAt(Item.INVENTORY))
 			&&(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 			{
-				mob.location().show(mob,invoker,Affect.MSG_OK_VISUAL,"<S-NAME> fire(s) "+affect.tool().name()+" at <T-NAME>.  The missile enters the monolith of air.");
+				mob.location().show(mob,invoker,Affect.MSG_OK_VISUAL,"<S-NAME> fire(s) "+affect.tool().displayName()+" at <T-NAME>.  The missile enters the monolith of air.");
 				MOB M=CMClass.getMOB("StdMOB");
 				M.setLocation(mob.location());
 				M.setName("The monolith of air");
@@ -287,7 +287,7 @@ public class Prayer_Monolith extends Prayer
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 				break;
 			}
-			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
+			FullMsg msg = new FullMsg(mob, target, this,affectType(auto),auto?I.displayName()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.displayName()+"!^?");
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);

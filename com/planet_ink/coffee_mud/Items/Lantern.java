@@ -53,7 +53,7 @@ public class Lantern extends LightSource
 							Drink thePuddle=(Drink)affect.tool();
 							if(thePuddle.liquidRemaining()<1)
 							{
-								mob.tell(thePuddle.name()+" is empty.");
+								mob.tell(thePuddle.displayName()+" is empty.");
 								return false;
 							}
 							return true;

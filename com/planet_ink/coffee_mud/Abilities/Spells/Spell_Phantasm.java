@@ -51,7 +51,7 @@ public class Spell_Phantasm extends Spell
 			MOB mob=(MOB)affected;
 			if(msg.amITarget(mob)&&(msg.sourceMinor()==Affect.TYP_CAST_SPELL))
 			{
-				mob.tell(mob.name()+" seems strangely unaffected by your magic.");
+				mob.tell(mob.displayName()+" seems strangely unaffected by your magic.");
 				return false;
 			}
 		}
@@ -69,7 +69,7 @@ public class Spell_Phantasm extends Spell
 				unInvoke();
 			else
 			if(msg.amITarget(mob)&&(Util.bset(msg.targetCode(),Affect.MASK_HURT)))
-				msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_QUIT,msg.source().name()+"'s attack somehow went THROUGH "+mob.name()+"."));
+				msg.addTrailerMsg(new FullMsg(mob,null,Affect.MSG_QUIT,msg.source().displayName()+"'s attack somehow went THROUGH "+mob.displayName()+"."));
 		}
 	}
 

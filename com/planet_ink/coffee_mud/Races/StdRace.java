@@ -107,13 +107,13 @@ public class StdRace implements Race
 					switch(affect.targetMinor())
 					{
 						case Affect.TYP_WEAR:
-							affect.source().tell("You lack the anatomy to wear "+affect.target().name()+".");
+							affect.source().tell("You lack the anatomy to wear "+affect.target().displayName()+".");
 							break;
 						case Affect.TYP_HOLD:
-							affect.source().tell("You lack the anatomy to hold "+affect.target().name()+".");
+							affect.source().tell("You lack the anatomy to hold "+affect.target().displayName()+".");
 							break;
 						case Affect.TYP_WIELD:
-							affect.source().tell("You lack the anatomy to wield "+affect.target().name()+".");
+							affect.source().tell("You lack the anatomy to wield "+affect.target().displayName()+".");
 							break;
 					}
 					return false;
@@ -365,9 +365,9 @@ public class StdRace implements Race
 		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
 		if(!mob.isMonster())
 			Body.baseEnvStats().setRejuv(Body.baseEnvStats().rejuv()*10);
-		Body.setName("the body of "+mob.name());
-		Body.setSecretIdentity(mob.name()+"/"+mob.description());
-		Body.setDisplayText("the body of "+mob.name()+" lies here.");
+		Body.setName("the body of "+mob.displayName());
+		Body.setSecretIdentity(mob.displayName()+"/"+mob.description());
+		Body.setDisplayText("the body of "+mob.displayName()+" lies here.");
 		room.addItem(Body);
 		Body.recoverEnvStats();
 		for(int i=0;i<mob.numAffects();i++)

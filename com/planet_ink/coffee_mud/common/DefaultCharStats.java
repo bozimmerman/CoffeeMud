@@ -11,6 +11,10 @@ public class DefaultCharStats implements Cloneable, CharStats
 	protected CharClass[] myClasses=null;
 	protected Integer[] myLevels=null;
 	protected Race myRace=null;
+	protected String raceName=null;
+	protected String genderName=null;
+	protected String displayClassName=null;
+	protected String displayClassLevel=null;
 	
 	public DefaultCharStats()
 	{
@@ -93,7 +97,40 @@ public class DefaultCharStats implements Cloneable, CharStats
 			combined+=myLevels[i].intValue();
 		return combined;
 	}
+	public void setDisplayClassName(String newName){displayClassName=newName;}
+	public String displayClassName()
+	{	
+		if(displayClassName!=null) return displayClassName;
+		return getCurrentClass().name();
+	}
+	public void setDisplayClassLevel(String newLevel){displayClassLevel=newLevel;}
+	public String displayClassLevel(MOB mob, boolean shortForm)
+	{
+		if(displayClassLevel!=null)
+		{
+			if(shortForm)
+				return displayClassName()+" "+displayClassLevel;
+			else
+				return "level "+displayClassLevel+" "+displayClassName;
+		}
+		int classLevel=getClassLevel(getCurrentClass());
+		String levelStr=null;
+		if(classLevel>=mob.envStats().level())
+			levelStr=""+mob.envStats().level();
+		else
+			levelStr=classLevel+"/"+mob.envStats().level();
+		if(shortForm)
+			return displayClassName()+" "+levelStr;
+		else
+			return "level "+levelStr+" "+displayClassName();
+	}
 
+	public void setRaceName(String newRaceName){raceName=newRaceName;}
+	public String raceName(){
+		if(raceName!=null) return raceName;
+		if(myRace!=null) return myRace.name();
+		return "MOB";
+	}
 	public CharClass getMyClass(int i)
 	{
 		if((myClasses==null)
@@ -161,6 +198,8 @@ public class DefaultCharStats implements Cloneable, CharStats
 			}
 		}
 	}
+	
+	
 	
 	public void setCurrentClass(CharClass aClass)
 	{
@@ -280,8 +319,14 @@ public class DefaultCharStats implements Cloneable, CharStats
 		return newOne;
 	}
 
+	public void setGenderName(String gname)
+	{
+		genderName=gname;
+	}
 	public String genderName()
 	{
+		if(genderName!=null) 
+			return genderName;
 		switch(getStat(GENDER))
 		{
 		case 'M': return "male";
@@ -291,7 +336,10 @@ public class DefaultCharStats implements Cloneable, CharStats
 	}
 	public String himher()
 	{
-		switch(getStat(GENDER))
+		char c=(char)getStat(GENDER);
+		if((genderName!=null)&&(genderName.length()>0))
+			c=Character.toUpperCase(genderName.charAt(0));
+		switch(c)
 		{
 		case 'M': return "him";
 		case 'F': return "her";
@@ -301,7 +349,10 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public String hisher()
 	{
-		switch(getStat(GENDER))
+		char c=(char)getStat(GENDER);
+		if((genderName!=null)&&(genderName.length()>0))
+			c=Character.toUpperCase(genderName.charAt(0));
+		switch(c)
 		{
 		case 'M': return "his";
 		case 'F': return "her";
@@ -311,7 +362,10 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public String heshe()
 	{
-		switch(getStat(GENDER))
+		char c=(char)getStat(GENDER);
+		if((genderName!=null)&&(genderName.length()>0))
+			c=Character.toUpperCase(genderName.charAt(0));
+		switch(c)
 		{
 		case 'M': return "he";
 		case 'F': return "she";
@@ -321,7 +375,10 @@ public class DefaultCharStats implements Cloneable, CharStats
 
 	public String HeShe()
 	{
-		switch(getStat(GENDER))
+		char c=(char)getStat(GENDER);
+		if((genderName!=null)&&(genderName.length()>0))
+			c=Character.toUpperCase(genderName.charAt(0));
+		switch(c)
 		{
 		case 'M': return "He";
 		case 'F': return "She";

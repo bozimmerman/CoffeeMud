@@ -45,7 +45,7 @@ public class Spell_Counterspell extends Spell
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<(70+(2*(mob.envStats().level()-affect.source().envStats().level())))))
 		{
-			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> dispels the "+affect.tool().name()+" from <T-NAME>!");
+			mob.location().show(mob,affect.source(),Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> dispels the "+affect.tool().displayName()+" from <T-NAME>!");
 			tickDown=0;
 			return false;
 		}

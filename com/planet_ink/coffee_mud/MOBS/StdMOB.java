@@ -145,6 +145,11 @@ public class StdMOB implements MOB
 	}
 	public String name(){ return Username;}
 	public void setName(String newName){Username=newName;}
+	public String displayName()
+	{ 
+		if(envStats().newName()!=null) return envStats().newName();
+		return name();
+	}
 	public String password()
 	{
 		return Password;
@@ -717,7 +722,7 @@ public class StdMOB implements MOB
 	public String displayText(MOB viewer)
 	{
 		if((displayText.length()==0)
-		   ||(envStats().replacementName()!=null)
+		   ||(!displayName().equals(name()))
 		   ||(Sense.isSleeping(this))
 		   ||(Sense.isSitting(this))
 		   ||(riding()!=null)
@@ -725,10 +730,7 @@ public class StdMOB implements MOB
 		   ||(isInCombat()))
 		{
 			StringBuffer sendBack=null;
-			if(envStats().replacementName()!=null)
-				sendBack=new StringBuffer(envStats().replacementName());
-			else
-				sendBack=new StringBuffer(name());
+			sendBack=new StringBuffer(displayName());
 			sendBack.append(" ");
 			sendBack.append(Sense.dispositionString(this,Sense.flag_is));
 			sendBack.append(" here");
@@ -738,7 +740,7 @@ public class StdMOB implements MOB
 				if(riding()==viewer)
 					sendBack.append("YOU");
 				else
-					sendBack.append(riding().name());
+					sendBack.append(riding().displayName());
 			}
 			else
 			if((this instanceof Rideable)
@@ -762,7 +764,7 @@ public class StdMOB implements MOB
 						if(rider==viewer)
 							sendBack.append("you");
 						else
-							sendBack.append(rider.name());
+							sendBack.append(rider.displayName());
 					}
 
 				}
@@ -773,7 +775,7 @@ public class StdMOB implements MOB
 				if(getVictim()==viewer)
 					sendBack.append("YOU");
 				else
-					sendBack.append(getVictim().name());
+					sendBack.append(getVictim().displayName());
 			}
 			sendBack.append(".");
 			return sendBack.toString();
@@ -985,7 +987,7 @@ public class StdMOB implements MOB
 					if((!Sense.canBeSeenBy(affect.target(),this))
 					&&(!(isMine(affect.target())&&(affect.target() instanceof Item))))
 					{
-						mob.tell("You don't see '"+affect.target().name()+"' here.");
+						mob.tell("You don't see '"+affect.target().displayName()+"' here.");
 						return false;
 					}
 					if(!Sense.canTaste(this))
@@ -1001,7 +1003,7 @@ public class StdMOB implements MOB
 				&&(!(isMine(affect.target())&&(affect.target() instanceof Item)))
 				&&(!(isInCombat()&&(affect.target()==victim))))
 				{
-					mob.tell("You don't see '"+affect.target().name()+"' here.");
+					mob.tell("You don't see '"+affect.target().displayName()+"' here.");
 					return false;
 				}
 				if(!Sense.aliveAwakeMobile(this,false))
@@ -1094,7 +1096,7 @@ public class StdMOB implements MOB
 					{
 						if(!Sense.canBeHeardBy(this,affect.target()))
 						{
-							tell(affect.target().name()+" can't hear you!");
+							tell(affect.target().displayName()+" can't hear you!");
 							return false;
 						}
 						else
@@ -1102,7 +1104,7 @@ public class StdMOB implements MOB
 						&&(((MOB)affect.target()).getLeigeID().equals(name()))))
 						&&(!affect.target().name().equals(getLeigeID())))
 						{
-							tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
+							tell(affect.target().displayName()+" does not serve you, and you do not serve "+affect.target().displayName()+".");
 							return false;
 						}
 					}
@@ -1131,7 +1133,7 @@ public class StdMOB implements MOB
 					break;
 				if(!Sense.canBeHeardBy(this,affect.target()))
 				{
-					tell(affect.target().name()+" can't hear you!");
+					tell(affect.target().displayName()+" can't hear you!");
 					return false;
 				}
 				if(getLeigeID().length()>0)
@@ -1167,7 +1169,7 @@ public class StdMOB implements MOB
 			   &&(rangeToTarget()>maxRange(affect.tool())))
 			{
 				String newstr="<S-NAME> advance(s) at ";
-				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.name(),Affect.MSG_ADVANCE,newstr+"you",Affect.MSG_ADVANCE,newstr+target.name());
+				affect.modify(this,target,null,Affect.MSG_ADVANCE,newstr+target.displayName(),Affect.MSG_ADVANCE,newstr+"you",Affect.MSG_ADVANCE,newstr+target.displayName());
 				boolean ok=location().okAffect(this,affect);
 				if(ok) setAtRange(rangeToTarget()-1);
 				if(victim!=null)
@@ -1220,13 +1222,13 @@ public class StdMOB implements MOB
 				}
 				if((useRange>=0)&&(maxRange(tool)<useRange))
 				{
-					mob.tell("You are too far away from "+target.name()+" to use "+tool.name()+".");
+					mob.tell("You are too far away from "+target.displayName()+" to use "+tool.displayName()+".");
 					return false;
 				}
 				else
 				if((useRange>=0)&&(minRange(tool)>useRange))
 				{
-					mob.tell("You are too close to "+target.name()+" to use "+tool.name()+".");
+					mob.tell("You are too close to "+target.displayName()+" to use "+tool.displayName()+".");
 					if((affect.targetMinor()==Affect.TYP_WEAPONATTACK)
 					&&(tool instanceof Weapon)
 					&&(!((Weapon)tool).amWearingAt(Item.INVENTORY)))
@@ -1253,7 +1255,7 @@ public class StdMOB implements MOB
 
 				if(!mayIFight(mob))
 				{
-					mob.tell("You are not allowed to attack "+name()+".");
+					mob.tell("You are not allowed to attack "+displayName()+".");
 					mob.setVictim(null);
 					if(victim==mob) setVictim(null);
 					return false;
@@ -1329,14 +1331,14 @@ public class StdMOB implements MOB
 			case Affect.TYP_WIELD:
 			case Affect.TYP_MOUNT:
 			case Affect.TYP_DISMOUNT:
-				mob.tell("You can't do that to "+name()+".");
+				mob.tell("You can't do that to "+displayName()+".");
 				return false;
 			case Affect.TYP_GIVE:
 				if(affect.tool()==null) return false;
 				if(!(affect.tool() instanceof Item)) return false;
 				if(!Sense.canBeSeenBy(affect.tool(),this))
 				{
-					mob.tell(name()+" can't see what you are giving.");
+					mob.tell(displayName()+" can't see what you are giving.");
 					return false;
 				}
 				FullMsg msg=new FullMsg(affect.source(),affect.tool(),null,Affect.MSG_DROP,null);
@@ -1347,7 +1349,7 @@ public class StdMOB implements MOB
 					msg=new FullMsg((MOB)affect.target(),affect.tool(),null,Affect.MSG_GET,null);
 					if(!location().okAffect(affect.target(),msg))
 					{
-						mob.tell(affect.target().name()+" cannot seem to accept "+affect.tool().name()+".");
+						mob.tell(affect.target().displayName()+" cannot seem to accept "+affect.tool().displayName()+".");
 						return false;
 					}
 				}
@@ -1355,7 +1357,7 @@ public class StdMOB implements MOB
 			case Affect.TYP_FOLLOW:
 				if(numFollowers()>=maxFollowers())
 				{
-					mob.tell(name()+" can't accept any more followers.");
+					mob.tell(displayName()+" can't accept any more followers.");
 					return false;
 				}
 				break;
@@ -1439,13 +1441,8 @@ public class StdMOB implements MOB
 						myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc : "+text()+"\n\r"+description()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r");
 					if(!isMonster())
 					{
-						String levelStr=null;
-						int classLevel=charStats().getClassLevel(charStats().getCurrentClass());
-						if(classLevel>=envStats().level())
-							levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
-						else
-							levelStr=charStats().getCurrentClass().name()+" "+classLevel+"/"+envStats().level();
-						myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a "+levelStr+".\n\r");
+						String levelStr=charStats().displayClassLevel(this,false);
+						myDescription.append(displayName()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
 					}
 					if(envStats().height()>0)
 						myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");
@@ -1457,7 +1454,7 @@ public class StdMOB implements MOB
 				break;
 			case Affect.TYP_READSOMETHING:
 				if((Sense.canBeSeenBy(this,mob))&&(affect.amITarget(this)))
-					tell("There is nothing written on "+name());
+					tell("There is nothing written on "+displayName());
 				break;
 			case Affect.TYP_SIT:
 				{
@@ -1600,13 +1597,8 @@ public class StdMOB implements MOB
 					myDescription.append(ID()+"\n\rRejuv:"+baseEnvStats().rejuv()+"\n\rAbile:"+baseEnvStats().ability()+"\n\rLevel:"+baseEnvStats().level()+"\n\rMisc :'"+text()+"\n\rRoom :'"+((getStartRoom()==null)?"null":getStartRoom().ID())+"\n\r"+description()+"\n\r");
 				if(!isMonster())
 				{
-					String levelStr=null;
-					int classLevel=charStats().getClassLevel(charStats().getCurrentClass());
-					if(classLevel>=envStats().level())
-						levelStr="level "+envStats().level()+" "+charStats().getCurrentClass().name();
-					else
-						levelStr=charStats().getCurrentClass().name()+" "+classLevel+"/"+envStats().level();
-					myDescription.append(name()+" the "+charStats().getMyRace().name()+" is a "+levelStr+".\n\r");
+					String levelStr=charStats().displayClassLevel(this,false);
+					myDescription.append(displayName()+" the "+charStats().raceName()+" is a "+levelStr+".\n\r");
 				}
 				if(envStats().height()>0)
 					myDescription.append(charStats().HeShe()+" is "+envStats().height()+" inches tall and weighs "+baseEnvStats().weight()+" pounds.\n\r");

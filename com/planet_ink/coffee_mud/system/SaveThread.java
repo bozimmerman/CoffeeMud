@@ -61,7 +61,7 @@ public class SaveThread extends Thread
 				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=ServiceEngine.isTicking(mob,Host.MOB_TICK);
-					Log.errOut("SaveThread",mob.name()+" in room "+R.ID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
+					Log.errOut("SaveThread",mob.displayName()+" in room "+R.ID()+" unticked ("+(!ticked)+") since: "+IQCalendar.d2String(mob.lastTickedDateTime())+".");
 				}
 			}
 		}

@@ -98,7 +98,7 @@ public class Prayer_FleshRock extends Prayer
 		// can get them out of it.
 		if(affected instanceof MOB)
 		{
-			//affectableStats.setReplacementName("a statue of "+affected.name());
+			//affectableStats.setReplacementName("a statue of "+affected.displayName());
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
@@ -172,7 +172,7 @@ public class Prayer_FleshRock extends Prayer
 					target.makePeace();
 					ExternalPlay.standIfNecessary(target);
 					statue=CMClass.getItem("GenItem");
-					String name=target.name();
+					String name=target.displayName();
 					if(name.startsWith("A ")) name="a "+name.substring(2);
 					if(name.startsWith("An ")) name="an "+name.substring(3);
 					if(name.startsWith("The ")) name="the "+name.substring(4);

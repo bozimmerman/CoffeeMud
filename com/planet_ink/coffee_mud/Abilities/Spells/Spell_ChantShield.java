@@ -45,7 +45,7 @@ public class Spell_ChantShield extends Spell
 		&&(!mob.amDead())
 		&&(Dice.rollPercentage()<35))
 		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> blocks off "+affect.tool().name()+"!");
+			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"The barrier around <S-NAME> blocks off "+affect.tool().displayName()+"!");
 			return false;
 		}
 		return super.okAffect(myHost,affect);

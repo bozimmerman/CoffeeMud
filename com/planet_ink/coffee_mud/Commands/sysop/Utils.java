@@ -83,9 +83,9 @@ public class Utils
 				if(i==0)
 				{
 					if(number>1)
-						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.name()+"s instantiate from the Java plain.");
+						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newMOB.displayName()+"s instantiate from the Java plain.");
 					else
-						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
+						room.show(newMOB,null,Affect.MSG_OK_ACTION,"Suddenly, "+newMOB.displayName()+" instantiates from the Java plain.");
 					Log.sysOut("SysopUtils",mob.ID()+" copied "+number+" mob "+newMOB.ID()+".");
 				}
 			}
@@ -102,7 +102,7 @@ public class Utils
 					if(number>1)
 						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s drop from the sky.");
 					else
-						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
+						room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" drops from the sky.");
 					Log.sysOut("SysopUtils",mob.ID()+" copied "+number+" item "+newItem.ID()+".");
 				}
 			}
@@ -148,7 +148,7 @@ public class Utils
 			}
 			else
 			{
-				mob.tell("I can't just make a copy of a '"+E.name()+"'.\n\r");
+				mob.tell("I can't just make a copy of a '"+E.displayName()+"'.\n\r");
 				room.showOthers(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 				break;
 			}

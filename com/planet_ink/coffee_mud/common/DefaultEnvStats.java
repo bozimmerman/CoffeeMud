@@ -27,8 +27,8 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	public int armor(){return Armor;}
 	public int damage(){return Damage;}
 	public double speed(){return Speed;}
-	public String replacementName(){return replacementName;}
 	public int attackAdjustment(){return AttackAdjustment;}
+	public String newName(){ return replacementName;}
 
 	public void setRejuv(int newRejuv){Rejuv=newRejuv;}
 	public void setLevel(int newLevel){Level=newLevel;}
@@ -41,7 +41,7 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	public void setDisposition(int newDisposition){Disposition=newDisposition;}
 	public void setSensesMask(int newMask){SensesMask=newMask;}
 	public void setHeight(int newHeight){Height=newHeight;}
-	public void setReplacementName(String newName){replacementName=newName;}
+	public void setName(String newName){ replacementName=newName;}
 	public EnvStats cloneStats()
 	{
 		try

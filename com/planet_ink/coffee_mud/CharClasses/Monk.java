@@ -195,7 +195,7 @@ public class Monk extends StdCharClass
 			{
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.DEXTERITY)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().name()+" attempt due to <S-HIS-HER> armor!");
+					myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> fumble(s) <S-HIS-HER> "+affect.tool().displayName()+" attempt due to <S-HIS-HER> armor!");
 					return false;
 				}
 			}

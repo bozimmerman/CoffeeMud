@@ -59,7 +59,7 @@ public class Chant_SensePoison extends Chant
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				StringBuffer buf=new StringBuffer(target.name()+" contains: ");
+				StringBuffer buf=new StringBuffer(target.displayName()+" contains: ");
 				if(offensiveAffects.size()==0)
 					buf.append("weak impurities, ");
 				else

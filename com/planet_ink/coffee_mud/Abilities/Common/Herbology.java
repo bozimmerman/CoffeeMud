@@ -42,11 +42,11 @@ public class Herbology extends CommonSkill
 			{
 				MOB mob=(MOB)affected;
 				if(messedUp)
-					commonTell(mob,"You lose your concentration on "+found.name()+".");
+					commonTell(mob,"You lose your concentration on "+found.displayName()+".");
 				else
 				{
 					String herb=herbList[Dice.roll(1,herbList.length,-1)].toLowerCase();
-					commonTell(mob,found.name()+" appears to be "+herb+".");
+					commonTell(mob,found.displayName()+" appears to be "+herb+".");
 					String name=found.name();
 					name=name.substring(0,name.length()-5).trim();
 					if(name.length()>0)
@@ -90,14 +90,14 @@ public class Herbology extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
-		verb="studying "+target.name();
+		verb="studying "+target.displayName();
 		displayText="You are "+verb;
 		found=target;
 		messedUp=false;
 		if(!profficiencyCheck(0,auto)) messedUp=true;
 		int duration=10-(mob.envStats().level()/3);
 		if(duration<2) duration=2;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.displayName()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

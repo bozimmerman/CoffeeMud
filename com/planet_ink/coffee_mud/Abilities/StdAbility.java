@@ -11,6 +11,7 @@ public class StdAbility implements Ability, Cloneable
 	public String name(){ return "an ability";}
 	public String description(){return "&";}
 	public String displayText(){return "What they see when affected.";}
+	public String displayName(){return name();}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
 	public int maxRange(){return 0;}
@@ -180,7 +181,7 @@ public class StdAbility implements Ability, Cloneable
 		}
 
 		if(target!=null)
-			targetName=target.name();
+			targetName=target.displayName();
 
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||(!target.isInCombat()))))
 		{
@@ -201,7 +202,7 @@ public class StdAbility implements Ability, Cloneable
 				if(target==mob)
 					mob.tell("You are already affected by "+name()+".");
 				else
-					mob.tell(target.name()+" is already affected by "+name()+".");
+					mob.tell(target.displayName()+" is already affected by "+name()+".");
 			}
 			return null;
 		}
@@ -223,7 +224,7 @@ public class StdAbility implements Ability, Cloneable
 			if(target==null)
 				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,wornReqCode);
 		}
-		if(target!=null) targetName=target.name();
+		if(target!=null) targetName=target.displayName();
 		if((target==null)||((!Sense.canBeSeenBy(target,mob))&&((!Sense.canBeHeardBy(target,mob))||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
 			if(targetName.trim().length()==0)
@@ -261,7 +262,7 @@ public class StdAbility implements Ability, Cloneable
 			else
 				target=mob.fetchCarried(null,targetName);
 		}
-		if(target!=null) targetName=target.name();
+		if(target!=null) targetName=target.displayName();
 		if((target==null)||((target!=null)&&((!Sense.canBeSeenBy(target,mob))||(!(target instanceof Item)))))
 		{
 			if(targetName.length()==0)
@@ -406,7 +407,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		Vector V=new Vector();
 		if(target!=null)
-			V.addElement(target.name());
+			V.addElement(target.displayName());
 		return invoke(mob,V,target,auto);
 	}
 
@@ -589,13 +590,13 @@ public class StdAbility implements Ability, Cloneable
 			if(yourAbility.profficiency()<25)
 			{
 				teacher.tell("You are not profficient enough to teach '"+name()+"'");
-				student.tell(teacher.name()+" is not profficient enough to teach '"+name()+"'.");
+				student.tell(teacher.displayName()+" is not profficient enough to teach '"+name()+"'.");
 				return false;
 			}
 			return true;
 		}
 		teacher.tell("You don't know '"+name()+"'.");
-		student.tell(teacher.name()+" doesn't know '"+name()+"'.");
+		student.tell(teacher.displayName()+" doesn't know '"+name()+"'.");
 		return false;
 	}
 
@@ -657,32 +658,32 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(student.getPractices()<practicesRequired())
 		{
-			teacher.tell(student.name()+" does not have enough practice points to learn '"+name()+"'.");
+			teacher.tell(student.displayName()+" does not have enough practice points to learn '"+name()+"'.");
 			student.tell("You do not have enough practice points.");
 			return false;
 		}
 		if(student.getTrains()<trainsRequired())
 		{
-			teacher.tell(student.name()+" does not have enough training sessions to learn '"+name()+"'.");
+			teacher.tell(student.displayName()+" does not have enough training sessions to learn '"+name()+"'.");
 			student.tell("You do not have enough training sessions.");
 			return false;
 		}
 		int qLevel=CMAble.qualifyingLevel(student,this);
 		if(qLevel<0)
 		{
-			teacher.tell(student.name()+" is not the right class to learn '"+name()+"'.");
+			teacher.tell(student.displayName()+" is not the right class to learn '"+name()+"'.");
 			student.tell("You are not the right class to learn '"+name()+"'.");
 			return false;
 		}
 		if(!CMAble.qualifiesByLevel(student,this))
 		{
-			teacher.tell(student.name()+" is not high enough level to learn '"+name()+"'.");
+			teacher.tell(student.displayName()+" is not high enough level to learn '"+name()+"'.");
 			student.tell("You are not high enough level to learn '"+name()+"'.");
 			return false;
 		}
 		if(qLevel>(student.charStats().getStat(CharStats.INTELLIGENCE)+15))
 		{
-			teacher.tell(student.name()+" is too stupid to learn '"+name()+"'.");
+			teacher.tell(student.displayName()+" is too stupid to learn '"+name()+"'.");
 			student.tell("You are not of high enough intelligence to learn '"+name()+"'.");
 			return false;
 		}
@@ -690,7 +691,7 @@ public class StdAbility implements Ability, Cloneable
 		Ability teacherAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			teacher.tell(student.name()+" already knows '"+name()+"'.");
+			teacher.tell(student.displayName()+" already knows '"+name()+"'.");
 			student.tell("You already know '"+name()+"'.");
 			return false;
 		}
@@ -700,13 +701,13 @@ public class StdAbility implements Ability, Cloneable
 			if(teacherAbility.profficiency()<25)
 			{
 				teacher.tell("You aren't profficient enough to teach '"+name()+"'.");
-				student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
+				student.tell(teacher.displayName()+" isn't profficient enough to teach you '"+name()+"'.");
 				return false;
 			}
 		}
 		else
 		{
-			student.tell(teacher.name()+" does not know anything about that.");
+			student.tell(teacher.displayName()+" does not know anything about that.");
 			teacher.tell("You don't know that.");
 			return false;
 		}
@@ -718,7 +719,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(student.getPractices()<practicesToPractice())
 		{
-			teacher.tell(student.name()+" does not have enough practices to practice '"+name()+"'.");
+			teacher.tell(student.displayName()+" does not have enough practices to practice '"+name()+"'.");
 			student.tell("You do not have enough practices.");
 			return false;
 		}
@@ -727,21 +728,21 @@ public class StdAbility implements Ability, Cloneable
 		Ability teacherAbility=teacher.fetchAbility(ID());
 		if((yourAbility==null)||(CMAble.qualifyingLevel(student,yourAbility)<0))
 		{
-			teacher.tell(student.name()+" has not learned '"+name()+"' yet.");
+			teacher.tell(student.displayName()+" has not learned '"+name()+"' yet.");
 			student.tell("You havn't learned '"+name()+"' yet.");
 			return false;
 		}
 
 		if(!CMAble.qualifiesByLevel(student,yourAbility))
 		{
-			teacher.tell(student.name()+" is not high enough level to practice '"+name()+"'.");
+			teacher.tell(student.displayName()+" is not high enough level to practice '"+name()+"'.");
 			student.tell("You are not high enough level to practice '"+name()+"'.");
 			return false;
 		}
 
 		if(teacherAbility==null)
 		{
-			student.tell(teacher.name()+" does not know anything about '"+name()+"'.");
+			student.tell(teacher.displayName()+" does not know anything about '"+name()+"'.");
 			teacher.tell("You don't know '"+name()+"'.");
 			return false;
 		}
@@ -749,7 +750,7 @@ public class StdAbility implements Ability, Cloneable
 		if(yourAbility.profficiency()>teacherAbility.profficiency())
 		{
 			teacher.tell("You aren't profficient enough to teach any more about '"+name()+"'.");
-			student.tell(teacher.name()+" isn't profficient enough to teach any more about '"+name()+"'.");
+			student.tell(teacher.displayName()+" isn't profficient enough to teach any more about '"+name()+"'.");
 			return false;
 		}
 		else
@@ -763,7 +764,7 @@ public class StdAbility implements Ability, Cloneable
 		if(teacherAbility.profficiency()<25)
 		{
 			teacher.tell("You aren't profficient enough to teach '"+name()+"'.");
-			student.tell(teacher.name()+" isn't profficient enough to teach you '"+name()+"'.");
+			student.tell(teacher.displayName()+" isn't profficient enough to teach you '"+name()+"'.");
 			return false;
 		}
 

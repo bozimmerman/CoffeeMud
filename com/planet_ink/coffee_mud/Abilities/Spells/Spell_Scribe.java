@@ -61,14 +61,14 @@ public class Spell_Scribe extends Spell
 		if(numSpells<0) numSpells=0;
 		if(scroll.numSpells()>numSpells)
 		{
-			mob.tell("You aren't powerful enough to scribe any more spells onto "+scroll.name()+".");
+			mob.tell("You aren't powerful enough to scribe any more spells onto "+scroll.displayName()+".");
 			return false;
 		}
 
 		for(int i=0;i<scroll.getSpells().size();i++)
 			if(((Ability)scroll.getSpells().elementAt(i)).ID().equals(scrollThis.ID()))
 			{
-				mob.tell("That spell is already scribed onto "+scroll.name()+".");
+				mob.tell("That spell is already scribed onto "+scroll.displayName()+".");
 				return false;
 			}
 

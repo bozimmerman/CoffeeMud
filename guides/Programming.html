@@ -1831,30 +1831,30 @@ public String healthText(MOB mob)
 	double pct=(Util.div(mob.curState().getHitPoints(),
 			     mob.maxState().getHitPoints())); 
 	if(pct&lt;.10) 
-		return "^r" + mob.name()+"^ris raging in bloody pain!^N"; 
+		return "^r" + mob.displayName()+"^ris raging in bloody pain!^N"; 
 	else 
 	if(pct&lt;.20) 
-		return "^r" + mob.name()+"^ris covered in blood.^N"; 
+		return "^r" + mob.displayName()+"^ris covered in blood.^N"; 
 	else 
 	if(pct&lt;.30) 
-		return "^r" + mob.name() + "^r is bleeding badly from lots of wounds.^N"; 
+		return "^r" + mob.displayName() + "^r is bleeding badly from lots of wounds.^N"; 
 	else 
 	if(pct&lt;.50) 
-		return "^y" + mob.name() + "^y has some bloody wounds and gashed scales.^N"; 
+		return "^y" + mob.displayName() + "^y has some bloody wounds and gashed scales.^N"; 
 	else 
 	if(pct&lt;.60) 
-		return "^p" + mob.name() + "^p has a few bloody wounds.^N";
+		return "^p" + mob.displayName() + "^p has a few bloody wounds.^N";
 	else 
 	if(pct&lt;.70) 
-		return "^p" + mob.name() + "^p is cut and bruised heavily.^N";
+		return "^p" + mob.displayName() + "^p is cut and bruised heavily.^N";
 	else 
 	if(pct&lt;.90) 
-		return "^g" + mob.name() + "^g has a few bruises and scratched scales.^N";
+		return "^g" + mob.displayName() + "^g has a few bruises and scratched scales.^N";
 	else 
 	if(pct&lt;.99)
-		return "^g" + mob.name() + "^g has a few small bruises.^N";
+		return "^g" + mob.displayName() + "^g has a few small bruises.^N";
 	else
-		return "^c" + mob.name() + "^c is in perfect health^N";
+		return "^c" + mob.displayName() + "^c is in perfect health^N";
 }
 </PRE>
 <P align=left><FONT size=4>Although 

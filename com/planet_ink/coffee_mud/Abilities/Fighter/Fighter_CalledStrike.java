@@ -48,7 +48,7 @@ public class Fighter_CalledStrike extends StdAbility
 			Item limb=CMClass.getItem("GenItem");
 			limb.setName("a "+gone);
 			limb.setDisplayText("a bloody "+gone+" is sitting here.");
-			limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
+			limb.setSecretIdentity(target.displayName()+"`s bloody "+gone+".");
 			limb.baseEnvStats().setLevel(1);
 			limb.baseEnvStats().setWeight(5);
 			limb.recoverEnvStats();
@@ -120,7 +120,7 @@ public class Fighter_CalledStrike extends StdAbility
 		Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
-			mob.tell("You cannot amputate with "+wp.name()+"!");
+			mob.tell("You cannot amputate with "+wp.displayName()+"!");
 			return false;
 		}
 		return true;
@@ -155,7 +155,7 @@ public class Fighter_CalledStrike extends StdAbility
 		if(V.size()==0)
 		{
 			if(!auto)
-				mob.tell("There is nothing left on "+target.name()+" to cut off!");
+				mob.tell("There is nothing left on "+target.displayName()+" to cut off!");
 			return false;
 		}
 		if(mob.isMonster())

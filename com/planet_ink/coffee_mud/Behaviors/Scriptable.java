@@ -413,7 +413,7 @@ public class Scriptable extends StdBehavior
 					returnable=(((MOB)E).fetchInventory(arg2)!=null);
 				else
 				if(E instanceof Item)
-					returnable=CoffeeUtensils.containsString(E.name(),arg2);
+					returnable=CoffeeUtensils.containsString(E.displayName(),arg2);
 				else
 				if(E instanceof Room)
 					returnable=(((Room)E).fetchItem(null,arg2)!=null);
@@ -438,7 +438,7 @@ public class Scriptable extends StdBehavior
 					returnable=(((MOB)E).fetchWornItem(arg2)!=null);
 				else
 				if(E instanceof Item)
-					returnable=(CoffeeUtensils.containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
+					returnable=(CoffeeUtensils.containsString(E.displayName(),arg2)&&(!((Item)E).amWearingAt(Item.INVENTORY)));
 				else
 					returnable=false;
 				break;
@@ -558,7 +558,7 @@ public class Scriptable extends StdBehavior
 				if(E==null)
 					returnable=false;
 				else
-					returnable=CoffeeUtensils.containsString(E.name(),arg2);
+					returnable=CoffeeUtensils.containsString(E.displayName(),arg2);
 				break;
 			}
 			case 14: // affected
@@ -625,7 +625,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+						if((M!=null)&&(CoffeeUtensils.containsString(M.displayName(),arg1)))
 							num++;
 					}
 				}
@@ -666,7 +666,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(CoffeeUtensils.containsString(M.name(),arg1)))
+						if((M!=null)&&(CoffeeUtensils.containsString(M.displayName(),arg1)))
 							num++;
 					}
 				}
@@ -707,7 +707,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().getMyRace().name().equalsIgnoreCase(arg1)))
+						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
 							num++;
 					}
 				}
@@ -748,7 +748,7 @@ public class Scriptable extends StdBehavior
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M!=null)&&(M.charStats().getMyRace().name().equalsIgnoreCase(arg1)))
+						if((M!=null)&&(M.charStats().raceName().equalsIgnoreCase(arg1)))
 							num++;
 					}
 				}
@@ -942,7 +942,7 @@ public class Scriptable extends StdBehavior
 				
 					if(!found)
 					{
-						Log.errOut("Scriptable","STAT Syntax -- "+monster.name()+", unknown stat: "+arg2+" for "+E.name());
+						Log.errOut("Scriptable","STAT Syntax -- "+monster.name()+", unknown stat: "+arg2+" for "+E.displayName());
 						break;
 					}
 						
@@ -1051,7 +1051,7 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 				{
-					String sex=((MOB)E).charStats().getCurrentClass().name().toUpperCase();
+					String sex=((MOB)E).charStats().displayClassName().toUpperCase();
 					if(arg2.equals("=="))
 						returnable=sex.startsWith(arg3);
 					else
@@ -1109,7 +1109,7 @@ public class Scriptable extends StdBehavior
 					returnable=false;
 				else
 				{
-					String sex=((MOB)E).charStats().getMyRace().name().toUpperCase();
+					String sex=((MOB)E).charStats().raceName().toUpperCase();
 					if(arg2.equals("=="))
 						returnable=sex.startsWith(arg3);
 					else
@@ -1337,7 +1337,7 @@ public class Scriptable extends StdBehavior
 			{
 			case 'i':
 				if(monster!=null)
-					middle=monster.name();
+					middle=monster.displayName();
 				break;
 			case 'I':
 				if(monster!=null)
@@ -1346,18 +1346,18 @@ public class Scriptable extends StdBehavior
 			case 'n':
 			case 'N':
 				if(source!=null)
-					middle=source.name();
+					middle=source.displayName();
 				break;
 			case 't':
 			case 'T':
 				if(target!=null)
-					middle=target.name();
+					middle=target.displayName();
 				break;
 			case 'r':
 			case 'R':
 				randMOB=getRandomMOB(monster,randMOB,room);
 				if(randMOB!=null)
-					middle=randMOB.name();
+					middle=randMOB.displayName();
 				break;
 			case 'j':
 				if(monster!=null)
@@ -1365,7 +1365,7 @@ public class Scriptable extends StdBehavior
 				break;
 			case 'f':
 				if((monster!=null)&&(monster.amFollowing()!=null))
-					middle=monster.amFollowing().name();
+					middle=monster.amFollowing().displayName();
 				break;
 			case 'F':
 				if((monster!=null)&&(monster.amFollowing()!=null))
@@ -1404,12 +1404,12 @@ public class Scriptable extends StdBehavior
 			case 'o':
 			case 'O':
 				if(primaryItem!=null)
-					middle=primaryItem.name();
+					middle=primaryItem.displayName();
 				break;
 			case 'p':
 			case 'P':
 				if(secondaryItem!=null)
-					middle=secondaryItem.name();
+					middle=secondaryItem.displayName();
 				break;
 			case '<':
 				{
@@ -1427,7 +1427,7 @@ public class Scriptable extends StdBehavior
 						if(E!=null)
 						{
 							middle=null;
-							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.name());
+							Hashtable H=(Hashtable)Resources.getResource("SCRIPTVAR-"+E.displayName());
 							if(H!=null)
 								middle=(String)H.get(mid);
 							if(middle==null) middle="";

@@ -47,12 +47,12 @@ public class Thief_Surrender extends ThiefSkill
 			{
 				MOB vic=(MOB)theList.elementAt(v);
 				if(v==0)
-					enemiesList.append(vic.name());
+					enemiesList.append(vic.displayName());
 				else
 				if(v==theList.size()-1)
-					enemiesList.append(", and "+vic.name());
+					enemiesList.append(", and "+vic.displayName());
 				else
-					enemiesList.append(", "+vic.name());
+					enemiesList.append(", "+vic.displayName());
 			}
 			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_NOISYMOVEMENT,"<S-NAME> surrender(s) to "+enemiesList.toString()+", paying "+gold+" gold.");
 			if(mob.location().okAffect(mob,msg))

@@ -92,7 +92,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		room.addItem(newItem);
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprouts up here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" sprouts up here.");
 		Chant_SummonFungus newChant=new Chant_SummonFungus();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

@@ -49,7 +49,7 @@ public class Skill_ScrollCopy extends StdAbility
 		for(int a=0;a<theSpells.size();a++)
 		{
 			Ability A=(Ability)theSpells.elementAt(a);
-			if(CoffeeUtensils.containsString(A.name().toUpperCase(),((String)commands.elementAt(0)).toUpperCase()))
+			if(CoffeeUtensils.containsString(A.displayName().toUpperCase(),((String)commands.elementAt(0)).toUpperCase()))
 			{
 				thisSpell=A;
 				break;
@@ -58,13 +58,13 @@ public class Skill_ScrollCopy extends StdAbility
 
 		if(thisSpell==null)
 		{
-			mob.tell("That is not written on "+target.name()+".");
+			mob.tell("That is not written on "+target.displayName()+".");
 			return false;
 		}
 
 		thisSpell=(Ability)thisSpell.copyOf();
 		MOB T=(MOB)CMClass.getMOB("Teacher");
-		T.setName(target.name());
+		T.setName(target.displayName());
 		T.charStats().setStat(CharStats.GENDER,(int)'N');
 		while(T.numAbilities()>0)
 		{
@@ -84,11 +84,11 @@ public class Skill_ScrollCopy extends StdAbility
 
 		if(success)
 		{
-			if(mob.location().show(mob,null,target,Affect.MSG_HANDS,"<S-NAME> cop(ys) '"+thisSpell.name()+"' from <O-NAME>."))
+			if(mob.location().show(mob,null,target,Affect.MSG_HANDS,"<S-NAME> cop(ys) '"+thisSpell.displayName()+"' from <O-NAME>."))
 				thisSpell.teach(T,mob);
 		}
 		else
-			mob.location().show(mob,null,Affect.MSG_HANDS,"<S-NAME> attempt(s) to copy '"+thisSpell.name()+"' from "+target.name()+", but fail(s).");
+			mob.location().show(mob,null,Affect.MSG_HANDS,"<S-NAME> attempt(s) to copy '"+thisSpell.displayName()+"' from "+target.displayName()+", but fail(s).");
 		return success;
 	}
 

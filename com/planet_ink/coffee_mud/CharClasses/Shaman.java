@@ -183,10 +183,10 @@ public class Shaman extends Cleric
 					return true;
 
 				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
+					myChar.tell("The anti-good nature of "+A.displayName()+" disrupts your thought.");
 				else
 				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
+					myChar.tell("The anti-evil nature of "+A.displayName()+" disrupts your thought.");
 				return false;
 			}
 			else
@@ -200,7 +200,7 @@ public class Shaman extends Cleric
 					return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)
 				{
-					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().name()+".");
+					myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"A conflict of <S-HIS-HER> conscience makes <S-NAME> fumble(s) horribly with "+affect.tool().displayName()+".");
 					return false;
 				}
 			}

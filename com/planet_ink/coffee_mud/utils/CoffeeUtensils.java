@@ -175,7 +175,7 @@ public class CoffeeUtensils
 				for(int i=0;i<list.size();i++)
 				{
 					Environmental thisThang=(Environmental)list.elementAt(i);
-					if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.name().equalsIgnoreCase(srchStr))
+					if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.displayName().equalsIgnoreCase(srchStr))
 						if((!allFlag)||(thisThang.displayText().length()>0))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -191,7 +191,7 @@ public class CoffeeUtensils
 				for(int i=0;i<list.size();i++)
 				{
 					Environmental thisThang=(Environmental)list.elementAt(i);
-					if(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
+					if(containsString(thisThang.displayName(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
 						if((--myOccurrance)<=0)
 							return thisThang;
 				}
@@ -259,7 +259,7 @@ public class CoffeeUtensils
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
-				if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.name().equalsIgnoreCase(srchStr))
+				if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.displayName().equalsIgnoreCase(srchStr))
 					if((!allFlag)||(thisThang.displayText().length()>0))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -271,7 +271,7 @@ public class CoffeeUtensils
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
-				if(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
+				if(containsString(thisThang.displayName(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
 					if((--myOccurrance)<=0)
 						return thisThang;
 			}
@@ -331,7 +331,7 @@ public class CoffeeUtensils
 			{
 				Environmental thisThang=(Environmental)list[i];
 				if(thisThang!=null)
-					if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.name().equalsIgnoreCase(srchStr))
+					if(thisThang.ID().equalsIgnoreCase(srchStr)||thisThang.displayName().equalsIgnoreCase(srchStr))
 						if((!allFlag)||(thisThang.displayText().length()>0))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -344,7 +344,7 @@ public class CoffeeUtensils
 			{
 				Environmental thisThang=(Environmental)list[i];
 				if(thisThang!=null)
-					if(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
+					if(containsString(thisThang.displayName(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0)))
 						if((--myOccurrance)<=0)
 							return thisThang;
 			}
@@ -408,7 +408,7 @@ public class CoffeeUtensils
 
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
-					&&(thisThang.ID().equalsIgnoreCase(srchStr)||(thisThang.name().equalsIgnoreCase(srchStr))))
+					&&(thisThang.ID().equalsIgnoreCase(srchStr)||(thisThang.displayName().equalsIgnoreCase(srchStr))))
 						if((!allFlag)||(thisThang.displayText().length()>0))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -427,7 +427,7 @@ public class CoffeeUtensils
 
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORN_REQ_ANY)||(beingWorn&(wornReqCode==Item.WORN_REQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORN_REQ_UNWORNONLY)))
-					&&(containsString(thisThang.name(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0))))
+					&&(containsString(thisThang.displayName(),srchStr)&&((!allFlag)||(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return thisThang;
 				}

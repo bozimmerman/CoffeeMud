@@ -213,7 +213,7 @@ public class StdRideable extends StdContainer implements Rideable
 						if(r==numRiders()-1)
 							sendBack.append("and ");
 					}
-					sendBack.append(rider.name());
+					sendBack.append(rider.displayName());
 					
 			}
 			return sendBack.toString();
@@ -336,7 +336,7 @@ public class StdRideable extends StdContainer implements Rideable
 			   &&(affect.amITarget(this))
 			   &&(affect.tool() instanceof Rider))
 			{
-				affect.source().tell(affect.tool().name()+" can not be mounted to "+name()+"!");
+				affect.source().tell(affect.tool().displayName()+" can not be mounted to "+name()+"!");
 				return false;
 			}
 			else

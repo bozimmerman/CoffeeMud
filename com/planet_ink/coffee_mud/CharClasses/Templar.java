@@ -175,7 +175,7 @@ public class Templar extends Cleric
 				int basis=0;
 				if(hq==1000)
 				{
-					myChar.tell("The good nature of "+A.name()+" disrupts your prayer.");
+					myChar.tell("The good nature of "+A.displayName()+" disrupts your prayer.");
 					return false;
 				}
 				else
@@ -192,16 +192,16 @@ public class Templar extends Cleric
 					return true;
 
 				if(hq==0)
-					myChar.tell("The evil nature of "+A.name()+" disrupts your prayer.");
+					myChar.tell("The evil nature of "+A.displayName()+" disrupts your prayer.");
 				else
 				if(hq==1000)
-					myChar.tell("The goodness of "+A.name()+" disrupts your prayer.");
+					myChar.tell("The goodness of "+A.displayName()+" disrupts your prayer.");
 				else
 				if(align>650)
-					myChar.tell("The anti-good nature of "+A.name()+" disrupts your thought.");
+					myChar.tell("The anti-good nature of "+A.displayName()+" disrupts your thought.");
 				else
 				if(align<350)
-					myChar.tell("The anti-evil nature of "+A.name()+" disrupts your thought.");
+					myChar.tell("The anti-evil nature of "+A.displayName()+" disrupts your thought.");
 				return false;
 			}
 		}

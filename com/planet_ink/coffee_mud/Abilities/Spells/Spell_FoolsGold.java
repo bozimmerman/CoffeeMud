@@ -66,7 +66,7 @@ public class Spell_FoolsGold extends Spell
 					break;
 				default:
 					gold.setName("a pile of "+amount+" gold coins"); 
-					gold.setDisplayText(gold.name()+" sit here"); 
+					gold.setDisplayText(gold.displayName()+" sit here"); 
 					break;
 				}
 				gold.baseEnvStats().setWeight(0);

@@ -39,7 +39,7 @@ public class Spell_WallOfStone extends Spell
 				Item w=mob.fetchWieldedItem();
 				if(w==null) w=mob.myNaturalWeapon();
 				if(w==null) return false;
-				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.name()+".^?");
+				mob.location().show(mob,null,Affect.MSG_WEAPONATTACK,"^F<S-NAME> hack(s) at the wall of stone with "+w.displayName()+".^?");
 				amountRemaining-=mob.envStats().damage();
 				if(amountRemaining<0)
 				{

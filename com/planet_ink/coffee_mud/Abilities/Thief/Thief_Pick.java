@@ -36,7 +36,7 @@ public class Thief_Pick extends ThiefSkill
 		||((unlockThis instanceof Container)&&(!((Container)unlockThis).hasALock()))
 		||((unlockThis instanceof Item)&&(!(unlockThis instanceof Container))))
 		{
-			mob.tell("There is no lock on "+unlockThis.name()+"!");
+			mob.tell("There is no lock on "+unlockThis.displayName()+"!");
 			return false;
 		}
 
@@ -48,13 +48,13 @@ public class Thief_Pick extends ThiefSkill
 		boolean success=profficiencyCheck(adjustment,auto);
 
 		if(!success)
-			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.name()+" and fail(s).");
+			beneficialVisualFizzle(mob,null,"<S-NAME> attempt(s) to pick "+unlockThis.displayName()+" and fail(s).");
 		else
 		{
 			FullMsg msg=new FullMsg(mob,unlockThis,this,auto?Affect.MSG_OK_VISUAL:(Affect.MSG_THIEF_ACT),Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,null);
 			if(mob.location().okAffect(mob,msg))
 			{
-				msg=new FullMsg(mob,unlockThis,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.name()+".");
+				msg=new FullMsg(mob,unlockThis,null,Affect.MSG_OK_VISUAL,Affect.MSG_UNLOCK,Affect.MSG_OK_VISUAL,auto?unlockThis.displayName()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.displayName()+".");
 				ExternalPlay.roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

@@ -41,7 +41,7 @@ public class Prayer_UndeadInvisibility extends Prayer
 			   &&(affect.source().charStats().getMyRace().racialCategory().equals("Undead"))
 			   &&(affect.source().getVictim()!=target))
 			{
-				affect.source().tell("You don't see "+target.name());
+				affect.source().tell("You don't see "+target.displayName());
 				if(target.getVictim()==affect.source())
 				{
 					target.makePeace();

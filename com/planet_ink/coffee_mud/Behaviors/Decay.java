@@ -49,14 +49,14 @@ public class Decay extends ActiveTicker
 				item.destroyThis();
 				if(E instanceof MOB)
 				{
-					((MOB)E).tell(item.name()+" vanishes!");
+					((MOB)E).tell(item.displayName()+" vanishes!");
 					((MOB)E).recoverEnvStats();
 					((MOB)E).recoverCharStats();
 					((MOB)E).recoverMaxState();
 				}
 				else
 				if(E instanceof Room)
-					((Room)E).showHappens(Affect.MSG_OK_VISUAL,item.name()+" vanishes!");
+					((Room)E).showHappens(Affect.MSG_OK_VISUAL,item.displayName()+" vanishes!");
 				room.recoverRoomStats();
 			}
 		}

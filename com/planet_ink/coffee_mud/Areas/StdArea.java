@@ -110,6 +110,7 @@ public class StdArea implements Area
 	}
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}
+	public String displayName(){return name();}
 	public EnvStats envStats()
 	{
 		return envStats;
@@ -788,13 +789,13 @@ public class StdArea implements Area
 							for(int i=0;i<rustThese.size();i++)
 							{
 								Item I=(Item)rustThese.elementAt(i);
-								M.tell("Your "+I.name()+" rusts in the "+weatherDesc+".");
+								M.tell("Your "+I.displayName()+" rusts in the "+weatherDesc+".");
 								I.setUsesRemaining(I.usesRemaining()-1);
 								if(I.usesRemaining()<=0)
 								{
 									if(M.location()!=null)
 									{
-										FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.name()+" is destroyed!",null,I.name()+" owned by "+M.name()+" is destroyed!");
+										FullMsg msg=new FullMsg(M,null,null,Affect.MSG_OK_VISUAL,I.displayName()+" is destroyed!",null,I.displayName()+" owned by "+M.displayName()+" is destroyed!");
 										if(M.location().okAffect(M,msg))
 											M.location().send(M,msg);
 									}

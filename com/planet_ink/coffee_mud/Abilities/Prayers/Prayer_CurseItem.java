@@ -40,7 +40,7 @@ public class Prayer_CurseItem extends Prayer
 		{
 			if(canBeUninvoked())
 			if((affected instanceof Item)&&(((Item)affected).owner()!=null)&&(((Item)affected).owner() instanceof MOB))
-				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).name()+" is lifted.");
+				((MOB)((Item)affected).owner()).tell("The curse on "+((Item)affected).displayName()+" is lifted.");
 			super.unInvoke();
 			return;
 		}
@@ -71,16 +71,16 @@ public class Prayer_CurseItem extends Prayer
 			{
 				if(item.amWearingAt(Item.WIELD)||item.amWearingAt(Item.HELD))
 				{
-					mob.tell("You can't seem to let go of "+item.name()+".");
+					mob.tell("You can't seem to let go of "+item.displayName()+".");
 					return false;
 				}
-				mob.tell("You can't seem to remove "+item.name()+".");
+				mob.tell("You can't seem to remove "+item.displayName()+".");
 				return false;
 			}
 			break;
 		case Affect.TYP_DROP:
 		case Affect.TYP_THROW:
-			mob.tell("You can't seem to get rid of "+item.name()+".");
+			mob.tell("You can't seem to get rid of "+item.displayName()+".");
 			return false;
 		}
 		return true;

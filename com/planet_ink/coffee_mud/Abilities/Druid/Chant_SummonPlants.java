@@ -22,7 +22,7 @@ public class Chant_SummonPlants extends Chant
 		if(littlePlants==null)
 			return;
 		if(canBeUninvoked())
-			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.name()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
+			PlantsLocation.showHappens(Affect.MSG_OK_VISUAL,littlePlants.displayName()+" wither"+(littlePlants.name().startsWith("s")?"":"s")+" away.");
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
@@ -78,7 +78,7 @@ public class Chant_SummonPlants extends Chant
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		newItem.setDispossessionTime(0);
-		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
+		room.showHappens(Affect.MSG_OK_ACTION,"Suddenly, "+newItem.displayName()+" sprout(s) up here.");
 		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

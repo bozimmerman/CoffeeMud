@@ -15,6 +15,7 @@ public interface Environmental extends Cloneable, Tickable, StatsAffecting, MsgL
 	public String ID();
 	public String name();
 	public void setName(String newName);
+	public String displayName();
 	public String displayText();
 	public void setDisplayText(String newDisplayText);
 	public Environmental copyOf();

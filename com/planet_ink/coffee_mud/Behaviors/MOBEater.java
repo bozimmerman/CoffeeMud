@@ -33,8 +33,8 @@ public class MOBEater extends ActiveTicker
 			lastKnownLocation=((MOB)forMe).location();
 			if(lastKnownLocation!=null)
 				Stomach.setArea(lastKnownLocation.getArea());
-			Stomach.setName("The Stomach of "+forMe.name());
-			Stomach.setDescription("You are in the stomach of "+forMe.name()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
+			Stomach.setName("The Stomach of "+forMe.displayName());
+			Stomach.setDescription("You are in the stomach of "+forMe.displayName()+".  It is wet with digestive acids, and the walls are grinding you to a pulp.  You have been Swallowed whole and are being digested.");
 		}
 	}
 

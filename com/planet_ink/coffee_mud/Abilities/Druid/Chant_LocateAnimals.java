@@ -142,7 +142,7 @@ public class Chant_LocateAnimals extends Chant
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				displayText="(seeking "+target.name()+")";
+				displayText="(seeking "+target.displayName()+")";
 				Chant_LocateAnimals newOne=(Chant_LocateAnimals)this.copyOf();
 				if(mob.fetchAffect(newOne.ID())==null)
 					mob.addAffect(newOne);

@@ -34,10 +34,10 @@ public class Spell_Shrink extends Spell
 				if(item.owner()!=null)
 				{
 					if(item.owner() instanceof Room)
-						((Room)item.owner()).showHappens(Affect.MSG_OK_VISUAL,item.name()+" returns to its proper size.");
+						((Room)item.owner()).showHappens(Affect.MSG_OK_VISUAL,item.displayName()+" returns to its proper size.");
 					else
 					if(item.owner() instanceof MOB)
-						((MOB)item.owner()).tell(item.name()+" returns to its proper size.");
+						((MOB)item.owner()).tell(item.displayName()+" returns to its proper size.");
 				}
 			}
 		}

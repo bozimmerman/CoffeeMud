@@ -43,7 +43,7 @@ public class Chant_AnimalSpy extends Chant
 				Ability A=invoker.fetchAffect(this.ID());
 				if(A!=null)
 					invoker.delAffect(A);
-				invoker.tell("Your connection with '"+spy.name()+"' fades.");
+				invoker.tell("Your connection with '"+spy.displayName()+"' fades.");
 			}
 		}
 		super.unInvoke();

@@ -23,12 +23,12 @@ public class Prop_RideSpellCast extends Property
 		{
 			Ability A=(Ability)V.elementAt(v);
 			if(V.size()==1)
-				id+=A.name();
+				id+=A.displayName();
 			else
 			if(v==(V.size()-1))
-				id+="and "+A.name();
+				id+="and "+A.displayName();
 			else
-				id+=A.name()+", ";
+				id+=A.displayName()+", ";
 		}
 		if(V.size()>0)
 			id="Casts "+id+" on the mounted.";

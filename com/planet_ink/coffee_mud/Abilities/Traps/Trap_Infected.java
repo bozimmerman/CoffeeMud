@@ -77,7 +77,7 @@ public class Trap_Infected extends StdTrap
 			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off an infectous trap!");
 			else
-			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) that "+affected.name()+" is infected!"))
+			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> notice(s) that "+affected.displayName()+" is infected!"))
 			{
 				super.spring(target);
 				Ability A=CMClass.getAbility(text());

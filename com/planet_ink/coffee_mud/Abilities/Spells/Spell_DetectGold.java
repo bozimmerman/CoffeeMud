@@ -36,12 +36,12 @@ public class Spell_DetectGold extends Spell
 		{
 			if((I.material()==EnvResource.RESOURCE_GOLD)
 			&&(Sense.canBeSeenBy(I,mob)))
-				msg.append(I.name()+" glows golden.\n\r");
+				msg.append(I.displayName()+" glows golden.\n\r");
 		}
 		else
 		if((I.container()!=null)&&(I.container().container()==container))
-			if(msg.toString().indexOf(I.container().name()+" contains some sort of gold.")<0)
-				msg.append(I.container().name()+" contains some sort of gold.\n\r");
+			if(msg.toString().indexOf(I.container().displayName()+" contains some sort of gold.")<0)
+				msg.append(I.container().displayName()+" contains some sort of gold.\n\r");
 		return msg.toString();
 	}
 	public String metalHere(MOB mob, Environmental E, Item container)
@@ -72,7 +72,7 @@ public class Spell_DetectGold extends Spell
 					metalCheck(mob,I,container,msg);
 			}
 			if(((MOB)E).getMoney()>0)
-				msg.append(E.name()+" is carrying some gold.");
+				msg.append(E.displayName()+" is carrying some gold.");
 		}
 		return msg.toString();
 	}

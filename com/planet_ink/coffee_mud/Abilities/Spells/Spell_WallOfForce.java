@@ -133,7 +133,7 @@ public class Spell_WallOfForce extends Spell
 				mob.location().send(mob,msg);
 				Item I=CMClass.getItem("GenItem");
 				I.setName("a wall of force");
-				I.setDisplayText("an impenetrable wall of force surrounds "+mob.name());
+				I.setDisplayText("an impenetrable wall of force surrounds "+mob.displayName());
 				I.setDescription("It`s tough, that's for sure.");
 				I.setMaterial(EnvResource.RESOURCE_NOTHING);
 				I.setGettable(false);

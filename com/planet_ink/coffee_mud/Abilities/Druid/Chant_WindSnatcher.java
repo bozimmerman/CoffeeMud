@@ -54,7 +54,7 @@ public class Chant_WindSnatcher extends Chant
 		if((affect.tool()!=null)&&(affect.tool() instanceof Ability)
 		   &&(isSpell(affect.tool().ID())))
 		{
-			affect.source().location().show(invoker,null,affect.MSG_OK_VISUAL,"A form around <S-NAME> snatches "+affect.tool().name()+".");
+			affect.source().location().show(invoker,null,affect.MSG_OK_VISUAL,"A form around <S-NAME> snatches "+affect.tool().displayName()+".");
 			return false;
 		}
 		return true;

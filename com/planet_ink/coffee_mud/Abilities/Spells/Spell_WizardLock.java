@@ -30,13 +30,13 @@ public class Spell_WizardLock extends Spell
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_OPEN:
-			mob.tell(affected.name()+" appears to be magically locked.");
+			mob.tell(affected.displayName()+" appears to be magically locked.");
 			return false;
 		case Affect.TYP_UNLOCK:
-			mob.tell(affected.name()+" appears to be magically locked.");
+			mob.tell(affected.displayName()+" appears to be magically locked.");
 			return false;
 		case Affect.TYP_DELICATE_HANDS_ACT:
-			mob.tell(affected.name()+" appears to be magically locked.");
+			mob.tell(affected.displayName()+" appears to be magically locked.");
 			return false;
 		default:
 			break;
@@ -109,7 +109,7 @@ public class Spell_WizardLock extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already magically locked!");
+			mob.tell(target.displayName()+" is already magically locked!");
 			return false;
 		}
 
