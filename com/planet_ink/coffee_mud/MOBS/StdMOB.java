@@ -2080,7 +2080,16 @@ public class StdMOB implements MOB
 					if(Sense.isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_TICK,maxState());
 					else
+					{
 						curState().adjFatigue(Host.TICK_TIME,maxState());
+				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
+						&&(!isMonster())
+                     	&&(Dice.rollPercentage()==1))
+                     	{
+                        	Ability theYawns = CMClass.getAbility("Disease_Yawning");
+                        	if(theYawns!=null) theYawns.invoke(this, this, true);
+                     	}
+					}
 				}
 				
 				if((riding()!=null)&&(CoffeeUtensils.roomLocation(riding())!=location()))
