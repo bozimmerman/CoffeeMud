@@ -27,7 +27,7 @@ public class GenDoor extends GenExit
 		super();
 		name="a door";
 		displayText="";
-		description="An ordinary wooden door with swinging hinges and a latch.";
+		description="An ordinary wooden door with hinges and a latch.";
 		hasADoor=true;
 		hasALock=false;
 		doorDefaultsClosed=true;
