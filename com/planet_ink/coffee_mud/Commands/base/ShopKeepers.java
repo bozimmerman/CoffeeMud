@@ -8,7 +8,9 @@ import java.util.*;
 
 public class ShopKeepers
 {
-	private ShopKeeper shopkeeper(Room here, MOB mob)
+	private ShopKeepers(){}
+	
+	private static ShopKeeper shopkeeper(Room here, MOB mob)
 	{
 		for(int i=0;i<here.numInhabitants();i++)
 		{
@@ -19,7 +21,7 @@ public class ShopKeepers
 		return null;
 	}
 
-	public void sell(MOB mob, Vector commands)
+	public static void sell(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
@@ -75,7 +77,7 @@ public class ShopKeepers
 	}
 
 
-	public void value(MOB mob, Vector commands)
+	public static void value(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
@@ -130,7 +132,7 @@ public class ShopKeepers
 		}while(allFlag);
 	}
 
-	public void view(MOB mob, Vector commands)
+	public static void view(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
@@ -186,7 +188,7 @@ public class ShopKeepers
 		}while(allFlag);
 	}
 
-	public void buy(MOB mob, Vector commands)
+	public static void buy(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
@@ -242,7 +244,7 @@ public class ShopKeepers
 		}while(allFlag);
 	}
 
-	public void deposit(MOB mob, Vector commands)
+	public static void deposit(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
@@ -272,7 +274,7 @@ public class ShopKeepers
 			commands.removeElementAt(0);
 		}
 		String thisName=Util.combine(commands,0);
-		Item thisThang=new SocialProcessor().possibleGold(mob,thisName);
+		Item thisThang=SocialProcessor.possibleGold(mob,thisName);
 		if(thisThang==null)
 		{
 			thisThang=mob.fetchCarried(null,thisName);
@@ -288,7 +290,7 @@ public class ShopKeepers
 		mob.location().send(mob,newMsg);
 	}
 	
-	public void withdraw(MOB mob, Vector commands)
+	public static void withdraw(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
@@ -371,7 +373,7 @@ public class ShopKeepers
 		mob.location().send(mob,newMsg);
 	}
 	
-	public void list(MOB mob, Vector commands)
+	public static void list(MOB mob, Vector commands)
 	{
 		MOB shopkeeper=shopkeeper(mob.location(),mob);
 		if(shopkeeper==null)
@@ -389,7 +391,7 @@ public class ShopKeepers
 			if((shopkeeper==null)||(!(shopkeeper instanceof ShopKeeper))||(!Sense.canBeSeenBy(shopkeeper,mob)))
 			{
 				if(mob.isASysOp(mob.location()))
-					new Lister().list(mob,commands);
+					Lister.list(mob,commands);
 				else
 					mob.tell("You don't see anyone called '"+(String)commands.elementAt(commands.size()-1)+"' selling anything.");
 				return;

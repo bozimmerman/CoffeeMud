@@ -11,17 +11,31 @@ import com.planet_ink.coffee_mud.utils.*;
 // requires nothing to load
 public class Socials
 {
-	private String filename="";
-	public boolean loaded=false;
-	public Hashtable soc=new Hashtable();
-	public String socialsList=null;
+	private Socials() {};
+	
+	private static String filename="";
+	private static boolean loaded=false;
+	private static Hashtable soc=new Hashtable();
+	private static String socialsList=null;
 
-	public void addSocial(Social S)
+	public static boolean isLoaded() { return loaded; }
+	public static void put(String name, Social S) { soc.put(name, S); }
+	public static void remove(String name) { soc.remove(name); }
+	public static void resetSocialsList() { socialsList = null; }
+	public static void clearAllSocials()
+	{
+		loaded=false;
+		filename="";
+		soc=new Hashtable();
+		resetSocialsList();
+	}
+
+	public static void addSocial(Social S)
 	{
 		soc.put(S.Social_name,S);
 	}
 	
-	public void load(String newFilename)
+	public static void load(String newFilename)
 	{
 		filename=newFilename;
 		try
@@ -127,13 +141,13 @@ public class Socials
 		}
 	}
 
-	public Social FetchSocial(String name)
+	public static Social FetchSocial(String name)
 	{
 		Social thisOne=(Social)soc.get(name.toUpperCase());
 		return thisOne;
 	}
 
-	public Social FetchSocial(Vector C)
+	public static Social FetchSocial(Vector C)
 	{
 		if(C==null) return null;
 		if(C.size()==0) return null;
@@ -161,12 +175,12 @@ public class Socials
 		return S;
 	}
 
-	public int num()
+	public static int num()
 	{
 		return soc.size();
 	}
 
-	public Social enum(int index)
+	public static Social enum(int index)
 	{
 		if((index<0)||(index>num())) return null;
 		int i=0;
@@ -178,7 +192,7 @@ public class Socials
 		return null;
 	}
 
-	public void save()
+	public static void save()
 	{
 		if(loaded==false) return;
 		try
@@ -264,7 +278,7 @@ public class Socials
 		}
 	}
 
-	public String getSocialsList()
+	public static String getSocialsList()
 	{
 		if(socialsList!=null)
 			return socialsList;

@@ -7,7 +7,9 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class AbilityEvoker
 {
-	public void gain(MOB mob, Vector commands)
+	private AbilityEvoker(){}
+	
+	public static void gain(MOB mob, Vector commands)
 		throws Exception
 	{
 		if(commands.size()==1)
@@ -18,7 +20,7 @@ public class AbilityEvoker
 		commands.insertElementAt("SAY",0);
 		ExternalPlay.doCommand(mob,commands);
 	}
-	private boolean evokedBy(Ability thisAbility, String thisWord)
+	private static boolean evokedBy(Ability thisAbility, String thisWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
@@ -28,7 +30,7 @@ public class AbilityEvoker
 		return false;
 	}
 
-	private boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
+	private static boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
 		{
@@ -41,7 +43,7 @@ public class AbilityEvoker
 		return false;
 	}
 
-	public Ability getToEvoke(MOB mob, Vector commands)
+	public static Ability getToEvoke(MOB mob, Vector commands)
 	{
 		String evokeWord=((String)commands.elementAt(0)).toUpperCase();
 
@@ -148,7 +150,7 @@ public class AbilityEvoker
 		return evokableAbility;
 	}
 	
-	public void evoke(MOB mob, Vector commands)
+	public static void evoke(MOB mob, Vector commands)
 	{
 		Ability evokableAbility=getToEvoke(mob,commands);
 		if(evokableAbility==null)
@@ -165,7 +167,7 @@ public class AbilityEvoker
 		evokableAbility.invoke(mob,commands,null,false);
 	}
 
-	public void teach(MOB mob, Vector commands)
+	public static void teach(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -215,7 +217,7 @@ public class AbilityEvoker
 		mob.location().send(mob,msg);
 	}
 
-	public void practice(MOB mob, Vector commands)
+	public static void practice(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{

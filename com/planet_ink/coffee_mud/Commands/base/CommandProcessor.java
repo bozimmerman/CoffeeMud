@@ -9,31 +9,12 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class CommandProcessor
 {
-	public CommandSet commandSet=new CommandSet();
-	public Channels channels=new Channels();
-	public BasicSenses basicSenses=new BasicSenses();
-	public AbilityEvoker abilityEvoker=new AbilityEvoker();
-	public FrontDoor frontDoor=new FrontDoor();
-	public Grouping grouping=new Grouping();
-	public ItemUsage itemUsage=new ItemUsage();
-	public Movement movement=new Movement();
-	public Scoring scoring=new Scoring();
-	public SocialProcessor socialProcessor=new SocialProcessor();
-	public ShopKeepers shopKeepers=new ShopKeepers();
-	public Socials socials=new Socials();
-	public Lister sysopLister=new Lister();
-	public TheFight theFight=new TheFight(grouping);
-	public CreateEdit createEdit=new CreateEdit(socials);
-	public Import importer=new Import(socials);
-	public SysopItemUsage sysopItemUsage=new SysopItemUsage();
-	public SysOpSkills sysopSkills=new SysOpSkills();
-	public Help help=new Help();
-	public XMLIO xmlIO=new XMLIO();
-	public Reset reset=new Reset();
-	public Rooms sysopRooms=new Rooms();
-	public Host myHost=null;
+	public static CommandSet commandSet=CommandSet.getInstance();
+	public static Host myHost=null;
 
-	public void doCommand(MOB mob, Vector commands)
+	private CommandProcessor(){}
+	
+	public static void doCommand(MOB mob, Vector commands)
 		throws Exception
 	{
 		if(commands.size()==0) return;
@@ -66,67 +47,67 @@ public class CommandProcessor
 				switch(commandCode)
 				{
 				case CommandSet.AFFECT:
-					scoring.affected(mob);
+					Scoring.affected(mob);
 					break;
 				case CommandSet.ANSI:
-					basicSenses.ansi(mob,1);
+					BasicSenses.ansi(mob,1);
 					break;
 				case CommandSet.ARCHELP:
 					if(mob.isASysOp(mob.location()))
-						help.arcHelp(mob,Util.combine(commands,1));
+						Help.arcHelp(mob,Util.combine(commands,1));
 					else
 						mob.tell("You are not powerful enough to even care.\n\r");
 					break;
 				case CommandSet.ARCTOPICS:
 					if(mob.isASysOp(mob.location()))
-						help.arcTopics(mob);
+						Help.arcTopics(mob);
 					else
 						mob.tell("You are not powerful enough to even care.\n\r");
 					break;
 				case CommandSet.AREAS:
-					scoring.areas(mob);
+					Scoring.areas(mob);
 					break;
 				case CommandSet.AUTOMELEE:
-					theFight.autoMelee(mob);
+					TheFight.autoMelee(mob);
 					break;
 				case CommandSet.AUTOASSIST:
-					theFight.autoAssist(mob);
+					TheFight.autoAssist(mob);
 					break;
 				case CommandSet.AUTOEXITS:
-					basicSenses.autoExits(mob);
+					BasicSenses.autoExits(mob);
 					break;
 				case CommandSet.AUTOGOLD:
-					theFight.autogold(mob);
+					TheFight.autogold(mob);
 					break;
 				case CommandSet.AUTOLOOT:
-					theFight.autoloot(mob);
+					TheFight.autoloot(mob);
 					break;
 				case CommandSet.AUTOWEATHER:
-					basicSenses.autoweather(mob);
+					BasicSenses.autoweather(mob);
 					break;
 				case CommandSet.AUTODRAW:
-					theFight.autoDraw(mob);
+					TheFight.autoDraw(mob);
 					break;
 				case CommandSet.BAN:
 					if(mob.isASysOp(null))
-						sysopSkills.ban(mob,commands);
+						SysOpSkills.ban(mob,commands);
 					else
 						mob.tell("You are not powerful enough to do that.\n\r");
 					break;
 				case CommandSet.BEACON:
 					if(mob.isASysOp(mob.location()))
-						sysopSkills.beacon(mob);
+						SysOpSkills.beacon(mob);
 					else
 						mob.tell("You are not powerful enough to do that.\n\r");
 					break;
 				case CommandSet.BOOT:
 					if(mob.isASysOp(mob.location()))
-						sysopSkills.boot(mob,commands);
+						SysOpSkills.boot(mob,commands);
 					else
 						mob.tell("You are not powerful enough to do that.\n\r");
 					break;
 				case CommandSet.BRIEF:
-					basicSenses.brief(mob);
+					BasicSenses.brief(mob);
 					break;
 				case CommandSet.BUG:
 					if(Util.combine(commands,1).length()>0)
@@ -138,53 +119,53 @@ public class CommandProcessor
 						mob.tell("What's the bug? Be Specific!");
 					break;
 				case CommandSet.BUY:
-					shopKeepers.buy(mob,commands);
+					ShopKeepers.buy(mob,commands);
 					break;
 				case CommandSet.CLOSE:
-					movement.close(mob,Util.combine(commands,1));
+					Movement.close(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.CHANNEL:
-					channels.channel(mob,commands);
+					Channels.channel(mob,commands);
 					break;
 				case CommandSet.CHANNELS:
-					channels.listChannels(mob);
+					Channels.listChannels(mob);
 					break;
 				case CommandSet.CHANTS:
-					scoring.chants(mob);
+					Scoring.chants(mob);
 					break;
 				case CommandSet.CHANWHO:
-					channels.channelWho(mob,Util.combine(commands,1));
+					Channels.channelWho(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.GENCHAR:
 					if(mob.isASysOp(mob.location()))
-						sysopSkills.chargen(mob,commands);
+						SysOpSkills.chargen(mob,commands);
 					else
 						mob.tell("Sorry, you don't have that power!");
 					break;
 				case CommandSet.CONSIDER:
-					socialProcessor.consider(mob,commands);
+					SocialProcessor.consider(mob,commands);
 					break;
 				case CommandSet.COMPARE:
-					itemUsage.compare(mob,commands);
+					ItemUsage.compare(mob,commands);
 					break;
 				case CommandSet.COLORSET:
-					scoring.colorSet(mob,commands);
+					Scoring.colorSet(mob,commands);
 					break;
 				case CommandSet.COMMANDS:
-					scoring.commands(mob,commandSet);
+					Scoring.commands(mob,commandSet);
 					break;
 				case CommandSet.COPY:
 					if(mob.isASysOp(mob.location()))
-						createEdit.copy(mob,commands);
+						CreateEdit.copy(mob,commands);
 					else
 						mob.tell("You lack the power of creation.\n\r");
 					break;
 				case CommandSet.CRAWL:
-					movement.crawl(mob,commands);
+					Movement.crawl(mob,commands);
 					break;
 				case CommandSet.CREATE:
 					if(mob.isASysOp(mob.location()))
-						createEdit.create(mob,commands);
+						CreateEdit.create(mob,commands);
 					else
 						mob.tell("You lack the power of creation.\n\r");
 					break;
@@ -192,31 +173,31 @@ public class CommandProcessor
 					credits(mob);
 					break;
 				case CommandSet.DEPOSIT:
-					shopKeepers.deposit(mob,commands);
+					ShopKeepers.deposit(mob,commands);
 					break;
 				case CommandSet.DESCRIPTION:
-					basicSenses.description(mob,commands);
+					BasicSenses.description(mob,commands);
 					break;
 				case CommandSet.DESTROY:
 					if(mob.isASysOp(mob.location()))
-						createEdit.destroy(mob,commands);
+						CreateEdit.destroy(mob,commands);
 					else
 						mob.tell("You lack the power to destroy things this way.  Did you mean kill?\n\r");
 					break;
 				case CommandSet.DISMOUNT:
-					movement.dismount(mob,commands);
+					Movement.dismount(mob,commands);
 					break;
 				case CommandSet.DOWN:
-					movement.standAndGo(mob,Directions.DOWN);
+					Movement.standAndGo(mob,Directions.DOWN);
 					break;
 				case CommandSet.DRAW:
-					theFight.draw(mob,commands,false,false);
+					TheFight.draw(mob,commands,false,false);
 					break;
 				case CommandSet.DRINK:
-					itemUsage.drink(mob,commands);
+					ItemUsage.drink(mob,commands);
 					break;
 				case CommandSet.DROP:
-					itemUsage.drop(mob,commands);
+					ItemUsage.drop(mob,commands);
 					break;
 				case CommandSet.DUMPFILE:
 					if(mob.isASysOp(null))
@@ -225,82 +206,82 @@ public class CommandProcessor
 						mob.tell("Huh?\n\r");
 					break;
 				case CommandSet.EAST:
-					movement.standAndGo(mob,Directions.EAST);
+					Movement.standAndGo(mob,Directions.EAST);
 					break;
 				case CommandSet.EAT:
-					itemUsage.eat(mob,commands);
+					ItemUsage.eat(mob,commands);
 					break;
 				case CommandSet.EMOTE:
-					basicSenses.emote(mob,commands);
+					BasicSenses.emote(mob,commands);
 					break;
 				case CommandSet.ENTER:
-					movement.enter(mob,commands);
+					Movement.enter(mob,commands);
 					break;
 				case CommandSet.EVOKE: // an ability
-					abilityEvoker.evoke(mob,commands);
+					AbilityEvoker.evoke(mob,commands);
 					break;
 				case CommandSet.EQUIPMENT:
-					scoring.equipment(mob);
+					Scoring.equipment(mob);
 					break;
 				case CommandSet.EXAMINE:
-					basicSenses.look(mob,commands,false);
+					BasicSenses.look(mob,commands,false);
 					break;
 				case CommandSet.EXITS:
 					mob.location().listExits(mob);
 					break;
 				case CommandSet.EXPORT:
 					if(mob.isASysOp(null))
-						importer.export(mob,commands);
+						Import.export(mob,commands);
 					else
 						mob.tell("Only the Archons may Export.\n\r");
 					break;
 				case CommandSet.FILL:
-					itemUsage.fill(mob,commands);
+					ItemUsage.fill(mob,commands);
 					break;
 				case CommandSet.FIRE:
-					socialProcessor.fire(mob,Util.combine(commands,1));
+					SocialProcessor.fire(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.FLEE:
-					movement.flee(mob,Util.combine(commands,1));
+					Movement.flee(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.FOLLOW:
-					grouping.follow(mob,commands);
+					Grouping.follow(mob,commands);
 					break;
 				case CommandSet.GAIN:
-					abilityEvoker.gain(mob,commands);
+					AbilityEvoker.gain(mob,commands);
 					break;
 				case CommandSet.GET:
-					itemUsage.get(mob,commands);
+					ItemUsage.get(mob,commands);
 					break;
 				case CommandSet.GIVE:
-					socialProcessor.give(mob,commands,false);
+					SocialProcessor.give(mob,commands,false);
 					break;
 				case CommandSet.GO:
-					movement.go(mob,commands);
+					Movement.go(mob,commands);
 					break;
 				case CommandSet.GOTO:
-					sysopSkills.gotoCmd(mob,commands);
+					SysOpSkills.gotoCmd(mob,commands);
 					break;
 				case CommandSet.GROUP:
-					grouping.group(mob);
+					Grouping.group(mob);
 					break;
 				case CommandSet.GTELL:
-					grouping.gtell(mob,Util.combine(commands,1));
+					Grouping.gtell(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.HELP:
-					help.help(mob,Util.combine(commands,1));
+					Help.help(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.HIRE:
-					socialProcessor.hire(mob,Util.combine(commands,1));
+					SocialProcessor.hire(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.HOLD:
-					itemUsage.hold(mob,commands);
+					ItemUsage.hold(mob,commands);
 					break;
 				case CommandSet.I3:
 					if(!(ExternalPlay.i3().i3online()))
 						mob.tell("I3 is unavailable.");
 					else
-						sysopSkills.i3(mob,commands);
+						SysOpSkills.i3(mob,commands);
 					break;
 				case CommandSet.I3LOCATE:
 					if(!(ExternalPlay.i3().i3online()))
@@ -319,143 +300,143 @@ public class CommandProcessor
 					break;
 				case CommandSet.IMPORT:
 					if(mob.isASysOp(null))
-						importer.areimport(mob,commands);
+						Import.areimport(mob,commands);
 					else
 						mob.tell("Only the Archons may Import.\n\r");
 					break;
 				case CommandSet.INVENTORY:
-					scoring.inventory(mob);
+					Scoring.inventory(mob);
 					break;
 				case CommandSet.KILL:
-					theFight.kill(mob,commands);
+					TheFight.kill(mob,commands);
 					break;
 				case CommandSet.LANGUAGES:
-					scoring.languages(mob);
+					Scoring.languages(mob);
 					break;
 				case CommandSet.LIST:
-					shopKeepers.list(mob,commands);
+					ShopKeepers.list(mob,commands);
 					break;
 				case CommandSet.LINK:
 					if(mob.isASysOp(mob.location()))
-						createEdit.link(mob,commands);
+						CreateEdit.link(mob,commands);
 					else
 						mob.tell("You lack the power to link rooms.\n\r");
 					break;
 				case CommandSet.LOCK:
-					movement.lock(mob,Util.combine(commands,1));
+					Movement.lock(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.LOOK:
-					basicSenses.look(mob,commands,false);
+					BasicSenses.look(mob,commands,false);
 					break;
 				case CommandSet.MODIFY:
 					if(mob.isASysOp(mob.location()))
-						createEdit.edit(mob,commands);
+						CreateEdit.edit(mob,commands);
 					else
 						mob.tell("You lack the power to modify things.\n\r");
 					break;
 				case CommandSet.MOUNT:
-					movement.mount(mob,commands);
+					Movement.mount(mob,commands);
 					break;
 				case CommandSet.NOCOLOR:
-					basicSenses.ansi(mob,0);
+					BasicSenses.ansi(mob,0);
 					break;
 				case CommandSet.NOFOLLOW:
-					grouping.togglenofollow(mob);
+					Grouping.togglenofollow(mob);
 					break;
 				case CommandSet.NORTH:
-					movement.standAndGo(mob,Directions.NORTH);
+					Movement.standAndGo(mob,Directions.NORTH);
 					break;
 				case CommandSet.NOCHANNEL:
-					channels.nochannel(mob,commands);
+					Channels.nochannel(mob,commands);
 					break;
 				case CommandSet.OPEN:
-					movement.open(mob,Util.combine(commands,1));
+					Movement.open(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.ORDER:
-					grouping.order(mob,commands);
+					Grouping.order(mob,commands);
 					break;
 				case CommandSet.OUTFIT:
-					basicSenses.outfit(mob);
+					BasicSenses.outfit(mob);
 					break;
 				case CommandSet.PASSWORD:
-					basicSenses.password(mob,commands);
+					BasicSenses.password(mob,commands);
 					break;
 				case CommandSet.PLAYERKILL:
-					theFight.playerkill(mob);
+					TheFight.playerkill(mob);
 					break;
 				case CommandSet.POSSESS:
 					if(mob.isASysOp(mob.location()))
-						sysopSkills.possess(mob,commands);
+						SysOpSkills.possess(mob,commands);
 					else
 						mob.tell("You aren't powerful enough to possess anyone.");
 					break;
 				case CommandSet.PRACTICE:
-					abilityEvoker.practice(mob,commands);
+					AbilityEvoker.practice(mob,commands);
 					break;
 				case CommandSet.PRAYERS:
-					scoring.prayers(mob);
+					Scoring.prayers(mob);
 					break;
 				case CommandSet.PREVIOUS_CMD:
 					if(!mob.isMonster())
 						doCommand(mob,Util.copyVector(mob.session().previousCMD()));
 					break;
 				case CommandSet.PROMPT:
-					scoring.prompt(mob,commands);
+					Scoring.prompt(mob,commands);
 					break;
 				case CommandSet.PULL:
-					itemUsage.pull(mob,Util.combine(commands,1));
+					ItemUsage.pull(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.PUSH:
-					itemUsage.push(mob,Util.combine(commands,1),commandSet);
+					ItemUsage.push(mob,Util.combine(commands,1),commandSet);
 					break;
 				case CommandSet.PUT:
-					itemUsage.put(mob,commands);
+					ItemUsage.put(mob,commands);
 					break;
 				case CommandSet.QUALIFY:
-					scoring.qualify(mob,commands);
+					Scoring.qualify(mob,commands);
 					break;
 				case CommandSet.QUIET:
-					channels.quiet(mob);
+					Channels.quiet(mob);
 					break;
 				case CommandSet.QUIT:
 					if(mob.soulMate()!=null)
-						new SysOpSkills().dispossess(mob);
+						SysOpSkills.dispossess(mob);
 					else
 					if(!mob.isMonster())
 						mob.session().cmdExit(mob,commands);
 					break;
 				case CommandSet.READ:
-					itemUsage.read(mob,commands);
+					ItemUsage.read(mob,commands);
 					break;
 				case CommandSet.REBUKE:
-					socialProcessor.rebuke(mob,commands);
+					SocialProcessor.rebuke(mob,commands);
 					break;
 				case CommandSet.REMOVE:
-					itemUsage.remove(mob,commands);
+					ItemUsage.remove(mob,commands);
 					break;
 				case CommandSet.REPLY:
-					socialProcessor.reply(mob,commands);
+					SocialProcessor.reply(mob,commands);
 					break;
 				case CommandSet.REPORT:
-					socialProcessor.report(mob);
+					SocialProcessor.report(mob);
 					break;
 				case CommandSet.RESET:
 					if(mob.isASysOp(mob.location()))
-						reset.resetSomething(mob,commands);
+						Reset.resetSomething(mob,commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");
 					break;
 				case CommandSet.RETIRE:
-					scoring.retire(mob);
+					Scoring.retire(mob);
 					break;
 				case CommandSet.SAVE:
 					if(mob.isASysOp(mob.location()))
-						createEdit.save(mob,commands);
+						CreateEdit.save(mob,commands);
 					else
 						mob.tell("Your game is automatically being saved while you play.\n\r");
 					break;
 				case CommandSet.SAY:
-					socialProcessor.cmdSay(mob,commands);
+					SocialProcessor.cmdSay(mob,commands);
 					break;
 				case CommandSet.SHUTDOWN:
 					if(mob.isASysOp(null))
@@ -464,65 +445,65 @@ public class CommandProcessor
 						mob.tell("You are not powerful enough.\n\r");
 					break;
 				case CommandSet.SCORE:
-					scoring.score(mob);
+					Scoring.score(mob);
 					break;
 				case CommandSet.SELL:
-					shopKeepers.sell(mob,commands);
+					ShopKeepers.sell(mob,commands);
 					break;
 				case CommandSet.SERVE:
-					socialProcessor.serve(mob,commands);
+					SocialProcessor.serve(mob,commands);
 					break;
 				case CommandSet.SHEATH:
-					theFight.sheath(mob,commands);
+					TheFight.sheath(mob,commands);
 					break;
 				case CommandSet.SIT:
-					movement.sit(mob,commands);
+					Movement.sit(mob,commands);
 					break;
 				case CommandSet.SKILLS:
-					scoring.skills(mob);
+					Scoring.skills(mob);
 					break;
 				case CommandSet.SLEEP:
-					movement.sleep(mob,commands);
+					Movement.sleep(mob,commands);
 					break;
 				case CommandSet.SNOOP:
 					if(mob.isASysOp(mob.location()))
-						sysopSkills.snoop(mob, commands);
+						SysOpSkills.snoop(mob, commands);
 					else
 						mob.tell("Mind your own business!\n\r");
 					break;
 				case CommandSet.SOCIALS:
-					scoring.socials(mob,socials);
+					Scoring.socials(mob);
 					break;
 				case CommandSet.SONGS:
-					scoring.songs(mob);
+					Scoring.songs(mob);
 					break;
 				case CommandSet.SOUTH:
-					movement.standAndGo(mob,Directions.SOUTH);
+					Movement.standAndGo(mob,Directions.SOUTH);
 					break;
 				case CommandSet.SPELLS:
-					scoring.spells(mob,commands);
+					Scoring.spells(mob,commands);
 					break;
 				case CommandSet.SPLIT:
-					grouping.split(mob,commands);
+					Grouping.split(mob,commands);
 					break;
 				case CommandSet.STAND:
-					movement.stand(mob);
+					Movement.stand(mob);
 					break;
 				case CommandSet.SYSMSGS:
 					if(mob.isASysOp(mob.location()))
-						sysopSkills.toggleSysopMsgs(mob);
+						SysOpSkills.toggleSysopMsgs(mob);
 					break;
 				case CommandSet.TAKE:
 					if(mob.isASysOp(mob.location()))
-						sysopItemUsage.take(mob,commands);
+						SysopItemUsage.take(mob,commands);
 					else
-						basicSenses.mundaneTake(mob,commands);
+						BasicSenses.mundaneTake(mob,commands);
 					break;
 				case CommandSet.TELL:
-					socialProcessor.tell(mob,commands);
+					SocialProcessor.tell(mob,commands);
 					break;
 				case CommandSet.TEACH:
-					abilityEvoker.teach(mob,commands);
+					AbilityEvoker.teach(mob,commands);
 					break;
 				case CommandSet.TICKTOCK:
 					if(mob.isASysOp(null))
@@ -534,13 +515,13 @@ public class CommandProcessor
 						mob.tell("Huh?\n\r");
 					break;
 				case CommandSet.TIME:
-					basicSenses.time(mob,commands);
+					BasicSenses.time(mob,commands);
 					break;
 				case CommandSet.TOPICS:
-					help.topics(mob);
+					Help.topics(mob);
 					break;
 				case CommandSet.TRAIN:
-					basicSenses.train(mob,commands);
+					BasicSenses.train(mob,commands);
 					break;
 				case CommandSet.TYPO:
 					if(Util.combine(commands,1).length()>0)
@@ -552,28 +533,28 @@ public class CommandProcessor
 						mob.tell("What's the typo?");
 					break;
 				case CommandSet.UNLOCK:
-					movement.unlock(mob,Util.combine(commands,1));
+					Movement.unlock(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.UNLINK:
 					if(mob.isASysOp(mob.location()))
-						createEdit.destroy(mob,commands);
+						CreateEdit.destroy(mob,commands);
 					else
 						mob.tell("You lack the power to link rooms.\n\r");
 					break;
 				case CommandSet.UNLOADHELP:
 					if(mob.isASysOp(null))
-						help.unloadHelpFile(mob);
+						Help.unloadHelpFile(mob);
 					else
 						mob.tell("Only the Archons may unload the help files...\n\r");
 					break;
 				case CommandSet.UP:
-					movement.standAndGo(mob,Directions.UP);
+					Movement.standAndGo(mob,Directions.UP);
 					break;
 				case CommandSet.VALUE:
-					shopKeepers.value(mob,commands);
+					ShopKeepers.value(mob,commands);
 					break;
 				case CommandSet.VASSALS:
-					socialProcessor.vassals(mob,commands);
+					SocialProcessor.vassals(mob,commands);
 					break;
 				case CommandSet.VER:
 					mob.tell(myHost.getVer());
@@ -582,70 +563,70 @@ public class CommandProcessor
 					mob.tell("http://www.zimmers.net/home/mud.html");
 					break;
 				case CommandSet.VIEW:
-					shopKeepers.view(mob,commands);
+					ShopKeepers.view(mob,commands);
 					break;
 				case CommandSet.WAKE:
-					movement.wake(mob);
+					Movement.wake(mob);
 					break;
 				case CommandSet.WEAR:
-					itemUsage.wear(mob,commands);
+					ItemUsage.wear(mob,commands);
 					break;
 				case CommandSet.WEATHER:
-					basicSenses.weather(mob,commands);
+					BasicSenses.weather(mob,commands);
 					break;
 				case CommandSet.WEST:
-					movement.standAndGo(mob,Directions.WEST);
+					Movement.standAndGo(mob,Directions.WEST);
 					break;
 				case CommandSet.WHERE:
 					if(mob.isASysOp(mob.location()))
-						sysopLister.where(mob,commands);
+						Lister.where(mob,commands);
 					else
 						mob.tell("Only the Archons may divine that.");
 					break;
 				case CommandSet.WHOIS:
-					grouping.whois(mob,Util.combine(commands,1));
+					Grouping.whois(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.WHO:
-					grouping.who(mob,Util.combine(commands,1));
+					Grouping.who(mob,Util.combine(commands,1));
 					break;
 				case CommandSet.WIELD:
-					itemUsage.wield(mob,commands);
+					ItemUsage.wield(mob,commands);
 					break;
 				case CommandSet.WIMPY:
-					basicSenses.wimpy(mob,commands);
+					BasicSenses.wimpy(mob,commands);
 					break;
 				case CommandSet.WITHDRAW:
-					shopKeepers.withdraw(mob,commands);
+					ShopKeepers.withdraw(mob,commands);
 					break;
 				case CommandSet.WIZINV:
 					if(mob.isASysOp(null))
-						sysopSkills.wizinv(mob,commands);
+						SysOpSkills.wizinv(mob,commands);
 					else
 						mob.tell("You aren't powerful enough to do that.");
 					break;
 				case CommandSet.XML:
 					if(mob.isASysOp(null))
-						xmlIO.xml(mob,commands);
+						XMLIO.xml(mob,commands);
 					else
 						mob.tell("You are not powerful enough.\n\r");
 					break;
 				case CommandSet.YELL:
-					socialProcessor.yell(mob,commands);
+					SocialProcessor.yell(mob,commands);
 					break;
 				}
 			}
 		}
 		else
 		{
-			Social social=socials.FetchSocial(commands);
+			Social social=Socials.FetchSocial(commands);
 			if(social!=null)
-				socialProcessor.doSocial(social,mob,commands);
+				SocialProcessor.doSocial(social,mob,commands);
 			else
 				mob.tell("Huh?\n\r");
 		}
 	}
 
-	public void credits(MOB mob)
+	public static void credits(MOB mob)
 	{
 		StringBuffer credits=Resources.getFileResource("credits.txt");
 
@@ -654,7 +635,7 @@ public class CommandProcessor
 		return;
 	}
 
-	public void shutdown(MOB mob, Vector commands)
+	public static void shutdown(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(mob.isMonster()) return;
@@ -688,7 +669,7 @@ public class CommandProcessor
 			Log.errOut("CommandProcessor","Shutdown failed.  No host.");
 	}
 
-	public void cmdDumpfile(MOB mob, Vector commands)
+	public static void cmdDumpfile(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{

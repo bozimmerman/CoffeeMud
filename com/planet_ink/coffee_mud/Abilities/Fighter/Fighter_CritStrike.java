@@ -31,8 +31,13 @@ public class Fighter_CritStrike extends StdAbility
 		if(affect.amISource(mob)
 		&&(Sense.aliveAwakeMobile(mob,true))
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
+		&&(affect.target()!=null)
+		&&(mob.getVictim()==affect.target())
+		&&(mob.rangeToTarget()==0)
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon)
+		&&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_RANGED)
+		&&(((Weapon)affect.tool()).weaponClassification()!=Weapon.CLASS_THROWN)
 		&&(profficiencyCheck(-90+mob.charStats().getStat(CharStats.STRENGTH),false)))
 		{
 			double pctRecovery=(Util.div(profficiency(),100.0)*Math.random());
@@ -42,5 +47,4 @@ public class Fighter_CritStrike extends StdAbility
 		}
 		return true;
 	}
-	
 }

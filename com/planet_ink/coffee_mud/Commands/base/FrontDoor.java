@@ -6,9 +6,9 @@ import java.io.*;
 import java.util.*;
 public class FrontDoor
 {
-
+	private FrontDoor(){}
 	
-	private boolean classOkForMe(MOB mob, CharClass thisClass)
+	private static boolean classOkForMe(MOB mob, CharClass thisClass)
 	{
 		if((thisClass.playerSelectable())
 		   &&((CommonStrings.getVar(CommonStrings.SYSTEM_MULTICLASS).startsWith("NO"))
@@ -19,7 +19,7 @@ public class FrontDoor
 		return false;
 	}
 	
-	private Vector classQualifies(MOB mob)
+	private static Vector classQualifies(MOB mob)
 	{
 		Vector them=new Vector();
 		for(int c=0;c<CMClass.charClasses.size();c++)
@@ -31,7 +31,7 @@ public class FrontDoor
 		return them;
 	}
 
-	private boolean isOkName(String login)
+	private static boolean isOkName(String login)
 	{
 		if(login.length()>20) return false;
 		if(login.trim().indexOf(" ")>=0) return false;
@@ -96,7 +96,7 @@ public class FrontDoor
 		return true;
 	}
 
-	public boolean login(MOB mob)
+	public static boolean login(MOB mob)
 		throws IOException
 	{
 		if(mob==null)
@@ -418,7 +418,7 @@ public class FrontDoor
 		return true;
 	}
 	
-	public void showTheNews(MOB mob)
+	public static void showTheNews(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("");
 		Vector journal=ExternalPlay.DBReadJournal("CoffeeMud News");

@@ -8,7 +8,9 @@ import java.util.*;
 
 public class SocialProcessor
 {
-	public Item possibleGold(MOB mob, String itemID)
+	private SocialProcessor(){}
+	
+	public static Item possibleGold(MOB mob, String itemID)
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))
 			itemID=itemID.substring(0,itemID.length()-6);
@@ -32,13 +34,13 @@ public class SocialProcessor
 		return null;
 	}
 
-	public void vassals(MOB mob, Vector commands)
+	public static void vassals(MOB mob, Vector commands)
 	{
 		mob.tell("The following players are in your service:");
 		ExternalPlay.vassals(mob,mob.name());
 	}
 	
-	public void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
+	public static void quickSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag)
 	{
 		Room location=mob.location();
 		if(target!=null)
@@ -81,7 +83,7 @@ public class SocialProcessor
 		}
 	}
 
-	public void hire(MOB mob, String rest)
+	public static void hire(MOB mob, String rest)
 	{
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
@@ -97,7 +99,7 @@ public class SocialProcessor
 			mob.location().send(mob,msg);
 	}
 
-	public void fire(MOB mob, String rest)
+	public static void fire(MOB mob, String rest)
 	{
 		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Item.WORN_REQ_ANY);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
@@ -114,7 +116,7 @@ public class SocialProcessor
 		}
 	}
 
-	public void cmdSay(MOB mob, Vector commands)
+	public static void cmdSay(MOB mob, Vector commands)
 	{
 		String theWord="Say";
 		if(((String)commands.elementAt(0)).equalsIgnoreCase("ask"))
@@ -164,18 +166,18 @@ public class SocialProcessor
 			mob.location().send(mob,msg);
 	}
 
-	public void yell(MOB mob, Vector commands)
+	public static void yell(MOB mob, Vector commands)
 	{
 		Vector newCommands=Util.parse(Util.combine(commands,0).toUpperCase());
 		cmdSay(mob,newCommands);
 	}
 
-	public void report(MOB mob)
+	public static void report(MOB mob)
 	{
 		cmdSay(mob,Util.parse("say \"I have "+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+" hit points, "+mob.curState().getMana()+"/"+mob.maxState().getMana()+" mana, "+mob.curState().getMovement()+"/"+mob.maxState().getMovement()+" move, and I've scored "+mob.getExperience()+" exp.\""));
 	}
 	
-	public void reply(MOB mob, Vector commands)
+	public static void reply(MOB mob, Vector commands)
 	{
 		if(mob==null) return;
 		if(mob.replyTo()==null)
@@ -192,7 +194,7 @@ public class SocialProcessor
 		quickSay(mob,mob.replyTo(),Util.combine(commands,1),true,!mob.location().isInhabitant(mob.replyTo()));
 	}
 	
-	public void tell(MOB mob, Vector commands)
+	public static void tell(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -247,7 +249,7 @@ public class SocialProcessor
 		target.setReplyTo(mob);
 	}
 
-	public void doSocial(Social social, MOB mob, Vector commands)
+	public static void doSocial(Social social, MOB mob, Vector commands)
 	{
 		String targetStr="";
 		if((commands.size()>1)&&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF")))
@@ -286,7 +288,7 @@ public class SocialProcessor
 		}
 	}
 
-	public void give(MOB mob, Vector commands, boolean involuntarily)
+	public static void give(MOB mob, Vector commands, boolean involuntarily)
 	{
 		if(commands.size()<2)
 		{
@@ -346,7 +348,7 @@ public class SocialProcessor
 		}
 	}
 
-	public int relativeLevelDiff(MOB mob1, MOB mob2)
+	public static int relativeLevelDiff(MOB mob1, MOB mob2)
 	{
 		if((mob1==null)||(mob2==null)) return 0;
 		int mob2Armor=(int)mob2.adjustedArmor();
@@ -371,7 +373,7 @@ public class SocialProcessor
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
 	
-	public void consider(MOB mob, Vector commands)
+	public static void consider(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -449,7 +451,7 @@ public class SocialProcessor
 		}
 	}
 
-	public void rebuke(MOB mob, Vector commands)
+	public static void rebuke(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -474,7 +476,7 @@ public class SocialProcessor
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
-	public void serve(MOB mob, Vector commands)
+	public static void serve(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{

@@ -65,7 +65,9 @@ public class MOBloader
 				mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 				mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
 				mob.setPrompt(DBConnections.getRes(R,"CMPRPT"));
-				mob.setColorStr(DBConnections.getRes(R,"CMCOLR"));
+				String colorStr=DBConnections.getRes(R,"CMCOLR");
+				if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
+					mob.setColorStr(colorStr);
 				mob.setClanID(DBConnections.getRes(R,"CMCLAN"));
 				mob.setClanRole((int)DBConnections.getLongRes(R,"CMCLRO"));
 				found=true;

@@ -7,7 +7,9 @@ import java.io.*;
 import java.util.*;
 public class ItemUsage
 {
-	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
+	private ItemUsage(){}
+	
+	public static Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().endsWith(" COINS"))
 			itemID=itemID.substring(0,itemID.length()-6);
@@ -38,7 +40,7 @@ public class ItemUsage
 		return null;
 	}
 
-	public Item possibleContainer(MOB mob, Vector commands, int wornReqCode)
+	public static Item possibleContainer(MOB mob, Vector commands, int wornReqCode)
 	{
 		if(commands.size()==1)
 			return null;
@@ -55,7 +57,7 @@ public class ItemUsage
 		return null;
 	}
 
-	public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode)
+	public static Vector possibleContainers(MOB mob, Vector commands, int wornReqCode)
 	{
 		Vector V=new Vector();
 		if(commands.size()==1)
@@ -100,7 +102,7 @@ public class ItemUsage
 		return V;
 	}
 
-	public void compare(MOB mob, Vector commands)
+	public static void compare(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -156,10 +158,10 @@ public class ItemUsage
 		else
 			mob.tell("You can't compare "+compareThis.name()+" and "+toThis.name()+".");
 	}
-	public boolean get(MOB mob, Item container, Item getThis, boolean quiet)
+	public static boolean get(MOB mob, Item container, Item getThis, boolean quiet)
 	{ return get(mob,container,getThis,quiet,"get");}
 
-	public boolean get(MOB mob, 
+	public static boolean get(MOB mob, 
 					   Item container, 
 					   Item getThis, 
 					   boolean quiet, 
@@ -189,7 +191,7 @@ public class ItemUsage
 		return true;
 	}
 
-	public void get(MOB mob, Vector commands)
+	public static void get(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -260,7 +262,7 @@ public class ItemUsage
 		}
 	}
 
-	public boolean drop(MOB mob, Environmental dropThis, boolean quiet)
+	public static boolean drop(MOB mob, Environmental dropThis, boolean quiet)
 	{
 		FullMsg msg=new FullMsg(mob,dropThis,null,Affect.MSG_DROP,quiet?null:"<S-NAME> drop(s) <T-NAME>.");
 		if(mob.location().okAffect(msg))
@@ -277,7 +279,7 @@ public class ItemUsage
 		return false;
 	}
 	
-	public void drop(MOB mob, Vector commands)
+	public static void drop(MOB mob, Vector commands)
 	{
 		String whatToDrop=null;
 		if(commands.size()<2)
@@ -298,7 +300,7 @@ public class ItemUsage
 		String addendumStr="";
 		do
 		{
-			Item dropThis=new SocialProcessor().possibleGold(mob,whatToDrop+addendumStr);
+			Item dropThis=SocialProcessor.possibleGold(mob,whatToDrop+addendumStr);
 			if(dropThis!=null)
 				allFlag=false;
 			else
@@ -322,7 +324,7 @@ public class ItemUsage
 		}
 	}
 
-	public void put(MOB mob, Vector commands)
+	public static void put(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -333,14 +335,14 @@ public class ItemUsage
 		if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("on"))
 		{
 			commands.removeElementAt(commands.size()-1);
-			this.wear(mob,commands);
+			wear(mob,commands);
 			return;
 		}
 
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("on"))
 		{
 			commands.removeElementAt(1);
-			this.wear(mob,commands);
+			wear(mob,commands);
 			return;
 		}
 
@@ -367,7 +369,7 @@ public class ItemUsage
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 		do
 		{
-			Environmental putThis=new SocialProcessor().possibleGold(mob,thingToPut);
+			Environmental putThis=SocialProcessor.possibleGold(mob,thingToPut);
 			if(putThis!=null)
 				allFlag=false;
 			else
@@ -396,7 +398,7 @@ public class ItemUsage
 		}
 	}
 
-	public void fill(MOB mob, Vector commands)
+	public static void fill(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -459,7 +461,7 @@ public class ItemUsage
 		}
 	}
 
-	public boolean wear(MOB mob, Item item, boolean quiet)
+	public static boolean wear(MOB mob, Item item, boolean quiet)
 	{
 		String str="<S-NAME> put(s) on <T-NAME>.";
 		int msgType=Affect.MSG_WEAR;
@@ -484,7 +486,7 @@ public class ItemUsage
 		return false;
 	}
 
-	public boolean wield(MOB mob, Item item, boolean quiet)
+	public static boolean wield(MOB mob, Item item, boolean quiet)
 	{
 		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_WIELD,quiet?null:"<S-NAME> wield(s) <T-NAME>.");
 		if(mob.location().okAffect(newMsg))
@@ -495,7 +497,7 @@ public class ItemUsage
 		return false;
 	}
 
-	public boolean hold(MOB mob, Item item, boolean quiet)
+	public static boolean hold(MOB mob, Item item, boolean quiet)
 	{
 		int msgType=Affect.MSG_HOLD;
 		String str="<S-NAME> hold(s) <T-NAME>.";
@@ -515,7 +517,7 @@ public class ItemUsage
 		return false;
 	}
 	
-	public Vector fetchItemList(Environmental from, 
+	public static Vector fetchItemList(Environmental from, 
 								MOB mob, 
 								Item container, 
 								Vector commands, 
@@ -554,7 +556,7 @@ public class ItemUsage
 		return V;
 	}
 
-	public void wear(MOB mob, Vector commands)
+	public static void wear(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -570,7 +572,7 @@ public class ItemUsage
 			wear(mob,(Item)items.elementAt(i),false);
 	}
 
-	public void hold(MOB mob, Vector commands)
+	public static void hold(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -586,7 +588,7 @@ public class ItemUsage
 			hold(mob,(Item)items.elementAt(i),false);
 	}
 
-	public void wield(MOB mob, Vector commands)
+	public static void wield(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -602,7 +604,7 @@ public class ItemUsage
 			wield(mob,(Item)items.elementAt(i),false);
 	}
 
-	public void drink(MOB mob, Vector commands)
+	public static void drink(MOB mob, Vector commands)
 	{
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
@@ -634,7 +636,7 @@ public class ItemUsage
 			mob.location().send(mob,newMsg);
 	}
 
-	public void eat(MOB mob, Vector commands)
+	public static void eat(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -657,7 +659,7 @@ public class ItemUsage
 		if(mob.location().okAffect(newMsg))
 			mob.location().send(mob,newMsg);
 	}
-	public void read(MOB mob, Environmental thisThang, String theRest)
+	public static void read(MOB mob, Environmental thisThang, String theRest)
 	{
 		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 		{
@@ -682,7 +684,7 @@ public class ItemUsage
 
 	}
 
-	public void read(MOB mob, Vector commands)
+	public static void read(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -703,7 +705,7 @@ public class ItemUsage
 		read(mob,thisThang, theRest);
 	}
 
-	public boolean remove(MOB mob, Item item, boolean quiet)
+	public static boolean remove(MOB mob, Item item, boolean quiet)
 	{
 		FullMsg newMsg=new FullMsg(mob,item,null,Affect.MSG_GET,quiet?null:"<S-NAME> remove(s) <T-NAME>.");
 		if(mob.location().okAffect(newMsg))
@@ -714,7 +716,7 @@ public class ItemUsage
 		return false;
 	}
 
-	public void remove(MOB mob, Vector commands)
+	public static void remove(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -730,7 +732,7 @@ public class ItemUsage
 			remove(mob,(Item)items.elementAt(i),false);
 	}
 
-	public void push(MOB mob, String whatToOpen, CommandSet commandSet)
+	public static void push(MOB mob, String whatToOpen, CommandSet commandSet)
 	{
 
 		Environmental openThis=null;
@@ -750,7 +752,7 @@ public class ItemUsage
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
-	public void pull(MOB mob, String whatToOpen)
+	public static void pull(MOB mob, String whatToOpen)
 	{
 
 		Environmental openThis=null;

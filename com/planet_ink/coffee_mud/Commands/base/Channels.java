@@ -8,13 +8,24 @@ import com.planet_ink.coffee_mud.common.*;
 import java.util.*;
 public class Channels
 {
-	private int numChannelsLoaded=0;
-	private int numIChannelsLoaded=0;
-	private Vector channelNames=new Vector();
-	private Vector channelLevels=new Vector();
-	private Vector ichannelList=new Vector();
+	private Channels(){}
+	private static int numChannelsLoaded=0;
+	private static int numIChannelsLoaded=0;
+	private static Vector channelNames=new Vector();
+	private static Vector channelLevels=new Vector();
+	private static Vector ichannelList=new Vector();
 
-	public void listChannels(MOB mob)
+	
+	public static void unloadChannels()
+	{
+		numChannelsLoaded=0;
+		numIChannelsLoaded=0;
+		channelNames=new Vector();
+		channelLevels=new Vector();
+		ichannelList=new Vector();
+	}
+	
+	public static void listChannels(MOB mob)
 	{
 		StringBuffer buf=new StringBuffer("Available channels: \n\r");
 		int col=0;
@@ -39,7 +50,7 @@ public class Channels
 		mob.tell(buf.toString());
 	}
 
-	public void channelWho(MOB mob, String channel)
+	public static void channelWho(MOB mob, String channel)
 	{
 		if((channel==null)||(channel.length()==0))
 		{
@@ -85,7 +96,7 @@ public class Channels
 	}
 	
 	
-	public int getChannelInt(String channelName)
+	public static int getChannelInt(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -93,7 +104,7 @@ public class Channels
 		return -1;
 	}
 
-	public int getChannelLvl(String channelName)
+	public static int getChannelLvl(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -101,7 +112,7 @@ public class Channels
 		return -1;
 	}
 
-	public int getChannelNum(String channelName)
+	public static int getChannelNum(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -109,7 +120,7 @@ public class Channels
 		return -1;
 	}
 
-	public String getChannelName(String channelName)
+	public static String getChannelName(String channelName)
 	{
 		for(int c=0;c<channelNames.size();c++)
 			if(((String)channelNames.elementAt(c)).startsWith(channelName))
@@ -117,7 +128,7 @@ public class Channels
 		return "";
 	}
 	
-	public String[][] iChannelsArray()
+	public static String[][] iChannelsArray()
 	{
 		String[][] array=new String[numIChannelsLoaded][3];
 		int num=0;
@@ -137,7 +148,7 @@ public class Channels
 		return array;
 	}
 	
-	public int loadChannels(String list, String ilist, CommandSet cmdSet)
+	public static int loadChannels(String list, String ilist, CommandSet cmdSet)
 	{
 		while(list.length()>0)
 		{
@@ -201,7 +212,7 @@ public class Channels
 		return numChannelsLoaded;
 	}
 
-	public void channel(MOB mob, Vector commands)
+	public static void channel(MOB mob, Vector commands)
 	{
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim();
 		commands.removeElementAt(0);
@@ -253,7 +264,7 @@ public class Channels
 		if((ExternalPlay.i3().i3online())&&(ExternalPlay.i3().isI3channel(getChannelName(channelName))))
 			ExternalPlay.i3().i3channel(mob,getChannelName(channelName),Util.combine(commands,0));
 	}
-	public void nochannel(MOB mob, Vector commands)
+	public static void nochannel(MOB mob, Vector commands)
 	{
 		String channelName=((String)commands.elementAt(0)).toUpperCase().trim().substring(2);
 		commands.removeElementAt(0);
@@ -280,7 +291,7 @@ public class Channels
 			mob.tell("The "+channelName+" channel is already off.");
 	}
 
-	public void quiet(MOB mob)
+	public static void quiet(MOB mob)
 	{
 		boolean turnedoff=false;
 		for(int c=0;c<channelNames.size();c++)

@@ -9,15 +9,14 @@ import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.system.I3.*;
 import com.planet_ink.coffee_mud.system.I3.server.*;
-import com.planet_ink.coffee_mud.Commands.base.CommandProcessor;
-import com.planet_ink.coffee_mud.Commands.base.ExternalCommands;
+import com.planet_ink.coffee_mud.Commands.base.*;
 import com.planet_ink.coffee_mud.web.*;
 
 
 public class MUD extends Thread implements Host
 {
 	public static final float HOST_VERSION_MAJOR=(float)3.8;
-	public static final float HOST_VERSION_MINOR=(float)6.1;
+	public static final float HOST_VERSION_MINOR=(float)6.2;
 	
 	public static String nameID="My Mud";
 	public static boolean keepDown=true;
@@ -208,8 +207,9 @@ public class MUD extends Thread implements Host
 			//return false;
 		}
 		
-		CommandProcessor commandProcessor=new CommandProcessor();
-		ExternalPlay.setPlayer(new ExternalCommands(commandProcessor), new ExternalSystems(), new IMudClient());
+
+		ExternalPlay.setPlayer(ExternalCommands.getInstance(), new ExternalSystems(), new IMudClient());
+
 
 		offlineReason=new String("Booting: loading base classes");
 		if(!CMClass.loadClasses(page))
@@ -218,17 +218,17 @@ public class MUD extends Thread implements Host
 			return false;
 		}
 
-		int numChannelsLoaded=commandProcessor.channels.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"),commandProcessor.commandSet);
-		commandProcessor.myHost=(Host)mudThreads.firstElement();
+		int numChannelsLoaded=Channels.loadChannels(page.getStr("CHANNELS"),page.getStr("ICHANNELS"),CommandSet.getInstance());
+		CommandProcessor.myHost=(Host)mudThreads.firstElement();
 		Log.sysOut("MUD","Channels loaded   : "+numChannelsLoaded);
 
 		offlineReason=new String("Booting: loading socials");
-		commandProcessor.socials.load("resources"+File.separatorChar+"socials.txt");
-		if(!commandProcessor.socials.loaded)
+		Socials.load("resources"+File.separatorChar+"socials.txt");
+		if(!Socials.isLoaded())
 			Log.errOut("MUD","WARNING: Unable to load socials from socials.txt!");
 		else
-			Log.sysOut("MUD","Socials loaded    : "+commandProcessor.socials.num());
-
+			Log.sysOut("MUD","Socials loaded    : "+Socials.num());
+		
 		Log.sysOut("MUD","Loading map...");
 		offlineReason=new String("Booting: loading rooms (0% completed).");
 		RoomLoader.DBRead((Host)mudThreads.firstElement(), CMMap.getAreaVector(),CMMap.getRoomVector());
@@ -259,7 +259,7 @@ public class MUD extends Thread implements Host
 		offlineReason=new String("Booting: readying for connections.");
 		try
 		{
-			commandProcessor.commandSet.loadAbilities(CMClass.abilities);
+			CommandProcessor.commandSet.loadAbilities(CMClass.abilities);
 
 			saveThread=new SaveThread();
 			saveThread.start();
@@ -283,7 +283,7 @@ public class MUD extends Thread implements Host
 													 getGlobalVer(),
 													 ((MUD)mudThreads.firstElement()).getPort(),
 													 playstate,
-													 commandProcessor.channels.iChannelsArray());
+													 Channels.iChannelsArray());
 				imserver=new Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;
@@ -506,7 +506,12 @@ public class MUD extends Thread implements Host
 		DBConnector.killConnections();
 		Log.sysOut("MUD","All users saved.");
 		S.println("Database connections closed.");
+		
+		Socials.clearAllSocials();
+		Channels.unloadChannels();
 
+		Help.unloadHelpFile(null);
+		
 		offlineReason=new String("Shutting down...unloading classes");
 		CMClass.unload();
 		offlineReason=new String("Shutting down...unloading map");

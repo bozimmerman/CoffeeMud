@@ -6,8 +6,9 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 public class CommandSet extends Hashtable
 {
-	private Vector extraCMDs=new Vector();
-	private Vector commandsToLeaveOut=new Vector();
+	private static CommandSet self=null;
+	private static Vector extraCMDs=new Vector();
+	private static Vector commandsToLeaveOut=new Vector();
 
 	public static final int AFFECT=0;
 	public static final int PUSH=1;
@@ -161,7 +162,7 @@ public class CommandSet extends Hashtable
 	public static final int COPY=149;
 	public static final int BAN=150;
 
-	public CommandSet()
+	private CommandSet()
 	{
 		put("AFFECT",new Integer(AFFECT));
 			put("AFF",new Integer(AFFECT));
@@ -391,6 +392,11 @@ public class CommandSet extends Hashtable
 			put("Y",new Integer(YELL));
 	}
 
+	public static CommandSet getInstance()
+	{
+		if (self==null) self=new CommandSet();
+		return self;
+	}
 
 	public void loadAbilities(Vector abilities)
 	{

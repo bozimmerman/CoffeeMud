@@ -7,7 +7,9 @@ import java.io.*;
 import java.util.*;
 public class Movement
 {
-	public void go(MOB mob, Vector commands)
+	private Movement(){}
+	
+	public static void go(MOB mob, Vector commands)
 	{
 		int direction=Directions.getGoodDirectionCode(Util.combine(commands,1));
 		if(direction>=0)
@@ -21,7 +23,7 @@ public class Movement
 		}
 	}
 
-	public void enter(MOB mob, Vector commands)
+	public static void enter(MOB mob, Vector commands)
 	{
 		if(commands.size()<=1)
 		{
@@ -73,7 +75,7 @@ public class Movement
 		move(mob,dir,false);
 	}
 	
-	public void crawl(MOB mob, Vector commands)
+	public static void crawl(MOB mob, Vector commands)
 	{
 		boolean tagged=false;
 		if((commands.size()>2)&&(((String)commands.elementAt(2)).equals(""+mob)))
@@ -105,7 +107,7 @@ public class Movement
 		}
 	}
 
-	public void standAndGo(MOB mob, int directionCode)
+	public static void standAndGo(MOB mob, int directionCode)
 	{
 		standIfNecessary(mob);
 		if(Sense.isSitting(mob))
@@ -116,7 +118,7 @@ public class Movement
 		move(mob,directionCode,false);
 	}
 
-	public boolean move(MOB mob, int directionCode, boolean flee)
+	public static boolean move(MOB mob, int directionCode, boolean flee)
 	{
 		if(directionCode<0) return false;
 		if(mob==null) return false;
@@ -278,7 +280,7 @@ public class Movement
 		return true;
 	}
 	
-	public void flee(MOB mob, String direction)
+	public static void flee(MOB mob, String direction)
 	{
 		if((mob.location()==null)||(!mob.isInCombat()))
 		{
@@ -330,7 +332,7 @@ public class Movement
 		}
 	}
 
-	public void open(MOB mob, String whatToOpen)
+	public static void open(MOB mob, String whatToOpen)
 	{
 		if(whatToOpen.length()==0)
 		{
@@ -357,7 +359,7 @@ public class Movement
 			mob.location().send(mob,msg);
 	}
 
-	public void unlock(MOB mob, String whatTounlock)
+	public static void unlock(MOB mob, String whatTounlock)
 	{
 		if(whatTounlock.length()==0)
 		{
@@ -384,7 +386,7 @@ public class Movement
 			mob.location().send(mob,msg);
 	}
 
-	public void close(MOB mob, String whatToClose)
+	public static void close(MOB mob, String whatToClose)
 	{
 		if(whatToClose.length()==0)
 		{
@@ -411,7 +413,7 @@ public class Movement
 			mob.location().send(mob,msg);
 	}
 
-	public void roomAffectFully(Affect msg, Room room, int dirCode)
+	public static void roomAffectFully(Affect msg, Room room, int dirCode)
 	{
 		room.send(msg.source(),msg);
 		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
@@ -424,7 +426,7 @@ public class Movement
 			pair.affect(altMsg);
 	}
 
-	public int getMyDirCode(Exit exit, Room room, int testCode)
+	public static int getMyDirCode(Exit exit, Room room, int testCode)
 	{
 		if(testCode>=0) return testCode;
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -432,7 +434,7 @@ public class Movement
 		return -1;
 	}
 
-	public boolean roomOkAndAffectFully(FullMsg msg, Room room, int dirCode)
+	public static boolean roomOkAndAffectFully(FullMsg msg, Room room, int dirCode)
 	{
 		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
 			return room.okAffect(msg);
@@ -453,7 +455,7 @@ public class Movement
 		return true;
 	}
 
-	public void lock(MOB mob, String whatTolock)
+	public static void lock(MOB mob, String whatTolock)
 	{
 		if(whatTolock.length()==0)
 		{
@@ -480,7 +482,7 @@ public class Movement
 			mob.location().send(mob,msg);
 	}
 
-	public void sit(MOB mob, Vector commands)
+	public static void sit(MOB mob, Vector commands)
 	{
 		if(Sense.isSitting(mob))
 		{
@@ -509,7 +511,7 @@ public class Movement
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
-	public void sleep(MOB mob, Vector commands)
+	public static void sleep(MOB mob, Vector commands)
 	{
 		if(Sense.isSleeping(mob))
 		{
@@ -534,7 +536,7 @@ public class Movement
 			mob.location().send(mob,msg);
 	}
 	
-	public void sit(MOB mob)
+	public static void sit(MOB mob)
 	{
 		if(Sense.isSitting(mob))
 			mob.tell("You are already sitting!");
@@ -545,7 +547,7 @@ public class Movement
 				mob.location().send(mob,msg);
 		}
 	}
-	public void wake(MOB mob)
+	public static void wake(MOB mob)
 	{
 		if(!Sense.isSleeping(mob))
 			mob.tell("You aren't sleeping!?");
@@ -556,7 +558,7 @@ public class Movement
 				mob.location().send(mob,msg);
 		}
 	}
-	public void sleep(MOB mob)
+	public static void sleep(MOB mob)
 	{
 		if(Sense.isSleeping(mob))
 			mob.tell("You are already asleep!");
@@ -568,13 +570,13 @@ public class Movement
 		}
 	}
 
-	public void standIfNecessary(MOB mob)
+	public static void standIfNecessary(MOB mob)
 	{
 		if((!mob.amDead())&&(Sense.isSleeping(mob)||Sense.isSitting(mob)))
 			stand(mob);
 	}
 
-	public void stand(MOB mob)
+	public static void stand(MOB mob)
 	{
 		if((!Sense.isSitting(mob))&&(!Sense.isSleeping(mob)))
 			mob.tell("You are already standing!");
@@ -586,7 +588,7 @@ public class Movement
 		}
 	}
 	
-	public void mount(MOB mob, Vector commands)
+	public static void mount(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -625,7 +627,7 @@ public class Movement
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
-	public void dismount(MOB mob, Vector commands)
+	public static void dismount(MOB mob, Vector commands)
 	{
 		if(mob.riding()==null)
 		{

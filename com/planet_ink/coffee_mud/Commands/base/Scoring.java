@@ -8,7 +8,9 @@ import java.io.*;
 import java.util.*;
 public class Scoring
 {
-	public StringBuffer getInventory(MOB seer, MOB mob)
+	private Scoring(){}
+	
+	public static StringBuffer getInventory(MOB seer, MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		boolean foundAndSeen=false;
@@ -39,7 +41,7 @@ public class Scoring
 		return msg;
 	}
 	
-	public void destroyUser(MOB deadMOB)
+	public static void destroyUser(MOB deadMOB)
 	{
 		if(CMMap.MOBs.get(deadMOB.ID())!=null)
 		{
@@ -76,7 +78,7 @@ public class Scoring
 		}
 	}
 
-	public void retire(MOB mob)
+	public static void retire(MOB mob)
 		throws IOException
 	{
 		if(mob.isMonster()) return;
@@ -99,7 +101,7 @@ public class Scoring
 			mob.tell("Whew.  Close one.");
 	}
 	
-	public void inventory(MOB mob)
+	public static void inventory(MOB mob)
 	{
 		StringBuffer msg=getInventory(mob,mob);
 		if(msg.length()==0)
@@ -109,7 +111,7 @@ public class Scoring
 			mob.session().unfilteredPrintln("^HYou are carrying:^?\n\r"+msg.toString());
 	}
 
-	public StringBuffer niceLister(MOB mob, Vector items, boolean useName)
+	public static StringBuffer niceLister(MOB mob, Vector items, boolean useName)
 	{
 		StringBuffer say=new StringBuffer("");
 		while(items.size()>0)
@@ -179,13 +181,13 @@ public class Scoring
 		return say;
 	}
 	
-	public void score(MOB mob)
+	public static void score(MOB mob)
 	{
 		StringBuffer msg=getScore(mob);
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln(msg.toString());
 	}
-	public StringBuffer getScore(MOB mob)
+	public static StringBuffer getScore(MOB mob)
 	{
 		int adjustedAttack=mob.adjustedAttackBonus();
 		int adjustedArmor=(-mob.adjustedArmor())+50;
@@ -280,7 +282,7 @@ public class Scoring
 		return msg;
 	}
 
-	public void affected(MOB mob)
+	public static void affected(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^!You are affected by:^? "+getAffects(mob)+"\n\r");
@@ -288,7 +290,7 @@ public class Scoring
 			mob.session().colorOnlyPrintln(msg.toString());
 	}
 
-	public void skills(MOB mob)
+	public static void skills(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		Vector V=new Vector();
@@ -300,7 +302,7 @@ public class Scoring
 			mob.session().unfilteredPrintln(msg.toString());
 	}
 
-	public void qualify(MOB mob, Vector commands)
+	public static void qualify(MOB mob, Vector commands)
 	{
 		StringBuffer msg=new StringBuffer("");
 		String qual=Util.combine(commands,1);
@@ -362,7 +364,7 @@ public class Scoring
 			mob.session().unfilteredPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
 	}
 
-	public void prayers(MOB mob)
+	public static void prayers(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HPrayers known:^? "+getAbilities(mob,Ability.PRAYER,-1)+"\n\r");
@@ -370,7 +372,7 @@ public class Scoring
 			mob.session().unfilteredPrintln(msg.toString());
 	}
 
-	public void chants(MOB mob)
+	public static void chants(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HDruidic Chants known:^? "+getAbilities(mob,Ability.CHANT,-1)+"\n\r");
@@ -378,7 +380,7 @@ public class Scoring
 			mob.session().unfilteredPrintln(msg.toString());
 	}
 
-	public void songs(MOB mob)
+	public static void songs(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HSongs known:^? "+getAbilities(mob,Ability.SONG,-1)+"\n\r");
@@ -386,7 +388,7 @@ public class Scoring
 			mob.session().unfilteredPrintln(msg.toString());
 	}
 
-	public void languages(MOB mob)
+	public static void languages(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HLanguages known:^? "+getAbilities(mob,Ability.LANGUAGE,-1)+"\n\r");
@@ -394,7 +396,7 @@ public class Scoring
 			mob.session().unfilteredPrintln(msg.toString());
 	}
 
-	public void spells(MOB mob, Vector commands)
+	public static void spells(MOB mob, Vector commands)
 	{
 		String qual=Util.combine(commands,1).toUpperCase();
 		int domain=-1;
@@ -424,7 +426,7 @@ public class Scoring
 	}
 
 
-	public StringBuffer getAffects(MOB affected)
+	public static StringBuffer getAffects(MOB affected)
 	{
 		StringBuffer msg=new StringBuffer("");
 		for(int a=0;a<affected.numAffects();a++)
@@ -441,7 +443,7 @@ public class Scoring
 	}
 
 
-	public StringBuffer getAbilities(MOB able, int ofType, int ofDomain)
+	public static StringBuffer getAbilities(MOB able, int ofType, int ofDomain)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_CODES;
@@ -453,7 +455,7 @@ public class Scoring
 		V.addElement(new Integer(ofType));
 		return getAbilities(able,V,mask);
 	}
-	public StringBuffer getAbilities(MOB able, Vector ofTypes, int mask)
+	public static StringBuffer getAbilities(MOB able, Vector ofTypes, int mask)
 	{
 		int highestLevel=0;
 		int lowestLevel=able.envStats().level()+1;
@@ -503,7 +505,7 @@ public class Scoring
 	}
 
 
-	public StringBuffer getQualifiedAbilities(MOB able, int ofType, int ofDomain, String prefix)
+	public static StringBuffer getQualifiedAbilities(MOB able, int ofType, int ofDomain, String prefix)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_CODES;
@@ -516,7 +518,7 @@ public class Scoring
 		return getQualifiedAbilities(able,V,mask,prefix);
 	}
 	
-	public StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask, String prefix)
+	public static StringBuffer getQualifiedAbilities(MOB able, Vector ofTypes, int mask, String prefix)
 	{
 		int highestLevel=0;
 		StringBuffer msg=new StringBuffer("");
@@ -568,7 +570,7 @@ public class Scoring
 	}
 
 
-	public StringBuffer getEquipment(MOB seer, MOB mob)
+	public static StringBuffer getEquipment(MOB seer, MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		if(Sense.isSleeping(seer))
@@ -599,23 +601,23 @@ public class Scoring
 			msg.append("^!(nothing)^?\n\r");
 		return msg;
 	}
-	public void equipment(MOB mob)
+	public static void equipment(MOB mob)
 	{
 		if(!mob.isMonster())
 			mob.session().unfilteredPrintln("You are wearing:\n\r"+getEquipment(mob,mob));
 	}
-	public void commands(MOB mob, CommandSet commandSet)
+	public static void commands(MOB mob, CommandSet commandSet)
 	{
 		if(!mob.isMonster())
 			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandSet.commandList());
 	}
-	public void socials(MOB mob, Socials socials)
+	public static void socials(MOB mob)
 	{
 		if(!mob.isMonster())
-			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+socials.getSocialsList());
+			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+Socials.getSocialsList());
 	}
 	
-	public void prompt(MOB mob, Vector commands)
+	public static void prompt(MOB mob, Vector commands)
 	{
 		if(mob.session()==null) return;
 		if(commands.size()==1)
@@ -627,7 +629,7 @@ public class Scoring
 		}
 	}
 	
-	public void colorSet(MOB mob, Vector commands)
+	public static void colorSet(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(mob.session()==null) return;
@@ -737,7 +739,7 @@ public class Scoring
 		}
 	}
 
-	public void areas(MOB mob)
+	public static void areas(MOB mob)
 	{
 		Vector areasVec=new Vector();
 		for(int a=0;a<CMMap.numAreas();a++)

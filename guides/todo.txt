@@ -1,4 +1,3 @@
-Some sort of Archon-only Journal that you can add banned address to (and remove).
 owns a room, owns mobs who start there (clans)
 bankers be snobby by requiring a minimum balance to deposit.
 

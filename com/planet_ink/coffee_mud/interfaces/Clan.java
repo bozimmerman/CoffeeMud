@@ -21,20 +21,20 @@ import java.util.*;
 public interface Clan 
 {
 
-  public static final int POS_APPLICANT=0;
-  public static final int POS_STAFF=1;
+	public static final int POS_APPLICANT=0;
+	public static final int POS_STAFF=1;
 	public static final int POS_MEMBER=2;
 	public static final int POS_TREASURER=4;
 	public static final int POS_LEADER=8;
 	public static final int POS_BOSS=16;
 
-  public static final int TYPE_CLAN=1;
+	public static final int TYPE_CLAN=1;
 
-  public static final int SETTING_RESTRICT_LEVEL=1;
-  public static final int SETTING_RESTRICT_RACE=2;
-  public static final int SETTING_RESTRICT_CLASS=4;
-  public static final int SETTING_RESTRICT_ALIGNMENT=8;
-  public static final int SETTING_RESTRICT_GENDER=16;
+	public static final int SETTING_RESTRICT_LEVEL=1;
+	public static final int SETTING_RESTRICT_RACE=2;
+	public static final int SETTING_RESTRICT_CLASS=4;
+	public static final int SETTING_RESTRICT_ALIGNMENT=8;
+	public static final int SETTING_RESTRICT_GENDER=16;
 
   /** Check if MOB is a member or not */
   public boolean isMember(MOB mob);

@@ -33,7 +33,7 @@ public class Fighter_CriticalShot extends StdAbility
 		&&(Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.target()!=null)
 		&&(mob.getVictim()==affect.target())
-		&&(mob.rangeToTarget()==0)
+		&&(mob.rangeToTarget()>0)
 		&&(affect.tool()!=null)
 		&&(affect.tool() instanceof Weapon)
 		&&((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_RANGED)

@@ -7,7 +7,8 @@ import java.util.*;
 
 public class BasicSenses
 {
-	public void look(MOB mob, Vector commands, boolean quiet)
+	private BasicSenses(){}
+	public static void look(MOB mob, Vector commands, boolean quiet)
 	{
 		String textMsg="<S-NAME> look(s) ";
 		if(mob.location()==null) return;
@@ -98,7 +99,7 @@ public class BasicSenses
 		}
 	}
 
-	public void wimpy(MOB mob, Vector commands)
+	public static void wimpy(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -109,7 +110,7 @@ public class BasicSenses
 		mob.tell("Your wimp level has been changed to "+mob.getWimpHitPoint()+" hit points.");
 	}
 
-	public void description(MOB mob, Vector commands)
+	public static void description(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -120,7 +121,7 @@ public class BasicSenses
 		mob.tell("Your description has been changed.");
 	}
 
-	public void password(MOB mob, Vector commands)
+	public static void password(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -131,7 +132,7 @@ public class BasicSenses
 		mob.tell("Your password has been changed.");
 	}
 
-	public void emote(MOB mob, Vector commands)
+	public static void emote(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -144,24 +145,24 @@ public class BasicSenses
 			mob.location().send(mob,msg);
 	}
 
-	public void mundaneTake(MOB mob, Vector commands)
+	public static void mundaneTake(MOB mob, Vector commands)
 	{
 		if(((String)commands.elementAt(commands.size()-1)).equalsIgnoreCase("off"))
 		{
 			commands.removeElementAt(commands.size()-1);
-			new ItemUsage().remove(mob,commands);
+			ItemUsage.remove(mob,commands);
 		}
 		else
 		if((commands.size()>1)&&(((String)commands.elementAt(1)).equalsIgnoreCase("off")))
 		{
 			commands.removeElementAt(1);
-			new ItemUsage().remove(mob,commands);
+			ItemUsage.remove(mob,commands);
 		}
 		else
-			new ItemUsage().get(mob,commands);
+			ItemUsage.get(mob,commands);
 	}
 
-	public void train(MOB mob, Vector commands)
+	public static void train(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -367,7 +368,7 @@ public class BasicSenses
 		}
 	}
 
-	public void outfit(MOB mob)
+	public static void outfit(MOB mob)
 	{
 		if(mob==null) return;
 		if(mob.charStats()==null) return;
@@ -375,10 +376,10 @@ public class BasicSenses
 		Race R=mob.charStats().getMyRace();
 		if(C!=null) C.outfit(mob);
 		if(R!=null) R.outfit(mob);
-		new Scoring().equipment(mob);
+		Scoring.equipment(mob);
 	}
 
-	public void autoExits(MOB mob)
+	public static void autoExits(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_AUTOEXITS)>0)
 		{
@@ -392,7 +393,7 @@ public class BasicSenses
 		}
 	}
 
-	public void brief(MOB mob)
+	public static void brief(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_BRIEF)>0)
 		{
@@ -406,7 +407,7 @@ public class BasicSenses
 		}
 	}
 
-	public void autoweather(MOB mob)
+	public static void autoweather(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_AUTOWEATHER)>0)
 		{
@@ -420,7 +421,7 @@ public class BasicSenses
 		}
 	}
 
-	public void ansi(MOB mob, int WhatToDo)
+	public static void ansi(MOB mob, int WhatToDo)
 	{
 		if(!mob.isMonster())
 		{
@@ -470,7 +471,7 @@ public class BasicSenses
 		}
 	}
 	
-	public void weather(MOB mob, Vector commands)
+	public static void weather(MOB mob, Vector commands)
 	{
 		Room room=mob.location();
 		if(room==null) return;
@@ -488,7 +489,7 @@ public class BasicSenses
 		}
 		mob.tell(room.getArea().weatherDescription(room));
 	}
-	public void time(MOB mob, Vector commands)
+	public static void time(MOB mob, Vector commands)
 	{
 		Room room=mob.location();
 		if(room==null) return;

@@ -10,17 +10,9 @@ import java.io.*;
 import java.util.*;
 public class TheFight
 {
+	private TheFight(){}
 
-	private Grouping grouping=new Grouping();
-	public TheFight()
-	{
-	}
-
-	public TheFight(Grouping grouper)
-	{
-		grouping=grouper;
-	}
-	public void kill(MOB mob, Vector commands)
+	public static void kill(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -78,7 +70,7 @@ public class TheFight
 		
 	}
 
-	public Hashtable allPossibleCombatants(MOB mob, boolean beRuthless)
+	public static Hashtable allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
 		Hashtable h=new Hashtable();
 		Room thisRoom=mob.location();
@@ -96,7 +88,7 @@ public class TheFight
 		return h;
 	}
 
-	public Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
+	public static Hashtable properTargets(Ability A, MOB caster, boolean beRuthless)
 	{
 		Hashtable h=null;
 		if(A.quality()!=Ability.MALICIOUS)
@@ -109,7 +101,7 @@ public class TheFight
 		return h;
 	}
 
-	public Hashtable allCombatants(MOB mob)
+	public static Hashtable allCombatants(MOB mob)
 	{
 		Hashtable h=new Hashtable();
 		Room thisRoom=mob.location();
@@ -132,7 +124,7 @@ public class TheFight
 	}
 
 
-	public void postDeath(MOB source, MOB target, Affect addHere)
+	public static void postDeath(MOB source, MOB target, Affect addHere)
 	{
 		if(target==null) return;
 		Room deathRoom=target.location();
@@ -172,7 +164,7 @@ public class TheFight
 		}
 	}
 	
-	public void postAttack(MOB attacker, MOB target, Item weapon)
+	public static void postAttack(MOB attacker, MOB target, Item weapon)
 	{
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target))) 
 			return;
@@ -187,7 +179,7 @@ public class TheFight
 		if(target.location().okAffect(msg))
 			target.location().send(attacker,msg);
 	}
-	public void postPanic(MOB mob, Affect addHere)
+	public static void postPanic(MOB mob, Affect addHere)
 	{
 		if(mob==null) return;
 		
@@ -210,7 +202,7 @@ public class TheFight
 			mob.location().send(mob,msg);
 	}
 	
-	private String replaceDamageTag(String str, int damage, int damageType)
+	private static String replaceDamageTag(String str, int damage, int damageType)
 	{
 		if(str==null) return null;
 		int replace=str.indexOf("<DAMAGE>");
@@ -219,7 +211,7 @@ public class TheFight
 		return str;
 	}
 
-	public void postDamage(MOB attacker, 
+	public static void postDamage(MOB attacker, 
 						   MOB target, 
 						   Environmental weapon, 
 						   int damage,
@@ -253,7 +245,7 @@ public class TheFight
 		}
 	}
 
-	public void justDie(MOB source, MOB target)
+	public static void justDie(MOB source, MOB target)
 	{
 		if(target==null) return;
 		Room deathRoom=target.location();
@@ -309,7 +301,7 @@ public class TheFight
 		
 		if(Body==null) Body=target.killMeDead();
 		
-		if(target.soulMate()!=null) new SysOpSkills().dispossess(target);
+		if(target.soulMate()!=null) SysOpSkills.dispossess(target);
 		
 		if(source!=null)
 		{
@@ -360,7 +352,7 @@ public class TheFight
 		}
 	}
 
-	public void autoloot(MOB mob)
+	public static void autoloot(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_AUTOLOOT)>0)
 		{
@@ -373,7 +365,7 @@ public class TheFight
 			mob.tell("Autolooting has been turned on.");
 		}
 	}
-	public void playerkill(MOB mob)
+	public static void playerkill(MOB mob)
 		throws IOException
 	{
 		if(CommonStrings.getVar(CommonStrings.SYSTEM_PKILL).startsWith("ALWAYS")
@@ -411,7 +403,7 @@ public class TheFight
 				mob.tell("Your playerkill flag remains OFF.");
 		}
 	}
-	public void autogold(MOB mob)
+	public static void autogold(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_AUTOGOLD)>0)
 		{
@@ -425,7 +417,7 @@ public class TheFight
 		}
 	}
 
-	public void autoAssist(MOB mob)
+	public static void autoAssist(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_AUTOASSIST)>0)
 		{
@@ -439,7 +431,7 @@ public class TheFight
 		}
 	}
 
-	public void autoMelee(MOB mob)
+	public static void autoMelee(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_AUTOMELEE)==0)
 		{
@@ -453,7 +445,7 @@ public class TheFight
 		}
 	}
 
-	public void autoDraw(MOB mob)
+	public static void autoDraw(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_AUTODRAW)==0)
 		{
@@ -467,7 +459,7 @@ public class TheFight
 		}
 	}
 
-	public Vector getSheaths(MOB mob, boolean withWeapons)
+	public static Vector getSheaths(MOB mob, boolean withWeapons)
 	{
 		Vector sheaths=new Vector();
 		if(mob!=null)
@@ -496,7 +488,7 @@ public class TheFight
 		return sheaths;
 	}
 	
-	public void sheath(MOB mob, Vector commands)
+	public static void sheath(MOB mob, Vector commands)
 	{
 		commands.removeElementAt(0);
 		Vector sheaths=getSheaths(mob,false);
@@ -538,7 +530,7 @@ public class TheFight
 		else
 		{
 			commands.insertElementAt("all",0);
-			Container container=(Container)new ItemUsage().possibleContainer(mob,commands,Item.WORN_REQ_WORNONLY);
+			Container container=(Container)ItemUsage.possibleContainer(mob,commands,Item.WORN_REQ_WORNONLY);
 			String thingToPut=Util.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";
@@ -600,13 +592,13 @@ public class TheFight
 		}
 	}
 	
-	public void drawIfNecessary(MOB mob)
+	public static void drawIfNecessary(MOB mob)
 	{
 		if(mob.fetchWieldedItem()==null)
 			draw(mob,new Vector(),true,true);
 	}
 	
-	public void draw(MOB mob, Vector commands, boolean noerrors, boolean quiet)
+	public static void draw(MOB mob, Vector commands, boolean noerrors, boolean quiet)
 	{
 		boolean allFlag=false;
 		Vector containers=new Vector();
@@ -649,7 +641,7 @@ public class TheFight
 		{
 			containerName=(String)commands.lastElement();
 			commands.insertElementAt("all",0);
-			containers=new ItemUsage().possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY);
+			containers=ItemUsage.possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY);
 			if(containers.size()==0) containers=sheaths;
 			whatToGet=Util.combine(commands,0);
 			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
@@ -681,14 +673,14 @@ public class TheFight
 				Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
-				if(new ItemUsage().get(mob,container,(Item)getThis,quiet,"draw"))
+				if(ItemUsage.get(mob,container,(Item)getThis,quiet,"draw"))
 				{
 					if(getThis.container()==null)
 					{
 						if(mob.amWearingSomethingHere(Item.WIELD))
-							new ItemUsage().hold(mob,getThis,true);
+							ItemUsage.hold(mob,getThis,true);
 						else
-							new ItemUsage().wield(mob,getThis,true);
+							ItemUsage.wield(mob,getThis,true);
 					}
 				}
 				if(container!=null)	container.setRawWornCode(wearCode);
@@ -712,7 +704,7 @@ public class TheFight
 		}
 	}
 
-	public void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
+	public static void postWeaponDamage(MOB source, MOB target, Weapon weapon, boolean success)
 	{
 		if(source==null) return;
 		if(!source.mayIFight(target)) return;

@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class AbilityHelper
 {
+	private AbilityHelper(){}
 	protected final static int TRACK_ATTEMPTS=25;
 	protected final static int TRACK_DEPTH=500;
 

@@ -10,10 +10,12 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Help
 {
-	private Properties helpFile=null;
-	private Properties arcHelpFile=null;
+	private Help(){}
 	
-	public boolean getArcHelpFile()
+	private static Properties helpFile=null;
+	private static Properties arcHelpFile=null;
+	
+	public static boolean getArcHelpFile()
 	{
 		if(arcHelpFile==null)
 		{
@@ -25,7 +27,7 @@ public class Help
 		return true;
 	}
 
-	public boolean getHelpFile()
+	public static boolean getHelpFile()
 	{
 		if(helpFile==null)
 		{
@@ -43,7 +45,7 @@ public class Help
 		return true;
 	}
 
-	public void topics(MOB mob)
+	public static void topics(MOB mob)
 	{
 		if(!getHelpFile())
 		{
@@ -54,7 +56,7 @@ public class Help
 		doTopics(mob,helpFile,"HELP", "PLAYER TOPICS");
 	}
 
-	public void arcTopics(MOB mob)
+	public static void arcTopics(MOB mob)
 	{
 		if(!getArcHelpFile())
 		{
@@ -65,7 +67,7 @@ public class Help
 		doTopics(mob,arcHelpFile,"AHELP", "ARCHON TOPICS");
 	}
 
-	public StringBuffer fourColumns(Vector reverseList)
+	public static StringBuffer fourColumns(Vector reverseList)
 	{
 		StringBuffer topicBuffer=new StringBuffer("");
 		int col=0;
@@ -87,7 +89,7 @@ public class Help
 		return topicBuffer;
 	}
 	
-	public void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
+	public static void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)
 	{
 		StringBuffer topicBuffer=(StringBuffer)Resources.getResource(resName);
 		if(topicBuffer==null)
@@ -115,7 +117,7 @@ public class Help
 	}
 
 	
-	public StringBuffer getHelpText(String helpStr)
+	public static StringBuffer getHelpText(String helpStr)
 	{
 		if(!getHelpFile())
 			return null;
@@ -128,7 +130,7 @@ public class Help
 	}
 	
 					
-	public String fixHelp(String tag, String str)
+	public static String fixHelp(String tag, String str)
 	{
 		if(str.startsWith("<ABILITY>"))
 		{
@@ -319,7 +321,7 @@ public class Help
 		return str;
 	}
 	
-	public StringBuffer getHelpText(String helpStr,Properties rHelpFile)
+	public static StringBuffer getHelpText(String helpStr,Properties rHelpFile)
 	{
 		// the area exception
 		if(CMMap.getArea(helpStr.trim())!=null)
@@ -359,7 +361,7 @@ public class Help
 		return new StringBuffer(fixHelp(helpStr,thisTag));
 	}
 	
-	public void help(MOB mob, String helpStr)
+	public static void help(MOB mob, String helpStr)
 	{
 		if(!getHelpFile())
 		{
@@ -378,7 +380,7 @@ public class Help
 			mob.session().unfilteredPrintln(thisTag.toString());
 	}
 
-	public void arcHelp(MOB mob, String helpStr)
+	public static void arcHelp(MOB mob, String helpStr)
 	{
 		if(!getArcHelpFile())
 		{
@@ -426,7 +428,7 @@ public class Help
 			mob.session().unfilteredPrintln(thisTag.toString());
 	}
 
-	public void unloadHelpFile(MOB mob)
+	public static void unloadHelpFile(MOB mob)
 	{
 		if(Resources.getResource("PLAYER TOPICS")!=null)
 			Resources.removeResource("PLAYER TOPICS");
@@ -456,7 +458,8 @@ public class Help
 		if(Resources.getResource("offline.txt")!=null)
 			Resources.removeResource("offline.txt");
 
-		mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");
+		if(mob!=null)
+			mob.tell("Help files unloaded. Next HELP, AHELP, new char will reload.");
 	}
 
 }

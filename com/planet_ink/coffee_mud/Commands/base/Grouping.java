@@ -9,7 +9,9 @@ import com.planet_ink.coffee_mud.common.*;
 
 public class Grouping
 {
-	public void whois(MOB mob, String mobName)
+	private Grouping(){}
+	
+	public static void whois(MOB mob, String mobName)
 	{
 		if((mobName==null)||(mobName.length()==0))
 		{
@@ -51,7 +53,7 @@ public class Grouping
 			mob.tell(head.toString()+msg.toString());
 		}
 	}
-	public void who(MOB mob, String mobName)
+	public static void who(MOB mob, String mobName)
 	{
 		if((mobName!=null)&&(mobName.startsWith("@")))
 		{
@@ -88,7 +90,7 @@ public class Grouping
 	}
 
 	
-	public void makePeaceInGroup(MOB mob)
+	public static void makePeaceInGroup(MOB mob)
 	{
 		Hashtable myGroup=mob.getGroupMembers(new Hashtable());
 		for(Enumeration e=myGroup.elements();e.hasMoreElements();)
@@ -99,7 +101,7 @@ public class Grouping
 		}
 	}
 	
-	public StringBuffer showWhoLong(MOB who)
+	public static StringBuffer showWhoLong(MOB who)
 	{
 		
 		StringBuffer msg=new StringBuffer("");
@@ -120,7 +122,7 @@ public class Grouping
 		msg.append("\n\r");
 		return msg;
 	}
-	public StringBuffer showWhoShort(MOB who)
+	public static StringBuffer showWhoShort(MOB who)
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("[");
@@ -139,7 +141,7 @@ public class Grouping
 	}
 
 
-	public void group(MOB mob)
+	public static void group(MOB mob)
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
 		Hashtable group=mob.getGroupMembers(new Hashtable());
@@ -152,7 +154,7 @@ public class Grouping
 		mob.tell(msg.toString());
 	}
 
-	public void gtell(MOB mob, String text)
+	public static void gtell(MOB mob, String text)
 	{
 		if(text.length()==0)
 		{
@@ -168,7 +170,7 @@ public class Grouping
 		}
 	}
 
-	public void unfollow(MOB mob, boolean quiet)
+	public static void unfollow(MOB mob, boolean quiet)
 	{
 		nofollow(mob,false,quiet);
 		Vector V=new Vector();
@@ -184,7 +186,7 @@ public class Grouping
 		}
 	}
 	
-	public void nofollow(MOB mob, boolean errorsOk, boolean quiet)
+	public static void nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{
 		if(mob.amFollowing()!=null)
 		{
@@ -200,7 +202,7 @@ public class Grouping
 		}
 	}
 
-	public void processFollow(MOB mob, MOB tofollow, boolean quiet)
+	public static void processFollow(MOB mob, MOB tofollow, boolean quiet)
 	{
 		if(tofollow!=null)
 		{
@@ -224,7 +226,7 @@ public class Grouping
 			nofollow(mob,!quiet,quiet);
 	}
 
-	public void follow(MOB mob, Vector commands)
+	public static void follow(MOB mob, Vector commands)
 	{
 		if(commands.size()<2)
 		{
@@ -257,7 +259,7 @@ public class Grouping
 		processFollow(mob,target,false);
 	}
 
-	public void togglenofollow(MOB mob)
+	public static void togglenofollow(MOB mob)
 	{
 		if((mob.getBitmap()&MOB.ATT_NOFOLLOW)==0)
 		{
@@ -272,7 +274,7 @@ public class Grouping
 		}
 	}
 	
-	public void order(MOB mob, Vector commands)
+	public static void order(MOB mob, Vector commands)
 		throws Exception
 	{
 		if(commands.size()<3)
@@ -310,7 +312,7 @@ public class Grouping
 			return;
 		}
 		commands.removeElementAt(0);
-		Integer commandCodeObj=(Integer)(new CommandSet()).get((String)commands.elementAt(0));
+		Integer commandCodeObj=(Integer)(CommandSet.getInstance()).get((String)commands.elementAt(0));
 		if((!mob.isASysOp(mob.location()))
 		   &&(commandCodeObj!=null)
 		   &&(commandCodeObj.intValue()==CommandSet.ORDER))
@@ -326,7 +328,7 @@ public class Grouping
 		}
 	}
 
-	public void split(MOB mob, Vector commands)
+	public static void split(MOB mob, Vector commands)
 	{
 		if(mob.numFollowers()==0)
 		{
