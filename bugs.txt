@@ -1,6 +1,0 @@
-restart doesn't work with fakedb 
-area currents affects underwater and water
-!look at import rejuv rates
-diff between gen and std
-the backslash/forward slash problem of pikels????? WOW... i have NO idea!!
-

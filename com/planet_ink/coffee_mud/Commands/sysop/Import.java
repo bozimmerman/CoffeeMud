@@ -141,7 +141,7 @@ public class Import
 		while(s.indexOf("~")<0)
 		{
 			String l=eatLine(V);
-			if(l.startsWith("  "))
+			if(l.startsWith(" "))
 				s+="%0D"+l;
 			else
 			if(l.length()==0)
@@ -152,6 +152,7 @@ public class Import
 		s=s.trim();
 		if(s.endsWith("~"))
 			s=s.substring(0,s.length()-1).trim();
+		s=Util.replaceAll(s,"^","^^");
 		return s;
 	}
 

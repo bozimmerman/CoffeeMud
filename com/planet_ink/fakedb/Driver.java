@@ -35,8 +35,8 @@ public class Driver implements java.sql.Driver
       return new java.sql.DriverPropertyInfo[0];
    }
 
-   public int getMajorVersion() { return 0; }
-   public int getMinorVersion() { return 1; }
+   public int getMajorVersion() { return 1; }
+   public int getMinorVersion() { return 0; }
    public boolean jdbcCompliant() { return false; }
 
    private Properties parseUrl(String url, Properties defaults)

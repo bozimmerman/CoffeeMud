@@ -93,7 +93,24 @@ public class WaterCurrents extends ActiveTicker
 		{
 			Vector sweeps=new Vector();
 			if(ticking instanceof Room)
-				applyCurrents((Room)ticking,sweeps);
+			{
+				Room R=(Room)ticking;
+				applyCurrents(R,sweeps);
+				Room below=R.rawDoors()[Directions.DOWN];
+				if((below!=null)
+				&&(below.roomID().length()==0)
+				&&(below instanceof GridLocale)
+				&&((below.domainType()==Room.DOMAIN_INDOORS_UNDERWATER))
+				   ||(below.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER))
+				{
+					Vector V=((GridLocale)below).getAllRooms();
+					for(int v=0;v<V.size();v++)
+					{
+						Room R2=(Room)V.elementAt(v);
+						applyCurrents(R2,sweeps);
+					}
+				}
+			}
 			else
 			if(ticking instanceof Area)
 			{

@@ -9,22 +9,39 @@ import java.lang.ref.WeakReference;
 public class Connection implements java.sql.Connection
 {
    static private java.util.Map databases = new java.util.HashMap();
+   static private java.util.Map references = new java.util.HashMap();
+   private Backend backend;
+   private boolean closed=false;
+   private String oldPath="";
 
    static private void log(String x) {
       System.err.println("Connection: "+x);
    }
 
-   private Backend backend;
-
    Backend getBackend() { return backend; }
 
    public Connection(String path) throws java.sql.SQLException
    {
+	  
       try {
          path=(new java.io.File(path)).getCanonicalPath();
       } catch (java.io.IOException e) {}
+	  
+		oldPath=path;
+		if(!closed)
+		{
+			synchronized(references)
+			{
+				Integer conCount=(Integer)references.get(path);
+				if(conCount==null)
+					conCount=new Integer(0);
+				references.remove(path);
+				references.put(path,new Integer(conCount.intValue()+1));
+			}
+		}
 
-      synchronized (databases) {
+      synchronized (databases) 
+	  {
          WeakReference ref=(WeakReference)databases.get(path);
          Backend       backend=null;
          if (ref!=null)
@@ -104,24 +121,46 @@ public class Connection implements java.sql.Connection
    }
    public boolean getAutoCommit() throws java.sql.SQLException
    {
-      return true;
+		return true;
    }
    public void commit() throws java.sql.SQLException
    {
-      log("commit");
+		log("commit");
    }
    public void rollback() throws java.sql.SQLException
    {
-      log("rollback");
+		log("rollback");
    }
    public void close() throws java.sql.SQLException
    {
-      log("close");
+		if(!closed)
+		{
+			closed=true;
+			synchronized(references)
+			{
+				Integer conCount=(Integer)references.get(oldPath);
+				if(conCount!=null)
+				{
+					if(conCount.intValue()==1)
+					{
+						if(backend!=null)
+							backend.clearRelations();
+						backend=null;
+						references.remove(oldPath);
+						databases.remove(oldPath);
+					}
+					else
+					{
+						references.remove(oldPath);
+						references.put(oldPath,new Integer(conCount.intValue()-1));
+					}
+				}
+			}
+		}
    }
    public boolean isClosed() throws java.sql.SQLException
    {
-      log("isClosed");
-      return false;
+		return closed;
    }
 
    public java.sql.DatabaseMetaData getMetaData() throws java.sql.SQLException

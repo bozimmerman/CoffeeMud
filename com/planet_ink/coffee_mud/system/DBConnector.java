@@ -17,6 +17,12 @@ public class DBConnector
 		DBs=new DBConnections(NEWDBClass,NEWDBService,NEWDBUser,NEWDBPass,NEWnumConnections,DoErrorQueueing);
 	}
 	
+	public static boolean deregisterDriver()
+	{ 
+		if(DBs!=null) return DBs.deregisterDriver();
+		return false;
+	}
+	
 	public static int update(String updateString)
 	{ return DBs.update(updateString);}
 	

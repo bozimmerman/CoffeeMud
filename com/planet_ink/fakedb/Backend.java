@@ -10,6 +10,7 @@ import java.util.*;
 class Backend
 {
    File basePath;
+   private Map relations=new HashMap();
 
    static class AttributeInfo {
       String  name;
@@ -20,6 +21,18 @@ class Backend
       int offset,size;
       RecordInfo(int o,int s) { offset=o; size=s; }
    }
+   public void clearRelations()
+   {
+	   basePath=null;
+	   if(relations!=null)
+		for(Iterator c=relations.values().iterator();c.hasNext();)
+		{
+			   Relation R=(Relation)c.next();
+			   R.close();
+		}
+	   relations=new HashMap();
+   }
+   
    static class Relation {
       File             fileName;
       RandomAccessFile file;
@@ -40,6 +53,22 @@ class Backend
                return index;
          return -1;
       }
+	  
+		void close()
+		{
+			   if(fileName!=null) fileName=null;
+			   if(file!=null)
+			   {
+				   try{
+					   file.close();
+				   } catch(Exception e){}
+				   file=null;
+			   }
+			   attributes=null;
+			   keys=null;
+			   index=new TreeMap();
+		}
+		
       void open() throws IOException
       {
          StringBuffer key=new StringBuffer();
@@ -306,8 +335,6 @@ class Backend
          return count;
       }
    }
-
-   private Map relations=new HashMap();
 
    private void readSchema(File basePath,File schema) throws IOException
    {

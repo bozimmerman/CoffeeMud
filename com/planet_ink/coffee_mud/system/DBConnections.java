@@ -182,6 +182,18 @@ public class DBConnections
 		}
 	}
 
+	public boolean deregisterDriver()
+	{
+		try
+		{
+			return true;
+		}
+		catch(Exception ce)
+		{
+		}
+		return false;
+	}
+	
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
 	 * You can then call DBConnection.query and DBConnection.update on this object.
