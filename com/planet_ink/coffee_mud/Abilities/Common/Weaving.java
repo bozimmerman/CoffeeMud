@@ -312,7 +312,11 @@ public class Weaving extends CraftingSkill
 			int armordmg=Util.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			bundle=misctype.equalsIgnoreCase("BUNDLE");
-			if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+			if(bundle) 
+			{
+			    building.setBaseValue(lostValue);
+				building.baseEnvStats().setWeight(woodRequired);
+			}
 			if(spell.length()>0)
 			{
 				String parm="";
