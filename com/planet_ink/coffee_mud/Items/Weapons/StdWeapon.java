@@ -86,6 +86,7 @@ public class StdWeapon extends StdItem implements Weapon
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 			msg.addTrailerMsg(new FullMsg(msg.source(),this,CMMsg.MSG_DROP,null));
+		
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==this)
 		&&(amWearingAt(Item.WIELD))
@@ -190,17 +191,22 @@ public class StdWeapon extends StdItem implements Weapon
 			{
 				boolean reLoaded=false;
 				
-				for(int a=0;a<numEffects();a++)
-				{ 
-					Ability A=fetchEffect(a); 
-					if((A!=null)&&A.isBorrowed(this)&&(A.invoker()==null)) 
-						delEffect(A);
-				}
-				
 				if((msg.source().isMine(this))
 				   &&(msg.source().location()!=null)
 				   &&(Sense.aliveAwakeMobile(msg.source(),true)))
 				{
+					boolean recover=false;
+				
+					for(int a=0;a<numEffects();a++)
+					{ 
+						Ability A=fetchEffect(a); 
+						if((A!=null)&&A.isBorrowed(this)&&(A.invoker()==null)) 
+						{
+							recover=true;
+							delEffect(A);
+						}
+					}
+					
 					MOB mob=msg.source();
 					for(int i=0;i<mob.inventorySize();i++)
 					{
@@ -227,6 +233,7 @@ public class StdWeapon extends StdItem implements Weapon
 										A.setInvoker(null);
 										A.setBorrowed(this,true);
 										addEffect(A);
+										recover=true;
 									}
 								}
 								
@@ -235,6 +242,12 @@ public class StdWeapon extends StdItem implements Weapon
 								break;
 							}
 						}
+					}
+					if(recover)
+					{
+						mob.recoverEnvStats();
+						mob.recoverCharStats();
+						mob.recoverMaxState();
 					}
 				}
 				if(!reLoaded)

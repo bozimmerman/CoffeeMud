@@ -1206,15 +1206,15 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       considered magical. The exception to this is the <B 
       >GenCoins</B> object. For coins, this denotes the 
       number of coins in the pile!</TD></TR></TABLE></P>
-<P><STRONG>The "GenLightSource", "GenCigar", "GenPipe", 
-and&nbsp;"GenLantern"&nbsp;</STRONG><BR><BR></P>
+<P><STRONG>The "GenLightSource", 
+"GenCigar", "GenPipe", and&nbsp;"GenLantern"&nbsp;</STRONG><BR><BR></P>
 <P>A GenLightSource and GenLantern provide light for 
 players whenever they are HELD.&nbsp; GenCigars and GenPipes are WORN on the 
-mouth for enjoyment.  GenLightSources and GenCigars will burn away after a 
-time, while GenLanterns can be refilled with oil from an oil flask, and GenPipes
-must be filled with an herb.</P>
-<P>Whenever these GenLightSources are created, much like the 
-GenItem above, you are presented with a list of properties to fill in.&nbsp; 
+mouth for enjoyment. GenLightSources and GenCigars will burn away after a time, 
+while GenLanterns can be refilled with oil from an oil flask, and GenPipes must 
+be filled with an herb.</P>
+<P>Whenever these GenLightSources are created, much like 
+the GenItem above, you are presented with a list of properties to fill in.&nbsp; 
 Pressing enter will leave the property unchanged.&nbsp; The properties include 
 all of the fields listed above under GenItem, plus&nbsp;two&nbsp;more:</P>
 <P><STRONG>
@@ -1228,17 +1228,17 @@ all of the fields listed above under GenItem, plus&nbsp;two&nbsp;more:</P>
   <TR>
     <TD><EM>Light Duration</EM></TD>
     <TD>the number of ticks (4 second intervals) which 
-      will transpire before the light source will burn out.
-      See the next field for more information on burning out.
-      </TD></TR>
+      will transpire before the light source will burn out. See the next field 
+      for more information on burning out. </TD></TR>
   <TR>
-    <TD><EM>Is Destroyed after burnout</EM></TD>
-    <TD>Whether the item is destroyed after burnout.  This defaults to true for
-    GenCigar and GenLightSource (torches), which vanish after use.  GenLanterns and GenCigars default this
-    to false, meaning the item remains after it burns out (though no longer gives
-    off light).  The GenLantern may be refilled with oil at this time, or the 
-    GenPipe may be refilled with herbs to continue.</TD></TR>
-</TABLE></P>
+    <TD><EM>Is Destroyed after 
+      burnout</EM></TD>
+    <TD>Whether the item is destroyed after burnout. This 
+      defaults to true for GenCigar and GenLightSource (torches), which vanish 
+      after use. GenLanterns and GenCigars default this to false, meaning the 
+      item remains after it burns out (though no longer gives off light). The 
+      GenLantern may be refilled with oil at this time, or the GenPipe may be 
+      refilled with herbs to continue.</TD></TR></TABLE></P>
 <P>The "GenJournal"</STRONG><BR><BR></P>
 <P>GenJournals represent message boards for players to 
 commonly post on and everyone to read.&nbsp; All GenJournals who have the same 
@@ -1393,8 +1393,9 @@ bows you shoot ammunition at, to spears that you throw.&nbsp; It all depends on
 how you design them.&nbsp; The GenBow, GenSling, and GenSpear classes don't 
 actually offer any functionality you couldn't get out of a properly molded 
 GenWeapon, but are provided as good examples of how to make them.&nbsp; 
-The&nbsp;GenBoffWeapon is another form of GenWeapon, but it provides some 
-silly&nbsp;and random hit messages during combat.&nbsp; </P>
+The&nbsp;GenBoffWeapon, on the&nbsp;other hand,&nbsp;is another form of 
+GenWeapon, but it provides some silly&nbsp;and random hit messages during 
+combat.&nbsp; </P>
 <P>The GenNet and GenLasso, however, are quite 
 different.&nbsp; Each of those are capable of ensnaring someone who is hit by 
 them when they are thrown.&nbsp; They do default to thrown weapons.</P>
@@ -1470,11 +1471,11 @@ Adjustment</EM></TD>
       to use.</TD></TR>
   <TR>
     <TD><EM>Ammunition Type</EM></TD>
-    <TD>This is the secret identity of the ammunition 
-      required by this weapon.&nbsp; Ammunition is a special kind of GenItem 
-      which has a secret identity matching that of its intended weapon (such as 
-      "arrows" or "bolts" or "rocks") and has a Uses Remaining property above 
-    0.</TD></TR>
+    <TD>This is the&nbsp;type of ammunition required by 
+      this weapon.&nbsp; Ammunition is a special kind of item called 
+      GenAmmunition (see below) which&nbsp;must have an ammunition type 
+      field&nbsp;matching that of its intended weapon (such as "arrows" or 
+      "bolts" or "rocks") and has a Uses Remaining property above 0.</TD></TR>
   <TR>
     <TD><EM>Ammunition 
     Capacity</EM></TD>
@@ -1518,8 +1519,41 @@ everything listed under GenItem, plus a few more:</P>
       can be placed in the container.</TD></TR></TABLE></P>
 <P>One more thing to keep in mind.&nbsp; Always make the 
 weight of a container less than its capacity.&nbsp; A container must be able to 
-hold its own weight in addition to anything put in it!<BR><STRONG></P></STRONG>
-<P><STRONG>The "GenArmor" and 
+hold its own weight in addition to anything put in it!</P>
+<P><STRONG>The 
+"GenAmmunition"</STRONG></P>
+<P>The GenAmmunition is a very special kind of item that 
+can not be worn or held.&nbsp; It represents a package of ammunition for a 
+GenWeapon (or GenBow, etc..) which requires ammunition.&nbsp; To make the 
+ammunition work with your weapon, the values in the ammunitionType fields in 
+both the GenWeapon and the GenAmmunition&nbsp;must match.&nbsp; Whenever a 
+player runs out of ammunition for their weapon, it will be drawn from 
+GenAmmunition objects, provided they are in the players inventory.</P>
+<P>GenAmmunition differs from other items not only in its 
+inability to be held, but also in its ability to transfer any Effects on itself 
+to the weapon.&nbsp; Whenever a weapon draws ammunition from a GenAmmunition 
+type, properties, spells, and other Effects on the Ammunition will be 
+transferred to the weapon.&nbsp; This allows one to make Magical ammunition.</P>
+<P>Whenever a GenAmmunition &nbsp;is created, much like the 
+GenItem above, you are presented with a list of properties to fill in.&nbsp; 
+Pressing enter will leave the property unchanged.&nbsp; The properties include 
+everything listed under GenItem, plus a few more:</P>
+<P>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Ammunition Type</EM></TD>
+    <TD>arrows, bolts, bullets, etc.&nbsp; MUST match the 
+      ammunition type field of the weapon.&nbsp; Also, the Uses Remaining field 
+      for ammunition represents the AMOUNT of ammunition in this 
+  bundle.</TD></TR></TABLE></P><STRONG>
+<P></P>
+<P></STRONG><STRONG>The "GenArmor" and 
 "GenShield"</STRONG></P>
 <P>These represent all manner of clothing, shoes, worn 
 jewelry, armor, and of course shields.&nbsp; Of these, only a shield MUST be 
@@ -1619,15 +1653,15 @@ plus&nbsp;a few more:</P><STRONG>
 <P>These items represent the edibles and drinkables on 
 CoffeeMud.&nbsp; The GenFood is a simple edible food, while a GenFoodResource is 
 a raw edible material that can be used for cooking or other resource-requiring 
-skills.&nbsp; GenWater, GenDrink, and GenFountain are all templates for drinkable containers, 
-with a GenFountain differing only in a lack of need to ever fill it.&nbsp; A 
-GenLiquidResource represents a liquid resource for potion making or other 
-skills.</P>
-<P>Whenever a GenFood, GenDrink, GenFountain, or GenWater&nbsp;is created, much 
-like the GenItem above, you are presented with a list of properties to fill 
-in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
-include everything listed under GenItem, plus GenContainer for the drinkables, 
-plus a few more:</P>
+skills.&nbsp; GenWater, GenDrink, and GenFountain are all templates for 
+drinkable containers, with a GenFountain differing only in a lack of need to 
+ever fill it.&nbsp; A GenLiquidResource represents a liquid resource for potion 
+making or other skills.</P>
+<P>Whenever a GenFood, GenDrink, GenFountain, or 
+GenWater&nbsp;is created, much like the GenItem above, you are presented with a 
+list of properties to fill in.&nbsp; Pressing enter will leave the property 
+unchanged.&nbsp; The properties include everything listed under GenItem, plus 
+GenContainer for the drinkables, plus a few more:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1655,11 +1689,11 @@ plus a few more:</P>
       the container is empty and must be refilled.</TD></TR>
   <TR>
     <TD><EM>Liquid Type</EM></TD>
-    <TD>for GenWater/GenDrink only, this denotes what kind of 
-      liquid it is, whether fresh water, salt water, or even BLOOD!&nbsp; This 
-      may differ from the GenItem material type, so that the archon may 
-      differentiate between the material of the container from whats inside 
-    it.</TD></TR></TABLE></P>
+    <TD>for GenWater/GenDrink only, this denotes what 
+      kind of liquid it is, whether fresh water, salt water, or even 
+      BLOOD!&nbsp; This may differ from the GenItem material type, so that the 
+      archon may differentiate between the material of the container from whats 
+      inside it.</TD></TR></TABLE></P>
 <P><STRONG>The "GenMap"</STRONG></P>
 <P>A GenMap is a readable item that will automatically map 
 out the rooms of the specified area(s).&nbsp; Level is uniquely significant on a 
@@ -2059,8 +2093,9 @@ songs.</TD></TR></TABLE></P>
 containers that can be modified by the Archon.&nbsp; If one wishes to modify a 
 dagger, one must either hold the dagger, or have the dagger present in the 
 room.&nbsp; The Archon can then issue the command "modify dagger".&nbsp; If the 
-item is a GenItem, GenContainer, GenFood, GenWater, GenDrink, GenWeapon, or any other 
-"Gen" item, then the same properties as above will be presented.&nbsp; </P>
+item is a GenItem, GenContainer, GenFood, GenWater, GenDrink, GenWeapon, or any 
+other "Gen" item, then the same properties as above will be presented.&nbsp; 
+</P>
 <P>Like rooms and areas, there are a very rich selection of 
 Behaviors you may choose for items.&nbsp; Here are our favorites:</P>
 <P>"Decay" for items that are only around for a limited 

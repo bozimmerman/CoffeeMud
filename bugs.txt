@@ -1,4 +1,5 @@
 !SET MOBGROUP quest command for narrowing mob selections, or applying stuff to more than one mob
+add isable func for abilities, isopen, islocked for items
 Update the database for the ammunition change
 Ability to buy space ship areas, and add them to shopkeepers
 Some solution for variable eq on mobs -- use rejuv!
