@@ -162,14 +162,23 @@ public class RandomMonsters extends ActiveTicker
 			if(monsters!=null) return monsters;
 			monsters=new Vector();
 			String error=CoffeeMaker.addMOBsFromXML(filename.toString(),monsters,null);
+			String thangName="null";
+			if(thang instanceof Room)
+			    thangName=CMMap.getExtendedRoomID((Room)thang);
+			else
+			if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
+			    thangName=CMMap.getExtendedRoomID(((MOB)thang).getStartRoom());
+			else
+			if(thang!=null)
+			    thangName=thang.name();
 			if(error.length()>0)
 			{
-				Log.errOut("RandomMonsters","Error on import of xml for '"+((thang!=null)?thang.name():"null")+"': "+error+".");
+				Log.errOut("RandomMonsters","Error on import of xml for '"+thangName+"': "+error+".");
 				return null;
 			}
 			if(monsters.size()<=0)
 			{
-				Log.errOut("RandomMonsters","No mobs loaded for '"+((thang!=null)?thang.name():"null")+"'.");
+				Log.errOut("RandomMonsters","No mobs loaded for '"+thangName+"'.");
 				return null;
 			}
 			Resources.submitResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode(),monsters);
@@ -184,26 +193,36 @@ public class RandomMonsters extends ActiveTicker
 			{
 				alreadyTriedLoad=true;
 				StringBuffer buf=Resources.getFileResource(filename);
+				String thangName="null";
+				if(thang instanceof Room)
+				    thangName=CMMap.getExtendedRoomID((Room)thang);
+				else
+				if((thang instanceof MOB)&&(((MOB)thang).getStartRoom())!=null)
+				    thangName=CMMap.getExtendedRoomID(((MOB)thang).getStartRoom());
+				else
+				if(thang!=null)
+				    thangName=thang.name();
+				
 				if((buf==null)||((buf!=null)&&(buf.length()<20)))
 				{
-					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
 					return null;
 				}
 				if(buf.substring(0,20).indexOf("<MOBS>")<0)
 				{
-					Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+					Log.errOut("RandomMonsters","Invalid XML file: '"+filename+"' for '"+thangName+"'.");
 					return null;
 				}
 				monsters=new Vector();
 				String error=CoffeeMaker.addMOBsFromXML(buf.toString(),monsters,null);
 				if(error.length()>0)
 				{
-					Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"': "+error+".");
+					Log.errOut("RandomMonsters","Error on import of: '"+filename+"' for '"+thangName+"': "+error+".");
 					return null;
 				}
 				if(monsters.size()<=0)
 				{
-					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+((thang!=null)?thang.name():"null")+"'.");
+					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+thangName+"'.");
 					return null;
 				}
 				

@@ -61,7 +61,7 @@ public class Fighter_SizeOpponent extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes, but looks confused.");
+			return beneficialVisualFizzle(mob,target,"<S-NAME> size(s) up <T-NAMESELF> with <S-HIS-HER> eyes, but look(s) confused.");
 
 		// return whether it worked
 		return success;

@@ -599,14 +599,21 @@ public class Scriptable extends StdBehavior
 		Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
 		if(monsters!=null) return monsters;
 		StringBuffer buf=Resources.getFile(filename);
+		String thangName="null";
+		Room R=CoffeeUtensils.roomLocation(scripted);
+		if(R!=null)
+		    thangName=scripted.name()+" at "+CMMap.getExtendedRoomID((Room)scripted);
+		else
+		if(scripted!=null)
+		    thangName=scripted.name();
 		if((buf==null)||((buf!=null)&&(buf.length()<20)))
 		{
-			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"'");
+			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
 		if(buf.substring(0,20).indexOf("<MOBS>")<0)
 		{
-			scriptableError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"'");
+			scriptableError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
 		monsters=new Vector();
@@ -631,14 +638,21 @@ public class Scriptable extends StdBehavior
 		Vector items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
 		if(items!=null) return items;
 		StringBuffer buf=Resources.getFile(filename);
+		String thangName="null";
+		Room R=CoffeeUtensils.roomLocation(scripted);
+		if(R!=null)
+		    thangName=scripted.name()+" at "+CMMap.getExtendedRoomID((Room)scripted);
+		else
+		if(scripted!=null)
+		    thangName=scripted.name();
 		if((buf==null)||((buf!=null)&&(buf.length()<20)))
 		{
-			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"'");
+			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
 		if(buf.substring(0,20).indexOf("<ITEMS>")<0)
 		{
-			scriptableError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"'");
+			scriptableError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
 			return null;
 		}
 		items=new Vector();
@@ -5672,14 +5686,16 @@ public class Scriptable extends StdBehavior
 
 		Vector scripts=getScripts();
 
+		int triggerCode=-1;
 		for(int v=0;v<scripts.size();v++)
 		{
 			Vector script=(Vector)scripts.elementAt(v);
-		    tickStatus=Tickable.STATUS_BEHAVIOR+v;
 			String trigger="";
 			if(script.size()>0)
 				trigger=((String)script.elementAt(0)).toUpperCase().trim();
-			switch(getTriggerCode(trigger))
+			triggerCode=getTriggerCode(trigger);
+		    tickStatus=Tickable.STATUS_BEHAVIOR+triggerCode;
+			switch(triggerCode)
 			{
 			case 5: // rand_Prog
 				if(!mob.amDead())
@@ -5812,6 +5828,7 @@ public class Scriptable extends StdBehavior
 			}
 		}
 		try{
+		    tickStatus=Tickable.STATUS_BEHAVIOR+100;
 			for(int q=que.size()-1;q>=0;q--)
 			{
 				ScriptableResponse SB=(ScriptableResponse)que.elementAt(q);
@@ -5819,6 +5836,7 @@ public class Scriptable extends StdBehavior
 					que.removeElement(SB);
 			}
 		}catch(Exception e){}
+	    tickStatus=Tickable.STATUS_NOT;
 		return true;
 	}
 }
