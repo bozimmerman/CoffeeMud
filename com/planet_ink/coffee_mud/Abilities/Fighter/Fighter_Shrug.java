@@ -39,12 +39,16 @@ public class Fighter_Shrug extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!mob.isInCombat())
+		if((!auto)&&(!mob.isInCombat()))
 		{
 			mob.tell("You must be in combat first!");
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -60,11 +64,11 @@ public class Fighter_Shrug extends StdAbility
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_QUIETMOVEMENT,"<S-NAME> brace(s) for an attack!");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> is braced for an attack!":"<S-NAME> brace(s) for an attack!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

@@ -286,6 +286,9 @@ public class CommandProcessor
 				case CommandSet.GO:
 					Movement.go(mob,commands);
 					break;
+				case CommandSet.GODS:
+					Scoring.gods(mob);
+					break;
 				case CommandSet.GOTO:
 					SysOpSkills.gotoCmd(mob,commands);
 					break;

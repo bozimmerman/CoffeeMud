@@ -72,6 +72,9 @@ public class Prayer_ProtParalyzation extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)

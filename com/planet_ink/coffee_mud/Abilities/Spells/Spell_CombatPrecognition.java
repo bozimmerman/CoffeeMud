@@ -118,7 +118,7 @@ public class Spell_CombatPrecognition extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<S-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),(auto?"<T-NAME> shout(s) combatively!":"^S<S-NAME> shout(s) a combative spell!^?"));
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

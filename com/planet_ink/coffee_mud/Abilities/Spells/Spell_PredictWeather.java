@@ -61,16 +61,20 @@ public class Spell_PredictWeather extends Spell
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> gain(s) sensitivity to the weather!":"^S<S-NAME> invoke(s) weather sensitivity!^?");
 			if(mob.location().okAffect(msg))
 			{
 				lastPrediction="";
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

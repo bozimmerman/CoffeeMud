@@ -85,7 +85,7 @@ public class Spell_FeatherFall extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> become(s) very light!":"^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) very light!":"^S<S-NAME> invoke(s) immediate lightness upon <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

@@ -65,24 +65,28 @@ public class Fighter_Tumble extends StdAbility
 			return false;
 		}
 
-		if(!mob.isInCombat())
+		if((!auto)&&(!mob.isInCombat()))
 		{
 			mob.tell("You aren't in combat!");
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> tumble(s) around!");
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,auto?"<T-NAME> begin(s) tumbling around!":"<S-NAME> tumble(s) around!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				hits=0;
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

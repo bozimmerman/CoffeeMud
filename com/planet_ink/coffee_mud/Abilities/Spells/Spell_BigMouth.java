@@ -185,6 +185,9 @@ public class Spell_BigMouth extends Spell
 	{
 		MOB target=mob;
 		if(target==null) return false;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
+		
 		if(Stomach==null)
 		{
 			Stomach = CMClass.getLocale("StdRoom");

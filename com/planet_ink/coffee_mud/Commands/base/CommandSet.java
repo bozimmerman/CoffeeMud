@@ -171,6 +171,7 @@ public class CommandSet extends Hashtable
 	public static final int CLANLIST=158;
 	public static final int CLANREJECT=159;
 	public static final int CLANRESIGN=160;
+	public static final int GODS=161;
 
 	private CommandSet()
 	{
@@ -230,6 +231,8 @@ public class CommandSet extends Hashtable
 		put("DEPOSIT",new Integer(DEPOSIT));
 		put("DESTROY",new Integer(DESTROY));
 		put("DESCRIPTION",new Integer(DESCRIPTION));
+		put("DIETIES",new Integer(GODS));
+			put("GODS",new Integer(GODS));
 		put("DISMOUNT",new Integer(DISMOUNT));
 			put("DISEMBARK",new Integer(DISMOUNT));
 			put("LEAVE",new Integer(DISMOUNT));

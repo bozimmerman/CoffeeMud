@@ -95,27 +95,27 @@ public class AbilityHelper
 		for(int v=fromHere;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
-			if(str.equals("+"+find)) return true;
+			if(str.toUpperCase().startsWith("+"+find)) return true;
 		}
 		return false;
 	}
 
-	public static StringBuffer levelHelp(String str, int c, String append)
+	public static StringBuffer levelHelp(String str, char c, String append)
 	{
 		if(str.startsWith(c+">="))
-			return new StringBuffer(append+"levels greater than or equal to "+str.substring(3).trim()+".");
+			return new StringBuffer(append+"levels greater than or equal to "+str.substring(3).trim()+".  ");
 		else
 		if(str.startsWith(c+"<="))
-			return new StringBuffer(append+"levels less than or equal to "+str.substring(3).trim()+".");
+			return new StringBuffer(append+"levels less than or equal to "+str.substring(3).trim()+".  ");
 		else
 		if(str.startsWith(c+">"))
-			return new StringBuffer(append+"levels greater than "+str.substring(2).trim()+".");
+			return new StringBuffer(append+"levels greater than "+str.substring(2).trim()+".  ");
 		else
 		if(str.startsWith(c+"<"))
-			return new StringBuffer(append+"levels less than "+str.substring(2).trim()+".");
+			return new StringBuffer(append+"levels less than "+str.substring(2).trim()+".  ");
 		else
 		if(str.startsWith(c+"="))
-			return new StringBuffer(append+"level "+str.substring(2).trim()+" players.");
+			return new StringBuffer(append+"level "+str.substring(2).trim()+" players.  ");
 		return new StringBuffer("");
 	}
 	
@@ -132,7 +132,8 @@ public class AbilityHelper
 				switch(((Integer)zapCodes.get(str)).intValue())
 				{
 				case 0: // -class
-					if(buf.length()==0) buf.append("Only ");
+					{
+					buf.append("Allows only ");
 					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
 						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
@@ -142,63 +143,82 @@ public class AbilityHelper
 					if(buf.toString().endsWith(", "))
 						buf=new StringBuffer(buf.substring(0,buf.length()-2));
 					buf.append(".  ");
+					}
 					break;
 				case 1: // -baseclass
-					if(buf.length()==0) buf.append("Only ");
-					for(int c=0;c<CMClass.charClasses.size();c++)
 					{
-						CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
-						if((C.ID().equals(C.baseClass())
-						&&(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))))
-							buf.append(C.name()+" types, ");
+						buf.append("Allows only ");
+						for(int c=0;c<CMClass.charClasses.size();c++)
+						{
+							CharClass C=(CharClass)CMClass.charClasses.elementAt(c);
+							if((C.ID().equals(C.baseClass())
+							&&(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))))
+								buf.append(C.name()+" types, ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
 					}
-					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					buf.append(".  ");
 					break;
 				case 2: // -Race
-					if(buf.length()==0) buf.append("Only ");
-					for(int c=0;c<CMClass.races.size();c++)
 					{
-						Race C=(Race)CMClass.races.elementAt(c);
-						if(fromHere(V,v+1,C.name().toUpperCase().substring(0,3)))
-							buf.append(C.name()+", ");
+						buf.append("Allows only ");
+						Vector cats=new Vector();
+						for(int c=0;c<CMClass.races.size();c++)
+						{
+							Race C=(Race)CMClass.races.elementAt(c);
+							String cat=C.racialCategory().toUpperCase();
+							if(cat.length()>6) cat=cat.substring(0,6);
+							if((!cats.contains(C.racialCategory())
+							&&(fromHere(V,v+1,cat))))
+							   cats.addElement(C.racialCategory());
+						}
+						for(int c=0;c<cats.size();c++)
+							buf.append(((String)cats.elementAt(c))+", ");
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
 					}
-					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					buf.append(".  ");
 					break;
 				case 3: // -Alignment
-					if(buf.length()==0) buf.append("Only ");
-					for(int c=0;c<=1000;c+=500)
 					{
-						String C=CommonStrings.shortAlignmentStr(c);
-						if(fromHere(V,v+1,C.toUpperCase().substring(0,3)))
-							buf.append(C+", ");
+						buf.append("Allows only ");
+						for(int c=0;c<=1000;c+=500)
+						{
+							String C=CommonStrings.shortAlignmentStr(c);
+							if(fromHere(V,v+1,C.toUpperCase().substring(0,3)))
+								buf.append(C+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
 					}
-					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					buf.append(".  ");
 					break;
 				case 4: // -Gender
-					if(buf.length()==0) buf.append("Only ");
-					if(fromHere(V,v+1,"MALE"))
-						buf.append("Male, ");
-					if(fromHere(V,v+1,"FEMALE"))
-						buf.append("Female, ");
-					if(fromHere(V,v+1,"FEMALE"))
-						buf.append("Neuter");
-					if(buf.toString().endsWith(", "))
-						buf=new StringBuffer(buf.substring(0,buf.length()-2));
-					buf.append(".  ");
+					{
+						buf.append("Allows only ");
+						if(fromHere(V,v+1,"MALE"))
+							buf.append("Male, ");
+						if(fromHere(V,v+1,"FEMALE"))
+							buf.append("Female, ");
+						if(fromHere(V,v+1,"FEMALE"))
+							buf.append("Neuter");
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
 					break;
 				case 5: // -Levels
-					for(int v2=v+1;v2<V.size();v2++)
-						buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only "));
+					{
+						for(int v2=v+1;v2<V.size();v2++)
+							buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only "));
+					}
 					break;
 				case 6: // -ClassLevels
-					for(int v2=v+1;v2<V.size();v2++)
-						buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only class "));
+					{
+						for(int v2=v+1;v2<V.size();v2++)
+							buf.append(levelHelp((String)V.elementAt(v2),'+',"Allows only class "));
+					}
 					break;
 				}
 			else
@@ -209,11 +229,17 @@ public class AbilityHelper
 					if(str.startsWith("-"+C.name().toUpperCase().substring(0,3)))
 						buf.append("Disallows "+C.name()+".  ");
 				}
+				Vector cats=new Vector();
 				for(int c=0;c<CMClass.races.size();c++)
 				{
 					Race C=(Race)CMClass.races.elementAt(c);
-					if(str.startsWith("-"+C.name().toUpperCase().substring(0,3)))
-						buf.append("Disallows "+C.name()+".  ");
+					String cat=C.racialCategory().toUpperCase();
+					if(cat.length()>6) cat=cat.substring(0,6);
+					if((str.startsWith("-"+cat))&&(!cats.contains(C.racialCategory())))
+					{
+						cats.addElement(C.racialCategory());
+						buf.append("Disallows "+C.racialCategory()+".  ");
+					}
 				}
 				for(int c=0;c<=1000;c+=500)
 				{
@@ -244,7 +270,8 @@ public class AbilityHelper
 		
 		String mobClass=mob.charStats().getCurrentClass().name().toUpperCase().substring(0,3);
 		String mobBaseClass=mob.charStats().getCurrentClass().baseClass().toUpperCase().substring(0,3);
-		String mobRace=mob.charStats().getMyRace().racialCategory().toUpperCase().substring(0,3);
+		String mobRace=mob.charStats().getMyRace().racialCategory().toUpperCase();
+		if(mobRace.length()>6) mobRace=mobRace.substring(0,6);
 		String mobAlign=CommonStrings.shortAlignmentStr(mob.getAlignment()).toUpperCase().substring(0,3);
 		String mobGender=mob.charStats().genderName().toUpperCase();
 		int level=mob.envStats().level();

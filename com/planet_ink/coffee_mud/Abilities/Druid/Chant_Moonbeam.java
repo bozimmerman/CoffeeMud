@@ -40,18 +40,22 @@ public class Chant_Moonbeam extends Chant
 			mob.tell("The moonbeam is already with you.");
 			return false;
 		}
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
 
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),auto?"A moonbeam begin(s) to follow <S-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
+		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"A moonbeam begin(s) to follow <T-NAME> around!":"^S<S-NAME> chant(s), causing a moonbeam to follow <S-HIM-HER> around!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,0);
-			mob.location().recoverRoomStats(); // attempt to handle followers
+			beneficialAffect(mob,target,0);
+			target.location().recoverRoomStats(); // attempt to handle followers
 		}
 		else
 			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> chant(s) for a moonbeam, but fail(s).");

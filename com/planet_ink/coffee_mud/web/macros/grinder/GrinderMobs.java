@@ -59,6 +59,33 @@ public class GrinderMobs
 		return "";
 	}
 	
+	public static String blessings(Diety E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		while(E.numBlessings()>0)
+		{
+			Ability A=E.fetchBlessing(0);
+			if(A!=null)
+				E.delBlessing(A);
+		}
+		if(httpReq.getRequestParameters().containsKey("BLESS1"))
+		{
+			int num=1;
+			String aff=(String)httpReq.getRequestParameters().get("BLESS"+num);
+			while(aff!=null)
+			{
+				if(aff.length()>0)
+				{
+					Ability B=CMClass.getAbility(aff);
+					if(B==null) return "Unknown Blessing '"+aff+"'.";
+					E.addBlessing(B);
+				}
+				num++;
+				aff=(String)httpReq.getRequestParameters().get("BLESS"+num);
+			}
+		}
+		return "";
+	}
+	
 	public static String editMob(ExternalHTTPRequests httpReq, Hashtable parms, Room R)
 	{
 		Hashtable reqs=httpReq.getRequestParameters();
@@ -107,7 +134,8 @@ public class GrinderMobs
 						  "SPEED","ATTACK","DAMAGE","ARMOR",
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ"};
+						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
+						  "ISDIETY","CLEREQ","CLERIT","WORREQ","WORRIT","BLESSINGS"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -215,6 +243,24 @@ public class GrinderMobs
 				if(M instanceof ShopKeeper)
 					((ShopKeeper)M).setPrejudiceFactors(old);
 				break;
+			case 29: // is diety
+				break;
+			case 30: // cleric requirements
+				if(M instanceof Diety)
+					((Diety)M).setClericRequirements(old);
+				break;
+			case 31: // cleric ritual
+				if(M instanceof Diety)
+					((Diety)M).setClericRitual(old);
+				break;
+			case 32: // worshipper requirements
+				if(M instanceof Diety)
+					((Diety)M).setWorshipRequirements(old);
+				break;
+			case 33: // worshipper ritual
+				if(M instanceof Diety)
+					((Diety)M).setWorshipRitual(old);
+				break;
 			}
 		}
 
@@ -228,6 +274,11 @@ public class GrinderMobs
 			if(error.length()>0) return error;
 			error=GrinderMobs.abilities(M,httpReq,parms);
 			if(error.length()>0) return error;
+			if(M instanceof Diety)
+			{
+				error=GrinderMobs.blessings((Diety)M,httpReq,parms);
+				if(error.length()>0) return error;
+			}
 			
 			if(httpReq.getRequestParameters().containsKey("ITEM1"))
 			{

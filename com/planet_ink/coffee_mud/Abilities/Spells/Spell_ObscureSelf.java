@@ -130,6 +130,8 @@ public class Spell_ObscureSelf extends Spell
 			return false;
 		}
 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
@@ -145,11 +147,11 @@ public class Spell_ObscureSelf extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> whisper(s) to <S-HIS-HERSELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<T-NAME> become(s) obscure!":"^S<S-NAME> whisper(s) to <S-HIS-HERSELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

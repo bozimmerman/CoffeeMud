@@ -1059,25 +1059,35 @@ public class StdMOB implements MOB
 				}
 				break;
 			case Affect.TYP_REBUKE:
-				if((affect.target()!=null)&&(!(affect.target() instanceof Diety)))
+				if((affect.target()==null)||(!(affect.target() instanceof Diety)))
 				{
-					if(!Sense.canBeHeardBy(this,affect.target()))
+					if(affect.target()!=null)
 					{
-						tell(affect.target().name()+" can't hear you!");
-						return false;
+						if(!Sense.canBeHeardBy(this,affect.target()))
+						{
+							tell(affect.target().name()+" can't hear you!");
+							return false;
+						}
+						else
+						if((!((affect.target() instanceof MOB)
+						&&(((MOB)affect.target()).getLeigeID().equals(name()))))
+						&&(!affect.target().name().equals(getLeigeID())))
+						{
+							tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
+							return false;
+						}
 					}
 					else
-					if((!((affect.target() instanceof MOB)&&(((MOB)affect.target()).getLeigeID().equals(name()))))
-					&&(!affect.target().name().equals(getLeigeID())))
+					if(getLeigeID().length()==0)
 					{
-						tell(affect.target().name()+" does not serve you, and you do not serve "+affect.target().name()+".");
+						tell("You aren't serving anyone!");
 						return false;
 					}
 				}
 				else
-				if(getLeigeID().length()==0)
+				if(getWorshipCharID().length()==0)
 				{
-					tell("You aren't serving anyone!");
+					tell("You aren't worshipping anyone!");
 					return false;
 				}
 				break;

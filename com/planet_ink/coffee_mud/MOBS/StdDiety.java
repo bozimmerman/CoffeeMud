@@ -115,8 +115,8 @@ public class StdDiety extends StdMOB implements Diety
 					String material="something";
 					int t=Util.s_int(DT.parm1);
 					if(((t&EnvResource.RESOURCE_MASK)==0)
-					&&((t<<8)<EnvResource.MATERIAL_MASK))
-						material=EnvResource.MATERIAL_DESCS[t<<8].toLowerCase();
+					&&((t>>8)<EnvResource.MATERIAL_MASK))
+						material=EnvResource.MATERIAL_DESCS[t>>8].toLowerCase();
 					else
 					if(((t&EnvResource.RESOURCE_MASK)>0)
 					&&((t&EnvResource.RESOURCE_MASK)<EnvResource.RESOURCE_DESCS.length))
@@ -129,8 +129,8 @@ public class StdDiety extends StdMOB implements Diety
 					String material="something";
 					int t=Util.s_int(DT.parm1);
 					if(((t&EnvResource.RESOURCE_MASK)==0)
-					&&((t<<8)<EnvResource.MATERIAL_MASK))
-						material=EnvResource.MATERIAL_DESCS[t<<8].toLowerCase();
+					&&((t>>8)<EnvResource.MATERIAL_MASK))
+						material=EnvResource.MATERIAL_DESCS[t>>8].toLowerCase();
 					else
 					if(((t&EnvResource.RESOURCE_MASK)>0)
 					&&((t&EnvResource.RESOURCE_MASK)<EnvResource.RESOURCE_DESCS.length))
@@ -157,22 +157,22 @@ public class StdDiety extends StdMOB implements Diety
 	
 	public String getClericRequirementsDesc()
 	{
-		return "The following may be clerics of "+name()+": "+ExternalPlay.zapperDesc(getClericRequirements())+".";
+		return "The following may be clerics of "+name()+": "+ExternalPlay.zapperDesc(getClericRequirements());
 	}
 	public String getClericTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+name()+" are bestowed to "+charStats().himher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericTriggers)+".";
+			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" clerics whenever the cleric does the following: "+getTriggerDesc(clericTriggers)+".";
 		return "";
 	}
 	public String getWorshipRequirementsDesc()
 	{
-		return "The following are acceptable worshipers of "+name()+": "+ExternalPlay.zapperDesc(getWorshipRequirements())+".";
+		return "The following are acceptable worshipers of "+name()+": "+ExternalPlay.zapperDesc(getWorshipRequirements());
 	}
 	public String getWorshipTriggerDesc()
 	{
 		if(numBlessings()>0)
-			return "The blessings of "+name()+" are bestowed to "+charStats().himher()+" clerics whenever the cleric does the following: "+getTriggerDesc(worshipTriggers)+".";
+			return "The blessings of "+name()+" are bestowed to "+charStats().hisher()+" worshippers whenever they do the following: "+getTriggerDesc(worshipTriggers)+".";
 		return "";
 	}
 	
@@ -312,14 +312,12 @@ public class StdDiety extends StdMOB implements Diety
 			Vector V=worshipTriggers;
 			if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 				V=clericTriggers;
-			boolean alreadyBlessed=alreadyBlessed(msg.source());
-			if((V.size()<3)||alreadyBlessed)
 			for(int v=0;v<V.size();v++)
 			{
 				boolean yup=false;
 				DietyTrigger DT=(DietyTrigger)V.elementAt(v);
 				if((msg.sourceMinor()==TRIG_WATCH[DT.triggerCode])
-					||(TRIG_WATCH[DT.triggerCode]==-999))
+				||(TRIG_WATCH[DT.triggerCode]==-999))
 				{
 					switch(DT.triggerCode)
 					{
@@ -428,7 +426,7 @@ public class StdDiety extends StdMOB implements Diety
 					if(checks!=null) checks[v]=yup;
 				}
 			}
-			if((recheck)&&(!alreadyBlessed))
+			if((recheck)&&(!alreadyBlessed(msg.source())))
 			{
 				boolean[] checks=(boolean[])trigParts.get(msg.source().name());
 				if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
@@ -545,7 +543,9 @@ public class StdDiety extends StdMOB implements Diety
 			int div1=trigger.indexOf("&");
 			int div2=trigger.indexOf("|");
 			int div=div1;
-			if((div2>=0)&&(div2<div)) div=div2;
+			
+			if((div2>=0)&&((div<0)||(div2<div)))
+				div=div2;
 			String trig=null;
 			if(div<0)
 			{
@@ -739,13 +739,14 @@ public class StdDiety extends StdMOB implements Diety
 					}
 					else
 					{ 
-						Log.errOut("StdDiety",name()+"- Illegal trigger: "+trig); 
+						Log.errOut("StdDiety",name()+"- Illegal trigger: '"+cmd+"','"+trig+"'"); 
 						break;
 					}
+					putHere.addElement(DT);
 				}
 				else
 				{
-					Log.errOut("StdDiety",name()+"- Illegal trigger: "+trig);
+					Log.errOut("StdDiety",name()+"- Illegal trigger (need more parameters): "+trig);
 					break;
 				}
 			}

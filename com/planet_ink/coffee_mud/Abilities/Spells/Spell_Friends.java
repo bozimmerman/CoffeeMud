@@ -48,6 +48,8 @@ public class Spell_Friends extends Spell
 			return false;
 
 
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 		// now see if it worked
 		boolean success=profficiencyCheck(0,auto);
 

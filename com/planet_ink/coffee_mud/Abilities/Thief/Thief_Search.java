@@ -34,20 +34,24 @@ public class Thief_Search extends ThiefSkill
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,"<S-NAME> examine(s) <S-HIS-HER> surroundings carefully.");
+		FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MASK_GENERAL:Affect.MSG_DELICATE_HANDS_ACT,Affect.MSG_OK_VISUAL,Affect.MSG_OK_VISUAL,auto?"<T-NAME> become(s) very observant.":"<S-NAME> examine(s) <S-HIS-HER> surroundings carefully.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,auto?"":"<S-NAME> look(s) around carefully, but become(s) distracted.");
 		else
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,0);
-			mob.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
-			mob.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
-			ExternalPlay.look(mob,null,false);
-			mob.recoverEnvStats();
+			beneficialAffect(mob,target,0);
+			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
+			ExternalPlay.look(target,null,false);
+			target.recoverEnvStats();
 		}
 		return success;
 	}

@@ -47,14 +47,17 @@ public class Spell_Infravision extends Spell
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> attain(s) glowing eyes!":"^S<S-NAME> invoke(s) glowing red eyes!^?");
+		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) glowing eyes!":"^S<S-NAME> invoke(s) glowing red eyes!^?");
 		if(mob.location().okAffect(msg))
 		{
 			successfulObservation=success;
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,0);
+			beneficialAffect(mob,target,0);
 		}
 
 		return success;

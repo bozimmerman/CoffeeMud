@@ -100,6 +100,8 @@ public class Prayer_ProtGood extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		Environmental target=mob;
+		if((auto)&&(givenTarget!=null)) target=givenTarget;
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -108,11 +110,11 @@ public class Prayer_ProtGood extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> become(s) protected from goodness.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from goodness.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> become(s) protected from goodness.":"^S<S-NAME> call(s) upon the protection of <S-HIS-HER> god from goodness.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

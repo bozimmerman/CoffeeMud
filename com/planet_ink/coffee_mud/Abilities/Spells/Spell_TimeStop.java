@@ -131,7 +131,6 @@ public class Spell_TimeStop extends Spell
 					}
 				}
 				beneficialAffect(mob,room,3);
-				//beneficialAffect(mob,mob,0);
 			}
 		}
 		else

@@ -46,7 +46,7 @@ public class Spell_ResistIndignities extends Spell
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> feel(s) well protected.":"^S<S-NAME> invoke(s) a dignified field of protection around <T-NAMESELF>.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) well protected.":"^S<S-NAME> invoke(s) a dignified field of protection around <T-NAMESELF>.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

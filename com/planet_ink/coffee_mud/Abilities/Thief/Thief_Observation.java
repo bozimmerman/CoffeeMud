@@ -35,16 +35,20 @@ public class Thief_Observation extends ThiefSkill
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,null,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_EYES),"<S-NAME> open(s) <S-HIS-HER> eyes and observe(s) <S-HIS-HER> surroundings carefully.");
+		FullMsg msg=new FullMsg(mob,target,this,auto?Affect.MSG_OK_ACTION:(Affect.MSG_DELICATE_HANDS_ACT|Affect.MASK_EYES),auto?"<T-NAME> become(s) observant.":"<S-NAME> open(s) <S-HIS-HER> eyes and observe(s) <S-HIS-HER> surroundings carefully.");
 		if(!success)
 			return beneficialVisualFizzle(mob,null,"<S-NAME> look(s) around carefully, but become(s) distracted.");
 		else
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,0);
+			beneficialAffect(mob,target,0);
 		}
 		return success;
 	}

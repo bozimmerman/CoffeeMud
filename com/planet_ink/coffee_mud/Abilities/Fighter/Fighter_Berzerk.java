@@ -68,7 +68,11 @@ public class Fighter_Berzerk extends StdAbility
 			return false;
 		}
 
-		if(!mob.isInCombat())
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
+		if((!auto)&&(!mob.isInCombat()))
 		{
 			mob.tell("You aren't in combat!");
 			return false;
@@ -80,14 +84,14 @@ public class Fighter_Berzerk extends StdAbility
 		boolean success=profficiencyCheck(0,auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) a wild look in <S-HIS-HER> eyes!");
+			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_QUIETMOVEMENT,"<S-NAME> get(s) a wild look in <S-HIS-HER> eyes!");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				hpAdjustment=(int)Math.round(Util.div(mob.maxState().getHitPoints(),5.0));
-				beneficialAffect(mob,mob,0);
-				mob.curState().setHitPoints(mob.curState().getHitPoints()+hpAdjustment);
-				mob.recoverMaxState();
+				hpAdjustment=(int)Math.round(Util.div(target.maxState().getHitPoints(),5.0));
+				beneficialAffect(mob,target,0);
+				target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
+				target.recoverMaxState();
 			}
 		}
 		else

@@ -52,15 +52,19 @@ public class Spell_Sonar extends Spell
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> gain(s) <S-HIS-HER> sonar capability!":"^S<S-NAME> incant(s) softly, and <S-HIS-HER> ears become capable of sonar!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<T-NAME> gain(s) sonar capability!":"^S<S-NAME> incant(s) softly, and <S-HIS-HER> ears become capable of sonar!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

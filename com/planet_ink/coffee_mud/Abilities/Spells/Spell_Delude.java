@@ -40,6 +40,9 @@ public class Spell_Delude extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 		boolean success=profficiencyCheck(0,auto);
 
 
@@ -49,7 +52,7 @@ public class Spell_Delude extends Spell
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) and meditate(s).^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"":"^S<S-NAME> incant(s) and meditate(s).^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -58,8 +61,8 @@ public class Spell_Delude extends Spell
 					int alignment = mob.getAlignment();
 					previousAlignment=alignment;
 
-					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> undergo(es) a change of attitude");
-					success=beneficialAffect(mob,mob,0);
+					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> undergo(es) a change of attitude");
+					success=beneficialAffect(mob,target,0);
 					if(success)
 					{
 						if(alignment < 350)

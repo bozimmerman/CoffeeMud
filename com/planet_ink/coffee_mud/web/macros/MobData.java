@@ -100,6 +100,68 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 	
+	public static StringBuffer blessings(Diety E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
+		StringBuffer str=new StringBuffer("");
+		if(parms.containsKey("BLESSINGS"))
+		{
+			Vector theclasses=new Vector();
+			if(httpReq.getRequestParameters().containsKey("BLESS1"))
+			{
+				int num=1;
+				String behav=(String)httpReq.getRequestParameters().get("BLESS"+num);
+				while(behav!=null)
+				{
+					if(behav.length()>0)
+						theclasses.addElement(behav);
+					num++;
+					behav=(String)httpReq.getRequestParameters().get("BLESS"+num);
+				}
+			}
+			else
+			for(int a=0;a<E.numBlessings();a++)
+			{
+				Ability Able=E.fetchBlessing(a);
+				if(Able!=null)
+					theclasses.addElement(CMClass.className(Able));
+			}
+			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			Vector sortMeA=new Vector();
+			for(int r=0;r<CMClass.abilities.size();r++)
+				sortMeA.addElement(CMClass.className(CMClass.abilities.elementAt(r)));
+			Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+			for(int i=0;i<theclasses.size();i++)
+			{
+				String theclass=(String)theclasses.elementAt(i);
+				str.append("<TR><TD WIDTH=100%>");
+				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=BLESS"+(i+1)+">");
+				str.append("<OPTION VALUE=\"\">Delete!");
+				for(int r=0;r<sortedA.length;r++)
+				{
+					String cnam=(String)sortedA[r];
+					str.append("<OPTION VALUE=\""+cnam+"\"");
+					if(theclass.equals(cnam))
+						str.append(" SELECTED");
+					str.append(">"+cnam);
+				}
+				str.append("</SELECT>");
+				str.append("</TD></TR>");
+			}
+			str.append("<TR><TD WIDTH=100%>");
+			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=BLESS"+(theclasses.size()+1)+">");
+			str.append("<OPTION SELECTED VALUE=\"\">Select a Blessing");
+			for(int r=0;r<sortedA.length;r++)
+			{
+				String cnam=(String)sortedA[r];
+				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+			}
+			str.append("</SELECT>");
+			str.append("</TD></TR>");
+			str.append("</TABLE>");
+		}
+		return str;
+	}
+	
 	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -333,7 +395,8 @@ public class MobData extends StdWebMacro
 						  "SPEED","ATTACK","DAMAGE","ARMOR",
 						  "ALIGNMENT","MONEY","ISRIDEABLE","RIDEABLETYPE",
 						  "MOBSHELD","ISSHOPKEEPER","SHOPKEEPERTYPE","ISGENERIC",
-						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ"};
+						  "ISBANKER","COININT","ITEMINT","BANKNAME","SHOPPREJ",
+						  "ISDIETY","CLEREQ","CLERIT","WORREQ","WORRIT"};
 		for(int o=0;o<okparms.length;o++)
 		if(parms.containsKey(okparms[o]))
 		{
@@ -542,9 +605,32 @@ public class MobData extends StdWebMacro
 					old=""+((Banker)M).bankChain();
 				str.append(old);
 				break;
-			case 28:
+			case 28: // prejudice factors
 				if((firstTime)&&(M instanceof ShopKeeper))
 					old=((ShopKeeper)M).prejudiceFactors();
+				str.append(old);
+				break;
+			case 29: // is diety
+				if(M instanceof Diety) return "true";
+				else return "false";
+			case 30: // cleric requirements
+				if((firstTime)&&(M instanceof Diety))
+					old=((Diety)M).getClericRequirements();
+				str.append(old);
+				break;
+			case 31: // cleric ritual
+				if((firstTime)&&(M instanceof Diety))
+					old=((Diety)M).getClericRitual();
+				str.append(old);
+				break;
+			case 32: // worship requirements
+				if((firstTime)&&(M instanceof Diety))
+					old=((Diety)M).getWorshipRequirements();
+				str.append(old);
+				break;
+			case 33: // worship ritual
+				if((firstTime)&&(M instanceof Diety))
+					old=((Diety)M).getWorshipRitual();
 				str.append(old);
 				break;
 			}
@@ -556,6 +642,8 @@ public class MobData extends StdWebMacro
 		str.append(MobData.senses(M,firstTime,httpReq,parms));
 		str.append(AreaData.affectsNBehaves(M,httpReq,parms));
 		str.append(MobData.abilities(M,httpReq,parms));
+		if(M instanceof Diety)
+			str.append(MobData.blessings((Diety)M,httpReq,parms));
 		if(M instanceof ShopKeeper)
 			str.append(MobData.shopkeeper((ShopKeeper)M,httpReq,parms));
 		

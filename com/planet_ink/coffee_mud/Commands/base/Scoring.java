@@ -290,6 +290,29 @@ public class Scoring
 			mob.session().colorOnlyPrintln(msg.toString());
 	}
 
+	public static void gods(MOB mob)
+	{
+		StringBuffer msg=new StringBuffer("\n\r^HThe known dieties:^? \n\r");
+		for(int d=0;d<CMMap.numDieties();d++)
+		{
+			Diety D=CMMap.getDiety(d);
+			msg.append("\n\r^z"+D.name()+"^.^?\n\r");
+			msg.append(D.description()+"\n\r");
+			msg.append(D.getWorshipRequirementsDesc()+"\n\r");
+			msg.append(D.getClericRequirementsDesc()+"\n\r");
+			if(D.numBlessings()>0)
+			{
+				msg.append("Blessings: ");
+				for(int b=0;b<D.numBlessings();b++)
+					msg.append(D.fetchBlessing(b).name()+" ");
+				msg.append("\n\r");
+				msg.append(D.getWorshipTriggerDesc()+"\n\r");
+				msg.append(D.getClericTriggerDesc()+"\n\r");
+			}
+		}
+		mob.tell(msg.toString());
+	}
+	
 	public static void skills(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");

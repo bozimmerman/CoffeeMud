@@ -48,6 +48,9 @@ public class Prayer_SenseInvisible extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		Environmental target=mob;
+		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -56,11 +59,11 @@ public class Prayer_SenseInvisible extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> attain(s) clear eyes.":"^S<S-NAME> pray(s) for divine revelation, and <S-HIS-HER> eyes become clear.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) clear eyes.":"^S<S-NAME> pray(s) for divine revelation, and <S-HIS-HER> eyes become clear.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

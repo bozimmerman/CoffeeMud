@@ -82,7 +82,7 @@ public class Skill_Convert extends StdAbility
 			}
 			Room dRoom=D.location();
 			if(dRoom==mob.location()) dRoom=null;
-			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAME> to the worship of "+D.name()+".");
+			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,auto?"<S-NAME> <S-IS-ARE> converted!":"<S-NAME> convert(s) <T-NAMESELF> to the worship of "+D.name()+".");
 			FullMsg msg2=new FullMsg(target,D,this,Affect.MSG_SERVE,null);
 			if((mob.location().okAffect(msg))
 			   &&(mob.location().okAffect(msg2))

@@ -94,43 +94,47 @@ public class Chant_LocatePlants extends Chant
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		String here=plantsHere(mob,mob.location());
+		String here=plantsHere(target,target.location());
 		if(here.length()>0)
 		{
-			mob.tell(here);
+			target.tell(here);
 			return true;
 		}
 		
 		boolean success=profficiencyCheck(0,auto);
 
 		Vector rooms=new Vector();
-		Vector localMap=mob.location().getArea().getMyMap();
+		Vector localMap=target.location().getArea().getMyMap();
 		for(int r=0;r<localMap.size();r++)
 			if(plantsHere(mob,(Room)localMap.elementAt(r)).length()>0) 
 				rooms.addElement((Room)localMap.elementAt(r));
 		
 		if(rooms.size()<=0)
 		for(int r=0;r<CMMap.numRooms();r++)
-			if(plantsHere(mob,(Room)CMMap.getRoom(r)).length()>0)
+			if(plantsHere(target,(Room)CMMap.getRoom(r)).length()>0)
 				rooms.addElement(CMMap.getRoom(r));
 		
 		if(rooms.size()>0)
-			theTrail=ExternalPlay.findBastardTheBestWay(mob.location(),rooms,false);
+			theTrail=ExternalPlay.findBastardTheBestWay(target.location(),rooms,false);
 		
 		if((success)&&(theTrail!=null))
 		{
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<S-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> begin(s) to sense plant life!":"^S<S-NAME> chant(s) for a route to plant life.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
 				Chant_LocatePlants newOne=(Chant_LocatePlants)this.copyOf();
-				if(mob.fetchAffect(newOne.ID())==null)
-					mob.addAffect(newOne);
-				mob.recoverEnvStats();
-				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
+				if(target.fetchAffect(newOne.ID())==null)
+					target.addAffect(newOne);
+				target.recoverEnvStats();
+				newOne.nextDirection=ExternalPlay.trackNextDirectionFromHere(newOne.theTrail,target.location(),false);
 			}
 		}
 		else

@@ -98,7 +98,7 @@ public class Spell_ComprehendLangs extends Spell
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<S-NAME> feel(s) more comprehrending.":"^S<S-NAME> invoke(s) the power of comprehension!^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> feel(s) more comprehrending.":"^S<S-NAME> invoke(s) the power of comprehension!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);

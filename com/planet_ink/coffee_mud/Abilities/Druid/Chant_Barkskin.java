@@ -48,6 +48,10 @@ public class Chant_Barkskin extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
+			target=(MOB)givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -57,12 +61,12 @@ public class Chant_Barkskin extends Chant
 			// affected MOB.  Then tell everyone else
 			// what happened.
 			invoker=mob;
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?");
+			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"<T-NAME> attain(s) bark-like skin!":"^S<S-NAME> chant(s) to <S-NAMESELF> and <S-HIS-HER> skin turns hard and brown!^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				success=beneficialAffect(mob,mob,0);
-				mob.location().recoverRoomStats();
+				success=beneficialAffect(mob,target,0);
+				target.location().recoverRoomStats();
 			}
 		}
 		else

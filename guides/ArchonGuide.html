@@ -1597,8 +1597,58 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
     <TD>This field is a list of the spells, skills, 
       prayers, blessings, or other Abilities which may be selectively granted by 
       the diety to his or her worshipers. All of the listed blessings are 
-      typically granted to Clerics of the diety. 
-</TD></TR></TABLE></STRONG><P>
+      typically granted to Clerics of the diety.</TD></TR>
+  <TR>
+    <TD><EM>Cleric Ritual</EM></TD>
+    <TD>For a cleric to receive the blessings of the diety, the cleric 
+    must perform a particular ritual consisting of one or more actions.
+    This field will list the tasks in the ritual which must be performed.
+    Each task is seperated by a "|" to mean that either of the tasks on
+    either side of the "|" is sufficient, or a "&" to mean that both of 
+    the tasks on either side of the "&" is required.  The tasks themselves
+    must be of one of the following forms:<BR>
+    <UL>
+	<LI>SAY [TEXT] - the text specified must be said by the player.  
+	For example: SAY "Allah is Great"
+	<LI>TIME [HOUR] - the other tasks must be performed at the 
+	specified hour.  For example: TIME 3
+	<LI>PUTTHING [THING NAME] [CONTAINER NAME] - an item of the type must 
+	be placed in the specified container.  For example: PUTTHING dagger pit
+	<LI>BURNTHING [THING NAME] - an item of the type given must be 
+	burnt or set afire.  This is typically done with the FIREBUILDING skill.
+	For example: BURNTHING the ceremonial log
+	<LI>EAT [FOOD NAME] - the specified item must be eaten.  For example: EAT holy pie.
+	<LI>DRINK [DRINK NAME] - the specified drink must be consumed.  For example: DRINK holy fountain
+	<LI>INROOM - the player must be in the specified room number.  For example: INROOM NewArea#123
+	<LI>RIDING - the player must be on the specified mount.  For example: RIDING holy altar
+	<LI>CAST - the player must cast the specied spell.  For example: CAST Prayer_Bless
+	<LI>EMOTE - the player must emote the following thing.  For example: EMOTE kneels before the throan
+	<LI>PUTVALUE  [MINIMUM VALUE] [CONTAINER NAME] - an item worth at least
+	the specified amount must be placed in the specified container.  
+	For example: PUTVALUE coins pit
+	<LI>PUTMATERIAL [MATERIAL TYPE] [CONTAINER NAME] - an item made of the
+	specified material must be placed in the specified container.  For instance:
+	PUTMATERIAL cotton pit
+	<LI>BURNMATERIAL [MATERIAL TYPE] - an item made of the
+	specified material must be burnt, such as using the FIREBUILDING skill.  
+	For instance: BURNMATERIAL balsa
+	<LI>BURNMATERIAL [MINIMUM VALUE] - an item worth at least the specified
+	amount must be burnt, such as using the FIREBUILDING skill.  
+	For instance: BURNVALUE "wooden statue"
+	<LI>SITTING 0 - the player must be sitting (the 0 is required!)
+	<LI>STANDING 0 - the player must be standing (the 0 is required!)
+	<LI>SLEEPING 0 - the player must be sleeping (the 0 is required!)
+    </UL>
+    </TD></TR>
+  <TR>
+    <TD><EM>Worshipper Ritual</EM></TD>
+    <TD>For a worshipper to receive one of the blessings of the diety, the 
+    player must perform a particular ritual consisting of one or more actions.
+    This field will list the tasks in the ritual which must be performed,
+    and uses the exact same format as the Cleric Ritual field above.
+    </TD></TR>
+
+</TABLE></STRONG><P>
 
 <STRONG><BR></P><BR>Modifying MOBs</STRONG>
 <P></P>

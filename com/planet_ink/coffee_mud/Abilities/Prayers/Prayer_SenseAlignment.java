@@ -10,7 +10,7 @@ public class Prayer_SenseAlignment extends Prayer
 	public String ID() { return "Prayer_SenseAlignment"; }
 	public String name(){ return "Sense Alignment";}
 	//public String displayText(){ return "(Sense Alignment)";}
-	public int quality(){ return OK_SELF;}
+	public int quality(){ return INDIFFERENT;}
 	public int holyQuality(){ return HOLY_NEUTRAL;}
 	public Environmental newInstance(){	return new Prayer_SenseAlignment();}
 

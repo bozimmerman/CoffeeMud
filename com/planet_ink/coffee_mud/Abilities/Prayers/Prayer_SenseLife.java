@@ -87,6 +87,9 @@ public class Prayer_SenseLife extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
+		Environmental target=mob;
+		if((auto)&&(givenTarget!=null)) target=givenTarget;
+		
 		boolean success=profficiencyCheck(0,auto);
 
 		if(success)
@@ -95,11 +98,11 @@ public class Prayer_SenseLife extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			FullMsg msg=new FullMsg(mob,null,this,affectType(auto),auto?"":"^S<S-NAME> listen(s) for a message from <S-HIS-HER> god.^?");
+			FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"<T-NAME> attain(s) life-like senses!":"^S<S-NAME> listen(s) for a message from <S-HIS-HER> god.^?");
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,0);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else

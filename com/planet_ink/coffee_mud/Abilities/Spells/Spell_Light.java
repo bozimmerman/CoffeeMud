@@ -48,13 +48,16 @@ public class Spell_Light extends Spell
 			return false;
 		}
 
+		MOB target=mob;
+		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+			target=(MOB)givenTarget;
 		boolean success=profficiencyCheck(0,auto);
 
-		FullMsg msg=new FullMsg(mob,mob.location(),this,affectType(auto),"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
+		FullMsg msg=new FullMsg(mob,target,this,affectType(auto),auto?"^S<S-NAME> attain(s) a light above <S-HIS-HER> head!":"^S<S-NAME> invoke(s) a white light above <S-HIS-HER> head!^?");
 		if(mob.location().okAffect(msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,0);
+			beneficialAffect(mob,target,0);
 			mob.location().recoverRoomStats(); // attempt to handle followers
 		}
 		else

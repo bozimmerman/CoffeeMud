@@ -464,8 +464,8 @@ public class SocialProcessor
 			if(mob.getWorshipCharID().length()>0)
 				target=(MOB)CMMap.getDiety(Util.combine(commands,1));
 			if((target==null)
-			&&((!Util.combine(commands,1).equalsIgnoreCase(mob.getLeigeID()))
-			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getWorshipCharID()))))
+			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getLeigeID()))
+			&&(!Util.combine(commands,1).equalsIgnoreCase(mob.getWorshipCharID())))
 			{
 				mob.tell("There's nobody here called '"+Util.combine(commands,1)+"' and you aren't serving '"+Util.combine(commands,1)+"'.");
 				return;
