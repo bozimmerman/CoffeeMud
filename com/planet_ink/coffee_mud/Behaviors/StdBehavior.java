@@ -93,6 +93,38 @@ public class StdBehavior implements Behavior
 		return true;
 	}
 
+	protected int getParmVal(String text, String key, int defaultValue)
+	{
+		text=text.toUpperCase();
+		key=key.toUpperCase();
+		int x=text.indexOf(key);
+		while(x>=0)
+		{
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='=')&&(!Character.isDigit(text.charAt(x))))
+					x++;
+				if((x<text.length())&&(text.charAt(x)=='='))
+				{
+					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						text=text.substring(x);
+						x=0;
+						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+							x++;
+						return Util.s_int(text.substring(0,x));
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return defaultValue;
+	}
+	
 	public boolean canImprove(Environmental E)
 	{
 		if((E==null)&&(canImproveCode()==0)) return true;

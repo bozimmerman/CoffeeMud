@@ -8,14 +8,22 @@ import java.util.*;
 public class VeryAggressive extends Aggressive
 {
 	public String ID(){return "VeryAggressive";}
+	protected int tickWait=0;
+	protected int tickDown=0;
 	public Behavior newInstance()
 	{
 		return new VeryAggressive();
 	}
 	
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		tickWait=getParmVal(newParms,"delay",0);
+		tickDown=tickWait;
+	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return !ExternalPlay.zapperCheck(getParms(),M);
+		return ExternalPlay.zapperCheck(getParms(),M);
 	}
 
 	public static void tickVeryAggressively(Environmental ticking, 
@@ -81,6 +89,10 @@ public class VeryAggressive extends Aggressive
 	public void tick(Environmental ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
-		tickVeryAggressively(ticking,tickID,this);
+		if((--tickDown)<0)
+		{
+			tickDown=tickWait;
+			tickVeryAggressively(ticking,tickID,this);
+		}
 	}
 }

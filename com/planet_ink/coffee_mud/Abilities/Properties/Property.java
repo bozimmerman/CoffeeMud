@@ -116,7 +116,7 @@ public class Property implements Ability, Cloneable
 			return this.newInstance();
 		}
 	}
-	public int getParmVal(String text, String key, int defaultValue)
+	protected int getParmVal(String text, String key, int defaultValue)
 	{
 		text=text.toUpperCase();
 		key=key.toUpperCase();
@@ -148,7 +148,7 @@ public class Property implements Ability, Cloneable
 		return defaultValue;
 	}
 	
-	public static int getVal(String text, String key)
+	protected static int getVal(String text, String key)
 	{
 		text=text.toUpperCase();
 		key=key.toUpperCase();
@@ -184,7 +184,7 @@ public class Property implements Ability, Cloneable
 		return 0;
 	}
 
-	public static String getStr(String text, String key)
+	protected static String getStr(String text, String key)
 	{
 		String oldText=text;
 		text=text.toUpperCase();
@@ -219,7 +219,7 @@ public class Property implements Ability, Cloneable
 		return "";
 	}
 
-	public String getParmStr(String text, String key, String defaultValue)
+	protected String getParmStr(String text, String key, String defaultValue)
 	{
 		text=text.toUpperCase();
 		key=key.toUpperCase();

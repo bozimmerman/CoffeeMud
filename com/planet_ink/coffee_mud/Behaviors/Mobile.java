@@ -91,13 +91,20 @@ public class Mobile extends ActiveTicker
 			if(move)
 			{
 				Ability A=mob.fetchAbility("Thief_Sneak");
-				if((A!=null)&&(Dice.rollPercentage()<50))
+				if(A!=null)
 				{
 					Vector V=new Vector();
 					V.add(Directions.getDirectionName(direction));
-					if(A.profficiency()<100)
+					if(A.profficiency()<50)
+					{
 						A.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+						Ability A2=mob.fetchAbility("Thief_Hide");
+						if(A2!=null)
+							A2.setProfficiency(Dice.roll(1,50,A.adjustedLevel(mob)*15));
+					}
+					int oldMana=mob.curState().getMana();
 					A.invoke(mob,V,null,false);
+					mob.curState().setMana(oldMana);
 				}
 				else
 					ExternalPlay.move(mob,direction,false,false);

@@ -9,15 +9,25 @@ import java.util.*;
 public class Aggressive extends StdBehavior
 {
 	public String ID(){return "Aggressive";}
+	protected int tickWait=0;
+	protected int tickDown=0;
+	
 	public Behavior newInstance()
 	{
 		return new Aggressive();
 	}
 	public boolean grantsAggressivenessTo(MOB M)
 	{
-		return !ExternalPlay.zapperCheck(getParms(),M);
+		return ExternalPlay.zapperCheck(getParms(),M);
 	}
 
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		tickWait=getParmVal(newParms,"delay",0);
+		tickDown=tickWait;
+	}
+	
 	public static boolean startFight(MOB monster, MOB mob, boolean fightMOBs)
 	{
 		if((mob!=null)
@@ -55,7 +65,7 @@ public class Aggressive extends StdBehavior
 			MOB mob=observer.location().fetchInhabitant(i);
 			if((mob!=null)
 			&&(mob!=observer)
-			&&(!ExternalPlay.zapperCheck(B.getParms(),mob)))
+			&&(ExternalPlay.zapperCheck(B.getParms(),mob)))
 			{
 				if(startFight(observer,mob,false))
 					return true;
@@ -79,6 +89,10 @@ public class Aggressive extends StdBehavior
 	{
 		super.tick(ticking,tickID);
 		if(tickID!=Host.MOB_TICK) return;
-		tickAggressively(ticking,tickID,this);
+		if((--tickDown)<0)
+		{
+			tickDown=tickWait;
+			tickAggressively(ticking,tickID,this);
+		}
 	}
 }
