@@ -260,6 +260,9 @@ public class Generic
 			text.append(XMLManager.convertXMLtoTag("MINR",((Weapon)E).minRange()));
 			text.append(XMLManager.convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
 		}
+		
+		if(E instanceof LandTitle)
+			text.append(XMLManager.convertXMLtoTag("LANDID",((LandTitle)E).landRoomID()));
 
 		if(E instanceof MOB)
 		{
@@ -835,6 +838,9 @@ public class Generic
 			((Rideable)E).setRideBasis(XMLManager.getIntFromPieces(buf,"RIDET"));
 			((Rideable)E).setMobCapacity(XMLManager.getIntFromPieces(buf,"RIDEC"));
 		}
+		
+		if(E instanceof LandTitle)
+			((LandTitle)E).setLandRoomID(XMLManager.getValFromPieces(buf,"LANDID"));
 		
 		if(E instanceof Food)
 			((Food)E).setNourishment(XMLManager.getIntFromPieces(buf,"CAPA2"));

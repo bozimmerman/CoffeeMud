@@ -5,14 +5,14 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Spell_CreateBeacon extends Spell
+public class Spell_Cogniportive extends Spell
 {
-	public String ID() { return "Spell_CreateBeacon"; }
-	public String name(){return "Create Beacon";}
+	public String ID() { return "Spell_Cogniportive"; }
+	public String name(){return "Cogniportive";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	public Environmental newInstance(){	return new Spell_CreateBeacon();}
-	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;}
+	public Environmental newInstance(){	return new Spell_Cogniportive();}
+	public int classificationCode(){return Ability.SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -27,7 +27,7 @@ public class Spell_CreateBeacon extends Spell
 
 		if(target.fetchAffect(this.ID())!=null)
 		{
-			mob.tell(target.name()+" is already a beacon!");
+			mob.tell(target.name()+" is already cogniportive!");
 			return false;
 		}
 

@@ -1486,13 +1486,16 @@ armor, LEATHER (or worse) armor, or NON-METAL armor.
 </FONT></P>
 <pre>
 	private static boolean abilitiesLoaded=false;
+	public boolean loaded(){return abilitiesLoaded;}
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	
 	public NormalGuy()
 	{
 		super();
 		maxStat[CharStats.CHARISMA]=10;
-		if(!abilitiesLoaded)
+		if(!loaded())
 		{
-			abilitiesLoaded=true;
+			setLoaded(true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",0,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",0,true);
@@ -1500,7 +1503,8 @@ armor, LEATHER (or worse) armor, or NON-METAL armor.
 		}
 	}
 </pre>
-<P align=left><FONT size=4>And now we come to our constructer!  The Constructer
+<P align=left><FONT size=4>And now, after a few methods to flag our construction,
+work, we come to our constructer!  The Constructer
 for every class has a couple of important parts.  The first is to define any special 
 maximums for the primary attributes.  This is done by setting the appropriate
 value in the maxStat[] array for the class.  By default, 18 is the maximum score

@@ -79,6 +79,8 @@ public class StdAbility implements Ability, Cloneable
 
 	public void startTickDown(Environmental affected, int tickTime)
 	{
+		borrowed=true; // makes it so that the affect does not save!
+		
 		if(invoker()!=null)
 			tickTime=invoker().charStats().getCurrentClass().classDurationModifier(invoker(),this,tickTime);
 		if(affected instanceof MOB)
@@ -551,6 +553,7 @@ public class StdAbility implements Ability, Cloneable
 	{
 		unInvoked=false;
 		canBeUninvoked=false;
+		borrowed=false;
 	}
 
 	public String accountForYourself(){return name();}
