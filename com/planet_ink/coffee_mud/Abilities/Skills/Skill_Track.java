@@ -171,7 +171,8 @@ public class Skill_Track extends StdAbility
 		Room thisRoom=mob.location();
 
 		Vector V=Sense.flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
+		for(int v=0;v<V.size();v++)	
+		    ((Ability)V.elementAt(v)).unInvoke();
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");
