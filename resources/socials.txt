@@ -111,7 +111,10 @@ mo	SHRUG <T-NAME>	You shrug in response to <T-HIS-HER> question.	<S-NAME> shrugs
 mo	COWER SELF	You are afraid of your own shadow!	<S-NAME> cowers in the corner afraid of <S-HIS-HER> own shadow		
 ww	SCREAM <T-NAME>	ARRRRRRRRRRGH!!!!!  Yes, it MUST have been <T-HIS-HER> fault!!!	<S-NAME> screams loudly at <T-NAMESELF>.  Better leave before <S-NAME> blames you, too!!!	<S-NAME> screams at you!  That's not nice!  *sniff*	Your lungs can't reach that far!
 oo	NUDGE	Nudge whom?			
-mo	GRIN	You grin evilly.	<S-NAME> grins evilly.		
+mo	EGRIN	You grin evilly.	<S-NAME> grins evilly.		
+mo	EGRIN <T-NAME>	You grin evilly at <T-NAME>.	<S-NAME> grins at <T-NAMESELF> evilly-- <T-HE-SHE> better watch out!		<S-NAME> grins at <T-NAMESELF> evilly-- <T-HE-SHE> better watch out!	
+mo	GRIN	You grin.	<S-NAME> grins.		
+mo	GRIN <T-NAME>	<S-NAME> grin at <T-NAMESELF>	<S-NAME> grins at <T-NAMESELF>.	<S-NAME> grins at you.
 wo	COMFORT	Do you feel uncomfortable?			
 ww	BABBLE	You babble endlessly.	<S-NAME> babbles endlessly, won't <S-HE-SHE> EVER shut up?		
 mo	WINK	Have you got something in your eye?	<S-NAME> winks suggestively.		

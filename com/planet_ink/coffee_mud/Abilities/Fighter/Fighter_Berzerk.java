@@ -54,7 +54,7 @@ public class Fighter_Berzerk extends StdAbility
 					mob.curState().setHitPoints(1);
 				else
 					mob.curState().adjHitPoints(-hpAdjustment,mob.maxState());
-				mob.tell("You fell calmer.");
+				mob.tell("You feel calmer.");
 				mob.recoverMaxState();
 			}
 		}

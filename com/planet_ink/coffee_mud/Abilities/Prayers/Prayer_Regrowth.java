@@ -77,7 +77,7 @@ public class Prayer_Regrowth extends Prayer
 					}
 					if(found) 
 					{
-						Amp.unamputate(target, Amp, LookingFor.toLowerCase());
+						Amp.unamputate(target, Amp, missLimb.toLowerCase());
 					}
 					target.recoverCharStats();
 					target.recoverEnvStats();

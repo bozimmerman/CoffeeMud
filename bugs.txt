@@ -7,6 +7,8 @@ When I Lost Concentration when trying to enchant, It still cost me exp
 born chars start with 66 stat points, made ones are 70
 there is no listing for genpipe in the archon manual
 I would like there to be support for the genpipe to be consumed when the tobacco burns out if there is a decay feature on it, or if it`s uses is set to 1 or something like that. (Cigars and cigarettes).
+Ban by e-mail address?
+
 
 SMTP Server
 put email forwarding
