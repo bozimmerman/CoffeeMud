@@ -9,7 +9,7 @@ public class Prayer_ProtPoison extends Prayer
 {
 	public String ID() { return "Prayer_ProtPoison"; }
 	public String name(){ return "Protection Poison";}
-	public String displayText(){ return "(Protection from Poison)";}
+	public String displayText(){ return "(Protection/Poison)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -9,7 +9,7 @@ public class Prayer_ProtParalyzation extends Prayer
 {
 	public String ID() { return "Prayer_ProtParalyzation"; }
 	public String name(){ return "Protection Paralyzation";}
-	public String displayText(){ return "(Protection from Paralyzation)";}
+	public String displayText(){ return "(Protection/Paralyzation)";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

@@ -11,7 +11,7 @@ public class Prayer_ProtectHealth extends Prayer
 	public String name(){ return "Protect Health";}
 	public int quality(){ return BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-	public String displayText(){ return "(Protection of Mind and Body)";}
+	public String displayText(){ return "(Protection of Health)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Prayer_ProtectHealth();}
