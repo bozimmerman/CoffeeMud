@@ -357,13 +357,27 @@ public class Socials
 		Social S=FetchSocial(SocialName+theRest,true);
 		if((S==null)&&(!exactOnly))
 		{
+			String backupSocialName=null;
 			for(Enumeration e=soc.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
 				if((key.startsWith(SocialName.toUpperCase()))&&(key.indexOf(" ")<0))
-				{	SocialName=key; break;}
+				{	
+					SocialName=key; 
+					break;
+				}
+				else
+				if(key.startsWith(SocialName.toUpperCase()))
+				{	
+					backupSocialName=key; 
+					break;
+				}
 			}
-			S=FetchSocial(SocialName+theRest,true);
+			if(SocialName==null) SocialName=backupSocialName;
+			if(SocialName==null) 
+				S=null;
+			else
+				S=FetchSocial(SocialName+theRest,true);
 		}
 		return S;
 	}

@@ -1,3 +1,6 @@
+combat precognition has no failed message.
+Anyways, turns out I need to select LAUGH SELF as a backup if LAUGH is not found.
+I have set the starting room in the ini file and it still does not adjust the players starting position (for new or old players) everyone goes to "New Room"
 ability to deposit a container and its contents.
 monetary tax rate on shopkeepers in controlled areas
 

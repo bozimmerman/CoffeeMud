@@ -221,9 +221,9 @@ public class UtiliThread extends Thread
 			try{Thread.sleep(2000);}catch(Exception e){}
 		}
 		
-		try{Thread.sleep(MudHost.TICK_TIME*(long)2);}catch(Exception e){}
+		try{Thread.sleep(MudHost.TICK_TIME*(long)2);}catch(Exception e){started=false;}
 		
-		while(true)
+		while(started)
 		{
 			try
 			{
@@ -250,7 +250,6 @@ public class UtiliThread extends Thread
 				if(shutDown)
 				{
 					shutDown=false;
-					started=false;
 					break;
 				}
 			}

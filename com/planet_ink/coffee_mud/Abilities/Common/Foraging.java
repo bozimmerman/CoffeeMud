@@ -104,7 +104,8 @@ public class Foraging extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			// herb/locale customisation for jeremy
-			if((found.material()==EnvResource.RESOURCE_HERBS)
+			if((found!=null)
+			&&(found.material()==EnvResource.RESOURCE_HERBS)
 			&&((found.Name().toUpperCase().endsWith(" HERBS"))
 			   ||(found.Name().equalsIgnoreCase("herbs"))))
 			{
