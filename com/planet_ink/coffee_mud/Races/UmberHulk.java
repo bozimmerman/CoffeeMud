@@ -14,7 +14,7 @@ public class UmberHulk extends StdRace
 	protected int heightVariance(){return 24;}
 	protected int lightestWeight(){return 800;}
 	protected int weightVariance(){return 200;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
 	public boolean playerSelectable(){return false;}
 	protected static Vector resources=new Vector();

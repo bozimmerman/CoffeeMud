@@ -67,10 +67,10 @@ public class CMMap
 		for (Iterator i=rooms(); i.hasNext();)
 		{
 			R = (Room)i.next();
-			if (R.ID().equalsIgnoreCase(calledThis)) break;
+			if (R.ID().equalsIgnoreCase(calledThis))
+				return R;
 		}
-
-		return R;
+		return null;
 	}
 	public static Iterator rooms() { 
 		return ((Vector)roomsList.clone()).iterator();
@@ -121,14 +121,13 @@ public class CMMap
 	public static Deity getDeity(String calledThis)
 	{
 		Deity D = null;
-
 		for (Iterator i=deities(); i.hasNext();)
 		{
 			D = (Deity)i.next();
-			if (D.name().equalsIgnoreCase(calledThis)) break;
+			if (D.name().equalsIgnoreCase(calledThis))
+				return D;
 		}
-
-		return D;
+		return null;
 	}
 	public static Iterator deities() { return deitiesList.iterator(); }
 	
@@ -142,10 +141,10 @@ public class CMMap
 		for (Iterator p=players(); p.hasNext();)
 		{
 			M = (MOB)p.next();
-			if (M.name().equalsIgnoreCase(calledThis)) break;
+			if (M.name().equalsIgnoreCase(calledThis)) 
+				return M;
 		}
-
-		return M;
+		return null;
 	}
 	public static Iterator players() { return ((Vector)playersList.clone()).iterator(); }
 	

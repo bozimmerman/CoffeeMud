@@ -14,7 +14,7 @@ public class LizardMan extends StdRace
 	protected int heightVariance(){return 3;}
 	protected int lightestWeight(){return 200;}
 	protected int weightVariance(){return 50;}
-	protected long forbiddenWornBits(){return Integer.MAX_VALUE-Item.ON_EYES;}
+	protected long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Lizard Man";}
 	
 	protected static Vector resources=new Vector();
@@ -22,9 +22,8 @@ public class LizardMan extends StdRace
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setStat(CharStats.STRENGTH,3);
-		affectableStats.setStat(CharStats.INTELLIGENCE,1);
-		affectableStats.setStat(CharStats.DEXTERITY,3);
+		affectableStats.setStat(CharStats.STRENGTH,9);
+		affectableStats.setStat(CharStats.INTELLIGENCE,4);
 	}
 	public String arriveStr()
 	{

@@ -725,6 +725,33 @@ public class Arrest extends StdBehavior
 								   getBit(nudity,BIT_SENTENCE),
 								   getBit(nudity,BIT_WARNMSG));
 				
+				String illegalRaces=(String)laws.get("TRESPASSERS");
+				String trespassing=(String)laws.get("TRESPASSING");
+				if((illegalRaces!=null)
+				&&(illegalRaces.length()>0)
+				&&(trespassing!=null)
+				&&(trespassing.length()>0))
+				{
+					Vector V=Util.parse(illegalRaces);
+					String myRace=affect.source().charStats().getMyRace().racialCategory();
+					for(int v=0;v<V.size();v++)
+					{
+						if(myRace.equalsIgnoreCase((String)V.elementAt(v)))
+						{
+							fillOutWarrant(affect.source(),
+										   myArea,
+										   null,
+										   getBit(trespassing,BIT_CRIMELOCS),
+										   getBit(trespassing,BIT_CRIMEFLAGS),
+										   getBit(trespassing,BIT_CRIMENAME),
+										   getBit(trespassing,BIT_SENTENCE),
+										   getBit(trespassing,BIT_WARNMSG));
+							break;
+						}
+					}
+				}
+				   
+				
 				String armed=(String)laws.get("ARMED");
 				Item w=null;
 				if((armed!=null)
