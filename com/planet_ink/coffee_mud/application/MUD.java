@@ -232,9 +232,9 @@ public class MUD extends Thread implements Host
 		}
 		catch(Throwable t)
 		{
-			if (servsock == null && serverOK)
+			if ((servsock == null) && (serverOK))
 			{
-				if((t!=null)&&(t instanceof Exception))
+				if((t!=null)&&(t instanceof Exception)&&((t.getMessage()==null)||(t.getMessage().indexOf("closed")<0)))
 					Log.errOut("MUD",((Exception)t));
 			}
 

@@ -303,9 +303,15 @@ public class Spell_Meld extends Spell
 				if(melded!=null)
 				{
 					for(int a=0;a<itemOne.numAffects();a++)
-						melded.addAffect(itemOne.fetchAffect(a));
+						if(melded.fetchAffect(itemOne.fetchAffect(a).ID())==null)
+							melded.addAffect(itemOne.fetchAffect(a));
 					for(int a=0;a<itemTwo.numAffects();a++)
-						melded.addAffect(itemTwo.fetchAffect(a));
+						if(melded.fetchAffect(itemTwo.fetchAffect(a).ID())==null)
+							melded.addAffect(itemTwo.fetchAffect(a));
+					for(int a=0;a<itemOne.numBehaviors();a++)
+						melded.addBehavior(itemOne.fetchBehavior(a));
+					for(int a=0;a<itemTwo.numBehaviors();a++)
+						melded.addBehavior(itemTwo.fetchBehavior(a));
 					melded.recoverEnvStats();
 				}
 				itemOne.destroyThis();

@@ -62,6 +62,9 @@ public class Movement
 		else
 		if(!enterMsg.target().okAffect(enterMsg))
 			return false;
+		else
+		if(!mob.okAffect(enterMsg))
+			return false;
 
 		mob.curState().expendEnergy(mob,mob.maxState(),true);
 		if(!mob.curState().adjMovement(-thisRoom.pointsPerMove(),mob.maxState()))
