@@ -134,16 +134,21 @@ public class ItemData extends StdWebMacro
 				case 1: // classes
 					{
 						if(firstTime) old=CMClass.className(I);
-						Vector sortMe=new Vector();
-						for(Enumeration i=CMClass.items();i.hasMoreElements();)
-							sortMe.addElement(CMClass.className(i.nextElement()));
-						for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-							sortMe.addElement(CMClass.className(i.nextElement()));
-						for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-							sortMe.addElement(CMClass.className(i.nextElement()));
-						for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
-							sortMe.addElement(CMClass.className(i.nextElement()));
-						Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2");
+						if(sorted==null)
+						{
+							Vector sortMe=new Vector();
+							for(Enumeration i=CMClass.items();i.hasMoreElements();)
+								sortMe.addElement(CMClass.className(i.nextElement()));
+							for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
+								sortMe.addElement(CMClass.className(i.nextElement()));
+							for(Enumeration i=CMClass.armor();i.hasMoreElements();)
+								sortMe.addElement(CMClass.className(i.nextElement()));
+							for(Enumeration i=CMClass.miscMagic();i.hasMoreElements();)
+								sortMe.addElement(CMClass.className(i.nextElement()));
+							sorted=(Object[])(new TreeSet(sortMe)).toArray();
+							Resources.submitResource("MUDGRINDER-ITEMS2",sorted);
+						}
 						for(int r=0;r<sorted.length;r++)
 						{
 							String cnam=(String)sorted[r];

@@ -45,6 +45,7 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
+			Object[] sortedB=null;
 			Vector sortMeB=new Vector();
 			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 			{
@@ -52,7 +53,7 @@ public class AreaData extends StdWebMacro
 				if(B.canImprove(E))
 					sortMeB.addElement(CMClass.className(B));
 			}
-			Object[] sortedB=(Object[])(new TreeSet(sortMeB)).toArray();
+			sortedB=(Object[])(new TreeSet(sortMeB)).toArray();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -60,14 +61,7 @@ public class AreaData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditBehavior(this);\" NAME=BEHAV"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(int r=0;r<sortedB.length;r++)
-				{
-					String cnam=(String)sortedB[r];
-					str.append("<OPTION VALUE=\""+cnam+"\"");
-					if(theclass.equals(cnam))
-						str.append(" SELECTED");
-					str.append(">"+cnam);
-				}
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
 				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
@@ -126,16 +120,7 @@ public class AreaData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-				{
-					Ability A=(Ability)a.nextElement();
-					if(!A.canAffect(E)) continue;
-					String cnam=A.ID();
-					str.append("<OPTION VALUE=\""+cnam+"\"");
-					if(theclass.equals(cnam))
-						str.append(" SELECTED");
-					str.append(">"+cnam);
-				}
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
 				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
@@ -229,10 +214,15 @@ public class AreaData extends StdWebMacro
 					String className=httpReq.getRequestParameter("CLASS");
 					if((className==null)||(className.length()==0))
 						className=CMClass.className(A);
-					Vector sortMeA=new Vector();
-					for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
-						sortMeA.addElement(CMClass.className(a.nextElement()));
-					Object[] sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
+					if(sortedA==null)
+					{
+						Vector sortMeA=new Vector();
+						for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
+							sortMeA.addElement(CMClass.className(a.nextElement()));
+						sortedA=(Object[])(new TreeSet(sortMeA)).toArray();
+						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
+					}
 					for(int r=0;r<sortedA.length;r++)
 					{
 						String cnam=(String)sortedA[r];

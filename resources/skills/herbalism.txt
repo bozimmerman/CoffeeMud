@@ -1,23 +1,32 @@
-Chant_PredictWeather	1	CARROTS	HERBS	
-Chant_HardenSkin	1	PINE	HERBS	
-Chant_LocatePlants	2	GREENS	HERBS	
-Chant_SensePoison	2	LIQUOR	HERBS	
-Chant_SenseLife	3	HEMP	Mustard$	
-Chant_LocateAnimals	4	FUR	Damiana$	
-Chant_Farsight	5	CARROTS	Cassia$	
-Chant_VenomWard	8	SAND	Myrrh$	
-Chant_Root	8	BALSA	Cloves$	
-Chant_WaterWalking	9	Yerba Mate$		
-Chant_Poison	11	LIQUOR	Poppy$	
-Chant_Treemind	12	REDWOOD	Anise$	
-Chant_BreatheWater	12	PEARL	Valerian$	
-Chant_LightningWard	13	MUSHROOMS	Marjoram$	Damiana$
-Chant_ColdWard	14	BARLEY	Angelica$	Marjoram$
-Chant_Thorns	14	CACTUS	Mint$	Angelica$
+Chant_PredictWeather	1	CARROTS	HERBS		
+Chant_HardenSkin	1	PINE	HERBS		
+Chant_LocatePlants	2	GREENS	HERBS		
+Chant_SensePoison	2	LIQUOR	HERBS		
+Chant_SenseLife	3	HEMP	HERBS		
+Chant_LocateAnimals	4	FUR	Damiana$		
+Chant_WindColor	5	CARROTS	Cassia$		
+Chant_VenomWard	8	SAND	Myrrh$		
+Chant_Root	8	BALSA	Cloves$		
+Chant_FurCoat	8	FUR	Mustard$		
+Chant_WaterWalking	9	Yerba Mate$			
+Chant_EnhanceBody	10	DATES	Peppermint$		
+Chant_CheetahBurst	11	FISH	Rosemary$	Mustard$	Chamomile$
+Chant_Treemind	12	Anise$			
+Chant_BreatheWater	12	PEARL	Valerian$		
+Chant_LightningWard	13	MUSHROOMS	Marjoram$	Damiana$	
+Chant_BullStrength	13	BEEF	Damiana$	Lemon Grass$	
+Chant_ColdWard	14	BARLEY	Angelica$	Marjoram$	
+Chant_Thorns	14	CACTUS	Mint$	Angelica$	
+Chant_Hawkeye	15	CARROTS	Gentian$		
+Chant_SongWard	16	MUTTON	Sarsaparilla$	Cloves$	Peppermint$
 Chant_FireWard	16	LAMP OIL	Lemon Grass$	Anise$	
 Chant_GasWard	18	OLIVES	Thyme$	Mustard$	
-Chant_Hibernation	18	POTATOES	Gentian$	Rosemary$	
+Chant_Hibernation	18	BERRIES	Gentian$	Rosemary$	
 Chant_Chlorophyll	18	SEAWEED	Cloves$	Chamomile$	
-Chant_NeutralizePoison	22	SAND	Peppermint$	Lemon Grass$	
-Chant_Treemorph	22	OAK	Elder$	Myrrh$	
+Chant_Bloodhound	19	POULTRY	Mint$	Mustard$	
+Chant_Shapelessness	21	MILK	Cloves$	Anise$	
+Chant_SpellWard	21	GRAPES	Angelica$	Thyme$	Yerba Mate$
+Chant_NeutralizePoison	22	SAND	Peppermint$		
 Chant_Barkskin	23	HICKORY	Sage$	Sarsaparilla$	Mustard$
+Chant_UnicornsHealth	24	CORN	Lemon Grass$	Mint$	Peppermint$
+Chant_Dragonsight	25	CARROTS	Thyme$	Marjoram$	Sarsaparilla$

@@ -117,9 +117,9 @@ public class Herbalism extends CommonSkill
 							if(s.endsWith("$")) s=s.substring(0,s.length()-1);
 							buf.append(s+" ");
 						}
+						buf.append("\n\r");
 					}
 				}
-				buf.append("\n\r");
 			}
 			commonTell(mob,buf.toString());
 			return true;

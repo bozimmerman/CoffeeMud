@@ -281,10 +281,15 @@ public class RoomData extends StdWebMacro
 			String className=httpReq.getRequestParameter("CLASSES");
 			if((className==null)||(className.length()==0))
 				className=CMClass.className(R);
-			Vector sortMe=new Vector();
-			for(Enumeration l=CMClass.locales();l.hasMoreElements();)
-				sortMe.addElement(CMClass.className(l.nextElement()));
-			Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
+			Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-LOCALES");
+			if(sorted==null)
+			{
+				Vector sortMe=new Vector();
+				for(Enumeration l=CMClass.locales();l.hasMoreElements();)
+					sortMe.addElement(CMClass.className(l.nextElement()));
+				sorted=(Object[])(new TreeSet(sortMe)).toArray();
+				Resources.submitResource("MUDGRINDER-LOCALES",sorted);
+			}
 			for(int r=0;r<sorted.length;r++)
 			{
 				String cnam=(String)sorted[r];
@@ -472,28 +477,33 @@ public class RoomData extends StdWebMacro
 				Item I=(Item)itemlist.elementAt(i);
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
-			Vector sortMe=new Vector();
-			for(Enumeration i=CMClass.items();i.hasMoreElements();)
+			Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMLIST");
+			if(sorted==null)
 			{
-				Item I=(Item)i.nextElement();
-				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+				Vector sortMe=new Vector();
+				for(Enumeration i=CMClass.items();i.hasMoreElements();)
+				{
+					Item I=(Item)i.nextElement();
+					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+				}
+				for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
+				{
+					Item I=(Item)i.nextElement();
+					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+				}
+				for(Enumeration i=CMClass.armor();i.hasMoreElements();)
+				{
+					Item I=(Item)i.nextElement();
+					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+				}
+				for(Enumeration i=CMClass.items();i.hasMoreElements();)
+				{
+					Item I=(Item)i.nextElement();
+					if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
+				}
+				sorted=(Object[])(new TreeSet(sortMe)).toArray();
+				Resources.submitResource("MUDGRINDER-ITEMLIST",sorted);
 			}
-			for(Enumeration i=CMClass.weapons();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
-			}
-			for(Enumeration i=CMClass.armor();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
-			}
-			for(Enumeration i=CMClass.items();i.hasMoreElements();)
-			{
-				Item I=(Item)i.nextElement();
-				if(!I.isGeneric())	sortMe.addElement(CMClass.className(I));
-			}
-			Object[] sorted=(Object[])(new TreeSet(sortMe)).toArray();
 			for(int i=0;i<sorted.length;i++)
 				str.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
 			str.append("</SELECT>");
