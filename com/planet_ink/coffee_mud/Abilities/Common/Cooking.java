@@ -81,7 +81,7 @@ public class Cooking extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected static synchronized Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("COOKING RECIPES");
 		if(V==null)
@@ -336,6 +336,10 @@ public class Cooking extends CommonSkill
 		fire=null;
 		finalRecipe=null;
 		finalAmount=0;
+		finalDish=null;
+		finalDishName=null;
+		burnt=false;
+		oldContents=null;
 		Vector allRecipes=loadRecipes();
 		if(Util.combine(commands,0).equalsIgnoreCase("list"))
 		{

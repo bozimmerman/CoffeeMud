@@ -83,16 +83,16 @@ public class CommonSkill extends StdAbility
 			{
 				MOB mob=(MOB)affected;
 				if(aborted)
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) "+verb);
+					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) "+verb+".");
 				else
-					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> done "+verb);
+					mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> <S-IS-ARE> done "+verb+".");
 
 			}
 		}
 		super.unInvoke();
 	}
 
-	protected static Vector loadList(StringBuffer str)
+	protected Vector loadList(StringBuffer str)
 	{
 		Vector V=new Vector();
 		if(str==null) return V;

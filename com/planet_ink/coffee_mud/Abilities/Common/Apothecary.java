@@ -20,7 +20,7 @@ public class Apothecary extends Cooking
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 
 	
-	protected synchronized static Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("APOTHECARY RECIPES");
 		if(V==null)

@@ -25,7 +25,7 @@ public class Distilling extends Cooking
 		{myMapped=true; CMAble.addCharAbilityMapping("All",10,ID(),false);}
 	}
 	
-	protected synchronized static Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("DISTILLING RECIPES");
 		if(V==null)

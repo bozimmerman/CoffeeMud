@@ -38,7 +38,7 @@ public class Fletching extends CommonSkill
 	}
 	public Environmental newInstance(){	return new Fletching();	}
 
-	protected static synchronized Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("FLECTHING RECIPES");
 		if(V==null)

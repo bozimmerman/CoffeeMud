@@ -39,7 +39,7 @@ public class LeatherWorking extends CommonSkill
 	}
 	public Environmental newInstance(){	return new LeatherWorking();}
 
-	protected static synchronized Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("LEATHERWORK RECIPES");
 		if(V==null)

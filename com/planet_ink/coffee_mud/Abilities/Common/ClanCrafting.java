@@ -41,7 +41,7 @@ public class ClanCrafting extends CommonSkill
 	}
 	public Environmental newInstance(){	return new ClanCrafting(); }
 
-	protected static synchronized Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("CLANCRAFTING RECIPES");
 		if(V==null)

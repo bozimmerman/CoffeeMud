@@ -50,7 +50,7 @@ public class Wainwrighting extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected static synchronized Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("WAINWRIGHT RECIPES");
 		if(V==null)

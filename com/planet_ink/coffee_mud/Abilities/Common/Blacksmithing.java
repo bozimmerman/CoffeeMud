@@ -54,7 +54,7 @@ public class Blacksmithing extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected static synchronized Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("BLACKSMITHING RECIPES");
 		if(V==null)

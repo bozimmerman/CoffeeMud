@@ -54,7 +54,7 @@ public class GlassBlowing extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected static synchronized Vector loadRecipes()
+	protected Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("GLASS BLOWING RECIPES");
 		if(V==null)
