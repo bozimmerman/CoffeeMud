@@ -167,7 +167,7 @@ public class StdAbility implements Ability, Cloneable
 		if((targetName.length()==0)&&(quality()!=Ability.MALICIOUS))
 			target=mob;
 		else
-		if(targetName.length()>0)
+		if((targetName.length()>0)&&(mob.location()!=null))
 		{
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
@@ -222,6 +222,7 @@ public class StdAbility implements Ability, Cloneable
 		if((targetName.length()==0)&&(mob.isInCombat())&&(quality()==Ability.MALICIOUS)&&(mob.getVictim()!=null))
 			target=mob.getVictim();
 		else
+		if(mob.location()!=null)
 		{
 			target=mob.location().fetchFromRoomFavorMOBs(null,targetName, wornReqCode);
 			if(target==null)

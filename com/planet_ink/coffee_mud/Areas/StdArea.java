@@ -150,15 +150,25 @@ public class StdArea implements Area
 	public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
 	public int getTechLevel(){return techLevel;}
 	public void setTechLevel(int level){techLevel=level;}
+	
+	public boolean hasASky(Room room)
+	{
+		if((room==null)
+		||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+		||((room.domainType()&Room.INDOORS)>0))
+			return false;
+		return true;
+	}
+	
+	
 	public int weatherType(Room room)
 	{
-		if((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS))
-			return Area.WEATHER_CLEAR;
+		if(!hasASky(room)) return Area.WEATHER_CLEAR;
 		return currentWeather;
 	}
 	public String weatherDescription(Room room)
 	{
-		if((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS))
+		if(!hasASky(room))
 			return "You can't tell much about the weather from here.";
 		return getWeatherDescription();
 	}
@@ -176,7 +186,7 @@ public class StdArea implements Area
 	public boolean canSeeTheMoon(Room room)
 	{
 		if(((timeCode!=Area.TIME_NIGHT)&&(timeCode!=Area.TIME_DUSK))
-		||((room.domainType()&Room.INDOORS)>0))
+		||(!hasASky(room)))
 			return false;
 		switch(weatherType(room))
 		{
@@ -197,8 +207,7 @@ public class StdArea implements Area
 	public boolean canSeeTheSun(Room room)
 	{
 		if(((timeCode!=Area.TIME_DAY)&&(timeCode!=Area.TIME_DAWN))
-		||((room.domainType()&Room.INDOORS)>0))
-			return false;
+		   ||(!hasASky(room)))
 		switch(weatherType(room))
 		{
 		case Area.WEATHER_BLIZZARD:
@@ -224,8 +233,9 @@ public class StdArea implements Area
 		timeDesc.append("\n\rIt is the "+getDayOfMonth()+numAppendage(getDayOfMonth()));
 		timeDesc.append(" day of the "+getMonth()+numAppendage(getMonth()));
 		timeDesc.append(" month.  It is "+(Area.SEASON_DESCS[getSeasonCode()]).toLowerCase()+".");
-		if(Sense.canSee(mob))
-		if((timeCode==Area.TIME_NIGHT)&&((room.domainType()&Room.INDOORS)==0))
+		if((Sense.canSee(mob))
+		&&(timeCode==Area.TIME_NIGHT)
+		&&(hasASky(room)))
 		{
 			switch(weatherType(room))
 			{
@@ -690,15 +700,15 @@ public class StdArea implements Area
 				for(Enumeration r=getMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if((R.domainType()&Room.INDOORS)==0)
-					for(int i=0;i<R.numInhabitants();i++)
-					{
-						MOB mob=R.fetchInhabitant(i);
-						if((mob!=null)
-						&&(!mob.isMonster())
-						&&(Sense.canSee(mob)||(currentWeather!=oldWeather)))
-							mob.tell(say);
-					}
+					if(hasASky(R))
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							MOB mob=R.fetchInhabitant(i);
+							if((mob!=null)
+							&&(!mob.isMonster())
+							&&(Sense.canSee(mob)||(currentWeather!=oldWeather)))
+								mob.tell(say);
+						}
 				}
 			}
 		}
@@ -749,15 +759,15 @@ public class StdArea implements Area
 					for(Enumeration r=getMap();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if((R.domainType()&Room.INDOORS)==0)
-						for(int i=0;i<R.numInhabitants();i++)
-						{
-							MOB mob=R.fetchInhabitant(i);
-							if((mob!=null)
-							&&(!mob.isMonster())
-							&&(Sense.aliveAwakeMobile(mob,true)))
-								mob.tell(getWeatherDescription());
-						}
+						if(hasASky(R))
+							for(int i=0;i<R.numInhabitants();i++)
+							{
+								MOB mob=R.fetchInhabitant(i);
+								if((mob!=null)
+								&&(!mob.isMonster())
+								&&(Sense.aliveAwakeMobile(mob,true)))
+									mob.tell(getWeatherDescription());
+							}
 					}
 					break;
 				}
@@ -1060,7 +1070,7 @@ public class StdArea implements Area
 			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition()
 			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
-		if((affected instanceof Room)&&((((Room)affected).domainType()&Room.INDOORS)==0))
+		if((affected instanceof Room)&&(hasASky((Room)affected)))
 		{
 			if((weatherType((Room)affected)==Area.WEATHER_BLIZZARD)
 			   ||(weatherType((Room)affected)==Area.WEATHER_DUSTSTORM)
@@ -1090,7 +1100,7 @@ public class StdArea implements Area
 					MOB mob=R.fetchInhabitant(m);
 					if(!mob.isMonster())
 					{
-						if(((R.domainType()&Room.INDOORS)==0)
+						if(hasASky(R)
 						&&(!Sense.isSleeping(mob))
 						&&(Sense.canSee(mob)))
 						{
@@ -1507,14 +1517,12 @@ public class StdArea implements Area
 
 	public int nextWeatherType(Room room)
 	{
-		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
-			return Area.WEATHER_CLEAR;
+		if(!hasASky(room)) return Area.WEATHER_CLEAR;
 		return nextWeather;
 	}
 	public String nextWeatherDescription(Room room)
 	{
-		if(((room!=null)&&(room.domainType()&Room.INDOORS)==(Room.INDOORS)))
-			return "You can't tell much about the weather from here.";
+		if(!hasASky(room)) return "You can't tell much about the weather from here.";
 		return getNextWeatherDescription();
 	}
 	public String getNextWeatherDescription()
