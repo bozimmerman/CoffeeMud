@@ -72,7 +72,7 @@ public class StdPotion extends StdDrink implements Potion
 		while(del>0)
 		{
 			String thisOne=names.substring(0,del);
-			if((thisOne.length()>0)&&(!thisOne.equals(";")))
+			if((thisOne.length()>0)&&(!thisOne.equals(";"))&&(!thisOne.equals("DRUNK")))
 			{
 				Ability A=(Ability)CMClass.getAbility(thisOne);
 				if(A!=null)
@@ -84,7 +84,7 @@ public class StdPotion extends StdDrink implements Potion
 			names=names.substring(del+1);
 			del=names.indexOf(";");
 		}
-		if((names.length()>0)&&(!names.equals(";")))
+		if((names.length()>0)&&(!names.equals(";"))&&(!names.equals("DRUNK")))
 		{
 			Ability A=(Ability)CMClass.getAbility(names);
 			if(A!=null)

@@ -98,7 +98,7 @@ public class StdWand extends StdItem implements Wand
 					else
 					{
 						A=(Ability)A.newInstance();
-						if((usesRemaining()>0)&&(me.useTheWand(A,mob)))
+						if((me.usesRemaining()>0)&&(me.useTheWand(A,mob)))
 						{
 							Vector V=new Vector();
 							if(target!=null)

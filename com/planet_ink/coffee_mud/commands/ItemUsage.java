@@ -198,12 +198,19 @@ public class ItemUsage
 					mob.tell("You aren't carrying that.");
 				return;
 			}
-
-			if(doneSomething)
+			else
+			if(last==dropThis)
+			{
+				addendumStr="."+(++addendum);
+				continue;
+			}
+			else
+			if((doneSomething)&&(!(dropThis instanceof Item)))
 			   return;
 
-			if((last==dropThis)||(!drop(mob,dropThis)))
+			if(!drop(mob,dropThis))
 				addendumStr="."+(++addendum);
+
 			last=dropThis;
 			doneSomething=true;
 		}while(allFlag);

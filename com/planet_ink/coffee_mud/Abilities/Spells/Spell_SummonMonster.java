@@ -51,9 +51,9 @@ public class Spell_SummonMonster extends Spell
 			FullMsg msg=new FullMsg(mob,null,this,affectType,auto?"":"<S-NAME> chant(s) and summon(s) help from the Java Plain.");
 			if(mob.location().okAffect(msg))
 			{
+				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, mob.envStats().level());
 				target.setFollowing(mob);
-				mob.location().send(mob,msg);
 			}
 		}
 		else

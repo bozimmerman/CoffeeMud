@@ -42,7 +42,7 @@ public class Song_Rage extends Song
 		if(affected==invoker) return;
 		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(Util.div(affectableStats.damage(),2.0)));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(int)Math.round(Util.div(affectableStats.attackAdjustment(),6.0)));
-		affectableStats.setArmor(affectableStats.armor()+(int)Math.round(Util.div(affectableStats.armor(),6.0)));
+		affectableStats.setArmor(affectableStats.armor()+20);
 	}
 
 

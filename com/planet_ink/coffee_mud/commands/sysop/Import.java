@@ -2373,7 +2373,7 @@ public class Import
 				}
 				Ability restrictor=CMClass.getAbility("Prop_RestrictSpells");
 				if(Util.isSet(codeBits,18))
-					restrictor.setMiscText(restrictor.text()+" Spell_Summon Spell_SummonMonster Spell_Charm Spell_Friends ");
+					restrictor.setMiscText(restrictor.text()+" Spell_Summon Spell_SummonMonster Spell_Charm Song_Friendship ");
 
 				if(Util.isSet(codeBits,19))
 					returnAnError(mob,R.ID()+" is a player-killing area, but CoffeeMud doesn't care.");

@@ -48,7 +48,7 @@ public class Fighter_Berzerk extends StdAbility
 		{
 			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(Util.div(affectableStats.damage(),4.0)));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(Util.div(affectableStats.attackAdjustment(),4.0)));
-			affectableStats.setArmor(affectableStats.armor()+(int)Math.round(Util.div(affectableStats.armor(),2.0)));
+			affectableStats.setArmor(affectableStats.armor()+20);
 		}
 	}
 

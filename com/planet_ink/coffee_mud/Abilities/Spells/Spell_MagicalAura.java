@@ -78,6 +78,7 @@ public class Spell_MagicalAura extends Spell
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,0);
+			target.recoverEnvStats();
 		}
 		else
 			beneficialWordsFizzle(mob,target,"<S-NAME> attempt(s) to invoke a magical aura, but fail(s).");

@@ -118,7 +118,7 @@ public class Spell_ObscureSelf extends Spell
 				if(x>=0)
 				{
 					somethingsChanged=true;
-					othersMessage=othersMessage.substring(0,x)+"his or herr"+othersMessage.substring(x+("<S-HIS-HER>").length());
+					othersMessage=othersMessage.substring(0,x)+"his or her"+othersMessage.substring(x+("<S-HIS-HER>").length());
 				}
 			}
 			if((!affect.amITarget(mob))&&(targetMessage!=null))

@@ -486,7 +486,7 @@ public class CommandProcessor
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
 		String thisTag=helpFile.getProperty(helpStr);
-		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<20))
+		while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<25))
 		{
 			String thisOtherTag=helpFile.getProperty(thisTag);
 			if((thisOtherTag!=null)&&(thisOtherTag.equals(thisTag)))

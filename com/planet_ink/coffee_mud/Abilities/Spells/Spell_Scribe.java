@@ -107,6 +107,8 @@ public class Spell_Scribe extends Spell
 					scroll.setScrollText(scrollThis.ID());
 				else
 					scroll.setScrollText(scroll.getScrollText()+";"+scrollThis.ID());
+				if((scroll.usesRemaining()==Integer.MAX_VALUE)||(scroll.usesRemaining()<0))
+					scroll.setUsesRemaining(0);
 				scroll.setUsesRemaining(scroll.usesRemaining()+1);
 			}
 

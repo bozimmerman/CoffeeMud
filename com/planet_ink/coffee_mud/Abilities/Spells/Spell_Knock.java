@@ -69,9 +69,9 @@ public class Spell_Knock extends Spell
 				if((A instanceof Spell_WizardLock)&&(A.invoker()!=null)&&(A.invoker().envStats().level()<mob.envStats().level()+3))
 				{
 					A.unInvoke();
+					mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"A spell around "+openThis.name()+" seems to fade.");
 					break;
 				}
-				mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"A spell aroud "+openThis.name()+" seems to fade.");
 			}
 
 			FullMsg msg=new FullMsg(mob,openThis,null,affectType,"<S-NAME> point(s) at <T-NAMESELF>");

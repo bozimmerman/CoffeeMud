@@ -427,6 +427,7 @@ public class StdMOB implements MOB
 	public void setVictim(MOB mob)
 	{
 		if(victim==mob) return;
+		if(mob==this) return;
 		victim=mob;
 		recoverEnvStats();
 		recoverCharStats();
@@ -740,11 +741,13 @@ public class StdMOB implements MOB
 				&&(!Util.bset(affect.sourceMajor(),Affect.ACT_GENERAL)))
 				{
 					mob.tell("You like yourself too much.");
+					if(victim==this) victim=null;
 					return false;
 				}
 
 				if((!this.isMonster())
 				&&(!affect.source().isMonster())
+				&&(affect.source()!=this)
 				&&(affect.source().envStats().level()>(this.envStats().level()-26)))
 				{
 					mob.tell("Player killing is highly discouraged.");

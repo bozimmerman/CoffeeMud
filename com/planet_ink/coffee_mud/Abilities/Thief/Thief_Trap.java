@@ -37,11 +37,11 @@ public class Thief_Trap extends ThiefSkill
 	{
 		String whatTounlock=Util.combine(commands,0);
 		Environmental unlockThis=null;
-		int dirCode=Directions.getDirectionCode(whatTounlock);
+		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		if(dirCode>=0)
 			unlockThis=mob.location().exits()[dirCode];
 		if(unlockThis==null)
-			unlockThis=getTarget(mob,commands,givenTarget);
+			unlockThis=this.getTarget(mob,mob.location(),givenTarget,commands);
 		if(unlockThis==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto))

@@ -58,17 +58,17 @@ public class Spell_Grease extends Spell
 
 		MOB mob=(MOB)affected;
 
-		if(affect.amITarget(mob))
+		if(affect.amISource(mob))
 		{
-			switch(affect.targetMinor())
+			switch(affect.sourceMinor())
 			{
 			case Affect.TYP_LEAVE:
 			case Affect.TYP_ENTER:
+			case Affect.TYP_WEAPONATTACK:
 			case Affect.TYP_FLEE:
 				if(invoker()!=null)
 				{
-					int pctDodge=mob.charStats().getDexterity();
-					if(Dice.rollPercentage()<pctDodge)
+					if(Dice.rollPercentage()>(mob.charStats().getDexterity()*4))
 					{
                         int greaseEffect = (int) Math.round(Math.random()*3);
                         switch(greaseEffect)
@@ -80,7 +80,7 @@ public class Spell_Grease extends Spell
 						        return false;
                             case FUMBLE_WEAPON:
                                 weapon = (Item) mob.fetchWieldedItem();
-								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*4)))
+								if((weapon!=null)&&(Dice.rollPercentage()>(mob.charStats().getDexterity()*5)))
                                 {
 									msg=new FullMsg(mob,weapon,null,Affect.MSG_DROP,"<S-NAME> can't hold onto <S-HIS-HER> weapon since it's covered with grease.");
 									if(mob.location().okAffect(msg))
