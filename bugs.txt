@@ -1,7 +1,6 @@
 make sure import cmare handles rooms with containers in containers with items ok
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 A young player had a follower, who had the skill kick and a decent amount of movement.  She turned off autoassist, then ordered the follower to kick a mob.  She then could order the mob to kick as often as she could type it, completely bypassing the fight delay system.
-Players reported that crafted canoes, furniture, and pipes can be withdrawn repeatedly and they're still in their bank account
 Re-conncting.  Anytime they reconnect for any reason (like link death), their followers are no longer following them, esp pets they bought or hirelings they had.  The latter is fine, but the former is a big problem.  Players with carts and horses find that their horses no longer will take their orders.
 A sengir Scholar was killed by one touch of my flameshield. It just said that it warmed him, but he died
 amputation does not affect wear position
@@ -9,4 +8,6 @@ a modification to the charm spell to allow the names of players as parameters wo
 packaging skill now
 book of laws can be crafted
 Helix wanted help on protection from good
+IN archon command to do delayed commands (in 5 ticks at hassan smile) (in 5 minutes shutdown noprompt)
+add noprompt shutdown
 

@@ -56,7 +56,7 @@ public class GenCigar extends StdSmokable
 	public String[] getStatCodes(){return Generic.GENITEMCODES;}
 	public boolean sameAs(Environmental E)
 	{
-		if(!(E instanceof GenItem)) return false;
+		if(!(E instanceof GenCigar)) return false;
 		for(int i=0;i<getStatCodes().length;i++)
 			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
