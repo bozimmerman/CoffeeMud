@@ -257,7 +257,7 @@ public class StdCharClass implements CharClass, Cloneable
 		}
 		if((homage!=null)&&(mob.getLeigeID().length()>0)&&(amount>2))
 		{
-			MOB sire=CMMap.getPlayer(mob.getLeigeID());
+			MOB sire=CMMap.getLoadPlayer(mob.getLeigeID());
 			if(sire!=null)
 			{
 				int sireShare=(int)Math.round(Util.div(amount,10.0));
@@ -266,6 +266,8 @@ public class StdCharClass implements CharClass, Cloneable
 				if(sire.charStats()!=null)
 					ExternalPlay.postExperience(sire,null," from "+mob.name(),sireShare,quiet);
 			}
+			else
+				mob.setLeigeID("");
 		}
 		if((mob.getClanID().length()>0)&&(amount>2))
 		{
@@ -477,6 +479,30 @@ public class StdCharClass implements CharClass, Cloneable
 		if((mob.isMonster())||(mob.soulMate()!=null)) return;
 		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
 		mob.setExperience(mob.getExperience()-amount);
+        if((mob.getLeigeID().length()>0)&&(amount>2))
+        {
+            MOB sire=CMMap.getLoadPlayer(mob.getLeigeID());
+            if(sire!=null)
+            {
+                int sireShare=(int)Math.round(Util.div(amount,10.0));
+                amount-=sireShare;
+                if(sire.charStats()!=null)
+                    sire.charStats().getCurrentClass().loseExperience(sire,sireShare);
+                sire.tell("^N^!You lose ^H"+sireShare+"^N^! experience points from "+mob.Name()+".^N");
+            }
+			else
+				mob.setLeigeID("");
+        }
+        if((mob.getClanID().length()>0)&&(amount>2))
+        {
+            Clan C=Clans.getClan(mob.getClanID());
+            if((C!=null)&&(C.getTaxes()>0.0))
+            {
+                int clanshare=(int)Math.round(Util.mul(amount,C.getTaxes()));
+                if(clanshare>0)
+                    C.adjExp(clanshare*-1);
+            }
+        }
 		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
 			unLevel(mob);
 	}
