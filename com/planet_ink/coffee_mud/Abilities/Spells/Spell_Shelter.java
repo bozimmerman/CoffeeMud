@@ -36,7 +36,7 @@ public class Spell_Shelter extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_EVOCATION;
+		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
 	}
 
 	public void unInvoke()

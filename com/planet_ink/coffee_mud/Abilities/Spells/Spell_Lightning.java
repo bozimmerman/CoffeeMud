@@ -37,7 +37,7 @@ public class Spell_Lightning extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_EVOCATION;
+		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

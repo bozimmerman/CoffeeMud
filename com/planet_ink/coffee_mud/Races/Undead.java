@@ -48,6 +48,30 @@ public class Undead extends StdRace
 			affect.tagModified(true);
 		}
 		else
+		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_PARALYZE))
+		{
+			String tool=null;
+			if(affect.tool()!=null)
+			{
+			    if(affect.tool() instanceof Ability)
+					tool=((Ability)affect.tool()).name();
+			}
+			affect.addTrailerMsg(new FullMsg(affect.source(),myChar,Affect.MSG_OK_VISUAL,"<T-NAME> seems(s) completely unaffected by the "+((tool==null)?"paralysis attack":tool)+" from <S-NAME>."));
+			affect.tagModified(true);
+		}
+		else
+		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_POISON))
+		{
+			String tool=null;
+			if(affect.tool()!=null)
+			{
+			    if(affect.tool() instanceof Ability)
+					tool=((Ability)affect.tool()).name();
+			}
+			affect.addTrailerMsg(new FullMsg(affect.source(),myChar,Affect.MSG_OK_VISUAL,"<T-NAME> seems(s) completely unaffected by the "+((tool==null)?"poisonous attack":tool)+" from <S-NAME>."));
+			affect.tagModified(true);
+		}
+		else
 		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_UNDEAD))
 		{
 			String tool=null;

@@ -38,7 +38,7 @@ public class Spell_FleshStone extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ALTERATION;
+		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
 	}
 
 	public boolean okAffect(Affect affect)

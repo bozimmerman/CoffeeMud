@@ -34,7 +34,7 @@ public class Spell_WaterBreathing extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ABJURATION;
+		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
 	}
 
 	public void unInvoke()

@@ -24,6 +24,8 @@ Two-handed fighting
 
 mend spell!
 
+ranger skills: find water, hunt (finds a huntable animal)
+
 target commmand to switch among targets fighting you
 
 Multi-Room Item Transporter.  Have a TeleportingContainer that, whenever anything is inside it, it 

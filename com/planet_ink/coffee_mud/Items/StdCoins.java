@@ -15,6 +15,7 @@ public class StdCoins extends StdItem implements Coins
 		myLocation=null;
 		description="Looks like someone left some gold sitting around.";
 		myUses=Integer.MAX_VALUE;
+		material=Item.METAL;
 		myWornCode=0;
 		miscText="";
 		baseEnvStats.setWeight(0);

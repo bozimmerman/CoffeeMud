@@ -29,7 +29,7 @@ public class Spell_EnchantWeapon extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ENCHANTMENT;
+		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

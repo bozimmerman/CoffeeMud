@@ -1687,7 +1687,7 @@ public class Import
 					 }
 					 ((Food)I).setNourishment(20*val1);
 					 break;
-			case 20: I=CMClass.getStdItem("GenCoins");
+			case 20: I=CMClass.getStdItem("StdCoins");
 					 I.baseEnvStats().setAbility(val1);
 					 break;
 			case 21: I=CMClass.getStdItem("GenItem"); break;

@@ -76,15 +76,25 @@ public class MoneyChanger extends StdBehavior
 				while(value>=100)
 				{
 					value-=100;
-					Coins msliver=(Coins)CMClass.getItem("MithrilNote");
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.CLOTH);
+					msliver.setName("a mithril note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 100 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
 					msliver.setLocation(changeBag);
+					msliver.text();
+					msliver.recoverEnvStats();
 				}
 				while(value>=10)
 				{
 					value-=10;
-					Coins msliver=(Coins)CMClass.getItem("PlatinumNote");
+					Coins msliver=(Coins)CMClass.getItem("GenCoins");
+					msliver.setMaterial(Item.CLOTH);
+					msliver.setName("a platinum note");
+					msliver.setDisplayText("a small crumpled note lies on the ground");
+					msliver.setDescription("This note convertable to 10 gold coins.");
 					totalWeight++;
 					observer.addInventory(msliver);
 					msliver.setLocation(changeBag);

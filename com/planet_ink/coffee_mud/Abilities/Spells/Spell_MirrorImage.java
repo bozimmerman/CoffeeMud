@@ -38,7 +38,7 @@ public class Spell_MirrorImage extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ILLUSION;
+		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
 	}
 
 	public boolean okAffect(Affect affect)

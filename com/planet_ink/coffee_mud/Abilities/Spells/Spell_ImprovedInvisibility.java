@@ -34,7 +34,7 @@ public class Spell_ImprovedInvisibility extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ILLUSION;
+		return Ability.SPELL|Ability.DOMAIN_ILLUSION;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -576,6 +576,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			else
 			if((product instanceof Scroll)&&(((Scroll)product).usesRemaining()<1))
 				val=0;
+			else
+			if((product instanceof Armor)&&(((Item)product).usesRemaining()<100))
+				val=(int)Math.round(Util.mul(val,Util.div(((Item)product).usesRemaining(),100)));
 		}
 		else
 		if(product instanceof Ability)
@@ -591,11 +594,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(mob==null) return val;
 
 		double halfPrice=Math.round(Util.div(val,2.0));
+		double quarterPrice=Math.round(Util.div(val,4.0));
 		
-		// gets the shopkeeper a deal on junk.  Pays 50% at 0 charisma, and value at 30
-		int buyPrice=(int)Math.round(halfPrice+Util.mul(halfPrice,Util.div(mob.charStats().getCharisma(),30.0)));
+		// gets the shopkeeper a deal on junk.  Pays 25% at 0 charisma, and 50% at 30
+		int buyPrice=(int)Math.round(quarterPrice+Util.mul(quarterPrice,Util.div(mob.charStats().getCharisma(),30.0)));
 		
-		// the markup is 100% at 0 charisma, and nothing at 30
+		// the price is 200% at 0 charisma, and 100% at 30
 		int sellPrice=(int)Math.round(val+val-Util.mul(val,Util.div(mob.charStats().getCharisma(),30.0)));
 		
 		if(buyPrice>sellPrice)buyPrice=sellPrice;

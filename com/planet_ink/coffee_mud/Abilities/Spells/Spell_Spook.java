@@ -35,7 +35,7 @@ public class Spell_Spook extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_CHARM;
+		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
 
 

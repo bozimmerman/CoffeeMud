@@ -28,7 +28,7 @@ public class Spell_Gate extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_EVOCATION;
+		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -41,7 +41,7 @@ public class Spell_MagicMouth extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ALTERATION;
+		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
 	}
 
 	public void affect(Affect affect)

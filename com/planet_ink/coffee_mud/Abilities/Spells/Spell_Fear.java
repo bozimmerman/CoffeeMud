@@ -34,7 +34,7 @@ public class Spell_Fear extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_CHARM;
+		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

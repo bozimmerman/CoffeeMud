@@ -29,7 +29,7 @@ public class Spell_Disenchant extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ENCHANTMENT;
+		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -53,6 +53,8 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				return Affect.TYP_ACID;
 			case GOLD_RING_RUBY:
 				return Affect.TYP_MIND;
+			case BRONZE_RING:
+				return Affect.TYP_PARALYZE;
 			case GOLD_RING_OPAL:
 				return Affect.TYP_CAST_SPELL;
 			case GOLD_RING_TOPAZ:
@@ -115,6 +117,10 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				break;
 			case GOLD_RING_DIAMOND:
 				secretIdentity="The ring of the Eternal Blaze. (Protection from Fire)";
+				baseGoldValue+=1000;
+				break;
+			case BRONZE_RING:
+				secretIdentity="The ring of the Bronze Shield. (Protection from Paralysis)";
 				baseGoldValue+=1000;
 				break;
 			case GOLD_RING:

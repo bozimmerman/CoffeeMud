@@ -34,7 +34,7 @@ public class Spell_Advancement extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ENCHANTMENT;
+		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

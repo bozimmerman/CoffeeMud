@@ -27,6 +27,10 @@ public class Spell_IdentifyObject extends Spell
 	{
 		return new Spell_IdentifyObject();
 	}
+	public int classificationCode()
+	{
+		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -34,7 +34,7 @@ public class Spell_Knock extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ALTERATION;
+		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

@@ -35,7 +35,7 @@ public class Spell_Deafness extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ALTERATION;
+		return Ability.SPELL|Ability.DOMAIN_TRANSMUTATION;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

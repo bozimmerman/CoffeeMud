@@ -136,6 +136,8 @@ public interface Affect
 	public static final int TYP_OK_VISUAL=54;
 	public static final int TYP_DRINK=55;
 	public static final int TYP_HANDS=56;
+	public static final int TYP_PARALYZE=57;
+	public static final int TYP_WAND_USE=58;
 
 	// helpful message groupings
 	public static final int MSK_CAST_VERBAL=ACT_SOUND|ACT_MOUTH|MASK_MAGIC;

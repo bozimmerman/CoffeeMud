@@ -33,7 +33,7 @@ public class Spell_Darkness extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ALTERATION;
+		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 	public void unInvoke()

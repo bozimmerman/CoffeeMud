@@ -1226,6 +1226,9 @@ public class StdMOB implements MOB
 					case Affect.TYP_MIND:
 						chanceToFail+=(charStats().getWisdom()+charStats().getIntelligence()+charStats().getCharisma());
 						break;
+					case Affect.TYP_PARALYZE:
+						chanceToFail+=(charStats().getConstitution()+charStats().getStrength());
+						break;
 					case Affect.TYP_POISON:
 						chanceToFail+=(charStats().getConstitution()*2);
 						break;

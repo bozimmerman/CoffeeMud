@@ -36,7 +36,7 @@ public class Spell_MassSleep extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_CHARM;
+		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
 
 	public boolean okAffect(Affect affect)

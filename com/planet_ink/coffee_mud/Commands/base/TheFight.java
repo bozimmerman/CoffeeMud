@@ -926,6 +926,9 @@ public class TheFight
 		case Affect.TYP_CAST_SPELL:
 			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart));
 			break;
+		case Affect.TYP_PARALYZE:
+			//affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart));
+			break;
 		}
 		affect.tagModified(true);
 	}

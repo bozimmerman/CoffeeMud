@@ -62,6 +62,7 @@ public class Skill_Resistance extends StdAbility
 				case Affect.TYP_FIRE:
 				case Affect.TYP_ELECTRIC:
 				case Affect.TYP_MIND:
+				case Affect.TYP_PARALYZE:
 				case Affect.TYP_CAST_SPELL:
 				case Affect.TYP_JUSTICE:
 				case Affect.TYP_COLD:

@@ -38,7 +38,7 @@ public class Spell_Grease extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_EVOCATION;
+		return Ability.SPELL|Ability.DOMAIN_CONJURATION;
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

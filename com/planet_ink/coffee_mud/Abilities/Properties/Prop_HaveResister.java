@@ -153,6 +153,10 @@ public class Prop_HaveResister extends Property
 				if(Prop_HaveResister.checkProtection(me,"poison"))
 					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
 				break;
+			case Affect.TYP_PARALYZE:
+				if(Prop_HaveResister.checkProtection(me,"paralyze"))
+					ExternalPlay.resistanceMsgs(affect,affect.source(),mob);
+				break;
 			default:
 				break;
 			}

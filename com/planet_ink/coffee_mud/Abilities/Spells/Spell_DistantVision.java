@@ -29,7 +29,7 @@ public class Spell_DistantVision extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_DIVINATION;
+		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

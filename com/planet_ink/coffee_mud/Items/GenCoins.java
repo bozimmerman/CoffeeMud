@@ -13,6 +13,7 @@ public class GenCoins extends GenItem implements Coins
 		name="a pile of gold coins";
 		displayText="some gold coins sit here.";
 		myLocation=null;
+		material=Item.METAL;
 		description="Looks like someone left some gold sitting around.";
 		isReadable=false;
 	}
@@ -21,26 +22,9 @@ public class GenCoins extends GenItem implements Coins
 	{
 		return new GenCoins();
 	}
-	public String name()
-	{
-		if(envStats().ability()==1)
-			return "a gold coin";
-		else
-		if(envStats().ability()==2)
-			return "two gold coins";
-		else
-			return "a pile of "+envStats().ability()+" gold coins";
-	}
 	
 	public int numberOfCoins(){return envStats().ability();}
 	public void setNumberOfCoins(int number){baseEnvStats().setAbility(number); recoverEnvStats();}
-	public String displayText()
-	{
-		if(envStats().ability()==1)
-			return name()+" sits here.";
-		else
-			return name()+" sit here.";
-	}
 	
 	public boolean isGeneric(){return true;}
 	public void recoverEnvStats()

@@ -67,10 +67,12 @@ public class Prayer_MassParalyze extends Prayer
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				FullMsg msg=new FullMsg(mob,target,this,affectType|Affect.MASK_MALICIOUS,auto?"":"<S-NAME> invoke(s) an unholy paralysis upon <T-NAMESELF>.");
-				if((target!=mob)&&(mob.location().okAffect(msg)))
+				FullMsg msg2=new FullMsg(mob,target,this,Affect.MASK_MALICIOUS|Affect.TYP_PARALYZE,null);
+				if((target!=mob)&&(mob.location().okAffect(msg))&&(mob.location().okAffect(msg2)))
 				{
 					mob.location().send(mob,msg);
-					if(!msg.wasModified())
+					mob.location().send(mob,msg2);
+					if((!msg.wasModified())&&(!msg2.wasModified()))
 					{
 						success=maliciousAffect(mob,target,7,-1);
 						mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> can't move!");

@@ -7,6 +7,7 @@ import java.util.*;
 
 public class Spell_FloatingDisc extends Spell
 {
+	boolean wasntMine=false;
 	public Spell_FloatingDisc()
 	{
 		super();
@@ -29,7 +30,7 @@ public class Spell_FloatingDisc extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ILLUSION;
+		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 	public void unInvoke()
@@ -47,9 +48,13 @@ public class Spell_FloatingDisc extends Spell
 
 		if(item.amWearingAt(Item.FLOATING_NEARBY))
 		{
-			mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back into <S-HIS-HER> hands.");
+			mob.location().show(mob,item,Affect.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME> now floats back "+((wasntMine)?"down to the ground":"into <S-HIS-HER> hands."));
 			item.remove();
 		}
+		if(wasntMine)
+			ExternalPlay.drop(mob,item);
+		wasntMine=false;
+		
 		item.recoverEnvStats();
 		mob.recoverMaxState();
 		mob.recoverCharStats();
@@ -61,12 +66,13 @@ public class Spell_FloatingDisc extends Spell
 	{
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands);
 		if(target==null) return false;
-
-		if(!mob.isMine(target))
+		if(!(target instanceof Item))
 		{
-			mob.tell("You don't have that.");
+			mob.tell("You cannot float "+target.name()+"!");
 			return false;
 		}
+			
+
 		if(mob.amWearingSomethingHere(Item.FLOATING_NEARBY))
 		{
 			mob.tell("You are already carrying something on a floating disc.");
@@ -80,6 +86,22 @@ public class Spell_FloatingDisc extends Spell
 
 		if(success)
 		{
+			wasntMine=false;
+			if(!mob.isMine(target))
+			{
+				int oldweight=target.envStats().weight();
+				target.envStats().setWeight(0);
+				wasntMine=true;
+				if(target.ID().equals("StdCoins"))
+					mob.addInventory((Item)target);
+				else
+				if(!ExternalPlay.get(mob,null,(Item)target,true))
+				{
+					target.envStats().setWeight(oldweight);
+					return false;
+				}
+				target.envStats().setWeight(oldweight);
+			}
 			FullMsg msg=new FullMsg(mob,target,this,affectType,auto?"<T-NAME> begin(s) to float around.":"<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.");
 			if(mob.location().okAffect(msg))
 			{

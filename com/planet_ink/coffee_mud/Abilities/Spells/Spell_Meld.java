@@ -34,7 +34,7 @@ public class Spell_Meld extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ALTERATION;
+		return Ability.SPELL|Ability.DOMAIN_ALTERATION;
 	}
 
 	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)

@@ -34,7 +34,7 @@ public class Spell_ResistAcid extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_ABJURATION;
+		return Ability.SPELL|Ability.DOMAIN_ABJURATION;
 	}
 
 

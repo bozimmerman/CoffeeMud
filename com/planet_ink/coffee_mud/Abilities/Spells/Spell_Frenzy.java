@@ -36,7 +36,7 @@ public class Spell_Frenzy extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_CHARM;
+		return Ability.SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -21,6 +21,7 @@ public class Ring_Ornamental extends Ring
 	public final static int GOLD_RING_PEARL				= 10;
 	public final static int GOLD_RING_EMERALD			= 11;
 	public final static int STEEL_RING					= 12;
+	public final static int BRONZE_RING					= 13;
 
 	public Ring_Ornamental()
 	{
@@ -28,7 +29,7 @@ public class Ring_Ornamental extends Ring
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 
 		Random randomizer = new Random(System.currentTimeMillis());
-		int ringType = Math.abs(randomizer.nextInt() % 11);
+		int ringType = Dice.roll(1,14,-1);
 
 		this.envStats.setLevel(ringType);
 		setItemDescription(this.envStats.level());
@@ -115,6 +116,11 @@ public class Ring_Ornamental extends Ring
 				description="It is a fancy gold ring with an emerald inset.";
 				baseGoldValue=100;
 				break;
+			case BRONZE_RING:
+				name="a bronze ring";
+				displayText="a bronze ring is on the ground.";
+				description="It is a simple broze ring.";
+				baseGoldValue=2;
 			default:
 				name="a metal ring";
 				displayText="a simple steel ring is on the ground.";

@@ -35,7 +35,7 @@ public class Spell_Earthquake extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_EVOCATION;
+		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -32,7 +32,7 @@ public class Spell_ReadMagic extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_DIVINATION;
+		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
 	}
 
 

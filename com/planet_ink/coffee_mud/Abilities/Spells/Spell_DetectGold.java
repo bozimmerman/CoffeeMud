@@ -34,7 +34,7 @@ public class Spell_DetectGold extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_DIVINATION;
+		return Ability.SPELL|Ability.DOMAIN_DIVINATION;
 	}
 	public void unInvoke()
 	{
@@ -51,7 +51,7 @@ public class Spell_DetectGold extends Spell
 		if(I.location()==container)
 		{
 			if(((I.ID().equalsIgnoreCase("StdCoins"))
-			||(I.ID().equalsIgnoreCase("GenCoins"))
+			||((I.ID().equalsIgnoreCase("GenCoins"))&&((I.material()==Item.METAL)||(I.material()==Item.MITHRIL)))
 			&&(Sense.canBeSeenBy(I,mob))))
 				msg.append(I.name()+" glows golden.\n\r");
 		}

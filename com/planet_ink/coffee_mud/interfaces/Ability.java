@@ -60,15 +60,15 @@ public interface Ability  extends Environmental
 	public static final int ALL_CODES=31;
 	
 	// domains
-	public static final int SPELL_DIVINATION=1<<5;
-	public static final int SPELL_ABJURATION=2<<5;
-	public static final int SPELL_ILLUSION=3<<5;
-	public static final int SPELL_EVOCATION=4<<5;
-	public static final int SPELL_ALTERATION=5<<5;
-	public static final int SPELL_TRANSMUTATION=6<<5;	
-	public static final int SPELL_ENCHANTMENT=7<<5;	
-	public static final int SPELL_CHARM=8<<5;	
-	
+	public static final int DOMAIN_DIVINATION=1<<5;
+	public static final int DOMAIN_ABJURATION=2<<5;
+	public static final int DOMAIN_ILLUSION=3<<5;
+	public static final int DOMAIN_EVOCATION=4<<5;
+	public static final int DOMAIN_ALTERATION=5<<5;
+	public static final int DOMAIN_TRANSMUTATION=6<<5;	
+	public static final int DOMAIN_ENCHANTMENT=7<<5;	
+	public static final int DOMAIN_CONJURATION=8<<5;	
+
 	// qualities
 	public static final int MALICIOUS=0;
 	public static final int INDIFFERENT=1;

@@ -29,7 +29,7 @@ public class Spell_Scribe extends Spell
 	}
 	public int classificationCode()
 	{
-		return Ability.SPELL|Ability.SPELL_EVOCATION;
+		return Ability.SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 
