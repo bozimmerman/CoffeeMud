@@ -55,7 +55,7 @@ public class UtiliThread extends Thread
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB mob=(MOB)R.fetchInhabitant(m);
-				if((mob!=null)&&(mob.lastTickedDateTime()<lastDateTime))
+				if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
 				{
 					boolean ticked=CMClass.ThreadEngine().isTicking(mob,MudHost.TICK_MOB);
 					boolean isDead=mob.amDead();

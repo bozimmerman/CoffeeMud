@@ -144,10 +144,17 @@ public class FrontLogin extends StdCommand
 		&&(!mob.isMonster())
 		&&(Util.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
 		{
-            buf = Resources.getFileResource("text"+File.separatorChar+"motd.txt");
-			if(buf.length()>0)
-                mob.session().unfilteredPrintln(buf.toString()+"\n\r--------------------------------------\n\r");
-			buf=new StringBuffer("");
+            String msg = Resources.getFileResource("text"+File.separatorChar+"motd.txt").toString();
+			if(msg.length()>0)
+			{
+				try
+				{
+					if(msg.startsWith("<cmvp>"))
+						msg=new String(CMClass.httpUtils().doVirtualPage(msg.substring(6).getBytes()));
+				}
+				catch(HTTPRedirectException e){}
+                buf.append(msg+"\n\r--------------------------------------\n\r");
+			}
 		}
 		
 		if(mob.session()!=null)
