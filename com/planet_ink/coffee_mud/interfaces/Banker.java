@@ -13,4 +13,6 @@ public interface Banker extends ShopKeeper
 	public void setItemInterest(double interest);
 	public double getCoinInterest();
 	public double getItemInterest();
+	public String bankChain();
+	public void setBankChain(String name);
 }

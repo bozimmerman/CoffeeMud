@@ -914,6 +914,12 @@ public class Generic
 		E.setCoinInterest(Util.div(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.getCoinInterest()*1000.0)),1000.0));
 		mob.tell("\n\rItem Interest: '"+((int)Math.round(E.getCoinInterest()*1000.0))+"'/1000th % per day.");
 		E.setItemInterest(Util.div(getNumericData(mob,"Enter a new value\n\r:",(int)Math.round(E.getCoinInterest()*1000.0)),1000.0));
+		mob.tell("\n\rBank Chain   : '"+E.bankChain()+"'.");
+		String newValue=mob.session().prompt("Enter a new chain\n\r:","");
+		if(newValue.length()>0)
+			E.setBankChain(newValue);
+		else
+			mob.tell("(no change)");
 	}
 
 	void genSpeed(MOB mob, Environmental E)

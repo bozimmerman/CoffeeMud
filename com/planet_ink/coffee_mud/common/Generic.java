@@ -276,6 +276,7 @@ public class Generic
 
 			if(E instanceof Banker)
 			{
+				text.append(XMLManager.convertXMLtoTag("BANK",""+((Banker)E).bankChain()));
 				text.append(XMLManager.convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
 				text.append(XMLManager.convertXMLtoTag("ITEMINT",""+((Banker)E).getCoinInterest()));
 			}
@@ -917,6 +918,7 @@ public class Generic
 
 			if(E instanceof Banker)
 			{
+				((Banker)E).setBankChain(XMLManager.getValFromPieces(buf,"BANK"));
 				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"COININT"));
 				((Banker)E).setCoinInterest(XMLManager.getDoubleFromPieces(buf,"ITEMINT"));
 			}

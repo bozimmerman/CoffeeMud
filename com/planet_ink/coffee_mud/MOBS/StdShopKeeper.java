@@ -582,7 +582,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 				return;
 			case Affect.TYP_LIST:
-				ExternalPlay.quickSay(this,mob,"\n\r"+listInventory(mob).toString()+"^T",true,false);
+				if(storeInventory.size()>0)
+					ExternalPlay.quickSay(this,mob,"\n\r"+listInventory(mob).toString()+"^T",true,false);
 				return;
 			default:
 				break;

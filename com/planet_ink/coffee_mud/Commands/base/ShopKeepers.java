@@ -291,6 +291,12 @@ public class ShopKeepers
 			mob.tell("That doesn't appear to be available.");
 			return;
 		}
+		if(thisThang instanceof Coins)
+		{
+			Coins oldThang=(Coins)thisThang;
+			thisThang=(Item)oldThang.copyOf();
+			((Coins)thisThang).setNumberOfCoins(Util.s_int(((String)(Util.parse(thisName).elementAt(0)))));
+		}
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,Affect.MSG_WITHDRAW,"<S-NAME> withdraw(s) "+thisThang.name()+" from <S-HIS-HER> account with "+shopkeeper.name()+".");
 		if(!mob.location().okAffect(newMsg))
 			return;
