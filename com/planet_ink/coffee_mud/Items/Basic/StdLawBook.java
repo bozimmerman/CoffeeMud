@@ -580,8 +580,9 @@ public class StdLawBook extends StdItem
 			StringBuffer str=new StringBuffer("");
 			str.append("1. PROPERTY TAX   : "+(Util.s_double(theLaw.getInternalStr("PROPERTYTAX")))+"%\n\r");
 			str.append("2. SALES TAX      : "+(Util.s_double(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
-			str.append("3. TAX EVASION    : "+shortLawDesc((String[])theLaw.taxLaws().get("TAXEVASION"))+"\n\r");
-			str.append("4. TREASURY       : ");
+			str.append("3. CITIZEN TAX    : "+(Util.s_double(theLaw.getInternalStr("SALESTAX")))+"%\n\r");
+			str.append("4. TAX EVASION    : "+shortLawDesc((String[])theLaw.taxLaws().get("TAXEVASION"))+"\n\r");
+			str.append("5. TREASURY       : ");
 			String S=theLaw.getInternalStr("TREASURY").trim();
 			String room="*";
 			String item="";
@@ -632,6 +633,14 @@ public class StdLawBook extends StdItem
 				}
 				break;
 			case 3:
+				s=mob.session().prompt("Enter a new tax amount: ",theLaw.getInternalStr("CITTAX"));
+				if(Util.s_double(s)!=Util.s_double(theLaw.getInternalStr("CITTAX")))
+				{
+					changeTheLaw(A,B,mob,theLaw,"CITTAX",""+Util.s_double(s));
+					mob.tell("Changed.");
+				}
+				break;
+			case 4:
 				{
 					String[] oldLaw=(String[])theLaw.taxLaws().get("TAXEVASION");
 					String[] newValue=modifyLaw(A,B,theLaw,mob,oldLaw);
@@ -650,7 +659,7 @@ public class StdLawBook extends StdItem
 					}
 					break;
 				}
-			case 4:
+			case 5:
 				{
 				    String room2="/";
 					while((room2.equals("/"))||(!room2.equals("*"))&&(room2.length()>0)&&(CMMap.getRoom(room2)==null))

@@ -59,7 +59,15 @@ public class TaxCollector extends StdBehavior
 	                owed[2]+=T.backTaxes();
 	        }
 	    }
-		owed[1]=MoneyUtils.totalMoney(M)/10;
+		Law theLaw=CoffeeUtensils.getTheLaw(M.location(),M);
+		if(theLaw!=null)
+		{
+			double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
+			if(cittax>0.0)
+			    owed[1]=(int)Math.round(Util.mul(MoneyUtils.totalMoney(M),cittax));
+		}
+		else
+			owed[1]=MoneyUtils.totalMoney(M)/10;
 		owed[0]=owed[1]+owed[2];
 		return owed;
 	}

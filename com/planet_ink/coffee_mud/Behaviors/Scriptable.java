@@ -162,7 +162,10 @@ public class Scriptable extends StdBehavior
 		"ISLOCKED", // 60
 		"STRIN", // 61 
 		"CALLFUNC", // 62
-		"NUMPCSROOM" // 63
+		"NUMPCSROOM", // 63
+		"DEITY", // 64
+		"CLAN", // 65
+		"CLANRANK", // 66
 	};
 	private static final String[] methods={
 		"MPASOUND", //1
@@ -2193,6 +2196,84 @@ public class Scriptable extends StdBehavior
 				}
 				break;
 			}
+			case 66: // clanrank
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"CLANRANK","Syntax",evaluable);
+					return returnable;
+				}
+				if(E==null)
+					returnable=false;
+				else
+				{
+					int val1=(E instanceof MOB)?((MOB)E).getClanRole():-1;
+					returnable=simpleEval(scripted,""+val1,arg3,arg2,"CLANRANK");
+				}
+				break;
+			}
+			case 64: // deity 
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"DEITY","Syntax",evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex=((MOB)E).getWorshipCharID();
+					if(arg2.equals("=="))
+						returnable=sex.startsWith(arg3);
+					else
+					if(arg2.equals("!="))
+						returnable=!sex.startsWith(arg3);
+					else
+					{
+						scriptableError(scripted,"DEITY","Syntax",evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
+			case 65: // clan 
+			{
+				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=Util.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=varify(source,target,monster,primaryItem,secondaryItem,msg,Util.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((arg2.length()==0)||(arg3.length()==0))
+				{
+					scriptableError(scripted,"CLAN","Syntax",evaluable);
+					return returnable;
+				}
+				if((E==null)||(!(E instanceof MOB)))
+					returnable=false;
+				else
+				{
+					String sex=((MOB)E).getClanID();
+					if(arg2.equals("=="))
+						returnable=sex.startsWith(arg3);
+					else
+					if(arg2.equals("!="))
+						returnable=!sex.startsWith(arg3);
+					else
+					{
+						scriptableError(scripted,"CLAN","Syntax",evaluable);
+						return returnable;
+					}
+				}
+				break;
+			}
 			case 21: // class
 			{
 				String arg1=Util.getCleanBit(evaluable.substring(y+1,z),0);
@@ -3240,6 +3321,14 @@ public class Scriptable extends StdBehavior
 					results.append(E.envStats().level());
 				break;
 			}
+			case 66: // clanrank
+			{
+				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+					results.append(((MOB)E).getClanRole()+"");
+				break;
+			}
 			case 21: // class
 			{
 				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
@@ -3247,6 +3336,28 @@ public class Scriptable extends StdBehavior
 				if((E!=null)&&(E instanceof MOB))
 				{
 					String sex=((MOB)E).charStats().displayClassName().toUpperCase();
+					results.append(sex);
+				}
+				break;
+			}
+			case 64: // deity
+			{
+				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					String sex=((MOB)E).getWorshipCharID();
+					results.append(sex);
+				}
+				break;
+			}
+			case 65: // clan
+			{
+				String arg1=Util.cleanBit(evaluable.substring(y+1,z));
+				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg);
+				if((E!=null)&&(E instanceof MOB))
+				{
+					String sex=((MOB)E).getClanID();
 					results.append(sex);
 				}
 				break;

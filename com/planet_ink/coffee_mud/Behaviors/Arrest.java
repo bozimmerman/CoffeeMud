@@ -497,6 +497,8 @@ public class Arrest extends StdBehavior
 			if(taxLaw.length()>0) taxLaws.put("TREASURY",taxLaw);
 			taxLaw=getInternalStr("SALESTAX");
 			if(taxLaw.length()>0) taxLaws.put("SALESTAX",taxLaw);
+			taxLaw=getInternalStr("CITTAX");
+			if(taxLaw.length()>0) taxLaws.put("CITTAX",taxLaw);
 			
 			basicCrimes.clear();
 			String basicLaw=getInternalStr("MURDER");

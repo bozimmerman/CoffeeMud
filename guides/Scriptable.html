@@ -873,8 +873,17 @@ useless. </P>
     <TD>Calls the FUNCTION_PROG of the given name, with the given parameters, 
     and returns the value returned by the program using the RETURN statement.</TD></TR>
   <TR>
+    <TD>CLAN([code])</TD>
+    <TD>Returns the clan of the given mob.</TD></TR>
+  <TR>
+    <TD>CLANRANK([code])</TD>
+    <TD>Returns the rank of the given mob in their clan.</TD></TR>
+  <TR>
     <TD>CLASS([code])</TD>
     <TD>Returns the class of the given mob.</TD></TR>
+  <TR>
+    <TD>DEITY([code])</TD>
+    <TD>Returns the deity of the given mob.</TD></TR>
   <TR>
     <TD>EVAL()</TD>
     <TD>Not implemented -- do not use.</TD></TR>
@@ -2027,6 +2036,34 @@ This callfunc function will always return false, since my parmeters are
 empty.<BR>&nbsp; endif<BR>~</EM></P>
 <P class=MsoNormal><B><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt"><O:P><EM></EM></O:P></SPAN></B></P>
+
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clan<o:p></O:P></SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clan(character == clanname)</EM></P>
+<P class=MsoNormal>This checks the name of the clan of the character 
+variable.&nbsp; Where '==' may be&nbsp;another 
+logical operator from&nbsp;above.&nbsp;</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if clan($n == 
+'The Unholy Goobers')<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to be 
+an Unholy Goober.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+triggering me appears not to be a Goober.<BR>endif</EM></P>
+
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">clanrank<o:p></O:P></SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>clanrank(character == integer)</EM></P>
+<P class=MsoNormal>This checks the rank of the character in their clan.&nbsp; Where '==' may be&nbsp;another 
+logical operator from&nbsp;above.&nbsp;  
+Valid values include: APPLICANT=0, MEMBER=1, STAFF=2, ENCHANTER=4, TREASURER=8, LEADER=16, BOSS=32
+</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if clanrank($n == 
+0)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to be 
+an APPLICANT.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+triggering me appears not to be an APPLICANT.<BR>endif</EM></P>
+
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
 style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">class<o:p></O:P></SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>class(character == classname)</EM></P>
@@ -2041,8 +2078,22 @@ Gaian)<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor trigger
 a Gaian.<BR>else<BR><SPAN 
 style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
 triggering me appears not to be a Gaian.<BR>endif</EM></P>
+
 <P class=MsoNormal><B style="mso-bidi-font-weight: normal"><SPAN 
-style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">eval</SPAN></B></P>
+style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">deity<o:p></O:P></SPAN></B></P>
+<P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>deity(character == deityname)</EM></P>
+<P class=MsoNormal>This checks the name of the deity of the character 
+variable.&nbsp; Where '==' may be&nbsp;another 
+logical operator from&nbsp;above.&nbsp;</P>
+<P class=MsoNormal>EXAMPLE:</P>
+<P class=MsoNormal><EM>if deity($n == 
+'Gothon')<BR><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor triggering me appears to worship 
+an Unholy Goober.<BR>else<BR><SPAN 
+style="mso-spacerun: yes">&nbsp; </SPAN>mpecho The actor 
+triggering me appears not to worship Gothon.<BR>endif</EM></P>
+
+<P class=MsoNormal><B style="mso-bidi-font-weight: normal">
+<SPAN style="FONT-SIZE: 14pt; COLOR: blue; mso-bidi-font-size: 12.0pt">eval</SPAN></B></P>
 <P class=MsoNormal>Usage:<SPAN style="mso-spacerun: yes">&nbsp; <BR></SPAN><EM>eval(expression == expression)</EM></P>
 <P class=MsoNormal>This powerful function compares the 
 first expression to the second expression.&nbsp; Expressions may be codes, 

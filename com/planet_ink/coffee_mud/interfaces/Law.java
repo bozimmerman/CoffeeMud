@@ -148,6 +148,7 @@ public interface Law
 		"TREASURY=\n"+
 		"PROPERTYTAX=0\n"+
 		"SALESTAX=0\n"+
+		"CITTAX=10\n"+
 		"THIEF_SWIPE=;;robbing <T-NAME>;jail2;Swiping violates our high moral code.\n"+
 		"THIEF_STEAL=;;robbing <T-NAME>;jail3;Stealing violates our high moral code.\n"+
 		"THIEF_TRAP=!home;;setting traps in city limits;jail3;Trapping puts us all in mortal danger.\n"+
