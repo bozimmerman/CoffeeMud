@@ -56,6 +56,7 @@ public class Generic
 					{
 						buf.setCharAt(loop,(char)((dig1*16)+dig2));
 						buf.deleteCharAt(loop+1);
+						buf.deleteCharAt(loop+1);
 					}
 				}
 				break;
