@@ -16,6 +16,10 @@ public class Thief_StripItem extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_StripItem();}
 	public int usageType(){return USAGE_MOVEMENT;}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -33,7 +37,7 @@ public class Thief_StripItem extends ThiefSkill
 			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if((!target.mayIFight(mob))&&(levelDiff<10))
 		{
 			mob.tell("You cannot strip anything off of "+target.charStats().himher()+".");

@@ -1,11 +1,12 @@
+Test: High Marks, Improved Distraction, Improved Peek, Improved Steal, 
+Test: Improved Swipe, Palm
+
 Thieves
 Palm - silent get for thieves
 Alertness  gives one random description from an item in the room upon entry into that  For example: A thief walks into a room. He gets the room description.  His alertness picks up a 3 items in the room, a wallpaper, a sword, and a coin.  It randomly selects one of those items (the coin) and issues a LOOK COIN command.  
-Autosneak  Nuff Said  
 Improved stealing/swiping  Burglar to be able to steal from signifigantly higher MOBs  
 Mug allows STEAL during a fight.  STEAL should be disabled during a fight, but MUG will accomplish this task during a fight. Similar to Slip Item and Strip Item.  
 Countertracking  an active skill that prevents you from being found with the  tracking skill.  
-Pick  should LOCK unlocked (but lockable) doors.  
 Squatting  Makes an area/room your own for a little while  
 Panhandling  allows a mob to set up in a location, and if a successful check is made, causes passing players/mobs to toss a few coins his way.  
 

@@ -106,6 +106,12 @@ public class Get extends BaseItemParser
 			return false;
 		}
 		commands.removeElementAt(0);
+		boolean quiet=false;
+		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("UNOBTRUSIVELY")))
+		{
+			quiet=true;
+			commands.removeElementAt(commands.size()-1);
+		}
 
 		String containerName="";
 		if(commands.size()>0)
@@ -159,7 +165,7 @@ public class Get extends BaseItemParser
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
-				if(!get(mob,container,(Item)getThis,false,"get",true))
+				if(!get(mob,container,(Item)getThis,quiet,"get",true))
 					if(getThis instanceof Coins)
 						((Coins)getThis).putCoinsBack();
 				doneSomething=true;

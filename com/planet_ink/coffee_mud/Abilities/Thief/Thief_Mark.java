@@ -17,6 +17,10 @@ public class Thief_Mark extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 	public Environmental newInstance(){	return new Thief_Mark();}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 	public MOB mark=null;
 	public int ticks=0;
 
@@ -95,7 +99,7 @@ public class Thief_Mark extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 

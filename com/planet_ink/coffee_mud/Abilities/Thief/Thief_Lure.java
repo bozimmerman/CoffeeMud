@@ -16,6 +16,10 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Lure();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}
@@ -59,7 +63,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
 		boolean success=profficiencyCheck(mob,-(levelDiff*(!Sense.canBeSeenBy(mob,target)?5:10)),auto);
 		success=success&&(Dice.rollPercentage()>target.charStats().getSave(CharStats.SAVE_TRAPS));

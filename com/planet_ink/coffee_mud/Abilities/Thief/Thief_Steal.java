@@ -16,6 +16,11 @@ public class Thief_Steal extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Steal();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
+	
 	private DVector lastOnes=new DVector(2);
 	private int timesPicked(MOB target)
 	{
@@ -44,6 +49,11 @@ public class Thief_Steal extends ThiefSkill
 			mob.tell("Steal what from whom?");
 			return false;
 		}
+		if(mob.isInCombat())
+		{
+			mob.tell("Not while you are fighting!");
+			return false;
+		}
 		String itemToSteal=(String)commands.elementAt(0);
 
 		MOB target=mob.location().fetchInhabitant(Util.combine(commands,1));
@@ -53,7 +63,7 @@ public class Thief_Steal extends ThiefSkill
 			mob.tell("You don't see '"+Util.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
 		if((!target.mayIFight(mob))&&(levelDiff<10))
 		{

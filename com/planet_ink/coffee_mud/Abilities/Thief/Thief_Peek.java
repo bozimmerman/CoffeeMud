@@ -16,6 +16,10 @@ public class Thief_Peek extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Peek();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -30,7 +34,7 @@ public class Thief_Peek extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
 		boolean success=profficiencyCheck(mob,-(levelDiff*(!Sense.canBeSeenBy(mob,target)?0:10)),auto);
 		int discoverChance=(int)Math.round(Util.div(target.charStats().getStat(CharStats.WISDOM),30.0))+(levelDiff*5);

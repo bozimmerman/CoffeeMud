@@ -17,7 +17,7 @@ public class Thief_Pick extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Pick();}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	public int code=5;
+	public int code=0;
 
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
@@ -41,10 +41,18 @@ public class Thief_Pick extends ThiefSkill
 			return false;
 		}
 
+		if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).isOpen()))
+		||((unlockThis instanceof Container)&&(!((Container)unlockThis).isOpen()))
+		||((unlockThis instanceof Item)&&(!(unlockThis instanceof Container))))
+		{
+			mob.tell(unlockThis.name()+" is open!");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int adjustment=(mob.envStats().level()-unlockThis.envStats().level())*(1+abilityCode());
+		int adjustment=((mob.envStats().level()+abilityCode())-unlockThis.envStats().level())*5;
 		if(adjustment>0) adjustment=0;
 		boolean success=profficiencyCheck(mob,adjustment,auto);
 
@@ -55,7 +63,11 @@ public class Thief_Pick extends ThiefSkill
 			FullMsg msg=new FullMsg(mob,unlockThis,this,auto?CMMsg.MSG_OK_VISUAL:(CMMsg.MSG_THIEF_ACT),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,null);
 			if(mob.location().okMessage(mob,msg))
 			{
-				msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.name()+".");
+				if(((unlockThis instanceof Exit)&&(!((Exit)unlockThis).isLocked()))
+				||((unlockThis instanceof Container)&&(!((Container)unlockThis).isLocked())))
+					msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_LOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) and relock(s) "+unlockThis.name()+".");
+				else
+					msg=new FullMsg(mob,unlockThis,null,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_UNLOCK,CMMsg.MSG_OK_VISUAL,auto?unlockThis.name()+" vibrate(s) and click(s).":"<S-NAME> pick(s) the lock on "+unlockThis.name()+".");
 				CoffeeUtensils.roomAffectFully(msg,mob.location(),dirCode);
 			}
 		}

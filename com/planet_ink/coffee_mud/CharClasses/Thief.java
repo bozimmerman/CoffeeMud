@@ -44,16 +44,17 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
-			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,false);
+			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",false);
 
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",true);
 			CMAble.addCharAbilityMapping(ID(),2,"Thief_SneakAttack",true);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Thief_Appraise",false);
-			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
+			CMAble.addCharAbilityMapping(ID(),4,"Thief_Autosneak",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Dirt",false);
@@ -98,6 +99,7 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_ComprehendLangs",false);
 
 			CMAble.addCharAbilityMapping(ID(),19,"Thief_Distract",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Thief_Snatch",false);
 
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Lore",false);
 
@@ -105,10 +107,13 @@ public class Thief extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_Caltrops",false);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_Flank",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Thief_ImprovedDistraction",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",false);
+			CMAble.addCharAbilityMapping(ID(),23,"Skill_Warrants",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Thief_Bribe",true);
+			CMAble.addCharAbilityMapping(ID(),24,"Skill_EscapeBonds",false);
 
 			CMAble.addCharAbilityMapping(ID(),25,"Thief_Ambush",false);
 			CMAble.addCharAbilityMapping(ID(),25,"Spell_Ventrilloquate",false);
@@ -162,6 +167,7 @@ public class Thief extends StdCharClass
 			   &&(msg.tool() instanceof Ability)
 			   &&(msg.tool().ID().equals("Thief_Steal")
 				  ||msg.tool().ID().equals("Thief_Robbery")
+				  ||msg.tool().ID().equals("Thief_Mug")
 				  ||msg.tool().ID().equals("Thief_Swipe")))
 				MUDFight.postExperience(myChar,(MOB)msg.target()," for a successful "+msg.tool().name(),10,false);
 		}

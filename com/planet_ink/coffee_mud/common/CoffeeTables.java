@@ -89,7 +89,8 @@ public class CoffeeTables
 	
 	public void bumpVal(MOB mob, int type)
 	{
-		if(mob.isMonster()) return;
+		if((mob!=null)&&(mob.isMonster())) return;
+		
 		if(type==STAT_SPECIAL_NUMONLINE)
 		{
 			int ct=0;

@@ -18,6 +18,20 @@ public class Thief_ImprovedHiding extends ThiefSkill
 	public boolean canBeUninvoked(){return false;}
 	public boolean active=false;
 
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		if(student.fetchAbility("Thief_Hide")==null)
+		{
+			teacher.tell(student.name()+" has not yet learned to hide.");
+			student.tell("You need to learn to hide first.");
+			return false;
+		}
+		return true;
+	}
+
 	public void improve(MOB mob, boolean yesorno)
 	{
 		Ability A=mob.fetchEffect("Thief_Hide");

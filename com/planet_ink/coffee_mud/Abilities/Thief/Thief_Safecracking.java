@@ -17,7 +17,20 @@ public class Thief_Safecracking extends ThiefSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		if(student.fetchAbility("Thief_Pick")==null)
+		{
+			teacher.tell(student.name()+" has not yet learned to pick locks.");
+			student.tell("You need to learn to pick locks first.");
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -30,7 +43,7 @@ public class Thief_Safecracking extends ThiefSkill
 		{
 			helpProfficiency(mob);
 			Ability A=mob.fetchAbility("Thief_Pick");
-			A.setAbilityCode(5-(profficiency()/10));
+			A.setAbilityCode(profficiency()/5);
 			if((msg.target()!=null)&&(Dice.rollPercentage()<profficiency()))
 			{
 				A=msg.target().fetchEffect("Spell_WizardLock");

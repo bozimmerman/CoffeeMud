@@ -25,6 +25,10 @@ public class Thief_Shadow extends ThiefSkill
 	private long lastTogether=0;
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public Environmental newInstance(){	return new Thief_Shadow();}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 
 	public boolean stillAShadower()
 	{
@@ -192,7 +196,7 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 
 		shadowing=null;
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 
 		boolean success=profficiencyCheck(mob,-(levelDiff*10),auto);
 

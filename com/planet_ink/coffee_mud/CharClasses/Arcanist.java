@@ -31,9 +31,8 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
-			CMAble.addCharAbilityMapping(ID(),1,"Alchemy",true);
+			CMAble.addCharAbilityMapping(ID(),1,"Alchemy",false);
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_ReadMagic",true);
-			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
 
 			// clan magic
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqAcid",0,"",false,true);
@@ -47,48 +46,46 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqWater",0,"",false,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Spell_CEqDisease",0,"",false,true);
 
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 			CMAble.addCharAbilityMapping(ID(),2,"Spell_Erase",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Skill_WandUse",25,true);
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_Appraise",false);
 
-			CMAble.addCharAbilityMapping(ID(),4,"Spell_ClarifyScroll",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Spell_ClarifyScroll",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
 
 			CMAble.addCharAbilityMapping(ID(),5,"PaperMaking",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_Revoke",false);
 			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
 
-			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",false);
 
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_Spellcraft",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 
-			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",true);
+			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_UsePoison",false);
 
 			CMAble.addCharAbilityMapping(ID(),9,"Skill_Parry",true);
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_RemoveTraps",false);
 
-			CMAble.addCharAbilityMapping(ID(),10,"Spell_RechargeWand",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Spell_RechargeWand",false);
 
-			CMAble.addCharAbilityMapping(ID(),11,"Thief_Lore",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Skill_Trip",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Thief_Lore",false);
+			CMAble.addCharAbilityMapping(ID(),11,"Skill_Trip",true);
 
-			CMAble.addCharAbilityMapping(ID(),12,"Spell_Scribe",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Thief_Snatch",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Spell_Scribe",false);
 
 			CMAble.addCharAbilityMapping(ID(),13,"Spell_DisenchantWand",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Skill_Map",false);
 
 			CMAble.addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
 
-			CMAble.addCharAbilityMapping(ID(),15,"Spell_EnchantWand",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Skill_Bash",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Spell_EnchantWand",false);
+			CMAble.addCharAbilityMapping(ID(),15,"Skill_Bash",true);
 
-			CMAble.addCharAbilityMapping(ID(),16,"Spell_WardArea",true);
+			CMAble.addCharAbilityMapping(ID(),16,"Spell_WardArea",false);
 			CMAble.addCharAbilityMapping(ID(),16,"Spell_DetectInvisible",false);
 
 			CMAble.addCharAbilityMapping(ID(),17,"Skill_Attack2",false);
@@ -97,20 +94,20 @@ public class Arcanist extends Thief
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_Detection",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Spell_Knock",false);
 
-			CMAble.addCharAbilityMapping(ID(),19,"Thief_Distract",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Spell_Refit",false);
 
-			CMAble.addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",true);
+			CMAble.addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
 
-			CMAble.addCharAbilityMapping(ID(),21,"Thief_Observation",false);
+			CMAble.addCharAbilityMapping(ID(),21,"Thief_Observation",true);
 
-			CMAble.addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",true);
+			CMAble.addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Thief_Trap",false);
 
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_Disenchant",true);
 			CMAble.addCharAbilityMapping(ID(),24,"Spell_ComprehendLangs",false);
 
-			CMAble.addCharAbilityMapping(ID(),25,"Spell_StoreSpell",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Spell_StoreSpell",false);
 
 			CMAble.addCharAbilityMapping(ID(),30,"Spell_MagicItem",true);
 		}

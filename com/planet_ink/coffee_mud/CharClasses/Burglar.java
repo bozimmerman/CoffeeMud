@@ -31,18 +31,18 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),1,"Skill_Climb",50,true);
 			CMAble.addCharAbilityMapping(ID(),1,"Thief_Swipe",true);
 			
-			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",true);
+			CMAble.addCharAbilityMapping(ID(),2,"Thief_Hide",false);
 			
-			CMAble.addCharAbilityMapping(ID(),3,"Thief_Appraise",true);
+			CMAble.addCharAbilityMapping(ID(),3,"Thief_Palm",false);
 			
-			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",true);
+			CMAble.addCharAbilityMapping(ID(),4,"Thief_Sneak",false);
 			CMAble.addCharAbilityMapping(ID(),4,"Fighter_Intimidate",false);
 			
-			CMAble.addCharAbilityMapping(ID(),5,"Thief_Haggle",true);
-			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Thief_Haggle",false);
+			CMAble.addCharAbilityMapping(ID(),5,"Thief_DetectTraps",true);
 			CMAble.addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
 			
-			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",true);
+			CMAble.addCharAbilityMapping(ID(),6,"Thief_Pick",false);
 			CMAble.addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
 			
 			CMAble.addCharAbilityMapping(ID(),7,"Thief_Peek",true);
@@ -51,23 +51,22 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",true);
 			CMAble.addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
 			
-			CMAble.addCharAbilityMapping(ID(),9,"Thief_Forgery",true);
+			CMAble.addCharAbilityMapping(ID(),9,"Thief_Forgery",false);
 			CMAble.addCharAbilityMapping(ID(),9,"Thief_Listen",false);
 			
-			CMAble.addCharAbilityMapping(ID(),10,"Thief_ImprovedHiding",true);
+			CMAble.addCharAbilityMapping(ID(),10,"Thief_ImprovedHiding",false);
 			CMAble.addCharAbilityMapping(ID(),10,"Thief_BackStab",false);
 			
 			CMAble.addCharAbilityMapping(ID(),11,"Thief_Steal",true);
-			CMAble.addCharAbilityMapping(ID(),11,"Thief_AvoidTraps",false);
 			
 			CMAble.addCharAbilityMapping(ID(),12,"Thief_SlipItem",true);
-			CMAble.addCharAbilityMapping(ID(),12,"Thief_Snatch",false);
+			CMAble.addCharAbilityMapping(ID(),12,"Thief_ImprovedPeek",false);
 			
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_PlantItem",true);
 			CMAble.addCharAbilityMapping(ID(),13,"Thief_Detection",false);
 			
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Bribe",true);
-			CMAble.addCharAbilityMapping(ID(),14,"Thief_Surrender",false);
+			CMAble.addCharAbilityMapping(ID(),14,"Thief_ImprovedSwipe",false);
 			
 			CMAble.addCharAbilityMapping(ID(),15,"Spell_ReadMagic",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Thief_SilentGold",false);
@@ -82,8 +81,7 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),18,"Thief_Robbery",true);
 			CMAble.addCharAbilityMapping(ID(),18,"Skill_Map",false);
 			
-			CMAble.addCharAbilityMapping(ID(),19,"Thief_SenseLaw",true);
-			CMAble.addCharAbilityMapping(ID(),19,"Thief_Distract",false);
+			CMAble.addCharAbilityMapping(ID(),19,"Thief_SenseLaw",false);
 			
 			CMAble.addCharAbilityMapping(ID(),20,"Thief_Lore",false);
 			
@@ -91,7 +89,7 @@ public class Burglar extends Thief
 			CMAble.addCharAbilityMapping(ID(),21,"Thief_StripItem",false);
 			
 			CMAble.addCharAbilityMapping(ID(),22,"Thief_UsePoison",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Fighter_CoverDefence",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Thief_ImprovedSteal",false);
 			
 			CMAble.addCharAbilityMapping(ID(),23,"Spell_AnalyzeDweomer",false);
 			CMAble.addCharAbilityMapping(ID(),23,"Fighter_Tumble",false);

@@ -17,12 +17,16 @@ public class Thief_Distract extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Distract();}
 	public int usageType(){return USAGE_MOVEMENT;}
+	public int code=0;
+
+	public int abilityCode(){return code;}
+	public void setAbilityCode(int newCode){code=newCode;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/2));
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2));
+		affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/2)+abilityCode());
+		affectableStats.setAttackAdjustment((affectableStats.attackAdjustment()-(affectableStats.attackAdjustment()/2))-abilityCode());
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -89,7 +93,7 @@ public class Thief_Distract extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode());
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else
