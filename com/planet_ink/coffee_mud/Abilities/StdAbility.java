@@ -259,13 +259,21 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 									  Vector commands, 
 									  Environmental givenTarget, 
 									  int wornReqCode)
-	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,false);}
+	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,false,false);}
+	
+	public Environmental getAnyTarget(MOB mob, 
+						  Vector commands, 
+						  Environmental givenTarget, 
+						  int wornReqCode,
+						  boolean checkOthersInventory)
+	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,checkOthersInventory,false);}
 	
 	public Environmental getAnyTarget(MOB mob, 
 									  Vector commands, 
 									  Environmental givenTarget, 
 									  int wornReqCode,
-									  boolean checkOthersInventory)
+									  boolean checkOthersInventory,
+									  boolean alreadyAffOk)
 	{
 		String targetName=Util.combine(commands,0);
 		Environmental target=null;
@@ -325,7 +333,7 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			return null;
 		}
 
-		if(target.fetchEffect(this.ID())!=null)
+		if((!alreadyAffOk)&&(target.fetchEffect(this.ID())!=null))
 		{
 			if(givenTarget==null)
 			{

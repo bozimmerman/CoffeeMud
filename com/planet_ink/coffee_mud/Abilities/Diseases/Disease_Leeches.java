@@ -69,7 +69,10 @@ public class Disease_Leeches extends Disease
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;
 			if(mob.curState().getHitPoints()>2)
+			{
+				mob.maxState().setHitPoints(mob.curState().getHitPoints()-1);
 				MUDFight.postDamage(diseaser,mob,this,1,CMMsg.MASK_GENERAL|CMMsg.TYP_DISEASE,-1,null);
+			}
 			return true;
 		}
 		return true;

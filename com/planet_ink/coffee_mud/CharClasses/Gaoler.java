@@ -79,14 +79,16 @@ public class Gaoler extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),14,"Thief_Flay",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Skill_ArrestingSap",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Torturesmithing",false);
-			CMAble.addCharAbilityMapping(ID(),17,"Skill_CollectBounty",true);
-			CMAble.addCharAbilityMapping(ID(),18,"Skill_Arrest",false);
-			CMAble.addCharAbilityMapping(ID(),19,"Fighter_Behead",true);
-			CMAble.addCharAbilityMapping(ID(),20,"Prayer_Stoning",false);
-			CMAble.addCharAbilityMapping(ID(),21,"SlaveTrading",true);
-			CMAble.addCharAbilityMapping(ID(),22,"Skill_Enslave",false);
-			CMAble.addCharAbilityMapping(ID(),23,"Skill_JailKey",true);
-			CMAble.addCharAbilityMapping(ID(),24,"Amputation",false);
+			CMAble.addCharAbilityMapping(ID(),17,"Skill_Leeching",false);
+			CMAble.addCharAbilityMapping(ID(),18,"Skill_CollectBounty",true);
+			CMAble.addCharAbilityMapping(ID(),19,"Skill_Arrest",false);
+			CMAble.addCharAbilityMapping(ID(),20,"Fighter_Behead",true);
+			CMAble.addCharAbilityMapping(ID(),21,"Prayer_Stoning",false);
+			CMAble.addCharAbilityMapping(ID(),22,"SlaveTrading",true);
+			CMAble.addCharAbilityMapping(ID(),23,"Skill_Enslave",false);
+			CMAble.addCharAbilityMapping(ID(),24,"Skill_JailKey",true);
+			CMAble.addCharAbilityMapping(ID(),25,"Skill_Chirgury",false);
+			CMAble.addCharAbilityMapping(ID(),30,"Amputation",true);
 			
 			// to separate from artisam
 			CMAble.addCharAbilityMapping(ID(),30,"MasterArmorsmithing",0,"",false,true);
