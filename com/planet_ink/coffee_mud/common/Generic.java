@@ -1181,7 +1181,7 @@ public class Generic
 		{
 			E.baseEnvStats().setLevel(XMLManager.getIntFromPieces(V,"MLEVL"));
 			E.baseEnvStats().setAbility(XMLManager.getIntFromPieces(V,"MABLE"));
-			E.baseEnvStats().setAbility(XMLManager.getIntFromPieces(V,"MREJUV"));
+			E.baseEnvStats().setRejuv(XMLManager.getIntFromPieces(V,"MREJUV"));
 			if(!E.isGeneric())
 				E.setMiscText(XMLManager.getValFromPieces(V,"MTEXT"));
 		}
