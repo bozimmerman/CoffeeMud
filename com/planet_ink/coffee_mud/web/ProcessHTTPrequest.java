@@ -390,7 +390,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		Log.sysOut(getName(), "Request='" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) + "'");
 		Log.sysOut(getName(), "Replied='" + status + "'" );
 */
-		Log.sysOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) + 
+		Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) + 
 				":" + status);
 		
 		try
