@@ -94,7 +94,7 @@ public class Spell_Grease extends Spell
                             case BOTH:
                                 weapon = (Item) mob.fetchWieldedItem();
                                 if(weapon != null)
-						            msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and loses <S-HIS-HER> weapon.");
+						            msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) and slide(s) around in the grease and lose(s) <S-HIS-HER> weapon.");
                                 else
 						            msg=new FullMsg(mob,affect.source(),null,Affect.MSG_OK_ACTION,"<S-NAME> slip(s) in the grease and fall(s) down.");
 								if(mob.location().okAffect(msg))
