@@ -172,6 +172,7 @@ public class Scriptable extends StdBehavior
 
 	public void setParms(String newParms)
 	{
+		newParms=Util.replaceAll(newParms,"'","`");
 		super.setParms(newParms);
 		oncesDone.clear();
 	}
@@ -3006,7 +3007,7 @@ public class Scriptable extends StdBehavior
 		if(scripts==null)
 		{
 			String script=getParms();
-			script=Util.replaceAll(script,"\\`","'");
+			script=Util.replaceAll(script,"`","'");
 			scripts=parseScripts(script);
 			if(getParms().length()>30)
 				Resources.submitResource("PARSED SCRIPTS: "+getParms().hashCode(),scripts);

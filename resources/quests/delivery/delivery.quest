@@ -1,8 +1,8 @@
 #set the quest name
 set name delivery
 
-# this one runs every 5 mins
-set wait 5
+# this one runs every 10 mins
+set wait 150
 set interval 1
 
 import items quests/delivery/note.cmare

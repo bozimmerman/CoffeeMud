@@ -1308,18 +1308,15 @@ public class Import
 					s=eatLineSquiggle(objV);
 					if(!s.substring(1).trim().toUpperCase().startsWith("IN_FILE_PROG"))
 					{
-						s=Util.replaceAll(s,"'","\\`");
 						scriptStuff+=s.substring(1).trim()+";";
 						s=nextLine(objV);
 						while(s.indexOf("~")<0)
 						{
-							s=Util.replaceAll(s,"'","\\`");
 							scriptStuff+=s.trim()+";";
 							eatLine(objV);
 							s=nextLine(objV);
 						}
 						s=eatLineSquiggle(objV).trim();
-						s=Util.replaceAll(s,"'","\\`");
 						scriptStuff+=s+"~";
 					}
 				}
@@ -1400,18 +1397,15 @@ public class Import
 										if(s.startsWith(">"))
 										{
 											s=eatLineSquiggle(V).substring(1).trim();
-											s=Util.replaceAll(s,"'","\\`");
 											scriptStuff+=s+";";
 											s=nextLine(V);
 											while(s.indexOf("~")<0)
 											{
-												s=Util.replaceAll(s.trim(),"'","\\`");
 												scriptStuff+=s+";";
 												eatLine(V);
 												s=nextLine(V);
 											}
 											s=eatLineSquiggle(V).trim();
-											s=Util.replaceAll(s,"'","\\`");
 											scriptStuff+=s+"~";
 										}
 										else

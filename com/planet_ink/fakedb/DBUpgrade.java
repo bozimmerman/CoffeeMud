@@ -7,6 +7,7 @@ import java.sql.*;
 public class DBUpgrade
 {
 	static PrintStream out=System.out;
+	static boolean debug=false;
 	static BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
 	
 	private static void pl(String str)
@@ -514,16 +515,16 @@ public class DBUpgrade
 		pl("");
 		p("Reading source tables: ");
 		Hashtable data=new Hashtable();
-		for(Enumeration e=oldTables.keys();e.hasMoreElements();)
+		try
 		{
-			String table=(String)e.nextElement();
-			Vector fields=(Vector)oldTables.get(table);
-			Vector rows=new Vector();
-			data.put(table,rows);
-			try
+			Class.forName(sclass);
+			java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
+			for(Enumeration e=oldTables.keys();e.hasMoreElements();)
 			{
-				Class.forName(sclass);
-				java.sql.Connection myConnection=DriverManager.getConnection(sservice,slogin,spassword);
+				String table=(String)e.nextElement();
+				Vector fields=(Vector)oldTables.get(table);
+				Vector rows=new Vector();
+				data.put(table,rows);
 				java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 				java.sql.ResultSet R=myStatement.executeQuery("SELECT * FROM "+table);
 				while(R.next())
@@ -537,15 +538,17 @@ public class DBUpgrade
 						row.addElement(S);
 					}
 				}
+				R.close();
+				myStatement.close();
+				p(table+"("+rows.size()+") ");
 			}
-			catch(Exception ce)
-			{
-				pl("Oops.. something bad happened!");
-				pl(ce.getMessage());
-				pl("Fix it and run this again!");
-				return;
-			}
-			p(table+"("+rows.size()+") ");
+		}
+		catch(Exception ce)
+		{
+			pl("Oops.. something bad happened!");
+			pl(ce.getMessage());
+			pl("Fix it and run this again!");
+			return;
 		}
 		pl(" ");
 		pl(" ");
@@ -614,6 +617,8 @@ public class DBUpgrade
 					else
 						str.append(")");
 					myStatement.executeUpdate(str.toString());
+					if(debug) p(".");
+					myStatement.close();
 				}
 				p(" ");
 			}

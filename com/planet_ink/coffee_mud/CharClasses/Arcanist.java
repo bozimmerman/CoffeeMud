@@ -193,7 +193,7 @@ public class Arcanist extends Thief
 			if(msg.tool().ID().equals("Spell_Scribe")
 			||msg.tool().ID().equals("Spell_EnchantWand")
 			||msg.tool().ID().equals("Spell_MagicItem")
-			||msg.tool().ID().equals("Spell_SpellStoring")
+			||msg.tool().ID().equals("Spell_StoreSpell")
 			||msg.tool().ID().equals("Spell_WardArea"))
 			{
 				Ability A=mob.fetchAbility(msg.tool().text());

@@ -16,7 +16,7 @@ public class MOBEater extends ActiveTicker
 
 	public MOBEater()
 	{
-		minTicks=10; maxTicks=30; chance=25;
+		minTicks=4; maxTicks=8; chance=75;
 		tickReset();
 	}
 

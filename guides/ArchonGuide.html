@@ -686,8 +686,10 @@ first, the wind blowing through the trees, the hoot of an owl, or a
 distant cackling noise are all considerable behaviors.&nbsp; In fact, it is a behavior called "Emoter".&nbsp; 
 Enter "ahelp emoter" for more information about the Emoter behavior.&nbsp; There are 
 other behaviors that Areas may benefit from too. Here are some examples: </P>
-<P>"FasterRoom" makes everything happen twice as fast here 
-(or faster!)<BR>"InstantDeath" makes everything that comes here 
+<P>"FasterRoom" makes everything happen twice as fast here (or 
+faster!)<BR>"Emoter" is what I mentioned above -- it's for inserting those cute 
+little blurbs in the area.<BR>"Sounder" is also for inserting little blurbs, 
+plus it reacts to player actions.<BR>"InstantDeath" makes everything that comes here 
 DIE!!!!!<BR>"LinkedWeather" makes the weather in this area mimic the weather 
 from another area.<BR>"PuddleMaker" will scatter some puddles around after rain 
 or snow.<BR>"RandomMonsters" will populate the area with lots of hideously 
@@ -708,8 +710,8 @@ process.<BR>
             
               
                
-         "WaterCurrents" will make 
-those on the water bob and flow in the direction you specify. </P>
+         "WaterCurrents" will make those 
+on the water bob and flow in the direction you specify. </P>
 <P>  
             
                
@@ -773,8 +775,9 @@ them, including a few more.&nbsp; In this case, the behaviors and
 affects above will only be active for this particular room. Aside from those 
 listed under Areas above, here are additional Behaviors you might enjoy: </P>
 <P>"DelayedTransporter" causes all those who enter to be 
-whisked elsewhere.<BR>"Emoter" - yea -- this was mentioned under Areas, but it's 
-just sooo cool.<BR>"Mime"&nbsp;causes the room to mimic players.&nbsp; Wierd.. 
+whisked elsewhere.<BR>"Emoter" - yea -- this was mentioned 
+under Areas, but it's just sooo cool.<BR>"Sounder" is still a good alternative 
+to Emoter.<BR>"Mime"&nbsp;causes the room to mimic players.&nbsp; Wierd.. 
 yea, I know.<BR>"MovingRoom" the fast train to somewhere.<BR>"ResourceOverride" 
 if you want fishing in the desert, or sand in your swap, this is the way to 
 go.<BR>           
@@ -1039,8 +1042,14 @@ bring one of these things into the world, you have only to call its true name
 using the create command.&nbsp; To create a Longsword, for instance, issue the 
 command "create Longsword".&nbsp; It will then fall from the sky onto the floor 
 or ground before you.</P>
-<P><STRONG>The "GenItem", "GenCoins", 
+<P><STRONG>The "GenItem", "GenCoins", "GenResource", "GenMirror", 
 and "GenReadable"</STRONG></P>
+<P>These represent some of the basic items your ordinary denizen will use 
+every day.&nbsp; A GenItem and GenMirror&nbsp;represent&nbsp;nothing-special THINGS, while a GenCoins always 
+represents a pile of gold coins, ready to be picked up and coverted to 
+money.&nbsp; GenResource is a raw material, like iron, coal, or wood, from which 
+other things are made.&nbsp; GenReadables are GenItems with something to read on 
+them, like a book or parchment.</P>
 <P>Whenever a GenItem is created, much like the GenExit 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include:</P>
@@ -1149,11 +1158,15 @@ enter will leave the property unchanged.&nbsp; The properties include:</P>
       >GenCoins</B> object. For coins, this denotes the 
       number of coins in the pile!</TD></TR></TABLE></P>
 <P><STRONG>The "GenLightSource" 
-and&nbsp;"GenLantern",&nbsp;</STRONG><BR><BR></P>
-<P>Whenever a GenLightSource is created, much like the 
-GenItem above, you are presented with a list of properties to fill in.&nbsp; 
-Pressing enter will leave the property unchanged.&nbsp; The properties include 
-all of the fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P>
+and&nbsp;"GenLantern"&nbsp;</STRONG><BR><BR></P>
+<P>        
+  A GenLightSource and GenLantern provide light for players whenever they are 
+HELD.&nbsp; GenLightSources will burn away after a time, while GenLanterns 
+can be refilled with oil from an oil flask.</P>
+<P>Whenever a GenLightSource is created, much like the GenItem above, you are 
+presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include all of the fields listed 
+above under GenItem, plus&nbsp;one&nbsp;more:</P>
 <P><STRONG>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1169,12 +1182,28 @@ all of the fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P>
       a GenLantern, the object may be refilled with oil to continue.&nbsp; For a 
       GenLightSource, the object will vanish.</TD></TR></TABLE></P>
 <P>The "GenJournal"</STRONG><BR><BR></P>
-<P>Whenever a GenJournal is created, much like the GenItem 
-above, you are presented with a list of properties to fill in.&nbsp; Pressing 
-enter will leave the property unchanged.&nbsp; The properties include all of the 
-fields listed above under GenItem, plus&nbsp;one&nbsp;that works a little bit 
-differently than described above:</P>
-<P><STRONG>
+<P>GenJournals represent message boards for players to 
+commonly post on and everyone to read.&nbsp; All GenJournals who have the same NAME field will 
+display the same set of messages to readers, regardless of how many GenJournals 
+there are.&nbsp; Players who have access to GenJournals, and who have the 
+Write skill may write new messages, or post replies to 
+old ones on GenJournals.</P>
+<P>GenJournals may be books that individual players carry around and magically 
+chat with each other on (assuming all their journals have the same name).&nbsp; 
+They may also be large public posting boards.&nbsp; To make one of this last 
+sort, simply make the journal non-gettable.&nbsp; That way, people can write on 
+them even if they can't pick them up.</P>
+<P>One special kind of journal is called "CoffeeMud News".&nbsp; If a Journal is 
+given that name (without the quotes, and yes -- watch your spelling and case), 
+then all messages posted to it will be echoed to all players whenever they log 
+on next.&nbsp; For this reason, you will want to keep journals with than name 
+close to your vest.</P>
+<P>Whenever a GenJournal is created, much like the GenItem above, you are 
+presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include all of the fields listed 
+above under GenItem, plus&nbsp;one&nbsp;that works a little bit differently than 
+described above:</P>
+<P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
   <TR>
@@ -1235,10 +1264,23 @@ differently than described above:</P>
         <LI>"-bob the orc" disallow mobs with this name.</LI>       
             
         </UL></TD></TR>
-</TABLE></P><BR>The 
-"GenWeapon"</STRONG> 
+</TABLE></P>
+<P><BR><STRONG>The "GenWeapon", "GenBow", "GenLasso", "GenNet", 
+"GenSling", "GenSpear"</STRONG></P>
+<P>These are the assorted weapons players and mobs use to 
+attack each other.&nbsp; They are typically worn in the WIELD position, though 
+some may also go in the HOLD position, either as a requirement (for two handed 
+weapons) or as an option (for those with two-weapon fighting).&nbsp;&nbsp;&nbsp; </P>
+<P>Weapons can be anything from swords to daggers, from bows you shoot 
+ammunition at, to spears that you throw.&nbsp; It all depends on how you design 
+them.&nbsp; The GenBow, GenSling, and GenSpear classes don't actually offer any 
+functionality you couldn't get out of a properly molded GenWeapon, but are 
+provided as good examples of how to make them.&nbsp; </P>
+<P>The GenNet and GenLasso, however, are quite different.&nbsp; Each of those 
+are capable of ensnaring someone who is hit by them when they are thrown.&nbsp; 
+They do default to thrown weapons.</P> 
 <P></P>
-<P>Whenever a GenWeapon is created, much like the GenItem 
+<P>Whenever any of these&nbsp;GenWeapons&nbsp;are created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include all of the 
 fields listed above under GenItem, plus a few more:</P>
@@ -1319,12 +1361,55 @@ Adjustment</EM></TD>
     Capacity</EM></TD>
     <TD>This is the amount of the ammunition which can be 
       held by the weapon at one time.&nbsp; Usually this is only 
-1.</TD></TR></TABLE><BR></P>
-<P><BR><STRONG>The "GenArmor"</STRONG></P>
-<P>Whenever a GenArmor piece is created, much like the 
-GenWeapon above, you are presented with a list of properties to fill in.&nbsp; 
+1.</TD></TR></TABLE></P>
+<P><STRONG>The "GenContainer", 
+"GenCorpse", 
+"GenCage"</STRONG></P>
+<P>The GenContainer represents the standard container of 
+other things, whether it be a piggy bank, a chest, or a holster.&nbsp; Lids, 
+capacity, and even restrictions on what can be placed in it are all settable 
+from here.&nbsp; A GenCorpse is a special sort of container, and should not be created in your 
+world without good reason.&nbsp; The GenCage is a GenContainer that one can see 
+the contents of even when the lid is closed.. this 
+simulates bars or other see-through doors and lids.</P>
+<P>Whenever a GenContainer is created, much like the 
+GenArmor above, you are presented with a list of properties to fill in.&nbsp; 
 Pressing enter will leave the property unchanged.&nbsp; The properties include 
 everything listed under GenItem, plus a few more:</P>
+<P>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Has A&nbsp;Lid</EM></TD>
+    <TD>Well, does it have one?.</TD></TR>
+  <TR>
+    <TD><EM>Has A Lock</EM></TD>
+    <TD>If it has a lid, can you lock it?</TD></TR>
+  <TR>
+    <TD><EM>Can Contain</EM></TD>
+    <TD>This can help you limit what goes inside.</TD></TR>
+  <TR>
+    <TD><EM>Capacity</EM></TD>
+    <TD>this denotes the maximum amount of weight that 
+      can be placed in the container.</TD></TR></TABLE></P>
+<P>One more thing to keep in mind.&nbsp; Always make the 
+weight of a container less than its capacity.&nbsp; A container must be able to 
+hold its own weight in addition to anything put in it!<BR><STRONG></P></STRONG>
+<P><STRONG>The "GenArmor" and "GenShield"</STRONG></P>
+<P>These represent all manner of clothing, shoes, worn 
+jewelry, armor, and of course shields.&nbsp; Of these, only a shield MUST be made 
+from GenShield.&nbsp; Everything else may be made from GenArmor.&nbsp; Plus, GenArmors are also 
+containers, meaning that you can make armor that things can 
+be sheathed in or placed in like pockets.</P>
+<P>Whenever a GenArmor piece is created, much like the GenContainer above, you 
+are presented with a list of properties to fill in.&nbsp; Pressing enter will 
+leave the property unchanged.&nbsp; The properties include everything listed 
+under GenItem and GenContainer, plus a few more:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1371,42 +1456,19 @@ everything listed under GenItem, plus a few more:</P>
     <TD>the size of the piece of armor. 0 means that the 
       piece has a variable size, and will fit anyone until it is worn for the 
       first time.&nbsp; Any other number means that the wearer must be near to 
-      the size in inches to wear it.</TD></TR></TABLE>
-<P><STRONG>The 
-"GenContainer"</STRONG></P>
-<P>Whenever a GenContainer is created, much like the 
-GenArmor above, you are presented with a list of properties to fill in.&nbsp; 
-Pressing enter will leave the property unchanged.&nbsp; The properties include 
-everything listed under GenItem, plus a few more:</P>
-<P>
-<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
-  
-  <TR>
-    <TD width="25%"><STRONG 
-      >Property</STRONG></TD>
-    <TD width="75%"><STRONG 
-      >Description</STRONG></TD></TR>
-  <TR>
-    <TD><EM>Has A&nbsp;Lid</EM></TD>
-    <TD>Well, does it have one?.</TD></TR>
-  <TR>
-    <TD><EM>Has A Lock</EM></TD>
-    <TD>If it has a lid, can you lock it?</TD></TR>
-  <TR>
-    <TD><EM>Can Contain</EM></TD>
-    <TD>This can help you limit what goes inside.</TD></TR>
-  <TR>
-    <TD><EM>Capacity</EM></TD>
-    <TD>this denotes the maximum amount of weight that 
-      can be placed in the container.</TD></TR></TABLE></P>
-<P>One more thing to keep in mind.&nbsp; Always make the 
-weight of a container less than its capacity.&nbsp; A container must be able to 
-hold its own weight in addition to anything put in it!<BR><BR><STRONG></P>
-<P>The "GenBed" "GenChair",&nbsp;"GenBoat"</STRONG></P>
-<P>Whenever a GenChair is created, much like the GenItem 
-above, you are presented with a list of properties to fill in.&nbsp; Pressing 
-enter will leave the property unchanged.&nbsp; The properties include all of the 
-fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P><STRONG>
+      the size in inches to wear it.</TD></TR></TABLE></P><STRONG>
+<P>The "GenBed" "GenChair",&nbsp;"GenBoat", "GenRideable", 
+"GenCageRideable"</STRONG></P>
+<P>These represent the GenRideable group -- a group of 
+things which may be sat one, slept in, ridden on the seas, or pulled by 
+horses.&nbsp; The GenRideable, GenBed, GenChair, and GenBoat all represent different incarnations of GenRideable, 
+but are interchangable otherwise.&nbsp; Only the GenCageRideable is different, since it has the 
+unique property of the GenCage -- able to be seen in even 
+when lids or doors are closed.&nbsp;</P>
+<P>Whenever a GenRideable item is created, much like the GenContainer above, you are presented 
+with a list of properties to fill in.&nbsp; Pressing enter will leave the 
+property unchanged.&nbsp; The properties include all of the fields listed above under 
+GenItem, and GenContainer, plus&nbsp;a few more:</P><STRONG>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
   <TR>
@@ -1417,16 +1479,29 @@ fields listed above under GenItem, plus&nbsp;one&nbsp;more:</P><STRONG>
   <TR>
     <TD><EM>Rideable Type</EM></TD>
     <TD>the type of rideable item this is, from sittable, 
-      to sleepable, etc.</TD></TR>
+      to sleepable, etc.&nbsp; Some of these types may be ridden from room to 
+      room, like "LAND-BASED","WATER-BASED","AIR-FLYING", and "WAGON"&nbsp;while 
+      others may not.&nbsp; "WAGON", unlike the others, may be hitched to 
+      another Rideable (such as a GenRideable MOB made into a horse.)&nbsp; 
+      "LADDER" will help those trying to get through climable rooms.&nbsp; The 
+      others are just furniture for sitting on, sleeping on, 
+      or climbing into.</TD></TR>
   <TR>
     <TD><EM>MOBs Held</EM></TD>
     <TD>th emaximum number of mobs which may occupy this 
-      piece of furniture at once.</TD></TR></TABLE>
-<P></STRONG><BR><STRONG>The "GenFood" and "GenWater"</STRONG></STRONG></P>
-<P>Whenever a GenFood or GenWater&nbsp;is created, much 
-like the GenItem above, you are presented with a list of properties to fill 
-in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
-include everything listed under Getntem, plus a few more:</P>
+      piece of furniture at once.</TD></TR></TABLE></STRONG>
+<P><BR><STRONG>The "GenFood", "GenWater", "GenFoodResource", 
+"GenLiquidResource", "GenFountain"</STRONG></STRONG></P>
+<P>These items represent the edibles and drinkables on 
+CoffeeMud.&nbsp; The GenFood is a simple edible food, while a GenFoodResource is 
+a raw edible material that can be used for cooking or other resource-requiring skills.&nbsp; GenWater and 
+GenFountain are both the same drinkable containers, with a GenFountain differing only in a 
+lack of need to ever fill it.&nbsp; A GenLiquidResource represents 
+a liquid resource for potion making or other skills.</P>
+<P>Whenever a GenFood or GenWater&nbsp;is created, much like the GenItem above, you 
+are presented with a list of properties to fill in.&nbsp; Pressing enter will leave 
+the property unchanged.&nbsp; The properties include everything listed under GenItem, 
+plus GenContainer for the drinkables, plus a few more:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1460,6 +1535,14 @@ include everything listed under Getntem, plus a few more:</P>
       differentiate between the material of the container from whats inside 
     it.</TD></TR></TABLE></P>
 <P><STRONG>The "GenMap"</STRONG></P>
+<P>A GenMap is a readable item that will automatically map 
+out the rooms of the specified area(s).&nbsp; Level is uniquely significant on a 
+GenMap.&nbsp; A&nbsp;level of 0 means the map will be built without access to 
+any indoor rooms or areas behind&nbsp;secret exits.&nbsp; A value of 1 means the 
+map will be built with both indoor and outdoor rooms, but 
+without secret rooms.&nbsp; Any other value will display each and every room, regardless.&nbsp; 
+A room that is classified as "in the air" will 
+never be placed on a map.</P>
 <P>Whenever a GenMap is created, much like the GenArmor 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include everything 
@@ -1475,15 +1558,19 @@ listed under GetItem, plus one more:</P>
   <TR>
     <TD><EM>Area List</EM></TD>
     <TD>
-      <P>List here the names of the areas which will be 
-      displayed on the map, seperated by semicolons. If you have a "MyArea", and 
-      a "HisArea", you might enter them here as "MyArea;HisArea" (without the 
-      quotes). Also! The level of the GenMap plays a special role! If the level 
-      is 0, only outdoor places will be shown. A level 1 map shows outdoor, and 
-      indoor, but nothing behind any invisible or hidden doors. Anything above 
-      level 1 will show all rooms.</P></TD></TR></TABLE></P>
+      <P>          
+                   
+                 
+                 List here the 
+      names of the areas which will be displayed on the map, seperated by semicolons. If 
+      you have a "MyArea", and a "HisArea", you might enter them 
+      here as "MyArea;HisArea" (without the quotes).</P></TD></TR></TABLE></P>
 <P><STRONG>The "GenKey"</STRONG></P>
-<P>Whenever a GenKey is created, much like the GenArmor 
+<P>         
+             
+     Keys are things required to 
+unlock doors and containers with locks.&nbsp;</P>
+<P>Whenever a GenKey is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include everything 
 listed under Genitem, plus one more:</P>
@@ -1501,6 +1588,10 @@ listed under Genitem, plus one more:</P>
       assigned key code for the door or container lid which this key 
   opens.</TD></TR></TABLE></P>
 <P><STRONG>The "GenStaff"</STRONG></P>
+<P>       A GenStaff 
+is a type of GenWeapon which also behaves like a wand.&nbsp; This means 
+that it has an invocation word which must be spoken 
+to activate the spell inside it.</P>
 <P>Whenever a GenStaff is created, much like the GenWeapon 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include everything 
@@ -1524,6 +1615,10 @@ charges!</TD></TR></TABLE></P>
 first wielding it, and then by <EM>speaking</EM> or <EM>saying</EM>&nbsp;the magical triggerword&nbsp;to the 
 target.&nbsp;</P>
 <P><STRONG>The "GenWand"</STRONG></P>
+<P>GenWands are items which must be worn/held and a magic word 
+spoken in order to activate an innate spell.&nbsp; To cast a wands spell 
+on a creature or item, the word must be spoken 
+to the creature or item directly.</P>
 <P>Whenever a GenWand is created, much like the GenItem 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include everything 
@@ -1546,8 +1641,12 @@ listed under GenItem, plus one more:</P>
 <P>The GenWand, like the GenStaff above, is activated by 
 first holding it in ones hand, and then by <EM>speaking</EM> or <EM>saying</EM>&nbsp;the magical triggerword&nbsp;to the 
 target.&nbsp;</P>
-<P><STRONG>The "GenPill" and 
-"GenPotion"</STRONG></P>
+<P><STRONG>The "GenPill", "GenPotion", and 
+"GenMultiPotion"</STRONG></P>
+<P>GenPills are edible items which impart their spell after eating.&nbsp; GenPotions 
+and GenMultiPotions do the same when they are drank.&nbsp; The difference between them 
+is that GenPills and GenPotions vanish after drinking/eating. GenMultiPotions may 
+be drank from many times to receive their magic.</P>
 <P>Whenever a GenPill or GenPotion is created, much like 
 the GenArmor above, you are presented with a list of properties to fill 
 in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The properties 
@@ -1591,6 +1690,10 @@ include everything listed under GenItem, plus a few more:</P>
       with something mundane, like water.</TD></TR></TABLE></P>
 <P><STRONG>The 
 "GenSuperPill"</STRONG></STRONG></P>
+<P>         
+        The GenSuperPill is a special 
+kind of GenPill which does not create a spell affect, 
+but has other, more permanent benefits!</P>
 <P>Whenever a GenSuperPill is created, much like the GenPill 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include everything 
@@ -1623,6 +1726,10 @@ listed under GenItem, plus two more:</P>
   snack.</TD></TR></TABLE></P>
 <P><STRONG>The 
 "GenScroll"</STRONG></STRONG></P>
+<P>  A GenScroll is a readable item that 
+has spells written on it.&nbsp; These spells may be discovered through the "Read 
+Magic" spell, and written on using Scribe.&nbsp; Spells can be 
+learned from scrolls using Scroll Copy.&nbsp;</P>
 <P>Whenever a GenScroll is created, much like the GenPill 
 above, you are presented with a list of properties to fill in.&nbsp; Pressing 
 enter will leave the property unchanged.&nbsp; The properties include everything 
@@ -1643,14 +1750,91 @@ listed under GenItem, plus one more:</P>
       have a little clarity!</TD></TR></TABLE></P>
 <P>
 <P>
-<P><STRONG>Modifying Items</STRONG></P>
+<P><STRONG>The 
+"GenTitle"</STRONG></STRONG></P>
+<P>A GenTitle is&nbsp;&nbsp;a piece of paper which 
+designates ownership of a piece of property.&nbsp; A piece of property can only 
+be a room or a set of rooms with Prop_RoomForSale, Prop_RoomsForSale, or 
+Prop_LotsForSale on it.&nbsp; Titles are unique in that whenever they are GIVEn 
+to another player, the property changes ownership.&nbsp; Although titles can be 
+created by archons and given to shopkeepers to sell, the usual method for putting land up for sale is 
+to create a shopkeeper of the type LANDSELLER (see shopkeepers below).&nbsp; This will 
+automatically populate the shopkeeper with titles to all properties for 
+sale in his or her area.</P>
+<P>Whenever a GenTitle is created, much like the GenPill 
+above, you are presented with a list of properties to fill in.&nbsp; Pressing 
+enter will leave the property unchanged.&nbsp; The properties include everything 
+listed under GenItem, plus one more:</P>
+<P>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Assigned Spells</EM></TD>
+    <TD>List here the names of the spells which are 
+      written upon the scroll.&nbsp; Check the list of spells for ones to 
+      use.&nbsp; Remember to set the uses remaining field so that the scroll can 
+      have a little clarity!</TD></TR></TABLE></P>
+<P>
+<P>
+<P><STRONG>The 
+"GenWallpaper"</STRONG></STRONG></P>
+<P>GenWallpaper is unique in that it is a non-gettable item 
+which&nbsp;it never listed among the items in&nbsp;a room, but CAN be looked 
+at.&nbsp; It is intended to&nbsp;provide targets for the LOOK command based 
+upon objects which might be mentioned in a room description.&nbsp; Archons should make 
+sure they have SYSMSGS turned on to edit wallpaper items, 
+since they will not be&nbsp;noticed otherwise.&nbsp;</P>
+<P>When GenWallpaper is created, you have only the name 
+(which should contain key words for the LOOK command), the description that is 
+seen, and whether or not it is also readable.</P>
+<P><STRONG>The "GenInstrument" and 
+"GenPiano"</STRONG></STRONG></P>
+<P> The GenInstrument represents a musical instrument for the 
+purposes of the several Minstrel spells.&nbsp; They differ only in that the GenPiano 
+is also like a GenRideable mentioned above, in that it 
+must be sat on to play.</P>
+<P>Whenever a GenInstrument is created, much like the GenRideable above, you are presented with 
+a list of properties to fill in.&nbsp; Pressing enter will leave the property 
+unchanged.&nbsp; The properties include everything listed under GenItem, and GenRideable 
+for the GenPiano, plus one more:</P>
+<P>
+<TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
+  
+  <TR>
+    <TD width="25%"><STRONG 
+      >Property</STRONG></TD>
+    <TD width="75%"><STRONG 
+      >Description</STRONG></TD></TR>
+  <TR>
+    <TD><EM>Instrument Type</EM></TD>
+    <TD>This is the general classification of the 
+      instrument for the purposes of several of the Minstrel 
+songs.</TD></TR></TABLE></P>
+<P>
+<P>
+<P><STRONG></STRONG>&nbsp;</P>
+<P><STRONG>Modifying 
+Items</STRONG></P>
 <P>There are properties of items, armor, weapons, and 
 containers that can be modified by the Archon.&nbsp; If one wishes to modify a 
 dagger, one must either hold the dagger, or have the dagger present in the 
 room.&nbsp; The Archon can then issue the command "modify dagger".&nbsp; If the 
 item is a GenItem, GenContainer, GenFood, GenWater, GenWeapon, or any other 
-"Gen" item, then the same properties as above will be presented.&nbsp; For all 
-other "non-Generic" items, the following properties will be presented:</P>
+"Gen" item, then the same properties as above will be presented.&nbsp; </P>
+<P>Like rooms and areas, there are a very rich selection of 
+Behaviors you may choose for items.&nbsp; Here are our favorites:</P>
+<P>&nbsp;</P>
+<P>Items also benefit from affects, just like rooms, areas, 
+and exits.&nbsp; Here are some important affects you may consider for your 
+items:</P>
+<P>&nbsp;</P>
+<P>For all other "non-Generic" items, the following 
+properties will be presented:</P>
 <P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
@@ -1701,7 +1885,8 @@ other "non-Generic" items, the following properties will be presented:</P>
   field.</TD></TR></TABLE></P>
 <P>
 <P>
-<P><STRONG>Destroying Items</STRONG></P>
+<P><STRONG>Destroying 
+Items</STRONG></P>
 <P>To destroy an item that is either being held by you, or 
 is in the same room as you, you need only issue the destroy command.&nbsp; Items 
 that have been set to rejuv will not do so.&nbsp; If the item was a permanently 
@@ -1714,11 +1899,12 @@ streets.&nbsp; To do this, the Archon need only issue the create command once
 again.&nbsp; Summoning a goblin is as simple as entering "create Goblin".</P>
 <P><STRONG>The "GenMob"&nbsp;and 
 "GenUndead"</STRONG></P>
-<P>Whenever a GenMob&nbsp;or GenUndead is created, much like 
-the GenItem above, you are presented with a list of properties to fill in.&nbsp; 
-Pressing enter will leave the property unchanged.&nbsp; The only difference 
-between the GenMob and GenUndead is that the GenUndead can be&nbsp;TURNed by a 
-Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties include:</P>
+<P>Whenever a GenMob&nbsp;or GenUndead is created, much 
+like the GenItem above, you are presented with a list of properties to fill 
+in.&nbsp; Pressing enter will leave the property unchanged.&nbsp; The only 
+difference between the GenMob and GenUndead is that the GenUndead can 
+be&nbsp;TURNed by a Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties 
+include:</P>
 <TABLE style="WIDTH: 100%" cellSpacing=1 cellPadding=1 width="100%" border=1>
   
   <TR>
@@ -1735,8 +1921,8 @@ Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties include:</P>
     <TD>what one sees when one looks at the mob</TD></TR>
   <TR>
     <TD><EM>Display Text</EM></TD>
-    <TD>what one sees when&nbsp;the mob&nbsp;is lurking in 
-      a room.</TD></TR>
+    <TD>what one sees when&nbsp;the mob&nbsp;is lurking 
+      in a room.</TD></TR>
   <TR>
     <TD><EM>Rejuv Ticks</EM></TD>
     <TD>the number of ticks (4 second intervals), after 
@@ -1756,18 +1942,19 @@ Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties include:</P>
       higher level, or "too tough" for a lower level.&nbsp;</TD></TR>
   <TR>
     <TD><EM>Attacks/Round</EM></TD>
-    <TD>this represents the number of attacks the creature 
-      receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
+    <TD>this represents the number of attacks the 
+      creature receives every round.&nbsp;&nbsp;1 is perfect.</TD></TR>
   <TR>
-    <TD><EM>Attack Adjustment</EM></TD>
+    <TD><EM>Attack 
+Adjustment</EM></TD>
     <TD>this represents the MOBs ability to slay other 
       beings.&nbsp; At first level, this should be a 0.&nbsp; At 25th level, 
       this may be as much as 150-200.&nbsp; You should keep the default, either 
       way.</TD></TR>
   <TR>
     <TD><EM>Damage/Hit</EM></TD>
-    <TD>this represents the maximum amount of damage a MOB 
-      does when striking its opponents.&nbsp; At first level, 4-8 is 
+    <TD>this represents the maximum amount of damage a 
+      MOB does when striking its opponents.&nbsp; At first level, 4-8 is 
       plenty.&nbsp; At 25th level, 10-30 is a good range, depending upon the 
       monsters speed.&nbsp; Just keep the default.</TD></TR>
   <TR>
@@ -1785,8 +1972,8 @@ Cleric, while a GenMob cannot.&nbsp;&nbsp;The properties include:</P>
       at default.</TD></TR>
   <TR>
     <TD><EM>Alignment </EM></TD>
-    <TD>aside from the creatures experience level, this is 
-      the most important determinate of whether a player gets experience for 
+    <TD>aside from the creatures experience level, this 
+      is the most important determinate of whether a player gets experience for 
       killing it.&nbsp; You should make the alignment reflect the creature’s 
       obvious disposition.&nbsp; Making children evil, or a good orc doesn't do 
       anyone any good.</TD></TR>
@@ -1873,7 +2060,8 @@ include all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
     <TD>this is where you would "stock" your shopkeeper 
       with items that match their type.</TD></TR>
   <TR>
-    <TD><EM>Prejudice Factors</EM></TD>
+    <TD><EM>Prejudice 
+Factors</EM></TD>
     <TD>
       <P>This complicated field is where you can adjust the 
       prices the ShopKeeper sells from the programmed normal.&nbsp; An 
@@ -1889,8 +2077,8 @@ include all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       (like 0.3 or 0.75) will lower prices.&nbsp; Values of 0.0 are NOT 
       allowed.&nbsp; If you need to all but not allow buying and selling, a 
       value of 0.000000001 should do.&nbsp; </P>
-      <P>Each adjustment may also contain the name of one or 
-      more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
+      <P>Each adjustment may also contain the name of one 
+      or more Racial Categories (Elf, Dwarf, Gnome, Halfing, etc..).&nbsp; If a 
       Racial Category is specified, then the adjustment will ONLY apply to that 
       race.&nbsp; The adjustments are read from left to right, so adjustments 
       without any racial categories should be listed LAST.&nbsp; In the above 
@@ -1901,8 +2089,8 @@ include all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       apply to a player will cancel evaluation of the rest of the 
       field!&nbsp;&nbsp; </P></TD></TR></TABLE></STRONG><BR></P><STRONG>
 <P>The "GenBanker"</P></STRONG>
-<P>A Banker is a special type of ShopKeeper that holds money 
-and items in a special private account for players.&nbsp; Bankers can pay 
+<P>A Banker is a special type of ShopKeeper that holds 
+money and items in a special private account for players.&nbsp; Bankers can pay 
 interest on money left in the account, and charge interest on items left with 
 them.&nbsp; Whenever a GenBanker is created, much like the GenShopKeeper above, 
 you are presented with a list of properties to fill in.&nbsp; Pressing enter 
@@ -1923,9 +2111,9 @@ fields listed above under GenMob and GenShopKeeper, plus&nbsp;one&nbsp;more:</P>
 account.</TD></TR>
   <TR>
     <TD><EM>Item Interest</EM></TD>
-    <TD>This is the amount of interest paid (or CHARGED if 
-      negative) every game week (about once a real day) on items left in a users 
-      account.</TD></TR>
+    <TD>This is the amount of interest paid (or CHARGED 
+      if negative) every game week (about once a real day) on items left in a 
+      users account.</TD></TR>
   <TR>
     <TD><EM>Bank Name</EM></TD>
     <TD>This is a unique identifier for the bank chain. 
@@ -1968,10 +2156,10 @@ all of the fields listed above under GenMob, plus&nbsp;a few more:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Cleric 
-Requirements</EM></TD>
-    <TD>This field describes the requirements for a cleric 
-      to work for this deity. The value in this field include the following 
-      masks: 
+    Requirements</EM></TD>
+    <TD>This field describes the requirements for a 
+      cleric to work for this deity. The value in this field include the 
+      following masks: 
       <P>
       <UL>
         <LI>+sysop (allow archons or area subops to bypass 
@@ -1980,10 +2168,10 @@ Requirements</EM></TD>
         check) 
         <LI>-class (disallow all classes) 
         <LI>-baseclass (disallow all base classes) 
-        <LI>+thief +bard +ranger etc.. (create exceptions to 
-        -class and -baseclass) 
-        <LI>-paladin -bard -mage etc.. (disallow only listed 
-        classes) 
+        <LI>+thief +bard +ranger etc.. (create exceptions 
+        to -class and -baseclass) 
+        <LI>-paladin -bard -mage etc.. (disallow only 
+        listed classes) 
         <LI>-race (disallow all racial categories) 
         <LI>+elf +dwarf +human +half +gnome (create 
         exceptions to -race) 
@@ -2002,10 +2190,10 @@ Requirements</EM></TD>
         <LI>-level (disallow all levels) 
         <LI>+=10 +&gt;10 +&gt;=10 +&lt;10 +&lt;=10 (create 
         exceptions to -level, put your level for 10) 
-        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 (disallow 
-        only listed levels, put your level for 10) 
-        <LI>-tattoos (disallow all tattoos, even a lack of a 
-        tatoo) 
+        <LI>-=10 -&gt;10 -&gt;=10 -&lt;10 -&lt;=10 
+        (disallow only listed levels, put your level for 10) 
+        <LI>-tattoos (disallow all tattoos, even a lack of 
+        a tatoo) 
         <LI>+mytatto +thistattoo +anytattoo etc.. (create 
         exceptions to -tattoos) 
         <LI>+tattoos (allow any or no tattoos) 
@@ -2043,22 +2231,22 @@ Requirements</EM></TD>
         the player. For example: SAY "Allah is Great" 
         <LI>TIME [HOUR] - the other tasks must be performed 
         at the specified hour. For example: TIME 3 
-        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an item 
-        of the type must be placed in the specified container. For example: 
+        <LI>PUTTHING [THING NAME] [CONTAINER NAME] - an 
+        item of the type must be placed in the specified container. For example: 
         PUTTHING dagger pit 
         <LI>BURNTHING [THING NAME] - an item of the type 
         given must be burnt or set afire. This is typically done with the 
         FIREBUILDING skill. For example: BURNTHING the ceremonial log 
         <LI>EAT [FOOD NAME] - the specified item must be 
         eaten. For example: EAT holy pie. 
-        <LI>DRINK [DRINK NAME] - the specified drink must be 
-        consumed. For example: DRINK holy fountain 
+        <LI>DRINK [DRINK NAME] - the specified drink must 
+        be consumed. For example: DRINK holy fountain 
         <LI>INROOM - the player must be in the specified 
         room number. For example: INROOM NewArea#123 
         <LI>RIDING - the player must be on the specified 
         mount. For example: RIDING holy altar 
-        <LI>CAST - the player must cast the specified spell. 
-        For example: CAST Prayer_Bless 
+        <LI>CAST - the player must cast the specified 
+        spell. For example: CAST Prayer_Bless 
         <LI>EMOTE - the player must emote the following 
         thing. For example: EMOTE kneels before the throan 
         <LI>PUTVALUE [MINIMUM VALUE] [CONTAINER NAME] - an 
@@ -2073,14 +2261,15 @@ Requirements</EM></TD>
         <LI>BURNMATERIAL [MINIMUM VALUE] - an item worth at 
         least the specified amount must be burnt, such as using the FIREBUILDING 
         skill. For instance: BURNVALUE "wooden statue" 
-        <LI>SITTING 0 - the player must be sitting (the 0 is 
-        required!) 
+        <LI>SITTING 0 - the player must be sitting (the 0 
+        is required!) 
         <LI>STANDING 0 - the player must be standing (the 0 
         is required!) 
         <LI>SLEEPING 0 - the player must be sleeping (the 0 
         is required!) </LI></UL></TD></TR>
   <TR>
-    <TD><EM>Worshipper Ritual</EM></TD>
+    <TD><EM>Worshipper 
+Ritual</EM></TD>
     <TD>For a worshipper to receive one of the blessings 
       of the deity, the player must perform a particular ritual consisting of 
       one or more actions. This field will list the tasks in the ritual which 
@@ -2088,8 +2277,8 @@ Requirements</EM></TD>
       field above. </TD></TR></TABLE></STRONG>
 <P><STRONG><BR></P><BR>Modifying MOBs</STRONG> 
 <P></P>
-<P>There are properties of&nbsp;mobs that can be modified by 
-the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
+<P>There are properties of&nbsp;mobs that can be modified 
+by the Archon.&nbsp; If one wishes to modify a goblin,&nbsp;the&nbsp;goblin must 
 be&nbsp;present in the room.&nbsp; The Archon can then issue the command "modify 
 goblin".&nbsp; If the item is a GenMob or GenUndead, then the same properties as 
 above will be presented.&nbsp; See Appendix B for more information.&nbsp; For 
@@ -2103,9 +2292,9 @@ all other MOBs, the following properties will be presented:</P>
       >Description</STRONG></TD></TR>
   <TR>
     <TD><EM>Level</EM></TD>
-    <TD>this is the level of the mob.&nbsp; Please see the 
-      Level entry under GenMob for more information.&nbsp; On some mobs, such as 
-      Dragons, this can have a profound impact.</TD></TR>
+    <TD>this is the level of the mob.&nbsp; Please see 
+      the Level entry under GenMob for more information.&nbsp; On some mobs, 
+      such as Dragons, this can have a profound impact.</TD></TR>
   <TR>
     <TD><EM>Magical Ability</EM></TD>
     <TD>This number represents an adjustment to the base 
@@ -2130,7 +2319,8 @@ all other MOBs, the following properties will be presented:</P>
     <TD><EM>MiscText</EM></TD>
     <TD>For non-generic MOBs, this is a 
       completely&nbsp;unused field.</TD></TR></TABLE>
-<P><STRONG>Destroying MOBs</STRONG> </P>
+<P><STRONG>Destroying MOBs</STRONG> 
+</P>
 <P>To destroy a MOB&nbsp;that is in the same room as you, 
 you need only issue the destroy command.&nbsp;&nbsp;MOBs that have been set to 
 rejuv will not do so.&nbsp; If the&nbsp;MOB was a permanently saved&nbsp;MOB in 
@@ -2147,17 +2337,18 @@ you wish to give to your new creature using the procedure described above under
 temporary control of your monster, allowing them to pick up the items you 
 created and wear or wield them as necessary.&nbsp; Another way is to "order" the 
 mob to pick up the items you created, and then "order" them again to wear or 
-wield the items.&nbsp; Either way will accomplish the purpose.<BR><BR><STRONG>Practical Affects, MOB Behaviors<BR><BR></STRONG>Although there are exceptions, MOBs will be the 
-primary beneficiary of Behaviors (see above under Creating MOBs), and Items (and 
-occasionally Rooms) will benefit from Affects.&nbsp; Some of the useful Affects 
-for Rooms are already described above under Creating Rooms.&nbsp; For Generic 
-Items, Prop_HaveAdjuster, Prop_WearAdjuster, Prop_HaveZapper and others are 
-commonly used.&nbsp; For Generic MOBs, you will find many useful Behaviors which 
-will add great depth to your MUD.&nbsp; The MudChat behavior may be added to ANY 
-Mob to add an extra dimension. "Aggressive", "MOBTeacher", and "Mobile" are also 
-extremely common behaviors to give to your MOBs.&nbsp; It is highly recommended 
-that any Archon wishing to create a rich and wonderous universe spend time 
-perusing the help files to learn of the wonders of the Behaviors and Affects.<BR><BR><STRONG>"Rejuvenating Items and Mobs" or "How to Save a 
+wield the items.&nbsp; Either way will accomplish the purpose.<BR><BR><STRONG>Practical Affects, MOB Behaviors<BR><BR></STRONG>Although there are 
+exceptions, MOBs will be the primary beneficiary of Behaviors (see above under 
+Creating MOBs), and Items (and occasionally Rooms) will benefit from 
+Affects.&nbsp; Some of the useful Affects for Rooms are already described above 
+under Creating Rooms.&nbsp; For Generic Items, Prop_HaveAdjuster, 
+Prop_WearAdjuster, Prop_HaveZapper and others are commonly used.&nbsp; For 
+Generic MOBs, you will find many useful Behaviors which will add great depth to 
+your MUD.&nbsp; The MudChat behavior may be added to ANY Mob to add an extra 
+dimension. "Aggressive", "MOBTeacher", and "Mobile" are also extremely common 
+behaviors to give to your MOBs.&nbsp; It is highly recommended that any Archon 
+wishing to create a rich and wonderous universe spend time perusing the help 
+files to learn of the wonders of the Behaviors and Affects.<BR><BR><STRONG>"Rejuvenating Items and Mobs" or "How to Save a 
 Room"</STRONG></P>
 <P>MOBs and Items that are created in rooms, even those 
 which have had the Rejuv Ticks property set to some reasonable number, will not 
@@ -2170,7 +2361,9 @@ or both, are exactly the way you want them to be when the system is
 rebooted.&nbsp; Players in the room, including yourself and your followers, will 
 be ignored by the command to save the mobs.</P>
 <P>&nbsp;</P>
-<P class=MsoNormal><STRONG><FONT size=5>Appendix A: Special Standard Items</FONT></STRONG></P>
+<P class=MsoNormal><STRONG><FONT 
+size=5>Appendix A: Special Standard 
+Items</FONT></STRONG></P>
 <P class=MsoNormal>Map</P>
 <UL>
   <LI>
@@ -2188,8 +2381,8 @@ be ignored by the command to save the mobs.</P>
 LockableContainer, etc</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>misc text - The name of the key which 
-  will open this container.</DIV></LI></UL>
+  <DIV class=MsoNormal>misc text - The name of the key 
+  which will open this container.</DIV></LI></UL>
 <P class=MsoNormal>StdJournal</P>
 <UL>
   <LI>
@@ -2242,9 +2435,10 @@ item)</P>
 Weapons)</P>
 <UL>
   <LI>
-  <DIV class=MsoNormal>ability - Equates to a 5 point attack 
-  bonus, and 1 point damage bonus for every ability point above 0.&nbsp; Makes 
-  the weapon magical. Negative ability points do the opposite.</DIV></LI></UL>
+  <DIV class=MsoNormal>ability - Equates to a 5 point 
+  attack bonus, and 1 point damage bonus for every ability point above 0.&nbsp; 
+  Makes the weapon magical. Negative ability points do the 
+opposite.</DIV></LI></UL>
 <P class=MsoNormal>ScrollSpell</P>
 <UL>
   <LI>
@@ -2284,14 +2478,22 @@ Wand_Nourishment</P>
   <LI>
   <DIV class=MsoNormal>ability - For levels 12 and higher, 
   the amount of 10 point armor protection afforded.</DIV></LI></UL>
+<P class=MsoNormal>StdTitle</P>
+<UL>
+  <LI>
+  <DIV class=MsoNormal>misc text - the room ID of the room 
+  which has the Prop_RoomForSale property.</DIV></LI></UL>
 <P class=MsoNormal>ManualClasses, ManualAdvancement, 
 etc.</P>
 <UL>
   <LI>
   <DIV class=MsoNormal>usesRemaining - The number of types 
   the manual may be read before becomming ineffective.</DIV></LI></UL>
-<P class=MsoNormal><STRONG><FONT size=5></FONT></STRONG>&nbsp;</P>
-<P class=MsoNormal><STRONG><FONT size=5>Appendix B: Special Standard MOBs</FONT></STRONG></P>
+<P class=MsoNormal><STRONG><FONT 
+size=5></FONT></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT 
+size=5>Appendix B: Special Standard 
+MOBs</FONT></STRONG></P>
 <P class=MsoNormal>Dragon</P>
 <DIV class=MsoNormal>
 <UL>
@@ -2485,7 +2687,8 @@ weapons that do a specific amount of damage which are balanced with the
 WEAPONSMITHING skills, use the following formula:</P>
 <P>Level= ((2*D)/(H+1) + (A-W)/5 +R)*((R/W)+2)+1</P>
 <P>where</P>
-<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
+<P>D=base DAMAGE of the weapon before material 
+modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon</P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 Round the final number down, to a minimum level of 1.&nbsp; Some general 
@@ -2835,7 +3038,8 @@ following formula:
 <P>where 
 <P>L=Level required to use weapon,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon 
-<P>Round the final number down, to a minimum level of 1.</P>
+<P>Round the final number down, to a minimum level of 
+1.</P>
 <P><U>Determining Weapon Cost</U> 
 <P>
 <P></P>
@@ -2843,10 +3047,11 @@ weapon
 To compute the weapon’s base value use the following equation: 
 <P>Cost of Item= 2*(W*V+(5*D+A+R*10)*D)/(H+1) 
 <P>where 
-<P>D=base DAMAGE of the weapon before material modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
+<P>D=base DAMAGE of the weapon before material 
+modifiers,<BR>H=number of hands required to wield<BR>A=base ATTACK bonus of the weapon<BR>R=REACH/RANGE of weapon<BR>W=WEIGHT of 
 weapon<BR>V=VALUE of the material the weapon is made from 
-<P><U>Determining Weapon Damage Type</U> 
-
+<P><U>Determining Weapon Damage 
+Type</U> 
 <P>
 <P></P>
 <P>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -3374,8 +3579,8 @@ Shirt (7 points) would provide a total ARMOR VALUE of 21 (7*3), and weigh 63
       <P align=center>3</P></TD>
     <TD vAlign=top width=118>
       <P align=center>4.5</P></TD></TR></TABLE></P>
-<P>&nbsp;The armor weights are recommendations.&nbsp; If you 
-wish to create a lighter version of chain mail that gives the same armor 
+<P>&nbsp;The armor weights are recommendations.&nbsp; If 
+you wish to create a lighter version of chain mail that gives the same armor 
 protection (like Elven Chainmail) go right ahead.&nbsp; It will not increase the 
 level, it will increase the COST of the armor.</P>
 <P><U>Armor Cost</U> 
@@ -5214,22 +5419,24 @@ step.</P>
       <P align=center>&nbsp;</P></TD></TR></TABLE></P>
 <P>
 <P></P>
-<P class=MsoNormal><STRONG><FONT size=5></FONT></STRONG>&nbsp;</P>
-<P class=MsoNormal><STRONG><FONT size=5>Appendix D: Builder's FAQ</FONT></STRONG></P>
-<P align=left><FONT color=darkviolet size=4><STRONG>Q. How can I get mobs into Grid 
-areas?</STRONG></FONT></P>
-<P align=left><FONT color=black><STRONG>A.</STRONG> Locale types like MountainsGrid, WoodsGrid, 
-WoodsMaze, PlainsGrid, DesertMaze, etc.. can all contain rejuvinating mobs in 
-them.&nbsp; However, two rules need to be followed for this to work 
-properly.&nbsp; The first is that you can only save mobs which are in the parent 
-Grid room itself.&nbsp; If you have SYSMSGS on, you can tell which room this is 
-because it is the only one with a valid room ID ("MyArea#123") in the 
-description.&nbsp; The child rooms will have blank () room IDs.&nbsp; Since no 
-one ever actually walks into the parent Grid room, the only way to get to it to 
-deposit mobs is using the Archon GOTO command.&nbsp; The second of the two rules 
-is that you must give the mob the Mobile behavior.&nbsp; The mobile behavior is 
-specially coded so that it will take the mob to a random room inside the grid 
-the first time the mob tries to move.&nbsp; </FONT></P>
+<P class=MsoNormal><STRONG><FONT 
+size=5></FONT></STRONG>&nbsp;</P>
+<P class=MsoNormal><STRONG><FONT 
+size=5>Appendix D: Builder's FAQ</FONT></STRONG></P>
+<P align=left><FONT color=darkviolet size=4><STRONG>Q. How can I get mobs into 
+Grid areas?</STRONG></FONT></P>
+<P align=left><FONT color=black><STRONG>A.</STRONG> Locale types like 
+MountainsGrid, WoodsGrid, WoodsMaze, PlainsGrid, DesertMaze, etc.. can all 
+contain rejuvinating mobs in them.&nbsp; However, two rules need to be followed 
+for this to work properly.&nbsp; The first is that you can only save mobs which 
+are in the parent Grid room itself.&nbsp; If you have SYSMSGS on, you can tell 
+which room this is because it is the only one with a valid room ID 
+("MyArea#123") in the description.&nbsp; The child rooms will have blank () room 
+IDs.&nbsp; Since no one ever actually walks into the parent Grid room, the only 
+way to get to it to deposit mobs is using the Archon GOTO command.&nbsp; The 
+second of the two rules is that you must give the mob the Mobile behavior.&nbsp; 
+The mobile behavior is specially coded so that it will take the mob to a random 
+room inside the grid the first time the mob tries to move.&nbsp; </FONT></P>
 <P align=left><STRONG><FONT 
 color=#9400d3 size=4>Q. How does the CoffeeMud News feature 
 work?</FONT></STRONG></P>
@@ -5242,10 +5449,10 @@ available to players, or restricted to Archons as you like.</P>
 <P align=left><STRONG><FONT 
 color=#9400d3 size=4>Q. How to Clans 
 work?</FONT></STRONG></P>
-<P align=left><STRONG>A.</STRONG> First, 
-you need to make a StdClanMaster MOB somewhere in the world to create clans. A 
-player would see him, and use the 'clancreate' command to create their new 
-clan.&nbsp;The StdClanMaster then&nbsp;puts your clan into a pending state 
+<P align=left><STRONG>A.</STRONG> 
+First, you need to make a StdClanMaster MOB somewhere in the world to create 
+clans. A player would see him, and use the 'clancreate' command to create their 
+new clan.&nbsp;The StdClanMaster then&nbsp;puts your clan into a pending state 
 awaiting new members. You have to get at least MINCLANMEMBERS amount of new 
 members before it will activate you (Set in the INI file). Activation means you 
 will be visible in the listing, can buy land, can have bank accounts, and can 
