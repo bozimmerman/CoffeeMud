@@ -174,8 +174,6 @@ public class Sense
 		   return false;
 		if((isHidden(seen))&&(!canSeeHidden(seer)))
 		   return false;
-		if((isSneaking(seen))&&(!canSeeSneakers(seer)))
-			return false;
 		if((seer instanceof MOB)&&(!(seen instanceof Room)))
 		{
 			MOB mob=(MOB)seer;
