@@ -176,11 +176,13 @@ public class CommandSet extends Hashtable
 	public static final int FEED=163;
 	public static final int DRESS=164;
 	public static final int UNDRESS=165;
+	public static final int ANNOUNCE=166;
 
 	private CommandSet()
 	{
 		put("AFFECT",new Integer(AFFECT));
 			put("AFF",new Integer(AFFECT));
+		put("ANNOUNCE",new Integer(ANNOUNCE));
 		put("ANSI",new Integer(ANSI));
 			put("COLOR",new Integer(ANSI));
 			put("COLOUR",new Integer(ANSI));

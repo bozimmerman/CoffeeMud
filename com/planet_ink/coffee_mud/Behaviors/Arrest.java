@@ -1067,6 +1067,8 @@ public class Arrest extends StdBehavior
 								W.state=STATE_MOVING;
 								Ability A=CMClass.getAbility("Skill_HandCuff");
 								if(A!=null)	A.invoke(officer,W.criminal,true);
+								W.criminal.makePeace();
+								makePeace(officer.location());
 								A=W.criminal.fetchAffect("Fighter_Whomp");
 								if(A!=null)A.unInvoke();
 								A=W.criminal.fetchAffect("Skill_Trip");
@@ -1075,6 +1077,7 @@ public class Arrest extends StdBehavior
 								ExternalPlay.standIfNecessary(W.criminal);
 								A=CMClass.getAbility("Ranger_Track");
 								if(A!=null)	A.invoke(officer,Util.parse((String)laws.get("JUDGE")),null,true);
+								makePeace(officer.location());
 							}
 						}
 						else

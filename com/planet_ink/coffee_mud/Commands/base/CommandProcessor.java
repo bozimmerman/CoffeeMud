@@ -49,6 +49,12 @@ public class CommandProcessor
 				case CommandSet.AFFECT:
 					Scoring.affected(mob);
 					break;
+				case CommandSet.ANNOUNCE:
+					if(mob.isASysOp(mob.location()))
+						SysOpSkills.announce(mob,commands);
+					else
+						mob.tell("You are not powerful enough to do that.\n\r");
+					break;
 				case CommandSet.ANSI:
 					BasicSenses.ansi(mob,1);
 					break;

@@ -27,13 +27,10 @@ public class Mobile extends ActiveTicker
 		if((canAct(ticking,tickID))&&(ticking instanceof MOB))
 		{
 			// ridden things dont wander!
-			if(ticking instanceof Rideable)
-				if(((Rideable)ticking).numRiders()>0)
-					return;
 			MOB mob=(MOB)ticking;
-			if(((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location()))
-			||(!Sense.canTaste(mob)))
-			   return;
+			if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
+			||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
+				return;
 			
 			Room thisRoom=mob.location();
 			if(thisRoom instanceof GridLocale)
