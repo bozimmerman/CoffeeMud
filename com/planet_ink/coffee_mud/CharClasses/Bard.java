@@ -85,6 +85,34 @@ public class Bard extends StdCharClass
 
 		}
 	}
+	
+	public void gainExperience(MOB mob, 
+							   MOB victim, 
+							   String homage, 
+							   int amount)
+	{
+		double theAmount=new Integer(amount).doubleValue();
+		if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
+		{
+			Hashtable H=mob.getGroupMembers(new Hashtable());
+			for(Enumeration e=H.elements();e.hasMoreElements();)
+			{
+				MOB mob2=(MOB)e.nextElement();
+				if((mob2!=mob)
+				   &&(mob2!=victim)
+				   &&(mob2.location()!=null)
+				   &&(mob2.location()==mob.location()))
+				{
+					if(!mob2.isMonster())
+						theAmount+=(theAmount/5.0);
+					else
+					if(mob2.charStats().getStat(CharStats.INTELLIGENCE)>3)
+						theAmount+=1.0;
+				}
+			}
+		}
+		super.gainExperience(mob,victim,homage,(int)Math.round(theAmount));
+	}
 
 	public boolean playerSelectable()
 	{
@@ -119,6 +147,7 @@ public class Bard extends StdCharClass
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear non-metal armor to avoid skill failure.";}
 	public String otherLimitations(){return "";}
+	public String otherBonuses(){return "Receives bonus combat experience when in a group.";}
 	public void outfit(MOB mob)
 	{
 		Weapon w=(Weapon)CMClass.getWeapon("Shortsword");

@@ -183,10 +183,9 @@ public class StdCharClass implements CharClass
 							   String homage, 
 							   int amount)
 	{
-		double theAmount=new Integer(amount).doubleValue();
-
 		if(victim!=null)
 		{
+			double theAmount=new Integer(amount).doubleValue();
 			int levelLimit=Util.s_int(CommonStrings.getVar(CommonStrings.SYSTEM_EXPRATE));
 			int levelDiff=victim.envStats().level()-mob.envStats().level();
 
@@ -198,11 +197,11 @@ public class StdCharClass implements CharClass
 				double levelFactor=Util.div(levelDiff,levelLimit);
 				theAmount=theAmount+Util.mul(levelFactor,amount);
 			}
-			
+				
 			double victimFactor=Util.div((500.0-new Integer(victim.getAlignment()).doubleValue()),10.0);
 			double mobFactor=Util.div(Math.abs(500.0-new Integer(mob.getAlignment()).doubleValue()),1000.0)+0.5;
 			mob.setAlignment(mob.getAlignment()+(int)Math.round(mobFactor*victimFactor));
-			
+				
 			double alignExpFactor=Math.abs(Util.div(victim.getAlignment()-mob.getAlignment(),1000.0));
 			amount=(int)Math.round((theAmount/2.0)+((theAmount/2.0)*alignExpFactor));
 		}
@@ -517,12 +516,6 @@ public class StdCharClass implements CharClass
 			}
 		}
 		if(beneficiaries.size()>0)
-		{
-			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
-			{
-				MOB mob=(MOB)e.nextElement();
-				totalLevels+=mob.envStats().level();
-			}
 			for(Enumeration e=beneficiaries.elements();e.hasMoreElements();)
 			{
 				MOB mob=(MOB)e.nextElement();
@@ -530,7 +523,6 @@ public class StdCharClass implements CharClass
 				if(myAmount>100) myAmount=100;
 				mob.charStats().getCurrentClass().gainExperience(mob,killed,"",myAmount);
 			}
-		}
 		return beneficiaries;
 	}
 }

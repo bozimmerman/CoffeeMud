@@ -30,7 +30,6 @@ add currents to water. Scratch that, you can simulate currents by the teleport b
 an ability to tell how many HP a MOB has
 ability to resist WHOMP
 Thief--Bonus for stealing, based on TARGET level.  about 1/6 the XP as for killing.
-Bard--Bonus XP from groups (similar 
 gen-wizard player editor
 property to force an object to decay once worn/picked up
 viewer/editor for items/mobs worldwide
@@ -45,7 +44,6 @@ new items to add to the CARVE list and the SCULPT list Toy,Door, Wall, Chop Stic
 the Artisan is created, players can start building their houses at high enough levels, in appropriate areas.
 Steps would allow him to build up or down. Roofs and floors are free. Each new room requires 3 new walls before you can expand it further.
 Ambusher—This gives the MOB an aggressive attitude, with the hide and backstab skills.  Ambushers may have a delay on them, a number of ticks before they come out of hiding and attack.
-DIETY—This just gives a MOB a chosen Diety.  Characters may select a diety at any given time, but it costs 100 XP to change deities.
 ReligiousHelper—Aids other MOBs of given religion
 Nonconvertable—MOB won’t accept another religion.
 IMPROVED TURNING:  Affects your bonus to Turn or control.  Don’t give this to anyone yet, but specialty clerics will need to have access to it.

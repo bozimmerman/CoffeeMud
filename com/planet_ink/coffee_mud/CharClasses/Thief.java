@@ -106,6 +106,21 @@ public class Thief extends StdCharClass
 	}
 	public String weaponLimitations(){return "To avoid fumble chance, must be sword, ranged, thrown, natural, or dagger-like weapon.";}
 	public String armorLimitations(){return "Must wear leather, cloth, or vegetation based armor to avoid skill failure.";}
+	public void affect(MOB myChar, Affect affect)
+	{
+		if(affect.amISource(myChar)
+		   &&(!myChar.isMonster())
+		   &&(affect.sourceCode()==Affect.MSG_THIEF_ACT)
+		   &&(affect.target()!=null)
+		   &&(affect.target() instanceof MOB)
+		   &&(affect.targetMessage()==null)
+		   &&(affect.tool()!=null)
+		   &&(affect.tool() instanceof Ability)
+		   &&(affect.tool().ID().equals("Thief_Steal")
+			  ||affect.tool().ID().equals("Thief_Swipe")))
+			gainExperience(myChar,(MOB)affect.target()," for a successful "+affect.tool().name(),10);
+		super.affect(myChar,affect);
+	}
 	public boolean okAffect(MOB myChar, Affect affect)
 	{
 		if(affect.amISource(myChar)&&(!myChar.isMonster()))
@@ -162,7 +177,7 @@ public class Thief extends StdCharClass
 		mob.recoverMaxState();
 	}
 
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level after 1st.";}
+	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defense every level after 1st.  Bonus experience for using certain skills.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
