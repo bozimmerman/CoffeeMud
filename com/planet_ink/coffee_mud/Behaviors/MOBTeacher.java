@@ -127,10 +127,14 @@ public class MOBTeacher extends CombatAbilities
 		ensureCharClass();
 	}
 
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public boolean okAffect(Environmental host, Affect msg)
 	{
-		if(Util.bset(affectedMOB.getBitmap(),MOB.ATT_NOTEACH))
-			affectedMOB.setBitmap(Util.unsetb(affectedMOB.getBitmap(),MOB.ATT_NOTEACH));
+		if(host instanceof MOB)
+		{
+			if(Util.bset(((MOB)host).getBitmap(),MOB.ATT_NOTEACH))
+				((MOB)host).setBitmap(Util.unsetb(((MOB)host).getBitmap(),MOB.ATT_NOTEACH));
+		}
+		return super.okAffect(host,msg);
 	}
 	public void affect(Environmental affecting, Affect affect)
 	{
