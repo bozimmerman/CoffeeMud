@@ -97,6 +97,10 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdateRoom(room);
 	}
+	public String queryLastIP(String name)
+	{
+		return MOBloader.DBQueryLastIP(name);
+	}
 	public void DBUpdateMOB(MOB mob)
 	{
 		MOBloader.DBUpdate(mob);

@@ -50,7 +50,12 @@ public class PlayerData extends StdWebMacro
 		"MANA",
 		"MOVEMENT",
 		"RIDING",
-		"HEIGHT"
+		"HEIGHT",
+		"LASTIP",
+		"QUESTPOINTS",
+		"BASEHITPOINTS",
+		"BASEMANA",
+		"BASEMOVEMENT",
 	};
 	public static int getBasicCode(String val)
 	{
@@ -123,13 +128,22 @@ public class PlayerData extends StdWebMacro
 		case 33: str.append(M.envStats().weight()+", "); break;
 		case 34: str.append(Util.capitalize(M.baseCharStats().genderName())+", "); break;
 		case 35: str.append(M.lastDateTime()+", "); break;
-		case 36: str.append(M.baseState().getHitPoints()+", "); break;
-		case 37: str.append(M.baseState().getMana()+", "); break;
-		case 38: str.append(M.baseState().getMovement()+", "); break;
+		case 36: str.append(M.curState().getHitPoints()+", "); break;
+		case 37: str.append(M.curState().getMana()+", "); break;
+		case 38: str.append(M.curState().getMovement()+", "); break;
 		case 39: if(M.riding()!=null)
 					 str.append(M.riding().name()+", ");
 				 break;
 		case 40: str.append(M.baseEnvStats().height()+", "); break;
+		case 41: if(!M.isMonster())
+					 str.append(M.session().getAddress()+", ");
+				 else
+					 str.append(ExternalPlay.queryLastIP(M.Name())+", "); 
+				 break;
+		case 42:  str.append(M.getQuestPoint()+", "); break;
+		case 43: str.append(M.maxState().getHitPoints()+", "); break;
+		case 44: str.append(M.maxState().getMana()+", "); break;
+		case 45: str.append(M.maxState().getMovement()+", "); break;
 		}
 		return str.toString();
 	}
@@ -173,6 +187,12 @@ public class PlayerData extends StdWebMacro
 					else
 					if(stat.startsWith("SAVE "))
 						stat=((String)Util.parse(stat).lastElement());
+					CharStats C=M.charStats();
+					if(parms.containsKey("BASE"+stat))
+					{
+						stat=stat.substring(4);
+						C=M.baseCharStats();
+					}
 					if(parms.containsKey(stat))
 					{
 						if(i>CharStats.NUM_BASE_STATS)

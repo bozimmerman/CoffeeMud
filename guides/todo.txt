@@ -1,5 +1,5 @@
 Bard Subclasses
-Admin macros for the grinder (view logs, purge players, etc..)
+Admin macros for the grinder (view logs, manage banage)
 Scriptable SPEECH_PROG match (* %d %s) -- only matches match, followed by %d, %s.. with () retained in a variable $1
 Just a command that lets players knock on a door, causing the folk inside to hear a 'knonk on the door' or some such. 5 rooms deep indoors if HARD is used.
 News (Journal) reading macro
@@ -7,6 +7,7 @@ macro help files
 
 //****** next version ********************************************************
 friends list, for filter who
+Z-level for the GrinderMap (elevation)
 group formations as an alternative way of determining range
 ignore list, for ignoreing players/gossips/who/etc.. 
 Room descriptions varying by the time of day.

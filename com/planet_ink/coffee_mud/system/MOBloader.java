@@ -329,6 +329,25 @@ public class MOBloader
 		}
 	}
 
+	public static String DBQueryLastIP(String name)
+	{
+		DBConnection D=null;
+		String returnable="";
+		try
+		{
+			D=DBConnector.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
+			while(R.next())
+				returnable=DBConnections.getRes(R,"CMLSIP");
+			DBConnector.DBDone(D);
+		}
+		catch(SQLException sqle)
+		{
+			Log.errOut("MOB",sqle);
+			if(D!=null) DBConnector.DBDone(D);
+		}
+		return returnable;
+	}
 	public static void vassals(MOB mob, String leigeID)
 	{
 		DBConnection D=null;
@@ -603,7 +622,7 @@ public class MOBloader
 		}
 		DBUpdateItems(mob);
 		DBUpdateAbilities(mob);
-		mob.setUpdated();
+		mob.setUpdated(System.currentTimeMillis());
 	}
 	private static void DBUpdateContents(MOB mob, Vector V)
 	{

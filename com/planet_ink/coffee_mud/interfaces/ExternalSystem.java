@@ -31,6 +31,7 @@ public interface ExternalSystem
 	public void DBUpdateClan(String name, String clan, int role);
 	public void DBUpdateEmail(MOB mob);
 	public void listUsers(MOB mob, int sortBy);
+	public String queryLastIP(String name);
 	public Vector userList();
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);

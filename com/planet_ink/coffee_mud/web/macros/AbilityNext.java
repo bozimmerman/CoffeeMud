@@ -29,17 +29,8 @@ public class AbilityNext extends StdWebMacro
 		String playerName=(String)httpReq.getRequestParameters().get("PLAYER");
 		if((playerName!=null)&&(playerName.length()>0))
 		{
-			MOB M=CMMap.getPlayer(playerName);
-			if((M==null)&&(ExternalPlay.DBUserSearch(null,playerName)))
-			{
-				M=CMClass.getMOB("StdMOB");
-				M.setName(playerName);
-				ExternalPlay.DBReadMOB(M);
-				ExternalPlay.DBReadFollowers(M,false);
-			}
-			else
-			if(M==null)
-				playerName=null;
+			MOB M=PlayerNext.getMOB(playerName);
+			if(M==null)	playerName=null;
 		}
 
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)

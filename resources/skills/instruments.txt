@@ -1,6 +1,6 @@
-Clappers	1	10	2	2	GenItem	HELD&&WIELD	WOOD	
+a pair of Clappers	1	10	2	2	GenItem	HELD&&WIELD	WOOD	
 Pan Pipe	1	10	2	2	GenItem	HELD&&MOUTH	METAL	
-Symbols	2	15	3	3	GenItem	HELD&&WIELD	METAL	
+a pair of Symbols	2	15	3	3	GenItem	HELD&&WIELD	METAL	
 Kazoo	2	50	10	10	GenItem	HELD&&MOUTH	WOOD	
 Tamborine	3	30	6	6	GenItem	HELD&&WIELD	WOOD	
 Lyre	3	40	8	8	GenItem	HELD&&WIELD	WOOD	
@@ -15,7 +15,7 @@ Flute	8	60	12	12	GenItem	HELD&&MOUTH	METAL
 Bass Drum	8	100	40	40	GenItem	HELD&&WIELD	WOOD	
 Oboe	9	50	10	10	GenItem	HELD&&MOUTH	WOOD	
 Bugle	9	60	12	12	GenItem	HELD&&MOUTH	METAL	
-Castanets	10	30	6	6	GenItem	HELD&&WIELD	WOOD	
+a pair of Castanets	10	30	6	6	GenItem	HELD&&WIELD	WOOD	
 Harp	11	100	20	20	GenItem	HELD&&WIELD	WOOD	ELF   
 Bagpipes	12	100	20	20	GenItem	HELD&&MOUTH	WOOD	HUMAN
 Cornet	13	50	10	10	GenItem	HELD&&MOUTH	METAL	HALFLING

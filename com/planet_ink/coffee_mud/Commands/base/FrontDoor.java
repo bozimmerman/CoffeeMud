@@ -31,6 +31,27 @@ public class FrontDoor
 		return them;
 	}
 
+	private static boolean bannedName(String login)
+	{
+		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
+		if((banned!=null)&&(banned.size()>0))
+		for(int b=0;b<banned.size();b++)
+		{
+			String str=(String)banned.elementAt(b);
+			if(str.length()>0)
+			{
+				if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(login))) return true;
+				else
+				if(str.startsWith("*")&&str.endsWith("*")&&(login.indexOf(str.substring(1,str.length()-1))>=0)) return true;
+				else
+				if(str.startsWith("*")&&(login.endsWith(str.substring(1)))) return true;
+				else
+				if(str.endsWith("*")&&(login.startsWith(str.substring(0,str.length()-1)))) return true;
+			}
+		}
+		return false;
+	}
+	
 	private static boolean isOkName(String login)
 	{
 		if(login.length()>20) return false;
@@ -84,23 +105,7 @@ public class FrontDoor
 			if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
 				return false;
 		}
-		Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini"));
-		if((banned!=null)&&(banned.size()>0))
-		for(int b=0;b<banned.size();b++)
-		{
-			String str=(String)banned.elementAt(b);
-			if(str.length()>0)
-			{
-				if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(login))) return false;
-				else
-				if(str.startsWith("*")&&str.endsWith("*")&&(login.indexOf(str.substring(1,str.length()-1))>=0)) return false;
-				else
-				if(str.startsWith("*")&&(login.endsWith(str.substring(1)))) return false;
-				else
-				if(str.endsWith("*")&&(login.startsWith(str.substring(0,str.length()-1)))) return false;
-			}
-		}
-		return true;
+		return !bannedName(login);
 	}
 
 	public static boolean login(MOB mob)
@@ -123,6 +128,12 @@ public class FrontDoor
 			String password=mob.session().blockingIn();
 			if((mob.password().equalsIgnoreCase(password))&&(mob.Name().trim().length()>0))
 			{
+				if(bannedName(mob.Name()))
+				{
+					mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+					mob.session().setKillFlag(true);
+					return false;
+				}
 				if(((mob.getEmail()==null)||(mob.getEmail().length()==0))
 				   &&(!CommonStrings.getVar(CommonStrings.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION")))
 				{

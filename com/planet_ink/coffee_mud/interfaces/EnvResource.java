@@ -77,7 +77,7 @@ public interface EnvResource extends Item
 	public final static int RESOURCE_COPPER=MATERIAL_METAL|39;
 	public final static int RESOURCE_TIN=MATERIAL_METAL|40;
 	public final static int RESOURCE_MITHRIL=MATERIAL_MITHRIL|41;
-	public final static int RESOURCE_ADAMANTITE=MATERIAL_METAL|42;
+	public final static int RESOURCE_ADAMANTITE=MATERIAL_MITHRIL|42;
 	public final static int RESOURCE_STEEL=MATERIAL_METAL|43;
 	public final static int RESOURCE_BRASS=MATERIAL_METAL|44;
 	public final static int RESOURCE_WOOD=MATERIAL_WOODEN|45;
@@ -305,7 +305,7 @@ public interface EnvResource extends Item
 	{RESOURCE_PAPER,10,0,0},
 	{RESOURCE_CLAY,1,50,1}, 
 	{RESOURCE_CHINA,30,0,3}, 
-	{RESOURCE_DIAMOND,5000,1,4}, 
+	{RESOURCE_DIAMOND,5000,1,9}, 
 	{RESOURCE_CRYSTAL,10,5,3}, 
 	{RESOURCE_GEM,100,1,3}, 
 	{RESOURCE_PEARL,1000,1,4}, 

@@ -6,12 +6,37 @@
 <head>
 </head>
 <body BGCOLOR=BLACK>
-@PlayerDelete@
+@if?CheckReqParm?FUNCTION=DELETE@ @PlayerDelete@ 
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 window.close();
 //-->
 </SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=BOOT@ @PlayerOnline?BOOT@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Player @PlayerID@ has been booted from the system.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=BANBYNAME@ @PlayerOnline?BANBYNAME@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Player @PlayerID@ has been banned.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=BANBYIP@ @PlayerOnline?BANBYIP@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Player IP Address has been banned.');
+document.location.href='player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER=@PlayerID@';
+//-->
+</SCRIPT>
+@endif@
 </BODY>
 </HTML>
 @endif@
