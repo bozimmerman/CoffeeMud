@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -23,13 +24,13 @@ public class StdCoins extends StdItem implements Coins
 {
 	public String ID(){	return "StdCoins";}
 	public int value(){	return envStats().ability();}
+	double denomination=1.0;
+	String currency="";
+	
 	public StdCoins()
 	{
 		super();
-		setName("a pile of gold coins");
-		setDisplayText("some gold coins sit here.");
 		myContainer=null;
-		setDescription("Looks like someone left some gold sitting around.");
 		myUses=Integer.MAX_VALUE;
 		material=EnvResource.RESOURCE_GOLD;
 		myWornCode=0;
@@ -37,25 +38,67 @@ public class StdCoins extends StdItem implements Coins
 		recoverEnvStats();
 	}
 
-
 	public String name()
 	{
-		if(envStats().ability()==1)
-			return "a gold coin";
-		else
-		if(envStats().ability()==2)
-			return "two gold coins";
-		else
-			return "a pile of "+envStats().ability()+" gold coins";
+        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
 	}
-	public int numberOfCoins(){return envStats().ability();}
-	public void setNumberOfCoins(int number){baseEnvStats().setAbility(number); recoverEnvStats();}
 	public String displayText()
 	{
-		if(envStats().ability()==1)
-			return name()+" sits here.";
-		else
-			return name()+" sit here.";
+        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":"lie here.");
+	}
+	
+	public void setDynamicMaterial()
+	{
+	    if((EnglishParser.containsString(name(),"note"))
+	    ||(EnglishParser.containsString(name(),"bill"))
+	    ||(EnglishParser.containsString(name(),"dollar")))
+	        setMaterial(EnvResource.RESOURCE_PAPER);
+	    else
+		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+		    if(EnglishParser.containsString(name(),EnvResource.RESOURCE_DESCS[i]))
+		    {
+		        setMaterial(EnvResource.RESOURCE_DATA[i][0]);
+		        break;
+		    }
+		setDescription(BeanCounter.getConvertableDescription(getCurrency(),getDenomination()));
+	}
+	public long getNumberOfCoins(){return envStats().ability();}
+	public void setNumberOfCoins(long number)
+	{
+	    if(number<=Integer.MAX_VALUE)
+		    baseEnvStats().setAbility((int)number);
+	    else
+	        baseEnvStats().setAbility(Integer.MAX_VALUE);
+    }
+	public double getDenomination(){return denomination;}
+	public void setDenomination(double valuePerCoin)
+	{
+	    denomination=valuePerCoin;
+	    setMiscText(getCurrency()+"/"+valuePerCoin);
+	}
+	public double getTotalValue(){return Util.mul(getDenomination(),getNumberOfCoins());}
+	public String getCurrency(){ return currency;}
+	public void setCurrency(String named)
+	{
+	    currency=named;
+	    setMiscText(named+"/"+getDenomination());
+	}
+	
+	public void setMiscText(String text)
+	{
+	    super.setMiscText(text);
+	    int x=text.indexOf("/");
+	    if(x>=0)
+	    {
+	        currency=text.substring(0,x);
+	        denomination=Util.s_double(text.substring(x+1));
+	        setDynamicMaterial();
+	    }
+	    else
+	    {
+	        setDenomination(0.0);
+	        setCurrency("");
+	    }
 	}
 	public void recoverEnvStats()
 	{
@@ -75,6 +118,8 @@ public class StdCoins extends StdItem implements Coins
 				if((I!=null)
 				   &&(I!=this)
 				   &&(I instanceof Coins)
+				   &&(((Coins)I).getDenomination()==getDenomination())
+				   &&(((Coins)I).getCurrency().equals(getCurrency()))
 				   &&(I.container()==container()))
 				{
 					alternative=(Coins)I;
@@ -86,18 +131,14 @@ public class StdCoins extends StdItem implements Coins
 		if(owner() instanceof MOB)
 		{
 			MOB M=(MOB)owner();
-			if(container()==null)
-			{
-				M.setMoney(M.getMoney()+numberOfCoins());
-				destroy();
-				return true;
-			}
 			for(int i=0;i<M.inventorySize();i++)
 			{
 				Item I=M.fetchInventory(i);
 				if((I!=null)
 				   &&(I!=this)
 				   &&(I instanceof Coins)
+				   &&(((Coins)I).getDenomination()==getDenomination())
+				   &&(((Coins)I).getCurrency().equals(getCurrency()))
 				   &&(I.container()==container()))
 				{
 					alternative=(Coins)I;
@@ -107,32 +148,10 @@ public class StdCoins extends StdItem implements Coins
 		}
 		if(alternative!=null)
 		{
-			alternative.setNumberOfCoins(alternative.numberOfCoins()+numberOfCoins());
+			alternative.setNumberOfCoins(alternative.getNumberOfCoins()+getNumberOfCoins());
 			destroy();
 			return true;
 		}
 		return false;
-	}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
-		switch(msg.targetMinor())
-		{
-		case CMMsg.TYP_GET:
-		case CMMsg.TYP_REMOVE:
-			if((msg.amITarget(this))||((msg.tool()==this)))
-			{
-				setContainer(null);
-				unWear();
-				destroy();
-				msg.source().setMoney(msg.source().getMoney()+envStats().ability());
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-					msg.source().location().recoverRoomStats();
-			}
-			break;
-		default:
-			break;
-		}
 	}
 }

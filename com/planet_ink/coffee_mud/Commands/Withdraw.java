@@ -40,64 +40,41 @@ public class Withdraw extends StdCommand
 			mob.tell("Withdraw what or how much?");
 			return false;
 		}
-		String str=(String)commands.firstElement();
-		if(((String)commands.lastElement()).equalsIgnoreCase("coins"))
+		String str=Util.combine(commands,0);
+		if(str.equalsIgnoreCase("all")) str=""+Integer.MAX_VALUE;
+	    long numCoins=EnglishParser.numPossibleGold(str);
+	    String currency=EnglishParser.numPossibleGoldCurrency(shopkeeper,str);
+	    double denomination=EnglishParser.numPossibleGoldDenomination(shopkeeper,currency,str);
+		if(((numCoins==0)||(denomination==0.0))&&(!str.equalsIgnoreCase("all")))
 		{
-			if((!str.equalsIgnoreCase("all"))
-			&&(Util.s_int((String)commands.firstElement())<=0))
-			{
-				mob.tell("Withdraw how much?");
-				return false;
-			}
-
-			commands.removeElement(commands.lastElement());
-		}
-		if(((String)commands.lastElement()).equalsIgnoreCase("gold"))
-		{
-			if((!str.equalsIgnoreCase("all"))
-			&&(Util.s_int((String)commands.firstElement())<=0))
-			{
-				mob.tell("Withdraw how much?");
-				return false;
-			}
-			commands.removeElement(commands.lastElement());
+			mob.tell("Withdraw how much?");
+			return false;
 		}
 
-		String thisName=Util.combine(commands,0);
 		Item thisThang=null;
-		if(thisName.equalsIgnoreCase("all"))
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob,""+Integer.MAX_VALUE);
-		else
-			thisThang=((Banker)shopkeeper).findDepositInventory(mob,thisName);
-		if((thisThang==null)
+		thisThang=((Banker)shopkeeper).findDepositInventory(mob,str);
+		if((!str.equalsIgnoreCase(""+Integer.MAX_VALUE))&&(thisThang instanceof Coins))
+		    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+		
+		if(((thisThang==null)||((thisThang instanceof Coins)&&(((Coins)thisThang).getNumberOfCoins()<=0)))
 		&&(((Banker)shopkeeper).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
 		&&(mob.isMarriedToLiege()))
 		{
 			MOB mob2=CMMap.getPlayer(mob.getLiegeID());
-			if(thisName.equalsIgnoreCase("all"))
-				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,""+Integer.MAX_VALUE);
-			else
-				thisThang=((Banker)shopkeeper).findDepositInventory(mob2,thisName);
+			thisThang=((Banker)shopkeeper).findDepositInventory(mob2,str);
+			if((!str.equalsIgnoreCase(""+Integer.MAX_VALUE))&&(thisThang instanceof Coins))
+			    thisThang=BeanCounter.makeCurrency(currency,denomination,numCoins);
+		    if((thisThang==null)||(((Coins)thisThang).getNumberOfCoins()<=0))
+		    {
+				mob.tell("Withdraw how much?");
+				return false;
+		    }
 		}
 
 		if((thisThang==null)||(!Sense.canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("That doesn't appear to be available.  Try LIST.");
 			return false;
-		}
-		if(thisThang instanceof Coins)
-		{
-			Coins oldThang=(Coins)thisThang;
-			if(!thisName.equalsIgnoreCase("all"))
-			{
-				thisThang=(Item)oldThang.copyOf();
-				((Coins)thisThang).setNumberOfCoins(Util.s_int(thisName));
-				if(((Coins)thisThang).numberOfCoins()<=0)
-				{
-					mob.tell("Withdraw how much?");
-					return false;
-				}
-			}
 		}
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_WITHDRAW,"<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".");
 		if(!mob.location().okMessage(mob,newMsg))

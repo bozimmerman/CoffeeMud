@@ -94,6 +94,11 @@ public class Dress extends StdCommand
 					mob.tell("You might want to remove that first.");
 					return false;
 				}
+				if(item instanceof Coins)
+				{
+				    mob.tell("I don't think you want to dress someone in "+item.name()+".");
+				    return false;
+				}
 				if(target.isInCombat())
 				{
 					mob.tell("Not while "+target.name()+" is in combat!");

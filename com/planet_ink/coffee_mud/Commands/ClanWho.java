@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -51,6 +52,7 @@ public class ClanWho extends Who
 				&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
 						||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level()))))
 				&&(mob2.getClanID().equals(mob.getClanID()))
+				&&(Sense.isInTheGame(mob2,true))
 				&&(mob2.envStats().level()>0))
 					msg.append(showWhoShort(mob2));
 			}

@@ -109,12 +109,22 @@ public class Thief_Panhandling extends ThiefSkill
 						break;
 					}
 					if(((Dice.rollPercentage()*10)<mob2.getAlignment())
-					&&(mob2.getMoney()>0)
 					&&(Dice.rollPercentage()>mob2.charStats().getSave(CharStats.SAVE_JUSTICE)))
 					{
-						int amount=mob2.getMoney()/20;
-						if(amount<1) amount=1;
-						mob2.enqueCommand(Util.parse("GIVE "+amount+" \""+mob.Name()+"\""),1);
+					    double total=BeanCounter.getTotalAbsoluteNativeValue(mob2);
+					    if(total>1.0)
+					    {
+						    total=total/20.0;
+						    if(total<1.0) total=1.0;
+							Coins C=BeanCounter.makeBestCurrency(mob2,total);
+							if(C!=null)
+							{
+								BeanCounter.subtractMoney(mob2,total);
+								mob2.addInventory(C);
+								mob2.doCommand(Util.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""));
+								if(!C.amDestroyed()) C.putCoinsBack();
+							}
+					    }
 					}
 
 					mobsHitUp.addElement(mob2);

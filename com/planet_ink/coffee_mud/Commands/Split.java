@@ -30,15 +30,18 @@ public class Split extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("Split how much gold?");
+			mob.tell("Split how much?");
 			return false;
 		}
-		int gold=Util.s_int((String)commands.elementAt(1));
-		if(gold<0)
+		String itemID=Util.combine(commands,1);
+		long numGold=EnglishParser.numPossibleGold(itemID);
+		if(numGold<0)
 		{
-			mob.tell("Split how much gold?!?");
+			mob.tell("Split how much?!?");
 			return false;
 		}
+		String currency=EnglishParser.numPossibleGoldCurrency(mob,itemID);
+		double denom=EnglishParser.numPossibleGoldDenomination(mob,currency,itemID);
 
 		int num=0;
 		HashSet H=mob.getGroupMembers(new HashSet());
@@ -56,28 +59,32 @@ public class Split extends StdCommand
 		}
 		if(num==0)
 		{
-			mob.tell("No one appears to be eligible to receive any of your gold.");
+			mob.tell("No one appears to be eligible to receive any of your money.");
 			return false;
 		}
 
-		gold=(int)Math.floor(Util.div(gold,num+1));
-
-		if((gold*num)>mob.getMoney())
+		double totalAbsoluteValue=Util.mul(numGold,denom);
+		totalAbsoluteValue=Util.div(totalAbsoluteValue,num+1);
+		if((totalAbsoluteValue*num)>BeanCounter.getTotalAbsoluteValue(mob,currency))
 		{
-			mob.tell("You don't have that much gold.");
+			mob.tell("You don't have that much "+BeanCounter.getDenominationName(currency,denom)+".");
 			return false;
 		}
+		Vector V=BeanCounter.makeAllCurrency(currency,totalAbsoluteValue);
+		BeanCounter.subtractMoney(mob,totalAbsoluteValue*num);
 		for(Iterator e=H.iterator();e.hasNext();)
 		{
 			MOB recipient=(MOB)e.next();
-			mob.setMoney(mob.getMoney()-gold);
-			Item C=CMClass.getItem("StdCoins");
-			C.baseEnvStats().setAbility(gold);
-			C.recoverEnvStats();
-			mob.addInventory(C);
-			FullMsg newMsg=new FullMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
-			if(mob.location().okMessage(mob,newMsg))
-				mob.location().send(mob,newMsg);
+			for(int v=0;v<V.size();v++)
+			{
+			    Coins C=(Coins)V.elementAt(v);
+			    C=(Coins)C.copyOf();
+				mob.addInventory(C);
+				FullMsg newMsg=new FullMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+				if(mob.location().okMessage(mob,newMsg))
+					mob.location().send(mob,newMsg);
+				C.putCoinsBack();
+			}
 		}
 		return false;
 	}

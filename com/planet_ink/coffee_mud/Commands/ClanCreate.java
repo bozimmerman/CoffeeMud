@@ -36,9 +36,9 @@ public class ClanCreate extends BaseClanner
 				int cost=CommonStrings.getIntVar(CommonStrings.SYSTEMI_CLANCOST);
 				if(cost>0)
 				{
-					if(MoneyUtils.totalMoney(mob)<cost)
+					if(BeanCounter.getTotalAbsoluteNativeValue(mob)<new Integer(cost).doubleValue())
 					{
-						mob.tell("It costs "+cost+" gold to create a clan.  You don't have it.");
+						mob.tell("It costs "+BeanCounter.nameCurrencyShort(mob,cost)+" to create a clan.  You don't have it.");
 						return false;
 					}
 				}
@@ -78,7 +78,7 @@ public class ClanCreate extends BaseClanner
 								}
 								
 								if(cost>0)
-									MoneyUtils.subtractMoney(null,mob,cost);
+									BeanCounter.subtractMoney(mob,cost);
 								
 								Clan newClan=Clans.getClanType(Clan.TYPE_CLAN);
 								newClan.setName(doubleCheck);

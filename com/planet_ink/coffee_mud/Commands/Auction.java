@@ -72,7 +72,7 @@ public class Auction extends Channel
 			}
 			Vector V=new Vector();
 			if((commands.size()>2)
-			&&((Util.s_int((String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))
+			&&((EnglishParser.numPossibleGold((String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))
 			{
 				V.addElement(commands.lastElement());
 				commands.removeElementAt(commands.size()-1);

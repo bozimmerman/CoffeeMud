@@ -3046,7 +3046,9 @@ public class Import extends StdCommand
 					 ((Food)I).setNourishment(20*val1);
 					 break;
 			case 20: I=CMClass.getStdItem("StdCoins");
-					 I.baseEnvStats().setAbility(val1);
+					 ((Coins)I).setNumberOfCoins(val1);
+					 ((Coins)I).setDenomination(1.0);
+					 ((Coins)I).setCurrency("");
 					 break;
 			case 21: I=CMClass.getStdItem("GenItem"); break;
 			case 22: I=CMClass.getStdItem("GenBoat");

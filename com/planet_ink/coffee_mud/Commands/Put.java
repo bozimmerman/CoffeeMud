@@ -116,9 +116,13 @@ public class Put extends BaseItemParser
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 		do
 		{
-			Environmental putThis=EnglishParser.possibleGold(mob,thingToPut);
+			Environmental putThis=EnglishParser.bestPossibleGold(mob,null,thingToPut);
 			if(putThis!=null)
+			{
+			    if(((Coins)putThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToPut))
+			        return false;
 				allFlag=false;
+			}
 			else
 				putThis=mob.fetchCarried(null,thingToPut+addendumStr);
 			if(putThis==null) break;

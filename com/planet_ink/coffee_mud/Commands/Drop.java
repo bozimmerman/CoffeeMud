@@ -33,14 +33,12 @@ public class Drop extends BaseItemParser
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			if(dropThis instanceof Coins)
+			    ((Coins)dropThis).putCoinsBack();
 			return true;
 		}
-		else
 		if(dropThis instanceof Coins)
-		{
-			mob.setMoney(mob.getMoney()+((Coins)dropThis).numberOfCoins());
-			((Coins)dropThis).destroy();
-		}
+		    ((Coins)dropThis).putCoinsBack();
 		return false;
 	}
 
@@ -86,9 +84,13 @@ public class Drop extends BaseItemParser
 		String addendumStr="";
 		do
 		{
-			Item dropThis=EnglishParser.possibleGold(mob,whatToDrop+addendumStr);
+			Item dropThis=EnglishParser.bestPossibleGold(mob,null,whatToDrop+addendumStr);
 			if(dropThis!=null)
+			{
+			    if(((Coins)dropThis).getNumberOfCoins()<EnglishParser.numPossibleGold(whatToDrop+addendumStr))
+			        return false;
 				allFlag=false;
+			}
 			else
 				dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
 			if((dropThis==null)
@@ -127,11 +129,7 @@ public class Drop extends BaseItemParser
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<V.size();i++)
-		{
 			drop(mob,(Item)V.elementAt(i),false,true);
-			if(V.elementAt(i) instanceof Coins)
-				((Coins)V.elementAt(i)).putCoinsBack();
-		}
 		mob.location().recoverRoomStats();
 		mob.location().recoverRoomStats();
 		return false;

@@ -47,6 +47,15 @@ public class StdArea implements Area
 	protected String author="";
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
+	protected String currency="";
+	public void setCurrency(String newCurrency)
+	{
+	    if(currency.length()>0)
+	        BeanCounter.unloadCurrencySet(currency);
+	    currency=newCurrency;
+	    BeanCounter.getCurrencySet(currency);
+	}
+	public String getCurrency(){return currency;}
 
 	protected Vector affects=new Vector();
 	protected Vector behaviors=new Vector();

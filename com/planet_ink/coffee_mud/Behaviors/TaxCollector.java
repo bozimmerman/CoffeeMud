@@ -45,9 +45,9 @@ public class TaxCollector extends StdBehavior
 		graceTime=Util.getParmInt(newParms,"GRACE",1000*60*60);
 	}
 	
-	public int[] totalMoneyOwed(MOB M)
+	public double[] totalMoneyOwed(MOB collector,MOB M)
 	{
-	    int[] owed=new int[3];
+	    double[] owed=new double[3];
 	    if((peopleWhoOwe.contains(M.Name()))||((M.getClanID().length()>0)&&(peopleWhoOwe.contains(M.getClanID()))))
 	    {
 	        for(int t=0;t<taxableProperties.size();t++)
@@ -56,7 +56,7 @@ public class TaxCollector extends StdBehavior
 			    if((T.landOwner().equals(M.Name())
 			            ||((M.getClanID().length()>0)&&T.landOwner().equals(M.getClanID())))
 	            &&(T.backTaxes()>0))
-	                owed[2]+=T.backTaxes();
+	                owed[2]+=new Integer(T.backTaxes()).doubleValue();
 	        }
 	    }
 		Law theLaw=CoffeeUtensils.getTheLaw(M.location(),M);
@@ -64,10 +64,10 @@ public class TaxCollector extends StdBehavior
 		{
 			double cittax=Util.s_double((String)theLaw.taxLaws().get("CITTAX"));
 			if(cittax>0.0)
-			    owed[1]=(int)Math.round(Util.mul(MoneyUtils.totalMoney(M),Util.div(cittax,100.0)));
+			    owed[1]=Util.mul(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),Util.div(cittax,100.0));
 		}
 		else
-			owed[1]=MoneyUtils.totalMoney(M)/10;
+			owed[1]=Util.div(BeanCounter.getTotalAbsoluteShopKeepersValue(M,collector),10.0);
 		owed[0]=owed[1]+owed[2];
 		return owed;
 	}
@@ -82,16 +82,13 @@ public class TaxCollector extends StdBehavior
 			&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 			&&(msg.tool() instanceof Coins))
 			{
-				int paidAmount=((Coins)msg.tool()).numberOfCoins();
-				if(paidAmount<=0) return;
-			    int[] owed=totalMoneyOwed(msg.source());
+				double paidAmount=((Coins)msg.tool()).getTotalValue();
+				if(paidAmount<=0.0) return;
+			    double[] owed=totalMoneyOwed(mob,msg.source());
 	            if(treasuryR!=null)
 	            {
-    				Coins COIN=(Coins)CMClass.getStdItem("StdCoins");
-    				COIN.setNumberOfCoins(paidAmount);
-    				COIN.setContainer(treasuryItem);
-    				treasuryR.addItem(COIN);
-    				COIN.putCoinsBack();
+	                Coins COIN=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(mob),paidAmount,treasuryR,treasuryItem);
+    				if(COIN!=null) COIN.putCoinsBack();
 	            }
 	            
 				if((demanded!=null)&&(demanded.contains(msg.source())))
@@ -132,7 +129,7 @@ public class TaxCollector extends StdBehavior
 					            else
 					            {
 					                paidAmount=0;
-					                T.setBackTaxes(T.backTaxes()-paidAmount);
+					                T.setBackTaxes(T.backTaxes()-(int)Math.round(paidAmount));
 					                T.updateTitle();
 					                break;
 					            }
@@ -160,9 +157,9 @@ public class TaxCollector extends StdBehavior
 				    if(((T.landOwner().equals(msg.source().Name())))
 				    &&(paidAmount>0))
 				    {
-			            T.setBackTaxes(T.backTaxes()-(paidAmount/numProperties));
+			            T.setBackTaxes(T.backTaxes()-(int)Math.round(Util.div(paidAmount,numProperties)));
 			            T.updateTitle();
-			            paidAmount-=(paidAmount/numProperties);
+			            paidAmount-=Util.div(paidAmount,numProperties);
 				    }
 				}
 				msg.addTrailerMsg(new FullMsg(mob,msg.source(),null,CMMsg.MSG_SPEAK,"<S-NAME> says 'Very good.  Your taxes are paid in full.' to <T-NAMESELF>."));
@@ -179,14 +176,17 @@ public class TaxCollector extends StdBehavior
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(msg.tool() instanceof Coins))
 		{
-		    int[] owe=totalMoneyOwed(msg.source());
-			int coins=((Coins)msg.tool()).numberOfCoins();
+		    String currency=BeanCounter.getCurrency(mob);
+		    double[] owe=totalMoneyOwed(mob,msg.source());
+			double coins=((Coins)msg.tool()).getTotalValue();
 			if((paid!=null)&&(paid.contains(msg.source())))
 		        owe[0]-=owe[1];
-			if(coins<owe[0])
+			String owed=BeanCounter.nameCurrencyShort(currency,owe[0]);
+			if((coins<owe[0])||(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(mob))))
 			{
 			    msg.source().tell(mob.name()+" refuses your money.");
-				CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owe[0]+".  Try again.",false,false);
+			    if(coins<owe[0])
+					CommonMsgs.say(mob,msg.source(),"That's not enough.  You owe "+owed+".  Try again.",false,false);
 				return false;
 			}
 		}
@@ -282,12 +282,14 @@ public class TaxCollector extends StdBehavior
 				}
 				if((!paid.contains(M))&&(demandDex<0))
 				{
-				    int[] owe=totalMoneyOwed(M);
+				    double[] owe=totalMoneyOwed(mob,M);
 				    StringBuffer say=new StringBuffer("");
+				    String currency=BeanCounter.getCurrency(mob);
+				    double denomination=BeanCounter.getLowestDenomination(currency);
 				    if(owe[1]>0)
-				    	say.append("You owe "+owe[1]+" gold in local taxes. ");
+				    	say.append("You owe "+BeanCounter.getDenominationName(currency,denomination,Math.round(Util.div(owe[1],denomination)))+" in local taxes. ");
 				    if(owe[2]>0)
-				    	say.append("You owe "+owe[2]+" in back property taxes");
+				    	say.append("You owe "+BeanCounter.getDenominationName(currency,denomination,Math.round(Util.div(owe[2],denomination)))+" in back property taxes");
 				    if(say.length()>0)
 				    {
 						CommonMsgs.say(mob,M,say.toString()+".  You must pay me immediately or face the consequences.",false,false);

@@ -173,17 +173,19 @@ public class Spell_Wish extends Spell
 			if((goldCheck.size()>1)
 			&&(Util.isNumber((String)goldCheck.firstElement()))
 			&&(Util.s_int((String)goldCheck.firstElement())>0)
-			&&(" coin gold coins ".indexOf(" "+Util.combine(goldCheck,1)+" ")>=0))
+			&&(EnglishParser.matchAnyCurrencySet(Util.combine(goldCheck,1))!=null))
 			{
-				Item newItem=CMClass.getItem("StdCoins");
-				((Coins)newItem).setNumberOfCoins(Util.s_int((String)goldCheck.firstElement()));
+				Coins newItem=(Coins)CMClass.getItem("StdCoins");
+				newItem.setCurrency(EnglishParser.matchAnyCurrencySet(Util.combine(goldCheck,1)));
+				newItem.setDenomination(EnglishParser.matchAnyDenomination(newItem.getCurrency(),Util.combine(goldCheck,1)));
+				newItem.setNumberOfCoins(Util.s_long((String)goldCheck.firstElement()));
 				newItem.setContainer(null);
 				newItem.wearAt(0);
 				newItem.recoverEnvStats();
 				mob.location().addItemRefuse(newItem,Item.REFUSE_PLAYER_DROP);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 				mob.location().recoverRoomStats();
-				int experienceRequired=((Coins)newItem).numberOfCoins()/10;
+				int experienceRequired=(int)Math.round(Util.div(newItem.getTotalValue(),10.0));
 				if(experienceRequired<=0)
 					experienceRequired=0;
 				wishDrain(mob,(baseLoss+experienceRequired),false);

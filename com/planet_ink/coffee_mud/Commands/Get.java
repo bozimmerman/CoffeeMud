@@ -69,33 +69,6 @@ public class Get extends BaseItemParser
 		return true;
 	}
 
-	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
-	{
-		int gold=EnglishParser.numPossibleGold(itemID);
-		if(gold>0)
-		{
-			for(int i=0;i<room.numItems();i++)
-			{
-				Item I=room.fetchItem(i);
-				if((I.container()==container)
-				&&(I instanceof Coins)
-				&&(Sense.canBeSeenBy(I,seer)))
-				{
-					if(((Coins)I).numberOfCoins()<=gold)
-						return I;
-					((Coins)I).setNumberOfCoins(((Coins)I).numberOfCoins()-gold);
-					Item C=CMClass.getItem("StdCoins");
-					C.baseEnvStats().setAbility(gold);
-					C.recoverEnvStats();
-					room.addItem(C);
-					C.setDispossessionTime(I.dispossessionTime());
-					return C;
-				}
-			}
-		}
-		return null;
-	}
-
 	protected Environmental unbundle(Item I)
 	{
 		if((I instanceof EnvResource)
@@ -143,7 +116,10 @@ public class Get extends BaseItemParser
 			else
 			if(commands.elementAt(1) instanceof Boolean)
 				quiet=((Boolean)commands.elementAt(1)).booleanValue();
-			return get(mob,container,item,quiet);
+			get(mob,container,item,quiet);
+			if(item instanceof Coins)
+			    ((Coins)item).putCoinsBack();
+			return false;
 		}
 
 		if(commands.size()<2)
@@ -214,7 +190,8 @@ public class Get extends BaseItemParser
 		{
 			Vector V=new Vector();
 			Item container=null;
-			if(containers.size()>0) container=(Item)containers.elementAt(c++);
+			if(containers.size()>0) 
+			    container=(Item)containers.elementAt(c++);
 			int addendum=1;
 			String addendumStr="";
 			do
@@ -225,7 +202,7 @@ public class Get extends BaseItemParser
 				else
 				{
 					if(!allFlag)
-						getThis=possibleRoomGold(mob,mob.location(),container,whatToGet);
+						getThis=EnglishParser.possibleRoomGold(mob,mob.location(),container,whatToGet);
 					if(getThis==null)
 						getThis=mob.location().fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORN_REQ_UNWORNONLY);
 				}
@@ -242,9 +219,9 @@ public class Get extends BaseItemParser
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
-				if(!get(mob,container,getThis,quiet,"get",true))
-					if(getThis instanceof Coins)
-						((Coins)getThis).putCoinsBack();
+				get(mob,container,getThis,quiet,"get",true);
+				if(getThis instanceof Coins)
+					((Coins)getThis).putCoinsBack();
 				doneSomething=true;
 			}
 			mob.location().recoverRoomStats();

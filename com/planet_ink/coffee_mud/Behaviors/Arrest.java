@@ -262,9 +262,9 @@ public class Arrest extends StdBehavior
 				        responsibleMob=CMMap.getLoadPlayer(owner);
 			        Vector particulars=(Vector)owners.get(owner);
 			        
-			        long totalValue=0;
-			        int paid=0;
-			        int owed=0;
+			        double totalValue=0;
+			        double paid=0;
+			        double owed=0;
 			        StringBuffer properties=new StringBuffer("");
 			        LandTitle T=null;
 			        Vector propertyRooms=null;
@@ -279,14 +279,14 @@ public class Arrest extends StdBehavior
 						    properties.append(T.landPropertyID());
 						else
 						    properties.append("around "+CMMap.getExtendedRoomID((Room)propertyRooms.firstElement()));
-			            totalValue+=T.landPrice();
+			            totalValue+=new Integer(T.landPrice()).doubleValue();
 			            if(T.backTaxes()>0)
 			            {
-			                totalValue+=T.backTaxes();
-			                owed+=T.backTaxes();
+			                totalValue+=new Integer(T.backTaxes()).doubleValue();
+			                owed+=new Integer(T.backTaxes()).doubleValue();
 			            }
 			        }
-			        owed+=(int)Math.round(Util.mul(totalValue,tax));
+			        owed+=Util.mul(totalValue,tax);
 			        
 			        if(owed>0)
 			        for(int p=0;p<particulars.size();p++)
@@ -297,13 +297,13 @@ public class Arrest extends StdBehavior
 			                if((-T.backTaxes())>=owed)
 			                {
 			                    paid+=owed;
-			                    T.setBackTaxes(T.backTaxes()+owed);
+			                    T.setBackTaxes((int)Math.round(new Integer(T.backTaxes()).doubleValue()+owed));
 					            T.updateTitle();
 			                    break;
 			                }
 			                else
 			                {
-				                paid+=(-T.backTaxes());
+				                paid+=new Integer(-T.backTaxes()).doubleValue();
 				                T.setBackTaxes(0);
 					            T.updateTitle();
 			                }
@@ -312,17 +312,21 @@ public class Arrest extends StdBehavior
 			        if(owed>0)
 			        {
 			            owed-=paid;
-			            if((owed>0)&&(!MoneyUtils.modifyLocalBankGold(A,owner,CoffeeUtensils.getFormattedDate(A)+": Withdrawl of "+owed+": Taxes on property: "+properties.toString(),-owed)))
+			            if((owed>0)&&(!BeanCounter.modifyLocalBankGold(A,
+					                    owner,
+					                    CoffeeUtensils.getFormattedDate(A)+": Withdrawl of "+owed+": Taxes on property: "+properties.toString(),
+					                    BeanCounter.getCurrency(A),
+					                   -owed)))
 			            {
 			                boolean owesButNotConfiscated=false;
 					        for(int p=0;p<particulars.size();p++)
 					        {
 					            T=(LandTitle)particulars.elementAt(p);
-						        int owedOnThisLand=(int)Math.round(Util.mul(T.landPrice(),tax));
+						        double owedOnThisLand=Util.mul(T.landPrice(),tax);
 						        owedOnThisLand-=(paid/particulars.size());
 						        if(owedOnThisLand>0)
 						        {
-					                T.setBackTaxes(T.backTaxes()+owedOnThisLand);
+					                T.setBackTaxes((int)Math.round(new Integer(T.backTaxes()).doubleValue()+owedOnThisLand));
 							        if((T.landPrice()/T.backTaxes())<4)
 							        {
 							            if(Clans.getClan(T.landOwner())!=null)
@@ -368,11 +372,14 @@ public class Arrest extends StdBehavior
 	        				if(owed<0) owed=0;
 				            if((treasuryR!=null)&&((owed+paid)>0))
 				            {
-		        				Coins COIN=(Coins)CMClass.getStdItem("StdCoins");
-		        				COIN.setNumberOfCoins(owed+paid);
-		        				COIN.setContainer(container);
-		        				treasuryR.addItem(COIN);
-		        				COIN.putCoinsBack();
+				                Vector V=BeanCounter.makeAllCurrency(BeanCounter.getCurrency(A),owed+paid);
+				                for(int v=0;v<V.size();v++)
+				                {
+				                    Coins COIN=(Coins)V.elementAt(v);
+			        				COIN.setContainer(container);
+			        				treasuryR.addItem(COIN);
+			        				COIN.putCoinsBack();
+				                }
 				            }
 					        if((evasionBits!=null)
 					        &&(evasionBits[Law.BIT_CRIMENAME].length()>0)

@@ -394,7 +394,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			                        needsToPay=true;
 			                    if(needsToPay)
 			                    {
-			                        if(MoneyUtils.modifyLocalBankGold(A,owner,CoffeeUtensils.getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,-rent))
+			                        if(BeanCounter.modifyLocalBankGold(A,
+			                                owner,
+			                                CoffeeUtensils.getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,
+			                                BeanCounter.getCurrency(A),
+			                                new Integer(-rent).doubleValue()))
 			                        {
 			                            lastMonth++;
 			                            if(lastMonth>A.getTimeObj().getMonthsInYear())

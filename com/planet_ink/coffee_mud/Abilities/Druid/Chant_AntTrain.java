@@ -101,7 +101,7 @@ public class Chant_AntTrain extends Chant
 				target.addNonUninvokableEffect(this);
 				target.recoverEnvStats();
 				wasntMine=true;
-				if(target.ID().equals("StdCoins"))
+				if(target instanceof Coins)
 				{
 					mob.location().delItem((Item)target);
 					mob.addInventory((Item)target);

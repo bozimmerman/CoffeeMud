@@ -98,7 +98,7 @@ public class Spell_FloatingDisc extends Spell
 				target.addNonUninvokableEffect(this);
 				target.recoverEnvStats();
 				wasntMine=true;
-				if(target.ID().equals("StdCoins"))
+				if(target instanceof Coins)
 				{
 					mob.location().delItem((Item)target);
 					mob.addInventory((Item)target);

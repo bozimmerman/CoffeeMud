@@ -34,6 +34,7 @@ public class StdRideable extends StdMOB implements Rideable
 		Username="a horse";
 		setDescription("A brown riding horse looks sturdy and reliable.");
 		setDisplayText("a horse stands here.");
+		baseCharStats().setMyRace(CMClass.getRace("Horse"));
 		baseEnvStats().setWeight(700);
 		recoverEnvStats();
 	}

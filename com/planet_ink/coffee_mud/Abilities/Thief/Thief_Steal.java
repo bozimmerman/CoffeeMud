@@ -88,6 +88,11 @@ public class Thief_Steal extends ThiefSkill
 			return false;
 
 		Item stolen=target.fetchCarried(null,itemToSteal);
+		if(stolen instanceof Coins)
+		{
+		    mob.tell("You'll need to try and SWIPE that.");
+		    return false;
+		}
 
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*5);
 		int times=timesPicked(target);

@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -62,9 +63,12 @@ public class Thief_FrameMark extends ThiefSkill
 			mob.tell("You aren't wanted for anything here.");
 			return false;
 		}
-		if(mob.getMoney()<(target.envStats().level()*1000))
+		double goldRequired=new Integer(target.envStats().level()*1000).doubleValue();
+		String localCurrency=BeanCounter.getCurrency(mob.location());
+		if(BeanCounter.getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-			mob.tell("You'll need at least "+(target.envStats().level()*1000)+" gold on hand to frame "+target.name()+".");
+		    String costWords=BeanCounter.nameCurrencyShort(localCurrency,goldRequired);
+			mob.tell("You'll need at least "+costWords+" on hand to frame "+target.name()+".");
 			return false;
 		}
 
@@ -75,7 +79,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(levelDiff>0) levelDiff=0;
 		boolean success=profficiencyCheck(mob,levelDiff,auto);
 
-		mob.setMoney(mob.getMoney()-(target.envStats().level()*1000));
+		BeanCounter.subtractMoney(mob,localCurrency,goldRequired);
 
 		FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_DELICATE_HANDS_ACT,"<S-NAME> frame(s) <T-NAMESELF>.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		if(mob.location().okMessage(mob,msg))

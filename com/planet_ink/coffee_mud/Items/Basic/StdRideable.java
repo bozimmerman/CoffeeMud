@@ -529,12 +529,15 @@ public class StdRideable extends StdContainer implements Rideable
 			break;
 		case CMMsg.TYP_BUY:
 		case CMMsg.TYP_SELL:
-			if(amRiding(msg.source()))
+			if((amRiding(msg.source()))
+            &&(rideBasis()!=Rideable.RIDEABLE_TABLE)
+        	&&(rideBasis()!=Rideable.RIDEABLE_SIT))
 			{
-				msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
+				msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name()+".");
 				return false;
 			}
-			break;
+			else
+			    return super.okMessage(myHost,msg);
 		}
 		if((Util.bset(msg.sourceMajor(),CMMsg.MASK_HANDS))
 		&&(amRiding(msg.source()))
@@ -547,7 +550,7 @@ public class StdRideable extends StdContainer implements Rideable
 		&&(!((msg.sourceMinor()==CMMsg.TYP_GIVE)&&(msg.target() instanceof MOB)&&(amRiding((MOB)msg.target()))&&(Sense.isStanding(msg.source())))))
 		{
 		    // some of the above applies to genrideable items only
-			msg.source().tell("You cannot do that while "+stateString(msg.source())+" "+name()+".");
+			msg.source().tell("You can not do that while "+stateString(msg.source())+" "+name()+".");
 			return false;
 		}
 		return super.okMessage(myHost,msg);

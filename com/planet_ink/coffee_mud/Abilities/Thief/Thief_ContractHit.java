@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -195,10 +196,12 @@ public class Thief_ContractHit extends ThiefSkill
 
 		int level=target.envStats().level();
 		if(level>mob.envStats().level()) level=mob.envStats().level();
-		int goldRequired=100*level;
-		if(mob.getMoney()<goldRequired)
+		double goldRequired=new Integer(100*level).doubleValue();
+		String localCurrency=BeanCounter.getCurrency(mob.location());
+		if(BeanCounter.getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-			mob.tell("You'll need at least "+goldRequired+" gold to put a hit out on "+target.name()+".");
+		    String costWords=BeanCounter.nameCurrencyShort(localCurrency,goldRequired);
+			mob.tell("You'll need at least "+costWords+" to put a hit out on "+target.name()+".");
 			return false;
 		}
 
@@ -214,7 +217,7 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 
-			mob.setMoney(mob.getMoney()-goldRequired);
+			BeanCounter.subtractMoney(mob,localCurrency,goldRequired);
 			if(success)
 				maliciousAffect(mob,target,asLevel,target.envStats().level()+10,0);
 		}

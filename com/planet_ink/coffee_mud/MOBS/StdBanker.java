@@ -193,10 +193,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 		{
 			if(mob.getClanID().length()==0) return;
-		    MoneyUtils.bankLedger(bankChain(),mob.getClanID(),date+": "+msg);
+		    BeanCounter.bankLedger(bankChain(),mob.getClanID(),date+": "+msg);
 		}
 		else
-		    MoneyUtils.bankLedger(bankChain(),mob.Name(),date+": "+msg);
+		    BeanCounter.bankLedger(bankChain(),mob.Name(),date+": "+msg);
 	}
 	
 	public Item findDepositInventory(MOB mob, String likeThis)
@@ -295,11 +295,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if(itemInterest!=0.0)
 								totalValue+=I.value();
 						}
-						int newBalance=0;
-						if(coinItem!=null) newBalance=coinItem.numberOfCoins();
-						newBalance+=(int)Math.round(Util.mul(newBalance,coinInterest));
+						double newBalance=0.0;
+						if(coinItem!=null) newBalance=coinItem.getTotalValue();
+						newBalance+=Util.mul(newBalance,coinInterest);
 						if(totalValue>0)
-							newBalance+=(int)Math.round(Util.mul(totalValue,itemInterest));
+							newBalance+=Util.mul(totalValue,itemInterest);
 						if(newBalance<0)
 						{
 							for(int v=0;v<V.size();v++)
@@ -311,20 +311,20 @@ public class StdBanker extends StdShopKeeper implements Banker
 							delAllDeposits(name);
 						}
 						else
-						if((coinItem==null)||(newBalance!=coinItem.numberOfCoins()))
+						if((coinItem==null)||(newBalance!=coinItem.getTotalValue()))
 						{
 						    if(coinItem!=null)
 						    {
-							    if(newBalance>coinItem.numberOfCoins())
-							        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Deposit of "+(newBalance-coinItem.numberOfCoins())+": Interest paid.");
+							    if(newBalance>coinItem.getTotalValue())
+							        BeanCounter.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Deposit of "+BeanCounter.nameCurrencyShort(this,newBalance-coinItem.getTotalValue())+": Interest paid.");
 							    else
-							        MoneyUtils.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Withdrawl of "+(coinItem.numberOfCoins()-newBalance)+": Interest charged.");
+							        BeanCounter.bankLedger(bankChain(),name,CoffeeUtensils.getFormattedDate(this)+": Withdrawl of "+BeanCounter.nameCurrencyShort(this,coinItem.getTotalValue()-newBalance)+": Interest charged.");
 								delDepositInventory(name,coinItem);
 						    }
-							coinItem=(Coins)CMClass.getItem("StdCoins");
-							coinItem.setNumberOfCoins(newBalance);
-							coinItem.recoverEnvStats();
-							addDepositInventory(name,coinItem);
+							String currency=BeanCounter.getCurrency(this);
+						    coinItem=BeanCounter.makeBestCurrency(currency,newBalance);
+						    if(coinItem!=null)
+								addDepositInventory(name,coinItem);
 						}
 					}
 				}
@@ -334,27 +334,27 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return true;
 	}
 
-	protected int getBalance(MOB mob)
+	protected double getBalance(MOB mob)
 	{
 		Item old=findDepositInventory(mob,""+Integer.MAX_VALUE);
 		if((old!=null)&&(old instanceof Coins))
-			return ((Coins)old).numberOfCoins();
+			return ((Coins)old).getTotalValue();
 		return 0;
 	}
 
-	protected int minBalance(MOB mob)
+	protected double minBalance(MOB mob)
 	{
 		Vector V=null;
 		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 			V=getDepositedItems(mob.getClanID());
 		else
 			V=getDepositedItems(mob.Name());
-		int min=0;
+		double min=0;
 		for(int v=0;v<V.size();v++)
 		{
 			Item I=(Item)V.elementAt(v);
 			if(I instanceof Coins) continue;
-			min+=(I.value()/2);
+			min+=Util.div(I.value(),2.0);
 		}
 		return min;
 	}
@@ -378,8 +378,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(msg.tool() instanceof Coins)
 					{
 						Coins older=(Coins)msg.tool();
-						Coins item=(Coins)CMClass.getItem("StdCoins");
-						int newNum=older.numberOfCoins();
+						double newValue=older.getTotalValue();
 						Item old=findDepositInventory(msg.source(),""+Integer.MAX_VALUE);
 						MOB owner=msg.source();
 						if((old==null)
@@ -390,17 +389,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if(old!=null) owner=CMMap.getPlayer(msg.source().getLiegeID());
 						}
 						if((old!=null)&&(old instanceof Coins))
-							newNum+=((Coins)old).numberOfCoins();
-						item.setNumberOfCoins(newNum);
-					    bankLedger(owner,"Deposit of "+newNum+": "+msg.source().Name());
+						    newValue+=((Coins)old).getTotalValue();
+						Coins item=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(this),newValue);
+					    bankLedger(owner,"Deposit of "+BeanCounter.nameCurrencyShort(this,newValue)+": "+msg.source().Name());
 						if(old!=null) delDepositInventory(owner,old);
-						addDepositInventory(owner,item);
-						setMoney(getMoney()-((Coins)msg.tool()).numberOfCoins());
-						if(getMoney()<0) setMoney(0);
+						if(item!=null)
+							addDepositInventory(owner,item);
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+getBalance(owner)+" gold coins.",true,false);
+						    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						else
-						    CommonMsgs.say(this,mob,"Ok, your new balance is "+getBalance(owner)+" gold coins.",true,false);
+						    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						recoverEnvStats();
 					}
 					else
@@ -416,28 +414,40 @@ public class StdBanker extends StdShopKeeper implements Banker
 					Item old=(Item)msg.tool();
 					if(old instanceof Coins)
 					{
-						Item item=findDepositInventory(msg.source(),""+Integer.MAX_VALUE);
+						Item depositInventoryItem=findDepositInventory(msg.source(),""+Integer.MAX_VALUE);
 						MOB owner=msg.source();
 						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
 						&&(msg.source().isMarriedToLiege())
-						&&((item==null)||((item instanceof Coins)&&(((Coins)item).numberOfCoins()<((Coins)old).numberOfCoins()))))
+						&&((depositInventoryItem==null)
+						        ||((depositInventoryItem instanceof Coins)
+						                &&(((Coins)depositInventoryItem).getTotalValue()<((Coins)old).getTotalValue()))))
 						{
 							Item item2=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
-							if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).numberOfCoins()>=((Coins)old).numberOfCoins()))
+							if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).getTotalValue()>=((Coins)old).getTotalValue()))
 							{
-								item=item2;
+							    depositInventoryItem=item2;
 								owner=CMMap.getPlayer(msg.source().getLiegeID());
 							}
 						}
-						if((item!=null)&&(item instanceof Coins))
+						if((depositInventoryItem!=null)
+						&&(depositInventoryItem instanceof Coins)
+						&&(old instanceof Coins)
+						&&(((Coins)depositInventoryItem).getTotalValue()>=((Coins)old).getTotalValue()))
 						{
-						    bankLedger(owner,"Withdrawl of "+((Coins)old).numberOfCoins()+": "+msg.source().Name());
-							Coins coins=(Coins)item;
-							coins.setNumberOfCoins(coins.numberOfCoins()-((Coins)old).numberOfCoins());
-							coins.recoverEnvStats();
-							delDepositInventory(owner,item);
-							MoneyUtils.giveMoney(this,msg.source(),((Coins)old).numberOfCoins());
-							if(coins.numberOfCoins()<=0)
+							Coins coins=BeanCounter.makeBestCurrency(this,((Coins)depositInventoryItem).getTotalValue()-((Coins)old).getTotalValue());
+						    bankLedger(owner,"Withdrawl of "+BeanCounter.nameCurrencyShort(this,((Coins)old).getTotalValue())+": "+msg.source().Name());
+							delDepositInventory(owner,depositInventoryItem);
+							
+					        addInventory(old);
+							FullMsg newMsg=new FullMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+							if(location().okMessage(this,newMsg))
+							{
+								location().send(this,newMsg);
+								((Coins)old).putCoinsBack();
+						    }
+							else
+								CommonMsgs.drop(this,old,true,false);
+							if((coins==null)||(coins.getNumberOfCoins()<=0))
 							{
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 									CommonMsgs.say(this,mob,"I have closed the account for Clan "+owner.getClanID()+". Thanks for your business.",true,false);
@@ -447,15 +457,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 							else
 							{
-								addDepositInventory(owner,item);
+								addDepositInventory(owner,coins);
 								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+								    CommonMsgs.say(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+BeanCounter.nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
 								else
-								    CommonMsgs.say(this,mob,"Ok, your new balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+								    CommonMsgs.say(this,mob,"Ok, your new balance is "+BeanCounter.nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
 							}
 						}
 						else
-						    CommonMsgs.say(this,mob,"But, your balance is "+((Coins)item).numberOfCoins()+" gold coins.",true,false);
+						    CommonMsgs.say(this,mob,"But, your balance is "+BeanCounter.nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
 					}
 					else
 					{
@@ -525,13 +535,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					str=new StringBuffer("\n\r^N");
 				else
 					str.append("\n\r\n\r");
-				int balance=getBalance(mob);
+				double balance=getBalance(mob);
 				if(balance>0)
 				{
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+balance+"^? gold coins.");
+						str.append("Clan "+mob.getClanID()+" has a balance of ^H"+BeanCounter.nameCurrencyLong(this,balance)+"^?.");
 					else
-						str.append("Your balance is ^H"+balance+"^? gold coins.");
+						str.append("Your balance is ^H"+BeanCounter.nameCurrencyLong(this,balance)+"^?.");
 				}
 				if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
 				&&(mob.isMarriedToLiege()))
@@ -575,13 +585,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 			case CMMsg.TYP_DEPOSIT:
 				{
 					if(msg.tool()==null) return false;
-					int balance=getBalance(mob);
+					double balance=getBalance(mob);
 					if(msg.tool() instanceof Coins)
 					{
-						if((Integer.MAX_VALUE-balance)<=((Coins)msg.tool()).numberOfCoins())
+						if((Double.MAX_VALUE-balance)<=((Coins)msg.tool()).getTotalValue())
 						{
 							CommonMsgs.say(this,mob,"I'm sorry, the law prevents us from holding that much money in one account.",true,false);
 							return false;
+						}
+						if(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(this)))
+						{
+						    CommonMsgs.say(this,mob,"I'm sorry, this bank only deals in "+BeanCounter.getDenominationName(BeanCounter.getCurrency(this))+".",true,false);
+						    return false;
 						}
 						return true;
 					}
@@ -597,13 +612,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 						mob.tell(mob.charStats().HeShe()+" doesn't look interested.");
 						return false;
 					}
-					int minbalance=minBalance(mob)+(((Item)msg.tool()).value()/2);
+					double minbalance=minBalance(mob)+Util.div(((Item)msg.tool()).value(),2.0);
 					if(balance<minbalance)
 					{
 						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-							CommonMsgs.say(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+minbalance+" for me to hold that.",true,false);
+							CommonMsgs.say(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+BeanCounter.nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
 						else
-							CommonMsgs.say(this,mob,"You'll need a total balance of "+minbalance+" for me to hold that.",true,false);
+							CommonMsgs.say(this,mob,"You'll need a total balance of "+BeanCounter.nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
 						return false;
 					}
 				}
@@ -636,17 +651,23 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 					    return false;
 					MOB owner=msg.source();
-					int balance=getBalance(owner);
+					double balance=getBalance(owner);
 					if(msg.tool() instanceof Coins)
 					{
+					    if(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(this)))
+					    {
+							CommonMsgs.say(this,mob,"I'm sorry, I can only give you "+BeanCounter.getDenominationName(BeanCounter.getCurrency(this))+".",true,false);
+							return false;
+					    }
+					    
 						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
 						&&(owner.isMarriedToLiege())
-						&&(balance<((Coins)msg.tool()).numberOfCoins()))
+						&&(balance<((Coins)msg.tool()).getTotalValue()))
 						{
 							MOB M=CMMap.getLoadPlayer(owner.getLiegeID());
-							int b=0;
+							double b=0.0;
 							if(M!=null) b=getBalance(M);
-							if((M!=null)&&(b>=((Coins)msg.tool()).numberOfCoins()))
+							if((M!=null)&&(b>=((Coins)msg.tool()).getTotalValue()))
 							{
 								owner=M;
 								balance=b;
@@ -667,22 +688,22 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 					}
-					int minbalance=minBalance(owner);
+					double minbalance=minBalance(owner);
 					if(msg.tool() instanceof Coins)
 					{
-						if(((Coins)msg.tool()).numberOfCoins()>balance)
+						if(((Coins)msg.tool()).getTotalValue()>balance)
 						{
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-								CommonMsgs.say(this,mob,"I'm sorry, Clan "+thename+" has only "+balance+" gold coins in its account.",true,false);
+								CommonMsgs.say(this,mob,"I'm sorry, Clan "+thename+" has only "+BeanCounter.nameCurrencyShort(this,balance)+" in its account.",true,false);
 							else
-								CommonMsgs.say(this,mob,"I'm sorry, you have only "+balance+" gold coins in that account.",true,false);
+								CommonMsgs.say(this,mob,"I'm sorry, you have only "+BeanCounter.nameCurrencyShort(this,balance)+" in that account.",true,false);
 							return false;
 						}
 						if(minbalance==0) return true;
-						if(((Coins)msg.tool()).numberOfCoins()>(balance-minbalance))
+						if(((Coins)msg.tool()).getTotalValue()>(balance-minbalance))
 						{
 							if((balance-minbalance)>0)
-								CommonMsgs.say(this,mob,"I'm sorry, you may only withdraw "+(balance-minbalance)+" gold coins at this time.",true,false);
+								CommonMsgs.say(this,mob,"I'm sorry, you may only withdraw "+BeanCounter.nameCurrencyShort(this,balance-minbalance)+"  at this time.",true,false);
 							else
 								CommonMsgs.say(this,mob,"I am holding other items in trust, so you may not withdraw funds at this time.",true,false);
 							return false;

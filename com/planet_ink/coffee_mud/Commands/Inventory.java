@@ -32,6 +32,10 @@ public class Inventory extends StdCommand
 		StringBuffer msg=new StringBuffer("");
 		boolean foundAndSeen=false;
 		Vector viewItems=new Vector();
+		Hashtable moneyItems=new Hashtable();
+		Vector V=null;
+		int insertAt=-1;
+		if(mob.getMoney()>0) BeanCounter.getTotalAbsoluteNativeValue(mob);
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item thisItem=mob.fetchInventory(i);
@@ -39,9 +43,26 @@ public class Inventory extends StdCommand
 			&&(thisItem.container()==null)
 			&&(thisItem.amWearingAt(Item.INVENTORY)))
 			{
-				viewItems.addElement(thisItem);
 				if(Sense.canBeSeenBy(thisItem,seer))
 					foundAndSeen=true;
+				if((!(thisItem instanceof Coins))||(((Coins)thisItem).getDenomination()==0.0))
+					viewItems.addElement(thisItem);
+				else
+				{
+				    V=(Vector)moneyItems.get(((Coins)thisItem).getCurrency());
+				    if(V==null)
+				    {
+				        V=new Vector();
+				        moneyItems.put(((Coins)thisItem).getCurrency(),V);
+				    }
+                    for(insertAt=0;insertAt<V.size();insertAt++)
+                        if(((Coins)V.elementAt(insertAt)).getDenomination()>((Coins)thisItem).getDenomination())
+                            break;
+                    if(insertAt>=V.size())
+		                V.addElement(thisItem);
+                    else
+                        V.insertElementAt(thisItem,insertAt);
+				}
 			}
 		}
 		if((viewItems.size()>0)&&(!foundAndSeen))
@@ -51,7 +72,7 @@ public class Inventory extends StdCommand
 		{
 			mask=mask.trim().toUpperCase();
 			if(!mask.startsWith("all")) mask="all "+mask;
-			Vector V=(Vector)viewItems.clone();
+			V=(Vector)viewItems.clone();
 			viewItems.clear();
 			Item I=(V.size()>0)?(Item)V.firstElement():null;
 			while(I!=null)
@@ -64,10 +85,7 @@ public class Inventory extends StdCommand
 				}
 			}
 		}
-		if(viewItems.size()>0)
-			msg.append(CMLister.niceLister(seer,viewItems,true,"MItem",""));
-		
-		if((viewItems.size()==0)&&((mob.getMoney()==0)||(!Sense.canBeSeenBy(mob.location(),seer))))
+		if((viewItems.size()==0)&&(moneyItems.size()==0))
 		{
 			if((mask!=null)&&(mask.trim().length()>0))
 				msg.append("(nothing like that you can see right now)");
@@ -75,11 +93,27 @@ public class Inventory extends StdCommand
 				msg.append("(nothing you can see right now)");
 		}
 		else
-		if((mob.getMoney()>0)&&(!Sense.canBeSeenBy(mob.location(),seer)))
-			msg.append("(some ^ygold^? coins you can't see)");
-		else
-		if(mob.getMoney()>0)
-			msg.append(mob.getMoney()+" ^ygold^? coins.\n\r");
+		{
+			if(viewItems.size()>0)
+				msg.append(CMLister.niceLister(seer,viewItems,true,"MItem",""));
+			if(moneyItems.size()>0)
+			{
+			    msg.append("\n\r^HMoney:^N\n\r");
+			    Item I=null;
+				for(Enumeration e=moneyItems.keys();e.hasMoreElements();)
+				{
+				    String key=(String)e.nextElement();
+				    V=(Vector)moneyItems.get(key);
+				    for(int v=0;v<V.size();v++)
+				    {
+				        I=(Item)V.elementAt(v);
+				        if(v>0) msg.append(", ");
+				        msg.append(I.name());
+				    }
+				    if(e.hasMoreElements()) msg.append("\n\r");
+				}
+			}
+		}
 		return msg;
 	}
 

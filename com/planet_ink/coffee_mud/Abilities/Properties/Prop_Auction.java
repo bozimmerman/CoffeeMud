@@ -28,8 +28,9 @@ public class Prop_Auction extends Property
 	public String accountForYourself(){ return "";	}
 	public Environmental auctioning=null;
 	public MOB highBidder=null;
-	public int highBid=Integer.MIN_VALUE;
-	public int bid=Integer.MIN_VALUE;
+	String currency="";
+	public double highBid=Integer.MIN_VALUE;
+	public double bid=Integer.MIN_VALUE;
 	public int state=-1;
 	public long tickDown=0;
 	public long auctionStart=0;
@@ -76,22 +77,22 @@ public class Prop_Auction extends Property
 			switch(state)
 			{
 			case STATE_RUNOUT:
-				V.addElement("The auction for "+auctioning.name()+" is almost done. The current bid is "+bid+".");
+				V.addElement("The auction for "+auctioning.name()+" is almost done. The current bid is "+BeanCounter.nameCurrencyShort(M,bid)+".");
 				break;
 			case STATE_ONCE:
-				V.addElement(bid+" gold for "+auctioning.name()+" going ONCE!");
+				V.addElement(BeanCounter.nameCurrencyShort(M,bid)+" for "+auctioning.name()+" going ONCE!");
 				break;
 			case STATE_TWICE:
-				V.addElement(bid+" gold for "+auctioning.name()+" going TWICE!");
+				V.addElement(BeanCounter.nameCurrencyShort(M,bid)+" for "+auctioning.name()+" going TWICE!");
 				break;
 			case STATE_THREE:
-				V.addElement(auctioning.name()+" going for "+bid+" gold! Last chance!");
+				V.addElement(auctioning.name()+" going for "+BeanCounter.nameCurrencyShort(M,bid)+"! Last chance!");
 				break;
 			case STATE_CLOSED:
 				{
 					if((highBidder!=null)&&(highBidder!=invoker()))
 					{
-						V.addElement(auctioning.name()+" SOLD to "+highBidder.name()+" for "+bid+" gold.");
+						V.addElement(auctioning.name()+" SOLD to "+highBidder.name()+" for "+BeanCounter.nameCurrencyShort(M,bid)+".");
 						M.doCommand(V);
 						if(!Sense.canMove(highBidder))
 						{
@@ -99,28 +100,28 @@ public class Prop_Auction extends Property
 							M.tell(highBidder.name()+" is unable to pay or collect at this time. Please contact "+highBidder.charStats().himher()+" immediately.");
 						}
 						else
-						if(MoneyUtils.totalMoney(highBidder)<bid)
+						if(BeanCounter.getTotalAbsoluteValue(highBidder,currency)<bid)
 						{
 							highBidder.tell("You can no longer cover your bid.  Please contact "+M.name()+" about this matter immediately.");
 							M.tell(highBidder.name()+" can not cover the bid any longer! Please contact "+highBidder.charStats().himher()+" immediately.");
 						}
 						else
 						{
-							MoneyUtils.subtractMoney(highBidder,highBidder,bid);
-							MoneyUtils.giveMoney(M,M,bid);
+						    BeanCounter.subtractMoney(highBidder,currency,bid);
+							BeanCounter.addMoney(M,currency,bid);
 							if((auctioning instanceof Item)
 							   &&(Sense.isInTheGame(highBidder,true)))
 							{
 								((Item)auctioning).unWear();
 								highBidder.location().bringItemHere((Item)auctioning,Item.REFUSE_PLAYER_DROP);
 								CommonMsgs.get(highBidder,null,(Item)auctioning,false);
-								M.tell(bid+" gold has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
-								highBidder.tell(bid+" gold has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
+								M.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to you as payment from "+highBidder.name()+".  The goods have also been transferred in exchange.");
+								highBidder.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  You should have received the auctioned goods.  This auction is complete.");
 							}
 							else
 							{
-								M.tell(bid+" gold has been transferred to you as payment from "+highBidder.name()+".  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+".");
-								highBidder.tell(bid+" gold has been transferred to "+M.name()+".  Please contact "+M.name()+" about receipt of "+auctioning.name()+".");
+								M.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to you as payment from "+highBidder.name()+".  Please contact "+highBidder.name()+" about receipt of "+auctioning.name()+".");
+								highBidder.tell(BeanCounter.nameCurrencyShort(M,bid)+" has been transferred to "+M.name()+".  Please contact "+M.name()+" about receipt of "+auctioning.name()+".");
 							}
 						}
 					}
@@ -144,28 +145,55 @@ public class Prop_Auction extends Property
 		{
 			setInvoker(mob);
 			auctioning=target;
-			bid=Util.s_int(Util.combine(commands,0));
+			String sb=Util.combine(commands,0);
+		    currency=EnglishParser.numPossibleGoldCurrency(mob,sb);
+		    double denomination=EnglishParser.numPossibleGoldDenomination(mob,currency,sb);
+		    long num=EnglishParser.numPossibleGold(sb);
+		    bid=Util.mul(denomination,num);
 			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
 			setAbilityCode(STATE_START);
 			CMClass.ThreadEngine().startTickDown(this,MudHost.TICK_QUEST,1);
-			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bid+".");
+			String bidWords=BeanCounter.nameCurrencyShort(currency,bid);
+			V.addElement("New lot: "+auctioning.name()+".  The opening bid is "+bidWords+".");
 		}
 		else
 		{
 			if(state>0)	setAbilityCode(STATE_RUNOUT);
-			int b=0;
+			double b=0;
 			String sb="";
-			if(commands!=null){ sb=Util.combine(commands,0); b=Util.s_int(sb);}
+			String bwords="0";
+			String myCurrency=BeanCounter.getCurrency(mob);
+			if(commands!=null)
+			{ 
+			    sb=Util.combine(commands,0);
+			    if(sb.length()>0)
+			    {
+				    myCurrency=EnglishParser.numPossibleGoldCurrency(mob,sb);
+				    double denomination=EnglishParser.numPossibleGoldDenomination(mob,currency,sb);
+				    long num=EnglishParser.numPossibleGold(sb);
+				    b=Util.mul(denomination,num);
+				    bwords=BeanCounter.getDenominationName(myCurrency,denomination,num);
+			    }
+			}
+			String bidWords=BeanCounter.nameCurrencyShort(currency,bid);
+			if(bidWords.length()==0) bidWords="0";
+			String currencyName=BeanCounter.getDenominationName(currency);
 			if(sb.length()==0)
 			{
-				mob.tell("Up for auction: "+auctioning.name()+".  The current bid is "+bid+".");
+				mob.tell("Up for auction: "+auctioning.name()+".  The current bid is "+bidWords+".");
 				return true;
 			}
 
-			if(b>MoneyUtils.totalMoney(mob))
+			if(!myCurrency.equals(currency))
 			{
-				mob.tell("You don't have enough total money on hand to cover that bid.");
+			    mob.tell("This auction is being bid in "+currencyName+" only.");
+				return false;
+			}
+			
+			if(b>BeanCounter.getTotalAbsoluteValue(mob,currency))
+			{
+				mob.tell("You don't have enough "+currencyName+" on hand to cover that bid.");
 				return false;
 			}
 
@@ -178,20 +206,20 @@ public class Prop_Auction extends Property
 				}
 
 				highBidder=mob;
-				if(highBid<0) highBid=0;
-				bid=highBid+1;
+				if(highBid<0.0) highBid=0.0;
+				bid=highBid+1.0;
 				highBid=b;
 			}
 			else
 			if((b<bid)||(b==0))
 			{
-				mob.tell("Your bid of "+b+" is insufficient."+((bid>0)?" The current high bid is "+bid+".":""));
+				mob.tell("Your bid of "+bwords+" is insufficient."+((bid>0)?" The current high bid is "+bidWords+".":""));
 				return false;
 			}
 			else
 			if((b==bid)&&(highBidder!=null))
 			{
-				mob.tell("You must bid higher than "+bid+" to have your bid accepted.");
+				mob.tell("You must bid higher than "+bidWords+" to have your bid accepted.");
 				return false;
 			}
 			else
@@ -209,7 +237,8 @@ public class Prop_Auction extends Property
 				bid=b;
 				mob.tell("You have been outbid by proxy for "+auctioning.name()+".");
 			}
-			V.addElement("A new bid has been entered for "+auctioning.name()+". The current bid is "+bid+".");
+			bidWords=BeanCounter.nameCurrencyShort(currency,bid);
+			V.addElement("A new bid has been entered for "+auctioning.name()+". The current bid is "+bidWords+".");
 		}
 		if(invoker()!=null) invoker().doCommand(V);
 		return true;

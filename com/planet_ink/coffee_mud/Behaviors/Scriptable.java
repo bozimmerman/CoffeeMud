@@ -2553,10 +2553,10 @@ public class Scriptable extends StdBehavior
 				{
 					int val1=0;
 					if(E instanceof MOB)
-						val1=((MOB)E).getMoney();
+						val1=(int)Math.round(BeanCounter.getTotalAbsoluteNativeValue(((MOB)E)));
 					else
 					if(E instanceof Coins)
-						val1=((Coins)E).numberOfCoins();
+						val1=(int)Math.round(((Coins)E).getTotalValue());
 					else
 					if(E instanceof Item)
 						val1=((Item)E).value();
@@ -3638,10 +3638,10 @@ public class Scriptable extends StdBehavior
 				{
 					int val1=0;
 					if(E instanceof MOB)
-						val1=((MOB)E).getMoney();
+						val1=(int)Math.round(BeanCounter.getTotalAbsoluteNativeValue(((MOB)E)));
 					else
 					if(E instanceof Coins)
-						val1=((Coins)E).numberOfCoins();
+						val1=(int)Math.round(((Coins)E).getTotalValue());
 					else
 					if(E instanceof Item)
 						val1=((Item)E).value();
@@ -3844,13 +3844,13 @@ public class Scriptable extends StdBehavior
 			case 1: // mpasound
 			{
 				String echo=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(8).trim());
-				lastKnownLocation.show(monster,null,CMMsg.MSG_OK_ACTION,echo);
+				//lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,echo);
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R2=lastKnownLocation.getRoomInDir(d);
 					Exit E2=lastKnownLocation.getExitInDir(d);
 					if((R2!=null)&&(E2!=null)&&(E2.isOpen()))
-						R2.show(monster,null,CMMsg.MSG_OK_ACTION,echo);
+						R2.showOthers(monster,null,null,CMMsg.MSG_OK_ACTION,echo);
 				}
 				break;
 			}
@@ -4080,7 +4080,7 @@ public class Scriptable extends StdBehavior
 				{
 					s=varify(source,target,monster,primaryItem,secondaryItem,msg,s.substring(7).trim());
 					if(Util.s_int(s)>0)
-						monster.setMoney(monster.getMoney()+Util.s_int(s));
+					    BeanCounter.addMoney(monster,new Integer(Util.s_int(s)).doubleValue());
 					else
 					if(lastKnownLocation!=null)
 					{
@@ -4118,9 +4118,8 @@ public class Scriptable extends StdBehavior
 					Vector Is=new Vector();
 					if(Util.s_int(s)>0)
 					{
-						Item I=CMClass.getItem("StdCoins");
-						((Coins)I).setNumberOfCoins(Util.s_int(s));
-						Is.addElement(I);
+						Coins C=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(monster),new Integer(Util.s_int(s)).doubleValue());
+						if(C!=null) Is.addElement(C);
 					}
 					else
 					{
@@ -5380,7 +5379,7 @@ public class Scriptable extends StdBehavior
 				{
 					trigger=trigger.substring(10).trim();
 					int t=Util.s_int(trigger);
-					if((((Coins)msg.tool()).numberOfCoins()>=t)
+					if((((Coins)msg.tool()).getNumberOfCoins()>=t)
 					||(trigger.equalsIgnoreCase("ALL")))
 					{
 						que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));

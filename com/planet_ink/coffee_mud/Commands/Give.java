@@ -53,6 +53,7 @@ public class Give extends BaseItemParser
 
 		int maxToGive=Integer.MAX_VALUE;
 		if((commands.size()>1)
+		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0)
 		&&(Util.s_int((String)commands.firstElement())>0))
 		{
 			maxToGive=Util.s_int((String)commands.firstElement());
@@ -68,9 +69,13 @@ public class Give extends BaseItemParser
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 		do
 		{
-			Environmental giveThis=EnglishParser.possibleGold(mob,thingToGive);
+			Environmental giveThis=EnglishParser.bestPossibleGold(mob,null,thingToGive);
 			if(giveThis!=null)
+			{
+			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToGive))
+			        return false;
 				allFlag=false;
+			}
 			else
 				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
 			if((giveThis==null)
@@ -112,7 +117,6 @@ public class Give extends BaseItemParser
 			FullMsg newMsg=new FullMsg(mob,recipient,giveThis,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
-			else
 			if(giveThis instanceof Coins)
 				((Coins)giveThis).putCoinsBack();
 		}

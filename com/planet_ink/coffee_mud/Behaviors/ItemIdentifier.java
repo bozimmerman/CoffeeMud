@@ -45,10 +45,11 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			Item tool=(Item)msg.tool();
-			if(source.getMoney()<cost(tool))
+			int cost=cost((Item)msg.tool());
+			if(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
 			{
-				CommonMsgs.say(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins for me to identify that.",true,false);
+			    String costStr=BeanCounter.nameCurrencyShort(observer,new Integer(cost).doubleValue());
+				CommonMsgs.say(observer,source,"You'll need "+costStr+" for me to identify that.",true,false);
 				return false;
 			}
 			return true;
@@ -75,9 +76,10 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			int cost=cost((Item)msg.tool());
-			source.setMoney(source.getMoney()-cost);
+			BeanCounter.subtractMoney(source,BeanCounter.getCurrency(observer),new Integer(cost).doubleValue());
+			String costStr=BeanCounter.nameCurrencyLong(observer,new Integer(cost).doubleValue());
 			source.recoverEnvStats();
-			FullMsg newMsg=new FullMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+cost+" gold coins to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) <T-NAME> very closely.");
 			msg.addTrailerMsg(newMsg);

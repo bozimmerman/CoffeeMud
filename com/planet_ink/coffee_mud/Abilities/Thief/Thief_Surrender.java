@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -43,6 +44,7 @@ public class Thief_Surrender extends ThiefSkill
 				theList.addElement(vic);
 			}
 		}
+		double goldRequired=new Integer(gold).doubleValue();
 		if((!mob.isInCombat())||(theList.size()==0))
 		{
 			mob.tell("There's no one to surrender to!");
@@ -54,7 +56,9 @@ public class Thief_Surrender extends ThiefSkill
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		if(success&&(mob.getMoney()>=gold))
+		String localCurrency=BeanCounter.getCurrency(mob.getVictim());
+	    String costWords=BeanCounter.nameCurrencyShort(localCurrency,goldRequired);
+		if(success&&BeanCounter.getTotalAbsoluteValue(mob,localCurrency)>=goldRequired)
 		{
 			StringBuffer enemiesList=new StringBuffer("");
 			for(int v=0;v<theList.size();v++)
@@ -68,17 +72,17 @@ public class Thief_Surrender extends ThiefSkill
 				else
 					enemiesList.append(", "+vic.name());
 			}
-			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> surrender(s) to "+enemiesList.toString()+", paying "+gold+" gold.");
+			FullMsg msg=new FullMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> surrender(s) to "+enemiesList.toString()+", paying "+costWords+".");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.setMoney(mob.getMoney()-gold);
+				BeanCounter.subtractMoney(mob,localCurrency,goldRequired);
 				mob.recoverEnvStats();
 				mob.makePeace();
 				for(int v=0;v<theList.size();v++)
 				{
 					MOB vic=(MOB)theList.elementAt(v);
-					vic.setMoney(vic.getMoney()+gold);
+					BeanCounter.addMoney(vic,localCurrency,Util.div(goldRequired,theList.size()));
 					vic.recoverEnvStats();
 					vic.makePeace();
 				}

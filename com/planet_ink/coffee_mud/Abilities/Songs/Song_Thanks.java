@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 
@@ -44,7 +45,7 @@ public class Song_Thanks extends Song
 		   &&(Dice.rollPercentage()>mob.charStats().getSave(CharStats.SAVE_MAGIC))
 		   &&(Sense.canMove(mob))
 		   &&(Sense.canBeSeenBy(invoker,mob))
-		   &&(mob.getMoney()>0))
+		   &&(BeanCounter.getTotalAbsoluteNativeValue(mob)>1.0))
 		{
 			switch(Dice.roll(1,10,0))
 			{
@@ -79,7 +80,14 @@ public class Song_Thanks extends Song
 				CommonMsgs.say(mob,invoker,"You're the best, "+invoker.name()+"! Thanks!",false,false);
 				break;
 			}
-			mob.doCommand(Util.parse("GIVE 1 "+invoker.name()));
+			Coins C=BeanCounter.makeBestCurrency(mob,1.0);
+			if(C!=null)
+			{
+				BeanCounter.subtractMoney(mob,1.0);
+				mob.addInventory(C);
+				mob.doCommand(Util.parse("GIVE \""+C.name()+"\" \""+invoker.name()+"\""));
+				if(!C.amDestroyed()) C.putCoinsBack();
+			}
 		}
 		return true;
 	}

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -47,6 +48,7 @@ public class ItemMender extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
+			int cost=cost((Item)msg.tool());
 			Item tool=(Item)msg.tool();
 			if(!tool.subjectToWearAndTear())
 			{
@@ -65,9 +67,10 @@ public class ItemMender extends StdBehavior
 				CommonMsgs.say(observer,source,tool.name()+" doesn't require repair.",true,false);
 				return false;
 			}
-			if(source.getMoney()<cost(tool))
+			if(BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
 			{
-				CommonMsgs.say(observer,source,"You'll need "+cost((Item)msg.tool())+" gold coins to repair that.",true,false);
+			    String costStr=BeanCounter.nameCurrencyShort(observer,new Integer(cost).doubleValue());
+				CommonMsgs.say(observer,source,"You'll need "+costStr+" for me to repair that.",true,false);
 				return false;
 			}
 			return true;
@@ -94,10 +97,11 @@ public class ItemMender extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			int cost=cost((Item)msg.tool());
-			source.setMoney(source.getMoney()-cost);
+			BeanCounter.subtractMoney(source,BeanCounter.getCurrency(observer),new Integer(cost).doubleValue());
+			String costStr=BeanCounter.nameCurrencyLong(observer,new Integer(cost).doubleValue());
 			source.recoverEnvStats();
 			((Item)msg.tool()).setUsesRemaining(100);
-			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> and "+cost+" coins to <T-NAMESELF>.");
+			FullMsg newMsg=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> and "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'There she is, good as new!  Thanks for your business' to <T-NAMESELF>.^?");
 			msg.addTrailerMsg(newMsg);

@@ -83,6 +83,7 @@ public class Thief_Swipe extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		String currency=BeanCounter.getCurrency(target);
 		int discoverChance=(target.charStats().getStat(CharStats.WISDOM)*5)-(levelDiff*3);
 		int times=timesPicked(target);
 		if(times>5) discoverChance-=(20*(times-5));
@@ -114,18 +115,17 @@ public class Thief_Swipe extends ThiefSkill
 			if(levelDiff>0) pct=0.15;
 			if(levelDiff>5) pct=0.10;
 			if(levelDiff>10) pct=0.05;
-			int goldTaken=(int)Math.round(new Integer(target.getMoney()).doubleValue()*pct*Math.random());
-			if(goldTaken>target.getMoney()) goldTaken=target.getMoney();
-			if((goldTaken<CMAble.qualifyingClassLevel(mob,this)))
-				goldTaken=CMAble.qualifyingClassLevel(mob,this);
-			if(goldTaken>target.getMoney())
-				goldTaken=target.getMoney();
-
+			double goldTaken=BeanCounter.getTotalAbsoluteNativeValue(target)*pct*Math.random();
+			if(goldTaken<new Integer(CMAble.qualifyingClassLevel(mob,this)).doubleValue())
+				goldTaken=new Integer(CMAble.qualifyingClassLevel(mob,this)).doubleValue();
+			if(goldTaken>BeanCounter.getTotalAbsoluteNativeValue(target)) goldTaken=BeanCounter.getTotalAbsoluteNativeValue(target);
+			String goldTakenStr=BeanCounter.nameCurrencyShort(target,goldTaken);
+			
 			String str=null;
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
 				if(goldTaken > 0)
-					str="<S-NAME> pick(s) <T-HIS-HER> pocket for "+goldTaken+" gold.";
+					str="<S-NAME> pick(s) <T-HIS-HER> pocket for "+goldTakenStr+".";
 				else
 				{
 					str="<S-NAME> attempt(s) to pick <T-HIS-HER> pocket, but nothing was found to steal!";
@@ -165,9 +165,9 @@ public class Thief_Swipe extends ThiefSkill
 					if(mob.getVictim()==target)
 						mob.makePeace();
 				}
-				mob.setMoney(mob.getMoney()+goldTaken);
+				BeanCounter.addMoney(mob,currency,goldTaken);
 				mob.recoverEnvStats();
-				target.setMoney(target.getMoney()-goldTaken);
+				BeanCounter.subtractMoney(target,currency,goldTaken);
 				target.recoverEnvStats();
 			}
 		}

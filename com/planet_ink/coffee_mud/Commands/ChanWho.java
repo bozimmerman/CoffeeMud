@@ -61,11 +61,15 @@ public class ChanWho extends StdCommand
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session ses=Sessions.elementAt(s);
+			MOB mob2=ses.mob();
+			if((mob2!=null)&&(mob2.soulMate()!=null))
+				mob2=mob2.soulMate();
 			if((ChannelSet.mayReadThisChannel(null,false,ses,channelInt))
-			&&(ses.mob()!=null)
-			&&((((ses.mob().envStats().disposition()&EnvStats.IS_CLOAKED)==0)
-					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=ses.mob().envStats().level())))))
-					buf.append("["+Util.padRight(ses.mob().name(),20)+"]\n\r");
+			&&(mob2!=null)
+			&&(Sense.isInTheGame(mob2,true))
+			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level())))))
+					buf.append("["+Util.padRight(mob2.name(),20)+"]\n\r");
 		}
 		if(buf.length()==0)
 			mob.tell(head+"Nobody!");

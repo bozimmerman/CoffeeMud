@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -23,19 +24,58 @@ public class GenCoins extends GenItem implements Coins
 {
 	public String ID(){	return "GenCoins";}
 	public int value(){	return envStats().ability();}
+	protected String currency="";
+	protected double denomination=1.0;
+	
 	public GenCoins()
 	{
 		super();
-		setName("a pile of gold coins");
-		setDisplayText("some gold coins sit here.");
 		myContainer=null;
 		setMaterial(EnvResource.RESOURCE_GOLD);
+		setNumberOfCoins(100);
+		setCurrency("");
+		setDenomination(BeanCounter.getLowestDenomination(""));
 		setDescription("");
 	}
-
-
-	public int numberOfCoins(){return envStats().ability();}
-	public void setNumberOfCoins(int number){baseEnvStats().setAbility(number); recoverEnvStats();}
+	
+	public String name()
+	{
+        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
+	}
+	public String displayText()
+	{
+        return BeanCounter.getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":"lie here.");
+	}
+	
+	public void setDynamicMaterial()
+	{
+	    if((EnglishParser.containsString(name(),"note"))
+	    ||(EnglishParser.containsString(name(),"bill"))
+	    ||(EnglishParser.containsString(name(),"dollar")))
+	        setMaterial(EnvResource.RESOURCE_PAPER);
+	    else
+		for(int i=0;i<EnvResource.RESOURCE_DESCS.length;i++)
+		    if(EnglishParser.containsString(name(),EnvResource.RESOURCE_DESCS[i]))
+		    {
+		        setMaterial(EnvResource.RESOURCE_DATA[i][0]);
+		        break;
+		    }
+		setDescription(BeanCounter.getConvertableDescription(getCurrency(),getDenomination()));
+	}
+	public long getNumberOfCoins(){return envStats().ability();}
+	public void setNumberOfCoins(long number)
+	{
+	    if(number<Integer.MAX_VALUE)
+		    baseEnvStats().setAbility((int)number); 
+	    else
+		    baseEnvStats().setAbility(Integer.MAX_VALUE); 
+	    recoverEnvStats();
+	}
+	public double getDenomination(){return denomination;}
+	public void setDenomination(double valuePerCoin){denomination=valuePerCoin; setDynamicMaterial();}
+	public double getTotalValue(){return Util.mul(getDenomination(),getNumberOfCoins());}
+	public String getCurrency(){return currency;}
+	public void setCurrency(String named){currency=named; setDynamicMaterial();}
 
 	public boolean isGeneric(){return true;}
 	public void recoverEnvStats()
@@ -64,6 +104,8 @@ public class GenCoins extends GenItem implements Coins
 				if((I!=null)
 				   &&(I!=this)
 				   &&(I instanceof Coins)
+				   &&(((Coins)I).getDenomination()==getDenomination())
+				   &&((Coins)I).getCurrency().equals(getCurrency())
 				   &&(I.container()==container()))
 				{
 					alternative=(Coins)I;
@@ -77,7 +119,10 @@ public class GenCoins extends GenItem implements Coins
 			MOB M=(MOB)owner();
 			if(container()==null)
 			{
-				M.setMoney(M.getMoney()+numberOfCoins());
+			    if((M.getMoney()+getNumberOfCoins())>Integer.MAX_VALUE)
+			        M.setMoney(Integer.MAX_VALUE);
+			    else
+					M.setMoney((int)(M.getMoney()+getNumberOfCoins()));
 				destroy();
 				return true;
 			}
@@ -87,6 +132,8 @@ public class GenCoins extends GenItem implements Coins
 				if((I!=null)
 				   &&(I!=this)
 				   &&(I instanceof Coins)
+				   &&(((Coins)I).getDenomination()==getDenomination())
+				   &&((Coins)I).getCurrency().equals(getCurrency())
 				   &&(I.container()==container()))
 				{
 					alternative=(Coins)I;
@@ -96,7 +143,7 @@ public class GenCoins extends GenItem implements Coins
 		}
 		if(alternative!=null)
 		{
-			alternative.setNumberOfCoins(alternative.numberOfCoins()+numberOfCoins());
+			alternative.setNumberOfCoins(alternative.getNumberOfCoins()+getNumberOfCoins());
 			destroy();
 			return true;
 		}
@@ -106,6 +153,7 @@ public class GenCoins extends GenItem implements Coins
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
+		if((getCurrency().length()==0)&&(getDenomination()==0.0))
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_REMOVE:

@@ -57,6 +57,7 @@ public class StdDeity extends StdMOB implements Deity
 		baseEnvStats().setArmor(0);
 		baseEnvStats().setAttackAdjustment(1000);
 		baseEnvStats().setDamage(1000);
+		baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 		recoverEnvStats();
 	}
 

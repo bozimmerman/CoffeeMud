@@ -120,7 +120,11 @@ public class Prop_Retainable extends Property
 							mob.destroy();
 							return false;
 						}
-						boolean paid=MoneyUtils.modifyLocalBankGold(mob.location().getArea(), owner, CoffeeUtensils.getFormattedDate(mob)+": Withdrawl of "+price+": Payroll: "+Name(),-price);
+						boolean paid=BeanCounter.modifyLocalBankGold(mob.location().getArea(), 
+						        owner, 
+						        CoffeeUtensils.getFormattedDate(mob)+": Withdrawl of "+BeanCounter.nameCurrencyShort(mob,price)+": Payroll: "+Name(),
+						        BeanCounter.getCurrency(mob),
+						        new Integer(-price).doubleValue());
 						if(paid)
 							CommonMsgs.say(mob,null,"Payday!",false,false);
 						else

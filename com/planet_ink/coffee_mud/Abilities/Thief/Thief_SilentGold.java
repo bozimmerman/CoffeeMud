@@ -39,27 +39,29 @@ public class Thief_SilentGold extends ThiefSkill
 			if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(msg.source()!=affected)
 			&&(Sense.canBeSeenBy(msg.source(),(MOB)affected))
-			&&(msg.source().location()==((MOB)affected).location())
-			&&((msg.source().getMoney()/10)>0))
+			&&(msg.source().location()==((MOB)affected).location()))
 			{
-				Item C=CMClass.getItem("StdCoins");
-				int amount=msg.source().getMoney()/10;
-				C.baseEnvStats().setAbility(amount);
-				C.recoverEnvStats();
-				msg.source().setMoney(msg.source().getMoney()-amount);
-				msg.source().recoverEnvStats();
-				MOB mob=(MOB)affected;
-				mob.location().addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
-				mob.location().recoverRoomStats();
-				MOB victim=mob.getVictim();
-				mob.setVictim(null);
-				FullMsg msg2=new FullMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot "+(amount)+" gold from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
-				if(mob.location().okMessage(mob,msg2))
+			    double money=BeanCounter.getTotalAbsoluteNativeValue((MOB)affected);
+				if((money/10.0)>0.0)
 				{
-					mob.location().send(mob,msg2);
-					CommonMsgs.get(mob,null,C,true);
+					Coins C=BeanCounter.makeBestCurrency((MOB)affected,money/10.0);
+					if((C!=null)&&(C.getNumberOfCoins()>0))
+					{
+					    BeanCounter.subtractMoney((MOB)affected,C.getTotalValue());
+						MOB mob=(MOB)affected;
+						mob.location().addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+						mob.location().recoverRoomStats();
+						MOB victim=mob.getVictim();
+						mob.setVictim(null);
+						FullMsg msg2=new FullMsg(mob,C,this,CMMsg.MSG_THIEF_ACT,"You silently autoloot "+C.name()+" from the corpse of "+msg.source().name(),CMMsg.MSG_THIEF_ACT,null,CMMsg.NO_EFFECT,null);
+						if(mob.location().okMessage(mob,msg2))
+						{
+							mob.location().send(mob,msg2);
+							CommonMsgs.get(mob,null,C,true);
+						}
+						if(victim!=null) mob.setVictim(victim);
+					}
 				}
-				if(victim!=null) mob.setVictim(victim);
 			}
 		}
 	}

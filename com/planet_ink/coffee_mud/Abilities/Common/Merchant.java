@@ -373,7 +373,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 					if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 					    return false;
 					if((msg.targetMinor()!=CMMsg.TYP_VIEW)
-					&&(yourValue(mob,msg.tool(),true)[0]>MoneyUtils.totalMoney(mob)))
+					&&(yourValue(mob,msg.tool(),true).absoluteGoldPrice>BeanCounter.getTotalAbsoluteShopKeepersValue(mob,M)))
 					{
 						CommonMsgs.say(M,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
 						return false;
@@ -468,12 +468,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if((msg.tool()!=null)
 				&&(doIHaveThisInStock(msg.tool().Name(),mobFor)))
 				{
-					int price=yourValue(mob,msg.tool(),true)[0];
+					double price=yourValue(mob,msg.tool(),true).absoluteGoldPrice;
 					Vector products=removeSellableProduct(msg.tool().Name(),mobFor);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
-					MoneyUtils.subtractMoney(M,mob,price);
-					M.setMoney(M.getMoney()+price);
+					String currency=BeanCounter.getCurrency(M);
+					BeanCounter.subtractMoney(mob,currency,price);
+					BeanCounter.addMoney(M,currency,price);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
@@ -515,20 +516,29 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			super.executeMsg(myHost,msg);
 	}
 
-	public int[] yourValue(MOB mob, Environmental product, boolean sellTo)
+	public ShopKeeper.ShopPrice yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
-		int[] val=new int[3];
+		ShopKeeper.ShopPrice price=new ShopKeeper.ShopPrice();
 		if((product==null)||(!(product instanceof Item)))
-			return val;
-		val[0]=stockPrice(product);
-		if((mob==null)||(mob==affected)) return val;
+			return price;
+		price.absoluteGoldPrice=new Integer(stockPrice(product)).doubleValue();
+		MOB shopkeeper=mob;
+		if(affected instanceof MOB) shopkeeper=(MOB)affected;
+		if((mob==null)||(mob==affected)) 
+		{
+		    price.absoluteGoldPrice=BeanCounter.abbreviatedRePrice(shopkeeper,price.absoluteGoldPrice);
+		    return price;
+		}
 
 		// the price is 200% at 0 charisma, and 100% at 30
-		val[0]=(int)Math.round(val[0]+val[0]-Util.mul(val[0],Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
-		if(val[0]<=0) val[0]=1;
+		price.absoluteGoldPrice=price.absoluteGoldPrice+price.absoluteGoldPrice-Util.mul(price.absoluteGoldPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0));
+		if(price.absoluteGoldPrice<=0) price.absoluteGoldPrice=1.0;
 		if(sellTo)
-			val[0]+=((int)Util.mul(val[0],Util.div(getSalesTax(),100.0)));
-		return val;
+		{
+		    price.absoluteGoldPrice+=(Util.mul(price.absoluteGoldPrice,Util.div(getSalesTax(),100.0)));
+		    price.absoluteGoldPrice=BeanCounter.abbreviatedRePrice(shopkeeper,price.absoluteGoldPrice);
+		}
+		return price;
 	}
 
 	private StringBuffer listInventory(MOB mob)
@@ -540,14 +550,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
 		int totalCols=2;
 		int totalWidth=60/totalCols;
+		Environmental E=null;
+		String price=null;
 		for(int i=0;i<inventory.size();i++)
 		{
-			Environmental E=(Environmental)inventory.elementAt(i);
+			E=(Environmental)inventory.elementAt(i);
 			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
-				int val=yourValue(mob,E,true)[0];
-				if((""+val).length()>(4+csize))
-					csize=(""+val).length()-4;
+				price=BeanCounter.abbreviatedPrice(invoker,yourValue(mob,E,true).absoluteGoldPrice);
+				if(price.length()>(4+csize))
+					csize=price.length()-4;
 			}
 		}
 
@@ -556,13 +568,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		int colNum=0;
 		for(int i=0;i<inventory.size();i++)
 		{
-			Environmental E=(Environmental)inventory.elementAt(i);
+			E=(Environmental)inventory.elementAt(i);
 
 			if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 			{
 				String col=null;
-				int val=yourValue(mob,E,true)[0];
-				col=Util.padRight("["+val,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
+				price=BeanCounter.abbreviatedPrice(invoker,yourValue(mob,E,true).absoluteGoldPrice);
+				col=Util.padRight("["+price,5+csize)+"] "+Util.padRight(E.name(),totalWidth-csize);
 				if((++colNum)>totalCols)
 				{
 					msg.append("\n\r");
@@ -618,12 +630,21 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 
 		Environmental target=null;
-		int val=-1;
+		double val=-1;
 		if(commands.size()>1)
 		{
 			String s=(String)commands.lastElement();
-			val=Util.s_int(s);
-			if(val>0) commands.removeElement(s);
+			long numberCoins=EnglishParser.numPossibleGold(s);
+		    if(numberCoins>0)
+		    {
+			    String currency=EnglishParser.numPossibleGoldCurrency(mob,s);
+			    double denom=EnglishParser.numPossibleGoldDenomination(mob,currency,s);
+			    if(denom>0.0)
+			    {
+					val=Util.mul(numberCoins,denom);
+					if(val>0) commands.removeElement(s);
+			    }
+		    }
 		}
 
 		String itemName=Util.combine(commands,0);
@@ -679,7 +700,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				if(val<=0)
 					addStoreInventory(I);
 				else
-					addStoreInventory(I,1,val);
+					addStoreInventory(I,1,(int)Math.round(val));
 				mob.delInventory(I);
 			}
 		}

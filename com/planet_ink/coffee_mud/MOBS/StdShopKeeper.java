@@ -624,7 +624,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
 				{
-					int yourValue=yourValue(mob,msg.tool(),false)[0];
+				    double yourValue=yourValue(mob,msg.tool(),false).absoluteGoldPrice;
 					if(yourValue<2)
 					{
 						CommonMsgs.say(this,mob,"I'm not interested.",true,false);
@@ -677,18 +677,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					    return false;
 					if(msg.targetMinor()!=CMMsg.TYP_VIEW)
 					{
-						int[] val=yourValue(mob,msg.tool(),true);
-						if((val[2]>0)&&(val[2]>mob.getExperience()))
+						ShopPrice price=yourValue(mob,msg.tool(),true);
+						if((price.experiencePrice>0)&&(price.experiencePrice>mob.getExperience()))
 						{
 							CommonMsgs.say(this,mob,"You aren't experienced enough to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
-						if((val[1]>0)&&(val[1]>mob.getQuestPoint()))
+						if((price.questPointPrice>0)&&(price.questPointPrice>mob.getQuestPoint()))
 						{
 							CommonMsgs.say(this,mob,"You don't have enough quest points to buy "+msg.tool().name()+".",false,false);
 							return false;
 						}
-						if((val[0]>0)&&(val[0]>MoneyUtils.totalMoney(mob)))
+						if((price.absoluteGoldPrice>0.0)
+						&&(price.absoluteGoldPrice>BeanCounter.getTotalAbsoluteShopKeepersValue(mob,this)))
 						{
 							CommonMsgs.say(this,mob,"You can't afford to buy "+msg.tool().name()+".",false,false);
 							return false;
@@ -872,15 +873,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				break;
 			case CMMsg.TYP_VALUE:
 				super.executeMsg(myHost,msg);
-				CommonMsgs.say(this,mob,"I'll give you "+yourValue(mob,msg.tool(),false)[0]+" for "+msg.tool().name()+".",true,false);
+				CommonMsgs.say(this,mob,"I'll give you "+BeanCounter.nameCurrencyShort(this,yourValue(mob,msg.tool(),false).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
 				break;
 			case CMMsg.TYP_SELL:
 				super.executeMsg(myHost,msg);
 				if((msg.tool()!=null)&&(doISellThis(msg.tool())))
 				{
-					int val=yourValue(mob,msg.tool(),false)[0];
-					mob.setMoney(mob.getMoney()+val);
-					budgetRemaining=budgetRemaining-val;
+					double val=yourValue(mob,msg.tool(),false).absoluteGoldPrice;
+					String currency=BeanCounter.getCurrency(this);
+					BeanCounter.giveSomeoneMoney(this,mob,currency,val);
+					budgetRemaining=budgetRemaining-Math.round(val);
 					mob.recoverEnvStats();
 					mob.tell(name()+" pays you "+val+" for "+msg.tool().name()+".");
 					if(msg.tool() instanceof LandTitle)
@@ -1015,10 +1017,10 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					Vector products=removeSellableProduct(msg.tool().Name()+"$",mobFor);
 					if(products.size()==0) break;
 					Environmental product=(Environmental)products.firstElement();
-					int[] val=yourValue(mob,product,true);
-					if(val[0]>0) MoneyUtils.subtractMoney(this,mob,val[0]);
-					if(val[1]>0) mob.setQuestPoint(mob.getQuestPoint()-val[1]);
-					if(val[2]>0) MUDFight.postExperience(mob,null,null,-val[2],false);
+					ShopPrice price=yourValue(mob,product,true);
+					if(price.absoluteGoldPrice>0.0) BeanCounter.subtractMoney(mob,BeanCounter.getCurrency(this),price.absoluteGoldPrice);
+					if(price.questPointPrice>0) mob.setQuestPoint(mob.getQuestPoint()-price.questPointPrice);
+					if(price.experiencePrice>0) MUDFight.postExperience(mob,null,null,-price.experiencePrice,false);
 					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
@@ -1142,21 +1144,26 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 									   ||(whatISell==DEAL_CSHIPSELLER))?1:2;
 						int totalWidth=60/totalCols;
 						int limit=Util.getParmInt(prejudiceFactors(),"LIMIT",0);
+						String showPrice=null;
+						ShopPrice price=null;
+						Environmental E=null;
 						for(int i=0;i<inventory.size();i++)
 						{
-							Environmental E=(Environmental)inventory.elementAt(i);
-	
+							E=(Environmental)inventory.elementAt(i);
 							if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 							{
-								int[] val=yourValue(mob,E,true);
-								if((val[2]>0)&&(((""+val[2]).length()+2)>(4+csize)))
-									csize=(""+val[2]).length()-2;
+								price=yourValue(mob,E,true);
+								if((price.experiencePrice>0)&&(((""+price.experiencePrice).length()+2)>(4+csize)))
+									csize=(""+price.experiencePrice).length()-2;
 								else
-								if((val[1]>0)&&(((""+val[1]).length()+2)>(4+csize)))
-									csize=(""+val[1]).length()-2;
+								if((price.questPointPrice>0)&&(((""+price.questPointPrice).length()+2)>(4+csize)))
+									csize=(""+price.questPointPrice).length()-2;
 								else
-								if((""+val[0]).length()>(4+csize))
-									csize=(""+val[0]).length()-4;
+								{
+								    showPrice=BeanCounter.abbreviatedPrice(this,price.absoluteGoldPrice);
+									if(showPrice.length()>(4+csize))
+										csize=showPrice.length()-4;
+								}
 							}
 						}
 	
@@ -1164,22 +1171,22 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY Shopkeeper \""+name()+"\"^>\n\r");
 						int colNum=0;
 						int rowNum=0;
-						
+						String col=null;
 						for(int i=0;i<inventory.size();i++)
 						{
-							Environmental E=(Environmental)inventory.elementAt(i);
+							E=(Environmental)inventory.elementAt(i);
 	
 							if(!((E instanceof Item)&&((((Item)E).container()!=null)||(!Sense.canBeSeenBy(E,mob)))))
 							{
-								int val[]=yourValue(mob,E,true);
-								String col=null;
-								if(val[1]>0)
-									col=Util.padRight("["+val[1]+"qp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
+								price=yourValue(mob,E,true);
+								col=null;
+								if(price.questPointPrice>0)
+									col=Util.padRight("["+price.questPointPrice+"qp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
 								else
-								if(val[2]>0)
-									col=Util.padRight("["+val[2]+"xp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
+								if(price.experiencePrice>0)
+									col=Util.padRight("["+price.experiencePrice+"xp",5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
 								else
-									col=Util.padRight("["+val[0],5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
+									col=Util.padRight("["+BeanCounter.abbreviatedPrice(this,price.absoluteGoldPrice),5+csize)+"] "+Util.padRight("^<SHOP^>"+E.name()+"^</SHOP^>",totalWidth-csize);
 								if((++colNum)>totalCols)
 								{
 									str.append("\n\r");
@@ -1305,29 +1312,29 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return rate;
 	}
 	
-	public int[] yourValue(MOB mob, Environmental product, boolean sellTo)
+	public ShopPrice yourValue(MOB mob, Environmental product, boolean sellTo)
 	{
-		int[] val=new int[3];
+	    ShopPrice val=new ShopPrice();
 		if(product==null) return val;
 		Integer I=(Integer)prices.get(product.ID()+"/"+product.name());
 		if((I!=null)&&(I.intValue()<=-100))
 		{
 			if(I.intValue()<=-1000)
-				val[2]=(I.intValue()*-1)-1000;
+				val.experiencePrice=(I.intValue()*-1)-1000;
 			else
-				val[1]=(I.intValue()*-1)-100;
+				val.questPointPrice=(I.intValue()*-1)-100;
 			return val;
 		}
 
 		if(product instanceof Item)
-			val[0]=((Item)product).value();
+		    val.absoluteGoldPrice=((Item)product).value();
 		else
 		if(product instanceof Ability)
 		{
 			if(whatISell==DEAL_TRAINER)
-				val[0]=CMAble.lowestQualifyingLevel(product.ID())*100;
+			    val.absoluteGoldPrice=CMAble.lowestQualifyingLevel(product.ID())*100;
 			else
-				val[0]=CMAble.lowestQualifyingLevel(product.ID())*75;
+			    val.absoluteGoldPrice=CMAble.lowestQualifyingLevel(product.ID())*75;
 		}
 		else
 		if(product instanceof MOB)
@@ -1336,40 +1343,62 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			if(A!=null)
 			{
 				if(A.text().indexOf(";")<0)
-					val[0]=Util.s_int(A.text());
+				{
+				    if(Util.isDouble(A.text()))
+				        val.absoluteGoldPrice=Util.s_double(A.text());
+				    else
+				        val.absoluteGoldPrice=new Integer(Util.s_int(A.text())).doubleValue();
+				}
 				else
-					val[0]=Util.s_int(A.text().substring(0,A.text().indexOf(";")));
+				{
+				    String s2=A.text().substring(0,A.text().indexOf(";"));
+				    if(Util.isDouble(s2))
+				        val.absoluteGoldPrice=Util.s_double(s2);
+				    else
+				        val.absoluteGoldPrice=new Integer(Util.s_int(s2)).doubleValue();
+				}
 			}
-			if(val[0]==0)
-				val[0]=25*product.envStats().level();
+			if(val.absoluteGoldPrice==0.0)
+			    val.absoluteGoldPrice=25.0*product.envStats().level();
 		}
 		else
-			val[0]=CMAble.lowestQualifyingLevel(product.ID())*25;
+		    val.absoluteGoldPrice=CMAble.lowestQualifyingLevel(product.ID())*25;
 		if((I!=null)&&(I.intValue()>=0))
-			val[0]=I.intValue();
+		    val.absoluteGoldPrice=I.intValue();
 
-		if(mob==null) return val;
+		if(mob==null) 
+		{
+		    if(sellTo&&(val.absoluteGoldPrice>0.0))
+		        val.absoluteGoldPrice=BeanCounter.abbreviatedRePrice(this,val.absoluteGoldPrice);
+		    return val;
+		}
 
 		double d=prejudiceFactor(mob,sellTo);
-		val[0]=(int)Math.round(Util.mul(d,val[0]));
+		val.absoluteGoldPrice=Util.mul(d,val.absoluteGoldPrice);
 
 		//double halfPrice=Math.round(Util.div(val,2.0));
 		// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
-		int buyPrice=(int)Math.round(Util.div(Util.mul(val[0],mob.charStats().getStat(CharStats.CHARISMA)),60.0));
+		double buyPrice=Util.div(Util.mul(val.absoluteGoldPrice,mob.charStats().getStat(CharStats.CHARISMA)),60.0);
         if(!(product instanceof Ability))
-			buyPrice=(int)Math.round(Util.mul(buyPrice,1.0-devalue(product)));
+			buyPrice=Util.mul(buyPrice,1.0-devalue(product));
 
 		// the price is 200% at 0 charisma, and 100% at 30
-		int sellPrice=(int)Math.round(val[0]+val[0]-Util.mul(val[0],Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0)));
+		double sellPrice=val.absoluteGoldPrice
+						+val.absoluteGoldPrice
+						-Util.mul(val.absoluteGoldPrice,Util.div(mob.charStats().getStat(CharStats.CHARISMA),30.0));
 
 		if(buyPrice>sellPrice)buyPrice=sellPrice;
 
 		if(sellTo)
-			val[0]=sellPrice+((int)Util.mul(val[0],Util.div(getSalesTax(),100.0)));
+		    val.absoluteGoldPrice=sellPrice+(Util.mul(val.absoluteGoldPrice,Util.div(getSalesTax(),100.0)));
 		else
-			val[0]=buyPrice;
+		    val.absoluteGoldPrice=buyPrice;
 
-		if(val[0]<=0) val[0]=1;
+		if(val.absoluteGoldPrice<=0.0) 
+		    val.absoluteGoldPrice=1.0;
+		else
+		if(sellTo)
+	        val.absoluteGoldPrice=BeanCounter.abbreviatedRePrice(this,val.absoluteGoldPrice);
 		return val;
 	}
 

@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -117,12 +118,12 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int amountRequired=(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
-
-		if(mob.getMoney()<amountRequired)
+		double goldRequired=new Integer((Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level())).doubleValue();
+		String localCurrency=BeanCounter.getCurrency(target);
+	    String costWords=BeanCounter.nameCurrencyShort(localCurrency,goldRequired);
+		if(BeanCounter.getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
-			if(mob.getMoney()<amountRequired)
-				mob.tell(target.charStats().HeShe()+" requires "+amountRequired+" coins to do this.");
+			mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
 			return false;
 		}
 
@@ -156,13 +157,14 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+amountRequired+" coins.^?");
-			mob.setMoney(mob.getMoney()-amountRequired);
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
+			
+			BeanCounter.subtractMoney(mob,localCurrency,goldRequired);
 			mob.recoverEnvStats();
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.setMoney(target.getMoney()+amountRequired);
+				BeanCounter.addMoney(target,localCurrency,goldRequired);
 				target.recoverEnvStats();
 				beneficialAffect(mob,target,asLevel,2);
 				bombFound.activateBomb();

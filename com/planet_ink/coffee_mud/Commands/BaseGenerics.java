@@ -92,6 +92,24 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genCurrency(MOB mob, Area A, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Currency: '"+A.getCurrency()+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		if(newName.length()>0)
+		{
+		    if((newName.indexOf("=")<0)&&(BeanCounter.getAllCurrencies().contains(newName.trim().toUpperCase())))
+		        mob.tell("'"+newName+"' is not a known currency. Existing currencies include: "+Util.toStringList(BeanCounter.getAllCurrencies()));
+		    else
+				A.setCurrency(newName.toUpperCase().trim());
+		}
+		else
+			mob.tell("(no change)");
+	}
+
 	static void genTimeClock(MOB mob, Area A, int showNumber, int showFlag)
 	throws IOException
 	{
@@ -1439,6 +1457,33 @@ public class BaseGenerics extends StdCommand
 		return numValue;
 	}
 
+	public static long getLongData(MOB mob, String prompt, long oldValue)
+	throws IOException
+	{
+		String value=mob.session().prompt(prompt,"");
+		long numValue=Util.s_long(value);
+		if((numValue==0)&&(!value.trim().equals("0")))
+		{
+			mob.tell("(no change)");
+			return oldValue;
+		}
+		return numValue;
+	}
+
+	public static String getTextData(MOB mob, String prompt, String oldValue)
+	throws IOException
+	{
+		String value=mob.session().prompt(prompt,"").trim();
+		if(value.length()==0)
+		{
+			mob.tell("(no change)");
+			return oldValue;
+		}
+		if(value.equalsIgnoreCase("null")) 
+		    value="";
+		return value;
+	}
+
 	public static double getDoubleData(MOB mob, String prompt, double oldValue)
 		throws IOException
 	{
@@ -1503,6 +1548,17 @@ public class BaseGenerics extends StdCommand
 		mob.tell(showNumber+". Magical Ability: '"+E.baseEnvStats().ability()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		E.baseEnvStats().setAbility(getNumericData(mob,"Enter a new value (0=no magic)\n\r:",E.baseEnvStats().ability()));
+	}
+
+	public static void genCoinStuff(MOB mob, Coins E, int showNumber, int showFlag)
+	throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		mob.tell(showNumber+". Money data: '"+E.getNumberOfCoins()+" x "+BeanCounter.getDenominationName(E.getCurrency(),E.getDenomination())+"'.");
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		E.setCurrency(getTextData(mob,"Enter currency code\n\r:",E.getCurrency()));
+		E.setDenomination(getDoubleData(mob,"Enter denomination\n\r:",E.getDenomination()));
+		E.setNumberOfCoins(getLongData(mob,"Enter stack size\n\r:",E.getNumberOfCoins()));
 	}
 
 	public static void genHitPoints(MOB mob, MOB E, int showNumber, int showFlag)
@@ -4675,7 +4731,10 @@ public class BaseGenerics extends StdCommand
 			genReadable2(mob,me,++showNumber,showFlag);
 			if(me instanceof Light)	genBurnout(mob,(Light)me,++showNumber,showFlag);
 			genRejuv(mob,me,++showNumber,showFlag);
-			genAbility(mob,me,++showNumber,showFlag);
+			if(me instanceof Coins)
+			    genCoinStuff(mob,(Coins)me,++showNumber,showFlag);
+			else
+				genAbility(mob,me,++showNumber,showFlag);
 			genUses(mob,me,++showNumber,showFlag);
 			if(me instanceof Wand)
 				genMaxUses(mob,(Wand)me,++showNumber,showFlag);

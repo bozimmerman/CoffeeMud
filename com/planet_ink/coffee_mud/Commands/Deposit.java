@@ -41,7 +41,7 @@ public class Deposit extends BaseItemParser
 			return false;
 		}
 		String thisName=Util.combine(commands,0);
-		Item thisThang=EnglishParser.possibleGold(mob,thisName);
+		Item thisThang=EnglishParser.bestPossibleGold(mob,null,thisName);
 		if(thisThang==null)
 		{
 			thisThang=mob.fetchCarried(null,thisName);
@@ -51,6 +51,9 @@ public class Deposit extends BaseItemParser
 				return false;
 			}
 		}
+		else
+	    if(((Coins)thisThang).getNumberOfCoins()<EnglishParser.numPossibleGold(thisName))
+	        return false;
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);

@@ -79,30 +79,37 @@ public class Thief_Bribe extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int amountRequired=target.getMoney()+(Math.round((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level());
+		
+		double amountRequired=BeanCounter.getTotalAbsoluteNativeValue(target)
+						+new Long(((100-(mob.charStats().getStat(CharStats.CHARISMA)*2)))*target.envStats().level()).doubleValue();
 
+		String currency=BeanCounter.getCurrency(target);
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		if((!success)||(mob.getMoney()<amountRequired))
+		if((!success)||(BeanCounter.getTotalAbsoluteValue(mob,currency)<amountRequired))
 		{
 			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> attempt(s) to bribe <T-NAMESELF> to '"+Util.combine(commands,0)+"', but no deal is reached.^?");
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
-			if(mob.getMoney()<amountRequired)
-				mob.tell(target.charStats().HeShe()+" requires "+amountRequired+" coins to do this.");
+			if(BeanCounter.getTotalAbsoluteValue(mob,currency)<amountRequired)
+			{
+			    String costWords=BeanCounter.nameCurrencyShort(currency,amountRequired);
+				mob.tell(target.charStats().HeShe()+" requires "+costWords+" to do this.");
+			}
 			success=false;
 		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+amountRequired+" coins.^?");
-			mob.setMoney(mob.getMoney()-amountRequired);
+		    String costWords=BeanCounter.nameCurrencyShort(target,amountRequired);
+			FullMsg msg=new FullMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+costWords+".^?");
+			BeanCounter.subtractMoney(mob,currency,amountRequired);
 			mob.recoverEnvStats();
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				target.doCommand(commands);
 			}
-			target.setMoney(target.getMoney()+amountRequired);
+			BeanCounter.addMoney(mob,currency,amountRequired);
 			target.recoverEnvStats();
 		}
 		if(target==lastChecked)

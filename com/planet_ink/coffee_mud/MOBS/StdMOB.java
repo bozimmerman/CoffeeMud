@@ -204,11 +204,14 @@ public class StdMOB implements MOB
 	public String image(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 	
-	public StdMOB(){}
+	public StdMOB()
+	{
+		baseCharStats().setMyRace(CMClass.getRace("Human"));
+		baseEnvStats().setLevel(1);
+	}
 
 	protected void cloneFix(MOB E)
 	{
-
 		affects=new Vector();
 		baseEnvStats=E.baseEnvStats().cloneStats();
 		envStats=E.envStats().cloneStats();
@@ -2966,30 +2969,25 @@ public class StdMOB implements MOB
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
-	public Item fetchInventory(String itemName)
+	public Item fetchFromInventory(Item goodLocation, String itemName, int wornCode, boolean allowCoins)
 	{
-		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,true);
-		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_ANY,false);
-		return item;
-	}
-	public Item fetchInventory(Item goodLocation, String itemName)
-	{
-		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,true);
-		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_ANY,false);
-		return item;
-	}
-	public Item fetchCarried(Item goodLocation, String itemName)
-	{
-		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,true);
+	    Vector inv=inventory;
+	    if(!allowCoins)
+	    {
+	        inv=(Vector)inventory.clone();
+	        for(int v=inv.size()-1;v>=0;v--)
+	            if(inv.elementAt(v) instanceof Coins)
+	                inv.removeElementAt(v);
+	    }
+		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,wornCode,true);
 		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,goodLocation,Item.WORN_REQ_UNWORNONLY,false);
 		return item;
 	}
-	public Item fetchWornItem(String itemName)
-	{
-		Item item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,true);
-		if(item==null) item=EnglishParser.fetchAvailableItem(inventory,itemName,null,Item.WORN_REQ_WORNONLY,false);
-		return item;
-	}
+	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_ANY,true);}
+	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_ANY,true);}
+	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORN_REQ_UNWORNONLY,true);}
+	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORN_REQ_WORNONLY,true);}
+	
 	public void addFollower(MOB follower, int order)
 	{
 		if(follower!=null)

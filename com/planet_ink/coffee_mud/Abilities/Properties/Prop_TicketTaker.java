@@ -32,10 +32,10 @@ public class Prop_TicketTaker extends Property
 		return "one who acts as a ticket taker";
 	}
 
-	private int cost(){
+	private double cost(){
 		int amount=Util.s_int(text());
 		if(amount==0) amount=10;
-		return amount;
+		return new Integer(amount).doubleValue();
 	}
 
 	private boolean isMine(Environmental host, Rideable R)
@@ -76,11 +76,18 @@ public class Prop_TicketTaker extends Property
 				case CMMsg.TYP_SIT:
 				case CMMsg.TYP_ENTER:
 				case CMMsg.TYP_SLEEP:
-					if(mob.getMoney()>=cost())
+				{
+					String currency=BeanCounter.getCurrency(affected);
+					if(currency.length()==0)
+					    currency=BeanCounter.getCurrency(mob);
+					if(BeanCounter.getTotalAbsoluteValue(mob,currency)>=cost())
 					{
-						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+cost()+" gold to <T-NAME>.");
-						mob.setMoney(mob.getMoney()-cost());
+					    String costStr=BeanCounter.nameCurrencyShort(currency,cost());
+						mob.location().show(mob,myHost,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> give(s) "+costStr+" to <T-NAME>.");
+						BeanCounter.subtractMoney(mob,currency,cost());
 					}
+				}
+				break;
 				}
 			}
 		}
@@ -103,15 +110,21 @@ public class Prop_TicketTaker extends Property
 				case CMMsg.TYP_SIT:
 				case CMMsg.TYP_ENTER:
 				case CMMsg.TYP_SLEEP:
-					if(mob.getMoney()<cost())
+				{
+					String currency=BeanCounter.getCurrency(affected);
+					if(currency.length()==0)
+					    currency=BeanCounter.getCurrency(mob);
+					if(BeanCounter.getTotalAbsoluteValue(mob,currency)<cost())
 					{
+					    String costStr=BeanCounter.nameCurrencyLong(currency,cost());
 						if(myHost instanceof MOB)
-							CommonMsgs.say((MOB)myHost,mob,"You'll need "+cost()+" gold to board.",false,false);
+							CommonMsgs.say((MOB)myHost,mob,"You'll need "+costStr+" to board.",false,false);
 						else
-							mob.tell("You'll need "+cost()+" gold to board.");
+							mob.tell("You'll need "+costStr+" to board.");
 						return false;
 					}
 					break;
+				}
 				default:
 					break;
 				}

@@ -27,7 +27,7 @@ public class BribeGateGuard extends StdBehavior
 	int tickTock = 0;
 	Vector paidPlayers = new Vector();
 	Hashtable toldAlready = new Hashtable();
-	private static boolean debug = true; // debuggin
+	private static boolean debug = false; // debuggin
 	private static boolean surviveReboot=false; // survive reboot
 	private static Hashtable notTheJournal=new Hashtable();
 
@@ -38,9 +38,9 @@ public class BribeGateGuard extends StdBehavior
 
 
 
-	private int price()
+	private double price()
 	{
-		return getVal(getParms(), "price", 5);
+		return new Integer(getVal(getParms(), "price", 5)).doubleValue();
 	}
 
 	private String gates()
@@ -88,18 +88,17 @@ public class BribeGateGuard extends StdBehavior
 		return key;
 	}
 
-	private void payment(Coins given, MOB mob)
+	private void payment(Coins given, MOB gateGuard, MOB mob)
 	{
 		// make a note in the journal
-		Coins item = (Coins) CMClass.getItem("StdCoins");
-		int newNum = given.numberOfCoins();
+		double newNum = given.getTotalValue();
 		newNum += getBalance(mob);
-		item.setNumberOfCoins(newNum);
+		Coins item = BeanCounter.makeBestCurrency(BeanCounter.getCurrency(gateGuard),newNum);
 		delBalance(mob);
-		writeBalance(item, mob);
+		if(item!=null) writeBalance(item, mob);
 	}
 
-	private boolean checkBalance(int charge, MOB mob)
+	private boolean checkBalance(double charge, MOB mob)
 	{
 		// Does this MOB have the cash for the charge?
 		if (getBalance(mob) > charge) {
@@ -108,9 +107,9 @@ public class BribeGateGuard extends StdBehavior
 		return false;
 	}
 
-	private int getBalance(MOB mob)
+	private double getBalance(MOB mob)
 	{
-		int balance = 0;
+		double balance = 0;
 		// return the balance in int form
 		if(surviveReboot)
 		{
@@ -137,7 +136,7 @@ public class BribeGateGuard extends StdBehavior
 						item.recoverEnvStats();
 						item.text();
 					}
-					balance += item.numberOfCoins();
+					balance += item.getTotalValue();
 				}
 			}
 		}
@@ -149,26 +148,28 @@ public class BribeGateGuard extends StdBehavior
 				H=new Hashtable();
 				notTheJournal.put(gates(),H);
 			}
-			Integer I=(Integer)H.get(mob.Name());
-			if(I==null)
+			Double D=(Double)H.get(mob.Name());
+			if(D==null)
 			{
-				I=new Integer(0);
-				H.put(mob.Name(),I);
+				D=new Double(0.0);
+				H.put(mob.Name(),D);
 			}
-			balance=I.intValue();
+			balance=D.doubleValue();
 		}
 		return balance;
 	}
 
-	private void charge(int charge, MOB mob)
+	private void charge(double charge, MOB gateGuard, MOB mob)
 	{
 		// update the balance in the journal
 		Coins item = (Coins) CMClass.getItem("StdCoins");
-		int newNum = getBalance(mob);
+		double newNum = getBalance(mob);
 		newNum -= charge;
 		if (newNum > 0)
 		{
-			item.setNumberOfCoins(newNum);
+		    item.setCurrency(BeanCounter.getCurrency(gateGuard));
+		    item.setDenomination(BeanCounter.getLowestDenomination(BeanCounter.getCurrency(gateGuard)));
+			item.setNumberOfCoins(Math.round(newNum/item.getDenomination()));
 			delBalance(mob);
 			writeBalance(item, mob);
 		}
@@ -206,8 +207,8 @@ public class BribeGateGuard extends StdBehavior
 		{
 			Hashtable H=(Hashtable)notTheJournal.get(gates());
 			if(H==null) return;
-			Integer I=(Integer)H.get(mob.Name());
-			if(I==null) return;
+			Double D=(Double)H.get(mob.Name());
+			if(D==null) return;
 			H.remove(mob.Name());
 		}
 	}
@@ -229,9 +230,9 @@ public class BribeGateGuard extends StdBehavior
 				H=new Hashtable();
 				notTheJournal.put(gates(),H);
 			}
-			Integer I=(Integer)H.get(mob.Name());
-			if(I!=null)	H.remove(mob.Name());
-			H.put(mob.Name(),new Integer(balance.numberOfCoins()));
+			Double D=(Double)H.get(mob.Name());
+			if(D!=null)	H.remove(mob.Name());
+			H.put(mob.Name(),new Double(balance.getTotalValue()));
 		}
 	}
 
@@ -302,6 +303,18 @@ public class BribeGateGuard extends StdBehavior
 		  return true;
 		}
 		MOB monster = (MOB) oking;
+	    String currency=BeanCounter.getCurrency(monster);
+		if (msg.amITarget(monster)
+	    && (!msg.amISource(monster))
+	    && (msg.targetMinor() == CMMsg.TYP_GIVE)
+	    && (msg.tool() != null)
+	    && (msg.tool()instanceof Coins)
+	    && (!((Coins)msg.tool()).getCurrency().equals(currency)))
+		{
+		    double denomination=BeanCounter.getLowestDenomination(currency);
+		    CommonMsgs.say(monster,mob,"I only accept "+BeanCounter.getDenominationName(currency,denomination)+".",false,false);
+		    return false;
+		}
 		if (msg.target() == null) {
 		  if (debug) {
 		    //CommonMsgs.say( (MOB) oking, msg.source(),
@@ -339,9 +352,10 @@ public class BribeGateGuard extends StdBehavior
 		              "<S-NAME> won't let <T-NAME> through there.");
 		          if (monster.location().okMessage(monster, msgs)) {
 		            monster.location().send(monster, msgs);
+		            double denomination=BeanCounter.getLowestDenomination(currency);
+		            String thePrice=BeanCounter.getDenominationName(currency,denomination,Math.round(price()/denomination));
 		            CommonMsgs.say(monster, mob,
-		                "I'll let you through here if you pay the fee of " + price() +
-		                " gold.", true, false);
+		                "I'll let you through here if you pay the fee of "+thePrice+".", true, false);
 		            if (debug) // debugging
 		              CommonMsgs.say(monster, mob,
 		                                    "I'm telling you this from okAffect", true, false);
@@ -422,7 +436,7 @@ public class BribeGateGuard extends StdBehavior
 		    if ( (msg.tool() != null) && (msg.tool()instanceof Exit)) {
 		      Exit exit = (Exit) msg.tool();
 		      if (exit.Name().equals(e.Name())) { // the player is walking through the gate.  NOW we charge their balance
-		        charge(price(), source);
+		        charge(price(), observer, source);
 		        if(debug)
 		        {
 		          CommonMsgs.say(observer,source,"Charging " + price() + ", balance " + getBalance(source) + ".", true,true);
@@ -441,14 +455,18 @@ public class BribeGateGuard extends StdBehavior
 		    && (!msg.amISource(observer))
 		    && (msg.targetMinor() == CMMsg.TYP_GIVE)
 		    && (msg.tool() != null)
-		    && (msg.tool()instanceof Coins)) {
-		  payment( (Coins) msg.tool(), msg.source());
+		    && (msg.tool()instanceof Coins)) 
+		{
+		  payment( (Coins) msg.tool(), observer, msg.source());
 		  CommonMsgs.say(observer, source, "Thank you very much.", true, false);
 		  if(getBalance(source) > price())
 		  {
+		      String currency=BeanCounter.getCurrency(observer);
+		      double denomination=BeanCounter.getLowestDenomination(currency);
+		      long diff=Math.round((getBalance(source) - price())/denomination);
+		      String difference=BeanCounter.getDenominationName(currency,denomination,diff);
 		    CommonMsgs.say(observer, source,
-		                          "I'll hang on to the additional " +
-		                          (getBalance(source) - price()) + " for you", true, false);
+		                          "I'll hang on to the additional "+difference+" for you", true, false);
 		    paidPlayers.addElement(source);
 		    toldAlready.put(source.Name(),new Boolean(false));
 		    if (debug)  // debugging
@@ -484,7 +502,7 @@ public class BribeGateGuard extends StdBehavior
 		    msg.addTrailerMsg(msg2);
 		    msg2=new FullMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 		    msg.addTrailerMsg(msg2);
-		    charge(( (Coins) msg.tool()).value(), msg.source());
+		    charge(( (Coins) msg.tool()).value(), observer, msg.source());
 		  }
 		}
 	}
@@ -513,10 +531,15 @@ public class BribeGateGuard extends StdBehavior
 		    if ( (paidPlayers.contains(M)) && (toldAlready.containsKey(M.Name()))) {
 		      Boolean B = (Boolean) toldAlready.get(M.Name());
 		      if (!B.booleanValue())
+		      {
+		          String currency=BeanCounter.getCurrency(mob);
+		          double denomination=BeanCounter.getLowestDenomination(currency);
+		          String balanceStr=BeanCounter.getDenominationName(currency,denomination,Math.round(getBalance(M)/denomination));
 		        CommonMsgs.say(mob, M,
 		                              "We still have record that you gave us " +
-		                              getBalance(M) +
+		                              balanceStr +
 		                              " before if you're heading through", true, false);
+		      }
 		      toldAlready.put(M.Name(), new Boolean(true));
 		    if (dir >= 0)
 				mob.doCommand(Util.parse("OPEN " +
@@ -526,9 +549,12 @@ public class BribeGateGuard extends StdBehavior
 		    else {
 		      if(toldAlready.containsKey(M.Name()))
 		         continue;
+	          String currency=BeanCounter.getCurrency(mob);
+	          double denomination=BeanCounter.getLowestDenomination(currency);
+	          String priceStr=BeanCounter.getDenominationName(currency,denomination,Math.round(price()/denomination));
 		      CommonMsgs.say(mob, M,
-		          "I'll let you through here if you pay the fee of " + price() +
-		          " gold.", true, false);
+		          "I'll let you through here if you pay the fee of " + priceStr +
+		          ".", true, false);
 		      toldAlready.put(M.Name(), new Boolean(true));
 		      if (debug)  // debugging
 		        CommonMsgs.say(mob, M,

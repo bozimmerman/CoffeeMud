@@ -182,8 +182,9 @@ public class Skill_CollectBounty extends StdAbility
 				    W=(LegalWarrant)warrants.elementAt(i);
 			        gold+=(W.actionCode()*5);
 				}
-				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+gold+" gold on "+target.Name()+".");
-				MoneyUtils.giveMoney(judge,mob,gold);
+				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+BeanCounter.nameCurrencyShort(judge,gold)+" on "+target.Name()+".");
+				String currency=BeanCounter.getCurrency(judge);
+				BeanCounter.giveSomeoneMoney(judge,mob,currency,new Integer(gold).doubleValue());
 			}
 		}
 		else

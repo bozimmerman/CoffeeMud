@@ -182,10 +182,15 @@ public class GrinderAreas
 		if(img==null)img="";
 		A.setImage(CoffeeFilter.safetyFilter(img));
 		
-		// description
+		// author
 		String author=httpReq.getRequestParameter("AUTHOR");
 		if(author==null)author="";
 		A.setAuthorID(CoffeeFilter.safetyFilter(author));
+		
+		// currency
+		String currency=httpReq.getRequestParameter("CURRENCY");
+		if(currency==null)currency="";
+		A.setCurrency(CoffeeFilter.safetyFilter(currency));
 		
         // modify Child Area list
         String parents=httpReq.getRequestParameter("PARENT");

@@ -38,26 +38,15 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 	{
 		I.setContainer(this);
 		if(owner() instanceof Room)
-		{
 			((Room)owner()).addItem(I);
-			I.setDispossessionTime(dispossessionTime());
-		}
 		else
 		if(owner() instanceof MOB)
 			((MOB)owner()).addInventory(I);
 		I.recoverEnvStats();
 	}
 
-	public void addMoney(int value)
+	public void addMoney(double value)
 	{
-		Container I=(Container)CMClass.getItem("GenContainer");
-		I.setCapacity(1);
-		I.setContainTypes(Container.CONTAIN_COINS);
-		putInBag(I);
-		Coins money=MoneyUtils.makeNote(value,this.owner(),I);
-		I.setName(money.Name()+" sleeve");
-		I.setDisplayText(money.Name()+" sleeve has been left here.");
-		I.recoverEnvStats();
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -67,14 +56,17 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 			alreadyFilled=true;
 			if(getContents().size()==0)
 			{
-				addMoney(100);
-				addMoney(500);
-				addMoney(1000);
-				addMoney(5000);
-				addMoney(10000);
-				addMoney(100000);
-				addMoney(1000000);
-				addMoney(10000000);
+			    Vector V=BeanCounter.getAllCurrencies();
+			    for(int v=0;v<V.size();v++)
+			    {
+			        String currency=(String)V.elementAt(v);
+			        DVector V2=BeanCounter.getCurrencySet(currency);
+			        for(int v2=0;v2<V2.size();v2++)
+			        {
+						Coins C=BeanCounter.makeBestCurrency(currency,((Double)V2.elementAt(v2,1)).doubleValue(),owner(),this);
+						C.setNumberOfCoins(100);
+			        }
+			    }
 				Item I=CMClass.getItem("GenSuperPill");
 				I.setName("a training pill");
 				I.setDisplayText("A small round pill has been left here.");

@@ -56,12 +56,13 @@ public class Prayer_Tithe extends Prayer
 		&&(msg.source()==affected)
 		&&(msg.target() instanceof Coins))
 		{
-			int num=((Coins)msg.target()).numberOfCoins();
+			long num=((Coins)msg.target()).getNumberOfCoins();
 			((Coins)msg.target()).setNumberOfCoins(num-(num/10));
-			if(invoker()!=msg.source())
+			if((invoker()!=msg.source())&&((num/10)>0))
 			{
 				invoker().tell(msg.source().name()+" tithes.");
-				invoker().setMoney(invoker().getMoney()+(num/10));
+			    String currency=((Coins)msg.target()).getCurrency();
+				BeanCounter.addMoney(invoker(),currency,Util.mul(((Coins)msg.target()).getDenomination(),(num/10)));
 			}
 		}
 		if((msg.sourceMinor()==CMMsg.TYP_BUY)
@@ -71,12 +72,12 @@ public class Prayer_Tithe extends Prayer
 			ShopKeeper SK=CoffeeUtensils.getShopKeeper((MOB)affected);
 			if(SK.doIHaveThisInStock(msg.tool().Name()+"$",msg.source()))
 			{
-				int[] val=SK.yourValue(msg.source(),msg.tool(),true);
-				if((val[0]>0)&&(val[0]<=MoneyUtils.totalMoney(msg.source())))
+			    ShopKeeper.ShopPrice price=SK.yourValue(msg.source(),msg.tool(),true);
+				if((price.absoluteGoldPrice>0.0)&&(price.absoluteGoldPrice<=BeanCounter.getTotalAbsoluteShopKeepersValue(msg.source(),invoker())))
 					if(invoker()!=msg.target())
 					{
 						invoker().tell(msg.source().name()+" tithes.");
-						invoker().setMoney(invoker().getMoney()+(val[0]/10));
+						BeanCounter.addMoney(invoker(),Util.div(price.absoluteGoldPrice,10.0));
 					}
 			}
 		}

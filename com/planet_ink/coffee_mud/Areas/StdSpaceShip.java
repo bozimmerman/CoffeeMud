@@ -48,6 +48,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected TimeClock localClock=new DefaultTimeClock();
 	public TimeClock getTimeObj(){return localClock;}
 	public void setTimeObj(TimeClock obj){localClock=obj;}
+	protected String currency="";
+	public void setCurrency(String newCurrency){currency=newCurrency;}
+	public String getCurrency(){return currency;}
 	
 	public SpaceObject spaceTarget=null;
 	public SpaceObject knownTarget(){return spaceTarget;}

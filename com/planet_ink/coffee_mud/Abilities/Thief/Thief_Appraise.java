@@ -59,7 +59,7 @@ public class Thief_Appraise extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			int realValue=target.value();
+			double realValue=new Integer(target.value()).doubleValue();
 			int materialCode=target.material();
 			int weight=target.baseEnvStats().weight();
 			int height=target.baseEnvStats().height();
@@ -67,14 +67,15 @@ public class Thief_Appraise extends ThiefSkill
 			if(!success)
 			{
 				double deviance=Util.div(Dice.roll(1,100,0)+50,100);
-				realValue=(int)Math.round(Util.mul(realValue,deviance));
+				realValue=Util.mul(realValue,deviance);
 				materialCode=Dice.roll(1,EnvResource.RESOURCE_DESCS.length,-1);
 				weight=(int)Math.round(Util.mul(weight,deviance));
 				height=(int)Math.round(Util.mul(height,deviance));
 				allWeight=(int)Math.round(Util.mul(allWeight,deviance));
 			}
 			StringBuffer str=new StringBuffer("");
-			str.append(target.name()+" is made of "+EnvResource.RESOURCE_DESCS[materialCode&EnvResource.RESOURCE_MASK]+" is worth about "+realValue+" gold.");
+			str.append(target.name()+" is made of "+EnvResource.RESOURCE_DESCS[materialCode&EnvResource.RESOURCE_MASK]);
+			str.append(" is worth about "+BeanCounter.nameCurrencyShort(mob,realValue)+".");
 			if(target instanceof Armor)
 				str.append("\n\r"+target.name()+" is a size "+height+".");
 			if(weight!=allWeight)

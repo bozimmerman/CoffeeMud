@@ -62,6 +62,7 @@ public class Take extends BaseItemParser
 
 			int maxToGive=Integer.MAX_VALUE;
 			if((commands.size()>1)
+			&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0)
 			&&(Util.s_int((String)commands.firstElement())>0))
 			{
 				maxToGive=Util.s_int((String)commands.firstElement());
@@ -98,11 +99,17 @@ public class Take extends BaseItemParser
 			
 			do
 			{
-				Environmental giveThis=EnglishParser.possibleGold(victim,thingToGive);
+				Environmental giveThis=EnglishParser.bestPossibleGold(victim,null,thingToGive);
+				
 				if(giveThis!=null)
+				{
+				    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToGive))
+				        return false;
 					allFlag=false;
+				}
 				else
 					giveThis=victim.fetchCarried(null,thingToGive+addendumStr);
+				
 				if((giveThis==null)
 				&&(V.size()==0)
 				&&(addendumStr.length()==0)
@@ -128,6 +135,8 @@ public class Take extends BaseItemParser
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);
 				if(!mob.isMine(giveThis)) mob.giveItem(giveThis);
+				if(giveThis instanceof Coins)
+				    ((Coins)giveThis).putCoinsBack();
 			}
 		}
 		else

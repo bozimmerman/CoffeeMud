@@ -462,6 +462,7 @@ public class StdRace implements Race
 		}
 
 		Vector items=new Vector();
+		BeanCounter.getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
 		for(int i=0;i<mob.inventorySize();)
 		{
 			Item thisItem=mob.fetchInventory(i);
@@ -490,16 +491,6 @@ public class StdRace implements Race
 				mob.delInventory(thisItem);
 			else
 				i++;
-		}
-		if(mob.getMoney()>0)
-		{
-			Item C=CMClass.getItem("StdCoins");
-			C.baseEnvStats().setAbility(mob.getMoney());
-			C.recoverEnvStats();
-			C.setContainer(Body);
-			if(room!=null)
-				room.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
-			mob.setMoney(0);
 		}
 		if(destroyBodyAfterUse())
 		{

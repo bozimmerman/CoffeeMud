@@ -41,11 +41,11 @@ public class Hireling extends StdBehavior
 			dex2=-1;
 	}
 
-	private int price()
+	private double price()
 	{
-		int price=100;
+		double price=100.0;
 		if(dex>=0)
-			price=Util.s_int(getParms().substring(0,dex));
+			price=new Integer(Util.s_int(getParms().substring(0,dex))).doubleValue();
 		return price;
 	}
 
@@ -164,11 +164,18 @@ public class Hireling extends StdBehavior
 			&&(!msg.amISource(observer))
 			&&(msg.targetMinor() == CMMsg.TYP_GIVE)
 			&&(msg.tool() != null)
-			&&(!MUDZapper.zapperCheck(zapper(),source))
-			&&(msg.tool()instanceof Coins))
+			&&(msg.tool() instanceof Coins))
 			{
-				CommonMsgs.say(observer,null,"I wouldn't work for the likes of you.",false,false);
-				return false;
+				if(!MUDZapper.zapperCheck(zapper(),source))
+				{
+					CommonMsgs.say(observer,null,"I wouldn't work for the likes of you.",false,false);
+					return false;
+				}
+				if(!((Coins)msg.tool()).getCurrency().equals(BeanCounter.getCurrency(observer)))
+				{
+					CommonMsgs.say(observer,null,"I'm sorry, I only deal in "+BeanCounter.getDenominationName(BeanCounter.getCurrency(observer))+".",false,false);
+					return false;
+				}
 			}
 
 			if((observer.soulMate()==null)
@@ -208,7 +215,7 @@ public class Hireling extends StdBehavior
 			if(((msg.sourceMessage().toUpperCase().indexOf(" HIRE")>0)
 				||(msg.sourceMessage().toUpperCase().indexOf("'HIRE")>0))
 			&&(onTheJobUntil==0))
-				CommonMsgs.say(observer,null,"I'm for hire.  Just give me "+price()+" and I'll work for you.",false,false);
+				CommonMsgs.say(observer,null,"I'm for hire.  Just give me "+BeanCounter.nameCurrencyShort(observer,price())+" and I'll work for you.",false,false);
 			else
 			if(((msg.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
 			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
@@ -235,15 +242,15 @@ public class Hireling extends StdBehavior
 		}
 		else
 		if(msg.amITarget(observer)
-		   &&(!msg.amISource(observer))
-		   &&(msg.targetMinor()==CMMsg.TYP_GIVE)
-		   &&(msg.tool()!=null)
-		   &&(msg.tool() instanceof Coins))
+		&&(!msg.amISource(observer))
+		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
+		&&(msg.tool()!=null)
+		&&(msg.tool() instanceof Coins))
 		{
-			int given=((Coins)msg.tool()).numberOfCoins();
+			double given=((Coins)msg.tool()).getTotalValue();
 			if(partials.get(msg.source().Name())!=null)
 			{
-				given+=((Integer)partials.get(msg.source().Name())).intValue();
+				given+=((Double)partials.get(msg.source().Name())).doubleValue();
 				partials.remove(msg.source().Name());
 			}
 			if(given<price())
@@ -253,11 +260,11 @@ public class Hireling extends StdBehavior
 					if(workingFor.equals(source.Name()))
 						CommonMsgs.say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
-						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me "+(price()-given)+" more later on and I'll work.",true,false);
+						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me "+BeanCounter.nameCurrencyShort(observer,(price()-given))+" more later on and I'll work.",true,false);
 				}
 				else
-					CommonMsgs.say(observer,source,"My price is "+price()+".  Give me "+(price()-given)+" more and I'll work.",true,false);
-				partials.put(msg.source().Name(),new Integer(given));
+					CommonMsgs.say(observer,source,"My price is "+price()+".  Give me "+BeanCounter.nameCurrencyShort(observer,(price()-given))+" more and I'll work.",true,false);
+				partials.put(msg.source().Name(),new Double(given));
 			}
 			else
 			{
@@ -267,12 +274,12 @@ public class Hireling extends StdBehavior
 						CommonMsgs.say(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
 						CommonMsgs.say(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
-					partials.put(msg.source().Name(),new Integer(given));
+					partials.put(msg.source().Name(),new Double(given));
 				}
 				else
 				{
 					if(given>price())
-						partials.put(msg.source().Name(),new Integer(given-price()));
+						partials.put(msg.source().Name(),new Double(given-price()));
 					StringBuffer skills=new StringBuffer("");
 					for(int a=0;a<observer.numAbilities();a++)
 					{

@@ -107,11 +107,12 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-			int[] coins={5,10,50,100,500,1000,5000,10000,100000,1000000,10000000};
-			for(int i=0;i<coins.length;i++)
+		    DVector DV=BeanCounter.getCurrencySet(BeanCounter.getCurrency(mob));
+			for(int i=0;i<DV.size();i++)
 			{
-				Item note=MoneyUtils.makeNote(coins[i],null,null);
-				if(EnglishParser.containsString(note.name(),forgeWhat))
+				Item note=BeanCounter.makeBestCurrency(BeanCounter.getCurrency(mob),
+											        ((Double)DV.elementAt(i,1)).doubleValue());
+				if((note!=null)&&(EnglishParser.containsString(note.name(),forgeWhat)))
 				{
 					newName=note.name();
 					newDisplay=note.displayText();

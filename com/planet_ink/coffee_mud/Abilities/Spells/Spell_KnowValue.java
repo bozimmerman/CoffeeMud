@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Spells;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -48,9 +49,9 @@ public class Spell_KnowValue extends Spell
 					str=target.name()+" isn't worth anything.";
 				else
 				if(target.value()==0)
-					str=target.name()+" is worth one puny gold piece";
+					str=target.name()+" is worth hardly anything at all";
 				else
-					str=target.name()+" is worth "+target.value()+" gold pieces";
+					str=target.name()+" is worth "+BeanCounter.nameCurrencyShort(mob,new Integer(target.value()).doubleValue())+" ";
 				if(mob.isMonster())
 					CommonMsgs.say(mob,null,str,false,false);
 				else

@@ -79,14 +79,13 @@ public class Spell_DetectGold extends Spell
 		else
 		if((E instanceof MOB)&&(Sense.canBeSeenBy(E,mob)))
 		{
+		    BeanCounter.getTotalAbsoluteNativeValue((MOB)E);
 			for(int i=0;i<((MOB)E).inventorySize();i++)
 			{
 				Item I=((MOB)E).fetchInventory(i);
 				if(!I.amWearingAt(Item.INVENTORY))
 					metalCheck(mob,I,container,msg);
 			}
-			if(((MOB)E).getMoney()>0)
-				msg.append(E.name()+" is carrying some gold.");
 		}
 		return msg.toString();
 	}

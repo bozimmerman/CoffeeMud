@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -78,20 +79,21 @@ public class Thief_Racketeer extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int amount=Dice.roll(profficiency(),target.envStats().level(),0);
+		double amount=new Long(Dice.roll(profficiency(),target.envStats().level(),0)).doubleValue();
 		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
 		if(success)
 		{
-			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "+amount+" gold of protection money from <T-NAME>.");
+			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,"<S-NAME> extract(s) "+BeanCounter.nameCurrencyShort(target,amount)+" of protection money from <T-NAME>.");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj().getDaysInMonth())/MudHost.TICK_TIME)).intValue());
-				Coins C=(Coins)CMClass.getItem("StdCoins");
-				C.setNumberOfCoins(amount);
-				C.recoverEnvStats();
-				mob.location().addItemRefuse(C,Item.REFUSE_PLAYER_DROP);
-				CommonMsgs.get(mob,null,C,true);
+				Coins C=BeanCounter.makeBestCurrency(mob,amount);
+				if(C!=null)
+				{
+					mob.location().addItemRefuse(C,Item.REFUSE_PLAYER_DROP);
+					CommonMsgs.get(mob,null,C,true);
+				}
 			}
 		}
 		else

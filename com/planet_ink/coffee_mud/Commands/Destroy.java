@@ -525,10 +525,7 @@ public class Destroy extends BaseItemParser
 		}
 		else
 		if(dropThis instanceof Coins)
-		{
-			mob.setMoney(mob.getMoney()+((Coins)dropThis).numberOfCoins());
-			((Coins)dropThis).destroy();
-		}
+		    ((Coins)dropThis).putCoinsBack();
 		return false;
 	}
 

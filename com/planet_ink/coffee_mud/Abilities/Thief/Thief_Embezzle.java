@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Abilities.Thief;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -79,23 +80,26 @@ public class Thief_Embezzle extends ThiefSkill
 		String victim="";
 		int tries=0;
 		Coins hisCoins=null;
-		int hisAmount=0;
+		double hisAmount=0;
 		while((hisCoins==null)&&((++tries)<10))
 		{
 			String possVic=(String)accounts.elementAt(Dice.roll(1,accounts.size(),-1));
 			Item C=bank.findDepositInventory(possVic,"1");
-			if((C!=null)&&(C instanceof Coins)&&((((Coins)C).numberOfCoins()/50)>0)&&(!mob.Name().equals(possVic)))
+			if((C!=null)
+	        &&(C instanceof Coins)
+	        &&((((Coins)C).getTotalValue()/50.0)>0.0)
+	        &&(!mob.Name().equals(possVic)))
 			{
 				hisCoins=(Coins)C;
 				victim=possVic;
-				hisAmount=hisCoins.numberOfCoins()/50;
+				hisAmount=hisCoins.getTotalValue()/50.0;
 				break;
 			}
 		}
 		int classLevel=mob.charStats().getClassLevel("Burglar");
 		if((classLevel>0)
-		&&(hisAmount>(1000*classLevel)))
-		   hisAmount=(1000*classLevel);
+		&&(Math.round(hisAmount)>(1000*classLevel)))
+		   hisAmount=new Long(1000*classLevel).doubleValue();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -103,17 +107,17 @@ public class Thief_Embezzle extends ThiefSkill
 		boolean success=profficiencyCheck(mob,-(levelDiff),auto);
 		if((success)&&(hisAmount>0)&&(hisCoins!=null))
 		{
-		    String str="<S-NAME> embezzle(s) "+hisAmount+" gold from the "+victim+" account maintained by <T-NAME>.";
+		    String str="<S-NAME> embezzle(s) "+BeanCounter.nameCurrencyShort(target,hisAmount)+" from the "+victim+" account maintained by <T-NAME>.";
 			FullMsg msg=new FullMsg(mob,target,this,(auto?CMMsg.MASK_GENERAL:0)|CMMsg.MSG_THIEF_ACT,str,null,str);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,new Long(((MudHost.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj().getDaysInMonth())/MudHost.TICK_TIME)).intValue());
 				bank.delDepositInventory(victim,hisCoins);
-				hisCoins.setNumberOfCoins(hisCoins.numberOfCoins()-hisAmount);
+				Coins newHisCoins=BeanCounter.makeBestCurrency(target,hisCoins.getTotalValue()-hisAmount);
 				bank.addDepositInventory(victim,hisCoins);
-				bank.delDepositInventory(mob.Name(),myCoins);
-				((Coins)myCoins).setNumberOfCoins(((Coins)myCoins).numberOfCoins()+hisAmount);
+				if(newHisCoins.getNumberOfCoins()>0)
+					bank.delDepositInventory(mob.Name(),newHisCoins);
 				bank.addDepositInventory(mob.Name(),myCoins);
 			}
 		}

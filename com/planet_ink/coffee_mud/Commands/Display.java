@@ -68,9 +68,13 @@ public class Display extends BaseItemParser
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 		do
 		{
-			Environmental giveThis=EnglishParser.possibleGold(mob,thingToGive);
+			Environmental giveThis=EnglishParser.bestPossibleGold(mob,null,thingToGive);
 			if(giveThis!=null)
+			{
+			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToGive))
+			        return false;
 				allFlag=false;
+			}
 			else
 				giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
 			if((giveThis==null)

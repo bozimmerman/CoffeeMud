@@ -132,6 +132,7 @@ public class Who extends StdCommand
 			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
 				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level()))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
+			&&(Sense.isInTheGame(mob2,true))
 			&&(mob2.envStats().level()>0))
 				msg.append(showWhoShort(mob2));
 		}

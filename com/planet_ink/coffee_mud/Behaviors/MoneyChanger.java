@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -23,6 +24,9 @@ import java.util.*;
 public class MoneyChanger extends StdBehavior
 {
 	public String ID(){return "MoneyChanger";}
+	
+	public Hashtable rates=new Hashtable();
+	public double cut=0.05;
 
 	public void startBehavior(Environmental forMe)
 	{
@@ -32,6 +36,53 @@ public class MoneyChanger extends StdBehavior
 		super.startBehavior(forMe);
 	}
 
+	public void setParms(String newParm)
+	{
+	    super.setParms(newParm);
+	    rates.clear();
+	    cut=0.05;
+	    newParm=newParm.toUpperCase();
+		int x=newParm.indexOf("=");
+		while(x>0)
+		{
+		    int lastSp=newParm.lastIndexOf(" ",x);
+		    if(lastSp<0) lastSp=0;
+			if((lastSp>=0)&&(lastSp<x-1)&&(Character.isLetter(newParm.charAt(x-1))))
+			{
+			    String parm=newParm.substring(lastSp,x).trim().toUpperCase();
+				while((x<newParm.length())&&(newParm.charAt(x)!='='))
+					x++;
+				if(x<newParm.length())
+				{
+					while((x<newParm.length())
+					&&(!Character.isDigit(newParm.charAt(x)))
+					&&(newParm.charAt(x)!='.'))
+						x++;
+					if(x<newParm.length())
+					{
+					    newParm=newParm.substring(x);
+						x=0;
+						while((x<newParm.length())
+						&&((Character.isDigit(newParm.charAt(x)))||(newParm.charAt(x)=='.')))
+							x++;
+						double val=Util.s_double(newParm.substring(0,x));
+						if(newParm.substring(0,x).indexOf(".")<0)
+							val= new Long(Util.s_long(newParm.substring(0,x))).doubleValue();
+						newParm=newParm.substring(x+1);
+						if(parm.equalsIgnoreCase("default"))
+						    parm="";
+						if(parm.equalsIgnoreCase("cut"))
+						    cut=val/100.0;
+						else
+						    rates.put(parm,new Double(val/100.0));
+					}
+				}
+				
+			}
+			x=newParm.indexOf("=");
+		}
+	}
+	
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -44,11 +95,20 @@ public class MoneyChanger extends StdBehavior
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 		&&(!CMSecurity.isAllowed(source,source.location(),"CMROOMS"))
-		&&(msg.tool()!=null)
-		&&(!(msg.tool() instanceof Coins)))
+		&&(msg.tool()!=null))
 		{
-			CommonMsgs.say(observer,source,"I'm sorry, I can only accept gold coins.",true,false);
-			return false;
+			if(!(msg.tool() instanceof Coins))
+			{
+				CommonMsgs.say(observer,source,"I'm sorry, I can only accept money.",true,false);
+				return false;
+			}
+			else
+			if(((rates.size()>0)&&(!rates.containsKey(((Coins)msg.tool()).getCurrency().toUpperCase()))))
+			{
+				CommonMsgs.say(observer,source,"I'm sorry, I don't accept that kind of currency.",true,false);
+				return false;
+			}
+			        
 		}
 		return true;
 	}
@@ -72,15 +132,21 @@ public class MoneyChanger extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Coins))
 		{
-			int value=((Coins)msg.tool()).numberOfCoins();
-			int numberToTake=1;
-			if(value>20) numberToTake=value/20;
+			double value=((Coins)msg.tool()).getTotalValue();
+			double takeCut=cut;
+			if((rates.size()>0)&&(rates.containsKey(((Coins)msg.tool()).getCurrency().toUpperCase())))
+			    takeCut=((Double)rates.get(((Coins)msg.tool()).getCurrency().toUpperCase())).doubleValue();
+			double numberToTake=BeanCounter.abbreviatedRePrice(observer,value*takeCut);
+			if(numberToTake<BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer)))
+			    numberToTake=BeanCounter.getLowestDenomination(BeanCounter.getCurrency(observer));
 			value-=numberToTake;
-			observer.setMoney(observer.getMoney()-value);
+			double myMoney=BeanCounter.getTotalAbsoluteNativeValue(observer);
+			if(myMoney>value)
+				BeanCounter.subtractMoney(observer,myMoney-value);
 			observer.recoverEnvStats();
 			if(value>0)
 			{
-				MoneyUtils.giveMoney(observer,source,value);
+				BeanCounter.giveSomeoneMoney(observer,source,value);
 				FullMsg newMsg=new FullMsg(observer,source,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) 'Thank you for your business' to <T-NAMESELF>.^?");
 				msg.addTrailerMsg(newMsg);
 			}

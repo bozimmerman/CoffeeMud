@@ -741,31 +741,34 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		public boolean tick(Tickable ticking, int tickID)
 		{
 			Room R=null;
-			for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
-			{
-				R=(Room)e.nextElement();
-				if(R instanceof StdThinGrid)
+			try{
+				for(Enumeration e=CMMap.rooms();e.hasMoreElements();)
 				{
-					DVector DV=((StdThinGrid)R).rooms;
-					if(DV.size()>0)
+					R=(Room)e.nextElement();
+					if(R instanceof StdThinGrid)
 					{
-						synchronized(DV)
+						DVector DV=((StdThinGrid)R).rooms;
+						if(DV.size()>0)
 						{
-							long time=System.currentTimeMillis()-EXPIRATION;
-							for(int r=DV.size()-1;r>=0;r--)
-								if(((Long)DV.elementAt(r,4)).longValue()<time)
-								{
-									R=(Room)DV.elementAt(r,1);
-									if(cleanRoomCenter(R))
+							synchronized(DV)
+							{
+								long time=System.currentTimeMillis()-EXPIRATION;
+								for(int r=DV.size()-1;r>=0;r--)
+									if(((Long)DV.elementAt(r,4)).longValue()<time)
 									{
-										DV.removeElement(R);
-										clearRoom(R,null);
+										R=(Room)DV.elementAt(r,1);
+										if(cleanRoomCenter(R))
+										{
+											DV.removeElement(R);
+											clearRoom(R,null);
+										}
 									}
-								}
+							}
 						}
 					}
 				}
 			}
+			catch(java.util.NoSuchElementException  e){}
 			return true;
 		}
 	}
