@@ -1,6 +1,8 @@
 Bard Subclasses
 
 //****** next version ********************************************************
+Room descriptions varying by the time of day.
+Item Interactivity (Scriptable + socials that require an ITEM target) Tapping your broadsword.  Poking some strange item you found on the critter you just killed.  Licking, sniffing, tasting food.  
 Space ships as Locale types
 Ship Dealer shopkeepers that use Space Ship templates as basis.
 Create Outer Space.
