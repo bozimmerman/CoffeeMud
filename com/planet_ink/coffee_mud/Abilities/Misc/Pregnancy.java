@@ -477,10 +477,10 @@ public class Pregnancy extends StdAbility
 				end=start;
 				start-=millisperbirthperiod;
 			}
-			if(mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
+			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-				target.addNonUninvokableEffect(this);
+				target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}
 		else

@@ -64,6 +64,7 @@ public class Spell_RepairingAura extends Spell
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORN_REQ_ANY);
+		if(target==null) return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already repairing!");

@@ -32,7 +32,6 @@ public class Spell_SpiderClimb extends Spell
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
-	    
 		if(affected instanceof MOB)
 		{
 		    if((!Sense.isSitting(affected))&&(!Sense.isSleeping(affected)))
@@ -73,7 +72,7 @@ public class Spell_SpiderClimb extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,target,asLevel,0);
+			beneficialAffect(mob,target,asLevel,10);
 		}
 		else
 			beneficialWordsFizzle(mob,mob.location(),"<S-NAME> attempt(s) to invoke a spell, but fail(s).");

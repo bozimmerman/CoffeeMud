@@ -48,10 +48,10 @@ public class Chant_StrikeBarren extends Chant
 		if((affected==null)||(!(affected instanceof MOB)))
 			return super.okMessage(myHost,msg);
 		MOB mob=(MOB)affected;
+
 		if((msg.amITarget(mob))
-		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Ability)
-		&&(((Ability)msg.tool()).ID().equals("Pregnancy"))
+		&&(((Ability)msg.tool()).ID().equalsIgnoreCase("Pregnancy"))
 		&&(!mob.amDead()))
 			return false;
 		return super.okMessage(myHost,msg);

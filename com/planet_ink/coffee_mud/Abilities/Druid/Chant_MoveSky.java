@@ -56,7 +56,7 @@ public class Chant_MoveSky extends Chant
 				else
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The sun hurries towards the horizon!");
-					int x=13-mob.location().getArea().getTimeObj().getTimeOfDay();
+					int x=mob.location().getArea().getTimeObj().getDawnToDusk()[TimeClock.TIME_NIGHT]-mob.location().getArea().getTimeObj().getTimeOfDay();
 					mob.location().getArea().getTimeObj().tickTock(x);
 				}
 			}
