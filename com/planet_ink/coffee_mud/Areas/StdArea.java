@@ -12,6 +12,7 @@ public class StdArea implements Area
 	protected String miscText="";
 	protected int climateID=Area.CLIMASK_NORMAL;
 	protected int currentWeather=Area.WEATHER_CLEAR;
+	protected int nextWeather=Area.WEATHER_CLEAR;
 
 	protected EnvStats envStats=new DefaultEnvStats();
 	protected EnvStats baseEnvStats=new DefaultEnvStats();
@@ -21,7 +22,7 @@ public class StdArea implements Area
 	protected Vector subOps=new Vector();
 	
 	protected boolean stopTicking=false;
-	private static final int WEATHER_TICK_DOWN=75; // 75 = 5 minutes * 60 seconds / 4
+	private static final int WEATHER_TICK_DOWN=3; // 75 = 5 minutes * 60 seconds / 4
 	protected int weatherTicker=WEATHER_TICK_DOWN;
 	protected int windDirection=Directions.NORTH;
 
@@ -295,7 +296,7 @@ public class StdArea implements Area
 					else
 					if((climateType()&Area.CLIMASK_DRY)>0)
 						chanceForClouds=5;
-					switch(currentWeather)
+					switch(oldWeather)
 					{
 					case Area.WEATHER_HAIL:
 						stopWord="The hailstorm stops.";
@@ -407,24 +408,24 @@ public class StdArea implements Area
 							chanceForClouds=3;
 						break;
 					}
-					int newWeather=0;
+					int newWeather=nextWeather;
 					if(Dice.rollPercentage()<chanceToRain)
-						newWeather=Area.WEATHER_RAIN;
+						nextWeather=Area.WEATHER_RAIN;
 					else
 					if(Dice.rollPercentage()<chanceToSnow)
-						newWeather=Area.WEATHER_SNOW;
+						nextWeather=Area.WEATHER_SNOW;
 					else
 					if(Dice.rollPercentage()<chanceToHail)
-						newWeather=Area.WEATHER_HAIL;
+						nextWeather=Area.WEATHER_HAIL;
 					else
 					if(Dice.rollPercentage()<chanceForClouds)
-						newWeather=Area.WEATHER_CLOUDY;
+						nextWeather=Area.WEATHER_CLOUDY;
 					else
 					if(Dice.rollPercentage()<chanceForWind)
-						newWeather=Area.WEATHER_WINDY;
+						nextWeather=Area.WEATHER_WINDY;
 					else
 					if(Dice.rollPercentage()<chanceForStorm)
-						newWeather=Area.WEATHER_THUNDERSTORM;
+						nextWeather=Area.WEATHER_THUNDERSTORM;
 					
 					currentWeather=newWeather;
 					switch(oldWeather)
@@ -554,7 +555,7 @@ public class StdArea implements Area
 					for(int r=0;r<myMap.size();r++)
 					{
 						Room R=(Room)myMap.elementAt(r);
-						if((R.domainType()&Room.INDOORS)==(Room.INDOORS))
+						if((R.domainType()&Room.INDOORS)==0)
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							MOB mob=R.fetchInhabitant(i);
@@ -570,10 +571,10 @@ public class StdArea implements Area
 		return true;
 	}
 	
-	public String getWeatherDescription()
+	protected String theWeatherDescription(int weather)
 	{
 		StringBuffer desc=new StringBuffer("");
-		switch(currentWeather)
+		switch(weather)
 		{
 		case Area.WEATHER_HAIL:
 			if((climateType()&Area.CLIMASK_COLD)>0)
@@ -669,6 +670,11 @@ public class StdArea implements Area
 			break;
 		}
 		return desc.toString();
+	}
+	
+	public String getWeatherDescription()
+	{
+		return theWeatherDescription(currentWeather);
 	}
 	
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -828,4 +834,22 @@ public class StdArea implements Area
 		}
 		return myMap;
 	}
+	
+	public int nextWeatherType(Room room)
+	{
+		if((room.domainType()&Room.INDOORS)==(Room.INDOORS))
+			return Area.WEATHER_CLEAR;
+		return nextWeather;
+	}
+	public String nextWeatherDescription(Room room)
+	{
+		if((room.domainType()&Room.INDOORS)==(Room.INDOORS))
+			return "You can't tell much about the weather from here.";
+		return getNextWeatherDescription();
+	}
+	public String getNextWeatherDescription()
+	{
+		return theWeatherDescription(nextWeather);
+	}
+	
 }

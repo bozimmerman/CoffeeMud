@@ -257,6 +257,10 @@ public class ExternalPlay
 		if(sysPlayer!=null) return sysPlayer.DBReadJournal(Journal);
 		return new Vector();
 	}
+	public static void DBDeleteJournal(String Journal, int which)
+	{
+		if(sysPlayer!=null) sysPlayer.DBDeleteJournal(Journal,which);
+	}
 	public static void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which)
 	{
 		if(sysPlayer!=null) sysPlayer.DBWriteJournal(Journal,from,to,subject,message,which);

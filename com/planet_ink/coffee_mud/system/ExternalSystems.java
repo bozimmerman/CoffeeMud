@@ -32,6 +32,10 @@ public class ExternalSystems implements ExternalSystem
 	{
 		RoomLoader.DBUpdateMOBs(room);
 	}
+	public void DBDeleteJournal(String Journal, int which)
+	{
+		JournalLoader.DBDelete(Journal,which);
+	}
 	public Vector DBReadJournal(String Journal)
 	{
 		return JournalLoader.DBRead(Journal);

@@ -42,26 +42,17 @@ public class JournalLoader
 		return journal;
 	}
 	
-	public static synchronized void DBWrite(String Journal, String from, String to, String subject, String message, int which)
+	public static synchronized void DBDelete(String Journal, int which)
 	{
-		String date=null;
-		if(which>=0)
+		Vector journal=DBRead(Journal);
+		if(journal==null) return;
+		DBConnection D=null;
+		if(which<0)
 		{
-			Vector journal=DBRead(Journal);
-			if(journal==null) return;
-			if(which>=journal.size()) return;
-			Vector entry=(Vector)journal.elementAt(which);
-			String oldkey=(String)entry.elementAt(0);
-			from=(String)entry.elementAt(1);
-			date=(String)entry.elementAt(2);
-			to=(String)entry.elementAt(3);
-			subject=(String)entry.elementAt(4);
-			message=((String)entry.elementAt(5))+"%0D---------------------------------------------%0DReply from: "+from+"%0D"+message;
-			DBConnection D=null;
 			try
 			{
 				D=DBConnector.DBFetch();
-				String str="DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+oldkey+"'";
+				String str="DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
 				D.update(str);
 				DBConnector.DBDone(D);
 			}
@@ -73,37 +64,87 @@ public class JournalLoader
 			}
 		}
 		else
-			date=new IQCalendar().getTime().getTime()+"";
-		DBConnection D=null;
-		String str=null;
-		try
 		{
-			D=DBConnector.DBFetch();
-
-			str="INSERT INTO CMJRNL ("
-			+"CMJRNL, "
-			+"CMJKEY, "
-			+"CMFROM, "
-			+"CMDATE, "
-			+"CMTONM, "
-			+"CMSUBJ, "
-			+"CMMSGT "
-			+") VALUES ('"
-			+Journal
-			+"','"+from+date
-			+"','"+from
-			+"',"+date
-			+",'"+to
-			+"','"+subject
-			+"','"+message+"');";
-			D.update(str);
-			DBConnector.DBDone(D);
+			if(which>=journal.size()) return;
+			Vector entry=(Vector)journal.elementAt(which);
+			String oldkey=(String)entry.elementAt(0);
+			try
+			{
+				D=DBConnector.DBFetch();
+				String str="DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'";
+				D.update(str);
+				DBConnector.DBDone(D);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("Journal",sqle);
+				if(D!=null) DBConnector.DBDone(D);
+				return;
+			}
 		}
-		catch(SQLException sqle)
+	}
+	
+	
+	public static synchronized void DBWrite(String Journal, String from, String to, String subject, String message, int which)
+	{
+		String date=new IQCalendar().getTime().getTime()+"";
+		if(which>=0)
 		{
-			Log.errOut("Journal",str);
-			Log.errOut("Journal","Create:"+sqle);
-			if(D!=null) DBConnector.DBDone(D);
+			Vector journal=DBRead(Journal);
+			if(journal==null) return;
+			if(which>=journal.size()) return;
+			Vector entry=(Vector)journal.elementAt(which);
+			String oldkey=(String)entry.elementAt(0);
+			String oldmsg=(String)entry.elementAt(5);
+			message=oldmsg+"%0D---------------------------------------------%0DReply from: "+from+"%0D"+message;
+			DBConnection D=null;
+			try
+			{
+				D=DBConnector.DBFetch();
+				String str="UPDATE CMJRNL SET CMDATE='"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'";
+				D.update(str);
+				DBConnector.DBDone(D);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("Journal",sqle);
+				if(D!=null) DBConnector.DBDone(D);
+				return;
+			}
+		}
+		else
+		{
+			DBConnection D=null;
+			String str=null;
+			try
+			{
+				D=DBConnector.DBFetch();
+
+				str="INSERT INTO CMJRNL ("
+				+"CMJKEY, "
+				+"CMJRNL, "
+				+"CMFROM, "
+				+"CMDATE, "
+				+"CMTONM, "
+				+"CMSUBJ, "
+				+"CMMSGT "
+				+") VALUES ('"
+				+Journal+from+date
+				+"','"+Journal
+				+"','"+from
+				+"',"+date
+				+",'"+to
+				+"','"+subject
+				+"','"+message+"');";
+				D.update(str);
+				DBConnector.DBDone(D);
+			}
+			catch(SQLException sqle)
+			{
+				Log.errOut("Journal",str);
+				Log.errOut("Journal","Create:"+sqle);
+				if(D!=null) DBConnector.DBDone(D);
+			}
 		}
 	}
 }
