@@ -957,10 +957,10 @@ public class Quests implements Cloneable, Quest
 							toSet=MG;
 						for(int i=0;i<toSet.size();i++)
 						{
-							M=(MOB)toSet.elementAt(i);
-							if(!stuff.contains(M))
-								stuff.addElement(M);
-							M.giveItem(I);
+							MOB M2=(MOB)toSet.elementAt(i);
+							if(!stuff.contains(M2))
+								stuff.addElement(M2);
+							M2.giveItem(I);
 							I=(Item)I.copyOf();
 						}
 					}
@@ -994,15 +994,15 @@ public class Quests implements Cloneable, Quest
 							toSet=MG;
 						for(int i=0;i<toSet.size();i++)
 						{
-							M=(MOB)toSet.elementAt(i);
-							if(!stuff.contains(M))
-								stuff.addElement(M);
+							MOB M2=(MOB)toSet.elementAt(i);
+							if(!stuff.contains(M2))
+								stuff.addElement(M2);
 							Vector V=new Vector();
-							V.addElement(M);
+							V.addElement(M2);
 							Ability A4=(Ability)A3.copyOf();
-							if(M.fetchAbility(A3.ID())!=null)
+							if(M2.fetchAbility(A3.ID())!=null)
 							{
-								A4=M.fetchAbility(A4.ID());
+								A4=M2.fetchAbility(A4.ID());
 								V.addElement(A4);
 								V.addElement(A4);
 								V.addElement(A4.text());
@@ -1015,7 +1015,7 @@ public class Quests implements Cloneable, Quest
 								V.addElement(A4);
 								V.addElement(A4);
 								A4.setProfficiency(100);
-								M.addAbility(A4);
+								M2.addAbility(A4);
 							}
 							addons.addElement(V);
 						}
@@ -1050,14 +1050,13 @@ public class Quests implements Cloneable, Quest
 							toSet=MG;
 						for(int i=0;i<toSet.size();i++)
 						{
-							E=(Environmental)toSet.elementAt(i);
-							if(!stuff.contains(E))
-								stuff.addElement(E);
+							Environmental E2=(Environmental)toSet.elementAt(i);
+							if(!stuff.contains(E2)) stuff.addElement(E2);
 							Vector V=new Vector();
-							V.addElement(E);
-							if(E.fetchBehavior(B.ID())!=null)
+							V.addElement(E2);
+							if(E2.fetchBehavior(B.ID())!=null)
 							{
-								B=E.fetchBehavior(B.ID());
+								B=E2.fetchBehavior(B.ID());
 								V.addElement(B);
 								V.addElement(B.getParms());
 								B.setParms(Util.combine(p,3));
@@ -1066,7 +1065,7 @@ public class Quests implements Cloneable, Quest
 							{
 								V.addElement(B);
 								B.setParms(Util.combine(p,3));
-								E.addBehavior(B);
+								E2.addBehavior(B);
 							}
 							addons.addElement(V);
 						}
@@ -1101,15 +1100,15 @@ public class Quests implements Cloneable, Quest
 							toSet=MG;
 						for(int i=0;i<toSet.size();i++)
 						{
-							E=(Environmental)toSet.elementAt(i);
-							if(!stuff.contains(E))
-								stuff.addElement(E);
+							Environmental E2=(Environmental)toSet.elementAt(i);
+							if(!stuff.contains(E2))
+								stuff.addElement(E2);
 							Vector V=new Vector();
-							V.addElement(E);
+							V.addElement(E2);
 							Ability A4=(Ability)A3.copyOf();
-							if(E.fetchEffect(A4.ID())!=null)
+							if(E2.fetchEffect(A4.ID())!=null)
 							{
-								A4=E.fetchEffect(A4.ID());
+								A4=E2.fetchEffect(A4.ID());
 								V.addElement(A4);
 								V.addElement(A4.text());
 								A4.makeLongLasting();
@@ -1120,9 +1119,9 @@ public class Quests implements Cloneable, Quest
 								V.addElement(A4);
 								A4.setMiscText(Util.combine(p,3));
 								if(M!=null)
-									A4.startTickDown(M,E,99999);
+									A4.startTickDown(M,E2,99999);
 								else
-									A4.startTickDown(null,E,99999);
+									A4.startTickDown(null,E2,99999);
 								A4.makeLongLasting();
 							}
 							addons.addElement(V);

@@ -1,3 +1,5 @@
+bat is not xferred into the room
+document mpsetvar * syntax, and mention clearing.
 Test Prop_WeaponImmunity and Prop_AbsorbDamage
 preload shows spells being invoked on people
 Christening Prayer, Chant Bestow Name, pregnancy change, domesticate name change

@@ -40,6 +40,7 @@ public class Aggressive extends StdBehavior
 		&&(monster.location()!=null)
 		&&(monster.location().isInhabitant(mob))
 		&&(monster.location().getArea().getMobility())
+		&&(!Sense.isATrackingMonster(monster))
 		&&(canFreelyBehaveNormal(monster))
 		&&(Sense.canBeSeenBy(mob,monster))
 		&&(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
@@ -94,7 +95,6 @@ public class Aggressive extends StdBehavior
 		if(tickID!=MudHost.TICK_MOB) return;
 		if(ticking==null) return;
 		if(!(ticking instanceof MOB)) return;
-
 		pickAFight((MOB)ticking,zapStr,mobKiller);
 	}
 

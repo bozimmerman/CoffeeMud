@@ -1,0 +1,77 @@
+QUEST_TIME_PROG gobwar 5
+	IF EVAL('$%ISHERE()%' == 'Midgaard') and EVAL($%NUMRACESINAREA(Goblin)% == 0)
+		QUESTCHAT The Goblins are routed! Victory is ours! Now, gather round me within the next 4 minutes and I shall reward our heroes!
+		MPSETVAR $i GOBMASTER 0
+	ENDIF
+~
+
+QUEST_TIME_PROG gobwar 4
+	IF VAR($i GOBMASTER != '') and VAR($i GOBMASTER != '0')
+		say We'll give everyone 3 more minutes to get here before awarding the prize.
+	ENDIF
+~
+
+QUEST_TIME_PROG gobwar 3
+	IF VAR($i GOBMASTER != '') and VAR($i GOBMASTER != '0')
+		say Ok, 2 more minutes before we award the prize.
+	ENDIF
+~
+
+QUEST_TIME_PROG gobwar 2
+	IF VAR($i GOBMASTER != '') and VAR($i GOBMASTER != '0')
+		say Lets wait one more minute for more heroes to get here..
+	ENDIF
+~
+
+ONCE_PROG
+	mpsetvar $i GOBMASTER ''
+	mpsetvar $i GOBWINNER ''
+	QUESTCHAT To arms! To arms! Goblins are invading the city!
+~
+
+QUEST_TIME_PROG gobwar 1
+	VAR ($i GOBMASTER != '')
+		if ISHERE('$<$i GOBWINNER>')
+			sayto "$<$i GOBWINNER>" Congratulations to "$<$i GOBWINNER>" - our goblin killing hero!
+			mpexp '$<$i GOBWINNER>' 1000
+			mpoload QuestPoint
+			give "a quest point" "$<$i GOBWINNER>"
+			mpquestwin '$<$i GOBWINNER>' gobwar
+			mpendquest gobwar
+		endif
+	MPENDQUEST gobwar
+~
+
+QUEST_TIME_PROG gobwar -1
+	mpsetvar $i GOBMASTER ''
+	mpsetvar $i GOBWINNER ''
+	mpsetvar * GOBWARKILL ''
+~
+
+DEATH_PROG
+	if VAR($i GOBMASTER == '')
+		QUESTCHAT The city is lost...goodbye cruel world.
+	else
+		QUESTCHAT At least I got to see the city safe before I died.
+	endif
+	MPENDQUEST gobwar
+~
+
+ALL_GREET_PROG 100
+	if RACE($n == Goblin) and VAR($i GOBMASTER == '')
+		yell Goblins! Die!
+		kill $n
+	endif
+	if VAR($i GOBMASTER != '') and VAR($n GOBWARKILL > 0) and ISPC($n)
+		if QUESTWINNER($n gobwar)
+			say $n You've already been a hero before! Go Away!
+		else
+			sayto $n Welcome! I heard that you killed $<$n GOBWARKILL> goblins! Well done!
+			if VAR($n GOBWARKILL > '$<$i GOBMASTER>')
+				sayto $n That makes you our leader so far!  I will award the prize in just a few minutes.
+				MPSETVAR $i GOBWINNER $n
+				MPSETVAR $i GOBMASTER $<$n GOBWARKILL>
+			endif
+		endif
+	endif
+~

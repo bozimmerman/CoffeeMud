@@ -130,6 +130,7 @@ public class MUDTracker extends Scriptable
 						bestDirection=dirs;
 						trailLength=trail;
 						nextRoom=thisRoom;
+						break;
 					}
 				}
 			}
@@ -176,9 +177,9 @@ public class MUDTracker extends Scriptable
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					if((noSkyPlease)
-					&&(R1.roomID().length()>0)
-					&&(R1.rawDoors()[d]!=null)
-					&&(R1.rawDoors()[d].roomID().length()==0))
+					&&(CMMap.getExtendedRoomID(R1).length()>0)
+					&&(R1.getRoomInDir(d)!=null)
+					&&(CMMap.getExtendedRoomID(R1.getRoomInDir(d)).length()==0))
 						continue;
 
 					Room R=R1.getRoomInDir(d);

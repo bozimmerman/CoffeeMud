@@ -611,7 +611,13 @@ public class Util
 			if(white&&in)
 			{
 				if(w==which)
-					return s.substring(i+1);
+				{
+					s=s.substring(i+1);
+					if(((s.trim().startsWith("'"))||(s.trim().startsWith("`")))
+					&&((s.trim().startsWith("'"))||(s.trim().startsWith("`"))))
+						s=s.trim().substring(1,s.length()-1);
+					return s;
+				}
 				w++;
 				in=false;
 				c=(char)0;

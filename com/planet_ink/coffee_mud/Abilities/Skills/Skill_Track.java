@@ -177,7 +177,7 @@ public class Skill_Track extends StdAbility
 			mob.tell("Track whom?");
 			return false;
 		}
-
+		
 		if(givenTarget==null)
 			givenTarget=CMMap.getRoom(mobName);
 		

@@ -1,0 +1,30 @@
+QUEST_TIME_PROG gobwar 5
+	if EVAL('$%ISHERE()%' == 'Midgaard') and EVAL($%NUMRACESINAREA(Goblin)% > 0)
+		QUESTCHAT Victory! 
+		QUESTCHAT The goblins return to their mountains with booty from the city.
+		MPENDQUEST gobwar
+	ENDIF
+~
+
+DEATH_PROG
+	if ISPC($n)
+		MPSETVAR $n GOBWARKILL ++
+		MPEXP $n 10
+	EnDIF
+~
+
+RAND_PROG 50
+	if EVAL('$%ISHERE()%' != 'Midgaard') and !AFFECTED($i Skill_Track)
+		IF ISFIGHT($i)
+			FLEE
+		ENDIF
+		MPTRACKTO Midgaard
+	ENDIF
+~
+
+QUEST_TIME_PROG gobwar -1
+	mpsetvar $i GOBMASTER ''
+	mpsetvar $i GOBWINNER ''
+	mpsetvar * GOBWARKILL ''
+~
+

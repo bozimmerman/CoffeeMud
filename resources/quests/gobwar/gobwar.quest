@@ -1,0 +1,36 @@
+#set the quest name
+set name gobwar
+
+# this one runs once per day
+set wait 18600
+set interval 600
+
+set area GoblinMountains
+set mobgroup MASK=-PLAYER -RACE +Goblin 
+give behavior Scriptable LOAD=quests/gobwar/goblin.script
+give behavior MobileAggressive -Goblin MOBKILL
+give behavior Scavenger
+
+set mobgroup
+set room
+set area
+set mob
+
+
+set area Miden`nir
+set mobgroup MASK=-PLAYER -RACE +Goblin 
+give behavior Scriptable LOAD=quests/gobwar/goblin.script
+give behavior MobileAggressive -Goblin MOBKILL
+give behavior Scavenger
+
+
+set mobgroup
+set room
+set area Midgaard
+set mob Hassan
+give behavior Scriptable LOAD=quests/gobwar/gobmaster.script
+
+
+set duration 400
+# the duration of the quest is 26 minutes (400 ticks).  The scripts on the mobs will
+# do the rest...
