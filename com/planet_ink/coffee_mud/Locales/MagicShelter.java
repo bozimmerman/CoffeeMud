@@ -44,7 +44,8 @@ public class MagicShelter extends StdRoom
 	{
 		if(!super.okAffect(affect))
 			return false;
-		if(Sense.isSleeping(this)) return true;
+		if(Sense.isSleeping(this)) 
+			return true;
 		if((affect.sourceMinor()==affect.TYP_RECALL)
 		||(affect.sourceMinor()==affect.TYP_LEAVE))
 		{

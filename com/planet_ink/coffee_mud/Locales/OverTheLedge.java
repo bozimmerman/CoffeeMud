@@ -12,7 +12,8 @@ public class OverTheLedge extends InTheAir
 {
 	public boolean okAffect(Affect affect)
 	{
-		if(Sense.isSleeping(this)) return true;
+		if(Sense.isSleeping(this)) 
+			return true;
 		
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.amITarget(this))

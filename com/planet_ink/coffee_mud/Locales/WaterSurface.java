@@ -84,7 +84,8 @@ public class WaterSurface extends StdRoom implements Drink
 	
 	public boolean okAffect(Affect affect)
 	{
-		if(Sense.isSleeping(this)) return super.okAffect(affect);
+		if(Sense.isSleeping(this)) 
+			return super.okAffect(affect);
 		
 		if(((affect.targetMinor()==Affect.TYP_LEAVE)
 			||(affect.targetMinor()==Affect.TYP_ENTER)

@@ -12,7 +12,8 @@ public class ClimbableLedge extends ClimbableSurface
 {
 	public boolean okAffect(Affect affect)
 	{
-		if(Sense.isSleeping(this)) return true;
+		if(Sense.isSleeping(this)) 
+			return super.okAffect(affect);
 		
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.amITarget(this)))

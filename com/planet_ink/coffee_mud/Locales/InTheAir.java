@@ -109,7 +109,8 @@ public class InTheAir extends StdRoom
 	
 	public static boolean isOkAffect(Room room, Affect affect)
 	{
-		if(Sense.isSleeping(room)) return true;
+		if(Sense.isSleeping(room)) 
+			return true;
 		if((affect.targetMinor()==affect.TYP_ENTER)
 		&&(affect.amITarget(room)))
 		{

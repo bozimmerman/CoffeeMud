@@ -34,7 +34,8 @@ public class IndoorUnderWater extends StdRoom implements Drink
 
 	public boolean okAffect(Affect affect)
 	{
-		if(Sense.isSleeping(this)) return super.okAffect(affect);
+		if(Sense.isSleeping(this)) 
+			return super.okAffect(affect);
 			  
 		if((affect.targetMinor()==affect.TYP_FIRE)
 		||(affect.targetMinor()==affect.TYP_GAS)

@@ -34,7 +34,8 @@ public class UnderWater extends StdRoom implements Drink
 
 	public boolean okAffect(Affect affect)
 	{
-		if(Sense.isSleeping(this)) return super.okAffect(affect);
+		if(Sense.isSleeping(this)) 
+			return super.okAffect(affect);
 			 
 		if((Util.bset(affect.targetCode(),Affect.MASK_HURT))
 		&&(affect.tool()!=null)

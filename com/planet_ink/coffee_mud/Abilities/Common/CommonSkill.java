@@ -404,6 +404,31 @@ public class CommonSkill extends StdAbility
 		return null;
 	}
 
+	protected Item makeItemResource(int type)
+	{
+		Item I=null;
+		String name=EnvResource.RESOURCE_DESCS[type&EnvResource.RESOURCE_MASK].toLowerCase();
+		if(((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_FLESH)
+		||((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_VEGETATION))
+			I=CMClass.getItem("GenFoodResource");
+		else
+		if((type&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LIQUID)
+			I=CMClass.getItem("GenLiquidResource");
+		else
+			I=CMClass.getItem("GenResource");
+		if(I instanceof Drink)
+			I.setName("some "+name);
+		else
+			I.setName("a pound of "+name);
+		I.setDisplayText("some "+name+" sits here.");
+		I.setDescription("");
+		I.setMaterial(type);
+		I.setBaseValue(EnvResource.RESOURCE_DATA[type&EnvResource.RESOURCE_MASK][1]);
+		I.baseEnvStats().setWeight(1);
+		I.recoverEnvStats();
+		return I;
+	}
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
 		if(mob.isInCombat())

@@ -155,7 +155,7 @@ public class Scrapping extends CommonSkill
 		for(int v=0;v<V.size();v++)
 			((Item)V.elementAt(v)).destroyThis();
 		messedUp=!profficiencyCheck(0,auto);
-		found=(Item)makeResource(I.material());
+		found=makeItemResource(I.material());
 		foundShortName="nothing";
 		if(found!=null)
 			foundShortName=EnvResource.RESOURCE_DESCS[found.material()&EnvResource.RESOURCE_MASK].toLowerCase();
