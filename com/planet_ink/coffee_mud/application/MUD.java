@@ -565,9 +565,8 @@ public class MUD extends Thread implements Host
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		Log.sysOut("MUD","Started shutdown");
-		if(S!=null)S.println("Starting shutdown!");
 		if((saveThread==null)||(utiliThread==null)) return;
-
+		if(S!=null)S.println("Closing MUD listeners to new connections...");
 		offlineReason="Shutting down" + (keepItDown? "..." : " and restarting...");
 		for(int i=0;i<mudThreads.size();i++)
 			((MUD)mudThreads.elementAt(i)).acceptConnections=false;

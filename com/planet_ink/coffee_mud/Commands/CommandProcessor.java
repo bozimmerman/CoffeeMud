@@ -867,6 +867,7 @@ public class CommandProcessor
 			Log.errOut("CommandProcessor",mob.Name()+" starts system restarting '"+externalCommand+"'...");
 		else
 			Log.errOut("CommandProcessor",mob.Name()+" starts system restart...");
+		mob.tell("Starting shutdown...");
 		FullMsg msg=new FullMsg(mob,null,Affect.MSG_SHUTDOWN,null);
 		for(Enumeration r=CMMap.rooms();r.hasMoreElements();)
 		{
@@ -876,7 +877,10 @@ public class CommandProcessor
 		if(myHost!=null)
 			myHost.shutdown(mob.session(),keepItDown,externalCommand);
 		else
+		{
+			mob.tell("Shutdown failed.  No host.");
 			Log.errOut("CommandProcessor","Shutdown failed.  No host.");
+		}
 	}
 
 	public static void cmdDumpfile(MOB mob, Vector commands)
