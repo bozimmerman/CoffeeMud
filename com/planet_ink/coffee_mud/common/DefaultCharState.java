@@ -135,10 +135,17 @@ public class DefaultCharState implements Cloneable, CharState
 		double manaGain=(man/6.0)+lvlby2+1.0;
 		double moveGain=(str/2.0)+lvlby2+4.0;
 		
-		if(Sense.isSleeping(mob)){
+		if(Sense.isSleeping(mob))
+		{
 			hpGain+=(hpGain/2.0);
 			manaGain+=(manaGain/2.0);
 			moveGain+=(moveGain/2.0);
+			if((mob.riding()!=null)&&(mob.riding() instanceof Item))
+			{
+				hpGain+=(hpGain/8.0);
+				manaGain+=(manaGain/8.0);
+				moveGain+=(moveGain/8.0);
+			}
 		}
 		else
 		if((Sense.isSitting(mob))||(mob.riding()!=null))
