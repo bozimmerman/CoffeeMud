@@ -182,7 +182,7 @@ public class CombatAbilities extends StdBehavior
 				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
                         return true;
                    else
-					   mob.curState().adjMana(tryThisOne.usageCost(mob)[0]);
+					   mob.curState().adjMana(tryThisOne.usageCost(mob)[0],mob.maxState());
 				}
 				mob.curState().adjMana(5,mob.maxState());
 			}
