@@ -53,9 +53,12 @@ public class ProcessSMTPrequest extends Thread
 		}
 		if(server.getAnEmailJournal(name)!=null)
 			return server.getAnEmailJournal(name);
-		if((server.mailboxName().length()>0)
-		&&(CMClass.DBEngine().DBUserSearch(null,name)))
-			return name;
+		if(server.mailboxName().length()>0)
+		{
+			MOB M=CMClass.getMOB("StdMOB");
+			if(CMClass.DBEngine().DBUserSearch(M,name))
+				return M.Name();
+		}
 		return null;
 	}
 	

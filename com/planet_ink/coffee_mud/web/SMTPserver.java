@@ -12,6 +12,7 @@ public class SMTPserver extends Thread implements Tickable
 	public String name(){return "SMTPserver";}
 	public long tickStatus=STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
+	public long lastAllProcessing=System.currentTimeMillis();
 	
 	public INI page=null;
 
@@ -268,14 +269,95 @@ public class SMTPserver extends Thread implements Tickable
 		Log.sysOut(getName(),"Shutting down.");
 		if (S != null)
 			S.println( getName() + " shutting down.");
+		if(getTickStatus()==Tickable.STATUS_NOT)
+			tick(this,MudHost.TICK_READYTOSTOP);
+		else
+		while(getTickStatus()!=Tickable.STATUS_NOT)
+		{try{Thread.sleep(100);}catch(Exception e){}}
 		this.interrupt();
 	}
 
 	public void shutdown()	{shutdown(null);}
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		if(tickStatus!=STATUS_NOT) return true;
+		
 		tickStatus=STATUS_START;
-		// this is where it should attempt any mail forwarding
+		if((tickID==MudHost.TICK_READYTOSTOP)||(tickID==MudHost.TICK_EMAIL))
+		{
+			Hashtable rememberedAddresses=new Hashtable();
+				
+			// this is where it should attempt any mail forwarding
+			// remember, a 5 day old private mail message is a goner
+			// remember that new to all messages need to be parsed
+			// for subscribe/unsubscribe and deleted, or then 
+			// forwarded to all members private boxes.  Lots of work to do!
+			if(journals!=null)
+			for(int j=0;j<journals.size();j++)
+			{
+				String name=(String)journals.elementAt(j,1);
+				if(isAForwardingJournal(name))
+				{
+					// Vector mailingList=?
+					Vector msgs=CMClass.DBEngine().DBReadJournal(name);
+					for(int m=0;m<msgs.size();m++)
+					{
+						Vector msg=(Vector)msgs.elementAt(m);
+						String to=(String)msg.elementAt(DatabaseEngine.JOURNAL_TO);
+						if(to.equalsIgnoreCase("ALL"))
+						{
+							String key=(String)msg.elementAt(DatabaseEngine.JOURNAL_KEY);
+							String subj=((String)msg.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
+							String s=((String)msg.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
+							long date=Util.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE));
+							if((subj.equalsIgnoreCase("subscribe"))
+							||(s.equalsIgnoreCase("subscribe")))
+							{
+								// add to mailing list
+								CMClass.DBEngine().DBDeleteJournal(key);
+							}
+							else
+							if((subj.equalsIgnoreCase("unsubscribe"))
+							||(s.equalsIgnoreCase("unsubscribe")))
+							{
+								// remove from mailing list
+								CMClass.DBEngine().DBDeleteJournal(key);
+							}
+							else
+							{
+								// split from mailing list to mail boxes
+								// if from address is valid member
+								// also, check if message should be deleted
+								// when forwarded -- should be a global setting
+							}
+						}
+					}
+				}
+			}
+		
+			// here is where the mail is actually sent
+			if((tickID==MudHost.TICK_EMAIL)
+			&&(mailboxName()!=null)
+			&&(mailboxName().length()>0))
+			{
+				Vector emails=CMClass.DBEngine().DBReadJournal(mailboxName());
+				if(emails!=null)
+				for(int e=0;e<emails.size();e++)
+				{
+					// **TODO check for forwarding, global AND individual
+					Vector mail=(Vector)emails.elementAt(e);
+					String key=(String)mail.elementAt(DatabaseEngine.JOURNAL_KEY);
+					String from=(String)mail.elementAt(DatabaseEngine.JOURNAL_FROM);
+					String to=(String)mail.elementAt(DatabaseEngine.JOURNAL_TO);
+					long date=Util.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE));
+					String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
+					String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
+				}
+			}
+			lastAllProcessing=System.currentTimeMillis();
+		}
+		System.gc();
+		try{Thread.sleep(1000);}catch(Exception ex){}
 		tickStatus=STATUS_NOT;
 		return true;
 	}

@@ -55,6 +55,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateMOBs(Room room)
 	{RoomLoader.DBUpdateMOBs(room);}
 	
+	public void DBDeleteJournal(String oldkey)
+	{JournalLoader.DBDelete(oldkey);}
 	public void DBDeleteJournal(String Journal, int which)
 	{JournalLoader.DBDelete(Journal,which);}
 	

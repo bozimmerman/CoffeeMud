@@ -604,6 +604,7 @@ public class MUD extends Thread implements MudHost
 		saveThread.shutdown();
 		saveThread.interrupt();
 		saveThread=null;
+		
 		if(S!=null)S.println("Save thread stopped");
 		CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...Utility Thread");
 		utiliThread.shutdown();
@@ -642,8 +643,11 @@ public class MUD extends Thread implements MudHost
 
 		if(smtpServerThread!=null)
 		{
-			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...waiting for smtp complete.");
-			while(smtpServerThread.getTickStatus()!=Tickable.STATUS_NOT){try{Thread.sleep(10);}catch(Exception e){}}
+			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...smtp server");
+			smtpServerThread.shutdown(S);
+			smtpServerThread = null;
+			Log.sysOut("MUD","SMTP Server stopped.");
+			if(S!=null)S.println("SMTP Server stopped");
 		}
 		
 		if(S!=null)S.print("Stopping all threads...");
@@ -675,14 +679,6 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)S.println("All resources unloaded");
 
 
-		if(smtpServerThread!=null)
-		{
-			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...smtp server");
-			smtpServerThread.shutdown(S);
-			smtpServerThread = null;
-			Log.sysOut("MUD","SMTP Server stopped.");
-			if(S!=null)S.println("SMTP Server stopped");
-		}
 		if(webServerThread!=null)
 		{
 			CommonStrings.setUpLowVar(CommonStrings.SYSTEM_MUDSTATUS,"Shutting down...pub webserver");

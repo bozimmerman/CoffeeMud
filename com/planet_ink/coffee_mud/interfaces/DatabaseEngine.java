@@ -6,6 +6,14 @@ public interface DatabaseEngine
 	public String errorStatus();
 	public void resetconnections();
 	
+	public static final int JOURNAL_KEY=0;
+	public static final int JOURNAL_FROM=1;
+	public static final int JOURNAL_DATE=2;
+	public static final int JOURNAL_TO=3;
+	public static final int JOURNAL_SUBJ=4;
+	public static final int JOURNAL_MSG=5;
+	public static final int JOURNAL_DATE2=6;
+	
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadContent(Room thisRoom, Hashtable rooms);
 	public void DBUpdateExits(Room room);
@@ -41,6 +49,7 @@ public interface DatabaseEngine
 	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);
+	public void DBDeleteJournal(String oldkey);
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String liegeID);

@@ -185,6 +185,11 @@ public class JournalLoader
 		return -1;
 	}
 	
+	public static synchronized void DBDelete(String oldkey)
+	{
+		DBConnector.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
+	}
+	
 	public static synchronized void DBDelete(String Journal, int which)
 	{
 		if(which<0)
