@@ -57,7 +57,6 @@ public class Thief_Shadowstrike extends ThiefSkill
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Ability hide=mob.fetchAffect("Thief_Hide");
 			ExternalPlay.postAttack(mob,target,w);
 			if(success)
 			{
@@ -65,9 +64,12 @@ public class Thief_Shadowstrike extends ThiefSkill
 				MOB oldVictim2=mob.getVictim();
 				if(oldVictim==mob) target.makePeace();
 				if(oldVictim2==target) mob.makePeace();
-				if((hide!=null)&&(mob.fetchAffect(hide.ID())==null))
+				if(mob.fetchAffect("Thief_Hide")==null)
 				{
-					hide.invoke(mob,null,false);
+					Ability hide=mob.fetchAbility("Thief_Hide");
+					if(hide!=null) hide.invoke(mob,null,false);
+						
+					mob.location().recoverRoomStats();
 					if(Sense.canBeSeenBy(mob,target))
 					{
 						target.setVictim(oldVictim);
