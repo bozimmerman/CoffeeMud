@@ -224,97 +224,130 @@ public class CMClass extends ClassLoader
 		races=loadVectorListToObj(prefix+"Races"+File.separatorChar,page.getStr("RACES"));
 		Log.sysOut("MUD","Races loaded      : "+races.size());
 		if(races.size()==0) return false;
+//-------------------------------------------------------
 
 		charClasses=loadVectorListToObj(prefix+"CharClasses"+File.separatorChar,page.getStr("CHARCLASSES"));
 		Log.sysOut("MUD","Classes loaded    : "+charClasses.size());
 		if(charClasses.size()==0) return false;
+//-------------------------------------------------------
 
 		MOBs=loadVectorListToObj(prefix+"MOBS"+File.separatorChar,page.getStr("MOBS"));
 		Log.sysOut("MUD","MOB Types loaded  : "+MOBs.size());
 		if(MOBs.size()==0) return false;
+//-------------------------------------------------------
 
 		exits=loadVectorListToObj(prefix+"Exits"+File.separatorChar,page.getStr("EXITS"));
 		Log.sysOut("MUD","Exit Types loaded : "+exits.size());
 		if(exits.size()==0) return false;
+//-------------------------------------------------------
 
 		areaTypes=loadVectorListToObj(prefix+"Areas"+File.separatorChar,page.getStr("AREAS"));
 		Log.sysOut("MUD","Area Types loaded : "+areaTypes.size());
 		if(areaTypes.size()==0) return false;
+//-------------------------------------------------------
 
 		locales=loadVectorListToObj(prefix+"Locales"+File.separatorChar,page.getStr("LOCALES"));
 		Log.sysOut("MUD","Locales loaded    : "+locales.size());
 		if(locales.size()==0) return false;
+//-------------------------------------------------------
 
 		abilities=loadVectorListToObj(prefix+"Abilities"+File.separatorChar,page.getStr("ABILITIES"));
-		Log.sysOut("MUD","Abilities loaded  : "+abilities.size());
 		if(abilities.size()==0) return false;
 
 		Vector tempV;
 		int size=0;
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Fighter"+File.separatorChar,"");
-		if(tempV.size()==0) return false; addV(tempV,abilities);
 		size=tempV.size();
+		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Ranger"+File.separatorChar,"");
-		if(tempV.size()==0) return false; addV(tempV,abilities);
 		size+=tempV.size();
+		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Paladin"+File.separatorChar,"");
-		Log.sysOut("MUD","     All Fighters : "+(tempV.size()+size));
+		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"");
-		if(tempV.size()==0) return false; addV(tempV,abilities);
+		Log.sysOut("MUD","Fighter Skills    : "+size);
+//-------------------------------------------------------
+		
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Druid"+File.separatorChar,"");
-		Log.sysOut("MUD","           Chants : "+tempV.size());
+		Log.sysOut("MUD","Chants loaded     : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
+//-------------------------------------------------------
+		
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Languages"+File.separatorChar,"");
-		Log.sysOut("MUD","        Languages : "+tempV.size());
+		Log.sysOut("MUD","Languages loaded  : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"");
-		Log.sysOut("MUD","             Misc : "+tempV.size());
-		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar,"");
-		Log.sysOut("MUD","          Prayers : "+tempV.size());
-		if(tempV.size()==0) return false; addV(tempV,abilities);
+//-------------------------------------------------------
+		
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Properties"+File.separatorChar,"");
-		Log.sysOut("MUD","       Properties : "+tempV.size());
+		size=tempV.size();
+		if(tempV.size()==0) return false; addV(tempV,abilities);
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Misc"+File.separatorChar,"");
+		size+=tempV.size();
+		if(tempV.size()==0) return false; addV(tempV,abilities);
+		Log.sysOut("MUD","Properties loaded : "+size);
+//-------------------------------------------------------
+		
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Prayers"+File.separatorChar,"");
+		Log.sysOut("MUD","Prayers loaded    : "+tempV.size());
+		if(tempV.size()==0) return false; addV(tempV,abilities);
+//-------------------------------------------------------
+		
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Archon"+File.separatorChar,"");
+		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Skills"+File.separatorChar,"");
-		Log.sysOut("MUD","           Skills : "+tempV.size());
+		size=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"");
-		Log.sysOut("MUD","            Songs : "+tempV.size());
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar,"");
+		size+=tempV.size();
+		if(tempV.size()==0) return false; addV(tempV,abilities);
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Common"+File.separatorChar,"");
+		size+=tempV.size();
 		if(tempV.size()==0) return false; addV(tempV,abilities);
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Specializations"+File.separatorChar,"");
-		Log.sysOut("MUD","  Specializations : "+tempV.size());
+		size+=tempV.size();
+		if(tempV.size()==0)  return false; addV(tempV,abilities);
+		Log.sysOut("MUD","Skills loaded     : "+size);
+//-------------------------------------------------------
+		
+		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Songs"+File.separatorChar,"");
+		Log.sysOut("MUD","Songs loaded      : "+tempV.size());
 		if(tempV.size()==0) return false; addV(tempV,abilities);
+//-------------------------------------------------------
+		
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Spells"+File.separatorChar,"");
-		Log.sysOut("MUD","           Spells : "+tempV.size());
+		Log.sysOut("MUD","Spells loaded     : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
-		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Thief"+File.separatorChar,"");
-		Log.sysOut("MUD","            Thief : "+tempV.size());
-		if(tempV.size()==0)  return false; addV(tempV,abilities);
+//-------------------------------------------------------
 		tempV=loadVectorListToObj(prefix+"Abilities"+File.separatorChar+"Traps"+File.separatorChar,"");
-		Log.sysOut("MUD","            Traps : "+tempV.size());
+		Log.sysOut("MUD","Traps loaded      : "+tempV.size());
 		if(tempV.size()==0)  return false; addV(tempV,abilities);
+//-------------------------------------------------------
 
 		items=loadVectorListToObj(prefix+"Items"+File.separatorChar,page.getStr("ITEMS"));
 		Log.sysOut("MUD","Items loaded      : "+items.size());
 		if(items.size()==0) return false;
+//-------------------------------------------------------
 
 		weapons=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Weapons"+File.separatorChar,"");
 		Log.sysOut("MUD","Weapons loaded    : "+weapons.size());
 		if(weapons.size()==0) return false;
+//-------------------------------------------------------
 
 		armor=loadVectorListToObj(prefix+"Items"+File.separatorChar+"Armor"+File.separatorChar,"");
 		Log.sysOut("MUD","Armor loaded      : "+armor.size());
 		if(armor.size()==0) return false;
+//-------------------------------------------------------
 
 		miscMagic=loadVectorListToObj(prefix+"Items"+File.separatorChar+"MiscMagic"+File.separatorChar,"");
 		Log.sysOut("MUD","Magic Items loaded: "+miscMagic.size());
 		if(miscMagic.size()==0) return false;
+//-------------------------------------------------------
 
 		behaviors=loadVectorListToObj(prefix+"Behaviors"+File.separatorChar,page.getStr("BEHAVIORS"));
 		Log.sysOut("MUD","Behaviors loaded  : "+behaviors.size());
 		if(behaviors.size()==0) return false;
+//-------------------------------------------------------
 		
 		Vector cmds=loadVectorListToObj(prefix+"Commands"+File.separatorChar,page.getStr("COMMANDS"));
 		if(cmds.size()>1)
