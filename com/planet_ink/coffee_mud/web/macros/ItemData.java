@@ -483,7 +483,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 51: // rideable capacity
 					if((firstTime)&&(I instanceof Rideable))
-						old=""+((Rideable)I).mobCapacity();
+						old=""+((Rideable)I).riderCapacity();
 					str.append(old);
 					break;
 				case 52: // has a lid

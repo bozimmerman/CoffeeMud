@@ -1,6 +1,6 @@
 package com.planet_ink.coffee_mud.interfaces;
 
-public interface Item extends Environmental
+public interface Item extends Environmental, Rider
 {
 	public static int WORN_REQ_WORNONLY=0;
 	public static int WORN_REQ_UNWORNONLY=1;

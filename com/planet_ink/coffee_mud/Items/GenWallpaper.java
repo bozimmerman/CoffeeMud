@@ -17,6 +17,8 @@ public class GenWallpaper implements Item
 	protected Environmental owner=null;
 
 	public boolean isGeneric(){return true;}
+	public Rideable riding(){return null;}
+	public void setRiding(Rideable one){};
 
 	public String name(){ return name;}
 	public void setName(String newName){name=newName;}

@@ -130,7 +130,7 @@ public class Chant_SummonMount extends Chant
 		newMOB.setName("a wild horse");
 		newMOB.setDisplayText("a wild horse stands here");
 		newMOB.setDescription("An untamed beast of the fields, tame only by magical means.");
-		ride.setMobCapacity(1);
+		ride.setRiderCapacity(1);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();

@@ -53,7 +53,7 @@ public class GenRideable extends StdRideable
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+rideBasis();
-		case 1: return ""+mobCapacity();
+		case 1: return ""+riderCapacity();
 		}
 		return "";
 	}
@@ -65,7 +65,7 @@ public class GenRideable extends StdRideable
 		switch(getCodeNum(code))
 		{
 		case 0: setRideBasis(Util.s_int(val)); break;
-		case 1: setMobCapacity(Util.s_int(val)); break;
+		case 1: setRiderCapacity(Util.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

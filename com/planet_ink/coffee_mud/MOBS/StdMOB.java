@@ -731,7 +731,7 @@ public class StdMOB implements MOB
 				sendBack.append(" "+me.stateStringSubject()+" ");
 				for(int r=0;r<me.numRiders();r++)
 				{
-					MOB rider=me.fetchRider(r);
+					Rider rider=me.fetchRider(r);
 					if(rider!=null)
 					{
 						if(r>0)
@@ -822,7 +822,9 @@ public class StdMOB implements MOB
 				else
 				for(int r=0;r<source.riding().numRiders();r++)
 				{
-					MOB otherMOB=source.riding().fetchRider(r);
+					Rider rider=source.riding().fetchRider(r);
+					if(!(rider instanceof MOB)) continue;
+					MOB otherMOB=(MOB)rider;
 					if((otherMOB!=null)
 					   &&(otherMOB!=this)
 					   &&(otherMOB.isInCombat())

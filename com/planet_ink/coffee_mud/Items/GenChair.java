@@ -19,7 +19,7 @@ public class GenChair extends GenRideable
 		material=EnvResource.RESOURCE_OAK;
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
-		setMobCapacity(1);
+		setRiderCapacity(1);
 		setRideBasis(Rideable.RIDEABLE_SIT);
 		recoverEnvStats();
 	}

@@ -117,6 +117,19 @@ public class StdItem implements Item
 		}
 	}
 
+	protected Rideable riding=null;
+	public Rideable riding(){return riding;}
+	public void setRiding(Rideable ride)
+	{
+		if((ride!=null)&&(riding()!=null)&&(riding()==ride)&&(riding().amRiding(this)))
+			return;
+		if((riding()!=null)&&(riding().amRiding(this)))
+			riding().delRider(this);
+		riding=ride;
+		if((riding()!=null)&&(!riding().amRiding(this)))
+			riding().addRider(this);
+	}
+	
 	public Environmental owner(){return owner;}
 	public void setOwner(Environmental E)
 	{

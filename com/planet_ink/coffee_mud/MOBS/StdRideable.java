@@ -9,7 +9,7 @@ import java.util.*;
 public class StdRideable extends StdMOB implements Rideable
 {
 	protected int rideBasis=Rideable.RIDEABLE_LAND;
-	protected int mobCapacity=2;
+	protected int riderCapacity=2;
 	protected Vector riders=new Vector();
 	public StdRideable()
 	{
@@ -28,7 +28,7 @@ public class StdRideable extends StdMOB implements Rideable
 	{
 		while(riders.size()>0)
 		{
-			MOB mob=fetchRider(0);
+			Rider mob=fetchRider(0);
 			if(mob!=null)
 			{
 				mob.setRiding(null);
@@ -41,22 +41,22 @@ public class StdRideable extends StdMOB implements Rideable
 	// common item/mob stuff
 	public int rideBasis(){return rideBasis;}
 	public void setRideBasis(int basis){rideBasis=basis;}
-	public int mobCapacity(){ return mobCapacity;}
-	public void setMobCapacity(int newCapacity){mobCapacity=newCapacity;}
+	public int riderCapacity(){ return riderCapacity;}
+	public void setRiderCapacity(int newCapacity){riderCapacity=newCapacity;}
 	public int numRiders(){return riders.size();}
 	public boolean mobileRideBasis(){return true;}
-	public MOB fetchRider(int which)
+	public Rider fetchRider(int which)
 	{
-		try	{ return (MOB)riders.elementAt(which);	}
+		try	{ return (Rider)riders.elementAt(which);	}
 		catch(java.lang.ArrayIndexOutOfBoundsException e){}
 		return null;
 	}
-	public void addRider(MOB mob)
+	public void addRider(Rider mob)
 	{ 
 		if(mob!=null)
 			riders.addElement(mob);
 	}
-	public void delRider(MOB mob)
+	public void delRider(Rider mob)
 	{ 
 		if(mob!=null)
 			riders.removeElement(mob);
@@ -83,7 +83,7 @@ public class StdRideable extends StdMOB implements Rideable
 			}
 		}
 	}
-	public boolean amRiding(MOB mob)
+	public boolean amRiding(Rider mob)
 	{
 		return riders.contains(mob);
 	}
@@ -98,7 +98,7 @@ public class StdRideable extends StdMOB implements Rideable
 		if(list.get(this)==null) list.put(this,this);
 		for(int r=0;r<numRiders();r++)
 		{
-			MOB R=fetchRider(r);
+			Rider R=fetchRider(r);
 			if(list.get(R)==null) list.put(R,R);
 		}
 		return list;
@@ -160,7 +160,7 @@ public class StdRideable extends StdMOB implements Rideable
 			else
 			if(affect.amITarget(this))
 			{
-				if(numRiders()>=mobCapacity())
+				if(numRiders()>=riderCapacity())
 				{
 					// for items
 					//affect.source().tell(name()+" is full.");

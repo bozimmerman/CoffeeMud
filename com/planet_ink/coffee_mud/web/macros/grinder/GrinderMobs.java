@@ -215,7 +215,7 @@ public class GrinderMobs
 				break;
 			case 20: // mobs held
 				if(M instanceof Rideable)
-					((Rideable)M).setMobCapacity(Util.s_int(old));
+					((Rideable)M).setRiderCapacity(Util.s_int(old));
 				break;
 			case 21: // is shopkeeper
 				break;

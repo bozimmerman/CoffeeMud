@@ -275,7 +275,7 @@ public class Generic
 		if(E instanceof Rideable)
 		{
 			text.append(XMLManager.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
-			text.append(XMLManager.convertXMLtoTag("RIDEC",((Rideable)E).mobCapacity()));
+			text.append(XMLManager.convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
 		}
 
 		if(E instanceof Food)
@@ -1320,7 +1320,7 @@ public class Generic
 		if(E instanceof Rideable)
 		{
 			((Rideable)E).setRideBasis(XMLManager.getIntFromPieces(buf,"RIDET"));
-			((Rideable)E).setMobCapacity(XMLManager.getIntFromPieces(buf,"RIDEC"));
+			((Rideable)E).setRiderCapacity(XMLManager.getIntFromPieces(buf,"RIDEC"));
 		}
 		
 		if(E instanceof LandTitle)

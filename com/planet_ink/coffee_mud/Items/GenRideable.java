@@ -55,7 +55,7 @@ public class GenRideable extends StdRideable
 		case 2: return ""+capacity();
 		case 3: return ""+containTypes();
 		case 4: return ""+rideBasis();
-		case 5: return ""+mobCapacity();
+		case 5: return ""+riderCapacity();
 		}
 		return "";
 	}
@@ -71,7 +71,7 @@ public class GenRideable extends StdRideable
 		case 2: setCapacity(Util.s_int(val)); break;
 		case 3: setContainTypes(Util.s_long(val)); break;
 		case 4: setRideBasis(Util.s_int(val)); break;
-		case 5: setMobCapacity(Util.s_int(val)); break;
+		case 5: setRiderCapacity(Util.s_int(val)); break;
 		}
 	}
 	protected int getCodeNum(String code){

@@ -564,7 +564,7 @@ public class MobData extends StdWebMacro
 				break;
 			case 20: // rideable capacity
 				if((firstTime)&&(M instanceof Rideable))
-					old=""+((Rideable)M).mobCapacity();
+					old=""+((Rideable)M).riderCapacity();
 				str.append(old);
 				break;
 			case 21: // is shopkeeper

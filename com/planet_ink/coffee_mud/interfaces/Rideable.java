@@ -20,13 +20,13 @@ public interface Rideable extends Environmental
 	
 	public int rideBasis();
 	public void setRideBasis(int basis);
-	public int mobCapacity();
-	public void setMobCapacity(int newCapacity);
+	public int riderCapacity();
+	public void setRiderCapacity(int newCapacity);
 	public int numRiders();
-	public MOB fetchRider(int which);
-	public void addRider(MOB mob);
-	public void delRider(MOB mob);
-	public boolean amRiding(MOB mob);
+	public Rider fetchRider(int which);
+	public void addRider(Rider mob);
+	public void delRider(Rider mob);
+	public boolean amRiding(Rider mob);
 	public String stateString();
 	public String stateStringSubject();
 	public boolean mobileRideBasis();

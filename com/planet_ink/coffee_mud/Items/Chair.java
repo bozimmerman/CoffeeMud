@@ -20,7 +20,7 @@ public class Chair extends StdRideable
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		setRideBasis(Rideable.RIDEABLE_SIT);
-		setMobCapacity(1);
+		setRiderCapacity(1);
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

@@ -7,7 +7,7 @@ import java.util.*;
  * down to a goblin
  */
 public interface MOB 
-	extends Environmental 
+	extends Environmental, Rider
 {
 	
 	public static final int ATT_AUTOGOLD=1;
@@ -121,12 +121,10 @@ public interface MOB
 	public int getAlignment();
 	public int getWimpHitPoint();
 	public int getQuestPoint();
-	public Rideable riding();
 	public void setAlignment(int newVal);
 	public void setWorshipCharID(String newVal);
 	public void setWimpHitPoint(int newVal);
 	public void setQuestPoint(int newVal);
-	public void setRiding(Rideable ride);
 	public long lastTickedDateTime();
 	
 	// location!

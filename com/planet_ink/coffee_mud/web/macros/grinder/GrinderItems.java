@@ -305,7 +305,7 @@ public class GrinderItems
 				break;
 			case 51: // mob capacity
 				if(I instanceof Rideable)
-					((Rideable)I).setMobCapacity(Util.s_int(old));
+					((Rideable)I).setRiderCapacity(Util.s_int(old));
 				break;
 			case 52: // has a lid
 				if(I instanceof Container)

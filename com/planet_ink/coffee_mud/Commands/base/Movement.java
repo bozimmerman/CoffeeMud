@@ -197,7 +197,7 @@ public class Movement extends Scriptable
 			riders=new Vector();
 			for(int r=0;r<riding.numRiders();r++)
 			{
-				MOB rider=riding.fetchRider(r);
+				Rider rider=riding.fetchRider(r);
 				if((rider!=null)&&(rider!=mob))
 					riders.addElement(rider);
 			}
@@ -232,26 +232,43 @@ public class Movement extends Scriptable
 		{
 			for(int r=0;r<riders.size();r++)
 			{
-				MOB rMOB=(MOB)riders.elementAt(r);
-				if((rMOB.location()==thisRoom)||(rMOB.location()==destRoom))
+				Rider rider=(Rider)riders.elementAt(r);
+				if(rider instanceof MOB)
 				{
-					boolean fallOff=false;
-					if(rMOB.location()==thisRoom)
+					MOB rMOB=(MOB)rider;
+					if((rMOB.location()==thisRoom)||(rMOB.location()==destRoom))
 					{
-						rMOB.tell(getScr("Movement","youride",riding.name(),Directions.getDirectionName(directionCode)));
-						if(!move(rMOB,directionCode,flee,false))
-							fallOff=true;
-					}
-					if(fallOff)
-					{
-						rMOB.tell(getScr("Movement","youfalloff",riding.name()));
-						rMOB.setRiding(null);
+						boolean fallOff=false;
+						if(rMOB.location()==thisRoom)
+						{
+							rMOB.tell(getScr("Movement","youride",riding.name(),Directions.getDirectionName(directionCode)));
+							if(!move(rMOB,directionCode,flee,false))
+								fallOff=true;
+						}
+						if(fallOff)
+						{
+							rMOB.tell(getScr("Movement","youfalloff",riding.name()));
+							rMOB.setRiding(null);
+						}
+						else
+							rMOB.setRiding(riding);
 					}
 					else
-						rMOB.setRiding(riding);
+						rMOB.setRiding(null);
 				}
 				else
-					rMOB.setRiding(null);
+				if(rider instanceof Item)
+				{
+					Item rItem=(Item)rider;
+					if((rItem.owner()==thisRoom)||(rItem.owner()==destRoom))
+					{
+						//boolean fallOff=false;
+						if(rItem.owner()==thisRoom)
+							destRoom.bringItemHere(rItem);
+					}
+					else
+						rItem.setRiding(null);
+				}
 			}
 		}
 		

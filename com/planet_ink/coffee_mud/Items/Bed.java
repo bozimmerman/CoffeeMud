@@ -20,7 +20,7 @@ public class Bed extends GenRideable
 		baseEnvStats().setLevel(1);
 		setMaterial(EnvResource.RESOURCE_COTTON);
 		setRideBasis(Rideable.RIDEABLE_SLEEP);
-		setMobCapacity(2);
+		setRiderCapacity(2);
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

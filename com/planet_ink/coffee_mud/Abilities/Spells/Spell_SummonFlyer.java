@@ -110,7 +110,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.setDisplayText("a warhorse with broad powerful wings stands here");
 		newMOB.setDescription("A ferocious, fleet of foot, flying friend.");
 		ride.setRideBasis(Rideable.RIDEABLE_AIR);
-		ride.setMobCapacity(2);
+		ride.setRiderCapacity(2);
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();

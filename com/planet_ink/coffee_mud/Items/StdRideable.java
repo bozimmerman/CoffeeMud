@@ -10,7 +10,7 @@ public class StdRideable extends StdContainer implements Rideable
 {
 	public String ID(){	return "StdRideable";}
 	protected int rideBasis=Rideable.RIDEABLE_WATER;
-	protected int mobCapacity=4;
+	protected int riderCapacity=4;
 	protected Vector riders=new Vector();
 	public StdRideable()
 	{
@@ -38,21 +38,21 @@ public class StdRideable extends StdContainer implements Rideable
 	// common item/mob stuff
 	public int rideBasis(){return rideBasis;}
 	public void setRideBasis(int basis){rideBasis=basis;}
-	public int mobCapacity(){ return mobCapacity;}
-	public void setMobCapacity(int newCapacity){mobCapacity=newCapacity;}
+	public int riderCapacity(){ return riderCapacity;}
+	public void setRiderCapacity(int newCapacity){riderCapacity=newCapacity;}
 	public int numRiders(){return riders.size();}
-	public MOB fetchRider(int which)
+	public Rider fetchRider(int which)
 	{
-		try	{ return (MOB)riders.elementAt(which);	}
+		try	{ return (Rider)riders.elementAt(which);	}
 		catch(java.lang.ArrayIndexOutOfBoundsException e){}
 		return null;
 	}
-	public void addRider(MOB mob)
+	public void addRider(Rider mob)
 	{ 
 		if(mob!=null)
 			riders.addElement(mob);
 	}
-	public void delRider(MOB mob)
+	public void delRider(Rider mob)
 	{ 
 		if(mob!=null)
 			riders.removeElement(mob);
@@ -63,7 +63,7 @@ public class StdRideable extends StdContainer implements Rideable
 		if(list==null) return list;
 		for(int r=0;r<numRiders();r++)
 		{
-			MOB R=fetchRider(r);
+			Rider R=fetchRider(r);
 			if(list.get(R)==null) list.put(R,R);
 		}
 		return list;
@@ -198,7 +198,7 @@ public class StdRideable extends StdContainer implements Rideable
 			sendBack.append(" "+stateStringSubject()+" ");
 			for(int r=0;r<numRiders();r++)
 			{
-				MOB rider=fetchRider(r);
+				Rider rider=fetchRider(r);
 				if(rider!=null)
 					if(r>0)
 					{
@@ -214,7 +214,7 @@ public class StdRideable extends StdContainer implements Rideable
 		else
 			return displayText;
 	}
-	public boolean amRiding(MOB mob)
+	public boolean amRiding(Rider mob)
 	{
 		return riders.contains(mob);
 	}
@@ -264,7 +264,7 @@ public class StdRideable extends StdContainer implements Rideable
 			||(rideBasis()==Rideable.RIDEABLE_ENTERIN)
 			||(rideBasis()==Rideable.RIDEABLE_SLEEP)))
 			{
-				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+				if(affect.amITarget(this)&&(numRiders()>=riderCapacity()))
 				{
 					// for items
 					affect.source().tell(name()+" is full.");
@@ -292,7 +292,7 @@ public class StdRideable extends StdContainer implements Rideable
 			if((rideBasis()==Rideable.RIDEABLE_SLEEP)
 			||(rideBasis()==Rideable.RIDEABLE_ENTERIN))
 			{
-				if(affect.amITarget(this)&&(numRiders()>=mobCapacity()))
+				if(affect.amITarget(this)&&(numRiders()>=riderCapacity()))
 				{
 					// for items
 					affect.source().tell(name()+" is full.");
@@ -324,7 +324,7 @@ public class StdRideable extends StdContainer implements Rideable
 			{
 				if(affect.amITarget(this))
 				{
-					if(numRiders()>=mobCapacity())
+					if(numRiders()>=riderCapacity())
 					{
 						// for items
 						affect.source().tell(name()+" is full.");
