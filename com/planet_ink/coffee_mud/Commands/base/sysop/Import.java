@@ -1659,7 +1659,7 @@ public class Import
 					 {
 						 I=CMClass.getMiscMagic("GenMultiPotion");
 						 ((Potion)I).setSpellList("Inebriation"+";");
-						((Drink)I).setLiquidHeld(val1);
+						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }
 					 else
@@ -1667,12 +1667,12 @@ public class Import
 					 {
 						 I=CMClass.getMiscMagic("GenMultiPotion");
 						 ((Potion)I).setSpellList("Poison"+";");
-						((Drink)I).setLiquidHeld(val1);
+						((Drink)I).setLiquidHeld(val1*10);
 						((Drink)I).setLiquidRemaining(val2);
 					 }
 					 else
 					 {
-						((Drink)I).setLiquidHeld(val1*10);
+						((Drink)I).setLiquidHeld(val1*30);
 						((Drink)I).setLiquidRemaining(val2*10);
 					 }
 					 break;
