@@ -124,7 +124,7 @@ public class Thief_ContractHit extends ThiefSkill
 		{
 			if((M!=null)&&(M.location()!=null))
 			{
-				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to <S-NAME>.");
+				M.location().showHappens(Affect.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
 				M.tell("'It is done.'");
 			}
 		}

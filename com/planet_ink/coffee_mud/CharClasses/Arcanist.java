@@ -125,22 +125,29 @@ public class Arcanist extends Thief
 	}
 	public boolean okAffect(Environmental myHost, Affect msg)
 	{
-		if((myHost==null)||(!(myHost instanceof MOB))) return super.okAffect(myHost,msg);
+		if((myHost==null)
+		||(!(myHost instanceof MOB))) 
+			return super.okAffect(myHost,msg);
+
 		MOB mob=(MOB)myHost;
-		if((msg.amISource(mob))&&(mob.charStats().getClassLevel(this)>4))
+		if((msg.amISource(mob))
+		&&(mob.charStats().getClassLevel(this)>4))
 		{
-			if(((msg.sourceMinor()==Affect.TYP_BUY)||(msg.sourceMinor()==Affect.TYP_VALUE))
+			if(((msg.sourceMinor()==Affect.TYP_BUY)
+				||(msg.sourceMinor()==Affect.TYP_LIST))
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Potion))
 			{
 				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 				mob.recoverEnvStats();
+				mob.recoverCharStats();
 			}
 			else
 			if((mob.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
 			{
 				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_BONUS);
 				mob.recoverEnvStats();
+				mob.recoverCharStats();
 			}
 		}
 		return super.okAffect(myHost,msg);
@@ -214,7 +221,7 @@ public class Arcanist extends Thief
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+(affectableStats.getClassLevel(this)));
-		if((affected.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
+		if(Util.bset(affected.baseEnvStats().disposition(),EnvStats.IS_BONUS))
 			affectableStats.setStat(CharStats.CHARISMA,affectableStats.getStat(CharStats.CHARISMA)+30);
 	}
 }
