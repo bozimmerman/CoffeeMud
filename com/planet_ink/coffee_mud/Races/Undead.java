@@ -119,7 +119,7 @@ public class Undead extends StdRace
 	}
 	public DeadBody getCorpse(MOB mob, Room room)
 	{
-		DeadBody body=getCorpse(mob,room);
+		DeadBody body=super.getCorpse(mob,room);
 		if((body!=null)&&(mob!=null))
 		{
 			if((mob.Name().toUpperCase().indexOf("DRACULA")>=0)

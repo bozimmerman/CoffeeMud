@@ -49,7 +49,7 @@ public class Skill_TuneInstrument extends BardSkill
 			}
 		}
 		else
-			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> attempt(s) to tune <T-NAMESELF>, but mess(es) up.");
+			mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to tune <T-NAMESELF>, but mess(es) up.");
 
 
 		// return whether it worked

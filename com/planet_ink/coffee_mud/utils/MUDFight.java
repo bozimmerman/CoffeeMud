@@ -316,6 +316,7 @@ public class MUDFight
 		if(target==null) return;
 		Room deathRoom=target.location();
 
+System.out.println(target.name()+"1");
 		HashSet beneficiaries=new HashSet();
 		if((source!=null)&&(source.charStats()!=null))
 		{
@@ -334,6 +335,7 @@ public class MUDFight
 				C=M.charStats().getCurrentClass();
 			beneficiaries=C.dispenseExperience(source,target);
 		}
+System.out.println(target.name()+"2");
 
 		int deadMoney=target.getMoney();
 		int myAmountOfDeadMoney=0;
@@ -347,6 +349,7 @@ public class MUDFight
 			&&(deathRoom.isInhabitant(M)))
 			   goldLooters.addElement(M);
 		}
+System.out.println(target.name()+"3");
 		if((goldLooters.size()>0)&&(deadMoney>0))
 		{
 			myAmountOfDeadMoney=(int)Math.round(Util.div(deadMoney,goldLooters.size()));
@@ -401,9 +404,11 @@ public class MUDFight
 				}
 			}
 		}
+System.out.println(target.name()+"4");
 
 		if(Body==null) Body=target.killMeDead(true);
 
+System.out.println(target.name()+"5");
 		if((!target.isMonster())&&(Dice.rollPercentage()==1))
 		{
 			Ability A=CMClass.getAbility("Disease_Amnesia");
@@ -411,6 +416,7 @@ public class MUDFight
 				A.invoke(target,target,true);
 		}
 
+System.out.println(target.name()+"6");
 		if(target.soulMate()!=null)
 		{
 			Session s=target.session();
@@ -422,6 +428,7 @@ public class MUDFight
 			target.setSoulMate(null);
 		}
 
+System.out.println(target.name()+"7");
 		if((source!=null)
 		&&(source.location()==deathRoom)
 		&&(deathRoom.isInhabitant(source))
@@ -445,6 +452,7 @@ public class MUDFight
 			deathRoom.recoverRoomStats();
 		}
 		
+System.out.println(target.name()+"8");
 		if((deadMoney>0)&&(myAmountOfDeadMoney>0))
 		for(int g=0;g<goldLooters.size();g++)
 		{
@@ -464,6 +472,7 @@ public class MUDFight
 			if(Sense.canBeSeenBy(Body,mob))
 				CommonMsgs.get(mob,Body,C,false);
 		}
+System.out.println(target.name()+"9");
 	}
 
 }
