@@ -29,6 +29,8 @@ public interface Area extends Environmental
 	public final static int WEATHER_THUNDERSTORM=4;
 	public final static int WEATHER_SNOW=5;
 	public final static int WEATHER_HAIL=6;
+	public final static int WEATHER_HEAT_WAVE=7;
+	public final static int WEATHER_SLEET=8;
 	
 	public final static int CLIMASK_NORMAL=0;
 	public final static int CLIMASK_WET=1;

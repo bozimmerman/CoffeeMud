@@ -35,7 +35,9 @@ public class UnderWater extends StdRoom
 		if(!super.okAffect(affect)) return false;
 			  
 		if((affect.targetMinor()==affect.TYP_FIRE)
-		||(affect.targetMinor()==affect.TYP_GAS))
+		||(affect.targetMinor()==affect.TYP_GAS)
+		||(affect.sourceMinor()==affect.TYP_FIRE)
+		||(affect.sourceMinor()==affect.TYP_GAS))
 		{
 			affect.source().tell("That won't work underwater.");
 			return false;

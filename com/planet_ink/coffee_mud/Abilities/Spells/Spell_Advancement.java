@@ -85,7 +85,7 @@ public class Spell_Advancement extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) more knowledgable!");
-				beneficialAffect(mob,target,5);
+				beneficialAffect(mob,target,0);
 			}
 		}
 		else
