@@ -1106,12 +1106,37 @@ public class StdMOB implements MOB
 				}
 			}
 
+			MOB follow=source.amFollowing();
 			if(target.getVictim()==source)
 			{
 				if(target.rangeToTarget()>=0)
 					source.setAtRange(target.rangeToTarget());
 				else
 					source.setAtRange(maxRange(tool));
+			}
+			else
+			if(follow!=null)
+			{
+				int newRange=follow.fetchFollowerOrder(source);
+				if(newRange<0)
+				{
+					if(follow.rangeToTarget()>=0)
+					{
+						newRange=follow.rangeToTarget();
+						if(newRange<maxRange(tool))
+							newRange=maxRange(tool);
+					}
+					else
+						newRange=maxRange(tool);
+				}
+				else
+				{
+					if(follow.rangeToTarget()>=0)
+						newRange=newRange+follow.rangeToTarget();
+				}
+				if((location()!=null)&&(location().maxRange()>newRange))
+					newRange=location().maxRange();
+				source.setAtRange(newRange);
 			}
 			else
 				source.setAtRange(maxRange(tool));
@@ -2797,7 +2822,7 @@ public class StdMOB implements MOB
 		if(mob!=null)
 		{
 			if(!mob.isFollowedBy(this))
-				mob.addFollower(this,0);
+				mob.addFollower(this,-1);
 		}
 		amFollowing=mob;
 	}
@@ -3267,6 +3292,7 @@ public class StdMOB implements MOB
 			}
 		}while(!nothingDone);
 	}
+	
 	private void fightingFollowers(MOB target, MOB source)
 	{
 		if((source==null)||(target==null)) return;
@@ -3280,12 +3306,18 @@ public class StdMOB implements MOB
 		if((amFollowing()==target)
 		||(target.amFollowing()==this)
 		||((target.amFollowing()!=null)&&(target.amFollowing()==this.amFollowing())))
+		{
 			setVictim(source);//MUDFight.postAttack(this,source,fetchWieldedItem());
+			establishRange(this,source,this.fetchWieldedItem());
+		}
 		else
 		if((amFollowing()==source)
 		||(source.amFollowing()==this)
 		||((source.amFollowing()!=null)&&(source.amFollowing()==this.amFollowing())))
-			setVictim(target);//MUDFight.postAttack(this,target,fetchWieldedItem());
+		{
+			setVictim(target);//MUDFight.postAttack(this,source,fetchWieldedItem());
+			establishRange(this,target,this.fetchWieldedItem());
+		}
 	}
 
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
