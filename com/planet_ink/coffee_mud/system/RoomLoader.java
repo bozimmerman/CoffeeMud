@@ -440,7 +440,7 @@ public class RoomLoader
 					 +thisMOB.baseEnvStats().level()+","
 					 +thisMOB.baseEnvStats().ability()+","
 					 +thisMOB.baseEnvStats().rejuv()+","
-					 +((thisMOB.riding()!=null)?(""+thisMOB.riding()):"")
+					 +"'"+((thisMOB.riding()!=null)?(""+thisMOB.riding()):"")+"'"
 					 +")";
 					D.update(str);
 					DBConnector.DBDone(D);

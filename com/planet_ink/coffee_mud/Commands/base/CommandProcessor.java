@@ -85,6 +85,9 @@ public class CommandProcessor
 				case CommandSet.AUTOWEATHER:
 					BasicSenses.autoweather(mob);
 					break;
+				case CommandSet.AUTOGUARD:
+					TheFight.autoGuard(mob);
+					break;
 				case CommandSet.AUTODRAW:
 					TheFight.autoDraw(mob);
 					break;
@@ -566,7 +569,7 @@ public class CommandProcessor
 					ShopKeepers.view(mob,commands);
 					break;
 				case CommandSet.WAKE:
-					Movement.wake(mob);
+					Movement.wake(mob,commands);
 					break;
 				case CommandSet.WEAR:
 					ItemUsage.wear(mob,commands);

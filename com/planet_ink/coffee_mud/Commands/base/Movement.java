@@ -264,7 +264,8 @@ public class Movement
 				if((follower.amFollowing()==mob)
 				&&((follower.location()==thisRoom)||(follower.location()==destRoom)))
 				{
-					if(follower.location()==thisRoom)
+					if((follower.location()==thisRoom)
+					   &&((follower.getBitmap()&MOB.ATT_AUTOGUARD)==MOB.ATT_AUTOGUARD))
 					{
 						follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
 						if(!move(follower,directionCode,false))
@@ -547,15 +548,41 @@ public class Movement
 				mob.location().send(mob,msg);
 		}
 	}
-	public static void wake(MOB mob)
+	public static void wake(MOB mob, Vector commands)
 	{
-		if(!Sense.isSleeping(mob))
-			mob.tell("You aren't sleeping!?");
+		if(commands!=null)
+			commands.removeElementAt(0);
+		if((commands==null)||(commands.size()==0))
+		{
+			if(!Sense.isSleeping(mob))
+				mob.tell("You aren't sleeping!?");
+			else
+			{
+				FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,"<S-NAME> awake(s) and stand(s) up.");
+				if(mob.location().okAffect(msg))
+					mob.location().send(mob,msg);
+			}
+		}
 		else
 		{
-			FullMsg msg=new FullMsg(mob,null,null,Affect.MSG_STAND,"<S-NAME> awake(s) and stand(s) up.");
+			String whom=Util.combine(commands,0);
+			MOB M=mob.location().fetchInhabitant(whom);
+			if((M==null)||(!Sense.canBeSeenBy(M,mob)))
+			{
+				mob.tell("You don't see '"+whom+"' here.");
+				return;
+			}
+			if(!Sense.isSleeping(M))
+			{
+				mob.tell(M.name()+" is awake!");
+				return;
+			}
+			FullMsg msg=new FullMsg(mob,M,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> wake(s) <T-NAME> up.");
 			if(mob.location().okAffect(msg))
+			{
 				mob.location().send(mob,msg);
+				wake(M,null);
+			}
 		}
 	}
 	public static void sleep(MOB mob)

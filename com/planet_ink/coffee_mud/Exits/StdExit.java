@@ -220,6 +220,7 @@ public class StdExit implements Exit
 			}
 			return true;
 		case Affect.TYP_DELICATE_HANDS_ACT:
+		case Affect.TYP_JUSTICE:
 		case Affect.TYP_CAST_SPELL:
 			return true;
 		case Affect.TYP_PULL:

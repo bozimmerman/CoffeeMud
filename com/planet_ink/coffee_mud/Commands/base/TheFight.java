@@ -437,11 +437,15 @@ public class TheFight
 		{
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOMELEE);
 			mob.tell("Automelee has been turned off.  You will no longer charge into melee combat from a ranged position.");
+			if(mob.isMonster())
+				SocialProcessor.quickSay(mob,null,"I will no longer charge into melee.",false,false);
 		}
 		else
 		{
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOMELEE);
 			mob.tell("Automelee has been turned back on.  You will now enter melee combat normally.");
+			if(mob.isMonster())
+				SocialProcessor.quickSay(mob,null,"I will now enter melee combat normally.",false,false);
 		}
 	}
 
@@ -456,6 +460,24 @@ public class TheFight
 		{
 			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTODRAW);
 			mob.tell("Auto weapon drawing has been turned off.  You will no longer draw your weapon automatically.");
+		}
+	}
+
+	public static void autoGuard(MOB mob)
+	{
+		if((mob.getBitmap()&MOB.ATT_AUTOGUARD)==0)
+		{
+			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOGUARD);
+			mob.tell("You are now on guard. You will no longer follow group leaders.");
+			if(mob.isMonster())
+				mob.tell("I am now on guard.");
+		}
+		else
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_AUTOGUARD);
+			mob.tell("You are on longer on guard.  You will now follow group leaders.");
+			if(mob.isMonster())
+				mob.tell("I will now follow my group leader.");
 		}
 	}
 
@@ -530,7 +552,7 @@ public class TheFight
 		else
 		{
 			commands.insertElementAt("all",0);
-			Container container=(Container)ItemUsage.possibleContainer(mob,commands,Item.WORN_REQ_WORNONLY);
+			Container container=(Container)ItemUsage.possibleContainer(mob,commands,false,Item.WORN_REQ_WORNONLY);
 			String thingToPut=Util.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";

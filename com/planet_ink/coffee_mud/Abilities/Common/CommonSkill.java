@@ -76,7 +76,7 @@ public class CommonSkill extends StdAbility
 			{
 				MOB mob=(MOB)affected;
 				if(aborted)
-					commonEmote(mob,"<S-NAME> stops "+verb);
+					commonEmote(mob,"<S-NAME> stop(s) "+verb);
 				else
 					commonEmote(mob,"<S-NAME> <S-IS-ARE> done "+verb);
 

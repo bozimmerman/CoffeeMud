@@ -8,7 +8,7 @@ import java.util.*;
 public class Thief_SilentGold extends ThiefSkill
 {
 	public String ID() { return "Thief_SilentGold"; }
-	public String displayText() {return "(Silent Autogold)";}
+	public String displayText() {return "(Silent AutoGold)";}
 	public String name(){ return "Silent AutoGold";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

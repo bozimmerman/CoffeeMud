@@ -22,6 +22,7 @@ public interface MOB
 	public static final int ATT_NOFOLLOW=512;
 	public static final int ATT_AUTOWEATHER=1024;
 	public static final int ATT_AUTODRAW=2048;
+	public static final int ATT_AUTOGUARD=4096;
 	
 	/** When the USER last logged off */
 	public long lastDateTime();

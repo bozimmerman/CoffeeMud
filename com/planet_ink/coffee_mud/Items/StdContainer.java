@@ -80,7 +80,10 @@ public class StdContainer extends StdItem implements Container
 					}
 					else
 					if(capacity<=0)
+					{
 						mob.tell("You can't put anything in "+newitem.name()+"!");
+						return false;
+					}
 					else
 					{
 						if(!canContain(newitem))

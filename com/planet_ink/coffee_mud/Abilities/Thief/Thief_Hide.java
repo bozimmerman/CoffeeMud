@@ -57,9 +57,6 @@ public class Thief_Hide extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto))
-			return false;
-
 		if(mob.fetchAffect(this.ID())!=null)
 		{
 			mob.tell("You are already hiding.");
@@ -72,6 +69,9 @@ public class Thief_Hide extends ThiefSkill
 			return false;
 		}
 		
+		if(!super.invoke(mob,commands,givenTarget,auto))
+			return false;
+
 		Hashtable H=mob.getGroupMembers(new Hashtable());
 		int highestLevel=0;
 		for(int i=0;i<mob.location().numInhabitants();i++)

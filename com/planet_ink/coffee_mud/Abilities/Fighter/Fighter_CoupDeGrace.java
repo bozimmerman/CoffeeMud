@@ -40,8 +40,8 @@ public class Fighter_CoupDeGrace extends StdAbility
 				return false;
 			}
 			ww=(Weapon)w;
-			if((ww.weaponClassification()!=Weapon.TYPE_SLASHING)
-			&&(ww.weaponClassification()!=Weapon.TYPE_PIERCING))
+			if((ww.weaponType()!=Weapon.TYPE_SLASHING)
+			&&(ww.weaponType()!=Weapon.TYPE_PIERCING))
 			{
 				mob.tell("You cannot coup de grace with a "+ww.name()+"!");
 				return false;

@@ -699,6 +699,7 @@ public class StdItem implements Item
 				return true;
 			break;
 		case Affect.TYP_DELICATE_HANDS_ACT:
+		case Affect.TYP_JUSTICE:
 		case Affect.TYP_WAND_USE:
 		case Affect.TYP_CAST_SPELL:
 			return true;

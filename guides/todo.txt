@@ -1,13 +1,13 @@
+when you use compare, if you only provide one param, have it compare it to what you have equipped
+the shopkeepers give way to much money for items. It is too lucrative
+Transmutation lvl 24 HUNGERLESS target needs no food for duration of spell.
+WILL's spell ANIMATEWEAPON, Enchantment 14 causes targetted weapon to attack on it's own, as part of the caster's party.
+Transmutation lvl 22 THIRSTLESS target needs no water for duration of spell.
+
 owns a room, owns mobs who start there (clans)
 bankers be snobby by requiring a minimum balance to deposit.
-
-New Skill -- Double the damage on all Ranged Weapons to make them more deadly.
-Wainsright - to create wagons
-Shipwright - create boats
-AUTOFOLLOW (or GUARD) to prevent a mob from actually following followers. 
-Scrolls can now disappear when used up.
 Paper-maker to make paper, scrolls (silkscreens) Wood. Cloth=Canvas. Cotton=Canvas. Silk=Silkscreen
-Should Greater Globe require Globe in order to gain?  YES.
+Wainsright - to create wagons -- but first, a rideable in a rideable is a puller!
 random monster property class which reads stats from a resource file
 Auto quests, quests, questbox (Behavior)
 Map skill for bards.  The map "document" expands as the bard travels, but consumes mana on each room mapped.
@@ -29,7 +29,6 @@ merchant class with haggle skill to lower prices HAGGLE 300 item
 can sit at tables and have conversation heard only at the table.
 racial abilities (abilities tied to the race)
 Gap exit.  Jump required not to fall in and die.  Strength check for most, Jump
-skill available all for help?????????????????????
 Infection: Hitpoints are recovered at 1/2 rate. 
 add currents to water...
 an ability to tell how many HP a MOB has
@@ -37,7 +36,6 @@ gen-wizard player editor
 Behavior & Skill libido - Property Pregnancy, Property Aging 
 property to force an object to decay once worn/picked up
 viewer/editor for items/mobs worldwide
-SPECULATE skill to determine what resources are available in a given area.
 mime behavior: A MOB will mimic any social that you do.
 pillow social to start a pillow fight
 aroma property. Exudes an odor to all adjacent rooms. Given to Undead for their stench. Given to Harem girls for their perfume. Parameter would be the emitted aroma description, and a Min/Max/Chance of message being created.

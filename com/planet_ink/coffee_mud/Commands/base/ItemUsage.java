@@ -40,7 +40,7 @@ public class ItemUsage
 		return null;
 	}
 
-	public static Item possibleContainer(MOB mob, Vector commands, int wornReqCode)
+	public static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode)
 	{
 		if(commands.size()==1)
 			return null;
@@ -49,7 +49,8 @@ public class ItemUsage
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
-		&&(((Item)thisThang) instanceof Container))
+		&&(((Item)thisThang) instanceof Container)
+		&&((!withStuff)||(((Container)thisThang).getContents().size()>0)))
 		{
 			commands.removeElementAt(commands.size()-1);
 			return (Item)thisThang;
@@ -289,9 +290,8 @@ public class ItemUsage
 		}
 		commands.removeElementAt(0);
 
-		Item container=possibleContainer(mob,commands,Item.WORN_REQ_UNWORNONLY);
+		Item container=possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
 		whatToDrop=Util.combine(commands,0);
-
 		Vector V=new Vector();
 		boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 		if(whatToDrop.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(4);}
@@ -353,7 +353,7 @@ public class ItemUsage
 			return;
 		}
 
-		Environmental container=possibleContainer(mob,commands,Item.WORN_REQ_ANY);
+		Environmental container=possibleContainer(mob,commands,false,Item.WORN_REQ_ANY);
 		if((container==null)||((container!=null)&&(!Sense.canBeSeenBy(container,mob))))
 		{
 			mob.tell("I don't see a "+(String)commands.elementAt(commands.size()-1)+" here.");

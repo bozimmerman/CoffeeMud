@@ -43,13 +43,14 @@ public class Util
 			compresser.reset();
 			compresser.setInput(s.getBytes("UTF-8"));
 			compresser.finish();
+			
+			if(s.length()>encodeBuffer.length)
+				encodeBuffer=new byte[s.length()];
 
 			synchronized (encodeBuffer)
 			{
 				int len = compresser.deflate(encodeBuffer);
 				result = new byte[len];
-				if(len>encodeBuffer.length)
-					encodeBuffer=new byte[len];
 				System.arraycopy(encodeBuffer, 0, result, 0, len);
 			}
 		}
