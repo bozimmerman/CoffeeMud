@@ -22,67 +22,14 @@ public class Undead extends StdRace
 	public void setWeight(MOB mob)
 	{	super.setWeight(mob);}
 
-	public void affect(MOB myChar, Affect affect)
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_MIND))
-		{
-			String tool=null;
-			if(affect.tool()!=null)
-			{
-			    if(affect.tool() instanceof Ability)
-					tool=((Ability)affect.tool()).name();
-			}
-			affect.addTrailerMsg(new FullMsg(affect.source(),myChar,Affect.MSG_OK_VISUAL,"<T-NAME> seems(s) completely unaffected by the "+((tool==null)?"mental attack":tool)+" from <S-NAME>."));
-			affect.tagModified(true);
-		}
-		else
-		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_GAS))
-		{
-			String tool=null;
-			if(affect.tool()!=null)
-			{
-			    if(affect.tool() instanceof Ability)
-					tool=((Ability)affect.tool()).name();
-			}
-			affect.addTrailerMsg(new FullMsg(affect.source(),myChar,Affect.MSG_OK_VISUAL,"<T-NAME> seems(s) completely unaffected by the "+((tool==null)?"gas attack":tool)+" from <S-NAME>."));
-			affect.tagModified(true);
-		}
-		else
-		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_PARALYZE))
-		{
-			String tool=null;
-			if(affect.tool()!=null)
-			{
-			    if(affect.tool() instanceof Ability)
-					tool=((Ability)affect.tool()).name();
-			}
-			affect.addTrailerMsg(new FullMsg(affect.source(),myChar,Affect.MSG_OK_VISUAL,"<T-NAME> seems(s) completely unaffected by the "+((tool==null)?"paralysis attack":tool)+" from <S-NAME>."));
-			affect.tagModified(true);
-		}
-		else
-		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_POISON))
-		{
-			String tool=null;
-			if(affect.tool()!=null)
-			{
-			    if(affect.tool() instanceof Ability)
-					tool=((Ability)affect.tool()).name();
-			}
-			affect.addTrailerMsg(new FullMsg(affect.source(),myChar,Affect.MSG_OK_VISUAL,"<T-NAME> seems(s) completely unaffected by the "+((tool==null)?"poisonous attack":tool)+" from <S-NAME>."));
-			affect.tagModified(true);
-		}
-		else
-		if(affect.amITarget(myChar)&&(affect.targetMinor()==Affect.TYP_UNDEAD))
-		{
-			String tool=null;
-			if(affect.tool()!=null)
-			{
-			    if(affect.tool() instanceof Ability)
-					tool=((Ability)affect.tool()).name();
-			}
-			affect.addTrailerMsg(new FullMsg(affect.source(),myChar,Affect.MSG_OK_VISUAL,"<T-NAME> seems(s) completely unaffected by the "+((tool==null)?"undead":tool)+" from <S-NAME>."));
-			affect.tagModified(true);
-		}
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.SAVE_MIND,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.SAVE_GAS,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.SAVE_PARALYSIS,affectableStats.getStat(CharStats.SAVE_POISON)+100);
+		affectableStats.setStat(CharStats.SAVE_UNDEAD,affectableStats.getStat(CharStats.SAVE_POISON)+100);
 	}
 	public String healthText(MOB mob)
 	{

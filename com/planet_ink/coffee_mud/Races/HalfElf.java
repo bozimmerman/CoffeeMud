@@ -36,6 +36,12 @@ public class HalfElf extends StdRace
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+5);
+		affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+5);
+	}
 	public void setWeight(MOB mob)
 	{
 		Random randomizer = new Random(System.currentTimeMillis());

@@ -19,6 +19,7 @@ public class Snake extends StdRace
 		affectableStats.setStat(CharStats.STRENGTH,6);
 		affectableStats.setStat(CharStats.DEXTERITY,16);
 		affectableStats.setStat(CharStats.INTELLIGENCE,3);
+		affectableStats.setStat(CharStats.SAVE_POISON,affectableStats.getStat(CharStats.SAVE_POISON)+100);
 	}
 	public String arriveStr()
 	{

@@ -44,19 +44,10 @@ public class FireGiant extends StdMOB
 	{
 		return new FireGiant();
 	}
-	public boolean okAffect(Affect affect)
+	public void recoverCharStats()
 	{
-		if((affect.target()==null)||(!(affect.target() instanceof MOB)))
-			return true;
-
-		MOB mob=(MOB)affect.target();
-		if((affect.targetMinor()==affect.TYP_FIRE)
-		&&(mob.isMine(this)))
-		{
-			mob.location().show(mob,null,Affect.MSG_OK_VISUAL,"<S-NAME> appear(s) to be unaffected.");
-			return false;
-		}
-		return true;
+		super.recoverCharStats();
+		charStats().setStat(CharStats.SAVE_MAGIC,charStats().getStat(CharStats.SAVE_FIRE)+100);
 	}
 
 

@@ -402,90 +402,36 @@ public class Dragon extends StdMOB
 		return true;
 	}
 
-	public boolean okAffect(Affect affect)
+	public void recoverCharStats()
 	{
-		boolean retval = super.okAffect(affect);
-
-		if((affect.amITarget(this))&&(Util.bset(affect.targetCode(),Affect.MASK_MALICIOUS)))
+		super.recoverCharStats();
+		charStats().setStat(CharStats.SAVE_MAGIC,charStats().getStat(CharStats.SAVE_MAGIC)+DragonAge*5);
+		switch(DragonColor)
 		{
-			// ===== check for natural protections
-			switch (affect.targetMinor())
-			{
-			case Affect.TYP_CAST_SPELL:
-				if ((this.DragonAge*5)>=(Dice.rollPercentage()+1))
-				{
-					affect.source().tell("The Dragon resisted your spell!");
-					return false;
-				}
-				break;
-			case Affect.TYP_FIRE:
-				if (this.DragonColor==RED)
-				{
-					affect.source().tell("Red Dragons are immune to Fire!");
-					return false;
-				}
-				if (this.DragonColor==GOLD)
-				{
-					affect.source().tell("Gold Dragons are immune to Fire!");
-					return false;
-				}
-				if (this.DragonColor==BRASS)
-				{
-					affect.source().tell("Brass Dragons are immune to Acid!");
-					return false;
-				}
-				break;
-			case Affect.TYP_GAS:
-				if (this.DragonColor==GREEN)
-				{
-					affect.source().tell("Green Dragons are immune to gas attacks!");
-					return false;
-				}
-				if (this.DragonColor==GOLD)
-				{
-					affect.source().tell("Gold Dragons are immune to gas attacks!");
-					return false;
-				}
-				break;
-			case Affect.TYP_ELECTRIC:
-				if (this.DragonColor==BLUE)
-				{
-					affect.source().tell("Blue Dragons are immune to Electrical attacks!");
-					return false;
-				}
-				if (this.DragonColor==BRONZE)
-				{
-					affect.source().tell("Bronze Dragons are immune to Electrical attacks!");
-					return false;
-				}
-				break;
-			case Affect.TYP_COLD:
-				if (this.DragonColor==WHITE)
-				{
-					affect.source().tell("White Dragons are immune to cold attacks!");
-					return false;
-				}
-				if (this.DragonColor==SILVER)
-				{
-					affect.source().tell("Silver Dragons are immune to cold attacks!");
-					return false;
-				}
-				break;
-			case Affect.TYP_ACID:
-				if (this.DragonColor==BLACK)
-				{
-					affect.source().tell("Black Dragons are immune to Acid!");
-					return false;
-				}
-				if (this.DragonColor==COPPER)
-				{
-					affect.source().tell("Copper Dragons are immune to Acid!");
-					return false;
-				}
-				break;
-			}
+		case GOLD:
+			charStats().setStat(CharStats.SAVE_FIRE,charStats().getStat(CharStats.SAVE_FIRE)+100);
+			charStats().setStat(CharStats.SAVE_GAS,charStats().getStat(CharStats.SAVE_GAS)+100);
+			break;
+		case RED:
+		case BRASS:
+			charStats().setStat(CharStats.SAVE_FIRE,charStats().getStat(CharStats.SAVE_FIRE)+100);
+			break;
+		case GREEN:
+			charStats().setStat(CharStats.SAVE_GAS,charStats().getStat(CharStats.SAVE_GAS)+100);
+			break;
+		case BLUE:
+		case BRONZE:
+			charStats().setStat(CharStats.SAVE_ELECTRIC,charStats().getStat(CharStats.SAVE_ELECTRIC)+100);
+			break;
+		case WHITE:
+		case SILVER:
+			charStats().setStat(CharStats.SAVE_COLD,charStats().getStat(CharStats.SAVE_COLD)+100);
+			break;
+		case BLACK:
+		case COPPER:
+			charStats().setStat(CharStats.SAVE_ACID,charStats().getStat(CharStats.SAVE_ACID)+100);
+			break;
 		}
-		return retval;
 	}
 
 	protected boolean digestTastyMorsels()

@@ -64,9 +64,15 @@ public class SocialProcessor
 
 	public void cmdSay(MOB mob, Vector commands)
 	{
+		String theWord="Say";
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("ask"))
+			theWord="Ask";
+		else
+		if(((String)commands.elementAt(0)).equalsIgnoreCase("yell"))
+			theWord="Yell";
 		if(commands.size()==1)
 		{
-			mob.tell("Say what?");
+			mob.tell(theWord+" what?");
 			return;
 		}
 		Environmental target=null;
@@ -84,49 +90,26 @@ public class SocialProcessor
 		String combinedCommands=Util.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			mob.tell("Say what?");
+			mob.tell(theWord+" what?");
 			return;
 		}
 
 		FullMsg msg=null;
 		if(target==null)
-			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"<S-NAME> say(s) '"+combinedCommands+"'.");
+			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"<S-NAME> "+theWord.toLowerCase()+"(s) '"+combinedCommands+"'.");
 		else
-			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> say(s) to <T-NAMESELF> '"+combinedCommands+"'.");
+		if(theWord.equalsIgnoreCase("ask"))
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> ask(s) <T-NAMESELF> '"+combinedCommands+"'.");
+		else
+			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> "+theWord.toLowerCase()+"(s) to <T-NAMESELF> '"+combinedCommands+"'.");
 		if(mob.location().okAffect(msg))
 			mob.location().send(mob,msg);
 	}
 
 	public void yell(MOB mob, Vector commands)
 	{
-		if(commands.size()==1)
-		{
-			mob.tell("Yell what?");
-			return;
-		}
-		Environmental target=null;
-		if(commands.size()>2)
-		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.elementAt(1));
-			if((target!=null)&&(Sense.canBeSeenBy(target,mob)))
-				commands.removeElementAt(1);
-			else
-				target=null;
-		}
-		String combinedCommands=Util.combine(commands,1);
-		if(combinedCommands.equals(""))
-		{
-			mob.tell("Yell what?");
-			return;
-		}
-
-		FullMsg msg=null;
-		if(target==null)
-			msg=new FullMsg(mob,null,null,Affect.MSG_SPEAK,"<S-NAME> yell(s) '"+combinedCommands.toUpperCase()+"'.");
-		else
-			msg=new FullMsg(mob,target,null,Affect.MSG_SPEAK,"<S-NAME> yell(s) to <T-NAMESELF> '"+combinedCommands.toUpperCase()+"'.");
-		if(mob.location().okAffect(msg))
-			mob.location().send(mob,msg);
+		Vector newCommands=Util.parse(Util.combine(commands,0).toUpperCase());
+		cmdSay(mob,newCommands);
 	}
 
 	public void report(MOB mob)

@@ -63,6 +63,11 @@ public class Wyvern extends StdMOB
         return super.tick(tickID);
 	}
 
+	public void recoverCharStats()
+	{
+		super.recoverCharStats();
+		charStats().setStat(CharStats.SAVE_POISON,charStats().getStat(CharStats.SAVE_POISON)+100);
+	}
 	protected boolean sting()
 	{
 		if (Sense.aliveAwakeMobile(this,true)&&

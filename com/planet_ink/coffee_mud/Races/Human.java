@@ -35,6 +35,11 @@ public class Human extends StdRace
  		else
 			mob.baseEnvStats().setWeight(100+weightModifier);
 	}
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.SAVE_JUSTICE,affectableStats.getStat(CharStats.SAVE_JUSTICE)+10);
+	}
 	public void outfit(MOB mob)
 	{
 		// Have to, since it requires use of special constructor

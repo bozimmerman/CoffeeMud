@@ -16,13 +16,17 @@ Serve and Rebuke commands.  Any character may take on a leige, but Clerics may o
 of the same god (room) as a leige.  A Leige receives 10% of all experience gained by the
 vassels, providing incentive to assist the vassel.
 
+Weapon condition, sharpness, and bluntness Weapon repair and sharpening/blunting. 
+
+Crawl command, is_crawling, and crawling requirements for exits
+
 Convert some properties to work with the new areas. Prop_NOMOB, etc..
 
 0-level abilities.  Trade skills to produce mundane items.  One would go to a "factory", where  one could buy raw materials.  Facilities available there would be used, along with your skill, to  produce a finished product..e.g. a shirt, pants, minor weapons and armor, etc.  Mining, Fishing,  Woodcutting, etc.. to get raw materials.  Cooking to improve the nourishment of Food objects (and  remove rawness from Meat).  The LeatherWorker ability can mend leather items, Tailor cloth items, etc..
 
-Two-handed fighting
+Furniture.. chairs to sit in, beds to lie in, tables to put things on?
 
-mend spell!
+Two-handed fighting
 
 ranger skills: find water, hunt (finds a huntable animal)
 
@@ -67,9 +71,7 @@ Predict Weather spell! Change weather! Call Lightening! Call hailstones!
 Lore skill for Bards.. allows an identify for them.
 
 More stuff for Fighters, especially Paladins and Rangers, who must use their 
-trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!
-
-Sweep would make a good Fighter ability, as would cleave!
+trains for spells.  Perhaps fill in Paladin and Ranger gaps with spells!  Sweep would make a good Fighter ability, as would cleave!
 
 iron grip spell to thwart disarm
 

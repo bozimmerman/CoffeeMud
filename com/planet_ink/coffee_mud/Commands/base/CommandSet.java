@@ -248,6 +248,7 @@ public class CommandSet extends Hashtable
 		put("REST",new Integer(SIT));
 		put("SAY",new Integer(SAY));
 			put("`",new Integer(SAY));
+			put("ASK",new Integer(SAY));
 		put("SAVE",new Integer(SAVE));
 		put("SELL",new Integer(SELL));
 		put("SHUTDOWN",new Integer(SHUTDOWN));
