@@ -60,6 +60,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),6,"Chant_Barkskin",true);
 			
 			CMAble.addCharAbilityMapping(ID(),7,"Ranger_Hide",false);
+			CMAble.addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
 			CMAble.addCharAbilityMapping(ID(),7,"Chant_Goodberry",false);
 			
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_GrowClub",true);
@@ -88,6 +89,7 @@ public class Gaian extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),15,"PlantLore",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_PoisonousVine",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_ControlPlant",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_SummonHouseplant",true);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_GrowItem",true);
@@ -108,6 +110,7 @@ public class Gaian extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),21,"Chant_VineMass",true);
 
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowForest",false);
+			CMAble.addCharAbilityMapping(ID(),22,"Chant_TapGrapevine",true);
 			CMAble.addCharAbilityMapping(ID(),22,"Chant_GrowFood",true);
 
 			CMAble.addCharAbilityMapping(ID(),23,"Chant_DistantIngrowth",true);

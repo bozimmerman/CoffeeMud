@@ -50,18 +50,17 @@ public class Bomb_Spores extends StdBomb
 	{
 		if(target.location()!=null)
 		{
-			if((target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))||(target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the poison gas!");
 			else
-			if(invoker().mayIFight(target))
-				if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.displayName()+" spews poison gas all over <T-NAME>!"))
-				{
-					super.spring(target);
-					Ability A=CMClass.getAbility(text());
-					if(A==null) A=CMClass.getAbility("Disease_Cold");
-					if(A!=null)
-						A.invoke(invoker(),target,true);
-				}
+			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.displayName()+" spews poison gas all over <T-NAME>!"))
+			{
+				super.spring(target);
+				Ability A=CMClass.getAbility(text());
+				if(A==null) A=CMClass.getAbility("Disease_Cold");
+				if(A!=null)
+					A.invoke(invoker(),target,true);
+			}
 		}
 	}
 	

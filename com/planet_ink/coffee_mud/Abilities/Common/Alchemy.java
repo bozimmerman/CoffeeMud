@@ -26,6 +26,7 @@ public class Alchemy extends CommonSkill
 
 		if(!mapped){mapped=true;
 					CMAble.addCharAbilityMapping("Mage",1,ID(),false);
+					CMAble.addCharAbilityMapping("Bard",10,ID(),false);
 					CMAble.addCharAbilityMapping("Cleric",1,ID(),false);}
 	}
 	public Environmental newInstance(){ return new Alchemy();	}

@@ -41,17 +41,16 @@ public class Trap_Spark extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) setting off a sparking trap!");
 			else
-			if(invoker().mayIFight(target))
-				if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off an sparking trap!"))
-				{
-					super.spring(target);
-					ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),8,1),Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The sparks <DAMAGE> <T-NAME>!");
-					if((canBeUninvoked())&&(affected instanceof Item))
-						disable();
-				}
+			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> set(s) off an sparking trap!"))
+			{
+				super.spring(target);
+				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),8,1),Affect.MASK_GENERAL|Affect.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The sparks <DAMAGE> <T-NAME>!");
+				if((canBeUninvoked())&&(affected instanceof Item))
+					disable();
+			}
 		}
 	}
 }

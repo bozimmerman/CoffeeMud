@@ -28,15 +28,14 @@ public class Bomb_Explosive extends StdBomb
 	{
 		if(target.location()!=null)
 		{
-			if((target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
+			if((!invoker().mayIFight(target))||(target==invoker())||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) the explosive!");
 			else
-			if(invoker().mayIFight(target))
-				if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.displayName()+" explodes all over <T-NAME>!"))
-				{
-					super.spring(target);
-					ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),10,1),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
-				}
+			if(target.location().show(invoker(),target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,affected.displayName()+" explodes all over <T-NAME>!"))
+			{
+				super.spring(target);
+				ExternalPlay.postDamage(invoker(),target,null,Dice.roll(trapLevel(),10,1),Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+			}
 		}
 	}
 	

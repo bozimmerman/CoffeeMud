@@ -52,9 +52,9 @@ public class Chant_Grapevine extends Chant
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
-		if(mob.fetchAffect(ID())!=null)
+		if((mob.fetchAffect(ID())!=null)||(mob.fetchAffect("Chant_TapGrapevine")!=null))
 		{
-			mob.tell("You are already listening through the grapevine.");
+			mob.tell("You are already listening through a grapevine.");
 			return false;
 		}
 		Vector myRooms=Druid_MyPlants.myPlantRooms(mob);

@@ -84,7 +84,7 @@ public class Trap_CaveIn extends StdTrap
 					{
 						MOB M=R.fetchInhabitant(i);
 						if((M!=null)&&(M!=invoker()))
-						if(invoker().mayIFight(M))
+							if(invoker().mayIFight(M))
 							{
 								int damage=Dice.roll(trapLevel(),20,1);
 								ExternalPlay.postDamage(invoker(),M,this,damage,Affect.MASK_MALICIOUS|Affect.MSG_OK_ACTION,Weapon.TYPE_BASHING,"The cave-in <DAMAGE> <T-NAME>!");

@@ -80,18 +80,17 @@ public class Trap_BearTrap extends StdTrap
 		trapped=null;
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) a bear trap!");
 			else
-			if(invoker().mayIFight(target))
-				if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))
-				{
-					super.spring(target);
-					int damage=Dice.roll(trapLevel(),6,1);
-					trapped=target;
-					amountRemaining=250+(trapLevel()*10);
-					ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
-				}
+			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> step(s) on a bear trap!"))
+			{
+				super.spring(target);
+				int damage=Dice.roll(trapLevel(),6,1);
+				trapped=target;
+				amountRemaining=250+(trapLevel()*10);
+				ExternalPlay.postDamage(invoker(),target,this,damage,Affect.MSG_OK_VISUAL,Weapon.TYPE_PIERCING,"The bear trap <DAMAGE> <T-NAME>!");
+			}
 		}
 	}
 }

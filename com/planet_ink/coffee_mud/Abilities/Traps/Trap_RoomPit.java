@@ -108,10 +108,9 @@ public class Trap_RoomPit extends StdTrap
 	
 	public void finishSpringing(MOB target)
 	{
-		if(target.envStats().weight()<5)
+		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
 			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
-		if(invoker().mayIFight(target))
 		{
 			target.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
 			int damage=Dice.roll(trapLevel(),6,1);
@@ -124,7 +123,7 @@ public class Trap_RoomPit extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null)&&(!Sense.isInFlight(target)))
 		{
-			if(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS))
+			if((!invoker().mayIFight(target))||(Dice.rollPercentage()<=target.charStats().getSave(CharStats.SAVE_TRAPS)))
 				target.location().show(target,null,null,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> avoid(s) falling into a pit!");
 			else
 			if(target.location().show(target,target,this,Affect.MASK_GENERAL|Affect.MSG_NOISE,"<S-NAME> fall(s) into a pit!"))
