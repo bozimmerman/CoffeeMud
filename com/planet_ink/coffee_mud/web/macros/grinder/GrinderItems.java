@@ -82,7 +82,7 @@ public class GrinderItems
 						  "AMMOCAP","READABLESPELL","ISRIDEABLE","RIDEABLETYPE","MOBSHELD",
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
 						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES",
-						  "ISINSTRUMENT","INSTRUMENTTYPE"};
+						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -285,6 +285,9 @@ public class GrinderItems
 			case 46: // ammo types
 				if((I instanceof Weapon)&&(!(I instanceof Wand)))
 					((Weapon)I).setAmmunitionType(old);
+				else
+				if(I instanceof Ammunition)
+					((Ammunition)I).setAmmunitionType(old);
 				break;
 			case 47: // ammo capacity
 				if((I instanceof Weapon)&&(!(I instanceof Wand)))
@@ -370,6 +373,10 @@ public class GrinderItems
 			case 64: // instrumenttype
 				if(I instanceof MusicalInstrument)
 					((MusicalInstrument)I).setInstrumentType(Util.s_int(old));
+				break;
+			case 65: // isammo
+				break;
+			case 66: // is mob type
 				break;
 			}
 		}

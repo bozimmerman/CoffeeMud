@@ -188,7 +188,8 @@ public class ItemData extends StdWebMacro
 							  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER",
 							  "READABLETEXT","CONTAINER","ISLIGHTSOURCE","DURATION",
 							  "ISUNTWOHANDED","ISCOIN","ISSCROLL","BEINGWORN","NONLOCATABLE",
-							  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE"};
+							  "ISKEY", "CONTENTTYPES","ISINSTRUMENT","INSTRUMENTTYPE",
+							  "ISAMMO","ISMOBITEM"};
 			for(int o=0;o<okparms.length;o++)
 			if(parms.containsKey(okparms[o]))
 			{
@@ -505,6 +506,9 @@ public class ItemData extends StdWebMacro
 				case 46: // ammo types
 					if((firstTime)&&(I instanceof Weapon))
 						old=""+((Weapon)I).ammunitionType();
+					else
+					if((firstTime)&&(I instanceof Ammunition))
+						old=""+((Ammunition)I).ammunitionType();
 					str.append(old);
 					break;
 				case 47: // ammo capacity
@@ -703,6 +707,12 @@ public class ItemData extends StdWebMacro
 						str.append(">"+MusicalInstrument.TYPE_DESC[r]);
 					}
 					break;
+				case 69: // is ammunition
+					if(I instanceof Ammunition) return "true";
+					else return "false";
+				case 70: // is mob item
+					if(M!=null) return "true";
+					else return "false";
 				}
 				if(firstTime)
 					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
