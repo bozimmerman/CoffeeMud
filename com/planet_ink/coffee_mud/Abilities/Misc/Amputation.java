@@ -27,6 +27,7 @@ public class Amputation extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return true;}
 	public int classificationCode(){return Ability.PROPERTY;}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private Vector missingLimbs=null;
 	private long forbiddenWornBits=-1;
 

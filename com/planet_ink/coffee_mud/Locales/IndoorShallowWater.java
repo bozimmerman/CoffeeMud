@@ -12,7 +12,7 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 		super();
 		name="the water";
 		recoverEnvStats();
-		domainType=Room.DOMAIN_INDOORS_CAVE;
+		domainType=Room.DOMAIN_INDOORS_WATERSURFACE;
 		domainCondition=Room.CONDITION_WET;
 		baseThirst=0;
 	}

@@ -138,14 +138,14 @@ public class Generic
 		{
 			Exit exit=(Exit)E;
 			exit.setReadable(get(f,4));
-			if(get(f,16)) Log.errOut("Generic","Exit is trapped!");
+			if(get(f,16)) Log.errOut("Generic","Exit has deprecated trap flag set!");
 			boolean HasDoor=get(f,32);
 			boolean HasLock=get(f,64);
 			boolean DefaultsClosed=get(f,128);
 			boolean DefaultsLocked=get(f,256);
-			if(get(f,512)) Log.errOut("Generic","Exit is level restricted!");
-			if(get(f,1024)) Log.errOut("Generic","Exit is class restricted!");
-			if(get(f,2048)) Log.errOut("Generic","Exit is alignment restricted!");
+			if(get(f,512)) Log.errOut("Generic","Exit has deprecated level restriction flag set!");
+			if(get(f,1024)) Log.errOut("Generic","Exit has deprecated class restriction flag set!");
+			if(get(f,2048)) Log.errOut("Generic","Exit has deprecated alignment restriction flag set!");
 			exit.setDoorsNLocks(HasDoor,(!HasDoor)||(!DefaultsClosed),DefaultsClosed,HasLock,HasLock&&DefaultsLocked,DefaultsLocked);
 		}
 	}
@@ -1640,6 +1640,37 @@ public class Generic
 		text.append(XMLManager.convertXMLtoTag("AFFECS",affectstr.toString()));
 		return text.toString();
 	}
+	
+	public static String getEnvStatsStr(EnvStats E)
+	{
+		return E.ability()+"|"+
+				E.armor()+"|"+
+				E.attackAdjustment()+"|"+
+				E.damage()+"|"+
+				E.disposition()+"|"+
+				E.level()+"|"+
+				E.rejuv()+"|"+
+				E.speed()+"|"+
+				E.weight()+"|"+
+				E.height()+"|"+
+				E.sensesMask()+"|";
+	}
+	public static String getCharStateStr(CharState E)
+	{
+		return E.getFatigue()+"|"+
+				E.getHitPoints()+"|"+
+				E.getHunger()+"|"+
+				E.getMana()+"|"+
+				E.getMovement()+"|"+
+				E.getThirst()+"|";
+	}
+	public static String getCharStatsStr(CharStats E)
+	{
+		StringBuffer str=new StringBuffer("");
+		for(int i=0;i<CharStats.NUM_STATS;i++)
+			str.append(E.getStat(i)+"|");
+		return str.toString();
+	}
 
 	private static String getEnvPropertiesStr(Environmental E)
 	{
@@ -1647,29 +1678,55 @@ public class Generic
 		text.append(XMLManager.convertXMLtoTag("NAME",E.Name()));
 		text.append(XMLManager.convertXMLtoTag("DESC",E.description()));
 		text.append(XMLManager.convertXMLtoTag("DISP",E.displayText()));
-		text.append(XMLManager.convertXMLtoTag("PROP",
-			E.baseEnvStats().ability()+"|"+
-			E.baseEnvStats().armor()+"|"+
-			E.baseEnvStats().attackAdjustment()+"|"+
-			E.baseEnvStats().damage()+"|"+
-			E.baseEnvStats().disposition()+"|"+
-			E.baseEnvStats().level()+"|"+
-			E.baseEnvStats().rejuv()+"|"+
-			E.baseEnvStats().speed()+"|"+
-			E.baseEnvStats().weight()+"|"+
-			E.baseEnvStats().height()+"|"+
-			E.baseEnvStats().sensesMask()+"|"));
+		text.append(XMLManager.convertXMLtoTag("PROP",getEnvStatsStr(E.baseEnvStats())));
 
 		text.append(getExtraEnvPropertiesStr(E));
 		return text.toString();
 	}
 
-	private static void setEnvProperties(Environmental E, Vector buf)
+	public static void setCharStats(CharStats E, String props)
 	{
-		E.setName(XMLManager.getValFromPieces(buf,"NAME"));
-		E.setDescription(XMLManager.getValFromPieces(buf,"DESC"));
-		E.setDisplayText(XMLManager.getValFromPieces(buf,"DISP"));
-		String props=XMLManager.getValFromPieces(buf,"PROP");
+		int x=0;
+		for(int y=props.indexOf("|");y>=0;y=props.indexOf("|"))
+		{
+			try
+			{
+				E.setStat(x,Integer.valueOf(props.substring(0,y)).intValue());
+			}
+			catch(Exception e)
+			{
+				E.setStat(x,new Integer(Util.s_int(props.substring(0,y))).intValue());
+			}
+			x++;
+			props=props.substring(y+1);
+		}
+	}
+	public static void setCharState(CharState E, String props)
+	{
+		int[] nums=new int[6];
+		int x=0;
+		for(int y=props.indexOf("|");y>=0;y=props.indexOf("|"))
+		{
+			try
+			{
+				nums[x]=Integer.valueOf(props.substring(0,y)).intValue();
+			}
+			catch(Exception e)
+			{
+				nums[x]=new Integer(Util.s_int(props.substring(0,y))).intValue();
+			}
+			x++;
+			props=props.substring(y+1);
+		}
+		E.setFatigue(nums[0]);
+		E.setHitPoints(nums[1]);
+		E.setHunger(nums[2]);
+		E.setMana(nums[3]);
+		E.setMovement(nums[4]);
+		E.setThirst(nums[5]);
+	}
+	public static void setEnvStats(EnvStats E, String props)
+	{
 		double[] nums=new double[11];
 		int x=0;
 		for(int y=props.indexOf("|");y>=0;y=props.indexOf("|"))
@@ -1685,18 +1742,25 @@ public class Generic
 			x++;
 			props=props.substring(y+1);
 		}
-		E.baseEnvStats().setAbility((int)Math.round(nums[0]));
-		E.baseEnvStats().setArmor((int)Math.round(nums[1]));
-		E.baseEnvStats().setAttackAdjustment((int)Math.round(nums[2]));
-		E.baseEnvStats().setDamage((int)Math.round(nums[3]));
-		E.baseEnvStats().setDisposition((int)Math.round(nums[4]));
-		E.baseEnvStats().setLevel((int)Math.round(nums[5]));
-		E.baseEnvStats().setRejuv((int)Math.round(nums[6]));
-		E.baseEnvStats().setSpeed(nums[7]);
-		E.baseEnvStats().setWeight((int)Math.round(nums[8]));
-		E.baseEnvStats().setHeight((int)Math.round(nums[9]));
-		E.baseEnvStats().setSensesMask((int)Math.round(nums[10]));
-
+		E.setAbility((int)Math.round(nums[0]));
+		E.setArmor((int)Math.round(nums[1]));
+		E.setAttackAdjustment((int)Math.round(nums[2]));
+		E.setDamage((int)Math.round(nums[3]));
+		E.setDisposition((int)Math.round(nums[4]));
+		E.setLevel((int)Math.round(nums[5]));
+		E.setRejuv((int)Math.round(nums[6]));
+		E.setSpeed(nums[7]);
+		E.setWeight((int)Math.round(nums[8]));
+		E.setHeight((int)Math.round(nums[9]));
+		E.setSensesMask((int)Math.round(nums[10]));
+	}
+	
+	private static void setEnvProperties(Environmental E, Vector buf)
+	{
+		E.setName(XMLManager.getValFromPieces(buf,"NAME"));
+		E.setDescription(XMLManager.getValFromPieces(buf,"DESC"));
+		E.setDisplayText(XMLManager.getValFromPieces(buf,"DISP"));
+		setEnvStats(E.baseEnvStats(),XMLManager.getValFromPieces(buf,"PROP"));
 		setExtraEnvProperties(E,buf);
 	}
 

@@ -18,6 +18,7 @@ public class Poison extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Poison();}
 	public int classificationCode(){return Ability.POISON;}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
 	protected int POISON_DELAY(){return 3;}
 	protected String POISON_DONE(){return "The poison runs its course.";}

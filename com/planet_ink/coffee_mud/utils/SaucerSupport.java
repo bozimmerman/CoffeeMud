@@ -929,14 +929,21 @@ public class SaucerSupport
 	public static void getRadiantRooms(Room room, 
 									   Vector rooms, 
 									   boolean openOnly,
+									   boolean areaOnly,
+									   boolean noSkyPlease,
+									   Room radiateTo,
 									   int maxDepth)
 	{
 		int depth=0;
 		if(room==null) return;
 		if(rooms.contains(room)) return;
+		HashSet H=new HashSet();
 		rooms.addElement(room);
+		for(int r=0;r<rooms.size();r++)
+			H.add(rooms.elementAt(r));
 		int min=0;
 		int size=rooms.size();
+		boolean radiateToSomewhere=(radiateTo!=null);
 		while(depth<maxDepth)
 		{
 			for(int r=min;r<size;r++)
@@ -944,18 +951,31 @@ public class SaucerSupport
 				Room R1=(Room)rooms.elementAt(r);
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
+					if((noSkyPlease)
+					&&(R1.roomID().length()>0)
+					&&(R1.rawDoors()[d]!=null)
+					&&(R1.rawDoors()[d].roomID().length()==0))
+						continue;
+					
 					Room R=R1.getRoomInDir(d);
 					Exit E=R1.getExitInDir(d);
 					if((R!=null)
 					&&(E!=null)
-					&&(R.getArea()==room.getArea())
+					&&((!areaOnly)||(R.getArea()==room.getArea()))
 					&&((!openOnly)||(E.isOpen()))
-					&&(!rooms.contains(R)))
+					&&(!H.contains(R)))
+					{
 						rooms.addElement(R);
+						H.add(R);
+						if((radiateToSomewhere)
+						&&(R==radiateTo))
+							return;
+					}
 				}
 			}
 			min=size;
 			size=rooms.size();
+			if(min==size) return;
 			depth++;
 		}
 	}

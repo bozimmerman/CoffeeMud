@@ -121,6 +121,11 @@ public interface Ability  extends Environmental
 	public boolean isAutoInvoked();
 	public boolean isNowAnAutoEffect();
 	public int usageCost(MOB mob);
+	public final static int USAGE_NADA=0;
+	public final static int USAGE_MANA=1;
+	public final static int USAGE_MOVEMENT=2;
+	public final static int USAGE_HITPOINTS=4;
+	public int usageType();
 	
 	// a borrowed ability is one derived from some other source
 	// than the mobs knowledge, such as a magic item, or 

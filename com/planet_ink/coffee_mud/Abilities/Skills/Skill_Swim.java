@@ -19,6 +19,7 @@ public class Skill_Swim extends StdAbility
 	public Environmental newInstance(){	return new Skill_Swim();}
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean placeToSwim(Room r2)
 	{

@@ -17,6 +17,7 @@ public class Skill_Cage extends StdAbility
 	private static final String[] triggerStrings = {"CAGE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public Environmental newInstance(){	return new Skill_Cage();}
 

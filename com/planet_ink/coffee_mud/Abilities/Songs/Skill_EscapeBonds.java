@@ -16,6 +16,7 @@ public class Skill_EscapeBonds extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_EscapeBonds();}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	
 	public void affectCharStats(MOB mob, CharStats stats)

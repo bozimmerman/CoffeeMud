@@ -13,6 +13,7 @@ public class Thief_MinorTrap extends Thief_Trap
 	private static final String[] triggerStrings = {"MTRAP","MINORTRAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_MinorTrap();}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	protected int maxLevel(){return 3;}
 }

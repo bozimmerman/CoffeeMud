@@ -15,6 +15,7 @@ public class Thief_BackStab extends ThiefSkill
 	private static final String[] triggerStrings = {"BACKSTAB"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_BackStab();}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

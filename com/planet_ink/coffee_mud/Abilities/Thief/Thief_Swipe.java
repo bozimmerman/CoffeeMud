@@ -15,6 +15,7 @@ public class Thief_Swipe extends ThiefSkill
 	private static final String[] triggerStrings = {"SWIPE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Swipe();}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	
 	private DVector lastOnes=new DVector(2);
 	private int timesPicked(MOB target)

@@ -15,6 +15,7 @@ public class Play extends StdAbility
 	private static final String[] triggerStrings = {"PLAY","PL","PLA"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SONG;}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public int maxRange(){return 2;}
 	
 	protected int requiredInstrumentType(){return -1;}

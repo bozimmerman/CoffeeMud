@@ -43,6 +43,8 @@ public class StdRace implements Race
 		}
 	}
 
+	public Race healthBuddy(){return this;}
+	
 	/** some general statistics about such an item
 	 * see class "EnvStats" for more information. */
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -443,4 +445,35 @@ public class StdRace implements Race
 	}
 	public String racialParms(){ return "";}
 	public void setRacialParms(String parms){}
+	protected static String[] CODES={"CLASS","PARMS"};
+	public String getStat(String code){
+		switch(getCodeNum(code))
+		{
+		case 0: return ID();
+		case 1: return ""+racialParms();
+		}
+		return "";
+	}
+	public void setStat(String code, String val)
+	{
+		switch(getCodeNum(code))
+		{
+		case 0: return;
+		case 1: setRacialParms(val); break;
+		}
+	}
+	public String[] getStatCodes(){return CODES;}
+	protected int getCodeNum(String code){
+		for(int i=0;i<CODES.length;i++)
+			if(code.equalsIgnoreCase(CODES[i])) return i;
+		return -1;
+	}
+	public boolean sameAs(Race E)
+	{
+		if(!(E instanceof StdRace)) return false;
+		for(int i=0;i<CODES.length;i++)
+			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+				return false;
+		return true;
+	}
 }

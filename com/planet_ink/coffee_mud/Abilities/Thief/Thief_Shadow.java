@@ -23,6 +23,7 @@ public class Thief_Shadow extends ThiefSkill
 	public MOB shadowing=null;
 	private Room lastRoom=null;
 	private long lastTogether=0;
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public Environmental newInstance(){	return new Thief_Shadow();}
 
 	public boolean stillAShadower()

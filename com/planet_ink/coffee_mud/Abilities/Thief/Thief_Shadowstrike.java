@@ -16,6 +16,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	private static final String[] triggerStrings = {"SHADOWSTRIKE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Shadowstrike();}
+	public int usageType(){return USAGE_MOVEMENT;}
 	protected int overrideMana(){return 100;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)

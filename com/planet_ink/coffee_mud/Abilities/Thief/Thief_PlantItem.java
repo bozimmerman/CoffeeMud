@@ -15,6 +15,7 @@ public class Thief_PlantItem extends ThiefSkill
 	private static final String[] triggerStrings = {"PLANTITEM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_PlantItem();}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -17,6 +17,7 @@ public class Fighter_AtemiStrike extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_AtemiStrike();	}
 	public int classificationCode(){ return Ability.SKILL;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void unInvoke()
 	{

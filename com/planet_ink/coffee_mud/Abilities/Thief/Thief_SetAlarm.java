@@ -16,6 +16,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	private static final String[] triggerStrings = {"SETALARM"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_SetAlarm();}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private boolean sprung=false;
 	public Room room1=null;
 	public Room room2=null;
@@ -60,8 +61,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(sprung)
 		{
 			Vector rooms=new Vector();
-			SaucerSupport.getRadiantRooms(room1,rooms,true,10);
-			SaucerSupport.getRadiantRooms(room2,rooms,true,10);
+			SaucerSupport.getRadiantRooms(room1,rooms,true,true,false,null,10);
+			SaucerSupport.getRadiantRooms(room2,rooms,true,true,false,null,10);
 			Vector mobsDone=new Vector();
 			room1.showHappens(Affect.MSG_NOISE,"A horrible alarm is going off here.");
 			room2.showHappens(Affect.MSG_NOISE,"A horrible alarm is going off here.");

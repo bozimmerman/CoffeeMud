@@ -18,6 +18,7 @@ public class Thief_Robbery extends ThiefSkill
 	public Environmental newInstance(){	return new Thief_Robbery();}
 	public Vector mobs=new Vector();
 	private DVector lastOnes=new DVector(2);
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	private int timesPicked(MOB target)
 	{
 		int times=0;

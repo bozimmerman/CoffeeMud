@@ -16,6 +16,18 @@ public class DefaultCharState implements Cloneable, CharState
 	protected int ticksThirsty=0;
 
 	protected int annoyanceTicker=ANNOYANCE_DEFAULT_TICKS;
+	
+	public DefaultCharState(){}
+	public DefaultCharState(int def)
+	{
+		HitPoints=def;
+		Mana=def;
+		Movement=def;
+		Hunger=def;
+		Thirst=def;
+		Fatigue=def;
+	}
+	
 
 	public int getHitPoints(){return HitPoints;}
 	public void setHitPoints(int newVal){HitPoints=newVal;}

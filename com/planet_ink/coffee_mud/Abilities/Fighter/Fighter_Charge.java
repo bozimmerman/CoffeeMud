@@ -16,6 +16,7 @@ public class Fighter_Charge extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_Charge();}
 	public int classificationCode(){return Ability.SKILL;}
+	public int usageType(){return USAGE_MOVEMENT;}
 	public int minRange(){return 1;}
 	public int maxRange(){return 2;}
 	public boolean done=false;

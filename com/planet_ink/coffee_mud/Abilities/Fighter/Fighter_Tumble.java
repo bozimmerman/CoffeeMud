@@ -18,6 +18,7 @@ public class Fighter_Tumble extends StdAbility
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Fighter_Tumble();}
 	public int classificationCode(){ return Ability.SKILL; }
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -15,6 +15,7 @@ Mortgages (bankers lend large amounts of money at interest, start taking away pr
 property to allow ongoing payments to hirelings -- they're permanent, so long as they can suck money from a bank account.
 SMTP capability
 save player affects
+Gaian is weak on qualifying chants.  
 give rooms maximum weight saveable to db
 zapper check on quests and questchats for eligible players
 Make size important for weapons.  Characters can hold items of (Char Size/2) in one hand, and (2*Char size) in 2 hands.

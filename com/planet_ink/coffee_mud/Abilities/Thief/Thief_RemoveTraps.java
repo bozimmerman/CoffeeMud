@@ -17,6 +17,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_RemoveTraps();}
 	public Environmental lastChecked=null;
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

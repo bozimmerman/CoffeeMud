@@ -19,6 +19,7 @@ public class Fighter_FlyingKick extends StdAbility
 	protected int overrideMana(){return 100;}
 	public int minRange(){return 1;}
 	public int maxRange(){return 5;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean canBeLearnedBy(MOB teacher, MOB student)
 	{

@@ -23,6 +23,7 @@ public class StdAbility implements Ability, Cloneable
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_SKILLPRACCOST);}
 	protected int practicesToPractice(){return 1;}
 	public long flags(){return 0;}
+	public int usageType(){return USAGE_MANA;}
 	protected int overrideMana(){return -1;} //-1=normal, Integer.MAX_VALUE=all
 	public int quality(){return Ability.INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_AREAS|

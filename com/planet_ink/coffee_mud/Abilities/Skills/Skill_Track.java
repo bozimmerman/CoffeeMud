@@ -22,6 +22,7 @@ public class Skill_Track extends StdAbility
 	private int cacheCode=-1;
 	public int abilityCode(){return cacheCode;}
 	public void setAbilityCode(int newCode){cacheCode=newCode;}
+	public int usageType(){return USAGE_MOVEMENT;}
 	
 	private Vector theTrail=null;
 	public int nextDirection=-2;

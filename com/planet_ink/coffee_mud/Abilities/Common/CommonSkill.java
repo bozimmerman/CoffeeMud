@@ -24,6 +24,7 @@ public class CommonSkill extends StdAbility
 	protected boolean aborted=false;
 	protected int tickUp=0;
 	protected String verb="working";
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}

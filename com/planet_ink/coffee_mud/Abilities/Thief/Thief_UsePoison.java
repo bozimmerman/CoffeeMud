@@ -15,6 +15,7 @@ public class Thief_UsePoison extends ThiefSkill
 	private static final String[] triggerStrings = {"POISON"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_UsePoison();}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{

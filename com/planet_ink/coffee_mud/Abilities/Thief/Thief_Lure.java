@@ -15,6 +15,7 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	private static final String[] triggerStrings = {"LURE"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Lure();}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}

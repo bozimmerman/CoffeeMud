@@ -22,6 +22,12 @@ public class DefaultCharStats implements Cloneable, CharStats
 			stats[i]=10;
 		stats[GENDER]=(int)'M';
 	}
+	public DefaultCharStats(int def)
+	{
+		for(int i=0;i<NUM_STATS;i++)
+			stats[i]=def;
+		stats[GENDER]=(int)'M';
+	}
 
 	public void setMyClasses(String classes)
 	{

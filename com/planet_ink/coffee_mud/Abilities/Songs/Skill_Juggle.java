@@ -17,6 +17,7 @@ public class Skill_Juggle extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Juggle();}
+	public int usageType(){return USAGE_MOVEMENT;}
 	protected Vector juggles=new Vector();
 	protected long lastJuggle=-1;
 	protected boolean pause=false;

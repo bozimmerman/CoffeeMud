@@ -16,6 +16,7 @@ public class Thief_Sap extends ThiefSkill
 	private static final String[] triggerStrings = {"SAP"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Sap();}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

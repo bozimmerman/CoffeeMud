@@ -16,6 +16,21 @@ public class DefaultEnvStats implements Cloneable, EnvStats
 	protected int Ability=0;			// object dependant
 	protected int Height=0;
 	protected String replacementName=null;
+	
+	public DefaultEnvStats(){}
+	public DefaultEnvStats(int def)
+	{
+		Level=def;
+		SensesMask=def;
+		Armor=def;
+		Speed=new Integer(def).doubleValue();
+		Damage=def;
+		AttackAdjustment=def;
+		Disposition=def;
+		Weight=def;
+		Ability=def;
+		Height=def;
+	}
 
 	public int sensesMask(){return SensesMask;}
 	public int disposition(){return Disposition;}

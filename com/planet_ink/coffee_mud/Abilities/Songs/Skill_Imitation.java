@@ -22,6 +22,7 @@ public class Skill_Imitation extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public String lastID="";
 	public int craftType(){return Ability.SPELL;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public Hashtable immitations=new Hashtable();
 

@@ -19,6 +19,7 @@ public class Fighter_BullRush extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Fighter_BullRush();}
 	public long flags(){return Ability.FLAG_MOVING;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

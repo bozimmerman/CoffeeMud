@@ -17,6 +17,7 @@ public class Ranger_Sneak extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Ranger_Sneak();}
 	public int classificationCode(){return Ability.SKILL;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

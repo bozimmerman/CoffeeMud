@@ -15,6 +15,7 @@ public class Thief_Sneak extends ThiefSkill
 	private static final String[] triggerStrings = {"SNEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Sneak();}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

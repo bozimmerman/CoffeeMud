@@ -22,6 +22,7 @@ public class Skill_Trip extends StdAbility
 	private int enhancement=0;
 	public int abilityCode(){return enhancement;}
 	public void setAbilityCode(int newCode){enhancement=newCode;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

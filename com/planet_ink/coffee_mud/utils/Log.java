@@ -221,6 +221,17 @@ public class Log
 		}
 	}
 
+	public static void rawSysOut(String Message)
+	{
+		if(systemOutWriter!=null)
+		{
+			systemOutWriter.println(Message);
+			systemOutWriter.flush();
+			if(sysMsgs.equalsIgnoreCase("BOTH"))
+				systemOut(Message);
+		}
+	}
+	
 	/**
 	* Handles error logging entries.  Sends them to System.out,
 	* the webiq.log file, or nowhere.

@@ -16,6 +16,7 @@ public class Thief_Snatch extends StdAbility
 	private static final String[] triggerStrings = {"SNATCH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Snatch();}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

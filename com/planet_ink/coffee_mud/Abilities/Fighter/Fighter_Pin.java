@@ -24,6 +24,7 @@ public class Fighter_Pin extends StdAbility
 	public Environmental newInstance(){	return new Fighter_Pin();	}
 	public int classificationCode(){ return Ability.SKILL;}
 	public long flags(){return Ability.FLAG_BINDING;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

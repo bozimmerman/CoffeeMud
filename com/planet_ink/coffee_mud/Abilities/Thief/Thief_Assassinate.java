@@ -15,6 +15,7 @@ public class Thief_Assassinate extends ThiefSkill
 	protected int canTargetCode(){return CAN_MOBS;}
 	public int quality(){return Ability.OK_OTHERS;}
 	private static final String[] triggerStrings = {"ASSASSINATE"};
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Assassinate();}
 	public long flags(){return Ability.FLAG_TRACKING;}

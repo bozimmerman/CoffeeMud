@@ -15,6 +15,7 @@ public class Skill_Write extends StdAbility
 	private static final String[] triggerStrings = {"WRITE","WR"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
+	public int overrideMana(){return 0;}
 	protected int trainsRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONTRAINCOST);}
 	protected int practicesRequired(){return CommonStrings.getIntVar(CommonStrings.SYSTEMI_COMMONPRACCOST);}
 	public Environmental newInstance(){	return new Skill_Write();}

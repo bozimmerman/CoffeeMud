@@ -23,6 +23,7 @@ public class Property implements Ability, Cloneable
 	public boolean bubbleAffect(){return false;}
 	public long flags(){return 0;}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public int usageType(){return 0;}
 
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}

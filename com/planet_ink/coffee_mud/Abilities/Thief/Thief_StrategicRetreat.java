@@ -16,6 +16,7 @@ public class Thief_StrategicRetreat extends ThiefSkill
 	private static final String[] triggerStrings = {"FREEFLEE","STRATEGICRETREAT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_StrategicRetreat();}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

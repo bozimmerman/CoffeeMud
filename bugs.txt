@@ -1,5 +1,10 @@
 set range at 0 after combat -- how did he leave combat? flee? yes, and then came back
 ability to permasave a mpvar
-! cityguards will try to arrest you, and then if you don't sit down, they will tell you that you are resisting arresting, but they never attack you to arrest you. You jest get a bunch of resisting arrest messages. (It could be that he is too intimidated by me, but it is not giving that message, if he is.)
-! for cityguard arrest you could make them do a bunch of SAP attacks followed by CALM prayers, or DEFENSE manuevers, or autoendcombat
 ! webiqserverport macro not showing other ips
+enchant weapon/armor to allow targeting of mobs
+summoned aggr monsters attack caster
+implement mana/move thing for abilities -- add to help
+decay riders on decay behavior
+scriptable support for seasons
+
+

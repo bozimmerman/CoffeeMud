@@ -19,6 +19,7 @@ public class Skill_ArrestingSap extends StdAbility
 	private int enhancement=0;
 	public int abilityCode(){return enhancement;}
 	public void setAbilityCode(int newCode){enhancement=newCode;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

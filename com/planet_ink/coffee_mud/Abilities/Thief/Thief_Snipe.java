@@ -17,6 +17,7 @@ public class Thief_Snipe extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Snipe();}
 	protected int overrideMana(){return 100;}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{

@@ -17,6 +17,7 @@ public class Paladin_Defend extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Paladin_Defend();}
 	public boolean fullRound=false;
+	public int usageType(){return USAGE_MOVEMENT;}
 	
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

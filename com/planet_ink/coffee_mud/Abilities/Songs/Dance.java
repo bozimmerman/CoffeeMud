@@ -15,6 +15,7 @@ public class Dance extends StdAbility
 	private static final String[] triggerStrings = {"DANCE","DA"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SONG;}
+	public int usageType(){return USAGE_MOVEMENT;}
 	public int maxRange(){return 2;}
 	protected int invokerManaCost=-1;
 

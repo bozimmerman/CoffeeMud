@@ -17,6 +17,7 @@ public class Fighter_Whomp extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public Environmental newInstance(){	return new Fighter_Whomp();	}
 	public int classificationCode(){ return Ability.SKILL;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public boolean okAffect(Environmental myHost, Affect affect)
 	{

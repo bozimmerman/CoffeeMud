@@ -16,6 +16,7 @@ public class Thief_Flank extends ThiefSkill
 	private static final String[] triggerStrings = {"FLANK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Flank();}
+	public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB target=null;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -18,6 +18,7 @@ public class Skill_HandCuff extends StdAbility
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public long flags(){return Ability.FLAG_BINDING;}
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public int amountRemaining=0;
 	public boolean oldAssist=false;

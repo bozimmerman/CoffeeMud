@@ -29,6 +29,14 @@ public class Movement extends Scriptable
 						v++;
 						s=(String)commands.elementAt(v);
 					}
+					else
+					if(("NSEWUDnsewud".indexOf(s.charAt(s.length()-1))>=0)
+					&&(Util.s_int(s.substring(0,s.length()-1))>0))
+					{
+						num=Util.s_int(s.substring(0,s.length()-1));
+						s=s.substring(s.length()-1);
+					}
+					
 					direction=Directions.getGoodDirectionCode(s);
 					if(direction>=0)
 					{
@@ -552,7 +560,7 @@ public class Movement extends Scriptable
 				{
 					Vector V=new Vector();
 					V.addElement(mob.location());
-					SaucerSupport.getRadiantRooms(R,V,true,5);
+					SaucerSupport.getRadiantRooms(R,V,true,false,false,null,5);
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)
 					{

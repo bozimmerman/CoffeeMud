@@ -16,6 +16,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	private static final String[] triggerStrings = {"CALTROPS"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public Environmental newInstance(){	return new Thief_Caltrops();}
+	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	
 	public boolean isABomb(){return false;}
 	public void activateBomb(){}

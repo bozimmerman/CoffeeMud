@@ -434,7 +434,13 @@ public class StdArea implements Area
 				&&(affect.source().location()!=null))
 					room=affect.source().location();
 				if(room!=null)
-					room.showHappens(Affect.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
+				{
+					if(room.getArea()==this)
+						room.showHappens(Affect.MSG_OK_VISUAL,"Magic doesn't seem to work here.");
+					else
+						room.showHappens(Affect.MSG_OK_VISUAL,"Magic doesn't seem to work there.");
+				}
+				
 				return false;
 			}
 		}

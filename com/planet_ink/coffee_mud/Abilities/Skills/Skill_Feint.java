@@ -18,6 +18,7 @@ public class Skill_Feint extends StdAbility
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_Feint();}
 	private boolean done=false;
+	public int usageType(){return USAGE_MOVEMENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

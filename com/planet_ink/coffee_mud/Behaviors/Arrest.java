@@ -23,6 +23,7 @@ public class Arrest extends StdBehavior
 	private Vector officerNames=new Vector();
 	private Vector chitChat=new Vector();
 	private Vector chitChat2=new Vector();
+	private boolean loadAttempt=false;
 
 	private static final long ONE_REAL_DAY=1000*60*60*24;
 	private static final long EXPIRATION_MILLIS=ONE_REAL_DAY*7; // 7 real days
@@ -146,6 +147,12 @@ public class Arrest extends StdBehavior
 		}
 		return super.modifyBehavior(mob,O);
 	}
+	
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		loadAttempt=false;
+	}
 
 	private Properties getLaws()
 	{
@@ -158,9 +165,14 @@ public class Arrest extends StdBehavior
 			try{laws.load(new FileInputStream("resources"+File.separatorChar+lawName));}
 			catch(IOException e)
 			{
-				Log.errOut("Arrest","Unable to load: "+lawName+", legal system inoperable.");
+				if(!loadAttempt)
+				{
+					Log.errOut("Arrest","Unable to load: "+lawName+", legal system inoperable.");
+					loadAttempt=true;
+				}
 				return laws;
 			}
+			loadAttempt=true;
 			Resources.submitResource("LEGAL-"+lawName,laws);
 			String officers=(String)laws.get("OFFICERS");
 			if((officers!=null)&&(officers.length()>0))

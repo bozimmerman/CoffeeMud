@@ -107,7 +107,7 @@ public class ProtectedCitizen extends ActiveTicker
 
 			Room thisRoom=mob.location();
 			Vector V=new Vector();
-			SaucerSupport.getRadiantRooms(thisRoom,V,true,radius);
+			SaucerSupport.getRadiantRooms(thisRoom,V,true,true,false,null,radius);
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=(Room)V.elementAt(v);
