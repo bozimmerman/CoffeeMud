@@ -78,7 +78,7 @@ public class Spell_DetectMagic extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HER-HER> eyes sparkling, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HIS-HER> eyes sparkling, but the spell fizzles.");
 
 		return success;
 	}

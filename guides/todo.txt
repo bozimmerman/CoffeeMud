@@ -9,6 +9,7 @@ title command
 
 more spells/ideas at http://www.turf.org/helps/
 
+nowho to mask a name off the who list
 
 Deadly weak-bridge exit.  If too much weight, you fall and die.
 

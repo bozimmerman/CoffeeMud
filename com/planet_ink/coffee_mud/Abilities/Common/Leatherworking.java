@@ -172,6 +172,11 @@ public class LeatherWorking extends CommonSkill
 				mob.tell("You can't mend "+building.name()+".");
 				return false;
 			}
+			if(((Item)building).usesRemaining()>=100)
+			{
+				mob.tell(building.name()+" is in good condition already.");
+				return false;
+			}
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto))
 				return false;

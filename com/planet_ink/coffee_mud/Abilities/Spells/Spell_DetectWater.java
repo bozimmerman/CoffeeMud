@@ -251,7 +251,7 @@ public class Spell_DetectWater extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HER-HER> liquified eyes, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HIS-HER> liquified eyes, but the spell fizzles.");
 
 		return success;
 	}

@@ -78,7 +78,7 @@ public class Spell_DetectInvisible extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HER-HER> eyes softly, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HIS-HER> eyes softly, but the spell fizzles.");
 
 		return success;
 	}

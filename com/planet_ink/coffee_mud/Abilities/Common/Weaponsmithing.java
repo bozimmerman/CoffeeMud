@@ -218,9 +218,9 @@ public class Weaponsmithing extends CommonSkill
 			Vector newCommands=Util.parse(Util.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORN_REQ_UNWORNONLY);
 			if(building==null) return false;
+			
 			if((!(building instanceof Weapon))
-			||(((Weapon)building).weaponClassification()!=Weapon.CLASS_RANGED)
-			   &&(((Weapon)building).weaponClassification()!=Weapon.CLASS_THROWN))
+			||((((Weapon)building).material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_METAL))
 			{
 				mob.tell("You don't know how to mend that sort of thing.");
 				return false;
@@ -228,6 +228,11 @@ public class Weaponsmithing extends CommonSkill
 			if(!building.subjectToWearAndTear())
 			{
 				mob.tell("You can't mend "+building.name()+".");
+				return false;
+			}
+			if(((Item)building).usesRemaining()>=100)
+			{
+				mob.tell(building.name()+" is in good condition already.");
 				return false;
 			}
 			mending=true;

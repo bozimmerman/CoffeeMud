@@ -209,7 +209,7 @@ public class Spell_DetectGold extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HER-HER> golden eyes, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HIS-HER> golden eyes, but the spell fizzles.");
 
 		return success;
 	}

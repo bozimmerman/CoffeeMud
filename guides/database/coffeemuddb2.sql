@@ -62,10 +62,10 @@ PRIMARY KEY (CMUSERID, CMFONM)
 
 CREATE TABLE CMCHIT (
 CMUSERID varchar (50),
-CMITNM varchar (50),
+CMITNM varchar (100),
 CMITID varchar (50) NULL,
 CMITTX text NULL,
-CMITLO varchar (50) NULL,
+CMITLO varchar (100) NULL,
 CMITWO integer NULL,
 CMITUR integer NULL,
 CMITLV integer NULL,
@@ -96,9 +96,9 @@ PRIMARY KEY (CMROID, CMDIRE)
 
 CREATE TABLE CMROIT (
 CMROID varchar (50),
-CMITNM varchar (50),
+CMITNM varchar (100),
 CMITID varchar (50) NULL,
-CMITLO varchar (50) NULL,
+CMITLO varchar (100) NULL,
 CMITTX text NULL,
 CMITRE integer NULL,
 CMITUR integer NULL,
@@ -119,8 +119,8 @@ PRIMARY KEY (CMROID)
 );
 
 CREATE TABLE CMAREA (
-CMAREA varchar (50) NULL ,
-CMTYPE varchar (50) NULL ,
+CMAREA varchar (50) ,
+CMTYPE varchar (50) ,
 CMCLIM integer NULL ,
 CMSUBS varchar (100) NULL ,
 CMDESC text NULL ,
@@ -130,10 +130,10 @@ PRIMARY KEY (CMAREA)
 
 
 CREATE TABLE CMJRNL (
-	CMJKEY varchar (50) NULL ,
+	CMJKEY varchar (50) ,
 	CMJRNL varchar (50) NULL ,
 	CMFROM varchar (50) NULL ,
-	CMDATE integer NULL ,
+	CMDATE bigint NULL ,
 	CMTONM varchar (50) NULL ,
 	CMSUBJ varchar (100) NULL ,
 	CMMSGT text NULL,

@@ -74,7 +74,7 @@ public class Spell_DetectMetal extends Spell
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HER-HER> metallic eyes, but the spell fizzles.");
+			beneficialVisualFizzle(mob,null,"<S-NAME> open(s) <S-HIS-HER> metallic eyes, but the spell fizzles.");
 
 		return success;
 	}
