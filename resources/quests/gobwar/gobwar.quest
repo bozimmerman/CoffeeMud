@@ -16,6 +16,27 @@ set room
 set area
 set mob
 
+set area Goblin Nation
+set mobgroup MASK=-PLAYER -RACE +Goblin 
+give behavior Scriptable LOAD=quests/gobwar/goblin.script
+give behavior MobileAggressive -Goblin MOBKILL
+give behavior Scavenger
+
+set mobgroup
+set room
+set area
+set mob
+
+set area Goblin Stronghold
+set mobgroup MASK=-PLAYER -RACE +Goblin 
+give behavior Scriptable LOAD=quests/gobwar/goblin.script
+give behavior MobileAggressive -Goblin MOBKILL
+give behavior Scavenger
+
+set mobgroup
+set room
+set area
+set mob
 
 set area Miden`nir
 set mobgroup MASK=-PLAYER -RACE +Goblin 
