@@ -28,6 +28,7 @@ JAVACPATH=/home/knoppix/j2sdk1.4.2/bin/javac
  $JAVACPATH  ./com/planet_ink/coffee_mud/Areas/*.java
  $JAVACPATH  ./com/planet_ink/coffee_mud/Behaviors/*.java
  $JAVACPATH  ./com/planet_ink/coffee_mud/CharClasses/*.java
+ $JAVACPATH  ./com/planet_ink/coffee_mud/Clans/*.java
  $JAVACPATH  ./com/planet_ink/coffee_mud/Commands/*.java
  $JAVACPATH  ./com/planet_ink/coffee_mud/Commands/base/*.java
  $JAVACPATH  ./com/planet_ink/coffee_mud/Commands/sysop/*.java

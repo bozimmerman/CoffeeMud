@@ -23,6 +23,7 @@ SET JAVACPATH=D:\java\jdk1.4.0\bin\javac
 %JAVACPATH% com\planet_ink\coffee_mud\Areas\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\Behaviors\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\CharClasses\*.java
+%JAVACPATH% com\planet_ink\coffee_mud\Clans\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\commands\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\commands\base\*.java
 %JAVACPATH% com\planet_ink\coffee_mud\commands\sysop\*.java
