@@ -978,6 +978,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return val;
 	}
 
+	private LandTitle getTitle(Room R)
+	{
+		for(int a=0;a<R.numAffects();a++)
+			if(R.fetchAffect(a) instanceof LandTitle)
+				return (LandTitle)R.fetchAffect(a);
+		return null;
+	}
 	
 	private Vector addRealEstate(Vector V,MOB mob)
 	{
@@ -989,10 +996,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			for(int r=0;r<rooms.size();r++)
 			{
 				Room R=(Room)rooms.elementAt(r);
-				Ability A=null;
-				for(int a=0;a<R.numAffects();a++)
-					if(R.fetchAffect(a) instanceof LandTitle)
-					{ A=R.fetchAffect(a); break;}
+				LandTitle A=getTitle(R);
 				if(A!=null)
 				{
 					Item I=CMClass.getItem("StdTitle");
@@ -1002,6 +1006,16 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					else
 					if(((LandTitle)I).landOwner().length()>0)
 						continue;
+					else
+					for(int d=0;d<4;d++)
+					{
+						Room R2=R.getRoomInDir(d);
+						LandTitle A2=null;
+						if(R2!=null)
+							A2=getTitle(R2);
+						if((A2!=null)&&(!A2.landOwner().equals(mob.name())))
+						   continue;
+					}
 					I.recoverEnvStats();
 					V.addElement(I);
 				}
