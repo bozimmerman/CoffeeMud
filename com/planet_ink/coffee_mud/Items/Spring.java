@@ -20,6 +20,7 @@ public class Spring extends StdDrink
 		setDisplayText("a little magical spring flows here.");
 		setDescription("The spring is coming magically from the ground.  The water looks pure and clean.");
 		baseGoldValue=10;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
 		material=EnvResource.RESOURCE_FRESHWATER;
 		recoverEnvStats();
 	}

@@ -61,10 +61,9 @@ public class Chant_Den extends Chant
 			mob.tell("There is already a den here!");
 			return false;
 		}
-		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
-		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE))
+		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{
-			mob.tell("This magic will not work here.");
+			mob.tell("This magic will only work in a cave.");
 			return false;
 		}
 		if(mob.location().roomID().length()==0)

@@ -25,6 +25,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 		setDescription("The fountain is coming magically from the ground.  The water looks pure and clean.");
 		baseGoldValue=10;
 		material=EnvResource.RESOURCE_FRESHWATER;
+		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
 		recoverEnvStats();
 	}
 

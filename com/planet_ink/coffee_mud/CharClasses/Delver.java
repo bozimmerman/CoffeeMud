@@ -60,10 +60,8 @@ public class Delver extends StdCharClass
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_FodderSignal",false);
 			CMAble.addCharAbilityMapping(ID(),8,"Chant_Den",false);
 
-CMAble.addCharAbilityMapping(ID(),9,"Chant_RockFeet",false);
-//Rockfeet 	Causes the earth around an opponent to encase his feet, immobilizing him. 
-CMAble.addCharAbilityMapping(ID(),9,"Chant_EarthPocket",false);
-//Earthpocket  Creates a cart for the delver that can stonewalk with him. It is kinda like a floating disk spell, with the items locked inside a pocket of earth that only the delver can get to. I would love for it to be a cart type item, though. (to make it different.)  
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_RockFeet",false);
+			CMAble.addCharAbilityMapping(ID(),9,"Chant_EarthPocket",false);
 
 CMAble.addCharAbilityMapping(ID(),10,"Chant_CrystalGrowth",false);
 //Crystal growth 	creates crystaline items that have very low hardnesses, made of crystal (STONE), but similar to other recipes from Tailor, Armorsmith, and Weaponsmith. 

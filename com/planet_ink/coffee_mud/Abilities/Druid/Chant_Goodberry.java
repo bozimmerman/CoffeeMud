@@ -45,6 +45,13 @@ public class Chant_Goodberry extends Chant
 		return false;
 	}
 
+	public boolean isBerry(Item I)
+	{
+		for(int i=0;i<EnvResource.BERRIES.length;i++)
+			if(I.material()==EnvResource.BERRIES[i])
+				return true;
+		return false;
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
 	{
@@ -59,9 +66,10 @@ public class Chant_Goodberry extends Chant
 
 		boolean success=profficiencyCheck(mob,0,auto);
 
-		if((!(target instanceof Food))||(((Food)target).material()!=EnvResource.RESOURCE_BERRIES))
+		if((!(target instanceof Food))
+		||(!isBerry(target)))
 		{
-			mob.tell(target.name()+" is not berries.");
+			mob.tell("This magic will not work on "+target.name()+".");
 			return false;
 		}
 

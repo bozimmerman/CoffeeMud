@@ -365,7 +365,7 @@ public class Sense
 		   ||((((MOB)seen).location().domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 			  &&(((MOB)seen).location().domainType()!=Room.DOMAIN_INDOORS_AIR))))
 			Say.append(" (^pfalling^?)");
-		if(isGlowing(seen))
+		if((isGlowing(seen))&&(!(seen instanceof Room)))
 			Say.append(" (^gglowing^?)");
 		return Say;
 	}

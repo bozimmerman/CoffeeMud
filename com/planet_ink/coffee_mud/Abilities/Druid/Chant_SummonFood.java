@@ -41,19 +41,22 @@ public class Chant_SummonFood extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				Food newItem=null;
+				int berryType=EnvResource.BERRIES[Dice.roll(1,EnvResource.BERRIES.length,-1)];
 				for(int i=0;i<((adjustedLevel(mob)/4)+1);i++)
 				{
-					Food newItem=(Food)CMClass.getStdItem("GenFoodResource");
-					newItem.setName("some berries");
-					newItem.setDisplayText("Some berries are growing here.");
-					newItem.setDescription("Small and round, these little red berries look juicy and good.");
-					newItem.setMaterial(EnvResource.RESOURCE_BERRIES);
+					newItem=(Food)CMClass.getStdItem("GenFoodResource");
+					newItem.setName("some "+EnvResource.RESOURCE_DESCS[berryType].toLowerCase());
+					newItem.setDisplayText(Util.capitalize(newItem.name())+" are growing here.");
+					newItem.setDescription("These little berries look juicy and good.");
+					newItem.setMaterial(berryType);
 					newItem.setNourishment(150);
 					newItem.setBaseValue(1);
 					newItem.setMiscText(newItem.text());
 					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
 				}
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some berries quickly begin to grow here.");
+				if(newItem!=null)
+					mob.location().showHappens(CMMsg.MSG_OK_ACTION,Util.capitalize(newItem.name())+" quickly begin to grow here.");
 				mob.location().recoverEnvStats();
 			}
 		}

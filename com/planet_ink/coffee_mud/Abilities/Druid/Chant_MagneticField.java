@@ -39,6 +39,7 @@ public class Chant_MagneticField extends Chant
 	{
 		if((msg.source()==affected)
 		&&(wearingHeldMetal(affected))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
 		&&(!(msg.tool() instanceof Ability))
 		&&((msg.sourceMinor()==CMMsg.TYP_LEAVE)
 		||(msg.sourceMinor()==CMMsg.TYP_ENTER)
@@ -49,12 +50,13 @@ public class Chant_MagneticField extends Chant
 			return false;
 		}
 		else
-		if((Util.bset(msg.targetCode(),CMMsg.MASK_DELICATE)
+		if(((Util.bset(msg.targetCode(),CMMsg.MASK_DELICATE)
 		   ||Util.bset(msg.targetCode(),CMMsg.MASK_HANDS)))
+		&&(!Util.bset(msg.sourceCode(),CMMsg.MASK_GENERAL))
+		&&(affected instanceof MOB))
 		{
 			if((msg.target() instanceof Item)
 			&&(Sense.isMetal(msg.target()))
-			&&(affected instanceof MOB)
 			&&(((MOB)affected).isMine(msg.target())))
 			{
 				msg.source().tell("The magnetic field around "+msg.target().name()+" prevents you from doing that.");
@@ -62,7 +64,6 @@ public class Chant_MagneticField extends Chant
 			}
 			if((msg.tool() instanceof Item)
 			&&(Sense.isMetal(msg.tool()))
-			&&(affected instanceof MOB)
 			&&(((MOB)affected).isMine(msg.tool())))
 			{
 				msg.source().tell("The magnetic field around "+msg.tool().name()+" prevents you from doing that.");
