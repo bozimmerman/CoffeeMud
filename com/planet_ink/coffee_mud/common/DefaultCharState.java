@@ -223,7 +223,7 @@ public class DefaultCharState implements Cloneable, CharState
 				if((mob.movesSinceLastTick()>4)
 				&&(mob.riding()==null)
 				&&(!Sense.isInFlight(mob)))
-					move=move+(mob.movesSinceLastTick()-4);
+					move=move-(mob.movesSinceLastTick()-4);
 				if(mob.envStats().weight()>mob.maxCarry())
 					move+=(int)Math.round(Util.mul(move,10.0*Util.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(move,maxState);

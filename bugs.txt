@@ -1,7 +1,3 @@
-I have the tattooAdder on a mob, on death it's supposed to add the tattoo to the player.
-go 100 e. You'll zip  right along and arrive at your destination, but you'll have 400 movement  points when you get there! Further tried it with low mana points and  movement points, and only the movement was refreshed.
-way to take quest points from players
-
 Finish Scripting doc
 Install ship battery
 n of 11656 door is not there in margate, 11752 should have been no_mob

@@ -2842,9 +2842,7 @@ public class Scriptable extends StdBehavior
 			int tries=0;
 			while((++tries)<1000)
 			{
-				if((randMOB!=null)
-				&&(randMOB!=monster)
-				&&(room.numPCInhabitants()==0))
+				if((randMOB!=null)&&(randMOB!=monster))
 				   break;
 				randMOB=room.fetchInhabitant(Dice.roll(1,room.numInhabitants(),-1));
 			}

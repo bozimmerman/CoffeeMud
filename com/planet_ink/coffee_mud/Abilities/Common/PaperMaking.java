@@ -192,7 +192,8 @@ public class PaperMaking extends CraftingSkill
 				}
 			}
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			if((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+			if(((data[0][FOUND_CODE]&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
+			||(data[0][FOUND_CODE]==EnvResource.RESOURCE_RICE))
 				building.setMaterial(EnvResource.RESOURCE_PAPER);
 			building.baseEnvStats().setLevel(Util.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.recoverEnvStats();

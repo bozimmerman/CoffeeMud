@@ -59,6 +59,27 @@ public class Take extends BaseItemParser
 			boolean allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");
 			if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 			if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
+			
+			if((thingToGive.equalsIgnoreCase("qp"))
+			||(thingToGive.toUpperCase().endsWith(" QP"))
+			||(thingToGive.toUpperCase().endsWith(".QP")))
+			{
+				int numToTake=1;
+				if(allFlag) numToTake=victim.getQuestPoint();
+				if(numToTake>maxToGive) numToTake=maxToGive;
+				if((victim.getQuestPoint()<=0)||(victim.getQuestPoint()<numToTake))
+				{
+					if(victim.getQuestPoint()<=0)
+						mob.tell(victim.name()+" has no quest points!");
+					else
+						mob.tell(victim.name()+" has only "+victim.getQuestPoint()+" quest points!");
+					return false;
+				}
+				mob.tell("You silently take "+numToTake+" quest points from "+victim.name()+".");
+				victim.setQuestPoint(victim.getQuestPoint()-numToTake);
+				return false;
+			}
+			
 			do
 			{
 				Environmental giveThis=possibleGold(victim,thingToGive);

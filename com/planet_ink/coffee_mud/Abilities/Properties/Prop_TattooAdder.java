@@ -105,7 +105,9 @@ public class Prop_TattooAdder extends Property
 			if((msg.tool()==affected)&&(msg.source()!=affected))
 				applyTattooCodes(msg.source(),false,true);
 			else
-			if((msg.source()==this)&&(msg.tool() instanceof MOB)&&(msg.tool()!=affected))
+			if((msg.source()==affected)
+			&&(msg.tool() instanceof MOB)
+			&&(msg.tool()!=affected))
 				applyTattooCodes((MOB)msg.tool(),true,false);
 		}
 		else
