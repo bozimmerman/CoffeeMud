@@ -51,8 +51,7 @@ public class Spell_EnchantWeapon extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		mob.setExperience(mob.getExperience()-50);
-
+		mob.charStats().getMyClass().loseExperience(mob,50);
 		mob.curState().setMana(0);
 
 		boolean success=profficiencyCheck(0,auto);

@@ -1112,6 +1112,11 @@ public class StdMOB implements MOB
 				}
 				break;
 			case Affect.TYP_FOLLOW:
+				if(isMonster())
+				{
+					mob.tell("You cannot follow '"+name()+"'.");
+					return false;
+				}
 				if(numFollowers()>=((int)Math.round(Util.div(charStats().getStat(CharStats.CHARISMA),4.0))+1))
 				{
 					mob.tell(name()+" can't accept any more followers.");

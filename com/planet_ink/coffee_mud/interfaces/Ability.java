@@ -22,7 +22,9 @@ public interface Ability  extends Environmental
 	public static final int DOMAIN_ALTERATION=5<<5;
 	public static final int DOMAIN_TRANSMUTATION=6<<5;	
 	public static final int DOMAIN_ENCHANTMENT=7<<5;	
-	public static final int DOMAIN_CONJURATION=8<<5;	
+	public static final int DOMAIN_CONJURATION=8<<5;
+	
+	public static final int ALL_DOMAINS=(255<<5);
 	// the classification incorporates the above
 	public int classificationCode();
 	

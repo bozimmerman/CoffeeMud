@@ -54,6 +54,9 @@ public interface Area extends Environmental
 	public int getSeasonCode();
 	public void setNextWeatherType(int weatherCode);
 	public void setCurrentWeatherType(int weatherCode);
+
+	public int adjustWaterConsumption(int base, MOB mob, Room room);
+	public int adjustMovement(int base, MOB mob, Room room);
 	
 	public void setClimateType(int newClimateType);
 	public String getWeatherDescription();

@@ -806,6 +806,51 @@ public class StdArea implements Area
 		}
 		return null;
 	}
+	
+	public int adjustWaterConsumption(int base, MOB mob, Room room)
+	{ 
+		if((room.domainType()&Room.INDOORS)>0)
+			return base;
+		else
+		switch(currentWeather)
+		{
+		case Area.WEATHER_DROUGHT:
+			return base*4;
+		case Area.WEATHER_DUSTSTORM:
+			return base*3;
+		case Area.WEATHER_HEAT_WAVE:
+			return base*2;
+		case Area.WEATHER_RAIN:
+		case Area.WEATHER_THUNDERSTORM:
+			return (int)Math.round(Math.floor(Util.div(base,2)));
+		case Area.WEATHER_BLIZZARD:
+		case Area.WEATHER_CLEAR:
+		case Area.WEATHER_CLOUDY:
+		case Area.WEATHER_HAIL:
+		case Area.WEATHER_WINDY:
+		case Area.WEATHER_WINTER_COLD:
+			break;
+		}
+		return base;
+	}
+	public int adjustMovement(int base, MOB mob, Room room)
+	{ 
+		if((room.domainType()&Room.INDOORS)>0)
+			return base;
+		else
+		switch(currentWeather)
+		{
+		case Area.WEATHER_THUNDERSTORM:
+			return base*2;
+		case Area.WEATHER_HAIL:
+			return base*2;
+		case Area.WEATHER_DUSTSTORM:
+			return base*3;
+		case Area.WEATHER_BLIZZARD:
+			return base*4;
+		}
+		return base;
+	}
 
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/

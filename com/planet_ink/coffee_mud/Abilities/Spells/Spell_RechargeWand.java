@@ -53,8 +53,7 @@ public class Spell_RechargeWand extends Spell
 			return false;
 
 		mob.curState().setMana(0);
-		mob.setExperience(mob.getExperience()-50);
-
+		mob.charStats().getMyClass().loseExperience(mob,50);
 
 		boolean success=profficiencyCheck(0,auto);
 

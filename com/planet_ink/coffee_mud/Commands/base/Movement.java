@@ -123,7 +123,7 @@ public class Movement
 		if(mob.riding()==null)
 		{
 			mob.curState().expendEnergy(mob,mob.maxState(),true);
-			if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(),mob.maxState())))
+			if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(mob),mob.maxState())))
 			{
 				mob.tell("You are too tired.");
 				return false;
@@ -265,8 +265,8 @@ public class Movement
 		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(move(mob,directionCode,true))))
 		{
 			mob.makePeace();
-			mob.setExperience(mob.getExperience()-lostExperience);
 			mob.tell("You lose "+lostExperience+" experience points for withdrawing.");
+			mob.charStats().getMyClass().loseExperience(mob,lostExperience);
 		}
 	}
 

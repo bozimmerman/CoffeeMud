@@ -791,12 +791,47 @@ public class StdRoom
 		return found;
 	}
 
-	public int pointsPerMove()
+	public int pointsPerMove(MOB mob)
 	{
-		if((domainType&Room.INDOORS)>0)
-			return 1;
-		else
-			return 3;
+		switch(domainType())
+		{
+		case Room.DOMAIN_OUTDOORS_AIR:
+		case Room.DOMAIN_OUTDOORS_CITY:
+			return getArea().adjustMovement(1,mob,this);
+		case Room.DOMAIN_OUTDOORS_PLAINS:
+			return getArea().adjustMovement(2,mob,this);
+		case Room.DOMAIN_OUTDOORS_ROCKS:
+			return getArea().adjustMovement(3,mob,this);
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return getArea().adjustMovement(3,mob,this);
+		case Room.DOMAIN_OUTDOORS_WOODS:
+			return getArea().adjustMovement(3,mob,this);
+		case Room.DOMAIN_INDOORS_CAVE:
+			return getArea().adjustMovement(2,mob,this);
+		case Room.DOMAIN_INDOORS_MAGIC:
+		case Room.DOMAIN_INDOORS_STONE:
+		case Room.DOMAIN_INDOORS_WOOD:
+			return getArea().adjustMovement(1,mob,this);
+		}
+		return getArea().adjustMovement(2,mob,this);
+	}
+	public int thirstPerRound(MOB mob)
+	{
+		switch(domainType())
+		{
+		case Room.DOMAIN_OUTDOORS_UNDERWATER:
+		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+			return getArea().adjustWaterConsumption(0,mob,this);
+		}
+		switch(domainConditions())
+		{
+		case Room.CONDITION_HOT:
+			return getArea().adjustWaterConsumption(2,mob,this);
+		case Room.CONDITION_WET:
+			return getArea().adjustWaterConsumption(0,mob,this);
+		}
+		return getArea().adjustWaterConsumption(1,mob,this);
 	}
 	public int minRange(){return Integer.MIN_VALUE;}
 	public int maxRange()

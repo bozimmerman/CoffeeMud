@@ -13,8 +13,8 @@ public class Spell_ResistParalyzation extends Spell
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
-		name="Resist Paralyzation";
-		displayText="(Resist Paralyzation)";
+		name="Resist Paralysis";
+		displayText="(Resist Paralysis)";
 		miscText="";
 
 		canBeUninvoked=true;

@@ -93,7 +93,7 @@ public class Spell_Wish extends Spell
 
 		mob.curState().setMana(0);
 		int baseLoss=25;
-		mob.setExperience(mob.getExperience()-baseLoss);
+		mob.charStats().getMyClass().loseExperience(mob,25);
 		FullMsg msg=new FullMsg(mob,null,this,affectType,"<S-NAME> wish(es) for '"+myWish+"'!!");
 		boolean success=profficiencyCheck(0,auto);
 		if(!success)
@@ -192,7 +192,7 @@ public class Spell_Wish extends Spell
 				if(experienceRequired<=0) 
 					experienceRequired=0;
 				mob.tell("Your wish has drained you of "+(baseLoss+experienceRequired)+" experience points.");
-				mob.setExperience(mob.getExperience()-experienceRequired);
+				mob.charStats().getMyClass().loseExperience(mob,experienceRequired);
 				return true;
 			}
 			

@@ -321,8 +321,8 @@ public class TheFight
 		if(!target.isMonster())
 		{
 			int expLost=100;
-			target.setExperience(target.getExperience()-expLost);
 			target.tell("You lose 100 experience points.");
+			target.charStats().getMyClass().loseExperience(target,expLost);
 		}
 		DeadBody Body=(DeadBody)CMClass.getItem("Corpse");
 		Body.baseEnvStats().setLevel(target.baseEnvStats().level());

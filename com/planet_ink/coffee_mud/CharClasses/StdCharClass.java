@@ -157,19 +157,23 @@ public class StdCharClass implements CharClass
 		mob.recoverMaxState();
 	}
 
+	protected int neededToBeLevel(int level)
+	{
+		int neededLevel=1000;
+		if(level==0)
+			neededLevel=0;
+		else
+		for(int i=1;i<level;i++)
+			neededLevel+=1000+(125*i);
+		return neededLevel;
+	}
+	
 	protected StringBuffer levelAdjuster(MOB mob, int adjuster)
 	{
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
 
-		int neededNext=1000;
-		int neededLower=1000;
-		for(int i=1;i<mob.baseEnvStats().level();i++)
-			neededNext+=1000+(125*i);
-		if(mob.baseEnvStats().level()==1)
-			neededLower=0;
-		else
-		for(int i=1;i<(mob.baseEnvStats().level()-1);i++)
-			neededLower+=1000+(125*i);
+		int neededNext=neededToBeLevel(mob.baseEnvStats().level());
+		int neededLower=neededToBeLevel(mob.baseEnvStats().level()-1);
 		mob.setExpNextLevel(neededNext);
 		if(mob.getExperience()>mob.getExpNextLevel())
 			mob.setExperience(neededLower);
@@ -282,6 +286,17 @@ public class StdCharClass implements CharClass
 		mob.resetToMaxState();
 	}
 
+	public void loseExperience(MOB mob, int amount)
+	{
+		int neededLower=neededToBeLevel(mob.baseEnvStats().level()-1);
+		int neededLowest=neededToBeLevel(mob.baseEnvStats().level()-2);
+		mob.setExperience(mob.getExperience()-amount);
+		if((mob.getExperience()<neededLowest)&&(mob.baseEnvStats().level()>1))
+		{
+			mob.tell("^XYou have ****LOST A LEVEL****^N\n\r\n\r");
+			unLevel(mob);
+		}
+	}
 	public void level(MOB mob)
 	{
 		StringBuffer theNews=new StringBuffer("^XYou have L E V E L E D ! ! ! ! ! ^N\n\r\n\r");

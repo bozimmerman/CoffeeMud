@@ -93,7 +93,7 @@ public class Spell_Scribe extends Spell
 			return false;
 
 		mob.curState().setMana(0);
-		mob.setExperience(mob.getExperience()-100);
+		mob.charStats().getMyClass().loseExperience(mob,100);
 
 		boolean success=profficiencyCheck(0,auto);
 

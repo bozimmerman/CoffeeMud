@@ -154,9 +154,9 @@ public class DefaultCharState implements Cloneable, CharState
 		if((!mob.isMonster())&&(mob.location()!=null))
 		{
 			if(moving)
-				adjMovement(-mob.location().pointsPerMove(),maxState);
+				adjMovement(-mob.location().thirstPerRound(mob),maxState);
 
-			boolean annoy=adjThirst(-1,maxState);
+			boolean annoy=adjThirst(-mob.location().thirstPerRound(mob),maxState);
 			annoy=adjHunger(-1,maxState)||annoy;
 			if(annoy)
 			{

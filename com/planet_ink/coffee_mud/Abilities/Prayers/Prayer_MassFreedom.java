@@ -36,14 +36,19 @@ public class Prayer_MassFreedom extends Prayer
 			Ability A=fromMe.fetchAffect(a);
 			if(A!=null)
 			{
-				newMOB.recoverEnvStats();
-				A.affectEnvStats(newMOB,newMOB.envStats());
-				if((!Sense.aliveAwakeMobile(newMOB,true))
-				   ||(!A.okAffect(msg)))
-				if((A.invoker()==null)
-				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
-						offenders.addElement(A);
+				try
+				{
+					newMOB.recoverEnvStats();
+					A.affectEnvStats(newMOB,newMOB.envStats());
+					if((!Sense.aliveAwakeMobile(newMOB,true))
+					   ||(!A.okAffect(msg)))
+					if((A.invoker()==null)
+					   ||((A.invoker()!=null)
+						  &&(A.invoker().envStats().level()<=caster.envStats().level()+1)))
+							offenders.addElement(A);
+				}
+				catch(Exception e)
+				{}
 			}
 		}
 		return offenders;
