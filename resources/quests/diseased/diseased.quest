@@ -1,9 +1,9 @@
 #set the quest name
 set name diseased
 
-# this one runs every 60-120 mins
+# this one runs every 120-180 mins
 set wait 900
-set interval 900
+set interval 1800
 
 set mobtype Human
 # load up any mob from the above area.  Will set a room!

@@ -1,9 +1,9 @@
 #set the quest name
 set name smurfocide
 
-# this one runs every 30-60 mins
-set wait 450
-set interval 450
+# this one runs every 60-120 mins
+set wait 900
+set interval 900
 
 set area Smurfville
 # inform the quest that it occurs in Smurfville
