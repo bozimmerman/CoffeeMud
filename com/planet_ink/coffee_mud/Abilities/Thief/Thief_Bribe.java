@@ -69,6 +69,7 @@ public class Thief_Bribe extends ThiefSkill
 		{
 			FullMsg msg=new FullMsg(mob,target,this,Affect.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+Util.combine(commands,0)+"' for "+amountRequired+" coins.^?");
 			mob.setMoney(mob.getMoney()-amountRequired);
+			mob.recoverEnvStats();
 			if(mob.location().okAffect(msg))
 			{
 				mob.location().send(mob,msg);
@@ -82,6 +83,7 @@ public class Thief_Bribe extends ThiefSkill
 				}
 			}
 			target.setMoney(mob.getMoney()+amountRequired);
+			target.recoverEnvStats();
 		}
 		return success;
 	}

@@ -95,7 +95,8 @@ public class Spell_GustOfWind extends Spell
 						if((victim!=null)&&(target.rangeToTarget()>=0))
 							target.setAtRange(target.rangeToTarget()+1);
 						mob.location().send(mob,msg);
-						if(Dice.rollPercentage()>((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level()))
+						if((!Sense.isFlying(target))
+						&&(Dice.rollPercentage()>((target.charStats().getStat(CharStats.DEXTERITY)*2)+target.envStats().level())))
 						{
 							mob.location().show(target,null,Affect.MSG_OK_ACTION,"<S-NAME> fall(s) down!");
 							doneTicking=false;

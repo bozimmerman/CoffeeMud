@@ -38,6 +38,8 @@ public class Thief_SilentGold extends ThiefSkill
 				int gold=((MOB)affect.target()).getMoney()/10;
 				mob.setMoney(mob.getMoney()+gold);
 				target.setMoney(target.getMoney()-gold);
+				mob.recoverEnvStats();
+				target.recoverEnvStats();
 			}
 		}
 	}

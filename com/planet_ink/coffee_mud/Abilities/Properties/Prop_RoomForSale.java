@@ -65,6 +65,18 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return oldTitle;
 	}
 	
+	public void affect(Affect msg)
+	{
+		super.affect(msg);
+		if((msg.sourceMinor()==Affect.MSG_SHUTDOWN)
+		&&(affected!=null)
+		&&(affected instanceof Room))
+		{
+			Room R=(Room)affected;
+			updateLot(R,this);
+		}
+	}
+	
 	public void colorForSale(Room R, boolean reset)
 	{
 		if(R.description().indexOf(theStr)<0)

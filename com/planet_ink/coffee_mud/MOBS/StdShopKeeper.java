@@ -486,6 +486,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if((affect.tool()!=null)&&(doISellThis(affect.tool())))
 				{
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
+					mob.recoverEnvStats();
 					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
 					if(affect.tool() instanceof LandTitle)
 						storeInventory.addElement(affect.tool());
@@ -532,6 +533,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					Environmental product=removeStock(affect.tool().name(),mob);
 					mob.setMoney(mob.getMoney()-yourValue(mob,product,true));
+					mob.recoverEnvStats();
 					if(product instanceof Item)
 					{
 						mob.location().addItemRefuse((Item)product,Item.REFUSE_PLAYER_DROP);

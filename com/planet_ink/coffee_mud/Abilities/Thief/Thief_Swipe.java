@@ -82,7 +82,9 @@ public class Thief_Swipe extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				mob.setMoney(mob.getMoney()+goldTaken);
+				mob.recoverEnvStats();
 				target.setMoney(target.getMoney()-goldTaken);
+				target.recoverEnvStats();
 			}
 		}
 		return success;

@@ -1008,7 +1008,7 @@ public class TelnetSession extends Thread implements Session
 			case 254:
 			case 255:
 			{
-				// don't let them enter telnet codes...
+				// don't let them enter telnet codes, except IAC, which is handled...
 				c = -1;
 				break;
 			}
@@ -1024,6 +1024,41 @@ public class TelnetSession extends Thread implements Session
 		return rv;
 	}
 
+	public void handleIAC()
+		throws IOException, InterruptedIOException
+	{
+		if((in==null)||(out==null))
+			return;
+		int c=in.read();
+		int opt=0;
+		switch(c)
+		{
+		case 251:
+		case 252:
+		case 253:
+		case 254:
+			opt=in.read();
+			break;
+		default:
+			return;
+		}
+		char[] wont={255,252,(char)opt};
+		char[] dont={255,254,(char)opt};
+		switch(c)
+		{
+		case 251:
+		case 252:
+			out.write(dont);
+			break;
+		case 253:
+		case 254:
+			out.write(wont);
+			break;
+		default:
+			return;
+		}
+	}
+	
 	public String blockingIn()
 		throws IOException
 	{
@@ -1036,6 +1071,8 @@ public class TelnetSession extends Thread implements Session
 				int c=in.read();
 				if(c<0)
 					throw new IOException("reset by peer");
+				else
+				if(c==255) handleIAC();
 				else
 				if (appendInput(c))
 					break;
@@ -1062,6 +1099,8 @@ public class TelnetSession extends Thread implements Session
 				int c=in.read();
 				if(c<0)
 					throw new IOException("Connection reset by peer.");
+				else
+				if(c==255) handleIAC();
 				else
 				if (appendInput(c))
 					break;

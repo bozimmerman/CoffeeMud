@@ -64,6 +64,7 @@ public class ItemIdentifier extends StdBehavior
 		{
 			int cost=cost((Item)affect.tool());
 			source.setMoney(source.getMoney()-cost);
+			source.recoverEnvStats();
 			FullMsg newMsg=new FullMsg(affect.source(),observer,null,Affect.MSG_OK_ACTION,"<S-NAME> give(s) "+cost+" gold coins to <T-NAMESELF>.");
 			affect.addTrailerMsg(newMsg);
 			newMsg=new FullMsg(observer,affect.tool(),null,Affect.MSG_EXAMINESOMETHING,"<S-NAME> examine(s) "+affect.tool().name()+" very closely.");

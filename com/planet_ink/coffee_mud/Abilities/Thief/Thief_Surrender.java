@@ -59,11 +59,13 @@ public class Thief_Surrender extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				mob.setMoney(mob.getMoney()-gold);
+				mob.recoverEnvStats();
 				mob.makePeace();
 				for(int v=0;v<theList.size();v++)
 				{
 					MOB vic=(MOB)theList.elementAt(v);
 					vic.setMoney(vic.getMoney()+gold);
+					vic.recoverEnvStats();
 					vic.makePeace();
 				}
 			}

@@ -52,9 +52,9 @@ public class Spell_Shelter extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto))
 			return false;
 
-		if(mob.fetchAffect(this.ID())!=null)
+		if(mob.fetchAffect(ID())!=null)
 		{
-			mob.tell("You are already in the shelter.");
+			mob.fetchAffect(ID()).unInvoke();
 			return false;
 		}
 

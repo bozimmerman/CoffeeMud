@@ -83,7 +83,7 @@ public class Spell_Cloudkill extends Spell
 					int damage = target.curState().getHitPoints();
 
 					int midLevel=(int)Math.round(Util.div(adjustedLevel(mob),2.0));
-					while(midLevel<target.envStats().level())
+					if(midLevel<target.envStats().level())
 						damage-=(int)Math.round(Util.div(damage,2.0));
 
 					if((!msg.wasModified())&&(!msg2.wasModified()))
@@ -92,7 +92,7 @@ public class Spell_Cloudkill extends Spell
 					if(damage<0) damage=0;
 					if(target.location()==mob.location())
 					{
-						this.maliciousAffect(mob,target,2,-1);
+						maliciousAffect(mob,target,2,-1);
 						ExternalPlay.postDamage(mob,target,this,damage,Affect.ACT_GENERAL|Affect.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
 					}
 				}

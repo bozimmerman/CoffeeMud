@@ -480,7 +480,7 @@ public class ItemData extends StdWebMacro
 				case 57:
 					Vector oldContents=new Vector();
 					if(oldI instanceof Container)
-						oldContents=((Container)I).getContents();
+						oldContents=((Container)oldI).getContents();
 					if(M==null)
 					{
 						if((firstTime)&&(I.container()!=null))
