@@ -66,6 +66,8 @@ public class StdArea implements Area
 	{
 		baseEnvStats=newBaseEnvStats.cloneStats();
 	}
+	public void setNextWeatherType(int weatherCode){nextWeather=weatherCode;}
+	public void setCurrentWeatherType(int weatherCode){currentWeather=weatherCode;}
 
 	public int weatherType(Room room)
 	{
@@ -348,7 +350,7 @@ public class StdArea implements Area
 	
 	public void weatherTick()
 	{
-		if((--weatherTicker)<=0)
+		if(true)//if((--weatherTicker)<=0)
 		{
 				
 			weatherTicker=WEATHER_TICK_DOWN;
@@ -373,48 +375,44 @@ public class StdArea implements Area
 			if(Dice.rollPercentage()<changeChance[currentWeather])
 			{
 				int[] chanceToDo=new int[Area.NUM_WEATHER];
-				chanceToDo[Area.WEATHER_CLOUDY]=10;
-				chanceToDo[Area.WEATHER_WINDY]=5;
+				chanceToDo[Area.WEATHER_CLEAR]=25;
+				chanceToDo[Area.WEATHER_WINDY]=10;
 				
-				if((climateType()&Area.CLIMATE_WINDY)>0) chanceToDo[Area.WEATHER_WINDY]+=15;
+				if((climateType()&Area.CLIMATE_WINDY)>0) chanceToDo[Area.WEATHER_WINDY]+=25;
 				if((climateType()&Area.CLIMASK_WET)>0) chanceToDo[Area.WEATHER_CLOUDY]+=25;
-				if((climateType()&Area.CLIMASK_DRY)>0) chanceToDo[Area.WEATHER_CLOUDY]-=5;
-				if((climateType()&Area.CLIMASK_HOT)>0) chanceToDo[Area.WEATHER_HEAT_WAVE]+=15;
-				if((climateType()&Area.CLIMASK_COLD)>0) chanceToDo[Area.WEATHER_WINTER_COLD]+=15;
+				if((climateType()&Area.CLIMASK_DRY)>0) chanceToDo[Area.WEATHER_CLOUDY]-=25;
+				if((climateType()&Area.CLIMASK_HOT)>0) chanceToDo[Area.WEATHER_HEAT_WAVE]+=25;
+				if((climateType()&Area.CLIMASK_COLD)>0) chanceToDo[Area.WEATHER_WINTER_COLD]+=25;
 				switch(getSeasonCode())
 				{
 				case Area.SEASON_FALL:
+					chanceToDo[Area.WEATHER_CLEAR]+=25;
+					chanceToDo[Area.WEATHER_CLOUDY]+=10;
+					chanceToDo[Area.WEATHER_WINTER_COLD]+=10;
+					chanceToDo[Area.WEATHER_HEAT_WAVE]-=10;
+					break;
 				case Area.SEASON_SPRING:
+					chanceToDo[Area.WEATHER_CLEAR]+=25;
+					chanceToDo[Area.WEATHER_CLOUDY]+=15;
+					chanceToDo[Area.WEATHER_WINTER_COLD]-=10;
+					chanceToDo[Area.WEATHER_HEAT_WAVE]+=10;
 					break;
 				case Area.SEASON_WINTER:
-					chanceToDo[Area.WEATHER_CLOUDY]+=5;
-					chanceToDo[Area.WEATHER_HEAT_WAVE]-=10;
-					chanceToDo[Area.WEATHER_WINTER_COLD]+=10;
+					chanceToDo[Area.WEATHER_CLOUDY]+=30;
+					chanceToDo[Area.WEATHER_HEAT_WAVE]-=20;
+					chanceToDo[Area.WEATHER_WINTER_COLD]+=20;
 					break;
 				case Area.SEASON_SUMMER:
-					chanceToDo[Area.WEATHER_CLOUDY]-=5;
-					chanceToDo[Area.WEATHER_HEAT_WAVE]+=10;
-					chanceToDo[Area.WEATHER_WINTER_COLD]-=10;
+					chanceToDo[Area.WEATHER_CLOUDY]+=10;
+					chanceToDo[Area.WEATHER_HEAT_WAVE]+=20;
+					chanceToDo[Area.WEATHER_WINTER_COLD]-=20;
 					break;
 				}
 				
 				String stopWord=getWeatherStop(oldWeather);
-				switch(oldWeather)
+				switch(nextWeather)
 				{
 				case Area.WEATHER_CLEAR:
-					if((climateType()&Area.CLIMASK_HOT)>0)
-					{
-						chanceToDo[Area.WEATHER_HEAT_WAVE]+=5;
-						if((climateType()&Area.CLIMASK_DRY)>0)
-							chanceToDo[Area.WEATHER_HEAT_WAVE]+=5;
-					}
-					else
-					if((climateType()&Area.CLIMASK_COLD)>0)
-					{
-						chanceToDo[Area.WEATHER_WINTER_COLD]+=5;
-						if((climateType()&Area.CLIMASK_DRY)>0)
-							chanceToDo[Area.WEATHER_WINTER_COLD]+=5;
-					}
 					break;
 				case Area.WEATHER_HEAT_WAVE:
 					chanceToDo[Area.WEATHER_HEAT_WAVE]=0;
@@ -558,15 +556,18 @@ public class StdArea implements Area
 				}
 				int newWeather=nextWeather;
 				
+				
 				int goodWeatherTotal=0;
 				for(int g=0;g<Area.NUM_WEATHER;g++)
-					if(chanceToDo[g]>0) goodWeatherTotal+=chanceToDo[g];
-				
-				int newGoodWeatherNum=Dice.roll(1,goodWeatherTotal,0);
+					if(chanceToDo[g]>0)
+						goodWeatherTotal+=chanceToDo[g];
+					}
+				int newGoodWeatherNum=Dice.roll(1,goodWeatherTotal,-1);
 				
 				int tempWeatherTotal=0;
 				for(int g=0;g<Area.NUM_WEATHER;g++)
-					if(chanceToDo[g]>0){
+					if(chanceToDo[g]>0)
+					{
 						tempWeatherTotal+=chanceToDo[g];
 						if(newGoodWeatherNum<tempWeatherTotal)
 						{
@@ -574,7 +575,6 @@ public class StdArea implements Area
 							break;
 						}
 					}
-					
 				currentWeather=newWeather;
 				
 				// 0=say nothing;
@@ -606,11 +606,16 @@ public class StdArea implements Area
 				}
 			}
 			else
-			if(currentWeather==Area.WEATHER_THUNDERSTORM)
-				say="A bolt of lightning streaks across the sky.";
+			{
+Room r2=CMClass.getLocale("InTheAir");
+Log.systemOutWriter.println("SAME  -"+name()+"/"+climateType()+"/"+Util.padRight(weatherDescription(r2),60));
+				if(currentWeather==Area.WEATHER_THUNDERSTORM)
+					say="A bolt of lightning streaks across the sky.";
+			}
 			if(say!=null)
 			{
-				Vector myMap=this.getMyMap();
+Log.systemOutWriter.println("CHANGE-"+name()+"/"+climateType()+"/"+Util.padRight(say,60));
+				Vector myMap=getMyMap();
 				for(int r=0;r<myMap.size();r++)
 				{
 					Room R=(Room)myMap.elementAt(r);
