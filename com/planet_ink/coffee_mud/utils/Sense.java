@@ -355,6 +355,16 @@ public class Sense
 			return isInFlight(((Rider)E).riding());
 		return false;
 	}
+	
+	public static boolean isAnimalIntelligence(MOB E)
+	{
+		return (E.charStats().getStat(CharStats.INTELLIGENCE)<2);
+	}
+	public static boolean isVegetable(MOB E)
+	{
+		return (E.charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation"));
+	}
+	
 	public static boolean isMobile(Environmental E)
 	{
 		if(E==null) return false;

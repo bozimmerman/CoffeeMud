@@ -9,7 +9,7 @@ public class Chant_FungalBloom extends Chant
 {
 	public String ID() { return "Chant_FungalBloom"; }
 	public String name(){ return "Fungal Bloom";}
-	protected int canAffectCode(){return 0;}
+	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_FungalBloom();}
 
@@ -42,16 +42,15 @@ public class Chant_FungalBloom extends Chant
 			{
 				mob.location().send(mob,msg);
 				target.setDescription("It seems to be getting puffier and puffier!");
+				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" seems to be puffing up!");
 				Ability A=CMClass.getAbility("Bomb_Poison");
 				A.setMiscText("Poison_Bloodboil");
 				A.setInvoker(mob);
 				A.setBorrowed(target,true);
-				target.addAffect(A);
+				target.addNonUninvokableAffect(A);
 				((Trap)A).setReset(3);
 				target.setMiscText(target.text());
-				mob.location().addItemRefuse(target,Item.REFUSE_RESOURCE);
-				ExternalPlay.startTickDown(A,Host.TRAP_RESET,1);
-				mob.location().showHappens(Affect.MSG_OK_VISUAL,target.name()+" seems to be puffing up!");
+				((Trap)A).activateBomb();
 			}
 		}
 		else

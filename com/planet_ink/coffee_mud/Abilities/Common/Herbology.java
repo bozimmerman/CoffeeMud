@@ -45,7 +45,7 @@ public class Herbology extends CommonSkill
 					commonTell(mob,"You lose your concentration on "+found.name()+".");
 				else
 				{
-					String herb=herbList[Dice.roll(1,herbList.length,-1)];
+					String herb=herbList[Dice.roll(1,herbList.length,-1)].toLowerCase();
 					commonTell(mob,found.name()+" appears to be "+herb+".");
 					String name=found.name();
 					name=name.substring(0,name.length()-5).trim();
@@ -97,7 +97,7 @@ public class Herbology extends CommonSkill
 		if(!profficiencyCheck(0,auto)) messedUp=true;
 		int duration=10-(mob.envStats().level()/3);
 		if(duration<2) duration=2;
-		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name());
+		FullMsg msg=new FullMsg(mob,null,Affect.MSG_NOISYMOVEMENT,"<S-NAME> stud(ys) "+target.name()+".");
 		if(mob.location().okAffect(mob,msg))
 		{
 			mob.location().send(mob,msg);

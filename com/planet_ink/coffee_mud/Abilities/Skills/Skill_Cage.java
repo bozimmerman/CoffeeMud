@@ -52,7 +52,7 @@ public class Skill_Cage extends StdAbility
 		
 		boolean ok=false;
 		if((target.isMonster())
-		&&(target.charStats().getStat(CharStats.INTELLIGENCE)<2))
+		&&(Sense.isAnimalIntelligence(target)))
 		{
 			if(Sense.isSleeping(target)
 			||(!Sense.canMove(target))

@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_SummonTree extends Chant_SummonPlants
 {
 	public String ID() { return "Chant_SummonTree"; }
-	public String name(){ return "Summon Trees";}
+	public String name(){ return "Summon Tree";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonTree();}
@@ -84,7 +84,8 @@ public class Chant_SummonTree extends Chant_SummonPlants
 				&&((((Integer)V.elementAt(v)).intValue())!=EnvResource.RESOURCE_WOOD))
 					V2.addElement(V.elementAt(v));
 			}
-			material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
+			if(V2.size()>0)
+				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
 		
 		return super.invoke(mob,commands,givenTarget,auto);

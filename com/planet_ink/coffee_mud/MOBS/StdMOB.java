@@ -970,7 +970,7 @@ public class StdMOB implements MOB
 							tell("You can't make sounds!");
 							return false;
 						}
-						if(charStats().getStat(CharStats.INTELLIGENCE)<2)
+						if(Sense.isAnimalIntelligence(this))
 						{
 							tell("You aren't smart enough to speak.");
 							return false;

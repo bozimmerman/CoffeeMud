@@ -47,7 +47,7 @@ public class Chant_Thorns extends Chant
 			   &&(affect.source().rangeToTarget()==0)
 			   &&(affect.targetMessage().length()>0))
 			{
-				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*3)))
+				if((Dice.rollPercentage()>(source.charStats().getStat(CharStats.DEXTERITY)*2)))
 				{
 					FullMsg msg=new FullMsg(source,mob,this,affectType(false),null);
 					if(source.location().okAffect(source,msg))
@@ -57,7 +57,7 @@ public class Chant_Thorns extends Chant
 						if(!msg.wasModified())
 						{
 							int damage = Dice.roll(1,(int)Math.round(new Integer(invoker.envStats().level()).doubleValue()/3.0),1);
-							ExternalPlay.postDamage(mob,source,this,damage,Affect.MASK_GENERAL|Affect.TYP_FIRE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
+							ExternalPlay.postDamage(mob,source,this,damage,Affect.MASK_GENERAL|Affect.TYP_JUSTICE,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 						}
 					}
 				}

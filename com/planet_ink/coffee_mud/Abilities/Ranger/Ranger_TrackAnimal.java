@@ -93,7 +93,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB mob=room.fetchInhabitant(i);
-			if(mob.charStats().getStat(CharStats.INTELLIGENCE)<2)
+			if(Sense.isAnimalIntelligence(mob))
 				return mob;
 		}
 		return null;

@@ -86,6 +86,18 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return super.okAffect(myHost,affect);
 	}
+	
+	public void activateBomb()
+	{
+		if(isABomb())
+		{
+			tickDown=getReset();
+			sprung=false;
+			disabled=false;
+			ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+		}
+	}
+	
 	public void affect(Environmental myHost, Affect affect)
 	{
 		if(!sprung)
@@ -108,10 +120,7 @@ public class StdTrap extends StdAbility implements Trap
 					&&(affect.source().isMine(affected)))
 					{
 						affect.source().tell(affect.source(),affected,null,"You activate <T-NAME>.");
-						tickDown=getReset();
-						sprung=false;
-						disabled=false;
-						ExternalPlay.startTickDown(this,Host.TRAP_RESET,1);
+						activateBomb();
 					}
 				}
 			}

@@ -16,7 +16,7 @@ public class Chant_AnimalFriendship extends Chant
 	{
 		if(((affect.targetCode()&Affect.MASK_MALICIOUS)>0)
 		&&((affect.amITarget(affected)))
-		&&(affect.source().charStats().getStat(CharStats.INTELLIGENCE)<2))
+		&&(Sense.isAnimalIntelligence(affect.source())))
 		{
 			MOB target=(MOB)affect.target();
 			if((!target.isInCombat())&&(affect.source().getVictim()!=target))

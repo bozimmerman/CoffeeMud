@@ -39,9 +39,9 @@ public class Ranger_AnimalFrenzy extends StdAbility
 			{
 				MOB mob=(MOB)e.nextElement();
 				if((!rangersGroup.contains(mob))
-				   &&(mob!=invoker)
-				   &&(mob.location()==invoker.location())
-				   &&(mob.charStats().getStat(CharStats.INTELLIGENCE)<2))
+				&&(mob!=invoker)
+				&&(mob.location()==invoker.location())
+				&&(Sense.isAnimalIntelligence(mob)))
 				{
 					rangersGroup.addElement(mob);
 					mob.addNonUninvokableAffect((Ability)this.copyOf());

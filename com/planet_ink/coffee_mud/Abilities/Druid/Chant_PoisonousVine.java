@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class Chant_PoisonousVine extends Chant
+public class Chant_PoisonousVine extends Chant_SummonVine
 {
 	public String ID() { return "Chant_PoisonousVine"; }
 	public String name(){ return "Poisonous Vine";}

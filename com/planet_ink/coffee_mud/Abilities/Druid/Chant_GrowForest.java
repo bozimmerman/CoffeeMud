@@ -66,6 +66,7 @@ public class Chant_GrowForest extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().showHappens(Affect.MSG_OK_VISUAL,"A grove of "+shortName.toLowerCase()+" trees sprout up.");
+				mob.location().setResource(material);
 			}
 		}
 		else

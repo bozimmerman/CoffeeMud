@@ -48,7 +48,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		if((PlantsLocation==null)||(littlePlants==null)) return false;
 		if(invoker!=null)
 		{
-			if(lastHp<invoker.curState().getHitPoints())
+			if((lastHp>invoker.curState().getHitPoints())&&(lastHp>0))
 			{
 				int dmg=lastHp-invoker.curState().getHitPoints();
 				if(invoker.location()!=PlantsLocation)
@@ -69,7 +69,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 				int dmg=Dice.roll(1,50,50);
 				hpRemaining-=dmg;
 				if(invoker!=null) invoker.tell("Your oak is being chopped down!");
-				ExternalPlay.postDamage(invoker,invoker,null,dmg/2,Affect.MSG_WEAPONATTACK,Weapon.TYPE_SLASHING,"The chopping on yor oak <DAMAGE> you!");
+				ExternalPlay.postDamage(invoker,invoker,null,dmg/2,Affect.MSG_OK_ACTION,Weapon.TYPE_SLASHING,"The chopping on your oak <DAMAGE> you!");
 				if(hpRemaining<0)
 				{
 					if(invoker!=null)

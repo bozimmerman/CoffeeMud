@@ -88,7 +88,7 @@ public class Gaian extends StdCharClass
 
 			CMAble.addCharAbilityMapping(ID(),15,"PlantLore",false);
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_PoisonousVine",true);
-			CMAble.addCharAbilityMapping(ID(),15,"Chant_Houseplant",true);
+			CMAble.addCharAbilityMapping(ID(),15,"Chant_SummonHouseplant",true);
 
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_GrowItem",true);
 			CMAble.addCharAbilityMapping(ID(),16,"Chant_Mold",true);
@@ -128,6 +128,20 @@ public class Gaian extends StdCharClass
 	}
 
 	
+	protected boolean isValidBeneficiary(MOB killer, 
+									   MOB killed, 
+									   MOB mob,
+									   Hashtable followers)
+	{
+		if((mob!=null)
+		&&(!mob.amDead())
+		&&((!mob.isMonster())||(!Sense.isVegetable(mob)))
+		&&((mob.getVictim()==killed)
+		 ||(followers.get(mob)!=null)
+		 ||(mob==killer)))
+			return true;
+		return false;
+	}
 	public String statQualifications(){return "Constitution 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -208,6 +222,7 @@ public class Gaian extends StdCharClass
 			&&((room.domainType()&Room.INDOORS)==0)
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_CITY))
 				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+			
 			if(classLevel>=5)
 			{
 				if(Sense.isInDark(room))

@@ -8,6 +8,7 @@ public interface Trap extends Ability
 	public final static int TRAP_SPELL=3;
 	
 	public boolean isABomb();
+	public void activateBomb();
 
 	public boolean disabled();
 	public void disable();

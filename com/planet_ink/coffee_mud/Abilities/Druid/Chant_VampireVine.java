@@ -26,7 +26,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 					amount=amount/4;
 					((MOB)affected).curState().adjHitPoints(amount,((MOB)affected).maxState());
 					if(invoker!=null)
-						invoker.curState().adjHitPoints(amount,((MOB)affected).maxState());
+						invoker.curState().adjHitPoints(amount,invoker.maxState());
 				}
 			}
 		}

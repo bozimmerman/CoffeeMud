@@ -151,7 +151,7 @@ public class Ranger extends StdCharClass
 	{
 		if((mob!=null)
 		&&(!mob.amDead())
-		&&((!mob.isMonster())||(mob.charStats().getStat(CharStats.INTELLIGENCE)>1))
+		&&((!mob.isMonster())||(!Sense.isAnimalIntelligence(mob)))
 		&&((mob.getVictim()==killed)
 		 ||(followers.get(mob)!=null)
 		 ||(mob==killer)))

@@ -74,7 +74,7 @@ public class Chant_CharmAnimal extends Chant
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if(target.charStats().getStat(CharStats.INTELLIGENCE)>1)
+		if(!Sense.isAnimalIntelligence(target))
 		{
 			mob.tell(target.name()+" is not an animal!");
 			return false;

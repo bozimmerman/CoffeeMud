@@ -98,7 +98,8 @@ public class Chant_SummonSapling extends Chant
 				if((((Integer)V.elementAt(v)).intValue()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_WOODEN)
 					V2.addElement(V.elementAt(v));
 			}
-			material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
+			if(V2.size()>0)
+				material=((Integer)V2.elementAt(Dice.roll(1,V2.size(),-1))).intValue();
 		}
 		
 		if(!super.invoke(mob,commands,givenTarget,auto))

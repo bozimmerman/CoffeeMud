@@ -124,7 +124,7 @@ public class Chant_AnimalSpy extends Chant
 			newRoom=target.location();
 		else
 		if((target==null)
-		||(target.charStats().getStat(CharStats.INTELLIGENCE)>1)
+		||(!Sense.isAnimalIntelligence(target))
 		||(target.amFollowing()!=mob))
 		{
 			mob.tell("You have no animal follower named '"+mobName+"' here.");

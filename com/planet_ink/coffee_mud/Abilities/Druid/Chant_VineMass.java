@@ -36,7 +36,6 @@ public class Chant_VineMass extends Chant_SummonVine
 			Ability A=CMClass.getAbility("Fighter_Rescue");
 			A.setProfficiency(100);
 			newMOB.addAbility(A);
-			newMOB.setVictim(victim);
 			newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 			newMOB.setLocation(caster.location());
 			newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
@@ -50,13 +49,20 @@ public class Chant_VineMass extends Chant_SummonVine
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
 			newMOB.bringToLife(caster.location(),true);
-			newMOB.location().showOthers(newMOB,null,Affect.MSG_OK_ACTION,"<S-NAME> start(s) attacking "+victim.name()+"!");
 			if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
+			newMOB.setVictim(victim);
 			newMOB.setStartRoom(null);
 			if((i+1)<limit)
 			{
 				beneficialAffect(caster,newMOB,0);
 				ExternalPlay.follow(newMOB,caster,true);
+				if(newMOB.amFollowing()!=caster)
+				{
+					A=newMOB.fetchAffect(ID());
+					if(A!=null) A.unInvoke();
+					return null;
+				}
+				ExternalPlay.postAttack(newMOB,victim,newMOB.fetchWieldedItem());
 			}
 		}
 		return(newMOB);

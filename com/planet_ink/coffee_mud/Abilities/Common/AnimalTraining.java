@@ -155,7 +155,7 @@ public class AnimalTraining extends CommonSkill
 				commonTell(mob,"You don't see anyone called '"+str+"' here.");
 				return false;
 			}
-			if((!M.isMonster())||(M.charStats().getStat(CharStats.INTELLIGENCE)>1))
+			if((!M.isMonster())||(!Sense.isAnimalIntelligence(M)))
 			{
 				commonTell(mob,"You can't train "+M.name()+".");
 				return false;

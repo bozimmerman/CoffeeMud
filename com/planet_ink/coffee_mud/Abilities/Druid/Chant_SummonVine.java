@@ -14,6 +14,7 @@ public class Chant_SummonVine extends Chant
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public Environmental newInstance(){	return new Chant_SummonVine();}
+	private int peaceTicks=0;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -26,9 +27,13 @@ public class Chant_SummonVine extends Chant
 				MOB mob=(MOB)affected;
 				if(((mob.amFollowing()==null)
 				||(mob.amDead())
-				||(!mob.isInCombat())
 				||(mob.location()!=invoker.location())))
 					unInvoke();
+				else
+				if((!mob.isInCombat())&&((++peaceTicks)>5))
+					unInvoke();
+				else
+					peaceTicks=0;
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -107,8 +112,11 @@ public class Chant_SummonVine extends Chant
 			{
 				mob.location().send(mob,msg);
 				MOB target = determineMonster(mob, material);
-				beneficialAffect(mob,target,0);
-				ExternalPlay.follow(target,mob,true);
+				if(target!=null)
+				{
+					beneficialAffect(mob,target,0);
+					ExternalPlay.follow(target,mob,true);
+				}
 			}
 		}
 		else

@@ -82,7 +82,7 @@ public class Domesticating extends CommonSkill
 			commonTell(mob,"You can't domesticate "+M.name()+".");
 			return false;
 		}
-		if(M.charStats().getStat(CharStats.INTELLIGENCE)>1)
+		if(!Sense.isAnimalIntelligence(M))
 		{
 			commonTell(mob,"You don't know how to domesticate "+M.name()+".");
 			return false;
