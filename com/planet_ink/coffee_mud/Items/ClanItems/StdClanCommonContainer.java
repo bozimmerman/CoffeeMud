@@ -49,8 +49,17 @@ public class StdClanCommonContainer extends StdClanContainer
 					if(M.inventorySize()>1)
 					{
 						Item I=null;
-						while((M.inventorySize()>1)&&((I==null)||(I==this)))
+						int tries=0;
+						while((I==null)&&(tries<10))
+						{
 							I=M.fetchInventory(Dice.roll(1,M.inventorySize(),-1));
+							tries++;
+							if((I==null)
+							||(I==this) 
+							||(!I.amWearingAt(Item.INVENTORY)))
+								continue;
+							break;
+						}
 						Vector V=new Vector();
 						if(I!=null)	V.addElement(I.name());
 						A.invoke(M,V,null,false);

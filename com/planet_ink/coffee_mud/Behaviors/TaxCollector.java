@@ -114,7 +114,7 @@ public class TaxCollector extends StdBehavior
 					if((demandDex>=0)
 					&&((System.currentTimeMillis()-((Long)demanded.elementAt(demandDex,2)).longValue())>waitTime))
 					{
-						ExternalPlay.quickSay(mob,M,"Refusing to pay then? Want to see if you CAN fight city hall? CHARGE!!!!",false,false);
+						ExternalPlay.quickSay(mob,M,"You know what they say about death and taxes, so if you won't pay ... DIE!!!!",false,false);
 						ExternalPlay.postAttack(mob,M,mob.fetchWieldedItem());
 						demanded.removeElementAt(demandDex);
 					}
