@@ -53,7 +53,7 @@ public class Give extends BaseItemParser
 
 		int maxToGive=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0)
+		&&(EnglishParser.numPossibleGold(mob,Util.combine(commands,0))==0)
 		&&(Util.s_int((String)commands.firstElement())>0))
 		{
 			maxToGive=Util.s_int((String)commands.firstElement());
@@ -72,7 +72,7 @@ public class Give extends BaseItemParser
 			Environmental giveThis=EnglishParser.bestPossibleGold(mob,null,thingToGive);
 			if(giveThis!=null)
 			{
-			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToGive))
+			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToGive))
 			    {
 			        ((Coins)giveThis).putCoinsBack();
 			        return false;

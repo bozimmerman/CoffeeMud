@@ -1657,29 +1657,64 @@ public class BaseGenerics extends StdCommand
 		boolean gocontinue=true;
 		while(gocontinue)
 		{
-			E.setCurrency(getTextData(mob,"Enter currency code\n\r:",E.getCurrency()));
-			if((E.getCurrency().length()>0)&&(!BeanCounter.getAllCurrencies().contains(E.getCurrency())))
+		    gocontinue=false;
+		    String oldCurrency=E.getCurrency();
+		    if(oldCurrency.length()==0) oldCurrency="Default";
+			oldCurrency=mob.session().prompt("Enter currency code (?):",oldCurrency).trim().toUpperCase();
+			if(oldCurrency.equalsIgnoreCase("Default"))
 			{
-			    mob.tell("'"+E.getCurrency()+"' is not recognized.  Try: "+Util.toStringList(BeanCounter.getAllCurrencies())+".");
-			    gocontinue=false;
+			    if(E.getCurrency().length()>0)
+				    E.setCurrency("");
+			    else
+			        mob.tell("(no change)");
 			}
 			else
+			if((oldCurrency.length()==0)||(oldCurrency.equalsIgnoreCase(E.getCurrency())))
+			    mob.tell("(no change)");
+			else
+			if(!BeanCounter.getAllCurrencies().contains(oldCurrency))
+			{
+			    Vector V=BeanCounter.getAllCurrencies();
+			    for(int v=0;v<V.size();v++)
+			        if(((String)V.elementAt(v)).length()==0)
+			            V.setElementAt("Default",v);
+			    mob.tell("'"+oldCurrency+"' is not recognized.  Try: "+Util.toStringList(V)+".");
 			    gocontinue=true;
+			}
+			else
+			    E.setCurrency(oldCurrency.toUpperCase().trim());
 		}
+		gocontinue=true;
 		while(gocontinue)
 		{
-			E.setDenomination(getDoubleData(mob,"Enter denomination\n\r:",E.getDenomination()));
+		    gocontinue=false;
+		    String newDenom=mob.session().prompt("Enter denomination (?):",""+E.getDenomination()).trim().toUpperCase();
 			DVector DV=BeanCounter.getCurrencySet(E.getCurrency());
-			if((DV!=null)&&(!DV.contains(new Double(E.getDenomination()))))
+			if((newDenom.length()>0)&&(!Util.isDouble(newDenom))&&(!newDenom.equalsIgnoreCase("?")))
+			{
+			    double denom=EnglishParser.matchAnyDenomination(E.getCurrency(),newDenom);
+			    if(denom>0.0) newDenom=""+denom;
+			}
+		    if((newDenom.length()==0)
+		    ||(Util.isDouble(newDenom)
+		            &&(!newDenom.equalsIgnoreCase("?"))
+		            &&(Util.s_double(newDenom)==E.getDenomination())))
+		        mob.tell("(no change)");
+		    else
+			if((!Util.isDouble(newDenom))
+			||(newDenom.equalsIgnoreCase("?"))
+			||((DV!=null)&&(!DV.contains(new Double(E.getDenomination())))))
 			{
 			    StringBuffer allDenoms=new StringBuffer("");
 			    for(int i=0;i<DV.size();i++)
-			        allDenoms.append(((Double)DV.elementAt(i,1)).doubleValue()+" ");
-			    mob.tell("'"+E.getDenomination()+"' is not a defined denomination. Try one of these: "+allDenoms.toString()+".");
-			    gocontinue=false;
+			        allDenoms.append(((Double)DV.elementAt(i,1)).doubleValue()+"("+((String)DV.elementAt(i,2))+"), ");
+			    if(allDenoms.toString().endsWith(", "))
+			        allDenoms=new StringBuffer(allDenoms.substring(0,allDenoms.length()-2));
+			    mob.tell("'"+newDenom+"' is not a defined denomination. Try one of these: "+allDenoms.toString()+".");
+			    gocontinue=true;
 			}
 			else
-			    gocontinue=true;
+			    E.setDenomination(Util.s_double(newDenom));
 		}
 		E.setNumberOfCoins(getLongData(mob,"Enter stack size\n\r:",E.getNumberOfCoins()));
 	}

@@ -506,9 +506,9 @@ public class Reset extends StdCommand
 						MOB M=R.fetchInhabitant(i);
 						if((M.isMonster())
 						&&(M.getStartRoom()==R)
-						&&(M.getMoney()>(M.baseEnvStats().level()+1)))
+						&&(BeanCounter.getMoney(M)>(M.baseEnvStats().level()+1)))
 						{
-							M.setMoney(Dice.roll(1,M.baseEnvStats().level(),0)+Dice.roll(1,10,0));
+							BeanCounter.setMoney(M,Dice.roll(1,M.baseEnvStats().level(),0)+Dice.roll(1,10,0));
 							Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+".");
 							didSomething=true;
 						}

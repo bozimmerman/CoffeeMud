@@ -150,7 +150,7 @@ public class Get extends BaseItemParser
 		int maxToGet=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(null,Util.combine(commands,0))==0))
 		{
 			maxToGet=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);

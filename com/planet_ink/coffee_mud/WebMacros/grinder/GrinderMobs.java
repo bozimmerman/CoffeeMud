@@ -275,7 +275,7 @@ public class GrinderMobs
 				M.setAlignment(Util.s_int(old));
 				break;
 			case 17: // money
-				M.setMoney(Util.s_int(old));
+				BeanCounter.setMoney(M,Util.s_int(old));
 				break;
 			case 18: // is rideable
 				break;

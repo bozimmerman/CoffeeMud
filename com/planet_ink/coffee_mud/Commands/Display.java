@@ -71,7 +71,7 @@ public class Display extends BaseItemParser
 			Environmental giveThis=EnglishParser.bestPossibleGold(mob,null,thingToGive);
 			if(giveThis!=null)
 			{
-			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToGive))
+			    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToGive))
 			        return false;
 				allFlag=false;
 			}

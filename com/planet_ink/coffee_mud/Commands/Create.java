@@ -136,9 +136,9 @@ public class Create extends BaseGenerics
 			}
 		}
 		Item newItem=CMClass.getItem(itemID);
-		if((newItem==null)&&(EnglishParser.numPossibleGold(itemID)>0))
+		if((newItem==null)&&(EnglishParser.numPossibleGold(null,itemID)>0))
 		{
-		    long numCoins=EnglishParser.numPossibleGold(itemID);
+		    long numCoins=EnglishParser.numPossibleGold(null,itemID);
 		    String currency=EnglishParser.numPossibleGoldCurrency(mob,itemID);
 		    double denom=EnglishParser.numPossibleGoldDenomination(mob,currency,itemID);
 		    if((numCoins>0)&&(denom>0.0))
@@ -520,7 +520,7 @@ public class Create extends BaseGenerics
 				lastWord=(String)commands.elementAt(commands.size()-1);
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
-			if(((E!=null)&&(E instanceof Item))||(EnglishParser.numPossibleGold(allWord)>0))
+			if(((E!=null)&&(E instanceof Item))||(EnglishParser.numPossibleGold(null,allWord)>0))
 			{
 				commands.insertElementAt("ITEM",1);
 				execute(mob,commands);

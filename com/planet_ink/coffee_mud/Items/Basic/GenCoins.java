@@ -125,15 +125,6 @@ public class GenCoins extends GenItem implements Coins
 		if(owner() instanceof MOB)
 		{
 			MOB M=(MOB)owner();
-			if(container()==null)
-			{
-			    if((M.getMoney()+getNumberOfCoins())>Integer.MAX_VALUE)
-			        M.setMoney(Integer.MAX_VALUE);
-			    else
-					M.setMoney((int)(M.getMoney()+getNumberOfCoins()));
-				destroy();
-				return true;
-			}
 			for(int i=0;i<M.inventorySize();i++)
 			{
 				Item I=M.fetchInventory(i);
@@ -158,28 +149,6 @@ public class GenCoins extends GenItem implements Coins
 		return false;
 	}
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
-		if((getCurrency().length()==0)&&(getDenomination()==0.0))
-		switch(msg.targetMinor())
-		{
-		case CMMsg.TYP_REMOVE:
-		case CMMsg.TYP_GET:
-			if((msg.amITarget(this))||((msg.tool()==this)))
-			{
-				setContainer(null);
-				msg.source().setMoney(msg.source().getMoney()+envStats().ability());
-				unWear();
-				destroy();
-				if(!Util.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-					msg.source().location().recoverRoomStats();
-			}
-			break;
-		default:
-			break;
-		}
-	}
 	private static String[] MYCODES={"NUMCOINS","CURRENCY","DENOM"};
 	public String getStat(String code)
 	{

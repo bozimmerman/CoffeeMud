@@ -75,7 +75,7 @@ public class Empty extends BaseItemParser
 		int maxToDrop=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(mob,Util.combine(commands,0))==0))
 		{
 			maxToDrop=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);

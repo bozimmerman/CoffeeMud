@@ -40,7 +40,6 @@ public class Deviations extends StdCommand
 		str.append(Util.padRight("Armor",5)+" ");
 		str.append(Util.padRight("Speed",5)+" ");
 		str.append(Util.padRight("Rejuv",5)+" ");
-		str.append(Util.padRight("Gold",5)+" ");
 		str.append(Util.padRight("Align",5)+" ");
 		str.append(Util.padRight("Worn",5));
 		str.append("\n\r");
@@ -238,13 +237,6 @@ public class Deviations extends StdCommand
 												(int)Math.round(M.baseEnvStats().speed()),
 												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
 				mobResults.append(Util.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
-				int properMoney = 0;
-				int rcode=M.baseCharStats().getMyRace().availabilityCode();
-				if(((CommonStrings.isTheme(rcode))&&(!Util.bset(rcode,Area.THEME_SKILLONLYMASK))))
-					properMoney=M.envStats().level()*5;
-				else
-					properMoney=M.envStats().level();
-				mobResults.append(Util.padRight(""+getDeviation(M.getMoney(),properMoney),5)+" ");
 				mobResults.append(Util.padRight(""+M.getAlignment(),5)+" ");
 				int reallyWornCount = 0;
 				for(int j=0;j<M.inventorySize();j++) 

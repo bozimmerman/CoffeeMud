@@ -113,7 +113,8 @@ public class Prop_EnterAdjuster extends Property
 		mob.setPractices(mob.getPractices()+Util.getParmPlus(readableText,"prac"));
 		mob.setTrains(mob.getTrains()+Util.getParmPlus(readableText,"trai"));
 		mob.setQuestPoint(mob.getQuestPoint()+Util.getParmPlus(readableText,"ques"));
-		mob.setMoney(mob.getMoney()+Util.getParmPlus(readableText,"coin"));
+		int newMoney=Util.getParmPlus(readableText,"coin");
+		if(newMoney!=0) BeanCounter.setMoney(mob,BeanCounter.getMoney(mob)+newMoney);
 		int exp=Util.getParmPlus(readableText,"expe");
 		if(exp>0) MUDFight.postExperience(mob,null,null,exp,false);
 		mob.recoverCharStats();

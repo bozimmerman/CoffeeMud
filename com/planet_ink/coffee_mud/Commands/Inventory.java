@@ -35,7 +35,7 @@ public class Inventory extends StdCommand
 		Hashtable moneyItems=new Hashtable();
 		Vector V=null;
 		int insertAt=-1;
-		if(mob.getMoney()>0) BeanCounter.getTotalAbsoluteNativeValue(mob);
+		BeanCounter.getTotalAbsoluteNativeValue(mob);
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item thisItem=mob.fetchInventory(i);

@@ -148,7 +148,7 @@ public class Prop_Auction extends Property
 			String sb=Util.combine(commands,0);
 		    currency=EnglishParser.numPossibleGoldCurrency(mob,sb);
 		    double denomination=EnglishParser.numPossibleGoldDenomination(mob,currency,sb);
-		    long num=EnglishParser.numPossibleGold(sb);
+		    long num=EnglishParser.numPossibleGold(mob,sb);
 		    bid=Util.mul(denomination,num);
 			highBid=bid-1;
 			auctionStart=System.currentTimeMillis();
@@ -171,7 +171,7 @@ public class Prop_Auction extends Property
 			    {
 				    myCurrency=EnglishParser.numPossibleGoldCurrency(mob,sb);
 				    double denomination=EnglishParser.numPossibleGoldDenomination(mob,currency,sb);
-				    long num=EnglishParser.numPossibleGold(sb);
+				    long num=EnglishParser.numPossibleGold(mob,sb);
 				    b=Util.mul(denomination,num);
 				    bwords=BeanCounter.getDenominationName(myCurrency,denomination,num);
 			    }

@@ -101,7 +101,7 @@ public class Put extends BaseItemParser
 		int maxToPut=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(mob,Util.combine(commands,0))==0))
 		{
 			maxToPut=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -119,7 +119,7 @@ public class Put extends BaseItemParser
 			Environmental putThis=EnglishParser.bestPossibleGold(mob,null,thingToPut);
 			if(putThis!=null)
 			{
-			    if(((Coins)putThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToPut))
+			    if(((Coins)putThis).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thingToPut))
 			        return false;
 				allFlag=false;
 			}

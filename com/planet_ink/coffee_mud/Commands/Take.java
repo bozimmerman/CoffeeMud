@@ -62,7 +62,7 @@ public class Take extends BaseItemParser
 
 			int maxToGive=Integer.MAX_VALUE;
 			if((commands.size()>1)
-			&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0)
+			&&(EnglishParser.numPossibleGold(victim,Util.combine(commands,0))==0)
 			&&(Util.s_int((String)commands.firstElement())>0))
 			{
 				maxToGive=Util.s_int((String)commands.firstElement());
@@ -103,7 +103,7 @@ public class Take extends BaseItemParser
 				
 				if(giveThis!=null)
 				{
-				    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(thingToGive))
+				    if(((Coins)giveThis).getNumberOfCoins()<EnglishParser.numPossibleGold(victim,thingToGive))
 				        return false;
 					allFlag=false;
 				}

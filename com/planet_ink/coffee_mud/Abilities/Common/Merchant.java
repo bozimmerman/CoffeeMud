@@ -656,7 +656,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(commands.size()>1)
 		{
 			String s=(String)commands.lastElement();
-			long numberCoins=EnglishParser.numPossibleGold(s);
+			long numberCoins=EnglishParser.numPossibleGold(mob,s);
 		    if(numberCoins>0)
 		    {
 			    String currency=EnglishParser.numPossibleGoldCurrency(mob,s);

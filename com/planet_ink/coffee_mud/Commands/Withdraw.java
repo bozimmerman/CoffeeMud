@@ -42,7 +42,7 @@ public class Withdraw extends StdCommand
 		}
 		String str=Util.combine(commands,0);
 		if(str.equalsIgnoreCase("all")) str=""+Integer.MAX_VALUE;
-	    long numCoins=EnglishParser.numPossibleGold(str);
+	    long numCoins=EnglishParser.numPossibleGold(null,str);
 	    String currency=EnglishParser.numPossibleGoldCurrency(shopkeeper,str);
 	    double denomination=EnglishParser.numPossibleGoldDenomination(shopkeeper,currency,str);
 		Item thisThang=null;

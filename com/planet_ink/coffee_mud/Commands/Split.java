@@ -34,7 +34,7 @@ public class Split extends StdCommand
 			return false;
 		}
 		String itemID=Util.combine(commands,1);
-		long numGold=EnglishParser.numPossibleGold(itemID);
+		long numGold=EnglishParser.numPossibleGold(mob,itemID);
 		if(numGold<0)
 		{
 			mob.tell("Split how much?!?");

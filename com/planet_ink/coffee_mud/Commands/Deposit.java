@@ -52,7 +52,7 @@ public class Deposit extends BaseItemParser
 			}
 		}
 		else
-	    if(((Coins)thisThang).getNumberOfCoins()<EnglishParser.numPossibleGold(thisName))
+	    if(((Coins)thisThang).getNumberOfCoins()<EnglishParser.numPossibleGold(mob,thisName))
 	        return false;
 		FullMsg newMsg=new FullMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,"<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>.");
 		if(mob.location().okMessage(mob,newMsg))
