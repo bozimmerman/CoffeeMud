@@ -77,6 +77,7 @@ public interface Ability  extends Environmental
 	
 	// for affects which may be uninvoked, this will do the trick!
 	public void unInvoke();
+	public boolean bubbleAffect();
 	public boolean canBeUninvoked();
 	public void makeNonUninvokable();
 

@@ -172,7 +172,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
             password = -1;
             channels = new ChannelList(-1);
             muds = new MudList(-1);
-            e.printStackTrace();
+			Log.errOut("Intermud",e);
         }
         save_thread = new SaveThread(this);
         save_thread.start();
@@ -252,7 +252,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
             I3Exception e;
 
             e = new I3Exception(msg);
-            e.printStackTrace();
+			Log.errOut("Intermud",e);
         }
         else {
         }
@@ -365,7 +365,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
                 }
                 else if( type.equals("chan-who-req") ) {
@@ -375,7 +375,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
                 }
                 else if( type.equals("chan-who-reply") ) {
@@ -385,7 +385,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
                 }
                 else if( type.equals("chanlist-reply") ) {
@@ -398,7 +398,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
                 }
                 else if( type.equals("locate-req") ) {
@@ -408,7 +408,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
                 }
                 else if( type.equals("mudlist") ) {
@@ -424,7 +424,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
                 }
                 else if( type.equals("who-req") ) {
@@ -434,7 +434,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
 				}
                 else if( type.equals("who-reply") ) {
@@ -444,7 +444,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
                         intermud.receive(p);
                     }
                     catch( InvalidPacketException e ) {
-                        e.printStackTrace();
+						Log.errOut("Intermud",e);
                     }
                 }
                 else if( type.equals("error") ) {
@@ -485,7 +485,7 @@ public class Intermud implements Runnable, Persistent, Serializable {
             output.writeBytes(str);
         }
         catch( java.io.IOException e ) {
-            e.printStackTrace();
+			Log.errOut("Intermud",e);
         }
     }
 

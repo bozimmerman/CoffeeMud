@@ -13,79 +13,17 @@ public class Prop_HaveResister extends Property
 	public String ID() { return "Prop_HaveResister"; }
 	public String name(){ return "Resistance due to ownership";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
+	public boolean bubbleAffect(){return true;}
 	private CharStats adjCharStats=null;
 	public Environmental newInstance(){	Prop_HaveResister BOB=new Prop_HaveResister();	BOB.setMiscText(text());return BOB;}
 	
-	public boolean isBorrowed(Environmental toMe)
-	{
-		if(toMe instanceof MOB)
-			return true;
-		return borrowed;
-	}
-
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
-	{
-		ensureStarted();
-		if(affectedMOB!=null)
-		{
-			if(affectedMOB instanceof Item)
-			{
-				myItem=(Item)affectedMOB;
-				if(myItem.owner() instanceof MOB)
-				{
-					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
-					{	removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
-					if(myItem.owner() !=null)
-					{
-						lastMOB=(MOB)myItem.owner();
-						if(!lastMOB.isMine(this))
-							addMe(lastMOB,this);
-					}
-				}
-			}
-			else
-			if(affectedMOB instanceof MOB)
-			{
-				if((myItem.owner() instanceof MOB)
-				   &&(myItem.owner()==affectedMOB))
-				{
-					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
-					{	removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
-					lastMOB=(MOB)affectedMOB;
-				}
-				else
-				if((affectedMOB!=null)&&(affectedMOB!=myItem.owner()))
-				{
-					removeMyAffectFromLastMob(this,(MOB)affectedMOB);
-				}
-			}
-		}
-		super.affectEnvStats(affectedMOB,affectableStats);
-	}
-
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		this.adjCharStats=new DefaultCharStats();
+		adjCharStats=new DefaultCharStats();
 		setAdjustments(this,adjCharStats);
 	}
 	
-	public static void removeMyAffectFromLastMob(Ability me, MOB mylastMOB)
-	{
-		int x=0;
-		while(x<mylastMOB.numAffects())
-		{
-			Ability aff=mylastMOB.fetchAffect(x);
-			if((aff!=null)&&(aff==me))
-				mylastMOB.delAffect(aff);
-			else
-				x++;
-		}
-		mylastMOB.recoverCharStats();
-	}
-
 	private void ensureStarted()
 	{
 		if(adjCharStats==null)
@@ -112,17 +50,11 @@ public class Prop_HaveResister extends Property
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		if((affectedMOB!=null)
-		   &&(lastMOB==affectedMOB))
-			adjCharStats(affectedStats,adjCharStats);
+		adjCharStats(affectedStats,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	
-	public static void addMe(MOB lastMOB, Ability me)
-	{
-		lastMOB.addNonUninvokableAffect(me);
-		lastMOB.recoverCharStats();
-	}
+	
 	public static boolean checkProtection(Ability me, String protType)
 	{
 		int prot=getProtection(me,protType);
@@ -265,13 +197,18 @@ public class Prop_HaveResister extends Property
 	{
 		if(!super.okAffect(affect))
 			return false;
-		if(lastMOB==null) return true;
-		MOB mob=lastMOB;
-		if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
+		
+		if((affected!=null)
+		&&(affected instanceof Item)
+		&&(((Item)affected).owner() instanceof MOB))
 		{
-			if(!Prop_HaveResister.isOk(affect,this,mob))
-				return false;
-			Prop_HaveResister.resistAffect(affect,mob,this);
+			MOB mob=(MOB)((Item)affected).owner();
+			if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
+			{
+				if(!Prop_HaveResister.isOk(affect,this,mob))
+					return false;
+				Prop_HaveResister.resistAffect(affect,mob,this);
+			}
 		}
 		return true;
 	}

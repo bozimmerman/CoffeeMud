@@ -298,7 +298,11 @@ class Backend
                   count++;
                }
             }
-         } catch (IOException e) { e.printStackTrace(); return -1; }
+         } 
+		 catch (IOException e) 
+		 { 
+			 e.printStackTrace(); return -1; 
+		 }
          return count;
       }
    }
@@ -373,7 +377,11 @@ class Backend
       try {
          readSchema(basePath,new File(basePath,"fakedb.schema"));
          return true;
-      } catch (IOException e) { e.printStackTrace(); return false; }
+      } catch (IOException e) 
+	  { 
+		  e.printStackTrace(); 
+		  return false; 
+	  }
    }
    
    java.sql.ResultSet constructScan(Statement s,String relationName,String conditionVar,String conditionValue,String orderVar) throws java.sql.SQLException

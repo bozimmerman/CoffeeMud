@@ -449,6 +449,7 @@ public class StdArmor extends StdContainer implements Armor
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
+		super.affectCharStats(affected,affectableStats);
 		if(!amWearingAt(Item.INVENTORY))
 		switch(material()&EnvResource.MATERIAL_MASK)
 		{

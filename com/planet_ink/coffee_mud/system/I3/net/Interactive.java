@@ -9,6 +9,7 @@ package com.planet_ink.coffee_mud.system.I3.net;
 
 import com.planet_ink.coffee_mud.system.I3.server.ServerUser;
 import com.planet_ink.coffee_mud.system.I3.server.Server;
+import com.planet_ink.coffee_mud.utils.Log;
 
 import java.io.DataInputStream;
 import java.io.PrintStream;
@@ -146,7 +147,7 @@ public abstract class Interactive implements ServerUser {
             socket.close();
         }
         catch( java.io.IOException e ) {
-            e.printStackTrace();
+			Log.errOut("Intermud",e);
         }
         destructed = true;
     }

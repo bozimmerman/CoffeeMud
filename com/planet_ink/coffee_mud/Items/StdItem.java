@@ -304,11 +304,31 @@ public class StdItem implements Item
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+envStats().weight());
 		}
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A.bubbleAffect()))
+			   A.affectEnvStats(affected,affectableStats);
+		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
-	{}
+	{
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A.bubbleAffect()))
+			   A.affectCharStats(affectedMob,affectableStats);
+		}
+	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
-	{}
+	{
+		for(int a=0;a<numAffects();a++)
+		{
+			Ability A=fetchAffect(a);
+			if((A!=null)&&(A.bubbleAffect()))
+			   A.affectCharState(affectedMob,affectableMaxState);
+		}
+	}
 	public void setMiscText(String newText)
 	{
 		miscText=newText;

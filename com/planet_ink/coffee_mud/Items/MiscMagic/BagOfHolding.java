@@ -36,6 +36,7 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
+		super.affectEnvStats(affected,affectableStats);
 		if(Sense.isLightSource(this))
 		{
 			if((!(affected instanceof Room))&&(rawWornCode()!=Item.INVENTORY))

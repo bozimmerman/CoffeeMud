@@ -13,8 +13,7 @@ public class Prop_HaveAdjuster extends Property
 	public String ID() { return "Prop_HaveAdjuster"; }
 	public String name(){ return "Adjustments to stats when owned";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
+	public boolean bubbleAffect(){return true;}
 	private CharStats adjCharStats=null;
 	private CharState adjCharState=null;
 	private EnvStats adjEnvStats=null;
@@ -22,13 +21,6 @@ public class Prop_HaveAdjuster extends Property
 	boolean gotRace=false;
 	boolean gotSex=false;
 	public Environmental newInstance(){	Prop_HaveAdjuster BOB=new Prop_HaveAdjuster();	BOB.setMiscText(text()); return BOB;}
-
-	public boolean isBorrowed(Environmental toMe)
-	{
-		if(toMe instanceof MOB)
-			return true;
-		return borrowed;
-	}
 
 	public static int getVal(String text, String key)
 	{
@@ -180,41 +172,6 @@ public class Prop_HaveAdjuster extends Property
 		affectableStats.setHeight(affectableStats.height()+adjEnvStats.height());
 	}
 
-	public static void addMe(MOB lastMOB, CharState adjCharState, Ability me)
-	{
-		lastMOB.addNonUninvokableAffect(me);
-		lastMOB.recoverMaxState();
-		lastMOB.recoverEnvStats();
-		lastMOB.recoverCharStats();
-		lastMOB.curState().adjHitPoints(adjCharState.getHitPoints(),lastMOB.maxState());
-		lastMOB.curState().adjHunger(adjCharState.getHunger(),lastMOB.maxState());
-		lastMOB.curState().adjMana(adjCharState.getMana(),lastMOB.maxState());
-		lastMOB.curState().adjMovement(adjCharState.getMovement(),lastMOB.maxState());
-		lastMOB.curState().adjThirst(adjCharState.getThirst(),lastMOB.maxState());
-	}
-
-	public static void removeMyAffectFromLastMob(Ability me, MOB mylastMOB, CharState adjCharState)
-	{
-		int x=0;
-		while(x<mylastMOB.numAffects())
-		{
-			Ability aff=mylastMOB.fetchAffect(x);
-			if((aff!=null)&&(aff==me))
-				mylastMOB.delAffect(aff);
-			else
-				x++;
-		}
-		mylastMOB.recoverEnvStats();
-		mylastMOB.recoverMaxState();
-		mylastMOB.recoverCharStats();
-
-		mylastMOB.curState().adjHitPoints(-adjCharState.getHitPoints(),mylastMOB.maxState());
-		mylastMOB.curState().adjHunger(-adjCharState.getHunger(),mylastMOB.maxState());
-		mylastMOB.curState().adjMana(-adjCharState.getMana(),mylastMOB.maxState());
-		mylastMOB.curState().adjMovement(-adjCharState.getMovement(),mylastMOB.maxState());
-		mylastMOB.curState().adjThirst(-adjCharState.getThirst(),mylastMOB.maxState());
-	}
-
 	private void ensureStarted()
 	{
 		if(adjCharStats==null)
@@ -224,41 +181,11 @@ public class Prop_HaveAdjuster extends Property
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
 		ensureStarted();
-		if(affectedMOB!=null)
-		{
-			if(affectedMOB instanceof Item)
-			{
-				myItem=(Item)affectedMOB;
-				if(myItem.owner() instanceof MOB)
-				{
-					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
-					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
-					if(myItem.owner() !=null)
-					{
-						lastMOB=(MOB)myItem.owner();
-						if(!lastMOB.isMine(this))
-							addMe(lastMOB,adjCharState,this);
-					}
-				}
-			}
-			else
-			if(affectedMOB instanceof MOB)
-			{
-				if((myItem.owner() instanceof MOB)
-				   &&(myItem.owner()==affectedMOB))
-				{
-					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
-					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
-					lastMOB=(MOB)affectedMOB;
-					envStuff(affectableStats,adjEnvStats);
-				}
-				else
-				if((affectedMOB!=null)&&(affectedMOB!=myItem.owner()))
-				{
-					Prop_HaveAdjuster.removeMyAffectFromLastMob(this,(MOB)affectedMOB,adjCharState);
-				}
-			}
-		}
+		if((affectedMOB!=null)
+		&&(affectedMOB instanceof MOB)
+		&&(affected!=null)
+		&&(affected instanceof Item))
+			envStuff(affectableStats,adjEnvStats);
 		super.affectEnvStats(affectedMOB,affectableStats);
 	}
 
@@ -295,17 +222,13 @@ public class Prop_HaveAdjuster extends Property
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		if((affectedMOB!=null)
-		   &&(lastMOB==affectedMOB))
-			adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
+		adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
-		if((affectedMOB!=null)
-		   &&(lastMOB==affectedMOB))
-			adjCharState(affectedState,adjCharState);
+		adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);
 	}
 

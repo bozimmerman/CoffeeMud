@@ -10,27 +10,17 @@ public class Prop_WearZapper extends Property
 	public String ID() { return "Prop_WearZapper"; }
 	public String name(){ return "Restrictions to wielding/wearing/holding";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
 	private Prop_HaveZapper WA=new Prop_HaveZapper();
 	public Environmental newInstance(){	Prop_WearZapper BOB=new Prop_WearZapper();	BOB.setMiscText(text()); return BOB;}
-
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
-	{
-		if(affectedMOB!=null)
-			if(affectedMOB instanceof Item)
-				myItem=(Item)affectedMOB;
-		super.affectEnvStats(affectedMOB,affectableStats);
-	}
-
 
 	public boolean okAffect(Affect affect)
 	{
 		if(!super.okAffect(affect))
 			return false;
 
-		if(myItem==null)
-			return true;
+		if(affected==null) return false;
+		if(!(affected instanceof Item)) return false;
+		Item myItem=(Item)affected;
 
 		MOB mob=affect.source();
 		if(mob.location()==null)

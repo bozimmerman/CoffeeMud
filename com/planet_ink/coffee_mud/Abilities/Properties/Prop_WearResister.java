@@ -8,9 +8,8 @@ public class Prop_WearResister extends Property
 {
 	public String ID() { return "Prop_WearResister"; }
 	public String name(){ return "Resistance due to worn";}
+	public boolean bubbleAffect(){return true;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
 	private CharStats adjCharStats=null;
 
 	public Environmental newInstance(){	Prop_WearResister BOB=new Prop_WearResister();	BOB.setMiscText(text()); return BOB;}
@@ -32,59 +31,12 @@ public class Prop_WearResister extends Property
 		this.adjCharStats=new DefaultCharStats();
 		Prop_HaveResister.setAdjustments(this,adjCharStats);
 	}
-	public boolean isBorrowed(Environmental toMe)
-	{
-		if(toMe instanceof MOB)
-			return true;
-		return borrowed;
-	}
-
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
-	{
-		ensureStarted();
-		if(affectedMOB!=null)
-		{
-			if(affectedMOB instanceof Item)
-			{
-				myItem=(Item)affectedMOB;
-				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.owner() instanceof MOB))
-				{
-					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
-					{	Prop_HaveResister.removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
-					if(myItem.owner() !=null)
-					{
-						lastMOB=(MOB)myItem.owner();
-						if(!lastMOB.isMine(this))
-							Prop_HaveResister.addMe(lastMOB,this);
-					}
-				}
-			}
-			else
-			if(affectedMOB instanceof MOB)
-			{
-				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.owner() instanceof MOB)
-				   &&(myItem.owner()==affectedMOB))
-				{
-					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
-					{	Prop_HaveResister.removeMyAffectFromLastMob(this,lastMOB); lastMOB=null;}
-					lastMOB=(MOB)affectedMOB;
-				}
-				else
-				if((affectedMOB!=null)&&(affectedMOB!=myItem.owner()))
-				{
-					Prop_HaveResister.removeMyAffectFromLastMob(this,(MOB)affectedMOB);
-				}
-			}
-		}
-		super.affectEnvStats(affectedMOB,affectableStats);
-	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		if((affectedMOB!=null)
-		   &&(lastMOB==affectedMOB))
+		if((affected !=null)
+		&&(affected instanceof Item)
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
 			Prop_HaveResister.adjCharStats(affectedStats,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
@@ -93,15 +45,18 @@ public class Prop_WearResister extends Property
 	{
 		if(!super.okAffect(affect))
 			return false;
-		if(lastMOB==null) return true;
-		if(myItem==null) return true;
-		if(myItem.amWearingAt(Item.INVENTORY)) return true;
-		MOB mob=lastMOB;
-		if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
+		if((affected !=null)
+		&&(affected instanceof Item)
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY))
+		&&(((Item)affected).owner() instanceof MOB))
 		{
-			if(!Prop_HaveResister.isOk(affect,this,mob))
-				return false;
-			Prop_HaveResister.resistAffect(affect,mob,this);
+			MOB mob=(MOB)((Item)affected).owner();
+			if((affect.amITarget(mob))&&(!affect.wasModified())&&(mob.location()!=null))
+			{
+				if(!Prop_HaveResister.isOk(affect,this,mob))
+					return false;
+				Prop_HaveResister.resistAffect(affect,mob,this);
+			}
 		}
 		return true;
 	}

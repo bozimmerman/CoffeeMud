@@ -10,8 +10,7 @@ public class Prop_WearAdjuster extends Property
 	public String ID() { return "Prop_WearAdjuster"; }
 	public String name(){ return "Adjustments to stats when worn";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
+	public boolean bubbleAffect(){return true;}
 	private CharStats adjCharStats=null;
 	private CharState adjCharState=null;
 	private EnvStats  adjEnvStats=null;
@@ -20,13 +19,6 @@ public class Prop_WearAdjuster extends Property
 	boolean gotSex=false;
 	
 	public Environmental newInstance(){	Prop_WearAdjuster BOB=new Prop_WearAdjuster();	BOB.setMiscText(text()); return BOB;}
-
-	public boolean isBorrowed(Environmental toMe)
-	{
-		if(toMe instanceof MOB)
-			return true;
-		return borrowed;
-	}
 
 	public String accountForYourself()
 	{
@@ -72,60 +64,30 @@ public class Prop_WearAdjuster extends Property
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
 		ensureStarted();
-		if(affectedMOB!=null)
-		{
-			if(affectedMOB instanceof Item)
-			{
-				myItem=(Item)affectedMOB;
-				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.owner() instanceof MOB))
-				{
-					if((lastMOB!=null)&&(myItem.owner()!=lastMOB))
-					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
-
-					if(myItem.owner() !=null)
-					{
-						lastMOB=(MOB)myItem.owner();
-						if(!lastMOB.isMine(this))
-							Prop_HaveAdjuster.addMe(lastMOB,adjCharState,this);
-					}
-				}
-			}
-			else
-			if(affectedMOB instanceof MOB)
-			{
-				if((!myItem.amWearingAt(Item.INVENTORY))
-				   &&(myItem.owner() instanceof MOB)
-				   &&(myItem.owner()==affectedMOB))
-				{
-					if((lastMOB!=null)&&(affectedMOB!=lastMOB))
-					{	Prop_HaveAdjuster.removeMyAffectFromLastMob(this,lastMOB,adjCharState); lastMOB=null;}
-					lastMOB=(MOB)affectedMOB;
-					Prop_HaveAdjuster.envStuff(affectableStats,adjEnvStats);
-				}
-				else
-				if((affectedMOB!=null)&&((affectedMOB!=myItem.owner())||(myItem.amWearingAt(Item.INVENTORY))))
-				{
-					Prop_HaveAdjuster.removeMyAffectFromLastMob(this,(MOB)affectedMOB,adjCharState);
-				}
-			}
-		}
+		if((affectedMOB!=null)
+		&&(affectedMOB instanceof MOB)
+		&&(affected !=null)
+		&&(affected instanceof Item)
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
+			Prop_HaveAdjuster.envStuff(affectableStats,adjEnvStats);
 		super.affectEnvStats(affectedMOB,affectableStats);
 	}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
 		ensureStarted();
-		if((affectedMOB!=null)
-		   &&(lastMOB==affectedMOB))
+		if((affected !=null)
+		&&(affected instanceof Item)
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
 			Prop_HaveAdjuster.adjCharStats(affectedStats,gotClass,gotRace,gotSex,adjCharStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		ensureStarted();
-		if((affectedMOB!=null)
-		   &&(lastMOB==affectedMOB))
+		if((affected !=null)
+		&&(affected instanceof Item)
+		&&(!((Item)affected).amWearingAt(Item.INVENTORY)))
 			Prop_HaveAdjuster.adjCharState(affectedState,adjCharState);
 		super.affectCharState(affectedMOB,affectedState);
 	}

@@ -124,7 +124,7 @@ public class ServerThread extends Thread {
             listen_thread = new ListenThread(port);
         }
         catch( java.io.IOException e ) {
-            e.printStackTrace();
+            Log.errOut("ServerThread",e.getMessage());
             return;
         }
 		
@@ -133,7 +133,7 @@ public class ServerThread extends Thread {
                            (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.system.I3.IMudPeer").newInstance());
         }
         catch( Exception e ) {
-            e.printStackTrace();
+            Log.errOut("ServerThread",e);
         }
         running = true;
         while( running ) {

@@ -17,6 +17,7 @@ public class StdAbility implements Ability, Cloneable
 	public int minRange(){return 0;}
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
+	public boolean bubbleAffect(){return false;}
 	protected int trainsRequired(){return 1;}
 	protected int practicesRequired(){return 0;}
 	protected int practicesToPractice(){return 1;}

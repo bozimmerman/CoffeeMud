@@ -10,17 +10,7 @@ public class Prop_HaveZapper extends Property
 	public String ID() { return "Prop_HaveZapper"; }
 	public String name(){ return "Restrictions to ownership";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	private Item myItem=null;
-	private MOB lastMOB=null;
 	public Environmental newInstance(){	Prop_HaveZapper BOB=new Prop_HaveZapper();	BOB.setMiscText(text());return BOB;}
-
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
-	{
-		if(affectedMOB!=null)
-			if(affectedMOB instanceof Item)
-				myItem=(Item)affectedMOB;
-		super.affectEnvStats(affectedMOB,affectableStats);
-	}
 
 	public boolean isOk(Ability me, MOB mob)
 	{
@@ -101,15 +91,13 @@ public class Prop_HaveZapper extends Property
 	{
 		if(!super.okAffect(affect))
 			return false;
-
-		if(myItem==null)
-			return true;
+		if(affected==null) return false;
 
 		MOB mob=affect.source();
 		if(mob.location()==null)
 			return true;
 
-		if(affect.amITarget(myItem))
+		if(affect.amITarget(affected))
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_HOLD:
@@ -121,7 +109,7 @@ public class Prop_HaveZapper extends Property
 		case Affect.TYP_GET:
 			if((!isOk(this,mob))&&(Prop_SpellAdder.didHappen(100,this)))
 			{
-				mob.location().show(mob,null,Affect.MSG_OK_ACTION,myItem.name()+" flashes and flys out of <S-HIS-HER> hands!");
+				mob.location().show(mob,null,Affect.MSG_OK_ACTION,affected.name()+" flashes and flys out of <S-HIS-HER> hands!");
 				return false;
 			}
 			break;

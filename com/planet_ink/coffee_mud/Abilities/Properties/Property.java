@@ -18,6 +18,7 @@ public class Property implements Ability, Cloneable
 	public int usesRemaining(){return 0;}
 	public void setUsesRemaining(int newUses){}
 	public int adjustedLevel(MOB mob){return -1;}
+	public boolean bubbleAffect(){return false;}
 
 	public void setName(String newName){}
 	public void setDescription(String newDescription){}
