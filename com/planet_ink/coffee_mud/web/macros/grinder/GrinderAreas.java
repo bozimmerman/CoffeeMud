@@ -4,8 +4,22 @@ import com.planet_ink.coffee_mud.utils.*;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 
-public class GrinderArea
+public class GrinderAreas
 {
+	public static String getAreaList(Area pickedA, MOB mob)
+	{
+		StringBuffer AreaList=new StringBuffer("");
+		for(int a=0;a<CMMap.numAreas();a++)
+		{
+			Area A=(Area)CMMap.getArea(a);
+			if((A.amISubOp(mob.name()))||(mob.isASysOp(null)))
+				if((pickedA!=null)&&(pickedA==A))
+					AreaList.append("<OPTION SELECTED VALUE=\""+A.name()+"\">"+A.name());
+				else
+					AreaList.append("<OPTION VALUE=\""+A.name()+"\">"+A.name());
+		}
+		return AreaList.toString();
+	}
 	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		String last=(String)httpReq.getRequestParameters().get("AREA");
@@ -142,6 +156,7 @@ public class GrinderArea
 			}
 			A.clearMap();
 		}
-		return null;
+		ExternalPlay.DBUpdateArea(A);
+		return "";
 	}
 }

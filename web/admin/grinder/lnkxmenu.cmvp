@@ -1,7 +1,6 @@
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
 <html>
 <head>
 	<!-- tell spiders to sod off -->
@@ -12,40 +11,29 @@
 	<!--
 		function Clicked(action)
 		{
-			document.AREAEDIT.action='/grinder/'+action;
+			document.AREAEDIT.action=action;
 			document.AREAEDIT.submit();
 		}
 	//-->
 	</script>
 </head>
 <BODY>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editarea.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
+<INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
+<INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="@RequestParameter?LINKSTO@">
+<INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
+<INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
-<TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
-<TR VALIGN=TOP>
-<TD WIDTH=80%><B>Unused @RequestParameter?LINK@ Exit From @RequestParameter?ROOM@ (@RoomName@)
+<B>Unused @RequestParameter?LINK@ Exit From @RequestParameter?ROOM@ (@RoomName@)</B>
+<BR>
 @if?!CheckReqParm?OLDLINK=@
-<BR><BR>
-<INPUT TYPE=BUTTON VALUE="Link to @RequestParameter?OLDROOM@ (@RequestParameter?OLDLINK@)" ONCLICK="Clicked('linkexit.cmvp');">
+<INPUT TYPE=BUTTON VALUE="Link to @RequestParameter?OLDROOM@ (@RequestParameter?OLDLINK@)" ONCLICK="Clicked('/grinder/linkexit.cmvp');">
 @endif@
-</TD>
-<TD WIDTH=20%>
-	<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editarea.cmvp">
-	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-	<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
-	<INPUT TYPE=HIDDEN NAME=ROOM VALUE="@RequestParameter?ROOM@">
-	<INPUT TYPE=HIDDEN NAME=LINK VALUE="@RequestParameter?LINK@">
-	<INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
-	<INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
-	<INPUT TYPE=BUTTON VALUE="New Exit" ONCLICK="Clicked('createexit.cmvp');">
-	</FORM>
-	<FORM NAME=AREAEDITING TARGET=_top METHOD=GET ACTION="/grinder/modarea.cmvp">
-	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-	<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
-	<INPUT TYPE=SUBMIT VALUE="Cancel">
-	</FORM>
-</TD>
-</TR>
-</TABLE>
+<INPUT TYPE=BUTTON VALUE="Create New Room" ONCLICK="Clicked('/grinder/createroom.cmvp');">
+<INPUT TYPE=BUTTON VALUE="Cancel" ONCLICK="Clicked('/grinder/modarea.cmvp');">
 </BODY>
 </HTML>
 @endif@

@@ -59,7 +59,7 @@ public class CMMap
 		startRoom=null;
 	}
 	
-	public static void theWorldChanged()
+	private static void theWorldChanged()
 	{
 		for(int a=0;a<AREAS.size();a++)
 		{

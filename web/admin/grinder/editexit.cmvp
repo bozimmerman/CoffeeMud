@@ -1,11 +1,10 @@
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckReqParm?SUBOP=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <HTML>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
-<TITLE></TITLE>
-</HEAD>
-<BODY>
-
-<P>&nbsp;</P>
-
-</BODY>
+<FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
+	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editexitform.cmvp?@RequestParametersEncoded@" NAME=MAP>
+	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?@RequestParametersEncoded@" NAME=MENU>
+</FRAMESET>
 </HTML>
+@endif@
+@endif@

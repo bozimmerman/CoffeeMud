@@ -8,32 +8,28 @@
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="/grinder/grinder.css">
 	<title>CoffeeMUD MUDGrinder</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.AREAEDIT.action=action;
+			document.AREAEDIT.submit();
+		}
+	//-->
+	</script>
 </head>
 <BODY>
+<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editarea.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
+</FORM>
 <IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
 <TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>
-<TD WIDTH=80%><BR></TD>
-<TD WIDTH=20%>
-	<TABLE WIDTH=100%  CELLSPACING=0 CELLPADDING=0 BORDER=0>
-	<TR>
-		<TD>
-		<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/grinder/editarea.cmvp">
-		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-		<INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
-		<INPUT TYPE=SUBMIT VALUE="Edit Area">
-		</FORM>
-		</TD>
-	</TR>
-	<TR>
-		<TD>
-		<FORM NAME=AREAEDIT TARGET=_top METHOD=GET ACTION="/index.cmvp">
-		<INPUT TYPE=SUBMIT VALUE="Log Out">
-		</FORM>
-		</TD>
-	</TR>
-	</TABLE>
-</TD>
+	<TD WIDTH=90% ALIGN=RIGHT>
+		<INPUT TYPE=SUBMIT VALUE="Edit Area" ONCLICK="Clicked('/grinder/editarea.cmvp');">
+		<INPUT TYPE=SUBMIT VALUE="Log Out" ONCLICK="Clicked('/index.cmvp');">
+	</TD>
 </TR>
 </TABLE>
 </BODY>
