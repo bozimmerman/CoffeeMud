@@ -696,9 +696,9 @@ public class BaseGenerics extends StdCommand
 		String c="Q";
 		while(!c.equals("\n"))
 		{
-			mob.session().println(showNumber+". A) Is Gettable   : "+Sense.isGettable(E));
-			mob.session().println("    B) Is Droppable  : "+Sense.isDroppable(E));
-			mob.session().println("    C) Is Removable  : "+Sense.isRemovable(E));
+			mob.session().println(showNumber+". A) Is Gettable   : "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET)));
+			mob.session().println("    B) Is Droppable  : "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP)));
+			mob.session().println("    C) Is Removable  : "+(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE)));
 			mob.session().println("    D) Non-Locatable : "+(((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)?"true":"false"));
 			if(E instanceof Weapon)
 				mob.session().println("    E) Is Two-Handed : "+E.rawLogicalAnd());
@@ -706,9 +706,9 @@ public class BaseGenerics extends StdCommand
 			c=mob.session().choose("Enter one to change, or ENTER when done: ","ABCDE\n","\n").toUpperCase();
 			switch(Character.toUpperCase(c.charAt(0)))
 			{
-			case 'A': Sense.setGettable(E,!Sense.isGettable(E)); break;
-			case 'B': Sense.setDroppable(E,!Sense.isDroppable(E)); break;
-			case 'C': Sense.setRemovable(E,!Sense.isRemovable(E)); break;
+			case 'A': Sense.setGettable(E,(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))); break;
+			case 'B': Sense.setDroppable(E,(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))); break;
+			case 'C': Sense.setRemovable(E,(!Util.bset(E.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))); break;
 			case 'D': if((E.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)
 						  E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()-EnvStats.SENSE_UNLOCATABLE);
 					  else

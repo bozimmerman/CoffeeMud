@@ -31,7 +31,7 @@ public class Beacon extends StdCommand
 		}
 		else
 		{
-			String name=Util.combine(commands,1);
+			String name=Util.combine(commands,0);
 			MOB M=null;
 			for(int s=0;s<Sessions.size();s++)
 			{

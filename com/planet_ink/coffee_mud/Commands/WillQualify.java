@@ -62,13 +62,19 @@ public class WillQualify extends BaseAbleLister{
 	                throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		String willQualErr = "Specify level and class:  WILLQUALIFY [LEVEL] [CLASS NAME].";
-		if(commands.size()<3){ mob.tell(willQualErr); return false;}
+		String willQualErr = "Specify level and class:  WILLQUALIFY [LEVEL] ([CLASS NAME]).";
+		if((commands.size()<2)||((commands.size()>1)&&(!Util.isNumber((String)commands.elementAt(1)))))
+		{
+			mob.tell(willQualErr); 
+			return false;
+		}
 		// # is param 1, class name is param 2+
 		int level=Util.s_int((String)commands.elementAt(1));
 		if (level > 0) 
 		{
-			String className=Util.combine(commands,2);
+			
+			String className=mob.charStats().getCurrentClass().ID();
+			if(commands.size()>2) className=Util.combine(commands,2);
 			CharClass C=CMClass.getCharClass(className);
 			if (C == null) 
 			{

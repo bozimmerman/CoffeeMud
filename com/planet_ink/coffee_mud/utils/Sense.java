@@ -51,7 +51,7 @@ public class Sense
 	public static void setReadable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(isReadable(I))
+		if(Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
 		{
 			if(!truefalse)
 			{
@@ -69,7 +69,7 @@ public class Sense
 	public static void setGettable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(isGettable(I))
+		if(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
 		{
 			if(!truefalse)
 			{
@@ -87,7 +87,7 @@ public class Sense
 	public static void setDroppable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(isDroppable(I))
+		if(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
 		{
 			if(!truefalse)
 			{
@@ -105,7 +105,7 @@ public class Sense
 	public static void setRemovable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(isRemovable(I))
+		if(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
 		{
 			if(!truefalse)
 			{

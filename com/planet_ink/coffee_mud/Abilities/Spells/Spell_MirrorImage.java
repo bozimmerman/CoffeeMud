@@ -72,8 +72,8 @@ public class Spell_MirrorImage extends Spell
 				if(numberOfImages<=0)
 					unInvoke();
 				else
-				for(int x=0;x<numberOfImages;x++)
-					msg.addTrailerMsg(new FullMsg(mob,msg.target(),CMMsg.MSG_OK_VISUAL,msg.othersMessage()));
+					for(int x=0;x<numberOfImages;x++)
+						msg.addTrailerMsg(new FullMsg(mob,msg.target(),msg.tool(),CMMsg.MSG_OK_VISUAL,msg.othersMessage()));
 			}
 		}
 		notAgain=false;

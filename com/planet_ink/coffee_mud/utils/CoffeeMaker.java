@@ -89,15 +89,15 @@ public class CoffeeMaker
 	{
 		int f=0;
 		if(E instanceof Item) 
-		{// deprecated, but unfortunately, its here to stay.
+		{
 			Item item=(Item)E;
-			if(Sense.isDroppable(item))
+			if(!Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
 				f=f|1;
-			if(Sense.isGettable(item))
+			if(!Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
 				f=f|2;
-			if(Sense.isReadable(item))
+			if(Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
 				f=f|4;
-			if(Sense.isRemovable(item))
+			if(!Util.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
 				f=f|8;
 		}
 		if(E instanceof Container)
@@ -1529,7 +1529,13 @@ public class CoffeeMaker
 		}
 
 		setEnvProperties(E,buf);
-		setEnvFlags(E,Util.s_int(XMLManager.getValFromPieces(buf,"FLAG")));
+		String deprecatedFlag=XMLManager.getValFromPieces(buf,"FLAG");
+if(E.displayText().indexOf("beautiful large marble fountain")>=0)
+	System.out.println("1-"+E.name()+"/"+deprecatedFlag+"/"+Sense.isGettable((Item)E));
+		if((deprecatedFlag!=null)&&(deprecatedFlag.length()>0))
+			setEnvFlags(E,Util.s_int(deprecatedFlag));
+if(E.displayText().indexOf("beautiful large marble fountain")>=0)
+	System.out.println("2-"+E.name()+"/"+deprecatedFlag+"/"+Sense.isGettable((Item)E));
 
 		if(E instanceof Exit)
 		{
@@ -2024,9 +2030,9 @@ public class CoffeeMaker
 		case 8: return ""+I.rawProperLocationBitmap();
 		case 9: return ""+I.rawLogicalAnd();
 		case 10: return ""+I.baseGoldValue();
-		case 11: return ""+Sense.isReadable(I);
-		case 12: return ""+Sense.isDroppable(I);
-		case 13: return ""+Sense.isRemovable(I);
+		case 11: return ""+(Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+		case 12: return ""+(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+		case 13: return ""+(!Util.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
 		case 14: return ""+I.material();
 		case 15: return getExtraEnvPropertiesStr(I);
 		case 16: return ""+I.baseEnvStats().disposition();

@@ -384,12 +384,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						Item item=findDepositInventory(msg.source(),""+Integer.MAX_VALUE);
 						MOB owner=msg.source();
-						if((item==null)
-						&&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
-						&&(msg.source().isMarriedToLiege()))
+						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
+						&&(msg.source().isMarriedToLiege())
+						&&((item==null)||((item instanceof Coins)&&(((Coins)item).numberOfCoins()<((Coins)old).numberOfCoins()))))
 						{
-							item=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
-							if(item!=null) owner=CMMap.getPlayer(msg.source().getLiegeID());
+							Item item2=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
+							if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).numberOfCoins()>=((Coins)old).numberOfCoins()))
+							{
+								item=item2;
+								owner=CMMap.getPlayer(msg.source().getLiegeID());
+							}
 						}
 						if((item!=null)&&(item instanceof Coins))
 						{
@@ -589,8 +593,26 @@ public class StdBanker extends StdShopKeeper implements Banker
 						return false;
 					}
 					MOB owner=msg.source();
-					if((!(msg.tool() instanceof Coins))
-					&&(findDepositInventory(thename,msg.tool().Name())==null))
+					int balance=getBalance(owner);
+					if(msg.tool() instanceof Coins)
+					{
+						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
+						&&(owner.isMarriedToLiege())
+						&&(balance<((Coins)msg.tool()).numberOfCoins()))
+						{
+							MOB M=CMMap.getLoadPlayer(owner.getLiegeID());
+							int b=0;
+							if(M!=null) b=getBalance(M);
+							if((M!=null)&&(b>=((Coins)msg.tool()).numberOfCoins()))
+							{
+								owner=M;
+								balance=b;
+								thename=owner.Name();
+							}
+						}
+					}
+					else
+					if(findDepositInventory(thename,msg.tool().Name())==null)
 					{
 						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
 						&&(msg.source().isMarriedToLiege())
@@ -602,7 +624,6 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 						}
 					}
-					int balance=getBalance(owner);
 					int minbalance=minBalance(owner);
 					if(msg.tool() instanceof Coins)
 					{
@@ -611,7 +632,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
 								CommonMsgs.say(this,mob,"I'm sorry, Clan "+thename+" has only "+balance+" gold coins in its account.",true,false);
 							else
-								CommonMsgs.say(this,mob,"I'm sorry, you have only "+balance+" gold coins in your account.",true,false);
+								CommonMsgs.say(this,mob,"I'm sorry, you have only "+balance+" gold coins in that account.",true,false);
 							return false;
 						}
 						if(minbalance==0) return true;

@@ -8,7 +8,7 @@ import java.util.*;
 public class Chant_StoneFriend extends Chant
 {
 	public String ID() { return "Chant_StoneFriend"; }
-	public String name(){ return "Stpne Friend";}
+	public String name(){ return "Stone Friend";}
 	public String displayText(){return "(Charmed)";}
 	public int quality(){return Ability.MALICIOUS;}
 	protected int canAffectCode(){return 0;}

@@ -12,11 +12,10 @@ MudChat should find ALL alternative answers and weigh them ALL against each othe
 Have rooms generate their resources instead of skills
 Prop_Translator -- echos translations to the room, but on items, players.
 I have 2 walking arenedirs one day, and he doesn't leige, and he doesn't autoassist!
-I can't withdraw from the bank. It says Your spouse's account has 45000 . I deposited 20000 and it said I had 0 in the bank. spouses automatically deposit to spouse, not to own -- cannot withdraw from own accounts
-When mirror image is up, and the original gives an object to another entity, it shows this: Zenthlas gives to you.
-Beacon works fine on yourself, however trying to set it on a player results in "No one is online called ''!"  I tried it on two different players and I promise they were online :) 
-
-Delver:
+add string control to decay
+look into cycling through classes on all stdmob recover/affect calls.
+confirm viability of fountains and gettability, removability, etc.. its BROKE!!!!
+Add ability to disable future logons.
 
 Some solution for variable eq on mobs -- use rejuv! 
 	But how to edit?! mobs with this kind of eq sort it out when entering a room with player or entered by player.
