@@ -13,6 +13,11 @@ public class Autoforward extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
+		if(!CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING))
+		{
+			mob.tell("This feature is not activated.");
+			return false;
+		}
 		if(Util.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
 		{
 			mob.setBitmap(Util.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));

@@ -397,7 +397,7 @@ public class SMTPserver extends Thread implements Tickable
 						String to=(String)msg.elementAt(DatabaseEngine.JOURNAL_TO);
 						if(to.equalsIgnoreCase("ALL"))
 						{
-							long date=Util.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE));
+							long date=Util.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE2));
 							String from=(String)msg.elementAt(DatabaseEngine.JOURNAL_FROM);
 							String key=(String)msg.elementAt(DatabaseEngine.JOURNAL_KEY);
 							String subj=((String)msg.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
@@ -425,7 +425,8 @@ public class SMTPserver extends Thread implements Tickable
 									{
 										mylist.addElement(from);
 										updatedMailingLists=true;
-										CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.",-1);
+										if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING))
+											CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.",-1);
 									}
 								}
 							}
@@ -444,7 +445,8 @@ public class SMTPserver extends Thread implements Tickable
 									{
 										mylist.removeElementAt(l);
 										updatedMailingLists=true;
-										CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now unsubscribed from "+name+". To subscribe again, send another email with a subject of subscribe.",-1);
+										if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING))
+											CMClass.DBEngine().DBWriteJournal(name,name,from,"Subscribed","You are now unsubscribed from "+name+". To subscribe again, send another email with a subject of subscribe.",-1);
 									}
 							}
 							else
@@ -460,7 +462,8 @@ public class SMTPserver extends Thread implements Tickable
 											for(int i=0;i<mylist.size();i++)
 											{
 												String to2=(String)mylist.elementAt(i);
-												CMClass.DBEngine().DBWriteJournal(name,from,to2,subj,s,-1);
+												if(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING))
+													CMClass.DBEngine().DBWriteJournal(name,from,to2,subj,s,-1);
 											}
 										}
 										else
@@ -483,7 +486,8 @@ public class SMTPserver extends Thread implements Tickable
 			}
 		
 			// here is where the mail is actually sent
-			if(tickID==MudHost.TICK_EMAIL)
+			if((tickID==MudHost.TICK_EMAIL)
+			&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_EMAILFORWARDING)))
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
@@ -536,7 +540,7 @@ public class SMTPserver extends Thread implements Tickable
 			String key=(String)mail.elementAt(DatabaseEngine.JOURNAL_KEY);
 			String from=(String)mail.elementAt(DatabaseEngine.JOURNAL_FROM);
 			String to=(String)mail.elementAt(DatabaseEngine.JOURNAL_TO);
-			long date=Util.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE));
+			long date=Util.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE2));
 			String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
 			String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
 			

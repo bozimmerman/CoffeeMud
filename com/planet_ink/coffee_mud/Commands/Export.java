@@ -29,7 +29,7 @@ public class Export extends StdCommand
 		}
 		else
 		{
-			mob.tell("Exporting room(s)...");
+			mob.tell("Writing file...");
 			try
 			{
 				if(fileName.indexOf(".")<0)
@@ -138,18 +138,20 @@ public class Export extends StdCommand
 				for(int v=0;v<V.size();v++)
 				{
 					Vector V2=(Vector)V.elementAt(v);
-					String name=(String)V2.elementAt(v);
+					String name=(String)V2.elementAt(0);
 					if(mob.session()!=null) mob.session().rawPrint(".");
 					MOB M=CMMap.getLoadPlayer(name);
 					if(M!=null)
 					{
-						x.append("<PLAYER>");
+						x.append("\r\n<PLAYER>");
 						x.append(CoffeeMaker.getPlayerXML(M,custom));
 						x.append("</PLAYER>");
 					}
 				}
 				if(fileNameCode==2) fileName=fileName+File.separatorChar+"player";
 				xml=x.toString()+"</PLAYERS>";
+				if(mob.session()!=null)
+					mob.session().rawPrintln("!");
 			}
 			else
 			if(commandType.equalsIgnoreCase("ROOM"))

@@ -9,9 +9,10 @@ simple mail transfer program which&nbsp;acts as&nbsp;server that runs as part of
 CoffeeMUD.&nbsp; It's primary purpose is to act as a mail forwarding and relay 
 engine for email between mud users, and as a distribution point for mailing 
 lists and other email related functions.</P>
-<P><STRONG>How to Connect:</STRONG><BR>By default, 
-the&nbsp;smtp&nbsp;server&nbsp;listens on port port 25.&nbsp; It is so important 
-that it do so that you can not even change it.</P>
+<P><STRONG>How to Connect:</STRONG><BR>By default, the&nbsp;smtp&nbsp;server&nbsp;listens on port 
+port 25 by default.&nbsp; Changing this port value 
+is generally a bad idea which will almost certainly 
+eliminate the ability for your server to receive mail from others.</P>
 <P>Messages sent either directly or indirectly to the CoffeeMud SMTP Server MUST 
 follow ALL of&nbsp;these rules or face rejection:</P>
 <UL>
@@ -70,24 +71,86 @@ this can be overridden. Options are placed in either 'web/common.ini' or
 'web/(servername).ini'; an option in the latter will override one in common. The 
 options are: </P>
 <UL>
-  <LI><B>PORT</B>=xx : <B>[REQUIRED]</B> <I>(e.g. PORT=25)</I> 
+  <LI><B>PORT</B>=xx : <B>[REQUIRED]</B> <I> (e.g.25)</I> 
   Sets the port number the&nbsp;server will listen for SMTP requests on; this 
   cannot be the same port as the main MUD server or web servers. Identical to 
   MUD server usage.&nbsp;There is normally no good reason&nbsp;to change from 
   25, as that is what&nbsp;email clients will expect.&nbsp; 
-  <LI><B>BACKLOG</B>=xx : <I>(e.g. BACKLOG=10)</I> Sets the number of requests 
+  <LI><B>BACKLOG</B>=xx : <I> (e.g.10)</I> Sets the number of requests 
   that can be queued by the internal TCP/IP stack. Identical to MUD server 
   usage. 
-  <LI><B>BIND</B>=addr : <I>(e.g. BIND=127.0.0.1)</I> Causes the server to be 
-  bound to a specific address; this is useful on multi-homed machines or if you 
-  wish to prevent public access to the pages. Identical to MUD server 
-  usage.<BR><B>The Admin server should be bound to localhost (or 127.0.0.1) 
-  unless you really know what you're doing...</B> 
-  <LI><B>DEFAULTFILE</B>=filename : <B>[REQUIRED]</B> <I>(e.g. 
-  DEFAULTFILE=index.html)</I> Sets the default filename to be appended if none 
-  is specified in the request (or the request refers to a directory - in which 
-  case the browser will get a 401 Unauthorized rather than a 404 Not Found if 
-  this file doesn't exist). </LI></UL>
+  <LI><B>BIND</B>=addr : <I> (e.g.127.0.0.1)</I> Causes the server to be bound to a 
+  specific address; this is useful on multi-homed machines or if you wish to 
+  prevent public access to the pages. Identical to MUD server usage. 
+  <LI><STRONG>DOMAIN</STRONG>=email domain&nbsp;: <B>[REQUIRED]</B>&nbsp;This is your servers domain for the 
+  purposes of interpreting local email addresses.&nbsp; It should be identical 
+  to your servers domain.&nbsp; For instance, if your server is 
+  myserver.myhost.com, then so should this value.&nbsp; Email&nbsp;addressed to 
+  your mud would then be <A 
+  href="mailto:playername@myserver.myhost.com">playername@myserver.myhost.com</A>.&nbsp; 
+  This domain must match the incoming mail addresses to be accepted. 
+  <LI><STRONG>FORWARD</STRONG>=trueorfalse <EM>(e.g. 
+  TRUE)</EM> Should be set to true or false.&nbsp; If TRUE, mail will be 
+  forwarded to players and mailing lists as the mail becomes available.&nbsp; If 
+  FALSE, the server will not forward mail, but will act as a mail accumulator 
+  only. 
+  <LI><STRONG>MAILBOX</STRONG>=journalname <EM>(e.g. The 
+  EMail Box)</EM> This is the name of your private email Journal.&nbsp; All 
+  private email, from player to player, is stored in this journal.&nbsp; A 
+  GenJournal item of this name can be created in-game to provide in-game access 
+  to email for players who do not have AUTOFORWARD turned on.&nbsp; Otherwise, 
+  when FORWARD is true, and the player has AUTOFORWARD turned on, email will 
+  remain in this box only until it can be successfully sent to the players 
+  private email address. 
+  <LI><STRONG>EMAILDAYS</STRONG>=xx <EM>(e.g. 30)</EM> This 
+  is the maximum number of days a message will remain in the MAILBOX above for 
+  any reason. 
+  <LI><STRONG>FAILUREDAYS</STRONG>=xx<EM> (e.g. 5)</EM> 
+  This is the number of days that&nbsp;your server will attempt to forward a 
+  message to a private email address before giving up.&nbsp; &nbsp; 
+  <LI><STRONG>MAXMSGS</STRONG>=xx <EM>(e.g. 100)</EM> This 
+  is the maximum number of private emails which will be stored in the MAILBOX 
+  for each player.&nbsp; Use 0 for unlimited. 
+  <LI><STRONG>MAXMSGSIZE</STRONG>=xx <EM>(e.g. 20000)</EM> 
+  This is the maximum number of bytes for each email sent.&nbsp; No email 
+  arriving through your server may exceed this size. 
+  <LI><STRONG>JOURNALS</STRONG>=coded 
+  list&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <BR><BR><EM>e.g. Local Chat, The Elf 
+  Journal (forward keepall -RACE +Elf), Announcements (forward)<BR><BR></EM>This 
+  is the name of one of more GenJournal (see Archon Guide). Each&nbsp;entry 
+  should be comma delimited. The mails sent to a journal name will 
+  appear&nbsp;as TO ALL messages in the designated journal. The names listed 
+  here are case&nbsp;sensitive with respect to your GenJournal names. Mail may 
+  be sent to journal&nbsp;names with spaces by substituting an unscore "_" for 
+  each space. For instance,&nbsp;to send an email to a journal called "The 
+  Journal" at the domain "mydomain.com",&nbsp;you would address it as: <A 
+  href="mailto:The_Journal@mydomain.com">The_Journal@mydomain.com</A>&nbsp;.<BR><BR>For 
+  each journal entry, parameters may follow the name, so long as they&nbsp;are 
+  enclosed in parenthesis. ().<BR><BR>The parameters may include the word 
+  'forward' if you would like emails&nbsp;to be forwarded to the private mail 
+  boxes whose names are maintained in&nbsp;resources/emaillists.txt. Nonmembers 
+  may post a message to the journal # or send an email with "subscribe" as the 
+  subject to subscribe. Members&nbsp;may likewise use "unsubscribe" to remove 
+  their names.&nbsp;<BR><BR>The Parameters should include the word 
+  'subscribeonly' if posts to the&nbsp;list are not accepted, but 
+  subscribe/unsubscribe messages are. This&nbsp;parameter should always be used 
+  with the 'forward' parameter.&nbsp;<BR><BR>The Parameters should include the 
+  word 'keepall' if posts to the journal&nbsp;are saved in the journal archives 
+  instead of automatically deleted after&nbsp;forwarding. Like 'subscribeonly', 
+  this parameter ONLY matters when 'forward'&nbsp;is included. Posts to journals 
+  are never deleted unless 'forward' is set.&nbsp;See the JOURNALDAYS ini entry 
+  below for ways to delete these messages even&nbsp;when 'keepall' is 
+  included.<BR><BR>&nbsp;Parameters may also include Zapper masks to control 
+  subscription&nbsp;and/or posting criteria. Use AHELP Prop_HaveZapper to list 
+  the&nbsp;valid Zapper mask parameters. 
+  <LI><STRONG>JOURNALDAYS</STRONG>=          
+           xx (e.g. 90) This is the 
+  number of maximum number of days a message will remain in an smtp server managed 
+  JOURNAL before being deleted. </LI></UL> 
+  <P>          
+                 
+                 
+     &nbsp; </P>
 
 </BODY>
 </HTML>

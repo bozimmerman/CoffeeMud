@@ -38,6 +38,7 @@ MUD Server: <b>@MUDSERVERVERSION@</b> on port <b>@MUDSERVERPORT@</b>: <b>@MUDSER
 	<B><FONT COLOR=WHITE>Guides</FONT></B><br>
 	<A HREF="pub/guides/InstallationGuide.html"><FONT COLOR=BLUE>The Installation Guide</FONT></A><br>
 	<A HREF="pub/guides/WebServer.html"><FONT COLOR=BLUE>The Web Server guide</FONT></A><br>
+	<A HREF="pub/guides/SMTPServer.html"><FONT COLOR=BLUE>The SMTP Server guide</FONT></A><br>
 	<a href="pub/guides/ArchonGuide.html"><FONT COLOR=BLUE>Archon's Guide</FONT></a><BR>
 	<A HREF="pub/guides/MUDGrinder.html"><FONT COLOR=BLUE>The MUDGrinder Guide</FONT></A><br>
 	<A HREF="pub/guides/Programming.html"><FONT COLOR=BLUE>The Programmer's Guide</FONT></A><br>
