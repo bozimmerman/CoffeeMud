@@ -1,4 +1,3 @@
-set range at 0 after combat -- how did he leave combat? flee? yes, and then came back
 ability to permasave a mpvar
 implement mana/move thing for abilities -- add to help
-social editor does not accept <>
+scriptable -- add ability adding, and container checking

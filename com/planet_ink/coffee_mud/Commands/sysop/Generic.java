@@ -3045,6 +3045,8 @@ public class Generic
 			genAlignment(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
 			genAbilities(mob,me,++showNumber,showFlag);
+			genAffects(mob,me,++showNumber,showFlag);
+			genBehaviors(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me,++showNumber,showFlag);
 			genSensesMask(mob,me,++showNumber,showFlag);
 			if(me instanceof Rideable)

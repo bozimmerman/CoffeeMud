@@ -1391,7 +1391,7 @@ public class StdMOB implements MOB
 				}
 			}
 
-			if((rangeToTarget()>0)&&(!isInCombat()))
+			if((rangeToTarget()>=0)&&(!isInCombat()))
 				setAtRange(-1);
 
 			switch(affect.targetMinor())

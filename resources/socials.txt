@@ -622,3 +622,4 @@ mo	NIBBLE SELF	You nibble on your OWN ear ???????????????????	<S-NAME> nibbles o
 oo	GOOSE	Who would you like to goose?			
 mo	PALE SELF	You feel the blood draining from your face.			
 ss	LAUGH <T-NAME>	You laugh at <T-NAMESELF> mercilessly.	<S-NAME> laughs at <T-NAMESELF> mercilessly.	<S-NAME> laughs at you mercilessly.	You can't find the butt of your joke.
+ot	PATPAT <T-NAME>	You patpat <T-NAMESELF>, trying to comfort <T-HIM-HER>.	<S-NAME> patpats <T-NAME>.  <T-NAME> is NOT comforted.	<S-NAME> patpats you.	They must not need your comforting.

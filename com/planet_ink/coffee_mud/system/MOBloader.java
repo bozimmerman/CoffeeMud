@@ -166,24 +166,38 @@ public class MOBloader
 			while(R.next())
 			{
 				String abilityID=DBConnections.getRes(R,"CMABID");
-				Ability newAbility=(Ability)CMClass.getAbility(abilityID);
-				if(newAbility==null)
-					Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
-				else
+				int profficiency=(int)DBConnections.getLongRes(R,"CMABPF");
+				if(profficiency==Integer.MIN_VALUE)
 				{
-					int profficiency=(int)DBConnections.getLongRes(R,"CMABPF");
-					if(profficiency==Integer.MAX_VALUE)
-					{
-						newAbility.setProfficiency(100);
-						mob.addNonUninvokableAffect(newAbility);
-						newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
-					}
+					Behavior newBehavior=(Behavior)CMClass.getBehavior(abilityID);
+					if(newBehavior==null)
+						Log.errOut("MOB","Couldn't find behavior '"+abilityID+"'");
 					else
 					{
-						newAbility.setProfficiency(profficiency);
-						newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
-						newAbility.recoverEnvStats();
-						mob.addAbility(newAbility);
+						newBehavior.setParms(DBConnections.getRes(R,"CMABTX"));
+						mob.addBehavior(newBehavior);
+					}
+				}
+				else
+				{
+					Ability newAbility=(Ability)CMClass.getAbility(abilityID);
+					if(newAbility==null)
+						Log.errOut("MOB","Couldn't find ability '"+abilityID+"'");
+					else
+					{
+						if(profficiency==Integer.MAX_VALUE)
+						{
+							newAbility.setProfficiency(100);
+							mob.addNonUninvokableAffect(newAbility);
+							newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
+						}
+						else
+						{
+							newAbility.setProfficiency(profficiency);
+							newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
+							newAbility.recoverEnvStats();
+							mob.addAbility(newAbility);
+						}
 					}
 				}
 			}
@@ -766,6 +780,26 @@ public class MOBloader
 				+"'"+thisAffect.ID()+"',"
 				+Integer.MAX_VALUE+",'"
 				+thisAffect.text()+"'"
+				+")";
+				V.addElement(str);
+			}
+		}
+		for(int b=0;b<mob.numBehaviors();b++)
+		{
+			Behavior thisBehavior=mob.fetchBehavior(b);
+			if(thisBehavior!=null)
+			{
+				String
+				str="INSERT INTO CMCHAB ("
+				+"CMUSERID, "
+				+"CMABID, "
+				+"CMABPF,"
+				+"CMABTX"
+				+") values ("
+				+"'"+mob.Name()+"',"
+				+"'"+thisBehavior.ID()+"',"
+				+Integer.MIN_VALUE+",'"
+				+thisBehavior.getParms()+"'"
 				+")";
 				V.addElement(str);
 			}

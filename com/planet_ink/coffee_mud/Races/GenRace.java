@@ -12,7 +12,8 @@ public class GenRace extends StdRace
 	public String name(){ return name; }
 	public int practicesAtFirstLevel(){return 0;}
 	public int trainsAtFirstLevel(){return 0;}
-	public boolean playerSelectable(){return false;}
+	public boolean playerSelectable=false;
+	public boolean playerSelectable(){return playerSelectable;}
 
 	public int shortestMale=24;
 	public int shortestMale(){return shortestMale;}
@@ -130,6 +131,7 @@ public class GenRace extends StdRace
 		str.append(XMLManager.convertXMLtoTag("BWEIGHT",""+lightestWeight()));
 		str.append(XMLManager.convertXMLtoTag("VWEIGHT",""+weightVariance()));
 		str.append(XMLManager.convertXMLtoTag("WEAR",""+forbiddenWornBits()));
+		str.append(XMLManager.convertXMLtoTag("PLAYER",""+playerSelectable));
 		StringBuffer bbody=new StringBuffer("");
 		for(int i=0;i<bodyMask().length;i++)
 			bbody.append(bodyMask()[i]+';');
@@ -197,6 +199,7 @@ public class GenRace extends StdRace
 		heightVariance=XMLManager.getIntFromPieces(raceData,"VHEIGHT");
 		shortestFemale=XMLManager.getIntFromPieces(raceData,"FHEIGHT");
 		shortestMale=XMLManager.getIntFromPieces(raceData,"MHEIGHT");
+		playerSelectable=XMLManager.getBoolFromPieces(raceData,"PLAYER");
 		leaveStr=XMLManager.getValFromPieces(raceData,"LEAVE");
 		arriveStr=XMLManager.getValFromPieces(raceData,"ARRIVE");
 		healthBuddy=CMClass.getRace(XMLManager.getValFromPieces(raceData,"HEALTHRACE"));
@@ -250,25 +253,119 @@ public class GenRace extends StdRace
 			}
 		}
 	}
-	protected static String[] CODES={"CLASS","PARMS"};
+	protected static String[] CODES={"CLASS","PARMS","CAT","WEAR","VWEIGHT","BWEIGHT",
+									 "VHEIGHT","FHEIGHT","MHEIGHT","PLAYER","LEAVE",
+									 "ARRIVE","HEALTHRACE","BODY","ESTATS",
+									 "ASTATS","CSTATS","ASTATE",
+									 "NUMRSC","GETRSCID","GETRSCPARM",
+									 "WEAPONCLASS","WEAPONXML"
+									 };
 	public String getStat(String code){
+		int num=0;
+		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
+		{
+			num=(num*10)+code.charAt(code.length()-1);
+			code=code.substring(0,code.length()-1);
+		}
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
 		case 1: return ""+racialParms();
+		case 2: return racialCategory;
+		case 3: return ""+forbiddenWornBits();
+		case 4: return ""+weightVariance();
+		case 5: return ""+lightestWeight();
+		case 6: return ""+heightVariance();
+		case 7: return ""+shortestFemale();
+		case 8: return ""+shortestMale();
+		case 9: return ""+playerSelectable();
+		case 10: return leaveStr();
+		case 11: return arriveStr();
+		case 12: return ((healthBuddy==null)?"":healthBuddy.ID());
+		case 13: 
+		{
+			StringBuffer bbody=new StringBuffer("");
+			for(int i=0;i<bodyMask().length;i++)
+				bbody.append(bodyMask()[i]+';');
+			return bbody.toString();
+		}
+		case 14: return (adjEStats==null)?"":Generic.getEnvStatsStr(adjEStats);
+		case 15: return (adjStats==null)?"":Generic.getCharStatsStr(adjStats);
+		case 16: return (setStats==null)?"":Generic.getCharStatsStr(setStats);
+		case 17: return (adjState==null)?"":Generic.getCharStateStr(adjState);
+		case 18: return ""+myResources().size();
+		case 19: return ""+((Item)myResources().elementAt(num)).ID();
+		case 20: return ""+((Item)myResources().elementAt(num)).text();
+		case 21: return (naturalWeapon==null)?"":naturalWeapon.ID();
+		case 22: return (naturalWeapon==null)?"":naturalWeapon.text();
 		}
 		return "";
 	}
 	public void setStat(String code, String val)
 	{
+		int num=0;
+		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
+		{
+			num=(num*10)+code.charAt(code.length()-1);
+			code=code.substring(0,code.length()-1);
+		}
 		switch(getCodeNum(code))
 		{
-		case 0: return;
+		case 0: ID=val; break;
 		case 1: setRacialParms(val); break;
+		case 2: racialCategory=val; break;
+		case 3: forbiddenWornBits=Util.s_long(val); break;
+		case 4: weightVariance=Util.s_int(val); break;
+		case 5: lightestWeight=Util.s_int(val); break;
+		case 6: heightVariance=Util.s_int(val); break;
+		case 7: shortestFemale=Util.s_int(val); break;
+		case 8: shortestMale=Util.s_int(val); break;
+		case 9: playerSelectable=Util.s_bool(val); break;
+		case 10: leaveStr=val;break;
+		case 11: arriveStr=val;break;
+		case 12: healthBuddy=CMClass.getRace(val); break;
+		case 13: 
+		{
+			Vector V=Util.parseSemicolons(val);
+			for(int v=0;v<V.size();v++)
+				if(v<bodyMask().length)
+					bodyMask()[v]=Util.s_int((String)V.elementAt(v));
+			break;
+		}
+		case 14: adjEStats=null;if(val.length()>0){adjEStats=new DefaultEnvStats(0); Generic.setEnvStats(adjEStats,val);}break;
+		case 15: adjStats=null;if(val.length()>0){adjStats=new DefaultCharStats(0); Generic.setCharStats(adjStats,val);}break;
+		case 16: setStats=null;if(val.length()>0){setStats=new DefaultCharStats(0); Generic.setCharStats(setStats,val);}break;
+		case 17: adjState=null;if(val.length()>0){adjState=new DefaultCharState(0); Generic.setCharState(adjState,val);}break;
+		case 18: if(val.length()==0) resourceChoices=null; break;
+		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
+					 if(num>=resourceChoices.size())
+						resourceChoices.addElement(CMClass.getItem(val));
+					 else
+				        resourceChoices.setElementAt(CMClass.getItem(val),num);
+					 break;
+				 }
+		case 20: {   if((resourceChoices!=null)&&(num<resourceChoices.size()))
+					 {
+						Item I=(Item)resourceChoices.elementAt(num);
+						I.setMiscText(val);
+						I.recoverEnvStats();
+					 }
+					 break;
+				 }
+		case 21: naturalWeapon=null; 
+				 if(val.length()>0) naturalWeapon=CMClass.getWeapon(val);
+				 break;
+		case 22: if(naturalWeapon!=null){
+					 naturalWeapon.setMiscText(val); 
+					 naturalWeapon.recoverEnvStats();
+				 }
+				 break;
 		}
 	}
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
+		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
+			code=code.substring(0,code.length()-1);
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
@@ -276,9 +373,8 @@ public class GenRace extends StdRace
 	public boolean sameAs(Race E)
 	{
 		if(!(E instanceof GenRace)) return false;
-		for(int i=0;i<CODES.length;i++)
-			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
-				return false;
-		return true;
+		if(((GenRace)E).racialParms().equals(racialParms()))
+			return true;
+		return false;
 	}
 }
