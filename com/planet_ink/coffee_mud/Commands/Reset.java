@@ -709,7 +709,7 @@ public class Reset extends StdCommand
 			mob.tell("Done.");
 		}
 		else
-			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREARACEMAT *, MOBSTATS ROOM *, MOBSTATS AREA *, MOBSTATS WORLD *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
+			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, AREARACEMAT *, AREAROOMIDS *.\n\r * = Reset functions which may take a long time to complete.");
 		return false;
 	}
 
