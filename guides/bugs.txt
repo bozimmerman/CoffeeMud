@@ -1,5 +1,5 @@
 bug look for alternate materials in the common skills
 Something to fix my existing imported weapon damages
 The Gnome chieftain in the Gnome Village is also missing...
-When I was using grinder a couple nights ago, I was in a room w/ 4 mobs, click to see the first, it showed me the 2nd, when I click on 4th it showed me 3rd, when I click on 2nd and 3rd it showed me 2nd.
 The Troll Den needs to be reimported. The two main trolls aren't there anymore, and the objects in the room are duplicaed (bed and ring). I don't know if anything else has changed with it...
+

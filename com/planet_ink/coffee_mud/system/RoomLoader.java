@@ -269,8 +269,6 @@ public class RoomLoader
 					newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
 					newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 					newItem.recoverEnvStats();
-					if(thisRoom!=null)
-						thisRoom.addItem(newItem);
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(myHost!=null))
 					myHost.setGameStatusStr("Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
@@ -328,8 +326,6 @@ public class RoomLoader
 					newMOB.recoverEnvStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
-					if(thisRoom!=null)
-						newMOB.bringToLife(thisRoom,true);
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(myHost!=null))
 					myHost.setGameStatusStr("Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
