@@ -1,5 +1,6 @@
 ?Test: High Marks, Imp. Distraction, Imp. Peek, Imp. Steal, Imp. Swipe
 ?Test: Far Shot, Body Shield, PK-ALWAYS-X
+?Heh... Don't know if we can have anything catch for the error, since it's so severe (i.e. MUD dies), but is it possible to check for snooping loops?
 Could you set it to auto-detect based on the inventory of the shop whether the items will fit in one column or two?  With some shops, the item names are long enough that two columns are poor fits.
 mutable body parts, with ability to grant powers
 SMTP Server

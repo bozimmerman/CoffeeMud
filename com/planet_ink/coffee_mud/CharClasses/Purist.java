@@ -44,6 +44,7 @@ public class Purist extends Cleric
 			CMAble.addCharAbilityMapping(ID(),2,"Prayer_Purify",false);
 
 			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Sacrifice",false);
+			CMAble.addCharAbilityMapping(ID(),3,"Prayer_Fidelity",false);
 
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtEvil",true);
 			CMAble.addCharAbilityMapping(ID(),4,"Prayer_ProtUndead",false);

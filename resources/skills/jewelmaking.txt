@@ -10,7 +10,7 @@
 % Choker	8	20	2	50	GenArmor	NECK	0	0
 % Earrings	9	20	1	20	GenArmor	EARS	0	0	PRECIOUS
 % Hairpin	10	10	1	40	GenArmor	HEAD	0	0	PRECIOUS
-% Wedding Band	10	20	1	250	GenArmor	LEFT FINGER||RIGHT FINGER	0	0
+% Wedding Band	10	20	1	250	GenArmor	LEFT FINGER||RIGHT FINGER	0	0		Prayer_Fidelity
 % Brooch	11	30	2	100	GenArmor	NECK	0	0
 % Eye Glasses	11	50	2	20	GenArmor	EYES	0	0	GLASS
 % Tiara	13	80	10	200	GenArmor	HEAD	0	0

@@ -10,6 +10,17 @@ public class Snoop extends StdCommand
 
 	private String[] access={"SNOOP"};
 	public String[] getAccessWords(){return access;}
+	
+	private Vector snoopedOnBy(Session S)
+	{
+		Vector V=new Vector();
+		for(int s=0;s<Sessions.size();s++)
+			if(Sessions.elementAt(s).amSnooping(S))
+				V.addElement(Sessions.elementAt(s));
+		return V;
+	}
+	
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -41,7 +52,7 @@ public class Snoop extends StdCommand
 			return false;
 		}
 		String whom=Util.combine(commands,0);
-		boolean snoop=false;
+		Session SnoopOn=null;
 		for(int s=0;s<Sessions.size();s++)
 		{
 			Session S=Sessions.elementAt(s);
@@ -53,18 +64,34 @@ public class Snoop extends StdCommand
 					return false;
 				}
 				else
-				if((!S.amSnooping(mob.session()))
-				&&(mob.isASysOp(S.mob().location())))
-				{
-					mob.tell("You start snooping on "+S.mob().name()+".");
-					S.startSnooping(mob.session());
-					snoop=true;
-					break;
-				}
+				if(mob.isASysOp(S.mob().location()))
+					SnoopOn=S;
 			}
 		}
-		if(!snoop)
-		mob.tell("You can't find anyone by that name.");
+		if(SnoopOn==null)
+			mob.tell("You can't find to snoop on by that name.");
+		else
+		{
+			Vector snoop=new Vector();
+			snoop.addElement(mob.session());
+			for(int v=0;v<snoop.size();v++)
+			{
+				if(snoop.elementAt(v)==SnoopOn)
+				{
+					mob.tell("This would create a snoop loop!");
+					return false;
+				}
+				Vector V=snoopedOnBy((Session)snoop.elementAt(v));
+				for(int v2=0;v2<V.size();v2++)
+				{
+					Session S2=(Session)V.elementAt(v2);
+					if(!snoop.contains(S2))
+						snoop.addElement(S2);
+				}
+			}
+			mob.tell("You start snooping on "+SnoopOn.mob().name()+".");
+			SnoopOn.startSnooping(mob.session());
+		}
 		return false;
 	}
 	public int ticksToExecute(){return 0;}

@@ -133,6 +133,7 @@ public class TelnetSession extends Thread implements Session
 	}
 	public boolean amSnooping(Session S)
 	{
+		if(S==null) return snoops.size()==0;
 		return(snoops.contains(S));
 	}
 

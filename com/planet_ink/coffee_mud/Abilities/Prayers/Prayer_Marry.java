@@ -112,6 +112,7 @@ public class Prayer_Marry extends Prayer
 				mob.location().send(mob,msg);
 				husband.setLiegeID(wife.Name());
 				wife.setLiegeID(husband.Name());
+				CoffeeTables.bump(husband,CoffeeTables.STAT_MARRIAGES);
 				CommonMsgs.say(mob,husband,"You may kiss your bride!",false,false);
 			}
 		}
