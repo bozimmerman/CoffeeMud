@@ -75,12 +75,10 @@ CMAble.addCharAbilityMapping(ID(),12,"Chant_RockThought",false);
 //Rockthought Makes the target stubborn. Short duration, but must repeat the next action for the entire duration. For example...delver casts rockthought. Mage casts magic missile. Mage casts MM, casts MM, casts MM, casts MM. I think 1 combat round per 4 delver levels.... 
 			CMAble.addCharAbilityMapping(ID(),12,"Chant_SnatchLight",false);
 
-CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
-//Drifting 	This is a levitate that allows the delver to move along the ceiling of a cave (reverse gravity). Outside, it should make the delver fall up. While drifting, the delver can only move at crawl speeds. This is similar to beholders and grells movement abilities. 
+			CMAble.addCharAbilityMapping(ID(),13,"Chant_Drifting",false);
 			CMAble.addCharAbilityMapping(ID(),13,"Chant_DistantFungalGrowth",false);
 
-CMAble.addCharAbilityMapping(ID(),14,"Chant_StoneWalking",false);
-//Stonewalking 	While in a cave, stone, or mountain -type room, the Delver is intangible and undetectable until he attacks or gets an item. 
+			CMAble.addCharAbilityMapping(ID(),14,"Chant_Stonewalking",false);
 			CMAble.addCharAbilityMapping(ID(),14,"Chant_Bury",false);
 
 			CMAble.addCharAbilityMapping(ID(),15,"Chant_FungalBloom",false);

@@ -68,6 +68,7 @@ public class Chant_AnimalSpy extends Chant
 			else
 			if((!msg.amISource(invoker))
 			&&(((MOB)invoker).location()!=spy.location())
+			&&(msg.source().location()==spy.location())
 			&&(msg.othersCode()!=CMMsg.NO_EFFECT)
 			&&(msg.othersMessage()!=null)
 			&&(!disable))

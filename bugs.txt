@@ -4,6 +4,7 @@ Test: Deep Darkness, Sense Metal, Tether, Endure Rust, Magnetic Field
 Test: Den, Rockfeet, Earthpocket, Golem Form, Crystal Growth, 1 Moon Change
 Test: Sacred Earth, Labyrinth, Mass Fungal Growth, Distant Fungal Growth, Stone Friend
 Test: Unbreakable, Homeopathy, Snatch Light, Summon Rock Golem, Fungus Feet, Worms
+Test: Stonewalking, Drifting
 Could you set it to auto-detect based on the inventory of the shop whether the items will fit in one column or two?  With some shops, the item names are long enough that two columns are poor fits.
 put a conquered mob on a home property, quit, log back on, see if this error occurs.
 MudChat should find ALL alternative answers and weigh them ALL against each other
@@ -11,7 +12,7 @@ Have rooms generate their resources instead of skills
 Prop_Translator -- echos translations to the room, but on items, players.
 I have 2 walking arenedirs one day, and he doesn't leige, and he doesn't autoassist!
 I can't withdraw from the bank. It says Your spouse's account has 45000 . I deposited 20000 and it said I had 0 in the bank. spouses automatically deposit to spouse, not to own -- cannot withdraw from own accounts
-
+When mirror image is up, and the original gives an object to another entity, it shows this: Zenthlas gives to you.
 
 Delver:
 

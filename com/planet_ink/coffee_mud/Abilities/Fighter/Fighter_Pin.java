@@ -73,7 +73,7 @@ public class Fighter_Pin extends StdAbility
 
 		if(canBeUninvoked())
 		{
-			if(!mob.amDead())
+			if((!mob.amDead())&&(Sense.isInTheGame(mob)))
 			{
 				if(mob==invoker)
 				{
