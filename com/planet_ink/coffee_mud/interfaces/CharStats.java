@@ -24,6 +24,8 @@ public interface CharStats extends Cloneable
 	public static final int SAVE_UNDEAD=18;
 	public static final int SAVE_MAGIC=19;
 	
+	public final static int NUM_STATS=20;
+	
 	public final static double AVG_VALUE=10.0;
 	public int getStat(int statNum);
 	public int getStat(String abilityName);

@@ -881,10 +881,16 @@ public class TheFight
 	public void resistanceMsgs(Affect affect, MOB source, MOB target)
 	{
 		if(affect.wasModified()) return;
+		
 		if(target.amDead()) return;
 
 		String tool=null;
-		String endPart=" from <S-NAME>.";
+		String endPart=" from <T-NAME>.";
+		if(source==target)
+		{
+			source=null;
+			endPart=".";
+		}
 		if(affect.tool()!=null)
 		{
 			if(affect.tool() instanceof Trap)
@@ -897,37 +903,37 @@ public class TheFight
 		switch(affect.targetMinor())
 		{
 		case Affect.TYP_MIND:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"mental attack":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"mental attack":tool)+endPart));
 			break;
 		case Affect.TYP_GAS:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"noxious fumes":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+((tool==null)?"noxious fumes":tool)+endPart));
 			break;
 		case Affect.TYP_COLD:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"cold blast":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"cold blast":tool)+endPart));
 			break;
 		case Affect.TYP_ELECTRIC:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"electrical attack":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"electrical attack":tool)+endPart));
 			break;
 		case Affect.TYP_FIRE:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> avoid(s) the "+((tool==null)?"blast of heat":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+((tool==null)?"blast of heat":tool)+endPart));
 			break;
 		case Affect.TYP_WATER:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> dodge(s) the "+((tool==null)?"wet blast":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> dodge(s) the "+((tool==null)?"wet blast":tool)+endPart));
 			break;
 		case Affect.TYP_UNDEAD:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"evil attack":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"evil attack":tool)+endPart));
 			break;
 		case Affect.TYP_POISON:
-			//affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"poisonous attack":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"poison":tool)+endPart));
 			break;
 		case Affect.TYP_JUSTICE:
-			//affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> shake(s) off the "+((tool==null)?"poisonous attack":tool)+endPart));
+			//affect.addTrailerMsg(new FullMsg(source,source,Affect.MSG_OK_ACTION,"<S-NAME> shake(s) off the "+((tool==null)?"poisonous attack":tool)+endPart));
 			break;
 		case Affect.TYP_CAST_SPELL:
-			affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+((tool==null)?"magical attack":tool)+endPart));
 			break;
 		case Affect.TYP_PARALYZE:
-			//affect.addTrailerMsg(new FullMsg(source,target,Affect.MSG_NOISYMOVEMENT,"<T-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart));
+			affect.addTrailerMsg(new FullMsg(target,source,Affect.MSG_OK_ACTION,"<S-NAME> resist(s) the "+((tool==null)?"paralysis":tool)+endPart));
 			break;
 		}
 		affect.tagModified(true);

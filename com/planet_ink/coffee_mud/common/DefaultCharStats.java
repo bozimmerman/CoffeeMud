@@ -5,7 +5,10 @@ public class DefaultCharStats implements Cloneable, CharStats
 {
 
 	// competency characteristics
-	protected int[] stats=new int[20];
+	protected int[] stats=new int[NUM_STATS];
+	protected CharClass MyClass=null;
+	protected Race MyRace=null;
+	
 	public DefaultCharStats()
 	{
 		for(int i=0;i<6;i++)
@@ -13,9 +16,6 @@ public class DefaultCharStats implements Cloneable, CharStats
 		stats[GENDER]=(int)'M';
 	}
 
-	// physical and static properties
-	protected CharClass MyClass=null;
-	protected Race MyRace=null;
 	public CharClass getMyClass()
 	{
 		if(MyClass==null)
@@ -67,15 +67,11 @@ public class DefaultCharStats implements Cloneable, CharStats
 	// create a new one of these
 	public CharStats cloneCharStats()
 	{
-		CharStats newOne=null;
-		try
-		{
-			newOne=(CharStats) this.clone();
-		}
-		catch(CloneNotSupportedException e)
-		{
-			newOne=(CharStats) new DefaultCharStats();
-		}
+		CharStats newOne=new DefaultCharStats();
+		newOne.setMyClass(MyClass);
+		newOne.setMyRace(MyRace);
+		for(int s=0;s<stats.length;s++)
+			newOne.setStat(s,stats[s]);
 		return newOne;
 	}
 

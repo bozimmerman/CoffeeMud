@@ -1215,34 +1215,26 @@ public class StdMOB implements MOB
 				else
 				{
 					int chanceToFail=Integer.MIN_VALUE;
+					int saveCode=-1;
 					for(int c=0;c<CharStats.affectTypeMap.length;c++)
 						if(affect.targetMinor()==CharStats.affectTypeMap[c])
-						{	chanceToFail=charStats().getSave(CharStats.affectTypeMap[c]); break;}
+						{	saveCode=c; chanceToFail=charStats().getSave(c); break;}
 					if((chanceToFail>Integer.MIN_VALUE)&&(!affect.wasModified()))
 					{
+						chanceToFail+=(envStats().level()-affect.source().envStats().level());
 						if(chanceToFail<5)
 							chanceToFail=5;
 						else
 						if(chanceToFail>95)
 						   chanceToFail=95;
+						
 						if(Dice.rollPercentage()<chanceToFail)
 						{
-							String tool=null;
-							String endPart=" from <S-NAME>.";
-							if(affect.tool()!=null)
-							{
-							    if(affect.tool() instanceof Ability)
-								{
-									if(affect.tool().getClass().getName().indexOf("Traps.")>=0)
-										endPart=".";
-									else
-										tool=((Ability)affect.tool()).name();
-								}
-							}
 							ExternalPlay.resistanceMsgs(affect,affect.source(),this);
 							affect.tagModified(true);
 						}
 					}
+					// what is this?  a malicious, weapon attack not attached to hurt or weaponstrike!
 					if((affect.tool()!=null)&&(affect.tool() instanceof Weapon))
 						ExternalPlay.strike(affect.source(),this,(Weapon)affect.tool(),true);
 				}
