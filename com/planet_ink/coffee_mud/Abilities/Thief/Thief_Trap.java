@@ -167,11 +167,12 @@ public class Thief_Trap extends ThiefSkill
 					CMClass.DBEngine().DBUpdateRoom(mob.location());
 				}
 				else
+				if(theTrap!=null)
 					theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 			}
 			else
 			{
-				if(Dice.rollPercentage()>50)
+				if((Dice.rollPercentage()>50)&&(theTrap!=null))
 				{
 					Trap T=theTrap.setTrap(mob,trapThis,CMAble.qualifyingClassLevel(mob,this),adjustedLevel(mob,asLevel));
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) the trap on accident!");
