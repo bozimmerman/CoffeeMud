@@ -45,7 +45,8 @@ public class UnderWater extends StdRoom
 
 		if(affect.amITarget(this)
 		   &&(Util.bset(affect.sourceMajor(),Affect.AFF_MOVEDON))
-		   &&(!Sense.isSwimming(affect.source())))
+		   &&(!Sense.isSwimming(affect.source()))
+		   &&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
 		{
 			MOB mob=affect.source();
 			if(!Sense.isSwimming(mob))

@@ -21,6 +21,7 @@ public class StdMOB implements MOB
 	protected boolean amDead=false;
 	protected Room location=null;
 	protected Room lastLocation=null;
+	protected Rideable riding=null;
 
 	protected Session mySession=null;
 	protected boolean pleaseDestroy=false;
@@ -214,6 +215,7 @@ public class StdMOB implements MOB
 		if(location()!=null)
 			location().affectEnvStats(this,envStats);
 		envStats().setWeight(envStats().weight()+(int)Math.round(Util.div(getMoney(),100.0)));
+		if(riding()!=null) riding().affectEnvStats(this,envStats);
 		if(charStats!=null)
 		{
 			if(charStats().getMyClass()!=null)
@@ -262,6 +264,7 @@ public class StdMOB implements MOB
 	public void recoverCharStats()
 	{
 		charStats=baseCharStats().cloneCharStats();
+		if(riding()!=null) riding().affectCharStats(this,charStats);
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability affect=fetchAffect(a);
@@ -313,6 +316,7 @@ public class StdMOB implements MOB
 	public void recoverMaxState()
 	{
 		maxState=baseState.cloneCharState();
+		if(riding()!=null) riding().affectCharState(this,maxState);
 		for(int a=0;a<numAffects();a++)
 		{
 			Ability affect=fetchAffect(a);
@@ -502,7 +506,7 @@ public class StdMOB implements MOB
 	{
 		amDead=true;
 		victim=null;
-
+		setRiding(null);
 		int a=0;
 		while(a<numAffects())
 		{
@@ -531,6 +535,16 @@ public class StdMOB implements MOB
 		lastLocation=location;
 		location=newRoom;
 	}
+	public Rideable riding(){return riding;}
+	public void setRiding(Rideable ride)
+	{
+		if((riding()!=null)&&(riding().amRiding(this)))
+			riding().delRider(this);
+		riding=ride;
+		if((riding()!=null)&&(!riding().amRiding(this)))
+			riding().addRider(this);
+	}
+	
 	public Session session()
 	{
 		return mySession;
@@ -549,15 +563,31 @@ public class StdMOB implements MOB
 
 	public String displayText()
 	{
-		String sendBack=displayText;
-		if((displayText.length()==0)||(Sense.isSleeping(this))||(Sense.isSitting(this))||(isInCombat()))
+		if((displayText.length()==0)
+		   ||(Sense.isSleeping(this))
+		   ||(Sense.isSitting(this))
+		   ||(riding()!=null)
+		   ||(isInCombat()))
 		{
-			sendBack=name()+" "+Sense.dispositionString(this,Sense.flag_is)+" here";
+			StringBuffer sendBack=new StringBuffer(name());
+			sendBack.append(" ");
+			sendBack.append(Sense.dispositionString(this,Sense.flag_is));
+			sendBack.append(" here");
+			if(riding()!=null)
+			{
+				sendBack.append(" riding ");
+				sendBack.append(riding().name());
+			}
 			if((isInCombat())&&(Sense.canMove(this))&&(!Sense.isSleeping(this)))
-				sendBack+=" fighting "+getVictim().name();
-			sendBack+=".";
+			{
+				sendBack.append(" fighting ");
+				sendBack.append(getVictim().name());
+			}
+			sendBack.append(".");
+			return sendBack.toString();
 		}
-		return sendBack;
+		else
+			return displayText;
 	}
 
 	public String rawDisplayText()
@@ -635,7 +665,7 @@ public class StdMOB implements MOB
 			if((B!=null)&&(!B.okAffect(this,affect)))
 				return false;
 		}
-
+		
 		MOB mob=affect.source();
 		if((affect.sourceCode()!=Affect.NO_EFFECT)
 		&&(affect.amISource(this))
@@ -665,6 +695,11 @@ public class StdMOB implements MOB
 					if((amFollowing()!=null)&&(target==amFollowing()))
 					{
 						tell("You like "+amFollowing().charStats().himher()+" too much.");
+						return false;
+					}
+					if((riding()!=null)&&(target==riding()))
+					{
+						tell("You can't attack "+riding().name()+" right now.");
 						return false;
 					}
 					// establish and enforce range

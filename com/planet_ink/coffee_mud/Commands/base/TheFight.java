@@ -824,7 +824,7 @@ public class TheFight
 				damageAmount = new Integer(Dice.roll(1, weapon.envStats().damage(),1)).doubleValue();
 			else
 				damageAmount = new Integer(Dice.roll(1, source.envStats().damage(), (source.charStats().getStrength() / 3)-2)).doubleValue();
-
+			
             // modify damage if target can not be seen
             if(!Sense.canBeSeenBy(target,source))
                 damageAmount *=.5;
@@ -845,8 +845,7 @@ public class TheFight
 			if(source.curState().getThirst() < 1)
                 damageAmount *= .9;
 
-			if(damageAmount<1.0)
-				damageAmount=1.0;
+			if(damageAmount<1.0) damageAmount=1.0;
 
 			int damageInt=(int)Math.round(damageAmount);
 

@@ -1,5 +1,5 @@
 The guildmaster teaches you 'Dwarven'.  The guildmaster says 'But you already know 'Dwarven'.' to you.
-Make the out of charges message different from the failure message.
+Make the out of charges message for wands different from the failure message.
 
 
 

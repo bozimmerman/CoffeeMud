@@ -6,20 +6,38 @@ import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
 import java.util.*;
 
-public class GenBoat extends GenItem implements Boat
+public class GenRideableItem extends StdRideableItem
 {
-	public GenBoat()
+	protected String readableText="";
+	public GenRideableItem()
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="a generic boat";
 		displayText="a generic boat sits here.";
 		description="Looks like a boat";
+		baseEnvStats().setWeight(2000);
+		rideBasis=Rideable.RIDEABLE_WATER;
+		recoverEnvStats();
 		isReadable=false;
 	}
 	public Environmental newInstance()
 	{
-		return new GenBoat();
+		return new GenRideableItem();
 	}
 	public boolean isGeneric(){return true;}
+
+	public String text()
+	{
+		return Generic.getPropertiesStr(this,false);
+	}
+
+	public String readableText(){return readableText;}
+	public void setReadableText(String text){readableText=text;}
+	public void setMiscText(String newText)
+	{
+		miscText="";
+		Generic.setPropertiesStr(this,newText,false);
+		recoverEnvStats();
+	}
 }

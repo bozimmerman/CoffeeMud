@@ -23,7 +23,6 @@ remove rawness from Meat).
 
 Two-handed fighting
 
-
 Convert some properties to work with the new areas. Prop_NOMOB, etc..
 
 exp from sac/des also based on level of the body.  Set body levels based on char level.

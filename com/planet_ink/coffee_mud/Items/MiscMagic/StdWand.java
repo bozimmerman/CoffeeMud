@@ -96,9 +96,12 @@ public class StdWand extends StdItem implements Wand
 					if(A==null)
 						mob.tell("Something seems wrong with "+me.name()+".");
 					else
+					if(me.usesRemaining()<=0)
+						mob.tell(me.name()+" seems spent.");
+					else
 					{
 						A=(Ability)A.newInstance();
-						if((me.usesRemaining()>0)&&(me.useTheWand(A,mob)))
+						if(me.useTheWand(A,mob))
 						{
 							Vector V=new Vector();
 							if(target!=null)

@@ -38,11 +38,23 @@ public class Movement
 		String otherDirectionName=Directions.getFromDirectionName(Directions.getOpDirectionCode(directionCode));
 
 		int leaveCode=Affect.MSG_LEAVE;
-		if(flee) leaveCode=Affect.MSG_FLEE;
+		if(flee) 
+			leaveCode=Affect.MSG_FLEE;
+			
 
 
-		FullMsg enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
-		FullMsg leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flees":Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName);
+		FullMsg enterMsg=null;
+		FullMsg leaveMsg=null;
+		if(mob.riding()!=null)
+		{
+			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> ride(s) "+mob.riding().name()+" in from "+otherDirectionName);
+			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flee(s) with ":"ride(s)")+mob.riding().name()+" "+directionName);
+		}
+		else
+		{
+			enterMsg=new FullMsg(mob,destRoom,exit,Affect.MSG_ENTER,null,Affect.MSG_ENTER,null,Affect.MSG_ENTER,"<S-NAME> "+Sense.dispositionString(mob,Sense.flag_arrives)+" from "+otherDirectionName);
+			leaveMsg=new FullMsg(mob,thisRoom,opExit,leaveCode,((flee)?"You flee "+directionName:null),leaveCode,null,leaveCode,"<S-NAME> "+((flee)?"flees":Sense.dispositionString(mob,Sense.flag_leaves))+" "+directionName);
+		}
 		if((exit==null)&&(!mob.isASysOp(destRoom)))
 		{
 			mob.tell("You can't go that way.");
@@ -67,11 +79,14 @@ public class Movement
 		if(!mob.okAffect(enterMsg))
 			return false;
 
-		mob.curState().expendEnergy(mob,mob.maxState(),true);
-		if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(),mob.maxState())))
+		if(mob.riding()==null)
 		{
-			mob.tell("You are too tired.");
-			return false;
+			mob.curState().expendEnergy(mob,mob.maxState(),true);
+			if((!flee)&&(!mob.curState().adjMovement(-thisRoom.pointsPerMove(),mob.maxState())))
+			{
+				mob.tell("You are too tired.");
+				return false;
+			}
 		}
 
 		if(exit!=null) exit.affect(enterMsg);
@@ -84,6 +99,41 @@ public class Movement
 
 		if(opExit!=null) opExit.affect(leaveMsg);
 		ExternalPlay.look(mob,null,true);
+		
+		Vector followers=new Vector();
+		for(int f=0;f<mob.numFollowers();f++)
+		{
+			MOB follower=mob.fetchFollower(f);
+			if(follower!=null)
+				followers.addElement(follower);
+		}
+			
+		if(mob.riding()!=null)
+		{
+			boolean moveRiders=false;
+			if((mob.riding() instanceof Item)
+			   &&(((Room)leaveMsg.target()).isContent((Item)mob.riding())))
+			{
+				((Room)leaveMsg.target()).delItem((Item)mob.riding());
+				((Room)enterMsg.target()).addItem((Item)mob.riding());
+				moveRiders=true;
+			}
+			else
+			if((mob.riding() instanceof MOB)
+			   &&(((Room)leaveMsg.target()).isInhabitant((MOB)mob.riding())))
+			{
+				moveRiders=true;
+				if(!followers.contains(mob.riding()))
+					followers.addElement(mob.riding());
+			}
+			if(moveRiders)
+				for(int r=0;r<mob.riding().numRiders();r++)
+				{
+					MOB rMOB=mob.riding().fetchRider(r);
+					if(!followers.contains(rMOB))
+						followers.addElement(rMOB);
+				}
+		}
 
 		if(!flee)
 		for(int f=0;f<mob.numFollowers();f++)
@@ -95,7 +145,10 @@ public class Movement
 			{
 				if(follower.location()==thisRoom)
 				{
-					follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
+					if((mob.riding()==null)||(mob.riding()!=follower))
+						follower.tell("You follow "+mob.name()+" "+Directions.getDirectionName(directionCode)+".");
+					else
+						follower.tell("You are ridden "+Directions.getDirectionName(directionCode)+".");
 					move(follower,directionCode,false);
 				}
 			}

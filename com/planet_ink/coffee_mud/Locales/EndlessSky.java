@@ -37,7 +37,8 @@ public class EndlessSky extends Grid
 			MOB mob=affect.source();
 			Room room=(Room)affect.target();
 			if(mob.location()!=room.doors()[Directions.UP])
-				if(!Sense.isFlying(mob))
+				if((!Sense.isFlying(mob))
+				&&((mob.riding()==null)||(!Sense.isFlying(mob.riding()))))
 				{
 					mob.tell("You can't fly.");
 					return false;
@@ -66,6 +67,7 @@ public class EndlessSky extends Grid
 		{
 			MOB mob=affect.source();
 			if((!Sense.isFlying(mob))
+			&&((mob.riding()==null)||(!Sense.isFlying(mob.riding())))
 			&&(doors()[Directions.DOWN]!=null)
 			&&(exits()[Directions.DOWN]!=null)
 			&&(exits()[Directions.DOWN].isOpen()))

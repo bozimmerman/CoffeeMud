@@ -130,8 +130,8 @@ public interface Affect
 	public static final int TYP_ELECTRIC=48;
 	public static final int TYP_POISON=49;
 	public static final int TYP_UNDEAD=50;
-	//public static final int TYP_CAST=51;
-	//public static final int TYP_CAST_MALICIOUS=52;
+	public static final int TYP_MOUNT=51;
+	public static final int TYP_DISMOUNT=52;
 	public static final int TYP_OK_ACTION=53;
 	public static final int TYP_OK_VISUAL=54;
 	public static final int TYP_DRINK=55;
@@ -197,5 +197,7 @@ public interface Affect
 	public static final int MSG_FOLLOW=ACT_GENERAL|TYP_FOLLOW;
 	public static final int MSG_NOFOLLOW=ACT_GENERAL|TYP_NOFOLLOW;
 	public static final int MSG_WRITE=ACT_HANDS|TYP_WRITE;
+	public static final int MSG_MOUNT=ACT_MOVE|ACT_SOUND|TYP_MOUNT;
+	public static final int MSG_DISMOUNT=ACT_MOVE|ACT_SOUND|TYP_DISMOUNT;
 }
 

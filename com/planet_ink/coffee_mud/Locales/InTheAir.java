@@ -32,7 +32,8 @@ public class InTheAir extends StdRoom
 		{
 			MOB mob=affect.source();
 			if(mob.location()!=this.doors()[Directions.UP])
-				if(!Sense.isFlying(mob))
+				if((!Sense.isFlying(mob))
+				&&((mob.riding()==null)||(!Sense.isFlying(mob.riding()))))
 				{
 					mob.tell("You can't fly.");
 					return false;
@@ -46,8 +47,8 @@ public class InTheAir extends StdRoom
 		super.affect(affect);
 
 		if((affect.target() instanceof Item)
-		   &&(!Sense.isFlying(affect.target())
-		   &&(affect.targetMinor()==Affect.TYP_DROP)))
+		   &&(!Sense.isFlying(affect.target()))
+		   &&(affect.targetMinor()==Affect.TYP_DROP))
 		{
 			Ability falling=CMClass.getAbility("Falling");
 			falling.setAffectedOne(this);
@@ -58,6 +59,7 @@ public class InTheAir extends StdRoom
 		{
 			MOB mob=affect.source();
 			if((!Sense.isFlying(mob))
+			&&((mob.riding()==null)||(!Sense.isFlying(mob.riding())))
 			&&(doors()[Directions.DOWN]!=null)
 			&&(exits()[Directions.DOWN]!=null)
 			&&(exits()[Directions.DOWN].isOpen()))

@@ -61,16 +61,15 @@ public interface Room extends Environmental
 	public int domainConditions();
 	
 	
-	public final static int OUTDOORS=0;
 	public final static int INDOORS=128;
 	
-	public final static int DOMAIN_OUTDOORS_CITY=OUTDOORS+0;
-	public final static int DOMAIN_OUTDOORS_WOODS=OUTDOORS+1;
-	public final static int DOMAIN_OUTDOORS_ROCKS=OUTDOORS+2;
-	public final static int DOMAIN_OUTDOORS_PLAINS=OUTDOORS+3;
-	public final static int DOMAIN_OUTDOORS_UNDERWATER=OUTDOORS+4;
-	public final static int DOMAIN_OUTDOORS_AIR=OUTDOORS+5;
-	public final static int DOMAIN_OUTDOORS_WATERSURFACE=OUTDOORS+6;
+	public final static int DOMAIN_OUTDOORS_CITY=0;
+	public final static int DOMAIN_OUTDOORS_WOODS=1;
+	public final static int DOMAIN_OUTDOORS_ROCKS=2;
+	public final static int DOMAIN_OUTDOORS_PLAINS=3;
+	public final static int DOMAIN_OUTDOORS_UNDERWATER=4;
+	public final static int DOMAIN_OUTDOORS_AIR=5;
+	public final static int DOMAIN_OUTDOORS_WATERSURFACE=6;
 	
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;

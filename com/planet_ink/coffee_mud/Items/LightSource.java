@@ -59,7 +59,7 @@ public class LightSource extends StdItem implements Light
 			if(room!=null)
 			{
 				if(((LightSource.inTheRain(room)&&(myLight.goesOutInTheRain()))
-					||(LightSource.inTheWater(room)))
+					||(LightSource.inTheWater(room)&&(mob.riding()==null)))
 				   &&(myLight.getDuration()>0)
 				   &&(mob.isMine(myLight)))
 				{
@@ -164,7 +164,7 @@ public class LightSource extends StdItem implements Light
 		if(room==null) return;
 		if(room!=null)
 		{
-			if(((LightSource.inTheRain(room)&&myLight.goesOutInTheRain())||(LightSource.inTheWater(room)))
+			if(((LightSource.inTheRain(room)&&myLight.goesOutInTheRain())||(LightSource.inTheWater(room)&&(mob.riding()==null)))
 			&&(myLight.isLit())
 			&&(myLight.getDuration()>0)
 			&&(mob.isMine(myLight))

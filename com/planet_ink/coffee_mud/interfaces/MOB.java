@@ -57,6 +57,8 @@ public interface MOB
 	/** Where this MOB is currently*/
 	public Room location();
 	public void setLocation(Room newRoom);
+	public Rideable riding();
+	public void setRiding(Rideable ride);
 	
 	/** If the MOB is controlled by a USER, this
 	 * will point to the controlling session object*/

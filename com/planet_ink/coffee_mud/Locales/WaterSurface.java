@@ -30,14 +30,15 @@ public class WaterSurface extends StdRoom
 		   &&((affect.targetMinor()==Affect.TYP_LEAVE)
 			||(affect.targetMinor()==Affect.TYP_ENTER)
 			||(affect.targetMinor()==Affect.TYP_FLEE))
-		   &&(!Sense.isSwimming(affect.source())))
+		   &&(!Sense.isSwimming(affect.source()))
+		   &&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
 		{
 			MOB mob=affect.source();
 			boolean hasBoat=false;
 			for(int i=0;i<mob.inventorySize();i++)
 			{
 				Item I=mob.fetchInventory(i);
-				if((I!=null)&&(I instanceof Boat))
+				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
 				{	hasBoat=true; break;}
 			}
 			if((!Sense.isSwimming(mob))&&(!hasBoat)&&(!Sense.isFlying(mob)))
@@ -54,8 +55,8 @@ public class WaterSurface extends StdRoom
 				}
 		}
 		else
-		if((affect.sourceMinor()==Affect.TYP_SIT)
-		||(affect.sourceMinor()==Affect.TYP_SLEEP))
+		if(((affect.sourceMinor()==Affect.TYP_SIT)||(affect.sourceMinor()==Affect.TYP_SLEEP))
+		&&((affect.source().riding()==null)||(!Sense.isSwimming(affect.source().riding()))))
 		{
 			affect.source().tell("You cannot rest here.");
 			return false;
