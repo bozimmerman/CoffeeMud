@@ -29,6 +29,7 @@ public class List extends StdCommand
 
 	public StringBuffer roomDetails(Vector these, Room likeRoom)
 	{return roomDetails(these.elements(),likeRoom);}
+	
 	public StringBuffer roomDetails(Enumeration these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
@@ -39,7 +40,7 @@ public class List extends StdCommand
 			Room thisThang=(Room)r.nextElement();
 			String thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(Util.padRightPreserve(thisOne,30)+": "+thisThang.displayText()+"\n\r");
+				lines.append(Util.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+thisThang.displayText()+"\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
@@ -474,7 +475,7 @@ public class List extends StdCommand
 				head.append(Util.padRight(IQCalendar.d2String(Util.s_long((String)U.elementAt(5))),18)+" ");
 			else
 				head.append(Util.padRight((String)U.elementAt(6),23)+" ");
-			head.append("] "+Util.padRight((String)U.elementAt(0),15));
+			head.append("] "+Util.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
 			head.append("\n\r");
 		}
 		mob.tell(head.toString());
@@ -512,7 +513,7 @@ public class List extends StdCommand
 				Quest Q=Quests.fetchQuest(i);
 				if(Q!=null)
 				{
-					buf.append(Util.padRight(""+(i+1),5)+Util.padRight(Q.name(),20)+" ");
+					buf.append(Util.padRight(""+(i+1),5)+Util.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",20)+" ");
 					if(Q.running())
 						buf.append("running ("+Q.minsRemaining()+" mins left)");
 					else

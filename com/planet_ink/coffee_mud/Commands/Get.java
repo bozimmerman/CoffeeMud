@@ -71,7 +71,7 @@ public class Get extends BaseItemParser
 
 	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
 	{
-		int gold=numPossibleGold(itemID);
+		int gold=EnglishParser.numPossibleGold(itemID);
 		if(gold>0)
 		{
 			for(int i=0;i<room.numItems();i++)
@@ -162,13 +162,13 @@ public class Get extends BaseItemParser
 		String containerName="";
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
-		Vector containers=possibleContainers(mob,commands,Item.WORN_REQ_ANY);
+		Vector containers=EnglishParser.possibleContainers(mob,commands,Item.WORN_REQ_ANY);
 		int c=0;
 
 		int maxToGet=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
 		{
 			maxToGet=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -67,7 +68,7 @@ public class Give extends BaseItemParser
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
 		do
 		{
-			Environmental giveThis=possibleGold(mob,thingToGive);
+			Environmental giveThis=EnglishParser.possibleGold(mob,thingToGive);
 			if(giveThis!=null)
 				allFlag=false;
 			else

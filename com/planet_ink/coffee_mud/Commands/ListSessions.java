@@ -48,7 +48,7 @@ public class ListSessions extends StdCommand
 			if (thisSession.mob() != null)
 			{
 				set[1]=Util.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";
-				set[2]="^!"+Util.padRight(thisSession.mob().Name(),17)+"^?| ";
+				set[2]="^!"+Util.padRight("^<LSTUSER^>"+thisSession.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
 			}
 			else
 			{

@@ -40,7 +40,7 @@ public class ClanList extends BaseClanner
 		{
 			Clan thisClan=(Clans)e.nextElement();
 			msg.append(" ");
-			msg.append(Util.padRight(thisClan.ID(),24)+"   ");
+			msg.append(Util.padRight("^<CLAN^>"+thisClan.ID()+"^</CLAN^>",24)+"   ");
 			msg.append(Util.padRight(thisClan.typeName(),13)+"   ");
 			boolean war=false;
 			for(Enumeration e2=Clans.clans();e2.hasMoreElements();)

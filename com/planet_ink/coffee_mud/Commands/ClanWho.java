@@ -48,8 +48,8 @@ public class ClanWho extends Who
 
 				if((mob2!=null)
 				&&(!thisSession.killFlag())
-				&&((((mob2.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0)
-					||(CMSecurity.isAllowedAnywhere(mob,"WIZINV"))))
+				&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+					||(CMSecurity.isAllowedAnywhere(mob,"CLOAK"))))
 				&&(mob2.getClanID().equals(mob.getClanID()))
 				&&(mob2.envStats().level()>0))
 					msg.append(showWhoShort(mob2));

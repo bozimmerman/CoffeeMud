@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -97,7 +98,7 @@ public class Take extends BaseItemParser
 			
 			do
 			{
-				Environmental giveThis=possibleGold(victim,thingToGive);
+				Environmental giveThis=EnglishParser.possibleGold(victim,thingToGive);
 				if(giveThis!=null)
 					allFlag=false;
 				else

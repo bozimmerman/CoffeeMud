@@ -304,7 +304,7 @@ public class FrontLogin extends StdCommand
 					if((S!=null)
 					&&(S.mob()!=null)
 					&&(S.mob()!=mob)
-					&&((Sense.isSeen(mob))||(CMSecurity.isASysOp(S.mob())))
+					&&((!Sense.isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
 					&&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
@@ -605,7 +605,7 @@ public class FrontLogin extends StdCommand
 					Session S=Sessions.elementAt(s);
 					if((S!=null)
 					&&(S.mob()!=null)
-					&&((Sense.isSeen(mob))||(CMSecurity.isASysOp(S.mob())))
+					&&((!Sense.isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
 					&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 					&&(S.mob().playerStats()!=null)
 					&&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -126,7 +127,7 @@ public class Sheath extends BaseItemParser
 		else
 		{
 			commands.insertElementAt("all",0);
-			Container container=(Container)possibleContainer(mob,commands,false,Item.WORN_REQ_WORNONLY);
+			Container container=(Container)EnglishParser.possibleContainer(mob,commands,false,Item.WORN_REQ_WORNONLY);
 			String thingToPut=Util.combine(commands,0);
 			int addendum=1;
 			String addendumStr="";

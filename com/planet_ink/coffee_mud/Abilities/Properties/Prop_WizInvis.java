@@ -23,10 +23,25 @@ import java.util.*;
 public class Prop_WizInvis extends Property
 {
 	public String ID() { return "Prop_WizInvis"; }
-	public String displayText() {return "(Wizard Invisibility)";}
+	public String displayText() 
+	{
+	    if(Util.bset(abilityCode(),EnvStats.IS_CLOAKED|EnvStats.IS_NOT_SEEN))
+		    return "(Wizard Invisibility)";
+	    else
+	    if(Util.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
+		    return "(WizUndetectable)";
+	    else
+	    if(Util.bset(abilityCode(),EnvStats.IS_CLOAKED))
+		    return "(Cloaked)";
+	    else
+	        return "";
+	}
 	public String name(){ return "Wizard Invisibility";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
-	boolean disabled=false;
+	private boolean disabled=false;
+	private int abilityCode=EnvStats.IS_NOT_SEEN|EnvStats.IS_CLOAKED;
+	public int abilityCode(){return abilityCode;}
+	public void setAbilityCode(int newCode){abilityCode=newCode;}
 
 	public String accountForYourself()
 	{ return "Wizard Invisibile";	}
@@ -42,13 +57,16 @@ public class Prop_WizInvis extends Property
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		affectableStats.setDisposition(affectableStats.disposition()|abilityCode);
+		if(Util.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
+		{
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		}
 		if((affected instanceof MOB)&&(!Sense.canBreathe((MOB)affected)))
 			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);

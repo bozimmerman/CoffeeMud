@@ -25,8 +25,10 @@
 <!ELEMENT SAY '<SEND HREF="SAY &name;" PROMPT hint="Click to reply.|SAY &name;">' ATT='name'>
 <!ELEMENT GTELL '<SEND HREF="GTELL" PROMPT hint="Click to reply.|GTELL">' ATT='name'>
 <!ELEMENT CHANNEL '<SEND HREF="&name; " PROMPT hint="Click to reply.|&name; ">' ATT='name'>
+<!ELEMENT CHANNELS '<SEND HREF="&extra;&text;" hint="Click to toggle on/off.|&extra;&text;">' ATT='extra'>
 <!ELEMENT JRNL '<SEND HREF="READ &text; &quot;&name;&quot;" hint="Click to read.|READ &text; &quot;&name;&quot;">' ATT='name'>
 <!ELEMENT MENU '<SEND>'>
+<!ELEMENT CLAN '<SEND HREF="CLAN &text;" hint="Click for info.|CLAN &text;">' >
 <!-- ********************************************************************* -->
 <!-- image related tags -->
 <!-- ZMUD does not support downloading from ports other than 80, so keep the -->
@@ -38,6 +40,11 @@
 <GAUGE mana Max=maxmana color=yellow Caption="Mana">
 <GAUGE move Max=maxmove color=white Caption="Movement">
 <GAUGE vichp Max=vicmaxhp color=red Caption="Enemy Damage">
+<!-- ********************************************************************* -->
+<!-- here are some archon tool elements -->
+<!ELEMENT LSTROOMID '<SEND HREF="GOTO &text;" hint="Click to goto.|GOTO &text;">' >
+<!ELEMENT LSTUSER '<SEND HREF="SNOOP &text;|BOOT &text;|BAN &text;|MULTIWATCH ADD &text;" hint="Click to use.|SNOOP &text;|BOOT &text;|BAN &text;|MULTIWATCH ADD &text;">' >
+<!ELEMENT LSTQUEST '<SEND HREF="MODIFY QUEST &text;" hint="Click to start/stop.|MODIFY QUEST &text;">' >
 <!-- ********************************************************************* -->
 <!-- the next elements deal with the MUD prompt -->
 <!ELEMENT Prompt FLAG="Prompt">

@@ -69,7 +69,7 @@ public class WaterCurrents extends ActiveTicker
 			Room R2=null;
 			for(int dl=0;dl<dirs.length();dl++)
 			{
-				dir=Directions.getDirectionCode(dirs.charAt(dl));
+				dir=Directions.getDirectionCode(""+dirs.charAt(dl));
 				if(dir>=0)
 				{
 					R2=R.getRoomInDir(dir);

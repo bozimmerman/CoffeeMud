@@ -16,5 +16,5 @@ deviations
 genchar possess goto wizinv
 where snoop visible stat as
 at after Multiwatch trailto
-wrath hush banish
+wrath hush banish cloak
 ** enter ^HAHELP 'command name'^N or ^!ATOPICS^N for more help!

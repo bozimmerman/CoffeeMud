@@ -63,8 +63,8 @@ public class ChanWho extends StdCommand
 			Session ses=Sessions.elementAt(s);
 			if((ChannelSet.mayReadThisChannel(null,false,ses,channelInt))
 			&&(ses.mob()!=null)
-			&&((((ses.mob().envStats().disposition()&EnvStats.IS_NOT_SEEN)==0)
-				||(CMSecurity.isAllowedAnywhere(mob,"WIZINV")))))
+			&&((((ses.mob().envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+				||(CMSecurity.isAllowedAnywhere(mob,"CLOAK")))))
 					buf.append("["+Util.padRight(ses.mob().name(),20)+"]\n\r");
 		}
 		if(buf.length()==0)

@@ -4178,7 +4178,7 @@ public class Import extends StdCommand
 							Session S=Sessions.elementAt(s);
 							if((S!=null)
 							&&(S.mob()!=null)
-							&&((Sense.isSeen(M))||(CMSecurity.isASysOp(S.mob())))
+							&&((!Sense.isCloaked(M))||(CMSecurity.isASysOp(S.mob())))
 							&&(Util.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
 							&&(S.mob().playerStats()!=null)
 							&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -36,7 +37,7 @@ public class Put extends BaseItemParser
 		commands.removeElementAt(1);
 		commands.removeElementAt(0);
 
-		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
+		Vector items=EnglishParser.fetchItemList(mob,mob,null,commands,Item.WORN_REQ_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -90,7 +91,7 @@ public class Put extends BaseItemParser
 			return false;
 		}
 
-		Environmental container=possibleContainer(mob,commands,false,Item.WORN_REQ_ANY);
+		Environmental container=EnglishParser.possibleContainer(mob,commands,false,Item.WORN_REQ_ANY);
 		if((container==null)||((container!=null)&&(!Sense.canBeSeenBy(container,mob))))
 		{
 			mob.tell("I don't see a "+(String)commands.elementAt(commands.size()-1)+" here.");
@@ -100,7 +101,7 @@ public class Put extends BaseItemParser
 		int maxToPut=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
 		{
 			maxToPut=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -115,7 +116,7 @@ public class Put extends BaseItemParser
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
 		do
 		{
-			Environmental putThis=possibleGold(mob,thingToPut);
+			Environmental putThis=EnglishParser.possibleGold(mob,thingToPut);
 			if(putThis!=null)
 				allFlag=false;
 			else

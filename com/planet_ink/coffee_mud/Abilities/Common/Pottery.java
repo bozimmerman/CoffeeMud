@@ -258,6 +258,7 @@ public class Pottery extends CraftingSkill
 			}
 		}
 		if(misctype.equalsIgnoreCase("bundle")) building.setBaseValue(lostValue);
+		if(misctype.equalsIgnoreCase("stone")) building.setMaterial(EnvResource.RESOURCE_STONE);
 		building.recoverEnvStats();
 		building.text();
 		building.recoverEnvStats();

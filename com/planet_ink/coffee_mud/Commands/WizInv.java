@@ -32,8 +32,11 @@ public class WizInv extends StdCommand
 		if(Character.toUpperCase(str.charAt(0))!='W')
 			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
+		int abilityCode=EnvStats.IS_NOT_SEEN|EnvStats.IS_CLOAKED;
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
+		if((commands.size()>0)&&("NOCLOAK".startsWith(Util.combine(commands,0).trim().toUpperCase())))
+		    abilityCode=EnvStats.IS_NOT_SEEN;
 		if(Util.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
 		   if(A!=null)
@@ -45,19 +48,27 @@ public class WizInv extends StdCommand
 		else
 		if(A!=null)
 		{
-			mob.tell("You have already faded from view!");
-			return false;
+		    if(Util.bset(A.abilityCode(),abilityCode))
+		    {
+				mob.tell("You have already faded from view!");
+				return false;
+		    }
 		}
 
 		// it worked, so build a copy of this ability,
 		// and add it to the affects list of the
 		// affected MOB.  Then tell everyone else
 		// what happened.
-		A=CMClass.getAbility(str);
+		if(A==null)
+			A=CMClass.getAbility(str);
 		if(A!=null)
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> fade(s) from view!");
-			mob.addEffect((Ability)A.copyOf());
+			if(mob.fetchEffect(A.ID())==null)
+				mob.addEffect((Ability)A.copyOf());
+			A=mob.fetchEffect(A.ID());
+			if(A!=null) A.setAbilityCode(abilityCode);
+			
 			mob.recoverEnvStats();
 			mob.location().recoverRoomStats();
 			mob.tell("You may uninvoke WIZINV with 'WIZINV OFF'.");

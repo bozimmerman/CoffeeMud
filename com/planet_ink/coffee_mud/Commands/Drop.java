@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -65,13 +66,13 @@ public class Drop extends BaseItemParser
 		}
 		commands.removeElementAt(0);
 
-		container=possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
+		container=EnglishParser.possibleContainer(mob,commands,true,Item.WORN_REQ_UNWORNONLY);
 
 
 		int maxToDrop=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
 		{
 			maxToDrop=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
@@ -85,7 +86,7 @@ public class Drop extends BaseItemParser
 		String addendumStr="";
 		do
 		{
-			Item dropThis=possibleGold(mob,whatToDrop+addendumStr);
+			Item dropThis=EnglishParser.possibleGold(mob,whatToDrop+addendumStr);
 			if(dropThis!=null)
 				allFlag=false;
 			else

@@ -45,7 +45,7 @@ public class Who extends StdCommand
 		msg.append(Util.padRight(who.charStats().displayClassName(),12)+" ");
 		msg.append(Util.padRight(levelStr,7));
 		String name=null;
-		if(Util.bset(who.envStats().disposition(),EnvStats.IS_NOT_SEEN))
+		if(Util.bset(who.envStats().disposition(),EnvStats.IS_CLOAKED))
 			name="("+(who.Name().equals(who.name())?who.titledName():who.name())+")";
 		else
 			name=(who.Name().equals(who.name())?who.titledName():who.name());
@@ -110,8 +110,8 @@ public class Who extends StdCommand
 
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
-			&&((((mob2.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0)
-				||(CMSecurity.isAllowedAnywhere(mob,"WIZINV"))))
+			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+				||(CMSecurity.isAllowedAnywhere(mob,"CLOAK"))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
 			&&(mob2.envStats().level()>0))
 				msg.append(showWhoShort(mob2));

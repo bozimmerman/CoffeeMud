@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -55,7 +56,7 @@ public class Empty extends BaseItemParser
 			if(s.equalsIgnoreCase("ground")) target=mob.location();
 			else
 			{
-				target=possibleContainer(mob,commands,false,Item.WORN_REQ_UNWORNONLY);
+				target=EnglishParser.possibleContainer(mob,commands,false,Item.WORN_REQ_UNWORNONLY);
 				if(target==null) 
 					target=mob.location().fetchFromRoomFavorItems(null,s,Item.WORN_REQ_UNWORNONLY);
 				else
@@ -74,7 +75,7 @@ public class Empty extends BaseItemParser
 		int maxToDrop=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
 		{
 			maxToDrop=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -127,7 +128,7 @@ public class Draw extends Get
 		{
 			containerName=(String)commands.lastElement();
 			commands.insertElementAt("all",0);
-			containers=possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY);
+			containers=EnglishParser.possibleContainers(mob,commands,Item.WORN_REQ_WORNONLY);
 			if(containers.size()==0) containers=sheaths;
 			whatToGet=Util.combine(commands,0);
 			allFlag=((String)commands.elementAt(0)).equalsIgnoreCase("all");

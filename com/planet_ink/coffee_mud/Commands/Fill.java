@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -57,7 +58,7 @@ public class Fill extends BaseItemParser
 		int maxToFill=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(Util.s_int((String)commands.firstElement())>0)
-		&&(numPossibleGold(Util.combine(commands,0))==0))
+		&&(EnglishParser.numPossibleGold(Util.combine(commands,0))==0))
 		{
 			maxToFill=Util.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);

@@ -41,7 +41,7 @@ public class Deposit extends BaseItemParser
 			return false;
 		}
 		String thisName=Util.combine(commands,0);
-		Item thisThang=possibleGold(mob,thisName);
+		Item thisThang=EnglishParser.possibleGold(mob,thisName);
 		if(thisThang==null)
 		{
 			thisThang=mob.fetchCarried(null,thisName);

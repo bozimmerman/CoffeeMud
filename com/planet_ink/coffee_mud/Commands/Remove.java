@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -50,7 +51,7 @@ public class Remove extends BaseItemParser
 			return false;
 		}
 
-		Vector items=fetchItemList(mob,mob,null,commands,Item.WORN_REQ_WORNONLY,false);
+		Vector items=EnglishParser.fetchItemList(mob,mob,null,commands,Item.WORN_REQ_WORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be wearing that.");
 		else
