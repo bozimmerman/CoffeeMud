@@ -3,8 +3,10 @@
 ?Test: Improved Swipe, Mug, Kamikaze, Side Kick, Back Hand, Shield Block
 ?Test: Improved Shield Defence, Body Toss, Mounted Charge, Far Shot, Counter Attack
 ?Test: Gouge, AutoBash, Weapon Catch, Body Shield
+Test: weaponsmith list, carpentry list
 ?absorption doesn't make the skill temporary....it's there for good.
 ca geas melancholy kill cityguard
+pets still getting exp
 
 Fighters:
 Smoke Signals  Requires a fire. Puffs of smoke produce a message for all in the area who can  read smoke signals (has smoke signal skill). To all others it says you see  puffs of smoke in the air. Totally a role-playing skill. Can't think of  

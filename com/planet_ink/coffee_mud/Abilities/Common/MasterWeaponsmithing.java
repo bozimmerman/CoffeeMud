@@ -11,7 +11,7 @@ public class MasterWeaponsmithing extends Weaponsmithing
 	public String ID() { return "MasterWeaponsmithing"; }
 	public Environmental newInstance(){	return new MasterWeaponsmithing();}
 	public String name(){ return "Master Weaponsmithing";}
-	private static final String[] triggerStrings = {"MASTERWEAPONSMITH","MASTERWEAPONSMITHING","MWEAPONSMITH"};
+	private static final String[] triggerStrings = {"MWEAPONSMITH","MASTERWEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	private static boolean mapped2=false;
 	

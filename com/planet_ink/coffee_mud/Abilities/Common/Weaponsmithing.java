@@ -284,7 +284,7 @@ public class Weaponsmithing extends CommonSkill
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"weaponsmith list\" for a list.");
+				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try 'list' instead.");
 				return false;
 			}
 			int woodRequired=Util.s_int((String)foundRecipe.elementAt(RCP_WOOD));

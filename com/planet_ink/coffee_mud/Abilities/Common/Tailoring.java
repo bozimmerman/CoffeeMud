@@ -310,7 +310,7 @@ public class Tailoring extends CommonSkill
 			if(building instanceof Weapon)
 			{
 				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
+				((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
 				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
 				{
 					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
