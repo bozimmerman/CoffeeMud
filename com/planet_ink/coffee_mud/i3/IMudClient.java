@@ -357,18 +357,24 @@ public class IMudClient implements I3Interface
 	{
 		if(mob==null) return;
 		if((!i3online())&&(!imc2online())) return;
+		
 		if((mobName==null)||(mobName.length()==0))
 		{
 			mob.tell("You must specify a name.");
 			return;
 		}
 
-		LocateQueryPacket ck=new LocateQueryPacket();
-		ck.sender_name=mob.Name();
-		ck.user_name=mobName;
-		try{
-		ck.send();
-		}catch(Exception e){Log.errOut("IMudClient",e);}
+		if(i3online())
+		{
+			LocateQueryPacket ck=new LocateQueryPacket();
+			ck.sender_name=mob.Name();
+			ck.user_name=mobName;
+			try{
+			ck.send();
+			}catch(Exception e){Log.errOut("IMudClient",e);}
+		}
+		if(imc2online())
+			imc2.imc_send_whois(mob.Name(),mobName,mob.envStats().level());
 	}
 
 	public void i3mudInfo(MOB mob, String parms)

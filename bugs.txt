@@ -1,4 +1,3 @@
-Prop_HereSpellCast broke
 MOB`s that are under your control should be able to purchase items if they have money. Remove curse for example. Order Sword.1 buy `remove curse` --- won`t work.
 take a look at WebIQ pregnancy stuff in session.
 

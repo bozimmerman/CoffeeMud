@@ -14,7 +14,7 @@ public class IMC2 extends StdCommand
 	public void IMC2Error(MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),"IMC2"))
-			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], or IMC2 CHANNELS.");
+			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, or IMC2 CHANNELS.");
 	}
 
 	public boolean execute(MOB mob, Vector commands)
@@ -37,6 +37,9 @@ public class IMC2 extends StdCommand
 		else
 		if(str.equalsIgnoreCase("list"))
 			CMClass.I3Interface().giveIMC2MudList(mob);
+		else
+		if(str.equalsIgnoreCase("locate"))
+			CMClass.I3Interface().i3locate(mob,Util.combine(commands,1));
 		else
 		if(str.equalsIgnoreCase("channels"))
 			CMClass.I3Interface().giveIMC2ChannelsList(mob);

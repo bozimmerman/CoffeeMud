@@ -756,6 +756,29 @@ public final class IMC2Driver extends Thread {
         imc_send(out);
     }
 
+    /* send a who-request to a remote mud */
+   public final void imc_send_whois(String from, String to, int level) 
+   {
+        PACKET out = new PACKET();
+
+        if (imc_active < IA_UP)
+            return;
+
+        //if (imc_mudof(to).equals("*"))
+        //    return; /* don't let them do this */
+
+        imc_initdata(out);
+		
+		out.from = from;
+		
+        out.to = to+"@*";
+        out.type = "whois";
+
+        imc_addkeyi(out, "level", level);
+
+        imc_send(out);
+    }
+
     final void imc_send( PACKET p)
     {
         if (imc_active < IA_UP) {
@@ -768,12 +791,11 @@ public final class IMC2Driver extends Thread {
         p.i.stamp = 0;
         p.i.path = "";
 
-
         p.i.sequence = imc_sequencenumber;
         if(p.i.sequence == imc_prev_sequencenumber)
         {
-                p.i.sequence++;
-                imc_sequencenumber++;
+            p.i.sequence++;
+            imc_sequencenumber++;
         }
 
         imc_prev_sequencenumber = imc_sequencenumber;
@@ -783,7 +805,7 @@ public final class IMC2Driver extends Thread {
         p.i.from = p.i.from.concat("@");
         p.i.from = p.i.from.concat(imc_name);
 
-//        p.i.path = this_imcmud.hubname;
+//      p.i.path = this_imcmud.hubname;
 
         do_send_packet(p);
     }
@@ -947,13 +969,6 @@ public final class IMC2Driver extends Thread {
         imc_send(out);
     }
 
-    final boolean query_online(String name)
-    {
-		MOB M=CMMap.getPlayer(name);
-		if(M==null) return false;
-		return Sense.isInTheGame(M);
-    }
-
     final void imc_recv_whois(imc_char_data from, String sender, int level)
     {
         PACKET out = new PACKET();
@@ -965,8 +980,10 @@ public final class IMC2Driver extends Thread {
         out.to = sender;
         out.type = "whois-reply";
 
-        imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name+" is "+
-                       (query_online(from.name) ? "online":"offline")+ ".");
+		MOB M=CMMap.getPlayer(from.name);
+		if(M==null) return;
+        imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name
+						+" is "+(Sense.isInTheGame(M) ? "online":"offline")+ ".");
 
         imc_send(out);
     }
@@ -1111,6 +1128,14 @@ public final class IMC2Driver extends Thread {
         send_to_player(d.name, "\n\r"+text+"^.^?");
     }
 
+    final void imc_recv_whois_reply(imc_char_data d, String to, String text)
+    {
+        text = Util.replaceAll(text, "\\n\\r", "\n\r");
+        String lines[] = explodeNicely(text, "\\n\\r");
+
+		send_to_player(d.name, "\n\r"+to+": "+text+"^.^?");
+    }
+	
     final void imc_recv_ping_reply(imc_char_data d, String from, String path)
     {
        String route[] = explodeNicely(path, "!");
@@ -1297,6 +1322,11 @@ public final class IMC2Driver extends Thread {
             imc_recv_who_reply(d, imc_getkey(p, "text", ""));
         }
 
+        if (p.type.equals("whois-reply")) {
+            tracef(8, "Who-Is reply received from " + p.i.from);
+            imc_recv_whois_reply(d, p.i.from, imc_getkey(p, "text", ""));
+        }
+		
         if (p.type.equals("ping-reply")) {
             tracef(8, "Ping-reply reply received from " + p.i.from);
             imc_recv_ping_reply(d, p.i.from, imc_getkey(p, "path", ""));

@@ -92,48 +92,63 @@ public class Prop_HereSpellCast extends Property
 		}
 	}
 
+	public void process(MOB mob, Room room, int code) // code=0 add/sub, 1=addon, 2=subon
+	{
+		if((code==2)||((code==0)&&(lastNum!=room.numInhabitants())))
+		{
+			Hashtable h=getMySpellsH();
+			for(int v=lastMOBs.size()-1;v>=0;v--)
+			{
+				MOB lastMOB=(MOB)lastMOBs.elementAt(v);
+				if((lastMOB.location()!=room)
+				||((mob==lastMOB)&&(code==2)))
+				{
+					int x=0;
+					while(x<lastMOB.numEffects())
+					{
+						Ability thisAffect=lastMOB.fetchEffect(x);
+						if((thisAffect!=null)
+						&&(h.containsKey(thisAffect.ID())
+						&&(thisAffect.invoker()==lastMOB)))
+						{
+							thisAffect.unInvoke();
+							x=-1;
+						}
+						x++;
+					}
+					lastMOBs.removeElementAt(v);
+				}
+			}
+			lastNum=room.numInhabitants();
+		}
+		if((!lastMOBs.contains(mob))
+		&&((code==1)||((code==0)&&(room.isInhabitant(mob)))))
+		{
+			addMeIfNeccessary(mob);
+			lastMOBs.addElement(mob);
+		}
+	}
+
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if(processing) return;
+		if((((msg.targetMinor()==CMMsg.TYP_ENTER)&&(msg.target()==affected))
+			||((msg.targetMinor()==CMMsg.TYP_RECALL)&&(msg.target()==affected)))
+		&&(affected instanceof Room))
+			process(msg.source(),(Room)affected,1);
+		else
+		if((((msg.targetMinor()==CMMsg.TYP_LEAVE)&&(msg.target()==affected))
+			||((msg.targetMinor()==CMMsg.TYP_RECALL)&&(msg.target()!=affected)))
+		&&(affected instanceof Room))
+			process(msg.source(),(Room)affected,2);
+	}
+	
 	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;
 		if((affectedMOB instanceof MOB)&&(affected instanceof Room))
-		{
-			MOB mob=(MOB)affectedMOB;
-			Room room=(Room)affected;
-			if(lastNum!=room.numInhabitants())
-			{
-				Hashtable h=getMySpellsH();
-				for(int v=lastMOBs.size()-1;v>=0;v--)
-				{
-					MOB lastMOB=(MOB)lastMOBs.elementAt(v);
-					if(lastMOB.location()!=affected)
-					{
-						int x=0;
-						while(x<lastMOB.numEffects())
-						{
-							Ability thisAffect=lastMOB.fetchEffect(x);
-							if(thisAffect!=null)
-							{
-								String ID=(String)h.get(thisAffect.ID());
-								if((ID!=null)&&(thisAffect.invoker()==lastMOB))
-								{
-									thisAffect.unInvoke();
-									x=-1;
-								}
-							}
-							x++;
-						}
-						lastMOBs.removeElementAt(v);
-					}
-				}
-				lastNum=room.numInhabitants();
-			}
-			if(!lastMOBs.contains(mob))
-			{
-				addMeIfNeccessary(mob);
-				lastMOBs.addElement(mob);
-			}
-		}
+			process((MOB)affectedMOB, (Room)affected,0);
 		super.affectEnvStats(affectedMOB,affectableStats);
 		processing=false;
 	}
