@@ -94,6 +94,11 @@ public class GrinderRooms
 		if(desc==null)desc="";
 		R.setDescription(desc);
 
+		// image
+		String img=httpReq.getRequestParameter("IMAGE");
+		if(img==null)img="";
+		R.setImage(img);
+
 		if(R instanceof GridLocale)
 		{
 			String x=httpReq.getRequestParameter("XGRID");

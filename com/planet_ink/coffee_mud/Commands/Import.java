@@ -310,7 +310,7 @@ public class Import extends StdCommand
 				if(areaName.indexOf(colors[s1][0])>=0)
 					areaName=Util.replaceAll(areaName,colors[s1][0],colors[s1][1]);
 		}
-		return Util.removeColors(Util.safetyFilter(areaName));
+		return Util.removeColors(CoffeeFilter.safetyFilter(areaName));
 	}
 	
 	private static String getAreaAuthor(Vector V)
@@ -1550,7 +1550,7 @@ public class Import extends StdCommand
 			if(useThisOne!=null)
 			{
 				if(okString)
-					useThisOne.addElement(Util.safetyFilter((String)buf.elementAt(0)));
+					useThisOne.addElement(CoffeeFilter.safetyFilter((String)buf.elementAt(0)));
 				buf.removeElementAt(0);
 			}
 			else
@@ -1802,10 +1802,10 @@ public class Import extends StdCommand
 			if(!mobID.equals(OfThisID))
 				continue;
 
-			String simpleName=Util.safetyFilter(eatLineSquiggle(objV));
-			String mobName=Util.safetyFilter(eatLineSquiggle(objV));
-			String mobDisplay=Util.safetyFilter(eatLineSquiggle(objV));
-			String mobDescription=Util.safetyFilter(eatLineSquiggle(objV));
+			String simpleName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+			String mobName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+			String mobDisplay=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+			String mobDescription=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
 			Race R=null;
 			boolean circleFormat=false;
 			if(nextLine(objV).endsWith("~"))
@@ -2750,12 +2750,12 @@ public class Import extends StdCommand
 			if(!objectID.equals(OfThisID))
 				continue;
 
-			String simpleName=Util.safetyFilter(eatLineSquiggle(objV));
-			String objectName=Util.safetyFilter(eatLineSquiggle(objV));
-			String objectDisplay=Util.safetyFilter(eatLineSquiggle(objV));
+			String simpleName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+			String objectName=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
+			String objectDisplay=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
 			String objectDescription="";
 			if((nextLine(objV).indexOf("~")>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
-				objectDescription=Util.safetyFilter(eatLineSquiggle(objV));
+				objectDescription=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
 			String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
 			String codeStr3=eatNextLine(objV);
@@ -3311,7 +3311,7 @@ public class Import extends StdCommand
 					}
 					if(!squiggleFound)
 						objV.addElement("~");
-					String desc=Util.safetyFilter(eatLineSquiggle(objV));
+					String desc=CoffeeFilter.safetyFilter(eatLineSquiggle(objV));
 					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
 						I.setReadableText(fixReadableContent(I.description()));
@@ -4493,8 +4493,8 @@ public class Import extends StdCommand
 				}
 				else
 				{
-					R.setDisplayText(Util.safetyFilter(eatLineSquiggle(roomV)));
-					R.setDescription(Util.safetyFilter(eatLineSquiggle(roomV)));
+					R.setDisplayText(CoffeeFilter.safetyFilter(eatLineSquiggle(roomV)));
+					R.setDescription(CoffeeFilter.safetyFilter(eatLineSquiggle(roomV)));
 				}
 				R.setArea(A);
 				String codeLine=eatNextLine(roomV);
@@ -4715,8 +4715,8 @@ public class Import extends StdCommand
 					else
 					if(nextLine.toUpperCase().startsWith("E"))
 					{
-						String nameString=Util.safetyFilter(eatLineSquiggle(roomV));
-						String descString=Util.safetyFilter(eatLineSquiggle(roomV));
+						String nameString=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
+						String descString=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
 						Item I=null;
 						if(hasReadableContent(nameString))
 						{
@@ -4735,8 +4735,8 @@ public class Import extends StdCommand
 					if(nextLine.toUpperCase().startsWith("D"))
 					{
 						int dirCode=Util.s_int(Util.getCleanBit(nextLine,0).substring(1).trim());
-						String descStr=Util.safetyFilter(eatLineSquiggle(roomV));
-						String nameStr=Util.safetyFilter(eatLineSquiggle(roomV));
+						String descStr=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
+						String nameStr=CoffeeFilter.safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
 						switch(dirCode)
 						{

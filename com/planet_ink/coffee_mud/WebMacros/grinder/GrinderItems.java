@@ -98,7 +98,7 @@ public class GrinderItems
 						  "HASALID","HASALOCK","KEYCODE","ISWALLPAPER","NOURISHMENT","CONTAINER",
 						  "ISLIGHTSOURCE","DURATION","NONLOCATABLE","ISKEY","CONTENTTYPES",
 						  "ISINSTRUMENT","INSTRUMENTTYPE","ISAMMO","ISMOBITEM",
-						  "ISDUST","ISPERFUME","SMELLS"};
+						  "ISDUST","ISPERFUME","SMELLS","IMAGE"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -399,6 +399,9 @@ public class GrinderItems
 				if(I instanceof Perfume)
 					((Perfume)I).setSmellList(old);
 				break;
+			case 70:
+			    I.setImage(old);
+			    break;
 			}
 		}
 		if(I.isGeneric())

@@ -175,12 +175,17 @@ public class GrinderAreas
 		// description
 		String desc=httpReq.getRequestParameter("DESCRIPTION");
 		if(desc==null)desc="";
-		A.setDescription(Util.safetyFilter(desc));
+		A.setDescription(CoffeeFilter.safetyFilter(desc));
 
+		// image
+		String img=httpReq.getRequestParameter("IMAGE");
+		if(img==null)img="";
+		A.setImage(CoffeeFilter.safetyFilter(img));
+		
 		// description
 		String author=httpReq.getRequestParameter("AUTHOR");
 		if(author==null)author="";
-		A.setAuthorID(Util.safetyFilter(author));
+		A.setAuthorID(CoffeeFilter.safetyFilter(author));
 		
         // modify Child Area list
         String parents=httpReq.getRequestParameter("PARENT");

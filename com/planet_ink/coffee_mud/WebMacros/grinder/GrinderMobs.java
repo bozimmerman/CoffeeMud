@@ -206,7 +206,7 @@ public class GrinderMobs
 						  "ISDEITY","CLEREQ","CLERIT","WORREQ","WORRIT",
 						  "CLESIN","WORSIN","CLEPOW","CURSES","POWERS",
 						  "CLANID","TATTOOS","EDUCATIONS",
-						  "BUDGET","DEVALRATE","INVRESETRATE"};
+						  "BUDGET","DEVALRATE","INVRESETRATE","IMAGE"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -380,6 +380,9 @@ public class GrinderMobs
 				if(M instanceof ShopKeeper)
 					((ShopKeeper)M).setInvResetRate(Util.s_int(old));
 				break;
+			case 45: // image
+			    M.setImage(old);
+			    break;
 			}
 		}
 

@@ -52,7 +52,7 @@ public class GrinderExits
 						  "HASALOCK","DEFAULTSLOCKED","KEYNAME","ISREADABLE",
 						  "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
 						  "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
-						  " MISCTEXT","ISGENERIC","DOORNAME"};
+						  " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
 		for(int o=0;o<okparms.length;o++)
 		{
 			String parm=okparms[o];
@@ -139,6 +139,9 @@ public class GrinderExits
 			case 23: // door name
 				E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
 				break;
+			case 24: // image
+			    E.setImage(old);
+			    break;
 			}
 		}
 		
