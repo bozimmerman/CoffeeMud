@@ -17,7 +17,7 @@ public class Grid extends StdRoom implements GridLocale
 	public Grid()
 	{
 		super();
-		super.myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 	}
 	public Environmental newInstance()
 	{
@@ -332,7 +332,7 @@ public class Grid extends StdRoom implements GridLocale
 					this.recoverEnvStats();
 				}
 			}
-			super.myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+			this.myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		}
 		public Environmental newInstance()
 		{
