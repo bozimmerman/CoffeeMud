@@ -17,7 +17,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
 			Room R2=R.getRoomInDir(d);
-			if((R2!=null)&&(!V.contains(R2)))
+			if((R2!=null)&&(R2.ID().length()>0)&&(!V.contains(R2)))
 			{
 				Ability A=R2.fetchAffect(ID());
 				if((R2.getArea()==R.getArea())&&(A!=null))
