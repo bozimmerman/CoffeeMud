@@ -64,11 +64,18 @@ public class EndlessThinSky extends StdThinGrid
 		// it does NOT
 		if(ox==null) ox=CMClass.getExit("Open");
 		Room R2=null;
+		if((y==0)
+		&&(R.rawDoors()[Directions.UP]!=rawDoors()[Directions.UP])
+		&&(rawDoors()[Directions.UP]!=null)
+		&&(rawExits()[Directions.UP]!=null))
+		{
+		    R.rawDoors()[Directions.UP]=null;
+		    R.rawExits()[Directions.UP]=null;
+			linkRoom(R,rawDoors()[Directions.UP],Directions.UP,rawExits()[Directions.UP],rawExits()[Directions.UP]);
+		}
+		else
 		if(R.rawDoors()[Directions.UP]==null)
 		{
-			if((y==0)&&(rawDoors()[Directions.UP]!=null)&&(rawExits()[Directions.UP]!=null))
-				linkRoom(R,rawDoors()[Directions.UP],Directions.UP,rawExits()[Directions.UP],rawExits()[Directions.UP]);
-			else
 			if(y>0)
 			{
 				R2=getMakeSingleGridRoom(x,y-1);
@@ -89,12 +96,18 @@ public class EndlessThinSky extends StdThinGrid
 					linkRoom(R,R2,Directions.UP,ox,ox);
 			}
 		}
-		
+		if((y==ySize()-1)
+		&&(R.rawDoors()[Directions.DOWN]!=rawDoors()[Directions.DOWN])
+		&&(rawDoors()[Directions.DOWN]!=null)
+	    &&(rawExits()[Directions.DOWN]!=null))
+		{
+		    R.rawDoors()[Directions.DOWN]=null;
+		    R.rawExits()[Directions.DOWN]=null;
+			linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,rawExits()[Directions.DOWN],rawExits()[Directions.DOWN]);
+		}
+		else
 		if(R.rawDoors()[Directions.DOWN]==null)
 		{
-			if((y==ySize()-1)&&(rawDoors()[Directions.DOWN]!=null)&&(rawExits()[Directions.DOWN]!=null))
-				linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,rawExits()[Directions.DOWN],rawExits()[Directions.DOWN]);
-			else
 			if(y<ySize()-1)
 			{
 				R2=getMakeSingleGridRoom(x,y+1);

@@ -51,7 +51,11 @@ public class Ingredients extends BagOfEndlessness
 		I.recoverEnvStats();
 		I.setContainer(this);
 		if(I instanceof Food)
+		{
 		    ((Food)I).setDecayTime(0);
+		    Ability A=I.fetchEffect("Poison_Rotten");
+		    if(A!=null) I.delEffect(A);
+		}
 		if(owner() instanceof Room)
 			((Room)owner()).addItem(I);
 		else
@@ -71,6 +75,17 @@ public class Ingredients extends BagOfEndlessness
 				String name=EnvResource.RESOURCE_DESCS[i];
 				makeResource(name.toLowerCase(),EnvResource.RESOURCE_DATA[i][0]);
 			}
+		}
+		else
+		if(msg.amITarget(this)
+		&&(msg.tool() instanceof Food)
+		&&(msg.tool() instanceof Item)
+		&&(((Item)msg.tool()).container()==this)
+		&&(((Item)msg.tool()).owner() !=null))
+		{
+		    ((Food)msg.tool()).setDecayTime(0);
+		    Ability A=msg.tool().fetchEffect("Poison_Rotten");
+		    if(A!=null) msg.tool().delEffect(A);
 		}
 		super.executeMsg(myHost,msg);
 	}

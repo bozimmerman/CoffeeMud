@@ -1359,6 +1359,7 @@ public class StdMOB implements MOB
 
 					if((Sense.isSitting(this))
 					&&(msg.sourceMinor()!=CMMsg.TYP_SITMOVE)
+					&&(msg.sourceMinor()!=CMMsg.TYP_BUY)
 					&&(msg.targetCode()!=CMMsg.MSG_OK_VISUAL)
 					&&((msg.sourceMessage()!=null)||(msg.othersMessage()!=null))
 					&&((!CoffeeUtensils.reachableItem(this,msg.target()))

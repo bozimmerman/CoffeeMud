@@ -34,7 +34,7 @@ public class Disease_Yawning extends Disease
 	protected int DISEASE_TICKS(){return 30;}
 	protected int DISEASE_DELAY(){return 3;}
 	protected String DISEASE_DONE(){return "You stop yawning.";}
-	protected String DISEASE_START(){return "^G<S-NAME> feel(s) really tired.^?";}
+	protected String DISEASE_START(){return "^G<S-NAME> seem(s) really tired.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> stretch(es) and yawn(s).";}
 	public int abilityCode(){return DiseaseAffect.SPREAD_PROXIMITY;}
 	public int difficultyLevel(){return 0;}

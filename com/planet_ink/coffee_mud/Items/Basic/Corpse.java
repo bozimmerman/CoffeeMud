@@ -103,6 +103,14 @@ public class Corpse extends GenContainer implements DeadBody
 	public long timeOfDeath(){return timeOfDeath;}
 	public void setTimeOfDeath(long time){timeOfDeath=time;}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
+        &&((System.currentTimeMillis()-timeOfDeath())>(IQCalendar.MILI_HOUR/2)))
+		    msg.source().tell(name()+" has definitely started to decay.");
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

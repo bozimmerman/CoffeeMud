@@ -1285,7 +1285,7 @@ public class Clans implements Clan, Tickable
                 String type=((String)V.lastElement()).toUpperCase();
                 String amt=(String)V.firstElement();
                 if("EXPERIENCE".startsWith(type))
-                    return "Members receive a "+amt+" experience point bonus.";
+                    return amt+" experience point bonus.";
             }
         }
 	    return prizeStr;

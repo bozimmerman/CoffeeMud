@@ -197,13 +197,12 @@ public class StdItem implements Item
 	}
 	public void wearIfPossible(MOB mob)
 	{
-		for(int i=0;i<20;i++)
+		for(int i=0;i<wornCodes.length;i++)
 		{
-			long wornCode=1<<i;
-			if((fitsOn(wornCode))
-			&&(canWear(mob,wornCode)))
+			if((fitsOn(wornCodes[i]))
+			&&(canWear(mob,wornCodes[i])))
 			{
-				wearAt(wornCode);
+				wearAt(wornCodes[i]);
 				break;
 			}
 		}
@@ -249,16 +248,14 @@ public class StdItem implements Item
 		if(properWornBitmap==0)
 			return couldHaveBeenWornAt;
 
-		long wornCode=0;
 		if(!wornLogicalAnd)
 		{
-			for(int i=0;i<20;i++)
+			for(int i=0;i<wornCodes.length;i++)
 			{
-				wornCode=1<<i;
-				if(fitsOn(wornCode))
+				if(fitsOn(wornCodes[i]))
 				{
-					couldHaveBeenWornAt=wornCode;
-					if(mob.freeWearPositions(wornCode)>0)
+					couldHaveBeenWornAt=wornCodes[i];
+					if(mob.freeWearPositions(wornCodes[i])>0)
 						return 0;
 				}
 			}
@@ -266,12 +263,11 @@ public class StdItem implements Item
 		}
 		else
 		{
-			for(int i=0;i<20;i++)
+			for(int i=0;i<wornCodes.length;i++)
 			{
-				wornCode=1<<i;
-				if((fitsOn(wornCode))
-				&&(mob.freeWearPositions(wornCode)==0))
-					return wornCode;
+				if((fitsOn(wornCodes[i]))
+				&&(mob.freeWearPositions(wornCodes[i])==0))
+					return wornCodes[i];
 			}
 			return 0;
 		}

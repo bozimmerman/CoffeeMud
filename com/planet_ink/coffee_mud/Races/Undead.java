@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -59,6 +60,16 @@ public class Undead extends StdRace
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(myHost)
+		&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
+		&&(myHost instanceof MOB)
+        &&(ID().equals("Undead")))
+		    msg.source().tell(name()+" stinks of grime and decay.");
+	}
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((myHost!=null)&&(myHost instanceof MOB))
@@ -147,7 +158,12 @@ public class Undead extends StdRace
 			if((mob.Name().toUpperCase().indexOf("GHOUL")>=0)
 			||(mob.Name().toUpperCase().indexOf("GHAST")>=0))
 				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
-
+	        if(ID().equals("Undead"))
+	        {
+	            Ability A=CMClass.getAbility("Prop_Smell");
+	            body.addNonUninvokableEffect(A);
+	            A.setMiscText(body.name()+" SMELLS HORRIBLE!");
+	        }
 		}
 		return body;
 	}

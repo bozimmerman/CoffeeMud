@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.interfaces.*;
 import com.planet_ink.coffee_mud.common.*;
 import com.planet_ink.coffee_mud.utils.*;
+
 import java.util.*;
 
 /* 
@@ -139,7 +140,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		return findMyCenter(opDirection);
 	}
 
-	private Room[][] getBuiltGrid()
+	protected Room[][] getBuiltGrid()
 	{
 		if(subMap==null) buildGrid();
 		if(subMap!=null) return (Room[][])subMap.clone();
@@ -425,6 +426,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		catch(Exception e)
 		{
+		    Log.errOut("StdGrid",e);
 			clearGrid(null);
 		}
 	}

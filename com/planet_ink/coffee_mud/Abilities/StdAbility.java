@@ -962,7 +962,9 @@ public class StdAbility extends Scriptable implements Ability, Cloneable
 			student.tell("You are not the right class to learn '"+name()+"'.");
 			return false;
 		}
-		if(!CMAble.qualifiesByLevel(student,this))
+		if((!student.charStats().getCurrentClass().leveless())
+		&&(!CMAble.qualifiesByLevel(student,this))
+		&&(!CMSecurity.isDisabled("LEVELS")))
 		{
 			teacher.tell(student.name()+" is not high enough level to learn '"+name()+"'.");
 			student.tell("You are not high enough level to learn '"+name()+"'.");

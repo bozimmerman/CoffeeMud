@@ -12,7 +12,7 @@ pray practice cast sing chant
 ^HOBJECTS^?                             follow group gtell split
 inventory equipment look compare    
 get put drop give wear wield        ^HOTHER^?
-hold eat drink fill                 ! quit password train qualify
+hold eat drink fill sniff           ! quit password train qualify
 lock unlock open close pick         ansi noansi prompt colorset
 list buy sell value                 bug commands help topics
                                     

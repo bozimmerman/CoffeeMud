@@ -133,7 +133,7 @@ public class AHelp extends StdCommand
 			thisTag=MUDHelp.getHelpText(helpStr,MUDHelp.getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			mob.tell("No archon help is available on '"+helpStr+"'.\nEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
+			mob.tell("No archon help is available on '"+helpStr+"'.\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");
 			Log.errOut("Help",mob.Name()+" wanted archon help on "+helpStr);
 		}
 		else

@@ -35,7 +35,9 @@ public class Sniff extends StdCommand
 			quiet=true;
 		}
 		String textMsg="<S-NAME> sniff(s)";
-		if(mob.location()==null) return false;
+		if(mob.location()==null) 
+		    return false;
+		
 		if((commands!=null)&&(commands.size()>1))
 		{
 			Environmental thisThang=null;
@@ -52,7 +54,7 @@ public class Sniff extends StdCommand
  				if(thisThang instanceof Room)
 				{
 					if(thisThang==mob.location())
-						name="around";
+						name=" around";
 				}
 				FullMsg msg=new FullMsg(mob,thisThang,null,CMMsg.MSG_SNIFF,textMsg+name+".");
 				if(mob.location().okMessage(mob,msg))
@@ -70,7 +72,7 @@ public class Sniff extends StdCommand
 					return false;
 				}
 
-			FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_SNIFF,(quiet?null:textMsg+"around."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+"you."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+"around."));
+			FullMsg msg=new FullMsg(mob,mob.location(),null,CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" you."),CMMsg.MSG_SNIFF,(quiet?null:textMsg+" around."));
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}

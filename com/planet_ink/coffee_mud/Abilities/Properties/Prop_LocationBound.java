@@ -32,9 +32,9 @@ public class Prop_LocationBound extends Property
 		if((msg.sourceMinor()!=CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&((msg.source()==affected)
-		        ||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))))
+	        ||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))))
 		{
-		    Room whereTo=(Room)affected;
+		    Room whereTo=(Room)msg.target();
 	        Room R=CoffeeUtensils.roomLocation(affected);
 	        if((whereTo==null)||(R==null))
 	            return true;
