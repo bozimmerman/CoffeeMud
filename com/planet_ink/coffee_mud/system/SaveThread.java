@@ -14,9 +14,6 @@ public class SaveThread extends Thread
 	public final static int TIME_SAVE_DELAY=18; // 3 hours...
 	public int timeSaveTicker=0;
 
-	public Calendar lastDateTime=Calendar.getInstance();
-	
-	
 	public SaveThread()
 	{
 		super("SaveThread");
@@ -94,6 +91,8 @@ public class SaveThread extends Thread
 	
 	public void checkHealth()
 	{
+		Calendar lastDateTime=Calendar.getInstance();
+		lastDateTime.add(Calendar.MINUTE,-20); // 20 minutes without ticking is TOO LONG
 		for(int mn=0;mn<CMMap.numRooms();mn++)
 		{
 			Room room=CMMap.getRoom(mn);
@@ -197,7 +196,6 @@ public class SaveThread extends Thread
 			return;
 		}
 		started=true;
-		lastDateTime.add(Calendar.MINUTE,-20);
 		while(true)
 		{
 			try
@@ -205,7 +203,6 @@ public class SaveThread extends Thread
 				itemSweep();
 				checkHealth();
 				tickTock();
-				lastDateTime=Calendar.getInstance();
 				int processed=0;
 				Thread.sleep(SAVE_DELAY);
 				for(Enumeration e=CMMap.MOBs.elements();e.hasMoreElements();)
@@ -218,7 +215,7 @@ public class SaveThread extends Thread
 						processed++;
 					}
 					else
-					if(mob.lastDateTime().after(lastDateTime))
+					if(mob.lastDateTime().after(Calendar.getInstance()))
 					{
 						MOBloader.DBUpdate(mob);
 						processed++;
