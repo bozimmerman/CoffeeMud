@@ -783,7 +783,7 @@ public class MOBloader
 			if((thisAffect!=null)
 			&&(!H.contains(thisAffect.ID()))
 			&&(!thisAffect.isBorrowed(mob))
-			&&((!thisAffect.canBeUninvoked())&&(!thisAffect.isAutoInvoked())))
+			&&(!thisAffect.canBeUninvoked()))
 			{
 				String
 				str="INSERT INTO CMCHAB ("

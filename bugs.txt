@@ -4,7 +4,6 @@ Abilility to do Archon commands in Scriptable.
 MOBReSave doesn't work? Creates dups?
 the grinder doesn't support geninstruments well (there is no field to determine instrument type)
 grinder to support tattoos and educations
-Every time I get pregnant.. it gets just.. undone.. and then like the next day.. I'm not pregnant if that loosing baby is supposed to happen.. then how about a message to tell me I loose it and why!
 crafting info parm
 
 

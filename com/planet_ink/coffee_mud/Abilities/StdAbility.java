@@ -721,10 +721,9 @@ public class StdAbility implements Ability, Cloneable
 	{
 		if(isAutoInvoked())
 		{
-			Ability thisAbility=mob.fetchEffect(this.ID());
-			if(thisAbility!=null)
-				return false;
-			Ability thatAbility=(Ability)this.copyOf();
+			Ability thisAbility=mob.fetchEffect(ID());
+			if(thisAbility!=null) return false;
+			Ability thatAbility=(Ability)copyOf();
 			((StdAbility)thatAbility).canBeUninvoked=true;
 			thatAbility.setBorrowed(mob,true);
 			mob.addEffect(thatAbility);
