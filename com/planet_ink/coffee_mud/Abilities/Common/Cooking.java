@@ -196,7 +196,7 @@ public class Cooking extends CommonSkill
 		{
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
-				String ingredient=(String)Vr.elementAt(vr);
+				String ingredient=((String)Vr.elementAt(vr)).toUpperCase();
 				if(ingredient.length()>0)
 				{
 					int amount=1;
@@ -208,10 +208,10 @@ public class Cooking extends CommonSkill
 					boolean found=false;
 					for(int i=0;i<contents.length;i++)
 					{
-						String ingredient2=(String)contents[i];
+						String ingredient2=((String)contents[i]).toUpperCase();
 						int amount2=amounts[i];
-						if((ingredient2.toUpperCase().startsWith(ingredient+"/"))
-						||(ingredient2.toUpperCase().endsWith("/"+ingredient)))
+						if((ingredient2.startsWith(ingredient+"/"))
+						||(ingredient2.endsWith("/"+ingredient)))
 						{
 							found=true;
 							amounts[i]=amount2-amount;
@@ -270,7 +270,7 @@ public class Cooking extends CommonSkill
 			else
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
-				String ingredient2=(String)Vr.elementAt(vr);
+				String ingredient2=((String)Vr.elementAt(vr)).toUpperCase();
 				if((ingredient2.length()>0)
 				&&((ingredient.toUpperCase().startsWith(ingredient2+"/"))
 				||(ingredient.toUpperCase().endsWith("/"+ingredient2))))
@@ -306,9 +306,9 @@ public class Cooking extends CommonSkill
 					boolean found=false;
 					for(Enumeration e=oldContents.keys();e.hasMoreElements();)
 					{
-						String ingredient2=(String)e.nextElement();
-						if((ingredient2.toUpperCase().startsWith(ingredient+"/"))
-						||(ingredient2.toUpperCase().endsWith("/"+ingredient)))
+						String ingredient2=((String)e.nextElement()).toUpperCase();
+						if((ingredient2.startsWith(ingredient.toUpperCase()+"/"))
+						||(ingredient2.endsWith("/"+ingredient.toUpperCase())))
 						{ found=true; break;}
 					}
 					if(!found)
@@ -419,9 +419,9 @@ public class Cooking extends CommonSkill
 			boolean found=false;
 			for(Enumeration e=oldContents.keys();e.hasMoreElements();)
 			{
-				String ingredient2=(String)e.nextElement();
-				if((ingredient2.toUpperCase().startsWith(((String)Vr.elementAt(RCP_MAININGR))+"/"))
-				||(ingredient2.toUpperCase().endsWith("/"+((String)Vr.elementAt(RCP_MAININGR)))))
+				String ingredient2=((String)e.nextElement()).toUpperCase();
+				if((ingredient2.startsWith(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()+"/"))
+				||(ingredient2.endsWith("/"+((String)Vr.elementAt(RCP_MAININGR)).toUpperCase())))
 				{ found=true; break;}
 			}
 			if(found)
@@ -493,21 +493,27 @@ public class Cooking extends CommonSkill
 				{
 					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to add a little more ");
 					for(int i=1;i<counts.size();i++)
-						if(i==1) buf.append(((String)counts.elementAt(i)).toLowerCase());
+						if(i==1) 
+							buf.append(((String)counts.elementAt(i)).toLowerCase());
 						else
-						if(i==counts.size()-1) buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
-						else buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
+						if(i==counts.size()-1) 
+							buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
+						else 
+							buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
 					complaints.addElement(buf.toString());
 				}
 				else
 				if(amountMaking.intValue()>0)
 				{
-					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to add a little more ");
+					StringBuffer buf=new StringBuffer("If you are trying to make "+recipeName+", you need to remove some of the ");
 					for(int i=1;i<counts.size();i++)
-						if(i==1) buf.append(((String)counts.elementAt(i)).toLowerCase());
+						if(i==1) 
+							buf.append(((String)counts.elementAt(i)).toLowerCase());
 						else
-						if(i==counts.size()-1) buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
-						else buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
+						if(i==counts.size()-1) 
+							buf.append(", and "+((String)counts.elementAt(i)).toLowerCase());
+						else 
+							buf.append(", "+((String)counts.elementAt(i)).toLowerCase());
 					complaints.addElement(buf.toString());
 				}
 			}
