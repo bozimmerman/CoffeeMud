@@ -94,7 +94,7 @@ public class Spell_Charm extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if((!target.isMonster())||(levelDiff>=3))
+		if((!target.mayIFight(mob))||(levelDiff>=3))
 		{
 			mob.tell(target.charStats().HeShe()+" looks too powerful.");
 			return false;

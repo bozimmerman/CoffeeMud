@@ -45,7 +45,7 @@ public class Thief_Swipe extends ThiefSkill
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
 
-		if((!target.isMonster())&&(levelDiff<15))
+		if((!target.mayIFight(mob))&&(levelDiff<15))
 		{
 			mob.tell("You cannot swipe from "+target.charStats().himher()+".");
 			return false;
@@ -94,7 +94,7 @@ public class Thief_Swipe extends ThiefSkill
 			if(Dice.rollPercentage()>discoverChance)
 				hisStr=null;
 			else
-				hisCode=hisCode | ((target.isMonster())?Affect.MASK_MALICIOUS:0);
+				hisCode=hisCode | ((target.mayIFight(mob))?Affect.MASK_MALICIOUS:0);
 			FullMsg msg=new FullMsg(mob,target,null,Affect.MSG_DELICATE_HANDS_ACT,str,hisCode,hisStr,Affect.NO_EFFECT,null);
 			if(mob.location().okAffect(msg))
 			{

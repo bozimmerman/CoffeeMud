@@ -17,6 +17,7 @@ public interface MOB
 	public static final int ATT_ANSI=16;
 	public static final int ATT_SYSOPMSGS=32;
 	public static final int ATT_AUTOMELEE=64;
+	public static final int ATT_PLAYERKILL=128;
 	
 	/** When the USER last logged on */
 	public Calendar lastDateTime();
@@ -53,6 +54,7 @@ public interface MOB
 	public void makePeace();
 	public void setAtRange(int newRange);
 	public int rangeToTarget();
+	public boolean mayIFight(MOB mob);
 	
 	/** Where this MOB is currently*/
 	public Room location();

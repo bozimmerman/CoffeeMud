@@ -93,7 +93,7 @@ public class Spell_Delay extends Spell
 		for(int m=0;m<mob.location().numInhabitants();m++)
 		{
 			MOB M=mob.location().fetchInhabitant(m);
-			if((M!=null)&&(M!=mob)&&(!M.isMonster()))
+			if((M!=null)&&(M!=mob)&&(!M.mayIFight(mob)))
 			{
 				mob.tell("You cannot delay that spell here -- there are other players present!");
 				return false;

@@ -300,6 +300,9 @@ public class CommandProcessor
 				case CommandSet.PASSWORD:
 					basicSenses.password(mob,commands);
 					break;
+				case CommandSet.PLAYERKILL:
+					theFight.playerkill(mob);
+					break;
 				case CommandSet.POSSESS:
 					if(mob.isASysOp(mob.location()))
 						sysopSkills.possess(mob,commands);

@@ -56,9 +56,9 @@ public class Spell_Command extends Spell
 			return false;
 		}
 
-		if(!target.isMonster())
+		if(!target.mayIFight(mob))
 		{
-			mob.tell("You can't command a sentient player.");
+			mob.tell("You can't command "+target.name()+".");
 			return false;
 		}
 

@@ -131,6 +131,7 @@ public class CommandSet extends Hashtable
 	public static final int CRAWL=119;
 	public static final int TIME=120;
 	public static final int ENTER=121;
+	public static final int PLAYERKILL=122;
 
 	public CommandSet()
 	{
@@ -234,6 +235,7 @@ public class CommandSet extends Hashtable
 		put("ORDER",new Integer(ORDER));
 		put("OUTFIT",new Integer(OUTFIT));
 		put("PASSWORD",new Integer(PASSWORD));
+		put("PLAYERKILL",new Integer(PLAYERKILL));
 		put("POSSESS",new Integer(POSSESS));
 			put("POSS",new Integer(POSSESS));
 		put("PRACTICE",new Integer(PRACTICE));

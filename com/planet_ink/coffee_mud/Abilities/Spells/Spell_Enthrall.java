@@ -94,7 +94,7 @@ public class Spell_Enthrall extends Spell
 		if(target==null) return false;
 
 		int levelDiff=target.envStats().level()-mob.envStats().level();
-		if((!target.isMonster())||(levelDiff>=10))
+		if((!target.mayIFight(mob))||(levelDiff>=10))
 		{
 			mob.tell(target.charStats().HeShe()+" looks too powerful.");
 			return false;

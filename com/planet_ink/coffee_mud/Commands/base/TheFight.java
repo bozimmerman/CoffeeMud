@@ -331,7 +331,7 @@ public class TheFight
 		target.setFollowing(null);
 		deathRoom.delInhabitant(target);
 		deathRoom.show(target,null,Affect.MSG_OK_ACTION,target.name()+" is DEAD!!!\n\r");
-		if(!target.isMonster())
+		if(!target.mayIFight(source))
 		{
 			int expLost=100;
 			target.tell("You lose 100 experience points.");
@@ -469,6 +469,32 @@ public class TheFight
 		{
 			mob.setBitmap(mob.getBitmap()|MOB.ATT_AUTOLOOT);
 			mob.tell("Autolooting has been turned on.");
+		}
+	}
+	public void playerkill(MOB mob)
+		throws IOException
+	{
+		if(mob.isInCombat())
+		{
+			mob.tell("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!");
+			return;
+		}
+		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)>0)
+		{
+			mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
+			mob.tell("Your playerkill flag has been turned off.");
+		}
+		else
+		if(!mob.isMonster())
+		{
+			mob.tell("Turning on this flag will allow you to kill and be killed by other players.");
+			if(mob.session().confirm("Are you absolutely sure (y/N)?","N"))
+			{
+				mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+				mob.tell("Your playerkill flag has been turned on.");
+			}
+			else
+				mob.tell("Your playerkill flag remains OFF.");
 		}
 	}
 	public void autogold(MOB mob)

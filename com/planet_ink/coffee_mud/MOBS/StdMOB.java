@@ -440,6 +440,14 @@ public class StdMOB implements MOB
 		}
 		return true;
 	}
+	public boolean mayIFight(MOB mob)
+	{
+		if(mob.isMonster()) return true;
+		if(isMonster()) return true;
+		if((getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
+		if((mob.getBitmap()&MOB.ATT_PLAYERKILL)==0) return false;
+		return true;
+	}
 	public void setAtRange(int newRange){atRange=newRange;}
 	public int rangeToTarget(){return atRange;}
 	public int maxRange(){return maxRange(null);}
@@ -1041,13 +1049,15 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if((!this.isMonster())
-				&&(!affect.source().isMonster())
-				&&(affect.source()!=this)
-				&&(affect.source().envStats().level()>(this.envStats().level()-26)))
+				if((!mayIFight(mob))
+				||(mob.envStats().level()>envStats().level()+26))
 				{
-					mob.tell("Player killing is highly discouraged.");
+					if(!mayIFight(mob))
+						mob.tell("Player killing is highly discouraged.");
+					else
+						mob.tell("That is not EVEN a fair fight.");
 					mob.setVictim(null);
+					if(victim==mob) setVictim(null);
 					return false;
 				}
 				if(this.amFollowing()==mob)
