@@ -91,15 +91,26 @@ public class AnimalTrading extends CommonSkill
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
 				{ cage=I; break;}
 			}
-			if(commands.size()>0)
+			if(cage==null)
+			for(int i=0;i<mob.inventorySize();i++)
 			{
-				String last=(String)commands.lastElement();
-				Item I=mob.location().fetchItem(null,last);
+				Item I=mob.fetchInventory(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
+				{ cage=I; break;}
+			}
+			if(commands.size()>0)
+			{
+				String last=(String)commands.lastElement();
+				Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Item.WORN_REQ_ANY);
+				if(E==null) 
+				if((E!=null)
+				&&(E instanceof Item)
+				&&(E instanceof Container)
+				&&((((Container)E).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
 				{
-					cage=I;
+					cage=(Item)E;
 					commands.removeElement(last);
 				}
 			}
@@ -108,7 +119,7 @@ public class AnimalTrading extends CommonSkill
 				commonTell(mob,"You don't see anyone called '"+str+"' here.");
 				return false;
 			}
-			taming=mob.location().fetchItem(cage,Util.combine(commands,0));
+			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,Util.combine(commands,0),Item.WORN_REQ_ANY);
 			if((taming==null)||(!Sense.canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
 				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+Util.combine(commands,0)+"'.");
@@ -125,10 +136,12 @@ public class AnimalTrading extends CommonSkill
 			if(mob.location().okAffect(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(taming instanceof Item)
+					((Item)taming).destroyThis();
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,shopkeeper,"<S-NAME> isn't able to strike a deal with <T-NAME>.");
+			beneficialWordsFizzle(mob,shopkeeper,"<S-NAME> <S-IS-ARE>n't able to strike a deal with <T-NAME>.");
 		return true;
 	}
 }
