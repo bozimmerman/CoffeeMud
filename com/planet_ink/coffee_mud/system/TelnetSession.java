@@ -428,7 +428,6 @@ public class TelnetSession extends Thread implements Session
 		if(mob==null) return msg;
 
 		if(msg.length()==0) return msg;
-
 		boolean doSagain=false;
 		StringBuffer buf=new StringBuffer(msg);
 
@@ -440,8 +439,7 @@ public class TelnetSession extends Thread implements Session
 		while(buf.length()>loop)
 		{
 			int lastSp=-1;
-			boolean breakPlease=false;
-			while((!breakPlease)&&(loop<len)&&(buf.length()>loop))
+			while((loop<len)&&(buf.length()>loop))
 			{
 				switch(buf.charAt(loop))
 				{
@@ -519,7 +517,6 @@ public class TelnetSession extends Thread implements Session
 							buf.deleteCharAt(lastParen);
 							buf.deleteCharAt(loop);
 						}
-
 					}
 					break;
 				case '\\':
@@ -691,7 +688,11 @@ public class TelnetSession extends Thread implements Session
 			}
 
 			
-			if((len<buf.length())&&(loop!=lastSp)&&(lastSp>=0))
+			if((len<buf.length())
+			   &&(loop!=lastSp)
+			   &&(lastSp>=0)
+			   &&(buf.charAt(loop)!='\n')
+			   &&(buf.charAt(loop)!='\r'))
 			{
 				if(buf.charAt(lastSp+1)==' ')
 				{

@@ -209,7 +209,7 @@ public class Scoring
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^N"+Util.padRight(thisAbility.name(),19));
+					thisLine.append("^N[^H"+Util.padRight(Integer.toString(thisAbility.profficiency()),3)+"%^?] ^N"+Util.padRight(thisAbility.name(),(col==3)?18:19));
 				}
 			}
 			if(thisLine.length()>0)
@@ -250,7 +250,7 @@ public class Scoring
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "+Util.padRight(thisAbility.name(),20));
+					thisLine.append("^N[^H"+Util.padRight(""+l,3)+"^?] "+Util.padRight(thisAbility.name(),(col==3)?19:20));
 				}
 			}
 			if(thisLine.length()>0)

@@ -57,7 +57,10 @@ public class Spell_Earthquake extends Spell
 		MOB mob=(MOB)affected;
 
 		super.unInvoke();
-		mob.tell("The movement under your feet stops.");
+		if(mob.location()!=null)
+			mob.location().show(mob,null,Affect.MSG_OK_ACTION,"<S-NAME> regain(s) <S-HIS-HER> feet as the ground stops shaking.");
+		else
+			mob.tell("The movement under your feet stops.");
 		ExternalPlay.standIfNecessary(mob);
 	}
 
@@ -97,7 +100,7 @@ public class Spell_Earthquake extends Spell
 					mob.location().send(mob,msg);
 					if(!msg.wasModified())
 					{
-						success=maliciousAffect(mob,target,-mob.envStats().level(),-1);
+						success=maliciousAffect(mob,target,5,-1);
 						if(success)
 						{
 							if(target.location()==mob.location())
