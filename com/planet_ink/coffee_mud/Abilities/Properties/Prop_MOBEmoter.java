@@ -21,7 +21,11 @@ public class Prop_MOBEmoter extends Property
 				emoter=CMClass.getBehavior("Emoter");
 				emoter.setParms(text());
 			}
-			return emoter.tick(ticking,tickID);
+			if(!emoter.tick(ticking,tickID))
+			{
+				if(Util.getParmInt(emoter.getParms(),"expires",0)>0)
+					((MOB)ticking).delEffect(this);
+			}
 		}
 		return true;
 	}

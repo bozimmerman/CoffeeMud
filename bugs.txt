@@ -6,10 +6,10 @@ webmacro LIST Maybe a system for the command LIST, wouldnt be as easy implemente
 
 leash in mobile broke
 wimpy zappercheck (very?) broken
-pets dont go away when players quit
 loading a new command doesn't appear to work
 
-I'd also like to tie commands to particular items and locations,which I'm presuming is possible in this codebase.
+Prop_HaveEnabler, Prop_WearEnabler, Prop_RideEnabler, I'd also like to tie commands to particular items and locations, 
+	which I'm presuming is possible in this codebase.
 
 If there is no TELL LAST thing, just take this as an IDEA then.
 

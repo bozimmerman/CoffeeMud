@@ -51,8 +51,11 @@ public class StdPerfume extends StdDrink implements Perfume
 			E=CMClass.getAbility("Prop_MOBEmoter");
 			String s=getSmellList();
 			if(s.toUpperCase().indexOf("EXPIRES")<0)
-				s="expires=100 "+s;
-			E.setMiscText("SMELL "+s);
+				s="expires=50 "+s;
+			if(s.toUpperCase().trim().startsWith("SMELL "))
+				E.setMiscText(s);
+			else
+				E.setMiscText("SMELL "+s);
 			mob.addNonUninvokableEffect(E);
 			E.setBorrowed(mob,true);
 		}

@@ -19,7 +19,7 @@ public class Emoter extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		expires=Util.getParmInt(parms,"expires",expires);
+		expires=Util.getParmInt(parms,"expires",0);
 		emotes=null;
 	}
 
