@@ -24,6 +24,14 @@ public class GiantWorm extends StdRace
 	protected static Vector resources=new Vector();
 	public boolean playerSelectable(){return false;}
 
+	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setStat(CharStats.STRENGTH,23);
+		affectableStats.setStat(CharStats.CONSTITUTION,18);
+		affectableStats.setStat(CharStats.DEXTERITY,3);
+		affectableStats.setStat(CharStats.INTELLIGENCE,1);
+	}
 	public String arriveStr()
 	{
 		return "shuffles in";
