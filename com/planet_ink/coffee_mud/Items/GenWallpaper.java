@@ -73,7 +73,7 @@ public class GenWallpaper implements Item
 	public void remove(){}
 	public int capacity(){return 0;}
 	public void setCapacity(int newValue){}
-	public int material(){return Item.GLASS;}
+	public int material(){return EnvResource.RESOURCE_PAPER;}
 	public void setMaterial(int newValue){}
 	public int value(){return 0;}
 	public void setBaseValue(int newValue){}

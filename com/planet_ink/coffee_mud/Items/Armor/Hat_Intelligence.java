@@ -21,7 +21,7 @@ public class Hat_Intelligence extends StdArmor
 		baseGoldValue=6000;
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
-		material=Armor.CLOTH;
+		material=EnvResource.RESOURCE_COTTON;
 	}
 	public Environmental newInstance()
 	{

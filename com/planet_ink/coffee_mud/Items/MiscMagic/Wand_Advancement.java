@@ -15,6 +15,7 @@ public class Wand_Advancement extends StdWand
 		description="A wand made out of platinum";
 		secretIdentity="The wand of Advancement.  Hold the wand say `level up` to it.";
 		this.setUsesRemaining(50);
+		material=EnvResource.RESOURCE_OAK;
 		baseGoldValue=20000;
 		recoverEnvStats();
 	}

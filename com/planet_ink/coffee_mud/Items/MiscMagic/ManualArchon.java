@@ -19,6 +19,7 @@ public class ManualArchon extends StdItem implements MiscMagic
 		secretIdentity="The Manual of the Archons.";
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=50000;
+		material=EnvResource.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 

@@ -22,6 +22,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 		displayText="a cup sits here.";
 		description="A small wooden cup with a lid.";
 		baseGoldValue=5;
+		material=EnvResource.RESOURCE_LEATHER;
 		recoverEnvStats();
 	}
 
@@ -33,7 +34,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public int thirstQuenched(){return amountOfThirstQuenched;}
 	public int liquidHeld(){return amountOfLiquidHeld;}
 	public int liquidRemaining(){return amountOfLiquidRemaining;}
-	public int liquidType(){return Drink.LIQUID_WATER;}
+	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
 
 	public void setThirstQuenched(int amount){amountOfThirstQuenched=amount;}
 	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
@@ -87,7 +88,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 						if((affect.tool()!=null)&&(affect.tool() instanceof Drink))
 						{
 							Drink thePuddle=(Drink)affect.tool();
-							if(thePuddle.liquidType()==Drink.LIQUID_SALT_WATER)
+							if(thePuddle.liquidType()==EnvResource.RESOURCE_SALTWATER)
 							{
 								mob.tell("You don't want to be drinking saltwater.");
 								return false;

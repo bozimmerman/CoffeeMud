@@ -10,6 +10,7 @@ public class CloseableContainer extends StdContainer
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		hasALid=true;
 		isOpen=false;
+		material=EnvResource.RESOURCE_OAK;
 	}
 
 	public Environmental newInstance()

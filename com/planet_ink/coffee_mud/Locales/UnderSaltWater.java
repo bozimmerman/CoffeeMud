@@ -12,5 +12,5 @@ public class UnderSaltWater extends UnderWater
 	{
 		return new UnderSaltWater();
 	}
-	public int liquidType(){return Drink.LIQUID_SALT_WATER;}
+	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 }

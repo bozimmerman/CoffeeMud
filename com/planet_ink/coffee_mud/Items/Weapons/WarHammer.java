@@ -22,6 +22,7 @@ public class WarHammer extends StdWeapon
 		properWornBitmap=Item.HELD|Item.WIELD;
 		recoverEnvStats();
 		weaponType=Weapon.TYPE_BASHING;
+		material=EnvResource.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_HAMMER;
 	}
 

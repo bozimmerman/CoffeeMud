@@ -14,6 +14,7 @@ public class TreeSurface extends ClimbableSurface
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_WOODS;
 		domainCondition=Room.CONDITION_NORMAL;
+		baseMove=4;
 	}
 	public Environmental newInstance()
 	{

@@ -18,6 +18,7 @@ public class GenRideable extends StdRideable
 		description="Looks like a boat";
 		baseEnvStats().setWeight(2000);
 		rideBasis=Rideable.RIDEABLE_WATER;
+		setMaterial(EnvResource.RESOURCE_OAK);
 		recoverEnvStats();
 		isReadable=false;
 	}

@@ -20,6 +20,7 @@ public class GenWeapon extends StdWeapon
 		properWornBitmap=Item.WIELD|Item.HELD;
 		wornLogicalAnd=false;
 		weaponType=Weapon.TYPE_BASHING;
+		material=EnvResource.RESOURCE_STEEL;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(5);
 		baseEnvStats().setLevel(5);

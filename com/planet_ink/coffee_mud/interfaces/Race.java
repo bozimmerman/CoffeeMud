@@ -12,6 +12,7 @@ public interface Race
 	public Weapon myNaturalWeapon();
 	public String healthText(MOB mob);
 	public DeadBody getCorpse(MOB mob, Room room);
+	public void confirmGear(MOB mob);
 	
 	public String arriveStr();
 	public String leaveStr();

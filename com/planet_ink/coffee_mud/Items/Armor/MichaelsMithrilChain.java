@@ -21,7 +21,7 @@ public class MichaelsMithrilChain extends StdArmor
 		baseEnvStats().setAbility(75);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
-		material=Armor.MITHRIL;
+		material=EnvResource.RESOURCE_MITHRIL;
 	}
 
 	public boolean okAffect(Affect affect)

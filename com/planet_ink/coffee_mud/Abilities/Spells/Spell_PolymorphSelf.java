@@ -127,6 +127,8 @@ public class Spell_PolymorphSelf extends Spell
 					newRace=R;
 					mob.location().show(target,null,Affect.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					success=beneficialAffect(mob,target,0);
+					target.recoverCharStats();
+					newRace.confirmGear(target);
 				}
 			}
 		}

@@ -22,6 +22,7 @@ public class Corpse extends StdContainer implements DeadBody
 		capacity=5;
 		baseGoldValue=0;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_MEAT;
 	}
 	public Environmental newInstance()
 	{

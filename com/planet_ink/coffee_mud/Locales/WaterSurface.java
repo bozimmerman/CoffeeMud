@@ -64,7 +64,7 @@ public class WaterSurface extends StdRoom implements Drink
 		else
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
 		{
-			if(liquidType()==Drink.LIQUID_SALT_WATER)
+			if(liquidType()==EnvResource.RESOURCE_SALTWATER)
 			{
 				affect.source().tell("You don't want to be drinking saltwater.");
 				return false;
@@ -97,7 +97,7 @@ public class WaterSurface extends StdRoom implements Drink
 	public int thirstQuenched(){return 1000;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return Drink.LIQUID_WATER;}
+	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}

@@ -19,7 +19,7 @@ public class GenPants extends GenArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=1;
 		recoverEnvStats();
-		material=Armor.CLOTH;
+		material=EnvResource.RESOURCE_COTTON;
 	}
 	public Environmental newInstance()
 	{

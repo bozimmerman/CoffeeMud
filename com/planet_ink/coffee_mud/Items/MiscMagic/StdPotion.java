@@ -19,7 +19,7 @@ public class StdPotion extends StdDrink implements Potion
 		description="An empty flask with strange residue.";
 		secretIdentity="What was once a powerful potion.";
 		baseGoldValue=200;
-		material=Item.GLASS;
+		material=EnvResource.RESOURCE_GLASS;
 		recoverEnvStats();
 	}
 
@@ -28,7 +28,7 @@ public class StdPotion extends StdDrink implements Potion
 		return new StdPotion();
 	}
 
-	public int liquidType(){return Drink.LIQUID_OTHERDRINKABLE;}
+	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
 	public boolean isDrunk(){return (miscText.toUpperCase().indexOf(";DRUNK")>=0);}
 	public int value()
 	{

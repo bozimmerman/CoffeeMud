@@ -1810,78 +1810,79 @@ public class Import
 
 			boolean materialchange=true;
 			if(objectDescription.equalsIgnoreCase("steel"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_STEEL);
 			else
 			if(objectDescription.equalsIgnoreCase("cloth"))
-				I.setMaterial(Item.CLOTH);
+				I.setMaterial(EnvResource.RESOURCE_COTTON);
 			else
 			if(objectDescription.equalsIgnoreCase("leather"))
-				I.setMaterial(Item.LEATHER);
+				I.setMaterial(EnvResource.RESOURCE_LEATHER);
 			else
 			if(objectDescription.equalsIgnoreCase("metal"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_TIN);
 			else
 			if(objectDescription.equalsIgnoreCase("glass"))
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(EnvResource.RESOURCE_GLASS);
 			else
 			if(objectDescription.equalsIgnoreCase("mithril"))
-				I.setMaterial(Item.MITHRIL);
+				I.setMaterial(EnvResource.RESOURCE_MITHRIL);
 			else
 			if(objectDescription.equalsIgnoreCase("adamantite"))
-				I.setMaterial(Item.MITHRIL);
+				I.setMaterial(EnvResource.RESOURCE_ADAMANTITE);
 			else
 			if(objectDescription.equalsIgnoreCase("wood"))
-				I.setMaterial(Item.WOODEN);
+				I.setMaterial(EnvResource.RESOURCE_OAK);
 			else
 			if(objectDescription.equalsIgnoreCase("iron"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_IRON);
 			else
 			if(objectDescription.equalsIgnoreCase("brass"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_BRASS);
 			else
 			if(objectDescription.equalsIgnoreCase("vellum"))
-				I.setMaterial(Item.CLOTH);
+				I.setMaterial(EnvResource.RESOURCE_SKIN);
 			else
 			if(objectDescription.equalsIgnoreCase("silver"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_SILVER);
 			else
 			if(objectDescription.equalsIgnoreCase("gold"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_GOLD);
 			else
 			if(objectDescription.equalsIgnoreCase("copper"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_COPPER);
 			else
 			if(objectDescription.equalsIgnoreCase("bronze"))
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_BRONZE);
 			else
 			if(objectDescription.equalsIgnoreCase("crystal"))
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(EnvResource.RESOURCE_CRYSTAL);
 			else
 			if(objectDescription.equalsIgnoreCase("clay"))
-				I.setMaterial(Item.ROCK);
+				I.setMaterial(EnvResource.RESOURCE_CLAY);
 			else
 			if(objectDescription.equalsIgnoreCase("china"))
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(EnvResource.RESOURCE_CHINA);
 			else
 			if(objectDescription.equalsIgnoreCase("diamond"))
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(EnvResource.RESOURCE_DIAMOND);
 			else
 			if(objectDescription.equalsIgnoreCase("pearl"))
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(EnvResource.RESOURCE_PEARL);
 			else
 			if(objectDescription.equalsIgnoreCase("gem"))
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(EnvResource.RESOURCE_STEEL);
 			else
 			if(objectDescription.equalsIgnoreCase("paper"))
-				I.setMaterial(Item.PAPER);
+				I.setMaterial(EnvResource.RESOURCE_PAPER);
 			else
 				materialchange=false;
 
 			// correction for certain rings
-			if(((I.material()==Item.CLOTH)||(I.material()==Item.PAPER))
+			if((((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_CLOTH)
+				||((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_PAPER))
 			   &&(I.canBeWornAt(Armor.ON_LEFT_FINGER)))
 			{
-				I.setMaterial(Item.METAL);
+				I.setMaterial(EnvResource.RESOURCE_SILVER);
 				materialchange=true;
 			}
 			
@@ -1941,8 +1942,8 @@ public class Import
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_GOOD);
 
 			if(Util.isSet(extraFlag,18))
-				if(I.material()==Item.METAL)
-					I.setMaterial(Item.GLASS);
+				if((I.material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
+					I.setMaterial(EnvResource.RESOURCE_GLASS);
 
 			//if(Util.isSet(extraFlag,20))
 			//nothing is unlocatable

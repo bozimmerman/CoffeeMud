@@ -21,6 +21,7 @@ public class TwoHandedSword extends Sword
 		wornLogicalAnd=true;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}
 

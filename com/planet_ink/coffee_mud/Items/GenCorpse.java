@@ -16,6 +16,7 @@ public class GenCorpse extends GenContainer implements DeadBody
 		displayText="a corpse lies here.";
 		description="Looks dead.";
 		isReadable=false;
+		setMaterial(EnvResource.RESOURCE_MEAT);
 	}
 
 	public Environmental newInstance()

@@ -19,6 +19,7 @@ public class Longsword extends Sword
 		baseEnvStats().setDamage(8);
 		baseGoldValue=15;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}
 

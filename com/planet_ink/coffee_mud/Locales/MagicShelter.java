@@ -33,6 +33,7 @@ public class MagicShelter extends StdRoom
 			A.setMiscText(A.text()+text()+" Spell_Teleport Spell_Gate Spell_Portal Spell_Shelter");
 		}
 		this.addAffect(A);
+		baseMove=0;
 	}
 
 	public Environmental newInstance()

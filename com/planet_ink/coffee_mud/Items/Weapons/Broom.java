@@ -11,6 +11,7 @@ public class Broom extends Quarterstaff
 		name="a broom";
 		displayText="a broom lies in the corner of the room.";
 		description="It's long and wooden, with lots of bristles on one end.";
+		material=EnvResource.RESOURCE_OAK;
 	}
 
 	public Environmental newInstance()

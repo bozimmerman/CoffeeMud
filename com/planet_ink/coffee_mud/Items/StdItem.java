@@ -27,7 +27,7 @@ public class StdItem implements Item
 	protected boolean	isRemovable=true;
 	protected boolean	isTrapped=false;
 	protected int		goldValue=0;
-	protected int		material=CLOTH;
+	protected int		material=EnvResource.RESOURCE_COTTON;
 	protected Environmental owner=null;
 	protected Calendar possessionTime=null;
 

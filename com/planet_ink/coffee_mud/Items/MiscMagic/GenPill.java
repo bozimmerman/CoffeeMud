@@ -20,7 +20,7 @@ public class GenPill extends GenFood implements Pill
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=Item.VEGETATION;
+		material=EnvResource.RESOURCE_CORN;
 	}
 
 	public Environmental newInstance()

@@ -19,6 +19,7 @@ public class Dagger extends StdWeapon
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(4);
 		weaponType=TYPE_PIERCING;
+		material=EnvResource.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_DAGGER;
 		recoverEnvStats();
 	}

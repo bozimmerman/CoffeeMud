@@ -26,9 +26,14 @@ public class StdRoom
 	protected int domainType=Room.DOMAIN_OUTDOORS_CITY;
 	protected int domainCondition=Room.CONDITION_NORMAL;
 	protected int maxRange=-1; // -1 = use indoor/outdoor algorithm
+	
+	// base move points and thirst points per round
+	protected int baseMove=2;
+	protected int baseThirst=1;
+	protected Vector resourceChoices=null;
+	protected int myResource=-1;
 
 	protected boolean skyedYet=false;
-
 	public StdRoom()
 	{
 	}
@@ -150,6 +155,16 @@ public class StdRoom
 			CMMap.addRoom(sky);
 		}
 	}
+	public int myResource()
+	{
+		if(myResource>=0) return myResource;
+		if(resourceChoices==null) 
+			myResource=-1;
+		else
+			myResource=((Integer)resourceChoices.elementAt(Dice.roll(1,resourceChoices.size(),-1))).intValue();
+		return myResource;
+	}
+			
 
 	public boolean okAffect(Affect affect)
 	{
@@ -789,46 +804,17 @@ public class StdRoom
 	}
 
 	public int pointsPerMove(MOB mob)
-	{
-		switch(domainType())
-		{
-		case Room.DOMAIN_OUTDOORS_AIR:
-		case Room.DOMAIN_OUTDOORS_CITY:
-			return getArea().adjustMovement(1,mob,this);
-		case Room.DOMAIN_OUTDOORS_PLAINS:
-			return getArea().adjustMovement(2,mob,this);
-		case Room.DOMAIN_OUTDOORS_ROCKS:
-			return getArea().adjustMovement(3,mob,this);
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			return getArea().adjustMovement(3,mob,this);
-		case Room.DOMAIN_OUTDOORS_WOODS:
-			return getArea().adjustMovement(3,mob,this);
-		case Room.DOMAIN_INDOORS_CAVE:
-			return getArea().adjustMovement(2,mob,this);
-		case Room.DOMAIN_INDOORS_MAGIC:
-		case Room.DOMAIN_INDOORS_STONE:
-		case Room.DOMAIN_INDOORS_WOOD:
-			return getArea().adjustMovement(1,mob,this);
-		}
-		return getArea().adjustMovement(2,mob,this);
-	}
+	{	return getArea().adjustMovement(baseMove,mob,this);	}
 	public int thirstPerRound(MOB mob)
 	{
-		switch(domainType())
-		{
-		case Room.DOMAIN_OUTDOORS_UNDERWATER:
-		case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-			return getArea().adjustWaterConsumption(0,mob,this);
-		}
 		switch(domainConditions())
 		{
 		case Room.CONDITION_HOT:
-			return getArea().adjustWaterConsumption(2,mob,this);
+			return getArea().adjustWaterConsumption(baseThirst+1,mob,this);
 		case Room.CONDITION_WET:
-			return getArea().adjustWaterConsumption(0,mob,this);
+			return getArea().adjustWaterConsumption(baseThirst-1,mob,this);
 		}
-		return getArea().adjustWaterConsumption(1,mob,this);
+		return getArea().adjustWaterConsumption(baseThirst,mob,this);
 	}
 	public int minRange(){return Integer.MIN_VALUE;}
 	public int maxRange()

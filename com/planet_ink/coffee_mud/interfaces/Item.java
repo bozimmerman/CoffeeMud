@@ -3,31 +3,6 @@ import java.util.Calendar;
 
 public interface Item extends Environmental
 {
-	// item materials
-	public final static int CLOTH=0;
-	public final static int LEATHER=1;
-	public final static int METAL=2;
-	public final static int MITHRIL=3;
-	public final static int WOODEN=4;
-	public final static int GLASS=5;
-	public final static int VEGETATION=6;
-	public final static int FLESH=7;
-	public final static int PAPER=8;
-	public final static int ROCK=9;
-	
-	public final static String[] materialDescription={
-	"CLOTH",
-	"LEATHER",
-	"METAL",
-	"MITHRIL",
-	"WOODEN",
-	"GLASS",
-	"VEGETATION",
-	"FLESH",
-	"PAPER",
-	"ROCK"};
-	
-	
 	/** Where the item is located.  Either null for
 	 * plain site (or contained on person), or will
 	 * point to the container object*/

@@ -19,6 +19,7 @@ public class BattleAxe extends Sword
 		baseEnvStats().setDamage(8);
 		baseGoldValue=35;
 		wornLogicalAnd=true;
+		material=EnvResource.RESOURCE_STEEL;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		recoverEnvStats();
 		weaponType=Weapon.TYPE_SLASHING;

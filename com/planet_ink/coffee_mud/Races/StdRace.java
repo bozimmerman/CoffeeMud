@@ -174,6 +174,28 @@ public class StdRace implements Race
 			stats.setHeight(shortestFemale+heightModifier);
 	}
 	
+	public void confirmGear(MOB mob)
+	{
+		if(mob==null) return;
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			Item item=mob.fetchInventory(i);
+			if((item!=null)&&(!item.amWearingAt(Item.INVENTORY)))
+			{
+				long oldCode=item.rawWornCode();
+				item.remove();
+				int msgCode=Affect.MSG_WEAR;
+				if((oldCode&Item.WIELD)>0)
+					msgCode=Affect.MSG_WIELD;
+				else
+				if((oldCode&Item.HELD)>0)
+					msgCode=Affect.MSG_HOLD;
+				FullMsg msg=new FullMsg(mob,item,null,Affect.NO_EFFECT,null,msgCode,null,Affect.NO_EFFECT,null);
+				if(item.okAffect(msg)) item.wearAt(oldCode);
+			}
+		}
+	}
+	
 	public boolean canWear(Item item)
 	{
 		if((item.rawLogicalAnd())&&((item.rawProperLocationBitmap()&forbiddenWornBits)>0))

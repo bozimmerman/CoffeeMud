@@ -17,6 +17,7 @@ public class Ration extends StdFood
 		displayText="a standard ration pack sits here.";
 		description="Bits of salt dried meat, dried fruit, and hard bread.";
 		baseGoldValue=15;
+		setMaterial(EnvResource.RESOURCE_MEAT);
 		recoverEnvStats();
 	}
 

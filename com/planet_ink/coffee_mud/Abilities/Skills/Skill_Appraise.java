@@ -69,13 +69,13 @@ public class Skill_Appraise extends StdAbility
 			{
 				double deviance=Util.div(Dice.roll(1,100,0)+50,100);
 				realValue=(int)Math.round(Util.mul(realValue,deviance));
-				materialCode=Dice.roll(1,Item.materialDescription.length,-1);
+				materialCode=Dice.roll(1,EnvResource.RESOURCE_DESCS.length,-1);
 				weight=(int)Math.round(Util.mul(weight,deviance));
 				height=(int)Math.round(Util.mul(height,deviance));
 				allWeight=(int)Math.round(Util.mul(allWeight,deviance));
 			}
 			StringBuffer str=new StringBuffer("");
-			str.append(target.name()+" is made of "+Item.materialDescription[materialCode]+" is worth about "+realValue+" gold.");
+			str.append(target.name()+" is made of "+EnvResource.RESOURCE_DESCS[materialCode&EnvResource.RESOURCE_MASK]+" is worth about "+realValue+" gold.");
 			if(target instanceof Armor)
 				str.append("\n\r"+target.name()+" is a size "+height+".");
 			if(weight!=allWeight)

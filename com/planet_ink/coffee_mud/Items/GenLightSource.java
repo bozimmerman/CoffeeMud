@@ -21,6 +21,7 @@ public class GenLightSource extends GenItem implements Light
 		description="Looks like something you can use for light.";
 		isReadable=false;
 		destroyedWhenBurnedOut=true;
+		setMaterial(EnvResource.RESOURCE_OAK);
 	}
 
 	public Environmental newInstance()

@@ -12,6 +12,7 @@ public class LockableContainer extends StdContainer
 		isOpen=false;
 		hasALock=true;
 		isLocked=true;
+		setMaterial(EnvResource.RESOURCE_OAK);
 	}
 
 	public Environmental newInstance()

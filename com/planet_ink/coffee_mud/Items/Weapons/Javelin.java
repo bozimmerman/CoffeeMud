@@ -20,7 +20,7 @@ public class Javelin extends StdWeapon
 		baseGoldValue=1;
 		setUsesRemaining(1);
 		recoverEnvStats();
-		material=Item.WOODEN;
+		material=EnvResource.RESOURCE_OAK;
 		weaponType=TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_RANGED;
 	}

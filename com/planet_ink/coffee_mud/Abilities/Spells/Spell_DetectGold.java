@@ -50,9 +50,8 @@ public class Spell_DetectGold extends Spell
 		if(I==null) return "";
 		if(I.location()==container)
 		{
-			if(((I.ID().equalsIgnoreCase("StdCoins"))
-			||((I.ID().equalsIgnoreCase("GenCoins"))&&((I.material()==Item.METAL)||(I.material()==Item.MITHRIL)))
-			&&(Sense.canBeSeenBy(I,mob))))
+			if((I.material()==EnvResource.RESOURCE_GOLD)
+			&&(Sense.canBeSeenBy(I,mob)))
 				msg.append(I.name()+" glows golden.\n\r");
 		}
 		else

@@ -11,6 +11,7 @@ public class RingOfElectricity extends Ring_Protection implements MiscMagic
 	{
 		super();
 		this.baseEnvStats().setLevel(COPPER_RING);
+		material=EnvResource.RESOURCE_COPPER;
 		this.recoverEnvStats();
 	}
 

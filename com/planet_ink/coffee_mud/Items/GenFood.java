@@ -19,6 +19,7 @@ public class GenFood extends StdFood
 		baseGoldValue=5;
 		amountOfNourishment=500;
 		recoverEnvStats();
+		setMaterial(EnvResource.RESOURCE_MEAT);
 	}
 
 	public Environmental newInstance()

@@ -21,6 +21,7 @@ public class StdRideable extends StdContainer implements Rideable
 		baseEnvStats().setWeight(2000);
 		recoverEnvStats();
 		capacity=2000;
+		material=EnvResource.RESOURCE_OAK;
 		isReadable=false;
 	}
 	public Environmental newInstance()

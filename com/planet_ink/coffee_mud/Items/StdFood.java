@@ -19,6 +19,7 @@ public class StdFood extends StdItem implements Food
 		displayText="a bit of food is here.";
 		description="Looks like some mystery meat";
 		baseGoldValue=5;
+		material=EnvResource.RESOURCE_MEAT;
 		recoverEnvStats();
 	}
 

@@ -18,7 +18,7 @@ public class GenShield extends GenArmor implements Shield
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setWeight(15);
 		recoverEnvStats();
-		material=Armor.METAL;
+		material=EnvResource.RESOURCE_OAK;
 	}
 	public boolean isGeneric(){return true;}
 

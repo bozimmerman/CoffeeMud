@@ -10,6 +10,7 @@ public class TrappedChest extends LargeChest
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		((Trap)CMClass.getAbility("Trap_Trap")).setTrapped(this,true);
+		material=EnvResource.RESOURCE_OAK;
 		isLocked=false;
 	}
 

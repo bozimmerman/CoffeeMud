@@ -19,6 +19,7 @@ public class Shortsword extends Sword
 		baseEnvStats().setDamage(5);
 		baseGoldValue=10;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 		weaponType=TYPE_PIERCING;
 	}
 

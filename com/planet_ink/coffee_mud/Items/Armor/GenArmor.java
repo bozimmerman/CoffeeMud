@@ -22,6 +22,7 @@ public class GenArmor extends StdArmor
 		baseEnvStats().setLevel(1);
 		baseEnvStats().setArmor(10);
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_LEATHER;
 	}
 
 	public Environmental newInstance()

@@ -19,7 +19,7 @@ public class SplintMail extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=160;
 		recoverEnvStats();
-		material=Armor.METAL;
+		material=EnvResource.RESOURCE_STEEL;
 	}
 	public Environmental newInstance()
 	{

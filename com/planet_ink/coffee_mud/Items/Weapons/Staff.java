@@ -25,7 +25,7 @@ public class Staff extends StdWeapon implements Wand
 		baseGoldValue=1;
 		recoverEnvStats();
 		wornLogicalAnd=true;
-		material=Item.WOODEN;
+		material=EnvResource.RESOURCE_OAK;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;

@@ -10,6 +10,7 @@ public class SmallDagger extends Dagger
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		baseEnvStats().setDamage(3);
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 	}
 
 	public Environmental newInstance()

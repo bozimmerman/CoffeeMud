@@ -150,7 +150,7 @@ public class Spell_WallOfDarkness extends Spell
 				I.setName("a wall of darkness");
 				I.setDisplayText("an eerie wall of darkness lingers here");
 				I.setDescription("It`s black.");
-				I.setMaterial(Item.GLASS);
+				I.setMaterial(EnvResource.RESOURCE_NOTHING);
 				I.setGettable(false);
 				I.recoverEnvStats();
 				mob.location().addItem(I);

@@ -13,7 +13,7 @@ public class GenCoins extends GenItem implements Coins
 		name="a pile of gold coins";
 		displayText="some gold coins sit here.";
 		myLocation=null;
-		material=Item.METAL;
+		setMaterial(EnvResource.RESOURCE_GOLD);
 		description="Looks like someone left some gold sitting around.";
 		isReadable=false;
 	}
@@ -29,7 +29,7 @@ public class GenCoins extends GenItem implements Coins
 	public boolean isGeneric(){return true;}
 	public void recoverEnvStats()
 	{
-		if((material!=Item.CLOTH)&&(material!=Item.PAPER))
+		if(((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)&&((material&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_PAPER))
 			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
 		envStats=baseEnvStats.cloneStats();
 		goldValue=envStats().ability();

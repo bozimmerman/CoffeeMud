@@ -19,7 +19,7 @@ public class ScaleMail extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=240;
 		recoverEnvStats();
-		material=Armor.METAL;
+		material=EnvResource.RESOURCE_STEEL;
 	}
 	public Environmental newInstance()
 	{

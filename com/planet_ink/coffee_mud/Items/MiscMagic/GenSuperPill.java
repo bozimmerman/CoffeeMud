@@ -18,7 +18,7 @@ public class GenSuperPill extends GenPill
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=Item.VEGETATION;
+		material=EnvResource.RESOURCE_CORN;
 	}
 
 	public Environmental newInstance()
@@ -153,6 +153,7 @@ public class GenSuperPill extends GenPill
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
+		mob.charStats().getMyRace().confirmGear(mob);
 	}
 
 	public void affect(Affect affect)

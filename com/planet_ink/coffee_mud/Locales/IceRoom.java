@@ -13,6 +13,7 @@ public class IceRoom extends StdRoom
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_STONE;
 		domainCondition=Room.CONDITION_COLD;
+		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

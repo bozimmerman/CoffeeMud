@@ -24,6 +24,7 @@ public class EternityQuarterstaff extends Quarterstaff
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		wornLogicalAnd=true;
 		properWornBitmap=Item.HELD|Item.WIELD;
+		material=EnvResource.RESOURCE_OAK;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
 		recoverEnvStats();

@@ -18,6 +18,7 @@ public class DragonClaw extends Natural
 		baseEnvStats().setAttackAdjustment(2);
 		baseEnvStats().setDamage(8);
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}

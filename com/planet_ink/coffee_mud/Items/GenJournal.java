@@ -15,6 +15,7 @@ public class GenJournal extends StdJournal
 		displayText="a journal sits here.";
 		description="Use the READ command to read the journal, and WRITE to add your own entries.";
 		isReadable=true;
+		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
 
 	public Environmental newInstance()

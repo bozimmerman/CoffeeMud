@@ -16,6 +16,7 @@ public class StdKey extends StdItem implements Key
 		displayText="a small metal key sits here.";
 		description="You can't tell what it\\`s to by looking at it.";
 
+		material=EnvResource.RESOURCE_STEEL;
 		baseGoldValue=0;
 		recoverEnvStats();
 	}

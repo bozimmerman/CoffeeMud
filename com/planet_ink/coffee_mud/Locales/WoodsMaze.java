@@ -13,6 +13,7 @@ public class WoodsMaze extends StdMaze
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_WOODS;
 		domainCondition=Room.CONDITION_NORMAL;
+		baseMove=3;
 	}
 	public Environmental newInstance()
 	{

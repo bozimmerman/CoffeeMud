@@ -12,5 +12,5 @@ public class SaltWaterSurface extends WaterSurface
 	{
 		return new SaltWaterSurface();
 	}
-	public int liquidType(){return Drink.LIQUID_SALT_WATER;}
+	public int liquidType(){return EnvResource.RESOURCE_SALTWATER;}
 }

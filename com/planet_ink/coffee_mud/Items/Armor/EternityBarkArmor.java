@@ -20,7 +20,7 @@ public class EternityBarkArmor extends StdArmor
 		baseEnvStats().setWeight(15);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
-		material=Armor.LEATHER;
+		material=EnvResource.RESOURCE_WOOD;
 	}
 
 	public Environmental newInstance()

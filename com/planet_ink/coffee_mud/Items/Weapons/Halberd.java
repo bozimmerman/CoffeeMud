@@ -30,6 +30,7 @@ public class Halberd extends StdWeapon
 		wornLogicalAnd=true;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		weaponType=TYPE_SLASHING;
+		material=EnvResource.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_POLEARM;
 	}
 

@@ -20,7 +20,7 @@ public class GenPotion extends GenWater implements Potion
 		secretIdentity="";
 		baseGoldValue=200;
 		recoverEnvStats();
-		material=Item.GLASS;
+		material=EnvResource.RESOURCE_GLASS;
 	}
 
 
@@ -29,7 +29,7 @@ public class GenPotion extends GenWater implements Potion
 		return new GenPotion();
 	}
 	public boolean isGeneric(){return true;}
-	public int liquidType(){return Drink.LIQUID_OTHERDRINKABLE;}
+	public int liquidType(){return EnvResource.RESOURCE_DRINKABLE;}
 
 	public boolean isDrunk(){return (readableText.toUpperCase().indexOf(";DRUNK")>=0);}
 	public void setDrunk(Potion me, boolean isTrue)

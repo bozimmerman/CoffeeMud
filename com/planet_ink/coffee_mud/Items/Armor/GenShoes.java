@@ -19,7 +19,7 @@ public class GenShoes extends GenArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=1;
 		recoverEnvStats();
-		material=Armor.CLOTH;
+		material=EnvResource.RESOURCE_LEATHER;
 	}
 	public Environmental newInstance()
 	{

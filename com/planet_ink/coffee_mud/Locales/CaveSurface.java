@@ -15,6 +15,7 @@ public class CaveSurface extends ClimbableSurface
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_CAVE;
 		domainCondition=Room.CONDITION_NORMAL;
+		baseMove=4;
 	}
 	public Environmental newInstance()
 	{

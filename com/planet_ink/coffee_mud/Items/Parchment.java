@@ -11,6 +11,7 @@ public class Parchment extends GenReadable
 		name="a piece of parchment";
 		displayText="a piece of parchment here.";
 		description="looks kinda like a piece of paper";
+		setMaterial(EnvResource.RESOURCE_PAPER);
 	}
 
 	public Environmental newInstance()

@@ -18,6 +18,7 @@ public class Helmet extends StdArmor
 		baseEnvStats().setWeight(10);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=16;
+		material=EnvResource.RESOURCE_IRON;
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

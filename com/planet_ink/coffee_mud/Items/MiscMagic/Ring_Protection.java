@@ -106,62 +106,76 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 			case SILVER_RING:
 				secretIdentity="The ring of Seven Winters. (Protection from Cold)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_SILVER;
 				break;
 			case COPPER_RING:
 				secretIdentity="The ring of Storms. (Protection from Electricity)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_COPPER;
 				break;
 			case PLATINUM_RING:
 				secretIdentity="The ring of Sweet Air. (Protection from Gas)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_PLATINUM;
 				break;
 			case GOLD_RING_DIAMOND:
 				secretIdentity="The ring of the Eternal Blaze. (Protection from Fire)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_GOLD;
 				break;
 			case BRONZE_RING:
 				secretIdentity="The ring of the Bronze Shield. (Protection from Paralysis)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_BRONZE;
 				break;
 			case GOLD_RING:
 				secretIdentity="The ring of Sweet Water. (Protection from Acid)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_GOLD;
 				break;
 			case GOLD_RING_RUBY:
 				secretIdentity="The ring of Focus. (Protection from Mind Attacks)";
 				baseGoldValue+=5000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case GOLD_RING_OPAL:
 				secretIdentity="Mages Bane. (15% Resistance to Magic)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case GOLD_RING_TOPAZ:
 				baseEnvStats().setAbility(60);
 				secretIdentity="Zimmers Guard. (Ring of Protection +60)";
 				baseGoldValue+=6000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case GOLD_RING_SAPPHIRE:
 				secretIdentity="The ring of Justice. (15% Resistance to Criminal Behavior)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case MITHRIL_RING:
 				secretIdentity="The ring of Fortitude. (5% Resistance to physical attacks)";
 				baseGoldValue+=2000;
+				material=EnvResource.RESOURCE_MITHRIL;
 				break;
 			case GOLD_RING_PEARL:
 				secretIdentity="The ring of the Wave. (Protection from Water Attacks)";
 				baseGoldValue+=1000;
+				material=EnvResource.RESOURCE_PEARL;
 				break;
 			case GOLD_RING_EMERALD:
 				baseEnvStats().setAbility(50);
 				secretIdentity="Fox Guard. (Ring of Protection +50)";
 				baseGoldValue+=5000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			default:
 				double pct=Math.random();
 				baseEnvStats().setAbility((int)Math.round(pct*49));
 				baseGoldValue+=baseEnvStats().ability()*100;
 				secretIdentity="A ring of protection + "+baseEnvStats().ability()+".";
+				material=EnvResource.RESOURCE_STEEL;
 				break;
 		}
 	}

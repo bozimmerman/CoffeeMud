@@ -19,7 +19,7 @@ public class Hat extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=5;
 		recoverEnvStats();
-		material=Armor.CLOTH;
+		material=EnvResource.RESOURCE_LEATHER;
 	}
 	public Environmental newInstance()
 	{

@@ -19,7 +19,7 @@ public class OilFlask extends StdContainer
 		name="an oil flask";
 		baseEnvStats.setWeight(10);
 		capacity=0;
-		material=Item.GLASS;
+		setMaterial(EnvResource.RESOURCE_GLASS);
 		displayText="an oil flask sits here.";
 		description="A small glass flask containing lamp oil, with a lid.";
 		baseGoldValue=5;

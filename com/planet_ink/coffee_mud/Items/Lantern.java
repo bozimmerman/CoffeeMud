@@ -17,7 +17,7 @@ public class Lantern extends LightSource
 		description="The lantern still looks like it has some oil in it.";
 
 		baseEnvStats().setWeight(5);
-		material=Item.METAL;
+		setMaterial(EnvResource.RESOURCE_STEEL);
 		durationTicks=200;
 		this.destroyedWhenBurnedOut=false;
 		this.goesOutInTheRain=false;

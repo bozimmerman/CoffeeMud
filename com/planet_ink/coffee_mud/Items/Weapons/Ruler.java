@@ -11,6 +11,7 @@ public class Ruler extends Quarterstaff
 		name="a ruler";
 		displayText="a ruler has been left here.";
 		description="It's long and wooden, with little tick marks on it.";
+		material=EnvResource.RESOURCE_OAK;
 	}
 
 	public Environmental newInstance()

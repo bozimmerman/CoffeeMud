@@ -14,6 +14,7 @@ public class CityStreet extends StdRoom
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_CITY;
 		domainCondition=Room.CONDITION_NORMAL;
+		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

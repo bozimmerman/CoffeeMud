@@ -16,6 +16,8 @@ public class UnderWaterGrid extends StdGrid
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_UNDERWATER;
 		domainCondition=Room.CONDITION_WET;
+		baseThirst=0;
+		baseMove=3;
 	}
 
 	public Environmental newInstance()

@@ -20,6 +20,7 @@ public class Glaive extends StdWeapon
 		weaponType=TYPE_SLASHING;
 		baseGoldValue=6;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 		wornLogicalAnd=true;
 		properWornBitmap=Item.HELD|Item.WIELD;
 		weaponClassification=Weapon.CLASS_POLEARM;

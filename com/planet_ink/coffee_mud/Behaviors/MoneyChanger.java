@@ -69,7 +69,7 @@ public class MoneyChanger extends StdBehavior
 				changeBag.setLidsNLocks(false,true,false,false);
 				changeBag.setName("a change bag");
 				changeBag.setDisplayText("a small crumbled bag lies here.");
-				changeBag.setMaterial(Item.CLOTH);
+				changeBag.setMaterial(EnvResource.RESOURCE_COTTON);
 				changeBag.setDescription("This bag is provided courtesy of CoffeeMud Savings and Loan.");
 				observer.addInventory(changeBag);
 				int totalWeight=0;
@@ -77,7 +77,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=10000000;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(10000000);
 					msliver.setName("an Archons note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -92,7 +92,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=1000000;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(1000000);
 					msliver.setName("a Legends note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -107,7 +107,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=100000;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(100000);
 					msliver.setName("a Heros note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -122,7 +122,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=10000;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(10000);
 					msliver.setName("a whole note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -137,7 +137,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=5000;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(5000);
 					msliver.setName("a half note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -152,7 +152,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=1000;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(1000);
 					msliver.setName("a adamantium note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -167,7 +167,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=500;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(500);
 					msliver.setName("a mithril note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -182,7 +182,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=100;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(100);
 					msliver.setName("a platinum note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -197,7 +197,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=50;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(50);
 					msliver.setName("a golden note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -212,7 +212,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=10;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(10);
 					msliver.setName("a gleaming silver note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");
@@ -227,7 +227,7 @@ public class MoneyChanger extends StdBehavior
 				{
 					value-=5;
 					Coins msliver=(Coins)CMClass.getItem("GenCoins");
-					msliver.setMaterial(Item.PAPER);
+					msliver.setMaterial(EnvResource.RESOURCE_PAPER);
 					msliver.setNumberOfCoins(5);
 					msliver.setName("a fiver note");
 					msliver.setDisplayText("a small crumpled note lies on the ground");

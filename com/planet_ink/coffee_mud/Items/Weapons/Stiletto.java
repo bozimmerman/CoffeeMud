@@ -19,6 +19,7 @@ public class Stiletto extends Dagger
 		baseEnvStats().setDamage(3);
 		baseGoldValue=1;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 		weaponType=TYPE_PIERCING;
 	}
 

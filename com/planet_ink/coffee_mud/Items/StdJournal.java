@@ -14,6 +14,7 @@ public class StdJournal extends StdItem
 		name="a journal";
 		displayText="a journal sits here.";
 		description="Use the READ command to read the journal, and WRITE to add your own entries.";
+		material=EnvResource.RESOURCE_PAPER;
 		isReadable=true;
 	}
 

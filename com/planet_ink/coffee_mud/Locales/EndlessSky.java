@@ -18,6 +18,7 @@ public class EndlessSky extends StdGrid
 		setDisplayText("Up in the sky");
 		setDescription("");
 		size=3;
+		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

@@ -16,6 +16,7 @@ public class Boat extends StdRideable
 		displayText="a boat is docked here.";
 		description="Looks like a boat";
 		rideBasis=Rideable.RIDEABLE_WATER;
+		material=EnvResource.RESOURCE_OAK;
 	}
 	public Environmental newInstance()
 	{

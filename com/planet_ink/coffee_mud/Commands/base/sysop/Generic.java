@@ -1005,24 +1005,26 @@ public class Generic
 	void genMaterialCode(MOB mob, Item E)
 		throws IOException
 	{
-		mob.tell("\n\rMaterial Type: '"+Item.materialDescription[E.material()]+"'.");
+		mob.tell("\n\rMaterial Type: '"+EnvResource.RESOURCE_DESCS[E.material()&EnvResource.RESOURCE_MASK]+"'.");
 		boolean q=false;
-		String sel="CLMIWGVFPR";
 		while(!q)
 		{
-			String newType=mob.session().choose("Enter a new value (?)\n\r:",sel+"?","");
+			String newType=mob.session().prompt("Enter a new material (?)\n\r:",EnvResource.RESOURCE_DESCS[E.material()&EnvResource.RESOURCE_MASK]);
 			if(newType.equals("?"))
 			{
-				for(int i=0;i<sel.length();i++)
-					mob.tell(sel.charAt(i)+") "+Item.materialDescription[i]);
+				StringBuffer say=new StringBuffer("");
+				for(int i=0;i<EnvResource.RESOURCE_DESCS.length-1;i++)
+					say.append(EnvResource.RESOURCE_DESCS[i]+", ");
+				mob.tell(say.toString().substring(0,say.length()-2));
 				q=false;
 			}
 			else
 			{
 				q=true;
 				int newValue=-1;
-				if(newType.length()>0)
-					newValue=sel.indexOf(newType.toUpperCase());
+				for(int i=0;i<EnvResource.RESOURCE_DESCS.length-1;i++)
+					if(newType.equalsIgnoreCase(EnvResource.RESOURCE_DESCS[i]))
+						newValue=EnvResource.RESOURCES_ALL[i];
 				if(newValue>=0)
 					E.setMaterial(newValue);
 				else

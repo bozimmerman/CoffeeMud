@@ -202,10 +202,10 @@ public class Sense
 		if((Sense.isABonusItems(seen))&&(Sense.canSeeBonusItems(seer)))
 			Say.append(" (^wmagical aura^?)");
 		if((Sense.canSeeMetal(seer))&&(seen instanceof Item))
-			if(((Item)seen).material()==Item.METAL)
+			if((((Item)seen).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_METAL)
 				Say.append(" (^wmetallic aura^?)");
 			else
-			if(((Item)seen).material()==Item.MITHRIL)
+			if((((Item)seen).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_MITHRIL)
 				Say.append(" (^wmithril aura^?)");
 		
 		if(isFlying(seen))

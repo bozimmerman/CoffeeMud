@@ -14,6 +14,7 @@ public class LargeSack extends StdContainer
 		description="A nice big berlap sack to put your things in.";
 		capacity=100;
 		baseGoldValue=5;
+		setMaterial(EnvResource.RESOURCE_COTTON);
 		recoverEnvStats();
 	}
 

@@ -23,6 +23,7 @@ public class StdContainer extends StdItem implements Container
 		baseGoldValue=10;
 		isAContainer=true;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_COTTON;
 	}
 
 	public Environmental newInstance()

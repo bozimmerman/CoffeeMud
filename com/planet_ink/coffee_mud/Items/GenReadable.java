@@ -15,6 +15,7 @@ public class GenReadable extends GenItem
 		name="a generic readable thing";
 		displayText="a generic readable thing sits here.";
 		description="Looks like something";
+		setMaterial(EnvResource.RESOURCE_WOOD);
 		isReadable=true;
 	}
 

@@ -14,7 +14,6 @@ public class CaveMaze extends StdMaze
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_CAVE;
-
 		domainCondition=Room.CONDITION_NORMAL;
 	}
 	public Environmental newInstance()

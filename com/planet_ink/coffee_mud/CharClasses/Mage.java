@@ -350,8 +350,9 @@ public class Mage extends StdCharClass
 					 ||(I.amWearingAt(Item.ON_WAIST))
 					 ||(I.amWearingAt(Item.ON_HEAD)))
 						if((I instanceof Armor)
-						&&(I.material()!=Armor.CLOTH)
-						&&(I.material()!=Armor.PAPER))
+						&&((I.material()&EnvResource.MATERIAL_MASK)!=0)
+						&&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+						&&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION))
 							if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.INTELLIGENCE)*2)
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!");

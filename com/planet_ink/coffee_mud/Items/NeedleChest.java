@@ -14,6 +14,7 @@ public class NeedleChest extends LargeChest
 		t.recoverEnvStats();
 		t.setTrapped(this,t,true);
 		isLocked=false;
+		setMaterial(EnvResource.RESOURCE_OAK);
 	}
 
 	public Environmental newInstance()

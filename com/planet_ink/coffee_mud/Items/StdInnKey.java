@@ -18,6 +18,7 @@ public class StdInnKey extends StdKey implements InnKey
 		displayText="a small metal key sits here.";
 		description="It says it goes to room 1.";
 
+		material=EnvResource.RESOURCE_STEEL;
 		baseGoldValue=10;
 		recoverEnvStats();
 	}

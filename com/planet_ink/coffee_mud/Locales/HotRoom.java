@@ -13,6 +13,7 @@ public class HotRoom extends StdRoom
 		recoverEnvStats();
 		domainType=Room.DOMAIN_INDOORS_STONE;
 		domainCondition=Room.CONDITION_HOT;
+		baseMove=1;
 	}
 	public Environmental newInstance()
 	{

@@ -18,6 +18,7 @@ public class Wand_Fire extends StdWand
 		this.setUsesRemaining(50);
 		baseGoldValue=20000;
 		baseEnvStats().setLevel(12);
+		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 

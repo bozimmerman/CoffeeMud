@@ -15,6 +15,7 @@ public class ClimbableSurface extends StdRoom
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_ROCKS;
 		domainCondition=Room.CONDITION_NORMAL;
+		baseMove=4;
 	}
 	public Environmental newInstance()
 	{

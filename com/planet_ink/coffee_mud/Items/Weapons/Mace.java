@@ -15,6 +15,7 @@ public class Mace extends StdWeapon
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(0);
 		baseEnvStats.setWeight(10);
+		material=EnvResource.RESOURCE_STEEL;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(7);
 		baseGoldValue=8;

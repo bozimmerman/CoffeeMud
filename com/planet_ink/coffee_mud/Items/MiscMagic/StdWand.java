@@ -20,6 +20,7 @@ public class StdWand extends StdItem implements Wand
 		description="Looks like an broken piece of a tree.";
 		secretIdentity="";
 		baseGoldValue=200;
+		material=EnvResource.RESOURCE_OAK;
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		recoverEnvStats();
 	}

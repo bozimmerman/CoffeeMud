@@ -233,7 +233,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if((whatISell==GENERAL)&&(thisThang instanceof Item)&&(!(thisThang instanceof Armor))&&(!(thisThang instanceof MiscMagic))&&(!(thisThang instanceof Weapon))&&(!(thisThang instanceof MOB))&&(!(thisThang instanceof Ability)))
 			return true;
 		else
-		if((whatISell==LEATHER)&&(thisThang instanceof Item)&&(((Item)thisThang).material()==Item.LEATHER))
+		if((whatISell==LEATHER)&&(thisThang instanceof Item)&&((((Item)thisThang).material()&EnvResource.MATERIAL_MASK)==EnvResource.MATERIAL_LEATHER))
 			return true;
 		else
 		if((whatISell==PETS)&&(thisThang instanceof MOB))

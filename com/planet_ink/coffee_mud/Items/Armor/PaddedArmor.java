@@ -19,7 +19,7 @@ public class PaddedArmor extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=8;
 		recoverEnvStats();
-		material=Armor.CLOTH;
+		material=EnvResource.RESOURCE_LEATHER;
 	}
 	public Environmental newInstance()
 	{

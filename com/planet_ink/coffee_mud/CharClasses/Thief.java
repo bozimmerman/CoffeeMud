@@ -103,10 +103,11 @@ public class Thief extends StdCharClass
 					 ||(I.amWearingAt(Item.ON_WAIST))
 					 ||(I.amWearingAt(Item.ON_HEAD)))
 						if((I instanceof Armor)
-						   &&(I.material()!=Armor.CLOTH)
-						   &&(I.material()!=Armor.FLESH)
-						   &&(I.material()!=Armor.VEGETATION)
-						   &&(I.material()!=Armor.LEATHER))
+						   &&((I.material()&EnvResource.MATERIAL_MASK)!=0)
+						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_CLOTH)
+						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_FLESH)
+						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_VEGETATION)
+						   &&((I.material()&EnvResource.MATERIAL_MASK)!=EnvResource.MATERIAL_LEATHER))
 							if(Dice.rollPercentage()>(myChar.charStats().getStat(CharStats.DEXTERITY)*2))
 							{
 								myChar.location().show(myChar,null,Affect.MSG_OK_ACTION,"<S-NAME> fumble(s) in <S-HIS-HER> maneuver!");

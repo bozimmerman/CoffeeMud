@@ -17,11 +17,11 @@ public class GenLantern extends GenLightSource
 		description="The lantern still looks like it has some oil in it.";
 
 		baseEnvStats().setWeight(5);
-		material=Item.METAL;
 		setDuration(200);
 		destroyedWhenBurnedOut=false;
 		goesOutInTheRain=false;
 		baseGoldValue=60;
+		setMaterial(EnvResource.RESOURCE_STEEL);
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

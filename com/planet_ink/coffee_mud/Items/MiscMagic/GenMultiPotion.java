@@ -12,6 +12,7 @@ public class GenMultiPotion extends GenPotion
 	{
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
+		material=EnvResource.RESOURCE_GLASS;
 	}
 
 

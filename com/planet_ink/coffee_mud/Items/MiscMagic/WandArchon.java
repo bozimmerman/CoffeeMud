@@ -15,6 +15,7 @@ public class WandArchon extends StdWand
 		secretIdentity="The Wand of the Archons!";
 		this.setUsesRemaining(99999);
 		baseGoldValue=20000;
+		material=EnvResource.RESOURCE_OAK;
 		recoverEnvStats();
 	}
 

@@ -16,6 +16,7 @@ public class GenKey extends GenItem implements Key
 		displayText="a generic key thing sits here.";
 		description="Looks like something";
 		isReadable=false;
+		setMaterial(EnvResource.RESOURCE_IRON);
 	}
 
 	public Environmental newInstance()

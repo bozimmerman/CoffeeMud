@@ -12,6 +12,7 @@ public class RingOfMagicResistance extends Ring_Protection implements MiscMagic
 		super();
 		this.baseEnvStats().setLevel(GOLD_RING_OPAL);
 		this.recoverEnvStats();
+		material=EnvResource.RESOURCE_GOLD;
 	}
 
 	public Environmental newInstance()

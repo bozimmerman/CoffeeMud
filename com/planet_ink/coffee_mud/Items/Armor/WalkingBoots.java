@@ -19,7 +19,7 @@ public class WalkingBoots extends StdArmor
 		baseEnvStats().setWeight(5);
 		baseGoldValue=5;
 		recoverEnvStats();
-		material=Armor.LEATHER;
+		material=EnvResource.RESOURCE_LEATHER;
 	}
 	public Environmental newInstance()
 	{

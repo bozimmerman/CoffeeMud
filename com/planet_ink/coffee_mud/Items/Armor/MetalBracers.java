@@ -19,7 +19,7 @@ public class MetalBracers extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=10;
 		recoverEnvStats();
-		material=Armor.METAL;
+		material=EnvResource.RESOURCE_STEEL;
 	}
 	public Environmental newInstance()
 	{

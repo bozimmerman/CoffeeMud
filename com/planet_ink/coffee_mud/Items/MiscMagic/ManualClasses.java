@@ -19,6 +19,7 @@ public class ManualClasses extends StdItem implements MiscMagic
 		secretIdentity="The Manual of Classes.";
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=5000;
+		material=EnvResource.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 

@@ -21,6 +21,7 @@ public class GenWater extends StdDrink
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=2000;
 		amountOfLiquidRemaining=2000;
+		setMaterial(EnvResource.RESOURCE_LEATHER);
 		recoverEnvStats();
 	}
 
@@ -34,7 +35,7 @@ public class GenWater extends StdDrink
 	{
 		return Generic.getPropertiesStr(this,false);
 	}
-	public int liquidType(){return Drink.LIQUID_WATER;}
+	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
 
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}

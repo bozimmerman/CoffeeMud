@@ -19,7 +19,7 @@ public class ChainMailArmor extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=150;
 		recoverEnvStats();
-		material=Armor.METAL;
+		material=EnvResource.RESOURCE_STEEL;
 	}
 	public Environmental newInstance()
 	{

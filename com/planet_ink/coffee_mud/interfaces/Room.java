@@ -13,6 +13,11 @@ public interface Room extends Environmental
 	public final static int DOMAIN_OUTDOORS_UNDERWATER=4;
 	public final static int DOMAIN_OUTDOORS_AIR=5;
 	public final static int DOMAIN_OUTDOORS_WATERSURFACE=6;
+	public final static int DOMAIN_OUTDOORS_JUNGLE=7;
+	public final static int DOMAIN_OUTDOORS_SWAMP=8;
+	public final static int DOMAIN_OUTDOORS_DESERT=9;
+	public final static int DOMAIN_OUTDOORS_HILLS=9;
+	public final static int DOMAIN_OUTDOORS_MOUNTAINS=9;
 	
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	public final static int DOMAIN_INDOORS_WOOD=INDOORS+1;
@@ -26,6 +31,7 @@ public interface Room extends Environmental
 	
 	public int domainType();
 	public int domainConditions();
+	public int myResource();
 	
 	public void setID(String newID);
 	public String objectID();

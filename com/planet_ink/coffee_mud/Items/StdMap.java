@@ -20,6 +20,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.interfa
 		description="Looks like a map of some place.";
 		isReadable=true;
 		baseGoldValue=10;
+		material=EnvResource.RESOURCE_PAPER;
 		recoverEnvStats();
 	}
 

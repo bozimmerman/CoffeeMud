@@ -83,20 +83,20 @@ public class Spell_Shatter extends Spell
 					int damage=100+mob.envStats().level()-target.envStats().level();
 					if(Sense.isABonusItems(target))
 						damage=(int)Math.round(Util.div(damage,2.0));
-					switch(target.material())
+					switch(target.material()&EnvResource.MATERIAL_MASK)
 					{
-					case Item.PAPER:
-					case Item.CLOTH:
-					case Item.VEGETATION:
-					case Item.LEATHER:
-					case Item.FLESH:
+					case EnvResource.MATERIAL_PAPER:
+					case EnvResource.MATERIAL_CLOTH:
+					case EnvResource.MATERIAL_VEGETATION:
+					case EnvResource.MATERIAL_LEATHER:
+					case EnvResource.MATERIAL_FLESH:
 						damage=(int)Math.round(Util.div(damage,3.0));
 						break;
-					case Item.WOODEN:
+					case EnvResource.MATERIAL_WOODEN:
 						damage=(int)Math.round(Util.div(damage,1.5));
 						break;
-					case Item.GLASS:
-					case Item.ROCK:
+					case EnvResource.MATERIAL_GLASS:
+					case EnvResource.MATERIAL_ROCK:
 						damage=(int)Math.round(Util.mul(damage,2.0));
 						break;
 					}

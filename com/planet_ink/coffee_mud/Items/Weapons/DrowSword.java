@@ -22,6 +22,7 @@ public class DrowSword extends Longsword
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
 		baseGoldValue=2500;
 		recoverEnvStats();
+		material=EnvResource.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}
 

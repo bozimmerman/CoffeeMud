@@ -18,7 +18,7 @@ public class GlowingMageArmor extends StdArmor
 		baseEnvStats().setWeight(0);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=40000;
-		material=Armor.CLOTH;
+		material=EnvResource.RESOURCE_NOTHING;
 		recoverEnvStats();
 	}
 	public Environmental newInstance()

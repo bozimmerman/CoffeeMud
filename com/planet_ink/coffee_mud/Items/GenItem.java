@@ -19,6 +19,7 @@ public class GenItem extends StdItem
 		baseGoldValue=5;
 		baseEnvStats().setLevel(1);
 		recoverEnvStats();
+		setMaterial(EnvResource.RESOURCE_OAK);
 	}
 	public Environmental newInstance()
 	{

@@ -17,6 +17,7 @@ public class QuestPoint extends StdItem
 		myUses=Integer.MAX_VALUE;
 		myWornCode=0;
 		miscText="";
+		material=0;
 		baseEnvStats.setWeight(0);
 		capacity=0;
 		isAContainer=false;

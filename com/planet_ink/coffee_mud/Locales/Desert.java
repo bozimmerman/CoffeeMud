@@ -12,8 +12,9 @@ public class Desert extends StdRoom
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the desert";
 		recoverEnvStats();
-		domainType=Room.DOMAIN_OUTDOORS_PLAINS;
+		domainType=Room.DOMAIN_OUTDOORS_DESERT;
 		domainCondition=Room.CONDITION_HOT;
+		baseThirst=4;
 	}
 	public Environmental newInstance()
 	{

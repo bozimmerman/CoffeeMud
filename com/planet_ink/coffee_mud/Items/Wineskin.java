@@ -20,6 +20,7 @@ public class Wineskin extends StdDrink
 		displayText="a tough little wineskin sits here.";
 		description="Looks like it could hold quite a bit of drink.";
 		baseGoldValue=10;
+		material=EnvResource.RESOURCE_LEATHER;
 		recoverEnvStats();
 	}
 

@@ -48,77 +48,90 @@ public class Gem extends StdItem
 				displayText="a piece of azurite lies here.";
 				description="A piece of blue stone.";
 				baseGoldValue=20;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case BLOODSTONE:
 				name="a bloodstone";
 				displayText="a bloodstone lies here.";
 				description="It dark grey stone with flecks of red.";
 				baseGoldValue=100;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case JADE:
 				name="a jade stone";
 				displayText="a jade stone lies here.";
 				description="A beutiful green stone.";
 				baseGoldValue=200;
+				material=EnvResource.RESOURCE_JADE;
 				break;
 			case DIAMOND:
 				name="a diamond";
 				displayText="a diamond lies here.";
 				description="Finely cut and sparkling.";
 				baseGoldValue=5000;
+				material=EnvResource.RESOURCE_DIAMOND;
 				break;
 			case QUARTZ:
 				name="a piece of quartz";
 				displayText="a piece of quartz lies here.";
 				description="It is a glasslike stone, gorgeous to the eye.";
 				baseGoldValue=30;
+				material=EnvResource.RESOURCE_CRYSTAL;
 				break;
 			case RUBY:
 				name="a ruby";
 				displayText="a ruby lies here.";
 				description="A beautiful red ruby with a smooth surface.";
 				baseGoldValue=5000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case OPAL:
 				name="an opal";
 				displayText="an opal lies here.";
 				description="Pale blue and lovely.";
 				baseGoldValue=2000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case TOPAZ:
 				name="a piece of topaz";
 				displayText="a piece of topaz lies here.";
 				description="A yellow stone.";
 				baseGoldValue=500;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case SAPPHIRE:
 				name="a sapphire";
 				displayText="a sapphire lies here.";
 				description="Clear, blue, and very fancy.";
 				baseGoldValue=1000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case ONYX:
 				name="an onyx stone";
 				displayText="a onyx stone lies here.";
 				description="A beautiful rich black stone.";
 				baseGoldValue=100;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			case PEARL:
 				name="a pearl";
 				displayText="a pearl lies here.";
 				description="Perfectly round, pure and white.";
 				baseGoldValue=300;
+				material=EnvResource.RESOURCE_PEARL;
 				break;
 			case EMERALD:
 				name="an emerald";
 				displayText="an emerald lies here.";
 				description="A beautiful clear green stone.";
 				baseGoldValue=5000;
+				material=EnvResource.RESOURCE_GEM;
 				break;
 			default:
 				name="a hunk of metal";
 				displayText="a hunk of steel ring is on the ground.";
 				description="It is a simple steel ring.";
+				material=EnvResource.RESOURCE_STEEL;
 				break;
 		}
 	}

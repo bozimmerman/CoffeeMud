@@ -25,7 +25,7 @@ public class StdWeapon extends StdItem implements Weapon
 		baseEnvStats().setDamage(0);
 		baseEnvStats().setAbility(0);
 		baseGoldValue=15;
-		material=Item.METAL;
+		material=EnvResource.RESOURCE_STEEL;
 		setUsesRemaining(100);
 		recoverEnvStats();
 	}

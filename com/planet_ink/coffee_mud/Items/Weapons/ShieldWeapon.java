@@ -18,6 +18,7 @@ public class ShieldWeapon extends com.planet_ink.coffee_mud.Items.Weapons.StdWea
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(1);
 		weaponType=Weapon.TYPE_BASHING;
+		material=EnvResource.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_BLUNT;
 		recoverEnvStats();
 	}

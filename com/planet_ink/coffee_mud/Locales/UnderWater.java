@@ -18,6 +18,8 @@ public class UnderWater extends StdRoom implements Drink
 		recoverEnvStats();
 		domainType=Room.DOMAIN_OUTDOORS_UNDERWATER;
 		domainCondition=Room.CONDITION_WET;
+		baseThirst=0;
+		baseMove=3;
 	}
 
 	public Environmental newInstance()
@@ -46,7 +48,7 @@ public class UnderWater extends StdRoom implements Drink
 		else
 		if(affect.amITarget(this)&&(affect.targetMinor()==Affect.TYP_DRINK))
 		{
-			if(liquidType()==Drink.LIQUID_SALT_WATER)
+			if(liquidType()==EnvResource.RESOURCE_SALTWATER)
 			{
 				affect.source().tell("You don't want to be drinking saltwater.");
 				return false;
@@ -73,7 +75,7 @@ public class UnderWater extends StdRoom implements Drink
 	public int thirstQuenched(){return 500;}
 	public int liquidHeld(){return Integer.MAX_VALUE-1000;}
 	public int liquidRemaining(){return Integer.MAX_VALUE-1000;}
-	public int liquidType(){return Drink.LIQUID_WATER;}
+	public int liquidType(){return EnvResource.RESOURCE_FRESHWATER;}
 	public void setThirstQuenched(int amount){}
 	public void setLiquidHeld(int amount){}
 	public void setLiquidRemaining(int amount){}

@@ -90,7 +90,7 @@ public class Spell_FakeWeapon extends Spell
 				weapon.baseEnvStats().setAttackAdjustment(100);
 				weapon.baseEnvStats().setDamage(75);
 				weapon.baseEnvStats().setDisposition(weapon.baseEnvStats().disposition()|EnvStats.IS_BONUS);
-				weapon.setMaterial(Item.CLOTH);
+				weapon.setMaterial(EnvResource.RESOURCE_COTTON);
 				switch(choice)
 				{
 				case 0:

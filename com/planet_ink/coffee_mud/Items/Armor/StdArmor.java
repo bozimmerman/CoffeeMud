@@ -55,64 +55,64 @@ public class StdArmor extends StdItem implements Armor
 		else
 		if(usesRemaining()>=75)
 		{
-			switch(material())
+			switch(material()&EnvResource.MATERIAL_MASK)
 			{
-			case Item.CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
-			case Item.GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
-			case Item.LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
-			case Item.METAL:
-			case Item.MITHRIL: return name()+" has some small dents ("+usesRemaining()+"%)";
-			case Item.WOODEN: return name()+" has a few smell splinters ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_CLOTH: return name()+" has a small tear ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_GLASS: return name()+" has a few hairline cracks ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_LEATHER: return name()+" is a bit scuffed ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL: return name()+" has some small dents ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return name()+" has a few smell splinters ("+usesRemaining()+"%)";
 			default: return name()+" is slightly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		if(usesRemaining()>=50)
 		{
-			switch(material())
+			switch(material()&EnvResource.MATERIAL_MASK)
 			{
-			case Item.CLOTH: 
-			case Item.PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
-			case Item.ROCK:
-			case Item.GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
-			case Item.FLESH:
-			case Item.LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
-			case Item.METAL:
-			case Item.MITHRIL: return name()+" is dented ("+usesRemaining()+"%)";
-			case Item.WOODEN: return name()+" is splintered ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_CLOTH: 
+			case EnvResource.MATERIAL_PAPER: return name()+" has a a few tears and rips ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_GLASS: return name()+" is cracked ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_FLESH:
+			case EnvResource.MATERIAL_LEATHER: return name()+" is torn ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL: return name()+" is dented ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return name()+" is splintered ("+usesRemaining()+"%)";
 			default: return name()+" is damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		if(usesRemaining()>=25)
 		{
-			switch(material())
+			switch(material()&EnvResource.MATERIAL_MASK)
 			{
-			case Item.PAPER: 
-			case Item.CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
-			case Item.ROCK:
-			case Item.GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
-			case Item.FLESH:
-			case Item.LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
-			case Item.METAL:
-			case Item.MITHRIL: return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
-			case Item.WOODEN: return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_PAPER: 
+			case EnvResource.MATERIAL_CLOTH: return name()+" has numerous tears and rips ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_GLASS: return name()+" has numerous streaking cracks ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_FLESH:
+			case EnvResource.MATERIAL_LEATHER: return name()+" is badly torn up ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL: return name()+" is badly dented and cracked ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return name()+" is badly cracked and splintered ("+usesRemaining()+"%)";
 			default: return name()+" is badly damaged ("+usesRemaining()+"%)";
 			}
 		}
 		else
 		{
-			switch(material())
+			switch(material()&EnvResource.MATERIAL_MASK)
 			{
-			case Item.PAPER: 
-			case Item.CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
-			case Item.ROCK:
-			case Item.GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
-			case Item.FLESH:
-			case Item.LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
-			case Item.METAL:
-			case Item.MITHRIL: return name()+" is a crumpled mess ("+usesRemaining()+"%)";
-			case Item.WOODEN: return name()+" is nothing but splinters ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_PAPER: 
+			case EnvResource.MATERIAL_CLOTH: return name()+" is a shredded mess ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_ROCK:
+			case EnvResource.MATERIAL_GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_FLESH:
+			case EnvResource.MATERIAL_LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_METAL:
+			case EnvResource.MATERIAL_MITHRIL: return name()+" is a crumpled mess ("+usesRemaining()+"%)";
+			case EnvResource.MATERIAL_WOODEN: return name()+" is nothing but splinters ("+usesRemaining()+"%)";
 			default: return name()+" is horribly damaged ("+usesRemaining()+"%)";
 			}
 		}
@@ -170,10 +170,10 @@ public class StdArmor extends StdItem implements Armor
 			&&(affect.tool() instanceof Weapon))
 			{
 				Weapon tool=(Weapon)affect.tool();
-				switch(material())
+				switch(material()&EnvResource.MATERIAL_MASK)
 				{
-				case Item.CLOTH:
-				case Item.PAPER:
+				case EnvResource.MATERIAL_CLOTH:
+				case EnvResource.MATERIAL_PAPER:
 					switch(tool.weaponType())
 					{
 					case Weapon.TYPE_BURNING:
@@ -194,7 +194,7 @@ public class StdArmor extends StdItem implements Armor
 						break;
 					}
 					break;
-				case Item.GLASS:
+				case EnvResource.MATERIAL_GLASS:
 					switch(tool.weaponType())
 					{
 					case Weapon.TYPE_BURNING:
@@ -213,7 +213,7 @@ public class StdArmor extends StdItem implements Armor
 						break;
 					}
 					break;
-				case Item.LEATHER:
+				case EnvResource.MATERIAL_LEATHER:
 					switch(tool.weaponType())
 					{
 					case Weapon.TYPE_BURNING:
@@ -237,12 +237,12 @@ public class StdArmor extends StdItem implements Armor
 						break;
 					}
 					break;
-				case Item.MITHRIL:
+				case EnvResource.MATERIAL_MITHRIL:
 					if(Dice.rollPercentage()==1)
 						setUsesRemaining(usesRemaining()-1);
 					break;
-				case Item.METAL:
-				case Item.ROCK:
+				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_ROCK:
 					switch(tool.weaponType())
 					{
 					case Weapon.TYPE_BURNING:
@@ -263,7 +263,7 @@ public class StdArmor extends StdItem implements Armor
 						break;
 					}
 					break;
-				case Item.WOODEN:
+				case EnvResource.MATERIAL_WOODEN:
 					switch(tool.weaponType())
 					{
 					case Weapon.TYPE_BURNING:
@@ -293,31 +293,54 @@ public class StdArmor extends StdItem implements Armor
 			else
 			if((affect.targetMinor()==Affect.TYP_ACID)&&(!affect.wasModified()))
 			{
-				if((material()==Item.METAL)
-				||(material()==Item.ROCK)
-				||(material()==Item.VEGETATION)
-				||(material()==Item.FLESH)
-				||((material()==Item.MITHRIL)&&(Dice.rollPercentage()<25))
-				||(material()==Item.WOODEN)&&(Dice.rollPercentage()<50))
+				switch(material()&EnvResource.MATERIAL_MASK)
+				{
+				case EnvResource.MATERIAL_METAL:
+				case EnvResource.MATERIAL_ROCK:
+				case EnvResource.MATERIAL_VEGETATION:
+				case EnvResource.MATERIAL_FLESH:
 					setUsesRemaining(usesRemaining()-5);
+					break;
+				case EnvResource.MATERIAL_MITHRIL:
+					if(Dice.rollPercentage()<25)
+						setUsesRemaining(usesRemaining()-5);
+					break;
+				case EnvResource.MATERIAL_WOODEN:
+					if(Dice.rollPercentage()<50)
+						setUsesRemaining(usesRemaining()-5);
+					break;
+				default:
+					break;
+				}
 			}
 			else
 			if((affect.targetMinor()==Affect.TYP_FIRE)&&(!affect.wasModified()))
 			{
-				if((material()==Item.CLOTH)
-				||(material()==Item.PAPER)
-				||((material()==Item.WOODEN)&&(Dice.rollPercentage()<15))
-				||(material()==Item.LEATHER)&&(Dice.rollPercentage()<50))
+				switch(material()&EnvResource.MATERIAL_MASK)
+				{
+				case EnvResource.MATERIAL_CLOTH:
+				case EnvResource.MATERIAL_PAPER:
+				case EnvResource.MATERIAL_WOODEN:
+				case EnvResource.MATERIAL_LEATHER:
 					setUsesRemaining(usesRemaining()-10);
+					break;
+				default:
+					break;
+				}
 			}
 			else
 			if((affect.targetMinor()==Affect.TYP_WATER)&&(!affect.wasModified()))
 			{
-				if(material()==Item.METAL)
+				switch(material())
+				{
+				case EnvResource.RESOURCE_IRON:
+				case EnvResource.RESOURCE_STEEL:
+				case EnvResource.RESOURCE_PAPER:
 					setUsesRemaining(usesRemaining()-1);
-				else
-				if(material()==Item.PAPER)
-					setUsesRemaining(usesRemaining()-1);
+					break;
+				default:
+					break;
+				}
 			}
 			
 			if((usesRemaining()<=0)
@@ -364,25 +387,25 @@ public class StdArmor extends StdItem implements Armor
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		if(!amWearingAt(Item.INVENTORY))
-		switch(material())
+		switch(material()&EnvResource.MATERIAL_MASK)
 		{
-		case Item.METAL: 
+		case EnvResource.MATERIAL_METAL: 
 			affectableStats.setStat(CharStats.SAVE_ELECTRIC,affectableStats.getStat(CharStats.SAVE_ELECTRIC)-2);
 			break;
-		case Item.LEATHER: 
+		case EnvResource.MATERIAL_LEATHER: 
 			affectableStats.setStat(CharStats.SAVE_ACID,affectableStats.getStat(CharStats.SAVE_ACID)+2);
 			break;
-		case Item.MITHRIL: 
+		case EnvResource.MATERIAL_MITHRIL: 
 			affectableStats.setStat(CharStats.SAVE_MAGIC,affectableStats.getStat(CharStats.SAVE_MAGIC)+2);
 			break;
-		case Item.CLOTH: 
-		case Item.PAPER:
+		case EnvResource.MATERIAL_CLOTH: 
+		case EnvResource.MATERIAL_PAPER:
 			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_FIRE)-2);
 			break;
-		case Item.GLASS: 
-		case Item.ROCK: 
-		case Item.VEGETATION: 
-		case Item.FLESH:
+		case EnvResource.MATERIAL_GLASS: 
+		case EnvResource.MATERIAL_ROCK: 
+		case EnvResource.MATERIAL_VEGETATION: 
+		case EnvResource.MATERIAL_FLESH:
 			affectableStats.setStat(CharStats.SAVE_FIRE,affectableStats.getStat(CharStats.SAVE_ACID)+2);
 			break;
 		}

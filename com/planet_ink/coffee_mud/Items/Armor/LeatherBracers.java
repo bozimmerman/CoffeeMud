@@ -19,7 +19,7 @@ public class LeatherBracers extends StdArmor
 		baseEnvStats().setAbility(0);
 		baseGoldValue=5;
 		recoverEnvStats();
-		material=Armor.LEATHER;
+		material=EnvResource.RESOURCE_LEATHER;
 	}
 	public Environmental newInstance()
 	{
