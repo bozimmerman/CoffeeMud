@@ -10,7 +10,7 @@ public class MOBReSave extends ActiveTicker
 	public String ID(){return "MOBReSave";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS;}
 	public long flags(){return 0;}
-	private static Hashtable roomsReset=new Hashtable();
+	private static HashSet roomsReset=new HashSet();
 	private boolean noRecurse=false;
 
 	public MOBReSave()
@@ -32,17 +32,17 @@ public class MOBReSave extends ActiveTicker
 		&&(!noRecurse)
 		&&(CommonStrings.getBoolVar(CommonStrings.SYSTEMB_MUDSTARTED))
 		&&(((MOB)ticking).getStartRoom()!=null)
-		&&(((MOB)ticking).getStartRoom().roomID().length()>0))
+		&&(CMMap.getExtendedRoomID(((MOB)ticking).getStartRoom()).length()>0))
 		{
 			noRecurse=true;
 			MOB mob=(MOB)ticking;
 			synchronized(roomsReset)
 			{
-				if(!roomsReset.containsKey(mob.getStartRoom().roomID()))
+				if(!roomsReset.contains(CMMap.getExtendedRoomID(mob.getStartRoom())))
 				{
 					if(mob.location()!=mob.getStartRoom())
 						mob.getStartRoom().bringMobHere(mob,false);
-					roomsReset.put(mob.getStartRoom().roomID(),mob.getStartRoom());
+					roomsReset.add(CMMap.getExtendedRoomID(mob.getStartRoom().roomID()));
 					CoffeeUtensils.resetRoom(mob.getStartRoom());
 					CMClass.DBEngine().DBUpdateMOBs(mob.getStartRoom());
 				}

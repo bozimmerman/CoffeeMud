@@ -77,11 +77,11 @@ public class Spell_AnalyzeDweomer extends Spell
 					if(w.maxRange()>w.minRange())
 						str.append("It has a maximum range of "+w.maxRange()+".  ");
 				}
-				str.append("It is made of "+EnvResource.RESOURCE_DESCS[target.material()&EnvResource.RESOURCE_MASK].toLowerCase()+"  ");
+				str.append("It is made of "+EnvResource.RESOURCE_DESCS[target.material()&EnvResource.RESOURCE_MASK].toLowerCase()+".  ");
 				if(mob.isMonster())
-					CommonMsgs.say(mob,null,str.toString(),false,false);
+					CommonMsgs.say(mob,null,str.toString().trim(),false,false);
 				else
-					mob.tell(str.toString());
+					mob.tell(str.toString().trim());
 			}
 
 		}

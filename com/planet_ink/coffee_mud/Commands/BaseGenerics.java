@@ -277,6 +277,20 @@ public class BaseGenerics extends StdCommand
 			mob.tell("(no change)");
 	}
 
+	static void genEmail(MOB mob, MOB E, int showNumber, int showFlag)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber)) return;
+		if(E.playerStats()!=null)
+			mob.tell(showNumber+". Email: "+E.playerStats().getEmail());
+		if((showFlag!=showNumber)&&(showFlag>-999)) return;
+		String newName=mob.session().prompt("Enter a new one\n\r:","");
+		if((newName.length()>0)&&(E.playerStats()!=null))
+			E.playerStats().setEmail(newName);
+		else
+			mob.tell("(no change)");
+	}
+
 	public static void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag)
 		throws IOException
 	{

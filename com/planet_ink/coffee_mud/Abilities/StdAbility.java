@@ -565,6 +565,13 @@ public class StdAbility implements Ability, Cloneable
 			// if you can't move, you can't cast! Not even verbal!
 			if(!Sense.aliveAwakeMobile(mob,false))
 				return false;
+			
+			if(Util.bset(usageType(),Ability.USAGE_MOVEMENT)
+			   &&(Sense.isBound(mob)))
+			{
+				mob.tell("You are bound!");
+				return false;
+			}
 
 			int[] consumed=usageCost(mob);
 			if(mob.curState().getMana()<consumed[0])

@@ -16,13 +16,16 @@ public class Skill_EscapeBonds extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.SKILL;}
 	public Environmental newInstance(){	return new Skill_EscapeBonds();}
-	public int usageType(){return USAGE_MOVEMENT;}
+	public int usageType(){return USAGE_MANA;}
 
 
 	public void affectCharStats(MOB mob, CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
-		stats.setStat(CharStats.STRENGTH,stats.getStat(CharStats.STRENGTH)+stats.getStat(CharStats.DEXTERITY)+mob.envStats().level());
+		if(!Sense.isBoundOrHeld(mob))
+			unInvoke();
+		else
+			stats.setStat(CharStats.STRENGTH,stats.getStat(CharStats.STRENGTH)+stats.getStat(CharStats.DEXTERITY)+mob.envStats().level());
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto)
