@@ -297,6 +297,7 @@ public class Cleric extends StdCharClass
 					if((classification==Weapon.CLASS_POLEARM)
 					||(classification==Weapon.CLASS_SWORD)
 					||(classification==Weapon.CLASS_AXE)
+					||(classification==Weapon.CLASS_DAGGER)
 					||(classification==Weapon.CLASS_NATURAL)
 					||(classification==Weapon.CLASS_EDGED))
 						return true;

@@ -30,7 +30,7 @@ public class Arrest extends StdBehavior
 		private String crime="";
 		private int actionCode=-1;
 		private int jailTime=0;
-		private int state=-1;
+		private int state=0;
 		private int offenses=0;
 		private long lastOffense=0;
 		private long travelAttemptTime=0;
@@ -41,60 +41,33 @@ public class Arrest extends StdBehavior
 				stopTracking(arrestingOfficer);
 			arrestingOfficer=mob;
 		}
-		public MOB criminal()
-		{ return criminal;}
-		public MOB victim()
-		{ return victim;}
-		public MOB witness()
-		{ return witness;}
-		public MOB arrestingOfficer()
-		{ return arrestingOfficer;}
-		public Room jail()
-		{ return jail;}
-		public Room releaseRoom()
-		{ return releaseRoom;}
-		public String crime()
-		{ return crime;}
-		public int actionCode()
-		{ return actionCode;}
-		public int jailTime()
-		{ return jailTime;}
-		public int state()
-		{ return state;}
-		public int offenses()
-		{ return offenses;}
-		public long lastOffense()
-		{ return lastOffense;}
-		public long travelAttemptTime()
-		{ return travelAttemptTime;}
-		public String warnMsg()
-		{ return warnMsg;}
-		public void setCriminal(MOB mob)
-		{ criminal=mob;}
-		public void setVictim(MOB mob)
-		{ victim=mob;}
-		public void setWitness(MOB mob)
-		{ witness=mob;}
-		public void setJail(Room R)
-		{ jail=R;}
-		public void setReleaseRoom(Room R)
-		{ releaseRoom=R;}
-		public void setCrime(String newcrime)
-		{ crime=newcrime;}
-		public void setActionCode(int code)
-		{ actionCode=code;}
-		public void setJailTime(int time)
-		{ jailTime=time;}
-		public void setState(int newstate)
-		{ state=newstate;}
-		public void setOffenses(int num)
-		{ offenses=num;}
-		public void setLastOffense(long last)
-		{ lastOffense=last;}
-		public void setTravelAttemptTime(long time)
-		{ travelAttemptTime=time;}
-		public void setWarnMsg(String msg)
-		{ warnMsg=msg;}
+		public MOB criminal(){ return criminal;}
+		public MOB victim()	{ return victim;}
+		public MOB witness(){ return witness;}
+		public MOB arrestingOfficer(){ return arrestingOfficer;}
+		public Room jail(){ return jail;}
+		public Room releaseRoom(){ return releaseRoom;}
+		public String crime(){ return crime;}
+		public int actionCode(){ return actionCode;}
+		public int jailTime(){ return jailTime;}
+		public int state(){ return state;}
+		public int offenses(){ return offenses;}
+		public long lastOffense(){ return lastOffense;}
+		public long travelAttemptTime(){ return travelAttemptTime;}
+		public String warnMsg(){ return warnMsg;}
+		public void setCriminal(MOB mob){ criminal=mob;}
+		public void setVictim(MOB mob){ victim=mob;}
+		public void setWitness(MOB mob){ witness=mob;}
+		public void setJail(Room R){ jail=R;}
+		public void setReleaseRoom(Room R){ releaseRoom=R;}
+		public void setCrime(String newcrime){ crime=newcrime;}
+		public void setActionCode(int code){ actionCode=code;}
+		public void setJailTime(int time){ jailTime=time;}
+		public void setState(int newstate){ state=newstate;}
+		public void setOffenses(int num){ offenses=num;}
+		public void setLastOffense(long last){ lastOffense=last;}
+		public void setTravelAttemptTime(long time){ travelAttemptTime=time;}
+		public void setWarnMsg(String msg){ warnMsg=msg;}
 	}
 
 	protected class Laws implements Law
@@ -148,6 +121,7 @@ public class Arrest extends StdBehavior
 			messages[Law.MSG_RESISTWARN]=getInternalStr("RESISTWARNMSG");
 			messages[Law.MSG_PAROLEDISMISS]=getInternalStr("PAROLEDISMISS");
 			messages[Law.MSG_RESIST]=getInternalStr("RESISTMSG");
+			messages[Law.MSG_LAWFREE]=getInternalStr("LAWFREE");
 			
 			paroleMessages[0]=getInternalStr("PAROLE1MSG");
 			paroleMessages[1]=getInternalStr("PAROLE2MSG");
@@ -212,48 +186,42 @@ public class Arrest extends StdBehavior
 			}
 		}
 
-		public Vector otherCrimes()
-		{ return otherCrimes;}
-		public Vector otherBits()
-		{ return otherBits;}
-		public Hashtable abilityCrimes()
-		{ return abilityCrimes;}
-		public Hashtable basicCrimes()
-		{ return basicCrimes;}
+		public Vector otherCrimes()	{ return otherCrimes;}
+		public Vector otherBits() { return otherBits;}
+		public Hashtable abilityCrimes(){ return abilityCrimes;}
+		public Hashtable basicCrimes(){ return basicCrimes;}
 		
-		public Vector chitChat()
-		{ return chitChat;}
-		public Vector chitChat2()
-		{ return chitChat2;}
-		public Vector jailRooms()
-		{ return jailRooms;}
-		public Vector releaseRooms()
-		{ return releaseRooms;}
-		public Vector officerNames()
-		{ return officerNames;}
-		public Vector judgeNames()
-		{ return judgeNames;}
-		public String[] messages()
-		{ return messages;}
+		public Vector chitChat(){ return chitChat;}
+		public Vector chitChat2(){ return chitChat2;}
+		public Vector jailRooms(){ return jailRooms;}
+		public Vector releaseRooms(){ return releaseRooms;}
+		public Vector officerNames(){ return officerNames;}
+		public Vector judgeNames(){ return judgeNames;}
+		public String[] messages(){ return messages;}
 		
-		public Vector oldWarrants()
-		{ return oldWarrants;}
-		public Vector warrants()
-		{ return warrants;}
+		public Vector oldWarrants(){ return oldWarrants;}
+		public Vector warrants(){ return warrants;}
 		
-		public boolean arrestMobs()
-		{ return arrestMobs;}
+		public boolean arrestMobs(){ return arrestMobs;}
 		
-		public String[] paroleMessages()
-		{ return paroleMessages;}
-		public Integer[] paroleTimes()
-		{ return paroleTimes;}
+		public String[] paroleMessages(){ return paroleMessages;}
+		public Integer[] paroleTimes(){ return paroleTimes;}
 											 
-		public String[] jailMessages()
-		{ return jailMessages;}
-		public Integer[] jailTimes()
-		{ return jailTimes;}
+		public String[] jailMessages(){ return jailMessages;}
+		public Integer[] jailTimes(){ return jailTimes;}
 		
+
+		public void changeStates(LegalWarrant W, int state)
+		{
+			if((W==null)||(W.criminal()==null)) return;
+			if(warrants.contains(W))
+				for(int w=0;w<warrants.size();w++)
+				{
+					LegalWarrant W2=(LegalWarrant)warrants.elementAt(w);
+					if(W2.criminal()==W.criminal())
+						W2.setState(state);
+				}
+		}
 		
 		public String getMessage(int which)
 		{
@@ -580,49 +548,6 @@ public class Arrest extends StdBehavior
 		return false;
 	}
 
-	public boolean isTheJudge(Law laws, MOB M)
-	{
-		if(((M.isMonster()||M.soulMate()!=null))
-		&&(!Sense.isMobile(M))
-		&&(M.location()!=null))
-		{
-			if((laws.judgeNames().size()<=0)||(((String)laws.judgeNames().firstElement()).equals("@")))
-				return false;
-			else
-			for(int i=0;i<laws.judgeNames().size();i++)
-				if((CoffeeUtensils.containsString(M.displayText(),(String)laws.judgeNames().elementAt(i)))
-				||(CoffeeUtensils.containsString(M.Name(),(String)laws.judgeNames().elementAt(i))))
-					return true;
-		}
-		return false;
-	}
-
-	public MOB getTheJudgeHere(Law laws, Room R)
-	{
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			MOB M=R.fetchInhabitant(i);
-			if(isTheJudge(laws,M))
-				return M;
-		}
-		return null;
-	}
-	
-	public Room findTheJudge(Law laws, Area myArea)
-	{
-		for(Enumeration r=myArea.getMap();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			for(int i=0;i<R.numInhabitants();i++)
-			{
-				MOB M=R.fetchInhabitant(i);
-				if(isTheJudge(laws,M))
-					return R;
-			}
-		}
-		return null;
-	}
-	
 	public boolean isElligibleOfficer(Law laws, MOB M, Area myArea)
 	{
 		if((M.isMonster())&&(M.location()!=null))
@@ -749,6 +674,227 @@ public class Arrest extends StdBehavior
 		return adjusted;
 	}
 
+	public boolean isBusyWithJustice(Law laws, MOB M)
+	{
+		for(int w=0;w<laws.warrants().size();w++)
+		{
+			LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(w);
+			if(W.arrestingOfficer()!=null)
+			{
+				if(W.criminal()==M) return true;
+				else
+				if(W.arrestingOfficer()==M) return true;
+			}
+		}
+		return false;
+	}
+	
+	public String fixCharge(LegalWarrant W)
+	{
+		if(W==null) return "";
+		String charge=W.crime();
+		if(W.victim()==null) return charge;
+		if(charge.indexOf("<T-NAME>")<0) return charge;
+		return charge.replaceFirst("<T-NAME>",W.victim().name());
+	}
+
+	public String restOfCharges(Law laws, MOB mob)
+	{
+		StringBuffer msg=new StringBuffer("");
+		for(int w=0;(laws.getWarrant(mob,w)!=null);w++)
+		{
+			LegalWarrant W=laws.getWarrant(mob,w);
+			if(W!=null)
+			{
+				if(w==0)
+					msg.append("for "+fixCharge(W));
+				else
+				if(laws.getWarrant(mob,w+1)==null)
+					msg.append(", and for "+fixCharge(W));
+				else
+					msg.append(", for "+fixCharge(W));
+			}
+		}
+		return msg.toString();
+	}
+
+	public void makePeace(Room R)
+	{
+		if(R==null) return;
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB inhab=R.fetchInhabitant(i);
+			if((inhab!=null)&&(inhab.isInCombat()))
+				inhab.makePeace();
+		}
+	}
+
+	public boolean isTheJudge(Law laws, MOB M)
+	{
+		if(((M.isMonster()||M.soulMate()!=null))
+		&&(!Sense.isMobile(M))
+		&&(M.location()!=null))
+		{
+			if((laws.judgeNames().size()<=0)||(((String)laws.judgeNames().firstElement()).equals("@")))
+				return false;
+			else
+			for(int i=0;i<laws.judgeNames().size();i++)
+			{
+				if((CoffeeUtensils.containsString(M.displayText(),(String)laws.judgeNames().elementAt(i)))
+				||(CoffeeUtensils.containsString(M.Name(),(String)laws.judgeNames().elementAt(i))))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public MOB getTheJudgeHere(Law laws, Room R)
+	{
+		for(int i=0;i<R.numInhabitants();i++)
+		{
+			MOB M=R.fetchInhabitant(i);
+			if(isTheJudge(laws,M))
+				return M;
+		}
+		return null;
+	}
+	
+	public Room findTheJudge(Law laws, Area myArea)
+	{
+		for(Enumeration r=myArea.getMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				MOB M=R.fetchInhabitant(i);
+				if(isTheJudge(laws,M))
+					return R;
+			}
+		}
+		return null;
+	}
+	
+	public boolean trackTheJudge(MOB officer, Area myArea, Law laws)
+	{
+		stopTracking(officer);
+		Ability A=CMClass.getAbility("Skill_Track");
+		if(A!=null)
+		{
+			Room R=findTheJudge(laws,myArea);
+			if(R!=null)
+			{
+				A.invoke(officer,Util.parse("\""+CMMap.getExtendedRoomID(R)+"\""),R,true);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void stopTracking(MOB officer)
+	{
+		Vector V=Sense.flaggedAffects(officer,Ability.FLAG_TRACKING);
+		for(int v=0;v<V.size();v++)
+		{ ((Ability)V.elementAt(v)).unInvoke(); officer.delAffect((Ability)V.elementAt(v));}
+	}
+	
+	public Room setReleaseRoom(Law laws, Area myArea, MOB criminal)
+	{
+		Room room=null;
+		if((criminal.isMonster())&&(criminal.getStartRoom()!=null))
+			room=criminal.getStartRoom();
+		else
+		if((laws.releaseRooms().size()==0)||(((String)laws.releaseRooms().firstElement()).equals("@")))
+			return (Room)myArea.getMap().nextElement();
+		else
+		{
+			room=getRoom(criminal.location().getArea(),laws.releaseRooms());
+			if(room==null) room=getRoom(myArea,laws.releaseRooms());
+			if(room==null) room=findTheJudge(laws,myArea);
+			if(room==null) room=(Room)myArea.getMap().nextElement();
+		}
+		return room;
+	}
+	
+
+	public boolean isTroubleMaker(MOB M)
+	{
+		if(M==null) return false;
+		for(int b=0;b<M.numBehaviors();b++)
+		{
+			Behavior B=M.fetchBehavior(b);
+			if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_TROUBLEMAKING)))
+				return true;
+		}
+		return false;
+	}
+	
+	public Room getRoom(Area A, Vector V)
+	{
+		Room jail=null;
+		if(V.size()==0) return jail;
+		String which=(String)V.elementAt(Dice.roll(1,V.size(),-1));
+		jail=CMMap.getRoom(which);
+		if(jail==null)
+		for(Enumeration r=A.getMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if(CoffeeUtensils.containsString(R.displayText(),which))
+			{ jail=R; break; }
+		}
+		if(jail==null)
+		for(Enumeration r=A.getMap();r.hasMoreElements();)
+		{
+			Room R=(Room)r.nextElement();
+			if(CoffeeUtensils.containsString(R.description(),which))
+			{ jail=R; break; }
+		}
+		return jail;
+	}
+
+	public void fileAllWarrants(Law laws, MOB mob)
+	{
+		LegalWarrant W=null;
+		Vector V=new Vector();
+		for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
+			if(W.criminal()==mob)
+				V.addElement(W);
+		for(int v=0;v<V.size();v++)
+		{
+			W=(LegalWarrant)V.elementAt(v);
+			laws.warrants().removeElement(W);
+			if(W.crime()!=null)
+			{
+				boolean found=false;
+				for(int w=0;w<laws.oldWarrants().size();w++)
+				{
+					LegalWarrant oW=(LegalWarrant)laws.oldWarrants().elementAt(w);
+					if((oW.criminal()==mob)
+					&&(oW.crime()!=null)
+					&&(oW.crime().equals(W.crime())))
+						found=true;
+				}
+				if(!found)
+				{
+					W.setOffenses(W.offenses()+1);
+					laws.oldWarrants().addElement(W);
+				}
+			}
+		}
+	}
+
+	public Room findTheJail(MOB mob, Area myArea, Law laws)
+	{
+		Room jail=null;
+		if((laws.jailRooms().size()==0)||(((String)laws.jailRooms().firstElement()).equals("@")))
+			return null;
+		else
+		{
+			jail=getRoom(mob.location().getArea(),laws.jailRooms());
+			if(jail==null) jail=getRoom(myArea,laws.jailRooms());
+		}
+		return jail;
+	}
+	
 	public boolean judgeMe(Law laws, MOB judge, MOB officer, MOB criminal, LegalWarrant W)
 	{
 		switch(highestCrimeAction(laws,criminal))
@@ -849,7 +995,7 @@ public class Arrest extends StdBehavior
 				if(laws.jailMessages(0).length()>0)
 					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(0),false,false);
 				W.setJailTime(laws.jailTimes(0));
-				W.setState(Law.STATE_PAROLING);
+				W.setState(Law.STATE_JAILING);
 			}
 			return false;
 		case Law.ACTION_JAIL2:
@@ -860,7 +1006,7 @@ public class Arrest extends StdBehavior
 				if(laws.jailMessages(1).length()>0)
 					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(1),false,false);
 				W.setJailTime(laws.jailTimes(1));
-				W.setState(Law.STATE_PAROLING);
+				W.setState(Law.STATE_JAILING);
 			}
 			return false;
 		case Law.ACTION_JAIL3:
@@ -871,7 +1017,7 @@ public class Arrest extends StdBehavior
 				if(laws.jailMessages(2).length()>0)
 					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(2),false,false);
 				W.setJailTime(laws.jailTimes(2));
-				W.setState(Law.STATE_PAROLING);
+				W.setState(Law.STATE_JAILING);
 			}
 			return false;
 		case Law.ACTION_JAIL4:
@@ -882,7 +1028,7 @@ public class Arrest extends StdBehavior
 				if(laws.jailMessages(3).length()>0)
 					ExternalPlay.quickSay(judge,criminal,laws.jailMessages(3),false,false);
 				W.setJailTime(laws.jailTimes(3));
-				W.setState(Law.STATE_PAROLING);
+				W.setState(Law.STATE_JAILING);
 			}
 			return false;
 		case Law.ACTION_EXECUTE:
@@ -898,85 +1044,7 @@ public class Arrest extends StdBehavior
 		}
 		return true;
 	}
-
-	public boolean isTroubleMaker(MOB M)
-	{
-		if(M==null) return false;
-		for(int b=0;b<M.numBehaviors();b++)
-		{
-			Behavior B=M.fetchBehavior(b);
-			if((B!=null)&&(Util.bset(flags(),Behavior.FLAG_TROUBLEMAKING)))
-				return true;
-		}
-		return false;
-	}
 	
-	public Room getRoom(Area A, Vector V)
-	{
-		Room jail=null;
-		if(V.size()==0) return jail;
-		String which=(String)V.elementAt(Dice.roll(1,V.size(),-1));
-		jail=CMMap.getRoom(which);
-		if(jail==null)
-		for(Enumeration r=A.getMap();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(R.displayText(),which))
-			{ jail=R; break; }
-		}
-		if(jail==null)
-		for(Enumeration r=A.getMap();r.hasMoreElements();)
-		{
-			Room R=(Room)r.nextElement();
-			if(CoffeeUtensils.containsString(R.description(),which))
-			{ jail=R; break; }
-		}
-		return jail;
-	}
-
-	public void fileAllWarrants(Law laws, MOB mob)
-	{
-		LegalWarrant W=null;
-		Vector V=new Vector();
-		for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
-			if(W.criminal()==mob)
-				V.addElement(W);
-		for(int v=0;v<V.size();v++)
-		{
-			W=(LegalWarrant)V.elementAt(v);
-			laws.warrants().removeElement(W);
-			if(W.crime()!=null)
-			{
-				boolean found=false;
-				for(int w=0;w<laws.oldWarrants().size();w++)
-				{
-					LegalWarrant oW=(LegalWarrant)laws.oldWarrants().elementAt(w);
-					if((oW.criminal()==mob)
-					&&(oW.crime()!=null)
-					&&(oW.crime().equals(W.crime())))
-						found=true;
-				}
-				if(!found)
-				{
-					W.setOffenses(W.offenses()+1);
-					laws.oldWarrants().addElement(W);
-				}
-			}
-		}
-	}
-
-	public Room findTheJail(MOB judge, Area myArea, Law laws)
-	{
-		Room jail=null;
-		if((laws.jailRooms().size()==0)||(((String)laws.jailRooms().firstElement()).equals("@")))
-			return null;
-		else
-		{
-			jail=getRoom(judge.location().getArea(),laws.jailRooms());
-			if(jail==null) jail=getRoom(myArea,laws.jailRooms());
-		}
-		return jail;
-	}
 	
 	public boolean fillOutWarrant(MOB mob,
 								Law laws,
@@ -1194,10 +1262,11 @@ public class Arrest extends StdBehavior
 					name=affect.sourceMessage().substring(x+16,y).trim();
 				else
 					name=affect.sourceMessage().substring(x+16).trim();
+				Vector warrs=(Vector)laws.warrants().clone();
 				if(name.length()>0)
-				for(int i=laws.warrants().size()-1;i>=0;i--)
+				for(int i=warrs.size()-1;i>=0;i--)
 				{
-					LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+					LegalWarrant W=(LegalWarrant)warrs.elementAt(i);
 					if((W.criminal()!=null)&&(CoffeeUtensils.containsString(W.criminal().Name(),name)))
 					{
 						Ability A=W.criminal().fetchAffect("Prisoner");
@@ -1434,102 +1503,6 @@ public class Arrest extends StdBehavior
 	}
 
 
-	public boolean isBusyWithJustice(Law laws, MOB M)
-	{
-		for(int w=0;w<laws.warrants().size();w++)
-		{
-			LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(w);
-			if(W.arrestingOfficer()!=null)
-			{
-				if(W.criminal()==M) return true;
-				else
-				if(W.arrestingOfficer()==M) return true;
-			}
-		}
-		return false;
-	}
-	
-	public String fixCharge(LegalWarrant W)
-	{
-		if(W==null) return "";
-		String charge=W.crime();
-		if(W.victim()==null) return charge;
-		if(charge.indexOf("<T-NAME>")<0) return charge;
-		return charge.replaceFirst("<T-NAME>",W.victim().name());
-	}
-
-	public String restOfCharges(Law laws, MOB mob)
-	{
-		StringBuffer msg=new StringBuffer("");
-		for(int w=0;(laws.getWarrant(mob,w)!=null);w++)
-		{
-			LegalWarrant W=laws.getWarrant(mob,w);
-			if(W!=null)
-			{
-				if(w==0)
-					msg.append("for "+fixCharge(W));
-				else
-				if(laws.getWarrant(mob,w+1)==null)
-					msg.append(", and for "+fixCharge(W));
-				else
-					msg.append(", for "+fixCharge(W));
-			}
-		}
-		return msg.toString();
-	}
-
-	public void makePeace(Room R)
-	{
-		if(R==null) return;
-		for(int i=0;i<R.numInhabitants();i++)
-		{
-			MOB inhab=R.fetchInhabitant(i);
-			if((inhab!=null)&&(inhab.isInCombat()))
-				inhab.makePeace();
-		}
-	}
-
-	public boolean trackTheJudge(MOB officer, Area myArea, Law laws)
-	{
-		stopTracking(officer);
-		Ability A=CMClass.getAbility("Skill_Track");
-		if(A!=null)
-		{
-			Room R=findTheJudge(laws,myArea);
-			if(R!=null)
-			{
-				A.invoke(officer,Util.parse("\""+CMMap.getExtendedRoomID(R)+"\""),null,true);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void stopTracking(MOB officer)
-	{
-		Vector V=Sense.flaggedAffects(officer,Ability.FLAG_TRACKING);
-		for(int v=0;v<V.size();v++)
-		{ ((Ability)V.elementAt(v)).unInvoke(); officer.delAffect((Ability)V.elementAt(v));}
-	}
-	
-	public Room setReleaseRoom(Law laws, Area myArea, MOB criminal)
-	{
-		Room room=null;
-		if((criminal.isMonster())&&(criminal.getStartRoom()!=null))
-			room=criminal.getStartRoom();
-		else
-		if((laws.releaseRooms().size()==0)||(((String)laws.releaseRooms().firstElement()).equals("@")))
-			return (Room)myArea.getMap().nextElement();
-		else
-		{
-			room=getRoom(criminal.location().getArea(),laws.releaseRooms());
-			if(room==null) room=getRoom(myArea,laws.releaseRooms());
-			if(room==null) room=findTheJudge(laws,myArea);
-			if(room==null) room=(Room)myArea.getMap().nextElement();
-		}
-		return room;
-	}
-	
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -1542,140 +1515,111 @@ public class Arrest extends StdBehavior
 
 
 		HashSet handled=new HashSet();
-		for(int w=laws.warrants().size()-1;w>=0;w--)
+		Vector warrs=(Vector)laws.warrants().clone();
+		for(int w=0;w<warrs.size();w++)
 		{
-			LegalWarrant W=null;
-			try{ W=(LegalWarrant)laws.warrants().elementAt(w);
-			} catch(Exception e){ continue;}
+			LegalWarrant W=(LegalWarrant)warrs.elementAt(w);
 
-			if((!handled.contains(W.criminal()))
-			&&(W.criminal()!=null)
-			&&(W.criminal().location()!=null))
+			if((W.criminal()==null)||(W.criminal().location()==null))
+				continue;
+			
+			if(!isStillACrime(W))
 			{
-				if(!isStillACrime(W))
+				unCuff(W.criminal());
+				if(W.arrestingOfficer()!=null)
+					dismissOfficer(W.arrestingOfficer());
+				W.setArrestingOfficer(null);
+				W.setOffenses(W.offenses()+1);
+				laws.oldWarrants().addElement(W);
+				laws.warrants().removeElement(W);
+				continue;
+			}
+			
+			if(handled.contains(W.criminal()))
+				continue;
+			handled.add(W.criminal());
+			
+			switch(W.state())
+			{
+			case Law.STATE_SEEKING:
 				{
-					unCuff(W.criminal());
-					if(W.arrestingOfficer()!=null)
-						dismissOfficer(W.arrestingOfficer());
-					W.setArrestingOfficer(null);
-					W.setOffenses(W.offenses()+1);
-					laws.oldWarrants().addElement(W);
-					laws.warrants().removeElement(W);
-					continue;
-				}
-				handled.add(W.criminal());
-				switch(W.state())
-				{
-				case Law.STATE_SEEKING:
+					MOB officer=W.arrestingOfficer();
+					if((officer==null)||(!W.criminal().location().isInhabitant(officer)))
+					   officer=null;
+					if(officer==null)
+						officer=getElligibleOfficer(laws,myArea,W.criminal(),W.victim());
+					W.setTravelAttemptTime(0);
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
-						MOB officer=W.arrestingOfficer();
-						if((officer==null)||(!W.criminal().location().isInhabitant(officer)))
-						   officer=null;
-						if(officer==null)
-							officer=getElligibleOfficer(laws,myArea,W.criminal(),W.victim());
-						W.setTravelAttemptTime(0);
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(Sense.canBeSeenBy(W.criminal(),officer)))
+						if(W.criminal().isASysOp(W.criminal().location()))
 						{
-							if(W.criminal().isASysOp(W.criminal().location()))
-							{
-								ExternalPlay.quickSay(officer,W.criminal(),"Damn, I can't arrest you.",false,false);
-								if(W.criminal().isASysOp(null))
-								{
-									fileAllWarrants(laws,W.criminal());
-									unCuff(W.criminal());
-									W.setArrestingOfficer(null);
-								}
-							}
-							else
-							if(W.crime().equalsIgnoreCase("pardoned"))
+							ExternalPlay.quickSay(officer,W.criminal(),"Damn, I can't arrest you.",false,false);
+							if(W.criminal().isASysOp(null))
 							{
 								fileAllWarrants(laws,W.criminal());
 								unCuff(W.criminal());
 								W.setArrestingOfficer(null);
-							}
-							else
-							if(judgeMe(laws,null,officer,W.criminal(),W))
-							{
-								fileAllWarrants(laws,W.criminal());
-								unCuff(W.criminal());
-								dismissOfficer(officer);
-								W.setArrestingOfficer(null);
-							}
-							else
-							{
-								W.setArrestingOfficer(officer);
-								ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
-								W.setState(Law.STATE_ARRESTING);
-							}
-						}
-					}
-					break;
-				case Law.STATE_ARRESTING:
-					{
-						MOB officer=W.arrestingOfficer();
-						W.setTravelAttemptTime(0);
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(Sense.canBeSeenBy(W.criminal(),officer)))
-						{
-							if(officer.isInCombat())
-							{
-								if(officer.getVictim()==W.criminal())
-								{
-									ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTFIGHT),false,false);
-									W.setState(Law.STATE_SUBDUEING);
-								}
-								else
-								{
-									W.setArrestingOfficer(null);
-									W.setState(Law.STATE_SEEKING);
-								}
-							}
-							else
-							if(W.crime().equalsIgnoreCase("pardoned"))
-							{
-								fileAllWarrants(laws,W.criminal());
-								unCuff(W.criminal());
-								W.setArrestingOfficer(null);
-							}
-							else
-							{
-								if((W.criminal().isMonster())
-								&&(!Sense.isEvil(W.criminal()))
-								&&(!Sense.isSitting(W.criminal())))
-								{
-									W.criminal().makePeace();
-									try{ExternalPlay.doCommand(W.criminal(),Util.parse("SIT"));}catch(Exception e){}
-								}
-								if(Sense.isSitting(W.criminal())||Sense.isSleeping(W.criminal()))
-									ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_NORESIST),false,false);
-								else
-									ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTWARN),false,false);
-								W.setState(Law.STATE_SUBDUEING);
 							}
 						}
 						else
+						if(W.crime().equalsIgnoreCase("pardoned"))
 						{
+							fileAllWarrants(laws,W.criminal());
+							unCuff(W.criminal());
 							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
+						}
+						else
+						if(judgeMe(laws,null,officer,W.criminal(),W))
+						{
+							fileAllWarrants(laws,W.criminal());
+							unCuff(W.criminal());
+							dismissOfficer(officer);
+							W.setArrestingOfficer(null);
+						}
+						else
+						{
+							W.setArrestingOfficer(officer);
+							ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"You are under arrest "+restOfCharges(laws,W.criminal())+"! Sit down on the ground immediately!",false,false);
+							W.setState(Law.STATE_ARRESTING);
 						}
 					}
-					break;
-				case Law.STATE_SUBDUEING:
+				}
+				break;
+			case Law.STATE_ARRESTING:
+				{
+					MOB officer=W.arrestingOfficer();
+					W.setTravelAttemptTime(0);
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.aliveAwakeMobile(officer,true))
+					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
-						MOB officer=W.arrestingOfficer();
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(Sense.canBeSeenBy(W.criminal(),officer)))
+						if(officer.isInCombat())
 						{
-							W.setTravelAttemptTime(0);
+							if(officer.getVictim()==W.criminal())
+							{
+								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTFIGHT),false,false);
+								W.setState(Law.STATE_SUBDUEING);
+							}
+							else
+							{
+								W.setArrestingOfficer(null);
+								W.setState(Law.STATE_SEEKING);
+							}
+						}
+						else
+						if(W.crime().equalsIgnoreCase("pardoned"))
+						{
+							fileAllWarrants(laws,W.criminal());
+							unCuff(W.criminal());
+							W.setArrestingOfficer(null);
+						}
+						else
+						{
 							if((W.criminal().isMonster())
 							&&(!Sense.isEvil(W.criminal()))
 							&&(!Sense.isSitting(W.criminal())))
@@ -1683,498 +1627,611 @@ public class Arrest extends StdBehavior
 								W.criminal().makePeace();
 								try{ExternalPlay.doCommand(W.criminal(),Util.parse("SIT"));}catch(Exception e){}
 							}
-							if(W.crime().equalsIgnoreCase("pardoned"))
-							{
-								fileAllWarrants(laws,W.criminal());
-								unCuff(W.criminal());
-								W.setArrestingOfficer(null);
-							}
+							if(Sense.isSitting(W.criminal())||Sense.isSleeping(W.criminal()))
+								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_NORESIST),false,false);
 							else
-							if(!Sense.isSitting(W.criminal())&&(!Sense.isSleeping(W.criminal())))
-							{
-								if(!W.arrestingOfficer().isInCombat())
-									ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESIST),false,false);
-
-								Ability A=CMClass.getAbility("Skill_ArrestingSap");
-								if(A!=null){
-									int curPoints=(int)Math.round(Util.div(W.criminal().curState().getHitPoints(),W.criminal().maxState().getHitPoints())*100.0);
-									A.setProfficiency(100);
-									A.setAbilityCode(10);
-									if(!A.invoke(officer,W.criminal(),(curPoints<=25)))
-									{
-										A=CMClass.getAbility("Skill_Trip");
-										A.setAbilityCode(30);
-										if(!A.invoke(officer,W.criminal(),(curPoints<=50)))
-											ExternalPlay.postAttack(officer,W.criminal(),officer.fetchWieldedItem());
-									}
-								}
-							}
-							if(Sense.isSitting(W.criminal())||(Sense.isSleeping(W.criminal())))
-							{
-								makePeace(officer.location());
-
-								// cuff him!
-								W.setState(Law.STATE_MOVING);
-								Ability A=CMClass.getAbility("Skill_HandCuff");
-								if(A!=null)	A.invoke(officer,W.criminal(),true);
-								W.criminal().makePeace();
-								makePeace(officer.location());
-								A=W.criminal().fetchAffect("Skill_ArrestingSap");
-								if(A!=null)A.unInvoke();
-								A=W.criminal().fetchAffect("Fighter_Whomp");
-								if(A!=null)A.unInvoke();
-								A=W.criminal().fetchAffect("Skill_Trip");
-								if(A!=null)A.unInvoke();
-								makePeace(officer.location());
-								ExternalPlay.standIfNecessary(W.criminal());
-								W.setTravelAttemptTime(System.currentTimeMillis());
-								trackTheJudge(officer,myArea,laws);
-								makePeace(officer.location());
-							}
-						}
-						else
-						{
-							W.setTravelAttemptTime(0);
-							unCuff(W.criminal());
-							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
+								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESISTWARN),false,false);
+							W.setState(Law.STATE_SUBDUEING);
 						}
 					}
-					break;
-				case Law.STATE_MOVING:
+					else
 					{
-						MOB officer=W.arrestingOfficer();
-
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(!W.crime().equalsIgnoreCase("pardoned"))
-						&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
-						&&(Sense.aliveAwakeMobile(officer,true)))
-						{
-							if(W.criminal().curState().getMovement()<50)
-								W.criminal().curState().setMovement(50);
-							if(officer.curState().getMovement()<50)
-								officer.curState().setMovement(50);
-							makePeace(officer.location());
-							if(officer.isMonster())
-								ExternalPlay.look(officer,null,true);
-							if(getTheJudgeHere(laws,officer.location())!=null)
-								W.setState(Law.STATE_REPORTING);
-							else
-							if(Sense.flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
-								trackTheJudge(officer,myArea,laws);
-							else
-							if((Dice.rollPercentage()>75)&&(laws.chitChat().size()>0))
-								ExternalPlay.quickSay(officer,W.criminal(),(String)laws.chitChat().elementAt(Dice.roll(1,laws.chitChat().size(),-1)),false,false);
-						}
-						else
-						{
-							W.setTravelAttemptTime(0);
-							unCuff(W.criminal());
-							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
-						}
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
 					}
-					break;
-				case Law.STATE_REPORTING:
-					{
-						MOB officer=W.arrestingOfficer();
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(!W.crime().equalsIgnoreCase("pardoned"))
-						&&(Sense.aliveAwakeMobile(officer,true)))
-						{
-							MOB judge=getTheJudgeHere(laws,officer.location());
-							if(judge==null)
-							{
-								W.setState(Law.STATE_MOVING);
-								trackTheJudge(officer,myArea,laws);
-							}
-							else
-							if(Sense.aliveAwakeMobile(judge,true))
-							{
-								W.setTravelAttemptTime(0);
-								String sirmaam="Sir";
-								if(Character.toString((char)judge.charStats().getStat(CharStats.GENDER)).equalsIgnoreCase("F"))
-									sirmaam="Ma'am";
-								ExternalPlay.quickSay(officer,judge,sirmaam+", "+W.criminal().name()+" has been arrested "+restOfCharges(laws,W.criminal())+".",false,false);
-								for(int w2=0;w2<laws.warrants().size();w2++)
-								{
-									LegalWarrant W2=(LegalWarrant)laws.warrants().elementAt(w2);
-									if(W2.criminal()==W.criminal())
-										ExternalPlay.quickSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
-								}
-								W.setState(Law.STATE_WAITING);
-							}
-							else
-							{
-								W.setTravelAttemptTime(0);
-								unCuff(W.criminal());
-								W.setArrestingOfficer(null);
-								W.setState(Law.STATE_SEEKING);
-							}
-						}
-						else
-						{
-							W.setTravelAttemptTime(0);
-							unCuff(W.criminal());
-							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
-						}
-					}
-					break;
-				case Law.STATE_WAITING:
-					{
-						MOB officer=W.arrestingOfficer();
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(!W.crime().equalsIgnoreCase("pardoned"))
-						&&(Sense.aliveAwakeMobile(officer,true)))
-						{
-							MOB judge=getTheJudgeHere(laws,officer.location());
-							if(judge==null)
-							{
-								W.setState(Law.STATE_MOVING);
-								trackTheJudge(officer,myArea,laws);
-							}
-							else
-							if(Sense.aliveAwakeMobile(judge,true))
-							{
-								if(judgeMe(laws,judge,officer,W.criminal(),W))
-								{
-									W.setTravelAttemptTime(0);
-									unCuff(W.criminal());
-									dismissOfficer(officer);
-									fileAllWarrants(laws,W.criminal());
-									unCuff(W.criminal());
-									W.setArrestingOfficer(null);
-								}
-								// else, still stuff to do
-							}
-							else
-							{
-								W.setTravelAttemptTime(0);
-								unCuff(W.criminal());
-								W.setArrestingOfficer(null);
-								W.setState(Law.STATE_SEEKING);
-							}
-						}
-						else
-						{
-							W.setTravelAttemptTime(0);
-							unCuff(W.criminal());
-							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
-						}
-					}
-					break;
-				case Law.STATE_PAROLING:
+				}
+				break;
+			case Law.STATE_SUBDUEING:
+				{
+					MOB officer=W.arrestingOfficer();
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.aliveAwakeMobile(officer,true))
+					&&(Sense.canBeSeenBy(W.criminal(),officer)))
 					{
 						W.setTravelAttemptTime(0);
-						MOB officer=W.arrestingOfficer();
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(!W.crime().equalsIgnoreCase("pardoned"))
-						&&(Sense.canBeSeenBy(W.criminal(),officer)))
+						if((W.criminal().isMonster())
+						&&(!Sense.isEvil(W.criminal()))
+						&&(!Sense.isSitting(W.criminal())))
 						{
-							MOB judge=getTheJudgeHere(laws,officer.location());
+							W.criminal().makePeace();
+							try{ExternalPlay.doCommand(W.criminal(),Util.parse("SIT"));}catch(Exception e){}
+						}
+						if(W.crime().equalsIgnoreCase("pardoned"))
+						{
 							fileAllWarrants(laws,W.criminal());
 							unCuff(W.criminal());
-							if((judge!=null)
-							&&(Sense.aliveAwakeMobile(judge,true)))
-							{
-								judge.location().show(judge,W.criminal(),Affect.MSG_OK_VISUAL,"<S-NAME> put(s) <T-NAME> on parole!");
-								Ability A=CMClass.getAbility("Prisoner");
-								A.startTickDown(judge,W.criminal(),W.jailTime());
-								W.criminal().recoverEnvStats();
-								W.criminal().recoverCharStats();
-								ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PAROLEDISMISS),false,false);
-								dismissOfficer(officer);
-								W.setArrestingOfficer(null);
-								W.criminal().tell("\n\r\n\r");
+							W.setArrestingOfficer(null);
+						}
+						else
+						if(!Sense.isSitting(W.criminal())&&(!Sense.isSleeping(W.criminal())))
+						{
+							if(!W.arrestingOfficer().isInCombat())
+								ExternalPlay.quickSay(officer,W.criminal(),laws.getMessage(Law.MSG_RESIST),false,false);
+
+							Ability A=CMClass.getAbility("Skill_ArrestingSap");
+							if(A!=null){
+								int curPoints=(int)Math.round(Util.div(W.criminal().curState().getHitPoints(),W.criminal().maxState().getHitPoints())*100.0);
+								A.setProfficiency(100);
+								A.setAbilityCode(10);
+								if(!A.invoke(officer,W.criminal(),(curPoints<=25)))
+								{
+									A=CMClass.getAbility("Skill_Trip");
+									A.setAbilityCode(30);
+									if(!A.invoke(officer,W.criminal(),(curPoints<=50)))
+										ExternalPlay.postAttack(officer,W.criminal(),officer.fetchWieldedItem());
+								}
 							}
+						}
+						Ability cuff=W.criminal().fetchAffect("Skill_HandCuff");
+						if(Sense.isSitting(W.criminal())
+						||(cuff!=null)
+						||(Sense.isSleeping(W.criminal())))
+						{
+							makePeace(officer.location());
+
+							// cuff him!
+							W.setState(Law.STATE_MOVING);
+							if(cuff!=null){ cuff.unInvoke(); W.criminal().delAffect(cuff);}
+							Ability A=CMClass.getAbility("Skill_HandCuff");
+							if(A!=null)	A.invoke(officer,W.criminal(),true);
+							W.criminal().makePeace();
+							makePeace(officer.location());
+							A=W.criminal().fetchAffect("Skill_ArrestingSap");
+							if(A!=null)A.unInvoke();
+							A=W.criminal().fetchAffect("Fighter_Whomp");
+							if(A!=null)A.unInvoke();
+							A=W.criminal().fetchAffect("Skill_Trip");
+							if(A!=null)A.unInvoke();
+							makePeace(officer.location());
+							ExternalPlay.standIfNecessary(W.criminal());
+							W.setTravelAttemptTime(System.currentTimeMillis());
+							if(trackTheJudge(officer,myArea,laws))
+								makePeace(officer.location());
 							else
 							{
+								makePeace(officer.location());
+								ExternalPlay.quickSay(officer,W.criminal(),"Since there is no judge, you may go.",false,false);
+								W.setTravelAttemptTime(0);
+								fileAllWarrants(laws,W.criminal());
 								unCuff(W.criminal());
 								if(W.arrestingOfficer()!=null)
 									dismissOfficer(W.arrestingOfficer());
+							}
+						}
+					}
+					else
+					{
+						if(officer!=null)
+							ExternalPlay.quickSay(officer,null,"Darn.",false,false);
+						W.setTravelAttemptTime(0);
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+					}
+				}
+				break;
+			case Law.STATE_MOVING:
+				{
+					MOB officer=W.arrestingOfficer();
+
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(!W.crime().equalsIgnoreCase("pardoned"))
+					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
+					&&(Sense.aliveAwakeMobile(officer,true)))
+					{
+						if(W.criminal().curState().getMovement()<50)
+							W.criminal().curState().setMovement(50);
+						if(officer.curState().getMovement()<50)
+							officer.curState().setMovement(50);
+						makePeace(officer.location());
+						if(officer.isMonster())
+							ExternalPlay.look(officer,null,true);
+						if(getTheJudgeHere(laws,officer.location())!=null)
+							W.setState(Law.STATE_REPORTING);
+						else
+						if(Sense.flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
+						{
+							if(!trackTheJudge(officer,myArea,laws))
+							{
+								ExternalPlay.quickSay(officer,null,"Now where was that court?.",false,false);
+								W.setTravelAttemptTime(0);
+								unCuff(W.criminal());
 								W.setArrestingOfficer(null);
 								W.setState(Law.STATE_SEEKING);
 							}
 						}
 						else
+						if((Dice.rollPercentage()>75)&&(laws.chitChat().size()>0))
+							ExternalPlay.quickSay(officer,W.criminal(),(String)laws.chitChat().elementAt(Dice.roll(1,laws.chitChat().size(),-1)),false,false);
+					}
+					else
+					{
+						if(officer!=null)
+							ExternalPlay.quickSay(officer,null,"Lost!",false,false);
+						W.setTravelAttemptTime(0);
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+					}
+				}
+				break;
+			case Law.STATE_REPORTING:
+				{
+					MOB officer=W.arrestingOfficer();
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(!W.crime().equalsIgnoreCase("pardoned"))
+					&&(Sense.aliveAwakeMobile(officer,true)))
+					{
+						MOB judge=getTheJudgeHere(laws,officer.location());
+						if(judge==null)
 						{
+							W.setState(Law.STATE_MOVING);
+							if(!trackTheJudge(officer,myArea,laws))
+							{
+								ExternalPlay.quickSay(officer,null,"Where was that darn court!",false,false);
+								W.setTravelAttemptTime(0);
+								unCuff(W.criminal());
+								W.setArrestingOfficer(null);
+								W.setState(Law.STATE_SEEKING);
+							}
+																		  
+						}
+						else
+						if(Sense.aliveAwakeMobile(judge,true))
+						{
+							W.setTravelAttemptTime(0);
+							String sirmaam="Sir";
+							if(Character.toString((char)judge.charStats().getStat(CharStats.GENDER)).equalsIgnoreCase("F"))
+								sirmaam="Ma'am";
+							ExternalPlay.quickSay(officer,judge,sirmaam+", "+W.criminal().name()+" has been arrested "+restOfCharges(laws,W.criminal())+".",false,false);
+							for(int w2=0;w2<laws.warrants().size();w2++)
+							{
+								LegalWarrant W2=(LegalWarrant)laws.warrants().elementAt(w2);
+								if(W2.criminal()==W.criminal())
+									ExternalPlay.quickSay(officer,judge,"The charge of "+fixCharge(W2)+" was witnessed by "+W2.witness().name()+".",false,false);
+							}
+							W.setState(Law.STATE_WAITING);
+						}
+						else
+						{
+							ExternalPlay.quickSay(officer,W.criminal(),"I guess court is not in session today.",false,false);
+							W.setTravelAttemptTime(0);
 							unCuff(W.criminal());
 							W.setArrestingOfficer(null);
 							W.setState(Law.STATE_SEEKING);
 						}
 					}
-					break;
-				case Law.STATE_JAILING:
+					else
 					{
-						MOB officer=W.arrestingOfficer();
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(!W.crime().equalsIgnoreCase("pardoned"))
-						&&(Sense.canBeSeenBy(W.criminal(),officer)))
+						if(officer!=null)
+							ExternalPlay.quickSay(officer,null,"Wha? Where'd he go?",false,false);
+						W.setTravelAttemptTime(0);
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+					}
+				}
+				break;
+			case Law.STATE_WAITING:
+				{
+					MOB officer=W.arrestingOfficer();
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(!W.crime().equalsIgnoreCase("pardoned"))
+					&&(Sense.aliveAwakeMobile(officer,true)))
+					{
+						MOB judge=getTheJudgeHere(laws,officer.location());
+						if(judge==null)
 						{
-							MOB judge=getTheJudgeHere(laws,officer.location());
-							if((judge!=null)
-							&&(Sense.aliveAwakeMobile(judge,true)))
+							W.setState(Law.STATE_MOVING);
+							if(!trackTheJudge(officer,myArea,laws))
 							{
-								Room jail=findTheJail(judge,myArea,laws);
-								if(jail!=null)
+								ExternalPlay.quickSay(officer,null,"Where was that darn court?!",false,false);
+								W.setTravelAttemptTime(0);
+								unCuff(W.criminal());
+								W.setArrestingOfficer(null);
+								W.setState(Law.STATE_SEEKING);
+							}
+						}
+						else
+						if(Sense.aliveAwakeMobile(judge,true))
+						{
+							if(judgeMe(laws,judge,officer,W.criminal(),W))
+							{
+								W.setTravelAttemptTime(0);
+								unCuff(W.criminal());
+								dismissOfficer(officer);
+								fileAllWarrants(laws,W.criminal());
+								unCuff(W.criminal());
+								W.setArrestingOfficer(null);
+							}
+							// else, still stuff to do
+						}
+						else
+						{
+							ExternalPlay.quickSay(officer,W.criminal(),"Court is not in session today.",false,false);
+							W.setTravelAttemptTime(0);
+							unCuff(W.criminal());
+							W.setArrestingOfficer(null);
+							W.setState(Law.STATE_SEEKING);
+						}
+					}
+					else
+					{
+						if(officer!=null)
+							ExternalPlay.quickSay(officer,null,"Wha? Huh?",false,false);
+						W.setTravelAttemptTime(0);
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+					}
+				}
+				break;
+			case Law.STATE_PAROLING:
+				{
+					W.setTravelAttemptTime(0);
+					MOB officer=W.arrestingOfficer();
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.aliveAwakeMobile(officer,true))
+					&&(!W.crime().equalsIgnoreCase("pardoned"))
+					&&(Sense.canBeSeenBy(W.criminal(),officer)))
+					{
+						MOB judge=getTheJudgeHere(laws,officer.location());
+						fileAllWarrants(laws,W.criminal());
+						unCuff(W.criminal());
+						if((judge!=null)
+						&&(Sense.aliveAwakeMobile(judge,true)))
+						{
+							judge.location().show(judge,W.criminal(),Affect.MSG_OK_VISUAL,"<S-NAME> put(s) <T-NAME> on parole!");
+							Ability A=CMClass.getAbility("Prisoner");
+							A.startTickDown(judge,W.criminal(),W.jailTime());
+							W.criminal().recoverEnvStats();
+							W.criminal().recoverCharStats();
+							ExternalPlay.quickSay(judge,W.criminal(),laws.getMessage(Law.MSG_PAROLEDISMISS),false,false);
+							dismissOfficer(officer);
+							W.setArrestingOfficer(null);
+							W.criminal().tell("\n\r\n\r");
+						}
+						else
+						{
+							if(officer!=null)
+								ExternalPlay.quickSay(officer,null,"No court today.",false,false);
+							unCuff(W.criminal());
+							if(W.arrestingOfficer()!=null)
+								dismissOfficer(W.arrestingOfficer());
+							W.setArrestingOfficer(null);
+							W.setState(Law.STATE_SEEKING);
+						}
+					}
+					else
+					{
+						if(officer!=null)
+							ExternalPlay.quickSay(officer,null,"That was wierd.",false,false);
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+					}
+				}
+				break;
+			case Law.STATE_JAILING:
+				{
+					MOB officer=W.arrestingOfficer();
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(Sense.aliveAwakeMobile(officer,true))
+					&&(!W.crime().equalsIgnoreCase("pardoned"))
+					&&(Sense.canBeSeenBy(W.criminal(),officer)))
+					{
+						Room jail=findTheJail(W.criminal(),myArea,laws);
+						if(jail!=null)
+						{
+							makePeace(officer.location());
+							W.setJail(jail);
+							// cuff him!
+							W.setState(Law.STATE_MOVING2);
+							Ability A=CMClass.getAbility("Skill_HandCuff");
+							if(A!=null)	A.invoke(officer,W.criminal(),true);
+							W.criminal().makePeace();
+							makePeace(officer.location());
+							ExternalPlay.standIfNecessary(W.criminal());
+							stopTracking(officer);
+							A=CMClass.getAbility("Skill_Track");
+							if(A!=null)
+							{
+								W.setTravelAttemptTime(System.currentTimeMillis());
+								A.setAbilityCode(1);
+								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true);
+							}
+							if(officer.fetchAffect("Skill_Track")==null)
+							{
+								W.setTravelAttemptTime(0);
+								fileAllWarrants(laws,W.criminal());
+								unCuff(W.criminal());
+								ExternalPlay.quickSay(officer,W.criminal(),"I can't find the jail, you are free to go.",false,false);
+								dismissOfficer(officer);
+								W.setArrestingOfficer(null);
+							}
+							makePeace(officer.location());
+						}
+						else
+						{
+							W.setTravelAttemptTime(0);
+							fileAllWarrants(laws,W.criminal());
+							unCuff(W.criminal());
+							ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"But since there IS no jail, I will let you go.",false,false);
+							dismissOfficer(officer);
+							W.setArrestingOfficer(null);
+						}
+					}
+					else
+					{
+						if(officer!=null)
+							ExternalPlay.quickSay(officer,null,"Crazy.",false,false);
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+						W.setTravelAttemptTime(0);
+					}
+				}
+				break;
+			case Law.STATE_EXECUTING:
+				{
+					MOB officer=W.arrestingOfficer();
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(Sense.aliveAwakeMobile(officer,true))
+					&&(!W.crime().equalsIgnoreCase("pardoned"))
+					&&(Sense.canBeSeenBy(W.criminal(),officer)))
+					{
+						MOB judge=getTheJudgeHere(laws,officer.location());
+						if((judge!=null)
+						&&(Sense.aliveAwakeMobile(judge,true))
+						&&(judge.location()==W.criminal().location()))
+						{
+							fileAllWarrants(laws,W.criminal());
+							unCuff(W.criminal());
+							dismissOfficer(officer);
+							Ability A=CMClass.getAbility("Prisoner");
+							A.startTickDown(judge,W.criminal(),100);
+							W.criminal().recoverEnvStats();
+							W.criminal().recoverCharStats();
+							ExternalPlay.postAttack(judge,W.criminal(),judge.fetchWieldedItem());
+							W.setArrestingOfficer(null);
+							W.setTravelAttemptTime(0);
+						}
+						else
+						{
+							if(officer!=null)
+								ExternalPlay.quickSay(officer,null,"Looks like court is not in session.",false,false);
+							W.setTravelAttemptTime(0);
+							unCuff(W.criminal());
+							if(W.arrestingOfficer()!=null)
+								dismissOfficer(W.arrestingOfficer());
+							W.setArrestingOfficer(null);
+							W.setState(Law.STATE_SEEKING);
+						}
+					}
+					else
+					{
+						if(officer!=null)
+							ExternalPlay.quickSay(officer,null,"Didn't see that coming.",false,false);
+						W.setTravelAttemptTime(0);
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+					}
+				}
+				break;
+			case Law.STATE_MOVING2:
+				{
+					MOB officer=W.arrestingOfficer();
+					if((officer!=null)
+					&&(W.criminal().location().isInhabitant(officer))
+					&&(W.criminal().location().isInhabitant(W.criminal()))
+					&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
+					&&(Sense.aliveAwakeMobile(officer,true))
+					&&(W.jail()!=null))
+					{
+						if(W.criminal().curState().getMovement()<50)
+							W.criminal().curState().setMovement(50);
+						if(officer.curState().getMovement()<50)
+							officer.curState().setMovement(50);
+						makePeace(officer.location());
+						ExternalPlay.look(officer,null,true);
+						if(W.jail()==W.criminal().location())
+						{
+							unCuff(W.criminal());
+							Ability A=CMClass.getAbility("Prisoner");
+							if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime());
+							W.criminal().recoverEnvStats();
+							W.criminal().recoverCharStats();
+							dismissOfficer(officer);
+							if(W.criminal().fetchAffect("Prisoner")==null)
+							{
+								fileAllWarrants(laws,W.criminal());
+								unCuff(W.criminal());
+							}
+							else
+								W.setState(Law.STATE_RELEASE);
+						}
+						else
+						if(Sense.flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
+						{
+							Ability A=CMClass.getAbility("Skill_Track");
+							if(A!=null)
+							{
+								stopTracking(officer);
+								A.setAbilityCode(1); // tells track to cache the path
+								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail())),W.jail(),true);
+							}
+							if(officer.fetchAffect("Skill_Track")==null)
+							{
+								W.setTravelAttemptTime(0);
+								fileAllWarrants(laws,W.criminal());
+								unCuff(W.criminal());
+								ExternalPlay.quickSay(officer,W.criminal(),"I lost the jail, so you are free to go.",false,false);
+								dismissOfficer(officer);
+								W.setArrestingOfficer(null);
+							}
+						}
+						else
+						if((Dice.rollPercentage()>75)&&(laws.chitChat2().size()>0))
+							ExternalPlay.quickSay(officer,W.criminal(),(String)laws.chitChat2().elementAt(Dice.roll(1,laws.chitChat2().size(),-1)),false,false);
+					}
+					else
+					{
+						unCuff(W.criminal());
+						W.setArrestingOfficer(null);
+						W.setState(Law.STATE_SEEKING);
+						W.setTravelAttemptTime(0);
+					}
+				}
+				break;
+			case Law.STATE_RELEASE:
+				{
+					if((W.criminal().fetchAffect("Prisoner")==null)
+					&&(W.jail()!=null))
+					{
+						if(W.criminal().location()==W.jail())
+						{
+							MOB officer=W.arrestingOfficer();
+							if((officer==null)
+							||(!Sense.aliveAwakeMobile(officer,true))
+							||(!W.criminal().location().isInhabitant(W.criminal()))
+							||(!W.criminal().location().isInhabitant(officer)))
+							{
+								W.setArrestingOfficer(getAnyElligibleOfficer(laws,W.jail().getArea(),W.criminal(),W.victim()));
+								if(W.arrestingOfficer()==null) W.setArrestingOfficer(getAnyElligibleOfficer(laws,myArea,W.criminal(),W.victim()));
+								if(W.arrestingOfficer()==null) break;
+								officer=W.arrestingOfficer();
+								W.jail().bringMobHere(officer,false);
+								W.jail().show(officer,W.criminal(),Affect.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
+								Ability A=CMClass.getAbility("Skill_HandCuff");
+								if(A!=null)	A.invoke(officer,W.criminal(),true);
+							}
+							W.setReleaseRoom(setReleaseRoom(laws,myArea,W.criminal()));
+							W.criminal().makePeace();
+							makePeace(officer.location());
+							stopTracking(officer);
+							Ability A=CMClass.getAbility("Skill_Track");
+							if(A!=null)
+							{
+								W.setTravelAttemptTime(System.currentTimeMillis());
+								A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true);
+							}
+							if(officer.fetchAffect("Skill_Track")==null)
+							{
+								W.setTravelAttemptTime(0);
+								fileAllWarrants(laws,W.criminal());
+								unCuff(W.criminal());
+								ExternalPlay.quickSay(officer,W.criminal(),"Well, you can always recall.",false,false);
+								dismissOfficer(officer);
+								W.setArrestingOfficer(null);
+							}
+						}
+						else
+						if(W.releaseRoom()!=null)
+						{
+							MOB officer=W.arrestingOfficer();
+							if(W.criminal().location()==W.releaseRoom())
+							{
+								fileAllWarrants(laws,W.criminal());
+								unCuff(W.criminal());
+
+								if(officer!=null)
 								{
-									makePeace(officer.location());
-									W.setJail(jail);
-									// cuff him!
-									W.setState(Law.STATE_MOVING2);
-									Ability A=CMClass.getAbility("Skill_HandCuff");
-									if(A!=null)	A.invoke(officer,W.criminal(),true);
-									W.criminal().makePeace();
-									makePeace(officer.location());
-									ExternalPlay.standIfNecessary(W.criminal());
-									A=CMClass.getAbility("Skill_Track");
-									if(A!=null)
+									if((Sense.aliveAwakeMobile(officer,true))
+									&&(W.criminal().location().isInhabitant(officer)))
+										ExternalPlay.quickSay(officer,null,laws.getMessage(Law.MSG_LAWFREE),false,false);
+									dismissOfficer(officer);
+								}
+								W.setTravelAttemptTime(0);
+							}
+							else
+							{
+								if((officer!=null)
+								&&(Sense.aliveAwakeMobile(officer,true))
+								&&(W.criminal().location().isInhabitant(officer))
+								&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000))))
+								{
+									ExternalPlay.look(officer,null,true);
+									if(W.criminal().curState().getMovement()<20)
+										W.criminal().curState().setMovement(20);
+									if(officer.curState().getMovement()<20)
+										officer.curState().setMovement(20);
+									if(W.arrestingOfficer().fetchAffect("Skill_Track")==null)
 									{
 										stopTracking(officer);
-										W.setTravelAttemptTime(System.currentTimeMillis());
-										A.setAbilityCode(1);
-										A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(jail)),jail,true);
-									}
-									makePeace(officer.location());
-								}
-								else
-								{
-									W.setTravelAttemptTime(0);
-									fileAllWarrants(laws,W.criminal());
-									unCuff(W.criminal());
-									ExternalPlay.quickSay(judge,W.criminal(),"But since there IS no jail, I will let you go.",false,false);
-									dismissOfficer(officer);
-									W.setArrestingOfficer(null);
-								}
-							}
-							else
-							{
-								unCuff(W.criminal());
-								W.setTravelAttemptTime(0);
-								if(W.arrestingOfficer()!=null)
-									dismissOfficer(W.arrestingOfficer());
-								W.setArrestingOfficer(null);
-								W.setState(Law.STATE_SEEKING);
-							}
-						}
-						else
-						{
-							unCuff(W.criminal());
-							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
-							W.setTravelAttemptTime(0);
-						}
-					}
-					break;
-				case Law.STATE_EXECUTING:
-					{
-						MOB officer=W.arrestingOfficer();
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(!W.crime().equalsIgnoreCase("pardoned"))
-						&&(Sense.canBeSeenBy(W.criminal(),officer)))
-						{
-							MOB judge=getTheJudgeHere(laws,officer.location());
-							if((judge!=null)
-							&&(Sense.aliveAwakeMobile(judge,true))
-							&&(judge.location()==W.criminal().location()))
-							{
-								fileAllWarrants(laws,W.criminal());
-								unCuff(W.criminal());
-								dismissOfficer(officer);
-								Ability A=CMClass.getAbility("Prisoner");
-								A.startTickDown(judge,W.criminal(),100);
-								W.criminal().recoverEnvStats();
-								W.criminal().recoverCharStats();
-								ExternalPlay.postAttack(judge,W.criminal(),judge.fetchWieldedItem());
-								W.setArrestingOfficer(null);
-								W.setTravelAttemptTime(0);
-							}
-							else
-							{
-								W.setTravelAttemptTime(0);
-								unCuff(W.criminal());
-								if(W.arrestingOfficer()!=null)
-									dismissOfficer(W.arrestingOfficer());
-								W.setArrestingOfficer(null);
-								W.setState(Law.STATE_SEEKING);
-							}
-						}
-						else
-						{
-							W.setTravelAttemptTime(0);
-							unCuff(W.criminal());
-							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
-						}
-					}
-					break;
-				case Law.STATE_MOVING2:
-					{
-						MOB officer=W.arrestingOfficer();
-						if((officer!=null)
-						&&(W.criminal().location().isInhabitant(officer))
-						&&(W.criminal().location().isInhabitant(W.criminal()))
-						&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000)))
-						&&(Sense.aliveAwakeMobile(officer,true))
-						&&(W.jail()!=null))
-						{
-							if(W.criminal().curState().getMovement()<50)
-								W.criminal().curState().setMovement(50);
-							if(officer.curState().getMovement()<50)
-								officer.curState().setMovement(50);
-							makePeace(officer.location());
-							ExternalPlay.look(officer,null,true);
-							if(W.jail()==W.criminal().location())
-							{
-								unCuff(W.criminal());
-								Ability A=CMClass.getAbility("Prisoner");
-								A.startTickDown(officer,W.criminal(),W.jailTime());
-								W.criminal().recoverEnvStats();
-								W.criminal().recoverCharStats();
-								dismissOfficer(officer);
-								if(W.criminal().fetchAffect("Prisoner")==null)
-								{
-									fileAllWarrants(laws,W.criminal());
-									unCuff(W.criminal());
-								}
-								else
-									W.setState(Law.STATE_RELEASE);
-							}
-							else
-							if(Sense.flaggedAffects(officer,Ability.FLAG_TRACKING).size()==0)
-							{
-								Ability A=CMClass.getAbility("Skill_Track");
-								if(A!=null)
-								{
-									stopTracking(officer);
-									A.setAbilityCode(1); // tells track to cache the path
-									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.jail())),W.jail(),true);
-								}
-							}
-							else
-							if((Dice.rollPercentage()>75)&&(laws.chitChat2().size()>0))
-								ExternalPlay.quickSay(officer,W.criminal(),(String)laws.chitChat2().elementAt(Dice.roll(1,laws.chitChat2().size(),-1)),false,false);
-						}
-						else
-						{
-							unCuff(W.criminal());
-							W.setArrestingOfficer(null);
-							W.setState(Law.STATE_SEEKING);
-							W.setTravelAttemptTime(0);
-						}
-					}
-					break;
-				case Law.STATE_RELEASE:
-					{
-						if((W.criminal().fetchAffect("Prisoner")==null)
-						&&(W.jail()!=null))
-						{
-							if(W.criminal().location()==W.jail())
-							{
-								MOB officer=W.arrestingOfficer();
-								if((officer==null)
-								||(!Sense.aliveAwakeMobile(officer,true))
-								||(!W.criminal().location().isInhabitant(W.criminal()))
-								||(!W.criminal().location().isInhabitant(officer)))
-								{
-									W.setArrestingOfficer(getAnyElligibleOfficer(laws,W.jail().getArea(),W.criminal(),W.victim()));
-									if(W.arrestingOfficer()==null) W.setArrestingOfficer(getAnyElligibleOfficer(laws,myArea,W.criminal(),W.victim()));
-									if(W.arrestingOfficer()==null) break;
-									officer=W.arrestingOfficer();
-									W.jail().bringMobHere(officer,false);
-									W.jail().show(officer,W.criminal(),Affect.MSG_QUIETMOVEMENT,"<S-NAME> arrive(s) to release <T-NAME>.");
-									Ability A=CMClass.getAbility("Skill_HandCuff");
-									if(A!=null)	A.invoke(officer,W.criminal(),true);
-								}
-								W.setReleaseRoom(setReleaseRoom(laws,myArea,W.criminal()));
-								W.criminal().makePeace();
-								makePeace(officer.location());
-								Ability A=CMClass.getAbility("Skill_Track");
-								if(A!=null)
-								{
-									stopTracking(officer);
-									W.setTravelAttemptTime(System.currentTimeMillis());
-									A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true);
-								}
-							}
-							else
-							if(W.releaseRoom()!=null)
-							{
-								MOB officer=W.arrestingOfficer();
-								if(W.criminal().location()==W.releaseRoom())
-								{
-									fileAllWarrants(laws,W.criminal());
-									unCuff(W.criminal());
-
-									if(officer!=null)
-									{
-										if((Sense.aliveAwakeMobile(officer,true))
-										&&(W.criminal().location().isInhabitant(officer)))
-											ExternalPlay.quickSay(officer,null,laws.getMessage(Law.MSG_LAWFREE),false,false);
-										dismissOfficer(officer);
-									}
-									W.setTravelAttemptTime(0);
-								}
-								else
-								{
-									if((officer!=null)
-									&&(Sense.aliveAwakeMobile(officer,true))
-									&&(W.criminal().location().isInhabitant(officer))
-									&&((W.travelAttemptTime()==0)||((System.currentTimeMillis()-W.travelAttemptTime())<(5*60*1000))))
-									{
-										ExternalPlay.look(officer,null,true);
-										if(W.criminal().curState().getMovement()<20)
-											W.criminal().curState().setMovement(20);
-										if(officer.curState().getMovement()<20)
-											officer.curState().setMovement(20);
+										Ability A=CMClass.getAbility("Skill_Track");
+										if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true);
 										if(W.arrestingOfficer().fetchAffect("Skill_Track")==null)
 										{
-											stopTracking(officer);
-											Ability A=CMClass.getAbility("Skill_Track");
-											if(A!=null)	A.invoke(officer,Util.parse(CMMap.getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true);
+											W.setTravelAttemptTime(0);
+											fileAllWarrants(laws,W.criminal());
+											unCuff(W.criminal());
+											ExternalPlay.quickSay(W.arrestingOfficer(),W.criminal(),"Don't worry, you can always recall.",false,false);
+											dismissOfficer(W.arrestingOfficer());
+											W.setArrestingOfficer(null);
 										}
 									}
-									else
-									{
-										W.setTravelAttemptTime(0);
-										fileAllWarrants(laws,W.criminal());
-										unCuff(W.criminal());
-										if(officer!=null)
-											dismissOfficer(officer);
-									}
+								}
+								else
+								{
+									if(officer!=null)
+										ExternalPlay.quickSay(officer,null,"There's always recall.",false,false);
+									W.setTravelAttemptTime(0);
+									fileAllWarrants(laws,W.criminal());
+									unCuff(W.criminal());
+									if(officer!=null)
+										dismissOfficer(officer);
 								}
 							}
-							else
-							{
-								W.setTravelAttemptTime(0);
-								fileAllWarrants(laws,W.criminal());
-								unCuff(W.criminal());
-								if(W.arrestingOfficer()!=null)
-									dismissOfficer(W.arrestingOfficer());
-							}
+						}
+						else
+						{
+							if(W.arrestingOfficer()!=null)
+								ExternalPlay.quickSay(W.arrestingOfficer(),null,"Well, he can always recall.",false,false);
+							W.setTravelAttemptTime(0);
+							fileAllWarrants(laws,W.criminal());
+							unCuff(W.criminal());
+							if(W.arrestingOfficer()!=null)
+								dismissOfficer(W.arrestingOfficer());
 						}
 					}
-					break;
 				}
+				break;
 			}
-
 		}
 		return true;
 	}

@@ -430,7 +430,16 @@ public class Sense
 	
 	
 	public static boolean isMobile(Environmental E)
-	{ return flaggedBehaviors(E,Behavior.FLAG_MOBILITY).size()>0;}
+	{
+		if(E!=null)
+			for(int b=0;b<E.numBehaviors();b++)
+			{
+				Behavior B=E.fetchBehavior(b);
+				if((B!=null)&&(Util.bset(B.flags(),Behavior.FLAG_MOBILITY)))
+					return true;
+			}
+		return false;
+	}
 	
 	public static Vector flaggedBehaviors(Environmental E, long flag)
 	{

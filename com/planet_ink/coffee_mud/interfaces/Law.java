@@ -108,6 +108,7 @@ public interface Law
 		"POISON_FIREBREATHER=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
 		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n";
 	
+		public void changeStates(LegalWarrant W, int state);
 		public Vector otherCrimes();
 		public Vector otherBits();
 		public Hashtable abilityCrimes();

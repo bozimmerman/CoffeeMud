@@ -1,3 +1,4 @@
+Delta 1903 = 10:36am.
 make sure import cmare handles rooms with containers in containers with items ok
 save ALL followers, including items, if possible.. if not, delete this, and do it in inventory
 allow duplicates of the quest to be run
@@ -7,3 +8,16 @@ Masonry	portcullis (but it requires METAL instead of stone)
 Where are some archon powers?  If some goob starts a clan called 'TulathIsAJerk', I can't delete the offending clan.  Also, clandetails should be viewable to Archons as if they are a boss for a clan (i.e. all members, applicants, etc).  It would also be nice to be able to manually authorize a clan to active.
 gain list should do qual
 posting always makes from unknown
+Commands/base/Movement.java:546
+   if((E==null)||(!E.hasADoor()))
+   {
+    mob.tell(getScr("Movement","knockerr2",E.name()));
+    return;
+   }
+If it's null, how can it have a .name()?\
+book of laws can be crafted
+fines for arrest should be added
+A young player had a follower, who had the skill kick and a decent amount of movement.  She turned off autoassist, then ordered the follower to kick a mob.  She then could order the mob to kick as often as she could type it, completely bypassing the fight delay system.
+While you are in a group, even when you are sitting you follow the members.  Seems if yer sitting you can't possibly be walking around!
+OK, if you put a drappable false into a container, foomp, it's droppable by way of the container.  Bad bug for cursed items.
+Can't for the life of me getting 'cook cookie' to work.  There are a number that don't seem to be working either (stews)...  and Fried TomatoEs is spelled tomatos.

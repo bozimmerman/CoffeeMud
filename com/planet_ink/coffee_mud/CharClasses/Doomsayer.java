@@ -200,6 +200,7 @@ public class Doomsayer extends Cleric
 				if((((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_EDGED)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_POLEARM)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_AXE)
+				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_DAGGER)
 				||(((Weapon)affect.tool()).weaponClassification()==Weapon.CLASS_SWORD))
 					return true;
 				if(Dice.rollPercentage()>myChar.charStats().getStat(CharStats.WISDOM)*2)

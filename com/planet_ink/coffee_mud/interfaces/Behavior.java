@@ -37,8 +37,8 @@ public interface Behavior extends Cloneable, Tickable, MsgListener, Comparable
 	// some behavioral flags for the rest of the system to look for
 	public static final long FLAG_MOBILITY=1;
 	public static final long FLAG_TROUBLEMAKING=2;
-	public static final long FLAG_POTENTIALLYAGGRESSIVE=3;
-	public static final long FLAG_LEGALBEHAVIOR=4;
+	public static final long FLAG_POTENTIALLYAGGRESSIVE=4;
+	public static final long FLAG_LEGALBEHAVIOR=8;
 	
 	public long flags();
 	public boolean grantsAggressivenessTo(MOB M);

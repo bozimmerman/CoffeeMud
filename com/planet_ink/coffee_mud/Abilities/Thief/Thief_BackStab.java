@@ -53,6 +53,7 @@ public class Thief_BackStab extends ThiefSkill
 		}
 		if((weapon.weaponClassification()==Weapon.CLASS_BLUNT)
 		||(weapon.weaponClassification()==Weapon.CLASS_HAMMER)
+		||(weapon.weaponClassification()==Weapon.CLASS_FLAILED)
 		||(weapon.weaponClassification()==Weapon.CLASS_RANGED)
 		||(weapon.weaponClassification()==Weapon.CLASS_THROWN)
 		||(weapon.weaponClassification()==Weapon.CLASS_STAFF))
