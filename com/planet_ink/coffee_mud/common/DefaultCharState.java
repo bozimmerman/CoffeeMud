@@ -159,9 +159,11 @@ public class DefaultCharState implements Cloneable, CharState
 		{
 			if(expendMovement)
 				adjMovement(-mob.location().thirstPerRound(mob),maxState);
-
-			adjThirst(-mob.location().thirstPerRound(mob),maxState);
-			adjHunger(-1,maxState);
+			if(!Sense.isSleeping(mob))
+			{
+				adjThirst(-mob.location().thirstPerRound(mob),maxState);
+				adjHunger(-1,maxState);
+			}
 			boolean thirsty=(getThirst()<=0);
 			boolean hungry=(getHunger()<=0);
 			if((hungry||thirsty)&&(!expendMovement))

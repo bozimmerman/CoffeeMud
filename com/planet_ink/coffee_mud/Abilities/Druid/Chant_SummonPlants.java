@@ -89,7 +89,7 @@ public class Chant_SummonPlants extends Chant
 		Chant_SummonPlants newChant=new Chant_SummonPlants();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
-		newChant.beneficialAffect(mob,newItem,newChant.adjustedLevel(mob)*40);
+		newChant.beneficialAffect(mob,newItem,newChant.adjustedLevel(mob)*120);
 		room.recoverEnvStats();
 		return newItem;
 	}

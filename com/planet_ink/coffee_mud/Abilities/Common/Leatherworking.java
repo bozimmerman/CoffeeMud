@@ -128,7 +128,7 @@ public class LeatherWorking extends CommonSkill
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
-					if(level<=(mob.envStats().level()+3))
+					if((level+3)<=(mob.envStats().level()))
 					{
 						buf.append(Util.padRight("Hard "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -143,7 +143,7 @@ public class LeatherWorking extends CommonSkill
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=Util.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=Util.s_int((String)V.elementAt(RCP_WOOD));
-					if(level<=mob.envStats().level()+6)
+					if((level+6)<=mob.envStats().level())
 					{
 						buf.append(Util.padRight("Studded "+item,14)+" "+Util.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -201,7 +201,7 @@ public class LeatherWorking extends CommonSkill
 						break;
 					}
 					else
-					if((level<=(mob.envStats().level()+3))
+					if(((level+3)<=(mob.envStats().level()))
 					&&(("hard "+replacePercent(item,"")).equalsIgnoreCase(recipeName)))
 					{
 						multiplier=2;
@@ -210,7 +210,7 @@ public class LeatherWorking extends CommonSkill
 						break;
 					}
 					else
-					if((level<=(mob.envStats().level()+3))
+					if(((level+6)<=(mob.envStats().level()))
 					&&(("studded "+replacePercent(item,"")).equalsIgnoreCase(recipeName)))
 					{
 						multiplier=3;

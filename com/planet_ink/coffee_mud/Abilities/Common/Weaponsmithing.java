@@ -175,7 +175,7 @@ public class Weaponsmithing extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			mob.tell("Make what? Enter \"weaponsmith list\" for a list.");
+			mob.tell("Make what? Enter \"weaponsmith list\" for a list, or \"weaponsmith mend <item>\".");
 			return false;
 		}
 		Vector recipes=loadRecipes();
