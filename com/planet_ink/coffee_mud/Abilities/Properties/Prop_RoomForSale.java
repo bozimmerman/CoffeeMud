@@ -1,5 +1,139 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 
-public class Prop_RoomForSale
+import com.planet_ink.coffee_mud.interfaces.*;
+import com.planet_ink.coffee_mud.common.*;
+import com.planet_ink.coffee_mud.utils.*;
+import java.util.*;
+
+public class Prop_RoomForSale extends Property implements LandTitle
 {
+	public String ID() { return "Prop_RoomForSale"; }
+	public String name(){ return "Putting a room up for sale";}
+	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+	public Environmental newInstance(){	return new Prop_RoomForSale();}
+	
+	private boolean confirmedUser=false;
+	private int lastNumItems=-1;
+
+	public String accountForYourself()
+	{ return "For Sale";	}
+	
+	public int landPrice()
+	{
+		int price=0;
+		if(text().indexOf("/")<0)
+			price=Util.s_int(text());
+		else
+			price=Util.s_int(text().substring(text().indexOf("/")+1));
+		if(price<=0) price=100000;
+		return price;
+	}
+	public void setLandPrice(int price){
+		String owner=landOwner();
+		if(owner.length()>0)
+			setMiscText(owner+"/"+price);
+		else
+			setMiscText(""+price);
+	}
+	public String landOwner()
+	{
+		if(text().indexOf("/")<0) return "";
+		return text().substring(0,text().indexOf("/"));
+	}
+	
+	public void setLandOwner(String owner)
+	{
+		int price=landPrice();
+		setMiscText(owner+"/"+price);
+	}
+	
+	public String landRoomID(){
+		if(affected!=null)
+			return affected.ID();
+		return "";
+	}
+	
+	public void setLandRoomID(String landID){}
+	
+	public static LandTitle getLandTitle(Room R)
+	{
+		LandTitle oldTitle=null;
+		for(int a=0;a<R.numAffects();a++)
+			if(R.fetchAffect(a) instanceof LandTitle)
+			{ oldTitle=(LandTitle)R.fetchAffect(a); break;}
+		return oldTitle;
+	}
+	
+	public void updateLot(Room R, LandTitle T)
+	{
+		if(R==null) R=CMMap.getRoom(landRoomID());
+		if(R==null) return;
+		if(T==null) T=getLandTitle(R);
+		if(T==null) return;
+		if(T.landOwner().length()==0)
+		{
+			for(int i=0;i<R.numItems();i++)
+			{
+				Item I=R.fetchItem(i);
+				if(I.dispossessionTime()==null)
+				{
+					Calendar C=new IQCalendar();
+					C.add(Calendar.HOUR,Item.REFUSE_PLAYER_DROP);
+					I.setDispossessionTime(C);
+				}
+			}
+			if(!R.displayText().equals("An empty plot of land"))
+			{
+				R.setDisplayText("An empty plot of land");
+				R.setDescription("Posted here is a notice that this lot, "+R.ID()+", is for sale.");
+				ExternalPlay.DBUpdateRoom(R);
+			}
+		}
+		else
+		{
+			boolean updateItems=false;
+			Item I=R.fetchItem(null,"id$");
+			if((I==null)||(!I.ID().equals("GenWallpaper")))
+			{
+				I=CMClass.getItem("GenWallpaper");
+				I.setReadable(true);
+				I.setName("id");
+				I.setReadableText("This room is "+R.ID());
+				R.addItem(I);
+				updateItems=true;
+			}
+			if(!confirmedUser)
+			{
+				confirmedUser=true;
+				if(!ExternalPlay.DBUserSearch(null,landOwner()))
+				{
+					T.setLandOwner("");
+					updateLot(R,T);
+					return;
+				}
+			}
+			
+			// this works on the priciple that 
+			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
+			// 2. if an item has ONLY been added, the dispossessiontime will be != null
+			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
+			if(lastNumItems<0) 
+				lastNumItems=R.numItems();
+			else 
+			if(R.numItems()!=lastNumItems)
+				updateItems=true;
+			
+			for(int i=0;i<R.numItems();i++)
+			{
+				I=R.fetchItem(i);
+				if(I.dispossessionTime()!=null)
+				{
+					I.setDispossessionTime(null);
+					updateItems=true;
+				}
+			}
+			if(updateItems)
+				ExternalPlay.DBUpdateItems(R);
+		}
+	}
 }

@@ -15,11 +15,12 @@ public interface ShopKeeper extends MOB
 	public final static int JEWELLER=10;
 	public final static int ALCHEMIST=11;
 	public final static int BANKER=12;
+	public final static int LANDSELLER=13;
 	
 	public final static String[] SOLDCODES={
 		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
 		"PETS","LEATHER","ONLYBASEINVENTORY","TRAINER",
-		"CASTER","JEWELLER","ALCHEMIST","BANKER"};
+		"CASTER","JEWELLERY","POTIONS","BANKER","LAND"};
 	
 	public int whatIsSold();
 	public void setWhatIsSold(int newSellCode);
@@ -33,8 +34,8 @@ public interface ShopKeeper extends MOB
 	public void addStoreInventory(Environmental thisThang, int number);
 	public void delStoreInventory(Environmental thisThang);
 	public boolean doISellThis(Environmental thisThang);
-	public boolean doIHaveThisInStock(String name);
+	public boolean doIHaveThisInStock(String name, MOB mob);
 	public int numberInStock(Environmental likeThis);
-	public Environmental getStock(String name);
-	public Environmental removeStock(String name);
+	public Environmental getStock(String name, MOB mob);
+	public Environmental removeStock(String name, MOB mob);
 }

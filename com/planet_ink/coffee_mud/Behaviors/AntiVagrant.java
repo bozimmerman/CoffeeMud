@@ -66,7 +66,8 @@ public class AntiVagrant extends StdBehavior
 		super.affect(affecting,msg);
 		if((msg.sourceMinor()==Affect.TYP_SPEAK)
 		&&(affecting!=null)
-		&&(msg.amISource(affecting))
+		&&(affecting instanceof MOB)
+		&&(msg.amISource((MOB)affecting))
 		&&(msg.sourceMessage()!=null)
 		&&(msg.sourceMessage().toUpperCase().indexOf("SIT")>=0))
 			speakDown=2;

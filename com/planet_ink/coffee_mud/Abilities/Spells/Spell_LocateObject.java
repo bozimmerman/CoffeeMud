@@ -61,7 +61,7 @@ public class Spell_LocateObject extends Spell
 						
 						item=inhab.fetchInventory(what);
 						if((item==null)&&(inhab instanceof ShopKeeper))
-							item=((ShopKeeper)inhab).getStock(what);
+							item=((ShopKeeper)inhab).getStock(what,mob);
 						if((item!=null)&&(Sense.canSee(item)))
 						{
 							if((levelFind==0)

@@ -186,7 +186,7 @@ public class ShopKeepers
 		}
 		do
 		{
-			Environmental thisThang=((ShopKeeper)shopkeeper).getStock(thisName);
+			Environmental thisThang=((ShopKeeper)shopkeeper).getStock(thisName,mob);
 			if((thisThang==null)||((thisThang!=null)&&(!Sense.canBeSeenBy(thisThang,mob))))
 			{
 				if(!doneSomething)

@@ -161,9 +161,11 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		case JEWELLER:
 			return "Precious stones and jewellery";
 		case BANKER:
-			return "My services as a Banker.";
+			return "My services as a Banker";
+		case LANDSELLER:
+			return "Real estate";
 		default:
-			return "I have no idea WHAT I sell.";
+			return "... I have no idea WHAT I sell";
 		}
 	}
 
@@ -264,16 +266,24 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					||((Item)thisThang).canBeWornAt(Item.ON_LEFT_FINGER)));
 		case ALCHEMIST:
 			return (thisThang instanceof Potion);
+		case LANDSELLER:
+			return (thisThang.ID().equals("StdLandTitle"));
 		}
 
 		return false;
 	}
 
-	public boolean doIHaveThisInStock(String name)
+	public boolean doIHaveThisInStock(String name, MOB mob)
 	{
 		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
 			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
+		if((item==null)&&(whatISell==LANDSELLER)&&(mob!=null))
+		{
+			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
+			if(item==null)
+				item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,false);
+		}
 		if(item!=null)
 		   return true;
 		return false;
@@ -310,17 +320,23 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return num;
 	}
 
-	public Environmental getStock(String name)
+	public Environmental getStock(String name, MOB mob)
 	{
 		Environmental item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,true);
 		if(item==null)
 			item=CoffeeUtensils.fetchEnvironmental(storeInventory,name,false);
+		if((item==null)&&(whatISell==LANDSELLER)&&(mob!=null))
+		{
+			item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,true);
+			if(item==null)
+				item=CoffeeUtensils.fetchEnvironmental(addRealEstate(new Vector(),mob),name,false);
+		}
 		return item;
 	}
 
-	public Environmental removeStock(String name)
+	public Environmental removeStock(String name, MOB mob)
 	{
-		Environmental item=getStock(name);
+		Environmental item=getStock(name,mob);
 		if(item!=null)
 		{
 			if(item instanceof Ability)
@@ -397,7 +413,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			}
 			case Affect.TYP_BUY:
 			{
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name())))
+				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
 				{
 					if(yourValue(mob,affect.tool(),true)>mob.getMoney())
 					{
@@ -459,30 +475,28 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					mob.setMoney(mob.getMoney()+yourValue(mob,affect.tool(),false));
 					mob.tell(name()+" pays you "+yourValue(mob,affect.tool(),false)+" for "+affect.tool().name()+".");
-					storeInventory.addElement(affect.tool());
+					if(!affect.tool().ID().equals("StdTitle"))
+						storeInventory.addElement(affect.tool());
 					if(affect.tool() instanceof Item)
 					{
-						((Item)affect.tool()).setContainer(null);
-						((Item)affect.tool()).remove();
-						mob.delInventory((Item)affect.tool());
-						if(affect.tool() instanceof Container)
+						Item item=(Item)affect.tool();
+						Vector V=null;
+						if(item instanceof Container)
+							V=((Container)item).getContents();
+						else
+							V=new Vector();
+						for(int v=0;v<V.size();v++)
 						{
-							int i=0;
-							while(i<mob.inventorySize())
+							Item item2=(Item)V.elementAt(v);
+							item2.remove();
+							mob.delInventory(item2);
+							if(item!=item2)
 							{
-								int a=mob.inventorySize();
-								Item I=mob.fetchInventory(i);
-								if((I!=null)&&(I.container()==affect.tool()))
-								{
-									I.remove();
-									storeInventory.addElement(I);
-									mob.delInventory(I);
-									((Item)I).setContainer((Item)affect.tool());
-								}
-								if(a==mob.inventorySize())
-									i++;
+								item2.setContainer(item);
+								storeInventory.addElement(item2);
 							}
 						}
+						item.setContainer(null);
 					}
 					else
 					if(affect.tool() instanceof MOB)
@@ -501,9 +515,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				}
 				return;
 			case Affect.TYP_BUY:
-				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name())))
+				if((affect.tool()!=null)&&(doIHaveThisInStock(affect.tool().name(),mob)))
 				{
-					Environmental product=removeStock(affect.tool().name());
+					Environmental product=removeStock(affect.tool().name(),mob);
 					mob.setMoney(mob.getMoney()-yourValue(mob,product,true));
 					if(product instanceof Item)
 					{
@@ -597,7 +611,12 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		if(product==null)
 			return val;
 		if(product instanceof Item)
-			val=((Item)product).value();
+		{
+			if(product.ID().equals("StdTitle")&&(product.name().endsWith("(Copy)")))
+				val=100;
+			else
+				val=((Item)product).value();
+		}
 		else
 		if(product instanceof Ability)
 		{
@@ -631,12 +650,50 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return val;
 	}
 
+	
+	private Vector addRealEstate(Vector V,MOB mob)
+	{
+		if((whatISell==ShopKeeper.LANDSELLER)
+		&&(getStartRoom()!=null)
+		&&(getStartRoom().getArea()!=null))
+		{
+			Vector rooms=getStartRoom().getArea().getMyMap();
+			for(int r=0;r<rooms.size();r++)
+			{
+				Room R=(Room)rooms.elementAt(r);
+				Ability A=null;
+				for(int a=0;a<R.numAffects();a++)
+					if(R.fetchAffect(a) instanceof LandTitle)
+					{ A=R.fetchAffect(a); break;}
+				if(A!=null)
+				{
+					Item I=CMClass.getItem("StdTitle");
+					I.setDisplayText("The title to "+R.ID()+" has foolishly been left here.");
+					((LandTitle)I).setLandRoomID(R.ID());
+					if(((LandTitle)I).landOwner().length()>0)
+					{
+						I.setName("the Title to "+R.ID());
+						((LandTitle)I).setLandPrice(((LandTitle)A).landPrice());
+					}
+					else
+					{
+						I.setName("the Title to "+R.ID()+" (Copy)");
+						((LandTitle)I).setLandPrice(((LandTitle)A).landPrice());
+					}
+					I.recoverEnvStats();
+					V.addElement(I);
+				}
+			}
+		}
+		return V;
+	}
 
 	private StringBuffer listInventory(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
 		int csize=0;
 		Vector inventory=getUniqueStoreInventory();
+		inventory=addRealEstate(inventory,mob);
 		for(int i=0;i<inventory.size();i++)
 		{
 			Environmental E=(Environmental)inventory.elementAt(i);

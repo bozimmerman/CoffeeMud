@@ -27,6 +27,14 @@ public class SaveThread extends Thread
 		for(int mn=0;mn<CMMap.numRooms();mn++)
 		{
 			Room room=CMMap.getRoom(mn);
+			LandTitle T=null;
+			for(int a=0;a<room.numAffects();a++)
+			{
+				Ability A=room.fetchAffect(a);
+				if((A!=null)&&(A instanceof LandTitle))
+					T=(LandTitle)A;
+			}
+			if(T!=null)	T.updateLot(room,T);
 			for(int i=0;i<room.numItems();i++)
 			{
 				Item I=room.fetchItem(i);
